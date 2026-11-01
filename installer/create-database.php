@@ -571,6 +571,10 @@ function populateDatabase($oDB)
             }
             $oDB->createCommand()->insert("{{surveymenu}}", $surveyMenuRow);
         }
+        // The default menus have fixed ids, so the PostgreSQL sequence must be moved past them
+        if ($oDB->getDriverName() === 'pgsql') {
+            $oDB->createCommand("SELECT setval(pg_get_serial_sequence('{{surveymenu}}', 'id'), (SELECT MAX(id) FROM {{surveymenu}}))")->execute();
+        }
 
         // Surveymenu entries
 
@@ -1112,7 +1116,8 @@ function populateDatabase($oDB)
             'validation_key_expiration' => 'datetime',
             'last_forgot_email_password' => 'datetime',
             'expires' => 'datetime',
-            'user_status' => 'integer NOT NULL DEFAULT 1'
+            'user_status' => 'integer NOT NULL DEFAULT 1',
+            'session_token' => 'string(64) NULL'
         ), $options);
 
         $oDB->createCommand()->createIndex('{{idx1_users}}', '{{users}}', 'users_name', true);

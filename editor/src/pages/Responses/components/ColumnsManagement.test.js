@@ -88,6 +88,7 @@ describe('ColumnsManagement', () => {
     render(
       <ColumnsManagement
         table={{ getAllLeafColumns: () => columns }}
+        saveTimings={true}
         handleOnColumnsManagementConfirm={handleConfirm}
       />
     )
@@ -152,6 +153,89 @@ describe('ColumnsManagement', () => {
       'Q43time',
       'response-actions',
     ])
+  })
+
+  test('keeps timings visible but disabled when saving timings is off', async () => {
+    const user = userEvent.setup()
+    const columns = [
+      createColumn({
+        id: 'interviewtime',
+        header: 'Total time (in s)',
+        isTiming: true,
+        timingType: 'interview_time',
+        visible: true,
+      }),
+    ]
+
+    const { rerender } = render(
+      <ColumnsManagement
+        table={{ getAllLeafColumns: () => columns }}
+        saveTimings={false}
+      />
+    )
+
+    const timingToggle = screen.getByRole('button', { name: 'Timings' })
+    expect(timingToggle).toBeVisible()
+    expect(
+      screen.getByRole('button', { name: 'About survey timings' })
+    ).toBeVisible()
+
+    await user.click(timingToggle)
+
+    const timingContainer = screen.getByTestId('timing-columns-container')
+    const disabledTotalTimingCheckbox =
+      within(timingContainer).getByLabelText('Total time (s)')
+    expect(disabledTotalTimingCheckbox).toBeDisabled()
+    expect(
+      disabledTotalTimingCheckbox.closest('.timing-column-item')
+    ).toHaveClass('disabled')
+    expect(
+      within(timingContainer).getByLabelText('Group time (s)')
+    ).toBeDisabled()
+    expect(
+      within(timingContainer).getByLabelText('Question time (s)')
+    ).toBeDisabled()
+
+    rerender(
+      <ColumnsManagement
+        table={{ getAllLeafColumns: () => columns }}
+        saveTimings={true}
+      />
+    )
+
+    const totalTimingCheckbox =
+      within(timingContainer).getByLabelText('Total time (s)')
+    expect(totalTimingCheckbox).toBeEnabled()
+    expect(totalTimingCheckbox).toBeChecked()
+  })
+
+  test('shows disabled timing checkboxes without timing metadata', async () => {
+    const user = userEvent.setup()
+
+    render(
+      <ColumnsManagement
+        table={{ getAllLeafColumns: () => [] }}
+        saveTimings={false}
+      />
+    )
+
+    expect(screen.getByRole('button', { name: 'Timings' })).toBeVisible()
+    expect(
+      screen.getByRole('button', { name: 'About survey timings' })
+    ).toBeVisible()
+
+    await user.click(screen.getByRole('button', { name: 'Timings' }))
+
+    const timingContainer = screen.getByTestId('timing-columns-container')
+    expect(
+      within(timingContainer).getByLabelText('Total time (s)')
+    ).toBeDisabled()
+    expect(
+      within(timingContainer).getByLabelText('Group time (s)')
+    ).toBeDisabled()
+    expect(
+      within(timingContainer).getByLabelText('Question time (s)')
+    ).toBeDisabled()
   })
 
   test('shows a styled question code when the question text is empty', async () => {

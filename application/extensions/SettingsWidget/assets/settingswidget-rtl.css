@@ -6,7 +6,7 @@
 }
 
 .settingswidget .jsoneditor-wrapper{
-    height:1em;/* set a heigth for heigth:100% on children*/
+    height:1em;/* set a height for height:100% on children*/
     min-height:20em;/* set the min-height */
     vertical-align: middle;
 }

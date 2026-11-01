@@ -51,7 +51,7 @@ if (isset($config['config'])) {
 unset($config['defaultController']);
 unset($config['config']);
 
-/* fix runtime path, unsure you can lauch function anywhere (if you use php /var/www/limesurvey/... : can be /root/ for config */
+/* fix runtime path, unsure you can launch function anywhere (if you use php /var/www/limesurvey/... : can be /root/ for config */
 if (!isset($config['runtimePath'])) {
     $runtimePath = $settings['tempdir'] . '/runtime';
     if (!is_dir($runtimePath) || !is_writable($runtimePath)) {

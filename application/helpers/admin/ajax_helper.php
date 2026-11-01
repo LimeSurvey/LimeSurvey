@@ -268,33 +268,20 @@ class JsonOutputModal extends JsonOutput
 }
 
 /**
- * Echo html for log in form modal body
+ * Echo html for the "logged out" modal
  * This is a special case of JsonOutputModal, but with fixed html
- * Only used through JsonOutputNotLoggedIn in AdminController::run.
+ * Only used through AjaxHelper::outputNotLoggedIn() in AdminController::run and LSBaseController::run.
  */
 class JsonOutputNotLoggedIn extends JsonOutputModal
 {
     /**
-     *
+     * Renders the "logged out" modal content
      */
     public function __construct()
     {
         parent::__construct(null);
 
-        \Yii::import('application.controllers.admin.authentication', true);
-
-        // Return success, failure or template data
-        $result = \Authentication::prepareLogin();
-
-        // This should not be possible here
-        if (isset($result[0]) && $result[0] == 'success') {
-            throw new \CException('Internal error: login form submitted');
-        } elseif (isset($result[0]) && $result[0] == 'failed') {
-            throw new \CException('Internal error: login form submitted');
-        }
-
-        $data = $result;
-        $this->html = \Yii::app()->getController()->renderPartial('/admin/authentication/ajaxLogin', $data, true);
+        $this->html = \Yii::app()->getController()->renderPartial('/admin/authentication/ajaxLoggedOut', [], true);
 
         $this->hasPermission = true;
         $this->loggedIn = false;

@@ -12,14 +12,14 @@ $ckeditorHandlers = "
         var dialogName = ev.data.name;
         var dialogDefinition = ev.data.definition;
 
-        // Remove upload tab from Link and Image dialog as it interferes with
+        // Remove upload tab from Link, Image and HTML5 video dialog as it interferes with
         // CSRF protection and upload can be reached using the browse server tab
         if ( dialogName == 'link')
         {
            // remove Upload tab
            dialogDefinition.removeContents( 'upload' );
         }
-        if ( dialogName == 'image')
+        if ( dialogName == 'image' || dialogName == 'html5video')
         {
            // remove Upload tab
            dialogDefinition.removeContents( 'Upload' );
@@ -80,7 +80,10 @@ $script = "
                 var inputLangDirection = targetField.getAttribute('data-contents-dir');
                 editorurl = editorurl + '/contdir/' + (inputLangDirection ? inputLangDirection : '');
             }
-            popup = window.open(editorurl,'', 'location=no, status=yes, scrollbars=auto, menubar=no, resizable=yes, width=690, height=500');
+            // Large enough for the tallest editor dialogs (image, table), but not larger than the screen
+            var popupWidth = Math.min(800, screen.availWidth);
+            var popupHeight = Math.min(720, screen.availHeight);
+            popup = window.open(editorurl,'', 'location=no, status=yes, scrollbars=auto, menubar=no, resizable=yes, width=' + popupWidth + ', height=' + popupHeight);
 
             editorwindowsHash[fieldname] = popup;
         }

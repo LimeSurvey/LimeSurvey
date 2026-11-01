@@ -10,6 +10,7 @@ class Update_712 extends DatabaseUpdateBase
      *
      * @inheritDoc
      */
+    #[\Override]
     public function up()
     {
         addColumn('{{surveys}}', 'preselectnoanswer', "string(1) NULL DEFAULT 'I'");

@@ -9,6 +9,9 @@ use Template;
 use TemplateConfiguration;
 use TemplateManifest;
 
+/**
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ */
 class SurveyThemeConfiguration
 {
     private const DEFAULT_CORNER_RADIUS = '2';
@@ -170,6 +173,7 @@ class SurveyThemeConfiguration
      *
      * @return array
      * @throws NotFoundException
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function updateCommon(TemplateConfiguration $themeConfiguration, ?int $sid = null, ?int $gsid = null)
     {
@@ -203,9 +207,22 @@ class SurveyThemeConfiguration
         } else {
             $customThemeOptionsPage = $preparedThemeConfigurationModel->getOptionPage();
         }
+        $parentOptions = [];
         if ($preparedThemeConfigurationModel->oParentTemplate !== null) {
             $parentTheme = $preparedThemeConfigurationModel->oParentTemplate;
             $preparedParentTheme = $parentTheme->prepareTemplateRendering();
+            $parentOptions = (array)($preparedParentTheme->oOptions ?? []);
+            // Some themes (e.g. bootswatch) only set their default variation as css file, not as option
+            if (empty($parentOptions['cssframework'])) {
+                $parentVariation = $this->getVariationFromCssFiles(
+                    $preparedParentTheme,
+                    $themeCategoriesAndOptions['optionAttributes']['cssframework']['dropdownoptions'] ?? ''
+                );
+                if ($parentVariation !== '') {
+                    $parentOptions['cssframework'] = $parentVariation;
+                }
+            }
+            $this->addInheritedValueLabels($themeCategoriesAndOptions, $parentOptions);
         }
         /** TODO: most of the options in this array should be renamed to better reflect what they actually contain,
          *  TODO: but it would break backwards compatibility with custom themes, unless we modify strings inside twig through a query
@@ -215,7 +232,7 @@ class SurveyThemeConfiguration
             // which would use the magic getter to resolve 'inherit' based values
             'model'                  => $themeConfiguration,
             'templateOptionPage'     => $customThemeOptionsPage,
-            'oParentOptions'         => (array)($preparedParentTheme->oOptions ?? []),
+            'oParentOptions'         => $parentOptions,
             'optionCssFiles'         => $preparedThemeConfigurationModel->files_css,
             'optionCssFramework'     => $preparedThemeConfigurationModel->cssframework_css,
             'aTemplateConfiguration' => $themeConfigurationAttributesAndFiles,
@@ -320,17 +337,7 @@ class SurveyThemeConfiguration
             return $options;
         }
 
-        $dom = new \DOMDocument();
-        $html = '<select>' . $optionsHtml . '</select>';
-
-        // Suppress errors for invalid HTML
-        libxml_use_internal_errors(true);
-        @$dom->loadHTML($html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-        libxml_clear_errors();
-
-        $optionElements = $dom->getElementsByTagName('option');
-
-        foreach ($optionElements as $option) {
+        foreach ($this->getDropdownOptionElements($optionsHtml) as $option) {
             $value = $option->getAttribute('value');
 
             $label = $option->textContent;
@@ -344,6 +351,102 @@ class SurveyThemeConfiguration
         }
 
         return $options;
+    }
+
+    /**
+     * Parses an HTML dropdown options string into option elements
+     *
+     * @param string $optionsHtml string containing option tags
+     * @return \DOMNodeList<\DOMElement> the option elements
+     */
+    private function getDropdownOptionElements(string $optionsHtml): \DOMNodeList
+    {
+        $dom = new \DOMDocument();
+        $html = '<select>' . $optionsHtml . '</select>';
+
+        // Suppress errors for invalid HTML
+        libxml_use_internal_errors(true);
+        @$dom->loadHTML($html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+        libxml_clear_errors();
+
+        return $dom->getElementsByTagName('option');
+    }
+
+    /**
+     * Finds the variation (value of the "cssframework" option) a theme uses by looking at its css files.
+     * Needed for themes that set their default variation only as css file, e.g. bootswatch through cssframework_css.
+     *
+     * @param TemplateConfiguration $theme the prepared theme configuration
+     * @param string $optionsHtml dropdown options of the "cssframework" option
+     * @return string the option value of the variation, or an empty string if none is found
+     */
+    private function getVariationFromCssFiles(TemplateConfiguration $theme, string $optionsHtml): string
+    {
+        if (empty($optionsHtml)) {
+            return '';
+        }
+        // Map of css file => option value. The css file is either the option value or its data-value attribute.
+        $variations = [];
+        foreach ($this->getDropdownOptionElements($optionsHtml) as $option) {
+            foreach ([$option->getAttribute('value'), $option->getAttribute('data-value')] as $cssFile) {
+                if ($cssFile !== '') {
+                    $variations[$cssFile] = $option->getAttribute('value');
+                }
+            }
+        }
+
+        // Framework files are loaded first, so a variation in files_css wins
+        $cssFiles = [];
+        $frameworkCss = json_decode((string)$theme->cssframework_css, true);
+        if (is_array($frameworkCss) && !empty($frameworkCss['replace'])) {
+            foreach ((array)$frameworkCss['replace'] as $replacement) {
+                // Replacements are pairs of [original file, replacement file]
+                $cssFiles[] = is_array($replacement) ? end($replacement) : $replacement;
+            }
+        }
+        $filesCss = json_decode((string)$theme->files_css, true);
+        if (is_array($filesCss)) {
+            foreach (['add', 'replace'] as $action) {
+                $cssFiles = array_merge($cssFiles, (array)($filesCss[$action] ?? []));
+            }
+        }
+
+        $variation = '';
+        foreach ($cssFiles as $cssFile) {
+            if (is_string($cssFile) && isset($variations[$cssFile])) {
+                $variation = $variations[$cssFile];
+            }
+        }
+        return $variation;
+    }
+
+    /**
+     * Adds the label of the inherited value to the dropdown option attributes as "inheritedvaluelabel",
+     * so the inherited value can be shown with the same text as in the dropdown (e.g. "Flatly" instead of a css file)
+     *
+     * @param array $themeCategoriesAndOptions option attributes as returned by TemplateManifest::getOptionAttributes()
+     * @param array $parentOptions the option values of the parent theme configuration
+     * @return void
+     */
+    private function addInheritedValueLabels(array &$themeCategoriesAndOptions, array $parentOptions): void
+    {
+        foreach ($themeCategoriesAndOptions['optionAttributes'] ?? [] as $key => $attribute) {
+            if (
+                ($attribute['type'] ?? '') !== 'dropdown'
+                || empty($attribute['dropdownoptions'])
+                || !isset($parentOptions[$key])
+                || !is_string($parentOptions[$key])
+            ) {
+                continue;
+            }
+            foreach ($this->extractDropdownOptions($attribute['dropdownoptions']) as $option) {
+                // Option values are not always stored with the same case, see getOptionAttributeDataValue()
+                if (strtolower($option['value']) === strtolower($parentOptions[$key])) {
+                    $themeCategoriesAndOptions['optionAttributes'][$key]['inheritedvaluelabel'] = $option['label'];
+                    break;
+                }
+            }
+        }
     }
 
      /**

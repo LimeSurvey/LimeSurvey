@@ -257,7 +257,7 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
         }
 
         /**
-         * Pick remaning characters from the general char pool
+         * Pick remaining characters from the general char pool
          */
 
         // Fill string from general char pool

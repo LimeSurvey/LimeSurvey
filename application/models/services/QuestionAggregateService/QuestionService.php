@@ -79,8 +79,9 @@ class QuestionService
      *      ?save_as_default: string,
      *      ?clear_default: string,
      *      ...<array-key, mixed>
-     *  }
-     * } $input
+     *  },
+     *  ?questionposition: string
+     * } $input questionposition is only used for a new question: Empty for at the end, 0 for at the beginning, else the wanted question_order
      * @return Question
      * @throws NotFoundException
      * @throws PermissionDeniedException
@@ -100,7 +101,9 @@ class QuestionService
         if (empty($data['question']['qid'])) {
             $data['question']['qid'] = null;
             $question = $this->storeNewQuestionData(
-                $data['question']
+                $data['question'],
+                false,
+                $input['questionposition'] ?? null
             );
         } else {
             $question = $this->getQuestionBySidAndQid(
@@ -134,10 +137,11 @@ class QuestionService
      *
      * @param array $data
      * @param boolean $subQuestion
+     * @param int|string|null $position Empty for at the end, 0 for at the beginning, else the wanted question_order
      * @return Question
      * @throws PersistErrorException
      */
-    private function storeNewQuestionData($data = null, $subQuestion = false)
+    private function storeNewQuestionData($data = null, $subQuestion = false, $position = null)
     {
         $data = $data ?? [];
         $surveyId = $data['sid'] ?? 0;
@@ -189,7 +193,7 @@ class QuestionService
                 ->getMaxQuestionOrder($questionGroupId);
         }
 
-        $question = $this->saveQuestionData($data, $questionGroupId);
+        $question = $this->saveQuestionData($data, $questionGroupId, $position);
 
         $this->initL10nService($survey, $question->qid);
 
@@ -201,9 +205,11 @@ class QuestionService
      *
      * @param array $data
      * @param int $questionGroupId
+     * @param int|string|null $position Empty for at the end, 0 for at the beginning, else the wanted question_order
      * @return Question
+     * @throws PersistErrorException
      */
-    private function saveQuestionData($data, $questionGroupId)
+    private function saveQuestionData($data, $questionGroupId, $position = null)
     {
         // We use the container to create a model instance
         // allowing us to mock the model instance via
@@ -225,6 +231,13 @@ class QuestionService
         if ($highestOrderNumber === null) {
             //this means there is no question inside this group ...
             $question->question_order = Question::START_SORTING_VALUE;
+        } elseif (is_numeric($position) && (int) $position >= 0 && (int) $position <= $highestOrderNumber) {
+            // Insert at the wanted position (0 means at the beginning) and move the following questions down
+            $question->question_order = max((int) $position, Question::START_SORTING_VALUE);
+            $this->proxyQuestion->increaseAllOrderNumbersForGroup(
+                $questionGroupId,
+                $question->question_order
+            );
         } else {
             $question->question_order = $highestOrderNumber + 1;
         }

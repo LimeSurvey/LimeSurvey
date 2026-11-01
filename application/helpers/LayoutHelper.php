@@ -74,12 +74,7 @@ class LayoutHelper
         $aData['sAdmintheme'] = $oAdminTheme->name;
         $aData['aPackageScripts'] = $aData['aPackageStyles'] = array();
 
-        $aData['pageTitle'] = null;
-        if (!empty($pageData['topbar'] ?? null) && !empty($pageData['topbar']['title'] ?? null)) {
-            $aData['pageTitle'] = strip_tags((string) $pageData['topbar']['title']);
-        } elseif (!empty($pageData['title_bar'] ?? null) && !empty($pageData['title_bar']['title'] ?? null)) {
-            $aData['pageTitle'] = strip_tags((string) $pageData['title_bar']['title']);
-        }
+        $aData['pageTitle'] = self::getDocumentTitle($pageData);
 
         $sOutput = Yii::app()->getController()->renderPartial("/layouts/header", $aData, true);
 
@@ -88,6 +83,61 @@ class LayoutHelper
         } else {
             echo $sOutput;
         }
+    }
+
+    /**
+     * Returns the document title (browser tab title) for an admin page, without the site name
+     *
+     * Pages with a survey title bar get the current page, question code or group name in front
+     * of the survey title, so that several tabs of the same or similarly named surveys can be
+     * told apart (the browser shows only the beginning of the title in the tab).
+     *
+     * Pages without a topbar or title bar (e.g. the dashboard) can set 'pageTitle' instead.
+     *
+     * @param array $pageData Page data (e.g. topbar, title_bar, subaction, qid, gid, pageTitle)
+     * @return string|null Null if the page has no title
+     */
+    public static function getDocumentTitle(array $pageData): ?string
+    {
+        if (!empty($pageData['topbar']['title'])) {
+            return strip_tags((string) $pageData['topbar']['title']);
+        }
+        if (empty($pageData['title_bar']['title'])) {
+            return !empty($pageData['pageTitle']) ? strip_tags((string) $pageData['pageTitle']) : null;
+        }
+        $surveyTitle = strip_tags((string) $pageData['title_bar']['title']);
+        $titleParts = [];
+        if (!empty($pageData['subaction']) && is_string($pageData['subaction'])) {
+            $subaction = flattenText(gT($pageData['subaction']), false, true);
+            if ($subaction !== '' && strpos($surveyTitle, $subaction) === false) {
+                $titleParts[] = $subaction;
+            }
+        }
+        // Same objects as the breadcrumb in layouts/title_bar.php
+        $question = $pageData['oQuestion'] ?? null;
+        if (!$question instanceof Question && !empty($pageData['qid'])) {
+            $question = Question::model()->findByPk((int) $pageData['qid']);
+        }
+        $questionGroup = $pageData['oQuestionGroup'] ?? null;
+        if (!$questionGroup instanceof QuestionGroup && !empty($pageData['gid'])) {
+            $questionGroup = QuestionGroup::model()->findByPk((int) $pageData['gid']);
+        }
+        if ($question instanceof Question) {
+            $titleParts[] = $question->isNewRecord ? gT('New question') : $question->title;
+        } elseif ($questionGroup instanceof QuestionGroup) {
+            if ($questionGroup->isNewRecord) {
+                $titleParts[] = gT('New question group');
+            } else {
+                $survey = Survey::model()->findByPk($questionGroup->sid);
+                $groupName = $survey ? ($questionGroup->questiongroupl10ns[$survey->language]->group_name ?? '') : '';
+                $groupName = flattenText($groupName, false, true);
+                if ($groupName !== '') {
+                    $titleParts[] = $groupName;
+                }
+            }
+        }
+        $titleParts[] = $surveyTitle;
+        return implode(' - ', $titleParts);
     }
 
     /**
@@ -215,7 +265,7 @@ class LayoutHelper
 
         $options = [
             'id' => 'createMenuButton',
-            'label' => '+',
+            'label' => gT('Create survey'),
             'iconClass' => 'ri-add-line',
             'isDropDown' => true,
             'isDropDownButton' => true,

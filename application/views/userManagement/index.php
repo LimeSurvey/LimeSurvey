@@ -55,20 +55,6 @@ echo viewHelper::getViewTestTag('usersIndex');
     );
     ?>
 
-    <!-- Floating Actions Widget for User Management -->
-    <?php
-    require_once Yii::getPathOfAlias('application.extensions.admin.grid.FloatingActionsWidget.actions.UserManagementMassiveActions') . '.php';
-    $aActions = \actions\UserManagementMassiveActions::getActions();
-    $this->widget(
-        'ext.admin.grid.FloatingActionsWidget.FloatingActionsWidget',
-        [
-            'pk'       => 'uid',
-            'gridId'   => 'usermanagement--identity-gridPanel',
-            'aActions' => $aActions,
-        ]
-    );
-    ?>
-
 <!-- To update rows per page via ajax -->
 <script type="text/javascript">
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
@@ -96,7 +82,7 @@ echo viewHelper::getViewTestTag('usersIndex');
 
 </script>
 <div id='UserManagement-action-modal' class="modal fade UserManagement--selector--modal" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-lg" role="document">
+    <div id="usermanagement-modal-doalog" class="modal-dialog" role="document">
         <div class="modal-content">
         </div>
     </div>

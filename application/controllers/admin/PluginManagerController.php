@@ -153,13 +153,14 @@ class PluginManagerController extends SurveyCommonAction
             ]
         );
 
-        $data['topbar']['title'] = gT('Plugins - scanned files');
+        $data['topbar']['title'] = gT('Plugins - Scanned files');
         $data['topbar']['backLink'] = $this->getController()->createUrl('/admin/pluginmanager');
         $data['topbar']['middleButtons'] = Yii::app()->getController()->renderPartial(
             '/admin/pluginmanager/partial/topbarBtns/leftSideButtons',
             [
                 'showUpload' => false,
                 'scanFilesUrl' => $scanFilesUrl,
+                'extraMenus' => [],
             ],
             true
         );
@@ -835,7 +836,7 @@ function pluginExtractFilter($file)
     if (
         $file['is_folder']
         || !isset($info['extension'])
-        || in_array($info['extension'], $aAllowExtensions)
+        || in_array(strtolower($info['extension']), $aAllowExtensions)
     ) {
         return 1;
     } else {

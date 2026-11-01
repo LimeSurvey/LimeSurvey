@@ -81,7 +81,7 @@ class ComfortUpdateChecker extends PluginBase
 
             $oNewMenu = new \ComfortUpdateChecker\helpers\CUCMenuClass($aMenuItemAdminOptions);
 
-            //Check if display only for security update is true in plugin settings and display it otherwhise display all
+            //Check if display only for security update is true in plugin settings and display it otherwise display all
             if ($this->get('only_security_update', null, null, false) && $updateNotification->security_update) {
                 $oEvent->append('extraMenus', [$oNewMenu]);
             } elseif (!$this->get('only_security_update', null, null, false)) {

@@ -222,6 +222,10 @@ class SurveyIndex extends CAction
 
         if ($surveyid && $surveyExists) {
             SetSurveyLanguage($surveyid, $sDisplayLanguage);
+            // Posted answers (e.g. dates) were entered on a page in the previous language
+            if ($sOldLang !== "" && $sOldLang != $_SESSION['responses_' . $surveyid]['s_lang'] && in_array($sOldLang, $oSurvey->getAllLanguages())) {
+                LimeExpressionManager::setPostedLanguage($sOldLang);
+            }
         }
 
         /* Launch beforeSurveyPage before all renderExitMessage */
@@ -376,13 +380,13 @@ class SurveyIndex extends CAction
         //GET BASIC INFORMATION ABOUT THIS SURVEY
         $thissurvey = getSurveyInfo($surveyid, $_SESSION['responses_' . $surveyid]['s_lang']);
         EmCacheHelper::init($thissurvey);
-        /* Unsure it still work, and surely better in afterFindSurvey */
-        if (!is_null($beforeSurveyPageEvent->get('template'))) {
-            $thissurvey['templatedir'] = $beforeSurveyPageEvent->get('template');
-        }
 
         //SET THE TEMPLATE DIRECTORY
-        if ($thissurvey['template'] == 'inherit') {
+        $sPluginTemplateName = $beforeSurveyPageEvent->get('template');
+        if (!empty($sPluginTemplateName)) {
+            /* Theme set by a plugin in beforeSurveyPage */
+            $oTemplate = Template::model()->getInstance($sPluginTemplateName, $surveyid);
+        } elseif ($thissurvey['template'] == 'inherit') {
             /* Load default theme (Global settings -> Default theme) */
             $oTemplate = Template::model()->getInstance();
         } else {

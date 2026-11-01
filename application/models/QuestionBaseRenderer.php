@@ -86,6 +86,12 @@ abstract class QuestionBaseRenderer extends StaticModel
         );
     }
 
+    /**
+     * Renders the timer of a question with a time limit and registers its script.
+     * Translated timer messages are taken in the language the question is rendered in.
+     *
+     * @return string|null The timer HTML, or null if the question has no time limit
+     */
     protected function getTimeSettingRender()
     {
         $oQuestion = $this->oQuestion;
@@ -123,14 +129,14 @@ abstract class QuestionBaseRenderer extends StaticModel
         //Render timer
         $disable_next = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_disable_next']['value'], 0);
         $disable_prev = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_disable_prev']['value'], 0);
-        $time_limit_action = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_action']['value'], 1);
-        $time_limit_message = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_message']['value'], gT("Your time to answer this question has expired"));
+        $time_limit_action = intval($this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_action']['value'], 1));
+        $time_limit_message = $this->setDefaultIfEmpty($this->getQuestionAttribute('time_limit_message', $this->sLanguage), gT("Your time to answer this question has expired"));
         $time_limit_warning = intval($this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning']['value'], 0));
         $time_limit_warning_2 = intval($this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_2']['value'], 0));
-        $time_limit_countdown_message = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_countdown_message']['value'], gT("Time remaining"));
-        $time_limit_warning_message = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_message']['value'], gT("Your time to answer this question has nearly expired. You have {TIME} remaining."));
+        $time_limit_countdown_message = $this->setDefaultIfEmpty($this->getQuestionAttribute('time_limit_countdown_message', $this->sLanguage), gT("Time remaining"));
+        $time_limit_warning_message = $this->setDefaultIfEmpty($this->getQuestionAttribute('time_limit_warning_message', $this->sLanguage), gT("Your time to answer this question has nearly expired. You have {TIME} remaining."));
         $time_limit_warning_display_time = intval($this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_display_time']['value'], 0));
-        $time_limit_warning_2_message = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_2_message']['value'], gT("Your time to answer this question has nearly expired. You have {TIME} remaining."));
+        $time_limit_warning_2_message = $this->setDefaultIfEmpty($this->getQuestionAttribute('time_limit_warning_2_message', $this->sLanguage), gT("Your time to answer this question has nearly expired. You have {TIME} remaining."));
 
         $time_limit_message_delay = intval($this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_message_delay']['value'], 1)) * 1000;
         $time_limit_warning_2_display_time = intval($this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_2_display_time']['value'], 0));
@@ -316,6 +322,25 @@ abstract class QuestionBaseRenderer extends StaticModel
         }
     }
 
+    /**
+     * Split an other-text string on the pipe separator into prefix and suffix parts.
+     *
+     * @param string $otherText  Raw other text, optionally containing a "|" separator (prefix|suffix).
+     * @return array{left: string, right: string}
+     */
+    protected function splitOtherText(string $otherText): array
+    {
+        $left  = $otherText;
+        $right = '';
+        if (!empty($otherText) && strpos($otherText, '|') !== false) {
+            [$left, $right] = explode('|', $otherText, 2);
+        }
+        return [
+            'left'  => $left,
+            'right' => $right,
+        ];
+    }
+
     protected function setDefaultIfEmpty($value, $default)
     {
         if (is_null($value)) {
@@ -348,11 +373,21 @@ abstract class QuestionBaseRenderer extends StaticModel
         $sExcludeAllOther = $this->setDefaultIfEmpty($this->getQuestionAttribute('exclude_all_others'), false);
         /* EM don't set difference between relevance in session, if exclude_all_others is set , just ls-disabled */
         if ($sExcludeAllOther !== false) {
-            foreach (explode(';', (string) $sExcludeAllOther) as $sExclude) {
-                $sExclude = $this->sSGQA . $sExclude;
+            foreach (explode(';', (string) $sExcludeAllOther) as $sExcludeCode) {
+                $sExcludeCode = trim($sExcludeCode);
+                $sExcludeField = null;
+                foreach ($this->aSubQuestions[0] ?? [] as $oSubQuestion) {
+                    if ($oSubQuestion->title === $sExcludeCode) {
+                        $sExcludeField = $this->sSGQA . '_S' . $oSubQuestion->qid;
+                        break;
+                    }
+                }
+                if ($sExcludeField === null) {
+                    continue;
+                }
                 if (
-                    (!isset($aSurveySessionArray['relevanceStatus'][$sExclude]) || $aSurveySessionArray['relevanceStatus'][$sExclude])
-                    && (isset($aSurveySessionArray[$sExclude]) && $aSurveySessionArray[$sExclude] == "Y")
+                    (!isset($aSurveySessionArray['relevanceStatus'][$sExcludeField]) || $aSurveySessionArray['relevanceStatus'][$sExcludeField])
+                    && ($aSurveySessionArray[$sExcludeField] ?? '') === "Y"
                 ) {
                     return "ls-irrelevant ls-disabled";
                 }

@@ -92,7 +92,7 @@
                 'emptyText'    => gT('No question groups found.'),
                 'lsPageSizeCurrentValue' => $pageSize,
 
-                // Columns to dispplay
+                // Columns to display
                 'columns'         => [
                     // Group Id
                     [
@@ -156,7 +156,7 @@ var bindPageSizeChange = function () {
   $(document).trigger("actions-updated");
 };
 
-const activeTabContent = () => {
+var activeTabContent = function () {
   const params = new URLSearchParams(window.location.search);
   const activeTab = params.get("activeTab");
   if (activeTab) {

@@ -226,7 +226,7 @@ abstract class AbstractQuestionProcessor
      */
     protected function read(string $alias): callable
     {
-        return fn(): int => $this->batch->value($alias);
+        return fn() => $this->batch->value($alias);
     }
 
     /**

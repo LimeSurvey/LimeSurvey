@@ -119,20 +119,20 @@
     <!-- Relevance equation -->
     {% if first and scale_id == 0 %}
         <td class="relevance-equation">
-            <input
+            {# Textarea of one row that grows with its content while focused, see bindExpandRelevanceEquation() in questionEditor.js #}
+            <textarea
                 data-bs-toggle="tooltip"
                 data-bs-placement="bottom"
                 title="{{ gT("Click to expand") }}"
-                type='text'
+                rows="1"
                 class='relevance form-control input'
                 id='subquestions[{{ subquestion.qid }}][{{ scale_id }}][relevance]'
                 name='subquestions[{{ subquestion.qid }}][{{ scale_id }}][relevance]'
-                value="{{ subquestion.relevance|escape('html_attr') }}"
-                onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('save-button').click(); return false;}"
-            />
+                placeholder="1"
+            >{{ subquestion.relevance|escape('html') }}</textarea>
         </td>
     {%  else %}
-        <!-- TOOD: Why render and then hide? -->
+        <!-- TODO: Why render and then hide? -->
         <span style="display: none" class="relevance relevance-equation">
             {# subquestion.relevance #}
         </span>

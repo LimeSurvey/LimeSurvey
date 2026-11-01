@@ -24,6 +24,9 @@ class SurveyActivator
     /** @var boolean */
     public $isSimulation = false;
 
+    /** @var string[] */
+    public $tableWarnings = [];
+
     /**
      * @param Survey $survey
      */
@@ -63,7 +66,7 @@ class SurveyActivator
         $this->setMySQLDefaultEngine(Yii::app()->getConfig('mysqlEngine'));
 
         if (!$this->showEventMessages($event)) {
-            return ['error' => 'plugin'];
+            return ['error' => 'plugin', 'message' => $event->get('message')];
         }
 
         // Clear session cache (e.g. from a survey preview run in
@@ -94,14 +97,15 @@ class SurveyActivator
         }
 
         $survey = Survey::model()->findByAttributes(array('sid' => $this->survey->primaryKey));
-        $survey->scenario = 'activationStateChange';
         $survey->active = 'Y';
-        $survey->save();
+        // Skip validation: The tables already exist, so an invalid setting must not keep the survey inactive
+        $survey->save(false);
 
         $aResult = array(
             'status' => 'OK',
             'pluginFeedback' => $event->get('pluginFeedback'),
-            'isAllowRegister' => $survey->isAllowRegister
+            'isAllowRegister' => $survey->isAllowRegister,
+            'tableWarnings' => $this->tableWarnings
         );
         if (!$this->createSurveyDirectory()) {
             $aResult['warning'] = 'nouploadsurveydir';
@@ -356,17 +360,23 @@ class SurveyActivator
             }
             return false;
         }
-        try {
-            if (isset($this->tableDefinition['token'])) {
+        if (isset($this->tableDefinition['token'])) {
+            // unique name ensure by surveyid + datetime + random number
+            $indexname = "idx_token_" .
+                trim($sTableName, '{}') . "_" .
+                date('YmdHis') . "_" .
+                randomChars(12, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890');
+            try {
                 Yii::app()->db->createCommand()->createIndex(
-                    "idx_survey_token_{$this->survey->primaryKey}_" . rand(1, 50000),
+                    $indexname,
                     $sTableName,
                     'token'
                 );
+            } catch (\Exception $e) {
+                Yii::log($e->getMessage(), 'error', 'application.model.SurveyActivator.createResponseTable');
+                $this->tableWarnings[] = sprintf(gT("Unable to create index on token with message %s"), $e->getMessage());
             }
-        } catch (\Exception $e) {
         }
-
         $this->createResponseTableKeys();
         return true;
     }
@@ -405,24 +415,20 @@ class SurveyActivator
 
         //if there is an autonumber_start field, start auto numbering here
         if ($iAutoNumberStart !== false && $iAutoNumberStart > 0) {
+            $tableName = $this->survey->responsesTableName;
             if (Yii::app()->db->driverName == 'mssql' || Yii::app()->db->driverName == 'sqlsrv' || Yii::app()->db->driverName == 'dblib') {
-                if (!function_exists('fixNumbering')) {
-                    Yii::app()->loadHelper("admin.activate"); // needed for mssql_drop_column_with_constraints
-                }
-                mssql_drop_column_with_constraints($this->survey->responsesTableName, 'id');
-                $sQuery = "ALTER TABLE {$this->survey->responsesTableName} ADD [id] int identity({$iAutoNumberStart},1)";
-                Yii::app()->db->createCommand($sQuery)->execute();
-                // Add back the primaryKey
-
-                Yii::app()->db->createCommand()->addPrimaryKey('PRIMARY_' . rand(1, 50000), $this->survey->responsesTableName, 'id');
+                // @see https://learn.microsoft.com/en-us/sql/t-sql/database-console-commands/dbcc-checkident-transact-sql
+                $sQuery = "DBCC CHECKIDENT ('{$tableName}', RESEED, {$iAutoNumberStart})";
             } elseif (Yii::app()->db->driverName == 'pgsql') {
-                $sQuery = "SELECT setval(pg_get_serial_sequence('{$this->survey->responsesTableName}', 'id'),{$iAutoNumberStart},false);";
-                // FIXME @ not good
-                @Yii::app()->db->createCommand($sQuery)->execute();
+                $sQuery = "SELECT setval(pg_get_serial_sequence('{$tableName}', 'id'),{$iAutoNumberStart},false);";
             } else {
-                $sQuery = "ALTER TABLE {$this->survey->responsesTableName} AUTO_INCREMENT = {$iAutoNumberStart}";
-                // FIXME @ not good
-                @Yii::app()->db->createCommand($sQuery)->execute();
+                $sQuery = "ALTER TABLE {$tableName} AUTO_INCREMENT = {$iAutoNumberStart}";
+            }
+            try {
+                Yii::app()->db->createCommand($sQuery)->execute();
+            } catch (\Exception $e) {
+                Yii::log($e->getMessage(), 'error', 'application.model.SurveyActivator.createResponseTableKeys');
+                $this->tableWarnings[] = sprintf(gT("Unable to set the start value of the response numbering with message %s"), $e->getMessage());
             }
         }
     }

@@ -107,10 +107,27 @@ class LSYii_ClientScript extends CClientScript
         }
     }
 
+    /**
+     * Remove a script file, whatever position it was registered at.
+     * If the file was published through the asset manager (see registerScriptFile), the published URL is removed too.
+     *
+     * @param string $sName URL of the script file, as given to registerScriptFile
+     * @return void
+     */
     public function unregisterScriptFile($sName)
     {
-        if (!empty($this->scriptFiles[0]["$sName"])) {
-            unset($this->scriptFiles[0]["$sName"]);
+        $aUrls = [(string) $sName];
+        $aUrlDatas = $this->analyzeUrl($sName);
+        if ($aUrlDatas['toPublish']) {
+            $sPublishedUrl = App()->assetManager->getPublishedUrl($aUrlDatas['sPathToFile']);
+            if ($sPublishedUrl) {
+                $aUrls[] = $sPublishedUrl;
+            }
+        }
+        foreach (array_keys($this->scriptFiles) as $position) {
+            foreach ($aUrls as $sUrl) {
+                unset($this->scriptFiles[$position][$sUrl]);
+            }
         }
     }
 

@@ -1,6 +1,6 @@
 # Question templates for LimeSurvey
 
-Coming with the 3.X Verson of LimeSurvey you will be able to create your 
+Coming with the 3.X Version of LimeSurvey you will be able to create your 
 own set of question types and alternative views for questions.
 
 All you need to know is a little HTML and XML.

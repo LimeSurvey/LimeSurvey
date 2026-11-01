@@ -20,6 +20,9 @@ class CopySurveyOptions
     /** @var bool whether to copy survey quotas */
     private bool $quotas;
 
+    /** @var bool whether to copy survey URL parameters */
+    private bool $urlParameters;
+
     /** @var bool whether to copy survey permissions */
     private bool $permissions;
 
@@ -43,6 +46,7 @@ class CopySurveyOptions
         $this->answerOptions = true;
         $this->conditions = true;
         $this->quotas = true;
+        $this->urlParameters = true;
         $this->permissions = true;
         $this->resetStartAndEndDate = false;
         $this->resetResponseStartId = false;
@@ -86,6 +90,19 @@ class CopySurveyOptions
     public function setQuotas(bool $quotas): void
     {
         $this->quotas = $quotas;
+    }
+
+    /**
+     * @return bool whether survey URL parameters should be copied
+     */
+    public function isUrlParameters(): bool
+    {
+        return $this->urlParameters;
+    }
+
+    public function setUrlParameters(bool $urlParameters): void
+    {
+        $this->urlParameters = $urlParameters;
     }
 
     public function isPermissions(): bool

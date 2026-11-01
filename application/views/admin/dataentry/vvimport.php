@@ -32,7 +32,11 @@ if ($tableExists) {
         <div class="card-body">
             <div class="mb-3">
                 <label for="csv_vv_file" class=" form-label">
-                <?php printf(gT("Response data file (*.csv,*.vv,*.txt) (maximum size: %d MB):"), getMaximumFileUploadSize() / 1024 / 1024); ?>
+                <?php if (isFileUploadSizeLimited()) {
+                    printf(gT("Response data file (*.csv,*.vv,*.txt) (maximum size: %d MB):"), getMaximumFileUploadSize() / 1024 / 1024);
+                } else {
+                    eT("Response data file (*.csv,*.vv,*.txt):");
+                } ?>
                 </label>
                 <div class="">
                     <input type="file" value="" name="csv_vv_file" id="csv_vv_file" class="form-control"  accept='.csv,.vv,.txt' required>

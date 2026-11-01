@@ -18,7 +18,11 @@ $(document).on('ready pjax:scriptcomplete',function()
         if ($("#mapservice_"+question_id).val()==1){
             // Google Maps
             if (gmaps[''+question] == undefined) {
-                GMapsInitialize(question,latLng[0],latLng[1]);
+                if (typeof google !== 'undefined' && google.maps) {
+                    GMapsInitialize(question,latLng[0],latLng[1]);
+                } else {
+                    console.warn('LimeSurvey: the Google Maps API failed to load (missing/invalid API key?), cannot initialize map for ' + question);
+                }
             }
         }
         else if ($("#mapservice_"+question_id).val()==100){
@@ -51,10 +55,7 @@ function isvalidCoord(val,type){
 // OSMap functions
 function OSGeoInitialize(question,latLng){
         var tileServerURL = {
-            OSM : "//{s}.tile.openstreetmap.org/{z}/{x}/{y}",
-            HUM : "//{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}",
-            CYC : "//{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}",
-            TRA : "//{s}.tile.thunderforest.com/transport/{z}/{x}/{y}"
+            OSM : "//{s}.tile.openstreetmap.org/{z}/{x}/{y}"
         };
         var name = question.substr(0,question.length - 2);
         // tiles layers def
@@ -71,36 +72,6 @@ function OSGeoInitialize(question,latLng){
             subdomains: ["a", "b", "c"],
             attribution: 'Map data © <a href="//www.openstreetmap.org/" target="_blank">OpenStreetMap</a> contributors, CC-BY-SA.'
         });
-        var mapCYC = L.tileLayer(tileServerURL.CYC+".png", {
-            maxZoom: 19,
-            subdomains: ["a", "b", "c"],
-            attribution: 'Map data © <a href="//www.openstreetmap.org/" target="_blank">OpenStreetMap</a> contributors, CC-BY-SA.'
-        });
-        var mapHOT = L.layerGroup([L.tileLayer(tileServerURL.HUM+".png", {
-            maxZoom: 20,
-            subdomains: ["a", "b", "c"],
-        }), L.tileLayer(tileServerURL+".png", {
-            maxZoom: 19,
-            subdomains: ["a", "b", "c"],
-            attribution: 'Map data © <a href="//www.openstreetmap.org/" target="_blank">OpenStreetMap</a> contributors, CC-BY-SA.'
-        })]);
-        var mapTRA = L.layerGroup([L.tileLayer(tileServerURL.TRA+".png", {
-            maxZoom: 19,
-            subdomains: ["a", "b", "c"],
-        }), L.tileLayer(tileServerURL+".png", {
-            maxZoom: 19,
-            subdomains: ["a", "b", "c"],
-            attribution: 'Map data © <a href="//www.openstreetmap.org/" target="_blank">OpenStreetMap</a> contributors, CC-BY-SA.'
-        })]);
-
-        var baseLayers = {
-            "Street Map": mapOSM,
-            "Humanitarian": mapHOT,
-            "Cyclemap": mapCYC,
-            "Traffic Map" : mapTRA
-        };
-        var overlays = {
-        };
         var map = L.map("map_"+name, {
             zoom:MapOption.zoomLevel,
             minZoom:1,
@@ -139,10 +110,6 @@ function OSGeoInitialize(question,latLng){
 
         var marker = new L.marker([lat,lng], {title:'Current Location',id:1,draggable:'true'});
         map.addLayer(marker);
-
-        var layerControl = L.control.layers(baseLayers, overlays, {
-          collapsed: true
-        }).addTo(map);
 
         map.on('click',
             function(e) {
@@ -346,6 +313,9 @@ function GMapsInitialize(question,lat,lng) {
 // Reset map when shown by conditions
 function resetMap(qID) {
     var question = $('#question'+qID+' input.location').attr('name');
+    if (question === undefined) {
+        return;
+    }
     var name = question.substr(0,question.length - 2);
     var coordinates = $('#question'+qID+' input.location').attr('value');
     var xy = coordinates.split(" ");
@@ -356,8 +326,33 @@ function resetMap(qID) {
         marker.setPosition(markerLatLng);
         google.maps.event.trigger(currentMap, 'resize')
         currentMap.setCenter(markerLatLng);
+    } else if (osmaps[question]) {
+        // Leaflet map container had no size while it was hidden by relevance : recalculate it now it is shown.
+        osmaps[question].invalidateSize();
     }
 }
+
+// Reset any map contained in a question/group DOM element when it is (re)shown by relevance
+function resetMapsIn(container) {
+    $(container).find('input.location').each(function() {
+        var question = $(this).attr('name');
+        if (question === undefined) {
+            return;
+        }
+        var qid = $(this).closest('[id^="question"]').attr('id');
+        if (qid === undefined) {
+            return;
+        }
+        qid = qid.replace('question', '');
+        if (gmaps[question] || osmaps[question]) {
+            resetMap(qid);
+        }
+    });
+}
+
+$(document).on('relevance:on', '[id^="question"], [id^="group-"]', function() {
+    resetMapsIn(this);
+});
 
 // Reverse geocoder
 function geocodeAddress(name, pos) {

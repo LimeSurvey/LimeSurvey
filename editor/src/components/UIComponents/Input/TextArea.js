@@ -3,6 +3,7 @@ import React from 'react'
 import { Form } from 'react-bootstrap'
 
 import { TooltipContainer } from 'components/TooltipContainer/TooltipContainer'
+import { getTooltipMessages } from 'helpers'
 
 export const TextArea = ({
   labelText,
@@ -12,13 +13,14 @@ export const TextArea = ({
   rows = 4,
   maxLength = 30,
   disabled = false,
+  overlayMessage,
 }) => {
+  const toolTip = overlayMessage
+    ? overlayMessage
+    : getTooltipMessages().NO_PERMISSION
+
   return (
-    <TooltipContainer
-      tip={t('Coming soon')}
-      showTip={disabled}
-      placement="bottom"
-    >
+    <TooltipContainer tip={toolTip} showTip={disabled} placement="bottom">
       <div className="w-full">
         {labelText && (
           <Form.Label className="ui-label">

@@ -119,9 +119,10 @@ class LSBaseController extends LSYii_Controller
 
                 App()->user->setReturnUrl(App()->request->requestUri);
 
-                // If this is an ajax call, don't redirect, but echo login modal instead
-                $isAjax = isset($_GET['ajax']) && $_GET['ajax'];
+                // If this is an ajax call, don't redirect, but answer with HTTP 401 and the "logged out" modal
+                $isAjax = Yii::app()->request->isAjaxRequest || !empty($_GET['ajax']);
                 if ($isAjax && Yii::app()->user->getIsGuest()) {
+                    http_response_code(401);
                     Yii::import('application.helpers.admin.ajax_helper', true);
                     ls\ajax\AjaxHelper::outputNotLoggedIn();
                     return;
@@ -167,7 +168,7 @@ class LSBaseController extends LSYii_Controller
         }
         //todo end
 
-        //todo this should be done only once per session and not everytime calling an action ...
+        //todo this should be done only once per session and not every time calling an action ...
         if (empty(Yii::app()->session['adminlang'])) {
             Yii::app()->session["adminlang"] = Yii::app()->getConfig("defaultlang");
         }

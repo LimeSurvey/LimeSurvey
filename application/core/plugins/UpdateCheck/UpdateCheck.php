@@ -134,10 +134,15 @@ JS
      * This method should be run at super admin login, max once every day.
      * Run by Ajax to avoid increased page load time.
      * This method can also be run manually for testing.
+     * Requires the same permission as the plugin manager where it is offered.
      * @return void
+     * @throws CHttpException
      */
     public function checkAll()
     {
+        if (!Permission::model()->hasGlobalPermission('settings', 'read')) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
         $service = \Yii::app()->extensionUpdaterServiceLocator;
 
         // Get one updater class for each extension.

@@ -9,6 +9,7 @@ namespace LimeSurvey\Models\Services;
 class PluginQuestionAttributeProvider extends QuestionAttributeProvider
 {
     /** @inheritdoc */
+    #[\Override]
     public function getDefinitions($options = [])
     {
         /** @var string question type */
@@ -30,10 +31,7 @@ class PluginQuestionAttributeProvider extends QuestionAttributeProvider
      */
     protected function getAttributesFromPlugin($questionType)
     {
-        $event = new \LimeSurvey\PluginManager\PluginEvent('newQuestionAttributes');
-        $result = App()->getPluginManager()->dispatchEvent($event);
-
-        $allPluginAttributes = (array) $result->get('questionAttributes');
+        $allPluginAttributes = \QuestionAttribute::getOwnQuestionAttributesViaPlugin();
         if (empty($allPluginAttributes)) {
             return [];
         }
@@ -45,6 +43,9 @@ class PluginQuestionAttributeProvider extends QuestionAttributeProvider
 
         // Complete category if missing
         $questionTypeAttributes = $questionAttributeHelper->fillMissingCategory($questionTypeAttributes, gT('Plugin'));
+
+        // Plugins may give the category translated (ex: gT('Logic')), but core categories are untranslated
+        $questionTypeAttributes = $questionAttributeHelper->untranslateCoreCategories($questionTypeAttributes);
 
         return $questionTypeAttributes;
     }

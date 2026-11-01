@@ -113,8 +113,13 @@ class DataEntry extends SurveyCommonAction
 
     /**
      * Iterate Survey Method.
+     *
+     * Note: Resetting the responses and participants (unfinalizeanswers) is destructive, so it
+     * needs a POST request and the responses update permission on top of the survey activation one.
+     *
      * @param int $surveyid Given Survey ID
      * @return void
+     * @throws CHttpException
      */
     public function iteratesurvey($surveyid)
     {
@@ -125,6 +130,12 @@ class DataEntry extends SurveyCommonAction
         $aData['success'] = false;
         if (Permission::model()->hasSurveyPermission($surveyid, 'surveyactivation', 'update')) {
             if (Yii::app()->request->getParam('unfinalizeanswers') == 'true') {
+                if (!Yii::app()->getRequest()->isPostRequest) {
+                    throw new CHttpException(405, gT("Invalid action"));
+                }
+                if (!Permission::model()->hasSurveyPermission($surveyid, 'responses', 'update')) {
+                    throw new CHttpException(403, gT("You do not have permission to access this page."));
+                }
                 SurveyDynamic::sid($surveyid);
                 Yii::app()->db->createCommand("DELETE from {{responses_$surveyid}} WHERE submitdate IS NULL AND token in (SELECT * FROM ( SELECT answ2.token from {{responses_$surveyid}} AS answ2 WHERE answ2.submitdate IS NOT NULL) tmp )")->execute();
                 // Then set all remaining answers to incomplete state
@@ -299,6 +310,18 @@ class DataEntry extends SurveyCommonAction
                 'label' => gT('Preserve response IDs')
             );
 
+            $aData['settings']['insertmethod'] = array(
+                'type' => 'select',
+                'label' => gT("When an imported record matches an existing record ID:"),
+                'options' => array(
+                    'skip' => gT("Report and skip the new record."),
+                    'renumber' => gT("Renumber the new record."),
+                    'replace' => gT("Replace the existing record."),
+                    'replaceanswers' => gT("Replace answers in file in the existing record."),
+                ),
+                'default' => 'skip'
+            );
+
             //Get the menubar
             $aData['display']['menu_bars']['browse'] = gT("Quick statistics");
 
@@ -335,6 +358,17 @@ class DataEntry extends SurveyCommonAction
                 $archivedEncryptedAttributes = json_decode((string) $archivedTableSettings->properties);
             }
 
+            // Subquestions deleted and re-created with the same code since the archive was made
+            $recreatedSubquestionColumns = [];
+            if (preg_match('/^old_responses_(\d+_\d+)$/', (string) $tbl_name, $tableMatches) && tableExists("{{old_questions_{$tableMatches[1]}}}")) {
+                require_once "application/helpers/admin/import_helper.php";
+                $recreatedSubquestionColumns = getRecreatedSubquestionColumns(
+                    $iSurveyId,
+                    $sourceSchema->name,
+                    App()->db->tablePrefix . "old_questions_{$tableMatches[1]}"
+                );
+            }
+
             $fieldMap = [];
             $pattern = '/([\d]+)X([\d]+)X([\d]+.*)/';
             foreach ($sourceSchema->getColumnNames() as $name) {
@@ -347,6 +381,8 @@ class DataEntry extends SurveyCommonAction
                 // Exact match.
                 if ($targetSchema->getColumn($name)) {
                     $fieldMap[$name] = $name;
+                } elseif (isset($recreatedSubquestionColumns[$name])) {
+                    $fieldMap[$name] = $recreatedSubquestionColumns[$name];
                 } elseif (preg_match($pattern, (string) $name, $matches)) {
                     // Column name is SIDXGIDXQID
                     $qid = $matches[3];
@@ -363,6 +399,12 @@ class DataEntry extends SurveyCommonAction
             $sourceResponses = new CDataProviderIterator(new CActiveDataProvider($sourceTable), 500);
             /* @var boolean preserveIDs */
             $preserveIDs = (bool)App()->getRequest()->getPost('preserveIDs');
+            $insertMethod = App()->getRequest()->getPost('insertmethod');
+            if (!in_array($insertMethod, ['skip', 'renumber', 'replace', 'replaceanswers'], true)) {
+                $insertMethod = 'skip';
+            }
+            $skipped = 0;
+            $isPgsql = App()->db->getDriverName() === 'pgsql';
             $rankingMap = [];
             foreach ($survey->questions as $q) {
                 if ((!$q->parent_qid) && ($q->type === Question::QT_R_RANKING)) {
@@ -375,16 +417,29 @@ class DataEntry extends SurveyCommonAction
                 $iOldID = $sourceResponse->id;
                 // Using plugindynamic model because I dont trust surveydynamic.
                 $targetResponse = new PluginDynamic("{{responses_$iSurveyId}}");
+                $existingResponse = null;
                 if ($preserveIDs) {
-                    $targetResponse->id = $sourceResponse->id;
+                    $existingResponse = PluginDynamic::model("{{responses_$iSurveyId}}")->findByPk($sourceResponse->id);
+                    if ($existingResponse && $insertMethod === 'skip') {
+                        $skipped++;
+                        continue;
+                    }
+                    if ($existingResponse && $insertMethod === 'replaceanswers') {
+                        // Update the existing response with the answers of the archived one
+                        $targetResponse = $existingResponse;
+                    } elseif (!$existingResponse || $insertMethod === 'replace') {
+                        $targetResponse->id = $sourceResponse->id;
+                    }
                 }
+                $isUpdate = !$targetResponse->getIsNewRecord();
+                $isExplicitId = !$isUpdate && isset($targetResponse->id);
 
                 foreach ($fieldMap as $sourceField => $targetField) {
                     $targetResponse[$targetField] = $sourceResponse[$sourceField];
-                    if (in_array($sourceField, $archivedEncryptedAttributes, false) && !in_array($sourceField, $encryptedAttributes, false)) {
+                    if (in_array($sourceField, $archivedEncryptedAttributes, false) && !in_array($targetField, $encryptedAttributes, false)) {
                         $targetResponse[$targetField] = $sourceResponse->decryptSingle($sourceResponse[$sourceField]);
                     }
-                    if (!in_array($sourceField, $archivedEncryptedAttributes, false) && in_array($sourceField, $encryptedAttributes, false)) {
+                    if (!in_array($sourceField, $archivedEncryptedAttributes, false) && in_array($targetField, $encryptedAttributes, false)) {
                         $targetResponse[$targetField] = $sourceResponse->encryptSingle($sourceResponse[$sourceField]);
                     }
                 }
@@ -422,23 +477,31 @@ class DataEntry extends SurveyCommonAction
 
                 $oTransaction = Yii::app()->db->beginTransaction();
                 try {
-                    if ($preserveIDs) {
-                        switchMSSQLIdentityInsert("responses_$iSurveyId", true);
+                    if ($existingResponse && $insertMethod === 'replace') {
+                        $existingResponse->delete();
                     }
-                    if ($targetResponse->save()) {
+                    if ($isExplicitId) {
+                        switchMSSQLIdentityInsert("responses_$iSurveyId", true);
+                    } elseif (!$isUpdate && $preserveIDs && $isPgsql) {
+                        // Preserved IDs may be ahead of the sequence: Sync it before letting it generate a new one
+                        $this->syncResponseIdSequence($iSurveyId);
+                    }
+                    // Never update the ID column (not allowed for identity columns on MSSQL)
+                    $attributeNames = $isUpdate ? array_diff($targetResponse->attributeNames(), ['id']) : null;
+                    if ($targetResponse->save(true, $attributeNames)) {
                         $imported++;
                         $beforeDataEntryImport = new PluginEvent('beforeDataEntryImport');
                         $beforeDataEntryImport->set('iSurveyID', $iSurveyId);
                         $beforeDataEntryImport->set('oModel', $targetResponse);
                         App()->getPluginManager()->dispatchEvent($beforeDataEntryImport);
                         $oTransaction->commit();
+                        $aSRIDConversions[$iOldID] = $targetResponse->id;
                     } else {
                         $oTransaction->rollBack();
                         $responseErrors[$iOldID] = $targetResponse['id'];
                         $aWarnings[$iOldID] = CHtml::errorSummary($targetResponse, '');
                     }
-                    $aSRIDConversions[$iOldID] = $targetResponse->id;
-                    if ($preserveIDs) {
+                    if ($isExplicitId) {
                         switchMSSQLIdentityInsert("responses_$iSurveyId", false);
                     }
                 } catch (Exception $oException) {
@@ -448,7 +511,10 @@ class DataEntry extends SurveyCommonAction
                 }
                 unset($targetResponse);
             }
-            if (empty($responseErrors)) {
+            if ($preserveIDs && $isPgsql) {
+                $this->syncResponseIdSequence($iSurveyId);
+            }
+            if (empty($responseErrors) && !$skipped) {
                 Yii::app()->session['flashmessage'] = sprintf(gT("%s old response(s) were successfully imported."), $imported);
             }
             $sOldTimingsTable = str_replace("responses", "timings", str_replace("timings_", "", $sourceTable->tableName()));
@@ -473,28 +539,46 @@ class DataEntry extends SurveyCommonAction
                     } else {
                         continue;
                     }
+                    // Replaced or updated responses may already have timings
+                    Yii::app()->db->createCommand()->delete("{{{$sNewTimingsTable}}}", 'id = :id', [':id' => $sRecord['id']]);
                     switchMSSQLIdentityInsert($sNewTimingsTable, true);
                     Yii::app()->db->createCommand()->insert("{{{$sNewTimingsTable}}}", $sRecord);
                     switchMSSQLIdentityInsert($sNewTimingsTable, false);
                     $iRecordCountT++;
                 }
-                if (empty($responseErrors)) {
+                if (empty($responseErrors) && !$skipped) {
                     Yii::app()->session['flashmessage'] = sprintf(gT("%s old response(s) and according %s timings were successfully imported."), $imported, $iRecordCountT);
                 }
             }
-            if (empty($responseErrors)) {
+            if (empty($responseErrors) && !$skipped) {
                 $this->getController()->redirect(["/responses/browse/", 'surveyId' => $surveyid]);
             }
             $aData = [
                 'imported' => $imported,
                 'responseErrors' => $responseErrors,
                 'aWarnings' => $aWarnings,
-                'iRecordCountT' => $iRecordCountT
+                'iRecordCountT' => $iRecordCountT,
+                'skipped' => $skipped
             ];
             $this->renderWrappedTemplate('dataentry', 'import_result', $aData);
         }
     }
 
+
+    /**
+     * Sets the PostgreSQL sequence of the response ID so that it continues after the highest existing response ID,
+     * so that responses imported with explicit IDs do not collide with generated ones.
+     * @param int $iSurveyId Survey ID
+     * @return void
+     */
+    protected function syncResponseIdSequence($iSurveyId)
+    {
+        $tableName = App()->db->tablePrefix . "responses_$iSurveyId";
+        App()->db->createCommand(
+            "SELECT pg_catalog.setval(pg_get_serial_sequence('{$tableName}', 'id'), "
+            . "(SELECT COALESCE(MAX(id), 0) + 1 FROM {{responses_$iSurveyId}}), false)"
+        )->execute();
+    }
 
     /**
      * Takes a list of tablenames and creates a nice key value array.
@@ -1006,7 +1090,7 @@ class DataEntry extends SurveyCommonAction
 
                     case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox
                         $thisqid = $fname['qid'];
-                        while ($fname['qid'] == $thisqid) {
+                        while (isset($fname['qid']) && $fname['qid'] == $thisqid) {
                             if (substr((string) $fname['fieldname'], -5) == "other") {
                                 $questionInput = "\t<input type='text' name='{$fname['fieldname']}' value='"
                                 . htmlspecialchars((string) $idrow[$fname['fieldname']], ENT_QUOTES) . "' />\n";
@@ -1049,7 +1133,8 @@ class DataEntry extends SurveyCommonAction
 
                     case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
                         $questionInput = '';
-                        while (isset($fname) && $fname['type'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) {
+                        $thisqid = $fname['qid'];
+                        while (isset($fname['qid']) && $fname['qid'] == $thisqid) {
                             $thefieldname = $fname['fieldname'];
                             $subquestionValue = $idrow[$fname['fieldname']];
                             if (substr((string) $fname['fieldname'], -5) == "other") {
@@ -1159,7 +1244,7 @@ class DataEntry extends SurveyCommonAction
                         break;
                     case Question::QT_A_ARRAY_5_POINT: // Array (5 point choice) radio-buttons
                         $thisqid = $fname['qid'];
-                        while ($fname['qid'] == $thisqid) {
+                        while (isset($fname['qid']) && $fname['qid'] == $thisqid) {
                             $questionInput = "<span>" . $fname['subquestion'] . "</span>";
                             $questionInput .= " <span>";
                             for ($j = 1; $j <= 5; $j++) {
@@ -1188,7 +1273,7 @@ class DataEntry extends SurveyCommonAction
                         break;
                     case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: // Array (10 point choice) radio-buttons
                         $thisqid = $fname['qid'];
-                        while ($fname['qid'] == $thisqid) {
+                        while (isset($fname['qid']) && $fname['qid'] == $thisqid) {
                             $questionInput = "<span>" . $fname['subquestion'] . "</span>";
                             $questionInput .= " <span>";
                             for ($j = 1; $j <= 10; $j++) {
@@ -1247,7 +1332,7 @@ class DataEntry extends SurveyCommonAction
                         break;
                     case Question::QT_E_ARRAY_INC_SAME_DEC: // Array (Increase/Same/Decrease) radio-buttons
                         $thisqid = $fname['qid'];
-                        while ($fname['qid'] == $thisqid) {
+                        while (isset($fname['qid']) && $fname['qid'] == $thisqid) {
                             $questionInput = "<span>" . $fname['subquestion'] . "</span>";
                             $questionInput .= " <span>";
                             $options = [

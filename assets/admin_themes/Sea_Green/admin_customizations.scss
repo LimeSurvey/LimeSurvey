@@ -137,9 +137,31 @@ blockquote {
   margin-bottom: 0px;
 }
 
+/* Keep the table header visible while scrolling inside the wrapper */
+.subquestions-table > thead > tr > th,
+.answeroptions-table > thead > tr > th {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: $white;
+}
+
 .subquestions-table input.code,
 .answeroptions-table input.code {
   min-width: 70px;
+}
+
+/* Relevance equation: One line like the inputs, the whole equation while focused (height set by questionEditor.js) */
+.subquestions-table textarea.relevance {
+  min-height: 0;
+  font-size: 14px;
+  resize: none;
+  overflow: hidden;
+  white-space: pre;
+
+  &:focus {
+    white-space: pre-wrap;
+  }
 }
 
 .subquestions-table > tbody > tr > td:first-of-type,
@@ -149,7 +171,8 @@ blockquote {
 
 .subquestions-table > tbody > tr > td:last-of-type,
 .answeroptions-table > tbody > tr > td:last-of-type {
-  padding-right: 0;
+  /* Leave room for an overlay scrollbar so it does not cover the delete button */
+  padding-right: 1rem;
 }
 // Question editor END
 

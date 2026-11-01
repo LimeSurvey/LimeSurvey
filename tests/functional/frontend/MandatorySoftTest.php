@@ -14,7 +14,7 @@ class MandatorySoftTest extends TestBaseClassWeb
 {
 
     /*
-     * Check basic mandatory soft functionnality with multiple page
+     * Check basic mandatory soft functionality with multiple page
      * Warning : some part came for Vanilla theme with a lot of JS
      * @since 2023-05-09
      **/
@@ -42,7 +42,7 @@ class MandatorySoftTest extends TestBaseClassWeb
             /* Check if question Q00 mandatoiry are shown */
             $MandatoryTip = trim(self::$webDriver->findElement(WebDriverBy::cssSelector('#question' . $questions['Q00']->qid . ' .ls-question-mandatory'))->getText());
             $this->assertEquals("Please note that you have not answered this question. You may continue without answering.", $MandatoryTip);
-            /* Find the action button (theme dependant ?) */
+            /* Find the action button (theme dependent ?) */
             $this->assertTrue(
                 !empty(self::$webDriver->findElement(WebDriverBy::id('mandatory-soft-alert-box-modal'))),
                 'Unable to find the action button after try to submit'
@@ -163,14 +163,30 @@ class MandatorySoftTest extends TestBaseClassWeb
                 'Soft mandatory G01Q01 question are not in 1st page after try submit'
             );
             /* wait for mandatory soft dialog box, close it with close button*/
-            $modalCloseButton = self::$webDriver->wait(10)->until(
+            self::$webDriver->wait(10)->until(
                 WebDriverExpectedCondition::elementToBeClickable(
                     WebDriverBy::cssSelector('.modal.show .btn-close')
                 )
             );
-            // Double-click to ensure modal closes (needed)
-            $modalCloseButton->click();
-            $modalCloseButton->click();
+            /*
+             * Bootstrap ignores hide() while the modal is still transitioning in,
+             * and .show is already set during that fade-in: retry the click until
+             * the modal is really closing.
+             */
+            self::$webDriver->wait(10, 250)->until(
+                function ($driver) {
+                    $closeButtons = $driver->findElements(WebDriverBy::cssSelector('.modal.show .btn-close'));
+                    if (empty($closeButtons)) {
+                        return true;
+                    }
+                    try {
+                        $closeButtons[0]->click();
+                    } catch (\Facebook\WebDriver\Exception\WebDriverException $ex) {
+                        // Element went stale or not interactable while closing: check again on next poll
+                    }
+                    return false;
+                }
+            );
 
             // wait for the Bootstrap backdrop overlay to fully disappear (including fade-out animation)
             self::$webDriver->wait(10)->until(

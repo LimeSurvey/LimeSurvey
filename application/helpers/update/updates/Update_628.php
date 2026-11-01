@@ -9,6 +9,7 @@ class Update_628 extends DatabaseUpdateBase
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function up()
     {
         /* Delete old unneeded settings */

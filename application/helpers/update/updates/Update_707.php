@@ -7,6 +7,7 @@ class Update_707 extends DatabaseUpdateBase
     /**
      * disable all custom plugins for LS7 release
      */
+    #[\Override]
     public function up()
     {
         $this->db->createCommand()
