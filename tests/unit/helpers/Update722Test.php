@@ -92,6 +92,33 @@ class Update722Test extends TestBaseClass
     }
 
     /**
+     * @testdox A custom question theme named like a bundled ranking theme gets subquestionsactiveedit 0
+     */
+    public function testUpdateIgnoresCustomThemeWithBundledName()
+    {
+        $db = \Yii::app()->db;
+        $db->createCommand()->insert('{{question_themes}}', [
+            'name' => 'ranking',
+            'visible' => 'Y',
+            'xml_path' => 'upload/themes/question/ranking/survey/questions/answer/ranking',
+            'title' => 'Custom ranking',
+            'api_version' => '1',
+            'question_type' => 'R',
+            'core_theme' => 0,
+            'extends' => 'R',
+            'settings' => json_encode(['subquestions' => '1', 'answerscales' => '0']),
+        ]);
+        $criteria = "name = 'ranking' AND xml_path = 'upload/themes/question/ranking/survey/questions/answer/ranking'";
+        try {
+            (new Update_722($db, []))->up();
+            $settings = $db->createCommand()->select('settings')->from('{{question_themes}}')->where($criteria)->queryScalar();
+            $this->assertSame('0', json_decode((string) $settings, true)['subquestionsactiveedit']);
+        } finally {
+            $db->createCommand()->delete('{{question_themes}}', $criteria);
+        }
+    }
+
+    /**
      * @testdox An existing subquestionsactiveedit setting is kept
      */
     public function testUpdateKeepsExistingSetting()

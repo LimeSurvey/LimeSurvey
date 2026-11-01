@@ -916,7 +916,7 @@ class QuestionTheme extends LSActiveRecord
         };
 
         // search missing new tags and copy theme from the core theme
-        $aNewMetadataTagsToRecoverFromCoreType = ['group', 'subquestions', 'answerscales', 'subquestionsactiveedit', 'hasdefaultvalues', 'assessable', 'class'];
+        $aNewMetadataTagsToRecoverFromCoreType = ['group', 'subquestions', 'answerscales', 'hasdefaultvalues', 'assessable', 'class'];
         foreach ($aNewMetadataTagsToRecoverFromCoreType as $sMetaTag) {
             if (!isset($oThemeConfig->metadata->$sMetaTag)) {
                 $oThemeConfig->metadata->addChild($sMetaTag, $oThemeCoreConfig->metadata->$sMetaTag);

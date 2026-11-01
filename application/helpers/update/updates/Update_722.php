@@ -31,7 +31,7 @@ class Update_722 extends DatabaseUpdateBase
     private function updateSettings()
     {
         $questionThemes = $this->db->createCommand()
-            ->select('id, name, question_type, settings')
+            ->select('id, name, question_type, core_theme, settings')
             ->from('{{question_themes}}')
             ->queryAll();
         foreach ($questionThemes as $questionTheme) {
@@ -39,7 +39,10 @@ class Update_722 extends DatabaseUpdateBase
             if (!is_array($settings) || array_key_exists('subquestionsactiveedit', $settings)) {
                 continue;
             }
-            $value = $questionTheme['question_type'] === 'R' && in_array($questionTheme['name'], self::ACTIVE_EDIT_THEMES, true) ? '1' : '0';
+            $isActiveEditTheme = !empty($questionTheme['core_theme'])
+                && $questionTheme['question_type'] === 'R'
+                && in_array($questionTheme['name'], self::ACTIVE_EDIT_THEMES, true);
+            $value = $isActiveEditTheme ? '1' : '0';
             $this->db->createCommand()->update(
                 '{{question_themes}}',
                 ['settings' => json_encode($this->addSetting($settings, $value))],
