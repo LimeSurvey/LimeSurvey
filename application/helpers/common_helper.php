@@ -2501,7 +2501,7 @@ function jsonEscape(string $str, $strip_tags = false, $htmldecode = false)
 }
 
 /**
-*  This functions removes all HTML tags, Javascript, CRs, linefeeds and other strange chars from a given text
+*  This functions removes all HTML tags, Javascript, CSS style blocks, CRs, linefeeds and other strange chars from a given text
 *
 * @param string $sTextToFlatten  Text you want to clean
 * @param boolean $bKeepSpan set to true for keep span, used for expression manager. Default: false
@@ -2514,6 +2514,8 @@ function jsonEscape(string $str, $strip_tags = false, $htmldecode = false)
 function flattenText($sTextToFlatten, $bKeepSpan = false, $bDecodeHTMLEntities = false, $sCharset = 'UTF-8', $bStripNewLines = true)
 {
     $sNicetext = stripJavaScript($sTextToFlatten);
+    // strip_tags() keeps the content of <style> elements: Remove the whole block, like the <script> ones
+    $sNicetext = (string) preg_replace('@<style[^>]*?>.*?</style>@si', '', $sNicetext);
     // When stripping tags, add a space before closing tags so that strings with embedded HTML tables don't get concatenated
     $sNicetext = str_replace(array('</td', '</th'), array(' </td', ' </th'), $sNicetext);
     if ($bKeepSpan) {
