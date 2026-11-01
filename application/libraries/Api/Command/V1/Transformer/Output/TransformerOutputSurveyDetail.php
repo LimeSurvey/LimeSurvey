@@ -2,6 +2,7 @@
 
 namespace LimeSurvey\Api\Command\V1\Transformer\Output;
 
+use Question;
 use Survey;
 use LimeSurvey\Models\Services\QuestionAggregateService\QuestionService;
 use LimeSurvey\Models\Services\SurveyCondition;
@@ -43,6 +44,8 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
     private TransformerOutputSurveyMenus $transformerOutputSurveyMenus;
     private TransformerOutputSurveyMenuItems $transformerOutputSurveyMenuItems;
     private SurveyCondition $surveyCondition;
+    /** @var array<string, bool> Subquestion changes allowed when active, per question type and theme */
+    private array $subquestionChangesAllowedWhenActive = [];
 
     /**
      * Construct
@@ -259,6 +262,8 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
             $question['showAssessmentValue'] = $questionModel->survey->isAssessments
                 && $questionModel->getAllowAnswerOptions();
 
+            $question['subquestionChangesAllowedWhenActive'] = $this->getSubquestionChangesAllowedWhenActive($questionModel);
+
             if ($questionModel->subquestions) {
                 $question['subquestions'] = $this->transformerQuestion->transformAll(
                     $questionModel->subquestions,
@@ -292,6 +297,25 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
                 $options
             );
         }
+    }
+
+    /**
+     * Returns true if subquestions of the question can be added or removed after the survey was activated.
+     * Cached per question type and theme, the setting comes from the question theme.
+     *
+     * @param Question $questionModel
+     * @return bool
+     */
+    private function getSubquestionChangesAllowedWhenActive(Question $questionModel)
+    {
+        if (!empty($questionModel->parent_qid)) {
+            return false;
+        }
+        $key = $questionModel->type . '|' . $questionModel->question_theme_name;
+        if (!array_key_exists($key, $this->subquestionChangesAllowedWhenActive)) {
+            $this->subquestionChangesAllowedWhenActive[$key] = $questionModel->getAllowSubquestionChangesWhenActive();
+        }
+        return $this->subquestionChangesAllowedWhenActive[$key];
     }
 
     /**

@@ -421,6 +421,7 @@ class QuestionTheme extends LSActiveRecord
             'subquestions'     => $questionMetaData['subquestions'] ?? 0,
             'other'            => $questionMetaData['other'] ?? false,
             'answerscales'     => $questionMetaData['answerscales'] ?? 0,
+            'subquestionsactiveedit' => $questionMetaData['subquestionsactiveedit'] ?? 0,
             'hasdefaultvalues' => $questionMetaData['hasdefaultvalues'] ?? 0,
             'assessable'       => $questionMetaData['assessable'] ?? 0,
             'class'            => $questionMetaData['class'] ?? '',
@@ -915,7 +916,7 @@ class QuestionTheme extends LSActiveRecord
         };
 
         // search missing new tags and copy theme from the core theme
-        $aNewMetadataTagsToRecoverFromCoreType = ['group', 'subquestions', 'answerscales', 'hasdefaultvalues', 'assessable', 'class'];
+        $aNewMetadataTagsToRecoverFromCoreType = ['group', 'subquestions', 'answerscales', 'subquestionsactiveedit', 'hasdefaultvalues', 'assessable', 'class'];
         foreach ($aNewMetadataTagsToRecoverFromCoreType as $sMetaTag) {
             if (!isset($oThemeConfig->metadata->$sMetaTag)) {
                 $oThemeConfig->metadata->addChild($sMetaTag, $oThemeCoreConfig->metadata->$sMetaTag);
@@ -1065,6 +1066,7 @@ class QuestionTheme extends LSActiveRecord
         $settings->class = '';
         $settings->answerscales = 0;
         $settings->subquestions = 0;
+        $settings->subquestionsactiveedit = 0;
 
         $questionTheme = new self();
         $questionTheme->title = gT('Question theme error: Missing metadata');
