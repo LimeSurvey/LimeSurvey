@@ -565,7 +565,7 @@
     <id><![CDATA[3]]></id>
     <qid><![CDATA[3]]></qid>
     <question><![CDATA[Just a question]]></question>
-    <help><![CDATA[getAnswerOptionText("simple","07") : <span id="check-string">{getAnswerOptionText("simple","07", 0)}</span><br>
+    <help><![CDATA[getAnswerOptionText("Simple","07") : <span id="check-string">{getAnswerOptionText("Simple","07", 0)}</span><br>
 getAnswerOptionText(self.qid,"07") : <span id="check-selfqid">{getAnswerOptionText(self.qid,"07")}</span><br>
 getAnswerOptionText(self.qid,join("0","7")) : <span id="check-answerem">{getAnswerOptionText(self.qid,join("0","7"))}</span><br>
 getAnswerOptionText("invalid","07") : <span id="check-invalidq">{getAnswerOptionText("invalidquestion","07")}</span><br>
@@ -577,7 +577,7 @@ getAnswerOptionText("invalid","07") : <span id="check-invalida">{getAnswerOption
     <id><![CDATA[4]]></id>
     <qid><![CDATA[3]]></qid>
     <question><![CDATA[Juste une question]]></question>
-    <help><![CDATA[getAnswerOptionText("simple","07") : <span id="check-string">{getAnswerOptionText("simple","07", 0)}</span><br>
+    <help><![CDATA[getAnswerOptionText("Simple","07") : <span id="check-string">{getAnswerOptionText("Simple","07", 0)}</span><br>
 getAnswerOptionText(self.qid,"07") : <span id="check-selfqid">{getAnswerOptionText(self.qid,"07")}</span><br>
 getAnswerOptionText(self.qid,join("0","7")) : <span id="check-answerem">{getAnswerOptionText(self.qid,join("0","7"))}</span><br>
 getAnswerOptionText("invalid","07") : <span id="check-invalidq">{getAnswerOptionText("invalidquestion","07")}</span><br>
@@ -589,7 +589,7 @@ getAnswerOptionText("invalid","07") : <span id="check-invalida">{getAnswerOption
     <id><![CDATA[5]]></id>
     <qid><![CDATA[3]]></qid>
     <question><![CDATA[Just a question]]></question>
-    <help><![CDATA[getAnswerOptionText("simple","07") : <span id="check-string">{getAnswerOptionText("simple","07", 0)}</span><br>
+    <help><![CDATA[getAnswerOptionText("Simple","07") : <span id="check-string">{getAnswerOptionText("Simple","07", 0)}</span><br>
 getAnswerOptionText(self.qid,"07") : <span id="check-selfqid">{getAnswerOptionText(self.qid,"07")}</span><br>
 getAnswerOptionText(self.qid,join("0","7")) : <span id="check-answerem">{getAnswerOptionText(self.qid,join("0","7"))}</span><br>
 getAnswerOptionText("invalid","07") : <span id="check-invalidq">{getAnswerOptionText("invalidquestion","07")}</span><br>
