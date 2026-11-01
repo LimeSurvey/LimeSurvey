@@ -125,14 +125,14 @@ class OptinController extends LSYii_Controller
             $participant = $blacklistHandler->getCentralParticipantFromToken($token);
             $isBlacklisted = !empty($participant) && $participant->blacklisted == 'Y';
 
-            if (!Yii::app()->getConfig('allowunblacklist') == "Y") {
-                $message = gT('Removing yourself from the blocklist is currently disabled.');
-            } elseif ($isBlacklisted) {
+            if ($isBlacklisted && Yii::app()->getConfig('allowunblacklist') == "Y") {
                 $message = gT('Please confirm that you want to be added back to the central participant list for this site.');
                 $link = Yii::app()->createUrl('optin/addtokens', ['surveyid' => $surveyId, 'langcode' => $baseLanguage, 'token' => $accessToken, 'global' => true]);
             } elseif ($optedOutFromSurvey) {
                 $message = gT('Please confirm that you want to be added back to this survey by clicking the button below.') . '<br>' . gT("After confirmation you may start receiving invitations and reminders for this survey.");
                 $link = Yii::app()->createUrl('optin/addtokens', ['surveyid' => $surveyId, 'langcode' => $baseLanguage, 'token' => $accessToken]);
+            } elseif ($isBlacklisted) {
+                $message = gT('Removing yourself from the blocklist is currently disabled.');
             } elseif (empty($participant)) {
                 $message = gT('You are already a participant of this survey.');
             } else {
