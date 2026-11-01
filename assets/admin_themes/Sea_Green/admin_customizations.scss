@@ -151,6 +151,19 @@ blockquote {
   min-width: 70px;
 }
 
+/* Relevance equation: One line like the inputs, the whole equation while focused (height set by questionEditor.js) */
+.subquestions-table textarea.relevance {
+  min-height: 0;
+  font-size: 14px;
+  resize: none;
+  overflow: hidden;
+  white-space: pre;
+
+  &:focus {
+    white-space: pre-wrap;
+  }
+}
+
 .subquestions-table > tbody > tr > td:first-of-type,
 .answeroptions-table > tbody > tr > td:first-of-type {
   padding-left: 0;

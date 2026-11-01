@@ -375,24 +375,54 @@ $(document).on('ready pjax:scriptcomplete', function () {
   }
 
   /**
+   * Make the subquestion relevance textarea as high as its content
+   *
+   * @param {HTMLElement} textarea
+   * @return {void}
+   */
+  function fitRelevanceEquationHeight(textarea) {
+    textarea.style.height = 'auto';
+    // scrollHeight doesn't include the border
+    textarea.style.height = `${textarea.scrollHeight + textarea.offsetHeight - textarea.clientHeight}px`;
+  }
+
+  /**
    * Bind relevance equation to expand on click (only once)
+   * The column gets wider and the textarea shows the whole equation while it has the focus.
    *
    * @return {void}
    */
   function bindExpandRelevanceEquation() {
+    $('textarea.relevance').off('input').on('input', (event) => {
+      fitRelevanceEquationHeight(event.currentTarget);
+    });
     $('.relevance').off('focus').on('focus', (event) => {
       if (event.relatedTarget && $(event.relatedTarget).hasClass('relevance')) {
-        // Don't do anything when moving between relevance fields.
+        // Column is already expanded when moving between relevance fields.
+        if (event.currentTarget instanceof HTMLTextAreaElement) {
+          fitRelevanceEquationHeight(event.currentTarget);
+        }
         return;
       }
       if ($('#rel-eq-th').hasClass('col-lg-4')) {
         // If already expanded, do not expand again.
         return;
       }
-      $('#rel-eq-th').toggleClass('col-lg-1 col-lg-4', 'fast');
+      const textarea = event.currentTarget;
+      // jQuery UI animates the class change, so the column has its final width only when it's complete
+      $('#rel-eq-th').toggleClass('col-lg-1 col-lg-4', 'fast', () => {
+        if (textarea instanceof HTMLTextAreaElement && document.activeElement === textarea) {
+          fitRelevanceEquationHeight(textarea);
+        }
+      });
       $('.relevance').tooltip('dispose');
     });
     $('.relevance').off('blur').on('blur', (event) => {
+      if (event.currentTarget instanceof HTMLTextAreaElement) {
+        // Back to one row, showing the start of the equation
+        event.currentTarget.style.height = '';
+        event.currentTarget.scrollTop = 0;
+      }
       if (event.relatedTarget && $(event.relatedTarget).hasClass('relevance')) {
         // Don't do anything when moving between relevance fields.
         return;
@@ -1130,8 +1160,8 @@ $(document).on('ready pjax:scriptcomplete', function () {
               throw 'Found nowhere to put label.code';
             }
 
-            if ($tr.find('td.relevance-equation').find('input[type=text]').length > 0) {
-              $tr.find('td.relevance-equation').find('input[type=text]').val(1);
+            if ($tr.find('td.relevance-equation').find('.relevance').length > 0) {
+              $tr.find('td.relevance-equation').find('.relevance').val(1);
             } else {
               // ??
             }
@@ -1358,8 +1388,8 @@ $(document).on('ready pjax:scriptcomplete', function () {
                   inputCode.textContent = row.code;
                 }
               }
-              const relevanceEquation = tableRow.querySelector('td.relevance-equation input');
-              if (relevanceEquation instanceof HTMLInputElement) {
+              const relevanceEquation = tableRow.querySelector('td.relevance-equation .relevance');
+              if (relevanceEquation instanceof HTMLTextAreaElement) {
                 relevanceEquation.value = '1';
               } else {
                 // Do nothing.
