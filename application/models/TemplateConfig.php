@@ -1253,6 +1253,11 @@ class TemplateConfig extends CActiveRecord
             // Else, we must remove it from current package, and if it doesn't exist in mother template definition,
             // we must add it.
             // (and leave it in moter template definition if it already exists.)
+            // A theme uses only one colour variation: If this theme sets one, the variations of
+            // the ancestors must not be loaded too (mantis #14980)
+            if ($sType === 'css' && !empty(preg_grep('#^css/variations/#', array_filter($aSettings, 'is_string')))) {
+                $this->removeVariationsFromAncestorPackages();
+            }
             foreach ($aSettings as $key => $sFileName) {
                 if (!is_string($sFileName)) {
                     continue;
@@ -1293,6 +1298,23 @@ class TemplateConfig extends CActiveRecord
             }
         }
         return $aSettings;
+    }
+
+    /**
+     * Removes the colour variation CSS files (css/variations/...) from the packages of all
+     * ancestor templates, so only the variation of this template is loaded
+     * @return void
+     */
+    protected function removeVariationsFromAncestorPackages()
+    {
+        $oAncestorTemplate = $this->oMotherTemplate;
+        while ($oAncestorTemplate instanceof TemplateConfiguration) {
+            $aPackage = App()->clientScript->packages[$oAncestorTemplate->sPackageName] ?? [];
+            foreach (preg_grep('#^css/variations/#', (array) ($aPackage['css'] ?? [])) as $sFileName) {
+                App()->clientScript->removeFileFromPackage($oAncestorTemplate->sPackageName, 'css', $sFileName);
+            }
+            $oAncestorTemplate = $oAncestorTemplate->oMotherTemplate;
+        }
     }
 
     /**
