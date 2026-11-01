@@ -27,10 +27,10 @@ import {
   questionConditionUpdateJoi,
   questionConditionDeleteJoi,
 } from './operationsScheme/questionCondition'
-import { themeSettingUpdateJoi } from './operationsScheme/survey/themeSettingUpdateJoi'
+import { getThemeSettingUpdateJoi } from './operationsScheme/survey/themeSettingUpdateJoi'
 import { accessModeUpdateJoi } from './operationsScheme/survey/accessModeUpdate.Joi'
 
-export const getOperationScheme = (operation, entity) => {
+export const getOperationScheme = (operation, entity, context = {}) => {
   const schemeMap = {
     [Operations.update]: {
       [Entities.question]: questionUpdateJoi,
@@ -45,7 +45,7 @@ export const getOperationScheme = (operation, entity) => {
       [Entities.languageSetting]: languageSettingUpdateJoi,
       [Entities.importResponses]: surveyImportResponsesJoi,
       [Entities.questionCondition]: questionConditionUpdateJoi,
-      [Entities.themeSettings]: themeSettingUpdateJoi,
+      [Entities.themeSettings]: getThemeSettingUpdateJoi(context.themesettings),
       [Entities.accessMode]: accessModeUpdateJoi,
     },
     [Operations.create]: {

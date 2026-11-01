@@ -57,7 +57,9 @@ export const useBuffer = () => {
       return
     }
 
-    operationBuffer.addOperation(operation, updateCurrentOperation)
+    operationBuffer.addOperation(operation, updateCurrentOperation, false, {
+      themesettings: survey?.themesettings ?? {},
+    })
     operationBuffer.setBufferHash(Math.random())
 
     setBuffer(operationBuffer.getOperations(), operationBuffer.bufferHash)
