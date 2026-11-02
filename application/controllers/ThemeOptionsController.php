@@ -321,15 +321,15 @@ class ThemeOptionsController extends LSBaseController
     }
 
     /**
-     * Returns the posted theme options without the IDs placing them (id, sid and gsid),
-     * so they can't be moved to another survey or survey group.
+     * Returns the posted theme options without the IDs placing them (id, sid, gsid and template_name),
+     * so they can't be moved to another survey, survey group or theme.
      *
      * @return array
      */
     private function getPostedTemplateConfiguration(): array
     {
         $data = (array) App()->request->getPost('TemplateConfiguration', []);
-        unset($data['id'], $data['sid'], $data['gsid']);
+        unset($data['id'], $data['sid'], $data['gsid'], $data['template_name']);
         return $data;
     }
 
