@@ -432,6 +432,23 @@ class LSYiiValidatorsTest extends TestBaseClass
     }
 
     /**
+     * Testing that variable names inside a link URL are kept (bug #18236).
+     */
+    public function testXssFilterKeepsVariablesInUrl()
+    {
+        $validator = new \LSYii_Validators();
+
+        $cases = array(
+            "<a href='@@SURVEYURL@@&UO1={ATTRIBUTE_1}'>do the survey</a>" => '<a href="@@SURVEYURL@@&amp;UO1={ATTRIBUTE_1}">do the survey</a>',
+            "<a href='@@SURVEYURL@@&UO1={TOKEN:ATTRIBUTE_1}'>do the survey</a>" => '<a href="@@SURVEYURL@@&amp;UO1={TOKEN:ATTRIBUTE_1}">do the survey</a>',
+            "<a href='https://example.com/?a={Q1_SQ001.shown}&b={TOKEN}'>link</a>" => '<a href="https://example.com/?a={Q1_SQ001.shown}&amp;b={TOKEN}">link</a>',
+        );
+        foreach ($cases as $string => $expected) {
+            $this->assertSame($expected, $validator->xssFilter($string), 'A variable in a link URL was not kept. Case: ' . $string);
+        }
+    }
+
+    /**
      * Testing that an expression built inside a quoted string is disabled, so it can not be evaluated again.
      */
     public function testXssFilterDisablesExpressionsInStrings()

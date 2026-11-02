@@ -136,7 +136,7 @@ class CreateQuestionTest extends TestBaseClassWeb
                 )
             );
 
-            $questionTypeSelector = $web->findById('trigger_questionTypeSelector_button');
+            $questionTypeSelector = $web->findByCss('#trigger_questionTypeSelector_button button');
             $questionTypeSelector->click();
             self::$webDriver->wait(10)->until(
                 WebDriverExpectedCondition::elementToBeClickable(
