@@ -172,18 +172,18 @@ class LSYii_ClientScript extends CClientScript
 
 
     /**
-     * Remove a file from a given package
+     * Remove a file from a given package (all its entries, a file can be added more than once)
      *
-     * @var $sPackageName   string  name of the package
-     * @var $sType          string  css/js
-     * @var $sFileName      string name of the file to remove
+     * @param string $sPackageName name of the package
+     * @param string $sType        css/js
+     * @param string $sFileName    name of the file to remove
+     * @return void
      */
     public function removeFileFromPackage($sPackageName, $sType, $sFileName)
     {
         if (!empty(Yii::app()->clientScript->packages[$sPackageName])) {
             if (!empty(Yii::app()->clientScript->packages[$sPackageName][$sType])) {
-                $key = array_search($sFileName, Yii::app()->clientScript->packages[$sPackageName][$sType]);
-                if ($key !== false) {
+                foreach (array_keys(Yii::app()->clientScript->packages[$sPackageName][$sType], $sFileName) as $key) {
                     unset(Yii::app()->clientScript->packages[$sPackageName][$sType][$key]);
                 }
             }

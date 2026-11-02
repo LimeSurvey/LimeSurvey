@@ -1860,6 +1860,10 @@ class TemplateConfiguration extends TemplateConfig
         $aCssFiles  = array_merge($aCssFiles, $aTCssFiles);
         $aJsFiles   = array_merge($aJsFiles, $aTJsFiles);
 
+        //For fruity_twentythree surveytheme we completely replace the variation theme css file:
+        // Before changeMotherConfiguration(), so a variation of a mother template is looked up with its rtl name too
+        $aCssFiles = $this->replaceVariationFilesWithRtl($aCssFiles);
+
         // Remove/Replace mother template files
         if (
             App()->getConfig('force_xmlsettings_for_survey_rendering') ||
@@ -1869,9 +1873,6 @@ class TemplateConfiguration extends TemplateConfig
               $aCssFiles = $this->changeMotherConfiguration('css', $aCssFiles);
               $aJsFiles  = $this->changeMotherConfiguration('js', $aJsFiles);
         }
-
-        //For fruity_twentythree surveytheme we completely replace the variation theme css file:
-        $aCssFiles = $this->replaceVariationFilesWithRtl($aCssFiles);
 
         $this->sPackageName = 'survey-template-' . $this->sTemplateName;
         $sTemplateurl       = $oTemplate->getTemplateURL();
