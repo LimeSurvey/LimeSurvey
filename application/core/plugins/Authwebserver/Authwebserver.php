@@ -75,12 +75,12 @@ class Authwebserver extends LimeSurvey\PluginManager\AuthPluginBase
      * Reads the configured server key, strips the domain part when wanted
      * and applies the auth_webserver_user_map config setting.
      *
-     * @return string|null Null when the web server did not pass a username
+     * @return string|null Null when the web server did not pass a username (key missing or empty, e.g. IIS LOGON_USER on anonymous requests)
      */
     protected function getWebserverUserName()
     {
         $serverKey = $this->get('serverkey');
-        if (empty($serverKey) || !isset($_SERVER[$serverKey])) {
+        if (empty($serverKey) || !isset($_SERVER[$serverKey]) || $_SERVER[$serverKey] === '') {
             return null;
         }
         $sUser = $_SERVER[$serverKey];

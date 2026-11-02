@@ -143,6 +143,18 @@ class AuthwebserverTest extends TestBaseClass
     }
 
     /**
+     * An empty username (IIS LOGON_USER on anonymous requests) counts as no username
+     */
+    public function testEmptyServerUserKeepsSession()
+    {
+        $this->logInAs(self::$user);
+        $_SERVER['REMOTE_USER'] = '';
+        $this->assertFalse(self::$plugin->hasWebserverUserChanged());
+        $this->dispatchBeforeControllerAction();
+        $this->assertFalse(App()->user->isGuest);
+    }
+
+    /**
      * Sessions opened through another authentication plugin are not checked
      */
     public function testOtherLoginPluginIsIgnored()
