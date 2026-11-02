@@ -215,8 +215,11 @@ class Reader
                             $veryLongStrings[$var->name] : $var->width
                     );
                     //Read the ValueLabels and set it to $var->values.
-                    if (Record\Variable::isVeryLong($var->width) !== false) {
-                        $longName = $this->getVariableName($newIndex);
+                    // Strings wider than 8 bytes have their value labels in the long string value labels record
+                    if ($var->width > 8) {
+                        $namesSubType = Record\Info\LongVariableNames::SUBTYPE;
+                        $longName = isset($this->info[$namesSubType]) && isset($this->info[$namesSubType]->data[$var->name]) ?
+                            $this->info[$namesSubType]->data[$var->name] : $var->name;
                         $subType = Record\Info\LongStringValueLabels::SUBTYPE;
                         if (isset($this->info[$subType]) && isset($this->info[$subType][$longName]) && 
                             isset($this->info[$subType][$longName]["values"])) {
