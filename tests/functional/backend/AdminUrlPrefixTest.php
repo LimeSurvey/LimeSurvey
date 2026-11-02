@@ -228,7 +228,7 @@ class AdminUrlPrefixTest extends TestBaseClass
         self::importSurvey(self::$surveysFolder . '/limesurvey_survey_718593_list_with_comment.lss');
         $languageSetting = self::$testSurvey->languagesettings[self::$testSurvey->language];
         $languageSetting->surveyls_alias = $alias;
-        $this->assertTrue($languageSetting->save(false), 'Could not set the alias');
+        $this->assertTrue($languageSetting->save(), 'Could not set the alias: ' . json_encode($languageSetting->errors));
         try {
             $response = $this->request('GET', '/' . $alias);
             $this->assertSame(200, $response['status'], 'The survey is served instead of the quotas controller');
