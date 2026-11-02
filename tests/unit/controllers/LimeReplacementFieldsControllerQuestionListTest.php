@@ -31,7 +31,7 @@ class LimeReplacementFieldsControllerQuestionListTest extends TestBaseClass
      * @param int $qid
      * @return int[] the qids of the question list
      */
-    private function getQuestionListQids($gid, $qid)
+    private function getQuestionList($gid, $qid, $fieldmap = null)
     {
         $controller = new \LimeReplacementFieldsController('limereplacementfields');
         $property = new \ReflectionProperty($controller, 'groupOrders');
@@ -39,13 +39,37 @@ class LimeReplacementFieldsControllerQuestionListTest extends TestBaseClass
         $property->setValue($controller, $this->groupOrders);
         $method = new \ReflectionMethod($controller, 'getQuestionList');
         $method->setAccessible(true);
-        $questionList = $method->invoke($controller, 'editanswer', $gid, $qid, $this->fieldmap, 'editanswer', 'G');
-        return array_column($questionList, 'qid');
+        return $method->invoke($controller, 'editanswer', $gid, $qid, $fieldmap ?? $this->fieldmap, 'editanswer', 'G');
+    }
+
+    /**
+     * @param int $gid
+     * @param int $qid
+     * @return int[] the qids of the question list
+     */
+    private function getQuestionListQids($gid, $qid)
+    {
+        return array_column($this->getQuestionList($gid, $qid), 'qid');
     }
 
     public function testUnsavedQuestionListsEarlierGroupsAndTheWholeCurrentGroup()
     {
         $this->assertSame([11, 21, 22], $this->getQuestionListQids(2, 0));
+    }
+
+    public function testUnsavedQuestionCalculatesPreviousPagePerGroupWhenFieldmapIsRandomized()
+    {
+        $fieldmap = [
+            ['qid' => 21, 'gid' => 2],
+            ['qid' => 11, 'gid' => 1],
+            ['qid' => 22, 'gid' => 2],
+            ['qid' => 31, 'gid' => 3],
+        ];
+
+        $questionList = $this->getQuestionList(2, 0, $fieldmap);
+
+        $this->assertSame([21, 11, 22], array_column($questionList, 'qid'));
+        $this->assertSame([false, true, false], array_column($questionList, 'previouspage'));
     }
 
     public function testUnsavedQuestionWithoutGroupListsAllQuestions()

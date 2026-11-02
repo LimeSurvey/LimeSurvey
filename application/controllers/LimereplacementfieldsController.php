@@ -131,7 +131,16 @@ class LimeReplacementFieldsController extends LSBaseController
             }
 
             if (is_null($qid) || $this->shouldAddQuestion($action, $gid, $qid, $question, $previousQuestion)) {
-                $isPreviousPageQuestion = $this->addQuestionToList($action, $gid, $question, $questionType, $surveyformat, $isPreviousPageQuestion, $questionList);
+                $isPreviousPageQuestion = $this->addQuestionToList(
+                    $action,
+                    $gid,
+                    $question,
+                    $questionType,
+                    $surveyformat,
+                    $isPreviousPageQuestion,
+                    $questionList,
+                    $action == 'editanswer' && empty($qid)
+                );
                 $previousQuestion = $question;
             } elseif ($action == 'editanswer' && empty($qid)) {
                 // Unsaved question: eligibility depends on the group, not on the position in the fieldmap
@@ -236,14 +245,17 @@ class LimeReplacementFieldsController extends LSBaseController
      * @param string $surveyformat
      * @param bool $isPreviousPageQuestion
      * @param array $questionList
+     * @param bool $isUnsavedQuestion
      * @return bool
      */
-    private function addQuestionToList($action, $gid, array $field, $questionType, $surveyformat, $isPreviousPageQuestion, &$questionList)
+    private function addQuestionToList($action, $gid, array $field, $questionType, $surveyformat, $isPreviousPageQuestion, &$questionList, $isUnsavedQuestion)
     {
         if ($action == 'tokens' && $questionType == 'email-conf' || $surveyformat == "S") {
             $isPreviousPageQuestion = true;
         } elseif ($surveyformat == "G") {
-            if ($isPreviousPageQuestion === true) {
+            if ($isUnsavedQuestion) {
+                $isPreviousPageQuestion = $field["gid"] != $gid;
+            } elseif ($isPreviousPageQuestion === true) {
 // Last question was on a previous page
                 if ($field["gid"] == $gid) {
 // This question is on same page
