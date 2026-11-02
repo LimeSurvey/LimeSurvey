@@ -56,7 +56,7 @@ class SubQuestionsService
             $this->storeSubquestions(
                 $question,
                 $subquestions ?? [],
-                $question->survey->active != 'N'
+                $question->survey->active != 'N' && !$question->getAllowSubquestionChangesWhenActive()
             );
         }
     }
@@ -74,7 +74,7 @@ class SubQuestionsService
     {
         $survey = $this->modelSurvey->findByPk($surveyId);
         if (
-            $survey->isActive ||
+            ($survey->isActive && !$this->allowsChangesWhenActive($surveyId, $subquestionId)) ||
             !$this->modelPermission->hasSurveyPermission(
                 $surveyId,
                 'surveycontent',
@@ -89,12 +89,32 @@ class SubQuestionsService
     }
 
     /**
+     * Returns true if the parent question of the subquestion allows adding or removing
+     * subquestions after the survey was activated.
+     *
+     * @param int $surveyId
+     * @param int $subquestionId
+     * @return boolean
+     */
+    private function allowsChangesWhenActive($surveyId, $subquestionId)
+    {
+        $subquestion = $this->modelQuestion->findByAttributes([
+            'qid' => $subquestionId,
+            'sid' => $surveyId
+        ]);
+        if (empty($subquestion) || empty($subquestion->parent)) {
+            return false;
+        }
+        return $subquestion->parent->getAllowSubquestionChangesWhenActive();
+    }
+
+    /**
      * Save subquestions.
-     * Used when survey is *not* activated.
+     * When $surveyActive is true, no subquestions are added or removed.
      *
      * @param Question $question
      * @param array $subquestionsArray
-     * @param boolean $surveyActive
+     * @param boolean $surveyActive Survey is active and the question type does not allow subquestion changes
      * @return void
      * @throws PersistErrorException
      * @throws BadRequestException
@@ -175,7 +195,10 @@ class SubQuestionsService
             // This should only happen if it's a new subquestion and the DI container fails to create an instance.
             throw new NotFoundException('Subquestion with id "' . $subquestionId . '" failed to process');
         }
-        $subquestion->title = $data['code'];
+        // Responses of an active survey refer to the codes (ranking stores them), so existing codes can't change
+        if (!$subquestionExists || $question->survey->active == 'N') {
+            $subquestion->title = $data['code'];
+        }
         $subquestion->sid = $question->sid;
         $subquestion->gid = $question->gid;
         $subquestion->parent_qid = $question->qid;

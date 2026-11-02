@@ -12,13 +12,14 @@
         <authorUrl>http://www.limesurvey.org</authorUrl>
         <copyright>Copyright (C) 2005 - 2018 LimeSurvey Gmbh, Inc. All rights reserved.</copyright>
         <license>GNU General Public License version 2 or later</license>
-        <version>1.0</version>
+        <version>1.1.0</version>
         <apiVersion>1</apiVersion>
         <description>Array (Numbers) question type configuration</description>
         <questionType>:</questionType>
         <group>Arrays</group>
         <subquestions>2</subquestions>
         <answerscales>0</answerscales>
+        <subquestionsactiveedit>0</subquestionsactiveedit>
         <hasdefaultvalues>0</hasdefaultvalues>
         <assessable>1</assessable>
         <class>array-multi-flexi</class>

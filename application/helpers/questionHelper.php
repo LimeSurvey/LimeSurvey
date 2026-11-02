@@ -573,12 +573,11 @@ class questionHelper
         /* Ranking specific : max DB answer */
          self::$attributes["max_subquestions"] = array(
         "types" => Question::QT_R_RANKING,
-            'readonly_when_active' => true,
             'category' => gT('Logic'),
             'sortorder' => 12,
             'inputtype' => 'integer',
             'default' => '',
-            "help" => gT('Limit the number of possible answers fixed by number of columns in database - this setting can only be edited when the survey is inactive.'),
+            "help" => gT('Limit the number of rank positions'),
             "caption" => gT('Maximum columns for answers')
         );
 

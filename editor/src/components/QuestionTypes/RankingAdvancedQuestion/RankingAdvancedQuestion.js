@@ -23,7 +23,11 @@ const SUBQUESTIONS_DROPPALE_ID = 'ranking-advanced-subquestions'
 const PLACEHOLDERS_DROPPALE_ID = 'ranking-advanced-placeholders'
 
 export const RankingAdvancedQuestion = ({
-  question: { subquestions: rankingSubquestions = [], qid } = {},
+  question: {
+    subquestions: rankingSubquestions = [],
+    qid,
+    subquestionChangesAllowedWhenActive,
+  } = {},
   isFocused,
   handleChildLUpdate,
   handleChildAdd,
@@ -37,6 +41,8 @@ export const RankingAdvancedQuestion = ({
   handleChildCodeUpdate,
 }) => {
   const [isSurveyActive] = useAppState(STATES.IS_SURVEY_ACTIVE)
+  const subquestionsLocked =
+    isSurveyActive && !subquestionChangesAllowedWhenActive
 
   const [subquestionsHeight, setSubquestionsHeight] = useState([])
   const [subquestionsValue, setSubquestionsValue] = useState(cloneDeep(values))
@@ -147,6 +153,7 @@ export const RankingAdvancedQuestion = ({
                 language={language}
                 handleCodeUpdate={handleChildCodeUpdate}
                 isTitleFocused={isTitleFocused}
+                subquestionsLocked={subquestionsLocked}
               />
               {provided.placeholder}
             </div>
@@ -176,7 +183,7 @@ export const RankingAdvancedQuestion = ({
       <div className="add-child-button-container">
         <TooltipContainer
           tip={getTooltipMessages().ACTIVE_DISABLED}
-          showTip={isSurveyActive}
+          showTip={subquestionsLocked}
         >
           <Button
             onClick={() =>
@@ -190,7 +197,7 @@ export const RankingAdvancedQuestion = ({
               }
             )}
             data-testid="single-choice-add-subquestion-button"
-            disabled={isSurveyActive}
+            disabled={subquestionsLocked}
           >
             <PlusLg /> {t('Add subquestion')}
           </Button>

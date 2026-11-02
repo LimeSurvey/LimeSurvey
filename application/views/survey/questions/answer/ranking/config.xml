@@ -12,13 +12,14 @@
         <authorUrl>http://www.limesurvey.org</authorUrl>
         <copyright>Copyright (C) 2005 - 2018 LimeSurvey Gmbh, Inc. All rights reserved.</copyright>
         <license>GNU General Public License version 2 or later</license>
-        <version>1.0</version>
+        <version>1.1.0</version>
         <apiVersion>1</apiVersion>
         <description>Ranking question type configuration</description>
         <questionType>R</questionType>
         <group>Mask questions</group>
         <subquestions>1</subquestions>
         <answerscales>0</answerscales>
+        <subquestionsactiveedit>1</subquestionsactiveedit>
         <hasdefaultvalues>0</hasdefaultvalues>
         <assessable>1</assessable>
         <class>ranking</class>
@@ -266,12 +267,12 @@
         </attribute>
         <attribute>
             <name>max_subquestions</name>
-            <readonly_when_active>1</readonly_when_active>
+            <readonly_when_active></readonly_when_active>
             <category>Logic</category>
             <sortorder>12</sortorder>
             <inputtype>integer</inputtype>
             <default></default>
-            <help>Limit the number of possible answers fixed by number of columns in database</help>
+            <help>Limit the number of rank positions</help>
             <caption>Maximum columns for answers</caption>
             <i18n></i18n>
             <readonly></readonly>

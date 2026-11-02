@@ -37,6 +37,7 @@
                     '/application/views/questionAdministration/subquestions.twig',
                     [
                         'activated'    => $survey->active !== 'N',
+                        'subquestionChangesAllowed' => $question->getAllowSubquestionChangesWhenActive(),
                         // NB: questionType->subquestions === subquestion scale count
                         'scalecount'   => $question->questionType->subquestions,
                         'subquestions' => $question->getScaledSubquestions(),

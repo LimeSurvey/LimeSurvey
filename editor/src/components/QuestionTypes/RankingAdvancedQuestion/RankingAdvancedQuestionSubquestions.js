@@ -3,7 +3,7 @@ import { Draggable } from 'react-beautiful-dnd'
 import classNames from 'classnames'
 import { SubquestionCodeInput } from '../subquestionCodeComponents'
 import { useSurvey, useAppState } from 'hooks'
-import { Entities, hasTempId, STATES } from 'helpers'
+import { Entities, hasTempId, isTempId, STATES } from 'helpers'
 import { useParams } from 'react-router-dom'
 import { ContentEditor } from 'components/UIComponents'
 import { CloseCircleFillIcon, DragIcon } from 'components/icons'
@@ -19,6 +19,7 @@ export const RankingAdvancedQuestionSubquestions = ({
   language,
   handleCodeUpdate,
   isTitleFocused,
+  subquestionsLocked,
 }) => {
   const subquestionsRef = useRef(null)
   const { surveyId } = useParams()
@@ -80,7 +81,7 @@ export const RankingAdvancedQuestionSubquestions = ({
                       className={classNames(
                         'cursor-pointer remove-option-button me-3',
                         {
-                          'd-none disabled': !isFocused,
+                          'd-none disabled': !isFocused || subquestionsLocked,
                         }
                       )}
                       onClick={() => handleRemoveSubquestion(subquestion)}
@@ -95,7 +96,9 @@ export const RankingAdvancedQuestionSubquestions = ({
                     <div className="d-flex align-items-center w-100 ranking-advanced-subquestion-main gap-4">
                       {isFocused && survey.showQNumCode?.showNumber && (
                         <SubquestionCodeInput
-                          isSurveyActive={isSurveyActive}
+                          isSurveyActive={
+                            isSurveyActive && !isTempId(subquestion.qid)
+                          }
                           code={subquestion.title}
                           onChange={(e) =>
                             handleCodeUpdate({

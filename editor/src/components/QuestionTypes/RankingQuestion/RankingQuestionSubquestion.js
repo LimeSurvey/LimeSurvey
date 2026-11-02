@@ -6,7 +6,7 @@ import { ContentEditor, DropZone } from 'components/UIComponents'
 import { CloseCircleFillIcon, DragIcon } from 'components/icons'
 import { useParams } from 'react-router-dom'
 import { useSurvey, useAppState } from 'hooks'
-import { STATES } from 'helpers'
+import { isTempId, STATES } from 'helpers'
 import { SubquestionCodeInput } from '../subquestionCodeComponents'
 // Todo: handle switching between image and text using attributes.
 export const RankingQuestionSubquestion = ({
@@ -14,6 +14,7 @@ export const RankingQuestionSubquestion = ({
   qid,
   onChange = () => {},
   isFocused,
+  subquestionsLocked,
   provided = {},
   handleRemovingSubquestions,
   handleCodeUpdate,
@@ -32,7 +33,7 @@ export const RankingQuestionSubquestion = ({
     <div className="d-flex align-items-center position-relative remove-option-button-parent">
       <div
         className={classNames('cursor-pointer remove-option-button me-1', {
-          'd-none': !isFocused,
+          'd-none': !isFocused || subquestionsLocked,
         })}
         onClick={() => handleRemovingSubquestions(qid)}
       >
@@ -51,7 +52,7 @@ export const RankingQuestionSubquestion = ({
           <div className="d-flex align-items-center gap-3">
             {isFocused && survey.showQNumCode?.showNumber && (
               <SubquestionCodeInput
-                isSurveyActive={isSurveyActive}
+                isSurveyActive={isSurveyActive && !isTempId(qid)}
                 code={title}
                 onChange={(e) => handleCodeUpdate(e.target.value, index)}
               />
