@@ -92,8 +92,9 @@ class StatisticsResponseFilters
         if (count($conditions) > 20) {
             throw new InvalidArgumentException('No more than 20 response conditions are allowed');
         }
-        foreach ($conditions as $condition) {
-            if (!is_array($condition)
+        foreach ($conditions as $index => $condition) {
+            if (
+                !is_array($condition)
                 || !isset($condition['key'], $condition['filterMethod'])
                 || !array_key_exists('value', $condition)
                 || !is_string($condition['key'])
@@ -112,9 +113,15 @@ class StatisticsResponseFilters
                     . implode(', ', ResponseConditionValues::SAFE_META_COLUMNS) . ' or token'
                 );
             }
+            if (ResponseConditionValues::isTokenKey($condition['key'])) {
+                $condition['key'] = 'token';
+            } elseif (in_array(strtolower($condition['key']), ResponseConditionValues::SAFE_META_COLUMNS, true)) {
+                $condition['key'] = strtolower($condition['key']);
+            }
             $isRange = $condition['filterMethod'] === 'range';
             $values = $condition['filterMethod'] === 'equal' ? [$condition['value']] : $condition['value'];
-            if (!is_array($values) || !$values || count($values) > 50
+            if (
+                !is_array($values) || !$values || count($values) > 50
                 || ($isRange && array_keys($values) !== [0, 1])
                 || (!$isRange && array_keys($values) !== range(0, count($values) - 1))
             ) {
@@ -127,6 +134,7 @@ class StatisticsResponseFilters
                     throw new InvalidArgumentException('Response condition values must be short strings or numbers');
                 }
             }
+            $conditions[$index] = $condition;
         }
         $this->conditions = array_values($conditions);
         return $this;

@@ -149,9 +149,7 @@ class OpHandlerResponseRangeConditionTest extends TestCondition
      */
     public function testConditionCastsToAnExactSignedDecimal(): void
     {
-        $handler = new RangeConditionHandler();
-
-        $criteria = $handler->execute('numeric_field', ['5', '15']);
+        $criteria = $this->handlerFor('mysql')->execute('numeric_field', ['5', '15']);
 
         $this->assertStringContainsString('DECIMAL(30,10)', $criteria->condition);
         $this->assertStringNotContainsString('UNSIGNED', $criteria->condition);

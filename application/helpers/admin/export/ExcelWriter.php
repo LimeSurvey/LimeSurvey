@@ -56,7 +56,7 @@ class ExcelWriter extends Writer
     {
         if (!$this->hasOutputHeader) {
             // No response matched: still write the worksheet so the file is a valid workbook
-            $this->workbook->writeSheetRow($this->currentSheet, []);
+            $this->workbook->writeSheetRow($this->currentSheet, ['']);
         }
         $this->workbook->writeToFile($this->filename);
         if ($this->forceDownload) {
