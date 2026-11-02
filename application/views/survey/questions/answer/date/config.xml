@@ -205,30 +205,6 @@
             <readonly_when_active></readonly_when_active>
             <expression></expression>
         </attribute>
-        <attribute>
-            <name>date_min</name>
-            <category>Display</category>
-            <sortorder>110</sortorder>
-            <inputtype>text</inputtype>
-            <expression>2</expression>
-            <help>Minimum date, valid date in YYYY-MM-DD format or any English textual datetime description. Expression Managed can be used (only with YYYY-MM-DD format). For dropdown : only the year is restricted if date use variable not in same page.</help>
-            <caption>Minimum date</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-        </attribute>
-        <attribute>
-            <name>date_max</name>
-            <category>Display</category>
-            <sortorder>111</sortorder>
-            <inputtype>text</inputtype>
-            <expression>2</expression>
-            <help>Maximum date, valid date in any English textual datetime description (YYYY-MM-DD for example). Expression Managed can be used (only with YYYY-MM-DD format) value. For dropdown : only the year is restricted if date use variable not in same page.</help>
-            <caption>Maximum date</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-        </attribute>
         <!-- Display Attributes END -->
         <!-- Logic Attributes START -->
         <attribute>
@@ -242,6 +218,30 @@
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>
             <expression></expression>
+        </attribute>
+        <attribute>
+            <name>date_min</name>
+            <category>Logic</category>
+            <sortorder>190</sortorder>
+            <inputtype>text</inputtype>
+            <expression>2</expression>
+            <help>Minimum date, valid date in YYYY-MM-DD format or any English textual datetime description. Expression Managed can be used (only with YYYY-MM-DD format). For dropdown : only the year is restricted if date use variable not in same page.</help>
+            <caption>Minimum date</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+        </attribute>
+        <attribute>
+            <name>date_max</name>
+            <category>Logic</category>
+            <sortorder>191</sortorder>
+            <inputtype>text</inputtype>
+            <expression>2</expression>
+            <help>Maximum date, valid date in any English textual datetime description (YYYY-MM-DD for example). Expression Managed can be used (only with YYYY-MM-DD format) value. For dropdown : only the year is restricted if date use variable not in same page.</help>
+            <caption>Maximum date</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
         </attribute>
         <attribute>
             <name>em_validation_q</name>

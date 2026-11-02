@@ -57,6 +57,12 @@ class LimeExpressionManager
      */
     private static $instance;
     /**
+     * Language of the page the posted answers come from, when the survey language changes in the current request.
+     * Static so that it is not saved with the singleton in the session and is only used for the current request.
+     * @var string|null
+     */
+    private static $postedLanguage = null;
+    /**
      * Implements the recursive descent parser that processes expressions
      * @var ExpressionManager
      */
@@ -857,6 +863,27 @@ class LimeExpressionManager
     public static function getEMlanguage()
     {
         return self::emSessionState()->getLanguage();
+    }
+
+    /**
+     * Set the language of the page the posted answers come from.
+     * Must be called when the survey language changes in the current request, since dates in POST
+     * are still in the date format of the previous language.
+     * @param string|null $lang Language code, null when the posted answers are in the current language
+     * @return void
+     */
+    public static function setPostedLanguage($lang)
+    {
+        self::$postedLanguage = $lang;
+    }
+
+    /**
+     * Get the language of the page the posted answers come from
+     * @return string
+     */
+    public static function getPostedLanguage()
+    {
+        return self::$postedLanguage ?? self::emSessionState()->getLanguage();
     }
 
     /**
@@ -4093,7 +4120,11 @@ class LimeExpressionManager
                 // Same columns as a participant row has in the survey (e.g. participant_id)
                 $attrs = Token::model($surveyid)->tableSchema->columnNames;
             } else {
-                $attrs = array_keys(getTokenFieldsAndNames($surveyid));
+                // Without a table, the attributes come from the survey's saved attribute descriptions
+                $attrs = array_merge(
+                    array_keys(getTokenFieldsAndNames($surveyid)),
+                    array_keys($survey->tokenAttributes ?? [])
+                );
             }
             $blankVal = [
                 'code'       => '',
@@ -8465,6 +8496,30 @@ class LimeExpressionManager
     }
 
     /**
+     * Set the given replacement fields while running $callback, then restore the previous state of these fields
+     * @param array $replacementFields 'replacement' => "fixed value"
+     * @param callable $callback
+     * @return mixed the return value of $callback
+     */
+    public static function withReplacementFields(array $replacementFields, callable $callback)
+    {
+        $LEM =& LimeExpressionManager::singleton();
+        $previousTempVars = array_intersect_key($LEM->tempVars, $replacementFields);
+        self::updateReplacementFields($replacementFields);
+        try {
+            return $callback();
+        } finally {
+            foreach (array_keys($replacementFields) as $key) {
+                if (array_key_exists($key, $previousTempVars)) {
+                    $LEM->tempVars[$key] = $previousTempVars[$key];
+                } else {
+                    unset($LEM->tempVars[$key]);
+                }
+            }
+        }
+    }
+
+    /**
      * Unit test strings containing expressions
      *
      * @return void
@@ -9142,15 +9197,20 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                         case Question::QT_D_DATE: //DATE
                             // Handle Arabic numerals
                             // TODO: Make a wrapper class around date converter, which constructor takes to-lang and from-lang
-                            $lang = self::emSessionState()->getLanguage();
+                            // The date was entered in the format of the page language, which differs from the current one after a language change
+                            $lang = self::getPostedLanguage();
                             $value = self::convertNonLatinNumerics($value, $lang);
                             $value = trim($value);
                             if ($value != "" && $value != "INVALID") {
-                                $aAttributes = $LEM->getQuestionAttributesForEM($LEM->sid, $qid, self::emSessionState()->getLanguage());
+                                $aAttributes = $LEM->getQuestionAttributesForEM($LEM->sid, $qid, $lang);
                                 if (!isset($aAttributes[$qid])) {
                                     $aAttributes[$qid] = [];
                                 }
-                                $aDateFormatData = getDateFormatDataForQID($aAttributes[$qid], $LEM->surveyOptions);
+                                $aDateFormatData = getDateFormatDataForQID(
+                                    $aAttributes[$qid],
+                                    $lang == self::emSessionState()->getLanguage() ? $LEM->surveyOptions : $LEM->sid,
+                                    $lang
+                                );
                                 $dateTime = DateTime::createFromFormat('!' . $aDateFormatData['phpdate'], trim($value));
                                 if ($dateTime === false) {
                                     $message = sprintf(

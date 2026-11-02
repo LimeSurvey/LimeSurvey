@@ -1470,7 +1470,12 @@ class TemplateManifest extends TemplateConfiguration
                         }
                     }
                     self::translateDropdownOptions($dropdownOptionsDom);
-                    $dropdownOptionsString = $dropdownOptions->asXML();
+                    // Only the content of the dropdownoptions element is used: Browsers with the new select parser
+                    // keep the unknown dropdownoptions element inside the select and then don't show the options
+                    $dropdownOptionsString = '';
+                    foreach ($dropdownOptionsDom->childNodes as $childNode) {
+                        $dropdownOptionsString .= $dropdownOptionsDom->ownerDocument->saveXML($childNode);
+                    }
                     $dropdownOptionsArray = [];
                     if (isset($dropdownOptions->optgroup)) {
                         $optgroup = 0;

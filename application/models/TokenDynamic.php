@@ -170,9 +170,10 @@ class TokenDynamic extends LSActiveRecord
      * @param string $SQLemailstatuscondition
      * @param string $SQLremindercountcondition
      * @param string $SQLreminderdelaycondition
+     * @param bool $bOnlyCurrentlyValid If true, skip participants whose validity period does not include the current time
      * @return CActiveRecord[]
      */
-    public function findUninvited($aTokenIds = false, $iMaxEmails = 0, $bEmail = true, $SQLemailstatuscondition = '', $SQLremindercountcondition = '', $SQLreminderdelaycondition = '')
+    public function findUninvited($aTokenIds = false, $iMaxEmails = 0, $bEmail = true, $SQLemailstatuscondition = '', $SQLremindercountcondition = '', $SQLreminderdelaycondition = '', $bOnlyCurrentlyValid = false)
     {
         $command = new CDbCriteria();
         $command->condition = '';
@@ -196,6 +197,10 @@ class TokenDynamic extends LSActiveRecord
 
         if ($SQLreminderdelaycondition) {
             $command->addCondition($SQLreminderdelaycondition);
+        }
+
+        if ($bOnlyCurrentlyValid) {
+            $command->addCondition($this->getCurrentlyValidCondition());
         }
 
         if ($aTokenIds) {
@@ -230,9 +235,10 @@ class TokenDynamic extends LSActiveRecord
      * @param string $SQLemailstatuscondition Additional email status condition
      * @param string $SQLremindercountcondition Reminder count condition
      * @param string $SQLreminderdelaycondition Reminder delay condition
+     * @param bool $bOnlyCurrentlyValid If true, skip participants whose validity period does not include the current time
      * @return array Array of token IDs
      */
-    public function findParticipantIDs($aTokenIds = false, $iMaxEmails = 0, $bEmail = true, $SQLemailstatuscondition = '', $SQLremindercountcondition = '', $SQLreminderdelaycondition = '')
+    public function findParticipantIDs($aTokenIds = false, $iMaxEmails = 0, $bEmail = true, $SQLemailstatuscondition = '', $SQLremindercountcondition = '', $SQLreminderdelaycondition = '', $bOnlyCurrentlyValid = false)
     {
         // Optimized version that only fetches and returns IDs to avoid memory exhaustion (issue #20465)
         // Use CDbCommand for safe SQL generation with proper column quoting
@@ -264,6 +270,10 @@ class TokenDynamic extends LSActiveRecord
             $command->andWhere($SQLreminderdelaycondition);
         }
 
+        if ($bOnlyCurrentlyValid) {
+            $command->andWhere($this->getCurrentlyValidCondition());
+        }
+
         if ($aTokenIds) {
             $ids = array_map('intval', $aTokenIds);
             $placeholders = implode(',', array_fill(0, count($ids), '?'));
@@ -288,6 +298,19 @@ class TokenDynamic extends LSActiveRecord
         $ids = array_column($results, 'tid');
 
         return $ids;
+    }
+
+    /**
+     * Returns an SQL condition matching participants whose validity period (valid from/valid until) includes the current time
+     * @return string
+     */
+    private function getCurrentlyValidCondition()
+    {
+        $db = Yii::app()->db;
+        $now = $db->quoteValue(gmdate('Y-m-d H:i:s'));
+        $validFrom = $db->quoteColumnName('validfrom');
+        $validUntil = $db->quoteColumnName('validuntil');
+        return "($validFrom IS NULL OR $validFrom <= $now) AND ($validUntil IS NULL OR $validUntil >= $now)";
     }
 
     /**

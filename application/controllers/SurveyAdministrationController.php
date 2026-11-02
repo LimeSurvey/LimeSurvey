@@ -583,8 +583,16 @@ class SurveyAdministrationController extends LSBaseController
                 $overrideAdministrator
             );
             if (!$newSurvey) {
-                Yii::app()->setFlashMessage(gT("Survey could not be created."), 'error');
-                $this->redirect(Yii::app()->request->urlReferrer);
+                return Yii::app()->getController()->renderPartial(
+                    '/admin/super/_renderJson',
+                    array(
+                        'data' => array(
+                            'alertData' => $surveyCreator->getErrorMessage(),
+                        )
+                    ),
+                    false,
+                    false
+                );
             }
 
             $iNewSurveyid = $newSurvey->sid;
@@ -679,7 +687,7 @@ class SurveyAdministrationController extends LSBaseController
                 );
                 $this->redirect($redirectUrl);
             } else {
-                App()->setFlashMessage(gT("Survey could not be created."), 'error');
+                App()->setFlashMessage($surveyCreator->getErrorMessage(), 'error');
                 $this->redirect(Yii::app()->request->urlReferrer);
             }
         } else {
@@ -1331,12 +1339,15 @@ class SurveyAdministrationController extends LSBaseController
      *
      * @return string|string[]
      * @throws CException
+     * @throws CHttpException
      */
     public function actionGetAjaxMenuArray($surveyid, $position = '')
     {
         $iSurveyID = sanitize_int($surveyid);
 
-        //todo permission check ?!?
+        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'read')) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
 
         $survey = Survey::model()->findByPk($iSurveyID);
         $menus = $survey->getSurveyMenus($position);
@@ -2018,6 +2029,10 @@ class SurveyAdministrationController extends LSBaseController
             $this->render('surveyActivation/_activation_error', $data);
         } else {
             $warning = (isset($result['warning'])) ? true : false;
+            /* Add potential table warnings */
+            foreach ($result['tableWarnings'] as $tableWarning) {
+                 App()->setFlashMessage($tableWarning, 'error');
+            }
             $allowregister = $result['isAllowRegister']; //todo: where to ask for this one here
 
             $openAccessMode = Yii::app()->request->getPost('openAccessMode', null);
