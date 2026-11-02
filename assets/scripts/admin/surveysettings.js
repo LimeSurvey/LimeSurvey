@@ -194,7 +194,7 @@ if (!window.accessModes) {
         button.disabled = true;
 
         // Build URL using LS.createUrl helper
-        const url = LS.createUrl('surveyAdministration/updateAccessMode');
+        const url = LS.createUrl('admin/surveyAdministration/updateAccessMode');
 
         // Make AJAX request
         fetch(url, {

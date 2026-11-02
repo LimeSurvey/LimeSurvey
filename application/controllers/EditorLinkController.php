@@ -16,13 +16,12 @@
 use LimeSurvey\DI;
 use LimeSurvey\Api\Authentication\AuthenticationTokenSimple;
 
-class EditorLinkController extends LSYii_Controller
+class EditorLinkController extends LSYii_Controller implements AdminControllerInterface
 {
-    const REACT_APP_BASE_PATH = '/editor/#/';
-
     /**
-     * Create react auth key cookie and redirect.
+     * Create react auth key cookie and redirect to the editor page (EditorController) with the hash route.
      *
+     * @param string $action Ignored, the controller has no actions
      * @return void
      */
     public function run($action)
@@ -33,14 +32,8 @@ class EditorLinkController extends LSYii_Controller
 
         $this->setAuthenticationInitCookie();
 
-        $editorUrl = rtrim(
-            App()->request->baseUrl
-            . static::REACT_APP_BASE_PATH,
-            '/'
-        );
-
         $editorRoute = App()->request->getQuery('route');
-        $url = $editorUrl . '/' . $editorRoute;
+        $url = App()->createUrl('editor') . '#/' . $editorRoute;
         $this->redirect($url);
     }
 

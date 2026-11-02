@@ -115,7 +115,7 @@ class SideMenuActiveItemMapper extends WhSelect2
                 'urls' => []
             ],
             'responses' => [
-                'pattern' => '/responses/',
+                'pattern' => '/admin/responses/',
                 'urls' => [
                     App()->createUrl("admin/export/sa/exportresults/surveyid/$this->surveyid"),
                     App()->createUrl("admin/export/sa/exportspss/sid/$this->surveyid"),
@@ -127,7 +127,7 @@ class SideMenuActiveItemMapper extends WhSelect2
                 ]
             ],
             'quotas' => [
-                'pattern' => '/quotas/',
+                'pattern' => '/admin/quotas/',
                 'urls' => []
             ]
         );

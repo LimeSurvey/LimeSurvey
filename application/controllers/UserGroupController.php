@@ -3,7 +3,7 @@
 /**
  * class UserGroupController
  **/
-class UserGroupController extends LSBaseController
+class UserGroupController extends LSBaseController implements AdminControllerInterface
 {
     /**
      * Run filters

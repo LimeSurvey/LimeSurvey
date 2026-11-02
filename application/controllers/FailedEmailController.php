@@ -3,7 +3,7 @@
 /**
  * @psalm-suppress InvalidScalarArgument
  */
-class FailedEmailController extends LSBaseController
+class FailedEmailController extends LSBaseController implements AdminControllerInterface
 {
     /**
      * this is part of renderWrappedTemplate implement in old responses.php

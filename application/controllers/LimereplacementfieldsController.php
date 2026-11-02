@@ -12,7 +12,7 @@
  * See COPYRIGHT.php for copyright notices and details.
  *
  */
-class LimeReplacementFieldsController extends LSBaseController
+class LimeReplacementFieldsController extends LSBaseController implements AdminControllerInterface
 {
     /** @var array<int, int>|null group_order indexed by gid, for the survey of the requested group */
     private $groupOrders = null;

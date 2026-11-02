@@ -5,7 +5,7 @@ use LimeSurvey\Models\Services\SurveySessionState;
 /**
  * class ResponsesController
  **/
-class ResponsesController extends LSBaseController
+class ResponsesController extends LSBaseController implements AdminControllerInterface
 {
     private const SELECT_ALL_HARD_CAP = 5000;
 

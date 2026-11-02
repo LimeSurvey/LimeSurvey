@@ -7,7 +7,7 @@ use LimeSurvey\Models\Services\{
     Exception\QuestionGroupHasConditionsException
 };
 
-class QuestionGroupsAdministrationController extends LSBaseController
+class QuestionGroupsAdministrationController extends LSBaseController implements AdminControllerInterface
 {
     /**
      * It's import to have the accessRules set (security issue).

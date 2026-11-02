@@ -3,7 +3,7 @@
 /**
  * Class IndexController
  */
-class DashboardController extends LSBaseController
+class DashboardController extends LSBaseController implements AdminControllerInterface
 {
     /**
      * responses constructor.

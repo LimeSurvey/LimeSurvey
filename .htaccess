@@ -12,9 +12,8 @@
     RewriteCond %{REQUEST_URI}::$1 ^(.*?/)(.*)::\2$
     RewriteRule ^(.*)$ - [E=BASE:%1]
 
-    # If the request is NOT for the editor folder"
-    RewriteCond %{REQUEST_URI} !/editor/ [NC]
-    # if a directory or a file exists, use it directly
+    # if a file exists, use it directly (the survey editor is served by index.php
+    # under admin/editor, its built assets in editor/build are files)
     RewriteCond %{REQUEST_FILENAME} !-f
     # RewriteCond %{REQUEST_FILENAME} !-d
 

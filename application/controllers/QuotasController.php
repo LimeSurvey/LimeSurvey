@@ -1,6 +1,6 @@
 <?php
 
-class QuotasController extends LSBaseController
+class QuotasController extends LSBaseController implements AdminControllerInterface
 {
     /**
      * @return string[] action filters

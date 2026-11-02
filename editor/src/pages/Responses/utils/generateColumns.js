@@ -104,7 +104,7 @@ export const generateColumns = (surveyQuestions, survey, timingFields = []) => {
           <TooltipContainer tip={row.original.quotaExitName}>
             <a
               href={getSiteUrl(
-                `/quotas/editQuota/surveyid/${survey.sid}?quota_id=${quotaId}`
+                `/admin/quotas/editQuota/surveyid/${survey.sid}?quota_id=${quotaId}`
               )}
               target="_blank"
               rel="noopener noreferrer"

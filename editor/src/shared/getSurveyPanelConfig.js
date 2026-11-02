@@ -39,7 +39,7 @@ export const getSurveyPanelConfig = () => {
       panel: 'permissions',
       icon: SurveyPermissionsIcon,
       getRedirectUrl: (surveyId) =>
-        getSiteUrl('/surveyPermissions/index?surveyid=' + surveyId),
+        getSiteUrl('/admin/surveyPermissions/index?surveyid=' + surveyId),
     },
     translations: {
       label: t('Translations'),
@@ -51,7 +51,7 @@ export const getSurveyPanelConfig = () => {
       ),
       icon: SurveyTranslationIcon,
       getRedirectUrl: (surveyId) =>
-        getSiteUrl(`/quickTranslation/index?surveyid=${surveyId}`),
+        getSiteUrl(`/admin/quickTranslation/index?surveyid=${surveyId}`),
     },
   }
 }
