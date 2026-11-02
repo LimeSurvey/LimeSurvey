@@ -448,6 +448,7 @@ class RenderArrayMultiFlexText extends QuestionBaseRenderer
             'answerwidth'       => $this->answerwidth,
             'formatedRowTotal'  => $formatedRowTotal,
             'odd'               => ($j % 2),
+            'relevanceClass'    => $this->getCurrentRelevecanceClass($myfname),
         ));
     }
 

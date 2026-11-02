@@ -421,8 +421,8 @@ class userstatistics_helper
         } //S - Short free text and T - Long free text
         elseif ($firstletter == "T" || $firstletter == "S") {
             //Short and long text
-            //search for key
-            $fld = $rt;
+            //search for key, $rt starts with the "T" of the statistics convention (e.g. "TQ29460")
+            $fld = substr($rt, 1);
             if (array_key_exists($fld, $fieldmap)) {
                 $fielddata = $fieldmap[$fld];
 
@@ -431,7 +431,7 @@ class userstatistics_helper
                 $qtitle = $nresult->title;
                 $qtype = $nresult->type;
                 $qquestion = flattenText($nresult->questionl10ns[$language]->question);
-                $mfield = $rt;
+                $mfield = $fld;
 
                 //Text questions either have an answer, or they don't. There's no other way of quantising the results.
                 // So, instead of building an array of predefined answers like we do with lists & other types,
@@ -1339,9 +1339,7 @@ class userstatistics_helper
                         // just count the number of 'other' values - that way with failing Javascript the statistics don't get messed up
                         /* This query selects a count of responses where "other" has been selected */
                         foreach ($oResponses as $oResponse) {
-                            $sResponseColumn = $this->getFieldNameFromRawName($al[2], $digitIndex);
-                            $column = substr((string) $sResponseColumn, 0, strlen((string) $sResponseColumn) - 5);
-                            if ($column == '-oth-' && !empty($oResponse->$sResponseColumn)) {
+                            if ($oResponse->$rt === '-oth-') {
                                 $row += 1;
                             }
                         }
@@ -1381,7 +1379,7 @@ class userstatistics_helper
                     elseif ($al[0] == "NoAnswer") {
                         foreach ($oResponses as $oResponse) {
                             $sResponseColumn = $this->getFieldNameFromRawName($al[2], $digitIndex);
-                            if ($oResponse->$sResponseColumn == '') {
+                            if ($oResponse->$sResponseColumn === '') {
                                 $row += 1;
                             }
                         }
@@ -1443,7 +1441,7 @@ class userstatistics_helper
                     //  ==> value is NULL
                     foreach ($oResponses as $oResponse) {
                         $sResponseColumn = $rt;
-                        if ($oResponse->$sResponseColumn == '' || $oResponse->$sResponseColumn == ' ') {
+                        if ($oResponse->$sResponseColumn === '' || $oResponse->$sResponseColumn === ' ') {
                             $row += 1;
                         }
                     }

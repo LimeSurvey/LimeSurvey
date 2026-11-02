@@ -30,7 +30,7 @@
      */
 class PositionWidget extends CWidget
 {
-    public $display             = 'form_group';                                     // What kind of rendering to use. For now, only form_group, to display inside right menu
+    public $display             = 'form_group';                                     // What kind of rendering to use: form_group to display inside right menu, general_option to display inside the question editor general settings
     public $oQuestionGroup      = '';                                               // Which question group the position is related to
     public $oSurvey             = '';
     public $reloadAction        = 'questionAdministration/ajaxLoadPositionWidget';    // In ajax mode, name of the controller/action to call to reload the widget. Update this value if you want to use the widget outside of the Questions controller (that should never happen, and if it happens, then it would be better to update this widget to a Yii module)
@@ -71,8 +71,14 @@ class PositionWidget extends CWidget
         }
     }
 
+    /**
+     * Check if the display mode has a view
+     *
+     * @param string $display
+     * @return bool
+     */
     private function isView($display)
     {
-        return in_array($display, array('form_group', 'ajax_form_group'));
+        return in_array($display, array('form_group', 'ajax_form_group', 'general_option'));
     }
 }

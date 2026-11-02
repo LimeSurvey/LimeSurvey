@@ -5,7 +5,9 @@ import { queryClient } from 'queryClient'
 
 import { useAppState, useBuffer, useErrors, useFocused, useSurvey } from 'hooks'
 import {
+  Entities,
   EntitiesType,
+  Operations,
   OperationsBuffer,
   STATES,
   errorToast,
@@ -78,6 +80,8 @@ export const SurveyLogicProvider = ({ children }) => {
     }
 
     const readyOperations = operationsBuffer.getOperations({ ready: true })
+    // surveyRefreshRequired is only updated on the next render, too late for finallyCallback
+    let deleteRefused = false
 
     const beforeCallback = () => {
       // Clear ready buffer items
@@ -175,6 +179,35 @@ export const SurveyLogicProvider = ({ children }) => {
         mapResult.operationsBuffer
       )
 
+      // A refused delete already removed the item locally: Drop the operation
+      // and reload the survey to show the item again.
+      const refusedDeletes = exceptionErrors.filter(
+        (error) => error.op === Operations.delete
+      )
+      refusedDeletes.forEach((error) => {
+        mapResult.operationsBuffer.removeOperation(
+          error.id,
+          error.op,
+          error.entity
+        )
+      })
+      if (refusedDeletes.length) {
+        deleteRefused = true
+        setSurveyRefreshRequired(true)
+      }
+
+      // A refused survey status change (e.g. activation blocked by a plugin) is
+      // not retried automatically: Drop it, so the user can trigger it again.
+      exceptionErrors
+        .filter((error) => error.entity === Entities.surveyStatus)
+        .forEach((error) => {
+          mapResult.operationsBuffer.removeOperation(
+            error.id,
+            error.op,
+            error.entity
+          )
+        })
+
       update({ ...mapResult.survey })
       refetchQuestionsFieldNamesMap()
       setBuffer(mapResult.operationsBuffer.getOperations(), RandomNumber())
@@ -192,7 +225,10 @@ export const SurveyLogicProvider = ({ children }) => {
         queryKey: [STATES.SURVEY_RESPONSES, surveyId],
       })
 
-      if (!result.operationsApplied) {
+      // Specific errors are already shown as toasts, see SurveyWorkspace
+      const hasErrorMessages =
+        result.validationErrors?.length || result.exceptionErrors?.length
+      if (!result.operationsApplied && !hasErrorMessages) {
         errorToast(
           t(
             'Sorry, we encountered an issue while saving the changes. Please try refreshing the page!'
@@ -226,7 +262,10 @@ export const SurveyLogicProvider = ({ children }) => {
       const pendingOperations = new OperationsBuffer(
         queryClient.getQueryData([STATES.BUFFER])
       )
-      if (pendingOperations.isEmpty() && surveyRefreshRequired) {
+      if (
+        pendingOperations.isEmpty() &&
+        (surveyRefreshRequired || deleteRefused)
+      ) {
         fetchSurvey(surveyId)
         setSurveyRefreshRequired(false)
       }

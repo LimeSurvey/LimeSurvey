@@ -744,7 +744,9 @@ function failedEmailSuccess($id)
  *
  * "Unexpected error"
  *
- * Will send e-mail to adminemail if defined.
+ * Will send e-mail to adminemail if defined, including the response ID if the response was already created.
+ *
+ * The e-mail is not sent if the config setting send_error_saving_results_email is false.
  *
  * @param string $errormsg
  * @param string $query  Will be included in sent email
@@ -763,12 +765,16 @@ function submitfailed($errormsg = '', $query = null)
     . "</p>";
     if ($thissurvey['adminemail']) {
         $completed .= "<p>";
-        $completed .= gT("Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point.");
+        $completed .= gT("Please don't continue and contact the survey administrator.");
         $completed .= "</p>";
         if (Yii::app()->getConfig('debug') > 0 && !empty($errormsg)) {
             $completed .= 'Error message: ' . htmlspecialchars($errormsg) . '<br />';
         }
         $email = sprintf(gT("An error occurred saving a response to survey %s", "unescaped"), $thissurvey['name'] . " - $surveyid\n\n");
+        // The response ID is only known if the response row was created before
+        if (!empty($_SESSION['responses_' . $surveyid]['srid'])) {
+            $email .= sprintf(gT("Response ID: %s", "unescaped"), $_SESSION['responses_' . $surveyid]['srid']) . "\n\n";
+        }
         $email .= gT("DATA TO BE ENTERED", "unescaped") . ":\n";
         foreach ($_SESSION['responses_' . $surveyid]['insertarray'] as $value) {
             if (isset($_SESSION['responses_' . $surveyid][$value])) {
@@ -786,13 +792,15 @@ function submitfailed($errormsg = '', $query = null)
                . $errormsg . "\n\n";
         }
 
-        $mailer = new \LimeMailer();
-        $mailer->emailType = "errorsavingresults";
-        $mailer->Subject = gT("Error saving results", "unescaped");
-        $mailer->Body = $email;
-        $mailer->setSurvey($surveyid);
-        $mailer->addAddress($thissurvey['adminemail']);
-        $mailer->sendMessage();
+        if (Yii::app()->getConfig('send_error_saving_results_email')) {
+            $mailer = new \LimeMailer();
+            $mailer->emailType = "errorsavingresults";
+            $mailer->Subject = gT("Error saving results", "unescaped");
+            $mailer->Body = $email;
+            $mailer->setSurvey($surveyid);
+            $mailer->addAddress($thissurvey['adminemail']);
+            $mailer->sendMessage();
+        }
     } else {
         $completed .= "<a href='javascript:location.reload()'>" . gT("Try to submit again") . "</a>\n";
     }
@@ -1440,10 +1448,11 @@ function resetAllSessionVariables($surveyid)
 /**
  * The number of "pages" that will be presented in this survey
  * The number of pages to be presented will differ depending on the survey format
- * Set totalsteps in session
+ * Set totalsteps, totalVisibleSteps and (group by group) hiddenGroupIds in session
  * @param int $surveyid
  * @param array $thissurvey
  * @param integer $totalquestions
+ * @param integer $totalVisibleQuestions Number of questions without "Always hide this question"
  * @return void
  */
 function setTotalSteps($surveyid, array $thissurvey, $totalquestions, $totalVisibleQuestions)
@@ -1455,7 +1464,13 @@ function setTotalSteps($surveyid, array $thissurvey, $totalquestions, $totalVisi
 
         case "G":
             if (isset($_SESSION['responses_' . $surveyid]['grouplist'])) {
-                $_SESSION['responses_' . $surveyid]['totalsteps'] = count($_SESSION['responses_' . $surveyid]['grouplist']);
+                $groupIds = array_map('intval', array_column($_SESSION['responses_' . $surveyid]['grouplist'], 'gid'));
+                // Groups with only always hidden questions are never shown: Don't count them for the progress bar
+                $visibleGroupIds = Survey::model()->findByPk($surveyid)->getGroupIdsWithVisibleQuestions();
+                $hiddenGroupIds = array_values(array_diff($groupIds, $visibleGroupIds));
+                $_SESSION['responses_' . $surveyid]['totalsteps'] = count($groupIds);
+                $_SESSION['responses_' . $surveyid]['totalVisibleSteps'] = count($groupIds) - count($hiddenGroupIds);
+                $_SESSION['responses_' . $surveyid]['hiddenGroupIds'] = $hiddenGroupIds;
             }
             break;
 

@@ -959,8 +959,10 @@ function LEMeq(a,b)
 /**
  * Return the value for data element jsName, treating it as blank if its question is irrelevant on the current page.
  * Also convert the string 'false' to '' to cope with a JavaScript type casting issue
+ * @param {string} alias
+ * @param {boolean} keepText Return a text answer as entered instead of converting it to a number (e.g. for regexMatch, to keep '+123' or '1.10')
  */
-function LEMval(alias)
+function LEMval(alias, keepText)
 {
     // first find out whether it is using a suffix
     var str = new String(alias);
@@ -1055,10 +1057,10 @@ function LEMval(alias)
                 case 'F': //ARRAY (Flexible) - Row Format
                 case 'R': //RANKING STYLE
                     if (attr.type == 'O' && varName.match(/comment$/)) {
-                        answer = htmlspecialchars(value);
+                        answer = htmlSpecialCharsUserValue(value);
                     }
                     else if ((attr.type == 'L' || attr.type == '!') && varName.match(/_other$/)) {
-                        answer = htmlspecialchars(value);
+                        answer = htmlSpecialCharsUserValue(value);
                     } else if (attr.type == 'R') {
                         if (value) {
                             let context = document.getElementById(whichJsName);
@@ -1109,7 +1111,7 @@ function LEMval(alias)
                 case 'I': //Language Question
                 case '|': //File Upload
                 case 'X': //BOILERPLATE QUESTION
-                        shown = htmlspecialchars(value);
+                        shown = htmlSpecialCharsUserValue(value);
                     break;
                 case 'M': //Multiple choice checkbox
                 case 'P': //Multiple choice with comments checkbox + text
@@ -1123,7 +1125,7 @@ function LEMval(alias)
                                 shown = parseFloat(numtest.valueOf());
                             }
                             catch(e) {
-                                shown = htmlspecialchars(value);
+                                shown = htmlSpecialCharsUserValue(value);
                             }
                         }
                         else {
@@ -1177,10 +1179,10 @@ function LEMval(alias)
                 case 'F': //ARRAY (Flexible) - Row Format
                 case 'R': //RANKING STYLE
                     if (attr.type == 'O' && varName.match(/comment$/)) {
-                        value = htmlspecialchars(value);
+                        value = htmlSpecialCharsUserValue(value);
                     }
                     else if ((attr.type == 'L' || attr.type == '!') && varName.match(/_other$/)) {
-                        value = htmlspecialchars(value);
+                        value = htmlSpecialCharsUserValue(value);
                     }
                     break;
                 case 'N': //NUMERICAL QUESTION TYPE
@@ -1193,12 +1195,12 @@ function LEMval(alias)
                 case 'D': //DATE
                 case '*': //Equation
                 case '|': //File Upload (unsure need to be encoded ?)
-                        value = htmlspecialchars(value);
+                        value = htmlSpecialCharsUserValue(value);
                     break;
                 case 'M': //Multiple choice checkbox
                 case 'P': //Multiple choice with comments checkbox + text
                     if (attr.type == 'P' && varName.match(/comment$/)) {
-                        value = htmlspecialchars(value);
+                        value = htmlSpecialCharsUserValue(value);
                     }
                     break;
                 case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
@@ -1307,7 +1309,7 @@ function LEMval(alias)
                 }
                 return value;
             }
-            else if (isNaN(value)) {
+            else if (isNaN(value) || keepText) {
                 return value;
             }
             else if(!isNaN(parseFloat(value)) && isFinite(value))
@@ -1661,6 +1663,8 @@ function html_entity_decode (string, quote_style) {
         tmp_str = '',
         entity = '';
     tmp_str = string.toString();
+    // { and } as encoded by htmlSpecialCharsUserValue() (before &amp;)
+    tmp_str = tmp_str.split('&#123;').join('{').split('&#125;').join('}');
 
     if (false === (hash_map = this.get_html_translation_table('HTML_ENTITIES', quote_style))) {
         return false;
@@ -1889,6 +1893,20 @@ function get_html_translation_table (table, quote_style) {
     }
 
     return hash_map;
+}
+
+/**
+ * Encode a user entered value the same way as LimeExpressionManager::htmlSpecialCharsUserValue() in PHP,
+ * so that expressions give the same result on the current page and on later pages
+ * @param {string} value
+ * @return {string}
+ */
+function htmlSpecialCharsUserValue(value)
+{
+    // <, > and &
+    value = htmlspecialchars(value, 'ENT_NOQUOTES');
+    // { and } (after &)
+    return value.replace(/{/g, '&#123;').replace(/}/g, '&#125;');
 }
 
 function htmlspecialchars (string, quote_style, charset, double_encode) {

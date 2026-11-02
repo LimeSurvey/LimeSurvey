@@ -39,7 +39,7 @@ class SurveyAdministrationController extends LSBaseController
                     'insert',
                     'listsurveys',
                     'newSurvey',
-                    'regenerateQuestionCode',
+                    'regenerateQuestionCodes',
                     'renderItemsSelected',
                     'applythemeoptions',
                     'changeMultipleSurveyGroup',
@@ -378,17 +378,18 @@ class SurveyAdministrationController extends LSBaseController
     }
 
     /**
-     * Regeerates the question code
+     * Regenerates the question codes
      * Automatically renumbers the "question codes" so that they follow
      * a methodical numbering method.
+     * Only accepted as POST request (sent by the confirmation dialog of the survey tools menu),
+     * with the POST parameter 'subaction' set to 'straight' or 'bygroup'.
      *
      * @return void
-     *
      */
     public function actionRegenerateQuestionCodes()
     {
         $iSurveyID = $this->getSurveyIdFromGetRequest();
-        $sSubAction = Yii::app()->request->getParam('subaction');
+        $sSubAction = Yii::app()->request->getPost('subaction');
 
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update')) {
             Yii::app()->setFlashMessage(gT("You do not have permission to access this page."), 'error');
@@ -400,8 +401,8 @@ class SurveyAdministrationController extends LSBaseController
             $this->redirect(array('surveyAdministration/view', 'surveyid' => $iSurveyID));
         }
 
-        //check subaction
-        if (!($sSubAction === 'straight' || $sSubAction === 'bygroup')) {
+        //check request method and subaction
+        if (!Yii::app()->request->isPostRequest || !($sSubAction === 'straight' || $sSubAction === 'bygroup')) {
             Yii::app()->setFlashMessage(gT("Invalid parameters."), 'error');
             $this->redirect(array('surveyAdministration/view', 'surveyid' => $iSurveyID));
         }
@@ -582,8 +583,16 @@ class SurveyAdministrationController extends LSBaseController
                 $overrideAdministrator
             );
             if (!$newSurvey) {
-                Yii::app()->setFlashMessage(gT("Survey could not be created."), 'error');
-                $this->redirect(Yii::app()->request->urlReferrer);
+                return Yii::app()->getController()->renderPartial(
+                    '/admin/super/_renderJson',
+                    array(
+                        'data' => array(
+                            'alertData' => $surveyCreator->getErrorMessage(),
+                        )
+                    ),
+                    false,
+                    false
+                );
             }
 
             $iNewSurveyid = $newSurvey->sid;
@@ -678,7 +687,7 @@ class SurveyAdministrationController extends LSBaseController
                 );
                 $this->redirect($redirectUrl);
             } else {
-                App()->setFlashMessage(gT("Survey could not be created."), 'error');
+                App()->setFlashMessage($surveyCreator->getErrorMessage(), 'error');
                 $this->redirect(Yii::app()->request->urlReferrer);
             }
         } else {
@@ -2017,6 +2026,10 @@ class SurveyAdministrationController extends LSBaseController
             $this->render('surveyActivation/_activation_error', $data);
         } else {
             $warning = (isset($result['warning'])) ? true : false;
+            /* Add potential table warnings */
+            foreach ($result['tableWarnings'] as $tableWarning) {
+                 App()->setFlashMessage($tableWarning, 'error');
+            }
             $allowregister = $result['isAllowRegister']; //todo: where to ask for this one here
 
             $openAccessMode = Yii::app()->request->getPost('openAccessMode', null);
@@ -3310,10 +3323,10 @@ class SurveyAdministrationController extends LSBaseController
         if ($activated == "N" && $sumcount3 == 0) {
             $aData['warnings'][] = gT("Survey cannot be activated yet.");
             if ($sumcount2 == 0 && Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'create')) {
-                $aData['warnings'][] = "<span class='statusentryhighlight'>[" . gT("You need to add question groups") . "]</span>";
+                $aData['warnings'][] = gT("You need to add question groups");
             }
             if ($sumcount3 == 0 && Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'create')) {
-                $aData['warnings'][] = "<span class='statusentryhighlight'>" . gT("You need to add questions") . "</span>";
+                $aData['warnings'][] = gT("You need to add questions");
             }
         }
         $aData['hints'] = $surveysummary2;
@@ -3466,7 +3479,7 @@ class SurveyAdministrationController extends LSBaseController
 
         foreach ($survey->allLanguages as $i => $sLang) {
             $aLanguageData = $this->getGeneralTemplateData($survey);
-            // this one is created to get the right default texts fo each language
+            // this one is created to get the right default texts for each language
             Yii::app()->loadHelper('database');
             Yii::app()->loadHelper('surveytranslator');
 

@@ -177,7 +177,7 @@ class CheckIntegrity extends SurveyCommonAction
                     'current' => (string) ini_get('memory_limit'),
                     'recommended' => $recommendedMemoryLimit . 'M',
                     // -1 means unlimited
-                    'ok' => $memoryLimit == -1 || $memoryLimit >= $recommendedMemoryLimit,
+                    'ok' => ini_get('memory_limit') == -1 || $memoryLimit >= $recommendedMemoryLimit,
                     'hint' => gT("Imports, exports and statistics of large surveys may fail."),
                 ],
                 [

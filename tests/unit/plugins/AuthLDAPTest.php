@@ -59,7 +59,6 @@ class AuthLDAPTest extends TestBaseClass
     private function callPrivate($method, array $args)
     {
         $reflectionMethod = new \ReflectionMethod(self::$plugin, $method);
-        $reflectionMethod->setAccessible(true);
         return $reflectionMethod->invokeArgs(self::$plugin, $args);
     }
 
@@ -86,6 +85,23 @@ class AuthLDAPTest extends TestBaseClass
         $this->assertNull($newUserId);
         $this->assertSame(\AuthLDAP::ERROR_ALREADY_EXISTING_USER, $event->get('errorCode'));
         $this->assertSame(1, (int) \User::model()->count('LOWER(users_name) = :name', [':name' => 'authldapcasetest']));
+    }
+
+    /**
+     * Users added in user management are only created by AuthLDAP when they are of LDAP type
+     */
+    public function testCreateNewUserOnlyHandlesLdapUserType()
+    {
+        $event = new \PluginEvent('createNewUser');
+        $event->set('preCollectedUserArray', ['users_name' => 'authldapcasetest', 'user_type' => 'DB']);
+        self::$plugin->setEvent($event)->createNewUser();
+        $this->assertNull($event->get('errorCode'));
+
+        // Fails without an LDAP server because the username already exists, which shows it was handled
+        $event = new \PluginEvent('createNewUser');
+        $event->set('preCollectedUserArray', ['users_name' => 'authldapcasetest', 'user_type' => 'LDAP']);
+        self::$plugin->setEvent($event)->createNewUser();
+        $this->assertSame(\AuthLDAP::ERROR_ALREADY_EXISTING_USER, $event->get('errorCode'));
     }
 
     /**

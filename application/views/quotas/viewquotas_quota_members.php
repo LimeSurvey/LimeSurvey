@@ -33,7 +33,7 @@ $icon = $quotaActions[$oQuota->action]['icon'] ?? '';
         <div class="float-end small">
             <span><span class="<?= $icon ?>"></span> <?= $tooltip ?></span>
             <?php if ($oQuota->autoload_url == 1) :?>
-                <span><span class=" ri-external-link-fill"></span> <?php echo gT('Autoload URL:') . ' ' . htmlentities((string) $oQuota->mainLanguagesetting->quotals_url);?></span>
+                <span><span class=" ri-external-link-fill"></span> <?php echo gT('Autoload URL:') . ' ' . htmlentities((string) $oQuota->mainLanguagesetting?->quotals_url);?></span>
             <?php endif;?>
         </div>
         <?php echo CHtml::encode($oQuota->name) ;?>

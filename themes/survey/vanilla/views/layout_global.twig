@@ -95,6 +95,9 @@
             <div id="{{ aSurveyInfo.id.dynamicreload }}">
             {% block body %}
 
+                {# Skip link for keyboard users: Only visible when focused #}
+                <a href="#{{ aSurveyInfo.id.outerframe }}" class="skip-link visually-hidden-focusable">{{ gT("Skip to main content") }}</a>
+
                 {# Bootstrap Navigation Bar: the top menu #}
                 {% block nav_bar %}
                     {{ include('./subviews/header/nav_bar.twig') }}

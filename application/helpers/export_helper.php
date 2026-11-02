@@ -987,8 +987,9 @@ function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude = array())
 
         //1Quota members
         $query = "SELECT {{quota_members}}.*
-        FROM {{quota_members}}
-        WHERE {{quota_members}}.sid=$iSurveyID";
+        FROM {{quota_members}}, {{quota}}
+        WHERE {{quota}}.id = {{quota_members}}.quota_id
+        AND {{quota_members}}.sid=$iSurveyID";
         buildXMLFromQuery($xmlwriter, $query);
 
         //Quota languagesettings
@@ -1897,7 +1898,7 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false, $EMreplace = 
                         //multi-flexi array text
 
                         //foreach question where scale_id = 1 this is a textbox
-                        quexml_create_multi($question, $qid, $sgq . "_S" . $SRow['qid'], $iResponseID, $fieldmap, 1, array('f' => 'text', 'len' => quexml_get_lengthth($qid, 'maximum_chars', 10), 'lab' => ''), false, 1, false, $EMreplace);
+                        quexml_create_multi($question, $qid, $sgq . "_S" . $SRow['qid'], $iResponseID, $fieldmap, 1, array('f' => 'text', 'len' => quexml_get_lengthth($qid, 'maximum_chars', 24), 'lab' => ''), false, 1, false, $EMreplace);
                     }
                     $section->appendChild($question);
                 }
@@ -1996,7 +1997,7 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false, $EMreplace = 
                         break;
                     case "Q": //Multiple short text
                         quexml_create_subQuestions($question, $qid, $sgq, $iResponseID, $fieldmap, false, false, false, $EMreplace);
-                        $response->appendChild(QueXMLCreateFree("text", quexml_get_lengthth($qid, "maximum_chars", "10"), ""));
+                        $response->appendChild(QueXMLCreateFree("text", quexml_get_lengthth($qid, "maximum_chars", "24"), ""));
                         $question->appendChild($response);
                         break;
                     case "K": //MULTIPLE NUMERICAL

@@ -413,7 +413,7 @@ class questionHelper
         );
 
         self::$attributes["statistics_showgraph"] = array(
-            'types' => '15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|*',
+            'types' => '15ABCDEFGHILMOPQRSTUWXYZ!:;|*',
             'category' => gT('Statistics'),
             'inputtype' => 'switch',
             'sortorder' => 101,
@@ -424,7 +424,7 @@ class questionHelper
         );
 
         self::$attributes["statistics_graphtype"] = array(
-            "types" => '15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|*',
+            "types" => '15ABCDEFGHILMOPQRSTUWXYZ!:;|*',
             'category' => gT('Statistics'),
             'inputtype' => 'singleselect',
             'sortorder' => 102,
@@ -887,7 +887,7 @@ class questionHelper
             'category' => gT('Display'),
             'sortorder' => 101,
             'inputtype' => 'text',
-            "help" => gT('Semicolon-separated list of codes that keep their original database position when items are randomized.'),
+            "help" => gT('Semicolon-separated list of codes that keep their original database position when items are randomized or sorted alphabetically.'),
             "caption" => gT('Keep codes at original positions')
         );
 
@@ -1540,7 +1540,9 @@ class questionHelper
             'sortorder' => 128,
             "inputtype" => "integer",
             'default' => 10240,
-            "help" => sprintf(gT("The participant cannot upload a single file larger than this size. Server configuration allow a maximum file size of %s KB."), getMaximumFileUploadSize() / 1024),
+            "help" => isFileUploadSizeLimited()
+                ? sprintf(gT("The participant cannot upload a single file larger than this size. Server configuration allow a maximum file size of %s KB."), getMaximumFileUploadSize() / 1024)
+                : gT("The participant cannot upload a single file larger than this size."),
             "caption" => gT("Maximum file size allowed (in KB)")
         );
 

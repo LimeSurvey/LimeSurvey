@@ -208,6 +208,8 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
 
         $survey['attributeDescriptions'] = $data->getDecodedAttributedescriptions();
 
+        $survey['participantEncryptedAttributes'] = $data->getAllEncryptedAttributes($data->sid, 'TokenDynamic');
+
         $survey['themesettings'] = [];
         $survey['templatePreview'] = '';
         $this->transformThemeSettings($survey['themesettings'], $survey['templatePreview'], $data);

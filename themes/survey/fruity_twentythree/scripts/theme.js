@@ -410,8 +410,22 @@ var TemplateCoreClass = exports.TemplateCoreClass = function TemplateCoreClass()
         text = startPopups.join("");
       }
       if (text) {
-        $("#bootstrap-alert-box-modal .modal-header .modal-title").text(title || "");
-        $("#bootstrap-alert-box-modal .modal-body").html(text);
+        var $modal = $("#bootstrap-alert-box-modal");
+        var $title = $modal.find(".modal-header .modal-title");
+        var $body = $modal.find(".modal-body");
+        $title.text(title || "");
+        $body.html(text);
+        /* Without a title, the message gives the dialog its name for screen readers */
+        if ($body.attr('id')) {
+          if (title && $title.attr('id')) {
+            $modal.attr({
+              'aria-labelledby': $title.attr('id'),
+              'aria-describedby': $body.attr('id')
+            });
+          } else {
+            $modal.attr('aria-labelledby', $body.attr('id')).removeAttr('aria-describedby');
+          }
+        }
         var modal = new bootstrap.Modal(document.getElementById('bootstrap-alert-box-modal'), {});
         modal.show();
       }
@@ -1109,6 +1123,13 @@ var NavbarScripts = exports.NavbarScripts = function NavbarScripts() {
       //replace menu content with submenu content
       replaceContent(getContentByElementId(openedSubmenuId), 'main-dropdown');
       focusMenuItem('.back-link');
+    });
+    // The submenu openers are links with role="button", which browsers only activate with Enter, so Space has to open them like a button
+    $(document).on('keydown', '[data-navtargetid]', function (event) {
+      if (event.key === ' ') {
+        event.preventDefault();
+        $(this).trigger('click');
+      }
     });
     $(document).on('click', '.back-link', function (event) {
       event.preventDefault();
