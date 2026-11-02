@@ -212,6 +212,39 @@ class AdminUrlPrefixTest extends TestBaseClass
     }
 
     /**
+     * A survey alias named like an administration controller is served at the unprefixed URL
+     */
+    public function testSurveyAliasWinsOverUnprefixedAdminController()
+    {
+        if (!$this->usesPathFormat()) {
+            $this->assertTrue(true);
+            return;
+        }
+        $alias = 'quotas';
+        $this->assertNull(
+            \SurveyLanguageSetting::model()->findByAttributes(['surveyls_alias' => $alias]),
+            'Another survey already uses the alias'
+        );
+        self::importSurvey(self::$surveysFolder . '/limesurvey_survey_718593_list_with_comment.lss');
+        $languageSetting = self::$testSurvey->languagesettings[self::$testSurvey->language];
+        $languageSetting->surveyls_alias = $alias;
+        $this->assertTrue($languageSetting->save(false), 'Could not set the alias');
+        try {
+            $response = $this->request('GET', '/' . $alias);
+            $this->assertSame(200, $response['status'], 'The survey is served instead of the quotas controller');
+            $this->assertStringContainsString($languageSetting->surveyls_title, $response['body']);
+
+            $response = $this->request('GET', '/admin/' . $alias);
+            $this->assertSame(302, $response['status'], 'The prefixed URL still reaches the controller');
+            $this->assertStringContainsString('/admin/authentication/sa/login', $response['location']);
+        } finally {
+            \Yii::app()->session['loginID'] = 1;
+            self::$testSurvey->delete();
+            self::$testSurvey = null;
+        }
+    }
+
+    /**
      * The legacy AdminController and the public survey controller are not affected
      */
     public function testOtherControllersAreNotTouched()
