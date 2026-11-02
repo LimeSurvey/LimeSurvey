@@ -2805,7 +2805,8 @@ class remotecontrol_handle
             if ($sUsername != null) {
                 $aUserData = User::model()->findByAttributes(array('users_name' => (string) $sUsername));
                 if (!isset($aUserData)) {
-                    return array('status' => 'Invalid user');
+                    // Same answer as for an existing user without surveys, to not reveal which usernames exist
+                    return array('status' => 'No surveys found');
                 } else {
                     $sUid = $aUserData->attributes['uid'];
                 }

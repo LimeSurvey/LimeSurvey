@@ -264,6 +264,56 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
         self::assertTrue($oSurveyPermissions->saveUserGroupPermissions((int)self::$userGroupId, $permissions));
     }
 
+    /**
+     * A user managing survey permissions can only give or remove the permissions
+     * they hold, unknown permissions are ignored.
+     */
+    public function testSaveUserPermissionsLimitedToCurrentUserPermissions()
+    {
+        $surveyId = self::$testSurvey->sid;
+        $editorId = self::$userIds[1];
+        $targetId = self::$userIds[2];
+        $oSurveyPermissions = new SurveyPermissions(self::$testSurvey, true);
+        self::assertTrue($oSurveyPermissions->saveUserPermissions($targetId, [
+            'responses' => ['read' => 1, 'export' => 1],
+        ]));
+        $oSurveyPermissions->deleteUserPermissions($editorId);
+        $editorPermissions = [
+            'survey' => ['read_p' => 1],
+            'surveysecurity' => ['read_p' => 1, 'update_p' => 1],
+            'tokens' => ['read_p' => 1],
+        ];
+        foreach ($editorPermissions as $permission => $cruds) {
+            \Permission::model()->insertSomeRecords(array_merge([
+                'entity_id' => $surveyId,
+                'entity' => 'survey',
+                'uid' => $editorId,
+                'permission' => $permission,
+            ], $cruds));
+        }
+
+        \Yii::app()->session['loginID'] = $editorId;
+        try {
+            self::assertTrue($oSurveyPermissions->saveUserPermissions($targetId, [
+                'tokens' => ['read' => 1],
+                'surveyactivation' => ['update' => 1],
+                'unknownpermission' => ['read' => 1],
+            ]));
+        } finally {
+            \Yii::app()->session['loginID'] = 1;
+        }
+
+        $responses = $oSurveyPermissions->getUsersSurveyPermissionEntity($targetId, 'responses');
+        self::assertEquals(1, $responses->read_p, 'Permission the editor does not hold must be kept.');
+        self::assertEquals(1, $responses->export_p, 'Permission the editor does not hold must be kept.');
+        self::assertEquals(1, $oSurveyPermissions->getUsersSurveyPermissionEntity($targetId, 'tokens')->read_p);
+        self::assertEquals(1, $oSurveyPermissions->getUsersSurveyPermissionEntity($targetId, 'survey')->read_p);
+        self::assertNull($oSurveyPermissions->getUsersSurveyPermissionEntity($targetId, 'surveyactivation'));
+        self::assertNull($oSurveyPermissions->getUsersSurveyPermissionEntity($targetId, 'unknownpermission'));
+        $oSurveyPermissions->deleteUserPermissions($editorId);
+        $oSurveyPermissions->deleteUserPermissions($targetId);
+    }
+
     public function testDeleteUsersSurveyPermissions()
     {
         $oSurveyPermissions = new SurveyPermissions(self::$testSurvey, true);

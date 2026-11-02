@@ -171,10 +171,24 @@ var UserManagement = function () {
     var wirePermissions = function () {
         var tableObject = $('#UserManagement--userpermissions-table');
 
+        var updateRowGeneralState = function (row) {
+            if (row.find('.specific-settings-block input:checked').size() == row.find('.specific-settings-block input').size()) {
+                row.find('.general-row-selector').prop('checked', true);
+                row.find('.general-row-selector').removeClass('incomplete-selection');
+            } else if (row.find('.specific-settings-block input:checked').size() == 0) {
+                row.find('.general-row-selector').prop('checked', false);
+                row.find('.general-row-selector').removeClass('incomplete-selection');
+            } else {
+                row.find('.general-row-selector').prop('checked', true);
+                row.find('.general-row-selector').addClass('incomplete-selection');
+            }
+        };
+
         $(".general-row-selector").on('click', function () {
-            $(this).removeClass('incomplete-selection');
-            bChecked = this.checked;
-            $(this).closest('tr').find('input').prop('checked', bChecked);
+            var row = $(this).closest('tr');
+            // Permissions the current user may not grant are disabled and keep their state
+            row.find('.specific-settings-block input:checkbox:not(:disabled)').prop('checked', this.checked);
+            updateRowGeneralState(row);
         });
 
         $('.specific-permission-selector').on('click', function () {
@@ -195,15 +209,12 @@ var UserManagement = function () {
         })
 
         $('#UserManagement--userpermissions-table tr').each(function () {
-            if ($(this).find('.specific-settings-block input:checked').size() == $(this).closest('tr').find('.specific-settings-block input').size()) {
-                $(this).find('.general-row-selector').prop('checked', true);
-                $(this).find('.general-row-selector').removeClass('incomplete-selection');
-            } else if ($(this).find('.specific-settings-block input:checked').size() == 0) {
-                $(this).find('.general-row-selector').prop('checked', false);
-            } else {
-                $(this).find('.general-row-selector').prop('checked', true);
-                $(this).find('.general-row-selector').addClass('incomplete-selection');
+            var row = $(this);
+            // Nothing to change in this row: The row selector would only pretend to
+            if (!row.find('.specific-settings-block input:checkbox:not(:disabled)').length) {
+                row.find('.general-row-selector').prop('disabled', true);
             }
+            updateRowGeneralState(row);
         });
 
         $('#permission-modal-exitForm').on('click', function(e){
