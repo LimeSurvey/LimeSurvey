@@ -170,6 +170,7 @@ class QuestionGroupService
      * @return int|null number of deleted rows
      * @throws PermissionDeniedException
      * @throws QuestionGroupHasConditionsException if questions of other groups have conditions on this group
+     * @throws NotFoundException if the group does not exist in this survey
      */
     public function deleteGroup(int $questionGroupId, int $surveyId)
     {
@@ -179,6 +180,10 @@ class QuestionGroupService
             throw new QuestionGroupHasConditionsException(
                 gT('Group can not be deleted, because of depending conditions')
             );
+        }
+        // Checked before the conditions are reverted, they would not be upgraded again otherwise
+        if (!$this->modelQuestionGroup->exists('gid = :gid AND sid = :sid', [':gid' => $questionGroupId, ':sid' => $surveyId])) {
+            throw new NotFoundException(gT('Group not found'));
         }
         $this->proxyExpressionManager->revertUpgradeConditionsToRelevance($surveyId);
 
