@@ -411,6 +411,7 @@ class remotecontrol_handle
      *     * active
      *     * language
      *     * additional_languages
+     *     * owner_id, unless the current user is the owner or a superadmin
      * * If survey is active
      *     * anonymized
      *     * datestamp
@@ -439,7 +440,21 @@ class remotecontrol_handle
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update')) {
                 // Remove fields that may not be modified
                 unset($aSurveyData['sid']);
-                // unset($aSurveyData['owner_id']);
+                // The owner can only be changed by the owner or a superadmin, and only to a user they can see, like in the survey settings
+                if (isset($aSurveyData['owner_id'])) {
+                    // Only a real user ID: Loose comparisons would let e.g. true match any user
+                    $ownerId = $aSurveyData['owner_id'];
+                    $ownerId = (is_int($ownerId) || (is_string($ownerId) && ctype_digit($ownerId))) ? (int) $ownerId : false;
+                    if (
+                        $ownerId === false
+                        || !($oSurvey->owner_id == Yii::app()->session['loginID'] || Permission::model()->hasGlobalPermission('superadmin', 'read'))
+                        || !in_array($ownerId, array_map('intval', getUserList('onlyuidarray')), true)
+                    ) {
+                        unset($aSurveyData['owner_id']);
+                    } else {
+                        $aSurveyData['owner_id'] = $ownerId;
+                    }
+                }
                 unset($aSurveyData['active']);
                 unset($aSurveyData['language']);
                 unset($aSurveyData['additional_languages']);
@@ -1329,6 +1344,7 @@ class remotecontrol_handle
      * Some attribute can not be set
      * * sid
      * * gid
+     * * in the questiongroupl10ns data: everything but group_name and description
      *
      * @access public
      * @param string $sSessionKey Auth credentials
@@ -1362,7 +1378,8 @@ class remotecontrol_handle
 
                 // Process L10n data
                 if (!empty($aGroupData['questiongroupl10ns']) && is_array($aGroupData['questiongroupl10ns'])) {
-                    $aL10nDestinationFields = array_flip(QuestionGroupL10n::model()->tableSchema->columnNames);
+                    // Only the texts can be set: The gid and language must not move the row to another group
+                    $aL10nDestinationFields = array_flip(['group_name', 'description']);
                     foreach ($aGroupData['questiongroupl10ns'] as $language => $aLanguageData) {
                         // Get existing L10n data or create new
                         if (isset($oGroup->questiongroupl10ns[$language])) {
@@ -1907,7 +1924,8 @@ class remotecontrol_handle
 
                 // Process L10n data
                 if (!empty($aQuestionData['questionl10ns']) && is_array($aQuestionData['questionl10ns'])) {
-                    $aL10nDestinationFields = array_flip(QuestionL10n::model()->tableSchema->columnNames);
+                    // Only the texts can be set: The qid and language must not move the row to another question
+                    $aL10nDestinationFields = array_flip(['question', 'help', 'script']);
                     foreach ($aQuestionData['questionl10ns'] as $language => $aLanguageData) {
                         // Get existing L10n data or create new
                         if (isset($oQuestion->questionl10ns[$language])) {
@@ -3316,9 +3334,11 @@ class remotecontrol_handle
                 $result_id = $survey_dynamic->id;
                 $oResponse = Response::model($iSurveyID)->findByAttributes(array('id' => $result_id))->decrypt();
                 foreach ($oResponse->getFiles() as $aFile) {
+                    // The file name comes from the response data: Never allow a path
+                    $sFileName = basename((string) $aFile['filename']);
                     $sUploadPath = Yii::app()->getConfig('uploaddir') . '/surveys/' . $iSurveyID . '/files/';
-                    $sFileRealName = Yii::app()->getConfig('uploaddir') . '/surveys/' . $iSurveyID . '/files/' . $aFile['filename'];
-                    $sFileTempName = Yii::app()->getConfig('tempdir') . '/upload/' . $aFile['filename'];
+                    $sFileRealName = Yii::app()->getConfig('uploaddir') . '/surveys/' . $iSurveyID . '/files/' . $sFileName;
+                    $sFileTempName = Yii::app()->getConfig('tempdir') . '/upload/' . $sFileName;
 
                     if (!file_exists($sFileRealName)) {
                         if (!is_dir($sUploadPath)) {
@@ -3724,6 +3744,8 @@ class remotecontrol_handle
     /**
      * Obtain all uploaded files for all responses
      *
+     * Files are only read from the upload directory of the survey.
+     *
      * @access public
      *
      * @param string  $sSessionKey  Auth credentials
@@ -3768,7 +3790,8 @@ class remotecontrol_handle
         $uploaded_files = array();
         foreach ($oResponses as $key => $oResponse) {
             foreach ($oResponse->getFiles() as $aFile) {
-                $sFileRealName = Yii::app()->getConfig('uploaddir') . '/surveys/' . $iSurveyID . '/files/' . $aFile['filename'];
+                // The file name comes from the response data: Never allow a path
+                $sFileRealName = Yii::app()->getConfig('uploaddir') . '/surveys/' . $iSurveyID . '/files/' . basename((string) $aFile['filename']);
 
                 if (!file_exists($sFileRealName)) {
                     return array('status' => 'Could not find uploaded files');
@@ -3913,7 +3936,7 @@ class remotecontrol_handle
      * @param array $aParticipants
      * [[0] => ["email"=>"dummy-02222@limesurvey.com","firstname"=>"max","lastname"=>"mustermann"]]
      * A new participant can get its own participant_id, which must be a UUID.
-     * @param bool $update
+     * @param bool $update Whether existing participants are updated; they keep their owner
      * @return array On success: array with 'ImportCount', 'UpdateCount' and 'InvalidParticipantIds' (participant IDs
      *              that were not imported because they are not UUIDs). On failure: array with status.
      */
@@ -3983,10 +4006,11 @@ class remotecontrol_handle
             $model->lastname = $participant['lastname'];
             $model->email = $participant['email'];
             $model->language = $participant['language'] ?? 'en';
-            $model->owner_uid = Yii::app()->session['loginID'];
             $model->blacklisted = (isset($participant['blacklisted']) && $participant['blacklisted'] === 'Y') ? 'Y' : 'N';
 
             if ($scenario == 'insert') {
+                // Updating a participant must not take over its ownership
+                $model->owner_uid = Yii::app()->session['loginID'];
                 $model->created = date('Y-m-d H:i:s');
                 $model->created_by = Yii::app()->session['loginID'];
             } else {  // update

@@ -31,9 +31,13 @@ class ExpressionValidate extends SurveyCommonAction
 
     /**
      * Check the Expression in quota
+     *
+     * Note: The quota must belong to the survey the permission is checked on.
+     *
      * @param integer $iSurveyId : the survey ID : can be sid/surveyid url GET parameters
      * @param integer $quota : the quota id
      * @param string $lang : the survey language, optional : if not set get all language of survey
+     * @throws CHttpException
      *
      * @author Denis Chenu
      * @version 1.0
@@ -43,6 +47,10 @@ class ExpressionValidate extends SurveyCommonAction
         $oSurvey = Survey::model()->findByPk($iSurveyId);
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'quotas', 'read')) {
             throw new CHttpException(401, "401 Unauthorized");
+        }
+        /* The quota must belong to the survey the permission was checked on */
+        if (!Quota::model()->exists('id = :id AND sid = :sid', [':id' => (int) $quota, ':sid' => (int) $iSurveyId])) {
+            throw new CHttpException(404, gT("Invalid quota ID"));
         }
         $iQuotaId = $quota;
         if (is_string($lang)) {

@@ -83,6 +83,8 @@ class AttributesService
     /**
      * Saves the base attributes of questions as they come in
      *
+     * Note: The IDs placing the question in a survey (qid, sid, gid, parent_qid) are never changed.
+     *
      * @param Question $question
      * @param array {
      *      ?min_answers: int,
@@ -110,7 +112,8 @@ class AttributesService
         foreach ($dataSet as $attributeKey => $attributeValue) {
             if (
                 !isset($attributeValue) ||
-                in_array($attributeKey, ['qid', 'debug', 'tempId'])
+                // The question must not be moved out of the survey the permission was checked on
+                in_array($attributeKey, ['qid', 'sid', 'gid', 'parent_qid', 'debug', 'tempId'])
             ) {
                 continue;
             }

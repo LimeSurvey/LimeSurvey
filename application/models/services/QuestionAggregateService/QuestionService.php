@@ -131,6 +131,7 @@ class QuestionService
      * @param array $data
      * @param boolean $subQuestion
      * @return Question
+     * @throws NotFoundException
      * @throws PersistErrorException
      */
     private function storeNewQuestionData($data = null, $subQuestion = false)
@@ -140,6 +141,7 @@ class QuestionService
         $survey = $this->modelSurvey
             ->findByPk($surveyId);
         $questionGroupId = $data['gid'] ?? 0;
+        $this->checkGroupAndParentOfSurvey((int) $surveyId, $data);
         $type = $this->proxySettingsUser->getUserSettingValue(
             'preselectquestiontype',
             null,
@@ -266,11 +268,14 @@ class QuestionService
      * @param Question $question
      * @param array $data
      * @return Question
+     * @throws NotFoundException
      * @throws PersistErrorException
      */
     private function updateQuestionData(Question $question, $data)
     {
         $data = $this->normalizeQuestionFlags($data);
+
+        $this->checkGroupAndParentOfSurvey((int) $question->sid, $data, $question);
 
         $originalRelevance = $question->relevance;
         $originalTitle = $question->title;
@@ -301,6 +306,37 @@ class QuestionService
         }
 
         return $question;
+    }
+
+    /**
+     * Checks that the group and parent question set in the data belong to the survey.
+     *
+     * Note: The permission was only checked on this survey.
+     *
+     * @param int $surveyId the survey of the question
+     * @param array $data the question data
+     * @param Question|null $question the existing question, null for a new one
+     * @return void
+     * @throws NotFoundException
+     */
+    private function checkGroupAndParentOfSurvey(int $surveyId, array $data, ?Question $question = null)
+    {
+        $groupId = (int) ($data['gid'] ?? 0);
+        if (
+            !empty($groupId)
+            && (empty($question) || $groupId != $question->gid)
+            && !\QuestionGroup::model()->exists('gid = :gid AND sid = :sid', [':gid' => $groupId, ':sid' => $surveyId])
+        ) {
+            throw new NotFoundException(gT('Invalid group ID'));
+        }
+        $parentQid = (int) ($data['parent_qid'] ?? 0);
+        if (
+            !empty($parentQid)
+            && (empty($question) || $parentQid != $question->parent_qid)
+            && !Question::model()->exists('qid = :qid AND sid = :sid', [':qid' => $parentQid, ':sid' => $surveyId])
+        ) {
+            throw new NotFoundException(gT('Invalid question ID'));
+        }
     }
 
     /**

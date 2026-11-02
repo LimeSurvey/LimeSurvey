@@ -979,6 +979,9 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
             unset($insertdata['qaid']);
             if (isset($aQIDReplacements[$insertdata['qid']])) {
                 $insertdata['qid'] = $aQIDReplacements[(int) $insertdata['qid']]; // remap the parent_qid
+            } else {
+                // Attribute of a question that is not part of this import: skip it, it must not be set on an existing question
+                continue;
             }
 
             // The question theme was already set by importQuestionThemeAttributes()

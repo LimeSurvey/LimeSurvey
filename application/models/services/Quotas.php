@@ -43,6 +43,8 @@ class Quotas
      *   ]
      * ]
      *
+     * Note: Quota members based on a question of another survey are left out.
+     *
      * @return array
      */
     public function getQuotaStructure()
@@ -58,6 +60,10 @@ class Quotas
 
                 //loop through all quotaMembers
                 foreach ($oQuota->quotaMembers as $oQuotaMember) {
+                    // A member based on a question of another survey is never shown, it would disclose its texts
+                    if (!empty($oQuotaMember->question) && $oQuotaMember->question->sid != $this->survey->sid) {
+                        continue;
+                    }
                     $aQuestionAnswers = self::getQuotaAnswers($oQuotaMember['qid'], $oQuota['id']);
                     if ($oQuotaMember->question->type == '*') {
                         $answerText = $oQuotaMember->code;
@@ -314,6 +320,10 @@ class Quotas
     }
 
     /**
+     * Applies a massive action to the given quotas.
+     *
+     * Note: Quotas that don't belong to the survey of this service are skipped,
+     * the permission was only checked on this survey.
      *
      * @param integer[] $aQuotaIds
      * @param string $action
@@ -329,6 +339,7 @@ class Quotas
             $oQuota = Quota::model()->findByPk($iQuotaId);
             if (empty($oQuota) || $oQuota->sid != $this->survey->sid) {
                 $errors [] = gT("Invalid quota ID");
+                continue;
             }
             switch ($action) {
                 case 'activate':

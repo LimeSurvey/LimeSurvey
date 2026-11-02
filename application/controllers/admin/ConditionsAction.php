@@ -414,6 +414,9 @@ class ConditionsAction extends SurveyCommonAction
 
     /**
      * Used by quick-add form to add conditions async
+     *
+     * Note: The condition is always added to the question the permission was checked on.
+     *
      * @return void
      * @throws CException
      */
@@ -422,6 +425,15 @@ class ConditionsAction extends SurveyCommonAction
         Yii::import('application.helpers.admin.ajax_helper', true);
         $request = Yii::app()->request;
         $data = $this->getQuickAddData($request);
+        $qid = (int) $data['qid'];
+        $question = $qid ? Question::model()->findByPk($qid) : null;
+        if (empty($question)) {
+            throw new CHttpException(400, gT("Your request is invalid.", 'unescaped'));
+        }
+        if (!Permission::model()->hasSurveyPermission($question->sid, 'surveycontent', 'update')) {
+            throw new CHttpException(403, gT("Access denied!", 'unescaped'));
+        }
+        $data['qid'] = $qid;
 
         list($message, $status) = $this->insertConditionAjax($data);
 
@@ -502,6 +514,11 @@ class ConditionsAction extends SurveyCommonAction
     }
 
     /**
+     * Copies the selected conditions to the selected questions.
+     *
+     * Note: Only conditions and target questions of the survey of the question
+     * the permission was checked on are used.
+     *
      * @param array $args
      * @return void
      * @throws CException
@@ -510,6 +527,35 @@ class ConditionsAction extends SurveyCommonAction
     {
         $copyconditionsfrom = returnGlobal('copyconditionsfrom');
         $copyconditionsto = returnGlobal('copyconditionsto');
+
+        $surveyId = (int) Question::model()->findByPk($args['qid'])->sid;
+        if (is_array($copyconditionsfrom) && count($copyconditionsfrom) > 0) {
+            $copyconditionsfrom = Yii::app()->db->createCommand()
+                ->select('c.cid')
+                ->from('{{conditions}} c')
+                ->join('{{questions}} q', 'q.qid = c.qid')
+                ->where(['in', 'c.cid', array_map('intval', $copyconditionsfrom)])
+                ->andWhere('q.sid = :sid', [':sid' => $surveyId])
+                ->queryColumn();
+        }
+        if (is_array($copyconditionsto) && count($copyconditionsto) > 0) {
+            $targetQids = [];
+            foreach ($copyconditionsto as $fieldName) {
+                $targetQids[] = (int) $this->surveyCondition->getQIDFromFieldName((string) $fieldName);
+            }
+            $surveyQids = array_map('intval', Yii::app()->db->createCommand()
+                ->select('qid')
+                ->from('{{questions}}')
+                ->where(['in', 'qid', $targetQids])
+                ->andWhere('sid = :sid', [':sid' => $surveyId])
+                ->queryColumn());
+            $copyconditionsto = array_values(array_filter(
+                $copyconditionsto,
+                function ($fieldName) use ($surveyQids) {
+                    return in_array((int) $this->surveyCondition->getQIDFromFieldName((string) $fieldName), $surveyQids, true);
+                }
+            ));
+        }
 
         // Validate that target questions are selected
         if (!is_array($copyconditionsto) || count($copyconditionsto) === 0) {

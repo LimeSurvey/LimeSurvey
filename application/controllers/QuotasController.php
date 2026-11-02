@@ -345,7 +345,12 @@ class QuotasController extends LSBaseController
     }
 
     /**
+     * Adds an answer (quota member) to a quota.
+     *
+     * Note: The question must belong to the survey of the quota the permission was checked on.
+     *
      * @return void
+     * @throws CHttpException
      */
     public function actionInsertQuotaAnswer()
     {
@@ -354,6 +359,9 @@ class QuotasController extends LSBaseController
         $quota_anscode = Yii::app()->request->getPost('quota_anscode');
         $oQuota = $this->getQuotaWithPermission($quota_id, 'update');
         $surveyid = $oQuota->sid;
+        if (!Question::model()->exists('qid = :qid AND sid = :sid', [':qid' => (int) $quota_qid, ':sid' => $surveyid])) {
+            throw new CHttpException(404, gT("Question not found"));
+        }
 
         $oQuotaMembers = new QuotaMember('create'); // Trigger the 'create' rules
         $oQuotaMembers->sid = $surveyid;
