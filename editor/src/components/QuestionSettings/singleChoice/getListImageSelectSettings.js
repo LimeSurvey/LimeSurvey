@@ -48,6 +48,7 @@ const displaySettings = () => {
     displayAttributes.CROP_OR_RESIZE,
     displayAttributes.KEEP_ASPECT_RATIO,
     displayAttributes.HORIZONTAL_SCROLL,
+    displayAttributes.DISPLAY_COLUMNS,
   ]
 }
 
