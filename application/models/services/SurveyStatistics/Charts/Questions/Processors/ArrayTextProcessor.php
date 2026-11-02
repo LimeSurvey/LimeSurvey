@@ -3,10 +3,11 @@
 namespace LimeSurvey\Models\Services\SurveyStatistics\Charts\Questions\Processors;
 
 /**
- * Array (Texts): a free-text grid that cannot be aggregated into a chart, so it
- * has no chart data. It emits an empty plan only to claim a card slot in the
- * statistics list; the client renders the raw per-response answers as a table
- * (participant rows × subquestion columns) fetched from the responses endpoint.
+ * Handles only Array (Texts) questions: this free-text grid has no chart data,
+ * so the processor emits an empty plan to claim a statistics card slot. The
+ * client renders the per-response answers as a table (responses × subquestions)
+ * fetched from the responses endpoint. K and Q response grids use the client
+ * response-grid component instead.
  */
 class ArrayTextProcessor extends AbstractQuestionProcessor
 {
