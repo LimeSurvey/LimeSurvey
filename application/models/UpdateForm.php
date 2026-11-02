@@ -171,7 +171,7 @@ class UpdateForm extends CFormModel
         $checks->files = $this->getFileSystemCheckList();
         $checks->php = $this->phpVerCheck($destinationBuild);
         $checks->php_modules = $this->getModuleChecks($destinationBuild);
-        $checks->mysql = $this->getMysqlChecks($destinationBuild);
+        $checks->db = $this->getDbVersionChecks($destinationBuild);
 
         return $checks;
     }
@@ -1033,27 +1033,59 @@ class UpdateForm extends CFormModel
         return($return);
     }
 
-    // Get the minimum required mysql version from the server
-
     /**
-     * @param integer $build
-     * @return stdClass
+     * Get the minimal database server versions for destination build from server, and compare the one
+     * of the local database type to the local database server version.
+     *
+     * The version is parsed here instead of using DbVersionHelper: This file is also shipped with the
+     * updater update to older installations, which don't have that helper.
+     *
+     * @param int $build the buildId to test
+     * @return stdClass the success/error result, docheck is 'pass' if there is nothing to check
      */
-    private function getMysqlChecks($build)
+    private function getDbVersionChecks($build)
     {
         $checks = new stdClass();
-        $dbType = Yii::app()->db->getDriverName();
-        if (in_array($dbType, array('mysql', 'mysqli'))) {
-            $checks->docheck = 'do';
-            $getters = '/index.php?r=updates/get-mysql-ver&build=' . $build;
-            $mysql_requirements = $this->performRequest($getters);
-            $checks->mysql_ver = $mysql_requirements->version;
-            $checks->local_mysql_ver = Yii::app()->db->getServerVersion();
-            $checks->result = (version_compare($checks->local_mysql_ver, $checks->mysql_ver, '<')) ? false : true;
-        } else {
-            $checks->docheck = 'pass';
+        $checks->docheck = 'pass';
+
+        $driverName = strtolower((string) Yii::app()->db->getDriverName());
+        try {
+            $serverVersion = (string) Yii::app()->db->getServerVersion();
+        } catch (Exception $e) {
+            // Some PDO drivers (e.g. dblib) can't report the server version: Nothing to check
+            return $checks;
         }
-        return($checks);
+        if (in_array($driverName, array('mysql', 'mysqli'))) {
+            $isMariaDb = stripos($serverVersion, 'mariadb') !== false;
+            $dbType = $isMariaDb ? 'mariadb' : 'mysql';
+            $checks->db_type = $isMariaDb ? 'MariaDB' : 'MySQL';
+        } elseif ($driverName === 'pgsql') {
+            $dbType = 'pgsql';
+            $checks->db_type = 'PostgreSQL';
+        } elseif (in_array($driverName, array('sqlsrv', 'dblib', 'mssql'))) {
+            $dbType = 'mssql';
+            $checks->db_type = 'Microsoft SQL Server';
+        } else {
+            return $checks;
+        }
+
+        $getters = '/index.php?r=updates/get-db-ver&build=' . $build;
+        $requirements = $this->performRequest($getters);
+        // Older server or no minimal version set for this database type: Nothing to check
+        if (empty($requirements->result) || empty($requirements->versions->$dbType)) {
+            return $checks;
+        }
+
+        // MariaDB 10 prepends a "5.5.5-" replication compatibility prefix to its version
+        $localVersion = preg_replace('/^5\.5\.5-/', '', $serverVersion);
+        $localVersion = preg_match('/\d+(\.\d+)*/', (string) $localVersion, $matches) ? $matches[0] : '';
+
+        $checks->docheck = 'do';
+        $checks->db_ver = (string) $requirements->versions->$dbType;
+        $checks->local_db_ver = $localVersion;
+        // If the local version can't be detected, don't block the update
+        $checks->result = $localVersion === '' || version_compare($localVersion, $checks->db_ver, '>=');
+        return $checks;
     }
 
     /**

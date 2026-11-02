@@ -62,25 +62,25 @@ if (isset($localChecks->html)) {
             </div>
         <?php endif;?>
 
-        <?php if ($localChecks->mysql->docheck !== 'pass') : ?>
+        <?php if ($localChecks->db->docheck !== 'pass') : ?>
             <table class="table">
                 <thead>
                     <tr>
-                        <th class="col-md-10"><?php eT('MariaDB/MYSQL version required:');?></th>
+                        <th class="col-md-10"><?php printf(gT('%s version required:'), CHtml::encode($localChecks->db->db_type));?></th>
                         <th class="col-md-1"  style="text-align: right"></th>
                         <th class="col-md-1"  style="text-align: right"></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td><?php echo $localChecks->mysql->mysql_ver;?></td>
+                        <td><?php echo CHtml::encode($localChecks->db->db_ver);?></td>
                         <td></td>
-                        <?php if ($localChecks->mysql->result) : ?>
+                        <?php if ($localChecks->db->result) : ?>
                             <td><span class="ri-check-fill text-success" alt="right"></span></td>
                         <?php else : ?>
                             <td>
                                 <h3 class="badge bg-danger">
-                                    <?php printf(gT('MariaDB/MySQL version is only %s'), $localChecks->mysql->local_mysql_ver);?>
+                                    <?php printf(gT('%1$s version is only %2$s'), CHtml::encode($localChecks->db->db_type), CHtml::encode($localChecks->db->local_db_ver));?>
                                 </h3>
                             </td>
                             <?php $errors = true;
