@@ -138,8 +138,10 @@ if (is_dir($application_folder)) {
 
 include __DIR__ . '/setdebug.php';
 
-if (version_compare(PHP_VERSION, '5.3.3', '<')) {
-    die('This script can only be run on PHP version 5.3.3 or later! Your version: '.PHP_VERSION.'<br />');
+// Must run before vendor/autoload.php: Composer's platform check would otherwise end with a generic 500 error.
+// Keep in sync with InstallerConfigForm::MINIMUM_PHP_VERSION (classes are not loadable yet at this point).
+if (version_compare(PHP_VERSION, '8.2.35', '<')) {
+    die('LimeSurvey requires PHP version 8.2.35 or later. Your version: ' . htmlspecialchars(PHP_VERSION) . '<br />Please upgrade PHP or ask your hosting provider to do so.');
 }
 require_once __DIR__ . '/vendor/autoload.php';
 
