@@ -268,7 +268,7 @@ class SurveyCondition
                     'method' => $p_method,
                     'value' => $ca
                 );
-                $results[] = \Condition::model()->insertRecords($updated_data, true, array('cid' => $p_cid));
+                $results[] = \Condition::model()->insertRecords($updated_data, true, array('cid' => $p_cid, 'qid' => $qid));
             }
 
             // Check if any result returned false
@@ -309,7 +309,7 @@ class SurveyCondition
                 if ($editSourceTab === "#SRCPREVQUEST") {
                     $updated_data['cqid'] = $p_cqid;
                 }
-                $result = \Condition::model()->insertRecords($updated_data, true, array('cid' => $p_cid));
+                $result = \Condition::model()->insertRecords($updated_data, true, array('cid' => $p_cid, 'qid' => $qid));
             }
             if (is_numeric($result)) {
                 $app->setFlashMessage(gT('Condition updated.'), 'success');
@@ -334,7 +334,7 @@ class SurveyCondition
     public function deleteCondition(int $qid, int $p_cid)
     {
         \LimeExpressionManager::RevertUpgradeConditionsToRelevance(null, $qid); // in case deleted the last condition
-        \Condition::model()->deleteRecords(array('cid' => $p_cid));
+        \Condition::model()->deleteRecords(array('cid' => $p_cid, 'qid' => $qid));
         \LimeExpressionManager::UpgradeConditionsToRelevance(null, $qid);
     }
 

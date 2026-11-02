@@ -44,7 +44,9 @@
                 </td>
                 <td>
                     <?php
-                    if ($updateKeyInfos->result === false) {
+                    if ($updateKeyInfos->result === false && $updateKeyInfos->error === 'hard_lock') {
+                        eT('Locked');
+                    } elseif ($updateKeyInfos->result === false) {
                         eT($updateKeyInfos->error);
                     } else {
                         echo convertToGlobalSettingFormat($updateKeyInfos->validuntil);

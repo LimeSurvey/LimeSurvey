@@ -410,8 +410,22 @@ var TemplateCoreClass = exports.TemplateCoreClass = function TemplateCoreClass()
         text = startPopups.join("");
       }
       if (text) {
-        $("#bootstrap-alert-box-modal .modal-header .modal-title").text(title || "");
-        $("#bootstrap-alert-box-modal .modal-body").html(text);
+        var $modal = $("#bootstrap-alert-box-modal");
+        var $title = $modal.find(".modal-header .modal-title");
+        var $body = $modal.find(".modal-body");
+        $title.text(title || "");
+        $body.html(text);
+        /* Without a title, the message gives the dialog its name for screen readers */
+        if ($body.attr('id')) {
+          if (title && $title.attr('id')) {
+            $modal.attr({
+              'aria-labelledby': $title.attr('id'),
+              'aria-describedby': $body.attr('id')
+            });
+          } else {
+            $modal.attr('aria-labelledby', $body.attr('id')).removeAttr('aria-describedby');
+          }
+        }
         var modal = new bootstrap.Modal(document.getElementById('bootstrap-alert-box-modal'), {});
         modal.show();
       }
@@ -452,6 +466,11 @@ var TemplateCoreClass = exports.TemplateCoreClass = function TemplateCoreClass()
      * @see assets/survey_themes/fruity_twentythree/core/old_template_core_pre.js:triggerEmClassChange
      */
     triggerEmClassChangeTemplate: function triggerEmClassChangeTemplate() {
+      /* The first ExpressionScript run (checkconditions in survey_runtime.js, same ready event) happens before the participant answered anything */
+      var initialRun = true;
+      setTimeout(function () {
+        initialRun = false;
+      }, 0);
       $('.ls-em-tip').each(function () {
         $(this).on('classChangeError', function () {
           /* If user choose hide-tip : leave it */
@@ -460,8 +479,11 @@ var TemplateCoreClass = exports.TemplateCoreClass = function TemplateCoreClass()
             parent.removeClass('hide-tip', 1);
             parent.addClass('tip-was-hidden', 1);
           }
-          var questionContainer = $(this).parents('div.question-container');
-          questionContainer.addClass('input-error'); /* No difference between error after submit and error before submit : think (Shnoulle) it's better to have a difference */
+          /* Don't flag untouched questions on page load: After a failed submit the server already sets input-error */
+          if (!initialRun) {
+            var questionContainer = $(this).parents('div.question-container');
+            questionContainer.addClass('input-error');
+          }
           $(this).find('span.fa-exclamation-circle').removeClass('d-none');
         });
         $(this).on('classChangeGood', function () {
@@ -472,8 +494,14 @@ var TemplateCoreClass = exports.TemplateCoreClass = function TemplateCoreClass()
           if (parent.hasClass('tip-was-hidden') && parent.find('.ls-em-tip.ls-em-error').not(this).length === 0) {
             parent.removeClass('tip-was-hidden').addClass('hide-tip');
           }
-          var questionContainer = $(this).parents('div.question-container');
-          questionContainer.removeClass('input-error'); /* Not working with mandatory question ... */
+          /* Keep input-error set by the server after a failed submit until the participant changes something */
+          if (!initialRun) {
+            var questionContainer = $(this).parents('div.question-container');
+            /* Only once no other tip of the question is still in error: This tip's own ls-em-error is removed after this handler */
+            if (questionContainer.find('.ls-em-tip.ls-em-error').not(this).length === 0) {
+              questionContainer.removeClass('input-error'); /* Not working with mandatory question ... */
+            }
+          }
           $(this).find('span.fa-exclamation-circle').addClass('d-none');
         });
       });
@@ -1095,6 +1123,13 @@ var NavbarScripts = exports.NavbarScripts = function NavbarScripts() {
       //replace menu content with submenu content
       replaceContent(getContentByElementId(openedSubmenuId), 'main-dropdown');
       focusMenuItem('.back-link');
+    });
+    // The submenu openers are links with role="button", which browsers only activate with Enter, so Space has to open them like a button
+    $(document).on('keydown', '[data-navtargetid]', function (event) {
+      if (event.key === ' ') {
+        event.preventDefault();
+        $(this).trigger('click');
+      }
     });
     $(document).on('click', '.back-link', function (event) {
       event.preventDefault();

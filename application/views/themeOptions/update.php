@@ -11,6 +11,9 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
 <div class="">
 <?php else : ?>
     <div class="col-12 side-body ls-settings-wrapper" id="theme-option-sidebody">
+    <div class="pagetitle">
+        <h1><?php eT('Survey theme options'); ?></h1>
+    </div>
 <?php endif; ?>
 
     <!-- Using bootstrap tabs to differ between just the options and advanced direct settings -->

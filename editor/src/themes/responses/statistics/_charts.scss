@@ -253,6 +253,18 @@
     }
   }
 
+  .responses-statistics-chart-info {
+    display: flex;
+    align-items: flex-start;
+    align-items: center;
+    gap: 8px;
+
+    i {
+      font-size: 1.25em;
+      line-height: 1;
+    }
+  }
+
   .responses-statistics-stat-term i {
     color: $g-700;
     cursor: help;

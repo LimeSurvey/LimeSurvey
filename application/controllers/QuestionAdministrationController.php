@@ -1,6 +1,7 @@
 <?php
 
 use LimeSurvey\Models\Services\QuestionAggregateService;
+use LimeSurvey\Models\Services\SurveyDetailService;
 use LimeSurvey\Models\Services\Exception\{
     NotFoundException,
     PermissionDeniedException,
@@ -1295,6 +1296,7 @@ class QuestionAdministrationController extends LSBaseController
         fixLanguageConsistency($iSurveyID);
 
         if (isset($aImportResults['fatalerror'])) {
+            unlink($sFullFilepath);
             App()->setFlashMessage($aImportResults['fatalerror'], 'error');
             $this->redirect(['questionAdministration/importView', 'surveyid' => $iSurveyID]);
             return;
@@ -1618,6 +1620,7 @@ class QuestionAdministrationController extends LSBaseController
 
         if (Permission::model()->hasSurveyPermission($iSid, 'surveycontent', 'update')) {
             self::setMultipleQuestionMandatoryState($aQids, $sMandatory, $iSid);
+            EmCacheHelper::flushAtEndOfRequest();
         }
     }
 
@@ -1632,6 +1635,7 @@ class QuestionAdministrationController extends LSBaseController
 
         if (Permission::model()->hasSurveyPermission($iSid, 'surveycontent', 'update')) {
             self::setMultipleQuestionOtherState($aQids, $sOther, $iSid);
+            EmCacheHelper::flushAtEndOfRequest();
         }
     }
 
@@ -1662,6 +1666,7 @@ class QuestionAdministrationController extends LSBaseController
             $attributesWithValue,
             $validQuestionTypes
         );
+        EmCacheHelper::flushAtEndOfRequest();
     }
 
     /**
@@ -1669,10 +1674,11 @@ class QuestionAdministrationController extends LSBaseController
      *
      * @param int $gid
      * @param string $classes
+     * @param string $display form_group, or general_option for the question editor general settings
      * @return CWidget|mixed|void
      * @throws Exception
      */
-    public function actionAjaxLoadPositionWidget($gid, $classes = '')
+    public function actionAjaxLoadPositionWidget($gid, $classes = '', $display = 'form_group')
     {
         $oQuestionGroup = QuestionGroup::model()->find('gid=:gid', [':gid' => $gid]);
         if (
@@ -1680,7 +1686,7 @@ class QuestionAdministrationController extends LSBaseController
             Permission::model()->hasSurveyPermission($oQuestionGroup->sid, 'surveycontent', 'read')
         ) {
             $aOptions = [
-                'display'           => 'form_group',
+                'display'           => $display === 'general_option' ? 'general_option' : 'form_group',
                 'oQuestionGroup'    => $oQuestionGroup,
 
             ];
@@ -1776,14 +1782,10 @@ class QuestionAdministrationController extends LSBaseController
             $questionTheme
         );
 
-        $questionThemeObject = QuestionTheme::model()->find('name=:name', array(':name' => $questionTheme));
         $this->renderPartial("generalSettings", [
             'generalSettings' => $generalSettings,
             'oSurvey' => Survey::model()->findByPk($surveyId),
             'question' => $question,
-            'aQuestionTypeGroups' => $this->getQuestionTypeGroups(QuestionTheme::findAllQuestionMetaDataForSelector()),
-            'questionTheme' => $questionThemeObject,
-            'selectormodeclass' => $this->getSelectorModeClass(),
         ]);
     }
 
@@ -2229,6 +2231,7 @@ class QuestionAdministrationController extends LSBaseController
      * @param array $aQids all question id's affected
      * @param int $iQuestionOrder the desired position
      * @param QuestionGroup $oQuestionGroup the desired QuestionGroup
+     * @return void
      * @throws CException
      */
     public static function changeMultipleQuestionPositionAndGroup($aQids, $iQuestionOrder, $oQuestionGroup)
@@ -2286,7 +2289,10 @@ class QuestionAdministrationController extends LSBaseController
             $oTransaction->commit();
         } catch (Exception $e) {
             $oTransaction->rollback();
+            return;
         }
+        // updateAll() bypasses Question::afterSave(), so update the survey's lastmodified timestamp here
+        (new SurveyDetailService())->touchSurveyLastModified((int) $oQuestionGroup->sid);
     }
 
     /**

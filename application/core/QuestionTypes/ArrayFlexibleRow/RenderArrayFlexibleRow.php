@@ -35,6 +35,14 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
 
     public $sCoreClass = "ls-answers subquestion-list questions-list";
 
+    /**
+     * Set up the renderer: mandatory violations, repeated headers and layout.
+     * An empty "Repeat headers" question attribute falls back to the global
+     * repeatheadings/minrepeatheadings config values.
+     *
+     * @param array $aFieldArray Field data of the question
+     * @param boolean $bRenderDirect Whether to render directly
+     */
     public function __construct($aFieldArray, $bRenderDirect = false)
     {
         parent::__construct($aFieldArray, $bRenderDirect);
@@ -44,8 +52,9 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
         $this->repeatheadings    = Yii::app()->getConfig("repeatheadings");
         $this->minrepeatheadings = Yii::app()->getConfig("minrepeatheadings");
 
-        if (ctype_digit((string) $this->repeatheadings) && !empty($this->repeatheadings)) {
-            $this->repeatheadings    = intval($this->getQuestionAttribute('repeat_headings'));
+        $sRepeatHeadings = trim((string) $this->getQuestionAttribute('repeat_headings'));
+        if (ctype_digit($sRepeatHeadings)) {
+            $this->repeatheadings    = intval($sRepeatHeadings);
             $this->minrepeatheadings = 0;
         }
 
@@ -243,6 +252,7 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
                 'answertextright'        => $answertextright,
                 'options'                => $options,
                 'odd'                    => ($i % 2), // true for odd, false for even
+                'relevanceClass'         => $this->getCurrentRelevecanceClass($myfname),
             );
 
             $this->inputnames[] = $myfname;
@@ -319,6 +329,7 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
                     'value'      => $value,
                     'error'      => $error,
                     'odd'        => ($i % 2), // true for odd, false for even
+                    'relevanceClass' => $this->getCurrentRelevecanceClass($myfname),
                 )
                 ];
 

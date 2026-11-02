@@ -700,7 +700,7 @@ class Template extends LSActiveRecord
     }
 
     /**
-     * Change the template name inside DB and the manifest (called from template editor)
+     * Change the template name inside DB (including theme permissions) and the manifest (called from template editor)
      * NOTE: all tests (like template exist, etc) are done from template controller.
      *
      * @param string $sNewName The newname of the template
@@ -711,10 +711,12 @@ class Template extends LSActiveRecord
         $this->deleteAssetVersion();
         Survey::model()->updateAll(array('template' => $sNewName), "template = :oldname", array(':oldname' => $this->name));
         SurveysGroupsettings::model()->updateAll(['template' => $sNewName], "template = :oldname", [':oldname' => $this->name]);
-        Template::model()->updateAll(array('name' => $sNewName, 'folder' => $sNewName), "name = :oldname", array(':oldname' => $this->name));
+        // Not with updateAll(): On MSSQL Yii leaves "name" out of the update, as it is the primary key of the model (see primaryKey()) and the table has an identity column
+        Yii::app()->db->createCommand()->update('{{templates}}', array('name' => $sNewName, 'folder' => $sNewName), "name = :oldname", array(':oldname' => $this->name));
         Template::model()->updateAll(array('extends' => $sNewName), "extends = :oldname", array(':oldname' => $this->name));
         TemplateConfiguration::rename($this->name, $sNewName);
         TemplateManifest::rename($this->name, $sNewName);
+        Permission::renameThemePermissions($this->name, $sNewName);
     }
 
     /**

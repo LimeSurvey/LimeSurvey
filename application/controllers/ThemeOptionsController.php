@@ -431,8 +431,8 @@ class ThemeOptionsController extends LSBaseController
             if (array_key_exists('description', $filterForm)) {
                 $aData['oQuestionTheme']->description = $filterForm['description'];
             }
-            if (array_key_exists('core_theme', $filterForm)) {
-                $aData['oQuestionTheme']->core_theme = $filterForm['core_theme'] == '1' || $filterForm['core_theme'] == '0' ? intval($filterForm['core_theme']) : '';
+            if (array_key_exists('themeKind', $filterForm) && in_array($filterForm['themeKind'], array_keys(QuestionTheme::getThemeKindLabels()), true)) {
+                $aData['oQuestionTheme']->themeKind = $filterForm['themeKind'];
             }
             if (array_key_exists('extends', $filterForm)) {
                 $aData['oQuestionTheme']->extends = $filterForm['extends'];
@@ -704,7 +704,11 @@ class ThemeOptionsController extends LSBaseController
             App()->clientScript->registerPackage('themeoptions-core');
         }
         if ($sid !== null) {
-            $data['title_bar']['title'] = gT("Survey theme options");
+            $survey = Survey::model()->findByPk($sid);
+            // Survey title is used for the browser page title, like on the other survey pages
+            $data['title_bar']['title'] = $survey
+                ? $survey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $sid . ")"
+                : gT("Survey theme options");
             $data['subaction'] = gT("Survey theme options");
             $data['sidemenu']['landOnSideMenuTab'] = 'settings';
             //buttons in topbar

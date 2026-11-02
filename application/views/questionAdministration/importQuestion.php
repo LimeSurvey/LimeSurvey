@@ -26,7 +26,9 @@
             ); ?>
             <div class="mb-3">
                 <label class="form-label" for='the_file'><?php eT("Select question file (*.lsq):");
-                    echo '<br>' . sprintf(gT("(Maximum file size: %01.2f MB)"), getMaximumFileUploadSize() / 1024 / 1024); ?>
+                    if (isFileUploadSizeLimited()) {
+                        echo '<br>' . sprintf(gT("(Maximum file size: %01.2f MB)"), getMaximumFileUploadSize() / 1024 / 1024);
+                    } ?>
                 </label>
                 <input name='the_file' id='the_file' class="form-control" type="file" required="required" accept=".lsq"/>
             </div>

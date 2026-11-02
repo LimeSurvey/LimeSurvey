@@ -480,7 +480,10 @@ class LS_Twig_Extension extends AbstractExtension
     }
 
     /**
-     * @param string $name
+     * Remove a registered script file, whatever position it was registered at
+     *
+     * @param string $name URL of the script file
+     * @return void
      */
     public static function unregisterScriptFile($name)
     {
@@ -565,7 +568,7 @@ class LS_Twig_Extension extends AbstractExtension
     /**
      * Get html text and remove whole not clean string
      * @param string $string to flatten
-     * @param boolean $encode html entities
+     * @param boolean $encode html special chars, existing html entities are kept as they are (no double encoding)
      * @return string
      */
     public static function flatString($string, $encode = false)
@@ -582,7 +585,8 @@ class LS_Twig_Extension extends AbstractExtension
         $string = preg_replace('/\s+/', ' ', $string);
 
         if ($encode) {
-            return \CHtml::encode($string);
+            // Texts saved from the HTML editor or the XSS filter are already entity-encoded (e.g. &amp;)
+            return htmlspecialchars($string, ENT_QUOTES, Yii::app()->charset, false);
         }
         return $string;
     }

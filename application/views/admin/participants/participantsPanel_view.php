@@ -26,6 +26,7 @@ App()->getClientScript()->registerScriptFile(
     var deleteLanguageFromAttributeUrl = "<?php echo Yii::app()->getController()->createUrl("/admin/participants/sa/deleteLanguageFromAttribute"); ?>";
 
     var translate_blacklisted = "<?php echo '<i class=\"ri-arrow-go-back-line\"></i> ' . gT('Remove from blocklist?'); ?>";
+    var translate_saveFailed = "<?php eT('Your changes could not be saved.', 'js'); ?>";
     var translate_notBlacklisted = "<?php echo '<i class=\"ri-forbid-2-line\"></i> ' . gT('Add to blocklist?'); ?>";
     var datepickerConfig =     <?php
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);

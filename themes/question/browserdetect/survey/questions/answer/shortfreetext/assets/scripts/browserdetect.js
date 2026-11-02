@@ -8,38 +8,39 @@ var BrowserCheck = function(options){
     var browser_version = "";
     var browser = "";
     var size_class = "";
-    var platformFlags = ["mac","windows","windowsphone","chromeos","android","webos","tizen","sailfish","linux","iphone","ipad","ipod","ios","blackberry","firefoxos","bada"];
-    
-    platformFlags = options.platformFlags === undefined ? platformFlags : options.platformFlags;
+    // Client hints let Bowser tell apart browsers sending the same user agent as Chrome (e.g. Brave)
+    var parser = bowser.getParser(window.navigator.userAgent, window.navigator.userAgentData || false);
+    var result = parser.getResult();
 
     // public methods
     var getRuntimeInfo = function(){
-            return bowser;
+            return result;
         },
         getVersion = function(){
-            browser_version = bowser.version || 'X.X.X';
+            // Keep the major.minor format of the answers saved with Bowser 1.x
+            browser_version = result.browser.version ? result.browser.version.split('.').slice(0, 2).join('.') : 'X.X.X';
             return browser_version;
         },
         getBrowser = function(){
-            browser = bowser.name;
+            browser = result.browser.name;
             return browser;
         },
         getPlatform = function(){
             if(platformSet!==true)
-                _recursePlatforms();
-            
+                _parsePlatformInfo();
+
             return platform;
         },
         getPlatformVersion = function(){
             if(platformSet!==true)
-                _recursePlatforms();
-            
+                _parsePlatformInfo();
+
             return platform_version;
         },
         getSizeClass = function(){
             if(platformSet!==true)
-                _recursePlatforms();
-            
+                _parsePlatformInfo();
+
             return size_class;
         },
         getBrowserInfoShort = function (){
@@ -49,109 +50,81 @@ var BrowserCheck = function(options){
             return  getBrowser() + " ("+ getVersion() +") | "+getPlatform()+" ("+getPlatformVersion()+")";
         },
         /// private methods
-        _recursePlatforms = function(iterator){
-            iterator = iterator || 0;
-            if(iterator>=platformFlags.length){
-                _parsePlatformInfo('unknown');       
-            } 
-            var flag = platformFlags[iterator];
-            if(bowser[flag] == true){
-                return _parsePlatformInfo(flag);
+        _getSizeClass = function(defaultClass){
+            if(result.platform.type === 'mobile' || result.platform.type === 'tablet'){
+                return result.platform.type;
             }
-            return _recursePlatforms(++iterator);
-
+            return defaultClass;
         },
-        _parsePlatformInfo = function(platformShort){
-            switch(platformShort){
-                case "mac" : 
-                    platform = "Mac OSX"
-                    platform_version = bowser.osversion || "unknown";
-                    size_class = window.screen.width > 1920 ? 'desktop' : 'laptop';
+        _parsePlatformInfo = function(){
+            var largeScreenClass = window.screen.width > 1920 ? 'desktop' : 'laptop';
+            platform_version = result.os.version || "unknown";
+            switch(result.os.name){
+                case "macOS" :
+                    platform = "Mac OSX";
+                    size_class = largeScreenClass;
                     break;
-                case "windows" : 
-                    platform = "Microsoft Windows"
-                    platform_version = bowser.osversion || "unknown";
-                    size_class = window.screen.width > 1920 ? 'desktop' : 'laptop';
+                case "Windows" :
+                    platform = "Microsoft Windows";
+                    platform_version = result.os.versionName || "unknown";
+                    size_class = largeScreenClass;
                     break;
-                case "windowsphone" : 
-                    platform = "Microsoft Windows Phone"
-                    platform_version = bowser.osversion || "unknown";
-                    size_class = bowser.mobile ? 'mobile' : 'tablet';
+                case "Windows Phone" :
+                    platform = "Microsoft Windows Phone";
+                    size_class = _getSizeClass('tablet');
                     break;
-                case "chromeos" : 
-                    platform = bowser.chromeBook ? "Chromebook with Chrome OS" : "Chrome OS"
-                    platform_version = bowser.osversion || "unknown";
-                    size_class = window.screen.width > 1920 ? 'desktop' : 'laptop';
+                case "Chrome OS" :
+                    platform = "Chromebook with Chrome OS";
+                    size_class = largeScreenClass;
                     break;
-                case "android" : 
-                    platform = "Android"
-                    platform_version = bowser.osversion || "unknown";
-                    size_class = bowser.mobile ? 'mobile' : (bowser.tablet ? 'tablet' : 'laptop');
+                case "Android" :
+                    platform = "Android";
+                    size_class = _getSizeClass('laptop');
                     break;
-                case "webos" : 
-                    platform = "WebOS"
-                    platform_version = bowser.osversion || "unknown";
-                    size_class = bowser.mobile ? 'mobile' : (bowser.tablet ? 'tablet' : 'desktop');
+                case "WebOS" :
+                    platform = "WebOS";
+                    size_class = _getSizeClass('desktop');
                     break;
-                case "tizen" : 
-                    platform = "Tizen"
-                    platform_version = bowser.osversion || "unknown";
-                    size_class = bowser.mobile ? 'mobile' : 'tablet';
+                case "Tizen" :
+                    platform = "Tizen";
+                    size_class = _getSizeClass('tablet');
                     break;
-                case "sailfish" : 
-                    platform = "SailfishOS"
-                    platform_version = bowser.osversion || "unknown";
-                    size_class = bowser.mobile ? 'mobile' : 'tablet';
+                case "Linux" :
+                    platform = "Linux";
+                    size_class = _getSizeClass('laptop');
                     break;
-                case "linux" : 
-                    platform = "Linux"
-                    platform_version = bowser.osversion || "unknown";
-                    size_class = bowser.mobile ? 'mobile' : (bowser.tablet ? 'tablet' : 'laptop');
+                case "iOS" :
+                    switch((result.platform.model || "").toLowerCase()){
+                        case "iphone" :
+                            platform = "Apple iPhone";
+                            break;
+                        case "ipad" :
+                            platform = "Apple iPad";
+                            break;
+                        case "ipod" :
+                            platform = "Apple iPod";
+                            break;
+                        default:
+                            platform = "Apple iOS product";
+                    }
+                    size_class = _getSizeClass('laptop');
                     break;
-                case "iphone" : 
-                    platform = "Apple iPhone"
-                    platform_version = bowser.osversion || "unknown";
-                    size_class = 'mobile';
+                case "BlackBerry" :
+                    platform = "Blackberry";
+                    size_class = _getSizeClass('laptop');
                     break;
-                case "ipad" : 
-                    platform = "Apple iPad"
-                    platform_version = bowser.osversion || "unknown";
-                    size_class = 'tablet';
+                case "Bada" :
+                    platform = "Samsung Bada OS";
+                    size_class = _getSizeClass('laptop');
                     break;
-                case "ipod" : 
-                    platform = "Apple iPod"
-                    platform_version = bowser.osversion || "unknown";
-                    size_class = bowser.mobile ? 'mobile' : 'tablet';
-                    break;
-                case "ios" : 
-                    platform = "Apple iOS product"
-                    platform_version = bowser.osversion || "unknown";
-                    size_class = bowser.mobile ? 'mobile' : (bowser.tablet ? 'tablet' : 'laptop');
-                    break;
-                case "blackberry" :
-                    platform = "Blackberry"
-                    platform_version = bowser.osversion || "unknown";
-                    size_class = bowser.mobile ? 'mobile' : (bowser.tablet ? 'tablet' : 'laptop'); 
-                    break;
-                case "firefoxos" : 
-                    platform = "FireFox OS"
-                    platform_version = bowser.osversion || "unknown";
-                    size_class = bowser.mobile ? 'mobile' : (bowser.tablet ? 'tablet' : 'laptop'); 
-                    break;
-                case "bada" : 
-                    platform = "Samsung Bada OS"
-                    platform_version = bowser.osversion || "unknown";
-                    size_class = bowser.mobile ? 'mobile' : (bowser.tablet ? 'tablet' : 'laptop'); 
-                    break;
-                case "unknown": //fallthrough
-                default: 
-                    platform = "Unknown platform"
-                    platform_version = "unknown";
-                    size_class = window.screen.width > 1920 ? 'desktop' : ( window.screen.width > 1280 ? 'laptop' : (window.screen.width > 720 ? 'tablet' : 'mobile'));
+                default:
+                    platform = result.os.name || "Unknown platform";
+                    platform_version = result.os.name ? platform_version : "unknown";
+                    size_class = _getSizeClass(window.screen.width > 1920 ? 'desktop' : ( window.screen.width > 1280 ? 'laptop' : (window.screen.width > 720 ? 'tablet' : 'mobile')));
             }
             platformSet = true;
         };
-    
+
     return {
         getBrowserInfoShort : getBrowserInfoShort,
         getBrowserInfoLong  : getBrowserInfoLong,

@@ -70,9 +70,10 @@ function flushWebFileCache()
  *
  * @param int $iOldDBVersion The previous database version to upgrade from.
  * @param bool $bSilent If true, attempt a silent update; the function will return `false` and perform no updates when one or more critical versions are included in the required update range.
+ * @param string|null &$sAbortReason Set to the reason when the update is refused before any update step ran, so the database was not changed.
  * @return bool `true` if all updates were applied successfully, `false` otherwise.
  */
-function db_upgrade_all($iOldDBVersion, $bSilent = false)
+function db_upgrade_all($iOldDBVersion, $bSilent = false, &$sAbortReason = null)
 {
     /**
      * If you add a new database version add any critical database version numbers to this array. See link
@@ -88,6 +89,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
     }
     // If DBVersion is older than 132 don't allow database update
     if ($iOldDBVersion < 132) {
+        $sAbortReason = sprintf(gT('Updating from database version %s is not supported, the oldest database version that can be updated is 132.'), $iOldDBVersion);
         return false;
     }
 
@@ -103,6 +105,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         );
     } catch (CDbException $e) {
         Yii::log('Could not verify database version before update: ' . $e->getMessage(), 'error', 'application.db.update');
+        $sAbortReason = 'Could not verify database version before update: ' . $e->getMessage();
         return false;
     }
     if (!$requirement['supported']) {
@@ -116,12 +119,14 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             Yii::app()->user->setFlash('error', $message);
         }
         Yii::log($message, 'error', 'application.db.update');
+        $sAbortReason = $message;
         return false;
     }
 
     // Try to acquire database update lock
     if (!getDatabaseUpdateLock(false, $sLockError)) {
-        Yii::app()->user->setFlash('error', $sLockError ?: 'Could not acquire the database update lock.');
+        $sAbortReason = $sLockError ?: 'Could not acquire the database update lock.';
+        Yii::app()->user->setFlash('error', $sAbortReason);
         return false;
     }
 
@@ -134,6 +139,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             Yii::app()->user->setFlash('error', $message);
         }
         Yii::log($message, 'error', 'application.db.update');
+        $sAbortReason = $message;
         releaseDatabaseUpdateLock();
         return false;
     }
@@ -2713,8 +2719,16 @@ function upgradeTokens148()
 {
     $aTables = dbGetTablesLike("tokens%");
     foreach ($aTables as $sTable) {
-        addColumn($sTable, 'participant_id', "string(50)");
-        addColumn($sTable, 'blacklisted', "string(17)");
+        $tokenTableSchema = Yii::app()->db->getSchema()->getTable($sTable, true);
+        if ($tokenTableSchema === null) {
+            continue;
+        }
+        if (!isset($tokenTableSchema->columns['participant_id'])) {
+            addColumn($sTable, 'participant_id', "string(50)");
+        }
+        if (!isset($tokenTableSchema->columns['blacklisted'])) {
+            addColumn($sTable, 'blacklisted', "string(17)");
+        }
     }
 }
 
@@ -3238,11 +3252,38 @@ function dropPrimaryKey($sTablename, $oldPrimaryKeyColumn = null)
 }
 
 /**
-* @param string $sTablename
+* @param string $sTablename : without { }
+* @param string|string[] $aColumns the primary keys as string or columns
 */
 function addPrimaryKey($sTablename, $aColumns)
 {
-    return Yii::app()->db->createCommand()->addPrimaryKey('PK_' . $sTablename . '_' . randomChars(12, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'), '{{' . $sTablename . '}}', $aColumns);
+    $tablePrefix = App()->getDb()->tablePrefix;
+    $indexTableName = $sTablename;
+    if ($tablePrefix !== '' && strpos($indexTableName, $tablePrefix) === 0) {
+        $indexTableName = substr($indexTableName, strlen($tablePrefix));
+    }
+    $date = date('YmdHis');
+    $maxRandomLength = 12;
+    $minRandomLength = 4;
+    // Reserve space for the prefix, separators, timestamp and minimum random string.
+    $maxTableNameLength = 63 - strlen('PK__' . $date . '_') - $minRandomLength;
+    if (strlen($indexTableName) > $maxTableNameLength) {
+        $indexTableName = substr($indexTableName, 0, $maxTableNameLength);
+    }
+    // Use as many random characters as possible, up to 12.
+    $randomLength = min(
+        $maxRandomLength,
+        63 - strlen('PK_' . $indexTableName . '_' . $date . '_')
+    );
+    $indexname = 'PK_' . $indexTableName
+        . '_' . $date
+        . '_' . randomChars($randomLength, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890');
+
+    return Yii::app()->db->createCommand()->addPrimaryKey(
+        $indexname,
+        '{{' . $sTablename . '}}',
+        $aColumns
+    );
 }
 
 /**

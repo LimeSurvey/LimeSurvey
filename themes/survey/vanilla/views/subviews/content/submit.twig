@@ -52,8 +52,9 @@
             {% if (aSurveyInfo.aCompleted.aPrintAnswers.show == true) %}
                 <!--  Link to Print Answer Preview -->
                 <div class="{{ aSurveyInfo.class.submitwrapperdiva }}" {{ aSurveyInfo.attr.submitwrapperdiv }}>
-                    <a href="{{ aSurveyInfo.aCompleted.aPrintAnswers.sUrl }}" title="{{ aSurveyInfo.aCompleted.aPrintAnswers.sTitle }}" class="{{ aSurveyInfo.class.submitwrapperdivaa }}" {{ aSurveyInfo.attr.submitwrapperdivaa }}>
+                    <a href="{{ aSurveyInfo.aCompleted.aPrintAnswers.sUrl }}" target="_blank" rel="noopener" title="{{ aSurveyInfo.aCompleted.aPrintAnswers.sTitle }}" class="{{ aSurveyInfo.class.submitwrapperdivaa }}" {{ aSurveyInfo.attr.submitwrapperdivaa }}>
                         {{ gT("Print your answers.") }}
+                        <span class="visually-hidden">{{ gT("Link opens in a new tab") }}</span>
                     </a>
                 </div>
             {% endif %}
@@ -64,8 +65,9 @@
             {% if (aSurveyInfo.aCompleted.aPublicStatistics.show == true) %}
                 <!-- Link to Public statistics -->
                 <div class="{{ aSurveyInfo.class.submitwrapperdivb }}" {{ aSurveyInfo.attr.submitwrapperdivb }}>
-                    <a href="{{ aSurveyInfo.aCompleted.aPublicStatistics.sUrl }}" title="{{ aSurveyInfo.aCompleted.aPublicStatistics.sTitle }}" class="{{ aSurveyInfo.class.submitwrapperdivba }}" {{ aSurveyInfo.attr.submitwrapperdivba }}>
+                    <a href="{{ aSurveyInfo.aCompleted.aPublicStatistics.sUrl }}" target="_blank" rel="noopener" title="{{ aSurveyInfo.aCompleted.aPublicStatistics.sTitle }}" class="{{ aSurveyInfo.class.submitwrapperdivba }}" {{ aSurveyInfo.attr.submitwrapperdivba }}>
                         {{ gT("View the statistics for this survey.") }}
+                        <span class="visually-hidden">{{ gT("Link opens in a new tab") }}</span>
                     </a>
                 </div>
             {% endif %}

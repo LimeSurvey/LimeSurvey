@@ -86,6 +86,9 @@ class SurveyActivate
         }
 
         $result = $this->surveyActivator->setSurvey($survey)->activate();
+        if (!empty($result['error'])) {
+            return $result;
+        }
         if ($params['restore'] ?? false) {
             $result['restored'] = $this->restoreData($surveyId);
         }
