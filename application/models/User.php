@@ -627,6 +627,16 @@ class User extends LSActiveRecord
 
         $dropdownItems = [];
         $dropdownItems[] = [
+            'title'            => gT('Edit'),
+            'iconClass'        => "ri-pencil-fill",
+            'linkClass'        => "UserManagement--action--openmodal UserManagement--action--edituser",
+            'linkAttributes'   => [
+                'data-href' => $editUrl,
+            ],
+            'enabledCondition' => $this->canEdit()
+                                && $this->uid != App()->user->getId() // To update self : must use personal settings
+        ];
+        $dropdownItems[] = [
             'title'            => gT('User details'),
             'iconClass'        => "ri-search-line",
             'linkClass'        => "UserManagement--action--openmodal UserManagement--action--userdetail",
@@ -649,6 +659,53 @@ class User extends LSActiveRecord
                 )
         ];
 
+        $dropdownItems[] = [
+            'title'            => gT('Permissions'),
+            'iconClass'        => "ri-lock-fill",
+            'linkClass'        => "UserManagement--action--openmodal UserManagement--action--permissions",
+            'linkAttributes'   => [
+                'data-href'      => $setPermissionsUrl,
+                'data-modalsize' => 'modal-lg',
+            ],
+            'enabledCondition' =>
+                ($permission_superadmin_read
+                    && !(Permission::isForcedSuperAdmin($this->uid)
+                        || $this->uid == App()->user->getId()
+                    )
+                )
+                || (!$permission_superadmin_read
+                    && ($this->uid != App()->session['loginID'] //Can't change your own permissions
+                        && (
+                            $permission_users_update
+                            && $ownedOrCreated
+                        )
+                        && !Permission::isForcedSuperAdmin($this->uid)
+                    )
+                )
+        ];
+        $dropdownItems[] = [
+            'title'            => gT('Roles'),
+            'iconClass'        => "ri-group-fill",
+            'linkClass'        => "UserManagement--action--openmodal UserManagement--action--addrole",
+            'linkAttributes'   => [
+                'data-href' => $setRoleUrl,
+            ],
+            'enabledCondition' => $userManager->canAssignRole() && $this->uid != App()->user->getId()
+        ];
+        $dropdownItems[] = [
+            'title'            => gT('Theme permissions'),
+            'iconClass'        => "ri-brush-fill",
+            'linkClass'        => "UserManagement--action--openmodal UserManagement--action--templatepermissions",
+            'linkAttributes'   => [
+                'data-href' => $setTemplatePermissionsUrl,
+            ],
+            'enabledCondition' =>
+                ($permission_superadmin_read
+                    && !(Permission::isForcedSuperAdmin($this->uid)
+                        || $this->uid == App()->user->getId()
+                    )
+                )
+        ];
         $permission = ( $permission_superadmin_read && !(Permission::isForcedSuperAdmin($this->uid) || $this->uid == App()->user->getId()))
             || (!$permission_superadmin_read && ($this->uid != App()->session['loginID'] //Can't change your own permissions
                     && ( $permission_users_update && $ownedOrCreated)
@@ -680,63 +737,6 @@ class User extends LSActiveRecord
             ];
         }
         $dropdownItems[] = [
-            'title'            => gT('Edit permissions'),
-            'iconClass'        => "ri-lock-fill",
-            'linkClass'        => "UserManagement--action--openmodal UserManagement--action--permissions",
-            'linkAttributes'   => [
-                'data-href'      => $setPermissionsUrl,
-                'data-modalsize' => 'modal-xl',
-            ],
-            'enabledCondition' =>
-                ($permission_superadmin_read
-                    && !(Permission::isForcedSuperAdmin($this->uid)
-                        || $this->uid == App()->user->getId()
-                    )
-                )
-                || (!$permission_superadmin_read
-                    && ($this->uid != App()->session['loginID'] //Can't change your own permissions
-                        && (
-                            $permission_users_update
-                            && $ownedOrCreated
-                        )
-                        && !Permission::isForcedSuperAdmin($this->uid)
-                    )
-                )
-        ];
-        $dropdownItems[] = [
-            'title'            => gT('User role'),
-            'iconClass'        => "ri-group-fill",
-            'linkClass'        => "UserManagement--action--openmodal UserManagement--action--addrole",
-            'linkAttributes'   => [
-                'data-href' => $setRoleUrl,
-            ],
-            'enabledCondition' => $userManager->canAssignRole() && $this->uid != App()->user->getId()
-        ];
-        $dropdownItems[] = [
-            'title'            => gT('Edit user'),
-            'iconClass'        => "ri-pencil-fill",
-            'linkClass'        => "UserManagement--action--openmodal UserManagement--action--edituser",
-            'linkAttributes'   => [
-                'data-href' => $editUrl,
-            ],
-            'enabledCondition' => $this->canEdit()
-                                && $this->uid != App()->user->getId() // To update self : must use personal settings
-        ];
-        $dropdownItems[] = [
-            'title'            => gT('Theme permissions'),
-            'iconClass'        => "ri-brush-fill",
-            'linkClass'        => "UserManagement--action--openmodal UserManagement--action--templatepermissions",
-            'linkAttributes'   => [
-                'data-href' => $setTemplatePermissionsUrl,
-            ],
-            'enabledCondition' =>
-                ($permission_superadmin_read
-                    && !(Permission::isForcedSuperAdmin($this->uid)
-                        || $this->uid == App()->user->getId()
-                    )
-                )
-        ];
-        $dropdownItems[] = [
             'title'            => gT('Take ownership'),
             'iconClass'        => "ri-user-received-fill",
             'linkId'        => "UserManagement--takeown-$this->uid",
@@ -764,7 +764,7 @@ class User extends LSActiveRecord
                 )
         ];
         $dropdownItems[] = [
-            'title'            => gT('Delete user'),
+            'title'            => gT('Delete'),
             'iconClass'        => "ri-delete-bin-fill text-danger",
             'linkClass'        => "UserManagement--action--openmodal UserManagement--action--delete",
             'linkId'           => "UserManagement--delete-$this->uid",
@@ -819,7 +819,7 @@ class User extends LSActiveRecord
     {
         $lastLogin = $this->last_login;
         if ($lastLogin == null) {
-            return '---';
+            return '—';
         } else {
             $lastLogin = getDateOfUTC($lastLogin);
         }
@@ -1059,8 +1059,8 @@ class User extends LSActiveRecord
             $this->getAttribute($column),
             [
                 'class' => "form-control",
-                // Native date inputs keep a larger min-height for the picker; pin height to match the other form-control filters.
-                'style' => 'font-size:1rem;height:37.6px;min-height:0;'
+                // Native date inputs keep a larger min-height for the picker; the height itself comes from the admin theme like for all other inputs
+                'style' => 'font-size:1rem;min-height:0;'
             ]
         );
         $dateFilter .= "</div>";
@@ -1107,6 +1107,10 @@ class User extends LSActiveRecord
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
+            // A fixed order, else the database may return the users in any order and paging can repeat or skip users
+            'sort' => array(
+                'defaultOrder' => 't.uid ASC'
+            ),
             'pagination' => array(
                 'pageSize' => $pageSize
             )
@@ -1237,6 +1241,10 @@ class User extends LSActiveRecord
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
+            // A fixed order, else the database may return the users in any order and paging can repeat or skip users
+            'sort' => array(
+                'defaultOrder' => 't.uid ASC'
+            ),
             'pagination' => array(
                 'pageSize' => $pageSize
             )

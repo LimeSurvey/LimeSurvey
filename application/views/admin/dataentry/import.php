@@ -26,6 +26,14 @@
                     ]
                 ]
             ]);
+            // The option for existing response IDs only applies when response IDs are preserved
+            App()->getClientScript()->registerScript(
+                'ImportInsertMethodSwitcher',
+                "$('#preserveIDs').on('change', function () {
+                    $('.setting[data-name=\"insertmethod\"]').toggleClass('d-none', !this.checked);
+                }).trigger('change');",
+                LSYii_ClientScript::POS_POSTSCRIPT
+            );
 
             $message = gT("Please be aware that tables including encryption should not be restored if they have been created in LimeSurvey 4 before version 4.6.1");
             $this->widget('ext.AlertWidget.AlertWidget', [

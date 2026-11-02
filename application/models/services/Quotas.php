@@ -49,6 +49,8 @@ class Quotas
      *   ]
      * ]
      *
+     * Note: Quota members based on a question of another survey are left out.
+     *
      * @return array
      */
     public function getQuotaStructure()
@@ -64,6 +66,10 @@ class Quotas
 
                 //loop through all quotaMembers
                 foreach ($oQuota->quotaMembers as $oQuotaMember) {
+                    // A member based on a question of another survey is never shown, it would disclose its texts
+                    if (!empty($oQuotaMember->question) && $oQuotaMember->question->sid != $this->survey->sid) {
+                        continue;
+                    }
                     $aQuestionAnswers = self::getQuotaAnswers($oQuotaMember['qid'], $oQuota['id']);
                     if ($oQuotaMember->question->type == '*') {
                         $answerText = $oQuotaMember->code;
@@ -322,6 +328,10 @@ class Quotas
     }
 
     /**
+     * Applies a massive action to the given quotas.
+     *
+     * Note: Quotas that don't belong to the survey of this service are skipped,
+     * the permission was only checked on this survey.
      *
      * @param integer[] $aQuotaIds
      * @param string $action
@@ -337,6 +347,7 @@ class Quotas
             $oQuota = Quota::model()->findByPk($iQuotaId);
             if (empty($oQuota) || $oQuota->sid != $this->survey->sid) {
                 $errors [] = gT("Invalid quota ID");
+                continue;
             }
             switch ($action) {
                 case self::MASSIVE_ACTION_ACTIVATE:
@@ -430,6 +441,8 @@ class Quotas
         }
         // EM call 2 times quotas with 3 lines of php code, then use static.
         static $aMatchedQuotas;
+        // Posted quota fields, kept with the matched quotas: needed when rendering the quota page from the second call
+        static $aPostedQuotaFields = [];
         if (is_null($aMatchedQuotas)) {
             $aMatchedQuotas = [];
             /** @var Quota[] $aQuotas */
@@ -567,16 +580,16 @@ class Quotas
         $sUrl = $event->get('url', $aMatchedQuota['quotals_url']);
         $sUrlDescription = $event->get('urldescrip', $aMatchedQuota['quotals_urldescrip']);
         $sAction = (int) $event->get('action', $aMatchedQuota['action']);
-        // close the survey only when the action is a terminate type or when confirmquota is called as move action
-        /**
-         * @todo: 2026-01-05: Is confirmquota action still used?
-         *        The "confirmquota" button was commented out on commit 9e678fb (Ticket #14652)
-         */
-        $closeSurvey = ($sAction !== Quota::SOFT_TERMINATE_VISIBLE_QUOTA_QUESTIONS || App()->getRequest()->getPost('move') === 'confirmquota');
+        // Participant confirmed the soft terminate quota with the "End survey" button of the quota page
+        $bSoftQuotaConfirmed = $sAction === Quota::SOFT_TERMINATE_VISIBLE_QUOTA_QUESTIONS
+            && App()->getRequest()->getPost('move') === 'confirmquota';
+        // close the survey only when the action is a terminate type or when the soft terminate is confirmed
+        $closeSurvey = ($sAction !== Quota::SOFT_TERMINATE_VISIBLE_QUOTA_QUESTIONS || $bSoftQuotaConfirmed);
         $sAutoloadUrl = $event->get('autoloadurl', $aMatchedQuota['autoload_url']);
-        // If action is Terminate, stamp the quota id in the response and marks tokens as completed
+        // If action is Terminate (or a confirmed soft terminate), stamp the quota id in the response and marks tokens as completed
         if (
-            in_array($sAction, [
+            $bSoftQuotaConfirmed
+            || in_array($sAction, [
                 Quota::TERMINATE_VISIBLE_QUOTA_QUESTIONS,
                 Quota::TERMINATE_VISIBLE_AND_HIDDEN_QUOTA_QUESTIONS,
                 Quota::TERMINATE_ALL_PAGES
@@ -624,24 +637,30 @@ class Quotas
             true
         );
 
-        // Datas for twig view
+        // Datas for twig view: Start from the survey info, so themes can use it like on the other pages
+        $thissurvey = $aSurveyInfo;
         $thissurvey['sid'] = $surveyid;
+        // Avoid showing the progress bar
+        $thissurvey['aCompleted'] = true;
         $thissurvey['aQuotas'] = [];
         $thissurvey['aQuotas']['sMessage'] = $sMessage;
         $thissurvey['aQuotas']['bShowNavigator'] = !$closeSurvey;
         $thissurvey['aQuotas']['sClientToken'] = $sClientToken;
         $thissurvey['aQuotas']['sQuotaStep'] = 'returnfromquota';
-        $thissurvey['aQuotas']['aPostedQuotaFields'] = $aPostedQuotaFields ?? '';
+        $thissurvey['aQuotas']['aPostedQuotaFields'] = $aPostedQuotaFields;
         $thissurvey['aQuotas']['sPluginBlocks'] = implode("\n", $blocks);
         $thissurvey['aQuotas']['sUrlDescription'] = $sUrlDescription;
         $thissurvey['aQuotas']['sUrl'] = $sUrl;
         $thissurvey['active'] = 'Y';
-        $thissurvey['aQuotas']['hiddeninputs'] = '<input type="hidden" name="sid"      value="' . $surveyid . '" />
-                                              <input type="hidden" name="token"    value="' . $thissurvey['aQuotas']['sClientToken'] . '" />
-                                              <input type="hidden" name="thisstep" value="' . ($_SESSION['responses_' . $surveyid]['step'] ?? 0) . '" />';
+        $thissurvey['aQuotas']['hiddeninputs'] = CHtml::hiddenField('sid', $surveyid, ['id' => false])
+            . CHtml::hiddenField('token', $thissurvey['aQuotas']['sClientToken'], ['id' => false])
+            . CHtml::hiddenField('thisstep', $_SESSION['responses_' . $surveyid]['step'] ?? 0, ['id' => false]);
         if (!empty($thissurvey['aQuotas']['aPostedQuotaFields'])) {
+            // Re-post the quota fields: the "End survey" (confirmquota) move needs them to match the quota again
             foreach ($thissurvey['aQuotas']['aPostedQuotaFields'] as $field => $post) {
-                $thissurvey['aQuotas']['hiddeninputs'] .= '<input type="hidden" name="' . $field . '"   value="' . $post . '" />';
+                if (is_scalar($post)) {
+                    $thissurvey['aQuotas']['hiddeninputs'] .= CHtml::hiddenField($field, $post, ['id' => false]);
+                }
             }
         }
 

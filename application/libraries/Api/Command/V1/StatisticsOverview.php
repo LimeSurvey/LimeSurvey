@@ -8,6 +8,7 @@ use LimeSurvey\Api\Transformer\TransformerException;
 use LimeSurvey\DI;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\FilterPatcher;
 use LimeSurvey\Libraries\Api\Command\V1\Transformer\Output\TransformerOutputSurveyResponses;
+use LimeSurvey\Models\Services\Exception\NotFoundException;
 use LimeSurvey\Models\Services\SurveyStatistics\Charts\DailyActivity\DailyActivityStatistics;
 use LimeSurvey\Models\Services\SurveyStatistics\Charts\SurveyOverview\SurveyOverviewStatistics;
 use LimeSurvey\Models\Services\SurveyStatistics\StatisticsService;
@@ -120,6 +121,7 @@ class StatisticsOverview implements CommandInterface
      * Retrieve statistics overview and daily activity data
      *
      * @return array Array containing daily activity and overview data
+     * @throws NotFoundException
      */
     private function getStatisticsOverviewData(): array
     {

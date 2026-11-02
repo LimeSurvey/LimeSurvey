@@ -83,16 +83,19 @@ export const ChartRenderer = ({
   }
 
   return (
-    <Card className="responses-chart-card py-3">
+    <Card className="responses-chart-card h-100 py-3">
       <div className="d-flex w-100 justify-content-center">
         <h2 className="text-xl flex-grow-1 text-center font-semibold mb-4">
           {title}
         </h2>
       </div>
 
-      <div className="chart-wrapper">
+      <div className="chart-wrapper d-flex flex-column justify-content-center flex-grow-1">
         {data.length !== 0 ? (
-          <ChartComponent data={data} />
+          <ChartComponent
+            data={data}
+            {...(ChartComponent === BarChart && { scrollable: false })}
+          />
         ) : (
           <div
             className="d-flex justify-content-center align-items-center"

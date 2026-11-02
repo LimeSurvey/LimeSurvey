@@ -109,7 +109,7 @@
                 '<br>' .
                 gT("Using the chart type selector you can force the graph type for all selected questions.") .
                 '<br>' .
-                gT("Only for HTML output.");
+                gT("In PDF output, polar and doughnut charts are shown as pie charts.");
             $this->widget('ext.AlertWidget.AlertWidget', [
             'text' => $message,
             'type' => 'info',

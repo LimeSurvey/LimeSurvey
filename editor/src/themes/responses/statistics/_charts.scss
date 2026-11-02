@@ -253,6 +253,18 @@
     }
   }
 
+  .responses-statistics-chart-info {
+    display: flex;
+    align-items: flex-start;
+    align-items: center;
+    gap: 8px;
+
+    i {
+      font-size: 1.25em;
+      line-height: 1;
+    }
+  }
+
   .responses-statistics-stat-term i {
     color: $g-700;
     cursor: help;
@@ -421,17 +433,6 @@
       height: 100%;
     }
 
-    .responses-statistics-bar-chart-viewport {
-      max-width: 100%;
-
-      &--scrollable {
-        overflow-x: auto;
-        overflow-y: hidden;
-
-        scrollbar-gutter: stable;
-      }
-    }
-
     .responses-statistics-bar-chart--clickable .recharts-bar-rectangle {
       cursor: pointer;
     }
@@ -533,6 +534,17 @@
         gap: 24px;
       }
     }
+  }
+}
+
+.responses-statistics-bar-chart-viewport {
+  max-width: 100%;
+
+  &--scrollable {
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    scrollbar-gutter: stable;
   }
 }
 

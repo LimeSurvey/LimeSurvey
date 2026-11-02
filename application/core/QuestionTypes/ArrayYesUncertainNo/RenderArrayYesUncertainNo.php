@@ -176,7 +176,8 @@ class RenderArrayYesUncertainNo extends QuestionBaseRenderer
                     'checkconditionFunction' => $this->checkconditionFunction,
                     'error'                  => $error,
                     'no_answer'              => $this->showNoAnswer(),
-                    'odd'                    => ($i % 2)
+                    'odd'                    => ($i % 2),
+                    'relevanceClass'         => $this->getCurrentRelevecanceClass($myfname),
                 )
             );
             $inputnames[] = $myfname;

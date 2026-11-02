@@ -232,9 +232,7 @@ class PasswordManagement
             case self::EMAIL_TYPE_RESET_PW:
                 $renderArray = $this->getRenderArray();
                 if (empty($renderArray)) {
-                    $mailer = new \LimeMailer();
-                    $mailer->ErrorInfo = gT('The system is not properly configured to send emails. Please contact the administrator.');
-                    return $mailer;
+                    return $this->getMailerConfigurationError();
                 }
                 $subject = "[" . \Yii::app()->getConfig("sitename") . "] " . gT(
                     "Your login credentials have been reset"
@@ -250,9 +248,7 @@ class PasswordManagement
                 //Get email template from globalSettings, replacements are done by LimeMailer
                 $replacements = $this->getAdminCreationEmailReplacements();
                 if ($replacements === false) {
-                    $mailer = new \LimeMailer();
-                    $mailer->ErrorInfo = gT('The system is not properly configured to send emails. Please contact the administrator.');
-                    return $mailer;
+                    return $this->getMailerConfigurationError();
                 }
                 $rawEmail = $this->getRawAdminCreationEmail();
                 $rawSubject = $rawEmail['subject'];
@@ -263,9 +259,7 @@ class PasswordManagement
         }
 
         if (empty(\Yii::app()->getConfig("siteadminemail"))) {
-            $mailer = new \LimeMailer();
-            $mailer->ErrorInfo = gT('The system is not properly configured to send emails. Please contact the administrator.');
-            return $mailer;
+            return $this->getMailerConfigurationError();
         }
 
         $emailType = "addadminuser";
@@ -281,6 +275,18 @@ class PasswordManagement
         $mailer->isHtml(true);
         $mailer->emailType = $emailType;
         $mailer->sendMessage();
+        return $mailer;
+    }
+
+    /**
+     * Returns an unsent mailer carrying the error that the system is not configured to send emails
+     *
+     * @return \LimeMailer
+     */
+    private function getMailerConfigurationError(): \LimeMailer
+    {
+        $mailer = new \LimeMailer();
+        $mailer->ErrorInfo = gT('The system is not properly configured to send emails. Please contact the administrator.');
         return $mailer;
     }
 

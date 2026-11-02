@@ -30,10 +30,13 @@ export const BarChart = ({
   isImage = false,
   hasComments = false,
   onViewComments,
+  scrollable = true,
 }) => {
   const isPercentage = valueType === VALUE_TYPE.PERCENTAGE
   const dataKey = getMetricDataKey(valueType)
-  const chartMinWidth = getBarChartMinWidth(data.length)
+  const chartMinWidth = scrollable
+    ? getBarChartMinWidth(data.length)
+    : undefined
   const formatBarValue = (value) =>
     value == null || Number(value) === 0
       ? ''
@@ -54,7 +57,7 @@ export const BarChart = ({
         style={chartMinWidth ? { minWidth: chartMinWidth } : undefined}
       >
         <ResponsiveContainer width="100%" height={400}>
-          <RechartsBarChart data={data} margin={{ top: 20 }}>
+          <RechartsBarChart data={data} margin={{ top: 20, right: 20 }}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis
               dataKey="title"

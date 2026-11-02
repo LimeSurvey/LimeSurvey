@@ -43,11 +43,15 @@ $fileMaxSizeHintId = $importModal . '-file-max-size-hint';
                             name='the_file'
                             type="file"
                             accept='.zip'
+                            <?php if (isFileUploadSizeLimited()) : ?>
                             aria-describedby="<?php echo CHtml::encode($fileMaxSizeHintId); ?>"
+                            <?php endif; ?>
                         />
+                        <?php if (isFileUploadSizeLimited()) : ?>
                         <div class="form-text mt-2" id="<?php echo CHtml::encode($fileMaxSizeHintId); ?>">
                             <?php printf(gT('(Maximum file size: %01.2f MB)'), getMaximumFileUploadSize() / 1024 / 1024); ?>
                         </div>
+                        <?php endif; ?>
                     </div>
                 </div>
                 <div class="modal-footer">

@@ -1,5 +1,5 @@
 <?php
-    $aPermissiontemplates = Permissiontemplates::model()->findAll();
+    $aPermissiontemplates = (new \LimeSurvey\Models\Services\UserManager(App()->user))->getAssignableRoles();
 ?>
 
 <div class="selector--edit-role-container">
@@ -14,7 +14,7 @@
             <label for="roleselector"><?= gT("Select role to apply to users") ?></label>
             <select class="form-select select post-value" name="roleselector" id="roleselector" multiple>
                 <?php foreach ($aPermissiontemplates as $oPermissiontemplate) {
-                    echo "<option value='" . $oPermissiontemplate->ptid . "'>" . $oPermissiontemplate->name . "</option>";
+                    echo CHtml::tag('option', ['value' => $oPermissiontemplate->ptid], CHtml::encode($oPermissiontemplate->name));
                 } ?>
             </select>
         </div>

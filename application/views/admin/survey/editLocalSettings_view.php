@@ -64,7 +64,7 @@ echo viewHelper::getViewTestTag('surveyTexts');
         </div>
         <div class="col-lg-2">
             <!-- Decimal mark -->
-            <label class="form-label "><?php eT("Decimal mark:"); ?></label>
+            <label class="form-label" id="numberformat_<?= $aSurveyLanguageSettings['surveyls_language'] ?>-label"><?php eT("Decimal mark:"); ?></label>
             <?php $aRadixPoint = [];
             foreach (getRadixPointData() as $index => $radixptdata) {
                 $aRadixPoint[$index] = html_entity_decode((string) $radixptdata['desc']);
@@ -73,7 +73,7 @@ echo viewHelper::getViewTestTag('surveyTexts');
                 'name'          => 'numberformat_' . $aSurveyLanguageSettings['surveyls_language'],
                 'checkedOption' => $aSurveyLanguageSettings['surveyls_numberformat'],
                 'selectOptions' => $aRadixPoint,
-                'ariaLabel'     => gT("Decimal mark:"),
+                'ariaLabelledBy' => 'numberformat_' . $aSurveyLanguageSettings['surveyls_language'] . '-label',
                 'htmlOptions'   => [
                     "style" => "z-index:0"
                 ]

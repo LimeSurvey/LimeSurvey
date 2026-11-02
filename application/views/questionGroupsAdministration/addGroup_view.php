@@ -90,7 +90,7 @@ $active = 1; ?>
                                     <label class="form-label " for='grelevance'><?php eT("Condition:"); ?></label>
                                     <div class="input-group">
                                         <div class="input-group-text">{</div>
-                                        <textarea cols='1' class="form-control" rows='1' id='grelevance' name='questionGroup[grelevance]'></textarea>
+                                        <textarea cols='1' class="form-control" rows='1' id='grelevance' name='questionGroup[grelevance]' placeholder='1'></textarea>
                                         <div class="input-group-text">}</div>
                                     </div>
                                 </div>

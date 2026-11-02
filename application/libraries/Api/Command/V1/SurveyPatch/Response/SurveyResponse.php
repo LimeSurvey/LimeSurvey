@@ -56,13 +56,39 @@ class SurveyResponse
     {
         // add error message and full operation info to ErrorItemList
         $exceptionErrorItem = new ExceptionErrorItem(
-            $e->getMessage(),
+            $this->getExceptionMessage($e),
             (int)$e->getCode(),
             $patchOpData
         );
         $this->exceptionErrors->addExceptionErrorItem(
             $exceptionErrorItem
         );
+    }
+
+    /**
+     * Returns the exception message, extended by the validation errors of the
+     * model attached to the exception (if any), so the editor can show the
+     * actual reason (e.g. free plan content restrictions).
+     *
+     * @param \Exception $e
+     * @return string
+     */
+    private function getExceptionMessage(\Exception $e): string
+    {
+        $message = $e->getMessage();
+        if (
+            !($e instanceof \LimeSurvey\Models\Services\Exception)
+            || !$e->getErrorModel()
+        ) {
+            return $message;
+        }
+        $modelErrors = array_unique(
+            array_merge(...array_values($e->getErrorModel()->getErrors()))
+        );
+        if (empty($modelErrors)) {
+            return $message;
+        }
+        return $message . ': ' . implode(' ', $modelErrors);
     }
 
     public function incrementOperationsApplied(): void

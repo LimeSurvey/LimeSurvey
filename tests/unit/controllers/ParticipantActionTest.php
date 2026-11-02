@@ -124,6 +124,95 @@ class ParticipantActionTest extends TestBaseClass
     }
 
     /**
+     * Users without global delete permission do not get the delete modal for participants of other users,
+     * an unknown participant answers with an error instead of a PHP warning.
+     *
+     * @return void
+     */
+    public function testUserWithoutGlobalDeletePermissionCannotOpenDeleteModalForForeignParticipant()
+    {
+        $foreignParticipant = $this->createParticipant(1);
+
+        \Yii::app()->session['loginID'] = self::$createOnlyUser->uid;
+        $calledForeign = $this->runParticipantsAction('openDeleteParticipant', [
+            'participant_id' => $foreignParticipant->participant_id,
+        ]);
+        $calledUnknown = $this->runParticipantsAction('openDeleteParticipant', [
+            'participant_id' => 'does-not-exist',
+        ]);
+
+        $this->assertEquals('outputNoPermission', $calledForeign);
+        $this->assertEquals('outputError', $calledUnknown);
+        $this->assertTrue($foreignParticipant->delete());
+    }
+
+    /**
+     * The attribute values of a participant are only returned to users who may see the participant.
+     *
+     * @return void
+     */
+    public function testAttributeJsonOnlyForReadableParticipant()
+    {
+        $foreignParticipant = $this->createParticipant(1);
+
+        \Yii::app()->session['loginID'] = self::$createOnlyUser->uid;
+        $_GET['pid'] = $foreignParticipant->participant_id;
+        ob_start();
+        $calledWithoutPermission = $this->runParticipantsAction('getAttributeJson', []);
+        $outputWithoutPermission = ob_get_clean();
+
+        \Yii::app()->session['loginID'] = self::$readOnlyUser->uid;
+        ob_start();
+        $calledWithPermission = $this->runParticipantsAction('getAttributeJson', []);
+        $outputWithPermission = ob_get_clean();
+        unset($_GET['pid']);
+
+        $this->assertEquals('outputNoPermission', $calledWithoutPermission);
+        $this->assertSame('', $outputWithoutPermission);
+        $this->assertNull($calledWithPermission);
+        $this->assertNotEmpty(json_decode($outputWithPermission));
+        $this->assertTrue($foreignParticipant->delete());
+    }
+
+    /**
+     * A share of one participant gives access to the attribute values of that participant only.
+     *
+     * @return void
+     */
+    public function testAttributeJsonShareDoesNotOpenOtherParticipants()
+    {
+        $sharedParticipant = $this->createParticipant(1);
+        $unsharedParticipant = $this->createParticipant(1);
+        $share = new \ParticipantShare();
+        $share->participant_id = $sharedParticipant->participant_id;
+        $share->share_uid = self::$createOnlyUser->uid;
+        $share->date_added = date('Y-m-d H:i:s');
+        $share->can_edit = 0;
+        $this->assertTrue($share->save());
+
+        \Yii::app()->session['loginID'] = self::$createOnlyUser->uid;
+        \Yii::app()->user->setId(self::$createOnlyUser->uid);
+        $_GET['pid'] = $sharedParticipant->participant_id;
+        ob_start();
+        $calledShared = $this->runParticipantsAction('getAttributeJson', []);
+        $outputShared = ob_get_clean();
+
+        $_GET['pid'] = $unsharedParticipant->participant_id;
+        ob_start();
+        $calledUnshared = $this->runParticipantsAction('getAttributeJson', []);
+        $outputUnshared = ob_get_clean();
+        unset($_GET['pid']);
+
+        $this->assertNull($calledShared);
+        $this->assertNotEmpty(json_decode($outputShared));
+        $this->assertEquals('outputNoPermission', $calledUnshared);
+        $this->assertSame('', $outputUnshared);
+        $this->assertTrue($share->delete());
+        $this->assertTrue($sharedParticipant->delete());
+        $this->assertTrue($unsharedParticipant->delete());
+    }
+
+    /**
      * Delete options of the participant delete action.
      *
      * @return array<string, string[]>
@@ -191,6 +280,162 @@ class ParticipantActionTest extends TestBaseClass
         $this->assertNotNull(\Participant::model()->findByPk($foreignParticipant->participant_id));
         \SurveyLink::model()->deleteAllByAttributes(['survey_id' => self::$surveyId]);
         $this->assertTrue($foreignParticipant->delete());
+    }
+
+    /**
+     * Changing the visibility of an attribute answers with a message for the user.
+     *
+     * @return void
+     */
+    public function testChangeAttributeVisibilityAnswersWithMessage()
+    {
+        $attributeName = $this->createAttributeName('FALSE', 'N');
+
+        \Yii::app()->session['loginID'] = 1;
+        ob_start();
+        $this->runParticipantsAction('changeAttributeVisibility', [
+            'attribute_id' => $attributeName->attribute_id,
+            'visible' => '1',
+        ]);
+        $response = json_decode(ob_get_clean(), true);
+
+        $this->assertTrue($response['success']);
+        $this->assertNotEmpty($response['message']);
+        $this->assertArrayNotHasKey('debug', $response);
+        $this->assertEquals('TRUE', \ParticipantAttributeName::model()->findByPk($attributeName->attribute_id)->visible);
+        $this->assertTrue($attributeName->delete());
+    }
+
+    /**
+     * Changing the encryption of an attribute answers with a message for the user,
+     * also if the attribute does not exist.
+     *
+     * @return void
+     */
+    public function testChangeAttributeEncryptedAnswersWithMessage()
+    {
+        $attributeName = $this->createAttributeName('TRUE', 'N');
+
+        \Yii::app()->session['loginID'] = 1;
+        ob_start();
+        $this->runParticipantsAction('changeAttributeEncrypted', [
+            'attribute_id' => $attributeName->attribute_id,
+            'encrypted' => '1',
+        ]);
+        $response = json_decode(ob_get_clean(), true);
+
+        $this->assertTrue($response['success']);
+        $this->assertNotEmpty($response['message']);
+        $this->assertArrayNotHasKey('debug', $response);
+        $this->assertEquals('Y', \ParticipantAttributeName::model()->findByPk($attributeName->attribute_id)->encrypted);
+        $this->assertTrue($attributeName->delete());
+
+        ob_start();
+        $this->runParticipantsAction('changeAttributeEncrypted', [
+            'attribute_id' => $attributeName->attribute_id,
+            'encrypted' => '0',
+        ]);
+        $response = json_decode(ob_get_clean(), true);
+
+        $this->assertFalse($response['success']);
+        $this->assertNotEmpty($response['message']);
+    }
+
+    /**
+     * Users who may not manage the share of a participant get a no permission answer
+     * when changing whether the share is editable.
+     *
+     * @return void
+     */
+    public function testChangeSharedEditableStatusWithoutPermission()
+    {
+        $participant = $this->createParticipant(1);
+        $share = new \ParticipantShare();
+        $share->participant_id = $participant->participant_id;
+        $share->share_uid = self::$createOnlyUser->uid;
+        $share->date_added = date('Y-m-d H:i:s');
+        $share->can_edit = 0;
+        $this->assertTrue($share->save());
+
+        \Yii::app()->session['loginID'] = self::$readOnlyUser->uid;
+        \Yii::app()->user->setId(self::$readOnlyUser->uid);
+        $called = $this->runParticipantsAction('changeSharedEditableStatus', [
+            'participant_id' => $participant->participant_id,
+            'share_uid' => self::$createOnlyUser->uid,
+            'can_edit' => '1',
+        ]);
+
+        $this->assertEquals('outputNoPermission', $called);
+        $share = \ParticipantShare::model()->findByAttributes([
+            'participant_id' => $participant->participant_id,
+            'share_uid' => self::$createOnlyUser->uid,
+        ]);
+        $this->assertEquals(0, $share->can_edit);
+        $this->assertTrue($share->delete());
+        $this->assertTrue($participant->delete());
+    }
+
+    /**
+     * The owner can delete a single share of a participant whose older participant ID has special characters.
+     *
+     * @return void
+     */
+    public function testDeleteSingleParticipantShareWithLegacyParticipantId()
+    {
+        $participantId = 'abc"\'<>';
+        \Yii::app()->db->createCommand()->insert('{{participants}}', [
+            'participant_id' => $participantId,
+            'blacklisted' => 'N',
+            'owner_uid' => self::$createOnlyUser->uid,
+            'created_by' => self::$createOnlyUser->uid,
+            'created' => date('Y-m-d H:i:s'),
+        ]);
+        $share = new \ParticipantShare();
+        $share->participant_id = $participantId;
+        $share->share_uid = self::$readOnlyUser->uid;
+        $share->date_added = date('Y-m-d H:i:s');
+        $share->can_edit = 0;
+        $this->assertTrue($share->save());
+
+        \Yii::app()->session['loginID'] = self::$createOnlyUser->uid;
+        \Yii::app()->user->setId(self::$createOnlyUser->uid);
+        $requestMethod = $_SERVER['REQUEST_METHOD'] ?? null;
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+        try {
+            $called = $this->runParticipantsAction('deleteSingleParticipantShare', [
+                'participantId' => $participantId,
+                'shareUid' => (string) self::$readOnlyUser->uid,
+            ]);
+
+            $this->assertEquals('outputSuccess', $called);
+            $this->assertNull(\ParticipantShare::model()->findByPk([
+                'participant_id' => $participantId,
+                'share_uid' => self::$readOnlyUser->uid,
+            ]));
+        } finally {
+            $_SERVER['REQUEST_METHOD'] = $requestMethod;
+            \ParticipantShare::model()->deleteAllByAttributes(['participant_id' => $participantId]);
+            \Participant::model()->deleteByPk($participantId);
+        }
+    }
+
+    /**
+     * Creates a custom central participant attribute.
+     *
+     * @param string $visible 'TRUE' or 'FALSE'
+     * @param string $encrypted 'Y' or 'N'
+     * @return \ParticipantAttributeName
+     */
+    private function createAttributeName($visible, $encrypted)
+    {
+        $attributeName = new \ParticipantAttributeName();
+        $attributeName->attribute_type = 'TB';
+        $attributeName->defaultname = 'switch_test';
+        $attributeName->visible = $visible;
+        $attributeName->encrypted = $encrypted;
+        $attributeName->core_attribute = 'N';
+        $this->assertTrue($attributeName->save(), 'Saved attribute');
+        return $attributeName;
     }
 
     /**

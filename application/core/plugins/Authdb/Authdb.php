@@ -62,6 +62,10 @@ class Authdb extends AuthPluginBase
                 $expires = flattenText(Yii::app()->request->getPost('expires'), false, true);
             }
         } else {
+            // Do nothing if the user is created by another authentication plugin (e.g. LDAP)
+            if (isset($preCollectedUserArray['user_type']) && $preCollectedUserArray['user_type'] != 'DB') {
+                return;
+            }
             $new_user = flattenText($preCollectedUserArray['users_name']);
             $new_email = flattenText($preCollectedUserArray['email']);
             $new_full_name = flattenText($preCollectedUserArray['full_name']);

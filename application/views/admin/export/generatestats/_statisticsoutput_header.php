@@ -26,7 +26,7 @@
             <td colspan='4' align='center' style='text-align: center; '>
                 <!-- question title -->
                 <?php echo $outputs['qquestion'];?>
-            </th>
+            </td>
         </tr>
         <!-- width depend on how much items... -->
         <tr>
@@ -57,4 +57,5 @@
             <?php endif; ?>
         </tr>
     </thead>
+    <tbody>
 <!-- end of _statisticsoutput_header -->

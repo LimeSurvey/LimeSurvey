@@ -39,15 +39,19 @@ class ValidatorNumerical implements ValidatorInterface
                 $minValid = $min === false || $value >= $min;
                 $maxValid = $max === false || $value <= $max;
                 if (!$minValid && !$maxValid) {
-                    $messages[] = $key . ' must be between ' . $min . ' and ' .
-                        $max . '.';
+                    $messages[] = sprintf(
+                        gT('%s must be between %s and %s.', 'unescaped'),
+                        $key,
+                        $min,
+                        $max
+                    );
                 } elseif (!$minValid) {
-                    $messages[] = $key . ' must be higher than ' . $min . '.';
+                    $messages[] = sprintf(gT('%s must be higher than %s.', 'unescaped'), $key, $min);
                 } elseif (!$maxValid) {
-                    $messages[] = $key . ' must be lower than ' . $max . '.';
+                    $messages[] = sprintf(gT('%s must be lower than %s.', 'unescaped'), $key, $max);
                 }
             } else {
-                $messages[] = $key . ' must be numeric.';
+                $messages[] = sprintf(gT('%s must be numeric.', 'unescaped'), $key);
             }
         }
 

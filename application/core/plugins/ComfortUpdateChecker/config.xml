@@ -7,6 +7,7 @@
         <lastUpdate>2020-10-12</lastUpdate>
         <author>LimeSurvey GmbH</author>
         <authorUrl>https://limesurvey.org</authorUrl>
+        <documentationUrl>https://www.limesurvey.org/manual/ComfortUpdateChecker_plugin</documentationUrl>
         <email>support@limesurvey.org</email>
         <version>1.0.1</version>
         <license>GNU General Public License version 2 or later</license>

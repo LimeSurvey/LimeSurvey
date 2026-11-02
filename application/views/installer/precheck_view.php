@@ -47,7 +47,7 @@ $iconFail = "<span class='ri-error-warning-fill text-danger'></span>";
                        <td><?=$model::MINIMUM_MEMORY_LIMIT?></td>
                        <td>
                            <?php if ($model->isMemoryLimitOK) :?>
-                                <?= $model->memoryLimit == -1 ? gT("Unlimited") : $model->memoryLimit . "MB" ?>
+                                <?= ini_get('memory_limit') == -1 ? gT("Unlimited") : $model->memoryLimit . "MB" ?>
                            <?php else :?>
                                 <span style='font-weight:bold; color: red'><?= gT("Too low"); ?>: <?=$model->memoryLimit?>MB</span>
                            <?php endif;?>

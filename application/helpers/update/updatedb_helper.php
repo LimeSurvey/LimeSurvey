@@ -42,13 +42,38 @@ use LimeSurvey\Helpers\Update\DatabaseUpdateBase;
 */
 
 /**
+ * Deletes the file cache that the web application uses (tmp/runtime/cache), including its cached table schemas.
+ *
+ * Needed when the current application does not use that cache itself: the console sets YII_DEBUG,
+ * so its cache component is a CDummyCache and flushing it leaves the web side's stale schema in place.
+ *
+ * @see https://bugs.limesurvey.org/view.php?id=20772
+ * @return void
+ */
+function flushWebFileCache()
+{
+    if (Yii::app()->cache instanceof CFileCache) {
+        // Already flushed with the application cache
+        return;
+    }
+    try {
+        $fileCache = new CFileCache();
+        $fileCache->init();
+        $fileCache->flush();
+    } catch (\Throwable $t) {
+        Yii::log('Failed to flush the file cache: ' . $t->getMessage(), 'error', 'application.db.update');
+    }
+}
+
+/**
  * Executes all required database migrations from the given previous DB version up to the configured target DB version.
  *
  * @param int $iOldDBVersion The previous database version to upgrade from.
  * @param bool $bSilent If true, attempt a silent update; the function will return `false` and perform no updates when one or more critical versions are included in the required update range.
+ * @param string|null &$sAbortReason Set to the reason when the update is refused before any update step ran, so the database was not changed.
  * @return bool `true` if all updates were applied successfully, `false` otherwise.
  */
-function db_upgrade_all($iOldDBVersion, $bSilent = false)
+function db_upgrade_all($iOldDBVersion, $bSilent = false, &$sAbortReason = null)
 {
     /**
      * If you add a new database version add any critical database version numbers to this array. See link
@@ -64,6 +89,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
     }
     // If DBVersion is older than 132 don't allow database update
     if ($iOldDBVersion < 132) {
+        $sAbortReason = sprintf(gT('Updating from database version %s is not supported, the oldest database version that can be updated is 132.'), $iOldDBVersion);
         return false;
     }
 
@@ -79,6 +105,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         );
     } catch (CDbException $e) {
         Yii::log('Could not verify database version before update: ' . $e->getMessage(), 'error', 'application.db.update');
+        $sAbortReason = 'Could not verify database version before update: ' . $e->getMessage();
         return false;
     }
     if (!$requirement['supported']) {
@@ -92,12 +119,28 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             Yii::app()->user->setFlash('error', $message);
         }
         Yii::log($message, 'error', 'application.db.update');
+        $sAbortReason = $message;
         return false;
     }
 
     // Try to acquire database update lock
     if (!getDatabaseUpdateLock(false, $sLockError)) {
-        Yii::app()->user->setFlash('error', $sLockError ?: 'Could not acquire the database update lock.');
+        $sAbortReason = $sLockError ?: 'Could not acquire the database update lock.';
+        Yii::app()->user->setFlash('error', $sAbortReason);
+        return false;
+    }
+
+    // A previous update that failed or was interrupted leaves the database half-migrated.
+    // Running the updates again on top of that can silently destroy data, so refuse it.
+    $sIncompleteUpdate = getIncompleteDatabaseUpdateMarker();
+    if ($sIncompleteUpdate !== null) {
+        $message = getIncompleteDatabaseUpdateMessage($sIncompleteUpdate);
+        if (!$bSilent && Yii::app()->hasComponent('user')) {
+            Yii::app()->user->setFlash('error', $message);
+        }
+        Yii::log($message, 'error', 'application.db.update');
+        $sAbortReason = $message;
+        releaseDatabaseUpdateLock();
         return false;
     }
 
@@ -140,6 +183,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $options .= ' ROW_FORMAT=DYNAMIC'; // Same than create-database
         }
     }
+    // Stays in place if the update throws or the process dies, see getIncompleteDatabaseUpdateMarker()
+    setIncompleteDatabaseUpdateMarker($iOldDBVersion);
     try {
         // Get all relevant files from updates/ folder
         $updates = getRelevantUpdates($iOldDBVersion, Yii::app()->db, $options);
@@ -147,6 +192,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             // NB: safeUp() wraps up() inside a transaction and also updates DBVersion.
             $update->safeUp();
         }
+        clearIncompleteDatabaseUpdateMarker();
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
         // Activate schema caching
@@ -165,6 +211,9 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             . htmlspecialchars($e->getMessage())
             . '</p><br />'
             . sprintf(gT('File %s, line %s.'), $file, $trace[1]['line'])
+            . '<p>'
+            . gT('Your database is probably in an inconsistent state now. Please restore the database backup you made before the update, then start the update again.')
+            . '</p>'
         );
         // Restore previous maintenance mode if it was changed
         if (!$bMaintenanceModeRestored) {
@@ -213,6 +262,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
     if (method_exists(Yii::app()->cache, 'gc')) {
         Yii::app()->cache->gc();
     }
+    flushWebFileCache();
 
     // Inform superadmin about update
     $superadmins = User::model()->getSuperAdmins();
@@ -324,6 +374,63 @@ function isDatabaseUpdateLockHeld()
 function releaseDatabaseUpdateLock()
 {
     getDatabaseUpdateLock(true);
+}
+
+/**
+ * Returns the marker that db_upgrade_all() writes before running the updates and removes
+ * once all of them have succeeded. If it exists while no update is running, a previous
+ * update failed or was interrupted (error, timeout, killed process) and left the database
+ * in an inconsistent state that only a backup restore can fix.
+ *
+ * @return string|null The database version the incomplete update started from, or null if there is none.
+ */
+function getIncompleteDatabaseUpdateMarker()
+{
+    $value = Yii::app()->db->createCommand()
+        ->select('stg_value')
+        ->from('{{settings_global}}')
+        ->where('stg_name = :name', [':name' => 'DBUpdateIncomplete'])
+        ->queryScalar();
+    return $value === false ? null : (string) $value;
+}
+
+/**
+ * Writes the incomplete database update marker, see getIncompleteDatabaseUpdateMarker().
+ *
+ * @param int $iOldDBVersion The database version the update starts from.
+ * @return void
+ */
+function setIncompleteDatabaseUpdateMarker($iOldDBVersion)
+{
+    clearIncompleteDatabaseUpdateMarker();
+    Yii::app()->db->createCommand()->insert(
+        '{{settings_global}}',
+        ['stg_name' => 'DBUpdateIncomplete', 'stg_value' => (string) $iOldDBVersion]
+    );
+}
+
+/**
+ * Removes the incomplete database update marker, see getIncompleteDatabaseUpdateMarker().
+ *
+ * @return void
+ */
+function clearIncompleteDatabaseUpdateMarker()
+{
+    Yii::app()->db->createCommand()->delete('{{settings_global}}', 'stg_name = :name', [':name' => 'DBUpdateIncomplete']);
+}
+
+/**
+ * Returns the message explaining that a previous database update did not complete.
+ *
+ * @param string $sOldDBVersion The database version the incomplete update started from.
+ * @return string
+ */
+function getIncompleteDatabaseUpdateMessage($sOldDBVersion)
+{
+    return sprintf(
+        gT('A previous database update (starting from database version %s) failed or was interrupted, so your database is probably in an inconsistent state. Please restore the database backup you made before the update, then start the update again.'),
+        $sOldDBVersion
+    );
 }
 
 /**
@@ -2612,8 +2719,16 @@ function upgradeTokens148()
 {
     $aTables = dbGetTablesLike("tokens%");
     foreach ($aTables as $sTable) {
-        addColumn($sTable, 'participant_id', "string(50)");
-        addColumn($sTable, 'blacklisted', "string(17)");
+        $tokenTableSchema = Yii::app()->db->getSchema()->getTable($sTable, true);
+        if ($tokenTableSchema === null) {
+            continue;
+        }
+        if (!isset($tokenTableSchema->columns['participant_id'])) {
+            addColumn($sTable, 'participant_id', "string(50)");
+        }
+        if (!isset($tokenTableSchema->columns['blacklisted'])) {
+            addColumn($sTable, 'blacklisted', "string(17)");
+        }
     }
 }
 
@@ -3137,11 +3252,38 @@ function dropPrimaryKey($sTablename, $oldPrimaryKeyColumn = null)
 }
 
 /**
-* @param string $sTablename
+* @param string $sTablename : without { }
+* @param string|string[] $aColumns the primary keys as string or columns
 */
 function addPrimaryKey($sTablename, $aColumns)
 {
-    return Yii::app()->db->createCommand()->addPrimaryKey('PK_' . $sTablename . '_' . randomChars(12, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'), '{{' . $sTablename . '}}', $aColumns);
+    $tablePrefix = App()->getDb()->tablePrefix;
+    $indexTableName = $sTablename;
+    if ($tablePrefix !== '' && strpos($indexTableName, $tablePrefix) === 0) {
+        $indexTableName = substr($indexTableName, strlen($tablePrefix));
+    }
+    $date = date('YmdHis');
+    $maxRandomLength = 12;
+    $minRandomLength = 4;
+    // Reserve space for the prefix, separators, timestamp and minimum random string.
+    $maxTableNameLength = 63 - strlen('PK__' . $date . '_') - $minRandomLength;
+    if (strlen($indexTableName) > $maxTableNameLength) {
+        $indexTableName = substr($indexTableName, 0, $maxTableNameLength);
+    }
+    // Use as many random characters as possible, up to 12.
+    $randomLength = min(
+        $maxRandomLength,
+        63 - strlen('PK_' . $indexTableName . '_' . $date . '_')
+    );
+    $indexname = 'PK_' . $indexTableName
+        . '_' . $date
+        . '_' . randomChars($randomLength, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890');
+
+    return Yii::app()->db->createCommand()->addPrimaryKey(
+        $indexname,
+        '{{' . $sTablename . '}}',
+        $aColumns
+    );
 }
 
 /**
@@ -3178,8 +3320,10 @@ function modifyPrimaryKey($sTablename, $aColumns)
 
 
 /**
+* Converts all tables and the database default to the given character set and collation (MySQL only)
 * @param string $sEncoding
 * @param string $sCollation
+* @return void
 */
 function fixMySQLCollations($sEncoding, $sCollation)
 {
@@ -3193,7 +3337,34 @@ function fixMySQLCollations($sEncoding, $sCollation)
         };
     }
     $sDatabaseName = getDBConnectionStringProperty('dbname');
-    Yii::app()->getDb()->createCommand("ALTER DATABASE `$sDatabaseName` DEFAULT CHARACTER SET {$sEncoding} COLLATE {$sCollation};");
+    try {
+        Yii::app()->getDb()->createCommand("ALTER DATABASE `$sDatabaseName` DEFAULT CHARACTER SET {$sEncoding} COLLATE {$sCollation};")->execute();
+    } catch (Exception $e) {
+        // Missing ALTER privilege on the database: Tables are created with explicit charset options anyway
+    };
+    if ($sEncoding === 'utf8mb4') {
+        fixMySQLConfigCharset();
+    }
+}
+
+/**
+* Replaces a MySQL connection charset of utf8 (utf8mb3) with utf8mb4 in config.php, if the file is writable.
+* @return void
+*/
+function fixMySQLConfigCharset()
+{
+    $sConfigFile = Yii::app()->getBasePath() . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'config.php';
+    if (!is_file($sConfigFile) || !is_writable($sConfigFile)) {
+        return;
+    }
+    $sContent = file_get_contents($sConfigFile);
+    if ($sContent === false) {
+        return;
+    }
+    $sNewContent = preg_replace('/([\'"]charset[\'"]\s*=>\s*)([\'"])utf8(?:mb3)?\2/i', '$1$2utf8mb4$2', $sContent);
+    if ($sNewContent !== null && $sNewContent !== $sContent) {
+        file_put_contents($sConfigFile, $sNewContent, LOCK_EX);
+    }
 }
 
 /**

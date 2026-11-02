@@ -113,6 +113,12 @@ class PreviewGroupAndQuestionTest extends TestBaseClassWeb
                 self::$webDriver->findElement(WebDriverBy::id('question'.$questions['G2Q03']['qid']))->isDisplayed(),
                 "Prefilling url broken when preview group"
             );
+            /* Check the prefilled value of a previous group is used in text tailoring */
+            $this->assertEquals(
+                'Y',
+                self::$webDriver->findElement(WebDriverBy::cssSelector('.prefilled-q02'))->getText(),
+                "Prefilled value missing in text tailoring when preview group"
+            );
         } catch (NoSuchElementException $ex) {
             $screenshot = self::$webDriver->takeScreenshot();
             $filename = self::$screenshotsFolder.'/'.__CLASS__ . '_' . __FUNCTION__ . '.png';
@@ -223,6 +229,12 @@ class PreviewGroupAndQuestionTest extends TestBaseClassWeb
             $this->assertTrue(
                 self::$webDriver->findElement(WebDriverBy::id('javatbd'.$secondLineSGQA))->isDisplayed(),
                 "Question preview force relevance broken"
+            );
+            /* Check the prefilled value of a previous group is used in text tailoring */
+            $this->assertEquals(
+                'Y',
+                self::$webDriver->findElement(WebDriverBy::cssSelector('.prefilled-q03'))->getText(),
+                "Prefilled value missing in text tailoring when preview question"
             );
         } catch (NoSuchElementException $ex) {
             $screenshot = self::$webDriver->takeScreenshot();
