@@ -436,7 +436,7 @@ class QuickTranslation
         ];
         if (isset($languageSettingFields[$fieldName])) {
             if ($fieldName == 'title') {
-                $new = substr((string) $new, 0, 200);
+                $new = mb_substr((string) $new, 0, 200);
             }
             $oLanguageSetting = SurveyLanguageSetting::model()->findByPk(
                 ['surveyls_survey_id' => $this->survey->sid, 'surveyls_language' => $tolang]
