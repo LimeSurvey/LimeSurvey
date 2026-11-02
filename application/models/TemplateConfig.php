@@ -1244,10 +1244,17 @@ class TemplateConfig extends CActiveRecord
 
 
     /**
-     * Change the mother template configuration depending on template settings
-     * @var $sType     string   the type of settings to change (css or js)
-     * @var $aSettings array    array of local setting
-     * @return array
+     * Reconciles this template's own file settings (add/replace) against its ancestor
+     * templates' packages: for each locally-existing file it removes the corresponding
+     * entry from every ancestor package up the inheritance chain (so the local file is
+     * the only one loaded), and for each file that doesn't exist locally it locates the
+     * nearest ancestor that provides it and registers it there instead.
+     * The colour variation (css/variations/...) of this template replaces the variations
+     * of the ancestors, see replaceAncestorVariations().
+     *
+     * @param string $sType the type of settings to change ('css' or 'js')
+     * @param array $aSettings array of local file settings (file names) to reconcile
+     * @return array the (possibly reduced) array of local file settings
      */
     protected function changeMotherConfiguration($sType, $aSettings)
     {
@@ -1257,16 +1264,25 @@ class TemplateConfig extends CActiveRecord
             // Else, we must remove it from current package, and if it doesn't exist in mother template definition,
             // we must add it.
             // (and leave it in moter template definition if it already exists.)
+            if ($sType === 'css') {
+                $aSettings = $this->replaceAncestorVariations($aSettings);
+            }
             foreach ($aSettings as $key => $sFileName) {
                 if (!is_string($sFileName)) {
                     continue;
                 }
                 if (file_exists($this->path . $sFileName)) {
-                    App()->clientScript->removeFileFromPackage(
-                        $this->oMotherTemplate->sPackageName,
-                        $sType,
-                        $sFileName
-                    );
+                    // The file being replaced/removed may have been declared by any ancestor
+                    // in the inheritance chain, not just the direct mother template (mantis #14980).
+                    // Walk the whole chain so it gets removed from whichever package actually
+                    // registered it, instead of leaving it (and thus loading it) further up.
+                    foreach ($this->getAncestorTemplates() as $oAncestorTemplate) {
+                        App()->clientScript->removeFileFromPackage(
+                            $oAncestorTemplate->sPackageName,
+                            $sType,
+                            $sFileName
+                        );
+                    }
                 } else {
                     // File doesn't exist locally, so it should be removed
                     $key = array_search($sFileName, $aSettings);
@@ -1289,6 +1305,68 @@ class TemplateConfig extends CActiveRecord
             }
         }
         return $aSettings;
+    }
+
+    /**
+     * A theme uses only one colour variation (css/variations/...): The variation of this template
+     * takes the place of the variations in the ancestor packages, so these are not loaded too and
+     * the load order stays the same (mantis #14980).
+     * If the variation file isn't found in this template or an ancestor, the ancestor packages are
+     * left unchanged and changeMotherConfiguration() reports the missing file.
+     *
+     * @param array $aSettings the css files of this template
+     * @return array the css files of this template, without the variation if it went to an ancestor package
+     */
+    protected function replaceAncestorVariations($aSettings)
+    {
+        foreach (preg_grep('#^css/variations/#', array_filter($aSettings, 'is_string')) as $key => $sVariation) {
+            if (file_exists($this->path . $sVariation)) {
+                // Loaded with the package of this template
+                $oRTemplate = $this;
+            } else {
+                $oRTemplate = $this->getTemplateForAsset($sVariation, $this);
+                if (!$oRTemplate) {
+                    continue;
+                }
+                unset($aSettings[$key]);
+            }
+            $bPlaced = ($oRTemplate === $this);
+            foreach ($this->getAncestorTemplates() as $oAncestorTemplate) {
+                $sPackageName = $oAncestorTemplate->sPackageName;
+                if (empty(App()->clientScript->packages[$sPackageName]['css'])) {
+                    continue;
+                }
+                $aCssFiles = (array) App()->clientScript->packages[$sPackageName]['css'];
+                foreach (preg_grep('#^css/variations/#', $aCssFiles) as $iIndex => $sFileName) {
+                    if (!$bPlaced && $sPackageName === $oRTemplate->sPackageName) {
+                        $aCssFiles[$iIndex] = $sVariation;
+                        $bPlaced = true;
+                    } else {
+                        unset($aCssFiles[$iIndex]);
+                    }
+                }
+                App()->clientScript->packages[$sPackageName]['css'] = $aCssFiles;
+            }
+            if (!$bPlaced) {
+                App()->clientScript->addFileToPackage($oRTemplate->sPackageName, 'css', $sVariation);
+            }
+        }
+        return $aSettings;
+    }
+
+    /**
+     * Get the ancestor templates of this template, from the mother template up to the root template
+     * @return TemplateConfiguration[]
+     */
+    protected function getAncestorTemplates()
+    {
+        $aAncestorTemplates = [];
+        $oAncestorTemplate = $this->oMotherTemplate;
+        while ($oAncestorTemplate instanceof TemplateConfiguration) {
+            $aAncestorTemplates[] = $oAncestorTemplate;
+            $oAncestorTemplate = $oAncestorTemplate->oMotherTemplate;
+        }
+        return $aAncestorTemplates;
     }
 
     /**
