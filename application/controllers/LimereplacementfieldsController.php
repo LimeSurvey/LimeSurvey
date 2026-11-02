@@ -72,6 +72,9 @@ class LimeReplacementFieldsController extends LSBaseController
                     $qid = (int) $oQuestion->parent_qid;
                 }
                 $gid = (int) $oQuestion->gid;
+            } else {
+                // Unknown question or one of another survey: treat it like an unsaved question
+                $qid = 0;
             }
         }
 
