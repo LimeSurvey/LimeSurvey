@@ -394,7 +394,7 @@ class ThemeOptionsController extends LSBaseController
         }
 
         if (isset($_POST['TemplateConfiguration'])) {
-            $model = TemplateConfiguration::getInstance($_POST['TemplateConfiguration']['template_name'], $gsid);
+            // The posted options are saved to the configuration loaded above, the posted theme name is not used
             $model->attributes = $this->getPostedTemplateConfiguration();
             if ($model->save()) {
                 App()->user->setFlash('success', gT('Theme options saved.'));
