@@ -124,6 +124,57 @@ class ParticipantActionTest extends TestBaseClass
     }
 
     /**
+     * Users without global delete permission do not get the delete modal for participants of other users,
+     * an unknown participant answers with an error instead of a PHP warning.
+     *
+     * @return void
+     */
+    public function testUserWithoutGlobalDeletePermissionCannotOpenDeleteModalForForeignParticipant()
+    {
+        $foreignParticipant = $this->createParticipant(1);
+
+        \Yii::app()->session['loginID'] = self::$createOnlyUser->uid;
+        $calledForeign = $this->runParticipantsAction('openDeleteParticipant', [
+            'participant_id' => $foreignParticipant->participant_id,
+        ]);
+        $calledUnknown = $this->runParticipantsAction('openDeleteParticipant', [
+            'participant_id' => 'does-not-exist',
+        ]);
+
+        $this->assertEquals('outputNoPermission', $calledForeign);
+        $this->assertEquals('outputError', $calledUnknown);
+        $this->assertTrue($foreignParticipant->delete());
+    }
+
+    /**
+     * The attribute values of a participant are only returned to users who may see the participant.
+     *
+     * @return void
+     */
+    public function testAttributeJsonOnlyForReadableParticipant()
+    {
+        $foreignParticipant = $this->createParticipant(1);
+
+        \Yii::app()->session['loginID'] = self::$createOnlyUser->uid;
+        $_GET['pid'] = $foreignParticipant->participant_id;
+        ob_start();
+        $calledWithoutPermission = $this->runParticipantsAction('getAttributeJson', []);
+        $outputWithoutPermission = ob_get_clean();
+
+        \Yii::app()->session['loginID'] = self::$readOnlyUser->uid;
+        ob_start();
+        $calledWithPermission = $this->runParticipantsAction('getAttributeJson', []);
+        $outputWithPermission = ob_get_clean();
+        unset($_GET['pid']);
+
+        $this->assertEquals('outputNoPermission', $calledWithoutPermission);
+        $this->assertSame('', $outputWithoutPermission);
+        $this->assertNull($calledWithPermission);
+        $this->assertNotEmpty(json_decode($outputWithPermission));
+        $this->assertTrue($foreignParticipant->delete());
+    }
+
+    /**
      * Delete options of the participant delete action.
      *
      * @return array<string, string[]>
