@@ -175,6 +175,44 @@ class ParticipantActionTest extends TestBaseClass
     }
 
     /**
+     * A share of one participant gives access to the attribute values of that participant only.
+     *
+     * @return void
+     */
+    public function testAttributeJsonShareDoesNotOpenOtherParticipants()
+    {
+        $sharedParticipant = $this->createParticipant(1);
+        $unsharedParticipant = $this->createParticipant(1);
+        $share = new \ParticipantShare();
+        $share->participant_id = $sharedParticipant->participant_id;
+        $share->share_uid = self::$createOnlyUser->uid;
+        $share->date_added = date('Y-m-d H:i:s');
+        $share->can_edit = 0;
+        $this->assertTrue($share->save());
+
+        \Yii::app()->session['loginID'] = self::$createOnlyUser->uid;
+        \Yii::app()->user->setId(self::$createOnlyUser->uid);
+        $_GET['pid'] = $sharedParticipant->participant_id;
+        ob_start();
+        $calledShared = $this->runParticipantsAction('getAttributeJson', []);
+        $outputShared = ob_get_clean();
+
+        $_GET['pid'] = $unsharedParticipant->participant_id;
+        ob_start();
+        $calledUnshared = $this->runParticipantsAction('getAttributeJson', []);
+        $outputUnshared = ob_get_clean();
+        unset($_GET['pid']);
+
+        $this->assertNull($calledShared);
+        $this->assertNotEmpty(json_decode($outputShared));
+        $this->assertEquals('outputNoPermission', $calledUnshared);
+        $this->assertSame('', $outputUnshared);
+        $this->assertTrue($share->delete());
+        $this->assertTrue($sharedParticipant->delete());
+        $this->assertTrue($unsharedParticipant->delete());
+    }
+
+    /**
      * Delete options of the participant delete action.
      *
      * @return array<string, string[]>
