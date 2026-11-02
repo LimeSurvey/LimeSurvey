@@ -1,6 +1,6 @@
 <?php
 
-class UserRoleController extends LSBaseController
+class UserRoleController extends LSBaseController implements AdminControllerInterface
 {
     /**
      * Run filters

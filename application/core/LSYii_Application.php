@@ -540,7 +540,39 @@ class LSYii_Application extends CWebApplication
             $controller = $this->createControllerFromShortUrl($route);
         }
 
+        if (!is_null($controller)) {
+            $this->enforceAdminUrlPrefix($controller[0], $controller[1]);
+        }
+
         return $controller;
+    }
+
+    /**
+     * Make sure an administration controller is only reached through its "admin/" URL prefix
+     *
+     * A GET or HEAD request to the unprefixed URL is permanently redirected to the prefixed one
+     * (bookmarks and links created before the prefix keep working), any other request is refused with 404.
+     * Nothing is enforced in GET URL format, there is no URL path to protect there.
+     *
+     * @param CController $controller The resolved controller
+     * @param string $actionId The resolved action id, empty for the default action
+     * @return void
+     * @throws CHttpException 404 for a non GET request without the prefix
+     */
+    protected function enforceAdminUrlPrefix(CController $controller, $actionId)
+    {
+        if (
+            !$controller instanceof AdminControllerInterface
+            || $this->getUrlManager()->getUrlFormat() !== CUrlManager::PATH_FORMAT
+            || LSAdminUrlRule::hasPrefix($this->getRequest()->getPathInfo())
+        ) {
+            return;
+        }
+        if (in_array($this->getRequest()->getRequestType(), ['GET', 'HEAD'])) {
+            $route = $controller->getId() . ($actionId !== '' ? '/' . $actionId : '');
+            $this->getRequest()->redirect($this->createUrl($route, $_GET), true, 301);
+        }
+        throw new CHttpException(404, gT("The requested page is only available under the administration URL."));
     }
 
     /**

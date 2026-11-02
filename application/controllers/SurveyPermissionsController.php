@@ -2,7 +2,7 @@
 
 use LimeSurvey\Models\Services\PermissionManager;
 
-class SurveyPermissionsController extends LSBaseController
+class SurveyPermissionsController extends LSBaseController implements AdminControllerInterface
 {
     /**
      * It's import to have the accessRules set (security issue).

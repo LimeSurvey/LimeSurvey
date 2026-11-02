@@ -160,7 +160,7 @@ describe('generateColumns', () => {
     const link = screen.getByRole('link', { name: '42' })
     expect(link).toHaveAttribute(
       'href',
-      getSiteUrl('/quotas/editQuota/surveyid/123?quota_id=42')
+      getSiteUrl('/admin/quotas/editQuota/surveyid/123?quota_id=42')
     )
     expect(link).toHaveAttribute('target', '_blank')
 

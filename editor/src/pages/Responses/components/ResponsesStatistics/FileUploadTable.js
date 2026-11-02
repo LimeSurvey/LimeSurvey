@@ -65,7 +65,7 @@ const formatFileSize = (sizeKb, locale) => {
 
 const fileUrl = (surveyId, responseId, questionId, index, inline = false) =>
   getSiteUrl(
-    `/responses/downloadfile?surveyId=${surveyId}&responseId=${responseId}&qid=${questionId}&index=${index}${inline ? '&inline=1' : ''}`
+    `/admin/responses/downloadfile?surveyId=${surveyId}&responseId=${responseId}&qid=${questionId}&index=${index}${inline ? '&inline=1' : ''}`
   )
 
 const FileIcon = ({ extension }) => (

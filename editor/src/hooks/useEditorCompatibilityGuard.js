@@ -32,7 +32,7 @@ export const useEditorCompatibilityGuard = (surveyId) => {
   useEffect(() => {
     if (isIncompatible) {
       window.location.replace(
-        getSiteUrl('/surveyAdministration/view/surveyid/' + surveyId)
+        getSiteUrl('/admin/surveyAdministration/view/surveyid/' + surveyId)
       )
     }
   }, [isIncompatible, surveyId])

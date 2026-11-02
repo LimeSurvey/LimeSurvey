@@ -1,10 +1,12 @@
+import getBasePath from './getBasePath'
+
 export const getApiUrl = (
   relativeUrl = null,
   { version = 'v1', baseUrl = process.env.REACT_APP_API_BASE_URL } = {}
 ) => {
   if (!baseUrl) {
     const host = window.location.protocol + '//' + window.location.host
-    const pathPrefix = window.location.pathname.split('/editor')[0]
+    const pathPrefix = getBasePath()
     baseUrl = host + pathPrefix + '/rest'
   }
   let parts = [baseUrl]

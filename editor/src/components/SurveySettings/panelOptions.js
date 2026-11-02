@@ -76,26 +76,26 @@ export const menuOptions = (surveyId, menuEntries, isSurveyActive) => [
     label: menuEntries[SURVEY_MENU_TITLES.failedEmail]?.menuTitle,
     labelEditor: t('Failed email notifications'),
     menu: SURVEY_MENU_TITLES.failedEmail,
-    redirect: getSiteUrl('/failedEmail/index?surveyid=' + surveyId),
+    redirect: getSiteUrl('/admin/failedEmail/index?surveyid=' + surveyId),
   },
   {
     label: menuEntries[SURVEY_MENU_TITLES.quotas]?.menuTitle,
     labelEditor: t('Quotas'),
     menu: SURVEY_MENU_TITLES.quotas,
-    redirect: getSiteUrl('/quotas/index?surveyid=' + surveyId),
+    redirect: getSiteUrl('/admin/quotas/index?surveyid=' + surveyId),
   },
   {
     label: menuEntries[SURVEY_MENU_TITLES.assessments]?.menuTitle,
     labelEditor: t('Assessments'),
     menu: SURVEY_MENU_TITLES.assessments,
-    redirect: getSiteUrl('/assessment/index?surveyid=' + surveyId),
+    redirect: getSiteUrl('/admin/assessment/index?surveyid=' + surveyId),
   },
   {
     label: menuEntries[SURVEY_MENU_TITLES.panelIntegration]?.menuTitle,
     labelEditor: t('Panel integration'),
     menu: SURVEY_MENU_TITLES.panelIntegration,
     redirect: getSiteUrl(
-      '/surveyAdministration/rendersidemenulink?surveyid=' +
+      '/admin/surveyAdministration/rendersidemenulink?surveyid=' +
         surveyId +
         '&subaction=panelintegration'
     ),
@@ -122,7 +122,7 @@ export const menuOptions = (surveyId, menuEntries, isSurveyActive) => [
     labelEditor: t('Resources'),
     menu: SURVEY_MENU_TITLES.resources,
     redirect: getSiteUrl(
-      '/surveyAdministration/rendersidemenulink?surveyid=' +
+      '/admin/surveyAdministration/rendersidemenulink?surveyid=' +
         surveyId +
         '&subaction=resources'
     ),
@@ -132,7 +132,7 @@ export const menuOptions = (surveyId, menuEntries, isSurveyActive) => [
     labelEditor: t('Simple plugins'),
     menu: SURVEY_MENU_TITLES.plugins,
     redirect: getSiteUrl(
-      '/surveyAdministration/rendersidemenulink?surveyid=' +
+      '/admin/surveyAdministration/rendersidemenulink?surveyid=' +
         surveyId +
         '&subaction=plugins'
     ),

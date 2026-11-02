@@ -11,7 +11,7 @@ $(document).ready(function () {
                 theme: 'bootstrap-5',
                 width: '100%',
                 ajax: {
-                    url: LS.createUrl('surveyAdministration/getAjaxSurveyList'),
+                    url: LS.createUrl('admin/surveyAdministration/getAjaxSurveyList'),
                     dataType: 'json',
                     delay: 250,
                     data: function (params) {

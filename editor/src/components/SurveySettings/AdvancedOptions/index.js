@@ -8,7 +8,7 @@ import getSiteUrl from '../../../helpers/getSiteUrl'
 export const AdvancedOptionsSettings = ({ surveyId }) => {
   const openSurveySettingsInMainApp = () => {
     window.open(
-      getSiteUrl('/surveyAdministration/view/surveyid/' + surveyId),
+      getSiteUrl('/admin/surveyAdministration/view/surveyid/' + surveyId),
       '_blank'
     )
   }

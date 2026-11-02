@@ -3,7 +3,7 @@
 /**
  * Class HomepageSettingsController
  */
-class HomepageSettingsController extends LSBaseController
+class HomepageSettingsController extends LSBaseController implements AdminControllerInterface
 {
     /**
      * @return array

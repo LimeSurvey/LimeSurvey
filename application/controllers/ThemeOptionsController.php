@@ -7,7 +7,7 @@ use LimeSurvey\Models\Services\SurveyThemeConfiguration;
 /**
  * @class ThemeOptionsController
  */
-class ThemeOptionsController extends LSBaseController
+class ThemeOptionsController extends LSBaseController implements AdminControllerInterface
 {
     /**
      * It's import to have the accessRules set (security issue).
