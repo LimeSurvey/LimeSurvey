@@ -51,6 +51,13 @@ class remotecontrol_handle
     protected $controller;
 
     /**
+     * Username as set by the auth plugin during the last successful login, can differ from the given one (e.g. login by email)
+     *
+     * @var string|null
+     */
+    protected $authenticatedUsername;
+
+    /**
      * Constructor, stores the action instance into this handle class
      *
      * @access public
@@ -83,8 +90,12 @@ class remotecontrol_handle
     {
         $username = (string) $username;
         $password = (string) $password;
+        $this->authenticatedUsername = null;
         $loginResult = $this->_doLogin($username, $password, $plugin);
         if ($loginResult === true) {
+            if (!empty($this->authenticatedUsername)) {
+                $username = $this->authenticatedUsername;
+            }
             $this->_jumpStartSession($username);
             $sSessionKey = Yii::app()->securityManager->generateRandomString(32);
             $session = new Session();
@@ -1121,7 +1132,7 @@ class remotecontrol_handle
     public function add_group($sSessionKey, $iSurveyID, $sGroupTitle, $sGroupDescription = '')
     {
         if ($this->_checkSessionKey($sSessionKey)) {
-            if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'update')) {
+            if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'create')) {
                 $iSurveyID = (int) $iSurveyID;
                 $oSurvey = Survey::model()->findByPk($iSurveyID);
                 if (!isset($oSurvey)) {
@@ -3226,6 +3237,7 @@ class remotecontrol_handle
      *
      * Returns array of results of sending.
      * The sending stops on the first error (ie. when a token is invalid).
+     * Participants whose validity period does not include the current time are skipped.
      *
      * @access public
      * @param string $sSessionKey Auth credentials
@@ -3258,8 +3270,8 @@ class remotecontrol_handle
             $SQLemailstatuscondition = "emailstatus = 'OK'";
 
             $oTokens = TokenDynamic::model($iSurveyID);
-            $aResultTokens = $oTokens->findUninvited($aTokenIds, $iMaxEmails, $bEmail, $SQLemailstatuscondition);
-            $aAllTokens = $oTokens->findParticipantIDs(false, 0, true, $SQLemailstatuscondition);
+            $aResultTokens = $oTokens->findUninvited($aTokenIds, $iMaxEmails, $bEmail, $SQLemailstatuscondition, '', '', true);
+            $aAllTokens = $oTokens->findParticipantIDs(false, 0, true, $SQLemailstatuscondition, '', '', true);
             $iAllTokensCount = count($aAllTokens);
             unset($aAllTokens);
             if (empty($aResultTokens)) {
@@ -3298,7 +3310,8 @@ class remotecontrol_handle
     /**
      * Send a reminder to participants in a survey (RPC function)
      *
-     * Returns array of results of sending
+     * Returns array of results of sending.
+     * Participants whose validity period does not include the current time are skipped.
      *
      * @access public
      * @param string $sSessionKey Auth credentials
@@ -3347,11 +3360,11 @@ class remotecontrol_handle
             }
 
             $oTokens = TokenDynamic::model($iSurveyID);
-            $aAllTokens = $oTokens->findParticipantIDs(false, 0, false, $SQLemailstatuscondition, $SQLremindercountcondition, $SQLreminderdelaycondition);
+            $aAllTokens = $oTokens->findParticipantIDs(false, 0, false, $SQLemailstatuscondition, $SQLremindercountcondition, $SQLreminderdelaycondition, true);
             $iAllTokensCount = count($aAllTokens);
             unset($aAllTokens);  // save some memory before the next query
 
-            $aResultTokens = $oTokens->findUninvited($aTokenIds, $iMaxEmails, false, $SQLemailstatuscondition, $SQLremindercountcondition, $SQLreminderdelaycondition);
+            $aResultTokens = $oTokens->findUninvited($aTokenIds, $iMaxEmails, false, $SQLemailstatuscondition, $SQLremindercountcondition, $SQLreminderdelaycondition, true);
 
             if (empty($aResultTokens)) {
                 return array('status' => 'Error: No candidate tokens', 'error_code' => self::ERR_NO_DATA);
@@ -3981,6 +3994,8 @@ class remotecontrol_handle
     /**
      * Login with username and password
      *
+     * On success the username set by the auth plugin is stored in $authenticatedUsername.
+     *
      * @access protected
      * @param string $sUsername username
      * @param string $sPassword password
@@ -4005,6 +4020,7 @@ class remotecontrol_handle
             }
             return false;
         } else {
+            $this->authenticatedUsername = $identity->username;
             return true;
         }
     }

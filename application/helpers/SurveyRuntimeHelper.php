@@ -357,7 +357,7 @@ class SurveyRuntimeHelper
             }
         }
 
-        if ($this->sSurveyMode != 'survey' && isset($this->aSurveyInfo['showprogress']) && $this->aSurveyInfo['showprogress'] == 'Y') {
+        if ($this->sSurveyMode != 'survey') {
             $totalSteps = $_SESSION[$this->LEMsessid]['totalsteps'] ?? 1;
             $totalVisibleSteps = $_SESSION[$this->LEMsessid]['totalVisibleSteps'] ?? 0;
             $step = $_SESSION[$this->LEMsessid]['step'] ?? 0;
@@ -371,7 +371,13 @@ class SurveyRuntimeHelper
                     $_SESSION[$this->LEMsessid]['hiddenGroupIds'] ?? []
                 ));
             }
+            // Number of the current page as seen by the participant (skipped pages not counted), used in the page title
+            if (!$this->bShowEmptyGroup && $step > 0 && !$this->previewgrp && !$this->previewquestion) {
+                $this->aSurveyInfo['pagenumber'] = max(1, $step - $notRelevantSteps - $hiddenSteps);
+            }
+        }
 
+        if ($this->sSurveyMode != 'survey' && isset($this->aSurveyInfo['showprogress']) && $this->aSurveyInfo['showprogress'] == 'Y') {
             if ($this->bShowEmptyGroup) {
                 $this->aSurveyInfo['progress']['currentstep'] = $totalSteps + 1;
                 $this->aSurveyInfo['progress']['total']       = $totalVisibleSteps ? $totalVisibleSteps : $totalSteps;

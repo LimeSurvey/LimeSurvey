@@ -13154,6 +13154,13 @@ textarea {
   opacity: 1;
 }
 
+@media (pointer: coarse) {
+  .form-control,
+  .form-control.ls-important-field,
+  .form-select {
+    font-size: 16px;
+  }
+}
 .form-control[disabled] {
   color: #e3e3e3;
 }

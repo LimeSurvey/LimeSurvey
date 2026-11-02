@@ -2501,7 +2501,7 @@ function jsonEscape(string $str, $strip_tags = false, $htmldecode = false)
 }
 
 /**
-*  This functions removes all HTML tags, Javascript, CRs, linefeeds and other strange chars from a given text
+*  This functions removes all HTML tags, Javascript, CSS style blocks, CRs, linefeeds and other strange chars from a given text
 *
 * @param string $sTextToFlatten  Text you want to clean
 * @param boolean $bKeepSpan set to true for keep span, used for expression manager. Default: false
@@ -2514,6 +2514,8 @@ function jsonEscape(string $str, $strip_tags = false, $htmldecode = false)
 function flattenText($sTextToFlatten, $bKeepSpan = false, $bDecodeHTMLEntities = false, $sCharset = 'UTF-8', $bStripNewLines = true)
 {
     $sNicetext = stripJavaScript($sTextToFlatten);
+    // strip_tags() keeps the content of <style> elements: Remove the whole block, like the <script> ones
+    $sNicetext = (string) preg_replace('@<style[^>]*?>.*?</style>@si', '', $sNicetext);
     // When stripping tags, add a space before closing tags so that strings with embedded HTML tables don't get concatenated
     $sNicetext = str_replace(array('</td', '</th'), array(' </td', ' </th'), $sNicetext);
     if ($bKeepSpan) {
@@ -5547,11 +5549,43 @@ function convertPHPSizeToBytes($sSize)
 /**
  * Get the maximum allowed file upload size in bytes
  *
- * @return int The maximum allowed file upload size in bytes
+ * PHP does not enforce a post_max_size or upload_max_filesize of 0 (or less), so such a setting is ignored.
+ *
+ * @return int The maximum allowed file upload size in bytes, PHP_INT_MAX if PHP does not limit it
  **/
 function getMaximumFileUploadSize()
 {
-    return min(convertPHPSizeToBytes(ini_get('post_max_size')), convertPHPSizeToBytes(ini_get('upload_max_filesize')));
+    $limits = array_filter(
+        [convertPHPSizeToBytes(ini_get('post_max_size')), convertPHPSizeToBytes(ini_get('upload_max_filesize'))],
+        function ($limit) {
+            return $limit > 0;
+        }
+    );
+    return empty($limits) ? PHP_INT_MAX : min($limits);
+}
+
+/**
+ * Check if PHP limits the file upload size at all
+ *
+ * @return bool False if both post_max_size and upload_max_filesize are disabled (0)
+ **/
+function isFileUploadSizeLimited()
+{
+    return getMaximumFileUploadSize() < PHP_INT_MAX;
+}
+
+/**
+ * Get the value for the accept attribute of a file input from a list of file extensions
+ *
+ * @param string $extensions Comma-separated file extensions, e.g. the 'allowedthemeimageformats' setting
+ * @return string Comma-separated lowercase extensions with a leading dot, e.g. ".gif,.png"
+ **/
+function getFileInputAcceptValue($extensions)
+{
+    $extensions = array_unique(array_filter(array_map('trim', explode(',', strtolower((string) $extensions))), 'strlen'));
+    return implode(',', array_map(function ($extension) {
+        return '.' . $extension;
+    }, $extensions));
 }
 
 /**
