@@ -1311,45 +1311,53 @@ class TemplateConfig extends CActiveRecord
      * A theme uses only one colour variation (css/variations/...): The variation of this template
      * takes the place of the variations in the ancestor packages, so these are not loaded too and
      * the load order stays the same (mantis #14980).
+     * If this template lists more than one variation, the last one is used.
      * If the variation file isn't found in this template or an ancestor, the ancestor packages are
      * left unchanged and changeMotherConfiguration() reports the missing file.
      *
      * @param array $aSettings the css files of this template
-     * @return array the css files of this template, without the variation if it went to an ancestor package
+     * @return array the css files of this template, without the variations that are not loaded with its package
      */
     protected function replaceAncestorVariations($aSettings)
     {
-        foreach (preg_grep('#^css/variations/#', array_filter($aSettings, 'is_string')) as $key => $sVariation) {
-            if (file_exists($this->path . $sVariation)) {
-                // Loaded with the package of this template
-                $oRTemplate = $this;
-            } else {
-                $oRTemplate = $this->getTemplateForAsset($sVariation, $this);
-                if (!$oRTemplate) {
-                    continue;
-                }
-                unset($aSettings[$key]);
+        $aVariations = preg_grep('#^css/variations/#', array_filter($aSettings, 'is_string'));
+        if (empty($aVariations)) {
+            return $aSettings;
+        }
+        $key = array_key_last($aVariations);
+        $sVariation = $aVariations[$key];
+        // The other variations of this template are not loaded at all
+        $aSettings = array_diff_key($aSettings, array_diff_key($aVariations, [$key => true]));
+
+        if (file_exists($this->path . $sVariation)) {
+            // Loaded with the package of this template
+            $oRTemplate = $this;
+        } else {
+            $oRTemplate = $this->getTemplateForAsset($sVariation, $this);
+            if (!$oRTemplate) {
+                return $aSettings;
             }
-            $bPlaced = ($oRTemplate === $this);
-            foreach ($this->getAncestorTemplates() as $oAncestorTemplate) {
-                $sPackageName = $oAncestorTemplate->sPackageName;
-                if (empty(App()->clientScript->packages[$sPackageName]['css'])) {
-                    continue;
-                }
-                $aCssFiles = (array) App()->clientScript->packages[$sPackageName]['css'];
-                foreach (preg_grep('#^css/variations/#', $aCssFiles) as $iIndex => $sFileName) {
-                    if (!$bPlaced && $sPackageName === $oRTemplate->sPackageName) {
-                        $aCssFiles[$iIndex] = $sVariation;
-                        $bPlaced = true;
-                    } else {
-                        unset($aCssFiles[$iIndex]);
-                    }
-                }
-                App()->clientScript->packages[$sPackageName]['css'] = $aCssFiles;
+            unset($aSettings[$key]);
+        }
+        $bPlaced = ($oRTemplate === $this);
+        foreach ($this->getAncestorTemplates() as $oAncestorTemplate) {
+            $sPackageName = $oAncestorTemplate->sPackageName;
+            if (empty(App()->clientScript->packages[$sPackageName]['css'])) {
+                continue;
             }
-            if (!$bPlaced) {
-                App()->clientScript->addFileToPackage($oRTemplate->sPackageName, 'css', $sVariation);
+            $aCssFiles = (array) App()->clientScript->packages[$sPackageName]['css'];
+            foreach (preg_grep('#^css/variations/#', $aCssFiles) as $iIndex => $sFileName) {
+                if (!$bPlaced && $sPackageName === $oRTemplate->sPackageName) {
+                    $aCssFiles[$iIndex] = $sVariation;
+                    $bPlaced = true;
+                } else {
+                    unset($aCssFiles[$iIndex]);
+                }
             }
+            App()->clientScript->packages[$sPackageName]['css'] = $aCssFiles;
+        }
+        if (!$bPlaced) {
+            App()->clientScript->addFileToPackage($oRTemplate->sPackageName, 'css', $sVariation);
         }
         return $aSettings;
     }

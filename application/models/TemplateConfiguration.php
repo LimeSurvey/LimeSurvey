@@ -1904,7 +1904,11 @@ class TemplateConfiguration extends TemplateConfig
             foreach ($cssFiles as $index => $cssFile) {
                 if (strpos($cssFile, 'css/variations/theme_') !== false) {
                     $cssFileSplitArray = explode('.', $cssFile);
-                    $cssFiles[$index] =  $cssFileSplitArray[0] . '-rtl.css';
+                    $rtlCssFile = $cssFileSplitArray[0] . '-rtl.css';
+                    // Keep the ltr file if neither this theme nor a mother theme has an rtl version
+                    if (file_exists($this->path . $rtlCssFile) || $this->getTemplateForAsset($rtlCssFile, $this)) {
+                        $cssFiles[$index] = $rtlCssFile;
+                    }
                 }
             }
         }

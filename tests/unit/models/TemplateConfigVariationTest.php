@@ -63,6 +63,55 @@ class TemplateConfigVariationTest extends TestBaseClass
     }
 
     /**
+     * If a theme lists more than one variation, only the last one is loaded, whether it is in the
+     * theme folder or in a mother theme.
+     */
+    public function testLastVariationIsUsed()
+    {
+        $localVariation = 'css/variations/darkly.min.css';
+        $motherVariation = 'css/variations/theme_grape.css';
+        // The bootswatch folder has the "local" variation, but not the one of the mother theme
+        $childPath = Yii::app()->getConfig('standardthemerootdir') . DIRECTORY_SEPARATOR
+            . 'bootswatch' . DIRECTORY_SEPARATOR;
+
+        $child = $this->getChildTemplate(['css/variations/theme_apple.css', 'css/base.css']);
+        $child->path = $childPath;
+        $settings = $this->replaceAncestorVariations($child, [$localVariation, $motherVariation]);
+        $this->assertSame([], $settings, 'The variation of the theme folder must not be loaded.');
+        $this->assertSame(
+            [$motherVariation, 'css/base.css'],
+            array_values(App()->clientScript->packages[$child->oMotherTemplate->sPackageName]['css'])
+        );
+
+        $child = $this->getChildTemplate(['css/variations/theme_apple.css', 'css/base.css']);
+        $child->path = $childPath;
+        $settings = $this->replaceAncestorVariations($child, [$motherVariation, $localVariation]);
+        $this->assertSame([1 => $localVariation], $settings, 'The variation of the theme folder must be loaded.');
+        $this->assertSame(
+            ['css/base.css'],
+            array_values(App()->clientScript->packages[$child->oMotherTemplate->sPackageName]['css'])
+        );
+    }
+
+    /**
+     * In a right-to-left language a variation is replaced by its rtl version only if that exists.
+     */
+    public function testRtlVariationOnlyIfItExists()
+    {
+        $language = App()->getLanguage();
+        App()->setLanguage('ar');
+        $child = $this->getChildTemplate(['css/variations/theme_apple-rtl.css']);
+        $method = new \ReflectionMethod($child, 'replaceVariationFilesWithRtl');
+        $method->setAccessible(true);
+        try {
+            $cssFiles = $method->invoke($child, ['css/variations/theme_grape.css', 'css/variations/theme_ltronly.css']);
+        } finally {
+            App()->setLanguage($language);
+        }
+        $this->assertSame(['css/variations/theme_grape-rtl.css', 'css/variations/theme_ltronly.css'], $cssFiles);
+    }
+
+    /**
      * removeFileFromPackage() removes every entry of the file.
      */
     public function testRemoveFileFromPackageRemovesAllEntries()
