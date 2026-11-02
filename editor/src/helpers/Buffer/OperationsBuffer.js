@@ -71,7 +71,6 @@ export class OperationsBuffer {
    * @param {Object} operation - The operation to be added or updated.
    * @param {boolean} [updateCurrentOperation=true] - Whether to update an existing operation if found.
    * @param {boolean} [restore=false] - Whether this operation is being restored.
-   * @param {Object} [schemeContext={}] - Extra data for validation, e.g. { themesettings }.
    *
    * This method handles various types of operations (survey, question group, question, answer, subquestion)
    * and manages the buffer accordingly. It includes logic for validating operations, handling deletions,
@@ -83,14 +82,9 @@ export class OperationsBuffer {
   addOperation = (
     operation,
     updateCurrentOperation = true,
-    restore = false,
-    schemeContext = {}
+    restore = false
   ) => {
-    const operationScheme = getOperationScheme(
-      operation.op,
-      operation.entity,
-      schemeContext
-    )
+    const operationScheme = getOperationScheme(operation.op, operation.entity)
 
     if (!operationScheme) {
       addBreadcrumb({

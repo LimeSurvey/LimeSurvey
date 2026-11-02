@@ -3,10 +3,7 @@ import { languageSettingUpdateJoi } from './languageSettingUpdateJoi'
 import { surveyUpdateJoi } from './surveyUpdateJoi'
 
 import { surveyStatusUpdateJoi } from './surveyStatusUpdateJoi'
-import {
-  getThemeSettingUpdateJoi,
-  themeSettingUpdateJoi,
-} from './themeSettingUpdateJoi'
+import { themeSettingUpdateJoi } from './themeSettingUpdateJoi'
 
 describe('LanguageSettingUpdateJoi Schema Tests', () => {
   // Valid input test
@@ -428,12 +425,6 @@ describe('SurveyStatusUpdateJoi Schema Tests', () => {
 })
 
 describe('ThemeSettingUpdateJoi Schema Tests', () => {
-  const themesettings = {
-    headerBackgroundColor: { type: 'colorpicker' },
-    showclearall: { type: 'buttons', options: 'on|off' },
-    brandlogofile: { type: 'dropdown' },
-  }
-  const schema = getThemeSettingUpdateJoi(themesettings)
   const buildOperation = (props) => ({
     id: 754621,
     op: 'update',
@@ -441,30 +432,12 @@ describe('ThemeSettingUpdateJoi Schema Tests', () => {
     props: { templateName: 'custom_options_demo', ...props },
   })
 
-  test('Accepts options declared in the theme manifest', () => {
+  test('Accepts option keys of any theme', () => {
     const input = buildOperation({
       headerBackgroundColor: '#2a2f38',
       showclearall: 'off',
       brandlogofile: null,
     })
-
-    const { error, value } = schema.validate(input)
-    expect(error).toBeUndefined()
-    expect(value).toEqual(input)
-  })
-
-  test('Rejects options not declared in the theme manifest', () => {
-    const { error } = schema.validate(buildOperation({ unknownOption: 'x' }))
-    expect(error.message).toContain('"props.unknownOption" is not allowed')
-  })
-
-  test('Rejects button values outside the declared options', () => {
-    const { error } = schema.validate(buildOperation({ showclearall: 'maybe' }))
-    expect(error).toBeDefined()
-  })
-
-  test('Accepts any option key when no manifest is available', () => {
-    const input = buildOperation({ headerBackgroundColor: '#2a2f38' })
 
     const { error, value } = themeSettingUpdateJoi.validate(input)
     expect(error).toBeUndefined()
@@ -482,28 +455,20 @@ describe('ThemeSettingUpdateJoi Schema Tests', () => {
     expect(error.message).toContain('"props.templateName" is required')
   })
 
-  test('OperationsBuffer.addOperation strips options not declared in the manifest', () => {
+  test('OperationsBuffer.addOperation buffers custom theme options unchanged', () => {
     const consoleError = jest
       .spyOn(console, 'error')
       .mockImplementation(() => {})
     const buffer = new OperationsBuffer()
+    const operation = buildOperation({
+      headerBackgroundColor: '#2a2f38',
+      animationDuration: '300',
+    })
 
-    buffer.addOperation(
-      buildOperation({
-        headerBackgroundColor: '#2a2f38',
-        unknownOption: 'x',
-      }),
-      true,
-      false,
-      { themesettings }
-    )
+    buffer.addOperation(operation)
 
-    expect(buffer.getOperations()).toEqual([
-      {
-        ...buildOperation({ headerBackgroundColor: '#2a2f38' }),
-        error: false,
-      },
-    ])
+    expect(buffer.getOperations()).toEqual([{ ...operation, error: false }])
+    expect(consoleError).not.toHaveBeenCalled()
     consoleError.mockRestore()
   })
 })
