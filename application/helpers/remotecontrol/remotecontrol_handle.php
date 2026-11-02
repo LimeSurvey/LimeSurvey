@@ -502,14 +502,19 @@ class remotecontrol_handle
                 // Remove fields that may not be modified
                 unset($aSurveyData['sid']);
                 // The owner can only be changed by the owner or a superadmin, and only to a user they can see, like in the survey settings
-                if (
-                    isset($aSurveyData['owner_id'])
-                    && (
-                        !($oSurvey->owner_id == Yii::app()->session['loginID'] || Permission::model()->hasGlobalPermission('superadmin', 'read'))
-                        || !in_array($aSurveyData['owner_id'], getUserList('onlyuidarray'))
-                    )
-                ) {
-                    unset($aSurveyData['owner_id']);
+                if (isset($aSurveyData['owner_id'])) {
+                    // Only a real user ID: Loose comparisons would let e.g. true match any user
+                    $ownerId = $aSurveyData['owner_id'];
+                    $ownerId = (is_int($ownerId) || (is_string($ownerId) && ctype_digit($ownerId))) ? (int) $ownerId : false;
+                    if (
+                        $ownerId === false
+                        || !($oSurvey->owner_id == Yii::app()->session['loginID'] || Permission::model()->hasGlobalPermission('superadmin', 'read'))
+                        || !in_array($ownerId, array_map('intval', getUserList('onlyuidarray')), true)
+                    ) {
+                        unset($aSurveyData['owner_id']);
+                    } else {
+                        $aSurveyData['owner_id'] = $ownerId;
+                    }
                 }
                 unset($aSurveyData['active']);
                 unset($aSurveyData['language']);
