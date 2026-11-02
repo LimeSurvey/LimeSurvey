@@ -84,4 +84,95 @@ describe('buildQuestionOptions', () => {
     expect(optionFor('R', { encrypted: true })).toBeUndefined()
     expect(optionFor('N', { encrypted: false })).toBeDefined()
   })
+
+  // Image select options show the image as thumbnail, whether the text holds
+  // the image as HTML or as a bare image path.
+  it('offers image select subquestions as thumbnails', () => {
+    const { answerOptions, isImageSelect } = optionFor('M', {
+      questionThemeName: 'image_select-multiplechoice',
+      subquestions: [
+        {
+          qid: 11,
+          title: 'SQ001',
+          scaleId: 0,
+          l10ns: {
+            en: {
+              question:
+                '<img alt="Red car" src="/upload/surveys/1/images/red.jpeg" />',
+            },
+          },
+        },
+        {
+          qid: 12,
+          title: 'SQ002',
+          scaleId: 0,
+          l10ns: {
+            en: { question: '/upload/surveys/1/images/blue%20car.jpeg' },
+          },
+        },
+      ],
+    })
+
+    expect(isImageSelect).toBe(true)
+    expect(answerOptions).toEqual([
+      {
+        value: 11,
+        label: 'Red car',
+        image: '/upload/surveys/1/images/red.jpeg',
+      },
+      {
+        value: 12,
+        label: 'blue car.jpeg',
+        image: '/upload/surveys/1/images/blue%20car.jpeg',
+      },
+    ])
+  })
+
+  it('offers image select answer options as thumbnails', () => {
+    const { answerOptions } = optionFor('L', {
+      questionThemeName: 'image_select-listradio',
+      answers: [
+        {
+          code: 'A1',
+          scaleId: 0,
+          l10ns: {
+            en: { answer: '<p><img src="/upload/green.png" alt="" /></p>' },
+          },
+        },
+      ],
+    })
+
+    expect(answerOptions).toEqual([
+      { value: 'A1', label: 'green.png', image: '/upload/green.png' },
+    ])
+  })
+
+  it('keeps image file names that cannot be URL-decoded', () => {
+    const { answerOptions } = optionFor('L', {
+      questionThemeName: 'image_select-listradio',
+      answers: [
+        {
+          code: 'A1',
+          scaleId: 0,
+          l10ns: { en: { answer: '<img src="/upload/50%off.png" alt="" />' } },
+        },
+        {
+          code: 'A2',
+          scaleId: 0,
+          l10ns: {
+            en: { answer: '<img src="https://example.com/car.png" alt="" />' },
+          },
+        },
+      ],
+    })
+
+    expect(answerOptions).toEqual([
+      { value: 'A1', label: '50%off.png', image: '/upload/50%off.png' },
+      {
+        value: 'A2',
+        label: 'car.png',
+        image: 'https://example.com/car.png',
+      },
+    ])
+  })
 })

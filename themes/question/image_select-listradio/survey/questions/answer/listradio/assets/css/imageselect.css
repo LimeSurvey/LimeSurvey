@@ -60,3 +60,20 @@ li.imageselect-listitem .imageselect-container .imageselect-checkbox{
 li.imageselect-listitem .imageselect-container input.imageselect-checkbox:checked+label{
     border: 18px solid hsla(198,50%,30%,0.9);
 }
+
+/* Images inserted as HTML: Apply the fixed width/height theme settings, keep the aspect ratio otherwise */
+.imageselect-html img {
+    max-width: 100%;
+}
+.imageselect-html.imageselect-fixed-width img {
+    width: var(--imageselect-width) !important;
+    height: auto !important;
+}
+.imageselect-html.imageselect-fixed-height img {
+    width: auto !important;
+    height: var(--imageselect-height) !important;
+}
+.imageselect-html.imageselect-fixed-width.imageselect-fixed-height img {
+    width: var(--imageselect-width) !important;
+    height: var(--imageselect-height) !important;
+}

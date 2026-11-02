@@ -46,13 +46,21 @@ question_template_attribute.horizontal_scroll   : {{question_template_attribute.
             onclick='cancelBubbleThis(event); {{ sCheckconditionFunction }}'
         />
         <label for="answer{{ myfname }}" class="imageselect-label" onclick='cancelBubbleThis(event); {{ sCheckconditionFunction }}'>
-
+        {% if question|isAbsoluteUrl %}
+         {# Subquestion text is a bare image URL (older format) #}
          <img class="unforce-height" src="{{ question|escape('html_attr') }}"
          style="{%if question_template_attribute.fix_width > 1%} 
             width: {{question_template_attribute.fix_width}}px 
             {% endif %} {%if question_template_attribute.fix_height > 1%}
             height: {{question_template_attribute.fix_height}}px
             {% endif %}"/>
+        {% else %}
+         {# Subquestion text is HTML, e.g. an image inserted with the HTML editor #}
+         <span class="imageselect-html{% if question_template_attribute.fix_width > 1 %} imageselect-fixed-width{% endif %}{% if question_template_attribute.fix_height > 1 %} imageselect-fixed-height{% endif %}"
+         style="{% if question_template_attribute.fix_width > 1 %}--imageselect-width: {{ question_template_attribute.fix_width }}px;{% endif %}{% if question_template_attribute.fix_height > 1 %}--imageselect-height: {{ question_template_attribute.fix_height }}px;{% endif %}">
+            {{ processString(question) }}
+         </span>
+        {% endif %}
         </label>
         <label for="answer{{ myfname }}" class="imageselect-select d-none"></label>
     </div>
