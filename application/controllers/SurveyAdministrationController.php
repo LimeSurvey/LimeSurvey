@@ -1339,12 +1339,15 @@ class SurveyAdministrationController extends LSBaseController
      *
      * @return string|string[]
      * @throws CException
+     * @throws CHttpException
      */
     public function actionGetAjaxMenuArray($surveyid, $position = '')
     {
         $iSurveyID = sanitize_int($surveyid);
 
-        //todo permission check ?!?
+        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'read')) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
 
         $survey = Survey::model()->findByPk($iSurveyID);
         $menus = $survey->getSurveyMenus($position);
