@@ -3,8 +3,7 @@
 namespace ls\tests;
 
 /**
- * Saving a response stores the multiple choice Other tick that goes with the Other text (JD-203),
- * for every way of saving: imports and RemoteControl (SurveyDynamic), response edit (Response).
+ * Saving a response stores the multiple choice Other tick that goes with the Other text.
  */
 class OtherCheckedOnSaveTest extends TestBaseClass
 {
@@ -53,6 +52,15 @@ class OtherCheckedOnSaveTest extends TestBaseClass
         $response = \SurveyDynamic::model(self::$surveyId)->findByPk($id);
         $response->setAttribute(self::$otherColumn, 'only text');
         $this->assertTrue($response->encryptSave(true, [self::$otherColumn]));
+        $this->assertSame('Y', $this->read($id)[self::$otherColumn . 'checked']);
+    }
+
+    public function testSavingOnlyAnEmptyTickKeepsTheTickOfTheText()
+    {
+        $id = $this->insert([self::$otherColumn => 'some text'])['id'];
+        $response = \SurveyDynamic::model(self::$surveyId)->findByPk($id);
+        $response->setAttribute(self::$otherColumn . 'checked', '');
+        $this->assertTrue($response->encryptSave(true, [self::$otherColumn . 'checked']));
         $this->assertSame('Y', $this->read($id)[self::$otherColumn . 'checked']);
     }
 

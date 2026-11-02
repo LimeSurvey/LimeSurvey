@@ -1387,7 +1387,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 continue;
             }
             $otherColumn = substr((string) $checkedColumn, 0, -7);
-            if ($attributes !== null && !in_array($otherColumn, $attributes, true)) {
+            if ($attributes !== null && !in_array($otherColumn, $attributes, true) && !in_array($checkedColumn, $attributes, true)) {
                 continue;
             }
             if ((string) $response->getAttribute($otherColumn) !== '') {

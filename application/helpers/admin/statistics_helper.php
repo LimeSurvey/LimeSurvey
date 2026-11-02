@@ -2703,14 +2703,19 @@ class statistics_helper
                 if ($noncompleted) {
                     foreach (self::addOtherCheckedColumns($surveyid, $outputs['alist']) as $al) {
                         $quotedColumnName = App()->db->quoteColumnName($al[2]);
+                        $isOtherChecked = substr((string) $al[2], -14) === '_Cotherchecked';
                         switch ($sDatabaseType) {
                             case 'mssql':
                             case 'sqlsrv':
                             case 'dblib':
-                                $condition = "$quotedColumnName IS NOT NULL AND CAST($quotedColumnName as VARCHAR)= ''";
+                                $condition = $isOtherChecked
+                                    ? "$quotedColumnName IS NULL OR CAST($quotedColumnName as VARCHAR)= ''"
+                                    : "$quotedColumnName IS NOT NULL AND CAST($quotedColumnName as VARCHAR)= ''";
                                 break;
                             default:
-                                $condition = "$quotedColumnName IS NOT NULL AND $quotedColumnName  = ''";
+                                $condition = $isOtherChecked
+                                    ? "$quotedColumnName IS NULL OR $quotedColumnName  = ''"
+                                    : "$quotedColumnName IS NOT NULL AND $quotedColumnName  = ''";
                         }
                         $criteria->addCondition($condition);
                     }
