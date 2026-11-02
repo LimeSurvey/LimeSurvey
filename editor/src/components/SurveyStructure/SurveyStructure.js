@@ -363,7 +363,7 @@ export const SurveyStructure = () => {
                     cursor:
                       isDraggingOutOfGroup || !hasSurveyUpdatePermission
                         ? 'not-allowed'
-                        : 'drag',
+                        : 'auto',
                   }}
                 >
                   {questionGroups.map((questionGroup, index) => (

@@ -25,7 +25,7 @@ export const DragAndDrop = ({
     isDropDisabled ||
     !hasSurveyUpdatePermission
 
-  /** Shows an error toast instead of calling `onDragEnd` when reordering is not allowed. */
+  /** Shows an error toast and passes the drop on as cancelled (`destination: null`) when reordering is not allowed, so consumers can still clean up drag state. */
   const handleOnDragEnd = (result) => {
     if ((isSurveyActive && surveyActiveDisable) || !hasSurveyUpdatePermission) {
       errorToast(
@@ -34,6 +34,7 @@ export const DragAndDrop = ({
           : getTooltipMessages().NO_PERMISSION
       )
 
+      onDragEnd({ ...result, destination: null })
       return
     }
 
