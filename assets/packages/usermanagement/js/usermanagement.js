@@ -281,8 +281,10 @@ var UserManagement = function () {
 
         tableObject.on('click', '.general-row-selector', function () {
             var bChecked = this.checked;
-            $(this).removeClass('incomplete-selection');
-            setPermissionsChecked($(this).closest('tr').find('input'), bChecked);
+            var row = $(this).closest('tr');
+            // Permissions the current user may not grant are disabled and keep their state
+            setPermissionsChecked(row.find('.specific-settings-block input:checkbox:not(:disabled)'), bChecked);
+            updateRowGeneralState(row);
             updateSelectAllState();
         });
 
@@ -308,7 +310,12 @@ var UserManagement = function () {
         });
 
         tableObject.find('tbody tr').each(function () {
-            updateRowGeneralState($(this));
+            var row = $(this);
+            // Nothing to change in this row: The row selector would only pretend to
+            if (!row.find('.specific-settings-block input:checkbox:not(:disabled)').length) {
+                row.find('.general-row-selector').prop('disabled', true);
+            }
+            updateRowGeneralState(row);
         });
         updateSelectAllState();
 

@@ -2914,7 +2914,7 @@ class remotecontrol_handle
      * @param string|null $sUsername (optional) username to get list of surveys
      * @param integer|null $gsid  (optional) the surveys group id to get list of surveys
      * @return array On success: list of surveys. On failure: array with 'status' and 'error_code' keys.
-     *              Possible error codes: ERR_INVALID_SESSION, ERR_INVALID_USER, ERR_NO_DATA.
+     *              Possible error codes: ERR_INVALID_SESSION, ERR_NO_DATA.
      */
     public function list_surveys($sSessionKey, $sUsername = null, $gsid = null)
     {
@@ -2924,7 +2924,8 @@ class remotecontrol_handle
             if ($sUsername != null) {
                 $aUserData = User::model()->findByAttributes(array('users_name' => (string) $sUsername));
                 if (!isset($aUserData)) {
-                    return array('status' => 'Invalid user', 'error_code' => self::ERR_INVALID_USER);
+                    // Same answer as for an existing user without surveys, to not reveal which usernames exist
+                    return array('status' => 'No surveys found', 'error_code' => self::ERR_NO_DATA);
                 } else {
                     $sUid = $aUserData->attributes['uid'];
                 }
