@@ -559,6 +559,10 @@ function deleteAttributeAjax(attribute_id){
             method: "POST",
             dataType: 'json',
             success: function (result){
+                if (result && result.hasPermission === false) {
+                    window.LS.ajaxAlerts(result.noPermissionText, 'danger', {showCloseButton: true});
+                    return;
+                }
                 window.LS.ajaxAlerts(result.success, 'success', {showCloseButton: true});
                 $.fn.yiiGridView.update('list_attributes',{});
             }

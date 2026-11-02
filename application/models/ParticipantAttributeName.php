@@ -97,6 +97,7 @@ class ParticipantAttributeName extends LSActiveRecord
 
     /**
      * Returns Buttons for Grid view
+     * Edit is only shown with global 'participantpanel' 'update' permission, delete only with 'delete' permission
      * @return string html
      */
     public function getButtons()
@@ -104,30 +105,37 @@ class ParticipantAttributeName extends LSActiveRecord
         $isNotCoreAttribute = $this->core_attribute !== 'Y';
 
         $dropdownItems = [];
-        $dropdownItems[] = [
-            'title'            => gT('Edit this attribute'),
-            'linkClass'        => 'action_attributeNames_editModal',
-            'iconClass'        => 'ri-pencil-fill',
-            'enabledCondition' => $isNotCoreAttribute,
-            'linkAttributes'   => [
-                'data-attribute_id'   => $this->attribute_id,
-            ]
-        ];
-        $dropdownItems[] = [
-            'title'            => gT('Delete this attribute'),
-            'linkClass'        => 'action_attributeNames_deleteModal',
-            'iconClass'        => 'ri-delete-bin-fill text-danger',
-            'enabledCondition' => $isNotCoreAttribute,
-            'linkAttributes'   => [
-                'data-bs-toggle' => "modal",
-                'data-bs-target' => "#confirmation-modal",
-                'data-title'     => gT("Delete this attribute"),
-                'data-btnclass'  => "btn-danger",
-                'data-btntext'   => gT("Delete"),
-                'data-message'   => gT('Do you really want to delete this attribute') . "?",
-                'data-onclick'   => 'deleteAttributeAjax(' . $this->attribute_id . ")",
-            ]
-        ];
+        if (Permission::model()->hasGlobalPermission('participantpanel', 'update')) {
+            $dropdownItems[] = [
+                'title'            => gT('Edit this attribute'),
+                'linkClass'        => 'action_attributeNames_editModal',
+                'iconClass'        => 'ri-pencil-fill',
+                'enabledCondition' => $isNotCoreAttribute,
+                'linkAttributes'   => [
+                    'data-attribute_id'   => $this->attribute_id,
+                ]
+            ];
+        }
+        if (Permission::model()->hasGlobalPermission('participantpanel', 'delete')) {
+            $dropdownItems[] = [
+                'title'            => gT('Delete this attribute'),
+                'linkClass'        => 'action_attributeNames_deleteModal',
+                'iconClass'        => 'ri-delete-bin-fill text-danger',
+                'enabledCondition' => $isNotCoreAttribute,
+                'linkAttributes'   => [
+                    'data-bs-toggle' => "modal",
+                    'data-bs-target' => "#confirmation-modal",
+                    'data-title'     => gT("Delete this attribute"),
+                    'data-btnclass'  => "btn-danger",
+                    'data-btntext'   => gT("Delete"),
+                    'data-message'   => gT('Do you really want to delete this attribute') . "?",
+                    'data-onclick'   => 'deleteAttributeAjax(' . $this->attribute_id . ")",
+                ]
+            ];
+        }
+        if (empty($dropdownItems)) {
+            return '';
+        }
 
         return App()->getController()->widget('ext.admin.grid.GridActionsWidget.GridActionsWidget', ['dropdownItems' => $dropdownItems], true);
     }

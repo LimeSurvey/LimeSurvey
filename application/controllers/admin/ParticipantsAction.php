@@ -593,6 +593,7 @@ class ParticipantsAction extends SurveyCommonAction
     /**
      * Method to open the participant delete modal
      * Requires 'participant_id' (int)
+     * Requires the global participant panel delete permission or ownership of the participant, like deleteParticipant()
      * @return void
      */
     public function openDeleteParticipant()
@@ -600,6 +601,14 @@ class ParticipantsAction extends SurveyCommonAction
 
         $participant_id = Yii::app()->request->getPost('participant_id');
         $model = Participant::model()->findByPk($participant_id);
+        if (empty($model)) {
+            $this->ajaxHelper::outputError(gT('Found no participant'));
+            return;
+        }
+        if (empty(Participant::model()->filterParticipantIDs([$participant_id]))) {
+            $this->ajaxHelper::outputNoPermission();
+            return;
+        }
 
         $html = $this->getController()->renderPartial(
             '/admin/participants/modal_subviews/_deleteParticipant',
@@ -674,8 +683,11 @@ class ParticipantsAction extends SurveyCommonAction
         if (count($aData) > 0) {
             foreach ($aParticipantIds as $sParticipantId) {
                 $oParticipant = Participant::model()->findByPk($sParticipantId);
-
-
+                if (empty($oParticipant)) {
+                    $aResults[$sParticipantId]['status']  = false;
+                    $aResults[$sParticipantId]['message'] = gT('Found no participant');
+                    continue;
+                }
 
                 foreach ($aData as $key => $value) {
                     // Make sure no-one hacks owner_uid into form
@@ -1609,10 +1621,16 @@ class ParticipantsAction extends SurveyCommonAction
 
     /**
      * Method to open the editAttributeName Modal
+     * Requires global 'participantpanel' 'update' permission when editing, 'create' when adding, like editAttributeName()
+     * @return void
      */
     public function openEditAttributeNames()
     {
         $attribute_id = Yii::app()->request->getPost('attribute_id');
+        if (!Permission::model()->hasGlobalPermission('participantpanel', $attribute_id ? 'update' : 'create')) {
+            $this->ajaxHelper::outputNoPermission();
+            return;
+        }
         if ($attribute_id) {
             $model = ParticipantAttributeName::model()->findByPk($attribute_id);
             $editType = "edit";
@@ -1917,11 +1935,17 @@ class ParticipantsAction extends SurveyCommonAction
 
     /**
      * Fetches the attributes of a participant to be displayed in the attribute subgrid
+     * Requires Participant::userHasPermissionToRead() for the participant
      * @todo Where is this called from?
      */
     public function getAttributeJson()
     {
         $iParticipantId = strip_tags(Yii::app()->request->getQuery('pid', ''));
+        $participant = Participant::model()->findByPk($iParticipantId);
+        if (empty($participant) || !$participant->userHasPermissionToRead()) {
+            $this->ajaxHelper::outputNoPermission();
+            return;
+        }
         $records = ParticipantAttributeName::model()->getParticipantVisibleAttribute($iParticipantId);
         $records = subval_sort($records, "attribute_name", "asc");
 
@@ -2594,11 +2618,14 @@ class ParticipantsAction extends SurveyCommonAction
                 'participant_id' => $participantId,
                 'share_uid' => $shareUid
             ));
+            if (empty($participantShare)) {
+                continue;
+            }
 
             $isOwner = $participantShare->participant->owner_uid == $userId;
             $hasPermissionToDelete = $isOwner || $isSuperAdmin;
 
-            if ($hasPermissionToDelete && !empty($participantShare)) {
+            if ($hasPermissionToDelete) {
                 $participantShare->delete();
                 $sharesDeleted++;
             }
