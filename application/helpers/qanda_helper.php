@@ -176,7 +176,7 @@ function retrieveAnswers($ia)
     $qtitle .= $validation_msg;
     $question_text['valid_message'] = $validation_msg;
 
-    if (!(($_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['step'] != $_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['maxstep']) || ($_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['step'] == $_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['prevstep']))) {
+    if (!isMandatoryMessageShown()) {
         $isValid = true; // don't want to show any validation messages.
     }
 
@@ -247,7 +247,7 @@ function retrieveAnswers($ia)
 }
 
 /**
- * Mandatory messages are shown once the participant tried to leave the page, or came back to it
+ * Mandatory and validation messages are shown once the participant tried to leave the page, or came back to it
  * @return bool
  */
 function isMandatoryMessageShown()

@@ -107,6 +107,16 @@ class SurveyDynamic extends LSActiveRecord
     }
 
     /**
+     * @inheritdoc
+     * Also stores the multiple choice Other tick that goes with the Other text
+     */
+    public function encryptSave($runValidation = true, $attributes = null)
+    {
+        $attributes = Survey::setOtherCheckedFromText($this, $attributes);
+        return parent::encryptSave($runValidation, $attributes);
+    }
+
+    /**
      * Insert records from $data array
      * Still used in em_manager_helper when create response in _UpdateValuesInDatabase function (2026-04-20)
      *

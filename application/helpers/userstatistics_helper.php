@@ -1347,9 +1347,10 @@ class userstatistics_helper
                         //get data - select a count of responses where no answer is provided
                         $sResponseColumn = $this->getFieldNameFromRawName($al[2], $digitIndex);
                         // Multiple choice Other can be ticked without text when the response table stores the tick
-                        $sCheckedColumn = $sResponseColumn . 'checked';
+                        $oSurvey = Survey::model()->findByPk($surveyid);
+                        $sCheckedColumn = $oSurvey ? $oSurvey->getOtherCheckedColumn($sResponseColumn) : null;
                         foreach ($oResponses as $oResponse) {
-                            $bChecked = $oResponse->hasAttribute($sCheckedColumn) && $oResponse->$sCheckedColumn === 'Y';
+                            $bChecked = $sCheckedColumn !== null && $oResponse->$sCheckedColumn === 'Y';
                             if ($oResponse->$sResponseColumn != '' || $bChecked) {
                                 $row += 1;
                             }

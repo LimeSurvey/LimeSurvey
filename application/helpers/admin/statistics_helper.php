@@ -1368,14 +1368,15 @@ class statistics_helper
     /**
      * Multiple choice Other is selected when it has text, or when its stored tick is set
      *
+     * @param integer $surveyid
      * @param SurveyDynamic $responseModel
      * @param string $otherColumn the Other text column, Q{qid}_Cother
      * @return string condition to add after the "has text" condition, empty when the response table has no tick column
      */
-    protected function getOtherCheckedCondition($responseModel, $otherColumn)
+    protected function getOtherCheckedCondition($surveyid, $responseModel, $otherColumn)
     {
-        $column = $otherColumn . 'checked';
-        if ($responseModel->getTableSchema()->getColumn($column) === null) {
+        $column = self::getOtherCheckedColumn($surveyid, $otherColumn);
+        if ($column === null) {
             return '';
         }
         $checkedValue = getEncryptedCondition($responseModel, $column, 'Y');
@@ -1494,7 +1495,7 @@ class statistics_helper
                         $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE " . Yii::app()->db->quoteColumnName($columnName) . "='$othEncrypted'";
                     } else {
                         $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE (" . Yii::app()->db->quoteColumnName($al[2]) . " <> ''"
-                            . $this->getOtherCheckedCondition($responseModel, $al[2]) . ")";
+                            . $this->getOtherCheckedCondition($surveyid, $responseModel, $al[2]) . ")";
                     }
                 }
 
@@ -2248,7 +2249,7 @@ class statistics_helper
                         //get data - select a count of responses where no answer is provided
                         $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE (";
                         $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($al[2]) . " != ''" : "NOT (" . Yii::app()->db->quoteColumnName($al[2]) . " LIKE '')";
-                        $query .= $this->getOtherCheckedCondition($responseModel, $al[2]) . ")";
+                        $query .= $this->getOtherCheckedCondition($surveyid, $responseModel, $al[2]) . ")";
                     }
                 }
 
@@ -4387,14 +4388,25 @@ class statistics_helper
      */
     private static function addOtherCheckedColumns($surveyid, $answersList)
     {
-        $tableSchema = SurveyDynamic::model($surveyid)->getTableSchema();
         $result = [];
         foreach ($answersList as $al) {
             $result[] = $al;
-            if (substr((string) $al[2], -7) === '_Cother' && $tableSchema->getColumn($al[2] . 'checked') !== null) {
-                $result[] = [$al[0], $al[1], $al[2] . 'checked'];
+            $checkedColumn = self::getOtherCheckedColumn($surveyid, $al[2] ?? '');
+            if ($checkedColumn !== null) {
+                $result[] = [$al[0], $al[1], $checkedColumn];
             }
         }
         return $result;
+    }
+
+    /**
+     * @param integer $surveyid
+     * @param string $otherColumn the Other text column, Q{qid}_Cother
+     * @return string|null its tick column, when the response table has it
+     */
+    private static function getOtherCheckedColumn($surveyid, $otherColumn)
+    {
+        $survey = Survey::model()->findByPk($surveyid);
+        return $survey ? $survey->getOtherCheckedColumn($otherColumn) : null;
     }
 }

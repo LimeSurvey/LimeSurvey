@@ -1360,6 +1360,47 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
+     * Tick column of a multiple choice Other text column, when the responses table has it
+     * @param string $otherColumn the Other text column, Q{qid}_Cother
+     * @return string|null
+     */
+    public function getOtherCheckedColumn($otherColumn)
+    {
+        if (!preg_match('/^Q(\d+)_Cother$/', (string) $otherColumn, $matches) || !$this->hasOtherCheckedColumn($matches[1])) {
+            return null;
+        }
+        return $otherColumn . 'checked';
+    }
+
+    /**
+     * Multiple choice Other with text is always ticked: set Q{qid}_Cotherchecked to Y where Q{qid}_Cother has text,
+     * so every way of saving a response (imports, RemoteControl, response edit) stores the tick.
+     * A tick without text is kept. Call it before the values are encrypted.
+     * @param CActiveRecord $response a row of the responses table
+     * @param string[]|null $attributes the attributes to save, null for all
+     * @return string[]|null the attributes to save, with the ticks that go with the saved Other texts
+     */
+    public static function setOtherCheckedFromText(CActiveRecord $response, $attributes = null)
+    {
+        foreach ($response->getTableSchema()->getColumnNames() as $checkedColumn) {
+            if (substr((string) $checkedColumn, -14) !== '_Cotherchecked') {
+                continue;
+            }
+            $otherColumn = substr((string) $checkedColumn, 0, -7);
+            if ($attributes !== null && !in_array($otherColumn, $attributes, true)) {
+                continue;
+            }
+            if ((string) $response->getAttribute($otherColumn) !== '') {
+                $response->setAttribute($checkedColumn, 'Y');
+                if ($attributes !== null && !in_array($checkedColumn, $attributes, true)) {
+                    $attributes[] = $checkedColumn;
+                }
+            }
+        }
+        return $attributes;
+    }
+
+    /**
      * @return bool
      */
     public function getIsAnonymized()

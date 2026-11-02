@@ -501,7 +501,7 @@ class DataEntry extends SurveyCommonAction
             if ($preserveIDs && $isPgsql) {
                 $this->syncResponseIdSequence($iSurveyId);
             }
-            $this->fillOtherCheckedFromText($iSurveyId, $targetSchema, $fieldMap, array_values($aSRIDConversions));
+            $this->fillOtherCheckedFromText($iSurveyId, $targetSchema, $fieldMap, array_values($aSRIDConversions), $encryptedAttributes);
             if (empty($responseErrors) && !$skipped) {
                 Yii::app()->session['flashmessage'] = sprintf(gT("%s old response(s) were successfully imported."), $imported);
             }
@@ -1652,15 +1652,15 @@ class DataEntry extends SurveyCommonAction
      * @param CDbTableSchema $targetSchema
      * @param array $fieldMap imported source column => target column
      * @param integer[] $importedIds ids of the imported responses, other responses are not changed
+     * @param array $encryptedAttributes encrypted columns of the target table
      * @return void
      */
-    private function fillOtherCheckedFromText($iSurveyId, $targetSchema, array $fieldMap, array $importedIds)
+    private function fillOtherCheckedFromText($iSurveyId, $targetSchema, array $fieldMap, array $importedIds, array $encryptedAttributes)
     {
         if (empty($importedIds)) {
             return;
         }
         $db = Yii::app()->db;
-        $encryptedAttributes = Response::getEncryptedAttributes($iSurveyId);
         foreach ($targetSchema->getColumnNames() as $checkedColumn) {
             if (substr((string) $checkedColumn, -14) !== '_Cotherchecked' || in_array($checkedColumn, $fieldMap, true)) {
                 continue;

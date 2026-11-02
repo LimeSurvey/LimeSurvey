@@ -117,6 +117,7 @@
         {
             $("#answer{{ myfname }}").val('').removeAttr('aria-invalid');
             $("#java{{ myfname }}").val('');
+            $("#status-{{ myfname }}-other").text('');
             {{ checkconditionFunction }}("", "{{ myfname }}", "text");
             LEMflagMandOther("{{ myfname }}",false);
         }

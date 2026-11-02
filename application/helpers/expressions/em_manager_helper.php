@@ -4848,6 +4848,9 @@ class LimeExpressionManager
                         'type'  => $knownVar['type'],
                         'value' => $value,
                     ];
+                    if (isset($LEM->other2otherChecked[$knownVar['sgqa']]) && (string) $value !== '') {
+                        $LEM->setOtherCheckedValue($knownVar['sgqa'], 'Y', $LEM->updatedValues);
+                    }
                 } else {
                     unset($_SESSION[$LEM->sessid]['startingValues'][$k]);
                 }
