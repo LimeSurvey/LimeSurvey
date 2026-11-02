@@ -77,6 +77,21 @@
     padding-bottom: 16px;
     overflow-x: visible;
 
+    // Image previews keep their size (fixed height, natural width), so a very
+    // wide image is wider than the question: scroll the answers instead of
+    // overflowing the card. A scroll container clips everything outside it,
+    // and some controls reach past the content edge: the 2px outline that
+    // draws radios/checkboxes, and the subquestion remove button (left: -24px).
+    // Padding gives them room inside the scroll area; the equal negative
+    // margin keeps the layout where it was.
+    &:has(.image-choice-preview) {
+      overflow-x: auto;
+      padding-top: 4px;
+      margin-top: -4px;
+      padding-left: 28px;
+      margin-left: -28px;
+    }
+
     .error-message {
       @include med14-c;
       @extend .text-danger;

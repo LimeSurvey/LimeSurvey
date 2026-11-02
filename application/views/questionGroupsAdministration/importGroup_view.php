@@ -25,7 +25,9 @@ echo viewHelper::getViewTestTag('importQuestionGroup');
                 <!-- Select question group file -->
                 <div class="mb-3">
                     <label for='the_file' class=" form-label"><?php eT("Select question group file (*.lsg):");
-                    echo '<br>' . sprintf(gT("(Maximum file size: %01.2f MB)"), getMaximumFileUploadSize() / 1024 / 1024);
+                    if (isFileUploadSizeLimited()) {
+                        echo '<br>' . sprintf(gT("(Maximum file size: %01.2f MB)"), getMaximumFileUploadSize() / 1024 / 1024);
+                    }
                     ?></label>
                         <div class="">
                            <input id='the_file' class="form-control" name="the_file" type="file" accept='.lsg' />
