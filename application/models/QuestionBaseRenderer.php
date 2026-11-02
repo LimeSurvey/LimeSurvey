@@ -86,6 +86,12 @@ abstract class QuestionBaseRenderer extends StaticModel
         );
     }
 
+    /**
+     * Renders the timer of a question with a time limit and registers its script.
+     * Translated timer messages are taken in the language the question is rendered in.
+     *
+     * @return string|null The timer HTML, or null if the question has no time limit
+     */
     protected function getTimeSettingRender()
     {
         $oQuestion = $this->oQuestion;
@@ -124,13 +130,13 @@ abstract class QuestionBaseRenderer extends StaticModel
         $disable_next = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_disable_next']['value'], 0);
         $disable_prev = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_disable_prev']['value'], 0);
         $time_limit_action = intval($this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_action']['value'], 1));
-        $time_limit_message = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_message']['value'], gT("Your time to answer this question has expired"));
+        $time_limit_message = $this->setDefaultIfEmpty($this->getQuestionAttribute('time_limit_message', $this->sLanguage), gT("Your time to answer this question has expired"));
         $time_limit_warning = intval($this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning']['value'], 0));
         $time_limit_warning_2 = intval($this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_2']['value'], 0));
-        $time_limit_countdown_message = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_countdown_message']['value'], gT("Time remaining"));
-        $time_limit_warning_message = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_message']['value'], gT("Your time to answer this question has nearly expired. You have {TIME} remaining."));
+        $time_limit_countdown_message = $this->setDefaultIfEmpty($this->getQuestionAttribute('time_limit_countdown_message', $this->sLanguage), gT("Time remaining"));
+        $time_limit_warning_message = $this->setDefaultIfEmpty($this->getQuestionAttribute('time_limit_warning_message', $this->sLanguage), gT("Your time to answer this question has nearly expired. You have {TIME} remaining."));
         $time_limit_warning_display_time = intval($this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_display_time']['value'], 0));
-        $time_limit_warning_2_message = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_2_message']['value'], gT("Your time to answer this question has nearly expired. You have {TIME} remaining."));
+        $time_limit_warning_2_message = $this->setDefaultIfEmpty($this->getQuestionAttribute('time_limit_warning_2_message', $this->sLanguage), gT("Your time to answer this question has nearly expired. You have {TIME} remaining."));
 
         $time_limit_message_delay = intval($this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_message_delay']['value'], 1)) * 1000;
         $time_limit_warning_2_display_time = intval($this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_2_display_time']['value'], 0));

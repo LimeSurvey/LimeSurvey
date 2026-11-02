@@ -593,12 +593,16 @@ window.addEventListener('message', function(event) {
             }
         }
         $oRTemplate   = $oTemplate;
-        /* This template */
-        $loader->addPath($oRTemplate->viewPath);
+        /* This template (an extended theme may have no views directory, e.g. when it only changes CSS) */
+        if (is_dir($oRTemplate->viewPath)) {
+            $loader->addPath($oRTemplate->viewPath);
+        }
         /* Parent template */
         while ($oRTemplate->oMotherTemplate instanceof TemplateConfiguration) {
             $oRTemplate = $oRTemplate->oMotherTemplate;
-            $loader->addPath($oRTemplate->viewPath);
+            if (is_dir($oRTemplate->viewPath)) {
+                $loader->addPath($oRTemplate->viewPath);
+            }
         }
         /* Added twig by plugins, replaced by any template file or question template file*/
         if (isset($configTwigExtendsAdd)) {

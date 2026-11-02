@@ -10,7 +10,7 @@ Yii::app()->getController()->renderPartial(
         <caption class="visually-hidden"><?=gT('User details')?></caption>
         <tr>
             <td><?=gT('User groups:')?></td>
-            <td><?=CHTml::encode(join(', ', $usergroups))?></td>
+            <td><?= empty($usergroups) ? '—' : CHTml::encode(join(', ', $usergroups)) ?></td>
         </tr>
         <?php if ($oUser->parentUser) : ?>
             <tr>

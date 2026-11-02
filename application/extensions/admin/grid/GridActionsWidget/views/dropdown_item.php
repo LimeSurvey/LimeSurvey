@@ -9,19 +9,25 @@
 /** @var string $title */
 ?>
 
-<div data-bs-toggle="tooltip" title="<?= $tooltip ?? '' ?>">
-    <a <?= !empty($linkId) ? 'id="' . $linkId . '"' : '' ?>
-       class="dropdown-item <?= $enabledCondition ? "" : "disabled" ?> <?= $linkClass ?? '' ?>"
-       href="<?= $url ?? '#' ?>"
+<?php
+// Note: Values are often escaped already (e.g. by gT()), so existing entities are not encoded again
+$encodeAttribute = function ($value) {
+    return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8', false);
+};
+?>
+<div data-bs-toggle="tooltip" title="<?= $encodeAttribute($tooltip ?? '') ?>">
+    <a <?= !empty($linkId) ? 'id="' . $encodeAttribute($linkId) . '"' : '' ?>
+       class="dropdown-item <?= $enabledCondition ? "" : "disabled" ?> <?= $encodeAttribute($linkClass ?? '') ?>"
+       href="<?= $encodeAttribute($url ?? '#') ?>"
        role="button"
        <?= !$enabledCondition ? 'aria-disabled="true" tabindex="-1"' : '' ?>
         <?php if (isset($linkAttributes) && is_array($linkAttributes)) : ?>
             <?php foreach ($linkAttributes as $attribute => $value) : ?>
-                <?= "$attribute='$value'" ?>
+                <?= $encodeAttribute($attribute) ?>="<?= $encodeAttribute($value) ?>"
             <?php endforeach; ?>
         <?php endif; ?>>
         <?php if (isset($iconClass)) : ?>
-            <i class="<?= $iconClass ?>"></i>
+            <i class="<?= $encodeAttribute($iconClass) ?>"></i>
         <?php endif; ?>
         <?= $title ?>
     </a>

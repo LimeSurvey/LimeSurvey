@@ -51,6 +51,13 @@ class remotecontrol_handle
     protected $controller;
 
     /**
+     * Username as set by the auth plugin during the last successful login, can differ from the given one (e.g. login by email)
+     *
+     * @var string|null
+     */
+    protected $authenticatedUsername;
+
+    /**
      * Constructor, stores the action instance into this handle class
      *
      * @access public
@@ -83,8 +90,12 @@ class remotecontrol_handle
     {
         $username = (string) $username;
         $password = (string) $password;
+        $this->authenticatedUsername = null;
         $loginResult = $this->_doLogin($username, $password, $plugin);
         if ($loginResult === true) {
+            if (!empty($this->authenticatedUsername)) {
+                $username = $this->authenticatedUsername;
+            }
             $this->_jumpStartSession($username);
             $sSessionKey = Yii::app()->securityManager->generateRandomString(32);
             $session = new Session();
@@ -1121,7 +1132,7 @@ class remotecontrol_handle
     public function add_group($sSessionKey, $iSurveyID, $sGroupTitle, $sGroupDescription = '')
     {
         if ($this->_checkSessionKey($sSessionKey)) {
-            if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'update')) {
+            if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'create')) {
                 $iSurveyID = (int) $iSurveyID;
                 $oSurvey = Survey::model()->findByPk($iSurveyID);
                 if (!isset($oSurvey)) {
@@ -1411,6 +1422,7 @@ class remotecontrol_handle
                 return array('status' => 'Error: Invalid group ID', 'error_code' => self::ERR_INVALID_GROUP);
             }
             if (Permission::model()->hasSurveyPermission($oGroup->sid, 'surveycontent', 'update')) {
+                EmCacheHelper::flushAtEndOfRequest();
                 $aResult = array();
                 // Remove fields that may not be modified
                 unset($aGroupData['sid']);
@@ -1714,6 +1726,9 @@ class remotecontrol_handle
      * Returns an associative array mapping requested property names to their values.
      * Supported special properties include `available_answers`, `subquestions`, `attributes`,
      * `attributes_lang`, `answeroptions`, `answeroptions_multiscale`, and `defaultvalue`.
+     * `available_answers` and `answeroptions` (for dual scale questions: each scale of it) are
+     * returned as objects keyed by code, so numeric codes like 0, 1, 2 are kept in JSON.
+     * XML-RPC encodes these objects like arrays (see BigData::xmlrpc_echo()).
      * On error or permission/session failure the method returns an array with a `status` message.
      *
      * @access public
@@ -1805,7 +1820,8 @@ class remotecontrol_handle
                                 }
                             }
 
-                            $aResult[$sPropertyName] = $aData;
+                            // Keyed by subquestion code: An object, so numeric codes (0, 1, ...) don't turn it into a list
+                            $aResult[$sPropertyName] = $sPropertyName == 'available_answers' ? (object) $aData : $aData;
                         } else {
                             $aResult[$sPropertyName] = 'No available answers';
                         }
@@ -1854,7 +1870,8 @@ class remotecontrol_handle
                                 $aData[$oAttribute['code']]['scale_id'] = $oAttribute['scale_id'];
                                 $aData[$oAttribute['code']]['order'] = $oAttribute['sortorder'];
                             }
-                            $aResult['answeroptions'] = $aData;
+                            // Keyed by answer code: An object, so numeric codes (0, 1, ...) don't turn it into a list
+                            $aResult['answeroptions'] = (object) $aData;
                         } else {
                             $aResult['answeroptions'] = 'No available answer options';
                         }
@@ -1875,7 +1892,10 @@ class remotecontrol_handle
                                 $aData[$oAttribute['scale_id']][$oAttribute['code']]['scale_id'] = $oAttribute['scale_id'];
                                 $aData[$oAttribute['scale_id']][$oAttribute['code']]['order'] = $oAttribute['sortorder'];
                             }
-                            $aResult['answeroptions'] = $aData;
+                            // Each scale is keyed by answer code: An object, so numeric codes (0, 1, ...) don't turn it into a list
+                            $aResult['answeroptions'] = array_map(function ($aScaleData) {
+                                return (object) $aScaleData;
+                            }, $aData);
                         } else {
                             $aResult['answeroptions'] = 'No available answer options';
                         }
@@ -1965,6 +1985,7 @@ class remotecontrol_handle
                     return array('status' => 'Error: Invalid language', 'error_code' => self::ERR_INVALID_LANGUAGE);
                 }
 
+                EmCacheHelper::flushAtEndOfRequest();
                 $oQuestion = Question::model()->findByAttributes(array('qid' => $iQuestionID));
                 if (!isset($oQuestion)) {
                     return array('status' => 'Error: Invalid questionid', 'error_code' => self::ERR_INVALID_QUESTION);
@@ -3215,6 +3236,7 @@ class remotecontrol_handle
      *
      * Returns array of results of sending.
      * The sending stops on the first error (ie. when a token is invalid).
+     * Participants whose validity period does not include the current time are skipped.
      *
      * @access public
      * @param string $sSessionKey Auth credentials
@@ -3247,8 +3269,8 @@ class remotecontrol_handle
             $SQLemailstatuscondition = "emailstatus = 'OK'";
 
             $oTokens = TokenDynamic::model($iSurveyID);
-            $aResultTokens = $oTokens->findUninvited($aTokenIds, $iMaxEmails, $bEmail, $SQLemailstatuscondition);
-            $aAllTokens = $oTokens->findParticipantIDs(false, 0, true, $SQLemailstatuscondition);
+            $aResultTokens = $oTokens->findUninvited($aTokenIds, $iMaxEmails, $bEmail, $SQLemailstatuscondition, '', '', true);
+            $aAllTokens = $oTokens->findParticipantIDs(false, 0, true, $SQLemailstatuscondition, '', '', true);
             $iAllTokensCount = count($aAllTokens);
             unset($aAllTokens);
             if (empty($aResultTokens)) {
@@ -3287,7 +3309,8 @@ class remotecontrol_handle
     /**
      * Send a reminder to participants in a survey (RPC function)
      *
-     * Returns array of results of sending
+     * Returns array of results of sending.
+     * Participants whose validity period does not include the current time are skipped.
      *
      * @access public
      * @param string $sSessionKey Auth credentials
@@ -3336,11 +3359,11 @@ class remotecontrol_handle
             }
 
             $oTokens = TokenDynamic::model($iSurveyID);
-            $aAllTokens = $oTokens->findParticipantIDs(false, 0, false, $SQLemailstatuscondition, $SQLremindercountcondition, $SQLreminderdelaycondition);
+            $aAllTokens = $oTokens->findParticipantIDs(false, 0, false, $SQLemailstatuscondition, $SQLremindercountcondition, $SQLreminderdelaycondition, true);
             $iAllTokensCount = count($aAllTokens);
             unset($aAllTokens);  // save some memory before the next query
 
-            $aResultTokens = $oTokens->findUninvited($aTokenIds, $iMaxEmails, false, $SQLemailstatuscondition, $SQLremindercountcondition, $SQLreminderdelaycondition);
+            $aResultTokens = $oTokens->findUninvited($aTokenIds, $iMaxEmails, false, $SQLemailstatuscondition, $SQLremindercountcondition, $SQLreminderdelaycondition, true);
 
             if (empty($aResultTokens)) {
                 return array('status' => 'Error: No candidate tokens', 'error_code' => self::ERR_NO_DATA);
@@ -3970,6 +3993,8 @@ class remotecontrol_handle
     /**
      * Login with username and password
      *
+     * On success the username set by the auth plugin is stored in $authenticatedUsername.
+     *
      * @access protected
      * @param string $sUsername username
      * @param string $sPassword password
@@ -3994,6 +4019,7 @@ class remotecontrol_handle
             }
             return false;
         } else {
+            $this->authenticatedUsername = $identity->username;
             return true;
         }
     }
@@ -4060,8 +4086,10 @@ class remotecontrol_handle
      * @param int $sSessionKey
      * @param array $aParticipants
      * [[0] => ["email"=>"dummy-02222@limesurvey.com","firstname"=>"max","lastname"=>"mustermann"]]
+     * A new participant can get its own participant_id, which must be a UUID.
      * @param bool $update
-     * @return array On success: array with status 'OK'. On failure: array with 'status' and 'error_code' keys.
+     * @return array On success: array with 'ImportCount', 'UpdateCount' and 'InvalidParticipantIds' (participant IDs
+     *              that were not imported because they are not UUIDs). On failure: array with 'status' and 'error_code' keys.
      *              Possible error codes: ERR_INVALID_SESSION.
      */
     public function cpd_importParticipants($sSessionKey, $participants, $update = false)
@@ -4073,7 +4101,8 @@ class remotecontrol_handle
         $aDefaultFields = array('participant_id', 'firstname', 'lastname', 'email', 'language', 'blacklisted');
         $aResponse = array(
             'ImportCount' => 0,
-            'UpdateCount' => 0
+            'UpdateCount' => 0,
+            'InvalidParticipantIds' => array()
         );
 
         $aAttributeRecords = ParticipantAttributeName::model()
@@ -4106,6 +4135,11 @@ class remotecontrol_handle
                 }
                 $model = new Participant();
                 if (isset($participant['participant_id'])) {
+                    // New participants need a UUID as participant ID
+                    if (!Participant::isValidParticipantId($participant['participant_id'])) {
+                        $aResponse['InvalidParticipantIds'][] = $participant['participant_id'];
+                        continue;
+                    }
                     $model->participant_id = $participant['participant_id'];
                 } else {
                     $model->participant_id = Participant::genUuid();

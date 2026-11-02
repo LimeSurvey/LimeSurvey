@@ -821,9 +821,18 @@ class QuestionExplorer {
     var surveyIsActive = window.SideMenuData.isActive;
     var createQuestionGroupLink = window.SideMenuData.createQuestionGroupLink;
     var createQuestionLink = window.SideMenuData.createQuestionLink;
+    var createPermission = window.SideMenuData.createPermission;
     var createQuestionAllowed = questiongroups.length > 0 && createQuestionLink && createQuestionLink.length > 1;
     var createQuestionAllowedClass = createQuestionAllowed ? '' : 'disabled';
     var createQuestionGroupAllowedClass = createQuestionGroupLink && createQuestionGroupLink.length > 1 ? '' : 'disabled';
+    // Explain why a button is disabled: Questions need a group, nothing can be added to an active survey
+    var createQuestionTooltip = '';
+    if (surveyIsActive) {
+      createQuestionTooltip = _UIHelpers_js__WEBPACK_IMPORTED_MODULE_2__["default"].translate('deactivateSurvey');
+    } else if (questiongroups.length === 0) {
+      createQuestionTooltip = _UIHelpers_js__WEBPACK_IMPORTED_MODULE_2__["default"].translate('addGroupFirst');
+    }
+    var createQuestionGroupTooltip = surveyIsActive ? _UIHelpers_js__WEBPACK_IMPORTED_MODULE_2__["default"].translate('deactivateSurvey') : '';
     var orderedQuestionGroups = LS.ld.orderBy(questiongroups, function (a) {
       return _UIHelpers_js__WEBPACK_IMPORTED_MODULE_2__["default"].parseIntOr(a.group_order, 999999);
     }, ['asc']);
@@ -844,22 +853,23 @@ class QuestionExplorer {
     html += '</div>';
     html += '</div>';
 
-    // Create buttons
-    html += '<div class="ls-flex-row wrap align-content-center align-items-center button-sub-bar">';
-    html += '<div class="scoped-toolbuttons-left mb-2 d-flex align-items-center">';
-    var createQuestionTooltip = _UIHelpers_js__WEBPACK_IMPORTED_MODULE_2__["default"].translate(createQuestionAllowed ? '' : 'deactivateSurvey');
-    html += '<div class="create-question px-3" data-bs-toggle="tooltip" data-bs-placement="top" title="' + createQuestionTooltip + '">';
-    html += '<a id="adminsidepanel__sidebar--selectorCreateQuestion" href="' + this.createFullQuestionLink(createQuestionLink) + '" class="btn btn-primary pjax ' + createQuestionAllowedClass + '">';
-    html += '<i class="ri-add-circle-fill"></i>&nbsp;' + _UIHelpers_js__WEBPACK_IMPORTED_MODULE_2__["default"].translate('createQuestion');
-    html += '</a>';
-    html += '</div>';
-    html += '<div data-bs-toggle="tooltip" data-bs-placement="top" title="' + createQuestionTooltip + '">';
-    html += '<a id="adminsidepanel__sidebar--selectorCreateQuestionGroup" href="' + createQuestionGroupLink + '" class="btn btn-secondary pjax ' + createQuestionGroupAllowedClass + '">';
-    html += _UIHelpers_js__WEBPACK_IMPORTED_MODULE_2__["default"].translate('createPage');
-    html += '</a>';
-    html += '</div>';
-    html += '</div>';
-    html += '</div>';
+    // Create buttons, hidden without permission
+    if (createPermission) {
+      html += '<div class="ls-flex-row wrap align-content-center align-items-center button-sub-bar">';
+      html += '<div class="scoped-toolbuttons-left mb-2 d-flex align-items-center">';
+      html += '<div class="create-question px-3" data-bs-toggle="tooltip" data-bs-placement="top" title="' + createQuestionTooltip + '">';
+      html += '<a id="adminsidepanel__sidebar--selectorCreateQuestion" href="' + this.createFullQuestionLink(createQuestionLink) + '" class="btn btn-primary pjax ' + createQuestionAllowedClass + '">';
+      html += '<i class="ri-add-circle-fill"></i>&nbsp;' + _UIHelpers_js__WEBPACK_IMPORTED_MODULE_2__["default"].translate('createQuestion');
+      html += '</a>';
+      html += '</div>';
+      html += '<div data-bs-toggle="tooltip" data-bs-placement="top" title="' + createQuestionGroupTooltip + '">';
+      html += '<a id="adminsidepanel__sidebar--selectorCreateQuestionGroup" href="' + createQuestionGroupLink + '" class="btn btn-secondary pjax ' + createQuestionGroupAllowedClass + '">';
+      html += _UIHelpers_js__WEBPACK_IMPORTED_MODULE_2__["default"].translate('createPage');
+      html += '</a>';
+      html += '</div>';
+      html += '</div>';
+      html += '</div>';
+    }
 
     // Question groups list
     html += '<div class="ls-flex-row ls-space padding all-0">';

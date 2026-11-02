@@ -37,6 +37,9 @@ class QuestionTheme extends LSActiveRecord
     const THEME_TYPE_CUSTOM = 'customCoreTheme';
     const THEME_TYPE_USER = 'customUserTheme';
 
+    /** @var string|null Filter for the kind of theme in search(), one of the THEME_TYPE_* constants */
+    public $themeKind;
+
     /**
      * @return string the associated database table name
      */
@@ -170,8 +173,29 @@ class QuestionTheme extends LSActiveRecord
         $criteria->compare('extends', $this->extends, true);
         $criteria->compare('group', $this->group, true);
         $criteria->compare('settings', $this->settings, true);
+        switch ($this->themeKind) {
+            case self::THEME_TYPE_CORE:
+                $criteria->compare('core_theme', 1);
+                $criteria->addCondition("(extends = '' OR extends IS NULL)");
+                break;
+            case self::THEME_TYPE_CUSTOM:
+                $criteria->compare('core_theme', 1);
+                $criteria->addCondition("extends <> ''");
+                break;
+            case self::THEME_TYPE_USER:
+                $criteria->compare('core_theme', 0);
+                break;
+        }
         $sort = new CSort();
         $sort->defaultOrder = 'name';
+        $sort->attributes = [
+            // Question types first, then the themes shipped with LimeSurvey, then the user themes
+            'themeKind' => [
+                'asc'  => 'core_theme DESC, extends ASC',
+                'desc' => 'core_theme ASC, extends DESC',
+            ],
+            '*',
+        ];
         return new CActiveDataProvider($this, array(
             'criteria'   => $criteria,
             'sort'      => $sort,
@@ -179,6 +203,37 @@ class QuestionTheme extends LSActiveRecord
                 'pageSize' => $pageSizeTemplateView,
             ),
         ));
+    }
+
+    /**
+     * Returns the labels of the theme kinds, keyed by the THEME_TYPE_* constants
+     *
+     * @return array<string, string>
+     */
+    public static function getThemeKindLabels()
+    {
+        return [
+            self::THEME_TYPE_CORE   => gT('Question type', 'unescaped'),
+            self::THEME_TYPE_CUSTOM => gT('Core theme', 'unescaped'),
+            self::THEME_TYPE_USER   => gT('User theme', 'unescaped'),
+        ];
+    }
+
+    /**
+     * Returns the label of the kind of this theme: A core question type, a theme shipped with LimeSurvey or a theme added by the user
+     *
+     * @return string
+     */
+    public function getThemeKindLabel()
+    {
+        if (!$this->core_theme) {
+            $themeKind = self::THEME_TYPE_USER;
+        } elseif (empty($this->extends)) {
+            $themeKind = self::THEME_TYPE_CORE;
+        } else {
+            $themeKind = self::THEME_TYPE_CUSTOM;
+        }
+        return self::getThemeKindLabels()[$themeKind];
     }
 
     /**

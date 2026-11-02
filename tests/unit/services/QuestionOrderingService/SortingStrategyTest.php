@@ -144,7 +144,7 @@ class SortingStrategyTest extends TestBaseClass
             ->with('subquestion_order')
             ->andReturn('random');
 
-        // old random setting ist still there but 0
+        // old random setting is still there but 0
         $mockQuestion->shouldReceive('getQuestionAttribute')
             ->with('random_order')
             ->andReturn(0);

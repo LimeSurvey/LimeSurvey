@@ -620,6 +620,15 @@ $config['restrictToLanguages'] = '';
 $config['RPCInterface'] = 'off';
 
 /**
+* This parameter enables a log of all RPC interface calls, to find out what an API client sent and received
+* Set to true in config.php to write each request and the start of its response to tmp/runtime/remotecontrol.log
+* Passwords are removed, session keys are replaced by a short hash and long values are shortened.
+* Warning: The log still contains the survey, participant and response data sent and received, only enable it while debugging.
+* @var boolean
+*/
+$config['rpc_log'] = false;
+
+/**
 * This parameter enables/disables the 'Access-Control-Allow-Origin: *' header on the RPC interface
 * Set to 1 to allow browser-based applications on other domains to use the RPC interface (CORS)
 * Set to 0 if the RPC interface is only used by server-side scripts or from the same domain
@@ -882,4 +891,3 @@ $config['twig_getConfig_extraallowlist'] = null;
 $config['editorEnabled'] = true;
 
 return $config;
-//settings deleted

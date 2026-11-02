@@ -357,24 +357,72 @@ $(document).on('ready pjax:scriptcomplete', function () {
   }
 
   /**
+   * Scroll a newly added row into view inside its scrollable table wrapper.
+   * Rows of hidden languages are ignored.
+   *
+   * @param {HTMLElement} row
+   * @param {boolean} focus Also focus the code (or answer text) input of the row
+   * @return {void}
+   */
+  function revealNewRow(row /*: HTMLElement */, focus /*: boolean */) {
+    if (!$(row).is(':visible')) {
+      return;
+    }
+    row.scrollIntoView({ block: 'nearest' });
+    if (focus) {
+      $(row).find('input.code, input.answer').filter(':visible').first().trigger('focus');
+    }
+  }
+
+  /**
+   * Make the subquestion relevance textarea as high as its content
+   *
+   * @param {HTMLElement} textarea
+   * @return {void}
+   */
+  function fitRelevanceEquationHeight(textarea) {
+    textarea.style.height = 'auto';
+    // scrollHeight doesn't include the border
+    textarea.style.height = `${textarea.scrollHeight + textarea.offsetHeight - textarea.clientHeight}px`;
+  }
+
+  /**
    * Bind relevance equation to expand on click (only once)
+   * The column gets wider and the textarea shows the whole equation while it has the focus.
    *
    * @return {void}
    */
   function bindExpandRelevanceEquation() {
+    $('textarea.relevance').off('input').on('input', (event) => {
+      fitRelevanceEquationHeight(event.currentTarget);
+    });
     $('.relevance').off('focus').on('focus', (event) => {
       if (event.relatedTarget && $(event.relatedTarget).hasClass('relevance')) {
-        // Don't do anything when moving between relevance fields.
+        // Column is already expanded when moving between relevance fields.
+        if (event.currentTarget instanceof HTMLTextAreaElement) {
+          fitRelevanceEquationHeight(event.currentTarget);
+        }
         return;
       }
       if ($('#rel-eq-th').hasClass('col-lg-4')) {
         // If already expanded, do not expand again.
         return;
       }
-      $('#rel-eq-th').toggleClass('col-lg-1 col-lg-4', 'fast');
+      const textarea = event.currentTarget;
+      // jQuery UI animates the class change, so the column has its final width only when it's complete
+      $('#rel-eq-th').toggleClass('col-lg-1 col-lg-4', 'fast', () => {
+        if (textarea instanceof HTMLTextAreaElement && document.activeElement === textarea) {
+          fitRelevanceEquationHeight(textarea);
+        }
+      });
       $('.relevance').tooltip('dispose');
     });
     $('.relevance').off('blur').on('blur', (event) => {
+      if (event.currentTarget instanceof HTMLTextAreaElement) {
+        // Back to one row, showing the start of the equation
+        event.currentTarget.style.height = '';
+        event.currentTarget.scrollTop = 0;
+      }
       if (event.relatedTarget && $(event.relatedTarget).hasClass('relevance')) {
         // Don't do anything when moving between relevance fields.
         return;
@@ -725,11 +773,15 @@ $(document).on('ready pjax:scriptcomplete', function () {
         // eg: {"en":"{the html of the en row}", "fr":{the html of the fr row}}
 
         // We insert each row for each language
+        const newRows = [];
         $.each(arrayofhtml, (lang, htmlRow) => {
           const $elRowToUpdate = $(`#row_${lang}_${commonId}`); // The row for the current language
           $elRowToUpdate.after(htmlRow); // We insert the HTML of the new row after this one
+          newRows.push(...$elRowToUpdate.next().get());
         });
         rebindClickHandler();
+        // The new row may be below the visible area of the scrollable table
+        newRows.forEach((newRow) => revealNewRow(newRow, true));
       },
       error() {
         alert(errormessage);
@@ -1108,8 +1160,8 @@ $(document).on('ready pjax:scriptcomplete', function () {
               throw 'Found nowhere to put label.code';
             }
 
-            if ($tr.find('td.relevance-equation').find('input[type=text]').length > 0) {
-              $tr.find('td.relevance-equation').find('input[type=text]').val(1);
+            if ($tr.find('td.relevance-equation').find('.relevance').length > 0) {
+              $tr.find('td.relevance-equation').find('.relevance').val(1);
             } else {
               // ??
             }
@@ -1301,6 +1353,8 @@ $(document).on('ready pjax:scriptcomplete', function () {
     $.when.apply($, promises).done(
       function (...args) {
         /* $('#quickadd').dialog('close'); */
+        // Last added row per language, to scroll it into view afterwards
+        const lastRows = {};
         // TODO: What is item here?
         args.forEach((item /*: {lang: string, langtable: {}, html: string} */) => {
           answers[item.lang].forEach((row /*: {quid: string, text: string, code: string} */) => {
@@ -1334,13 +1388,14 @@ $(document).on('ready pjax:scriptcomplete', function () {
                   inputCode.textContent = row.code;
                 }
               }
-              const relevanceEquation = tableRow.querySelector('td.relevance-equation input');
-              if (relevanceEquation instanceof HTMLInputElement) {
+              const relevanceEquation = tableRow.querySelector('td.relevance-equation .relevance');
+              if (relevanceEquation instanceof HTMLTextAreaElement) {
                 relevanceEquation.value = '1';
               } else {
                 // Do nothing.
               }
               $(item.langtable).find('tbody').append(tableRow);
+              lastRows[item.lang] = tableRow;
             } catch (e) {
               alert('Internal error in quickAddLabels:' + e);
               throw 'abort';
@@ -1350,6 +1405,8 @@ $(document).on('ready pjax:scriptcomplete', function () {
         $('#quickaddarea').val('');
         $('.answertable tbody').sortable('refresh');
         updateRowProperties();
+        // Focus is not moved here, the closing modal gives it back to the "Quick add" button
+        Object.values(lastRows).forEach((lastRow) => revealNewRow(lastRow, false));
         $('#quickaddModal').modal('hide');
         bindExpandRelevanceEquation();
       },
@@ -1791,6 +1848,25 @@ $(document).on('ready pjax:scriptcomplete', function () {
   // Public functions for LS.questionEditor module.
   LS.questionEditor = {
     /**
+     * Show the selected question type on the button of the question type selector modal.
+     * The selector is not rendered again when the question type changes.
+     *
+     * @param {string} questionType - One-letter string of question type
+     * @param {object|false} option - Data of the selected question theme, false if no other theme was clicked in the modal
+     * @return {void}
+     */
+    updateQuestionTypeButton: function (questionType, option) {
+      if (!option) {
+        return;
+      }
+      const buttonText = $('#selector__questionTypeSelector--buttonText');
+      buttonText.text(option.title);
+      if ($('#question-type-selector-wrapper').data('debug') == 1) {
+        buttonText.append(' ', $('<em class="small"></em>').text(`Type: ${questionType}`));
+      }
+    },
+
+    /**
      * Update question attributes (general and advanced settings) when selecting question type.
      * Used by question selector modal.
      *
@@ -1811,7 +1887,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
         $.ajax({
           url: generalSettingsUrl,
           method: 'GET',
-          data: { questionType, questionTheme, code },
+          data: { questionType, questionTheme },
           dataType: 'html',
           success: (data) => {
             resolve(data);
@@ -1850,26 +1926,14 @@ $(document).on('ready pjax:scriptcomplete', function () {
         });
       });
       try {
-        var code = $('#questionCode').val();
         const [generalSettingsHtml, advancedSettingsHtml, extraOptionsHtml] = await Promise.all([generalSettingsPromise, advancedSettingsPromise, extraOptionsPromise]);
         const currentGroup = $('#gid').children("option:selected").val();
+        const currentPosition = $('#questionposition').val();
         $('#general-settings').replaceWith(generalSettingsHtml);
-        $('#questionCode').val(code);
-        var wrapperEl = $('#question-type-selector-wrapper');
-        var viewType = wrapperEl.data('viewtype');
-        var debug = wrapperEl.data('debug');
-        var runner_questionTypeSelector = new PreviewModalScript("questionTypeSelector", {
-          "selectedClass": "text-short",
-          "onUpdate": ["value", "theme", "$('#question_type').val(value); $('#question_theme_name').val(theme); LS.questionEditor.updateQuestionAttributes(value, theme, '" + generalSettingsUrl + "', '" + advancedSettingsUrl + "', '" + extraOptionsUrl + "');"],
-          "value": questionType,
-          "theme": questionTheme,
-          "debugString": "Type: ",
-          "debug": debug == 1,
-          "viewType": viewType
-        });
-        runner_questionTypeSelector.bind();
-
         $('#gid').val(currentGroup);
+        /* The group selector and the position selector were replaced: Bind the group change again and load the positions of the selected group */
+        activateQuestionPositionReload();
+        reloadQuestionPosition(currentGroup, currentPosition);
         // TODO: Double check HTML injected here. Extra div?
         $('#advanced-options-container').replaceWith(advancedSettingsHtml);
         $('#extra-options-container').replaceWith(extraOptionsHtml);
@@ -1980,6 +2044,10 @@ $(document).on('ready pjax:scriptcomplete', function () {
           }
         },
         error: (data) => {
+          // Logged out: The "logged out" modal is shown by the adminbasics ajaxError handler
+          if (data.status === 401) {
+            return;
+          }
           alert('Internal error in checkQuestionValidateTitle: ' + JSON.stringify(data));
           throw 'abort';
         }
@@ -2010,6 +2078,11 @@ $(document).on('ready pjax:scriptcomplete', function () {
       if (!(form instanceof HTMLFormElement)) {
         $('#ls-loading').hide();
         throw 'form is not HTMLFormElement';
+      }
+      /* Reset a stale custom validity message from a previous check: The code is checked again below with Ajax */
+      const questionCodeInput = document.getElementById('questionCode');
+      if (questionCodeInput instanceof HTMLInputElement) {
+        questionCodeInput.setCustomValidity('');
       }
       /* Check if input are HTML5 valid */
       if (!form.checkValidity() ) {
@@ -2196,6 +2269,11 @@ $(document).on('ready pjax:scriptcomplete', function () {
           }
         },
         error: (response) => {
+          $('#ls-loading').hide();
+          // Logged out: The "logged out" modal is shown by the adminbasics ajaxError handler
+          if (response.status === 401) {
+            return;
+          }
           alert('Internal error in checkQuestionValidateTitle: ' + response);
           throw 'abort';
         }
@@ -2250,6 +2328,46 @@ $(document).on('ready pjax:scriptcomplete', function () {
   }
   /* Attach event when ready */
   activateQuestionCodeChecker();
+
+  /**
+   * Load the position selector of a new question for another question group
+   *
+   * @param {string} gid
+   * @param {string|undefined} position Position to select again, if it exists in this group
+   * @return {void}
+   */
+  function reloadQuestionPosition(gid, position) {
+    const container = $('#question-position-container');
+    if (container.length === 0) {
+      return;
+    }
+    $.ajax({
+      url: container.data('url'),
+      method: 'GET',
+      data: { gid, display: 'general_option' },
+      dataType: 'html',
+      success: (html) => {
+        container.html(html);
+        if (position !== undefined && position !== null) {
+          $('#questionposition').val(position);
+          /* Position does not exist in this group: Back to "At end" */
+          if ($('#questionposition').val() === null) {
+            $('#questionposition').val('');
+          }
+        }
+      },
+      error: (data) => {
+        console.ls.error(data);
+      },
+    });
+  }
+  /** Reload the position selector of a new question when its question group changes */
+  function activateQuestionPositionReload() {
+    $('#gid').off('change.questionposition').on('change.questionposition', function () {
+      reloadQuestionPosition($(this).val());
+    });
+  }
+  activateQuestionPositionReload();
   /** */
   function showConditionsWarning(e) {
     if (!$(this).data('hasConditions')) {

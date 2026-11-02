@@ -337,12 +337,22 @@ function sanitize_labelname($string)
     return $string;
 }
 
-// make float float!
+/**
+ * Returns the number in a string, with a comma accepted as decimal separator.
+ *
+ * Whole numbers use the GMP library when available, so large values keep their precision.
+ * Anything else (decimals, text) goes through floatval(), text becomes 0.
+ *
+ * @param mixed $float The value to sanitize
+ * @param string|int|float $min Lowest allowed value, '' for no limit
+ * @param string|int|float $max Highest allowed value, '' for no limit
+ * @return string|float|false The number (a string for GMP whole numbers), false when outside min/max
+ */
 function sanitize_float($float, $min = '', $max = '')
 {
-    $float = str_replace(',', '.', (string) $float);
-    // GMP library allows for high precision and high value numbers
-    if (function_exists('gmp_init') && defined('GMP_VERSION') && version_compare(GMP_VERSION, '4.3.2') == 1) {
+    $float = trim(str_replace(',', '.', (string) $float));
+    // GMP library allows for high precision and high value numbers, but only handles whole numbers
+    if (preg_match('/^-?\d+$/', $float) && function_exists('gmp_init') && defined('GMP_VERSION') && version_compare(GMP_VERSION, '4.3.2') == 1) {
         $gNumber = gmp_init($float);
         if (($min != '' && gmp_cmp($gNumber, $min) < 0) || ($max != '' && gmp_cmp($gNumber, $max) > 0)) {
             return false;

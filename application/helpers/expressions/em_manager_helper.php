@@ -55,6 +55,12 @@ class LimeExpressionManager
      */
     private static $instance;
     /**
+     * Language of the page the posted answers come from, when the survey language changes in the current request.
+     * Static so that it is not saved with the singleton in the session and is only used for the current request.
+     * @var string|null
+     */
+    private static $postedLanguage = null;
+    /**
      * Implements the recursive descent parser that processes expressions
      * @var ExpressionManager
      */
@@ -256,8 +262,8 @@ class LimeExpressionManager
      * JavaScript array of mappings of canonical JavaScript variable name to key attributes.
      * These fragments are used to create the JavaScript varNameAttr array.
      *
-     * @example ['java38612X11X147'] = "'java38612X11X147':{ 'jsName':'java38612X11X147','jsName_on':'java38612X11X147','sgqa':'38612X11X147','qid':147,'gid':11,'type':'G','default':'','rowdivid':'','onlynum':'','gseq':1,'answers':{ 'M':'Male','F':'Female'}}"
-     * @example ['java26626X37X705sq1#1'] = "'java26626X37X705sq1#1':{ 'jsName':'java26626X37X705sq1#1','jsName_on':'java26626X37X705sq1#1','sgqa':'26626X37X705sq1#1','qid':705,'gid':37,'type':'1','default':'','rowdivid':'26626X37X705sq1','onlynum':'','gseq':1,'answers':{ '0~1':'1|Low','0~2':'2|Medium','0~3':'3|High','1~1':'1|Never','1~2':'2|Sometimes','1~3':'3|Always'}}"
+     * @example ['java38612X11X147'] = "'java38612X11X147':{ 'jsName':'java38612X11X147','jsName_on':'java38612X11X147','sgqa':'38612X11X147','qid':147,'gid':11,'type':'G','default':"",'rowdivid':'','onlynum':'','gseq':1,'answers':{ 'M':'Male','F':'Female'}}"
+     * @example ['java26626X37X705sq1#1'] = "'java26626X37X705sq1#1':{ 'jsName':'java26626X37X705sq1#1','jsName_on':'java26626X37X705sq1#1','sgqa':'26626X37X705sq1#1','qid':705,'gid':37,'type':'1','default':"",'rowdivid':'26626X37X705sq1','onlynum':'','gseq':1,'answers':{ '0~1':'1|Low','0~2':'2|Medium','0~3':'3|High','1~1':'1|Never','1~2':'2|Sometimes','1~3':'3|Always'}}"
      *
      * @var array
      */
@@ -717,6 +723,8 @@ class LimeExpressionManager
             $c = __CLASS__;
             self::$instance = new $c();
             unset($_SESSION['LEMdirtyFlag']);
+            // The cached instance is outdated too: Without this, the next request would restore it if this one does not save the new instance
+            unset($_SESSION['LEMsingleton']);
         } elseif (!isset(self::$instance)) {
             if (isset($_SESSION['LEMsingleton'])) {
                 $restored = @unserialize($_SESSION['LEMsingleton'], ['allowed_classes' => [LimeExpressionManager::class, ExpressionManager::class]]);
@@ -823,6 +831,27 @@ class LimeExpressionManager
     public static function getEMlanguage()
     {
         return Yii::app()->session['LEMlang'];
+    }
+
+    /**
+     * Set the language of the page the posted answers come from.
+     * Must be called when the survey language changes in the current request, since dates in POST
+     * are still in the date format of the previous language.
+     * @param string|null $lang Language code, null when the posted answers are in the current language
+     * @return void
+     */
+    public static function setPostedLanguage($lang)
+    {
+        self::$postedLanguage = $lang;
+    }
+
+    /**
+     * Get the language of the page the posted answers come from
+     * @return string
+     */
+    public static function getPostedLanguage()
+    {
+        return self::$postedLanguage ?? $_SESSION['LEMlang'];
     }
 
     /**
@@ -3987,8 +4016,8 @@ class LimeExpressionManager
                 //                . "','relevance':'" . (($relevance != '') ? htmlspecialchars(preg_replace('/[[:space:]]/',' ',$relevance),ENT_QUOTES) : 1)
                 //                . "','readWrite':'" . $readWrite
                 //                . "','grelevance':'" . (($grelevance != '') ? htmlspecialchars(preg_replace('/[[:space:]]/',' ',$grelevance),ENT_QUOTES) : 1)
-                . "','default':'" . (is_null($defaultValue) ? '' : json_encode($defaultValue)) // Don't found usage in em_javascript, used in expression ?
-                . "','rowdivid':'" . (is_null($rowdivid) ? '' : $rowdivid)
+                . "','default':" . json_encode($defaultValue ?? '', JSON_HEX_TAG | JSON_HEX_APOS) // Don't found usage in em_javascript, used in expression ?
+                . ",'rowdivid':'" . (is_null($rowdivid) ? '' : $rowdivid)
                 . "','onlynum':'" . ($onlynum ? '1' : '')
                 . "','gseq':" . $groupSeq
                 //                . ",'qseq':" . $questionSeq
@@ -4032,7 +4061,16 @@ class LimeExpressionManager
             }
         } else {
             // Read list of available tokens from the tokens table so that preview and error checking works correctly
-            $attrs = array_keys(getTokenFieldsAndNames($surveyid));
+            if ($survey->hasTokensTable) {
+                // Same columns as a participant row has in the survey (e.g. participant_id)
+                $attrs = Token::model($surveyid)->tableSchema->columnNames;
+            } else {
+                // Without a table, the attributes come from the survey's saved attribute descriptions
+                $attrs = array_merge(
+                    array_keys(getTokenFieldsAndNames($surveyid)),
+                    array_keys($survey->tokenAttributes ?? [])
+                );
+            }
             $blankVal = [
                 'code'       => '',
                 'type'       => '',
@@ -5312,11 +5350,6 @@ class LimeExpressionManager
             if ($this->surveyOptions['datestamp'] == true) {
                 $sdata['datestamp'] = $_SESSION[$this->sessid]['datestamp'];
                 $sdata['startdate'] = $_SESSION[$this->sessid]['datestamp'];
-                if($this->surveyOptions['anonymized']){
-                    //all dates should be anonymized
-                    $sdata['datestamp'] = $this->anonymizeDate();
-                    $sdata['startdate'] = $this->anonymizeDate();
-                }
             }
             if ($this->surveyOptions['ipaddr'] == true) {
                 $sdata['ipaddr'] = getIPAddress();
@@ -5396,10 +5429,6 @@ class LimeExpressionManager
             if ($this->surveyOptions['datestamp'] && isset($_SESSION[$this->sessid]['datestamp'])) {
                 $_SESSION[$this->sessid]['datestamp'] = gmdate("Y-m-d H:i:s");
                 $aResponseAttributes['datestamp'] = $_SESSION[$this->sessid]['datestamp'];
-                if($this->surveyOptions['anonymized']){
-                    //all dates should be anonymized
-                    $aResponseAttributes['datestamp'] = $this->anonymizeDate();
-                }
             }
             if ($this->surveyOptions['ipaddr']) {
                 $aResponseAttributes['ipaddr'] = getIPAddress();
@@ -9083,15 +9112,20 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                         case Question::QT_D_DATE: //DATE
                             // Handle Arabic numerals
                             // TODO: Make a wrapper class around date converter, which constructor takes to-lang and from-lang
-                            $lang = $_SESSION['LEMlang'];
+                            // The date was entered in the format of the page language, which differs from the current one after a language change
+                            $lang = self::getPostedLanguage();
                             $value = self::convertNonLatinNumerics($value, $lang);
                             $value = trim($value);
                             if ($value != "" && $value != "INVALID") {
-                                $aAttributes = $LEM->getQuestionAttributesForEM($LEM->sid, $qid, $_SESSION['LEMlang']);
+                                $aAttributes = $LEM->getQuestionAttributesForEM($LEM->sid, $qid, $lang);
                                 if (!isset($aAttributes[$qid])) {
                                     $aAttributes[$qid] = [];
                                 }
-                                $aDateFormatData = getDateFormatDataForQID($aAttributes[$qid], $LEM->surveyOptions);
+                                $aDateFormatData = getDateFormatDataForQID(
+                                    $aAttributes[$qid],
+                                    $lang == $_SESSION['LEMlang'] ? $LEM->surveyOptions : $LEM->sid,
+                                    $lang
+                                );
                                 $dateTime = DateTime::createFromFormat('!' . $aDateFormatData['phpdate'], trim($value));
                                 if ($dateTime === false) {
                                     $message = sprintf(
