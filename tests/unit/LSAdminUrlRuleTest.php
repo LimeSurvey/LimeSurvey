@@ -177,6 +177,36 @@ class LSAdminUrlRuleTest extends TestBaseClass
     }
 
     /**
+     * A route carrying the prefix is accepted for administration controllers only
+     */
+    public function testStripPrefix()
+    {
+        $this->assertSame('surveyAdministration/view', LSAdminUrlRule::stripPrefix('admin/surveyAdministration/view'));
+        $this->assertSame('ajaxAlert/getAlertWidget', LSAdminUrlRule::stripPrefix('/admin/ajaxAlert/getAlertWidget'));
+        $this->assertSame('editor', LSAdminUrlRule::stripPrefix('admin/editor'));
+        $this->assertSame('surveyAdministration/view', LSAdminUrlRule::stripPrefix('surveyAdministration/view'));
+        $this->assertSame('admin/survey/sa/view', LSAdminUrlRule::stripPrefix('admin/survey/sa/view'));
+        $this->assertSame('admin/index', LSAdminUrlRule::stripPrefix('admin/index'));
+        $this->assertSame('admin', LSAdminUrlRule::stripPrefix('admin'));
+        $this->assertSame('survey/index', LSAdminUrlRule::stripPrefix('survey/index'));
+    }
+
+    /**
+     * In GET URL format a hard-coded prefixed route (?r=admin/ajaxAlert/getAlertWidget) reaches the controller
+     */
+    public function testPrefixedRouteResolvesInGetFormat()
+    {
+        $this->useUrlFormat(CUrlManager::GET_FORMAT);
+        $resolved = Yii::app()->createController('admin/ajaxAlert/getAlertWidget');
+        $this->assertNotNull($resolved);
+        $this->assertInstanceOf(\AjaxAlertController::class, $resolved[0]);
+        $this->assertSame('getAlertWidget', $resolved[1]);
+
+        $resolved = Yii::app()->createController('admin/survey/sa/view');
+        $this->assertInstanceOf(\AdminController::class, $resolved[0]);
+    }
+
+    /**
      * Prefix detection on request paths
      */
     public function testHasPrefix()

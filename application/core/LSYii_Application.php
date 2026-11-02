@@ -532,6 +532,8 @@ class LSYii_Application extends CWebApplication
      */
     public function createController($route, $owner = null)
     {
+        // The "admin/" prefix belongs to the URL, a route carrying it (GET URL format, hard-coded) is accepted as well
+        $route = LSAdminUrlRule::stripPrefix($route);
         $controller = parent::createController($route, $owner);
 
         // If no controller is found by standard ways, check if the route matches

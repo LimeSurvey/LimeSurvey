@@ -97,6 +97,28 @@ class LSAdminUrlRule extends CBaseUrlRule
     }
 
     /**
+     * Remove the prefix from a route that carries it although the prefix belongs to the URL, not to the route
+     *
+     * Lets hard-coded prefixed routes work in GET URL format (?r=admin/ajaxAlert/getAlertWidget) and
+     * createUrl('admin/surveyAdministration/view') in either format, so one spelling works everywhere.
+     * Routes of the legacy AdminController (admin/survey/sa/view) are not touched.
+     *
+     * @param string $route
+     * @return string
+     */
+    public static function stripPrefix($route)
+    {
+        $route = ltrim((string) $route, '/');
+        if (
+            preg_match('~^' . self::PREFIX . '/(\w+)(?:/|$)~', $route, $matches)
+            && self::isAdminController($matches[1])
+        ) {
+            return substr($route, strlen(self::PREFIX) + 1);
+        }
+        return $route;
+    }
+
+    /**
      * Whether a request path already carries the administration prefix
      *
      * @param string $pathInfo Path info of the request, without leading slash
