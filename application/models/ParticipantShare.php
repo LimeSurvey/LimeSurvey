@@ -114,7 +114,7 @@ class ParticipantShare extends LSActiveRecord
             $oUser = User::model()->findByPk($id['share_uid']);
             $shareList[$id['share_uid']] = $oUser->full_name;
         }
-        return TbHtml::dropDownList('ParticipantShare[share_uid]', $selected, $shareList);
+        return TbHtml::dropDownList('ParticipantShare[share_uid]', $selected, $shareList, ['aria-label' => gT('Shared with')]);
     }
 
     /**
@@ -227,7 +227,8 @@ class ParticipantShare extends LSActiveRecord
                 "header"            => "<input type='checkbox' id='action_toggleAllParticipantShare' aria-label='" . CHtml::encode(gT('Select all')) . "' />",
                 "filter"            => false,
                 'filterHtmlOptions' => ['class' => 'ls-sticky-column'],
-                'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
+                // The header only holds a checkbox: name the column for the screen reader table navigation
+                'headerHtmlOptions' => ['class' => 'ls-sticky-column', 'aria-label' => gT('Select all')],
                 'htmlOptions'       => ['class' => 'ls-sticky-column'],
             ],
             [

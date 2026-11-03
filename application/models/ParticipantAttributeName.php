@@ -267,19 +267,22 @@ class ParticipantAttributeName extends LSActiveRecord
             [
                 "name"   => 'attribute_type',
                 "value"  => '$data->getAttributeTypeNice()',
-                "filter" => $this->attributeTypeDropdownArray
+                "filter" => $this->attributeTypeDropdownArray,
+                "filterInputOptions" => ['prompt' => gT('All')]
             ],
             [
                 "name"   => 'visible',
                 "value"  => '$data->getVisibleSwitch()',
                 "type"   => "raw",
-                "filter" => ["TRUE" => gT("Yes"), "FALSE" => gT("No")]
+                "filter" => ["TRUE" => gT("Yes"), "FALSE" => gT("No")],
+                "filterInputOptions" => ['prompt' => gT('All')]
             ],
             [
                 "name"   => 'encrypted',
                 "value"  => '$data->getEncryptedSwitch()',
                 "type"   => "raw",
                 "filter" => ["Y" => gT("Yes"), "N" => gT("No")],
+                "filterInputOptions" => ['prompt' => gT('All')],
                 "header" => '<span ' . ($bEncrypted === true ? '' : 'title="' . gT("Encryption is disabled because Sodium library isn't installed") . '"') . '>' . gT("Encrypted") . '</span>',
             ],
             [
@@ -287,6 +290,7 @@ class ParticipantAttributeName extends LSActiveRecord
                 "value"  => '$data->getCoreAttributeSwitch()',
                 "type"   => "raw",
                 "filter" => ["Y" => gT("Yes"), "N" => gT("No")],
+                "filterInputOptions" => ['prompt' => gT('All')],
             ],
             [
                 "name"              => 'buttons',

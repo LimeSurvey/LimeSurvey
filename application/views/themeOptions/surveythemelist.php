@@ -20,6 +20,7 @@ $this->widget(
                 'id' => 'id',
                 'class' => 'CCheckBoxColumn',
                 'selectableRows' => '100',
+                'ariaLabel' => 'sprintf(gT("Select %s"), $data->template->title ?? $data->template_name)',
             ],
             [
                 'header' => gT('Preview'),
@@ -52,7 +53,8 @@ $this->widget(
                 'value' => '$data->typeIcon',
                 'type' => 'raw',
                 'htmlOptions' => ['class' => 'col-lg-2 text-center'],
-                'filter' => ['core' => 'Core theme', 'user' => 'User theme'],
+                'filter' => ['core' => gT('Core theme'), 'user' => gT('User theme')],
+                'filterInputOptions' => ['prompt' => gT('All')],
             ],
 
             [
