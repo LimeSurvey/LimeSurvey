@@ -1,4 +1,5 @@
 <?php
+
 /** @var array $aData */
 Yii::app()->getController()->renderPartial(
     '/surveyAdministration/partial/topbar/surveyTopbarRight_view',
@@ -7,4 +8,3 @@ Yii::app()->getController()->renderPartial(
         'returnUrl' => $aData['topBar']['returnUrl']
     ]
 );
-?>

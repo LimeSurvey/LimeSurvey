@@ -69,7 +69,7 @@ abstract class Response extends Dynamic
             ->findAll($criteria);
         $files = array();
         foreach ($questions as $question) {
-            $field = $question->sid . 'X' . $question->gid . 'X' . $question->qid;
+            $field = 'Q' . $question->qid;
             $fieldDataJson = $this->getAttribute($field);
             if ($question->encrypted === 'Y') {
                 $fieldDataJson = self::decryptSingle($fieldDataJson);
@@ -110,7 +110,7 @@ abstract class Response extends Dynamic
         $files = array();
         foreach ($aQuestions as $question) {
             $encrypted = $question->encrypted === 'Y';
-            $field = $question->sid . 'X' . $question->gid . 'X' . $question->qid;
+            $field = 'Q' . $question->qid;
             $fieldDataJson = $this->getAttribute($field);
             if ($encrypted) {
                 $fieldDataJson = self::decryptSingle($fieldDataJson);
@@ -241,7 +241,7 @@ abstract class Response extends Dynamic
     }
     public function tableName()
     {
-        return '{{survey_' . $this->dynamicId . '}}';
+        return '{{responses_' . $this->dynamicId . '}}';
     }
     /**
      * Get current surveyId for other model/function
@@ -259,10 +259,18 @@ abstract class Response extends Dynamic
     {
     }
 
-    /** Get all encrypted questions for a survey, as array of fieldnames */
+    /**
+     * Get all encrypted questions for a survey, as array of fieldnames
+     *
+     * @param int $surveyid Survey ID
+     * @return string[] Fieldnames of the encrypted questions; empty if the survey does not exist (e.g. archiving the responses table of a deleted survey)
+     */
     public static function getEncryptedAttributes($surveyid = 0)
     {
         $survey = Survey::model()->findByPk($surveyid);
+        if (!$survey) {
+            return array();
+        }
         $fieldmap = createFieldMap($survey, 'full', false, false, $survey->language);
         $aAttributes = array();
         foreach ($fieldmap as $field) {

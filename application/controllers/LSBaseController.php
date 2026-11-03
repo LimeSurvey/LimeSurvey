@@ -33,7 +33,6 @@ class LSBaseController extends LSYii_Controller
         //REFACTORING we have to set the main layout here (it's in /view/layouts/main)
         $this->layout = 'main';
 
-        App()->getComponent('bootstrap');
         $this->sessionControl();
 
         $this->userId = Yii::app()->user->getId();
@@ -69,7 +68,7 @@ class LSBaseController extends LSYii_Controller
             Yii::app()->setConfig("editedaction", returnGlobal('editedaction'));
         } // for html editor integration
 
-        // This line is needed for template editor to work
+        // we load the AdminTheme
         AdminTheme::getInstance();
 
         Yii::setPathOfAlias('lsadminmodules', Yii::app()->getConfig('lsadminmodulesrootdir'));
@@ -102,7 +101,7 @@ class LSBaseController extends LSYii_Controller
     public function run($action)
     {
         // Check if the DB is up to date
-        $sDBVersion = getGlobalSetting('DBVersion');
+        $sDBVersion = Yii::app()->getConfig('DBVersion');
 
         if ((int) $sDBVersion < Yii::app()->getConfig('dbversionnumber') && $action != 'databaseupdate') {
             // Try a silent update first
@@ -120,9 +119,10 @@ class LSBaseController extends LSYii_Controller
 
                 App()->user->setReturnUrl(App()->request->requestUri);
 
-                // If this is an ajax call, don't redirect, but echo login modal instead
-                $isAjax = isset($_GET['ajax']) && $_GET['ajax'];
+                // If this is an ajax call, don't redirect, but answer with HTTP 401 and the "logged out" modal
+                $isAjax = Yii::app()->request->isAjaxRequest || !empty($_GET['ajax']);
                 if ($isAjax && Yii::app()->user->getIsGuest()) {
+                    http_response_code(401);
                     Yii::import('application.helpers.admin.ajax_helper', true);
                     ls\ajax\AjaxHelper::outputNotLoggedIn();
                     return;
@@ -133,7 +133,7 @@ class LSBaseController extends LSYii_Controller
                 /** @var LSUserIdentity */
                 $user = Yii::app()->user;
                 /** @var string */
-                $hash = hash('sha256', getGlobalSetting('SessionName') . $user->getName() . $user->getId());
+                $hash = hash('sha256', Yii::app()->getConfig('SessionName') . $user->getName() . $user->getId());
                 if (Yii::app()->session['session_hash'] != $hash) {
                     Yii::app()->session->clear();
                     Yii::app()->session->close();
@@ -148,7 +148,7 @@ class LSBaseController extends LSYii_Controller
     /**
      * Load and set session vars
      *
-     * todo REFACTORING see comments in mehtod
+     * todo REFACTORING see comments in method
      *
      * @access protected
      * @return void
@@ -162,13 +162,13 @@ class LSBaseController extends LSYii_Controller
             if (Yii::app()->request->getPost('lang') == 'auto') {
                 $sLanguage = getBrowserLanguage();
             } else {
-                $sLanguage = sanitize_languagecode(Yii::app()->request->getPost('lang'));
+                $sLanguage = \LSYii_Validators::languageCodeFilter(Yii::app()->request->getPost('lang'));
             }
             Yii::app()->session['adminlang'] = $sLanguage;
         }
         //todo end
 
-        //todo this should be done only once per session and not everytime calling an action ...
+        //todo this should be done only once per session and not every time calling an action ...
         if (empty(Yii::app()->session['adminlang'])) {
             Yii::app()->session["adminlang"] = Yii::app()->getConfig("defaultlang");
         }

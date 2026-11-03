@@ -3,9 +3,11 @@
 namespace ls\tests\unit\objectpatch;
 
 use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerQuestionCreate;
+use LimeSurvey\Api\Command\V1\SurveyPatch\Response\ExceptionErrors;
 use LimeSurvey\Api\Command\V1\SurveyPatch\Response\SurveyResponse;
 use LimeSurvey\Api\Command\V1\SurveyPatch\Response\TempIdMapItem;
 use LimeSurvey\Api\Command\V1\SurveyPatch\Response\TempIdMapping;
+use LimeSurvey\Api\Command\V1\SurveyPatch\Response\ValidationErrors;
 use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerValidationTrait;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionAggregate;
 use LimeSurvey\DI;
@@ -75,6 +77,31 @@ class SurveyResponseTest extends TestBaseClass
         $exceptionErrorItem = $responseObject['exceptionErrors'][0];
         $this->assertEquals('Exception message', $exceptionErrorItem->error);
         $this->assertEquals('create', $exceptionErrorItem->op);
+    }
+
+    /**
+     * @testdox exception error contains validation errors of the error model
+     */
+    public function testExceptionErrorContainsErrorModelErrors()
+    {
+        $errorModel = new \SurveyLanguageSetting();
+        $errorModel->addError('surveyls_description', 'Links are not allowed.');
+        $errorModel->addError('surveyls_welcometext', 'Links are not allowed.');
+        $exception = new PersistErrorException('Failed saving language settings');
+        $exception->setErrorModel($errorModel);
+
+        $surveyResponse = new SurveyResponse(
+            new TempIdMapping(),
+            new ValidationErrors(),
+            new ExceptionErrors()
+        );
+        $surveyResponse->handleException($exception, self::getOp());
+        $responseObject = $surveyResponse->buildResponseObject();
+
+        $this->assertEquals(
+            'Failed saving language settings: Links are not allowed.',
+            $responseObject['exceptionErrors'][0]->error
+        );
     }
 
     private static function getResponse()

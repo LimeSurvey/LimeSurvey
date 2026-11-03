@@ -2,7 +2,7 @@
 
 /*
  * LimeSurvey
- * Copyright (C) 2007-2014 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2014 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -18,7 +18,10 @@
 class UploaderController extends SurveyController
 {
     /**
-     * @param int $actionID
+     * Handles file upload question requests: file download, delete and upload (mode=upload),
+     * otherwise renders the upload modal content (a fragment for AJAX requests, a full page otherwise).
+     *
+     * @param string $actionID
      * @return void
      */
     public function run($actionID)
@@ -32,7 +35,7 @@ class UploaderController extends SurveyController
             throw new CHttpException(400);
         }
 
-        $sLanguage = Yii::app()->session['survey_' . $surveyid]['s_lang'] ?? "";
+        $sLanguage = Yii::app()->session['responses_' . $surveyid]['s_lang'] ?? "";
         Yii::app()->setLanguage($sLanguage);
         $uploaddir = Yii::app()->getConfig("uploaddir");
         $tempdir = Yii::app()->getConfig("tempdir");
@@ -51,10 +54,14 @@ class UploaderController extends SurveyController
         // Using 'futmp_'.randomChars(15).'_'.$pathinfo['extension'] for filename, then remove all other characters
         $sFileGetContentFiltered = preg_replace('/[^a-zA-Z0-9_]/', '', (string) $sFileGetContent);
         $sFileNameFiltered = preg_replace('/[^a-zA-Z0-9_]/', '', (string) $sFileName);
-        $sFieldNameFiltered = preg_replace('/[^X0-9]/', '', (string) $sFieldName);
+        $sFieldNameFiltered = preg_replace('/[^Q0-9]/', '', (string) $sFieldName);
         if ($sFileGetContent != $sFileGetContentFiltered || $sFileName != $sFileNameFiltered || $sFieldName != $sFieldNameFiltered) {
             // If one seems to be a hack: Bad request
             throw new CHttpException(400); // See for debug > 1
+        }
+        // File content, delete and upload responses are not HTML: Don't append the HTML debug log (debugsql)
+        if ($sFileGetContentFiltered || $bDelete || $sMode == "upload") {
+            viewHelper::disableHtmlLogging();
         }
         if ($sFileGetContentFiltered) {
             if (substr($sFileGetContentFiltered, 0, 6) == 'futmp_') {
@@ -112,7 +119,7 @@ class UploaderController extends SurveyController
             if (@unlink($sFileDir . $sFileNameFiltered)) {
                 echo sprintf(gT('File %s deleted'), CHtml::encode($sOriginalFileName));
             } else {
-                echo gT('Oops, There was an error deleting the file');
+                echo gT('There was an error deleting the file.');
             }
             Yii::app()->end();
         }
@@ -144,11 +151,11 @@ class UploaderController extends SurveyController
             $size = $_FILES['uploadfile']['size'] / 1024;
             $preview = Yii::app()->session['preview'];
             /* Find the question by sFieldName : must be a upload question type, and id is end of sFieldName in $surveyid*/
-            $aFieldName = explode("X", $sFieldName);
-            if (empty($aFieldName[2]) || !ctype_digit($aFieldName[2])) {
+            $qid = substr(explode("_", $sFieldName)[0], 1);
+            if (empty($qid) || !ctype_digit($qid)) {
                 throw new CHttpException(400);
             }
-            $oQuestion = self::getQuestion($surveyid, $aFieldName[2]);
+            $oQuestion = self::getQuestion($surveyid, $qid);
             $aAttributes = QuestionAttribute::model()->getQuestionAttributes($oQuestion);
             $maxfilesize = min(intval($aAttributes['max_filesize']), getMaximumFileUploadSize() / 1024);
             if ($maxfilesize <= 0) {
@@ -172,7 +179,7 @@ class UploaderController extends SurveyController
             if ($_FILES['uploadfile']['error'] == 1 || $_FILES['uploadfile']['error'] == 2) {
                 $return = array(
                     "success" => false,
-                    "msg" => sprintf(gT("Sorry, this file is too large. Only files upto %s KB are allowed."), $maxfilesize)
+                    "msg" => sprintf(gT("Sorry, this file is too large. Only files up to %s KB are allowed."), $maxfilesize)
                 );
                 //header('Content-Type: application/json');
                 echo ls_json_encode($return);
@@ -190,7 +197,7 @@ class UploaderController extends SurveyController
             $event = new PluginEvent('beforeProcessFileUpload');
             /* Current state */
             $event->set('surveyId', $surveyid);
-            $event->set('responseId', Yii::app()->session['survey_' . $surveyid]['srid'] ?? null); // NULL if not exist
+            $event->set('responseId', Yii::app()->session['responses_' . $surveyid]['srid'] ?? null); // NULL if not exist
             $event->set('qid', $oQuestion->qid);
             $event->set('preview', $preview);
             $event->set('fieldname', $sFieldName);
@@ -247,7 +254,7 @@ class UploaderController extends SurveyController
             if (!$disableCheck && $size > $maxfilesize) {
                 $return = array(
                     "success" => false,
-                    "msg" => sprintf(gT("Sorry, this file is too large. Only files upto %s KB are allowed."), $maxfilesize)
+                    "msg" => sprintf(gT("Sorry, this file is too large. Only files up to %s KB are allowed."), $maxfilesize)
                 );
                 //header('Content-Type: application/json');
                 echo ls_json_encode($return);
@@ -331,7 +338,7 @@ class UploaderController extends SurveyController
                                 "success"       => true,
                                 "file_index"    => $filecount,
                                 "size"          => $size,
-                                "name"          => rawurlencode(basename((string) $filename)),
+                                "name"          => $filename,
                                 "ext"           => $cleanExt,
                                 "filename"      => $randfilename,
                                 "msg"           =>  !empty($message) ? $message : gT("The file has been successfully uploaded.")
@@ -368,14 +375,14 @@ class UploaderController extends SurveyController
                     Yii::app()->end();
                 }
             }
-            /* We get there : an unknow error happen … maybe a move_uploaded_file error (with debug=0) */
+            /* We get there : an unknown error happened … maybe a move_uploaded_file error (with debug=0) */
             $return = array(
                 "success" => false,
                 "msg" => gT("An unknown error occurred")
             );
             /* Add information for for user forcedSuperAdmin right */
             if (Permission::isForcedSuperAdmin(Permission::model()->getUserId())) {
-                $return['msg'] = sprintf(gT("An unknown error happened when moving file %s to %s."), $uploadfile_tmp_name, $randfileloc);
+                $return['msg'] = sprintf(gT("An unknown error occurred when moving file %s to %s."), $uploadfile_tmp_name, $randfileloc);
             }
             //header('Content-Type: application/json');
             echo ls_json_encode($return);
@@ -389,12 +396,11 @@ class UploaderController extends SurveyController
         $oEvent = new PluginEvent('beforeSurveyPage');
         $oEvent->set('surveyId', $surveyid);
         App()->getPluginManager()->dispatchEvent($oEvent);
-        if (!is_null($oEvent->get('template'))) {
-            $aSurveyInfo['templatedir'] = $oEvent->get('template');
-        }
+        /* Theme set by a plugin in beforeSurveyPage */
+        $sPluginTemplateName = $oEvent->get('template');
         $sTemplateDir = getTemplatePath($aSurveyInfo['template']);
         $sTemplateUrl = getTemplateURL($aSurveyInfo['template']) . "/";
-        $oTemplate = Template::model()->getInstance('', $surveyid);
+        $oTemplate = Template::model()->getInstance(empty($sPluginTemplateName) ? '' : $sPluginTemplateName, $surveyid);
         $sNeededScriptVar = '
             var uploadurl = uploadurl || "' . $this->createUrl('/uploader/index/mode/upload/') . '";
             var imageurl = imageurl || "' . Yii::app()->getConfig('imageurl') . '/";
@@ -426,10 +432,6 @@ class UploaderController extends SurveyController
         App()->getClientScript()->registerScript('sNeededScriptVar', $sNeededScriptVar, LSYii_ClientScript::POS_BEGIN);
         App()->getClientScript()->registerScript('sLangScriptVar', $sLangScriptVar, LSYii_ClientScript::POS_BEGIN);
 
-        $header = getHeader($meta);
-
-        echo $header;
-
         $fn = $sFieldName;
         $qid = (int) Yii::app()->request->getParam('qid');
         $oQuestion = self::getQuestion($surveyid, $qid);
@@ -451,7 +453,8 @@ class UploaderController extends SurveyController
             'qid' => $qid,
             'minfiles' => $minfiles,
             'maxfiles' => $maxfiles,
-            'qidattributes' => $qidattributes
+            'qidattributes' => $qidattributes,
+            'preview' => Yii::app()->session['preview']
         ];
 
         $body = '<body class="uploader">';
@@ -473,7 +476,15 @@ class UploaderController extends SurveyController
                     . "});
             });
         </script>";
-        $container = $this->renderPartial('/survey/questions/answer/file_upload/modal-container', $aData, true);
+        /* Render with twig to allow survey themes and question themes to override the modal content */
+        QuestionTemplate::getNewInstance($oQuestion);
+        $container = App()->twigRenderer->renderQuestion('/survey/questions/answer/file_upload/modal-container', $aData);
+        if (App()->request->getIsAjaxRequest()) {
+            /* Loaded into the survey page modal, which already has all assets: no page header or external scripts */
+            echo "<script>\n" . $sNeededScriptVar . $sLangScriptVar . "\n</script>\n" . $container . $scripts;
+            return;
+        }
+        echo getHeader($meta);
         $body .= $container . $scripts;
         $body .= '</body>
         </html>';

@@ -3,6 +3,7 @@
 /**
  * Import survey
  */
+
 ?>
 <!--<div class="ls-flex-row wrap align-content-center align-items-center">-->
 <div class="ls-flex-row">
@@ -16,7 +17,11 @@
                 <!-- Select file -->
                 <div class="mb-3 col-4">
                     <label class='form-label ' for='the_file'>
-                        <?php printf(gT("Select survey structure file (*.lss, *.txt) or survey archive (*.lsa) (maximum file size: %01.2f MB)"), getMaximumFileUploadSize() / 1024 / 1024); ?>
+                        <?php if (isFileUploadSizeLimited()) {
+                            printf(gT("Select survey structure file (*.lss, *.txt) or survey archive (*.lsa) (maximum file size: %01.2f MB)"), getMaximumFileUploadSize() / 1024 / 1024);
+                        } else {
+                            eT("Select survey structure file (*.lss, *.txt) or survey archive (*.lsa)");
+                        } ?>
                     </label>
                     <div>
                         <input id='the_file' name="the_file" class="form-control" type="file" accept='.lss,.lsa,.tsv,.txt' onchange="$('#import-submit').attr('disabled', false).attr('data-bs-toggle', false);" required />
@@ -31,7 +36,7 @@
                         'asDropDownList' => true,
                         'htmlOptions' => [],
                         'data' => [
-                            'default' => gT("Import on default survey group"),
+                            'default' => gT("Import to default survey group"),
                             'from_survey' => gT("Keep the survey group from the imported file"),
                         ],
                         'value' => 'default',
@@ -58,7 +63,9 @@
                     </div>
                 </div>
 
-                <?php if (isset($surveyid)) echo '<input type="hidden" name="sid" value="' . $surveyid . '" />'; ?>
+                <?php if (isset($surveyid)) {
+                    echo '<input type="hidden" name="sid" value="' . $surveyid . '" />';
+                } ?>
                 <input type='hidden' name='action' value='importsurvey' />
             </div>
             </form>

@@ -24,6 +24,9 @@ class SurveyActivator
     /** @var boolean */
     public $isSimulation = false;
 
+    /** @var string[] */
+    public $tableWarnings = [];
+
     /**
      * @param Survey $survey
      */
@@ -63,13 +66,13 @@ class SurveyActivator
         $this->setMySQLDefaultEngine(Yii::app()->getConfig('mysqlEngine'));
 
         if (!$this->showEventMessages($event)) {
-            return ['error' => 'plugin'];
+            return ['error' => 'plugin', 'message' => $event->get('message')];
         }
 
         // Clear session cache (e.g. from a survey preview run in
         // the same browser session) before building the response table.
         $iSurveyId = $this->survey->sid;
-        unset($_SESSION['survey_' . $iSurveyId]);
+        unset($_SESSION['responses_' . $iSurveyId]);
 
         $this->prepareResponsesTable();
 
@@ -94,14 +97,15 @@ class SurveyActivator
         }
 
         $survey = Survey::model()->findByAttributes(array('sid' => $this->survey->primaryKey));
-        $survey->scenario = 'activationStateChange';
         $survey->active = 'Y';
-        $survey->save();
+        // Skip validation: The tables already exist, so an invalid setting must not keep the survey inactive
+        $survey->save(false);
 
         $aResult = array(
             'status' => 'OK',
             'pluginFeedback' => $event->get('pluginFeedback'),
-            'isAllowRegister' => $survey->isAllowRegister
+            'isAllowRegister' => $survey->isAllowRegister,
+            'tableWarnings' => $this->tableWarnings
         );
         if (!$this->createSurveyDirectory()) {
             $aResult['warning'] = 'nouploadsurveydir';
@@ -119,7 +123,8 @@ class SurveyActivator
 
     /**
      * See bug #09828: Ranking question : update allowed can broke Survey DB
-     * If max_subquestions is not set or is invalid : set it to actual answers numbers
+     * If max_subquestions is not set or is invalid : set it to actual subquestions numbers
+     * (Ranking items are now stored as subquestions)
      *
      * @return void
      */
@@ -128,8 +133,9 @@ class SurveyActivator
         foreach ($sFieldMap as $aRow) {
             switch ($aRow['type']) {
                 case Question::QT_R_RANKING:
-                    $nrOfAnswers = Answer::model()->countByAttributes(
-                        array('qid' => $aRow['qid'])
+                    // Ranking items are now stored as subquestions, not answers
+                    $nrOfRankingItems = Question::model()->countByAttributes(
+                        array('parent_qid' => $aRow['qid'])
                     );
                     $oQuestionAttribute = QuestionAttribute::model()->find(
                         "qid = :qid AND attribute = 'max_subquestions'",
@@ -139,11 +145,11 @@ class SurveyActivator
                         $oQuestionAttribute = new QuestionAttribute();
                         $oQuestionAttribute->qid = $aRow['qid'];
                         $oQuestionAttribute->attribute = 'max_subquestions';
-                        $oQuestionAttribute->value = $nrOfAnswers;
+                        $oQuestionAttribute->value = $nrOfRankingItems;
                         $oQuestionAttribute->save();
                     } elseif (intval($oQuestionAttribute->value) < 1) {
                         // Fix it if invalid : disallow 0, but need a sub question minimum for EM
-                        $oQuestionAttribute->value = $nrOfAnswers;
+                        $oQuestionAttribute->value = $nrOfRankingItems;
                         $oQuestionAttribute->save();
                     }
             }
@@ -179,6 +185,9 @@ class SurveyActivator
                 case "lastpage":
                     $aTableDefinition[$aRow['fieldname']] = "integer";
                     break;
+                case "quota_exit":
+                    $aTableDefinition[$aRow['fieldname']] = "integer";
+                    break;
                 case Question::QT_N_NUMERICAL:
                 case Question::QT_K_MULTIPLE_NUMERICAL:
                     $aTableDefinition[$aRow['fieldname']] = (array_key_exists('encrypted', $aRow) && $aRow['encrypted'] == 'Y') ? "text" : (isset($aRow['answertabledefinition']) && !empty($aRow['answertabledefinition']) ? $aRow['answertabledefinition'] : "decimal (30,10)");
@@ -191,7 +200,7 @@ class SurveyActivator
                 case Question::QT_M_MULTIPLE_CHOICE:
                 case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:
                 case Question::QT_O_LIST_WITH_COMMENT:
-                    if ($aRow['aid'] != 'other' && strpos((string) $aRow['aid'], 'comment') === false && strpos((string) $aRow['aid'], 'othercomment') === false) {
+                    if (strpos((string) $aRow['aid'], 'other') === false && strpos((string) $aRow['aid'], 'comment') === false) {
                         $aTableDefinition[$aRow['fieldname']] = (array_key_exists('encrypted', $aRow) && $aRow['encrypted'] == 'Y') ? "text" : (isset($aRow['answertabledefinition']) && !empty($aRow['answertabledefinition']) ? $aRow['answertabledefinition'] : "string(5)") ;
                     } else {
                         $aTableDefinition[$aRow['fieldname']] = "text";
@@ -241,8 +250,11 @@ class SurveyActivator
                     $aTableDefinition[$aRow['fieldname']] = isset($aRow['answertabledefinition']) && !empty($aRow['answertabledefinition']) ? $aRow['answertabledefinition'] : "text";
                     break;
                 case Question::QT_R_RANKING:
-                    $aTableDefinition[$aRow['fieldname']] = (array_key_exists('encrypted', $aRow) && $aRow['encrypted'] == 'Y') ? "text" : (isset($aRow['answertabledefinition']) && !empty($aRow['answertabledefinition']) ? $aRow['answertabledefinition'] : "string(5)");
-                    break;                                                                                                                                                                                                                                                                 default:
+                    if (!str_contains($aRow['fieldname'], "_S")) {
+                        $aTableDefinition[$aRow['fieldname']] = (array_key_exists('encrypted', $aRow) && $aRow['encrypted'] == 'Y') ? "text" : (isset($aRow['answertabledefinition']) && !empty($aRow['answertabledefinition']) ? $aRow['answertabledefinition'] : "json");
+                    }
+                    break;
+                default:
                     $aTableDefinition[$aRow['fieldname']] = (array_key_exists('encrypted', $aRow) && $aRow['encrypted'] == 'Y') ? "text" : (isset($aRow['answertabledefinition']) && !empty($aRow['answertabledefinition']) ? $aRow['answertabledefinition'] : "string(5)");
             }
             if (!$this->survey->isAnonymized && !array_key_exists('token', $aTableDefinition)) {
@@ -348,17 +360,23 @@ class SurveyActivator
             }
             return false;
         }
-        try {
-            if (isset($this->tableDefinition['token'])) {
+        if (isset($this->tableDefinition['token'])) {
+            // unique name ensure by surveyid + datetime + random number
+            $indexname = "idx_token_" .
+                trim($sTableName, '{}') . "_" .
+                date('YmdHis') . "_" .
+                randomChars(12, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890');
+            try {
                 Yii::app()->db->createCommand()->createIndex(
-                    "idx_survey_token_{$this->survey->primaryKey}_" . rand(1, 50000),
+                    $indexname,
                     $sTableName,
                     'token'
                 );
+            } catch (\Exception $e) {
+                Yii::log($e->getMessage(), 'error', 'application.model.SurveyActivator.createResponseTable');
+                $this->tableWarnings[] = sprintf(gT("Unable to create index on token with message %s"), $e->getMessage());
             }
-        } catch (\Exception $e) {
         }
-
         $this->createResponseTableKeys();
         return true;
     }
@@ -397,22 +415,20 @@ class SurveyActivator
 
         //if there is an autonumber_start field, start auto numbering here
         if ($iAutoNumberStart !== false && $iAutoNumberStart > 0) {
+            $tableName = $this->survey->responsesTableName;
             if (Yii::app()->db->driverName == 'mssql' || Yii::app()->db->driverName == 'sqlsrv' || Yii::app()->db->driverName == 'dblib') {
-                Yii::app()->loadHelper("admin.activate"); // needed for mssql_drop_column_with_constraints
-                mssql_drop_column_with_constraints($this->survey->responsesTableName, 'id');
-                $sQuery = "ALTER TABLE {$this->survey->responsesTableName} ADD [id] int identity({$iAutoNumberStart},1)";
-                Yii::app()->db->createCommand($sQuery)->execute();
-                // Add back the primaryKey
-
-                Yii::app()->db->createCommand()->addPrimaryKey('PRIMARY_' . rand(1, 50000), $this->survey->responsesTableName, 'id');
+                // @see https://learn.microsoft.com/en-us/sql/t-sql/database-console-commands/dbcc-checkident-transact-sql
+                $sQuery = "DBCC CHECKIDENT ('{$tableName}', RESEED, {$iAutoNumberStart})";
             } elseif (Yii::app()->db->driverName == 'pgsql') {
-                $sQuery = "SELECT setval(pg_get_serial_sequence('{$this->survey->responsesTableName}', 'id'),{$iAutoNumberStart},false);";
-                // FIXME @ not good
-                @Yii::app()->db->createCommand($sQuery)->execute();
+                $sQuery = "SELECT setval(pg_get_serial_sequence('{$tableName}', 'id'),{$iAutoNumberStart},false);";
             } else {
-                $sQuery = "ALTER TABLE {$this->survey->responsesTableName} AUTO_INCREMENT = {$iAutoNumberStart}";
-                // FIXME @ not good
-                @Yii::app()->db->createCommand($sQuery)->execute();
+                $sQuery = "ALTER TABLE {$tableName} AUTO_INCREMENT = {$iAutoNumberStart}";
+            }
+            try {
+                Yii::app()->db->createCommand($sQuery)->execute();
+            } catch (\Exception $e) {
+                Yii::log($e->getMessage(), 'error', 'application.model.SurveyActivator.createResponseTableKeys');
+                $this->tableWarnings[] = sprintf(gT("Unable to set the start value of the response numbering with message %s"), $e->getMessage());
             }
         }
     }

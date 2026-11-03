@@ -257,15 +257,9 @@ class Zend_XmlRpc_Client
     {
         $this->_lastRequest = $request;
 
-        if (PHP_VERSION_ID < 50600) {
-            iconv_set_encoding('input_encoding', 'UTF-8');
-            iconv_set_encoding('output_encoding', 'UTF-8');
-            iconv_set_encoding('internal_encoding', 'UTF-8');
-        } else {
-            ini_set('input_encoding', 'UTF-8');
-            ini_set('output_encoding', 'UTF-8');
-            ini_set('default_charset', 'UTF-8');
-        }
+        ini_set('input_encoding', 'UTF-8');
+        ini_set('output_encoding', 'UTF-8');
+        ini_set('default_charset', 'UTF-8');
 
         $http = $this->getHttpClient();
         if($http->getUri() === null) {

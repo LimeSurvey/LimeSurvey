@@ -14,8 +14,8 @@ namespace phpseclib3\Crypt\DSA;
 use phpseclib3\Crypt\Common;
 use phpseclib3\Crypt\DSA;
 use phpseclib3\Crypt\DSA\Formats\Signature\ASN1 as ASN1Signature;
-use phpseclib3\Math\BigInteger;
 use phpseclib3\Exception\BadConfigurationException;
+use phpseclib3\Math\BigInteger;
 
 /**
  * DSA Private Key
@@ -91,7 +91,7 @@ final class PrivateKey extends DSA implements Common\PrivateKey
         if (function_exists('openssl_get_md_methods') && self::$forcedEngine !== 'PHP') {
             if (in_array($this->hash->getHash(), openssl_get_md_methods())) {
                 $signature = '';
-                $result = openssl_sign($message, $signature, $this->toString('PKCS8'), $this->hash->getHash());
+                $result = openssl_sign($message, $signature, $this->withPassword()->toString('PKCS8'), $this->hash->getHash());
 
                 if ($result) {
                     if ($this->shortFormat == 'ASN1') {

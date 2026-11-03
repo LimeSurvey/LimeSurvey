@@ -1,3 +1,4 @@
+<!-- 
 # Thank you for contributing to LimeSurvey!
 
 To make our work easier, please make sure to follow the instructions below.
@@ -11,8 +12,8 @@ To make our work easier, please make sure to follow the instructions below.
 
 ## Branch policy
 
-- **Fixed issues** should always go to the **master** branch, UNLESS they fix an issue in a yet unreleased feature in the develop branch.
-- **New features** should always go to the **major-develop** or ***minor-develop** branches. For more information about release schedule and code requirements, please see the following manual pages:
+- **Fixed issues** should always go to the **master** branch, UNLESS they fix an issue in a yet unreleased feature in the **develop-minor** or **develop-major** branch.
+- **New features** should always go to the **develop-minor** (backward-compatible) or **develop-major** (breaking changes) branch. For more information about release schedule and code requirements, please see the following manual pages:
   - [LimeSurvey roadmap - Current release schedule](https://manual.limesurvey.org/LimeSurvey_roadmap#Current_release_schedule)
   - [How to contribute new features](https://manual.limesurvey.org/How_to_contribute_new_features)
 
@@ -23,3 +24,4 @@ To make our work easier, please make sure to follow the instructions below.
 Fixed issue #<Mantis issue number>: <Description>
 New feature #<Mantis issue number>: <Description>
 Dev: <Description for a change that's neither a feature nor a bug>
+-->

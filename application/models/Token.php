@@ -59,6 +59,9 @@ use LimeSurvey\PluginManager\PluginEvent;
  */
 abstract class Token extends Dynamic
 {
+    /** @var int Minimum token length */
+    const MIN_LENGTH = 5;
+
     /** @var int Maximum token length */
     const MAX_LENGTH = 36;
 
@@ -155,7 +158,6 @@ abstract class Token extends Dynamic
     public static function createTable($surveyId, array $extraFields = array())
     {
         $surveyId = intval($surveyId);
-
         // Specify case sensitive collations for the token
         $sCollation = '';
         if (Yii::app()->db->driverName == 'mysql' || Yii::app()->db->driverName == 'mysqli') {
@@ -188,7 +190,6 @@ abstract class Token extends Dynamic
             'validuntil' => 'datetime',
             'mpid' => 'integer'
         );
-
         foreach ($extraFields as $extraField) {
             $fields[$extraField] = 'text';
         }
@@ -211,16 +212,23 @@ abstract class Token extends Dynamic
              * complaining about duplicates when renaming the table and trying to use the same index again
              * on a new token table (for example on reactivation)
              */
-            $db->createCommand()->createIndex("idx_token_token_{$surveyId}_" . rand(1, 50000), $sTableName, 'token');
-
+            $tokenindexname = "idx_token_" .
+                trim($sTableName, '{}') . "_" .
+                date('YmdHis') . "_" .
+                randomChars(12, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890');
+            $db->createCommand()->createIndex($tokenindexname, $sTableName, 'token');
+            $mailindexname = "idx_email_" .
+                trim($sTableName, '{}') . "_" .
+                date('YmdHis') . "_" .
+                randomChars(12, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890');
             // MSSQL does not support indexes on text fields so not needed here
             switch (Yii::app()->db->driverName) {
                 case 'mysql':
                 case 'mysqli':
-                    $db->createCommand()->createIndex('idx_email', $sTableName, 'email(30)', false);
+                    $db->createCommand()->createIndex($mailindexname, $sTableName, 'email(30)', false);
                     break;
                 case 'pgsql':
-                    $db->createCommand()->createIndex('idx_email_' . $surveyId . '_' . rand(1, 50000), $sTableName, 'email', false);
+                    $db->createCommand()->createIndex($mailindexname, $sTableName, 'email', false);
                     break;
             }
         } catch (CDbException $ex) {
@@ -321,13 +329,15 @@ abstract class Token extends Dynamic
 
     /**
      * Sanitize string for any attribute
-     * @param string $attribute to sanitize
+     * Only strips HTML tags: The value is stored as plain text and encoded on output,
+     * encoding it here would show entities like &amp;amp; in the administration and in text emails
+     * and add one more level of encoding each time the participant is saved.
+     * @param string|null $attribute to sanitize
      * @return string sanitized attribute
      */
     public static function sanitizeAttribute($attribute)
     {
-        // TODO: Use HTML Purifier?
-        return filter_var($attribute, @FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+        return strip_tags((string) $attribute);
     }
 
     /**
@@ -405,7 +415,7 @@ abstract class Token extends Dynamic
     public function relations()
     {
         $result = array(
-            'responses' => array(self::HAS_MANY, 'Response_' . $this->dynamicId, array('token' => 'token')),
+            'responses' => array(self::HAS_MANY, 'Responses_' . $this->dynamicId, array('token' => 'token')),
             'survey' =>  array(self::BELONGS_TO, 'Survey', '', 'on' => "sid = {$this->dynamicId}"),
             'surveylink' => array(self::BELONGS_TO, 'SurveyLink', array('participant_id' => 'participant_id'), 'on' => "survey_id = {$this->dynamicId}")
         );
@@ -458,7 +468,7 @@ abstract class Token extends Dynamic
     /** @inheritdoc */
     public function scopes()
     {
-        $now = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust"));
+        $now = gmdate("Y-m-d H:i:s");
         return array(
             'incomplete' => array(
                 'condition' => "completed = 'N'"

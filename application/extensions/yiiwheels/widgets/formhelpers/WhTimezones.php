@@ -1,4 +1,5 @@
 <?php
+
 /**
  *
  * WhCountries.php
@@ -9,11 +10,11 @@
  * @link http://www.ramirezcobos.com/
  * @link http://www.2amigos.us/
  */
+
 Yii::import('yiiwheels.widgets.formhelpers.WhDropDownInputWidget');
 
 class WhTimezones extends WhDropDownInputWidget
 {
-
     /**
      * @var string the two letter country code or ID of a bfh-countries HTML element. To filter based on a country.
      * It is required.
@@ -37,10 +38,9 @@ class WhTimezones extends WhDropDownInputWidget
 
     public function run()
     {
-        if(!$this->readOnly) {
+        if (!$this->readOnly) {
             echo $this->dropDownList();
-        } else
-        {
+        } else {
             echo CHtml::tag('span', $this->htmlOptions, '');
         }
 

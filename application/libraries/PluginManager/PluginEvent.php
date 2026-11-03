@@ -161,7 +161,7 @@ class PluginEvent
     }
 
     /**
-     * Set a key/value pair to be used by plugins hanlding this event.
+     * Set a key/value pair to be used by plugins handling this event.
      *
      * @param string $key
      * @param mixed $value

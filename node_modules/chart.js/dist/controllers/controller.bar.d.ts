@@ -36,6 +36,9 @@ export default class BarController extends DatasetController {
        * @private
        */
     private _getStackCount;
+    _getAxisCount(): number;
+    getFirstScaleIdForIndexAxis(): string;
+    _getAxis(): string[];
     /**
        * Returns the stack index for the given dataset based on groups and bar visibility.
        * @param {number} [datasetIndex] - The dataset index

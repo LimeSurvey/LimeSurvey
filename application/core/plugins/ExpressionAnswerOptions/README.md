@@ -4,7 +4,7 @@ Expression Script: make answer option text available inside survey by expression
 
 ## Usage
 
-The plugin can be used on single choice question and array question , all question with realted answers editable by administrator.
+The plugin can be used on single choice question and array question , all question with related answers editable by administrator.
 
 The function getAnswerOptionText get 3 parameters
 

@@ -3124,9 +3124,9 @@ You must enter values for <b>age</b> and <b>yearsMarried</b> in order to complet
     <gid><![CDATA[10]]></gid>
     <type><![CDATA[U]]></type>
     <title><![CDATA[vU]]></title>
-    <question><![CDATA[Write an essay about a pet.  Must contain the word cat, dog, or hampster]]></question>
-    <preg><![CDATA[/\s(cat|dog|hampster)\s/]]></preg>
-    <help><![CDATA[Validation equation is /\s(cat|dog|hampster)\s/]]></help>
+    <question><![CDATA[Write an essay about a pet.  Must contain the word cat, dog, or hamster]]></question>
+    <preg><![CDATA[/\s(cat|dog|hamster)\s/]]></preg>
+    <help><![CDATA[Validation equation is /\s(cat|dog|hamster)\s/]]></help>
     <other><![CDATA[N]]></other>
     <mandatory><![CDATA[N]]></mandatory>
     <question_order><![CDATA[53]]></question_order>
@@ -3555,7 +3555,7 @@ Please correct this or you won't be able to pass some of the Validation Tests la
     <gid><![CDATA[5]]></gid>
     <type><![CDATA[P]]></type>
     <title><![CDATA[ex]]></title>
-    <question><![CDATA[Excercise]]></question>
+    <question><![CDATA[Exercise]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>

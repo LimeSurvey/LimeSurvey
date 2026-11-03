@@ -159,7 +159,10 @@ class SettingsUser extends LSActiveRecord
         }
         if ($entity_id != null) {
             $searchCriteria->addCondition('entity_id=:entity_id');
-            $searchParams[':entity_id'] = $entity_id;
+            // entity_id is a varchar column, so bind it as a string. Otherwise PDO infers
+            // PARAM_INT from an integer $entity_id (e.g. a survey id), and strict databases
+            // like PostgreSQL then fail to compare a varchar column against an integer param.
+            $searchParams[':entity_id'] = (string) $entity_id;
         } else {
             $searchCriteria->addCondition('entity_id IS NULL');
         }
@@ -186,6 +189,33 @@ class SettingsUser extends LSActiveRecord
     {
         $setting = self::getUserSetting($stg_name, $uid, $entity, $entity_id);
         return $setting != null ? $setting->getAttribute('stg_value') : $default;
+    }
+
+    /**
+     * Gets the current user's global settings matching the given names.
+     *
+     * @param string[] $stgNames
+     * @param integer|null $uid
+     * @return SettingsUser[]
+     */
+    public static function getUserSettingsByNames($stgNames, $uid = null)
+    {
+        if (empty($stgNames)) {
+            return [];
+        }
+
+        if ($uid === null) {
+            $uid = Yii::app()->user->getId();
+        }
+
+        $criteria = new CDbCriteria();
+        $criteria->addCondition('uid=:uid');
+        $criteria->params[':uid'] = $uid;
+        $criteria->addInCondition('stg_name', $stgNames);
+        $criteria->addCondition('entity IS NULL');
+        $criteria->addCondition('entity_id IS NULL');
+
+        return self::model()->findAll($criteria);
     }
 
     public static function applyBaseSettings($iUid)

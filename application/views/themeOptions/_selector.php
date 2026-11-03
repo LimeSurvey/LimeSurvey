@@ -36,7 +36,7 @@
                 'sModalTitle'   => gT('Reset themes'),
                 'htmlModalBody' => gT('Are you sure you want to reset the selected themes?'),
             ),
-            //uninstall 
+            //uninstall
             array(
                 //li element
                 'type'        => 'action',
@@ -60,7 +60,7 @@
 
 
 
-    
-?>
+
+    ?>
 
 

@@ -101,7 +101,7 @@ class TransformerInputQuestionAttribute extends Transformer
                     'newValue' => '0'
                 ],
                 [
-                    'matchValue' => ['0', '1', '2', '3', '4', '5'],
+                    'matchValue' => ['', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
                     'targetAttribute' => 'statistics_showgraph',
                     'isLanguageBased' => false,
                     'newValue' => '1'

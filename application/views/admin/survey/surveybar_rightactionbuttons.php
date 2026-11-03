@@ -10,20 +10,17 @@
 ?>
 
 <div class=" col-lg-4 text-end">
-    <?php if (isset($surveybar['savebutton']['form'])):?>
-
+    <?php if (isset($surveybar['savebutton']['form'])) :?>
         <!-- Save -->
         <button class="btn btn-primary" href="#" type="button" id="save-button">
             <span class="ri-check-fill"></span>
-            <?php if (isset($surveybar['savebutton']['text']))
-            {
+            <?php if (isset($surveybar['savebutton']['text'])) {
                 echo $surveybar['savebutton']['text'];
-            }
-            else {
+            } else {
                 eT("Save");
             }?>
         </button>
-        <?php if (isset($surveybar['importquestiongroup'])):?>
+        <?php if (isset($surveybar['importquestiongroup'])) :?>
             <?php
                 //Save and new button
                 $paramArray = array();
@@ -42,15 +39,15 @@
                 <?php eT("Save & add new group"); ?>
             </button>
         <?php endif; ?>
-        <?php if (isset($surveybar['importquestion'])):?>
+        <?php if (isset($surveybar['importquestion'])) :?>
             <?php
                 //Save and new button
                 $paramArray = array();
                 $paramArray["surveyid"] = $surveyid;
 
-                if (isset($gid) && !empty($gid)) {
-                    $paramArray["gid"] = $gid;
-                }
+            if (isset($gid) && !empty($gid)) {
+                $paramArray["gid"] = $gid;
+            }
 
                 $saveAndNewLink = $this->createUrl("questionAdministration/view/", $paramArray);
             ?>

@@ -43,7 +43,7 @@
                                     <?php } ?>
                                 </select>
                             <?php } else {
-                                echo eT("No question group found.");
+                                eT("No question groups found.");
                             } ?>
                         </div>
                         <div class='col-md-2 hide-xs'></div>
@@ -102,7 +102,7 @@
                             <div id="tablang<?= $assessmentlang; ?>" class="tab-pane fade <?php if ($count == 0) {
                                 echo "show active ";
                                 $count++;
-                            } ?>">
+                                            } ?>">
                                 <div class='col-12'></div>
                                 <div class='mb-3 col-12'>
                                     <label class='form-label col-12' for='name_<?= $assessmentlang ?>'>

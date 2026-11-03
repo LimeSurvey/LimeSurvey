@@ -9,6 +9,7 @@ namespace LimeSurvey\Models\Services;
 class ThemeQuestionAttributeProvider extends QuestionAttributeProvider
 {
     /** @inheritdoc */
+    #[\Override]
     public function getDefinitions($options = [])
     {
         /** @var string question theme from the filter or, if not set, from the question */
@@ -42,7 +43,7 @@ class ThemeQuestionAttributeProvider extends QuestionAttributeProvider
         $questionTheme = \QuestionTheme::model()->findByAttributes([], 'name = :name AND extends = :extends', ['name' => $questionThemeName, 'extends' => $questionType]);
         if ($questionTheme !== null) {
             $xmlFilePath = $questionTheme->getXmlPath() . '/config.xml';
-            $extensionConfig = \ExtensionConfig::loadFromFile($xmlFilePath);
+            $extensionConfig = \ExtensionConfig::loadFromFileCached($xmlFilePath);
         }
 
         if (!empty($extensionConfig)) {

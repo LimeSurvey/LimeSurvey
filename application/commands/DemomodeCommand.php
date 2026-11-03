@@ -2,7 +2,7 @@
 
 /*
 * LimeSurvey (tm)
-* Copyright (C) 2011 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2011-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -16,6 +16,7 @@ class DemomodeCommand extends CConsoleCommand
     /**
      * @return int
      */
+    #[\Override]
     public function run($args)
     {
         if (isset($args) && isset($args[0]) && $args[0] = 'yes') {
@@ -171,7 +172,6 @@ class DemomodeCommand extends CConsoleCommand
         $aSamplesurveys = scandir($documentationSurveyPath);
         $surveysToActivate = [];
         foreach ($aSamplesurveys as $sSamplesurvey) {
-            $result = null;
             if ($sSamplesurvey[0] == '.') {
                 continue;
             }
@@ -188,7 +188,7 @@ class DemomodeCommand extends CConsoleCommand
         foreach ($surveysToActivate as $surveyID) {
             $survey = \Survey::model()->findByPk($surveyID);
             $surveyActivator = new SurveyActivator($survey);
-            $result = $surveyActivator->activate();
+            $surveyActivator->activate();
         }
     }
 }

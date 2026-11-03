@@ -10,7 +10,7 @@ namespace LimeSurvey\Api\Transformer\Formatter;
  *
  *
  * For values that should always be displayed as is, we should not use this formatter
- * but instead use only the 'date' valitator. For exmaple we use this formatter on
+ * but instead use only the 'date' valitator. For example we use this formatter on
  * 'survey.dateCreated' but not on 'survey.expires' or 'survey.startDate' because we
  * want to display and edit the values of 'survey.expires' or 'survey.startDate' using
  * the server timezone not the local timezone.

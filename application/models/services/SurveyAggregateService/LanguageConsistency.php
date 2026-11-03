@@ -90,7 +90,7 @@ class LanguageConsistency
             $oLanguageSettings->surveyls_dateformat = $languagedetails['dateformat'];
             if (!$oLanguageSettings->save()) {
                 $this->yiiApp->setFlashMessage(
-                    gT("Survey language could not be created."),
+                    sprintf(gT("Survey language %s could not be created."), $sLang),
                     "error"
                 );
                 tracevar($oLanguageSettings->getErrors());

@@ -6,6 +6,7 @@ use DirectoryIterator;
 
 class Update_473 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
         $dir = new DirectoryIterator(APPPATH . DIRECTORY_SEPARATOR . 'core' . DIRECTORY_SEPARATOR . 'plugins');

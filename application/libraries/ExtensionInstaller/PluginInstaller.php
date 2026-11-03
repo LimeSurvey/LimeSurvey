@@ -24,6 +24,7 @@ class PluginInstaller extends ExtensionInstaller
      * @return void
      * @throws Exception
      */
+    #[\Override]
     public function install()
     {
         if (empty($this->fileFetcher)) {
@@ -35,17 +36,16 @@ class PluginInstaller extends ExtensionInstaller
         }
 
         $config = $this->getConfig();
-        /** @var PluginManager $pluginManager */
         $pluginManager = App()->getPluginManager();
         $destdir = $pluginManager->getPluginFolder($config, $this->pluginType);
 
         if ($this->fileFetcher->move($destdir)) {
             [$result, $errorMessage] = $pluginManager->installUploadedPlugin($destdir);
-            if ($result) {
-                // Do nothing.
-            } else {
+            if (!$result) {
                 throw new Exception($errorMessage);
             }
+            // Remove temporary files.
+            $this->fileFetcher->abort();
         } else {
             throw new Exception('Could not move files.');
         }
@@ -57,6 +57,7 @@ class PluginInstaller extends ExtensionInstaller
      * @return void
      * @throws Exception
      */
+    #[\Override]
     public function update()
     {
         if (empty($this->fileFetcher)) {
@@ -80,6 +81,8 @@ class PluginInstaller extends ExtensionInstaller
         if ($this->fileFetcher->move($destdir)) {
             $plugin->version = $config->getVersion();
             $plugin->update();
+            // Remove temporary files.
+            $this->fileFetcher->abort();
         } else {
             throw new Exception('Could not move files.');
         }
@@ -88,6 +91,7 @@ class PluginInstaller extends ExtensionInstaller
     /**
      * @todo
      */
+    #[\Override]
     public function uninstall()
     {
         throw new Exception('Not implemented');

@@ -4,6 +4,7 @@ namespace LimeSurvey\Helpers\Update;
 
 class Update_636 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
         $columnNames = \Yii::app()->db->schema->getTable('{{surveys}}')->columnNames;

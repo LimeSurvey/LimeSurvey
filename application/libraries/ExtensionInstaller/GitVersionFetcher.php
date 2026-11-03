@@ -11,6 +11,7 @@ class GitVersionFetcher extends VersionFetcher
     /**
      * @inherit
      */
+    #[\Override]
     public function getLatestVersion()
     {
         return 'todo';
@@ -19,6 +20,7 @@ class GitVersionFetcher extends VersionFetcher
     /**
      * @inherit
      */
+    #[\Override]
     public function getLatestSecurityVersion()
     {
         return 'todo';

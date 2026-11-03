@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitddb1a145e450f862353420acc5153e40
+class ComposerStaticInita33ab0ef5816c4172c683747e68a37fe
 {
     public static $files = array (
         '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
@@ -27,23 +27,27 @@ class ComposerStaticInitddb1a145e450f862353420acc5153e40
     );
 
     public static $prefixLengthsPsr4 = array (
-        'p' => 
+        'p' =>
         array (
             'phpseclib3\\' => 11,
         ),
-        'l' => 
+        'l' =>
         array (
             'ls\\tests\\' => 9,
         ),
-        'b' => 
+        'b' =>
         array (
             'bcmath_compat\\' => 14,
         ),
-        'T' => 
+        'Z' =>
+        array (
+            'ZipStream\\' => 10,
+        ),
+        'T' =>
         array (
             'Twig\\' => 5,
         ),
-        'S' => 
+        'S' =>
         array (
             'Symfony\\Polyfill\\Php83\\' => 23,
             'Symfony\\Polyfill\\Php82\\' => 23,
@@ -53,17 +57,21 @@ class ComposerStaticInitddb1a145e450f862353420acc5153e40
             'Symfony\\Polyfill\\Ctype\\' => 23,
             'SPSS\\' => 5,
         ),
-        'P' => 
+        'P' =>
         array (
+            'Psr\\SimpleCache\\' => 16,
             'Psr\\Http\\Message\\' => 17,
             'Psr\\Http\\Client\\' => 16,
             'Psr\\Container\\' => 14,
-            'Psr\\Cache\\' => 10,
-            'PhpDocReader\\' => 13,
+            'PhpOffice\\PhpSpreadsheet\\' => 25,
             'ParagonIE\\ConstantTime\\' => 23,
             'PHPMailer\\PHPMailer\\' => 20,
         ),
-        'L' => 
+        'M' =>
+        array (
+            'Matrix\\' => 7,
+        ),
+        'L' =>
         array (
             'LimeSurvey\\PluginManager\\' => 25,
             'LimeSurvey\\Models\\Services\\' => 27,
@@ -78,15 +86,15 @@ class ComposerStaticInitddb1a145e450f862353420acc5153e40
             'League\\OAuth2\\Client\\' => 21,
             'Laravel\\SerializableClosure\\' => 28,
         ),
-        'I' => 
+        'I' =>
         array (
             'Invoker\\' => 8,
         ),
-        'H' => 
+        'H' =>
         array (
             'Html2Text\\' => 10,
         ),
-        'G' => 
+        'G' =>
         array (
             'GuzzleHttp\\Psr7\\' => 16,
             'GuzzleHttp\\Promise\\' => 19,
@@ -95,14 +103,16 @@ class ComposerStaticInitddb1a145e450f862353420acc5153e40
             'GoogleTranslate\\' => 16,
             'GoldSpecDigital\\ObjectOrientedOAS\\' => 34,
         ),
-        'D' => 
+        'D' =>
         array (
-            'Doctrine\\Deprecations\\' => 22,
-            'Doctrine\\Common\\Lexer\\' => 22,
-            'Doctrine\\Common\\Annotations\\' => 28,
             'DI\\' => 3,
         ),
-        'A' => 
+        'C' =>
+        array (
+            'Composer\\Pcre\\' => 14,
+            'Complex\\' => 8,
+        ),
+        'A' =>
         array (
             'ArPHP\\I18N\\' => 11,
             'Anper\\Iuliia\\' => 13,
@@ -110,215 +120,198 @@ class ComposerStaticInitddb1a145e450f862353420acc5153e40
     );
 
     public static $prefixDirsPsr4 = array (
-        'phpseclib3\\' => 
+        'phpseclib3\\' =>
         array (
             0 => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib',
         ),
-        'ls\\tests\\' => 
+        'ls\\tests\\' =>
         array (
             0 => __DIR__ . '/../..' . '/tests',
         ),
-        'bcmath_compat\\' => 
+        'bcmath_compat\\' =>
         array (
             0 => __DIR__ . '/..' . '/phpseclib/bcmath_compat/src',
         ),
-        'Twig\\' => 
+        'ZipStream\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/maennchen/zipstream-php/src',
+        ),
+        'Twig\\' =>
         array (
             0 => __DIR__ . '/..' . '/twig/twig/src',
         ),
-        'Symfony\\Polyfill\\Php83\\' => 
+        'Symfony\\Polyfill\\Php83\\' =>
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-php83',
         ),
-        'Symfony\\Polyfill\\Php82\\' => 
+        'Symfony\\Polyfill\\Php82\\' =>
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-php82',
         ),
-        'Symfony\\Polyfill\\Php81\\' => 
+        'Symfony\\Polyfill\\Php81\\' =>
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-php81',
         ),
-        'Symfony\\Polyfill\\Php80\\' => 
+        'Symfony\\Polyfill\\Php80\\' =>
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-php80',
         ),
-        'Symfony\\Polyfill\\Mbstring\\' => 
+        'Symfony\\Polyfill\\Mbstring\\' =>
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-mbstring',
         ),
-        'Symfony\\Polyfill\\Ctype\\' => 
+        'Symfony\\Polyfill\\Ctype\\' =>
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-ctype',
         ),
-        'SPSS\\' => 
+        'SPSS\\' =>
         array (
             0 => __DIR__ . '/..' . '/tiamo/spss/src',
         ),
-        'Psr\\Http\\Message\\' => 
+        'Psr\\SimpleCache\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/psr/simple-cache/src',
+        ),
+        'Psr\\Http\\Message\\' =>
         array (
             0 => __DIR__ . '/..' . '/psr/http-factory/src',
             1 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
-        'Psr\\Http\\Client\\' => 
+        'Psr\\Http\\Client\\' =>
         array (
             0 => __DIR__ . '/..' . '/psr/http-client/src',
         ),
-        'Psr\\Container\\' => 
+        'Psr\\Container\\' =>
         array (
             0 => __DIR__ . '/..' . '/psr/container/src',
         ),
-        'Psr\\Cache\\' => 
+        'PhpOffice\\PhpSpreadsheet\\' =>
         array (
-            0 => __DIR__ . '/..' . '/psr/cache/src',
+            0 => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet',
         ),
-        'PhpDocReader\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/php-di/phpdoc-reader/src/PhpDocReader',
-        ),
-        'ParagonIE\\ConstantTime\\' => 
+        'ParagonIE\\ConstantTime\\' =>
         array (
             0 => __DIR__ . '/..' . '/paragonie/constant_time_encoding/src',
         ),
-        'PHPMailer\\PHPMailer\\' => 
+        'PHPMailer\\PHPMailer\\' =>
         array (
             0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
         ),
-        'LimeSurvey\\PluginManager\\' => 
+        'Matrix\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/markbaker/matrix/classes/src',
+        ),
+        'LimeSurvey\\PluginManager\\' =>
         array (
             0 => __DIR__ . '/../..' . '/application/libraries/PluginManager',
             1 => __DIR__ . '/../..' . '/application/libraries/PluginManager/Storage',
         ),
-        'LimeSurvey\\Models\\Services\\' => 
+        'LimeSurvey\\Models\\Services\\' =>
         array (
             0 => __DIR__ . '/../..' . '/application/models/services',
         ),
-        'LimeSurvey\\Menu\\' => 
+        'LimeSurvey\\Menu\\' =>
         array (
             0 => __DIR__ . '/../..' . '/application/libraries/MenuObjects',
         ),
-        'LimeSurvey\\Libraries\\' => 
+        'LimeSurvey\\Libraries\\' =>
         array (
             0 => __DIR__ . '/../..' . '/application/libraries',
         ),
-        'LimeSurvey\\Helpers\\Update\\' => 
+        'LimeSurvey\\Helpers\\Update\\' =>
         array (
             0 => __DIR__ . '/../..' . '/application/helpers/update',
             1 => __DIR__ . '/../..' . '/application/helpers/update/updates',
         ),
-        'LimeSurvey\\Helpers\\' => 
+        'LimeSurvey\\Helpers\\' =>
         array (
             0 => __DIR__ . '/../..' . '/application/helpers',
         ),
-        'LimeSurvey\\ExtensionInstaller\\' => 
+        'LimeSurvey\\ExtensionInstaller\\' =>
         array (
             0 => __DIR__ . '/../..' . '/application/libraries/ExtensionInstaller',
         ),
-        'LimeSurvey\\Exceptions\\' => 
+        'LimeSurvey\\Exceptions\\' =>
         array (
             0 => __DIR__ . '/../..' . '/application/exceptions',
         ),
-        'LimeSurvey\\Datavalueobjects\\' => 
+        'LimeSurvey\\Datavalueobjects\\' =>
         array (
             0 => __DIR__ . '/../..' . '/application/datavalueobjects',
         ),
-        'LimeSurvey\\' => 
+        'LimeSurvey\\' =>
         array (
             0 => __DIR__ . '/../..' . '/application/libraries',
         ),
-        'League\\OAuth2\\Client\\' => 
+        'League\\OAuth2\\Client\\' =>
         array (
             0 => __DIR__ . '/..' . '/league/oauth2-google/src',
             1 => __DIR__ . '/..' . '/league/oauth2-client/src',
         ),
-        'Laravel\\SerializableClosure\\' => 
+        'Laravel\\SerializableClosure\\' =>
         array (
             0 => __DIR__ . '/..' . '/laravel/serializable-closure/src',
         ),
-        'Invoker\\' => 
+        'Invoker\\' =>
         array (
             0 => __DIR__ . '/..' . '/php-di/invoker/src',
         ),
-        'Html2Text\\' => 
+        'Html2Text\\' =>
         array (
             0 => __DIR__ . '/..' . '/html2text/html2text/src',
         ),
-        'GuzzleHttp\\Psr7\\' => 
+        'GuzzleHttp\\Psr7\\' =>
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/psr7/src',
         ),
-        'GuzzleHttp\\Promise\\' => 
+        'GuzzleHttp\\Promise\\' =>
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/promises/src',
         ),
-        'GuzzleHttp\\' => 
+        'GuzzleHttp\\' =>
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/guzzle/src',
         ),
-        'Greew\\OAuth2\\Client\\Provider\\' => 
+        'Greew\\OAuth2\\Client\\Provider\\' =>
         array (
             0 => __DIR__ . '/..' . '/greew/oauth2-azure-provider/src/Provider',
         ),
-        'GoogleTranslate\\' => 
+        'GoogleTranslate\\' =>
         array (
             0 => __DIR__ . '/..' . '/viniciusgava/google-translate-api/src',
         ),
-        'GoldSpecDigital\\ObjectOrientedOAS\\' => 
+        'GoldSpecDigital\\ObjectOrientedOAS\\' =>
         array (
             0 => __DIR__ . '/..' . '/goldspecdigital/oooas/src',
         ),
-        'Doctrine\\Deprecations\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/doctrine/deprecations/src',
-        ),
-        'Doctrine\\Common\\Lexer\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/doctrine/lexer/src',
-        ),
-        'Doctrine\\Common\\Annotations\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/doctrine/annotations/lib/Doctrine/Common/Annotations',
-        ),
-        'DI\\' => 
+        'DI\\' =>
         array (
             0 => __DIR__ . '/..' . '/php-di/php-di/src',
         ),
-        'ArPHP\\I18N\\' => 
+        'Composer\\Pcre\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/composer/pcre/src',
+        ),
+        'Complex\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/markbaker/complex/classes/src',
+        ),
+        'ArPHP\\I18N\\' =>
         array (
             0 => __DIR__ . '/..' . '/khaled.alshamaa/ar-php/src',
         ),
-        'Anper\\Iuliia\\' => 
+        'Anper\\Iuliia\\' =>
         array (
             0 => __DIR__ . '/..' . '/anper/iuliia/src',
         ),
     );
 
     public static $prefixesPsr0 = array (
-        'Z' => 
+        'Z' =>
         array (
-            'Zend_' => 
+            'Zend_' =>
             array (
                 0 => __DIR__ . '/..' . '/shardj/zf1-future/library',
-            ),
-        ),
-        'S' => 
-        array (
-            'Spreadsheet' => 
-            array (
-                0 => __DIR__ . '/..' . '/pear/spreadsheet_excel_writer',
-            ),
-        ),
-        'O' => 
-        array (
-            'OLE' => 
-            array (
-                0 => __DIR__ . '/..' . '/pear/ole',
-            ),
-        ),
-        'C' => 
-        array (
-            'Console' => 
-            array (
-                0 => __DIR__ . '/..' . '/pear/console_getopt',
             ),
         ),
     );
@@ -338,13 +331,8 @@ class ComposerStaticInitddb1a145e450f862353420acc5153e40
         'DateMalformedStringException' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/DateMalformedStringException.php',
         'DateObjectError' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/DateObjectError.php',
         'DateRangeError' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/DateRangeError.php',
-        'OS_Guess' => __DIR__ . '/..' . '/pear/pear-core-minimal/src/OS/Guess.php',
         'Override' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/Override.php',
         'PDF417' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/barcodes/pdf417.php',
-        'PEAR' => __DIR__ . '/..' . '/pear/pear-core-minimal/src/PEAR.php',
-        'PEAR_Error' => __DIR__ . '/..' . '/pear/pear-core-minimal/src/PEAR.php',
-        'PEAR_ErrorStack' => __DIR__ . '/..' . '/pear/pear-core-minimal/src/PEAR/ErrorStack.php',
-        'PEAR_Exception' => __DIR__ . '/..' . '/pear/pear_exception/PEAR/Exception.php',
         'PhpToken' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/PhpToken.php',
         'QRcode' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/barcodes/qrcode.php',
         'Random\\BrokenRandomEngineError' => __DIR__ . '/..' . '/symfony/polyfill-php82/Resources/stubs/Random/BrokenRandomEngineError.php',
@@ -358,7 +346,6 @@ class ComposerStaticInitddb1a145e450f862353420acc5153e40
         'SensitiveParameter' => __DIR__ . '/..' . '/symfony/polyfill-php82/Resources/stubs/SensitiveParameter.php',
         'SensitiveParameterValue' => __DIR__ . '/..' . '/symfony/polyfill-php82/Resources/stubs/SensitiveParameterValue.php',
         'Stringable' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Stringable.php',
-        'System' => __DIR__ . '/..' . '/pear/pear-core-minimal/src/System.php',
         'TCPDF' => __DIR__ . '/..' . '/tecnickcom/tcpdf/tcpdf.php',
         'TCPDF2DBarcode' => __DIR__ . '/..' . '/tecnickcom/tcpdf/tcpdf_barcodes_2d.php',
         'TCPDFBarcode' => __DIR__ . '/..' . '/tecnickcom/tcpdf/tcpdf_barcodes_1d.php',
@@ -379,10 +366,10 @@ class ComposerStaticInitddb1a145e450f862353420acc5153e40
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitddb1a145e450f862353420acc5153e40::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitddb1a145e450f862353420acc5153e40::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInitddb1a145e450f862353420acc5153e40::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInitddb1a145e450f862353420acc5153e40::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInita33ab0ef5816c4172c683747e68a37fe::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInita33ab0ef5816c4172c683747e68a37fe::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInita33ab0ef5816c4172c683747e68a37fe::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInita33ab0ef5816c4172c683747e68a37fe::$classMap;
 
         }, null, ClassLoader::class);
     }

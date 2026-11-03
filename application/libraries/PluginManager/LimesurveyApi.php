@@ -81,6 +81,12 @@ class LimesurveyApi
         return false;
     }
 
+    /**
+     * Creates an absolute URL for the given route.
+     * @param string $route The controller route, e.g. 'admin/update'.
+     * @param array $params Additional GET parameters (name=>value).
+     * @return string The absolute URL.
+     */
     public function createUrl($route, array $params)
     {
         return App()->createAbsoluteUrl($route, $params);
@@ -140,12 +146,26 @@ class LimesurveyApi
         }
     }
 
+    /**
+     * Deletes a single response from the survey response table.
+     * @param integer $surveyId The survey ID.
+     * @param integer $responseId The response ID.
+     * @return integer The number of deleted rows.
+     */
     public function removeResponse($surveyId, $responseId)
     {
         return \Response::model($surveyId)->deleteByPk($responseId);
     }
+
     /**
      * Check if a table does exist in the database
+     *
+     * Uses schema->getTableNames() rather than schema->getTable($sTableName) on purpose:
+     * getTableNames() issues a single lightweight "SHOW TABLES" query (cached per schema),
+     * while getTable() additionally runs "SHOW FULL COLUMNS" and "SHOW CREATE TABLE" per call
+     * to build the full column/constraint metadata, which is unnecessary overhead when all
+     * that is needed is an existence check.
+     *
      * @param iPlugin $plugin
      * @param string $sTableName Table name to check for (without dbprefix!))
      * @return boolean True or false if table exists or not
@@ -267,7 +287,7 @@ class LimesurveyApi
         if (empty($surveyId)) {
             return;
         }
-        $sessionSurvey = Yii::app()->session["survey_{$surveyId}"];
+        $sessionSurvey = Yii::app()->session["responses_{$surveyId}"];
         if (empty($sessionSurvey['srid'])) {
             return;
         }
@@ -333,7 +353,7 @@ class LimesurveyApi
      */
     public function getResponseTable($surveyId)
     {
-        return App()->getDb()->tablePrefix . 'survey_' . $surveyId;
+        return App()->getDb()->tablePrefix . 'responses_' . $surveyId;
     }
 
     /**
@@ -344,8 +364,8 @@ class LimesurveyApi
     public function getOldResponseTables($surveyId)
     {
         $tables = array();
-        $base = App()->getDb()->tablePrefix . 'old_survey_' . $surveyId;
-        $timingbase = App()->getDb()->tablePrefix . 'old_survey_' . $surveyId . '_timings_';
+        $base = App()->getDb()->tablePrefix . 'old_responses_' . $surveyId;
+        $timingbase = App()->getDb()->tablePrefix . 'old_timings_' . $surveyId;
         foreach (App()->getDb()->getSchema()->getTableNames() as $table) {
             if (strpos((string) $table, $base) === 0 && strpos((string) $table, $timingbase) === false) {
                 $tables[] = $table;
@@ -557,8 +577,10 @@ class LimesurveyApi
             $newUserGroup->name = $db_group_name;
             $newUserGroup->description = $db_group_description;
             if ($newUserGroup->save()) {
-                \UserInGroup::model()->insertRecords(array('ugid' => $newUserGroup->getPrimaryKey(), 'uid' => 1));
-                return true;
+                $newUserInGroup = new \UserInGroup();
+                $newUserInGroup->ugid = $newUserGroup->getPrimaryKey();
+                $newUserInGroup->uid = 1;
+                return $newUserInGroup->save();
             } else {
                 return false;
             }
@@ -588,8 +610,11 @@ class LimesurveyApi
                     throw new InvalidArgumentException('user must not be group owner');
                 } else {
                     $user_in_group = $this->getUserInGroup($ugid, $uid);
-                    if (empty($user_in_group) && \UserInGroup::model()->insertRecords(array('ugid' => $ugid, 'uid' => $uid))) {
-                        return true;
+                    if (empty($user_in_group)) {
+                        $newUserInGroup = new \UserInGroup();
+                        $newUserInGroup->ugid = $ugid;
+                        $newUserInGroup->uid = $uid;
+                        return $newUserInGroup->save();
                     } else {
                         return false;
                     }
@@ -659,7 +684,7 @@ class LimesurveyApi
      * Used to return date from date input in admin
      * @param string $dateValue the string as date value
      * @param string $returnFormat the final date format
-     * @param integer|null $currentFormat the current format of dateValue, defaut from App()->session['dateformat'] @see getDateFormatData function (in surveytranslator_helper)
+     * @param integer|null $currentFormat the current format of dateValue, default from App()->session['dateformat'] @see getDateFormatData function (in surveytranslator_helper)
      * @return string
      */
     public static function getFormattedDateTime($dateValue, $returnFormat, $currentFormat = null)

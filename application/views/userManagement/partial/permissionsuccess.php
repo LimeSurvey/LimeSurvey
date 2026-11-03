@@ -46,7 +46,7 @@
     </div>
 </div>
 <div class="modal-footer">
-    <?php if (!isset($noButton)): ?>
+    <?php if (!isset($noButton)) : ?>
         <button id="exitForm" class="btn btn-cancel" data-bs-dismiss="modal">
             <?= gT('Close') ?>
         </button>

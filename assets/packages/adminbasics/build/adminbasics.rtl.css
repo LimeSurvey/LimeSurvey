@@ -2398,8 +2398,8 @@ iframe#dialog {
 }
 
 /** Fixed pager width */
-/* jqgrid table must take all place if avalaible, but header and footer must not be outside the screen */
-/* Myabe use a pseudo fixd-y solution is a good idea */
+/* jqgrid table must take all place if available, but header and footer must not be outside the screen */
+/* Maybe use a pseudo fixd-y solution is a good idea */
 .ui-jqgrid,
 .ui-jqgrid-view,
 .ui-jqgrid-titlebar,
@@ -2476,7 +2476,7 @@ td.subquestion-actions span:hover {
   display: none;
 }
 
-/* Box in resopnses list need a little more space */
+/* Box in responses list need a little more space */
 div#gview_displayresponses th#displayresponses_cb {
   width: 35px;
   /* Override jQgrid stuff */
@@ -2673,7 +2673,7 @@ h3,
 }
 
 #token-grid table tr.odd .blank_button {
-  /*For older Browsers with compatibilty issues*/
+  /*For older Browsers with compatibility issues*/
   border-color: #f9f9f9;
   background-color: #f9f9f9;
   /*New CSS3 Style of doing it*/
@@ -2838,7 +2838,7 @@ table#responsedetail tr td {
 
 #responses-grid .filter-container {
   min-width: 6em;
-  /* defaut em is 13px : 75/13 = 5.76… */
+  /* default em is 13px : 75/13 = 5.76… */
 }
 
 .edit-participant-modal-body {

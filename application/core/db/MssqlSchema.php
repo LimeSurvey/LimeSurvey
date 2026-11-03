@@ -23,11 +23,15 @@ class MssqlSchema extends CMssqlSchema
          * Auto increment.
          */
         $this->columnTypes['autoincrement'] = 'integer NOT NULL IDENTITY (1,1)';
-        
+
         $this->columnTypes['longbinary'] = 'varbinary(max)';
+        /**
+         * MSSQL has no native JSON type, use nvarchar to store unicode JSON.
+         */
+        $this->columnTypes['json'] = 'nvarchar(max)';
     }
 
-    
+
     public function getColumnType($type)
     {
         $sResult = $type;
@@ -85,13 +89,39 @@ class MssqlSchema extends CMssqlSchema
         );
     }
 
-	/**
-	 * Creates a command builder for the database.
-	 * This method may be overridden by child classes to create a DBMS-specific command builder.
-	 * @return LSMssqlDbCommandBuilder command builder instance
-	 */
-	protected function createCommandBuilder()
-	{
-		return new LSMssqlDbCommandBuilder($this);
-	}
+    /**
+     * Quotes a table name for use in a query.
+     * Unlike the Yii parent, any embedded closing bracket is escaped by doubling it, so a
+     * name cannot break out of the quoted identifier (mantis #20741).
+     *
+     * @param string $name table name
+     * @return string the properly quoted table name
+     */
+    public function quoteSimpleTableName($name)
+    {
+        return '[' . str_replace(']', ']]', (string) $name) . ']';
+    }
+
+    /**
+     * Quotes a column name for use in a query.
+     * Unlike the Yii parent, any embedded closing bracket is escaped by doubling it, so a
+     * name cannot break out of the quoted identifier (mantis #20741).
+     *
+     * @param string $name column name
+     * @return string the properly quoted column name
+     */
+    public function quoteSimpleColumnName($name)
+    {
+        return '[' . str_replace(']', ']]', (string) $name) . ']';
+    }
+
+    /**
+     * Creates a command builder for the database.
+     * This method may be overridden by child classes to create a DBMS-specific command builder.
+     * @return LSMssqlDbCommandBuilder command builder instance
+     */
+    protected function createCommandBuilder()
+    {
+        return new LSMssqlDbCommandBuilder($this);
+    }
 }

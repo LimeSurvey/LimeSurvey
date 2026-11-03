@@ -31,15 +31,30 @@ class FloatingActionsWidget extends CWidget
     /** @var string ID attribute of the CLSGridView container element */
     public $gridId;
 
-    /**
-     * Alias for $gridId using lowercase property name, required by the 6.x
-     * MassiveActionsWidget modal views which reference $this->gridid.
-     * @var string
-     */
-    public $gridid;
-
     /** @var array Action definitions – see class docblock for structure */
     public $aActions = [];
+
+    /**
+     * Optional URL for the "Select all" button.
+     * When set, a "Select all" button is shown in the floating bar.
+     * Clicking it will AJAX-fetch all matching PKs from this URL and select them
+     * across pagination via LS.gridSelection.
+     *
+     * The URL should accept current filter parameters (as GET params matching the
+     * model name, e.g. ?Survey[active]=R) and return a JSON array of integer PKs.
+     *
+     * @var string|null
+     */
+    public $selectAllUrl;
+
+    /**
+     * Show a "Select all" button for a grid with "Select all" enabled
+     * (CLSGridView::$lsSelectAllEnabled). It selects the whole result set; the actions
+     * then post a selectAll flag plus the grid filters instead of the selected ids.
+     *
+     * @var bool
+     */
+    public $lsSelectAllEnabled = false;
 
     /** Modal view names available in MassiveActionsWidget/views/modals/ */
     private const MODAL_VIEW_NAMES = [
@@ -61,9 +76,6 @@ class FloatingActionsWidget extends CWidget
 
     public function run(): void
     {
-        // Sync lowercase alias so modal views ($this->gridid) work correctly.
-        $this->gridid = $this->gridId;
-
         // 1. Render the floating bar HTML
         $this->render('floating_bar');
 
@@ -72,16 +84,18 @@ class FloatingActionsWidget extends CWidget
 
         // 3. Register the widget JavaScript
         Yii::app()->getClientScript()->registerScriptFile(
-            Yii::app()->getConfig('extensionsurl') . 'admin/grid/FloatingActionsWidget/assets/floatingActions.js',
+            Yii::app()->getAssetManager()->publish(dirname(__FILE__) . '/assets/floatingActions.js'),
             CClientScript::POS_END
         );
 
         // 4. Initialise this bar instance after the DOM is ready
+        $selectAllUrl = $this->selectAllUrl ? addslashes($this->selectAllUrl) : '';
         Yii::app()->getClientScript()->registerScript(
             'FloatingActionsWidget-init-' . $this->gridId,
             "$(function () { LS.floatingActions.init('"
                 . $this->gridId . "', '"
-                . $this->pk . "'); });",
+                . $this->pk . "', '"
+                . $selectAllUrl . "'); });",
             LSYii_ClientScript::POS_POSTSCRIPT
         );
     }
@@ -154,10 +168,19 @@ class FloatingActionsWidget extends CWidget
     // -------------------------------------------------------------------------
 
     /**
+     * HTML-encode an action label without double-encoding existing entities.
+     * Labels usually come from gT(), which already HTML-escapes by default.
+     *
+     * @param string $text  Action label
+     * @return string
+     */
+    public function encodeLabel(string $text): string
+    {
+        return htmlspecialchars($text, ENT_QUOTES, Yii::app()->charset, false);
+    }
+
+    /**
      * Build a unique modal DOM ID for the given action key and action name.
-     * Uses the same pattern as MassiveActionsWidget so the 6.x modal views
-     * (which hard-code "massive-actions-modal-{gridid}-{action}-{key}")
-     * produce IDs that match the data-modal-id attributes on the bar buttons.
      *
      * @param string $keyStr  Key string (numeric index or 'd{n}_{m}' for dropdowns)
      * @param string $action  Action identifier (e.g. 'delete', 'updateTheme')
@@ -165,7 +188,7 @@ class FloatingActionsWidget extends CWidget
      */
     public function getModalId(string $keyStr, string $action): string
     {
-        return 'massive-actions-modal-' . $this->gridId . '-' . $action . '-' . $keyStr;
+        return 'floating-actions-modal-' . $this->gridId . '-' . $action . '-' . $keyStr;
     }
 }
 

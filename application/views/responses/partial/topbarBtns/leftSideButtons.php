@@ -41,7 +41,7 @@ if ($hasResponsesExportPermission) {
             'class' => 'btn btn-outline-secondary',
         ],
     ]);
- }
+}
 
 if ($hasResponsesCreatePermission) {
         $importDropdownItems = $this->renderPartial(
@@ -60,7 +60,7 @@ if ($hasResponsesCreatePermission) {
                 'class' => 'btn btn-outline-secondary',
             ],
         ]);
- }
+}
 
 if ($hasStatisticsReadPermission) {
     if ($oSurvey->getIsSaveTimings()) {

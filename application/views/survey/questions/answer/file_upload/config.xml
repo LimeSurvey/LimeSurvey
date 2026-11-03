@@ -27,6 +27,8 @@
     <compatibility>
         <version>4.0</version>
         <version>5.0</version>
+        <version>6.0</version>
+        <version>7.0</version>
     </compatibility>
 
     <!--
@@ -141,7 +143,7 @@
             <default>0</default>
             <min>0</min>
             <help>Minimum number of files that the participant must upload for this question</help>
-            <caption>Min number of files</caption>
+            <caption>Minimum number of files</caption>
             <i18n></i18n>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>
@@ -152,7 +154,7 @@
             <category>Other</category>
             <sortorder>134</sortorder>
             <inputtype>text</inputtype>
-            <default>png, gif, doc, odt, jpg, jpeg, pdf, png, heic</default>
+            <default>png, gif, doc, odt, jpg, jpeg, pdf, heic</default>
             <help>Allowed file types in comma separated format. e.g. pdf,doc,odt</help>
             <caption>Allowed file types</caption>
             <i18n></i18n>
@@ -181,7 +183,7 @@
             <min>1</min>
             <default>1</default>
             <help>Maximum number of files that the participant can upload for this question</help>
-            <caption>Max number of files</caption>
+            <caption>Maximum number of files</caption>
             <i18n></i18n>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>
@@ -268,7 +270,7 @@
             </options>
             <help>Select the type of chart to be displayed</help>
             <caption>Chart type</caption>
-            <default>0</default>
+            <default></default>
             <i18n></i18n>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>

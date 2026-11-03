@@ -11,6 +11,7 @@ class Update_622 extends DatabaseUpdateBase
      * @inheritDoc
      * @throws CException
      */
+    #[\Override]
     public function up(): void
     {
         try {

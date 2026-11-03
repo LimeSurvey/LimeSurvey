@@ -196,6 +196,6 @@ class DateTimeTest extends TestBaseClass
         $result = \LimeExpressionManager::ProcessCurrentResponses();
         $moveResult = \LimeExpressionManager::NavigateForwards();
         $result = \LimeExpressionManager::ProcessCurrentResponses();
-        $this->assertEquals(date('Y-m-d'), $_SESSION['survey_' . self::$surveyId][$sgqa]);
+        $this->assertEquals(date('Y-m-d'), $_SESSION['responses_' . self::$surveyId][$sgqa]);
     }
 }

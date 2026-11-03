@@ -42,7 +42,6 @@ if ($hasTokensUpdatePermission || $hasSurveySettingsUpdatePermission) {
 }
 
 if ($tokenexists) {
-
     if ($hasTokensExportPermission) {
         $this->widget(
             'ext.ButtonWidget.ButtonWidget',
@@ -59,15 +58,15 @@ if ($tokenexists) {
             ]
         );
     }
-    
+
     if ($hasTokensUpdatePermission) {
         $invRemDropDownItems = $this->renderPartial(
             '/surveyAdministration/partial/topbar_tokens/tokensInvRemDropdownItems',
             get_defined_vars(),
             true
         );
-    
-    
+
+
         $this->widget('ext.ButtonWidget.ButtonWidget', [
             'name' => 'ls-inv-rem-button',
             'id' => 'ls-inv-rem-button',
@@ -79,7 +78,7 @@ if ($tokenexists) {
                 'class' => 'btn btn-outline-secondary',
             ],
         ]);
-    
+
         $this->widget(
             'ext.ButtonWidget.ButtonWidget',
             [
@@ -94,9 +93,9 @@ if ($tokenexists) {
                 ],
             ]
         );
-    
+
         $url = Yii::App()->createUrl("/admin/participants/sa/displayParticipants");
-    
+
         $this->widget(
             'ext.ButtonWidget.ButtonWidget',
             [
@@ -112,7 +111,6 @@ if ($tokenexists) {
             ]
         );
     }
-    
 }
 /* --> btn not necessary because it is already a side menu link (entry)
 $this->widget(

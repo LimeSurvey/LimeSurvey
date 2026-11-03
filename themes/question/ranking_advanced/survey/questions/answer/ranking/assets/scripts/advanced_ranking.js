@@ -13,14 +13,26 @@ var AdvancedRankingQuestion = function (options) {
         min_answers = options.min_answers,
         rankingName = options.rankingName,
         showpopups = options.showpopups || true,
-        samechoiceheight = options.samechoiceheight || true,
-        samelistheight = options.samelistheight || true,
+        samechoiceheight = (typeof options.samechoiceheight != 'undefined') ? parseInt(options.samechoiceheight) : 1,
+        samelistheight = (typeof options.samelistheight != 'undefined') ? parseInt(options.samelistheight) : 1,
         numbersActive = options.numbersActive,
         withHandle = options.withHandle;
 
     //define reused variables
     var relevancename= "relevance"+rankingName,
         rankingID = "javatbd" + rankingName;
+
+    // Build a map from data-value (title) to element id from the DOM
+    var buildValueToIdMap = function () {
+        var map = {};
+        $('#sortable-choice-' + questionId + ' .sortable-item').each(function () {
+            var val = $(this).data('value');
+            if (val) {
+                map[val] = $(this).attr('id');
+            }
+        });
+        return map;
+    };
 
     //define HTML snippets
     var screenReader = "<div class='visually-hidden'>" + $('#question' + questionId + ' .em_default').html() + "</div><div aria-hidden='true'>" + LSvar.lang.rankadvancedhelp + "</div>"
@@ -71,6 +83,7 @@ var AdvancedRankingQuestion = function (options) {
         $('#question' + questionId + ' .ls-remove').remove();
         // Adapt choice and list height
         fixChoiceListHeight();
+        $(window).on('resize.advancedRanking' + questionId, fixChoiceListHeight);
     },
     fixScreenReaderCompatibility = function(){
         // Hide the default answers list but display for media oral or screen reader
@@ -110,38 +123,39 @@ var AdvancedRankingQuestion = function (options) {
         bindActions();
     },
     
+    /**
+     * Show the rank number on ranked items only; items still in the choice list have no rank
+     */
     updateRankingNumber= function () {
         $('#sortable-rank-' + questionId + ' .answer-item.sortable-item.ls-choice').each(function (index,item) {
-            $(item).find('.selector__index_row').text('#'+(index+1));
+            $(item).find('.selector__index_row').text('#' + (index + 1) + ' ');
         });
-        $('#sortable-choice-' + questionId + ' .answer-item.sortable-item.ls-choice').each(function (index,item) {
-            $(item).find('.selector__index_row').text('#'+(index+1));
-        });
+        $('#sortable-choice-' + questionId + ' .answer-item.sortable-item.ls-choice .selector__index_row').text('');
     },
     /**
      * Update answers after updating drag and drop part
      */
     updateDragDropRank = function() {
-        
         $('#question' + questionId + ' .select-item select').val('');
-
+        if (numbersActive === 1) {
+            updateRankingNumber();
+        }
         $('#sortable-rank-' + questionId + ' .answer-item.sortable-item.ls-choice').each(function (index,item) {
-            if(numbersActive === 1){
-                updateRankingNumber();
+           var valToSet = $(this).data("value");
+           var $targetSelect = $('#question' + questionId + ' .select-item select').eq(index);
+        
+            if ($targetSelect.length > 0) {
+                $targetSelect.val(valToSet).trigger("change", { source: 'dragdrop' });
             }
-
-            $('#question' + questionId + ' .select-item select').eq(index).val($(this).data("value"));
-
         });
 
-        // Update #relevance and lauch checkconditions function
+        // Update #relevance and launch checkconditions function
         $("[id^=" + relevancename + "]").val('0');
 
         $('#question' + questionId + ' .select-item select:lt(' + max_answers + ')').each(function (index) {
             if ($(this).val() != "") {
                 $("#" + relevancename + (index+1) ).val("1");
             }
-            $(this).trigger("change", { source: 'dragdrop' });
         });
         $('#sortable-rank-' + questionId + ' .answer-item.sortable-item.ls-choice').removeClass("text-error");
         $('#sortable-choice-' + questionId + ' .answer-item.sortable-item.ls-choice').removeClass("text-error");
@@ -160,10 +174,14 @@ var AdvancedRankingQuestion = function (options) {
         $('#sortable-rank-' + questionId + ' .answer-item.sortable-item.ls-choice').each(function () {
             $(this).appendTo('#sortable-choice-' + questionId );
         });
+        var valueToId = buildValueToIdMap();
         $('#question' + questionId + ' .select-item select :selected').each(function (index) {
             if ($(this).val() != '') {
                 $("#" + relevancename + (index+1)).val("1");
-                $('#sortable-choice-' + questionId + ' #' + rankingID + $(this).val()).appendTo('#sortable-rank-' + questionId);
+                var elId = valueToId[$(this).val()];
+                if (elId) {
+                    $('#sortable-choice-' + questionId + ' #' + elId).appendTo('#sortable-rank-' + questionId);
+                }
             }
         });
 
@@ -174,36 +192,42 @@ var AdvancedRankingQuestion = function (options) {
         $('#sortable-rank-' + questionId + ' .answer-item.sortable-item.ls-choice:gt(' + (max_answers * 1 - 1) + ')').addClass("error");
     },
 
+    /**
+     * Apply the "Same height for all answer options" and "Same height for lists" settings
+     * Called at load and on window resize, so it resets the previous values before measuring
+     */
     fixChoiceListHeight = function() {
-        //Keep the target field as big as the source field
-        var minHeight = $('#sortable-choice-' + questionId).actual('height');
-        var minWidth = $('#sortable-choice-' + questionId).actual('width');
-        $('#sortable-choice-' + questionId).css('min-height', minHeight);
-        $('#sortable-rank-' + questionId).css('min-height', minHeight);
-        $('#sortable-choice-' + questionId).css('min-width', minWidth);
-        $('#sortable-rank-' + questionId).css('min-width', minWidth);
+        var $choices = $('#question' + questionId + ' .sortable-item.ls-choice'),
+            $lists = $('#sortable-choice-' + questionId + ',#sortable-rank-' + questionId);
+        //No fixed width: The lists already fill their column, a pixel width would overflow once the viewport gets narrower
+        $choices.css('min-height', '');
+        $lists.css('min-height', '');
 
-        // if (samechoiceheight) {
-        //     var maxHeight = 0;
-        //     $('#sortable-choice-' + questionId + ' li,#sortable-rank-' + questionId + ' li').each(function () {
-        //         if ($(this).actual('height') > maxHeight) {
-        //             maxHeight = $(this).actual('height');
-        //         }
-        //     });
-        //     $('#sortable-choice-' + questionId + ' li,#sortable-rank-' + questionId + ' li').css('min-height', maxHeight + 'px');
-        // }
+        if (samechoiceheight) {
+            var maxChoiceHeight = 0;
+            $choices.filter(':not(.ls-hidden)').each(function () {
+                maxChoiceHeight = Math.max(maxChoiceHeight, getMinHeightBoxHeight($(this)));
+            });
+            $choices.css('min-height', maxChoiceHeight + 'px');
+        }
 
-        // if (samelistheight) {
-        //     var totalHeight = 0;
-        //     $('#sortable-choice-' + questionId + ' li,#sortable-rank-' + questionId + ' li').each(function () {
-        //         totalHeight = totalHeight + $(this).actual('outerHeight', {
-        //             includeMargin: true
-        //         }); /* Border not inside */
-        //     });
-        //     /* Add the padding to min-height */
-        //     $('#sortable-choice-' + questionId + ',#sortable-rank-' + questionId).css('min-height', totalHeight + 'px').addClass("ls-sameheight");
-        // }
+        if (samelistheight) {
+            //Keep both lists as high as the higher one, at load the rank list is empty: It gets the height of all choices
+            var maxListHeight = 0;
+            $lists.each(function () {
+                maxListHeight = Math.max(maxListHeight, getMinHeightBoxHeight($(this)));
+            });
+            $lists.css('min-height', maxListHeight + 'px');
+        }
+    },
 
+    /**
+     * Height of the box that min-height applies to, depending on box-sizing
+     * @param {jQuery} $element
+     * @return {number}
+     */
+    getMinHeightBoxHeight = function($element) {
+        return ($element.css('box-sizing') == 'border-box') ? $element.actual('outerHeight') : $element.actual('height');
     },
 
     triggerEmRelevanceSortable = function() {

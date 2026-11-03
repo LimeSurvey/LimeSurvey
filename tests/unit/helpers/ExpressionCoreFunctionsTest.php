@@ -1,6 +1,8 @@
 <?php
 
-namespace ls\tests;
+namespace ls\tests\unit\helpers;
+
+use ls\tests\TestBaseClass;
 
 /**
  * Test Expression manager PHP function
@@ -8,7 +10,7 @@ namespace ls\tests;
  * @since 2022-09-30
  * @group em
  */
-class ExpressionCoreFunctionTest extends TestBaseClass
+class ExpressionCoreFunctionsTest extends TestBaseClass
 {
     /**
      * @group me

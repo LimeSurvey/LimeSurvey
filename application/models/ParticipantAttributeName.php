@@ -2,7 +2,7 @@
 
 /*
  * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -97,6 +97,7 @@ class ParticipantAttributeName extends LSActiveRecord
 
     /**
      * Returns Buttons for Grid view
+     * Edit is only shown with global 'participantpanel' 'update' permission, delete only with 'delete' permission
      * @return string html
      */
     public function getButtons()
@@ -104,30 +105,37 @@ class ParticipantAttributeName extends LSActiveRecord
         $isNotCoreAttribute = $this->core_attribute !== 'Y';
 
         $dropdownItems = [];
-        $dropdownItems[] = [
-            'title'            => gT('Edit this attribute'),
-            'linkClass'        => 'action_attributeNames_editModal',
-            'iconClass'        => 'ri-pencil-fill',
-            'enabledCondition' => $isNotCoreAttribute,
-            'linkAttributes'   => [
-                'data-attribute_id'   => $this->attribute_id,
-            ]
-        ];
-        $dropdownItems[] = [
-            'title'            => gT('Delete this attribute'),
-            'linkClass'        => 'action_attributeNames_deleteModal',
-            'iconClass'        => 'ri-delete-bin-fill text-danger',
-            'enabledCondition' => $isNotCoreAttribute,
-            'linkAttributes'   => [
-                'data-bs-toggle' => "modal",
-                'data-bs-target' => "#confirmation-modal",
-                'data-title'     => gT("Delete this attribute"),
-                'data-btnclass'  => "btn-danger",
-                'data-btntext'   => gT("Delete"),
-                'data-message'   => gT('Do you really want to delete this attribute') . "?",
-                'data-onclick'   => 'deleteAttributeAjax(' . $this->attribute_id . ")",
-            ]
-        ];
+        if (Permission::model()->hasGlobalPermission('participantpanel', 'update')) {
+            $dropdownItems[] = [
+                'title'            => gT('Edit this attribute'),
+                'linkClass'        => 'action_attributeNames_editModal',
+                'iconClass'        => 'ri-pencil-fill',
+                'enabledCondition' => $isNotCoreAttribute,
+                'linkAttributes'   => [
+                    'data-attribute_id'   => $this->attribute_id,
+                ]
+            ];
+        }
+        if (Permission::model()->hasGlobalPermission('participantpanel', 'delete')) {
+            $dropdownItems[] = [
+                'title'            => gT('Delete this attribute'),
+                'linkClass'        => 'action_attributeNames_deleteModal',
+                'iconClass'        => 'ri-delete-bin-fill text-danger',
+                'enabledCondition' => $isNotCoreAttribute,
+                'linkAttributes'   => [
+                    'data-bs-toggle' => "modal",
+                    'data-bs-target' => "#confirmation-modal",
+                    'data-title'     => gT("Delete this attribute"),
+                    'data-btnclass'  => "btn-danger",
+                    'data-btntext'   => gT("Delete"),
+                    'data-message'   => gT('Do you really want to delete this attribute') . "?",
+                    'data-onclick'   => 'deleteAttributeAjax(' . $this->attribute_id . ")",
+                ]
+            ];
+        }
+        if (empty($dropdownItems)) {
+            return '';
+        }
 
         return App()->getController()->widget('ext.admin.grid.GridActionsWidget.GridActionsWidget', ['dropdownItems' => $dropdownItems], true);
     }
@@ -139,11 +147,11 @@ class ParticipantAttributeName extends LSActiveRecord
     {
         // don't show checkbox for core attributes
         if ($this->core_attribute == 'Y') {
-            // BugFix: 317(op), whithout this hidden inputfields, massive action 'delete' is not working correctly
+            // BugFix: 317(op), without this hidden inputfields, massive action 'delete' is not working correctly
             // as we have only that special case in cpdb at the moment, it's not necessary to change it in the frontend part (listAction.js line 27)
             return "<input type='hidden' class='selector_attributeNamesCheckbox' name='selectedAttributeNames[]' value='" . $this->attribute_id . "' >";
         }
-        return "<input type='checkbox' class='selector_attributeNamesCheckbox massiveActionsCheckbox' name='selectedAttributeNames[]' value='" . $this->attribute_id . "' >";
+        return "<input type='checkbox' class='selector_attributeNamesCheckbox massiveActionsCheckbox' name='selectedAttributeNames[]' value='" . $this->attribute_id . "' aria-label='" . CHtml::encode(sprintf(gT('Select attribute %s'), $this->defaultname)) . "' >";
     }
 
     /**
@@ -245,7 +253,7 @@ class ParticipantAttributeName extends LSActiveRecord
             [
                 "name"              => 'massiveActionCheckbox',
                 "type"              => 'raw',
-                "header"            => "<input type='checkbox' id='action_toggleAllAttributeNames' />",
+                "header"            => "<input type='checkbox' id='action_toggleAllAttributeNames' aria-label='" . CHtml::encode(gT('Select all')) . "' />",
                 "filter"            => false,
                 'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
                 'filterHtmlOptions' => ['class' => 'ls-sticky-column'],

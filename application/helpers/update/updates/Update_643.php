@@ -11,6 +11,7 @@ class Update_643 extends DatabaseUpdateBase
      * @inheritDoc
      * @throws CException
      */
+    #[\Override]
     public function up()
     {
         $desc = $this->db->quoteColumnName('desc');

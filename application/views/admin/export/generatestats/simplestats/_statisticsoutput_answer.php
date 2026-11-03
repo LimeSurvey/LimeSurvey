@@ -8,7 +8,7 @@
  * @var $i
  * @var $extraline
  * @var $sColumnNameForView
- * potentialy not set when controller will try to load them in $aData (so will need default values)
+ * potentially not set when controller will try to load them in $aData (so will need default values)
  * @var $aggregated
  * @var $aggregatedPercentage
  * @var $sumitems
@@ -95,4 +95,4 @@
         </td>
     </tr>
 <?php endif; ?>
-*/ ?>
+*/

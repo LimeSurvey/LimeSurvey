@@ -17,6 +17,7 @@ class RESTVersionFetcher extends VersionFetcher
     /**
      * @return string
      */
+    #[\Override]
     public function getLatestVersion()
     {
         if (empty($this->curlResult)) {
@@ -33,6 +34,7 @@ class RESTVersionFetcher extends VersionFetcher
     /**
      * @return string
      */
+    #[\Override]
     public function getLatestSecurityVersion()
     {
         if (empty($this->curlResult)) {
@@ -75,7 +77,6 @@ class RESTVersionFetcher extends VersionFetcher
         }
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         $content = json_decode(curl_exec($ch));
-        curl_close($ch);
         if ($content && count($content) === 1) {
             $this->curlResult = $content[0];
         } else {

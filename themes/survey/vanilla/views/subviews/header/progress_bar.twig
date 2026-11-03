@@ -1,6 +1,6 @@
 {#
     LimeSurvey
-    Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+    Copyright (C) 2007-2026 The LimeSurvey Project Team
     All rights reserved.
     License: GNU/GPL License v2 or later, see LICENSE.php
     LimeSurvey is free software. This version may have been modified pursuant
@@ -19,7 +19,7 @@
 {# do not show if : All in one or is not Y or on aCompleted #}
 {% if aSurveyInfo.showprogress == 'Y' and aSurveyInfo.format != 'A' and not aSurveyInfo.aCompleted %}
     <!-- Top container -->
-    <div class="{{ aSurveyInfo.class.topcontainer  }} space-col"  {{ aSurveyInfo.attr.topcontainer  }} >
+    <aside class="{{ aSurveyInfo.class.topcontainer  }} space-col"  {{ aSurveyInfo.attr.topcontainer  }} >
         <div class="{{ aSurveyInfo.class.topcontent  }} container-fluid" {{ aSurveyInfo.attr.topcontent  }} >
             {% set progressValue  = aSurveyInfo.progress.value %}
             <div class="visually-hidden">{{ sprintf(gT('You have completed %s%% of this survey'),progressValue) }}</div>
@@ -29,5 +29,5 @@
                     </div>
                 </div>
         </div>
-    </div>
+    </aside>
 {% endif %}

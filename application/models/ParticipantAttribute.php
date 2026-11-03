@@ -2,7 +2,7 @@
 
 /*
  * LimeSurvey
- * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2013-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -101,5 +101,26 @@ class ParticipantAttribute extends LSActiveRecord
     public function getSurveyId()
     {
         return 0;
+    }
+
+    /**
+     * @inheritdoc
+     * But without filter on attributes (not same than activerecords)
+     * @param string $action
+     * @return void
+     */
+    public function decryptEncryptAttributes($action = 'decrypt')
+    {
+        // load sodium library
+        $sodium = Yii::app()->sodium;
+        /* @var [] the attribute_id need encrypt and decrypt */
+        $aParticipantAttributes = CHtml::listData(
+            ParticipantAttributeName::model()->findAll(["select" => "attribute_id", "condition" => "encrypted = 'Y' and core_attribute <> 'Y'"]),
+            'attribute_id',
+            'attribute_id'
+        );
+        if (array_key_exists($this->attribute_id, $aParticipantAttributes)) {
+            $this->value = $sodium->$action($this->value);
+        }
     }
 }

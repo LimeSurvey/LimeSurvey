@@ -21,24 +21,24 @@ function triggerEmRelevance(){
 /* On question */
 function triggerEmRelevanceQuestion(){
     /* Action on this question */
-    $("[id^='question']").on('relevance:on',function(event,data) {
+    $("[id^='question'].question-container").on('relevance:on',function(event,data) {
         /* @todo : attach only to this. Use http://stackoverflow.com/a/6411507/2239406 solution for now. 
         Don't want to stop propagation. */
         if(event.target != this) return; 
         $(this).removeClass("ls-irrelevant ls-hidden");
     });
-    $("[id^='question']").on('relevance:off',function(event,data) {
+    $("[id^='question'].question-container").on('relevance:off',function(event,data) {
         if(event.target != this) return;
         $(this).addClass("ls-irrelevant ls-hidden");
     });
     /* In all in one mode : need updating group too */
-    $(".allinone [id^='group-']:not(.ls-irrelevant) [id^='question']").on('relevance:on',function(event,data) {
+    $(".allinone [id^='group-']:not(.ls-irrelevant) [id^='question'].question-container").on('relevance:on',function(event,data) {
         if(event.target != this) return;
         $(this).closest("[id^='group-']").removeClass("ls-hidden");
     });
-    $(".allinone [id^='group-']:not(.ls-irrelevant) [id^='question']").on('relevance:off',function(event,data) {
+    $(".allinone [id^='group-']:not(.ls-irrelevant) [id^='question'].question-container").on('relevance:off',function(event,data) {
         if(event.target != this) return;
-        if($(this).closest("[id^='group-']").find("[id^='question']").length==$(this).closest("[id^='group-']").find("[id^='question'].ls-hidden").length){
+        if($(this).closest("[id^='group-']").find("[id^='question'].question-container").length==$(this).closest("[id^='group-']").find("[id^='question'].question-container.ls-hidden").length){
             $(this).closest("[id^='group-']").addClass("ls-hidden");
         }
     });
@@ -56,10 +56,12 @@ function triggerEmRelevanceGroup(){
 }
 /* On subquestion and answers-list */
 function triggerEmRelevanceSubQuestion(){
-    $("[id^='question']").on('relevance:on',"[id^='javatbd']",function(event,data) {
+    $("[id^='question'].question-container").on('relevance:on',"[id^='javatbd']",function(event,data) {
         if(event.target != this) return; // not needed now, but after (2016-11-07)
         data = $.extend({style:'hidden'}, data);
         $(this).removeClass("ls-irrelevant ls-"+data.style);
+        /* In all in one mode : need updating group too */
+        $(this).closest("[id^='group-']").removeClass("ls-hidden");
         if(data.style=='disabled'){
             if($(event.target).hasClass("answer-item")) {
                 $(event.target).find('input').each(function(itrt, item ){
@@ -76,7 +78,7 @@ function triggerEmRelevanceSubQuestion(){
             updateRepeatHeading($(this).closest(".ls-answers"));
         }
     });
-    $("[id^='question']").on('relevance:off',"[id^='javatbd']",function(event,data) {
+    $("[id^='question'].question-container").on('relevance:off',"[id^='javatbd']",function(event,data) {
         if(event.target != this) return; // not needed now, but after (2016-11-07)
         data = $.extend({style:'hidden'}, data);
         $(this).addClass("ls-irrelevant ls-"+data.style);
@@ -95,7 +97,10 @@ function triggerEmRelevanceSubQuestion(){
             updateLineClass($(this));
             updateRepeatHeading($(this).closest(".ls-answers"));
         }
-            
+        /* In all in one mode : need updating group too */
+        if ($(this).closest("[id^='group-']").find("[id^='question'].question-container").length == $(this).closest("[id^='group-']").find("[id^='question'].question-container.ls-hidden").length) {
+            $(this).closest("[id^='group-']").addClass("ls-hidden");
+        }
         console.ls.log($(this).find('input[disabled]'));
     });
 }
@@ -410,7 +415,7 @@ function triggerEmClassChange(){
 /**
  * has-error management for ls-error-mandatory
  * Only add ls-error-mandatory in PHP currently, not in js : different behaviour after try next and don't try next
- * /!\ We can more easily doing without js ( usage of :empty in css with :text & select) but then no boostrap, for before submit : use only css in template
+ * /!\ We can more easily doing without js ( usage of :empty in css with :text & select) but then no bootstrap, for before submit : use only css in template
  */
 function updateMandatoryErrorClass(){
     $(".ls-error-mandatory .has-error,.ls-error-mandatory.has-error").on("blur",":text,textarea",function(event){
@@ -450,7 +455,7 @@ function activateSoftMandatory(){
     $('#mandatory-soft-alert-box-modal').on('click', function (ev) {
         ev.preventDefault();
         var $form = $('#limesurvey');
-        $form.append('<input type="hidden" name="mandSoft" value="' + $(this).data('movenext') + '" />');
+        $form.find(".ls-mandSoft-checkbox").prop('checked', true);
         $form.find('#ls-button-submit').trigger('click');
         $("#bootstrap-alert-box-modal").modal('hide');
     });
@@ -478,16 +483,32 @@ $(document).on('submit', function (e) {
     if (e.target.id != 'limesurvey') {
         return;
     }
-    // We only care about the final submit, not normal forward/backward navigation.
-    var submitter = e.originalEvent ? $(e.originalEvent.submitter) : null;
-    if (!submitter || submitter.attr('value') != 'movesubmit') {
+    // Another script (e.g. ajax mode) canceled the submit or handles it itself.
+    if (e.isDefaultPrevented()) {
         return;
     }
-    // Still, we disable all submit buttons to make sure the "back" button is not
-    // pressed while submitting.
-    $('#limesurvey button[type="submit"]').prop('disabled', true);
+    // Any navigation can finish the survey (e.g. "Next" when only hidden questions follow),
+    // and a second request after that ends with a "session expired" message.
+    var submitter = e.originalEvent ? $(e.originalEvent.submitter) : null;
+    if (!submitter || ['movenext', 'moveprev', 'movesubmit'].indexOf(submitter.attr('value')) === -1) {
+        return;
+    }
+    // We disable all submit buttons to make sure no other button is pressed while submitting.
+    $('#limesurvey button[type="submit"]:not(:disabled)').prop('disabled', true).addClass('ls-disabled-on-submit');
 
     // We also add a hidden input with the button's value, because it's not included
     // in the request when the button is disabled.
+    $('#onsubmitbuttoninput').remove();
     $('#limesurvey').append('<input id="onsubmitbuttoninput" name=\'' + submitter.attr('name') + '\' value=\'' + submitter.attr('value') + '\' type=\'hidden\' />');
+});
+
+/**
+ * Re-enable the submit buttons when the page is restored from the browser's back/forward cache
+ */
+$(window).on('pageshow', function (e) {
+    if (!e.originalEvent.persisted) {
+        return;
+    }
+    $('#limesurvey .ls-disabled-on-submit').prop('disabled', false).removeClass('ls-disabled-on-submit');
+    $('#onsubmitbuttoninput').remove();
 });

@@ -59,7 +59,6 @@
     margin : 0 auto;
 }
 #welcome-container {
-    max-width: 750px;
 }
 
 .question-item .other-label {
@@ -112,7 +111,7 @@
     cursor : pointer;
 }
 
-.radio-item [type='radio'], .checkbox-item [type='checkbox'] { /* Why we must positionning at same place */
+.radio-item [type='radio'], .checkbox-item [type='checkbox'] { /* Why we must position them at the same place */
     cursor : pointer;
 }
 

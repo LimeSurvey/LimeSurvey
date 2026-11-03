@@ -11,7 +11,6 @@ namespace LimeSurvey\Datavalueobjects;
  */
 class ThemeFileCategory
 {
-
     /** @var string the category name */
     public $name;
 

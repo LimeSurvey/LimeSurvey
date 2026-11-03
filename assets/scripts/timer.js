@@ -235,7 +235,7 @@ var TimerConstructor = function(options){
     },
 
     /**
-     * Finalize method to just diable the input
+     * Finalize method to just disable the input
      */
     _disableInput = function(){
         $toBeDisabledElement.prop('readonly',true);

@@ -6,6 +6,7 @@ use Exception;
 
 class Update_257 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
         switch (\Yii::app()->db->driverName) {

@@ -50,7 +50,7 @@ class TwoFactorAdminLogin extends AuthPluginBase
 
     /**
      * Web direct methods that mutate data and therefore must only be reachable
-     * through a safe HTTP method (POST/PATCH), never GET.
+     * through an safe HTTP method (POST/PATCH), never GET.
      * @var string[]
      */
     private $writeDirectMethods = [
@@ -166,9 +166,8 @@ class TwoFactorAdminLogin extends AuthPluginBase
 
     //##############  Plugin event handlers ##############//
     /**
-     * Handle public web direct requests (plugins/direct endpoint).
-     * Only methods in $allowedDirectMethods are dispatchable; data-modifying
-     * ones additionally require a POST request.
+     * Listen to direct requests
+     * Necessary for the getMetadata function
      *
      * @return void
      */
@@ -186,7 +185,7 @@ class TwoFactorAdminLogin extends AuthPluginBase
         }
         // Data-modifying actions must never run on a safe (GET) request.
         if (in_array($action, $this->writeDirectMethods, true) && !$request->getIsPostRequest()) {
-            throw new CHttpException(405, gT('This action requires a POST request.'));
+            throw new CHttpException(405, 'This action requires a POST request.');
         }
         call_user_func([$this, $action], $oEvent, $request);
     }
@@ -256,7 +255,7 @@ class TwoFactorAdminLogin extends AuthPluginBase
         $oEvent = $this->getEvent();
         $onepass = App()->request->getParam('onepass');
 
-        // skip 2fa when theres an active and verified onetimepassword used (verification is allready done before getting here)
+        // skip 2fa when there's an active and verified one-time password used (verification is already done before getting here)
         if (App()->getConfig('use_one_time_passwords') && isset($onepass)) {
             return;
         }
@@ -279,7 +278,7 @@ class TwoFactorAdminLogin extends AuthPluginBase
     }
 
     /**
-     * Add menue to the top bar
+     * Add menu to the top bar
      * @return void
      */
     public function beforeAdminMenuRender()
@@ -468,7 +467,7 @@ class TwoFactorAdminLogin extends AuthPluginBase
     }
 
     /**
-     * Checks a submitted authentication code and stores the underlaying secret key into the Database.
+     * Checks a submitted authentication code and stores the underlying secret key into the Database.
      * Returns a JSON document
      *
      * @param PluginEvent $oEvent
@@ -659,7 +658,7 @@ class TwoFactorAdminLogin extends AuthPluginBase
                 $this->get('issuer', null, null, 'LimeSurvey - survey software'),
                 ((int) $this->get('digits', null, null, 6)),
                 ((int) $this->get('period', null, null, 30)),
-                $this->get('algorithm', null, null, 'sha1'),
+                RobThree\Auth\Algorithm::from((string) $this->get('algorithm', null, null, 'sha1')),
                 $mp
             );
         }

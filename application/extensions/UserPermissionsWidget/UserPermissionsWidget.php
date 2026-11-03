@@ -10,7 +10,7 @@ class UserPermissionsWidget extends CWidget
      */
     public function run()
     {
-        if(empty($this->aPermissions)) {
+        if (empty($this->aPermissions)) {
             return;
         }
         $this->render('table', ['aPermissions' => $this->aPermissions]);

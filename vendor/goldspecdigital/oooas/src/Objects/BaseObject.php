@@ -35,7 +35,7 @@ abstract class BaseObject implements JsonSerializable
      *
      * @param string|null $objectId
      */
-    public function __construct(string $objectId = null)
+    public function __construct(?string $objectId = null)
     {
         $this->objectId = $objectId;
         $this->extensions = new Extensions();
@@ -45,7 +45,7 @@ abstract class BaseObject implements JsonSerializable
      * @param string|null $objectId
      * @return static
      */
-    public static function create(string $objectId = null): self
+    public static function create(?string $objectId = null): self
     {
         return new static($objectId);
     }
@@ -55,7 +55,7 @@ abstract class BaseObject implements JsonSerializable
      * @param string|null $objectId
      * @return static
      */
-    public static function ref(string $ref, string $objectId = null): self
+    public static function ref(string $ref, ?string $objectId = null): self
     {
         $instance = new static($objectId);
 

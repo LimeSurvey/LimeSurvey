@@ -1,4 +1,5 @@
 <?php
+
 $this->widget(
     'ext.ButtonWidget.ButtonWidget',
     [
@@ -18,5 +19,3 @@ $this->widget(
         ],
     ]
 );
-
-

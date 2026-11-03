@@ -12,25 +12,24 @@ use Exception;
 /**
  * Resolves an array definition to a value.
  *
+ * @template-implements DefinitionResolver<ArrayDefinition>
+ *
  * @since 5.0
  * @author Matthieu Napoli <matthieu@mnapoli.fr>
  */
 class ArrayResolver implements DefinitionResolver
 {
     /**
-     * @var DefinitionResolver
-     */
-    private $definitionResolver;
-
-    /**
      * @param DefinitionResolver $definitionResolver Used to resolve nested definitions.
      */
-    public function __construct(DefinitionResolver $definitionResolver)
-    {
-        $this->definitionResolver = $definitionResolver;
+    public function __construct(
+        private DefinitionResolver $definitionResolver,
+    ) {
     }
 
     /**
+     * {@inheritDoc}
+     *
      * Resolve an array definition to a value.
      *
      * An array definition can contain simple values or references to other entries.
@@ -56,7 +55,10 @@ class ArrayResolver implements DefinitionResolver
         return true;
     }
 
-    private function resolveDefinition(Definition $value, ArrayDefinition $definition, $key)
+    /**
+     * @throws DependencyException
+     */
+    private function resolveDefinition(Definition $value, ArrayDefinition $definition, int|string $key) : mixed
     {
         try {
             return $this->definitionResolver->resolve($value);

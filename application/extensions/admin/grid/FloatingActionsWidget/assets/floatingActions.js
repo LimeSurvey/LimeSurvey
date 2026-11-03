@@ -1,14 +1,15 @@
-/**
- * Floating Actions Widget – JavaScript
+﻿/**
+ * Floating Actions Widget JavaScript
  *
  * Provides LS.floatingActions:
- *   - Shows a context bar with action buttons just above the pagination row of
- *     a CLSGridView whenever one or more row-checkboxes are checked.
- *   - The bar is injected into the grid DOM just before .grid-view-ls-footer and
- *     re-injected automatically after every AJAX grid update so that it always
- *     sits above the pager regardless of page changes.
+ *   - Shows a context bar with action buttons at the bottom of the viewport
+ *     whenever one or more row-checkboxes are checked in a CLSGridView.
+ *   - The bar lives in <body> (position:fixed) so it is never removed by
+ *     yiiGridView's replaceWith() operation on pagination.
  *   - Uses LS.gridSelection.count() for cross-page selection tracking when
  *     LS.gridSelection is available (registered by CLSGridView via gridSelection.js).
+ *   - CLSGridView calls LS.floatingActions.refresh(id) explicitly after every
+ *     AJAX update to keep the count in sync.
  */
 /* global $, bootstrap, LS */
 window.LS = window.LS || {};
@@ -30,6 +31,51 @@ LS.floatingActions = (function () {
     function _bar(gridId) {
         return _barRefs[gridId] || $('#floating-actions-bar-' + gridId);
     }
+
+    /**
+     * Resolve dotted callback paths (e.g. "LS.CPDB.onClickExport") safely.
+     * Returns a function bound to its parent object, or null.
+     *
+     * @param {string} path
+     * @returns {Function|null}
+     */
+    function _resolveActionCallback(path) {
+        if (typeof path !== 'string' || path === '') { return null; }
+        var parts = path.split('.');
+        var context = null;
+        var current = window;
+        for (var i = 0; i < parts.length; i++) {
+            if (current == null || typeof current[parts[i]] === 'undefined') {
+                return null;
+            }
+            context = current;
+            current = current[parts[i]];
+        }
+        return typeof current === 'function' ? current.bind(context) : null;
+    }
+    /**
+     * Whether the whole result set of the grid is selected ("Select all" mode).
+     *
+     * @param {string} gridId
+     * @returns {boolean}
+     */
+    function _isSelectAll(gridId) {
+        return !!(window.LS && LS.gridSelection && typeof LS.gridSelection.isSelectAll === 'function'
+            && LS.gridSelection.isSelectAll(gridId));
+    }
+
+    /**
+     * Append one hidden input per entry of data to a form.
+     *
+     * @param {jQuery} $form
+     * @param {Object} data
+     */
+    function _appendHiddenInputs($form, data) {
+        $.each(data, function (name, value) {
+            $form.append($('<input>', { name: name, value: value, type: 'hidden' }));
+        });
+    }
+
     /**
      * Count selected rows and update the floating bar visibility.
      * Uses LS.gridSelection.count() (cross-page) when available,
@@ -51,12 +97,21 @@ LS.floatingActions = (function () {
                 .find('.table tbody input[name="' + pkCol + '"]:checked').length;
         }
         $bar.find('.floating-actions-count-number').text(count);
+        // The whole result set is already selected
+        $bar.find('.floating-actions-select-all').toggleClass('d-none', _isSelectAll(gridId));
         if (count > 0) {
             $bar.addClass('floating-actions-bar--visible');
             // Sync position every time the bar becomes visible so it is always
             // rendered at the correct location regardless of scroll state.
             _syncBarPosition(gridId);
         } else {
+            // Dispose of any Bootstrap tooltips in the bar before hiding it
+            $bar.find('[data-bs-toggle="tooltip"]').each(function () {
+                var tooltipInstance = bootstrap.Tooltip.getInstance(this);
+                if (tooltipInstance) {
+                    tooltipInstance.dispose();
+                }
+            });
             $bar.removeClass('floating-actions-bar--visible');
         }
         // Keep the legacy MassiveActionsWidget button in sync as well
@@ -103,19 +158,22 @@ LS.floatingActions = (function () {
         }
     }
     /**
-     * (Re-)inject the bar directly before .grid-view-ls-footer inside the grid
-     * container.  The element reference is stable even when the grid replaces its
-     * own innerHTML via AJAX, so this works both on first init and after updates.
+     * Ensure the bar is attached to <body>.
+     * Since the bar uses position:fixed it does not need to live inside the grid
+     * container it only needs to be somewhere in the document.  Keeping it in
+     * <body> means it is never removed by yiiGridView's replaceWith() operation,
+     * so there is no detach/re-inject cycle to manage.
      *
      * @param {string} gridId
      */
     function _injectBar(gridId) {
-        var $bar    = _bar(gridId);
-        var $footer = $('#' + gridId).find('.grid-view-ls-footer');
-        if ($bar.length && $footer.length) {
-            $footer.before($bar);
-            _syncBarPosition(gridId);
+        var $bar = _bar(gridId);
+        if (!$bar.length) { return; }
+        // Move to body once (or whenever it has been removed from the document).
+        if (!$.contains(document.body, $bar[0])) {
+            $('body').append($bar);
         }
+        _syncBarPosition(gridId);
     }
     // -------------------------------------------------------------------------
     // Action click handler
@@ -136,7 +194,7 @@ LS.floatingActions = (function () {
         var onSuccess  = $that.data('on-success');
         var gridReload = $that.data('grid-reload');
         var $grid      = $('#' + gridId);
-        // Get selected items – use cross-page store when available, fall back to DOM
+        // Get selected items Ã¢â‚¬â€œ use cross-page store when available, fall back to DOM
         var checkedItems;
         if (window.LS && LS.gridSelection && typeof LS.gridSelection.getAll === 'function') {
             checkedItems = LS.gridSelection.getAll(gridId);
@@ -144,6 +202,8 @@ LS.floatingActions = (function () {
             checkedItems = $grid.yiiGridView('getChecked', pk);
         }
         var checkedItemsJson = JSON.stringify(checkedItems);
+        // In select-all mode no ids are sent; a selectAll flag with the grid filters is posted instead
+        var selectAllData = _isSelectAll(gridId) ? LS.gridSelection.getSelectAllPostData(gridId) : {};
         // ---- redirect action ------------------------------------------
         if (actionType === 'redirect') {
             var newForm = $('<form>', {
@@ -159,7 +219,43 @@ LS.floatingActions = (function () {
                 value : LS.data.csrfToken,
                 type  : 'hidden',
             })).appendTo('body');
+            _appendHiddenInputs(newForm, selectAllData);
             newForm.submit();
+            return;
+        }
+        // ---- fill-session-and-redirect action -------------------------
+        // Posts checked IDs to a session-fill endpoint (postUrl), then redirects.
+        if (actionType === 'fill-session-and-redirect') {
+            var setSessionUrl = (typeof postUrl !== 'undefined' && postUrl) ? postUrl : actionUrl;
+            var postData = {
+                itemsid: checkedItems.join($that.data('input-separator') || ','),
+            };
+            postData[LS.data.csrfTokenName] = LS.data.csrfToken;
+            $.post(setSessionUrl, postData, function () {
+                window.location.href = actionUrl;
+            });
+            return;
+        }
+        // ---- window-location-href action ------------------------------
+        // Appends the checked ids (comma-separated) to the action URL and navigates.
+        // In select-all mode the select-all data is posted to the action URL instead.
+        // Used by "Download files" in the responses list.
+        if (actionType === 'window-location-href') {
+            if (_isSelectAll(gridId)) {
+                var selectAllForm = $('<form>', { action: actionUrl, method: 'POST' }).appendTo('body');
+                selectAllData[LS.data.csrfTokenName] = LS.data.csrfToken;
+                _appendHiddenInputs(selectAllForm, selectAllData);
+                selectAllForm.submit().remove();
+                return;
+            }
+            window.location.href = actionUrl + checkedItems.join($that.data('input-separator') || ',');
+            return;
+        }
+
+        // ---- custom JS action -----------------------------------------
+        if (actionType === 'custom') {
+            var cb = _resolveActionCallback($that.data('custom-js'));
+            if (cb) { cb(checkedItems); }
             return;
         }
         // ---- modal action ---------------------------------------------
@@ -180,24 +276,26 @@ LS.floatingActions = (function () {
         var selectedUrl  = $modal.data('selected-url');
         // Show a preview of the selected items inside the modal body
         if (showSelected === 'yes' && selectedUrl) {
+            var csrfToken    = $('meta[name="csrf-token"]').attr('content');
             var $grididvalue   = gridId;
             var $oCheckedItems = checkedItemsJson;
             $selectedList.empty();
             $.ajax({
                 url:  selectedUrl,
                 type: 'POST',
-                data: { $grididvalue: $grididvalue, $oCheckedItems: $oCheckedItems, [LS.data.csrfTokenName]: LS.data.csrfToken },
+                data: { $grididvalue: $grididvalue, $oCheckedItems: $oCheckedItems, csrfToken: csrfToken },
                 success: function (html) { $selectedList.html(html); },
                 error:   function (req, err) { console.log(err); },
             });
         }
         // Reset modal to original state on close
-        $modal.off('hidden.bs.modal.floating').on('hidden.bs.modal.floating', function () {
+        $modal.off('hidden.bs.modal.floating hidden.bs.modal').on('hidden.bs.modal.floating hidden.bs.modal', function () {
             $modalTitle.text($oldModalTitle);
             $modalBody.empty().append($oldModalBody);
             $modalClose.hide();
             $oldModalButtons.show();
-            if (gridReload === 'yes') {
+            var modalGridReload = $modal.data('grid-reload');
+            if (modalGridReload === 'yes') {
                 // Clear cross-page selection: deleted (or modified) rows no longer exist.
                 if (window.LS && LS.gridSelection && typeof LS.gridSelection.clear === 'function') {
                     LS.gridSelection.clear(gridId);
@@ -205,6 +303,9 @@ LS.floatingActions = (function () {
                 // Uncheck all visible checkboxes on the current page
                 $('#' + gridId + ' tbody .massiveActionsCheckbox').prop('checked', false);
                 $('#' + gridId + ' thead input[type="checkbox"]').prop('checked', false);
+                // Get pk from the floating bar's data attribute and update immediately
+                var barPk = _bar(gridId).data('pk');
+                _updateBar(gridId, barPk);
                 $('#' + gridId).yiiGridView('update');
                 setTimeout(function () { $(document).trigger('actions-updated'); }, 500);
             }
@@ -215,7 +316,17 @@ LS.floatingActions = (function () {
             if ($form.data('trigger-validation') && !$form[0].reportValidity()) {
                 return;
             }
-            var postData = { sItems: checkedItemsJson };
+            
+            // Sync all CKEditor instances back to their textareas before collecting form data
+            if (typeof CKEDITOR !== 'undefined' && CKEDITOR.instances) {
+                for (var instanceName in CKEDITOR.instances) {
+                    if (CKEDITOR.instances.hasOwnProperty(instanceName)) {
+                        CKEDITOR.instances[instanceName].updateElement();
+                    }
+                }
+            }
+            
+            var postData = $.extend({ sItems: checkedItemsJson }, selectAllData);
             $modal.find('.custom-data').each(function () {
                 if ($(this).hasClass('btn-group')) {
                     $(this).find('input:checked').each(function () {
@@ -256,9 +367,11 @@ LS.floatingActions = (function () {
                         if (typeof syncMassiveActionResultsTableCaption === 'function') {
                             syncMassiveActionResultsTableCaption($modal, $modalBody);
                         }
+                        // The clicked confirm button is hidden now: Keep keyboard focus inside the modal
+                        $modalClose.find('button').first().trigger('focus');
                     }
                     if (onSuccess) {
-                        var func = typeof window[onSuccess] === 'function' ? window[onSuccess] : null;
+                        var func = _resolveActionCallback(onSuccess);
                         if (func) { func(html); }
                     }
                 },
@@ -296,13 +409,15 @@ LS.floatingActions = (function () {
         /**
          * Initialise the floating bar for one grid.
          *
-         * @param {string} gridId  ID of the CLSGridView container element
-         * @param {string} pk      Primary key column name (without [])
+         * @param {string} gridId        ID of the CLSGridView container element
+         * @param {string} pk            Primary key column name (without [])
+         * @param {string} [selectAllUrl] Optional URL to fetch all matching PKs for "Select all"
          */
-        init: function (gridId, pk) {
+        init: function (gridId, pk, selectAllUrl) {
             var $bar  = $('#floating-actions-bar-' + gridId);
             var $grid = $('#' + gridId);
             if (!$bar.length || !$grid.length) { return; }
+
             // Hook LS.gridView.afterAjaxUpdate once (here, not at load time, so
             // that afterAjaxUpdate.js has already defined its base implementation).
             if (!_afterAjaxHooked) {
@@ -339,6 +454,19 @@ LS.floatingActions = (function () {
             $(document).on('change' + ns, gridSelector + ' input[type="checkbox"][id$="_all"]', function () {
                 setTimeout(function () { _updateBar(gridId, pk); }, 50);
             });
+            
+            // Also handle action_toggleAllParticipant checkbox used in Central Participant Management
+            $(document).on('change' + ns, '#action_toggleAllParticipant', function () {
+                setTimeout(function () { _updateBar(gridId, pk); }, 50);
+            });
+            // Also handle RoleControl--action-toggleAllRoles checkbox used in User Roles
+            $(document).on('change' + ns, '#RoleControl--action-toggleAllRoles', function () {
+                setTimeout(function () { _updateBar(gridId, pk); }, 50);
+            });
+            // Also handle action_toggleAllAttributeNames checkbox used in Attribute Management
+            $(document).on('change' + ns, '#action_toggleAllAttributeNames', function () {
+                setTimeout(function () { _updateBar(gridId, pk); }, 50);
+            });
             // ---- Bar controls (delegated from document) ---------------------
             // Close / deselect-all: clear cross-page store AND uncheck visible checkboxes
             $(document).on('click' + ns, barSelector + ' .floating-actions-close', function () {
@@ -351,9 +479,9 @@ LS.floatingActions = (function () {
                 $('#' + gridId + ' thead input[type="checkbox"]').prop('checked', false);
                 _updateBar(gridId, pk);
             });
-            // Direct action buttons
+            // Direct action buttons (exclude dropdown toggles and the select-all button)
             $(document).on('click' + ns,
-                barSelector + ' .floating-actions-btn:not(.dropdown-toggle)',
+                barSelector + ' .floating-actions-btn:not(.dropdown-toggle):not(.floating-actions-select-all)',
                 function (e) { _onClick.call(this, e, gridId, pk); }
             );
             // Dropdown sub-items
@@ -361,6 +489,95 @@ LS.floatingActions = (function () {
                 barSelector + ' .floating-actions-item',
                 function (e) { _onClick.call(this, e, gridId, pk); }
             );
+            // ---- "Select all" across pagination ------------------------------
+            if (selectAllUrl) {
+                $(document).on('click' + ns, barSelector + ' .floating-actions-select-all', function (e) {
+                    e.preventDefault();
+                    var $btn = $(this);
+                    $btn.prop('disabled', true);
+
+                    // Collect current grid filter params from the URL / form
+                    var filterParams = {};
+                    // yiiGridView stores filter inputs inside the grid
+                    $('#' + gridId + ' .filters input, #' + gridId + ' .filters select').each(function () {
+                        var name = $(this).attr('name');
+                        var val  = $(this).val();
+                        if (name && val !== '') {
+                            filterParams[name] = val;
+                        }
+                    });
+                    // Also forward URL query-string params that are not inside the grid filter row
+                    // (e.g. ?active=R or ?gsid=3 set by the SearchBoxWidget / survey-group filter).
+                    (new URLSearchParams(window.location.search)).forEach(function (val, key) {
+                        if (val !== '' && !(key in filterParams)) {
+                            filterParams[key] = val;
+                        }
+                    });
+
+                    $.ajax({
+                        url:      selectAllUrl,
+                        type:     'GET',
+                        data:     filterParams,
+                        dataType: 'json',
+                        success: function (ids) {
+                            if (!Array.isArray(ids)) { return; }
+
+                            // Store all IDs in gridSelection in one bulk operation (O(1) UI syncs).
+                            // replaceAll() replaces the entire Set and synchronises the UI once,
+                            // avoiding the O(n) DOM thrash caused by calling add() in a loop.
+                            if (window.LS && LS.gridSelection) {
+                                if (typeof LS.gridSelection.replaceAll === 'function') {
+                                    LS.gridSelection.replaceAll(gridId, ids);
+                                } else {
+                                    // Fallback for older gridSelection without replaceAll
+                                    LS.gridSelection.clear(gridId);
+                                    ids.forEach(function (id) {
+                                        LS.gridSelection.add(gridId, String(id));
+                                    });
+                                }
+                            }
+
+                            // Check visible checkboxes whose PK value is in the returned IDs
+                            var idSet = {};
+                            ids.forEach(function (id) { idSet[String(id)] = true; });
+                            $('#' + gridId + ' tbody input[name="' + pkCol + '"]').each(function () {
+                                if (idSet[$(this).val()]) {
+                                    $(this).prop('checked', true);
+                                }
+                            });
+
+                            // Sync header "select all" checkbox if all visible rows are now checked
+                            var total   = $('#' + gridId + ' tbody input[name="' + pkCol + '"]').length;
+                            var checked = $('#' + gridId + ' tbody input[name="' + pkCol + '"]:checked').length;
+                            if (total > 0 && total === checked) {
+                                $('#' + gridId + ' thead input[type="checkbox"]').prop('checked', true);
+                            }
+
+                            _updateBar(gridId, pk);
+                        },
+                        error: function () {
+                            console.warn('FloatingActionsWidget: selectAllUrl request failed');
+                        },
+                        complete: function () {
+                            $btn.prop('disabled', false);
+                        }
+                    });
+                });
+            }
+            // ---- "Select all" of a grid with select-all mode -----------------
+            // Selects the whole result set; actions then post the grid filters.
+            if (!selectAllUrl) {
+                $(document).on('click' + ns, barSelector + ' .floating-actions-select-all', function (e) {
+                    e.preventDefault();
+                    if (!(window.LS && LS.gridSelection && typeof LS.gridSelection.selectAll === 'function')) {
+                        return;
+                    }
+                    LS.gridSelection.selectAll(gridId);
+                    _updateBar(gridId, pk);
+                    // The button is hidden now: Keep keyboard focus in the bar
+                    _bar(gridId).find('.floating-actions-btn:visible').first().trigger('focus');
+                });
+            }
             // ---- Scroll: keep bar position in sync with table position ---------
             $(window).on('scroll' + ns, function () {
                 _syncBarPosition(gridId);
@@ -371,5 +588,18 @@ LS.floatingActions = (function () {
         },
         /** Manually refresh the bar state (e.g. after an external grid update). */
         updateBar: _updateBar,
+        /**
+         * Re-ensure the bar is in the DOM and refresh the selection count.
+         * Called explicitly by CLSGridView after every AJAX pagination update.
+         * Since the bar now lives in <body> (not inside the grid), this is mainly
+         * a count refresh, but _injectBar also re-attaches if somehow removed.
+         *
+         * @param {string} gridId
+         */
+        refresh: function (gridId) {
+            if (!_barRefs[gridId]) { return; }
+            _injectBar(gridId);
+            _updateBar(gridId, _barRefs[gridId].data('pk'));
+        },
     };
 }());

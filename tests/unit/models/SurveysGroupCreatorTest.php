@@ -14,7 +14,6 @@ class SurveysGroupCreatorTest extends TestCase
     public static function setupBeforeClass(): void
     {
         \Yii::import('application.helpers.common_helper', true);
-        \Yii::import('application.helpers.globalsettings_helper', true);
     }
 
     /**
@@ -123,6 +122,7 @@ class SurveysGroupCreatorTest extends TestCase
             'printanswers',
             'ipaddr',
             'refurl',
+            'savequotaexit',
             'datecreated',
             'showsurveypolicynotice',
             'publicstatistics',
@@ -141,12 +141,12 @@ class SurveysGroupCreatorTest extends TestCase
             'showxquestions',
             'showgroupinfo',
             'shownoanswer',
+            'preselectnoanswer',
             'showqnumcode',
             'showwelcome',
             'showprogress',
             'questionindex',
             'navigationdelay',
-            'nokeyboard',
             'alloweditaftercompletion',
             'ipanonymize'
         ]);

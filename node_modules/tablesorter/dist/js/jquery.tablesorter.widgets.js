@@ -1,4 +1,4 @@
-/*! tablesorter (FORK) - updated 2020-03-03 (v2.31.3)*/
+/*! tablesorter (FORK) - updated 2024-08-13 (v2.32.0)*/
 /* Includes widgets ( storage,uitheme,columns,filter,stickyHeaders,resizable,saveSort ) */
 (function(factory){if (typeof define === 'function' && define.amd){define(['jquery'], factory);} else if (typeof module === 'object' && typeof module.exports === 'object'){module.exports = factory(require('jquery'));} else {factory(jQuery);}}(function(jQuery) {
 /*! Widget: storage - updated 2018-03-18 (v2.30.0) */

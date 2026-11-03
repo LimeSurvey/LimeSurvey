@@ -13,7 +13,9 @@ $rest['v1/user-permissions'] = [
         'description' => 'User permissions',
         'commandClass' => UserPermission::class,
         'auth' => true,
-        'params' => [],
+        'params' => [
+            'surveyId' => ['type' => 'int'],
+        ],
         'responses' => [
             'success' => [
                 'code' => 200,

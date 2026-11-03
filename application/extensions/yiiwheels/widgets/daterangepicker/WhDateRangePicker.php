@@ -1,4 +1,5 @@
 <?php
+
 /**
  * WhDateRangePicker widget class
  * A simple implementation for date range picker for Twitter Bootstrap
@@ -10,11 +11,11 @@
  * @package YiiWheels.widgets.daterangepicker
  * @uses YiiStrap.helpers.TbArray
  */
+
 Yii::import('yiistrap_fork.helpers.TbArray');
 
 class WhDateRangePicker extends CInputWidget
 {
-
     /**
      * @var string $selector if provided, then no input field will be rendered. It will write the JS code for the
      * specified selector.

@@ -1,4 +1,5 @@
 <?php
+
 /** @var bool $ownsAddAttributeButton */
 
 if (isset($ownsAddAttributeButton) && ($ownsAddAttributeButton)) {

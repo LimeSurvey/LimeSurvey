@@ -12,14 +12,13 @@
 
 ?>
 <?php if ($isAttached) : ?>
-
-  <?php if ($attachContent != '') : ?>
-    <?= CHtml::tag('div', $wrapperHtmlOptions, CHtml::textField($name, $value, $htmlOptions) . $attachContent, true)  ?>
+    <?php if ($attachContent != '') : ?>
+        <?= CHtml::tag('div', $wrapperHtmlOptions, CHtml::textField($name, $value, $htmlOptions) . $attachContent, true)  ?>
   
-  <?php else : ?>
-  <?= CHtml::textField($name, $value, $htmlOptions)  ?>
+    <?php else : ?>
+        <?= CHtml::textField($name, $value, $htmlOptions)  ?>
 
-<?php endif; ?>
+    <?php endif; ?>
 
 
-<?php endif; ?>
+<?php endif;

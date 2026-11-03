@@ -17,7 +17,7 @@
         <div class="col-12 content-right">
             <div class="card card-primary h-100">
                 <h3>
-                    <?php eT('Activate Survey'); ?> (<?php echo $survey->currentLanguageSettings->surveyls_title; ?>)
+                    <?php eT('Activate survey'); ?> (<?php echo $survey->currentLanguageSettings->surveyls_title; ?>)
                 </h3>
                 <p class='lead'>
                     <?php eT("Your survey has been activated and the responses and statistics section is now available."); ?>
@@ -25,7 +25,7 @@
 
                     <?php if ($warning) : ?>
                         <strong class='text-danger'>
-                            <?php eT("The required directory for saving the uploaded files couldn't be created. Please check file premissions on the /upload/surveys directory."); ?>
+                            <?php eT("The required directory for saving the uploaded files couldn't be created. Please check file permissions on the /upload/surveys directory."); ?>
                         </strong>
                     <?php endif; ?>
 

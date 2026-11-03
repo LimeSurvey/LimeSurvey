@@ -2,7 +2,7 @@
 
 /*
  * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -54,7 +54,7 @@ class OptoutController extends LSYii_Controller
         if (!isset($sLanguageCode) || $sLanguageCode == "" || !$sLanguageCode) {
             $sBaseLanguage = $oSurvey->language;
         } else {
-            $sBaseLanguage = sanitize_languagecode($sLanguageCode);
+            $sBaseLanguage = \LSYii_Validators::languageCodeFilter($sLanguageCode);
         }
 
         Yii::app()->setLanguage($sBaseLanguage);
@@ -106,7 +106,7 @@ class OptoutController extends LSYii_Controller
         if (!isset($languageCode) || $languageCode == "" || !$languageCode) {
             $baseLanguage = $survey->language;
         } else {
-            $baseLanguage = sanitize_languagecode($languageCode);
+            $baseLanguage = \LSYii_Validators::languageCodeFilter($languageCode);
         }
 
         Yii::app()->setLanguage($baseLanguage);
@@ -201,7 +201,7 @@ class OptoutController extends LSYii_Controller
         if (!isset($language) || $language == "" || !$language) {
             $baseLanguage = $survey->language;
         } else {
-            $baseLanguage = sanitize_languagecode($language);
+            $baseLanguage = \LSYii_Validators::languageCodeFilter($language);
         }
 
         Yii::app()->setLanguage($baseLanguage);
@@ -212,7 +212,7 @@ class OptoutController extends LSYii_Controller
         $tokenAttributes = [];
         $participantAttributes = [];
         if (!isset($token)) {
-            $message = gT('You are not a participant in this survey.');
+            $message = gT('You are not a participant of this survey.');
         } else {
             if (substr((string) $token->emailstatus, 0, strlen('OptOut')) !== 'OptOut') {
                 $token->emailstatus = 'OptOut';

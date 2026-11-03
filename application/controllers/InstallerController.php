@@ -2,7 +2,7 @@
 
 /*
 * LimeSurvey (tm)
-* Copyright (C) 2011 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2011-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -100,14 +100,17 @@ class InstallerController extends CController
     /**
      * Installer::checkInstallation()
      *
-     * Based on existance of 'sample_installer_file.txt' file, check if
-     * installation should proceed further or not.
+     * Based on existence of the config.php file, check if installation should
+     * proceed further or not. If LimeSurvey is already installed, redirect to
+     * the administration with a warning message.
      * @return void
      */
     private function checkInstallation()
     {
         if (file_exists(APPPATH . 'config/config.php')) {
-            throw new CHttpException(500, 'Installation has been done already. Installer disabled.');
+            App()->loadHelper('common');
+            App()->setFlashMessage(gT('LimeSurvey is already installed. The installer has been disabled.'), 'warning');
+            $this->redirect(array('/admin'));
         }
     }
 
@@ -285,7 +288,7 @@ class InstallerController extends CController
             //run validation, if it fails, load the view again else proceed to next step.
             if ($oModel->validate()) {
                 //saving the form data to session
-                foreach (array('dblocation', 'dbport', 'dbname', 'dbengine', 'dbtype', 'dbpwd', 'dbuser', 'dbprefix') as $sStatusKey) {
+                foreach (array('dblocation', 'dbport', 'dbname', 'dbengine', 'dbtype', 'dbpwd', 'dbuser', 'dbprefix', 'mssqlTrustServerCertificate') as $sStatusKey) {
                     Yii::app()->session[$sStatusKey] = $oModel->$sStatusKey;
                 }
 
@@ -682,7 +685,7 @@ class InstallerController extends CController
      * @param string $base key for data manipulation
      * @param string $keyError key for error data
      * @param string $aData
-     * @return bool result of check (that it is writeable which implies existance)
+     * @return bool result of check (that it is writeable which implies existence)
      */
     public function checkPathWriteable($path, $type, &$aData, $base, $keyError, $bRecursive = false)
     {
@@ -720,7 +723,7 @@ class InstallerController extends CController
      * @param string $data to manipulate
      * @param string $base key for data manipulation
      * @param string $keyError key for error data
-     * @return bool result of check (that it is writeable which implies existance)
+     * @return bool result of check (that it is writeable which implies existence)
      */
     public function checkFileWriteable($file, &$data, $base, $keyError)
     {
@@ -734,7 +737,7 @@ class InstallerController extends CController
      * @param string $data to manipulate
      * @param string $base key for data manipulation
      * @param string $keyError key for error data
-     * @return bool result of check (that it is writeable which implies existance)
+     * @return bool result of check (that it is writeable which implies existence)
      */
     public function checkDirectoryWriteable($directory, &$data, $base, $keyError, $bRecursive = false)
     {
@@ -902,12 +905,10 @@ class InstallerController extends CController
             //{
             $sShowScriptName = 'true';
             //}
-            if (stripos((string) $_SERVER['SERVER_SOFTWARE'], 'apache') !== false || (ini_get('security.limit_extensions') && ini_get('security.limit_extensions') != '')) {
-                $sURLFormat = 'path';
-            } else {
-                // Apache
-                $sURLFormat = 'get'; // Fall back to get if an Apache server cannot be determined reliably
-            }
+
+            //we set it only to 'path' from now on for new installations for the new react editor
+            $sURLFormat = 'path';
+
             $sCharset = 'utf8';
             if ($model->isMysql) {
                 $sCharset = 'utf8mb4';
@@ -989,8 +990,9 @@ class InstallerController extends CController
             ."\t\t"   . "),"                                        . "\n"
             ."\t\t"   . ""                                          . "\n"
             */
-
             . "\t\t" . "'urlManager' => array(" . "\n"
+            . "\t\t\t\t" . "// This is required for proper REST API and React Editor functionality." . "\n"
+            . "\t\t\t\t" . "// If you change it back to 'get', the new editor won't work " . "\n"
             . "\t\t\t" . "'urlFormat' => '{$sURLFormat}'," . "\n"
             . "\t\t\t" . "'rules' => array(" . "\n"
             . "\t\t\t\t" . "// You can add your own rules here" . "\n"
@@ -1056,7 +1058,7 @@ class InstallerController extends CController
     {
         $sResult = '';
         for ($i = 0; $i < $iTotalChar; $i++) {
-            // Range 65-90 means A-Z, uppercase. Lowercase is betweeen 97-122.
+            // Range 65-90 means A-Z, uppercase. Lowercase is between 97-122.
             // @see http://www.asciitable.com/
             $sResult .= chr(rand(65, 90));
         }
@@ -1078,6 +1080,7 @@ class InstallerController extends CController
         isset(Yii::app()->session['dblocation']) ? $model->dblocation = Yii::app()->session['dblocation'] : null;
         isset(Yii::app()->session['dbport']) ? $model->dbport = Yii::app()->session['dbport'] : null;
         isset(Yii::app()->session['dbprefix']) ? $model->dbprefix = Yii::app()->session['dbprefix'] : null;
+        isset(Yii::app()->session['mssqlTrustServerCertificate']) ? $model->mssqlTrustServerCertificate = Yii::app()->session['mssqlTrustServerCertificate'] : null;
         isset(Yii::app()->session['dbExists']) ? $model->dbExists = Yii::app()->session['databaseexist'] : null;
         return $model;
     }
@@ -1095,6 +1098,7 @@ class InstallerController extends CController
         unset(Yii::app()->session['dblocation']);
         unset(Yii::app()->session['dbport']);
         unset(Yii::app()->session['dbprefix']);
+        unset(Yii::app()->session['mssqlTrustServerCertificate']);
         unset(Yii::app()->session['dbExists']);
     }
 

@@ -1,0 +1,127 @@
+.survey-header-container {
+  background: $white;
+  box-shadow: 0 2px 6px 0 $elevation-shadow-soft;
+  border-radius: 2px;
+  width: 100%;
+  padding: 63px 67px;
+  border: 2px solid $g-700;
+
+  .show-x-questions {
+    font-size: 16px;
+    font-weight: normal;
+  }
+
+  .select {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    width: fit-content;
+
+    .react-select__menu {
+      background-color: red !important;
+    }
+
+    *,
+    svg {
+      color: $active-green !important;
+      fill: $active-green;
+      padding: 0;
+      //styleName: LSD/Typography/Sans/Semi14;
+      font-family: IBM Plex Sans;
+      font-size: $font-size-sm;
+      font-weight: $font-weight-600;
+      line-height: $line-height-20;
+      letter-spacing: -0.017em;
+      text-align: left;
+    }
+  }
+
+  .start-survey-section {
+    .or-press-enter-text {
+      font-size: $font-size-md;
+      color: $g-700 !important;
+      font-weight: $font-weight-normal;
+      font-family: IBM Plex Sans;
+    }
+
+    .start-button {
+      min-width: 101px;
+      height: 44px;
+      transition: box-shadow 0.2s;
+      border-radius: $border-radius;
+      background: $active-green;
+      border: none;
+      outline: none;
+
+      font-size: $font-size-sm;
+      font-weight: $font-weight-500;
+      line-height: $line-height-20;
+      letter-spacing: -0.015em;
+      text-align: left;
+      color: $white;
+
+      &:hover {
+        background: $active-green-hover;
+      }
+    }
+  }
+
+  h6,
+  h4 {
+    font-weight: $font-weight-normal;
+    color: #757575;
+  }
+
+  h4 {
+    color: $black75 !important;
+  }
+
+  .language-change-header {
+    color: $g-700;
+    margin-bottom: 18px;
+  }
+
+  .welcome-screen-survey-title {
+    .content-editable {
+      color: $g-900;
+      font-size: $font-size-xxxl;
+      margin-bottom: 16px;
+      font-style: $font-style-base;
+      font-family: $ibm-font-serif;
+      font-weight: $font-weight-600;
+      line-height: $line-height-52;
+      letter-spacing: -0.68px;
+      padding: 0;
+    }
+  }
+
+  .welcome-title,
+  .welcome-description {
+    @include reg16;
+
+    margin-bottom: 10px;
+    line-height: $line-height-24;
+    .mce-content-body {
+      // Before contains the placeholder
+      &::before {
+        font-style: $font-style-placeholder;
+      }
+    }
+  }
+
+  .collapse-control {
+    color: $g-700;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-600;
+    line-height: $line-height-24;
+  }
+
+  .border-bottom {
+    border-bottom: 1px rgb(220, 220, 220) solid;
+  }
+}
+
+.inactive-section-header {
+  opacity: 0.25;
+  cursor: default;
+}

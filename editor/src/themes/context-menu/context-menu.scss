@@ -1,0 +1,70 @@
+.context-menu {
+  visibility: hidden;
+  opacity: 0;
+  position: fixed;
+  z-index: 5;
+  padding: 5px;
+  font-size: 0.875em;
+  max-width: 250px;
+  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.4);
+  width: 167px;
+  border-radius: 8px;
+  background-color: #1e1e1e;
+  color: white;
+}
+
+.context-menu.active {
+  visibility: visible;
+  opacity: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.context-menu button {
+  width: 100%;
+  background-color: transparent;
+  border: 0;
+  border-radius: 5px;
+  display: inline-flex;
+  justify-content: space-between;
+  gap: 4px;
+  padding: 4px;
+  cursor: pointer;
+  color: white;
+  align-items: flex-start;
+  font-family: 'IBM Plex Sans';
+  font-size: 10px;
+  line-height: 20px;
+  letter-spacing: -0.15px;
+}
+
+.context-menu button span.btn-icon {
+  line-height: 20px;
+  letter-spacing: -0.12px;
+}
+
+.context-menu button .btn-icon-shortcut {
+  font-size: 8px;
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  //margin: 0;
+  //padding: 0;
+}
+
+.context-menu button:hover {
+  background-color: #8146f6;
+  color: white;
+}
+
+.context-menu .icon {
+  opacity: 1;
+}
+
+.context-menu hr {
+  margin: 0;
+  height: 0;
+  align-self: stretch;
+  stroke-width: 0.3px;
+  stroke: #6e748c;
+}

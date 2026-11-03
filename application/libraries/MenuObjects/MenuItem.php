@@ -100,7 +100,8 @@ class MenuItem implements ExtendedMenuItemInterface
         return $this->iconClass;
     }
 
-    public function getModalId(){
+    public function getModalId()
+    {
         return $this->modalId;
     }
 
@@ -125,7 +126,8 @@ class MenuItem implements ExtendedMenuItemInterface
         return $this->isModal;
     }
 
-    public function getItemClass(){
+    public function getItemClass()
+    {
         return $this->itemClass;
     }
 

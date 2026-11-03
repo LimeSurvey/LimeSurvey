@@ -7,6 +7,7 @@ use App;
 
 class Update_177 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
         if (\Yii::app()->getConfig('auth_webserver') === true) {

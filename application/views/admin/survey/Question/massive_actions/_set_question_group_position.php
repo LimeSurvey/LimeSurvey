@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Set question group and position modal body (parsed to massive action widget)
  */
@@ -14,7 +15,7 @@
         <label class="form-label col-md-4" for="group_gid"><?php et('Group:'); ?></label>
         <div class="col-md-8">
             <select name="group_gid" class="form-select custom-data" id="gid">
-                <?php foreach($model->survey->groups as $group): ?>
+                <?php foreach ($model->survey->groups as $group) : ?>
                     <option value="<?php echo $group->gid;?>">
                         <?php echo flattenText($group->questiongroupl10ns[$model->survey->language]->group_name);?>
                     </option>
@@ -29,5 +30,5 @@
                 'oSurvey' => $model->survey,
                 'classes' => 'custom-data'
         ));
-    ?>
+?>
 </form>

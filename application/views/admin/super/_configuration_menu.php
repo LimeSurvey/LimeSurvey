@@ -8,7 +8,8 @@
 ?>
 
 <!-- Configuration -->
-<?php if (Permission::model()->hasGlobalPermission('superadmin', 'read')
+<?php if (
+    Permission::model()->hasGlobalPermission('superadmin', 'read')
     || Permission::model()->hasGlobalPermission('templates', 'read')
     || Permission::model()->hasGlobalPermission('labelsets', 'read')
     || Permission::model()->hasGlobalPermission('labelsets', 'create')
@@ -18,9 +19,11 @@
     || Permission::model()->hasGlobalPermission('participantpanel', 'create')
     || Permission::model()->hasGlobalPermission('participantpanel', 'update')
     || Permission::model()->hasGlobalPermission('participantpanel', 'delete')
+    || Permission::model()->hasGlobalPermission('participantpanel', 'import')
+    || Permission::model()->hasGlobalPermission('participantpanel', 'export')
     || ParticipantShare::model()->exists('share_uid = :userid', [':userid' => App()->user->id])
     || Permission::model()->hasGlobalPermission('settings', 'read')
-): ?>
+) : ?>
     <li class="dropdown mega-dropdown nav-item">
         <a href="#" class="nav-link dropdown-toggle mainmenu-dropdown-toggle" data-bs-toggle="dropdown">
             <!-- <i class="ri-settings-5-fill"></i> -->
@@ -32,8 +35,7 @@
                 <!-- System overview -->
                 <div class="mega-dropdown__column col-md-3">
                     <!-- System overview -->
-                    <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read')): ?>
-
+                    <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read')) : ?>
                         <div class="box" id="systemoverview">
                             <div class="box-icon">
                                 <span class="ri-information-fill" id="info-header"></span>
@@ -63,12 +65,12 @@
                     <?php endif; ?>
                 </div>
                 <!-- ExpressionScript Engine -->
+                <?php if (YII_DEBUG) : ?>
                 <div class="mega-dropdown__column col-md-3">
-                    <?php if (YII_DEBUG): ?>
                         <ul>
 
                             <!-- ExpressionScript Engine -->
-                            <li class="dropdown-header">
+                            <li class="dropdown-header" role="presentation">
                                 <span class="ri-superscript"></span>
                                 <?php eT("Expression Engine"); ?>
                             </li>
@@ -110,7 +112,13 @@
 
                             <!-- Bulk Convert Conditions to Relevance -->
                             <li class="dropdown-item">
-                                <a href="<?php echo $this->createUrl('admin/expressions/sa/upgrade_conditions2relevance'); ?>">
+                                <a href="#" role="button"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#confirmation-modal"
+                                    data-post-url="<?php echo $this->createUrl('admin/expressions/sa/upgrade_conditions2relevance'); ?>"
+                                    data-title="<?php eT("Bulk convert conditions to ExpressionScript"); ?>"
+                                    data-message="<?php eT("Are you sure?"); ?>"
+                                    data-btntext="<?php eT("Continue"); ?>">
                                     <?php eT("Bulk convert conditions to ExpressionScript"); ?>
                                 </a>
                             </li>
@@ -122,25 +130,26 @@
                                 </a>
                             </li>
 
-                            <!-- Show Survey logic file -->
+                            <!-- Show Survey logic overview -->
                             <li class="dropdown-item">
                                 <a href="<?php echo $this->createUrl('admin/expressions/sa/surveyLogicForm'); ?>">
-                                    <?php eT("Show survey logic file"); ?>
+                                    <?php eT("Show survey logic overview"); ?>
                                 </a>
                             </li>
                         </ul>
-                    <?php endif; ?>
                 </div>
+                <?php endif; ?>
                 <!-- Advanced -->
-                <div class="mega-dropdown__column col-md-2">
-                    <ul>
+                <div class="mega-dropdown__column col-md">
+                    <span  id="list-heading-cn" class="sr-only" role="heading" aria-level="2"> <?php eT('Advanced'); ?></span>
+                    <ul aria-labelledby="list-heading-cn">
 
                         <!-- Advanced -->
-                        <li class="dropdown-header">
+                        <li class="dropdown-header" role="presentation">
                             <span class="ri-tools-fill"></span>
-                            <span role="heading" aria-level="2"> <?php eT('Advanced'); ?></span>
+                            <span role="none" aria-hidden="true" aria-level="2"> <?php eT('Advanced'); ?></span>
                         </li>
-                        <?php if (Permission::model()->hasGlobalPermission('templates', 'read')): ?>
+                        <?php if (Permission::model()->hasGlobalPermission('templates', 'read')) : ?>
                             <!-- Theme Editor -->
                             <li class="dropdown-item">
                              <a href="<?php echo $this->createUrl("themeOptions/index"); ?>" class="link-themes">
@@ -148,7 +157,7 @@
                                 </a>
                             </li>
                         <?php endif; ?>
-                        <?php if (Permission::model()->hasGlobalPermission('labelsets', 'read') || Permission::model()->hasGlobalPermission('labelsets', 'create')): ?>
+                        <?php if (Permission::model()->hasGlobalPermission('labelsets', 'read') || Permission::model()->hasGlobalPermission('labelsets', 'create')) : ?>
                             <?php /* Can remove permission check when we have way to : update owner or complete Permission system */ ?>
                             <!-- Edit label sets -->
                             <li class="dropdown-item">
@@ -158,58 +167,47 @@
                             </li>
                         <?php endif; ?>
 
-                        <!-- Data Integrity -->
-                        <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read')): ?>
-
+                        <!-- Central participant management -->
+                        <?php if (
+                        Permission::model()->hasGlobalPermission('participantpanel', 'read')
+                            || Permission::model()->hasGlobalPermission('participantpanel', 'create')
+                            || Permission::model()->hasGlobalPermission('participantpanel', 'update')
+                            || Permission::model()->hasGlobalPermission('participantpanel', 'delete')
+                            || Permission::model()->hasGlobalPermission('participantpanel', 'import')
+                            || Permission::model()->hasGlobalPermission('participantpanel', 'export')
+                            || ParticipantShare::model()->exists('share_uid = :userid', [':userid' => App()->user->id])
+) : ?>
                             <li class="dropdown-item">
-                                <a href="<?php echo $this->createUrl("admin/checkintegrity"); ?>">
-                                    <?php eT("Data integrity"); ?>
-                                </a>
-                            </li>
-
-                            <!-- Backup Entire Database -->
-                            <li class="dropdown-item">
-                                <a href="<?php echo $this->createUrl("admin/dumpdb"); ?>">
-                                    <?php eT("Backup entire database"); ?>
-                                </a>
-                            </li>
-
-                        <?php endif; ?>
-
-                        <!-- Comfort update -->
-                        <?php if (Permission::model()->hasGlobalPermission('superadmin')): ?>
-                            <li class="dropdown-item">
-                                <a href="<?php echo $this->createUrl("admin/update"); ?>">
-                                    <?php eT("ComfortUpdate"); ?>
+                                <a href="<?php echo $this->createUrl("admin/participants/sa/displayParticipants"); ?>">
+                                    <?php eT("Central participant database"); ?>
                                 </a>
                             </li>
                         <?php endif; ?>
                     </ul>
-
                 </div>
                 <!-- Users -->
-                <div class="mega-dropdown__column col-md-2">
+                <div class="mega-dropdown__column col-md">
 
                     <!-- Users -->
+                   <h2 class="sr-only"> <?php eT('Users'); ?></h2>
                     <ul>
 
                         <!-- Users -->
-                        <li class="dropdown-header">
+                        <li class="dropdown-header" role="presentation">
 
                             <i class="ri-user-fill"></i>
-                           <span role="heading" aria-level="2"> <?php eT('Users'); ?></span>
+                           <span  aria-hidden="true" role="heading" aria-level="2"> <?php eT('Users'); ?></span>
                         </li>
 
                         <!-- User management -->
-                        <?php if (Permission::model()->hasGlobalPermission('users', 'read')): ?>
+                        <?php if (Permission::model()->hasGlobalPermission('users', 'read')) : ?>
                             <li class="dropdown-item">
                                 <a href="<?php echo $this->createUrl("userManagement/index"); ?>">
                                     <?php eT("User management"); ?>
                                 </a>
                             </li>
                         <?php endif; ?>
-                        <?php if (Permission::model()->hasGlobalPermission('usergroups', 'read')): ?>
-
+                        <?php if (Permission::model()->hasGlobalPermission('usergroups', 'read')) : ?>
                             <!-- User groups -->
                             <li class="dropdown-item">
                                 <a href="<?php echo $this->createUrl("userGroup/index"); ?>">
@@ -219,8 +217,7 @@
 
                         <?php endif; ?>
 
-                        <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read')): ?>
-
+                        <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read')) : ?>
                             <!-- User groups -->
                             <li class="dropdown-item">
                                 <a href="<?php echo $this->createUrl("userRole/index"); ?>">
@@ -229,33 +226,20 @@
                             </li>
 
                         <?php endif; ?>
-
-                        <!-- Central participant management -->
-                        <?php if (Permission::model()->hasGlobalPermission('participantpanel', 'read')
-                            || Permission::model()->hasGlobalPermission('participantpanel', 'create')
-                            || Permission::model()->hasGlobalPermission('participantpanel', 'update')
-                            || Permission::model()->hasGlobalPermission('participantpanel', 'delete')
-                            || ParticipantShare::model()->exists('share_uid = :userid', [':userid' => App()->user->id])
-                        ): ?>
-                            <li class="dropdown-item">
-                                <a href="<?php echo $this->createUrl("admin/participants/sa/displayParticipants"); ?>">
-                                    <?php eT("Central participant management"); ?>
-                                </a>
-                            </li>
-                        <?php endif; ?>
                     </ul>
                 </div>
                 <!-- Settings -->
-                <div class="mega-dropdown__column col-md-2">
+                <div class="mega-dropdown__column col-md">
+                    <h2 class="sr-only">  <?php eT('Settings'); ?></h2>
                     <ul>
 
                         <!-- Settings -->
-                        <li class="dropdown-header">
+                        <li class="dropdown-header" role="presentation">
                             <span class="ri-list-settings-line"></span>
-                          <span role="heading" aria-level="2">  <?php eT('Settings'); ?></span>
+                          <span aria-hidden="true" role="heading" aria-level="2">  <?php eT('Settings'); ?></span>
                         </li>
 
-                        <?php if (Permission::model()->hasGlobalPermission('settings', 'read')): ?>
+                        <?php if (Permission::model()->hasGlobalPermission('settings', 'read')) : ?>
                             <!-- Dashboard  -->
                             <li class="dropdown-item">
                                 <a href="<?php echo $this->createUrl("homepageSettings/index"); ?>">
@@ -286,7 +270,7 @@
 
                             <!-- Surveymenu Editor -->
                             <!-- Survey Menu -->
-                            <?php if (Permission::model()->hasGlobalPermission('settings', 'read')): ?>
+                            <?php if (Permission::model()->hasGlobalPermission('settings', 'read')) : ?>
                                 <li class="dropdown-item">
                                     <a href="<?php echo $this->createUrl("admin/menus/sa/view"); ?>">
                                         <?php eT("Survey menus"); ?>
@@ -298,6 +282,39 @@
 
                     </ul>
                 </div>
+                <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read')) : ?>
+                <!-- Tools -->
+                <div class="mega-dropdown__column col-md">
+                    <h2 class="sr-only"><?php eT('Tools'); ?></h2>
+                    <ul>
+                        <li class="dropdown-header" role="presentation">
+                            <span class="ri-hammer-fill" aria-hidden="true"></span>
+                            <span aria-hidden="true"><?php eT('Tools'); ?></span>
+                        </li>
+
+                        <!-- Data Integrity -->
+                        <li class="dropdown-item">
+                            <a href="<?php echo $this->createUrl("admin/checkintegrity"); ?>">
+                                <?php eT("Data integrity"); ?>
+                            </a>
+                        </li>
+
+                        <!-- Backup Entire Database -->
+                        <li class="dropdown-item">
+                            <a href="<?php echo $this->createUrl("admin/dumpdb"); ?>">
+                                <?php eT("Database backup"); ?>
+                            </a>
+                        </li>
+
+                        <!-- Comfort update -->
+                        <li class="dropdown-item">
+                            <a href="<?php echo $this->createUrl("admin/update"); ?>">
+                                <?php eT("ComfortUpdate"); ?>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <?php endif; ?>
             </div>
         </div>
     </li>

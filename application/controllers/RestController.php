@@ -2,7 +2,7 @@
 
 /*
  * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -34,6 +34,8 @@ class RestController extends LSYii_Controller
         Yii::app()->loadConfig('rest');
         $action = new CInlineAction($this, 'index');
         if (Yii::app()->beforeControllerAction($this, $action)) {
+            $this->applyUserLanguage();
+
             $endpointFactory = DI::getContainer()
                 ->get(EndpointFactory::class);
 
@@ -43,5 +45,22 @@ class RestController extends LSYii_Controller
 
             Yii::app()->afterControllerAction($this, $action);
         }
+    }
+
+    /**
+     * Applies the logged-in user's language, falling back to the browser language.
+     *
+     * @return void
+     */
+    private function applyUserLanguage()
+    {
+        $user = App()->user->isGuest ? null : User::model()->findByPk(App()->user->id);
+        $lang = $user ? $user->lang : null;
+        if (empty($lang) || $lang === 'auto') {
+            App()->loadHelper('common');
+            $lang = getBrowserLanguage();
+        }
+        // REST calls share the admin's PHP session, so don't persist the language there
+        App()->setLanguage($lang, false);
     }
 }

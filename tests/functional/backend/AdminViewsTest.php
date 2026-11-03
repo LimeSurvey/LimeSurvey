@@ -1,7 +1,7 @@
 <?php
 /**
  *  LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -17,7 +17,7 @@ use ls\tests\TestBaseClassView;
 
 /**
  * Class AdminViewsTest
- * This test loops through all basic admin view pages and cheks if they open withour errors
+ * This test loops through all basic admin view pages and checks if they open without errors
  *
  * @package ls\tests
  * @group adminviews

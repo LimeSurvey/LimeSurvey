@@ -8,6 +8,7 @@ namespace LimeSurvey\Helpers\Update;
  */
 class Update_611 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
         $this->db->createCommand()->update(

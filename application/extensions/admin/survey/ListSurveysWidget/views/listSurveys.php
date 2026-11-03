@@ -1,7 +1,7 @@
 <?php
 /*
 * LimeSurvey
-* Copyright (C) 2007-2016 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -16,7 +16,6 @@
  * @var $this ListSurveysWidget
  */
 
-require_once __DIR__ . '/../../../grid/FloatingActionsWidget/actions/SurveyListMassiveActions.php';
 ?>
 
 <!-- Grid -->
@@ -26,9 +25,10 @@ require_once __DIR__ . '/../../../grid/FloatingActionsWidget/actions/SurveyListM
         // Render the floating action bar (cross-page selection, fixed at bottom)
         $floatingActions = \actions\SurveyListMassiveActions::getActions();
         $this->widget('ext.admin.grid.FloatingActionsWidget.FloatingActionsWidget', [
-            'pk'       => 'sid',
-            'gridId'   => 'survey-grid',
-            'aActions' => $floatingActions,
+            'pk'           => 'sid',
+            'gridId'       => 'survey-grid',
+            'aActions'     => $floatingActions,
+            'selectAllUrl' => Yii::app()->createUrl('surveyAdministration/getAllSurveyIds'),
         ]);
         ?>
         <?php
@@ -37,29 +37,22 @@ require_once __DIR__ . '/../../../grid/FloatingActionsWidget/actions/SurveyListM
             'dataProvider'          => $this->model->search(),
             // Number of row per page selection
             'id'                    => 'survey-grid',
-            'caption'               => gT('List of surveys'),
+            'lsCaption'               => gT('List of surveys'),
             'emptyText'             => gT('No surveys found.'),
-            'summaryText'           => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
-                    gT('%s rows per page'),
-                    CHtml::dropDownList(
-                        'surveygrid--pageSize',
-                        $this->pageSize,
-                        Yii::app()->params['pageSizeOptions'],
-                        ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto',
-                         'aria-label' => gT('Change page size')]
-                    )
-                ),
-            'ajaxUpdate'            => 'survey-grid',
+            'lsPageSizeCurrentValue'  => $this->pageSize,
+            // Also refresh the survey counts in the admin menu, since mass actions like delete change them
+            'ajaxUpdate'            => 'survey-grid,surveys-menu-item,small-screens-menu-items,systemoverview',
             'lsAfterAjaxUpdate'     => [
                 'window.LS.doToolTip();',
+                'LS.restoreFocusAfterSort("survey-grid");',
             ],
-            'rowLink'               =>
-                '$data->hasNewEditor'
-                . ' ? App()->createUrl("editorLink/index", ["route" => "survey/" . $data->sid]) '
-                . ' : Yii::app()->createUrl("surveyAdministration/view/",array("iSurveyID"=>$data->sid))',
-            'showSelectionBar'      => false,
+            'lsRowLink'               =>
+                'Yii::app()->createUrl("surveyAdministration/view/",array("iSurveyID"=>$data->sid))',
+            'lsShowSelectionBar'      => false,
             'columns'               => $this->model->getColumns(),
             'lsAdditionalColumns' => $this->model->getAdditionalColumns(),
+            'lsOrganizeColumns'   => true,
+            'lsAdditionalColumnsDefault' => ['lastModified', 'group', 'owner'],
 
         ]);
         ?>

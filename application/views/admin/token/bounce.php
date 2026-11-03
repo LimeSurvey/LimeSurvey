@@ -25,9 +25,9 @@
                                 <div class="default controls">
                                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', array(
                                         'name' => 'bounceprocessing',
-                                        'value'=> $settings['bounceprocessing'] ,
-                                        'ariaLabel'=> gT('Used bounce settings'),
-                                        'checkedOption'=> $settings['bounceprocessing'] ,
+                                        'value' => $settings['bounceprocessing'] ,
+                                        'ariaLabel' => gT('Used bounce settings'),
+                                        'checkedOption' => $settings['bounceprocessing'] ,
                                         'selectOptions' => array(
                                             "N" => gT("None", 'unescaped'),
                                             "L" => gT("Use settings below", 'unescaped'),
@@ -47,11 +47,11 @@
                                 <div class="default controls">
                                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', array(
                                         'name' => 'bounceaccounttype',
-                                        'checkedOption'=> $settings['bounceaccounttype'] ,
-                                        'ariaLabel'=> gT('Server type'),
+                                        'checkedOption' => $settings['bounceaccounttype'] ,
+                                        'ariaLabel' => gT('Server type'),
                                         'selectOptions' => array(
-                                            "IMAP" => gT("IMAP", 'unescaped'),
-                                            "POP" => gT("POP", 'unescaped')
+                                            "IMAP" => "IMAP",
+                                            "POP" => "POP3",
                                         )
                                     ));?>
                                 </div>
@@ -99,10 +99,10 @@
                                 <div class="default controls">
                                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', array(
                                         'name' => 'bounceaccountencryption',
-                                        'ariaLabel'=> gT('Encryption type'),
-                                        'checkedOption'=> strtolower((string) $settings['bounceaccountencryption']),
+                                        'ariaLabel' => gT('Encryption type'),
+                                        'checkedOption' => strtolower((string) $settings['bounceaccountencryption']),
                                         'selectOptions' => array(
-                                            "off" => gT("Off (unsafe)", 'unescaped'),
+                                            "off" => gT("Off", 'unescaped'),
                                             "ssl" => gT("SSL/TLS", 'unescaped'),
                                             "tls" => gT("StartTLS", 'unescaped')
                                         )

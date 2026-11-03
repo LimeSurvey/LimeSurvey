@@ -21,7 +21,7 @@ class LayoutHelper
             if ($sendHTTPHeader) {
                 header("Content-type: text/html; charset=UTF-8"); // needed for correct UTF-8 encoding
             }
-            $this->getAdminHeader();
+            $this->getAdminHeader(false, false, $aData);
         }
     }
 
@@ -31,9 +31,10 @@ class LayoutHelper
      * @access protected
      * @param bool $meta
      * @param bool $return
+     * @param array $pageData Optional page data (e.g. topbar, title_bar) to set document title for screen readers
      * @return string|null
      */
-    public function getAdminHeader(bool $meta = false, bool $return = false)
+    public function getAdminHeader(bool $meta = false, bool $return = false, array $pageData = [])
     {
         if (empty(Yii::app()->session['adminlang'])) {
             Yii::app()->session["adminlang"] = Yii::app()->getConfig("defaultlang");
@@ -73,6 +74,8 @@ class LayoutHelper
         $aData['sAdmintheme'] = $oAdminTheme->name;
         $aData['aPackageScripts'] = $aData['aPackageStyles'] = array();
 
+        $aData['pageTitle'] = self::getDocumentTitle($pageData);
+
         $sOutput = Yii::app()->getController()->renderPartial("/layouts/header", $aData, true);
 
         if ($return) {
@@ -83,7 +86,62 @@ class LayoutHelper
     }
 
     /**
-     * This is the topbar for the whole application consiting of:
+     * Returns the document title (browser tab title) for an admin page, without the site name
+     *
+     * Pages with a survey title bar get the current page, question code or group name in front
+     * of the survey title, so that several tabs of the same or similarly named surveys can be
+     * told apart (the browser shows only the beginning of the title in the tab).
+     *
+     * Pages without a topbar or title bar (e.g. the dashboard) can set 'pageTitle' instead.
+     *
+     * @param array $pageData Page data (e.g. topbar, title_bar, subaction, qid, gid, pageTitle)
+     * @return string|null Null if the page has no title
+     */
+    public static function getDocumentTitle(array $pageData): ?string
+    {
+        if (!empty($pageData['topbar']['title'])) {
+            return strip_tags((string) $pageData['topbar']['title']);
+        }
+        if (empty($pageData['title_bar']['title'])) {
+            return !empty($pageData['pageTitle']) ? strip_tags((string) $pageData['pageTitle']) : null;
+        }
+        $surveyTitle = strip_tags((string) $pageData['title_bar']['title']);
+        $titleParts = [];
+        if (!empty($pageData['subaction']) && is_string($pageData['subaction'])) {
+            $subaction = flattenText(gT($pageData['subaction']), false, true);
+            if ($subaction !== '' && strpos($surveyTitle, $subaction) === false) {
+                $titleParts[] = $subaction;
+            }
+        }
+        // Same objects as the breadcrumb in layouts/title_bar.php
+        $question = $pageData['oQuestion'] ?? null;
+        if (!$question instanceof Question && !empty($pageData['qid'])) {
+            $question = Question::model()->findByPk((int) $pageData['qid']);
+        }
+        $questionGroup = $pageData['oQuestionGroup'] ?? null;
+        if (!$questionGroup instanceof QuestionGroup && !empty($pageData['gid'])) {
+            $questionGroup = QuestionGroup::model()->findByPk((int) $pageData['gid']);
+        }
+        if ($question instanceof Question) {
+            $titleParts[] = $question->isNewRecord ? gT('New question') : $question->title;
+        } elseif ($questionGroup instanceof QuestionGroup) {
+            if ($questionGroup->isNewRecord) {
+                $titleParts[] = gT('New question group');
+            } else {
+                $survey = Survey::model()->findByPk($questionGroup->sid);
+                $groupName = $survey ? ($questionGroup->questiongroupl10ns[$survey->language]->group_name ?? '') : '';
+                $groupName = flattenText($groupName, false, true);
+                if ($groupName !== '') {
+                    $titleParts[] = $groupName;
+                }
+            }
+        }
+        $titleParts[] = $surveyTitle;
+        return implode(' - ', $titleParts);
+    }
+
+    /**
+     * This is the topbar for the whole application consisting of:
      * -- Create survey (link)
      * -- Surveys
      * -- Help
@@ -105,9 +163,9 @@ class LayoutHelper
      */
     public function showadminmenu($aData): ?string
     {
-        // We don't wont the admin menu to be shown in login page
+        // We don't want the admin menu to be shown in login page
         if (!Yii::app()->user->isGuest) {
-            if (!(App()->getConfig('ssl_disable_alert')) && strtolower(App()->getConfig('force_ssl') != 'on') && \Permission::model()->hasGlobalPermission("superadmin")) {
+            if (!(Yii::app()->getConfig('ssl_disable_alert')) && strtolower(Yii::app()->getConfig('force_ssl')) != 'on' && \Permission::model()->hasGlobalPermission("superadmin")) {
                 $not = new UniqueNotification(array(
                     'user_id' => App()->user->id,
                     'importance' => Notification::HIGH_IMPORTANCE,
@@ -128,7 +186,7 @@ class LayoutHelper
             $aData['dataForConfigMenu']['userscount'] = User::model()->count();
 
             //Check if have a comfortUpdate key
-            if (getGlobalSetting('update_key') != '') {
+            if (Yii::app()->getConfig('update_key') != '') {
                 $aData['dataForConfigMenu']['comfortUpdateKey'] = gT('Activated');
             } else {
                 $aData['dataForConfigMenu']['comfortUpdateKey'] = gT('None');
@@ -160,7 +218,8 @@ class LayoutHelper
      *
      * @return Menu
      */
-    public function getCreateMenu() {
+    public function getCreateMenu()
+    {
         $itemClass = 'create-menu-item';
         $menuItemHeader = [
             'isDivider' => false,
@@ -206,7 +265,7 @@ class LayoutHelper
 
         $options = [
             'id' => 'createMenuButton',
-            'label' => '+',
+            'label' => gT('Create survey'),
             'iconClass' => 'ri-add-line',
             'isDropDown' => true,
             'isDropDownButton' => true,
@@ -324,7 +383,7 @@ class LayoutHelper
             $updateNotification = $updateModel->updateNotification;
 
             if ($updateNotification->result) {
-                App()->getClientScript()->registerScriptFile(App()->getConfig('packages') . DIRECTORY_SEPARATOR . 'comfort_update' . DIRECTORY_SEPARATOR . 'comfort_update.js');
+                App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('packages') . DIRECTORY_SEPARATOR . 'comfort_update' . DIRECTORY_SEPARATOR . 'comfort_update.js');
                 return App()->getController()->renderPartial(
                     "/admin/update/_update_notification",
                     array(
@@ -415,8 +474,9 @@ class LayoutHelper
 
         $survey = Survey::model()->findByPk($iSurveyID);
 
-        if (!empty($survey) && $survey->hasNewEditor) {
-            App()->controller->widget('ext.admin.survey.SurveySidemenuWidget.SurveySidemenuWidget', ['sid' => $iSurveyID]);
+        $event = new PluginEvent('beforeRenderSurveySidemenu', $this);
+        App()->getPluginManager()->dispatchEvent($event);
+        if ($event->get('sidemenu')) {
             return;
         }
 
@@ -456,7 +516,7 @@ class LayoutHelper
             $aData['aGroups'] = $aGroups;
             $aData['surveycontent'] = Permission::model()->hasSurveyPermission($aData['surveyid'], 'surveycontent', 'read');
             $aData['surveycontentupdate'] = Permission::model()->hasSurveyPermission($aData['surveyid'], 'surveycontent', 'update');
-            $aData['sideMenuBehaviour'] = getGlobalSetting('sideMenuBehaviour');
+            $aData['sideMenuBehaviour'] = Yii::app()->getConfig('sideMenuBehaviour');
 
             Yii::app()->getController()->renderPartial("/layouts/sidemenu", $aData);
         } else {
@@ -513,46 +573,4 @@ class LayoutHelper
         $result = App()->getPluginManager()->dispatchEvent($event);
         return $result->get('html');
     }
-
-    /**
-     * todo: document me...
-     *
-     * @deprecated not used anymore
-     * @param array $aData
-     */
-    /*
-    public function renderGeneralTopbarAdditions(array $aData)
-    {
-        $aData['topBar'] = $aData['topBar'] ?? [];
-        $aData['topBar'] = array_merge(
-            [
-                'type' => 'survey',
-                'sid' => $aData['sid'],
-                'gid' => $aData['gid'] ?? 0,
-                'qid' => $aData['qid'] ?? 0,
-                'showSaveButton' => false,
-                'showCloseButton' => false,
-            ],
-            $aData['topBar']
-        );
-
-        if (isset($aData['qid'])) {
-            $aData['topBar']['type'] = $aData['topBar']['type'] ?? 'question';
-        } elseif (isset($aData['gid'])) {
-            $aData['topBar']['type'] = $aData['topBar']['type'] ?? 'group';
-        } elseif (isset($aData['surveyid'])) {
-            $sid = $aData['sid'];
-            $oSurvey       = Survey::model()->findByPk($sid);
-            $respstatsread = Permission::model()->hasSurveyPermission($sid, 'responses', 'read')  ||
-                Permission::model()->hasSurveyPermission($sid, 'statistics', 'read') ||
-                Permission::model()->hasSurveyPermission($sid, 'responses', 'export');
-            $surveyexport = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'export');
-            $oneLanguage  = (count($oSurvey->allLanguages) == 1);
-            $aData['respstatsread'] = $respstatsread;
-            $aData['surveyexport']  = $surveyexport;
-            $aData['onelanguage']   = $oneLanguage;
-            $aData['topBar']['type'] = $aData['topBar']['type'] ?? 'survey';
-        }
-        Yii::app()->getController()->renderPartial("/admin/survey/topbar/topbar_additions", $aData);
-    }*/
 }

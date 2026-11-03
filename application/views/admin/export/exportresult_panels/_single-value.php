@@ -1,5 +1,7 @@
 <?php
-    $sResponsesId = App()->getRequest()->getParam('responseIds');
+/**
+ * @var string $responseIds Comma-separated ids of the selected responses
+ */
 ?>
 
 <div class="card mb-4 <?= $SingleResponse ? 'd-none' : '' ?>" id="panel-2">
@@ -17,7 +19,7 @@
           <input
              name="responses_id" id="responses_id"
             type="text" readonly class="form-control"
-            value="<?= Chtml::encode($sResponsesId); ?>"
+            value="<?= CHtml::encode($responseIds); ?>"
           />
         </div>
         <div class="col-md-2">

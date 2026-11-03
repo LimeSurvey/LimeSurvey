@@ -9,6 +9,7 @@ use Exception;
  */
 class Update_145 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
         addColumn('{{surveys}}', 'savetimings', "string(1) NULL DEFAULT 'N'");

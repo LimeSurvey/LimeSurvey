@@ -2,7 +2,7 @@
 
 /*
  * LimeSurvey
- * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2013-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -282,7 +282,7 @@ class Permission extends LSActiveRecord
                 // Make sure that he owns the user he wants to give global permissions for
                 $oUser = User::model()->findByAttributes(array('uid' => $iUserID, 'parent_id' => Yii::app()->session['loginID']));
                 if (!$oUser) {
-                    die('You are not allowed to set permisisons for this user');
+                    die('You are not allowed to set permissions for this user');
                 }
                 $aFilteredPermissions = array();
                 foreach ($aBasePermissions as $PermissionName => $aPermission) {
@@ -470,17 +470,6 @@ class Permission extends LSActiveRecord
 
     /**
      * @param array $data
-     * @deprecated at 2018-01-29 use $model->attributes = $data && $model->save()
-     */
-    public function insertRecords($data)
-    {
-        foreach ($data as $item) {
-            $this->insertSomeRecords($item);
-        }
-    }
-
-    /**
-     * @param array $data
      * @return bool
      */
     public function insertSomeRecords($data)
@@ -553,7 +542,7 @@ class Permission extends LSActiveRecord
             return true;
         }
 
-        /* Always return false for unknow sCRUD */
+        /* Always return false for unknown sCRUD */
         // TODO: should not be necessary
         if (!in_array($sCRUD, array('create', 'read', 'update', 'delete', 'import', 'export'))) {
             return false;
@@ -702,16 +691,19 @@ class Permission extends LSActiveRecord
      * Checks if a user has a certain permission in the given survey
      * Note: This function automatically also takes global permissions into account
      *
-     * @param $iSurveyID integer The survey ID
-     * @param $sPermission string Name of the permission
-     * @param $sCRUD string The permission detail you want to check on: 'create','read','update','delete','import' or 'export'
-     * @param $iUserID integer User ID - if not given the one of the current user is used
+     * @param integer $iSurveyID The survey ID
+     * @param string $sPermission Name of the permission
+     * @param string $sCRUD The permission detail you want to check on: 'create','read','update','delete','import' or 'export'
+     * @param integer|null $iUserID User ID - if not given the one of the current user is used
      * @return bool True if user has the permission
      */
     public function hasSurveyPermission($iSurveyID, $sPermission, $sCRUD = 'read', $iUserID = null)
     {
-        if (isset(self::$aCachedSurveyPermissions[$iSurveyID][$sPermission][$sCRUD][$iUserID])) {
-            return self::$aCachedSurveyPermissions[$iSurveyID][$sPermission][$sCRUD][$iUserID];
+        $iUserID = $this->getUserId($iUserID);
+        // Guests have no user ID
+        $sUserKey = (string) $iUserID;
+        if (isset(self::$aCachedSurveyPermissions[$iSurveyID][$sPermission][$sCRUD][$sUserKey])) {
+            return self::$aCachedSurveyPermissions[$iSurveyID][$sPermission][$sCRUD][$sUserKey];
         }
         if (!isset(self::$aCachedSurveyPermissions[$iSurveyID])) {
             self::$aCachedSurveyPermissions[$iSurveyID] = [];
@@ -720,10 +712,10 @@ class Permission extends LSActiveRecord
             self::$aCachedSurveyPermissions[$iSurveyID][$sPermission] = [];
         }
         if (!isset(self::$aCachedSurveyPermissions[$iSurveyID][$sPermission][$sCRUD])) {
-            self::$aCachedSurveyPermissions[$iSurveyID][$sPermission][$iUserID] = [];
+            self::$aCachedSurveyPermissions[$iSurveyID][$sPermission][$sCRUD] = [];
         }
         $oSurvey = Survey::Model()->findByPk($iSurveyID);
-        return self::$aCachedSurveyPermissions[$iSurveyID][$sPermission][$sCRUD][$iUserID] = ($oSurvey ? $oSurvey->hasPermission($sPermission, $sCRUD, $iUserID) : false);
+        return self::$aCachedSurveyPermissions[$iSurveyID][$sPermission][$sCRUD][$sUserKey] = ($oSurvey ? $oSurvey->hasPermission($sPermission, $sCRUD, $iUserID) : false);
     }
 
     /**
@@ -731,7 +723,7 @@ class Permission extends LSActiveRecord
      * @param integer $roleId
      * @param string $sPermission
      * @param string $sCRUD The permission detailsyou want to check on: 'create','read','update','delete','import' or 'export'
-     * @return bool allowed permssion
+     * @return bool allowed permission
      */
     public function roleHasPermission($iRoleId, $sPermission, $sCRUD = 'read')
     {
@@ -874,7 +866,7 @@ class Permission extends LSActiveRecord
                 'import' => false,
                 'export' => false,
                 'title' => gT("Users"),
-                'description' => gT("Permission to create, view, update and delete users"),
+                'description' => gT("Permission to create users, view all users, and update and delete the users you own"),
                 'img' => ' ri-shield-check-fill',
             ),
             'usergroups' => array(
@@ -899,7 +891,7 @@ class Permission extends LSActiveRecord
                 'create' => false,
                 'delete' => false,
                 'export' => false,
-                'title' => gT("Settings & Plugins"),
+                'title' => gT("Settings & plugins"),
                 'description' => gT("Permission to view and update global settings & plugins and to delete and import plugins"),
                 'warning' => gT("This permission allows an admin to change security relevant settings. Please make sure to assign this only to trusted persons."),
                 'img' => 'ri-earth-fill',
@@ -964,6 +956,28 @@ class Permission extends LSActiveRecord
         }
 
         return $results;
+    }
+
+    /**
+     * Move the theme permissions of all users from a theme name to its new name (called when a theme is renamed).
+     *
+     * @param string $sOldName The previous name of the theme
+     * @param string $sNewName The new name of the theme
+     * @return void
+     */
+    public static function renameThemePermissions($sOldName, $sNewName)
+    {
+        /* Drop orphaned permissions with the new name so they don't collide with the moved ones */
+        /* On case-insensitive databases a case-only rename matches the old rows here too, so these are kept */
+        self::model()->deleteAll(
+            "entity = 'template' AND permission = :newname AND permission <> :oldname",
+            [':newname' => $sNewName, ':oldname' => $sOldName]
+        );
+        self::model()->updateAll(
+            ['permission' => $sNewName],
+            "entity = 'template' AND permission = :oldname",
+            [':oldname' => $sOldName]
+        );
     }
 
     /**

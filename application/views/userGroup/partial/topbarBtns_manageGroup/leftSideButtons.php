@@ -8,7 +8,7 @@ if ($hasPermission) {
         [
             'name' => 'group-mail-button',
             'id' => 'group-mail-button',
-            'text' => gT('Mail to all Members'),
+            'text' => gT('Mail to all members'),
             'icon' => 'ri-mail-send-fill',
             'link' => $this->createUrl("userGroup/mailToAllUsersInGroup/ugid/" . $userGroupId),
             'htmlOptions' => [
@@ -22,8 +22,8 @@ if ($hasPermission) {
     $this->widget(
         'ext.ButtonWidget.ButtonWidget',
         [
-            'name' => 'group-mail-button',
-            'id' => 'group-mail-button',
+            'name' => 'group-edit-button',
+            'id' => 'group-edit-button',
             'text' => gT('Edit current user group'),
             'icon' => 'ri-pencil-fill',
             'link' => $this->createUrl("userGroup/edit/ugid/" . $userGroupId),
@@ -39,8 +39,8 @@ if ($hasPermission) {
     $this->widget(
         'ext.ButtonWidget.ButtonWidget',
         [
-            'name' => 'group-mail-button',
-            'id' => 'group-mail-button',
+            'name' => 'group-delete-button',
+            'id' => 'group-delete-button',
             'text' => gT('Delete current user group'),
             'icon' => 'ri-delete-bin-fill',
             'htmlOptions' => [

@@ -21,10 +21,11 @@
             <table class='detailbrowsetable table table-striped'>
 
                 <?php foreach ($answers as $answer) : ?>
-                    <?php if (!isset($fnames[$answer['i']]['type']) ||
+                    <?php if (
+                    !isset($fnames[$answer['i']]['type']) ||
                         (isset($fnames[$answer['i']]['type']) && $fnames[$answer['i']]['type'] !== '|') ||
                         (isset($fnames[$answer['i']]['type']) && $fnames[$answer['i']]['type'] === '|' && $answer['answervalue'] !== '')
-                    ) : ?>
+) : ?>
                         <tr <?php echo $inserthighlight; ?>>
                             <th>
                                 <?php if (isset($fnames[$answer['i']]['code'])) { ?>

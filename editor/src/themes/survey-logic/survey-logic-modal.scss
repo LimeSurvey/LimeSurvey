@@ -1,0 +1,35 @@
+.survey-logic-modal-content {
+  // Row colors — applied to the cells, because Bootstrap 5 table cells paint
+  // their own opaque background that would otherwise cover the row color.
+  tr.LEMgroup td {
+    background-color: lightgrey;
+  }
+
+  tr.LEMquestion td {
+    background-color: #eaf2d3;
+  }
+
+  tr.LEManswer td {
+    background-color: #fff;
+  }
+
+  tr.LEMsubq td {
+    background-color: lightyellow;
+  }
+
+  // Declared last so it wins over the LEM row colors on equal specificity.
+  tr td.danger {
+    background-color: #f2dede;
+  }
+
+  .LEMerror {
+    color: red;
+    font-weight: bold;
+  }
+}
+
+.expression-tooltip .tooltip-inner {
+  max-width: none;
+  font-size: 1rem;
+  line-height: 1.4;
+}

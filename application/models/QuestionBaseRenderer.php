@@ -48,13 +48,13 @@ abstract class QuestionBaseRenderer extends StaticModel
         $this->sSGQA = $this->aFieldArray[1];
         $this->oQuestion = Question::model()->findByPk($aFieldArray[0]);
         $this->bRenderDirect = $bRenderDirect;
-        $this->sLanguage = $this->setDefaultIfEmpty(@$aFieldArray['language'], @$_SESSION['survey_' . $this->oQuestion->sid]['s_lang']);
+        $this->sLanguage = $this->setDefaultIfEmpty(@$aFieldArray['language'], @$_SESSION['responses_' . $this->oQuestion->sid]['s_lang']);
         if (!$this->sLanguage) {
                 $this->sLanguage = $this->oQuestion->survey->language;
         }
 
         $this->aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($this->oQuestion->qid);
-        $this->aSurveySessionArray = @$_SESSION['survey_' . $this->oQuestion->sid];
+        $this->aSurveySessionArray = @$_SESSION['responses_' . $this->oQuestion->sid];
         $this->mSessionValue = @$this->setDefaultIfEmpty($this->aSurveySessionArray[$this->sSGQA], '');
 
         $oQuestionTemplate = QuestionTemplate::getNewInstance($this->oQuestion);
@@ -62,23 +62,18 @@ abstract class QuestionBaseRenderer extends StaticModel
 
         $questionScript = $this->getQuestionScript();
         if (!empty($questionScript)) {
-            /* Replace Expression Manager */
-            $sScriptRendered = LimeExpressionManager::ProcessString(
-                $questionScript,
-                $this->oQuestion->qid,
+            /* Replace Expression Manager, restore the previous question related replacements afterwards */
+            $sScriptRendered = LimeExpressionManager::withReplacementFields(
                 [
                     'QID' => $this->oQuestion->qid,
                     'GID' => $this->oQuestion->gid,
-                    'SGQ' => $this->oQuestion->sid . "X" . $this->oQuestion->gid . "X" . $this->oQuestion->qid,
-                ]
+                    'SGQ' => "Q" . $this->oQuestion->qid,
+                ],
+                function () use ($questionScript) {
+                    return LimeExpressionManager::ProcessString($questionScript, $this->oQuestion->qid);
+                }
             );
             $this->addScript('QuestionStoredScript-' . $this->oQuestion->qid, $sScriptRendered, LSYii_ClientScript::POS_POSTSCRIPT);
-            /* Reset needed replacement */
-            LimeExpressionManager::updateReplacementFields(array(
-                'QID' => null,
-                'GID' => null,
-                'SGQ' => null,
-            ));
         }
         $diContainer = \LimeSurvey\DI::getContainer();
         $this->questionOrderingService = $diContainer->get(
@@ -86,6 +81,12 @@ abstract class QuestionBaseRenderer extends StaticModel
         );
     }
 
+    /**
+     * Renders the timer of a question with a time limit and registers its script.
+     * Translated timer messages are taken in the language the question is rendered in.
+     *
+     * @return string|null The timer HTML, or null if the question has no time limit
+     */
     protected function getTimeSettingRender()
     {
         $oQuestion = $this->oQuestion;
@@ -98,24 +99,17 @@ abstract class QuestionBaseRenderer extends StaticModel
         Yii::app()->getClientScript()->registerPackage('timer-addition');
 
         $surveyId = App()->getConfig('surveyID');
-        $langTimer = array(
-            'hours' => gT("hours"),
-            'mins' => gT("mins"),
-            'seconds' => gT("seconds"),
-        );
-        /* Registering script : don't go to EM : no need usage of ls_json_encode */
-        App()->getClientScript()->registerScript("LSVarLangTimer", "LSvar.lang.timer=" . json_encode($langTimer) . ";", CClientScript::POS_BEGIN);
         /**
-         * The following lines cover for previewing questions, because no $_SESSION['survey_'.$surveyId]['fieldarray'] exists.
-         * This just stops error messages occuring
+         * The following lines cover for previewing questions, because no $_SESSION['responses_'.$surveyId]['fieldarray'] exists.
+         * This just stops error messages occurring
          */
-        if (!isset($_SESSION['survey_' . $surveyId]['fieldarray'])) {
-            $_SESSION['survey_' . $surveyId]['fieldarray'] = [];
+        if (!isset($_SESSION['responses_' . $surveyId]['fieldarray'])) {
+            $_SESSION['responses_' . $surveyId]['fieldarray'] = [];
         }
         /* End */
 
         //Used to count how many timer questions in a page, and ensure scripts only load once
-        $_SESSION['survey_' . $oSurvey->sid]['timercount'] = (isset($_SESSION['survey_' . $oSurvey->sid]['timercount'])) ? $_SESSION['survey_' . $oSurvey->sid]['timercount']++ : 1;
+        $_SESSION['responses_' . $oSurvey->sid]['timercount'] = (isset($_SESSION['responses_' . $oSurvey->sid]['timercount'])) ? $_SESSION['responses_' . $oSurvey->sid]['timercount']++ : 1;
 
         /* Work in all mode system : why disable it ? */
         //~ if ($thissurvey['format'] != "S")
@@ -130,14 +124,14 @@ abstract class QuestionBaseRenderer extends StaticModel
         //Render timer
         $disable_next = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_disable_next']['value'], 0);
         $disable_prev = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_disable_prev']['value'], 0);
-        $time_limit_action = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_action']['value'], 1);
-        $time_limit_message = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_message']['value'], gT("Your time to answer this question has expired"));
+        $time_limit_action = intval($this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_action']['value'], 1));
+        $time_limit_message = $this->setDefaultIfEmpty($this->getQuestionAttribute('time_limit_message', $this->sLanguage), gT("Your time to answer this question has expired"));
         $time_limit_warning = intval($this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning']['value'], 0));
         $time_limit_warning_2 = intval($this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_2']['value'], 0));
-        $time_limit_countdown_message = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_countdown_message']['value'], gT("Time remaining"));
-        $time_limit_warning_message = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_message']['value'], gT("Your time to answer this question has nearly expired. You have {TIME} remaining."));
+        $time_limit_countdown_message = $this->setDefaultIfEmpty($this->getQuestionAttribute('time_limit_countdown_message', $this->sLanguage), gT("Time remaining"));
+        $time_limit_warning_message = $this->setDefaultIfEmpty($this->getQuestionAttribute('time_limit_warning_message', $this->sLanguage), gT("Your time to answer this question has nearly expired. You have {TIME} remaining."));
         $time_limit_warning_display_time = intval($this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_display_time']['value'], 0));
-        $time_limit_warning_2_message = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_2_message']['value'], gT("Your time to answer this question has nearly expired. You have {TIME} remaining."));
+        $time_limit_warning_2_message = $this->setDefaultIfEmpty($this->getQuestionAttribute('time_limit_warning_2_message', $this->sLanguage), gT("Your time to answer this question has nearly expired. You have {TIME} remaining."));
 
         $time_limit_message_delay = intval($this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_message_delay']['value'], 1)) * 1000;
         $time_limit_warning_2_display_time = intval($this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_2_display_time']['value'], 0));
@@ -172,8 +166,8 @@ abstract class QuestionBaseRenderer extends StaticModel
         $time_limit_warning_2_message = str_replace("{TIME}", $timer_html, $time_limit_warning_2_message);
 
         $timersessionname = "timer_question_" . $oQuestion->qid;
-        if (isset($_SESSION['survey_' . $surveyId][$timersessionname])) {
-            $time_limit = $_SESSION['survey_' . $surveyId][$timersessionname];
+        if (isset($_SESSION['responses_' . $surveyId][$timersessionname])) {
+            $time_limit = $_SESSION['responses_' . $surveyId][$timersessionname];
         }
 
         $disable = null;
@@ -189,11 +183,11 @@ abstract class QuestionBaseRenderer extends StaticModel
             true
         );
 
-        if ($_SESSION['survey_' . $oSurvey->sid]['timercount'] < 2) {
+        if ($_SESSION['responses_' . $oSurvey->sid]['timercount'] < 2) {
             $iAction = '';
             if ($oSurvey->format == "G") {
                 $qcount = 0;
-                foreach ($_SESSION['survey_' . $oSurvey->sid]['fieldarray'] as $ib) {
+                foreach ($_SESSION['responses_' . $oSurvey->sid]['fieldarray'] as $ib) {
                     if ($ib[5] == $oQuestion->gid) {
                         $qcount++;
                     }
@@ -284,7 +278,7 @@ abstract class QuestionBaseRenderer extends StaticModel
 
     protected function getFromSurveySession($sIndex, $default = "")
     {
-        return $_SESSION['survey_' . $this->oQuestion->sid][$sIndex] ?? $default;
+        return $_SESSION['responses_' . $this->oQuestion->sid][$sIndex] ?? $default;
     }
 
     protected function applyPackages()
@@ -323,6 +317,25 @@ abstract class QuestionBaseRenderer extends StaticModel
         }
     }
 
+    /**
+     * Split an other-text string on the pipe separator into prefix and suffix parts.
+     *
+     * @param string $otherText  Raw other text, optionally containing a "|" separator (prefix|suffix).
+     * @return array{left: string, right: string}
+     */
+    protected function splitOtherText(string $otherText): array
+    {
+        $left  = $otherText;
+        $right = '';
+        if (!empty($otherText) && strpos($otherText, '|') !== false) {
+            [$left, $right] = explode('|', $otherText, 2);
+        }
+        return [
+            'left'  => $left,
+            'right' => $right,
+        ];
+    }
+
     protected function setDefaultIfEmpty($value, $default)
     {
         if (is_null($value)) {
@@ -346,7 +359,7 @@ abstract class QuestionBaseRenderer extends StaticModel
     */
     public function getCurrentRelevecanceClass($myfname)
     {
-        $aSurveySessionArray = $_SESSION["survey_{$this->oQuestion->sid}"];
+        $aSurveySessionArray = $_SESSION["responses_{$this->oQuestion->sid}"];
         $relevanceStatus = !isset($aSurveySessionArray['relevanceStatus'][$myfname]) || $aSurveySessionArray['relevanceStatus'][$myfname];
         if ($relevanceStatus) {
             return "";
@@ -355,11 +368,21 @@ abstract class QuestionBaseRenderer extends StaticModel
         $sExcludeAllOther = $this->setDefaultIfEmpty($this->getQuestionAttribute('exclude_all_others'), false);
         /* EM don't set difference between relevance in session, if exclude_all_others is set , just ls-disabled */
         if ($sExcludeAllOther !== false) {
-            foreach (explode(';', (string) $sExcludeAllOther) as $sExclude) {
-                $sExclude = $this->sSGQA . $sExclude;
+            foreach (explode(';', (string) $sExcludeAllOther) as $sExcludeCode) {
+                $sExcludeCode = trim($sExcludeCode);
+                $sExcludeField = null;
+                foreach ($this->aSubQuestions[0] ?? [] as $oSubQuestion) {
+                    if ($oSubQuestion->title === $sExcludeCode) {
+                        $sExcludeField = $this->sSGQA . '_S' . $oSubQuestion->qid;
+                        break;
+                    }
+                }
+                if ($sExcludeField === null) {
+                    continue;
+                }
                 if (
-                    (!isset($aSurveySessionArray['relevanceStatus'][$sExclude]) || $aSurveySessionArray['relevanceStatus'][$sExclude])
-                    && (isset($aSurveySessionArray[$sExclude]) && $aSurveySessionArray[$sExclude] == "Y")
+                    (!isset($aSurveySessionArray['relevanceStatus'][$sExcludeField]) || $aSurveySessionArray['relevanceStatus'][$sExcludeField])
+                    && ($aSurveySessionArray[$sExcludeField] ?? '') === "Y"
                 ) {
                     return "ls-irrelevant ls-disabled";
                 }
@@ -426,21 +449,6 @@ abstract class QuestionBaseRenderer extends StaticModel
             'sInputContainerWidth' => $sInputContainerWidth,
             'defaultWidth' => $defaultWidth,
         );
-    }
-
-    /**
-    * Include Keypad headers
-    */
-    public function includeKeypad()
-    {
-        Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('vendor') . "jquery-keypad/jquery.keypad.alt.css");
-
-        $this->aScriptFiles[] = ['path' => Yii::app()->getConfig('vendor') . 'jquery-keypad/jquery.plugin.min.js', 'position' => LSYii_ClientScript::POS_BEGIN];
-        $this->aScriptFiles[] = ['path' => Yii::app()->getConfig('vendor') . 'jquery-keypad/jquery.keypad.min.js', 'position' => LSYii_ClientScript::POS_BEGIN];
-        $localefile = Yii::app()->getConfig('vendor') . 'jquery-keypad/jquery.keypad-' . App()->language . '.js';
-        if (App()->language != 'en' && file_exists($localefile)) {
-            $this->aScriptFiles[] = ['path' => Yii::app()->getConfig('vendor') . 'jquery-keypad/jquery.keypad-' . App()->language . '.js', 'position' => LSYii_ClientScript::POS_BEGIN];
-        }
     }
 
     /**

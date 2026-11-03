@@ -5,6 +5,9 @@ class NewQuestionAttributesPlugin extends PluginBase
     protected static $description = 'Dummy plugin for testing newQuestionAttributes event';
     protected static $name = 'NewQuestionAttributesPlugin';
 
+    /** @var int Number of times the newQuestionAttributes event was dispatched to this plugin */
+    public $dispatchCount = 0;
+
     public function init()
     {
         $this->subscribe('newQuestionAttributes');
@@ -12,6 +15,7 @@ class NewQuestionAttributesPlugin extends PluginBase
 
     public function newQuestionAttributes()
     {
+        $this->dispatchCount++;
         $event = $this->getEvent();
         $questionAttributes = [
             'testAttribute' => [

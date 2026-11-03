@@ -20,16 +20,22 @@
  * @version    $Id$
  */
 
-/**
- * Zend_Test_PHPUnit_Constraint_Exception
- *
- * @uses       PHPUnit_Framework_ExpectationFailedException
- * @category   Zend
- * @package    Zend_Test
- * @subpackage PHPUnit
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
- */
-class Zend_Test_PHPUnit_Constraint_Exception extends PHPUnit_Framework_ExpectationFailedException
-{
+if (class_exists('PHPUnit\Runner\Version')) {
+	$id = PHPUnit\Runner\Version::id();
+} elseif (class_exists('PHPUnit_Runner_Version')) {
+	$id = PHPUnit_Runner_Version::id();
+} else {
+	$id = '0.0.0';
+}
+
+if (version_compare($id, '6.0', '>=')) {
+	include(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Exception80.php');
+
+	class Zend_Test_PHPUnit_Constraint_Exception extends Zend_Test_PHPUnit_Constraint_Exception80
+	{}
+} else {
+	include(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Exception34.php');
+
+	class Zend_Test_PHPUnit_Constraint_Exception extends Zend_Test_PHPUnit_Constraint_Exception34
+	{}
 }

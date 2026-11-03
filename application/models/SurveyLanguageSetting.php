@@ -2,7 +2,7 @@
 
 /*
  * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -372,7 +372,7 @@ class SurveyLanguageSetting extends LSActiveRecord
     }
 
     /**
-     * Get valid attachements in array
+     * Get valid attachments in array
      * @param boolean $exist check if file exist in a valid directory
      * @return string[][][] : array of attachments array by template, sample by key [template][][url,size,relevance]
      **/
@@ -382,8 +382,8 @@ class SurveyLanguageSetting extends LSActiveRecord
     }
 
     /**
-     * Get valid attachements in array
-     * @param string $attachement the attahcment string to be filtered
+     * Get valid attachments in array
+     * @param string $string the attachment string to be filtered
      * @param boolean $exist check if file exist in a valid directory
      * @return string[][][] : array of attachments array by template, sample by key [template][][url,size,relevance]
      **/
@@ -419,7 +419,7 @@ class SurveyLanguageSetting extends LSActiveRecord
     }
 
     /**
-     * get if template have all attachement valid
+     * get if template have all attachment valid
      * @param string $template the template
      * @return boolean
      **/

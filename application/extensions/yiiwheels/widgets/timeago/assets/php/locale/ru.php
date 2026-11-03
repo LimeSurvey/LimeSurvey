@@ -1,10 +1,11 @@
 <?php
+
 // Russian
 return array(
-    'prefixAgo' => NULL,
+    'prefixAgo' => null,
     'prefixFromNow' => "через",
     'suffixAgo' => "назад",
-    'suffixFromNow' => NULL,
+    'suffixFromNow' => null,
     'seconds' => "меньше минуты",
     'minute' => "минуту",
     'minutes' => array("%d минута", "%d минуты", "%d минут"),
@@ -19,11 +20,11 @@ return array(
     'wordSeparator' => ' ',
     'numbers' => array(),
     'rules' =>
-        function($n) {
+        function ($n) {
             $n10 = $n % 10;
-            if ( ($n10 == 1) && ( ($n == 1) || ($n > 20) ) ) {
+            if (($n10 == 1) && ( ($n == 1) || ($n > 20) )) {
                 return 0;
-            } else if ( ($n10 > 1) && ($n10 < 5) && ( ($n > 20) || ($n < 10) ) ) {
+            } elseif (($n10 > 1) && ($n10 < 5) && ( ($n > 20) || ($n < 10) )) {
                 return 1;
             }
             return 2;

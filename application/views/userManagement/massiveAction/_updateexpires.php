@@ -32,6 +32,4 @@ $dateFormatDetails = getDateFormatData(Yii::app()->session['dateformat']);
             </div>
         </div>
     </div>
-    <div id="hereBeUserIds">
-    </div>
 </div>

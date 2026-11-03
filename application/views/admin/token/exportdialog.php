@@ -3,7 +3,7 @@
     <h2 class="h3"><?php eT("Survey participant export options"); ?></h2>
     <div class="row">
         <div class="col-12 content-right">
-            <?php echo CHtml::form(array("admin/tokens/sa/exportdialog/surveyid/$surveyid"), 'post',array('class'=>'form-core settingswidget ','id'=>'bouncesettings','name'=>'frmeditquestion')); ?>
+            <?php echo CHtml::form(array("admin/tokens/sa/exportdialog/surveyid/$surveyid"), 'post', array('class' => 'form-core settingswidget ','id' => 'bouncesettings','name' => 'frmeditquestion')); ?>
             <div class="row">
                 <div class="settings-list col-12 col-lg-6">
                     <!--Survey status -->
@@ -30,12 +30,12 @@
                         <div class="default controls">
                             <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', array(
                                 'name' => 'invitationstatus',
-                                'checkedOption'=> 0 ,
-                                'ariaLabel'=>gT('Invitation status'),
-                                'selectOptions'=>array(
-                                    "0"=>gT("All",'unescaped'),
-                                    "1"=>gT("Invited",'unescaped'),
-                                    "2"=>gT("Not invited",'unescaped')
+                                'checkedOption' => 0 ,
+                                'ariaLabel' => gT('Invitation status'),
+                                'selectOptions' => array(
+                                    "0" => gT("All", 'unescaped'),
+                                    "1" => gT("Invited", 'unescaped'),
+                                    "2" => gT("Not invited", 'unescaped')
                                 )
                             ));?>
                         </div>
@@ -49,12 +49,12 @@
                         <div class="default controls">
                             <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', array(
                                 'name' => 'reminderstatus',
-                                'checkedOption'=> 0 ,
-                                'ariaLabel'=>gT('Reminder status'),
-                                'selectOptions'=>array(
-                                    "0"=>gT("All",'unescaped'),
-                                    "1"=>gT("Reminder(s) sent",'unescaped'),
-                                    "2"=>gT("No reminder(s) sent",'unescaped')
+                                'checkedOption' => 0 ,
+                                'ariaLabel' => gT('Reminder status'),
+                                'selectOptions' => array(
+                                    "0" => gT("All", 'unescaped'),
+                                    "1" => gT("Reminder(s) sent", 'unescaped'),
+                                    "2" => gT("No reminder(s) sent", 'unescaped')
                                 )
                             ));?>
                         </div>
@@ -67,8 +67,10 @@
                         </label>
                         <div class="default controls">
                             <select id="tokenlanguage" name="tokenlanguage" class="form-select">
-                                <option value="" selected="selected"><?php eT('All'); ?>
-                                <option value="de"><?php eT('German'); ?></option>
+                                <option value="" selected="selected"><?php eT('All'); ?></option>
+                                <?php foreach ($aSettings['tokenlanguage']['options'] as $code => $name): ?>
+                                    <option value="<?php echo CHtml::encode($code); ?>"><?php echo CHtml::encode($name); ?></option>
+                                <?php endforeach; ?>
                             </select>
                         </div>
                     </div>
@@ -96,7 +98,6 @@
 
                     <!--Delete exported tokens -->
                     <?php if (Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'delete')) { ?>
-
                     <div class="mb-3 control-group " data-name="tokendeleteexported">
                         <label class="default form-label" for="tokendeleteexported">
                             <?php eT('Delete exported participants:'); ?>
@@ -121,6 +122,29 @@
                         ?>
                     </div>
                     <?php } ?>
+                    <div class="mb-3 control-group " data-name="includesurveylink">
+                        <label class="default form-label" for="includesurveylink">
+                            <?php eT('Include survey link:'); ?>
+                        </label>
+                        <div class="default controls">
+                            <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                'name' => 'includesurveylink',
+                                'checkedOption' => 0,
+                                'ariaLabel' => gT('Include survey link'),
+                                'selectOptions' => [
+                                    '1' => gT('On'),
+                                    '0' => gT('Off'),
+                                ],
+                            ]); ?>
+                        </div>
+                        <?php
+                        $this->widget('ext.AlertWidget.AlertWidget', [
+                            'text' => gT('Add a column with the participant-specific survey URL (including the access code).'),
+                            'type' => 'info',
+                            'htmlOptions' => ['class' => 'mt-1'],
+                        ]);
+                        ?>
+                    </div>
                     <div class="mb-3 control-group " data-name="maskequations">
                         <label class="default form-label" for="maskequations">
                             <?php eT('Quote equations:'); ?>

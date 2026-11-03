@@ -6,6 +6,7 @@ use Exception;
 
 class Update_133 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
         addColumn('{{users}}', 'one_time_pw', 'binary');
@@ -33,7 +34,7 @@ class Update_133 extends DatabaseUpdateBase
         // Add new fields to survey language settings
         addColumn('{{surveys_languagesettings}}', 'surveyls_url', "string");
         addColumn('{{surveys_languagesettings}}', 'surveyls_endtext', 'text');
-        // copy old URL fields ot language specific entries
+        // copy old URL fields to language specific entries
         $this->db->createCommand(
             "UPDATE {{surveys_languagesettings}} set surveyls_url=(select url from {{surveys}} where sid={{surveys_languagesettings}}.surveyls_survey_id)"
         )->execute();

@@ -26,13 +26,13 @@ $aActionsArray = array(
         array(
             'type' => 'action',
             'action' => 'batchExport',
-            'url' => App()->createUrl('userRole/batchExport/sItems').'/',
+            'url' => App()->createUrl('userRole/batchExport/sItems') . '/',
             'iconClasses' => 'ri-upload-2-fill',
             'text' => gT('Bulk export roles'),
             'grid-reload' => 'no',
             'actionType'    => 'window-location-href',
         ),
-        
+
     )
 );
 

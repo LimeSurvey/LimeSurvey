@@ -7,12 +7,14 @@
         <lastUpdate>2021-08-02</lastUpdate>
         <author>Adam Zammit</author>
         <authorUrl>https://www.acspri.org.au</authorUrl>
+        <documentationUrl>https://www.limesurvey.org/manual/ExportSPSSsav_plugin</documentationUrl>
         <version>1.0.4</version>
         <license>GNU General Public License version 2 or later</license>
         <description><![CDATA[Core: Export survey results to an SPSS sav file]]></description>
     </metadata>
 
     <compatibility>
+        <version>7.0</version>
         <version>6.0</version>
         <version>5.0</version>
         <version>4.0</version>

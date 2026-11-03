@@ -2,7 +2,7 @@
 
 /*
 * LimeSurvey
-* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -114,7 +114,7 @@ function recursive_in_array($needle, $haystack)
 */
 function is_template_editable($templatename)
 {
-    if (Template::isStandardTemplate($templatename) && Yii::app()->getConfig("standard_themes_readonly") == true) {
+    if (SurveyThemeHelper::isStandardTemplate($templatename) && Yii::app()->getConfig("standard_themes_readonly") == true) {
         return false;
     } else {
         return true;
@@ -123,12 +123,18 @@ function is_template_editable($templatename)
 
 /**
 * This is a callback function that ensures only files are extracted that have a valid extension
+* and whose path contains no < > " or control characters
 *
-* @param mixed $file
+* @param array $file File info from ZipExtractor, with at least the 'name' and 'is_folder' keys
 * @return int Return 1 for yes (file can be extracted), 0 for no
 */
 function templateExtractFilter($file)
 {
+    // File names are listed in the theme options, so don't allow names that could break out of HTML.
+    // Backslashes stay allowed, because some ZIP tools on Windows use them as folder separators.
+    if (preg_match('/[<>"\x00-\x1F\x7F]/', (string) $file['name'])) {
+        return 0;
+    }
     $aAllowExtensions = explode(',', Yii::app()->getConfig('allowedthemeuploads') . ',' . Yii::app()->getConfig('allowedthemeimageformats'));
     $aAllowExtensions[] = 'twig';
     $info = pathinfo((string) $file['name']);

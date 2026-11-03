@@ -6,7 +6,6 @@
  */
 class StaticModel extends CModel
 {
-
     /**
      * Models attributes as array indexed by primary key
      * @return array
@@ -33,7 +32,8 @@ class StaticModel extends CModel
         $modelsAttributes = static::modelsAttributes();
         if (isset($modelsAttributes[$pk])) {
             $model = new static();
-            $model->attributes = $modelsAttributes[$pk];
+            // Static models have no validation rules: Set all attributes, not only safe ones
+            $model->setAttributes($modelsAttributes[$pk], false);
             return $model;
         }
         return null;

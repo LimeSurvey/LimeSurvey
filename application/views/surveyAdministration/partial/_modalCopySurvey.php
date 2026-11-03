@@ -92,6 +92,12 @@
                                 <label class=" form-label reg16" for='copyAnswerOptions'><?php eT("Answer options from the original survey"); ?> </label>
                             </div>
 
+                            <!-- include survey URL parameters -->
+                            <div>
+                                <input id="copySurveyUrlParameters" name="copySurveyUrlParameters" type="checkbox" value="1" checked>
+                                <label class=" form-label reg16" for='copySurveyUrlParameters'><?php eT("Survey URL parameters"); ?> </label>
+                            </div>
+
                             <!-- Reset conditions/relevance -->
                             <div>
                                 <input id="copySurveyConditions" name="copySurveyConditions" type="checkbox" value="1" checked>

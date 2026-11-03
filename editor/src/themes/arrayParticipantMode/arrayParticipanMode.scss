@@ -1,0 +1,13 @@
+.arraarrayParticipanMode {
+  td,
+  tr,
+  th {
+    border: none;
+  }
+
+  tbody tr:nth-child(odd) {
+    td {
+      background-color: $g-100;
+    }
+  }
+}

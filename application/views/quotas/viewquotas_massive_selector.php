@@ -63,8 +63,8 @@
             'htmlModalBody' => $this->renderPartial(
                 'viewquotas_massive_langsettings_form',
                 array(
-                    'oQuota'=>$oQuota,
-                    'aQuotaLanguageSettings'=>$aQuotaLanguageSettings,
+                    'oQuota' => $oQuota,
+                    'aQuotaLanguageSettings' => $aQuotaLanguageSettings,
                     ),
                 true
             ),
@@ -96,5 +96,5 @@
     ),
 
 ));
-?>
+
 

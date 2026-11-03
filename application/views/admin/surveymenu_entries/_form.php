@@ -127,19 +127,19 @@ Yii::app()->getController()->renderPartial(
                 <li class="list-group-item col-md-6">
                     <div class="form-check">
                         <input id="external-link" type="checkbox" data-value="1" class="form-check-input checkbox selector__dataOptionModel selector__disable_following" data-priority="5" data-option='["render","link","external"]' />
-                        <label class="form-check-label" for="external-link"><?=gT("External Link")?></label>
+                        <label class="form-check-label" for="external-link"><?=gT("External link")?></label>
                     </div>
                 </li>
                 <li class="list-group-item col-md-6">
                     <div class="form-check">
-                        <input id="load-with-pjax" type="checkbox" data-value="1" class="form-check-input checkbox selector__dataOptionModel" checked="true" data-priority="4" data-option='["render","link","pjax"]' />
+                        <input id="load-with-pjax" type="checkbox" data-value="true" data-unchecked-value="false" class="form-check-input checkbox selector__dataOptionModel" checked="true" data-priority="4" data-option='["render","link","pjaxed"]' />
                         <label class="form-check-label" for="load-with-pjax"><?=gT("Load with pjax")?></label>
                     </div>
                 </li>
                 <li class="list-group-item col-md-6">
                     <div class="form-check">
                         <input id="add-survey-id" type="checkbox" data-value='["survey", "sid"]' class="form-check-input checkbox selector__dataOptionModel" data-priority="3" data-option='["render","link","data","surveyid"]' />
-                        <label class="form-check-label" for="add-survey-id"><?=gT("Add SurveyId to link")?></label>
+                        <label class="form-check-label" for="add-survey-id"><?=gT("Add survey ID to link")?></label>
                     </div>
                 </li>
                 <li class="list-group-item col-md-6">

@@ -30,6 +30,8 @@
     <compatibility>
         <version>4.0</version>
         <version>5.0</version>
+        <version>6.0</version>
+        <version>7.0</version>
     </compatibility>
 
     <!--
@@ -60,7 +62,7 @@
                 <sm>Small</sm>
                 <xs>Extra small</xs>
             </options>
-            <default></default>
+            <default>default</default>
             <help>Change button size</help>
             <caption>Button size</caption>
         </attribute>
@@ -78,7 +80,7 @@
                 <col-md-2>6</col-md-2>
                 <col-md-1>12</col-md-1>
             </options>
-            <default></default>
+            <default>default</default>
             <help>Choose maximum number of buttons in a row</help>
             <caption>Maximum number of buttons in a row</caption>
         </attribute>

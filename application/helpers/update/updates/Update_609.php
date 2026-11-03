@@ -10,6 +10,7 @@ class Update_609 extends DatabaseUpdateBase
      * @inheritDoc
      * @throws CException
      */
+    #[\Override]
     public function up()
     {
         $this->installFruityTwentyThree();

@@ -17,7 +17,7 @@ Here's one way to debug the CI:
 
     try {
         $web->wait(20)->until(WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::cssSelector('#massive-actions-modal-failedemail-grid-resend-1 #preserveResend')));
-    } catch (TimeOutException $ex) {
+    } catch (TimeoutException $ex) {
         $body = $web->findElement(WebDriverBy::tagName('body'));
         var_dump($body->getText());
         throw $ex;

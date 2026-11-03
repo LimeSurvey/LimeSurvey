@@ -35,7 +35,7 @@ class ExpressionWarningsOnLogicTest extends TestBaseClassWeb
     }
 
     /**
-     * Check with CheckInvalid : compare in intval VS forced string : then forced string comparaison
+     * Check with CheckInvalid : compare in intval VS forced string : then forced string comparison
      * @return void
      **/
     public function testCheckInvalid()
@@ -73,7 +73,7 @@ class ExpressionWarningsOnLogicTest extends TestBaseClassWeb
     }
 
     /**
-     * Check with CheckValidString : compare in forced string (with + "") VS forced string : then forced string comparaison
+     * Check with CheckValidString : compare in forced string (with + "") VS forced string : then forced string comparison
      * 2 warnings : one for + and one for compare
      * @return void
      **/
@@ -188,7 +188,7 @@ class ExpressionWarningsOnLogicTest extends TestBaseClassWeb
     }
 
     /**
-     * Check with assigment : just a warning
+     * Check with assignment : just a warning
      * @return void
      **/
     public function testCheckAssigment()
@@ -284,7 +284,7 @@ class ExpressionWarningsOnLogicTest extends TestBaseClassWeb
             self::$webDriver->get($url);
             sleep(1);
             /* Did we have a warning alert */
-            $findWarnings = self::$webDriver->findElements(WebDriverBy::cssSelector('.alert-filled-warning'));
+            $findWarnings = self::$webDriver->findElements(WebDriverBy::cssSelector('#logicfiletable .alert-filled-warning'));
             $this->assertCount(0, $findWarnings, 'There are a false warnings with a valid compare.');
         } catch (Exception $ex) {
             $screenshot = self::$webDriver->takeScreenshot();

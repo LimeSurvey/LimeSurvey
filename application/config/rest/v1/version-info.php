@@ -5,7 +5,6 @@ use LimeSurvey\Api\Command\V1\{
     VersionInfo
 };
 
-
 $rest = [];
 
 $rest['v1/version-info'] = [

@@ -1,0 +1,131 @@
+// In edit mode the row remove buttons live in a gutter at the content inset
+// (inside the scroll container), like the remove buttons of other types.
+.array-question-wrapper {
+  --array-remove-gutter: 18px; // 14px icon + 4px gap to the drag handle
+
+  &.edit-mode {
+    padding-left: var(--array-remove-gutter);
+  }
+}
+
+.array-question {
+  .form-check-input {
+    width: 20px;
+    height: 20px;
+  }
+
+  .array-question-answers {
+    overflow-wrap: break-word;
+    white-space: normal;
+  }
+
+  .array-question-item {
+    .action-item-button {
+      &.action-item-button {
+        position: absolute;
+        transform: translate(-50%, -50%);
+        &.drag {
+          &.column {
+            top: 50%;
+            left: 10px;
+          }
+          &.row {
+            // Sits in the label's left padding (dragIconSize = icon + gap).
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            margin: 0; // the "row" class also matches Bootstrap's grid .row
+
+            > * {
+              padding: 0;
+              width: auto;
+            }
+          }
+        }
+        &.remove {
+          &.column {
+            top: -10px;
+            left: 50%;
+          }
+          &.row {
+            top: 50%;
+            // Anchor the left edge (the icon is drawn from its left edge)
+            // to the start of the edit-mode gutter.
+            left: calc(-1 * var(--array-remove-gutter));
+            transform: translateY(-50%);
+            margin: 0; // the "row" class also matches Bootstrap's grid .row
+
+            > * {
+              padding: 0;
+              width: auto;
+            }
+          }
+        }
+      }
+    }
+    // Reserve the drag handle width (14px) plus a 16px gap before the code tag.
+    .array-question-code:not(:empty) {
+      padding-left: 30px;
+    }
+    .array-question-code,
+    .array-answer-metadata {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+
+      .assessment-value-container {
+        margin-left: 0;
+      }
+    }
+    .array-row-assessment-value {
+      display: flex;
+      margin-left: auto;
+      padding-left: 16px;
+    }
+    &:hover {
+      .remove-item-button {
+        &.remove-item-button {
+          opacity: 1;
+        }
+      }
+    }
+  }
+
+  .array-answer-content-editor {
+    min-width: 120px;
+    width: max-content;
+
+    .content-editable {
+      text-align: center;
+    }
+  }
+
+  .array-dual-scale-header-input {
+    height: max-content;
+    min-height: 40px;
+  }
+
+  .add-item-button {
+    border-style: dashed;
+    border-color: $grape;
+    background-color: $grape-light;
+    color: $grape;
+    fill: $grape;
+    outline: none;
+
+    &:hover,
+    &:focus,
+    &:active {
+      background-color: $grape;
+      color: $white;
+      fill: $white;
+      border-color: $white;
+    }
+  }
+}
+
+.array-question-footer {
+  position: sticky;
+  left: 0;
+}

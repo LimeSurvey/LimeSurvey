@@ -1,4 +1,4 @@
-<?php echo CHtml::form(array("/admin/conditions/sa/index/subaction/{$subaction}/surveyid/{$iSurveyID}/gid/{$gid}/qid/{$qid}/"),'post',array('id'=>"quick-add-conditions-form",'name'=>"quick-add-conditions-form", 'class' => 'form '));?>
+<?php echo CHtml::form(array("/admin/conditions/sa/index/subaction/{$subaction}/surveyid/{$iSurveyID}/gid/{$gid}/qid/{$qid}/"), 'post', array('id' => "quick-add-conditions-form",'name' => "quick-add-conditions-form", 'class' => 'form '));?>
 
     <div class="row">
     <!-- Form quick-add condition -->
@@ -36,7 +36,7 @@
                     <div class='col-md-2'></div>
                     <div class='col-md-10'>
                         <select class='form-select' name='quick-add-cquestions' id='quick-add-cquestions' size='7'>
-                            <?php foreach ($cquestions as $cqn): ?>
+                            <?php foreach ($cquestions as $cqn) : ?>
                                 <option value='<?php echo $cqn[3]; ?>' title="<?php echo htmlspecialchars((string) $cqn[0]); ?>">
                                     <?php echo $cqn[0]; ?>
                                 </option>
@@ -50,8 +50,10 @@
                     <div class='col-md-2'></div>
                     <div class='col-md-10'>
                         <select class='form-select' name='quick-add-csrctoken' id='quick-add-csrctoken' size='7'>
-                            <?php foreach ($tokenFieldsAndNames as $tokenattr => $tokenattrName): ?>
-                                <option value='{TOKEN:<?php echo strtoupper((string) $tokenattr); ?>}' <?php if ($p_csrctoken == '{TOKEN:'.strtoupper((string) $tokenattr).'}'): echo ' selected="selected" '; endif; ?>>
+                            <?php foreach ($tokenFieldsAndNames as $tokenattr => $tokenattrName) : ?>
+                                <option value='{TOKEN:<?php echo strtoupper((string) $tokenattr); ?>}' <?php if ($p_csrctoken == '{TOKEN:' . strtoupper((string) $tokenattr) . '}') :
+                                    echo ' selected="selected" ';
+                                                      endif; ?>>
                                     <?php echo HTMLEscape($tokenattrName['description']); ?>
                                 </option>
                             <?php endforeach; ?>
@@ -66,8 +68,10 @@
             <label class='form-label col-md-2'><?php eT("Comparison operator"); ?></label>
             <div class='col-md-4'>
                 <select class='form-select' name='quick-add-method' id='quick-add-method'>
-                    <?php foreach ($method as $methodCode => $methodTxt): ?>
-                        <option value='<?php echo $methodCode; ?>' <?php if ($methodCode == "=="): echo ' selected="selected" '; endif; ?>>
+                    <?php foreach ($method as $methodCode => $methodTxt) : ?>
+                        <option value='<?php echo $methodCode; ?>' <?php if ($methodCode == "==") :
+                            echo ' selected="selected" ';
+                                       endif; ?>>
                             <?php echo $methodTxt; ?>
                         </option>
                     <?php endforeach; ?>
@@ -106,7 +110,9 @@
                         <select
                             class='form-control'
                             name='quick-add-canswers[]'
-                            <?php if ($subaction != 'editthiscondition'): echo ' multiple '; endif; ?>
+                            <?php if ($subaction != 'editthiscondition') :
+                                echo ' multiple ';
+                            endif; ?>
                             id='quick-add-canswers'
                             size='7'
                         >
@@ -129,13 +135,15 @@
                     <div class='col-md-2'></div>
                     <div class='col-md-10'>
                         <select class='form-select' name='quick-add-prevQuestionSGQA' id='quick-add-prevQuestionSGQA' size='7'>
-                            <?php foreach ($cquestions as $cqn): ?>
-                                <?php if ($cqn[2] != Question::QT_M_MULTIPLE_CHOICE && $cqn[2] != Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS): ?>
+                            <?php foreach ($cquestions as $cqn) : ?>
+                                <?php if ($cqn[2] != Question::QT_M_MULTIPLE_CHOICE && $cqn[2] != Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) : ?>
                                     <!-- Type M or P aren't real fieldnames and thus can't be used in @SGQA@ placehodlers -->
                                     <option
                                         value='<?php echo '@' . $cqn[3] . '@'; ?>'
                                         title="<?php echo HTMLEscape($cqn[0]); ?>"
-                                        <?php if ($p_prevquestionsgqa == '@' . $cqn[3] . '@'): echo ' selected="selected" '; endif; ?>
+                                        <?php if ($p_prevquestionsgqa == '@' . $cqn[3] . '@') :
+                                            echo ' selected="selected" ';
+                                        endif; ?>
                                         >
                                         <?php echo HTMLEscape($cqn[0]); ?>
                                     </option>
@@ -151,7 +159,7 @@
                     <div class='col-md-2'></div>
                     <div class='col-md-10'>
                         <select class='form-select' name='quick-add-tokenAttr' id='quick-add-tokenAttr' size='7'>
-                            <?php foreach ($tokenFieldsAndNames as $tokenattr => $tokenattrName): ?>
+                            <?php foreach ($tokenFieldsAndNames as $tokenattr => $tokenattrName) : ?>
                                 <option value='{TOKEN:<?php echo strtoupper((string) $tokenattr); ?>}'>
                                     <?php echo HTMLEscape($tokenattrName['description']); ?>
                                 </option>

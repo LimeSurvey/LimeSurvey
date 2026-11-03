@@ -53,7 +53,9 @@ $aFunctions = array_map(
                     [
                         'header' => gT('Reference'),
                         'type' => 'raw',
-                        'value' => function($data) { return sprintf('<a class="ls-link" target="_blank" href="%s">%s</a>', $data[4], $data[4]); }
+                        'value' => function ($data) {
+                            return sprintf('<a class="ls-link" target="_blank" href="%s">%s</a>', $data[4], $data[4]);
+                        }
                     ]
                 ]
             ]

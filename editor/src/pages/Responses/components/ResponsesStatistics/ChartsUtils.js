@@ -1,0 +1,470 @@
+import { format } from 'util'
+import { getQuestionTypeInfo } from 'components/QuestionTypes'
+import {
+  dayJsHelper,
+  QT_1_ARRAY_DUAL,
+  QT_5_POINT_CHOICE,
+  QT_A_ARRAY_5_POINT,
+  QT_B_ARRAY_10_CHOICE_QUESTIONS,
+  QT_C_ARRAY_YES_UNCERTAIN_NO,
+  QT_COLON_ARRAY_NUMBERS,
+  QT_E_ARRAY_INC_SAME_DEC,
+  QT_EXCLAMATION_LIST_DROPDOWN,
+  QT_F_ARRAY,
+  QT_G_GENDER,
+  QT_H_ARRAY_COLUMN,
+  QT_I_LANGUAGE,
+  QT_K_MULTIPLE_NUMERICAL,
+  QT_L_LIST,
+  QT_M_MULTIPLE_CHOICE,
+  QT_N_NUMERICAL,
+  QT_O_LIST_WITH_COMMENT,
+  QT_P_MULTIPLE_CHOICE_WITH_COMMENTS,
+  QT_Q_MULTIPLE_SHORT_TEXT,
+  QT_R_RANKING,
+  QT_S_SHORT_FREE_TEXT,
+  QT_SEMICOLON_ARRAY_TEXT,
+  QT_T_LONG_FREE_TEXT,
+  QT_U_HUGE_FREE_TEXT,
+  QT_VERTICAL_FILE_UPLOAD,
+  QT_Y_YES_NO_RADIO,
+} from 'helpers'
+
+export const formatAnswerDate = (date) => {
+  if (!date) {
+    return ''
+  }
+  const day = dayJsHelper(date)
+  if (day.isSame(dayJsHelper(), 'day')) {
+    return day.fromNow()
+  }
+  if (day.isSame(dayJsHelper().subtract(1, 'day'), 'day')) {
+    return t('Yesterday')
+  }
+  return day.format('D MMM YYYY')
+}
+
+export const COLORS = [
+  '#FFBA68',
+  '#FF9AA2',
+  '#25003E',
+  '#8146F6',
+  '#7FF409',
+  '#FFE872',
+  '#A3C8FF',
+]
+
+export const BAR_MAX_SIZE = 120
+
+export const BAR_SCROLL_THRESHOLD = 20
+export const BAR_MIN_CATEGORY_WIDTH = 48
+
+export const getBarChartMinWidth = (count) =>
+  count > BAR_SCROLL_THRESHOLD ? count * BAR_MIN_CATEGORY_WIDTH : undefined
+
+export const MAX_LABEL_LENGTH = 18
+
+export const NON_ANSWER_KEYS = ['comment', 'other']
+
+export const CHOICE_QUESTION_TYPES = [
+  QT_L_LIST,
+  QT_EXCLAMATION_LIST_DROPDOWN,
+  QT_O_LIST_WITH_COMMENT,
+  QT_5_POINT_CHOICE,
+  QT_G_GENDER,
+  QT_Y_YES_NO_RADIO,
+  QT_I_LANGUAGE,
+  QT_M_MULTIPLE_CHOICE,
+  QT_P_MULTIPLE_CHOICE_WITH_COMMENTS,
+]
+
+export const TEXT_QUESTION_TYPES = [
+  QT_S_SHORT_FREE_TEXT,
+  QT_T_LONG_FREE_TEXT,
+  QT_U_HUGE_FREE_TEXT,
+  QT_Q_MULTIPLE_SHORT_TEXT,
+]
+
+// Whether charts display raw response counts or percentages.
+export const VALUE_TYPE = {
+  COUNT: 'count',
+  PERCENTAGE: 'percentage',
+}
+
+export const statisticsGraphs = {
+  DONT_SHOW: -1,
+  BAR_CHART: 0,
+  PIE_CHART: 1,
+  RADAR: 2,
+  LINE: 3,
+  POLAR_AREA: 4,
+  DOUGHNUT_CHART: 5,
+  STACKED_BAR: 6,
+  GROUPED_BAR: 7,
+  TABLE: 8,
+  COMMENTS: 9,
+  GRID: 10,
+}
+
+const ARRAY_POINT_CHOICE_TYPES = [
+  QT_A_ARRAY_5_POINT,
+  QT_B_ARRAY_10_CHOICE_QUESTIONS,
+  QT_C_ARRAY_YES_UNCERTAIN_NO,
+  QT_E_ARRAY_INC_SAME_DEC,
+  QT_F_ARRAY,
+  QT_H_ARRAY_COLUMN,
+]
+
+// Types whose statistics card has a Table view (free texts get a Grid instead).
+const TABLE_QUESTION_TYPES = [
+  ...CHOICE_QUESTION_TYPES,
+  ...ARRAY_POINT_CHOICE_TYPES,
+  QT_1_ARRAY_DUAL,
+  QT_COLON_ARRAY_NUMBERS,
+  QT_SEMICOLON_ARRAY_TEXT,
+  QT_Q_MULTIPLE_SHORT_TEXT,
+  QT_R_RANKING,
+  QT_N_NUMERICAL,
+  QT_K_MULTIPLE_NUMERICAL,
+  QT_VERTICAL_FILE_UPLOAD,
+]
+
+// Types whose statistics card has a Grid view (one row per response).
+const GRID_QUESTION_TYPES = [
+  QT_S_SHORT_FREE_TEXT,
+  QT_T_LONG_FREE_TEXT,
+  QT_U_HUGE_FREE_TEXT,
+  QT_N_NUMERICAL,
+  QT_K_MULTIPLE_NUMERICAL,
+]
+
+const getChartsForType = (type) => {
+  if (type === QT_R_RANKING) {
+    return [statisticsGraphs.BAR_CHART]
+  }
+  if (CHOICE_QUESTION_TYPES.includes(type)) {
+    return [
+      statisticsGraphs.BAR_CHART,
+      statisticsGraphs.PIE_CHART,
+      statisticsGraphs.RADAR,
+      statisticsGraphs.LINE,
+      statisticsGraphs.POLAR_AREA,
+      statisticsGraphs.DOUGHNUT_CHART,
+    ]
+  }
+  if (TEXT_QUESTION_TYPES.includes(type)) {
+    return [statisticsGraphs.BAR_CHART, statisticsGraphs.PIE_CHART]
+  }
+  if (ARRAY_POINT_CHOICE_TYPES.includes(type)) {
+    return [statisticsGraphs.STACKED_BAR, statisticsGraphs.GROUPED_BAR]
+  }
+  if (type === QT_1_ARRAY_DUAL) {
+    return [statisticsGraphs.STACKED_BAR, statisticsGraphs.DOUGHNUT_CHART]
+  }
+  if (type === QT_COLON_ARRAY_NUMBERS) {
+    return [statisticsGraphs.GROUPED_BAR]
+  }
+  return []
+}
+
+// Views the statistics can open for a question type (statistics_graphtype
+// values); types without a statistics card get an empty list.
+export const getStatisticsGraphsForType = (type) => [
+  ...getChartsForType(type),
+  ...(GRID_QUESTION_TYPES.includes(type) ? [statisticsGraphs.GRID] : []),
+  ...(TABLE_QUESTION_TYPES.includes(type) ? [statisticsGraphs.TABLE] : []),
+  ...(isCommentQuestionType(type) ? [statisticsGraphs.COMMENTS] : []),
+]
+
+// The registry's type/theme strings are static (only `title` is translated),
+// so derive the lookup sets once on first use instead of rebuilding and
+// scanning the whole registry on every render.
+let imageThemes = null
+let commentTypes = null
+
+const ensureRegistrySets = () => {
+  if (imageThemes !== null) return
+  const entries = Object.values(getQuestionTypeInfo())
+  imageThemes = new Set(
+    entries
+      .map((entry) => entry.theme)
+      .filter((theme) => theme?.includes('image_select'))
+  )
+  commentTypes = new Set(
+    entries
+      .filter((entry) => entry.theme?.includes('comment'))
+      .map((entry) => entry.type)
+  )
+}
+
+// True for themes that render answer images (e.g. image_select-listradio).
+export const isImageTheme = (themeName) => {
+  ensureRegistrySets()
+  return imageThemes.has(themeName)
+}
+
+export const isCommentQuestionType = (type) => {
+  ensureRegistrySets()
+  return commentTypes.has(type)
+}
+
+export const getUnionSegments = (data = []) => {
+  const titles = []
+  let noAnswerTitle = null
+  data.forEach((row) =>
+    (row.segments ?? []).forEach((segment) => {
+      if (segment.key === 'NoAnswer') {
+        noAnswerTitle = noAnswerTitle ?? segment.title
+        return
+      }
+      if (!titles.includes(segment.title)) {
+        titles.push(segment.title)
+      }
+    })
+  )
+  if (noAnswerTitle !== null) {
+    titles.push(noAnswerTitle)
+  }
+
+  return titles.map((title, index) => ({
+    title,
+    color: COLORS[index % COLORS.length],
+  }))
+}
+
+export const shouldRenderImage = (isImage, item) =>
+  isImage && item?.key !== 'NoAnswer' && !NON_ANSWER_KEYS.includes(item?.key)
+
+export const getLabelInterval = (count) => {
+  if (count > 20) return 2
+  if (count > 10) return 1
+  return 0
+}
+
+export const truncateLabel = (value) => {
+  const text = String(value ?? '')
+  return text.length > MAX_LABEL_LENGTH
+    ? `${text.slice(0, MAX_LABEL_LENGTH)}…`
+    : text
+}
+
+// 1 -> "1st", 2 -> "2nd", 3 -> "3rd", 11 -> "11th", ...
+export const ordinal = (n) => {
+  const rem100 = n % 100
+  if (rem100 >= 11 && rem100 <= 13) return `${n}th`
+  switch (n % 10) {
+    case 1:
+      return `${n}st`
+    case 2:
+      return `${n}nd`
+    case 3:
+      return `${n}rd`
+    default:
+      return `${n}th`
+  }
+}
+
+export const formatMetricValue = (value, valueType) =>
+  valueType === VALUE_TYPE.PERCENTAGE
+    ? `${Math.round(value ?? 0)}%`
+    : `${value ?? 0}`
+
+// Wraps the part of a translated sentence marked by a `%s` pair in an element:
+// wrapTerm('%sMean%s of ...', (term) => <b>{term}</b>) -> <b>Mean</b> of ...
+export const wrapTerm = (text, wrap) => {
+  const parts = text.split('%s')
+  if (parts.length !== 3) return text.replaceAll('%s', '')
+  const [before, term, after] = parts
+  return (
+    <>
+      {before}
+      {wrap(term)}
+      {after}
+    </>
+  )
+}
+
+export const getMetricDataKey = (valueType) =>
+  valueType === VALUE_TYPE.COUNT ? 'value' : 'percentageValue'
+
+export const getDisplayMetric = (item, valueType, percentFallback) => {
+  if (valueType === VALUE_TYPE.COUNT) return `${item?.value ?? ''}`
+  const percentage =
+    item?.percentage != null
+      ? parseFloat(item.percentage)
+      : (percentFallback ?? 0) * 100
+  return `${percentage.toFixed(1).replace('.', ',')}%`
+}
+
+export const getAnswerFilterOptions = (answerOptions = []) =>
+  answerOptions.filter((option) => option?.key && option.key !== 'comment')
+
+export const buildOptionByAnswer = (answerOptions = []) => {
+  const map = {}
+  answerOptions.forEach((option) => {
+    if (option?.title != null) map[option.title] = option
+    if (option?.key != null && !(option.key in map)) map[option.key] = option
+  })
+  return map
+}
+
+export const getDataWithPercentages = (statisticsData) => {
+  if (!statisticsData?.data) return []
+
+  const newData = [...statisticsData.data]
+
+  return newData.map((item, index) => {
+    const percentageValue = (item.value / (statisticsData.total || 1)) * 100
+    return {
+      ...item,
+      percentage: percentageValue.toFixed(1),
+      percentageValue,
+      fill: COLORS[index % COLORS.length],
+    }
+  })
+}
+
+export const getSegmentedCategories = (data = []) =>
+  data.map((row) => ({
+    key: row.key ?? row.title,
+    title: row.title,
+    options: (row.segments ?? []).map((segment, index) => {
+      const percentageValue = segment.percentage ?? 0
+      return {
+        ...segment,
+        percentage: percentageValue.toFixed(1),
+        percentageValue,
+        fill: COLORS[index % COLORS.length],
+      }
+    }),
+  }))
+
+export const TruncatedTick = ({
+  x,
+  y,
+  cx,
+  cy,
+  payload,
+  textAnchor = 'middle',
+  dy = 12,
+  isImage = false,
+  item = null,
+  imageWidth = BAR_MAX_SIZE,
+}) => {
+  const value = payload?.value ?? ''
+
+  if (shouldRenderImage(isImage, item) && value) {
+    const hasCenter = Number.isFinite(cx) && Number.isFinite(cy)
+    let boxX = -imageWidth / 2
+    let boxY = 4
+    if (hasCenter) {
+      const dirX = x - cx
+      const dirY = y - cy
+      const len = Math.hypot(dirX, dirY) || 1
+      boxX = (dirX / len) * (imageWidth / 2) - imageWidth / 2
+      boxY = (dirY / len) * (imageWidth / 2) - imageWidth / 2
+    }
+    return (
+      <g transform={`translate(${x},${y})`}>
+        <foreignObject
+          x={boxX}
+          y={boxY}
+          width={imageWidth}
+          height={imageWidth}
+          overflow="hidden"
+        >
+          <img
+            src={value}
+            alt={value}
+            title={value}
+            className="responses-statistics-bar-image"
+          />
+        </foreignObject>
+      </g>
+    )
+  }
+
+  return (
+    <g transform={`translate(${x},${y})`}>
+      <text
+        className="responses-statistics-chart-labels"
+        x={0}
+        y={0}
+        dy={dy}
+        textAnchor={textAnchor}
+      >
+        {truncateLabel(value)}
+        <title>{value}</title>
+      </text>
+    </g>
+  )
+}
+
+export const TooltipShell = ({ children }) => (
+  <div
+    style={{
+      position: 'relative',
+      background: '#1F1F1F',
+      color: '#FFFFFF',
+      fontSize: 14,
+      lineHeight: 1.5,
+      padding: '12px 16px',
+      borderRadius: 8,
+      boxShadow: '0 4px 14px rgba(0, 0, 0, 0.18)',
+      whiteSpace: 'nowrap',
+    }}
+  >
+    {children}
+  </div>
+)
+
+export const TooltipMetricLines = ({ count, percentage }) => (
+  <>
+    <div>
+      {count === 1
+        ? format(t('%s participant selected this option'), count)
+        : format(t('%s participants selected this option'), count)}
+    </div>
+    <div>
+      {t('Percentage')}: {percentage}%
+    </div>
+  </>
+)
+
+export const CustomTooltip = ({
+  active,
+  payload,
+  showCommentsHint = false,
+}) => {
+  if (!active || !payload?.length) return null
+
+  const count = payload[0].payload.value
+  const percentage = payload[0].payload.percentage
+  return (
+    <TooltipShell>
+      <TooltipMetricLines count={count} percentage={percentage} />
+      {showCommentsHint && (
+        <div
+          style={{
+            marginTop: 8,
+            display: 'flex',
+            alignItems: 'center',
+            gap: 6,
+            opacity: 0.85,
+          }}
+        >
+          <i className="ri-eye-line" />
+          <span>{t('Click to view comments')}</span>
+        </div>
+      )}
+    </TooltipShell>
+  )
+}
+
+export const CommentSwatch = ({ fill }) =>
+  fill ? (
+    <span
+      className="responses-statistics-comments-swatch"
+      style={{ backgroundColor: fill }}
+    />
+  ) : null

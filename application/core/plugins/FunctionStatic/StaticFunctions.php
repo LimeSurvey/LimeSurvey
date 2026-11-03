@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of FunctionStatic plugin
  * @version 0.1.0

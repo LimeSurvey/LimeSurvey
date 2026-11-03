@@ -24,18 +24,9 @@ echo viewHelper::getViewTestTag('participantsSharePanel');
                     'emptyText'                => gT('No shared participants found.'),
                     'ajaxType' => 'POST',
                     'afterAjaxUpdate' => 'LS.CPDB.bindButtons',
-                    'summaryText'     => gT('Displaying {start}-{end} of {count} result(s).') . ' '
-                        . sprintf(
-                            gT('%s rows per page'),
-                            CHtml::dropDownList(
-                                'pageSizeShareParticipantView',
-                                $pageSizeShareParticipantView,
-                                App()->params['pageSizeOptions'],
-                                array('class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto')
-                            )
-                        ),
+                    'lsPageSizeCurrentValue'     => $pageSizeShareParticipantView,
                 ]);
-            ?>
+                ?>
         </div>
     </div>
     <span id="locator" data-location="sharepanel">&nbsp;</span>

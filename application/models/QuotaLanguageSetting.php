@@ -2,7 +2,7 @@
 
 /*
    * LimeSurvey
-   * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
+   * Copyright (C) 2013-2026 The LimeSurvey Project Team
    * All rights reserved.
    * License: GNU/GPL License v2 or later, see LICENSE.php
    * LimeSurvey is free software. This version may have been modified pursuant
@@ -88,23 +88,5 @@ class QuotaLanguageSetting extends LSActiveRecord
             'quotals_url' => gT("URL:"),
             'quotals_urldescrip' => gT("URL Description:"),
         );
-    }
-
-    /**
-     * @param $data
-     * @return bool
-     * @deprecated at 2018-02-03 use $model->attributes = $data && $model->save()
-     */
-    public function insertRecords($data)
-    {
-        $settings = new self();
-        foreach ($data as $k => $v) {
-            if ($k === 'autoload_url') {
-                $settings->quota->autoload_url = $v;
-            } else {
-                $settings->$k = $v;
-            }
-        }
-        return $settings->save();
     }
 }

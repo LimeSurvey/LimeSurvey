@@ -7,6 +7,7 @@ class Update_493 extends DatabaseUpdateBase
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function up()
     {
         $this->db->createCommand()->update(

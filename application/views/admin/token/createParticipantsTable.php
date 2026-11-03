@@ -1,7 +1,9 @@
 <?php
+
 /**
- * 
+ *
  */
+
 ?>
 
 <div class="side-body">
@@ -12,7 +14,7 @@
                 'post',
                 ['id' => 'startfromscratch', 'name' => 'startfromscratch']
             );
-            ?>
+?>
             <h3 class="lead"><?php eT('Create survey participant list'); ?></h3>
             <p>
                 <?php eT('Do you want to create a participant list for your survey?'); ?>

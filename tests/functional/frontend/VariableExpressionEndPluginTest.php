@@ -59,10 +59,14 @@ class VariableExpressionEndPluginTest extends TestBaseClassWeb
             $checkMULTIhelpFixed = "MULTI.help : MULTI response is 2";
             $this->assertEquals($checkMULTIhelp,$checkMULTIhelpFixed,"MULTI.help seems invalid, get «".$checkMULTIhelp."»");
             /* updated */
-            $TextSGQA = self::$surveyId."X".$questions['TEXT']['gid']."X".$questions['TEXT']['qid'];
+            $TextSGQA = "Q".$questions['TEXT']['qid'];
             $Text = self::$webDriver->findElement(WebDriverBy::id("answer".$TextSGQA));
             $Text->sendKeys(" updated");
-            $MultiTextSQ03SGQA = self::$surveyId."X".$questions['MULTI']['gid']."X".$questions['MULTI']['qid']."SQ03";
+            $multiTextQuestion = \Question::model()->find("parent_qid = :parent_qid AND title = :title", [
+                ":parent_qid" => $questions['MULTI']['qid'],
+                ":title" => 'SQ03'
+            ]);
+            $MultiTextSQ03SGQA = "Q".$questions['MULTI']['qid'] . "_S" . $multiTextQuestion->qid;
             $MultiTextSQ03 = self::$webDriver->findElement(WebDriverBy::id("answer".$MultiTextSQ03SGQA));
             $MultiTextSQ03->sendKeys("Sub question #3 updated");
              $checkMULTIquestion = self::$webDriver->findElement(WebDriverBy::id('MULTI-question'))->getText();

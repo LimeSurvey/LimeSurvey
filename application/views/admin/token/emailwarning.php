@@ -25,29 +25,25 @@
         <input type='hidden' name='bypassbademails' value="<?php echo (int) Yii::app()->request->getPost('bypassbademails'); ?>" />
         <?php
         //Include values for constraints minreminderdelay and maxremindercount if they exist
-        if (!$bEmail)
-        {
-            if (intval(Yii::app()->request->getPost('minreminderdelay')) != 0)
-            { ?>
+        if (!$bEmail) {
+            if (intval(Yii::app()->request->getPost('minreminderdelay')) != 0) { ?>
                 <input 
                     type='hidden' 
                     name='minreminderdelay' 
                     value="<?php echo (int) Yii::app()->request->getPost('minreminderdelay'); ?>" />
-                <?php }
-            if (intval(Yii::app()->request->getPost('maxremindercount')) != 0)
-            { ?>
+            <?php }
+            if (intval(Yii::app()->request->getPost('maxremindercount')) != 0) { ?>
                 <input 
                     type='hidden' 
                     name='maxremindercount' 
                     value="<?php echo (int) Yii::app()->request->getPost('maxremindercount'); ?>" />
-                <?php }
-            if (Yii::app()->request->getPost('bypassdatecontrol')=='1')
-            { ?>
+            <?php }
+            if (Yii::app()->request->getPost('bypassdatecontrol') == '1') { ?>
                 <input 
                     type='hidden' 
                     name='bypassdatecontrol' 
                     value="<?php echo (int) Yii::app()->request->getPost('bypassdatecontrol'); ?>" />
-                <?php }
+            <?php }
         }
         ?>
         <?php if (!empty($tids)) { ?>
@@ -57,12 +53,11 @@
                 value="<?php echo $tids; ?>" />
         <?php } ?>
         <?php
-            foreach ($aSurveyLangs as $language)
-            {
-                echo CHtml::hiddenField('from_'.$language, Yii::app()->request->getPost('from_' . $language));
-                echo CHtml::hiddenField('subject_'.$language, Yii::app()->request->getPost('subject_' . $language));
-                echo CHtml::hiddenField('message_'.$language, Yii::app()->request->getPost('message_' . $language));
-            } 
+        foreach ($aSurveyLangs as $language) {
+            echo CHtml::hiddenField('from_' . $language, Yii::app()->request->getPost('from_' . $language));
+            echo CHtml::hiddenField('subject_' . $language, Yii::app()->request->getPost('subject_' . $language));
+            echo CHtml::hiddenField('message_' . $language, Yii::app()->request->getPost('message_' . $language));
+        }
         ?>
     </form>
     <br/>

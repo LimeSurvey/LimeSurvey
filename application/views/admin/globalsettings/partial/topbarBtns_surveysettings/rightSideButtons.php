@@ -1,6 +1,5 @@
 <?php
 
-
 //close
 $this->widget(
     'ext.ButtonWidget.ButtonWidget',

@@ -1,4 +1,14 @@
-ace.define("ace/ext/linking",["require","exports","module","ace/editor","ace/config"], function(require, exports, module){var Editor = require("../editor").Editor;
+ace.define("ace/ext/linking",["require","exports","module","ace/editor","ace/config"], function(require, exports, module){/**
+ * ## Interactive Linking Extension
+ *
+ * Enables clickable links and hover interactions in the editor when the Control key is pressed. Provides
+ * keyboard-accelerated navigation by detecting tokens under the cursor and emitting custom events that can be handled
+ * by external code to implement go-to-definition, symbol navigation, or other link-based functionality.
+ *
+ * **Enable:** `editor.setOption("enableLinking", true)`
+ * @module
+ */
+var Editor = require("../editor").Editor;
 require("../config").defineOptions(Editor.prototype, "editor", {
     enableLinking: {
         set: function (val) {

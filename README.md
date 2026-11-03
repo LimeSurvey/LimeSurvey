@@ -8,7 +8,7 @@ It's what we love and do best since 2006...
 
 🌐 [Website](https://www.limesurvey.org) · 🔮 [Demo](https://demo.limesurvey.org/admin) · 📚 [Documentation](https://www.limesurvey.org/manual) · ⚙️ [Request a feature](https://bugs.limesurvey.org) · 🐛 [Report a bug](https://bugs.limesurvey.org) · 🗨️ [Forums](https://forums.limesurvey.org) · 🗨️ [Discord](https://discord.gg/DEjguXn)
 
-[LimeSurvey](https://www.limesurvey.org) is a free and open-source online survey platfrom used by businesses of all sizes, professionals, academic institutions, teachers, students, governments, financial institutes, and [Anja](https://www.linkedin.com/in/anja-meinders-ba3b29213/) from HR (who is hiring and looking for a **DevOps** and **Technical Support Engineer/Developer**  – [drop her a Lime…](https://www.linkedin.com/in/anja-meinders-ba3b29213/)) in 80+ countries worldwide. It offers features like conditional logic, question branching, customizable templates, multilingual support, and GDPR compliance.
+[LimeSurvey](https://www.limesurvey.org) is a free and open-source online survey platform used by businesses of all sizes, professionals, academic institutions, teachers, students, governments, financial institutes, and [Anja](https://www.linkedin.com/in/anja-meinders-ba3b29213/) from HR (who is hiring and looking for a **DevOps** and **Technical Support Engineer/Developer**  – [drop her a Lime…](https://www.linkedin.com/in/anja-meinders-ba3b29213/)) in 80+ countries worldwide. It offers features like conditional logic, question branching, customizable templates, multilingual support, and GDPR compliance.
 
 ## 🌟 Why LimeSurvey?
 
@@ -55,8 +55,8 @@ LimeSurvey is perfect for you if you are...
 
 ### Minimal
 - Apache ≥ 2.4, nginx ≥ 1.1, or any PHP-ready web server
-- PHP ≥ 7.4 with mbstring and PDO drivers
-- MySQL ≥ 8.0, PostgreSQL ≥ 12, MariaDB ≥ 10.3.38, or MSSQL ≥ 2016
+- PHP ≥ 8.1.29 with mbstring and PDO drivers
+- MySQL ≥ 8.0, PostgreSQL ≥ 14, MariaDB ≥ 10.3.38, or MSSQL ≥ 2019
 
 ### Recommended
 - Latest nginx version

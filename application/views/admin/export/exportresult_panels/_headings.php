@@ -11,13 +11,15 @@
         <?php eT("Export questions as:"); ?>
       </label>
       <div class="btn-group col-md-12">
-        <?php foreach($headexports as $type=>$headexport):?>
+        <?php foreach ($headexports as $type => $headexport) :?>
             <input
                 class="btn-check"
                 value="<?= $type; ?>"
                 id="headstyle-<?= $type; ?>"
                 type="radio"
-                name="headstyle" <?php if($headexport[ 'checked']=='checked' ){ echo 'checked';} ?>
+                name="headstyle" <?php if ($headexport[ 'checked'] == 'checked') {
+                    echo 'checked';
+                                 } ?>
             />
             <label class="btn btn-outline-secondary" for="headstyle-<?= $type; ?>">
                 <?= $headexport['label'];?>

@@ -20,6 +20,7 @@ class Update_605 extends DatabaseUpdateBase
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function up()
     {
         // In Postgres we can't keep using the transaction after a command fails, so we can't just use

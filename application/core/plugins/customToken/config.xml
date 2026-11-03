@@ -7,12 +7,14 @@
         <last_update>2019-07-22</last_update>
         <author>Tools for Research</author>
         <authorUrl>https://www.toolsforresearch.com</authorUrl>
+        <documentationUrl>https://www.limesurvey.org/manual/CustomToken_plugin</documentationUrl>
         <version>1.0.1</version>
         <license>MIT</license>
         <description><![CDATA[Numeric, non-ambiguous or CAPITAL tokens]]></description>
     </metadata>
 
     <compatibility>
+        <version>7.0</version>
         <version>6.0</version>
         <version>5.0</version>
         <version>4.0</version>

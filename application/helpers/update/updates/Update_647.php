@@ -4,6 +4,7 @@ namespace LimeSurvey\Helpers\Update;
 
 class Update_647 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
         // Fix serialized attachments, get only needed surveys_languagesettings row

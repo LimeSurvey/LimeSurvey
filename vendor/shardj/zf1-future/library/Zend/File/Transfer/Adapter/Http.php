@@ -135,7 +135,8 @@ class Zend_File_Transfer_Adapter_Http extends Zend_File_Transfer_Adapter_Abstrac
                 $files = current($files);
             }
 
-            $temp = [$files => [
+            $fileKey = $files ?? '';
+            $temp = [$fileKey => [
                 'name'  => $files,
                 'error' => 1]];
             $validator = $this->_validators['Zend_Validate_File_Upload'];
