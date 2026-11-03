@@ -253,5 +253,9 @@ describe('ChartRendererV2 bar chart orientation', () => {
 
     expect(getBarIcon(0)).toHaveClass('ri-bar-chart-horizontal-line')
     expect(getBarIcon(1)).toHaveClass('ri-bar-chart-line')
+
+    const [firstChart, secondChart] = screen.getAllByTestId('bar-chart')
+    expect(firstChart).toHaveAttribute('data-orientation', 'horizontal')
+    expect(secondChart).toHaveAttribute('data-orientation', 'vertical')
   })
 })
