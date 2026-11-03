@@ -160,6 +160,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
     protected static array $findByPkCache = [];
 
+    /** @var WeakMap<CDbTableSchema, array<string, string>>|null tick column => Other text column, per responses table schema */
+    private static $otherCheckedColumns;
+
     // survey options
     public $oOptions;
     public $oOptionLabels;
@@ -1382,11 +1385,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
      */
     public static function setOtherCheckedFromText(CActiveRecord $response, $attributes = null)
     {
-        foreach ($response->getTableSchema()->getColumnNames() as $checkedColumn) {
-            if (substr((string) $checkedColumn, -14) !== '_Cotherchecked') {
-                continue;
-            }
-            $otherColumn = substr((string) $checkedColumn, 0, -7);
+        foreach (self::getOtherCheckedColumns($response->getTableSchema()) as $checkedColumn => $otherColumn) {
             if ($attributes !== null && !in_array($otherColumn, $attributes, true) && !in_array($checkedColumn, $attributes, true)) {
                 continue;
             }
@@ -1398,6 +1397,26 @@ class Survey extends LSActiveRecord implements PermissionInterface
             }
         }
         return $attributes;
+    }
+
+    /**
+     * Tick columns of a responses table, worked out once per table schema: a created or changed table gets a new schema
+     * @param CDbTableSchema $table
+     * @return array<string, string> tick column => Other text column
+     */
+    private static function getOtherCheckedColumns(CDbTableSchema $table)
+    {
+        self::$otherCheckedColumns ??= new WeakMap();
+        if (!isset(self::$otherCheckedColumns[$table])) {
+            $columns = [];
+            foreach ($table->getColumnNames() as $column) {
+                if (substr((string) $column, -14) === '_Cotherchecked') {
+                    $columns[$column] = substr((string) $column, 0, -7);
+                }
+            }
+            self::$otherCheckedColumns[$table] = $columns;
+        }
+        return self::$otherCheckedColumns[$table];
     }
 
     /**
