@@ -438,7 +438,7 @@ export const ChartRendererV2 = ({
     .filter((option) => !isMenuOnly(option))
     .map(({ value, icon }) => ({
       value,
-      addon:
+      control:
         value === VIEW.BAR_CHART && isBarChartActive ? (
           <ChartOrientationMenu
             orientation={orientation}

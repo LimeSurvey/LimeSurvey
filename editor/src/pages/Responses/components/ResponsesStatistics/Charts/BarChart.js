@@ -125,6 +125,7 @@ export const BarChart = ({
       <div
         className={classNames('responses-statistics-bar-chart', {
           'responses-statistics-bar-chart--clickable': hasComments,
+          'responses-statistics-bar-chart--horizontal': isHorizontal,
         })}
         style={chartMinWidth ? { minWidth: chartMinWidth } : undefined}
       >

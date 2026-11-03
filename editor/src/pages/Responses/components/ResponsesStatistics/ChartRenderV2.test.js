@@ -57,9 +57,10 @@ const getChevron = (container = document.body) =>
   within(container).queryByRole('button', { name: 'Chart orientation' })
 
 const getBarOption = (index = 0) =>
-  screen.getByTestId(`toggleButton-chart-view-${index}-option-0`)
+  screen.queryByTestId(`toggleButton-chart-view-${index}-option-0`)
 
-const getBarIcon = (index = 0) => getBarOption(index).querySelector('i')
+const getBarIcon = (index = 0) =>
+  (getBarOption(index) ?? getChevron(getCardToggle(index))).querySelector('i')
 
 const expectMenuOpen = (isOpen, container) =>
   expect(getChevron(container)).toHaveAttribute('aria-expanded', String(isOpen))
@@ -80,10 +81,23 @@ describe('ChartRendererV2 bar chart orientation', () => {
     expect(getChevron()).not.toBeInTheDocument()
   })
 
-  test('keeps the chevron out of the bar chart radio label', async () => {
+  test('makes the whole active bar chart button the flyout toggle', async () => {
     await renderCard()
-    expect(getChevron().closest('label')).toBeNull()
-    expect(getBarOption()).not.toContainElement(getChevron())
+    expect(getBarOption()).not.toBeInTheDocument()
+
+    await userEvent.click(getBarIcon())
+    expectMenuOpen(true)
+  })
+
+  test('selects the inactive bar chart button without opening the flyout', async () => {
+    await renderCard()
+    await userEvent.click(
+      screen.getByTestId('toggleButton-chart-view-0-option-2')
+    )
+    await userEvent.click(getBarOption())
+
+    expect(screen.getByTestId('bar-chart')).toBeInTheDocument()
+    expectMenuOpen(false)
   })
 
   test('opens and closes the orientation flyout from the chevron', async () => {

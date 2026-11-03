@@ -65,11 +65,15 @@ export const ChartOrientationMenu = ({ orientation, onSelect }) => {
       className="responses-statistics-orientation-dropdown"
     >
       <Dropdown.Toggle
-        variant="light"
+        active
+        variant="outline-lime-toggle"
         aria-label={t('Chart orientation')}
         className="responses-statistics-orientation-toggle"
       >
-        <i className="ri-arrow-down-s-line"></i>
+        <div className="d-flex gap-1 justify-content-center align-items-center">
+          <i className={getOrientationIconClassName(orientation)}></i>
+          <i className="ri-arrow-down-s-line responses-statistics-orientation-chevron"></i>
+        </div>
       </Dropdown.Toggle>
       <Dropdown.Menu
         popperConfig={popperConfig}

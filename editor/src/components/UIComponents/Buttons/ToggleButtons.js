@@ -109,32 +109,33 @@ export const ToggleButtons = ({
         <ButtonGroup id={id}>
           {options.map((option, index) => (
             <Fragment key={`toggleButton-${id}-option-${index}`}>
-              <ToggleButton
-                data-testid={`toggleButton-${id}-option-${index}`}
-                id={`toggleButton-${id}-option-${index}`}
-                name={name || id || labelText}
-                variant="outline-lime-toggle"
-                value={option.value}
-                checked={isChecked(option)}
-                onClick={() => handleChange(option)}
-                className="toggle-button"
-                disabled={isDisabled || option.disabled}
-                type="radio"
-              >
-                <div
-                  style={{ height: height && height }}
-                  className={`d-flex gap-2 justify-content-center align-items-center ${optionTextClassName}`}
+              {option.control ?? (
+                <ToggleButton
+                  data-testid={`toggleButton-${id}-option-${index}`}
+                  id={`toggleButton-${id}-option-${index}`}
+                  name={name || id || labelText}
+                  variant="outline-lime-toggle"
+                  value={option.value}
+                  checked={isChecked(option)}
+                  onClick={() => handleChange(option)}
+                  className="toggle-button"
+                  disabled={isDisabled || option.disabled}
+                  type="radio"
                 >
-                  {option.icon && (
-                    <option.icon
-                      size={24}
-                      color={isChecked(option) ? '#515567' : '#6e748c'} // $g-750 and $g-700
-                    />
-                  )}
-                  {option.name}
-                </div>
-              </ToggleButton>
-              {option.addon}
+                  <div
+                    style={{ height: height && height }}
+                    className={`d-flex gap-2 justify-content-center align-items-center ${optionTextClassName}`}
+                  >
+                    {option.icon && (
+                      <option.icon
+                        size={24}
+                        color={isChecked(option) ? '#515567' : '#6e748c'} // $g-750 and $g-700
+                      />
+                    )}
+                    {option.name}
+                  </div>
+                </ToggleButton>
+              )}
             </Fragment>
           ))}
         </ButtonGroup>
