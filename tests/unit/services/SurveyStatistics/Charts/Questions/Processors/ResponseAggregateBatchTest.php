@@ -17,7 +17,7 @@ class ResponseAggregateBatchTest extends TestCase
         $request = $this->getRequest($batch, $alias);
 
         $this->assertTrue($this->invoke($batch, 'requestUsesEncryptedField', [$request]));
-        $this->assertSame(2, $this->invoke($batch, 'aggregateValues', [['Y', 'N', 'Y', ''], $request]));
+        $this->assertSame(2, $this->aggregateValues($batch, ['Y', 'N', 'Y', ''], $request));
     }
 
     public function testEncryptedRankingJsonIsAggregatedByPosition(): void
@@ -37,7 +37,7 @@ class ResponseAggregateBatchTest extends TestCase
             $rows
         );
 
-        $this->assertSame(1, $this->invoke($batch, 'aggregateValues', [$values, $request]));
+        $this->assertSame(1, $this->aggregateValues($batch, $values, $request));
     }
 
     public function testEmptyValueDoesNotCountNullCells(): void
@@ -46,8 +46,8 @@ class ResponseAggregateBatchTest extends TestCase
         $valueRequest = $this->getRequest($batch, $batch->countValue('Q12', ''));
         $jsonRequest = $this->getRequest($batch, $batch->countJsonArrayValue('Q13', 0, ''));
 
-        $this->assertSame(1, $this->invoke($batch, 'aggregateValues', [[null, ''], $valueRequest]));
-        $this->assertSame(1, $this->invoke($batch, 'aggregateValues', [[null, ''], $jsonRequest]));
+        $this->assertSame(1, $this->aggregateValues($batch, [null, ''], $valueRequest));
+        $this->assertSame(1, $this->aggregateValues($batch, [null, ''], $jsonRequest));
     }
 
     public function testNumericEncryptedColumnIsNotTreatedAsJsonPosition(): void
@@ -68,8 +68,8 @@ class ResponseAggregateBatchTest extends TestCase
         $numericRequest = $this->getRequest($batch, $batch->countNumeric('Q13', true));
         $values = ['1', '1e2', '-2.5', 'not a number'];
 
-        $this->assertSame(2, $this->invoke($batch, 'aggregateValues', [$values, $textRequest]));
-        $this->assertSame(3, $this->invoke($batch, 'aggregateValues', [$values, $numericRequest]));
+        $this->assertSame(2, $this->aggregateValues($batch, $values, $textRequest));
+        $this->assertSame(3, $this->aggregateValues($batch, $values, $numericRequest));
     }
 
     public function testNumericTextPatternMatchesDatabaseDriverRules(): void
@@ -93,10 +93,10 @@ class ResponseAggregateBatchTest extends TestCase
         $minRequest = $this->getRequest($batch, $batch->minValue('Q12'));
         $maxRequest = $this->getRequest($batch, $batch->maxValue('Q12'));
 
-        $this->assertEqualsWithDelta(3.2346, $this->invoke($batch, 'aggregateValues', [$values, $sumRequest]), 0.00001);
-        $this->assertEqualsWithDelta(1.2346 ** 2 + 2 ** 2, $this->invoke($batch, 'aggregateValues', [$values, $squaresRequest]), 0.00001);
-        $this->assertEqualsWithDelta(1.2346, $this->invoke($batch, 'aggregateValues', [$values, $minRequest]), 0.00001);
-        $this->assertEqualsWithDelta(2, $this->invoke($batch, 'aggregateValues', [$values, $maxRequest]), 0.00001);
+        $this->assertEqualsWithDelta(3.2346, $this->aggregateValues($batch, $values, $sumRequest), 0.00001);
+        $this->assertEqualsWithDelta(1.2346 ** 2 + 2 ** 2, $this->aggregateValues($batch, $values, $squaresRequest), 0.00001);
+        $this->assertEqualsWithDelta(1.2346, $this->aggregateValues($batch, $values, $minRequest), 0.00001);
+        $this->assertEqualsWithDelta(2, $this->aggregateValues($batch, $values, $maxRequest), 0.00001);
     }
 
     public function testEncryptedNumericAggregatesTreatEmptyStringAsBlank(): void
@@ -106,8 +106,8 @@ class ResponseAggregateBatchTest extends TestCase
         $answeredRequest = $this->getRequest($batch, $batch->countNonEmpty('Q12', true));
         $values = ['', '5'];
 
-        $this->assertSame(1, $this->invoke($batch, 'aggregateValues', [$values, $blankRequest]));
-        $this->assertSame(1, $this->invoke($batch, 'aggregateValues', [$values, $answeredRequest]));
+        $this->assertSame(1, $this->aggregateValues($batch, $values, $blankRequest));
+        $this->assertSame(1, $this->aggregateValues($batch, $values, $answeredRequest));
     }
 
     public function testEncryptedAggregatesApplyGroupedValueWeight(): void
@@ -159,5 +159,16 @@ class ResponseAggregateBatchTest extends TestCase
     {
         $reflection = new ReflectionMethod(ResponseAggregateBatch::class, $method);
         return $reflection->invokeArgs($batch, $arguments);
+    }
+
+    /** @return int|float */
+    private function aggregateValues(ResponseAggregateBatch $batch, array $values, array $request)
+    {
+        $result = $this->invoke($batch, 'initialAggregateValue', [$request]);
+        foreach ($values as $value) {
+            $result = $this->invoke($batch, 'accumulateValue', [$result, $value, $request]);
+        }
+
+        return $this->invoke($batch, 'finalizeAggregateValue', [$result]);
     }
 }

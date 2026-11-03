@@ -322,16 +322,21 @@ final class ResponseAggregateBatch
         array $requests
     ): void {
         $fields = [];
-        foreach ($requests as $request) {
-            foreach ($this->requestFields($request) as $field) {
+        $requestsByField = [];
+        foreach ($requests as $alias => $request) {
+            $requestFields = $this->requestFields($request);
+            foreach ($requestFields as $field) {
                 $fields[$field] = true;
             }
+            $requestsByField[$requestFields[0]][$alias] = $request;
         }
 
-        $medianRequests = [];
+        $medianRequestsByField = [];
+        $medianValues = [];
         foreach ($this->medianRequests as $alias => $request) {
             if ($this->isEncryptedField($request['field'])) {
-                $medianRequests[$alias] = $request;
+                $medianRequestsByField[$request['field']][$alias] = $request;
+                $medianValues[$alias] = [];
             }
         }
 
@@ -340,8 +345,9 @@ final class ResponseAggregateBatch
             $results[$alias] = $this->initialAggregateValue($request);
         }
 
-        $medianValues = array_fill_keys(array_keys($medianRequests), []);
         foreach (array_keys($fields) as $field) {
+            $fieldRequests = $requestsByField[$field] ?? [];
+            $fieldMedianRequests = $medianRequestsByField[$field] ?? [];
             $column = $db->quoteColumnName($field);
             $valueAlias = $db->quoteColumnName('encrypted_value');
             $countAlias = $db->quoteColumnName('value_count');
@@ -361,10 +367,7 @@ final class ResponseAggregateBatch
                 }
 
                 $row = [$field => $value];
-                foreach ($requests as $alias => $request) {
-                    if ($this->requestFields($request)[0] !== $field) {
-                        continue;
-                    }
+                foreach ($fieldRequests as $alias => $request) {
                     $results[$alias] = $this->accumulateValue(
                         $results[$alias],
                         $this->valueForRequest($row, $request),
@@ -372,10 +375,7 @@ final class ResponseAggregateBatch
                         $weight
                     );
                 }
-                foreach ($medianRequests as $alias => $request) {
-                    if ($request['field'] !== $field) {
-                        continue;
-                    }
+                foreach ($fieldMedianRequests as $alias => $request) {
                     $numericValue = $this->normalizedNumericValue($value, !empty($request['numeric']));
                     if ($numericValue !== null) {
                         $medianValues[$alias][] = ['value' => $numericValue, 'weight' => $weight];
@@ -439,17 +439,6 @@ final class ResponseAggregateBatch
         }
 
         return $row[$request['field']] ?? null;
-    }
-
-    /** @return int|float */
-    private function aggregateValues(array $values, array $request)
-    {
-        $result = $this->initialAggregateValue($request);
-        foreach ($values as $value) {
-            $result = $this->accumulateValue($result, $value, $request);
-        }
-
-        return $this->finalizeAggregateValue($result);
     }
 
     /** @return int|float|null */
