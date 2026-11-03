@@ -163,8 +163,8 @@ export const ArrayRows = ({
       >
         {entitiesInfo.items?.map((entity, index) => (
           <Draggable
-            key={`${entity.appKey || entity[entitiesInfo.idKey]}}-subquestion`}
-            draggableId={`${entity.appKey || entity[entitiesInfo.idKey]}}-subquestion`}
+            key={`${entity.appKey || entity[entitiesInfo.idKey]}-subquestion`}
+            draggableId={`${entity.appKey || entity[entitiesInfo.idKey]}-subquestion`}
             index={index}
           >
             {(provided, snapshot) => (
