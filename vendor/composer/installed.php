@@ -3,7 +3,7 @@
         'name' => 'limesurvey/limesurvey',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => '0785e80d2836e4d899fb2bbd74e070827bf02994',
+        'reference' => '39426f0c39f68aaa25922c7af760e445951c08e1',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -121,7 +121,7 @@
         'limesurvey/limesurvey' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => '0785e80d2836e4d899fb2bbd74e070827bf02994',
+            'reference' => '39426f0c39f68aaa25922c7af760e445951c08e1',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -236,9 +236,9 @@
             'dev_requirement' => false,
         ),
         'phpseclib/phpseclib' => array(
-            'pretty_version' => '3.0.57',
-            'version' => '3.0.57.0',
-            'reference' => 'd17e0ddaeaf6f22f7e007cbb437d78792fe2a0e4',
+            'pretty_version' => '3.0.58',
+            'version' => '3.0.58.0',
+            'reference' => '91f3a6436bb84040ac0cf49e761977f17d16a39b',
             'type' => 'library',
             'install_path' => __DIR__ . '/../phpseclib/phpseclib',
             'aliases' => array(),
@@ -406,7 +406,7 @@
         'tiamo/spss' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => '3dd8fde1d3538650417c541af27d01227a9ea67f',
+            'reference' => '76b1141ce9d57927fc55d89f1aa775eb16ae4d88',
             'type' => 'library',
             'install_path' => __DIR__ . '/../tiamo/spss',
             'aliases' => array(

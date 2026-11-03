@@ -482,7 +482,10 @@ class LS_Twig_Extension extends AbstractExtension
     }
 
     /**
-     * @param string $name
+     * Remove a registered script file, whatever position it was registered at
+     *
+     * @param string $name URL of the script file
+     * @return void
      */
     public static function unregisterScriptFile($name)
     {
