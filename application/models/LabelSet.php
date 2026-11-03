@@ -90,7 +90,7 @@ class LabelSet extends LSActiveRecord implements PermissionInterface
         $oDB = App()->db;
         $oTransaction = $oDB->beginTransaction();
         try {
-            $this->deleteLabelsForLabelSet();
+            $arLabelSet->deleteLabelsForLabelSet();
 
             $bLabelSetDeleted = $arLabelSet->delete();
             $oTransaction->commit();

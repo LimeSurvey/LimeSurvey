@@ -1351,13 +1351,6 @@ function XMLImportLabelsets($sFullFilePath, $options)
             }
         }
 
-        if ($results['duplicates'] > 0) {
-            $results['warnings'][] = ngT(
-                '{n} duplicate label set was not imported.|{n} duplicate label sets were not imported.',
-                $results['duplicates']
-            );
-        }
-
         //END CHECK FOR DUPLICATES
     }
     return $results;
