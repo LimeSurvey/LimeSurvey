@@ -500,14 +500,17 @@ $config['chartfontsize'] = 10;
 $config['updatecheckperiod'] = 7;
 
 /**
-* $allowwebdatabaseupdate - whether a database update can be started from the web interface, either
-* automatically after login or on the database update page. Set it to false while the database is
-* updated from the command line (console.php updatedb), e.g. by a hosting system, so that nobody can
-* start a second update from a web request in parallel. Updates started from the command line are
-* not affected.
-* Recommended: true
+* $maintenancemode - maintenance mode of the site, normally set in the global settings. One of:
+*   'off'      no maintenance
+*   'soft'     participants can finish surveys they already started, no new participants are allowed
+*   'hard'     no participant can take a survey
+*   'hard-cli' like 'hard', and the administration (web interface, RemoteControl and REST API) is locked
+*              as well, so that nothing can be changed while e.g. a hosting system makes a backup or runs
+*              the database update from the command line. It can only be set and unset with the console
+*              command "console.php setMaintenanceMode hard-cli|off", not in the global settings.
+* The value in the global settings (settings_global table) takes precedence over this file.
 */
-$config['allowwebdatabaseupdate'] = true;
+$config['maintenancemode'] = 'off';
 
 
 /**

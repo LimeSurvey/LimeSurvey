@@ -343,9 +343,9 @@ class Authentication extends SurveyCommonAction
         if (Yii::app()->db->schema->getTable('{{surveys}}')) {
             $sDBVersion = Yii::app()->getConfig('DBVersion');
             if ((int) $sDBVersion < Yii::app()->getConfig('dbversionnumber')) {
-                // Try a silent update first, unless the update is run from the command line
+                // Try a silent update first
                 Yii::app()->loadHelper('update.updatedb');
-                if (!isWebDatabaseUpdateAllowed() || !db_upgrade_all(intval($sDBVersion), true)) {
+                if (!db_upgrade_all(intval($sDBVersion), true)) {
                     Yii::app()->getController()->redirect(array('/admin/databaseupdate/sa/db'));
                 }
             }

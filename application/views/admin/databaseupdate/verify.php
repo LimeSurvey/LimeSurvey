@@ -29,13 +29,6 @@
             'type' => 'danger',
         ])
         ?>
-    <?php } elseif (!isWebDatabaseUpdateAllowed()) { ?>
-        <?php
-        App()->getController()->widget('ext.AlertWidget.AlertWidget', [
-            'text' => getWebDatabaseUpdateDisabledMessage(),
-            'type' => 'warning',
-        ])
-        ?>
     <?php } elseif (isDatabaseUpdateLockHeld()) { ?>
         <?php
         App()->getController()->widget('ext.AlertWidget.AlertWidget', [

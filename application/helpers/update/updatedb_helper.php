@@ -146,11 +146,12 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false, &$sAbortReason = null)
 
     // Enable maintenance mode during critical updates so survey participants
     // see a maintenance page. Preserve the previous value to restore it afterwards.
+    // "hard-cli" already locks everything and must stay until the command line lifts it.
     $bIsCriticalUpdate = count(array_intersect($aCriticalDBVersions, $aAllUpdates)) > 0;
     $sPreviousMaintenanceMode = App()->getConfig('maintenancemode');
     $bMaintenanceModeRestored = true;
-    if ($bIsCriticalUpdate && $sPreviousMaintenanceMode !== 'hard') {
-        SettingGlobal::setSetting('maintenancemode', 'hard');
+    if ($bIsCriticalUpdate && !SettingGlobal::isMaintenanceModeHard()) {
+        SettingGlobal::setSetting('maintenancemode', SettingGlobal::MAINTENANCE_MODE_HARD);
         $bMaintenanceModeRestored = false;
 
         // Safety net: restore maintenance mode even on fatal error / timeout.
@@ -374,28 +375,6 @@ function isDatabaseUpdateLockHeld()
 function releaseDatabaseUpdateLock()
 {
     getDatabaseUpdateLock(true);
-}
-
-/**
- * Whether a database update may be started from the web interface, see the
- * configuration setting "allowwebdatabaseupdate".
- *
- * @return bool
- */
-function isWebDatabaseUpdateAllowed()
-{
-    return (bool) Yii::app()->getConfig('allowwebdatabaseupdate', true);
-}
-
-/**
- * Returns the message shown instead of the database update when it must not be
- * started from the web interface.
- *
- * @return string
- */
-function getWebDatabaseUpdateDisabledMessage()
-{
-    return gT('The database update cannot be started from the web interface on this installation, it is run from the command line by the system administrator. Please wait until it has been completed, then reload this page.');
 }
 
 /**

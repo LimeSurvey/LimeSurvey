@@ -170,8 +170,7 @@ class SurveyIndex extends CAction
         $this->loadLimesurveyLang($surveyid);
 
         // maintenance mode
-        $sMaintenanceMode = Yii::app()->getConfig('maintenancemode');
-        if ($sMaintenanceMode == 'hard') {
+        if (SettingGlobal::isMaintenanceModeHard()) {
             if ($previewmode === false) {
                 Yii::app()->twigRenderer->renderTemplateFromFile(
                     "layout_maintenance.twig",
@@ -179,7 +178,7 @@ class SurveyIndex extends CAction
                     false
                 );
             }
-        } elseif ($sMaintenanceMode == 'soft') {
+        } elseif (SettingGlobal::getMaintenanceMode() === SettingGlobal::MAINTENANCE_MODE_SOFT) {
             if ($move === null) {
                 if ($previewmode === false) {
                     Yii::app()->twigRenderer->renderTemplateFromFile(

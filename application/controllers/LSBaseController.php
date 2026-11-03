@@ -100,13 +100,16 @@ class LSBaseController extends LSYii_Controller
      */
     public function run($action)
     {
+        // Nothing may be changed while the hosting system makes a backup or runs the database update
+        $this->endRequestIfAdministrationLocked(Yii::app()->request->isAjaxRequest ? 'text' : 'html');
+
         // Check if the DB is up to date
         $sDBVersion = Yii::app()->getConfig('DBVersion');
 
         if ((int) $sDBVersion < Yii::app()->getConfig('dbversionnumber') && $action != 'databaseupdate') {
-            // Try a silent update first, unless the update is run from the command line
+            // Try a silent update first
             Yii::app()->loadHelper('update.updatedb');
-            if (!isWebDatabaseUpdateAllowed() || !db_upgrade_all(intval($sDBVersion), true)) {
+            if (!db_upgrade_all(intval($sDBVersion), true)) {
                 $this->redirect(array('/admin/databaseupdate/sa/db'));
             }
         }

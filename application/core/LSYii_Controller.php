@@ -56,6 +56,34 @@ abstract class LSYii_Controller extends CController
     }
 
     /**
+     * Ends the request with HTTP 503 and a "site under maintenance" message when the maintenance
+     * mode "hard-cli" locks the administration, see SettingGlobal::isAdministrationLocked().
+     * Called first thing by every administrative entry point (web interface, RemoteControl, REST API).
+     *
+     * @param string $format 'html' for the maintenance page, 'text' for a plain text body (RemoteControl, AJAX), 'json' for a JSON body (REST API)
+     * @return void
+     */
+    protected function endRequestIfAdministrationLocked($format = 'html')
+    {
+        if (!SettingGlobal::isAdministrationLocked()) {
+            return;
+        }
+        $message = gT('The administration of this site is temporarily locked for maintenance, for example while a backup or an update is being made. Please try again later.');
+        http_response_code(503);
+        header('Retry-After: 300');
+        if ($format === 'json') {
+            header('Content-Type: application/json');
+            echo CJSON::encode(['error' => ['code' => 'MaintenanceMode', 'message' => $message]]);
+        } elseif ($format === 'text') {
+            header('Content-Type: text/plain; charset=UTF-8');
+            echo $message;
+        } else {
+            $this->renderPartial('/admin/super/administrationlocked', ['message' => $message], false, true);
+        }
+        Yii::app()->end();
+    }
+
+    /**
      * Loads a helper
      *
      * @access public
