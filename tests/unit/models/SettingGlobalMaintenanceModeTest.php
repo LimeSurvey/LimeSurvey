@@ -27,6 +27,7 @@ class SettingGlobalMaintenanceModeTest extends TestBaseClass
     {
         parent::setUp();
         require_once \Yii::app()->getBasePath() . '/commands/SetMaintenanceModeCommand.php';
+        \Yii::import('application.helpers.update.updatedb_helper', true);
         $this->previousSetting = \Yii::app()->getConfig('maintenancemode', 'off');
         $this->previousRow = $this->readRow();
     }
@@ -141,5 +142,47 @@ class SettingGlobalMaintenanceModeTest extends TestBaseClass
         $this->assertSame(1, $this->runCommand(['off', '/no/such/config.php']), 'A missing config.php is a usage error');
         $this->assertSame(1, $this->runCommand(['off', dirname(__DIR__, 3) . '/README.md']), 'A file that is not a config.php is a usage error');
         $this->assertSame('soft', $this->readRow(), 'A usage error changes nothing');
+
+        // A PHP file with another name is rejected without running it
+        $dir = sys_get_temp_dir() . '/ls-maintenance-' . uniqid();
+        mkdir($dir);
+        $marker = $dir . '/included.txt';
+        $script = $dir . '/not-a-config.php';
+        file_put_contents($script, '<?php file_put_contents(' . var_export($marker, true) . ', "1"); return ["components" => ["db" => ["connectionString" => "x"]]];');
+        try {
+            $this->assertSame(1, $this->runCommand(['off', $script]));
+            $this->assertFileDoesNotExist($marker, 'The file must not be included before it is rejected');
+            $this->assertSame('soft', $this->readRow());
+        } finally {
+            @unlink($marker);
+            unlink($script);
+            rmdir($dir);
+        }
+    }
+
+    /**
+     * After a critical database update the maintenance mode row is put back as it was,
+     * and removed again if there was none so a value from config.php stays in force.
+     *
+     * @return void
+     */
+    public function testRestoreAfterUpdate()
+    {
+        $db = \Yii::app()->db;
+        $db->createCommand()->delete('{{settings_global}}', 'stg_name = :name', [':name' => 'maintenancemode']);
+
+        // Previously a row "soft": the row is written back
+        SettingGlobal::setSetting('maintenancemode', 'hard');
+        restoreMaintenanceModeAfterUpdate('soft');
+        $this->assertSame('soft', $this->readRow());
+
+        // Previously no row: the row written for the update is removed again
+        SettingGlobal::setSetting('maintenancemode', 'hard');
+        restoreMaintenanceModeAfterUpdate(null);
+        $this->assertFalse($this->readRow());
+
+        // Nothing to remove is not an error
+        restoreMaintenanceModeAfterUpdate(null);
+        $this->assertFalse($this->readRow());
     }
 }

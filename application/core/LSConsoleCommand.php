@@ -31,6 +31,10 @@ abstract class LSConsoleCommand extends CConsoleCommand
         if ($readFromConfig === false) {
             throw new CException("Config file not found: $configPath");
         }
+        // Checked before the include: any other PHP file would run before being rejected
+        if (basename($readFromConfig) !== 'config.php') {
+            throw new CException("Not a LimeSurvey config.php (the file must be named config.php): $configPath");
+        }
         $configuration = include($readFromConfig);
         if (!is_array($configuration) || empty($configuration['components']['db']['connectionString'])) {
             throw new CException("Not a LimeSurvey config.php (no database connection in it): $configPath");

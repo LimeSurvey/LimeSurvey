@@ -149,18 +149,20 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false, &$sAbortReason = null)
     // "hard-cli" already locks everything and must stay until the command line lifts it.
     // The mode is read from the database being updated: with a custom config (console.php
     // updatedb path/to/config.php) the application config still holds the values of the
-    // default installation. A missing row means "off".
+    // default installation. Without a row the mode comes from config.php (or its default
+    // "off"): the row written for the update is removed again afterwards, so that value
+    // stays in force.
     $bIsCriticalUpdate = count(array_intersect($aCriticalDBVersions, $aAllUpdates)) > 0;
     $sPreviousMaintenanceMode = Yii::app()->db->createCommand()
         ->select('stg_value')
         ->from('{{settings_global}}')
         ->where('stg_name = :name', [':name' => 'maintenancemode'])
         ->queryScalar();
-    if (empty($sPreviousMaintenanceMode)) {
-        $sPreviousMaintenanceMode = SettingGlobal::MAINTENANCE_MODE_OFF;
+    if ($sPreviousMaintenanceMode === false) {
+        $sPreviousMaintenanceMode = null;
     }
     $bMaintenanceModeRestored = true;
-    if ($bIsCriticalUpdate && !SettingGlobal::isMaintenanceModeHard($sPreviousMaintenanceMode)) {
+    if ($bIsCriticalUpdate && !SettingGlobal::isMaintenanceModeHard($sPreviousMaintenanceMode ?? SettingGlobal::MAINTENANCE_MODE_OFF)) {
         SettingGlobal::setSetting('maintenancemode', SettingGlobal::MAINTENANCE_MODE_HARD);
         $bMaintenanceModeRestored = false;
 
@@ -168,7 +170,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false, &$sAbortReason = null)
         register_shutdown_function(function () use ($sPreviousMaintenanceMode, &$bMaintenanceModeRestored) {
             if (!$bMaintenanceModeRestored) {
                 try {
-                    SettingGlobal::setSetting('maintenancemode', $sPreviousMaintenanceMode);
+                    restoreMaintenanceModeAfterUpdate($sPreviousMaintenanceMode);
                 } catch (\Throwable $t) {
                     // DB may be unavailable at this point, nothing we can do.
                 }
@@ -229,7 +231,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false, &$sAbortReason = null)
         // Restore previous maintenance mode if it was changed
         if (!$bMaintenanceModeRestored) {
             try {
-                SettingGlobal::setSetting('maintenancemode', $sPreviousMaintenanceMode);
+                restoreMaintenanceModeAfterUpdate($sPreviousMaintenanceMode);
                 // @psalm-suppress UnusedVariable Read by the by-reference shutdown-function
                 // closure registered above; Psalm doesn't trace writes observed by a
                 // by-ref closure captured before this point.
@@ -291,7 +293,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false, &$sAbortReason = null)
     // Restore previous maintenance mode if it was changed
     if (!$bMaintenanceModeRestored) {
         try {
-            SettingGlobal::setSetting('maintenancemode', $sPreviousMaintenanceMode);
+            restoreMaintenanceModeAfterUpdate($sPreviousMaintenanceMode);
             // @psalm-suppress UnusedVariable Read by the by-reference shutdown-function
             // closure registered above; Psalm doesn't trace writes observed by a
             // by-ref closure captured before this point.
@@ -377,6 +379,22 @@ function isDatabaseUpdateLockHeld()
     }
     fclose($pLock);
     return $bLocked;
+}
+
+/**
+ * Puts the maintenance mode back to what it was before a critical database update.
+ *
+ * @param string|null $sPreviousMaintenanceMode The value of the settings_global row before the update, null if there was none
+ * @return void
+ */
+function restoreMaintenanceModeAfterUpdate($sPreviousMaintenanceMode)
+{
+    if ($sPreviousMaintenanceMode === null) {
+        // There was no row: remove the one written for the update so config.php decides again
+        SettingGlobal::model()->deleteByPk('maintenancemode');
+        return;
+    }
+    SettingGlobal::setSetting('maintenancemode', $sPreviousMaintenanceMode);
 }
 
 /**
