@@ -95,6 +95,15 @@ class Question extends LSActiveRecord
 
     const DEFAULT_QUESTION_THEME = 'core';  // The question theme name to use when no theme is specified
 
+    /** @var int Default maximum characters of a Long free text answer when 'maximum_chars' is not set (100K characters) */
+    const DEFAULT_MAX_CHARS_LONG_TEXT = 102400;
+
+    /** @var int Default maximum characters of a Huge free text answer when 'maximum_chars' is not set (1M characters) */
+    const DEFAULT_MAX_CHARS_HUGE_TEXT = 1048576;
+
+    /** @var int Default maximum characters of an Array (Texts) answer when 'maximum_chars' is not set (10K characters) */
+    const DEFAULT_MAX_CHARS_ARRAY_TEXT = 10000;
+
     /** @var string $group_name Stock the active group_name for questions list filtering */
     public $group_name;
     public $gid;
@@ -1600,5 +1609,50 @@ class Question extends LSActiveRecord
         );
 
         return $dualScaleTypes;
+    }
+
+    /**
+     * Get the maximum characters of a Long (T), Huge (U) free text or Array (Texts) (;) answer.
+     * Uses the 'maximum_chars' question attribute. When it is not set, the default of the question type is used,
+     * raised to the length of the current answer so an answer saved before the default existed is not shortened.
+     * Whether the answer fits the response column is checked separately when it is saved.
+     *
+     * @param string $type Question type (Question::QT_T_LONG_FREE_TEXT, Question::QT_U_HUGE_FREE_TEXT or Question::QT_SEMICOLON_ARRAY_TEXT)
+     * @param mixed $maximumChars Value of the 'maximum_chars' question attribute
+     * @param mixed $currentAnswer The answer currently stored for the field, if any
+     * @return int
+     */
+    public static function getTextMaxChars($type, $maximumChars, $currentAnswer = null)
+    {
+        $maxChars = intval(trim((string) $maximumChars));
+        if ($maxChars > 0) {
+            return $maxChars;
+        }
+        switch ($type) {
+            case self::QT_SEMICOLON_ARRAY_TEXT:
+                $default = self::DEFAULT_MAX_CHARS_ARRAY_TEXT;
+                break;
+            case self::QT_U_HUGE_FREE_TEXT:
+                $default = self::DEFAULT_MAX_CHARS_HUGE_TEXT;
+                break;
+            default:
+                $default = self::DEFAULT_MAX_CHARS_LONG_TEXT;
+        }
+        return max($default, self::getTextAnswerLength($currentAnswer));
+    }
+
+    /**
+     * Get the length of a text answer the same way the browser counts it for the maxlength attribute:
+     * a line break (submitted as CRLF) counts as one character.
+     *
+     * @param mixed $value The answer
+     * @return int
+     */
+    public static function getTextAnswerLength($value)
+    {
+        if (!is_scalar($value)) {
+            return 0;
+        }
+        return mb_strlen(str_replace("\r\n", "\n", (string) $value), 'UTF-8');
     }
 }

@@ -63,8 +63,6 @@ class RenderArrayMultiFlexText extends QuestionBaseRenderer
     private $isNumber = 0;
     /** @var int Always 0, kept for question theme backward compatibility */
     private $isInteger = 0;
-    /** @var int|string Maximum number of characters, empty string if not set */
-    private $maxlength = "";
     /** @var string|null Size of the inputs, null if not set */
     private $inputsize = null;
     /** @var string Placeholder of the inputs */
@@ -224,8 +222,7 @@ class RenderArrayMultiFlexText extends QuestionBaseRenderer
             $this->repeatheadings = intval($this->getQuestionAttribute('repeat_headings'));
             $this->minrepeatheadings = 0;
         }
-        // Always apply a maxlength; when 'maximum_chars' is empty/null, fall back to the default of the question type.
-        $this->maxlength = $this->getEffectiveMaxChars();
+        // Every cell gets a maxlength, see renderCells()
         $this->extraclass .= " ls-input-maxchars";
         if (ctype_digit(trim((string) $this->getQuestionAttribute('input_size')))) {
             $this->inputsize = trim((string) $this->getQuestionAttribute('input_size'));
@@ -476,7 +473,8 @@ class RenderArrayMultiFlexText extends QuestionBaseRenderer
                 'myfname2'   => $myfname2,
                 'labelText'  => $aLabel['label'],
                 'kpclass'    => '', // Old class of removed keypad functionality, kept for question theme backward compatibility
-                'maxlength'  => $this->maxlength,
+                // When 'maximum_chars' is not set the default of the question type is used, raised to the length of the saved answer
+                'maxlength'  => $this->getEffectiveMaxChars($myfname2value),
                 'inputsize'  => $this->inputsize,
                 'value'      => $myfname2value,
                 'placeholder' => $this->placeholder,

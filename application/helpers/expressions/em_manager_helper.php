@@ -686,11 +686,20 @@ class LimeExpressionManager
      */
     private $invalidAnswerString = [];
 
-    /** @var int Maximum bytes of a TEXT column in MySQL/MariaDB */
-    private const MYSQL_TEXT_MAX_BYTES = 65535;
+    /** @var int[] Maximum bytes of the MySQL/MariaDB text column types */
+    private const MYSQL_TEXT_TYPE_MAX_BYTES = [
+        'tinytext' => 255,
+        'text' => 65535,
+        'mediumtext' => 16777215,
+        'longtext' => 4294967295,
+    ];
 
-    /** @var int Maximum bytes of a value that still fits a MySQL/MariaDB TEXT column when encrypted (base64 of the value plus a 16 byte MAC) */
-    private const MYSQL_TEXT_MAX_BYTES_ENCRYPTED = 49133;
+    /**
+     * Request cache of the response column limits by survey ID and answer column, see getResponseColumnLimit().
+     * Static, so it is not serialized with the singleton and a changed response table is seen on the next request.
+     * @var array<string, array{length: int, bytes: bool, encrypted: bool}|null>
+     */
+    private static $responseColumnLimits = [];
 
     /**
      * Array of values to be updated
@@ -10447,9 +10456,14 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             case 'T': // Long text
             case ';': // Array text
                 // Submitted answers are already shortened in ProcessCurrentResponses, this catches prefilled and default values - see #18275
-                $maxChars = self::getTextMaxChars($type, $qid);
-                if (self::getTextLength($value) > $maxChars) {
-                    $LEM->addValidityString($sgq, '', sprintf(gT("Text exceeds the maximum allowed length of %s characters"), $maxChars), $set);
+                $maxChars = self::getTextMaxChars($type, $qid, $sgq);
+                if (Question::getTextAnswerLength($value) > $maxChars) {
+                    // The message is used as a sprintf format again in addValidityString
+                    $LEM->addValidityString($sgq, '', str_replace('%', '%%', sprintf(gT("Text exceeds the maximum allowed length of %s characters"), $maxChars)), $set);
+                    return false;
+                }
+                if (self::fitResponseColumn($value, $sgq, $qid) !== $value) {
+                    $LEM->addValidityString($sgq, '', str_replace('%', '%%', gT("Text is too long to be saved")), $set);
                     return false;
                 }
                 break;
@@ -10483,35 +10497,49 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
     }
 
     /**
-     * Get the effective maximum characters of a Long (T), Huge (U) free text or Array (Texts) (;) question.
+     * Get the maximum characters of a Long (T), Huge (U) free text or Array (Texts) (;) answer.
+     * The answer currently in the session is passed on, so an answer saved before the default limit existed is not shortened.
      *
      * @param string $type Question type
      * @param integer $qid Question ID
+     * @param string $sgqa The answer column
      * @return integer
+     * @see Question::getTextMaxChars()
      */
-    private static function getTextMaxChars($type, $qid)
+    private static function getTextMaxChars($type, $qid, $sgqa)
     {
         $LEM =& LimeExpressionManager::singleton();
-        return QuestionBaseRenderer::getEffectiveMaxCharsForType(
+        return Question::getTextMaxChars(
             $type,
-            $LEM->qattr[$qid]['maximum_chars'] ?? null
+            $LEM->qattr[$qid]['maximum_chars'] ?? null,
+            $_SESSION[$LEM->sessid][$sgqa] ?? null
         );
     }
 
     /**
-     * Get the length of a text answer the same way the browser counts it for the textarea maxlength:
-     * a line break (submitted as CRLF) counts as one character.
+     * Shorten a text to a number of characters, a line break (CRLF) counting as one character.
+     * The line breaks of the kept part are left as they are.
      *
-     * @param string $value The answer
-     * @return integer
+     * @param string $value The text
+     * @param integer $maxChars Maximum characters
+     * @return string
      */
-    private static function getTextLength($value)
+    private static function cutTextAnswer($value, $maxChars)
     {
-        return mb_strlen(str_replace("\r\n", "\n", (string) $value), 'UTF-8');
+        $keptBytes = strlen(mb_substr(str_replace("\r\n", "\n", $value), 0, $maxChars, 'UTF-8'));
+        // Add back the CR of each CRLF in the kept part
+        $offset = 0;
+        $crCount = 0;
+        while (($position = strpos($value, "\r\n", $offset)) !== false && $position - $crCount < $keptBytes) {
+            $crCount++;
+            $offset = $position + 2;
+        }
+        return substr($value, 0, $keptBytes + $crCount);
     }
 
     /**
-     * Shorten a submitted Long (T), Huge (U) free text or Array (Texts) (;) answer to the maximum characters of the question.
+     * Shorten a submitted Long (T), Huge (U) free text or Array (Texts) (;) answer to the maximum characters of the question
+     * and to what fits the response column.
      * When shortened, an invalid answer string is set so the question is invalid and the respondent
      * has to review the answer before moving on.
      *
@@ -10523,27 +10551,31 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
      */
     private static function truncateTextAnswer($type, $value, $sgqa, $qid)
     {
-        if (!is_string($value)) {
-            return $value;
-        }
-        $maxChars = self::getTextMaxChars($type, $qid);
-        if (self::getTextLength($value) <= $maxChars) {
+        if (!is_string($value) || $value === '') {
             return $value;
         }
         $LEM =& LimeExpressionManager::singleton();
-        $LEM->addValidityString(
-            $sgqa,
-            '',
-            sprintf(gT("Your answer exceeded the maximum allowed length of %s characters and has been shortened. Please review your answer."), $maxChars)
-        );
-        return mb_substr(str_replace("\r\n", "\n", $value), 0, $maxChars, 'UTF-8');
+        $maxChars = self::getTextMaxChars($type, $qid, $sgqa);
+        if (Question::getTextAnswerLength($value) > $maxChars) {
+            $value = self::cutTextAnswer($value, $maxChars);
+            $message = sprintf(gT("Your answer exceeded the maximum allowed length of %s characters and has been shortened. Please review your answer."), $maxChars);
+        }
+        $fittingValue = self::fitResponseColumn($value, $sgqa, $qid);
+        if ($fittingValue !== $value) {
+            $value = $fittingValue;
+            $message = gT("Your answer is too long to be saved and has been shortened. Please review your answer.");
+        }
+        if (isset($message)) {
+            // The message is used as a sprintf format again in addValidityString
+            $LEM->addValidityString($sgqa, '', str_replace('%', '%%', $message));
+        }
+        return $value;
     }
 
     /**
-     * Shorten an Equation result that does not fit the TEXT response column on MySQL/MariaDB
-     * (65535 bytes, less when the question is encrypted) and log it for the administrator.
+     * Shorten an Equation result that does not fit the response column and log it for the administrator.
      * The respondent can not change the result, so no error is shown.
-     * Other databases have no relevant limit, so the result is never shortened there.
+     * It is only logged when the shortened result is not the one already stored, so a result is not logged again on each validation.
      *
      * @param mixed $value The Equation result
      * @param string $sgqa The answer column
@@ -10552,24 +10584,82 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
      */
     private static function truncateEquationResult($value, $sgqa, $qid)
     {
-        if (!is_string($value) || strlen($value) <= self::MYSQL_TEXT_MAX_BYTES_ENCRYPTED || Yii::app()->db->driverName != 'mysql') {
-            return $value;
-        }
-        $maxBytes = self::MYSQL_TEXT_MAX_BYTES;
-        $question = Question::model()->findByPk($qid);
-        if ($question && $question->encrypted === 'Y') {
-            $maxBytes = self::MYSQL_TEXT_MAX_BYTES_ENCRYPTED;
-        }
-        if (strlen($value) <= $maxBytes) {
+        $fittingValue = self::fitResponseColumn($value, $sgqa, $qid);
+        if ($fittingValue === $value) {
             return $value;
         }
         $LEM =& LimeExpressionManager::singleton();
-        Yii::log(
-            sprintf("Survey %s: the result of the equation %s is %s bytes long and has been shortened to %s bytes to fit the response column", intval($LEM->sid), $sgqa, strlen($value), $maxBytes),
-            'error',
-            'application.LimeExpressionManager.truncateEquationResult'
-        );
-        return mb_strcut($value, 0, $maxBytes, 'UTF-8');
+        if (($_SESSION[$LEM->sessid][$sgqa] ?? null) !== $fittingValue) {
+            Yii::log(
+                sprintf("Survey %s: the result of the equation %s is %s bytes long and has been shortened to %s bytes to fit the response column", intval($LEM->sid), $sgqa, strlen($value), strlen($fittingValue)),
+                'error',
+                'application.LimeExpressionManager.truncateEquationResult'
+            );
+        }
+        return $fittingValue;
+    }
+
+    /**
+     * Shorten a value so it fits its column in the response table, taking response encryption into account.
+     * Values of surveys without a response table (inactive surveys) and of columns without a relevant limit are returned unchanged.
+     *
+     * @param mixed $value The value
+     * @param string $sgqa The answer column
+     * @param integer $qid Question ID
+     * @return mixed The value, shortened if needed
+     */
+    private static function fitResponseColumn($value, $sgqa, $qid)
+    {
+        if (!is_string($value) || $value === '') {
+            return $value;
+        }
+        $limit = self::getResponseColumnLimit($sgqa, $qid);
+        if ($limit === null) {
+            return $value;
+        }
+        if ($limit['encrypted']) {
+            $maxBytes = Yii::app()->sodium->getMaxPlaintextBytes($limit['length']);
+        } elseif ($limit['bytes']) {
+            $maxBytes = $limit['length'];
+        } else {
+            return mb_strlen($value, 'UTF-8') > $limit['length'] ? mb_substr($value, 0, $limit['length'], 'UTF-8') : $value;
+        }
+        return strlen($value) > $maxBytes ? mb_strcut($value, 0, $maxBytes, 'UTF-8') : $value;
+    }
+
+    /**
+     * Get the length limit of an answer column in the response table.
+     * MySQL/MariaDB text columns are limited in bytes, (n)varchar and (n)char columns (set with answertabledefinition) in characters.
+     * Other text columns (PostgreSQL text, MSSQL nvarchar(max)) have no relevant limit.
+     *
+     * @param string $sgqa The answer column
+     * @param integer $qid Question ID
+     * @return array{length: int, bytes: bool, encrypted: bool}|null Null if there is no response table, column or relevant limit
+     */
+    private static function getResponseColumnLimit($sgqa, $qid)
+    {
+        $LEM =& LimeExpressionManager::singleton();
+        $cacheKey = intval($LEM->sid) . ':' . $sgqa;
+        if (array_key_exists($cacheKey, self::$responseColumnLimits)) {
+            return self::$responseColumnLimits[$cacheKey];
+        }
+        $limit = null;
+        $table = Yii::app()->db->schema->getTable('{{responses_' . intval($LEM->sid) . '}}');
+        $column = $table ? $table->getColumn($sgqa) : null;
+        if ($column) {
+            $dbType = strtolower((string) $column->dbType);
+            if (Yii::app()->db->driverName == 'mysql' && isset(self::MYSQL_TEXT_TYPE_MAX_BYTES[$dbType])) {
+                $limit = ['length' => self::MYSQL_TEXT_TYPE_MAX_BYTES[$dbType], 'bytes' => true];
+            } elseif (strpos($dbType, 'char') !== false && $column->size > 0) {
+                $limit = ['length' => (int) $column->size, 'bytes' => false];
+            }
+        }
+        if ($limit !== null) {
+            $question = Question::model()->findByPk($qid);
+            $limit['encrypted'] = $question && $question->encrypted === 'Y';
+        }
+        self::$responseColumnLimits[$cacheKey] = $limit;
+        return $limit;
     }
 
     /**

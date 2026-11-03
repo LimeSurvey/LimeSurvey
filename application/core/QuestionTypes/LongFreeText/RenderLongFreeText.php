@@ -29,7 +29,7 @@ class RenderLongFreeText extends QuestionBaseRenderer
     }
 
     /**
-     * Render the Long free text question textarea.
+     * Render the Long free text question textarea, also used by the Huge free text question.
      *
      * @param string $sCoreClasses Additional CSS classes
      * @return array{0: string, 1: string[]} Rendered HTML and input name(s)
@@ -39,7 +39,6 @@ class RenderLongFreeText extends QuestionBaseRenderer
         $answer = '';
         $inputnames = [];
         $extraclass = "";
-        $maxlength = "";
         $withColumn = false;
         $inputsize = null;
         $placeholder = "";
@@ -49,7 +48,7 @@ class RenderLongFreeText extends QuestionBaseRenderer
             ($this->oQuestion->type == Question::QT_T_LONG_FREE_TEXT  ? 4 : 30)
         );
 
-        // Always apply a maxlength; when 'maximum_chars' is empty/null, fall back to the default of the question type.
+        // Always apply a maxlength, when 'maximum_chars' is not set the default of the question type is used
         $maxlength = $this->getEffectiveMaxChars();
         $extraclass .= " ls-input-maxchars";
 

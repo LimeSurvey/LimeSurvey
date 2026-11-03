@@ -3,7 +3,7 @@
 namespace ls\tests;
 
 /**
- * Maximum characters of Long (T) and Huge (U) free text questions.
+ * Maximum characters of Long (T), Huge (U) free text and Array (Texts) questions and the response column limits.
  * @see https://bugs.limesurvey.org/view.php?id=18275
  * @group freetextmaxchars
  */
@@ -35,32 +35,32 @@ class FreeTextMaxCharsTest extends TestBaseClass
     }
 
     /**
-     * Default, configured and capped maximum characters.
+     * Reset the response column limits cached by ExpressionManager.
      */
-    public function testEffectiveMaxCharsForType()
+    protected function tearDown(): void
     {
-        $this->assertSame(
-            \QuestionBaseRenderer::DEFAULT_MAX_CHARS_LONG_TEXT,
-            \QuestionBaseRenderer::getEffectiveMaxCharsForType(\Question::QT_T_LONG_FREE_TEXT, '')
-        );
-        $this->assertSame(
-            \QuestionBaseRenderer::DEFAULT_MAX_CHARS_HUGE_TEXT,
-            \QuestionBaseRenderer::getEffectiveMaxCharsForType(\Question::QT_U_HUGE_FREE_TEXT, null)
-        );
-        $this->assertSame(500, \QuestionBaseRenderer::getEffectiveMaxCharsForType(\Question::QT_T_LONG_FREE_TEXT, ' 500 '));
-        $this->assertSame(
-            \QuestionBaseRenderer::MAX_CHARS_CAP,
-            \QuestionBaseRenderer::getEffectiveMaxCharsForType(\Question::QT_U_HUGE_FREE_TEXT, \QuestionBaseRenderer::MAX_CHARS_CAP + 1)
-        );
-        $this->assertSame(
-            \QuestionBaseRenderer::MAX_CHARS_ARRAY_TEXT,
-            \QuestionBaseRenderer::getEffectiveMaxCharsForType(\Question::QT_SEMICOLON_ARRAY_TEXT, '')
-        );
-        $this->assertSame(500, \QuestionBaseRenderer::getEffectiveMaxCharsForType(\Question::QT_SEMICOLON_ARRAY_TEXT, '500'));
-        $this->assertSame(
-            \QuestionBaseRenderer::MAX_CHARS_ARRAY_TEXT,
-            \QuestionBaseRenderer::getEffectiveMaxCharsForType(\Question::QT_SEMICOLON_ARRAY_TEXT, \QuestionBaseRenderer::MAX_CHARS_ARRAY_TEXT + 1)
-        );
+        $this->getResponseColumnLimitsProperty()->setValue(null, []);
+        parent::tearDown();
+    }
+
+    /**
+     * Default and configured maximum characters, the default is raised to the length of a saved answer.
+     */
+    public function testTextMaxChars()
+    {
+        $this->assertSame(\Question::DEFAULT_MAX_CHARS_LONG_TEXT, \Question::getTextMaxChars(\Question::QT_T_LONG_FREE_TEXT, ''));
+        $this->assertSame(\Question::DEFAULT_MAX_CHARS_HUGE_TEXT, \Question::getTextMaxChars(\Question::QT_U_HUGE_FREE_TEXT, null));
+        $this->assertSame(\Question::DEFAULT_MAX_CHARS_ARRAY_TEXT, \Question::getTextMaxChars(\Question::QT_SEMICOLON_ARRAY_TEXT, ''));
+        $this->assertSame(500, \Question::getTextMaxChars(\Question::QT_T_LONG_FREE_TEXT, ' 500 '));
+        // A configured value is not capped
+        $this->assertSame(20000, \Question::getTextMaxChars(\Question::QT_SEMICOLON_ARRAY_TEXT, '20000'));
+        $this->assertSame(5000000, \Question::getTextMaxChars(\Question::QT_U_HUGE_FREE_TEXT, '5000000'));
+
+        $savedAnswer = str_repeat('a', \Question::DEFAULT_MAX_CHARS_ARRAY_TEXT + 5);
+        $this->assertSame(\Question::DEFAULT_MAX_CHARS_ARRAY_TEXT + 5, \Question::getTextMaxChars(\Question::QT_SEMICOLON_ARRAY_TEXT, '', $savedAnswer));
+        // A configured value is not raised
+        $this->assertSame(500, \Question::getTextMaxChars(\Question::QT_SEMICOLON_ARRAY_TEXT, '500', $savedAnswer));
+        $this->assertSame(3, \Question::getTextAnswerLength("a\r\nb"));
     }
 
     /**
@@ -79,7 +79,7 @@ class FreeTextMaxCharsTest extends TestBaseClass
 
         $method = new \ReflectionMethod(\LimeExpressionManager::class, 'truncateTextAnswer');
         $method->setAccessible(true);
-        $answer = str_repeat('a', \QuestionBaseRenderer::MAX_CHARS_ARRAY_TEXT);
+        $answer = str_repeat('a', \Question::DEFAULT_MAX_CHARS_ARRAY_TEXT);
 
         $this->assertSame($answer, $method->invoke(null, \Question::QT_SEMICOLON_ARRAY_TEXT, $answer, $sgqa, $qid));
         $this->assertArrayNotHasKey($sgqa, $this->getInvalidAnswerStrings());
@@ -91,23 +91,102 @@ class FreeTextMaxCharsTest extends TestBaseClass
     }
 
     /**
-     * An Equation result that does not fit the TEXT column on MySQL is shortened without breaking a multibyte character.
+     * An answer that was saved longer than the default maximum is not shortened.
      */
-    public function testTooLongEquationResultIsShortenedOnMysql()
+    public function testSavedLongerAnswerIsNotShortened()
     {
-        list($question, , $sgqa) = self::$testHelper->getSgqa('Q00', self::$surveyId);
+        $qid = 999999;
+        $sgqa = 'Q' . $qid;
+        $LEM = \LimeExpressionManager::singleton();
+        $qattr = new \ReflectionProperty(\LimeExpressionManager::class, 'qattr');
+        $qattr->setAccessible(true);
+        $originalQattr = $qattr->getValue($LEM);
+        $qattr->setValue($LEM, [$qid => []]);
+        $sessid = new \ReflectionProperty(\LimeExpressionManager::class, 'sessid');
+        $sessid->setAccessible(true);
+        $originalSessid = $sessid->getValue($LEM);
+        $sessid->setValue($LEM, 'responses_' . self::$surveyId);
+        $this->getInvalidAnswerStringProperty()->setValue($LEM, []);
+        $savedAnswer = str_repeat('a', \Question::DEFAULT_MAX_CHARS_LONG_TEXT + 5);
+        $_SESSION['responses_' . self::$surveyId][$sgqa] = $savedAnswer;
+
+        $method = new \ReflectionMethod(\LimeExpressionManager::class, 'truncateTextAnswer');
+        $method->setAccessible(true);
+        $this->assertSame($savedAnswer, $method->invoke(null, \Question::QT_T_LONG_FREE_TEXT, $savedAnswer, $sgqa, $qid));
+        $this->assertArrayNotHasKey($sgqa, $this->getInvalidAnswerStrings());
+        $this->assertSame($savedAnswer, $method->invoke(null, \Question::QT_T_LONG_FREE_TEXT, $savedAnswer . 'b', $sgqa, $qid));
+        $this->assertArrayHasKey($sgqa, $this->getInvalidAnswerStrings());
+
+        unset($_SESSION['responses_' . self::$surveyId][$sgqa]);
+        $qattr->setValue($LEM, $originalQattr);
+        $sessid->setValue($LEM, $originalSessid);
+        $this->getInvalidAnswerStringProperty()->setValue($LEM, []);
+    }
+
+    /**
+     * A value is shortened to the limit of its response column, in bytes or characters, less when encrypted.
+     */
+    public function testValueIsFittedToResponseColumn()
+    {
+        $sgqa = 'Q999999';
+        $method = new \ReflectionMethod(\LimeExpressionManager::class, 'fitResponseColumn');
+        $method->setAccessible(true);
+
+        // No limit: unchanged
+        $this->setResponseColumnLimit($sgqa, null);
+        $this->assertSame(str_repeat('ä', 100), $method->invoke(null, str_repeat('ä', 100), $sgqa, 999999));
+
+        // 'ä' is 2 bytes, so a cut at exactly 11 bytes would split a character
+        $this->setResponseColumnLimit($sgqa, ['length' => 11, 'bytes' => true, 'encrypted' => false]);
+        $this->assertSame(str_repeat('ä', 5), $method->invoke(null, str_repeat('ä', 10), $sgqa, 999999));
+        $this->assertSame(str_repeat('ä', 5), $method->invoke(null, str_repeat('ä', 5), $sgqa, 999999));
+
+        $this->setResponseColumnLimit($sgqa, ['length' => 3, 'bytes' => false, 'encrypted' => false]);
+        $this->assertSame('äää', $method->invoke(null, 'ääää', $sgqa, 999999));
+
+        $this->setResponseColumnLimit($sgqa, ['length' => 65535, 'bytes' => true, 'encrypted' => true]);
+        $maxBytes = \Yii::app()->sodium->getMaxPlaintextBytes(65535);
+        $result = $method->invoke(null, str_repeat('a', 65535), $sgqa, 999999);
+        $this->assertSame($maxBytes, strlen($result));
+        $this->assertLessThanOrEqual(65535, strlen(\Yii::app()->sodium->encrypt($result)));
+    }
+
+    /**
+     * A submitted answer that does not fit the response column is shortened and the question gets an error.
+     */
+    public function testAnswerNotFittingResponseColumnIsShortened()
+    {
+        $qid = 999999;
+        $sgqa = 'Q' . $qid;
+        $LEM = \LimeExpressionManager::singleton();
+        $qattr = new \ReflectionProperty(\LimeExpressionManager::class, 'qattr');
+        $qattr->setAccessible(true);
+        $originalQattr = $qattr->getValue($LEM);
+        $qattr->setValue($LEM, [$qid => []]);
+        $this->getInvalidAnswerStringProperty()->setValue($LEM, []);
+        $this->setResponseColumnLimit($sgqa, ['length' => 5, 'bytes' => true, 'encrypted' => false]);
+
+        $method = new \ReflectionMethod(\LimeExpressionManager::class, 'truncateTextAnswer');
+        $method->setAccessible(true);
+        $this->assertSame('abcde', $method->invoke(null, \Question::QT_T_LONG_FREE_TEXT, 'abcdefgh', $sgqa, $qid));
+        $this->assertArrayHasKey($sgqa, $this->getInvalidAnswerStrings());
+
+        $qattr->setValue($LEM, $originalQattr);
+        $this->getInvalidAnswerStringProperty()->setValue($LEM, []);
+    }
+
+    /**
+     * An Equation result that does not fit the response column is shortened.
+     */
+    public function testTooLongEquationResultIsShortened()
+    {
+        $sgqa = 'Q999999';
         $method = new \ReflectionMethod(\LimeExpressionManager::class, 'truncateEquationResult');
         $method->setAccessible(true);
-        $shortResult = str_repeat('a', 40000);
-        // 'ä' is 2 bytes, so a cut at exactly 65535 bytes would split a character
-        $longResult = str_repeat('ä', 40000);
+        $this->setResponseColumnLimit($sgqa, ['length' => 65535, 'bytes' => true, 'encrypted' => false]);
 
-        $this->assertSame($shortResult, $method->invoke(null, $shortResult, $sgqa, $question->qid));
-        $result = $method->invoke(null, $longResult, $sgqa, $question->qid);
-        if (\Yii::app()->db->driverName != 'mysql') {
-            $this->assertSame($longResult, $result);
-            return;
-        }
+        $this->assertSame(str_repeat('a', 40000), $method->invoke(null, str_repeat('a', 40000), $sgqa, 999999));
+        $result = $method->invoke(null, str_repeat('ä', 40000), $sgqa, 999999);
         $this->assertSame(65534, strlen($result));
         $this->assertTrue(mb_check_encoding($result, 'UTF-8'));
     }
@@ -136,6 +215,17 @@ class FreeTextMaxCharsTest extends TestBaseClass
     }
 
     /**
+     * The line breaks of a shortened answer are kept, a line break counting as one character.
+     */
+    public function testLineBreaksAreKeptWhenShortened()
+    {
+        list($sgqa) = $this->processAnswer("ab\r\ncd\r\nefghijklmno");
+
+        $this->assertSame("ab\r\ncd\r\nefgh", $_SESSION['responses_' . self::$surveyId][$sgqa]);
+        $this->assertArrayHasKey($sgqa, $this->getInvalidAnswerStrings());
+    }
+
+    /**
      * Activating a survey creates a MEDIUMTEXT response column for Long free text questions on MySQL.
      * MEDIUMTEXT is only different from TEXT on MySQL/MariaDB.
      * @group mysql
@@ -149,6 +239,21 @@ class FreeTextMaxCharsTest extends TestBaseClass
 
         $db->schema->refresh();
         $this->assertSame('mediumtext', strtolower($db->schema->getTable($tableName)->getColumn($sgqa)->dbType));
+
+        // ExpressionManager reads the limit of the column
+        list($question) = self::$testHelper->getSgqa('Q00', self::$surveyId);
+        $LEM = \LimeExpressionManager::singleton();
+        $sid = new \ReflectionProperty(\LimeExpressionManager::class, 'sid');
+        $sid->setAccessible(true);
+        $originalSid = $sid->getValue($LEM);
+        $sid->setValue($LEM, self::$surveyId);
+        $method = new \ReflectionMethod(\LimeExpressionManager::class, 'getResponseColumnLimit');
+        $method->setAccessible(true);
+        $this->assertSame(
+            ['length' => 16777215, 'bytes' => true, 'encrypted' => false],
+            $method->invoke(null, $sgqa, $question->qid)
+        );
+        $sid->setValue($LEM, $originalSid);
     }
 
     /**
@@ -187,6 +292,35 @@ class FreeTextMaxCharsTest extends TestBaseClass
 
         \LimeExpressionManager::ProcessCurrentResponses();
         return [$sgqa];
+    }
+
+    /**
+     * Set the cached limit of a response column of the current survey of ExpressionManager.
+     *
+     * @param string $sgqa The answer column
+     * @param array{length: int, bytes: bool, encrypted: bool}|null $limit
+     * @return void
+     */
+    private function setResponseColumnLimit($sgqa, $limit)
+    {
+        $sid = new \ReflectionProperty(\LimeExpressionManager::class, 'sid');
+        $sid->setAccessible(true);
+        $property = $this->getResponseColumnLimitsProperty();
+        $limits = $property->getValue();
+        $limits[intval($sid->getValue(\LimeExpressionManager::singleton())) . ':' . $sgqa] = $limit;
+        $property->setValue(null, $limits);
+    }
+
+    /**
+     * Get the accessible responseColumnLimits property of ExpressionManager.
+     *
+     * @return \ReflectionProperty
+     */
+    private function getResponseColumnLimitsProperty()
+    {
+        $property = new \ReflectionProperty(\LimeExpressionManager::class, 'responseColumnLimits');
+        $property->setAccessible(true);
+        return $property;
     }
 
     /**
