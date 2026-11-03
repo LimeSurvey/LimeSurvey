@@ -53,6 +53,7 @@ const setup = async (props = {}) => {
 describe('RowQuestion menu', () => {
   beforeEach(() => {
     mockSetFocused.mockClear()
+    queryClient.setQueryData([STATES.OPERATION_FINISH_SUBSCRIPTIONS], new Map())
   })
 
   test('renders heading, items in order, and separator', async () => {
@@ -168,6 +169,7 @@ describe('RowQuestion menu', () => {
       await screen.findByTestId('confirm-modal-confirm-button')
     )
     expect(Toast).not.toHaveBeenCalled()
+    expect(answerUpdateSubscriptions()).toHaveLength(1)
     const [subscription] = answerUpdateSubscriptions()
     expect(subscription.id).toBe(question.qid)
     act(() => subscription.callback())
@@ -179,6 +181,36 @@ describe('RowQuestion menu', () => {
     )
   })
 
+  test('no save subscription is left when nothing was queued', async () => {
+    await setup({ assignNumericAnswerCodes: jest.fn(() => false) })
+    await userEvent.click(screen.getByTestId('assign-numeric-codes-button'))
+    await userEvent.click(
+      await screen.findByTestId('confirm-modal-confirm-button')
+    )
+    expect(answerUpdateSubscriptions()).toHaveLength(0)
+  })
+
+  test('a throwing assignment shows an error and leaves no subscription', async () => {
+    Toast.mockClear()
+    const consoleError = jest.spyOn(console, 'error').mockImplementation()
+    await setup({
+      assignNumericAnswerCodes: jest.fn(() => {
+        throw new Error('boom')
+      }),
+    })
+    await userEvent.click(screen.getByTestId('assign-numeric-codes-button'))
+    await userEvent.click(
+      await screen.findByTestId('confirm-modal-confirm-button')
+    )
+    expect(answerUpdateSubscriptions()).toHaveLength(0)
+    expect(Toast).toHaveBeenCalledWith(
+      expect.objectContaining({
+        message: 'Numeric answer codes could not be assigned.',
+      })
+    )
+    consoleError.mockRestore()
+  })
+
   test('a failed save shows an error toast and logs the error', async () => {
     Toast.mockClear()
     const consoleError = jest.spyOn(console, 'error').mockImplementation()
@@ -187,10 +219,8 @@ describe('RowQuestion menu', () => {
     await userEvent.click(
       await screen.findByTestId('confirm-modal-confirm-button')
     )
-    const subscriptions = answerUpdateSubscriptions()
-    act(() =>
-      subscriptions[subscriptions.length - 1].onError({ error: 'boom' })
-    )
+    const [subscription] = answerUpdateSubscriptions()
+    act(() => subscription.onError({ error: 'boom' }))
     expect(Toast).toHaveBeenCalledWith(
       expect.objectContaining({
         message: 'Numeric answer codes could not be assigned.',

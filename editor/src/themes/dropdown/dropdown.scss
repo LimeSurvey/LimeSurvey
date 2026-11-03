@@ -43,7 +43,7 @@
     &.has-trailing-icon {
       justify-content: space-between;
 
-      i:last-child {
+      > i:last-child {
         padding-right: 0;
         padding-left: 8px;
       }

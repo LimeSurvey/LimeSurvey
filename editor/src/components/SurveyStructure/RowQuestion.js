@@ -83,7 +83,18 @@ export const RowQuestion = ({
 
   const confirmAssignNumericCodes = () => {
     setNumericCodesConfirm({ show: false, references: [] })
-    // The change is only queued here; report the result once it is saved
+    let changed
+    try {
+      changed = assignNumericAnswerCodes(question)
+    } catch (error) {
+      showAssignError(error)
+      return
+    }
+    if (!changed) {
+      return
+    }
+    // The change is only queued here (the save is debounced), so subscribing
+    // afterwards still catches its result and leaves no stale subscription
     subscribeToOperationFinish({
       entity: Entities.answer,
       operation: Operations.update,
@@ -96,11 +107,6 @@ export const RowQuestion = ({
         ),
       onError: showAssignError,
     })
-    try {
-      assignNumericAnswerCodes(question)
-    } catch (error) {
-      showAssignError(error)
-    }
   }
 
   const numericCodesWarning = (
