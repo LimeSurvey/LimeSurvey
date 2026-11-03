@@ -45,7 +45,7 @@ export const RowQuestion = ({
           {
             type: 'item',
             label: t('Duplicate question'),
-            icon: 'ri-file-copy-line',
+            icon: 'ri-file-copy-2-line',
             onClick: duplicateQuestion,
             testId: 'duplicate-button',
             disabled: { state: isSurveyActive },
@@ -53,7 +53,7 @@ export const RowQuestion = ({
           {
             type: 'item',
             label: t('Delete question'),
-            icon: 'ri-delete-bin-line',
+            icon: 'ri-delete-bin-fill',
             onClick: deleteQuestion,
             className: 'text-danger',
             testId: 'delete-button',
