@@ -23,7 +23,7 @@ abstract class LSConsoleCommand extends CConsoleCommand
      *
      * @param string $configPath Path of the config.php of the installation to work on
      * @return void
-     * @throws CException If the config file cannot be found
+     * @throws CException If the config file cannot be found or is not a LimeSurvey config.php
      */
     protected function useCustomConfig($configPath)
     {
@@ -32,6 +32,9 @@ abstract class LSConsoleCommand extends CConsoleCommand
             throw new CException("Config file not found: $configPath");
         }
         $configuration = include($readFromConfig);
+        if (!is_array($configuration) || empty($configuration['components']['db']['connectionString'])) {
+            throw new CException("Not a LimeSurvey config.php (no database connection in it): $configPath");
+        }
         $dbConnectionArray = $configuration['components']['db'];
         foreach ($configuration as $configKey => $configValue) {
             Yii::app()->params[$configKey] = $configValue;
@@ -44,10 +47,13 @@ abstract class LSConsoleCommand extends CConsoleCommand
         $connection->connectionString = $dbConnectionArray['connectionString'];
         $connection->username = $dbConnectionArray['username'];
         $connection->password = $dbConnectionArray['password'];
-        if (isset($dbConnectionArray['tablePrefix'])) {
-            $connection->tablePrefix = $dbConnectionArray['tablePrefix'];
-        }
+        $connection->tablePrefix = $dbConnectionArray['tablePrefix'] ?? null;
         $connection->active = true;
+        // The console application already read settings_global of the default installation at
+        // startup: forget the cached table schemas and the model metadata, which still carry the
+        // default installation's table prefix
+        $connection->getSchema()->refresh();
+        SettingGlobal::model()->refreshMetaData();
         echo "Using connection string " . $connection->connectionString . "\n";
     }
 }

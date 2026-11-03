@@ -52,11 +52,7 @@ class UploaderController extends SurveyController
 
         // No file may be stored or deleted while the maintenance mode keeps participants from taking surveys
         if (($bDelete || $sMode == "upload") && SettingGlobal::isMaintenanceModeHard()) {
-            http_response_code(503);
-            header('Retry-After: 300');
-            header('Content-Type: text/plain; charset=UTF-8');
-            echo gT("Our survey site is currently undergoing maintenance.");
-            Yii::app()->end();
+            $this->endRequestWithMaintenanceMessage(gT("Our survey site is currently undergoing maintenance."), 'text');
         }
 
         // Validate and filter and throw error if problems

@@ -68,7 +68,21 @@ abstract class LSYii_Controller extends CController
         if (!SettingGlobal::isAdministrationLocked()) {
             return;
         }
-        $message = gT('The administration of this site is temporarily locked for maintenance, for example while a backup or an update is being made. Please try again later.');
+        $this->endRequestWithMaintenanceMessage(
+            gT('The administration of this site is temporarily locked for maintenance, for example while a backup or an update is being made. Please try again later.'),
+            $format
+        );
+    }
+
+    /**
+     * Ends the request with HTTP 503, a Retry-After header and the given maintenance message.
+     *
+     * @param string $message The message to show
+     * @param string $format 'html' for the admin maintenance page, 'text' for a plain text body, 'json' for a JSON body
+     * @return void
+     */
+    protected function endRequestWithMaintenanceMessage($message, $format)
+    {
         http_response_code(503);
         header('Retry-After: 300');
         if ($format === 'json') {
@@ -98,12 +112,12 @@ abstract class LSYii_Controller extends CController
             return;
         }
         Template::model()->getInstance('', $survey->sid);
+        // Renders the page and ends the request
         Yii::app()->twigRenderer->renderTemplateFromFile(
             'layout_maintenance.twig',
             ['oSurvey' => $survey, 'aSurveyInfo' => getSurveyInfo($survey->sid, App()->language)],
             false
         );
-        Yii::app()->end();
     }
 
     /**

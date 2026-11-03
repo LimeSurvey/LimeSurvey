@@ -17,6 +17,11 @@ class SettingGlobalMaintenanceModeTest extends TestBaseClass
     /** @var string|false The settings_global row as it was before the test, false if there was none */
     private $previousRow;
 
+    /**
+     * Loads the console command and remembers the setting and its settings_global row.
+     *
+     * @return void
+     */
     #[\Override]
     public function setUp(): void
     {
@@ -26,6 +31,11 @@ class SettingGlobalMaintenanceModeTest extends TestBaseClass
         $this->previousRow = $this->readRow();
     }
 
+    /**
+     * Restores the setting and its settings_global row.
+     *
+     * @return void
+     */
     #[\Override]
     public function tearDown(): void
     {
@@ -39,7 +49,9 @@ class SettingGlobalMaintenanceModeTest extends TestBaseClass
     }
 
     /**
-     * @return string|false the stored value, false if there is no row
+     * Reads the maintenancemode row from settings_global.
+     *
+     * @return string|false The stored value, false if there is no row
      */
     private function readRow()
     {
@@ -97,10 +109,13 @@ class SettingGlobalMaintenanceModeTest extends TestBaseClass
         $this->assertFalse(SettingGlobal::isMaintenanceModeHard('soft'));
         $this->assertFalse(SettingGlobal::isMaintenanceModeHard('off'));
 
-        // Installations updated from older versions have no value at all
+        // Installations updated from older versions have no value at all, unknown values count as off
         \Yii::app()->setConfig('maintenancemode', '');
         $this->assertSame('off', SettingGlobal::getMaintenanceMode());
         $this->assertFalse(SettingGlobal::isAdministrationLocked());
+        \Yii::app()->setConfig('maintenancemode', 'Hard');
+        $this->assertSame('off', SettingGlobal::getMaintenanceMode());
+        $this->assertFalse(SettingGlobal::isMaintenanceModeHard());
     }
 
     /**
@@ -123,6 +138,8 @@ class SettingGlobalMaintenanceModeTest extends TestBaseClass
 
         $this->assertSame(1, $this->runCommand([]), 'Missing mode is a usage error');
         $this->assertSame(1, $this->runCommand(['hardcli']));
+        $this->assertSame(1, $this->runCommand(['off', '/no/such/config.php']), 'A missing config.php is a usage error');
+        $this->assertSame(1, $this->runCommand(['off', dirname(__DIR__, 3) . '/README.md']), 'A file that is not a config.php is a usage error');
         $this->assertSame('soft', $this->readRow(), 'A usage error changes nothing');
     }
 }

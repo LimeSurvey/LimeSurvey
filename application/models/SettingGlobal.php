@@ -117,13 +117,15 @@ class SettingGlobal extends LSActiveRecord
 
     /**
      * Returns the current maintenance mode, one of the MAINTENANCE_MODE_* constants.
+     * An empty or unknown value counts as "off".
      *
      * @return string
      */
     public static function getMaintenanceMode()
     {
         $mode = (string) App()->getConfig('maintenancemode', self::MAINTENANCE_MODE_OFF);
-        return ($mode === '') ? self::MAINTENANCE_MODE_OFF : $mode;
+        $modes = [self::MAINTENANCE_MODE_OFF, self::MAINTENANCE_MODE_SOFT, self::MAINTENANCE_MODE_HARD, self::MAINTENANCE_MODE_HARD_CLI];
+        return in_array($mode, $modes, true) ? $mode : self::MAINTENANCE_MODE_OFF;
     }
 
     /**

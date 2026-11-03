@@ -42,7 +42,7 @@ class SetMaintenanceModeCommand extends LSConsoleCommand
 
     /**
      * @param array $args The mode, optionally followed by the path of a config.php
-     * @return int 0 on success, 1 on wrong usage
+     * @return int 0 on success, 1 on wrong usage or an unusable config.php
      */
     #[\Override]
     public function run($args)
@@ -59,7 +59,12 @@ class SetMaintenanceModeCommand extends LSConsoleCommand
             return 1;
         }
         if (!empty($args[1])) {
-            $this->useCustomConfig($args[1]);
+            try {
+                $this->useCustomConfig($args[1]);
+            } catch (CException $e) {
+                echo $e->getMessage() . "\n" . $this->getHelp();
+                return 1;
+            }
         }
         SettingGlobal::setSetting('maintenancemode', $mode);
         echo "Maintenance mode set to '$mode'.\n";
