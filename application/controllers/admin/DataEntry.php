@@ -400,6 +400,13 @@ class DataEntry extends SurveyCommonAction
                     }
                 }
             }
+            $otherCheckedFromText = [];
+            foreach ($targetSchema->getColumnNames() as $checkedColumn) {
+                $otherColumn = substr((string) $checkedColumn, 0, -7);
+                if (substr((string) $checkedColumn, -14) === '_Cotherchecked' && !in_array($checkedColumn, $fieldMap, true) && in_array($otherColumn, $fieldMap, true)) {
+                    $otherCheckedFromText[$checkedColumn] = $otherColumn;
+                }
+            }
             foreach ($sourceResponses as $sourceResponse) {
                 $iOldID = $sourceResponse->id;
                 // Using plugindynamic model because I dont trust surveydynamic.
@@ -429,6 +436,9 @@ class DataEntry extends SurveyCommonAction
                     if (!in_array($sourceField, $archivedEncryptedAttributes, false) && in_array($sourceField, $encryptedAttributes, false)) {
                         $targetResponse[$targetField] = $sourceResponse->encryptSingle($sourceResponse[$sourceField]);
                     }
+                }
+                foreach ($otherCheckedFromText as $checkedColumn => $otherColumn) {
+                    $targetResponse[$checkedColumn] = $targetResponse[$otherColumn] === null ? null : '';
                 }
                 $rankingJSONs = [];
 

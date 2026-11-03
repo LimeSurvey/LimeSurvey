@@ -6689,10 +6689,9 @@ class LimeExpressionManager
                         //$mandatoryTip .= "\n".sprintf($this->gT("If you choose '%s' please also specify your choice in the accompanying text field."),$othertext);
                         $sMandatoryText = "\n" . sprintf($this->gT("If you choose '%s' please also specify your choice in the accompanying text field."), $othertext);
                         $mandatoryTip .= App()->twigRenderer->renderPartial(
-                            '/survey/questions/question_help/mandatory_tip.twig',
+                            '/survey/questions/question_help/mandatory_tip_other.twig',
                             [
                                 'sMandatoryText' => $sMandatoryText,
-                                'part'           => 'other',
                                 'qInfo'          => $qInfo
                             ]
                         );
