@@ -12,7 +12,18 @@
     </strong>
 <?php else : ?>
     <?php unset($aResults['global']); ?>
+    <?php
+    // Inserted after "Save": the alert role makes the screen reader announce the result
+    $updatedCount = count(array_filter($aResults, function ($result) {
+        return $result['status'] === true;
+    }));
+    $this->widget('ext.AlertWidget.AlertWidget', [
+        'text' => sprintf(ngT('%s participant was updated.|%s participants were updated.', $updatedCount), $updatedCount),
+        'type' => 'success',
+    ]);
+    ?>
     <table class="table table-striped">
+        <caption class="massive-action-results-caption visually-hidden"><?php eT('Batch edit the participants'); ?></caption>
         <thead>
             <th><?php eT('Participant ID');?></th>
             <th><?php eT('Status');?></th>

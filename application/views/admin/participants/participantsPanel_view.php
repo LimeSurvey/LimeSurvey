@@ -59,7 +59,7 @@ App()->getClientScript()->registerScriptFile(
 
 <!-- Modal for editing participants-->
 <div class="modal fade" id="participantPanel_edit_modal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="participant_edit_modal">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog">
         <div class="modal-content">
 
         </div>
