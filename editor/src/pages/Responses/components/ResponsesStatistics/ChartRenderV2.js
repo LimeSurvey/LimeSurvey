@@ -121,6 +121,8 @@ const VIEWS = [
     graphType: statisticsGraphs.DOUGHNUT_CHART,
     label: () => t('Doughnut chart'),
     icon: () => <i className="ri-donut-chart-line"></i>,
+    // Segmented rows (row.segments) only come from dual-scale questions.
+    supports: ({ isDualScale }) => isDualScale,
     render: ({ data }) => <DualScaleDoughnutChart data={data} />,
   },
   {
@@ -171,6 +173,8 @@ const VIEWS = [
     label: () => t('Doughnut chart'),
     icon: () => <i className="ri-donut-chart-line"></i>,
     menuOnly: true,
+    // Flat values only; dual-scale rows use the segmented doughnut instead.
+    supports: ({ isDualScale }) => !isDualScale,
     render: ({ data, isImage }) => (
       <DoughnutChart data={data} isImage={isImage} />
     ),
@@ -299,7 +303,8 @@ const GRAPH_VIEWS = {
   [statisticsGraphs.RADAR]: [VIEW.RADAR],
   [statisticsGraphs.LINE]: [VIEW.LINE],
   [statisticsGraphs.POLAR_AREA]: [VIEW.POLAR_AREA],
-  [statisticsGraphs.DOUGHNUT_CHART]: [VIEW.DOUGHNUT, VIEW.STACKED_DOUGHNUT],
+  // Only one of the two is available per question (see `supports`).
+  [statisticsGraphs.DOUGHNUT_CHART]: [VIEW.STACKED_DOUGHNUT, VIEW.DOUGHNUT],
   [statisticsGraphs.STACKED_BAR]: [VIEW.STACKED_BAR],
   [statisticsGraphs.GROUPED_BAR]: [VIEW.GROUPED_BAR],
   [statisticsGraphs.GRID]: [VIEW.GRID],
@@ -382,8 +387,11 @@ export const ChartRendererV2 = ({
     isMultiNumerical,
   }
 
-  const availableViews = VIEWS.filter(({ graphType }) =>
-    availableGraphTypes.includes(graphType)
+  // `supports` narrows views that share a graph type to the data shape they render.
+  const availableViews = VIEWS.filter(
+    ({ graphType, supports }) =>
+      availableGraphTypes.includes(graphType) &&
+      (!supports || supports({ isDualScale }))
   )
   const [view, setView] = useState(() =>
     getDefaultView(availableViews, viewContext, question?.chartType)
