@@ -1,24 +1,13 @@
 import 'tests/mocks'
 
-import { screen, waitFor } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { renderWithProviders } from 'tests/testUtils'
 import { Toast } from 'helpers/Alert'
+import { STATES } from 'helpers'
+import { queryClient } from 'queryClient'
 
 import { RowQuestion } from './RowQuestion'
-
-let mockShowCode = true
-let mockShowNumber = true
-const mockUpdate = jest.fn()
-jest.mock('hooks/useSurvey', () => ({
-  useSurvey: () => ({
-    survey: {
-      ...require('helpers/data/survey-detail.json').survey,
-      showQNumCode: { showCode: mockShowCode, showNumber: mockShowNumber },
-    },
-    update: mockUpdate,
-  }),
-}))
 
 jest.mock('helpers/Alert', () => ({
   ...jest.requireActual('helpers/Alert'),
@@ -42,6 +31,7 @@ const setup = async (props = {}) => {
     duplicateQuestion: jest.fn(),
     deleteQuestion: jest.fn(),
     assignNumericAnswerCodes: jest.fn(() => true),
+    toggleQuestionCodes: jest.fn(),
   }
   await renderWithProviders(
     <RowQuestion
@@ -50,20 +40,18 @@ const setup = async (props = {}) => {
       provided={{}}
       snapshot={{}}
       focused={{}}
+      areCodesVisible
       {...handlers}
       {...props}
     />
   )
-  const toggle = await screen.findByRole('menu', { name: 'Question menu' })
+  const toggle = await screen.findByRole('button', { name: 'Question menu' })
   await userEvent.click(toggle)
   return { toggle, ...handlers }
 }
 
 describe('RowQuestion menu', () => {
   beforeEach(() => {
-    mockShowCode = true
-    mockShowNumber = true
-    mockUpdate.mockClear()
     mockSetFocused.mockClear()
   })
 
@@ -78,7 +66,7 @@ describe('RowQuestion menu', () => {
           'Duplicate question',
           'Delete question',
           'Check logic',
-          'Show/hide question codes',
+          'Hide question codes',
           'Assign numeric answer codes',
         ].includes(t)
       )
@@ -86,7 +74,7 @@ describe('RowQuestion menu', () => {
       'Duplicate question',
       'Delete question',
       'Check logic',
-      'Show/hide question codes',
+      'Hide question codes',
       'Assign numeric answer codes',
     ])
     expect(document.querySelectorAll('.dropdown-divider')).toHaveLength(1)
@@ -101,30 +89,18 @@ describe('RowQuestion menu', () => {
   })
 
   test('trailing icon is crossed out when codes are hidden', async () => {
-    mockShowCode = false
-    await setup()
+    await setup({ areCodesVisible: false })
+    expect(screen.getByText('Show question codes')).toBeInTheDocument()
     expect(
       screen.getByTestId('toggle-question-codes-button-trailing-icon')
     ).toHaveClass('ri-eye-off-line')
   })
 
-  test('toggle updates the survey and menu clicks do not activate the row', async () => {
-    await setup()
+  test('toggle calls the handler and menu clicks do not activate the row', async () => {
+    const { toggleQuestionCodes } = await setup()
     await userEvent.click(screen.getByTestId('toggle-question-codes-button'))
-    expect(mockUpdate).toHaveBeenCalledWith({
-      showQNumCode: { showCode: false, showNumber: false },
-    })
+    expect(toggleQuestionCodes).toHaveBeenCalledTimes(1)
     expect(mockSetFocused).not.toHaveBeenCalled()
-  })
-
-  test('toggle sets showCode and showNumber to the same value when diverged', async () => {
-    mockShowCode = false
-    mockShowNumber = true
-    await setup()
-    await userEvent.click(screen.getByTestId('toggle-question-codes-button'))
-    expect(mockUpdate).toHaveBeenCalledWith({
-      showQNumCode: { showCode: true, showNumber: true },
-    })
   })
 
   test('Escape closes the menu and focuses the toggle', async () => {
@@ -136,16 +112,65 @@ describe('RowQuestion menu', () => {
     expect(toggle).toHaveFocus()
   })
 
-  test('assign numeric codes calls the handler; disabled when survey active', async () => {
+  const answerUpdateSubscriptions = () =>
+    queryClient
+      .getQueryData([STATES.OPERATION_FINISH_SUBSCRIPTIONS])
+      ?.get('answer_update') ?? []
+
+  test('assign numeric codes asks for confirmation before changing anything', async () => {
     const { assignNumericAnswerCodes } = await setup()
     await userEvent.click(screen.getByTestId('assign-numeric-codes-button'))
+    expect(
+      await screen.findByText(/Conditions, expressions, default answers/)
+    ).toBeInTheDocument()
+    expect(assignNumericAnswerCodes).not.toHaveBeenCalled()
+    await userEvent.click(screen.getByTestId('confirm-modal-confirm-button'))
     expect(assignNumericAnswerCodes).toHaveBeenCalledWith(question)
   })
 
-  test('assign numeric codes shows a success toast when codes changed', async () => {
+  test('the confirmation lists questions whose logic uses the code', async () => {
+    await setup()
+    const loaded = queryClient.getQueryData([STATES.SURVEY])
+    queryClient.setQueryData([STATES.SURVEY], {
+      ...loaded,
+      survey: {
+        ...loaded.survey,
+        language: 'en',
+        questionGroups: [
+          {
+            gid: 1,
+            gRelevance: '1',
+            l10ns: { en: { groupName: 'G1' } },
+            questions: [
+              question,
+              { qid: 2, title: 'Q2', relevance: 'Q1 == "AO01"', l10ns: {} },
+              { qid: 3, title: 'Q3', relevance: 'Q10 == "1"', l10ns: {} },
+            ],
+          },
+        ],
+      },
+    })
+    try {
+      await userEvent.click(screen.getByTestId('assign-numeric-codes-button'))
+      expect(
+        await screen.findByTestId('numeric-codes-references')
+      ).toHaveTextContent(/^Q2$/)
+    } finally {
+      queryClient.setQueryData([STATES.SURVEY], loaded)
+    }
+  })
+
+  test('the success toast waits for the save result', async () => {
     Toast.mockClear()
     await setup()
     await userEvent.click(screen.getByTestId('assign-numeric-codes-button'))
+    await userEvent.click(
+      await screen.findByTestId('confirm-modal-confirm-button')
+    )
+    expect(Toast).not.toHaveBeenCalled()
+    const [subscription] = answerUpdateSubscriptions()
+    expect(subscription.id).toBe(question.qid)
+    act(() => subscription.callback())
     expect(Toast).toHaveBeenCalledWith(
       expect.objectContaining({
         message: 'Numeric answer codes assigned.',
@@ -154,9 +179,32 @@ describe('RowQuestion menu', () => {
     )
   })
 
-  test('assign numeric codes shows an info toast when nothing changed', async () => {
+  test('a failed save shows an error toast and logs the error', async () => {
     Toast.mockClear()
-    await setup({ assignNumericAnswerCodes: jest.fn(() => false) })
+    const consoleError = jest.spyOn(console, 'error').mockImplementation()
+    await setup()
+    await userEvent.click(screen.getByTestId('assign-numeric-codes-button'))
+    await userEvent.click(
+      await screen.findByTestId('confirm-modal-confirm-button')
+    )
+    const subscriptions = answerUpdateSubscriptions()
+    act(() =>
+      subscriptions[subscriptions.length - 1].onError({ error: 'boom' })
+    )
+    expect(Toast).toHaveBeenCalledWith(
+      expect.objectContaining({
+        message: 'Numeric answer codes could not be assigned.',
+      })
+    )
+    expect(consoleError).toHaveBeenCalled()
+    consoleError.mockRestore()
+  })
+
+  test('assign numeric codes shows an info toast when codes are already numeric', async () => {
+    Toast.mockClear()
+    const { assignNumericAnswerCodes } = await setup({
+      question: { ...question, answers: [{ aid: 1, code: '1', sortOrder: 0 }] },
+    })
     await userEvent.click(screen.getByTestId('assign-numeric-codes-button'))
     expect(Toast).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -164,6 +212,8 @@ describe('RowQuestion menu', () => {
         className: 'import-survey-toast import-survey-toast--info',
       })
     )
+    expect(assignNumericAnswerCodes).not.toHaveBeenCalled()
+    expect(screen.queryByTestId('confirm-modal-confirm-button')).toBeNull()
   })
 
   test('assign numeric codes is disabled for active surveys', async () => {
@@ -192,7 +242,7 @@ describe('RowQuestion menu', () => {
         />
       </>
     )
-    const [a, b] = await screen.findAllByRole('menu', {
+    const [a, b] = await screen.findAllByRole('button', {
       name: 'Question menu',
     })
     await userEvent.click(a)

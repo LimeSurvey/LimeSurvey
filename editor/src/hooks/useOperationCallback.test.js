@@ -77,4 +77,23 @@ describe('useOperationCallback', () => {
       error: 'Server error',
     })
   })
+
+  test('a subscription with an id only fires for that entity id', () => {
+    const callback = jest.fn()
+    const { result } = renderHook(() => useOperationCallback(), { wrapper })
+
+    result.current.subscribeToOperationFinish({
+      entity: operation.entity,
+      operation: operation.op,
+      id: 456,
+      callback,
+    })
+    result.current.triggerCallbacks([operation], { operationsApplied: 1 })
+    expect(callback).not.toHaveBeenCalled()
+
+    result.current.triggerCallbacks([{ ...operation, id: 456 }], {
+      operationsApplied: 1,
+    })
+    expect(callback).toHaveBeenCalledTimes(1)
+  })
 })

@@ -1,14 +1,21 @@
 import { useState } from 'react'
+import { useParams } from 'react-router-dom'
 import { Draggable, Droppable } from '@hello-pangea/dnd'
 import classNames from 'classnames'
 
-import { useAppState, useBuffer, useFocused } from 'hooks'
+import {
+  useAppState,
+  useBuffer,
+  useFocused,
+  useToggleQuestionCodes,
+} from 'hooks'
 import {
   arrayDeleteItem,
   DuplicateQuestion,
   createBufferOperation,
   Entities,
   getNumericAnswerCodes,
+  hasNumericAnswerCodes,
   STATES,
 } from 'helpers'
 import { createChildrenUpdateOperation } from 'hooks/useQuestionChildren'
@@ -27,6 +34,10 @@ export const RowQuestionsList = ({
   const { focused = {}, setFocused, unFocus } = useFocused()
   const [deleteState, setDeleteState] = useState({ show: false, index: null })
   const [isSurveyActive] = useAppState(STATES.IS_SURVEY_ACTIVE, false)
+  const { surveyId } = useParams()
+  // Read once per list instead of per row to avoid a subscription per question
+  const { areCodesVisible, toggleQuestionCodes } =
+    useToggleQuestionCodes(surveyId)
 
   const getQuestionDragStyle = (draggableStyle) => ({
     userSelect: 'none',
@@ -72,11 +83,10 @@ export const RowQuestionsList = ({
   }
 
   const assignNumericAnswerCodes = (question, index) => {
-    const answers = getNumericAnswerCodes(question.answers)
-    const changed = answers.some((a, i) => a.code !== question.answers[i].code)
-    if (!changed) {
+    if (hasNumericAnswerCodes(question.answers)) {
       return false
     }
+    const answers = getNumericAnswerCodes(question.answers)
     const updatedQuestion = { ...question, answers }
     const updatedQuestions = [...questions]
     updatedQuestions[index] = updatedQuestion
@@ -166,6 +176,8 @@ export const RowQuestionsList = ({
                         assignNumericAnswerCodes={(q) =>
                           assignNumericAnswerCodes(q, index)
                         }
+                        areCodesVisible={areCodesVisible}
+                        toggleQuestionCodes={toggleQuestionCodes}
                       />
                     </div>
                   )}

@@ -4,12 +4,10 @@ import classNames from 'classnames'
 
 import {
   useAppState,
-  useBuffer,
-  useSurvey,
   useSurveyImportService,
+  useToggleQuestionCodes,
 } from 'hooks'
 import {
-  createBufferOperation,
   getSiteUrl,
   getTooltipMessages,
   PAGES,
@@ -45,9 +43,9 @@ export const TopBarActions = ({
   const location = useLocation()
   const navigate = useNavigate()
   const [showImportSurveyModal, setShowImportSurveyModal] = useState(false)
-  const { update } = useSurvey(surveyId)
   const surveyImportService = useSurveyImportService()
-  const { addToBuffer } = useBuffer()
+  const { areCodesVisible, toggleQuestionCodes } =
+    useToggleQuestionCodes(surveyId)
   const [siteSettings = {}] = useAppState(STATES.SITE_SETTINGS, {})
   const [, startEditorTutorial] = useAppState(
     STATES.START_EDITOR_TUTORIAL,
@@ -56,21 +54,6 @@ export const TopBarActions = ({
 
   const handleStartEditorTutorial = () => {
     startEditorTutorial(true)
-  }
-
-  const handleToggleQuestionCodes = () => {
-    const next = !survey.showQNumCode?.showCode
-    const operationAttr = {
-      showQNumCode: {
-        showCode: next,
-        showNumber: next,
-      },
-    }
-    update(operationAttr)
-    const operation = createBufferOperation(surveyId)
-      .survey()
-      .update(operationAttr)
-    addToBuffer(operation)
   }
 
   const isActiveMenuItem = (url) => {
@@ -141,8 +124,8 @@ export const TopBarActions = ({
     {
       type: 'item',
       label: t('Question codes'),
-      onClick: handleToggleQuestionCodes,
-      checked: !!survey.showQNumCode?.showCode,
+      onClick: toggleQuestionCodes,
+      checked: areCodesVisible,
     },
     {
       type: 'divider',

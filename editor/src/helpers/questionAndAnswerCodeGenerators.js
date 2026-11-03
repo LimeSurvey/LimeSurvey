@@ -47,6 +47,13 @@ export const getNextAnswerCode = (question, initialCode = null) => {
   ) {
     const answers = question?.answers ?? []
     answerTitles = answers.map((a) => a.code).filter(Boolean)
+    // Answers numbered 1, 2, 3 (e.g. by getNumericAnswerCodes) continue that scheme
+    if (
+      answerTitles.length > 0 &&
+      answerTitles.every((code) => /^[1-9]\d*$/.test(code))
+    ) {
+      return String(Math.max(...answerTitles.map(Number)) + 1)
+    }
   } else {
     answerTitles.push(initialCode.toString())
   }
@@ -56,8 +63,9 @@ export const getNextAnswerCode = (question, initialCode = null) => {
 }
 
 /**
- * Numbers answer options 1..n (no prefix) per scale, following sortOrder.
- * Idempotent: already numbered answers keep their code.
+ * Renumbers answer options 1..n (no prefix) per scale, following sortOrder.
+ * Every code is replaced, numeric ones included (10, 20, 30 become 1, 2, 3);
+ * running it again on the result changes nothing.
  */
 export const getNumericAnswerCodes = (answers = []) => {
   const counters = {}
@@ -70,3 +78,8 @@ export const getNumericAnswerCodes = (answers = []) => {
   })
   return answers.map((answer) => ({ ...answer, code: codes.get(answer) }))
 }
+
+export const hasNumericAnswerCodes = (answers = []) =>
+  getNumericAnswerCodes(answers).every(
+    (answer, index) => answer.code === answers[index].code
+  )

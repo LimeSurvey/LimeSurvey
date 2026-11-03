@@ -14,9 +14,10 @@ export const useOperationCallback = () => {
   })
 
   const subscribe = useCallback(
-    ({ entity, operation, callback, onError, once = true }) => {
+    ({ entity, operation, id, callback, onError, once = true }) => {
       const key = `${entity}_${operation}`
-      const subscription = { callback, onError, once }
+      // id is optional: when set, only operations on that entity id are matched
+      const subscription = { callback, onError, once, id }
 
       const currentSubscriptions = queryClient.getQueryData([
         STATES.OPERATION_FINISH_SUBSCRIPTIONS,
@@ -67,7 +68,13 @@ export const useOperationCallback = () => {
                 failed.op === operation.op
             )
 
-        matchingSubscriptions.forEach((subscription) => {
+        const applicableSubscriptions = matchingSubscriptions.filter(
+          (subscription) =>
+            subscription.id === undefined ||
+            String(subscription.id) === String(operation.id)
+        )
+
+        applicableSubscriptions.forEach((subscription) => {
           if (!failedOperation) {
             subscription.callback(results.extras)
           } else if (subscription.onError) {
@@ -76,7 +83,9 @@ export const useOperationCallback = () => {
         })
 
         const remainingSubscriptions = matchingSubscriptions.filter(
-          (subscription) => !subscription.once
+          (subscription) =>
+            !subscription.once ||
+            !applicableSubscriptions.includes(subscription)
         )
 
         if (remainingSubscriptions.length > 0) {

@@ -49,11 +49,6 @@
       }
     }
 
-    &.no-icon-space i:empty,
-    &.no-icon-space i:not([class]) {
-      display: none;
-    }
-
     &:hover,
     &.text-danger:hover {
       background-color: $g-200;

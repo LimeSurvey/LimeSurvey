@@ -2,8 +2,17 @@ import { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import classNames from 'classnames'
 
-import { useBuffer, useFocused, useSurvey } from 'hooks'
-import { createBufferOperation, Toast } from 'helpers'
+import { queryClient } from 'queryClient'
+import { useFocused, useOperationCallback } from 'hooks'
+import {
+  Entities,
+  findQuestionCodeReferences,
+  hasNumericAnswerCodes,
+  Operations,
+  STATES,
+  Toast,
+} from 'helpers'
+import { ConfirmModal } from 'components/Modals'
 import { ExclamationMark, InformationIcon } from 'components/icons'
 import SmallCheckMarkIcon from 'components/icons/SmallCheckMarkIcon'
 import { SideBarRow } from 'components/SideBar/SideBarRow'
@@ -23,54 +32,94 @@ export const RowQuestion = ({
   focused,
   isSurveyActive,
   assignNumericAnswerCodes,
+  areCodesVisible = false,
+  toggleQuestionCodes,
 }) => {
   const { setFocused } = useFocused()
   const { surveyId } = useParams()
-  const { survey, update } = useSurvey(surveyId)
-  const { addToBuffer } = useBuffer()
-  const areCodesVisible = !!survey.showQNumCode?.showCode
+  const { subscribeToOperationFinish } = useOperationCallback()
   const hasAnswerOptions = (question.answers?.length ?? 0) > 0
+  const [numericCodesConfirm, setNumericCodesConfirm] = useState({
+    show: false,
+    references: [],
+  })
 
-  const toggleQuestionCodes = () => {
-    const next = !survey.showQNumCode?.showCode
-    const operationAttr = {
-      showQNumCode: {
-        showCode: next,
-        showNumber: next,
-      },
-    }
-    update(operationAttr)
-    addToBuffer(createBufferOperation(surveyId).survey().update(operationAttr))
+  const showToast = (message, variant, icon) =>
+    Toast({
+      position: 'top-center',
+      duration: 5000,
+      message,
+      className: `import-survey-toast import-survey-toast--${variant}`,
+      leftIcon: icon,
+      rightIcon: '',
+    })
+
+  const showAssignError = (error) => {
+    // eslint-disable-next-line no-console
+    console.error('Assigning numeric answer codes failed', error)
+    showToast(
+      t('Numeric answer codes could not be assigned.'),
+      'error',
+      <ExclamationMark />
+    )
   }
 
   const handleAssignNumericCodes = () => {
-    const toastOptions = { position: 'top-center', duration: 5000 }
+    if (hasNumericAnswerCodes(question.answers)) {
+      showToast(
+        t('Answer options already use numeric codes.'),
+        'info',
+        <InformationIcon />
+      )
+      return
+    }
+    // Read at click time so rows do not subscribe to the whole survey
+    const survey = queryClient.getQueryData([STATES.SURVEY])?.survey
+    setNumericCodesConfirm({
+      show: true,
+      references: findQuestionCodeReferences(survey, question),
+    })
+  }
+
+  const confirmAssignNumericCodes = () => {
+    setNumericCodesConfirm({ show: false, references: [] })
+    // The change is only queued here; report the result once it is saved
+    subscribeToOperationFinish({
+      entity: Entities.answer,
+      operation: Operations.update,
+      id: question.qid,
+      callback: () =>
+        showToast(
+          t('Numeric answer codes assigned.'),
+          'success',
+          <SmallCheckMarkIcon />
+        ),
+      onError: showAssignError,
+    })
     try {
-      const changed = assignNumericAnswerCodes(question)
-      Toast({
-        ...toastOptions,
-        ...(changed
-          ? {
-              message: t('Numeric answer codes assigned.'),
-              className: 'import-survey-toast import-survey-toast--success',
-              leftIcon: <SmallCheckMarkIcon />,
-            }
-          : {
-              message: t('Answer options already use numeric codes.'),
-              className: 'import-survey-toast import-survey-toast--info',
-              leftIcon: <InformationIcon />,
-            }),
-        rightIcon: '',
-      })
-    } catch (e) {
-      Toast({
-        ...toastOptions,
-        message: t('Numeric answer codes could not be assigned.'),
-        className: 'import-survey-toast import-survey-toast--error',
-        leftIcon: <ExclamationMark />,
-      })
+      assignNumericAnswerCodes(question)
+    } catch (error) {
+      showAssignError(error)
     }
   }
+
+  const numericCodesWarning = (
+    <>
+      {t(
+        'Answer codes will be renumbered 1, 2, 3, … Conditions, expressions, default answers and quotas that use the current codes are not updated and may stop working.'
+      )}
+      {numericCodesConfirm.references.length > 0 && (
+        <>
+          <br />
+          <br />
+          {t('This question is used in:')}{' '}
+          <strong data-testid="numeric-codes-references">
+            {numericCodesConfirm.references.join(', ')}
+          </strong>
+        </>
+      )}
+    </>
+  )
   const [showLogicModal, setShowLogicModal] = useState(false)
 
   return (
@@ -118,7 +167,10 @@ export const RowQuestion = ({
           },
           {
             type: 'item',
-            label: t('Show/hide question codes'),
+            // The label states the action so screen readers know the current state
+            label: areCodesVisible
+              ? t('Hide question codes')
+              : t('Show question codes'),
             onClick: toggleQuestionCodes,
             testId: 'toggle-question-codes-button',
             trailingIcon: areCodesVisible ? 'ri-eye-line' : 'ri-eye-off-line',
@@ -143,6 +195,14 @@ export const RowQuestion = ({
         onRowClick={() =>
           setFocused({ ...question }, groupIndex, questionIndex)
         }
+      />
+      <ConfirmModal
+        show={numericCodesConfirm.show}
+        onHide={() => setNumericCodesConfirm({ show: false, references: [] })}
+        onConfirm={confirmAssignNumericCodes}
+        title={t('Assign numeric answer codes')}
+        description={numericCodesWarning}
+        confirmButtonText={t('Assign codes')}
       />
       <SurveyLogicModal
         show={showLogicModal}
