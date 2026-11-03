@@ -835,6 +835,8 @@ function buildsurveysession($surveyid, $preview = false)
 
     // Reset all the session variables and start again
     resetAllSessionVariables($surveyid);
+    // Remember the activation state the session was built for: the survey controller discards the session when it changes (see issue #19378)
+    $_SESSION['responses_' . $surveyid]['surveyactive'] = $survey->isActive;
 
     // NOTE: All of this is already done in survey controller.
     // We keep it here only for Travis Tested that are still not using Selenium
