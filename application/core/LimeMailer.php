@@ -230,6 +230,7 @@ class LimeMailer extends PHPMailer
 
     /**
      * Get the decrypted SMTP password from the global settings
+     * getConfig() decrypts the crypted settings (see SettingGlobal::getCryptedSettings())
      * A password that can't be decrypted (e.g. because the encryption keys changed since it was saved) is logged
      * and replaced by an empty password, so sending fails with a mailer error instead of an exception
      * @return string
@@ -237,7 +238,7 @@ class LimeMailer extends PHPMailer
     private function getSmtpPassword()
     {
         try {
-            return LSActiveRecord::decryptSingle(Yii::app()->getConfig("emailsmtppassword"));
+            return (string) Yii::app()->getConfig("emailsmtppassword");
         } catch (SodiumException $e) {
             Yii::log('Unable to decrypt the SMTP password: ' . $e->getMessage(), CLogger::LEVEL_ERROR, 'application.LimeMailer');
             return '';
