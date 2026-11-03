@@ -12213,6 +12213,13 @@ Responsive navbar-brand image CSS
 #survey-nav .dropdown-menu > li > a {
   color: #1E1E1E;
 }
+#survey-nav .dropdown-menu > li > a:hover,
+#survey-nav .dropdown-menu > li > a:focus,
+#survey-nav .dropdown-menu > li > a:active,
+#survey-nav .dropdown-menu > li > a.active,
+#survey-nav .dropdown-menu > .active > a {
+  color: #ffffff;
+}
 #survey-nav #main-dropdown .list-group-item {
   border: none;
 }
