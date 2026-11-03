@@ -40,19 +40,14 @@
     }
 
     // Highlighted menu items get $base-color as background (see
-    // bootstrap_select_colors.scss). Neither $white nor $g-900 reaches the
-    // WCAG 2.2 AA 4.5:1 ratio on every theme variation, so pick the text
-    // colour per variation: $white if it passes, else $g-900, else $black.
-    // Apple → $g-900 (5.75:1), Blueberry → $black (5.38:1),
-    // Grape → $white (5.07:1), Mango → $g-900 (4.63:1).
-    $survey-nav-highlight-color : color-contrast($base-color, $g-900, $white, 4.5);
-
+    // bootstrap_select_colors.scss); $base-color-contrast keeps the text
+    // WCAG AA readable on it (see theme_color_variables.scss).
     .dropdown-menu > li > a:hover,
     .dropdown-menu > li > a:focus,
     .dropdown-menu > li > a:active,
     .dropdown-menu > li > a.active,
     .dropdown-menu > .active > a {
-        color : $survey-nav-highlight-color;
+        color : $base-color-contrast;
     }
 
     #main-dropdown {

@@ -12339,15 +12339,15 @@ Responsive navbar-brand image CSS
 .btn-primary {
   background-color: #ED5046;
   border-color: #ED5046;
-  color: #ffffff;
+  color: #1E1E1E;
 }
 .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .btn-primary:active:focus, .btn-primary.dropdown-toggle.show, .btn-primary.dropdown-toggle.show:focus {
-  color: #ffffff;
+  color: #1E1E1E;
   background-color: #ED5046;
   border-color: #ED5046;
 }
 .btn-primary:hover {
-  color: #ffffff;
+  color: #1E1E1E;
   box-shadow: 0px 0px 0px 3px rgba(123, 97, 255, 0.4);
 }
 .btn-primary:focus, .btn-primary:active, .btn-primary.active, .btn-primary:active:focus, .btn-primary.dropdown-toggle.show, .btn-primary.dropdown-toggle.show:focus {
@@ -12369,15 +12369,15 @@ Responsive navbar-brand image CSS
 .btn-secondary {
   background-color: #9094A7;
   border-color: #9094A7;
-  color: #ffffff;
+  color: #1E1E1E;
 }
 .btn-secondary:hover, .btn-secondary:focus, .btn-secondary:active, .btn-secondary.active, .btn-secondary:active:focus, .btn-secondary.dropdown-toggle.show, .btn-secondary.dropdown-toggle.show:focus {
-  color: #ffffff;
+  color: #1E1E1E;
   background-color: #9094A7;
   border-color: #9094A7;
 }
 .btn-secondary:hover {
-  color: #ffffff;
+  color: #1E1E1E;
   box-shadow: 0px 0px 0px 3px rgba(123, 97, 255, 0.4);
 }
 .btn-secondary:focus, .btn-secondary:active, .btn-secondary.active, .btn-secondary:active:focus, .btn-secondary.dropdown-toggle.show, .btn-secondary.dropdown-toggle.show:focus {
@@ -12519,15 +12519,15 @@ Responsive navbar-brand image CSS
 .btn-light {
   background-color: #EEEFF7;
   border-color: #EEEFF7;
-  color: #ffffff;
+  color: #1E1E1E;
 }
 .btn-light:hover, .btn-light:focus, .btn-light:active, .btn-light.active, .btn-light:active:focus, .btn-light.dropdown-toggle.show, .btn-light.dropdown-toggle.show:focus {
-  color: #ffffff;
+  color: #1E1E1E;
   background-color: #EEEFF7;
   border-color: #EEEFF7;
 }
 .btn-light:hover {
-  color: #ffffff;
+  color: #1E1E1E;
   box-shadow: 0px 0px 0px 3px rgba(123, 97, 255, 0.4);
 }
 .btn-light:focus, .btn-light:active, .btn-light.active, .btn-light:active:focus, .btn-light.dropdown-toggle.show, .btn-light.dropdown-toggle.show:focus {
@@ -12579,15 +12579,15 @@ Responsive navbar-brand image CSS
 .btn-cancel {
   background-color: #9094A7;
   border-color: #9094A7;
-  color: #ffffff;
+  color: #1E1E1E;
 }
 .btn-cancel:hover, .btn-cancel:focus, .btn-cancel:active, .btn-cancel.active, .btn-cancel:active:focus, .btn-cancel.dropdown-toggle.show, .btn-cancel.dropdown-toggle.show:focus {
-  color: #ffffff;
+  color: #1E1E1E;
   background-color: #9094A7;
   border-color: #9094A7;
 }
 .btn-cancel:hover {
-  color: #ffffff;
+  color: #1E1E1E;
   box-shadow: 0px 0px 0px 3px rgba(123, 97, 255, 0.4);
 }
 .btn-cancel:focus, .btn-cancel:active, .btn-cancel.active, .btn-cancel:active:focus, .btn-cancel.dropdown-toggle.show, .btn-cancel.dropdown-toggle.show:focus {
@@ -12794,13 +12794,13 @@ Responsive navbar-brand image CSS
 }
 
 .btn-check + .btn-primary:hover {
-  color: #ffffff;
+  color: #1E1E1E;
   background-color: #ED5046;
   border-color: #ED5046;
   box-shadow: none;
 }
 .btn-check + .btn-primary:active, .btn-check + .btn-primary.active, .btn-check + .btn-primary:active:focus {
-  color: #ffffff;
+  color: #1E1E1E;
   background-color: #ED5046;
   border-color: #ED5046;
   box-shadow: none;
@@ -12812,13 +12812,13 @@ Responsive navbar-brand image CSS
   box-shadow: none;
 }
 .btn-check:active + .btn-primary {
-  color: #ffffff;
+  color: #1E1E1E;
   background-color: #ED5046;
   border-color: #ED5046;
   box-shadow: none;
 }
 .btn-check:checked + .btn-primary, .btn-check:checked + .btn-primary:focus, .btn-check:focus:checked + .btn-primary {
-  color: #ffffff;
+  color: #1E1E1E;
   background-color: #ED5046;
   border-color: #ED5046;
   box-shadow: none;
