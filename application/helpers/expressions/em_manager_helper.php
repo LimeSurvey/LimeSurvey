@@ -9201,6 +9201,9 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                                         $aFiles[$i]->size = floatval($aFiles[$i]->size);
                                     }
                                     $value = ls_json_encode($aFiles);  // so that EM doesn't try to parse it.
+                                } else {
+                                    // All files removed: '' instead of an empty list so its correctly validated when mandatory
+                                    $value = '';
                                 }
                             }
                             break;
