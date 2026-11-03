@@ -26,9 +26,9 @@ $form = $this->beginWidget(
 <div class="modal-body edit-participant-modal-body ">
     <input type="hidden" name="oper" value="<?php echo $editType; ?>"/>
     <?= $form->hiddenField($model, 'participant_id') ?>
-    <fieldset>
+    <div>
         <?php
-        echo "<legend>" . gT("Basic attributes") . "</legend>";
+        echo '<h3 class="h4">' . gT("Basic attributes") . "</h3>";
         $baseControlGroupHtmlOptions = [
             'labelOptions' => ['class' => ''],
             'class'        => '',
@@ -40,13 +40,13 @@ $form = $this->beginWidget(
                 <?php eT('First name:'); ?>
             </label>
             <div class=''>
-                <?= $form->textField($model, 'firstname', ['id' => 'Participant_firstname', 'aria-labelledby' => 'Participant_firstname_label']) ?>
+                <?= $form->textField($model, 'firstname', ['id' => 'Participant_firstname', 'aria-labelledby' => 'Participant_firstname_label', 'autocomplete' => 'given-name']) ?>
             </div>
             <label id="Participant_lastname_label" class='form-label ' for="Participant_lastname">
                 <?php eT('Last name:'); ?>
             </label>
             <div class=''>
-                <?= $form->textField($model, 'lastname', ['id' => 'Participant_lastname', 'aria-labelledby' => 'Participant_lastname_label']) ?>
+                <?= $form->textField($model, 'lastname', ['id' => 'Participant_lastname', 'aria-labelledby' => 'Participant_lastname_label', 'autocomplete' => 'family-name']) ?>
             </div>
         </div>
         <div class='mb-3'>
@@ -54,7 +54,7 @@ $form = $this->beginWidget(
                 <?php eT('Email:'); ?>
             </label>
             <div class=''>
-                <?= $form->textField($model, 'email', ['id' => 'Participant_email', 'aria-labelledby' => 'Participant_email_label']) ?>
+                <?= $form->textField($model, 'email', ['id' => 'Participant_email', 'aria-labelledby' => 'Participant_email_label', 'autocomplete' => 'email']) ?>
             </div>
         </div>
         <div class='mb-3'>
@@ -106,7 +106,7 @@ $form = $this->beginWidget(
                 ?>
             </div>
         <?php endif; ?>
-    </fieldset>
+    </div>
 
     <?php if (count($extraAttributes) > 0): ?>
         <fieldset>

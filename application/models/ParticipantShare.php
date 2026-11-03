@@ -102,7 +102,7 @@ class ParticipantShare extends LSActiveRecord
             ->queryAll();
 
         $shareList = array(
-            '' => '', // No filter
+            '' => gT('All'), // No filter
             '-1' => gT('Everybody')
         );
 
@@ -267,6 +267,7 @@ class ParticipantShare extends LSActiveRecord
                 "value"  => '$data->getCanEditHtml()',
                 "header" => gT("Can edit?"),
                 "filter" => [1 => gT('Yes'), 0 => gT('No')],
+                "filterInputOptions" => ['prompt' => gT('All')],
                 "type"   => "raw"
             ],
             [
