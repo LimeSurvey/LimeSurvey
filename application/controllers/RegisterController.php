@@ -115,6 +115,9 @@ class RegisterController extends LSYii_Controller
             Yii::app()->setLanguage($sLanguage);
         }
 
+        // Nobody may register while the maintenance mode keeps participants from taking surveys
+        $this->endRequestIfParticipantsLocked($oSurvey);
+
         $this->sendRegistrationEmail = true;
 
         $event = new PluginEvent('beforeRegister');

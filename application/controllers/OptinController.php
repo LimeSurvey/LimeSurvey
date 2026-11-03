@@ -57,6 +57,7 @@ class OptinController extends LSYii_Controller
         }
 
         Yii::app()->setLanguage($baseLanguage);
+        $this->endRequestIfParticipantsLocked($survey);
 
         LimeExpressionManager::singleton()->loadTokenInformation($surveyId, $accessToken, false);
         $token = Token::model($surveyId)->findByAttributes(['token' => $accessToken]);
@@ -109,6 +110,7 @@ class OptinController extends LSYii_Controller
         }
 
         Yii::app()->setLanguage($baseLanguage);
+        $this->endRequestIfParticipantsLocked($survey);
 
         LimeExpressionManager::singleton()->loadTokenInformation($surveyId, $accessToken, false);
         $token = Token::model($surveyId)->findByAttributes(['token' => $accessToken]);
@@ -180,6 +182,7 @@ class OptinController extends LSYii_Controller
         }
 
         Yii::app()->setLanguage($baseLanguage);
+        $this->endRequestIfParticipantsLocked($survey);
 
         LimeExpressionManager::singleton()->loadTokenInformation($surveyId, $accessToken, false);
         $token = Token::model($surveyId)->findByAttributes(['token' => $accessToken]);

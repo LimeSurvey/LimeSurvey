@@ -58,6 +58,7 @@ class OptoutController extends LSYii_Controller
         }
 
         Yii::app()->setLanguage($sBaseLanguage);
+        $this->endRequestIfParticipantsLocked($oSurvey);
 
         $link = '';
         $tokenAttributes = [];
@@ -110,6 +111,7 @@ class OptoutController extends LSYii_Controller
         }
 
         Yii::app()->setLanguage($baseLanguage);
+        $this->endRequestIfParticipantsLocked($survey);
 
         $token = Token::model($surveyId)->findByAttributes(array('token' => $accessToken));
 
@@ -205,6 +207,7 @@ class OptoutController extends LSYii_Controller
         }
 
         Yii::app()->setLanguage($baseLanguage);
+        $this->endRequestIfParticipantsLocked($survey);
 
         LimeExpressionManager::singleton()->loadTokenInformation($surveyId, $accessToken, false);
         $token = Token::model($surveyId)->findByAttributes(['token' => $accessToken]);

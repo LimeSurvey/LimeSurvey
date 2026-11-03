@@ -50,6 +50,15 @@ class UploaderController extends SurveyController
         $sMode = Yii::app()->request->getParam('mode');
         $sPreview = (int) Yii::app()->request->getParam('preview', 0);
 
+        // No file may be stored or deleted while the maintenance mode keeps participants from taking surveys
+        if (($bDelete || $sMode == "upload") && SettingGlobal::isMaintenanceModeHard()) {
+            http_response_code(503);
+            header('Retry-After: 300');
+            header('Content-Type: text/plain; charset=UTF-8');
+            echo gT("Our survey site is currently undergoing maintenance.");
+            Yii::app()->end();
+        }
+
         // Validate and filter and throw error if problems
         // Using 'futmp_'.randomChars(15).'_'.$pathinfo['extension'] for filename, then remove all other characters
         $sFileGetContentFiltered = preg_replace('/[^a-zA-Z0-9_]/', '', (string) $sFileGetContent);

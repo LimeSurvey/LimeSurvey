@@ -147,10 +147,20 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false, &$sAbortReason = null)
     // Enable maintenance mode during critical updates so survey participants
     // see a maintenance page. Preserve the previous value to restore it afterwards.
     // "hard-cli" already locks everything and must stay until the command line lifts it.
+    // The mode is read from the database being updated: with a custom config (console.php
+    // updatedb path/to/config.php) the application config still holds the values of the
+    // default installation. A missing row means "off".
     $bIsCriticalUpdate = count(array_intersect($aCriticalDBVersions, $aAllUpdates)) > 0;
-    $sPreviousMaintenanceMode = App()->getConfig('maintenancemode');
+    $sPreviousMaintenanceMode = Yii::app()->db->createCommand()
+        ->select('stg_value')
+        ->from('{{settings_global}}')
+        ->where('stg_name = :name', [':name' => 'maintenancemode'])
+        ->queryScalar();
+    if (empty($sPreviousMaintenanceMode)) {
+        $sPreviousMaintenanceMode = SettingGlobal::MAINTENANCE_MODE_OFF;
+    }
     $bMaintenanceModeRestored = true;
-    if ($bIsCriticalUpdate && !SettingGlobal::isMaintenanceModeHard()) {
+    if ($bIsCriticalUpdate && !SettingGlobal::isMaintenanceModeHard($sPreviousMaintenanceMode)) {
         SettingGlobal::setSetting('maintenancemode', SettingGlobal::MAINTENANCE_MODE_HARD);
         $bMaintenanceModeRestored = false;
 

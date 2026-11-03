@@ -91,6 +91,12 @@ class SettingGlobalMaintenanceModeTest extends TestBaseClass
         $this->assertTrue(SettingGlobal::isMaintenanceModeHard());
         $this->assertTrue(SettingGlobal::isAdministrationLocked());
 
+        // The mode of another installation can be checked without loading its config
+        $this->assertTrue(SettingGlobal::isMaintenanceModeHard('hard-cli'));
+        $this->assertTrue(SettingGlobal::isMaintenanceModeHard('hard'));
+        $this->assertFalse(SettingGlobal::isMaintenanceModeHard('soft'));
+        $this->assertFalse(SettingGlobal::isMaintenanceModeHard('off'));
+
         // Installations updated from older versions have no value at all
         \Yii::app()->setConfig('maintenancemode', '');
         $this->assertSame('off', SettingGlobal::getMaintenanceMode());

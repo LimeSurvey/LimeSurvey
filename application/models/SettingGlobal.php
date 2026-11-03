@@ -130,11 +130,13 @@ class SettingGlobal extends LSActiveRecord
      * Whether no participant may take a survey, not even one they already started
      * (maintenance modes "hard" and "hard-cli").
      *
+     * @param string|null $mode The mode to check, null for the current one
      * @return bool
      */
-    public static function isMaintenanceModeHard()
+    public static function isMaintenanceModeHard($mode = null)
     {
-        return in_array(self::getMaintenanceMode(), [self::MAINTENANCE_MODE_HARD, self::MAINTENANCE_MODE_HARD_CLI], true);
+        $mode = $mode ?? self::getMaintenanceMode();
+        return in_array($mode, [self::MAINTENANCE_MODE_HARD, self::MAINTENANCE_MODE_HARD_CLI], true);
     }
 
     /**
