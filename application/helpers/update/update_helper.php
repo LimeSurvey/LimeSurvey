@@ -26,6 +26,13 @@ function CheckForDBUpgrades($subaction = null)
     $currentDBVersion = Yii::app()->getConfig('DBVersion');
     if (intval($dbversionnumber) > intval($currentDBVersion)) {
         Yii::app()->loadHelper('update.updatedb');
+        if (isset($subaction) && $subaction == "yes" && !isWebDatabaseUpdateAllowed()) {
+            // The link can be bookmarked, so this is checked here as well as on the notice page
+            return App()->getController()->widget('ext.AlertWidget.AlertWidget', [
+                'text' => getWebDatabaseUpdateDisabledMessage(),
+                'type' => 'warning',
+            ], true);
+        }
         if (isset($subaction) && $subaction == "yes") {
             $header = Yii::app()->getController()->getAdminHeader(false, true);
             $header = preg_replace('/<###begin###>/', '', (string) $header);

@@ -499,6 +499,16 @@ $config['chartfontsize'] = 10;
 */
 $config['updatecheckperiod'] = 7;
 
+/**
+* $allowwebdatabaseupdate - whether a database update can be started from the web interface, either
+* automatically after login or on the database update page. Set it to false while the database is
+* updated from the command line (console.php updatedb), e.g. by a hosting system, so that nobody can
+* start a second update from a web request in parallel. Updates started from the command line are
+* not affected.
+* Recommended: true
+*/
+$config['allowwebdatabaseupdate'] = true;
+
 
 /**
 * @var $force_ssl string - forces LimeSurvey to run through HTTPS or to block HTTPS

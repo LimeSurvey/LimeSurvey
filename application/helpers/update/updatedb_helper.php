@@ -377,6 +377,28 @@ function releaseDatabaseUpdateLock()
 }
 
 /**
+ * Whether a database update may be started from the web interface, see the
+ * configuration setting "allowwebdatabaseupdate".
+ *
+ * @return bool
+ */
+function isWebDatabaseUpdateAllowed()
+{
+    return (bool) Yii::app()->getConfig('allowwebdatabaseupdate', true);
+}
+
+/**
+ * Returns the message shown instead of the database update when it must not be
+ * started from the web interface.
+ *
+ * @return string
+ */
+function getWebDatabaseUpdateDisabledMessage()
+{
+    return gT('The database update cannot be started from the web interface on this installation, it is run from the command line by the system administrator. Please wait until it has been completed, then reload this page.');
+}
+
+/**
  * Returns the marker that db_upgrade_all() writes before running the updates and removes
  * once all of them have succeeded. If it exists while no update is running, a previous
  * update failed or was interrupted (error, timeout, killed process) and left the database

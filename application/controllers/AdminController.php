@@ -163,9 +163,9 @@ class AdminController extends LSYii_Controller
             $sDBVersion = Yii::app()->getConfig('DBVersion');
         }
         if ((int) $sDBVersion < Yii::app()->getConfig('dbversionnumber') && $action != 'databaseupdate') {
-            // Try a silent update first
+            // Try a silent update first, unless the update is run from the command line
             Yii::app()->loadHelper('update.updatedb');
-            if (!db_upgrade_all(intval($sDBVersion), true)) {
+            if (!isWebDatabaseUpdateAllowed() || !db_upgrade_all(intval($sDBVersion), true)) {
                 $this->redirect(array('/admin/databaseupdate/sa/db'));
             }
         }
