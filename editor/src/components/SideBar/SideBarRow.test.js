@@ -43,35 +43,25 @@ describe('SideBarRow', () => {
   })
 
   test('pinned rows have no badge and no menu', async () => {
-    await renderWithProviders(<SideBarRow title="Welcome" />)
+    await renderWithProviders(<SideBarRow title="Welcome" code="" isPinned />)
     await screen.findByText('Welcome')
     expect(screen.queryByTestId('question-code-badge')).toBeNull()
-    expect(screen.queryByRole('menu')).toBeNull()
+    expect(screen.queryByRole('button', { name: 'Question menu' })).toBeNull()
   })
 
   test('exposes selection through aria-current', async () => {
     await renderWithProviders(
-      <SideBarRow title="Welcome" testId="row" isFocused />
+      <SideBarRow title="Welcome" testId="row" isPinned isFocused />
     )
     const row = await screen.findByTestId('row')
     expect(row).toHaveAttribute('aria-current', 'true')
     expect(row).toHaveClass('structure-item-selected')
   })
 
-  test('pinned row inside a selected core wrapper is marked current', async () => {
-    await renderWithProviders(
-      <div className="focus-bg-purple">
-        <SideBarRow title="Welcome" testId="row" />
-      </div>
-    )
-    expect(await screen.findByTestId('row')).toHaveAttribute(
-      'aria-current',
-      'true'
-    )
-  })
-
   test('is not marked current when not selected', async () => {
-    await renderWithProviders(<SideBarRow title="Welcome" testId="row" />)
+    await renderWithProviders(
+      <SideBarRow title="Welcome" testId="row" isPinned />
+    )
     const row = await screen.findByTestId('row')
     expect(row).not.toHaveAttribute('aria-current')
   })
@@ -79,7 +69,7 @@ describe('SideBarRow', () => {
   test('activates on click and Enter', async () => {
     const onRowClick = jest.fn()
     await renderWithProviders(
-      <SideBarRow title="End" testId="row" onRowClick={onRowClick} />
+      <SideBarRow title="End" testId="row" isPinned onRowClick={onRowClick} />
     )
     const row = await screen.findByTestId('row')
     await userEvent.click(row)
@@ -120,7 +110,8 @@ describe('SideBarRow', () => {
         menuToggleId="menu-toggle"
       />
     )
-    const toggle = await screen.findByRole('menu', { name: 'Question menu' })
+    const toggle = await screen.findByRole('button', { name: 'Question menu' })
+    expect(toggle).toHaveAttribute('aria-haspopup', 'menu')
     await userEvent.click(toggle)
     expect(await screen.findByText('Delete')).toBeInTheDocument()
     expect(onRowClick).not.toHaveBeenCalled()
@@ -194,11 +185,75 @@ describe('SideBarRow', () => {
   })
 
   test('pinned row main is not a nested button', async () => {
-    await renderWithProviders(<SideBarRow title="Welcome" testId="row" />)
+    await renderWithProviders(
+      <SideBarRow title="Welcome" testId="row" isPinned />
+    )
     const main = (await screen.findByTestId('row')).querySelector(
       '.structure-item-main'
     )
     expect(main).not.toHaveAttribute('role')
     expect(main).not.toHaveAttribute('tabIndex')
+  })
+
+  test('a question with an undefined code is still a question row', async () => {
+    await renderWithProviders(
+      <SideBarRow
+        title="Q"
+        code={undefined}
+        testId="row"
+        menuItems={menuItems}
+      />
+    )
+    const row = await screen.findByTestId('row')
+    expect(row).toHaveClass('structure-item-question')
+    expect(row).not.toHaveAttribute('role')
+  })
+
+  test('rows stay keyboard-reachable when dragging is disabled', async () => {
+    const onRowClick = jest.fn()
+    await renderWithProviders(
+      <SideBarRow
+        title="Q"
+        code="Q1"
+        provided={{ dragHandleProps: null }}
+        onRowClick={onRowClick}
+      />
+    )
+    const main = document.querySelector('.structure-item-main')
+    expect(main).toHaveAttribute('tabindex', '0')
+    expect(main).toHaveStyle({ cursor: 'pointer' })
+    main.focus()
+    await userEvent.keyboard('{Enter}')
+    expect(onRowClick).toHaveBeenCalledTimes(1)
+  })
+
+  test('the group test id sits on the row element', async () => {
+    await renderWithProviders(
+      <SideBarRow title="Group" isQuestionGroup testId="group-row" />
+    )
+    expect(await screen.findByTestId('group-row')).toHaveClass(
+      'structure-item-group'
+    )
+  })
+
+  test('opening a menu on another row closes the first one', async () => {
+    await renderWithProviders(
+      <>
+        <SideBarRow title="A" code="A1" menuItems={menuItems} />
+        <SideBarRow
+          title="B"
+          code="B1"
+          menuItems={[{ type: 'item', label: 'Other', onClick: () => {} }]}
+        />
+      </>
+    )
+    const [a, b] = await screen.findAllByRole('button', {
+      name: 'Question menu',
+    })
+    await userEvent.click(a)
+    expect(a).toHaveAttribute('aria-expanded', 'true')
+    await userEvent.click(b)
+    expect(b).toHaveAttribute('aria-expanded', 'true')
+    expect(a).toHaveAttribute('aria-expanded', 'false')
   })
 })

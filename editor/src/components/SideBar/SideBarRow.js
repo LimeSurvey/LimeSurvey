@@ -33,9 +33,10 @@ export const SideBarRow = ({
   onRowClick = noop,
   onTitleClick = noop,
   isQuestionGroup,
+  isPinned = false,
   isOpen: _isOpen = false,
   className = '',
-  isFocused: isFocusedProp = false,
+  isFocused = false,
   menuItems = [],
 }) => {
   const [isOpen, setOpen] = useState(_isOpen)
@@ -103,39 +104,36 @@ export const SideBarRow = ({
   }, [])
 
   const rowRef = useRef(null)
-  const menuRef = useRef(null)
-  const [isWrapperSelected, setWrapperSelected] = useState(false)
+  const codeRef = useRef(null)
+  const [isCodeTruncated, setCodeTruncated] = useState(false)
 
-  const rowType = isQuestionGroup
-    ? 'group'
-    : code !== undefined
-      ? 'question'
-      : 'pinned'
-  const isPinned = rowType === 'pinned'
-  const isDraggable = provided.dragHandleProps !== undefined
+  const rowType = isQuestionGroup ? 'group' : isPinned ? 'pinned' : 'question'
+  // The drag library passes null (not undefined) when dragging is disabled
+  const isDraggable = !!provided.dragHandleProps
   const showCodeBadge =
     rowType === 'question' && showQNumCode?.showCode && !!code
 
-  // Welcome/End selection is only expressed by the core wrapper element
   useLayoutEffect(() => {
-    if (isPinned) {
-      setWrapperSelected(!!rowRef.current?.closest('.focus-bg-purple'))
-    }
-  })
-  const isFocused = isFocusedProp || (isPinned && isWrapperSelected)
+    const el = codeRef.current
+    setCodeTruncated(!!el && el.scrollWidth > el.clientWidth)
+  }, [code, showCodeBadge])
 
   const menuLabel = isQuestionGroup
     ? t('Question group menu')
     : t('Question menu')
-  useEffect(() => {
-    menuRef.current
-      ?.querySelector('.dropdown-toggler')
-      ?.setAttribute('aria-label', menuLabel)
-  })
 
-  // Portaled menu content bubbles through the React tree but is not inside the row
+  // Clicks are not stopped so document-level outside-click handlers (other
+  // open menus, context menu) still fire; controls inside the row are skipped here.
+  // Portaled menu content bubbles through the React tree but is not inside the row.
   const handleRowClick = (e) => {
-    if (!e.defaultPrevented && e.currentTarget.contains(e.target)) {
+    const isRowControl = e.target.closest?.(
+      '.structure-item-menu, .structure-item-arrow'
+    )
+    if (
+      !e.defaultPrevented &&
+      e.currentTarget.contains(e.target) &&
+      !isRowControl
+    ) {
       const handler = isQuestionGroup ? onTitleClick : onRowClick
       handler(e)
     }
@@ -168,16 +166,13 @@ export const SideBarRow = ({
         setContextMenu={setContextMenu}
       />
 
-      <div
-        onContextMenu={handleOnContextMenu}
-        data-testid={isQuestionGroup ? testId : undefined}
-      >
+      <div onContextMenu={handleOnContextMenu}>
         <div
           className={classNames(
             `structure-item structure-item-${rowType} ${className}`,
             { 'structure-item-selected': isFocused }
           )}
-          data-testid={isQuestionGroup ? undefined : testId}
+          data-testid={testId}
           ref={rowRef}
           role={isPinned ? 'button' : undefined}
           tabIndex={isPinned ? 0 : undefined}
@@ -191,10 +186,7 @@ export const SideBarRow = ({
               variant="link"
               aria-label={isOpen ? t('Collapse group') : t('Expand group')}
               aria-expanded={isOpen}
-              onClick={(e) => {
-                e.stopPropagation()
-                setOpen(!isOpen)
-              }}
+              onClick={() => setOpen(!isOpen)}
               className={classNames('structure-item-arrow p-0', {
                 'rotate-270': !isOpen,
               })}
@@ -205,16 +197,16 @@ export const SideBarRow = ({
           <div
             className="structure-item-main"
             style={{ cursor: isDraggable ? 'grab' : 'pointer' }}
-            // Pinned rows are focusable on the outer element; draggable rows get role/tabIndex from dragHandleProps
-            role={!isDraggable && !isPinned ? 'button' : undefined}
-            tabIndex={!isDraggable && !isPinned ? 0 : undefined}
+            // Without a drag handle the main area must stay keyboard-reachable itself
+            role={!isPinned && !isDraggable ? 'button' : undefined}
+            tabIndex={!isPinned && !isDraggable ? 0 : undefined}
             {...provided.dragHandleProps}
           >
             <span className="structure-item-icon">
               {typeof icon === 'string' ? <img src={icon} alt="" /> : icon}
             </span>
             <ContentEditor
-              className={classNames('sidebar-row-title structure-item-title', {
+              className={classNames('structure-item-title', {
                 'question-group': !code,
                 'question-code': showQNumCode?.showCode,
               })}
@@ -224,9 +216,10 @@ export const SideBarRow = ({
             />
           </div>
           {showCodeBadge && (
-            // when the length is more than 5 then its shorted with dots
-            <TooltipContainer tip={code} showTip={code?.length > 5}>
+            // The badge has a fixed width, so show the full code only when it is cut off
+            <TooltipContainer tip={code} showTip={isCodeTruncated}>
               <div
+                ref={codeRef}
                 className="structure-item-code"
                 data-testid="question-code-badge"
               >
@@ -235,11 +228,7 @@ export const SideBarRow = ({
             </TooltipContainer>
           )}
           {menuItems.length > 0 && (
-            <div
-              className="structure-item-menu"
-              ref={menuRef}
-              onClick={(e) => e.stopPropagation()}
-            >
+            <div className="structure-item-menu">
               <Dropdown
                 className="meatball-dropdown"
                 testId={menuId}
@@ -252,6 +241,7 @@ export const SideBarRow = ({
                   id: menuToggleId,
                   testId: menuToggleId,
                   title: '',
+                  ariaLabel: menuLabel,
                 }}
               />
             </div>
