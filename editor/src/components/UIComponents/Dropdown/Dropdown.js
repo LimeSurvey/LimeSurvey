@@ -103,6 +103,7 @@ export const Dropdown = ({
     id: '', // must be unique to trigger the menu
     title: '',
     testId: '',
+    ariaLabel: undefined,
   },
 }) => {
   const [openSubmenu, setOpenSubmenu] = useState(null)
@@ -118,7 +119,8 @@ export const Dropdown = ({
         className="button me-2 dropdown-toggler"
         id={toggleSettings.id}
         data-testid={toggleSettings.testId}
-        role="menu"
+        aria-label={toggleSettings.ariaLabel}
+        aria-haspopup="menu"
       >
         {toggleSettings.title}
         <i className={toggleSettings.iconClassName}></i>

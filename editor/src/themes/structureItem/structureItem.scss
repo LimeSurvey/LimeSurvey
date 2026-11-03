@@ -19,6 +19,11 @@
     background-color: $g-100;
   }
 
+  // Lines the pin icon up with group icons, which sit after the 20px arrow
+  &.structure-item-pinned {
+    padding-left: 28px;
+  }
+
   &.disabled {
     opacity: 0.5;
   }
@@ -212,24 +217,7 @@
   }
 }
 
-// The core wrappers around rows paint their own selection/background;
-// the row now owns those states.
 .survey-structure {
-  // :has() keeps other panels (e.g. Settings) that reuse these classes untouched
-  .focus-bg-purple:has(.structure-item),
-  .question-body-content {
-    background-color: transparent !important;
-    border-radius: 0;
-  }
-
-  .question-body-content .structure-item {
-    margin-bottom: 0;
-  }
-
-  .question-body-content {
-    margin-bottom: 6px;
-  }
-
   .structure-item-title.question-code,
   .group .structure-item-title.question-code {
     width: auto !important;
