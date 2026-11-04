@@ -278,9 +278,17 @@ class CoreCaptcha extends CaptchaPluginBase
             CHtml::tag('div', ['class' => 'alert alert-warning', 'role' => 'alert'], CHtml::encode(gT("Please enable JavaScript to pass the CAPTCHA.")))
         );
         $html = CHtml::tag('div', ['class' => 'ls-captcha ls-captcha-altcha'], $widget . $noscript);
-        // Older survey themes render the answer field and label of the classic CAPTCHA themselves, hide them
+        // Older survey themes render the answer field, label and reload button of the classic CAPTCHA
+        // themselves, after this markup: hide them once the page is parsed, and disable the field so it
+        // is neither validated by the browser (it may be required) nor submitted
         $hideClassicField = CHtml::script(
-            "document.querySelectorAll('#" . self::CLASSIC_FIELD . ", label[for=\"" . self::CLASSIC_FIELD . "\"], #reloadCaptcha').forEach(function (element) { element.hidden = true; });"
+            "(function () {"
+            . " function hideClassicCaptchaField() {"
+            . " document.querySelectorAll('#" . self::CLASSIC_FIELD . ", label[for=\"" . self::CLASSIC_FIELD . "\"], #reloadCaptcha').forEach(function (element) {"
+            . " element.hidden = true; if ('disabled' in element) { element.disabled = true; } });"
+            . " }"
+            . " if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', hideClassicCaptchaField); } else { hideClassicCaptchaField(); }"
+            . " })();"
         );
         return [
             'html' => $html,
