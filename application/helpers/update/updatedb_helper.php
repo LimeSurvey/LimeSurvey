@@ -2713,8 +2713,16 @@ function upgradeTokens148()
 {
     $aTables = dbGetTablesLike("tokens%");
     foreach ($aTables as $sTable) {
-        addColumn($sTable, 'participant_id', "string(50)");
-        addColumn($sTable, 'blacklisted', "string(17)");
+        $tokenTableSchema = Yii::app()->db->getSchema()->getTable($sTable, true);
+        if ($tokenTableSchema === null) {
+            continue;
+        }
+        if (!isset($tokenTableSchema->columns['participant_id'])) {
+            addColumn($sTable, 'participant_id', "string(50)");
+        }
+        if (!isset($tokenTableSchema->columns['blacklisted'])) {
+            addColumn($sTable, 'blacklisted', "string(17)");
+        }
     }
 }
 

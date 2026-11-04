@@ -34,6 +34,84 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 7.8.0 (build 261026) to 7.9.0 (build 261029) October 29, 2026
++New feature: All RemoteControl requests and responses can be logged to tmp/runtime/remotecontrol.log for debugging API clients (Carsten Schmitz)
++New feature: Shared filter state, responses and statistics filter backend + responses filter export (#5340) (SaraDimoska)
+-Fixed issue: Vendor libraries, docs and development files could be opened in the browser when LimeSurvey is installed in a subdirectory without mod_rewrite (Carsten Schmitz)
+-Fixed issue: Users with only response export permission got a 403 error on SPSS "Export syntax" (Carsten Schmitz)
+-Fixed issue: Survey showed an internal error when a numerical question was prefilled from the URL with a decimal or text and the server has the PHP GMP extension (Carsten Schmitz)
+-Fixed issue: PHP error when the response of a participant with an access code was deleted while they were still taking the survey (Carsten Schmitz)
+-Fixed issue: New editor did not show why saving texts or activating a survey failed (#5423) (Carsten Schmitz)
+-Fixed issue: Mandatory modal a11Y and better support of WCAG 4.1.2 (#5458) (Denis Chenu)
+-Fixed issue: List with comment in dropdown layout did not save the comment (Carsten Schmitz)
+-Fixed issue: Dragging a question in the survey structure did not show where it would be dropped and greyed out the dragged question (Carsten Schmitz)
+-Fixed issue: Deleting a survey left its theme options in the database (Carsten Schmitz)
+-Fixed issue: Debug output of the test email was printed above the page when using PHP mail() (Carsten Schmitz)
+-Fixed issue: Better support of WCAG 4.1.2 - Name, Role, Value (Level A), (Denis Chenu)
+-Fixed issue: After updating from LimeSurvey 6 an active survey failed with "Attribute 'Q…_S…' not found in the model" when an array question had a subquestion coded "other", "comment" or "othercomment" (Carsten Schmitz)
+-Fixed issue #TB-114: Inherited survey theme settings remain unresolved after preparation (#5307) (Adil Moumni Abdou)
+-Fixed issue #AT-2156: fixes for incorrect code diversion through merges and additions based on cloud code (#5115) (Patrick Teichmann)
+-Fixed issue #20810: [security] Stored cross-site scripting (XSS) vulnerability in the central participant database. Severity: High (CVSS 7.4, CVSS:4.0/AV:N/AC:L/AT:N/PR:L/UI:A/VC:H/VI:H/VA:N/SC:N/SI:N/SA:N). An attacker with only the permission to import participants into the central participant database could import a participant ID containing HTML that ran as script in the browser of any administrator viewing the participant list. Affects versions 3.0.0 to 7.7.0. (#5482) (Carsten Schmitz)
+-Fixed issue #20803: When unable to set memory limit : error log are difficult to read (#5468) (Denis Chenu)
+-Fixed issue #20800: Start date and date of last action were stored as 1980-01-01 in anonymized surveys with date stamp enabled (Carsten Schmitz)
+-Fixed issue #20798: Keyboard + screen reader: access to hidden element (Denis Chenu)
+-Fixed issue #20797: Soft mandatory modal A11Y issue with WCAG 1.3.1, (Denis Chenu)
+-Fixed issue #20788: Soft mandatory modal: “Continue without answering” action inaccessible with keyboard, (Denis Chenu)
+-Fixed issue #20178: Language-specific question settings like the "Other:" label were empty after adding a survey language instead of being copied from the base language (Carsten Schmitz)
+-Fixed issue #20069: Central participant database list showed HTML in attribute values as formatted text or hid it instead of showing it as entered (Carsten Schmitz)
+-Fixed issue #20049: Screen readers did not read out the error popup shown when a mandatory question was not answered or an answer was invalid (Carsten Schmitz)
+-Fixed issue #20045: Survey alias link showed "not found" on servers without URL rewriting (Carsten Schmitz)
+-Fixed issue #20025: Console command importsurvey showed a PHP error instead of usage instructions, and also when called with just a file name (Carsten Schmitz)
+-Fixed issue #20007: Theme editor preview showed an error about a missing views directory for an imported theme that only changes CSS (Carsten Schmitz)
+-Fixed issue #19978: Chosen stars in the 5 point choice star rating differed from unchosen stars only by colour (Carsten Schmitz)
+-Fixed issue #19977: Keyboard and screen reader users had to go through the whole top menu on every page of a survey in the Vanilla, Bootswatch and Fruity themes before reaching the questions (Carsten Schmitz)
+-Fixed issue #19889: R syntax export showed the full answer texts instead of the answer codes when answer codes were selected (Carsten Schmitz)
+-Fixed issue #19880: Deleting a question group of an active survey or without delete permission showed a server error instead of an error message (Carsten Schmitz)
+-Fixed issue #19868: Screen readers announced the survey action icons on the dashboard and survey list without a name (Carsten Schmitz)
+-Fixed issue #19849: Survey logic overview cut off long texts, errors and expressions in the last column (Carsten Schmitz)
+-Fixed issue #19827: Question index and language menu in the survey Tools menu could not be opened with the Space key (Carsten Schmitz)
+-Fixed issue #19697: Survey structure asked to deactivate the survey to add a question when the survey had no question group yet (Carsten Schmitz)
+-Fixed issue #19627: Scale headers of dual-scale array dropdowns were missing or shown twice at some screen widths and on tablets (Carsten Schmitz)
+-Fixed issue #19624: Themes extended from Bootswatch showed a light survey navigation bar instead of the Bootswatch colored one (Carsten Schmitz)
+-Fixed issue #19593: List with comment showed HTML entities instead of special characters in the comment when returning to the page (Carsten Schmitz)
+-Fixed issue #19592: Changed question settings and question groups were not shown in active surveys with the emcache enabled (Carsten Schmitz)
+-Fixed issue #19591: Survey pages read the settings of each question from the database several times (Carsten Schmitz)
+-Fixed issue #19577: Importing a survey with quota rules of deleted quotas failed in debug mode and created broken quota rules otherwise (Carsten Schmitz)
+-Fixed issue #19563: An "&" in dropdown answer options and in input placeholders was shown as "&amp;" when entered with the HTML editor or with the XSS filter enabled (Carsten Schmitz)
+-Fixed issue #19554: On PostgreSQL installations upgraded from very old versions, installing a plugin failed with a database error (Carsten Schmitz)
+-Fixed issue #19508: RemoteControl add_response created an empty response when question codes or IDs were used as keys (Carsten Schmitz)
+-Fixed issue #19506: Survey top bar buttons missing on plugin pages shown inside a survey (Carsten Schmitz)
+-Fixed issue #19503: Deleting a survey theme whose name starts with a space deleted another theme or failed (Carsten Schmitz)
+-Fixed issue #19498: R syntax export used the answer code as label for answer options with the text "0" (Carsten Schmitz)
+-Fixed issue #19494: Dragging a question in the survey structure could change the order of other questions (Carsten Schmitz)
+-Fixed issue #19401: Subquestion codes could contain underscores and some other special characters, and such codes were not cleaned up on survey import (Carsten Schmitz)
+-Fixed issue #19315: Permissions given by a role were shown as the user's own permissions and became permanent on save (Carsten Schmitz)
+-Fixed issue #19314: Importing a question group or question whose description or help text was empty showed a PHP error in debug mode (Carsten Schmitz)
+-Fixed issue #19281: Numerical and multiple numerical questions offered "Display chart" and "Chart type" settings although statistics never show a chart for them (Carsten Schmitz)
+-Fixed issue #19263: After completing a survey, opening the printable answers or the public statistics made the other link unreachable (Carsten Schmitz)
+-Fixed issue #19225: When adding a user, LDAP could not be chosen as login method, so all details had to be entered and the login method changed afterwards (Carsten Schmitz)
+-Fixed issue #19212: Regex-validated text answers like +123 were marked as invalid while typing although they were accepted on submit (Carsten Schmitz)
+-Fixed issue #19144: No way to give ALL survey permission in one click (#5347) (Carsten Schmitz)
+-Fixed issue #18861: Update notification kept showing after updating LimeSurvey until the next login or day (Carsten Schmitz)
+-Fixed issue #18567: Survey structure jumped back to the top when editing or saving a question, so the question was out of view on long surveys (Carsten Schmitz)
+-Fixed issue #18475: Plugins adding question settings were run again for every question shown, slowing down survey and admin pages (Carsten Schmitz)
+-Fixed issue #15385: Survey logic file showed the array filter of a ranking question on the ranks instead of on the ranking items (Carsten Schmitz)
+#Updated translation: Ukrainian by translations_bot
+#Updated translation: Slovenian by translations_bot
+#Updated translation: Polish by elissa, translations_bot
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Mongolian by translations_bot
+#Updated translation: Malay by translations_bot
+#Updated translation: Japanese by d_inoue, translations_bot
+#Updated translation: Greek by translations_bot
+#Updated translation: German by c_schmitz, translations_bot
+#Updated translation: German (Informal) by c_schmitz, translations_bot
+#Updated translation: Dutch by c_schmitz, Han, translations_bot
+#Updated translation: Dutch (Informal) by c_schmitz, Han, translations_bot
+#Updated translation: Catalan by qualitatuvic, translations_bot
+#Updated translation: Bulgarian by translations_bot
+
+
 Changes from 7.7.0 (build 261020) to 7.8.0 (build 261026) October 26, 2026
 +New feature: The "Error saving results" email to the survey administrator can be disabled in config.php (Carsten Schmitz)
 -Fixed issue: When responses could not be saved, participants were told that their responses would be entered into the database later and could continue the survey (Carsten Schmitz)

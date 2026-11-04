@@ -5312,11 +5312,6 @@ class LimeExpressionManager
             if ($this->surveyOptions['datestamp'] == true) {
                 $sdata['datestamp'] = $_SESSION[$this->sessid]['datestamp'];
                 $sdata['startdate'] = $_SESSION[$this->sessid]['datestamp'];
-                if($this->surveyOptions['anonymized']){
-                    //all dates should be anonymized
-                    $sdata['datestamp'] = $this->anonymizeDate();
-                    $sdata['startdate'] = $this->anonymizeDate();
-                }
             }
             if ($this->surveyOptions['ipaddr'] == true) {
                 $sdata['ipaddr'] = getIPAddress();
@@ -5396,10 +5391,6 @@ class LimeExpressionManager
             if ($this->surveyOptions['datestamp'] && isset($_SESSION[$this->sessid]['datestamp'])) {
                 $_SESSION[$this->sessid]['datestamp'] = gmdate("Y-m-d H:i:s");
                 $aResponseAttributes['datestamp'] = $_SESSION[$this->sessid]['datestamp'];
-                if($this->surveyOptions['anonymized']){
-                    //all dates should be anonymized
-                    $aResponseAttributes['datestamp'] = $this->anonymizeDate();
-                }
             }
             if ($this->surveyOptions['ipaddr']) {
                 $aResponseAttributes['ipaddr'] = getIPAddress();

@@ -885,7 +885,7 @@ class SurveyRuntimeHelper
 
     /**
      * It checks if user used the browser navigation (prev, next, reload page etc)
-     * and feed te backpopup variable if needed
+     * and feed the backpopup variable if needed
      */
     private function checkIfUseBrowserNav()
     {

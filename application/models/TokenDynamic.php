@@ -984,7 +984,7 @@ class TokenDynamic extends LSActiveRecord
             'url'              => App()->createUrl("admin/participants/sa/displayParticipants", [
                 "#" => json_encode(
                     ["searchcondition" => "participant_id||equal||" . $this->participant_id],
-                    JSON_FORCE_OBJECT
+                    JSON_FORCE_OBJECT | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT
                 )
             ]),
             'iconClass'        => 'ri-shield-user-line',

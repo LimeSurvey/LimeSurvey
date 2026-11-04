@@ -358,7 +358,7 @@ LS.CPDB = (function() {
         for (let changeBlacklistButton of changeBlacklistButtons) {
             changeBlacklistButton.addEventListener("change", (event) => {
                 let params = "actionTarget=changeBlacklistStatus"
-                    + "&participant_id=" + event.target.closest("tr").dataset.participant_id
+                    + "&participant_id=" + encodeURIComponent(event.target.closest("tr").dataset.participant_id)
                     + "&blacklist=" + event.target.value;
                 saveSwitchValue(event.target, params);
             });
@@ -448,7 +448,7 @@ LS.CPDB = (function() {
         for (let changeSharedEditableStatusButton of changeSharedEditableStatusButtons) {
             changeSharedEditableStatusButton.addEventListener("change", (event) => {
                 let params = "actionTarget=changeSharedEditableStatus"
-                    + "&participant_id=" + event.target.closest("tr").dataset.participant_id
+                    + "&participant_id=" + encodeURIComponent(event.target.closest("tr").dataset.participant_id)
                     + "&can_edit=" + event.target.value
                     + "&share_uid=" + event.target.closest('tr').dataset.share_uid;
                 saveSwitchValue(event.target, params);
@@ -513,14 +513,15 @@ LS.CPDB = (function() {
 
     /**
      * Call server to delete ONE single participant share
+     * @param {string} url
      * @param {string} participantId
-     * @param {number} shareUid
+     * @param {string} shareUid
      * @return
      */
-    deleteSingleParticipantShare = function(url) {
+    deleteSingleParticipantShare = function(url, participantId, shareUid) {
         $.ajax({
             url: url,
-            data: {},
+            data: {participantId: participantId, shareUid: shareUid},
             method: "POST",
             dataType: 'json',
             success: function(result){

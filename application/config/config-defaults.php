@@ -891,4 +891,3 @@ $config['twig_getConfig_extraallowlist'] = null;
 $config['editorEnabled'] = true;
 
 return $config;
-//settings deleted

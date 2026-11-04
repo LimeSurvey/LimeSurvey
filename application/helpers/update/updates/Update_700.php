@@ -250,8 +250,12 @@ class Update_700 extends DatabaseUpdateBase
                         $currentQuestion = null;
                         $excludeSubquestion = false;
                         foreach ($questions as $question) {
-                            if ($question['title'] === $code) {
+                            if ($question['parent_qid'] && $question['title'] === $code) {
+                                // A subquestion with exactly this code (e.g. a subquestion coded "other") wins over the "other"/"comment" suffixes
                                 $currentQuestion = $question;
+                                $commentText = false;
+                                $excludeSubquestion = false;
+                                break;
                             } elseif (
                                 in_array(
                                     $code,
