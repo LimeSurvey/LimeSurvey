@@ -42,7 +42,7 @@ class SetMaintenanceModeCommand extends LSConsoleCommand
 
     /**
      * @param array $args The mode, optionally followed by the path of a config.php
-     * @return int 0 on success, 1 on wrong usage or an unusable config.php
+     * @return int 0 on success, 1 on wrong usage, an unusable config.php or a mode that could not be saved
      */
     #[\Override]
     public function run($args)
@@ -67,6 +67,16 @@ class SetMaintenanceModeCommand extends LSConsoleCommand
             }
         }
         SettingGlobal::setSetting('maintenancemode', $mode);
+        // Read back from the database: only report success when the mode is really stored
+        $storedMode = Yii::app()->db->createCommand()
+            ->select('stg_value')
+            ->from('{{settings_global}}')
+            ->where('stg_name = :name', [':name' => 'maintenancemode'])
+            ->queryScalar();
+        if ($storedMode !== $mode) {
+            echo "The maintenance mode could not be saved, it is still '" . ($storedMode === false ? SettingGlobal::MAINTENANCE_MODE_OFF : $storedMode) . "'.\n";
+            return 1;
+        }
         echo "Maintenance mode set to '$mode'.\n";
         return 0;
     }

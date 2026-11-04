@@ -161,54 +161,43 @@ class SettingGlobalMaintenanceModeTest extends TestBaseClass
     }
 
     /**
-     * After a critical database update the maintenance mode row is put back as it was,
-     * and removed again if there was none so a value from config.php stays in force.
+     * The maintenance mode row is written without the model, as needed during a database update,
+     * and a missing row before the update is removed again afterwards.
      *
      * @return void
      */
-    public function testRestoreAfterUpdate()
+    public function testWriteRowForUpdate()
     {
-        $db = \Yii::app()->db;
-        $db->createCommand()->delete('{{settings_global}}', 'stg_name = :name', [':name' => 'maintenancemode']);
+        \Yii::app()->db->createCommand()->delete('{{settings_global}}', 'stg_name = :name', [':name' => 'maintenancemode']);
 
-        // The row is written without the model, over an existing row or not
-        writeMaintenanceModeRowForUpdate('hard');
+        writeMaintenanceModeRow('hard');
         $this->assertSame('hard', $this->readRow());
-        writeMaintenanceModeRowForUpdate('hard');
-        $this->assertSame('hard', $this->readRow());
+        $this->assertTrue(SettingGlobal::isMaintenanceModeHard());
+        writeMaintenanceModeRow('soft');
+        $this->assertSame('soft', $this->readRow(), 'An existing row is replaced');
+        $this->assertSame('soft', SettingGlobal::getMaintenanceMode());
 
-        // Previously a row "soft": the row and the running configuration are put back
-        \Yii::app()->setConfig('maintenancemode', 'hard');
-        restoreMaintenanceModeAfterUpdate('soft', 'soft');
-        $this->assertSame('soft', $this->readRow());
-        $this->assertSame('soft', \Yii::app()->getConfig('maintenancemode'));
-
-        // Previously no row, "hard-cli" from config.php: the row written for the update is removed again
-        writeMaintenanceModeRowForUpdate('hard');
-        \Yii::app()->setConfig('maintenancemode', 'hard');
-        restoreMaintenanceModeAfterUpdate(null, 'hard-cli');
-        $this->assertFalse($this->readRow());
-        $this->assertSame('hard-cli', \Yii::app()->getConfig('maintenancemode'));
-
-        // Nothing to remove is not an error
-        restoreMaintenanceModeAfterUpdate(null, 'off');
-        $this->assertFalse($this->readRow());
+        writeMaintenanceModeRow(null);
+        $this->assertFalse($this->readRow(), 'null removes the row');
+        $this->assertSame('off', SettingGlobal::getMaintenanceMode());
+        writeMaintenanceModeRow(null);
+        $this->assertFalse($this->readRow(), 'Nothing to remove is not an error');
     }
 
     /**
-     * A console command given a config.php works with that installation's configuration:
-     * its settings_global rows override what the console application loaded at startup.
+     * A config.php without a table prefix gives an empty prefix, not null, so that the
+     * {{table}} placeholders are still replaced.
      *
      * @return void
      */
-    public function testCustomConfigLoadsThatInstallation()
+    public function testCustomConfigWithoutTablePrefix()
     {
-        $configPath = \Yii::app()->getBasePath() . '/config/config.php';
-        $db = \Yii::app()->db;
-        $db->createCommand()->delete('{{settings_global}}', 'stg_name = :name', [':name' => 'maintenancemode']);
-        $db->createCommand()->insert('{{settings_global}}', ['stg_name' => 'maintenancemode', 'stg_value' => 'soft']);
-        \Yii::app()->setConfig('maintenancemode', 'off');
-
+        $realConfig = \Yii::app()->getBasePath() . '/config/config.php';
+        $dir = sys_get_temp_dir() . '/ls-maintenance-' . uniqid();
+        mkdir($dir);
+        $configPath = $dir . '/config.php';
+        $code = '<?php $c = include ' . var_export($realConfig, true) . '; unset($c["components"]["db"]["tablePrefix"]); return $c;';
+        file_put_contents($configPath, $code);
         $command = new class ('setmaintenancemode', null) extends \SetMaintenanceModeCommand {
             public function loadConfig(string $configPath): void
             {
@@ -220,17 +209,15 @@ class SettingGlobalMaintenanceModeTest extends TestBaseClass
                 }
             }
         };
-        $command->loadConfig($configPath);
-        $this->assertSame('soft', \Yii::app()->getConfig('maintenancemode'));
-        $this->assertSame(
-            (string) $db->createCommand()->select('stg_value')->from('{{settings_global}}')->where("stg_name = 'DBVersion'")->queryScalar(),
-            (string) \Yii::app()->getConfig('DBVersion')
-        );
-
-        // The command itself writes the row of that installation
-        $this->assertSame(0, $this->runCommand(['hard-cli', $configPath]));
-        $this->assertSame('hard-cli', $this->readRow());
-        $this->assertSame(0, $this->runCommand(['off', $configPath]));
-        $this->assertSame('off', $this->readRow());
+        try {
+            $command->loadConfig($configPath);
+            $this->assertSame('', \Yii::app()->db->tablePrefix);
+            $this->assertSame('SELECT 1 FROM settings_global', \Yii::app()->db->createCommand('SELECT 1 FROM {{settings_global}}')->getText());
+        } finally {
+            // Back to the connection of the test installation
+            $command->loadConfig($realConfig);
+            unlink($configPath);
+            rmdir($dir);
+        }
     }
 }

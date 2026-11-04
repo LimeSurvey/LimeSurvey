@@ -147,11 +147,10 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false, &$sAbortReason = null)
     // Enable maintenance mode during critical updates so survey participants
     // see a maintenance page. Preserve the previous value to restore it afterwards.
     // "hard" and "hard-cli" are left as they are, "hard-cli" must stay until the command
-    // line lifts it. The application config describes the installation being updated
-    // (a console command with a custom config.php loads that installation's config.php
-    // and settings_global), so the effective mode can be read from it. The settings_global
-    // row is remembered separately: without one, config.php decides, and the row written
-    // for the update is removed again afterwards so that value stays in force.
+    // line lifts it. The mode is read from the settings_global row of the database being
+    // updated, the only place it is set: with a custom config (console.php updatedb
+    // path/to/config.php) the application config still holds the values of the default
+    // installation. A missing row means "off" and is removed again afterwards.
     // The row is read and written with plain queries: models must not be used while the
     // schema is being updated.
     $bIsCriticalUpdate = count(array_intersect($aCriticalDBVersions, $aAllUpdates)) > 0;
@@ -161,18 +160,16 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false, &$sAbortReason = null)
         ->where('stg_name = :name', [':name' => 'maintenancemode'])
         ->queryScalar();
     $sPreviousMaintenanceMode = $sPreviousMaintenanceMode === false ? null : (string) $sPreviousMaintenanceMode;
-    $sPreviousMaintenanceModeConfig = Yii::app()->getConfig('maintenancemode');
     $bMaintenanceModeRestored = true;
-    if ($bIsCriticalUpdate && !SettingGlobal::isMaintenanceModeHard()) {
-        writeMaintenanceModeRowForUpdate(SettingGlobal::MAINTENANCE_MODE_HARD);
-        Yii::app()->setConfig('maintenancemode', SettingGlobal::MAINTENANCE_MODE_HARD);
+    if ($bIsCriticalUpdate && !SettingGlobal::isMaintenanceModeHard($sPreviousMaintenanceMode ?? SettingGlobal::MAINTENANCE_MODE_OFF)) {
+        writeMaintenanceModeRow(SettingGlobal::MAINTENANCE_MODE_HARD);
         $bMaintenanceModeRestored = false;
 
         // Safety net: restore maintenance mode even on fatal error / timeout.
-        register_shutdown_function(function () use ($sPreviousMaintenanceMode, $sPreviousMaintenanceModeConfig, &$bMaintenanceModeRestored) {
+        register_shutdown_function(function () use ($sPreviousMaintenanceMode, &$bMaintenanceModeRestored) {
             if (!$bMaintenanceModeRestored) {
                 try {
-                    restoreMaintenanceModeAfterUpdate($sPreviousMaintenanceMode, $sPreviousMaintenanceModeConfig);
+                    writeMaintenanceModeRow($sPreviousMaintenanceMode);
                 } catch (\Throwable $t) {
                     // DB may be unavailable at this point, nothing we can do.
                 }
@@ -233,7 +230,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false, &$sAbortReason = null)
         // Restore previous maintenance mode if it was changed
         if (!$bMaintenanceModeRestored) {
             try {
-                restoreMaintenanceModeAfterUpdate($sPreviousMaintenanceMode, $sPreviousMaintenanceModeConfig);
+                writeMaintenanceModeRow($sPreviousMaintenanceMode);
                 // @psalm-suppress UnusedVariable Read by the by-reference shutdown-function
                 // closure registered above; Psalm doesn't trace writes observed by a
                 // by-ref closure captured before this point.
@@ -295,7 +292,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false, &$sAbortReason = null)
     // Restore previous maintenance mode if it was changed
     if (!$bMaintenanceModeRestored) {
         try {
-            restoreMaintenanceModeAfterUpdate($sPreviousMaintenanceMode, $sPreviousMaintenanceModeConfig);
+            writeMaintenanceModeRow($sPreviousMaintenanceMode);
             // @psalm-suppress UnusedVariable Read by the by-reference shutdown-function
             // closure registered above; Psalm doesn't trace writes observed by a
             // by-ref closure captured before this point.
@@ -384,31 +381,26 @@ function isDatabaseUpdateLockHeld()
 }
 
 /**
- * Writes the maintenancemode row of settings_global with plain queries, usable while the schema is being updated.
+ * Writes the maintenancemode row of settings_global and the running configuration, with plain
+ * queries so that it can be used while the schema is being updated.
  *
- * @param string|null $sMode The value to store, null removes the row so config.php decides
+ * @param string|null $sMode The value to store, null removes the row (maintenance mode "off")
  * @return void
  */
-function writeMaintenanceModeRowForUpdate($sMode)
+function writeMaintenanceModeRow($sMode)
 {
     $db = Yii::app()->db;
-    $db->createCommand()->delete('{{settings_global}}', 'stg_name = :name', [':name' => 'maintenancemode']);
-    if ($sMode !== null) {
+    $condition = 'stg_name = :name';
+    $params = [':name' => 'maintenancemode'];
+    if ($sMode === null) {
+        $db->createCommand()->delete('{{settings_global}}', $condition, $params);
+    } elseif ($db->createCommand()->select('COUNT(*)')->from('{{settings_global}}')->where($condition, $params)->queryScalar()) {
+        // Updated in place: no moment without a row in which other requests would see "off"
+        $db->createCommand()->update('{{settings_global}}', ['stg_value' => $sMode], $condition, $params);
+    } else {
         $db->createCommand()->insert('{{settings_global}}', ['stg_name' => 'maintenancemode', 'stg_value' => $sMode]);
     }
-}
-
-/**
- * Puts the maintenance mode back to what it was before a critical database update.
- *
- * @param string|null $sPreviousMaintenanceMode The settings_global row before the update, null if there was none
- * @param mixed $sPreviousMaintenanceModeConfig The value of the application config before the update
- * @return void
- */
-function restoreMaintenanceModeAfterUpdate($sPreviousMaintenanceMode, $sPreviousMaintenanceModeConfig)
-{
-    writeMaintenanceModeRowForUpdate($sPreviousMaintenanceMode);
-    Yii::app()->setConfig('maintenancemode', $sPreviousMaintenanceModeConfig);
+    Yii::app()->setConfig('maintenancemode', $sMode ?? SettingGlobal::MAINTENANCE_MODE_OFF);
 }
 
 /**
