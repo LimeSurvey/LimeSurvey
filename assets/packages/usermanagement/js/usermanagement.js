@@ -120,6 +120,10 @@ var UserManagement = function () {
     };
 
     var wireForm = function () {
+        // The import form is a normal multipart submit (page reload): Only show and announce the loading state
+        $('#UserManagement--modalform--import').on('submit.USERMANAGERMODAL', function () {
+            startSubmit();
+        });
         $('#UserManagement--modalform').on('submit.USERMANAGERMODAL', function (e) {
             e.preventDefault();
             const buttonClassName = e.originalEvent.submitter.className;
