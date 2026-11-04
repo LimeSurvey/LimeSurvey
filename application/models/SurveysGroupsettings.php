@@ -505,9 +505,13 @@ class SurveysGroupsettings extends LSActiveRecord
         }
     }
 
+    /**
+     * Set the attributes to their default values, used only when creating the top level (global) SurveysGroupsettings.
+     *
+     * @return void
+     */
     public function setToDefault()
     {
-        // set attribute values to default values, used only when creating new top level SurveysGroupsettings instance
         $this->owner_id = 1;
         $this->usecaptcha = 'N';
         $this->captchatype = (new \LimeSurvey\Models\Services\CaptchaService())->getDefaultProvider() ?? \LimeSurvey\Models\Services\CaptchaService::NONE;

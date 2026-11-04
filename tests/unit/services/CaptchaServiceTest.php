@@ -125,15 +125,28 @@ class CaptchaServiceTest extends TestBaseClass
     }
 
     /**
-     * A configured type that no active plugin offers falls back to an available type
+     * A configured type that no active plugin offers falls back to the global type, else the first offered type
      */
     public function testUnavailableTypeFallsBack()
     {
+        $this->assertTrue(extension_loaded('gd'), 'This test needs both core CAPTCHA types');
         $service = new CaptchaService();
         $survey = $this->surveyWithCaptchaType('no_such_captcha');
         $this->assertSame('no_such_captcha', $service->getConfiguredProvider($survey));
-        $this->assertSame($service->getDefaultProvider(), $service->resolveProvider($survey));
-        $this->assertArrayHasKey($service->resolveProvider($survey), $service->getProviders());
+
+        self::setGlobalCaptchaType(\CoreCaptcha::TYPE_CLASSIC);
+        CaptchaService::reset();
+        $this->assertSame(\CoreCaptcha::TYPE_CLASSIC, $service->getDefaultProvider());
+        $this->assertSame(\CoreCaptcha::TYPE_CLASSIC, $service->resolveProvider($survey));
+
+        self::setGlobalCaptchaType(CaptchaService::NONE);
+        CaptchaService::reset();
+        $this->assertSame(\CoreCaptcha::TYPE_ALTCHA, $service->getDefaultProvider(), 'Alphabetically first offered type');
+        $this->assertSame(\CoreCaptcha::TYPE_ALTCHA, $service->resolveProvider($survey));
+
+        self::$plugin->saveSettings(['altchaEnabled' => 0]);
+        CaptchaService::reset();
+        $this->assertSame(\CoreCaptcha::TYPE_CLASSIC, $service->resolveProvider($survey));
     }
 
     /**
@@ -174,6 +187,7 @@ class CaptchaServiceTest extends TestBaseClass
         $first = $service->render($survey, CaptchaService::SCREEN_SURVEY_ACCESS);
         $second = $service->render($survey, CaptchaService::SCREEN_SURVEY_ACCESS);
         $this->assertSame($first['html'], $second['html']);
+        $this->assertStringStartsWith('<input type="hidden" value="1" name="' . CaptchaService::SUBMITTED_FIELD . '"', $first['html']);
         $this->assertSame($first, CaptchaService::getLastRendered());
 
         $other = $service->render($survey, CaptchaService::SCREEN_SAVE_AND_LOAD);

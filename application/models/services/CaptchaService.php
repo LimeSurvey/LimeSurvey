@@ -13,7 +13,9 @@ use Survey;
  * CAPTCHA plugins subscribe to three events:
  *  - getCaptchaProviders: append ['providers' => [<typeId> => ['label' => ..., 'description' => ...]]]
  *  - renderCaptcha: when 'provider' is one of the plugin's type ids, set 'html' (the complete form field
- *    markup), optionally 'label', 'inputId' (for the label's "for" attribute) and 'data' (extra template data)
+ *    markup), optionally 'label' (plain text), 'inputId' (for the label's "for" attribute), 'legacyHtml'
+ *    (markup for older survey themes that render their own answer field, see LS_Twig_Extension::renderCaptcha())
+ *    and 'data' (extra template data)
  *  - validateCaptcha: when 'provider' is one of the plugin's type ids, set 'valid' (bool) and optionally 'message'
  *
  * See LimeSurvey\PluginManager\CaptchaPluginBase for a base class that handles the events.
@@ -32,6 +34,12 @@ class CaptchaService
 
     /** CAPTCHA type meaning "no CAPTCHA": nothing is shown and validated, even where the CAPTCHA is switched on */
     public const NONE = 'none';
+
+    /** Name of the hidden field rendered with every CAPTCHA, telling the server that a form with a CAPTCHA was submitted */
+    public const SUBMITTED_FIELD = 'captcha_submitted';
+
+    /** @var string|null The CAPTCHA type of the global survey settings, cached per request */
+    private static $globalProvider = null;
 
     /** @var array<string, array{label: string, description: string}>|null CAPTCHA types collected from plugins, cached per request */
     private static $providers = null;
@@ -73,6 +81,9 @@ class CaptchaService
     /**
      * Get the CAPTCHA type that is used when nothing else is configured or the configured type is not available.
      *
+     * This is the type of the global survey settings when a plugin offers it, otherwise the first
+     * offered type in alphabetical order, so the fallback does not depend on the plugin load order.
+     *
      * @return string|null CAPTCHA type id, null when no CAPTCHA plugin is available
      */
     public function getDefaultProvider(): ?string
@@ -81,7 +92,30 @@ class CaptchaService
         if (empty($providers)) {
             return null;
         }
-        return (string) array_key_first($providers);
+        $globalProvider = $this->getGlobalProvider();
+        if ($globalProvider !== null && array_key_exists($globalProvider, $providers)) {
+            return $globalProvider;
+        }
+        $typeIds = array_keys($providers);
+        sort($typeIds, SORT_STRING);
+        return (string) $typeIds[0];
+    }
+
+    /**
+     * Get the CAPTCHA type of the global survey settings (survey group settings with gsid 0).
+     *
+     * @return string|null Type id, null when unset, "inherit" or "none"
+     */
+    private function getGlobalProvider(): ?string
+    {
+        if (self::$globalProvider === null) {
+            $globalSettings = \SurveysGroupsettings::model()->findByPk(0);
+            self::$globalProvider = (string) ($globalSettings->captchatype ?? '');
+        }
+        if (self::$globalProvider === '' || self::$globalProvider === self::INHERIT || self::$globalProvider === self::NONE) {
+            return null;
+        }
+        return self::$globalProvider;
     }
 
     /**
@@ -141,8 +175,9 @@ class CaptchaService
      *
      * @param Survey $survey
      * @param string $screen One of the SCREEN_* constants
-     * @return array{show: bool, provider: string, html: string, label: string|null, inputId: string|null} plus any plugin data,
-     *         show is false when the survey uses no CAPTCHA
+     * @return array{show: bool, provider: string, html: string, legacyHtml: string, label: string|null, inputId: string|null}
+     *         plus any plugin data; show is false when the survey uses no CAPTCHA, html starts with a hidden
+     *         field (SUBMITTED_FIELD), label is HTML encoded for the survey themes
      */
     public function render(Survey $survey, string $screen): array
     {
@@ -212,6 +247,7 @@ class CaptchaService
     public static function reset(): void
     {
         self::$providers = null;
+        self::$globalProvider = null;
         self::$rendered = [];
         self::$lastRendered = null;
     }
@@ -230,6 +266,7 @@ class CaptchaService
             'show' => $provider !== self::NONE,
             'provider' => $provider,
             'html' => '',
+            'legacyHtml' => '',
             'label' => null,
             'inputId' => null,
         ];
@@ -243,9 +280,13 @@ class CaptchaService
         $event->set('language', \App()->language);
         \App()->getPluginManager()->dispatchEvent($event);
 
-        $result['html'] = (string) $event->get('html', '');
+        // The hidden field tells the server that the submitted form carried a CAPTCHA (see SurveyRuntimeHelper)
+        $submittedField = \CHtml::hiddenField(self::SUBMITTED_FIELD, '1');
+        $result['html'] = $submittedField . (string) $event->get('html', '');
+        $legacyHtml = $event->get('legacyHtml');
+        $result['legacyHtml'] = $submittedField . (($legacyHtml === null || $legacyHtml === '') ? (string) $event->get('html', '') : (string) $legacyHtml);
         $label = $event->get('label');
-        $result['label'] = ($label === null || $label === '') ? null : (string) $label;
+        $result['label'] = ($label === null || $label === '') ? null : \CHtml::encode((string) $label);
         $inputId = $event->get('inputId');
         $result['inputId'] = ($inputId === null || $inputId === '') ? null : (string) $inputId;
         $data = $event->get('data');

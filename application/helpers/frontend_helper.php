@@ -1373,6 +1373,7 @@ function getRenderWay($renderToken, $renderCaptcha)
  * @param string $sTemplateViewPath
  * @param array $aEnterTokenData
  * @param int $surveyid
+ * @param array|null $aSurveyInfo Survey info array, loaded when not given
  * @return void
  */
 function renderRenderWayForm($renderWay, array $scenarios, $sTemplateViewPath, $aEnterTokenData, $surveyid, $aSurveyInfo = null)

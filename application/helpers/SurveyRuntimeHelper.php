@@ -1654,15 +1654,18 @@ class SurveyRuntimeHelper
     }
 
     /**
-     * Whether the current request is a submit of the token or captcha form (and not e.g. a language change),
-     * so a CAPTCHA answer is expected in it.
+     * Whether the current request is a submit of a form that contained the CAPTCHA, so an answer is expected in it.
+     *
+     * Every rendered CAPTCHA carries a hidden field (CaptchaService::SUBMITTED_FIELD); other POSTs, like a
+     * language change or a survey navigation after the session expired, must not show a CAPTCHA error.
      *
      * @return bool
      */
     private function isCaptchaAnswerPosted()
     {
         $request = App()->getRequest();
-        return $request->getIsPostRequest() && $request->getPost('move') !== 'changelang';
+        return $request->getIsPostRequest()
+            && $request->getPost(\LimeSurvey\Models\Services\CaptchaService::SUBMITTED_FIELD) !== null;
     }
 
     /**

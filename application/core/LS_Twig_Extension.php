@@ -263,8 +263,9 @@ class LS_Twig_Extension extends AbstractExtension
      * Get a widget whose renderOut() returns the CAPTCHA markup of the survey's CAPTCHA plugin.
      *
      * @deprecated Survey themes get the CAPTCHA markup from aSurveyInfo (aForm.captcha.html, captcha.html,
-     *             aSaveForm.aCaptcha.html and aLoadForm.aCaptcha.html). Kept so older themes still show
-     *             the CAPTCHA type selected for the survey.
+     *             aSaveForm.aCaptcha.html and aLoadForm.aCaptcha.html). Kept so older themes, which render
+     *             the reload button and the "loadsecurity" answer field themselves, still show the CAPTCHA
+     *             type selected for the survey (the plugin's "legacyHtml" markup).
      * @return LSCaptcha
      */
     public static function renderCaptcha()
@@ -272,7 +273,7 @@ class LS_Twig_Extension extends AbstractExtension
         $widget = App()->getController()->createWidget('LSCaptcha', array('captchaAction' => 'captcha'));
         $rendered = \LimeSurvey\Models\Services\CaptchaService::getLastRendered();
         if ($rendered !== null) {
-            $widget->prerenderedHtml = (string) $rendered['html'];
+            $widget->prerenderedHtml = (string) ($rendered['legacyHtml'] ?? $rendered['html']);
         }
         return $widget;
     }

@@ -49,8 +49,10 @@ abstract class CaptchaPluginBase extends PluginBase
      * @param string $type One of the type ids returned by getCaptchaTypes()
      * @param int $surveyId
      * @param string $screen One of the LimeSurvey\Models\Services\CaptchaService::SCREEN_* constants
-     * @return array{html: string, label?: string|null, inputId?: string|null, data?: array}
-     *         label: text for a visible label rendered by the theme (null for none),
+     * @return array{html: string, legacyHtml?: string, label?: string|null, inputId?: string|null, data?: array}
+     *         legacyHtml: markup for older survey themes that still render the classic CAPTCHA's reload
+     *         button and "loadsecurity" answer field themselves (defaults to html),
+     *         label: plain text for a visible label rendered by the theme (null for none), the core encodes it,
      *         inputId: id of the input the label points to, data: extra data for the theme templates
      */
     abstract protected function renderCaptchaWidget(string $type, int $surveyId, string $screen): array;
@@ -94,6 +96,9 @@ abstract class CaptchaPluginBase extends PluginBase
         }
         $result = $this->renderCaptchaWidget($type, (int) $event->get('surveyId'), (string) $event->get('screen'));
         $event->set('html', (string) ($result['html'] ?? ''));
+        if (!empty($result['legacyHtml'])) {
+            $event->set('legacyHtml', (string) $result['legacyHtml']);
+        }
         if (array_key_exists('label', $result)) {
             $event->set('label', $result['label']);
         }

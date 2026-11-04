@@ -175,7 +175,7 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
             $captchaTypeDescriptions = [];
             if ($bShowInherited) {
                 $inheritedCaptchaLabel = $captchaTypes[$inheritedCaptchaType]['label'] ?? $inheritedCaptchaType;
-                $captchaTypeOptions[\LimeSurvey\Models\Services\CaptchaService::INHERIT] = gT('Inherit') . ' [' . $inheritedCaptchaLabel . ']';
+                $captchaTypeOptions[\LimeSurvey\Models\Services\CaptchaService::INHERIT] = sprintf(gT('Inherit [%s]'), $inheritedCaptchaLabel);
                 $captchaTypeDescriptions[\LimeSurvey\Models\Services\CaptchaService::INHERIT] = $captchaTypes[$inheritedCaptchaType]['description'] ?? '';
             }
             foreach ($captchaTypes as $captchaTypeId => $captchaType) {

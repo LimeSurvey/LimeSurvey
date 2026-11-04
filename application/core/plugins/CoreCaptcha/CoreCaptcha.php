@@ -40,8 +40,11 @@ class CoreCaptcha extends CaptchaPluginBase
     public const DEFAULT_ALTCHA_DIFFICULTY = 'high';
     public const DEFAULT_ALTCHA_AUTO = 'off';
     public const DEFAULT_ALTCHA_EXPIRY_MINUTES = 5;
-    /** How many solved challenges per session are remembered to refuse replays */
-    public const ALTCHA_MAX_USED_CHALLENGES = 50;
+    /** Upper bound of solved challenges remembered per session (expired ones are dropped anyway) */
+    public const ALTCHA_MAX_USED_CHALLENGES = 1000;
+
+    /** @var array<string, mixed> Plugin settings read in this request, so each is queried once */
+    private $settingCache = [];
     /** PBKDF2 iterations per attempt, the widget needs about 256 attempts on average for the "00" key prefix */
     public const ALTCHA_COSTS = [
         'low' => 2000,
@@ -202,8 +205,35 @@ class CoreCaptcha extends CaptchaPluginBase
      */
     protected function isTypeEnabled(string $settingName): bool
     {
-        $value = $this->get($settingName, null, null, true);
+        $value = $this->getSetting($settingName, true);
         return $value === true || $value === 1 || $value === '1';
+    }
+
+    /**
+     * Read a plugin wide setting, querying the storage only once per request and setting.
+     *
+     * @param string $name
+     * @param mixed $default
+     * @return mixed
+     */
+    protected function getSetting(string $name, $default = null)
+    {
+        if (!array_key_exists($name, $this->settingCache)) {
+            $this->settingCache[$name] = $this->get($name, null, null, $default);
+        }
+        return $this->settingCache[$name];
+    }
+
+    /**
+     * @inheritdoc Also forgets the cached value of a plugin wide setting
+     */
+    #[\Override]
+    protected function set($key, $data, $model = null, $id = null)
+    {
+        if ($model === null && $id === null) {
+            unset($this->settingCache[$key]);
+        }
+        return parent::set($key, $data, $model, $id);
     }
 
     /**
@@ -221,7 +251,7 @@ class CoreCaptcha extends CaptchaPluginBase
      * so the expiry only counts from then.
      *
      * @param int $surveyId
-     * @return array{html: string, label: null, inputId: null}
+     * @return array{html: string, legacyHtml: string, label: null, inputId: null}
      */
     protected function renderAltchaCaptcha(int $surveyId): array
     {
@@ -247,8 +277,14 @@ class CoreCaptcha extends CaptchaPluginBase
             [],
             CHtml::tag('div', ['class' => 'alert alert-warning', 'role' => 'alert'], CHtml::encode(gT("Please enable JavaScript to pass the CAPTCHA.")))
         );
+        $html = CHtml::tag('div', ['class' => 'ls-captcha ls-captcha-altcha'], $widget . $noscript);
+        // Older survey themes render the answer field and label of the classic CAPTCHA themselves, hide them
+        $hideClassicField = CHtml::script(
+            "document.querySelectorAll('#" . self::CLASSIC_FIELD . ", label[for=\"" . self::CLASSIC_FIELD . "\"], #reloadCaptcha').forEach(function (element) { element.hidden = true; });"
+        );
         return [
-            'html' => CHtml::tag('div', ['class' => 'ls-captcha ls-captcha-altcha'], $widget . $noscript),
+            'html' => $html,
+            'legacyHtml' => $html . $hideClassicField,
             'label' => null,
             'inputId' => null,
         ];
@@ -306,13 +342,23 @@ class CoreCaptcha extends CaptchaPluginBase
         if ($signature === '') {
             return false;
         }
+        // An expired challenge is refused by the verification, so it can be forgotten here
+        $expiresAt = (int) ($decoded['challenge']['parameters']['expiresAt'] ?? 0);
+        $now = time();
         $session = App()->session;
-        $used = (array) ($session['coreCaptchaUsedAltchaChallenges'] ?? []);
-        if (in_array($signature, $used, true)) {
+        $used = array_filter(
+            (array) ($session['coreCaptchaUsedAltchaChallenges'] ?? []),
+            fn($expiry) => (int) $expiry > $now
+        );
+        if (array_key_exists($signature, $used)) {
             return false;
         }
-        $used[] = $signature;
-        $session['coreCaptchaUsedAltchaChallenges'] = array_slice($used, -self::ALTCHA_MAX_USED_CHALLENGES);
+        $used[$signature] = $expiresAt > 0 ? $expiresAt : $now + $this->getAltchaExpiryMinutes() * 60;
+        if (count($used) > self::ALTCHA_MAX_USED_CHALLENGES) {
+            asort($used);
+            $used = array_slice($used, -self::ALTCHA_MAX_USED_CHALLENGES, null, true);
+        }
+        $session['coreCaptchaUsedAltchaChallenges'] = $used;
         return true;
     }
 
@@ -339,7 +385,7 @@ class CoreCaptcha extends CaptchaPluginBase
      */
     protected function getAltchaSecret(): string
     {
-        $secret = (string) $this->get('altchaSecret', null, null, '');
+        $secret = (string) $this->getSetting('altchaSecret', '');
         if ($secret === '') {
             $secret = bin2hex(random_bytes(32));
             $this->set('altchaSecret', $secret);
@@ -354,7 +400,7 @@ class CoreCaptcha extends CaptchaPluginBase
      */
     protected function getAltchaCost(): int
     {
-        $difficulty = (string) $this->get('altchaDifficulty', null, null, self::DEFAULT_ALTCHA_DIFFICULTY);
+        $difficulty = (string) $this->getSetting('altchaDifficulty', self::DEFAULT_ALTCHA_DIFFICULTY);
         return self::ALTCHA_COSTS[$difficulty] ?? self::ALTCHA_COSTS[self::DEFAULT_ALTCHA_DIFFICULTY];
     }
 
@@ -365,7 +411,7 @@ class CoreCaptcha extends CaptchaPluginBase
      */
     protected function getAltchaAuto(): string
     {
-        $auto = (string) $this->get('altchaAuto', null, null, self::DEFAULT_ALTCHA_AUTO);
+        $auto = (string) $this->getSetting('altchaAuto', self::DEFAULT_ALTCHA_AUTO);
         return in_array($auto, ['onload', 'onsubmit', 'off'], true) ? $auto : self::DEFAULT_ALTCHA_AUTO;
     }
 
@@ -376,7 +422,7 @@ class CoreCaptcha extends CaptchaPluginBase
      */
     protected function getAltchaExpiryMinutes(): int
     {
-        $minutes = (int) $this->get('altchaExpiryMinutes', null, null, self::DEFAULT_ALTCHA_EXPIRY_MINUTES);
+        $minutes = (int) $this->getSetting('altchaExpiryMinutes', self::DEFAULT_ALTCHA_EXPIRY_MINUTES);
         return $minutes > 0 ? $minutes : self::DEFAULT_ALTCHA_EXPIRY_MINUTES;
     }
 
@@ -387,7 +433,7 @@ class CoreCaptcha extends CaptchaPluginBase
      */
     protected function getAltchaShowFooter(): bool
     {
-        return (bool) $this->get('altchaShowFooter', null, null, false);
+        return (bool) $this->getSetting('altchaShowFooter', false);
     }
 
     /**
@@ -411,7 +457,7 @@ class CoreCaptcha extends CaptchaPluginBase
      *
      * @param int $surveyId
      * @param string $screen
-     * @return array{html: string, label: string, inputId: string, data: array}
+     * @return array{html: string, legacyHtml: string, label: string, inputId: string, data: array}
      */
     protected function renderClassicCaptcha(int $surveyId, string $screen): array
     {
@@ -453,7 +499,9 @@ class CoreCaptcha extends CaptchaPluginBase
         );
         return [
             'html' => $html,
-            'label' => gT("Please solve the following equation:"),
+            // Older survey themes render the reload button and the answer field themselves
+            'legacyHtml' => $image,
+            'label' => gT("Please solve the following equation:", 'unescaped'),
             'inputId' => self::CLASSIC_FIELD,
             'data' => $data,
         ];

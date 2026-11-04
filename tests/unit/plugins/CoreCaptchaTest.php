@@ -140,6 +140,9 @@ class CoreCaptchaTest extends TestBaseClass
         $this->assertSame(\CoreCaptcha::TYPE_ALTCHA, $rendered['provider']);
         $this->assertStringContainsString('<altcha-widget', $rendered['html']);
         $this->assertStringContainsString('name="altcha"', $rendered['html']);
+        $this->assertStringContainsString('name="' . CaptchaService::SUBMITTED_FIELD . '"', $rendered['html']);
+        $this->assertStringContainsString('<altcha-widget', $rendered['legacyHtml']);
+        $this->assertStringContainsString('loadsecurity', $rendered['legacyHtml'], 'Older themes get their classic answer field hidden');
         $this->assertNull($rendered['label']);
         $this->assertSame(1, preg_match('/ challenge="([^"]+)"/', $rendered['html'], $matches), 'The widget gets a challenge url');
         $this->assertStringContainsString('plugins/direct', html_entity_decode($matches[1], ENT_QUOTES));
@@ -166,6 +169,9 @@ class CoreCaptchaTest extends TestBaseClass
         $_POST['altcha'] = $payload;
         $this->assertTrue($service->validate($survey, CaptchaService::SCREEN_SURVEY_ACCESS), 'The solved challenge must be accepted');
         $this->assertFalse($service->validate($survey, CaptchaService::SCREEN_SURVEY_ACCESS), 'A replayed payload must be refused');
+        $used = (array) App()->session['coreCaptchaUsedAltchaChallenges'];
+        $this->assertCount(1, $used);
+        $this->assertGreaterThan(time(), reset($used), 'Used challenges are remembered until they expire');
 
         $tampered = json_decode(base64_decode($payload), true);
         $tampered['challenge']['parameters']['salt'] = bin2hex(random_bytes(16));
@@ -217,6 +223,10 @@ class CoreCaptchaTest extends TestBaseClass
         $rendered = $service->render($survey, CaptchaService::SCREEN_SURVEY_ACCESS);
         $this->assertStringContainsString('<img', $rendered['html']);
         $this->assertStringContainsString('id="reloadCaptcha"', $rendered['html']);
+        $this->assertStringContainsString('name="' . CaptchaService::SUBMITTED_FIELD . '"', $rendered['legacyHtml']);
+        $this->assertStringContainsString('<img', $rendered['legacyHtml']);
+        $this->assertStringNotContainsString('id="reloadCaptcha"', $rendered['legacyHtml'], 'Older themes render the reload button themselves');
+        $this->assertStringNotContainsString('name="loadsecurity"', $rendered['legacyHtml'], 'Older themes render the answer field themselves');
         $this->assertSame('loadsecurity', $rendered['inputId']);
 
         /** @var CaptchaExtendedAction $action */
