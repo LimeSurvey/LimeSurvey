@@ -83,3 +83,15 @@ $button-min-width: 140px;
     }
   }
 }
+
+.single-choice-buttons-other {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: $buttons-gap;
+
+  .comment-input {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+}
