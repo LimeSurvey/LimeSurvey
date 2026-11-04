@@ -1,8 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
+import classNames from 'classnames'
 import {
   Entities,
   getStringPartsUsingSeperator,
   getAttributeValue,
+  htmlToPlainText,
   isTrue,
   L10ns,
   OTHER_CODE,
@@ -32,6 +34,15 @@ const dropdownThemeComponents = [
 ]
 
 const commentedCheckboxOptions = getCommentedCheckboxOptions()
+
+const BUTTONS_PER_ROW = {
+  'col-md-12': 1,
+  'col-md-6': 2,
+  'col-md-4': 3,
+  'col-md-3': 4,
+  'col-md-2': 6,
+  'col-md-1': 12,
+}
 
 const OTHER_POSITIONS = {
   BEGINNING: 'beginning',
@@ -93,6 +104,7 @@ export const OptionQuestionViewMode = ({
     other_replace_text,
     other_position,
     other_position_code,
+    max_buttons_row,
   } = attributes || {}
   const isDropdownTheme = useMemo(
     () => dropdownThemeComponents.includes(questionThemeName),
@@ -102,6 +114,11 @@ export const OptionQuestionViewMode = ({
     () => singleChoiceThemes.includes(questionThemeName),
     [questionThemeName]
   )
+
+  const isSingleChoiceButtons =
+    questionThemeName === getQuestionTypeInfo().SINGLE_CHOICE_BUTTONS.theme
+  const buttonsPerRow =
+    isSingleChoiceButtons && BUTTONS_PER_ROW[getAttributeValue(max_buttons_row)]
 
   const isSingleChoiceWithComments = useMemo(() => {
     return (
@@ -413,9 +430,12 @@ export const OptionQuestionViewMode = ({
 
   return (
     <div
-      className={`children-parent${
-        isMultipleShortTexts ? ' multiple-short-texts' : ''
-      }`}
+      className={classNames('children-parent', {
+        'multiple-short-texts': isMultipleShortTexts,
+        'single-choice-buttons': isSingleChoiceButtons,
+        'fixed-columns': buttonsPerRow,
+      })}
+      style={buttonsPerRow ? { '--buttons-per-row': buttonsPerRow } : undefined}
     >
       {children?.map((child, index) => {
         const ChildUiComponentToRender =
@@ -454,6 +474,11 @@ export const OptionQuestionViewMode = ({
               }
               text={getChildTitle(child.l10ns)}
               variant="outline-success"
+              title={
+                isSingleChoiceButtons
+                  ? htmlToPlainText(getChildTitle(child.l10ns))
+                  : undefined
+              }
               update={(newValue) => {
                 if (isSingleChoiceTheme) {
                   pendingIndexRef.current = index
