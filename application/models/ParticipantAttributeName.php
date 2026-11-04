@@ -97,6 +97,7 @@ class ParticipantAttributeName extends LSActiveRecord
 
     /**
      * Returns Buttons for Grid view
+     * Edit is only shown with global 'participantpanel' 'update' permission, delete only with 'delete' permission
      * @return string html
      */
     public function getButtons()
@@ -104,30 +105,37 @@ class ParticipantAttributeName extends LSActiveRecord
         $isNotCoreAttribute = $this->core_attribute !== 'Y';
 
         $dropdownItems = [];
-        $dropdownItems[] = [
-            'title'            => gT('Edit this attribute'),
-            'linkClass'        => 'action_attributeNames_editModal',
-            'iconClass'        => 'ri-pencil-fill',
-            'enabledCondition' => $isNotCoreAttribute,
-            'linkAttributes'   => [
-                'data-attribute_id'   => $this->attribute_id,
-            ]
-        ];
-        $dropdownItems[] = [
-            'title'            => gT('Delete this attribute'),
-            'linkClass'        => 'action_attributeNames_deleteModal',
-            'iconClass'        => 'ri-delete-bin-fill text-danger',
-            'enabledCondition' => $isNotCoreAttribute,
-            'linkAttributes'   => [
-                'data-bs-toggle' => "modal",
-                'data-bs-target' => "#confirmation-modal",
-                'data-title'     => gT("Delete this attribute"),
-                'data-btnclass'  => "btn-danger",
-                'data-btntext'   => gT("Delete"),
-                'data-message'   => gT('Do you really want to delete this attribute') . "?",
-                'data-onclick'   => 'deleteAttributeAjax(' . $this->attribute_id . ")",
-            ]
-        ];
+        if (Permission::model()->hasGlobalPermission('participantpanel', 'update')) {
+            $dropdownItems[] = [
+                'title'            => gT('Edit this attribute'),
+                'linkClass'        => 'action_attributeNames_editModal',
+                'iconClass'        => 'ri-pencil-fill',
+                'enabledCondition' => $isNotCoreAttribute,
+                'linkAttributes'   => [
+                    'data-attribute_id'   => $this->attribute_id,
+                ]
+            ];
+        }
+        if (Permission::model()->hasGlobalPermission('participantpanel', 'delete')) {
+            $dropdownItems[] = [
+                'title'            => gT('Delete this attribute'),
+                'linkClass'        => 'action_attributeNames_deleteModal',
+                'iconClass'        => 'ri-delete-bin-fill text-danger',
+                'enabledCondition' => $isNotCoreAttribute,
+                'linkAttributes'   => [
+                    'data-bs-toggle' => "modal",
+                    'data-bs-target' => "#confirmation-modal",
+                    'data-title'     => gT("Delete this attribute"),
+                    'data-btnclass'  => "btn-danger",
+                    'data-btntext'   => gT("Delete"),
+                    'data-message'   => gT('Do you really want to delete this attribute') . "?",
+                    'data-onclick'   => 'deleteAttributeAjax(' . $this->attribute_id . ")",
+                ]
+            ];
+        }
+        if (empty($dropdownItems)) {
+            return '';
+        }
 
         return App()->getController()->widget('ext.admin.grid.GridActionsWidget.GridActionsWidget', ['dropdownItems' => $dropdownItems], true);
     }
@@ -143,7 +151,7 @@ class ParticipantAttributeName extends LSActiveRecord
             // as we have only that special case in cpdb at the moment, it's not necessary to change it in the frontend part (listAction.js line 27)
             return "<input type='hidden' class='selector_attributeNamesCheckbox' name='selectedAttributeNames[]' value='" . $this->attribute_id . "' >";
         }
-        return "<input type='checkbox' class='selector_attributeNamesCheckbox massiveActionsCheckbox' name='selectedAttributeNames[]' value='" . $this->attribute_id . "' >";
+        return "<input type='checkbox' class='selector_attributeNamesCheckbox massiveActionsCheckbox' name='selectedAttributeNames[]' value='" . $this->attribute_id . "' aria-label='" . CHtml::encode(sprintf(gT('Select attribute %s'), $this->defaultname)) . "' >";
     }
 
     /**
@@ -245,7 +253,7 @@ class ParticipantAttributeName extends LSActiveRecord
             [
                 "name"              => 'massiveActionCheckbox',
                 "type"              => 'raw',
-                "header"            => "<input type='checkbox' id='action_toggleAllAttributeNames' />",
+                "header"            => "<input type='checkbox' id='action_toggleAllAttributeNames' aria-label='" . CHtml::encode(gT('Select all')) . "' />",
                 "filter"            => false,
                 'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
                 'filterHtmlOptions' => ['class' => 'ls-sticky-column'],

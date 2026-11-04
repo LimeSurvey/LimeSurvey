@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { Draggable } from 'react-beautiful-dnd'
+import { Draggable } from '@hello-pangea/dnd'
 import { useParams } from 'react-router-dom'
 import classNames from 'classnames'
 import { max } from 'lodash'
@@ -21,6 +21,7 @@ import { ARRAY_ROW_LABEL_INSET } from '../arrayLayout'
 
 import { ArrayColumnTitle } from './ArrayColumnTitle'
 
+/** Header row of an array question showing the draggable answer (column) titles. */
 export const ArrayColumnsTitles = ({
   question: {
     answers = [],
@@ -246,8 +247,8 @@ export const ArrayColumnsTitles = ({
             {entitiesInfo?.items?.map((entity, index) => {
               return (
                 <Draggable
-                  key={`${entity.appKey || entity[entitiesInfo.idKey]}}-subQuestionAnswerTitle`}
-                  draggableId={`${entity.appKey || entity[entitiesInfo.idKey]}}-subQuestionAnswerTitle`}
+                  key={`${entity.appKey || entity[entitiesInfo.idKey]}-subQuestionAnswerTitle`}
+                  draggableId={`${entity.appKey || entity[entitiesInfo.idKey]}-subQuestionAnswerTitle`}
                   index={index}
                 >
                   {(provided, snapshot) => (

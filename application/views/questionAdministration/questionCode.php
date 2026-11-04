@@ -1,9 +1,9 @@
 <?php
 
 /**@var Question $question */
-/** @var bool $generalSettingsView */
-$generalSettingsView = $generalSettingsView ?? false;
-$class = !$generalSettingsView ? 'mb-4 col-12 scoped-responsive-fix-height' : '';
+/** @var bool $questionEditorView */
+$questionEditorView = $questionEditorView ?? false;
+$class = !$questionEditorView ? 'mb-4 col-12 scoped-responsive-fix-height' : '';
 ?>
 <div class="<?= $class ?>">
     <label for="questionCode"><?= gT('Code'); ?></label>

@@ -1,6 +1,7 @@
 <?php
 
 Yii::import('zii.widgets.grid.CGridView');
+Yii::import('ext.admin.grid.LSCheckBoxColumn');
 
 class CLSGridView extends TbGridView
 {
@@ -127,6 +128,10 @@ class CLSGridView extends TbGridView
         ], true);
         $this->rowLink();
         $this->lsAfterAjaxUpdate();
+        // Logged out (HTTP 401): The adminbasics ajaxError handler shows the "logged out" modal, skip the default error alert
+        if ($this->ajaxUpdateError === null) {
+            $this->ajaxUpdateError = 'function(xhr, textStatus, errorThrown, err){if(xhr.status !== 401 && err){alert(err);}}';
+        }
         if (!empty($classes)) {
             $classes = implode(' ', $classes);
             if (isset($this->itemsCssClass)) {
@@ -190,6 +195,10 @@ class CLSGridView extends TbGridView
         foreach ($this->columns as $i => $column) {
             if (is_array($column) && !isset($column['class'])) {
                 $this->columns[$i]['class'] = '\TbDataColumn';
+            }
+            // Row checkboxes get an accessible name
+            if (is_array($column) && isset($column['class']) && ltrim($column['class'], '\\') === 'CCheckBoxColumn') {
+                $this->columns[$i]['class'] = 'LSCheckBoxColumn';
             }
         }
         parent::initColumns();
@@ -282,6 +291,11 @@ class CLSGridView extends TbGridView
         }
     }
 
+    /**
+     * Registers the script files used by every CLSGridView, whether or not it has rows
+     *
+     * @return void
+     */
     private function registerGridviewScripts()
     {
         $assetsPath = dirname(__FILE__) . '/assets/';
@@ -320,6 +334,12 @@ class CLSGridView extends TbGridView
         // Accessibility: keyboard navigation and focus management for sort links
         App()->clientScript->registerScriptFile(
             App()->getAssetManager()->publish($assetsPath . 'sortAccessibility.js'),
+            CClientScript::POS_END
+        );
+        // Row action dropdowns: Registered here too, because GridActionsWidget only registers it when a row is
+        // rendered, and rows added later to an initially empty grid by AJAX need it
+        App()->clientScript->registerScriptFile(
+            App()->getAssetManager()->publish(dirname(__FILE__) . '/GridActionsWidget/assets/action_dropdown.js'),
             CClientScript::POS_END
         );
         // Standard afterAjaxUpdate handler (actionDropdown, rowlink, columnFilter, restoreFocus)

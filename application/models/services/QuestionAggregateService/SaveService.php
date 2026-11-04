@@ -103,7 +103,8 @@ class SaveService
      *          ...<array-key, mixed>
      *      },
      *      ...<array-key, mixed>
-     *  }
+     *  },
+     *  ?questionposition: string
      * } $input
      * @throws PersistErrorException
      * @throws NotFoundException
@@ -189,6 +190,7 @@ class SaveService
             $input['loadCurrentAdvancedSettings'] ?? false;
         $data['answeroptions']    = $input['answeroptions'] ?? null;
         $data['subquestions']     = $input['subquestions'] ?? null;
+        $data['questionposition'] = $input['questionposition'] ?? null;
 
         return $data;
     }

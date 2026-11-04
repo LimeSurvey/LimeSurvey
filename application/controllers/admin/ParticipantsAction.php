@@ -342,7 +342,7 @@ class ParticipantsAction extends SurveyCommonAction
         }
         $model = new Participant();
         if (Yii::app()->getConfig('hideblacklisted') == "Y") {
-            $model->blacklisted = "Y";
+            $model->blacklisted = "N";
         }
         $request = Yii::app()->request;
         $participantParam = $request->getParam('Participant');
@@ -599,6 +599,7 @@ class ParticipantsAction extends SurveyCommonAction
     /**
      * Method to open the participant delete modal
      * Requires 'participant_id' (int)
+     * Requires the global participant panel delete permission or ownership of the participant, like deleteParticipant()
      * @return void
      */
     public function openDeleteParticipant()
@@ -606,6 +607,14 @@ class ParticipantsAction extends SurveyCommonAction
 
         $participant_id = Yii::app()->request->getPost('participant_id');
         $model = Participant::model()->findByPk($participant_id);
+        if (empty($model)) {
+            $this->ajaxHelper::outputError(gT('Found no participant'));
+            return;
+        }
+        if (empty(Participant::model()->filterParticipantIDs([$participant_id]))) {
+            $this->ajaxHelper::outputNoPermission();
+            return;
+        }
 
         $html = $this->getController()->renderPartial(
             '/admin/participants/modal_subviews/_deleteParticipant',
@@ -680,8 +689,11 @@ class ParticipantsAction extends SurveyCommonAction
         if (count($aData) > 0) {
             foreach ($aParticipantIds as $sParticipantId) {
                 $oParticipant = Participant::model()->findByPk($sParticipantId);
-
-
+                if (empty($oParticipant)) {
+                    $aResults[$sParticipantId]['status']  = false;
+                    $aResults[$sParticipantId]['message'] = gT('Found no participant');
+                    continue;
+                }
 
                 foreach ($aData as $key => $value) {
                     // Make sure no-one hacks owner_uid into form
@@ -1089,6 +1101,29 @@ class ParticipantsAction extends SurveyCommonAction
                     ];
                 }
                 $existingParticipant = Participant::model()->findByAttributes($duplicateCriteriaAttributes);
+                // Note: Older participant IDs can have surrounding spaces, so the ID is only trimmed if no participant has it as is
+                if (empty($existingParticipant) && isset($writearray['participant_id'])) {
+                    $trimmedParticipantId = trim((string) $writearray['participant_id']);
+                    if ($trimmedParticipantId !== $writearray['participant_id']) {
+                        $writearray['participant_id'] = $trimmedParticipantId;
+                        $existingParticipant = Participant::model()->findByAttributes(['participant_id' => $trimmedParticipantId]);
+                    }
+                }
+                // New participants need a UUID as participant ID, existing ones are still found by an older ID
+                if (
+                    empty($existingParticipant)
+                    && isset($writearray['participant_id'])
+                    && $writearray['participant_id'] !== ''
+                    && !Participant::isValidParticipantId($writearray['participant_id'])
+                ) {
+                    $participantDetails = trim($writearray['firstname'] . " " . $writearray['lastname'] . ($writearray['email'] !== '' ? " (" . $writearray['email'] . ")" : ""));
+                    // The header is line 1 of the CSV file
+                    $invalidparticipantid[] = $participantDetails !== ''
+                        ? sprintf(gT("Line %s: %s"), $recordcount + 1, CHtml::encode($participantDetails))
+                        : sprintf(gT("Line %s"), $recordcount + 1);
+                    $recordcount++;
+                    continue;
+                }
                 if (!empty($existingParticipant)) {
                     $thisduplicate = 1;
                     $dupcount++;
@@ -1202,8 +1237,9 @@ class ParticipantsAction extends SurveyCommonAction
                                 $participant->$key = $value;
                             }
                         }
-                        $participant->encrypt()->insertParticipantCSV($participant->attributes);
-                        $imported++;
+                        if ($participant->encrypt()->insertParticipantCSV($participant->attributes)) {
+                            $imported++;
+                        }
                     }
                 }
                 $mincriteria++;
@@ -1604,10 +1640,16 @@ class ParticipantsAction extends SurveyCommonAction
 
     /**
      * Method to open the editAttributeName Modal
+     * Requires global 'participantpanel' 'update' permission when editing, 'create' when adding, like editAttributeName()
+     * @return void
      */
     public function openEditAttributeNames()
     {
         $attribute_id = Yii::app()->request->getPost('attribute_id');
+        if (!Permission::model()->hasGlobalPermission('participantpanel', $attribute_id ? 'update' : 'create')) {
+            $this->ajaxHelper::outputNoPermission();
+            return;
+        }
         if ($attribute_id) {
             $model = ParticipantAttributeName::model()->findByPk($attribute_id);
             $editType = "edit";
@@ -1912,11 +1954,17 @@ class ParticipantsAction extends SurveyCommonAction
 
     /**
      * Fetches the attributes of a participant to be displayed in the attribute subgrid
+     * Requires Participant::userHasPermissionToRead() for the participant
      * @todo Where is this called from?
      */
     public function getAttributeJson()
     {
         $iParticipantId = strip_tags(Yii::app()->request->getQuery('pid', ''));
+        $participant = Participant::model()->findByPk($iParticipantId);
+        if (empty($participant) || !$participant->userHasPermissionToRead()) {
+            $this->ajaxHelper::outputNoPermission();
+            return;
+        }
         $records = ParticipantAttributeName::model()->getParticipantVisibleAttribute($iParticipantId);
         $records = subval_sort($records, "attribute_name", "asc");
 
@@ -2534,13 +2582,15 @@ class ParticipantsAction extends SurveyCommonAction
     /**
      * Deletes a single participant share
      * Called by Ajax; echoes success/error
-     * @param string $participantId
-     * @param int $shareUid
+     * @param string|null $participantId Participant ID, the posted participantId is used if not set
+     * @param int|null $shareUid User ID of the share, the posted shareUid is used if not set
      * @return void
      */
     public function deleteSingleParticipantShare($participantId = null, $shareUid = null)
     {
         $this->requirePostRequest();
+        $participantId = $participantId ?? Yii::app()->request->getPost('participantId');
+        $shareUid = $shareUid ?? Yii::app()->request->getPost('shareUid');
 
         $participantShare = ParticipantShare::model()->findByPk(array(
             'participant_id' => $participantId,
@@ -2585,11 +2635,14 @@ class ParticipantsAction extends SurveyCommonAction
                 'participant_id' => $participantId,
                 'share_uid' => $shareUid
             ));
+            if (empty($participantShare)) {
+                continue;
+            }
 
             $isOwner = $participantShare->participant->owner_uid == $userId;
             $hasPermissionToDelete = $isOwner || $isSuperAdmin;
 
-            if ($hasPermissionToDelete && !empty($participantShare)) {
+            if ($hasPermissionToDelete) {
                 $participantShare->delete();
                 $sharesDeleted++;
             }
@@ -2677,6 +2730,11 @@ class ParticipantsAction extends SurveyCommonAction
         if ($response['duplicate'] > 0) {
             echo "<p>";
             printf(gT("%s entries were not copied because they already existed"), "<span class='badge rounded-pill bg-warning'>" . $response['duplicate'] . "</span>&nbsp;");
+            echo "</p>";
+        }
+        if ($response['replacedparticipantid'] > 0) {
+            echo "<p>";
+            printf(gT("%s survey participants got a new participant ID because their previous participant ID was not a valid UUID"), "<span class='badge rounded-pill bg-warning'>" . $response['replacedparticipantid'] . "</span>&nbsp;");
             echo "</p>";
         }
         if ($response['overwriteman'] || $response['overwriteauto']) {
