@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE ldml SYSTEM "../../common/dtd/ldml.dtd">
-<!-- Copyright © 1991-2013 Unicode, Inc.
-CLDR data files are interpreted according to the LDML specification (http://unicode.org/reports/tr35/)
+<!-- Copyright © 1991-2026 Unicode, Inc.
 For terms of use, see http://www.unicode.org/copyright.html
+SPDX-License-Identifier: Unicode-3.0
+CLDR data files are interpreted according to the LDML specification (http://unicode.org/reports/tr35/)
 -->
 <ldml>
 	<identity>
-		<version number="$Revision: 9862 $"/>
-		<generation date="$Date: 2014-03-03 17:35:05 -0600 (Mon, 03 Mar 2014) $"/>
+		<version number="$Revision$"/>
 		<language type="nmg"/>
 	</identity>
 	<localeDisplayNames>
 		<languages>
 			<language type="ak">Kiɛl akan</language>
 			<language type="am">Kiɛl amaria</language>
-			<language type="ar">Kiɛl b'árabe</language>
+			<language type="ar">Kiɛl b’árabe</language>
 			<language type="be">Kiɛl belarussie</language>
 			<language type="bg">Kiɛl bulgaria</language>
 			<language type="bn">Kiɛl bengalia</language>
@@ -26,8 +26,8 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<language type="fa">Kiɛl pɛrsia</language>
 			<language type="fr">Fala</language>
 			<language type="ha">Kiɛl máwúsá</language>
-			<language type="hi">Kiɛl b'indien</language>
-			<language type="hu">Kiɛl b'ɔ́ngrois</language>
+			<language type="hi">Kiɛl b’indien</language>
+			<language type="hu">Kiɛl b’ɔ́ngrois</language>
 			<language type="id">Kiɛl indonesie</language>
 			<language type="ig">Kiɛl ikbo</language>
 			<language type="it">Kiɛl italia</language>
@@ -51,7 +51,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<language type="ta">Kiɛl tamul</language>
 			<language type="th">Kiɛl thaï</language>
 			<language type="tr">Kiɛl bó turk</language>
-			<language type="uk">Kiɛl b'ukrɛ̄nien</language>
+			<language type="uk">Kiɛl b’ukrɛ̄nien</language>
 			<language type="ur">Kiɛl úrdu</language>
 			<language type="vi">Kiɛl viɛtnam</language>
 			<language type="yo">Yorúbâ</language>
@@ -66,7 +66,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="AI">Anguílla</territory>
 			<territory type="AL">Albania</territory>
 			<territory type="AM">Arménia</territory>
-			<territory type="AN">B'Antilles bó Nedɛrland</territory>
 			<territory type="AO">Angola</territory>
 			<territory type="AR">Argentína</territory>
 			<territory type="AS">Samoa m ́Amɛ́rka</territory>
@@ -150,7 +149,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="IE">Irland</territory>
 			<territory type="IL">Äsrɛl</territory>
 			<territory type="IN">India</territory>
-			<territory type="IO">Nlambɔ́ ngɛlɛn ma yí maŋ ntsiɛh</territory>
+			<territory type="IO" draft="provisional">Nlambɔ́ ngɛlɛn ma yí maŋ ntsiɛh</territory>
 			<territory type="IQ">Irak</territory>
 			<territory type="IR">Iran</territory>
 			<territory type="IS">Island</territory>
@@ -185,7 +184,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="MD">Mɔldavia</territory>
 			<territory type="MG">Madagaskar</territory>
 			<territory type="MH">Maŋ́ má Marshall</territory>
-			<territory type="MK">Macedonia</territory>
 			<territory type="ML">Mali</territory>
 			<territory type="MM">Myanmar</territory>
 			<territory type="MN">Mɔngolia</territory>
@@ -287,13 +285,13 @@ For terms of use, see http://www.unicode.org/copyright.html
 		</territories>
 	</localeDisplayNames>
 	<characters>
-		<exemplarCharacters>[a á â ǎ ä ā b ɓ c d e é ê ě ē ǝ {ǝ\u0301} {ǝ\u0302} {ǝ\u030C} {ǝ\u0304} ɛ {ɛ\u0301} {ɛ\u0302} {ɛ\u030C} {ɛ\u0304} f g h i í î ǐ ï ī j k l m n ń ŋ o ó ô ǒ ö ō ɔ {ɔ\u0301} {ɔ\u0302} {ɔ\u030C} {ɔ\u0304} p r ŕ s t u ú û ǔ ū v w y]</exemplarCharacters>
+		<exemplarCharacters>[aáâǎäā b ɓ c d eéêěē ǝ{ǝ́}{ǝ̂}{ǝ̌}{ǝ̄} ɛ{ɛ́}{ɛ̂}{ɛ̌}{ɛ̄} f g h iíîǐïī j k l m nń ŋ oóôǒöō ɔ{ɔ́}{ɔ̂}{ɔ̌}{ɔ̄} p rŕ s t uúûǔū v w y]</exemplarCharacters>
 		<exemplarCharacters type="auxiliary">[q x z]</exemplarCharacters>
 		<exemplarCharacters type="index">[A B Ɓ C D E Ǝ Ɛ F G H I J K L M N Ŋ O Ɔ P R S T U V W Y]</exemplarCharacters>
+		<exemplarCharacters type="numbers">[  \- ‑ , % ‰ + 0 1 2 3 4 5 6 7 8 9]</exemplarCharacters>
 	</characters>
 	<delimiters>
 		<quotationStart>„</quotationStart>
-		<quotationEnd>”</quotationEnd>
 		<alternateQuotationStart>«</alternateQuotationStart>
 		<alternateQuotationEnd>»</alternateQuotationEnd>
 	</delimiters>
@@ -319,21 +317,17 @@ For terms of use, see http://www.unicode.org/copyright.html
 					<dateFormatLength type="short">
 						<dateFormat>
 							<pattern>d/M/y GGGGG</pattern>
+							<datetimeSkeleton>GGGGGyMd</datetimeSkeleton>
 						</dateFormat>
 					</dateFormatLength>
 				</dateFormats>
 				<dateTimeFormats>
 					<availableFormats>
-						<dateFormatItem id="d">d</dateFormatItem>
 						<dateFormatItem id="Ed">E d</dateFormatItem>
-						<dateFormatItem id="hm">h:mm a</dateFormatItem>
-						<dateFormatItem id="Hm">HH:mm</dateFormatItem>
-						<dateFormatItem id="hms">h:mm:ss a</dateFormatItem>
-						<dateFormatItem id="Hms">HH:mm:ss</dateFormatItem>
-						<dateFormatItem id="M">L</dateFormatItem>
+						<dateFormatItem id="hm">h:mm a</dateFormatItem>
+						<dateFormatItem id="hms">h:mm:ss a</dateFormatItem>
 						<dateFormatItem id="Md">d/M</dateFormatItem>
 						<dateFormatItem id="MEd">E d/M</dateFormatItem>
-						<dateFormatItem id="MMM">LLL</dateFormatItem>
 						<dateFormatItem id="MMMd">d MMM</dateFormatItem>
 						<dateFormatItem id="MMMEd">E d MMM</dateFormatItem>
 						<dateFormatItem id="ms">m:ss</dateFormatItem>
@@ -433,7 +427,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 				</quarters>
 				<dayPeriods>
 					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
+						<dayPeriodWidth type="abbreviated">
 							<dayPeriod type="am">maná</dayPeriod>
 							<dayPeriod type="pm">kugú</dayPeriod>
 						</dayPeriodWidth>
@@ -468,6 +462,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 					<dateFormatLength type="short">
 						<dateFormat>
 							<pattern>d/M/y</pattern>
+							<datetimeSkeleton>yMd</datetimeSkeleton>
 						</dateFormat>
 					</dateFormatLength>
 				</dateFormats>
@@ -495,20 +490,14 @@ For terms of use, see http://www.unicode.org/copyright.html
 				</timeFormats>
 				<dateTimeFormats>
 					<availableFormats>
-						<dateFormatItem id="d">d</dateFormatItem>
 						<dateFormatItem id="Ed">E d</dateFormatItem>
-						<dateFormatItem id="hm">h:mm a</dateFormatItem>
-						<dateFormatItem id="Hm">HH:mm</dateFormatItem>
-						<dateFormatItem id="hms">h:mm:ss a</dateFormatItem>
-						<dateFormatItem id="Hms">HH:mm:ss</dateFormatItem>
-						<dateFormatItem id="M">L</dateFormatItem>
+						<dateFormatItem id="hm">h:mm a</dateFormatItem>
+						<dateFormatItem id="hms">h:mm:ss a</dateFormatItem>
 						<dateFormatItem id="Md">d/M</dateFormatItem>
 						<dateFormatItem id="MEd">E d/M</dateFormatItem>
-						<dateFormatItem id="MMM">LLL</dateFormatItem>
 						<dateFormatItem id="MMMd">d MMM</dateFormatItem>
 						<dateFormatItem id="MMMEd">E d MMM</dateFormatItem>
 						<dateFormatItem id="ms">m:ss</dateFormatItem>
-						<dateFormatItem id="y">y</dateFormatItem>
 						<dateFormatItem id="yM">M/y</dateFormatItem>
 						<dateFormatItem id="yMd">d/M/y</dateFormatItem>
 						<dateFormatItem id="yMEd">E d/M/y</dateFormatItem>
@@ -562,24 +551,30 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<decimal>,</decimal>
 			<group> </group>
 		</symbols>
-		<decimalFormats numberSystem="latn">
-			<decimalFormatLength>
-				<decimalFormat>
-					<pattern>#,##0.###</pattern>
-				</decimalFormat>
-			</decimalFormatLength>
-		</decimalFormats>
-		<percentFormats numberSystem="latn">
-			<percentFormatLength>
-				<percentFormat>
-					<pattern>#,##0%</pattern>
-				</percentFormat>
-			</percentFormatLength>
-		</percentFormats>
 		<currencyFormats numberSystem="latn">
 			<currencyFormatLength>
 				<currencyFormat type="standard">
 					<pattern>#,##0.00 ¤</pattern>
+					<pattern alt="alphaNextToNumber">#,##0.00 ¤</pattern>
+				</currencyFormat>
+				<currencyFormat type="accounting">
+					<pattern alt="alphaNextToNumber">#,##0.00 ¤</pattern>
+				</currencyFormat>
+			</currencyFormatLength>
+			<currencyFormatLength type="short">
+				<currencyFormat type="standard">
+					<pattern type="1000" count="other" draft="provisional">0K ¤</pattern>
+					<pattern type="10000" count="other" draft="provisional">00K ¤</pattern>
+					<pattern type="100000" count="other" draft="provisional">000K ¤</pattern>
+					<pattern type="1000000" count="other" draft="provisional">0M ¤</pattern>
+					<pattern type="10000000" count="other" draft="provisional">00M ¤</pattern>
+					<pattern type="100000000" count="other" draft="provisional">000M ¤</pattern>
+					<pattern type="1000000000" count="other" draft="provisional">0G ¤</pattern>
+					<pattern type="10000000000" count="other" draft="provisional">00G ¤</pattern>
+					<pattern type="100000000000" count="other" draft="provisional">000G ¤</pattern>
+					<pattern type="1000000000000" count="other" draft="provisional">0T ¤</pattern>
+					<pattern type="10000000000000" count="other" draft="provisional">00T ¤</pattern>
+					<pattern type="100000000000000" count="other" draft="provisional">000T ¤</pattern>
 				</currencyFormat>
 			</currencyFormatLength>
 		</currencyFormats>
@@ -675,6 +670,9 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Mɔn Madagaskar</displayName>
 			</currency>
 			<currency type="MRO">
+				<displayName>Mɔn Moritania (1973–2017)</displayName>
+			</currency>
+			<currency type="MRU">
 				<displayName>Mɔn Moritania</displayName>
 			</currency>
 			<currency type="MUR">
@@ -710,13 +708,19 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<currency type="SHP">
 				<displayName>Mɔn má Saint Lina</displayName>
 			</currency>
-			<currency type="SLL">
+			<currency type="SLE">
 				<displayName>Mɔn Leɔne</displayName>
+			</currency>
+			<currency type="SLL">
+				<displayName>Mɔn Leɔn (1964—2022)¨</displayName>
 			</currency>
 			<currency type="SOS">
 				<displayName>Mɔn Somalía</displayName>
 			</currency>
 			<currency type="STD">
+				<displayName>Mɔn Sao tomé na prinship (1977–2017)</displayName>
+			</currency>
+			<currency type="STN">
 				<displayName>Mɔn Sao tomé na prinship</displayName>
 			</currency>
 			<currency type="SZL">
@@ -761,4 +765,3 @@ For terms of use, see http://www.unicode.org/copyright.html
 		</messages>
 	</posix>
 </ldml>
-

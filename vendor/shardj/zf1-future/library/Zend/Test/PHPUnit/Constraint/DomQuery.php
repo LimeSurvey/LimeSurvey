@@ -28,10 +28,15 @@ if (class_exists('PHPUnit\Runner\Version')) {
 	$id = '0.0.0';
 }
 
-if (version_compare($id, '6.0', '>=')) {
+if (version_compare($id, '10.0', '>=')) {
 	include(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'DomQuery80.php');
 
 	class Zend_Test_PHPUnit_Constraint_DomQuery extends Zend_Test_PHPUnit_Constraint_DomQuery80
+	{}
+} elseif (version_compare($id, '6.0', '>=')) {
+	include(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'DomQuery60.php');
+
+	class Zend_Test_PHPUnit_Constraint_DomQuery extends Zend_Test_PHPUnit_Constraint_DomQuery60
 	{}
 } elseif (version_compare($id, '4.1', '>=')) {
     include(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'DomQuery41.php');

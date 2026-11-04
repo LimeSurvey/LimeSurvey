@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE ldml SYSTEM "../../common/dtd/ldml.dtd">
-<!-- Copyright © 1991-2013 Unicode, Inc.
-CLDR data files are interpreted according to the LDML specification (http://unicode.org/reports/tr35/)
+<!-- Copyright © 1991-2026 Unicode, Inc.
 For terms of use, see http://www.unicode.org/copyright.html
+SPDX-License-Identifier: Unicode-3.0
+CLDR data files are interpreted according to the LDML specification (http://unicode.org/reports/tr35/)
 -->
 <ldml>
 	<identity>
-		<version number="$Revision: 9625 $"/>
-		<generation date="$Date: 2014-01-08 23:53:23 -0600 (Wed, 08 Jan 2014) $"/>
+		<version number="$Revision$"/>
 		<language type="kkj"/>
 	</identity>
 	<localeDisplayNames>
@@ -21,10 +21,10 @@ For terms of use, see http://www.unicode.org/copyright.html
 		</territories>
 	</localeDisplayNames>
 	<characters>
-		<exemplarCharacters>[a á à â {a\u0327} b ɓ c d ɗ {ɗy} e é è ê ɛ {ɛ\u0301} {ɛ\u0300} {ɛ\u0302} {ɛ\u0327} f g {gb} {gw} h i í ì î {i\u0327} j k {kp} {kw} l m {mb} n {nd} ǌ {ny} ŋ {ŋg} {ŋgb} {ŋgw} o ó ò ô ɔ {ɔ\u0301} {ɔ\u0300} {ɔ\u0302} {ɔ\u0327} p r s t u ú ù û {u\u0327} v w y]</exemplarCharacters>
+		<exemplarCharacters>[aáàâ{a̧} b ɓ c d ɗ {ɗy} eéèê ɛ{ɛ́}{ɛ̀}{ɛ̂}{ɛ̧} f g {gb} {gw} h iíìî{i̧} j k {kp} {kw} l m {mb} n {nd} {nj} {ny} ŋ {ŋg} {ŋgb} {ŋgw} oóòô ɔ{ɔ́}{ɔ̀}{ɔ̂}{ɔ̧} p r s t uúùû{u̧} v w y]</exemplarCharacters>
 		<exemplarCharacters type="auxiliary">[q x z]</exemplarCharacters>
-		<exemplarCharacters type="index">[A B Ɓ C D Ɗ {Ɗy} E Ɛ F G {Gb} {Gw} H I {I\u0327} J K {Kp} {Kw} L M {Mb} N {Nd} ǋ {Ny} Ŋ {Ŋg} {Ŋgb} {Ŋgw} O Ɔ {Ɔ\u0327} P R S T U {U\u0327} V W Y]</exemplarCharacters>
-		<exemplarCharacters type="punctuation">[, \: ! ? . … ‘ ‹ › “ ” « » ( ) *]</exemplarCharacters>
+		<exemplarCharacters type="index">[A B Ɓ C D Ɗ {Ɗy} E Ɛ F G {Gb} {Gw} H I{I̧} J K {Kp} {Kw} L M {Mb} N {Nd} {Nj} {Ny} Ŋ {Ŋg} {Ŋgb} {Ŋgw} O Ɔ{Ɔ̧} P R S T U{U̧} V W Y]</exemplarCharacters>
+		<exemplarCharacters type="punctuation">[, \: ! ? . … ‘ ‹ › “” « » ( ) *]</exemplarCharacters>
 	</characters>
 	<delimiters>
 		<quotationStart>«</quotationStart>
@@ -39,6 +39,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 					<dateFormatLength type="full">
 						<dateFormat>
 							<pattern>EEEE dd MMMM y G</pattern>
+							<datetimeSkeleton>GyMMMMEEEEdd</datetimeSkeleton>
 						</dateFormat>
 					</dateFormatLength>
 					<dateFormatLength type="long">
@@ -111,56 +112,13 @@ For terms of use, see http://www.unicode.org/copyright.html
 							<month type="8">fɛ</month>
 							<month type="9">njapi</month>
 							<month type="10">nyukul</month>
-							<month type="11">11</month>
-							<month type="12">ɓulɓusɛ</month>
-						</monthWidth>
-					</monthContext>
-					<monthContext type="stand-alone">
-						<monthWidth type="wide">
-							<month type="1">pamba</month>
-							<month type="2">wanja</month>
-							<month type="3">mbiyɔ mɛndoŋgɔ</month>
-							<month type="4">Nyɔlɔmbɔŋgɔ</month>
-							<month type="5">Mɔnɔ ŋgbanja</month>
-							<month type="6">Nyaŋgwɛ ŋgbanja</month>
-							<month type="7">kuŋgwɛ</month>
-							<month type="8">fɛ</month>
-							<month type="9">njapi</month>
-							<month type="10">nyukul</month>
-							<month type="11">11</month>
+							<month type="11">M11</month>
 							<month type="12">ɓulɓusɛ</month>
 						</monthWidth>
 					</monthContext>
 				</months>
 				<days>
 					<dayContext type="format">
-						<dayWidth type="abbreviated">
-							<day type="sun">sɔndi</day>
-							<day type="mon">lundi</day>
-							<day type="tue">mardi</day>
-							<day type="wed">mɛrkɛrɛdi</day>
-							<day type="thu">yedi</day>
-							<day type="fri">vaŋdɛrɛdi</day>
-							<day type="sat">mɔnɔ sɔndi</day>
-						</dayWidth>
-						<dayWidth type="narrow">
-							<day type="sun">so</day>
-							<day type="mon">lu</day>
-							<day type="tue">ma</day>
-							<day type="wed">mɛ</day>
-							<day type="thu">ye</day>
-							<day type="fri">va</day>
-							<day type="sat">ms</day>
-						</dayWidth>
-						<dayWidth type="short">
-							<day type="sun">sɔndi</day>
-							<day type="mon">lundi</day>
-							<day type="tue">mardi</day>
-							<day type="wed">mɛrkɛrɛdi</day>
-							<day type="thu">yedi</day>
-							<day type="fri">vaŋdɛrɛdi</day>
-							<day type="sat">mɔnɔ sɔndi</day>
-						</dayWidth>
 						<dayWidth type="wide">
 							<day type="sun">sɔndi</day>
 							<day type="mon">lundi</day>
@@ -172,15 +130,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 						</dayWidth>
 					</dayContext>
 					<dayContext type="stand-alone">
-						<dayWidth type="abbreviated">
-							<day type="sun">sɔndi</day>
-							<day type="mon">lundi</day>
-							<day type="tue">mardi</day>
-							<day type="wed">mɛrkɛrɛdi</day>
-							<day type="thu">yedi</day>
-							<day type="fri">vaŋdɛrɛdi</day>
-							<day type="sat">mɔnɔ sɔndi</day>
-						</dayWidth>
 						<dayWidth type="narrow">
 							<day type="sun">so</day>
 							<day type="mon">lu</day>
@@ -199,21 +148,13 @@ For terms of use, see http://www.unicode.org/copyright.html
 							<day type="fri">va</day>
 							<day type="sat">ms</day>
 						</dayWidth>
-						<dayWidth type="wide">
-							<day type="sun">sɔndi</day>
-							<day type="mon">lundi</day>
-							<day type="tue">mardi</day>
-							<day type="wed">mɛrkɛrɛdi</day>
-							<day type="thu">yedi</day>
-							<day type="fri">vaŋdɛrɛdi</day>
-							<day type="sat">mɔnɔ sɔndi</day>
-						</dayWidth>
 					</dayContext>
 				</days>
 				<dateFormats>
 					<dateFormatLength type="full">
 						<dateFormat>
 							<pattern>EEEE dd MMMM y</pattern>
+							<datetimeSkeleton>yMMMMEEEEdd</datetimeSkeleton>
 						</dateFormat>
 					</dateFormatLength>
 					<dateFormatLength type="long">
@@ -294,10 +235,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 		</fields>
 	</dates>
 	<numbers>
-		<defaultNumberingSystem>latn</defaultNumberingSystem>
-		<otherNumberingSystems>
-			<native>latn</native>
-		</otherNumberingSystems>
 		<symbols numberSystem="latn">
 			<decimal>,</decimal>
 			<group>.</group>
@@ -305,15 +242,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 		<currencies>
 			<currency type="XAF">
 				<displayName>Franc CFA</displayName>
-				<symbol>FCFA</symbol>
 			</currency>
 		</currencies>
 	</numbers>
-	<listPatterns>
-		<listPattern>
-			<listPatternPart type="start">{0}, {1}</listPatternPart>
-			<listPatternPart type="middle">{0}, {1}</listPatternPart>
-			<listPatternPart type="end">{0}, {1}</listPatternPart>
-		</listPattern>
-	</listPatterns>
 </ldml>

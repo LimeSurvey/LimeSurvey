@@ -269,13 +269,13 @@ abstract class Zend_View_Abstract implements Zend_View_Interface
      * If {@link strictVars()} is on, raises a notice.
      *
      * @param  string $key
-     * @return null
+     * @return mixed
      */
     public function &__get($key)
     {
         $value = null;
-        if ('_' != substr($key, 0, 1) && isset($this->_data[$key])) {
-
+        if ('_' != substr($key, 0, 1) && array_key_exists($key, $this->_data)) {
+            // a variable assigned with null exists, strictVars must not report it
             $value = &$this->_data[$key];
             return $value;
         }
@@ -337,7 +337,7 @@ abstract class Zend_View_Abstract implements Zend_View_Interface
      */
     public function __unset($key)
     {
-        if ('_' != substr($key, 0, 1) && isset($this->_data[$key])) {
+        if ('_' != substr($key, 0, 1) && array_key_exists($key, $this->_data)) {
             unset($this->_data[$key]);
         }
     }
