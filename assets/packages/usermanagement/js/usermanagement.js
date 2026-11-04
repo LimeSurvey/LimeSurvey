@@ -70,10 +70,13 @@ var UserManagement = function () {
         $('#submitForm').append(
             '<i class="ri-loader-2-fill remix-pulse UserManagement-spinner"></i>'
         ).prop('disabled', true);
+        var status = $('#UserManagement-action-modal-status');
+        status.text(status.data('loading-text'));
     };
     var stopSubmit = function () {
         $('.UserManagement-spinner').remove();
         $('#submitForm').prop('disabled', false);
+        $('#UserManagement-action-modal-status').text('');
     };
 
     /**
@@ -117,6 +120,10 @@ var UserManagement = function () {
     };
 
     var wireForm = function () {
+        // The import form is a normal multipart submit (page reload): Only show and announce the loading state
+        $('#UserManagement--modalform--import').on('submit.USERMANAGERMODAL', function () {
+            startSubmit();
+        });
         $('#UserManagement--modalform').on('submit.USERMANAGERMODAL', function (e) {
             e.preventDefault();
             const buttonClassName = e.originalEvent.submitter.className;
@@ -175,6 +182,7 @@ var UserManagement = function () {
                     $('#UserManagement--errors').html(result.errors).removeClass('d-none').addClass('alert alert-danger').focus();
                 },
                 error: function (request, status, error) {
+                    stopSubmit();
                     if (request && request.responseJSON && request.responseJSON.message) {
                         $('#UserManagement--errors').html(
                             LS.LsGlobalNotifier.createAlert(
