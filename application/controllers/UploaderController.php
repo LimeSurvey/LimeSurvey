@@ -426,7 +426,8 @@ class UploaderController extends SurveyController
                      errorTooMuch: '" . gT('The maximum number of files has been uploaded. You may return back to survey.', 'js') . "',
                      errorNeedMoreConfirm: '" . gT("You need to upload %s more files for this question.\nAre you sure you want to exit?", 'js') . "',
                      deleteFile : '" . gT('Delete', 'js') . "',
-                     editFile : '" . gT('Edit', 'js') . "'
+                     editFile : '" . gT('Edit', 'js') . "',
+                     errorUnknown : '" . gT('An unknown error occurred', 'js') . "'
                     }
         ";
 
