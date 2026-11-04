@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 
 import { Button } from 'components'
 import { useDateTimeValues } from 'hooks'
@@ -7,7 +7,9 @@ import { DateTimeCalendar } from './DateTimeCalendar.js'
 import { toDayMap } from './dateTimeUtils'
 
 /**
- * Calendar view of an encrypted Date/time question.
+ * Calendar view of an encrypted Date/time question. Its answers are only
+ * decrypted once asked for; until the page reloads they then feed the same
+ * calendar, and the same loaded values serve its day and range breakdowns.
  */
 export const EncryptedDateTimeCalendar = ({
   surveyId,
@@ -18,6 +20,8 @@ export const EncryptedDateTimeCalendar = ({
   onCalendarStateChange,
 }) => {
   const isDecrypted = !!calendarState.decrypted
+  const decryptedRef = useRef(null)
+  const moveFocusRef = useRef(false)
   const { values, isLoading, isError } = useDateTimeValues(
     surveyId,
     question.qid,
@@ -25,6 +29,13 @@ export const EncryptedDateTimeCalendar = ({
     { enabled: isDecrypted, filterSet, decrypt: true }
   )
   const stats = useMemo(() => values && toDayMap(values.days), [values])
+
+  useEffect(() => {
+    if (isDecrypted && moveFocusRef.current) {
+      moveFocusRef.current = false
+      decryptedRef.current?.focus()
+    }
+  }, [isDecrypted])
 
   if (!isDecrypted) {
     return (
@@ -36,9 +47,10 @@ export const EncryptedDateTimeCalendar = ({
         </p>
         <Button
           variant="primary"
-          onClick={() =>
+          onClick={() => {
+            moveFocusRef.current = true
             onCalendarStateChange?.({ ...calendarState, decrypted: true })
-          }
+          }}
         >
           {t('Decrypt response data and show statistics')}
         </Button>
@@ -46,31 +58,47 @@ export const EncryptedDateTimeCalendar = ({
     )
   }
 
-  if (isLoading) {
-    return (
-      <div className="responses-statistics-comments-status">
-        <span className="loader"></span>
-      </div>
-    )
-  }
+  const renderContent = () => {
+    if (isLoading) {
+      return (
+        <div
+          className="responses-statistics-comments-status"
+          role="status"
+          aria-label={t('Loading')}
+        >
+          <span className="loader"></span>
+        </div>
+      )
+    }
 
-  if (isError) {
+    if (isError) {
+      return (
+        <div className="responses-statistics-empty" role="alert">
+          {t('The responses could not be loaded.')}
+        </div>
+      )
+    }
+
     return (
-      <div className="responses-statistics-empty">
-        {t('The responses could not be loaded.')}
-      </div>
+      <DateTimeCalendar
+        surveyId={surveyId}
+        question={question}
+        filters={filters}
+        filterSet={filterSet}
+        stats={stats}
+        calendarState={calendarState}
+        onCalendarStateChange={onCalendarStateChange}
+      />
     )
   }
 
   return (
-    <DateTimeCalendar
-      surveyId={surveyId}
-      question={question}
-      filters={filters}
-      filterSet={filterSet}
-      stats={stats}
-      calendarState={calendarState}
-      onCalendarStateChange={onCalendarStateChange}
-    />
+    <div
+      ref={decryptedRef}
+      tabIndex={-1}
+      className="responses-statistics-calendar-decrypted"
+    >
+      {renderContent()}
+    </div>
   )
 }

@@ -15,6 +15,15 @@
     border-bottom: 1px solid $g-400;
   }
 
+  .rdp-root[data-nav-layout='around'] .rdp-month_caption {
+    margin-inline: 0;
+  }
+
+  .rdp-root[data-nav-layout='around'] .rdp-button_previous,
+  .rdp-root[data-nav-layout='around'] .rdp-button_next {
+    z-index: 1;
+  }
+
   .rdp-dropdowns {
     justify-content: space-around;
     width: 100%;
@@ -29,10 +38,17 @@
 
   .rdp-dropdown,
   .rdp-dropdown:focus,
-  .rdp-dropdown:focus-visible,
-  .rdp-dropdown:focus-visible ~ .rdp-caption_label {
+  .rdp-dropdown:focus-visible {
     outline: none;
     box-shadow: none;
+  }
+
+  .rdp-dropdown:focus-visible ~ .rdp-caption_label,
+  .rdp-day_button:focus-visible,
+  .rdp-button_previous:focus-visible,
+  .rdp-button_next:focus-visible {
+    outline: 2px solid $grape;
+    outline-offset: 2px;
   }
 
   .rdp-dropdown_root:hover .rdp-caption_label {
@@ -82,12 +98,24 @@
     .rdp-weekday {
       padding-top: 10px;
     }
+
+    th.date-range-month-label {
+      padding: 10px 0 8px 12px;
+      font-weight: 400;
+      text-align: left;
+    }
   }
 
   .rdp-weekday {
     font-size: 13px;
     font-weight: 500;
     color: $g-900;
+  }
+
+  @for $column from 1 through 7 {
+    .rdp-weekday:nth-child(#{$column}) {
+      transform: translateX(#{(4 - $column) * 1.5}px);
+    }
   }
 
   .date-range-month-label {
@@ -102,6 +130,10 @@
 
   .rdp-day:not(.rdp-selected):not(.rdp-disabled) .rdp-day_button:hover {
     background-color: $g-200;
+  }
+
+  .rdp-selected {
+    font-size: inherit;
   }
 
   .rdp-selected .rdp-day_button {

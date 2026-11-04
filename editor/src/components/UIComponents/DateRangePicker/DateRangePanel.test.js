@@ -58,6 +58,17 @@ describe('DateRangePanel', () => {
     expect(screen.getByText('Days up to today')).toBeVisible()
   })
 
+  test('names the month below the weekdays', () => {
+    renderPanel()
+
+    const [weekdays, month] = document.querySelectorAll('thead tr')
+    expect(weekdays).toHaveTextContent('Mon')
+    expect(month).toHaveTextContent('Jan 2026')
+    expect(
+      document.querySelector('.date-range-next-month-label')
+    ).toHaveTextContent('Feb 2026')
+  })
+
   test('selects two clicked days as a range', () => {
     const { onConfirm } = renderPanel()
 
@@ -97,6 +108,23 @@ describe('DateRangePanel', () => {
 
     const today = new Date().toDateString()
     expect(confirmedDays(onConfirm)).toEqual([today, today])
+  })
+
+  test('the arrows of the days input step it, never below one', () => {
+    renderPanel()
+
+    const input = screen.getByRole('spinbutton')
+    const [up, down] = document.querySelectorAll(
+      '.date-range-days-steppers button'
+    )
+
+    fireEvent.click(up)
+    expect(input).toHaveValue(1)
+    fireEvent.click(up)
+    expect(input).toHaveValue(2)
+    fireEvent.click(down)
+    fireEvent.click(down)
+    expect(input).toHaveValue(1)
   })
 
   test('a single day shows one date input', () => {

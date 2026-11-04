@@ -1,3 +1,5 @@
+import { useId, useMemo } from 'react'
+
 import { DateRangePickerField } from 'components'
 import { htmlToPlainText } from 'helpers'
 import { useDateTimeValues } from 'hooks'
@@ -20,7 +22,9 @@ export const DateTimeRangeModal = ({
   onRangeChange,
   onOpenPicker,
   onHide,
+  ...modalProps
 }) => {
+  const titleId = useId()
   const { values, isLoading, isError } = useDateTimeValues(
     surveyId,
     question.qid,
@@ -28,12 +32,19 @@ export const DateTimeRangeModal = ({
     { enabled: !!range, filterSet, decrypt: !!question.encrypted }
   )
   const isSingleDay = range?.from === range?.to
-  const rows = range ? sliceByRange(values?.days, range.from, range.to) : []
+  const rows = useMemo(
+    () => (range ? sliceByRange(values?.days, range.from, range.to) : []),
+    [range, values]
+  )
 
   const renderContent = () => {
     if (isLoading) {
       return (
-        <div className="responses-statistics-comments-status">
+        <div
+          className="responses-statistics-comments-status"
+          role="status"
+          aria-label={t('Loading')}
+        >
           <span className="loader"></span>
         </div>
       )
@@ -41,7 +52,7 @@ export const DateTimeRangeModal = ({
 
     if (isError) {
       return (
-        <div className="responses-statistics-empty">
+        <div className="responses-statistics-empty" role="alert">
           {t('The responses could not be loaded.')}
         </div>
       )
@@ -59,6 +70,7 @@ export const DateTimeRangeModal = ({
 
     return (
       <DateTimeBreakdownTable
+        key={`${range.from}|${range.to}`}
         rows={rows}
         hasTime={question.hasTime}
         showDate={!isSingleDay || !question.hasTime}
@@ -71,8 +83,10 @@ export const DateTimeRangeModal = ({
       show={!!range}
       onHide={onHide}
       modalClassname="responses-statistics-date-modal"
+      aria-labelledby={titleId}
+      {...modalProps}
     >
-      <h2 className="responses-statistics-modal-title">
+      <h2 id={titleId} className="responses-statistics-modal-title">
         {htmlToPlainText(question.title)}
       </h2>
       {range && (

@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { LSTable } from 'components'
+import { htmlToPlainText } from 'helpers'
 import { useQuestionResponses } from 'hooks'
 import { useIsInViewport } from 'hooks/useInViewport'
 
@@ -168,6 +169,7 @@ export const DateTimeTable = ({
         show={showModal}
         onHide={() => setShowModal(false)}
         modalClassname="responses-statistics-responses-modal responses-statistics-date-table-modal"
+        aria-label={htmlToPlainText(question.title)}
       >
         <div className="responses-statistics-comments">
           <ChartHeader {...question} />

@@ -1,12 +1,6 @@
-import { useMemo, useState } from 'react'
+import { useId, useMemo, useRef, useState } from 'react'
 import { DayButton, DayPicker } from '@daypicker/react'
-import {
-  addMonths,
-  endOfMonth,
-  endOfYear,
-  startOfMonth,
-  startOfYear,
-} from 'date-fns'
+import { endOfYear, startOfMonth, startOfYear } from 'date-fns'
 import classNames from 'classnames'
 
 import { useDayPickerSetup } from 'components/UIComponents/DateRangePicker/DateRangeCalendar'
@@ -39,13 +33,17 @@ export const DateTimeCalendar = ({
   // The range picker; `returnTo` is the breakdown range it was opened from,
   // shown again on Cancel. Only one of the two modals is open at a time.
   const [rangePicker, setRangePicker] = useState(null)
-  const { locale, formatters, components, weekStartsOn } = useDayPickerSetup()
+  const calendarRef = useRef(null)
+  const openerRef = useRef(null)
+  const rangeLabelId = useId()
   const days = useMemo(() => stats?.days ?? {}, [stats])
   const earliest = stats?.earliest ?? null
   const latest = stats?.latest ?? null
 
   const month =
     calendarState.month ?? startOfMonth(toDate(latest) ?? new Date())
+  const { locale, formatters, components, weekStartsOn } =
+    useDayPickerSetup(month)
   const selected = toDate(calendarState.selectedDate)
   const startMonth = startOfYear(
     toDate(earliest) && toDate(earliest) < month ? toDate(earliest) : month
@@ -60,11 +58,27 @@ export const DateTimeCalendar = ({
   const goTo = (dayKey) =>
     update({ month: startOfMonth(toDate(dayKey)), selectedDate: dayKey })
 
-  const handleDayClick = (date, modifiers) => {
+  const handleDayClick = (date, modifiers, event) => {
     if (question.hasTime && !modifiers.outside && days[toDayKey(date)]) {
       const dayKey = toDayKey(date)
+      openerRef.current = event.currentTarget
       setBreakdownRange({ from: dayKey, to: dayKey })
     }
+  }
+
+  const openPickerFromLink = (event) => {
+    openerRef.current = event.currentTarget
+    setRangePicker({ returnTo: null })
+  }
+
+  const restoreFocus = () => {
+    if (breakdownRange || rangePicker) {
+      return
+    }
+    const opener = openerRef.current?.isConnected
+      ? openerRef.current
+      : calendarRef.current?.querySelector('.rdp-selected .rdp-day_button')
+    opener?.focus()
   }
 
   // The last picked range is offered again the next time the picker opens.
@@ -102,14 +116,6 @@ export const DateTimeCalendar = ({
     )
   }
 
-  const endsMidWeek = (endOfMonth(month).getDay() + 7 - weekStartsOn) % 7 !== 6
-  const nextMonthLabel = endsMidWeek
-    ? new Intl.DateTimeFormat(locale.code, {
-        month: 'short',
-        year: 'numeric',
-      }).format(addMonths(month, 1))
-    : null
-
   const calendarComponents = useMemo(
     () => ({
       ...components,
@@ -130,21 +136,8 @@ export const DateTimeCalendar = ({
           </DayButton>
         )
       },
-      MonthGrid: (props) => (
-        <>
-          <table {...props} />
-          {nextMonthLabel && (
-            <div
-              className="date-range-month-label responses-statistics-calendar-next-month"
-              aria-hidden="true"
-            >
-              {nextMonthLabel}
-            </div>
-          )}
-        </>
-      ),
     }),
-    [components, days, nextMonthLabel]
+    [components, days]
   )
 
   const labels = useMemo(() => {
@@ -162,12 +155,19 @@ export const DateTimeCalendar = ({
 
   return (
     <>
-      <div className="responses-statistics-calendar">
+      <div className="responses-statistics-calendar" ref={calendarRef}>
         <div className="responses-statistics-calendar-range">
-          <span className="responses-statistics-calendar-range-label">
+          <span
+            id={rangeLabelId}
+            className="responses-statistics-calendar-range-label"
+          >
             {t('Range of responses:')}
           </span>
-          <div className="responses-statistics-calendar-range-fields">
+          <div
+            className="responses-statistics-calendar-range-fields"
+            role="group"
+            aria-labelledby={rangeLabelId}
+          >
             <div className="responses-statistics-calendar-range-field">
               <input
                 type="text"
@@ -214,7 +214,7 @@ export const DateTimeCalendar = ({
               type="button"
               className="responses-statistics-calendar-range-picker-link"
               aria-haspopup="dialog"
-              onClick={() => setRangePicker({ returnTo: null })}
+              onClick={openPickerFromLink}
             >
               <i className="ri-calendar-line" aria-hidden="true"></i>
               {t('View responses by date range')}
@@ -255,11 +255,15 @@ export const DateTimeCalendar = ({
           onRangeChange={changeBreakdownRange}
           onOpenPicker={openPickerFromBreakdown}
           onHide={() => setBreakdownRange(null)}
+          onExited={restoreFocus}
+          restoreFocus={false}
         />
       </div>
       <DateRangePanelModal
         show={!!rangePicker}
         onHide={cancelRangePicker}
+        onExited={restoreFocus}
+        restoreFocus={false}
         label={t('View responses by date range')}
         initialRange={{
           from: toDate(pickerRange?.from),

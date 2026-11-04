@@ -62,6 +62,11 @@
       color: $g-900;
     }
 
+    &:focus-visible {
+      outline: 2px solid $grape;
+      outline-offset: 2px;
+    }
+
     &:disabled {
       color: $g-400;
       cursor: not-allowed;
@@ -81,6 +86,11 @@
 
     &:hover {
       text-decoration: underline;
+    }
+
+    &:focus-visible {
+      outline: 2px solid $grape;
+      outline-offset: 2px;
     }
   }
 
@@ -119,7 +129,7 @@
     border: 1px solid transparent;
   }
 
-  .responses-statistics-calendar-next-month {
+  .date-range-next-month-label {
     padding: 0 0 8px 12px;
   }
 
@@ -136,10 +146,6 @@
     font-weight: $font-weight-500;
   }
 
-  .rdp-selected {
-    font-size: inherit;
-  }
-
   // Selected keeps its dark fill on hover.
   .rdp-selected .rdp-day_button {
     border-color: $g-900;
@@ -149,7 +155,8 @@
     }
 
     .responses-statistics-calendar-day-count {
-      color: $white;
+      color: $g-400;
+      font-weight: $font-weight-normal;
     }
   }
 }
@@ -181,7 +188,15 @@
   }
 }
 
+.responses-statistics-calendar-decrypted:focus {
+  outline: none;
+}
+
 .responses-statistics-date-table {
+  &:focus {
+    outline: none;
+  }
+
   .ls-table {
     table-layout: fixed;
   }

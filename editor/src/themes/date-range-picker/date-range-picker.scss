@@ -9,7 +9,7 @@
   .date-range-presets {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 1px;
     width: 250px;
     padding: 8px;
     background-color: $g-100;
@@ -17,12 +17,17 @@
 
   .date-range-preset {
     text-align: left;
-    padding: 9px 34px;
+    padding: 7px 30px;
     border: none;
     border-radius: 4px;
     background: transparent;
     color: $g-900;
-    font-size: 15px;
+    font-size: 14px;
+
+    &:focus-visible {
+      outline: 2px solid $grape;
+      outline-offset: 2px;
+    }
 
     &:hover {
       background-color: $g-200;
@@ -39,7 +44,7 @@
     flex-direction: column;
     gap: 12px;
     margin: 4px 0 0;
-    padding: 12px 26px 0;
+    padding: 12px 30px;
     border-top: 1px solid $g-400;
   }
 
@@ -57,23 +62,62 @@
     align-items: center;
     gap: 6px;
     margin: 0;
-    font-size: 15px;
-    font-weight: 500;
+    font-size: 14px;
+    font-weight: 400;
     color: $g-900;
     cursor: pointer;
 
     input {
-      width: 58px;
-      height: 30px;
-      padding: 2px 8px;
+      width: 52px;
+      height: 28px;
+      padding: 2px 20px 2px 8px;
       border: 1px solid $g-700;
       border-radius: 4px;
       background-color: $white;
       color: $g-900;
+      appearance: textfield;
+
+      &::-webkit-outer-spin-button,
+      &::-webkit-inner-spin-button {
+        margin: 0;
+        appearance: none;
+      }
 
       &:focus {
         outline: none;
         border-color: $grape;
+      }
+    }
+  }
+
+  .date-range-days-field {
+    position: relative;
+    display: inline-flex;
+  }
+
+  .date-range-days-steppers {
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    bottom: 3px;
+    display: flex;
+    flex-direction: column;
+
+    button {
+      display: flex;
+      flex: 1;
+      align-items: center;
+      justify-content: center;
+      width: 14px;
+      padding: 0;
+      border: none;
+      border-radius: 2px;
+      background: transparent;
+      color: $g-700;
+
+      &:hover {
+        background-color: $g-200;
+        color: $g-900;
       }
     }
   }
@@ -87,6 +131,7 @@
 
   .date-range-inputs {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: 12px;
     padding: 12px 16px;
@@ -144,7 +189,7 @@
   }
 
   .date-range-calendar {
-    padding: 8px 16px 12px;
+    padding: 8px 21px 12px;
     background-color: $white;
 
     .rdp-root {
@@ -158,10 +203,10 @@
       --rdp-range_middle-color: #{$white};
       --rdp-selected-border: none;
       --rdp-day-width: 56px;
-      --rdp-day-height: 42px;
-      --rdp-day_button-width: 44px;
-      --rdp-day_button-height: 34px;
-      --rdp-day_button-border-radius: 17px;
+      --rdp-day-height: 44px;
+      --rdp-day_button-width: 42px;
+      --rdp-day_button-height: 36px;
+      --rdp-day_button-border-radius: 18px;
       --rdp-outside-opacity: 1;
       --rdp-disabled-opacity: 1;
       --rdp-nav-height: 44px;
@@ -173,6 +218,23 @@
     }
 
     @include ls-day-picker;
+
+    .rdp-root[data-nav-layout='around'] .rdp-month_caption {
+      margin-inline: 10px;
+    }
+
+    .rdp-root .rdp-month .rdp-month_grid {
+      width: calc(100% - 20px);
+      margin-inline: 10px;
+    }
+
+    .rdp-root .rdp-month .rdp-month_grid th.date-range-month-label {
+      padding-left: 0;
+    }
+
+    .date-range-next-month-label {
+      padding-left: 10px;
+    }
 
     .rdp-today:not(.rdp-selected):not(.rdp-outside) .rdp-day_button {
       color: $grape;
@@ -195,10 +257,12 @@
   }
 
   .date-range-btn {
-    min-width: 80px;
-    padding: 8px 14px;
+    justify-content: center;
+    min-width: 73px;
+    height: 36px;
+    padding: 0 14px;
     border-radius: 4px;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 500;
     border: 1px solid transparent;
 
@@ -270,10 +334,21 @@
   }
 
   .modal-content {
-    overflow: hidden;
+    overflow: auto;
     border: none;
     border-radius: 6px;
     background-color: $g-100;
+  }
+
+  @media (max-width: 720px) {
+    .date-range-picker .date-range-component {
+      flex-direction: column;
+    }
+
+    .date-range-picker .date-range-presets,
+    .date-range-picker .date-range-main {
+      width: auto;
+    }
   }
 
   .date-range-picker {
