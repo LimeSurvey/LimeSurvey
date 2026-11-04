@@ -160,14 +160,17 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false, &$sAbortReason = null)
         ->where('stg_name = :name', [':name' => 'maintenancemode'])
         ->queryScalar();
     $previousMaintenanceMode = $previousMaintenanceMode === false ? null : (string) $previousMaintenanceMode;
-    $maintenanceModeRestored = true;
+    // An object, not a by-reference variable: Psalm cannot see that the shutdown function reads a
+    // by-reference variable, and the automatic Psalm fixes in CI deleted its "unused" assignments
+    $maintenanceModeState = new stdClass();
+    $maintenanceModeState->restored = true;
     if ($isCriticalUpdate && !SettingGlobal::areParticipantsLocked($previousMaintenanceMode ?? SettingGlobal::MAINTENANCE_MODE_OFF)) {
         writeMaintenanceModeRow(SettingGlobal::MAINTENANCE_MODE_HARD);
-        $maintenanceModeRestored = false;
+        $maintenanceModeState->restored = false;
 
         // Safety net: restore maintenance mode even on fatal error / timeout.
-        register_shutdown_function(function () use ($previousMaintenanceMode, &$maintenanceModeRestored) {
-            if (!$maintenanceModeRestored) {
+        register_shutdown_function(function () use ($previousMaintenanceMode, $maintenanceModeState) {
+            if (!$maintenanceModeState->restored) {
                 try {
                     writeMaintenanceModeRow($previousMaintenanceMode);
                 } catch (\Throwable $t) {
@@ -228,12 +231,11 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false, &$sAbortReason = null)
             . '</p>'
         );
         // Restore previous maintenance mode if it was changed
-        if (!$maintenanceModeRestored) {
+        if (!$maintenanceModeState->restored) {
             try {
                 writeMaintenanceModeRow($previousMaintenanceMode);
-                // Read by the by-reference shutdown-function closure registered above, which
-                // would otherwise write the previous mode a second time at the end of the process
-                /** @psalm-suppress UnusedVariable Psalm doesn't trace writes observed by a by-ref closure */
+                // Keeps the shutdown function from writing the previous mode a second time
+                $maintenanceModeState->restored = true;
             } catch (\Throwable $t) {
                 Yii::log('Failed to restore maintenance mode: ' . $t->getMessage(), 'error', 'application.db.update');
             }
@@ -290,12 +292,11 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false, &$sAbortReason = null)
     fixLanguageConsistencyAllSurveys();
 
     // Restore previous maintenance mode if it was changed
-    if (!$maintenanceModeRestored) {
+    if (!$maintenanceModeState->restored) {
         try {
             writeMaintenanceModeRow($previousMaintenanceMode);
-            // Read by the by-reference shutdown-function closure registered above, which
-            // would otherwise write the previous mode a second time at the end of the process
-            /** @psalm-suppress UnusedVariable Psalm doesn't trace writes observed by a by-ref closure */
+            // Keeps the shutdown function from writing the previous mode a second time
+            $maintenanceModeState->restored = true;
         } catch (\Throwable $t) {
             Yii::log('Failed to restore maintenance mode: ' . $t->getMessage(), 'error', 'application.db.update');
         }
