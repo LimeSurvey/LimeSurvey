@@ -1030,7 +1030,13 @@ class SFTP extends SSH2
                 $result[] = $relativeDir . $value;
                 continue;
             }
-            if (is_array($this->query_stat_cache($this->realpath($dir . '/' . $value)))) {
+            if ($this->use_stat_cache) {
+                $is_directory = is_array($this->query_stat_cache($this->realpath($dir . '/' . $value)));
+            } else {
+                $stat = $this->lstat($dir . '/' . $value);
+                $is_directory = $stat && $stat['type'] === NET_SFTP_TYPE_DIRECTORY;
+            }
+            if ($is_directory) {
                 $temp = $this->nlist_helper($dir . '/' . $value, true, $relativeDir . $value . '/');
                 $temp = is_array($temp) ? $temp : [];
                 $result = array_merge($result, $temp);
@@ -1051,6 +1057,19 @@ class SFTP extends SSH2
      */
     public function rawlist($dir = '.', $recursive = false)
     {
+        return $this->rawlist_helper($dir, $recursive, 0);
+    }
+
+    /**
+     * Helper method for rawlist
+     *
+     * @param string $dir
+     * @param bool $recursive
+     * @param int $depth
+     * @return array|false
+     */
+    private function rawlist_helper($dir, $recursive, $depth)
+    {
         $files = $this->readlist($dir, true);
 
         // If we get an int back, then that is an "unexpected" status.
@@ -1062,8 +1081,6 @@ class SFTP extends SSH2
         if (!$recursive || $files === false) {
             return $files;
         }
-
-        static $depth = 0;
 
         foreach ($files as $key => $value) {
             if ($depth != 0 && $key == '..') {
@@ -1081,9 +1098,7 @@ class SFTP extends SSH2
             }
 
             if ($is_directory) {
-                $depth++;
-                $files[$key] = $this->rawlist($dir . '/' . $key, true);
-                $depth--;
+                $files[$key] = $this->rawlist_helper($dir . '/' . $key, true, $depth + 1);
             } else {
                 $files[$key] = (object) $value;
             }
@@ -3345,7 +3360,7 @@ class SFTP extends SSH2
     {
         // in SSH2.php the timeout is cumulative per function call. eg. exec() will
         // timeout after 10s. but for SFTP.php it's cumulative per packet
-        $this->curTimeout = $this->timeout;
+        $this->curTimeout = $this->timeout ?: false;
         $this->is_timeout = false;
 
         $packet = $this->use_request_id ?
@@ -3408,7 +3423,7 @@ class SFTP extends SSH2
 
         // in SSH2.php the timeout is cumulative per function call. eg. exec() will
         // timeout after 10s. but for SFTP.php it's cumulative per packet
-        $this->curTimeout = $this->timeout;
+        $this->curTimeout = $this->timeout ?: false;
         $this->is_timeout = false;
 
         $start = microtime(true);

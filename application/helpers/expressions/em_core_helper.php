@@ -511,10 +511,13 @@ class ExpressionManager
                 break;
             case '+':
                 if ($bBothNumeric) {
-                    $this->RDP_AddWarning(new EMWarningPlusOperator($token));
+                    $this->RDP_AddWarning(new EMWarningPlusOperator($token, EMWarningPlusOperator::NUMERIC));
                     $result = array(($arg1[0] + $arg2[0]), $token[1], 'NUMBER');
                 } else {
-                    $this->RDP_AddWarning(new EMWarningPlusOperator($token));
+                    $this->RDP_AddWarning(new EMWarningPlusOperator(
+                        $token,
+                        $isForcedString ? EMWarningPlusOperator::STRING : EMWarningPlusOperator::UNKNOWN
+                    ));
                     $result = array($arg1[0] . $arg2[0], $token[1], 'STRING');
                 }
                 break;

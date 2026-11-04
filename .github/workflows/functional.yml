@@ -27,6 +27,8 @@ jobs:
       matrix:
         # Specify what versions of php you want to test
         php-versions: [ '8.1', '8.5' ]
+        # MySQL runs on all PHP versions, PostgreSQL and MSSQL only on the newest (see exclude)
+        db-type: [ 'mysql', 'pgsql', 'mssql' ]
         testsuite:
           - survey
           - question-a
@@ -41,11 +43,16 @@ jobs:
           - plugin
           - security
           - api
+        exclude:
+          - php-versions: '8.1'
+            db-type: 'pgsql'
+          - php-versions: '8.1'
+            db-type: 'mssql'
     # Env vars for this job
     env:
       DBENGINE: INNODB
 
-    name: PHP ${{ matrix.php-versions }} / ${{ matrix.testsuite }}
+    name: PHP ${{ matrix.php-versions }} / ${{ matrix.db-type }} / ${{ matrix.testsuite }}
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v5
@@ -75,6 +82,7 @@ jobs:
             php${{ matrix.php-versions }}-dom \
             php${{ matrix.php-versions }}-zip \
             php${{ matrix.php-versions }}-mysql \
+            php${{ matrix.php-versions }}-pgsql \
             php${{ matrix.php-versions }}-xml \
             php${{ matrix.php-versions }}-curl \
             php${{ matrix.php-versions }}-mbstring \
@@ -84,8 +92,55 @@ jobs:
 
       # Start the MySQL service - https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu1804-README.md#mysql
       - name: Start the MySQL service
+        if: matrix.db-type == 'mysql'
         run: |
           sudo systemctl start mysql.service
+
+      - name: Install and setup PostgreSQL
+        if: matrix.db-type == 'pgsql'
+        run: |
+          # Remove any existing PostgreSQL
+          sudo systemctl stop postgresql || true
+          sudo apt-get remove -y postgresql* || true
+          # Add PostgreSQL official repository (PGDG)
+          sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+          wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+          sudo apt-get update
+          sudo apt-get install -y postgresql-14 postgresql-client-14
+          sudo systemctl start postgresql
+          # Create user and database
+          sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD 'postgres';"
+          sudo -u postgres psql -c "CREATE DATABASE limesurvey;"
+          PGPASSWORD=postgres psql -h localhost -U postgres -d limesurvey -c "SELECT version();"
+
+      - name: Install and setup MSSQL Server and the PHP sqlsrv extensions
+        if: matrix.db-type == 'mssql'
+        run: |
+          # Remove pre-existing Microsoft repo entries shipped on the runner
+          # (they conflict with our own signed-by entries)
+          sudo rm -f /etc/apt/sources.list.d/microsoft-prod.list
+          curl -fsSL https://packages.microsoft.com/keys/microsoft.asc \
+          | sudo gpg --batch --yes --no-tty --dearmor -o /usr/share/keyrings/microsoft-prod.gpg
+          echo "deb [arch=amd64,arm64,armhf signed-by=/usr/share/keyrings/microsoft-prod.gpg] https://packages.microsoft.com/ubuntu/22.04/mssql-server-2022 jammy main" \
+          | sudo tee /etc/apt/sources.list.d/mssql-server.list
+          echo "deb [arch=amd64,arm64,armhf signed-by=/usr/share/keyrings/microsoft-prod.gpg] https://packages.microsoft.com/ubuntu/22.04/prod jammy main" \
+          | sudo tee /etc/apt/sources.list.d/msprod.list
+          sudo apt-get update
+          sudo apt-get install -y mssql-server
+          sudo MSSQL_SA_PASSWORD='LimeSurvey123!' MSSQL_PID='Developer' /opt/mssql/bin/mssql-conf -n setup accept-eula
+          sudo systemctl status mssql-server --no-pager
+          sudo ACCEPT_EULA=Y apt-get install -y msodbcsql18 mssql-tools18 unixodbc-dev
+          # The PHP extensions are not packaged on packages.sury.org, so build them with PECL
+          # and enable them for both the CLI (PHPUnit) and Apache (Selenium tests)
+          sudo apt-get install -y php${{ matrix.php-versions }}-dev php-pear
+          sudo pecl -d php_suffix=${{ matrix.php-versions }} install sqlsrv pdo_sqlsrv
+          printf "; priority=20\nextension=sqlsrv.so\n" | sudo tee /etc/php/${{ matrix.php-versions }}/mods-available/sqlsrv.ini
+          printf "; priority=30\nextension=pdo_sqlsrv.so\n" | sudo tee /etc/php/${{ matrix.php-versions }}/mods-available/pdo_sqlsrv.ini
+          sudo phpenmod -v ${{ matrix.php-versions }} sqlsrv pdo_sqlsrv
+          # Wait for MSSQL to be fully ready
+          sleep 10
+          /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P 'LimeSurvey123!' -C -Q "CREATE DATABASE limesurvey"
+          /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P 'LimeSurvey123!' -C -d limesurvey -Q "SELECT @@VERSION"
 
       - name: Initialize and check all dependencies
         env:
@@ -144,6 +199,7 @@ jobs:
           chmod 777 /home/runner
 
       - name: Check MySQL service
+        if: matrix.db-type == 'mysql'
         run: |
           # InnoDB needs large_file_prefix & Barracuda file format
           # https://discuss.gogs.io/t/solved-mysql-error-1064-while-running-first-install/1604
@@ -159,7 +215,17 @@ jobs:
 
       - name: Load custom console and start the Application
         run: |
-          cp application/config/config-sample-mysql.php application/config/config.php
+          if [ "${{ matrix.db-type }}" = "pgsql" ]; then
+            cp application/config/config-sample-pgsql.php application/config/config.php
+            sed -i "s/'password' => 'somepassword'/'password' => 'postgres'/g" application/config/config.php
+          elif [ "${{ matrix.db-type }}" = "mssql" ]; then
+            cp application/config/config-sample-sqlsrv.php application/config/config.php
+            sed -i "s/'password' => 'somepassword'/'password' => 'LimeSurvey123!'/g" application/config/config.php
+            # ODBC Driver 18 encrypts by default and the local server only has a self-signed certificate
+            sed -i "s/Database=limesurvey'/Database=limesurvey;TrustServerCertificate=1'/" application/config/config.php
+          else
+            cp application/config/config-sample-mysql.php application/config/config.php
+          fi
           php application/commands/console.php install admin password TravisLS no@email.com verbose
           # Do NOT set debug=2 here.
           # InstallationControllerTest rewrites config.php with debug=0 and PHPUnit's YII_DEBUG constant (set at bootstrap) is immutable.
@@ -168,7 +234,8 @@ jobs:
           # sed -i '60s/.*/        "debug"=>2,/' application/config/config.php
           #
           # disable new editor for functional tests CI
-          sed -i '61i\        "editorEnabled"=>false,' application/config/config.php
+          # (inserted after the line opening the config array, which is on a different line in each sample config)
+          sed -i "/'config' *=> *array(/a\        \"editorEnabled\"=>false," application/config/config.php
           cat application/config/config.php
 
       # for debugging
@@ -211,12 +278,12 @@ jobs:
       - name: Run functional tests
         env:
           DOMAIN: localhost
-        run: php vendor/bin/phpunit --testdox --stop-on-failure --fail-on-skipped --testsuite ${{ matrix.testsuite }}
+        run: php vendor/bin/phpunit --testdox --stop-on-failure --fail-on-skipped ${{ matrix.db-type != 'mysql' && '--exclude-group mysql' || '' }} --testsuite ${{ matrix.testsuite }}
 
       - name: Upload Screenshots
         uses: actions/upload-artifact@v7
         if: failure()
         with:
-          name: screenshots-${{ matrix.php-versions }}-${{ matrix.testsuite }}
+          name: screenshots-${{ matrix.php-versions }}-${{ matrix.db-type }}-${{ matrix.testsuite }}
           path: tests/tmp/screenshots/
           retention-days: 5

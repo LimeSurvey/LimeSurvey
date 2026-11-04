@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef } from 'react'
-import { Draggable } from 'react-beautiful-dnd'
+import { Draggable } from '@hello-pangea/dnd'
 import classNames from 'classnames'
 
 import { DragAndDrop } from 'components/UIComponents/DragAndDrop/DragAndDrop'
@@ -163,8 +163,8 @@ export const ArrayRows = ({
       >
         {entitiesInfo.items?.map((entity, index) => (
           <Draggable
-            key={`${entity.appKey || entity[entitiesInfo.idKey]}}-subquestion`}
-            draggableId={`${entity.appKey || entity[entitiesInfo.idKey]}}-subquestion`}
+            key={`${entity.appKey || entity[entitiesInfo.idKey]}-subquestion`}
+            draggableId={`${entity.appKey || entity[entitiesInfo.idKey]}-subquestion`}
             index={index}
           >
             {(provided, snapshot) => (
