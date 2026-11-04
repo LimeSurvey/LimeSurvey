@@ -577,9 +577,19 @@ var UserManagement = function () {
         }
     };
 
+    /**
+     * Put the loaded content into the modal. While the content loads, the modal is named by its aria-label
+     * ("Loading..."): When focus is already in the modal, its new name is not read, so the title is announced.
+     *
+     * @param {string} html
+     */
     var applyModalHtml = function (html) {
-        $('#UserManagement-action-modal').find('.modal-content').html(html);
-        $('#UserManagement-action-modal-status').text('');
+        var modal = $('#UserManagement-action-modal');
+        var hasFocus = modal[0] === document.activeElement || $.contains(modal[0], document.activeElement);
+        modal.find('.modal-content').html(html);
+        $('#UserManagement-action-modal-status').text(
+            hasFocus ? $('#UserManagement-action-modal-title').text().trim() : ''
+        );
         wirePasswordOptions();
         wireLoginMethods();
         wirePermissions();
