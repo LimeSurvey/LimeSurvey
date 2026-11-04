@@ -116,15 +116,10 @@ class ExportSurveyResultsService
             $responsesQuery = $surveyDao->loadSurveyResults($survey, $oOptions->responseMinRecord, $oOptions->responseMaxRecord, $sFilter, $oOptions->responseCompletionState, $oOptions->selectedColumns, $oOptions->aResponses);
             $responsesQuery->offset($offset);
             $responsesQuery->limit($maxRows);
-            $survey->responses = $responsesQuery->query();
+            $survey->responses = $surveyDao->addJoinedResults($survey, $responsesQuery->queryAll(), $oOptions->selectedColumns);
             $writer->write($survey, $sLanguageCode, $oOptions, true);
         }
         $result = $writer->close();
-
-        // Close resultset if needed
-        if ($survey->responses instanceof CDbDataReader) {
-            $survey->responses->close();
-        }
 
         if ($oOptions->output == 'file') {
             return $writer->filename;

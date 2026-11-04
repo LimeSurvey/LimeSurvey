@@ -304,17 +304,17 @@ class SurveyRuntimeHelper
                         //Get the answers/inputnames
                         // TMSW - can content of retrieveAnswers() be provided by LEM?  Review scope of what it provides.
                         // TODO - retrieveAnswers is slow - queries database separately for each question. May be fixed in _CI or _YII ports, so ignore for now
-                        LimeExpressionManager::updateReplacementFields(array(
-                            'QID' => $ia[0],
-                            'GID' => $ia[5],
-                            'SGQ' => $ia[1],
-                        ));
-                        list($plus_qanda, $plus_inputnames) = retrieveAnswers($ia);
-                        LimeExpressionManager::updateReplacementFields(array(
-                            'QID' => null,
-                            'GID' => null,
-                            'SGQ' => null,
-                        ));
+                        // Make question related replacements available in subquestion and answer option texts
+                        list($plus_qanda, $plus_inputnames) = LimeExpressionManager::withReplacementFields(
+                            array(
+                                'QID' => $ia[0],
+                                'GID' => $ia[5], // The question's own group, may differ from $gid with randomized groups
+                                'SGQ' => $ia[1],
+                            ),
+                            function () use ($ia) {
+                                return retrieveAnswers($ia);
+                            }
+                        );
 
                         if ($plus_qanda) {
                             $plus_qanda[] = $ia[4];
@@ -357,7 +357,7 @@ class SurveyRuntimeHelper
             }
         }
 
-        if ($this->sSurveyMode != 'survey' && isset($this->aSurveyInfo['showprogress']) && $this->aSurveyInfo['showprogress'] == 'Y') {
+        if ($this->sSurveyMode != 'survey') {
             $totalSteps = $_SESSION[$this->LEMsessid]['totalsteps'] ?? 1;
             $totalVisibleSteps = $_SESSION[$this->LEMsessid]['totalVisibleSteps'] ?? 0;
             $step = $_SESSION[$this->LEMsessid]['step'] ?? 0;
@@ -371,7 +371,13 @@ class SurveyRuntimeHelper
                     $_SESSION[$this->LEMsessid]['hiddenGroupIds'] ?? []
                 ));
             }
+            // Number of the current page as seen by the participant (skipped pages not counted), used in the page title
+            if (!$this->bShowEmptyGroup && $step > 0 && !$this->previewgrp && !$this->previewquestion) {
+                $this->aSurveyInfo['pagenumber'] = max(1, $step - $notRelevantSteps - $hiddenSteps);
+            }
+        }
 
+        if ($this->sSurveyMode != 'survey' && isset($this->aSurveyInfo['showprogress']) && $this->aSurveyInfo['showprogress'] == 'Y') {
             if ($this->bShowEmptyGroup) {
                 $this->aSurveyInfo['progress']['currentstep'] = $totalSteps + 1;
                 $this->aSurveyInfo['progress']['total']       = $totalVisibleSteps ? $totalVisibleSteps : $totalSteps;
@@ -814,6 +820,10 @@ class SurveyRuntimeHelper
      * - Check surveyid coherence
      * - Init $LEM states.
      * - Decide if Welcome page should be shown
+     * Otherwise, reload the LEM if it belongs to another survey, or end the request with
+     * an error page if it was started in another survey mode.
+     *
+     * @return void
      */
     private function initFirstStep()
     {
@@ -842,7 +852,34 @@ class SurveyRuntimeHelper
             }
         } elseif ($this->iSurveyid != LimeExpressionManager::getLEMsurveyId()) {
             $this->initDirtyStep();
+        } elseif ($this->sSurveyMode != LimeExpressionManager::getLEMsurveyMode()) {
+            // The session was replaced in another tab or window of this browser, eg: by the survey preview of the editor
+            $this->renderSessionChangedError();
         }
+    }
+
+    /**
+     * Renders the error page for a survey session that was replaced, with a link to restart the survey, and ends the request.
+     *
+     * @return void
+     */
+    private function renderSessionChangedError()
+    {
+        $aReloadUrlParam = ['lang' => App()->language, 'newtest' => 'Y'];
+        if (!empty($_SESSION[$this->LEMsessid]['token'])) {
+            $aReloadUrlParam['token'] = $_SESSION[$this->LEMsessid]['token'];
+        }
+        App()->getController()->renderExitMessage(
+            $this->iSurveyid,
+            'session-changed',
+            [gT("The survey was changed or opened in another tab or window of this browser.")],
+            [
+                'url'         => App()->createUrl("/survey/index/sid/{$this->iSurveyid}", $aReloadUrlParam),
+                'type'        => 'restart-survey',
+                'description' => gT("Click here to start the survey.")
+            ],
+            [gT('We are sorry but your session has expired.')]
+        );
     }
 
     /**
@@ -885,7 +922,7 @@ class SurveyRuntimeHelper
 
     /**
      * It checks if user used the browser navigation (prev, next, reload page etc)
-     * and feed te backpopup variable if needed
+     * and feed the backpopup variable if needed
      */
     private function checkIfUseBrowserNav()
     {

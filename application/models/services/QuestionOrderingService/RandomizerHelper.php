@@ -70,7 +70,7 @@ class RandomizerHelper
      * @param Question $question
      * @return string[]
      */
-    private function getKeepCodes(Question $question): array
+    public function getKeepCodes(Question $question): array
     {
         return $this->splitCodes($question->getQuestionAttribute('keep_codes_order'));
     }
