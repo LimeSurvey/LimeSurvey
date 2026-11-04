@@ -260,4 +260,11 @@
     color: $g-900;
     font-size: $font-size-sm;
   }
+
+  &-total {
+    margin-bottom: 8px;
+    color: $g-900;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-500;
+  }
 }

@@ -127,6 +127,35 @@ describe('DateRangePanel', () => {
     expect(input).toHaveValue(1)
   })
 
+  test('an invalid number of days leaves nothing to confirm', () => {
+    renderPanel()
+
+    const input = screen.getByRole('spinbutton')
+    fireEvent.change(input, { target: { value: '3' } })
+    expect(screen.getByRole('button', { name: 'Confirm' })).toBeEnabled()
+
+    fireEvent.change(input, { target: { value: '0' } })
+    expect(screen.getByRole('button', { name: 'Confirm' })).toBeDisabled()
+
+    fireEvent.change(input, { target: { value: '1.5' } })
+    expect(screen.getByRole('button', { name: 'Confirm' })).toBeDisabled()
+
+    fireEvent.change(input, { target: { value: '3' } })
+    fireEvent.change(input, { target: { value: '' } })
+    expect(screen.getByRole('button', { name: 'Confirm' })).toBeDisabled()
+  })
+
+  test('an invalid date shows an example, not the format tokens', () => {
+    renderPanel()
+
+    typeDate('Start date', 'nonsense')
+
+    expect(screen.getByRole('alert')).not.toHaveTextContent('PP')
+    expect(screen.getByRole('alert')).toHaveTextContent(
+      new Date().getFullYear().toString()
+    )
+  })
+
   test('a single day shows one date input', () => {
     renderPanel()
 
@@ -144,13 +173,75 @@ describe('DateRangePanel', () => {
     expect(document.querySelector('.date-range-preset.active')).toBeNull()
 
     clickDay('January 14th, 2026')
-    expect(screen.queryByLabelText('End date')).not.toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Custom range' })).toHaveClass(
       'active'
     )
+    expect(screen.getByLabelText('End date')).toHaveValue('')
 
     clickDay('January 20th, 2026')
-    expect(screen.getByLabelText('End date')).toBeInTheDocument()
+    expect(screen.getByLabelText('End date')).toHaveValue('Jan 20, 2026')
+  })
+
+  test('a custom range can be typed from the start', () => {
+    const { onConfirm } = renderPanel()
+
+    clickButton('Custom range')
+    typeDate('Start date', 'Jan 5, 2026')
+    typeDate('End date', 'Jan 9, 2026')
+    clickButton('Confirm')
+
+    expect(confirmedDays(onConfirm)).toEqual(days([2026, 1, 5], [2026, 1, 9]))
+  })
+
+  test('an end date can also be typed before the start date', () => {
+    const { onConfirm } = renderPanel()
+
+    clickButton('Custom range')
+    typeDate('End date', 'Jan 9, 2026')
+    clickButton('Confirm')
+
+    expect(confirmedDays(onConfirm)).toEqual(days([2026, 1, 9], [2026, 1, 9]))
+  })
+
+  test('Custom range on a single day offers the end date', () => {
+    renderPanel({
+      initialRange: { from: new Date(2026, 0, 14), to: new Date(2026, 0, 14) },
+    })
+    expect(screen.queryByLabelText('End date')).not.toBeInTheDocument()
+
+    clickButton('Custom range')
+    expect(screen.getByLabelText('End date')).toHaveValue('Jan 14, 2026')
+  })
+
+  test('Select month takes the displayed month without a click', () => {
+    const { onConfirm } = renderPanel()
+
+    clickButton('Select month')
+    clickButton('Confirm')
+
+    expect(confirmedDays(onConfirm)).toEqual(days([2026, 1, 1], [2026, 1, 31]))
+  })
+
+  test('navigating selects the month in Select month', () => {
+    const { onConfirm } = renderPanel()
+
+    clickButton('Select month')
+    fireEvent.click(screen.getByRole('button', { name: /Next Month/ }))
+    clickButton('Confirm')
+
+    expect(confirmedDays(onConfirm)).toEqual(days([2026, 2, 1], [2026, 2, 28]))
+  })
+
+  test('navigating selects the year in Select year', () => {
+    const { onConfirm } = renderPanel()
+
+    clickButton('Select year')
+    fireEvent.change(screen.getByRole('combobox', { name: /Year/ }), {
+      target: { value: '2027' },
+    })
+    clickButton('Confirm')
+
+    expect(confirmedDays(onConfirm)).toEqual(days([2027, 1, 1], [2027, 12, 31]))
   })
 
   test('Confirm needs a date', () => {

@@ -146,6 +146,136 @@ describe('DateTimeCalendar breakdown', () => {
     expect(dialog.getByLabelText('Date')).toHaveValue('Jan 14, 2026')
   })
 
+  test('a single day picked from the breakdown moves the calendar', async () => {
+    renderCard()
+
+    fireEvent.click(dayButton(14))
+    fireEvent.click(
+      inDialog('When did you start?').getByRole('button', {
+        name: 'Open calendar',
+      })
+    )
+    const picker = await waitFor(() => inDialog('View responses by date range'))
+    fireEvent.change(picker.getByLabelText('Start date'), {
+      target: { value: 'Dec 3, 2025' },
+    })
+    fireEvent.blur(picker.getByLabelText('Start date'))
+    fireEvent.click(picker.getByRole('button', { name: 'Confirm' }))
+
+    const dialog = await waitFor(() => inDialog('When did you start?'))
+    expect(dialog.getByLabelText('Date')).toHaveValue('Dec 3, 2025')
+    expect(
+      screen.getByRole('button', { name: /December 3, 2025/, hidden: true })
+    ).toBeInTheDocument()
+  })
+
+  test('a range from the link leaves the calendar where it is', async () => {
+    renderCard()
+
+    openLink()
+    const picker = inDialog('View responses by date range')
+    fireEvent.change(picker.getByLabelText('Start date'), {
+      target: { value: 'Dec 3, 2025' },
+    })
+    fireEvent.blur(picker.getByLabelText('Start date'))
+    fireEvent.click(picker.getByRole('button', { name: 'Confirm' }))
+
+    await waitFor(() => inDialog('When did you start?'))
+    expect(
+      screen.queryByRole('button', { name: /December 3, 2025/, hidden: true })
+    ).not.toBeInTheDocument()
+  })
+
+  test('activating a date in the breakdown reopens the picker', async () => {
+    renderCard()
+
+    fireEvent.click(dayButton(14))
+    const input = inDialog('When did you start?').getByLabelText('Date')
+    expect(input).toHaveAttribute('readonly')
+    fireEvent.click(input)
+
+    const picker = await waitFor(() => inDialog('View responses by date range'))
+    expect(picker.getByLabelText('Start date')).toHaveValue('Jan 14, 2026')
+  })
+
+  test('the keyboard reopens the picker from a date too', async () => {
+    renderCard()
+
+    fireEvent.click(dayButton(14))
+    fireEvent.keyDown(inDialog('When did you start?').getByLabelText('Date'), {
+      key: 'Enter',
+    })
+
+    await waitFor(() => inDialog('View responses by date range'))
+  })
+
+  test('the link flow never moves the calendar, also on a later change', async () => {
+    renderCard()
+
+    openLink()
+    const picker = inDialog('View responses by date range')
+    fireEvent.change(picker.getByLabelText('Start date'), {
+      target: { value: 'Jan 14, 2026' },
+    })
+    fireEvent.blur(picker.getByLabelText('Start date'))
+    fireEvent.click(picker.getByRole('button', { name: 'Confirm' }))
+
+    const dialog = await waitFor(() => inDialog('When did you start?'))
+    fireEvent.click(dialog.getByRole('button', { name: 'Open calendar' }))
+    const again = await waitFor(() => inDialog('View responses by date range'))
+    fireEvent.change(again.getByLabelText('Start date'), {
+      target: { value: 'Dec 3, 2025' },
+    })
+    fireEvent.blur(again.getByLabelText('Start date'))
+    fireEvent.click(again.getByRole('button', { name: 'Confirm' }))
+
+    await waitFor(() => inDialog('When did you start?'))
+    expect(
+      screen.queryByRole('button', { name: /December 3, 2025/, hidden: true })
+    ).not.toBeInTheDocument()
+  })
+
+  test('a range result shows its total, from all its rows', async () => {
+    renderCard()
+
+    openLink()
+    const picker = inDialog('View responses by date range')
+    fireEvent.click(picker.getByRole('button', { name: 'Select week' }))
+    fireEvent.click(picker.getByRole('button', { name: /January 14th, 2026/ }))
+    fireEvent.click(picker.getByRole('button', { name: 'Confirm' }))
+
+    const dialog = await waitFor(() => inDialog('When did you start?'))
+    expect(dialog.getByText('4 responses')).toBeInTheDocument()
+  })
+
+  test('the breakdown of a day has no total', () => {
+    renderCard()
+
+    fireEvent.click(dayButton(14))
+
+    expect(
+      inDialog('When did you start?').queryByText('3 responses')
+    ).not.toBeInTheDocument()
+  })
+
+  test('a range without answers says so and keeps the date controls', async () => {
+    renderCard()
+
+    openLink()
+    const picker = inDialog('View responses by date range')
+    fireEvent.change(picker.getByLabelText('Start date'), {
+      target: { value: 'Mar 3, 2026' },
+    })
+    fireEvent.blur(picker.getByLabelText('Start date'))
+    fireEvent.click(picker.getByRole('button', { name: 'Confirm' }))
+
+    const dialog = await waitFor(() => inDialog('When did you start?'))
+    expect(
+      dialog.getByText('No responses for this date range.')
+    ).toBeInTheDocument()
+    expect(dialog.getByRole('button', { name: 'Open calendar' })).toBeVisible()
+  })
+
   test('focus returns to the day after going through the picker', async () => {
     renderCard()
 

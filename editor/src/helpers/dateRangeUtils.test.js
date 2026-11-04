@@ -1,4 +1,11 @@
-import { expandToUnit, getPresets } from './dateRangeUtils'
+import { format, isSameDay, parse } from 'date-fns'
+
+import {
+  DATE_FORMAT,
+  expandToUnit,
+  getDayPickerLocale,
+  getPresets,
+} from './dateRangeUtils'
 
 global.t = (key) => key
 
@@ -52,4 +59,34 @@ test('the presets follow the ticket', () => {
     'year',
   ])
   expect(trailingPresets.map(({ key }) => key)).toEqual(['custom'])
+})
+
+describe('DATE_FORMAT', () => {
+  test('is the format of the Figma in English', () => {
+    expect(
+      format(new Date(2026, 0, 8), DATE_FORMAT, {
+        locale: getDayPickerLocale('en'),
+      })
+    ).toBe('Jan 8, 2026')
+  })
+
+  test.each(['en', 'de', 'fr', 'es', 'nl', 'it', 'pt', 'ru', 'pl', 'tr', 'el'])(
+    'a date shown in %s can be typed back',
+    (language) => {
+      const locale = getDayPickerLocale(language)
+      const date = new Date(2026, 8, 8)
+
+      expect(
+        isSameDay(
+          parse(
+            format(date, DATE_FORMAT, { locale }),
+            DATE_FORMAT,
+            new Date(),
+            { locale }
+          ),
+          date
+        )
+      ).toBe(true)
+    }
+  )
 })

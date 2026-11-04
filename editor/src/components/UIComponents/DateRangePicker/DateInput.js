@@ -13,6 +13,7 @@ export const DateInput = ({
   label,
   locale,
   onIconClick,
+  readOnly = false,
 }) => {
   const localeOptions = locale ? { locale } : undefined
   const formatted = value ? format(value, dateFormat, localeOptions) : ''
@@ -58,12 +59,26 @@ export const DateInput = ({
         title={isInvalid ? t('Invalid date.') : undefined}
         placeholder={format(new Date(), dateFormat, localeOptions)}
         value={text}
-        onChange={(e) => {
-          setText(e.target.value)
-          setIsInvalid(false)
-        }}
-        onBlur={commit}
-        onKeyDown={(e) => e.key === 'Enter' && commit()}
+        {...(readOnly
+          ? {
+              'readOnly': true,
+              'aria-haspopup': 'dialog',
+              'onClick': onIconClick,
+              'onKeyDown': (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault()
+                  onIconClick()
+                }
+              },
+            }
+          : {
+              onChange: (e) => {
+                setText(e.target.value)
+                setIsInvalid(false)
+              },
+              onBlur: commit,
+              onKeyDown: (e) => e.key === 'Enter' && commit(),
+            })}
       />
       {onIconClick ? (
         <button

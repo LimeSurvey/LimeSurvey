@@ -75,7 +75,8 @@ class DateTimeValues
 
     /**
      * Shape [stored value => count] into the day => time => count response.
-     * Values that are no real date are skipped.
+     * Values that are no real date are skipped. A question without a time has
+     * one entry per day, also when its format had a time when it was answered.
      *
      * @param array<string, int> $valueCounts
      */
@@ -89,6 +90,7 @@ class DateTimeValues
                 continue;
             }
             [$day, $time] = $parts;
+            $time = $hasTime ? $time : '';
             $days[$day][$time] = ($days[$day][$time] ?? 0) + (int)$count;
             $total += (int)$count;
         }

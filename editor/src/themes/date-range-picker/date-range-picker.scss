@@ -303,6 +303,10 @@
 
 // Date inputs whose calendar icon opens the range panel (DateRangePickerField).
 .date-range-picker.date-range-picker-field {
+  .date-range-input input {
+    cursor: pointer;
+  }
+
   .date-range-picker-field-inputs {
     display: flex;
     flex-wrap: wrap;

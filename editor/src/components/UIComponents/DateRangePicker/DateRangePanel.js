@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { format } from 'util'
 import {
+  format as formatDate,
   isBefore,
   isAfter,
   isSameDay,
@@ -48,12 +49,16 @@ export const DateRangePanel = ({
   const [isToValid, setIsToValid] = useState(true)
   // Clear starts the inputs over, along with any invalid text in them.
   const [inputsKey, setInputsKey] = useState(0)
+  const [isEnteringEnd, setIsEnteringEnd] = useState(false)
   // The end date input shows up once the range has an end of its own.
-  const isSingleDay = !(
-    tempRange.from &&
-    tempRange.to &&
-    !isSameDay(tempRange.from, tempRange.to)
-  )
+  const isSingleDay =
+    !isEnteringEnd &&
+    !(tempRange.from && !tempRange.to) &&
+    !(
+      tempRange.from &&
+      tempRange.to &&
+      !isSameDay(tempRange.from, tempRange.to)
+    )
   const hasInvalidInput = !isFromValid || (!isSingleDay && !isToValid)
   const selectionMode =
     [...presets, ...trailingPresets].find(({ key }) => key === activeKey)
@@ -79,6 +84,7 @@ export const DateRangePanel = ({
 
   const handlePresetSelect = (preset) => {
     setDaysUpToToday('')
+    setIsEnteringEnd(preset.mode === 'range')
 
     if (preset.range) {
       const clampedRange = clampRange(preset.range)
@@ -89,19 +95,33 @@ export const DateRangePanel = ({
     }
 
     setActiveKey(preset.key)
-    if (preset.mode !== 'range' && tempRange.from) {
-      setTempRange(clampRange(expandToUnit(tempRange.from, preset.mode)))
+    const anchor =
+      tempRange.from ??
+      (preset.mode === 'month' || preset.mode === 'year' ? month : null)
+    if (preset.mode !== 'range' && anchor) {
+      setTempRange(clampRange(expandToUnit(anchor, preset.mode)))
+    }
+  }
+
+  const handleMonthChange = (newMonth) => {
+    setMonth(newMonth)
+    if (selectionMode === 'month' || selectionMode === 'year') {
+      setTempRange(clampRange(expandToUnit(newMonth, selectionMode)))
     }
   }
 
   const handleDaysUpToTodayChange = (e) => {
     const value = e.target.value
     setDaysUpToToday(value)
+    setIsEnteringEnd(false)
     setActiveKey(null)
 
-    const days = parseInt(value, 10)
-    if (!days || days < 1) return
+    if (!/^[1-9]\d*$/.test(value)) {
+      setTempRange(EMPTY_RANGE)
+      return
+    }
 
+    const days = parseInt(value, 10)
     const today = startOfDay(new Date())
     const newRange = clampRange({ from: subDays(today, days - 1), to: today })
     setTempRange(newRange)
@@ -120,8 +140,11 @@ export const DateRangePanel = ({
       setTempRange(EMPTY_RANGE)
       return
     }
-    const to =
-      !isSingleDay && !isAfter(from, tempRange.to) ? tempRange.to : from
+    let to = from
+    if (!isSingleDay) {
+      to =
+        tempRange.to && !isAfter(from, tempRange.to) ? tempRange.to : undefined
+    }
     setTempRange({ from, to })
     setMonth(from)
   }
@@ -133,7 +156,8 @@ export const DateRangePanel = ({
       return
     }
     setTempRange({
-      from: isBefore(to, tempRange.from) ? to : tempRange.from,
+      from:
+        !tempRange.from || isBefore(to, tempRange.from) ? to : tempRange.from,
       to,
     })
     setMonth(to)
@@ -166,6 +190,7 @@ export const DateRangePanel = ({
   const handleClear = () => {
     setTempRange(EMPTY_RANGE)
     setDaysUpToToday('')
+    setIsEnteringEnd(false)
     setActiveKey(null)
     setInputsKey((key) => key + 1)
   }
@@ -210,13 +235,16 @@ export const DateRangePanel = ({
         </div>
         {hasInvalidInput && (
           <div className="date-range-error" role="alert">
-            {format(t('Invalid date, please use "%s" format.'), dateFormat)}
+            {format(
+              t('Invalid date, please enter a date like "%s".'),
+              formatDate(new Date(), dateFormat, { locale })
+            )}
           </div>
         )}
         <DateRangeCalendar
           selected={tempRange}
           month={month}
-          onMonthChange={setMonth}
+          onMonthChange={handleMonthChange}
           onSelect={handleCalendarSelect}
           minDate={minDate}
           maxDate={maxDate}

@@ -69,6 +69,20 @@ class DateTimeValuesTest extends TestCase
     }
 
     /**
+     * @testdox groupByDay() has one entry per day for a question without a time
+     */
+    public function testGroupByDayMergesTimesWithoutATime()
+    {
+        $result = DateTimeValues::groupByDay(false, [
+            '2026-10-02 00:00:00' => 2,
+            '2026-10-02 14:30:00' => 3,
+        ]);
+
+        $this->assertSame(['2026-10-02' => ['' => 5]], $result['days']);
+        $this->assertSame(5, $result['total']);
+    }
+
+    /**
      * @testdox groupByDay() skips values that are no real date
      */
     public function testGroupByDaySkipsInvalidDates()
@@ -83,7 +97,7 @@ class DateTimeValuesTest extends TestCase
         $this->assertSame([
             'hasTime' => false,
             'total' => 2,
-            'days' => ['2024-02-29' => ['00:00:00' => 2]],
+            'days' => ['2024-02-29' => ['' => 2]],
         ], $result);
     }
 

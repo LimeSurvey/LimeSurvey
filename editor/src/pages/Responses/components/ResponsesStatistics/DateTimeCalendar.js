@@ -33,6 +33,7 @@ export const DateTimeCalendar = ({
   // The range picker; `returnTo` is the breakdown range it was opened from,
   // shown again on Cancel. Only one of the two modals is open at a time.
   const [rangePicker, setRangePicker] = useState(null)
+  const [isFromDay, setIsFromDay] = useState(false)
   const calendarRef = useRef(null)
   const openerRef = useRef(null)
   const rangeLabelId = useId()
@@ -62,12 +63,14 @@ export const DateTimeCalendar = ({
     if (question.hasTime && !modifiers.outside && days[toDayKey(date)]) {
       const dayKey = toDayKey(date)
       openerRef.current = event.currentTarget
+      setIsFromDay(true)
       setBreakdownRange({ from: dayKey, to: dayKey })
     }
   }
 
   const openPickerFromLink = (event) => {
     openerRef.current = event.currentTarget
+    setIsFromDay(false)
     setRangePicker({ returnTo: null })
   }
 
@@ -79,14 +82,6 @@ export const DateTimeCalendar = ({
       ? openerRef.current
       : calendarRef.current?.querySelector('.rdp-selected .rdp-day_button')
     opener?.focus()
-  }
-
-  // The last picked range is offered again the next time the picker opens.
-  const confirmRange = ({ from, to }) => {
-    const range = { from: toDayKey(from), to: toDayKey(to) }
-    setRangePicker(null)
-    setBreakdownRange(range)
-    update({ range })
   }
 
   const openPickerFromBreakdown = () => {
@@ -102,11 +97,12 @@ export const DateTimeCalendar = ({
   // The picker starts from the breakdown it was opened from, or the last range.
   const pickerRange = rangePicker?.returnTo ?? calendarState.range
 
-  // Picking another single day in the breakdown moves the calendar with it.
-  const changeBreakdownRange = (range) => {
+  const confirmRange = ({ from, to }) => {
+    const range = { from: toDayKey(from), to: toDayKey(to) }
+    setRangePicker(null)
     setBreakdownRange(range)
     update(
-      range.from === range.to
+      isFromDay && range.from === range.to
         ? {
             month: startOfMonth(toDate(range.from)),
             selectedDate: range.from,
@@ -252,7 +248,7 @@ export const DateTimeCalendar = ({
           filters={filters}
           filterSet={filterSet}
           range={breakdownRange}
-          onRangeChange={changeBreakdownRange}
+          isRangeFlow={!isFromDay}
           onOpenPicker={openPickerFromBreakdown}
           onHide={() => setBreakdownRange(null)}
           onExited={restoreFocus}

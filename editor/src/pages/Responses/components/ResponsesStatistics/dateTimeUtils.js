@@ -1,6 +1,7 @@
 import { format } from 'util'
+import { format as formatDate } from 'date-fns'
 
-import { getDayPickerLocale } from 'helpers/dateRangeUtils'
+import { DATE_FORMAT, getDayPickerLocale } from 'helpers/dateRangeUtils'
 
 const ANSWER_PATTERN =
   /^(\d{4})-(\d{2})-(\d{2})(?:[ T](\d{2}):(\d{2})(?::(\d{2}))?)?/
@@ -49,11 +50,9 @@ export const formatDay = (dayKey, localeCode) => {
     return ''
   }
 
-  return new Intl.DateTimeFormat(localeCode, {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-  }).format(date)
+  return formatDate(date, DATE_FORMAT, {
+    locale: getDayPickerLocale(localeCode),
+  })
 }
 
 export const formatTime = (time, localeCode) => {

@@ -67,7 +67,7 @@ class StatisticsDateValues implements CommandInterface
             return $this->responseFactory->makeErrorUnauthorised();
         }
 
-        $survey = Survey::model()->findByPk($surveyId);
+        $survey = $this->findSurvey($surveyId);
         if ($survey === null) {
             return $this->responseFactory->makeErrorNotFound("Survey {$surveyId} not found.");
         }
@@ -93,5 +93,10 @@ class StatisticsDateValues implements CommandInterface
         }
 
         return $this->responseFactory->makeSuccess($values);
+    }
+
+    protected function findSurvey(int $surveyId): ?Survey
+    {
+        return Survey::model()->findByPk($surveyId);
     }
 }

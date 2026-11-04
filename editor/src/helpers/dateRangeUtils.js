@@ -10,7 +10,7 @@ import {
 import * as dayPickerLocales from '@daypicker/react/locale'
 
 export const WEEK_STARTS_ON = 1
-export const DATE_FORMAT = 'MMM d, yyyy'
+export const DATE_FORMAT = 'PP'
 export const CUSTOM_RANGE_PRESET = 'custom'
 
 // LimeSurvey language codes that don't map directly to a DayPicker locale export.

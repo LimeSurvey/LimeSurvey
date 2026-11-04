@@ -6,12 +6,18 @@ import { useDateTimeValues } from 'hooks'
 
 import { DateTimeBreakdownTable } from './DateTimeBreakdownTable.js'
 import { StatisticsDetailModal } from './StatisticsDetailModal.js'
-import { sliceByRange, toDate, toDayKey } from './dateTimeUtils'
+import {
+  formatResponseCount,
+  sliceByRange,
+  sumCounts,
+  toDate,
+} from './dateTimeUtils'
 
 /**
  * How many answers entered each date and time in a range of days (`from` and
  * `to` are day keys). One day lists its times; a longer range adds the date.
- * Dates can be typed here; the calendar icon calls `onOpenPicker`.
+ * A date or its calendar icon calls `onOpenPicker`. In the range flow, the
+ * results also show their total.
  */
 export const DateTimeRangeModal = ({
   surveyId,
@@ -19,7 +25,7 @@ export const DateTimeRangeModal = ({
   filters,
   filterSet,
   range,
-  onRangeChange,
+  isRangeFlow = false,
   onOpenPicker,
   onHide,
   ...modalProps
@@ -32,6 +38,7 @@ export const DateTimeRangeModal = ({
     { enabled: !!range, filterSet, decrypt: !!question.encrypted }
   )
   const isSingleDay = range?.from === range?.to
+  const isRangeResult = isRangeFlow || !isSingleDay
   const rows = useMemo(
     () => (range ? sliceByRange(values?.days, range.from, range.to) : []),
     [range, values]
@@ -61,20 +68,27 @@ export const DateTimeRangeModal = ({
     if (!rows.length) {
       return (
         <div className="responses-statistics-empty">
-          {isSingleDay
-            ? t('There are no responses for this date.')
-            : t('There are no responses for this date range.')}
+          {isRangeResult
+            ? t('No responses for this date range.')
+            : t('There are no responses for this date.')}
         </div>
       )
     }
 
     return (
-      <DateTimeBreakdownTable
-        key={`${range.from}|${range.to}`}
-        rows={rows}
-        hasTime={question.hasTime}
-        showDate={!isSingleDay || !question.hasTime}
-      />
+      <>
+        {isRangeResult && (
+          <p className="responses-statistics-date-modal-total">
+            {formatResponseCount(sumCounts(rows))}
+          </p>
+        )}
+        <DateTimeBreakdownTable
+          key={`${range.from}|${range.to}`}
+          rows={rows}
+          hasTime={question.hasTime}
+          showDate={!isSingleDay || !question.hasTime}
+        />
+      </>
     )
   }
 
@@ -97,9 +111,6 @@ export const DateTimeRangeModal = ({
           <DateRangePickerField
             value={{ from: toDate(range.from), to: toDate(range.to) }}
             onOpenPicker={onOpenPicker}
-            onChange={({ from, to }) =>
-              onRangeChange({ from: toDayKey(from), to: toDayKey(to) })
-            }
           />
         </div>
       )}

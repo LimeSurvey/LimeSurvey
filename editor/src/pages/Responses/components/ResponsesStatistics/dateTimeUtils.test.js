@@ -58,6 +58,8 @@ describe('toDate / toDayKey', () => {
 describe('formatDay / formatTime', () => {
   test('formats a day in the given locale', () => {
     expect(formatDay('2023-01-08', 'en-US')).toBe('Jan 8, 2023')
+    expect(formatDay('2023-01-08', 'de')).toBe('8. Jan. 2023')
+    expect(formatDay('2023-01-08', 'zh-CN')).toBe('2023-01-08')
   })
 
   test('formats a time in the given locale', () => {
