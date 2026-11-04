@@ -46,9 +46,21 @@ LS.gridView.announceSummary = function (gridId) {
     // The live region lives outside the grid, which is replaced on every update
     var status = document.getElementById('ls-grid-status');
     var summary = document.querySelector('#' + gridId + ' .summary');
-    var text = summary && summary.firstChild && summary.firstChild.nodeType === Node.TEXT_NODE
-        ? summary.firstChild.textContent.trim()
-        : '';
+    // The result sentence is the first non-empty text, which may be nested (e.g. in a layout div).
+    // Text inside the page size select (its option labels) is skipped.
+    var text = '';
+    if (summary) {
+        var walker = document.createTreeWalker(summary, NodeFilter.SHOW_TEXT, {
+            acceptNode: function (node) {
+                return node.parentNode.closest('select') || !node.textContent.trim()
+                    ? NodeFilter.FILTER_REJECT
+                    : NodeFilter.FILTER_ACCEPT;
+            }
+        });
+        var textNode = walker.nextNode();
+        text = textNode ? textNode.textContent.trim() : '';
+    }
+    window.clearTimeout(LS.gridView.summaryAnnouncementTimeout);
     if (!text || document.getElementById(gridId + '-empty-message')) {
         if (status) {
             status.textContent = '';
@@ -65,7 +77,7 @@ LS.gridView.announceSummary = function (gridId) {
         document.body.appendChild(status);
     }
     status.textContent = '';
-    setTimeout(function () {
+    LS.gridView.summaryAnnouncementTimeout = window.setTimeout(function () {
         status.textContent = text;
     }, 100);
 };
