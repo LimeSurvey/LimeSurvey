@@ -58,7 +58,10 @@ $this->widget(
                 'value' => '$data->typeIcon',
                 'type' => 'raw',
                 'htmlOptions' => ['class' => 'col-lg-2 text-center'],
-                'filter' => ['core' => gT('Core theme'), 'user' => gT('User theme')],
+                'filter' => [
+                    'core' => gT('Core theme', 'unescaped'),
+                    'user' => gT('User theme', 'unescaped')
+                ],
                 'filterInputOptions' => ['prompt' => gT('All')],
             ],
 
