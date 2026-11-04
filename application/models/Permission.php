@@ -866,7 +866,7 @@ class Permission extends LSActiveRecord
                 'import' => false,
                 'export' => false,
                 'title' => gT("Users"),
-                'description' => gT("Permission to create, view, update and delete users"),
+                'description' => gT("Permission to create users, view all users, and update and delete the users you own"),
                 'img' => ' ri-shield-check-fill',
             ),
             'usergroups' => array(

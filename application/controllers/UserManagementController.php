@@ -23,7 +23,7 @@ class UserManagementController extends LSBaseController
                 'allow',
                 'actions' => array(
                     'index', 'addEditUser', 'applyEdit',
-                    'addRole', 'batchAddGroup', 'batchApplyRoles', 'batchPermissions', 'batchExpires',
+                    'addRole', 'batchAddGroup', 'batchApplyRoles', 'batchPermissions', 'batchPermissionStates', 'batchExpires',
                     'batchSendAndResetLoginData', 'deleteConfirm',  'deleteMultiple', 'exportUser', 'importUser',
                     'renderSelectedItems', 'renderUserImport', 'saveRole', 'saveThemePermissions',
                     'takeOwnership', 'userPermissions', 'userTemplatePermissions', 'viewUser'
@@ -42,7 +42,8 @@ class UserManagementController extends LSBaseController
         return [
             'postOnly + applyEdit, deleteUser, userActivateDeactivate,'
             . ' batchStatus, saveUserPermissions, saveThemePermissions, saveRole, importUsers, deleteMultiple,'
-            . ' batchSendAndResetLoginData, batchPermissions, batchAddGroup, batchApplyRoles, batchExpires, '
+            . ' batchSendAndResetLoginData, batchPermissions, batchPermissionStates, batchAddGroup, batchApplyRoles,'
+            . ' batchExpires, '
             . ' TakeOwnership'
         ];
     }
@@ -1300,7 +1301,90 @@ class UserManagementController extends LSBaseController
     }
 
     /**
-     * Stores the permission settings run via MassEdit
+     * Returns for the selected users how many of them have each global permission set on themselves,
+     * so the mass edit permissions dialog can show a permission only some of them have as mixed.
+     * Only the users whose permissions can be changed by the current user are counted.
+     *
+     * @return string JSON with 'total' (number of counted users) and 'counts' ([permission][crud] => number of users)
+     * @throws CException
+     */
+    public function actionBatchPermissionStates()
+    {
+        if (!Permission::model()->hasGlobalPermission('users', 'update')) {
+            return $this->renderPartial('/admin/super/_renderJson', [
+                'data' => [
+                    'success' => false,
+                    'message' => gT("You do not have permission to access this page."),
+                ]
+            ]);
+        }
+
+        $userIds = json_decode((string) Yii::app()->request->getPost('sItems', '[]'), true);
+        $userIds = is_array($userIds) ? array_values(array_unique(array_map('intval', $userIds))) : [];
+        $cruds = ['create', 'read', 'update', 'delete', 'import', 'export'];
+        $total = 0;
+        $counts = [];
+        foreach (array_chunk($userIds, 500) as $userIdsChunk) {
+            $assignableUserIds = $this->getPermissionAssignableUserIds($userIdsChunk);
+            if (empty($assignableUserIds)) {
+                continue;
+            }
+            $total += count($assignableUserIds);
+            $rows = Yii::app()->db->createCommand()
+                ->select(array_merge(
+                    ['permission'],
+                    array_map(function ($crud) {
+                        return "SUM({$crud}_p) AS {$crud}_p";
+                    }, $cruds)
+                ))
+                ->from('{{permissions}}')
+                ->where(
+                    ['and', 'entity = :entity', 'entity_id = 0', ['in', 'uid', $assignableUserIds]],
+                    [':entity' => 'global']
+                )
+                ->group('permission')
+                ->queryAll();
+            foreach ($rows as $row) {
+                foreach ($cruds as $crud) {
+                    $counts[$row['permission']][$crud] = ($counts[$row['permission']][$crud] ?? 0) + (int) $row[$crud . '_p'];
+                }
+            }
+        }
+
+        return $this->renderPartial('/admin/super/_renderJson', [
+            'data' => [
+                'success' => true,
+                'total' => $total,
+                'counts' => $counts,
+            ]
+        ]);
+    }
+
+    /**
+     * Returns the ids of the given users whose permissions can be changed by the current user,
+     * with the same rules as UserManager::canAssignPermissions(). The current user is never included.
+     *
+     * @param int[] $userIds
+     * @return int[]
+     */
+    private function getPermissionAssignableUserIds(array $userIds): array
+    {
+        $command = Yii::app()->db->createCommand()
+            ->select('uid')
+            ->from('{{users}}')
+            ->where(
+                ['and', ['in', 'uid', $userIds], 'uid <> :currentuid'],
+                [':currentuid' => (int) Yii::app()->user->id]
+            );
+        if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+            $command->andWhere('parent_id = :parentid', [':parentid' => (int) Yii::app()->user->id]);
+        }
+        return array_map('intval', $command->queryColumn());
+    }
+
+    /**
+     * Stores the permission settings run via MassEdit.
+     * Only the posted permissions are changed (1 gives, 0 removes the permission), all others stay as they are.
      *
      * @return string
      * @throws CException
@@ -1333,7 +1417,7 @@ class UserManagementController extends LSBaseController
                 $results[$iUserId]['error'] = gT("You are not allowed to assign permissions to this user.");
                 continue;
             }
-            $aPermissionsResults = $this->applyPermissionFromArray($iUserId, $aPermissions);
+            $aPermissionsResults = $this->applyPermissionFromArray($iUserId, $aPermissions, true);
             $oUser->modified = date('Y-m-d H:i:s');
             $results[$iUserId]['result'] = $oUser->save();
             $results[$iUserId]['title'] = $oUser->users_name;
@@ -1954,9 +2038,11 @@ class UserManagementController extends LSBaseController
      *
      * @param int $iUserId
      * @param array $aPermissionArray
+     * @param bool $onlyGiven If true, only the permissions given in $aPermissionArray are changed (a false value removes
+     *                        the permission) and all others stay as they are, else a permission not given is removed
      * @return array
      */
-    protected function applyPermissionFromArray(int $iUserId, array $aPermissionArray): array
+    protected function applyPermissionFromArray(int $iUserId, array $aPermissionArray, bool $onlyGiven = false): array
     {
         /**
          * Get current user permission to update only this permission
@@ -2004,6 +2090,9 @@ class UserManagementController extends LSBaseController
         $results = [];
         //Apply the permission array
         foreach ($aAllowedPermissions as $permissionKey => $aAllowedPermission) {
+            if ($onlyGiven && (empty($aPermissionArray[$permissionKey]) || !is_array($aPermissionArray[$permissionKey]))) {
+                continue;
+            }
             /* get the current user permission or create */
             $oPermission = Permission::model()->find(
                 "entity = :entity AND entity_id = :entity_id AND uid = :uid AND permission = :permission",
@@ -2022,6 +2111,9 @@ class UserManagementController extends LSBaseController
                 $oPermission->permission = $permissionKey;
             }
             foreach ($aAllowedPermission as $action => $havePermission) {
+                if ($onlyGiven && !isset($aPermissionArray[$permissionKey][$action])) {
+                    continue;
+                }
                 if ($havePermission) {
                     $oPermission->setAttribute(
                         $action . '_p',

@@ -45,6 +45,16 @@ class SurveyIndex extends CAction
             killSurveySession($surveyid);
             resetQuestionTimers($surveyid);
         }
+        $oSurvey = Survey::model()->findByPk($surveyid);
+        /* A session started while the survey was inactive (preview) must not be continued after activation: no response would be saved (see issue #19378) */
+        if (
+            !empty($oSurvey)
+            && isset($_SESSION['responses_' . $surveyid]['surveyactive'])
+            && $_SESSION['responses_' . $surveyid]['surveyactive'] !== $oSurvey->isActive
+        ) {
+            killSurveySession($surveyid);
+            resetQuestionTimers($surveyid);
+        }
         /* Get client token by POST or GET value */
         $clienttoken = trim((string)$param['token']);
         /* A token longer than the column limit can never match a real token: ignore it to avoid a DB truncation error on save (see issue #20479) */
@@ -55,8 +65,6 @@ class SurveyIndex extends CAction
         if (empty($clienttoken) && !empty($_SESSION['responses_' . $surveyid]['token'])) {
             $clienttoken = $_SESSION['responses_' . $surveyid]['token'];
         }
-
-        $oSurvey = Survey::model()->findByPk($surveyid);
 
         if (empty($oSurvey)) {
             $event = new PluginEvent('onSurveyDenied');
@@ -222,6 +230,10 @@ class SurveyIndex extends CAction
 
         if ($surveyid && $surveyExists) {
             SetSurveyLanguage($surveyid, $sDisplayLanguage);
+            // Posted answers (e.g. dates) were entered on a page in the previous language
+            if ($sOldLang !== "" && $sOldLang != $_SESSION['responses_' . $surveyid]['s_lang'] && in_array($sOldLang, $oSurvey->getAllLanguages())) {
+                LimeExpressionManager::setPostedLanguage($sOldLang);
+            }
         }
 
         /* Launch beforeSurveyPage before all renderExitMessage */

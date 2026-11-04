@@ -61,7 +61,8 @@ RedirectMatch 403 ^/vendor/
 RedirectMatch 403 ^/docs/
 
 # issue #19297: deny access to development/build/fingerprinting files without mod_rewrite
-RedirectMatch 403 ^/(composer\.(json|lock)|package\.json|yarn\.lock|gulpfile\.js|open-api-gen\.php|phpunit\.xml|psalm(-\w+)?\.xml|phpci\.yml|phpcs\.ruleset\.xml|publiccode\.yml|manifest\.yml|CONTRIBUTING\.md|README\.md|SECURITY\.md)$
+# also matches nested copies because the LimeSurvey base path is unknown here (vendor/ and docs/ have their own .htaccess)
+RedirectMatch 403 ^/(.*/)?(composer\.(json|lock)|package\.json|yarn\.lock|gulpfile\.js|open-api-gen\.php|phpunit\.xml|psalm(-\w+)?\.xml|phpci\.yml|phpcs\.ruleset\.xml|publiccode\.yml|manifest\.yml|CONTRIBUTING\.md|README\.md|SECURITY\.md)$
 
 # General setting to properly handle LimeSurvey paths
 # AcceptPathInfo on

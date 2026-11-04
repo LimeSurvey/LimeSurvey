@@ -656,7 +656,7 @@ class QuestionAttribute extends LSActiveRecord
      * $questionAttributes=[
      *  attributeName=>[
      *      'types' : Apply to this question type
-     *      'category' : Where to put it
+     *      'category' : Where to put it, untranslated (ex: 'Logic'); core categories given translated are untranslated
      *      'sortorder' : Qort order in this category
      *      'inputtype' : type of input
      *      'expression' : 2 to force Expression Manager when see the survey logic overview (add { } and validate, 1 : allow it : validate in survey logic overview

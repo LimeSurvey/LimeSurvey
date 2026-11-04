@@ -145,9 +145,9 @@ App()->getClientScript()->registerScript(
 <!-- Presentation panel -->
 <div id='presentation-panel'>
     <div class="row">
-        <h1>
+        <h2 class="h1">
             <?php eT('Display'); ?>
-        </h1>
+        </h2>
         <div class="col-12 col-lg-6">
             <!-- Show "No answer" -->
             <div class="mb-3">
@@ -344,7 +344,7 @@ App()->getClientScript()->registerScript(
     </div>
 
     <div class="row mt-5">
-        <h1><?php eT('Navigation') ?></h1>
+        <h2 class="h1"><?php eT('Navigation') ?></h2>
         <!-- Navigation delay -->
         <div class="col-12 col-lg-6 mb-3">
             <?php $navigationdelay = $oSurvey->navigationdelay; ?>

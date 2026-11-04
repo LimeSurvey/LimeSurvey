@@ -44,6 +44,9 @@ class PluginQuestionAttributeProvider extends QuestionAttributeProvider
         // Complete category if missing
         $questionTypeAttributes = $questionAttributeHelper->fillMissingCategory($questionTypeAttributes, gT('Plugin'));
 
+        // Plugins may give the category translated (ex: gT('Logic')), but core categories are untranslated
+        $questionTypeAttributes = $questionAttributeHelper->untranslateCoreCategories($questionTypeAttributes);
+
         return $questionTypeAttributes;
     }
 }

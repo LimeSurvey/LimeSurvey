@@ -41,10 +41,10 @@ $this->widget('application.extensions.admin.grid.CLSGridView', [
 
         [
             'header'      => gT('Type'),
-            'name'        => 'core_theme',
-            'value'       => '($data->core_theme == 1) ? gT("Core theme, "unescaped") : gT("User theme, "unescaped")',
+            'name'        => 'themeKind',
+            'value'       => '$data->getThemeKindLabel()',
             'htmlOptions' => ['class' => 'col-lg-2'],
-            "filter"      => [1 => gT("Core theme", "unescaped"), 0 => gT("User theme", "unescaped")]
+            "filter"      => QuestionTheme::getThemeKindLabels()
         ],
 
         [
