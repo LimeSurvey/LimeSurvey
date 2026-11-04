@@ -159,6 +159,11 @@ var UserManagement = function () {
                             }
                             return;
                         }
+                        // The focused submit button was replaced: Move focus to the first field of the new step
+                        $('#UserManagement-action-modal .modal-body')
+                            .find('select, input:not([type=hidden]), textarea')
+                            .first()
+                            .trigger('focus');
                         $('#exitForm').on('click.USERMANAGERMODAL', function (e) {
                             e.preventDefault();
                             $('#exitForm').off('click.USERMANAGERMODAL');
