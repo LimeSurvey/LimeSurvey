@@ -8,6 +8,12 @@ export class QuestionThemeAttributeService {
   }
 
   getAttributes = async () => {
-    return await this.restClient.get('questionThemeAttribute')
+    // Throw on failure so react-query doesn't cache the error object as data
+    return await this.restClient.get(
+      'questionThemeAttribute',
+      {},
+      undefined,
+      true
+    )
   }
 }

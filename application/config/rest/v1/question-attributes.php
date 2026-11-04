@@ -1,36 +1,19 @@
 <?php
 
-use LimeSurvey\Api\Command\V1\{
-    QuestionAttributesDetail,
-    SurveyList,
-    SurveyDetail,
-    SurveyPatch,
-    SurveyTemplate,
-    SurveyArchive,
-    SurveyLogic,
-    SurveyQuestionsFieldname
-};
+use LimeSurvey\Api\Command\V1\QuestionAttributesDetail;
 use LimeSurvey\Api\Rest\V1\SchemaFactory\{
     SchemaFactoryError,
-    SchemaFactoryQuestionAttribute,
-    SchemaFactorySurveyList,
-    SchemaFactorySurveyDetail,
-    SchemaFactorySurveyPatch,
-    SchemaFactorySurveyTemplate,
-    SchemaFactorySurveyArchive,
-    SchemaFactorySurveyLogic,
-    SchemaFactorySurveyQuestionsFieldname
+    SchemaFactoryQuestionThemeAttributes
 };
 
 $errorSchema = (new SchemaFactoryError())->make();
-$surveyPatchSchema = (new SchemaFactorySurveyPatch())->make();
-$surveyTemplateSchema = (new SchemaFactorySurveyTemplate())->make();
 
 $rest = [];
 
 $rest['v1/questionThemeAttribute'] = [
     'GET' => [
-        'description' => 'Question attributes detail',
+        'tag' => 'question-attributes',
+        'description' => 'Editor attribute definitions of all question themes',
         'commandClass' => QuestionAttributesDetail::class,
         'auth' => true,
         'responses' => [
@@ -38,7 +21,7 @@ $rest['v1/questionThemeAttribute'] = [
                 'code' => 200,
                 'description' => 'Success',
                 'content' => null,
-                'schema' => (new SchemaFactoryQuestionAttribute())->make()
+                'schema' => (new SchemaFactoryQuestionThemeAttributes())->make()
             ],
             'unauthorized' => [
                 'code' => 401,

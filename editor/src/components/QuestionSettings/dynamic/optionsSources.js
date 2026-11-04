@@ -1,6 +1,8 @@
 import { L10ns } from 'helpers'
 import { getQuestionTypeInfo } from 'components/QuestionTypes'
 
+import { getStatisticsAttributes } from '../attributes/getStatisticsAttributes'
+
 const getImageChoiceThemes = () => [
   getQuestionTypeInfo().SINGLE_CHOICE_IMAGE_SELECT.theme,
   getQuestionTypeInfo().MULTIPLE_CHOICE_IMAGE_SELECT.theme,
@@ -58,4 +60,7 @@ export const optionsSources = {
   answersOrSubquestions: getAnswerOrSubquestionOptions,
   answers: getAnswerOptions,
   subquestions: getSubquestionOptions,
+  // Default + "Don't show" + the charts the question type supports
+  statisticsGraphs: (args) =>
+    getStatisticsAttributes().SHOW_IN_STATISTICS.getOptions(args),
 }

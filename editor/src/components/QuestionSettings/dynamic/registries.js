@@ -16,7 +16,6 @@ import { DefaultValuesActions } from '../DefaultValuesActions'
 import { ImageAttributes } from '../attributes/ImageAttributes'
 import { QuestionCodeAttribute } from '../attributes/QuestionCodeAttribute'
 import { QuestionTypeAttribute } from '../attributes/QuestionTypeAttribute'
-import { statisticsGraphs } from '../../../pages/Responses/components/ResponsesStatistics/ChartsUtils'
 
 // Referenced from the react/*.xml files via <component>
 export const componentRegistry = {
@@ -50,14 +49,6 @@ export const optionsPresets = {
     { name: t('On'), value: true },
     { name: t('Soft'), value: 'S' },
     { name: t('Off'), value: false },
-  ],
-  statisticsGraph: () => [
-    { label: t("Don't show"), value: statisticsGraphs.DONT_SHOW },
-    { label: t('Bar chart'), value: statisticsGraphs.BAR_CHART },
-    { label: t('Pie chart'), value: statisticsGraphs.PIE_CHART },
-    { label: t('Radar chart'), value: statisticsGraphs.RADAR },
-    { label: t('Line chart'), value: statisticsGraphs.LINE },
-    { label: t('Polar chart'), value: statisticsGraphs.POLAR_AREA },
   ],
 }
 

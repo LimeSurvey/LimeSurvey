@@ -15,6 +15,9 @@ class ReactQuestionAttributeConfig
     /** Elements whose children are returned as a list */
     private const LIST_ELEMENTS = ['options', 'requires', 'returnValues', 'values', 'default', 'attributes', 'themes'];
 
+    /** Overlay props that hold user-facing text */
+    private const TRANSLATABLE_PROPS = ['labelText', 'helpText', 'labelTooltip', 'placeholder', 'leftInputText', 'rightInputText'];
+
     private const BOOLEAN_KEYS = ['languageBased', 'hidden', 'devOnly', 'disableWhenActive', 'action', 'virtual', 'always'];
 
     private string $directory;
@@ -108,6 +111,13 @@ class ReactQuestionAttributeConfig
                 $option['text'] = gT((string) ($option['text'] ?? ''), 'unescaped');
                 return $option;
             }, $merged['options']);
+        }
+        if (!empty($merged['props']) && is_array($merged['props'])) {
+            foreach (self::TRANSLATABLE_PROPS as $prop) {
+                if (isset($merged['props'][$prop]) && is_string($merged['props'][$prop]) && $merged['props'][$prop] !== '') {
+                    $merged['props'][$prop] = gT($merged['props'][$prop], 'unescaped');
+                }
+            }
         }
 
         return $merged;

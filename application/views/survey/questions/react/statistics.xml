@@ -7,10 +7,13 @@
             <name>statistics_graphtype</name>
             <component>Select</component>
             <caption>Show in statistics</caption>
-            <optionsPreset>statisticsGraph</optionsPreset>
+            <!-- Options depend on the question type, see optionsSources.statisticsGraphs -->
+            <optionsSource>statisticsGraphs</optionsSource>
             <props>
                 <dataTestId>display-chart</dataTestId>
-                <value>0</value>
+                <!-- Saved charts the type can't show fall back to Default, so show that -->
+                <value></value>
+                <defaultValue></defaultValue>
             </props>
         </attribute>
         <attribute>

@@ -5,6 +5,7 @@ import {
   getLogicAttributes,
   getDisplayAttributes,
   getGeneralAttributes,
+  getOtherAttributes,
   getTimerAttributes,
 } from '../attributes'
 
@@ -43,6 +44,7 @@ const displaySettings = () => {
     displayAttributes.ALWAYS_HIDE_THIS_QUESTION,
     displayAttributes.CSS_CLASSES,
     displayAttributes.SHOW_PLATFORM_INFORMATION,
+    getOtherAttributes().INSERT_PAGE_BREAK_IN_PRINTABLE_VIEW,
     displayAttributes.PLACEHOLDER_ANSWER,
   ]
 }

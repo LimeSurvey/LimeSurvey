@@ -60,28 +60,30 @@ const toConditions = (dependsOn, attributesByName) => {
     return []
   }
 
-  return dependsOn
-    .map(({ attribute, path, value, values, notEmpty }) => {
-      const target = attribute ? attributesByName[attribute] : null
+  return dependsOn.map(({ attribute, path, value, values, notEmpty }) => {
+    const target = attribute ? attributesByName[attribute] : null
 
-      // The attribute this depends on doesn't exist for this question theme.
-      if (attribute && !target) {
-        return null
-      }
-
-      return {
-        attributePath: target ? target.attributePath : path,
-        languageBased: target ? !!target.languageBased : false,
-        ...(value !== undefined ? { value } : {}),
-        ...(Array.isArray(values) ? { values } : {}),
-        ...(notEmpty ? { notEmpty: true } : {}),
-      }
-    })
-    .filter(Boolean)
+    return {
+      attributePath: target ? target.attributePath : path,
+      languageBased: target ? !!target.languageBased : false,
+      ...(value !== undefined ? { value } : {}),
+      ...(Array.isArray(values) ? { values } : {}),
+      ...(notEmpty ? { notEmpty: true } : {}),
+    }
+  })
 }
 
+// A condition on an attribute this question theme doesn't have can never be
+// satisfied (e.g. the other_* settings on a theme without "other").
+const dependsOnMissingAttribute = (dependsOn, attributesByName) =>
+  Array.isArray(dependsOn) &&
+  dependsOn.some(({ attribute }) => attribute && !attributesByName[attribute])
+
 const toDefinition = (attribute, attributesByName) => {
-  if (attribute.hidden) {
+  if (
+    attribute.hidden ||
+    dependsOnMissingAttribute(attribute.dependsOn, attributesByName)
+  ) {
     return null
   }
 

@@ -2,228 +2,148 @@
 
 namespace LimeSurvey\Api\Command\V1;
 
-use Permission;
 use LimeSurvey\Api\Command\{
     CommandInterface,
     Request\Request,
     Response\Response,
     Response\ResponseFactory
 };
-use LimeSurvey\Api\Command\Mixin\Auth\AuthPermissionTrait;
 use LimeSurvey\Models\Services\ReactQuestionAttributeConfig;
 
+/**
+ * Returns the editor attribute definitions of every installed question theme,
+ * keyed by theme name: the config.xml attributes merged with the react/*.xml overlays.
+ */
 class QuestionAttributesDetail implements CommandInterface
 {
-    use AuthPermissionTrait;
-
     protected ResponseFactory $responseFactory;
-    protected Permission $permission;
     protected ReactQuestionAttributeConfig $reactQuestionAttributeConfig;
 
     /**
      * @param ResponseFactory $responseFactory
-     * @param Permission $permission
      * @param ReactQuestionAttributeConfig $reactQuestionAttributeConfig
      */
     public function __construct(
         ResponseFactory $responseFactory,
-        Permission $permission,
         ReactQuestionAttributeConfig $reactQuestionAttributeConfig
     ) {
         $this->responseFactory = $responseFactory;
-        $this->permission = $permission;
         $this->reactQuestionAttributeConfig = $reactQuestionAttributeConfig;
     }
 
     /**
-     * Fetch question attribute metadata for the current question type/theme.
-     *
-     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      * @param Request $request
      * @return Response
      */
     public function run(Request $request): Response
     {
-        $type = \Yii::app()->request->getParam('type');
-        $theme = \Yii::app()->request->getParam('theme');
-        $qid = (int) \Yii::app()->request->getParam('qid', 0);
-
-        if (empty($type) && $qid > 0) {
-            $question = \Question::model()->findByPk($qid);
-
-            if (!empty($question)) {
-                $type = $question->type;
-                $theme = $question->question_theme_name;
-            }
-        }
-
-        if (empty($type) && empty($qid)) {
-            return $this->responseFactory->makeSuccess([
-                'success' => true,
-                'type' => null,
-                'theme' => null,
-                'attributesDetails' => $this->flattenQuestionAttributes($this->getAllXmlQuestionAttributes()),
-            ]);
-        }
-
-        if (empty($type)) {
-            return $this->responseFactory->makeErrorBadRequest([
-                'success' => false,
-                'message' => \gT('Missing question type.'),
-            ]);
-        }
-
-        $attributes = \QuestionAttribute::getQuestionAttributesSettings($type);
-        $advancedAttributes = \QuestionAttribute::getQuestionAttributesSettings($type, true);
-
-        // General attributes come with default settings (category "Attribute"), mark them like the XML path does
-        foreach (array_keys(array_diff_key($attributes, $advancedAttributes)) as $name) {
-            $attributes[$name] = ['name' => $name, 'general' => true];
-        }
-
-        if (!empty($theme) && $theme !== \Question::DEFAULT_QUESTION_THEME) {
-            $additionalAttributes = \QuestionTheme::getAdditionalAttrFromExtendedTheme($theme, $type);
-            $attributes = array_merge($attributes, $additionalAttributes);
-        }
-
-        $attributes = $this->reactQuestionAttributeConfig->apply(
-            $attributes,
-            (string) ($theme ?: \Question::DEFAULT_QUESTION_THEME)
-        );
-
         return $this->responseFactory->makeSuccess([
             'success' => true,
-            'type' => $type,
-            'theme' => $theme,
-            'attributes' => $attributes,
+            'attributesDetails' => $this->getThemeAttributes(),
         ]);
     }
 
     /**
-     * @return array<string, array<string, mixed>>
+     * @return array<string, array{attributes: array<string, array<string, mixed>>}>
      */
-    protected function getAllXmlQuestionAttributes(): array
+    protected function getThemeAttributes(): array
     {
-        $result = [];
-        $coreAttributesByType = [];
-        $questionThemeDirectories = \QuestionTheme::getQuestionThemeDirectories();
+        /** @var \QuestionTheme[] $questionThemes */
+        $questionThemes = \QuestionTheme::model()->findAll();
 
-        foreach ($questionThemeDirectories as $themeType => $baseDirectory) {
-            if (!is_dir($baseDirectory)) {
+        $baseAttributesByType = [];
+        $themes = [];
+        foreach ($questionThemes as $questionTheme) {
+            $attributes = $this->readConfigAttributes($questionTheme);
+            if ($attributes === null) {
                 continue;
             }
-
-            $iterator = new \RecursiveIteratorIterator(
-                new \RecursiveDirectoryIterator($baseDirectory, \FilesystemIterator::SKIP_DOTS)
-            );
-
-            foreach ($iterator as $file) {
-                if (!$file->isFile() || strtolower($file->getFilename()) !== 'config.xml') {
-                    continue;
-                }
-
-                try {
-                    $config = \ExtensionConfig::loadFromFile($file->getPathname());
-                } catch (\Exception $e) {
-                    continue;
-                }
-
-                $metadata = $config->getNodeAsArray('metadata');
-                $name = $metadata['name'] ?? basename(dirname($file->getPathname()));
-                $questionType = $metadata['questionType'] ?? '';
-
-                if (empty($questionType) || empty($name)) {
-                    continue;
-                }
-
-                $attributeDefinitions = [];
-
-                foreach (['generalattributes', 'attributes'] as $nodeName) {
-                    $nodeData = $config->getNodeAsArray($nodeName);
-                    if (empty($nodeData['attribute'])) {
-                        continue;
-                    }
-
-                    $attributes = $nodeData['attribute'];
-                    if (!array_key_exists(0, $attributes)) {
-                        $attributes = [$attributes];
-                    }
-
-                    foreach ($attributes as $attribute) {
-                        // <generalattributes> only lists attribute names
-                        if (is_string($attribute)) {
-                            if ($attribute === 'other' && empty($metadata['other'])) {
-                                continue;
-                            }
-                            $attribute = ['name' => $attribute, 'general' => true];
-                        }
-                        if (empty($attribute['name'])) {
-                            continue;
-                        }
-                        $attributeDefinitions[$attribute['name']] = $attribute;
-                    }
-                }
-
-                if (empty($attributeDefinitions)) {
-                    continue;
-                }
-
-                if ($themeType === \QuestionTheme::THEME_TYPE_CORE && !isset($coreAttributesByType[$questionType])) {
-                    $coreAttributesByType[$questionType] = $attributeDefinitions;
-                }
-
-                $result[$questionType][$name] = [
-                    'xml_path' => str_replace(\App()->getConfig('rootdir') . DIRECTORY_SEPARATOR, '', $file->getPathname()),
-                    'core' => $themeType === \QuestionTheme::THEME_TYPE_CORE,
-                    'attributes' => $attributeDefinitions,
-                ];
+            if ((string) $questionTheme->extends === '') {
+                $baseAttributesByType[$questionTheme->question_type] = $attributes;
             }
+            $themes[] = [$questionTheme, $attributes];
         }
 
-        // Extended themes only declare their additional attributes
-        foreach ($result as $questionType => $themes) {
-            foreach ($themes as $name => $definition) {
-                $baseAttributes = $definition['core'] ? [] : ($coreAttributesByType[$questionType] ?? []);
-                $result[$questionType][$name]['attributes'] = $this->reactQuestionAttributeConfig->apply(
-                    array_merge($baseAttributes, $definition['attributes']),
-                    (string) $name
-                );
-                unset($result[$questionType][$name]['core']);
+        $result = [];
+        foreach ($themes as [$questionTheme, $attributes]) {
+            // Extended themes only declare their additional attributes
+            if ((string) $questionTheme->extends !== '') {
+                $attributes = array_merge($baseAttributesByType[$questionTheme->question_type] ?? [], $attributes);
             }
+            if (empty($attributes)) {
+                continue;
+            }
+            $result[$questionTheme->name] = [
+                'attributes' => $this->reactQuestionAttributeConfig->apply($attributes, (string) $questionTheme->name),
+            ];
         }
 
         return $result;
     }
 
     /**
-     * Flatten the question-type keyed result to a single-level attributes map.
+     * Reads the <generalattributes> and <attributes> of a question theme config.xml.
      *
-     * Example:
-     * [
-     *   '1' => ['arrays/dualscale' => [...], '5pointchoice' => [...]],
-     *   '5' => ['multiplenumeric' => [...]]
-     * ]
-     *
-     * becomes:
-     * [
-     *   'arrays/dualscale' => [...],
-     *   '5pointchoice' => [...],
-     *   'multiplenumeric' => [...]
-     * ]
-     *
-     * @param array<string, array<string, array<string, mixed>>> $questionAttributes
-     * @return array<string, array<string, mixed>>
+     * @param \QuestionTheme $questionTheme
+     * @return array<string, array<string, mixed>>|null Null when the config.xml can't be read
      */
-    protected function flattenQuestionAttributes(array $questionAttributes): array
+    protected function readConfigAttributes(\QuestionTheme $questionTheme): ?array
     {
-        $flattened = [];
+        $xmlPath = (string) $questionTheme->getXmlPath();
+        if ($xmlPath === '') {
+            return null;
+        }
+        if (!preg_match('#^(/|[A-Za-z]:[\\\\/])#', $xmlPath)) {
+            $xmlPath = \App()->getConfig('rootdir') . DIRECTORY_SEPARATOR . $xmlPath;
+        }
 
-        foreach ($questionAttributes as $questionTypeAttributes) {
-            foreach ($questionTypeAttributes as $themeName => $definition) {
-                $flattened[$themeName] = $definition;
+        // A broken theme must not break the endpoint for all other themes:
+        // collect libxml errors instead of raising warnings (turned into errors by Yii)
+        $useInternalErrors = libxml_use_internal_errors(true);
+        try {
+            $config = \ExtensionConfig::loadFromFileCached($xmlPath . DIRECTORY_SEPARATOR . 'config.xml');
+            if ($config === null) {
+                return null;
+            }
+            $metadata = $config->getNodeAsArray('metadata');
+            $nodes = [
+                $config->getNodeAsArray('generalattributes'),
+                $config->getNodeAsArray('attributes'),
+            ];
+        } catch (\Throwable $e) {
+            return null;
+        } finally {
+            libxml_clear_errors();
+            libxml_use_internal_errors($useInternalErrors);
+        }
+
+        $attributeDefinitions = [];
+        foreach ($nodes as $nodeData) {
+            if (empty($nodeData['attribute'])) {
+                continue;
+            }
+
+            $attributes = $nodeData['attribute'];
+            // A single <attribute> is decoded as a string (generalattributes) or an associative array
+            if (!is_array($attributes) || !array_key_exists(0, $attributes)) {
+                $attributes = [$attributes];
+            }
+
+            foreach ($attributes as $attribute) {
+                // <generalattributes> only lists attribute names
+                if (is_string($attribute)) {
+                    if ($attribute === 'other' && empty($metadata['other'])) {
+                        continue;
+                    }
+                    $attribute = ['name' => $attribute, 'general' => true];
+                }
+                if (!is_array($attribute) || empty($attribute['name']) || !is_string($attribute['name'])) {
+                    continue;
+                }
+                $attributeDefinitions[$attribute['name']] = $attribute;
             }
         }
 
-        return $flattened;
+        return $attributeDefinitions;
     }
 }

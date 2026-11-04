@@ -47,7 +47,6 @@ const backendAttributes = {
     dependsOn: [
       { attribute: 'other' },
       { attribute: 'other_position', value: 'specific' },
-      { attribute: 'not_in_this_theme', value: '1' },
     ],
     onDependsToggle: { onFalse: '' },
     attributePath: 'attributes.other_position_code',
@@ -125,7 +124,19 @@ describe('buildSettingsFromAttributes', () => {
     ).toEqual(['hide_tip', 'other_position', 'other_position_code'])
   })
 
-  test('resolves multiple conditions and drops conditions on missing attributes', () => {
+  test('skips settings that depend on an attribute the theme does not have', () => {
+    const result = buildSettingsFromAttributes({
+      hide_tip: backendAttributes.hide_tip,
+      other_position: backendAttributes.other_position,
+      // depends on "other", which this theme doesn't have
+      other_position_code: backendAttributes.other_position_code,
+    })
+    expect(
+      findSection(result, 'Display').attributes.map((a) => a.name)
+    ).toEqual(['hide_tip', 'other_position'])
+  })
+
+  test('resolves multiple conditions', () => {
     const otherPositionCode = findSection(settings, 'Display').attributes.find(
       (a) => a.name === 'other_position_code'
     )
