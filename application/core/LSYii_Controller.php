@@ -99,32 +99,65 @@ abstract class LSYii_Controller extends CController
 
     /**
      * Filter for the controllers of participant pages that write data (registration, opt-in, opt-out):
-     * while the maintenance mode keeps participants out ("hard" and "hard-cli"), every action ends with
-     * the theme's maintenance page instead of running. A controller enables it by listing
-     * 'participantsLocked' in its filters(), so new actions are covered without further code.
-     * The survey comes from the "surveyid" or "sid" parameter, the language from "langcode" or "lang"
-     * (the survey's base language if it is not one of the survey's languages). Without an existing
-     * survey the action runs and answers with its own error, as it cannot write anything then.
+     * while the maintenance mode keeps participants out ("hard" and "hard-cli"), no action runs, every
+     * request ends with a maintenance page. A controller enables it by listing 'participantsLocked' in
+     * its filters(), so new actions are covered without further code.
+     * The survey ID ("surveyid", else "sid") and the language ("langcode", else "lang") only choose how
+     * the page looks: the survey's theme and language for an existing survey, the site's maintenance
+     * page otherwise. The actions read their parameters in different ways, so the filter never relies
+     * on a missing or malformed survey ID to keep an action from writing data.
      *
      * @param CFilterChain $filterChain
      * @return void
      */
     public function filterParticipantsLocked($filterChain)
     {
-        if (SettingGlobal::areParticipantsLocked()) {
-            $request = Yii::app()->request;
-            $surveyId = $request->getParam('surveyid', $request->getParam('sid'));
-            $survey = filter_var($surveyId, FILTER_VALIDATE_INT) ? Survey::model()->findByPk((int) $surveyId) : null;
-            if ($survey) {
-                $language = $request->getParam('langcode', $request->getParam('lang'));
-                if (!in_array($language, $survey->getAllLanguages(), true)) {
-                    $language = $survey->language;
-                }
-                Yii::app()->setLanguage($language);
-                $this->endRequestIfParticipantsLocked($survey);
-            }
+        if (!SettingGlobal::areParticipantsLocked()) {
+            $filterChain->run();
+            return;
         }
-        $filterChain->run();
+        $request = Yii::app()->request;
+        $surveyId = (int) ($request->getParam('surveyid') ?: $request->getParam('sid'));
+        $survey = $surveyId > 0 ? Survey::model()->findByPk($surveyId) : null;
+        $language = (string) $request->getParam('langcode', $request->getParam('lang', ''));
+        if ($survey) {
+            if (!in_array($language, $survey->getAllLanguages(), true)) {
+                $language = $survey->language;
+            }
+            Yii::app()->setLanguage($language);
+            $this->endRequestIfParticipantsLocked($survey);
+        }
+        $this->endRequestWithSiteMaintenancePage($language);
+    }
+
+    /**
+     * Renders the maintenance page of the site in the default theme, as the public survey list does
+     * during maintenance, and ends the request.
+     *
+     * @param string $language The requested language, the default language is used if the site does not offer it
+     * @return void
+     */
+    protected function endRequestWithSiteMaintenancePage($language)
+    {
+        if (!isset(getLanguageDataRestricted(false, 'short')[$language])) {
+            $language = Yii::app()->getConfig('defaultlang');
+        }
+        Yii::app()->setLanguage($language);
+        LimeExpressionManager::SetSurveyId(0);
+        $template = Template::model()->getInstance(Yii::app()->getConfig('defaulttheme'));
+        $siteName = Yii::app()->getConfig('sitename');
+        $surveyInfo = [
+            'oTemplate' => $template,
+            'sSiteName' => $siteName,
+            'sSiteAdminName' => Yii::app()->getConfig('siteadminname'),
+            'sSiteAdminEmail' => Yii::app()->getConfig('siteadminemail'),
+            'bShowClearAll' => false,
+            'surveyls_title' => $siteName,
+            'alanguageChanger' => ['show' => false],
+        ];
+        // Renders the page and ends the request
+        Yii::app()->twigRenderer->renderTemplateFromFile('layout_maintenance.twig', ['aSurveyInfo' => $surveyInfo], false);
+        Yii::app()->end();
     }
 
     /**

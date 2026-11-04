@@ -223,8 +223,8 @@ class SettingGlobalMaintenanceModeTest extends TestBaseClass
 
     /**
      * The participant pages that write data enable the lock filter, which lets the action run
-     * while participants are not locked, and when the survey does not exist (the action then
-     * answers with its own error).
+     * while participants are not locked. While they are locked it ends every request, which
+     * cannot be tested here.
      *
      * @return void
      */
@@ -254,14 +254,9 @@ class SettingGlobalMaintenanceModeTest extends TestBaseClass
         $previousGet = $_GET;
         try {
             $_GET = ['surveyid' => '999999999'];
-            \Yii::app()->setConfig('maintenancemode', 'off');
+            \Yii::app()->setConfig('maintenancemode', 'soft');
             $controller->filterParticipantsLocked($chain);
             $this->assertTrue($chain->ran, 'Not locked: the action runs');
-
-            $chain->ran = false;
-            \Yii::app()->setConfig('maintenancemode', 'hard');
-            $controller->filterParticipantsLocked($chain);
-            $this->assertTrue($chain->ran, 'Locked, but no such survey: the action runs and answers with its own error');
         } finally {
             $_GET = $previousGet;
         }
