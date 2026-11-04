@@ -133,19 +133,21 @@ export const QuestionGroupHeader = ({
             height={20}
           />
         </div>
-        <Dropdown
-          className="meatball-dropdown"
-          testId="question-group-meatball-menu"
-          menuItems={menuItems}
-          align="start"
-          toggleSettings={{
-            iconClassName: 'ri-more-fill',
-            variant: 'light',
-            id: 'question-group-actions-menu',
-            testId: 'meatball-menu-button',
-            title: '',
-          }}
-        />
+        {menuItems.length > 0 && (
+          <Dropdown
+            className="meatball-dropdown"
+            testId="question-group-meatball-menu"
+            menuItems={menuItems}
+            align="start"
+            toggleSettings={{
+              iconClassName: 'ri-more-fill',
+              variant: 'light',
+              id: 'question-group-actions-menu',
+              testId: 'meatball-menu-button',
+              title: '',
+            }}
+          />
+        )}
       </div>
     </>
   )

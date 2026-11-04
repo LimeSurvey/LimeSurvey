@@ -6,11 +6,13 @@ export const getQuestionGroupMenuItems = ({
   isSurveyActive,
   hasSurveyUpdatePermission,
 }) => {
+  if (!hasSurveyUpdatePermission) {
+    return []
+  }
+
   const disabled = {
-    state: isSurveyActive || !hasSurveyUpdatePermission,
-    tooltip: isSurveyActive
-      ? getTooltipMessages().ACTIVE_DISABLED
-      : getTooltipMessages().NO_PERMISSION,
+    state: isSurveyActive,
+    tooltip: getTooltipMessages().ACTIVE_DISABLED,
   }
 
   return [

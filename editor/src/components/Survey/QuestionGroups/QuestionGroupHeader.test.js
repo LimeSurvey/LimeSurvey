@@ -2,7 +2,7 @@
 import 'tests/mocks'
 
 import { act } from 'react'
-import { screen, fireEvent } from '@testing-library/react'
+import { screen, fireEvent, waitFor } from '@testing-library/react'
 
 import { renderWithProviders } from 'tests/testUtils'
 import { getSiteUrl, STATES } from 'helpers'
@@ -67,7 +67,7 @@ describe('QuestionGroupHeader', () => {
     }
   )
 
-  test('Duplicate/Delete are disabled when the user lacks survey update permission', async () => {
+  test('Duplicate/Delete are hidden when the user lacks survey update permission', async () => {
     await setSurveyActive(false)
     await act(async () => {
       queryClient.setQueryData(
@@ -75,12 +75,14 @@ describe('QuestionGroupHeader', () => {
         false
       )
     })
-    fireEvent.click(await screen.findByTestId('meatball-menu-button'))
 
-    expect(await screen.findByTestId('duplicate-button')).toHaveClass(
-      'disabled'
+    await waitFor(() =>
+      expect(
+        screen.queryByTestId('meatball-menu-button')
+      ).not.toBeInTheDocument()
     )
-    expect(await screen.findByTestId('delete-button')).toHaveClass('disabled')
+    expect(screen.queryByTestId('duplicate-button')).not.toBeInTheDocument()
+    expect(screen.queryByTestId('delete-button')).not.toBeInTheDocument()
   })
 
   test('Opens the group preview URL in a new tab when the preview icon is clicked', async () => {
