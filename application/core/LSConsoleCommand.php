@@ -58,6 +58,24 @@ abstract class LSConsoleCommand extends CConsoleCommand
         // default installation's table prefix
         $connection->getSchema()->refresh();
         SettingGlobal::model()->refreshMetaData();
+        // From here on the application config describes the installation of the custom config, the
+        // way the console application loads the default installation at startup: the values of its
+        // config.php, overridden by its settings_global rows (maintenance mode, DBVersion, ...)
+        $userConfig = is_array($configuration['config'] ?? null) ? $configuration['config'] : [];
+        if (isset($userConfig['emailsmtppassword'])) {
+            // Stored encrypted in the database, kept in the same form in the config
+            $userConfig['emailsmtppassword'] = LSActiveRecord::encryptSingle($userConfig['emailsmtppassword']);
+        }
+        foreach ($userConfig as $configKey => $configValue) {
+            Yii::app()->setConfig($configKey, $configValue);
+        }
+        $settingRows = $connection->createCommand()
+            ->select('stg_name, stg_value')
+            ->from('{{settings_global}}')
+            ->queryAll();
+        foreach ($settingRows as $settingRow) {
+            Yii::app()->setConfig($settingRow['stg_name'], $settingRow['stg_value']);
+        }
         echo "Using connection string " . $connection->connectionString . "\n";
     }
 }
