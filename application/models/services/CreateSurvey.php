@@ -246,6 +246,7 @@ class CreateSurvey
         $this->survey->tokenanswerspersistence = self::STRING_SHORT_VALUE_INHERIT;
         $this->survey->alloweditaftercompletion = self::STRING_SHORT_VALUE_INHERIT;
         $this->survey->usecaptcha = 'E'; // see Survey::saveTranscribeCaptchaOptions() special inherit char ...
+        $this->survey->captchatype = \LimeSurvey\Models\Services\CaptchaService::INHERIT;
         $this->survey->publicstatistics = self::STRING_SHORT_VALUE_INHERIT;
         $this->survey->publicgraphs = self::STRING_SHORT_VALUE_INHERIT;
         $this->survey->assessments = self::STRING_SHORT_VALUE_INHERIT;

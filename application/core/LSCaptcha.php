@@ -11,10 +11,23 @@
 
 class LSCaptcha extends CCaptcha
 {
+    /**
+     * @var string|null Markup to return instead of the image, set by the deprecated twig function renderCaptcha()
+     *                  so older survey themes show the CAPTCHA of the plugin selected for the survey
+     */
+    public $prerenderedHtml = null;
+
+    /**
+     * Get the CAPTCHA markup: the prerendered plugin markup when set, otherwise the classic image.
+     *
+     * @return string
+     */
     public function renderOut()
     {
-        $html = $this->renderImage();
-        return $html;
+        if ($this->prerenderedHtml !== null) {
+            return $this->prerenderedHtml;
+        }
+        return $this->renderImage();
     }
 
     /**

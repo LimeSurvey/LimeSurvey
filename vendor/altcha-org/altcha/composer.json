@@ -1,0 +1,37 @@
+{
+    "name": "altcha-org/altcha",
+    "description": "A lightweight PHP library for creating and verifying ALTCHA challenges.",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "AltchaOrg\\Altcha\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "AltchaOrg\\Altcha\\Tests\\": "tests/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Daniel Regeci",
+            "email": "536331+ovx@users.noreply.github.com"
+        }
+    ],
+    "require": {
+        "php": ">=8.1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.5 || ^11.5",
+        "phpstan/phpstan": "^2.1",
+        "phpstan/phpstan-phpunit": "^2.0",
+        "phpstan/extension-installer": "^1.4",
+        "friendsofphp/php-cs-fixer": "^3.72"
+    },
+    "config": {
+        "allow-plugins": {
+            "phpstan/extension-installer": true
+        }
+    }
+}

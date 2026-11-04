@@ -36,6 +36,7 @@
  * @property string $tokenanswerspersistence
  * @property string $assessments
  * @property string $usecaptcha
+ * @property string $captchatype CAPTCHA type id offered by a CAPTCHA plugin (e.g. 'altcha'), or 'inherit'
  * @property string $bounce_email
  * @property string $attributedescriptions
  * @property string $emailresponseto
@@ -71,7 +72,7 @@ class SurveysGroupsettings extends LSActiveRecord
                                                 'ipaddr','ipanonymize', 'refurl', 'publicstatistics', 'publicgraphs', 'listpublic', 'htmlemail', 'sendconfirmation', 'tokenanswerspersistence',
                                                 'assessments', 'showxquestions', 'showgroupinfo', 'shownoanswer', 'preselectnoanswer', 'showqnumcode', 'showwelcome', 'showprogress',
                                                 'alloweditaftercompletion', 'savequotaexit', 'showregisterpolicy', 'showtokenpolicy');
-    protected $optionAttributesText     = array('admin', 'adminemail', 'template', 'bounce_email', 'emailresponseto', 'emailnotificationto');
+    protected $optionAttributesText     = array('admin', 'adminemail', 'template', 'bounce_email', 'emailresponseto', 'emailnotificationto', 'captchatype');
 
     public $showInherited = 1;
     public $active;
@@ -107,6 +108,8 @@ class SurveysGroupsettings extends LSActiveRecord
             array('anonymized, format, savetimings, datestamp, usecookie, allowregister, allowsave, autoredirect, allowprev, printanswers, ipaddr, refurl, publicstatistics, publicgraphs, listpublic, htmlemail, sendconfirmation, tokenanswerspersistence, assessments, usecaptcha, showxquestions, showgroupinfo, shownoanswer, preselectnoanswer, showqnumcode, showwelcome, showprogress, alloweditaftercompletion, ipanonymize, savequotaexit', 'length', 'max' => 1),
             array('adminemail, bounce_email', 'length', 'max' => 255),
             array('template', 'length', 'max' => 100),
+            array('captchatype', 'length', 'max' => 50),
+            array('captchatype', 'match', 'pattern' => '/^[A-Za-z0-9_-]+$/', 'allowEmpty' => true),
             array('expires, startdate, datecreated, attributedescriptions, emailresponseto, emailnotificationto', 'safe'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
@@ -179,6 +182,7 @@ class SurveysGroupsettings extends LSActiveRecord
             'tokenanswerspersistence' => 'Tokenanswerspersistence',
             'assessments' => 'Assessments',
             'usecaptcha' => 'Usecaptcha',
+            'captchatype' => 'Captchatype',
             'bounce_email' => 'Bounce Email',
             'attributedescriptions' => 'Attributedescriptions',
             'emailresponseto' => 'Emailresponseto',
@@ -506,6 +510,7 @@ class SurveysGroupsettings extends LSActiveRecord
         // set attribute values to default values, used only when creating new top level SurveysGroupsettings instance
         $this->owner_id = 1;
         $this->usecaptcha = 'N';
+        $this->captchatype = (new \LimeSurvey\Models\Services\CaptchaService())->getDefaultProvider() ?? \LimeSurvey\Models\Services\CaptchaService::NONE;
         $this->format = 'G';
         $this->admin = substr((string) App()->getConfig('siteadminname'), 0, 50);
         $this->adminemail = substr((string) App()->getConfig('siteadminemail'), 0, 254);

@@ -51,4 +51,5 @@ return array(
     'Complex\\' => array($vendorDir . '/markbaker/complex/classes/src'),
     'ArPHP\\I18N\\' => array($vendorDir . '/khaled.alshamaa/ar-php/src'),
     'Anper\\Iuliia\\' => array($vendorDir . '/anper/iuliia/src'),
+    'AltchaOrg\\Altcha\\' => array($vendorDir . '/altcha-org/altcha/src'),
 );

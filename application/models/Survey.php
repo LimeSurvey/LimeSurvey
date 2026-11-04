@@ -55,6 +55,7 @@ use LimeSurvey\PluginManager\PluginEvent;
  * @property string $tokenanswerspersistence Enable token-based response persistence: (Y/N)
  * @property string $assessments Enable assessment mode: (Y/N)
  * @property string $usecaptcha
+ * @property string $captchatype CAPTCHA type id offered by a CAPTCHA plugin (e.g. 'altcha'), or 'inherit'
  * @property string $usetokens
  * @property string $bounce_email Bounce email address
  * @property string $attributedescriptions
@@ -601,6 +602,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
             array('alloweditaftercompletion', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => true),
             array('bounceprocessing', 'in', 'range' => array('L', 'N', 'G'), 'allowEmpty' => true),
             array('usecaptcha', 'in', 'range' => array('A', 'B', 'C', 'D', 'X', 'R', 'S', 'N', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'O', 'P', 'T', 'U', '1', '2', '3', '4', '5', '6'), 'allowEmpty' => true),
+            array('captchatype', 'length', 'max' => 50),
+            array('captchatype', 'match', 'pattern' => '/^[A-Za-z0-9_-]+$/', 'allowEmpty' => true),
             array('showgroupinfo', 'in', 'range' => array('B', 'N', 'D', 'X', 'I'), 'allowEmpty' => true),
             array('showqnumcode', 'in', 'range' => array('B', 'N', 'C', 'X', 'I'), 'allowEmpty' => true),
             array('format', 'in', 'range' => array('G', 'S', 'A', 'I'), 'allowEmpty' => true),
@@ -2499,17 +2502,13 @@ class Survey extends LSActiveRecord implements PermissionInterface
     /**
      * Determine whether a runtime screen should show or validate a CAPTCHA for this survey.
      *
-     * If the GD extension is unavailable, CAPTCHA is treated as disabled.
+     * Which CAPTCHA is shown is decided by the CAPTCHA plugins, see LimeSurvey\Models\Services\CaptchaService.
      *
      * @param string $screen Runtime screen identifier (one of 'registrationscreen', 'surveyaccessscreen', 'saveandloadscreen')
      * @return bool True when CAPTCHA is enabled for the requested screen.
      */
     public function isCaptchaEnabled($screen)
     {
-        if (!extension_loaded('gd')) {
-            return false;
-        }
-
         if ($this->oOptions === null || !property_exists($this->oOptions, 'usecaptcha')) {
             $this->setOptions($this->gsid);
         }
@@ -2518,14 +2517,19 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
         switch ($screen) {
             case 'registrationscreen':
-                return in_array($useCaptcha, SurveyUseCaptcha::REGISTRATION_YES, true);
+                $enabledForScreen = in_array($useCaptcha, SurveyUseCaptcha::REGISTRATION_YES, true);
+                break;
             case 'surveyaccessscreen':
-                return in_array($useCaptcha, SurveyUseCaptcha::SURVEY_ACCESS_YES, true);
+                $enabledForScreen = in_array($useCaptcha, SurveyUseCaptcha::SURVEY_ACCESS_YES, true);
+                break;
             case 'saveandloadscreen':
-                return in_array($useCaptcha, SurveyUseCaptcha::SAVE_LOAD_YES, true);
+                $enabledForScreen = in_array($useCaptcha, SurveyUseCaptcha::SAVE_LOAD_YES, true);
+                break;
             default:
-                return true;
+                $enabledForScreen = true;
         }
+        // No CAPTCHA when the survey's CAPTCHA type is "none" or no plugin offers a type
+        return $enabledForScreen && (new \LimeSurvey\Models\Services\CaptchaService())->isCaptchaActive($this);
     }
 
     public function setOptionsFromDatabase()

@@ -56,6 +56,7 @@
  * @property string $tokenanswerspersistence Enable token-based response persistence: (Y/N)
  * @property string $assessments Enable assessment mode: (Y/N)
  * @property string $usecaptcha
+ * @property string $captchatype CAPTCHA type id offered by a CAPTCHA plugin (e.g. 'altcha'), or 'inherit'
  * @property string $usetokens
  * @property string $bounce_email Bounce email address
  * @property string $attributedescriptions

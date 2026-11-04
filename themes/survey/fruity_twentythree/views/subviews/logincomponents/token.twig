@@ -83,22 +83,18 @@
 
             {# CAPTACHA INSIDE TOKEN FORM #}
             {% if ( aSurveyInfo.aForm.bCaptchaEnabled == true ) %}
+                {% set captcha = aSurveyInfo.aForm.captcha %}
                 <div class="{{ aSurveyInfo.class.maincolformdivb }}" {{ aSurveyInfo.attr.maincolformdivb }}>
-                    <label class='{{ aSurveyInfo.class.maincolformdivblabel }} control-label' {{ aSurveyInfo.attr.maincolformdivblabel }} >
-                        {{ gT("Please solve the following equation:") }}<small class="{{ aSurveyInfo.class.maincolformdivblabelsmall }} superset asterisk ri-asterisk" {{ aSurveyInfo.attr.maincolformdivblabelsmall }} >&nbsp;</small>
+                    {% if captcha.label %}
+                    <label class='{{ aSurveyInfo.class.maincolformdivblabel }} control-label' {% if captcha.inputId %}for="{{ captcha.inputId }}"{% endif %}>
+                        {{ captcha.label }}<small class="{{ aSurveyInfo.class.maincolformdivblabelsmall }} superset asterisk ri-asterisk" {{ aSurveyInfo.attr.maincolformdivblabelsmall }} >&nbsp;</small>
                         <span class="{{ aSurveyInfo.class.maincolformdivblabelspan }} visually-hidden asterisk" {{ aSurveyInfo.attr.maincolformdivblabelspan }}>
                         ( {{ gT("Mandatory") }} )
                         </span>
                     </label>
-                    <div class="row">
-                        <div class="captcha-container col-xl-3 col-lg-12 align-items-center">
-                            {{ renderCaptcha().renderOut() }}
-                            <button type="button" class="btn btn-outline-secondary" id="reloadCaptcha" title="{{ gT("Reload captcha") }}" aria-label="{{ gT("Reload captcha") }}" data-toggle="captcha"><i class="ri-refresh-line" aria-hidden="true"></i></button>
-                        </div>
-                        <div class="{{ aSurveyInfo.class.maincolformdivbdiv }} col-xl-9 col-lg-12 captcha-input align-self-center" {{ aSurveyInfo.attr.maincolformdivbdiv }}>
-                            <input class='form-control ls-important-field {{ aSurveyInfo.class.maincolformdivbdivdivinput }}' {{ aSurveyInfo.attr.maincolformdivbdivdivinput }} placeholder="{{ gT("Enter result here - numbers only") }}">
-                        </div>
-                    </div>
+                    {% endif %}
+                    {# The markup (image, widget, input) comes from the CAPTCHA plugin selected for the survey #}
+                    {{ captcha.html }}
                 </div>
             {% endif %}
 

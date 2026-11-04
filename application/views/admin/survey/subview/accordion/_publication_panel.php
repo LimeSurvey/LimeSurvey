@@ -159,10 +159,58 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
                     ]); ?>
                 </div>
             </div>
-            <?php if (!extension_loaded('gd')) { ?>
+            <!-- CAPTCHA type -->
+            <?php
+            $captchaService = new \LimeSurvey\Models\Services\CaptchaService();
+            $captchaPluginTypes = $captchaService->getProviders();
+            $captchaTypes = $captchaPluginTypes + [
+                \LimeSurvey\Models\Services\CaptchaService::NONE => [
+                    'label' => gT("None"),
+                    'description' => gT("No CAPTCHA is shown, even where it is switched on above."),
+                ],
+            ];
+            $currentCaptchaType = !empty($oSurvey->captchatype) ? $oSurvey->captchatype : \LimeSurvey\Models\Services\CaptchaService::INHERIT;
+            $inheritedCaptchaType = (string) ($oSurveyOptions->captchatype ?? '');
+            $captchaTypeOptions = [];
+            $captchaTypeDescriptions = [];
+            if ($bShowInherited) {
+                $inheritedCaptchaLabel = $captchaTypes[$inheritedCaptchaType]['label'] ?? $inheritedCaptchaType;
+                $captchaTypeOptions[\LimeSurvey\Models\Services\CaptchaService::INHERIT] = gT('Inherit') . ' [' . $inheritedCaptchaLabel . ']';
+                $captchaTypeDescriptions[\LimeSurvey\Models\Services\CaptchaService::INHERIT] = $captchaTypes[$inheritedCaptchaType]['description'] ?? '';
+            }
+            foreach ($captchaTypes as $captchaTypeId => $captchaType) {
+                $captchaTypeOptions[$captchaTypeId] = $captchaType['label'];
+                $captchaTypeDescriptions[$captchaTypeId] = $captchaType['description'];
+            }
+            if (!isset($captchaTypeOptions[$currentCaptchaType])) {
+                // Keep a type that no active plugin offers selectable, so saving the form does not silently change it
+                $captchaTypeOptions[$currentCaptchaType] = sprintf(gT("%s (not available)"), $currentCaptchaType);
+                $captchaTypeDescriptions[$currentCaptchaType] = gT("No active plugin offers this CAPTCHA type, another available type is used instead - or no CAPTCHA, if there is none.");
+            }
+            App()->getClientScript()->registerScript('captchatype-description', "
+                document.addEventListener('change', function (event) {
+                    if (!event.target || event.target.id !== 'captchatype') {
+                        return;
+                    }
+                    var descriptions = JSON.parse(event.target.getAttribute('data-descriptions') || '{}');
+                    document.getElementById('captchatype-description').textContent = descriptions[event.target.value] || '';
+                });
+            ", LSYii_ClientScript::POS_END);
+            ?>
+            <div class="mb-3">
+                <label class="form-label" for="captchatype"><?php eT("CAPTCHA type:"); ?></label>
+                <?php echo CHtml::dropDownList('captchatype', $currentCaptchaType, $captchaTypeOptions, [
+                    'id' => 'captchatype',
+                    'class' => 'form-select',
+                    'aria-describedby' => 'captchatype-description',
+                    'data-descriptions' => json_encode($captchaTypeDescriptions),
+                ]); ?>
+                <div class="help-block mt-1" id="captchatype-description"><?php echo CHtml::encode($captchaTypeDescriptions[$currentCaptchaType] ?? ''); ?></div>
+            </div>
+            <?php if (empty($captchaPluginTypes)) { ?>
                 <?php
                 $this->widget('ext.AlertWidget.AlertWidget', [
-                    'text' => '<strong>' . gT('Warning!') . '</strong> ' . gT("The CAPTCHA settings won't have any effect because you don't have the required GD library activated in your PHP configuration."),
+                    'text' => '<strong>' . gT('Warning!') . '</strong> ' . gT("No active plugin offers a CAPTCHA type, so no CAPTCHA is shown even where it is switched on. Activate a CAPTCHA plugin (for example the core plugin CoreCaptcha) or enable one of its CAPTCHA types."),
                     'type' => 'warning',
                 ]);
                 ?>

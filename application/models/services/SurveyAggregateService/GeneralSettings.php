@@ -286,6 +286,7 @@ class GeneralSettings
                     'usecaptcha_saveandload'
                 ]
             ],
+            'captchatype' => [],
             'emailresponseto' => [],
             'emailnotificationto' => [],
             'googleanalyticsapikeysetting' => [],

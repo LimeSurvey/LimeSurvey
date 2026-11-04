@@ -127,6 +127,9 @@ class TransformerInputSurvey extends Transformer
             'assessments' => [
                 'formatter' => ['ynToBool' => ['revert' => true]]
             ],
+            'captchaType' => [
+                'key' => 'captchatype',
+            ],
             'useCaptcha' => [
                 'key' => 'usecaptcha',
                 'range' => [

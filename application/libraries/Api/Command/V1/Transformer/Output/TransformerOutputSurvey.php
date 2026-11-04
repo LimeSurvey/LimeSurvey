@@ -112,6 +112,7 @@ class TransformerOutputSurvey extends TransformerOutputActiveRecord
             ],
             "assessments" => ['formatter' => ['ynToBool' => true]],
             "usecaptcha" => 'useCaptcha',
+            "captchatype" => 'captchaType',
             "usetokens" => [
                 'key' => 'useTokens',
                 'formatter' => ['ynToBool' => true]

@@ -116,6 +116,7 @@ class ComposerStaticInita33ab0ef5816c4172c683747e68a37fe
         array (
             'ArPHP\\I18N\\' => 11,
             'Anper\\Iuliia\\' => 13,
+            'AltchaOrg\\Altcha\\' => 17,
         ),
     );
 
@@ -303,6 +304,10 @@ class ComposerStaticInita33ab0ef5816c4172c683747e68a37fe
         'Anper\\Iuliia\\' =>
         array (
             0 => __DIR__ . '/..' . '/anper/iuliia/src',
+        ),
+        'AltchaOrg\\Altcha\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/altcha-org/altcha/src',
         ),
     );
 

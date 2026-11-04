@@ -400,7 +400,7 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['attr']['maincolformmandatoryinfo']      = ' ';
         $aClassAndAttributes['attr']['maincolformdivblabel']          = ' for="loadsecurity" ';
         $aClassAndAttributes['attr']['maincolformdivblabelsmall']     = ' aria-hidden="true" ';
-        $aClassAndAttributes['attr']['maincolformdivbdivdivinput']    = ' type="text" size="15" maxlength="15" id="loadsecurity" name="loadsecurity" value="" alt="" required ';
+        $aClassAndAttributes['attr']['maincolformdivbdivdivinput']    = ' type="text" size="15" maxlength="15" id="loadsecurity" name="loadsecurity" value="" alt="" ';
         $aClassAndAttributes['attr']['maincolformdivcdivbutton']      = ' type="submit" id="default" name="continue"  value="continue" ';
         $aClassAndAttributes['attr']['maincolformdivddivlabel']       = ' for="loadsecurity" ';
         $aClassAndAttributes['attr']['maincolformdivddivcolinput']    = ' type="text" size="15" maxlength="15" id="loadsecurity" name="loadsecurity" value="" alt="" required ';
@@ -592,7 +592,7 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['attr']['registerformcolrowblabel']  = ' for="register_lastname"  ';
         $aClassAndAttributes['attr']['registerformcolrowclabel']  = ' for="register_email"  ';
         $aClassAndAttributes['attr']['registerformcaptchalabel']  = ' for="loadsecurity"  ';
-        $aClassAndAttributes['attr']['registerformcaptchainput']  = ' type="text" size="15" maxlength="15" id="loadsecurity" name="loadsecurity" value="" alt="" required ';
+        $aClassAndAttributes['attr']['registerformcaptchainput']  = ' type="text" size="15" maxlength="15" id="loadsecurity" name="loadsecurity" value="" alt="" ';
         $aClassAndAttributes['attr']['registermandatoryinfo']     = ' aria-hidden="true" ';
         $aClassAndAttributes['attr']['registersavedivbutton']    = ' type="submit" id="register_button" name="register" value="register"';
 

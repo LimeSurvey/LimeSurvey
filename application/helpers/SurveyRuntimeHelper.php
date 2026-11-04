@@ -1654,6 +1654,18 @@ class SurveyRuntimeHelper
     }
 
     /**
+     * Whether the current request is a submit of the token or captcha form (and not e.g. a language change),
+     * so a CAPTCHA answer is expected in it.
+     *
+     * @return bool
+     */
+    private function isCaptchaAnswerPosted()
+    {
+        $request = App()->getRequest();
+        return $request->getIsPostRequest() && $request->getPost('move') !== 'changelang';
+    }
+
+    /**
      * NOTE: right now, captcha works ONLY if reloaded... need to be debug.
      * NOTE: I bet we have the same problem on 2.6x.x
      * NOTE: when token + captcha: works fine
@@ -1709,10 +1721,12 @@ class SurveyRuntimeHelper
         }
 
         //Check the scenario for captcha required
+        $captchaService = new \LimeSurvey\Models\Services\CaptchaService();
+        $captchaAnswerPosted = $this->isCaptchaAnswerPosted();
         if ($scenarios['captchaRequired']) {
-            //Check if the Captcha was correct
-            $captcha                        = Yii::app()->getController()->createAction('captcha');
-            $subscenarios['captchaCorrect'] = $captcha->validate(App()->getRequest()->getPost('loadsecurity', ''), false);
+            //Check if the Captcha was correct, the answer is only sent by the token or captcha form
+            $subscenarios['captchaCorrect'] = $captchaAnswerPosted
+                && $captchaService->validate(Survey::model()->findByPk($this->iSurveyid), \LimeSurvey\Models\Services\CaptchaService::SCREEN_SURVEY_ACCESS);
         } else {
             $subscenarios['captchaCorrect'] = true;
         }
@@ -1758,10 +1772,8 @@ class SurveyRuntimeHelper
             $aEnterTokenData['bCaptchaEnabled'] = true;
             // IF CAPTCHA ANSWER IS NOT CORRECT OR NOT SET
             if (!$subscenarios['captchaCorrect']) {
-                if (App()->getRequest()->getPost('loadsecurity')) {
-                    $aEnterErrors['captcha'] = gT("Your answer to the security question was not correct - please try again.");
-                } elseif (null !== App()->getRequest()->getPost('loadsecurity')) {
-                    $aEnterErrors['captcha'] = gT("Your have to answer the security question - please try again.");
+                if ($captchaAnswerPosted) {
+                    $aEnterErrors['captcha'] = $captchaService->getErrorMessage();
                 }
                 $renderCaptcha = 'main';
             } else {

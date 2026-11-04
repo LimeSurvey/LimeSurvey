@@ -86,10 +86,11 @@
 
             {# CAPTACHA INSIDE TOKEN FORM #}
             {% if ( aSurveyInfo.aForm.bCaptchaEnabled == true ) %}
+                {% set captcha = aSurveyInfo.aForm.captcha %}
                 <div class="{{ aSurveyInfo.class.maincolformdivb }} mb-3" {{ aSurveyInfo.attr.maincolformdivb }}>
-                    <label
-                        class='{{ aSurveyInfo.class.maincolformdivblabel }} control-label' {{ aSurveyInfo.attr.maincolformdivblabel }} >
-                        {{ gT("Please solve the following equation:") }}
+                    {% if captcha.label %}
+                    <label class='{{ aSurveyInfo.class.maincolformdivblabel }} control-label' {% if captcha.inputId %}for="{{ captcha.inputId }}"{% endif %}>
+                        {{ captcha.label }}
                         <small
                             class="{{ aSurveyInfo.class.maincolformdivblabelsmall }} text-danger asterisk fa fa-asterisk float-start small" {{ aSurveyInfo.attr.maincolformdivblabelsmall }} >&nbsp;</small>
                         <span
@@ -97,19 +98,9 @@
                         ( {{ gT("Mandatory") }} )
                     </span>
                     </label>
-                    <div class="row">
-                        <div class="col-2">
-                            {{ renderCaptcha().renderOut() }}
-                        </div>
-                        <div class="col-1 align-self-center">
-                            <button type="button" class="btn btn-sm btn-outline-secondary" id="reloadCaptcha" title="{{ gT("Reload captcha") }}" aria-label="{{ gT("Reload captcha") }}" data-bs-toggle="captcha"><i class="fa fa-refresh" aria-hidden="true"></i></button>
-                        </div>
-                        <div
-                            class="{{ aSurveyInfo.class.maincolformdivbdiv }} col-9 align-self-center" {{ aSurveyInfo.attr.maincolformdivbdiv }}>
-                            <input
-                                class='form-control {{ aSurveyInfo.class.maincolformdivbdivdivinput }}' {{ aSurveyInfo.attr.maincolformdivbdivdivinput }} >
-                        </div>
-                    </div>
+                    {% endif %}
+                    {# The markup (image, widget, input) comes from the CAPTCHA plugin selected for the survey #}
+                    {{ captcha.html }}
                 </div>
             {% endif %}
             {% if ( aSurveyInfo.showtokenpolicy == 'Y' ) %}
