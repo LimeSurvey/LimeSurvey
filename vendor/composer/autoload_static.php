@@ -27,27 +27,27 @@ class ComposerStaticInita33ab0ef5816c4172c683747e68a37fe
     );
 
     public static $prefixLengthsPsr4 = array (
-        'p' => 
+        'p' =>
         array (
             'phpseclib3\\' => 11,
         ),
-        'l' => 
+        'l' =>
         array (
             'ls\\tests\\' => 9,
         ),
-        'b' => 
+        'b' =>
         array (
             'bcmath_compat\\' => 14,
         ),
-        'Z' => 
+        'Z' =>
         array (
             'ZipStream\\' => 10,
         ),
-        'T' => 
+        'T' =>
         array (
             'Twig\\' => 5,
         ),
-        'S' => 
+        'S' =>
         array (
             'Symfony\\Polyfill\\Php83\\' => 23,
             'Symfony\\Polyfill\\Php82\\' => 23,
@@ -57,7 +57,7 @@ class ComposerStaticInita33ab0ef5816c4172c683747e68a37fe
             'Symfony\\Polyfill\\Ctype\\' => 23,
             'SPSS\\' => 5,
         ),
-        'P' => 
+        'P' =>
         array (
             'Psr\\SimpleCache\\' => 16,
             'Psr\\Http\\Message\\' => 17,
@@ -67,11 +67,11 @@ class ComposerStaticInita33ab0ef5816c4172c683747e68a37fe
             'ParagonIE\\ConstantTime\\' => 23,
             'PHPMailer\\PHPMailer\\' => 20,
         ),
-        'M' => 
+        'M' =>
         array (
             'Matrix\\' => 7,
         ),
-        'L' => 
+        'L' =>
         array (
             'LimeSurvey\\PluginManager\\' => 25,
             'LimeSurvey\\Models\\Services\\' => 27,
@@ -86,15 +86,15 @@ class ComposerStaticInita33ab0ef5816c4172c683747e68a37fe
             'League\\OAuth2\\Client\\' => 21,
             'Laravel\\SerializableClosure\\' => 28,
         ),
-        'I' => 
+        'I' =>
         array (
             'Invoker\\' => 8,
         ),
-        'H' => 
+        'H' =>
         array (
             'Html2Text\\' => 10,
         ),
-        'G' => 
+        'G' =>
         array (
             'GuzzleHttp\\Psr7\\' => 16,
             'GuzzleHttp\\Promise\\' => 19,
@@ -103,16 +103,16 @@ class ComposerStaticInita33ab0ef5816c4172c683747e68a37fe
             'GoogleTranslate\\' => 16,
             'GoldSpecDigital\\ObjectOrientedOAS\\' => 34,
         ),
-        'D' => 
+        'D' =>
         array (
             'DI\\' => 3,
         ),
-        'C' => 
+        'C' =>
         array (
             'Composer\\Pcre\\' => 14,
             'Complex\\' => 8,
         ),
-        'A' => 
+        'A' =>
         array (
             'ArPHP\\I18N\\' => 11,
             'Anper\\Iuliia\\' => 13,
@@ -120,196 +120,196 @@ class ComposerStaticInita33ab0ef5816c4172c683747e68a37fe
     );
 
     public static $prefixDirsPsr4 = array (
-        'phpseclib3\\' => 
+        'phpseclib3\\' =>
         array (
             0 => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib',
         ),
-        'ls\\tests\\' => 
+        'ls\\tests\\' =>
         array (
             0 => __DIR__ . '/../..' . '/tests',
         ),
-        'bcmath_compat\\' => 
+        'bcmath_compat\\' =>
         array (
             0 => __DIR__ . '/..' . '/phpseclib/bcmath_compat/src',
         ),
-        'ZipStream\\' => 
+        'ZipStream\\' =>
         array (
             0 => __DIR__ . '/..' . '/maennchen/zipstream-php/src',
         ),
-        'Twig\\' => 
+        'Twig\\' =>
         array (
             0 => __DIR__ . '/..' . '/twig/twig/src',
         ),
-        'Symfony\\Polyfill\\Php83\\' => 
+        'Symfony\\Polyfill\\Php83\\' =>
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-php83',
         ),
-        'Symfony\\Polyfill\\Php82\\' => 
+        'Symfony\\Polyfill\\Php82\\' =>
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-php82',
         ),
-        'Symfony\\Polyfill\\Php81\\' => 
+        'Symfony\\Polyfill\\Php81\\' =>
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-php81',
         ),
-        'Symfony\\Polyfill\\Php80\\' => 
+        'Symfony\\Polyfill\\Php80\\' =>
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-php80',
         ),
-        'Symfony\\Polyfill\\Mbstring\\' => 
+        'Symfony\\Polyfill\\Mbstring\\' =>
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-mbstring',
         ),
-        'Symfony\\Polyfill\\Ctype\\' => 
+        'Symfony\\Polyfill\\Ctype\\' =>
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-ctype',
         ),
-        'SPSS\\' => 
+        'SPSS\\' =>
         array (
             0 => __DIR__ . '/..' . '/tiamo/spss/src',
         ),
-        'Psr\\SimpleCache\\' => 
+        'Psr\\SimpleCache\\' =>
         array (
             0 => __DIR__ . '/..' . '/psr/simple-cache/src',
         ),
-        'Psr\\Http\\Message\\' => 
+        'Psr\\Http\\Message\\' =>
         array (
             0 => __DIR__ . '/..' . '/psr/http-factory/src',
             1 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
-        'Psr\\Http\\Client\\' => 
+        'Psr\\Http\\Client\\' =>
         array (
             0 => __DIR__ . '/..' . '/psr/http-client/src',
         ),
-        'Psr\\Container\\' => 
+        'Psr\\Container\\' =>
         array (
             0 => __DIR__ . '/..' . '/psr/container/src',
         ),
-        'PhpOffice\\PhpSpreadsheet\\' => 
+        'PhpOffice\\PhpSpreadsheet\\' =>
         array (
             0 => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet',
         ),
-        'ParagonIE\\ConstantTime\\' => 
+        'ParagonIE\\ConstantTime\\' =>
         array (
             0 => __DIR__ . '/..' . '/paragonie/constant_time_encoding/src',
         ),
-        'PHPMailer\\PHPMailer\\' => 
+        'PHPMailer\\PHPMailer\\' =>
         array (
             0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
         ),
-        'Matrix\\' => 
+        'Matrix\\' =>
         array (
             0 => __DIR__ . '/..' . '/markbaker/matrix/classes/src',
         ),
-        'LimeSurvey\\PluginManager\\' => 
+        'LimeSurvey\\PluginManager\\' =>
         array (
             0 => __DIR__ . '/../..' . '/application/libraries/PluginManager',
             1 => __DIR__ . '/../..' . '/application/libraries/PluginManager/Storage',
         ),
-        'LimeSurvey\\Models\\Services\\' => 
+        'LimeSurvey\\Models\\Services\\' =>
         array (
             0 => __DIR__ . '/../..' . '/application/models/services',
         ),
-        'LimeSurvey\\Menu\\' => 
+        'LimeSurvey\\Menu\\' =>
         array (
             0 => __DIR__ . '/../..' . '/application/libraries/MenuObjects',
         ),
-        'LimeSurvey\\Libraries\\' => 
+        'LimeSurvey\\Libraries\\' =>
         array (
             0 => __DIR__ . '/../..' . '/application/libraries',
         ),
-        'LimeSurvey\\Helpers\\Update\\' => 
+        'LimeSurvey\\Helpers\\Update\\' =>
         array (
             0 => __DIR__ . '/../..' . '/application/helpers/update',
             1 => __DIR__ . '/../..' . '/application/helpers/update/updates',
         ),
-        'LimeSurvey\\Helpers\\' => 
+        'LimeSurvey\\Helpers\\' =>
         array (
             0 => __DIR__ . '/../..' . '/application/helpers',
         ),
-        'LimeSurvey\\ExtensionInstaller\\' => 
+        'LimeSurvey\\ExtensionInstaller\\' =>
         array (
             0 => __DIR__ . '/../..' . '/application/libraries/ExtensionInstaller',
         ),
-        'LimeSurvey\\Exceptions\\' => 
+        'LimeSurvey\\Exceptions\\' =>
         array (
             0 => __DIR__ . '/../..' . '/application/exceptions',
         ),
-        'LimeSurvey\\Datavalueobjects\\' => 
+        'LimeSurvey\\Datavalueobjects\\' =>
         array (
             0 => __DIR__ . '/../..' . '/application/datavalueobjects',
         ),
-        'LimeSurvey\\' => 
+        'LimeSurvey\\' =>
         array (
             0 => __DIR__ . '/../..' . '/application/libraries',
         ),
-        'League\\OAuth2\\Client\\' => 
+        'League\\OAuth2\\Client\\' =>
         array (
-            0 => __DIR__ . '/..' . '/league/oauth2-client/src',
-            1 => __DIR__ . '/..' . '/league/oauth2-google/src',
+            0 => __DIR__ . '/..' . '/league/oauth2-google/src',
+            1 => __DIR__ . '/..' . '/league/oauth2-client/src',
         ),
-        'Laravel\\SerializableClosure\\' => 
+        'Laravel\\SerializableClosure\\' =>
         array (
             0 => __DIR__ . '/..' . '/laravel/serializable-closure/src',
         ),
-        'Invoker\\' => 
+        'Invoker\\' =>
         array (
             0 => __DIR__ . '/..' . '/php-di/invoker/src',
         ),
-        'Html2Text\\' => 
+        'Html2Text\\' =>
         array (
             0 => __DIR__ . '/..' . '/html2text/html2text/src',
         ),
-        'GuzzleHttp\\Psr7\\' => 
+        'GuzzleHttp\\Psr7\\' =>
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/psr7/src',
         ),
-        'GuzzleHttp\\Promise\\' => 
+        'GuzzleHttp\\Promise\\' =>
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/promises/src',
         ),
-        'GuzzleHttp\\' => 
+        'GuzzleHttp\\' =>
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/guzzle/src',
         ),
-        'Greew\\OAuth2\\Client\\Provider\\' => 
+        'Greew\\OAuth2\\Client\\Provider\\' =>
         array (
             0 => __DIR__ . '/..' . '/greew/oauth2-azure-provider/src/Provider',
         ),
-        'GoogleTranslate\\' => 
+        'GoogleTranslate\\' =>
         array (
             0 => __DIR__ . '/..' . '/viniciusgava/google-translate-api/src',
         ),
-        'GoldSpecDigital\\ObjectOrientedOAS\\' => 
+        'GoldSpecDigital\\ObjectOrientedOAS\\' =>
         array (
             0 => __DIR__ . '/..' . '/goldspecdigital/oooas/src',
         ),
-        'DI\\' => 
+        'DI\\' =>
         array (
             0 => __DIR__ . '/..' . '/php-di/php-di/src',
         ),
-        'Composer\\Pcre\\' => 
+        'Composer\\Pcre\\' =>
         array (
             0 => __DIR__ . '/..' . '/composer/pcre/src',
         ),
-        'Complex\\' => 
+        'Complex\\' =>
         array (
             0 => __DIR__ . '/..' . '/markbaker/complex/classes/src',
         ),
-        'ArPHP\\I18N\\' => 
+        'ArPHP\\I18N\\' =>
         array (
             0 => __DIR__ . '/..' . '/khaled.alshamaa/ar-php/src',
         ),
-        'Anper\\Iuliia\\' => 
+        'Anper\\Iuliia\\' =>
         array (
             0 => __DIR__ . '/..' . '/anper/iuliia/src',
         ),
     );
 
     public static $prefixesPsr0 = array (
-        'Z' => 
+        'Z' =>
         array (
-            'Zend_' => 
+            'Zend_' =>
             array (
                 0 => __DIR__ . '/..' . '/shardj/zf1-future/library',
             ),

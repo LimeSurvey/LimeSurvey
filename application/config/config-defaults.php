@@ -832,15 +832,6 @@ $config['encryptionsecretkey'] = '';
 $config['encryptionnonce'] = '';
 $config['encryptionsecretboxkey'] = '';
 
-$config['passwordValidationRules'] = array(
-    'min' => 8,
-    'max' => 0,
-    'lower' => 0,
-    'upper' => 1,
-    'numeric' => 1,
-    'symbol' => 0,
-);
-
 // Allowed host of the LimeSurvey instance, avoid Host Header Injection in some case
 // For security purpose : Host Header Injection in password reset function
 // You can set an array of string, for example : ['example.limesurvey.org','limesurvey.example.org']

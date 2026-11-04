@@ -114,7 +114,7 @@ class Authdb extends AuthPluginBase
         $this->getEvent()->set('success', false);
 
         // Optionally set a custom error message.
-        $this->getEvent()->set('message', gT('Core plugin can not be disabled.'));
+        $this->getEvent()->set('message', gT('This core plugin can not be disabled.'));
     }
 
     public function beforeLogin()

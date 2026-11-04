@@ -196,9 +196,7 @@ class CheckIntegrityTest extends TestBaseClass
             // unit test does not provide; only fixintegrity()'s DB side effects are under
             // test here, so the trailing render call is stubbed out.
             $noRenderController = new class('dummy', 'fixintegrity') extends \CheckIntegrity {
-                protected function renderWrappedTemplate($sAction = 'checkintegrity', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
-                {
-                }
+                protected function renderWrappedTemplate($sAction = 'checkintegrity', $aViewUrls = array(), $aData = array(), $sRenderFile = false) {}
             };
             $noRenderController->fixintegrity();
         } finally {
@@ -531,6 +529,38 @@ class CheckIntegrityTest extends TestBaseClass
     }
 
     /**
+     * An empty responses archive and its questions archive of a deleted survey are both
+     * auto-deleted; the questions archive is dropped together with the responses archive
+     * and must not be dropped a second time, which failed with a "table does not exist" error.
+     */
+    public function testQuestionsArchiveOfAnEmptyResponsesArchiveIsDroppedOnlyOnce()
+    {
+        $dbPrefix = \Yii::app()->db->tablePrefix;
+        $bogusSid = 999999918;
+        $responsesTable = $dbPrefix . 'old_responses_' . $bogusSid . '_20200101120000';
+        $questionsTable = $dbPrefix . 'old_questions_' . $bogusSid . '_20200101120000';
+
+        \Yii::app()->db->createCommand()->createTable($responsesTable, array('id' => 'pk'));
+        \Yii::app()->db->createCommand()->createTable($questionsTable, array('qid' => 'pk'));
+        // tableExists() reads the cached schema table names
+        \Yii::app()->db->schema->refresh();
+
+        try {
+            $aData = $this->integrityChecker->applyAutomaticFixes();
+
+            $this->assertFalse($this->tableExistsRaw($responsesTable), 'Empty old survey responses table was not auto-deleted.');
+            $this->assertFalse($this->tableExistsRaw($questionsTable), 'Related old questions table was not auto-deleted.');
+            $questionsWarnings = array_filter($aData['warnings'], function ($warning) use ($questionsTable) {
+                return strpos($warning, $questionsTable) !== false;
+            });
+            $this->assertEmpty($questionsWarnings, 'The old questions table was dropped twice.');
+        } finally {
+            $this->dropTableIfPresent($responsesTable);
+            $this->dropTableIfPresent($questionsTable);
+        }
+    }
+
+    /**
      * A non-empty old participant list table must never be auto-deleted, even when
      * its parent survey no longer exists at all - only ever offered for manual
      * confirmation via the data redundancy check, since it still holds real
@@ -810,7 +840,12 @@ class CheckIntegrityTest extends TestBaseClass
     public function testDuplicateThemeConfigurationsAreOnlyDeletedAndReportedByTheConsistencyCheckKeepingTheOldest()
     {
         $templateName = 'fruity_twentythree';
-        $insertedIds = array();
+        $getIds = function () use ($templateName) {
+            return array_map('intval', \Yii::app()->db->createCommand()->select('id')->from('{{template_configuration}}')
+                ->where('sid = :sid AND template_name = :template_name', array(':sid' => self::$surveyId, ':template_name' => $templateName))
+                ->order('id')->queryColumn());
+        };
+        $preexistingIds = $getIds();
         foreach (array('{"container":"off"}', '{"container":"on"}') as $options) {
             \Yii::app()->db->createCommand()->insert('{{template_configuration}}', array(
                 'template_name' => $templateName,
@@ -819,11 +854,8 @@ class CheckIntegrityTest extends TestBaseClass
             ));
             $insertedIds[] = (int) getLastInsertID('{{template_configuration}}');
         }
-        $getIds = function () use ($templateName) {
-            return array_map('intval', \Yii::app()->db->createCommand()->select('id')->from('{{template_configuration}}')
-                ->where('sid = :sid AND template_name = :template_name', array(':sid' => self::$surveyId, ':template_name' => $templateName))
-                ->order('id')->queryColumn());
-        };
+        // getLastInsertID() without a sequence name fails on PostgreSQL
+        $insertedIds = array_values(array_diff($getIds(), $preexistingIds));
         $idsBefore = $getIds();
 
         try {

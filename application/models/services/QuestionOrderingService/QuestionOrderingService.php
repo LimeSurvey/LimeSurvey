@@ -162,6 +162,8 @@ class QuestionOrderingService
      *
      * Items are sorted by their visible text in the given language, using that language's
      * collation. For 'random_alphabetical' the direction (A-Z or Z-A) is chosen randomly.
+     * Items listed in keep_codes_order stay at their original position, the other items
+     * are sorted around them.
      *
      * @param array $groupedItems Items (Answer or Question models) grouped by scale_id
      * @param Question $question The parent question model
@@ -182,10 +184,15 @@ class QuestionOrderingService
         $orderAttribute = $context === 'answers' ? 'answer_order' : 'subquestion_order';
         $textField = $context === 'answers' ? 'answer' : 'question';
         $l10nField = $context === 'answers' ? 'answerl10ns' : 'questionl10ns';
+        $codeField = $context === 'answers' ? 'code' : 'title';
+        $keepCodes = $this->randomizerHelper->getKeepCodes($question);
 
         foreach ($groupedItems as $scaleId => &$scaleArray) {
             $sorted = [];
             foreach ($scaleArray as $key => $item) {
+                if (!empty($keepCodes) && in_array($item->$codeField, $keepCodes, true)) {
+                    continue;
+                }
                 $l10nCollection = $item->$l10nField;
                 /** @var array<string, \AnswerL10n|\QuestionL10n> $l10nCollection */
                 $sorted[$key] = $this->getSortableText((string) $l10nCollection[$language]->$textField);
@@ -201,9 +208,12 @@ class QuestionOrderingService
                 SortHelper::SORT_STRING
             );
 
+            // Kept items stay at their position, the free positions are filled in sorted order
+            $sortedKeys = array_keys($sorted);
+            $sortedIndex = 0;
             $sortedItems = [];
-            foreach ($sorted as $key => $text) {
-                $sortedItems[] = $scaleArray[$key];
+            foreach ($scaleArray as $key => $item) {
+                $sortedItems[] = array_key_exists($key, $sorted) ? $scaleArray[$sortedKeys[$sortedIndex++]] : $item;
             }
             $scaleArray = $sortedItems;
         }

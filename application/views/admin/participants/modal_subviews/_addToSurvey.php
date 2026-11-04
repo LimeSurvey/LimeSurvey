@@ -14,7 +14,7 @@
         </div>
 
         <!-- Comma separated list -->
-        <input type='hidden' name='participant_id' value='<?php echo $participant_id; ?>'/>
+        <input type='hidden' name='participant_id' value='<?php echo CHtml::encode($participant_id); ?>'/>
         <div class="row ls-space margin top-10 bottom-10">
             <div class='mb-3'>
                 <label id="addToSurvey_survey_label" class='form-label col-md-4' for="addToSurvey_survey_id">

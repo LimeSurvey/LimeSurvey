@@ -1602,7 +1602,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
-     * Count the total answers, submitted ot not.
+     * Count the total answers, submitted or not.
      * @return int
      */
     public function getCountTotalAnswers()
@@ -1733,6 +1733,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 'id'                => 'sid',
                 'class'             => 'CCheckBoxColumn',
                 'selectableRows'    => '100',
+                'ariaLabel'         => function ($data) {
+                    return isset($data->defaultlanguage) ? sprintf(gT('Select survey %s'), flattenText($data->defaultlanguage->surveyls_title, false, true)) : null;
+                },
                 'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
                 'htmlOptions'       => ['class' => 'ls-sticky-column']
             ],
@@ -2021,9 +2024,13 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
     /**
      * Get criteria from Permission
-     * @param $userid for this user id , if not set : get current one
+     * Plugins can change the criteria with the getSurveyPermissionCriteria event, for example to
+     * list surveys they give access to with beforeHasPermission. The event gets:
+     * - userid: The user the criteria is for
+     * - hasGlobalRead: Whether the user has the global surveys read permission, the criteria is empty then
+     * - criteria: The core CDbCriteria, plugins can update it (e.g. mergeWith() with 'OR') or set a new one
+     * @param int|null $userid for this user id , if not set : get current one
      * @todo : move to PermissionInterface
-     * @todo : create an event
      * @return CDbCriteria
      */
     protected static function getPermissionCriteria($userid = null)
@@ -2034,7 +2041,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
         // Note: reflect Permission::hasPermission
         $criteriaPerm = new CDbCriteria();
         $criteriaPerm->params = array();
-        if (!Permission::model()->hasGlobalPermission("surveys", 'read', $userid)) {
+        $hasGlobalRead = Permission::model()->hasGlobalPermission("surveys", 'read', $userid);
+        if (!$hasGlobalRead) {
             /* it's the owner of the survey */
             $criteriaPerm->compare('t.owner_id', $userid, false);
 
@@ -2066,7 +2074,15 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 $criteriaPerm->compare("surveysgroupsowner{$userid}.owner_id", $userid, false, 'OR');
             }
         }
-        /* Place for a new event */
+        $event = new PluginEvent('getSurveyPermissionCriteria');
+        $event->set('userid', $userid);
+        $event->set('hasGlobalRead', $hasGlobalRead);
+        $event->set('criteria', $criteriaPerm);
+        App()->getPluginManager()->dispatchEvent($event);
+        $pluginCriteria = $event->get('criteria');
+        if ($pluginCriteria instanceof CDbCriteria) {
+            return $pluginCriteria;
+        }
         return $criteriaPerm;
     }
     /**

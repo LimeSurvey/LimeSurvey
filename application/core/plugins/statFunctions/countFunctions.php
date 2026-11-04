@@ -43,6 +43,12 @@ class countFunctions
             return "";
         }
         $sQuotedColumn = Yii::app()->db->quoteColumnName($column);
+        $sComparedColumn = $sQuotedColumn;
+        // A value that is not a number (after the optional operator, see CDbCriteria::compare()) is compared as text
+        preg_match('/^(?:\s*(?:<>|<=|>=|<|>|=))?(.*)$/s', (string) $comparison, $matches);
+        if (!is_numeric(trim($matches[1]))) {
+            $sComparedColumn = self::castToText($sQuotedColumn);
+        }
         $oCriteria = new CDbCriteria();
         $oCriteria->condition = "$sQuotedColumn IS NOT NULL";
         if ($submitted) {
@@ -52,7 +58,7 @@ class countFunctions
         if (!$self && $srid !== null) {
             $oCriteria->compare("id", "<>" . $srid);
         }
-        $oCriteria->compare($sQuotedColumn, $comparison);
+        $oCriteria->compare($sComparedColumn, $comparison);
         return intval(SurveyDynamic::model($surveyId)->count($oCriteria));
     }
 
@@ -79,10 +85,8 @@ class countFunctions
             return "";
         }
 
-        $sCastedColumn = $sQuotedColumn = Yii::app()->db->quoteColumnName($column);
-        if (Yii::app()->db->driverName == 'pgsql') {
-            $sCastedColumn = "CAST($sQuotedColumn as text)";
-        }
+        $sQuotedColumn = Yii::app()->db->quoteColumnName($column);
+        $sCastedColumn = self::castToText($sQuotedColumn);
         $oCriteria = new CDbCriteria();
         $oCriteria->condition = "$sQuotedColumn IS NOT NULL and $sCastedColumn <> ''";
         if ($submitted) {
@@ -93,5 +97,26 @@ class countFunctions
             $oCriteria->compare("id", "<>" . $srid);
         }
         return intval(SurveyDynamic::model($surveyId)->count($oCriteria));
+    }
+
+    /**
+     * Returns the SQL expression that casts a response column to text, so it can be compared with text
+     * on every database: PostgreSQL and MSSQL fail when comparing a number or a date with text,
+     * MySQL converts the text to a number instead (so '' or 'NOT' would match 0).
+     * @param string $quotedColumn The quoted column name
+     * @return string
+     */
+    private static function castToText($quotedColumn)
+    {
+        switch (Yii::app()->db->driverName) {
+            case 'pgsql':
+                return "CAST($quotedColumn AS text)";
+            case 'mssql':
+            case 'sqlsrv':
+            case 'dblib':
+                return "CAST($quotedColumn AS NVARCHAR(MAX))";
+            default:
+                return "CAST($quotedColumn AS CHAR)";
+        }
     }
 }
