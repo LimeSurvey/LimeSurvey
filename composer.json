@@ -39,7 +39,7 @@
 	},
 	"require": {
 		"php": "^8.2.35",
-		"composer": "2.10.3",
+		"composer": "^2.10.3",
         "paragonie/sodium_compat": "^1.14",
 		"twig/twig": "^3.27.1",
 		"phpseclib/bcmath_compat": "^2.0",
