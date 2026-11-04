@@ -161,7 +161,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false, &$sAbortReason = null)
         ->queryScalar();
     $previousMaintenanceMode = $previousMaintenanceMode === false ? null : (string) $previousMaintenanceMode;
     $maintenanceModeRestored = true;
-    if ($isCriticalUpdate && !SettingGlobal::isMaintenanceModeHard($previousMaintenanceMode ?? SettingGlobal::MAINTENANCE_MODE_OFF)) {
+    if ($isCriticalUpdate && !SettingGlobal::areParticipantsLocked($previousMaintenanceMode ?? SettingGlobal::MAINTENANCE_MODE_OFF)) {
         writeMaintenanceModeRow(SettingGlobal::MAINTENANCE_MODE_HARD);
         $maintenanceModeRestored = false;
 

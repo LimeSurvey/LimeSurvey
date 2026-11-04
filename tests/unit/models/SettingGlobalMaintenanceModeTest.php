@@ -89,26 +89,26 @@ class SettingGlobalMaintenanceModeTest extends TestBaseClass
     {
         \Yii::app()->setConfig('maintenancemode', 'off');
         $this->assertSame('off', SettingGlobal::getMaintenanceMode());
-        $this->assertFalse(SettingGlobal::isMaintenanceModeHard());
+        $this->assertFalse(SettingGlobal::areParticipantsLocked());
         $this->assertFalse(SettingGlobal::isAdministrationLocked());
 
         \Yii::app()->setConfig('maintenancemode', 'soft');
-        $this->assertFalse(SettingGlobal::isMaintenanceModeHard());
+        $this->assertFalse(SettingGlobal::areParticipantsLocked());
         $this->assertFalse(SettingGlobal::isAdministrationLocked());
 
         \Yii::app()->setConfig('maintenancemode', 'hard');
-        $this->assertTrue(SettingGlobal::isMaintenanceModeHard());
+        $this->assertTrue(SettingGlobal::areParticipantsLocked());
         $this->assertFalse(SettingGlobal::isAdministrationLocked());
 
         \Yii::app()->setConfig('maintenancemode', 'hard-cli');
-        $this->assertTrue(SettingGlobal::isMaintenanceModeHard());
+        $this->assertTrue(SettingGlobal::areParticipantsLocked());
         $this->assertTrue(SettingGlobal::isAdministrationLocked());
 
         // The mode of another installation can be checked without loading its config
-        $this->assertTrue(SettingGlobal::isMaintenanceModeHard('hard-cli'));
-        $this->assertTrue(SettingGlobal::isMaintenanceModeHard('hard'));
-        $this->assertFalse(SettingGlobal::isMaintenanceModeHard('soft'));
-        $this->assertFalse(SettingGlobal::isMaintenanceModeHard('off'));
+        $this->assertTrue(SettingGlobal::areParticipantsLocked('hard-cli'));
+        $this->assertTrue(SettingGlobal::areParticipantsLocked('hard'));
+        $this->assertFalse(SettingGlobal::areParticipantsLocked('soft'));
+        $this->assertFalse(SettingGlobal::areParticipantsLocked('off'));
 
         // Installations updated from older versions have no value at all, unknown values count as off
         \Yii::app()->setConfig('maintenancemode', '');
@@ -116,7 +116,7 @@ class SettingGlobalMaintenanceModeTest extends TestBaseClass
         $this->assertFalse(SettingGlobal::isAdministrationLocked());
         \Yii::app()->setConfig('maintenancemode', 'Hard');
         $this->assertSame('off', SettingGlobal::getMaintenanceMode());
-        $this->assertFalse(SettingGlobal::isMaintenanceModeHard());
+        $this->assertFalse(SettingGlobal::areParticipantsLocked());
     }
 
     /**
@@ -172,7 +172,7 @@ class SettingGlobalMaintenanceModeTest extends TestBaseClass
 
         writeMaintenanceModeRow('hard');
         $this->assertSame('hard', $this->readRow());
-        $this->assertTrue(SettingGlobal::isMaintenanceModeHard());
+        $this->assertTrue(SettingGlobal::areParticipantsLocked());
         writeMaintenanceModeRow('soft');
         $this->assertSame('soft', $this->readRow(), 'An existing row is replaced');
         $this->assertSame('soft', SettingGlobal::getMaintenanceMode());

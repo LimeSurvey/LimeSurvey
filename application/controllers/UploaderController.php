@@ -51,7 +51,7 @@ class UploaderController extends SurveyController
         $sPreview = (int) Yii::app()->request->getParam('preview', 0);
 
         // No file may be stored or deleted while the maintenance mode keeps participants from taking surveys
-        if (($bDelete || $sMode == "upload") && SettingGlobal::isMaintenanceModeHard()) {
+        if (($bDelete || $sMode == "upload") && SettingGlobal::areParticipantsLocked()) {
             $this->endRequestWithMaintenanceMessage(gT("Our survey site is currently undergoing maintenance."), 'text');
         }
 

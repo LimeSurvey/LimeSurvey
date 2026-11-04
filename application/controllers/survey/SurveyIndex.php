@@ -170,7 +170,7 @@ class SurveyIndex extends CAction
         $this->loadLimesurveyLang($surveyid);
 
         // maintenance mode
-        if (SettingGlobal::isMaintenanceModeHard()) {
+        if (SettingGlobal::areParticipantsLocked()) {
             if ($previewmode === false) {
                 Yii::app()->twigRenderer->renderTemplateFromFile(
                     "layout_maintenance.twig",

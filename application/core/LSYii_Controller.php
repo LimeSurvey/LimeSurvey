@@ -99,7 +99,7 @@ abstract class LSYii_Controller extends CController
 
     /**
      * Renders the theme's maintenance page and ends the request when the maintenance mode keeps
-     * participants from taking surveys ("hard" and "hard-cli"), see SettingGlobal::isMaintenanceModeHard().
+     * participants from taking surveys ("hard" and "hard-cli"), see SettingGlobal::areParticipantsLocked().
      * Called by the participant pages that write data (registration, opt-in, opt-out) once the survey
      * and the language are known, so that the page is shown in the survey's theme and language.
      *
@@ -108,7 +108,7 @@ abstract class LSYii_Controller extends CController
      */
     protected function endRequestIfParticipantsLocked(Survey $survey)
     {
-        if (!SettingGlobal::isMaintenanceModeHard()) {
+        if (!SettingGlobal::areParticipantsLocked()) {
             return;
         }
         Template::model()->getInstance('', $survey->sid);
