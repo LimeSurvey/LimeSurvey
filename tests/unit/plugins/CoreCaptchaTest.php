@@ -104,10 +104,20 @@ class CoreCaptchaTest extends TestBaseClass
         $this->assertArrayHasKey(\CoreCaptcha::TYPE_ALTCHA, $providers);
         $this->assertNotEmpty($providers[\CoreCaptcha::TYPE_ALTCHA]['label']);
         $this->assertNotEmpty($providers[\CoreCaptcha::TYPE_ALTCHA]['description']);
-        $this->assertSame(extension_loaded('gd'), array_key_exists(\CoreCaptcha::TYPE_CLASSIC, $providers));
-        if (extension_loaded('gd')) {
+        $this->assertSame(self::isClassicCaptchaAvailable(), array_key_exists(\CoreCaptcha::TYPE_CLASSIC, $providers));
+        if (self::isClassicCaptchaAvailable()) {
             $this->assertNotEmpty($providers[\CoreCaptcha::TYPE_CLASSIC]['description']);
         }
+    }
+
+    /**
+     * The classic CAPTCHA draws its image with GD and FreeType, the same rule the plugin applies
+     *
+     * @return bool
+     */
+    private static function isClassicCaptchaAvailable(): bool
+    {
+        return extension_loaded('gd') && function_exists('imagettftext');
     }
 
     /**
@@ -125,7 +135,7 @@ class CoreCaptchaTest extends TestBaseClass
         CaptchaService::reset();
         $providers = (new CaptchaService())->getProviders();
         $this->assertArrayNotHasKey(\CoreCaptcha::TYPE_ALTCHA, $providers);
-        $this->assertSame(extension_loaded('gd'), array_key_exists(\CoreCaptcha::TYPE_CLASSIC, $providers));
+        $this->assertSame(self::isClassicCaptchaAvailable(), array_key_exists(\CoreCaptcha::TYPE_CLASSIC, $providers));
     }
 
     /**
@@ -188,7 +198,7 @@ class CoreCaptchaTest extends TestBaseClass
      */
     public function testClassicSaveAndLoadScreen()
     {
-        $this->assertTrue(extension_loaded('gd'), 'The classic CAPTCHA needs GD');
+        $this->assertTrue(self::isClassicCaptchaAvailable(), 'The classic CAPTCHA needs GD with FreeType');
         $survey = $this->surveyWithCaptchaType(\CoreCaptcha::TYPE_CLASSIC);
         $service = new CaptchaService();
 
@@ -216,7 +226,7 @@ class CoreCaptchaTest extends TestBaseClass
      */
     public function testClassicSurveyAccessScreen()
     {
-        $this->assertTrue(extension_loaded('gd'), 'The classic CAPTCHA needs GD');
+        $this->assertTrue(self::isClassicCaptchaAvailable(), 'The classic CAPTCHA needs GD with FreeType');
         $survey = $this->surveyWithCaptchaType(\CoreCaptcha::TYPE_CLASSIC);
         $service = new CaptchaService();
 

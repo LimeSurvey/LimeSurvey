@@ -98,7 +98,7 @@ class CaptchaServiceTest extends TestBaseClass
      */
     public function testCaptchaTypeIsInherited()
     {
-        $this->assertTrue(extension_loaded('gd'), 'This test needs both core CAPTCHA types');
+        $this->assertTrue(extension_loaded('gd') && function_exists('imagettftext'), 'This test needs both core CAPTCHA types');
         $service = new CaptchaService();
 
         self::setGlobalCaptchaType(\CoreCaptcha::TYPE_CLASSIC);
@@ -129,7 +129,7 @@ class CaptchaServiceTest extends TestBaseClass
      */
     public function testUnavailableTypeFallsBack()
     {
-        $this->assertTrue(extension_loaded('gd'), 'This test needs both core CAPTCHA types');
+        $this->assertTrue(extension_loaded('gd') && function_exists('imagettftext'), 'This test needs both core CAPTCHA types');
         $service = new CaptchaService();
         $survey = $this->surveyWithCaptchaType('no_such_captcha');
         $this->assertSame('no_such_captcha', $service->getConfiguredProvider($survey));

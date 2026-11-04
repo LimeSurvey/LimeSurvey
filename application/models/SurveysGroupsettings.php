@@ -501,7 +501,10 @@ class SurveysGroupsettings extends LSActiveRecord
             }
         }
         foreach ($this->optionAttributesText as $attribute) {
-            $this->$attribute = 'inherit';
+            //Some attribute created at specific DBVersion
+            if (!($attribute === 'captchatype' && App()->getConfig('DBVersion') < 719)) {
+                $this->$attribute = 'inherit';
+            }
         }
     }
 
