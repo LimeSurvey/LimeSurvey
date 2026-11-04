@@ -89,8 +89,8 @@ jobs:
             php${{ matrix.php-versions }}-sqlite3 \
             libapache2-mod-php${{ matrix.php-versions }}
           sudo update-alternatives --set php /usr/bin/php${{ matrix.php-versions }}
-          # Exact version comes from the "composer" requirement in composer.json
-          sudo composer self-update "$(jq -r '.require.composer' composer.json)"
+          # Latest stable Composer 2; "composer install" enforces the "composer" requirement from composer.json
+          sudo composer self-update --2
           composer --version
 
       # Start the MySQL service - https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu1804-README.md#mysql

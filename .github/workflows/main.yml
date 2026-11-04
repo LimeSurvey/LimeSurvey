@@ -49,15 +49,12 @@ jobs:
     name: PHP ${{ matrix.php-version }} - ${{ matrix.db-type }}
     steps:
       - uses: actions/checkout@v5
-      - name: Read required Composer version from composer.json
-        id: composer-version
-        run: echo "version=$(jq -r '.require.composer' composer.json)" >> "$GITHUB_OUTPUT"
       - name: Install specified PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
-          # Exact version comes from the "composer" requirement in composer.json
-          tools: composer:${{ steps.composer-version.outputs.version }}
+          # Latest stable Composer 2; "composer install" enforces the "composer" requirement from composer.json
+          tools: composer:v2
           extensions: >-
             dom, xml, libxml,
             ${{ matrix.db-type == 'pgsql' && 'pdo_pgsql, pgsql' ||
@@ -227,15 +224,12 @@ jobs:
 
       # PHP + Composer must be set up before "composer install"; the runner's
       # default PHP/Composer do not satisfy composer.json requirements.
-      - name: Read required Composer version from composer.json
-        id: composer-version
-        run: echo "version=$(jq -r '.require.composer' composer.json)" >> "$GITHUB_OUTPUT"
       - name: Install specified PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ env.PHP_VERSION }}
-          # Exact version comes from the "composer" requirement in composer.json
-          tools: composer:${{ steps.composer-version.outputs.version }}
+          # Latest stable Composer 2; "composer install" enforces the "composer" requirement from composer.json
+          tools: composer:v2
       - name: Setup
         run: |
           touch enabletests

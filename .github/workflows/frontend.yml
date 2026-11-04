@@ -40,16 +40,12 @@ jobs:
         with:
             node-version: 24 # use 'latest' to always track the newest stable release
 
-      - name: Read required Composer version from composer.json
-        id: composer-version
-        run: echo "version=$(jq -r '.require.composer' composer.json)" >> "$GITHUB_OUTPUT"
-
       - name: Install PHP and Composer
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.2'
-          # Exact version comes from the "composer" requirement in composer.json
-          tools: composer:${{ steps.composer-version.outputs.version }}
+          # Latest stable Composer 2; "composer install" enforces the "composer" requirement from composer.json
+          tools: composer:v2
 
       - name: Run composer
         run: |
