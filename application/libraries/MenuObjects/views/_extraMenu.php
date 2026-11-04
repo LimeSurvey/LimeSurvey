@@ -31,9 +31,9 @@ foreach ($extraMenus as $menu) : ?>
                             data-bs-toggle="dropdown"
                             aria-expanded="false"
                             aria-haspopup="true"
-                            title="<?= CHtml::encode($menuLabel) ?>"
-                            aria-label="<?= CHtml::encode($menuLabel) ?>">
+                            title="<?= CHtml::encode($menuLabel) ?>">
                         <i class="<?= $menuIconClass ?>" aria-hidden="true"></i>
+                        <span class="dropdown-button-label visually-hidden"><?= CHtml::encode($menuLabel) ?></span>
                     </button>
                     <?php
                 } else { ?>
