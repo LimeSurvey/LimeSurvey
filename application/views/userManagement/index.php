@@ -33,6 +33,7 @@ echo viewHelper::getViewTestTag('usersIndex');
             'lsCaption' => gT('User management'),
             'lsAfterAjaxUpdate' => [
                 'LS.UserManagement.bindButtons();',
+                'LS.UserManagement.restoreFocus(true);',
                 'showDeactivatedUserTooltip();'
             ],
             'filter' => $model,

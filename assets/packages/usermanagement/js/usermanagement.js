@@ -603,6 +603,63 @@ var UserManagement = function () {
     }
 
 
+    var focusReturnHref = null;
+    var restoreFocusPending = false;
+
+    /**
+     * Move focus back to the control that opened the user management modal, once the modal is closed.
+     * Row actions are in a closed dropdown, so their toggle gets focus. Without a matching control
+     * (e.g. the user was deleted), the grid gets focus.
+     * Called when the modal is hidden and again after the grid reload, which replaces the row controls.
+     *
+     * @param {boolean} gridUpdated true when called after the grid reload
+     */
+    var restoreFocus = function (gridUpdated) {
+        var grid = $('#usermanagement--identity-gridPanel');
+        if (!restoreFocusPending || $('#UserManagement-action-modal').hasClass('show')) {
+            return;
+        }
+        // Without a running reload, this is the final position
+        if (gridUpdated || !grid.hasClass('grid-view-loading')) {
+            restoreFocusPending = false;
+        }
+        var target = $();
+        $('.UserManagement--action--openmodal').each(function () {
+            if ($(this).data('href') !== focusReturnHref) {
+                return;
+            }
+            var control = getDropdownToggle($(this));
+            if (control.is(':visible')) {
+                target = control;
+                return false;
+            }
+        });
+        if (!target.length) {
+            target = grid.attr('tabindex', '-1');
+        }
+        target.trigger('focus');
+    };
+
+    /**
+     * Get the control to focus for a modal trigger: The trigger itself, or the toggle of the dropdown it is in.
+     * Row action menus are moved to the body and linked to their toggle by an id, menus of removed rows
+     * have no toggle anymore.
+     *
+     * @param {jQuery} trigger
+     * @return {jQuery}
+     */
+    var getDropdownToggle = function (trigger) {
+        var menu = trigger.closest('.dropdown-menu');
+        if (!menu.length) {
+            return trigger;
+        }
+        var toggleId = menu.attr('data-for-ls-dropdown-toggle-id');
+        if (toggleId) {
+            return $('[data-ls-dropdown-toggle-id="' + toggleId + '"]').first();
+        }
+        return menu.parent().find('[data-bs-toggle="dropdown"]').first();
+    };
+
     var bindButtons = function () {
         $('.action_usercontrol_button').on('click', function () {
             runAction(this);
@@ -616,6 +673,8 @@ var UserManagement = function () {
         $('.UserManagement--action--openmodal').on('click', function () {
             var href = $(this).data('href');
             var modalSize = $(this).data('modalsize');
+            // The grid is reloaded when the modal closes, so the control is found again by its URL
+            focusReturnHref = href;
 
             if ($(this).attr("data-stackmodal") !== undefined) {
                 var stackablemodal = $(this).data('stackmodal');
@@ -636,6 +695,10 @@ var UserManagement = function () {
     var bindModals = function () {
         $('#UserManagement-action-modal').on('hide.bs.modal', function () {
             $.fn.yiiGridView.update('usermanagement--identity-gridPanel', {});
+        });
+        $('#UserManagement-action-modal').on('hidden.bs.modal', function () {
+            restoreFocusPending = true;
+            restoreFocus(false);
         });
 
         $(document).off('shown.bs.modal.batchpermissions').on('shown.bs.modal.batchpermissions', '#floating-actions-modal-usermanagement--identity-gridPanel-batchPermissions-1', function () {
@@ -673,6 +736,7 @@ var UserManagement = function () {
         wireMassPermissions: wireMassPermissions,
         wireForm: wireForm,
         openModal: openModal,
+        restoreFocus: restoreFocus,
     };
 };
 
