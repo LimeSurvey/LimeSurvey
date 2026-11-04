@@ -352,7 +352,8 @@ class TemplateConfig extends CActiveRecord
 
         $aClassAndAttributes['class']['outerframe'] = ' outerframe ';
         $aClassAndAttributes['class']['maincol'] = ' ';
-        $aClassAndAttributes['attr']['html'] = $thissurvey['attr']['body'] = $aClassAndAttributes['attr']['outerframe'] = $thissurvey['attr']['mainrow'] = $thissurvey['attr']['maincol'] = '';
+        $aClassAndAttributes['attr']['html'] = $thissurvey['attr']['body'] = $thissurvey['attr']['mainrow'] = $thissurvey['attr']['maincol'] = '';
+        $aClassAndAttributes['attr']['outerframe'] = ' tabindex="-1" ';
 
         // User forms
         $aClassAndAttributes['class']['maincoldivdiva']               = '  ';

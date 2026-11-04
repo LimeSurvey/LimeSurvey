@@ -189,7 +189,21 @@ class Participant extends LSActiveRecord
      */
     public function getCheckbox()
     {
-        return "<input type='checkbox' class='selector_participantCheckbox massiveActionsCheckbox' name='selectedParticipant[]' value='" . CHtml::encode($this->id) . "' >";
+        return "<input type='checkbox' class='selector_participantCheckbox massiveActionsCheckbox' name='selectedParticipant[]' value='" . CHtml::encode($this->id) . "' aria-label='" . CHtml::encode(sprintf(gT('Select participant %s'), $this->getDisplayName())) . "' >";
+    }
+
+    /**
+     * Returns a name to identify the participant: The first and last name, else the email address, else the participant ID
+     *
+     * @return string
+     */
+    public function getDisplayName()
+    {
+        $name = trim($this->firstname . ' ' . $this->lastname);
+        if ($name !== '') {
+            return $name;
+        }
+        return !empty($this->email) ? $this->email : $this->participant_id;
     }
 
     /**
@@ -351,7 +365,7 @@ class Participant extends LSActiveRecord
             [
                 "name"              => 'checkbox',
                 "type"              => 'raw',
-                "header"            => "<input type='checkbox' id='action_toggleAllParticipant' />",
+                "header"            => "<input type='checkbox' id='action_toggleAllParticipant' aria-label='" . CHtml::encode(gT('Select all')) . "' />",
                 "filter"            => false,
                 'filterHtmlOptions' => ['class' => 'ls-sticky-column'],
                 'headerHtmlOptions' => ['class' => 'ls-sticky-column'],

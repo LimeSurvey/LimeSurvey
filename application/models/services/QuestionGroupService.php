@@ -170,6 +170,7 @@ class QuestionGroupService
      * @return int|null number of deleted rows
      * @throws PermissionDeniedException
      * @throws QuestionGroupHasConditionsException if questions of other groups have conditions on this group
+     * @throws NotFoundException if the group does not exist in this survey
      */
     public function deleteGroup(int $questionGroupId, int $surveyId)
     {
@@ -179,6 +180,10 @@ class QuestionGroupService
             throw new QuestionGroupHasConditionsException(
                 gT('Group can not be deleted, because of depending conditions')
             );
+        }
+        // Checked before the conditions are reverted, they would not be upgraded again otherwise
+        if (!$this->modelQuestionGroup->exists('gid = :gid AND sid = :sid', [':gid' => $questionGroupId, ':sid' => $surveyId])) {
+            throw new NotFoundException(gT('Group not found'));
         }
         $this->proxyExpressionManager->revertUpgradeConditionsToRelevance($surveyId);
 
@@ -430,6 +435,9 @@ class QuestionGroupService
     /**
      * Gets array with question related parameters (qid, question_order, gid)
      * and updates them in those questions and their subquestions
+     *
+     * Note: The question and its target group must belong to the survey.
+     *
      * @param array $aQuestion
      * @param int $surveyId
      * @param bool $success
@@ -440,6 +448,14 @@ class QuestionGroupService
         int $surveyId,
         bool $success
     ) {
+        if (
+            !$this->modelQuestionGroup->exists(
+                "gid=:gid AND sid=:sid",
+                [':gid' => (int) ($aQuestion['gid'] ?? 0), ':sid' => $surveyId]
+            )
+        ) {
+            return false;
+        }
         $aQuestions = $this->modelQuestion->findAll(
             "qid=:qid AND sid=:sid",
             [':qid' => $aQuestion['qid'], ':sid' => $surveyId]

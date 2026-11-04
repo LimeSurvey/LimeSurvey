@@ -280,6 +280,12 @@ class Question extends LSActiveRecord
                     'SAVEDID','TOKEN', // current survey related var
                     'QID','GID','SGQ', // current question related var
                     'self','that','this', // EM reserved variables
+                    /* Standard replacement fields (getStandardsReplacementFields): They take precedence over question codes in ExpressionManager */
+                    'ACTIVE','ADMINEMAIL','ADMINNAME','DATESTAMP','EXPIRY',
+                    'MOVENEXTBUTTON','MOVEPREVBUTTON','NAVIGATOR','NUMBEROFGROUPS','NUMBEROFQUESTIONS',
+                    'PERCENTCOMPLETE','PRIVACYHEADING','PRIVACYMESSAGE','SURVEYCONTACT','SURVEYDESCRIPTION',
+                    'SURVEYFORMAT','SURVEYLANGUAGE','SURVEYNAME','SURVEYRESOURCESURL','TEMPLATEURL',
+                    'URL','WELCOME',
                 ),
                 'message' => sprintf(gT("Code: '%s' is a reserved word."), $this->title), // Usage of {attribute} need attributeLabels, {value} never exist in message
                 'except' => 'archiveimport'
@@ -510,9 +516,10 @@ class Question extends LSActiveRecord
     }
 
     /**
-     * Delete a bunch of questions in one go
+     * Delete a bunch of questions in one go, including their subquestions, answers, default values
+     * and the texts (l10ns) of all of them
      *
-     * @param mixed $questionsIds
+     * @param int|int[] $questionsIds
      * @return void
      */
     public static function deleteAllById($questionsIds)
@@ -520,6 +527,30 @@ class Question extends LSActiveRecord
         if (!is_array($questionsIds)) {
             $questionsIds = array($questionsIds);
         }
+        $db = Yii::app()->db;
+
+        // The texts are deleted first, the subqueries need the questions, answers and default values they belong to
+        $subquestionIdsSql = $db->createCommand()
+            ->select('qid')
+            ->from(Question::model()->tableName())
+            ->where(array('in', 'parent_qid', $questionsIds))
+            ->getText();
+        $answerIdsSql = $db->createCommand()
+            ->select('aid')
+            ->from(Answer::model()->tableName())
+            ->where(array('in', 'qid', $questionsIds))
+            ->getText();
+        $defaultValueIdsSql = $db->createCommand()
+            ->select('dvid')
+            ->from(DefaultValue::model()->tableName())
+            ->where(array('in', 'qid', $questionsIds))
+            ->getText();
+        $db->createCommand()->delete(
+            QuestionL10n::model()->tableName(),
+            array('or', array('in', 'qid', $questionsIds), "qid IN ($subquestionIdsSql)")
+        );
+        $db->createCommand()->delete(AnswerL10n::model()->tableName(), "aid IN ($answerIdsSql)");
+        $db->createCommand()->delete(DefaultValueL10n::model()->tableName(), "dvid IN ($defaultValueIdsSql)");
 
         Yii::app()->db->createCommand()->delete(Condition::model()->tableName(), array('in', 'qid', $questionsIds));
         Yii::app()->db->createCommand()->delete(QuestionAttribute::model()->tableName(), array('in', 'qid', $questionsIds));
@@ -1448,23 +1479,23 @@ class Question extends LSActiveRecord
     }
 
     /**
-     * Increases all question_order numbers for questions belonging to the group by +1
+     * Increases the question_order numbers of the (parent) questions belonging to the group by +1
+     *
+     * Subquestions are not touched, their order is relative to their parent question.
      *
      * @param int $questionGroupId
-     * @param integer|null $after questionorder
+     * @param integer|null $after Only questions with a question_order greater than or equal to this value are moved, all of them if empty
+     * @return void
      */
     public static function increaseAllOrderNumbersForGroup($questionGroupId, $after = null)
     {
-        $criteria = new CDbCriteria();
-        $criteria->compare("gid", $questionGroupId);
+        $condition = 'gid = :gid AND parent_qid = 0';
+        $params = [':gid' => $questionGroupId];
         if ($after) {
-            $criteria->compare("question_order", ">=" . $after);
+            $condition .= ' AND question_order >= :after';
+            $params[':after'] = (int) $after;
         }
-        $questionsInGroup = Question::model()->findAll($criteria);
-        foreach ($questionsInGroup as $question) {
-            $question->question_order = $question->question_order + 1;
-            $question->save();
-        }
+        Question::model()->updateCounters(['question_order' => 1], $condition, $params);
     }
 
     /**
