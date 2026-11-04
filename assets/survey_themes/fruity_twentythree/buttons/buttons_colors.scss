@@ -61,8 +61,10 @@ $btn-variants        : (
     outline-cancel: $g-600,
 );
 @mixin button-variant($color, $variant) {
-    $otherColorBtns : ('success', 'warning', 'danger');
-    $font-color     : $white;
+    // Filled buttons: $white if it reaches the WCAG 2.2 AA 4.5:1 ratio on the
+    // background, else $g-900, else $black. For primary this follows the theme
+    // variation ($base-color-contrast, see theme_color_variables.scss).
+    $font-color     : color-contrast($color, $g-900, $white, 4.5);
     @if (str-index($variant, 'outline-')) {
         color            : $color;
         border-color     : $color;
@@ -77,9 +79,6 @@ $btn-variants        : (
             box-shadow   : $color;
         }
     } @else {
-        @if index($otherColorBtns, $variant) {
-            $font-color : $g-900;
-        }
         background-color : $color;
         border-color     : $color;
         color            : $font-color;
@@ -180,7 +179,7 @@ $btn-variants        : (
 .btn-check {
     + .btn-primary {
         &:hover {
-            color            : $white;
+            color            : $base-color-contrast;
             background-color : $btn-primary-color;
             border-color     : $btn-primary-color;
             box-shadow       : none;
@@ -189,7 +188,7 @@ $btn-variants        : (
         &:active,
         &.active,
         &:active:focus {
-            color            : $white;
+            color            : $base-color-contrast;
             background-color : $btn-primary-color;
             border-color     : $btn-primary-color;
             box-shadow       : none;
@@ -204,7 +203,7 @@ $btn-variants        : (
     }
 
     &:active + .btn-primary {
-        color            : $white;
+        color            : $base-color-contrast;
         background-color : $btn-primary-color;
         border-color     : $btn-primary-color;
         box-shadow       : none;
@@ -213,7 +212,7 @@ $btn-variants        : (
     &:checked + .btn-primary,
     &:checked + .btn-primary:focus,
     &:focus:checked + .btn-primary {
-        color            : $white;
+        color            : $base-color-contrast;
         background-color : $btn-primary-color;
         border-color     : $btn-primary-color;
         box-shadow       : none;
