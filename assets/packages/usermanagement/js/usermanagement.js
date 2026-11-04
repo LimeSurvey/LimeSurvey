@@ -489,7 +489,11 @@ var UserManagement = function () {
     var wireRoleSet = function () {
         $('#UserManagement--modalform').find('select').each(
             function(i,item) {
-                jQuery(item).select2({'theme':'bootstrap\x2D5'});
+                // Keep the dropdown inside the modal, screen readers ignore content outside an aria-modal dialog
+                jQuery(item).select2({
+                    'theme': 'bootstrap\x2D5',
+                    'dropdownParent': $('#UserManagement-action-modal')
+                });
                 labelSelect2(item);
                 jQuery(item).on('change', function () {
                     labelSelect2(item);
