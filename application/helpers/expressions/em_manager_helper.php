@@ -10402,6 +10402,16 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
     }
 
     /**
+     * Returns the survey mode the EM singleton was started with
+     * @return string 'survey', 'group' or 'question'
+     */
+    public static function getLEMsurveyMode()
+    {
+        $LEM =& LimeExpressionManager::singleton();
+        return $LEM->surveyMode;
+    }
+
+    /**
      * This function loads the relevant data about tokens for a survey.
      * If specific token is not given it loads empty values, this is used for
      * question previewing and the like.

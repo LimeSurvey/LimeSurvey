@@ -381,9 +381,12 @@ $(document).on('ready pjax:scriptcomplete', function () {
    * @return {void}
    */
   function fitRelevanceEquationHeight(textarea) {
+    // A scrollbar while measuring would make the text narrower and the height too big
+    textarea.style.overflow = 'hidden';
     textarea.style.height = 'auto';
     // scrollHeight doesn't include the border
     textarea.style.height = `${textarea.scrollHeight + textarea.offsetHeight - textarea.clientHeight}px`;
+    textarea.style.overflow = '';
   }
 
   /**
