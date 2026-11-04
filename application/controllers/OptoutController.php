@@ -26,6 +26,18 @@ class OptoutController extends LSYii_Controller
     public $defaultAction = 'tokens';
 
     /**
+     * Ends every action with the maintenance page while participants are locked out, see
+     * LSYii_Controller::filterParticipantsLocked().
+     *
+     * @return array
+     */
+    #[\Override]
+    public function filters()
+    {
+        return array_merge(parent::filters(), ['participantsLocked']);
+    }
+
+    /**
      * Display the confirmation page for individual survey opt-out.
      * Provides both a legacy GET link (optin_link) for old themes and a
      * secure POST link (optin_post_link) for updated themes.
@@ -58,7 +70,6 @@ class OptoutController extends LSYii_Controller
         }
 
         Yii::app()->setLanguage($sBaseLanguage);
-        $this->endRequestIfParticipantsLocked($oSurvey);
 
         $link = '';
         $tokenAttributes = [];
@@ -111,7 +122,6 @@ class OptoutController extends LSYii_Controller
         }
 
         Yii::app()->setLanguage($baseLanguage);
-        $this->endRequestIfParticipantsLocked($survey);
 
         $token = Token::model($surveyId)->findByAttributes(array('token' => $accessToken));
 
@@ -207,7 +217,6 @@ class OptoutController extends LSYii_Controller
         }
 
         Yii::app()->setLanguage($baseLanguage);
-        $this->endRequestIfParticipantsLocked($survey);
 
         LimeExpressionManager::singleton()->loadTokenInformation($surveyId, $accessToken, false);
         $token = Token::model($surveyId)->findByAttributes(['token' => $accessToken]);

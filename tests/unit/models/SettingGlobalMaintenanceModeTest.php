@@ -220,4 +220,50 @@ class SettingGlobalMaintenanceModeTest extends TestBaseClass
             rmdir($dir);
         }
     }
+
+    /**
+     * The participant pages that write data enable the lock filter, which lets the action run
+     * while participants are not locked, and when the survey does not exist (the action then
+     * answers with its own error).
+     *
+     * @return void
+     */
+    public function testParticipantsLockedFilter()
+    {
+        foreach (['RegisterController', 'OptinController', 'OptoutController'] as $controllerClass) {
+            require_once \Yii::app()->getBasePath() . '/controllers/' . $controllerClass . '.php';
+            $controller = new $controllerClass(strtolower(substr($controllerClass, 0, -10)));
+            $this->assertContains('participantsLocked', $controller->filters(), $controllerClass);
+        }
+
+        $chain = new class {
+            /** @var bool */
+            public $ran = false;
+
+            /**
+             * Records that the action would run.
+             *
+             * @return void
+             */
+            public function run()
+            {
+                $this->ran = true;
+            }
+        };
+        $controller = new \OptinController('optin');
+        $previousGet = $_GET;
+        try {
+            $_GET = ['surveyid' => '999999999'];
+            \Yii::app()->setConfig('maintenancemode', 'off');
+            $controller->filterParticipantsLocked($chain);
+            $this->assertTrue($chain->ran, 'Not locked: the action runs');
+
+            $chain->ran = false;
+            \Yii::app()->setConfig('maintenancemode', 'hard');
+            $controller->filterParticipantsLocked($chain);
+            $this->assertTrue($chain->ran, 'Locked, but no such survey: the action runs and answers with its own error');
+        } finally {
+            $_GET = $previousGet;
+        }
+    }
 }

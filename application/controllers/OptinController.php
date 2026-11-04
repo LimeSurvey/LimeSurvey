@@ -28,6 +28,18 @@ class OptinController extends LSYii_Controller
     public $defaultAction = 'tokens';
 
     /**
+     * Ends every action with the maintenance page while participants are locked out, see
+     * LSYii_Controller::filterParticipantsLocked().
+     *
+     * @return array
+     */
+    #[\Override]
+    public function filters()
+    {
+        return array_merge(parent::filters(), ['participantsLocked']);
+    }
+
+    /**
      * Display the confirmation for individual survey opt in
      */
     public function actiontokens()
@@ -57,7 +69,6 @@ class OptinController extends LSYii_Controller
         }
 
         Yii::app()->setLanguage($baseLanguage);
-        $this->endRequestIfParticipantsLocked($survey);
 
         LimeExpressionManager::singleton()->loadTokenInformation($surveyId, $accessToken, false);
         $token = Token::model($surveyId)->findByAttributes(['token' => $accessToken]);
@@ -110,7 +121,6 @@ class OptinController extends LSYii_Controller
         }
 
         Yii::app()->setLanguage($baseLanguage);
-        $this->endRequestIfParticipantsLocked($survey);
 
         LimeExpressionManager::singleton()->loadTokenInformation($surveyId, $accessToken, false);
         $token = Token::model($surveyId)->findByAttributes(['token' => $accessToken]);
@@ -182,7 +192,6 @@ class OptinController extends LSYii_Controller
         }
 
         Yii::app()->setLanguage($baseLanguage);
-        $this->endRequestIfParticipantsLocked($survey);
 
         LimeExpressionManager::singleton()->loadTokenInformation($surveyId, $accessToken, false);
         $token = Token::model($surveyId)->findByAttributes(['token' => $accessToken]);

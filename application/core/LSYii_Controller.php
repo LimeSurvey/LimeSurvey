@@ -98,10 +98,39 @@ abstract class LSYii_Controller extends CController
     }
 
     /**
+     * Filter for the controllers of participant pages that write data (registration, opt-in, opt-out):
+     * while the maintenance mode keeps participants out ("hard" and "hard-cli"), every action ends with
+     * the theme's maintenance page instead of running. A controller enables it by listing
+     * 'participantsLocked' in its filters(), so new actions are covered without further code.
+     * The survey comes from the "surveyid" or "sid" parameter, the language from "langcode" or "lang"
+     * (the survey's base language if it is not one of the survey's languages). Without an existing
+     * survey the action runs and answers with its own error, as it cannot write anything then.
+     *
+     * @param CFilterChain $filterChain
+     * @return void
+     */
+    public function filterParticipantsLocked($filterChain)
+    {
+        if (SettingGlobal::areParticipantsLocked()) {
+            $request = Yii::app()->request;
+            $surveyId = $request->getParam('surveyid', $request->getParam('sid'));
+            $survey = filter_var($surveyId, FILTER_VALIDATE_INT) ? Survey::model()->findByPk((int) $surveyId) : null;
+            if ($survey) {
+                $language = $request->getParam('langcode', $request->getParam('lang'));
+                if (!in_array($language, $survey->getAllLanguages(), true)) {
+                    $language = $survey->language;
+                }
+                Yii::app()->setLanguage($language);
+                $this->endRequestIfParticipantsLocked($survey);
+            }
+        }
+        $filterChain->run();
+    }
+
+    /**
      * Renders the theme's maintenance page and ends the request when the maintenance mode keeps
      * participants from taking surveys ("hard" and "hard-cli"), see SettingGlobal::areParticipantsLocked().
-     * Called by the participant pages that write data (registration, opt-in, opt-out) once the survey
-     * and the language are known, so that the page is shown in the survey's theme and language.
+     * The language must be set before, so that the page is shown in the survey's theme and language.
      *
      * @param Survey $survey The survey the request belongs to
      * @return void
