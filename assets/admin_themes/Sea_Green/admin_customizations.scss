@@ -155,11 +155,11 @@ blockquote {
 .subquestions-table textarea.relevance {
   min-height: 0;
   font-size: 14px;
-  resize: none;
   overflow: hidden;
   white-space: pre;
 
   &:focus {
+    overflow: auto;
     white-space: pre-wrap;
   }
 }
