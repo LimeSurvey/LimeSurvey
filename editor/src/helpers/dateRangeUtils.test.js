@@ -1,4 +1,4 @@
-import { expandToUnit, getStatisticsPresets } from './dateRangeUtils'
+import { expandToUnit, getPresets } from './dateRangeUtils'
 
 global.t = (key) => key
 
@@ -42,8 +42,8 @@ describe('expandToUnit', () => {
   })
 })
 
-test('statistics presets follow the ticket', () => {
-  const { presets, trailingPresets, dayCountKeys } = getStatisticsPresets()
+test('the presets follow the ticket', () => {
+  const { presets, trailingPresets } = getPresets()
 
   expect(presets.map(({ key }) => key)).toEqual([
     'today',
@@ -52,5 +52,4 @@ test('statistics presets follow the ticket', () => {
     'year',
   ])
   expect(trailingPresets.map(({ key }) => key)).toEqual(['custom'])
-  expect(dayCountKeys).toEqual(['upTo'])
 })

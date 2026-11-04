@@ -11,7 +11,6 @@ import classNames from 'classnames'
 
 import { useDayPickerSetup } from 'components/UIComponents/DateRangePicker/DateRangeCalendar'
 import { DateRangePanelModal } from 'components/UIComponents/DateRangePicker/DateRangePanelModal'
-import { getStatisticsPresets } from 'helpers/dateRangeUtils'
 
 import { DateTimeRangeModal } from './DateTimeRangeModal.js'
 import {
@@ -262,17 +261,11 @@ export const DateTimeCalendar = ({
         show={!!rangePicker}
         onHide={cancelRangePicker}
         label={t('View responses by date range')}
-        {...getStatisticsPresets()}
         initialRange={{
           from: toDate(pickerRange?.from),
           to: toDate(pickerRange?.to),
         }}
         initialMonth={toDate(pickerRange?.from) ?? month}
-        dateFormat="MMM d, yyyy"
-        locale={locale}
-        separator={t('until')}
-        collapseSingleDay
-        confirmRequiresDate
         onConfirm={confirmRange}
       />
     </>

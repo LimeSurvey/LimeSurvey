@@ -1,33 +1,6 @@
 @import 'day-picker';
 
 .date-range-picker {
-  background-color: $white;
-
-  .date-range-placeholder {
-    display: block;
-    width: 100%;
-    background-color: transparent;
-    color: inherit;
-    font: inherit;
-    text-align: left;
-    padding: 10px;
-    border: 1px solid $g-200;
-    border-radius: $border-radius;
-    cursor: pointer;
-    min-width: 215px;
-  }
-
-  .date-range-container {
-    position: fixed;
-    z-index: 10;
-    border-radius: 6px;
-    box-shadow: 0 4px 16px $elevation-shadow-soft;
-    background-color: $g-100;
-    overflow: hidden;
-    font-size: $font-size-sm;
-    color: $g-900;
-  }
-
   .date-range-component {
     display: flex;
   }
@@ -124,10 +97,10 @@
   .date-range-input {
     display: flex;
     align-items: center;
-    flex: 1;
+    flex: 0 0 160px;
     min-width: 0;
-    padding: 4px 4px 4px 10px;
-    border: 2px solid $g-750;
+    padding: 5px 4px 5px 13px;
+    border: 2px solid $g-700;
     border-radius: 4px;
     background-color: $white;
 
@@ -266,8 +239,6 @@
 
 // Date inputs whose calendar icon opens the range panel (DateRangePickerField).
 .date-range-picker.date-range-picker-field {
-  background-color: transparent;
-
   .date-range-picker-field-inputs {
     display: flex;
     flex-wrap: wrap;
@@ -278,22 +249,6 @@
   .date-range-picker-field-until {
     color: $g-900;
     font-size: $font-size-sm;
-  }
-
-  .date-range-input {
-    flex: 0 0 160px;
-    padding: 5px 4px 5px 13px;
-    border: 2px solid $g-700;
-    border-radius: 4px;
-    background-color: $white;
-
-    &:focus-within {
-      border-color: $grape;
-    }
-
-    &.is-invalid {
-      border-color: $error;
-    }
   }
 
   .date-range-input-icon {
@@ -325,19 +280,5 @@
     background-color: $g-100;
     font-size: $font-size-sm;
     color: $g-900;
-  }
-
-  .date-range-input {
-    flex: 0 0 160px;
-    padding: 5px 4px 5px 13px;
-    border-color: $g-700;
-
-    &:focus-within {
-      border-color: $grape;
-    }
-
-    &.is-invalid {
-      border-color: $error;
-    }
   }
 }

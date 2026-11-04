@@ -5,7 +5,6 @@ import {
   isAfter,
   isSameDay,
   startOfDay,
-  addDays,
   subDays,
   max,
   min,
@@ -13,10 +12,11 @@ import {
 
 import { DateInput } from './DateInput'
 import { DateRangePresets } from './DateRangePresets'
-import { DateRangeCalendar } from './DateRangeCalendar'
+import { DateRangeCalendar, useDayPickerSetup } from './DateRangeCalendar'
 import { DateRangeActions } from './DateRangeActions'
 import {
-  EMPTY_DAY_COUNTS,
+  CUSTOM_RANGE_PRESET,
+  DATE_FORMAT,
   expandToUnit,
   getPresets,
 } from 'helpers/dateRangeUtils'
@@ -26,49 +26,38 @@ const EMPTY_RANGE = { from: undefined, to: undefined }
 export const DateRangePanel = ({
   initialRange = EMPTY_RANGE,
   initialMonth,
-  presets,
-  trailingPresets = [],
-  dayCountKeys = ['upTo', 'from'],
   minDate = new Date('1900-01-01T00:00'),
   maxDate = new Date('2100-12-31T23:59'),
-  dateFormat,
-  locale,
-  separator = '–',
-  collapseSingleDay = false,
-  confirmRequiresDate = false,
+  dateFormat = DATE_FORMAT,
   onConfirm,
   onCancel,
-  onClear = () => {},
 }) => {
-  const presetList = presets ?? getPresets()
-  const rangeModeKey =
-    [...presetList, ...trailingPresets].find(({ mode }) => mode === 'range')
-      ?.key ?? null
+  const { locale } = useDayPickerSetup()
+  const { presets, trailingPresets } = getPresets()
 
   const [tempRange, setTempRange] = useState(initialRange)
   const [month, setMonth] = useState(
     initialMonth ?? initialRange.from ?? new Date()
   )
-  const [dayCounts, setDayCounts] = useState(EMPTY_DAY_COUNTS)
+  const [daysUpToToday, setDaysUpToToday] = useState('')
   // Nothing is highlighted until something is picked.
   const [activeKey, setActiveKey] = useState(
-    initialRange.from ? rangeModeKey : null
+    initialRange.from ? CUSTOM_RANGE_PRESET : null
   )
   const [isFromValid, setIsFromValid] = useState(true)
   const [isToValid, setIsToValid] = useState(true)
-  const hasInvalidInput = !isFromValid || !isToValid
-  const hasDayCount = !!(dayCounts.upTo || dayCounts.from)
-  const selectionMode =
-    [...presetList, ...trailingPresets].find(({ key }) => key === activeKey)
-      ?.mode ?? 'range'
+  // Clear starts the inputs over, along with any invalid text in them.
+  const [inputsKey, setInputsKey] = useState(0)
   // The end date input shows up once the range has an end of its own.
-  const isSingleDay =
-    collapseSingleDay &&
-    !(
-      tempRange.from &&
-      tempRange.to &&
-      !isSameDay(tempRange.from, tempRange.to)
-    )
+  const isSingleDay = !(
+    tempRange.from &&
+    tempRange.to &&
+    !isSameDay(tempRange.from, tempRange.to)
+  )
+  const hasInvalidInput = !isFromValid || (!isSingleDay && !isToValid)
+  const selectionMode =
+    [...presets, ...trailingPresets].find(({ key }) => key === activeKey)
+      ?.mode ?? 'range'
 
   const clampDate = (date) =>
     min([max([date, startOfDay(minDate)]), startOfDay(maxDate)])
@@ -82,19 +71,17 @@ export const DateRangePanel = ({
     preset.mode
       ? activeKey === preset.key
       : activeKey === null &&
-        !hasDayCount &&
+        !daysUpToToday &&
         !!tempRange.from &&
         !!tempRange.to &&
         isSameDay(tempRange.from, preset.range.from) &&
         isSameDay(tempRange.to, preset.range.to)
 
   const handlePresetSelect = (preset) => {
-    setDayCounts(EMPTY_DAY_COUNTS)
+    setDaysUpToToday('')
 
     if (preset.range) {
       const clampedRange = clampRange(preset.range)
-      // The end date input may be hidden for a single day.
-      setIsToValid(true)
       setActiveKey(null)
       setTempRange(clampedRange)
       setMonth(clampedRange.from)
@@ -107,37 +94,34 @@ export const DateRangePanel = ({
     }
   }
 
-  const handleDayCountChange = (key) => (e) => {
+  const handleDaysUpToTodayChange = (e) => {
     const value = e.target.value
-    setDayCounts({ ...EMPTY_DAY_COUNTS, [key]: value })
+    setDaysUpToToday(value)
     setActiveKey(null)
 
     const days = parseInt(value, 10)
     if (!days || days < 1) return
 
     const today = startOfDay(new Date())
-    const newRange = clampRange(
-      key === 'upTo'
-        ? { from: subDays(today, days - 1), to: today }
-        : { from: today, to: addDays(today, days - 1) }
-    )
+    const newRange = clampRange({ from: subDays(today, days - 1), to: today })
     setTempRange(newRange)
     setMonth(newRange.from)
   }
 
   // Typing a date always makes it a custom range.
   const startCustomRange = () => {
-    setDayCounts(EMPTY_DAY_COUNTS)
-    setActiveKey(rangeModeKey)
+    setDaysUpToToday('')
+    setActiveKey(CUSTOM_RANGE_PRESET)
   }
 
   const handleFromInput = (from) => {
     startCustomRange()
     if (!from) {
-      setTempRange({ from: undefined, to: tempRange.to })
+      setTempRange(EMPTY_RANGE)
       return
     }
-    const to = tempRange.to && isAfter(from, tempRange.to) ? from : tempRange.to
+    const to =
+      !isSingleDay && !isAfter(from, tempRange.to) ? tempRange.to : from
     setTempRange({ from, to })
     setMonth(from)
   }
@@ -148,21 +132,22 @@ export const DateRangePanel = ({
       setTempRange({ from: tempRange.from, to: undefined })
       return
     }
-    const from =
-      !tempRange.from || isBefore(to, tempRange.from) ? to : tempRange.from
-    setTempRange({ from, to })
+    setTempRange({
+      from: isBefore(to, tempRange.from) ? to : tempRange.from,
+      to,
+    })
     setMonth(to)
   }
 
   const handleCalendarSelect = (selected, triggerDate) => {
-    setDayCounts(EMPTY_DAY_COUNTS)
+    setDaysUpToToday('')
 
     if (selectionMode !== 'range') {
       setTempRange(clampRange(expandToUnit(triggerDate, selectionMode)))
       return
     }
 
-    setActiveKey(rangeModeKey)
+    setActiveKey(CUSTOM_RANGE_PRESET)
     const isSelectingEnd = tempRange.from && !tempRange.to
     // click outside an in-progress selection starts a new range.
     setTempRange(
@@ -173,37 +158,30 @@ export const DateRangePanel = ({
   }
 
   const handleConfirm = () => {
-    if (hasInvalidInput) return
+    if (hasInvalidInput || !tempRange.from) return
 
-    const from = tempRange.from ?? tempRange.to
-    if (!from) {
-      handleClear()
-      return
-    }
-
-    onConfirm({ from, to: tempRange.to ?? from })
+    onConfirm({ from: tempRange.from, to: tempRange.to ?? tempRange.from })
   }
 
   const handleClear = () => {
     setTempRange(EMPTY_RANGE)
-    setDayCounts(EMPTY_DAY_COUNTS)
+    setDaysUpToToday('')
     setActiveKey(null)
-    onClear()
+    setInputsKey((key) => key + 1)
   }
 
   return (
     <div className="date-range-component">
       <DateRangePresets
-        presets={presetList}
+        presets={presets}
         trailingPresets={trailingPresets}
-        dayCountKeys={dayCountKeys}
         isPresetActive={isPresetActive}
-        dayCounts={dayCounts}
+        daysUpToToday={daysUpToToday}
         onPresetSelect={handlePresetSelect}
-        onDayCountChange={handleDayCountChange}
+        onDaysUpToTodayChange={handleDaysUpToTodayChange}
       />
       <div className="date-range-main">
-        <div className="date-range-inputs">
+        <div className="date-range-inputs" key={inputsKey}>
           <DateInput
             label={t('Start date')}
             value={tempRange.from}
@@ -216,7 +194,7 @@ export const DateRangePanel = ({
           />
           {!isSingleDay && (
             <>
-              <span aria-hidden="true">{separator}</span>
+              <span aria-hidden="true">{t('until')}</span>
               <DateInput
                 label={t('End date')}
                 value={tempRange.to}
@@ -247,10 +225,7 @@ export const DateRangePanel = ({
           onClear={handleClear}
           onCancel={onCancel}
           onConfirm={handleConfirm}
-          confirmDisabled={
-            hasInvalidInput ||
-            (confirmRequiresDate && !tempRange.from && !tempRange.to)
-          }
+          confirmDisabled={hasInvalidInput || !tempRange.from}
         />
       </div>
     </div>

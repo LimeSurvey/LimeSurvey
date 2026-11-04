@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { isAfter, isBefore, isSameDay } from 'date-fns'
 import classNames from 'classnames'
 
+import { DATE_FORMAT } from 'helpers/dateRangeUtils'
+
 import { DateInput } from './DateInput'
 import { useDayPickerSetup } from './DateRangeCalendar'
 
@@ -13,7 +15,7 @@ export const DateRangePickerField = ({
   value,
   onChange,
   onOpenPicker,
-  dateFormat = 'MMM d, yyyy',
+  dateFormat = DATE_FORMAT,
   minDate = new Date('1900-01-01T00:00'),
   maxDate = new Date('2100-12-31T23:59'),
   className,

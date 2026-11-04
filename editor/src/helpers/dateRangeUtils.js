@@ -1,22 +1,17 @@
 import {
-  parseISO,
-  isValid,
-  isSameDay,
   startOfDay,
-  subDays,
   startOfWeek,
   endOfWeek,
-  subWeeks,
   startOfMonth,
   endOfMonth,
-  subMonths,
   startOfYear,
   endOfYear,
 } from 'date-fns'
 import * as dayPickerLocales from '@daypicker/react/locale'
 
 export const WEEK_STARTS_ON = 1
-export const EMPTY_DAY_COUNTS = { upTo: '', from: '' }
+export const DATE_FORMAT = 'MMM d, yyyy'
+export const CUSTOM_RANGE_PRESET = 'custom'
 
 // LimeSurvey language codes that don't map directly to a DayPicker locale export.
 const LOCALE_ALIASES = {
@@ -41,46 +36,9 @@ export const getDayPickerLocale = (language = 'en') => {
   return dayPickerLocales[match] ?? dayPickerLocales.enUS
 }
 
+// A preset with a `range` selects it; one with a `mode` changes what a calendar
+// click selects. The trailing ones sit below the days input.
 export const getPresets = () => {
-  const weekOptions = { weekStartsOn: WEEK_STARTS_ON }
-  const today = startOfDay(new Date())
-  const lastWeek = subWeeks(today, 1)
-  const lastMonth = subMonths(today, 1)
-
-  return [
-    { label: t('Today'), range: { from: today, to: today } },
-    {
-      label: t('Yesterday'),
-      range: { from: subDays(today, 1), to: subDays(today, 1) },
-    },
-    {
-      label: t('This week'),
-      range: {
-        from: startOfWeek(today, weekOptions),
-        to: endOfWeek(today, weekOptions),
-      },
-    },
-    {
-      label: t('Last week'),
-      range: {
-        from: startOfWeek(lastWeek, weekOptions),
-        to: endOfWeek(lastWeek, weekOptions),
-      },
-    },
-    {
-      label: t('This month'),
-      range: { from: startOfMonth(today), to: endOfMonth(today) },
-    },
-    {
-      label: t('Last month'),
-      range: { from: startOfMonth(lastMonth), to: endOfMonth(lastMonth) },
-    },
-  ]
-}
-
-// Statistics presets. A preset with a `mode` changes what a calendar click
-// selects.
-export const getStatisticsPresets = () => {
   const today = startOfDay(new Date())
 
   return {
@@ -91,9 +49,8 @@ export const getStatisticsPresets = () => {
       { key: 'year', label: t('Select year'), mode: 'year' },
     ],
     trailingPresets: [
-      { key: 'custom', label: t('Custom range'), mode: 'range' },
+      { key: CUSTOM_RANGE_PRESET, label: t('Custom range'), mode: 'range' },
     ],
-    dayCountKeys: ['upTo'],
   }
 }
 
@@ -112,18 +69,4 @@ export const expandToUnit = (date, mode) => {
     default:
       return { from: date, to: date }
   }
-}
-
-export const isSameRange = (a, b) =>
-  !!a?.from &&
-  !!a?.to &&
-  !!b?.from &&
-  !!b?.to &&
-  isSameDay(a.from, b.from) &&
-  isSameDay(a.to, b.to)
-
-export const toDate = (value) => {
-  if (!value) return undefined
-  const date = value instanceof Date ? value : parseISO(value)
-  return isValid(date) ? date : undefined
 }
