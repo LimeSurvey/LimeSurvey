@@ -416,12 +416,13 @@ class QuestionStatistics implements StatisticsChartInterface
         $attributes = $question['attributes'] ?? [];
         $mapService = (int) ($attributes['location_mapservice'] ?? 0);
         if (($question['type'] ?? null) === Question::QT_J_MAP) {
-            return $mapService ?: 100;
+            return $mapService === 1 ? 1 : 100;
         }
         $isBrowserDetection = ($question['question_theme_name'] ?? '') === 'browserdetect';
         $isTextarea = ($attributes['display_rows'] ?? '') !== '';
         if (($question['type'] ?? null) === Question::QT_S_SHORT_FREE_TEXT && !$isBrowserDetection && !$isTextarea) {
-            return $mapService;
+            // Only 1 and 100 render a map, any other value is a plain text input
+            return in_array($mapService, [1, 100], true) ? $mapService : 0;
         }
         return 0;
     }

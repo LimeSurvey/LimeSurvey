@@ -59,77 +59,90 @@ class QuestionStatisticsTest extends TestCase
         $this->assertSame(3, $browserDetectionPlan['data'][1]['value']());
     }
 
-    public function testMapTypeIsReportedAsMap(): void
+    /**
+     * @dataProvider mapServiceProvider
+     */
+    public function testMapServiceMetadata(array $question, int $expected): void
     {
         $statistics = new QuestionStatistics();
         (new ReflectionProperty($statistics, 'language'))->setValue($statistics, 'en');
         $chart = new StatisticsChartDTO('', [], [], null, [
-            'question' => [
-                'qid' => 80,
-                'gid' => 1,
-                'title' => 'Q80',
-                'type' => Question::QT_J_MAP,
-                'attributes' => [],
-            ],
+            'question' => $question + ['qid' => 80, 'gid' => 1, 'title' => 'Q80'],
         ]);
 
         (new ReflectionMethod($statistics, 'trimMeta'))->invoke($statistics, $chart);
 
-        // No map service set: defaults to OpenStreetMap (100)
-        $this->assertSame(100, $chart->getMeta()['question']['mapService']);
+        $this->assertSame($expected, $chart->getMeta()['question']['mapService']);
     }
 
-    public function testLegacyMapIsReportedAsMapAndBrowserDetectionIsNot(): void
+    public static function mapServiceProvider(): array
     {
-        $statistics = new QuestionStatistics();
-        (new ReflectionProperty($statistics, 'language'))->setValue($statistics, 'en');
-        $legacyMap = new StatisticsChartDTO('', [], [], null, [
-            'question' => [
-                'qid' => 81,
-                'gid' => 1,
-                'title' => 'Q81',
-                'type' => Question::QT_S_SHORT_FREE_TEXT,
-                'question_theme_name' => 'core',
-                'attributes' => ['location_mapservice' => '100'],
+        $shortText = Question::QT_S_SHORT_FREE_TEXT;
+        return [
+            'Map without a service falls back to OpenStreetMap' => [
+                ['type' => Question::QT_J_MAP, 'attributes' => []],
+                100,
             ],
-        ]);
-        $browserDetection = new StatisticsChartDTO('', [], [], null, [
-            'question' => [
-                'qid' => 82,
-                'gid' => 1,
-                'title' => 'Q82',
-                'type' => Question::QT_S_SHORT_FREE_TEXT,
-                'question_theme_name' => 'browserdetect',
-                'attributes' => ['location_mapservice' => '100'],
+            'Map with Google' => [
+                ['type' => Question::QT_J_MAP, 'attributes' => ['location_mapservice' => '1']],
+                1,
             ],
-        ]);
-        $trimMeta = new ReflectionMethod($statistics, 'trimMeta');
-
-        $trimMeta->invoke($statistics, $legacyMap);
-        $trimMeta->invoke($statistics, $browserDetection);
-
-        $this->assertSame(100, $legacyMap->getMeta()['question']['mapService']);
-        $this->assertSame(0, $browserDetection->getMeta()['question']['mapService']);
-    }
-
-    public function testShortTextShownAsTextareaIsNotReportedAsMap(): void
-    {
-        $statistics = new QuestionStatistics();
-        (new ReflectionProperty($statistics, 'language'))->setValue($statistics, 'en');
-        $chart = new StatisticsChartDTO('', [], [], null, [
-            'question' => [
-                'qid' => 83,
-                'gid' => 1,
-                'title' => 'Q83',
-                'type' => Question::QT_S_SHORT_FREE_TEXT,
-                'question_theme_name' => 'shortfreetext',
-                'attributes' => ['location_mapservice' => '100', 'display_rows' => '5'],
+            'Map with OpenStreetMap' => [
+                ['type' => Question::QT_J_MAP, 'attributes' => ['location_mapservice' => '100']],
+                100,
             ],
-        ]);
-
-        (new ReflectionMethod($statistics, 'trimMeta'))->invoke($statistics, $chart);
-
-        $this->assertSame(0, $chart->getMeta()['question']['mapService']);
+            'Short text with Google (old map question)' => [
+                [
+                    'type' => $shortText,
+                    'question_theme_name' => 'core',
+                    'attributes' => ['location_mapservice' => '1'],
+                ],
+                1,
+            ],
+            'Short text with OpenStreetMap (old map question)' => [
+                [
+                    'type' => $shortText,
+                    'question_theme_name' => 'shortfreetext',
+                    'attributes' => ['location_mapservice' => '100'],
+                ],
+                100,
+            ],
+            'Short text without a map service' => [
+                ['type' => $shortText, 'question_theme_name' => 'shortfreetext', 'attributes' => []],
+                0,
+            ],
+            'Short text with a legacy map service is not a map' => [
+                ['type' => $shortText, 'question_theme_name' => 'shortfreetext', 'attributes' => ['location_mapservice' => '2']],
+                0,
+            ],
+            'Map with an unknown map service falls back to OpenStreetMap' => [
+                ['type' => Question::QT_J_MAP, 'attributes' => ['location_mapservice' => '2']],
+                100,
+            ],
+            'Browser detection is not a map' => [
+                [
+                    'type' => $shortText,
+                    'question_theme_name' => 'browserdetect',
+                    'attributes' => ['location_mapservice' => '100'],
+                ],
+                0,
+            ],
+            'Short text shown as a textarea is not a map' => [
+                [
+                    'type' => $shortText,
+                    'question_theme_name' => 'shortfreetext',
+                    'attributes' => ['location_mapservice' => '100', 'display_rows' => '5'],
+                ],
+                0,
+            ],
+            'Other question types are not maps' => [
+                [
+                    'type' => Question::QT_N_NUMERICAL,
+                    'attributes' => ['location_mapservice' => '100'],
+                ],
+                0,
+            ],
+        ];
     }
 
     private function buildPlan(
