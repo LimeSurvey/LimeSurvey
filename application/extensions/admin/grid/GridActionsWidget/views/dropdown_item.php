@@ -20,7 +20,8 @@ $isAction = empty($url) || $url === '#' || stripos((string) $url, 'javascript:')
     || in_array($linkAttributes['data-bs-toggle'] ?? null, ['modal', 'offcanvas', 'collapse', 'dropdown', 'tab', 'pill', 'button'], true)
     || isset($linkAttributes['onclick'])
     || isset($linkAttributes['data-post-url']);
-$role = $linkAttributes['role'] ?? ($isAction ? 'button' : null);
+// Disabled items lose their href in rowLink.js, so navigation items need an explicit link role
+$role = $linkAttributes['role'] ?? ($isAction ? 'button' : ($enabledCondition ? null : 'link'));
 unset($linkAttributes['role']);
 ?>
 <div data-bs-toggle="tooltip" title="<?= $encodeAttribute($tooltip ?? '') ?>">
