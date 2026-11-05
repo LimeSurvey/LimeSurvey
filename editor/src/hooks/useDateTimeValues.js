@@ -41,6 +41,7 @@ export function useDateTimeValues(
         decrypt
       ),
     enabled: enabled && !!surveyId && !!qid,
+    retry: false,
   })
 
   return { values: data, isLoading, isError }

@@ -195,7 +195,10 @@ export class StatisticsService {
     decrypt = false
   ) => {
     return await this.restClient.get(
-      `statistics-date-values/${sid}?qid=${qid}&${buildStatisticsFilterQuery(filters)}${filterSetQuery(filterSet)}${decrypt ? '&decrypt=1' : ''}`
+      `statistics-date-values/${sid}?qid=${qid}&${buildStatisticsFilterQuery(filters)}${filterSetQuery(filterSet)}${decrypt ? '&decrypt=1' : ''}`,
+      {},
+      undefined,
+      true
     )
   }
 
