@@ -184,13 +184,14 @@ class ParticipantAttributeName extends LSActiveRecord
 
     /**
      * Checks whether an attribute name (default name or translation) is empty or contains only whitespace.
+     * Tags are stripped first, as the strip_tags filter in rules() does on save, so markup-only input counts as blank.
      *
-     * @param string|null $name The name to check
+     * @param string|null $name The name to check, as submitted or as stored
      * @return bool True if the name can't identify the attribute
      */
     public static function isBlankName($name)
     {
-        return trim((string) $name) === '';
+        return trim(strip_tags((string) $name)) === '';
     }
 
     /**
