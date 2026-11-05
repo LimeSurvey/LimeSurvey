@@ -1000,7 +1000,14 @@ class ParticipantsAction extends SurveyCommonAction
             and it's associated lime_participant_attribute_names_lang table
             for each NEW attribute being created in this import process */
             foreach ($newarray as $key => $value) {
-                if (!is_scalar($value) || in_array(strtolower((string) $value), $participantColumns)) {
+                // Trimmed like the CSV header line parsed below
+                $csvFieldName = trim((string) $key);
+                // Neither the attribute name nor the CSV field it is filled from may be a core participant column
+                if (
+                    !is_scalar($value)
+                    || in_array(strtolower((string) $value), $participantColumns)
+                    || in_array(strtolower($csvFieldName), $participantColumns)
+                ) {
                     continue;
                 }
                 $aData = array('attribute_type' => 'TB', 'defaultname' => $value, 'visible' => 'FALSE');
@@ -1009,9 +1016,8 @@ class ParticipantsAction extends SurveyCommonAction
                 in the $mappedarray string, with the CSV field name (not the attribute name
                 the user may have typed), since that is what the CSV columns are matched against.
                 For example, if the new attribute has attribute_id of 35 and is created from
-                the CSV field "gender", $mappedarray['35']='gender'.
-                Trimmed like the CSV header line parsed below */
-                $mappedarray[$insertid] = trim((string) $key);
+                the CSV field "gender", $mappedarray['35']='gender' */
+                $mappedarray[$insertid] = $csvFieldName;
             }
         }
         if (!isset($uploadcharset)) {
