@@ -1009,8 +1009,9 @@ class ParticipantsAction extends SurveyCommonAction
                 in the $mappedarray string, with the CSV field name (not the attribute name
                 the user may have typed), since that is what the CSV columns are matched against.
                 For example, if the new attribute has attribute_id of 35 and is created from
-                the CSV field "gender", $mappedarray['35']='gender' */
-                $mappedarray[$insertid] = $key;
+                the CSV field "gender", $mappedarray['35']='gender'.
+                Trimmed like the CSV header line parsed below */
+                $mappedarray[$insertid] = trim((string) $key);
             }
         }
         if (!isset($uploadcharset)) {
