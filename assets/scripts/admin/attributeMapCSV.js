@@ -154,9 +154,12 @@ $(document).on('ready pjax:scriptcomplete', function() {
                 containment: $('.draggable-container'),
                 opacity: 0.75,
                 stop: function(event, ui) {
-                    // ui.helper, ui.position, .ui.offset
-                    console.ls.log(col);
-                    col.find('.fa-arrows-h').remove();
+                    // Invalid drop: The field reverted and stays mapped to this attribute
+                    if ($.contains(document.documentElement, this)) {
+                        return;
+                    }
+                    // Dropped elsewhere: Remove the arrow and the empty wrapper, and accept a new field again
+                    col.find('.csvatt-arrow').remove();
                     col.next().remove();
                     $(that).droppable('enable');
                 }
