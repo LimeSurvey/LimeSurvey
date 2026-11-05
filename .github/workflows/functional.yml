@@ -44,9 +44,9 @@ jobs:
           - security
           - api
         exclude:
-          - php-versions: '8.1'
+          - php-versions: '8.2'
             db-type: 'pgsql'
-          - php-versions: '8.1'
+          - php-versions: '8.2'
             db-type: 'mssql'
     # Env vars for this job
     env:
