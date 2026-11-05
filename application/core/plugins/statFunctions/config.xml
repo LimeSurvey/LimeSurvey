@@ -15,6 +15,7 @@
             <li>statCount(QuestionCode.sgqa[, submitted = true][, self = true])</li>
             </ul>
 ]]></description>
+        <category>expressions</category>
     </metadata>
 
     <compatibility>

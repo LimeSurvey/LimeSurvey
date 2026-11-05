@@ -11,6 +11,7 @@
         <version>1.0.2</version>
         <license>GPL</license>
         <description><![CDATA[Adds SEED and other database variable in ExpressionScript Engine. <a href="https://www.limesurvey.org/manual/ExpressionFixedDbVar_plugin">More information in LimeSurvey manual.</a>]]></description>
+        <category>expressions</category>
     </metadata>
 
     <compatibility>

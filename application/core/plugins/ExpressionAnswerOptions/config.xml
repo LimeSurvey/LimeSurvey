@@ -12,6 +12,7 @@
         <version>0.2.1</version>
         <license>GNU General Public License version 3 or later</license>
         <description><![CDATA[Expression Script: make answer option text available; see settings for documentation and usage.]]></description>
+        <category>expressions</category>
     </metadata>
 
     <compatibility>

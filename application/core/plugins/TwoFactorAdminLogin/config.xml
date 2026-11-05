@@ -12,6 +12,7 @@
         <license>GNU General Public License version 2 or later</license>
         <description><![CDATA[Use a TOTP based 2 factor authentication on logging in into the admin portal.]]></description>
         <supportUrl>https://www.limesurvey.org</supportUrl>
+        <category>authentication</category>
     </metadata>
     <compatibility>
         <version>7.0</version>

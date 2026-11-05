@@ -11,6 +11,7 @@
         <version>1.0.1</version>
         <license>MIT</license>
         <description><![CDATA[Numeric, non-ambiguous or CAPITAL tokens]]></description>
+        <category>participants</category>
     </metadata>
 
     <compatibility>

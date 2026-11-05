@@ -44,6 +44,10 @@ $sort->attributes   = [
         'desc' => 'active desc',
         'default' => 'desc',
     ],
+    'type' => [
+        'asc' => 'categoryLabel',
+        'desc' => 'categoryLabel desc',
+    ],
 ];
 $sort->defaultOrder = [
     'name' => CSort::SORT_ASC,
@@ -68,6 +72,14 @@ $dataProvider = new CArrayDataProvider($plugins, $providerOptions);
 
 $gridColumns = [
     [
+        'header' => gT('Status'),
+        'type' => 'raw',
+        'name' => 'status',
+        'value' => '$data->getStatus(false, "fs-3")',
+        'headerHtmlOptions' => ['class' => 'text-center'],
+        'htmlOptions' => ['class' => 'text-center'],
+    ],
+    [
         'header' => gT('Plugin'),
         'name' => 'name',
         'type' => 'html',
@@ -81,12 +93,10 @@ $gridColumns = [
         'htmlOptions' => ['class' => 'can-contain-link'],
     ],
     [
-        'header' => gT('Status'),
-        'type' => 'raw',
-        'name' => 'status',
-        'value' => '$data->getStatus(false, "fs-3")',
-        'headerHtmlOptions' => ['class' => 'text-center'],
-        'htmlOptions' => ['class' => 'text-center'],
+        'header' => gT('Type'),
+        'name' => 'type',
+        'type' => 'text',
+        'value' => '$data->getCategoryLabel()',
     ],
     [
         'header'            => gT('Action'),

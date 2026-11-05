@@ -11,6 +11,7 @@
         <version>1.0.0</version>
         <license>GNU General Public License version 2 or later</license>
         <description><![CDATA[Core: CAPTCHA types for survey access, registration and save/load - the accessible ALTCHA proof-of-work CAPTCHA and the classic image CAPTCHA]]></description>
+        <category>captcha</category>
     </metadata>
 
     <compatibility>

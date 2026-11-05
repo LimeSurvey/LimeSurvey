@@ -98,6 +98,16 @@ class ExtensionConfig
     }
 
     /**
+     * Get the category of the extension (metadata element "category"), e.g. "authentication" or "captcha" for plugins.
+     *
+     * @return string Empty when not set
+     */
+    public function getCategory()
+    {
+        return trim((string) $this->xml->metadata->category);
+    }
+
+    /**
      * @return string
      */
     public function getAuthor()

@@ -11,6 +11,7 @@
         <version>1.0.0</version>
         <license>GNU General Public License version 2 or later</license>
         <description><![CDATA[Core: Activate Editor]]></description>
+        <category>editor</category>
     </metadata>
 
     <compatibility>
