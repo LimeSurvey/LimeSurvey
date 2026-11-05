@@ -110,17 +110,13 @@
                 {% if aSurveyInfo.aLoadForm.aCaptcha.show %}
                     <!-- Captcha -->
                     <div class='{{ aSurveyInfo.class.captcharow }} mb-3' {{ aSurveyInfo.attr.captcharow }}>
-                        <label class='{{ aSurveyInfo.class.captcharowlabel }} control-label'  {{ aSurveyInfo.attr.captcharowlabel }}>
-                            {{ gT("Security question") }}
+                        {% if aSurveyInfo.aLoadForm.aCaptcha.label %}
+                        <label class='{{ aSurveyInfo.class.captcharowlabel }} control-label' {% if aSurveyInfo.aLoadForm.aCaptcha.inputId %}for="{{ aSurveyInfo.aLoadForm.aCaptcha.inputId }}"{% endif %}>
+                            {{ aSurveyInfo.aLoadForm.aCaptcha.label }}
                         </label>
-                        <div class='{{ aSurveyInfo.class.captcharowcol }}' {{ aSurveyInfo.attr.captcharowcol }}>
-                            <div class='{{ aSurveyInfo.class.captcharowcoldiv }}' {{ aSurveyInfo.attr.captcharowcoldiv }}>
-                                <span class='{{ aSurveyInfo.class.captcharowcoldivdiv }}  ls-important-field' {{ aSurveyInfo.attr.captcharowcoldivdiv }} >
-                                    <img src="{{ aSurveyInfo.aLoadForm.aCaptcha.sImageUrl }}" {{ aSurveyInfo.attr.captcharowcoldivdivimg }} />
-                                </span>
-                                <input id="{{ aSurveyInfo.id.captcharowcoldivinput }}" class='{{ aSurveyInfo.class.captcharowcoldivinput }}   form-control ls-important-field' {{ aSurveyInfo.attr.captcharowcoldivinput }} placeholder="{{ gT("Enter result here - numbers only") }}"/>
-                            </div>
-                        </div>
+                        {% endif %}
+                        {# The markup (image, widget, input) comes from the CAPTCHA plugin selected for the survey #}
+                        {{ aSurveyInfo.aLoadForm.aCaptcha.html }}
                     </div>
                 {% endif %}
                     <div class="row button-row">

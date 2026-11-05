@@ -11,6 +11,7 @@
         <version>1.0.1</version>
         <license>GNU General Public License version 2 or later</license>
         <description><![CDATA[Core: Export survey results to a STATA xml file]]></description>
+        <category>export</category>
     </metadata>
 
     <compatibility>

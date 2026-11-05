@@ -11,6 +11,7 @@
         <version>1.0.0</version>
         <license>MIT</license>
         <description><![CDATA[Force sender, From etc … to be the mail set for sending email. Some SMTP server need smtp user as From and Return-Path.]]></description>
+        <category>email</category>
     </metadata>
 
     <compatibility>

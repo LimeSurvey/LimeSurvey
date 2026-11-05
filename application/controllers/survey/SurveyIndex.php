@@ -478,16 +478,9 @@ class SurveyIndex extends CAction
             // Not called if scid is set in GET params (when using email save/reload reminder URL)
             // && Yii::app()->request->isPostRequest ?
             if ($oSurvey->isCaptchaEnabled('saveandloadscreen') && is_null(Yii::app()->request->getQuery('scid'))) {
-                $sLoadSecurity = Yii::app()->request->getPost('loadsecurity');
-
-                if (empty($sLoadSecurity)) {
-                    $aLoadErrorMsg['captchaempty'] = gT("You did not answer to the security question.");
-                } elseif (
-                    !Yii::app()->request->getPost('loadsecurity')
-                    || !isset($_SESSION['responses_' . $surveyid]['secanswer'])
-                    || Yii::app()->request->getPost('loadsecurity') != $_SESSION['responses_' . $surveyid]['secanswer']
-                ) {
-                    $aLoadErrorMsg['captcha'] = gT("The answer to the security question is incorrect.");
+                $captchaService = new \LimeSurvey\Models\Services\CaptchaService();
+                if (!$captchaService->validate($oSurvey, \LimeSurvey\Models\Services\CaptchaService::SCREEN_SAVE_AND_LOAD)) {
+                    $aLoadErrorMsg['captcha'] = $captchaService->getErrorMessage();
                 }
             }
 
@@ -535,8 +528,7 @@ class SurveyIndex extends CAction
             $SurveyRuntimeHelper->saveAllIfNeeded();
 
             if ($oSurvey->isCaptchaEnabled('saveandloadscreen')) {
-                $aLoadForm['aCaptcha']['show'] = true;
-                $aLoadForm['aCaptcha']['sImageUrl'] = Yii::app()->getController()->createUrl('/verification/image', ['sid' => $surveyid]);
+                $aLoadForm['aCaptcha'] = (new \LimeSurvey\Models\Services\CaptchaService())->render($oSurvey, \LimeSurvey\Models\Services\CaptchaService::SCREEN_SAVE_AND_LOAD);
             }
 
             if (!empty($clienttoken)) {

@@ -133,6 +133,7 @@ class SurveysGroupCreatorTest extends TestCase
             'tokenanswerspersistence',
             'assessments',
             'usecaptcha',
+            'captchatype',
             'bounce_email',
             'attributedescriptions',
             'emailresponseto',

@@ -37,6 +37,11 @@ class Plugin extends LSActiveRecord
     public $plugin_type;
 
     /**
+     * @var string|null Category label read from the config.xml, see getCategoryLabel()
+     */
+    private $cachedCategoryLabel = null;
+
+    /**
      * @inheritdoc
      */
     public function init()
@@ -283,6 +288,53 @@ class Plugin extends LSActiveRecord
         // Harden for XSS
         $filter = LSYii_HtmlPurifier::getXssPurifier();
         return $filter->purify($config->getDescription());
+    }
+
+    /**
+     * Translated labels of the plugin categories a plugin can declare in its config.xml (metadata element "category").
+     *
+     * @return array<string, string> Category => label, plain text (not HTML escaped)
+     */
+    public static function getCategoryLabels()
+    {
+        return [
+            'authentication' => gT('Authentication', 'unescaped'),
+            'captcha' => gT('CAPTCHA', 'unescaped'),
+            'compatibility' => gT('Compatibility', 'unescaped'),
+            'editor' => gT('Editor', 'unescaped'),
+            'email' => gT('Email', 'unescaped'),
+            'export' => gT('Export', 'unescaped'),
+            'expressions' => gT('Expressions', 'unescaped'),
+            'participants' => gT('Participants', 'unescaped'),
+            'security' => gT('Security', 'unescaped'),
+            'updates' => gT('Updates', 'unescaped'),
+        ];
+    }
+
+    /**
+     * Type of the plugin as shown in the plugin list, from the category in its config.xml.
+     *
+     * Read once per plugin, the plugin list sorts by it.
+     *
+     * @return string Translated label of a known category, the category as given for others, "Other" when none is set
+     *                or the config.xml cannot be read; plain text, the plugin list encodes it
+     */
+    public function getCategoryLabel()
+    {
+        if ($this->cachedCategoryLabel === null) {
+            try {
+                $category = $this->getExtensionConfig()->getCategory();
+            } catch (\Throwable $ex) {
+                $category = '';
+            }
+            $labels = self::getCategoryLabels();
+            if ($category === '') {
+                $this->cachedCategoryLabel = gT('Other', 'unescaped');
+            } else {
+                $this->cachedCategoryLabel = $labels[strtolower($category)] ?? $category;
+            }
+        }
+        return $this->cachedCategoryLabel;
     }
 
     /**

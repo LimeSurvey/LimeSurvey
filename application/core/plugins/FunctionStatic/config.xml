@@ -12,6 +12,7 @@
         <version>0.1.0</version>
         <license>GNU General Public License version 3 or later</license>
         <description><![CDATA[The function is used to return a static value of any expression : {getStatic(expression)}.]]></description>
+        <category>expressions</category>
     </metadata>
 
     <compatibility>

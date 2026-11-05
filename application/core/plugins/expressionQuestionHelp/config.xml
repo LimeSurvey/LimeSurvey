@@ -11,6 +11,7 @@
         <version>1.0.1</version>
         <license>GPL</license>
         <description><![CDATA[Add QCODE.help for expression Manager. <a href="https://www.limesurvey.org/manual/ExpressionQuestionHelp_plugin">More information on LimeSurvey manual.</a>]]></description>
+        <category>expressions</category>
     </metadata>
 
     <compatibility>

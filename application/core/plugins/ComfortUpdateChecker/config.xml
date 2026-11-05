@@ -13,6 +13,7 @@
         <license>GNU General Public License version 2 or later</license>
         <description><![CDATA[Checks if a new update is available in ComfortUpdate]]></description>
         <supportUrl>https://www.limesurvey.org</supportUrl>
+        <category>updates</category>
     </metadata>
     <compatibility>
         <version>7.0</version>

@@ -10,6 +10,7 @@
         <version>1.0.0</version>
         <license>GNU General Public License version 2 or later</license>
         <description><![CDATA[Use the ExtensionLibrary to check for extension updates.]]></description>
+        <category>updates</category>
     </metadata>
 
     <compatibility>

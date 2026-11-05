@@ -1762,6 +1762,7 @@ class LsDefaultDataSets
             $addRow('ComfortUpdateChecker', 1),
             $addRow('Authdb', 1),
             $addRow('ReactEditor', 1, '1.0.0', 0),
+            $addRow('CoreCaptcha', 1),
             // Inactive plugins below.
             $addRow('AuthLDAP'),
             $addRow('AuditLog'),

@@ -25,7 +25,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         'printanswers', 'publicgraphs', 'publicstatistics', 'questionindex', 'refurl',
         'savetimings', 'sendconfirmation', 'showgroupinfo', 'shownoanswer', 'preselectnoanswer', 'showprogress', 'showqnumcode',
         'showwelcome', 'showxquestions', 'template', 'tokenanswerspersistence', 'tokenlength', 'usecookie',
-        'savequotaexit'
+        'savequotaexit', 'captchatype'
     ];
 
     private TransformerOutputSurvey $transformerSurvey;

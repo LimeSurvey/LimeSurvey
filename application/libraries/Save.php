@@ -79,8 +79,7 @@ class Save
         /* Construction of the form */
         $aSaveForm['aCaptcha']['show'] = false;
         if ($survey->isCaptchaEnabled('saveandloadscreen')) {
-            $aSaveForm['aCaptcha']['show'] = true;
-            $aSaveForm['aCaptcha']['sImageUrl'] = Yii::app()->getController()->createUrl('/verification/image', array('sid' => $iSurveyId));
+            $aSaveForm['aCaptcha'] = (new \LimeSurvey\Models\Services\CaptchaService())->render($survey, \LimeSurvey\Models\Services\CaptchaService::SCREEN_SAVE_AND_LOAD);
         }
 
         $aSaveForm['sHiddenField'] = CHtml::hiddenField('thisstep', $thisstep);
@@ -149,12 +148,9 @@ class Save
 
         // Check captcha
         if ($survey->isCaptchaEnabled('saveandloadscreen')) {
-            if (
-                !Yii::app()->request->getPost('loadsecurity')
-                || !isset($_SESSION['responses_' . $surveyid]['secanswer'])
-                || Yii::app()->request->getPost('loadsecurity') != $_SESSION['responses_' . $surveyid]['secanswer']
-            ) {
-                $this->aSaveErrors[] = gT("The answer to the security question is incorrect.");
+            $captchaService = new \LimeSurvey\Models\Services\CaptchaService();
+            if (!$captchaService->validate($survey, \LimeSurvey\Models\Services\CaptchaService::SCREEN_SAVE_AND_LOAD)) {
+                $this->aSaveErrors[] = $captchaService->getErrorMessage();
             }
         }
         $this->launchSaveFormEvent($surveyid, 'validate');

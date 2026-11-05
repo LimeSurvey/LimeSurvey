@@ -11,6 +11,7 @@
         <version>1.0.1</version>
         <license>GNU General Public License version 2 or later</license>
         <description><![CDATA[Old url (pre-2.0) compatible system]]></description>
+        <category>compatibility</category>
     </metadata>
 
     <compatibility>

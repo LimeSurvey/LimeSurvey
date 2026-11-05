@@ -1,34 +1,35 @@
 <?php
 
 /**
- * CCaptcha class file.
+ * Widget behind the deprecated twig function renderCaptcha() (see LS_Twig_Extension::renderCaptcha()).
  *
  * @author LimeSurvey GmbH <info@limesurvey.org>
  * @link http://www.limesurvey.org/
- * @copyright 2008-2018 LimeSurvey GmbH
+ * @copyright 2008-2026 LimeSurvey GmbH
  * @license GPLv3
+ * @deprecated The CAPTCHA markup comes from the CAPTCHA plugin selected for the survey (see
+ *             LimeSurvey\Models\Services\CaptchaService); survey themes get it from aSurveyInfo.
  */
-
-class LSCaptcha extends CCaptcha
+class LSCaptcha extends CWidget
 {
-    public function renderOut()
-    {
-        $html = $this->renderImage();
-        return $html;
-    }
+    /**
+     * @var string Not used any more, kept so existing callers that pass it keep working
+     */
+    public $captchaAction = 'captcha';
 
     /**
-     * Renders the CAPTCHA image.
+     * @var string|null Markup of the CAPTCHA plugin, set by the twig function renderCaptcha()
      */
-    protected function renderImage()
-    {
-        if (!isset($this->imageOptions['id'])) {
-                    $this->imageOptions['id'] = $this->getId();
-        }
-        $this->imageOptions['class'] = "img-fluid";
+    public $prerenderedHtml = null;
 
-        $url = $this->getController()->createUrl($this->captchaAction, array('v' => uniqid()));
-        $alt = $this->imageOptions['alt'] ?? gT('Image showing the equation to solve', 'unescaped');
-        return CHtml::image($url, $alt, $this->imageOptions);
+    /**
+     * Get the CAPTCHA markup of the survey's CAPTCHA plugin; nothing when no CAPTCHA was rendered,
+     * so no CAPTCHA is shown that would not be validated.
+     *
+     * @return string
+     */
+    public function renderOut()
+    {
+        return $this->prerenderedHtml ?? '';
     }
 }

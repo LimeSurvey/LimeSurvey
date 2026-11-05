@@ -12,6 +12,7 @@
         <version>1.1.1</version>
         <license>GNU General Public License version 2 or later</license>
         <description><![CDATA[Core: Password requirement settings]]></description>
+        <category>security</category>
     </metadata>
 
     <compatibility>

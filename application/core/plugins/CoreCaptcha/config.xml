@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <metadata>
+        <name>CoreCaptcha</name>
+        <type>plugin</type>
+        <plugin_type>core</plugin_type>
+        <creationDate>2026-11-04</creationDate>
+        <lastUpdate>2026-11-04</lastUpdate>
+        <author>LimeSurvey GmbH</author>
+        <authorUrl>https://www.limesurvey.org</authorUrl>
+        <version>1.0.0</version>
+        <license>GNU General Public License version 2 or later</license>
+        <description><![CDATA[Core: CAPTCHA types for survey access, registration and save/load - the accessible ALTCHA proof-of-work CAPTCHA and the classic image CAPTCHA]]></description>
+        <category>captcha</category>
+    </metadata>
+
+    <compatibility>
+        <version>7.0</version>
+    </compatibility>
+
+    <updaters disabled="disabled">
+    </updaters>
+</config>

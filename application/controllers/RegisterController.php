@@ -177,12 +177,9 @@ class RegisterController extends LSYii_Controller
 
         // Check the security question's answer
         if ($oSurvey->isCaptchaEnabled('registrationscreen')) {
-            $sLoadSecurity = App()->request->getPost('loadsecurity', '');
-            $captcha = App()->getController()->createAction("captcha");
-            $captchaCorrect = $captcha->validate($sLoadSecurity, false);
-
-            if (!$captchaCorrect) {
-                $this->aRegisterErrors[] = gT("Your answer to the security question was not correct - please try again.");
+            $captchaService = new \LimeSurvey\Models\Services\CaptchaService();
+            if (!$captchaService->validate($oSurvey, \LimeSurvey\Models\Services\CaptchaService::SCREEN_REGISTRATION)) {
+                $this->aRegisterErrors[] = $captchaService->getErrorMessage();
             }
         }
 
@@ -288,6 +285,9 @@ class RegisterController extends LSYii_Controller
         $aData['aAttribute'] = $aFieldValue['aAttribute'];
         $aData['aExtraAttributes'] = $aRegisterAttributes;
         $aData['bCaptcha'] = $oSurvey->isCaptchaEnabled('registrationscreen');
+        $aData['captcha'] = $aData['bCaptcha']
+            ? (new \LimeSurvey\Models\Services\CaptchaService())->render($oSurvey, \LimeSurvey\Models\Services\CaptchaService::SCREEN_REGISTRATION)
+            : null;
         $aData['sRegisterFormUrl'] = App()->createUrl('register/index', array('sid' => $iSurveyId));
 
         $aData['formAdditions'] = '';

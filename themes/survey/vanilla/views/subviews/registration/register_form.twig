@@ -99,18 +99,11 @@
         {# Captcha box #}
         {% if aSurveyInfo.bCaptcha %}
             <div class="{{ aSurveyInfo.class.registerformcaptcha }} mb-3" {{ aSurveyInfo.attr.maincolformdivb }}>
-                <label class='{{ aSurveyInfo.class.registerformcaptchalabel }} control-label ' {{ aSurveyInfo.attr.registerformcaptchalabel }} >{{ gT("Please solve the following equation:") }} {{ include('./subviews/registration/required.twig') }}</label>
-                <div class="row" {{ aSurveyInfo.attr.registerformcaptchadiv }}>
-                    <div class="{{ aSurveyInfo.class.registerformcaptchadivb }} col-2" {{ aSurveyInfo.attr.registerformcaptchadivb }}>
-                            {{ renderCaptcha().renderOut() }}
-                    </div>
-                    <div class="{{ aSurveyInfo.class.registerformcaptchadivc }} col-1 align-self-center" {{ aSurveyInfo.attr.registerformcaptchadivc }}>
-                        <button type="button" class="btn btn-sm btn-outline-secondary" id="reloadCaptcha" title="{{ gT("Reload captcha") }}" aria-label="{{ gT("Reload captcha") }}" data-bs-toggle="captcha"><i class="fa fa-refresh" aria-hidden="true"></i></button>
-                    </div>
-                    <div class="col-9 align-self-center">
-                        <input class='form-control {{ aSurveyInfo.class.registerformcaptchainput }}' {{ aSurveyInfo.attr.registerformcaptchainput }}>
-                    </div>
-                </div>
+                {% if aSurveyInfo.captcha.label %}
+                <label class='{{ aSurveyInfo.class.registerformcaptchalabel }} control-label ' {% if aSurveyInfo.captcha.inputId %}for="{{ aSurveyInfo.captcha.inputId }}"{% endif %}>{{ aSurveyInfo.captcha.label }} {{ include('./subviews/registration/required.twig') }}</label>
+                {% endif %}
+                {# The markup (image, widget, input) comes from the CAPTCHA plugin selected for the survey #}
+                {{ aSurveyInfo.captcha.html }}
             </div>
         {% endif %}
 

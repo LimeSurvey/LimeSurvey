@@ -740,6 +740,7 @@ class PluginManager extends \CApplicationComponent
             'AzureOAuthSMTP',
             'GoogleOAuthSMTP',
             'ReactEditor',
+            'CoreCaptcha',
         ];
     }
 

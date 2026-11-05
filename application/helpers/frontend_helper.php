@@ -1373,6 +1373,7 @@ function getRenderWay($renderToken, $renderCaptcha)
  * @param string $sTemplateViewPath
  * @param array $aEnterTokenData
  * @param int $surveyid
+ * @param array|null $aSurveyInfo Survey info array, loaded when not given
  * @return void
  */
 function renderRenderWayForm($renderWay, array $scenarios, $sTemplateViewPath, $aEnterTokenData, $surveyid, $aSurveyInfo = null)
@@ -1385,10 +1386,10 @@ function renderRenderWayForm($renderWay, array $scenarios, $sTemplateViewPath, $
             $aForm['token']           = array_key_exists('token', $aEnterTokenData) ? $aEnterTokenData['token'] : null;
             $aForm['aEnterErrors']    = $aEnterTokenData['aEnterErrors'];
             $aForm['bCaptchaEnabled'] = $aEnterTokenData['bCaptchaEnabled'] ?? '';
-            if ($aForm['bCaptchaEnabled']) {
-                Yii::app()->getController()->createAction('captcha');
-            }
             $oSurvey = Survey::model()->findByPk($surveyid);
+            if ($aForm['bCaptchaEnabled']) {
+                $aForm['captcha'] = (new \LimeSurvey\Models\Services\CaptchaService())->render($oSurvey, \LimeSurvey\Models\Services\CaptchaService::SCREEN_SURVEY_ACCESS);
+            }
             if (empty($aSurveyInfo)) {
                 $aSurveyInfo  =  getsurveyinfo($surveyid, App()->getLanguage());
             }
