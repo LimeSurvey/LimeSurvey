@@ -20,7 +20,15 @@ import {
 
 const CustomizedLabel = ({ x, y, stroke, value, isPercentage }) => {
   return (
-    <text x={x} y={y} dy={-4} fill={stroke} fontSize={10} textAnchor="middle">
+    <text
+      x={x}
+      y={y}
+      dy={-6}
+      fill={stroke}
+      fontSize={10}
+      fontWeight={500}
+      textAnchor="middle"
+    >
       {isPercentage ? `${Math.round(value)}%` : value}
     </text>
   )

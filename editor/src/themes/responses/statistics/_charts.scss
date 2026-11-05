@@ -295,6 +295,23 @@
     }
   }
 
+  .recharts-cartesian-axis-tick {
+    .recharts-cartesian-axis-tick-value,
+    .responses-statistics-chart-labels {
+      font-family: $ibm-font-family;
+      font-size: $font-size-xxs;
+      font-weight: $font-weight-500;
+      fill: $g-900;
+      color: $g-900;
+    }
+  }
+
+  .responses-statistics-bar-chart
+    .recharts-label-list
+    .responses-statistics-chart-labels {
+    font-size: $font-size-xxs;
+  }
+
   .responses-statistics-table-image {
     @include chart-image;
     max-width: 100px;

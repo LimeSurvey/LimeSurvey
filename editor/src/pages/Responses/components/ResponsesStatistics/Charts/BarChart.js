@@ -223,7 +223,7 @@ export const BarChart = ({
               <LabelList
                 dataKey={dataKey}
                 position={isHorizontal ? 'right' : 'top'}
-                offset={8}
+                offset={2}
                 formatter={formatBarValue}
                 className="responses-statistics-chart-labels"
               />
