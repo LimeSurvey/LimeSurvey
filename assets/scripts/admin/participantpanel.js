@@ -437,6 +437,134 @@ LS.CPDB = (function() {
         if(!$('#export').hasClass('d-none')){
             $('#export').addClass('d-none');
         }
+
+        bindAttributeEditModal();
+    },
+
+    /**
+     * Binds the controls of the Add/Edit attribute modal (dropdown fields and languages).
+     * The modal content is loaded via Ajax, so the listeners are delegated from the modal element,
+     * which stays in the page. Bound only once per modal element, as the panel bindings run on every pjax load.
+     * @return void
+     */
+    bindAttributeEditModal = function() {
+        let modal = document.querySelector(baseModal);
+        if (!modal || modal.dataset.attributeEditBound) {
+            return;
+        }
+        modal.dataset.attributeEditBound = '1';
+
+        modal.addEventListener('change', function(event) {
+            if (event.target.id === 'ParticipantAttributeName_attribute_type') {
+                let dropdownEdit = modal.querySelector('#ParticipantAttributeNamesDropdownEdit');
+                if (dropdownEdit) {
+                    dropdownEdit.style.display = event.target.value === 'DD' ? '' : 'none';
+                }
+            }
+        });
+
+        modal.addEventListener('click', function(event) {
+            let button = event.target.closest('button');
+            if (!button || !modal.contains(button)) {
+                return;
+            }
+            if (button.id === 'addDropdownField') {
+                event.preventDefault();
+                addAttributeDropdownField(modal);
+            } else if (button.classList.contains('action_delDropdownField')) {
+                event.preventDefault();
+                button.closest('div.control-group').remove();
+            } else if (button.id === 'addLanguageField') {
+                event.preventDefault();
+                addAttributeLanguageField(modal);
+            } else if (button.classList.contains('action_delLanguageField')) {
+                event.preventDefault();
+                deleteAttributeLanguage(modal, button.closest('div.ex-form-group'));
+            } else if (button.classList.contains('action_delNewLanguageField')) {
+                event.preventDefault();
+                button.closest('div.ex-form-group').remove();
+            }
+        });
+    },
+
+    /**
+     * Adds an empty dropdown field to the Add/Edit attribute modal, copied from the hidden template.
+     * @param {HTMLElement} modal - The modal containing the attribute form
+     * @return void
+     */
+    addAttributeDropdownField = function(modal) {
+        let field = modal.querySelector('#dummyDropdownInputGroup').cloneNode(true);
+        field.removeAttribute('id');
+        field.querySelectorAll('input').forEach(function(input) {
+            input.name = 'ParticipantAttributeNamesDropdown[]';
+        });
+        modal.querySelector('#ParticipantAttributeNamesDropdownEditList').appendChild(field);
+    },
+
+    /**
+     * Adds a name input for the language selected in the Add/Edit attribute modal, copied from the hidden template.
+     * @param {HTMLElement} modal - The modal containing the attribute form
+     * @return void
+     */
+    addAttributeLanguageField = function(modal) {
+        let languageSelect = modal.querySelector('#ParticipantAttributeName_addLanguage_language');
+        let langKey = languageSelect.value;
+        if (langKey === '') {
+            return;
+        }
+        let languageName = languageSelect.options[languageSelect.selectedIndex].text;
+        let languagesList = modal.querySelector('#languagesList');
+        let languageField = modal.querySelector('#dummyLanguageInputGroup').cloneNode(true);
+        languageField.removeAttribute('id');
+        languageField.dataset.lang = langKey;
+        let input = languageField.querySelector('input.selector_languageAddInput');
+        input.name = 'ParticipantAttributeNameLanguages[' + langKey + ']';
+        input.id = 'ParticipantAttributeNameLanguages_' + langKey;
+        let label = languageField.querySelector('label.selector_languageAddLabel');
+        label.htmlFor = input.id;
+        label.textContent = languageName;
+        languageField.querySelector('.action_delNewLanguageField')
+            .setAttribute('aria-label', languagesList.dataset.removeLanguageLabel.replace('%s', languageName));
+        languagesList.appendChild(languageField);
+    },
+
+    /**
+     * Deletes a saved language of an attribute via Ajax and removes its input from the Add/Edit attribute modal.
+     * @param {HTMLElement} modal - The modal containing the attribute form
+     * @param {HTMLElement} languageField - The form group of the language, with its code in data-lang
+     * @return void
+     */
+    deleteAttributeLanguage = function(modal, languageField) {
+        let attributeIdInput = modal.querySelector('#ParticipantAttributeName_attribute_id');
+        // Adding new attribute: No id yet, can't delete
+        if (!attributeIdInput || !attributeIdInput.value) {
+            window.LS.ajaxAlerts(modal.querySelector('#languagesList').dataset.atLeastOneLanguage, 'danger');
+            return;
+        }
+        let xhttp = new XMLHttpRequest();
+        xhttp.open('POST', deleteLanguageFromAttributeUrl, true);
+        xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        xhttp.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+        xhttp.onload = function() {
+            let response = null;
+            try {
+                response = JSON.parse(xhttp.responseText);
+            } catch (e) {
+                return;
+            }
+            if (response && response.success) {
+                languageField.remove();
+            } else if (response && response.error) {
+                window.LS.ajaxAlerts(response.error.message, 'danger');
+            } else if (response && response.hasPermission === false) {
+                window.LS.ajaxAlerts(response.noPermissionText, 'danger');
+            }
+        };
+        xhttp.send(new URLSearchParams({
+            attribute_id: attributeIdInput.value,
+            lang: languageField.dataset.lang,
+            YII_CSRF_TOKEN: LS.data.csrfToken
+        }).toString());
     },
     //JS-bindings especially for the sharePanel
     sharePanel = function() {
