@@ -342,7 +342,7 @@ class ParticipantsAction extends SurveyCommonAction
         }
         $model = new Participant();
         if (Yii::app()->getConfig('hideblacklisted') == "Y") {
-            $model->blacklisted = "Y";
+            $model->blacklisted = "N";
         }
         $request = Yii::app()->request;
         $participantParam = $request->getParam('Participant');
@@ -599,6 +599,7 @@ class ParticipantsAction extends SurveyCommonAction
     /**
      * Method to open the participant delete modal
      * Requires 'participant_id' (int)
+     * Requires the global participant panel delete permission or ownership of the participant, like deleteParticipant()
      * @return void
      */
     public function openDeleteParticipant()
@@ -606,6 +607,14 @@ class ParticipantsAction extends SurveyCommonAction
 
         $participant_id = Yii::app()->request->getPost('participant_id');
         $model = Participant::model()->findByPk($participant_id);
+        if (empty($model)) {
+            $this->ajaxHelper::outputError(gT('Found no participant'));
+            return;
+        }
+        if (empty(Participant::model()->filterParticipantIDs([$participant_id]))) {
+            $this->ajaxHelper::outputNoPermission();
+            return;
+        }
 
         $html = $this->getController()->renderPartial(
             '/admin/participants/modal_subviews/_deleteParticipant',
@@ -680,8 +689,11 @@ class ParticipantsAction extends SurveyCommonAction
         if (count($aData) > 0) {
             foreach ($aParticipantIds as $sParticipantId) {
                 $oParticipant = Participant::model()->findByPk($sParticipantId);
-
-
+                if (empty($oParticipant)) {
+                    $aResults[$sParticipantId]['status']  = false;
+                    $aResults[$sParticipantId]['message'] = gT('Found no participant');
+                    continue;
+                }
 
                 foreach ($aData as $key => $value) {
                     // Make sure no-one hacks owner_uid into form
@@ -1629,10 +1641,16 @@ class ParticipantsAction extends SurveyCommonAction
 
     /**
      * Method to open the editAttributeName Modal
+     * Requires global 'participantpanel' 'update' permission when editing, 'create' when adding, like editAttributeName()
+     * @return void
      */
     public function openEditAttributeNames()
     {
         $attribute_id = Yii::app()->request->getPost('attribute_id');
+        if (!Permission::model()->hasGlobalPermission('participantpanel', $attribute_id ? 'update' : 'create')) {
+            $this->ajaxHelper::outputNoPermission();
+            return;
+        }
         if ($attribute_id) {
             $model = ParticipantAttributeName::model()->findByPk($attribute_id);
             $editType = "edit";
@@ -1708,8 +1726,9 @@ class ParticipantsAction extends SurveyCommonAction
      *   'ParticipantAttributeNamesDropdown' (array|null),
      *   'oper' (string) ['edit'|'new']
      * Requires global 'participantpanel' 'update' permission when editing, 'create' when adding
-     * Echoes json-encoded array 'success' (array), 'successMessage' (string)
-     * @return void
+     * Echoes json-encoded array 'success' (array), 'successMessage' (string),
+     * or an error when neither the default name nor any translation is filled in
+     * @return void|false False if saving failed and the transaction was rolled back
      */
     public function editAttributeName()
     {
@@ -1727,6 +1746,16 @@ class ParticipantsAction extends SurveyCommonAction
         $AttributeNameLanguages = Yii::app()->request->getPost('ParticipantAttributeNameLanguages');
         $ParticipantAttributeNamesDropdown = Yii::app()->request->getPost('ParticipantAttributeNamesDropdown');
         $sEncryptedAfterChange = $AttributeNameAttributes['encrypted'];
+
+        // The default name is optional, but the attribute needs a name in at least one place
+        $aNames = array_merge([$AttributeNameAttributes['defaultname'] ?? ''], is_array($AttributeNameLanguages) ? $AttributeNameLanguages : []);
+        $aNonEmptyNames = array_filter($aNames, function ($name) {
+            return !ParticipantAttributeName::isBlankName($name);
+        });
+        if (empty($aNonEmptyNames)) {
+            $this->ajaxHelper::outputError(gT('Name can not be empty.'));
+            return;
+        }
 
         // encryption/decryption MUST be done in a one synchronous step, either all succeed or none
         $oDB = Yii::app()->db;
@@ -1802,7 +1831,8 @@ class ParticipantsAction extends SurveyCommonAction
     }
 
     /**
-     * Deletes a translation from an Attribute, if it has at least one translation
+     * Deletes a translation from an Attribute, if another translation remains
+     * and the attribute keeps a nonblank name (default name or another translation)
      * Requires POST 'attribute_id' (int), 'lang' (string) [language-code]
      * Requires global 'participantpanel' 'update' permission
      * Echoes 'success' (boolean), 'successMessage' (string|null), 'errorMessage' (string|null)
@@ -1818,12 +1848,23 @@ class ParticipantsAction extends SurveyCommonAction
         $attribute_id = Yii::app()->request->getPost('attribute_id');
         $lang = Yii::app()->request->getPost('lang');
         $AttributePackage = ParticipantAttributeName::model()->findByPk($attribute_id);
-        if (count($AttributePackage->participant_attribute_names_lang) > 1) {
-            ParticipantAttributeNameLang::model()->deleteByPk(array("attribute_id" => $attribute_id, "lang" => $lang));
-            $this->ajaxHelper::outputSuccess(gT("Language successfully deleted"));
-        } else {
+        if (count($AttributePackage->participant_attribute_names_lang) <= 1) {
             $this->ajaxHelper::outputError(gT("There has to be at least one language."));
+            return;
         }
+        // The default name is optional: Don't delete the only nonblank name
+        $bNameRemains = !ParticipantAttributeName::isBlankName($AttributePackage->defaultname);
+        foreach ($AttributePackage->participant_attribute_names_lang as $oNameLang) {
+            if ($oNameLang->lang !== $lang && !ParticipantAttributeName::isBlankName($oNameLang->attribute_name)) {
+                $bNameRemains = true;
+            }
+        }
+        if (!$bNameRemains) {
+            $this->ajaxHelper::outputError(gT('Name can not be empty.'));
+            return;
+        }
+        ParticipantAttributeNameLang::model()->deleteByPk(array("attribute_id" => $attribute_id, "lang" => $lang));
+        $this->ajaxHelper::outputSuccess(gT("Language successfully deleted"));
     }
     /**
      * Deletes a single Attribute via AJAX-call
@@ -1937,11 +1978,17 @@ class ParticipantsAction extends SurveyCommonAction
 
     /**
      * Fetches the attributes of a participant to be displayed in the attribute subgrid
+     * Requires Participant::userHasPermissionToRead() for the participant
      * @todo Where is this called from?
      */
     public function getAttributeJson()
     {
         $iParticipantId = strip_tags(Yii::app()->request->getQuery('pid', ''));
+        $participant = Participant::model()->findByPk($iParticipantId);
+        if (empty($participant) || !$participant->userHasPermissionToRead()) {
+            $this->ajaxHelper::outputNoPermission();
+            return;
+        }
         $records = ParticipantAttributeName::model()->getParticipantVisibleAttribute($iParticipantId);
         $records = subval_sort($records, "attribute_name", "asc");
 
@@ -2612,11 +2659,14 @@ class ParticipantsAction extends SurveyCommonAction
                 'participant_id' => $participantId,
                 'share_uid' => $shareUid
             ));
+            if (empty($participantShare)) {
+                continue;
+            }
 
             $isOwner = $participantShare->participant->owner_uid == $userId;
             $hasPermissionToDelete = $isOwner || $isSuperAdmin;
 
-            if ($hasPermissionToDelete && !empty($participantShare)) {
+            if ($hasPermissionToDelete) {
                 $participantShare->delete();
                 $sharesDeleted++;
             }

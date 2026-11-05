@@ -40,7 +40,8 @@
             'lsCaption'               => gT('List of surveys'),
             'emptyText'             => gT('No surveys found.'),
             'lsPageSizeCurrentValue'  => $this->pageSize,
-            'ajaxUpdate'            => 'survey-grid',
+            // Also refresh the survey counts in the admin menu, since mass actions like delete change them
+            'ajaxUpdate'            => 'survey-grid,surveys-menu-item,small-screens-menu-items,systemoverview',
             'lsAfterAjaxUpdate'     => [
                 'window.LS.doToolTip();',
                 'LS.restoreFocusAfterSort("survey-grid");',
