@@ -445,6 +445,32 @@ class Tokens extends SurveyCommonAction
     }
 
     /**
+     * Converts a posted sent, remindersent or completed value to the format stored in the participant table.
+     *
+     * The date pickers of the participant forms post the date in the date format of the administrator,
+     * the participant table stores it as 'Y-m-d H:i'. A value already in 'Y-m-d H:i' is kept, e.g. an unchanged
+     * date of a participant in an anonymized survey, where no date picker is shown.
+     *
+     * @param mixed $value Posted value: 'N', 'Y', a date in the administrator's date format or in 'Y-m-d H:i'
+     * @return string 'N', 'Y', the date as 'Y-m-d H:i', or the trimmed value if it is not a valid date
+     */
+    private function convertTokenDateToDbFormat($value): string
+    {
+        $value = trim((string) $value);
+        if ($value === '' || $value === 'N') {
+            return 'N';
+        }
+        if ($value === 'Y') {
+            return 'Y';
+        }
+        $date = convertFromGlobalSettingFormat($value, true);
+        if ($date === null) {
+            return $value;
+        }
+        return (new DateTime($date))->format('Y-m-d H:i');
+    }
+
+    /**
      * Browse Tokens
      * @param int $iSurveyId
      * @param int $limit
@@ -619,8 +645,8 @@ class Tokens extends SurveyCommonAction
                         if ($sCoreTokenField == 'language' && empty($value)) {
                             continue;
                         }
-                        if (($sCoreTokenField == 'sent' || $sCoreTokenField == 'remindersent' || $sCoreTokenField == 'completed') && empty($value)) {
-                            $value = 'N';
+                        if ($sCoreTokenField == 'sent' || $sCoreTokenField == 'remindersent' || $sCoreTokenField == 'completed') {
+                            $value = $this->convertTokenDateToDbFormat($value);
                         }
                         $aData[$sCoreTokenField] = $value;
                     }
@@ -753,9 +779,9 @@ class Tokens extends SurveyCommonAction
                 'emailstatus' => $request->getPost('emailstatus'),
                 'token' => $sanitizedtoken,
                 'language' => \LSYii_Validators::languageCodeFilter($request->getPost('language')),
-                'sent' => $request->getPost('sent'),
-                'remindersent' => $request->getPost('remindersent'),
-                'completed' => $request->getPost('completed'),
+                'sent' => $this->convertTokenDateToDbFormat($request->getPost('sent')),
+                'remindersent' => $this->convertTokenDateToDbFormat($request->getPost('remindersent')),
+                'completed' => $this->convertTokenDateToDbFormat($request->getPost('completed')),
                 'usesleft' => $request->getPost('usesleft'),
                 'validfrom' => $validfrom,
                 'validuntil' => $validuntil,
@@ -885,32 +911,6 @@ class Tokens extends SurveyCommonAction
                 $_POST['validuntil'] = $datetimeobj->convert('Y-m-d H:i:s');
             }
 
-            // completed
-            if (trim($request->getPost('completed', '')) == 'N' || trim($request->getPost('completed', '')) == '') {
-                $_POST['completed'] = 'N';
-            } elseif (trim($request->getPost('completed', '')) == 'Y') {
-                $_POST['completed'] = 'Y';
-            } else {
-                $datetimeobj = new Date_Time_Converter(trim($request->getPost('completed', '')), $dateformatdetails['phpdate'] . ' H:i');
-                $_POST['completed'] = $datetimeobj->convert('Y-m-d H:i');
-            }
-
-            //sent
-            if (trim($request->getPost('sent', '')) == 'N') {
-                $_POST['sent'] = 'N';
-            } else {
-                $datetimeobj = new Date_Time_Converter(trim($request->getPost('sent', '')), $dateformatdetails['phpdate'] . ' H:i');
-                $_POST['sent'] = $datetimeobj->convert('Y-m-d H:i');
-            }
-
-            // remindersent
-            if (trim($request->getPost('remindersent', '')) == 'N') {
-                $_POST['remindersent'] = 'N';
-            } else {
-                $datetimeobj = new Date_Time_Converter(trim($request->getPost('remindersent', '')), $dateformatdetails['phpdate'] . ' H:i');
-                $_POST['remindersent'] = $datetimeobj->convert('Y-m-d H:i');
-            }
-
             $aTokenData['firstname'] = $request->getPost('firstname');
             $aTokenData['lastname'] = $request->getPost('lastname');
             $aTokenData['email'] = $request->getPost('email');
@@ -919,12 +919,12 @@ class Tokens extends SurveyCommonAction
             $sSanitizedToken = Token::sanitizeToken($request->getPost('token'));
             $aTokenData['token'] = $sSanitizedToken;
             $aTokenData['language'] = $request->getPost('language');
-            $aTokenData['sent'] = $request->getPost('sent');
-            $aTokenData['completed'] = $request->getPost('completed');
+            $aTokenData['sent'] = $this->convertTokenDateToDbFormat($request->getPost('sent'));
+            $aTokenData['completed'] = $this->convertTokenDateToDbFormat($request->getPost('completed'));
             $aTokenData['usesleft'] = $request->getPost('usesleft');
             $aTokenData['validfrom'] = $request->getPost('validfrom');
             $aTokenData['validuntil'] = $request->getPost('validuntil');
-            $aTokenData['remindersent'] = $request->getPost('remindersent');
+            $aTokenData['remindersent'] = $this->convertTokenDateToDbFormat($request->getPost('remindersent'));
             $aTokenData['remindercount'] = intval($request->getPost('remindercount'));
             $udresult = Token::model($iSurveyId)->findAll("tid <> :tid and token <> '' and token = :token", [':tid' => $iTokenId, ':token' => $sSanitizedToken]);
             $sOutput = '';

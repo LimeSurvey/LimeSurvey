@@ -460,7 +460,7 @@ class TemplateConfig extends CActiveRecord
 
         $aClassAndAttributes['attr']['passwordrowcol']         = ' for="loadpass" ';
         $aClassAndAttributes['attr']['passwordrowcolsmall']    = ' aria-hidden="true"';
-        $aClassAndAttributes['attr']['captcharowcoldivdivimg'] = ' alt="captcha" ';
+        $aClassAndAttributes['attr']['captcharowcoldivdivimg'] = ' alt="' . gT("Image showing the equation to solve") . '" ';
         $aClassAndAttributes['attr']['captcharowcoldivinput']  = '  type="text" size="5" maxlength="3" id="loadsecurity" name="loadsecurity" value="" alt="" ';
         $aClassAndAttributes['attr']['loadrowcolbutton']       = '  type="submit" id="loadbutton" name="loadall"  value="reload" ';
 
@@ -519,7 +519,7 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['attr']['saveformsurveydivdlabelsmall']   = ' aria-hidden="true" ';
         $aClassAndAttributes['attr']['saveformsurveydivelabel']        = ' for="saveemail" ';
         $aClassAndAttributes['attr']['saveformsurveydivflabel']        = ' for="loadsecurity" ';
-        $aClassAndAttributes['attr']['saveformsurveydivfdivdivdivimg'] = ' alt="captcha" ';
+        $aClassAndAttributes['attr']['saveformsurveydivfdivdivdivimg'] = ' alt="' . gT("Image showing the equation to solve") . '" ';
         $aClassAndAttributes['attr']['saveformsurveydivfdivdivinput']  = ' type="text" size="5" maxlength="3" id="loadsecurity" name="loadsecurity" value="" alt="" ';
         $aClassAndAttributes['attr']['saveformsurveydivgdivbutton']    = ' type="submit" id="savebutton" name="savesubmit" value="save"';
 

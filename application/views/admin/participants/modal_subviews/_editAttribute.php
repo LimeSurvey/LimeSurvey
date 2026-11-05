@@ -1,5 +1,7 @@
 <div class="modal-header">
     <h2 class="modal-title h5" id="participant_edit_modal"><?php if ($editType === 'new') : eT('Add attribute'); else: eT('Edit attribute'); endif; ?></h2>
+    <?php // aria-hidden: only read as part of the dialog name, not again when reading the dialog content ?>
+    <span class="visually-hidden" id="participant_edit_modal-dialogsr" aria-hidden="true"><?= gT('Dialog') ?></span>
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 </div>
 <?php

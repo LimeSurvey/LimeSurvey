@@ -383,7 +383,7 @@ $aOptionAttributes['optionAttributes']['brandlogofile']['dropdownoptions'] = $br
                             <div class="col-8">
                                 <span id="fileselector_frontend">
                                     <label class="btn btn-outline-secondary" for="upload_image_frontend" role="button" tabindex="0">
-                                    <input class="d-none" id="upload_image_frontend" name="upload_image_frontend" type="file">
+                                    <input class="d-none" id="upload_image_frontend" name="upload_image_frontend" type="file" accept="<?= CHtml::encode(getFileInputAcceptValue(App()->getConfig('allowedthemeimageformats'))) ?>">
                                         <i class="ri-upload-fill ls-space margin right-10"></i>
                                         <?php eT("Upload"); ?>
                                     </label>
