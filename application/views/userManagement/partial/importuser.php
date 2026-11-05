@@ -13,7 +13,7 @@
 <?php
 Yii::app()->getController()->renderPartial(
     '/layouts/partial_modals/modal_header',
-    ['modalTitle' => gT('Import users')]
+    ['modalTitle' => gT('Import users'), 'modalTitleId' => 'UserManagement-action-modal-title']
 );
 ?>
 
