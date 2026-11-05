@@ -936,6 +936,7 @@ class ParticipantsAction extends SurveyCommonAction
                 . "var notPairedErrorTxt = '" . gT("You have to pair this field with an existing attribute.") . "';\n"
                 . "var onlyOnePairedErrorTxt = '" . gT("Only one CSV attribute is mapped with central attribute.") . "';\n"
                 . "var cannotAcceptErrorTxt='" . gT("This list cannot accept survey participant attributes.") . "';\n"
+                . "var moveBackTxt = '" . gT("Move %s back to the CSV field names", 'js') . "';\n"
                 . "var separator = '" . sanitize_paranoid_string($_POST['separatorused']) . "';\n"
                 . "var thefilepath = '" . $sRandomFileName . "';\n"
                 . "var filterblankemails = '" . sanitize_paranoid_string($filterblankemails) . "';\n";
@@ -999,16 +1000,24 @@ class ParticipantsAction extends SurveyCommonAction
             and it's associated lime_participant_attribute_names_lang table
             for each NEW attribute being created in this import process */
             foreach ($newarray as $key => $value) {
-                if (!is_scalar($value) || in_array(strtolower((string) $value), $participantColumns)) {
+                // Trimmed like the CSV header line parsed below
+                $csvFieldName = trim((string) $key);
+                // Neither the attribute name nor the CSV field it is filled from may be a core participant column
+                if (
+                    !is_scalar($value)
+                    || in_array(strtolower((string) $value), $participantColumns)
+                    || in_array(strtolower($csvFieldName), $participantColumns)
+                ) {
                     continue;
                 }
                 $aData = array('attribute_type' => 'TB', 'defaultname' => $value, 'visible' => 'FALSE');
                 $insertid = ParticipantAttributeName::model()->storeAttributeCSV($aData);
                 /* Keep a record of the attribute_id for this new attribute
-                in the $mappedarray string. For example, if the new attribute
-                has attribute_id of 35 and is called "gender",
-                $mappedarray['35']='gender' */
-                $mappedarray[$insertid] = $value;
+                in the $mappedarray string, with the CSV field name (not the attribute name
+                the user may have typed), since that is what the CSV columns are matched against.
+                For example, if the new attribute has attribute_id of 35 and is created from
+                the CSV field "gender", $mappedarray['35']='gender' */
+                $mappedarray[$insertid] = $csvFieldName;
             }
         }
         if (!isset($uploadcharset)) {

@@ -18686,6 +18686,11 @@ ol.breadcrumb.title-bar-breadcrumb a:active {
   font-weight: 600;
 }
 
+@media (max-width: 575.98px), (max-height: 500px) and (max-width: 991.98px) {
+  .topbar.sticky-top {
+    position: static;
+  }
+}
 .survey-actionbar {
   padding-top: 16px;
   padding-bottom: 16px;
