@@ -2769,6 +2769,12 @@ class LsDefaultDataSets
             gT("Colors"),
             gT("Animations"),
             gT("Fonts"),
+            // Privacy policy settings labels used outside this repository (e.g. legal notice / data policy plugin).
+            // Do not remove: they are not found by the translation script anywhere else.
+            gT("Show link to legal notice in survey:"),
+            gT("Show link to data policy in survey:"),
+            gT("Survey legal notice:"),
+            gT("Legal notice"),
             // Survey theme dropdown option groups and options from themes/survey/*/config.xml
             gT("Attention seekers"),
             gT("Bouncing entrances"),
