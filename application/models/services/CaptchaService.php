@@ -41,6 +41,9 @@ class CaptchaService
     /** @var string|null The CAPTCHA type of the global survey settings, cached per request */
     private static $globalProvider = null;
 
+    /** @var bool Whether the missing CAPTCHA plugin was already logged in this request */
+    private static $noProviderLogged = false;
+
     /** @var array<string, array{label: string, description: string}>|null CAPTCHA types collected from plugins, cached per request */
     private static $providers = null;
 
@@ -136,7 +139,37 @@ class CaptchaService
         if ($configured !== null && array_key_exists($configured, $this->getProviders())) {
             return $configured;
         }
-        return $this->getDefaultProvider() ?? self::NONE;
+        $defaultProvider = $this->getDefaultProvider();
+        if ($defaultProvider === null) {
+            $this->logNoProvider((int) $survey->sid, $configured);
+            return self::NONE;
+        }
+        return $defaultProvider;
+    }
+
+    /**
+     * Warn the administrator (application log) that a survey wants a CAPTCHA but no active plugin offers one,
+     * so the CAPTCHA is silently switched off. Logged once per request.
+     *
+     * @param int $surveyId
+     * @param string|null $configured The CAPTCHA type configured for the survey, null when inherited without a value
+     * @return void
+     */
+    private function logNoProvider(int $surveyId, ?string $configured): void
+    {
+        if (self::$noProviderLogged) {
+            return;
+        }
+        self::$noProviderLogged = true;
+        \Yii::log(
+            sprintf(
+                'Survey %d uses the CAPTCHA type "%s", but no active plugin offers a CAPTCHA type, so no CAPTCHA is shown. Activate a CAPTCHA plugin (for example CoreCaptcha) or set the CAPTCHA type to "none".',
+                $surveyId,
+                $configured ?? self::INHERIT
+            ),
+            \CLogger::LEVEL_WARNING,
+            'application.captcha'
+        );
     }
 
     /**
@@ -248,6 +281,7 @@ class CaptchaService
     {
         self::$providers = null;
         self::$globalProvider = null;
+        self::$noProviderLogged = false;
         self::$rendered = [];
         self::$lastRendered = null;
     }

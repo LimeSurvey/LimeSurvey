@@ -270,7 +270,7 @@ class LS_Twig_Extension extends AbstractExtension
      */
     public static function renderCaptcha()
     {
-        $widget = App()->getController()->createWidget('LSCaptcha', array('captchaAction' => 'captcha'));
+        $widget = App()->getController()->createWidget('LSCaptcha');
         $rendered = \LimeSurvey\Models\Services\CaptchaService::getLastRendered();
         if ($rendered !== null) {
             $widget->prerenderedHtml = (string) ($rendered['legacyHtml'] ?? $rendered['html']);

@@ -194,11 +194,28 @@ class CoreCaptchaTest extends TestBaseClass
     }
 
     /**
+     * The widget behind the deprecated twig function renderCaptcha() only returns the plugin markup, never an
+     * image of its own that would not be validated
+     */
+    public function testLegacyWidgetOnlyReturnsPluginMarkup()
+    {
+        $widget = \Yii::app()->getController()->createWidget('LSCaptcha');
+        $this->assertSame('', $widget->renderOut());
+        $widget->prerenderedHtml = '<span class="from-plugin"></span>';
+        $this->assertSame('<span class="from-plugin"></span>', $widget->renderOut());
+    }
+
+    /**
      * The classic CAPTCHA on the save/load screen keeps the image action and the answer in the survey session
      */
     public function testClassicSaveAndLoadScreen()
     {
-        $this->assertTrue(self::isClassicCaptchaAvailable(), 'The classic CAPTCHA needs GD with FreeType');
+        if (!self::isClassicCaptchaAvailable()) {
+            // Without GD and FreeType the classic type is not offered, a survey set to it gets ALTCHA instead
+            $survey = $this->surveyWithCaptchaType(\CoreCaptcha::TYPE_CLASSIC);
+            $this->assertSame(\CoreCaptcha::TYPE_ALTCHA, (new CaptchaService())->resolveProvider($survey));
+            return;
+        }
         $survey = $this->surveyWithCaptchaType(\CoreCaptcha::TYPE_CLASSIC);
         $service = new CaptchaService();
 
@@ -226,7 +243,12 @@ class CoreCaptchaTest extends TestBaseClass
      */
     public function testClassicSurveyAccessScreen()
     {
-        $this->assertTrue(self::isClassicCaptchaAvailable(), 'The classic CAPTCHA needs GD with FreeType');
+        if (!self::isClassicCaptchaAvailable()) {
+            // Without GD and FreeType the classic type is not offered, a survey set to it gets ALTCHA instead
+            $survey = $this->surveyWithCaptchaType(\CoreCaptcha::TYPE_CLASSIC);
+            $this->assertSame(\CoreCaptcha::TYPE_ALTCHA, (new CaptchaService())->resolveProvider($survey));
+            return;
+        }
         $survey = $this->surveyWithCaptchaType(\CoreCaptcha::TYPE_CLASSIC);
         $service = new CaptchaService();
 

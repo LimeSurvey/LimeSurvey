@@ -98,13 +98,12 @@ class CaptchaServiceTest extends TestBaseClass
      */
     public function testCaptchaTypeIsInherited()
     {
-        $this->assertTrue(extension_loaded('gd') && function_exists('imagettftext'), 'This test needs both core CAPTCHA types');
         $service = new CaptchaService();
 
         self::setGlobalCaptchaType(\CoreCaptcha::TYPE_CLASSIC);
         $survey = $this->surveyWithCaptchaType(CaptchaService::INHERIT);
         $this->assertSame(\CoreCaptcha::TYPE_CLASSIC, $service->getConfiguredProvider($survey), 'The inherited global type is the configured type');
-        $this->assertSame(\CoreCaptcha::TYPE_CLASSIC, $service->resolveProvider($survey));
+        $this->assertSame(self::isClassicCaptchaAvailable() ? \CoreCaptcha::TYPE_CLASSIC : \CoreCaptcha::TYPE_ALTCHA, $service->resolveProvider($survey));
 
         self::setGlobalCaptchaType(\CoreCaptcha::TYPE_ALTCHA);
         $survey = $this->surveyWithCaptchaType(CaptchaService::INHERIT);
@@ -119,9 +118,19 @@ class CaptchaServiceTest extends TestBaseClass
         \Survey::model()->resetCache();
         $this->assertFalse(\Survey::model()->findByPk(self::$surveyId)->isCaptchaEnabled('surveyaccessscreen'), 'Type "none" switches the CAPTCHA off');
 
-        $survey = $this->surveyWithCaptchaType(\CoreCaptcha::TYPE_CLASSIC);
-        $this->assertSame(\CoreCaptcha::TYPE_CLASSIC, $service->getConfiguredProvider($survey));
-        $this->assertSame(\CoreCaptcha::TYPE_CLASSIC, $service->resolveProvider($survey));
+        $survey = $this->surveyWithCaptchaType(\CoreCaptcha::TYPE_ALTCHA);
+        $this->assertSame(\CoreCaptcha::TYPE_ALTCHA, $service->getConfiguredProvider($survey), 'The survey\'s own type wins over the global one');
+        $this->assertSame(\CoreCaptcha::TYPE_ALTCHA, $service->resolveProvider($survey));
+    }
+
+    /**
+     * The classic CAPTCHA draws its image with GD and FreeType, the same rule the plugin applies
+     *
+     * @return bool
+     */
+    private static function isClassicCaptchaAvailable(): bool
+    {
+        return extension_loaded('gd') && function_exists('imagettftext');
     }
 
     /**
@@ -129,24 +138,28 @@ class CaptchaServiceTest extends TestBaseClass
      */
     public function testUnavailableTypeFallsBack()
     {
-        $this->assertTrue(extension_loaded('gd') && function_exists('imagettftext'), 'This test needs both core CAPTCHA types');
         $service = new CaptchaService();
         $survey = $this->surveyWithCaptchaType('no_such_captcha');
         $this->assertSame('no_such_captcha', $service->getConfiguredProvider($survey));
-
-        self::setGlobalCaptchaType(\CoreCaptcha::TYPE_CLASSIC);
-        CaptchaService::reset();
-        $this->assertSame(\CoreCaptcha::TYPE_CLASSIC, $service->getDefaultProvider());
-        $this->assertSame(\CoreCaptcha::TYPE_CLASSIC, $service->resolveProvider($survey));
 
         self::setGlobalCaptchaType(CaptchaService::NONE);
         CaptchaService::reset();
         $this->assertSame(\CoreCaptcha::TYPE_ALTCHA, $service->getDefaultProvider(), 'Alphabetically first offered type');
         $this->assertSame(\CoreCaptcha::TYPE_ALTCHA, $service->resolveProvider($survey));
 
+        if (!self::isClassicCaptchaAvailable()) {
+            // Without GD and FreeType there is no second core type to fall back to
+            return;
+        }
+        self::setGlobalCaptchaType(\CoreCaptcha::TYPE_CLASSIC);
+        CaptchaService::reset();
+        $this->assertSame(\CoreCaptcha::TYPE_CLASSIC, $service->getDefaultProvider(), 'The global type when it is offered');
+        $this->assertSame(\CoreCaptcha::TYPE_CLASSIC, $service->resolveProvider($survey));
+
+        self::setGlobalCaptchaType(CaptchaService::NONE);
         self::$plugin->saveSettings(['altchaEnabled' => 0]);
         CaptchaService::reset();
-        $this->assertSame(\CoreCaptcha::TYPE_CLASSIC, $service->resolveProvider($survey));
+        $this->assertSame(\CoreCaptcha::TYPE_CLASSIC, $service->resolveProvider($survey), 'The only offered type');
     }
 
     /**
@@ -162,7 +175,10 @@ class CaptchaServiceTest extends TestBaseClass
 
         \Survey::model()->updateByPk(self::$surveyId, ['usecaptcha' => 'A']);
         $survey = $this->surveyWithCaptchaType(\CoreCaptcha::TYPE_ALTCHA);
+        $warningsBefore = count(\Yii::getLogger()->getLogs('warning', 'application.captcha'));
         $this->assertSame(CaptchaService::NONE, $service->resolveProvider($survey));
+        $this->assertSame(CaptchaService::NONE, $service->resolveProvider($survey));
+        $this->assertCount($warningsBefore + 1, \Yii::getLogger()->getLogs('warning', 'application.captcha'), 'The administrator is warned once per request');
         $this->assertFalse($service->isCaptchaActive($survey));
         $this->assertFalse($survey->isCaptchaEnabled('registrationscreen'), 'The CAPTCHA switches are ignored without a CAPTCHA type');
 

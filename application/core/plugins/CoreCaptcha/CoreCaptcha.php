@@ -476,7 +476,8 @@ class CoreCaptcha extends CaptchaPluginBase
             $data['sImageUrl'] = $imageUrl;
             $reload = '';
         } else {
-            $image = App()->getController()->createWidget('LSCaptcha', ['captchaAction' => 'captcha'])->renderOut();
+            Yii::import('application.core.plugins.CoreCaptcha.ClassicCaptchaImage', true);
+            $image = App()->getController()->createWidget('ClassicCaptchaImage', ['captchaAction' => 'captcha'])->renderOut();
             $reload = CHtml::htmlButton(
                 CHtml::tag('i', ['class' => 'ri-refresh-line fa fa-refresh', 'aria-hidden' => 'true'], ''),
                 [
