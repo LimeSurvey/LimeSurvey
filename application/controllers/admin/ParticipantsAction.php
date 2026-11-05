@@ -1006,10 +1006,11 @@ class ParticipantsAction extends SurveyCommonAction
                 $aData = array('attribute_type' => 'TB', 'defaultname' => $value, 'visible' => 'FALSE');
                 $insertid = ParticipantAttributeName::model()->storeAttributeCSV($aData);
                 /* Keep a record of the attribute_id for this new attribute
-                in the $mappedarray string. For example, if the new attribute
-                has attribute_id of 35 and is called "gender",
-                $mappedarray['35']='gender' */
-                $mappedarray[$insertid] = $value;
+                in the $mappedarray string, with the CSV field name (not the attribute name
+                the user may have typed), since that is what the CSV columns are matched against.
+                For example, if the new attribute has attribute_id of 35 and is created from
+                the CSV field "gender", $mappedarray['35']='gender' */
+                $mappedarray[$insertid] = $key;
             }
         }
         if (!isset($uploadcharset)) {
