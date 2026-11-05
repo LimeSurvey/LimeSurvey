@@ -71,6 +71,8 @@ $form = $this->beginWidget(
                 </div>
                 <h4 class="col-8 col-offset-2"><?php eT("Dropdown fields") ?></h4>
             </div>
+            <?php // Always sent (empty values are skipped), so removing every field clears the saved values ?>
+            <input type="hidden" name="ParticipantAttributeNamesDropdown[]" value=""/>
             <div id='ParticipantAttributeNamesDropdownEditList'>
                 <?php foreach ($model->getAttributesValues($model->attribute_id) as $attribute_value): ?>
                     <div class="control-group">

@@ -157,19 +157,19 @@ class ParticipantAttributeName extends LSActiveRecord
     }
 
     /**
-     * Returns a name that identifies the attribute: The default name, or if that is empty,
+     * Returns a name that identifies the attribute: The default name, or if that is blank,
      * the name in the admin language or else the first translated name.
      *
      * @return string The attribute name, may be empty if no name is set at all
      */
     private function getAccessibleName()
     {
-        if ((string) $this->defaultname !== '') {
+        if (!self::isBlankName($this->defaultname)) {
             return $this->defaultname;
         }
         $fallbackName = '';
         foreach ($this->participant_attribute_names_lang as $nameLang) {
-            if ((string) $nameLang->attribute_name === '') {
+            if (self::isBlankName($nameLang->attribute_name)) {
                 continue;
             }
             if ($nameLang->lang === Yii::app()->session['adminlang']) {
@@ -180,6 +180,17 @@ class ParticipantAttributeName extends LSActiveRecord
             }
         }
         return $fallbackName;
+    }
+
+    /**
+     * Checks whether an attribute name (default name or translation) is empty or contains only whitespace.
+     *
+     * @param string|null $name The name to check
+     * @return bool True if the name can't identify the attribute
+     */
+    public static function isBlankName($name)
+    {
+        return trim((string) $name) === '';
     }
 
     /**
@@ -540,7 +551,7 @@ class ParticipantAttributeName extends LSActiveRecord
             $thislang = '';
             foreach ($row->participant_attribute_names_lang as $names) {
                 //Iterate through each language version of this attribute
-                if ((string) $names->attribute_name === '') {
+                if (self::isBlankName($names->attribute_name)) {
                     continue;
                 }
                 if ($thisname == "") {

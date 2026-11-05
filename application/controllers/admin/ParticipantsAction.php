@@ -1749,7 +1749,7 @@ class ParticipantsAction extends SurveyCommonAction
         // The default name is optional, but the attribute needs a name in at least one place
         $aNames = array_merge([$AttributeNameAttributes['defaultname'] ?? ''], is_array($AttributeNameLanguages) ? $AttributeNameLanguages : []);
         $aNonEmptyNames = array_filter($aNames, function ($name) {
-            return trim((string) $name) !== '';
+            return !ParticipantAttributeName::isBlankName($name);
         });
         if (empty($aNonEmptyNames)) {
             $this->ajaxHelper::outputError(gT('Name can not be empty.'));
@@ -1830,7 +1830,8 @@ class ParticipantsAction extends SurveyCommonAction
     }
 
     /**
-     * Deletes a translation from an Attribute, if it has at least one translation
+     * Deletes a translation from an Attribute, if another translation remains
+     * and the attribute keeps a nonblank name (default name or another translation)
      * Requires POST 'attribute_id' (int), 'lang' (string) [language-code]
      * Requires global 'participantpanel' 'update' permission
      * Echoes 'success' (boolean), 'successMessage' (string|null), 'errorMessage' (string|null)
@@ -1846,12 +1847,23 @@ class ParticipantsAction extends SurveyCommonAction
         $attribute_id = Yii::app()->request->getPost('attribute_id');
         $lang = Yii::app()->request->getPost('lang');
         $AttributePackage = ParticipantAttributeName::model()->findByPk($attribute_id);
-        if (count($AttributePackage->participant_attribute_names_lang) > 1) {
-            ParticipantAttributeNameLang::model()->deleteByPk(array("attribute_id" => $attribute_id, "lang" => $lang));
-            $this->ajaxHelper::outputSuccess(gT("Language successfully deleted"));
-        } else {
+        if (count($AttributePackage->participant_attribute_names_lang) <= 1) {
             $this->ajaxHelper::outputError(gT("There has to be at least one language."));
+            return;
         }
+        // The default name is optional: Don't delete the only nonblank name
+        $bNameRemains = !ParticipantAttributeName::isBlankName($AttributePackage->defaultname);
+        foreach ($AttributePackage->participant_attribute_names_lang as $oNameLang) {
+            if ($oNameLang->lang !== $lang && !ParticipantAttributeName::isBlankName($oNameLang->attribute_name)) {
+                $bNameRemains = true;
+            }
+        }
+        if (!$bNameRemains) {
+            $this->ajaxHelper::outputError(gT('Name can not be empty.'));
+            return;
+        }
+        ParticipantAttributeNameLang::model()->deleteByPk(array("attribute_id" => $attribute_id, "lang" => $lang));
+        $this->ajaxHelper::outputSuccess(gT("Language successfully deleted"));
     }
     /**
      * Deletes a single Attribute via AJAX-call
