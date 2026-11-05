@@ -141,7 +141,9 @@ class ParticipantAttributeName extends LSActiveRecord
     }
 
     /**
-     * @return string
+     * Returns the mass action checkbox for the attribute grid row (a hidden input for core attributes).
+     *
+     * @return string HTML of the checkbox or hidden input
      */
     public function getMassiveActionCheckbox()
     {
@@ -151,7 +153,33 @@ class ParticipantAttributeName extends LSActiveRecord
             // as we have only that special case in cpdb at the moment, it's not necessary to change it in the frontend part (listAction.js line 27)
             return "<input type='hidden' class='selector_attributeNamesCheckbox' name='selectedAttributeNames[]' value='" . $this->attribute_id . "' >";
         }
-        return "<input type='checkbox' class='selector_attributeNamesCheckbox massiveActionsCheckbox' name='selectedAttributeNames[]' value='" . $this->attribute_id . "' aria-label='" . CHtml::encode(sprintf(gT('Select attribute %s'), $this->defaultname)) . "' >";
+        return "<input type='checkbox' class='selector_attributeNamesCheckbox massiveActionsCheckbox' name='selectedAttributeNames[]' value='" . $this->attribute_id . "' aria-label='" . CHtml::encode(sprintf(gT('Select attribute %s'), $this->getAccessibleName())) . "' >";
+    }
+
+    /**
+     * Returns a name that identifies the attribute: The default name, or if that is empty,
+     * the name in the admin language or else the first translated name.
+     *
+     * @return string The attribute name, may be empty if no name is set at all
+     */
+    private function getAccessibleName()
+    {
+        if ((string) $this->defaultname !== '') {
+            return $this->defaultname;
+        }
+        $fallbackName = '';
+        foreach ($this->participant_attribute_names_lang as $nameLang) {
+            if ((string) $nameLang->attribute_name === '') {
+                continue;
+            }
+            if ($nameLang->lang === Yii::app()->session['adminlang']) {
+                return $nameLang->attribute_name;
+            }
+            if ($fallbackName === '') {
+                $fallbackName = $nameLang->attribute_name;
+            }
+        }
+        return $fallbackName;
     }
 
     /**
@@ -726,6 +754,13 @@ class ParticipantAttributeName extends LSActiveRecord
         return $data;
     }
 
+    /**
+     * Updates an existing attribute with the given values; keys that are missing are left unchanged.
+     *
+     * @param array $data Attribute values: 'attribute_id' (required), and optionally 'attribute_type', 'visible',
+     *                    'encrypted', 'core_attribute', 'defaultname' and 'attribute_name' (name in the admin language)
+     * @return void
+     */
     public function saveAttribute($data)
     {
         if (empty($data['attribute_id'])) {
@@ -748,7 +783,8 @@ class ParticipantAttributeName extends LSActiveRecord
         } else {
             $insertnames['core_attribute'] = 'N';
         }
-        if (!empty($data['defaultname'])) {
+        // isset, not empty: An explicitly cleared default name must be saved too
+        if (isset($data['defaultname'])) {
             $insertnames['defaultname'] = $data['defaultname'];
         }
         if (!empty($insertnames)) {
