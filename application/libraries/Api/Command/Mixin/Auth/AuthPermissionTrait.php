@@ -3,10 +3,6 @@
 namespace LimeSurvey\Api\Command\Mixin\Auth;
 
 use Permission;
-use LimeSurvey\Api\Command\Response\{
-    Response,
-    Status\StatusErrorUnauthorised
-};
 
 trait AuthPermissionTrait
 {
@@ -40,51 +36,31 @@ trait AuthPermissionTrait
      * @param string $sPermission
      * @param string $sCRUD
      * @param ?int $iUserID
-     * @return Response | boolean
+     * @return bool true if the user has the global permission
      */
-    protected function hasGlobalPermission($sPermission, $sCRUD, $iUserID = null)
+    protected function hasGlobalPermission($sPermission, $sCRUD, $iUserID = null): bool
     {
-        $result =
-            $this->getPermissionModel()->hasGlobalPermission(
-                $sPermission,
-                $sCRUD,
-                $iUserID
-            );
-
-        if ($result) {
-            return true;
-        } else {
-            return new Response(
-                array('status' => 'No permission'),
-                new StatusErrorUnauthorised()
-            );
-        }
+        return $this->getPermissionModel()->hasGlobalPermission(
+            $sPermission,
+            $sCRUD,
+            $iUserID
+        );
     }
 
     /**
      * @param int $iSurveyID
      * @param string $sPermission
      * @param string $sCRUD
-     * @param ?string $iUserID
-     * @return Response | boolean
+     * @param ?int $iUserID
+     * @return bool true if the user has the survey permission
      */
-    protected function hasSurveyPermission($iSurveyID, $sPermission, $sCRUD, $iUserID = null)
+    protected function hasSurveyPermission($iSurveyID, $sPermission, $sCRUD, $iUserID = null): bool
     {
-        $result =
-            $this->getPermissionModel()->hasSurveyPermission(
-                $iSurveyID,
-                $sPermission,
-                $sCRUD,
-                $iUserID
-            );
-
-        if ($result) {
-            return true;
-        } else {
-            return new Response(
-                array('status' => 'No permission'),
-                new StatusErrorUnauthorised()
-            );
-        }
+        return $this->getPermissionModel()->hasSurveyPermission(
+            $iSurveyID,
+            $sPermission,
+            $sCRUD,
+            $iUserID
+        );
     }
 }
