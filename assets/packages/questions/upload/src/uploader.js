@@ -320,6 +320,15 @@ var uploadHandler = function (qid, options) {
                     $('#uploadstatus').html(uploadLang.errorMoreAllowed.replace('%s', (maxfiles - filecount)));
                     fixParentHeigth();
                 }
+            })
+            .fail(function (jqXHR) {
+                // A plain text answer is a message for the participant, e.g. during maintenance
+                var isText = (jqXHR.getResponseHeader('Content-Type') || '').indexOf('text/plain') === 0;
+                var message = isText && jqXHR.responseText ? jqXHR.responseText : uploadLang.errorUnknown;
+                $('#notice').html(
+                    $('<p class="alert alert-danger" role="alert"><span class="fa fa-exclamation-circle ri-error-warning-fill" aria-hidden="true"></span>&nbsp;</p>')
+                        .append(document.createTextNode(message))
+                );
             });
     };
 
