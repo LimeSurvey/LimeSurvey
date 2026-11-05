@@ -550,7 +550,7 @@ LS.CPDB = (function() {
             try {
                 response = JSON.parse(xhttp.responseText);
             } catch (e) {
-                return;
+                response = null;
             }
             if (response && response.success) {
                 languageField.remove();
@@ -558,7 +558,12 @@ LS.CPDB = (function() {
                 window.LS.ajaxAlerts(response.error.message, 'danger');
             } else if (response && response.hasPermission === false) {
                 window.LS.ajaxAlerts(response.noPermissionText, 'danger');
+            } else {
+                window.LS.ajaxAlerts(translate_saveFailed, 'danger');
             }
+        };
+        xhttp.onerror = function() {
+            window.LS.ajaxAlerts(translate_saveFailed, 'danger');
         };
         xhttp.send(new URLSearchParams({
             attribute_id: attributeIdInput.value,
