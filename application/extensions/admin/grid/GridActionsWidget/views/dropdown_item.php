@@ -17,7 +17,7 @@ $encodeAttribute = function ($value) {
 // Items that only navigate to their url keep the link role, items that run an action are buttons
 $linkAttributes = isset($linkAttributes) && is_array($linkAttributes) ? $linkAttributes : [];
 $isAction = empty($url) || $url === '#' || stripos((string) $url, 'javascript:') === 0
-    || isset($linkAttributes['data-bs-toggle'])
+    || in_array($linkAttributes['data-bs-toggle'] ?? null, ['modal', 'offcanvas', 'collapse', 'dropdown', 'tab', 'pill', 'button'], true)
     || isset($linkAttributes['onclick'])
     || isset($linkAttributes['data-post-url']);
 $role = $linkAttributes['role'] ?? ($isAction ? 'button' : null);
