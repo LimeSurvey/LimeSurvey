@@ -1725,8 +1725,9 @@ class ParticipantsAction extends SurveyCommonAction
      *   'ParticipantAttributeNamesDropdown' (array|null),
      *   'oper' (string) ['edit'|'new']
      * Requires global 'participantpanel' 'update' permission when editing, 'create' when adding
-     * Echoes json-encoded array 'success' (array), 'successMessage' (string)
-     * @return void
+     * Echoes json-encoded array 'success' (array), 'successMessage' (string),
+     * or an error when neither the default name nor any translation is filled in
+     * @return void|false False if saving failed and the transaction was rolled back
      */
     public function editAttributeName()
     {
@@ -1744,6 +1745,16 @@ class ParticipantsAction extends SurveyCommonAction
         $AttributeNameLanguages = Yii::app()->request->getPost('ParticipantAttributeNameLanguages');
         $ParticipantAttributeNamesDropdown = Yii::app()->request->getPost('ParticipantAttributeNamesDropdown');
         $sEncryptedAfterChange = $AttributeNameAttributes['encrypted'];
+
+        // The default name is optional, but the attribute needs a name in at least one place
+        $aNames = array_merge([$AttributeNameAttributes['defaultname'] ?? ''], is_array($AttributeNameLanguages) ? $AttributeNameLanguages : []);
+        $aNonEmptyNames = array_filter($aNames, function ($name) {
+            return trim((string) $name) !== '';
+        });
+        if (empty($aNonEmptyNames)) {
+            $this->ajaxHelper::outputError(gT('Name can not be empty.'));
+            return;
+        }
 
         // encryption/decryption MUST be done in a one synchronous step, either all succeed or none
         $oDB = Yii::app()->db;

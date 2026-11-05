@@ -191,7 +191,8 @@ $form = $this->beginWidget(
             $('#ParticipantAttributeNamesDropdownEdit').slideUp();
         }
     })
-    jQuery('.action_delDropdownField').on('click', function (e) {
+    // Delegated, so the remove buttons of fields added with #addDropdownField work too
+    jQuery('#ParticipantAttributeNamesDropdownEditList').on('click', '.action_delDropdownField', function (e) {
         e.preventDefault();
         $(this).closest('div.control-group').remove();
         return false;

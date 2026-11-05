@@ -540,6 +540,9 @@ class ParticipantAttributeName extends LSActiveRecord
             $thislang = '';
             foreach ($row->participant_attribute_names_lang as $names) {
                 //Iterate through each language version of this attribute
+                if ((string) $names->attribute_name === '') {
+                    continue;
+                }
                 if ($thisname == "") {
                     $thisname = $names->attribute_name;
                     $thislang = $names->lang;
@@ -773,15 +776,11 @@ class ParticipantAttributeName extends LSActiveRecord
         if (!empty($data['visible'])) {
             $insertnames['visible'] = $data['visible'];
         }
-        if (!empty($data['encrypted'])) {
+        if (isset($data['encrypted'])) {
             $insertnames['encrypted'] = $data['encrypted'] == 'Y' ? 'Y' : 'N';
-        } else {
-            $insertnames['encrypted'] = 'N';
         }
-        if (!empty($data['core_attribute'])) {
+        if (isset($data['core_attribute'])) {
             $insertnames['core_attribute'] = $data['core_attribute'] == 'Y' ? 'Y' : 'N';
-        } else {
-            $insertnames['core_attribute'] = 'N';
         }
         // isset, not empty: An explicitly cleared default name must be saved too
         if (isset($data['defaultname'])) {
