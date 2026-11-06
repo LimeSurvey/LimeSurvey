@@ -40,13 +40,13 @@ $form = $this->beginWidget(
                 <?php eT('First name:'); ?>
             </label>
             <div class=''>
-                <?= $form->textField($model, 'firstname', ['id' => 'Participant_firstname', 'aria-labelledby' => 'Participant_firstname_label', 'autocomplete' => 'given-name']) ?>
+                <?= $form->textField($model, 'firstname', ['id' => 'Participant_firstname', 'aria-labelledby' => 'Participant_firstname_label']) ?>
             </div>
             <label id="Participant_lastname_label" class='form-label ' for="Participant_lastname">
                 <?php eT('Last name:'); ?>
             </label>
             <div class=''>
-                <?= $form->textField($model, 'lastname', ['id' => 'Participant_lastname', 'aria-labelledby' => 'Participant_lastname_label', 'autocomplete' => 'family-name']) ?>
+                <?= $form->textField($model, 'lastname', ['id' => 'Participant_lastname', 'aria-labelledby' => 'Participant_lastname_label']) ?>
             </div>
         </div>
         <div class='mb-3'>
@@ -54,7 +54,7 @@ $form = $this->beginWidget(
                 <?php eT('Email:'); ?>
             </label>
             <div class=''>
-                <?= $form->textField($model, 'email', ['id' => 'Participant_email', 'aria-labelledby' => 'Participant_email_label', 'autocomplete' => 'email']) ?>
+                <?= $form->textField($model, 'email', ['id' => 'Participant_email', 'aria-labelledby' => 'Participant_email_label']) ?>
             </div>
         </div>
         <div class='mb-3'>
