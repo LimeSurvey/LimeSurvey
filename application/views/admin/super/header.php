@@ -49,6 +49,7 @@
     <title><?php echo (isset($pageTitle) && $pageTitle !== '') ? htmlspecialchars((string) $pageTitle) . ' - ' . $sitename : $sitename; ?></title>
     <link rel="shortcut icon" href="<?php echo Yii::app()->getConfig('styleurl');?>favicon.ico" type="image/x-icon" />
     <link rel="icon" href="<?php echo Yii::app()->getConfig('styleurl');?>favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="<?php echo Yii::app()->getConfig('styleurl');?>apple-touch-icon.png" />
     <?php $this->widget('ext.LimeScript.LimeScript'); ?>
     <?php //$this->widget('ext.LimeDebug.LimeDebug'); ?>
 </head>
