@@ -1,5 +1,7 @@
 <div class="modal-header">
     <h5 class="modal-title" id="participant_edit_modal"><?php eT('List active surveys'); ?></h5>
+    <?php // aria-hidden: only read as part of the dialog name, not again when reading the dialog content ?>
+    <span class="visually-hidden" id="participant_edit_modal-dialogsr" aria-hidden="true"><?= gT('Dialog') ?></span>
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 </div>
 <?php $form = $this->beginWidget(

@@ -141,7 +141,9 @@ class ParticipantAttributeName extends LSActiveRecord
     }
 
     /**
-     * @return string
+     * Returns the mass action checkbox for the attribute grid row (a hidden input for core attributes).
+     *
+     * @return string HTML of the checkbox or hidden input
      */
     public function getMassiveActionCheckbox()
     {
@@ -151,7 +153,45 @@ class ParticipantAttributeName extends LSActiveRecord
             // as we have only that special case in cpdb at the moment, it's not necessary to change it in the frontend part (listAction.js line 27)
             return "<input type='hidden' class='selector_attributeNamesCheckbox' name='selectedAttributeNames[]' value='" . $this->attribute_id . "' >";
         }
-        return "<input type='checkbox' class='selector_attributeNamesCheckbox massiveActionsCheckbox' name='selectedAttributeNames[]' value='" . $this->attribute_id . "' aria-label='" . CHtml::encode(sprintf(gT('Select attribute %s'), $this->defaultname)) . "' >";
+        return "<input type='checkbox' class='selector_attributeNamesCheckbox massiveActionsCheckbox' name='selectedAttributeNames[]' value='" . $this->attribute_id . "' aria-label='" . CHtml::encode(sprintf(gT('Select attribute %s'), $this->getAccessibleName())) . "' >";
+    }
+
+    /**
+     * Returns a name that identifies the attribute: The default name, or if that is blank,
+     * the name in the admin language or else the first translated name.
+     *
+     * @return string The attribute name, may be empty if no name is set at all
+     */
+    private function getAccessibleName()
+    {
+        if (!self::isBlankName($this->defaultname)) {
+            return $this->defaultname;
+        }
+        $fallbackName = '';
+        foreach ($this->participant_attribute_names_lang as $nameLang) {
+            if (self::isBlankName($nameLang->attribute_name)) {
+                continue;
+            }
+            if ($nameLang->lang === Yii::app()->session['adminlang']) {
+                return $nameLang->attribute_name;
+            }
+            if ($fallbackName === '') {
+                $fallbackName = $nameLang->attribute_name;
+            }
+        }
+        return $fallbackName;
+    }
+
+    /**
+     * Checks whether an attribute name (default name or translation) is empty or contains only whitespace.
+     * Tags are stripped first, as the strip_tags filter in rules() does on save, so markup-only input counts as blank.
+     *
+     * @param string|null $name The name to check, as submitted or as stored
+     * @return bool True if the name can't identify the attribute
+     */
+    public static function isBlankName($name)
+    {
+        return trim(strip_tags((string) $name)) === '';
     }
 
     /**
@@ -242,7 +282,9 @@ class ParticipantAttributeName extends LSActiveRecord
     }
 
     /**
-     * @return array
+     * Returns the column definitions of the attribute management grid.
+     *
+     * @return array The CGridView column configurations
      */
     public function getColumns()
     {
@@ -253,9 +295,13 @@ class ParticipantAttributeName extends LSActiveRecord
             [
                 "name"              => 'massiveActionCheckbox',
                 "type"              => 'raw',
-                "header"            => "<input type='checkbox' id='action_toggleAllAttributeNames' aria-label='" . CHtml::encode(gT('Select all')) . "' />",
+                // The visually hidden label names both the checkbox and the column header (for the table navigation)
+                "header"            => "<label for='action_toggleAllAttributeNames' class='visually-hidden'>"
+                    . CHtml::encode(gT('Select all')) . "</label>"
+                    . "<input type='checkbox' id='action_toggleAllAttributeNames' />",
                 "filter"            => false,
-                'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
+                // The header only holds a checkbox: Name the column for the screen reader table navigation
+                'headerHtmlOptions' => ['class' => 'ls-sticky-column', 'aria-label' => gT('Selection')],
                 'filterHtmlOptions' => ['class' => 'ls-sticky-column'],
                 'htmlOptions'       => ['class' => 'ls-sticky-column']
             ],
@@ -283,7 +329,7 @@ class ParticipantAttributeName extends LSActiveRecord
                 "type"   => "raw",
                 "filter" => ["Y" => gT("Yes"), "N" => gT("No")],
                 "filterInputOptions" => ['prompt' => gT('All')],
-                "header" => '<span ' . ($bEncrypted === true ? '' : 'title="' . gT("Encryption is disabled because Sodium library isn't installed") . '"') . '>' . gT("Encrypted") . '</span>',
+                "header" => '<span ' . ($bEncrypted === true ? '' : 'title="' . CHtml::encode(gT("Encryption is disabled because Sodium library isn't installed")) . '"') . '>' . gT("Encrypted") . '</span>',
             ],
             [
                 "name"   => 'core_attribute',
@@ -516,6 +562,9 @@ class ParticipantAttributeName extends LSActiveRecord
             $thislang = '';
             foreach ($row->participant_attribute_names_lang as $names) {
                 //Iterate through each language version of this attribute
+                if (self::isBlankName($names->attribute_name)) {
+                    continue;
+                }
                 if ($thisname == "") {
                     $thisname = $names->attribute_name;
                     $thislang = $names->lang;
@@ -730,6 +779,13 @@ class ParticipantAttributeName extends LSActiveRecord
         return $data;
     }
 
+    /**
+     * Updates an existing attribute with the given values; keys that are missing are left unchanged.
+     *
+     * @param array $data Attribute values: 'attribute_id' (required), and optionally 'attribute_type', 'visible',
+     *                    'encrypted', 'core_attribute', 'defaultname' and 'attribute_name' (name in the admin language)
+     * @return void
+     */
     public function saveAttribute($data)
     {
         if (empty($data['attribute_id'])) {
@@ -742,17 +798,14 @@ class ParticipantAttributeName extends LSActiveRecord
         if (!empty($data['visible'])) {
             $insertnames['visible'] = $data['visible'];
         }
-        if (!empty($data['encrypted'])) {
+        if (isset($data['encrypted'])) {
             $insertnames['encrypted'] = $data['encrypted'] == 'Y' ? 'Y' : 'N';
-        } else {
-            $insertnames['encrypted'] = 'N';
         }
-        if (!empty($data['core_attribute'])) {
+        if (isset($data['core_attribute'])) {
             $insertnames['core_attribute'] = $data['core_attribute'] == 'Y' ? 'Y' : 'N';
-        } else {
-            $insertnames['core_attribute'] = 'N';
         }
-        if (!empty($data['defaultname'])) {
+        // isset, not empty: An explicitly cleared default name must be saved too
+        if (isset($data['defaultname'])) {
             $insertnames['defaultname'] = $data['defaultname'];
         }
         if (!empty($insertnames)) {

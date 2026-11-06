@@ -4,7 +4,8 @@ import 'tests/mocks'
 import { act } from 'react'
 import { renderWithProviders } from 'tests/testUtils'
 import { SurveyStructure } from './SurveyStructure'
-import { screen } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import surveyData from 'helpers/data/survey-detail.json'
 import { queryClient } from 'queryClient'
 import { STATES } from 'helpers'
@@ -50,6 +51,22 @@ describe('SurveyStructure', () => {
 
     expect(header).toBeDefined()
     expect(footer).toBeDefined()
+  })
+
+  test('Welcome row is selected by click and by keyboard', async () => {
+    await renderWithProviders(<SurveyStructure />)
+
+    const header = await screen.findByTestId('survey-structure-header')
+    const footer = await screen.findByTestId('survey-structure-footer')
+    expect(header).not.toHaveAttribute('aria-current')
+
+    header.focus()
+    await userEvent.keyboard('{Enter}')
+    await waitFor(() => expect(header).toHaveAttribute('aria-current', 'true'))
+
+    await userEvent.click(footer)
+    await waitFor(() => expect(footer).toHaveAttribute('aria-current', 'true'))
+    expect(header).not.toHaveAttribute('aria-current')
   })
 
   test('Should have all of the survey question groups', async () => {

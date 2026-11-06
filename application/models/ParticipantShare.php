@@ -91,14 +91,18 @@ class ParticipantShare extends LSActiveRecord
     }
 
     /**
-     * @param integer $selected
-     * @return string html dropdown
+     * Returns the filter dropdown for the "Shared with" column of the share panel.
+     *
+     * @param integer|string|null $selected The currently selected share user ID, or empty for no filter
+     * @return string The HTML of the dropdown list
      */
     public function getSharedByList($selected)
     {
-        $share_uids = Yii::app()->db->createCommand()
-            ->selectDistinct('share_uid')
-            ->from('{{participant_shares}}')
+        // One query for all share targets: The inner join skips shares with users that were deleted since
+        $shareUsers = Yii::app()->db->createCommand()
+            ->selectDistinct('ps.share_uid, u.full_name')
+            ->from('{{participant_shares}} ps')
+            ->join('{{users}} u', 'u.uid = ps.share_uid')
             ->queryAll();
 
         $shareList = array(
@@ -106,13 +110,8 @@ class ParticipantShare extends LSActiveRecord
             '-1' => gT('Everybody')
         );
 
-        foreach ($share_uids as $id) {
-            if ($id['share_uid'] == -1) {
-                continue;
-            }
-            /** @var User $oUser */
-            $oUser = User::model()->findByPk($id['share_uid']);
-            $shareList[$id['share_uid']] = $oUser->full_name;
+        foreach ($shareUsers as $shareUser) {
+            $shareList[$shareUser['share_uid']] = $shareUser['full_name'];
         }
         return TbHtml::dropDownList('ParticipantShare[share_uid]', $selected, $shareList, ['aria-label' => gT('Shared with')]);
     }
@@ -215,7 +214,9 @@ class ParticipantShare extends LSActiveRecord
     }
 
     /**
-     * @return array
+     * Returns the column definitions for the share panel grid.
+     *
+     * @return array The column configurations for the grid view
      */
     public function getColumns()
     {
@@ -227,24 +228,24 @@ class ParticipantShare extends LSActiveRecord
                 "header"            => "<input type='checkbox' id='action_toggleAllParticipantShare' aria-label='" . CHtml::encode(gT('Select all')) . "' />",
                 "filter"            => false,
                 'filterHtmlOptions' => ['class' => 'ls-sticky-column'],
-                // The header only holds a checkbox: name the column for the screen reader table navigation
-                'headerHtmlOptions' => ['class' => 'ls-sticky-column', 'aria-label' => gT('Select all')],
+                // The header only holds a checkbox: Name the column for the screen reader table navigation
+                'headerHtmlOptions' => ['class' => 'ls-sticky-column', 'aria-label' => gT('Selection')],
                 'htmlOptions'       => ['class' => 'ls-sticky-column'],
             ],
             [
                 "name"   => 'participant.lastname',
                 "header" => gT("Last name"),
-                "filter" => TbHtml::textField("Participant[lastname]", $participantFilter['lastname'] ?? '')
+                "filter" => TbHtml::textField("Participant[lastname]", $participantFilter['lastname'] ?? '', ['aria-label' => gT("Last name")])
             ],
             [
                 "name"   => 'participant.firstname',
                 "header" => gT("First name"),
-                "filter" => TbHtml::textField("Participant[firstname]", $participantFilter['firstname'] ?? '')
+                "filter" => TbHtml::textField("Participant[firstname]", $participantFilter['firstname'] ?? '', ['aria-label' => gT("First name")])
             ],
             [
                 "name"   => 'participant.email',
                 "header" => gT("Email address"),
-                "filter" => TbHtml::textField("Participant[email]", $participantFilter['email'] ?? '')
+                "filter" => TbHtml::textField("Participant[email]", $participantFilter['email'] ?? '', ['aria-label' => gT("Email address")])
             ],
             [
                 "name"   => 'share_uid',

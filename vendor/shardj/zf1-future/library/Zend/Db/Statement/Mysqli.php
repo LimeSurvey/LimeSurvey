@@ -67,7 +67,13 @@ class Zend_Db_Statement_Mysqli extends Zend_Db_Statement
     {
         $mysqli = $this->_adapter->getConnection();
 
-        $this->_stmt = $mysqli->prepare($sql);
+        try {
+            $this->_stmt = $mysqli->prepare($sql);
+        } catch (mysqli_sql_exception $e) {
+            // PHP 8.1+ throws by default (MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT)
+            require_once 'Zend/Db/Statement/Mysqli/Exception.php';
+            throw new Zend_Db_Statement_Mysqli_Exception("Mysqli prepare error: " . $e->getMessage(), $e->getCode(), $e);
+        }
 
         if ($this->_stmt === false || $mysqli->errno) {
             /**
@@ -191,6 +197,25 @@ class Zend_Db_Statement_Mysqli extends Zend_Db_Statement
         if ($params === null) {
             $params = $this->_bindParam;
         }
+        try {
+            return $this->_executeStatement($params);
+        } catch (mysqli_sql_exception $e) {
+            // PHP 8.1+ throws by default (MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT)
+            require_once 'Zend/Db/Statement/Mysqli/Exception.php';
+            throw new Zend_Db_Statement_Mysqli_Exception("Mysqli statement execute error : " . $e->getMessage(), $e->getCode(), $e);
+        }
+    }
+
+    /**
+     * Binds the parameters, executes the statement and binds the result.
+     *
+     * @param array|null $params Values to bind to parameter placeholders.
+     * @return bool
+     * @throws Zend_Db_Statement_Mysqli_Exception
+     * @throws mysqli_sql_exception
+     */
+    protected function _executeStatement($params)
+    {
         // send $params as input parameters to the statement
         if ($params) {
             array_unshift($params, str_repeat('s', count($params)));
