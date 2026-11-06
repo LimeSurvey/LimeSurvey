@@ -282,7 +282,9 @@ class ParticipantAttributeName extends LSActiveRecord
     }
 
     /**
-     * @return array
+     * Returns the column definitions of the attribute management grid.
+     *
+     * @return array The CGridView column configurations
      */
     public function getColumns()
     {
@@ -293,7 +295,10 @@ class ParticipantAttributeName extends LSActiveRecord
             [
                 "name"              => 'massiveActionCheckbox',
                 "type"              => 'raw',
-                "header"            => "<input type='checkbox' id='action_toggleAllAttributeNames' aria-label='" . CHtml::encode(gT('Select all')) . "' />",
+                // The visually hidden label names both the checkbox and the column header (for the table navigation)
+                "header"            => "<label for='action_toggleAllAttributeNames' class='visually-hidden'>"
+                    . CHtml::encode(gT('Select all')) . "</label>"
+                    . "<input type='checkbox' id='action_toggleAllAttributeNames' />",
                 "filter"            => false,
                 'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
                 'filterHtmlOptions' => ['class' => 'ls-sticky-column'],
