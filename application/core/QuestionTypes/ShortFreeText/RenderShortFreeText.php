@@ -1,5 +1,7 @@
 <?php
 
+use LimeSurvey\Models\Services\SurveySessionState;
+
 /**
  * RenderClass for Short Free Text Question (including the map/location variants)
  *  * The ia Array contains the following
@@ -153,7 +155,7 @@ class RenderShortFreeText extends QuestionBaseRenderer
     private function renderTextarea(array $aCommonData)
     {
         //question attribute "display_rows" is set -> we need a textarea to be able to show several rows
-        $drows = $this->getQuestionAttribute('display_rows');
+        $drows = intval($this->getQuestionAttribute('display_rows'));
 
         $dispVal = "";
         $mSessionValue = $this->getLegacySessionValue($this->sSGQA);
@@ -191,6 +193,7 @@ class RenderShortFreeText extends QuestionBaseRenderer
      *
      * @param array $aCommonData Values shared by all variants, as built in render()
      * @return string Rendered HTML
+     * @deprecated Use the Map question type (RenderMap). Kept for custom Short Text themes that define location settings.
      */
     private function renderMapService(array $aCommonData)
     {
@@ -283,6 +286,7 @@ class RenderShortFreeText extends QuestionBaseRenderer
      *
      * @param array $aCommonData Values shared by all variants, as built in render()
      * @return string Rendered HTML
+     * @deprecated Use the Map question type (RenderMap). Kept for custom Short Text themes that define location settings.
      */
     private function renderLeafletMap(array $aCommonData)
     {
@@ -398,7 +402,7 @@ class RenderShortFreeText extends QuestionBaseRenderer
      */
     private function getSessionLanguage()
     {
-        return $_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['s_lang'] ?? '';
+        return SurveySessionState::forSurvey((int) Yii::app()->getConfig('surveyID'))->getLanguage() ?? '';
     }
 
     /**
@@ -410,7 +414,7 @@ class RenderShortFreeText extends QuestionBaseRenderer
      */
     private function getLegacySessionValue($sIndex)
     {
-        return $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$sIndex] ?? null;
+        return SurveySessionState::forSurvey((int) Yii::app()->getConfig('surveyID'))->getFieldValue($sIndex);
     }
 
     /**
@@ -418,6 +422,7 @@ class RenderShortFreeText extends QuestionBaseRenderer
      *
      * @param string $sIPAddress IP address to look up
      * @return array{0: float, 1: float}|false|null [latitude, longitude], false if the lookup failed, null if no API key is set
+     * @deprecated Duplicated in RenderMap, only used by the deprecated map variants.
      */
     private function getLatLongFromIp($sIPAddress)
     {
@@ -429,7 +434,7 @@ class RenderShortFreeText extends QuestionBaseRenderer
                 $lat = (float) $oXML->{'latitude'};
                 $lng = (float) $oXML->{'longitude'};
 
-                return(array($lat, $lng));
+                return (array($lat, $lng));
             } else {
                 return false;
             }

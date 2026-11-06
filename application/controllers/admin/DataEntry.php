@@ -358,6 +358,17 @@ class DataEntry extends SurveyCommonAction
                 $archivedEncryptedAttributes = json_decode((string) $archivedTableSettings->properties);
             }
 
+            // Subquestions deleted and re-created with the same code since the archive was made
+            $recreatedSubquestionColumns = [];
+            if (preg_match('/^old_responses_(\d+_\d+)$/', (string) $tbl_name, $tableMatches) && tableExists("{{old_questions_{$tableMatches[1]}}}")) {
+                require_once "application/helpers/admin/import_helper.php";
+                $recreatedSubquestionColumns = getRecreatedSubquestionColumns(
+                    $iSurveyId,
+                    $sourceSchema->name,
+                    App()->db->tablePrefix . "old_questions_{$tableMatches[1]}"
+                );
+            }
+
             $fieldMap = [];
             $pattern = '/([\d]+)X([\d]+)X([\d]+.*)/';
             foreach ($sourceSchema->getColumnNames() as $name) {
@@ -370,6 +381,8 @@ class DataEntry extends SurveyCommonAction
                 // Exact match.
                 if ($targetSchema->getColumn($name)) {
                     $fieldMap[$name] = $name;
+                } elseif (isset($recreatedSubquestionColumns[$name])) {
+                    $fieldMap[$name] = $recreatedSubquestionColumns[$name];
                 } elseif (preg_match($pattern, (string) $name, $matches)) {
                     // Column name is SIDXGIDXQID
                     $qid = $matches[3];
@@ -423,10 +436,10 @@ class DataEntry extends SurveyCommonAction
 
                 foreach ($fieldMap as $sourceField => $targetField) {
                     $targetResponse[$targetField] = $sourceResponse[$sourceField];
-                    if (in_array($sourceField, $archivedEncryptedAttributes, false) && !in_array($sourceField, $encryptedAttributes, false)) {
+                    if (in_array($sourceField, $archivedEncryptedAttributes, false) && !in_array($targetField, $encryptedAttributes, false)) {
                         $targetResponse[$targetField] = $sourceResponse->decryptSingle($sourceResponse[$sourceField]);
                     }
-                    if (!in_array($sourceField, $archivedEncryptedAttributes, false) && in_array($sourceField, $encryptedAttributes, false)) {
+                    if (!in_array($sourceField, $archivedEncryptedAttributes, false) && in_array($targetField, $encryptedAttributes, false)) {
                         $targetResponse[$targetField] = $sourceResponse->encryptSingle($sourceResponse[$sourceField]);
                     }
                 }
@@ -1077,7 +1090,7 @@ class DataEntry extends SurveyCommonAction
 
                     case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox
                         $thisqid = $fname['qid'];
-                        while ($fname['qid'] == $thisqid) {
+                        while (isset($fname['qid']) && $fname['qid'] == $thisqid) {
                             if (substr((string) $fname['fieldname'], -5) == "other") {
                                 $questionInput = "\t<input type='text' name='{$fname['fieldname']}' value='"
                                 . htmlspecialchars((string) $idrow[$fname['fieldname']], ENT_QUOTES) . "' />\n";
@@ -1120,7 +1133,8 @@ class DataEntry extends SurveyCommonAction
 
                     case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
                         $questionInput = '';
-                        while (isset($fname) && $fname['type'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) {
+                        $thisqid = $fname['qid'];
+                        while (isset($fname['qid']) && $fname['qid'] == $thisqid) {
                             $thefieldname = $fname['fieldname'];
                             $subquestionValue = $idrow[$fname['fieldname']];
                             if (substr((string) $fname['fieldname'], -5) == "other") {
@@ -1200,6 +1214,7 @@ class DataEntry extends SurveyCommonAction
                         $questionInputs[$fname['fieldname']] = CHtml::textField($fname['fieldname'], $value, array('pattern' => "[-]?([0-9]{0,20}([\.][0-9]{0,10})?)?",'title' => gT("Only numbers may be entered in this field.")));
                         break;
                     case Question::QT_S_SHORT_FREE_TEXT: //Short free text
+                    case Question::QT_J_MAP:
                         $questionInputs[$fname['fieldname']] = CHtml::textField($fname['fieldname'], $idrow[$fname['fieldname']]);
                         break;
                     case Question::QT_T_LONG_FREE_TEXT: //LONG FREE TEXT
@@ -1230,7 +1245,7 @@ class DataEntry extends SurveyCommonAction
                         break;
                     case Question::QT_A_ARRAY_5_POINT: // Array (5 point choice) radio-buttons
                         $thisqid = $fname['qid'];
-                        while ($fname['qid'] == $thisqid) {
+                        while (isset($fname['qid']) && $fname['qid'] == $thisqid) {
                             $questionInput = "<span>" . $fname['subquestion'] . "</span>";
                             $questionInput .= " <span>";
                             for ($j = 1; $j <= 5; $j++) {
@@ -1259,7 +1274,7 @@ class DataEntry extends SurveyCommonAction
                         break;
                     case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: // Array (10 point choice) radio-buttons
                         $thisqid = $fname['qid'];
-                        while ($fname['qid'] == $thisqid) {
+                        while (isset($fname['qid']) && $fname['qid'] == $thisqid) {
                             $questionInput = "<span>" . $fname['subquestion'] . "</span>";
                             $questionInput .= " <span>";
                             for ($j = 1; $j <= 10; $j++) {
@@ -1318,7 +1333,7 @@ class DataEntry extends SurveyCommonAction
                         break;
                     case Question::QT_E_ARRAY_INC_SAME_DEC: // Array (Increase/Same/Decrease) radio-buttons
                         $thisqid = $fname['qid'];
-                        while ($fname['qid'] == $thisqid) {
+                        while (isset($fname['qid']) && $fname['qid'] == $thisqid) {
                             $questionInput = "<span>" . $fname['subquestion'] . "</span>";
                             $questionInput .= " <span>";
                             $options = [

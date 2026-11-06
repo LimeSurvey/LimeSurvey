@@ -474,8 +474,8 @@ class Surveymenu extends LSActiveRecord
     }
 
     /**
-     * Method to restore the default surveymenu entries
-     * This method will fail if the surveymenus have been tempered, or wrongly set
+     * Method to restore the default surveymenus
+     * Menu entries of custom menus are deleted, as their menus no longer exist afterwards.
      *
      * @return boolean
      */
@@ -492,8 +492,22 @@ class Surveymenu extends LSActiveRecord
             foreach ($basicMenues as $basicMenu) {
                 $oDB->createCommand()->insert("{{surveymenu}}", $basicMenu);
             }
+            // The default menus have fixed ids, so the PostgreSQL sequence must be moved past them
+            if ($oDB->getDriverName() === 'pgsql') {
+                $oDB->createCommand("SELECT setval(pg_get_serial_sequence('{{surveymenu}}', 'id'), (SELECT MAX(id) FROM {{surveymenu}}))")->execute();
+            }
+            // Remove the entries of custom menus that no longer exist
+            $oDB->createCommand()->delete(
+                '{{surveymenu_entries}}',
+                'menu_id NOT IN (SELECT id FROM {{surveymenu}})'
+            );
             $oTransaction->commit();
         } catch (Exception $e) {
+            // TRUNCATE causes an implicit commit on MySQL, so the transaction may already be closed
+            if ($oDB->getPdoInstance()->inTransaction()) {
+                $oTransaction->rollback();
+            }
+            switchMSSQLIdentityInsert('surveymenu', false);
             App()->setLanguage($sOldLanguage);
             return false;
         }

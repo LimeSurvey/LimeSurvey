@@ -239,21 +239,14 @@ class ExtensionConfig
 
     /**
      * Create a version fetcher for every <updater> tag in config.xml.
+     * A missing <updaters> tag is treated like disabled updaters.
      * @return array VersionFetcher[]
+     * @throws \Exception If an <updater> tag cannot be turned into a version fetcher
      */
     public function createVersionFetchers()
     {
-        if (empty($this->xml->updaters)) {
-            throw new \Exception(
-                sprintf(
-                    gT('Extension %s has no updater defined in config.xml'),
-                    $this->getName()
-                )
-            );
-        }
-
-        // Don't create any fetchers if updaters are disabled.
-        if ((string) $this->xml->updaters['disabled'] === 'disabled') {
+        // Don't create any fetchers if updaters are missing or disabled.
+        if (empty($this->xml->updaters) || (string) $this->xml->updaters['disabled'] === 'disabled') {
             return [];
         }
 

@@ -7,8 +7,6 @@ see: https://www.yiiframework.com/doc/guide/1.1/en/basics.module
 
 Modules must be loaded first in internal.php. In the future, if we want to allow user to upload Yii Modules, we'll provide a way to do it by DB.
 
-In the subfolder HelloWorld, you'll fin a minimal example of a Yii Module.
-
 ## Note about yii modules and admin interface
 Since LimeSurvey still doesn't use a real layout system, but rather the SurveyCommonAction strategy, those modules can't be shown inside the admin interface. They can still be useful, for echoing pure json for example.
 

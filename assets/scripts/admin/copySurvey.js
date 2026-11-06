@@ -107,7 +107,7 @@ function copySurveyOptions(surveyId, defaultTitle, surveyText) {
         // Clear any previous selection
         $select.empty();
 
-        // Pre-select the current survey
+        // Preselect the current survey
         if (surveyId) {
             var option = new Option(surveyText || surveyId, surveyId, true, true);
             $select.append(option).trigger('change');

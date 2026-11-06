@@ -226,7 +226,7 @@ function checkQuestions($postsid, $iSurveyID)
     } // while
 
     //TO AVOID NATURAL SORT ORDER ISSUES, FIRST GET ALL QUESTIONS IN NATURAL SORT ORDER, AND FIND OUT WHICH NUMBER IN THAT ORDER THIS QUESTION IS
-    $qorderquery = "SELECT * FROM {{questions}} WHERE sid=$iSurveyID AND type not in ('" . Question::QT_S_SHORT_FREE_TEXT . "', '" . Question::QT_D_DATE . "', '" . Question::QT_T_LONG_FREE_TEXT . "', '" . Question::QT_Q_MULTIPLE_SHORT_TEXT . "')";
+    $qorderquery = "SELECT * FROM {{questions}} WHERE sid=$iSurveyID AND type not in ('" . Question::QT_S_SHORT_FREE_TEXT . "', '" . Question::QT_J_MAP . "', '" . Question::QT_D_DATE . "', '" . Question::QT_T_LONG_FREE_TEXT . "', '" . Question::QT_Q_MULTIPLE_SHORT_TEXT . "')";
     $qorderresult = Yii::app()->db->createCommand($qorderquery)->query()->readAll();
     $qrows = array(); //Create an empty array in case FetchRow does not return any rows
     foreach ($qorderresult as $qrow) {

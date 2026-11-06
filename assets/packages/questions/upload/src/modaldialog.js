@@ -1,3 +1,5 @@
+import { applyImagePreviewFallback, PLACEHOLDER_HTML, PLACEHOLDER_CELL_CLASS } from './previewfallback.js';
+
 window.uploadModalObjects = window.uploadModalObjects || {};
 
 class UploadQuestionController {
@@ -18,14 +20,21 @@ class UploadQuestionController {
         $(document).off('shown.bs.modal.lsuploadquestion', '#file-upload-modal-' + this.fieldname);
         $(document).on('shown.bs.modal.lsuploadquestion', '#file-upload-modal-' + this.fieldname, () => {
             const uploadFrame = $('#uploader' + this.fieldname);
-            uploadFrame.load(uploadFrame.data('src'));
+            uploadFrame.load(uploadFrame.data('src'), (response, status, xhr) => {
+                if (status === 'error') {
+                    this.showLoadError(uploadFrame, xhr.status);
+                }
+            });
             this.updateMaxHeightModalbody(this.$el);
         });
 
         this.$modalEl.off('hide.bs.modal.lsuploadquestion');
         this.$modalEl.on('hide.bs.modal.lsuploadquestion', () => {
             const uploadFrame = $('#uploader' + this.fieldname);
-            window.currentUploadHandler.saveAndExit(this.fieldname, this.show_title, this.show_comment, 1);
+            // Without the loaded upload content (e.g. after the session expired) there is nothing to save
+            if ($('#' + this.fieldname + '_licount').length) {
+                window.currentUploadHandler.saveAndExit(this.fieldname, this.show_title, this.show_comment, 1);
+            }
             uploadFrame.html('');
             return true;
 
@@ -36,6 +45,16 @@ class UploadQuestionController {
             console.ls.log("File upload modal opening");
             this.$modalEl.modal('show');
         });
+    }
+
+    /* Function to show an error message in the upload frame when its content could not be loaded
+     *
+     * @param uploadFrame jquery object : the upload frame
+     * @param integer httpStatus HTTP status of the failed request
+     */
+    showLoadError(uploadFrame, httpStatus) {
+        const message = (httpStatus === 401) ? uploadLang.errorSessionExpired : uploadLang.errorLoading;
+        uploadFrame.html('<div class="alert alert-danger" role="alert">' + message + '</div>');
     }
 
     /* Function to update upload frame
@@ -107,7 +126,7 @@ class UploadQuestionController {
             $('#' + this.fieldname + '_uploadedfiles').removeClass('d-none');
             $('#' + this.fieldname + '_uploadedfiles').find('table>tbody').html('');
 
-            const image_extensions = new Array('gif', 'jpeg', 'jpg', 'png', 'swf', 'psd', 'bmp', 'tiff', 'jp2', 'iff', 'bmp', 'xbm', 'ico');
+            const image_extensions = new Array('gif', 'jpeg', 'jpg', 'png', 'swf', 'psd', 'bmp', 'tiff', 'jp2', 'iff', 'bmp', 'xbm', 'ico', 'heic');
             const templateHtml = $('#filerowtemplate_'+this.fieldname).html();
             
             jsonobj.forEach((item, iterator) => {
@@ -116,8 +135,8 @@ class UploadQuestionController {
                     imageOrPlaceholder = "image";
                     imageOrPlaceholderHtml  = '<img src="'+uploadurl+'/filegetcontents/'+decodeURIComponent(item.filename)+'" class="uploaded" />';
                 } else {
-                    imageOrPlaceholder = "placeholder";
-                    imageOrPlaceholderHtml = '<div class="upload-placeholder"></div>';
+                    imageOrPlaceholder = PLACEHOLDER_CELL_CLASS;
+                    imageOrPlaceholderHtml = PLACEHOLDER_HTML;
                 }
 
                 title = (show_title != 0) ? htmlentities(item.title) : '';
@@ -127,6 +146,7 @@ class UploadQuestionController {
                 const rowHtml = this.replaceWithObject(templateHtml, {imageOrPlaceholder, imageOrPlaceholderHtml, title, comment, name, filepointer});
                 $('#' + this.fieldname + '_uploadedfiles').find('table>tbody').append(rowHtml)
             });
+            applyImagePreviewFallback($('#' + this.fieldname + '_uploadedfiles').find('img.uploaded'));
             
             $('.trigger_edit_upload_'+this.fieldname).off('click.lsuploadquestion');
             $('.trigger_edit_upload_'+this.fieldname).on('click.lsuploadquestion', 

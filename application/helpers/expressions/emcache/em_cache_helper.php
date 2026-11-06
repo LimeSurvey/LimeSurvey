@@ -1,5 +1,7 @@
 <?php
 
+use LimeSurvey\Models\Services\SurveySessionState;
+
 /**
  * Discussion here: https://bugs.limesurvey.org/view.php?id=14859
  * PR: https://github.com/LimeSurvey/LimeSurvey/pull/1273
@@ -15,6 +17,13 @@ class EmCacheHelper
      * @var array|null
      */
     protected static $surveyinfo = null;
+
+    /**
+     * True if a flush at the end of this request is already scheduled.
+     *
+     * @var boolean
+     */
+    protected static $flushAtEndOfRequest = false;
 
     /**
      * Set survey info used by this request.
@@ -69,6 +78,30 @@ class EmCacheHelper
             throw new EmCacheException('Cannot flush emcache unless initalised');
         }
         \Yii::app()->emcache->flush();
+    }
+
+    /**
+     * Flush the whole cache at the end of this request, because survey content was changed.
+     * Can be called any number of times, the cache is flushed once. Flushing at the end makes
+     * sure the changes are committed, so no other request can cache the old content in between.
+     * Unlike flush(), no init() is needed.
+     *
+     * @return void
+     */
+    public static function flushAtEndOfRequest()
+    {
+        if (self::$flushAtEndOfRequest) {
+            return;
+        }
+        $emcache = \Yii::app()->getComponent('emcache');
+        if (empty($emcache) || $emcache instanceof \CDummyCache) {
+            return;
+        }
+        self::$flushAtEndOfRequest = true;
+        \Yii::app()->attachEventHandler('onEndRequest', function () use ($emcache) {
+            $emcache->flush();
+            self::$flushAtEndOfRequest = false;
+        });
     }
 
     /**
@@ -188,7 +221,7 @@ class EmCacheHelper
         }
 
         // Don't use emcache with randomization.
-        if ($_SESSION['responses_' . self::$surveyinfo['sid']]['randomized']) {
+        if (SurveySessionState::forSurvey((int) self::$surveyinfo['sid'])->isRandomized()) {
             return false;
         }
 

@@ -38,6 +38,11 @@ class RemoteControl extends SurveyCommonAction
         $oHandler = new remotecontrol_handle($this->controller);
         $RPCType = Yii::app()->getConfig("RPCInterface");
         if (Yii::app()->getRequest()->isPostRequest) {
+            $rpcLogger = null;
+            if (Yii::app()->getConfig('rpc_log') && in_array($RPCType, array('xml', 'json'))) {
+                $rpcLogger = new RemoteControlLogger();
+                $rpcLogger->start();
+            }
             if ($RPCType == 'xml') {
                 $cur_path = get_include_path();
                 set_include_path($cur_path . PATH_SEPARATOR . APPPATH . 'helpers');
@@ -61,6 +66,9 @@ class RemoteControl extends SurveyCommonAction
                     $_SERVER['CONTENT_TYPE'] = reset($serverContentType);
                 }
                 LSjsonRPCServer::handle($oHandler);
+            }
+            if ($rpcLogger) {
+                $rpcLogger->finish($oHandler, $RPCType);
             }
             foreach (App()->log->routes as $route) {
                 $route->enabled = $route->enabled && !($route instanceof CWebLogRoute);

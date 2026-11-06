@@ -12,6 +12,8 @@
 * See COPYRIGHT.php for copyright notices and details.
 */
 
+use LimeSurvey\Models\Services\SurveySessionState;
+
 // Security Checked: POST, GET, SESSION, REQUEST, returnGlobal, DB
 
 //if (!isset($homedir) || isset($_REQUEST['$homedir'])) {die("Cannot run this script directly");}
@@ -111,7 +113,7 @@ function retrieveAnswers($ia)
     // 2. No tokens
     // 3. Always first time it's shown to one user (and no tokens).
     // 4. No expressions with tokens or time or other dynamic features.
-    if (EmCacheHelper::cacheQanda($ia, $_SESSION['responses_' . $thissurvey['sid']])) {
+    if (EmCacheHelper::cacheQanda($ia, SurveySessionState::forSurvey((int) $thissurvey['sid'])->toArray())) {
         $cacheKey = 'retrieveAnswers_' . sha1(implode('_', $ia));
         $value = EmCacheHelper::get($cacheKey);
         if ($value !== false) {
@@ -161,7 +163,8 @@ function retrieveAnswers($ia)
 
     //If this question is mandatory but wasn't answered in the last page
     //add a message HIGHLIGHTING the question
-    $mandatory_msg = (($_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['step'] != $_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['maxstep']) || ($_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['step'] == $_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['prevstep'])) ? mandatory_message($ia) : '';
+    $sessionState = SurveySessionState::forSurvey((int) Yii::app()->getConfig('surveyID'));
+    $mandatory_msg = (($sessionState->getStep() != $sessionState->getMaxStep()) || ($sessionState->getStep() == $sessionState->getPrevStep())) ? mandatory_message($ia) : '';
     $qtitle .= $mandatory_msg;
     $question_text['man_message'] = $mandatory_msg;
 
@@ -176,7 +179,7 @@ function retrieveAnswers($ia)
     $qtitle .= $validation_msg;
     $question_text['valid_message'] = $validation_msg;
 
-    if (!(($_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['step'] != $_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['maxstep']) || ($_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['step'] == $_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['prevstep']))) {
+    if (!(($sessionState->getStep() != $sessionState->getMaxStep()) || ($sessionState->getStep() == $sessionState->getPrevStep()))) {
         $isValid = true; // don't want to show any validation messages.
     }
 
@@ -239,7 +242,7 @@ function retrieveAnswers($ia)
     // =====================================================
 
     $qanda = array($qtitle, $answer, 'help', $display, $qid, $ia[2], $ia[5], $ia[1]);
-    if (EmCacheHelper::cacheQanda($ia, $_SESSION['responses_' . $thissurvey['sid']])) {
+    if (EmCacheHelper::cacheQanda($ia, SurveySessionState::forSurvey((int) $thissurvey['sid'])->toArray())) {
         EmCacheHelper::set($cacheKey, [$qanda, $inputnames]);
     }
     //New Return
@@ -355,9 +358,14 @@ function file_validation_popup($ia, $filenotvalidated = null)
 }
 
 /**
+ * Returns the HTML of the timer of a question with a time limit, and
+ * registers its script.
+ *
+ * @param array $aQuestionAttributes
+ * @param array $ia See retrieveAnswers()
  * @param string $disable
- * @return string
- * @todo : check if really deprecated (date : 20240902)
+ * @return string|null Null if the question has no time limit
+ * @todo Check if really deprecated (date: 20240902)
  */
 function return_timer_script($aQuestionAttributes, $ia, $disable = null)
 {
@@ -376,28 +384,26 @@ function return_timer_script($aQuestionAttributes, $ia, $disable = null)
      * The following lines cover for previewing questions, because no $_SESSION['responses_'.$surveyId]['fieldarray'] exists.
      * This just stops error messages occurring
      */
-    if (!isset($_SESSION['responses_' . $surveyId]['fieldarray'])) {
-        $_SESSION['responses_' . $surveyId]['fieldarray'] = [];
+    $sessionState = SurveySessionState::forSurvey((int) $surveyId);
+    if (!$sessionState->hasFieldArray()) {
+        $sessionState->setFieldArray([]);
     }
     /* End */
-
-    //Used to count how many timer questions in a page, and ensure scripts only load once
-    $thissurvey['timercount'] = (isset($thissurvey['timercount'])) ? $thissurvey['timercount']++ : 1;
 
     $disable_next = trim((string) $aQuestionAttributes['time_limit_disable_next']) != '' ? $aQuestionAttributes['time_limit_disable_next'] : 0;
     $disable_prev = trim((string) $aQuestionAttributes['time_limit_disable_prev']) != '' ? $aQuestionAttributes['time_limit_disable_prev'] : 0;
     $time_limit_action = trim((string) $aQuestionAttributes['time_limit_action']) != '' ? $aQuestionAttributes['time_limit_action'] : 1;
-    $time_limit_message = trim((string) $aQuestionAttributes['time_limit_message'][$_SESSION['responses_' . $surveyId]['s_lang']]) != '' ? htmlspecialchars((string) $aQuestionAttributes['time_limit_message'][$_SESSION['responses_' . $surveyId]['s_lang']], ENT_QUOTES) : gT("Your time to answer this question has expired");
+    $time_limit_message = trim((string) $aQuestionAttributes['time_limit_message'][$sessionState->getLanguage()]) != '' ? htmlspecialchars((string) $aQuestionAttributes['time_limit_message'][$sessionState->getLanguage()], ENT_QUOTES) : gT("Your time to answer this question has expired");
     $time_limit_warning = trim((string) $aQuestionAttributes['time_limit_warning']) != '' ? intval($aQuestionAttributes['time_limit_warning']) : 0;
     $time_limit_warning_2 = trim((string) $aQuestionAttributes['time_limit_warning_2']) != '' ? intval($aQuestionAttributes['time_limit_warning_2']) : 0;
-    $time_limit_countdown_message = trim((string) $aQuestionAttributes['time_limit_countdown_message'][$_SESSION['responses_' . $surveyId]['s_lang']]) != '' ? htmlspecialchars((string) $aQuestionAttributes['time_limit_countdown_message'][$_SESSION['responses_' . $surveyId]['s_lang']], ENT_QUOTES) : gT("Time remaining");
-    $time_limit_warning_message = trim((string) $aQuestionAttributes['time_limit_warning_message'][$_SESSION['responses_' . $surveyId]['s_lang']]) != '' ? htmlspecialchars((string) $aQuestionAttributes['time_limit_warning_message'][$_SESSION['responses_' . $surveyId]['s_lang']], ENT_QUOTES) : gT("Your time to answer this question has nearly expired. You have {TIME} remaining.");
+    $time_limit_countdown_message = trim((string) $aQuestionAttributes['time_limit_countdown_message'][$sessionState->getLanguage()]) != '' ? htmlspecialchars((string) $aQuestionAttributes['time_limit_countdown_message'][$sessionState->getLanguage()], ENT_QUOTES) : gT("Time remaining");
+    $time_limit_warning_message = trim((string) $aQuestionAttributes['time_limit_warning_message'][$sessionState->getLanguage()]) != '' ? htmlspecialchars((string) $aQuestionAttributes['time_limit_warning_message'][$sessionState->getLanguage()], ENT_QUOTES) : gT("Your time to answer this question has nearly expired. You have {TIME} remaining.");
 
     //Render timer
     $timer_html = Yii::app()->twigRenderer->renderQuestion('/survey/questions/question_timer/timer', array('iQid' => $questionId, 'sWarnId' => ''), true);
     $time_limit_warning_message = str_replace("{TIME}", $timer_html, $time_limit_warning_message);
     $time_limit_warning_display_time = trim((string) $aQuestionAttributes['time_limit_warning_display_time']) != '' ? intval($aQuestionAttributes['time_limit_warning_display_time']) + 1 : 0;
-    $time_limit_warning_2_message = trim((string) $aQuestionAttributes['time_limit_warning_2_message'][$_SESSION['responses_' . $surveyId]['s_lang']]) != '' ? htmlspecialchars((string) $aQuestionAttributes['time_limit_warning_2_message'][$_SESSION['responses_' . $surveyId]['s_lang']], ENT_QUOTES) : gT("Your time to answer this question has nearly expired. You have {TIME} remaining.");
+    $time_limit_warning_2_message = trim((string) $aQuestionAttributes['time_limit_warning_2_message'][$sessionState->getLanguage()]) != '' ? htmlspecialchars((string) $aQuestionAttributes['time_limit_warning_2_message'][$sessionState->getLanguage()], ENT_QUOTES) : gT("Your time to answer this question has nearly expired. You have {TIME} remaining.");
 
     //Render timer 2
     $timer_html = Yii::app()->twigRenderer->renderQuestion('/survey/questions/question_timer/timer', array('iQid' => $questionId, 'sWarnId' => '_Warning_2'), true);
@@ -414,8 +420,8 @@ function return_timer_script($aQuestionAttributes, $ia, $disable = null)
     $time_limit_timer_class = "ls-timer-content ls-timer-countdown ls-no-js-hidden";
 
     $timersessionname = "timer_question_" . $questionId;
-    if (isset($_SESSION['responses_' . $surveyId][$timersessionname])) {
-        $time_limit = $_SESSION['responses_' . $surveyId][$timersessionname];
+    if ($sessionState->hasFieldValue($timersessionname)) {
+        $time_limit = $sessionState->getFieldValue($timersessionname);
     }
 
     App()->getClientScript()->registerScript(
@@ -426,38 +432,36 @@ function return_timer_script($aQuestionAttributes, $ia, $disable = null)
 
     $output = Yii::app()->twigRenderer->renderQuestion('/survey/questions/question_timer/timer_header', array('timersessionname' => $timersessionname, 'time_limit' => $time_limit), true);
 
-    if ($thissurvey['timercount'] < 2) {
-        $iAction = '';
-        if (isset($thissurvey['format']) && $thissurvey['format'] == "G") {
-            $qcount = 0;
-            foreach ($_SESSION['responses_' . $surveyId]['fieldarray'] as $ib) {
-                if ($ib[5] == $gid) {
-                    $qcount++;
-                }
-            }
-            // Override all other options and just allow freezing, survey is presented in group by group mode
-            // Why don't allow submit in Group by group mode, this surely broke 'mandatory' question, but this remove a great system for user (Denis 140224)
-            if ($qcount > 1) {
-                $iAction = '3';
+    $iAction = '';
+    if (isset($thissurvey['format']) && $thissurvey['format'] == "G") {
+        $qcount = 0;
+        foreach ($sessionState->getFieldArray() as $ib) {
+            if ($ib[5] == $gid) {
+                $qcount++;
             }
         }
-
-        /* If this is a preview, don't allow the page to submit/reload */
-        $thisaction = returnglobal('action');
-        if ($thisaction == "previewquestion" || $thisaction == "previewgroup") {
+        // Override all other options and just allow freezing, survey is presented in group by group mode
+        // Why don't allow submit in Group by group mode, this surely broke 'mandatory' question, but this remove a great system for user (Denis 140224)
+        if ($qcount > 1) {
             $iAction = '3';
         }
-
-        $output .= Yii::app()->twigRenderer->renderQuestion('/survey/questions/question_timer/timer_javascript', array(
-            'timersessionname' => $timersessionname,
-            'time_limit' => $time_limit,
-            'iAction' => $iAction,
-            'disable_next' => $disable_next,
-            'disable_prev' => $disable_prev,
-            'time_limit_countdown_message' => $time_limit_countdown_message,
-            'time_limit_message_delay' => $time_limit_message_delay
-        ), true);
     }
+
+    /* If this is a preview, don't allow the page to submit/reload */
+    $thisaction = returnglobal('action');
+    if ($thisaction == "previewquestion" || $thisaction == "previewgroup") {
+        $iAction = '3';
+    }
+
+    $output .= Yii::app()->twigRenderer->renderQuestion('/survey/questions/question_timer/timer_javascript', array(
+        'timersessionname' => $timersessionname,
+        'time_limit' => $time_limit,
+        'iAction' => $iAction,
+        'disable_next' => $disable_next,
+        'disable_prev' => $disable_prev,
+        'time_limit_countdown_message' => $time_limit_countdown_message,
+        'time_limit_message_delay' => $time_limit_message_delay
+    ), true);
 
     $output .= Yii::app()->twigRenderer->renderQuestion(
         '/survey/questions/question_timer/timer_content',

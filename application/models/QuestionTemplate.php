@@ -303,7 +303,10 @@ class QuestionTemplate extends CFormModel
                             $oAttributeValue = QuestionAttribute::model()->find("qid=:qid and attribute=:custom_attribute", array('qid' => $oQuestion->qid, 'custom_attribute' => $attribute_name));
                         }
                         if (is_object($oAttributeValue)) {
-                            $this->aCustomAttributes[$attribute_name] = $oAttributeValue->value;
+                            $this->aCustomAttributes[$attribute_name] = QuestionAttribute::sanitizeValue(
+                                $oAttributeValue->value,
+                                self::getCustomAttributeDefinition($oCustomAttribute)
+                            );
                         } else {
                             $this->aCustomAttributes[$attribute_name] = (string) $oCustomAttribute->default;
                         }
@@ -392,6 +395,35 @@ class QuestionTemplate extends CFormModel
     }
 
     /**
+     * Returns the definition of a custom attribute from the theme configuration, as needed by
+     * QuestionAttribute::sanitizeValue()
+     * @param SimpleXMLElement $oCustomAttribute the attribute node of the theme configuration
+     * @return array{inputtype: string, options: array<string,string>, default: string, expression: string}
+     */
+    private static function getCustomAttributeDefinition($oCustomAttribute)
+    {
+        $options = [];
+        if (isset($oCustomAttribute->options->option)) {
+            foreach ($oCustomAttribute->options->option as $oOption) {
+                $options[(string) $oOption->value] = (string) $oOption->text;
+            }
+        } elseif (isset($oCustomAttribute->options)) {
+            // Short format: <options><value>Label</value></options>
+            foreach ($oCustomAttribute->options->children() as $oOption) {
+                if ($oOption->getName() !== 'comment') {
+                    $options[$oOption->getName()] = (string) $oOption;
+                }
+            }
+        }
+        return [
+            'inputtype' => (string) $oCustomAttribute->inputtype,
+            'options' => $options,
+            'default' => (string) $oCustomAttribute->default,
+            'expression' => (string) $oCustomAttribute->expression,
+        ];
+    }
+
+    /**
      * Called from admin, to generate the template list for a given question type
      * Reads the installed question themes from the database on purpose: Themes that are
      * only present in the file system are not installed and must not be selectable.
@@ -459,6 +491,7 @@ class QuestionTemplate extends CFormModel
             "G" => 'gender',
             "H" => 'arrays/column',
             "I" => 'language',
+            "J" => 'map',
             "K" => 'multiplenumeric',
             "L" => 'listradio',
             "M" => 'multiplechoice',

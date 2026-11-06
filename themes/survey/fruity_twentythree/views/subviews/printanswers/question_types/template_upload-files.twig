@@ -4,13 +4,13 @@
     {% for file in question.fileinfo %}
         <div class="row">
                     <div class="col-lg-4 text-end">
-                        <b>{{file.title}}</b></a>
+                        <b>{{file.title|escape}}</b>
                     </div>
                     <div class="col-lg-8 text-start">
-                        {{file.comment == '' ? gT('No comment') : file.comment}}
+                        {{file.comment == '' ? gT('No comment') : file.comment|escape}}
                     </div>
                     <div class="col-lg-4 text-end">
-                        {{ gT("File type") }} "{{file.ext}}"
+                        {{ gT("File type") }} "{{file.ext|escape}}"
                     </div>
                     <div class="col-lg-8 text-start">
                     </div>

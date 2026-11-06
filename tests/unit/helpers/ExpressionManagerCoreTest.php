@@ -87,6 +87,59 @@ class ExpressionManagerCoreTest extends TestBaseClass
     }
 
     /**
+     * Expressions with an on-page question variable, and how often the generated JavaScript
+     * reads it as entered (LEMval with keepText) and converted to a number (plain LEMval).
+     * @return array
+     */
+    public function regexMatchJavaScriptProvider(): array
+    {
+        return [
+            'regexMatch argument'              => ['regexMatch("/^\\+[0-9]+$/", Q1.NAOK)', 1, 0],
+            'regex validation equation'        => ['(if(is_empty(Q1.NAOK),0,!regexMatch("/^\\+[0-9]+$/", Q1.NAOK)))', 1, 1],
+            'arithmetic inside regexMatch'     => ['regexMatch("/^[0-9]+$/", Q1.NAOK + 1)', 0, 1],
+            'other function inside regexMatch' => ['regexMatch("/^[0-9]+$/", sum(Q1.NAOK))', 0, 1],
+            'comparison'                       => ['Q1.NAOK > 1', 0, 1],
+        ];
+    }
+
+    /**
+     * A text answer like '+123' must be matched by regexMatch in the browser as entered, as on the server.
+     *
+     * @see https://bugs.limesurvey.org/view.php?id=19212
+     * @dataProvider regexMatchJavaScriptProvider
+     * @param string $expression
+     * @param int $keepTextCount Expected number of LEMval calls with keepText
+     * @param int $convertedCount Expected number of plain LEMval calls
+     * @return void
+     */
+    public function testRegexMatchJavaScriptKeepsTextAnswer(string $expression, int $keepTextCount, int $convertedCount): void
+    {
+        \Yii::import('application.helpers.expressions.em_manager_helper', true);
+        $lem = \LimeExpressionManager::singleton();
+        $knownVars = new \ReflectionProperty($lem, 'knownVars');
+        $knownVars->setAccessible(true);
+        $savedKnownVars = $knownVars->getValue($lem);
+        $lem->setKnownVars([
+            'Q1' => [
+                'code' => '+123',
+                'jsName' => 'java563168X136X5376',
+                'jsName_on' => 'java563168X136X5376',
+                'readWrite' => 'Y',
+                'type' => 'T',
+            ],
+        ]);
+        try {
+            $em = new \ExpressionManager();
+            $this->assertTrue($em->RDP_Evaluate($expression), "Expression should evaluate without errors: $expression");
+            $js = $em->GetJavaScriptEquivalentOfExpression();
+        } finally {
+            $knownVars->setValue($lem, $savedKnownVars);
+        }
+        $this->assertSame($keepTextCount, substr_count($js, "LEMval('Q1.NAOK', true)"), $js);
+        $this->assertSame($convertedCount, substr_count($js, "LEMval('Q1.NAOK') "), $js);
+    }
+
+    /**
      * @dataProvider expressionProvider
      */
     public function testExpressionEvaluation(string $varValue, string $expression, bool $expected): void

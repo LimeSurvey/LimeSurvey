@@ -35,7 +35,13 @@ export const subquestionCreateJoi = Joi.object({
           .pattern(
             /^[a-zA-Z-]{2,}$/, // Matches valid language codes like "ar", "en"
             Joi.object({
+              id: Joi.alternatives().try(Joi.string(), Joi.number()).optional(),
+              qid: Joi.alternatives()
+                .try(Joi.string(), Joi.number())
+                .optional(),
               question: Joi.string().allow(''),
+              help: Joi.string().allow('', null),
+              script: Joi.any().allow(null),
               language: Joi.string().required(),
             })
           )
@@ -43,6 +49,7 @@ export const subquestionCreateJoi = Joi.object({
         attributes: Joi.array().items(Joi.any()).optional(),
         answers: Joi.array().items(Joi.any()).optional(),
         subquestions: Joi.array().items(Joi.any()).optional(),
+        scenarios: Joi.array().items(Joi.any()).optional(),
       })
     )
     .min(0)

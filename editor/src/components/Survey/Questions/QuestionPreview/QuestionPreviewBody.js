@@ -30,6 +30,23 @@ export const QuestionBodyPreview = ({
     () => singleChoiceThemes.includes(question.questionThemeName),
     [question.questionThemeName]
   )
+  // Merge the local (unsaved or just saved) changes into the values, so controlled inputs like selects reflect them
+  const values = useMemo(() => {
+    if (!Array.isArray(valueInfo.values)) {
+      return valueInfo.values
+    }
+
+    return valueInfo.values.map((valueItem) =>
+      Object.prototype.hasOwnProperty.call(value, valueItem.key)
+        ? { ...valueItem, value: value[valueItem.key] }
+        : valueItem
+    )
+  }, [valueInfo.values, value])
+  // valueInfo.values may be a new array on every parent render, so compare by content
+  const valuesSignature = useMemo(
+    () => JSON.stringify(valueInfo.values ?? null),
+    [valueInfo.values]
+  )
 
   if (!QuestionViewComponent) {
     return (
@@ -48,6 +65,12 @@ export const QuestionBodyPreview = ({
 
     setChildren(children)
   }, [question.answers, question.subquestions, language])
+
+  // Drop local overrides once refreshed response values arrive from the parent
+  useEffect(() => {
+    setValue({})
+    setValueIsUpdated(false)
+  }, [valuesSignature])
 
   const handleOnValueChange = (newValue, key) => {
     if (disableUpdatingResponses) {
@@ -95,7 +118,7 @@ export const QuestionBodyPreview = ({
         isHovered={isHovered}
         surveySettings={surveySettings}
         _children={children}
-        values={valueInfo.values}
+        values={values}
         participantMode={true}
         onValueChange={handleOnValueChange}
       />

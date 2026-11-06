@@ -401,7 +401,7 @@ class Themes extends SurveyCommonAction
                 // Successfully unpacked
                 $aExtractResult = $zipExtractor->getExtractResult();
                 foreach ($aExtractResult as $sFile) {
-                    if ($sFile['status'] == 'skipped' && !$sFile['is_folder']) {
+                    if ($sFile['status'] == 'skipped') {
                         $aErrorFilesInfo[] = array(
                             "filename" => $sFile['name'],
                         );
@@ -697,7 +697,7 @@ JAVASCRIPT
                 Yii::import('application.helpers.SurveyThemeHelper');
                 if (SurveyThemeHelper::isStandardTemplate($sNewName)) {
                     App()->user->setFlash('error', sprintf(gT("Template could not be renamed to '%s'."), $sNewName) . " " . gT("This name is reserved for standard template."));
-                } elseif (file_exists($sNewDirectoryPath)) {
+                } elseif (file_exists($sNewDirectoryPath) || Template::findNameConflict($sNewName, $sOldName) !== null) {
                     App()->user->setFlash('error', sprintf(gT("Template could not be renamed to '%s'."), $sNewName) . " " . gT("A template with that name already exists."));
                 } elseif (rename($sOldDirectoryPath, $sNewDirectoryPath) == false) {
                     App()->user->setFlash('error', sprintf(gT("Template could not be renamed to '%s'."), $sNewName) . " " . gT("Maybe you don't have permission."));
@@ -739,7 +739,7 @@ JAVASCRIPT
             Template::validateTemplateName($newname);
 
             Yii::import('application.helpers.SurveyThemeHelper');
-            if (SurveyThemeHelper::isStandardTemplate($newname)) {
+            if (SurveyThemeHelper::isStandardTemplate($newname) || Template::findNameConflict($newname) !== null) {
                 Yii::app()->setFlashMessage(sprintf(gT("Directory with the name `%s` already exists - choose another name"), $newname), 'error');
                 $this->getController()->redirect(array("themeOptions/index"));
             }
@@ -786,23 +786,19 @@ JAVASCRIPT
      */
     public function delete()
     {
-        $templatename = trim(Yii::app()->request->getPost('templatename', ''));
+        $templatename = Yii::app()->request->getPost('templatename', '');
         if (Permission::model()->hasGlobalPermission('templates', 'delete')) {
             Yii::app()->loadHelper("admin.template");
 
             Yii::import('application.helpers.SurveyThemeHelper');
             if (Template::checkIfTemplateExists($templatename) && !SurveyThemeHelper::isStandardTemplate($templatename)) {
-                if (!Template::hasInheritance($templatename)) {
+                if ($templatename == Yii::app()->getConfig('defaulttheme')) {
+                    // Deleting the default theme would leave every survey without a usable theme
+                    Yii::app()->setFlashMessage(sprintf(gT("You can't delete theme '%s' because it is the default survey theme."), $templatename), 'error');
+                } elseif (!Template::hasInheritance($templatename)) {
                     if (rmdirr(Yii::app()->getConfig('userthemerootdir') . "/" . $templatename)) {
                         Template::model()->findByPk($templatename)->deleteAssetVersion();
                         $surveys = Survey::model()->findAllByAttributes(array('template' => $templatename));
-
-                        // The default template could be the same as the one we're trying to remove
-                        $globalDefaultIsGettingDeleted = Yii::app()->getConfig('defaulttheme') == $templatename;
-
-                        if ($globalDefaultIsGettingDeleted) {
-                            SettingGlobal::setSetting('defaulttheme', Yii::app()->getConfig('defaulttheme'));
-                        }
 
                         foreach ($surveys as $s) {
                             $s->template = Yii::app()->getConfig('defaulttheme');
@@ -831,9 +827,15 @@ JAVASCRIPT
         $this->getController()->redirect(array("themeOptions/index"));
     }
 
+    /**
+     * Deletes the folder of a broken survey theme (one listed as invalid by TemplateConfig::getTemplatesWithNoDb())
+     *
+     * @access public
+     * @return void
+     */
     public function deleteBrokenTheme()
     {
-        $templatename = trim(Yii::app()->request->getPost('templatename', ''));
+        $templatename = Yii::app()->request->getPost('templatename', '');
 
         if (Permission::model()->hasGlobalPermission('templates', 'delete')) {
             // First we check that the theme is really broken
@@ -865,19 +867,19 @@ JAVASCRIPT
      */
     public function deleteAvailableTheme()
     {
-        $templatename = trim(App()->request->getPost('templatename', ''));
-        $templatename = CHtml::decode($templatename);
+        $templatename = CHtml::decode(App()->request->getPost('templatename', ''));
 
         if (Permission::model()->hasGlobalPermission('templates', 'delete')) {
-            $completeFileName = realpath(Yii::app()->getConfig('userthemerootdir') . "/" . $templatename);
-            /* If retuirn false, not a dir or not inside userthemerootdir: try to hack : throw a 403 for security */
-            if (!is_dir($completeFileName) || strpos($completeFileName, Yii::app()->getConfig('userthemerootdir')) !== 0) {
+            $themeRootDir = realpath(Yii::app()->getConfig('userthemerootdir'));
+            $completeFileName = realpath($themeRootDir . DIRECTORY_SEPARATOR . $templatename);
+            /* Must be exactly this theme's directory directly inside userthemerootdir, anything else is a hacking attempt: Throw a 403 */
+            if (!is_dir($completeFileName) || $completeFileName !== $themeRootDir . DIRECTORY_SEPARATOR . $templatename) {
                 throw new CHttpException(403, "Disable for security reasons.");
             }
             // CheckIfTemplateExists check if the template is installed....
                 Yii::import('application.helpers.SurveyThemeHelper');
             if (! Template::checkIfTemplateExists($templatename) && !SurveyThemeHelper::isStandardTemplate($templatename)) {
-                if (rmdirr(Yii::app()->getConfig('userthemerootdir') . "/" . $templatename)) {
+                if (rmdirr($completeFileName)) {
                     App()->setFlashMessage(sprintf(gT("Theme '%s' was successfully deleted."), $templatename));
                 } else {
                     App()->setFlashMessage(sprintf(gT("There was a problem deleting the template '%s'. Please check your directory/file permissions."), $templatename), 'error');
@@ -1413,7 +1415,7 @@ JAVASCRIPT
             $this->getController()->redirect(array($redirectUrl));
         }
 
-        if (is_dir($destdir)) {
+        if (is_dir($destdir) || ($themeType == 'survey' && Template::findNameConflict($sNewDirectoryName) !== null)) {
             Yii::app()->user->setFlash('error', sprintf(gT("Template '%s' does already exist."), $sNewDirectoryName));
             $this->getController()->redirect(array($redirectUrl));
         }
@@ -1435,7 +1437,7 @@ JAVASCRIPT
             $extConfig = ExtensionConfig::loadFromZip($src);
             return $extConfig->getName();
         } else {
-            return sanitize_dirname(pathinfo((string) $_FILES['the_file']['name'], PATHINFO_FILENAME));
+            return trim(sanitize_dirname(pathinfo((string) $_FILES['the_file']['name'], PATHINFO_FILENAME)));
         }
     }
 

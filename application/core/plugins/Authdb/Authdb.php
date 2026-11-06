@@ -62,6 +62,10 @@ class Authdb extends AuthPluginBase
                 $expires = flattenText(Yii::app()->request->getPost('expires'), false, true);
             }
         } else {
+            // Do nothing if the user is created by another authentication plugin (e.g. LDAP)
+            if (isset($preCollectedUserArray['user_type']) && $preCollectedUserArray['user_type'] != 'DB') {
+                return;
+            }
             $new_user = flattenText($preCollectedUserArray['users_name']);
             $new_email = flattenText($preCollectedUserArray['email']);
             $new_full_name = flattenText($preCollectedUserArray['full_name']);
@@ -110,7 +114,7 @@ class Authdb extends AuthPluginBase
         $this->getEvent()->set('success', false);
 
         // Optionally set a custom error message.
-        $this->getEvent()->set('message', gT('Core plugin can not be disabled.'));
+        $this->getEvent()->set('message', gT('This core plugin can not be disabled.'));
     }
 
     public function beforeLogin()
@@ -197,6 +201,11 @@ class Authdb extends AuthPluginBase
         return hash_equals(hash('sha256', $onepass), $storedHash);
     }
 
+    /**
+     * Authenticate the user against the internal database, by password or one-time password
+     *
+     * @return void
+     */
     public function newUserSession()
     {
         // Do nothing if this user is not Authdb type
@@ -244,6 +253,7 @@ class Authdb extends AuthPluginBase
                 $user->one_time_pw = '';
                 $user->save();
                 $identity->oneTimePasswordActorId = $actorId;
+                $identity->usedOneTimePassword = true;
                 $this->setAuthSuccess($user);
                 return;
             }

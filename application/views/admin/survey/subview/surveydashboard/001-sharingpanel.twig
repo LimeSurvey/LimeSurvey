@@ -84,7 +84,7 @@
                     {% set accessModeIcon = accessMode == 'O' ? "ri-global-line" : "ri-lock-2-line" %}
                     {% set accessModeText = accessMode == 'O' ? gT("Anyone with link") : gT("Link with access code") %}
                     <div class="dropdown">
-                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="access-mode-dropdown" data-bs-toggle="dropdown" aria-expanded="false" {{ oSurvey.active == 'Y' ? '' : 'disabled' }}>
+                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="access-mode-dropdown" data-bs-toggle="dropdown" aria-expanded="false" data-updating="{{ gT('Updating...') }}" {{ oSurvey.active == 'Y' ? '' : 'disabled' }}>
                             <i class="{{ accessModeIcon }}"></i> {{ accessModeText }}
                         </button>
                          <ul class="dropdown-menu" aria-labelledby="access-mode-dropdown">

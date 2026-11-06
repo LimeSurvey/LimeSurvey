@@ -183,6 +183,12 @@ body {
     margin-bottom: 0;
 }
 
+/* Remove the dark Bootstrap 5 border between table sections (colgroup, thead, tbody), rows inherit its color */
+.table > :not(:first-child) {
+    border-top-width: 0;
+    border-top-color: inherit;
+}
+
 /* little icon near the question-help */
 .ls-questionhelp {
     position: relative;

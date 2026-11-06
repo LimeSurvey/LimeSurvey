@@ -100,12 +100,12 @@ abstract class LSYii_Controller extends CController
 
         if (ini_get("max_execution_time") < intval(Yii::app()->getConfig('max_execution_time'))) {
             if (!@set_time_limit(intval(Yii::app()->getConfig('max_execution_time')))) {
-                Yii::log("Unable to set time limit to " . Yii::app()->getConfig('max_execution_time'), \CLogger::LEVEL_WARNING, 'application.controller');
+                Yii::log("Unable to set time limit to " . Yii::app()->getConfig('max_execution_time'), \CLogger::LEVEL_WARNING, 'application.controller.customInit.max_execution_time');
             }
         }
         if (ini_get('memory_limit') != -1 && convertPHPSizeToBytes(ini_get("memory_limit")) < convertPHPSizeToBytes(Yii::app()->getConfig('memory_limit') . 'M')) {
             if (@ini_set("memory_limit", Yii::app()->getConfig('memory_limit') . 'M') === false) {
-                Yii::log("Unable to set memory_limit to " . App()->getConfig('memory_limit') . 'M', \CLogger::LEVEL_WARNING, 'application.controller');
+                Yii::log("Unable to set memory_limit to " . App()->getConfig('memory_limit') . 'M', \CLogger::LEVEL_WARNING, 'application.controller.customInit.memory_limit');
             }
         }
 

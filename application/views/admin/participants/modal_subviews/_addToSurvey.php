@@ -2,7 +2,7 @@
     'action' => App()->createUrl('/admin/participants/sa/attributeMap'),
     ), 'post'); ?>
     <div class="modal-header">
-        <h2 class="modal-title h5" id="participant_edit_modal"><?php echo ngT('Add participant to survey|Add participants to survey', $count); ?></h2>
+        <h2 class="modal-title h5" id="participant_edit_modal"><?php echo gTPlural('Add participant to survey', 'Add participants to survey', $count); ?></h2>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
 
@@ -10,11 +10,11 @@
 
         <div class='col-md-4'></div>
         <div class='col-md-8'>
-            <p role="heading" aria-level="3"><?php echo ngT('Add the selected participant to survey.|Add the {n} selected participants to survey.', $count); ?></p>
+            <p role="heading" aria-level="3"><?php printf(gTPlural('Add the selected participant to survey.', 'Add the %d selected participants to survey.', $count), $count); ?></p>
         </div>
 
         <!-- Comma separated list -->
-        <input type='hidden' name='participant_id' value='<?php echo $participant_id; ?>'/>
+        <input type='hidden' name='participant_id' value='<?php echo CHtml::encode($participant_id); ?>'/>
         <div class="row ls-space margin top-10 bottom-10">
             <div class='mb-3'>
                 <label id="addToSurvey_survey_label" class='form-label col-md-4' for="addToSurvey_survey_id">

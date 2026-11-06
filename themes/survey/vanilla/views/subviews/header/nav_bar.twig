@@ -18,7 +18,8 @@ For the survey navigator ("Next", "Back", etc.), see: navigation/navigator.twig
 #}
 {% if not aSurveyInfo.popupPreview %}
     {% set navClass = "navbar-light bg-light" %}
-    {% if( aSurveyInfo.template == "bootswatch") %}
+    {# The body class lists the theme and all the themes it extends #}
+    {% if "bootswatch" in aSurveyInfo.class.body|split(' ') %}
         {% set navClass = "navbar-default bg-primary" %}
     {% endif %}
     <!-- Bootstrap Navigation Bar -->

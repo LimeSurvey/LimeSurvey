@@ -9,54 +9,47 @@
 <div class='side-body'>
     <div class="row">
         <div class="col-12 content-right">
-            
-            <!-- Success -->
-            <?php if ($xz != 0) : ?>
-                <div class="jumbotron message-box">
+            <div class="jumbotron message-box<?php echo $xz == 0 ? ' message-box-error' : ''; ?>">
+                <?php if ($xz != 0) : ?>
                     <h2 class="text-success"><?php eT("Success"); ?></h2>
-                    <p><?php echo $resultnum; ?></p>
-                    <p>
-                        <?php eT("Results from LDAP Query."); ?><br />
-                        <?php printf(gT("%s records met minimum requirements"), $xv); ?><br />
-                        <?php echo $xz; ?> <?php eT("Records imported"); ?>.<br />
-                        <?php echo $xy; ?> <?php eT("Duplicate records skipped"); ?>                        
-                    </p>
-                    <p>
-                        [<a href='#' onclick='$("#duplicateslist").toggle();'><?php eT("List"); ?></a>]
-                    </p>
-                    <p class='badtokenlist' id='invalidemaillist' style='display: none;'>
-                        <ul class="list-unstyled">
-                            <?php foreach ($invalidemaillist as $aData) { ?>
-                                <li><?php echo $aData; ?></li>
-                            <?php } ?>                
-                        </ul>        
-                    </p>
-                </div>
-                
-            <!-- Error -->
-            <?php else : ?>
-                <div class="jumbotron message-box message-box-error">
+                <?php else : ?>
                     <h2 class="text-danger"><?php eT("Error"); ?></h2>
-                    <p><?php echo $resultnum; ?></p>
-                    <p>
-                        <?php eT("Results from LDAP Query."); ?><br />
-                        <?php printf(gT("%s records met minimum requirements"), $xv); ?><br />
-                        <?php echo $xz; ?> <?php eT("Records imported"); ?>.<br />
-                        <?php echo $xy; ?> <?php eT("Duplicate records skipped"); ?>                        
-                    </p>
-                    <p>
-                        [<a href='#' onclick='$("#duplicateslist").toggle();'><?php eT("List"); ?></a>]
-                    </p>
-                    <p class='badtokenlist' id='invalidemaillist' style='display: none;'>
+                <?php endif; ?>
+                <p><?php echo $resultnum; ?></p>
+                <p>
+                    <?php eT("Results from LDAP Query."); ?><br />
+                    <?php printf(gT("%s records met minimum requirements"), $xv); ?><br />
+                    <?php printf(gT("%s records imported"), $xz); ?>
+                </p>
+                <p>
+                    <?php printf(gT("%s duplicate records skipped"), $xy); ?>
+                    <?php if (!empty($duplicatelist)) : ?>
+                        [<a href="#duplicateslist" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="duplicateslist"><?php eT("List"); ?></a>]
+                    <?php endif; ?>
+                </p>
+                <?php if (!empty($duplicatelist)) : ?>
+                    <div class="collapse" id="duplicateslist">
                         <ul class="list-unstyled">
-                            <?php foreach ($invalidemaillist as $aData) { ?>
-                                <li><?php echo $aData; ?></li>
-                            <?php } ?>                
-                        </ul>        
+                            <?php foreach ($duplicatelist as $sDuplicate) : ?>
+                                <li><?php echo CHtml::encode($sDuplicate); ?></li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
+                <?php endif; ?>
+                <?php if (!empty($invalidemaillist)) : ?>
+                    <p>
+                        <?php printf(gT("%s records with invalid email address skipped"), $invalidemailcount); ?>
+                        [<a href="#invalidemaillist" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="invalidemaillist"><?php eT("List"); ?></a>]
                     </p>
-
-                </div>                
-            <?php endif;?>
+                    <div class="collapse" id="invalidemaillist">
+                        <ul class="list-unstyled">
+                            <?php foreach ($invalidemaillist as $sInvalidEmail) : ?>
+                                <li><?php echo CHtml::encode($sInvalidEmail); ?></li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
+                <?php endif; ?>
+            </div>
         </div>
     </div>
 </div>

@@ -461,21 +461,11 @@ class CopySurvey
         $mappedSubquestionIds = [];
         $cntCopiedQuestions = 0;
         foreach ($questions as $question) {
-            $copyQuestionValues = new CopyQuestionValues();
-            $copyQuestionValues->setSourceSurveyId($this->sourceSurvey->sid);
-            $copyQuestionValues->setQuestiontoCopy($question);
-            $copyQuestionValues->setQuestionGroupId($mapping['questionGroupIds'][$question->gid]);
-            $copyQuestionValues->setOSurvey($destinationSurvey);
-            $copyQuestionValues->setQuestionCode($question->title);
-            $copyQuestionValues->setQuestionPositionInGroup($question->question_order);
-            $copyQuestionTextValues = [];
-            $questionLanguages = QuestionL10n::model()->findAllByAttributes(['qid' => $question->qid]);
-            foreach ($questionLanguages as $questionL10n) {
-                $questionText = $questionL10n->question ?? '';
-                $questionHelp = $questionL10n->help ?? '';
-                $copyQuestionTextValues[$questionL10n->language] = new \LimeSurvey\Datavalueobjects\CopyQuestionTextValues($questionText, $questionHelp);
-            }
-            $copyQuestionValues->setQuestionL10nData($copyQuestionTextValues);
+            $copyQuestionValues = $this->getCopyQuestionValues(
+                $question,
+                $destinationSurvey,
+                $mapping['questionGroupIds'][$question->gid]
+            );
             $optionsCopyQuestion['copySubquestions'] = true;
             $optionsCopyQuestion['copyAnswerOptions'] = $this->options->isAnswerOptions();
             $optionsCopyQuestion['copyDefaultAnswers'] = false; //we have to do it separately here (id-mapping)
@@ -514,6 +504,35 @@ class CopySurvey
         $this->copyDefaultAnswers($mappingQuestionIds, $mappedSubquestionIds);
 
         return $mapping;
+    }
+
+    /**
+     * Collects the values needed to copy a question (including its texts) to the destination survey.
+     *
+     * @param Question $question the question to copy
+     * @param Survey $destinationSurvey
+     * @param int $destinationGroupId id of the question group in the destination survey
+     * @return CopyQuestionValues
+     */
+    private function getCopyQuestionValues($question, $destinationSurvey, $destinationGroupId)
+    {
+        $copyQuestionValues = new CopyQuestionValues();
+        $copyQuestionValues->setSourceSurveyId($this->sourceSurvey->sid);
+        $copyQuestionValues->setQuestiontoCopy($question);
+        $copyQuestionValues->setQuestionGroupId($destinationGroupId);
+        $copyQuestionValues->setOSurvey($destinationSurvey);
+        $copyQuestionValues->setQuestionCode($question->title);
+        $copyQuestionValues->setQuestionPositionInGroup($question->question_order);
+        $copyQuestionTextValues = [];
+        $questionLanguages = QuestionL10n::model()->findAllByAttributes(['qid' => $question->qid]);
+        foreach ($questionLanguages as $questionL10n) {
+            $questionText = $questionL10n->question ?? '';
+            $questionHelp = $questionL10n->help ?? '';
+            $copyQuestionTextValues[$questionL10n->language] = new \LimeSurvey\Datavalueobjects\CopyQuestionTextValues($questionText, $questionHelp);
+        }
+        $copyQuestionValues->setQuestionL10nData($copyQuestionTextValues);
+
+        return $copyQuestionValues;
     }
 
     /**

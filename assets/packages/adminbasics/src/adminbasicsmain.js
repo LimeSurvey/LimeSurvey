@@ -98,6 +98,7 @@ const AdminCore = function(){
             appendToLoad(focusStatusMessage, 'pjax:scriptcomplete ready ajaxStop');
             appendToLoad(tabsControl, 'pjax:scriptcomplete ready ajaxStop');
             dismissTooltipsOnEscapePress();
+            AjaxHelper.bindNotLoggedInHandler();
         },
         appendToLoad = (fn, event, root, delay) => {
             event = event || 'pjax:scriptcomplete ready';
