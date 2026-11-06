@@ -282,7 +282,9 @@ class ParticipantAttributeName extends LSActiveRecord
     }
 
     /**
-     * @return array
+     * Returns the column definitions for the participant attributes grid.
+     *
+     * @return array The column configurations for the grid view
      */
     public function getColumns()
     {
@@ -295,7 +297,8 @@ class ParticipantAttributeName extends LSActiveRecord
                 "type"              => 'raw',
                 "header"            => "<input type='checkbox' id='action_toggleAllAttributeNames' aria-label='" . CHtml::encode(gT('Select all')) . "' />",
                 "filter"            => false,
-                'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
+                // The header only holds a checkbox: Name the column for the screen reader table navigation
+                'headerHtmlOptions' => ['class' => 'ls-sticky-column', 'aria-label' => gT('Selection')],
                 'filterHtmlOptions' => ['class' => 'ls-sticky-column'],
                 'htmlOptions'       => ['class' => 'ls-sticky-column']
             ],
