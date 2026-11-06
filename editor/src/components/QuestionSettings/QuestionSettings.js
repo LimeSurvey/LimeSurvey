@@ -26,7 +26,7 @@ import { AddScenario } from 'components/ConditionDesigner/AddScenario'
 
 import { ExpressionScript } from '../ConditionDesigner/ExpressionScript'
 
-import { ExpressionScriptInputBox } from '../ConditionDesigner/ExpressionScript/ExpressionScriptInputBox'
+import { ExpressionScriptInputBox } from '../ConditionDesigner/ExpressionScript/index.js'
 
 export const QuestionSettings = ({ surveyId }) => {
   const [questionSettingsOptions, setQuestionSettingsOptions] = useAppState(
