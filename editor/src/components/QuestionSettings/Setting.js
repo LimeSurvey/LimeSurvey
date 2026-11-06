@@ -68,15 +68,20 @@ export const Setting = ({
         condition.attributePath
       )
         ? overrides[condition.attributePath]
-        : condition.notEmpty
-          ? getRawValueFromPath(condition.attributePath)
-          : getAttributeValueFromPath(
-              condition.attributePath,
-              condition.languageBased
-            )
+        : getConditionValue(condition)
 
       return isConditionSatisfied(condition, value)
     })
+
+  // notEmpty on a raw question path (e.g. answers) checks the raw value, while
+  // attributes are unwrapped so an emptied { '': '' } counts as empty.
+  const getConditionValue = (condition) =>
+    condition.notEmpty && !condition.attributePath.startsWith('attributes.')
+      ? getRawValueFromPath(condition.attributePath)
+      : getAttributeValueFromPath(
+          condition.attributePath,
+          condition.languageBased
+        )
 
   const getRawValueFromPath = (attributePath) =>
     attributePath.split('.').reduce((acc, key) => acc?.[key], question)

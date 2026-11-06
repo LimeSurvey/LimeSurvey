@@ -10,7 +10,7 @@
             <props>
                 <dataTestId>min-number-of-files</dataTestId>
                 <type>number</type>
-                <defaultValue>1</defaultValue>
+                <defaultValue>0</defaultValue>
             </props>
         </attribute>
         <attribute>
@@ -19,7 +19,7 @@
             <caption>Allowed file types</caption>
             <props>
                 <dataTestId>allowed-file-types</dataTestId>
-                <defaultValue>png, gif, doc, odt, jpg, jpeg</defaultValue>
+                <defaultValue>png, gif, doc, odt, jpg, jpeg, pdf, heic</defaultValue>
             </props>
         </attribute>
         <attribute>
@@ -31,7 +31,7 @@
                 <type>number</type>
                 <min>1</min>
                 <max>1073741824</max>
-                <defaultValue>1024</defaultValue>
+                <defaultValue>10240</defaultValue>
             </props>
         </attribute>
         <attribute>
@@ -134,7 +134,7 @@
         <attribute>
             <name>other_numbers_only</name>
             <component>ToggleButtons</component>
-            <caption>Numbers only for 'Other' text</caption>
+            <caption>Numbers only for 'Other'</caption>
             <optionsPreset>onOff</optionsPreset>
             <default>0</default>
             <props>
