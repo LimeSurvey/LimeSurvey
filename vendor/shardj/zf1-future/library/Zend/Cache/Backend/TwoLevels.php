@@ -514,7 +514,7 @@ class Zend_Cache_Backend_TwoLevels extends Zend_Cache_Backend implements Zend_Ca
      *
      * @param int $lifetime original lifetime
      * @param int $priority priority
-     * @param int $maxLifetime maximum lifetime
+     * @param int|null $maxLifetime maximum lifetime, null for no maximum
      * @return int lifetime for the fast backend
      */
     private function _getFastLifetime($lifetime, $priority, $maxLifetime = null)
@@ -528,7 +528,7 @@ class Zend_Cache_Backend_TwoLevels extends Zend_Cache_Backend implements Zend_Ca
             $fastLifetime = (int) ceil($lifetime / (11 - $priority));
         }
 
-        if ($maxLifetime >= 0 && $fastLifetime > $maxLifetime) {
+        if ($maxLifetime !== null && $maxLifetime >= 0 && $fastLifetime > $maxLifetime) {
             return $maxLifetime;
         }
 

@@ -72,6 +72,24 @@ class Zend_Soap_Client_Common extends SoapClient
         }
     }
 
+    /**
+     * Performs the native SOAP request without invoking the transport callback.
+     *
+     * @param string $request
+     * @param string $location
+     * @param string $action
+     * @param int    $version
+     * @param int    $one_way
+     * @return mixed
+     */
+    public function doRequest($request, $location, $action, $version, $one_way = null)
+    {
+        if ($one_way === null) {
+            return parent::__doRequest($request, $location, $action, $version);
+        } else {
+            return parent::__doRequest($request, $location, $action, $version, $one_way);
+        }
+    }
 }
 
 } // end if (extension_loaded('soap')

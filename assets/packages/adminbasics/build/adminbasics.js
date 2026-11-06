@@ -14770,10 +14770,36 @@
 	  return $.ajax(options);
 	};
 
+	/**
+	* Show the "logged out" modal when an ajax call fails because the user is logged out.
+	* The admin controllers answer such calls with HTTP 401 and the
+	* JsonOutputNotLoggedIn JSON (containing the modal content).
+	* Bound only once per page load.
+	* @return {void}
+	*/
+	const bindNotLoggedInHandler = () => {
+	  if (window.LS && LS._notLoggedInHandlerBound) {
+	    return;
+	  }
+	  LS._notLoggedInHandlerBound = true;
+	  $(document).ajaxError((event, jqXHR) => {
+	    if (jqXHR.status !== 401 || !jqXHR.responseJSON || jqXHR.responseJSON.loggedIn !== false) {
+	      return;
+	    }
+	    $('#ls-loading').hide();
+	    // Several calls can fail at once: Show the modal only once
+	    if ($('#ajax-helper-modal').hasClass('show')) {
+	      return;
+	    }
+	    onSuccess$1(jqXHR.responseJSON);
+	  });
+	};
+
 	var AjaxHelper = /*#__PURE__*/Object.freeze({
 		__proto__: null,
 		ajax: ajax,
-		onSuccess: onSuccess$1
+		onSuccess: onSuccess$1,
+		bindNotLoggedInHandler: bindNotLoggedInHandler
 	});
 
 	/**
@@ -18371,6 +18397,7 @@
 	      appendToLoad(focusStatusMessage, 'pjax:scriptcomplete ready ajaxStop');
 	      appendToLoad(tabsControl, 'pjax:scriptcomplete ready ajaxStop');
 	      dismissTooltipsOnEscapePress();
+	      bindNotLoggedInHandler();
 	    },
 	    appendToLoad = (fn, event, root, delay) => {
 	      event = event || 'pjax:scriptcomplete ready';

@@ -123,11 +123,12 @@ class Zend_Db_Adapter_Oracle extends Zend_Db_Adapter_Abstract
 
         $connectionFuncName = ($this->_config['persistent'] == true) ? 'oci_pconnect' : 'oci_connect';
 
+        // an empty encoding selects the default, null is not accepted by the oci functions
         $this->_connection = @$connectionFuncName(
                 $this->_config['username'],
                 $this->_config['password'],
                 $this->_config['dbname'],
-                $this->_config['charset']);
+                (string) ($this->_config['charset'] ?? ''));
 
         // check the connection
         if (!$this->_connection) {

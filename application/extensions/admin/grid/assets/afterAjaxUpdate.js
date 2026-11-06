@@ -7,8 +7,8 @@ LS.gridView = LS.gridView || {};
  * @param {string} gridId The grid element ID.
  */
 LS.gridView.announceEmptyMessage = function (gridId) {
-    'use strict';
-    var emptyEl = document.getElementById(gridId + '-empty-message');
+    "use strict";
+    var emptyEl = document.getElementById(gridId + "-empty-message");
     if (emptyEl) {
         emptyEl.focus();
     }
@@ -18,18 +18,23 @@ LS.gridView.announceEmptyMessage = function (gridId) {
  * Grids refreshed by a filter or page size change, whose result summary has to be announced.
  * @type {Object.<string, boolean>}
  */
-LS.gridView.pendingSummaryAnnouncement = LS.gridView.pendingSummaryAnnouncement || {};
+LS.gridView.pendingSummaryAnnouncement =
+    LS.gridView.pendingSummaryAnnouncement || {};
 
-jQuery(document).on('change keydown', '.grid-view-ls .filters input, .grid-view-ls .filters select, .grid-view-ls .changePageSize', function (e) {
-    'use strict';
-    if (e.type === 'keydown' && e.key !== 'Enter') {
-        return;
-    }
-    var gridId = jQuery(this).closest('.grid-view-ls').attr('id');
-    if (gridId) {
-        LS.gridView.pendingSummaryAnnouncement[gridId] = true;
-    }
-});
+jQuery(document).on(
+    "change keydown",
+    ".grid-view-ls .filters input, .grid-view-ls .filters select, .grid-view-ls .changePageSize",
+    function (e) {
+        "use strict";
+        if (e.type === "keydown" && e.key !== "Enter") {
+            return;
+        }
+        var gridId = jQuery(this).closest(".grid-view-ls").attr("id");
+        if (gridId) {
+            LS.gridView.pendingSummaryAnnouncement[gridId] = true;
+        }
+    },
+);
 
 /**
  * Announce the result summary (e.g. "Displaying 1-5 of 6 result(s).") through a polite live region
@@ -38,36 +43,54 @@ jQuery(document).on('change keydown', '.grid-view-ls .filters input, .grid-view-
  * @param {string} gridId The grid element ID.
  */
 LS.gridView.announceSummary = function (gridId) {
-    'use strict';
+    "use strict";
     if (!LS.gridView.pendingSummaryAnnouncement[gridId]) {
         return;
     }
     delete LS.gridView.pendingSummaryAnnouncement[gridId];
     // The live region lives outside the grid, which is replaced on every update
-    var status = document.getElementById('ls-grid-status');
-    var summary = document.querySelector('#' + gridId + ' .summary');
-    var text = summary && summary.firstChild && summary.firstChild.nodeType === Node.TEXT_NODE
-        ? summary.firstChild.textContent.trim()
-        : '';
-    if (!text || document.getElementById(gridId + '-empty-message')) {
+    var status = document.getElementById("ls-grid-status");
+    var summary = document.querySelector("#" + gridId + " .summary");
+    // The result sentence is the first non-empty text, which may be nested (e.g. in a layout div).
+    // Text inside the page size select (its option labels) is skipped.
+    var text = "";
+    if (summary) {
+        var walker = document.createTreeWalker(summary, NodeFilter.SHOW_TEXT, {
+            acceptNode: function (node) {
+                return node.parentNode.closest("select") ||
+                    !node.textContent.trim()
+                    ? NodeFilter.FILTER_REJECT
+                    : NodeFilter.FILTER_ACCEPT;
+            },
+        });
+        var textNode = walker.nextNode();
+        text = textNode ? textNode.textContent.trim() : "";
+    }
+    LS.gridView.summaryAnnouncementTimeouts =
+        LS.gridView.summaryAnnouncementTimeouts || {};
+    window.clearTimeout(LS.gridView.summaryAnnouncementTimeouts[gridId]);
+    if (!text || document.getElementById(gridId + "-empty-message")) {
         if (status) {
-            status.textContent = '';
+            status.textContent = "";
         }
         return;
     }
     if (!status) {
-        status = document.createElement('div');
-        status.id = 'ls-grid-status';
-        status.className = 'visually-hidden';
-        status.setAttribute('role', 'status');
-        status.setAttribute('aria-live', 'polite');
-        status.setAttribute('aria-atomic', 'true');
+        status = document.createElement("div");
+        status.id = "ls-grid-status";
+        status.className = "visually-hidden";
+        status.setAttribute("role", "status");
+        status.setAttribute("aria-live", "polite");
+        status.setAttribute("aria-atomic", "true");
         document.body.appendChild(status);
     }
-    status.textContent = '';
-    setTimeout(function () {
-        status.textContent = text;
-    }, 100);
+    status.textContent = "";
+    LS.gridView.summaryAnnouncementTimeouts[gridId] = window.setTimeout(
+        function () {
+            status.textContent = text;
+        },
+        100,
+    );
 };
 
 /**
@@ -78,14 +101,14 @@ LS.gridView.announceSummary = function (gridId) {
  * @param {*}      data The raw AJAX response data.
  */
 LS.gridView.afterAjaxUpdate = function (id, data) {
-    'use strict';
+    "use strict";
     if (LS.actionDropdown && LS.actionDropdown.create) {
         LS.actionDropdown.create();
     }
     if (LS.rowlink && LS.rowlink.create) {
         LS.rowlink.create();
     }
-    if (typeof initColumnFilter === 'function') {
+    if (typeof initColumnFilter === "function") {
         initColumnFilter();
     }
 

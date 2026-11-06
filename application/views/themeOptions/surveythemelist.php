@@ -7,6 +7,8 @@
 require_once Yii::getPathOfAlias('application.extensions.admin.grid.FloatingActionsWidget.actions.SurveyThemeMassiveActions') . '.php';
 
 $aFloatingActions = \actions\SurveyThemeMassiveActions::getActions();
+// Accessible name of the row checkboxes, e.g. "Select Fruity TwentyThree (fruity_twentythree)"
+$selectThemeLabel = gT('Select %s (%s)', 'unescaped');
 $this->widget(
     'application.extensions.admin.grid.CLSGridView',
     [
@@ -20,7 +22,10 @@ $this->widget(
                 'id' => 'id',
                 'class' => 'CCheckBoxColumn',
                 'selectableRows' => '100',
-                'ariaLabel' => 'sprintf(gT("Select %s"), $data->template->title ?? $data->template_name)',
+                // Title and name together: An extended theme keeps the title of its parent
+                'ariaLabel' => function ($data) use ($selectThemeLabel) {
+                    return sprintf($selectThemeLabel, $data->template->title ?? $data->template_name, $data->template_name);
+                },
             ],
             [
                 'header' => gT('Preview'),
@@ -53,7 +58,10 @@ $this->widget(
                 'value' => '$data->typeIcon',
                 'type' => 'raw',
                 'htmlOptions' => ['class' => 'col-lg-2 text-center'],
-                'filter' => ['core' => gT('Core theme'), 'user' => gT('User theme')],
+                'filter' => [
+                    'core' => gT('Core theme', 'unescaped'),
+                    'user' => gT('User theme', 'unescaped')
+                ],
                 'filterInputOptions' => ['prompt' => gT('All')],
             ],
 
