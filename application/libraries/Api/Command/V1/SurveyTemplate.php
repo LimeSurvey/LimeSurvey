@@ -103,6 +103,15 @@ class SurveyTemplate implements CommandInterface
             $response['subtitle'] = $languageSettings->surveyls_description;
         }
         $result = $this->getTemplateData($surveyId, $language);
+        if ($result === false) {
+            return $this->responseFactory->makeError(
+                (new ResponseDataError(
+                    'SURVEY_TEMPLATE_UNAVAILABLE',
+                    'Survey template could not be retrieved'
+                )
+                )->toArray()
+            );
+        }
         return $this->responseFactory->makeSuccess(
             array_merge($response, ['template' => $result])
         );
@@ -144,9 +153,12 @@ class SurveyTemplate implements CommandInterface
     /**
      * Get template data
      *
+     * Renders the survey preview by requesting it from this installation
+     * over HTTP, using the session of the current user.
+     *
      * @param int $surveyId
      * @param string $language
-     * @return Response|bool|string
+     * @return string|false The rendered survey page, or false on failure
      */
     private function getTemplateData($surveyId, $language)
     {
@@ -155,18 +167,25 @@ class SurveyTemplate implements CommandInterface
         // - we should refactor the survey view functionality to make it
         // - reusable (move it out of the controllers).
 
+        // Never request a URL the client can choose (SSRF)
+        $root = $this->getTrustedBaseUrl();
+        if ($root === null) {
+            return false;
+        }
+
         $strCookie = $this->session->getSessionName()
         . '=' . $this->session->getSessionID() . '; path=/';
         $this->session->close();
 
         $ch = curl_init();
-        // Use the trusted, server-side base URL instead of the client-supplied
-        // Host header to prevent server-side request forgery (SSRF).
-        $root = App()->getBaseUrl(true);
         curl_setopt(
             $ch,
             CURLOPT_URL,
-            $root . "/{$surveyId}?newtest=Y&lang={$language}&popuppreview=true"
+            $root . '/' . $surveyId . '?' . http_build_query([
+                'newtest' => 'Y',
+                'lang' => $language,
+                'popuppreview' => 'true',
+            ])
         );
         curl_setopt($ch, CURLOPT_TIMEOUT, 10);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -174,15 +193,47 @@ class SurveyTemplate implements CommandInterface
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_COOKIE, $strCookie);
         $result = curl_exec($ch);
-        if (curl_errno($ch)) {
-            return $this->responseFactory->makeErrorNotFound(
-                (new ResponseDataError(
-                    'SURVEY_NOT_FOUND',
-                    'Survey not found'
-                )
-                )->toArray()
-            );
+        if (curl_errno($ch) || !is_string($result)) {
+            return false;
         }
         return $result;
+    }
+
+    /**
+     * Get the base URL for the internal survey preview request
+     *
+     * The configured publicurl is used when it is set. Otherwise the URL of
+     * the current request is used: its hostname was already checked against
+     * the allowed hosts list, but its port comes from the client's Host
+     * header, so only the default port of the scheme is accepted.
+     *
+     * @return string|null The base URL without trailing slash, or null if no trusted base URL is available
+     */
+    protected function getTrustedBaseUrl(): ?string
+    {
+        $defaultPorts = ['http' => 80, 'https' => 443];
+
+        $publicUrl = trim((string) App()->getConfig('publicurl'));
+        $parsedPublicUrl = parse_url($publicUrl);
+        if (!empty($parsedPublicUrl['scheme']) && !empty($parsedPublicUrl['host'])) {
+            if (!isset($defaultPorts[strtolower($parsedPublicUrl['scheme'])])) {
+                return null;
+            }
+            return rtrim($publicUrl, '/');
+        }
+
+        $baseUrl = App()->getBaseUrl(true);
+        $parsedBaseUrl = parse_url($baseUrl);
+        if (empty($parsedBaseUrl['scheme']) || empty($parsedBaseUrl['host'])) {
+            return null;
+        }
+        $scheme = strtolower($parsedBaseUrl['scheme']);
+        if (!isset($defaultPorts[$scheme])) {
+            return null;
+        }
+        if (isset($parsedBaseUrl['port']) && $parsedBaseUrl['port'] !== $defaultPorts[$scheme]) {
+            return null;
+        }
+        return rtrim($baseUrl, '/');
     }
 }
