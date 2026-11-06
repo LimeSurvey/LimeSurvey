@@ -48,6 +48,9 @@ import saveBindings from './parts/save';
 import parameterGlobals from './parts/parameterGlobals';
 import focusStatusMessage from './accessibility/statusMessageFocus';
 import dismissTooltipsOnEscapePress from './accessibility/dismissTooltipsOnEscapePress';
+import keepTooltipsHoverable from './accessibility/keepTooltipsHoverable';
+import restoreFocusAfterModal from './accessibility/restoreFocusAfterModal';
+import skipToMainContent from './accessibility/skipToMainContent';
 import tabsControl from './accessibility/tabsControl';
 
 // import components
@@ -98,6 +101,9 @@ const AdminCore = function(){
             appendToLoad(focusStatusMessage, 'pjax:scriptcomplete ready ajaxStop');
             appendToLoad(tabsControl, 'pjax:scriptcomplete ready ajaxStop');
             dismissTooltipsOnEscapePress();
+            keepTooltipsHoverable();
+            restoreFocusAfterModal();
+            skipToMainContent();
             AjaxHelper.bindNotLoggedInHandler();
         },
         appendToLoad = (fn, event, root, delay) => {
