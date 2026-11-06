@@ -40,6 +40,15 @@
       padding-right: 8px;
     }
 
+    &.has-trailing-icon {
+      justify-content: space-between;
+
+      > i:last-child {
+        padding-right: 0;
+        padding-left: 8px;
+      }
+    }
+
     &:hover,
     &.text-danger:hover {
       background-color: $g-200;
