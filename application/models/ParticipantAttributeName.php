@@ -133,7 +133,9 @@ class ParticipantAttributeName extends LSActiveRecord
     }
 
     /**
-     * @return string
+     * Returns the row checkbox for the mass actions (a hidden input for core attributes).
+     *
+     * @return string The HTML of the checkbox or hidden input
      */
     public function getMassiveActionCheckbox()
     {
@@ -143,12 +145,38 @@ class ParticipantAttributeName extends LSActiveRecord
             // as we have only that special case in cpdb at the moment, it's not necessary to change it in the frontend part (listAction.js line 27)
             return "<input type='hidden' class='selector_attributeNamesCheckbox' name='selectedAttributeNames[]' value='" . $this->attribute_id . "' >";
         }
-        // The default name is optional: fall back to the first translated name
-        $name = $this->defaultname;
-        if ((string) $name === '' && !empty($this->participant_attribute_names_lang)) {
-            $name = $this->participant_attribute_names_lang[0]['attribute_name'];
+        return "<input type='checkbox' class='selector_attributeNamesCheckbox massiveActionsCheckbox' name='selectedAttributeNames[]' value='" . $this->attribute_id . "' aria-label='" . CHtml::encode(sprintf(gT('Select attribute %s'), $this->getAccessibleName())) . "' >";
+    }
+
+    /**
+     * Returns the name to announce for this attribute, e.g. in the row checkbox label.
+     *
+     * The default name is optional: Without it, the name in the admin language is used, then the first
+     * non-empty translated name (by language code, so the choice doesn't depend on the database order),
+     * and as a last resort the attribute ID.
+     *
+     * @return string The attribute name
+     */
+    private function getAccessibleName()
+    {
+        if (trim((string) $this->defaultname) !== '') {
+            return $this->defaultname;
         }
-        return "<input type='checkbox' class='selector_attributeNamesCheckbox massiveActionsCheckbox' name='selectedAttributeNames[]' value='" . $this->attribute_id . "' aria-label='" . CHtml::encode(sprintf(gT('Select attribute %s'), $name)) . "' >";
+        $names = [];
+        foreach ($this->participant_attribute_names_lang as $nameLang) {
+            if (trim((string) $nameLang->attribute_name) !== '') {
+                $names[$nameLang->lang] = $nameLang->attribute_name;
+            }
+        }
+        $adminLang = Yii::app()->session['adminlang'];
+        if (isset($names[$adminLang])) {
+            return $names[$adminLang];
+        }
+        if (!empty($names)) {
+            ksort($names);
+            return reset($names);
+        }
+        return (string) $this->attribute_id;
     }
 
     /**
