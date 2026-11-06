@@ -1,5 +1,52 @@
 <?xml version="1.0"?>
-<ruleset name="OpenMage" namespace="OpenMage\CS\Standard">
+<ruleset name="zf1-future">
     <file>library</file>
-    <rule ref="PHPCompatibility" />
+
+    <!-- Lowest PHP version supported by composer.json, no upper limit -->
+    <config name="testVersion" value="7.4-"/>
+
+    <!-- Warnings (mostly deprecations that are already guarded by PHP_VERSION_ID checks) are reported but do not fail the run -->
+    <config name="ignore_warnings_on_exit" value="1"/>
+
+    <rule ref="PHPCompatibility">
+        <!-- func_get_args() & co. behave the same on every PHP version >= 7.0, so there is no difference to detect in the supported range -->
+        <exclude name="PHPCompatibility.FunctionUse.ArgumentFunctionsReportCurrentValue"/>
+    </rule>
+
+    <!--
+        Adapters for extensions that are no longer bundled with PHP but can still be installed
+        from PECL (sqlite2, oci8, mcrypt, wddx). They are only usable when the extension is loaded.
+    -->
+    <rule ref="PHPCompatibility.Extensions.RemovedExtensions">
+        <exclude-pattern>*/Zend/Cache/Backend/Sqlite.php</exclude-pattern>
+        <exclude-pattern>*/Zend/Crypt/Math.php</exclude-pattern>
+        <exclude-pattern>*/Zend/Filter/Encrypt/Mcrypt.php</exclude-pattern>
+        <exclude-pattern>*/Zend/Serializer/Adapter/Wddx.php</exclude-pattern>
+        <exclude-pattern>*/Zend/Service/ReCaptcha/MailHide.php</exclude-pattern>
+    </rule>
+    <rule ref="PHPCompatibility.FunctionUse.RemovedFunctions">
+        <exclude-pattern>*/Zend/Cache/Backend/Sqlite.php</exclude-pattern>
+        <exclude-pattern>*/Zend/Crypt/Math.php</exclude-pattern>
+        <exclude-pattern>*/Zend/Db/Adapter/Oracle.php</exclude-pattern>
+        <exclude-pattern>*/Zend/Db/Statement/Oracle.php</exclude-pattern>
+        <exclude-pattern>*/Zend/Filter/Encrypt/Mcrypt.php</exclude-pattern>
+        <exclude-pattern>*/Zend/Serializer/Adapter/Wddx.php</exclude-pattern>
+        <exclude-pattern>*/Zend/Service/ReCaptcha/MailHide.php</exclude-pattern>
+    </rule>
+    <rule ref="PHPCompatibility.Constants.RemovedConstants">
+        <exclude-pattern>*/Zend/Cache/Backend/Sqlite.php</exclude-pattern>
+        <exclude-pattern>*/Zend/Crypt/Math.php</exclude-pattern>
+        <exclude-pattern>*/Zend/Db/Adapter/Oracle.php</exclude-pattern>
+        <exclude-pattern>*/Zend/Db/Statement/Oracle.php</exclude-pattern>
+        <exclude-pattern>*/Zend/Filter/Encrypt/Mcrypt.php</exclude-pattern>
+        <exclude-pattern>*/Zend/Service/ReCaptcha/MailHide.php</exclude-pattern>
+    </rule>
+
+    <!-- Constraint classes for newer PHPUnit versions, selected at runtime by the PHPUnit version -->
+    <rule ref="PHPCompatibility.FunctionDeclarations.NewParamTypeDeclarations">
+        <exclude-pattern>*/Zend/Test/PHPUnit/Constraint/*80.php</exclude-pattern>
+    </rule>
+    <rule ref="PHPCompatibility.FunctionDeclarations.NewReturnTypeDeclarations">
+        <exclude-pattern>*/Zend/Test/PHPUnit/Constraint/*80.php</exclude-pattern>
+    </rule>
 </ruleset>

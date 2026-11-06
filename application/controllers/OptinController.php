@@ -28,6 +28,18 @@ class OptinController extends LSYii_Controller
     public $defaultAction = 'tokens';
 
     /**
+     * Ends every action with the maintenance page while participants are locked out, see
+     * LSYii_Controller::filterParticipantsLocked().
+     *
+     * @return array
+     */
+    #[\Override]
+    public function filters()
+    {
+        return array_merge(parent::filters(), ['participantsLocked']);
+    }
+
+    /**
      * Display the confirmation for individual survey opt in
      */
     public function actiontokens()

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE ldml SYSTEM "../../common/dtd/ldml.dtd">
-<!-- Copyright © 1991-2013 Unicode, Inc.
-CLDR data files are interpreted according to the LDML specification (http://unicode.org/reports/tr35/)
+<!-- Copyright © 1991-2026 Unicode, Inc.
 For terms of use, see http://www.unicode.org/copyright.html
+SPDX-License-Identifier: Unicode-3.0
+CLDR data files are interpreted according to the LDML specification (http://unicode.org/reports/tr35/)
 -->
 <ldml>
 	<identity>
-		<version number="$Revision: 9287 $"/>
-		<generation date="$Date: 2013-08-28 21:32:04 -0500 (Wed, 28 Aug 2013) $"/>
+		<version number="$Revision$"/>
 		<language type="kln"/>
 	</identity>
 	<localeDisplayNames>
@@ -66,7 +66,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="AI">Emetab Anguilla</territory>
 			<territory type="AL">Emetab Albania</territory>
 			<territory type="AM">Emetab Armenia</territory>
-			<territory type="AN">Emetab Antile nebo Holand</territory>
 			<territory type="AO">Emetab Angola</territory>
 			<territory type="AR">Emetab Argentina</territory>
 			<territory type="AS">Emetab American Samoa</territory>
@@ -97,7 +96,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="CF">Emetab Afrika nebo Kwen</territory>
 			<territory type="CG">Emetab Congo - Brazzaville</territory>
 			<territory type="CH">Emetab Switzerland</territory>
-			<territory type="CI">Emetab Côte d'Ivoire</territory>
+			<territory type="CI">Emetab Côte d’Ivoire</territory>
 			<territory type="CK">Ikwembeyotab Cook</territory>
 			<territory type="CL">Emetab Chile</territory>
 			<territory type="CM">Emetab Cameroon</territory>
@@ -150,7 +149,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="IE">Emetab Ireland</territory>
 			<territory type="IL">Emetab Israel</territory>
 			<territory type="IN">Emetab India</territory>
-			<territory type="IO">Kebebertab araraitab indian Ocean nebo Uingeresa</territory>
+			<territory type="IO" draft="provisional">Kebebertab araraitab indian Ocean nebo Uingeresa</territory>
 			<territory type="IQ">Emetab Iraq</territory>
 			<territory type="IR">Emetab Iran</territory>
 			<territory type="IS">Emetab Iceland</territory>
@@ -185,7 +184,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="MD">Emetab Moldova</territory>
 			<territory type="MG">Emetab Madagascar</territory>
 			<territory type="MH">Ikwembeiyotab Marshall</territory>
-			<territory type="MK">Emetab Macedonia</territory>
 			<territory type="ML">Emetab Mali</territory>
 			<territory type="MM">Emetab Myanmar</territory>
 			<territory type="MN">Emetab Mongolia</territory>
@@ -291,12 +289,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 		<exemplarCharacters type="auxiliary">[f q v x z]</exemplarCharacters>
 		<exemplarCharacters type="index">[A B C D E G H I J K L M N O P R S T U W Y]</exemplarCharacters>
 	</characters>
-	<delimiters>
-		<quotationStart>“</quotationStart>
-		<quotationEnd>”</quotationEnd>
-		<alternateQuotationStart>‘</alternateQuotationStart>
-		<alternateQuotationEnd>’</alternateQuotationEnd>
-	</delimiters>
 	<dates>
 		<calendars>
 			<calendar type="generic">
@@ -324,19 +316,11 @@ For terms of use, see http://www.unicode.org/copyright.html
 				</dateFormats>
 				<dateTimeFormats>
 					<availableFormats>
-						<dateFormatItem id="d">d</dateFormatItem>
-						<dateFormatItem id="hm">h:mm a</dateFormatItem>
-						<dateFormatItem id="Hm">HH:mm</dateFormatItem>
-						<dateFormatItem id="Hms">HH:mm:ss</dateFormatItem>
-						<dateFormatItem id="M">L</dateFormatItem>
+						<dateFormatItem id="hm">h:mm a</dateFormatItem>
 						<dateFormatItem id="Md">M/d</dateFormatItem>
 						<dateFormatItem id="MEd">E, M/d</dateFormatItem>
-						<dateFormatItem id="MMM">LLL</dateFormatItem>
-						<dateFormatItem id="MMMd">MMM d</dateFormatItem>
 						<dateFormatItem id="MMMEd">E, MMM d</dateFormatItem>
-						<dateFormatItem id="MMMMd">MMMM d</dateFormatItem>
 						<dateFormatItem id="MMMMEd">E, MMMM d</dateFormatItem>
-						<dateFormatItem id="ms">mm:ss</dateFormatItem>
 						<dateFormatItem id="y">y</dateFormatItem>
 						<dateFormatItem id="yM">M/y</dateFormatItem>
 						<dateFormatItem id="yMEd">E, M/d/y</dateFormatItem>
@@ -353,43 +337,43 @@ For terms of use, see http://www.unicode.org/copyright.html
 					<monthContext type="format">
 						<monthWidth type="abbreviated">
 							<month type="1">Mul</month>
-							<month type="2">Nga</month>
-							<month type="3">Kip</month>
-							<month type="4">Iwa</month>
-							<month type="5">Nge</month>
-							<month type="6">Wak</month>
-							<month type="7">Rop</month>
-							<month type="8">Kog</month>
+							<month type="2">Ngat</month>
+							<month type="3">Taa</month>
+							<month type="4">Iwo</month>
+							<month type="5">Mam</month>
+							<month type="6">Paa</month>
+							<month type="7">Nge</month>
+							<month type="8">Roo</month>
 							<month type="9">Bur</month>
 							<month type="10">Epe</month>
-							<month type="11">Tai</month>
-							<month type="12">Aen</month>
+							<month type="11">Kpt</month>
+							<month type="12">Kpa</month>
 						</monthWidth>
 						<monthWidth type="wide">
 							<month type="1">Mulgul</month>
-							<month type="2">Ng'atyato</month>
-							<month type="3">Kiptamo</month>
-							<month type="4">Iwat kut</month>
-							<month type="5">Ng'eiyet</month>
-							<month type="6">Waki</month>
-							<month type="7">Roptui</month>
-							<month type="8">Kipkogaga</month>
-							<month type="9">Buret</month>
-							<month type="10">Epeso</month>
-							<month type="11">Kipsunde netai</month>
-							<month type="12">Kipsunde nebo aeng</month>
+							<month type="2">Ng’atyaato</month>
+							<month type="3">Kiptaamo</month>
+							<month type="4">Iwootkuut</month>
+							<month type="5">Mamuut</month>
+							<month type="6">Paagi</month>
+							<month type="7">Ng’eiyeet</month>
+							<month type="8">Rooptui</month>
+							<month type="9">Bureet</month>
+							<month type="10">Epeeso</month>
+							<month type="11">Kipsuunde ne taai</month>
+							<month type="12">Kipsuunde nebo aeng’</month>
 						</monthWidth>
 					</monthContext>
 					<monthContext type="stand-alone">
 						<monthWidth type="narrow">
 							<month type="1">M</month>
 							<month type="2">N</month>
-							<month type="3">K</month>
+							<month type="3">T</month>
 							<month type="4">I</month>
-							<month type="5">N</month>
-							<month type="6">W</month>
-							<month type="7">R</month>
-							<month type="8">K</month>
+							<month type="5">M</month>
+							<month type="6">P</month>
+							<month type="7">N</month>
+							<month type="8">R</month>
 							<month type="9">B</month>
 							<month type="10">E</month>
 							<month type="11">K</month>
@@ -400,29 +384,29 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<days>
 					<dayContext type="format">
 						<dayWidth type="abbreviated">
-							<day type="sun">Tis</day>
-							<day type="mon">Tai</day>
-							<day type="tue">Aen</day>
-							<day type="wed">Som</day>
-							<day type="thu">Ang</day>
-							<day type="fri">Mut</day>
-							<day type="sat">Loh</day>
+							<day type="sun">Kts</day>
+							<day type="mon">Kot</day>
+							<day type="tue">Koo</day>
+							<day type="wed">Kos</day>
+							<day type="thu">Koa</day>
+							<day type="fri">Kom</day>
+							<day type="sat">Kol</day>
 						</dayWidth>
 						<dayWidth type="wide">
-							<day type="sun">Betutab tisap</day>
-							<day type="mon">Betut netai</day>
-							<day type="tue">Betutab aeng'</day>
-							<day type="wed">Betutab somok</day>
-							<day type="thu">Betutab ang'wan</day>
-							<day type="fri">Betutab mut</day>
-							<day type="sat">Betutab lo</day>
+							<day type="sun">Kotisap</day>
+							<day type="mon">Kotaai</day>
+							<day type="tue">Koaeng’</day>
+							<day type="wed">Kosomok</day>
+							<day type="thu">Koang’wan</day>
+							<day type="fri">Komuut</day>
+							<day type="sat">Kolo</day>
 						</dayWidth>
 					</dayContext>
 					<dayContext type="stand-alone">
 						<dayWidth type="narrow">
 							<day type="sun">T</day>
 							<day type="mon">T</day>
-							<day type="tue">A</day>
+							<day type="tue">O</day>
 							<day type="wed">S</day>
 							<day type="thu">A</day>
 							<day type="fri">M</day>
@@ -440,21 +424,21 @@ For terms of use, see http://www.unicode.org/copyright.html
 						</quarterWidth>
 						<quarterWidth type="wide">
 							<quarter type="1">Robo netai</quarter>
-							<quarter type="2">Robo nebo aeng'</quarter>
+							<quarter type="2">Robo nebo aeng’</quarter>
 							<quarter type="3">Robo nebo somok</quarter>
-							<quarter type="4">Robo nebo ang'wan</quarter>
+							<quarter type="4">Robo nebo ang’wan</quarter>
 						</quarterWidth>
 					</quarterContext>
 				</quarters>
 				<dayPeriods>
 					<dayPeriodContext type="format">
 						<dayPeriodWidth type="abbreviated">
-							<dayPeriod type="am">BE</dayPeriod>
-							<dayPeriod type="pm">KE</dayPeriod>
+							<dayPeriod type="am">krn</dayPeriod>
+							<dayPeriod type="pm">koosk</dayPeriod>
 						</dayPeriodWidth>
 						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">Beet</dayPeriod>
-							<dayPeriod type="pm">Kemo</dayPeriod>
+							<dayPeriod type="am">karoon</dayPeriod>
+							<dayPeriod type="pm">kooskoliny</dayPeriod>
 						</dayPeriodWidth>
 					</dayPeriodContext>
 				</dayPeriods>
@@ -493,41 +477,32 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<timeFormats>
 					<timeFormatLength type="full">
 						<timeFormat>
-							<pattern>h:mm:ss a zzzz</pattern>
+							<pattern>HH:mm:ss zzzz</pattern>
 						</timeFormat>
 					</timeFormatLength>
 					<timeFormatLength type="long">
 						<timeFormat>
-							<pattern>h:mm:ss a z</pattern>
+							<pattern>HH:mm:ss z</pattern>
 						</timeFormat>
 					</timeFormatLength>
 					<timeFormatLength type="medium">
 						<timeFormat>
-							<pattern>h:mm:ss a</pattern>
+							<pattern>HH:mm:ss</pattern>
 						</timeFormat>
 					</timeFormatLength>
 					<timeFormatLength type="short">
 						<timeFormat>
-							<pattern>h:mm a</pattern>
+							<pattern>HH:mm</pattern>
 						</timeFormat>
 					</timeFormatLength>
 				</timeFormats>
 				<dateTimeFormats>
 					<availableFormats>
-						<dateFormatItem id="d">d</dateFormatItem>
-						<dateFormatItem id="hm">h:mm a</dateFormatItem>
-						<dateFormatItem id="Hm">HH:mm</dateFormatItem>
-						<dateFormatItem id="Hms">HH:mm:ss</dateFormatItem>
-						<dateFormatItem id="M">L</dateFormatItem>
+						<dateFormatItem id="hm">h:mm a</dateFormatItem>
 						<dateFormatItem id="Md">M/d</dateFormatItem>
 						<dateFormatItem id="MEd">E, M/d</dateFormatItem>
-						<dateFormatItem id="MMM">LLL</dateFormatItem>
-						<dateFormatItem id="MMMd">MMM d</dateFormatItem>
 						<dateFormatItem id="MMMEd">E, MMM d</dateFormatItem>
-						<dateFormatItem id="MMMMd">MMMM d</dateFormatItem>
 						<dateFormatItem id="MMMMEd">E, MMMM d</dateFormatItem>
-						<dateFormatItem id="ms">mm:ss</dateFormatItem>
-						<dateFormatItem id="y">y</dateFormatItem>
 						<dateFormatItem id="yM">M/y</dateFormatItem>
 						<dateFormatItem id="yMEd">E, M/d/y</dateFormatItem>
 						<dateFormatItem id="yMMM">MMM y</dateFormatItem>
@@ -583,9 +558,40 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<currencyFormatLength>
 				<currencyFormat type="standard">
 					<pattern>¤#,##0.00</pattern>
+					<pattern alt="alphaNextToNumber" draft="provisional">¤ #,##0.00</pattern>
 				</currencyFormat>
 				<currencyFormat type="accounting">
 					<pattern>¤#,##0.00;(¤#,##0.00)</pattern>
+					<pattern alt="alphaNextToNumber" draft="provisional">¤ #,##0.00;(¤ #,##0.00)</pattern>
+					<pattern alt="noCurrency" draft="provisional">#,##0.00;(#,##0.00)</pattern>
+				</currencyFormat>
+			</currencyFormatLength>
+			<currencyFormatLength type="short">
+				<currencyFormat type="standard">
+					<pattern type="1000" count="other" draft="provisional">¤0K</pattern>
+					<pattern type="1000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 0K</pattern>
+					<pattern type="10000" count="other" draft="provisional">¤00K</pattern>
+					<pattern type="10000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 00K</pattern>
+					<pattern type="100000" count="other" draft="provisional">¤000K</pattern>
+					<pattern type="100000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 000K</pattern>
+					<pattern type="1000000" count="other" draft="provisional">¤0M</pattern>
+					<pattern type="1000000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 0M</pattern>
+					<pattern type="10000000" count="other" draft="provisional">¤00M</pattern>
+					<pattern type="10000000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 00M</pattern>
+					<pattern type="100000000" count="other" draft="provisional">¤000M</pattern>
+					<pattern type="100000000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 000M</pattern>
+					<pattern type="1000000000" count="other" draft="provisional">¤0G</pattern>
+					<pattern type="1000000000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 0G</pattern>
+					<pattern type="10000000000" count="other" draft="provisional">¤00G</pattern>
+					<pattern type="10000000000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 00G</pattern>
+					<pattern type="100000000000" count="other" draft="provisional">¤000G</pattern>
+					<pattern type="100000000000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 000G</pattern>
+					<pattern type="1000000000000" count="other" draft="provisional">¤0T</pattern>
+					<pattern type="1000000000000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 0T</pattern>
+					<pattern type="10000000000000" count="other" draft="provisional">¤00T</pattern>
+					<pattern type="10000000000000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 00T</pattern>
+					<pattern type="100000000000000" count="other" draft="provisional">¤000T</pattern>
+					<pattern type="100000000000000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 000T</pattern>
 				</currencyFormat>
 			</currencyFormatLength>
 		</currencyFormats>
@@ -682,6 +688,9 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Rabisiekab Malagasy</displayName>
 			</currency>
 			<currency type="MRO">
+				<displayName>Rabisiekab Mauritania (1973–2017)</displayName>
+			</currency>
+			<currency type="MRU">
 				<displayName>Rabisiekab Mauritania</displayName>
 			</currency>
 			<currency type="MUR">
@@ -714,13 +723,19 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<currency type="SHP">
 				<displayName>Pouditab helena ne tilil</displayName>
 			</currency>
-			<currency type="SLL">
+			<currency type="SLE">
 				<displayName>Leonit</displayName>
+			</currency>
+			<currency type="SLL">
+				<displayName>Leonit (1964—2022)</displayName>
 			</currency>
 			<currency type="SOS">
 				<displayName>siligitab Somalia</displayName>
 			</currency>
 			<currency type="STD">
+				<displayName>Rabisiekab Sao Tome ak Principe (1977–2017)</displayName>
+			</currency>
+			<currency type="STN">
 				<displayName>Rabisiekab Sao Tome ak Principe</displayName>
 			</currency>
 			<currency type="SZL">
@@ -765,4 +780,3 @@ For terms of use, see http://www.unicode.org/copyright.html
 		</messages>
 	</posix>
 </ldml>
-

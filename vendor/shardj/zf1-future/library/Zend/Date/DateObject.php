@@ -179,7 +179,7 @@ abstract class Zend_Date_DateObject
         if (isset(self::$_cache)) {
             $id = strtr('Zend_DateObject_mkTime_' . $this->_offset . '_' . $year.$month.$day.'_'.$hour.$minute.$second . '_'.(int)$gmt, '-','_');
             if ($result = self::$_cache->load($id)) {
-                return unserialize($result);
+                return unserialize($result, ['allowed_classes' => false]);
             }
         }
 
@@ -345,7 +345,7 @@ abstract class Zend_Date_DateObject
         if (isset(self::$_cache)) {
             $idstamp = strtr('Zend_DateObject_date_' . $this->_offset . '_'. $timestamp . '_'.(int)$gmt, '-','_');
             if ($result2 = self::$_cache->load($idstamp)) {
-                $timestamp = unserialize($result2);
+                $timestamp = unserialize($result2, ['allowed_classes' => false]);
                 $jump = true;
             }
         }
@@ -706,7 +706,7 @@ abstract class Zend_Date_DateObject
         if (isset(self::$_cache)) {
             $id = strtr('Zend_DateObject_getDateParts_' . $timestamp.'_'.(int)$fast, '-','_');
             if ($result = self::$_cache->load($id)) {
-                return unserialize($result);
+                return unserialize($result, ['allowed_classes' => false]);
             }
         }
 

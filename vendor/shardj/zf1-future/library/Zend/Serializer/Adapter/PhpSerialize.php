@@ -38,6 +38,18 @@ class Zend_Serializer_Adapter_PhpSerialize extends Zend_Serializer_Adapter_Adapt
     private static $_serializedFalse = null;
 
     /**
+     * Options:
+     *   unserialize_class_whitelist: classes unserialize() may instantiate
+     *     (the allowed_classes option of unserialize()) — false allows all
+     *     classes, true allows none, an array lists the allowed class names.
+     *
+     * @var array
+     */
+    protected $_options = [
+        'unserialize_class_whitelist' => false,
+    ];
+
+    /**
      * Constructor
      *
      * @param  array|Zend_Config $opts
@@ -83,12 +95,34 @@ class Zend_Serializer_Adapter_PhpSerialize extends Zend_Serializer_Adapter_Adapt
     public function unserialize($serialized, array $opts = [])
     {
         // TODO: @see php.ini directive "unserialize_callback_func"
-        $ret = @unserialize($serialized);
+        $opts = $opts + $this->_options;
+        $ret = @unserialize($serialized, ['allowed_classes' => $this->_allowedClasses($opts['unserialize_class_whitelist'])]);
         if ($ret === false && $serialized !== self::$_serializedFalse) {
             $lastErr = error_get_last();
             require_once 'Zend/Serializer/Exception.php';
             throw new Zend_Serializer_Exception($lastErr['message']);
         }
         return $ret;
+    }
+
+    /**
+     * Converts the unserialize_class_whitelist option into the allowed_classes value of unserialize()
+     *
+     * @param  bool|array|string $whitelist
+     * @return bool|array
+     */
+    protected function _allowedClasses($whitelist)
+    {
+        if ($whitelist === false || $whitelist === null) {
+            return true;
+        }
+        if ($whitelist === true) {
+            return false;
+        }
+        if (is_string($whitelist)) {
+            return [$whitelist];
+        }
+
+        return array_values((array) $whitelist);
     }
 }
