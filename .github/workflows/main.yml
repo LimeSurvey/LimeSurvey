@@ -61,6 +61,13 @@ jobs:
                 matrix.db-type == 'mssql' && 'pdo_sqlsrv, sqlsrv' ||
                 'mysqli, pdo_mysql' }}
 
+      # composer.lock is resolved against config.platform.php (our minimum PHP),
+      # and "composer install" trusts that fake version too. This checks the
+      # locked packages (incl. require-dev) against the PHP actually running
+      # here, so a package that doesn't support our min or max PHP fails early
+      - name: Check locked packages support PHP ${{ matrix.php-version }}
+        run: composer check-platform-reqs --lock
+
       - name: Setup
         run: |
           touch enabletests
