@@ -492,6 +492,20 @@ describe('handleQuestionConditionOperation Tests', () => {
       expect(result.addToBuffer).toBe(false)
     })
 
+    test('deleting a temp condition whose create is already being sent queues the delete', () => {
+      const otherCondition = scenarioUpdate(1, [condition('temp__1_1')])
+      const operation = conditionDelete('temp__1_2')
+      const result = handleQuestionConditionOperation(
+        [otherCondition],
+        operation,
+        null
+      )
+
+      expect(result.bufferOperations).toEqual([otherCondition])
+      expect(result.newOperation).toEqual(operation)
+      expect(result.addToBuffer).toBe(true)
+    })
+
     test('deleting a local-only condition removes it without sending a delete', () => {
       const buffer = [
         scenarioUpdate(1, [condition('temp__1_1'), condition('temp__1_2')]),

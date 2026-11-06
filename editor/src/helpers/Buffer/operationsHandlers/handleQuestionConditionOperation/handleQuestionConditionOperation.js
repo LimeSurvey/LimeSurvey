@@ -103,6 +103,16 @@ const removeConditionFromBuffer = (bufferOperations, qid, cid) =>
       .filter((scenario) => !scenario.conditions || scenario.conditions.length)
   )
 
+const isConditionInBuffer = (bufferOperations, qid, cid) =>
+  bufferOperations.some(
+    (op) =>
+      isConditionOperationOfQuestion(op, qid) &&
+      isScenarioChangeOperation(op) &&
+      (op.props?.scenarios ?? []).some((scenario) =>
+        (scenario.conditions ?? []).some((c) => c.cid == cid)
+      )
+  )
+
 const removeScenariosFromBuffer = (bufferOperations, qid, scids) =>
   updateBufferedScenarios(bufferOperations, qid, (scenarios) =>
     scenarios.filter((scenario) => !scids.includes(String(scenario.scid)))
@@ -137,6 +147,9 @@ export const handleQuestionConditionOperation = (
   if (operation.op === Operations.delete) {
     const deletedScenarioIds = getDeletedScenarioIds(operation)
     const isScenarioDelete = deletedScenarioIds.length > 0
+    const isConditionCreateBuffered =
+      !isScenarioDelete &&
+      isConditionInBuffer(bufferOperations, qid, operation.id)
 
     bufferOperations = isScenarioDelete
       ? removeScenariosFromBuffer(bufferOperations, qid, deletedScenarioIds)
@@ -146,9 +159,11 @@ export const handleQuestionConditionOperation = (
     // owning the scenario, only exists locally. Queuing such a delete would
     // also block the buffer: deletes are sent first, but this one could never
     // be sent before the question is created.
+    // A temp condition whose create is no longer buffered is already being
+    // sent: its delete is queued and waits until the cid is replaced.
     const isLocalOnly = isScenarioDelete
       ? hasTempId(String(qid))
-      : hasTempId(String(operation.id))
+      : hasTempId(String(operation.id)) && isConditionCreateBuffered
 
     return {
       bufferOperations,

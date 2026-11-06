@@ -1,6 +1,6 @@
+import { format } from 'util'
 import React from 'react'
 import { useParams } from 'react-router-dom'
-import classNames from 'classnames'
 
 import { useBuffer, useFocused, useSurvey } from 'hooks'
 import {
@@ -65,7 +65,7 @@ export const ScenarioList = ({ setScenarioToPatch }) => {
           <div
             key={scenario.scid}
             id={`scenario-${scenario.scid}`}
-            className={classNames('scenario-list-item', {})}
+            className="scenario-list-item"
           >
             <span
               className="fw-medium"
@@ -77,7 +77,7 @@ export const ScenarioList = ({ setScenarioToPatch }) => {
                 })
               }
             >
-              {t('Scenario')} {scenario.scid}
+              {format(t('Scenario %s'), scenario.scid)}
             </span>
             <div className="d-flex gap-2">
               <Button
