@@ -106,23 +106,28 @@ class Zend_Locale_Data
 
             $result = self::$_ldml[(string) $locale]->xpath($path);
             if (!empty($result)) {
+                // Alternative variants (alt="variant", alt="short", ...) are only read when the path asks for them
+                $readAlternatives = (strpos($path, '@alt') !== false);
                 foreach ($result as &$found) {
+                    if (!$readAlternatives && isset($found['alt'])) {
+                        continue;
+                    }
 
                     if (empty($value)) {
 
                         if (empty($attribute)) {
                             // Case 1
-                            $temp[] = (string) $found;
+                            $temp[] = self::_normalizePattern($path, (string) $found);
                         } else if (empty($temp[(string) $found[$attribute]])){
                             // Case 2
-                            $temp[(string) $found[$attribute]] = (string) $found;
+                            $temp[(string) $found[$attribute]] = self::_normalizePattern($path, (string) $found);
                         }
 
                     } else if (empty ($temp[$value])) {
 
                         if (empty($attribute)) {
                             // Case 3
-                            $temp[$value] = (string) $found;
+                            $temp[$value] = self::_normalizePattern($path, (string) $found);
                         } else {
                             // Case 4
                             $temp[$value] = (string) $found[$attribute];
@@ -136,17 +141,56 @@ class Zend_Locale_Data
     }
 
     /**
+     * Maps CLDR date/time pattern characters that Zend_Date does not know to
+     * the closest supported ones
+     *
+     * The flexible day period 'B' (上午, 下午, ...) is replaced with the
+     * AM/PM marker 'a', which the day period names of Zend_Date cover; 'B'
+     * is the Swatch beat in Zend_Date formats. Quoted literals are kept.
+     *
+     * @param  string $path XPath the value was read from
+     * @param  string $pattern
+     * @return string
+     */
+    protected static function _normalizePattern($path, $pattern)
+    {
+        if (strpos($pattern, 'B') === false
+            || (strpos($path, 'Formats/') === false && strpos($path, 'FormatItem') === false)) {
+            return $pattern;
+        }
+
+        $result = '';
+        $quoted = false;
+        $length = strlen($pattern);
+        for ($i = 0; $i < $length; $i++) {
+            $char = $pattern[$i];
+            if ($char === "'") {
+                $quoted = !$quoted;
+            } else if ($char === 'B' && !$quoted) {
+                $char = 'a';
+            }
+            $result .= $char;
+        }
+
+        return $result;
+    }
+
+    /**
      * Find possible routing to other path or locale
      *
-     * @param  string $locale
-     * @param  string $path
-     * @param  string $attribute
-     * @param  string $value
-     * @param  array  $temp
+     * An alias with source="locale" points to another path of the requested locale,
+     * so it is resolved from $origin, also when it is inherited from a parent or root.
+     *
+     * @param  string      $locale
+     * @param  string      $path
+     * @param  string      $attribute
+     * @param  string      $value
+     * @param  array       $temp
+     * @param  string|null $origin Requested locale
      * @return bool
      * @throws Zend_Locale_Exception
      */
-    private static function _findRoute($locale, $path, $attribute, $value, &$temp)
+    private static function _findRoute($locale, $path, $attribute, $value, &$temp, $origin = null)
     {
         // load locale file if not already in cache
         // needed for alias tag when referring to other locale
@@ -201,8 +245,10 @@ class Zend_Locale_Data
                         }
                     }
 
-                    // reroute to other locale
-                    if ($source != 'locale') {
+                    // reroute to the requested locale or to other locale
+                    if ($source == 'locale') {
+                        $locale = ($origin !== null) ? $origin : $locale;
+                    } else {
                         $locale = $source;
                     }
 
@@ -224,12 +270,17 @@ class Zend_Locale_Data
      * @param  string|bool $attribute
      * @param  string|bool $value
      * @param  array       $temp
+     * @param  string|null $origin Requested locale, defaults to $locale
      * @return array
      * @throws Zend_Locale_Exception
      */
-    private static function _getFile($locale, $path, $attribute = false, $value = false, $temp = [])
+    private static function _getFile($locale, $path, $attribute = false, $value = false, $temp = [], $origin = null)
     {
-        $result = self::_findRoute($locale, $path, $attribute, $value, $temp);
+        if ($origin === null) {
+            $origin = $locale;
+        }
+
+        $result = self::_findRoute($locale, $path, $attribute, $value, $temp, $origin);
         if ($result) {
             $temp = self::_readFile($locale, $path, $attribute, $value, $temp);
         }
@@ -245,15 +296,15 @@ class Zend_Locale_Data
             if (false !== strpos($locale, '_')) {
                 $parentLocale = self::getContent($locale, 'parentlocale');
                 if ($parentLocale) {
-                    $temp = self::_getFile($parentLocale, $path, $attribute, $value, $temp);
+                    $temp = self::_getFile($parentLocale, $path, $attribute, $value, $temp, $origin);
                 }
             }
 
             $locale = substr($locale, 0, -strlen(strrchr($locale, '_')));
             if (!empty($locale)) {
-                $temp = self::_getFile($locale, $path, $attribute, $value, $temp);
+                $temp = self::_getFile($locale, $path, $attribute, $value, $temp, $origin);
             } else {
-                $temp = self::_getFile('root', $path, $attribute, $value, $temp);
+                $temp = self::_getFile('root', $path, $attribute, $value, $temp, $origin);
             }
         }
         return $temp;
@@ -279,6 +330,82 @@ class Zend_Locale_Data
             }
         }
         return $ret;
+    }
+
+    /**
+     * Returns the default numbering system of the locale
+     *
+     * Number symbols and formats are defined per numbering system.
+     *
+     * @param  string $locale
+     * @return string
+     */
+    protected static function _getNumberingSystem($locale)
+    {
+        $system = self::_getFile($locale, '/ldml/numbers/defaultNumberingSystem', '', 'default');
+        if (empty($system['default']) || !preg_match('/^[a-z]+$/', $system['default'])) {
+            return 'latn';
+        }
+
+        return $system['default'];
+    }
+
+    /**
+     * Returns the territories of each language, as a space separated list
+     *
+     * Read from the language population of each territory in the supplemental data: the territories
+     * where the language is official, or all territories where it is spoken when it is not official anywhere.
+     *
+     * @return array
+     */
+    protected static function _getLanguageTerritories()
+    {
+        // loads the supplemental data
+        self::_getFile('supplementalData', '/supplementalData/territoryInfo/territory', 'type');
+
+        $official  = [];
+        $languages = [];
+        foreach (self::$_ldml['supplementalData']->xpath('/supplementalData/territoryInfo/territory') as $territory) {
+            foreach ($territory->languagePopulation as $population) {
+                $language = (string) $population['type'];
+                $languages[$language][] = (string) $territory['type'];
+                if (in_array((string) $population['officialStatus'], ['official', 'de_facto_official'], true)) {
+                    $official[$language][] = (string) $territory['type'];
+                }
+            }
+        }
+
+        $languages = $official + $languages;
+        ksort($languages);
+        foreach ($languages as $language => $territories) {
+            $territories = array_unique($territories);
+            sort($territories);
+            $languages[$language] = implode(' ', $territories);
+        }
+
+        return $languages;
+    }
+
+    /**
+     * Returns the languages spoken in each territory, as a space separated list
+     *
+     * @return array
+     */
+    protected static function _getTerritoryLanguages()
+    {
+        $territories = [];
+        foreach (self::_getLanguageTerritories() as $language => $list) {
+            foreach (explode(' ', $list) as $territory) {
+                $territories[$territory][] = $language;
+            }
+        }
+
+        ksort($territories);
+        foreach ($territories as $territory => $languages) {
+            $territories[$territory] = implode(' ', $languages);
+        }
+
+        return $territories;
     }
 
     /**
@@ -336,7 +463,7 @@ class Zend_Locale_Data
         $val = urlencode((string) $val);
         $id  = self::_filterCacheId('Zend_LocaleL_' . $locale . '_' . $path . '_' . $val);
         if (!self::$_cacheDisabled && ($result = self::$_cache->load($id))) {
-            return unserialize($result);
+            return unserialize($result, ['allowed_classes' => false]);
         }
 
         $temp = [];
@@ -624,18 +751,19 @@ class Zend_Locale_Data
                 break;
 
             case 'symbols':
-                $temp  = self::_getFile($locale, '/ldml/numbers/symbols/decimal',         '', 'decimal');
-                $temp += self::_getFile($locale, '/ldml/numbers/symbols/group',           '', 'group');
-                $temp += self::_getFile($locale, '/ldml/numbers/symbols/list',            '', 'list');
-                $temp += self::_getFile($locale, '/ldml/numbers/symbols/percentSign',     '', 'percent');
-                $temp += self::_getFile($locale, '/ldml/numbers/symbols/nativeZeroDigit', '', 'zero');
-                $temp += self::_getFile($locale, '/ldml/numbers/symbols/patternDigit',    '', 'pattern');
-                $temp += self::_getFile($locale, '/ldml/numbers/symbols/plusSign',        '', 'plus');
-                $temp += self::_getFile($locale, '/ldml/numbers/symbols/minusSign',       '', 'minus');
-                $temp += self::_getFile($locale, '/ldml/numbers/symbols/exponential',     '', 'exponent');
-                $temp += self::_getFile($locale, '/ldml/numbers/symbols/perMille',        '', 'mille');
-                $temp += self::_getFile($locale, '/ldml/numbers/symbols/infinity',        '', 'infinity');
-                $temp += self::_getFile($locale, '/ldml/numbers/symbols/nan',             '', 'nan');
+                $symbols = '/ldml/numbers/symbols[@numberSystem=\'' . self::_getNumberingSystem($locale) . '\']';
+                $temp  = self::_getFile($locale, $symbols . '/decimal',         '', 'decimal');
+                $temp += self::_getFile($locale, $symbols . '/group',           '', 'group');
+                $temp += self::_getFile($locale, $symbols . '/list',            '', 'list');
+                $temp += self::_getFile($locale, $symbols . '/percentSign',     '', 'percent');
+                $temp += self::_getFile($locale, $symbols . '/nativeZeroDigit', '', 'zero');
+                $temp += self::_getFile($locale, $symbols . '/patternDigit',    '', 'pattern');
+                $temp += self::_getFile($locale, $symbols . '/plusSign',        '', 'plus');
+                $temp += self::_getFile($locale, $symbols . '/minusSign',       '', 'minus');
+                $temp += self::_getFile($locale, $symbols . '/exponential',     '', 'exponent');
+                $temp += self::_getFile($locale, $symbols . '/perMille',        '', 'mille');
+                $temp += self::_getFile($locale, $symbols . '/infinity',        '', 'infinity');
+                $temp += self::_getFile($locale, $symbols . '/nan',             '', 'nan');
                 break;
 
             case 'nametocurrency':
@@ -765,34 +893,11 @@ class Zend_Locale_Data
                 break;
 
             case 'territorytolanguage':
-                $_temp = self::_getFile('supplementalData', '/supplementalData/languageData/language', 'type');
-                foreach ($_temp as $key => $found) {
-                    $temp += self::_getFile('supplementalData', '/supplementalData/languageData/language[@type=\'' . $key . '\']', 'territories', $key);
-                    if (empty($temp[$key])) {
-                        unset($temp[$key]);
-                    }
-                }
+                $temp = self::_getLanguageTerritories();
                 break;
 
             case 'languagetoterritory':
-                $_temp2 = self::_getFile('supplementalData', '/supplementalData/languageData/language', 'type');
-                $_temp = [];
-                foreach ($_temp2 as $key => $found) {
-                    $_temp += self::_getFile('supplementalData', '/supplementalData/languageData/language[@type=\'' . $key . '\']', 'territories', $key);
-                }
-                foreach($_temp as $key => $found) {
-                    $_temp3 = explode(" ", $found);
-                    foreach($_temp3 as $found3) {
-                        if (empty($found3)) {
-                            continue;
-                        }
-                        if (!isset($temp[$found3])) {
-                            $temp[$found3] = (string) $key;
-                        } else {
-                            $temp[$found3] .= " " . $key;
-                        }
-                    }
-                }
+                $temp = self::_getTerritoryLanguages();
                 break;
 
             case 'timezonetowindows':
@@ -932,9 +1037,9 @@ class Zend_Locale_Data
                 break;
 
             case 'unit':
-                $_temp = self::_getFile($locale, '/ldml/units/unitLength/unit', 'type');
+                $_temp = self::_getFile($locale, '/ldml/units/unitLength[@type=\'long\']/unit', 'type');
                 foreach($_temp as $key => $keyvalue) {
-                    $_temp2 = self::_getFile($locale, '/ldml/units/unitLength/unit[@type=\'' . $key . '\']/unitPattern', 'count');
+                    $_temp2 = self::_getFile($locale, '/ldml/units/unitLength[@type=\'long\']/unit[@type=\'' . $key . '\']/unitPattern', 'count');
                     $temp[$key] = $_temp2;
                 }
                 break;
@@ -986,7 +1091,7 @@ class Zend_Locale_Data
         $val = urlencode((string) $val);
         $id  = self::_filterCacheId('Zend_LocaleC_' . $locale . '_' . $path . '_' . $val);
         if (!self::$_cacheDisabled && ($result = self::$_cache->load($id))) {
-            return unserialize($result);
+            return unserialize($result, ['allowed_classes' => false]);
         }
 
         switch(strtolower((string) $path)) {
@@ -1217,20 +1322,21 @@ class Zend_Locale_Data
                 $temp = self::_getFile($locale, '/ldml/numbers/defaultNumberingSystem', '', 'default');
                 break;
 
+            // The default format has no type, typed lengths (short, long) hold compact formats
             case 'decimalnumber':
-                $temp = self::_getFile($locale, '/ldml/numbers/decimalFormats/decimalFormatLength/decimalFormat/pattern', '', 'default');
+                $temp = self::_getFile($locale, '/ldml/numbers/decimalFormats[@numberSystem=\'' . self::_getNumberingSystem($locale) . '\']/decimalFormatLength[not(@type)]/decimalFormat/pattern[not(@type)]', '', 'default');
                 break;
 
             case 'scientificnumber':
-                $temp = self::_getFile($locale, '/ldml/numbers/scientificFormats/scientificFormatLength/scientificFormat/pattern', '', 'default');
+                $temp = self::_getFile($locale, '/ldml/numbers/scientificFormats[@numberSystem=\'' . self::_getNumberingSystem($locale) . '\']/scientificFormatLength[not(@type)]/scientificFormat/pattern[not(@type)]', '', 'default');
                 break;
 
             case 'percentnumber':
-                $temp = self::_getFile($locale, '/ldml/numbers/percentFormats/percentFormatLength/percentFormat/pattern', '', 'default');
+                $temp = self::_getFile($locale, '/ldml/numbers/percentFormats[@numberSystem=\'' . self::_getNumberingSystem($locale) . '\']/percentFormatLength[not(@type)]/percentFormat/pattern[not(@type)]', '', 'default');
                 break;
 
             case 'currencynumber':
-                $temp = self::_getFile($locale, '/ldml/numbers/currencyFormats/currencyFormatLength/currencyFormat/pattern', '', 'default');
+                $temp = self::_getFile($locale, '/ldml/numbers/currencyFormats[@numberSystem=\'' . self::_getNumberingSystem($locale) . '\']/currencyFormatLength[not(@type)]/currencyFormat[not(@type) or @type=\'standard\']/pattern[not(@type)]', '', 'default');
                 break;
 
             case 'nametocurrency':
@@ -1349,29 +1455,13 @@ class Zend_Locale_Data
                 break;
 
             case 'territorytolanguage':
-                $temp = self::_getFile('supplementalData', '/supplementalData/languageData/language[@type=\'' . $value . '\']', 'territories', $value);
+                $languages = self::_getLanguageTerritories();
+                $temp = isset($languages[$value]) ? [$value => $languages[$value]] : [];
                 break;
 
             case 'languagetoterritory':
-                $_temp2 = self::_getFile('supplementalData', '/supplementalData/languageData/language', 'type');
-                $_temp = [];
-                foreach ($_temp2 as $key => $found) {
-                    $_temp += self::_getFile('supplementalData', '/supplementalData/languageData/language[@type=\'' . $key . '\']', 'territories', $key);
-                }
-                $temp = [];
-                foreach($_temp as $key => $found) {
-                    $_temp3 = explode(" ", $found);
-                    foreach($_temp3 as $found3) {
-                        if ($found3 !== $value) {
-                            continue;
-                        }
-                        if (!isset($temp[$found3])) {
-                            $temp[$found3] = (string) $key;
-                        } else {
-                            $temp[$found3] .= " " . $key;
-                        }
-                    }
-                }
+                $territories = self::_getTerritoryLanguages();
+                $temp = isset($territories[$value]) ? [$value => $territories[$value]] : [];
                 break;
 
             case 'timezonetowindows':
@@ -1480,7 +1570,7 @@ class Zend_Locale_Data
                 break;
 
             case 'unit':
-                $temp = self::_getFile($locale, '/ldml/units/unitLength/unit[@type=\'' . $value[0] . '\']/unitPattern[@count=\'' . $value[1] . '\']', '');
+                $temp = self::_getFile($locale, '/ldml/units/unitLength[@type=\'long\']/unit[@type=\'' . $value[0] . '\']/unitPattern[@count=\'' . $value[1] . '\']', '');
                 break;
 
             case 'parentlocale':

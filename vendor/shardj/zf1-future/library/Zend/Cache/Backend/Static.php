@@ -223,7 +223,7 @@ class Zend_Cache_Backend_Static
         }
         $extension = null;
         if ($this->_isSerialized($data)) {
-            $data = unserialize($data);
+            $data = unserialize($data, ['allowed_classes' => false]);
             $extension = '.' . ltrim($data[1], '.');
             $data = $data[0];
         }
@@ -244,7 +244,7 @@ class Zend_Cache_Backend_Static
         $this->_createDirectoriesFor($pathName);
 
         if ($id === null || strlen($id) === 0) {
-            $dataUnserialized = unserialize($data);
+            $dataUnserialized = unserialize($data, ['allowed_classes' => false]);
             $data = $dataUnserialized['data'];
         }
         $ext = $this->_options['file_extension'];

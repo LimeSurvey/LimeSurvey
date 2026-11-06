@@ -1434,8 +1434,9 @@ abstract class Zend_File_Transfer_Adapter_Abstract
      */
     protected function _isPathWriteable($path)
     {
+        // a unique name, so parallel transfers checking the same path do not remove each other's file
         $tempFile = rtrim($path, "/\\");
-        $tempFile .= '/' . 'test.1';
+        $tempFile .= '/' . uniqid('test.', true);
 
         $result = @file_put_contents($tempFile, 'TEST');
 
