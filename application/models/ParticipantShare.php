@@ -98,9 +98,11 @@ class ParticipantShare extends LSActiveRecord
      */
     public function getSharedByList($selected)
     {
-        $share_uids = Yii::app()->db->createCommand()
-            ->selectDistinct('share_uid')
-            ->from('{{participant_shares}}')
+        // One query for all share targets: The inner join skips shares with users that were deleted since
+        $shareUsers = Yii::app()->db->createCommand()
+            ->selectDistinct('ps.share_uid, u.full_name')
+            ->from('{{participant_shares}} ps')
+            ->join('{{users}} u', 'u.uid = ps.share_uid')
             ->queryAll();
 
         $shareList = array(
@@ -108,13 +110,8 @@ class ParticipantShare extends LSActiveRecord
             '-1' => gT('Everybody')
         );
 
-        foreach ($share_uids as $id) {
-            if ($id['share_uid'] == -1) {
-                continue;
-            }
-            /** @var User $oUser */
-            $oUser = User::model()->findByPk($id['share_uid']);
-            $shareList[$id['share_uid']] = $oUser->full_name;
+        foreach ($shareUsers as $shareUser) {
+            $shareList[$shareUser['share_uid']] = $shareUser['full_name'];
         }
         return TbHtml::dropDownList('ParticipantShare[share_uid]', $selected, $shareList, ['aria-label' => gT('Shared with')]);
     }

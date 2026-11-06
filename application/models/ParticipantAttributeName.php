@@ -326,7 +326,7 @@ class ParticipantAttributeName extends LSActiveRecord
                 "type"   => "raw",
                 "filter" => ["Y" => gT("Yes"), "N" => gT("No")],
                 "filterInputOptions" => ['prompt' => gT('All')],
-                "header" => '<span ' . ($bEncrypted === true ? '' : 'title="' . gT("Encryption is disabled because Sodium library isn't installed") . '"') . '>' . gT("Encrypted") . '</span>',
+                "header" => '<span ' . ($bEncrypted === true ? '' : 'title="' . CHtml::encode(gT("Encryption is disabled because Sodium library isn't installed")) . '"') . '>' . gT("Encrypted") . '</span>',
             ],
             [
                 "name"   => 'core_attribute',
