@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { format } from 'util'
+import { cloneDeep } from 'lodash'
 import { queryClient } from 'queryClient'
 
 import {
@@ -243,15 +244,23 @@ export const SurveyLogicProvider = ({ children }) => {
       refetchQuestionsFieldNamesMap()
       setBuffer(mapResult.operationsBuffer.getOperations(), RandomNumber())
 
-      // Refresh focused entity from the updated survey
-      if (focused?.qid) {
-        const updatedInfo = getQuestionById(focused.qid, mapResult.survey)
+      // Refresh the focused question's data from the updated survey. Only the
+      // data changes (its URL was already updated with any new ID above), so
+      // no navigation: it would add browser history entries on every save.
+      // Read the focus now, it may have changed while the request was running.
+      const currentFocus = queryClient.getQueryData([STATES.FOCUSED_ENTITY])
+      if (currentFocus?.focused?.qid) {
+        const updatedInfo = getQuestionById(
+          currentFocus.focused.qid,
+          mapResult.survey
+        )
         if (updatedInfo.question) {
-          setFocused(
-            updatedInfo.question,
-            updatedInfo.groupIndex,
-            updatedInfo.questionIndex
-          )
+          queryClient.setQueryData([STATES.FOCUSED_ENTITY], {
+            ...currentFocus,
+            focused: cloneDeep(updatedInfo.question),
+            groupIndex: updatedInfo.groupIndex,
+            questionIndex: updatedInfo.questionIndex,
+          })
         }
       }
 

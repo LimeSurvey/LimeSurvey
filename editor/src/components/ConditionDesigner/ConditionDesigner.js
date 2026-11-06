@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import { PlusLg } from 'react-bootstrap-icons'
 
 import { Button, Input } from 'components'
-import { useFocused, useConditionDesigner, setFocusLeaveGuard } from 'hooks'
+import { useFocused, useConditionDesigner } from 'hooks'
 import { SideBarHeader } from 'components/SideBar'
 import { ArrowLeftIcon } from 'components/icons'
 import {
@@ -127,33 +127,6 @@ export const ConditionDesigner = ({
     }
   }, [conditions, scenarioToPatch, scid, isUpdateAction, onNavigateBack])
 
-  // Ask before the focus moves to another question (or nothing) while there
-  // are unsaved changes, instead of silently closing the designer.
-  const leaveGuardRef = useRef()
-  leaveGuardRef.current = (proceed, cancel) => {
-    if (hasUnsavedChanges(conditions, scenarioToPatch, scid, isUpdateAction)) {
-      // No focus return on close: it would focus the clicked question's
-      // title again, which requests the focus change again (endless popup).
-      showUnsavedChangesOverlay(
-        proceed,
-        t(
-          'You are about to leave this question without saving your changes on this scenario. Do you want to proceed?'
-        ),
-        { returnFocus: false, ignoreButtonText: t('Leave without saving') }
-      ).then(cancel)
-    } else {
-      proceed()
-    }
-  }
-
-  useEffect(
-    () =>
-      setFocusLeaveGuard((proceed, cancel) =>
-        leaveGuardRef.current(proceed, cancel)
-      ),
-    []
-  )
-
   const handleApplyClick = () => {
     const save = () => handleSavingScenario(onNavigateBack)
     if (shouldConfirmOverwrite) {
@@ -213,7 +186,9 @@ export const ConditionDesigner = ({
         <div className="conditions-container">
           {conditions.map((condition, index) => (
             <ConditionItem
-              key={`condition-item-${condition.cid ?? index}`}
+              key={
+                condition.uiKey ?? `condition-item-${condition.cid ?? index}`
+              }
               index={index}
               condition={condition}
               pervCondition={conditions[index - 1]}

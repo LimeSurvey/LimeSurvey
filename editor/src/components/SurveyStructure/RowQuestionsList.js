@@ -2,13 +2,7 @@ import { useState } from 'react'
 import { Draggable, Droppable } from 'react-beautiful-dnd'
 import classNames from 'classnames'
 
-import {
-  confirmFocusLeave,
-  runWithoutFocusLeaveGuard,
-  useAppState,
-  useBuffer,
-  useFocused,
-} from 'hooks'
+import { useAppState, useBuffer, useFocused } from 'hooks'
 import {
   arrayDeleteItem,
   DuplicateQuestion,
@@ -37,7 +31,7 @@ export const RowQuestionsList = ({
     ...draggableStyle,
   })
 
-  const insertDuplicatedQuestion = (question, questionIndex) => {
+  const duplicateQuestion = (question, questionIndex) => {
     const cloneIndex = questionIndex + 1
     const duplicatedQuestion = DuplicateQuestion(question)
     const updatedQuestions = InsertElementAndIncrementProperty(
@@ -69,24 +63,13 @@ export const RowQuestionsList = ({
     }
 
     handleUpdate(updatedQuestions)
-    // Runs after confirmFocusLeave returned: leaving was already confirmed.
     setTimeout(() => {
-      runWithoutFocusLeaveGuard(() =>
-        setFocused(updatedQuestions[cloneIndex], groupIndex, cloneIndex)
-      )
+      setFocused(updatedQuestions[cloneIndex], groupIndex, cloneIndex)
     }, 0)
   }
 
-  // Unsaved changes of an open panel (e.g. Condition Designer) of the focused
-  // question are confirmed before the duplicate is added.
-  const duplicateQuestion = (question, questionIndex) => {
-    confirmFocusLeave(() => insertDuplicatedQuestion(question, questionIndex))
-  }
-
-  // Deleting a question clears the focus: unsaved changes of an open panel of
-  // the focused question are confirmed first, the delete itself afterwards.
   const deleteQuestion = (index) => {
-    confirmFocusLeave(() => setDeleteState({ show: true, index }))
+    setDeleteState({ show: true, index })
   }
 
   const handleConfirmDelete = () => {
@@ -99,8 +82,7 @@ export const RowQuestionsList = ({
 
     addToBuffer(operation)
     handleUpdate(updatedQuestions)
-    // Leaving was already confirmed when the delete was requested.
-    runWithoutFocusLeaveGuard(unFocus)
+    unFocus()
     setDeleteState({ show: false, index: null })
   }
   return (

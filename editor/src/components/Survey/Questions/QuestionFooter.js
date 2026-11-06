@@ -2,12 +2,7 @@ import { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import classNames from 'classnames'
 
-import {
-  confirmFocusLeave,
-  runWithoutFocusLeaveGuard,
-  useAppState,
-  useBuffer,
-} from 'hooks'
+import { useAppState, useBuffer } from 'hooks'
 import { STATES, createBufferOperation, getSiteUrl } from 'helpers'
 import { getTooltipMessages } from 'helpers/options'
 import { TooltipContainer } from 'components'
@@ -26,22 +21,15 @@ export const QuestionFooter = ({
   const { addToBuffer } = useBuffer()
   const [showDeleteModal, setShowDeleteModal] = useState(false)
 
-  // Unsaved changes of an open panel (e.g. Condition Designer) of this question
-  // are confirmed first, the delete itself is confirmed afterwards.
   const handleRemoveQuestion = () => {
-    confirmFocusLeave(() => setShowDeleteModal(true))
+    setShowDeleteModal(true)
   }
 
   const handleConfirmRemove = () => {
     const operation = createBufferOperation(question.qid).question().delete()
     addToBuffer(operation)
-    // Leaving was already confirmed when the delete was requested.
-    runWithoutFocusLeaveGuard(handleRemove)
+    handleRemove()
     setShowDeleteModal(false)
-  }
-
-  const handleDuplicateQuestion = () => {
-    confirmFocusLeave(handleDuplicate)
   }
 
   const openQuestionPreview = () => {
@@ -98,7 +86,7 @@ export const QuestionFooter = ({
                 }}
                 className={classNames({ disabled: !isFocused })}
                 data-testid="question-footer-copy-icon"
-                onClick={handleDuplicateQuestion}
+                onClick={handleDuplicate}
               >
                 <CopyIcon
                   className={classNames('footer-icon ', {

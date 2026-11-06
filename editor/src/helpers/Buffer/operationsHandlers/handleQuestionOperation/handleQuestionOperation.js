@@ -2,6 +2,8 @@ import { cloneDeep, merge } from 'lodash'
 
 import { Operations, hasTempId } from 'helpers'
 
+import { removeConditionOperationsOfQuestion } from '../handleQuestionConditionOperation/handleQuestionConditionOperation'
+
 export const handleQuestionOperation = (
   _bufferOperations,
   _operation,
@@ -30,6 +32,15 @@ export const handleQuestionOperation = (
 
       return true
     })
+
+    // A question that was never saved will never get its real ID, so the
+    // condition operations of it, or using it as source, could never be sent.
+    if (questionHasATempId) {
+      updatedBufferOperations = removeConditionOperationsOfQuestion(
+        updatedBufferOperations,
+        operation.id
+      )
+    }
 
     return {
       bufferOperations: updatedBufferOperations,

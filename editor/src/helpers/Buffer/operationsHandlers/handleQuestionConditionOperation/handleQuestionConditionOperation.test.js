@@ -2,7 +2,10 @@ import { merge } from 'lodash'
 
 import { Operations } from 'helpers'
 import { handleQuestionOperation } from '../handleQuestionOperation/handleQuestionOperation'
-import { handleQuestionConditionOperation } from './handleQuestionConditionOperation'
+import {
+  handleQuestionConditionOperation,
+  removeConditionOperationsOfQuestion,
+} from './handleQuestionConditionOperation'
 
 describe('handleQuestionConditionOperation Tests', () => {
   const questionConditionCreateOperation = {
@@ -504,6 +507,60 @@ describe('handleQuestionConditionOperation Tests', () => {
       expect(result.bufferOperations).toEqual([otherCondition])
       expect(result.newOperation).toEqual(operation)
       expect(result.addToBuffer).toBe(true)
+    })
+
+    test('editing a condition still waiting to be created keeps it a create', () => {
+      const created = {
+        ...condition('temp__1_1'),
+        tempId: 'temp__1_1',
+        tempcids: ['temp__1_1'],
+      }
+      const buffer = [scenarioUpdate(1, [created])]
+      const edited = {
+        ...condition('temp__1_1', 'A2'),
+        action: 'updateCondition',
+      }
+      const result = handleQuestionConditionOperation(
+        buffer,
+        scenarioUpdate(1, [edited]),
+        buffer[0]
+      )
+
+      expect(result.addToBuffer).toBe(false)
+      expect(result.bufferOperations[0].props.scenarios[0].conditions).toEqual([
+        {
+          ...edited,
+          action: 'insertCondition',
+          tempId: 'temp__1_1',
+          tempcids: ['temp__1_1'],
+        },
+      ])
+    })
+
+    test('removeConditionOperationsOfQuestion drops the operations of a deleted unsaved question', () => {
+      const ofDeletedQuestion = scenarioUpdate(
+        1,
+        [condition('temp__1_1')],
+        'temp__9'
+      )
+      const usingDeletedQuestion = scenarioUpdate(1, [
+        { ...condition('temp__2_1'), cqid: 'temp__9' },
+        condition('temp__2_2'),
+      ])
+      const onlyUsingDeletedQuestion = scenarioUpdate(
+        1,
+        [{ ...condition('temp__3_1'), cqid: 'temp__9' }],
+        30
+      )
+      const result = removeConditionOperationsOfQuestion(
+        [ofDeletedQuestion, usingDeletedQuestion, onlyUsingDeletedQuestion],
+        'temp__9'
+      )
+
+      expect(result).toHaveLength(1)
+      expect(result[0].props.scenarios[0].conditions.map((c) => c.cid)).toEqual(
+        ['temp__2_2']
+      )
     })
 
     test('deleting a local-only condition removes it without sending a delete', () => {

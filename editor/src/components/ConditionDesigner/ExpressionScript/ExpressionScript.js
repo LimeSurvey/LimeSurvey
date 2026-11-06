@@ -8,7 +8,6 @@ import {
   useFocused,
   useIsConditionRelevancePending,
   useSurvey,
-  setFocusLeaveGuard,
 } from 'hooks'
 import { getQuestionById, QUESTION_RELEVANCE_DEFAULT_VALUE } from 'helpers'
 import { SideBarHeader } from 'components/SideBar'
@@ -25,10 +24,15 @@ import {
 export const ExpressionScript = ({ onNavigateBack = () => {} }) => {
   const { surveyId } = useParams()
   const { survey, update } = useSurvey(surveyId)
-  const { focused, groupIndex, questionIndex } = useFocused()
+  const { focused } = useFocused()
   const { addToBuffer } = useBuffer()
 
-  const question = getQuestionById(focused.qid, survey).question
+  // Positions come from the current survey, the persisted focus indexes can be
+  // stale (e.g. after a refresh restores focus from an older survey state).
+  const { question, groupIndex, questionIndex } = getQuestionById(
+    focused.qid,
+    survey
+  )
   const validateExpression = useExpressionScriptValidation(
     surveyId,
     question.qid
@@ -79,33 +83,6 @@ export const ExpressionScript = ({ onNavigateBack = () => {} }) => {
 
     return question.relevance.trim() !== content.trim()
   }
-
-  // Ask before the focus moves to another question (or nothing) while there
-  // are unsaved changes, instead of silently closing the panel.
-  const leaveGuardRef = useRef()
-  leaveGuardRef.current = (proceed, cancel) => {
-    if (shouldShowUnsavedAlert()) {
-      // No focus return on close: it would focus the clicked question's
-      // title again, which requests the focus change again (endless popup).
-      showUnsavedChangesOverlay(
-        proceed,
-        t(
-          'You are about to leave this question without saving your changes. Do you want to proceed?'
-        ),
-        { returnFocus: false, ignoreButtonText: t('Leave without saving') }
-      ).then(cancel)
-    } else {
-      proceed()
-    }
-  }
-
-  useEffect(
-    () =>
-      setFocusLeaveGuard((proceed, cancel) =>
-        leaveGuardRef.current(proceed, cancel)
-      ),
-    []
-  )
 
   const handleApplyClick = () => {
     if (question?.scenarios.length > 0) {

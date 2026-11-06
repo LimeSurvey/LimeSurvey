@@ -2,7 +2,11 @@ import { isUndefined } from 'lodash'
 import { EntitiesType } from './Buffer'
 import { arrayDeleteItem } from './arrayDeleteItem'
 import { getEntityInfo } from './getEntityInfo'
-import { replaceValuesInObject } from './replaceValuesInObject'
+import {
+  getTempIdMap,
+  replaceTempIdsInObject,
+  replaceValuesInObject,
+} from './replaceValuesInObject'
 
 /**
  * Replace survey branch references.
@@ -54,6 +58,18 @@ export const replaceTempIdsInSurveyAndBuffer = (
   operationsBuffer,
   focused = undefined
 ) => {
+  const idMap = getTempIdMap(mappings)
+  if (!idMap.size) {
+    return { survey, operationsBuffer, focused }
+  }
+
+  // Update the operations in the buffer once for all the mappings. This is done
+  // even for entities no longer in the survey (e.g. a condition deleted while
+  // its create was being sent): their queued operations need the real ID.
+  operationsBuffer.setOperations(
+    replaceTempIdsInObject(operationsBuffer.getOperations(), idMap)
+  )
+
   mappings.forEach((tempIdMap) => {
     // Retrieve the entity based on type and temporary ID
     let entityInfo = getEntityInfo(tempIdMap.tempId, survey, entityType)
@@ -82,15 +98,6 @@ export const replaceTempIdsInSurveyAndBuffer = (
         tempIdMap.id
       )
     }
-
-    // Update operations in the buffer with the new ID
-    operationsBuffer.setOperations(
-      replaceValuesInObject(
-        operationsBuffer.getOperations(),
-        tempIdMap.tempId,
-        tempIdMap.id
-      )
-    )
 
     if (entityType === EntitiesType.group) {
       if (!isUndefined(entityInfo.groupIndex)) {
@@ -139,19 +146,6 @@ export const replaceTempIdsInSurveyAndBuffer = (
       }
     }
 
-    // Also update cross-references for group, question, and subquestion temp IDs across the survey.
-    if (
-      entityType === EntitiesType.group ||
-      entityType === EntitiesType.question ||
-      entityType === EntitiesType.subquestion
-    ) {
-      survey.questionGroups = replaceValuesInObject(
-        survey.questionGroups,
-        tempIdMap.tempId,
-        tempIdMap.id
-      )
-    }
-
     replaceSurveyEntityParentRefs(
       survey,
       entityInfo.groupIndex,
@@ -160,6 +154,16 @@ export const replaceTempIdsInSurveyAndBuffer = (
       entityInfo.answerIndex
     )
   })
+
+  // Also update cross-references to group, question and subquestion temp IDs
+  // across the survey (e.g. condition sources), in a single pass.
+  if (
+    entityType === EntitiesType.group ||
+    entityType === EntitiesType.question ||
+    entityType === EntitiesType.subquestion
+  ) {
+    survey.questionGroups = replaceTempIdsInObject(survey.questionGroups, idMap)
+  }
 
   return { survey, operationsBuffer, focused }
 }

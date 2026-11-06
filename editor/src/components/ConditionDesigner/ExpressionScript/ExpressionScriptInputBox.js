@@ -23,10 +23,15 @@ import { showResetAllConditionsOverlay, showWarningMessage } from '../utils'
 export const ExpressionScriptInputBox = ({ onShowPanel, onNavigateBack }) => {
   const { surveyId } = useParams()
   const { survey, update } = useSurvey(surveyId)
-  const { focused, groupIndex, questionIndex } = useFocused()
+  const { focused } = useFocused()
   const { addToBuffer } = useBuffer()
 
-  const question = getQuestionById(focused.qid, survey).question
+  // Positions come from the current survey, the persisted focus indexes can be
+  // stale (e.g. after a refresh restores focus from an older survey state).
+  const { question, groupIndex, questionIndex } = getQuestionById(
+    focused.qid,
+    survey
+  )
   const validateExpression = useExpressionScriptValidation(
     surveyId,
     question.qid

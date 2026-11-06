@@ -1,5 +1,5 @@
 import { isTempId } from './isTempId'
-import { replaceValuesInObject } from './replaceValuesInObject'
+import { replaceTempIdsInObject } from './replaceValuesInObject'
 import { NEW_OBJECT_ID_PREFIX } from './constants'
 
 // Temp IDs the server has already replaced with real IDs (tempId => id).
@@ -38,12 +38,7 @@ export const resolveTempIds = (value) => {
   const serialized = JSON.stringify(value)
   if (!serialized?.includes(NEW_OBJECT_ID_PREFIX)) return value
 
-  let resolved = value
-  resolvedTempIds.forEach((id, tempId) => {
-    if (serialized.includes(tempId)) {
-      resolved = replaceValuesInObject(resolved, tempId, id)
-    }
-  })
+  const resolved = replaceTempIdsInObject(value, resolvedTempIds)
 
   return JSON.stringify(resolved) === serialized ? value : resolved
 }

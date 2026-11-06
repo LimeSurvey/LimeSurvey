@@ -28,6 +28,14 @@ const getSuccessMessage = (action) =>
     ? t('Condition deleted successfully')
     : t('Condition applied successfully')
 
+// Stable React key of a condition row: its cid can change while the designer
+// is open (temp ID replaced with the real one), which would remount the row.
+let conditionUiKeySeed = 0
+const withUiKey = (condition) =>
+  condition.uiKey
+    ? condition
+    : { ...condition, uiKey: `condition-${++conditionUiKeySeed}` }
+
 // Splits multi-value conditions ("A1,A2") into one condition per value.
 const expandConditionValues = (conditions) =>
   conditions.flatMap(({ value, ...rest }) =>
@@ -60,8 +68,11 @@ export const useConditionDesigner = ({
   const [scid, setScid] = useState(scenarioToPatch ? scenarioToPatch.scid : 1)
   const [conditions, setConditions] = useState(() =>
     scenarioToPatch
-      ? buildScenarioConditionsForUpdate(scenarioToPatch, previousQuestions)
-      : [getDefaultCondition()]
+      ? buildScenarioConditionsForUpdate(
+          scenarioToPatch,
+          previousQuestions
+        ).map(withUiKey)
+      : [withUiKey(getDefaultCondition())]
   )
   const originalScid = useRef(scenarioToPatch ? scid : null)
 
@@ -105,7 +116,9 @@ export const useConditionDesigner = ({
     } else {
       setConditions((prev) => {
         const updated = prev.filter((_, i) => i !== index)
-        return updated.length === 0 ? [getDefaultCondition()] : updated
+        return updated.length === 0
+          ? [withUiKey(getDefaultCondition())]
+          : updated
       })
     }
   }
@@ -114,7 +127,10 @@ export const useConditionDesigner = ({
     const sorted = [...conditions].sort((a, b) =>
       String(a.cqid).localeCompare(String(b.cqid), undefined, { numeric: true })
     )
-    setConditions([...sorted, { ...getDefaultCondition(), scenario: scid }])
+    setConditions([
+      ...sorted,
+      withUiKey({ ...getDefaultCondition(), scenario: scid }),
+    ])
   }
 
   const updateCondition = (index, key, value) => {

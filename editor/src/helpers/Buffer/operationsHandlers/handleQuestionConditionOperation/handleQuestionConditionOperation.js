@@ -3,6 +3,22 @@ import { cloneDeep } from 'lodash'
 import { Entities, hasTempId, Operations } from 'helpers'
 
 /**
+ * A condition still waiting to be created must stay a create when it is edited
+ * again before being sent: the edit arrives as an update of its temp cid, which
+ * the server can't apply to a condition it doesn't have yet.
+ */
+const keepPendingCreate = (existingCondition, incomingCondition) =>
+  existingCondition?.tempId && !incomingCondition.tempId
+    ? {
+        ...incomingCondition,
+        action: existingCondition.action,
+        tempId: existingCondition.tempId,
+        tempcids: existingCondition.tempcids,
+        cid: existingCondition.cid,
+      }
+    : incomingCondition
+
+/**
  * Merge scenario arrays by combining conditions under matching scids
  * instead of overwriting by array index (which lodash merge does).
  */
@@ -21,7 +37,12 @@ const mergeScenarios = (existing = [], incoming = []) => {
         ...existingConditions.filter(
           (c) => !incomingConditions.some((nc) => nc.cid == c.cid)
         ),
-        ...incomingConditions,
+        ...incomingConditions.map((incomingCondition) =>
+          keepPendingCreate(
+            existingConditions.find((c) => c.cid == incomingCondition.cid),
+            incomingCondition
+          )
+        ),
       ]
 
       // Merge any other scenario-level props (e.g. action)
@@ -103,7 +124,7 @@ const removeConditionFromBuffer = (bufferOperations, qid, cid) =>
       .filter((scenario) => !scenario.conditions || scenario.conditions.length)
   )
 
-const isConditionInBuffer = (bufferOperations, qid, cid) =>
+export const isConditionInBuffer = (bufferOperations, qid, cid) =>
   bufferOperations.some(
     (op) =>
       isConditionOperationOfQuestion(op, qid) &&
@@ -203,3 +224,43 @@ export const handleQuestionConditionOperation = (
 
   return { bufferOperations, newOperation: operation, addToBuffer: true }
 }
+
+/**
+ * Remove every condition operation of the question `qid`, and the conditions
+ * using it as source (cqid) from the other condition operations. Used when a
+ * question that was never saved is deleted: its temp ID will never be
+ * replaced, so these operations could never be sent.
+ */
+export const removeConditionOperationsOfQuestion = (bufferOperations, qid) =>
+  bufferOperations.reduce((acc, op) => {
+    if (op.entity !== Entities.questionCondition) {
+      acc.push(op)
+      return acc
+    }
+
+    if (String(getOperationQid(op)) === String(qid)) return acc
+
+    if (!isScenarioChangeOperation(op) || !op.props?.scenarios) {
+      acc.push(op)
+      return acc
+    }
+
+    const scenarios = op.props.scenarios
+      .map((scenario) =>
+        scenario.conditions
+          ? {
+              ...scenario,
+              conditions: scenario.conditions.filter(
+                (c) => String(c.cqid) !== String(qid)
+              ),
+            }
+          : scenario
+      )
+      .filter((scenario) => !scenario.conditions || scenario.conditions.length)
+
+    if (scenarios.length) {
+      acc.push({ ...op, props: { ...op.props, scenarios } })
+    }
+
+    return acc
+  }, [])
