@@ -7,9 +7,14 @@ import { EntitiesType, STATES, isResolvedTempId } from 'helpers'
 import { queryClient } from 'queryClient'
 
 // Lets an open panel with unsaved changes (e.g. the Condition Designer) ask the
-// user before the focus moves away from its question. Called with `proceed`,
-// it either calls it right away or after the user confirmed leaving.
+// user before the focus moves away from its question. Called with
+// (proceed, cancel), it either calls proceed right away, or asks the user and
+// then calls proceed (leave) or cancel (stay).
 let focusLeaveGuard = null
+// The focus change waiting for the user's answer, while the guard is asking.
+let pendingFocusChange = null
+// True while running an action the user already agreed to leave for.
+let isLeaveConfirmed = false
 
 /**
  * Register a guard for leaving the focused question.
@@ -19,7 +24,10 @@ let focusLeaveGuard = null
 export const setFocusLeaveGuard = (guard) => {
   focusLeaveGuard = guard
   return () => {
-    if (focusLeaveGuard === guard) focusLeaveGuard = null
+    if (focusLeaveGuard === guard) {
+      focusLeaveGuard = null
+      pendingFocusChange = null
+    }
   }
 }
 
@@ -34,12 +42,52 @@ const isSameFocusedQuestion = (target) => {
 }
 
 const guardFocusChange = (target, apply) => {
-  if (!focusLeaveGuard || isSameFocusedQuestion(target)) {
+  if (!focusLeaveGuard || isLeaveConfirmed || isSameFocusedQuestion(target)) {
     return apply()
   }
 
-  focusLeaveGuard(apply)
+  // The user is already being asked (one click can request several focus
+  // changes): don't ask again, apply the latest request if they leave.
+  if (pendingFocusChange) {
+    pendingFocusChange = apply
+    return
+  }
+
+  pendingFocusChange = apply
+  focusLeaveGuard(
+    () => {
+      const applyPending = pendingFocusChange
+      pendingFocusChange = null
+      applyPending?.()
+    },
+    () => {
+      pendingFocusChange = null
+    }
+  )
 }
+
+/**
+ * Run an action without asking the focus leave guard again, e.g. because the
+ * user already confirmed leaving the focused question for it.
+ */
+export const runWithoutFocusLeaveGuard = (action) => {
+  const wasLeaveConfirmed = isLeaveConfirmed
+  isLeaveConfirmed = true
+  try {
+    return action()
+  } finally {
+    isLeaveConfirmed = wasLeaveConfirmed
+  }
+}
+
+/**
+ * Run an action that leaves the focused question (e.g. deleting or duplicating
+ * it) only once the focus leave guard allows it, i.e. right away when there are
+ * no unsaved changes, otherwise after the user chose to leave without saving.
+ * Focus changes made by the action are not guarded again.
+ */
+export const confirmFocusLeave = (action) =>
+  guardFocusChange(null, () => runWithoutFocusLeaveGuard(action))
 
 export const useFocused = (focused, groupIndex, questionIndex) => {
   const navigate = useNavigate()

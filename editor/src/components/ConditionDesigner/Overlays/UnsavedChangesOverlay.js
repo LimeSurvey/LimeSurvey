@@ -1,7 +1,11 @@
 import { Button } from 'components'
 import { SwalAlert } from 'helpers'
 
-export const UnsavedChangesOverlay = ({ onIgnoreChanges, message = false }) => {
+export const UnsavedChangesOverlay = ({
+  onIgnoreChanges,
+  message = false,
+  ignoreButtonText = null,
+}) => {
   const defaultMessage = t(
     'You are about to go back without saving your changes on this scenario. Do you want to proceed?'
   )
@@ -24,7 +28,7 @@ export const UnsavedChangesOverlay = ({ onIgnoreChanges, message = false }) => {
             SwalAlert.close()
           }}
         >
-          {t('Go back without saving')}
+          {ignoreButtonText || t('Go back without saving')}
         </Button>
         <Button
           variant="primary"

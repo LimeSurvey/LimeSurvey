@@ -130,21 +130,27 @@ export const ConditionDesigner = ({
   // Ask before the focus moves to another question (or nothing) while there
   // are unsaved changes, instead of silently closing the designer.
   const leaveGuardRef = useRef()
-  leaveGuardRef.current = (proceed) => {
+  leaveGuardRef.current = (proceed, cancel) => {
     if (hasUnsavedChanges(conditions, scenarioToPatch, scid, isUpdateAction)) {
+      // No focus return on close: it would focus the clicked question's
+      // title again, which requests the focus change again (endless popup).
       showUnsavedChangesOverlay(
         proceed,
         t(
           'You are about to leave this question without saving your changes on this scenario. Do you want to proceed?'
-        )
-      )
+        ),
+        { returnFocus: false, ignoreButtonText: t('Leave without saving') }
+      ).then(cancel)
     } else {
       proceed()
     }
   }
 
   useEffect(
-    () => setFocusLeaveGuard((proceed) => leaveGuardRef.current(proceed)),
+    () =>
+      setFocusLeaveGuard((proceed, cancel) =>
+        leaveGuardRef.current(proceed, cancel)
+      ),
     []
   )
 

@@ -58,6 +58,7 @@ export const htmlPopup = ({
   popupClass,
   width,
   preConfirm = () => {},
+  returnFocus = true,
 }) => {
   return SwalAlert.fire({
     title,
@@ -79,6 +80,7 @@ export const htmlPopup = ({
     },
     width,
     preConfirm,
+    returnFocus,
   })
 }
 

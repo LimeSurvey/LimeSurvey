@@ -48,7 +48,19 @@ export const showErrorMessage = (message, position = 'bottom-right') => {
   })
 }
 
-export const showUnsavedChangesOverlay = (onIgnoreChanges, message = null) => {
+/**
+ * @param {Function} onIgnoreChanges called when the user discards the changes
+ * @param {string|null} message
+ * @param {object} options
+ * @param {string} [options.ignoreButtonText] label of the discard button
+ * @param {...object} [options.popupOptions] extra htmlPopup options
+ * @returns {Promise} resolved when the popup is closed
+ */
+export const showUnsavedChangesOverlay = (
+  onIgnoreChanges,
+  message = null,
+  { ignoreButtonText = null, ...popupOptions } = {}
+) =>
   htmlPopup({
     html: (
       <UnsavedChangesOverlay
@@ -56,13 +68,14 @@ export const showUnsavedChangesOverlay = (onIgnoreChanges, message = null) => {
           onIgnoreChanges()
         }}
         message={message}
+        ignoreButtonText={ignoreButtonText}
       />
     ),
     title: '',
     showCloseButton: true,
     width: '807px',
+    ...popupOptions,
   })
-}
 
 export const showDeleteScenarioOverlay = (scenarioId, onConfirmDelete) => {
   htmlPopup({
