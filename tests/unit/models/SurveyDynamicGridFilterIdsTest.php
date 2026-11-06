@@ -25,6 +25,8 @@ class SurveyDynamicGridFilterIdsTest extends TestBaseClass
         parent::setUpBeforeClass();
 
         self::importSurvey(self::$surveysFolder . '/limesurvey_survey_161359_quickTranslation.lss');
+        // The responses are inserted without dates, so the survey must not inherit a date stamp
+        self::$testSurvey->saveAttributes(['datestamp' => 'N']);
         (new \SurveyActivator(self::$testSurvey))->activate();
 
         $model = \SurveyDynamic::model(self::$surveyId);

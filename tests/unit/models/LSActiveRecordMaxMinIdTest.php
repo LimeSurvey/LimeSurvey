@@ -29,9 +29,12 @@ class LSActiveRecordMaxMinIdTest extends TestBaseClass
 
         self::importSurvey(self::$surveysFolder . '/limesurvey_survey_854771.lss');
         self::$secondSurvey = self::$testSurvey;
+        // The responses are inserted without dates, so the survey must not inherit a date stamp
+        self::$secondSurvey->saveAttributes(['datestamp' => 'N']);
         (new \SurveyActivator(self::$secondSurvey))->activate();
 
         self::importSurvey(self::$surveysFolder . '/limesurvey_survey_161359_quickTranslation.lss');
+        self::$testSurvey->saveAttributes(['datestamp' => 'N']);
         (new \SurveyActivator(self::$testSurvey))->activate();
 
         for ($i = 0; $i < 3; $i++) {

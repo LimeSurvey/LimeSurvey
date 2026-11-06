@@ -34,9 +34,9 @@ $googleAnalyticsStyleOptions = array(
 <!-- Notification panel -->
 <div id='notification-panel'>
     <?php if ($oSurvey->isActive) : ?>
-        <div class="row ls-panelboxes mb-5">
+        <div class="row ls-panelboxes mb-3">
             <div class="col-12 col-lg-6 ls-flex-column">
-                <div class="card card-primary ">
+                <div class="card card-primary mb-0">
                     <div class="card-body d-flex">
                         <?php eT("Please note that you need to deactivate this survey if you want to change the disabled settings below."); ?>
                     </div>
@@ -52,7 +52,7 @@ $googleAnalyticsStyleOptions = array(
 
 
     <div class="row">
-        <div class="col-12 col-lg-6 position-relative">
+        <div class="col-12 col-lg-6">
             <!-- Date Stamp -->
             <div class="ex-form-group mb-3">
                 <label id="datestamp-label" class="form-label"><?php eT("Date stamp:"); ?></label>
@@ -61,6 +61,7 @@ $googleAnalyticsStyleOptions = array(
                     $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'datestamp',
                         'ariaLabelledBy' => 'datestamp-label',
+                        'htmlOptions'   => ['disabled' => $oSurvey->isActive],
                         'checkedOption'         => $oSurvey->datestamp,
                         'selectOptions' => ($bShowInherited)
                             ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->datestamp . " ᴵ"])
@@ -78,6 +79,7 @@ $googleAnalyticsStyleOptions = array(
                     $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'ipaddr',
                         'ariaLabelledBy' => 'ipaddr-label',
+                        'htmlOptions'   => ['disabled' => $oSurvey->isActive],
                         'checkedOption' => $oSurvey->ipaddr,
                         'selectOptions' => ($bShowInherited)
                             ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->ipaddr . " ᴵ"])
@@ -95,6 +97,7 @@ $googleAnalyticsStyleOptions = array(
                     $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'ipanonymize',
                         'ariaLabelledBy' => 'ipanonymize-label',
+                        'htmlOptions'   => ['disabled' => $oSurvey->isActive],
                         'checkedOption' => $oSurvey->ipanonymize,
                         'selectOptions' => ($bShowInherited)
                             ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->ipanonymize . " ᴵ"])
@@ -112,6 +115,7 @@ $googleAnalyticsStyleOptions = array(
                     $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'refurl',
                         'ariaLabelledBy' => 'refurl-label',
+                        'htmlOptions'   => ['disabled' => $oSurvey->isActive],
                         'checkedOption' => $oSurvey->refurl,
                         'selectOptions' => ($bShowInherited)
                             ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->refurl . " ᴵ"])
@@ -128,6 +132,7 @@ $googleAnalyticsStyleOptions = array(
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'savetimings',
                         'ariaLabelledBy' => 'savetimings-label',
+                        'htmlOptions'   => ['disabled' => $oSurvey->isActive],
                         'checkedOption' => $oSurvey->savetimings,
                         'selectOptions' => ($bShowInherited)
                             ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->savetimings . " ᴵ"])
@@ -144,6 +149,7 @@ $googleAnalyticsStyleOptions = array(
                     $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'savequotaexit',
                         'ariaLabelledBy' => 'savequotaexit-label',
+                        'htmlOptions'   => ['disabled' => $oSurvey->isActive],
                         'checkedOption' => $oSurvey->savequotaexit,
                         'selectOptions' => ($bShowInherited)
                             ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->savequotaexit . " ᴵ"])
@@ -151,9 +157,6 @@ $googleAnalyticsStyleOptions = array(
                     ]); ?>
                 </div>
             </div>
-            <?php if ($oSurvey->isActive) : ?>
-                <div class="ls-option-disabled"></div>
-            <?php endif; ?>
         </div>
 
         <div class="col-12 col-lg-6">
