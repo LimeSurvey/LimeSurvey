@@ -42,7 +42,8 @@ foreach ($filterableColumns as $key => $column) {
                             <span class="ri-close-circle-line"></span>&nbsp;<?= gT('Clear selection') ?>
                         </button>
                     </div>
-                    <div class="organize-columns-list">
+                    <?php // The checkboxes are announced as a group named by the modal title ?>
+                    <div class="organize-columns-list" role="group" aria-labelledby="<?= $modalId ?>-label">
                         <?php foreach ($columnsData as $column) : ?>
                             <?php if (!empty($column->header) && $column->name !== 'dropdown_actions' && !array_key_exists($column->name, $filterableColumns)) : ?>
                                 <div class="organize-columns-item organize-columns-locked">
