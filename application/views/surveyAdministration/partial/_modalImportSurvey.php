@@ -2,7 +2,7 @@
 
 ?>
 
-<div id="importSurvey_modal" class="modal fade" role="dialog">
+<div id="importSurvey_modal" class="modal fade" role="dialog" aria-modal="true" aria-labelledby="importSurveyModalTitle importSurveyModalTitle-dialogsr">
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">
@@ -22,10 +22,11 @@
             //modal header
             App()->getController()->renderPartial(
                 '/layouts/partial_modals/modal_header',
-                ['modalTitle' => gT('Import survey')]
+                ['modalTitle' => gT('Import survey'), 'modalTitleId' => 'importSurveyModalTitle']
             );
             ?>
             <div class="modal-body" id="modal-body-import-survey">
+                <p class="note"><?php echo sprintf(gT('Fields with %s are required.'), '<span class="required">*</span>'); ?></p>
                 <div class="row">
                     <div class="mb-3">
                         <label class='form-label ' >
@@ -41,7 +42,7 @@
                             } ?>
                         </label>
                         <div class="upload-container">
-                            <label><b><?php eT("Select or drop a file here"); ?></b></label>
+                            <label id="fileUpload-label"><b><?php eT("Select or drop a file here"); ?> <span class="required">*</span></b></label>
                             <label for="fileUpload" class="upload-label" id="drop_zone">
                                 <div class="upload-text" id="file-upload-text">
                                     <span class="ri-upload-line">&nbsp;</span> </br>
@@ -53,9 +54,14 @@
                                     name="the_file"
                                     class="form-control upload-input"
                                     accept='.lss,.lsa,.tsv,.txt'
+                                    aria-labelledby="fileUpload-label file-upload-text"
+                                    aria-required="true"
+                                    aria-describedby="fileUpload-error"
                                     onchange="$('#import-submit').attr('disabled', false).attr('data-bs-toggle', false);"
                                 />
                             </label>
+                            <?php // Filled when the form is submitted without a file: the alert role announces it ?>
+                            <div id="fileUpload-error" class="text-danger mt-1" role="alert"></div>
                         </div>
                     </div>
                     <div class='mb-3'>
@@ -103,6 +109,11 @@ $('#importsurvey').on('submit', function(e) {
     setTimeout(function() {
         if (!e.isDefaultPrevented()) {
             $('#ls-loading').show();
+            // Set the text of the status region again, so the screen reader announces it
+            var loadingText = $('#ls-loading .visually-hidden');
+            var text = loadingText.text();
+            loadingText.text('');
+            setTimeout(function () { loadingText.text(text); }, 100);
         }
     }, 100);
 });

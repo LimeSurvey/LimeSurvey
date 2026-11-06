@@ -16,11 +16,29 @@ $(document).on('ready  pjax:scriptcomplete', function(){
         textField.textContent = filename + ('\n');
     }
 
+    //the error message of the file field, in an alert region
+    const errorField = document.getElementById('fileUpload-error');
+
+    /**
+     * Show or clear the "No file selected" error of the file field.
+     */
+    function setFileError(message) {
+        if (errorField) {
+            errorField.textContent = message;
+        }
+        if (message) {
+            inputFieldFile.setAttribute('aria-invalid', 'true');
+        } else {
+            inputFieldFile.removeAttribute('aria-invalid');
+        }
+    }
+
     inputFieldFile.addEventListener('change', function(event) {
         const files = event.target.files; // This is a FileList object
         for (const file of files) {
             changeTextAfterFileIsChanged(file.name);
         }
+        setFileError('');
     });
 
     function dropHandler(event) {
@@ -36,6 +54,7 @@ $(document).on('ready  pjax:scriptcomplete', function(){
             changeTextAfterFileIsChanged(file.name);
         }
         inputFieldFile.files = dataTransfer.files;
+        setFileError('');
     }
 
     //to prevent to just open file content in new tab
@@ -51,7 +70,8 @@ $(document).on('ready  pjax:scriptcomplete', function(){
         //Check input fields are filled
         //check file ending
         if (inputFieldFile.files.length === 0) {
-            textField.textContent = $('#importsurvey').data('error-file-required');
+            setFileError($('#importsurvey').data('error-file-required'));
+            inputFieldFile.focus();
             return false;
         }
 
