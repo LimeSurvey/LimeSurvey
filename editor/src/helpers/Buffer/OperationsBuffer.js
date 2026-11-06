@@ -407,12 +407,28 @@ export class OperationsBuffer {
     const isNonCreateOperationWithTempId =
       operation.op !== Operations.create && hasTempId(operation.id?.toString())
 
+    // Condition operations referencing a question with a temp ID must wait
+    // until the question's temp ID has been replaced with the real one.
+    const isConditionOperationReferencingTempQuestion =
+      operation.entity === Entities.questionCondition &&
+      operation.props &&
+      hasTempId(operation.props, 'qid')
+
+    // Condition operations referencing a condition-question (cqid) with a
+    // temp ID must also wait until that question's temp ID is resolved.
+    const isConditionOperationReferencingTempCqid =
+      operation.entity === Entities.questionCondition &&
+      operation.props &&
+      hasTempId(operation.props, 'cqid')
+
     if (
       isQuestionGroupHasATempIdAndOpIsNotGroupCreate ||
       isAddingQuestionAndQuestionHasAGroupTempId ||
       isAddingSubquestionAndQuestionHasATempId ||
       isAddingAnswerAndQuestionHasATempid ||
       isNonCreateOperationWithTempId ||
+      isConditionOperationReferencingTempQuestion ||
+      isConditionOperationReferencingTempCqid ||
       operation.error
     ) {
       return false

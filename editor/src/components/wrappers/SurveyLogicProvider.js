@@ -1,9 +1,17 @@
 import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { format } from 'util'
+import { cloneDeep } from 'lodash'
 import { queryClient } from 'queryClient'
 
-import { useAppState, useBuffer, useErrors, useFocused, useSurvey } from 'hooks'
+import {
+  useAppState,
+  useBuffer,
+  useErrors,
+  useFocused,
+  useInFlightConditionQids,
+  useSurvey,
+} from 'hooks'
 import {
   Entities,
   EntitiesType,
@@ -11,11 +19,14 @@ import {
   OperationsBuffer,
   STATES,
   errorToast,
+  getConditionLogicQids,
   processValidationErrorsAndUpdateOperations,
+  rememberResolvedTempIds,
   replaceTempIdsInSurveyAndBuffer,
   updateSurveyEntitiesData,
   dayJsHelper,
   RandomNumber,
+  getQuestionById,
 } from 'helpers'
 
 /**
@@ -45,6 +56,7 @@ export const SurveyLogicProvider = ({ children }) => {
     STATES.IS_ADDING_QUESTION_OR_GROUP,
     false
   )
+  const [, setInFlightConditionQids] = useInFlightConditionQids()
 
   // Mount / ID Change Logic
   useEffect(() => {
@@ -53,6 +65,7 @@ export const SurveyLogicProvider = ({ children }) => {
     setHelpersSettings({})
     setIsPatchSurveyRunning(false)
     setIsAddingQuestionOrGroup(false)
+    setInFlightConditionQids([])
 
     if (surveyId) {
       fetchSurvey(surveyId)
@@ -88,6 +101,7 @@ export const SurveyLogicProvider = ({ children }) => {
       // - items that are not ready may be waiting for tempId to be resolved
       operationsBuffer.clearBuffer({ ready: true })
       clearBuffer({ ready: true })
+      setInFlightConditionQids(getConditionLogicQids(readyOperations))
       setIsPatchSurveyRunning(true)
     }
 
@@ -109,6 +123,14 @@ export const SurveyLogicProvider = ({ children }) => {
       const groupsTempIdMapping = result.tempIdMapping?.questionGroupsMap
       const answersTempIdMapping = result.tempIdMapping?.answersMap
       const conditionsTempIdMapping = result.tempIdMapping?.conditionsMap
+
+      ;[
+        groupsTempIdMapping,
+        questionsTempIdMapping,
+        subquestionsTempIdMapping,
+        answersTempIdMapping,
+        conditionsTempIdMapping,
+      ].forEach(rememberResolvedTempIds)
 
       let mapResult = replaceTempIdsInSurveyAndBuffer(
         groupsTempIdMapping,
@@ -155,14 +177,24 @@ export const SurveyLogicProvider = ({ children }) => {
         mapResult.operationsBuffer
       )
 
-      if (result.extras) {
-        mapResult = updateSurveyEntitiesData(
-          EntitiesType.question,
-          mapResult.survey,
-          mapResult.operationsBuffer,
-          result.extras
-        )
-      }
+      const pendingConditionQids = getConditionLogicQids(
+        mapResult.operationsBuffer.getOperations()
+      )
+
+      Object.entries(result.extras?.questionRelevance ?? {}).forEach(
+        ([qid, relevance]) => {
+          // Newer condition operations of this question are still waiting to
+          // be sent, so this relevance is already outdated.
+          if (pendingConditionQids.includes(String(qid))) return
+
+          mapResult = updateSurveyEntitiesData(
+            EntitiesType.question,
+            mapResult.survey,
+            mapResult.operationsBuffer,
+            { qid: Number(qid), relevance }
+          )
+        }
+      )
 
       // The operations that were sent to the API.
       const readyOperationsBuffer = new OperationsBuffer(readyOperations)
@@ -212,6 +244,26 @@ export const SurveyLogicProvider = ({ children }) => {
       refetchQuestionsFieldNamesMap()
       setBuffer(mapResult.operationsBuffer.getOperations(), RandomNumber())
 
+      // Refresh the focused question's data from the updated survey. Only the
+      // data changes (its URL was already updated with any new ID above), so
+      // no navigation: it would add browser history entries on every save.
+      // Read the focus now, it may have changed while the request was running.
+      const currentFocus = queryClient.getQueryData([STATES.FOCUSED_ENTITY])
+      if (currentFocus?.focused?.qid) {
+        const updatedInfo = getQuestionById(
+          currentFocus.focused.qid,
+          mapResult.survey
+        )
+        if (updatedInfo.question) {
+          queryClient.setQueryData([STATES.FOCUSED_ENTITY], {
+            ...currentFocus,
+            focused: cloneDeep(updatedInfo.question),
+            groupIndex: updatedInfo.groupIndex,
+            questionIndex: updatedInfo.questionIndex,
+          })
+        }
+      }
+
       setSaveState(
         format(
           t('Saved at %s'),
@@ -257,6 +309,7 @@ export const SurveyLogicProvider = ({ children }) => {
 
     const finallyCallback = () => {
       setIsPatchSurveyRunning(false)
+      setInFlightConditionQids([])
 
       // maybe there's some delayed operations.
       const pendingOperations = new OperationsBuffer(

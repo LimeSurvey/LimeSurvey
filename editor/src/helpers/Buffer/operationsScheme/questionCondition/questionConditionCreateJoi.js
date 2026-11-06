@@ -5,9 +5,9 @@ export const questionConditionCreateJoi = Joi.object({
   id: Joi.alternatives().try(Joi.string(), Joi.number()).required(),
   op: Joi.string().valid('create').required(),
   entity: Joi.string().valid('questionCondition').required(),
-  qid: Joi.number().required(),
+  qid: Joi.alternatives().try(Joi.number(), Joi.string()).required(),
   props: {
-    qid: Joi.number().required(),
+    qid: Joi.alternatives().try(Joi.number(), Joi.string()).required(),
     scenarios: Joi.array().items(
       Joi.object({
         scid: Joi.number().required(),

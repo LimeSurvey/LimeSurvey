@@ -1,55 +1,81 @@
 import { format } from 'util'
-import React, { useCallback, useEffect, useState } from 'react'
+import React from 'react'
 import { useParams } from 'react-router-dom'
-import classNames from 'classnames'
 
 import { useBuffer, useFocused, useSurvey } from 'hooks'
 import {
   createBufferOperation,
   getQuestionById,
+  hasTempId,
   QUESTION_RELEVANCE_DEFAULT_VALUE,
 } from 'helpers'
+import { isConditionInBuffer } from 'helpers/Buffer/operationsHandlers'
 import { Button } from 'components'
 import { CloseCircleIcon } from 'components/icons'
 
 import { getApiOperationActions, showDeleteScenarioOverlay } from './utils'
 
-export const ScenarioList = ({
-  setScenarioToPatch,
-  pendingScenarioName,
-  setPendingScenarioName,
-}) => {
+export const ScenarioList = ({ setScenarioToPatch }) => {
   const { surveyId } = useParams()
   const { survey, update } = useSurvey(surveyId)
-  const { focused, groupIndex, questionIndex } = useFocused()
-  const { addToBuffer } = useBuffer()
+  const { focused } = useFocused()
+  const { addToBuffer, operationsBuffer } = useBuffer()
 
-  const question = getQuestionById(focused.qid, survey).question
+  // Positions come from the current survey, the persisted focus indexes can be
+  // stale (e.g. after a refresh restores focus from an older survey state).
+  const { question, groupIndex, questionIndex } = getQuestionById(
+    focused.qid,
+    survey
+  )
   const scenarios = question?.scenarios || []
 
-  const [hasTempId, setHasTempId] = useState(!!pendingScenarioName)
+  // The scenario only exists locally when all its conditions are still waiting
+  // in the buffer to be created: none of them was sent to the server yet.
+  const isLocalOnlyScenario = (scenario) => {
+    const bufferedOperations = operationsBuffer.getOperations()
 
-  useEffect(() => {
-    if (!pendingScenarioName) return
-
-    const processedScenario = scenarios.find(
-      (scenario) => scenario.scid === pendingScenarioName
-    )
-
-    if (processedScenario) {
-      const tempIdExists = processedScenario.conditions.some((condition) =>
-        condition.cid.toString().includes('temp')
+    return (
+      scenario.conditions?.length > 0 &&
+      scenario.conditions.every(
+        (condition) =>
+          hasTempId(String(condition.cid)) &&
+          isConditionInBuffer(bufferedOperations, question.qid, condition.cid)
       )
-      setHasTempId(tempIdExists)
+    )
+  }
 
-      if (pendingScenarioName && !tempIdExists) {
-        setPendingScenarioName(null)
+  // Deleting each local-only condition removes it from the buffered creates
+  // without sending anything to the server.
+  const deleteLocalOnlyConditions = (scenario) => {
+    scenario.conditions.forEach((condition) => {
+      const operation = createBufferOperation(condition.cid)
+        .questionCondition()
+        .delete()
+      operation.qid = question.qid
+      operation.props = {
+        qid: question.qid,
+        scenarios: [
+          {
+            scid: scenario.scid,
+            conditions: [
+              {
+                cid: condition.cid,
+                action: getApiOperationActions().CONDITION.DELETE,
+              },
+            ],
+          },
+        ],
       }
-    }
-  }, [question, pendingScenarioName, scenarios])
+      addToBuffer(operation)
+    })
+  }
 
-  const handleDeleteScenario = (scenarioId) => {
-    const properties = {
+  const queueScenarioDelete = (scenarioId) => {
+    const operation = createBufferOperation(question.qid)
+      .questionCondition(question.qid)
+      .delete()
+    operation.qid = question.qid
+    operation.props = {
       qid: question.qid,
       scenarios: [
         {
@@ -58,13 +84,16 @@ export const ScenarioList = ({
         },
       ],
     }
-
-    const operation = createBufferOperation(question.qid)
-      .questionCondition(question.qid)
-      .delete()
-    operation.qid = question.qid
-    operation.props = properties
     addToBuffer(operation)
+  }
+
+  const handleDeleteScenario = (scenarioId) => {
+    const scenario = scenarios.find((s) => s.scid === scenarioId)
+    if (scenario && isLocalOnlyScenario(scenario)) {
+      deleteLocalOnlyConditions(scenario)
+    } else {
+      queueScenarioDelete(scenarioId)
+    }
 
     question.scenarios = scenarios.filter(
       (scenario) => scenario.scid !== scenarioId
@@ -84,11 +113,6 @@ export const ScenarioList = ({
     focused.relevance = question.relevance
   }
 
-  const isPendingAndHasTempId = useCallback(
-    (scenario) => scenario.scid === pendingScenarioName && hasTempId,
-    [pendingScenarioName, hasTempId]
-  )
-
   return (
     <div className="d-grid gap-2">
       {scenarios.map((scenario) => {
@@ -96,9 +120,7 @@ export const ScenarioList = ({
           <div
             key={scenario.scid}
             id={`scenario-${scenario.scid}`}
-            className={classNames('scenario-list-item', {
-              disabled: isPendingAndHasTempId(scenario),
-            })}
+            className="scenario-list-item"
           >
             <span
               className="fw-medium"

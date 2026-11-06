@@ -453,11 +453,11 @@ describe('questionConditionUpdateJoi - conditionScript validation', () => {
     expect(error).toBeDefined()
   })
 
-  it('should fail if qid is not a number', () => {
+  it('should fail if qid is not a number or string', () => {
     const invalidData = {
       ...validData,
       props: {
-        qid: 'abc',
+        qid: true,
         action: 'conditionScript',
         script: 'return answer1 == 5;',
       },
@@ -465,6 +465,21 @@ describe('questionConditionUpdateJoi - conditionScript validation', () => {
 
     const { error } = questionConditionUpdateJoi.validate(invalidData)
     expect(error).toBeDefined()
+  })
+
+  it('should allow a string qid (temp ID) for conditionScript', () => {
+    const tempIdData = {
+      ...validData,
+      qid: 'temp__123456',
+      props: {
+        qid: 'temp__123456',
+        action: 'conditionScript',
+        script: 'return answer1 == 5;',
+      },
+    }
+
+    const { error } = questionConditionUpdateJoi.validate(tempIdData)
+    expect(error).toBeUndefined()
   })
 
   it('should fail if extra unknown props are added', () => {

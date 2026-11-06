@@ -104,6 +104,40 @@ class SurveyResponseTest extends TestBaseClass
         );
     }
 
+    /**
+     * @testdox response merges the additional data of every operation
+     */
+    public function testAdditionalOfEveryOperationIsMerged()
+    {
+        $surveyResponse = new SurveyResponse(
+            new TempIdMapping(),
+            new ValidationErrors(),
+            new ExceptionErrors()
+        );
+        $surveyResponse->handleResponse(
+            ['additional' => ['questionRelevance' => [12 => 'Q1 == "A1"']]]
+        );
+        $surveyResponse->handleResponse([]);
+        $surveyResponse->handleResponse(
+            ['additional' => ['questionRelevance' => [3 => '1']]]
+        );
+        $surveyResponse->handleResponse(
+            ['additional' => ['questionRelevance' => [12 => 'Q2 == "A2"']]]
+        );
+
+        $responseObject = $surveyResponse->buildResponseObject();
+
+        $this->assertSame(
+            ['questionRelevance' => [12 => 'Q2 == "A2"', 3 => '1']],
+            $responseObject['extras']
+        );
+        $this->assertArrayNotHasKey('extrasList', $responseObject);
+        $this->assertSame(
+            '{"questionRelevance":{"12":"Q2 == \\"A2\\"","3":"1"}}',
+            json_encode($responseObject['extras'])
+        );
+    }
+
     private static function getResponse()
     {
         $surveyResponse = DI::getContainer()->get(SurveyResponse::class);

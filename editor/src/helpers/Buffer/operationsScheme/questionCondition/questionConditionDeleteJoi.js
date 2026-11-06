@@ -22,9 +22,9 @@ export const questionConditionDeleteJoi = Joi.object({
   id: Joi.alternatives().try(Joi.string(), Joi.number()).required(),
   op: Joi.string().valid('delete').required(),
   entity: Joi.string().valid('questionCondition').required(),
-  qid: Joi.number().optional(),
+  qid: Joi.alternatives().try(Joi.number(), Joi.string()).optional(),
   props: Joi.object({
-    qid: Joi.number().optional(),
+    qid: Joi.alternatives().try(Joi.number(), Joi.string()).optional(),
     scenarios: Joi.array()
       .items(Joi.alternatives().try(scenarioSchema, conditionSchema).required())
       .min(1)

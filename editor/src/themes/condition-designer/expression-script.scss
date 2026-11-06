@@ -29,6 +29,15 @@
   margin-bottom: 10px;
   height: 40px;
   width: 242px;
+
+  &.pending {
+    border-style: dashed;
+    background-color: $g-200;
+  }
+
+  .condition-script-pending-label {
+    font-style: italic;
+  }
 }
 
 .expression-script-body {

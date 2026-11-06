@@ -3,18 +3,20 @@ import classNames from 'classnames'
 import { PlusLg } from 'react-bootstrap-icons'
 
 import { Button, Input } from 'components'
-import { useBuffer, useFocused, useConditionDesigner } from 'hooks'
+import { useFocused, useConditionDesigner } from 'hooks'
 import { SideBarHeader } from 'components/SideBar'
 import { ArrowLeftIcon } from 'components/icons'
-import { getQuestionById, QUESTION_RELEVANCE_DEFAULT_VALUE } from 'helpers'
+import {
+  getQuestionById,
+  hasTempId,
+  QUESTION_RELEVANCE_DEFAULT_VALUE,
+} from 'helpers'
 
 import { previousQuestionsHandler } from './handlers/previousQuestions/previousQuestionsHandler'
 import { ConditionItem } from './ConditionItem'
 import {
-  buildScenarioConditionsForUpdate,
   getAllowedMethods,
   getConditionTypeInfo,
-  getDefaultCondition,
   hasUnsavedChanges,
   showConditionScriptOverwriteConfirmationOverlay,
   showUnsavedChangesOverlay,
@@ -33,31 +35,31 @@ export const ConditionDesigner = ({
   update,
   language,
   scenarioToPatch = null,
-  setPendingScenarioName,
   onNavigateBack = () => {},
 }) => {
-  const { focused, groupIndex, questionIndex } = useFocused()
-  const { addToBuffer } = useBuffer()
+  const { focused } = useFocused()
 
-  const question = useMemo(() => {
-    return getQuestionById(focused.qid, survey)?.question
-  }, [focused.qid, survey])
+  // Positions come from the current survey, the persisted focus indexes can be
+  // stale (e.g. after a refresh restores focus from an older survey state).
+  const { question, groupIndex, questionIndex } = useMemo(
+    () => getQuestionById(focused.qid, survey),
+    [focused.qid, survey]
+  )
 
-  const [scid, setScid] = useState(scenarioToPatch ? scenarioToPatch.scid : 1)
+  // Changes when a question's temp ID is replaced with its real ID, so the
+  // condition sources don't keep pointing at the old temp IDs.
+  const surveyQids = survey.questionGroups
+    .flatMap((group) => group.questions.map((q) => q.qid))
+    .join(',')
 
   const previousQuestions = useMemo(() => {
     return previousQuestionsHandler(language, survey, groupIndex, questionIndex)
       .cQuestions
-  }, [language, survey.sid, groupIndex, questionIndex])
+  }, [language, survey.sid, surveyQids, groupIndex, questionIndex])
 
   const scenarioAction = scenarioToPatch
     ? scenarioActions.UPDATE
     : scenarioActions.CREATE
-  const initialConditions = scenarioToPatch
-    ? buildScenarioConditionsForUpdate(scenarioToPatch, previousQuestions)
-    : [getDefaultCondition()]
-
-  const [conditions, setConditions] = useState(initialConditions)
   const [isApplyButtonDisabled, setIsApplyButtonDisabled] = useState(true)
 
   const shouldConfirmOverwrite =
@@ -79,33 +81,20 @@ export const ConditionDesigner = ({
   }, [question])
 
   const {
+    scid,
+    conditions,
     removeCondition,
     addCondition,
     updateCondition,
     handleSavingScenario,
     handleScenarioNameChange,
   } = useConditionDesigner({
+    survey,
+    update,
     question,
     scenarioToPatch,
-    survey,
-    groupIndex,
-    questionIndex,
-    update,
-    focused,
-    setPendingScenarioName,
-    onNavigateBack,
-    scid,
-    setScid,
-    setConditions,
-    conditions,
-    addToBuffer,
+    previousQuestions,
   })
-
-  useEffect(() => {
-    if (scenarioToPatch && scenarioToPatch.qid !== focused.qid) {
-      onNavigateBack()
-    }
-  }, [focused.qid])
 
   const isValidScenario = useMemo(() => {
     return conditions.every((condition) => {
@@ -119,7 +108,7 @@ export const ConditionDesigner = ({
 
       const isSourceValid =
         sourceType === conditionTypeInfo.SOURCE.QUESTION
-          ? typeof cqid === 'number' && cqid > 0
+          ? (typeof cqid === 'number' && cqid > 0) || hasTempId(String(cqid))
           : Boolean(cfieldname)
 
       return isMethodValid && isValueValid && isScidValid && isSourceValid
@@ -139,7 +128,7 @@ export const ConditionDesigner = ({
   }, [conditions, scenarioToPatch, scid, isUpdateAction, onNavigateBack])
 
   const handleApplyClick = () => {
-    const save = () => handleSavingScenario()
+    const save = () => handleSavingScenario(onNavigateBack)
     if (shouldConfirmOverwrite) {
       showConditionScriptOverwriteConfirmationOverlay({
         script: question.relevance,
@@ -197,7 +186,9 @@ export const ConditionDesigner = ({
         <div className="conditions-container">
           {conditions.map((condition, index) => (
             <ConditionItem
-              key={`condition-item-${condition.cid ?? index}`}
+              key={
+                condition.uiKey ?? `condition-item-${condition.cid ?? index}`
+              }
               index={index}
               condition={condition}
               pervCondition={conditions[index - 1]}
