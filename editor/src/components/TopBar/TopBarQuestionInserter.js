@@ -17,7 +17,13 @@ import {
   getNextSubQuestionCode,
   isTrue,
 } from 'helpers'
-import { useAppState, useBuffer, useFocused, useSurvey } from 'hooks'
+import {
+  confirmFocusLeave,
+  useAppState,
+  useBuffer,
+  useFocused,
+  useSurvey,
+} from 'hooks'
 
 export const TopBarQuestionInserter = ({ surveyID }) => {
   const [, setIsAddingQuestionOrGroup] = useAppState(
@@ -128,7 +134,14 @@ export const TopBarQuestionInserter = ({ surveyID }) => {
     addToBuffer(operation)
   }
 
+  // The new question or group gets the focus: unsaved changes of an open panel
+  // (e.g. Condition Designer) of the focused question are confirmed before
+  // anything is added.
   const addNewQuestion = (questionTypeInfo) => {
+    confirmFocusLeave(() => insertNewQuestion(questionTypeInfo))
+  }
+
+  const insertNewQuestion = (questionTypeInfo) => {
     const questionId = `${NEW_OBJECT_ID_PREFIX}${RandomNumber()}`
     const questionThemeName = questionTypeInfo.questionThemeName
 
