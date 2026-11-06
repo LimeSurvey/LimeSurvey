@@ -235,7 +235,7 @@ export const getUnionSegments = (data = []) => {
 export const shouldRenderImage = (isImage, item) =>
   isImage && item?.key !== 'NoAnswer' && !NON_ANSWER_KEYS.includes(item?.key)
 
-export const LABEL_CHAR_WIDTH = 7
+export const LABEL_CHAR_WIDTH = 6
 
 export const getCategoryAxisWidth = (
   data = [],
