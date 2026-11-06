@@ -16,7 +16,7 @@ class ReactQuestionAttributeConfig
     private const LIST_ELEMENTS = ['options', 'requires', 'returnValues', 'values', 'default', 'attributes', 'themes'];
 
     /** Overlay props that hold user-facing text */
-    private const TRANSLATABLE_PROPS = ['labelText', 'helpText', 'labelTooltip', 'placeholder', 'leftInputText', 'rightInputText'];
+    private const TRANSLATABLE_PROPS = ['labelText', 'helpText', 'labelTooltip', 'placeholder', 'leftInputText', 'rightInputText', 'ariaLabel'];
 
     private const BOOLEAN_KEYS = ['languageBased', 'hidden', 'devOnly', 'disableWhenActive', 'action', 'virtual', 'always'];
 
@@ -40,9 +40,11 @@ class ReactQuestionAttributeConfig
     /**
      * @param array<string, array<string, mixed>> $attributes Attributes keyed by name
      * @param string $themeName
+     * @param string|null $baseThemeName Base theme of the question type, whose simple settings
+     *                                   an extended theme inherits when it has no list of its own
      * @return array<string, array<string, mixed>>
      */
-    public function apply(array $attributes, string $themeName): array
+    public function apply(array $attributes, string $themeName, ?string $baseThemeName = null): array
     {
         $this->load();
 
@@ -65,7 +67,9 @@ class ReactQuestionAttributeConfig
             }
         }
 
-        $simpleList = $this->simpleThemes[$themeName] ?? $this->simpleDefault;
+        $simpleList = $this->simpleThemes[$themeName]
+            ?? ($baseThemeName !== null ? $this->simpleThemes[$baseThemeName] ?? null : null)
+            ?? $this->simpleDefault;
         foreach ($simpleList as $index => $name) {
             if (isset($result[$name])) {
                 $result[$name]['simpleOrder'] = $index;
@@ -87,6 +91,14 @@ class ReactQuestionAttributeConfig
         $isGeneral = !empty($attribute['general']);
         $category = $attribute['category'] ?? '';
         $merged = array_merge($attribute, $overlay ?? []);
+        // The default and options declared by the theme are the ones used at runtime,
+        // the overlay only fills them in when the theme has none
+        if (isset($attribute['default']) && $attribute['default'] !== '') {
+            $merged['default'] = $attribute['default'];
+        }
+        if (!empty($attribute['options'])) {
+            $merged['options'] = $attribute['options'];
+        }
 
         $merged['name'] = $name;
         $merged['tab'] = $category !== '' ? $category : ($overlay['tab'] ?? 'General');
@@ -106,11 +118,15 @@ class ReactQuestionAttributeConfig
         if (!empty($merged['help'])) {
             $merged['help'] = gT($merged['help'], 'unescaped');
         }
-        if (!empty($merged['options'])) {
+        if (!empty($merged['options']) && is_array($merged['options'])) {
             $merged['options'] = array_map(function ($option) {
+                // An <option> without child elements is read as a plain string
+                if (!is_array($option)) {
+                    $option = ['value' => (string) $option, 'text' => (string) $option];
+                }
                 $option['text'] = gT((string) ($option['text'] ?? ''), 'unescaped');
                 return $option;
-            }, $merged['options']);
+            }, array_values($merged['options']));
         }
         if (!empty($merged['props']) && is_array($merged['props'])) {
             foreach (self::TRANSLATABLE_PROPS as $prop) {
@@ -134,7 +150,7 @@ class ReactQuestionAttributeConfig
         foreach ($attribute as $key => $value) {
             if ($key === 'options') {
                 $attribute['options'] = $this->normalizeOptions($value);
-            } elseif ($value === []) {
+            } elseif ($value === [] || $value === null) {
                 $attribute[$key] = '';
             }
         }

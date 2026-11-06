@@ -91,6 +91,56 @@ class ReactQuestionAttributeConfigTest extends TestBaseClass
         $this->assertSame(3, $shortText['numbers_only']['simpleOrder']);
     }
 
+    public function testExtendedThemeInheritsSimpleListOfItsBaseTheme(): void
+    {
+        $attributes = $this->getListRadioAttributes();
+        $attributes['numbers_only'] = ['name' => 'numbers_only', 'category' => 'Input'];
+
+        $result = self::$config->apply($attributes, 'my_custom_shortfreetext', 'shortfreetext');
+        $this->assertSame(3, $result['numbers_only']['simpleOrder']);
+
+        $withoutBase = self::$config->apply($attributes, 'my_custom_shortfreetext');
+        $this->assertArrayNotHasKey('simpleOrder', $withoutBase['numbers_only']);
+    }
+
+    public function testConfigDefaultWinsOverOverlayDefault(): void
+    {
+        $result = self::$config->apply(
+            ['commented_checkbox_auto' => ['name' => 'commented_checkbox_auto', 'category' => 'Logic', 'default' => '1']],
+            'multiplechoice_with_comments'
+        );
+        $this->assertSame('1', $result['commented_checkbox_auto']['default']);
+
+        $withoutConfigDefault = self::$config->apply(
+            ['commented_checkbox_auto' => ['name' => 'commented_checkbox_auto', 'category' => 'Logic', 'default' => '']],
+            'multiplechoice_with_comments'
+        );
+        $this->assertSame('0', $withoutConfigDefault['commented_checkbox_auto']['default']);
+    }
+
+    public function testOverlayOptionWithoutChildElementsDoesNotBreak(): void
+    {
+        $directory = sys_get_temp_dir() . '/react-overlay-' . uniqid();
+        mkdir($directory);
+        file_put_contents(
+            $directory . '/display.xml',
+            '<react><tab>Display</tab><attributes><attribute><name>custom</name>'
+            . '<options><option>X</option></options></attribute></attributes></react>'
+        );
+
+        try {
+            $result = (new ReactQuestionAttributeConfig($directory))->apply(
+                ['custom' => ['name' => 'custom', 'category' => 'Display']],
+                'listradio'
+            );
+        } finally {
+            unlink($directory . '/display.xml');
+            rmdir($directory);
+        }
+
+        $this->assertSame([['value' => 'X', 'text' => 'X']], $result['custom']['options']);
+    }
+
     public function testQuestionHelperOptionFormatIsNormalized(): void
     {
         $result = self::$config->apply(

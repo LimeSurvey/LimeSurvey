@@ -1,4 +1,9 @@
-import { Input, Select, ToggleButtons } from 'components/UIComponents'
+import {
+  ExpressionScriptEditor,
+  Input,
+  Select,
+  ToggleButtons,
+} from 'components/UIComponents'
 import { RatingItems } from 'components/UIComponents/RatingItems'
 import {
   getColumnWidthOptions,
@@ -20,6 +25,7 @@ import { QuestionTypeAttribute } from '../attributes/QuestionTypeAttribute'
 // Referenced from the react/*.xml files via <component>
 export const componentRegistry = {
   Input,
+  ExpressionScriptEditor,
   Select,
   ToggleButtons,
   ImageAttributes,

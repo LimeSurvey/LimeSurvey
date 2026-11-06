@@ -30,13 +30,11 @@
         </attribute>
         <attribute>
             <name>equation</name>
-            <component>Input</component>
+            <component>ExpressionScriptEditor</component>
             <caption>Equation</caption>
             <props>
-                <className>textarea</className>
-                <type>textarea</type>
-                <role>textarea</role>
-                <rows>3</rows>
+                <height>140px</height>
+                <ariaLabel>Equation</ariaLabel>
             </props>
         </attribute>
         <attribute>

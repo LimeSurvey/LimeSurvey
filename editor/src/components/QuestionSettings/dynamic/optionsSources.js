@@ -8,58 +8,41 @@ const getImageChoiceThemes = () => [
   getQuestionTypeInfo().MULTIPLE_CHOICE_IMAGE_SELECT.theme,
 ]
 
-export const getAnswerOrSubquestionOptions = ({ question, language }) => {
-  const answers = question?.answers || []
-  const subquestions = question?.subquestions || []
-  const isImageChoiceTheme = getImageChoiceThemes().includes(
-    question?.questionThemeName
-  )
+const isImageChoiceTheme = (question) =>
+  getImageChoiceThemes().includes(question?.questionThemeName)
 
-  if (answers.length) {
-    return answers.map((answer = {}) => ({
-      label: isImageChoiceTheme
-        ? answer.code
-        : L10ns({
-            prop: 'answer',
-            language,
-            l10ns: answer.l10ns,
-          }) || answer.code,
-      value: answer.code,
-    }))
-  }
+// Image select themes show the code: their answer/subquestion text is the image
+const mapAnswers = ({ question, language }) => {
+  const showCode = isImageChoiceTheme(question)
 
-  return subquestions.map((subquestion = {}) => ({
-    label: isImageChoiceTheme
+  return (question?.answers || []).map((answer = {}) => ({
+    label: showCode
+      ? answer.code
+      : L10ns({ prop: 'answer', language, l10ns: answer.l10ns }) || answer.code,
+    value: answer.code,
+  }))
+}
+
+const mapSubquestions = ({ question, language }) => {
+  const showCode = isImageChoiceTheme(question)
+
+  return (question?.subquestions || []).map((subquestion = {}) => ({
+    label: showCode
       ? subquestion.title
-      : L10ns({
-          prop: 'question',
-          language,
-          l10ns: subquestion.l10ns,
-        }) || subquestion.title,
+      : L10ns({ prop: 'question', language, l10ns: subquestion.l10ns }) ||
+        subquestion.title,
     value: subquestion.title,
   }))
 }
 
-const getAnswerOptions = ({ question, language }) =>
-  (question?.answers || []).map((answer = {}) => ({
-    label:
-      L10ns({ prop: 'answer', language, l10ns: answer.l10ns }) || answer.code,
-    value: answer.code,
-  }))
-
-const getSubquestionOptions = ({ question, language }) =>
-  (question?.subquestions || []).map((subquestion = {}) => ({
-    label:
-      L10ns({ prop: 'question', language, l10ns: subquestion.l10ns }) ||
-      subquestion.title,
-    value: subquestion.title,
-  }))
+export const getAnswerOrSubquestionOptions = (args) =>
+  args.question?.answers?.length ? mapAnswers(args) : mapSubquestions(args)
 
 // Referenced from the react/*.xml files via <optionsSource>
 export const optionsSources = {
   answersOrSubquestions: getAnswerOrSubquestionOptions,
-  answers: getAnswerOptions,
-  subquestions: getSubquestionOptions,
+  answers: mapAnswers,
+  subquestions: mapSubquestions,
   // Default + "Don't show" + the charts the question type supports
   statisticsGraphs: (args) =>
     getStatisticsAttributes().SHOW_IN_STATISTICS.getOptions(args),

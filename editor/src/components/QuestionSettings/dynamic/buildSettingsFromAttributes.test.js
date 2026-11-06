@@ -1,3 +1,5 @@
+import { ExpressionScriptEditor } from 'components/UIComponents'
+
 import { getTimerAttributes } from '../attributes'
 import { buildSettingsFromAttributes } from './buildSettingsFromAttributes'
 
@@ -220,5 +222,27 @@ describe('buildSettingsFromAttributes', () => {
     expect(message.onDependsToggle).toEqual(
       legacy.FIRST_TIME_LIMIT_WARNING_MESSAGE.onDependsToggle
     )
+  })
+
+  it('uses the expression editor for the equation attribute', () => {
+    const [, ...tabs] = buildSettingsFromAttributes({
+      equation: {
+        name: 'equation',
+        category: 'Logic',
+        component: 'ExpressionScriptEditor',
+        caption: 'Equation',
+        props: { height: '140px', ariaLabel: 'Equation' },
+        attributePath: 'attributes.equation',
+        tab: 'Logic',
+      },
+    })
+    const equation = tabs.flatMap((tab) => tab.attributes)[0]
+
+    expect(equation.component).toBe(ExpressionScriptEditor)
+    expect(equation.props).toMatchObject({
+      height: '140px',
+      ariaLabel: 'Equation',
+      labelText: 'Equation',
+    })
   })
 })
