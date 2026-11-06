@@ -38,7 +38,7 @@
 		}
 	},
 	"require": {
-		"php": "^8.2.4",
+		"php": "^8.2.27",
 		"composer": "^2.10.3",
         "paragonie/sodium_compat": "^1.14",
 		"twig/twig": "^3.27.1",
@@ -67,7 +67,7 @@
         "vendor-dir": "vendor",
         "bin-dir": "vendor/bin",
 		"platform": {
-			"php": "8.2.4"
+			"php": "8.2.27"
 		}
     },
     "require-dev": {
@@ -75,7 +75,7 @@
         "squizlabs/php_codesniffer": "^3.5",
         "phpmd/phpmd" : "^2.8",
         "phpunit/phpunit": "^9.6",
-        "vimeo/psalm": "^6.0",
+        "vimeo/psalm": "^6.14",
 		"misantron/dbunit": "^5.4",
 		"mockery/mockery": "^1.5"
     },
