@@ -28,10 +28,21 @@
   font-weight: $font-weight-normal;
 }
 
+// The drop zone label stands for the file input: the input is only visually hidden,
+// so it stays in the keyboard focus order, and the drop zone shows its focus
+.upload-label:focus-within {
+  border-style: solid;
+  border-color: $grape;
+}
+
 .upload-input {
-  visibility: hidden;
-  margin: 0;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
   padding: 0 !important;
-  width: 0;
-  height: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }

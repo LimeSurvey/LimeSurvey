@@ -19,10 +19,11 @@
             <div class="modal-body" id="modal-body-copy-survey">
                 <div class="row mb-3">
                     <p class="form-label"><?= gT("Select the options for copying your survey."); ?></p>
+                    <p class="note"><?php echo sprintf(gT('Fields with %s are required.'), '<span class="required">*</span>'); ?></p>
                 </div>
                     <div class="row mb-3">
                         <!-- Source survey -->
-                        <label class="form-label" for='surveyIdToCopy'><?= gT("Source survey:"); ?> </label>
+                        <label class="form-label" for='surveyIdToCopy'><?= gT("Source survey:"); ?> <span class="required">*</span></label>
                         <select id='surveyIdToCopy' name='surveyIdToCopy' class="form-select w-100"></select>
                     </div>
                     <div class="mb-3">

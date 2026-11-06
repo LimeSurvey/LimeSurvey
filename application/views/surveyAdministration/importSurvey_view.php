@@ -51,10 +51,8 @@
         <!-- Import result messages -->
         <div class="row justify-content-center">
             <div class="col-lg-2">
-                <table class="table table-striped table-condensed ">
-                    <caption class="visually-hidden">
-                        <?php eT("Survey copy summary"); ?>
-                    </caption>
+                <?php // Label/count list laid out as a table: not announced as a data table ?>
+                <table class="table table-striped table-condensed " role="presentation">
                     <tr>
                         <td><?php eT("Surveys"); ?></td>
                         <td><?php echo $aImportResults['surveys']; ?></td>
