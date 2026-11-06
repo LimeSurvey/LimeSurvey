@@ -12,6 +12,7 @@
     App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'surveysettings.js', LSYii_ClientScript::POS_BEGIN);
 ?>
 <!-- admin menu bar -->
+<header>
 <nav class="navbar navbar-expand-md">
     <div class="container-fluid">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#small-screens-menus"
@@ -138,6 +139,7 @@
 
     </div>
 </nav>
+</header>
 <script type="text/javascript">
     //show tooltips
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
