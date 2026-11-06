@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import { PlusLg } from 'react-bootstrap-icons'
 
 import { Button, Input } from 'components'
-import { useFocused, useConditionDesigner } from 'hooks'
+import { useFocused, useConditionDesigner, setFocusLeaveGuard } from 'hooks'
 import { SideBarHeader } from 'components/SideBar'
 import { ArrowLeftIcon } from 'components/icons'
 import {
@@ -46,10 +46,16 @@ export const ConditionDesigner = ({
     [focused.qid, survey]
   )
 
+  // Changes when a question's temp ID is replaced with its real ID, so the
+  // condition sources don't keep pointing at the old temp IDs.
+  const surveyQids = survey.questionGroups
+    .flatMap((group) => group.questions.map((q) => q.qid))
+    .join(',')
+
   const previousQuestions = useMemo(() => {
     return previousQuestionsHandler(language, survey, groupIndex, questionIndex)
       .cQuestions
-  }, [language, survey.sid, groupIndex, questionIndex])
+  }, [language, survey.sid, surveyQids, groupIndex, questionIndex])
 
   const scenarioAction = scenarioToPatch
     ? scenarioActions.UPDATE
@@ -90,12 +96,6 @@ export const ConditionDesigner = ({
     previousQuestions,
   })
 
-  useEffect(() => {
-    if (scenarioToPatch && scenarioToPatch.qid !== focused.qid) {
-      onNavigateBack()
-    }
-  }, [focused.qid])
-
   const isValidScenario = useMemo(() => {
     return conditions.every((condition) => {
       const { method, cqid, targetType, value, sourceType, cfieldname } =
@@ -126,6 +126,27 @@ export const ConditionDesigner = ({
       onNavigateBack()
     }
   }, [conditions, scenarioToPatch, scid, isUpdateAction, onNavigateBack])
+
+  // Ask before the focus moves to another question (or nothing) while there
+  // are unsaved changes, instead of silently closing the designer.
+  const leaveGuardRef = useRef()
+  leaveGuardRef.current = (proceed) => {
+    if (hasUnsavedChanges(conditions, scenarioToPatch, scid, isUpdateAction)) {
+      showUnsavedChangesOverlay(
+        proceed,
+        t(
+          'You are about to leave this question without saving your changes on this scenario. Do you want to proceed?'
+        )
+      )
+    } else {
+      proceed()
+    }
+  }
+
+  useEffect(
+    () => setFocusLeaveGuard((proceed) => leaveGuardRef.current(proceed)),
+    []
+  )
 
   const handleApplyClick = () => {
     const save = () => handleSavingScenario(onNavigateBack)

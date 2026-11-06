@@ -3,8 +3,43 @@ import { cloneDeep } from 'lodash'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 import { getQuestionTypeInfo } from 'components'
-import { EntitiesType, STATES } from 'helpers'
+import { EntitiesType, STATES, isResolvedTempId } from 'helpers'
 import { queryClient } from 'queryClient'
+
+// Lets an open panel with unsaved changes (e.g. the Condition Designer) ask the
+// user before the focus moves away from its question. Called with `proceed`,
+// it either calls it right away or after the user confirmed leaving.
+let focusLeaveGuard = null
+
+/**
+ * Register a guard for leaving the focused question.
+ * @param {Function} guard (proceed) => void
+ * @returns {Function} unregister
+ */
+export const setFocusLeaveGuard = (guard) => {
+  focusLeaveGuard = guard
+  return () => {
+    if (focusLeaveGuard === guard) focusLeaveGuard = null
+  }
+}
+
+const isSameFocusedQuestion = (target) => {
+  const current = queryClient.getQueryData([STATES.FOCUSED_ENTITY])?.focused
+  if (!current?.qid || !target?.qid) return false
+
+  return (
+    String(current.qid) === String(target.qid) ||
+    isResolvedTempId(current.qid, target.qid)
+  )
+}
+
+const guardFocusChange = (target, apply) => {
+  if (!focusLeaveGuard || isSameFocusedQuestion(target)) {
+    return apply()
+  }
+
+  focusLeaveGuard(apply)
+}
 
 export const useFocused = (focused, groupIndex, questionIndex) => {
   const navigate = useNavigate()
@@ -25,13 +60,16 @@ export const useFocused = (focused, groupIndex, questionIndex) => {
     },
   })
 
-  const setFocused = (
+  const setFocused = (...args) =>
+    guardFocusChange(args[0], () => applyFocused(...args))
+
+  const applyFocused = (
     focusElement,
     groupIndex,
     questionIndex,
     unfocus = true
   ) => {
-    if (unfocus) unFocus()
+    if (unfocus) applyUnFocus()
 
     const focused = cloneDeep(focusElement) || {}
 
@@ -52,7 +90,9 @@ export const useFocused = (focused, groupIndex, questionIndex) => {
     })
   }
 
-  const unFocus = () => {
+  const unFocus = () => guardFocusChange(null, applyUnFocus)
+
+  const applyUnFocus = () => {
     navigate(location.pathname)
     return queryClient.setQueryData([STATES.FOCUSED_ENTITY], {})
   }

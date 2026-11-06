@@ -20,6 +20,7 @@ import {
   errorToast,
   getConditionLogicQids,
   processValidationErrorsAndUpdateOperations,
+  rememberResolvedTempIds,
   replaceTempIdsInSurveyAndBuffer,
   updateSurveyEntitiesData,
   dayJsHelper,
@@ -121,6 +122,14 @@ export const SurveyLogicProvider = ({ children }) => {
       const groupsTempIdMapping = result.tempIdMapping?.questionGroupsMap
       const answersTempIdMapping = result.tempIdMapping?.answersMap
       const conditionsTempIdMapping = result.tempIdMapping?.conditionsMap
+
+      ;[
+        groupsTempIdMapping,
+        questionsTempIdMapping,
+        subquestionsTempIdMapping,
+        answersTempIdMapping,
+        conditionsTempIdMapping,
+      ].forEach(rememberResolvedTempIds)
 
       let mapResult = replaceTempIdsInSurveyAndBuffer(
         groupsTempIdMapping,

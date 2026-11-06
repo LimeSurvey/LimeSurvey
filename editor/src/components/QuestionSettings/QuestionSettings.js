@@ -9,6 +9,8 @@ import {
   getDisabledQuestionTypes,
   getQuestionById,
   errorToast,
+  isResolvedTempId,
+  resolveTempIds,
 } from 'helpers'
 import { useAppState, useBuffer, useFocused, useSurvey } from 'hooks'
 import { SideBarHeader } from 'components/SideBar'
@@ -52,9 +54,28 @@ export const QuestionSettings = ({ surveyId }) => {
     questionIndex,
   } = useFocused()
 
+  // Identifies the question the condition panels belong to. It survives the
+  // focused question's temp ID being replaced with its real ID, so open panels
+  // and their unsaved changes are kept; switching to another question changes it.
+  const [panelsQuestion, setPanelsQuestion] = useState({
+    qid: focused?.qid,
+    key: focused?.qid,
+  })
+  const isQidResolution = isResolvedTempId(panelsQuestion.qid, focused?.qid)
+  if (panelsQuestion.qid !== focused?.qid) {
+    setPanelsQuestion({
+      qid: focused?.qid,
+      key: isQidResolution ? panelsQuestion.key : focused?.qid,
+    })
+    if (isQidResolution && scenarioToPatch) {
+      setScenarioToPatch(resolveTempIds(scenarioToPatch))
+    }
+  }
+  const panelsKey = panelsQuestion.key
+
   useEffect(() => {
     closeConditionDesignerPanels()
-  }, [focused?.qid])
+  }, [panelsKey])
 
   // The persisted focus can point to a question that isn't in the loaded
   // survey (e.g. one from a previously opened survey) until focus is restored.
@@ -263,7 +284,7 @@ export const QuestionSettings = ({ surveyId }) => {
     if (conditionDesignerPanels.isConditionPanelOpen || scenarioToPatch) {
       return (
         <ConditionDesigner
-          key={`condition-designer-${focused.qid}`}
+          key={`condition-designer-${panelsKey}`}
           survey={survey}
           update={update}
           language={language}
@@ -278,7 +299,7 @@ export const QuestionSettings = ({ surveyId }) => {
     ) {
       return (
         <ExpressionScript
-          key={`expression-script-${focused.qid}`}
+          key={`expression-script-${panelsKey}`}
           onNavigateBack={closeConditionDesignerPanels}
         />
       )

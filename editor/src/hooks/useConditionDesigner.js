@@ -1,10 +1,11 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import {
   createBufferOperation,
   errorToast,
   getQuestionById,
   QUESTION_RELEVANCE_DEFAULT_VALUE,
+  resolveTempIds,
 } from 'helpers'
 
 import {
@@ -63,6 +64,13 @@ export const useConditionDesigner = ({
       : [getDefaultCondition()]
   )
   const originalScid = useRef(scenarioToPatch ? scid : null)
+
+  // Unsaved conditions can reference questions/conditions by temp ID. Once the
+  // server replaces those IDs, switch to the real ones, otherwise the queued
+  // operations would point at temp IDs that will never be resolved again.
+  useEffect(() => {
+    setConditions((prev) => resolveTempIds(prev))
+  }, [survey])
 
   const withUpdatedFlag = (condition) =>
     scenarioToPatch

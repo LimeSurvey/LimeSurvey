@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import classNames from 'classnames'
 
 import {
@@ -8,6 +8,7 @@ import {
   useFocused,
   useIsConditionRelevancePending,
   useSurvey,
+  setFocusLeaveGuard,
 } from 'hooks'
 import { getQuestionById, QUESTION_RELEVANCE_DEFAULT_VALUE } from 'helpers'
 import { SideBarHeader } from 'components/SideBar'
@@ -33,23 +34,29 @@ export const ExpressionScript = ({ onNavigateBack = () => {} }) => {
     question.qid
   )
 
-  const [content, setContent] = useState(
-    question.relevance === QUESTION_RELEVANCE_DEFAULT_VALUE
-      ? ''
-      : question.relevance
-  )
+  const toContent = (relevance) =>
+    relevance === QUESTION_RELEVANCE_DEFAULT_VALUE ? '' : relevance
+
+  const [content, setContent] = useState(toContent(question.relevance))
+  const syncedContent = useRef(content)
 
   const isRelevancePending = useIsConditionRelevancePending(question)
   const isApplyDisabled =
     isRelevancePending || isValidRelevanceValue(content, question)
 
+  // Pick up relevance changes from the survey (e.g. merged by the server after
+  // a save) without discarding what the user is typing. Focus refreshes after
+  // every save, temp ID replacement included, don't touch the content.
   useEffect(() => {
-    setContent(
-      question.relevance === QUESTION_RELEVANCE_DEFAULT_VALUE
-        ? ''
-        : question.relevance
+    const newContent = toContent(question.relevance)
+    const previousContent = syncedContent.current
+    if (newContent === previousContent) return
+
+    syncedContent.current = newContent
+    setContent((current) =>
+      current === previousContent ? newContent : current
     )
-  }, [focused])
+  }, [question.relevance])
 
   const handleApply = () => {
     handleConditionScriptUpdate(
@@ -72,6 +79,27 @@ export const ExpressionScript = ({ onNavigateBack = () => {} }) => {
 
     return question.relevance.trim() !== content.trim()
   }
+
+  // Ask before the focus moves to another question (or nothing) while there
+  // are unsaved changes, instead of silently closing the panel.
+  const leaveGuardRef = useRef()
+  leaveGuardRef.current = (proceed) => {
+    if (shouldShowUnsavedAlert()) {
+      showUnsavedChangesOverlay(
+        proceed,
+        t(
+          'You are about to leave this question without saving your changes. Do you want to proceed?'
+        )
+      )
+    } else {
+      proceed()
+    }
+  }
+
+  useEffect(
+    () => setFocusLeaveGuard((proceed) => leaveGuardRef.current(proceed)),
+    []
+  )
 
   const handleApplyClick = () => {
     if (question?.scenarios.length > 0) {
