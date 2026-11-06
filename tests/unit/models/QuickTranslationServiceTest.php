@@ -60,4 +60,64 @@ class QuickTranslationServiceTest extends TestBaseClass
         $this->assertNotNull($ts);
         $this->assertEquals(1, $ts);
     }*/
+
+    /**
+     * Expressions are replaced by markers, the HTML around them stays in one piece.
+     */
+    public function testProtectExpressionsKeepsHtmlTogether()
+    {
+        $protected = QuickTranslation::protectExpressions('<p>Dear {TOKEN:FIRSTNAME},</p><p>Age: <b>{age}</b> years</p>');
+
+        $this->assertSame(
+            '<p>Dear <span class="notranslate" translate="no">LSEXPR0</span>,</p>'
+            . '<p>Age: <b><span class="notranslate" translate="no">LSEXPR1</span></b> years</p>',
+            $protected['text']
+        );
+        $this->assertSame(['{TOKEN:FIRSTNAME}', '{age}'], $protected['expressions']);
+        $this->assertTrue($protected['hasText']);
+    }
+
+    /**
+     * A text without expressions is returned as it is.
+     */
+    public function testProtectExpressionsWithoutExpressions()
+    {
+        $protected = QuickTranslation::protectExpressions('First line<br>Second line');
+
+        $this->assertSame('First line<br>Second line', $protected['text']);
+        $this->assertSame([], $protected['expressions']);
+        $this->assertTrue($protected['hasText']);
+    }
+
+    /**
+     * A text made of tags and expressions only has nothing to translate.
+     */
+    public function testProtectExpressionsWithoutText()
+    {
+        $protected = QuickTranslation::protectExpressions('<p>{TOKEN:FIRSTNAME} </p>');
+
+        $this->assertFalse($protected['hasText']);
+    }
+
+    /**
+     * Expressions are put back exactly, also when the translation dropped the marker's wrapper.
+     */
+    public function testRestoreExpressions()
+    {
+        $expressions = ['{if(age > 5, "a & b", \'$1\\\\\')}', '{age}'];
+        $translated = '<p>Hallo <span class="notranslate" translate="no">LSEXPR0</span>,</p><p>Alter: <b>LSEXPR1</b></p>';
+
+        $this->assertSame(
+            '<p>Hallo ' . $expressions[0] . ',</p><p>Alter: <b>{age}</b></p>',
+            QuickTranslation::restoreExpressions($translated, $expressions)
+        );
+    }
+
+    /**
+     * A translation that lost an expression is rejected.
+     */
+    public function testRestoreExpressionsMissingMarker()
+    {
+        $this->assertNull(QuickTranslation::restoreExpressions('<p>Hallo</p>', ['{TOKEN:FIRSTNAME}']));
+    }
 }

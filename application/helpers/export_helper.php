@@ -1409,8 +1409,8 @@ function quexml_create_multi(&$question, $qid, $varname, $iResponseID, $fieldmap
             //if regular multiple choice question
             quexml_set_default_value($response, $iResponseID, $Row['qid'], $iSurveyID, $fieldmap, false, true);
         } else {
-            //if array multi style question
-            $dvname = substr((string) $varname, stripos((string) $varname, "_") + 1) . "_" . $Row['qid'];
+            //if array multi style question: The response column is Q<qid>_S<row sqid>_S<column sqid>
+            $dvname = substr((string) $varname, stripos((string) $varname, "_") + 1) . "_S" . $Row['qid'];
             quexml_set_default_value($response, $iResponseID, $qid, $iSurveyID, $fieldmap, $dvname);
         }
 

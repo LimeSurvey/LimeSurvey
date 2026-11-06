@@ -15643,6 +15643,11 @@ body > .bootstrap-select .dropdown-item {
   white-space: nowrap;
 }
 
+body > .bootstrap-select .dropdown-menu {
+  width: auto;
+  max-width: none;
+}
+
 .dropdown-menu {
   background-color: #ffffff;
   border: 1px solid #9094A7;
