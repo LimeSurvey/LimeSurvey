@@ -18,15 +18,13 @@ import {
   VALUE_TYPE,
 } from '../ChartsUtils'
 
-const CustomizedLabel = ({ x, y, stroke, value, isPercentage }) => {
+const CustomizedLabel = ({ x, y, value, isPercentage }) => {
   return (
     <text
+      className="responses-statistics-chart-labels"
       x={x}
       y={y}
       dy={-6}
-      fill={stroke}
-      fontSize={10}
-      fontWeight={500}
       textAnchor="middle"
     >
       {isPercentage ? `${Math.round(value)}%` : value}
