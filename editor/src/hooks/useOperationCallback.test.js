@@ -96,4 +96,27 @@ describe('useOperationCallback', () => {
     })
     expect(callback).toHaveBeenCalledTimes(1)
   })
+
+  test('a subscription with match only fires for matching operations', () => {
+    const callback = jest.fn()
+    const { result } = renderHook(() => useOperationCallback(), { wrapper })
+
+    result.current.subscribeToOperationFinish({
+      entity: operation.entity,
+      operation: operation.op,
+      match: (candidate) => candidate.props?.tag === 'mine',
+      callback,
+    })
+    result.current.triggerCallbacks(
+      [{ ...operation, props: { tag: 'earlier' } }],
+      { operationsApplied: 1 }
+    )
+    expect(callback).not.toHaveBeenCalled()
+
+    result.current.triggerCallbacks(
+      [{ ...operation, props: { tag: 'mine' } }],
+      { operationsApplied: 1 }
+    )
+    expect(callback).toHaveBeenCalledTimes(1)
+  })
 })

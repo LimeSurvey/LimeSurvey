@@ -99,6 +99,9 @@ export const RowQuestion = ({
       entity: Entities.answer,
       operation: Operations.update,
       id: question.qid,
+      match: (operation) =>
+        Array.isArray(operation.props) &&
+        hasNumericAnswerCodes(operation.props),
       callback: () =>
         showToast(
           t('Numeric answer codes assigned.'),

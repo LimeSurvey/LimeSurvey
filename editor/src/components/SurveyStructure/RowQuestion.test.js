@@ -1,11 +1,13 @@
 import 'tests/mocks'
 
-import { act, screen, waitFor } from '@testing-library/react'
+import { act, renderHook, screen, waitFor } from '@testing-library/react'
+import { QueryClientProvider } from '@tanstack/react-query'
 import userEvent from '@testing-library/user-event'
 import { renderWithProviders } from 'tests/testUtils'
 import { Toast } from 'helpers/Alert'
 import { STATES } from 'helpers'
 import { queryClient } from 'queryClient'
+import { useOperationCallback } from 'hooks/useOperationCallback'
 
 import { RowQuestion } from './RowQuestion'
 
@@ -179,6 +181,46 @@ describe('RowQuestion menu', () => {
         className: 'import-survey-toast import-survey-toast--success',
       })
     )
+  })
+
+  test('an earlier answer save of the question does not trigger the toast', async () => {
+    Toast.mockClear()
+    await setup()
+    await userEvent.click(screen.getByTestId('assign-numeric-codes-button'))
+    await userEvent.click(
+      await screen.findByTestId('confirm-modal-confirm-button')
+    )
+    const answerUpdate = (code) => ({
+      id: question.qid,
+      entity: 'answer',
+      op: 'update',
+      props: [{ aid: 1, code, sortOrder: 0 }],
+    })
+    const { result } = renderHook(() => useOperationCallback(), {
+      wrapper: ({ children }) => (
+        <QueryClientProvider client={queryClient}>
+          {children}
+        </QueryClientProvider>
+      ),
+    })
+
+    act(() =>
+      result.current.triggerCallbacks([answerUpdate('AO01')], {
+        operationsApplied: 1,
+      })
+    )
+    expect(Toast).not.toHaveBeenCalled()
+    expect(answerUpdateSubscriptions()).toHaveLength(1)
+
+    act(() =>
+      result.current.triggerCallbacks([answerUpdate('1')], {
+        operationsApplied: 1,
+      })
+    )
+    expect(Toast).toHaveBeenCalledWith(
+      expect.objectContaining({ message: 'Numeric answer codes assigned.' })
+    )
+    expect(answerUpdateSubscriptions()).toHaveLength(0)
   })
 
   test('no save subscription is left when nothing was queued', async () => {
