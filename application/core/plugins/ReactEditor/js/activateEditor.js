@@ -24,7 +24,9 @@ $(document).ready(function () {
 
             const updateContent = () => {
                 $title.html(slide.title);
-                $image.attr("src", slide.image).attr("alt", slide.title);
+                // e.g. "Screenshot of Editor preview" (the title may contain markup)
+                const altPattern = $modal.data("image-alt") || "%s";
+                $image.attr("src", slide.image).attr("alt", altPattern.replace("%s", $("<div>").html(slide.title).text()));
                 $desc.html(slide.description);
 
                 // Swap the info panel if custom info is provided for this slide
