@@ -42,9 +42,6 @@
         <css>
             <filename>css/imageselect.css</filename>
         </css>
-        <js>
-            <filename>scripts/imageselect.js</filename>
-        </js>
     </files>
 
     <attributes>

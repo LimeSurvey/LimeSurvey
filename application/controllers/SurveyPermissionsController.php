@@ -256,8 +256,7 @@ class SurveyPermissionsController extends LSBaseController
     public function actionSavePermissions($surveyid)
     {
         $surveyid = sanitize_int($surveyid);
-        //todo: or update permission ?!?
-        if (!Permission::model()->hasSurveyPermission($surveyid, 'surveysecurity', 'create')) {
+        if (!Permission::model()->hasSurveyPermission($surveyid, 'surveysecurity', 'update')) {
             Yii::app()->user->setFlash('error', gT("No permission or survey does not exist."));
             $this->redirect(Yii::app()->request->urlReferrer);
         }
@@ -272,6 +271,9 @@ class SurveyPermissionsController extends LSBaseController
         switch ($action) {
             case 'user':
                 $userId = sanitize_int(Yii::app()->request->getPost('uid'));
+                if (!in_array($userId, getUserList('onlyuidarray'))) {
+                    throw new CHttpException(403, gT("You do not have permission to access this user."));
+                }
                 $success = $oSurveyPermissions->saveUserPermissions($userId, $setOfPermissions['Survey']);
                 if ($success) {
                     Yii::app()->user->setFlash('success', gT("Successfully saved permissions for user."));

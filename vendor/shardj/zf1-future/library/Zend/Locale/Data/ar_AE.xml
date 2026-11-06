@@ -1,15 +1,50 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE ldml SYSTEM "../../common/dtd/ldml.dtd">
-<!-- Copyright © 1991-2013 Unicode, Inc.
-CLDR data files are interpreted according to the LDML specification (http://unicode.org/reports/tr35/)
+<!-- Copyright © 1991-2026 Unicode, Inc.
 For terms of use, see http://www.unicode.org/copyright.html
+SPDX-License-Identifier: Unicode-3.0
+CLDR data files are interpreted according to the LDML specification (http://unicode.org/reports/tr35/)
 -->
 <ldml>
 	<identity>
-		<version number="$Revision: 9280 $"/>
-		<generation date="$Date: 2013-08-27 13:07:13 -0500 (Tue, 27 Aug 2013) $"/>
+		<version number="$Revision$"/>
 		<language type="ar"/>
 		<territory type="AE"/>
 	</identity>
+	<localeDisplayNames>
+		<territories>
+			<territory type="CI" alt="variant" draft="contributed">ساحل العاج</territory>
+			<territory type="TL" alt="variant" draft="contributed">التيمور الشرقية</territory>
+		</territories>
+	</localeDisplayNames>
+	<dates>
+		<calendars>
+			<calendar type="gregorian">
+				<eras>
+					<eraNames>
+						<era type="0" alt="variant" draft="contributed">قبل الميلاد</era>
+					</eraNames>
+					<eraAbbr>
+						<era type="0" alt="variant" draft="contributed">ق.م</era>
+					</eraAbbr>
+				</eras>
+			</calendar>
+		</calendars>
+		<fields>
+			<field type="year">
+				<relative type="-1" draft="contributed">السنة الماضية</relative>
+				<relative type="0" draft="contributed">هذه السنة</relative>
+				<relative type="1" draft="contributed">السنة التالية</relative>
+			</field>
+		</fields>
+	</dates>
+	<numbers>
+		<defaultNumberingSystem>latn</defaultNumberingSystem>
+		<defaultNumberingSystem alt="latn">latn</defaultNumberingSystem>
+		<currencies>
+			<currency type="BND">
+				<symbol alt="narrow" draft="contributed">$</symbol>
+			</currency>
+		</currencies>
+	</numbers>
 </ldml>
-

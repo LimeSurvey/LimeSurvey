@@ -112,7 +112,7 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
         $leftheader  = $this->setDefaultIfEmpty($this->getQuestionAttribute('dualscale_headerA', $this->sLanguage), '');
         $rightheader = $this->setDefaultIfEmpty($this->getQuestionAttribute('dualscale_headerB', $this->sLanguage), '');
 
-        $shownoanswer = ($this->oQuestion->mandatory != "Y" && SHOW_NO_ANSWER == 1);
+        $shownoanswer = ($this->oQuestion->mandatory != "Y" && $this->oQuestion->mandatory != "S" && SHOW_NO_ANSWER == 1);
 
         if ($shownoanswer) {
             $this->numrows++;

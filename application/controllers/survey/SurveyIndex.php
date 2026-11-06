@@ -45,6 +45,16 @@ class SurveyIndex extends CAction
             killSurveySession($surveyid);
             resetQuestionTimers($surveyid);
         }
+        $oSurvey = Survey::model()->findByPk($surveyid);
+        /* A session started while the survey was inactive (preview) must not be continued after activation: no response would be saved (see issue #19378) */
+        if (
+            !empty($oSurvey)
+            && isset($_SESSION['responses_' . $surveyid]['surveyactive'])
+            && $_SESSION['responses_' . $surveyid]['surveyactive'] !== $oSurvey->isActive
+        ) {
+            killSurveySession($surveyid);
+            resetQuestionTimers($surveyid);
+        }
         /* Get client token by POST or GET value */
         $clienttoken = trim((string)$param['token']);
         /* A token longer than the column limit can never match a real token: ignore it to avoid a DB truncation error on save (see issue #20479) */
@@ -55,8 +65,6 @@ class SurveyIndex extends CAction
         if (empty($clienttoken) && !empty($_SESSION['responses_' . $surveyid]['token'])) {
             $clienttoken = $_SESSION['responses_' . $surveyid]['token'];
         }
-
-        $oSurvey = Survey::model()->findByPk($surveyid);
 
         if (empty($oSurvey)) {
             $event = new PluginEvent('onSurveyDenied');
@@ -162,23 +170,14 @@ class SurveyIndex extends CAction
         $this->loadLimesurveyLang($surveyid);
 
         // maintenance mode
-        $sMaintenanceMode = Yii::app()->getConfig('maintenancemode');
-        if ($sMaintenanceMode == 'hard') {
+        if (SettingGlobal::areParticipantsLocked()) {
             if ($previewmode === false) {
-                Yii::app()->twigRenderer->renderTemplateFromFile(
-                    "layout_maintenance.twig",
-                    ['oSurvey' => Survey::model()->findByPk($surveyid), 'aSurveyInfo' => $thissurvey],
-                    false
-                );
+                $this->renderMaintenancePage($oSurvey, $param['lang']);
             }
-        } elseif ($sMaintenanceMode == 'soft') {
+        } elseif (SettingGlobal::getMaintenanceMode() === SettingGlobal::MAINTENANCE_MODE_SOFT) {
             if ($move === null) {
                 if ($previewmode === false) {
-                    Yii::app()->twigRenderer->renderTemplateFromFile(
-                        "layout_maintenance.twig",
-                        ['oSurvey' => Survey::model()->findByPk($surveyid), 'aSurveyInfo' => $thissurvey],
-                        false
-                    );
+                    $this->renderMaintenancePage($oSurvey, $param['lang']);
                 }
             }
         }
@@ -727,6 +726,34 @@ class SurveyIndex extends CAction
         Yii::app()->loadHelper("database");
         Yii::app()->loadHelper("frontend");
         Yii::app()->loadHelper("surveytranslator");
+    }
+
+    /**
+     * Renders the theme's maintenance page and ends the request. The page is shown in the requested
+     * language, else in the language of the participant's running survey session, else in the survey's
+     * base language: it comes before the survey language is set up for the page.
+     *
+     * @param Survey $survey The survey the participant wants to take
+     * @param string|null $requestedLanguage The sanitized "lang" parameter of the request
+     * @return void
+     */
+    private function renderMaintenancePage(Survey $survey, $requestedLanguage)
+    {
+        $surveyLanguages = $survey->getAllLanguages();
+        $sessionLanguage = $_SESSION['responses_' . $survey->sid]['s_lang'] ?? null;
+        $language = $survey->language;
+        if (!empty($requestedLanguage) && in_array($requestedLanguage, $surveyLanguages, true)) {
+            $language = $requestedLanguage;
+        } elseif (!empty($sessionLanguage) && in_array($sessionLanguage, $surveyLanguages, true)) {
+            $language = $sessionLanguage;
+        }
+        App()->setLanguage($language);
+        // Renders the page and ends the request
+        Yii::app()->twigRenderer->renderTemplateFromFile(
+            "layout_maintenance.twig",
+            ['oSurvey' => $survey, 'aSurveyInfo' => getSurveyInfo($survey->sid, $language)],
+            false
+        );
     }
 
     private function loadLimesurveyLang($mvSurveyIdOrBaseLang)

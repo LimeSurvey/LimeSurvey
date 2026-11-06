@@ -115,6 +115,16 @@ class Box extends CActiveRecord
     }
 
     /**
+     * Default boxes are stored in English, so translate the description for display.
+     * Custom descriptions without a translation are returned unchanged.
+     * @return string
+     */
+    public function getLocalizedDescription()
+    {
+        return gT((string)$this->desc, 'unescaped');
+    }
+
+    /**
      * @return string
      */
     public function getSpanIcon()

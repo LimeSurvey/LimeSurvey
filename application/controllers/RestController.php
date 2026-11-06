@@ -31,6 +31,9 @@ class RestController extends LSYii_Controller
      */
     public function run($actionID)
     {
+        // Nothing may be changed while the hosting system makes a backup or runs the database update
+        $this->endRequestIfAdministrationLocked('json');
+
         Yii::app()->loadConfig('rest');
         $action = new CInlineAction($this, 'index');
         if (Yii::app()->beforeControllerAction($this, $action)) {
