@@ -1,0 +1,102 @@
+<?php
+
+namespace LimeSurvey\Libraries\Api\Command\V1;
+
+use CDbException;
+use InvalidArgumentException;
+use LimeSurvey\Api\Command\{
+    CommandInterface,
+    Request\Request,
+    Response\Response,
+    Response\ResponseFactory
+};
+use LimeSurvey\Api\Command\Mixin\Auth\AuthPermissionTrait;
+use LimeSurvey\Libraries\Api\Command\V1\Statistics\StatisticsFilterParamsTrait;
+use LimeSurvey\Models\Services\Exception\PermissionDeniedException;
+use LimeSurvey\Models\Services\SurveyStatistics\DateTimeValues;
+use LimeSurvey\Models\Services\SurveyStatistics\StatisticsResponseFilters;
+use Permission;
+use Survey;
+use Yii;
+
+/**
+ * The entered values of one Date/time question, grouped by day and time,
+ * for the day breakdown and date range views of its statistics card.
+ */
+class StatisticsDateValues implements CommandInterface
+{
+    use AuthPermissionTrait;
+    use StatisticsFilterParamsTrait;
+
+    protected Permission $permission;
+    protected ResponseFactory $responseFactory;
+    protected StatisticsResponseFilters $filters;
+    protected DateTimeValues $dateTimeValues;
+
+    public function __construct(
+        Permission $permission,
+        ResponseFactory $responseFactory,
+        StatisticsResponseFilters $filters,
+        DateTimeValues $dateTimeValues
+    ) {
+        $this->permission = $permission;
+        $this->responseFactory = $responseFactory;
+        $this->filters = $filters;
+        $this->dateTimeValues = $dateTimeValues;
+    }
+
+    /**
+     * @param Request $request
+     * @return Response
+     */
+    public function run(Request $request)
+    {
+        $surveyId = (int)$request->getData('_id');
+        if (!$this->permission->hasSurveyPermission($surveyId, 'statistics')) {
+            return $this->responseFactory->makeErrorUnauthorised();
+        }
+
+        $params = Yii::app()->getRequest()->getQueryParams();
+        $qid = (int)($params['qid'] ?? 0);
+        if ($qid <= 0) {
+            return $this->responseFactory->makeErrorBadRequest('Missing question ID (qid).');
+        }
+
+        $decrypt = in_array($params['decrypt'] ?? null, ['1', 'true'], true);
+        if ($decrypt && !$this->permission->hasSurveyPermission($surveyId, 'responses')) {
+            return $this->responseFactory->makeErrorUnauthorised();
+        }
+
+        $survey = $this->findSurvey($surveyId);
+        if ($survey === null) {
+            return $this->responseFactory->makeErrorNotFound("Survey {$surveyId} not found.");
+        }
+
+        try {
+            $filters = $this->getFilters();
+            $values = $this->dateTimeValues->get(
+                $surveyId,
+                $qid,
+                $filters->count() > 0 ? $filters : null,
+                $this->resolveFilterSet($request, $survey, $survey->language),
+                $decrypt
+            );
+        } catch (InvalidArgumentException $exception) {
+            return $this->responseFactory->makeErrorBadRequest($exception->getMessage());
+        } catch (PermissionDeniedException $exception) {
+            return $this->responseFactory->makeErrorUnauthorised();
+        } catch (CDbException $exception) {
+            if ($exception->getCode() === 42) {
+                return $this->responseFactory->makeErrorBadRequest("Survey table with ID {$surveyId} does not exist.");
+            }
+            throw $exception;
+        }
+
+        return $this->responseFactory->makeSuccess($values);
+    }
+
+    protected function findSurvey(int $surveyId): ?Survey
+    {
+        return Survey::model()->findByPk($surveyId);
+    }
+}

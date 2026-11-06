@@ -1,0 +1,270 @@
+@import '../../date-range-picker/day-picker';
+
+// Date/time question: calendar view with the range of entered dates.
+.responses-statistics-calendar {
+  padding: 8px 24px 0;
+
+  &-range {
+    margin-bottom: 24px;
+  }
+
+  &-range-label {
+    display: block;
+    margin-bottom: 8px;
+    color: $g-900;
+    font-size: $font-size-sm;
+  }
+
+  &-range-fields {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 8px 24px;
+  }
+
+  &-range-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 180px;
+
+    .form-control[readonly] {
+      border: 1px solid $g-400;
+      border-radius: 4px;
+      background-color: $g-100;
+      color: $g-900;
+      font-size: $font-size-sm;
+      cursor: default;
+    }
+  }
+
+  &-range-until {
+    padding-top: 8px;
+    color: $g-900;
+    font-size: $font-size-sm;
+  }
+
+  &-range-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 0;
+    border: none;
+    background: none;
+    color: $g-700;
+    font-size: $font-size-xs;
+
+    &--end {
+      align-self: flex-end;
+    }
+
+    &:hover:not(:disabled) {
+      color: $g-900;
+    }
+
+    &:focus-visible {
+      outline: 2px solid $grape;
+      outline-offset: 2px;
+    }
+
+    &:disabled {
+      color: $g-400;
+      cursor: not-allowed;
+    }
+  }
+
+  // Opens the range breakdown; on the fields' line, next to the inputs.
+  &-range-picker-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 0 0;
+    border: none;
+    background: none;
+    color: $grape;
+    font-size: $font-size-sm;
+
+    &:hover {
+      text-decoration: underline;
+    }
+
+    &:focus-visible {
+      outline: 2px solid $grape;
+      outline-offset: 2px;
+    }
+  }
+
+  .rdp-root {
+    --rdp-accent-color: #{$g-900};
+    --rdp-accent-background-color: transparent;
+    --rdp-selected-border: none;
+    --rdp-day-width: auto;
+    --rdp-day-height: 60px;
+    --rdp-day_button-width: min(100%, 144px);
+    --rdp-day_button-height: 50px;
+    --rdp-day_button-border-radius: 25px;
+    --rdp-outside-opacity: 1;
+    --rdp-disabled-opacity: 1;
+    --rdp-nav-height: 44px;
+    --rdp-nav_button-width: 28px;
+    --rdp-nav_button-height: 28px;
+
+    font-size: $font-size-sm;
+    color: $g-900;
+  }
+
+  @include ls-day-picker;
+
+  .rdp-dropdowns {
+    justify-content: center;
+    gap: 40px;
+  }
+
+  .rdp-day_button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    border: 1px solid transparent;
+  }
+
+  .date-range-next-month-label {
+    padding: 0 0 8px 12px;
+  }
+
+  &-day-count {
+    color: $g-700;
+    font-size: 11px;
+    line-height: 1.2;
+  }
+
+  // Days with answers.
+  .responses-statistics-calendar-day--has-responses:not(.rdp-outside)
+    .rdp-day_button {
+    border-color: $g-900;
+    font-weight: $font-weight-500;
+  }
+
+  // Selected keeps its dark fill on hover.
+  .rdp-selected .rdp-day_button {
+    border-color: $g-900;
+
+    &:hover {
+      background-color: $g-900;
+    }
+
+    .responses-statistics-calendar-day-count {
+      color: $g-400;
+      font-weight: $font-weight-normal;
+    }
+  }
+}
+
+.responses-statistics-calendar-locked {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  min-height: 300px;
+  padding: 24px;
+  text-align: center;
+  color: $g-700;
+  font-size: 14px;
+
+  p {
+    margin: 0;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    height: 36px;
+    padding: 0 16px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: $font-weight-500;
+  }
+}
+
+.responses-statistics-calendar-decrypted:focus {
+  outline: none;
+}
+
+.responses-statistics-date-table {
+  &:focus {
+    outline: none;
+  }
+
+  .ls-table {
+    table-layout: fixed;
+  }
+
+  // Right-aligned counts keep their share of the width, and their column
+  // title sits above them (the header content is a flex box).
+  .ls-table .ls-table__actions-cell {
+    width: auto;
+
+    .ls-table__header-content {
+      justify-content: flex-end;
+    }
+  }
+
+  &-no-time {
+    color: $g-700;
+  }
+}
+
+// Date modals: close button on the right, like the ranking modal.
+.responses-statistics-date-table-modal .modal-close-button,
+.responses-statistics-date-modal .modal-close-button {
+  margin-left: auto;
+}
+
+// Day breakdown modal.
+.responses-statistics-date-modal {
+  // Undo the global fit-content minimum, which would stretch the modal to
+  // the table's full width, like the Load more modal does.
+  .modal-dialog {
+    min-width: 0;
+    width: auto;
+    max-width: min(800px, calc(100vw - 48px));
+  }
+
+  // The close button sits on the title's line, not on a row of its own.
+  .modal-header {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    padding: 0;
+  }
+
+  .responses-statistics-modal-body {
+    padding-top: 24px;
+  }
+
+  .responses-statistics-modal-title {
+    margin-bottom: 16px;
+    padding-right: 32px;
+  }
+
+  &-picker {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 16px;
+  }
+
+  &-label {
+    color: $g-900;
+    font-size: $font-size-sm;
+  }
+
+  &-total {
+    margin-bottom: 8px;
+    color: $g-900;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-500;
+  }
+}

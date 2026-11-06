@@ -7,6 +7,7 @@ import {
   isRankingQuestion,
   QT_1_ARRAY_DUAL,
   QT_COLON_ARRAY_NUMBERS,
+  QT_D_DATE,
   QT_K_MULTIPLE_NUMERICAL,
   QT_N_NUMERICAL,
   QT_S_SHORT_FREE_TEXT,
@@ -24,6 +25,9 @@ import { ArrayTextTable } from './ArrayTextTable.js'
 import { ResponsesGrid } from './ResponsesGrid.js'
 import { MultiNumericalGrid } from './MultiNumericalGrid.js'
 import { FileUploadTable } from './FileUploadTable.js'
+import { DateTimeCalendar } from './DateTimeCalendar.js'
+import { EncryptedDateTimeCalendar } from './EncryptedDateTimeCalendar.js'
+import { DateTimeTable } from './DateTimeTable.js'
 import {
   BarChart,
   PieChart,
@@ -55,6 +59,7 @@ import {
 } from './ChartOrientationMenu.js'
 
 const VIEW = {
+  CALENDAR: 'calendar',
   BAR_CHART: 'bar-chart',
   STACKED_BAR: 'stacked-bar',
   GROUPED_BAR: 'grouped-bar',
@@ -71,6 +76,41 @@ const VIEW = {
 
 const VIEWS = [
   {
+    value: VIEW.CALENDAR,
+    label: () => t('Calendar'),
+    icon: () => <i className="ri-calendar-line"></i>,
+    isAvailable: ({ isDate }) => isDate,
+    render: ({
+      data,
+      surveyId,
+      question,
+      filters,
+      filterSet,
+      calendarState,
+      onCalendarStateChange,
+    }) =>
+      question?.encrypted ? (
+        <EncryptedDateTimeCalendar
+          surveyId={surveyId}
+          question={question}
+          filters={filters}
+          filterSet={filterSet}
+          calendarState={calendarState}
+          onCalendarStateChange={onCalendarStateChange}
+        />
+      ) : (
+        <DateTimeCalendar
+          surveyId={surveyId}
+          question={question}
+          filters={filters}
+          filterSet={filterSet}
+          stats={data?.[0]?.stats}
+          calendarState={calendarState}
+          onCalendarStateChange={onCalendarStateChange}
+        />
+      ),
+  },
+  {
     value: VIEW.BAR_CHART,
     label: () => t('Bar chart'),
     icon: () => <i className="ri-bar-chart-line"></i>,
@@ -80,12 +120,14 @@ const VIEWS = [
       isNumerical,
       isMultiNumerical,
       isFileUpload,
+      isDate,
     }) =>
       !isArray &&
       !isArrayText &&
       !isNumerical &&
       !isMultiNumerical &&
-      !isFileUpload,
+      !isFileUpload &&
+      !isDate,
     render: ({
       isRanking,
       data,
@@ -157,13 +199,15 @@ const VIEWS = [
       isNumerical,
       isMultiNumerical,
       isFileUpload,
+      isDate,
     }) =>
       !isRanking &&
       !isArray &&
       !isArrayText &&
       !isNumerical &&
       !isMultiNumerical &&
-      !isFileUpload,
+      !isFileUpload &&
+      !isDate,
     // Comment types keep only Bar/Table/Comments in the quick toggle; pie moves
     // to the meatball menu.
     menuOnly: ({ hasComments }) => hasComments,
@@ -264,8 +308,16 @@ const VIEWS = [
       question,
       filters,
       filterSet,
+      isDate,
     }) =>
-      isFileUpload ? (
+      isDate ? (
+        <DateTimeTable
+          surveyId={surveyId}
+          question={question}
+          filters={filters}
+          filterSet={filterSet}
+        />
+      ) : isFileUpload ? (
         <FileUploadTable
           surveyId={surveyId}
           questionId={question?.qid}
@@ -344,6 +396,7 @@ const GRAPH_VIEWS = {
 
 const getDefaultView = (availableViews, viewContext, chartType) => {
   const preferredViews = [
+    viewContext.isDate && VIEW.CALENDAR,
     // Ranking opens on the table; only the table breaks down the ranked places.
     viewContext.isRanking && VIEW.TABLE,
     ...(GRAPH_VIEWS[chartType] ?? []),
@@ -378,12 +431,14 @@ export const ChartRendererV2 = ({
   const isMultiNumerical = question?.type === QT_K_MULTIPLE_NUMERICAL
   const isRanking = isRankingQuestion(question?.themeName)
   const isFileUpload = question?.type === QT_VERTICAL_FILE_UPLOAD
+  const isDate = question?.type === QT_D_DATE
   const isGridable =
     isNumerical ||
     [QT_S_SHORT_FREE_TEXT, QT_T_LONG_FREE_TEXT, QT_U_HUGE_FREE_TEXT].includes(
       question?.type
     )
   const [commentsAnswer, setCommentsAnswer] = useState(null)
+  const [calendarState, setCalendarState] = useState({})
   const cardRef = useRef(null)
   const isImage = isImageTheme(question?.themeName)
   const hasComments = isCommentQuestionType(question?.type)
@@ -395,7 +450,7 @@ export const ChartRendererV2 = ({
   const isArrayNumbers = question?.type === QT_COLON_ARRAY_NUMBERS
   const isDualScale = question?.type === QT_1_ARRAY_DUAL
   const effectiveValueType =
-    isArrayNumbers || isRanking ? VALUE_TYPE.COUNT : valueType
+    isArrayNumbers || isRanking || isDate ? VALUE_TYPE.COUNT : valueType
   // No responses for this question when every answer option has a zero count.
   // Array text bypasses this — its table loads its own per-response data.
   const hasResponses =
@@ -416,6 +471,7 @@ export const ChartRendererV2 = ({
     isMultiNumerical,
     isFileUpload,
     isGridable,
+    isDate,
   }
 
   const availableViews = VIEWS.filter(
@@ -470,6 +526,9 @@ export const ChartRendererV2 = ({
     filters,
     orientation,
     filterSet,
+    isDate,
+    calendarState,
+    onCalendarStateChange: setCalendarState,
     onViewComments: setCommentsAnswer,
   }
 

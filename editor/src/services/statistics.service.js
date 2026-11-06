@@ -131,6 +131,32 @@ const flattenAnswers = (responses) =>
     }))
   })
 
+// Statistics filter query (minId, maxId, completed, search), shared by every
+// statistics endpoint so they all filter the same way.
+const buildStatisticsFilterQuery = (filters = {}) => {
+  let { completed, minId, maxId, search } = filters
+
+  // Ensure minId is not greater than maxId, if provided.
+  if (Number(minId) > Number(maxId) && maxId) {
+    minId = maxId
+  }
+
+  const minIdIsNumber = typeof minId === 'number'
+  const maxIdIsNumber = typeof maxId === 'number'
+
+  const searchParams = (Array.isArray(search) ? search : [])
+    .map((term) => `&search[]=${encodeURIComponent(term)}`)
+    .join('')
+
+  return `${typeof completed === 'boolean' ? `completed=${completed}` : ''}${minIdIsNumber ? `&minId=${minId}` : ''}${maxIdIsNumber ? `&maxId=${maxId}` : ''}${searchParams}`
+}
+
+// The condition filter as `&filterSet[...]` params, empty when there is none.
+const filterSetQuery = (filterSet) => {
+  const params = encodeFilterSet(filterSet)
+  return params ? `&${params}` : ''
+}
+
 export class StatisticsService {
   constructor(auth, surveyId, baseUrl) {
     this.auth = auth
@@ -148,28 +174,32 @@ export class StatisticsService {
     language,
     filterSet = []
   ) => {
-    let { completed, minId, maxId, search } = filters
-
-    // Ensure minId is not greater than maxId, if provided.
-    if (Number(minId) > Number(maxId) && maxId) {
-      minId = maxId
-    }
-
-    const minIdIsNumber = typeof minId === 'number'
-    const maxIdIsNumber = typeof maxId === 'number'
-
-    const searchParams = (Array.isArray(search) ? search : [])
-      .map((term) => `&search[]=${encodeURIComponent(term)}`)
-      .join('')
-
     const languageParam = language
       ? `&language=${encodeURIComponent(language)}`
       : ''
 
-    const filterSetParams = encodeFilterSet(filterSet)
-
-    const queryFilters = `${typeof completed === 'boolean' ? `completed=${completed}` : ''}${minIdIsNumber ? `&minId=${minId}` : ''}${maxIdIsNumber ? `&maxId=${maxId}` : ''}${searchParams}${languageParam}${filterSetParams ? `&${filterSetParams}` : ''}&page=${page}&pageSize=${pageSize}`
+    const queryFilters = `${buildStatisticsFilterQuery(filters)}${languageParam}${filterSetQuery(filterSet)}&page=${page}&pageSize=${pageSize}`
     return await this.restClient.get(`statistics/${sid}?${queryFilters}`)
+  }
+
+  /**
+   * Answers of a Date/time question grouped by day and time:
+   * { hasTime, total, days: { 'YYYY-MM-DD': { 'HH:mm:ss': count } } }.
+   * An encrypted question's answers are only sent with `decrypt`.
+   */
+  getDateTimeValues = async (
+    sid,
+    qid,
+    filters,
+    filterSet = [],
+    decrypt = false
+  ) => {
+    return await this.restClient.get(
+      `statistics-date-values/${sid}?qid=${qid}&${buildStatisticsFilterQuery(filters)}${filterSetQuery(filterSet)}${decrypt ? '&decrypt=1' : ''}`,
+      {},
+      undefined,
+      true
+    )
   }
 
   getSurveyStatisticsAtGlance = async (sid) => {
