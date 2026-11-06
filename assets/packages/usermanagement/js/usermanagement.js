@@ -63,16 +63,20 @@ var UserManagement = function () {
             modalDialog.addClass(modalSize);
         }
         $('#UserManagement-action-modal').modal('show');
+        announceLoading();
     };
 
     var startSubmit = function () {
         $('#submitForm').append(
             '<i class="ri-loader-2-fill remix-pulse UserManagement-spinner"></i>'
         ).prop('disabled', true);
+        var status = $('#UserManagement-action-modal-status');
+        status.text(status.data('loading-text'));
     };
     var stopSubmit = function () {
         $('.UserManagement-spinner').remove();
         $('#submitForm').prop('disabled', false);
+        $('#UserManagement-action-modal-status').text('');
     };
 
     /**
@@ -116,6 +120,10 @@ var UserManagement = function () {
     };
 
     var wireForm = function () {
+        // The import form is a normal multipart submit (page reload): Only show and announce the loading state
+        $('#UserManagement--modalform--import').on('submit.USERMANAGERMODAL', function () {
+            startSubmit();
+        });
         $('#UserManagement--modalform').on('submit.USERMANAGERMODAL', function (e) {
             e.preventDefault();
             const buttonClassName = e.originalEvent.submitter.className;
@@ -158,6 +166,11 @@ var UserManagement = function () {
                             }
                             return;
                         }
+                        // The focused submit button was replaced: Move focus to the first field of the new step
+                        $('#UserManagement-action-modal .modal-body')
+                            .find('select, input:not([type=hidden]), textarea')
+                            .first()
+                            .trigger('focus');
                         $('#exitForm').on('click.USERMANAGERMODAL', function (e) {
                             e.preventDefault();
                             $('#exitForm').off('click.USERMANAGERMODAL');
@@ -169,6 +182,7 @@ var UserManagement = function () {
                     $('#UserManagement--errors').html(result.errors).removeClass('d-none').addClass('alert alert-danger').focus();
                 },
                 error: function (request, status, error) {
+                    stopSubmit();
                     if (request && request.responseJSON && request.responseJSON.message) {
                         $('#UserManagement--errors').html(
                             LS.LsGlobalNotifier.createAlert(
@@ -281,8 +295,10 @@ var UserManagement = function () {
 
         tableObject.on('click', '.general-row-selector', function () {
             var bChecked = this.checked;
-            $(this).removeClass('incomplete-selection');
-            setPermissionsChecked($(this).closest('tr').find('input'), bChecked);
+            var row = $(this).closest('tr');
+            // Permissions the current user may not grant are disabled and keep their state
+            setPermissionsChecked(row.find('.specific-settings-block input:checkbox:not(:disabled)'), bChecked);
+            updateRowGeneralState(row);
             updateSelectAllState();
         });
 
@@ -308,7 +324,12 @@ var UserManagement = function () {
         });
 
         tableObject.find('tbody tr').each(function () {
-            updateRowGeneralState($(this));
+            var row = $(this);
+            // Nothing to change in this row: The row selector would only pretend to
+            if (!row.find('.specific-settings-block input:checkbox:not(:disabled)').length) {
+                row.find('.general-row-selector').prop('disabled', true);
+            }
+            updateRowGeneralState(row);
         });
         updateSelectAllState();
 
@@ -481,9 +502,31 @@ var UserManagement = function () {
     var wireRoleSet = function () {
         $('#UserManagement--modalform').find('select').each(
             function(i,item) {
-                jQuery(item).select2({'theme':'bootstrap\x2D5'});
+                // Keep the dropdown inside the modal, screen readers ignore content outside an aria-modal dialog
+                jQuery(item).select2({
+                    'theme': 'bootstrap\x2D5',
+                    'dropdownParent': $('#UserManagement-action-modal')
+                });
+                labelSelect2(item);
+                jQuery(item).on('change', function () {
+                    labelSelect2(item);
+                });
             }
         );
+    }
+
+    /**
+     * The inline search field of a multiple Select2 gets focus but is only labelled "Search",
+     * so link it to the label of the select (select2-aria.js only handles the combobox and dropdown search)
+     */
+    var labelSelect2 = function (item) {
+        var labelledBy = $(item).attr('aria-labelledby');
+        if (!labelledBy) {
+            return;
+        }
+        $(item).next('.select2').find('.select2-search--inline .select2-search__field')
+            .removeAttr('aria-label')
+            .attr('aria-labelledby', labelledBy);
     }
 
     var wireDatePicker = function () {
@@ -523,8 +566,38 @@ var UserManagement = function () {
         });
     }
 
+    /**
+     * Announces the loader through the status live region once the modal is visible
+     */
+    var announceLoading = function () {
+        var modal = $('#UserManagement-action-modal');
+        var status = $('#UserManagement-action-modal-status');
+        var setText = function () {
+            if (modal.find('#loader-usermanagement').length) {
+                status.text(status.data('loading-text'));
+            }
+        };
+        status.text('');
+        if (modal.hasClass('show')) {
+            setTimeout(setText, 100);
+        } else {
+            modal.one('shown.bs.modal', setText);
+        }
+    };
+
+    /**
+     * Put the loaded content into the modal. While the content loads, the modal is named by its aria-label
+     * ("Loading..."): When focus is already in the modal, its new name is not read, so the title is announced.
+     *
+     * @param {string} html
+     */
     var applyModalHtml = function (html) {
-        $('#UserManagement-action-modal').find('.modal-content').html(html);
+        var modal = $('#UserManagement-action-modal');
+        var hasFocus = modal[0] === document.activeElement || $.contains(modal[0], document.activeElement);
+        modal.find('.modal-content').html(html);
+        $('#UserManagement-action-modal-status').text(
+            hasFocus ? $('#UserManagement-action-modal-title').text().trim() : ''
+        );
         wirePasswordOptions();
         wireLoginMethods();
         wirePermissions();
@@ -537,6 +610,63 @@ var UserManagement = function () {
         }
     }
 
+
+    var focusReturnHref = null;
+    var restoreFocusPending = false;
+
+    /**
+     * Move focus back to the control that opened the user management modal, once the modal is closed.
+     * Row actions are in a closed dropdown, so their toggle gets focus. Without a matching control
+     * (e.g. the user was deleted), the grid gets focus.
+     * Called when the modal is hidden and again after the grid reload, which replaces the row controls.
+     *
+     * @param {boolean} gridUpdated true when called after the grid reload
+     */
+    var restoreFocus = function (gridUpdated) {
+        var grid = $('#usermanagement--identity-gridPanel');
+        if (!restoreFocusPending || $('#UserManagement-action-modal').hasClass('show')) {
+            return;
+        }
+        // Without a running reload, this is the final position
+        if (gridUpdated || !grid.hasClass('grid-view-loading')) {
+            restoreFocusPending = false;
+        }
+        var target = $();
+        $('.UserManagement--action--openmodal').each(function () {
+            if ($(this).data('href') !== focusReturnHref) {
+                return;
+            }
+            var control = getDropdownToggle($(this));
+            if (control.is(':visible')) {
+                target = control;
+                return false;
+            }
+        });
+        if (!target.length) {
+            target = grid.attr('tabindex', '-1');
+        }
+        target.trigger('focus');
+    };
+
+    /**
+     * Get the control to focus for a modal trigger: The trigger itself, or the toggle of the dropdown it is in.
+     * Row action menus are moved to the body and linked to their toggle by an id, menus of removed rows
+     * have no toggle anymore.
+     *
+     * @param {jQuery} trigger
+     * @return {jQuery}
+     */
+    var getDropdownToggle = function (trigger) {
+        var menu = trigger.closest('.dropdown-menu');
+        if (!menu.length) {
+            return trigger;
+        }
+        var toggleId = menu.attr('data-for-ls-dropdown-toggle-id');
+        if (toggleId) {
+            return $('[data-ls-dropdown-toggle-id="' + toggleId + '"]').first();
+        }
+        return menu.parent().find('[data-bs-toggle="dropdown"]').first();
+    };
 
     var bindButtons = function () {
         $('.action_usercontrol_button').on('click', function () {
@@ -551,6 +681,8 @@ var UserManagement = function () {
         $('.UserManagement--action--openmodal').on('click', function () {
             var href = $(this).data('href');
             var modalSize = $(this).data('modalsize');
+            // The grid is reloaded when the modal closes, so the control is found again by its URL
+            focusReturnHref = href;
 
             if ($(this).attr("data-stackmodal") !== undefined) {
                 var stackablemodal = $(this).data('stackmodal');
@@ -571,6 +703,10 @@ var UserManagement = function () {
     var bindModals = function () {
         $('#UserManagement-action-modal').on('hide.bs.modal', function () {
             $.fn.yiiGridView.update('usermanagement--identity-gridPanel', {});
+        });
+        $('#UserManagement-action-modal').on('hidden.bs.modal', function () {
+            restoreFocusPending = true;
+            restoreFocus(false);
         });
 
         $(document).off('shown.bs.modal.batchpermissions').on('shown.bs.modal.batchpermissions', '#floating-actions-modal-usermanagement--identity-gridPanel-batchPermissions-1', function () {
@@ -608,6 +744,7 @@ var UserManagement = function () {
         wireMassPermissions: wireMassPermissions,
         wireForm: wireForm,
         openModal: openModal,
+        restoreFocus: restoreFocus,
     };
 };
 

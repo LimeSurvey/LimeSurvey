@@ -159,7 +159,7 @@ class QuestionGroup extends LSActiveRecord
      * and afterQuestionGroupDelete/afterModelDelete plugin events are raised while its questions still exist.
      * Returns affected rows of question group table (should be 1 or 0)
      * @param integer $groupId
-     * @param integer|null $surveyId deprecated
+     * @param integer|null $surveyId if set, the group must belong to this survey
      * @throws NotFoundException if the group does not exist
      * @throws BadRequestException if the survey is active
      * @return int
@@ -167,7 +167,7 @@ class QuestionGroup extends LSActiveRecord
     public static function deleteWithDependency($groupId, $surveyId = null)
     {
         $QuestionGroup = self::model()->findByPk($groupId);
-        if (empty($QuestionGroup)) {
+        if (empty($QuestionGroup) || ($surveyId !== null && (int) $surveyId !== (int) $QuestionGroup->sid)) {
             throw new NotFoundException(gT('Group not found'));
         }
         // Abort if the survey is active

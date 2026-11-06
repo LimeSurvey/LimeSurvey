@@ -124,4 +124,29 @@ class QuestionTest extends BaseModelTestCase
         $question->title = '1_a';
         $this->assertSame('q1a', $question->getNewTitle());
     }
+
+    /**
+     * Standard replacement field names can not be used as question code, since
+     * ExpressionManager would use the replacement field instead of the answer.
+     */
+    public function testStandardReplacementFieldIsReservedQuestionCode()
+    {
+        $question = new Question();
+        $question->sid = 999999;
+        $question->parent_qid = 0;
+
+        $question->title = 'URL';
+        $this->assertFalse($question->validate(array('title')));
+        $this->assertStringContainsString('is a reserved word', $question->getError('title'));
+
+        $question->title = 'redirectURL';
+        $this->assertTrue($question->validate(array('title')));
+
+        /* Existing surveys can still be imported as they are */
+        $question = new Question('archiveimport');
+        $question->sid = 999999;
+        $question->parent_qid = 0;
+        $question->title = 'URL';
+        $this->assertTrue($question->validate(array('title')));
+    }
 }

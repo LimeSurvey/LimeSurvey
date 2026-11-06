@@ -41,8 +41,8 @@ class RenderFivePointChoice extends QuestionBaseRenderer
                 );
         }
 
-        if ($this->oQuestion->mandatory != "Y" && SHOW_NO_ANSWER == 1) {
-            // Add "No Answer" option if question is not mandatory
+        if ($this->oQuestion->mandatory != "Y" && $this->oQuestion->mandatory != "S" && SHOW_NO_ANSWER == 1) {
+            // Add "No Answer" option if question is not (soft) mandatory
             $aRows[] = array(
                 'name'                   => $this->sSGQA,
                 'value'                  => "",

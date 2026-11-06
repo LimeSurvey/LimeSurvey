@@ -102,9 +102,7 @@
                             {{ renderCaptcha().renderOut() }}
                         </div>
                         <div class="col-1 align-self-center">
-                            <a href="#" class="btn btn-sm btn-outline-secondary" id="reloadCaptcha"
-                               title="{{ gT("Reload captcha") }}" data-bs-toggle="captcha"><i
-                                    class="fa fa-refresh"></i></a>
+                            <button type="button" class="btn btn-sm btn-outline-secondary" id="reloadCaptcha" title="{{ gT("Reload captcha") }}" aria-label="{{ gT("Reload captcha") }}" data-bs-toggle="captcha"><i class="fa fa-refresh" aria-hidden="true"></i></button>
                         </div>
                         <div
                             class="{{ aSurveyInfo.class.maincolformdivbdiv }} col-9 align-self-center" {{ aSurveyInfo.attr.maincolformdivbdiv }}>

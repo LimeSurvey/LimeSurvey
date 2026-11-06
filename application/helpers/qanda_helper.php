@@ -161,7 +161,7 @@ function retrieveAnswers($ia)
 
     //If this question is mandatory but wasn't answered in the last page
     //add a message HIGHLIGHTING the question
-    $mandatory_msg = (($_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['step'] != $_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['maxstep']) || ($_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['step'] == $_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['prevstep'])) ? mandatory_message($ia) : '';
+    $mandatory_msg = isMandatoryMessageShown() ? mandatory_message($ia) : '';
     $qtitle .= $mandatory_msg;
     $question_text['man_message'] = $mandatory_msg;
 
@@ -176,7 +176,7 @@ function retrieveAnswers($ia)
     $qtitle .= $validation_msg;
     $question_text['valid_message'] = $validation_msg;
 
-    if (!(($_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['step'] != $_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['maxstep']) || ($_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['step'] == $_SESSION['responses_' . Yii::app()->getConfig('surveyID')]['prevstep']))) {
+    if (!isMandatoryMessageShown()) {
         $isValid = true; // don't want to show any validation messages.
     }
 
@@ -244,6 +244,16 @@ function retrieveAnswers($ia)
     }
     //New Return
     return array($qanda, $inputnames);
+}
+
+/**
+ * Mandatory and validation messages are shown once the participant tried to leave the page, or came back to it
+ * @return bool
+ */
+function isMandatoryMessageShown()
+{
+    $session = $_SESSION['responses_' . Yii::app()->getConfig('surveyID')];
+    return $session['step'] != $session['maxstep'] || $session['step'] == $session['prevstep'];
 }
 
 function mandatory_message($ia)

@@ -2211,6 +2211,30 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     $fieldmap[$fieldname]['groupSeq'] = $groupSeq;
                     $fieldmap[$fieldname]['other'] = $arow['other'];
                 }
+                if ($arow['type'] == Question::QT_M_MULTIPLE_CHOICE && $survey->hasOtherCheckedColumn($arow['qid'])) {
+                    $fieldname = "Q{$arow['qid']}_Cotherchecked";
+                    if (isset($fieldmap[$fieldname])) {
+                        $aDuplicateQIDs[$arow['qid']] = array('fieldname' => $fieldname, 'question' => $arow['question'], 'gid' => $arow['gid']);
+                    }
+                    $fieldmap[$fieldname] = array("fieldname" => $fieldname, 'type' => $arow['type'], 'sid' => $surveyid, "gid" => $arow['gid'], "qid" => $arow['qid'], "aid" => "otherchecked", "suffix" => "_Cotherchecked");
+                    if (isset($answerColumnDefinition)) {
+                        $fieldmap[$fieldname]['answertabledefinition'] = $answerColumnDefinition;
+                    }
+
+                    if ($style == "full") {
+                        $fieldmap[$fieldname]['title'] = $arow['title'];
+                        $fieldmap[$fieldname]['question'] = $arow['question'];
+                        $fieldmap[$fieldname]['subquestion'] = gT('Other (selected)');
+                        $fieldmap[$fieldname]['group_name'] = $arow['group_name'];
+                        $fieldmap[$fieldname]['mandatory'] = $arow['mandatory'];
+                        $fieldmap[$fieldname]['encrypted'] = $arow['encrypted'];
+                        $fieldmap[$fieldname]['hasconditions'] = $conditions;
+                        $fieldmap[$fieldname]['usedinconditions'] = $usedinconditions;
+                        $fieldmap[$fieldname]['questionSeq'] = $questionSeq;
+                        $fieldmap[$fieldname]['groupSeq'] = $groupSeq;
+                        $fieldmap[$fieldname]['other'] = $arow['other'];
+                    }
+                }
                 if ($arow['type'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) {
                     $fieldname = "Q{$arow['qid']}_Cothercomment";
                     if (isset($fieldmap[$fieldname])) {

@@ -357,7 +357,35 @@ $(document).on('ready pjax:scriptcomplete', function () {
   }
 
   /**
-   * Scroll a newly added row into view inside its scrollable table wrapper.
+   * Keep --ls-topbar-height on the document root up to date, so the sticky subquestion and
+   * answer option table headers stay right below the sticky topbar, whose height changes
+   * e.g. when its buttons wrap to a second line.
+   *
+   * @return {void}
+   */
+  function observeTopbarHeight() {
+    if (LS.questionEditorTopbarObserver) {
+      LS.questionEditorTopbarObserver.disconnect();
+      LS.questionEditorTopbarObserver = null;
+    }
+    const topbar = document.querySelector('.topbar.sticky-top');
+    const root = document.documentElement;
+    if (!topbar || !root) {
+      return;
+    }
+    const updateHeight = () => {
+      const height = topbar.offsetParent !== null ? topbar.offsetHeight : 0;
+      root.style.setProperty('--ls-topbar-height', `${height}px`);
+    };
+    updateHeight();
+    if (window.ResizeObserver) {
+      LS.questionEditorTopbarObserver = new ResizeObserver(updateHeight);
+      LS.questionEditorTopbarObserver.observe(topbar);
+    }
+  }
+
+  /**
+   * Scroll a newly added row into view, clear of the sticky table header and buttons.
    * Rows of hidden languages are ignored.
    *
    * @param {HTMLElement} row
@@ -375,24 +403,57 @@ $(document).on('ready pjax:scriptcomplete', function () {
   }
 
   /**
+   * Make the subquestion relevance textarea as high as its content
+   *
+   * @param {HTMLElement} textarea
+   * @return {void}
+   */
+  function fitRelevanceEquationHeight(textarea) {
+    // A scrollbar while measuring would make the text narrower and the height too big
+    textarea.style.overflow = 'hidden';
+    textarea.style.height = 'auto';
+    // scrollHeight doesn't include the border
+    textarea.style.height = `${textarea.scrollHeight + textarea.offsetHeight - textarea.clientHeight}px`;
+    textarea.style.overflow = '';
+  }
+
+  /**
    * Bind relevance equation to expand on click (only once)
+   * The column gets wider and the textarea shows the whole equation while it has the focus.
    *
    * @return {void}
    */
   function bindExpandRelevanceEquation() {
+    $('textarea.relevance').off('input').on('input', (event) => {
+      fitRelevanceEquationHeight(event.currentTarget);
+    });
     $('.relevance').off('focus').on('focus', (event) => {
       if (event.relatedTarget && $(event.relatedTarget).hasClass('relevance')) {
-        // Don't do anything when moving between relevance fields.
+        // Column is already expanded when moving between relevance fields.
+        if (event.currentTarget instanceof HTMLTextAreaElement) {
+          fitRelevanceEquationHeight(event.currentTarget);
+        }
         return;
       }
       if ($('#rel-eq-th').hasClass('col-lg-4')) {
         // If already expanded, do not expand again.
         return;
       }
-      $('#rel-eq-th').toggleClass('col-lg-1 col-lg-4', 'fast');
+      const textarea = event.currentTarget;
+      // jQuery UI animates the class change, so the column has its final width only when it's complete
+      $('#rel-eq-th').toggleClass('col-lg-1 col-lg-4', 'fast', () => {
+        if (textarea instanceof HTMLTextAreaElement && document.activeElement === textarea) {
+          fitRelevanceEquationHeight(textarea);
+        }
+      });
       $('.relevance').tooltip('dispose');
     });
     $('.relevance').off('blur').on('blur', (event) => {
+      if (event.currentTarget instanceof HTMLTextAreaElement) {
+        // Back to one row, showing the start of the equation
+        event.currentTarget.style.height = '';
+        event.currentTarget.scrollTop = 0;
+      }
       if (event.relatedTarget && $(event.relatedTarget).hasClass('relevance')) {
         // Don't do anything when moving between relevance fields.
         return;
@@ -460,6 +521,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
     const datas = {
       surveyid: $dataInput.data('surveyid'),
       gid: $dataInput.data('gid'),
+      qid: $dataInput.data('qid'),
       codes: JSON.stringify({lbl_1: 'eins'}),  // jshint ignore:line
       scale_id: scaleId,  // jshint ignore:line
       position: position,
@@ -539,6 +601,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
       position: null,
       first,
       language,
+      qid: dataInput.dataset.qid,
     };
 
     // We get the HTML of the new row to insert
@@ -1130,8 +1193,8 @@ $(document).on('ready pjax:scriptcomplete', function () {
               throw 'Found nowhere to put label.code';
             }
 
-            if ($tr.find('td.relevance-equation').find('input[type=text]').length > 0) {
-              $tr.find('td.relevance-equation').find('input[type=text]').val(1);
+            if ($tr.find('td.relevance-equation').find('.relevance').length > 0) {
+              $tr.find('td.relevance-equation').find('.relevance').val(1);
             } else {
               // ??
             }
@@ -1358,8 +1421,8 @@ $(document).on('ready pjax:scriptcomplete', function () {
                   inputCode.textContent = row.code;
                 }
               }
-              const relevanceEquation = tableRow.querySelector('td.relevance-equation input');
-              if (relevanceEquation instanceof HTMLInputElement) {
+              const relevanceEquation = tableRow.querySelector('td.relevance-equation .relevance');
+              if (relevanceEquation instanceof HTMLTextAreaElement) {
                 relevanceEquation.value = '1';
               } else {
                 // Do nothing.
@@ -2395,6 +2458,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
     updateRowProperties();
 
     bindExpandRelevanceEquation();
+    observeTopbarHeight();
 
     // Since save button is not inside the form, we need to trigger it manually.
     $('#save-button').on('click', (ev) => {

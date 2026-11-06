@@ -92,7 +92,9 @@ class LayoutHelper
      * of the survey title, so that several tabs of the same or similarly named surveys can be
      * told apart (the browser shows only the beginning of the title in the tab).
      *
-     * @param array $pageData Page data (e.g. topbar, title_bar, subaction, qid, gid)
+     * Pages without a topbar or title bar (e.g. the dashboard) can set 'pageTitle' instead.
+     *
+     * @param array $pageData Page data (e.g. topbar, title_bar, subaction, qid, gid, pageTitle)
      * @return string|null Null if the page has no title
      */
     public static function getDocumentTitle(array $pageData): ?string
@@ -101,7 +103,7 @@ class LayoutHelper
             return strip_tags((string) $pageData['topbar']['title']);
         }
         if (empty($pageData['title_bar']['title'])) {
-            return null;
+            return !empty($pageData['pageTitle']) ? strip_tags((string) $pageData['pageTitle']) : null;
         }
         $surveyTitle = strip_tags((string) $pageData['title_bar']['title']);
         $titleParts = [];

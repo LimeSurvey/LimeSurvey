@@ -97,6 +97,7 @@ class ParticipantAttributeName extends LSActiveRecord
 
     /**
      * Returns Buttons for Grid view
+     * Edit is only shown with global 'participantpanel' 'update' permission, delete only with 'delete' permission
      * @return string html
      */
     public function getButtons()
@@ -104,38 +105,45 @@ class ParticipantAttributeName extends LSActiveRecord
         $isNotCoreAttribute = $this->core_attribute !== 'Y';
 
         $dropdownItems = [];
-        $dropdownItems[] = [
-            'title'            => gT('Edit this attribute'),
-            'linkClass'        => 'action_attributeNames_editModal',
-            'iconClass'        => 'ri-pencil-fill',
-            'enabledCondition' => $isNotCoreAttribute,
-            'linkAttributes'   => [
-                'data-attribute_id'   => $this->attribute_id,
-            ]
-        ];
-        $dropdownItems[] = [
-            'title'            => gT('Delete this attribute'),
-            'linkClass'        => 'action_attributeNames_deleteModal',
-            'iconClass'        => 'ri-delete-bin-fill text-danger',
-            'enabledCondition' => $isNotCoreAttribute,
-            'linkAttributes'   => [
-                'data-bs-toggle' => "modal",
-                'data-bs-target' => "#confirmation-modal",
-                'data-title'     => gT("Delete this attribute"),
-                'data-btnclass'  => "btn-danger",
-                'data-btntext'   => gT("Delete"),
-                'data-message'   => gT('Do you really want to delete this attribute') . "?",
-                'data-onclick'   => 'deleteAttributeAjax(' . $this->attribute_id . ")",
-            ]
-        ];
+        if (Permission::model()->hasGlobalPermission('participantpanel', 'update')) {
+            $dropdownItems[] = [
+                'title'            => gT('Edit this attribute'),
+                'linkClass'        => 'action_attributeNames_editModal',
+                'iconClass'        => 'ri-pencil-fill',
+                'enabledCondition' => $isNotCoreAttribute,
+                'linkAttributes'   => [
+                    'data-attribute_id'   => $this->attribute_id,
+                ]
+            ];
+        }
+        if (Permission::model()->hasGlobalPermission('participantpanel', 'delete')) {
+            $dropdownItems[] = [
+                'title'            => gT('Delete this attribute'),
+                'linkClass'        => 'action_attributeNames_deleteModal',
+                'iconClass'        => 'ri-delete-bin-fill text-danger',
+                'enabledCondition' => $isNotCoreAttribute,
+                'linkAttributes'   => [
+                    'data-bs-toggle' => "modal",
+                    'data-bs-target' => "#confirmation-modal",
+                    'data-title'     => gT("Delete this attribute"),
+                    'data-btnclass'  => "btn-danger",
+                    'data-btntext'   => gT("Delete"),
+                    'data-message'   => gT('Do you really want to delete this attribute') . "?",
+                    'data-onclick'   => 'deleteAttributeAjax(' . $this->attribute_id . ")",
+                ]
+            ];
+        }
+        if (empty($dropdownItems)) {
+            return '';
+        }
 
         return App()->getController()->widget('ext.admin.grid.GridActionsWidget.GridActionsWidget', ['dropdownItems' => $dropdownItems], true);
     }
 
     /**
-     * Returns the row checkbox for the mass actions (a hidden input for core attributes).
+     * Returns the mass action checkbox for the attribute grid row (a hidden input for core attributes).
      *
-     * @return string The HTML of the checkbox or hidden input
+     * @return string HTML of the checkbox or hidden input
      */
     public function getMassiveActionCheckbox()
     {
@@ -149,34 +157,41 @@ class ParticipantAttributeName extends LSActiveRecord
     }
 
     /**
-     * Returns the name to announce for this attribute, e.g. in the row checkbox label.
+     * Returns a name that identifies the attribute: The default name, or if that is blank,
+     * the name in the admin language or else the first translated name.
      *
-     * The default name is optional: Without it, the name in the admin language is used, then the first
-     * non-empty translated name (by language code, so the choice doesn't depend on the database order),
-     * and as a last resort the attribute ID.
-     *
-     * @return string The attribute name
+     * @return string The attribute name, may be empty if no name is set at all
      */
     private function getAccessibleName()
     {
-        if (trim((string) $this->defaultname) !== '') {
+        if (!self::isBlankName($this->defaultname)) {
             return $this->defaultname;
         }
-        $names = [];
+        $fallbackName = '';
         foreach ($this->participant_attribute_names_lang as $nameLang) {
-            if (trim((string) $nameLang->attribute_name) !== '') {
-                $names[$nameLang->lang] = $nameLang->attribute_name;
+            if (self::isBlankName($nameLang->attribute_name)) {
+                continue;
+            }
+            if ($nameLang->lang === Yii::app()->session['adminlang']) {
+                return $nameLang->attribute_name;
+            }
+            if ($fallbackName === '') {
+                $fallbackName = $nameLang->attribute_name;
             }
         }
-        $adminLang = Yii::app()->session['adminlang'];
-        if (isset($names[$adminLang])) {
-            return $names[$adminLang];
-        }
-        if (!empty($names)) {
-            ksort($names);
-            return reset($names);
-        }
-        return (string) $this->attribute_id;
+        return $fallbackName;
+    }
+
+    /**
+     * Checks whether an attribute name (default name or translation) is empty or contains only whitespace.
+     * Tags are stripped first, as the strip_tags filter in rules() does on save, so markup-only input counts as blank.
+     *
+     * @param string|null $name The name to check, as submitted or as stored
+     * @return bool True if the name can't identify the attribute
+     */
+    public static function isBlankName($name)
+    {
+        return trim(strip_tags((string) $name)) === '';
     }
 
     /**
@@ -542,6 +557,9 @@ class ParticipantAttributeName extends LSActiveRecord
             $thislang = '';
             foreach ($row->participant_attribute_names_lang as $names) {
                 //Iterate through each language version of this attribute
+                if (self::isBlankName($names->attribute_name)) {
+                    continue;
+                }
                 if ($thisname == "") {
                     $thisname = $names->attribute_name;
                     $thislang = $names->lang;
@@ -756,6 +774,13 @@ class ParticipantAttributeName extends LSActiveRecord
         return $data;
     }
 
+    /**
+     * Updates an existing attribute with the given values; keys that are missing are left unchanged.
+     *
+     * @param array $data Attribute values: 'attribute_id' (required), and optionally 'attribute_type', 'visible',
+     *                    'encrypted', 'core_attribute', 'defaultname' and 'attribute_name' (name in the admin language)
+     * @return void
+     */
     public function saveAttribute($data)
     {
         if (empty($data['attribute_id'])) {
@@ -768,17 +793,14 @@ class ParticipantAttributeName extends LSActiveRecord
         if (!empty($data['visible'])) {
             $insertnames['visible'] = $data['visible'];
         }
-        if (!empty($data['encrypted'])) {
+        if (isset($data['encrypted'])) {
             $insertnames['encrypted'] = $data['encrypted'] == 'Y' ? 'Y' : 'N';
-        } else {
-            $insertnames['encrypted'] = 'N';
         }
-        if (!empty($data['core_attribute'])) {
+        if (isset($data['core_attribute'])) {
             $insertnames['core_attribute'] = $data['core_attribute'] == 'Y' ? 'Y' : 'N';
-        } else {
-            $insertnames['core_attribute'] = 'N';
         }
-        if (!empty($data['defaultname'])) {
+        // isset, not empty: An explicitly cleared default name must be saved too
+        if (isset($data['defaultname'])) {
             $insertnames['defaultname'] = $data['defaultname'];
         }
         if (!empty($insertnames)) {

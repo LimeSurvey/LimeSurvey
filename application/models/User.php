@@ -1107,6 +1107,10 @@ class User extends LSActiveRecord
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
+            // A fixed order, else the database may return the users in any order and paging can repeat or skip users
+            'sort' => array(
+                'defaultOrder' => 't.uid ASC'
+            ),
             'pagination' => array(
                 'pageSize' => $pageSize
             )
@@ -1237,6 +1241,10 @@ class User extends LSActiveRecord
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
+            // A fixed order, else the database may return the users in any order and paging can repeat or skip users
+            'sort' => array(
+                'defaultOrder' => 't.uid ASC'
+            ),
             'pagination' => array(
                 'pageSize' => $pageSize
             )
