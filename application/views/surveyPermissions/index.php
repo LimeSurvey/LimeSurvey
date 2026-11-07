@@ -82,7 +82,7 @@
                             if (count($userGroupList) > 0) {
                                 echo "<option value='-1' selected='selected'>" . gT("Please choose...") . "</option>";
                                 foreach ($userGroupList as $userGroup) {
-                                    echo "<option value='{$userGroup['ugid']}'>{$userGroup['name']}</option>";
+                                    echo CHtml::tag('option', ['value' => (int) $userGroup['ugid']], CHtml::encode($userGroup['name']));
                                 }
                             } else {
                                 echo "<option value='-1'>" . gT("None") . "</option>";
