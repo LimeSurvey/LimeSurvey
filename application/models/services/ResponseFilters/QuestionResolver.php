@@ -39,9 +39,17 @@ class QuestionResolver
 
     private QuestionColumnMap $map;
 
-    public function __construct(QuestionColumnMap $map)
+    /** @var string Encryption method of the survey : 'B' (Basic) or 'H' (Hardened) */
+    private string $encryptionMethod;
+
+    /**
+     * @param string $encryptionMethod 'B' (Basic) or 'H' (Hardened) : hardened
+     *     encrypted questions can only be filtered as empty or not empty.
+     */
+    public function __construct(QuestionColumnMap $map, string $encryptionMethod = 'B')
     {
         $this->map = $map;
+        $this->encryptionMethod = $encryptionMethod;
     }
 
     public function resolve(ResponseFilter $filter): ResolvedFilter
@@ -114,10 +122,12 @@ class QuestionResolver
     }
 
     /**
-     * Encrypted answers are stored as ciphertext with a fixed nonce, so a value
+     * With the Basic method, encrypted answers are stored as ciphertext with a fixed nonce, so a value
      * always encrypts the same way: whole values can be matched once the
      * filter's values are encrypted too, parts and orderings cannot. The
      * classic participant list searches encrypted columns likewise.
+     * With the Hardened method (random nonce), no value can be matched: only
+     * empty / not empty filters are allowed.
      *
      * @param ResolvedCondition[] $conditions
      * @return ResolvedCondition[]
@@ -128,6 +138,19 @@ class QuestionResolver
     {
         return array_map(function (ResolvedCondition $condition) use ($qid): ResolvedCondition {
             $value = $condition->getValue();
+
+            if (
+                $this->encryptionMethod === 'H'
+                && !in_array($condition->getOperator(), [
+                    ResolvedCondition::OPERATOR_NOT_EMPTY,
+                    ResolvedCondition::OPERATOR_EMPTY,
+                    ResolvedCondition::OPERATOR_NULL,
+                ], true)
+            ) {
+                throw new InvalidArgumentException(
+                    "Question $qid is encrypted with the hardened method, so it can only be filtered as empty or not empty."
+                );
+            }
 
             switch ($condition->getOperator()) {
                 case ResolvedCondition::OPERATOR_EQUAL:
@@ -156,9 +179,12 @@ class QuestionResolver
         }, $conditions);
     }
 
+    /**
+     * Encrypt with the Basic method (fixed nonce), the only one that can be compared
+     */
     protected function encryptValue(string $value): string
     {
-        return (string) \LSActiveRecord::encryptSingle($value);
+        return (string) \LSActiveRecord::encryptSingle($value, 'B');
     }
 
     /**
