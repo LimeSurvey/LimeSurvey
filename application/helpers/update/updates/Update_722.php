@@ -47,5 +47,76 @@ class Update_722 extends DatabaseUpdateBase
         } catch (\Exception $e) {
             rollBackToTransactionBookmark();
         }
+        $this->fillDuplicateFinder();
+    }
+
+    /**
+     * Fill duplicatefinder of existing participants.
+     * The value is a HMAC of plain firstname, lastname and email : it does not depend on encryption,
+     * then it stays valid if encryption of these attributes is changed later.
+     * Participants that can not be decrypted are left empty (can be fixed with the CPDB encryption maintenance).
+     * @return void
+     */
+    private function fillDuplicateFinder()
+    {
+        /* Initialize sodium (adds encryptionduplicateindexkey if missing), then check if it can be used */
+        try {
+            if (!\Participant::canUseDuplicateFinder()) {
+                return;
+            }
+        } catch (\Exception $e) {
+            /* Invalid CPDB_duplicatefinder_bits : do not break the update, fixed later by maintenance */
+            \Yii::log(
+                "Update_722 : unable to fill participants duplicatefinder : " . $e->getMessage(),
+                'error',
+                'application.update'
+            );
+            return;
+        }
+        /* Core attributes encrypted : before this version, only Basic encryption */
+        $encryptedCoreAttributes = $this->db->createCommand()
+            ->select('defaultname')
+            ->from('{{participant_attribute_names}}')
+            ->where("core_attribute = 'Y' AND encrypted = 'Y'")
+            ->queryColumn();
+        $encryptedCoreAttributes = array_intersect($encryptedCoreAttributes, ['firstname', 'lastname', 'email']);
+        /* Paginate with offset : the selected rows do not depend on the updated column,
+         * and participant_id > :last can skip rows with old ids differing only by trailing spaces (MySQL PAD SPACE) */
+        $batchSize = 1000;
+        $offset = 0;
+        $decryptErrors = 0;
+        do {
+            $participants = $this->db->createCommand()
+                ->select('participant_id, firstname, lastname, email')
+                ->from('{{participants}}')
+                ->order('participant_id')
+                ->limit($batchSize, $offset)
+                ->queryAll();
+            $offset += $batchSize;
+            foreach ($participants as $participant) {
+                try {
+                    foreach ($encryptedCoreAttributes as $attribute) {
+                        $participant[$attribute] = \LSActiveRecord::decryptSingle((string) $participant[$attribute], 'B');
+                    }
+                } catch (\Exception $e) {
+                    /* Unable to decrypt (wrong key) : keep empty, fixed later by maintenance */
+                    $decryptErrors++;
+                    continue;
+                }
+                $this->db->createCommand()->update(
+                    '{{participants}}',
+                    ['duplicatefinder' => \Participant::getDuplicateFinderValue($participant)],
+                    'participant_id = :participant_id',
+                    [':participant_id' => $participant['participant_id']]
+                );
+            }
+        } while (count($participants) === $batchSize);
+        if ($decryptErrors > 0) {
+            \Yii::log(
+                sprintf("Update_722 : unable to decrypt %d participants, their duplicatefinder is not filled", $decryptErrors),
+                'error',
+                'application.update'
+            );
+        }
     }
 }

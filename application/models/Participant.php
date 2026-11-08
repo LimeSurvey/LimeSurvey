@@ -2898,7 +2898,27 @@ class Participant extends LSActiveRecord
         if (!self::canUseDuplicateFinder()) {
             return true;
         }
-        return self::getDuplicateFinderInvalidCount() === 0;
+        /* Once up to date, it stays up to date : every save computes it. Cache depends on settings (key and bits). */
+        $cacheKey = self::getDuplicateFinderUpToDateCacheKey();
+        if (App()->cache->get($cacheKey) === true) {
+            return true;
+        }
+        $upToDate = self::getDuplicateFinderInvalidCount() === 0;
+        if ($upToDate) {
+            App()->cache->set($cacheKey, true);
+        }
+        return $upToDate;
+    }
+
+    /**
+     * The cache key for duplicatefinder up to date, depends on the settings used to compute it
+     * @return string
+     */
+    private static function getDuplicateFinderUpToDateCacheKey()
+    {
+        return 'participantDuplicateFinderUpToDate_' . md5(
+            App()->getConfig('encryptionduplicateindexkey') . '_' . App()->getConfig('CPDB_duplicatefinder_bits')
+        );
     }
 
     /**
