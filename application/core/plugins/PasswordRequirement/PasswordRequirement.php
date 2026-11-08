@@ -85,6 +85,7 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
     public function init()
     {
         $this->subscribe('checkPasswordRequirement');
+        $this->subscribe('getPasswordRequirements');
         $this->subscribe('createRandomPassword');
 
         $this->subscribe('saveSurveyForm', 'validateSaveSurveyForm');
@@ -106,6 +107,31 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
             $oEvent->set('passwordError', $errors[0]); // Previous system
             $oEvent->set('passwordErrors', $errors);
         }
+    }
+
+    /**
+     * Add the requirements of this plugin to the password help text.
+     * Uses the same settings as checkPasswordRequirement().
+     * @return void
+     */
+    public function getPasswordRequirements()
+    {
+        $event = $this->getEvent();
+        $requirements = $event->get('requirements');
+        $minimumSize = (int) $this->get('minimumSize', null, null, self::DEFAULT_MINIMUM_SIZE);
+        if ($minimumSize > (int) $requirements['min']) {
+            $requirements['min'] = $minimumSize;
+        }
+        if ($this->get('needsNumber', null, null, self::DEFAULT_NEEDS_NUMBER)) {
+            $requirements['numeric'] = max(1, (int) $requirements['numeric']);
+        }
+        if ($this->get('needsUppercase', null, null, self::DEFAULT_NEEDS_UPPERCASE)) {
+            $requirements['upper'] = max(1, (int) $requirements['upper']);
+        }
+        if ($this->get('needsNonAlphanumeric', null, null, self::DEFAULT_NEEDS_NON_ALPHANUMERIC)) {
+            $requirements['symbol'] = max(1, (int) $requirements['symbol']);
+        }
+        $event->set('requirements', $requirements);
     }
 
     /** @see event
