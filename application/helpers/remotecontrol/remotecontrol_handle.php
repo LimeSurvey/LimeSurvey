@@ -630,7 +630,11 @@ class remotecontrol_handle
         }
         // persist changes : activation settings are fixed, do not activate if they can not be saved
         if (!$oSurvey->save()) {
-            return array('status' => 'Error: ' . implode(' ', array_merge(...array_values($oSurvey->getErrors()))), 'error_code' => self::ERR_CREATION_FAILED);
+            return array(
+                'status' => 'Error: survey settings could not be saved',
+                'errors' => $oSurvey->getErrors(),
+                'error_code' => self::ERR_CREATION_FAILED
+            );
         }
         // attempt to activate the survey
         $aActivateResults = $surveyActivator->activate();

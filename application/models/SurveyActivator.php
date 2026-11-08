@@ -52,7 +52,11 @@ class SurveyActivator
      * Creates necessary tables "responseTable", "timingTable".
      * Fires events "beforeSurveyActivate" and "afterSurveyActivation"
      *
-     * @return array
+     * @return array On error : 'error' (string) : 'plugin' with 'message' (string),
+     *     'surveytablecreation' (the database error message in debug mode) or 'timingstablecreation'.
+     *   On simulation : 'dbengine', 'dbtype' and 'fields'.
+     *   On success : 'status' ('OK'), 'pluginFeedback', 'isAllowRegister' (bool), 'tableWarnings' (string[])
+     *     and 'warning' ('nouploadsurveydir') if the upload directory could not be created.
      * @throws CException
      */
     public function activate()
