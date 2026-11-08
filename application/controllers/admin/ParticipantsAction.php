@@ -3105,15 +3105,38 @@ class ParticipantsAction extends SurveyCommonAction
             $criteria->compare('participant_id', '>' . $lastParticipantId);
         }
         $oParticipants = Participant::model()->findAll($criteria);
+        /* Extra attributes (not core) encrypted : re-encrypted with the participant */
+        $encryptedAttributeIds = array_map('intval', App()->db->createCommand()
+            ->select('attribute_id')
+            ->from('{{participant_attribute_names}}')
+            ->where("encrypted = 'Y' AND core_attribute <> 'Y'")
+            ->queryColumn());
+        $cryptMethod = App()->getConfig('CPDB_encryption_method', 'B');
         foreach ($oParticipants as $oParticipant) {
-            $oParticipant->decrypt();
-            if ($oParticipant->encryptSave(false)) {
-                $processed++;
-                $lastParticipantId = $oParticipant->participant_id;
-                App()->user->setState($stateId, $lastParticipantId);
-            } else {
-                // Log it as error, but need to find situation wnhre can happen, maybe better a 500 error.
+            /* Participant and its attributes in one step : all or nothing */
+            $transaction = App()->db->getCurrentTransaction() ? null : App()->db->beginTransaction();
+            try {
+                $oParticipant->decrypt();
+                if (!$oParticipant->encryptSave(false)) {
+                    // Log it as error, but need to find situation wnhre can happen, maybe better a 500 error.
+                    if ($transaction) {
+                        $transaction->rollback();
+                    }
+                    continue;
+                }
+                $this->reencryptParticipantAttributes($oParticipant->participant_id, $encryptedAttributeIds, $cryptMethod);
+                if ($transaction) {
+                    $transaction->commit();
+                }
+            } catch (Exception $e) {
+                if ($transaction) {
+                    $transaction->rollback();
+                }
+                throw $e;
             }
+            $processed++;
+            $lastParticipantId = $oParticipant->participant_id;
+            App()->user->setState($stateId, $lastParticipantId);
         }
         if ($lastParticipantId !== '') {
             $stilltoProcess = Participant::model()->count(
@@ -3132,6 +3155,44 @@ class ParticipantsAction extends SurveyCommonAction
             ));
         }
         App()->getController()->redirect(['admin/participants/sa/encryptionMaintenance']);
+    }
+
+    /**
+     * Re-encrypt the encrypted extra attributes of a participant with the current CPDB encryption method
+     * Decryption tries both methods (Basic and Hardened)
+     * @param string $participantId
+     * @param integer[] $attributeIds encrypted extra attributes
+     * @param string $cryptMethod 'B' or 'H'
+     * @return void
+     */
+    private function reencryptParticipantAttributes($participantId, array $attributeIds, $cryptMethod)
+    {
+        if (empty($attributeIds)) {
+            return;
+        }
+        $attributes = App()->db->createCommand()
+            ->select('attribute_id, value')
+            ->from('{{participant_attribute}}')
+            ->where(
+                ['and', 'participant_id = :participant_id', ['in', 'attribute_id', $attributeIds]],
+                [':participant_id' => $participantId]
+            )
+            ->queryAll();
+        foreach ($attributes as $attribute) {
+            if ($attribute['value'] === null || $attribute['value'] === '') {
+                continue;
+            }
+            $value = LSActiveRecord::encryptSingle(
+                LSActiveRecord::decryptSingle($attribute['value'], $cryptMethod),
+                $cryptMethod
+            );
+            App()->db->createCommand()->update(
+                '{{participant_attribute}}',
+                ['value' => $value],
+                'participant_id = :participant_id AND attribute_id = :attribute_id',
+                [':participant_id' => $participantId, ':attribute_id' => $attribute['attribute_id']]
+            );
+        }
     }
 
     /**
