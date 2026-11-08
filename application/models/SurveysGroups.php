@@ -75,6 +75,20 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
     }
 
     /**
+     * @inheritdoc
+     * Moved to another parent : surveys inheriting hardened can not have a quota with an encrypted question
+     */
+    public function save($runValidation = true, $attributes = null)
+    {
+        $parentModified = !$this->getIsNewRecord() && $this->isAttributeModifiedFromStored('parent_id');
+        $saved = parent::save($runValidation, $attributes);
+        if ($saved && $parentModified) {
+            Survey::forceBasicForInheritedHardenedQuota();
+        }
+        return $saved;
+    }
+
+    /**
      * @return array relational rules.
      */
     public function relations()

@@ -167,6 +167,17 @@ $googleAnalyticsStyleOptions = array(
             if ($bShowInherited) {
                 $optionsEncryptionMethod['I'] = $oSurveyOptions->encryption_method . " ᴵ";
             }
+            /* Hardened can not be used if a quota uses an encrypted question */
+            $hardenedDisabledByQuota = $oSurvey instanceof Survey
+                && $oSurvey->encryption_method !== 'H'
+                && $oSurvey->hasQuotaOnEncryptedQuestion();
+            if ($hardenedDisabledByQuota) {
+                unset($optionsEncryptionMethod['H']);
+                /* Inherit is hardened too : not available (except if current value) */
+                if ($oSurvey->encryption_method !== 'I' && $oSurvey->getResolvedEncryptionMethod('I') === 'H') {
+                    unset($optionsEncryptionMethod['I']);
+                }
+            }
             ?>
             <div class="ex-form-group mb-3">
                 <label class="form-label" id='encryption_method-label' for='encryption_method'><?php eT("Encryption method:"); ?></label>
@@ -181,7 +192,22 @@ $googleAnalyticsStyleOptions = array(
                         'selectOptions' => $optionsEncryptionMethod,
                     ]); ?>
                 </div>
-                <div class="form-text"  id='encryption_method-help'><?php eT("Basic encryption allows filtering and searching in browse responses, as well as statistics generation. Hardened encryption uses stronger cryptographic methods but disables all statistics and filtering features."); ?></div>
+                <div class="form-text"  id='encryption_method-help'>
+                    <?php eT("Basic encryption allows filtering and searching in browse responses, as well as statistics generation. Hardened encryption uses stronger cryptographic methods but disables all statistics and filtering features."); ?>
+                    <?php eT("With hardened encryption, encrypted questions cannot be used in quotas."); ?>
+                </div>
+                <?php if ($hardenedDisabledByQuota) {
+                    $hardenedAlertText = gT("Hardened encryption is not available: at least one quota uses an encrypted question.");
+                    if ($oSurvey->encryption_method === 'B' && $oSurvey->getResolvedEncryptionMethod('I') === 'H') {
+                        /* Forced to Basic instead of inherited hardened */
+                        $hardenedAlertText .= " " . gT("Basic encryption is used instead of the inherited hardened encryption.");
+                    }
+                    App()->getController()->widget('ext.AlertWidget.AlertWidget', [
+                        'text' => $hardenedAlertText,
+                        'type' => 'warning',
+                        'htmlOptions' => ['class' => 'mt-2'],
+                    ]);
+                } ?>
             </div>
 
             <!-- Enable assessment mode -->

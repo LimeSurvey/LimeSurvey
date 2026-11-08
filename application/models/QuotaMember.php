@@ -46,9 +46,30 @@ class QuotaMember extends LSActiveRecord
     {
         return array(
             array('code', 'required', 'on' => array('create')),
-            array('code', 'length', 'max' => 11)
-
+            array('code', 'length', 'max' => 11),
+            array('qid', 'validateNotHardenedEncrypted', 'on' => array('create')),
         );
+    }
+
+    /**
+     * Validate the question : with hardened encryption, an encrypted question can not be used
+     * (hardened encrypted answers can not be compared in SQL, the quota would never be reached)
+     * @param string $attribute
+     * @return void
+     */
+    public function validateNotHardenedEncrypted($attribute)
+    {
+        $question = Question::model()->findByPk($this->$attribute);
+        if (empty($question) || $question->encrypted !== 'Y') {
+            return;
+        }
+        $survey = Survey::model()->findByPk($this->sid);
+        if ($survey && $survey->getResolvedEncryptionMethod() === 'H') {
+            $this->addError(
+                $attribute,
+                gT("Encrypted questions cannot be used in quotas with hardened encryption.")
+            );
+        }
     }
     /**
      * Returns the relations

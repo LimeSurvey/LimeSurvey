@@ -20,13 +20,27 @@
                     <?php echo CHtml::form(array("quotas/newanswer/surveyid/{$oQuota->sid}/sSubaction/new_answer_two"), 'post', array('class' => '')); ?>
                         <div class='mb-3'>
                             <div class='col-md-5 offset-md-4'>
-                                <select class='form-select' name="quota_qid" size="15">
-                                    <?php foreach ($oQuota->survey->quotableQuestions as $questionlisting) { ?>
-                                        <option value="<?php echo $questionlisting['qid'];?>">
+                                <?php
+                                /* Hardened encrypted answers can not be compared : encrypted questions are disabled */
+                                $hardenedEncryption = $oQuota->survey->getResolvedEncryptionMethod() === 'H';
+                                $hasDisabledQuestion = false;
+                                ?>
+                                <select class='form-select' name="quota_qid" size="15" aria-describedby="quota_qid-help">
+                                    <?php foreach ($oQuota->survey->quotableQuestions as $questionlisting) {
+                                        $disabled = $hardenedEncryption && $questionlisting->encrypted === 'Y';
+                                        $hasDisabledQuestion = $hasDisabledQuestion || $disabled;
+                                        ?>
+                                        <option value="<?php echo $questionlisting['qid'];?>" <?php echo $disabled ? 'disabled' : ''; ?>>
                                             <?php echo $questionlisting['title'];?>: <?php echo strip_tags(substr((string) $questionlisting->questionl10ns[$sBaseLang]->question, 0, 40));?>
+                                            <?php echo $disabled ? ' (' . gT("Encrypted") . ')' : ''; ?>
                                         </option>
                                     <?php } ?>
                                 </select>
+                                <?php if ($hasDisabledQuestion) { ?>
+                                    <div class="form-text" id="quota_qid-help">
+                                        <?php eT("Encrypted questions cannot be used in quotas with hardened encryption."); ?>
+                                    </div>
+                                <?php } ?>
                             </div>
                         </div>
                         <div class='mb-3'>

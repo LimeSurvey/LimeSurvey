@@ -128,7 +128,13 @@ class SurveysGroupsettings extends LSActiveRecord
     public function save($runValidation = true, $attributes = null)
     {
         unset(self::$aSurveysGroupSettings[$this->gsid]);
-        return parent::save($runValidation, $attributes);
+        $encryptionMethodModified = $this->isAttributeModifiedFromStored('encryption_method');
+        $saved = parent::save($runValidation, $attributes);
+        /* Surveys inheriting hardened can not have a quota with an encrypted question */
+        if ($saved && $encryptionMethodModified && $this->encryption_method !== 'B') {
+            Survey::forceBasicForInheritedHardenedQuota();
+        }
+        return $saved;
     }
     /**
      * @return array relational rules.
