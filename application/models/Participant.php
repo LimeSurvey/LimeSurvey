@@ -2288,7 +2288,16 @@ class Participant extends LSActiveRecord
 
                 // First check if token already has a participant_id in central database
                 // We don't check with permission, see issue #20704
-                $existingParticipants = self::getDuplicates($oTokenDynamic->attributes, false) ?: [];
+                // Like master : without participant_id, do not search duplicates if firstname, lastname and email are all empty
+                $existingParticipants = [];
+                if (
+                    !empty($oTokenDynamic->participant_id)
+                    || !empty($oTokenDynamic->firstname)
+                    || !empty($oTokenDynamic->lastname)
+                    || !empty($oTokenDynamic->email)
+                ) {
+                    $existingParticipants = self::getDuplicates($oTokenDynamic->attributes, false) ?: [];
+                }
                 /* If there is already an existing entry, add to the duplicate count */
                 if (!empty($existingParticipants)) {
                     $duplicate++;
@@ -2854,51 +2863,28 @@ class Participant extends LSActiveRecord
      */
     protected static function findDuplicateNotCryted(array $participant, $ownerid)
     {
-        $duplicateCriteriaAttributes = [
-            'firstname' => $participant['firstname'] ?? '',
-            'lastname' => $participant['lastname'] ?? '',
-            'email' => $participant['email'] ?? '' ,
-        ];
-        if (App()->db->getDriverName() == 'pgsql') {
-            if ($ownerid) {
-                return Participant::model()->findAll(
-                    'LOWER(firstname) = LOWER(:firstname)
-                     AND LOWER(lastname) = LOWER(:lastname)
-                     AND LOWER(email) = LOWER(:email)
-                     AND owner_uid = :owner_uid',
-                    [
-                        ':firstname' => $duplicateCriteriaAttributes['firstname'],
-                        ':lastname' => $duplicateCriteriaAttributes['lastname'],
-                        ':email' => $duplicateCriteriaAttributes['email'],
-                        ':owner_uid' => $ownerid,
-                    ]
-                );
+        /* pgsql is case sensitive, Mysql and MSSQL no need extra part here , maybe add an index */
+        $caseInsensitive = App()->db->getDriverName() == 'pgsql';
+        $criteria = new CDbCriteria();
+        foreach (['firstname', 'lastname', 'email'] as $column) {
+            /* Force string : null => '' */
+            $value = (string) ($participant[$column] ?? '');
+            if ($value === '') {
+                /* Empty value : can be stored as '' or NULL */
+                $criteria->addCondition("({$column} = '' OR {$column} IS NULL)");
+            } elseif ($caseInsensitive) {
+                $criteria->addCondition("LOWER({$column}) = LOWER(:{$column})");
+                $criteria->params[":{$column}"] = $value;
+            } else {
+                $criteria->addCondition("{$column} = :{$column}");
+                $criteria->params[":{$column}"] = $value;
             }
-                return Participant::model()->findAll(
-                    'LOWER(firstname) = LOWER(:firstname)
-                     AND LOWER(lastname) = LOWER(:lastname)
-                     AND LOWER(email) = LOWER(:email)',
-                    [
-                        ':firstname' => $duplicateCriteriaAttributes['firstname'],
-                        ':lastname' => $duplicateCriteriaAttributes['lastname'],
-                        ':email' => $duplicateCriteriaAttributes['email']
-                    ]
-                );
         }
-        /* Mysql and MSSQL no need extra part here , maybe add an index */
         if ($ownerid) {
-            return Participant::model()->findAllByAttributes([
-                'firstname' => $duplicateCriteriaAttributes['firstname'],
-                'lastname' => $duplicateCriteriaAttributes['lastname'],
-                'email' => $duplicateCriteriaAttributes['email'] ,
-                'owner_uid' => $ownerid
-            ]);
+            $criteria->addCondition('owner_uid = :owner_uid');
+            $criteria->params[':owner_uid'] = $ownerid;
         }
-        return Participant::model()->findAllByAttributes([
-            'firstname' => $duplicateCriteriaAttributes['firstname'],
-            'lastname' => $duplicateCriteriaAttributes['lastname'],
-            'email' => $duplicateCriteriaAttributes['email']
-        ]);
+        return Participant::model()->findAll($criteria);
     }
 
     /**
