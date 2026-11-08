@@ -195,7 +195,7 @@ $googleAnalyticsStyleOptions = array(
                     ]); ?>
                 </div>
                 <div class="form-text"  id='encryption_method-help'>
-                    <?php eT("Basic encryption allows filtering and searching in browse responses, as well as statistics generation. Hardened encryption uses stronger cryptographic methods but disables all statistics and filtering features."); ?>
+                    <?php eT("Basic encryption allows filtering and searching in browse responses, as well as statistics generation. Hardened encryption uses stronger cryptographic methods, but encrypted questions and attributes cannot be filtered or searched, and statistics are limited to unencrypted questions."); ?>
                     <?php eT("With hardened encryption, encrypted questions cannot be used in quotas."); ?>
                     <?php if ($oSurvey instanceof Survey && $oSurvey->isActive) {
                         eT("The encryption method cannot be changed while the survey is active.");
