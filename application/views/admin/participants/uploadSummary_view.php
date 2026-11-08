@@ -46,8 +46,8 @@ if (empty($errorinupload)) {
             $warningSummary .= "</ul></div></li>";
         }
         if (count($nopermissionlist) > 0) {
-            $warningSummary .= "<li>" . sprintf(gT("%s valid records but without permission"), count($nopermissionlist));
-            $warningSummary .= "<div class='badtokenlist' id='invalidemaillist'><ul>";
+            $warningSummary .= "<li>" . sprintf(gT("%s matching participants were not updated because you do not have permission to edit them"), count($nopermissionlist));
+            $warningSummary .= "<div class='badtokenlist' id='nopermissionlist'><ul>";
             foreach ($nopermissionlist as $data) {
                 $warningSummary .= "<li>" . $data . "</li>";
             }
