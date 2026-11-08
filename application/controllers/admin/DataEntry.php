@@ -436,7 +436,6 @@ class DataEntry extends SurveyCommonAction
                 $isExplicitId = !$isUpdate && isset($targetResponse->id);
 
                 foreach ($fieldMap as $sourceField => $targetField) {
-                    $targetResponse[$targetField] = $sourceResponse[$sourceField];
                     $sourceEncrypted = in_array($sourceField, $archivedEncryptedAttributes, false);
                     $value = $sourceResponse[$sourceField];
                     if ($value === null || $value === '') {
@@ -458,19 +457,18 @@ class DataEntry extends SurveyCommonAction
                         }
 
                         $value = $sourceResponse[$oldFieldName];
-                        if (in_array($oldFieldName, $archivedEncryptedAttributes, false) && !in_array($oldFieldName, $encryptedAttributes, false)) {
-                            $value = $sourceResponse->decryptSingle($sourceResponse[$oldFieldName]);
+                        if (in_array($oldFieldName, $archivedEncryptedAttributes, false)) {
+                            $value = LSActiveRecord::decryptSingle($value);
                         }
-                        if (!in_array($oldFieldName, $archivedEncryptedAttributes, false) && in_array($oldFieldName, $encryptedAttributes, false)) {
-                            $value = $sourceResponse->encryptSingle($sourceResponse[$oldFieldName]);
-                        }
-                        
                         $rankingJSONs[$newFieldName][] = $value;
                     }
                 }
 
                 foreach ($rankingJSONs as $newFieldName => $value) {
-                    $targetResponse[$newFieldName] = json_encode($value);
+                    /* The whole JSON is stored in the ranking column : encrypt it with the encryption method of the survey */
+                    $targetResponse[$newFieldName] = in_array($newFieldName, $encryptedAttributes, false)
+                        ? LSActiveRecord::encryptSingle(json_encode($value), $encryptionMethod)
+                        : json_encode($value);
                 }
 
                 if (isset($targetSchema->columns['startdate']) && empty($targetResponse['startdate'])) {
