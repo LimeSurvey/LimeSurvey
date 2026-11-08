@@ -504,6 +504,8 @@ class QuestionTheme extends LSActiveRecord
     /**
      * Find all XML paths for specified Question Root folders
      *
+     * The theme folders directly in a root folder may be symbolic links, symbolic links below them are not followed.
+     *
      * @param bool $core
      * @param bool $custom
      * @param bool $user
@@ -532,12 +534,19 @@ class QuestionTheme extends LSActiveRecord
 
         if (isset($selectedQuestionDirectories)) {
             foreach ($selectedQuestionDirectories as $questionThemeDirectory) {
-                $directory = new RecursiveDirectoryIterator($questionThemeDirectory);
-                $iterator = new RecursiveIteratorIterator($directory);
-                foreach ($iterator as $info) {
-                    $ext = pathinfo((string) $info->getPathname(), PATHINFO_EXTENSION);
-                    if ($ext == 'xml') {
-                        $questionDirectoriesAndPaths[$questionThemeDirectory][] = dirname((string) $info->getPathname());
+                // The theme folders directly in the root directory may be symbolic links (isDir() follows them),
+                // symbolic links further down are not followed, so a link loop can't make the scan endless
+                foreach (new DirectoryIterator($questionThemeDirectory) as $themeFolder) {
+                    if ($themeFolder->isDot() || !$themeFolder->isDir()) {
+                        continue;
+                    }
+                    $directory = new RecursiveDirectoryIterator($themeFolder->getPathname());
+                    $iterator = new RecursiveIteratorIterator($directory);
+                    foreach ($iterator as $info) {
+                        $ext = pathinfo((string) $info->getPathname(), PATHINFO_EXTENSION);
+                        if ($ext == 'xml') {
+                            $questionDirectoriesAndPaths[$questionThemeDirectory][] = dirname((string) $info->getPathname());
+                        }
                     }
                 }
             }

@@ -90,6 +90,54 @@ class QuestionThemePathTest extends TestBaseClass
     }
 
     /**
+     * A theme folder in the user question theme root dir that is a symbolic link to a folder elsewhere is found.
+     *
+     * @return void
+     */
+    public function testSymlinkedUserQuestionThemeIsFound()
+    {
+        $userQuestionThemeRootDir = \Yii::app()->getConfig('userquestionthemerootdir');
+        $sourceRootDir = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'lsquestionthemesource' . uniqid();
+        $this->createdDirs[] = $sourceRootDir;
+        $this->extractRangeSliderTheme($sourceRootDir, 'Range-Slider');
+        if (!is_dir($userQuestionThemeRootDir)) {
+            mkdir($userQuestionThemeRootDir, 0777, true);
+        }
+        $linkName = 'SymlinkTest' . uniqid();
+        $link = $userQuestionThemeRootDir . DIRECTORY_SEPARATOR . $linkName;
+        // The link must be removed before its target, rmdirr() skips dangling links
+        array_unshift($this->createdDirs, $link);
+        $this->assertTrue(symlink($sourceRootDir . DIRECTORY_SEPARATOR . 'Range-Slider', $link));
+
+        $paths = QuestionTheme::getAllQuestionXMLPaths(false, false, true);
+
+        $expectedXmlFolder = $link . DIRECTORY_SEPARATOR . 'survey' . DIRECTORY_SEPARATOR . 'questions' . DIRECTORY_SEPARATOR . 'answer' . DIRECTORY_SEPARATOR . 'multiplenumeric';
+        $this->assertContains($expectedXmlFolder, $paths[$userQuestionThemeRootDir]);
+    }
+
+    /**
+     * Symbolic links inside a theme folder are not followed, so a link loop doesn't make the scan endless.
+     *
+     * @return void
+     */
+    public function testSymlinkInsideUserQuestionThemeIsNotFollowed()
+    {
+        $userQuestionThemeRootDir = \Yii::app()->getConfig('userquestionthemerootdir');
+        $themeName = 'SymlinkLoopTest' . uniqid();
+        $xmlFolder = $this->extractRangeSliderTheme($userQuestionThemeRootDir, $themeName);
+        $this->assertTrue(symlink($userQuestionThemeRootDir . DIRECTORY_SEPARATOR . $themeName, $xmlFolder . DIRECTORY_SEPARATOR . 'loop'));
+
+        $paths = QuestionTheme::getAllQuestionXMLPaths(false, false, true);
+
+        $this->assertSame([$xmlFolder], array_values(array_filter(
+            $paths[$userQuestionThemeRootDir],
+            function ($path) use ($themeName) {
+                return strpos($path, $themeName) !== false;
+            }
+        )));
+    }
+
+    /**
      * Extracts the Range-Slider test question theme into $rootDir/$themeName.
      *
      * @param string $rootDir Directory to extract the theme to
