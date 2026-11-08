@@ -2208,33 +2208,26 @@ class Tokens extends SurveyCommonAction
                                 $dupfound = false;
                                 $invalidemail = false;
                                 if ($filterduplicatetoken) {
-                                    if ($surveyEncryptionmethod != 'H' || count($aCoreEncryptedAttributes) < 3) { // No duplicate count if H and all core attribute are encryoted
-                                        $criteria = new CDbCriteria();
-                                        if (in_array('firstname', $aCoreEncryptedAttributes)) {
-                                            if ($surveyEncryptionmethod == 'B') {
-                                                $criteria->compare('firstname', LSActiveRecord::encryptSingle($myfirstname, 'B'));
+                                    /* Do not use compare : it ignores '' and reads a leading <, >, = or <> as operator (same as CSV import) */
+                                    $criteria = new CDbCriteria();
+                                    $duplicateValues = [
+                                        'firstname' => (string) $myfirstname,
+                                        'lastname' => (string) $mylastname,
+                                        'email' => (string) $myemail,
+                                    ];
+                                    foreach ($duplicateValues as $field => $value) {
+                                        if (in_array($field, $aCoreEncryptedAttributes)) {
+                                            if ($surveyEncryptionmethod == 'H') {
+                                                /* Hardened encrypted value can not be compared : ignore this field */
+                                                continue;
                                             }
-                                        } else {
-                                            $criteria->compare('firstname', $myfirstname);
+                                            $value = LSActiveRecord::encryptSingle($value, 'B'); // '' stays ''
                                         }
-                                        if (in_array('lastname', $aCoreEncryptedAttributes)) {
-                                            if ($surveyEncryptionmethod == 'B') {
-                                                $criteria->compare('lastname', LSActiveRecord::encryptSingle($mylastname, 'B'));
-                                            }
-                                        } else {
-                                            $criteria->compare('lastname', $mylastname);
-                                        }
-                                        if (in_array('email', $aCoreEncryptedAttributes)) {
-                                            if ($surveyEncryptionmethod == 'B') {
-                                                $criteria->compare('email', LSActiveRecord::encryptSingle($myemail, 'B'));
-                                            }
-                                        } else {
-                                            $criteria->compare('email', $myemail);
-                                        }
-                                        $dupresult = TokenDynamic::model($iSurveyId)->count($criteria);
-                                    } else {
-                                        $dupresult = 0;
+                                        $criteria->addCondition("{$field} = :{$field}");
+                                        $criteria->params[":{$field}"] = $value;
                                     }
+                                    /* No field can be compared (all hardened encrypted) : no duplicate check */
+                                    $dupresult = empty($criteria->params) ? 0 : TokenDynamic::model($iSurveyId)->count($criteria);
                                     if ($dupresult > 0) {
                                         $dupfound = true;
                                         $duplicatelist[] = $myfirstname . " " . $mylastname . " (" . $myemail . ")";
