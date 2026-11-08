@@ -230,7 +230,7 @@ class LimeMailer extends PHPMailer
 
     /**
      * Get the decrypted SMTP password from the global settings
-     * getConfig() decrypts the crypted settings (see SettingGlobal::getCryptedSettings())
+     * getConfig() decrypts the encrypted settings (see SettingGlobal::getCryptedSettings())
      * A password that can't be decrypted (e.g. because the encryption keys changed since it was saved) is logged
      * and replaced by an empty password, so sending fails with a mailer error instead of an exception
      * @return string

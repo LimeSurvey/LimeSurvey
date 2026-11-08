@@ -1136,7 +1136,7 @@ class ParticipantsAction extends SurveyCommonAction
                     continue;
                 }
                 if ($invalidemail) {
-                    $invalidemaillist[] = CHtml::encode($line[0] . " " . $line[1] . " (" . $line[2] . ")");
+                    $invalidemaillist[] = CHtml::encode($writearray['firstname'] . " " . $writearray['lastname'] . " (" . $writearray['email'] . ")");
                 }
                 if (!empty($existingParticipants)) {
                     $dupfound = true;
