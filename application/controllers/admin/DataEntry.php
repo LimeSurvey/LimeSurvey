@@ -346,6 +346,7 @@ class DataEntry extends SurveyCommonAction
             $sourceTable = PluginDynamic::model($_POST['table']);
             $sourceSchema = $sourceTable->getTableSchema();
             $encryptedAttributes = Response::getEncryptedAttributes($iSurveyId);
+            $encryptionMethod = $survey->oOptions->encryption_method;
             $tbl_name = $sourceSchema->name;
 
             if (!empty(App()->db->tablePrefix) && strpos((string) $sourceSchema->name, (string) App()->db->tablePrefix) === 0) {
@@ -436,11 +437,16 @@ class DataEntry extends SurveyCommonAction
 
                 foreach ($fieldMap as $sourceField => $targetField) {
                     $targetResponse[$targetField] = $sourceResponse[$sourceField];
-                    if (in_array($sourceField, $archivedEncryptedAttributes, false) && !in_array($targetField, $encryptedAttributes, false)) {
-                        $targetResponse[$targetField] = $sourceResponse->decryptSingle($sourceResponse[$sourceField]);
-                    }
-                    if (!in_array($sourceField, $archivedEncryptedAttributes, false) && in_array($targetField, $encryptedAttributes, false)) {
-                        $targetResponse[$targetField] = $sourceResponse->encryptSingle($sourceResponse[$sourceField]);
+                    $sourceEncrypted = in_array($sourceField, $archivedEncryptedAttributes, false);
+                    $value = $sourceResponse[$sourceField];
+                    if ($value === null || $value === '') {
+                        $targetResponse[$targetField] = $value;
+                    } elseif (in_array($targetField, $encryptedAttributes, false)) {
+                        /* Encrypt with the (new) encryption method of the survey : archived values can use the previous one, decrypt tries both */
+                        $plainValue = $sourceEncrypted ? LSActiveRecord::decryptSingle($value) : $value;
+                        $targetResponse[$targetField] = LSActiveRecord::encryptSingle($plainValue, $encryptionMethod);
+                    } elseif ($sourceEncrypted) {
+                        $targetResponse[$targetField] = LSActiveRecord::decryptSingle($value);
                     }
                 }
                 $rankingJSONs = [];

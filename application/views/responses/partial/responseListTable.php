@@ -207,7 +207,7 @@ $hideCryptedFilter = $survey && $survey->oOptions && $survey->oOptions->encrypti
                         'SurveyDynamic[lastname_filter]',
                         $model->lastname_filter
                     ),
-                    'sortable' => !($encryptedColumn && $hideCryptedFilter)
+                    'sortable' => !$encryptedColumn
                 ];
             }
             $filterableColumns['lastname'] = gT("Last name");
@@ -223,7 +223,7 @@ $hideCryptedFilter = $survey && $survey->oOptions && $survey->oOptions->encrypti
                         'SurveyDynamic[email_filter]',
                         $model->email_filter
                     ),
-                    'sortable' => !($encryptedColumn && $hideCryptedFilter)
+                    'sortable' => !$encryptedColumn
                 ];
             }
             $filterableColumns['email'] = gT("Email");
@@ -284,7 +284,7 @@ $hideCryptedFilter = $survey && $survey->oOptions && $survey->oOptions->encrypti
                             'SurveyDynamic[' . $column->name . ']',
                             $model->{$column->name}
                         ),
-                        'sortable'          => !($encryptedColumn && $hideCryptedFilter),
+                        'sortable'          => !$encryptedColumn, // Encrypted value order is meaningless (Basic or Hardened)
                         'value'             => $columnValueExpression,
                     ];
                 }

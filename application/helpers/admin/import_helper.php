@@ -2123,6 +2123,7 @@ function recoverSurveyResponses(int $surveyId, string $archivedResponseTableName
     $batchData = [];
     $batchModels = [];
     $survey = Survey::model()->findByPk($surveyId);
+    $encryptionMethod = $survey->oOptions->encryption_method;
     $rankingMap = [];
     foreach ($survey->questions as $q) {
         if ((!$q->parent_qid) && ($q->type === Question::QT_R_RANKING)) {
@@ -2146,12 +2147,18 @@ function recoverSurveyResponses(int $surveyId, string $archivedResponseTableName
             $source = $validatedColumns[$from][$index];
             $target = $validatedColumns[$to][$index];
             $targetResponse->{$target} = $archivedResponse[$source];
-            if (in_array($source, $archivedEncryptedAttributes, false) && !in_array($target, $encryptedAttributes, false)) {
-                $targetResponse->{$target} = $archivedResponse->decryptSingle($archivedResponse[$source]);
-            } elseif (!in_array($source, $archivedEncryptedAttributes, false) && in_array($target, $encryptedAttributes, false)) {
-                $targetResponse->{$target} = $archivedResponse->encryptSingle($archivedResponse[$source]);
+            $sourceEncrypted = in_array($source, $archivedEncryptedAttributes, false);
+            $value = $archivedResponse[$source];
+            if ($value === null || $value === '') {
+                $targetResponse->{$target} = $value;
+            } elseif (in_array($target, $encryptedAttributes, false)) {
+                /* Encrypt with the (new) encryption method of the survey : archived values can use the previous one, decrypt tries both */
+                $plainValue = $sourceEncrypted ? LSActiveRecord::decryptSingle($value) : $value;
+                $targetResponse->{$target} = LSActiveRecord::encryptSingle($plainValue, $encryptionMethod);
+            } elseif ($sourceEncrypted) {
+                $targetResponse->{$target} = LSActiveRecord::decryptSingle($value);
             } else {
-                $targetResponse->{$target} = $archivedResponse[$source];
+                $targetResponse->{$target} = $value;
             }
             $dataRow[$target] = $targetResponse->{$target};
         }
@@ -4210,6 +4217,8 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
                         $oSurvey = new SurveyDynamic();
                         break;
                     case 'replaceanswers':
+                        /* Decrypt existing values : encryptSave encrypts all encrypted columns, including the ones not in the file */
+                        $oSurvey->decrypt();
                         break;
                     case 'skip':
                         $oSurvey = false; // Remove existing survey : don't import again
