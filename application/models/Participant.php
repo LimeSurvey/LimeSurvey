@@ -2821,7 +2821,7 @@ class Participant extends LSActiveRecord
             return [];
         }
         if (self::countCoreAttributeCrypted() == 0) {
-            return self::findDuplicateNotCryted($duplicateCriteriaAttributes, $ownerid);
+            return self::findDuplicateNotEncrypted($duplicateCriteriaAttributes, $ownerid);
         }
         /* One or more core attributes are encrypted: use the duplicate finder */
         $duplicatefindervalue = self::getDuplicateFinderValue($participant);
@@ -2854,12 +2854,12 @@ class Participant extends LSActiveRecord
     }
 
     /**
-     * Find duplicate with not cryoted database
+     * Find duplicate with not encrypted database
      * @param string[], must contain firstname , lastname, email
      * @param integer|false ownerid
      * @return self[]
      */
-    protected static function findDuplicateNotCryted(array $participant, $ownerid)
+    protected static function findDuplicateNotEncrypted(array $participant, $ownerid)
     {
         /* pgsql is case sensitive, Mysql and MSSQL no need extra part here , maybe add an index */
         $caseInsensitive = App()->db->getDriverName() == 'pgsql';
@@ -2891,7 +2891,7 @@ class Participant extends LSActiveRecord
     */
     public static function isDuplicateFinderUpToDate()
     {
-        /* duplicatefinder is used only when a core attribute is encrypted (else findDuplicateNotCryted) : no need to check */
+        /* duplicatefinder is used only when a core attribute is encrypted (else findDuplicateNotEncrypted) : no need to check */
         if (self::countCoreAttributeCrypted() == 0) {
             return true;
         }

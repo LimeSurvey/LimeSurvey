@@ -1594,7 +1594,7 @@ class ParticipantsAction extends SurveyCommonAction
         $attributeName->encrypted = $encrypted_value;
         $encryptedAfterChange = $attributeName->isEncrypted();
         $sDefaultname = $attributeName->defaultname;
-        $cryptMedthod = App()->getConfig('CPDB_encryption_method', 'B');
+        $cryptMethod = App()->getConfig('CPDB_encryption_method', 'B');
 
         // encryption/decryption MUST be done in a one synchronous step, either all succeeded or none
         $oDB = Yii::app()->db;
@@ -1606,9 +1606,9 @@ class ParticipantsAction extends SurveyCommonAction
                 foreach ($oParticipants as $participant) {
                     $aUpdateData = array();
                     if ($encryptedBeforeChange && !$encryptedAfterChange) {
-                        $aUpdateData[$sDefaultname] = LSActiveRecord::decryptSingle($participant->$sDefaultname, $cryptMedthod);
+                        $aUpdateData[$sDefaultname] = LSActiveRecord::decryptSingle($participant->$sDefaultname, $cryptMethod);
                     } elseif (!$encryptedBeforeChange && $encryptedAfterChange) {
-                        $aUpdateData[$sDefaultname] = LSActiveRecord::encryptSingle($participant->$sDefaultname, $cryptMedthod);
+                        $aUpdateData[$sDefaultname] = LSActiveRecord::encryptSingle($participant->$sDefaultname, $cryptMethod);
                     }
                     if (!empty($aUpdateData)) {
                         $oDB->createCommand()->update(
@@ -1628,9 +1628,9 @@ class ParticipantsAction extends SurveyCommonAction
                 foreach ($oAttributes as $attribute) {
                     $aUpdateData = array();
                     if ($encryptedBeforeChange && !$encryptedAfterChange) {
-                        $aUpdateData['value'] = LSActiveRecord::decryptSingle($attribute->value, $cryptMedthod);
+                        $aUpdateData['value'] = LSActiveRecord::decryptSingle($attribute->value, $cryptMethod);
                     } elseif (!$encryptedBeforeChange && $encryptedAfterChange) {
-                        $aUpdateData['value'] = LSActiveRecord::encryptSingle($attribute->value, $cryptMedthod);
+                        $aUpdateData['value'] = LSActiveRecord::encryptSingle($attribute->value, $cryptMethod);
                     }
                     if (!empty($aUpdateData) && $aUpdateData['value'] !== null) {
                         $oDB->createCommand()->update(
@@ -1772,7 +1772,7 @@ class ParticipantsAction extends SurveyCommonAction
         $AttributeNameLanguages = Yii::app()->request->getPost('ParticipantAttributeNameLanguages');
         $ParticipantAttributeNamesDropdown = Yii::app()->request->getPost('ParticipantAttributeNamesDropdown');
         $sEncryptedAfterChange = $AttributeNameAttributes['encrypted'];
-        $cryptMedthod = App()->getConfig('CPDB_encryption_method', 'B');
+        $cryptMethod = App()->getConfig('CPDB_encryption_method', 'B');
 
         // encryption/decryption MUST be done in a one synchronous step, either all succeed or none
         $oDB = Yii::app()->db;
@@ -1797,9 +1797,9 @@ class ParticipantsAction extends SurveyCommonAction
             foreach ($oAttributes as $attribute) {
                 $aUpdateData = array();
                 if ($sEncryptedBeforeChange == 'Y' && $sEncryptedAfterChange == 'N') {
-                    $aUpdateData['value'] = LSActiveRecord::decryptSingle($attribute->value, $cryptMedthod);
+                    $aUpdateData['value'] = LSActiveRecord::decryptSingle($attribute->value, $cryptMethod);
                 } elseif ($sEncryptedBeforeChange == 'N' && $sEncryptedAfterChange == 'Y') {
-                    $aUpdateData['value'] = LSActiveRecord::encryptSingle($attribute->value, $cryptMedthod);
+                    $aUpdateData['value'] = LSActiveRecord::encryptSingle($attribute->value, $cryptMethod);
                 }
                 if (!empty($aUpdateData)) {
                     $oDB->createCommand()->update(
@@ -3118,7 +3118,7 @@ class ParticipantsAction extends SurveyCommonAction
             try {
                 $oParticipant->decrypt();
                 if (!$oParticipant->encryptSave(false)) {
-                    // Log it as error, but need to find situation wnhre can happen, maybe better a 500 error.
+                    // Log it as error, but need to find situation where it can happen, maybe better a 500 error.
                     if ($transaction) {
                         $transaction->rollback();
                     }
@@ -3235,7 +3235,7 @@ class ParticipantsAction extends SurveyCommonAction
                 $lastParticipantId = $oParticipant->participant_id;
                 App()->user->setState($stateId, $lastParticipantId);
             } else {
-                // Log it as error, but need to find situation wnhre can happen, maybe better a 500 error.
+                // Log it as error, but need to find situation where it can happen, maybe better a 500 error.
             }
         }
         if ($lastParticipantId !== '') {
