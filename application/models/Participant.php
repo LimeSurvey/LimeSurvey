@@ -2426,7 +2426,9 @@ class Participant extends LSActiveRecord
      * Inserts a participant from a CSV import without model validation
      * Note: Only participants with a UUID as participant ID are inserted
      *
-     * @param array $data Participant data, keys participant_id, firstname, lastname, email, language, blacklisted, owner_uid and duplicatefinder
+     * The values are encrypted here and the duplicatefinder is computed here (on plain values).
+     *
+     * @param array $data Participant data, NOT encrypted, keys participant_id, firstname, lastname, email, language, blacklisted and owner_uid
      * @return bool True if the participant was inserted
      */
     public function insertParticipantCSV($data)
@@ -2434,17 +2436,29 @@ class Participant extends LSActiveRecord
         if (!self::isValidParticipantId($data['participant_id'] ?? null)) {
             return false;
         }
-        $insertData = array(
+        $participant = new self();
+        $participant->setAttributes([
             'participant_id' => $data['participant_id'],
-            'firstname' => $data['firstname'],
-            'lastname' => $data['lastname'],
-            'email' => $data['email'],
-            'language' => $data['language'],
-            'blacklisted' => $data['blacklisted'],
-            'created_by' => $data['owner_uid'],
+            'firstname' => $data['firstname'] ?? '',
+            'lastname' => $data['lastname'] ?? '',
+            'email' => $data['email'] ?? '',
+            'language' => $data['language'] ?? '',
+            'blacklisted' => $data['blacklisted'] ?? 'N',
             'owner_uid' => $data['owner_uid'],
+        ], false);
+        /* Computes duplicatefinder on plain values, then encrypts the encrypted attributes */
+        $participant->encrypt();
+        $insertData = array(
+            'participant_id' => $participant->participant_id,
+            'firstname' => $participant->firstname,
+            'lastname' => $participant->lastname,
+            'email' => $participant->email,
+            'language' => $participant->language,
+            'blacklisted' => $participant->blacklisted,
+            'created_by' => $participant->owner_uid,
+            'owner_uid' => $participant->owner_uid,
             'created' => date('Y-m-d H:i:s', time()),
-            'duplicatefinder' => $data['duplicatefinder']
+            'duplicatefinder' => (string) $participant->duplicatefinder,
         );
         return Yii::app()->db->createCommand()->insert('{{participants}}', $insertData) > 0;
     }

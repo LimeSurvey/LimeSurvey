@@ -1253,13 +1253,8 @@ class ParticipantsAction extends SurveyCommonAction
                     }
                     //If any of the mandatory fields are blank, then don't import this user
                     if (!$dontimport) {
-                        $participant = Participant::model();
-                        foreach ($writearray as $key => $value) {
-                            if ($participant->hasAttribute($key)) {
-                                $participant->$key = $value;
-                            }
-                        }
-                        if ($participant->encrypt()->insertParticipantCSV($participant->attributes)) {
+                        /* Plain values : insertParticipantCSV computes the duplicatefinder and encrypts */
+                        if (Participant::model()->insertParticipantCSV($writearray)) {
                             $imported++;
                         }
                     }
