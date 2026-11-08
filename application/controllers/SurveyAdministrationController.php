@@ -227,6 +227,18 @@ class SurveyAdministrationController extends LSBaseController
         $surveyActivationFeedback = Yii::app()->request->getParam('surveyActivationFeedback', null);
         $aData['surveyActivationFeedback'] = $surveyActivationFeedback;
 
+        // Open the activation modal directly, e.g. when coming from the "Activate" action in the survey list
+        if (Yii::app()->request->getParam('openActivation')) {
+            Yii::app()->getClientScript()->registerScript(
+                'openSurveyActivationModal',
+                "var activateBtn = document.getElementById('ls-activate-survey');
+                if (activateBtn && !activateBtn.disabled && typeof openModalActivate === 'function') {
+                    openModalActivate();
+                }",
+                CClientScript::POS_READY
+            );
+        }
+
         $this->aData = $aData;
         $this->render('sidebody');
     }
