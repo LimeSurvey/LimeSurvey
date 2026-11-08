@@ -67,7 +67,8 @@ class SurveyActivate
                 'ipanonymize',
                 'refurl',
                 'savetimings',
-                'savequotaexit'
+                'savequotaexit',
+                'encryption_method'
             ];
             foreach ($fields as $field) {
                 if (array_key_exists($field, $survey->aOptions)) {

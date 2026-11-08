@@ -535,6 +535,7 @@ class remotecontrol_handle
                     unset($aSurveyData['ipaddr']);
                     unset($aSurveyData['refurl']);
                     unset($aSurveyData['savequotaexit']);
+                    unset($aSurveyData['encryption_method']);
                 }
 
                 if (empty($aSurveyData)) {
@@ -612,6 +613,7 @@ class remotecontrol_handle
             'refurl',
             'savetimings',
             'savequotaexit',
+            'encryption_method',
         ];
         // update survey activation settings
         foreach ($activationSettingNames as $activationSettingName) {
