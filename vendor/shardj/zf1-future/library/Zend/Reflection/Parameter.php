@@ -58,25 +58,32 @@ class Zend_Reflection_Parameter extends ReflectionParameter
      */
     public function getClass($reflectionClass = 'Zend_Reflection_Class'): ?\ReflectionClass
     {
+        $className = null;
         if (PHP_VERSION_ID < 80000) {
-            $phpReflection  = parent::getClass();
-            if ($phpReflection == null) {
-                return null;
+            $phpReflection = parent::getClass();
+            if ($phpReflection !== null) {
+                $className = $phpReflection->getName();
             }
-            $phpReflectionClassName = $phpReflection->getName();
         } else {
-            if (!parent::hasType()) {
-                return null;
+            $type = parent::getType();
+            if ($type instanceof \ReflectionNamedType && !$type->isBuiltin()) {
+                $className = $type->getName();
+                if (strcasecmp($className, 'self') === 0) {
+                    $className = $this->getDeclaringClass()->getName();
+                } elseif (strcasecmp($className, 'parent') === 0) {
+                    $className = $this->getDeclaringClass()->getParentClass()->getName();
+                }
             }
-            $phpReflectionClassName = parent::getType();
+        }
+        if ($className === null) {
+            return null;
         }
 
-        $zendReflection = new $reflectionClass($phpReflectionClassName);
+        $zendReflection = new $reflectionClass($className);
         if (!$zendReflection instanceof Zend_Reflection_Class) {
             require_once 'Zend/Reflection/Exception.php';
             throw new Zend_Reflection_Exception('Invalid reflection class provided; must extend Zend_Reflection_Class');
         }
-        unset($phpReflection);
         return $zendReflection;
     }
 
@@ -111,29 +118,39 @@ class Zend_Reflection_Parameter extends ReflectionParameter
     }
 
     /**
-     * Get parameter type
+     * Get the declared parameter type
      *
-     * @return string
+     * The type from the @param tag of the docblock is available through
+     * getDocblockType().
+     *
+     * @return \ReflectionType|null
      */
     public function getType(): ?\ReflectionType
     {
+        return parent::getType();
+    }
+
+    /**
+     * Get the parameter type from the @param tag of the docblock
+     *
+     * @return string|null null when the function has no docblock or no tag for this parameter
+     */
+    public function getDocblockType()
+    {
         try {
-            if ($docblock = $this->getDeclaringFunction()->getDocblock()) {
-                $params = $docblock->getTags('param');
-
-                if (isset($params[$this->getPosition()])) {
-                    return $params[$this->getPosition()]->getType();
-                }
-
-            }
+            $docblock = $this->getDeclaringFunction()->getDocblock();
         } catch (Zend_Reflection_Exception $e) {
-            if (PHP_VERSION_ID >= 80000) {
-                return parent::getType();
-            } else {
-                throw $e;
-            }
+            return null;
+        }
+        if (!$docblock) {
+            return null;
         }
 
-        return null;
+        $params = $docblock->getTags('param');
+        if (!isset($params[$this->getPosition()])) {
+            return null;
+        }
+
+        return $params[$this->getPosition()]->getType();
     }
 }
