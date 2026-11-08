@@ -2890,6 +2890,14 @@ class Participant extends LSActiveRecord
     */
     public static function isDuplicateFinderUpToDate()
     {
+        /* duplicatefinder is used only when a core attribute is encrypted (else findDuplicateNotCryted) : no need to check */
+        if (self::countCoreAttributeCrypted() == 0) {
+            return true;
+        }
+        /* duplicatefinder can not be used (no key, or disabled) : every value is '', it can not be updated */
+        if (!self::canUseDuplicateFinder()) {
+            return true;
+        }
         return self::getDuplicateFinderInvalidCount() === 0;
     }
 
@@ -2900,10 +2908,11 @@ class Participant extends LSActiveRecord
      */
     public static function getDuplicateFinderInvalidCount($extraCriteria = null)
     {
+        /* Force integer : some drivers (pdo_sqlsrv) return count as string */
         if ($extraCriteria) {
-            return self::model()->invaliduplicatefinder()->count($extraCriteria);
+            return (int) self::model()->invaliduplicatefinder()->count($extraCriteria);
         }
-        return self::model()->invaliduplicatefinder()->count();
+        return (int) self::model()->invaliduplicatefinder()->count();
     }
 
     /**
