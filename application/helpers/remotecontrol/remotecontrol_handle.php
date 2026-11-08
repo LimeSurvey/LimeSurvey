@@ -620,12 +620,18 @@ class remotecontrol_handle
             // use inherited value
             $oSurvey->{$activationSettingName} = $oSurvey->oOptions->{$activationSettingName};
             // override inherited value with user input
-            if (isset($userActivationSettings[$activationSettingName]) && in_array($userActivationSettings[$activationSettingName], ['Y', 'N'])) {
+            $allowedValues = ['Y', 'N'];
+            if ($activationSettingName === 'encryption_method') {
+                $allowedValues = ['B', 'H'];
+            }
+            if (isset($userActivationSettings[$activationSettingName]) && in_array($userActivationSettings[$activationSettingName], $allowedValues, true)) {
                 $oSurvey->{$activationSettingName} = $userActivationSettings[$activationSettingName];
             }
         }
-        // persist changes
-        $oSurvey->save();
+        // persist changes : activation settings are fixed, do not activate if they can not be saved
+        if (!$oSurvey->save()) {
+            return array('status' => 'Error: ' . implode(' ', array_merge(...array_values($oSurvey->getErrors()))), 'error_code' => self::ERR_CREATION_FAILED);
+        }
         // attempt to activate the survey
         $aActivateResults = $surveyActivator->activate();
         if (isset($aActivateResults['error'])) {
