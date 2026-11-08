@@ -4213,15 +4213,10 @@ class remotecontrol_handle
                 $participant['participant_id'] = $participant['id'];
             }
 
-            if (isset($participant['participant_id'])) {
-                $model = Participant::model()->findByPk($participant['participant_id']);
-            } else {
-                $model = Participant::model()->findByAttributes(array(
-                    'firstname' => $participant['firstname'],
-                    'lastname' => $participant['lastname'],
-                    'email' => $participant['email'],
-                    'owner_uid' => Yii::app()->session['loginID']
-                ));
+            /* By participant_id if set, else by firstname, lastname and email of current user (works with encrypted attributes) */
+            $duplicates = Participant::getDuplicates($participant, Yii::app()->session['loginID']);
+            if (!empty($duplicates)) {
+                $model = reset($duplicates);
             }
 
             // Participant not found, so we create a new one
