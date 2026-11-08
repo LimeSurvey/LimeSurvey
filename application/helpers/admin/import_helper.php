@@ -4205,6 +4205,8 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
     }
     $iIdResponsesKey = (is_int($iIdKey)) ? $iIdKey : 0; // The key for responses id: id column or first column if not exist
 
+    // Lines before the first response in the file (header and optional deleted first line)
+    $iHeaderLines = $aOptions['bDeleteFistLine'] ? 2 : 1;
     // Import each responses line here
     while ($aResponses = array_shift($aFileResponses)) {
         $iNbResponseLine++;
@@ -4223,7 +4225,14 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
                         break;
                     case 'replaceanswers':
                         /* Decrypt existing values : encryptSave encrypts all encrypted columns, including the ones not in the file */
-                        $oSurvey->decrypt();
+                        try {
+                            $oSurvey->decrypt();
+                        } catch (Exception $oException) {
+                            /* Existing values can not be decrypted : error on this response only */
+                            $aResponsesError[] = $aResponses[$iIdResponsesKey];
+                            $CSVImportResult['errors'][] = sprintf(gT("Line %s: %s"), $iNbResponseLine + $iHeaderLines, CHtml::encode($oException->getMessage()));
+                            $oSurvey = false;
+                        }
                         break;
                     case 'skip':
                         $oSurvey = false; // Remove existing survey : don't import again
@@ -4326,7 +4335,7 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
                 $oTransaction->rollBack();
                 $aResponsesError[] = $aResponses[$iIdResponsesKey];
                 // Show some error to user ?
-                $CSVImportResult['errors'][] = $oException->getMessage(); // Show it in view
+                $CSVImportResult['errors'][] = sprintf(gT("Line %s: %s"), $iNbResponseLine + $iHeaderLines, CHtml::encode($oException->getMessage())); // Show it in view
                 tracevar($oException->getMessage()); // Show it in console (if debug is set)
             }
         }
