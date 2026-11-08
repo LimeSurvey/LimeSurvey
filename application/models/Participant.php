@@ -2904,11 +2904,11 @@ class Participant extends LSActiveRecord
         if (App()->cache->get($cacheKey) === true) {
             return true;
         }
-        $upToDate = self::getDuplicateFinderInvalidCount() === 0;
-        if ($upToDate) {
+        $isCurrent = self::getDuplicateFinderInvalidCount() === 0;
+        if ($isCurrent) {
             App()->cache->set($cacheKey, true);
         }
-        return $upToDate;
+        return $isCurrent;
     }
 
     /**

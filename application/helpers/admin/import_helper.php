@@ -3541,6 +3541,11 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 $skippedQuotaMembers
             );
         }
+        /* Hardened encrypted answers can not be counted : use Basic if a quota uses an encrypted question */
+        $importedSurvey = Survey::model()->findByPkNoCache($iNewSID);
+        if ($importedSurvey && $importedSurvey->forceBasicIfHardenedQuota()) {
+            $results['importwarnings'][] = gT("Basic encryption was set for this survey instead of hardened encryption, because a quota uses an encrypted question.");
+        }
     }
 
     // Batch process INSERTANS conversions to minimize database writes

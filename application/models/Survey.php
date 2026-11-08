@@ -2411,6 +2411,27 @@ class Survey extends LSActiveRecord implements PermissionInterface
         return $count > 0;
     }
 
+    /**
+     * Force Basic encryption on this not active survey if it uses hardened encryption (set or inherited)
+     * while a quota uses an encrypted question. Used after import or copy of quotas.
+     * @return boolean true if the encryption method was updated
+     */
+    public function forceBasicIfHardenedQuota()
+    {
+        if (
+            $this->active == 'Y'
+            || $this->getResolvedEncryptionMethod() !== 'H'
+            || !$this->hasQuotaOnEncryptedQuestion()
+        ) {
+            return false;
+        }
+        self::model()->updateByPk($this->sid, ['encryption_method' => 'B']);
+        $this->encryption_method = 'B';
+        /* updateByPk : the cached surveys are outdated */
+        self::model()->resetCache();
+        return true;
+    }
+
     public function getQuotableQuestions()
     {
         $criteria = $this->getQuestionOrderCriteria();

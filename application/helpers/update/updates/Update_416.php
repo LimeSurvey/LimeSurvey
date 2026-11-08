@@ -10,8 +10,8 @@ class Update_416 extends DatabaseUpdateBase
     public function up()
     {
         // encrypt values in db
-        // Read raw values from DB : App()->getConfig() decrypts crypted settings, values are still plain text here
-        // Do not use SettingGlobal::setSetting : it encrypts crypted settings itself
+        // Read raw values from DB : App()->getConfig() decrypts encrypted settings, values are still plain text here
+        // Do not use SettingGlobal::setSetting : it encrypts encrypted settings itself
         foreach (['emailsmtppassword', 'bounceaccountpass'] as $settingName) {
             $setting = $this->db->createCommand()
                 ->select('stg_value')
