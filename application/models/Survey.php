@@ -2286,9 +2286,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
 
     /**
-     * @return Question[]
-     */
-    /**
      * Validate encryption_method : can not use hardened if a quota use an encrypted question
      * (hardened encrypted answers can not be compared in SQL, the quota would never be reached)
      * Validated only when changed : allow to save other settings of an existing survey
@@ -2430,6 +2427,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
         return true;
     }
 
+    /**
+     * @return Question[]
+     */
     public function getQuotableQuestions()
     {
         $criteria = $this->getQuestionOrderCriteria();
