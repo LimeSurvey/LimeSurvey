@@ -2826,6 +2826,7 @@ class Participant extends LSActiveRecord
         /* One or more core attributes are encrypted: use the duplicate finder */
         $duplicatefindervalue = self::getDuplicateFinderValue($participant);
         if ($duplicatefindervalue === false || $duplicatefindervalue === '') {
+            /* Not with the encrypted values, even with Basic : the comparison would be case sensitive, unlike the duplicate finder */
             return false;
         }
         if ($ownerid) {
