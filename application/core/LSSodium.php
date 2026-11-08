@@ -59,7 +59,10 @@ class LSSodium
             $this->generateEncryptionKeys();
         } elseif (empty(App()->getConfig('encryptionduplicateindexkey'))) {
             $result = $this->addEncryptionDuplicateIndexKey();
-            // Add a alert if current user have superadmin permission, usage of Permission::model break 
+            if (!$result) {
+                Yii::log("Unable to add encryptionduplicateindexkey to security.php", 'error', 'application.LSSodium');
+            }
+            // Add a alert if current user have superadmin permission, usage of Permission::model break
             if (App()->getCurrentUserId() && Permission::isForcedSuperAdmin(App()->getCurrentUserId())) {
                 if ($result) {
                     Yii::app()->setFlashMessage(sprintf(gT("The settings encryptionduplicateindexkey was added to %s."), 'application/config/security.php'), 'success');
@@ -317,7 +320,9 @@ class LSSodium
         }
         $sConfig .= "\$config['encryptionnonce'] = '" . $sEncryptionNonce . "';" . "\n"
             . "\$config['encryptionsecretboxkey'] = '" . $sEncryptionSecretBoxKey . "';" . "\n";
-        if (empty(App()->getConfig('encryptionduplicateindexkey'))) {
+        /* Keep an existing duplicate index key (e.g. set in config.php), else create a new one in security.php */
+        $sEncryptionDuplicateIndexKey = (string) App()->getConfig('encryptionduplicateindexkey');
+        if ($sEncryptionDuplicateIndexKey === '') {
             /* @var string the key to be added to duplicateindex */
             $sEncryptionDuplicateIndexKey = sodium_bin2hex(random_bytes(32));
             $sConfig .= "// Changing the duplicate index key will make existing duplicate indexes invalid." . "\n";
@@ -326,14 +331,29 @@ class LSSodium
         $sConfig .= "return \$config;";
 
         $configdir = \Yii::app()->getConfig('configdir');
-        if (is_writable($configdir)) {
-            file_put_contents($configdir . '/security.php', $sConfig);
-            Yii::app()->setConfig("encryptionnonce", $sEncryptionNonce);
-            Yii::app()->setConfig("encryptionsecretboxkey", $sEncryptionSecretBoxKey);
-            Yii::app()->setConfig("encryptionduplicateindexkey", $sEncryptionDuplicateIndexKey);
-        } else {
+        if (!is_writable($configdir)) {
             throw new CHttpException(500, gT("Configuration directory is not writable"));
         }
+        $configFile = $configdir . DIRECTORY_SEPARATOR . 'security.php';
+        $lock = $this->lockConfigFile($configFile);
+        try {
+            /* Another request may have created the keys while waiting for the lock : never replace them */
+            $existingConfig = $this->readConfigFile($configFile);
+            if (!empty($existingConfig['encryptionsecretboxkey']) || !empty($existingConfig['encryptionnonce'])) {
+                foreach ($existingConfig as $name => $value) {
+                    Yii::app()->setConfig($name, $value);
+                }
+                return;
+            }
+            if (!$this->writeConfigFile($configFile, $sConfig)) {
+                throw new CHttpException(500, gT("Configuration directory is not writable"));
+            }
+        } finally {
+            $this->unlockConfigFile($lock);
+        }
+        Yii::app()->setConfig("encryptionnonce", $sEncryptionNonce);
+        Yii::app()->setConfig("encryptionsecretboxkey", $sEncryptionSecretBoxKey);
+        Yii::app()->setConfig("encryptionduplicateindexkey", $sEncryptionDuplicateIndexKey);
     }
 
     /**
@@ -347,8 +367,44 @@ class LSSodium
         $configFile = \Yii::app()->getConfig('configdir')
             . DIRECTORY_SEPARATOR
             . 'security.php';
+        /* A previous failure : do not retry at each request (retry after one hour) */
+        $failureFile = $this->getDuplicateIndexKeyFailureFile();
+        if ($failureFile && is_file($failureFile) && filemtime($failureFile) > time() - 3600) {
+            return false;
+        }
+        $lock = $this->lockConfigFile($configFile);
+        try {
+            $result = $this->writeEncryptionDuplicateIndexKey($configFile);
+        } finally {
+            $this->unlockConfigFile($lock);
+        }
+        if ($failureFile) {
+            if ($result) {
+                @unlink($failureFile);
+            } else {
+                @touch($failureFile);
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * Write the encryptionduplicateindexkey in security.php, must be called with the lock
+     * @param string $configFile
+     * @return bool True on success, false on failure.
+     */
+    private function writeEncryptionDuplicateIndexKey($configFile)
+    {
+        /* Another request may have added it while waiting for the lock : use it */
+        $existingConfig = $this->readConfigFile($configFile);
+        if (!empty($existingConfig['encryptionduplicateindexkey'])) {
+            Yii::app()->setConfig("encryptionduplicateindexkey", $existingConfig['encryptionduplicateindexkey']);
+            return true;
+        }
         /* @var string the key to be added to duplicateindex */
         $sEncryptionDuplicateIndexKey = bin2hex(random_bytes(32));
+        $keyLines = "// Changing the duplicate index key will make existing duplicate indexes invalid.\n"
+            . "\$config['encryptionduplicateindexkey'] = '{$sEncryptionDuplicateIndexKey}';\n";
         if (is_file($configFile)) {
             $content = file_get_contents($configFile);
             if ($content === false) {
@@ -358,11 +414,7 @@ class LSSodium
             if (strpos($content, $search) === false) {
                 return false;
             }
-            $replacement = "// Changing the duplicate index key will make existing duplicate indexes invalid.\n";
-            $replacement .= "\$config['encryptionduplicateindexkey'] = '{$sEncryptionDuplicateIndexKey}';\n";
-            $replacement .= $search;
-            $content = str_replace($search, $replacement, $content);
-            return @file_put_contents($configFile, $content) !== false;
+            $content = str_replace($search, $keyLines . $search, $content);
         } else {
             // No licence needed
             $content = "<?php if (!defined('BASEPATH')) exit('No direct script access allowed');\n"
@@ -372,15 +424,109 @@ class LSSodium
                 . " */" . "\n"
                 . "\n"
                 . "\$config = array();\n"
-                . "// Changing the duplicate index key will make existing duplicate indexes invalid.\n"
-                . "\$config['encryptionduplicateindexkey'] = '{$sEncryptionDuplicateIndexKey}';\n"
+                . $keyLines
                 . "return \$config;\n";
         }
-        if (@file_put_contents($configFile, $content) !== false) {
-            Yii::app()->setConfig("encryptionduplicateindexkey", $sEncryptionDuplicateIndexKey);
-            return true;
+        if (!$this->writeConfigFile($configFile, $content)) {
+            return false;
         }
-        return false;
+        Yii::app()->setConfig("encryptionduplicateindexkey", $sEncryptionDuplicateIndexKey);
+        return true;
+    }
+
+    /**
+     * Get the file used to remember a failure to add encryptionduplicateindexkey
+     * @return string|null
+     */
+    private function getDuplicateIndexKeyFailureFile()
+    {
+        $tempdir = (string) Yii::app()->getConfig('tempdir');
+        if ($tempdir === '' || !is_dir($tempdir) || !is_writable($tempdir)) {
+            return null;
+        }
+        return $tempdir . DIRECTORY_SEPARATOR . 'encryptionduplicateindexkey.failed';
+    }
+
+    /**
+     * Read a config file without the current loaded config
+     * @param string $configFile
+     * @return array
+     */
+    private function readConfigFile($configFile)
+    {
+        if (!is_file($configFile)) {
+            return [];
+        }
+        if (function_exists('opcache_invalidate')) {
+            @opcache_invalidate($configFile, true);
+        }
+        $config = include $configFile;
+        return is_array($config) ? $config : [];
+    }
+
+    /**
+     * Write a config file atomically : write a temporary file in the same directory then rename it,
+     * a concurrent request never reads a partial file.
+     * @param string $configFile
+     * @param string $content
+     * @return bool
+     */
+    private function writeConfigFile($configFile, $content)
+    {
+        $tempFile = @tempnam(dirname($configFile), 'security_');
+        if ($tempFile === false) {
+            return false;
+        }
+        if (@file_put_contents($tempFile, $content) === false) {
+            @unlink($tempFile);
+            return false;
+        }
+        /* tempnam create with 0600 : keep permissions of existing file */
+        @chmod($tempFile, is_file($configFile) ? (fileperms($configFile) & 0777) : 0644);
+        if (!@rename($tempFile, $configFile)) {
+            @unlink($tempFile);
+            return false;
+        }
+        if (function_exists('opcache_invalidate')) {
+            @opcache_invalidate($configFile, true);
+        }
+        return true;
+    }
+
+    /**
+     * Get an exclusive lock for writing a config file
+     * @param string $configFile
+     * @return array|null the lock [handle, file], null if lock can not be created
+     */
+    private function lockConfigFile($configFile)
+    {
+        $lockFile = $configFile . '.lock';
+        $handle = @fopen($lockFile, 'c');
+        if ($handle === false) {
+            return null;
+        }
+        if (!flock($handle, LOCK_EX)) {
+            fclose($handle);
+            return null;
+        }
+        return [$handle, $lockFile];
+    }
+
+    /**
+     * Release a lock from lockConfigFile and remove the lock file.
+     * Removing it is safe : it is done after the config file is written,
+     * and a request getting the lock after always re-reads the config file before writing.
+     * @param array|null $lock
+     * @return void
+     */
+    private function unlockConfigFile($lock)
+    {
+        if ($lock) {
+            [$handle, $lockFile] = $lock;
+            flock($handle, LOCK_UN);
+            fclose($handle);
+            @unlink($lockFile);
+        }
     }
 
 }

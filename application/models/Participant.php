@@ -2947,7 +2947,8 @@ class Participant extends LSActiveRecord
      */
     public static function canUseDuplicateFinder()
     {
-        $encryptionduplicateindexkey = App()->getConfig('encryptionduplicateindexkey');
+        /* Initialize the sodium component first : it adds encryptionduplicateindexkey if missing (after an upgrade) */
+        Yii::app()->getComponent('sodium');
         /* can not use it */
         if (empty(App()->getConfig('encryptionduplicateindexkey'))) {
             return false;
