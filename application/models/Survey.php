@@ -2310,6 +2310,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
             $survey = self::model()->findByPk($surveyId);
             if ($survey && $survey->encryption_method === 'I' && $survey->getResolvedEncryptionMethod('I') !== $method) {
                 self::model()->updateByPk($surveyId, ['encryption_method' => $method]);
+                /* updateByPk : the cached survey is outdated */
+                unset(self::$findByPkCache[$surveyId]);
                 $updatedSurveyIds[] = (int) $surveyId;
             }
         }
@@ -2365,6 +2367,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
             $survey = self::model()->findByPk($surveyId);
             if ($survey && $survey->getResolvedEncryptionMethod('I') === 'H') {
                 self::model()->updateByPk($surveyId, ['encryption_method' => 'B']);
+                /* updateByPk : the cached survey is outdated */
+                unset(self::$findByPkCache[$surveyId]);
                 $updatedSurveyIds[] = (int) $surveyId;
             }
         }
@@ -2427,8 +2431,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
         }
         self::model()->updateByPk($this->sid, ['encryption_method' => 'B']);
         $this->encryption_method = 'B';
-        /* updateByPk : the cached surveys are outdated */
-        self::model()->resetCache();
+        /* updateByPk : the cached survey is outdated */
+        unset(self::$findByPkCache[$this->sid]);
         return true;
     }
 
