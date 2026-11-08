@@ -944,6 +944,7 @@ class ParticipantsAction extends SurveyCommonAction
                 . "var notPairedErrorTxt = '" . gT("You have to pair this field with an existing attribute.") . "';\n"
                 . "var onlyOnePairedErrorTxt = '" . gT("Only one CSV attribute is mapped with central attribute.") . "';\n"
                 . "var cannotAcceptErrorTxt='" . gT("This list cannot accept survey participant attributes.") . "';\n"
+                . "var moveBackTxt = '" . gT("Move %s back to the CSV field names", 'js') . "';\n"
                 . "var separator = '" . sanitize_paranoid_string($_POST['separatorused']) . "';\n"
                 . "var thefilepath = '" . $sRandomFileName . "';\n"
                 . "var filterblankemails = '" . sanitize_paranoid_string($filterblankemails) . "';\n";
@@ -1008,16 +1009,24 @@ class ParticipantsAction extends SurveyCommonAction
             and it's associated lime_participant_attribute_names_lang table
             for each NEW attribute being created in this import process */
             foreach ($newarray as $key => $value) {
-                if (!is_scalar($value) || in_array(strtolower((string) $value), $participantColumns)) {
+                // Trimmed like the CSV header line parsed below
+                $csvFieldName = trim((string) $key);
+                // Neither the attribute name nor the CSV field it is filled from may be a core participant column
+                if (
+                    !is_scalar($value)
+                    || in_array(strtolower((string) $value), $participantColumns)
+                    || in_array(strtolower($csvFieldName), $participantColumns)
+                ) {
                     continue;
                 }
                 $aData = array('attribute_type' => 'TB', 'defaultname' => $value, 'visible' => 'FALSE');
                 $insertid = ParticipantAttributeName::model()->storeAttributeCSV($aData);
                 /* Keep a record of the attribute_id for this new attribute
-                in the $mappedarray string. For example, if the new attribute
-                has attribute_id of 35 and is called "gender",
-                $mappedarray['35']='gender' */
-                $mappedarray[$insertid] = $value;
+                in the $mappedarray string, with the CSV field name (not the attribute name
+                the user may have typed), since that is what the CSV columns are matched against.
+                For example, if the new attribute has attribute_id of 35 and is created from
+                the CSV field "gender", $mappedarray['35']='gender' */
+                $mappedarray[$insertid] = $csvFieldName;
             }
         }
         if (!isset($uploadcharset)) {
@@ -1748,8 +1757,9 @@ class ParticipantsAction extends SurveyCommonAction
      *   'ParticipantAttributeNamesDropdown' (array|null),
      *   'oper' (string) ['edit'|'new']
      * Requires global 'participantpanel' 'update' permission when editing, 'create' when adding
-     * Echoes json-encoded array 'success' (array), 'successMessage' (string)
-     * @return void
+     * Echoes json-encoded array 'success' (array), 'successMessage' (string),
+     * or an error when neither the default name nor any translation is filled in
+     * @return void|false False if saving failed and the transaction was rolled back
      */
     public function editAttributeName()
     {
@@ -1768,6 +1778,16 @@ class ParticipantsAction extends SurveyCommonAction
         $ParticipantAttributeNamesDropdown = Yii::app()->request->getPost('ParticipantAttributeNamesDropdown');
         $sEncryptedAfterChange = $AttributeNameAttributes['encrypted'];
         $cryptMethod = App()->getConfig('CPDB_encryption_method', 'B');
+
+        // The default name is optional, but the attribute needs a name in at least one place
+        $aNames = array_merge([$AttributeNameAttributes['defaultname'] ?? ''], is_array($AttributeNameLanguages) ? $AttributeNameLanguages : []);
+        $aNonEmptyNames = array_filter($aNames, function ($name) {
+            return !ParticipantAttributeName::isBlankName($name);
+        });
+        if (empty($aNonEmptyNames)) {
+            $this->ajaxHelper::outputError(gT('Name can not be empty.'));
+            return;
+        }
 
         // encryption/decryption MUST be done in a one synchronous step, either all succeed or none
         $oDB = Yii::app()->db;
@@ -1843,7 +1863,8 @@ class ParticipantsAction extends SurveyCommonAction
     }
 
     /**
-     * Deletes a translation from an Attribute, if it has at least one translation
+     * Deletes a translation from an Attribute, if another translation remains
+     * and the attribute keeps a nonblank name (default name or another translation)
      * Requires POST 'attribute_id' (int), 'lang' (string) [language-code]
      * Requires global 'participantpanel' 'update' permission
      * Echoes 'success' (boolean), 'successMessage' (string|null), 'errorMessage' (string|null)
@@ -1859,12 +1880,23 @@ class ParticipantsAction extends SurveyCommonAction
         $attribute_id = Yii::app()->request->getPost('attribute_id');
         $lang = Yii::app()->request->getPost('lang');
         $AttributePackage = ParticipantAttributeName::model()->findByPk($attribute_id);
-        if (count($AttributePackage->participant_attribute_names_lang) > 1) {
-            ParticipantAttributeNameLang::model()->deleteByPk(array("attribute_id" => $attribute_id, "lang" => $lang));
-            $this->ajaxHelper::outputSuccess(gT("Language successfully deleted"));
-        } else {
+        if (count($AttributePackage->participant_attribute_names_lang) <= 1) {
             $this->ajaxHelper::outputError(gT("There has to be at least one language."));
+            return;
         }
+        // The default name is optional: Don't delete the only nonblank name
+        $bNameRemains = !ParticipantAttributeName::isBlankName($AttributePackage->defaultname);
+        foreach ($AttributePackage->participant_attribute_names_lang as $oNameLang) {
+            if ($oNameLang->lang !== $lang && !ParticipantAttributeName::isBlankName($oNameLang->attribute_name)) {
+                $bNameRemains = true;
+            }
+        }
+        if (!$bNameRemains) {
+            $this->ajaxHelper::outputError(gT('Name can not be empty.'));
+            return;
+        }
+        ParticipantAttributeNameLang::model()->deleteByPk(array("attribute_id" => $attribute_id, "lang" => $lang));
+        $this->ajaxHelper::outputSuccess(gT("Language successfully deleted"));
     }
     /**
      * Deletes a single Attribute via AJAX-call

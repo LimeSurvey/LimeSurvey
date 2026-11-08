@@ -1,5 +1,6 @@
 <div class="modal-header">
-    <h5 class="modal-title"><?php eT("Delete user"); ?></h5>
+    <h5 class="modal-title" id="UserManagement-action-modal-title"><?php eT("Delete user"); ?></h5>
+    <span class="visually-hidden" id="UserManagement-action-modal-title-dialogsr"><?= gT('Dialog') ?></span>
     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 </div>
 <div class="modal-body">

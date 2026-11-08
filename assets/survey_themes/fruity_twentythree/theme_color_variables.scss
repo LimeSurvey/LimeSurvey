@@ -35,6 +35,14 @@ $g-300: #dddee8;
 $g-200: #eeeff7;
 $g-100: #f9f9fb;
 
+// Text colour on a $base-color background (filled primary buttons, checked
+// button-type answers, highlighted navbar menu items). Neither $white nor
+// $g-900 reaches the WCAG 2.2 AA 4.5:1 ratio on every theme variation, so it
+// is picked per variation: $white if it passes, else $g-900, else $black.
+// Apple → $g-900 (5.75:1), Blueberry → $black (5.38:1),
+// Grape → $white (5.07:1), Mango → $g-900 (4.63:1).
+$base-color-contrast: color-contrast($base-color, $g-900, $white, 4.5);
+
 $theme-colors: (
   "primary": $base-color,
   "secondary": $g-600,

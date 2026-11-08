@@ -33,6 +33,7 @@ require_once 'Zend/Queue/Adapter/AdapterAbstract.php';
  * @subpackage Adapter
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @deprecated Deprecated since 1.26.1 and will be removed in a future version: Zend Platform and its Job Queue are discontinued
  */
 class Zend_Queue_Adapter_PlatformJobQueue extends Zend_Queue_Adapter_AdapterAbstract
 {
@@ -50,6 +51,8 @@ class Zend_Queue_Adapter_PlatformJobQueue extends Zend_Queue_Adapter_AdapterAbst
      */
     public function __construct($options, ?Zend_Queue $queue = null)
     {
+        trigger_error(get_class($this) . ' is deprecated and will be removed in a future version', E_USER_DEPRECATED);
+
         parent::__construct($options, $queue);
 
         if (!extension_loaded("jobqueue_client")) {

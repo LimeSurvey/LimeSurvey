@@ -306,7 +306,13 @@ class GlobalSettings extends SurveyCommonAction
         SettingGlobal::setSetting('defaultthemeteeditormode', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('defaultthemeteeditormode', 'default')));
         SettingGlobal::setSetting('javascriptdebugbcknd', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('javascriptdebugbcknd', false)));
         SettingGlobal::setSetting('javascriptdebugfrntnd', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('javascriptdebugfrntnd', false)));
-        SettingGlobal::setSetting('maintenancemode', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('maintenancemode', 'off')));
+        // "hard-cli" would lock the administrator out, it can only be set from the command line (console.php setMaintenanceMode)
+        $maintenanceMode = Yii::app()->getRequest()->getPost('maintenancemode', SettingGlobal::MAINTENANCE_MODE_OFF);
+        $allowedMaintenanceModes = [SettingGlobal::MAINTENANCE_MODE_OFF, SettingGlobal::MAINTENANCE_MODE_SOFT, SettingGlobal::MAINTENANCE_MODE_HARD];
+        if (!in_array($maintenanceMode, $allowedMaintenanceModes, true)) {
+            $maintenanceMode = SettingGlobal::MAINTENANCE_MODE_OFF;
+        }
+        SettingGlobal::setSetting('maintenancemode', $maintenanceMode);
         SettingGlobal::setSetting('defaultBreadcrumbMode', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('defaultBreadcrumbMode', 'short')));
 
         //security: for failed login attempts by user/admin

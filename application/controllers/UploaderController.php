@@ -55,6 +55,11 @@ class UploaderController extends SurveyController
         $sMode = Yii::app()->request->getParam('mode');
         $sPreview = (int) Yii::app()->request->getParam('preview', 0);
 
+        // No file may be stored or deleted while the maintenance mode keeps participants from taking surveys
+        if (($bDelete || $sMode == "upload") && SettingGlobal::areParticipantsLocked()) {
+            $this->endRequestWithMaintenanceMessage(gT("Our survey site is currently undergoing maintenance."), 'text');
+        }
+
         // Validate and filter and throw error if problems
         // Using 'futmp_'.randomChars(15).'_'.$pathinfo['extension'] for filename, then remove all other characters
         $sFileGetContentFiltered = preg_replace('/[^a-zA-Z0-9_]/', '', (string) $sFileGetContent);
@@ -405,7 +410,8 @@ class UploaderController extends SurveyController
                      errorTooMuch: '" . gT('The maximum number of files has been uploaded. You may return back to survey.', 'js') . "',
                      errorNeedMoreConfirm: '" . gT("You need to upload %s more files for this question.\nAre you sure you want to exit?", 'js') . "',
                      deleteFile : '" . gT('Delete', 'js') . "',
-                     editFile : '" . gT('Edit', 'js') . "'
+                     editFile : '" . gT('Edit', 'js') . "',
+                     errorUnknown : '" . gT('An unknown error occurred', 'js') . "'
                     }
         ";
 

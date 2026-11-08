@@ -31,6 +31,9 @@ class QuestionResolver
     /** The `aid` marking a question's free-text "Other" column. */
     private const OTHER_AID = 'other';
 
+    /** The `aid` marking a multiple choice "Other" tick column. */
+    private const OTHER_CHECKED_AID = 'otherchecked';
+
     /** Array (Numbers); its sibling ';' is Array (Texts). */
     private const ARRAY_NUMBERS_TYPE = ':';
 
@@ -194,9 +197,10 @@ class QuestionResolver
      *   gender, 5 point choice). Several picks are an IN list, and "Other" is
      *   just another stored code.
      * - One column per option, holding 'Y' when ticked (multiple choice). The
-     *   picks are subquestion ids, each resolving to its own column, and
-     *   "Other" is not among them: ticking it stores free text in a separate
-     *   column, so the only trace of the tick is that the text is there.
+     *   picks are subquestion ids, each resolving to its own column. "Other"
+     *   has a tick column of its own holding 'Y' too, in surveys activated
+     *   with it; older surveys only store the free text, so there the only
+     *   trace of the tick is that the text is there.
      *
      * @return ResolvedCondition[]
      */
@@ -222,6 +226,11 @@ class QuestionResolver
 
         foreach ($codes as $code) {
             if ($code === self::OTHER_CODE) {
+                $otherCheckedColumn = $this->getOtherCheckedColumn($qid);
+                if ($otherCheckedColumn !== null) {
+                    $optionColumns[] = $otherCheckedColumn;
+                    continue;
+                }
                 $conditions[] = new ResolvedCondition(
                     [$this->requireOtherColumn($qid)],
                     ResolvedCondition::OPERATOR_NOT_EMPTY,
@@ -590,5 +599,13 @@ class QuestionResolver
         }
 
         return $column;
+    }
+
+    /** The "Other" tick column, or null for surveys activated without it. */
+    private function getOtherCheckedColumn(int $qid): ?string
+    {
+        $this->requireOtherColumn($qid);
+
+        return $this->map->getColumnByAid($qid, self::OTHER_CHECKED_AID);
     }
 }

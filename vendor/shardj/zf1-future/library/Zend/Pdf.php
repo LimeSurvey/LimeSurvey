@@ -1106,7 +1106,7 @@ class Zend_Pdf
         $this->_pageNumbers    = [];
         $count = 1;
         foreach ($this->pages as $page) {
-            $pageDictionaryHashId = spl_object_hash($page->getPageDictionary()->getObject());
+            $pageDictionaryHashId = spl_object_id($page->getPageDictionary()->getObject());
             $this->_pageReferences[$pageDictionaryHashId] = $page;
             $this->_pageNumbers[$count++]                 = $page;
         }
@@ -1162,7 +1162,7 @@ class Zend_Pdf
         }
 
         // Page reference is a PDF page dictionary reference
-        $pageDictionaryHashId = spl_object_hash($pageElement->getObject());
+        $pageDictionaryHashId = spl_object_id($pageElement->getObject());
         if (!isset($this->_pageReferences[$pageDictionaryHashId])) {
             return null;
         }
@@ -1245,7 +1245,7 @@ class Zend_Pdf
                     throw new Zend_Pdf_Exception('Font dictionary has to be an indirect object or object reference.');
                 }
 
-                $fontResourcesUnique[spl_object_hash($fontDictionary->getObject())] = $fontDictionary;
+                $fontResourcesUnique[spl_object_id($fontDictionary->getObject())] = $fontDictionary;
             }
         }
 
@@ -1300,7 +1300,7 @@ class Zend_Pdf
                     throw new Zend_Pdf_Exception('Font dictionary has to be an indirect object or object reference.');
                 }
 
-                $resourceId = spl_object_hash($fontDictionary->getObject());
+                $resourceId = spl_object_id($fontDictionary->getObject());
                 if (isset($fontResourcesUnique[$resourceId])) {
                     continue;
                 } else {
