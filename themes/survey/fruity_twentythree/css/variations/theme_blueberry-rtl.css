@@ -12155,6 +12155,13 @@ Responsive navbar-brand image CSS
 #survey-nav .dropdown-menu > li > a {
   color: #1e1e1e;
 }
+#survey-nav .dropdown-menu > li > a:hover,
+#survey-nav .dropdown-menu > li > a:focus,
+#survey-nav .dropdown-menu > li > a:active,
+#survey-nav .dropdown-menu > li > a.active,
+#survey-nav .dropdown-menu > .active > a {
+  color: #fff;
+}
 #survey-nav #main-dropdown .list-group-item {
   border: none;
 }
@@ -12304,15 +12311,15 @@ Responsive navbar-brand image CSS
 .btn-secondary {
   background-color: #9094a7;
   border-color: #9094a7;
-  color: #ffffff;
+  color: #1e1e1e;
 }
 .btn-secondary:hover, .btn-secondary:focus, .btn-secondary:active, .btn-secondary.active, .btn-secondary:active:focus, .btn-secondary.dropdown-toggle.show, .btn-secondary.dropdown-toggle.show:focus {
-  color: #ffffff;
+  color: #1e1e1e;
   background-color: #9094a7;
   border-color: #9094a7;
 }
 .btn-secondary:hover {
-  color: #ffffff;
+  color: #1e1e1e;
   box-shadow: 0px 0px 0px 3px rgba(123, 97, 255, 0.4);
 }
 .btn-secondary:focus, .btn-secondary:active, .btn-secondary.active, .btn-secondary:active:focus, .btn-secondary.dropdown-toggle.show, .btn-secondary.dropdown-toggle.show:focus {
@@ -12454,15 +12461,15 @@ Responsive navbar-brand image CSS
 .btn-light {
   background-color: #eeeff7;
   border-color: #eeeff7;
-  color: #ffffff;
+  color: #1e1e1e;
 }
 .btn-light:hover, .btn-light:focus, .btn-light:active, .btn-light.active, .btn-light:active:focus, .btn-light.dropdown-toggle.show, .btn-light.dropdown-toggle.show:focus {
-  color: #ffffff;
+  color: #1e1e1e;
   background-color: #eeeff7;
   border-color: #eeeff7;
 }
 .btn-light:hover {
-  color: #ffffff;
+  color: #1e1e1e;
   box-shadow: 0px 0px 0px 3px rgba(123, 97, 255, 0.4);
 }
 .btn-light:focus, .btn-light:active, .btn-light.active, .btn-light:active:focus, .btn-light.dropdown-toggle.show, .btn-light.dropdown-toggle.show:focus {
@@ -12514,15 +12521,15 @@ Responsive navbar-brand image CSS
 .btn-cancel {
   background-color: #9094a7;
   border-color: #9094a7;
-  color: #ffffff;
+  color: #1e1e1e;
 }
 .btn-cancel:hover, .btn-cancel:focus, .btn-cancel:active, .btn-cancel.active, .btn-cancel:active:focus, .btn-cancel.dropdown-toggle.show, .btn-cancel.dropdown-toggle.show:focus {
-  color: #ffffff;
+  color: #1e1e1e;
   background-color: #9094a7;
   border-color: #9094a7;
 }
 .btn-cancel:hover {
-  color: #ffffff;
+  color: #1e1e1e;
   box-shadow: 0px 0px 0px 3px rgba(123, 97, 255, 0.4);
 }
 .btn-cancel:focus, .btn-cancel:active, .btn-cancel.active, .btn-cancel:active:focus, .btn-cancel.dropdown-toggle.show, .btn-cancel.dropdown-toggle.show:focus {
@@ -12729,13 +12736,13 @@ Responsive navbar-brand image CSS
 }
 
 .btn-check + .btn-primary:hover {
-  color: #ffffff;
+  color: #fff;
   background-color: #3D67FF;
   border-color: #3D67FF;
   box-shadow: none;
 }
 .btn-check + .btn-primary:active, .btn-check + .btn-primary.active, .btn-check + .btn-primary:active:focus {
-  color: #ffffff;
+  color: #fff;
   background-color: #3D67FF;
   border-color: #3D67FF;
   box-shadow: none;
@@ -12747,13 +12754,13 @@ Responsive navbar-brand image CSS
   box-shadow: none;
 }
 .btn-check:active + .btn-primary {
-  color: #ffffff;
+  color: #fff;
   background-color: #3D67FF;
   border-color: #3D67FF;
   box-shadow: none;
 }
 .btn-check:checked + .btn-primary, .btn-check:checked + .btn-primary:focus, .btn-check:focus:checked + .btn-primary {
-  color: #ffffff;
+  color: #fff;
   background-color: #3D67FF;
   border-color: #3D67FF;
   box-shadow: none;
@@ -14405,6 +14412,10 @@ body.error-page .error-link {
   .slider-list .ls-slider-answer-row {
     margin-top: 20px;
   }
+  .slider-list .ls-slider-item-horizontal .ls-slider-answer-row {
+    /* Keep the default distance: The question-numeric-slider package reserves 48px for its tooltip, this theme moves the tooltip closer to the handle (see above) and pads the item instead */
+    margin-top: 20px;
+  }
   .slider-list .ls-slider-item-horizontal .slider-right {
     order: 4;
   }
@@ -15745,6 +15756,11 @@ body > .bootstrap-select .dropdown-item p:last-child {
 
 body > .bootstrap-select .dropdown-item {
   white-space: nowrap;
+}
+
+body > .bootstrap-select .dropdown-menu {
+  width: auto;
+  max-width: none;
 }
 
 .dropdown-menu {

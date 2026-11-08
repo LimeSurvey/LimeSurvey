@@ -48,6 +48,16 @@ abstract class Response extends Dynamic
     }
 
     /**
+     * @inheritdoc
+     * Also stores the multiple choice Other tick that goes with the Other text
+     */
+    public function encryptSave($runValidation = true, $attributes = null)
+    {
+        $attributes = Survey::setOtherCheckedFromText($this, $attributes);
+        return parent::encryptSave($runValidation, $attributes);
+    }
+
+    /**
      * Get all files related to this response and (optionally) question ID.
      *
      * @param int $qid

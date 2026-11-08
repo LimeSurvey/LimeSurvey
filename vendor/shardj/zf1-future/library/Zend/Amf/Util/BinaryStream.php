@@ -74,6 +74,7 @@ class Zend_Amf_Util_BinaryStream
 
         $this->_stream       = $stream;
         $this->_needle       = 0;
+        // phpcs:ignore PHPCompatibility.IniDirectives.RemovedIniDirectives.mbstring_func_overloadDeprecatedRemoved -- the directive exists on PHP 7.4
         $this->_mbStringFunctionsOverloaded = function_exists('mb_strlen') && (ini_get('mbstring.func_overload') !== '') && ((int)ini_get('mbstring.func_overload') & 2);
         $this->_streamLength = $this->_mbStringFunctionsOverloaded ? mb_strlen($stream, '8bit') : strlen($stream);
         $this->_bigEndian    = (pack('l', 1) === "\x00\x00\x00\x01");

@@ -32,7 +32,7 @@ $(document).ready(function () {
             $("#" + name + "-div").removeClass('d-none');
         } else {
             $("#" + name + "-div").addClass('d-none');
-            $("#answer" + name).val('');
+            $("#answer" + name).val('').removeAttr('aria-invalid');
         }
     });
 
@@ -40,6 +40,8 @@ $(document).ready(function () {
         var name = $(this).data('name');
         if (!$(this).val()) {
             $("#java" + $(this).attr('name')).val('');
+        } else {
+            $(this).removeAttr('aria-invalid');
         }
         checkconditions(this.value, this.name, this.type);
     });

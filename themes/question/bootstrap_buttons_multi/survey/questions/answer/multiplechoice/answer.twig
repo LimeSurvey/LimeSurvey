@@ -10,6 +10,8 @@
  * @var $otherTextRight
  * @var $otherInputSize
  * @var $otherMaxLength
+ * @var $otherMandatoryTipId id of the shown "please specify" tip, else empty
+ * @var $otherInvalid the submit was blocked because Other is ticked without text
  */
  #}
 <!-- Multiple Choice -->
@@ -45,6 +47,8 @@
                     id="answer{{ name }}other"
                     name="{{ name }}_Cother"
                     aria-labelledby="label-id-{{ name }}"
+                    {% if otherMandatoryTipId %} aria-describedby="{{ otherMandatoryTipId }}" {% endif %}
+                    {% if otherInvalid %} aria-invalid="true" {% endif %}
                     data-name="{{ name }}other"
                     {% if otherInputSize %} size="{{ otherInputSize }}" {% endif %}
                     {% if otherMaxLength %} maxlength="{{ otherMaxLength }}" {% endif %}
