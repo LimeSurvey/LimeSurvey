@@ -150,6 +150,12 @@ class StatisticsUserController extends SurveyController
             'params'    => [':surveyid' => $iSurveyID, ':parent_qid' => 0, ':attribute' => 'public_statistics', ':value' => '1'],
             'order'     => 'g.group_order, t.question_order'
         ]);
+        /* Hardened encrypted answers can not be counted : remove encrypted questions (like admin statistics) */
+        if ($survey->oOptions->encryption_method == 'H') {
+            $questions = array_values(array_filter($questions, function ($question) {
+                return $question->encrypted !== 'Y';
+            }));
+        }
 
         //...while this is the array from copy/paste which we don't want to replace because this is a nasty source of error
         $allfields = [];
