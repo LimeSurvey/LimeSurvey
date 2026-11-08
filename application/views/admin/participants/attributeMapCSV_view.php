@@ -62,6 +62,12 @@
                         </div>
                     <?php endforeach; ?>
                 </div>
+                <?php if ($duplicateControlDisable) {
+                    App()->getController()->widget('ext.AlertWidget.AlertWidget', [
+                        'text' => gT("Duplicate control by first name, last name, and email is disabled for the central participant database because of an error in your configuration."),
+                        'type' => 'warning',
+                    ]);
+                } ?>
                 <?php if ($participant_id_exists || !$duplicateControlDisable) { ?>
                     <div class='explanation'>
                         <div class="explanation-row">
@@ -82,12 +88,7 @@
                             </label>
                         </div>
                     </div>
-                <?php } else {
-                    App()->getController()->widget('ext.AlertWidget.AlertWidget', [
-                        'text' => gT("Duplicate control by first name, last name, and email is disabled for the central participant database because of an error in your configuration."),
-                        'type' => 'warning',
-                    ]);
-                } ?>
+                <?php } ?>
             </div>
         </div>
     </div>
