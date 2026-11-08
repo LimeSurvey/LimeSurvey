@@ -253,14 +253,14 @@ abstract class Zend_Oauth_Token
         $params = [];
         $body   = $response->getBody();
         if (empty($body)) {
-            return;
+            return $params;
         }
 
         // validate body based on acceptable characters...todo
         $parts = explode('&', $body);
         foreach ($parts as $kvpair) {
-            $pair = explode('=', $kvpair);
-            $params[rawurldecode($pair[0])] = rawurldecode($pair[1]);
+            $pair = explode('=', $kvpair, 2);
+            $params[rawurldecode($pair[0])] = rawurldecode($pair[1] ?? '');
         }
         return $params;
     }

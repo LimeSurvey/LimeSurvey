@@ -117,20 +117,27 @@ if (empty($errorinupload)) {
 }
 
 ?>
-<div id='attribute-map-csv-modal' class="modal fade" tabindex="-1" role="dialog">
+<?php $displayParticipantsUrl = App()->createUrl("admin/participants/sa/displayParticipants"); ?>
+<div id='attribute-map-csv-modal' class="modal fade" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="attribute-map-csv-modal-title" data-bs-backdrop="static">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title"><?php eT("CPDB CSV summary"); ?></h5>
-                <a href="<?= App()->createUrl("admin/participants/sa/displayParticipants") ?>" type="button" class="btn-close" aria-label="Close"></a>
+                <h2 class="modal-title h5" id="attribute-map-csv-modal-title"><?php eT("CPDB CSV summary"); ?></h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<?php eT("Close"); ?>"></button>
             </div>
             <div class="modal-body">
                 <?= $alerts ?>
             </div>
             <div class="modal-footer">
-                <a href="<?= App()->createUrl("admin/participants/sa/displayParticipants") ?>" class="btn btn-outline-secondary"><?php eT("OK");?></a>
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"><?php eT("OK");?></button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+<script>
+    // However the summary is closed (Close, OK or Escape): Go to the participants list instead of the stale mapping page
+    document.getElementById('attribute-map-csv-modal').addEventListener('hidden.bs.modal', function () {
+        window.location.href = <?= json_encode($displayParticipantsUrl) ?>;
+    });
+</script>
 

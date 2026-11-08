@@ -231,6 +231,14 @@ class LimeExpressionManager
      */
     private $qid2code;
     /**
+     * Mapping of the Other SGQA of a multiple choice question to the column storing its tick.
+     * Only for questions whose response table has that column. It is not an expression variable.
+     *
+     * @example ['Q150_Cother'] = 'Q150_Cotherchecked'
+     * @var array
+     */
+    private $other2otherChecked = [];
+    /**
      * array of mappings of JavaScript Variable names to Question number (qid)
      *
      * @example ['java38612X13X161other'] = '161'
@@ -3388,6 +3396,7 @@ class LimeExpressionManager
         $this->qcode2sgqa = [];
         $this->tempVars = [];
         $this->qid2code = [];    // List of codes for each question - needed to know which to NULL if a question is irrelevant
+        $this->other2otherChecked = [];
         $this->jsVar2qid = [];
         $this->qcode2sgq = [];
         $this->alias2varName = [];
@@ -3483,6 +3492,10 @@ class LimeExpressionManager
             }
             $sgqa = $fielddata['fieldname'];
             $type = $fielddata['type'];
+            if (($fielddata['aid'] ?? '') === 'otherchecked') {
+                $this->other2otherChecked["Q{$fielddata['qid']}_Cother"] = $sgqa;
+                continue;
+            }
             $mandatory = $fielddata['mandatory'];
             $groupNum = (isset($fielddata['gid']) ? $fielddata['gid'] : '');
             $aid = (isset($fielddata['aid']) ? $fielddata['aid'] : '');
@@ -4920,6 +4933,9 @@ class LimeExpressionManager
                         'type'  => $knownVar['type'],
                         'value' => $value,
                     ];
+                    if (isset($LEM->other2otherChecked[$knownVar['sgqa']]) && (string) $value !== '') {
+                        $LEM->setOtherCheckedValue($knownVar['sgqa'], 'Y', $LEM->updatedValues);
+                    }
                 } else {
                     $sessionState->removeStartingValue($k);
                 }
@@ -6753,10 +6769,9 @@ class LimeExpressionManager
                         //$mandatoryTip .= "\n".sprintf($this->gT("If you choose '%s' please also specify your choice in the accompanying text field."),$othertext);
                         $sMandatoryText = "\n" . sprintf($this->gT("If you choose '%s' please also specify your choice in the accompanying text field."), $othertext);
                         $mandatoryTip .= App()->twigRenderer->renderPartial(
-                            '/survey/questions/question_help/mandatory_tip.twig',
+                            '/survey/questions/question_help/mandatory_tip_other.twig',
                             [
                                 'sMandatoryText' => $sMandatoryText,
-                                'part'           => 'other',
                                 'qInfo'          => $qInfo
                             ]
                         );
@@ -7167,6 +7182,9 @@ class LimeExpressionManager
                 $sessionState->setFieldValue($sgqa, null);
                 $updatedValues[$sgqa] = null;
                 $LEM->updatedValues[$sgqa] = null;
+                if (isset($LEM->other2otherChecked[$sgqa])) {
+                    $LEM->setOtherCheckedValue($sgqa, null, $updatedValues);
+                }
             }
         } elseif ($qInfo['type'] == Question::QT_ASTERISK_EQUATION) {
             // Process relevant equations, even if hidden, and write the result to the database
@@ -7252,6 +7270,9 @@ class LimeExpressionManager
                 $sessionState->setFieldValue($sq, null);
                 $updatedValues[$sq] = null;
                 $LEM->updatedValues[$sq] = null;
+                if (isset($LEM->other2otherChecked[$sq])) {
+                    $LEM->setOtherCheckedValue($sq, null, $updatedValues);
+                }
             }
         }
         // Regardless of whether relevant or hidden, always set a $_SESSION for quanda_helper, use default value if exist
@@ -9245,6 +9266,9 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                                         $aFiles[$i]->size = floatval($aFiles[$i]->size);
                                     }
                                     $value = ls_json_encode($aFiles);  // so that EM doesn't try to parse it.
+                                } else {
+                                    // All files removed: '' instead of an empty list so its correctly validated when mandatory
+                                    $value = '';
                                 }
                             }
                             break;
@@ -9261,6 +9285,10 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     ];
                     $updatedValues[$sq] = $_update;
                     $LEM->updatedValues[$sq] = $_update;
+                    if (isset($LEM->other2otherChecked[$sq])) {
+                        $otherChecked = (string) $value !== '' || !empty($_POST[$sq . 'cbox']);
+                        $LEM->setOtherCheckedValue($sq, $otherChecked ? 'Y' : '', $updatedValues);
+                    }
                 } else {  // irrelevant, so database will be NULLed separately
                     // Must unset the value, rather than setting to '', so that EM can reuse the default value as needed.
                     $sessionState->removeFieldValue($sq);
@@ -9270,6 +9298,9 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     ];
                     $updatedValues[$sq] = $_update;
                     $LEM->updatedValues[$sq] = $_update;
+                    if (isset($LEM->other2otherChecked[$sq])) {
+                        $LEM->setOtherCheckedValue($sq, null, $updatedValues);
+                    }
                 }
             }
         }
@@ -9280,11 +9311,37 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
     }
 
     /**
+     * Set the tick of the Other option, in session and in the values to save
+     * @param string $sq the Other SGQA, a key of $other2otherChecked
+     * @param string|null $value 'Y', '' or null when irrelevant
+     * @param array $updatedValues
+     */
+    private function setOtherCheckedValue($sq, $value, &$updatedValues)
+    {
+        $otherChecked = $this->other2otherChecked[$sq];
+        $_SESSION[$this->sessid][$otherChecked] = $value;
+        $_update = [
+            'type'  => Question::QT_M_MULTIPLE_CHOICE,
+            'value' => $value,
+        ];
+        $updatedValues[$otherChecked] = $_update;
+        $this->updatedValues[$otherChecked] = $_update;
+    }
+
+    /**
+     * Other is ticked but its text is empty. Uses the stored tick when the response table has the column,
+     * else only the current request (the tick is not stored).
      * @param string $sq
      * @return boolean
      */
     public static function isOtherCheckedWithoutValue($sq)
     {
+        $LEM =& LimeExpressionManager::singleton();
+        if (isset($LEM->other2otherChecked[$sq])) {
+            $values = $_SESSION[$LEM->sessid] ?? [];
+            return ($values[$LEM->other2otherChecked[$sq]] ?? '') === 'Y'
+                && (string) ($values[$sq] ?? '') === '';
+        }
         if (empty($_POST[$sq . 'cbox'])) {
             return false;
         }
@@ -10208,6 +10265,18 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     $rankingItemQids[$rankingItem['title']] = $rankingItem['qid'];
                 }
             }
+            // List answer options: Their filters are stored under the row ids Q{qid}_S{aid}, which the answer list does not know
+            $listAnswerRowdivids = [];
+            if (
+                ($q['info']['type'] == Question::QT_L_LIST || $q['info']['type'] == Question::QT_EXCLAMATION_LIST_DROPDOWN)
+                && !empty($LEM->q2subqInfo[$qid]['subqs'])
+            ) {
+                foreach ($LEM->q2subqInfo[$qid]['subqs'] as $listSubq) {
+                    if ($listSubq['csuffix'] != '_Cother') {
+                        $listAnswerRowdivids[substr($listSubq['sqsuffix'], 1)] = $listSubq['rowdivid'];
+                    }
+                }
+            }
             if (!empty($ansList)) {
                 $_scale = -1;
                 foreach ($ansList as $ans => $value) {
@@ -10224,6 +10293,9 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     $subQeqn = '';
                     $rowdivid = $sgqas[0] . $ansInfo[1];
                     $valueText = '[VALUE: ' . $valInfo[0] . ']';
+                    if (isset($listAnswerRowdivids[$ansInfo[1]])) {
+                        $rowdivid = $listAnswerRowdivids[$ansInfo[1]];
+                    }
                     if (isset($rankingItemQids[$ansInfo[1]])) {
                         $rowdivid = 'Q' . $qid . '_S' . $rankingItemQids[$ansInfo[1]];
                         $valueText = '';
@@ -10390,6 +10462,16 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
     {
         $LEM =& LimeExpressionManager::singleton();
         return $LEM->sid;
+    }
+
+    /**
+     * Returns the survey mode the EM singleton was started with
+     * @return string 'survey', 'group' or 'question'
+     */
+    public static function getLEMsurveyMode()
+    {
+        $LEM =& LimeExpressionManager::singleton();
+        return $LEM->surveyMode;
     }
 
     /**

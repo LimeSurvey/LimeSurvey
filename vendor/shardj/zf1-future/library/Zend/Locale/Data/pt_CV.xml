@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE ldml SYSTEM "../../common/dtd/ldml.dtd">
-<!-- Copyright © 1991-2013 Unicode, Inc.
-CLDR data files are interpreted according to the LDML specification (http://unicode.org/reports/tr35/)
+<!-- Copyright © 1991-2026 Unicode, Inc.
 For terms of use, see http://www.unicode.org/copyright.html
+SPDX-License-Identifier: Unicode-3.0
+CLDR data files are interpreted according to the LDML specification (http://unicode.org/reports/tr35/)
 -->
 <ldml>
 	<identity>
-		<version number="$Revision: 9061 $"/>
-		<generation date="$Date: 2013-07-20 12:27:45 -0500 (Sat, 20 Jul 2013) $"/>
+		<version number="$Revision$"/>
 		<language type="pt"/>
 		<territory type="CV"/>
 	</identity>
@@ -15,7 +15,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 		<timeZoneNames>
 			<metazone type="Azores">
 				<short>
-					<generic>∅∅∅</generic>
+					<generic>AZOT</generic>
 					<standard>∅∅∅</standard>
 					<daylight>∅∅∅</daylight>
 				</short>
@@ -46,11 +46,11 @@ For terms of use, see http://www.unicode.org/copyright.html
 	<numbers>
 		<currencies>
 			<currency type="CVE">
+				<symbol>​</symbol>
 				<decimal>$</decimal>
 			</currency>
 			<currency type="PTE">
-				<decimal>,</decimal>
-				<group> </group>
+				<symbol>PTE</symbol>
 			</currency>
 		</currencies>
 	</numbers>

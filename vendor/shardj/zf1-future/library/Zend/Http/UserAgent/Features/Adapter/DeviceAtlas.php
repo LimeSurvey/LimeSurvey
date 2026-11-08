@@ -33,6 +33,7 @@ require_once 'Zend/Http/UserAgent/Features/Adapter.php';
  * @subpackage UserAgent
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @deprecated Deprecated since 1.26.1 and will be removed in a future version: the DeviceAtlas PHP API this adapter was written for is discontinued
  */
 class Zend_Http_UserAgent_Features_Adapter_DeviceAtlas implements Zend_Http_UserAgent_Features_Adapter
 {
@@ -44,6 +45,8 @@ class Zend_Http_UserAgent_Features_Adapter_DeviceAtlas implements Zend_Http_User
      */
     public static function getFromRequest($request, array $config)
     {
+        trigger_error(__CLASS__ . ' is deprecated and will be removed in a future version', E_USER_DEPRECATED);
+
         if (!class_exists('Mobi_Mtld_DA_Api')) {
             if (!isset($config['deviceatlas'])) {
                 require_once 'Zend/Http/UserAgent/Features/Exception.php';

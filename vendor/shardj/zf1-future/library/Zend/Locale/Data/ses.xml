@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE ldml SYSTEM "../../common/dtd/ldml.dtd">
-<!-- Copyright © 1991-2013 Unicode, Inc.
-CLDR data files are interpreted according to the LDML specification (http://unicode.org/reports/tr35/)
+<!-- Copyright © 1991-2026 Unicode, Inc.
 For terms of use, see http://www.unicode.org/copyright.html
+SPDX-License-Identifier: Unicode-3.0
+CLDR data files are interpreted according to the LDML specification (http://unicode.org/reports/tr35/)
 -->
 <ldml>
 	<identity>
-		<version number="$Revision: 9728 $"/>
-		<generation date="$Date: 2014-02-12 22:14:13 -0600 (Wed, 12 Feb 2014) $"/>
+		<version number="$Revision$"/>
 		<language type="ses"/>
 	</identity>
 	<localeDisplayNames>
@@ -66,7 +66,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="AI">Angiiya</territory>
 			<territory type="AL">Albaani</territory>
 			<territory type="AM">Armeeni</territory>
-			<territory type="AN">Hollandu Antiiyey Laboo</territory>
 			<territory type="AO">Angoola</territory>
 			<territory type="AR">Argentine</territory>
 			<territory type="AS">Ameriki Samoa</territory>
@@ -150,7 +149,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="IE">Irlandu</territory>
 			<territory type="IL">Israyel</territory>
 			<territory type="IN">Indu laboo</territory>
-			<territory type="IO">Britiši Indu teekoo laama</territory>
+			<territory type="IO" draft="provisional">Britiši Indu teekoo laama</territory>
 			<territory type="IQ">Iraak</territory>
 			<territory type="IR">Iraan</territory>
 			<territory type="IS">Ayceland</territory>
@@ -185,7 +184,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="MD">Moldovi</territory>
 			<territory type="MG">Madagascar</territory>
 			<territory type="MH">Maršal gungey</territory>
-			<territory type="MK">Maacedooni</territory>
 			<territory type="ML">Maali</territory>
 			<territory type="MM">Maynamar</territory>
 			<territory type="MN">Mongooli</territory>
@@ -287,16 +285,11 @@ For terms of use, see http://www.unicode.org/copyright.html
 		</territories>
 	</localeDisplayNames>
 	<characters>
-		<exemplarCharacters>[a ã b c d e ẽ f g h i j k l m n ɲ ŋ o õ p q r s š t u w x y z ž]</exemplarCharacters>
+		<exemplarCharacters>[aã b c d eẽ f g h i j k l m n ɲ ŋ oõ p q r sš t u w x y zž]</exemplarCharacters>
 		<exemplarCharacters type="auxiliary">[v]</exemplarCharacters>
-		<exemplarCharacters type="index">[A Ã B C D E Ẽ F G H I J K L M N Ɲ Ŋ O Õ P Q R S Š T U W X Y Z Ž]</exemplarCharacters>
+		<exemplarCharacters type="index">[AÃ B C D EẼ F G H I J K L M N Ɲ Ŋ OÕ P Q R SŠ T U W X Y ZŽ]</exemplarCharacters>
+		<exemplarCharacters type="numbers">[  \- ‑ . % ‰ + 0 1 2 3 4 5 6 7 8 9]</exemplarCharacters>
 	</characters>
-	<delimiters>
-		<quotationStart>“</quotationStart>
-		<quotationEnd>”</quotationEnd>
-		<alternateQuotationStart>‘</alternateQuotationStart>
-		<alternateQuotationEnd>’</alternateQuotationEnd>
-	</delimiters>
 	<dates>
 		<calendars>
 			<calendar type="generic">
@@ -319,6 +312,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 					<dateFormatLength type="short">
 						<dateFormat>
 							<pattern>d/M/y GGGGG</pattern>
+							<datetimeSkeleton>GGGGGyMd</datetimeSkeleton>
 						</dateFormat>
 					</dateFormatLength>
 				</dateFormats>
@@ -447,7 +441,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 				</quarters>
 				<dayPeriods>
 					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
+						<dayPeriodWidth type="abbreviated">
 							<dayPeriod type="am">Adduha</dayPeriod>
 							<dayPeriod type="pm">Aluula</dayPeriod>
 						</dayPeriodWidth>
@@ -482,6 +476,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 					<dateFormatLength type="short">
 						<dateFormat>
 							<pattern>d/M/y</pattern>
+							<datetimeSkeleton>yMd</datetimeSkeleton>
 						</dateFormat>
 					</dateFormatLength>
 				</dateFormats>
@@ -519,7 +514,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 						<dateFormatItem id="MMMMd">d MMMM</dateFormatItem>
 						<dateFormatItem id="MMMMEd">E d MMMM</dateFormatItem>
 						<dateFormatItem id="ms">m:ss</dateFormatItem>
-						<dateFormatItem id="y">y</dateFormatItem>
 						<dateFormatItem id="yM">M/y</dateFormatItem>
 						<dateFormatItem id="yMEd">E d/M/y</dateFormatItem>
 						<dateFormatItem id="yMM">MM/y</dateFormatItem>
@@ -577,6 +571,23 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<currencyFormatLength>
 				<currencyFormat type="standard">
 					<pattern>#,##0.00¤</pattern>
+					<pattern alt="alphaNextToNumber" draft="provisional">#,##0.00 ¤</pattern>
+				</currencyFormat>
+			</currencyFormatLength>
+			<currencyFormatLength type="short">
+				<currencyFormat type="standard">
+					<pattern type="1000" count="other" draft="provisional">0K¤</pattern>
+					<pattern type="10000" count="other" draft="provisional">00K¤</pattern>
+					<pattern type="100000" count="other" draft="provisional">000K¤</pattern>
+					<pattern type="1000000" count="other" draft="provisional">0M¤</pattern>
+					<pattern type="10000000" count="other" draft="provisional">00M¤</pattern>
+					<pattern type="100000000" count="other" draft="provisional">000M¤</pattern>
+					<pattern type="1000000000" count="other" draft="provisional">0G¤</pattern>
+					<pattern type="10000000000" count="other" draft="provisional">00G¤</pattern>
+					<pattern type="100000000000" count="other" draft="provisional">000G¤</pattern>
+					<pattern type="1000000000000" count="other" draft="provisional">0T¤</pattern>
+					<pattern type="10000000000000" count="other" draft="provisional">00T¤</pattern>
+					<pattern type="100000000000000" count="other" draft="provisional">000T¤</pattern>
 				</currencyFormat>
 			</currencyFormatLength>
 		</currencyFormats>
@@ -672,6 +683,9 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Malgaaši Fraŋ</displayName>
 			</currency>
 			<currency type="MRO">
+				<displayName>Mooritaani Ugiya (1973–2017)</displayName>
+			</currency>
+			<currency type="MRU">
 				<displayName>Mooritaani Ugiya</displayName>
 			</currency>
 			<currency type="MUR">
@@ -707,13 +721,19 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<currency type="SHP">
 				<displayName>Seŋ Helena Fraŋ</displayName>
 			</currency>
-			<currency type="SLL">
+			<currency type="SLE">
 				<displayName>Leeon</displayName>
+			</currency>
+			<currency type="SLL">
+				<displayName>Leeon (1964—2022)</displayName>
 			</currency>
 			<currency type="SOS">
 				<displayName>Somaali Šiiliŋ</displayName>
 			</currency>
 			<currency type="STD">
+				<displayName>Sao Tome nda Prinsipe Dobra (1977–2017)</displayName>
+			</currency>
+			<currency type="STN">
 				<displayName>Sao Tome nda Prinsipe Dobra</displayName>
 			</currency>
 			<currency type="SZL">
@@ -758,4 +778,3 @@ For terms of use, see http://www.unicode.org/copyright.html
 		</messages>
 	</posix>
 </ldml>
-

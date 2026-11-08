@@ -39,7 +39,7 @@ class Zend_Tool_Framework_Client_Config
     /**
      * @param array $options
      */
-    public function __config($options = [])
+    public function __config($options = []) // phpcs:ignore PHPCompatibility.FunctionNameRestrictions.ReservedFunctionNames.MethodDoubleUnderscore -- public API
     {
         if ($options) {
             $this->setOptions($options);

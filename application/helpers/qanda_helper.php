@@ -163,8 +163,7 @@ function retrieveAnswers($ia)
 
     //If this question is mandatory but wasn't answered in the last page
     //add a message HIGHLIGHTING the question
-    $sessionState = SurveySessionState::forSurvey((int) Yii::app()->getConfig('surveyID'));
-    $mandatory_msg = (($sessionState->getStep() != $sessionState->getMaxStep()) || ($sessionState->getStep() == $sessionState->getPrevStep())) ? mandatory_message($ia) : '';
+    $mandatory_msg = isMandatoryMessageShown() ? mandatory_message($ia) : '';
     $qtitle .= $mandatory_msg;
     $question_text['man_message'] = $mandatory_msg;
 
@@ -179,7 +178,7 @@ function retrieveAnswers($ia)
     $qtitle .= $validation_msg;
     $question_text['valid_message'] = $validation_msg;
 
-    if (!(($sessionState->getStep() != $sessionState->getMaxStep()) || ($sessionState->getStep() == $sessionState->getPrevStep()))) {
+    if (!isMandatoryMessageShown()) {
         $isValid = true; // don't want to show any validation messages.
     }
 
@@ -247,6 +246,16 @@ function retrieveAnswers($ia)
     }
     //New Return
     return array($qanda, $inputnames);
+}
+
+/**
+ * Mandatory and validation messages are shown once the participant tried to leave the page, or came back to it
+ * @return bool
+ */
+function isMandatoryMessageShown()
+{
+    $sessionState = SurveySessionState::forSurvey((int) Yii::app()->getConfig('surveyID'));
+    return $sessionState->getStep() != $sessionState->getMaxStep() || $sessionState->getStep() == $sessionState->getPrevStep();
 }
 
 function mandatory_message($ia)

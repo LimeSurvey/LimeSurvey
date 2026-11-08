@@ -67,6 +67,18 @@ class OptoutController extends LSYii_Controller
     public $defaultAction = 'tokens';
 
     /**
+     * Ends every action with the maintenance page while participants are locked out, see
+     * LSYii_Controller::filterParticipantsLocked().
+     *
+     * @return array
+     */
+    #[\Override]
+    public function filters()
+    {
+        return array_merge(parent::filters(), ['participantsLocked']);
+    }
+
+    /**
      * Display the confirmation page for individual survey opt-out.
      * Provides both a legacy GET link (optin_link) for old themes and a
      * secure POST link (optin_post_link) for updated themes.

@@ -414,6 +414,13 @@ class DataEntry extends SurveyCommonAction
                     }
                 }
             }
+            $otherCheckedFromText = [];
+            foreach ($targetSchema->getColumnNames() as $checkedColumn) {
+                $otherColumn = substr((string) $checkedColumn, 0, -7);
+                if (substr((string) $checkedColumn, -14) === '_Cotherchecked' && !in_array($checkedColumn, $fieldMap, true) && in_array($otherColumn, $fieldMap, true)) {
+                    $otherCheckedFromText[$checkedColumn] = $otherColumn;
+                }
+            }
             foreach ($sourceResponses as $sourceResponse) {
                 $iOldID = $sourceResponse->id;
                 // Using plugindynamic model because I dont trust surveydynamic.
@@ -447,6 +454,9 @@ class DataEntry extends SurveyCommonAction
                     } elseif ($sourceEncrypted) {
                         $targetResponse[$targetField] = LSActiveRecord::decryptSingle($value);
                     }
+                }
+                foreach ($otherCheckedFromText as $checkedColumn => $otherColumn) {
+                    $targetResponse[$checkedColumn] = $targetResponse[$otherColumn] === null ? null : '';
                 }
                 $rankingJSONs = [];
 
@@ -518,6 +528,7 @@ class DataEntry extends SurveyCommonAction
             if ($preserveIDs && $isPgsql) {
                 $this->syncResponseIdSequence($iSurveyId);
             }
+            $this->fillOtherCheckedFromText($iSurveyId, $targetSchema, $fieldMap, array_values($aSRIDConversions), $encryptedAttributes);
             if (empty($responseErrors) && !$skipped) {
                 Yii::app()->session['flashmessage'] = sprintf(gT("%s old response(s) were successfully imported."), $imported);
             }
@@ -1663,6 +1674,59 @@ class DataEntry extends SurveyCommonAction
     }
 
     /**
+     * Imported responses from a table without the tick column of multiple choice Other: text always ticks Other.
+     * One query per Other column and per 1000 responses, not per response.
+     * @param integer $iSurveyId
+     * @param CDbTableSchema $targetSchema
+     * @param array $fieldMap imported source column => target column
+     * @param integer[] $importedIds ids of the imported responses, other responses are not changed
+     * @param array $encryptedAttributes encrypted columns of the target table
+     * @return void
+     */
+    private function fillOtherCheckedFromText($iSurveyId, $targetSchema, array $fieldMap, array $importedIds, array $encryptedAttributes)
+    {
+        if (empty($importedIds)) {
+            return;
+        }
+        $db = Yii::app()->db;
+        foreach ($targetSchema->getColumnNames() as $checkedColumn) {
+            if (substr((string) $checkedColumn, -14) !== '_Cotherchecked' || in_array($checkedColumn, $fieldMap, true)) {
+                continue;
+            }
+            $otherColumn = substr((string) $checkedColumn, 0, -7);
+            if (!$targetSchema->getColumn($otherColumn)) {
+                continue;
+            }
+            $checked = in_array($checkedColumn, $encryptedAttributes, false) ? LSActiveRecord::encryptSingle('Y') : 'Y';
+            $quotedChecked = $db->quoteColumnName($checkedColumn);
+            $quotedOther = $db->quoteColumnName($otherColumn);
+            foreach (array_chunk($importedIds, 1000) as $ids) {
+                $db->createCommand()->update(
+                    "{{responses_$iSurveyId}}",
+                    [$checkedColumn => $checked],
+                    "($quotedChecked IS NULL OR $quotedChecked = '') AND $quotedOther IS NOT NULL AND $quotedOther <> ''"
+                    . " AND " . $db->quoteColumnName('id') . " IN (" . implode(',', array_map('intval', $ids)) . ")"
+                );
+            }
+        }
+    }
+
+    /**
+     * Stored tick of the multiple choice Other option: text always ticks Other, like in the survey
+     * @param array $field fieldmap entry
+     * @param string $value posted value
+     * @return string
+     */
+    private function getOtherCheckedValue(array $field, $value)
+    {
+        if (($field['aid'] ?? '') !== 'otherchecked') {
+            return $value;
+        }
+        $otherText = Yii::app()->request->getPost("Q{$field['qid']}_Cother", '');
+        return ($value === 'Y' || (string) $otherText !== '') ? 'Y' : '';
+    }
+
+    /**
      * dataentry::update()
      * update dataentry
      * @return void
@@ -1723,7 +1787,7 @@ class DataEntry extends SurveyCommonAction
             if ($fieldname == 'id') {
                 continue;
             }
-            $thisvalue = Yii::app()->request->getPost($fieldname, '');
+            $thisvalue = $this->getOtherCheckedValue($irow, Yii::app()->request->getPost($fieldname, ''));
             // For questions, if the "Unseen" checkbox is checked, we must set the field to null.
             // There are some special cases we need to handle.
             if ($irow['type'] == Question::QT_R_RANKING) {
@@ -2041,6 +2105,10 @@ class DataEntry extends SurveyCommonAction
                             $rankValues[] = $posValue;
                         }
                         $insert_data[$fieldname] = json_encode($rankValues);
+                        continue;
+                    }
+                    if (($irow['aid'] ?? '') === 'otherchecked') {
+                        $insert_data[$fieldname] = $this->getOtherCheckedValue($irow, Yii::app()->request->getPost($fieldname, ''));
                         continue;
                     }
                     if (isset($_POST[$fieldname])) {
@@ -2573,6 +2641,7 @@ class DataEntry extends SurveyCommonAction
                             $meacount = count($cdata['mearesult']);
                             $cdata['meacount'] = $meacount;
                             $cdata['dcols'] = $dcols;
+                            $cdata['hasOtherChecked'] = $arQuestion->other == 'Y' && $survey->hasOtherCheckedColumn($arQuestion->qid);
                             break;
                         case Question::QT_I_LANGUAGE: //Language Switch
                             $cdata['slangs'] = $survey->allLanguages;
