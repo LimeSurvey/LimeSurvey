@@ -10217,6 +10217,18 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     $rankingItemQids[$rankingItem['title']] = $rankingItem['qid'];
                 }
             }
+            // List answer options: Their filters are stored under the row ids Q{qid}_S{aid}, which the answer list does not know
+            $listAnswerRowdivids = [];
+            if (
+                ($q['info']['type'] == Question::QT_L_LIST || $q['info']['type'] == Question::QT_EXCLAMATION_LIST_DROPDOWN)
+                && !empty($LEM->q2subqInfo[$qid]['subqs'])
+            ) {
+                foreach ($LEM->q2subqInfo[$qid]['subqs'] as $listSubq) {
+                    if ($listSubq['csuffix'] != '_Cother') {
+                        $listAnswerRowdivids[substr($listSubq['sqsuffix'], 1)] = $listSubq['rowdivid'];
+                    }
+                }
+            }
             if (!empty($ansList)) {
                 $_scale = -1;
                 foreach ($ansList as $ans => $value) {
@@ -10233,6 +10245,9 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     $subQeqn = '';
                     $rowdivid = $sgqas[0] . $ansInfo[1];
                     $valueText = '[VALUE: ' . $valInfo[0] . ']';
+                    if (isset($listAnswerRowdivids[$ansInfo[1]])) {
+                        $rowdivid = $listAnswerRowdivids[$ansInfo[1]];
+                    }
                     if (isset($rankingItemQids[$ansInfo[1]])) {
                         $rowdivid = 'Q' . $qid . '_S' . $rankingItemQids[$ansInfo[1]];
                         $valueText = '';
