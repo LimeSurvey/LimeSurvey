@@ -61,15 +61,19 @@ class Update_722 extends DatabaseUpdateBase
      */
     private function fillDuplicateFinder()
     {
-        /* Initialize sodium (adds encryptionduplicateindexkey if missing), then check if it can be used */
-        try {
-            if (!\Participant::canUseDuplicateFinder()) {
-                return;
-            }
-        } catch (\Exception $e) {
+        /* No model usage : the computation is the one of this version (see Participant::getDuplicateFinderValue) */
+        /* Initialize sodium : adds encryptionduplicateindexkey if missing */
+        $sodium = \Yii::app()->getComponent('sodium');
+        $key = (string) \Yii::app()->getConfig('encryptionduplicateindexkey');
+        $bits = (int) \Yii::app()->getConfig('CPDB_duplicatefinder_bits');
+        if ($key === '' || $bits == 0) {
+            /* Can not be used or disabled */
+            return;
+        }
+        if ($bits < 32 || $bits > 256 || $bits % 4 !== 0) {
             /* Invalid CPDB_duplicatefinder_bits : do not break the update, fixed later by maintenance */
             \Yii::log(
-                "Update_722 : unable to fill participants duplicatefinder : " . $e->getMessage(),
+                "Update_722 : unable to fill participants duplicatefinder : CPDB_duplicatefinder_bits must be a multiple of 4 between 32 and 256.",
                 'error',
                 'application.update'
             );
@@ -98,16 +102,25 @@ class Update_722 extends DatabaseUpdateBase
             foreach ($participants as $participant) {
                 try {
                     foreach ($encryptedCoreAttributes as $attribute) {
-                        $participant[$attribute] = \LSActiveRecord::decryptSingle((string) $participant[$attribute], 'B');
+                        $value = (string) $participant[$attribute];
+                        if ($value !== '') {
+                            $sodium->setEncryptionMethod('B');
+                            $participant[$attribute] = $sodium->decrypt($value);
+                        }
                     }
                 } catch (\Exception $e) {
                     /* Unable to decrypt (wrong key) : keep empty, fixed later by maintenance */
                     $decryptErrors++;
                     continue;
                 }
+                $hash = hash_hmac('sha256', json_encode([
+                    mb_strtolower((string) $participant['firstname']),
+                    mb_strtolower((string) $participant['lastname']),
+                    mb_strtolower((string) $participant['email']),
+                ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), $key);
                 $this->db->createCommand()->update(
                     '{{participants}}',
-                    ['duplicatefinder' => \Participant::getDuplicateFinderValue($participant)],
+                    ['duplicatefinder' => substr($hash, 0, $bits / 4)],
                     'participant_id = :participant_id',
                     [':participant_id' => $participant['participant_id']]
                 );
