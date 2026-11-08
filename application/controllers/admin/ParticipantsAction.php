@@ -3090,6 +3090,7 @@ class ParticipantsAction extends SurveyCommonAction
         }
         $limit = intval(App()->getConfig('CPDB_reencrypt_limit', 0));
         $processed = 0;
+        $failed = 0;
         $stilltoProcess = $count = Participant::model()->count();
         $criteria = new CDbCriteria();
         $criteria->order = "participant_id";
@@ -3113,10 +3114,11 @@ class ParticipantsAction extends SurveyCommonAction
             try {
                 $oParticipant->decrypt();
                 if (!$oParticipant->encryptSave(false)) {
-                    // Log it as error, but need to find situation where it can happen, maybe better a 500 error.
                     if ($transaction) {
                         $transaction->rollback();
                     }
+                    $failed++;
+                    $this->logParticipantSaveError($oParticipant, 'reencryptParticipantData');
                     continue;
                 }
                 $this->reencryptParticipantAttributes($oParticipant->participant_id, $encryptedAttributeIds, $cryptMethod);
@@ -3141,14 +3143,17 @@ class ParticipantsAction extends SurveyCommonAction
         }
         if ($stilltoProcess == 0) {
             App()->user->setState($stateId, null);
+        }
+        if ($stilltoProcess == 0 && $failed == 0) {
             App()->setFlashMessage(gT("All participant data have been re-encrypted."));
-        } else {
+        } elseif ($stilltoProcess > 0) {
             App()->setFlashMessage(sprintf(
                 gT("%s participant data have been re-encrypted; %s still need to be re-encrypted."),
                 $processed,
                 $stilltoProcess
             ));
         }
+        $this->setParticipantSaveErrorFlash($failed);
         App()->getController()->redirect(['admin/participants/sa/encryptionMaintenance']);
     }
 
@@ -3213,6 +3218,7 @@ class ParticipantsAction extends SurveyCommonAction
         }
         $limit = intval(App()->getConfig('CPDB_reencrypt_limit', 0));
         $processed = 0;
+        $failed = 0;
         $stilltoProcess = $count = Participant::model()->getDuplicateFinderInvalidCount();
         $criteria = new CDbCriteria();
         $criteria->order = "participant_id";
@@ -3230,7 +3236,8 @@ class ParticipantsAction extends SurveyCommonAction
                 $lastParticipantId = $oParticipant->participant_id;
                 App()->user->setState($stateId, $lastParticipantId);
             } else {
-                // Log it as error, but need to find situation where it can happen, maybe better a 500 error.
+                $failed++;
+                $this->logParticipantSaveError($oParticipant, 'recalculateDuplicateFinder');
             }
         }
         if ($lastParticipantId !== '') {
@@ -3240,15 +3247,53 @@ class ParticipantsAction extends SurveyCommonAction
         }
         if ($stilltoProcess == 0) {
             App()->user->setState($stateId, null);
+        }
+        if ($stilltoProcess == 0 && $failed == 0) {
             App()->setFlashMessage(gT("All participant duplicate indexes are up to date."));
-        } else {
+        } elseif ($stilltoProcess > 0) {
             App()->setFlashMessage(sprintf(
                 gT("%s duplicate finder entries saved, %s remaining."),
                 $processed,
                 $stilltoProcess
             ));
         }
+        $this->setParticipantSaveErrorFlash($failed);
         App()->getController()->redirect(['admin/participants/sa/encryptionMaintenance']);
+    }
+
+    /**
+     * Log a participant that could not be saved during encryption maintenance
+     * @param Participant $participant
+     * @param string $action
+     * @return void
+     */
+    private function logParticipantSaveError(Participant $participant, $action)
+    {
+        Yii::log(
+            sprintf(
+                '%s: participant %s could not be saved: %s',
+                $action,
+                $participant->participant_id,
+                json_encode($participant->getErrors())
+            ),
+            CLogger::LEVEL_ERROR,
+            'application.controllers.admin.ParticipantsAction'
+        );
+    }
+
+    /**
+     * Flash message for the participants that could not be saved during encryption maintenance
+     * @param integer $failed
+     * @return void
+     */
+    private function setParticipantSaveErrorFlash($failed)
+    {
+        if ($failed > 0) {
+            App()->setFlashMessage(sprintf(
+                gT("%s participants could not be saved, see the error log."),
+                $failed
+            ), 'error');
+        }
     }
 
     /**
