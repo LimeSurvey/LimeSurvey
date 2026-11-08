@@ -213,6 +213,18 @@ $googleAnalyticsStyleOptions = array(
                         'htmlOptions' => ['class' => 'mt-2'],
                     ]);
                 } ?>
+                <?php
+                /* Existing participants are not re-encrypted : survey not active with a participant list, or group / global settings (inherited by surveys) */
+                if (!($oSurvey instanceof Survey) || (!$oSurvey->isActive && $oSurvey->hasTokensTable)) {
+                    App()->getController()->widget('ext.AlertWidget.AlertWidget', [
+                        'text' => $oSurvey instanceof Survey
+                            ? gT("Changing the encryption method does not re-encrypt the existing survey participants. After a change, export and re-import the survey participant list, otherwise filters and duplicate checks can miss participants encrypted with the previous method.")
+                            : gT("Changing the encryption method does not re-encrypt the existing survey participants of the surveys inheriting it. After a change, export and re-import the survey participant list of these surveys, otherwise filters and duplicate checks can miss participants encrypted with the previous method."),
+                        'type' => 'warning',
+                        'htmlOptions' => ['class' => 'mt-2'],
+                    ]);
+                }
+                ?>
             </div>
 
             <!-- Enable assessment mode -->

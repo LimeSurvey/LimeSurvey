@@ -2228,7 +2228,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
         }
         /* Active survey : responses are encrypted with the current method, it can not be changed */
         if (!$this->getIsNewRecord() && $this->active == 'Y') {
-            $storedSurvey = self::model()->findByPk($this->sid);
+            $storedSurvey = self::model()->findByPkNoCache($this->sid);
             if (
                 $storedSurvey
                 && $storedSurvey->getResolvedEncryptionMethod() !== $this->getResolvedEncryptionMethod($this->$attribute)
@@ -2990,7 +2990,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             && $this->encryption_method === 'I'
             && $this->isAttributeModifiedFromStored('gsid')
         ) {
-            $storedSurvey = self::model()->findByPk($this->sid);
+            $storedSurvey = self::model()->findByPkNoCache($this->sid);
             if ($storedSurvey) {
                 $previousMethod = $storedSurvey->getResolvedEncryptionMethod('I');
                 if ($this->getResolvedEncryptionMethod('I') !== $previousMethod) {
