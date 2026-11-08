@@ -81,8 +81,11 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
     public function save($runValidation = true, $attributes = null)
     {
         $parentModified = !$this->getIsNewRecord() && $this->isAttributeModifiedFromStored('parent_id');
+        /* Active surveys inheriting the encryption method : keep it, responses are encrypted with it */
+        $activeInheritedMethods = $parentModified ? Survey::getActiveInheritedEncryptionMethods() : [];
         $saved = parent::save($runValidation, $attributes);
         if ($saved && $parentModified) {
+            Survey::keepActiveInheritedEncryptionMethods($activeInheritedMethods);
             Survey::forceBasicForInheritedHardenedQuota();
         }
         return $saved;

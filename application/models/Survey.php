@@ -2226,6 +2226,20 @@ class Survey extends LSActiveRecord implements PermissionInterface
         if (!$this->isAttributeModifiedFromStored($attribute)) {
             return;
         }
+        /* Active survey : responses are encrypted with the current method, it can not be changed */
+        if (!$this->getIsNewRecord() && $this->active == 'Y') {
+            $storedSurvey = self::model()->findByPk($this->sid);
+            if (
+                $storedSurvey
+                && $storedSurvey->getResolvedEncryptionMethod() !== $this->getResolvedEncryptionMethod($this->$attribute)
+            ) {
+                $this->addError(
+                    $attribute,
+                    gT("The encryption method cannot be changed while the survey is active.")
+                );
+                return;
+            }
+        }
         if ($this->getResolvedEncryptionMethod($this->$attribute) !== 'H') {
             return;
         }
@@ -2258,6 +2272,70 @@ class Survey extends LSActiveRecord implements PermissionInterface
             }
         }
         return $encryptionMethod === 'H' ? 'H' : 'B';
+    }
+
+    /**
+     * Get the resolved encryption method of active surveys inheriting it.
+     * To be called before a change of the inherited method (group or global settings, group parent).
+     * @return string[] survey id => 'B' or 'H'
+     */
+    public static function getActiveInheritedEncryptionMethods()
+    {
+        $surveyIds = Yii::app()->db->createCommand()
+            ->select('sid')
+            ->from('{{surveys}}')
+            ->where("active = 'Y' AND encryption_method = 'I'")
+            ->queryColumn();
+        $methods = [];
+        foreach ($surveyIds as $surveyId) {
+            $survey = self::model()->findByPk($surveyId);
+            if ($survey) {
+                $methods[(int) $surveyId] = $survey->getResolvedEncryptionMethod('I');
+            }
+        }
+        return $methods;
+    }
+
+    /**
+     * Keep the encryption method of active surveys when the inherited method changed :
+     * responses are encrypted with this method.
+     * @param string[] $previousMethods from getActiveInheritedEncryptionMethods() before the change
+     * @param boolean $showFlashMessage show a warning with the list of updated surveys
+     * @return integer[] the updated survey ids
+     */
+    public static function keepActiveInheritedEncryptionMethods(array $previousMethods, $showFlashMessage = true)
+    {
+        $updatedSurveyIds = [];
+        foreach ($previousMethods as $surveyId => $method) {
+            $survey = self::model()->findByPk($surveyId);
+            if ($survey && $survey->encryption_method === 'I' && $survey->getResolvedEncryptionMethod('I') !== $method) {
+                self::model()->updateByPk($surveyId, ['encryption_method' => $method]);
+                $updatedSurveyIds[] = (int) $surveyId;
+            }
+        }
+        if ($showFlashMessage && !empty($updatedSurveyIds)) {
+            self::setKeptEncryptionMethodFlashMessage($updatedSurveyIds);
+        }
+        return $updatedSurveyIds;
+    }
+
+    /**
+     * Show the warning about active surveys that keep their encryption method
+     * @param integer[] $surveyIds
+     * @return void
+     */
+    public static function setKeptEncryptionMethodFlashMessage(array $surveyIds)
+    {
+        if (!(Yii::app() instanceof LSYii_Application)) {
+            return;
+        }
+        Yii::app()->setFlashMessage(
+            sprintf(
+                gT("These active surveys keep their current encryption method, because it cannot be changed while a survey is active: %s. They no longer inherit the encryption method."),
+                implode(', ', $surveyIds)
+            ),
+            'warning'
+        );
     }
 
     /**
@@ -2905,6 +2983,22 @@ class Survey extends LSActiveRecord implements PermissionInterface
     protected function beforeSave()
     {
         $this->lastmodified = gmdate('Y-m-d H:i:s');
+        /* Active survey moved to another group : keep the encryption method used for the responses */
+        if (
+            !$this->getIsNewRecord()
+            && $this->active == 'Y'
+            && $this->encryption_method === 'I'
+            && $this->isAttributeModifiedFromStored('gsid')
+        ) {
+            $storedSurvey = self::model()->findByPk($this->sid);
+            if ($storedSurvey) {
+                $previousMethod = $storedSurvey->getResolvedEncryptionMethod('I');
+                if ($this->getResolvedEncryptionMethod('I') !== $previousMethod) {
+                    $this->encryption_method = $previousMethod;
+                    self::setKeptEncryptionMethodFlashMessage([(int) $this->sid]);
+                }
+            }
+        }
         /* Moved to another group : can not inherit hardened if a quota uses an encrypted question */
         if (
             !$this->getIsNewRecord()

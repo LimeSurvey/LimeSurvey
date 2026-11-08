@@ -286,7 +286,11 @@ class GeneralSettings
                     'usecaptcha_saveandload'
                 ]
             ],
-            'encryption_method' => ['default' => 'I'],
+            /* Responses are encrypted with this method : can not be changed when survey is active */
+            'encryption_method' => [
+                'default' => 'I',
+                'canUpdate' => $surveyNotActive
+            ],
             'emailresponseto' => [],
             'emailnotificationto' => [],
             'googleanalyticsapikeysetting' => [],

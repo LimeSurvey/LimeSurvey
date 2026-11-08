@@ -32,6 +32,8 @@ class Update_722 extends DatabaseUpdateBase
         }
         /* Set global one to B (basic) if it's not hardened (only if I), didn't update any response table */
         $this->db->createCommand()->update("{{surveys_groupsettings}}", ["encryption_method" => "B"], "gsid = 0 AND (encryption_method IS NULL OR encryption_method <> 'H')");
+        /* Active surveys : existing responses are encrypted with Basic, the method can not be changed while active */
+        $this->db->createCommand()->update("{{surveys}}", ["encryption_method" => "B"], "active = 'Y' AND (encryption_method IS NULL OR encryption_method = 'I')");
 
         /* Create the duplicatefinder in participants for checking duplicate */
         $participantsTable = $this->db->schema->getTable('{{participants}}', true);
