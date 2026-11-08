@@ -2288,16 +2288,8 @@ class Participant extends LSActiveRecord
 
                 // First check if token already has a participant_id in central database
                 // We don't check with permission, see issue #20704
-                // Like master : without participant_id, do not search duplicates if firstname, lastname and email are all empty
-                $existingParticipants = [];
-                if (
-                    !empty($oTokenDynamic->participant_id)
-                    || !empty($oTokenDynamic->firstname)
-                    || !empty($oTokenDynamic->lastname)
-                    || !empty($oTokenDynamic->email)
-                ) {
-                    $existingParticipants = self::getDuplicates($oTokenDynamic->attributes, false) ?: [];
-                }
+                // Without participant_id, getDuplicates doesn't search if firstname, lastname and email are all empty
+                $existingParticipants = self::getDuplicates($oTokenDynamic->attributes, false) ?: [];
                 /* If there is already an existing entry, add to the duplicate count */
                 if (!empty($existingParticipants)) {
                     $duplicate++;
@@ -2799,6 +2791,7 @@ class Participant extends LSActiveRecord
      * Find duplicates participant and return the array using default core system
      * If participant_id is is set and not empty : use it
      * Else duplicate are found using firstname, lastname, email and owner_uid
+     * If firstname, lastname and email are all empty : no duplicate (empty array)
      * @param string[]
      * @param false|integer owner_id to use, if false : get in all CPDB, never used if  participant_id is set
      * @return false|self[] false if duplicates can not be checked (duplicate finder disabled with encrypted core attributes)
@@ -2823,6 +2816,10 @@ class Participant extends LSActiveRecord
             'lastname' => $participant['lastname'] ?? '',
             'email' => $participant['email'] ?? '' ,
         ];
+        /* No firstname, lastname and email : can not be a duplicate (else all empty participants would match) */
+        if (implode('', array_map('strval', $duplicateCriteriaAttributes)) === '') {
+            return [];
+        }
         if (self::countCoreAttributeCrypted() == 0) {
             return self::findDuplicateNotCryted($duplicateCriteriaAttributes, $ownerid);
         }
