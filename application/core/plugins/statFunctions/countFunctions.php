@@ -69,7 +69,11 @@ class countFunctions
         if ($encrypted) {
             $surveyEncryptionmethod = Survey::model()->findByPk($surveyId)->oOptions->encryption_method;
             if ($surveyEncryptionmethod == 'H') {
-                return self::setErrorText($surveyId, sprintf(gT("Question code %s is encrypted, unable to get statistics with hardened encryption method."), CHtml::encode($qCode)));
+                /* Hardened encrypted answers can not be compared : show the error to user who can update the survey, else return 0 */
+                if (Permission::model()->hasSurveyPermission($surveyId, 'surveycontent')) {
+                    return sprintf(gT("Question code %s is encrypted, unable to get statistics with hardened encryption method."), CHtml::encode($qCode));
+                }
+                return 0;
             }
             /* Get the operator with the same rules than CDbCriteria::compare */
             $op = "";
@@ -83,7 +87,7 @@ class countFunctions
                 return self::setErrorText($surveyId, sprintf(gT("Question code %s is encrypted, unable to get statistics with comparisons."), CHtml::encode($qCode)));
             }
             /* Encrypt only the value and keep the operator */
-            $comparison = $op . LSActiveRecord::encryptSingle($value, $surveyEncryptionmethod); // $surveyEncryptionmethod is B currently
+            $comparison = $op . LSActiveRecord::encryptSingle($value, 'B'); // Hardened already returned : Basic only
         }
         $oCriteria->compare($sComparedColumn, $comparison);
         return intval(SurveyDynamic::model($surveyId)->count($oCriteria));
