@@ -125,7 +125,9 @@
             $bsWrapper.on('input', '.bs-searchbox input', function () {
                 var search = this.value;
                 var noResultsMessage = noResultsText.replace('%s', function () { return '"' + search + '"'; });
-                var count = $bsWrapper.find('[role="listbox"] [role="option"]').length;
+                {# Count from the filtered data, the DOM only has the visible part when virtual scroll is used #}
+                var picker = selectPicker.data('selectpicker');
+                var count = $.grep(picker.selectpicker.search.data, function (item) { return item.type === 'option'; }).length;
                 $bsWrapper.find('[role="listbox"] li.no-results').remove();
                 $noResults.text(noResultsMessage).prop('hidden', search === '' || count > 0);
                 clearTimeout(searchStatusTimer);
