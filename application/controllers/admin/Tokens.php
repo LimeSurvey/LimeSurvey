@@ -176,12 +176,9 @@ class Tokens extends SurveyCommonAction
             'screenout' => 0
         ];
 
-        $result = Yii::app()->db->createCommand(dbSelectTablesLike("{{old_tokens_" . intval($iSurveyId) . "_%}}"))->queryAll();
-        $tcount = count($result);
+        $oldlist = $this->getArchivedTokenTables($iSurveyId);
+        $tcount = count($oldlist);
         if ($tcount > 0) {
-            foreach ($result as $rows) {
-                $oldlist[] = substr((string) reset($rows), strlen((string) Yii::app()->db->tablePrefix), (strlen((string) reset($rows)) - strlen((string) Yii::app()->db->tablePrefix)));
-            }
             $aData['oldlist'] = $oldlist;
         }
 
@@ -3063,22 +3060,43 @@ class Tokens extends SurveyCommonAction
     }
 
     /**
+     * Returns the archived participant tables of a survey, without the table prefix
+     *
+     * Only tables named old_tokens_<surveyId>_<timestamp> are returned. The LIKE pattern alone
+     * would also match other surveys whose id starts with this one (the underscore is a wildcard).
+     *
+     * @param int $surveyId
+     * @return string[] Table names without prefix, sorted by name
+     */
+    private function getArchivedTokenTables($surveyId)
+    {
+        Yii::app()->loadHelper('database');
+        $prefix = (string) Yii::app()->db->tablePrefix;
+        $pattern = '/^' . preg_quote($prefix, '/') . 'old_tokens_' . (int) $surveyId . '_\d+$/';
+        $tableNames = Yii::app()->db->createCommand(dbSelectTablesLike("{{old_tokens_" . (int) $surveyId . "_%}}"))->queryColumn();
+        $archives = [];
+        foreach ($tableNames as $tableName) {
+            if (preg_match($pattern, (string) $tableName)) {
+                $archives[] = substr((string) $tableName, strlen($prefix));
+            }
+        }
+        sort($archives);
+        return $archives;
+    }
+
+    /**
      * Returns the posted 'oldtable' name if it is an archived participant table of this survey
      *
-     * Only tables named old_tokens_<surveyId>_<timestamp> that actually exist are accepted,
-     * so the name can never point to another survey's table or be used to inject SQL.
+     * Only the tables returned by getArchivedTokenTables() are accepted, so the name can never
+     * point to another survey's table or be used to inject SQL.
      *
      * @param int $surveyId
      * @return string|null The table name without prefix, null if the posted name is not acceptable
      */
     private function getRestorableTokenTable($surveyId)
     {
-        $oldTable = (string) Yii::app()->request->getPost('oldtable');
-        if (!preg_match('/^old_tokens_' . (int) $surveyId . '_\d+$/', $oldTable)) {
-            return null;
-        }
-        Yii::import('application.helpers.common_helper', true);
-        if (!tableExists("{{{$oldTable}}}")) {
+        $oldTable = Yii::app()->request->getPost('oldtable');
+        if (!is_string($oldTable) || !in_array($oldTable, $this->getArchivedTokenTables($surveyId), true)) {
             return null;
         }
         return $oldTable;
@@ -3236,12 +3254,9 @@ class Tokens extends SurveyCommonAction
             if (!$survey->hasTokensTable) {
                 Yii::app()->loadHelper('database');
                 Survey::model()->updateByPk($iSurveyId, array('tokenencryptionoptions' => ls_json_encode($aTokenencryptionoptions)));
-                $result = Yii::app()->db->createCommand(dbSelectTablesLike("{{old_tokens_" . intval($iSurveyId) . "_%}}"))->queryAll();
-                $tcount = count($result);
+                $oldlist = $this->getArchivedTokenTables($iSurveyId);
+                $tcount = count($oldlist);
                 if ($tcount > 0) {
-                    foreach ($result as $rows) {
-                        $oldlist[] = substr((string) reset($rows), strlen((string) Yii::app()->db->tablePrefix), (strlen((string) reset($rows)) - strlen((string) Yii::app()->db->tablePrefix)));
-                    }
                     $aData['oldlist'] = $oldlist;
                 }
 
