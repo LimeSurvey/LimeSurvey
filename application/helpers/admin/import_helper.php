@@ -2146,7 +2146,6 @@ function recoverSurveyResponses(int $surveyId, string $archivedResponseTableName
         for ($index = 0; $index < count($validatedColumns[$to]); $index++) {
             $source = $validatedColumns[$from][$index];
             $target = $validatedColumns[$to][$index];
-            $targetResponse->{$target} = $archivedResponse[$source];
             $sourceEncrypted = in_array($source, $archivedEncryptedAttributes, false);
             $value = $archivedResponse[$source];
             if ($value === null || $value === '') {
@@ -2171,12 +2170,19 @@ function recoverSurveyResponses(int $surveyId, string $archivedResponseTableName
                     $rankingJSONs[$newFieldName] = [];
                 }
 
-                $rankingJSONs[$newFieldName][] = $archivedResponse[$oldFieldName];
+                $value = $archivedResponse[$oldFieldName];
+                if (in_array($oldFieldName, $archivedEncryptedAttributes, false)) {
+                    $value = LSActiveRecord::decryptSingle($value);
+                }
+                $rankingJSONs[$newFieldName][] = $value;
             }
         }
 
         foreach ($rankingJSONs as $newFieldName => $value) {
-            $dataRow[$newFieldName] = json_encode($value);
+            /* The whole JSON is stored in the ranking column : encrypt it with the encryption method of the survey */
+            $dataRow[$newFieldName] = in_array($newFieldName, $encryptedAttributes, false)
+                ? LSActiveRecord::encryptSingle(json_encode($value), $encryptionMethod)
+                : json_encode($value);
         }
         $additionalFields = [
             'token',
