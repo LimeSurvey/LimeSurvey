@@ -1888,7 +1888,8 @@ class Participant extends LSActiveRecord
     {
         App()->loadHelper('update.updatedb');
         foreach ($addedAttributeIds as $attributeId) {
-            addColumn("{{tokens_$surveyId}}", $attributeId, 'string');
+            /* text like other participant attributes : encrypted values are longer than plain ones (hardened : 2 × length + 80) */
+            addColumn("{{tokens_$surveyId}}", $attributeId, 'text');
         }
         App()->db->schema->getTable("{{tokens_$surveyId}}", true); // Refresh schema cache just
         Token::model($surveyId)->refreshMetaData(); // Refresh model meta data
