@@ -1,10 +1,9 @@
-import { useQuery } from '@tanstack/react-query'
-
 import { hasPendingConditionLogicOperations, STATES } from 'helpers'
 
 import { isConditionOperationWaiting } from 'helpers/Buffer/operationsHandlers'
 
 import { useAppState } from './useAppState'
+import { useBufferOperations } from './useBuffer'
 
 /**
  * Question IDs whose condition operations are currently being sent to the server.
@@ -27,12 +26,7 @@ export const useInFlightConditionQids = () =>
  */
 export const useIsConditionRelevancePending = (question) => {
   // The raw buffer: OperationsBuffer would deep copy it on every render.
-  const { data: operations } = useQuery({
-    queryKey: [STATES.BUFFER],
-    queryFn: () => [],
-    cacheTime: Infinity,
-    staleTime: Infinity,
-  })
+  const operations = useBufferOperations()
   const [inFlightConditionQids] = useInFlightConditionQids()
   const qid = question?.qid
 

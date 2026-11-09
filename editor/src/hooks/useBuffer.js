@@ -6,13 +6,24 @@ import { OperationsBuffer, STATES } from 'helpers'
 
 import { useErrors } from './useErrors'
 
-export const useBuffer = () => {
-  let { data } = useQuery({
+/**
+ * The buffered operations as stored, without the deep copy OperationsBuffer
+ * makes: for components that only read them. Re-renders on every buffer change.
+ * @returns {Array} the buffered operations (don't mutate them)
+ */
+export const useBufferOperations = () => {
+  const { data } = useQuery({
     queryKey: [STATES.BUFFER],
     queryFn: () => [],
     cacheTime: Infinity,
     staleTime: Infinity,
   })
+
+  return data
+}
+
+export const useBuffer = () => {
+  const data = useBufferOperations()
 
   let { data: hash = '' } = useQuery({
     queryKey: [STATES.BUFFER_HASH],
