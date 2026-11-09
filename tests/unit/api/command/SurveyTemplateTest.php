@@ -23,38 +23,31 @@ class SurveyTemplateTest extends TestBaseClass
 {
     use AssertResponse;
 
-    /** @var mixed Public URL config before the test */
-    private $publicUrl;
-
-    /** @var string Request host info before the test */
-    private $hostInfo;
-
-    /** @var string Request base URL before the test */
-    private $baseUrl;
+    /** @var mixed Allowed hosts config before the test */
+    private $allowedHosts;
 
     /**
-     * Saves the URL settings changed by the tests
+     * Saves the URL and allowed hosts settings changed by the tests, and sets an allowed hosts list
      *
      * @return void
      */
     public function setUp(): void
     {
         parent::setUp();
-        $this->publicUrl = Yii::app()->getConfig('publicurl');
-        $this->hostInfo = Yii::app()->getRequest()->getHostInfo();
-        $this->baseUrl = Yii::app()->getRequest()->getBaseUrl();
+        self::$testHelper::saveUrlSettings();
+        $this->allowedHosts = Yii::app()->getConfig('allowedHosts');
+        Yii::app()->setConfig('allowedHosts', ['localhost']);
     }
 
     /**
-     * Restores the URL settings changed by the tests
+     * Restores the URL and allowed hosts settings changed by the tests
      *
      * @return void
      */
     public function tearDown(): void
     {
-        Yii::app()->setConfig('publicurl', $this->publicUrl);
-        Yii::app()->getRequest()->setHostInfo($this->hostInfo);
-        Yii::app()->getRequest()->setBaseUrl($this->baseUrl);
+        Yii::app()->setConfig('allowedHosts', $this->allowedHosts);
+        self::$testHelper::resetUrlSettings();
         parent::tearDown();
     }
 
@@ -111,10 +104,40 @@ class SurveyTemplateTest extends TestBaseClass
     }
 
     /**
+     * A publicurl that is not a plain http(s) base URL is not used
+     *
+     * @dataProvider untrustedPublicUrlProvider
+     * @param string $publicUrl The publicurl config value
+     * @return void
+     */
+    public function testTrustedBaseUrlRejectsUntrustedPublicUrl(string $publicUrl): void
+    {
+        Yii::app()->setConfig('publicurl', $publicUrl);
+        $this->setRequestUrl('http://localhost', '/limesurvey');
+
+        $this->assertNull($this->getTrustedBaseUrl());
+    }
+
+    /**
+     * Data provider for testTrustedBaseUrlRejectsUntrustedPublicUrl
+     *
+     * @return array<string, array{string}> Test case name => publicurl
+     */
+    public function untrustedPublicUrlProvider(): array
+    {
+        return [
+            'other scheme' => ['ftp://localhost/limesurvey'],
+            'with user' => ['http://user@localhost/limesurvey'],
+            'with query' => ['http://localhost/limesurvey?a=b'],
+            'with fragment' => ['http://localhost/limesurvey#a'],
+        ];
+    }
+
+    /**
      * Without publicurl, the request URL is used when it has no port or the default port
      *
      * @dataProvider defaultPortProvider
-     * @param string $hostInfo
+     * @param string $hostInfo The request host info, e.g. "http://localhost"
      * @return void
      */
     public function testTrustedBaseUrlAcceptsDefaultPort(string $hostInfo): void
@@ -128,7 +151,7 @@ class SurveyTemplateTest extends TestBaseClass
     /**
      * Data provider for testTrustedBaseUrlAcceptsDefaultPort
      *
-     * @return array
+     * @return array<string, array{string}> Test case name => request host info
      */
     public function defaultPortProvider(): array
     {
@@ -144,7 +167,7 @@ class SurveyTemplateTest extends TestBaseClass
      * Without publicurl, a port taken from the Host header must never be requested
      *
      * @dataProvider otherPortProvider
-     * @param string $hostInfo
+     * @param string $hostInfo The request host info, e.g. "http://localhost:9098"
      * @return void
      */
     public function testTrustedBaseUrlRejectsOtherPort(string $hostInfo): void
@@ -158,7 +181,7 @@ class SurveyTemplateTest extends TestBaseClass
     /**
      * Data provider for testTrustedBaseUrlRejectsOtherPort
      *
-     * @return array
+     * @return array<string, array{string}> Test case name => request host info
      */
     public function otherPortProvider(): array
     {
@@ -170,9 +193,23 @@ class SurveyTemplateTest extends TestBaseClass
     }
 
     /**
+     * Without publicurl and without an allowed hosts list, the request host is not checked, so it is never used
+     *
+     * @return void
+     */
+    public function testTrustedBaseUrlRequiresAllowedHostsWithoutPublicUrl(): void
+    {
+        Yii::app()->setConfig('publicurl', '');
+        Yii::app()->setConfig('allowedHosts', []);
+        $this->setRequestUrl('http://localhost', '/limesurvey');
+
+        $this->assertNull($this->getTrustedBaseUrl());
+    }
+
+    /**
      * Returns a permission model that denies every permission
      *
-     * @return Permission
+     * @return Permission A mocked permission model
      */
     private function getPermissionModelWithoutPermissions(): Permission
     {
@@ -185,8 +222,8 @@ class SurveyTemplateTest extends TestBaseClass
     /**
      * Sets the host info and base URL of the current request
      *
-     * @param string $hostInfo
-     * @param string $baseUrl
+     * @param string $hostInfo The host info, e.g. "http://localhost"
+     * @param string $baseUrl The base URL path, e.g. "/limesurvey"
      * @return void
      */
     private function setRequestUrl(string $hostInfo, string $baseUrl): void
@@ -198,7 +235,7 @@ class SurveyTemplateTest extends TestBaseClass
     /**
      * Calls SurveyTemplate::getTrustedBaseUrl()
      *
-     * @return string|null
+     * @return string|null The trusted base URL, or null if there is none
      */
     private function getTrustedBaseUrl(): ?string
     {

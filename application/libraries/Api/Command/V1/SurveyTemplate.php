@@ -68,8 +68,8 @@ class SurveyTemplate implements CommandInterface
      *     "subtitle": "What should we eat for lunch?"
      * }
      *
-     * @param Request $request
-     * @return Response
+     * @param Request $request The REST request, with the survey ID in "_id" and an optional "language"
+     * @return Response The template, title and subtitle, or an error response
      */
     public function run(Request $request)
     {
@@ -156,8 +156,8 @@ class SurveyTemplate implements CommandInterface
      * Renders the survey preview by requesting it from this installation
      * over HTTP, using the session of the current user.
      *
-     * @param int $surveyId
-     * @param string $language
+     * @param int $surveyId The survey ID
+     * @param string $language The language code to render the survey in
      * @return string|false The rendered survey page, or false on failure
      */
     private function getTemplateData($surveyId, $language)
@@ -193,7 +193,11 @@ class SurveyTemplate implements CommandInterface
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_COOKIE, $strCookie);
         $result = curl_exec($ch);
-        if (curl_errno($ch) || !is_string($result)) {
+        if (
+            curl_errno($ch)
+            || !is_string($result)
+            || curl_getinfo($ch, CURLINFO_RESPONSE_CODE) !== 200
+        ) {
             return false;
         }
         return $result;
@@ -203,9 +207,13 @@ class SurveyTemplate implements CommandInterface
      * Get the base URL for the internal survey preview request
      *
      * The configured publicurl is used when it is set. Otherwise the URL of
-     * the current request is used: its hostname was already checked against
-     * the allowed hosts list, but its port comes from the client's Host
-     * header, so only the default port of the scheme is accepted.
+     * the current request is used, which comes from the client's Host
+     * header. Its hostname is only checked when an allowed hosts list
+     * exists, and its port is never checked, so it is only accepted when an
+     * allowed hosts list exists and the port is the default of the scheme.
+     *
+     * The URL is rebuilt from its parsed parts, so curl gets exactly the
+     * scheme, host, port and path that were checked here.
      *
      * @return string|null The base URL without trailing slash, or null if no trusted base URL is available
      */
@@ -213,27 +221,40 @@ class SurveyTemplate implements CommandInterface
     {
         $defaultPorts = ['http' => 80, 'https' => 443];
 
-        $publicUrl = trim((string) App()->getConfig('publicurl'));
-        $parsedPublicUrl = parse_url($publicUrl);
-        if (!empty($parsedPublicUrl['scheme']) && !empty($parsedPublicUrl['host'])) {
-            if (!isset($defaultPorts[strtolower($parsedPublicUrl['scheme'])])) {
-                return null;
-            }
-            return rtrim($publicUrl, '/');
-        }
+        $baseUrl = App()->getPublicBaseUrl(true);
+        $isPublicUrl = $baseUrl === App()->getConfig('publicurl');
 
-        $baseUrl = App()->getBaseUrl(true);
-        $parsedBaseUrl = parse_url($baseUrl);
-        if (empty($parsedBaseUrl['scheme']) || empty($parsedBaseUrl['host'])) {
+        $parts = parse_url((string) $baseUrl);
+        if (
+            empty($parts['scheme'])
+            || empty($parts['host'])
+            || isset($parts['user'])
+            || isset($parts['pass'])
+            || isset($parts['query'])
+            || isset($parts['fragment'])
+        ) {
             return null;
         }
-        $scheme = strtolower($parsedBaseUrl['scheme']);
+        $scheme = strtolower($parts['scheme']);
         if (!isset($defaultPorts[$scheme])) {
             return null;
         }
-        if (isset($parsedBaseUrl['port']) && $parsedBaseUrl['port'] !== $defaultPorts[$scheme]) {
+        // Only plain host names, IPv4 addresses and bracketed IPv6 addresses
+        if (!preg_match('/^(?:[a-z0-9.-]+|\[[0-9a-f:.]+\])$/i', $parts['host'])) {
             return null;
         }
-        return rtrim($baseUrl, '/');
+
+        if (!$isPublicUrl) {
+            if (empty(App()->loadAllowedHosts())) {
+                return null;
+            }
+            if (isset($parts['port']) && $parts['port'] !== $defaultPorts[$scheme]) {
+                return null;
+            }
+        }
+
+        return $scheme . '://' . $parts['host']
+            . (isset($parts['port']) ? ':' . $parts['port'] : '')
+            . rtrim($parts['path'] ?? '', '/');
     }
 }
