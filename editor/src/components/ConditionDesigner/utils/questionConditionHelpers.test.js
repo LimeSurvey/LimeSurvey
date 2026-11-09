@@ -1,7 +1,7 @@
 import { getConditionTypeInfo } from './getConditionTypeInfo'
 import {
   determineConditionTargetType,
-  toConditionQid,
+  toConditionId,
 } from './questionConditionHelpers'
 
 describe('determineConditionTargetType', () => {
@@ -27,13 +27,21 @@ describe('determineConditionTargetType', () => {
   )
 })
 
-describe('toConditionQid', () => {
-  it('turns a saved question ID into a number', () => {
-    expect(toConditionQid(123)).toBe(123)
-    expect(toConditionQid('123')).toBe(123)
+describe('toConditionId', () => {
+  it('turns a saved entity ID into a number', () => {
+    expect(toConditionId(123)).toBe(123)
+    expect(toConditionId('123')).toBe(123)
   })
 
-  it('keeps the temp ID of an unsaved question', () => {
-    expect(toConditionQid('temp__4821')).toBe('temp__4821')
+  it('keeps the temp ID of an unsaved entity', () => {
+    expect(toConditionId('temp__4821')).toBe('temp__4821')
+    expect(toConditionId('temp__4821_1')).toBe('temp__4821_1')
+  })
+
+  it('keeps empty and non-numeric values as they are', () => {
+    expect(toConditionId('')).toBe('')
+    expect(toConditionId(null)).toBeNull()
+    expect(toConditionId(undefined)).toBeUndefined()
+    expect(toConditionId('abc')).toBe('abc')
   })
 })

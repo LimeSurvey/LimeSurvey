@@ -12,19 +12,13 @@ const conditionTypeInfo = getConditionTypeInfo()
 const allowedMethods = getAllowedMethods()
 
 /**
- * A question ID of a condition (qid, cqid): a saved question's ID as a number,
- * an unsaved question's temp ID as is (it would become NaN as a number).
- * @param {number|string} id
- * @returns {number|string}
+ * An ID of a condition (cid, qid, cqid) as a number when it is numeric (a
+ * saved entity), otherwise as is: a temp ID (e.g. "temp__123456") of an
+ * unsaved entity would become NaN as a number, and an empty value stays empty.
+ * @param {number|string|null|undefined} value
+ * @returns {number|string|null|undefined}
  */
-export const toConditionQid = (id) => (hasTempId(String(id)) ? id : Number(id))
-
-/**
- * Coerce an ID value to a number if it is numeric, otherwise return it as-is.
- * This preserves temp IDs (e.g. "temp__123456") while still converting
- * real numeric IDs to numbers.
- */
-const coerceId = (value) => {
+export const toConditionId = (value) => {
   if (value == null || value === '') return value
   if (typeof value === 'string' && hasTempId(value)) return value
   const num = Number(value)
@@ -128,9 +122,9 @@ export const hasUnsavedChanges = (
 }
 
 export const getBaseConditionObject = (condition, scenarioId) => ({
-  cid: coerceId(condition.cid),
-  qid: coerceId(condition.qid),
-  cqid: coerceId(condition.cqid),
+  cid: toConditionId(condition.cid),
+  qid: toConditionId(condition.qid),
+  cqid: toConditionId(condition.cqid),
   cfieldname: condition.cfieldname,
   cquestions: condition.cfieldname,
   method: condition.method,
