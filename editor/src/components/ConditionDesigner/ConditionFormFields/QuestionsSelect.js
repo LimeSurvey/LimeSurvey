@@ -3,7 +3,7 @@ import React, { useMemo } from 'react'
 import { useFocused } from 'hooks'
 import { Select } from 'components'
 
-import { getConditionTypeInfo } from '../utils'
+import { getConditionTypeInfo, toConditionQid } from '../utils'
 
 export const QuestionsSelect = ({
   index,
@@ -35,8 +35,8 @@ export const QuestionsSelect = ({
 
   const defaultHandleChange = ({ value, cqid, answers }) => {
     const updates = {
-      qid: focused.qid,
-      cqid: cqid,
+      qid: toConditionQid(focused.qid),
+      cqid: toConditionQid(cqid),
       cfieldname: value,
       cquestions: value,
       answers: answers,

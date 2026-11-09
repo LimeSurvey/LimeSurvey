@@ -12,6 +12,14 @@ const conditionTypeInfo = getConditionTypeInfo()
 const allowedMethods = getAllowedMethods()
 
 /**
+ * A question ID of a condition (qid, cqid): a saved question's ID as a number,
+ * an unsaved question's temp ID as is (it would become NaN as a number).
+ * @param {number|string} id
+ * @returns {number|string}
+ */
+export const toConditionQid = (id) => (hasTempId(String(id)) ? id : Number(id))
+
+/**
  * Coerce an ID value to a number if it is numeric, otherwise return it as-is.
  * This preserves temp IDs (e.g. "temp__123456") while still converting
  * real numeric IDs to numbers.

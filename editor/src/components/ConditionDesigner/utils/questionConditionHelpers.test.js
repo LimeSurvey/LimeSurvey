@@ -1,5 +1,8 @@
 import { getConditionTypeInfo } from './getConditionTypeInfo'
-import { determineConditionTargetType } from './questionConditionHelpers'
+import {
+  determineConditionTargetType,
+  toConditionQid,
+} from './questionConditionHelpers'
 
 describe('determineConditionTargetType', () => {
   const previousQuestions = [
@@ -22,4 +25,15 @@ describe('determineConditionTargetType', () => {
       )
     }
   )
+})
+
+describe('toConditionQid', () => {
+  it('turns a saved question ID into a number', () => {
+    expect(toConditionQid(123)).toBe(123)
+    expect(toConditionQid('123')).toBe(123)
+  })
+
+  it('keeps the temp ID of an unsaved question', () => {
+    expect(toConditionQid('temp__4821')).toBe('temp__4821')
+  })
 })
