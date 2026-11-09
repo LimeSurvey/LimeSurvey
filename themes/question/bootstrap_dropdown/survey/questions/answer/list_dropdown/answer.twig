@@ -116,8 +116,9 @@
             {% if data_live_search %}
             {# Announce the search result (number of results or no result) #}
             var $searchStatus = $('#answer{{ name }}-search-status');
-            var resultsText = {{ json_encode(gT('Number of results: %s')) }};
-            var noResultsText = {{ json_encode(gT('No results matched %s')) }};
+            {# Unescaped : used with .text() #}
+            var resultsText = {{ json_encode(gT('Number of results: %s', 'unescaped')) }};
+            var noResultsText = {{ json_encode(gT('No results matched %s', 'unescaped')) }};
             var searchStatusTimer = null;
             {# No results message as a paragraph outside the listbox, replace the plugin <li class="no-results"> #}
             var $noResults = $('<p class="no-results mb-0" hidden></p>');
