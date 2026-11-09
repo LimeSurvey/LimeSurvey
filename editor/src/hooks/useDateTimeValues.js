@@ -4,6 +4,7 @@ import { useMemo } from 'react'
 import { getApiUrl, STATES } from 'helpers'
 import { StatisticsService } from 'services'
 
+import { useAppState } from './useAppState'
 import useAuth from './useAuth'
 
 /**
@@ -18,6 +19,7 @@ export function useDateTimeValues(
   { enabled = true, filterSet = [], decrypt = false } = {}
 ) {
   const auth = useAuth()
+  const [activeLanguage] = useAppState(STATES.ACTIVE_LANGUAGE)
   const statisticsService = useMemo(
     () => new StatisticsService(auth, surveyId, getApiUrl()),
     [auth, surveyId]
@@ -31,6 +33,7 @@ export function useDateTimeValues(
       filters,
       filterSet,
       decrypt,
+      activeLanguage,
     ],
     queryFn: () =>
       statisticsService.getDateTimeValues(
@@ -38,7 +41,8 @@ export function useDateTimeValues(
         qid,
         filters,
         filterSet,
-        decrypt
+        decrypt,
+        activeLanguage
       ),
     enabled: enabled && !!surveyId && !!qid,
     retry: false,

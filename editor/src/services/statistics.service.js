@@ -192,10 +192,15 @@ export class StatisticsService {
     qid,
     filters,
     filterSet = [],
-    decrypt = false
+    decrypt = false,
+    language
   ) => {
+    const languageParam = language
+      ? `&language=${encodeURIComponent(language)}`
+      : ''
+
     return await this.restClient.get(
-      `statistics-date-values/${sid}?qid=${qid}&${buildStatisticsFilterQuery(filters)}${filterSetQuery(filterSet)}${decrypt ? '&decrypt=1' : ''}`,
+      `statistics-date-values/${sid}?qid=${qid}&${buildStatisticsFilterQuery(filters)}${filterSetQuery(filterSet)}${decrypt ? '&decrypt=1' : ''}${languageParam}`,
       {},
       undefined,
       true

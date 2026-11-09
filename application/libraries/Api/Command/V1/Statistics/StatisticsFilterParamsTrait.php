@@ -5,9 +5,6 @@ namespace LimeSurvey\Libraries\Api\Command\V1\Statistics;
 use InvalidArgumentException;
 use LimeSurvey\Api\Command\Request\Request;
 use LimeSurvey\Models\Services\Exception\PermissionDeniedException;
-use LimeSurvey\Models\Services\ResponseFilters\ParticipantResolver;
-use LimeSurvey\Models\Services\ResponseFilters\QuestionColumnMap;
-use LimeSurvey\Models\Services\ResponseFilters\ResponseFilterResolver;
 use LimeSurvey\Models\Services\ResponseFilters\ResponseFilterSet;
 use LimeSurvey\Models\Services\SurveyStatistics\StatisticsResponseFilters;
 use Survey;
@@ -19,10 +16,15 @@ use Yii;
  * way.
  *
  * Expects the using class to hold a StatisticsResponseFilters in $filters and
- * a Permission in $permission.
+ * a ResponseFilterSetService in $filterSetService.
  */
 trait StatisticsFilterParamsTrait
 {
+    /**
+     * The minId, maxId, completed and search params of the request.
+     *
+     * @return StatisticsResponseFilters The using class's $filters, filled in
+     */
     public function getFilters(): StatisticsResponseFilters
     {
         $params = Yii::app()->getRequest()->getQueryParams();
@@ -53,6 +55,9 @@ trait StatisticsFilterParamsTrait
      * The `filterSet` param: the filter as the user built it in the modal,
      * resolved into the response columns it means.
      *
+     * @param Request $request
+     * @param Survey $survey
+     * @param string $language The language the filter's answer options are in
      * @return \LimeSurvey\Models\Services\ResponseFilters\ResolvedFilter[]
      * @throws InvalidArgumentException on a malformed or unresolvable filter,
      *     which run() turns into a bad request rather than a 500.
@@ -61,25 +66,10 @@ trait StatisticsFilterParamsTrait
      */
     private function resolveFilterSet(Request $request, Survey $survey, string $language): array
     {
-        $filterSet = ResponseFilterSet::fromRequestValue($request->getData('filterSet', null));
-        if ($filterSet->isEmpty()) {
-            return [];
-        }
-
-        if (
-            $filterSet->hasParticipantFilter()
-            && !$this->permission->hasSurveyPermission((int)$survey->sid, 'tokens')
-        ) {
-            throw new PermissionDeniedException();
-        }
-
-        $resolver = new ResponseFilterResolver(
-            QuestionColumnMap::fromQuestionFieldMap(
-                createFieldMap($survey, 'full', false, false, $language)
-            ),
-            ParticipantResolver::fromSurvey($survey)
+        return $this->filterSetService->resolve(
+            ResponseFilterSet::fromRequestValue($request->getData('filterSet', null)),
+            $survey,
+            createFieldMap($survey, 'full', false, false, $language)
         );
-
-        return $resolver->resolve($filterSet);
     }
 }

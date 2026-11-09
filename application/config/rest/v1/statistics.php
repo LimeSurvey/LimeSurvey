@@ -115,6 +115,7 @@ $rest['v1/statistics-date-values/$id'] = [
             'completed' => ['type' => 'bool'],
             'search' => ['type' => 'array'],
             'filterSet' => ['type' => 'array'],
+            'language' => ['type' => 'string'],
         ],
         'responses' => [
             'success' => [

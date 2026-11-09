@@ -6,6 +6,7 @@ use CDbException;
 use InvalidArgumentException;
 use LimeSurvey\Models\Services\Exception\NotFoundException;
 use LimeSurvey\Models\Services\Exception\PermissionDeniedException;
+use LimeSurvey\Models\Services\ResponseFilters\ResponseFilterSetService;
 use LimeSurvey\Models\Services\SurveyStatistics\StatisticsResponseFilters;
 use LimeSurvey\Models\Services\SurveyStatistics\StatisticsService;
 use Permission;
@@ -36,28 +37,32 @@ class Statistics implements CommandInterface
     protected ResponseFactory $responseFactory;
     protected StatisticsService $statisticsService;
     protected StatisticsResponseFilters $filters;
+    protected ResponseFilterSetService $filterSetService;
 
     /**
      * Constructor
      *
      * @param TransformerOutputSurvey $transformerOutputSurvey
-     * @param FactoryInterface $diFactory
+     * @param Permission $permission
      * @param ResponseFactory $responseFactory
      * @param StatisticsResponseFilters $filters
      * @param StatisticsService $statisticsService
+     * @param ResponseFilterSetService $filterSetService
      */
     public function __construct(
         TransformerOutputSurvey $transformerOutputSurvey,
         Permission $permission,
         ResponseFactory $responseFactory,
         StatisticsResponseFilters $filters,
-        StatisticsService $statisticsService
+        StatisticsService $statisticsService,
+        ResponseFilterSetService $filterSetService
     ) {
         $this->permission = $permission;
         $this->transformerOutputSurvey = $transformerOutputSurvey;
         $this->responseFactory = $responseFactory;
         $this->statisticsService = $statisticsService;
         $this->filters = $filters;
+        $this->filterSetService = $filterSetService;
     }
 
     /**

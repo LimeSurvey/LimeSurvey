@@ -13,6 +13,7 @@ use LimeSurvey\Api\Command\{
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermissionTrait;
 use LimeSurvey\Libraries\Api\Command\V1\Statistics\StatisticsFilterParamsTrait;
 use LimeSurvey\Models\Services\Exception\PermissionDeniedException;
+use LimeSurvey\Models\Services\ResponseFilters\ResponseFilterSetService;
 use LimeSurvey\Models\Services\SurveyStatistics\DateTimeValues;
 use LimeSurvey\Models\Services\SurveyStatistics\StatisticsResponseFilters;
 use Permission;
@@ -32,22 +33,33 @@ class StatisticsDateValues implements CommandInterface
     protected ResponseFactory $responseFactory;
     protected StatisticsResponseFilters $filters;
     protected DateTimeValues $dateTimeValues;
+    protected ResponseFilterSetService $filterSetService;
 
+    /**
+     * @param Permission $permission
+     * @param ResponseFactory $responseFactory
+     * @param StatisticsResponseFilters $filters
+     * @param DateTimeValues $dateTimeValues
+     * @param ResponseFilterSetService $filterSetService
+     */
     public function __construct(
         Permission $permission,
         ResponseFactory $responseFactory,
         StatisticsResponseFilters $filters,
-        DateTimeValues $dateTimeValues
+        DateTimeValues $dateTimeValues,
+        ResponseFilterSetService $filterSetService
     ) {
         $this->permission = $permission;
         $this->responseFactory = $responseFactory;
         $this->filters = $filters;
         $this->dateTimeValues = $dateTimeValues;
+        $this->filterSetService = $filterSetService;
     }
 
     /**
      * @param Request $request
-     * @return Response
+     * @return Response The values, or an error when not permitted, the survey
+     *     doesn't exist or the request is invalid
      */
     public function run(Request $request)
     {
@@ -72,13 +84,18 @@ class StatisticsDateValues implements CommandInterface
             return $this->responseFactory->makeErrorNotFound("Survey {$surveyId} not found.");
         }
 
+        $language = $request->getData('language') ?: $survey->language;
+        if (!in_array($language, $survey->getAllLanguages(), true)) {
+            return $this->responseFactory->makeErrorBadRequest('Invalid language code');
+        }
+
         try {
             $filters = $this->getFilters();
             $values = $this->dateTimeValues->get(
                 $surveyId,
                 $qid,
                 $filters->count() > 0 ? $filters : null,
-                $this->resolveFilterSet($request, $survey, $survey->language),
+                $this->resolveFilterSet($request, $survey, $language),
                 $decrypt
             );
         } catch (InvalidArgumentException $exception) {
@@ -95,6 +112,10 @@ class StatisticsDateValues implements CommandInterface
         return $this->responseFactory->makeSuccess($values);
     }
 
+    /**
+     * @param int $surveyId
+     * @return Survey|null Null when the survey doesn't exist
+     */
     protected function findSurvey(int $surveyId): ?Survey
     {
         return Survey::model()->findByPk($surveyId);

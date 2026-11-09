@@ -8,6 +8,7 @@ use LimeSurvey\Api\Command\Response\Status\StatusErrorBadRequest;
 use LimeSurvey\Api\Command\Response\Status\StatusErrorUnauthorised;
 use LimeSurvey\Api\Command\Response\Status\StatusSuccess;
 use LimeSurvey\Libraries\Api\Command\V1\StatisticsDateValues;
+use LimeSurvey\Models\Services\ResponseFilters\ResponseFilterSetService;
 use LimeSurvey\Models\Services\SurveyStatistics\DateTimeValues;
 use LimeSurvey\Models\Services\SurveyStatistics\StatisticsResponseFilters;
 use Permission;
@@ -52,13 +53,14 @@ class StatisticsDateValuesTest extends TestCase
             new ResponseFactory(),
             new StatisticsResponseFilters(),
             $values,
+            new ResponseFilterSetService($permission),
             $survey
         ) extends StatisticsDateValues {
             private Survey $survey;
 
-            public function __construct($permission, $factory, $filters, $values, Survey $survey)
+            public function __construct($permission, $factory, $filters, $values, $filterSetService, Survey $survey)
             {
-                parent::__construct($permission, $factory, $filters, $values);
+                parent::__construct($permission, $factory, $filters, $values, $filterSetService);
                 $this->survey = $survey;
             }
 

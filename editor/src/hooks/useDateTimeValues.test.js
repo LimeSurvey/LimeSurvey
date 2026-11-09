@@ -16,6 +16,10 @@ jest.mock('./useAuth', () => ({
   default: () => ({ restHeaders: {} }),
 }))
 
+jest.mock('./useAppState', () => ({
+  useAppState: () => ['de'],
+}))
+
 const wrapper = ({ children }) => (
   <QueryClientProvider client={new QueryClient()}>
     {children}
@@ -43,6 +47,15 @@ describe('useDateTimeValues', () => {
 
     await waitFor(() => expect(result.current.values).toEqual(values))
     expect(result.current.isError).toBe(false)
+  })
+
+  it('sends the active language, as the charts do', async () => {
+    mockGet.mockResolvedValue({ data: { hasTime: false, total: 0, days: {} } })
+
+    render()
+
+    await waitFor(() => expect(mockGet).toHaveBeenCalled())
+    expect(mockGet.mock.calls[0][0]).toContain('&language=de')
   })
 
   it.each([

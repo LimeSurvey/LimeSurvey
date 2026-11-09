@@ -279,23 +279,33 @@ final class ResponseAggregateBatch
 
     /**
      * Per-day counts via one GROUP BY sub-select per field
+     *
+     * @param CDbConnection $db
+     * @param string $table The quoted response table
      */
     private function executeDayCounts(CDbConnection $db, string $table): void
     {
         $selects = [];
-        [$filterWhere, $params] = $this->buildWhere();
+        $params = [];
         foreach ($this->dayCountRequests as $alias => $field) {
             $this->results[$alias] = [];
+            [$filterWhere, $filterParams] = $this->buildWhere();
             $col = $db->quoteColumnName($field);
             $where = $filterWhere === '' ? " WHERE $col IS NOT NULL" : "$filterWhere AND $col IS NOT NULL";
             $selects[] = 'SELECT ' . $db->quoteValue($alias) . ' AS ' . $db->quoteColumnName('alias')
                 . ", CAST($col AS DATE) AS " . $db->quoteColumnName('day')
                 . ', COUNT(*) AS ' . $db->quoteColumnName('total')
                 . " FROM $table$where GROUP BY CAST($col AS DATE)";
+            $params[] = $filterParams;
         }
 
-        foreach (array_chunk($selects, self::MAX_DAY_COUNTS_PER_QUERY) as $chunk) {
-            $rows = $db->createCommand(implode(' UNION ALL ', $chunk))->queryAll(true, $params);
+        foreach (array_chunk($selects, self::MAX_DAY_COUNTS_PER_QUERY, true) as $chunk) {
+            $chunkParams = [];
+            foreach (array_keys($chunk) as $index) {
+                $chunkParams += $params[$index];
+            }
+
+            $rows = $db->createCommand(implode(' UNION ALL ', $chunk))->queryAll(true, $chunkParams);
             foreach ($rows as $row) {
                 $day = substr((string)$row['day'], 0, 10);
                 // Skips MySQL zero dates and anything else that is no real day.
@@ -311,6 +321,12 @@ final class ResponseAggregateBatch
         }
     }
 
+    /**
+     * Whether a day string from the database is a real 'Y-m-d' date.
+     *
+     * @param string $day
+     * @return bool
+     */
     private function isValidDay(string $day): bool
     {
         if (preg_match('/^(\d{4})-(\d{2})-(\d{2})$/', $day, $parts) !== 1) {
