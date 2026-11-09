@@ -140,6 +140,43 @@ class ExpressionManagerCoreTest extends TestBaseClass
     }
 
     /**
+     * A dual scale cell can be referenced by its field name (Q123_S456#0) as it could by its SGQA code before 7.0.
+     *
+     * @see https://bugs.limesurvey.org/view.php?id=20836
+     * @return void
+     */
+    public function testDualScaleFieldNameIsOneVariable(): void
+    {
+        \Yii::import('application.helpers.expressions.em_manager_helper', true);
+        $lem = \LimeExpressionManager::singleton();
+        $knownVars = new \ReflectionProperty($lem, 'knownVars');
+        $savedKnownVars = $knownVars->getValue($lem);
+        $vars = [];
+        foreach ([0 => 'A2', 1 => 'B3'] as $scale => $code) {
+            $vars['Q1_S2#' . $scale] = [
+                'code' => $code,
+                'jsName' => 'javaQ1_S2_' . $scale,
+                'jsName_on' => 'javaQ1_S2_' . $scale,
+                'readWrite' => 'Y',
+                'type' => '1',
+            ];
+        }
+        $lem->setKnownVars($vars);
+        try {
+            $em = new \ExpressionManager();
+            $this->assertTrue($em->RDP_Evaluate('Q1_S2#0'), implode('; ', $em->GetErrors()));
+            $this->assertSame('A2', $em->GetResult());
+            $this->assertTrue($em->RDP_Evaluate('Q1_S2#1.NAOK == "B3"'), implode('; ', $em->GetErrors()));
+            $this->assertTrue($em->GetResult());
+            $this->assertStringContainsString("LEMval('Q1_S2#1.NAOK')", $em->GetJavaScriptEquivalentOfExpression());
+            // A plain field name without a scale suffix is still an unknown word, not part of a '#' variable
+            $this->assertFalse($em->RDP_Evaluate('Q1_S2'));
+        } finally {
+            $knownVars->setValue($lem, $savedKnownVars);
+        }
+    }
+
+    /**
      * @dataProvider expressionProvider
      */
     public function testExpressionEvaluation(string $varValue, string $expression, bool $expected): void

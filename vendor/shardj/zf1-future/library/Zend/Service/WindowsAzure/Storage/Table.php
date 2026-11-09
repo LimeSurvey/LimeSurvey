@@ -219,7 +219,7 @@ class Zend_Service_WindowsAzure_Storage_Table
 
         $requestBody = $this->_fillTemplate($requestBody, [
             'BaseUrl' => $this->getBaseUrl(),
-            'TableName' => htmlspecialchars($tableName),
+            'TableName' => htmlspecialchars($tableName, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401),
         	'Updated' => $this->isoDate(),
             'AccountName' => $this->_accountName
         ]);
@@ -841,7 +841,7 @@ class Zend_Service_WindowsAzure_Storage_Table
 		        } else if (strtolower($azureValue->Type) == 'edm.datetime') {
 		        	$value[] = $this->_convertToEdmDateTime($azureValue->Value);
 		        } else {
-		            $value[] = htmlspecialchars($azureValue->Value);
+		            $value[] = htmlspecialchars($azureValue->Value, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401);
 		        }
 		    }
 
