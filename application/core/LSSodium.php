@@ -238,12 +238,7 @@ class LSSodium
         $nonceAndCipherText = ParagonIE_Sodium_Compat::hex2bin($sEncryptedString);
         $nonce = substr($nonceAndCipherText, 0, ParagonIE_Sodium_Compat::CRYPTO_SECRETBOX_NONCEBYTES);
         $ciphertext = substr($nonceAndCipherText, ParagonIE_Sodium_Compat::CRYPTO_SECRETBOX_NONCEBYTES);
-        $plaintext = ParagonIE_Sodium_Compat::crypto_secretbox_open(
-            $ciphertext,
-            $nonce,
-            $this->sEncryptionSecretBoxKey
-        );
-        return $plaintext;
+        return $this->secretboxOpen($ciphertext, $nonce);
     }
 
     /**
@@ -257,12 +252,33 @@ class LSSodium
         if ($decoded === false || strlen($decoded) < ParagonIE_Sodium_Compat::CRYPTO_SECRETBOX_MACBYTES) {
             return false;
         }
-        $plaintext = ParagonIE_Sodium_Compat::crypto_secretbox_open(
-            $decoded,
-            $this->sEncryptionNonce,
-            $this->sEncryptionSecretBoxKey
-        );
-        return $plaintext;
+        return $this->secretboxOpen($decoded, $this->sEncryptionNonce);
+    }
+
+    /**
+     * Open a secret box with the encryption key
+     * The sodium extension returns false if authentication fails, the sodium_compat PHP implementation
+     * (used without the sodium extension) throws a SodiumException 'Invalid MAC' : return false in both cases.
+     * Other errors (invalid nonce or key length) are thrown.
+     * @param string $ciphertext
+     * @param string $nonce
+     * @return string|false
+     * @throws SodiumException
+     */
+    private function secretboxOpen($ciphertext, $nonce)
+    {
+        try {
+            return ParagonIE_Sodium_Compat::crypto_secretbox_open(
+                $ciphertext,
+                $nonce,
+                $this->sEncryptionSecretBoxKey
+            );
+        } catch (SodiumException $e) {
+            if ($e->getMessage() === 'Invalid MAC') {
+                return false;
+            }
+            throw $e;
+        }
     }
 
     /**
