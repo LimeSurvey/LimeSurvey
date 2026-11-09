@@ -433,6 +433,15 @@ var TemplateCoreClass = exports.TemplateCoreClass = function TemplateCoreClass()
         $modal.one('shown.bs.modal', function () {
           $body.trigger('focus');
         });
+        /* Bracket the dialog with two invisible, focusable nodes while it is open, as in the W3C modal dialog example
+         * (https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/examples/dialog/): focus never leaves the document,
+         * the Bootstrap focus trap sends it back to the first or last element of the dialog */
+        var $preNode = $('<div tabindex="0"></div>').insertBefore($modal);
+        var $postNode = $('<div tabindex="0"></div>').insertAfter($modal);
+        $modal.one('hidden.bs.modal', function () {
+          $preNode.remove();
+          $postNode.remove();
+        });
         var modal = new bootstrap.Modal(document.getElementById('bootstrap-alert-box-modal'), {});
         modal.show();
       }
