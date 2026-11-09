@@ -185,7 +185,8 @@ export class StatisticsService {
   /**
    * Answers of a Date/time question grouped by day and time:
    * { hasTime, total, days: { 'YYYY-MM-DD': { 'HH:mm:ss': count } } }.
-   * An encrypted question's answers are only sent with `decrypt`.
+   * An encrypted question's answers are only sent with `decrypt`. `from` and
+   * `to` ('YYYY-MM-DD') limit them to those days.
    */
   getDateTimeValues = async (
     sid,
@@ -193,14 +194,18 @@ export class StatisticsService {
     filters,
     filterSet = [],
     decrypt = false,
-    language
+    language,
+    { from, to } = {}
   ) => {
     const languageParam = language
       ? `&language=${encodeURIComponent(language)}`
       : ''
+    const rangeParams = `${from ? `&from=${from}` : ''}${to ? `&to=${to}` : ''}`
+    const filterQuery = buildStatisticsFilterQuery(filters).replace(/^&/, '')
+    const filterParams = filterQuery ? `&${filterQuery}` : ''
 
     return await this.restClient.get(
-      `statistics-date-values/${sid}?qid=${qid}&${buildStatisticsFilterQuery(filters)}${filterSetQuery(filterSet)}${decrypt ? '&decrypt=1' : ''}${languageParam}`,
+      `statistics-date-values/${sid}?qid=${qid}${filterParams}${filterSetQuery(filterSet)}${decrypt ? '&decrypt=1' : ''}${languageParam}${rangeParams}`,
       {},
       undefined,
       true

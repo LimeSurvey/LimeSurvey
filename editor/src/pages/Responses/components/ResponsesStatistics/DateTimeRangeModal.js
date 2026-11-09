@@ -40,7 +40,15 @@ export const DateTimeRangeModal = ({
     surveyId,
     question.qid,
     filters,
-    { enabled: !!shownRange, filterSet, decrypt: !!question.encrypted }
+    {
+      enabled: !!shownRange,
+      filterSet,
+      decrypt: !!question.encrypted,
+      ...(!question.encrypted && {
+        from: shownRange?.from,
+        to: shownRange?.to,
+      }),
+    }
   )
   const isSingleDay = shownRange?.from === shownRange?.to
   const isRangeResult = isRangeFlow || !isSingleDay

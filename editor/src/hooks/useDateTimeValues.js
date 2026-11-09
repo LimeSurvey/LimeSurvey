@@ -8,15 +8,15 @@ import { useAppState } from './useAppState'
 import useAuth from './useAuth'
 
 /**
- * Answers of a Date/time question grouped by day and time, loaded once per
- * filter set and then sliced on the client for the day and range views.
+ * Answers of a Date/time question grouped by day and time. `from` and `to`
+ * ('YYYY-MM-DD') load only those days; without them every day is loaded.
  * `decrypt` is needed for an encrypted question.
  */
 export function useDateTimeValues(
   surveyId,
   qid,
   filters,
-  { enabled = true, filterSet = [], decrypt = false } = {}
+  { enabled = true, filterSet = [], decrypt = false, from, to } = {}
 ) {
   const auth = useAuth()
   const [activeLanguage] = useAppState(STATES.ACTIVE_LANGUAGE)
@@ -34,6 +34,8 @@ export function useDateTimeValues(
       filterSet,
       decrypt,
       activeLanguage,
+      from,
+      to,
     ],
     queryFn: () =>
       statisticsService.getDateTimeValues(
@@ -42,7 +44,8 @@ export function useDateTimeValues(
         filters,
         filterSet,
         decrypt,
-        activeLanguage
+        activeLanguage,
+        { from, to }
       ),
     enabled: enabled && !!surveyId && !!qid,
     retry: false,

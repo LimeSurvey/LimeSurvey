@@ -57,7 +57,8 @@ class StatisticsDateValues implements CommandInterface
     }
 
     /**
-     * Return the answers of the `qid` question per day and time.
+     * Return the answers of the `qid` question per day and time, for all days
+     * or only those from `from` to `to`.
      *
      * @param Request $request
      * @return Response The values, or an error when not permitted, the survey
@@ -86,6 +87,17 @@ class StatisticsDateValues implements CommandInterface
             return $this->responseFactory->makeErrorNotFound("Survey {$surveyId} not found.");
         }
 
+        $fromDay = $params['from'] ?? null;
+        $toDay = $params['to'] ?? null;
+        foreach ([$fromDay, $toDay] as $day) {
+            if ($day !== null && !self::isDay($day)) {
+                return $this->responseFactory->makeErrorBadRequest('Days have to be given as YYYY-MM-DD.');
+            }
+        }
+        if ($fromDay !== null && $toDay !== null && $fromDay > $toDay) {
+            return $this->responseFactory->makeErrorBadRequest('The range ends before it starts.');
+        }
+
         $language = $request->getData('language') ?: $survey->language;
         if (!in_array($language, $survey->getAllLanguages(), true)) {
             return $this->responseFactory->makeErrorBadRequest('Invalid language code');
@@ -98,7 +110,9 @@ class StatisticsDateValues implements CommandInterface
                 $qid,
                 $filters->count() > 0 ? $filters : null,
                 $this->resolveFilterSet($request, $survey, $language),
-                $decrypt
+                $decrypt,
+                $fromDay,
+                $toDay
             );
         } catch (InvalidArgumentException $exception) {
             return $this->responseFactory->makeErrorBadRequest($exception->getMessage());
@@ -111,7 +125,24 @@ class StatisticsDateValues implements CommandInterface
             throw $exception;
         }
 
+        if (isset($values['days']) && $values['days'] === []) {
+            $values['days'] = new \stdClass();
+        }
+
         return $this->responseFactory->makeSuccess($values);
+    }
+
+    /**
+     * Whether a request value is a real day, 'Y-m-d'.
+     *
+     * @param mixed $value
+     * @return bool
+     */
+    private static function isDay($value): bool
+    {
+        return is_string($value)
+            && preg_match('/^(\d{4})-(\d{2})-(\d{2})$/', $value, $parts) === 1
+            && checkdate((int)$parts[2], (int)$parts[3], (int)$parts[1]);
     }
 
     /**

@@ -148,6 +148,29 @@ class DateTimeValuesTest extends TestCase
     }
 
     /**
+     * @testdox withinDays() keeps the values on the days of the range, both ends included
+     */
+    public function testWithinDaysKeepsTheRange()
+    {
+        $values = [
+            '2026-01-13 23:59' => 1,
+            '2026-01-14 00:00' => 2,
+            '2026-01-16 23:59' => 3,
+            '2026-01-17 00:00' => 4,
+        ];
+
+        $this->assertSame(
+            ['2026-01-14 00:00' => 2, '2026-01-16 23:59' => 3],
+            DateTimeValues::withinDays($values, '2026-01-14', '2026-01-16')
+        );
+        $this->assertSame(
+            ['2026-01-16 23:59' => 3, '2026-01-17 00:00' => 4],
+            DateTimeValues::withinDays($values, '2026-01-16', null)
+        );
+        $this->assertSame($values, DateTimeValues::withinDays($values, null, null));
+    }
+
+    /**
      * @testdox Decrypted answers give the same output as the same answers stored in plain
      */
     public function testDecryptedAnswersMatchPlainAnswers()

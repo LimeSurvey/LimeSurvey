@@ -122,10 +122,10 @@ class StatisticsDateValuesTest extends TestCase
      */
     public function testDecryptIsPassedOnWithBothPermissions()
     {
-        $result = ['hasTime' => true, 'total' => 0, 'days' => []];
+        $result = ['hasTime' => true, 'total' => 1, 'days' => ['2026-10-22' => ['14:20:00' => 1]]];
         $values = $this->createMock(DateTimeValues::class);
         $values->expects($this->once())->method('get')
-            ->with(self::SURVEY_ID, self::QID, null, [], true)
+            ->with(self::SURVEY_ID, self::QID, null, [], true, null, null)
             ->willReturn($result);
 
         $response = $this->runCommand(
@@ -145,12 +145,72 @@ class StatisticsDateValuesTest extends TestCase
     {
         $values = $this->createMock(DateTimeValues::class);
         $values->expects($this->once())->method('get')
-            ->with(self::SURVEY_ID, self::QID, null, [], false)
+            ->with(self::SURVEY_ID, self::QID, null, [], false, null, null)
             ->willReturn([]);
 
         $response = $this->runCommand(['qid' => self::QID], ['statistics'], $values);
 
         $this->assertInstanceOf(StatusSuccess::class, $response->getStatus());
+    }
+
+    /**
+     * @testdox A day range is passed on
+     */
+    public function testDayRangeIsPassedOn()
+    {
+        $values = $this->createMock(DateTimeValues::class);
+        $values->expects($this->once())->method('get')
+            ->with(self::SURVEY_ID, self::QID, null, [], false, '2026-01-14', '2026-01-16')
+            ->willReturn([]);
+
+        $response = $this->runCommand(
+            ['qid' => self::QID, 'from' => '2026-01-14', 'to' => '2026-01-16'],
+            ['statistics'],
+            $values
+        );
+
+        $this->assertInstanceOf(StatusSuccess::class, $response->getStatus());
+    }
+
+    /**
+     * @testdox A range without answers still sends its days as a JSON object
+     */
+    public function testNoDaysIsAJsonObject()
+    {
+        $values = $this->createMock(DateTimeValues::class);
+        $values->method('get')->willReturn(['hasTime' => true, 'total' => 0, 'days' => []]);
+
+        $response = $this->runCommand(
+            ['qid' => self::QID, 'from' => '2026-10-23', 'to' => '2026-10-23'],
+            ['statistics'],
+            $values
+        );
+
+        $this->assertSame('{"hasTime":true,"total":0,"days":{}}', json_encode($response->getData()));
+    }
+
+    /**
+     * @testdox A day that is not YYYY-MM-DD, or a range that ends before it starts, is a bad request
+     * @dataProvider badRangeProvider
+     */
+    public function testBadRangeIsABadRequest(array $range)
+    {
+        $values = $this->createMock(DateTimeValues::class);
+        $values->expects($this->never())->method('get');
+
+        $response = $this->runCommand(['qid' => self::QID] + $range, ['statistics'], $values);
+
+        $this->assertInstanceOf(StatusErrorBadRequest::class, $response->getStatus());
+    }
+
+    public function badRangeProvider(): array
+    {
+        return [
+            'not a date' => [['from' => 'yesterday']],
+            'no real day' => [['to' => '2026-02-30']],
+            'with a time' => [['from' => '2026-01-14 10:00']],
+            'ends before it starts' => [['from' => '2026-01-16', 'to' => '2026-01-14']],
+        ];
     }
 
     /**

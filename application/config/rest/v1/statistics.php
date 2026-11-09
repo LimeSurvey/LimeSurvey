@@ -110,6 +110,8 @@ $rest['v1/statistics-date-values/$id'] = [
         'params' => [
             'qid' => ['type' => 'integer'],
             'decrypt' => ['type' => 'bool'],
+            'from' => ['type' => 'string'],
+            'to' => ['type' => 'string'],
             'minId' => ['type' => 'integer'],
             'maxId' => ['type' => 'integer'],
             'completed' => ['type' => 'bool'],

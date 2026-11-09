@@ -423,18 +423,31 @@ final class ResponseAggregateBatch
 
     /**
      * Every distinct stored value of a column with its count, ordered by
-     * value, with the same response filters as the aggregates.
+     * value, with the same response filters as the aggregates. A day range
+     * keeps only the values on those days, so only they are read.
      *
-     * @param string $field The response column
+     * @param string $field The response column, a datetime column
+     * @param string|null $fromDay First day to include, 'Y-m-d'
+     * @param string|null $toDay Last day to include, 'Y-m-d'
      * @return array<string, int> stored value => count
      */
-    public function groupedValues(string $field): array
+    public function groupedValues(string $field, ?string $fromDay = null, ?string $toDay = null): array
     {
         $db = $this->getDb();
         $table = $db->quoteTableName('{{responses_' . $this->surveyId . '}}');
         $col = $db->quoteColumnName($field);
         [$where, $params] = $this->buildWhere();
-        $where = $where === '' ? " WHERE $col IS NOT NULL" : "$where AND $col IS NOT NULL";
+        $conditions = ["$col IS NOT NULL"];
+        if ($fromDay !== null) {
+            $conditions[] = "$col >= :dayFrom";
+            $params[':dayFrom'] = $fromDay . ' 00:00:00';
+        }
+        if ($toDay !== null) {
+            $conditions[] = "$col < :dayTo";
+            $params[':dayTo'] = (new \DateTimeImmutable($toDay))->modify('+1 day')->format('Y-m-d') . ' 00:00:00';
+        }
+        $condition = implode(' AND ', $conditions);
+        $where = $where === '' ? " WHERE $condition" : "$where AND $condition";
 
         $rows = $db->createCommand(
             "SELECT $col AS " . $db->quoteColumnName('value')

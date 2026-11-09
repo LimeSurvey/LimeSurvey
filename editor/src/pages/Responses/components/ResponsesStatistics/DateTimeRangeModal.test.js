@@ -29,6 +29,37 @@ describe('DateTimeRangeModal', () => {
     })
   })
 
+  test('a plain question asks only for the days of the range', () => {
+    render(
+      <DateTimeRangeModal
+        surveyId={1}
+        question={question}
+        range={{ from: '2026-01-14', to: '2026-01-16' }}
+      />
+    )
+
+    expect(useDateTimeValues.mock.lastCall[3]).toMatchObject({
+      from: '2026-01-14',
+      to: '2026-01-16',
+      decrypt: false,
+    })
+  })
+
+  test('an encrypted question reuses its whole decrypted column', () => {
+    render(
+      <DateTimeRangeModal
+        surveyId={1}
+        question={{ ...question, encrypted: true }}
+        range={{ from: '2026-01-14', to: '2026-01-16' }}
+      />
+    )
+
+    const options = useDateTimeValues.mock.lastCall[3]
+    expect(options).toMatchObject({ decrypt: true })
+    expect(options).not.toHaveProperty('from')
+    expect(options).not.toHaveProperty('to')
+  })
+
   test('closing keeps the results on screen while the modal fades out', () => {
     const { rerender } = render(
       <DateTimeRangeModal surveyId={1} question={question} range={day} />

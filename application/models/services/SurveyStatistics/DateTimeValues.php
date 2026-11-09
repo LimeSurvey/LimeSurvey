@@ -28,6 +28,8 @@ class DateTimeValues
      *     The filterSet the user built in the filter modal, resolved.
      * @param bool $decrypt Asked for explicitly, and only for an encrypted
      *     question, so its answers are never decrypted by accident.
+     * @param string|null $fromDay First day to include, 'Y-m-d'
+     * @param string|null $toDay Last day to include, 'Y-m-d'
      * @return array{hasTime: bool, total: int, days: array<string, array<string, int>>}
      * @throws InvalidArgumentException When the question is no date question
      *                                  of the survey, or $decrypt doesn't match
@@ -38,7 +40,9 @@ class DateTimeValues
         int $qid,
         ?StatisticsResponseFilters $filters = null,
         array $resolvedFilters = [],
-        bool $decrypt = false
+        bool $decrypt = false,
+        ?string $fromDay = null,
+        ?string $toDay = null
     ): array {
         $question = $this->findDateQuestion($surveyId, $qid);
         $encrypted = DateProcessor::isEncrypted($question);
@@ -52,11 +56,42 @@ class DateTimeValues
         $batch = new ResponseAggregateBatch($surveyId, $filters, $resolvedFilters);
         $field = 'Q' . $qid;
 
+        // Encrypted values can't be compared in SQL, so their range is applied
+        // once they are decrypted.
         return self::groupByDay(
             DateProcessor::hasTime($question),
             $encrypted
-                ? self::countValues($batch->eachValue($field), [LSActiveRecord::class, 'decryptSingle'])
-                : $batch->groupedValues($field)
+                ? self::withinDays(
+                    self::countValues($batch->eachValue($field), [LSActiveRecord::class, 'decryptSingle']),
+                    $fromDay,
+                    $toDay
+                )
+                : $batch->groupedValues($field, $fromDay, $toDay)
+        );
+    }
+
+    /**
+     * Keep the values whose day lies in the range; values that are no date
+     * are left for groupByDay() to skip.
+     *
+     * @param array<string, int> $valueCounts value => count
+     * @param string|null $fromDay First day to include, 'Y-m-d'
+     * @param string|null $toDay Last day to include, 'Y-m-d'
+     * @return array<string, int> value => count
+     */
+    public static function withinDays(array $valueCounts, ?string $fromDay, ?string $toDay): array
+    {
+        if ($fromDay === null && $toDay === null) {
+            return $valueCounts;
+        }
+
+        return array_filter(
+            $valueCounts,
+            static function ($value) use ($fromDay, $toDay): bool {
+                $day = substr(trim((string)$value), 0, 10);
+                return ($fromDay === null || $day >= $fromDay) && ($toDay === null || $day <= $toDay);
+            },
+            ARRAY_FILTER_USE_KEY
         );
     }
 

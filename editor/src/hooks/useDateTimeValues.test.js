@@ -49,6 +49,52 @@ describe('useDateTimeValues', () => {
     expect(result.current.isError).toBe(false)
   })
 
+  it('asks only for the days of a range', async () => {
+    mockGet.mockResolvedValue({ data: { hasTime: false, total: 0, days: {} } })
+
+    renderHook(
+      () =>
+        useDateTimeValues(
+          '100',
+          5,
+          {},
+          { from: '2026-01-14', to: '2026-01-16' }
+        ),
+      { wrapper }
+    )
+
+    await waitFor(() => expect(mockGet).toHaveBeenCalled())
+    expect(mockGet.mock.calls[0][0]).toContain('&from=2026-01-14&to=2026-01-16')
+  })
+
+  it.each([
+    ['no filters', {}, '?qid=5&language=de'],
+    [
+      'completed first',
+      { completed: true, minId: 2 },
+      '?qid=5&completed=true&minId=2&language=de',
+    ],
+    [
+      'an ID range only',
+      { minId: 2, maxId: 9 },
+      '?qid=5&minId=2&maxId=9&language=de',
+    ],
+  ])(
+    'joins the filters with single ampersands: %s',
+    async (unused, filters, query) => {
+      mockGet.mockResolvedValue({
+        data: { hasTime: false, total: 0, days: {} },
+      })
+
+      renderHook(() => useDateTimeValues('100', 5, filters), { wrapper })
+
+      await waitFor(() => expect(mockGet).toHaveBeenCalled())
+      expect(mockGet.mock.calls[0][0]).toBe(
+        `statistics-date-values/100${query}`
+      )
+    }
+  )
+
   it('sends the active language, as the charts do', async () => {
     mockGet.mockResolvedValue({ data: { hasTime: false, total: 0, days: {} } })
 
