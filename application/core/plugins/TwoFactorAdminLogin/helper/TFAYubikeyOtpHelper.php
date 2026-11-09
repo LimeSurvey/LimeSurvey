@@ -137,13 +137,21 @@ class TFAYubikeyOtpHelper
         return $result;
     }
 
+    /**
+     * Generates the nonce sent with an OTP verification request.
+     *
+     * Uses a cryptographically secure random number generator, so the nonce cannot be predicted.
+     *
+     * @return string 20 random alphanumeric characters
+     * @throws \Exception If no source of randomness is available
+     */
     private function generateNonce()
     {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $charactersLength = strlen($characters);
         $nonce = '';
         for ($i = 0; $i < 20; $i++) {
-            $nonce .= $characters[rand(0, $charactersLength - 1)];
+            $nonce .= $characters[random_int(0, $charactersLength - 1)];
         }
         return $nonce;
     }
