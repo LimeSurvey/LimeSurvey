@@ -1162,14 +1162,20 @@ class ParticipantsAction extends SurveyCommonAction
                                 }
                                 continue;
                             }
+                            $overwrittenAttributes = [];
                             foreach ($writearray as $attribute => $value) {
                                 // Note: Only language and blacklisted, never ownership or other core columns
                                 // and only when present in the CSV, so stored values are not overwritten by empty defaults
                                 if (in_array($attribute, ['language', 'blacklisted']) && in_array($attribute, $firstline)) {
                                     $existingParticipant->$attribute = $value;
+                                    $overwrittenAttributes[] = $attribute;
                                 }
                             }
-                            if (!$existingParticipant->encryptSave()) {
+                            /* Validate only the overwritten attributes : other stored values are not changed by the import */
+                            if (
+                                (!empty($overwrittenAttributes) && !$existingParticipant->validate($overwrittenAttributes))
+                                || !$existingParticipant->encryptSave(false)
+                            ) {
                                 $invalidattribute[] = CHtml::encode($writearray['firstname'] . " " . $writearray['lastname'] . " (" . $writearray['email'] . ")");
                                 continue;
                             }
