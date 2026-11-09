@@ -41,7 +41,7 @@ class RandomCharsTest extends TestBaseClass
         $result = randomChars(200, 'ABC123');
 
         $this->assertSame(200, strlen($result));
-        $this->assertMatchesRegularExpression('/^[ABC123]+$/', $result);
+        $this->assertRegExp('/^[ABC123]+$/', $result);
     }
 
     /**
@@ -68,7 +68,7 @@ class RandomCharsTest extends TestBaseClass
         $result = randomChars(200);
 
         $this->assertSame(200, strlen($result));
-        $this->assertMatchesRegularExpression('/^[23456789abcdefghijkmnpqrstuvwxyz]+$/', $result);
+        $this->assertRegExp('/^[23456789abcdefghijkmnpqrstuvwxyz]+$/', $result);
     }
 
     /**

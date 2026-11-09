@@ -227,6 +227,7 @@ if (substr(sprintf('%o', fileperms(BASEPATH . '../../../../tests/tmp/')), -4) !=
 $_SERVER['SCRIPT_FILENAME'] = 'index-test.php';
 $_SERVER['SCRIPT_NAME'] =  '/index-test.php';
 $_SERVER['REQUEST_URI'] = 'index-test.php';
+$_SERVER['SERVER_NAME'] = 'localhost';
 
 Yii::$enableIncludePath = false;
 Yii::createApplication('LSYii_Application', $config);
