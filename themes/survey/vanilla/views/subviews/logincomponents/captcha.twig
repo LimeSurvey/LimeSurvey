@@ -51,13 +51,13 @@
                     <small class="{{ aSurveyInfo.class.maincolformdivblabelsmall }} text-danger asterisk fa fa-asterisk float-start small"  {{ aSurveyInfo.attr.maincolformdivblabelsmall }} ></small>
                     <span  class="{{ aSurveyInfo.class.maincolformdivblabelspan }} visually-hidden text-danger asterisk" {{ aSurveyInfo.attr.maincolformdivblabelspan }}>
                         ( {{ gT("Mandatory") }} )
-                    <span>
+                    </span>
                 </label>
                 <div class="col-md-2">
                     <div class='{{ aSurveyInfo.class.maincolformdivbdivdivdiv }}' {{ aSurveyInfo.attr.maincolformdivbdivdivdiv }} >
                         {# see: LS_Twig_Extension::renderCaptcha() in application/core/LS_Twig_Extension.php #}
                         {{ renderCaptcha().renderOut() }}
-                        <a href="#" class="btn btn-sm btn-outline-secondary" id="reloadCaptcha" title="{{ gT("Reload captcha") }}" data-bs-toggle="captcha"><i class="fa fa-refresh"></i></a>
+                        <button type="button" class="btn btn-sm btn-outline-secondary" id="reloadCaptcha" title="{{ gT("Reload captcha") }}" aria-label="{{ gT("Reload captcha") }}" data-bs-toggle="captcha"><i class="fa fa-refresh" aria-hidden="true"></i></button>
                     </div>
                 </div>
                 <div class='{{ aSurveyInfo.class.maincolformdivbdiv }} col-md-6' {{ aSurveyInfo.attr.maincolformdivbdiv }}>

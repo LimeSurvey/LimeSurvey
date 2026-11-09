@@ -19,6 +19,9 @@ use SurveyLanguageSetting;
  */
 class QuickTranslation
 {
+    /** @var string Placeholder for an expression while its text goes through machine translation */
+    private const EXPRESSION_MARKER = 'LSEXPR';
+
     /** @var Survey the survey */
     private $survey;
 
@@ -593,5 +596,59 @@ class QuickTranslation
     public function getSurvey()
     {
         return $this->survey;
+    }
+
+    /**
+     * Replaces every expression ({...}) in a text with a numbered marker that machine translation
+     * leaves alone, so the text can be translated in one piece with its HTML tags intact.
+     *
+     * @param string $text Text to translate, may contain HTML and expressions
+     * @return array{text: string, expressions: string[], hasText: bool} The text with markers,
+     *         the expressions indexed by marker number, and whether there is any text to translate
+     */
+    public static function protectExpressions(string $text): array
+    {
+        $protectedText = '';
+        $expressions = [];
+        $hasText = false;
+        foreach (\LimeExpressionManager::SplitStringOnExpressions($text) as $part) {
+            if ($part[2] === 'EXPRESSION') {
+                $protectedText .= '<span class="notranslate" translate="no">'
+                    . self::EXPRESSION_MARKER . count($expressions) . '</span>';
+                $expressions[] = $part[0];
+            } else {
+                $protectedText .= $part[0];
+                $hasText = $hasText || trim(strip_tags($part[0])) !== '';
+            }
+        }
+        return ['text' => $protectedText, 'expressions' => $expressions, 'hasText' => $hasText];
+    }
+
+    /**
+     * Puts the expressions back in place of the markers set by protectExpressions().
+     *
+     * @param string $text Translated text that contains the markers
+     * @param string[] $expressions The expressions as returned by protectExpressions()
+     * @return string|null The text with its expressions, or null if the translation lost one of them
+     */
+    public static function restoreExpressions(string $text, array $expressions): ?string
+    {
+        $restored = [];
+        $replaceMarker = function (array $matches) use ($expressions, &$restored) {
+            $index = (int)$matches[1];
+            if (!isset($expressions[$index])) {
+                return $matches[0];
+            }
+            $restored[$index] = true;
+            return $expressions[$index];
+        };
+        // Markers with their wrapper first, then any marker whose wrapper the translation dropped
+        $text = preg_replace_callback(
+            '#<span\b[^>]*>\s*' . self::EXPRESSION_MARKER . '(\d+)\s*</span>#i',
+            $replaceMarker,
+            $text
+        );
+        $text = preg_replace_callback('#' . self::EXPRESSION_MARKER . '(\d+)#', $replaceMarker, (string)$text);
+        return count($restored) === count($expressions) ? $text : null;
     }
 }

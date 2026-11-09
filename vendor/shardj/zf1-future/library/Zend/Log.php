@@ -604,6 +604,7 @@ class Zend_Log
         }
         // Deprecated in PHP 8.4
         if (defined('E_STRICT') && version_compare(PHP_VERSION, '8.4.0', '<')) {
+            // phpcs:ignore PHPCompatibility.Constants.RemovedConstants.e_strictDeprecated -- used before PHP 8.4 only
             $this->_errorHandlerMap[E_STRICT] = Zend_Log::DEBUG;
         }
 

@@ -18,6 +18,7 @@ use PhpOffice\PhpSpreadsheet\Shared\Date;
 use PhpOffice\PhpSpreadsheet\Shared\Drawing as SharedDrawing;
 use PhpOffice\PhpSpreadsheet\Shared\File;
 use PhpOffice\PhpSpreadsheet\Shared\Font as SharedFont;
+use PhpOffice\PhpSpreadsheet\Shared\Metafile;
 use PhpOffice\PhpSpreadsheet\Shared\StringHelper;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
@@ -447,7 +448,9 @@ class Html extends BaseWriter
         $properties = $this->spreadsheet->getProperties();
         $html = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">' . $this->lineEnding;
         $rtl = ($this->rtlSheets && !$this->ltrSheets) ? " dir='rtl'" : '';
-        $html .= '<html xmlns="http://www.w3.org/1999/xhtml"' . $rtl . '>' . $this->lineEnding;
+        $language = htmlspecialchars($properties->getLanguage(), Settings::htmlEntityFlags());
+        $lang = ($language === '') ? '' : " lang=\"$language\"";
+        $html .= '<html xmlns="http://www.w3.org/1999/xhtml"' . $lang . $rtl . '>' . $this->lineEnding;
         $html .= '  <head>' . $this->lineEnding;
         $html .= '      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />' . $this->lineEnding;
         $html .= '      <meta name="generator" content="PhpSpreadsheet, https://github.com/PHPOffice/PhpSpreadsheet" />' . $this->lineEnding;
@@ -597,7 +600,7 @@ class Html extends BaseWriter
             $this->sheetDrawings = [];
             $condStylesCollection = $sheet->getConditionalStylesCollection();
             foreach ($condStylesCollection as $condStyles) {
-                foreach ($condStyles as $key => $cs) {
+                foreach ($condStyles as $cs) {
                     if ($cs->getConditionType() === Conditional::CONDITION_COLORSCALE) {
                         $cs->getColorScale()?->setScaleArray();
                     }
@@ -765,6 +768,10 @@ class Html extends BaseWriter
             }
             $filedesc = $drawing->getDescription();
             $filedesc = $filedesc ? htmlspecialchars($filedesc, ENT_QUOTES) : 'Embedded image';
+            if ($drawing->isDecorative()) {
+                // An empty alt is how HTML marks a decorative image
+                $filedesc = '';
+            }
             if ($drawing instanceof Drawing && $drawing->getPath() !== '') {
                 $filename = $drawing->getPath();
 
@@ -783,7 +790,11 @@ class Html extends BaseWriter
                 $html .= $this->lineEnding;
                 $imageData = self::winFileToUrl($filename, $this instanceof Pdf\Mpdf);
 
-                if ($this->embedImages || str_starts_with($imageData, 'zip://')) {
+                if ($drawing->isMetafile()) {
+                    // Browsers can not display Windows Metafiles : they are embedded as PNG
+                    $png = Metafile::tryToPng($drawing->getContents());
+                    $imageData = ($png === null) ? 'data:,' : 'data:image/png;base64,' . base64_encode($png);
+                } elseif ($this->embedImages || str_starts_with($imageData, 'zip://')) {
                     $imageData = 'data:,';
                     $picture = @file_get_contents($filename);
                     if ($picture !== false) {
@@ -1240,11 +1251,25 @@ class Html extends BaseWriter
 
         $css['color'] = '#' . $font->getColor()->getRGB();
         if (!$conditional) {
-            $css['font-family'] = '\'' . htmlspecialchars((string) $font->getName(), ENT_QUOTES) . '\'';
+            $css['font-family'] = "'" . self::cssEscape((string) $font->getName()) . "'";
+            if ($this instanceof Pdf\Tcpdf) {
+                $css['font-family'] .= ', serif';
+            }
             $css['font-size'] = $font->getSize() . 'pt';
         }
 
         return $css;
+    }
+
+    /** @param string[] $matches */
+    private static function replaceUnexpected(array $matches): string
+    {
+        return '\\' . sprintf('%x ', mb_ord($matches[0], 'UTF-8'));
+    }
+
+    public static function cssEscape(string $convert): ?string
+    {
+        return preg_replace_callback('/[^-. \w]/u', self::replaceUnexpected(...), $convert) ?? 'unparseable';
     }
 
     /**
@@ -1652,7 +1677,7 @@ class Html extends BaseWriter
                         $dataType = DataType::TYPE_STRING;
                     }
                 } catch (CalculationException $exception) {
-                    $calculatedValue = '#ERROR';
+                    $calculatedValue = '#ERROR'; //* @phpstan-ignore assign.unused (I think Phpstan is wrong)
                     $dataType = DataType::TYPE_ERROR;
                 }
             }
@@ -1708,7 +1733,6 @@ class Html extends BaseWriter
 
     /**
      * @param string|string[] $cssClass
-     * @param Conditional[] $condStyles
      */
     private function generateRowWriteCell(
         string &$html,
@@ -1721,8 +1745,7 @@ class Html extends BaseWriter
         array|string $cssClass,
         int $colNum,
         int $sheetIndex,
-        int $row,
-        array $condStyles = []
+        int $row
     ): void {
         // Image?
         $htmlx = $this->writeImageInCell($coordinate);
@@ -1932,9 +1955,6 @@ class Html extends BaseWriter
             // Cell Data
             $cellData = $this->generateRowCellData($worksheet, $cell, $cssClass);
 
-            // Get an array of all styles
-            $condStyles = $worksheet->getStyle($coordinate)->getConditionalStyles();
-
             // Hyperlink?
             if ($worksheet->hyperlinkExists($coordinate) && !$worksheet->getHyperlink($coordinate)->isInternal()) {
                 $url = $worksheet->getHyperlink($coordinate)->getUrl();
@@ -1985,7 +2005,7 @@ class Html extends BaseWriter
 
             // Write
             if ($writeCell) {
-                $this->generateRowWriteCell($html, $worksheet, $coordinate, $cellType, $cellData, $colSpan, $rowSpan, $cssClass, $colNum, $sheetIndex, $row, $condStyles);
+                $this->generateRowWriteCell($html, $worksheet, $coordinate, $cellType, $cellData, $colSpan, $rowSpan, $cssClass, $colNum, $sheetIndex, $row);
             }
 
             // Next column
@@ -2171,8 +2191,6 @@ class Html extends BaseWriter
         foreach ($sheetIndexes as $sheetIndex) {
             $sheet = $this->spreadsheet->getSheet($sheetIndex);
 
-            $candidateSpannedRow = [];
-
             // loop through all Excel merged cells
             foreach ($sheet->getMergeCells() as $cells) {
                 [$cells] = Coordinate::splitRange($cells);
@@ -2188,9 +2206,6 @@ class Html extends BaseWriter
                 // loop through the individual cells in the individual merge
                 $r = $fr - 1;
                 while ($r++ < $lr) {
-                    // also, flag this row as a HTML row that is candidate to be omitted
-                    $candidateSpannedRow[$r] = $r;
-
                     $c = $fc - 1;
                     while ($c++ < $lc) {
                         if (!($c == $fc && $r == $fr)) {
@@ -2390,7 +2405,7 @@ class Html extends BaseWriter
         return $this;
     }
 
-    private static function nl2brx(string $string, bool $useXhtml = false): string
+    private static function nl2brx(string $string): string
     {
         return str_replace(
             ["\r\n", "\n\r", "\r", "\n"],

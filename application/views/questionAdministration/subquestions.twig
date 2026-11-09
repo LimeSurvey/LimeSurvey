@@ -10,6 +10,8 @@
 {% for lang in allLanguages %}
     <div class="lang-hide lang-{{ lang }} {{ first ? 'base-lang' : 'extra-lang' }}">
         {% for scale_id in range(0, scalecount - 1) %}
+            <!-- One block per scale, so the sticky buttons of a scale stay with its own table -->
+            <div class="scale-block">
             {% set anscount = subquestions|length %}
             {# TODO : check the rendering of XSCALES / Y SCALES #}
 
@@ -28,7 +30,7 @@
 
             <!-- Subquestions table -->
             <!-- NB: Both questions and answer options uses class "answertable". -->
-            <div class="subquestions-table-wrapper" style="max-height: max(500px, calc(100vh - 20rem));">
+            <div class="subquestions-table-wrapper">
                 <table
                     class='answertable subquestions-table table table-responsive  {{ supportsRelevance ? '' : 'hide-relevance' }}'
                     id='subquestions_{{lang}}_{{scale_id}}'
@@ -117,6 +119,7 @@
                 <button {{ disabled }} id='btnquickadd_{{ lang }}_{{ scale_id }}' data-scale-id="{{ scale_id }}" class='btn btn-outline-secondary btnquickadd float-end' type='button' data-bs-toggle="modal" data-bs-target="#quickaddModal" data-scale-id="{{ scale_id }}">
                     {{ gT('Quick add') }}
                 </button>
+            </div>
             </div>
             {% set position=sprintf("%05d", position) %}
         {% endfor %}

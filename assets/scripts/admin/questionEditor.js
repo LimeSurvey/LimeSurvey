@@ -357,7 +357,35 @@ $(document).on('ready pjax:scriptcomplete', function () {
   }
 
   /**
-   * Scroll a newly added row into view inside its scrollable table wrapper.
+   * Keep --ls-topbar-height on the document root up to date, so the sticky subquestion and
+   * answer option table headers stay right below the sticky topbar, whose height changes
+   * e.g. when its buttons wrap to a second line.
+   *
+   * @return {void}
+   */
+  function observeTopbarHeight() {
+    if (LS.questionEditorTopbarObserver) {
+      LS.questionEditorTopbarObserver.disconnect();
+      LS.questionEditorTopbarObserver = null;
+    }
+    const topbar = document.querySelector('.topbar.sticky-top');
+    const root = document.documentElement;
+    if (!topbar || !root) {
+      return;
+    }
+    const updateHeight = () => {
+      const height = topbar.offsetParent !== null ? topbar.offsetHeight : 0;
+      root.style.setProperty('--ls-topbar-height', `${height}px`);
+    };
+    updateHeight();
+    if (window.ResizeObserver) {
+      LS.questionEditorTopbarObserver = new ResizeObserver(updateHeight);
+      LS.questionEditorTopbarObserver.observe(topbar);
+    }
+  }
+
+  /**
+   * Scroll a newly added row into view, clear of the sticky table header and buttons.
    * Rows of hidden languages are ignored.
    *
    * @param {HTMLElement} row
@@ -381,9 +409,12 @@ $(document).on('ready pjax:scriptcomplete', function () {
    * @return {void}
    */
   function fitRelevanceEquationHeight(textarea) {
+    // A scrollbar while measuring would make the text narrower and the height too big
+    textarea.style.overflow = 'hidden';
     textarea.style.height = 'auto';
     // scrollHeight doesn't include the border
     textarea.style.height = `${textarea.scrollHeight + textarea.offsetHeight - textarea.clientHeight}px`;
+    textarea.style.overflow = '';
   }
 
   /**
@@ -2427,6 +2458,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
     updateRowProperties();
 
     bindExpandRelevanceEquation();
+    observeTopbarHeight();
 
     // Since save button is not inside the form, we need to trigger it manually.
     $('#save-button').on('click', (ev) => {
