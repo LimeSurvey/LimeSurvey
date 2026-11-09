@@ -99,10 +99,7 @@ class SurveyArchive implements CommandInterface
         if (!$surveyId) {
             $surveyId = intval($_GET['id']);
         }
-        if ($response = $this->ensurePermissions($surveyId)) {
-            return $response;
-        }
-        $survey = Survey::model()->findByPk($surveyId);
+        $survey = $this->survey->findByPk($surveyId);
         if (!$survey) {
             return $this->responseFactory->makeErrorNotFound(
                 (new ResponseDataError(
@@ -112,6 +109,9 @@ class SurveyArchive implements CommandInterface
                 )->toArray()
             );
         }
+        if ($response = $this->ensurePermissions($surveyId)) {
+            return $response;
+        }
         require_once "application/helpers/admin/import_helper.php";
         $result = getTableArchivesAndTimestamps($surveyId);
         return $this->responseFactory->makeSuccess($this->processData($survey, $result));
@@ -120,9 +120,11 @@ class SurveyArchive implements CommandInterface
     /**
      * Ensure Permissions
      *
-     * @param string $authToken
+     * The survey must exist before this is called, because the permission
+     * check returns false for unknown surveys, which must give a 404 instead.
+     *
      * @param int $surveyId
-     * @return Response|false
+     * @return Response|false Forbidden response, or false if access is allowed
      */
     private function ensurePermissions($surveyId)
     {
@@ -135,16 +137,6 @@ class SurveyArchive implements CommandInterface
         ) {
             return $this->responseFactory
                 ->makeErrorForbidden();
-        }
-
-        if (!$surveyId) {
-            return $this->responseFactory->makeErrorNotFound(
-                (new ResponseDataError(
-                    'SURVEY_NOT_FOUND',
-                    'Survey not found'
-                )
-                )->toArray()
-            );
         }
 
         return false;

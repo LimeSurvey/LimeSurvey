@@ -75,10 +75,6 @@ class SurveyTemplate implements CommandInterface
     {
         $surveyId = (int)$request->getData('_id');
 
-        if ($response = $this->ensurePermissions($surveyId)) {
-            return $response;
-        }
-
         $survey = $this->survey->findByPk($surveyId);
         if (!$survey) {
             return $this->responseFactory->makeErrorNotFound(
@@ -88,6 +84,10 @@ class SurveyTemplate implements CommandInterface
                 )
                 )->toArray()
             );
+        }
+
+        if ($response = $this->ensurePermissions($surveyId)) {
+            return $response;
         }
         $language = $request->getData('language', $survey->language);
         $language = $language ?? 'en';
@@ -111,9 +111,11 @@ class SurveyTemplate implements CommandInterface
     /**
      * Ensure Permissions
      *
-     * @param string $authToken
+     * The survey must exist before this is called, because the permission
+     * check returns false for unknown surveys, which must give a 404 instead.
+     *
      * @param int $surveyId
-     * @return Response|false
+     * @return Response|false Forbidden response, or false if access is allowed
      */
     private function ensurePermissions($surveyId)
     {
@@ -126,16 +128,6 @@ class SurveyTemplate implements CommandInterface
         ) {
             return $this->responseFactory
                 ->makeErrorForbidden();
-        }
-
-        if (!$surveyId) {
-            return $this->responseFactory->makeErrorNotFound(
-                (new ResponseDataError(
-                    'SURVEY_NOT_FOUND',
-                    'Survey not found'
-                )
-                )->toArray()
-            );
         }
 
         return false;
