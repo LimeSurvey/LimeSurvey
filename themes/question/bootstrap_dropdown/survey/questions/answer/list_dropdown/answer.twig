@@ -119,16 +119,20 @@
             var resultsText = {{ json_encode(gT('Number of results: %s')) }};
             var noResultsText = {{ json_encode(gT('No results matched %s')) }};
             var searchStatusTimer = null;
+            {# No results message as a paragraph outside the listbox, replace the plugin <li class="no-results"> #}
+            var $noResults = $('<p class="no-results mb-0" hidden></p>');
+            $bsWrapper.find('[role="listbox"]').first().after($noResults);
             $bsWrapper.on('input', '.bs-searchbox input', function () {
                 var search = this.value;
+                var noResultsMessage = noResultsText.replace('%s', function () { return '"' + search + '"'; });
+                var count = $bsWrapper.find('[role="listbox"] [role="option"]').length;
+                $bsWrapper.find('[role="listbox"] li.no-results').remove();
+                $noResults.text(noResultsMessage).prop('hidden', search === '' || count > 0);
                 clearTimeout(searchStatusTimer);
                 searchStatusTimer = setTimeout(function () {
                     var message = '';
                     if (search !== '') {
-                        var count = $bsWrapper.find('[role="listbox"] [role="option"]').length;
-                        message = count
-                            ? resultsText.replace('%s', count)
-                            : noResultsText.replace('%s', function () { return '"' + search + '"'; });
+                        message = count ? resultsText.replace('%s', count) : noResultsMessage;
                     }
                     $searchStatus.text(message);
                 }, 500);
@@ -136,6 +140,7 @@
             selectPicker.on('hidden.bs.select', function () {
                 clearTimeout(searchStatusTimer);
                 $searchStatus.text('');
+                $noResults.prop('hidden', true);
             });
             {% endif %}
         });
