@@ -2,6 +2,7 @@ import { OperationsBuffer } from 'helpers/Buffer/OperationsBuffer'
 
 import {
   buildConditionOperations,
+  buildScenarioPayload,
   buildScenarioConditionDeleteOperations,
 } from './scenarioPayloadBuilder'
 
@@ -110,5 +111,37 @@ describe('buildConditionOperations', () => {
         props: { qid: 20, scenarios: [{ scid: 2, conditions: [updated] }] },
       }),
     ])
+  })
+})
+
+describe('buildScenarioPayload', () => {
+  const newCondition = (value) => ({
+    qid: 20,
+    cqid: 10,
+    cfieldname: 'Q10',
+    cquestions: 'Q10',
+    method: '==',
+    value,
+    sourceType: 'Question',
+    targetType: 'Constant',
+  })
+  const tempIds = ({ scenarios }) =>
+    scenarios.flatMap((s) => s.conditions.map((c) => c.tempId))
+
+  test('gives every new condition a distinct temp ID, across payloads', () => {
+    const first = tempIds(
+      buildScenarioPayload(
+        { qid: 20 },
+        [newCondition('A'), newCondition('B')],
+        1
+      )
+    )
+    const second = tempIds(
+      buildScenarioPayload({ qid: 20 }, [newCondition('C')], 1)
+    )
+    const all = [...first, ...second]
+
+    expect(new Set(all).size).toBe(all.length)
+    all.forEach((id) => expect(id).toMatch(/^temp__\d+_\d+$/))
   })
 })

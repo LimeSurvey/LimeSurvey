@@ -29,10 +29,13 @@ const targetTabs = {
   RegExp: '#REGEXP',
 }
 
+// Unique per session: Condition operations are keyed by their temp cid.
+let conditionTempIdSeed = Date.now()
+
 export const buildScenarioPayload = (question, conditions, scenarioName) => {
   const apiActions = getApiOperationActions()
   const qid = question.qid
-  const tempIdSeed = Math.floor(Math.random() * 1000000)
+  const tempIdSeed = ++conditionTempIdSeed
   let tempIdIndex = 1
   const scenarios = []
 
