@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from 'react'
 
-import { getApiUrl } from 'helpers'
+import { getApiUrl, hasTempId } from 'helpers'
 import { ExpressionScriptValidationService } from 'services'
 
 import useAuth from './useAuth'
@@ -14,7 +14,15 @@ export const useExpressionScriptValidation = (surveyId, questionId) => {
 
   return useCallback(
     async (expression, signal) => {
-      if (!surveyId || !questionId || !String(expression).trim()) {
+      // An unsaved question (temp ID) isn't on the server yet, which would
+      // answer "Question not found": It's validated once saved. The server
+      // can't check the other unsaved questions a script uses either.
+      if (
+        !surveyId ||
+        !questionId ||
+        hasTempId(String(questionId)) ||
+        !String(expression).trim()
+      ) {
         return { valid: true, diagnostics: [] }
       }
 
