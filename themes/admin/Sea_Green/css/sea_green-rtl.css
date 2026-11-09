@@ -17160,7 +17160,6 @@ body {
   background-color: #333641;
   border-color: #000;
   color: #fff;
-  stroke: #fff;
 }
 .btn-group .btn-check:active + .btn-outline-secondary.disabled, .btn-group .btn-check:active + .btn-outline-secondary[disabled], .btn-group .btn-check:checked + .btn-outline-secondary.disabled, .btn-group .btn-check:checked + .btn-outline-secondary[disabled], .btn-group .btn-outline-secondary.active.disabled, .btn-group .btn-outline-secondary.active[disabled], .btn-group .btn-outline-secondary.dropdown-toggle.show.disabled, .btn-group .btn-outline-secondary.dropdown-toggle.show[disabled], .btn-group .btn-outline-secondary:active.disabled, .btn-group .btn-outline-secondary:active[disabled] {
   border-color: #9094A7;
