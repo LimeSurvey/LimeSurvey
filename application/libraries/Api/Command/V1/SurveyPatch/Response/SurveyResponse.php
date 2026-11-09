@@ -137,8 +137,9 @@ class SurveyResponse
      * Additional values must be scalars or keyed maps, not lists: lists are
      * merged by index (array_replace_recursive), so a later operation's list
      * would overwrite the items of an earlier one instead of being appended.
-     * @param array $handleResponse
-     * @return void
+     * @param array $handleResponse the response of one operation handler,
+     *   whose 'additional' entry (if any) is merged into 'extras'
+     * @return void nothing: the merged data is kept in $this->additional
      */
     public function extractAdditional(array $handleResponse)
     {
