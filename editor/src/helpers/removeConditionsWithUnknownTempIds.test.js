@@ -1,43 +1,4 @@
-import {
-  removeConditionsWithUnknownTempIds,
-  removeConditionsWithUnknownTempIdsFromSurveyAndBuffer,
-} from './removeConditionsWithUnknownTempIds'
-
-describe('removeConditionsWithUnknownTempIds', () => {
-  it('removes conditions using an unknown temp ID without mutating', () => {
-    const other = { qid: 3, scenarios: [] }
-    const question = {
-      qid: 10,
-      relevance: 'X',
-      scenarios: [
-        {
-          scid: 1,
-          conditions: [{ cid: 1, cqid: 4, cfieldname: 'Q4_Stemp__34' }],
-        },
-      ],
-    }
-    const survey = {
-      questionGroups: [{ gid: 1, questions: [other, question] }],
-    }
-
-    const result = removeConditionsWithUnknownTempIds(survey, new Set())
-
-    expect(result.changedQids).toEqual(['10'])
-    expect(result.survey.questionGroups[0].questions[1]).toMatchObject({
-      scenarios: [],
-      relevance: '1',
-    })
-    expect(result.survey.questionGroups[0].questions[0]).toBe(other)
-    expect(question.scenarios).toHaveLength(1)
-  })
-
-  it('returns the same survey when nothing changes', () => {
-    const survey = { questionGroups: [{ gid: 1, questions: [{ qid: 3 }] }] }
-    expect(removeConditionsWithUnknownTempIds(survey, new Set()).survey).toBe(
-      survey
-    )
-  })
-})
+import { removeConditionsWithUnknownTempIdsFromSurveyAndBuffer } from './removeConditionsWithUnknownTempIds'
 
 describe('removeConditionsWithUnknownTempIdsFromSurveyAndBuffer', () => {
   const conditionUsing = (cqid) => ({
@@ -119,5 +80,37 @@ describe('removeConditionsWithUnknownTempIdsFromSurveyAndBuffer', () => {
     expect(result.survey).toBe(survey)
     expect(result.operations).toBe(operations)
     expect(result.changedQids).toEqual([])
+  })
+
+  it('removes the conditions using a deleted unsaved subquestion from the survey only, without mutating', () => {
+    const other = { qid: 3, scenarios: [] }
+    const question = {
+      qid: 10,
+      relevance: 'X',
+      scenarios: [
+        {
+          scid: 1,
+          conditions: [{ cid: 1, cqid: 4, cfieldname: 'Q4_Stemp__34' }],
+        },
+      ],
+    }
+    const survey = {
+      questionGroups: [{ gid: 1, questions: [other, question] }],
+    }
+    const operations = []
+
+    const result = removeConditionsWithUnknownTempIdsFromSurveyAndBuffer(
+      survey,
+      operations
+    )
+
+    expect(result.changedQids).toEqual(['10'])
+    expect(result.survey.questionGroups[0].questions[1]).toMatchObject({
+      scenarios: [],
+      relevance: '1',
+    })
+    expect(result.survey.questionGroups[0].questions[0]).toBe(other)
+    expect(question.scenarios).toHaveLength(1)
+    expect(result.operations).toBe(operations)
   })
 })

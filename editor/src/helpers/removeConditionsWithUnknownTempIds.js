@@ -9,19 +9,20 @@ import {
 } from './Buffer/operationsHandlers/handleQuestionConditionOperation/handleQuestionConditionOperation'
 
 /**
- * Removes the conditions matching `isRemoved` from the questions. Questions
- * left without scenarios get the default relevance back.
- * Doesn't mutate `questionGroups`: the changed groups and questions are
- * copied, the others are kept as is.
+ * Removes from the questions of the survey the conditions using an unknown
+ * temp ID (see usesUnknownTempId). Questions left without scenarios get the
+ * default relevance back.
+ * Doesn't mutate `survey`: only the changed groups and questions are copied.
  *
- * @param {Array} questionGroups
- * @param {function(object): boolean} isRemoved
- * @returns {{questionGroups: Array, changedQids: Array<string>}}
+ * @param {object} survey
+ * @param {Set<string>} knownTempIds
+ * @returns {{survey: object, changedQids: Array<string>}}
  */
-const removeConditions = (questionGroups = [], isRemoved) => {
+const removeSurveyConditionsWithUnknownTempIds = (survey, knownTempIds) => {
+  const isRemoved = (condition) => usesUnknownTempId(condition, knownTempIds)
   const changedQids = []
 
-  const updatedGroups = questionGroups.map((group) => {
+  const questionGroups = survey.questionGroups.map((group) => {
     let groupChanged = false
     const questions = (group.questions ?? []).map((question) => {
       const hasRemoved = (question.scenarios ?? []).some((scenario) =>
@@ -51,31 +52,6 @@ const removeConditions = (questionGroups = [], isRemoved) => {
   })
 
   return changedQids.length
-    ? { questionGroups: updatedGroups, changedQids }
-    : { questionGroups, changedQids }
-}
-
-/**
- * Removes the conditions using as source an unsaved entity that doesn't exist
- * anymore (see usesUnknownTempId), e.g. a deleted unsaved subquestion. Their
- * buffered operations are dropped too (removeConditionOpsWithUnknownTempIds),
- * so they would otherwise be shown but never saved.
- * Questions left without scenarios get the default relevance back.
- * Doesn't mutate `survey`: the changed groups and questions are copied.
- *
- * @param {object} survey
- * @param {Set<string>} knownTempIds
- * @returns {{survey: object, changedQids: Array<string>}}
- */
-export const removeConditionsWithUnknownTempIds = (survey, knownTempIds) => {
-  if (!survey?.questionGroups) return { survey, changedQids: [] }
-
-  const { questionGroups, changedQids } = removeConditions(
-    survey.questionGroups,
-    (condition) => usesUnknownTempId(condition, knownTempIds)
-  )
-
-  return changedQids.length
     ? { survey: { ...survey, questionGroups }, changedQids }
     : { survey, changedQids }
 }
@@ -83,8 +59,8 @@ export const removeConditionsWithUnknownTempIds = (survey, knownTempIds) => {
 /**
  * Removes, from the survey and from the buffered operations, the conditions of
  * or using as source an unsaved question, subquestion or group that was
- * deleted (see removeConditionsWithUnknownTempIds and
- * removeConditionOpsWithUnknownTempIds): its temp ID will never be replaced.
+ * deleted (see usesUnknownTempId and removeConditionOpsWithUnknownTempIds):
+ * its temp ID will never be replaced.
  * Usually no condition uses a temp ID, and nothing more is computed.
  *
  * @param {object} survey
@@ -115,7 +91,7 @@ export const removeConditionsWithUnknownTempIdsFromSurveyAndBuffer = (
   )
 
   return {
-    ...removeConditionsWithUnknownTempIds(survey, knownTempIds),
+    ...removeSurveyConditionsWithUnknownTempIds(survey, knownTempIds),
     operations: isEqual(cleanedOperations, operations)
       ? operations
       : cleanedOperations,
