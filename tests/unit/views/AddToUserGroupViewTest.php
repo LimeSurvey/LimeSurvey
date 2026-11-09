@@ -15,7 +15,8 @@ class AddToUserGroupViewTest extends TestBaseClass
     public function testGroupNameIsEncoded()
     {
         $originalLoginId = \Yii::app()->session['loginID'] ?? null;
-        $originalUserId = \Yii::app()->user->getId();
+        // setId() writes both the user state and session['loginID'], so both are saved and restored
+        $originalUserState = \Yii::app()->user->getState('__id');
         $groupName = "Grp '20831' & <i>";
         // A leftover group of an aborted run would fail the unique rule
         \UserGroup::model()->deleteAllByAttributes(['name' => $groupName]);
@@ -41,8 +42,8 @@ class AddToUserGroupViewTest extends TestBaseClass
             );
             $this->assertStringNotContainsString($groupName, $html);
         } finally {
+            \Yii::app()->user->setState('__id', $originalUserState);
             \Yii::app()->session['loginID'] = $originalLoginId;
-            \Yii::app()->user->setId($originalUserId);
             $userGroup->delete();
         }
     }
