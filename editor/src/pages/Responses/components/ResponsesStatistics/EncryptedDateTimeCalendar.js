@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useRef } from 'react'
 
 import { Button } from 'components'
-import { useDateTimeValues } from 'hooks'
+import { STATES } from 'helpers'
+import { useAppState, useDateTimeValues } from 'hooks'
 
 import { DateTimeCalendar } from './DateTimeCalendar.js'
 import { toDayMap } from './dateTimeUtils'
@@ -10,6 +11,8 @@ import { toDayMap } from './dateTimeUtils'
  * Calendar view of an encrypted Date/time question. Its answers are only
  * decrypted once asked for; until the page reloads they then feed the same
  * calendar, and the same loaded values serve its day and range breakdowns.
+ * Decrypting needs the permission to read responses, so without it only the
+ * message is shown.
  */
 export const EncryptedDateTimeCalendar = ({
   surveyId,
@@ -19,7 +22,11 @@ export const EncryptedDateTimeCalendar = ({
   calendarState = {},
   onCalendarStateChange,
 }) => {
-  const isDecrypted = !!calendarState.decrypted
+  const [canReadResponses] = useAppState(
+    STATES.HAS_RESPONSES_READ_PERMISSION,
+    false
+  )
+  const isDecrypted = !!calendarState.decrypted && canReadResponses
   const decryptedRef = useRef(null)
   const moveFocusRef = useRef(false)
   const { values, isLoading, isError } = useDateTimeValues(
@@ -45,15 +52,17 @@ export const EncryptedDateTimeCalendar = ({
             'The date/time data for this question was set up to be encrypted.'
           )}
         </p>
-        <Button
-          variant="primary"
-          onClick={() => {
-            moveFocusRef.current = true
-            onCalendarStateChange?.({ ...calendarState, decrypted: true })
-          }}
-        >
-          {t('Decrypt response data and show statistics')}
-        </Button>
+        {canReadResponses && (
+          <Button
+            variant="primary"
+            onClick={() => {
+              moveFocusRef.current = true
+              onCalendarStateChange?.({ ...calendarState, decrypted: true })
+            }}
+          >
+            {t('Decrypt response data and show statistics')}
+          </Button>
+        )}
       </div>
     )
   }

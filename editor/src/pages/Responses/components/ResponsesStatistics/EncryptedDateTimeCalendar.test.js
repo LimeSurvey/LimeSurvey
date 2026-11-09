@@ -3,7 +3,7 @@ import 'tests/mocks'
 import { useState } from 'react'
 import { fireEvent, render, screen } from '@testing-library/react'
 
-import { useDateTimeValues } from 'hooks'
+import { useAppState, useDateTimeValues } from 'hooks'
 
 import { EncryptedDateTimeCalendar } from './EncryptedDateTimeCalendar.js'
 
@@ -12,6 +12,7 @@ global.t = (key) => key
 jest.mock('hooks', () => ({
   ...jest.requireActual('hooks'),
   useDateTimeValues: jest.fn(),
+  useAppState: jest.fn(),
 }))
 
 const BUTTON = 'Decrypt response data and show statistics'
@@ -44,6 +45,24 @@ const mockValues = (result) =>
 const lastOptions = () => useDateTimeValues.mock.lastCall[3]
 
 describe('EncryptedDateTimeCalendar', () => {
+  beforeEach(() => {
+    useAppState.mockReturnValue([true])
+  })
+
+  test('without the permission to read responses there is no button', () => {
+    useAppState.mockReturnValue([false])
+    mockValues({})
+    render(<Card />)
+
+    expect(
+      screen.getByText(
+        'The date/time data for this question was set up to be encrypted.'
+      )
+    ).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: BUTTON })).toBeNull()
+    expect(lastOptions()).toMatchObject({ enabled: false })
+  })
+
   test('nothing is decrypted until asked', () => {
     mockValues({})
     render(<Card />)

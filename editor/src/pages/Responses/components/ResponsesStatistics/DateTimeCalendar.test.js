@@ -2,6 +2,7 @@ import 'tests/mocks'
 
 import { useState } from 'react'
 import {
+  act,
   fireEvent,
   render,
   screen,
@@ -312,5 +313,48 @@ describe('DateTimeCalendar breakdown', () => {
       expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
     )
     await waitFor(() => expect(link).toHaveFocus())
+  })
+})
+
+describe('DateTimeCalendar keyboard focus', () => {
+  const props = {
+    surveyId: 1,
+    question: { qid: 5, title: 'When did you start?', hasTime: true },
+    calendarState: {},
+    onCalendarStateChange: () => {},
+  }
+
+  beforeEach(() => {
+    useDateTimeValues.mockReturnValue({
+      values,
+      isLoading: false,
+      isError: false,
+    })
+  })
+
+  test('the arrow keys move the focus into the next month', () => {
+    renderCard()
+    act(() => dayButton(31).focus())
+
+    fireEvent.keyDown(document.activeElement, { key: 'ArrowRight' })
+
+    expect(document.activeElement).toHaveAccessibleName(/February 1, 2026/)
+  })
+
+  test('new day counts keep the focused day button', () => {
+    const { rerender } = render(<DateTimeCalendar {...props} stats={stats} />)
+    const focused = dayButton(16)
+    act(() => focused.focus())
+
+    rerender(
+      <DateTimeCalendar
+        {...props}
+        stats={{ ...stats, days: { ...stats.days, '2026-01-20': 2 } }}
+      />
+    )
+
+    expect(dayButton(16)).toBe(focused)
+    expect(document.activeElement).toBe(focused)
+    expect(dayButton(20)).toHaveTextContent('2')
   })
 })

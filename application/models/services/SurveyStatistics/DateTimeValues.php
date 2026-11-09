@@ -8,6 +8,7 @@ use LimeSurvey\Models\Services\SurveyStatistics\Charts\Questions\Processors\Resp
 use LSActiveRecord;
 use Question;
 use QuestionAttribute;
+use SodiumException;
 
 /**
  * Every entered value of a Date/time question with its count, grouped by day
@@ -54,7 +55,10 @@ class DateTimeValues
     }
 
     /**
-     * Count values after decoding each one; empty results are skipped.
+     * Count values after decoding each one. Values that decode to nothing are
+     * skipped, and so are values that can't be decrypted (an old key, or a
+     * plain value written by an import), so one bad row doesn't hide all the
+     * others.
      *
      * @param iterable<string> $values
      * @param callable(string): string $decode
@@ -64,7 +68,11 @@ class DateTimeValues
     {
         $counts = [];
         foreach ($values as $value) {
-            $decoded = trim((string)$decode($value));
+            try {
+                $decoded = trim((string)$decode($value));
+            } catch (SodiumException $exception) {
+                continue;
+            }
             if ($decoded !== '') {
                 $counts[$decoded] = ($counts[$decoded] ?? 0) + 1;
             }

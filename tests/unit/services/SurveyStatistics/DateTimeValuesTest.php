@@ -118,6 +118,36 @@ class DateTimeValuesTest extends TestCase
     }
 
     /**
+     * @testdox countValues() skips values that can't be decrypted and keeps the others
+     */
+    public function testCountValuesSkipsValuesThatCannotBeDecrypted()
+    {
+        $decode = static function (string $value): string {
+            if ($value === 'old-key') {
+                throw new \SodiumException('Wrong decryption key!');
+            }
+            return $value;
+        };
+
+        $this->assertSame(
+            ['2026-10-03 00:00' => 1, '2026-10-22 14:20' => 1],
+            DateTimeValues::countValues(['2026-10-03 00:00', 'old-key', '2026-10-22 14:20'], $decode)
+        );
+    }
+
+    /**
+     * @testdox countValues() doesn't hide other errors
+     */
+    public function testCountValuesLetsOtherErrorsThrough()
+    {
+        $this->expectException(\RuntimeException::class);
+
+        DateTimeValues::countValues(['2026-10-03 00:00'], static function (): string {
+            throw new \RuntimeException('Database gone');
+        });
+    }
+
+    /**
      * @testdox Decrypted answers give the same output as the same answers stored in plain
      */
     public function testDecryptedAnswersMatchPlainAnswers()

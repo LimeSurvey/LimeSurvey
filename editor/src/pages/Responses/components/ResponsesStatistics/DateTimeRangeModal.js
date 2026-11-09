@@ -1,4 +1,4 @@
-import { useId, useMemo } from 'react'
+import { useId, useMemo, useRef } from 'react'
 
 import { DateRangePickerField } from 'components'
 import { htmlToPlainText } from 'helpers'
@@ -17,7 +17,7 @@ import {
  * How many answers entered each date and time in a range of days (`from` and
  * `to` are day keys). One day lists its times; a longer range adds the date.
  * A date or its calendar icon calls `onOpenPicker`. In the range flow, the
- * results also show their total.
+ * results also show their total. A null `range` closes the modal.
  */
 export const DateTimeRangeModal = ({
   surveyId,
@@ -31,17 +31,25 @@ export const DateTimeRangeModal = ({
   ...modalProps
 }) => {
   const titleId = useId()
+  const lastRangeRef = useRef(range)
+  if (range) {
+    lastRangeRef.current = range
+  }
+  const shownRange = lastRangeRef.current
   const { values, isLoading, isError } = useDateTimeValues(
     surveyId,
     question.qid,
     filters,
-    { enabled: !!range, filterSet, decrypt: !!question.encrypted }
+    { enabled: !!shownRange, filterSet, decrypt: !!question.encrypted }
   )
-  const isSingleDay = range?.from === range?.to
+  const isSingleDay = shownRange?.from === shownRange?.to
   const isRangeResult = isRangeFlow || !isSingleDay
   const rows = useMemo(
-    () => (range ? sliceByRange(values?.days, range.from, range.to) : []),
-    [range, values]
+    () =>
+      shownRange
+        ? sliceByRange(values?.days, shownRange.from, shownRange.to)
+        : [],
+    [shownRange, values]
   )
 
   const renderContent = () => {
@@ -83,7 +91,7 @@ export const DateTimeRangeModal = ({
           </p>
         )}
         <DateTimeBreakdownTable
-          key={`${range.from}|${range.to}`}
+          key={`${shownRange.from}|${shownRange.to}`}
           rows={rows}
           hasTime={question.hasTime}
           showDate={!isSingleDay || !question.hasTime}
@@ -103,13 +111,16 @@ export const DateTimeRangeModal = ({
       <h2 id={titleId} className="responses-statistics-modal-title">
         {htmlToPlainText(question.title)}
       </h2>
-      {range && (
+      {shownRange && (
         <div className="responses-statistics-date-modal-picker">
           <span className="responses-statistics-date-modal-label">
             {t('See all responses for:')}
           </span>
           <DateRangePickerField
-            value={{ from: toDate(range.from), to: toDate(range.to) }}
+            value={{
+              from: toDate(shownRange.from),
+              to: toDate(shownRange.to),
+            }}
             onOpenPicker={onOpenPicker}
           />
         </div>

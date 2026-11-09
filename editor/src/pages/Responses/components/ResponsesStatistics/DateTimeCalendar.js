@@ -1,4 +1,11 @@
-import { useId, useMemo, useRef, useState } from 'react'
+import {
+  createContext,
+  useContext,
+  useId,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 import { DayButton, DayPicker } from '@daypicker/react'
 import { endOfYear, startOfMonth, startOfYear } from 'date-fns'
 import classNames from 'classnames'
@@ -13,6 +20,26 @@ import {
   toDate,
   toDayKey,
 } from './dateTimeUtils'
+
+const DayCountsContext = createContext({})
+
+const DayCountButton = ({ children, ...props }) => {
+  const days = useContext(DayCountsContext)
+  const count = props.modifiers.outside ? 0 : days[toDayKey(props.day.date)]
+
+  return (
+    <DayButton {...props}>
+      <span className="responses-statistics-calendar-day-number">
+        {children}
+      </span>
+      {count > 0 && (
+        <span className="responses-statistics-calendar-day-count">
+          {formatResponseCount(count)}
+        </span>
+      )}
+    </DayButton>
+  )
+}
 
 /**
  * Calendar view of a Date/time question: the range of entered dates above a
@@ -113,27 +140,8 @@ export const DateTimeCalendar = ({
   }
 
   const calendarComponents = useMemo(
-    () => ({
-      ...components,
-      DayButton: ({ children, ...props }) => {
-        const count = props.modifiers.outside
-          ? 0
-          : days[toDayKey(props.day.date)]
-        return (
-          <DayButton {...props}>
-            <span className="responses-statistics-calendar-day-number">
-              {children}
-            </span>
-            {count > 0 && (
-              <span className="responses-statistics-calendar-day-count">
-                {formatResponseCount(count)}
-              </span>
-            )}
-          </DayButton>
-        )
-      },
-    }),
-    [components, days]
+    () => ({ ...components, DayButton: DayCountButton }),
+    [components]
   )
 
   const labels = useMemo(() => {
@@ -218,29 +226,33 @@ export const DateTimeCalendar = ({
           </div>
         </div>
 
-        <DayPicker
-          mode="single"
-          required
-          captionLayout="dropdown"
-          navLayout="around"
-          showOutsideDays
-          locale={locale}
-          weekStartsOn={weekStartsOn}
-          formatters={formatters}
-          components={calendarComponents}
-          labels={labels}
-          selected={selected}
-          onSelect={(date) => date && update({ selectedDate: toDayKey(date) })}
-          onDayClick={handleDayClick}
-          month={month}
-          onMonthChange={(newMonth) => update({ month: newMonth })}
-          startMonth={startMonth}
-          endMonth={endMonth}
-          modifiers={{ hasResponses: (date) => !!days[toDayKey(date)] }}
-          modifiersClassNames={{
-            hasResponses: 'responses-statistics-calendar-day--has-responses',
-          }}
-        />
+        <DayCountsContext.Provider value={days}>
+          <DayPicker
+            mode="single"
+            required
+            captionLayout="dropdown"
+            navLayout="around"
+            showOutsideDays
+            locale={locale}
+            weekStartsOn={weekStartsOn}
+            formatters={formatters}
+            components={calendarComponents}
+            labels={labels}
+            selected={selected}
+            onSelect={(date) =>
+              date && update({ selectedDate: toDayKey(date) })
+            }
+            onDayClick={handleDayClick}
+            month={month}
+            onMonthChange={(newMonth) => update({ month: newMonth })}
+            startMonth={startMonth}
+            endMonth={endMonth}
+            modifiers={{ hasResponses: (date) => !!days[toDayKey(date)] }}
+            modifiersClassNames={{
+              hasResponses: 'responses-statistics-calendar-day--has-responses',
+            }}
+          />
+        </DayCountsContext.Provider>
 
         <DateTimeRangeModal
           surveyId={surveyId}
