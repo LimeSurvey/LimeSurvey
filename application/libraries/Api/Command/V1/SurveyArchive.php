@@ -99,6 +99,9 @@ class SurveyArchive implements CommandInterface
         if (!$surveyId) {
             $surveyId = intval($_GET['id']);
         }
+        if ($response = $this->ensurePermissions($surveyId)) {
+            return $response;
+        }
         $survey = $this->survey->findByPk($surveyId);
         if (!$survey) {
             return $this->responseFactory->makeErrorNotFound(
@@ -109,9 +112,6 @@ class SurveyArchive implements CommandInterface
                 )->toArray()
             );
         }
-        if ($response = $this->ensurePermissions($surveyId)) {
-            return $response;
-        }
         require_once "application/helpers/admin/import_helper.php";
         $result = getTableArchivesAndTimestamps($surveyId);
         return $this->responseFactory->makeSuccess($this->processData($survey, $result));
@@ -120,8 +120,8 @@ class SurveyArchive implements CommandInterface
     /**
      * Ensure Permissions
      *
-     * The survey must exist before this is called, because the permission
-     * check returns false for unknown surveys, which must give a 404 instead.
+     * This runs before the survey lookup on purpose: An unknown survey id
+     * gives a 403 as well, so users cannot probe which survey ids exist.
      *
      * @param int $surveyId
      * @return Response|false Forbidden response, or false if access is allowed

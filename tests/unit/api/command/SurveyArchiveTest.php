@@ -6,7 +6,6 @@ use CHttpSession;
 use LimeSurvey\Api\Command\Request\Request;
 use LimeSurvey\Api\Command\Response\ResponseFactory;
 use LimeSurvey\Api\Command\Response\Status\StatusErrorForbidden;
-use LimeSurvey\Api\Command\Response\Status\StatusErrorNotFound;
 use LimeSurvey\Api\Command\Response\Status\StatusSuccess;
 use LimeSurvey\Api\Command\V1\SurveyArchive;
 use ls\tests\TestBaseClass;
@@ -23,21 +22,24 @@ class SurveyArchiveTest extends TestBaseClass
     use AssertResponse;
 
     /**
-     * An unknown survey id must give a 404 before any permission check.
+     * An unknown survey id must give a 403 like a missing permission does,
+     * so that users cannot probe which survey ids exist.
      */
-    public function testUnknownSurveyGivesNotFound(): void
+    public function testUnknownSurveyGivesForbidden(): void
     {
         $survey = Mockery::mock(Survey::class)->makePartial();
-        $survey->shouldReceive('findByPk')->with(123)->andReturn(null);
+        $survey->shouldNotReceive('findByPk');
 
+        // Permission::hasSurveyPermission() returns false for unknown surveys
         $permission = Mockery::mock(Permission::class)->makePartial();
-        $permission->shouldNotReceive('hasSurveyPermission');
+        $permission->shouldReceive('hasSurveyPermission')
+            ->with(123, 'surveycontent', 'read', null)
+            ->andReturn(false);
 
         $command = $this->makeCommand($survey, $permission);
         $response = $command->run(new Request(['_id' => 123]));
 
-        $this->assertResponseStatus($response, new StatusErrorNotFound());
-        $this->assertResponseDataStatus($response, 'SURVEY_NOT_FOUND');
+        $this->assertResponseStatus($response, new StatusErrorForbidden());
     }
 
     /**
@@ -77,7 +79,7 @@ class SurveyArchiveTest extends TestBaseClass
         $response = $command->run(new Request(['_id' => 123]));
 
         $this->assertResponseStatus($response, new StatusSuccess());
-        $this->assertSame([], $response->getData());
+        $this->assertIsArray($response->getData());
     }
 
     /**

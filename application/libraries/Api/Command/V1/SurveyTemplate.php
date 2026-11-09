@@ -75,6 +75,10 @@ class SurveyTemplate implements CommandInterface
     {
         $surveyId = (int)$request->getData('_id');
 
+        if ($response = $this->ensurePermissions($surveyId)) {
+            return $response;
+        }
+
         $survey = $this->survey->findByPk($surveyId);
         if (!$survey) {
             return $this->responseFactory->makeErrorNotFound(
@@ -84,10 +88,6 @@ class SurveyTemplate implements CommandInterface
                 )
                 )->toArray()
             );
-        }
-
-        if ($response = $this->ensurePermissions($surveyId)) {
-            return $response;
         }
         $language = $request->getData('language', $survey->language);
         $language = $language ?? 'en';
@@ -111,8 +111,8 @@ class SurveyTemplate implements CommandInterface
     /**
      * Ensure Permissions
      *
-     * The survey must exist before this is called, because the permission
-     * check returns false for unknown surveys, which must give a 404 instead.
+     * This runs before the survey lookup on purpose: An unknown survey id
+     * gives a 403 as well, so users cannot probe which survey ids exist.
      *
      * @param int $surveyId
      * @return Response|false Forbidden response, or false if access is allowed
@@ -140,7 +140,7 @@ class SurveyTemplate implements CommandInterface
      * @param string $language
      * @return Response|bool|string
      */
-    private function getTemplateData($surveyId, $language)
+    protected function getTemplateData($surveyId, $language)
     {
         // @todo This shouldn't require a HTTP request we should be able to
         // - render survey content internally. To handle this correctly
