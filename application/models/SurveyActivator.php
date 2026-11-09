@@ -265,7 +265,7 @@ class SurveyActivator
                     $aTableDefinition[$aRow['fieldname']] = (array_key_exists('encrypted', $aRow) && $aRow['encrypted'] == 'Y') ? "text" : (isset($aRow['answertabledefinition']) && !empty($aRow['answertabledefinition']) ? $aRow['answertabledefinition'] : "string(5)");
             }
             /* Encrypted answers are longer than plain ones (hardened : 2 × length + 80), MySQL text is limited to 65535 bytes */
-            if (($aRow['encrypted'] ?? 'N') === 'Y') {
+            if (isset($aTableDefinition[$aRow['fieldname']]) && ($aRow['encrypted'] ?? 'N') === 'Y') {
                 $aTableDefinition[$aRow['fieldname']] = "mediumtext";
             }
             if (!$this->survey->isAnonymized && !array_key_exists('token', $aTableDefinition)) {
