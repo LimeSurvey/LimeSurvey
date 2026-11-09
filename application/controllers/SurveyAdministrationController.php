@@ -227,6 +227,18 @@ class SurveyAdministrationController extends LSBaseController
         $surveyActivationFeedback = Yii::app()->request->getParam('surveyActivationFeedback', null);
         $aData['surveyActivationFeedback'] = $surveyActivationFeedback;
 
+        // Open the activation modal directly, e.g. when coming from the "Activate" action in the survey list
+        if (Yii::app()->request->getParam('openActivation')) {
+            Yii::app()->getClientScript()->registerScript(
+                'openSurveyActivationModal',
+                "var activateBtn = document.getElementById('ls-activate-survey');
+                if (activateBtn && !activateBtn.disabled && typeof openModalActivate === 'function') {
+                    openModalActivate();
+                }",
+                CClientScript::POS_READY
+            );
+        }
+
         $this->aData = $aData;
         $this->render('sidebody');
     }
@@ -2892,7 +2904,7 @@ class SurveyAdministrationController extends LSBaseController
 
         foreach ($groups as $iGID => $oGroup) {
             $groupData[$iGID]['gid'] = $oGroup->gid;
-            $groupData[$iGID]['group_text'] = $oGroup->gid . ' ' . $oGroup->questiongroupl10ns[$sBaseLanguage]->group_name;
+            $groupData[$iGID]['group_text'] = $oGroup->questiongroupl10ns[$sBaseLanguage]->group_name;
             LimeExpressionManager::StartProcessingGroup($oGroup->gid, false, $iSurveyID);
             if (!$initializedReplacementFields) {
                 templatereplace("{SITENAME}"); // Hack to ensure the EM sets values of LimeReplacementFields
@@ -2904,9 +2916,8 @@ class SurveyAdministrationController extends LSBaseController
             foreach ($oGroup->questions as $question) {
                 $relevance = $question->relevance == '' ? 1 : $question->relevance;
                 $questionText = sprintf(
-                    '[{%s}] %s % s',
+                    '[{%s}] %s',
                     $relevance,
-                    $question->title,
                     $question->questionl10ns[$sBaseLanguage]->question
                 );
                 LimeExpressionManager::ProcessString($questionText, $question->qid);

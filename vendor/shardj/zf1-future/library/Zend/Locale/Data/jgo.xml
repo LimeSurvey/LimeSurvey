@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE ldml SYSTEM "../../common/dtd/ldml.dtd">
-<!-- Copyright © 1991-2013 Unicode, Inc.
-CLDR data files are interpreted according to the LDML specification (http://unicode.org/reports/tr35/)
+<!-- Copyright © 1991-2026 Unicode, Inc.
 For terms of use, see http://www.unicode.org/copyright.html
+SPDX-License-Identifier: Unicode-3.0
+CLDR data files are interpreted according to the LDML specification (http://unicode.org/reports/tr35/)
 -->
 <ldml>
 	<identity>
-		<version number="$Revision: 9770 $"/>
-		<generation date="$Date: 2014-02-24 11:09:08 -0600 (Mon, 24 Feb 2014) $"/>
+		<version number="$Revision$"/>
 		<language type="jgo"/>
 	</identity>
 	<localeDisplayNames>
@@ -24,7 +24,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 		<scripts>
 			<script type="Latn">mík -ŋwaꞌnɛ yi ɛ́ líŋɛ́nɛ Latɛ̂ŋ</script>
 			<script type="Zxxx">ntúu yi pɛ́ ká ŋwaꞌnε</script>
-			<script type="Zzzz">ntɛ-ŋwaꞌnɛ yí pɛ́ ká kɛ́ jí</script>
+			<script type="Zzzz">ntɛ-ŋwaꞌnɛ yí pɛ́ ká kɛ́ jí</script>
 		</scripts>
 		<territories>
 			<territory type="001">Mbí</territory>
@@ -115,16 +115,15 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<key type="numbers">Pɛnɔ́mba</key>
 		</keys>
 		<types>
-			<type type="gregorian" key="calendar">mɛlɛ́ꞌ-mɛkát</type>
-			<type type="latn" key="numbers">pɛnɔ́mba</type>
+			<type key="calendar" type="gregorian">mɛlɛ́ꞌ-mɛkát</type>
+			<type key="numbers" type="latn">pɛnɔ́mba</type>
 		</types>
 	</localeDisplayNames>
 	<characters>
-		<exemplarCharacters>[a á â ǎ b c d ɛ {ɛ\u0301} {ɛ\u0300} {ɛ\u0302} {ɛ\u030C} {ɛ\u0304} f g h i í î ǐ j k l m ḿ {m\u0300} {m\u0304} n ń ǹ {n\u0304} ŋ {ŋ\u0301} {ŋ\u0300} {ŋ\u0304} ɔ {ɔ\u0301} {ɔ\u0302} {ɔ\u030C} p {pf} s {sh} t {ts} u ú û ǔ ʉ {ʉ\u0301} {ʉ\u0302} {ʉ\u030C} {ʉ\u0308} v w ẅ y z ꞌ]</exemplarCharacters>
+		<exemplarCharacters>[aáâǎ b c d ɛ{ɛ́}{ɛ̀}{ɛ̂}{ɛ̌}{ɛ̄} f g h iíîǐ j k l mḿ{m̀}{m̄} nńǹ{n̄} ŋ{ŋ́}{ŋ̀}{ŋ̄} ɔ{ɔ́}{ɔ̂}{ɔ̌} p {pf} s {sh} t {ts} uúûǔ ʉ{ʉ́}{ʉ̂}{ʉ̌}{ʉ̈} v wẅ y z ꞌ]</exemplarCharacters>
 		<exemplarCharacters type="auxiliary">[e o q r x]</exemplarCharacters>
-		<exemplarCharacters type="index">[A B C D Ɛ F G H I J K L M N Ŋ Ɔ P {Pf} S {Sh} T {Ts} U Ʉ {Ʉ\u0308} V W Ẅ Y Z Ꞌ]</exemplarCharacters>
-		<exemplarCharacters type="punctuation">[\- , ; \: ! ? . ‹ › « »]</exemplarCharacters>
-		<moreInformation>?</moreInformation>
+		<exemplarCharacters type="index">[A B C D Ɛ F G H I J K L M N Ŋ Ɔ P {Pf} S {Sh} T {Ts} U Ʉ{Ʉ̈} V WẄ Y Z Ꞌ]</exemplarCharacters>
+		<exemplarCharacters type="punctuation">[\- ‑ , ; \: ! ? . ‹ › « »]</exemplarCharacters>
 	</characters>
 	<delimiters>
 		<quotationStart>«</quotationStart>
@@ -139,6 +138,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 					<dateFormatLength type="full">
 						<dateFormat>
 							<pattern>EEEE, G y MMMM dd</pattern>
+							<datetimeSkeleton>GyMMMMEEEEdd</datetimeSkeleton>
 						</dateFormat>
 					</dateFormatLength>
 					<dateFormatLength type="long">
@@ -153,7 +153,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 					</dateFormatLength>
 					<dateFormatLength type="short">
 						<dateFormat>
-							<pattern>GGGGG y-MM-dd</pattern>
+							<pattern>G y-MM-dd</pattern>
 						</dateFormat>
 					</dateFormatLength>
 				</dateFormats>
@@ -184,86 +184,11 @@ For terms of use, see http://www.unicode.org/copyright.html
 						<dateFormatItem id="MEd">E, d.M</dateFormatItem>
 						<dateFormatItem id="yyyyMd">M.d.y G</dateFormatItem>
 					</availableFormats>
-					<intervalFormats>
-						<intervalFormatFallback>{0} – {1}</intervalFormatFallback>
-					</intervalFormats>
 				</dateTimeFormats>
 			</calendar>
 			<calendar type="gregorian">
 				<months>
 					<monthContext type="format">
-						<monthWidth type="abbreviated">
-							<month type="1">Nduŋmbi Saŋ</month>
-							<month type="2">Pɛsaŋ Pɛ́pá</month>
-							<month type="3">Pɛsaŋ Pɛ́tát</month>
-							<month type="4">Pɛsaŋ Pɛ́nɛ́kwa</month>
-							<month type="5">Pɛsaŋ Pataa</month>
-							<month type="6">Pɛsaŋ Pɛ́nɛ́ntúkú</month>
-							<month type="7">Pɛsaŋ Saambá</month>
-							<month type="8">Pɛsaŋ Pɛ́nɛ́fɔm</month>
-							<month type="9">Pɛsaŋ Pɛ́nɛ́pfúꞋú</month>
-							<month type="10">Pɛsaŋ Nɛgɛ́m</month>
-							<month type="11">Pɛsaŋ Ntsɔ̌pmɔ́</month>
-							<month type="12">Pɛsaŋ Ntsɔ̌ppá</month>
-						</monthWidth>
-						<monthWidth type="narrow">
-							<month type="1">1</month>
-							<month type="2">2</month>
-							<month type="3">3</month>
-							<month type="4">4</month>
-							<month type="5">5</month>
-							<month type="6">6</month>
-							<month type="7">7</month>
-							<month type="8">8</month>
-							<month type="9">9</month>
-							<month type="10">10</month>
-							<month type="11">11</month>
-							<month type="12">12</month>
-						</monthWidth>
-						<monthWidth type="wide">
-							<month type="1">Nduŋmbi Saŋ</month>
-							<month type="2">Pɛsaŋ Pɛ́pá</month>
-							<month type="3">Pɛsaŋ Pɛ́tát</month>
-							<month type="4">Pɛsaŋ Pɛ́nɛ́kwa</month>
-							<month type="5">Pɛsaŋ Pataa</month>
-							<month type="6">Pɛsaŋ Pɛ́nɛ́ntúkú</month>
-							<month type="7">Pɛsaŋ Saambá</month>
-							<month type="8">Pɛsaŋ Pɛ́nɛ́fɔm</month>
-							<month type="9">Pɛsaŋ Pɛ́nɛ́pfúꞋú</month>
-							<month type="10">Pɛsaŋ Nɛgɛ́m</month>
-							<month type="11">Pɛsaŋ Ntsɔ̌pmɔ́</month>
-							<month type="12">Pɛsaŋ Ntsɔ̌ppá</month>
-						</monthWidth>
-					</monthContext>
-					<monthContext type="stand-alone">
-						<monthWidth type="abbreviated">
-							<month type="1">Nduŋmbi Saŋ</month>
-							<month type="2">Pɛsaŋ Pɛ́pá</month>
-							<month type="3">Pɛsaŋ Pɛ́tát</month>
-							<month type="4">Pɛsaŋ Pɛ́nɛ́kwa</month>
-							<month type="5">Pɛsaŋ Pataa</month>
-							<month type="6">Pɛsaŋ Pɛ́nɛ́ntúkú</month>
-							<month type="7">Pɛsaŋ Saambá</month>
-							<month type="8">Pɛsaŋ Pɛ́nɛ́fɔm</month>
-							<month type="9">Pɛsaŋ Pɛ́nɛ́pfúꞋú</month>
-							<month type="10">Pɛsaŋ Nɛgɛ́m</month>
-							<month type="11">Pɛsaŋ Ntsɔ̌pmɔ́</month>
-							<month type="12">Pɛsaŋ Ntsɔ̌ppá</month>
-						</monthWidth>
-						<monthWidth type="narrow">
-							<month type="1">1</month>
-							<month type="2">2</month>
-							<month type="3">3</month>
-							<month type="4">4</month>
-							<month type="5">5</month>
-							<month type="6">6</month>
-							<month type="7">7</month>
-							<month type="8">8</month>
-							<month type="9">9</month>
-							<month type="10">10</month>
-							<month type="11">11</month>
-							<month type="12">12</month>
-						</monthWidth>
 						<monthWidth type="wide">
 							<month type="1">Nduŋmbi Saŋ</month>
 							<month type="2">Pɛsaŋ Pɛ́pá</month>
@@ -282,24 +207,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 				</months>
 				<days>
 					<dayContext type="format">
-						<dayWidth type="abbreviated">
-							<day type="sun">Sɔ́ndi</day>
-							<day type="mon">Mɔ́ndi</day>
-							<day type="tue">Ápta Mɔ́ndi</day>
-							<day type="wed">Wɛ́nɛsɛdɛ</day>
-							<day type="thu">Tɔ́sɛdɛ</day>
-							<day type="fri">Fɛlâyɛdɛ</day>
-							<day type="sat">Sásidɛ</day>
-						</dayWidth>
-						<dayWidth type="narrow">
-							<day type="sun">Sɔ́</day>
-							<day type="mon">Mɔ́</day>
-							<day type="tue">ÁM</day>
-							<day type="wed">Wɛ́</day>
-							<day type="thu">Tɔ́</day>
-							<day type="fri">Fɛ</day>
-							<day type="sat">Sá</day>
-						</dayWidth>
 						<dayWidth type="wide">
 							<day type="sun">Sɔ́ndi</day>
 							<day type="mon">Mɔ́ndi</day>
@@ -311,15 +218,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 						</dayWidth>
 					</dayContext>
 					<dayContext type="stand-alone">
-						<dayWidth type="abbreviated">
-							<day type="sun">Sɔ́ndi</day>
-							<day type="mon">Mɔ́ndi</day>
-							<day type="tue">Ápta Mɔ́ndi</day>
-							<day type="wed">Wɛ́nɛsɛdɛ</day>
-							<day type="thu">Tɔ́sɛdɛ</day>
-							<day type="fri">Fɛlâyɛdɛ</day>
-							<day type="sat">Sásidɛ</day>
-						</dayWidth>
 						<dayWidth type="narrow">
 							<day type="sun">Sɔ́</day>
 							<day type="mon">Mɔ́</day>
@@ -329,19 +227,14 @@ For terms of use, see http://www.unicode.org/copyright.html
 							<day type="fri">Fɛ</day>
 							<day type="sat">Sá</day>
 						</dayWidth>
-						<dayWidth type="wide">
-							<day type="sun">Sɔ́ndi</day>
-							<day type="mon">Mɔ́ndi</day>
-							<day type="tue">Ápta Mɔ́ndi</day>
-							<day type="wed">Wɛ́nɛsɛdɛ</day>
-							<day type="thu">Tɔ́sɛdɛ</day>
-							<day type="fri">Fɛlâyɛdɛ</day>
-							<day type="sat">Sásidɛ</day>
-						</dayWidth>
 					</dayContext>
 				</days>
 				<dayPeriods>
 					<dayPeriodContext type="format">
+						<dayPeriodWidth type="abbreviated">
+							<dayPeriod type="am">mbaꞌmbaꞌ</dayPeriod>
+							<dayPeriod type="pm">ŋka mbɔ́t nji</dayPeriod>
+						</dayPeriodWidth>
 						<dayPeriodWidth type="wide">
 							<dayPeriod type="am">mbaꞌmbaꞌ</dayPeriod>
 							<dayPeriod type="pm">ŋka mbɔ́t nji</dayPeriod>
@@ -349,15 +242,16 @@ For terms of use, see http://www.unicode.org/copyright.html
 					</dayPeriodContext>
 				</dayPeriods>
 				<eras>
-					<eraAbbr>
+					<eraNames>
 						<era type="0">tsɛttsɛt mɛŋguꞌ mi ɛ́ lɛɛnɛ Kɛlísɛtɔ gɔ ńɔ́</era>
 						<era type="1">tsɛttsɛt mɛŋguꞌ mi ɛ́ fúnɛ Kɛlísɛtɔ tɔ́ mɔ́</era>
-					</eraAbbr>
+					</eraNames>
 				</eras>
 				<dateFormats>
 					<dateFormatLength type="full">
 						<dateFormat>
 							<pattern>EEEE, y MMMM dd</pattern>
+							<datetimeSkeleton>yMMMMEEEEdd</datetimeSkeleton>
 						</dateFormat>
 					</dateFormatLength>
 					<dateFormatLength type="long">
@@ -425,9 +319,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 						<dateFormatItem id="MEd">E, d.M</dateFormatItem>
 						<dateFormatItem id="yMd">M.d.y</dateFormatItem>
 					</availableFormats>
-					<intervalFormats>
-						<intervalFormatFallback>{0} – {1}</intervalFormatFallback>
-					</intervalFormats>
 				</dateTimeFormats>
 			</calendar>
 		</calendars>
@@ -463,7 +354,9 @@ For terms of use, see http://www.unicode.org/copyright.html
 				</relativeTime>
 			</field>
 			<field type="day">
+				<relative type="-1">yesterday</relative>
 				<relative type="0">lɔꞋɔ</relative>
+				<relative type="1">tomorrow</relative>
 				<relativeTime type="future">
 					<relativeTimePattern count="one">Nǔu lɛ́Ꞌ {0}</relativeTimePattern>
 					<relativeTimePattern count="other">Nǔu lɛ́Ꞌ {0}</relativeTimePattern>
@@ -494,59 +387,12 @@ For terms of use, see http://www.unicode.org/copyright.html
 				</relativeTime>
 			</field>
 		</fields>
-		<timeZoneNames>
-			<hourFormat>+HH:mm;-HH:mm</hourFormat>
-			<gmtFormat>GMT{0}</gmtFormat>
-			<gmtZeroFormat>GMT</gmtZeroFormat>
-			<regionFormat>{0}</regionFormat>
-			<fallbackFormat>{1} ({0})</fallbackFormat>
-		</timeZoneNames>
 	</dates>
 	<numbers>
-		<defaultNumberingSystem>latn</defaultNumberingSystem>
-		<otherNumberingSystems>
-			<native>latn</native>
-		</otherNumberingSystems>
 		<symbols numberSystem="latn">
 			<decimal>,</decimal>
 			<group>.</group>
-			<list>;</list>
-			<percentSign>%</percentSign>
-			<plusSign>+</plusSign>
-			<minusSign>-</minusSign>
-			<exponential>E</exponential>
-			<perMille>‰</perMille>
-			<infinity>∞</infinity>
-			<nan>NaN</nan>
 		</symbols>
-		<decimalFormats numberSystem="latn">
-			<decimalFormatLength>
-				<decimalFormat>
-					<pattern>#,##0.###</pattern>
-				</decimalFormat>
-			</decimalFormatLength>
-		</decimalFormats>
-		<scientificFormats numberSystem="latn">
-			<scientificFormatLength>
-				<scientificFormat>
-					<pattern>#E0</pattern>
-				</scientificFormat>
-			</scientificFormatLength>
-		</scientificFormats>
-		<percentFormats numberSystem="latn">
-			<percentFormatLength>
-				<percentFormat>
-					<pattern>#,##0%</pattern>
-				</percentFormat>
-			</percentFormatLength>
-		</percentFormats>
-		<currencyFormats numberSystem="latn">
-			<currencyFormatLength>
-				<currencyFormat type="standard">
-					<pattern>¤ #,##0.00</pattern>
-				</currencyFormat>
-			</currencyFormatLength>
-		</currencyFormats>
 		<currencies>
 			<currency type="CAD">
 				<displayName>Ndɔ́la-Kanandâ</displayName>
@@ -559,7 +405,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</currency>
 			<currency type="XAF">
 				<displayName>Fɛlâŋ</displayName>
-				<symbol>FCFA</symbol>
 			</currency>
 			<currency type="XXX">
 				<displayName>ntɛ-ŋkáp yi pɛ́ ká kɛ́ jínɛ</displayName>
@@ -568,6 +413,14 @@ For terms of use, see http://www.unicode.org/copyright.html
 	</numbers>
 	<units>
 		<unitLength type="long">
+			<unit type="duration-year">
+				<unitPattern count="one">ŋguꞋ {0}</unitPattern>
+				<unitPattern count="other">ŋguꞋ {0}</unitPattern>
+			</unit>
+			<unit type="duration-month">
+				<unitPattern count="one">pɛsaŋ {0}</unitPattern>
+				<unitPattern count="other">pɛsaŋ {0}</unitPattern>
+			</unit>
 			<unit type="duration-day">
 				<unitPattern count="one">{0} lɛ́Ꞌ</unitPattern>
 				<unitPattern count="other">{0} lɛ́Ꞌ</unitPattern>
@@ -580,13 +433,22 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<unitPattern count="one">{0} minút</unitPattern>
 				<unitPattern count="other">{0} minút</unitPattern>
 			</unit>
-			<unit type="duration-month">
-				<unitPattern count="one">pɛsaŋ {0}</unitPattern>
-				<unitPattern count="other">pɛsaŋ {0}</unitPattern>
-			</unit>
+		</unitLength>
+		<unitLength type="short">
 			<unit type="duration-year">
-				<unitPattern count="one">ŋguꞋ {0}</unitPattern>
-				<unitPattern count="other">ŋguꞋ {0}</unitPattern>
+				<displayName draft="provisional">ŋguꞋ</displayName>
+			</unit>
+			<unit type="duration-month">
+				<displayName draft="provisional">pɛsaŋ</displayName>
+			</unit>
+			<unit type="duration-day">
+				<displayName draft="provisional">lɛ́Ꞌ</displayName>
+			</unit>
+			<unit type="duration-hour">
+				<displayName draft="provisional">háwa</displayName>
+			</unit>
+			<unit type="duration-minute">
+				<displayName draft="provisional">minút</displayName>
 			</unit>
 		</unitLength>
 	</units>
@@ -605,4 +467,3 @@ For terms of use, see http://www.unicode.org/copyright.html
 		</messages>
 	</posix>
 </ldml>
-

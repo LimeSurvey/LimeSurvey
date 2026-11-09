@@ -105,7 +105,7 @@
                 <div class="row" {{ aSurveyInfo.attr.registerformcaptchadiv }}>
                     <div class="{{ aSurveyInfo.class.registerformcaptchadivb }} captcha-container col-xl-2 col-lg-3 col-md-12 align-items-center" {{ aSurveyInfo.attr.registerformcaptchadivb }}>
                             {{ renderCaptcha().renderOut() }}
-                        <a href="#" class="btn btn-outline-secondary" id="reloadCaptcha" title="{{ gT("Reload captcha") }}" data-toggle="captcha"><i class="ri-refresh-line"></i></a>
+                        <button type="button" class="btn btn-outline-secondary" id="reloadCaptcha" title="{{ gT("Reload captcha") }}" aria-label="{{ gT("Reload captcha") }}" data-toggle="captcha"><i class="ri-refresh-line" aria-hidden="true"></i></button>
                     </div>
                     <div class="col-xl-10 col-lg-9 col-md-12 captcha-input align-self-center">
                         <input class='form-control ls-important-field {{ aSurveyInfo.class.registerformcaptchainput }}' {{ aSurveyInfo.attr.registerformcaptchainput }} placeholder="{{ gT("Enter result here - numbers only") }}">

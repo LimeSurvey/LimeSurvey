@@ -228,6 +228,7 @@ class Zend_Mail_Storage_Imap extends Zend_Mail_Storage_Abstract
      *   - user username
      *   - host hostname or ip address of IMAP server [optional, default = 'localhost']
      *   - password password for user 'username' [optional, default = '']
+     *   - accessToken OAuth 2.0 access token, used instead of the password (XOAUTH2) [optional]
      *   - port port for IMAP server [optional, default = 110]
      *   - ssl 'SSL' or 'TLS' for secure sockets
      *   - folder select this folder [optional, default = 'INBOX']
@@ -273,12 +274,19 @@ class Zend_Mail_Storage_Imap extends Zend_Mail_Storage_Abstract
 
         $this->_protocol = new Zend_Mail_Protocol_Imap();
         $this->_protocol->connect($host, $port, $ssl);
-        if (!$this->_protocol->login($params->user, $password)) {
+        if (isset($params->accessToken)) {
+            $loggedIn = $this->_protocol->authenticateXoauth2($params->user, $params->accessToken);
+        } else {
+            $loggedIn = $this->_protocol->login($params->user, $password);
+        }
+        if (!$loggedIn) {
             /**
              * @see Zend_Mail_Storage_Exception
              */
             require_once 'Zend/Mail/Storage/Exception.php';
-            throw new Zend_Mail_Storage_Exception('cannot login, user or password wrong');
+            throw new Zend_Mail_Storage_Exception(isset($params->accessToken)
+                ? 'cannot login, user or access token wrong'
+                : 'cannot login, user or password wrong');
         }
         $this->selectFolder(isset($params->folder) ? $params->folder : 'INBOX');
     }

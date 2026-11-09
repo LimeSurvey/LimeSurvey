@@ -82,7 +82,7 @@ class Zend_Debug
         var_dump($var);
         $output = ob_get_clean();
 
-        $varDumpIsOverloaded = extension_loaded('xdebug') && str_contains((string) ini_get('xdebug.mode'), 'develop');
+        $varDumpIsOverloaded = extension_loaded('xdebug') && strpos((string) ini_get('xdebug.mode'), 'develop') !== false;
 
         if (!$varDumpIsOverloaded) {
             // neaten the newlines and indents

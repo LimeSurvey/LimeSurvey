@@ -110,22 +110,21 @@ class CLSYiiPager extends CLinkPager
             $ariaLabel = $selected ? gT('Last page, current page') : gT('Go to last page');
         }
 
-        if ($hidden || $selected) {
-            $class .= ' ' . ($hidden ? $this->hiddenPageCssClass : 'active');
-            $attrs = ['class' => 'page-link'];
-            if ($selected) {
-                $attrs['aria-current'] = 'page';
-            }
-            if ($hidden) {
-                $attrs['aria-disabled'] = 'true';
-                $attrs['tabindex'] = '-1';
-            }
+        if ($hidden) {
+            $class .= ' ' . $this->hiddenPageCssClass;
+            // The link role exposes the aria-label and the disabled state, a plain span would hide them
+            $attrs = ['class' => 'page-link', 'role' => 'link', 'aria-disabled' => 'true', 'tabindex' => '-1'];
             if ($ariaLabel !== '') {
                 $attrs['aria-label'] = $ariaLabel;
             }
             return '<li class="page-item ' . $class . '">' . CHtml::tag('span', $attrs, $label) . '</li>';
         } else {
             $linkOptions = ['class' => 'page-link'];
+            if ($selected) {
+                // The current page stays a real, focusable link, as recommended for pagination
+                $class .= ' active';
+                $linkOptions['aria-current'] = 'page';
+            }
             if ($ariaLabel !== '') {
                 $linkOptions['aria-label'] = $ariaLabel;
             }

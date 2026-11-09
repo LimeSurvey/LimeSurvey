@@ -271,10 +271,13 @@ class Zend_Cache_Frontend_Page extends Zend_Cache_Core
             $data = $array['data'];
             $headers = $array['headers'];
             if (!headers_sent()) {
+                $replaced = [];
                 foreach ($headers as $key=>$headerCouple) {
                     $name = $headerCouple[0];
                     $value = $headerCouple[1];
-                    header("$name: $value");
+                    $lowerName = strtolower($name);
+                    header("$name: $value", !isset($replaced[$lowerName]));
+                    $replaced[$lowerName] = true;
                 }
             }
             if ($this->_specificOptions['debug_header']) {

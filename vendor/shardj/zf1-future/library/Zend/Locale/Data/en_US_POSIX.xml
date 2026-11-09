@@ -1,25 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE ldml SYSTEM "../../common/dtd/ldml.dtd">
-<!-- Copyright © 1991-2013 Unicode, Inc.
-CLDR data files are interpreted according to the LDML specification (http://unicode.org/reports/tr35/)
+<!-- Copyright © 1991-2026 Unicode, Inc.
 For terms of use, see http://www.unicode.org/copyright.html
+SPDX-License-Identifier: Unicode-3.0
+CLDR data files are interpreted according to the LDML specification (http://unicode.org/reports/tr35/)
 -->
 <ldml>
-	<!-- This is a special purpose locale so that a user can request the C or POSIX
-		 style formatting. This does not include grouping separators in numbers, nor
-		 unusual characters for infinity or NaN. Some people have known this to be the
-		 invariant locale, which is different from the root locale.
-		 This locale should not be modified to create some sort of custom collation to
-		 represent a specific codepage. Many users complained when the C locale was
-		 being used, and multi-level UCA collation was expected.
-	-->
 	<identity>
-		<version number="$Revision: 9287 $"/>
-		<generation date="$Date: 2013-08-28 21:32:04 -0500 (Wed, 28 Aug 2013) $"/>
+		<version number="$Revision$"/>
 		<language type="en"/>
 		<territory type="US"/>
 		<variant type="POSIX"/>
 	</identity>
+	<characters>
+		<exemplarCharacters type="numbers">[‑ % + , \- . / 0 1 2 3 4 5 6 7 8 9]</exemplarCharacters>
+	</characters>
 	<numbers>
 		<symbols numberSystem="latn">
 			<perMille>0/00</perMille>
@@ -28,7 +23,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 		<decimalFormats numberSystem="latn">
 			<decimalFormatLength>
 				<decimalFormat>
-					<pattern>#0.######</pattern>
+					<pattern>0.######</pattern>
 				</decimalFormat>
 			</decimalFormatLength>
 		</decimalFormats>
@@ -42,17 +37,18 @@ For terms of use, see http://www.unicode.org/copyright.html
 		<percentFormats numberSystem="latn">
 			<percentFormatLength>
 				<percentFormat>
-					<pattern>#0%</pattern>
+					<pattern>0%</pattern>
 				</percentFormat>
 			</percentFormatLength>
 		</percentFormats>
 		<currencyFormats numberSystem="latn">
 			<currencyFormatLength>
 				<currencyFormat type="standard">
-					<pattern>¤ #0.00</pattern>
+					<pattern>¤ 0.00</pattern>
+					<pattern alt="alphaNextToNumber">¤ 0.00</pattern>
+					<pattern alt="noCurrency">0.00</pattern>
 				</currencyFormat>
 			</currencyFormatLength>
 		</currencyFormats>
 	</numbers>
 </ldml>
-

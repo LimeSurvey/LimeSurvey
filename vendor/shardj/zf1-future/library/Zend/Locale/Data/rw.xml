@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE ldml SYSTEM "../../common/dtd/ldml.dtd">
-<!-- Copyright © 1991-2013 Unicode, Inc.
-CLDR data files are interpreted according to the LDML specification (http://unicode.org/reports/tr35/)
+<!-- Copyright © 1991-2026 Unicode, Inc.
 For terms of use, see http://www.unicode.org/copyright.html
+SPDX-License-Identifier: Unicode-3.0
+CLDR data files are interpreted according to the LDML specification (http://unicode.org/reports/tr35/)
 -->
 <ldml>
 	<identity>
-		<version number="$Revision: 9791 $"/>
-		<generation date="$Date: 2014-02-25 15:16:49 -0600 (Tue, 25 Feb 2014) $"/>
+		<version number="$Revision$"/>
 		<language type="rw"/>
 	</identity>
 	<localeDisplayNames>
@@ -40,7 +40,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<language type="fr">Igifaransa</language>
 			<language type="fy">Igifiriziyani</language>
 			<language type="ga">Ikirilandi</language>
-			<language type="gd">Ikigaluwa cy'Igisweduwa</language>
+			<language type="gd">Ikigaluwa cy’Igisweduwa</language>
 			<language type="gl">Ikigalisiya</language>
 			<language type="gn">Inyaguwarani</language>
 			<language type="gu">Inyegujarati</language>
@@ -67,7 +67,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<language type="lo">Ikilawotiyani</language>
 			<language type="lt">Ikilituwaniya</language>
 			<language type="lv">Ikinyaletoviyani</language>
-			<language type="mk">Ikimasedoniyani</language>
+			<language type="mk">Ikimasedoniya</language>
 			<language type="ml">Ikimalayalami</language>
 			<language type="mn">Ikimongoli</language>
 			<language type="mr">Ikimarati</language>
@@ -87,7 +87,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<language type="pt_PT">Inyeporutigali (Igiporutigali)</language>
 			<language type="ro">Ikinyarumaniya</language>
 			<language type="ru">Ikirusiya</language>
-			<language type="rw">Kinyarwanda</language>
+			<language type="rw">Ikinyarwanda</language>
 			<language type="sa">Igisansikiri</language>
 			<language type="sd">Igisindi</language>
 			<language type="sh">Inyeseribiya na Korowasiya</language>
@@ -118,9 +118,13 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<language type="yi">Inyeyidishi</language>
 			<language type="zu">Inyezulu</language>
 		</languages>
+		<scripts>
+			<script type="Latn">Latin</script>
+		</scripts>
 		<territories>
-			<territory type="RW">Rwanda</territory>
-			<territory type="TO">Igitonga</territory>
+			<territory type="MK">Masedoniya y’Amajyaruguru</territory>
+			<territory type="RW">U Rwanda</territory>
+			<territory type="TO">Tonga</territory>
 		</territories>
 	</localeDisplayNames>
 	<characters>
@@ -130,8 +134,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 	<delimiters>
 		<quotationStart>«</quotationStart>
 		<quotationEnd>»</quotationEnd>
-		<alternateQuotationStart>‘</alternateQuotationStart>
-		<alternateQuotationEnd>’</alternateQuotationEnd>
 	</delimiters>
 	<dates>
 		<calendars>
@@ -140,6 +142,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 					<dateFormatLength type="full">
 						<dateFormat>
 							<pattern>EEEE, G y MMMM dd</pattern>
+							<datetimeSkeleton>GyMMMMEEEEdd</datetimeSkeleton>
 						</dateFormat>
 					</dateFormatLength>
 					<dateFormatLength type="long">
@@ -155,6 +158,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 					<dateFormatLength type="short">
 						<dateFormat>
 							<pattern>GGGGG yy/MM/dd</pattern>
+							<datetimeSkeleton>GGGGGyyMMdd</datetimeSkeleton>
 						</dateFormat>
 					</dateFormatLength>
 				</dateFormats>
@@ -163,29 +167,29 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<months>
 					<monthContext type="format">
 						<monthWidth type="abbreviated">
-							<month type="1">mut.</month>
-							<month type="2">gas.</month>
-							<month type="3">wer.</month>
-							<month type="4">mat.</month>
-							<month type="5">gic.</month>
-							<month type="6">kam.</month>
-							<month type="7">nya.</month>
-							<month type="8">kan.</month>
-							<month type="9">nze.</month>
-							<month type="10">ukw.</month>
-							<month type="11">ugu.</month>
-							<month type="12">uku.</month>
+							<month type="1">Mut.</month>
+							<month type="2">Gas.</month>
+							<month type="3">Wer.</month>
+							<month type="4">Mat.</month>
+							<month type="5">Gic.</month>
+							<month type="6">Kam.</month>
+							<month type="7">Nya.</month>
+							<month type="8">Kan.</month>
+							<month type="9">Nze.</month>
+							<month type="10">Ukw.</month>
+							<month type="11">Ugu.</month>
+							<month type="12">Uku.</month>
 						</monthWidth>
 						<monthWidth type="wide">
 							<month type="1">Mutarama</month>
 							<month type="2">Gashyantare</month>
 							<month type="3">Werurwe</month>
 							<month type="4">Mata</month>
-							<month type="5">Gicuransi</month>
+							<month type="5">Gicurasi</month>
 							<month type="6">Kamena</month>
 							<month type="7">Nyakanga</month>
 							<month type="8">Kanama</month>
-							<month type="9">Nzeli</month>
+							<month type="9">Nzeri</month>
 							<month type="10">Ukwakira</month>
 							<month type="11">Ugushyingo</month>
 							<month type="12">Ukuboza</month>
@@ -195,13 +199,13 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<days>
 					<dayContext type="format">
 						<dayWidth type="abbreviated">
-							<day type="sun">cyu.</day>
-							<day type="mon">mbe.</day>
-							<day type="tue">kab.</day>
-							<day type="wed">gtu.</day>
-							<day type="thu">kan.</day>
-							<day type="fri">gnu.</day>
-							<day type="sat">gnd.</day>
+							<day type="sun">Cyu.</day>
+							<day type="mon">Mbe.</day>
+							<day type="tue">Kab.</day>
+							<day type="wed">Gtu.</day>
+							<day type="thu">Kan.</day>
+							<day type="fri">Gnu.</day>
+							<day type="sat">Gnd.</day>
 						</dayWidth>
 						<dayWidth type="wide">
 							<day type="sun">Ku cyumweru</day>
@@ -230,55 +234,180 @@ For terms of use, see http://www.unicode.org/copyright.html
 						</quarterWidth>
 					</quarterContext>
 				</quarters>
-				<dateFormats>
-					<dateFormatLength type="full">
-						<dateFormat>
-							<pattern>EEEE, y MMMM dd</pattern>
-						</dateFormat>
-					</dateFormatLength>
-					<dateFormatLength type="long">
-						<dateFormat>
-							<pattern>y MMMM d</pattern>
-						</dateFormat>
-					</dateFormatLength>
-					<dateFormatLength type="medium">
-						<dateFormat>
-							<pattern>y MMM d</pattern>
-						</dateFormat>
-					</dateFormatLength>
-					<dateFormatLength type="short">
-						<dateFormat>
-							<pattern>yy/MM/dd</pattern>
-						</dateFormat>
-					</dateFormatLength>
-				</dateFormats>
-				<timeFormats>
-					<timeFormatLength type="full">
-						<timeFormat>
-							<pattern>HH:mm:ss zzzz</pattern>
-						</timeFormat>
-					</timeFormatLength>
-					<timeFormatLength type="long">
-						<timeFormat>
-							<pattern>HH:mm:ss z</pattern>
-						</timeFormat>
-					</timeFormatLength>
-					<timeFormatLength type="medium">
-						<timeFormat>
-							<pattern>HH:mm:ss</pattern>
-						</timeFormat>
-					</timeFormatLength>
-					<timeFormatLength type="short">
-						<timeFormat>
-							<pattern>HH:mm</pattern>
-						</timeFormat>
-					</timeFormatLength>
-				</timeFormats>
+				<dateTimeFormats>
+					<availableFormats>
+						<dateFormatItem id="Ed">E, d</dateFormatItem>
+						<dateFormatItem id="Ehm">E h:mm a</dateFormatItem>
+						<dateFormatItem id="Ehms">E h:mm:ss a</dateFormatItem>
+						<dateFormatItem id="Gy">y G</dateFormatItem>
+						<dateFormatItem id="GyM">MM-y G</dateFormatItem>
+						<dateFormatItem id="GyMd">dd-MM-y G</dateFormatItem>
+						<dateFormatItem id="GyMEd">E, dd-MM-y G</dateFormatItem>
+						<dateFormatItem id="GyMMM">MMM y G</dateFormatItem>
+						<dateFormatItem id="GyMMMd">d MMM y G</dateFormatItem>
+						<dateFormatItem id="GyMMMEd">E, d MMM y G</dateFormatItem>
+						<dateFormatItem id="h">h a</dateFormatItem>
+						<dateFormatItem id="hm">h:mm a</dateFormatItem>
+						<dateFormatItem id="hms">h:mm:ss a</dateFormatItem>
+						<dateFormatItem id="hmsv">h:mm:ss a v</dateFormatItem>
+						<dateFormatItem id="hmv">h:mm a v</dateFormatItem>
+						<dateFormatItem id="Md">dd-MM</dateFormatItem>
+						<dateFormatItem id="MEd">E, dd-MM</dateFormatItem>
+						<dateFormatItem id="MMMd">d MMM</dateFormatItem>
+						<dateFormatItem id="MMMEd">E, d MMM</dateFormatItem>
+						<dateFormatItem id="MMMMd">d MMMM</dateFormatItem>
+						<dateFormatItem id="yM">MM-y</dateFormatItem>
+						<dateFormatItem id="yMd">dd-MM-y</dateFormatItem>
+						<dateFormatItem id="yMEd">E, dd-MM-y</dateFormatItem>
+						<dateFormatItem id="yMMM">MMM y</dateFormatItem>
+						<dateFormatItem id="yMMMd">d MMMM y</dateFormatItem>
+						<dateFormatItem id="yMMMEd">E, d MMM y</dateFormatItem>
+						<dateFormatItem id="yMMMM">MMMM y</dateFormatItem>
+						<dateFormatItem id="yQQQ">QQQ y</dateFormatItem>
+						<dateFormatItem id="yQQQQ">QQQQ y</dateFormatItem>
+					</availableFormats>
+					<intervalFormats>
+						<intervalFormatItem id="Gy">
+							<greatestDifference id="G">y G–y G</greatestDifference>
+							<greatestDifference id="y">y–y G</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="GyM">
+							<greatestDifference id="G">MM-y G– MM-y G</greatestDifference>
+							<greatestDifference id="M">MM-y– MM-y G</greatestDifference>
+							<greatestDifference id="y">MM-y– MM-y G</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="GyMd">
+							<greatestDifference id="d">dd-MM-y– dd-MM-y G</greatestDifference>
+							<greatestDifference id="G">dd-MM-y G – dd-MM-y G</greatestDifference>
+							<greatestDifference id="M">dd-MM-y – dd-MM-y G</greatestDifference>
+							<greatestDifference id="y">dd-MM-y – dd-MM-y G</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="GyMEd">
+							<greatestDifference id="d">E, dd-MM-y – E, dd-MM-y G</greatestDifference>
+							<greatestDifference id="G">E, dd-MM-y G–E, dd-MM-y G</greatestDifference>
+							<greatestDifference id="M">E, dd-MM-y – E, dd-MM-y G</greatestDifference>
+							<greatestDifference id="y">E, dd-MM-y – E, dd-MM-y G</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="GyMMM">
+							<greatestDifference id="G">MMM y G – MMM y G</greatestDifference>
+							<greatestDifference id="M">MMM–MMM y G</greatestDifference>
+							<greatestDifference id="y">MMM y – MMM y G</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="GyMMMd">
+							<greatestDifference id="d">d–d MMM y G</greatestDifference>
+							<greatestDifference id="G">d-MMM-y G–d-MMM-y G</greatestDifference>
+							<greatestDifference id="M">d MMM–d MMM y G</greatestDifference>
+							<greatestDifference id="y">d-MMM-y–d-MMM-y G</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="GyMMMEd">
+							<greatestDifference id="d">E, d MMM–d MMM y G</greatestDifference>
+							<greatestDifference id="G">E, d MMM y G–E, d MMM y G</greatestDifference>
+							<greatestDifference id="M">E, d MMM y–E, d MMM G</greatestDifference>
+							<greatestDifference id="y">E, d MMM y –E, d MMM y G</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="h">
+							<greatestDifference id="a">h a – h a</greatestDifference>
+							<greatestDifference id="h">h–h a</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="hm">
+							<greatestDifference id="a">h:mm a – h:mm a</greatestDifference>
+							<greatestDifference id="h">h:mm–h:mm a</greatestDifference>
+							<greatestDifference id="m">h:mm–h:mm a</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="hmv">
+							<greatestDifference id="a">h:mm a – h:mm a v</greatestDifference>
+							<greatestDifference id="h">h:mm–h:mm a v</greatestDifference>
+							<greatestDifference id="m">h:mm–h:mm a v</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="hv">
+							<greatestDifference id="a">h a – h a v</greatestDifference>
+							<greatestDifference id="h">h–h a v</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="Md">
+							<greatestDifference id="d">dd-MM – dd-MM</greatestDifference>
+							<greatestDifference id="M">dd-MM – dd-MM</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="MEd">
+							<greatestDifference id="d">E, dd-MM – E, dd-MM</greatestDifference>
+							<greatestDifference id="M">E, dd-MM – E, dd-MM</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="MMMd">
+							<greatestDifference id="d">d–d MMM</greatestDifference>
+							<greatestDifference id="M">d MMM – d MMM</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="MMMEd">
+							<greatestDifference id="d">E, d MMM – E, d MMM</greatestDifference>
+							<greatestDifference id="M">E, d MMM – E, d MMM</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="yM">
+							<greatestDifference id="M">MM-y –MM-y</greatestDifference>
+							<greatestDifference id="y">MM-y – MM-y</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="yMd">
+							<greatestDifference id="d">dd-MM-y – dd-MM-y </greatestDifference>
+							<greatestDifference id="M">dd-MM-y – dd-MM-y</greatestDifference>
+							<greatestDifference id="y">dd-MM-y – dd-MM-y</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="yMEd">
+							<greatestDifference id="d">E, dd–dd-MM–y – E, dd-dd-MM–y </greatestDifference>
+							<greatestDifference id="M">E, dd-MM-y –E, dd-MM-y</greatestDifference>
+							<greatestDifference id="y">E, dd-MM-y –E, dd-MM-y</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="yMMM">
+							<greatestDifference id="M">MMM–MMM y</greatestDifference>
+							<greatestDifference id="y">MMM y – MMM y</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="yMMMd">
+							<greatestDifference id="d">d–d MMM y</greatestDifference>
+							<greatestDifference id="M">d MMM – d MMM y</greatestDifference>
+							<greatestDifference id="y">d MMM y – d MMM y</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="yMMMEd">
+							<greatestDifference id="d">E, d MMM – E, d MMM y</greatestDifference>
+							<greatestDifference id="M">E, d MMM – E, d MMM y</greatestDifference>
+							<greatestDifference id="y">E, d MMM y – E, d MMM y</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="yMMMM">
+							<greatestDifference id="M">MMMM – MMMM y</greatestDifference>
+							<greatestDifference id="y">MMMM y – MMMM y</greatestDifference>
+						</intervalFormatItem>
+					</intervalFormats>
+				</dateTimeFormats>
 			</calendar>
 		</calendars>
+		<fields>
+			<field type="year">
+				<relative type="-1">umwaka ushize</relative>
+				<relative type="0">uyu mwaka</relative>
+				<relative type="1">umwaka utaha</relative>
+			</field>
+			<field type="month">
+				<relative type="-1">ukwezi gushize</relative>
+				<relative type="0">uku kwezi</relative>
+				<relative type="1">ukwezi gutaha</relative>
+			</field>
+			<field type="week">
+				<relative type="-1">icyumweru gishize</relative>
+				<relative type="0">iki cyumweru</relative>
+				<relative type="1">icyumweru gitaha</relative>
+			</field>
+			<field type="day">
+				<relative type="-1">ejo</relative>
+				<relative type="0">uyu munsi</relative>
+				<relative type="1">ejo</relative>
+			</field>
+			<field type="sun">
+				<relative type="-1">Ku Cyumweru hashize</relative>
+				<relative type="0">kuri iki Cyumweru</relative>
+				<relative type="1">Ku Cyumweru hazaza</relative>
+			</field>
+		</fields>
 		<timeZoneNames>
-			<hourFormat>+HH:mm;-HH:mm</hourFormat>
-			<gmtFormat>GMT{0}</gmtFormat>
+			<metazone type="GMT">
+				<long>
+					<standard>Greenwich Mean Time</standard>
+				</long>
+			</metazone>
 		</timeZoneNames>
 	</dates>
 	<numbers>
@@ -286,6 +415,9 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<decimal>,</decimal>
 			<group>.</group>
 		</symbols>
+		<currencyFormats numberSystem="latn">
+			<unitPattern count="other">{0} {1}</unitPattern>
+		</currencyFormats>
 		<currencies>
 			<currency type="RWF">
 				<symbol>RF</symbol>
@@ -293,4 +425,3 @@ For terms of use, see http://www.unicode.org/copyright.html
 		</currencies>
 	</numbers>
 </ldml>
-

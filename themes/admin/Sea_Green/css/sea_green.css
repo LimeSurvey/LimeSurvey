@@ -11555,12 +11555,13 @@ blockquote.float-end {
   border-right: 8px solid var(--bs-primary);
 }
 
-/* Scrollable subquestion/answer tables*/
-.subquestions-table-wrapper,
-.answeroptions-table-wrapper {
-  display: block;
-  overflow: auto;
-  margin-bottom: 20px;
+/* Subquestion/answer option tables: All rows are shown and the page scrolls; the table header
+   stays below the topbar and the buttons below the table stay at the bottom of the window */
+/* These layout containers clip their content, which makes them scroll containers:
+   Sticky elements inside them would never stick and scrollIntoView() would scroll them */
+#pjax-content .side-body:has(.subquestions-table-wrapper, .answeroptions-table-wrapper),
+.main-content-container:has(.subquestions-table-wrapper, .answeroptions-table-wrapper) {
+  overflow: clip;
 }
 
 .subquestions-table,
@@ -11568,13 +11569,30 @@ blockquote.float-end {
   margin-bottom: 0px;
 }
 
-/* Keep the table header visible while scrolling inside the wrapper */
+/* --ls-topbar-height is set by questionEditor.js */
 .subquestions-table > thead > tr > th,
 .answeroptions-table > thead > tr > th {
   position: sticky;
-  top: 0;
+  top: var(--ls-topbar-height, 0px);
   z-index: 10;
   background-color: #fff;
+}
+
+.subquestions-table-wrapper + .action-buttons,
+.answeroptions-table-wrapper + .action-buttons {
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+  margin-bottom: 20px;
+  padding-top: 10px;
+  background-color: #fff;
+}
+
+/* A row scrolled into view must not end up behind the sticky header or buttons */
+.subquestions-table > tbody > tr,
+.answeroptions-table > tbody > tr {
+  scroll-margin-top: calc(var(--ls-topbar-height, 0px) + 5rem);
+  scroll-margin-bottom: 5rem;
 }
 
 .subquestions-table input.code,
@@ -11597,12 +11615,6 @@ blockquote.float-end {
 .subquestions-table > tbody > tr > td:first-of-type,
 .answeroptions-table > tbody > tr > td:first-of-type {
   padding-left: 0;
-}
-
-.subquestions-table > tbody > tr > td:last-of-type,
-.answeroptions-table > tbody > tr > td:last-of-type {
-  /* Leave room for an overlay scrollbar so it does not cover the delete button */
-  padding-right: 1rem;
 }
 
 .container-fluid, .container-sm, .container-md, .container-lg, .container-xl, .container-xxl {
@@ -18698,6 +18710,11 @@ ol.breadcrumb.title-bar-breadcrumb a:active {
   font-weight: 600;
 }
 
+@media (max-width: 575.98px), (max-height: 500px) and (max-width: 991.98px) {
+  .topbar.sticky-top {
+    position: static;
+  }
+}
 .survey-actionbar {
   padding-top: 16px;
   padding-bottom: 16px;

@@ -69,10 +69,11 @@ class Zend_XmlRpc_Value_DateTime extends Zend_XmlRpc_Value_Scalar
         } elseif (is_numeric($value)) { // The value is numeric, we make sure it is an integer
             $this->_value = date($this->_phpFormatString, (int)$value);
         } else {
-            $timestamp = new DateTime($value);
-            if ($timestamp === false) { // cannot convert the value to a timestamp
+            try {
+                $timestamp = new DateTime($value);
+            } catch (Exception $e) { // cannot convert the value to a timestamp
                 require_once 'Zend/XmlRpc/Value/Exception.php';
-                throw new Zend_XmlRpc_Value_Exception('Cannot convert given value \''. $value .'\' to a timestamp');
+                throw new Zend_XmlRpc_Value_Exception('Cannot convert given value \'' . $value . '\' to a timestamp', 0, $e);
             }
 
             $this->_value = $timestamp->format($this->_phpFormatString); // Convert the timestamp to iso8601 format

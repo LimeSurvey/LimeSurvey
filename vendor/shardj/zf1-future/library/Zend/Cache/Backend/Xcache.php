@@ -37,6 +37,7 @@ require_once 'Zend/Cache/Backend.php';
  * @subpackage Zend_Cache_Backend
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @deprecated Deprecated since 1.26.1 and will be removed in a future version: XCache has not been maintained since 2014
  */
 class Zend_Cache_Backend_Xcache extends Zend_Cache_Backend implements Zend_Cache_Backend_Interface
 {
@@ -72,6 +73,8 @@ class Zend_Cache_Backend_Xcache extends Zend_Cache_Backend implements Zend_Cache
      */
     public function __construct(array $options = [])
     {
+        trigger_error(get_class($this) . ' is deprecated and will be removed in a future version', E_USER_DEPRECATED);
+
         if (!extension_loaded('xcache')) {
             Zend_Cache::throwException('The xcache extension must be loaded for using this backend !');
         }

@@ -4,10 +4,11 @@ import 'tests/mocks'
 import { act, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import { QT_L_LIST } from 'helpers'
+import { QT_D_DATE, QT_L_LIST } from 'helpers'
 import { renderWithProviders } from 'tests/testUtils'
 
 import { ChartRendererV2 } from './ChartRenderV2'
+import { statisticsGraphs } from './ChartsUtils'
 
 // Recharts' d3 dependencies are ESM-only and don't load under Jest; stub the
 // charts and expose the orientation they receive.
@@ -31,6 +32,14 @@ jest.mock('./Charts/index.js', () => {
     DoughnutChart: stub('doughnut-chart'),
   }
 })
+
+// The date/time views load their own data; stub them to see which one opens.
+jest.mock('./DateTimeCalendar.js', () => ({
+  DateTimeCalendar: () => <div data-testid="date-time-calendar" />,
+}))
+jest.mock('./DateTimeTable.js', () => ({
+  DateTimeTable: () => <div data-testid="date-time-table" />,
+}))
 
 const data = [
   { key: 'A1', title: 'Every day', value: 2, percentageValue: 20 },
@@ -257,5 +266,36 @@ describe('ChartRendererV2 bar chart orientation', () => {
     const [firstChart, secondChart] = screen.getAllByTestId('bar-chart')
     expect(firstChart).toHaveAttribute('data-orientation', 'horizontal')
     expect(secondChart).toHaveAttribute('data-orientation', 'vertical')
+  })
+})
+
+describe('ChartRendererV2 date/time question', () => {
+  const dateQuestion = { type: QT_D_DATE, code: 'Q2', title: 'When?' }
+  const dateData = [{ key: 'Q2', title: 'When?', value: 3 }]
+
+  test('opens on the calendar and offers the table too', async () => {
+    await renderCard({ data: dateData, question: dateQuestion })
+
+    expect(screen.getByTestId('date-time-calendar')).toBeInTheDocument()
+    expect(
+      screen.getByTestId('toggleButton-chart-view-0-option-1')
+    ).toBeInTheDocument()
+    expect(
+      screen.queryByTestId('toggleButton-chart-view-0-option-2')
+    ).not.toBeInTheDocument()
+
+    await userEvent.click(
+      screen.getByTestId('toggleButton-chart-view-0-option-1')
+    )
+    expect(screen.getByTestId('date-time-table')).toBeInTheDocument()
+  })
+
+  test('opens on the table when the question setting asks for it', async () => {
+    await renderCard({
+      data: dateData,
+      question: { ...dateQuestion, chartType: statisticsGraphs.TABLE },
+    })
+
+    expect(screen.getByTestId('date-time-table')).toBeInTheDocument()
   })
 })

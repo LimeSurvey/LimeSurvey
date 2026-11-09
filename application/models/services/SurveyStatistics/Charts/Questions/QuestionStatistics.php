@@ -57,6 +57,10 @@ class QuestionStatistics implements StatisticsChartInterface
     /** @var \Survey|null Survey model injected by the service to avoid a second fetch */
     private ?\Survey $survey = null;
 
+    /**
+     * Configure processors for supported question types, including placeholders
+     * for multiple short text questions whose responses are fetched by the client.
+     */
     public function __construct()
     {
         $this->factories = [
@@ -67,7 +71,7 @@ class QuestionStatistics implements StatisticsChartInterface
             Question::QT_T_LONG_FREE_TEXT => fn() => new TextProcessor(),
             Question::QT_S_SHORT_FREE_TEXT => fn() => new TextProcessor(),
             Question::QT_U_HUGE_FREE_TEXT => fn() => new TextProcessor(),
-            Question::QT_Q_MULTIPLE_SHORT_TEXT => fn() => new MultipleChoiceProcessor(),
+            Question::QT_Q_MULTIPLE_SHORT_TEXT => fn() => new ArrayTextProcessor(),
             Question::QT_R_RANKING => fn() => new RankingProcessor(),
             Question::QT_1_ARRAY_DUAL => fn() => new DualScaleProcessor(),
             Question::QT_D_DATE => fn() => new DateProcessor(),
