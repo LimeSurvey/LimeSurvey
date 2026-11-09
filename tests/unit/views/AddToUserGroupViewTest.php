@@ -15,7 +15,10 @@ class AddToUserGroupViewTest extends TestBaseClass
     public function testGroupNameIsEncoded()
     {
         $originalLoginId = \Yii::app()->session['loginID'] ?? null;
-        $groupName = "Grp '" . rand(1000, 9999) . "' & <i>";
+        $originalUserId = \Yii::app()->user->getId();
+        $groupName = "Grp '20831' & <i>";
+        // A leftover group of an aborted run would fail the unique rule
+        \UserGroup::model()->deleteAllByAttributes(['name' => $groupName]);
         $userGroup = new \UserGroup();
         $userGroup->name = $groupName;
         $userGroup->description = '';
@@ -39,6 +42,7 @@ class AddToUserGroupViewTest extends TestBaseClass
             $this->assertStringNotContainsString($groupName, $html);
         } finally {
             \Yii::app()->session['loginID'] = $originalLoginId;
+            \Yii::app()->user->setId($originalUserId);
             $userGroup->delete();
         }
     }

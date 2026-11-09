@@ -144,14 +144,14 @@
                     [
                         'header'            => gT('Username'),
                         'name'              => 'users_name',
-                        'type'              => 'raw',
+                        'type'              => 'text',
                         'value'             => '$data->user->users_name',
                         'headerHtmlOptions' => ['class' => 'd-none d-sm-table-cell text-nowrap'],
                         'htmlOptions'       => ['class' => 'd-none d-sm-table-cell'],
                     ],
                     [
                         'header' => gT('User group'),
-                        'type'   => 'raw',
+                        'type'   => 'text',
                         'value'  => function ($data) use ($oSurveyPermissions) {
                             $groupsStr = $oSurveyPermissions->getUserGroupNames(
                                 $data->uid,
