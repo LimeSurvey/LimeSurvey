@@ -45,6 +45,20 @@ class RandomCharsTest extends TestBaseClass
     }
 
     /**
+     * Every character of the pattern, including the first and the last one, can be picked.
+     *
+     * @return void
+     */
+    public function testEveryPatternCharacterCanBePicked(): void
+    {
+        // With 1000 picks from 6 characters, the chance that one never appears is below 1e-75
+        $result = randomChars(1000, 'ABC123');
+
+        $usedCharacters = count_chars($result, 3);
+        $this->assertSame('123ABC', $usedCharacters);
+    }
+
+    /**
      * The default pattern leaves out characters that are easily confused (0, 1, l, o).
      *
      * @return void
