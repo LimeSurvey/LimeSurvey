@@ -12,6 +12,21 @@ const conditionTypeInfo = getConditionTypeInfo()
 const allowedMethods = getAllowedMethods()
 
 /**
+ * A reference to another question's answer: "@<fieldname>@". Fieldnames start
+ * with a Q, referring to the question, then digits follow, representing the
+ * qid of the main question. Then comes either the subquestion, that is, _S, or
+ * a ranking answer, that is, _R, then some digits, representing the
+ * subquestion/answer. Subquestions may be chained, like Q123_S456_S789, and
+ * some subquestions have # followed by digits. Unsaved questions and
+ * subquestions have temp IDs instead of digits, like Qtemp__123_Stemp__456.
+ * Built once: It's used for every condition parsed.
+ */
+const FIELDNAME_ID_PATTERN = `(?:\\d+|${NEW_OBJECT_ID_PREFIX}\\d+)`
+const FIELDNAME_REFERENCE_REGEX = new RegExp(
+  `^@(Q${FIELDNAME_ID_PATTERN}(?:_[SR]${FIELDNAME_ID_PATTERN})*(?:#\\d+)?)@$`
+)
+
+/**
  * An ID of a condition (cid, qid, cqid) as a number when it is numeric (a
  * saved entity), otherwise as is: A temp ID (e.g. "temp__123456") of an
  * unsaved entity would become NaN as a number, and an empty value stays empty.
@@ -161,19 +176,7 @@ export const determineConditionTargetType = (
     return
   }
 
-  /**
-   * Fieldnames start with a Q, referring to the question
-   * then digits follow, representing the qid of the main question
-   * then comes either the subquestion, that is, _S or a ranking answer,
-   * that is, _R. Then come some digits, representing the subquestion/answer
-   * subquestions may be chained, like Q123_S456_S789
-   * and some subquestions have # followed by digits
-   * Unsaved questions and subquestions have temp IDs instead of digits,
-   * like Qtemp__123_Stemp__456
-   */
-  const id = `(?:\\d+|${NEW_OBJECT_ID_PREFIX}\\d+)`
-  const fieldnameRegex = new RegExp(`^@(Q${id}(?:_[SR]${id})*(?:#\\d+)?)@$`)
-  if (fieldnameRegex.test(condition.value)) {
+  if (FIELDNAME_REFERENCE_REGEX.test(condition.value)) {
     const matchingQuestion = previousQuestions.find((q) => {
       return '@' + q.cfieldname + '@' === condition.value
     })
