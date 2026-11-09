@@ -106,7 +106,7 @@ export const buildScenarioPayload = (question, conditions, scenarioName) => {
 }
 
 /**
- * Builds the buffer operations of the conditions of `scenarios`: one per
+ * Builds the buffer operations of the conditions of `scenarios`: One per
  * condition, keyed by its cid (see handleQuestionConditionOperation). A new
  * condition is an update operation with the insertCondition action, keyed by
  * its temp cid.

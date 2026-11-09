@@ -107,7 +107,7 @@ export const SurveyLogicProvider = ({ children }) => {
    * @returns {boolean} whether the buffer changed
    */
   const dropConditionOpsOfFailedCreates = () => {
-    // Read only: the buffer's own copy, getOperations() would copy it again.
+    // Read only: The buffer's own copy, getOperations() would copy it again.
     const operations = operationsBuffer.operations
     const cleanedOperations = removeConditionOpsOfFailedCreates(operations)
     if (cleanedOperations === operations) return false

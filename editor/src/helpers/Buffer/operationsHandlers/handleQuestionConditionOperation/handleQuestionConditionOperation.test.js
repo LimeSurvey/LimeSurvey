@@ -351,7 +351,7 @@ describe('removeConditionOpsOfFailedCreates', () => {
   })
 
   test('drops the delete of a condition whose create came back with the request failure', () => {
-    // The delete is handled first: the restored create is then dropped.
+    // The delete is handled first: The restored create is then dropped.
     const buffer = [conditionDelete('temp__1_2')]
     const restored = handleQuestionConditionOperation(buffer, {
       ...conditionOperation(newCondition('temp__1_2')),
