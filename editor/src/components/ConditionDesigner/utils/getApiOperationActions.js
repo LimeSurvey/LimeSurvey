@@ -10,8 +10,5 @@ export const getApiOperationActions = () => {
     CONDITION_SCRIPT: {
       UPDATE: CONDITION_ACTIONS.SCRIPT,
     },
-    SCENARIO: {
-      DELETE: CONDITION_ACTIONS.DELETE_SCENARIO,
-    },
   }
 }

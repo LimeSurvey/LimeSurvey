@@ -59,14 +59,6 @@ const script = (qid = QID, extra = {}) => ({
   ...extra,
 })
 
-const scenarioDelete = (scid, qid = QID) => ({
-  id: qid,
-  qid,
-  entity: 'questionCondition',
-  op: Operations.delete,
-  props: { qid, scenarios: [{ scid, action: 'deleteScenario' }] },
-})
-
 describe('handleQuestionConditionOperation', () => {
   test('returns the buffer as is without an operation', () => {
     const buffer = [conditionOperation(condition(5))]
@@ -192,27 +184,6 @@ describe('handleQuestionConditionOperation', () => {
       )
 
       expect(result.bufferOperations).toEqual([otherQuestion, script(7)])
-    })
-
-    test('a scenario delete drops the operations of that scenario only', () => {
-      const keep = conditionOperation(condition(6), 2)
-      const result = handleQuestionConditionOperation(
-        [conditionOperation(condition(5), 1), keep],
-        scenarioDelete(1)
-      )
-
-      expect(result.bufferOperations).toEqual([keep])
-      expect(result.addToBuffer).toBe(true)
-    })
-
-    test('a scenario delete of an unsaved question is not queued', () => {
-      const result = handleQuestionConditionOperation(
-        [conditionOperation(newCondition('temp__1_1', { qid: 'temp__7' }))],
-        scenarioDelete(1, 'temp__7')
-      )
-
-      expect(result.bufferOperations).toEqual([])
-      expect(result.addToBuffer).toBe(false)
     })
   })
 

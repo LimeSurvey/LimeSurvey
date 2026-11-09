@@ -14,7 +14,6 @@ export const CONDITION_ACTIONS = {
   UPDATE: 'updateCondition',
   DELETE: 'deleteCondition',
   SCRIPT: 'conditionScript',
-  DELETE_SCENARIO: 'deleteScenario',
   DELETE_ALL: 'deleteAllConditions',
 }
 
@@ -55,8 +54,7 @@ const getOperationConditions = (op) =>
  * action, not as a `create` operation: The buffer sends nothing while it holds
  * both a create operation and a delete operation, so a new condition would
  * stall every save while a delete operation is waiting.
- * Question-level operations (expression script, reset, scenario delete) use the
- * qid.
+ * Question-level operations (expression script, reset) use the qid.
  */
 
 // A condition create: An update operation carrying an insertCondition.
@@ -102,12 +100,6 @@ const isConditionOperationOfQuestion = (op, qid) =>
 const isConditionScriptOperation = (op) =>
   op?.op === Operations.update && op?.props?.action === CONDITION_ACTIONS.SCRIPT
 
-// A scenario-level delete lists scenarios without conditions.
-const getDeletedScenarioIds = (operation) =>
-  (operation.props?.scenarios ?? [])
-    .filter((scenario) => !scenario.conditions)
-    .map((scenario) => String(scenario.scid))
-
 // Deletes every condition of the question on the server (its id is the qid).
 const isDeleteAllConditionsOperation = (op) =>
   op?.op === Operations.delete &&
@@ -115,9 +107,7 @@ const isDeleteAllConditionsOperation = (op) =>
 
 // Operations of the whole question, keyed by its qid.
 const isQuestionLevelOperation = (op) =>
-  isConditionScriptOperation(op) ||
-  isDeleteAllConditionsOperation(op) ||
-  getDeletedScenarioIds(op).length > 0
+  isConditionScriptOperation(op) || isDeleteAllConditionsOperation(op)
 
 // An operation of the condition `cid`: Its create, update or delete.
 const isOperationOfCondition = (op, cid) =>
@@ -265,7 +255,7 @@ const handleRestoredConditionChange = (bufferOperations, operation, qid) => {
  *   the same condition, in place;
  * - an edit of a condition whose create is still buffered is applied to that
  *   create, which keeps the insertCondition action;
- * - question-level operations (expression script, scenario delete) apply to
+ * - question-level operations (expression script, reset) apply to
  *   every condition operation of the question.
  */
 export const handleQuestionConditionOperation = (
@@ -286,22 +276,6 @@ export const handleQuestionConditionOperation = (
 
   if (isConditionScriptOperation(operation)) {
     return handleScriptOperation(bufferOperations, operation, qid)
-  }
-
-  const deletedScenarioIds = getDeletedScenarioIds(operation)
-  if (deletedScenarioIds.length) {
-    // Nothing to delete on the server when the question only exists locally.
-    const isLocalOnly = hasTempId(String(qid))
-    return {
-      bufferOperations: bufferOperations.filter(
-        (op) =>
-          !isConditionOperationOfQuestion(op, qid) ||
-          isQuestionLevelOperation(op) ||
-          !deletedScenarioIds.includes(String(getScenarioCondition(op).scid))
-      ),
-      newOperation: isLocalOnly ? {} : operation,
-      addToBuffer: !isLocalOnly,
-    }
   }
 
   if (isDeleteAllConditionsOperation(operation)) {
