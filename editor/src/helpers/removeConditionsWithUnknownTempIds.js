@@ -60,7 +60,7 @@ const removeSurveyConditionsWithUnknownTempIds = (survey, knownTempIds) => {
  * Removes, from the survey and from the buffered operations, the conditions of
  * or using as source an unsaved question, subquestion or group that was
  * deleted (see usesUnknownTempId and removeConditionOpsWithUnknownTempIds):
- * its temp ID will never be replaced.
+ * Its temp ID will never be replaced.
  * Usually no condition uses a temp ID, and nothing more is computed.
  *
  * @param {object} survey

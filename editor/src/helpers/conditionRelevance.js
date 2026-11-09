@@ -45,7 +45,7 @@ export const getQidsWithPendingConditionOperations = (operations = []) =>
  * Applies the question relevances returned by the survey PATCH response
  * (extras.questionRelevance, keyed by qid), except for the questions with
  * newer condition operations (or an expression script) still to be sent:
- * their returned relevance is already outdated.
+ * Their returned relevance is already outdated.
  * Operations waiting for a temp ID don't count: They may wait for a while, and
  * meanwhile the relevance of the saved conditions is the right one.
  *

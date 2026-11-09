@@ -29,7 +29,7 @@ export const ScenarioList = ({ setScenarioToPatch }) => {
     if (groupIndex === undefined) return
 
     // Condition by condition (see buildScenarioConditionDeleteOperations):
-    // unsaved conditions are only removed from the buffer.
+    // Unsaved conditions are only removed from the buffer.
     const scenario = scenarios.find((s) => s.scid === scenarioId)
     buildScenarioConditionDeleteOperations(question.qid, scenario).forEach(
       (operation) => addToBuffer(operation)
