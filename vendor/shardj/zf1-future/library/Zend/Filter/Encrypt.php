@@ -47,7 +47,7 @@ class Zend_Filter_Encrypt implements Zend_Filter_Interface
     /**
      * Class constructor
      *
-     * @param string|array $options (Optional) Options to set, if null mcrypt is used
+     * @param string|array $options (Optional) Options to set, the Openssl adapter is used when none is named
      */
     public function __construct($options = null)
     {
@@ -82,7 +82,7 @@ class Zend_Filter_Encrypt implements Zend_Filter_Interface
             $adapter = $options['adapter'];
             unset($options['adapter']);
         } else {
-            $adapter = 'Mcrypt';
+            $adapter = 'Openssl';
         }
 
         if (!is_array($options)) {

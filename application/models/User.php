@@ -517,11 +517,19 @@ class User extends LSActiveRecord
     }
 
     /**
-     * @todo document me
+     * Returns the password requirements as a text for the help below the password fields.
+     * Plugins can add their own requirements with the getPasswordRequirements event,
+     * so the text matches what checkPasswordStrength() enforces.
+     *
+     * @return string
      */
     public function getPasswordHelpText()
     {
-        $settings =  Yii::app()->getConfig("passwordValidationRules");
+        $settings = Yii::app()->getConfig("passwordValidationRules");
+        $requirementsEvent = new PluginEvent('getPasswordRequirements');
+        $requirementsEvent->set('requirements', $settings);
+        Yii::app()->getPluginManager()->dispatchEvent($requirementsEvent);
+        $settings = array_merge($settings, (array) $requirementsEvent->get('requirements'));
         $txt = gT('A password must meet the following requirements: ');
         if ((int) $settings['min'] > 0) {
             $txt .= sprintf(ngT('At least %d character long.|At least %d characters long.', $settings['min']), $settings['min']) . ' ';

@@ -227,7 +227,7 @@ class Zend_ProgressBar_Adapter_Console extends Zend_ProgressBar_Adapter
      */
     public function setWidth($width = null)
     {
-        if ($width === null || !is_integer($width)) {
+        if ($width === null || !is_int($width)) {
             if (substr(PHP_OS, 0, 3) === 'WIN') {
                 // We have to default to 79 on windows, because the windows
                 // terminal always has a fixed width of 80 characters and the

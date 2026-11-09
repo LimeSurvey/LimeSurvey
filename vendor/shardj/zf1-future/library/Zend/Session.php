@@ -535,10 +535,9 @@ class Zend_Session extends Zend_Session_Abstract
             }
         }
 
+        // reading the directive is not deprecated, only setting it
+        // phpcs:ignore PHPCompatibility.IniDirectives.RemovedIniDirectives.session_sid_bits_per_characterDeprecated
         $hashBitsPerChar = ini_get('session.sid_bits_per_character');
-        if (!$hashBitsPerChar) {
-          $hashBitsPerChar = ini_get('session.hash_bits_per_character');
-        }
         if (!$hashBitsPerChar) {
             $hashBitsPerChar = 5; // the default value
         }

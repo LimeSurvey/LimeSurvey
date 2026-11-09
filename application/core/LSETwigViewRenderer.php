@@ -717,6 +717,11 @@ window.addEventListener('message', function(event) {
             $aData["aSurveyInfo"]["options"] = $this->convertOptionsToArray($oTemplateConfigurationCurrent->oOptions);
         }
 
+        // A theme can switch the language changer off via its 'showlanguageswitcher' option
+        if (($aData["aSurveyInfo"]["options"]["showlanguageswitcher"] ?? '') === 'off') {
+            $aData["aSurveyInfo"]["alanguageChanger"]["show"] = false;
+        }
+
         $aData = $this->fixDataCoherence($aData);
 
         return $aData;

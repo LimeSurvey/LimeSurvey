@@ -89,6 +89,9 @@
         <showclearall type="buttons" category="Simple options" width="4" title="Show 'Clear all' button" options="on|off"
                       optionlabels="Yes|No">off
         </showclearall>
+        <showlanguageswitcher type="buttons" category="Simple options" width="4" title="Show language switcher" options="on|off"
+                              optionlabels="Yes|No">on
+        </showlanguageswitcher>
         <questionhelptextposition type="buttons" category="Simple options" width="4" title="Question help text position"
                                   options="top|bottom" optionlabels="Top|Bottom">top
         </questionhelptextposition>
@@ -180,6 +183,7 @@
         <hideprivacyinfo category="Display options" />
         <notables category="Display options" />
         <showclearall category="Display options" />
+        <showlanguageswitcher category="Display options" />
         <questionhelptextposition category="Display options"/>
         <showpopups category="Display options" />
         <fixnumauto category="Display options" />

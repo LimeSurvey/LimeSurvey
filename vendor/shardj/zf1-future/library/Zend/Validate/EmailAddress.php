@@ -492,9 +492,12 @@ class Zend_Validate_EmailAddress extends Zend_Validate_Abstract
         $mxHosts = [];
         $hostname = $this->_hostname;
 
-        //decode IDN domain name if possible
+        // the ASCII form of an IDN domain, by IDNA 2008 (UTS #46) like Zend_Validate_Hostname
         if (function_exists('idn_to_ascii')) {
-            $hostname = idn_to_ascii($this->_hostname);
+            $ascii = idn_to_ascii($this->_hostname, IDNA_NONTRANSITIONAL_TO_ASCII, INTL_IDNA_VARIANT_UTS46);
+            if ($ascii !== false) {
+                $hostname = $ascii;
+            }
         }
 
         $result = getmxrr($hostname, $mxHosts);
