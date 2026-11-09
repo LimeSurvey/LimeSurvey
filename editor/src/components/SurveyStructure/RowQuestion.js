@@ -115,7 +115,7 @@ export const RowQuestion = ({
   const numericCodesWarning = (
     <>
       {t(
-        'Answer codes will be renumbered 1, 2, 3, … Conditions, expressions, default answers and quotas that use the current codes are not updated and may stop working.'
+        'The answer codes of this question will be renumbered to use “1, 2, 3…”. Conditions, expressions, default answers and quotas that use the current codes are not updated and may stop working.'
       )}
       {numericCodesConfirm.references.length > 0 && (
         <>
@@ -176,13 +176,13 @@ export const RowQuestion = ({
           },
           {
             type: 'item',
-            // The label states the action so screen readers know the current state
+            // The label and icon show the action, not the current state
             label: areCodesVisible
               ? t('Hide question codes')
               : t('Show question codes'),
             onClick: toggleQuestionCodes,
             testId: 'toggle-question-codes-button',
-            trailingIcon: areCodesVisible ? 'ri-eye-line' : 'ri-eye-off-line',
+            trailingIcon: areCodesVisible ? 'ri-eye-off-line' : 'ri-eye-line',
           },
           {
             type: 'item',
@@ -212,6 +212,7 @@ export const RowQuestion = ({
         title={t('Assign numeric answer codes')}
         description={numericCodesWarning}
         confirmButtonText={t('Assign codes')}
+        confirmButtonVariant="primary"
       />
       <SurveyLogicModal
         show={showLogicModal}

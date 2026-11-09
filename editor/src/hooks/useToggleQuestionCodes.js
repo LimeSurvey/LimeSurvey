@@ -5,8 +5,8 @@ import { useSurvey } from './useSurvey'
 
 /**
  * Shows or hides question codes for the whole survey.
- * Only showCode is flipped; showNumber is sent back unchanged because the
- * API needs both to build the single showqnumcode setting (B/N/C/X).
+ * showCode and showNumber are set together: the sidebar reads showCode while
+ * the canvas (answer and subquestion codes) reads showNumber.
  */
 export const useToggleQuestionCodes = (surveyId) => {
   const { survey, update } = useSurvey(surveyId)
@@ -14,10 +14,11 @@ export const useToggleQuestionCodes = (surveyId) => {
   const areCodesVisible = !!survey?.showQNumCode?.showCode
 
   const toggleQuestionCodes = () => {
+    const next = !areCodesVisible
     const operationAttr = {
       showQNumCode: {
-        showCode: !areCodesVisible,
-        showNumber: !!survey?.showQNumCode?.showNumber,
+        showCode: next,
+        showNumber: next,
       },
     }
     update(operationAttr)

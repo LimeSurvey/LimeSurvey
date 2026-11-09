@@ -84,19 +84,19 @@ describe('RowQuestion menu', () => {
     expect(screen.getByTestId('delete-button')).toHaveClass('text-danger')
   })
 
-  test('trailing eye icon reflects code visibility', async () => {
+  test('trailing icon is crossed out when codes are shown', async () => {
     await setup()
     expect(
       screen.getByTestId('toggle-question-codes-button-trailing-icon')
-    ).toHaveClass('ri-eye-line')
+    ).toHaveClass('ri-eye-off-line')
   })
 
-  test('trailing icon is crossed out when codes are hidden', async () => {
+  test('trailing icon is an open eye when codes are hidden', async () => {
     await setup({ areCodesVisible: false })
     expect(screen.getByText('Show question codes')).toBeInTheDocument()
     expect(
       screen.getByTestId('toggle-question-codes-button-trailing-icon')
-    ).toHaveClass('ri-eye-off-line')
+    ).toHaveClass('ri-eye-line')
   })
 
   test('toggle calls the handler and menu clicks do not activate the row', async () => {

@@ -48,28 +48,28 @@ describe('RowQuestionsList question codes toggle', () => {
     mockUpdate.mockClear()
   })
 
-  test('hides codes when they are visible', async () => {
+  test('hiding codes also hides them in the canvas', async () => {
     await openMenuAndToggle()
     expect(mockUpdate).toHaveBeenCalledWith({
-      showQNumCode: { showCode: false, showNumber: true },
+      showQNumCode: { showCode: false, showNumber: false },
     })
   })
 
-  test('only flips showCode and keeps question numbers shown', async () => {
+  test('showing codes also shows them in the canvas', async () => {
     mockShowCode = false
-    mockShowNumber = true
+    mockShowNumber = false
     await openMenuAndToggle()
     expect(mockUpdate).toHaveBeenCalledWith({
       showQNumCode: { showCode: true, showNumber: true },
     })
   })
 
-  test('only flips showCode and keeps question numbers hidden', async () => {
-    mockShowCode = true
-    mockShowNumber = false
+  test('the sidebar code state decides the toggle direction', async () => {
+    mockShowCode = false
+    mockShowNumber = true
     await openMenuAndToggle()
     expect(mockUpdate).toHaveBeenCalledWith({
-      showQNumCode: { showCode: false, showNumber: false },
+      showQNumCode: { showCode: true, showNumber: true },
     })
   })
 })
