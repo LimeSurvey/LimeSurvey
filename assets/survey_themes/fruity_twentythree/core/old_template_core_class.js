@@ -62,6 +62,13 @@ export var TemplateCoreClass = function () {
                         $modal.attr('aria-labelledby', $body.attr('id')).removeAttr('aria-describedby');
                     }
                 }
+                /* Move keyboard focus to the message when the dialog opens (tabindex comes from aSurveyInfo.attr.modalbody, added here for themes not using it) */
+                if (!$body.is('[tabindex]')) {
+                    $body.attr('tabindex', '-1');
+                }
+                $modal.one('shown.bs.modal', function () {
+                    $body.trigger('focus');
+                });
                 const modal = new bootstrap.Modal(document.getElementById('bootstrap-alert-box-modal'), {})
                 modal.show();
             }
