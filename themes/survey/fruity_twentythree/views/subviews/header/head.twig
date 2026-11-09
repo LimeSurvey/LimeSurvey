@@ -59,12 +59,13 @@
     <title>
         {{ bPageHasErrors ? gT("Error: %s")|format(sFullPageTitle) : sFullPageTitle }}
     </title>
+    {% set homeScreenIcon = imageSrc('./files/home-screen-icon-192.png') %}
+    {% if homeScreenIcon %}
+        <link rel="apple-touch-icon" href="{{ homeScreenIcon }}" />
+        <link rel="icon" href="{{ homeScreenIcon }}" type="image/png" sizes="192x192" />
+    {% endif %}
     {% if(imageSrc('./files/favicon.ico')) %}
         <link rel="shortcut icon" href="{{ imageSrc('./files/favicon.ico') }}" />
-    {% endif %}
-    {% set appleTouchIcon = imageSrc('./files/apple-touch-icon.png') %}
-    {% if appleTouchIcon %}
-        <link rel="apple-touch-icon" href="{{ appleTouchIcon }}" />
     {% endif %}
     <script type="text/javascript">
         if(window.basicThemeScripts === undefined){ 
