@@ -15,13 +15,19 @@ import {
 export const ScenarioList = ({ setScenarioToPatch }) => {
   const { surveyId } = useParams()
   const { survey, update } = useSurvey(surveyId)
-  const { focused, groupIndex, questionIndex } = useFocused()
+  const { focused } = useFocused()
   const { addToBuffer } = useBuffer()
 
-  const question = getQuestionById(focused.qid, survey).question
+  // The position comes from the survey: The focus indexes can be stale.
+  const { question, groupIndex, questionIndex } = getQuestionById(
+    focused.qid,
+    survey
+  )
   const scenarios = question?.scenarios || []
 
   const handleDeleteScenario = (scenarioId) => {
+    if (groupIndex === undefined) return
+
     // Condition by condition (see buildScenarioConditionDeleteOperations):
     // unsaved conditions are only removed from the buffer.
     const scenario = scenarios.find((s) => s.scid === scenarioId)
