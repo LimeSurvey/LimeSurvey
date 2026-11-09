@@ -34,6 +34,9 @@ class SurveyTemplateTest extends TestBaseClass
     /** @var mixed SSL emergency override config before the test */
     private $sslEmergencyOverride;
 
+    /** @var string|null $_SERVER['SERVER_NAME'] before the test */
+    private $serverName;
+
     /**
      * Saves the URL, allowed hosts and SSL settings changed by the tests, sets an allowed hosts list and turns Force SSL off
      *
@@ -42,9 +45,12 @@ class SurveyTemplateTest extends TestBaseClass
     public function setUp(): void
     {
         parent::setUp();
-        self::$testHelper::saveUrlSettings();
+        // The CLI has no request host, so saveUrlSettings() needs a server name to read the host info
+        $this->serverName = $_SERVER['SERVER_NAME'] ?? null;
+        $_SERVER['SERVER_NAME'] = 'localhost';
         $this->allowedHosts = Yii::app()->getConfig('allowedHosts');
         Yii::app()->setConfig('allowedHosts', ['localhost']);
+        self::$testHelper::saveUrlSettings();
         $this->forceSsl = Yii::app()->getConfig('force_ssl');
         $this->sslEmergencyOverride = Yii::app()->getConfig('ssl_emergency_override');
         Yii::app()->setConfig('force_ssl', 'off');
@@ -62,6 +68,13 @@ class SurveyTemplateTest extends TestBaseClass
         Yii::app()->setConfig('force_ssl', $this->forceSsl);
         Yii::app()->setConfig('ssl_emergency_override', $this->sslEmergencyOverride);
         self::$testHelper::resetUrlSettings();
+        // Don't leak the host info built from the server name into later tests
+        self::$testHelper->resetHostInfo();
+        if ($this->serverName === null) {
+            unset($_SERVER['SERVER_NAME']);
+        } else {
+            $_SERVER['SERVER_NAME'] = $this->serverName;
+        }
         parent::tearDown();
     }
 
