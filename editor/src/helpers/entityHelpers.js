@@ -1,5 +1,5 @@
 import { isUndefined } from 'lodash'
-import { EntitiesType } from './Buffer'
+import { Entities, EntitiesType } from './Buffer'
 import { arrayDeleteItem } from './arrayDeleteItem'
 import { getEntityInfo } from './getEntityInfo'
 import { getTempIdMap, replaceTempIdsInObject } from './replaceTempIdsInObject'
@@ -188,6 +188,19 @@ export const updateSurveyEntitiesData = (
   return { survey, operationsBuffer }
 }
 
+/**
+ * Puts the operations refused by the API back in the buffer, flagged with
+ * `error`, and drops the errors of the operations changed again since.
+ * Refused condition operations are neither put back nor dropped: all the
+ * condition operations of a question share its id (the qid), so a buffered
+ * one doesn't mean the refused change was made again, and sending a refused
+ * change again would only fail again. Their errors are kept, the caller
+ * reloads the survey to show the conditions the server has.
+ * @param {Array} errors the errors returned by the API
+ * @param {OperationsBuffer} readyOperationsBuffer the operations sent to the API
+ * @param {OperationsBuffer} operationsBuffer the current buffer, updated in place
+ * @returns {Array} the errors left to show
+ */
 export const processValidationErrorsAndUpdateOperations = (
   errors, // Errors that get from the API.
   readyOperationsBuffer, // The operations that were sent to the API.
@@ -197,6 +210,8 @@ export const processValidationErrorsAndUpdateOperations = (
 
   for (let i = 0; i < errors?.length; i++) {
     const validationError = errors[i]
+    if (validationError.entity === Entities.questionCondition) continue
+
     const sentOperationIndex = readyOperationsBuffer.findIndex(
       validationError.id,
       validationError.op,

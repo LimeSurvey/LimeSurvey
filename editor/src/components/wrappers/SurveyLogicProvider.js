@@ -139,7 +139,7 @@ export const SurveyLogicProvider = ({ children }) => {
 
     const readyOperations = operationsBuffer.getOperations({ ready: true })
     // surveyRefreshRequired is only updated on the next render, too late for finallyCallback
-    let deleteRefused = false
+    let refreshRequired = false
 
     const beforeCallback = () => {
       // Clear ready buffer items
@@ -254,8 +254,14 @@ export const SurveyLogicProvider = ({ children }) => {
           error.entity
         )
       })
-      if (refusedDeletes.length) {
-        deleteRefused = true
+      // A refused condition change is not sent again: The editor shows it,
+      // reload the survey to show the conditions the server has.
+      const hasRefusedConditionChange = [
+        ...validationErrors,
+        ...exceptionErrors,
+      ].some((error) => error.entity === Entities.questionCondition)
+      if (refusedDeletes.length || hasRefusedConditionChange) {
+        refreshRequired = true
         setSurveyRefreshRequired(true)
       }
 
@@ -342,7 +348,7 @@ export const SurveyLogicProvider = ({ children }) => {
       )
       if (
         pendingOperations.isEmpty() &&
-        (surveyRefreshRequired || deleteRefused)
+        (surveyRefreshRequired || refreshRequired)
       ) {
         fetchSurvey(surveyId)
         setSurveyRefreshRequired(false)
