@@ -77,7 +77,7 @@
                             $sNewSurveyTableName,
                             '</b>'
                         ); ?></li>
-                        <li><?php printf(gT("All %sparticipant information will be lost%s."), '<b>', '</b>'); ?></li>
+                        <li><?php printf(gT("The %sparticipant list is archived%s. You can restore it after you activate the survey again."), '<b>', '</b>'); ?></li>
                         <li><?php printf(
                             gT("%sCannot%s be %saccessed%s by %sparticipants%s. A message will be displayed stating that the survey has been closed."),
                             '<b>',

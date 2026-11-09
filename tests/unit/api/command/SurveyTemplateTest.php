@@ -2,10 +2,11 @@
 
 namespace ls\tests\unit\api\command;
 
+use CHttpSession;
 use LimeSurvey\Api\Command\Request\Request;
 use LimeSurvey\Api\Command\Response\ResponseFactory;
 use LimeSurvey\Api\Command\Response\Status\StatusErrorForbidden;
-use LimeSurvey\Api\Command\V1\SurveyArchive;
+use LimeSurvey\Api\Command\Response\Status\StatusSuccess;
 use LimeSurvey\Api\Command\V1\SurveyTemplate;
 use ls\tests\TestBaseClass;
 use ls\tests\unit\api\command\mixin\AssertResponse;
@@ -17,7 +18,8 @@ use SurveyLanguageSetting;
 use Yii;
 
 /**
- * Tests for the REST survey template and survey archives commands
+ * Tests for the survey-template REST command: Access checks and the trusted
+ * base URL of the internal survey preview request.
  */
 class SurveyTemplateTest extends TestBaseClass
 {
@@ -64,42 +66,78 @@ class SurveyTemplateTest extends TestBaseClass
     }
 
     /**
-     * A user without survey permission must get "forbidden" from the survey template command
-     *
-     * @return void
+     * An unknown survey id must give a 403 like a missing permission does,
+     * so that users cannot probe which survey ids exist.
      */
-    public function testSurveyTemplateRequiresSurveyPermission(): void
+    public function testUnknownSurveyGivesForbidden(): void
     {
-        $command = new SurveyTemplate(
-            new ResponseFactory(),
-            Yii::app()->session,
-            Survey::model(),
-            SurveyLanguageSetting::model()
-        );
-        $command->setPermissionModel($this->getPermissionModelWithoutPermissions());
+        $survey = Mockery::mock(Survey::class)->makePartial();
+        $survey->shouldNotReceive('findByPk');
 
-        $response = $command->run(new Request(['_id' => 123456]));
+        // Permission::hasSurveyPermission() returns false for unknown surveys
+        $permission = Mockery::mock(Permission::class)->makePartial();
+        $permission->shouldReceive('hasSurveyPermission')
+            ->with(123, 'surveycontent', 'read', null)
+            ->andReturn(false);
+
+        $command = $this->makeCommand($survey, $permission);
+        $response = $command->run(new Request(['_id' => 123]));
 
         $this->assertResponseStatus($response, new StatusErrorForbidden());
     }
 
     /**
-     * A user without survey permission must get "forbidden" from the survey archives command
-     *
-     * @return void
+     * A user without read permission on the survey content must get a 403.
      */
-    public function testSurveyArchiveRequiresSurveyPermission(): void
+    public function testMissingPermissionGivesForbidden(): void
     {
-        $command = new SurveyArchive(
-            Yii::app()->session,
-            new ResponseFactory(),
-            Survey::model()
-        );
-        $command->setPermissionModel($this->getPermissionModelWithoutPermissions());
+        $survey = Mockery::mock(Survey::class)->makePartial();
+        $survey->shouldReceive('findByPk')->with(123)->andReturn($survey);
 
-        $response = $command->run(new Request(['_id' => 123456]));
+        $permission = Mockery::mock(Permission::class)->makePartial();
+        $permission->shouldReceive('hasSurveyPermission')
+            ->with(123, 'surveycontent', 'read', null)
+            ->andReturn(false);
+
+        $command = $this->makeCommand($survey, $permission);
+        $response = $command->run(new Request(['_id' => 123]));
 
         $this->assertResponseStatus($response, new StatusErrorForbidden());
+    }
+
+    /**
+     * A user with read permission on the survey content gets the template.
+     */
+    public function testPermissionGivesSuccess(): void
+    {
+        $survey = Mockery::mock(Survey::class)->makePartial();
+        $survey->shouldReceive('findByPk')->with(123)->andReturn($survey);
+        $survey->language = 'en';
+
+        $permission = Mockery::mock(Permission::class)->makePartial();
+        $permission->shouldReceive('hasSurveyPermission')
+            ->with(123, 'surveycontent', 'read', null)
+            ->andReturn(true);
+
+        $languageSetting = Mockery::mock(SurveyLanguageSetting::class);
+        $languageSetting->shouldReceive('find')->andReturn(null);
+
+        // The template is fetched over HTTP, so that step is stubbed
+        $command = Mockery::mock(SurveyTemplate::class, [
+            new ResponseFactory(),
+            Mockery::mock(CHttpSession::class),
+            $survey,
+            $languageSetting
+        ])->makePartial()->shouldAllowMockingProtectedMethods();
+        $command->shouldReceive('getTemplateData')
+            ->with(123, 'en')
+            ->andReturn('<p>Survey</p>');
+        $command->setPermissionModel($permission);
+
+        $response = $command->run(new Request(['_id' => 123]));
+
+        $this->assertResponseStatus($response, new StatusSuccess());
+        $this->assertSame(['template' => '<p>Survey</p>'], $response->getData());
     }
 
     /**
@@ -257,16 +295,22 @@ class SurveyTemplateTest extends TestBaseClass
     }
 
     /**
-     * Returns a permission model that denies every permission
+     * Build the command with mocked collaborators
      *
-     * @return Permission A mocked permission model
+     * @param Survey $survey
+     * @param Permission $permission
+     * @return SurveyTemplate
      */
-    private function getPermissionModelWithoutPermissions(): Permission
+    private function makeCommand(Survey $survey, Permission $permission): SurveyTemplate
     {
-        $permission = Mockery::mock(Permission::class);
-        $permission->shouldReceive('hasSurveyPermission')->andReturn(false);
-        $permission->shouldReceive('hasGlobalPermission')->andReturn(false);
-        return $permission;
+        $command = new SurveyTemplate(
+            new ResponseFactory(),
+            Mockery::mock(CHttpSession::class),
+            $survey,
+            Mockery::mock(SurveyLanguageSetting::class)
+        );
+        $command->setPermissionModel($permission);
+        return $command;
     }
 
     /**

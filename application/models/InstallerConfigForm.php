@@ -50,7 +50,7 @@ class InstallerConfigForm extends CFormModel
     /** @var int Recommended value in MB for the PHP setting upload_max_filesize, it limits survey imports and file uploads */
     public const RECOMMENDED_UPLOAD_MAX_FILESIZE = 32;
     /** @var string Minimum supported PHP version, keep in sync with require → php and config → platform → php in composer.json and the check in index.php */
-    public const MINIMUM_PHP_VERSION = '8.2.4';
+    public const MINIMUM_PHP_VERSION = '8.2.27';
 
     // Database
     /** @var string $dbtype */

@@ -140,9 +140,9 @@ include __DIR__ . '/setdebug.php';
 
 // Must run before vendor/autoload.php: Composer's platform check would otherwise end with a generic 500 error.
 // Keep in sync with InstallerConfigForm::MINIMUM_PHP_VERSION (classes are not loadable yet at this point).
-if (version_compare(PHP_VERSION, '8.2.4', '<')) {
+if (version_compare(PHP_VERSION, '8.2.27', '<')) {
     http_response_code(500);
-    die('LimeSurvey requires PHP version 8.2.4 or later. Your version: ' . htmlspecialchars(PHP_VERSION) . '<br />Please upgrade PHP or ask your hosting provider to do so.');
+    die('LimeSurvey requires PHP version 8.2.27 or later. Your version: ' . htmlspecialchars(PHP_VERSION) . '<br />Please upgrade PHP or ask your hosting provider to do so.');
 }
 require_once __DIR__ . '/vendor/autoload.php';
 

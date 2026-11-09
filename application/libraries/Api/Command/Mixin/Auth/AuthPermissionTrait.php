@@ -33,16 +33,16 @@ trait AuthPermissionTrait
     }
 
     /**
-     * Check a global permission of the current (or given) user
+     * Check whether a user has a global permission
      *
-     * @param string $permission The permission name, e.g. 'surveys'
-     * @param string $crud The permission action, e.g. 'read'
-     * @param ?int $userId The user ID, null for the current user
-     * @return bool True if the user has the permission, false otherwise
+     * @param string $permission Permission name, e.g. 'surveys'
+     * @param string $crud One of 'create', 'read', 'update', 'delete', 'import', 'export'
+     * @param ?int $userId User id, defaults to the current user
+     * @return bool true if the user has the global permission
      */
     protected function hasGlobalPermission($permission, $crud, $userId = null): bool
     {
-        return (bool) $this->getPermissionModel()->hasGlobalPermission(
+        return $this->getPermissionModel()->hasGlobalPermission(
             $permission,
             $crud,
             $userId
@@ -50,17 +50,17 @@ trait AuthPermissionTrait
     }
 
     /**
-     * Check a survey permission of the current (or given) user
+     * Check whether a user has a permission on a survey
      *
-     * @param int $surveyId The survey ID
-     * @param string $permission The permission name, e.g. 'surveycontent'
-     * @param string $crud The permission action, e.g. 'read'
-     * @param ?int $userId The user ID, null for the current user
-     * @return bool True if the user has the permission, false otherwise
+     * @param int $surveyId Survey id
+     * @param string $permission Permission name, e.g. 'surveycontent'
+     * @param string $crud One of 'create', 'read', 'update', 'delete', 'import', 'export'
+     * @param ?int $userId User id, defaults to the current user
+     * @return bool true if the user has the survey permission
      */
     protected function hasSurveyPermission($surveyId, $permission, $crud, $userId = null): bool
     {
-        return (bool) $this->getPermissionModel()->hasSurveyPermission(
+        return $this->getPermissionModel()->hasSurveyPermission(
             $surveyId,
             $permission,
             $crud,

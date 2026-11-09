@@ -14369,6 +14369,10 @@ body.error-page .error-link {
   .slider-list .ls-slider-answer-row {
     margin-top: 20px;
   }
+  .slider-list .ls-slider-item-horizontal .ls-slider-answer-row {
+    /* Keep the default distance: The question-numeric-slider package reserves 48px for its tooltip, this theme moves the tooltip closer to the handle (see above) and pads the item instead */
+    margin-top: 20px;
+  }
   .slider-list .ls-slider-item-horizontal .slider-left {
     order: 4;
   }
