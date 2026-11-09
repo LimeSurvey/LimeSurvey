@@ -76,8 +76,9 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
     }
 
     /**
-     * Updates multiple attributes for a single question. Format is exactly the
-     * same as in Question create, so they share the prepare function.
+     * Applies one condition operation of a question: a question-level action
+     * (e.g. deleteAllConditions, conditionScript) or scenario and condition
+     * changes, then returns the question's resulting relevance.
      *
      * renumberScenarios:
      * {
@@ -703,12 +704,15 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
      * }
      *
      *
-     * @param OpInterface $op
+     * @param OpInterface $op the questionCondition operation, its props holding
+     *   the qid and either an action or the scenarios to change
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      * @psalm-suppress RedundantConditionGivenDocblockType
      * @psalm-suppress DocblockTypeContradiction
      * @psalm-suppress PossiblyNullArgument
-     * @return array
+     * @return array the handler response: 'additional' with the question's
+     *   relevance ('relevance', 'qid', and 'questionRelevance' keyed by qid), and
+     *   'tempIdMapping' with the real IDs of the conditions created from temp IDs
      * @throws OpHandlerException
      * @throws PersistErrorException
      * @throws NotFoundException
