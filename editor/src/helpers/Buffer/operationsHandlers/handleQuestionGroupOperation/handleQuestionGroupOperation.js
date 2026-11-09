@@ -10,8 +10,9 @@ import { Entities, hasTempId, Operations } from 'helpers'
  * with it. Left in the buffer, the question create would block every save of
  * the survey until a reload:
  * - its group was saved: The group delete is queued next to the create, and
- *   the buffer sends nothing while it holds both a create and a delete
- *   (creates and deletes each wait for the other, see isOperationReadyForPatch);
+ *   the buffer sends nothing while it holds both a create operation and a
+ *   delete operation (creates and deletes each wait for the other, see
+ *   isOperationReadyForPatch);
  * - its group was new: The create waits for a group ID that never comes, and
  *   meanwhile every other operation waits for the creates to be sent.
  * @param {Array} bufferOperations

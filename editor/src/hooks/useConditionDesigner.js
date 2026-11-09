@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 
 import {
-  createBufferOperation,
   errorToast,
   getQuestionById,
   getResolvedTempIdsVersion,
@@ -11,6 +10,7 @@ import {
 
 import {
   buildConditionDeleteOperation,
+  buildConditionOperations,
   buildScenarioConditionsForUpdate,
   buildScenarioPayload,
   getDefaultCondition,
@@ -246,14 +246,10 @@ export const useConditionDesigner = ({
         message = getSuccessMessage('create')
       }
 
-      if (apiProps.scenarios.length > 0) {
-        const operation = createBufferOperation(question.qid)
-          .questionCondition()
-          .update()
-        operation.qid = question.qid
-        operation.props = apiProps
-        addToBuffer(operation)
-      }
+      // One operation per condition, keyed by its cid.
+      buildConditionOperations(question.qid, apiProps.scenarios).forEach(
+        (operation) => addToBuffer(operation)
+      )
 
       return { saved: Boolean(message), hasDuplicate, message }
     } catch (error) {

@@ -106,6 +106,31 @@ export const buildScenarioPayload = (question, conditions, scenarioName) => {
 }
 
 /**
+ * Builds the buffer operations of the conditions of `scenarios`: one per
+ * condition, keyed by its cid (see handleQuestionConditionOperation). A new
+ * condition is an update operation with the insertCondition action, keyed by
+ * its temp cid.
+ * @param {number|string} qid question owning the conditions
+ * @param {Array<{scid: number, conditions: Array}>} scenarios as built by
+ *   buildScenarioPayload
+ * @returns {Array}
+ */
+export const buildConditionOperations = (qid, scenarios = []) =>
+  scenarios.flatMap((scenario) =>
+    (scenario.conditions ?? []).map((condition) => {
+      const operation = createBufferOperation(condition.cid)
+        .questionCondition()
+        .update()
+      operation.qid = qid
+      operation.props = {
+        qid,
+        scenarios: [{ scid: scenario.scid, conditions: [condition] }],
+      }
+      return operation
+    })
+  )
+
+/**
  * Builds the buffer operation deleting one condition of a scenario.
  * @param {number|string} qid question owning the condition
  * @param {number|string} scid scenario of the condition

@@ -10,6 +10,6 @@ export {
   getKnownTempIds,
   isConditionOperationWaiting,
   removeConditionOpsWithUnknownTempIds,
-  removeOrphanConditionDeletes,
+  removeConditionOpsOfFailedCreates,
   usesUnknownTempId,
 } from './handleQuestionConditionOperation/handleQuestionConditionOperation'

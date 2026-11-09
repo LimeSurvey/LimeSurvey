@@ -191,10 +191,8 @@ export const updateSurveyEntitiesData = (
 /**
  * Puts the operations refused by the API back in the buffer, flagged with
  * `error`, and drops the errors of the operations changed again since.
- * Refused condition operations are neither put back nor dropped: All the
- * condition operations of a question share its id (the qid), so a buffered
- * one doesn't mean the refused change was made again, and sending a refused
- * change again would only fail again. Their errors are kept, the caller
+ * Refused condition operations are neither put back nor dropped: Sending a
+ * refused change again would only fail again. Their errors are kept, the caller
  * reloads the survey to show the conditions the server has.
  * @param {Array} errors the errors returned by the API
  * @param {OperationsBuffer} readyOperationsBuffer the operations sent to the API

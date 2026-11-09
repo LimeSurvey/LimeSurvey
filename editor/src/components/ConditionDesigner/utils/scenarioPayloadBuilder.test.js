@@ -1,6 +1,9 @@
 import { OperationsBuffer } from 'helpers/Buffer/OperationsBuffer'
 
-import { buildScenarioConditionDeleteOperations } from './scenarioPayloadBuilder'
+import {
+  buildConditionOperations,
+  buildScenarioConditionDeleteOperations,
+} from './scenarioPayloadBuilder'
 
 const condition = (cid, scenario, value = 'A1') => ({
   qid: 20,
@@ -17,9 +20,10 @@ const condition = (cid, scenario, value = 'A1') => ({
   cid,
 })
 
-// A condition moved to another scenario (its scenario number edited).
+// A condition moved to another scenario (its scenario number edited), keyed by
+// its cid as buildConditionOperations builds it.
 const moveTo = (cid, scid) => ({
-  id: 20,
+  id: cid,
   qid: 20,
   entity: 'questionCondition',
   op: 'update',
@@ -80,5 +84,31 @@ describe('buildScenarioConditionDeleteOperations', () => {
     expect(buffer.getOperations().filter((op) => op.op === 'update')).toEqual(
       []
     )
+  })
+})
+
+describe('buildConditionOperations', () => {
+  test('builds one operation per condition, keyed by its cid', () => {
+    const created = { cid: 'temp__5_1', action: 'insertCondition' }
+    const updated = { cid: 77, action: 'updateCondition' }
+    const operations = buildConditionOperations(20, [
+      { scid: 1, conditions: [created] },
+      { scid: 2, conditions: [updated] },
+    ])
+
+    expect(operations).toEqual([
+      expect.objectContaining({
+        id: 'temp__5_1',
+        qid: 20,
+        entity: 'questionCondition',
+        op: 'update',
+        props: { qid: 20, scenarios: [{ scid: 1, conditions: [created] }] },
+      }),
+      expect.objectContaining({
+        id: 77,
+        op: 'update',
+        props: { qid: 20, scenarios: [{ scid: 2, conditions: [updated] }] },
+      }),
+    ])
   })
 })

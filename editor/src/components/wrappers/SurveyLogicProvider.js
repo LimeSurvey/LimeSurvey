@@ -29,7 +29,7 @@ import {
   dayJsHelper,
   RandomNumber,
 } from 'helpers'
-import { removeOrphanConditionDeletes } from 'helpers/Buffer/operationsHandlers'
+import { removeConditionOpsOfFailedCreates } from 'helpers/Buffer/operationsHandlers'
 
 /**
  * Render children while loading the route's survey and saving buffered edits.
@@ -99,6 +99,23 @@ export const SurveyLogicProvider = ({ children }) => {
     return true
   }
 
+  /**
+   * Drop the condition operations still on a temp cid without a buffered
+   * create (see removeConditionOpsOfFailedCreates). No request is running here,
+   * so no create can be on its way: For example the delete operation of a
+   * condition whose create was refused, which would otherwise block every save.
+   * @returns {boolean} whether the buffer changed
+   */
+  const dropConditionOpsOfFailedCreates = () => {
+    // Read only: the buffer's own copy, getOperations() would copy it again.
+    const operations = operationsBuffer.operations
+    const cleanedOperations = removeConditionOpsOfFailedCreates(operations)
+    if (cleanedOperations === operations) return false
+
+    setBuffer(cleanedOperations, RandomNumber())
+    return true
+  }
+
   // Mount / ID Change Logic
   useEffect(() => {
     clearBuffer()
@@ -136,6 +153,7 @@ export const SurveyLogicProvider = ({ children }) => {
 
     // The buffer changed: This effect runs again with the cleaned buffer.
     if (dropConditionsWithUnknownTempIds()) return
+    if (dropConditionOpsOfFailedCreates()) return
 
     const readyOperations = operationsBuffer.getOperations({ ready: true })
     // surveyRefreshRequired is only updated on the next render, too late for finallyCallback
@@ -279,9 +297,12 @@ export const SurveyLogicProvider = ({ children }) => {
 
       update({ ...mapResult.survey })
       refetchQuestionsFieldNamesMap()
-      // A condition delete still on a temp cid now belongs to a failed create.
+      // A condition operation still on a temp cid without a buffered create
+      // now belongs to a condition creation that failed or was refused.
       mapResult.operationsBuffer.setOperations(
-        removeOrphanConditionDeletes(mapResult.operationsBuffer.getOperations())
+        removeConditionOpsOfFailedCreates(
+          mapResult.operationsBuffer.getOperations()
+        )
       )
 
       setBuffer(mapResult.operationsBuffer.getOperations(), RandomNumber())
@@ -324,9 +345,12 @@ export const SurveyLogicProvider = ({ children }) => {
         addToBuffer(operation, false)
       })
 
-      // No condition create got its real ID: Drop the deletes waiting for one.
+      // No condition create got its real ID: Drop the operations waiting for
+      // one, except those of the creates put back.
       setBuffer(
-        removeOrphanConditionDeletes(queryClient.getQueryData([STATES.BUFFER])),
+        removeConditionOpsOfFailedCreates(
+          queryClient.getQueryData([STATES.BUFFER])
+        ),
         RandomNumber()
       )
 

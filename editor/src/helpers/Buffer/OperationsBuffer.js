@@ -405,8 +405,12 @@ export class OperationsBuffer {
     // Block any non-create operation whose own id is still a tempId.
     // This happens when a create is flushed but the backend hasn't yet responded
     // with the real id — updates/deletes must wait for the tempId to be replaced.
+    // Condition operations are checked by isConditionOperationWaiting: A
+    // condition create is an update keyed by its temp cid.
     const isNonCreateOperationWithTempId =
-      operation.op !== Operations.create && hasTempId(operation.id?.toString())
+      operation.op !== Operations.create &&
+      operation.entity !== Entities.questionCondition &&
+      hasTempId(operation.id?.toString())
 
     // Condition operations wait for the temp IDs they use to be replaced
     // (question, source question/subquestion, condition being created).
