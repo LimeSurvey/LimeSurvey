@@ -57,6 +57,8 @@ class StatisticsDateValues implements CommandInterface
     }
 
     /**
+     * Return the answers of the `qid` question per day and time.
+     *
      * @param Request $request
      * @return Response The values, or an error when not permitted, the survey
      *     doesn't exist or the request is invalid
@@ -113,6 +115,8 @@ class StatisticsDateValues implements CommandInterface
     }
 
     /**
+     * Load the survey.
+     *
      * @param int $surveyId
      * @return Survey|null Null when the survey doesn't exist
      */

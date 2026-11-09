@@ -7,6 +7,7 @@ import { useQuestionResponses } from 'hooks'
 import { useIsInViewport } from 'hooks/useInViewport'
 
 import { ChartHeader } from './ChartHeader.js'
+import { EncryptedDateTimeGate } from './EncryptedDateTimeGate.js'
 import { StatisticsDetailModal } from './StatisticsDetailModal.js'
 import {
   formatDay,
@@ -24,16 +25,7 @@ const byRawValue = (rowA, rowB, columnId) =>
     String(rowB.original[columnId] ?? '')
   )
 
-/**
- * Data table view of a Date/time question: one row per answer with its
- * response ID, entered date and, when the question records one, time.
- */
-export const DateTimeTable = ({
-  surveyId,
-  question = {},
-  filters,
-  filterSet,
-}) => {
+const DateTimeTableContent = ({ surveyId, question, filters, filterSet }) => {
   const { code: questionCode, fields, hasTime = false } = question
   const { i18n } = useTranslation()
   const localeCode = getLocaleCode(i18n?.language)
@@ -191,3 +183,21 @@ export const DateTimeTable = ({
     </div>
   )
 }
+
+/**
+ * Data table view of a Date/time question
+ */
+export const DateTimeTable = ({
+  calendarState = {},
+  onCalendarStateChange,
+  question = {},
+  ...props
+}) => (
+  <EncryptedDateTimeGate
+    isEncrypted={!!question.encrypted}
+    calendarState={calendarState}
+    onCalendarStateChange={onCalendarStateChange}
+  >
+    <DateTimeTableContent {...props} question={question} />
+  </EncryptedDateTimeGate>
+)

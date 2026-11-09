@@ -19,10 +19,16 @@ class DateTimeValues
     private const VALUE_PATTERN = '/^(\d{4})-(\d{2})-(\d{2})(?:[ T](\d{2}):(\d{2})(?::(\d{2}))?)?/';
 
     /**
+     * Every answer of a Date/time question per day and time.
+     *
+     * @param int $surveyId
+     * @param int $qid The date question
+     * @param StatisticsResponseFilters|null $filters The sidebar filters
      * @param \LimeSurvey\Models\Services\ResponseFilters\ResolvedFilter[] $resolvedFilters
      *     The filterSet the user built in the filter modal, resolved.
      * @param bool $decrypt Asked for explicitly, and only for an encrypted
      *     question, so its answers are never decrypted by accident.
+     * @return array{hasTime: bool, total: int, days: array<string, array<string, int>>}
      * @throws InvalidArgumentException When the question is no date question
      *                                  of the survey, or $decrypt doesn't match
      *                                  whether it is encrypted.
@@ -86,7 +92,9 @@ class DateTimeValues
      * Values that are no real date are skipped. A question without a time has
      * one entry per day, also when its format had a time when it was answered.
      *
-     * @param array<string, int> $valueCounts
+     * @param bool $hasTime Whether the question's format records a time
+     * @param array<string, int> $valueCounts stored value => count
+     * @return array{hasTime: bool, total: int, days: array<string, array<string, int>>}
      */
     public static function groupByDay(bool $hasTime, array $valueCounts): array
     {
@@ -116,6 +124,7 @@ class DateTimeValues
      * Day and time of a stored value: datetime columns give 'Y-m-d H:i:s'
      * (MSSQL adds fractions), decrypted answers 'Y-m-d H:i'.
      *
+     * @param string $value A stored or decrypted answer
      * @return array{0: string, 1: string}|null ['Y-m-d', 'H:i:s' or '']
      */
     private static function split(string $value): ?array
@@ -136,8 +145,12 @@ class DateTimeValues
     }
 
     /**
+     * Load a date question of the survey with its date format.
+     *
+     * @param int $surveyId
+     * @param int $qid
      * @return array Question data in the shape DateProcessor expects.
-     * @throws InvalidArgumentException
+     * @throws InvalidArgumentException When it is no date question of the survey
      */
     private function findDateQuestion(int $surveyId, int $qid): array
     {

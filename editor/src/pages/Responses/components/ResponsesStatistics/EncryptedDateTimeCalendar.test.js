@@ -47,6 +47,7 @@ const lastOptions = () => useDateTimeValues.mock.lastCall[3]
 describe('EncryptedDateTimeCalendar', () => {
   beforeEach(() => {
     useAppState.mockReturnValue([true])
+    useDateTimeValues.mockClear()
   })
 
   test('without the permission to read responses there is no button', () => {
@@ -60,7 +61,7 @@ describe('EncryptedDateTimeCalendar', () => {
       )
     ).toBeInTheDocument()
     expect(screen.queryByRole('button', { name: BUTTON })).toBeNull()
-    expect(lastOptions()).toMatchObject({ enabled: false })
+    expect(useDateTimeValues).not.toHaveBeenCalled()
   })
 
   test('nothing is decrypted until asked', () => {
@@ -72,7 +73,7 @@ describe('EncryptedDateTimeCalendar', () => {
         'The date/time data for this question was set up to be encrypted.'
       )
     ).toBeInTheDocument()
-    expect(lastOptions()).toMatchObject({ enabled: false, decrypt: true })
+    expect(useDateTimeValues).not.toHaveBeenCalled()
   })
 
   test('the button loads the values and keeps the focus nearby', () => {
@@ -81,7 +82,7 @@ describe('EncryptedDateTimeCalendar', () => {
 
     fireEvent.click(screen.getByRole('button', { name: BUTTON }))
 
-    expect(lastOptions()).toMatchObject({ enabled: true, decrypt: true })
+    expect(lastOptions()).toMatchObject({ decrypt: true })
     expect(screen.queryByRole('button', { name: BUTTON })).toBeNull()
     expect(screen.getByRole('status', { name: 'Loading' })).toBeInTheDocument()
     expect(document.activeElement).toHaveClass(

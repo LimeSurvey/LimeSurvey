@@ -309,6 +309,8 @@ const VIEWS = [
       filters,
       filterSet,
       isDate,
+      calendarState,
+      onCalendarStateChange,
     }) =>
       isDate ? (
         <DateTimeTable
@@ -316,6 +318,8 @@ const VIEWS = [
           question={question}
           filters={filters}
           filterSet={filterSet}
+          calendarState={calendarState}
+          onCalendarStateChange={onCalendarStateChange}
         />
       ) : isFileUpload ? (
         <FileUploadTable

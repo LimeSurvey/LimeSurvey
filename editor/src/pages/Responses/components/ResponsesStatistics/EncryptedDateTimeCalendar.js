@@ -1,113 +1,78 @@
-import { useEffect, useMemo, useRef } from 'react'
+import { useMemo } from 'react'
 
-import { Button } from 'components'
-import { STATES } from 'helpers'
-import { useAppState, useDateTimeValues } from 'hooks'
+import { useDateTimeValues } from 'hooks'
 
 import { DateTimeCalendar } from './DateTimeCalendar.js'
+import { EncryptedDateTimeGate } from './EncryptedDateTimeGate.js'
 import { toDayMap } from './dateTimeUtils'
 
-/**
- * Calendar view of an encrypted Date/time question. Its answers are only
- * decrypted once asked for; until the page reloads they then feed the same
- * calendar, and the same loaded values serve its day and range breakdowns.
- * Decrypting needs the permission to read responses, so without it only the
- * message is shown.
- */
-export const EncryptedDateTimeCalendar = ({
+const DecryptedCalendar = ({
   surveyId,
-  question = {},
+  question,
   filters,
   filterSet,
-  calendarState = {},
+  calendarState,
   onCalendarStateChange,
 }) => {
-  const [canReadResponses] = useAppState(
-    STATES.HAS_RESPONSES_READ_PERMISSION,
-    false
-  )
-  const isDecrypted = !!calendarState.decrypted && canReadResponses
-  const decryptedRef = useRef(null)
-  const moveFocusRef = useRef(false)
   const { values, isLoading, isError } = useDateTimeValues(
     surveyId,
     question.qid,
     filters,
-    { enabled: isDecrypted, filterSet, decrypt: true }
+    { filterSet, decrypt: true }
   )
   const stats = useMemo(() => values && toDayMap(values.days), [values])
 
-  useEffect(() => {
-    if (isDecrypted && moveFocusRef.current) {
-      moveFocusRef.current = false
-      decryptedRef.current?.focus()
-    }
-  }, [isDecrypted])
-
-  if (!isDecrypted) {
+  if (isLoading) {
     return (
-      <div className="responses-statistics-calendar-locked">
-        <p>
-          {t(
-            'The date/time data for this question was set up to be encrypted.'
-          )}
-        </p>
-        {canReadResponses && (
-          <Button
-            variant="primary"
-            onClick={() => {
-              moveFocusRef.current = true
-              onCalendarStateChange?.({ ...calendarState, decrypted: true })
-            }}
-          >
-            {t('Decrypt response data and show statistics')}
-          </Button>
-        )}
+      <div
+        className="responses-statistics-comments-status"
+        role="status"
+        aria-label={t('Loading')}
+      >
+        <span className="loader"></span>
       </div>
     )
   }
 
-  const renderContent = () => {
-    if (isLoading) {
-      return (
-        <div
-          className="responses-statistics-comments-status"
-          role="status"
-          aria-label={t('Loading')}
-        >
-          <span className="loader"></span>
-        </div>
-      )
-    }
-
-    if (isError) {
-      return (
-        <div className="responses-statistics-empty" role="alert">
-          {t('The responses could not be loaded.')}
-        </div>
-      )
-    }
-
+  if (isError) {
     return (
-      <DateTimeCalendar
-        surveyId={surveyId}
-        question={question}
-        filters={filters}
-        filterSet={filterSet}
-        stats={stats}
-        calendarState={calendarState}
-        onCalendarStateChange={onCalendarStateChange}
-      />
+      <div className="responses-statistics-empty" role="alert">
+        {t('The responses could not be loaded.')}
+      </div>
     )
   }
 
   return (
-    <div
-      ref={decryptedRef}
-      tabIndex={-1}
-      className="responses-statistics-calendar-decrypted"
-    >
-      {renderContent()}
-    </div>
+    <DateTimeCalendar
+      surveyId={surveyId}
+      question={question}
+      filters={filters}
+      filterSet={filterSet}
+      stats={stats}
+      calendarState={calendarState}
+      onCalendarStateChange={onCalendarStateChange}
+    />
   )
 }
+
+/**
+ * Calendar view of an encrypted Date/time question
+ */
+export const EncryptedDateTimeCalendar = ({
+  calendarState = {},
+  onCalendarStateChange,
+  question = {},
+  ...props
+}) => (
+  <EncryptedDateTimeGate
+    calendarState={calendarState}
+    onCalendarStateChange={onCalendarStateChange}
+  >
+    <DecryptedCalendar
+      {...props}
+      question={question}
+      calendarState={calendarState}
+      onCalendarStateChange={onCalendarStateChange}
+    />
+  </EncryptedDateTimeGate>
+)

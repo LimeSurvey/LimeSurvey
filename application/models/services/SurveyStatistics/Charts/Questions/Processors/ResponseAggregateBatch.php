@@ -195,7 +195,10 @@ final class ResponseAggregateBatch
     }
 
     /**
-     * Answers per calendar day of a date column
+     * Register a count of answers per calendar day of a date column.
+     *
+     * @param string $field The response column
+     * @return string Alias to read the result with, as [day => count]
      */
     public function countByDay(string $field): string
     {
@@ -422,6 +425,7 @@ final class ResponseAggregateBatch
      * Every distinct stored value of a column with its count, ordered by
      * value, with the same response filters as the aggregates.
      *
+     * @param string $field The response column
      * @return array<string, int> stored value => count
      */
     public function groupedValues(string $field): array
@@ -448,8 +452,11 @@ final class ResponseAggregateBatch
 
     /**
      * Every non-empty stored value of a column, one at a time, with the same
-     * response filters as the aggregates.
+     * response filters as the aggregates. Read in chunks, so a large table
+     * isn't loaded at once.
      *
+     * @param string $field The response column
+     * @param int $chunkSize Rows read per query
      * @return \Generator<int, string>
      */
     public function eachValue(string $field, int $chunkSize = 1000): \Generator
