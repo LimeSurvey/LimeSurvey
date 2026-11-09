@@ -528,7 +528,7 @@ class DataEntry extends SurveyCommonAction
             if ($preserveIDs && $isPgsql) {
                 $this->syncResponseIdSequence($iSurveyId);
             }
-            $this->fillOtherCheckedFromText($iSurveyId, $targetSchema, $fieldMap, array_values($aSRIDConversions), $encryptedAttributes);
+            $this->fillOtherCheckedFromText($iSurveyId, $targetSchema, $fieldMap, array_values($aSRIDConversions), $encryptedAttributes, $encryptionMethod);
             if (empty($responseErrors) && !$skipped) {
                 Yii::app()->session['flashmessage'] = sprintf(gT("%s old response(s) were successfully imported."), $imported);
             }
@@ -1681,9 +1681,10 @@ class DataEntry extends SurveyCommonAction
      * @param array $fieldMap imported source column => target column
      * @param integer[] $importedIds ids of the imported responses, other responses are not changed
      * @param array $encryptedAttributes encrypted columns of the target table
+     * @param string $encryptionMethod encryption method of the target survey : 'B' or 'H'
      * @return void
      */
-    private function fillOtherCheckedFromText($iSurveyId, $targetSchema, array $fieldMap, array $importedIds, array $encryptedAttributes)
+    private function fillOtherCheckedFromText($iSurveyId, $targetSchema, array $fieldMap, array $importedIds, array $encryptedAttributes, $encryptionMethod)
     {
         if (empty($importedIds)) {
             return;
@@ -1697,7 +1698,7 @@ class DataEntry extends SurveyCommonAction
             if (!$targetSchema->getColumn($otherColumn)) {
                 continue;
             }
-            $checked = in_array($checkedColumn, $encryptedAttributes, false) ? LSActiveRecord::encryptSingle('Y') : 'Y';
+            $checked = in_array($checkedColumn, $encryptedAttributes, false) ? LSActiveRecord::encryptSingle('Y', $encryptionMethod) : 'Y';
             $quotedChecked = $db->quoteColumnName($checkedColumn);
             $quotedOther = $db->quoteColumnName($otherColumn);
             foreach (array_chunk($importedIds, 1000) as $ids) {
