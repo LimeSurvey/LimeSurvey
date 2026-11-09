@@ -230,7 +230,7 @@ var ThemeScripts = exports.ThemeScripts = function ThemeScripts() {
         $('[data-target=\'#navbar\']').remove();
       }
 
-      // Scroll to first error - After user close modal -
+      // Scroll to first error and move the keyboard focus to it - After user close modal -
       if ($('.input-error').length > 0 || $('.ls-em-error').length > 0) {
         $('#bootstrap-alert-box-modal').on('hidden.bs.modal', function () {
           var $firstError = $('.input-error').length > 0 ? $('.input-error').first() : $('.ls-em-error').first();
@@ -238,6 +238,23 @@ var ThemeScripts = exports.ThemeScripts = function ThemeScripts() {
           $('html, body').animate({
             scrollTop: $pixToScroll + 'px'
           }, 'fast');
+
+          /* Only one text field or select in the answers: focus it, else (radio, checkbox, array…) focus the question text (W3C: tabindex="-1" on a static element). Radio and checkbox can be hidden by CSS: they are shown when not inside .ls-irrelevant */
+          var $question = $firstError.closest('.question-container');
+          var $answers = $question.find('.ls-answers');
+          var $inputs = $answers.find(':input:visible').not('button, :radio, :checkbox, [type="button"], [type="submit"], [type="reset"]');
+          var $choices = $answers.find(':radio, :checkbox').filter(function () {
+            return !$(this).closest('.ls-irrelevant').length;
+          });
+          var $focusTarget = $inputs.length === 1 && $choices.length === 0 ? $inputs : $question.find('[id^="ls-question-text-"]').first();
+          if (!$focusTarget.is(':input')) {
+            $focusTarget.attr('tabindex', '-1');
+          }
+          if ($focusTarget.length) {
+            $focusTarget.get(0).focus({
+              preventScroll: true
+            });
+          }
         });
       }
       $('.language-changer').each(function () {
