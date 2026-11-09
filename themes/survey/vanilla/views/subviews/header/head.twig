@@ -60,7 +60,7 @@
     <title>
         {{ bPageHasErrors ? gT("Error: %s")|format(sFullPageTitle) : sFullPageTitle }}
     </title>
-    {% set homeScreenIcon = imageSrc('./files/home-screen-icon-192.png') %}
+    {% set homeScreenIcon = homeScreenIconSrc() %}
     {% if homeScreenIcon %}
         <link rel="apple-touch-icon" href="{{ homeScreenIcon }}" />
         <link rel="icon" href="{{ homeScreenIcon }}" type="image/png" sizes="192x192" />
