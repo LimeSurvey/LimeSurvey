@@ -29,14 +29,15 @@ class ResponseFilterSetService
      *
      * @param ResponseFilterSet $filterSet The filter as the user built it
      * @param Survey $survey The survey the responses belong to
-     * @param array $questionFieldMap The survey's field map, in the language
-     *     the filter's answer options are given in
+     * @param callable(): array $questionFieldMap Builds the survey's field map,
+     *     in the language the filter's answer options are given in; only
+     *     called when there is a filter to resolve
      * @return ResolvedFilter[] Empty when there is no filter
      * @throws InvalidArgumentException on a malformed or unresolvable filter
      * @throws PermissionDeniedException when a participant filter is sent by a
      *     user who may not read the survey's participants
      */
-    public function resolve(ResponseFilterSet $filterSet, Survey $survey, array $questionFieldMap): array
+    public function resolve(ResponseFilterSet $filterSet, Survey $survey, callable $questionFieldMap): array
     {
         if ($filterSet->isEmpty()) {
             return [];
@@ -50,7 +51,7 @@ class ResponseFilterSetService
         }
 
         $resolver = new ResponseFilterResolver(
-            QuestionColumnMap::fromQuestionFieldMap($questionFieldMap),
+            QuestionColumnMap::fromQuestionFieldMap($questionFieldMap()),
             ParticipantResolver::fromSurvey($survey)
         );
 

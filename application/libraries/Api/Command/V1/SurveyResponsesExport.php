@@ -272,7 +272,7 @@ class SurveyResponsesExport implements CommandInterface
         return $this->filterSetService->resolve(
             ResponseFilterSet::fromRequestValue($request->getData('filterSet', null)),
             $this->surveyModel,
-            createFieldMap($this->surveyModel, 'full', false, false, $language)
+            fn(): array => createFieldMap($this->surveyModel, 'full', false, false, $language)
         );
     }
 

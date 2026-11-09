@@ -69,7 +69,7 @@ trait StatisticsFilterParamsTrait
         return $this->filterSetService->resolve(
             ResponseFilterSet::fromRequestValue($request->getData('filterSet', null)),
             $survey,
-            createFieldMap($survey, 'full', false, false, $language)
+            fn(): array => createFieldMap($survey, 'full', false, false, $language)
         );
     }
 }

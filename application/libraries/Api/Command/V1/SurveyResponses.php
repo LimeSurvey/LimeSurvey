@@ -407,7 +407,7 @@ class SurveyResponses implements CommandInterface
         $resolvedFilters = $this->filterSetService->resolve(
             $filterSet,
             $this->survey,
-            $this->getQuestionFieldMap()
+            fn(): array => $this->getQuestionFieldMap()
         );
         if ($resolvedFilters === []) {
             return;

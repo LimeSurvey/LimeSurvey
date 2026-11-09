@@ -140,9 +140,14 @@ class StatisticsDateValues implements CommandInterface
      */
     private static function isDay($value): bool
     {
-        return is_string($value)
-            && preg_match('/^(\d{4})-(\d{2})-(\d{2})$/', $value, $parts) === 1
-            && checkdate((int)$parts[2], (int)$parts[3], (int)$parts[1]);
+        if (!is_string($value)) {
+            return false;
+        }
+        if (preg_match('/^(\d{4})-(\d{2})-(\d{2})$/', $value, $parts) !== 1) {
+            return false;
+        }
+
+        return checkdate((int)$parts[2], (int)$parts[3], (int)$parts[1]);
     }
 
     /**

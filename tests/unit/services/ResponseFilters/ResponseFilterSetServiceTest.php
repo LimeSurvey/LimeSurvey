@@ -42,7 +42,7 @@ class ResponseFilterSetServiceTest extends TestCase
         return $this->service($granted)->resolve(
             ResponseFilterSet::fromRequestValue($entries),
             $this->survey(),
-            self::FIELD_MAP
+            static fn(): array => self::FIELD_MAP
         );
     }
 
@@ -76,5 +76,40 @@ class ResponseFilterSetServiceTest extends TestCase
             [['source' => 'participant', 'attribute' => '{TOKEN:EMAIL}', 'value' => 'example.org']],
             ['responses']
         );
+    }
+
+    /**
+     * @testdox The field map is only built when there is a filter to resolve
+     */
+    public function testFieldMapIsOnlyBuiltWhenNeeded(): void
+    {
+        $built = 0;
+        $fieldMap = static function () use (&$built): array {
+            $built++;
+            return self::FIELD_MAP;
+        };
+
+        $this->service([])->resolve(ResponseFilterSet::fromRequestValue([]), $this->survey(), $fieldMap);
+        $this->assertSame(0, $built);
+
+        try {
+            $this->service([])->resolve(
+                ResponseFilterSet::fromRequestValue(
+                    [['source' => 'participant', 'attribute' => '{TOKEN:EMAIL}', 'value' => 'example.org']]
+                ),
+                $this->survey(),
+                $fieldMap
+            );
+        } catch (PermissionDeniedException $exception) {
+            // Expected; the map still shouldn't have been built.
+        }
+        $this->assertSame(0, $built);
+
+        $this->service([])->resolve(
+            ResponseFilterSet::fromRequestValue([['source' => 'question', 'qid' => 10, 'text' => 'refund']]),
+            $this->survey(),
+            $fieldMap
+        );
+        $this->assertSame(1, $built);
     }
 }
