@@ -57,7 +57,7 @@ describe('buildScenarioConditionDeleteOperations', () => {
   })
 
   test('a condition moved out of the deleted scenario is kept', () => {
-    // 77 moved from scenario 1 to 2: scenario 1 now only shows 78.
+    // 77 moved from scenario 1 to 2: Scenario 1 now only shows 78.
     const buffer = new OperationsBuffer([moveTo(77, 2)])
     buildScenarioConditionDeleteOperations(20, {
       scid: 1,

@@ -82,7 +82,7 @@ export const previousQuestionsHandler = (
     handleAttributes(question, cAnswers)
   }
 
-  // Group the answers by field name once: filtering all of them for each
+  // Group the answers by field name once: Filtering all of them for each
   // question is quadratic, and this list is rebuilt on every survey change
   // while the Condition Designer is open.
   const answersByFieldname = new Map()
@@ -92,7 +92,7 @@ export const previousQuestionsHandler = (
     else answersByFieldname.set(answer.cfieldname, [answer])
   })
   cQuestions.forEach((question) => {
-    // A copy per question, as filter() returned: questions sharing a field
+    // A copy per question, as filter() returned: Questions sharing a field
     // name must not share the same array.
     question.answers = [...(answersByFieldname.get(question.cfieldname) ?? [])]
   })

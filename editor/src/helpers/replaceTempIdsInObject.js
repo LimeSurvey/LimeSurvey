@@ -3,7 +3,7 @@ import { escapeRegExp } from 'lodash'
 import { isTempId } from './isTempId'
 import { NEW_OBJECT_ID_PREFIX } from './constants'
 
-// The condition temp ID format, "temp__12_1": the temp ID prefix, a seed and
+// The condition temp ID format, "temp__12_1": The temp ID prefix, a seed and
 // a counter (see buildConditionTempId). Defined here only.
 const TEMP_ID_PATTERN = `${escapeRegExp(NEW_OBJECT_ID_PREFIX)}[0-9]+`
 const CONDITION_COUNTER_PATTERN = '_[0-9]+'
@@ -29,7 +29,7 @@ export const isConditionTempId = (id) =>
   CONDITION_TEMP_ID_REGEX.test(String(id))
 
 /**
- * Builds the temp ID of a new condition: the conditions saved together share
+ * Builds the temp ID of a new condition: The conditions saved together share
  * a seed and get a counter each.
  * @param {number} seed
  * @param {number} counter
@@ -64,7 +64,7 @@ export const replaceTempIdsInString = (string, idMap) => {
  *
  * Keys and values equal to a temp ID are replaced, as well as temp IDs
  * embedded in strings (see replaceTempIdsInString).
- * Doesn't mutate `value`: only the objects and arrays containing a replaced
+ * Doesn't mutate `value`: Only the objects and arrays containing a replaced
  * temp ID are copied, the others are kept as is (so unchanged parts keep their
  * identity, e.g. for memoized components). Returns `value` itself when there
  * is nothing to replace.

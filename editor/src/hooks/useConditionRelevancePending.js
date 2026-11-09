@@ -7,7 +7,7 @@ import { useBufferOperations } from './useBuffer'
 
 /**
  * Question IDs whose condition operations are currently being sent to the server.
- * Not persisted: a reload must never leave a question stuck as pending.
+ * Not persisted: A reload must never leave a question stuck as pending.
  */
 export const useInFlightConditionQids = () =>
   useAppState(STATES.IN_FLIGHT_CONDITION_QIDS, [], {
@@ -20,7 +20,7 @@ export const useInFlightConditionQids = () =>
  * Without scenarios the relevance is always the default one, so there is
  * nothing to wait for (e.g. after deleting the last scenario or condition).
  * Operations waiting for a temp ID don't count (e.g. a source question whose
- * create was refused): they may wait for a long time, and the server
+ * create was refused): They may wait for a long time, and the server
  * relevance of the saved conditions is applied meanwhile. Applying an
  * expression script replaces them.
  */

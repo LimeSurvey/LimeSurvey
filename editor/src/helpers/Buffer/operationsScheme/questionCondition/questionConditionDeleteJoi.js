@@ -12,7 +12,7 @@ const conditionSchema = Joi.object({
   conditions: Joi.array()
     .items(
       Joi.object({
-        // A temp cid when the condition was never saved: the delete only
+        // A temp cid when the condition was never saved: The delete only
         // removes it from the buffer, or waits for the real cid when the
         // condition's create is being sent (see handleQuestionConditionOperation).
         cid: Joi.alternatives()

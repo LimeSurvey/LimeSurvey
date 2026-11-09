@@ -13,7 +13,7 @@ const allowedMethods = getAllowedMethods()
 
 /**
  * An ID of a condition (cid, qid, cqid) as a number when it is numeric (a
- * saved entity), otherwise as is: a temp ID (e.g. "temp__123456") of an
+ * saved entity), otherwise as is: A temp ID (e.g. "temp__123456") of an
  * unsaved entity would become NaN as a number, and an empty value stays empty.
  * @param {number|string|null|undefined} value
  * @returns {number|string|null|undefined}

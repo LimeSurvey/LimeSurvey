@@ -61,14 +61,14 @@ export const replaceTempIdsInSurveyAndBuffer = (
   }
 
   // Update the operations in the buffer once for all the mappings. This is done
-  // even for entities no longer in the survey: their queued operations still
+  // even for entities no longer in the survey: Their queued operations still
   // need the real ID.
   operationsBuffer.setOperations(
     replaceTempIdsInObject(operationsBuffer.getOperations(), idMap)
   )
 
   // Groups, questions and subquestions are also referenced elsewhere in the
-  // survey (e.g. condition sources, cfieldname): replace them everywhere in a
+  // survey (e.g. condition sources, cfieldname): Replace them everywhere in a
   // single pass. Only the changed groups, questions... are copied, so React
   // re-renders them and keeps the others as they are.
   if (
@@ -191,7 +191,7 @@ export const updateSurveyEntitiesData = (
 /**
  * Puts the operations refused by the API back in the buffer, flagged with
  * `error`, and drops the errors of the operations changed again since.
- * Refused condition operations are neither put back nor dropped: all the
+ * Refused condition operations are neither put back nor dropped: All the
  * condition operations of a question share its id (the qid), so a buffered
  * one doesn't mean the refused change was made again, and sending a refused
  * change again would only fail again. Their errors are kept, the caller

@@ -20,7 +20,7 @@ export const CONDITION_ACTIONS = {
 
 /**
  * A condition still waiting to be created must stay a create when it is edited
- * again before being sent: the edit arrives as an update of its temp cid, which
+ * again before being sent: The edit arrives as an update of its temp cid, which
  * the server can't apply to a condition it doesn't have yet.
  */
 const keepPendingCreate = (createCondition, editCondition) => ({
@@ -51,9 +51,9 @@ const getOperationConditions = (op) =>
  * Whether the condition operation can't be sent yet:
  * - it failed (error), or its own ID is still a temp ID;
  * - it references a question (qid/cqid) that still has a temp ID;
- * - it edits a condition whose create is being sent (temp cid): the server
+ * - it edits a condition whose create is being sent (temp cid): The server
  *   can't update a condition by its temp ID;
- * - a condition field embeds a temp ID: the server stores these fields as is.
+ * - a condition field embeds a temp ID: The server stores these fields as is.
  */
 export const isConditionOperationWaiting = (op) => {
   if (op?.entity !== Entities.questionCondition) return false
@@ -182,7 +182,7 @@ const isDeleteAllConditionsOperation = (op) =>
   op?.op === Operations.delete &&
   op?.props?.action === CONDITION_ACTIONS.DELETE_ALL
 
-// A condition-level delete: its id is the cid.
+// A condition-level delete: Its id is the cid.
 const isConditionDeleteOperation = (op) =>
   op?.entity === Entities.questionCondition &&
   op?.op === Operations.delete &&
@@ -319,7 +319,7 @@ const foldEditIntoPendingCreate = (bufferOperations, qid, edit, scid) => {
 
 /**
  * Edits of conditions whose create is still buffered are applied to that
- * create, wherever it is in the buffer: the server can't update a condition
+ * create, wherever it is in the buffer: The server can't update a condition
  * it doesn't have yet. Returns the operation without these edits, or null
  * when nothing is left in it.
  */
@@ -368,7 +368,7 @@ const removeScenariosFromBuffer = (bufferOperations, qid, scids) =>
  *   on the server, after their delete);
  * - the conditions deleted since then;
  * - the edits of conditions edited again since then.
- * Restored creates edited since then are kept: the buffered edit (of their
+ * Restored creates edited since then are kept: The buffered edit (of their
  * temp cid) is applied to them when merged.
  * Returns null when nothing is left.
  */
@@ -456,9 +456,9 @@ export const handleQuestionConditionOperation = (
 
     // Nothing to delete on the server when the condition, or the question
     // owning the scenario, only exists locally. Queuing such a delete would
-    // also block the buffer: deletes are sent first, but this one could never
+    // also block the buffer: Deletes are sent first, but this one could never
     // be sent before the question is created.
-    // A temp condition whose create is no longer buffered is being sent: its
+    // A temp condition whose create is no longer buffered is being sent: Its
     // delete waits in the buffer until the real cid replaces the temp one
     // (replaceTempIdsInSurveyAndBuffer), or is dropped with the condition when
     // the create failed (removeOrphanConditionDeletes).
@@ -480,7 +480,7 @@ export const handleQuestionConditionOperation = (
 
     // A script put back after a failed request (error) is older than the
     // buffered operations of the question:
-    // - a newer script replaces it: it's discarded;
+    // - a newer script replaces it: It's discarded;
     // - newer scenario changes were made on top of it (the script cleared the
     //   conditions in the editor), so they stay. The server still has the
     //   conditions the script should have deleted: Delete them first.
@@ -508,7 +508,7 @@ export const handleQuestionConditionOperation = (
   }
 
   // An operation put back after a failed request (error) is older than the
-  // buffered ones: what they changed since then wins.
+  // buffered ones: What they changed since then wins.
   const isRestored = Boolean(operation.error)
   const currentOperation = isRestored
     ? withoutSupersededChanges(bufferOperations, qid, operation)
@@ -533,9 +533,9 @@ export const handleQuestionConditionOperation = (
   const lastOperation = bufferOperations[lastIndex]
 
   // A restored operation keeps being merged into the latest operation, as the
-  // older side: the newer buffered values win (a restored create stays a
+  // older side: The newer buffered values win (a restored create stays a
   // create, see mergeCondition).
-  // Otherwise only merge operations that can be sent at the same time: merged
+  // Otherwise only merge operations that can be sent at the same time: Merged
   // into an operation waiting for a temp ID (or failed), a change using only
   // real IDs would wait with it, and the other way round.
   if (
@@ -632,7 +632,7 @@ const filterConditionOperations = (
   }, [])
 
 // Question, subquestion or group temp IDs found in `value` (condition temp IDs,
-// "temp__12_1", are skipped: they are not condition sources).
+// "temp__12_1", are skipped: They are not condition sources).
 const getEntityTempIds = (value) =>
   (String(value ?? '').match(TEMP_ID_TOKEN_REGEX) ?? []).filter(
     (token) => !isConditionTempId(token)
@@ -640,7 +640,7 @@ const getEntityTempIds = (value) =>
 
 /**
  * Whether the condition uses as source a question, subquestion or group temp ID
- * that isn't in `knownTempIds`, i.e. an unsaved entity that was deleted: that
+ * that isn't in `knownTempIds`, i.e. an unsaved entity that was deleted: That
  * temp ID will never be replaced.
  * @param {object} condition
  * @param {Set<string>} knownTempIds
@@ -652,7 +652,7 @@ export const usesUnknownTempId = (condition, knownTempIds) =>
 
 /**
  * Remove the condition operations waiting for a temp ID that will never be
- * replaced (see usesUnknownTempId): those of a question with an unknown temp
+ * replaced (see usesUnknownTempId): Those of a question with an unknown temp
  * ID, and the conditions using an unknown temp ID as source. Without this,
  * these operations would wait forever, and every later change of the question
  * conditions merged into them would never be sent either.
@@ -675,7 +675,7 @@ export const removeConditionOpsWithUnknownTempIds = (
 /**
  * The question, subquestion and group temp IDs the conditions use, in the
  * buffered condition operations and in the survey. A cheap check before
- * getKnownTempIds: usually there are none.
+ * getKnownTempIds: Usually there are none.
  * @param {Array} bufferOperations
  * @param {object} survey
  * @returns {Set<string>}
@@ -705,9 +705,9 @@ export const getConditionTempIds = (bufferOperations = [], survey) => {
 
 /**
  * The temp IDs of the groups, questions, subquestions and answers still
- * existing: in the survey, or in the buffered (non condition) operations.
+ * existing: In the survey, or in the buffered (non condition) operations.
  * With `wantedIds` (e.g. getConditionTempIds), only these are looked for, and
- * the search stops once they are all found: the buffer, serialized operation
+ * the search stops once they are all found: The buffer, serialized operation
  * by operation, is then usually not read at all, the unsaved entities used by
  * the conditions being in the survey.
  * @param {object} survey
@@ -748,9 +748,9 @@ export const getKnownTempIds = (survey, bufferOperations = [], wantedIds) => {
  * buffered create and edits of these conditions.
  * Such a delete waits for the real cid of a condition whose create was being
  * sent. Call it once that request ended, after its ID mappings were applied
- * (or when it failed): a temp cid left then belongs to a create that failed,
+ * (or when it failed): A temp cid left then belongs to a create that failed,
  * the condition doesn't exist on the server and the delete could never be
- * sent. While waiting, the delete blocks nothing else: a request is running.
+ * sent. While waiting, the delete blocks nothing else: A request is running.
  * Returns `bufferOperations` itself when there is nothing to drop.
  * @param {Array} bufferOperations
  * @returns {Array}

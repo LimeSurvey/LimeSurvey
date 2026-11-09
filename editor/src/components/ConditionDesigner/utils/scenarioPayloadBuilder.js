@@ -129,10 +129,10 @@ export const buildConditionDeleteOperation = (qid, scid, cid) => {
 }
 
 /**
- * Builds the buffer operations deleting a scenario: one delete per condition
+ * Builds the buffer operations deleting a scenario: One delete per condition
  * shown in it, not a scenario delete by number. The buffer sends deletes
  * before older updates, so a scenario delete could reach the server before a
- * buffered move of a condition between scenarios: it would then delete a
+ * buffered move of a condition between scenarios: It would then delete a
  * condition moved out of the scenario, and keep one moved into it. Deleting
  * the conditions by cid doesn't depend on that order.
  * @param {number|string} qid question owning the scenario

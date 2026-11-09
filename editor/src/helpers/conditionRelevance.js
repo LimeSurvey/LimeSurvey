@@ -35,7 +35,7 @@ export const hasPendingConditionLogicOperations = (operations, qid) =>
 
 /**
  * Question IDs with any condition operation (scenarios or expression script)
- * still waiting in the buffer: a relevance returned by the server for these
+ * still waiting in the buffer: A relevance returned by the server for these
  * questions is outdated.
  */
 export const getQidsWithPendingConditionOperations = (operations = []) =>
@@ -46,7 +46,7 @@ export const getQidsWithPendingConditionOperations = (operations = []) =>
  * (extras.questionRelevance, keyed by qid), except for the questions with
  * newer condition operations (or an expression script) still to be sent:
  * their returned relevance is already outdated.
- * Operations waiting for a temp ID don't count: they may wait for a while, and
+ * Operations waiting for a temp ID don't count: They may wait for a while, and
  * meanwhile the relevance of the saved conditions is the right one.
  *
  * @param {{survey: object, operationsBuffer: object}} mapResult

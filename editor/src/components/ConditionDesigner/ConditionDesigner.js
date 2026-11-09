@@ -47,14 +47,14 @@ export const ConditionDesigner = ({
   )
 
   // The field names come from this map (fetched by useSurvey). It is refetched
-  // after a save, after the survey update replacing the temp IDs: the field
+  // after a save, after the survey update replacing the temp IDs: The field
   // names of the just saved questions are only known once it arrives.
   const { data: questionsFieldNamesMap } = useQuery({
     queryKey: [STATES.SURVEY_QUESTIONS_FIELDNAME],
     enabled: false,
   })
 
-  // Built from the survey questions: recomputed when any of them changes
+  // Built from the survey questions: Recomputed when any of them changes
   // (e.g. a temp ID replaced, new answer options, a type change).
   const previousQuestions = useMemo(() => {
     return previousQuestionsHandler(language, survey, groupIndex, questionIndex)

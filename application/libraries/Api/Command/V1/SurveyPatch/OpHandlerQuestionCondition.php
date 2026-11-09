@@ -76,7 +76,7 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
     }
 
     /**
-     * Applies one condition operation of a question: a question-level action
+     * Applies one condition operation of a question: A question-level action
      * (e.g. deleteAllConditions, conditionScript) or scenario and condition
      * changes, then returns the question's resulting relevance.
      *

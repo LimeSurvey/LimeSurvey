@@ -61,7 +61,7 @@ export const SurveyLogicProvider = ({ children }) => {
   const [, setInFlightConditionQids] = useInFlightConditionQids()
 
   // Refresh the focused question's data from the survey. Only the data
-  // changes, so no navigation: it would add browser history entries.
+  // changes, so no navigation: It would add browser history entries.
   // Read the focus now, it may have changed while a request was running.
   const refreshFocusedQuestion = (survey) => {
     const focusData = getRefreshedFocus(
@@ -73,7 +73,7 @@ export const SurveyLogicProvider = ({ children }) => {
 
   /**
    * Drop the conditions of, or using as source, an unsaved question,
-   * subquestion or group that was deleted: its temp ID will never be
+   * subquestion or group that was deleted: Its temp ID will never be
    * replaced, so their operations would wait forever, and so would every
    * later change of these questions' conditions merged into them.
    * This is the only cleanup of these conditions, in the survey (shown in
@@ -82,7 +82,7 @@ export const SurveyLogicProvider = ({ children }) => {
    * @returns {boolean} whether the buffer changed
    */
   const dropConditionsWithUnknownTempIds = () => {
-    // Read only: the buffer's own copy, getOperations() would copy it again.
+    // Read only: The buffer's own copy, getOperations() would copy it again.
     const operations = operationsBuffer.operations
     const result = removeConditionsWithUnknownTempIdsFromSurveyAndBuffer(
       queryClient.getQueryData([STATES.SURVEY])?.survey,

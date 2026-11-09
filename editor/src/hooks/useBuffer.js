@@ -8,7 +8,7 @@ import { useErrors } from './useErrors'
 
 /**
  * The buffered operations as stored, without the deep copy OperationsBuffer
- * makes: for components that only read them. Re-renders on every buffer change.
+ * makes: For components that only read them. Re-renders on every buffer change.
  * @returns {Array} the buffered operations (don't mutate them)
  */
 export const useBufferOperations = () => {

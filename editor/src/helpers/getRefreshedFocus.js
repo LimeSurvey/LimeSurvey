@@ -4,9 +4,9 @@ import { getQuestionById } from './getQuestionById'
 
 /**
  * The focus data (STATES.FOCUSED_ENTITY) with the focused question refreshed
- * from `survey`: its data and its position. The focus is a copy of the
+ * from `survey`: Its data and its position. The focus is a copy of the
  * question, so it doesn't see the changes made to the survey.
- * Returns null when there is nothing to refresh: no focused question, the
+ * Returns null when there is nothing to refresh: No focused question, the
  * question isn't in the survey, or nothing changed (the focus object must then
  * be kept, its identity drives effects, e.g. QuestionGroup re-expanding the
  * group of the focused question).

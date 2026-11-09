@@ -2,7 +2,7 @@ import { getQuestionTypeInfo } from 'components/QuestionTypes/index.js'
 
 import { getQuestionText } from '../helpers'
 
-// Read once: getQuestionTypeInfo() builds (and translates) every type, and
+// Read once, since getQuestionTypeInfo() builds (and translates) every type, and
 // this runs for each source question of the Condition Designer.
 let rankingType
 const getRankingType = () => {

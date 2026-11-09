@@ -12,7 +12,7 @@ import {
  * Removes from the questions of the survey the conditions using an unknown
  * temp ID (see usesUnknownTempId). Questions left without scenarios get the
  * default relevance back.
- * Doesn't mutate `survey`: only the changed groups and questions are copied.
+ * Doesn't mutate `survey`: Only the changed groups and questions are copied.
  *
  * @param {object} survey
  * @param {Set<string>} knownTempIds
@@ -80,7 +80,7 @@ export const removeConditionsWithUnknownTempIdsFromSurveyAndBuffer = (
 
   // Only the temp IDs used by the conditions are looked for.
   const knownTempIds = getKnownTempIds(survey, operations, conditionTempIds)
-  // The usual case: every unsaved entity they use still exists.
+  // The usual case: Every unsaved entity they use still exists.
   if ([...conditionTempIds].every((id) => knownTempIds.has(id))) {
     return unchanged
   }

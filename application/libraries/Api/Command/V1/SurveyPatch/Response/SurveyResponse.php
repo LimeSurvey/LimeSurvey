@@ -134,12 +134,12 @@ class SurveyResponse
      * Extracts additional fields into 'extras'.
      * The additional data of every operation in the patch is merged recursively,
      * so keyed data (e.g. questionRelevance by qid) of earlier operations is kept.
-     * Additional values must be scalars or keyed maps, not lists: lists are
+     * Additional values must be scalars or keyed maps, not lists: Lists are
      * merged by index (array_replace_recursive), so a later operation's list
      * would overwrite the items of an earlier one instead of being appended.
      * @param array $handleResponse the response of one operation handler,
      *   whose 'additional' entry (if any) is merged into 'extras'
-     * @return void nothing: the merged data is kept in $this->additional
+     * @return void nothing: The merged data is kept in $this->additional
      */
     public function extractAdditional(array $handleResponse)
     {

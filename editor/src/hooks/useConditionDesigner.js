@@ -29,7 +29,7 @@ const getSuccessMessage = (action) =>
     ? t('Condition deleted successfully')
     : t('Condition applied successfully')
 
-// Stable React key of a condition row: its cid can change while the designer
+// Stable React key of a condition row: Its cid can change while the designer
 // is open (temp ID replaced with the real one), which would remount the row.
 let conditionUiKeySeed = 0
 const withUiKey = (condition) =>

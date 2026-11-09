@@ -106,10 +106,10 @@ class SurveyResponseTest extends TestBaseClass
 
     /**
      * Checks that the additional data of every operation of a patch is merged
-     * into 'extras': keyed data of earlier operations is kept, a later value
+     * into 'extras': Keyed data of earlier operations is kept, a later value
      * of the same key wins, and the result stays a JSON object keyed by qid.
      * @testdox response merges the additional data of every operation
-     * @return void nothing: the checks are PHPUnit assertions
+     * @return void nothing: The checks are PHPUnit assertions
      */
     public function testAdditionalOfEveryOperationIsMerged(): void
     {

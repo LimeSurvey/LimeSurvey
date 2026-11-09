@@ -1,6 +1,6 @@
 import { getQuestionTypeInfo } from 'components/QuestionTypes'
 
-// Built once: getQuestionTypeInfo() builds (and translates) every type, and
+// Built once, since getQuestionTypeInfo() builds (and translates) every type, and
 // this runs for each source question of the Condition Designer. The type codes
 // never change.
 let blankTypes
