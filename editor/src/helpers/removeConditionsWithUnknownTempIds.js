@@ -104,6 +104,11 @@ export const removeConditionsWithUnknownTempIdsFromSurveyAndBuffer = (
 
   // Only the temp IDs used by the conditions are looked for.
   const knownTempIds = getKnownTempIds(survey, operations, conditionTempIds)
+  // The usual case: every unsaved entity they use still exists.
+  if ([...conditionTempIds].every((id) => knownTempIds.has(id))) {
+    return unchanged
+  }
+
   const cleanedOperations = removeConditionOpsWithUnknownTempIds(
     operations,
     knownTempIds

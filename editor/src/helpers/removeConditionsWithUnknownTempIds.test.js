@@ -78,6 +78,35 @@ describe('removeConditionsWithUnknownTempIdsFromSurveyAndBuffer', () => {
     expect(result.operations).toEqual([])
   })
 
+  it('returns the given survey and operations when every temp ID used still exists', () => {
+    const survey = {
+      questionGroups: [
+        {
+          gid: 1,
+          questions: [
+            { qid: 'temp__7' },
+            {
+              qid: 10,
+              scenarios: [
+                { scid: 1, conditions: [{ cid: 1, cqid: 'temp__7' }] },
+              ],
+            },
+          ],
+        },
+      ],
+    }
+    const operations = [conditionUsing('temp__7')]
+
+    const result = removeConditionsWithUnknownTempIdsFromSurveyAndBuffer(
+      survey,
+      operations
+    )
+
+    expect(result.survey).toBe(survey)
+    expect(result.operations).toBe(operations)
+    expect(result.changedQids).toEqual([])
+  })
+
   it('returns the given survey and operations when no condition uses a temp ID', () => {
     const survey = { questionGroups: [{ gid: 1, questions: [{ qid: 10 }] }] }
     const operations = [conditionUsing(4)]
