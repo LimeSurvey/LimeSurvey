@@ -62,7 +62,7 @@ export const handleQuestionGroupOperation = (
     // The unsaved questions of the group go with it: Their operations could
     // never be sent since their temp IDs will never be replaced. The condition
     // operations of them or using them as source are dropped by
-    // dropConditionsWithUnknownTempIds (SurveyLogicProvider).
+    // cleanConditionOperations (SurveyLogicProvider).
     const unsavedQids = getUnsavedQuestionIdsOfGroup(
       bufferOperations,
       operation.id

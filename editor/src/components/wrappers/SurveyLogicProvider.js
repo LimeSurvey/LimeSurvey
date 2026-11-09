@@ -72,16 +72,19 @@ export const SurveyLogicProvider = ({ children }) => {
   }
 
   /**
-   * Drop the conditions of, or using as source, an unsaved question,
-   * subquestion or group that was deleted: Its temp ID will never be
-   * replaced, so their operations would wait forever, and so would every
-   * later change of these questions' conditions merged into them.
-   * This is the only cleanup of these conditions, in the survey (shown in
-   * the editor) and in the buffer. It runs before each save, and only when no
-   * save is running.
+   * Clean the condition operations that could never be sent, before each save
+   * (only when no save is running, so no create can be on its way):
+   * - the conditions of, or using as source, an unsaved question, subquestion
+   *   or group that was deleted: Its temp ID will never be replaced. They are
+   *   removed from the survey (shown in the editor) and from the buffer, and
+   *   this is their only cleanup;
+   * - the operations still on a temp cid without a buffered create (see
+   *   removeConditionOpsOfFailedCreates): For example the delete of a
+   *   condition whose create was refused, which would otherwise block every
+   *   save.
    * @returns {boolean} whether the buffer changed
    */
-  const dropConditionsWithUnknownTempIds = () => {
+  const cleanConditionOperations = () => {
     // Read only: The buffer's own copy, getOperations() would copy it again.
     const operations = operationsBuffer.operations
     const result = removeConditionsWithUnknownTempIdsFromSurveyAndBuffer(
@@ -93,23 +96,10 @@ export const SurveyLogicProvider = ({ children }) => {
       update({ ...result.survey })
       refreshFocusedQuestion(result.survey)
     }
-    if (result.operations === operations) return false
 
-    setBuffer(result.operations, RandomNumber())
-    return true
-  }
-
-  /**
-   * Drop the condition operations still on a temp cid without a buffered
-   * create (see removeConditionOpsOfFailedCreates). No request is running here,
-   * so no create can be on its way: For example the delete operation of a
-   * condition whose create was refused, which would otherwise block every save.
-   * @returns {boolean} whether the buffer changed
-   */
-  const dropConditionOpsOfFailedCreates = () => {
-    // Read only: The buffer's own copy, getOperations() would copy it again.
-    const operations = operationsBuffer.operations
-    const cleanedOperations = removeConditionOpsOfFailedCreates(operations)
+    const cleanedOperations = removeConditionOpsOfFailedCreates(
+      result.operations
+    )
     if (cleanedOperations === operations) return false
 
     setBuffer(cleanedOperations, RandomNumber())
@@ -152,8 +142,7 @@ export const SurveyLogicProvider = ({ children }) => {
     }
 
     // The buffer changed: This effect runs again with the cleaned buffer.
-    if (dropConditionsWithUnknownTempIds()) return
-    if (dropConditionOpsOfFailedCreates()) return
+    if (cleanConditionOperations()) return
 
     const readyOperations = operationsBuffer.getOperations({ ready: true })
     // surveyRefreshRequired is only updated on the next render, too late for finallyCallback
