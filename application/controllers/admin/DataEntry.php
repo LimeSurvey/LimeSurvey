@@ -453,6 +453,8 @@ class DataEntry extends SurveyCommonAction
                         $targetResponse[$targetField] = LSActiveRecord::encryptSingle($plainValue, $encryptionMethod);
                     } elseif ($sourceEncrypted) {
                         $targetResponse[$targetField] = LSActiveRecord::decryptSingle($value);
+                    } else {
+                        $targetResponse[$targetField] = $value;
                     }
                 }
                 foreach ($otherCheckedFromText as $checkedColumn => $otherColumn) {
