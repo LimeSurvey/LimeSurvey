@@ -2,25 +2,35 @@
 /**
  * This view display the result of multiple update action. It's rendered via ajax for the confirmation modal
  *
- * @var $aResults   The array containing the result of each surveymenu entry action
+ * @var array $aResults     The array containing the result of each participant update
+ * @var int   $updatedCount Number of participants that were updated
+ * @var int   $failedCount  Number of participants that could not be updated
  */
 ?>
 
 <?php if (!$aResults['global']['result']) :?>
-    <strong>
-        <?php echo $aResults['global']['message'] ;?>
-    </strong>
+    <?php
+    $this->widget('ext.AlertWidget.AlertWidget', [
+        'text' => CHtml::encode($aResults['global']['message']),
+        'type' => 'warning',
+    ]);
+    ?>
 <?php else : ?>
     <?php unset($aResults['global']); ?>
     <?php
-    // Inserted after "Save": the alert role makes the screen reader announce the result
-    $updatedCount = count(array_filter($aResults, function ($result) {
-        return $result['status'] === true;
-    }));
-    $this->widget('ext.AlertWidget.AlertWidget', [
-        'text' => sprintf(ngT('%s participant was updated.|%s participants were updated.', $updatedCount), $updatedCount),
-        'type' => 'success',
-    ]);
+    // Inserted after "Save": The alert role makes the screen reader announce the result
+    if ($updatedCount > 0 || $failedCount === 0) {
+        $this->widget('ext.AlertWidget.AlertWidget', [
+            'text' => sprintf(gT('%s participants have been updated'), $updatedCount),
+            'type' => 'success',
+        ]);
+    }
+    if ($failedCount > 0) {
+        $this->widget('ext.AlertWidget.AlertWidget', [
+            'text' => sprintf(gT('%s participants could not be updated'), $failedCount),
+            'type' => 'danger',
+        ]);
+    }
     ?>
     <table class="table table-striped">
         <caption class="massive-action-results-caption visually-hidden"><?php eT('Batch edit the participants'); ?></caption>
@@ -32,7 +42,7 @@
             <?php foreach ($aResults as $sParticipantToken => $result) :?>
                 <tr>
                     <td>
-                        <?php echo $sParticipantToken;?>
+                        <?php echo CHtml::encode($sParticipantToken);?>
                     </td>
                     <?php if ($result['status'] === true) :?>
                         <td class="text-success">
