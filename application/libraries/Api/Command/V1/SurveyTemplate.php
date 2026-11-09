@@ -212,6 +212,9 @@ class SurveyTemplate implements CommandInterface
      * exists, and its port is never checked, so it is only accepted when an
      * allowed hosts list exists and the port is the default of the scheme.
      *
+     * With "Force SSL" on, an http URL is changed to https, because the
+     * preview request would only be redirected to https.
+     *
      * The URL is rebuilt from its parsed parts, so curl gets exactly the
      * scheme, host, port and path that were checked here.
      *
@@ -250,6 +253,17 @@ class SurveyTemplate implements CommandInterface
             }
             if (isset($parts['port']) && $parts['port'] !== $defaultPorts[$scheme]) {
                 return null;
+            }
+        }
+
+        if (
+            $scheme === 'http'
+            && App()->getConfig('ssl_emergency_override') !== true
+            && strtolower((string) App()->getConfig('force_ssl')) === 'on'
+        ) {
+            $scheme = 'https';
+            if (isset($parts['port']) && $parts['port'] === $defaultPorts['http']) {
+                unset($parts['port']);
             }
         }
 

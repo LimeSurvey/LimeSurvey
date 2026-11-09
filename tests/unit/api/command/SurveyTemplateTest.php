@@ -26,8 +26,14 @@ class SurveyTemplateTest extends TestBaseClass
     /** @var mixed Allowed hosts config before the test */
     private $allowedHosts;
 
+    /** @var mixed Force SSL config before the test */
+    private $forceSsl;
+
+    /** @var mixed SSL emergency override config before the test */
+    private $sslEmergencyOverride;
+
     /**
-     * Saves the URL and allowed hosts settings changed by the tests, and sets an allowed hosts list
+     * Saves the URL, allowed hosts and SSL settings changed by the tests, sets an allowed hosts list and turns Force SSL off
      *
      * @return void
      */
@@ -37,16 +43,22 @@ class SurveyTemplateTest extends TestBaseClass
         self::$testHelper::saveUrlSettings();
         $this->allowedHosts = Yii::app()->getConfig('allowedHosts');
         Yii::app()->setConfig('allowedHosts', ['localhost']);
+        $this->forceSsl = Yii::app()->getConfig('force_ssl');
+        $this->sslEmergencyOverride = Yii::app()->getConfig('ssl_emergency_override');
+        Yii::app()->setConfig('force_ssl', 'off');
+        Yii::app()->setConfig('ssl_emergency_override', false);
     }
 
     /**
-     * Restores the URL and allowed hosts settings changed by the tests
+     * Restores the URL, allowed hosts and SSL settings changed by the tests
      *
      * @return void
      */
     public function tearDown(): void
     {
         Yii::app()->setConfig('allowedHosts', $this->allowedHosts);
+        Yii::app()->setConfig('force_ssl', $this->forceSsl);
+        Yii::app()->setConfig('ssl_emergency_override', $this->sslEmergencyOverride);
         self::$testHelper::resetUrlSettings();
         parent::tearDown();
     }
@@ -101,6 +113,44 @@ class SurveyTemplateTest extends TestBaseClass
         $this->setRequestUrl('http://localhost:9098', '/other');
 
         $this->assertSame('http://localhost:8082/limesurvey', $this->getTrustedBaseUrl());
+    }
+
+    /**
+     * With Force SSL on, an http base URL is changed to https, unless the SSL emergency override is on
+     *
+     * @dataProvider forceSslProvider
+     * @param string $publicUrl The publicurl config value
+     * @param bool $isEmergencyOverride The ssl_emergency_override config value
+     * @param string $expected The expected trusted base URL
+     * @return void
+     */
+    public function testTrustedBaseUrlUsesHttpsWithForceSsl(
+        string $publicUrl,
+        bool $isEmergencyOverride,
+        string $expected
+    ): void {
+        Yii::app()->setConfig('publicurl', $publicUrl);
+        Yii::app()->setConfig('force_ssl', 'on');
+        Yii::app()->setConfig('ssl_emergency_override', $isEmergencyOverride);
+        $this->setRequestUrl('https://localhost', '/limesurvey');
+
+        $this->assertSame($expected, $this->getTrustedBaseUrl());
+    }
+
+    /**
+     * Data provider for testTrustedBaseUrlUsesHttpsWithForceSsl
+     *
+     * @return array<string, array{string, bool, string}> Test case name => publicurl, emergency override, expected base URL
+     */
+    public function forceSslProvider(): array
+    {
+        return [
+            'http' => ['http://localhost/limesurvey/', false, 'https://localhost/limesurvey'],
+            'http with port 80' => ['http://localhost:80/limesurvey', false, 'https://localhost/limesurvey'],
+            'http with other port' => ['http://localhost:8443/limesurvey', false, 'https://localhost:8443/limesurvey'],
+            'https' => ['https://localhost/limesurvey', false, 'https://localhost/limesurvey'],
+            'emergency override' => ['http://localhost/limesurvey', true, 'http://localhost/limesurvey'],
+        ];
     }
 
     /**
