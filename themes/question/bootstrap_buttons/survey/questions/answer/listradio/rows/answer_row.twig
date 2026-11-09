@@ -24,9 +24,7 @@
             value={{ code }}
             {{ checkedState }}
         >
-        {% set answer_html = processString(answer) %}
-        <label class="btn btn-primary w-100 {{ button_size_class }}" for="answer{{ name }}{{ code }}" title="{{ flattenText(answer_html) }}">
-            <span class="bootstrap-buttons-text">{{ answer_html }}</span>
+        <label class="btn btn-primary w-100 {{ button_size_class }}" for="answer{{ name }}{{ code }}"> {{ processString(answer) }}
         </label>
     </div>
 </li>

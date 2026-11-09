@@ -4,7 +4,6 @@ import {
   Entities,
   getStringPartsUsingSeperator,
   getAttributeValue,
-  htmlToPlainText,
   isTrue,
   L10ns,
   OTHER_CODE,
@@ -496,11 +495,6 @@ export const OptionQuestionViewMode = ({
                 }
                 text={getChildTitle(child.l10ns)}
                 variant="outline-success"
-                title={
-                  isSingleChoiceButtons
-                    ? htmlToPlainText(getChildTitle(child.l10ns))
-                    : undefined
-                }
                 update={(newValue) => {
                   if (isSingleChoiceTheme) {
                     pendingIndexRef.current = index

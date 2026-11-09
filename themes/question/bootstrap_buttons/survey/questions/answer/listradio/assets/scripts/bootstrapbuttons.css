@@ -13,7 +13,6 @@ ul.bootstrap-buttons-list {
     grid-auto-rows: 1fr;
     gap: 20px;
     margin-left: 0;
-    --bootstrap-buttons-max-lines: 3;
     margin-right: 0;
 }
 
@@ -78,21 +77,6 @@ ul.bootstrap-buttons-list .btn {
 
 .bootstrap-buttons-div .btn > :last-child {
     margin-bottom: 0;
-}
-
-/* Buttons grow with their label up to a max height, longer labels are truncated (full text in the title) */
-.bootstrap-buttons-div .bootstrap-buttons-text {
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: var(--bootstrap-buttons-max-lines);
-    line-clamp: var(--bootstrap-buttons-max-lines);
-    max-height: calc(var(--bootstrap-buttons-max-lines) * 1lh);
-    overflow: hidden;
-}
-
-.bootstrap-buttons-div .bootstrap-buttons-text > * {
-    display: inline;
-    margin: 0;
 }
 
 /*
