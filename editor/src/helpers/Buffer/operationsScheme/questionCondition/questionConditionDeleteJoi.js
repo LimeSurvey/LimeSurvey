@@ -1,12 +1,6 @@
 import Joi from 'joi'
-import { escapeRegExp } from 'lodash'
 
-import { NEW_OBJECT_ID_PREFIX } from 'helpers'
-
-// A condition temp ID: "temp__12_1".
-const CONDITION_TEMP_ID_REGEX = new RegExp(
-  `^${escapeRegExp(NEW_OBJECT_ID_PREFIX)}\\d+_\\d+$`
-)
+import { CONDITION_TEMP_ID_REGEX } from '../../../replaceTempIdsInObject'
 
 const scenarioSchema = Joi.object({
   scid: Joi.number().required(),

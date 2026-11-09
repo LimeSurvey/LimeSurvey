@@ -12,7 +12,7 @@
  * Depends on:
  * - getApiOperationActions from utils.js
  */
-import { createBufferOperation } from 'helpers'
+import { buildConditionTempId, createBufferOperation } from 'helpers'
 
 import { getApiOperationActions } from './getApiOperationActions'
 
@@ -33,7 +33,6 @@ export const buildScenarioPayload = (question, conditions, scenarioName) => {
   const apiActions = getApiOperationActions()
   const qid = question.qid
   const tempIdSeed = Math.floor(Math.random() * 1000000)
-  const tempIdPrefix = `temp__${tempIdSeed}`
   let tempIdIndex = 1
   const scenarios = []
 
@@ -59,7 +58,7 @@ export const buildScenarioPayload = (question, conditions, scenarioName) => {
     }
 
     if (apiCondition.action === apiActions.CONDITION.CREATE) {
-      apiCondition.tempId = `${tempIdPrefix}_${tempIdIndex++}`
+      apiCondition.tempId = buildConditionTempId(tempIdSeed, tempIdIndex++)
       apiCondition.cid = apiCondition.tempId
       apiCondition.tempcids = [apiCondition.tempId]
     }

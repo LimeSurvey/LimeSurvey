@@ -1,4 +1,9 @@
-import { getTempIdMap, replaceTempIdsInObject } from './replaceTempIdsInObject'
+import {
+  buildConditionTempId,
+  getTempIdMap,
+  isConditionTempId,
+  replaceTempIdsInObject,
+} from './replaceTempIdsInObject'
 
 describe('replaceTempIdsInObject', () => {
   const idMap = getTempIdMap([
@@ -56,5 +61,21 @@ describe('replaceTempIdsInObject structural sharing', () => {
     expect(replaceTempIdsInObject([untouched], idMap)[0]).toBe(untouched)
     const same = [untouched]
     expect(replaceTempIdsInObject(same, idMap)).toBe(same)
+  })
+})
+
+describe('condition temp IDs', () => {
+  test('buildConditionTempId builds an ID that isConditionTempId recognises', () => {
+    const id = buildConditionTempId(4821, 1)
+
+    expect(id).toBe('temp__4821_1')
+    expect(isConditionTempId(id)).toBe(true)
+  })
+
+  test('isConditionTempId rejects other IDs', () => {
+    expect(isConditionTempId('temp__4821')).toBe(false)
+    expect(isConditionTempId('Qtemp__4821_1')).toBe(false)
+    expect(isConditionTempId('temp__4821_1_2')).toBe(false)
+    expect(isConditionTempId(4821)).toBe(false)
   })
 })

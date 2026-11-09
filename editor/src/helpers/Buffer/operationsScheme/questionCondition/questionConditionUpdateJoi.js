@@ -1,4 +1,5 @@
 import Joi from 'joi'
+import { CONDITION_TEMP_ID_REGEX } from '../../../replaceTempIdsInObject'
 import { questionConditionBaseJoi } from './questionConditionBaseJoi.js'
 
 const actionConditionTypes = ['insertCondition', 'updateCondition']
@@ -15,11 +16,9 @@ const conditionActionPropsSchema = {
               .valid(...actionConditionTypes)
               .required(),
             cid: Joi.alternatives()
-              .try(Joi.number(), Joi.string().pattern(/^temp__\d+_\d+$/))
+              .try(Joi.number(), Joi.string().pattern(CONDITION_TEMP_ID_REGEX))
               .required(),
-            tempId: Joi.string()
-              .pattern(/^temp__\d+_\d+$/)
-              .optional(),
+            tempId: Joi.string().pattern(CONDITION_TEMP_ID_REGEX).optional(),
             tempcids: Joi.array().items(Joi.string()).optional(),
           })
         )

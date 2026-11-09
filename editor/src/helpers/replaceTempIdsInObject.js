@@ -3,11 +3,40 @@ import { escapeRegExp } from 'lodash'
 import { isTempId } from './isTempId'
 import { NEW_OBJECT_ID_PREFIX } from './constants'
 
+// The condition temp ID format, "temp__12_1": the temp ID prefix, a seed and
+// a counter (see buildConditionTempId). Defined here only.
+const TEMP_ID_PATTERN = `${escapeRegExp(NEW_OBJECT_ID_PREFIX)}[0-9]+`
+const CONDITION_COUNTER_PATTERN = '_[0-9]+'
+
 // A temp ID, as a whole: "temp__12", or the condition temp ID "temp__12_1".
 export const TEMP_ID_TOKEN_REGEX = new RegExp(
-  `${escapeRegExp(NEW_OBJECT_ID_PREFIX)}[0-9]+(?:_[0-9]+)?`,
+  `${TEMP_ID_PATTERN}(?:${CONDITION_COUNTER_PATTERN})?`,
   'g'
 )
+
+// A condition temp ID, the whole string: "temp__12_1".
+export const CONDITION_TEMP_ID_REGEX = new RegExp(
+  `^${TEMP_ID_PATTERN}${CONDITION_COUNTER_PATTERN}$`
+)
+
+/**
+ * Whether `id` is a condition temp ID ("temp__12_1"), not the temp ID of a
+ * question, subquestion or group ("temp__12").
+ * @param {*} id
+ * @returns {boolean}
+ */
+export const isConditionTempId = (id) =>
+  CONDITION_TEMP_ID_REGEX.test(String(id))
+
+/**
+ * Builds the temp ID of a new condition: the conditions saved together share
+ * a seed and get a counter each.
+ * @param {number} seed
+ * @param {number} counter
+ * @returns {string} e.g. "temp__12_1"
+ */
+export const buildConditionTempId = (seed, counter) =>
+  `${NEW_OBJECT_ID_PREFIX}${seed}_${counter}`
 
 /**
  * Replace the temp IDs of `idMap` in one string. A string that is a temp ID

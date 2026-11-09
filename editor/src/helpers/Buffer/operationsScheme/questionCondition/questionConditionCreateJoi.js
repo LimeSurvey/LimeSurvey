@@ -1,4 +1,5 @@
 import Joi from 'joi'
+import { CONDITION_TEMP_ID_REGEX } from '../../../replaceTempIdsInObject'
 import { questionConditionBaseJoi } from './questionConditionBaseJoi.js'
 
 export const questionConditionCreateJoi = Joi.object({
@@ -16,18 +17,10 @@ export const questionConditionCreateJoi = Joi.object({
           .items(
             questionConditionBaseJoi.keys({
               action: Joi.string().valid('insertCondition').required(),
-              tempId: Joi.string()
-                .pattern(/^temp__\d+_\d+$/)
-                .required(),
-              cid: Joi.string()
-                .pattern(/^temp__\d+_\d+$/)
-                .required(),
+              tempId: Joi.string().pattern(CONDITION_TEMP_ID_REGEX).required(),
+              cid: Joi.string().pattern(CONDITION_TEMP_ID_REGEX).required(),
               tempcids: Joi.array()
-                .items(
-                  Joi.string()
-                    .pattern(/^temp__\d+_\d+$/)
-                    .required()
-                )
+                .items(Joi.string().pattern(CONDITION_TEMP_ID_REGEX).required())
                 .required(),
             })
           )

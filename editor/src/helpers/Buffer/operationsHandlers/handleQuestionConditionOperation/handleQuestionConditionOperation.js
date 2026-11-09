@@ -3,7 +3,7 @@ import { cloneDeep } from 'lodash'
 import {
   Entities,
   hasTempId,
-  NEW_OBJECT_ID_PREFIX,
+  isConditionTempId,
   Operations,
   TEMP_ID_TOKEN_REGEX,
 } from 'helpers'
@@ -630,10 +630,6 @@ const filterConditionOperations = (
 
     return acc
   }, [])
-
-// A condition temp ID has a counter after the question temp ID: "temp__12_1".
-const isConditionTempId = (token) =>
-  /^[0-9]+_[0-9]+$/.test(token.slice(NEW_OBJECT_ID_PREFIX.length))
 
 // Question, subquestion or group temp IDs found in `value` (condition temp IDs,
 // "temp__12_1", are skipped: they are not condition sources).
