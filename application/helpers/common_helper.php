@@ -3259,16 +3259,20 @@ function hasResources($id, $type = 'survey')
 /**
  * Creates a random sequence of characters
  *
+ * Uses a cryptographically secure random number generator, because the result
+ * is used for secrets like participant access codes and password reset keys.
+ *
  * @param integer $length Length of resulting string
  * @param string $pattern To define which characters should be in the resulting string
  * @return string
+ * @throws \Exception If no source of randomness is available
  */
 function randomChars($length, $pattern = "23456789abcdefghijkmnpqrstuvwxyz")
 {
     $patternlength = strlen($pattern) - 1;
     $key = '';
     for ($i = 0; $i < $length; $i++) {
-        $key .= $pattern[mt_rand(0, $patternlength)];
+        $key .= $pattern[random_int(0, $patternlength)];
     }
     return $key;
 }
