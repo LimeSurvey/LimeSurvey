@@ -7,10 +7,17 @@ import {
   getQuestionAttributesTitles,
   createBufferOperation,
   getDisabledQuestionTypes,
+  getQuestionById,
   errorToast,
-  isTempId,
+  resolveTempIds,
 } from 'helpers'
-import { useAppState, useBuffer, useFocused, useSurvey } from 'hooks'
+import {
+  useAppState,
+  useBuffer,
+  useConditionPanelsKey,
+  useFocused,
+  useSurvey,
+} from 'hooks'
 import { SideBarHeader } from 'components/SideBar'
 import { CloseIcon } from 'components/icons'
 import { ToggleButtons } from 'components/UIComponents'
@@ -24,7 +31,7 @@ import { AddScenario } from 'components/ConditionDesigner/AddScenario'
 
 import { ExpressionScript } from '../ConditionDesigner/ExpressionScript'
 
-import { ExpressionScriptInputBox } from '../ConditionDesigner/ExpressionScript/ExpressionScriptInputBox'
+import { ExpressionScriptInputBox } from '../ConditionDesigner/ExpressionScript/index.js'
 
 export const QuestionSettings = ({ surveyId }) => {
   const [questionSettingsOptions, setQuestionSettingsOptions] = useAppState(
@@ -43,8 +50,6 @@ export const QuestionSettings = ({ surveyId }) => {
     STATES.SURVEY_REFRESH_REQUIRED
   )
 
-  // holds the scenario ID currently has a new conditions (waiting for temp condition IDs to be replaced)
-  const [pendingScenarioName, setPendingScenarioName] = useState(null)
   const [expandedAdvancedSections, setExpandedAdvancedSections] = useState({})
 
   const {
@@ -55,9 +60,26 @@ export const QuestionSettings = ({ surveyId }) => {
     questionIndex,
   } = useFocused()
 
+  // The scenario being edited switches to the real IDs with the question.
+  const panelsKey = useConditionPanelsKey(focused?.qid, () =>
+    setScenarioToPatch((scenario) => scenario && resolveTempIds(scenario))
+  )
+
   useEffect(() => {
     closeConditionDesignerPanels()
-  }, [focused?.qid])
+  }, [panelsKey])
+
+  // The persisted focus can point to a question that isn't in the loaded
+  // survey (e.g. one from a previously opened survey) until focus is restored.
+  const isFocusedQuestionInSurvey = useMemo(
+    () =>
+      Boolean(
+        focused?.qid &&
+        survey?.questionGroups &&
+        getQuestionById(focused.qid, survey).question
+      ),
+    [focused?.qid, survey]
+  )
 
   const questionSettings = useMemo(() => {
     if (!focused?.qid) {
@@ -250,17 +272,16 @@ export const QuestionSettings = ({ surveyId }) => {
     !!questionSettingsOptions?.isAdvanced &&
     advancedQuestionSettings.length > 0
 
-  if (focused && typeof focused.qid === 'number') {
+  if (isFocusedQuestionInSurvey) {
     if (conditionDesignerPanels.isConditionPanelOpen || scenarioToPatch) {
       return (
         <ConditionDesigner
-          key={`condition-designer-${focused.qid}`}
+          key={`condition-designer-${panelsKey}`}
           survey={survey}
           update={update}
           language={language}
           onNavigateBack={closeConditionDesignerPanels}
           scenarioToPatch={scenarioToPatch}
-          setPendingScenarioName={setPendingScenarioName}
         />
       )
     }
@@ -270,7 +291,7 @@ export const QuestionSettings = ({ surveyId }) => {
     ) {
       return (
         <ExpressionScript
-          key={`expression-script-${focused.qid}`}
+          key={`expression-script-${panelsKey}`}
           onNavigateBack={closeConditionDesignerPanels}
         />
       )
@@ -362,7 +383,7 @@ export const QuestionSettings = ({ surveyId }) => {
         </>
       )}
       <div id="condition-designer">
-        {!focused || (focused && isTempId(focused.qid)) ? null : (
+        {!isFocusedQuestionInSurvey ? null : (
           <>
             <AddScenario
               key={`add-scenario-${focused.qid}`}
@@ -373,8 +394,6 @@ export const QuestionSettings = ({ surveyId }) => {
               <ScenarioList
                 key={`scenario-list-${focused.qid}-${focused.scenarios.length}`}
                 setScenarioToPatch={setScenarioToPatch}
-                pendingScenarioName={pendingScenarioName}
-                setPendingScenarioName={setPendingScenarioName}
               />
             ) : null}
 

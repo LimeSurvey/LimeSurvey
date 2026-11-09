@@ -2,12 +2,13 @@ import { isUndefined } from 'lodash'
 import { EntitiesType } from './Buffer'
 import { arrayDeleteItem } from './arrayDeleteItem'
 import { getEntityInfo } from './getEntityInfo'
+import { getTempIdMap, replaceTempIdsInObject } from './replaceTempIdsInObject'
 import { replaceValuesInObject } from './replaceValuesInObject'
 
 /**
  * Replace survey branch references.
  *
- * Some times we need to modify a value deep within the survey object
+ * Sometimes we need to modify a value deep within the survey object
  * such as when replacing a temp question ID with a new one in a survey.
  * In order to ensure a re-render after such a change, we must replace
  * all parents of the target to ensure re-react re-renders.
@@ -54,6 +55,42 @@ export const replaceTempIdsInSurveyAndBuffer = (
   operationsBuffer,
   focused = undefined
 ) => {
+  const idMap = getTempIdMap(mappings)
+  if (!idMap.size) {
+    return { survey, operationsBuffer, focused }
+  }
+
+  // Update the operations in the buffer once for all the mappings. This is done
+  // even for entities no longer in the survey: their queued operations still
+  // need the real ID.
+  operationsBuffer.setOperations(
+    replaceTempIdsInObject(operationsBuffer.getOperations(), idMap)
+  )
+
+  // Groups, questions and subquestions are also referenced elsewhere in the
+  // survey (e.g. condition sources, cfieldname): replace them everywhere in a
+  // single pass. Only the changed groups, questions... are copied, so React
+  // re-renders them and keeps the others as they are.
+  if (
+    entityType === EntitiesType.group ||
+    entityType === EntitiesType.question ||
+    entityType === EntitiesType.subquestion
+  ) {
+    survey.questionGroups = replaceTempIdsInObject(survey.questionGroups, idMap)
+
+    if (focused) {
+      mappings.forEach(({ tempId, id }) => {
+        if (focused.qid === tempId) {
+          focused.qid = id
+        } else if (focused.gid === tempId) {
+          focused.gid = id
+        }
+      })
+    }
+
+    return { survey, operationsBuffer, focused }
+  }
+
   mappings.forEach((tempIdMap) => {
     // Retrieve the entity based on type and temporary ID
     let entityInfo = getEntityInfo(tempIdMap.tempId, survey, entityType)
@@ -83,39 +120,7 @@ export const replaceTempIdsInSurveyAndBuffer = (
       )
     }
 
-    // Update operations in the buffer with the new ID
-    operationsBuffer.setOperations(
-      replaceValuesInObject(
-        operationsBuffer.getOperations(),
-        tempIdMap.tempId,
-        tempIdMap.id
-      )
-    )
-
-    if (entityType === EntitiesType.group) {
-      if (!isUndefined(entityInfo.groupIndex)) {
-        survey.questionGroups[entityInfo.groupIndex] = entityInfo[entityType]
-      }
-    } else if (entityType === EntitiesType.question) {
-      if (
-        !isUndefined(entityInfo.groupIndex) &&
-        !isUndefined(entityInfo.questionIndex)
-      ) {
-        survey.questionGroups[entityInfo.groupIndex].questions[
-          entityInfo.questionIndex
-        ] = entityInfo[entityType]
-      }
-    } else if (entityType === EntitiesType.subquestion) {
-      if (
-        !isUndefined(entityInfo.groupIndex) &&
-        !isUndefined(entityInfo.questionIndex) &&
-        !isUndefined(entityInfo.subquestionIndex)
-      ) {
-        survey.questionGroups[entityInfo.groupIndex].questions[
-          entityInfo.questionIndex
-        ].subquestions[entityInfo.subquestionIndex] = entityInfo[entityType]
-      }
-    } else if (entityType === EntitiesType.answer) {
+    if (entityType === EntitiesType.answer) {
       if (
         !isUndefined(entityInfo.groupIndex) &&
         !isUndefined(entityInfo.questionIndex)

@@ -1,8 +1,8 @@
 import Joi from 'joi'
 
 export const questionConditionBaseJoi = Joi.object({
-  qid: Joi.number().required(),
-  cqid: Joi.number().required(),
+  qid: Joi.alternatives().try(Joi.number(), Joi.string()).required(),
+  cqid: Joi.alternatives().try(Joi.number(), Joi.string()).required(),
   cfieldname: Joi.string().required(),
   cquestions: Joi.string().required(),
   method: Joi.string()
@@ -18,7 +18,7 @@ export const questionConditionBaseJoi = Joi.object({
     .required(),
   csrctoken: Joi.string().optional(),
   canswers: Joi.alternatives().try(
-    Joi.array().items(Joi.string()).min(1).required(),
+    Joi.array().items(Joi.string().allow('')).min(1).required(),
     Joi.string().required()
   ),
   ConditionConst: Joi.string().allow('').trim(false),

@@ -1,20 +1,24 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import classNames from 'classnames'
 import { PlusLg } from 'react-bootstrap-icons'
+import { useQuery } from '@tanstack/react-query'
 
 import { Button, Input } from 'components'
-import { useBuffer, useFocused, useConditionDesigner } from 'hooks'
+import { useFocused, useConditionDesigner } from 'hooks'
 import { SideBarHeader } from 'components/SideBar'
 import { ArrowLeftIcon } from 'components/icons'
-import { getQuestionById, QUESTION_RELEVANCE_DEFAULT_VALUE } from 'helpers'
+import {
+  getQuestionById,
+  hasTempId,
+  QUESTION_RELEVANCE_DEFAULT_VALUE,
+  STATES,
+} from 'helpers'
 
 import { previousQuestionsHandler } from './handlers/previousQuestions/previousQuestionsHandler'
 import { ConditionItem } from './ConditionItem'
 import {
-  buildScenarioConditionsForUpdate,
   getAllowedMethods,
   getConditionTypeInfo,
-  getDefaultCondition,
   hasUnsavedChanges,
   showConditionScriptOverwriteConfirmationOverlay,
   showUnsavedChangesOverlay,
@@ -33,31 +37,40 @@ export const ConditionDesigner = ({
   update,
   language,
   scenarioToPatch = null,
-  setPendingScenarioName,
   onNavigateBack = () => {},
 }) => {
   const { focused, groupIndex, questionIndex } = useFocused()
-  const { addToBuffer } = useBuffer()
 
-  const question = useMemo(() => {
-    return getQuestionById(focused.qid, survey)?.question
-  }, [focused.qid, survey])
+  const question = useMemo(
+    () => getQuestionById(focused.qid, survey).question,
+    [focused.qid, survey]
+  )
 
-  const [scid, setScid] = useState(scenarioToPatch ? scenarioToPatch.scid : 1)
+  // The field names come from this map (fetched by useSurvey). It is refetched
+  // after a save, after the survey update replacing the temp IDs: the field
+  // names of the just saved questions are only known once it arrives.
+  const { data: questionsFieldNamesMap } = useQuery({
+    queryKey: [STATES.SURVEY_QUESTIONS_FIELDNAME],
+    enabled: false,
+  })
 
+  // Built from the survey questions: recomputed when any of them changes
+  // (e.g. a temp ID replaced, new answer options, a type change).
   const previousQuestions = useMemo(() => {
     return previousQuestionsHandler(language, survey, groupIndex, questionIndex)
       .cQuestions
-  }, [language, survey.sid, groupIndex, questionIndex])
+  }, [
+    language,
+    survey.sid,
+    survey.questionGroups,
+    questionsFieldNamesMap,
+    groupIndex,
+    questionIndex,
+  ])
 
   const scenarioAction = scenarioToPatch
     ? scenarioActions.UPDATE
     : scenarioActions.CREATE
-  const initialConditions = scenarioToPatch
-    ? buildScenarioConditionsForUpdate(scenarioToPatch, previousQuestions)
-    : [getDefaultCondition()]
-
-  const [conditions, setConditions] = useState(initialConditions)
   const [isApplyButtonDisabled, setIsApplyButtonDisabled] = useState(true)
 
   const shouldConfirmOverwrite =
@@ -79,33 +92,20 @@ export const ConditionDesigner = ({
   }, [question])
 
   const {
+    scid,
+    conditions,
     removeCondition,
     addCondition,
     updateCondition,
     handleSavingScenario,
     handleScenarioNameChange,
   } = useConditionDesigner({
+    survey,
+    update,
     question,
     scenarioToPatch,
-    survey,
-    groupIndex,
-    questionIndex,
-    update,
-    focused,
-    setPendingScenarioName,
-    onNavigateBack,
-    scid,
-    setScid,
-    setConditions,
-    conditions,
-    addToBuffer,
+    previousQuestions,
   })
-
-  useEffect(() => {
-    if (scenarioToPatch && scenarioToPatch.qid !== focused.qid) {
-      onNavigateBack()
-    }
-  }, [focused.qid])
 
   const isValidScenario = useMemo(() => {
     return conditions.every((condition) => {
@@ -119,7 +119,7 @@ export const ConditionDesigner = ({
 
       const isSourceValid =
         sourceType === conditionTypeInfo.SOURCE.QUESTION
-          ? typeof cqid === 'number' && cqid > 0
+          ? (typeof cqid === 'number' && cqid > 0) || hasTempId(String(cqid))
           : Boolean(cfieldname)
 
       return isMethodValid && isValueValid && isScidValid && isSourceValid
@@ -139,7 +139,7 @@ export const ConditionDesigner = ({
   }, [conditions, scenarioToPatch, scid, isUpdateAction, onNavigateBack])
 
   const handleApplyClick = () => {
-    const save = () => handleSavingScenario()
+    const save = () => handleSavingScenario(onNavigateBack)
     if (shouldConfirmOverwrite) {
       showConditionScriptOverwriteConfirmationOverlay({
         script: question.relevance,
@@ -197,7 +197,9 @@ export const ConditionDesigner = ({
         <div className="conditions-container">
           {conditions.map((condition, index) => (
             <ConditionItem
-              key={`condition-item-${condition.cid ?? index}`}
+              key={
+                condition.uiKey ?? `condition-item-${condition.cid ?? index}`
+              }
               index={index}
               condition={condition}
               pervCondition={conditions[index - 1]}

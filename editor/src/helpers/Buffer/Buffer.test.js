@@ -179,4 +179,57 @@ describe('OperationsBuffer', () => {
     ).toBe(1)
     expect(operationBuffer.findIndex(3, 'delete', 'order')).toBe(-1)
   })
+
+  describe('condition operations readiness', () => {
+    const conditionOperation = (condition) => ({
+      id: 20,
+      qid: 20,
+      entity: Entities.questionCondition,
+      op: Operations.update,
+      props: { qid: 20, scenarios: [{ scid: 1, conditions: [condition] }] },
+    })
+    const isReady = (operation) =>
+      new OperationsBuffer().isOperationReadyForPatch(operation, false, false)
+
+    test('a create with a temp cid is ready', () => {
+      expect(
+        isReady(
+          conditionOperation({
+            cid: 'temp__1_1',
+            tempId: 'temp__1_1',
+            cqid: 10,
+            cfieldname: 'Q10',
+            action: 'insertCondition',
+          })
+        )
+      ).toBe(true)
+    })
+
+    test('an edit of a condition whose create is being sent waits', () => {
+      expect(
+        isReady(
+          conditionOperation({
+            cid: 'temp__1_1',
+            cqid: 10,
+            cfieldname: 'Q10',
+            action: 'updateCondition',
+          })
+        )
+      ).toBe(false)
+    })
+
+    test('a condition on an unsaved subquestion waits', () => {
+      expect(
+        isReady(
+          conditionOperation({
+            cid: 'temp__1_1',
+            tempId: 'temp__1_1',
+            cqid: 10,
+            cfieldname: 'Q10_Stemp__55',
+            action: 'insertCondition',
+          })
+        )
+      ).toBe(false)
+    })
+  })
 })

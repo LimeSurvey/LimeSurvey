@@ -66,7 +66,7 @@ export const OperatorSelect = ({
 
   const filteredOptions = useMemo(() => {
     if (condition.sourceType === conditionTypeInfo.SOURCE.QUESTION) {
-      const cQuestion = getQuestionById(+condition.cqid, survey).question
+      const cQuestion = getQuestionById(condition.cqid, survey).question
       if (
         cQuestion &&
         (cQuestion.type === questionTypeInfo.MULTIPLE_CHOICE.type ||

@@ -1,11 +1,12 @@
 import { useParams } from 'react-router-dom'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import classNames from 'classnames'
 
 import {
   useBuffer,
   useExpressionScriptValidation,
   useFocused,
+  useIsConditionRelevancePending,
   useSurvey,
 } from 'hooks'
 import { getQuestionById, QUESTION_RELEVANCE_DEFAULT_VALUE } from 'helpers'
@@ -32,19 +33,29 @@ export const ExpressionScript = ({ onNavigateBack = () => {} }) => {
     question.qid
   )
 
-  const [content, setContent] = useState(
-    question.relevance === QUESTION_RELEVANCE_DEFAULT_VALUE
-      ? ''
-      : question.relevance
-  )
+  const toContent = (relevance) =>
+    relevance === QUESTION_RELEVANCE_DEFAULT_VALUE ? '' : relevance
 
+  const [content, setContent] = useState(toContent(question.relevance))
+  const syncedContent = useRef(content)
+
+  const isRelevancePending = useIsConditionRelevancePending(question)
+  const isApplyDisabled =
+    isRelevancePending || isValidRelevanceValue(content, question)
+
+  // Pick up relevance changes from the survey (e.g. merged by the server after
+  // a save) without discarding what the user is typing. Focus refreshes after
+  // every save, temp ID replacement included, don't touch the content.
   useEffect(() => {
-    setContent(
-      question.relevance === QUESTION_RELEVANCE_DEFAULT_VALUE
-        ? ''
-        : question.relevance
+    const newContent = toContent(question.relevance)
+    const previousContent = syncedContent.current
+    if (newContent === previousContent) return
+
+    syncedContent.current = newContent
+    setContent((current) =>
+      current === previousContent ? newContent : current
     )
-  }, [focused])
+  }, [question.relevance])
 
   const handleApply = () => {
     handleConditionScriptUpdate(
@@ -136,10 +147,8 @@ export const ExpressionScript = ({ onNavigateBack = () => {} }) => {
       <div className="p-2 m-2 d-flex justify-content-center">
         <Button
           onClick={handleApplyClick}
-          variant={
-            isValidRelevanceValue(content, question) ? 'secondary' : 'primary'
-          }
-          disabled={isValidRelevanceValue(content, question)}
+          variant={isApplyDisabled ? 'secondary' : 'primary'}
+          disabled={isApplyDisabled}
         >
           {t('Apply')}
         </Button>

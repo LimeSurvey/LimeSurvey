@@ -211,4 +211,32 @@ describe('handleQuestionGroupOperation Tests', () => {
     expect(result.newOperation).toEqual({})
     expect(result.addToBuffer).toBe(false)
   })
+
+  test('deleting a group drops its unsaved questions', () => {
+    const questionCreate = {
+      id: 'temp__77',
+      op: Operations.create,
+      entity: 'question',
+      props: { question: { qid: 'temp__77', gid: 'temp__568708' } },
+    }
+    const questionL10n = {
+      id: 'temp__77',
+      op: Operations.update,
+      entity: 'questionL10n',
+      props: { en: { question: 'Q' } },
+    }
+    const otherGroupQuestion = {
+      ...questionCreate,
+      id: 'temp__78',
+      props: { question: { qid: 'temp__78', gid: 12 } },
+    }
+
+    const result = handleQuestionGroupOperation(
+      [createOperation, questionCreate, questionL10n, otherGroupQuestion],
+      { id: 'temp__568708', op: Operations.delete, entity: 'questionGroup' }
+    )
+
+    expect(result.addToBuffer).toBe(false)
+    expect(result.bufferOperations).toEqual([otherGroupQuestion])
+  })
 })

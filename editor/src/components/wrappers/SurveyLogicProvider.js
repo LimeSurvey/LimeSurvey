@@ -3,7 +3,14 @@ import { useParams } from 'react-router-dom'
 import { format } from 'util'
 import { queryClient } from 'queryClient'
 
-import { useAppState, useBuffer, useErrors, useFocused, useSurvey } from 'hooks'
+import {
+  useAppState,
+  useBuffer,
+  useErrors,
+  useFocused,
+  useInFlightConditionQids,
+  useSurvey,
+} from 'hooks'
 import {
   Entities,
   EntitiesType,
@@ -11,12 +18,18 @@ import {
   OperationsBuffer,
   STATES,
   errorToast,
+  applyQuestionRelevance,
+  clearResolvedTempIds,
+  getConditionLogicQids,
+  getRefreshedFocus,
   processValidationErrorsAndUpdateOperations,
+  rememberResolvedTempIds,
+  removeConditionsWithUnknownTempIdsFromSurveyAndBuffer,
   replaceTempIdsInSurveyAndBuffer,
-  updateSurveyEntitiesData,
   dayJsHelper,
   RandomNumber,
 } from 'helpers'
+import { removeOrphanConditionDeletes } from 'helpers/Buffer/operationsHandlers'
 
 /**
  * Render children while loading the route's survey and saving buffered edits.
@@ -45,6 +58,46 @@ export const SurveyLogicProvider = ({ children }) => {
     STATES.IS_ADDING_QUESTION_OR_GROUP,
     false
   )
+  const [, setInFlightConditionQids] = useInFlightConditionQids()
+
+  // Refresh the focused question's data from the survey. Only the data
+  // changes, so no navigation: it would add browser history entries.
+  // Read the focus now, it may have changed while a request was running.
+  const refreshFocusedQuestion = (survey) => {
+    const focusData = getRefreshedFocus(
+      queryClient.getQueryData([STATES.FOCUSED_ENTITY]),
+      survey
+    )
+    if (focusData) queryClient.setQueryData([STATES.FOCUSED_ENTITY], focusData)
+  }
+
+  /**
+   * Drop the conditions of, or using as source, an unsaved question,
+   * subquestion or group that was deleted: its temp ID will never be
+   * replaced, so their operations would wait forever, and so would every
+   * later change of these questions' conditions merged into them.
+   * This is the only cleanup of these conditions, in the survey (shown in
+   * the editor) and in the buffer. It runs before each save, and only when no
+   * save is running.
+   * @returns {boolean} whether the buffer changed
+   */
+  const dropConditionsWithUnknownTempIds = () => {
+    // Read only: the buffer's own copy, getOperations() would copy it again.
+    const operations = operationsBuffer.operations
+    const result = removeConditionsWithUnknownTempIdsFromSurveyAndBuffer(
+      queryClient.getQueryData([STATES.SURVEY])?.survey,
+      operations
+    )
+
+    if (result.changedQids.length) {
+      update({ ...result.survey })
+      refreshFocusedQuestion(result.survey)
+    }
+    if (result.operations === operations) return false
+
+    setBuffer(result.operations, RandomNumber())
+    return true
+  }
 
   // Mount / ID Change Logic
   useEffect(() => {
@@ -53,6 +106,8 @@ export const SurveyLogicProvider = ({ children }) => {
     setHelpersSettings({})
     setIsPatchSurveyRunning(false)
     setIsAddingQuestionOrGroup(false)
+    setInFlightConditionQids([])
+    clearResolvedTempIds()
 
     if (surveyId) {
       fetchSurvey(surveyId)
@@ -79,6 +134,9 @@ export const SurveyLogicProvider = ({ children }) => {
       return
     }
 
+    // The buffer changed: This effect runs again with the cleaned buffer.
+    if (dropConditionsWithUnknownTempIds()) return
+
     const readyOperations = operationsBuffer.getOperations({ ready: true })
     // surveyRefreshRequired is only updated on the next render, too late for finallyCallback
     let deleteRefused = false
@@ -88,6 +146,7 @@ export const SurveyLogicProvider = ({ children }) => {
       // - items that are not ready may be waiting for tempId to be resolved
       operationsBuffer.clearBuffer({ ready: true })
       clearBuffer({ ready: true })
+      setInFlightConditionQids(getConditionLogicQids(readyOperations))
       setIsPatchSurveyRunning(true)
     }
 
@@ -109,6 +168,14 @@ export const SurveyLogicProvider = ({ children }) => {
       const groupsTempIdMapping = result.tempIdMapping?.questionGroupsMap
       const answersTempIdMapping = result.tempIdMapping?.answersMap
       const conditionsTempIdMapping = result.tempIdMapping?.conditionsMap
+
+      ;[
+        groupsTempIdMapping,
+        questionsTempIdMapping,
+        subquestionsTempIdMapping,
+        answersTempIdMapping,
+        conditionsTempIdMapping,
+      ].forEach(rememberResolvedTempIds)
 
       let mapResult = replaceTempIdsInSurveyAndBuffer(
         groupsTempIdMapping,
@@ -155,14 +222,10 @@ export const SurveyLogicProvider = ({ children }) => {
         mapResult.operationsBuffer
       )
 
-      if (result.extras) {
-        mapResult = updateSurveyEntitiesData(
-          EntitiesType.question,
-          mapResult.survey,
-          mapResult.operationsBuffer,
-          result.extras
-        )
-      }
+      mapResult = applyQuestionRelevance(
+        mapResult,
+        result.extras?.questionRelevance
+      )
 
       // The operations that were sent to the API.
       const readyOperationsBuffer = new OperationsBuffer(readyOperations)
@@ -210,7 +273,15 @@ export const SurveyLogicProvider = ({ children }) => {
 
       update({ ...mapResult.survey })
       refetchQuestionsFieldNamesMap()
+      // A condition delete still on a temp cid now belongs to a failed create.
+      mapResult.operationsBuffer.setOperations(
+        removeOrphanConditionDeletes(mapResult.operationsBuffer.getOperations())
+      )
+
       setBuffer(mapResult.operationsBuffer.getOperations(), RandomNumber())
+
+      // Its URL was already updated with any new ID above.
+      refreshFocusedQuestion(mapResult.survey)
 
       setSaveState(
         format(
@@ -247,6 +318,12 @@ export const SurveyLogicProvider = ({ children }) => {
         addToBuffer(operation, false)
       })
 
+      // No condition create got its real ID: Drop the deletes waiting for one.
+      setBuffer(
+        removeOrphanConditionDeletes(queryClient.getQueryData([STATES.BUFFER])),
+        RandomNumber()
+      )
+
       setErrorsFromPatchResponse([...updatedOperation])
       setSaveState(
         `Error happened ${dayJsHelper(new Date().getTime()).format('hh:mm')}`
@@ -257,6 +334,7 @@ export const SurveyLogicProvider = ({ children }) => {
 
     const finallyCallback = () => {
       setIsPatchSurveyRunning(false)
+      setInFlightConditionQids([])
 
       // maybe there's some delayed operations.
       const pendingOperations = new OperationsBuffer(

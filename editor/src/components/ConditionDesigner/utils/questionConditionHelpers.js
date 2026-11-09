@@ -1,11 +1,27 @@
 // Helper functions for condition operations
-import { QUESTION_RELEVANCE_DEFAULT_VALUE } from 'helpers'
+import {
+  hasTempId,
+  NEW_OBJECT_ID_PREFIX,
+  QUESTION_RELEVANCE_DEFAULT_VALUE,
+} from 'helpers'
 
 import { getConditionTypeInfo } from './getConditionTypeInfo'
 import { getAllowedMethods } from './getAllowedMethods'
 
 const conditionTypeInfo = getConditionTypeInfo()
 const allowedMethods = getAllowedMethods()
+
+/**
+ * Coerce an ID value to a number if it is numeric, otherwise return it as-is.
+ * This preserves temp IDs (e.g. "temp__123456") while still converting
+ * real numeric IDs to numbers.
+ */
+const coerceId = (value) => {
+  if (value == null || value === '') return value
+  if (typeof value === 'string' && hasTempId(value)) return value
+  const num = Number(value)
+  return isNaN(num) ? value : num
+}
 
 export const getDefaultCondition = () => ({
   qid: '',
@@ -104,9 +120,9 @@ export const hasUnsavedChanges = (
 }
 
 export const getBaseConditionObject = (condition, scenarioId) => ({
-  cid: +condition.cid,
-  qid: +condition.qid,
-  cqid: +condition.cqid,
+  cid: coerceId(condition.cid),
+  qid: coerceId(condition.qid),
+  cqid: coerceId(condition.cqid),
   cfieldname: condition.cfieldname,
   cquestions: condition.cfieldname,
   method: condition.method,
@@ -150,8 +166,12 @@ export const determineConditionTargetType = (
    * that is, _R. Then come some digits, representing the subquestion/answer
    * subquestions may be chained, like Q123_S456_S789
    * and some subquestions have # followed by digits
+   * Unsaved questions and subquestions have temp IDs instead of digits,
+   * like Qtemp__123_Stemp__456
    */
-  if (/^@(Q\d+(?:_[SR]\d+)*(?:#\d+)?)@$/.test(condition.value)) {
+  const id = `(?:\\d+|${NEW_OBJECT_ID_PREFIX}\\d+)`
+  const fieldnameRegex = new RegExp(`^@(Q${id}(?:_[SR]${id})*(?:#\\d+)?)@$`)
+  if (fieldnameRegex.test(condition.value)) {
     const matchingQuestion = previousQuestions.find((q) => {
       return '@' + q.cfieldname + '@' === condition.value
     })

@@ -1,9 +1,4 @@
-import {
-  getPreviousQuestions,
-  isTrue,
-  NEW_OBJECT_ID_PREFIX,
-  OTHER_CODE,
-} from 'helpers'
+import { getPreviousQuestions, isTrue, OTHER_CODE } from 'helpers'
 import { getQuestionTypeInfo } from 'components/QuestionTypes'
 
 import {
@@ -82,18 +77,24 @@ export const previousQuestionsHandler = (
   }
 
   for (const question of previousQuestions) {
-    if (String(question.qid).toLowerCase().includes(NEW_OBJECT_ID_PREFIX))
-      continue
-
     const handler = handlers[question.type] || defaultTypeHandler
     handler(question, language, cQuestions, cAnswers)
     handleAttributes(question, cAnswers)
   }
 
+  // Group the answers by field name once: filtering all of them for each
+  // question is quadratic, and this list is rebuilt on every survey change
+  // while the Condition Designer is open.
+  const answersByFieldname = new Map()
+  cAnswers.forEach((answer) => {
+    const answers = answersByFieldname.get(answer.cfieldname)
+    if (answers) answers.push(answer)
+    else answersByFieldname.set(answer.cfieldname, [answer])
+  })
   cQuestions.forEach((question) => {
-    question.answers = cAnswers.filter(
-      (answer) => answer.cfieldname === question.cfieldname
-    )
+    // A copy per question, as filter() returned: questions sharing a field
+    // name must not share the same array.
+    question.answers = [...(answersByFieldname.get(question.cfieldname) ?? [])]
   })
 
   return { cQuestions, cAnswers }

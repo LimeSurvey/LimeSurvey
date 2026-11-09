@@ -12,6 +12,8 @@
  * Depends on:
  * - getApiOperationActions from utils.js
  */
+import { createBufferOperation } from 'helpers'
+
 import { getApiOperationActions } from './getApiOperationActions'
 
 const sourceTabs = {
@@ -102,4 +104,42 @@ export const buildScenarioPayload = (question, conditions, scenarioName) => {
   })
 
   return scenarios.length ? { qid, scenarios } : null
+}
+
+/**
+ * Builds the buffer operation deleting one condition of a scenario.
+ * @param {number|string} qid question owning the condition
+ * @param {number|string} scid scenario of the condition
+ * @param {number|string} cid
+ */
+export const buildConditionDeleteOperation = (qid, scid, cid) => {
+  const operation = createBufferOperation(cid).questionCondition().delete()
+  operation.qid = qid
+  operation.props = {
+    qid,
+    scenarios: [
+      {
+        scid,
+        conditions: [
+          { cid, action: getApiOperationActions().CONDITION.DELETE },
+        ],
+      },
+    ],
+  }
+  return operation
+}
+
+/**
+ * Builds the buffer operation deleting a whole scenario.
+ * @param {number|string} qid question owning the scenario
+ * @param {number|string} scid
+ */
+export const buildScenarioDeleteOperation = (qid, scid) => {
+  const operation = createBufferOperation(qid).questionCondition(qid).delete()
+  operation.qid = qid
+  operation.props = {
+    qid,
+    scenarios: [{ scid, action: getApiOperationActions().SCENARIO.DELETE }],
+  }
+  return operation
 }

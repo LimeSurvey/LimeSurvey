@@ -840,9 +840,16 @@ class OpHandlerQuestionCondition implements OpHandlerInterface
         $return = [];
         if ($qid) {
             $question = \Question::model()->findByPk($qid);
+            $relevance = $question->relevance ?? 1;
             $return['additional'] = [
-                'relevance' => $question->relevance ?? 1,
-                'qid' => $qid
+                // Kept for API clients reading the relevance of the last
+                // condition operation of the patch.
+                'relevance' => $relevance,
+                'qid' => $qid,
+                // Keyed by qid, so the relevance of every question in a patch is kept.
+                'questionRelevance' => [
+                    (int)$qid => $relevance,
+                ],
             ];
         }
         if (!empty($mapping)) {

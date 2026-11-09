@@ -66,6 +66,7 @@ export const STATES = {
   REQUESTED_SURVEY_ID: 'requested_survey_id',
   LOADED_SURVEY_ID: 'loaded_survey_id',
   SURVEY_LOGIC: 'survey_logic',
+  IN_FLIGHT_CONDITION_QIDS: 'in_flight_condition_qids',
   TOPBAR_CONFIG: 'topbar_config',
 }
 

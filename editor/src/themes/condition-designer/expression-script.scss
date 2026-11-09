@@ -29,6 +29,40 @@
   margin-bottom: 10px;
   height: 40px;
   width: 242px;
+
+  &.pending {
+    border-style: dashed;
+    background-color: $g-200;
+  }
+
+  .condition-script-pending-label {
+    font-style: italic;
+  }
+
+  .condition-script-open {
+    flex: 1;
+    min-width: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    text-align: left;
+    cursor: pointer;
+
+    &:disabled {
+      cursor: not-allowed;
+    }
+  }
+}
+
+.condition-script-pending-hint {
+  width: 242px;
+  margin: -6px 0 10px;
+  font-size: $font-size-xs;
+  color: $g-600;
+
+  &:empty {
+    margin: 0;
+  }
 }
 
 .expression-script-body {

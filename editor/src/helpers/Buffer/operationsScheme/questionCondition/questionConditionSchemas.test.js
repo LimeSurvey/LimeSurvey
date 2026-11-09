@@ -150,6 +150,28 @@ describe('QuestionCondition Schemas', () => {
       )
     })
 
+    test('accepts the empty "No answer" of array type questions', () => {
+      const withNoAnswer = (canswers) => ({
+        ...createBaseValidObject,
+        props: {
+          ...createBaseValidObject.props,
+          scenarios: [
+            {
+              ...BASE_SCENARIO,
+              conditions: [{ ...createBaseCondition, value: '', canswers }],
+            },
+          ],
+        },
+      })
+
+      expect(
+        questionConditionCreateJoi.validate(withNoAnswer([''])).error
+      ).toBeUndefined()
+      expect(
+        questionConditionCreateJoi.validate(withNoAnswer([])).error
+      ).toBeDefined()
+    })
+
     describe('Scenario Validation', () => {
       test('Validates multiple conditions in one scenario', () => {
         const validObject = {
@@ -453,11 +475,11 @@ describe('questionConditionUpdateJoi - conditionScript validation', () => {
     expect(error).toBeDefined()
   })
 
-  it('should fail if qid is not a number', () => {
+  it('should fail if qid is not a number or string', () => {
     const invalidData = {
       ...validData,
       props: {
-        qid: 'abc',
+        qid: true,
         action: 'conditionScript',
         script: 'return answer1 == 5;',
       },
@@ -465,6 +487,21 @@ describe('questionConditionUpdateJoi - conditionScript validation', () => {
 
     const { error } = questionConditionUpdateJoi.validate(invalidData)
     expect(error).toBeDefined()
+  })
+
+  it('should allow a string qid (temp ID) for conditionScript', () => {
+    const tempIdData = {
+      ...validData,
+      qid: 'temp__123456',
+      props: {
+        qid: 'temp__123456',
+        action: 'conditionScript',
+        script: 'return answer1 == 5;',
+      },
+    }
+
+    const { error } = questionConditionUpdateJoi.validate(tempIdData)
+    expect(error).toBeUndefined()
   })
 
   it('should fail if extra unknown props are added', () => {
@@ -484,6 +521,31 @@ describe('questionConditionUpdateJoi - conditionScript validation', () => {
 })
 
 describe('questionConditionDeleteJoi Schema Validation', () => {
+  const conditionDelete = (cid) => ({
+    id: cid,
+    op: 'delete',
+    entity: 'questionCondition',
+    qid: 20,
+    props: {
+      qid: 20,
+      scenarios: [
+        { scid: 1, conditions: [{ cid, action: 'deleteCondition' }] },
+      ],
+    },
+  })
+
+  it('accepts the temp cid of a condition that was never saved, or whose create is being sent', () => {
+    expect(
+      questionConditionDeleteJoi.validate(conditionDelete('temp__123_1')).error
+    ).toBeUndefined()
+  })
+
+  it('rejects a cid that is neither a number nor a condition temp ID', () => {
+    expect(
+      questionConditionDeleteJoi.validate(conditionDelete('abc')).error
+    ).toBeDefined()
+  })
+
   it('should validate valid data correctly', () => {
     const validData = {
       id: '123',

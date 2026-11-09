@@ -15,6 +15,7 @@ import {
   handleSubquestionOperation,
   handleSurveyOperation,
   handleQuestionConditionOperation,
+  isConditionOperationWaiting,
 } from './operationsHandlers'
 import { addBreadcrumb, reportExtras } from 'appInstrumentation'
 
@@ -407,7 +408,12 @@ export class OperationsBuffer {
     const isNonCreateOperationWithTempId =
       operation.op !== Operations.create && hasTempId(operation.id?.toString())
 
+    // Condition operations wait for the temp IDs they use to be replaced
+    // (question, source question/subquestion, condition being created).
+    const isConditionOperationNotReady = isConditionOperationWaiting(operation)
+
     if (
+      isConditionOperationNotReady ||
       isQuestionGroupHasATempIdAndOpIsNotGroupCreate ||
       isAddingQuestionAndQuestionHasAGroupTempId ||
       isAddingSubquestionAndQuestionHasATempId ||
