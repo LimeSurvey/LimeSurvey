@@ -44,6 +44,10 @@
             'disabled' : "disabled",
         }))
         }}
+        {# Search result announcement for screen readers #}
+        {% if data_live_search %}
+            <output id="answer{{ name }}-search-status" class="visually-hidden" aria-live="polite" aria-atomic="true"></output>
+        {% endif %}
     </div>
     {# rows/othertext.php #}
     {{ sOther }}
@@ -108,6 +112,32 @@
                     $bsToggle.trigger('click.bs.dropdown.data-api').trigger('focus');
                 }
             }, true);
+
+            {% if data_live_search %}
+            {# Announce the search result (number of results or no result) #}
+            var $searchStatus = $('#answer{{ name }}-search-status');
+            var resultsText = {{ json_encode(gT('Number of results: %s')) }};
+            var noResultsText = {{ json_encode(gT('No results matched %s')) }};
+            var searchStatusTimer = null;
+            $bsWrapper.on('input', '.bs-searchbox input', function () {
+                var search = this.value;
+                clearTimeout(searchStatusTimer);
+                searchStatusTimer = setTimeout(function () {
+                    var message = '';
+                    if (search !== '') {
+                        var count = $bsWrapper.find('[role="listbox"] [role="option"]').length;
+                        message = count
+                            ? resultsText.replace('%s', count)
+                            : noResultsText.replace('%s', function () { return '"' + search + '"'; });
+                    }
+                    $searchStatus.text(message);
+                }, 500);
+            });
+            selectPicker.on('hidden.bs.select', function () {
+                clearTimeout(searchStatusTimer);
+                $searchStatus.text('');
+            });
+            {% endif %}
         });
 
     </script>
