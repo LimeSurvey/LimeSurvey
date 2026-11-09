@@ -28,6 +28,7 @@
                 {{ data_live_search }}
                 {{ width_entry }}
                 data-none-selected-text=''
+                data-none-results-text="{{ sprintf(gT('No results matched %s'), '{0}')|escape }}"
                 name="{{ name }}"
                 id="answer{{ name }}"
                 {% if dropdownSize %} data-size={{ dropdownSize }} {% endif %}
