@@ -111,9 +111,11 @@ class SurveyTemplate implements CommandInterface
     /**
      * Ensure Permissions
      *
-     * @param string $authToken
+     * This runs before the survey lookup on purpose: An unknown survey id
+     * gives a 403 as well, so users cannot probe which survey ids exist.
+     *
      * @param int $surveyId
-     * @return Response|false
+     * @return Response|false Forbidden response, or false if access is allowed
      */
     private function ensurePermissions($surveyId)
     {
@@ -128,16 +130,6 @@ class SurveyTemplate implements CommandInterface
                 ->makeErrorForbidden();
         }
 
-        if (!$surveyId) {
-            return $this->responseFactory->makeErrorNotFound(
-                (new ResponseDataError(
-                    'SURVEY_NOT_FOUND',
-                    'Survey not found'
-                )
-                )->toArray()
-            );
-        }
-
         return false;
     }
 
@@ -148,7 +140,7 @@ class SurveyTemplate implements CommandInterface
      * @param string $language
      * @return Response|bool|string
      */
-    private function getTemplateData($surveyId, $language)
+    protected function getTemplateData($surveyId, $language)
     {
         // @todo This shouldn't require a HTTP request we should be able to
         // - render survey content internally. To handle this correctly
