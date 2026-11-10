@@ -234,6 +234,10 @@ var ThemeScripts = exports.ThemeScripts = function ThemeScripts() {
       if ($('.input-error').length > 0 || $('.ls-em-error').length > 0) {
         $('#bootstrap-alert-box-modal').on('hidden.bs.modal', function () {
           var $firstError = $('.input-error').length > 0 ? $('.input-error').first() : $('.ls-em-error').first();
+          /* No error element: nothing to scroll to or focus */
+          if (!$firstError.length) {
+            return;
+          }
           var $pixToScroll = $firstError.offset().top - 100;
           $('html, body').animate({
             scrollTop: $pixToScroll + 'px'
