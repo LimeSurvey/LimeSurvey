@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
+import classNames from 'classnames'
 import {
   Entities,
   getStringPartsUsingSeperator,
@@ -32,6 +33,15 @@ const dropdownThemeComponents = [
 ]
 
 const commentedCheckboxOptions = getCommentedCheckboxOptions()
+
+const BUTTONS_PER_ROW = {
+  'col-md-12': 1,
+  'col-md-6': 2,
+  'col-md-4': 3,
+  'col-md-3': 4,
+  'col-md-2': 6,
+  'col-md-1': 12,
+}
 
 const OTHER_POSITIONS = {
   BEGINNING: 'beginning',
@@ -93,6 +103,7 @@ export const OptionQuestionViewMode = ({
     other_replace_text,
     other_position,
     other_position_code,
+    max_buttons_row,
   } = attributes || {}
   const isDropdownTheme = useMemo(
     () => dropdownThemeComponents.includes(questionThemeName),
@@ -102,6 +113,11 @@ export const OptionQuestionViewMode = ({
     () => singleChoiceThemes.includes(questionThemeName),
     [questionThemeName]
   )
+
+  const isSingleChoiceButtons =
+    questionThemeName === getQuestionTypeInfo().SINGLE_CHOICE_BUTTONS.theme
+  const buttonsPerRow =
+    isSingleChoiceButtons && BUTTONS_PER_ROW[getAttributeValue(max_buttons_row)]
 
   const isSingleChoiceWithComments = useMemo(() => {
     return (
@@ -411,233 +427,240 @@ export const OptionQuestionViewMode = ({
     return null
   }
 
+  const renderOtherInput = (otherText) => (
+    <>
+      <Input
+        onClick={(e) => {
+          e.stopPropagation()
+        }}
+        placeholder={st('Enter your answer here.')}
+        rows={1}
+        maxLength={Infinity}
+        className="comment-input"
+        dataTestId="other-option-input"
+        type="textarea"
+        value={otherText?.value}
+        update={(newValue) => onValueChange(newValue, otherText?.key)}
+      />
+      {otherSuffix && <span className="other-suffix">{otherSuffix}</span>}
+    </>
+  )
+
   return (
-    <div
-      className={`children-parent${
-        isMultipleShortTexts ? ' multiple-short-texts' : ''
-      }`}
-    >
-      {children?.map((child, index) => {
-        const ChildUiComponentToRender =
-          child.isOther && UiComponentToRender === ImageChoice
-            ? FormCheck
-            : UiComponentToRender
-
-        const value = isSingleChoiceTheme
-          ? childrenValuesInOrder[0]
-          : childrenValuesInOrder[index]
-        const isOtherWithTick =
-          !isSingleChoiceTheme && child.isOther && value?.otherChecked
-        const toggleOther = (checked) => {
-          onValueChange(checked ? 'Y' : '', value.otherChecked.key)
-          if (!checked && value.otherText?.key) {
-            onValueChange('', value.otherText.key)
-          }
+    <>
+      <div
+        className={classNames('children-parent', {
+          'multiple-short-texts': isMultipleShortTexts,
+          'single-choice-buttons': isSingleChoiceButtons,
+          'fixed-columns': buttonsPerRow,
+        })}
+        style={
+          buttonsPerRow ? { '--buttons-per-row': buttonsPerRow } : undefined
         }
+      >
+        {children?.map((child, index) => {
+          const ChildUiComponentToRender =
+            child.isOther && UiComponentToRender === ImageChoice
+              ? FormCheck
+              : UiComponentToRender
 
-        return (
-          <div
-            className={'child'}
-            data-testid="child-option"
-            key={`view-mode-child-${index}-${child[childrenInfo.idKey]}`}
-          >
-            <ChildUiComponentToRender
-              value={
-                ChildUiComponentToRender.name === selectName
-                  ? child.options[selectedIndex]?.value
-                  : getChildTitle(child.l10ns)
-              }
-              defaultValue={
-                ChildUiComponentToRender.name === selectName
-                  ? child.options[selectedIndex]?.value
-                  : getChildTitle(child.l10ns)
-              }
-              text={getChildTitle(child.l10ns)}
-              variant="outline-success"
-              update={(newValue) => {
-                if (isSingleChoiceTheme) {
-                  pendingIndexRef.current = index
-                }
-                if (isOtherWithTick) {
-                  toggleOther(newValue)
-                  return
-                }
-                onValueChange(
-                  isSingleChoiceTheme &&
-                    ChildUiComponentToRender.name !== selectName
-                    ? child[childrenInfo.codeKey]
-                    : newValue,
-                  value?.key
-                )
-              }}
-              onClick={() => {
-                if (isSingleChoiceTheme) {
-                  pendingIndexRef.current = index
-                }
-                setSelectedIndex(index)
-                if (isOtherWithTick) {
-                  toggleOther(!value.checked)
-                  return
-                }
-                onValueChange(
-                  isSingleChoiceTheme
-                    ? child[childrenInfo.codeKey]
-                    : getChildTitle(child.l10ns),
-                  value?.key
-                )
-              }}
-              className="child-ui-component"
-              label={
-                child.isOther && otherLabel ? (
-                  <ContentEditor
-                    placeholder=""
-                    className="choice"
-                    value={getChildTitle(child.l10ns)}
-                    disabled={true}
-                  />
-                ) : !child.isOther ? (
-                  <ContentEditor
-                    placeholder={
-                      isSingleChoiceTheme ? 'Answer option' : 'Subquestion'
-                    }
-                    className="choice"
-                    value={getChildTitle(child.l10ns)}
-                    disabled={true}
-                  />
-                ) : (
-                  <span />
-                )
-              }
-              key={`uicomponent-${qid}-${index}-questionmode`}
-              index={index}
-              type={isSingleChoiceTheme ? 'radio' : 'checkbox'}
-              inputType={isSingleChoiceTheme ? 'radio' : 'checkbox'}
-              isFocused={false}
-              idPrefix={isSingleChoiceTheme ? 'a' : 'q'}
-              id={child[childrenInfo.idKey]}
-              hasReset={false}
-              options={child.options}
-              checked={isSingleChoiceTheme ? selectedIndex === index : null}
-              defaultChecked={!isSingleChoiceTheme && value?.checked}
-              groupName={`${gid}X${qid}`}
-              active={
-                isSingleChoiceTheme
-                  ? selectedIndex === index
-                  : (value?.checked ?? false)
-              }
-              disabled={ChildUiComponentToRender.name === contentEditorName}
-              isNoAnswer={child.isNoAnswer}
-            />
-            {isMultipleShortTexts && (
-              <Input
-                onClick={(e) => {
-                  e.stopPropagation()
-                }}
-                value={value?.value}
-                placeholder={st('Enter your answer here.')}
-                maxLength={Infinity}
-                className="w-100 d-block comment-input"
-                dataTestId="multiple-choice-comment-input"
-                update={(newValue) => onValueChange(newValue, value?.key)}
-              />
-            )}
-            {isMultipleChoiceNumerical && (
-              <div className="ms-auto">
-                <MultipleChoiceNumericalSubquestion
-                  onChange={(newValue) => onValueChange(newValue, value?.key)}
-                  hasSliderLayout={hasSliderLayout}
-                  attributes={attributes}
-                  child={child}
-                  childrenInfo={childrenInfo}
-                  language={language}
-                  valueInfo={value}
-                  participantMode={participantMode}
-                />
-              </div>
-            )}
-            {child.isOther && (
-              <Input
-                onClick={(e) => {
-                  e.stopPropagation()
-                }}
-                placeholder={st('Enter your answer here.')}
-                rows={1}
-                maxLength={Infinity}
-                className="comment-input"
-                dataTestId="other-option-input"
-                type="textarea"
+          const value = isSingleChoiceTheme
+            ? childrenValuesInOrder[0]
+            : childrenValuesInOrder[index]
+          const isOtherWithTick =
+            !isSingleChoiceTheme && child.isOther && value?.otherChecked
+          const toggleOther = (checked) => {
+            onValueChange(checked ? 'Y' : '', value.otherChecked.key)
+            if (!checked && value.otherText?.key) {
+              onValueChange('', value.otherText.key)
+            }
+          }
+
+          return (
+            <div
+              className={'child'}
+              data-testid="child-option"
+              key={`view-mode-child-${index}-${child[childrenInfo.idKey]}`}
+            >
+              <ChildUiComponentToRender
                 value={
-                  isSingleChoiceTheme
-                    ? valueInfo?.otherText?.value
-                    : value?.otherText?.value
+                  ChildUiComponentToRender.name === selectName
+                    ? child.options[selectedIndex]?.value
+                    : getChildTitle(child.l10ns)
                 }
-                update={(newValue) =>
+                defaultValue={
+                  ChildUiComponentToRender.name === selectName
+                    ? child.options[selectedIndex]?.value
+                    : getChildTitle(child.l10ns)
+                }
+                text={getChildTitle(child.l10ns)}
+                variant="outline-success"
+                update={(newValue) => {
+                  if (isSingleChoiceTheme) {
+                    pendingIndexRef.current = index
+                  }
+                  if (isOtherWithTick) {
+                    toggleOther(newValue)
+                    return
+                  }
                   onValueChange(
-                    newValue,
+                    isSingleChoiceTheme &&
+                      ChildUiComponentToRender.name !== selectName
+                      ? child[childrenInfo.codeKey]
+                      : newValue,
+                    value?.key
+                  )
+                }}
+                onClick={() => {
+                  if (isSingleChoiceTheme) {
+                    pendingIndexRef.current = index
+                  }
+                  setSelectedIndex(index)
+                  if (isOtherWithTick) {
+                    toggleOther(!value.checked)
+                    return
+                  }
+                  onValueChange(
                     isSingleChoiceTheme
-                      ? valueInfo?.otherText?.key
-                      : value?.otherText?.key
+                      ? child[childrenInfo.codeKey]
+                      : getChildTitle(child.l10ns),
+                    value?.key
+                  )
+                }}
+                className="child-ui-component"
+                label={
+                  child.isOther && otherLabel ? (
+                    <ContentEditor
+                      placeholder=""
+                      className="choice"
+                      value={getChildTitle(child.l10ns)}
+                      disabled={true}
+                    />
+                  ) : !child.isOther ? (
+                    <ContentEditor
+                      placeholder={
+                        isSingleChoiceTheme ? 'Answer option' : 'Subquestion'
+                      }
+                      className="choice"
+                      value={getChildTitle(child.l10ns)}
+                      disabled={true}
+                    />
+                  ) : (
+                    <span />
                   )
                 }
+                key={`uicomponent-${qid}-${index}-questionmode`}
+                index={index}
+                type={isSingleChoiceTheme ? 'radio' : 'checkbox'}
+                inputType={isSingleChoiceTheme ? 'radio' : 'checkbox'}
+                isFocused={false}
+                idPrefix={isSingleChoiceTheme ? 'a' : 'q'}
+                id={child[childrenInfo.idKey]}
+                hasReset={false}
+                options={child.options}
+                checked={isSingleChoiceTheme ? selectedIndex === index : null}
+                defaultChecked={!isSingleChoiceTheme && value?.checked}
+                groupName={`${gid}X${qid}`}
+                active={
+                  isSingleChoiceTheme
+                    ? selectedIndex === index
+                    : (value?.checked ?? false)
+                }
+                disabled={ChildUiComponentToRender.name === contentEditorName}
+                isNoAnswer={child.isNoAnswer}
               />
-            )}
-            {child.isOther && otherSuffix && (
-              <span className="other-suffix">{otherSuffix}</span>
-            )}
-            {isDropdownTheme &&
-              supportsOther &&
-              child.options?.[selectedIndex]?.value === OTHER_CODE && (
+              {isMultipleShortTexts && (
                 <Input
                   onClick={(e) => {
                     e.stopPropagation()
                   }}
+                  value={value?.value}
+                  placeholder={st('Enter your answer here.')}
+                  maxLength={Infinity}
+                  className="w-100 d-block comment-input"
+                  dataTestId="multiple-choice-comment-input"
+                  update={(newValue) => onValueChange(newValue, value?.key)}
+                />
+              )}
+              {isMultipleChoiceNumerical && (
+                <div className="ms-auto">
+                  <MultipleChoiceNumericalSubquestion
+                    onChange={(newValue) => onValueChange(newValue, value?.key)}
+                    hasSliderLayout={hasSliderLayout}
+                    attributes={attributes}
+                    child={child}
+                    childrenInfo={childrenInfo}
+                    language={language}
+                    valueInfo={value}
+                    participantMode={participantMode}
+                  />
+                </div>
+              )}
+              {child.isOther &&
+                !isSingleChoiceButtons &&
+                renderOtherInput(
+                  isSingleChoiceTheme ? valueInfo?.otherText : value?.otherText
+                )}
+              {isDropdownTheme &&
+                supportsOther &&
+                child.options?.[selectedIndex]?.value === OTHER_CODE && (
+                  <Input
+                    onClick={(e) => {
+                      e.stopPropagation()
+                    }}
+                    placeholder={st('Enter your answer here.')}
+                    rows={1}
+                    maxLength={Infinity}
+                    className="comment-input"
+                    dataTestId="other-option-input"
+                    type="textarea"
+                    value={valueInfo?.otherText?.value}
+                    update={(newValue) =>
+                      onValueChange(newValue, valueInfo?.otherText?.key)
+                    }
+                  />
+                )}
+              {shouldShowInput && (
+                <Input
+                  onClick={(e) => {
+                    e.stopPropagation()
+                  }}
+                  value={value?.comment?.value}
                   placeholder={st('Enter your answer here.')}
                   rows={1}
                   maxLength={Infinity}
-                  className="comment-input"
-                  dataTestId="other-option-input"
+                  className="w-100 d-block comment-input"
+                  dataTestId="multiple-choice-comment-input"
                   type="textarea"
-                  value={valueInfo?.otherText?.value}
                   update={(newValue) =>
-                    onValueChange(newValue, valueInfo?.otherText?.key)
+                    onValueChange(newValue, value?.comment?.key)
                   }
                 />
               )}
-            {shouldShowInput && (
-              <Input
-                onClick={(e) => {
-                  e.stopPropagation()
-                }}
-                value={value?.comment?.value}
-                placeholder={st('Enter your answer here.')}
-                rows={1}
-                maxLength={Infinity}
-                className="w-100 d-block comment-input"
-                dataTestId="multiple-choice-comment-input"
-                type="textarea"
-                update={(newValue) =>
-                  onValueChange(newValue, value?.comment?.key)
-                }
-              />
-            )}
+            </div>
+          )
+        })}
+        {isSingleChoiceWithComments && (
+          <div className="flex-1 w-50">
+            <Input
+              onClick={(e) => {
+                e.stopPropagation()
+              }}
+              value={valueInfo?.comment?.value}
+              update={(value) => onValueChange(value, valueInfo?.comment?.key)}
+              placeholder={st('Enter your comment here.')}
+              rows={1}
+              maxLength={Infinity}
+              dataTestId="multiple-choice-comment-input"
+            />
           </div>
-        )
-      })}
-      {isSingleChoiceWithComments && (
-        <div className="flex-1 w-50">
-          <Input
-            onClick={(e) => {
-              e.stopPropagation()
-            }}
-            value={valueInfo?.comment?.value}
-            update={(value) => onValueChange(value, valueInfo?.comment?.key)}
-            placeholder={st('Enter your comment here.')}
-            rows={1}
-            maxLength={Infinity}
-            dataTestId="multiple-choice-comment-input"
-          />
+        )}
+      </div>
+      {isSingleChoiceButtons && supportsOther && (
+        <div className="single-choice-buttons-other">
+          {renderOtherInput(valueInfo?.otherText)}
         </div>
       )}
-    </div>
+    </>
   )
 }

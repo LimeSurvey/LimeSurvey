@@ -19473,6 +19473,7 @@ input[type=datetime-local] {
   border-radius: 4px;
   background-color: #fff;
   height: 150px; /* Set a height so vertical centering is visible */
+  position: relative; /* Positions the visually hidden file input inside the drop zone */
   cursor: pointer;
   transition: border-color 0.3s;
   text-align: center;
@@ -19487,12 +19488,21 @@ input[type=datetime-local] {
   font-weight: 400;
 }
 
+.upload-label:focus-within {
+  border-style: solid;
+  border-color: #8146F6;
+}
+
 .upload-input {
-  visibility: hidden;
-  margin: 0;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
   padding: 0 !important;
-  width: 0;
-  height: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 .welcome #lime-logo {
