@@ -10,6 +10,8 @@ export const Tutorial = ({
   onStepChange = () => {},
   onTutorialFinish = () => {},
   onTutorialSkip = () => {},
+  // when provided, renders a "Close and don't show again" button
+  onTutorialDismiss,
   tutorialState,
   setTutorialState,
 }) => {
@@ -140,17 +142,34 @@ export const Tutorial = ({
         }}
       />
 
-      <div
-        onClick={() => {
-          setTutorialState({ ...tutorialState, run: false })
-          onTutorialSkip()
-        }}
-        className="cursor-pointer tutorial-skip-button med12"
-      >
-        <div>{t('Close interactive help')}</div>
-        <div className="x-button-container">
-          <i className="ri-close-fill"></i>
+      <div className="tutorial-close-actions">
+        <div
+          onClick={() => {
+            setTutorialState({ ...tutorialState, run: false })
+            onTutorialSkip()
+          }}
+          className="cursor-pointer tutorial-skip-button med12"
+        >
+          <div>{t('Close interactive help')}</div>
+          <div className="x-button-container">
+            <i className="ri-close-fill"></i>
+          </div>
         </div>
+        {typeof onTutorialDismiss === 'function' && (
+          <button
+            type="button"
+            onClick={() => {
+              setTutorialState({ ...tutorialState, run: false })
+              onTutorialDismiss()
+            }}
+            className="tutorial-dismiss-button med12"
+          >
+            <span>{t('Close and don’t show again')}</span>
+            <span className="x-button-container" aria-hidden="true">
+              <i className="ri-close-fill"></i>
+            </span>
+          </button>
+        )}
       </div>
     </>
   )
