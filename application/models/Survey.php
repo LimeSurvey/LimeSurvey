@@ -1776,7 +1776,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
         ];
         $items[] = [
             'title' => gT('Activate'),
-            'url' => App()->createUrl('surveyAdministration/rendersidemenulink/subaction/generalsettings', ['surveyid' => $this->sid]),
+            'url' => App()->createUrl('surveyAdministration/view', ['iSurveyID' => $this->sid, 'openActivation' => 1]),
             'iconClass' => 'ri-check-line',
             'enabledCondition' =>
             $this->active === "N"

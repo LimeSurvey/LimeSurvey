@@ -1296,7 +1296,7 @@ abstract class Zend_Navigation_Page extends Zend_Navigation_Container
      */
     public final function hashCode()
     {
-        return spl_object_hash($this);
+        return (string) spl_object_id($this);
     }
 
     /**

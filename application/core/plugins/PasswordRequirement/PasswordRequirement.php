@@ -85,6 +85,7 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
     public function init()
     {
         $this->subscribe('checkPasswordRequirement');
+        $this->subscribe('getPasswordRequirements');
         $this->subscribe('createRandomPassword');
 
         $this->subscribe('saveSurveyForm', 'validateSaveSurveyForm');
@@ -106,6 +107,31 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
             $oEvent->set('passwordError', $errors[0]); // Previous system
             $oEvent->set('passwordErrors', $errors);
         }
+    }
+
+    /**
+     * Add the requirements of this plugin to the password help text.
+     * Uses the same settings as checkPasswordRequirement().
+     * @return void
+     */
+    public function getPasswordRequirements()
+    {
+        $event = $this->getEvent();
+        $requirements = $event->get('requirements');
+        $minimumSize = (int) $this->get('minimumSize', null, null, self::DEFAULT_MINIMUM_SIZE);
+        if ($minimumSize > (int) $requirements['min']) {
+            $requirements['min'] = $minimumSize;
+        }
+        if ($this->get('needsNumber', null, null, self::DEFAULT_NEEDS_NUMBER)) {
+            $requirements['numeric'] = max(1, (int) $requirements['numeric']);
+        }
+        if ($this->get('needsUppercase', null, null, self::DEFAULT_NEEDS_UPPERCASE)) {
+            $requirements['upper'] = max(1, (int) $requirements['upper']);
+        }
+        if ($this->get('needsNonAlphanumeric', null, null, self::DEFAULT_NEEDS_NON_ALPHANUMERIC)) {
+            $requirements['symbol'] = max(1, (int) $requirements['symbol']);
+        }
+        $event->set('requirements', $requirements);
     }
 
     /** @see event
@@ -270,23 +296,39 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
          */
 
         // Shuffle, as to not have always to start with the loweracse, then uppercase, ...
-        $str = str_shuffle($str);
+        $str = static::secureShuffle($str);
 
         return $str;
     }
 
     /**
-     * Returns a random number using random_int if available or mt_rand if not.
+     * Returns a random number using a cryptographically secure random number generator.
      * @param int $max The highest value to be returned
      * @param int $min The lowest value to be returned
      * @return int
+     * @throws \Exception If no source of randomness is available
      */
     private static function safeRandom($max, $min = 0)
     {
-        if (function_exists('random_int')) {
-            return random_int($min, $max);
+        return random_int($min, $max);
+    }
+
+    /**
+     * Shuffles the characters of a string (Fisher-Yates) using a cryptographically
+     * secure random number generator. str_shuffle() is not used because its order
+     * can be predicted, which would reveal where the required characters are.
+     * @param string $str String to shuffle
+     * @return string Shuffled string
+     * @throws \Exception If no source of randomness is available
+     */
+    private static function secureShuffle($str)
+    {
+        $characters = str_split($str);
+        for ($i = count($characters) - 1; $i > 0; $i--) {
+            $j = static::safeRandom($i);
+            [$characters[$i], $characters[$j]] = [$characters[$j], $characters[$i]];
         }
-        return mt_rand($min, $max);
+        return implode('', $characters);
     }
 
     /**

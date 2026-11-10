@@ -554,7 +554,7 @@ class Calculation extends CalculationLocale
                     $value
                 );
             }
-            $result = self::unwrapResult($this->_calculateFormulaValue($value, $cell->getCoordinate(), $cell)); //* @phpstan-ignore argument.type ($value can be mixed not string)
+            $result = self::unwrapResult($this->calculateFormulaValue($value, $cell->getCoordinate(), $cell)); //* @phpstan-ignore argument.type ($value can be mixed not string)
             if ($this->spreadsheet === null) {
                 throw new Exception('null spreadsheet in calculateCellValue');
             }
@@ -677,7 +677,7 @@ class Calculation extends CalculationLocale
 
         //    Execute the calculation
         try {
-            $result = self::unwrapResult($this->_calculateFormulaValue($formula, $cellID, $cell));
+            $result = self::unwrapResult($this->calculateFormulaValue($formula, $cellID, $cell));
         } catch (\Exception $e) {
             throw new Exception($e->getMessage());
         }
@@ -720,9 +720,9 @@ class Calculation extends CalculationLocale
      * @param string $formula The formula to parse and calculate
      * @param ?string $cellID The ID (e.g. A3) of the cell that we are calculating
      * @param ?Cell $cell Cell to calculate
-     * @param bool $ignoreQuotePrefix If set to true, evaluate the formyla even if the referenced cell is quote prefixed
+     * @param bool $ignoreQuotePrefix If set to true, evaluate the formula even if the referenced cell is quote prefixed
      */
-    public function _calculateFormulaValue(string $formula, ?string $cellID = null, ?Cell $cell = null, bool $ignoreQuotePrefix = false): mixed
+    public function calculateFormulaValue(string $formula, ?string $cellID = null, ?Cell $cell = null, bool $ignoreQuotePrefix = false): mixed
     {
         $cellValue = null;
 
@@ -790,6 +790,14 @@ class Calculation extends CalculationLocale
 
         //    Return the calculated value
         return $cellValue;
+    }
+
+    /**
+     * @deprecated 5.11.0 use calculateFormulaValue
+     */
+    public function _calculateFormulaValue(string $formula, ?string $cellID = null, ?Cell $cell = null, bool $ignoreQuotePrefix = false): mixed // phpcs:ignore
+    {
+        return $this->calculateFormulaValue($formula, $cellID, $cell, $ignoreQuotePrefix);
     }
 
     /**
@@ -1412,7 +1420,7 @@ class Calculation extends CalculationLocale
                     $ax = preg_match('/^\s*\)/u', substr($formula, $index + $length));
                     if ($ax) {
                         $stack->push('Operand Count for Function ' . $valToUpper . ')', 0);
-                        $expectingOperator = true;
+                        $expectingOperator = true; //* @phpstan-ignore assign.redundant (code clarity)
                     } else {
                         $stack->push('Operand Count for Function ' . $valToUpper . ')', 1);
                         $expectingOperator = false;
@@ -1475,7 +1483,7 @@ class Calculation extends CalculationLocale
                     $outputItem = $stack->getStackItem(Operands\StructuredReference::NAME, $structuredReference, null);
 
                     $output[] = $outputItem;
-                    $expectingOperator = true;
+                    $expectingOperator = true; //* @phpstan-ignore assign.redundant (code clarity)
                 } else {
                     // it's a variable, constant, string, number or boolean
                     $localeConstant = false;
@@ -1515,7 +1523,7 @@ class Calculation extends CalculationLocale
                         } else {
                             /** @var non-empty-string $startRowColRef */
                             $startRowColRef = $output[count($output) - 1]['value'] ?? '';
-                            [$rangeWS1, $startRowColRef] = Worksheet::extractSheetTitle($startRowColRef, true);
+                            [$rangeWS1] = Worksheet::extractSheetTitle($startRowColRef, true);
                             $rangeSheetRef = $rangeWS1;
                             if ($rangeWS1 !== '') {
                                 $rangeWS1 .= '!';
@@ -1531,8 +1539,10 @@ class Calculation extends CalculationLocale
                             }
 
                             $refSheet = $pCellParent;
+                            $returnRef = false;
                             if ($pCellParent !== null && $rangeSheetRef !== '' && $rangeSheetRef !== $pCellParent->getTitle()) {
                                 $refSheet = $pCellParent->getParentOrThrow()->getSheetByName($rangeSheetRef);
+                                $returnRef = $refSheet === null;
                             }
 
                             if (ctype_digit($val) && $val <= AddressRange::MAX_ROW) {
@@ -1546,6 +1556,9 @@ class Calculation extends CalculationLocale
                                 $stackItemType = 'Column Reference';
                                 $endRowColRef = ($refSheet !== null) ? $refSheet->getHighestDataRow() : AddressRange::MAX_ROW; //    Max 1,048,576 rows for Excel2007
                                 $val = "{$rangeWS2}{$val}{$endRowColRef}";
+                            }
+                            if ($returnRef) {
+                                $val = ExcelError::REF();
                             }
                             $stackItemReference = $val;
                         }
@@ -1820,7 +1833,7 @@ class Calculation extends CalculationLocale
                     $cellRange = $token->parse($cell);
                     if (str_contains($cellRange, ':')) {
                         $this->debugLog->writeDebugLog('Evaluating Structured Reference %s as Cell Range %s', $token->value(), $cellRange);
-                        $rangeValue = self::getInstance($cell->getWorksheet()->getParent())->_calculateFormulaValue("={$cellRange}", $cellRange, $cell);
+                        $rangeValue = self::getInstance($cell->getWorksheet()->getParent())->calculateFormulaValue("={$cellRange}", $cellRange, $cell);
                         $stack->push('Value', $rangeValue);
                         $this->debugLog->writeDebugLog('Evaluated Structured Reference %s as value %s', $token->value(), $this->showValue($rangeValue));
                     } else {
@@ -1957,7 +1970,11 @@ class Calculation extends CalculationLocale
                             }
                             $cellRef = Coordinate::stringFromColumnIndex(min($oCol) + 1) . min($oRow) . ':' . Coordinate::stringFromColumnIndex(max($oCol) + 1) . max($oRow);
                             if ($pCellParent !== null && $this->spreadsheet !== null) {
-                                $cellValue = $this->extractCellRange($cellRef, $this->spreadsheet->getSheetByName($sheet1), false);
+                                if ($operand1Data['value'] === ExcelError::REF()) {
+                                    $cellValue = ExcelError::REF();
+                                } else {
+                                    $cellValue = $this->extractCellRange($cellRef, $this->spreadsheet->getSheetByName($sheet1), false);
+                                }
                             } else {
                                 return $this->raiseFormulaError('Unable to access Cell Reference');
                             }
@@ -2075,13 +2092,13 @@ class Calculation extends CalculationLocale
 
                         break;
                 }
-            } elseif (($token === '~') || ($token === '%')) { // @phpstan-ignore booleanOr.alwaysFalse (phpstan says token can't be plain string), identical.alwaysFalse (ditto), identical.alwaysFalse (ditto)
+            } elseif (($token === '~') || ($token === '%')) {
                 // if the token is a unary operator, pop one value off the stack, do the operation, and push it back on
                 if (($arg = $stack->pop()) === null) {
                     return $this->raiseFormulaError('Internal error - Operand value missing from stack');
                 }
                 $arg = $arg['value'];
-                if ($token === '~') { // @phpstan-ignore identical.alwaysFalse (phpstan says token can't be plain string)
+                if ($token === '~') {
                     $this->debugLog->writeDebugLog('Evaluating Negation of %s', $this->showValue($arg));
                     $multiplier = -1;
                 } else {
@@ -2367,7 +2384,7 @@ class Calculation extends CalculationLocale
                         $branchStore[$storeKey] = self::EXCEL_CONSTANTS[$excelConstant];
                     }
                     $this->debugLog->writeDebugLog('Evaluating Constant %s as %s', $excelConstant, $this->showTypeDetails(self::EXCEL_CONSTANTS[$excelConstant]));
-                } elseif ((is_numeric($token)) || ($token === null) || (is_bool($token)) || ($token == '') || ($token[0] == self::FORMULA_STRING_QUOTE) || ($token[0] == '#')) { //* @phpstan-ignore function.alreadyNarrowedType (phpstan says is_bool has argument of *NEVER*?), equal.alwaysFalse (ditto)
+                } elseif ((is_numeric($token)) || ($token === null) || (is_bool($token)) || ($token == '') || ($token[0] == self::FORMULA_STRING_QUOTE) || ($token[0] == '#')) {
                     /** @var array{type: string, reference: ?string} $tokenData */
                     $stack->push($tokenData['type'], $token, $tokenData['reference']);
                     if (isset($storeKey)) {
@@ -2995,7 +3012,7 @@ class Calculation extends CalculationLocale
         $recursiveCalculator = new self($this->spreadsheet);
         $recursiveCalculator->getDebugLog()->setWriteDebugLog($this->getDebugLog()->getWriteDebugLog());
         $recursiveCalculator->getDebugLog()->setEchoDebugLog($this->getDebugLog()->getEchoDebugLog());
-        $result = $recursiveCalculator->_calculateFormulaValue($definedNameValue, $recursiveCalculationCellAddress, $recursiveCalculationCell, true);
+        $result = $recursiveCalculator->calculateFormulaValue($definedNameValue, $recursiveCalculationCellAddress, $recursiveCalculationCell, true);
         $cellWorksheet->getCell($originalCoordinate);
 
         if ($this->getDebugLog()->getWriteDebugLog()) {

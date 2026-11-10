@@ -1,0 +1,57 @@
+site_name: WMF
+site_url: https://phpoffice.github.io/WMF
+repo_url: https://github.com/PHPOffice/WMF
+repo_name: PHPOffice/WMF
+edit_uri: edit/master/docs/
+
+## Theme
+theme:
+  name: material
+  palette:
+    primary: grey
+  features:
+    - search.highlight
+    - search.suggest
+
+## Plugins
+plugins:
+  - search
+
+## Config
+extra:
+  generator: false
+extra_javascript:
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+markdown_extensions:
+  ## Syntax highlighting
+  - pymdownx.highlight
+  - pymdownx.superfences
+  ## Support for emojis
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  ## Support for call-outs
+  - admonition
+  - pymdownx.details
+use_directory_urls: false
+
+## Navigation
+nav:
+  - Introduction: 'index.md'
+  - Install: 'install.md'
+  - Usage:
+    - WMF: 'usage/wmf.md'
+    - EMF: 'usage/emf.md'
+    - Detector: 'usage/detector.md'
+  - Credits: 'credits.md'
+  - Releases:
+      - '0.2.1 (WIP)': 'changes/0.2.1.md'
+      - '0.2.0': 'changes/0.2.0.md'
+      - '0.1.3': 'changes/0.1.3.md'
+      - '0.1.2': 'changes/0.1.2.md'
+      - '0.1.1': 'changes/0.1.1.md'
+      - '0.1.0': 'changes/0.1.0.md'
+  - Developers:
+    - 'Coveralls': 'https://coveralls.io/github/PHPOffice/WMF'
+    - 'Code Coverage': 'coverage/index.html'
+    - 'PHPDoc': 'docs/index.html'
