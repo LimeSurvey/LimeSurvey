@@ -9,13 +9,19 @@ import {
   docUrls,
 } from 'helpers'
 import NoImageFound from 'assets/images/no-image-found.jpg'
-import { ContentEditor, DropZone, FormCheck } from 'components/UIComponents'
+import {
+  ContentEditor,
+  DropZone,
+  FormCheck,
+  ImageEditor,
+} from 'components/UIComponents'
 import { useFileService } from 'hooks'
 
 export const ImageChoice = ({
   id,
   idPrefix,
   index,
+  code = '',
   inputType = 'checkbox',
   isFocused,
   update,
@@ -28,6 +34,7 @@ export const ImageChoice = ({
   setErrors = () => {},
 }) => {
   const [isLoading, setIsLoading] = useState(false)
+  const [showImageEditor, setShowImageEditor] = useState(false)
   const { fileService } = useFileService()
   // REACT_APP_SITE_URL is needed in development environments
   // - because the react-app runs on a different port to the core app
@@ -51,6 +58,12 @@ export const ImageChoice = ({
   const idSuffix = idPrefix + id + '-i' + index
 
   const showLoader = (isFocused || isLoading) && !initLoading
+
+  // Memoized: The image editor resets its state whenever this object changes.
+  const imageEditorObject = useMemo(
+    () => ({ imagePreviewUrl: previewUrl }),
+    [previewUrl]
+  )
 
   useEffect(() => {
     setPreviewUrl(value ? process.env.REACT_APP_SITE_URL + value : null)
@@ -119,9 +132,24 @@ export const ImageChoice = ({
                 onChangePreview={onChangePreview}
                 isValidImg={isValidImg}
                 onLoading={(value) => setIsLoading(value)}
+                onEdit={
+                  previewUrl && isValidImg
+                    ? () => setShowImageEditor(true)
+                    : null
+                }
+                imageName={code}
               />
             </div>
           </div>
+        )}
+        {showImageEditor && (
+          <ImageEditor
+            showModal={showImageEditor}
+            onClose={() => setShowImageEditor(false)}
+            // The settings are not stored yet.
+            onChange={() => {}}
+            imageObject={imageEditorObject}
+          />
         )}
         {isFocused && initLoading && !isNoAnswer && (
           <div style={{ width: 44, height: 44 }} className="loader ms-4"></div>

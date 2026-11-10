@@ -8,6 +8,8 @@
   position: absolute;
   bottom: 10px;
   right: 10px;
+  // Keep several buttons side by side: The buttons themselves are flex boxes.
+  display: flex;
   .image-handle-btn {
     background: rgba(255, 255, 255, 0.75);
     &:hover {

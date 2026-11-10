@@ -5,11 +5,12 @@ import React, {
   useImperativeHandle,
   forwardRef,
 } from 'react'
+import { format } from 'util'
 import { useDropzone } from 'react-dropzone'
 import { Form, Button, Image } from 'react-bootstrap'
 
 import NoImageFound from 'assets/images/no-image-found.jpg'
-import { UploadIcon, DeleteIcon } from 'components/icons'
+import { UploadIcon, DeleteIcon, EditIcon } from 'components/icons'
 import { errorToast } from 'helpers/Alert'
 import { FILE_UPLOAD_MAX_SIZE } from 'helpers/constants'
 import classNames from 'classnames'
@@ -32,6 +33,11 @@ export const DropZone = forwardRef(
       previewMaxWidth = '100%',
       dataTestId = 'dropzone',
       trashIconEnabled = true,
+      // When set, an edit button is shown next to the trash icon on hover.
+      onEdit = null,
+      // Name of the image (e.g. the option code), used to tell the buttons of
+      // several dropzones apart for screen readers.
+      imageName = '',
       disabled = false,
       previewCover = true,
       // When set, both the empty and the uploaded-image states use this
@@ -41,12 +47,19 @@ export const DropZone = forwardRef(
     },
     ref
   ) => {
-    const [showTrashIcon, setShowTrashIcon] = useState(false)
+    const [showImageButtons, setShowImageButtons] = useState(false)
     const [previewUrl, setPreviewUrl] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
 
-    const handleOnMouseHover = () => setShowTrashIcon(trashIconEnabled && true)
-    const handleOnMouseLeave = () => setShowTrashIcon(false)
+    const handleOnMouseHover = () =>
+      setShowImageButtons(trashIconEnabled || !!onEdit)
+    const handleOnMouseLeave = () => setShowImageButtons(false)
+    // Keyboard users reach the buttons by focusing the dropzone first.
+    const handleOnBlur = (event) => {
+      if (!event.currentTarget.contains(event.relatedTarget)) {
+        setShowImageButtons(false)
+      }
+    }
 
     const setLoading = (value) => {
       onLoading(value)
@@ -123,7 +136,7 @@ export const DropZone = forwardRef(
     const handleDelete = () => {
       // Deleting - does not delete the file from the server
       // - we just remove the reference in the related data
-      setShowTrashIcon(false)
+      setShowImageButtons(false)
       changePreview(null)
       onChange('')
       onDelete()
@@ -195,20 +208,48 @@ export const DropZone = forwardRef(
         />
         <div
           className={`position-absolute image-handle-btn-wrapper ${
-            !isLoading && showTrashIcon ? '' : 'd-none'
+            !isLoading && showImageButtons ? '' : 'd-none'
           }`}
         >
-          <Button
-            variant="outline-light"
-            className="image-handle-btn ms-1"
-            size="sm"
-            onClick={(event) => {
-              handleDelete()
-              event.stopPropagation()
-            }}
-          >
-            <DeleteIcon className="text-primary fill-current" />
-          </Button>
+          {onEdit && (
+            <Button
+              variant="outline-light"
+              className="image-handle-btn ms-1"
+              size="sm"
+              aria-label={
+                imageName
+                  ? format(t('Edit image %s'), imageName)
+                  : t('Edit image')
+              }
+              data-testid={`${dataTestId}-edit`}
+              onClick={(event) => {
+                // Keep the click from opening the file dialog of the dropzone.
+                event.stopPropagation()
+                setShowImageButtons(false)
+                onEdit()
+              }}
+            >
+              <EditIcon className="text-primary fill-current" />
+            </Button>
+          )}
+          {trashIconEnabled && (
+            <Button
+              variant="outline-light"
+              className="image-handle-btn ms-1"
+              size="sm"
+              aria-label={
+                imageName
+                  ? format(t('Delete image %s'), imageName)
+                  : t('Delete image')
+              }
+              onClick={(event) => {
+                handleDelete()
+                event.stopPropagation()
+              }}
+            >
+              <DeleteIcon className="text-primary fill-current" />
+            </Button>
+          )}
         </div>
       </div>
     )
@@ -217,7 +258,10 @@ export const DropZone = forwardRef(
       <div
         style={{ cursor: 'pointer', minwidth: '200px' }}
         data-testid={dataTestId}
-        {...getRootProps()}
+        {...getRootProps({
+          onFocus: previewUrl ? handleOnMouseHover : undefined,
+          onBlur: handleOnBlur,
+        })}
       >
         <input {...getInputProps()} />
         {labelText.length ? (

@@ -79,12 +79,17 @@ export const ImageEditor = ({ showModal, onClose, imageObject, onChange }) => {
   if (!selectedFile) return <></>
 
   return (
-    <Modal show={showModal} onHide={onClose}>
+    <Modal
+      show={showModal}
+      onHide={onClose}
+      size="lg"
+      aria-labelledby="image-editor-title"
+    >
       <Modal.Header closeButton>
-        <Modal.Title>{t('LimeSurvey Image Editor')}</Modal.Title>
+        <Modal.Title id="image-editor-title">{t('Edit image')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <div className=" " style={{ width: '900px' }}>
+        <div className="d-flex gap-4">
           <div className="w-50">
             <AvatarEditor
               ref={editor}

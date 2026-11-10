@@ -156,6 +156,7 @@ export const OptionQuestionEditMode = ({
                       }
                       key={`uicomponent-${child.appKey || child[childrenInfo.idKey]}-questionmode`}
                       index={index}
+                      code={isSingleChoiceTheme ? child.code : child.title}
                       isFocused={true}
                       idPrefix={isSingleChoiceTheme ? 'a' : 'q'}
                       id={child[childrenInfo.idKey]}
