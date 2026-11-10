@@ -24,7 +24,7 @@
                     <div class="row mb-3">
                         <!-- Source survey -->
                         <label class="form-label" for='surveyIdToCopy'><?= gT("Source survey:"); ?> <span class="required">*</span></label>
-                        <select id='surveyIdToCopy' name='surveyIdToCopy' class="form-select w-100"></select>
+                        <select id='surveyIdToCopy' name='surveyIdToCopy' class="form-select w-100" aria-required="true"></select>
                     </div>
                     <div class="mb-3">
                         <!-- New survey title -->

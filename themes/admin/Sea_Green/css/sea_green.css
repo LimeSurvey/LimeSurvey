@@ -19474,6 +19474,7 @@ input[type=datetime-local] {
   border-radius: 4px;
   background-color: #fff;
   height: 150px; /* Set a height so vertical centering is visible */
+  position: relative; /* Positions the visually hidden file input inside the drop zone */
   cursor: pointer;
   transition: border-color 0.3s;
   text-align: center;

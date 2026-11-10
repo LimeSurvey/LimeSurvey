@@ -42,7 +42,7 @@
                             } ?>
                         </label>
                         <div class="upload-container">
-                            <label id="fileUpload-label"><b><?php eT("Select or drop a file here"); ?> <span class="required">*</span></b></label>
+                            <label id="fileUpload-label" for="fileUpload"><b><?php eT("Select or drop a file here"); ?> <span class="required" aria-hidden="true">*</span></b></label>
                             <label for="fileUpload" class="upload-label" id="drop_zone">
                                 <div class="upload-text" id="file-upload-text">
                                     <span class="ri-upload-line">&nbsp;</span> </br>
@@ -60,7 +60,7 @@
                                     onchange="$('#import-submit').attr('disabled', false).attr('data-bs-toggle', false);"
                                 />
                             </label>
-                            <?php // Filled when the form is submitted without a file: the alert role announces it ?>
+                            <?php // Filled when the form is submitted without a file: The alert role announces it ?>
                             <div id="fileUpload-error" class="text-danger mt-1" role="alert"></div>
                         </div>
                     </div>
@@ -111,7 +111,12 @@ $('#importsurvey').on('submit', function(e) {
             $('#ls-loading').show();
             // Set the text of the status region again, so the screen reader announces it
             var loadingText = $('#ls-loading .visually-hidden');
-            var text = loadingText.text();
+            // Keep the original text: A second submit must not read the temporarily emptied text
+            var text = loadingText.data('loadingText');
+            if (text === undefined) {
+                text = loadingText.text();
+                loadingText.data('loadingText', text);
+            }
             loadingText.text('');
             setTimeout(function () { loadingText.text(text); }, 100);
         }

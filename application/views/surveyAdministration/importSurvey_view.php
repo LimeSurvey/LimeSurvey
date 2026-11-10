@@ -51,7 +51,7 @@
         <!-- Import result messages -->
         <div class="row justify-content-center">
             <div class="col-lg-2">
-                <?php // Label/count list laid out as a table: not announced as a data table ?>
+                <?php // Label/count list laid out as a table: Not announced as a data table ?>
                 <table class="table table-striped table-condensed " role="presentation">
                     <tr>
                         <td><?php eT("Surveys"); ?></td>

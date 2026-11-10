@@ -14,6 +14,7 @@
   border-radius: $border-radius;
   background-color: $white;
   height: 150px;           /* Set a height so vertical centering is visible */
+  position: relative;      /* Positions the visually hidden file input inside the drop zone */
   cursor: pointer;
   transition: border-color 0.3s;
   text-align: center;
@@ -28,7 +29,7 @@
   font-weight: $font-weight-normal;
 }
 
-// The drop zone label stands for the file input: the input is only visually hidden,
+// The drop zone label stands for the file input: The input is only visually hidden,
 // so it stays in the keyboard focus order, and the drop zone shows its focus
 .upload-label:focus-within {
   border-style: solid;

@@ -25,6 +25,8 @@ $(document).ready(function () {
                 placeholder: '',
                 allowClear: false
             });
+            // Select2 hides the select: Mark its combobox as required for screen readers
+            $select.next('.select2').find('.select2-selection').attr('aria-required', 'true');
 
             // When source survey changes, update the title field
             $select.on('select2:select', function (e) {
