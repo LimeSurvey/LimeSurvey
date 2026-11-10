@@ -100,14 +100,17 @@ class InstallerController extends CController
     /**
      * Installer::checkInstallation()
      *
-     * Based on existence of 'sample_installer_file.txt' file, check if
-     * installation should proceed further or not.
+     * Based on existence of the config.php file, check if installation should
+     * proceed further or not. If LimeSurvey is already installed, redirect to
+     * the administration with a warning message.
      * @return void
      */
     private function checkInstallation()
     {
         if (file_exists(APPPATH . 'config/config.php')) {
-            throw new CHttpException(500, 'Installation has been done already. Installer disabled.');
+            App()->loadHelper('common');
+            App()->setFlashMessage(gT('LimeSurvey is already installed. The installer has been disabled.'), 'warning');
+            $this->redirect(array('/admin'));
         }
     }
 

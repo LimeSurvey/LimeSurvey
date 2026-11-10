@@ -51,6 +51,15 @@ switch ($errorObject->error) {
         $buttons = 1;
         break;
 
+    case 'hard_lock':
+        $title = gT("Your update key has been locked!");
+        $message = sprintf(
+            gT("This usually happens if the payment for your update key is still outstanding. Please check your invoices in your LimeSurvey account or contact LimeSurvey support at %s."),
+            'support@limesurvey.org'
+        );
+        $buttons = 3;
+        break;
+
     case 'not_found':
         $title = gT("Unknown update key!");
         $message = gT("Your key is unknown to the update server.");

@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react'
-import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
+import { useState } from 'react'
+import { DragDropContext, Draggable, Droppable } from '@hello-pangea/dnd'
 import classNames from 'classnames'
 import Button from 'react-bootstrap/Button'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -34,6 +34,7 @@ import { RowPinned } from './RowPinned'
 import { RowQuestionGroup } from './RowQuestionGroup'
 import { arrayInsertItem } from '../../helpers/arrayInsertItem'
 
+/** Sidebar tree of question groups and questions with drag-and-drop reordering. */
 export const SurveyStructure = () => {
   const { surveyId } = useParams()
   const navigate = useNavigate()
@@ -61,23 +62,6 @@ export const SurveyStructure = () => {
     questionGroup: null,
     index: null,
   })
-
-  useEffect(() => {
-    const allGroupsElement = document.querySelector(
-      '[data-rbd-droppable-id="all-groups"]'
-    )
-    if (allGroupsElement) {
-      if (isDraggingOutOfGroup || !hasSurveyUpdatePermission) {
-        allGroupsElement.style.cursor = 'not-allowed'
-      } else {
-        allGroupsElement.style.cursor = 'auto'
-      }
-
-      return () => {
-        allGroupsElement.style.cursor = 'auto'
-      }
-    }
-  }, [isDraggingOutOfGroup, hasSurveyUpdatePermission])
 
   const handleUpdate = (questionGroups) => {
     survey.questionGroups = questionGroups
@@ -182,6 +166,7 @@ export const SurveyStructure = () => {
     return false
   }
 
+  /** Moves a question inside its own group; returns false if source and destination groups differ. */
   const reorderQuestionWithinGroup = (
     source,
     destination,
@@ -189,7 +174,7 @@ export const SurveyStructure = () => {
     newIndex
   ) => {
     if (source.droppableId === destination.droppableId) {
-      const groupIndex = source.droppableId.replace('g', '')
+      const groupIndex = Number(source.droppableId.replace('g', ''))
       const questions = questionGroups[groupIndex].questions
       const { movedQuestion, reorderedQuestions } = MoveQuestion(
         questions,
@@ -215,10 +200,11 @@ export const SurveyStructure = () => {
     return false
   }
 
+  /** Moves a question to another group; not allowed while the survey is active. */
   const reorderQuestionToNewGroup = (source, destination) => {
     if (!isSurveyActive) {
-      const sourceGroupIndex = source.droppableId.replace('g', '')
-      const destGroupIndex = destination.droppableId.replace('g', '')
+      const sourceGroupIndex = Number(source.droppableId.replace('g', ''))
+      const destGroupIndex = Number(destination.droppableId.replace('g', ''))
       // remove question from source and add it to destination group
       const [sourceQuestions, [movedQuestion]] = arrayDeleteItem(
         questionGroups[sourceGroupIndex].questions,
@@ -345,20 +331,18 @@ export const SurveyStructure = () => {
               <CloseIcon className="text-black fill-current" />
             </Button>
           </SideBarHeader>
-          <div
-            data-testid="survey-structure-header"
-            className={classNames({
-              'focus-bg-purple text-white':
-                focused?.info?.type ===
-                getQuestionTypeInfo().WELCOME_SCREEN.type,
-            })}
-            onClick={() => {
+          <RowPinned
+            testId="survey-structure-header"
+            title={t('Welcome')}
+            disabled={!showWelcome}
+            isFocused={
+              focused?.info?.type === getQuestionTypeInfo().WELCOME_SCREEN.type
+            }
+            onRowClick={() => {
               scrollToElement('survey-header')
               setFocused({ info: getQuestionTypeInfo().WELCOME_SCREEN })
             }}
-          >
-            <RowPinned title={t('Welcome')} disabled={!showWelcome} />
-          </div>
+          />
           <DragDropContext
             onDragEnd={handleOnDragEnd}
             onDragUpdate={onDragUpdate}
@@ -370,7 +354,16 @@ export const SurveyStructure = () => {
               direction="vertical"
             >
               {(provided) => (
-                <div {...provided.droppableProps} ref={provided.innerRef}>
+                <div
+                  {...provided.droppableProps}
+                  ref={provided.innerRef}
+                  style={{
+                    cursor:
+                      isDraggingOutOfGroup || !hasSurveyUpdatePermission
+                        ? 'not-allowed'
+                        : 'auto',
+                  }}
+                >
                   {questionGroups.map((questionGroup, index) => (
                     <Draggable
                       index={index}
@@ -424,19 +417,17 @@ export const SurveyStructure = () => {
             </Droppable>
           </DragDropContext>
           {questionGroups.length > 0 ? (
-            <div
-              data-testid="survey-structure-footer"
-              className={classNames({
-                'focus-bg-purple text-white':
-                  focused?.info?.type === getQuestionTypeInfo().END_SCREEN.type,
-              })}
-              onClick={() => {
+            <RowPinned
+              testId="survey-structure-footer"
+              title={t('End')}
+              isFocused={
+                focused?.info?.type === getQuestionTypeInfo().END_SCREEN.type
+              }
+              onRowClick={() => {
                 scrollToElement('survey-footer-title')
                 setFocused({ info: getQuestionTypeInfo().END_SCREEN })
               }}
-            >
-              <RowPinned title={t('End')} />
-            </div>
+            />
           ) : (
             <></>
           )}

@@ -94,6 +94,7 @@ class Zend_Stdlib_CallbackHandler
     protected function registerCallback($callback)
     {
         $errorLevel = (defined('E_STRICT') && version_compare(PHP_VERSION, '8.4.0', '<'))
+            // phpcs:ignore PHPCompatibility.Constants.RemovedConstants.e_strictDeprecated -- used before PHP 8.4 only
             ? (E_ALL | E_STRICT)
             : E_ALL;
 

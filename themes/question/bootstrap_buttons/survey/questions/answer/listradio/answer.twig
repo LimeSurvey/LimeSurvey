@@ -13,9 +13,13 @@
 
 <!-- List Radio -->
 <!-- answer -->
+{# Translate the col-md-* option of "Maximum number of buttons in a row" into a fixed grid column count #}
+{% set buttons_per_row_map = {'col-md-12': 1, 'col-md-6': 2, 'col-md-4': 3, 'col-md-3': 4, 'col-md-2': 6, 'col-md-1': 12} %}
+{% set max_buttons_row_value = question_template_attribute.max_buttons_row|default('') %}
+{% set buttons_cols_class = max_buttons_row_value in buttons_per_row_map|keys ? 'bootstrap-buttons-cols-' ~ buttons_per_row_map[max_buttons_row_value] : '' %}
 {{ sTimer }}
 <div>
-    <ul class="{{coreClass}} list-unstyled bootstrap-buttons-list" data-bs-toggle="buttons" role="radiogroup" aria-labelledby="ls-question-text-{{name }}">
+    <ul class="{{coreClass}} list-unstyled bootstrap-buttons-list {{ buttons_cols_class }}" data-bs-toggle="buttons" role="radiogroup" aria-labelledby="ls-question-text-{{name }}">
     {# rows/answer_row.php #}
     {{ sRows }}
     </ul>

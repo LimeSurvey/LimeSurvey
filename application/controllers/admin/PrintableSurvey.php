@@ -546,11 +546,10 @@ class PrintableSurvey extends SurveyCommonAction
                     }*/
                     /* Add a PRINT_QUESTION_CODE : same than used in "automatic system generation (with EM condition) */
                     $question['print_code'] = "{$question['number']} [{$question['code']}]";
-                    $showqnumcode = Yii::app()->getConfig('showqnumcode');
-                    if (($showqnumcode == 'choose' && ($aSurveyInfo['showqnumcode'] == 'N' || $aSurveyInfo['showqnumcode'] == 'X')) || $showqnumcode == 'number' || $showqnumcode == 'none') {
+                    if (in_array($aSurveyInfo['showqnumcode'], ['N', 'X'])) {
                         $question['code'] = '';
                     }
-                    if (($showqnumcode == 'choose' && ($aSurveyInfo['showqnumcode'] == 'C' || $aSurveyInfo['showqnumcode'] == 'X')) || $showqnumcode == 'code' || $showqnumcode == 'none') {
+                    if (in_array($aSurveyInfo['showqnumcode'], ['C', 'X'])) {
                         $question['number'] = '';
                     }
 
@@ -807,6 +806,7 @@ class PrintableSurvey extends SurveyCommonAction
 
                             // ==================================================================
                         case Question::QT_S_SHORT_FREE_TEXT:  //SHORT TEXT
+                        case Question::QT_J_MAP:
                             $question['type_help'] .= CHtml::tag("div", array("class" => "tip-help"), gT("Please write your answer here:"));
                             $width = (isset($qidattributes['input_size']) && $qidattributes['input_size']) ? $qidattributes['input_size'] : null;
                             $height = (isset($qidattributes['display_rows']) && $qidattributes['display_rows']) ? $qidattributes['display_rows'] : null;

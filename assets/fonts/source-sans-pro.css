@@ -154,3 +154,7 @@
          url('./font-src/source-sans-pro/source-sans-pro-v21-latin-ext_latin-900italic.ttf') format('truetype'), /* Safari, Android, iOS */
          url('./font-src/source-sans-pro/source-sans-pro-v21-latin-ext_latin-900italic.svg#SourceSansPro') format('svg'); /* Legacy iOS */
 }
+
+.font-source-sans-pro{
+    font-family: 'Source Sans Pro';
+}

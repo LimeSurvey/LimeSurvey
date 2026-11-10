@@ -50,11 +50,6 @@ class StreamHandler
     ];
 
     /**
-     * @var array
-     */
-    private $lastHeaders = [];
-
-    /**
      * @var string
      */
     private $transportSharingMode;
@@ -179,10 +174,14 @@ class StreamHandler
                 $request = $request->withHeader('Content-Length', '0');
             }
 
+            $stream = $this->createStream($request, $options);
+            $headers = \stream_get_meta_data($stream)['wrapper_data'];
+
             return $this->createResponse(
                 $request,
                 $options,
-                $this->createStream($request, $options),
+                $stream,
+                \is_array($headers) ? $headers : [],
                 $startTime
             );
         } catch (\InvalidArgumentException $e) {
@@ -226,11 +225,8 @@ class StreamHandler
     /**
      * @param resource $stream
      */
-    private function createResponse(RequestInterface $request, array $options, $stream, ?float $startTime): PromiseInterface
+    private function createResponse(RequestInterface $request, array $options, $stream, array $hdrs, ?float $startTime): PromiseInterface
     {
-        $hdrs = $this->lastHeaders;
-        $this->lastHeaders = [];
-
         try {
             [$ver, $status, $reason, $headers] = HeaderProcessor::parseHeaders($hdrs);
         } catch (\Throwable $e) {
@@ -502,13 +498,6 @@ class StreamHandler
             function () use ($uri, $contextResource, $context, $options, $request) {
                 $resource = @\fopen((string) $uri, 'r', false, $contextResource);
 
-                // See https://wiki.php.net/rfc/deprecations_php_8_5#deprecate_the_http_response_header_predefined_variable
-                if (function_exists('http_get_last_response_headers')) {
-                    $http_response_header = \http_get_last_response_headers();
-                }
-
-                $this->lastHeaders = $http_response_header ?? [];
-
                 if (false === $resource) {
                     throw new ConnectException(sprintf('Connection refused for URI %s', Psr7\Utils::redactUserInfo($uri)), $request, null, $context);
                 }
@@ -635,14 +624,27 @@ class StreamHandler
     private static function numericIpv4PartValue(string $part): float
     {
         if ($part[0] === '0' && isset($part[1]) && ($part[1] === 'x' || $part[1] === 'X')) {
-            return (float) \hexdec((string) \substr($part, 2));
+            return self::digitsValue((string) \substr($part, 2), 16);
         }
 
         if ($part[0] === '0') {
-            return (float) \octdec($part);
+            return self::digitsValue($part, 8);
         }
 
         return (float) $part;
+    }
+
+    private static function digitsValue(string $digits, int $base): float
+    {
+        $value = 0.0;
+        foreach (\str_split($digits) as $digit) {
+            $value = $value * $base + \hexdec($digit);
+            if ($value > 0xFFFFFFFF) {
+                break;
+            }
+        }
+
+        return $value;
     }
 
     private function getDefaultContext(RequestInterface $request): array

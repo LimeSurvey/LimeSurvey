@@ -4,7 +4,7 @@
         <strong class="sortable-subtitle sortable-rank-subtitle">{{choice_title}}</strong>
         <!-- @todo : move htmlblock at the good place -->      
         <div id="sortable-choice-{{qId}}" class="sortable-choice sortable-list ">
-            {% for index, ansrow in  answers %}
+            {% for ansrow in  answers %}
                 {% if show_handle is same as('yes') %} 
                     <div id="javatbd{{rankingName}}_S{{ansrow.sqid}}" class="ls-choice answer-item sortable-item sortable-enable sortable-button btn btn-outline-secondary" data-value="{{ansrow.title}}">
                     <i class="fa fa-bars bigIcons grabable selector__dragHandle "></i>
@@ -13,8 +13,7 @@
                     <div id="javatbd{{rankingName}}_S{{ansrow.sqid}}" class="ls-choice answer-item sortable-item sortable-enable sortable-button btn btn-outline-secondary grabable" data-value="{{ansrow.title}}">
                 {% endif %}
                 {% if show_number is same as('yes') %} 
-                    <b class="selector__index_row">#{{(index+1)}}</b>
-                    &nbsp;
+                    <b class="selector__index_row"></b>
                 {% endif %}
                     {{ansrow.answer}}
                     

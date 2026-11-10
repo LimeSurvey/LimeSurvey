@@ -2,7 +2,7 @@
 
 ?>
 
-<div id="copySurvey_modal" class="modal fade" role="dialog" aria-modal="true" aria-labelledby="copySurveyModalTitle">
+<div id="copySurvey_modal" class="modal fade" role="dialog" aria-modal="true" aria-labelledby="copySurveyModalTitle copySurveyModalTitle-dialogsr">
     <div class="modal-dialog import-modal">
         <!-- Modal content-->
         <div class="modal-content">

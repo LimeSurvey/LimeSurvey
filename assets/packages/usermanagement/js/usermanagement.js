@@ -63,24 +63,75 @@ var UserManagement = function () {
             modalDialog.addClass(modalSize);
         }
         $('#UserManagement-action-modal').modal('show');
+        announceLoading();
     };
 
     var startSubmit = function () {
         $('#submitForm').append(
             '<i class="ri-loader-2-fill remix-pulse UserManagement-spinner"></i>'
         ).prop('disabled', true);
+        var status = $('#UserManagement-action-modal-status');
+        status.text(status.data('loading-text'));
     };
     var stopSubmit = function () {
         $('.UserManagement-spinner').remove();
         $('#submitForm').prop('disabled', false);
+        $('#UserManagement-action-modal-status').text('');
+    };
+
+    /**
+     * Ask for confirmation before submitting when the submit button has a data-confirm-message,
+     * e.g. saving user permissions removes the roles of the user.
+     * With data-confirm-if-filled, the confirmation is only asked when the field with this name has a value.
+     *
+     * @param {HTMLFormElement} form
+     * @param {HTMLElement} submitter
+     * @return {boolean} true if the submit has to wait for the confirmation
+     */
+    var confirmSubmit = function (form, submitter) {
+        var confirmationModal = document.getElementById('confirmation-modal');
+        if (!submitter || !submitter.dataset.confirmMessage || submitter.dataset.confirmed || !confirmationModal) {
+            return false;
+        }
+        if (submitter.dataset.confirmIfFilled) {
+            var value = $(form).find('[name="' + submitter.dataset.confirmIfFilled + '"]').val();
+            if (!value || value.length === 0) {
+                return false;
+            }
+        }
+        var relatedTarget = $('<span>').data({
+            title: submitter.dataset.confirmTitle,
+            message: submitter.dataset.confirmMessage,
+            btntext: submitter.dataset.confirmBtntext,
+            btnclass: 'btn-danger',
+        })[0];
+        // Stack the confirmation and its backdrop above the open user management modal
+        $(confirmationModal).css('z-index', 1065).one('hidden.bs.modal', function () {
+            $(this).css('z-index', '');
+        });
+        bootstrap.Modal.getOrCreateInstance(confirmationModal).show(relatedTarget);
+        $('.modal-backdrop').last().css('z-index', 1060);
+        $(confirmationModal).find('.btn-ok').off('click').on('click', function () {
+            bootstrap.Modal.getOrCreateInstance(confirmationModal).hide();
+            submitter.dataset.confirmed = '1';
+            form.requestSubmit(submitter);
+        });
+        return true;
     };
 
     var wireForm = function () {
+        // The import form is a normal multipart submit (page reload): Only show and announce the loading state
+        $('#UserManagement--modalform--import').on('submit.USERMANAGERMODAL', function () {
+            startSubmit();
+        });
         $('#UserManagement--modalform').on('submit.USERMANAGERMODAL', function (e) {
             e.preventDefault();
             const buttonClassName = e.originalEvent.submitter.className;
             // Do nothing for outline-secondary (close) button.
             if (buttonClassName.includes('outline-secondary')) {
+                return false;
+            }
+            if (confirmSubmit(this, e.originalEvent.submitter)) {
                 return false;
             }
             $('#UserManagement--errors').addClass('d-none').removeClass('alert alert-danger');
@@ -115,6 +166,11 @@ var UserManagement = function () {
                             }
                             return;
                         }
+                        // The focused submit button was replaced: Move focus to the first field of the new step
+                        $('#UserManagement-action-modal .modal-body')
+                            .find('select, input:not([type=hidden]), textarea')
+                            .first()
+                            .trigger('focus');
                         $('#exitForm').on('click.USERMANAGERMODAL', function (e) {
                             e.preventDefault();
                             $('#exitForm').off('click.USERMANAGERMODAL');
@@ -126,6 +182,7 @@ var UserManagement = function () {
                     $('#UserManagement--errors').html(result.errors).removeClass('d-none').addClass('alert alert-danger').focus();
                 },
                 error: function (request, status, error) {
+                    stopSubmit();
                     if (request && request.responseJSON && request.responseJSON.message) {
                         $('#UserManagement--errors').html(
                             LS.LsGlobalNotifier.createAlert(
@@ -168,68 +225,224 @@ var UserManagement = function () {
         });
     };
 
-    var wirePermissions = function () {
-        var tableObject = $('#UserManagement--userpermissions-table');
+    /**
+     * Show the permissions the user already has in another way (e.g. by a global permission)
+     * as indeterminate when they are not set here
+     *
+     * @param {jQuery} checkboxes
+     */
+    var updateIndeterminatePermissions = function (checkboxes) {
+        checkboxes.filter('[data-indeterminate=1]').each(function () {
+            this.indeterminate = !this.checked;
+        });
+    };
 
-        $(".general-row-selector").on('click', function () {
-            $(this).removeClass('incomplete-selection');
-            bChecked = this.checked;
-            $(this).closest('tr').find('input').prop('checked', bChecked);
+    /**
+     * Check or uncheck permission checkboxes, this also ends the mixed state of the mass edit
+     *
+     * @param {jQuery} checkboxes
+     * @param {boolean} bChecked
+     * @return {jQuery}
+     */
+    var setPermissionsChecked = function (checkboxes, bChecked) {
+        checkboxes.prop('checked', bChecked).prop('indeterminate', false).data('mixed', false);
+        updateIndeterminatePermissions(checkboxes);
+        return checkboxes;
+    };
+
+    var wirePermissions = function (root) {
+        // Multiple modals on the User Management page (single-user edit and the
+        // massive-action batch edit) reuse the same ids, so everything must be
+        // scoped to the modal actually being wired instead of matching whichever
+        // one of the duplicate-id elements happens to be first/visible in the DOM.
+        var rootObject = root ? $(root) : $('#UserManagement-action-modal');
+        var tableObject = rootObject.find('#UserManagement--userpermissions-table');
+
+        updateIndeterminatePermissions(tableObject.find('input:checkbox'));
+        tableObject.on('change', 'input:checkbox[data-indeterminate=1]', function () {
+            updateIndeterminatePermissions($(this));
         });
 
-        $('.specific-permission-selector').on('click', function () {
-            var thisRow = $(this).closest('tr');
-            if (thisRow.find('.specific-settings-block input:checked').size() == thisRow.find('.specific-settings-block input').size()) {
-                thisRow.find('.general-row-selector').prop('checked', true);
-                thisRow.find('.general-row-selector').removeClass('incomplete-selection');
-            } else if (thisRow.find('.specific-settings-block input:checked').size() == 0) {
-                thisRow.find('.general-row-selector').prop('checked', false);
+        var updateRowGeneralState = function (row) {
+            var specificInputs = row.find('.specific-settings-block input:checkbox');
+            var checkedCount = specificInputs.filter(':checked').length;
+            var mixedCount = specificInputs.filter(function () { return $(this).data('mixed') === true; }).length;
+            var generalSelector = row.find('.general-row-selector');
+            if (checkedCount === 0 && mixedCount === 0) {
+                generalSelector.prop('checked', false).prop('indeterminate', false).removeClass('incomplete-selection');
+            } else if (checkedCount === specificInputs.length) {
+                generalSelector.prop('checked', true).prop('indeterminate', false).removeClass('incomplete-selection');
             } else {
-                thisRow.find('.general-row-selector').prop('checked', true);
-                thisRow.find('.general-row-selector').addClass('incomplete-selection');
+                generalSelector.prop('checked', true).prop('indeterminate', true).addClass('incomplete-selection');
             }
+        };
+
+        var updateSelectAllState = function () {
+            var selectAllCheckbox = rootObject.find('.selector--select-all-permissions');
+            if (!selectAllCheckbox.length) {
+                return;
+            }
+            var enabledInputs = tableObject.find('.specific-settings-block input:checkbox:not(:disabled)');
+            var checkedCount = enabledInputs.filter(':checked').length;
+            if (checkedCount === 0) {
+                selectAllCheckbox.prop('checked', false).prop('indeterminate', false);
+            } else if (checkedCount === enabledInputs.length) {
+                selectAllCheckbox.prop('checked', true).prop('indeterminate', false);
+            } else {
+                selectAllCheckbox.prop('checked', false).prop('indeterminate', true);
+            }
+        };
+
+        tableObject.on('click', '.general-row-selector', function () {
+            var bChecked = this.checked;
+            var row = $(this).closest('tr');
+            // Permissions the current user may not grant are disabled and keep their state
+            setPermissionsChecked(row.find('.specific-settings-block input:checkbox:not(:disabled)'), bChecked);
+            updateRowGeneralState(row);
+            updateSelectAllState();
         });
 
-        $('#perm_superadmin_read').on(' click', function () {
-            tableObject.find('input').prop('checked', this.checked).fadeTo(1, 1);
+        tableObject.on('change', '.specific-settings-block input:checkbox', function () {
+            updateRowGeneralState($(this).closest('tr'));
+            updateSelectAllState();
+        });
+
+        rootObject.find('#perm_superadmin_read').on(' click', function () {
+            setPermissionsChecked(tableObject.find('input'), this.checked).fadeTo(1, 1);
+            tableObject.find('tbody tr').each(function () {
+                updateRowGeneralState($(this));
+            });
+            updateSelectAllState();
         })
 
-        $('#UserManagement--userpermissions-table tr').each(function () {
-            if ($(this).find('.specific-settings-block input:checked').size() == $(this).closest('tr').find('.specific-settings-block input').size()) {
-                $(this).find('.general-row-selector').prop('checked', true);
-                $(this).find('.general-row-selector').removeClass('incomplete-selection');
-            } else if ($(this).find('.specific-settings-block input:checked').size() == 0) {
-                $(this).find('.general-row-selector').prop('checked', false);
-            } else {
-                $(this).find('.general-row-selector').prop('checked', true);
-                $(this).find('.general-row-selector').addClass('incomplete-selection');
-            }
+        rootObject.find('.selector--select-all-permissions').on('click', function () {
+            var bChecked = this.checked;
+            setPermissionsChecked(tableObject.find('input:checkbox:not(:disabled)'), bChecked);
+            tableObject.find('.general-row-selector').removeClass('incomplete-selection');
+            updateIndeterminatePermissions(tableObject.find('.specific-settings-block input:checkbox'));
+            updateSelectAllState();
         });
 
-        $('#permission-modal-exitForm').on('click', function(e){
+        tableObject.find('tbody tr').each(function () {
+            var row = $(this);
+            // Nothing to change in this row: The row selector would only pretend to
+            if (!row.find('.specific-settings-block input:checkbox:not(:disabled)').length) {
+                row.find('.general-row-selector').prop('disabled', true);
+            }
+            updateRowGeneralState(row);
+        });
+        updateSelectAllState();
+
+        rootObject.find('#permission-modal-exitForm').on('click', function(e){
             e.preventDefault();
             triggerModalClose();
         });
     };
 
-    var wireMassPermissions = function () {
-        wirePermissions();
-
-        var oCheckedItems = $('#usermanagement--identity-gridPanel').yiiGridView('getChecked', $('.listActions').data('pk'));
-        $('#hereBeUserIds').html('');
-        console.ls.log(oCheckedItems);
-        
-        var userIds = [];
-        $('.usermanagement--selector-userCheckbox').each(function(){
-            if($(this).prop('checked')){
-                userIds.push($(this).attr('value'));
+    /**
+     * Put the permissions changed in the mass edit as hidden inputs into the modal, the massive action posts them.
+     * A permission that is still mixed or back at its loaded state is not posted, so it is not changed for any user.
+     *
+     * @param {jQuery} container
+     */
+    var setChangedMassPermissions = function (container) {
+        var changedPermissions = container.find('.selector--changed-permissions').empty();
+        container.find('.specific-permission-selector').each(function () {
+            var initialState = $(this).data('initial-state');
+            if (initialState === undefined || this.indeterminate) {
+                return;
             }
+            if (initialState !== 'mixed' && this.checked === (initialState === 'checked')) {
+                return;
+            }
+            $('<input type="hidden" class="custom-data" />')
+                .attr('name', this.name)
+                .val(this.checked ? 1 : 0)
+                .appendTo(changedPermissions);
         });
-        console.ls.log(userIds);
+    };
 
-        LS.ld.forEach(oCheckedItems, function(item,key) {
-            console.ls.log(item,key);
-            $('#hereBeUserIds').append('<input type="hidden" name="userids[]" value="'+item+'" />');
+    /**
+     * Show the permissions of the users selected for the mass edit: Checked if all of them have it, a dash if only
+     * some of them have it. Clicking a mixed checkbox cycles through checked, unchecked and mixed again.
+     */
+    var wireMassPermissions = function () {
+        var gridId = 'usermanagement--identity-gridPanel';
+        var rootObject = $('#floating-actions-modal-' + gridId + '-batchPermissions-1');
+        var container = rootObject.find('.selector--edit-permissions-container');
+        var tableObject = container.find('#UserManagement--userpermissions-table');
+        // The modal body is replaced by a fresh copy when the modal is closed, so a wired table is still open
+        if (!tableObject.length || tableObject.data('wired')) {
+            return;
+        }
+        tableObject.data('wired', true);
+
+        var okButton = rootObject.find('.btn-ok');
+        var allCheckboxes = tableObject.find('input:checkbox');
+        var checkboxes = tableObject.find('.specific-permission-selector');
+        okButton.prop('disabled', true);
+        allCheckboxes.prop('disabled', true);
+        container.attr('aria-busy', 'true');
+        rootObject.one('hidden.bs.modal', function () {
+            okButton.prop('disabled', false);
+        });
+        if (!rootObject.data('changed-permissions-wired')) {
+            rootObject.data('changed-permissions-wired', true);
+            // Capturing, so the hidden inputs are there before the massive action collects the data on click
+            rootObject[0].addEventListener('click', function (e) {
+                if ($(e.target).closest('.btn-ok').length) {
+                    setChangedMassPermissions(rootObject.find('.selector--edit-permissions-container'));
+                }
+            }, true);
+        }
+
+        var userIds = (window.LS && LS.gridSelection && typeof LS.gridSelection.getAll === 'function')
+            ? LS.gridSelection.getAll(gridId)
+            : $('#' + gridId).yiiGridView('getChecked', 'uid');
+        var postData = { sItems: JSON.stringify(userIds) };
+        postData[LS.data.csrfTokenName] = LS.data.csrfToken;
+        $.post(container.data('states-url'), postData).done(function (data) {
+            if (!data || !data.success) {
+                container.find('.selector--permission-states-error').removeClass('d-none');
+                container.attr('aria-busy', 'false');
+                return;
+            }
+            var hasMixed = false;
+            checkboxes.each(function () {
+                var permissionCounts = data.counts[$(this).data('permission')] || {};
+                var count = permissionCounts[$(this).data('crud')] || 0;
+                var state = count === 0 ? 'unchecked' : (count >= data.total ? 'checked' : 'mixed');
+                $(this).data('initial-state', state);
+                this.checked = state === 'checked';
+                if (state === 'mixed') {
+                    hasMixed = true;
+                    this.indeterminate = true;
+                    $(this).data('mixed', true).attr('aria-describedby', 'batch-permission-mixed-help');
+                }
+            });
+            container.find('#batch-permission-mixed-help').toggleClass('d-none', !hasMixed);
+
+            tableObject.on('click', '.specific-permission-selector', function () {
+                if ($(this).data('initial-state') !== 'mixed') {
+                    return;
+                }
+                // The browser already toggled the checkbox: Coming from unchecked goes back to mixed
+                if (this.checked && $(this).data('mixed') !== true) {
+                    this.checked = false;
+                    this.indeterminate = true;
+                    $(this).data('mixed', true);
+                } else {
+                    $(this).data('mixed', false);
+                }
+            });
+
+            allCheckboxes.prop('disabled', false);
+            okButton.prop('disabled', false);
+            container.attr('aria-busy', 'false');
+            wirePermissions(rootObject);
+        }).fail(function () {
+            container.find('.selector--permission-states-error').removeClass('d-none');
+            container.attr('aria-busy', 'false');
         });
     };
 
@@ -259,12 +472,61 @@ var UserManagement = function () {
         });
     };
 
+    var wireLoginMethods = function () {
+        var $loginMethods = $('#UserManagement--login-methods');
+        if ($loginMethods.length === 0) {
+            return;
+        }
+        var updateLoginMethods = function () {
+            var ldapLogin = $('#User_Form_login_method_auth_ldap').prop('checked') === true;
+            var dbLogin = $('#User_Form_login_method_auth_db').prop('checked') === true;
+            // LDAP users get full name and email address from the LDAP directory
+            $('#UserManagement--ldap-hint').toggleClass('d-none', !ldapLogin);
+            $('#User_Form_email').prop('required', !ldapLogin);
+            $('label[for=User_Form_email] span.required').toggleClass('d-none', ldapLogin);
+            if (ldapLogin) {
+                $('#User_Form_full_name, #User_Form_email').attr('aria-describedby', 'UserManagement--ldap-hint');
+            } else {
+                $('#User_Form_full_name, #User_Form_email').removeAttr('aria-describedby');
+            }
+            // A password is only needed for the internal database login
+            if (!dbLogin) {
+                $('#utility_set_password_no').prop('checked', true).trigger('change');
+            }
+            $('#utility_set_password').toggleClass('d-none', !dbLogin);
+        };
+        $loginMethods.find('input[type=checkbox]').on('change', updateLoginMethods);
+        updateLoginMethods();
+    };
+
     var wireRoleSet = function () {
         $('#UserManagement--modalform').find('select').each(
             function(i,item) {
-                jQuery(item).select2({'theme':'bootstrap\x2D5'});
+                // Keep the dropdown inside the modal, screen readers ignore content outside an aria-modal dialog
+                jQuery(item).select2({
+                    'theme': 'bootstrap\x2D5',
+                    'dropdownParent': $('#UserManagement-action-modal')
+                });
+                labelSelect2(item);
+                jQuery(item).on('change', function () {
+                    labelSelect2(item);
+                });
             }
         );
+    }
+
+    /**
+     * The inline search field of a multiple Select2 gets focus but is only labelled "Search",
+     * so link it to the label of the select (select2-aria.js only handles the combobox and dropdown search)
+     */
+    var labelSelect2 = function (item) {
+        var labelledBy = $(item).attr('aria-labelledby');
+        if (!labelledBy) {
+            return;
+        }
+        $(item).next('.select2').find('.select2-search--inline .select2-search__field')
+            .removeAttr('aria-label')
+            .attr('aria-labelledby', labelledBy);
     }
 
     var wireDatePicker = function () {
@@ -304,16 +566,107 @@ var UserManagement = function () {
         });
     }
 
+    /**
+     * Announces the loader through the status live region once the modal is visible
+     */
+    var announceLoading = function () {
+        var modal = $('#UserManagement-action-modal');
+        var status = $('#UserManagement-action-modal-status');
+        var setText = function () {
+            if (modal.find('#loader-usermanagement').length) {
+                status.text(status.data('loading-text'));
+            }
+        };
+        status.text('');
+        if (modal.hasClass('show')) {
+            setTimeout(setText, 100);
+        } else {
+            modal.one('shown.bs.modal', setText);
+        }
+    };
+
+    /**
+     * Put the loaded content into the modal. While the content loads, the modal is named by its aria-label
+     * ("Loading..."): When focus is already in the modal, its new name is not read, so the title is announced.
+     *
+     * @param {string} html
+     */
     var applyModalHtml = function (html) {
-        $('#UserManagement-action-modal').find('.modal-content').html(html);
+        var modal = $('#UserManagement-action-modal');
+        var hasFocus = modal[0] === document.activeElement || $.contains(modal[0], document.activeElement);
+        modal.find('.modal-content').html(html);
+        $('#UserManagement-action-modal-status').text(
+            hasFocus ? $('#UserManagement-action-modal-title').text().trim() : ''
+        );
         wirePasswordOptions();
+        wireLoginMethods();
         wirePermissions();
         wireTemplatePermissions();
         wireRoleSet();
         wireForm();
         wireDatePicker();
+        if (window.LS && typeof window.LS.doToolTip === 'function') {
+            window.LS.doToolTip();
+        }
     }
 
+
+    var focusReturnHref = null;
+    var restoreFocusPending = false;
+
+    /**
+     * Move focus back to the control that opened the user management modal, once the modal is closed.
+     * Row actions are in a closed dropdown, so their toggle gets focus. Without a matching control
+     * (e.g. the user was deleted), the grid gets focus.
+     * Called when the modal is hidden and again after the grid reload, which replaces the row controls.
+     *
+     * @param {boolean} gridUpdated true when called after the grid reload
+     */
+    var restoreFocus = function (gridUpdated) {
+        var grid = $('#usermanagement--identity-gridPanel');
+        if (!restoreFocusPending || $('#UserManagement-action-modal').hasClass('show')) {
+            return;
+        }
+        // Without a running reload, this is the final position
+        if (gridUpdated || !grid.hasClass('grid-view-loading')) {
+            restoreFocusPending = false;
+        }
+        var target = $();
+        $('.UserManagement--action--openmodal').each(function () {
+            if ($(this).data('href') !== focusReturnHref) {
+                return;
+            }
+            var control = getDropdownToggle($(this));
+            if (control.is(':visible')) {
+                target = control;
+                return false;
+            }
+        });
+        if (!target.length) {
+            target = grid.attr('tabindex', '-1');
+        }
+        target.trigger('focus');
+    };
+
+    /**
+     * Get the control to focus for a modal trigger: The trigger itself, or the toggle of the dropdown it is in.
+     * Row action menus are moved to the body and linked to their toggle by an id, menus of removed rows
+     * have no toggle anymore.
+     *
+     * @param {jQuery} trigger
+     * @return {jQuery}
+     */
+    var getDropdownToggle = function (trigger) {
+        var menu = trigger.closest('.dropdown-menu');
+        if (!menu.length) {
+            return trigger;
+        }
+        var toggleId = menu.attr('data-for-ls-dropdown-toggle-id');
+        if (toggleId) {
+            return $('[data-ls-dropdown-toggle-id="' + toggleId + '"]').first();
+        }
+        return menu.parent().find('[data-bs-toggle="dropdown"]').first();
+    };
 
     var bindButtons = function () {
         $('.action_usercontrol_button').on('click', function () {
@@ -328,6 +681,8 @@ var UserManagement = function () {
         $('.UserManagement--action--openmodal').on('click', function () {
             var href = $(this).data('href');
             var modalSize = $(this).data('modalsize');
+            // The grid is reloaded when the modal closes, so the control is found again by its URL
+            focusReturnHref = href;
 
             if ($(this).attr("data-stackmodal") !== undefined) {
                 var stackablemodal = $(this).data('stackmodal');
@@ -349,8 +704,12 @@ var UserManagement = function () {
         $('#UserManagement-action-modal').on('hide.bs.modal', function () {
             $.fn.yiiGridView.update('usermanagement--identity-gridPanel', {});
         });
+        $('#UserManagement-action-modal').on('hidden.bs.modal', function () {
+            restoreFocusPending = true;
+            restoreFocus(false);
+        });
 
-        $(document).on('shown.bs.modal', '#massive-actions-modal-usermanagement--identity-gridPanel-batchPermissions-2', function () {
+        $(document).off('shown.bs.modal.batchpermissions').on('shown.bs.modal.batchpermissions', '#floating-actions-modal-usermanagement--identity-gridPanel-batchPermissions-1', function () {
             wireMassPermissions();
         });
     };
@@ -385,6 +744,7 @@ var UserManagement = function () {
         wireMassPermissions: wireMassPermissions,
         wireForm: wireForm,
         openModal: openModal,
+        restoreFocus: restoreFocus,
     };
 };
 

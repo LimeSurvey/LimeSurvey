@@ -57,6 +57,7 @@
 .emoji-noanswer {
     background-image: url(../images/274c.svg);
     background-size: 55%;
-    /* the slider stop for "no answer" sits left of the label centre */
-    background-position: calc(50% - 0.25em) center;
+    /* the slider stop for "no answer" sits left of the label centre, shift the whole icon so a focus ring stays centred on it */
+    position: relative;
+    left: -0.25em;
 }

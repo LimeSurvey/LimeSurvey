@@ -26,10 +26,14 @@ class EMWarningHTMLBaker
     public function getWarningHTML(array $warnings)
     {
         $message = "<strong>"
-            . ngT(
-                "This question has at least {n} warning.|This question has at least {n} warnings.",
-                count($warnings),
-                'html'
+            . sprintf(
+                gTPlural(
+                    "This question has at least %d warning.",
+                    "This question has at least %d warnings.",
+                    count($warnings),
+                    'html'
+                ),
+                count($warnings)
             )
             . "</strong>";
         $message .= "<ul class='list-unstyled small'>";

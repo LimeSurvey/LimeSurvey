@@ -9,10 +9,12 @@ import {
   QT_COLON_ARRAY_NUMBERS,
   QT_K_MULTIPLE_NUMERICAL,
   QT_N_NUMERICAL,
+  QT_J_MAP,
   QT_S_SHORT_FREE_TEXT,
   QT_SEMICOLON_ARRAY_TEXT,
   QT_T_LONG_FREE_TEXT,
   QT_U_HUGE_FREE_TEXT,
+  QT_VERTICAL_FILE_UPLOAD,
 } from 'helpers'
 import { ReactComponent as StackedBarIcon } from 'assets/icons/stacked-bar-icon.svg'
 import { ReactComponent as RadarIcon } from 'assets/icons/radar-icon.svg'
@@ -22,6 +24,7 @@ import { StatisticsTable } from './StatisticsTable.js'
 import { ArrayTextTable } from './ArrayTextTable.js'
 import { ResponsesGrid } from './ResponsesGrid.js'
 import { MultiNumericalGrid } from './MultiNumericalGrid.js'
+import { FileUploadTable } from './FileUploadTable.js'
 import {
   BarChart,
   PieChart,
@@ -40,11 +43,17 @@ import {
   CHOICE_QUESTION_TYPES,
   TEXT_QUESTION_TYPES,
   getSegmentedCategories,
+  statisticsGraphs,
   VALUE_TYPE,
   wrapTerm,
 } from './ChartsUtils.js'
 import { QuestionComments } from './QuestionComments.js'
 import { CommentsModal } from './CommentsModal.js'
+import {
+  ChartOrientationMenu,
+  ORIENTATION,
+  getOrientationIconClassName,
+} from './ChartOrientationMenu.js'
 
 const VIEW = {
   BAR_CHART: 'bar-chart',
@@ -66,8 +75,18 @@ const VIEWS = [
     value: VIEW.BAR_CHART,
     label: () => t('Bar chart'),
     icon: () => <i className="ri-bar-chart-line"></i>,
-    isAvailable: ({ isArray, isArrayText, isNumerical, isMultiNumerical }) =>
-      !isArray && !isArrayText && !isNumerical && !isMultiNumerical,
+    isAvailable: ({
+      isArray,
+      isArrayText,
+      isNumerical,
+      isMultiNumerical,
+      isFileUpload,
+    }) =>
+      !isArray &&
+      !isArrayText &&
+      !isNumerical &&
+      !isMultiNumerical &&
+      !isFileUpload,
     render: ({
       isRanking,
       data,
@@ -76,6 +95,7 @@ const VIEWS = [
       question,
       hasComments,
       onViewComments,
+      orientation,
     }) => {
       if (isRanking) {
         return <RankingBarChart data={data} title={question?.title} />
@@ -87,6 +107,7 @@ const VIEWS = [
           isImage={isImage}
           hasComments={hasComments}
           onViewComments={onViewComments}
+          orientation={orientation}
         />
       )
     },
@@ -136,12 +157,14 @@ const VIEWS = [
       isArrayText,
       isNumerical,
       isMultiNumerical,
+      isFileUpload,
     }) =>
       !isRanking &&
       !isArray &&
       !isArrayText &&
       !isNumerical &&
-      !isMultiNumerical,
+      !isMultiNumerical &&
+      !isFileUpload,
     // Comment types keep only Bar/Table/Comments in the quick toggle; pie moves
     // to the meatball menu.
     menuOnly: ({ hasComments }) => hasComments,
@@ -195,13 +218,21 @@ const VIEWS = [
     icon: () => <i className="ri-list-check"></i>,
     isAvailable: ({ isGridable, isMultiNumerical }) =>
       isGridable || isMultiNumerical,
-    render: ({ surveyId, question, filters, isNumerical, isMultiNumerical }) =>
+    render: ({
+      surveyId,
+      question,
+      filters,
+      filterSet,
+      isNumerical,
+      isMultiNumerical,
+    }) =>
       isMultiNumerical ? (
         <MultiNumericalGrid
           surveyId={surveyId}
           questionCode={question?.code}
           fields={question?.fields}
           filters={filters}
+          filterSet={filterSet}
         />
       ) : (
         <ResponsesGrid
@@ -210,6 +241,7 @@ const VIEWS = [
           title={question?.title}
           fields={question?.fields}
           filters={filters}
+          filterSet={filterSet}
           twoColumns={isNumerical}
         />
       ),
@@ -227,17 +259,29 @@ const VIEWS = [
       isText,
       isDualScale,
       isMultiNumerical,
+      isFileUpload,
       valueType,
       surveyId,
       question,
       filters,
+      filterSet,
     }) =>
-      isArrayText || isText || isDualScale || isMultiNumerical ? (
+      isFileUpload ? (
+        <FileUploadTable
+          surveyId={surveyId}
+          questionId={question?.qid}
+          questionCode={question?.code}
+          fields={question?.fields}
+          filters={filters}
+          filterSet={filterSet}
+        />
+      ) : isArrayText || isText || isDualScale || isMultiNumerical ? (
         <ArrayTextTable
           surveyId={surveyId}
           questionCode={question?.code}
           fields={question?.fields}
           filters={filters}
+          filterSet={filterSet}
           searchable={isText || isMultiNumerical}
           scaleHeaders={question?.scaleHeaders}
         />
@@ -250,12 +294,13 @@ const VIEWS = [
     label: () => t('Comments'),
     icon: () => <i className="ri-message-2-line"></i>,
     isAvailable: ({ hasComments }) => hasComments,
-    render: ({ surveyId, question, data, onViewComments }) => (
+    render: ({ surveyId, question, data, filterSet, onViewComments }) => (
       <QuestionComments
         surveyId={surveyId}
         questionCode={question?.code}
         fields={question?.fields}
         answerOptions={data}
+        filterSet={filterSet}
         onViewComments={onViewComments}
       />
     ),
@@ -283,8 +328,26 @@ const writeHiddenCharts = (hidden) => {
 const getStorageKey = (surveyId, chartId, index) =>
   `${surveyId ?? 'unknown'}:${chartId ?? `index-${index}`}`
 
-const getDefaultView = (availableViews, viewContext) => {
+// statistics_graphtype question setting → views it selects, first available wins.
+const GRAPH_VIEWS = {
+  [statisticsGraphs.BAR_CHART]: [VIEW.BAR_CHART],
+  [statisticsGraphs.PIE_CHART]: [VIEW.PIE_CHART],
+  [statisticsGraphs.RADAR]: [VIEW.RADAR],
+  [statisticsGraphs.LINE]: [VIEW.LINE],
+  [statisticsGraphs.POLAR_AREA]: [VIEW.POLAR_AREA],
+  [statisticsGraphs.DOUGHNUT_CHART]: [VIEW.DOUGHNUT, VIEW.STACKED_DOUGHNUT],
+  [statisticsGraphs.STACKED_BAR]: [VIEW.STACKED_BAR],
+  [statisticsGraphs.GROUPED_BAR]: [VIEW.GROUPED_BAR],
+  [statisticsGraphs.GRID]: [VIEW.GRID],
+  [statisticsGraphs.TABLE]: [VIEW.TABLE],
+  [statisticsGraphs.COMMENTS]: [VIEW.COMMENTS],
+}
+
+const getDefaultView = (availableViews, viewContext, chartType) => {
   const preferredViews = [
+    // Ranking opens on the table; only the table breaks down the ranked places.
+    viewContext.isRanking && VIEW.TABLE,
+    ...(GRAPH_VIEWS[chartType] ?? []),
     viewContext.isArrayText && VIEW.TABLE,
     viewContext.isArray && !viewContext.isArrayNumbers && VIEW.STACKED_BAR,
     viewContext.isNumerical && VIEW.TABLE,
@@ -302,6 +365,17 @@ const getDefaultView = (availableViews, viewContext) => {
   )
 }
 
+/**
+ * Renders the statistics card of a question with its chart, table or grid view.
+ * @param {Object} props
+ * @param {Object} props.data Chart data.
+ * @param {number} props.index Card index.
+ * @param {number|string} props.surveyId Survey id.
+ * @param {string} props.chartId Chart id.
+ * @param {Object} props.question Question metadata.
+ * @param {string} props.valueType Count or percentage.
+ * @param {Object} props.filters Active statistics filters.
+ */
 export const ChartRendererV2 = ({
   data,
   index = 0,
@@ -310,18 +384,23 @@ export const ChartRendererV2 = ({
   question = {},
   valueType,
   filters = {},
+  filterSet = [],
 }) => {
   const isNumerical = question?.type === QT_N_NUMERICAL
   const isMultiNumerical = question?.type === QT_K_MULTIPLE_NUMERICAL
+  const isRanking = isRankingQuestion(question?.themeName)
+  const isFileUpload = question?.type === QT_VERTICAL_FILE_UPLOAD
   const isGridable =
     isNumerical ||
-    [QT_S_SHORT_FREE_TEXT, QT_T_LONG_FREE_TEXT, QT_U_HUGE_FREE_TEXT].includes(
-      question?.type
-    )
+    [
+      QT_J_MAP,
+      QT_S_SHORT_FREE_TEXT,
+      QT_T_LONG_FREE_TEXT,
+      QT_U_HUGE_FREE_TEXT,
+    ].includes(question?.type)
   const [commentsAnswer, setCommentsAnswer] = useState(null)
   const cardRef = useRef(null)
   const isImage = isImageTheme(question?.themeName)
-  const isRanking = isRankingQuestion(question?.themeName)
   const hasComments = isCommentQuestionType(question?.type)
   const isChoice = CHOICE_QUESTION_TYPES.includes(question?.type)
   const isArray = (data ?? []).some((item) => Array.isArray(item?.segments))
@@ -337,6 +416,7 @@ export const ChartRendererV2 = ({
   const hasResponses =
     isArrayText ||
     isMultiNumerical ||
+    isFileUpload ||
     (data ?? []).reduce((sum, item) => sum + (item?.value || 0), 0) > 0
 
   const viewContext = {
@@ -349,6 +429,7 @@ export const ChartRendererV2 = ({
     isDualScale,
     isNumerical,
     isMultiNumerical,
+    isFileUpload,
     isGridable,
   }
 
@@ -356,17 +437,34 @@ export const ChartRendererV2 = ({
     ({ isAvailable }) => isAvailable?.(viewContext) ?? true
   )
   const [view, setView] = useState(() =>
-    getDefaultView(availableViews, viewContext)
+    getDefaultView(availableViews, viewContext, question?.chartType)
   )
+  const [orientation, setOrientation] = useState(ORIENTATION.VERTICAL)
+  const hasOrientationSwitch = !isRanking
   // `menuOnly` hides a view from the quick toggle (it stays in the meatball
   // menu); it can be a flag or a predicate of the view context.
   const isMenuOnly = ({ menuOnly }) =>
     typeof menuOnly === 'function' ? menuOnly(viewContext) : !!menuOnly
-  const toggleOptions = availableViews
-    .filter((option) => !isMenuOnly(option))
-    .map(({ value, icon }) => ({ value, icon }))
   const activeView =
     availableViews.find(({ value }) => value === view) ?? availableViews[0]
+  const isBarChartActive =
+    hasOrientationSwitch && activeView?.value === VIEW.BAR_CHART
+  const toggleOptions = availableViews
+    .filter((option) => !isMenuOnly(option))
+    .map(({ value, icon }) => ({
+      value,
+      control:
+        value === VIEW.BAR_CHART && isBarChartActive ? (
+          <ChartOrientationMenu
+            orientation={orientation}
+            onSelect={setOrientation}
+          />
+        ) : undefined,
+      icon:
+        value === VIEW.BAR_CHART && hasOrientationSwitch
+          ? () => <i className={getOrientationIconClassName(orientation)}></i>
+          : icon,
+    }))
 
   const renderContext = {
     data,
@@ -379,27 +477,27 @@ export const ChartRendererV2 = ({
     isDualScale,
     isNumerical,
     isMultiNumerical,
+    isFileUpload,
     surveyId,
     chartId,
     question,
     hasComments,
     filters,
+    orientation,
+    filterSet,
     onViewComments: setCommentsAnswer,
   }
 
   const storageKey = getStorageKey(surveyId, chartId, index)
   const [isHidden, setIsHidden] = useState(
-    () => !!readHiddenCharts()[storageKey]
+    () =>
+      readHiddenCharts()[storageKey] ??
+      String(question?.chartType) === String(statisticsGraphs.DONT_SHOW)
   )
 
+  // Stored both ways so showing a "Don't show" chart sticks.
   const setHidden = (hidden) => {
-    const hiddenCharts = readHiddenCharts()
-    if (hidden) {
-      hiddenCharts[storageKey] = true
-    } else {
-      delete hiddenCharts[storageKey]
-    }
-    writeHiddenCharts(hiddenCharts)
+    writeHiddenCharts({ ...readHiddenCharts(), [storageKey]: hidden })
     setIsHidden(hidden)
   }
 
@@ -465,6 +563,16 @@ export const ChartRendererV2 = ({
                 )}
               </div>
             )}
+            {isRanking && activeView?.value === VIEW.BAR_CHART && (
+              <div className="responses-statistics-chart-subtitle responses-statistics-chart-info">
+                <i className="ri-information-line" aria-hidden="true"></i>
+                <span>
+                  {t(
+                    'The bar chart shows each option’s average rank, calculated by adding all the ranks it received and dividing the total by the number of times this option was ranked. A lower average means a better ranking.'
+                  )}
+                </span>
+              </div>
+            )}
             <div>{activeView?.render(renderContext)}</div>
             {toggleOptions.length > 1 && (
               <div className="responses-statistics-chart-toggle">
@@ -495,6 +603,7 @@ export const ChartRendererV2 = ({
           questionTitle={question?.title}
           fields={question?.fields}
           answerOptions={data}
+          filterSet={filterSet}
           initialAnswer={commentsAnswer ?? ''}
         />
       )}

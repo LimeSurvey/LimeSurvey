@@ -54,78 +54,6 @@
   }
 }
 
-.sidebar-row {
-  @include med14-c;
-
-  margin-bottom: 6px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding-right: 10px;
-  cursor: grab;
-  position: relative;
-
-  .content-editable {
-    cursor: grab;
-
-    &::before {
-      cursor: grab;
-    }
-  }
-
-  .sidebar-row-title {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    width: 170px;
-    margin-left: 5px;
-    min-height: 32px;
-    display: flex;
-    align-items: center;
-  }
-
-  .dropdown-toggler {
-    opacity: 0;
-
-    &:hover,
-    &:focus {
-      opacity: 1;
-    }
-  }
-
-  &.sidebar-row-focused {
-    .dropdown-toggler {
-      color: $white !important;
-      opacity: 1;
-    }
-  }
-
-  .sidebar-row-tag {
-    background-color: $g-100;
-    padding: 4px 8px;
-    margin-left: 6px;
-    margin-right: 6px;
-    border-radius: 2px;
-    max-width: 70px;
-    min-width: 62px;
-    min-height: 24px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .sidebar-row-title-container {
-    cursor: grab;
-  }
-
-  .sidebar-meatball-menu {
-    opacity: 0;
-  }
-
-  &:hover .sidebar-meatball-menu {
-    opacity: 1;
-  }
-}
-
 .sidebar-section {
   margin: 0 0 1rem 0;
   padding: 0 0.5rem 1.5rem 1.5rem;
@@ -168,11 +96,6 @@ h6.section-header {
 .survey-menu {
   box-sizing: content-box;
   padding: 8px 6px;
-}
-
-.group .sidebar-row-title.question-code .content-editable,
-.group .sidebar-row-title.question-code {
-  width: 110px !important;
 }
 
 .sidebar-icon-disabled {

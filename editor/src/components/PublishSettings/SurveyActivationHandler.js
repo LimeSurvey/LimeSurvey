@@ -170,6 +170,7 @@ const SurveyActivationHandler = forwardRef(
         operation: Operations.update,
         callback: (extraData) =>
           onSwitchComplete(isSurveyActiveAfterOperation, switchType, extraData),
+        onError: () => setSurveyPublishRunning(false),
       })
       runStatusSwitchOperation(switchType)
     }
@@ -223,6 +224,10 @@ const SurveyActivationHandler = forwardRef(
       const surveyUpdateFields = { active: isSurveyActiveAfterOperation }
       if (extraData?.expire) {
         surveyUpdateFields.expires = extraData.expire
+      }
+      // activation creates the responses table on the backend
+      if (isSurveyActiveAfterOperation) {
+        surveyUpdateFields.hasResponsesTable = true
       }
       update(surveyUpdateFields)
 

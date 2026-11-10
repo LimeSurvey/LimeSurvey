@@ -16,7 +16,7 @@ gT("Set the size of the 'Other:' input. The input will be displayed approximatel
 gT("'Other:' text input box size");
 gT("Maximum characters allowed for 'Other:' option");
 gT("'Other:' option maximum characters");
-gT('Semicolon-separated list of subquestion codes that keep their original database position when subquestions are randomized');
+gT('Semicolon-separated list of subquestion codes that keep their original database position when subquestions are randomized or sorted alphabetically');
 gT('Use JavaScript function to remove text and uncheck checkbox (or use ExpressionScript Engine only).');
 gT("Position for 'Other:' option");
 gT("Indicates where the 'Other' option should be placed");

@@ -29,7 +29,7 @@ echo viewHelper::getViewTestTag('surveyPanelIntegration');
                 <div class="ls-flex-item justify-content-end row row-cols-lg-auto g-1 align-items-center mb-3">
                     <!-- Search Box -->
                     <div class="col-12">
-                        <label class="control-label text-right" for="search_query">Search:</label>
+                        <label class="control-label text-right" for="search_query"><?= gT('Search:') ?></label>
                     </div>
                     <div class="col-12">
                         <input class="form-control" name="search_query" id="search_query" type="text">

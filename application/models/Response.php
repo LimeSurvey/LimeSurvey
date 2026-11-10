@@ -48,6 +48,16 @@ abstract class Response extends Dynamic
     }
 
     /**
+     * @inheritdoc
+     * Also stores the multiple choice Other tick that goes with the Other text
+     */
+    public function encryptSave($runValidation = true, $attributes = null)
+    {
+        $attributes = Survey::setOtherCheckedFromText($this, $attributes);
+        return parent::encryptSave($runValidation, $attributes);
+    }
+
+    /**
      * Get all files related to this response and (optionally) question ID.
      *
      * @param int $qid
@@ -259,10 +269,18 @@ abstract class Response extends Dynamic
     {
     }
 
-    /** Get all encrypted questions for a survey, as array of fieldnames */
+    /**
+     * Get all encrypted questions for a survey, as array of fieldnames
+     *
+     * @param int $surveyid Survey ID
+     * @return string[] Fieldnames of the encrypted questions; empty if the survey does not exist (e.g. archiving the responses table of a deleted survey)
+     */
     public static function getEncryptedAttributes($surveyid = 0)
     {
         $survey = Survey::model()->findByPk($surveyid);
+        if (!$survey) {
+            return array();
+        }
         $fieldmap = createFieldMap($survey, 'full', false, false, $survey->language);
         $aAttributes = array();
         foreach ($fieldmap as $field) {

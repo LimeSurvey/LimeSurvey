@@ -40,24 +40,6 @@ class RandomizerHelperMockSetFactory
     }
 
     /**
-     * Get a mock Question configured for excluded subquestion testing
-     */
-    public function getMockQuestionWithExcludedSubquestion(): Question
-    {
-        $question = Mockery::mock(Question::class)
-            ->makePartial();
-        $question->shouldReceive('getQuestionAttribute')
-            ->with('exclude_all_others')
-            ->andReturn('excluded');
-        $question->shouldReceive('getQuestionAttribute')
-            ->with('random_order')
-            ->andReturn(1);
-        $question->sid = 12345;
-
-        return $question;
-    }
-
-    /**
      * Get a mock Survey
      */
     private function getMockSurvey(): Survey

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { omit } from 'lodash'
 import { useQuery } from '@tanstack/react-query'
 import { useBuffer } from './useBuffer'
 import {
@@ -18,6 +19,14 @@ import { reportExtras } from 'appInstrumentation'
 import { singleChoiceThemes } from 'components/QuestionTypes'
 import { TestValidation } from 'components/Survey/Questions/QuestionCodeSchema'
 import { showErrorMessage } from 'components/ConditionDesigner/utils'
+
+export const createChildrenUpdateOperation = (qid, entityType, children) => {
+  const props = children.map((child) => omit(child, 'conditiontext'))
+
+  return entityType === Entities.answer
+    ? createBufferOperation(qid).answer().update(props)
+    : createBufferOperation(qid).subquestion().update(props)
+}
 
 export const useQuestionChildren = ({
   question,
@@ -121,16 +130,9 @@ export const useQuestionChildren = ({
 
     const updatedChildren = filterAndSortChildren(childArray, props, newChild)
 
-    const operation =
-      entityType === Entities.answer
-        ? createBufferOperation(question.qid)
-            .answer()
-            .update([...updatedChildren])
-        : createBufferOperation(question.qid)
-            .subquestion()
-            .update([...updatedChildren])
-
-    addToBuffer(operation)
+    addToBuffer(
+      createChildrenUpdateOperation(question.qid, entityType, updatedChildren)
+    )
     handleUpdate({ [childKey]: updatedChildren })
   }
 
@@ -142,16 +144,9 @@ export const useQuestionChildren = ({
       (child) => child[idKey] !== childId
     )
 
-    const operation =
-      entityType === Entities.answer
-        ? createBufferOperation(question.qid)
-            .answer()
-            .update([...updatedChildren])
-        : createBufferOperation(question.qid)
-            .subquestion()
-            .update([...updatedChildren])
-
-    addToBuffer(operation)
+    addToBuffer(
+      createChildrenUpdateOperation(question.qid, entityType, updatedChildren)
+    )
     handleUpdate({ [childKey]: updatedChildren })
   }
 
@@ -200,16 +195,9 @@ export const useQuestionChildren = ({
       return { ...child, sortOrder: index }
     })
 
-    const operation =
-      entityType === Entities.answer
-        ? createBufferOperation(question.qid)
-            .answer()
-            .update([...updatedChildren])
-        : createBufferOperation(question.qid)
-            .subquestion()
-            .update([...updatedChildren])
-
-    addToBuffer(operation)
+    addToBuffer(
+      createChildrenUpdateOperation(question.qid, entityType, updatedChildren)
+    )
     handleUpdate({ [childKey]: updatedChildren })
   }
 
@@ -251,16 +239,9 @@ export const useQuestionChildren = ({
       },
     }
 
-    const operation =
-      entityType === Entities.answer
-        ? createBufferOperation(question.qid)
-            .answer()
-            .update([...updatedChildren])
-        : createBufferOperation(question.qid)
-            .subquestion()
-            .update([...updatedChildren])
-
-    addToBuffer(operation)
+    addToBuffer(
+      createChildrenUpdateOperation(question.qid, entityType, updatedChildren)
+    )
     handleUpdate({ [childKey]: updatedChildren })
   }
 
@@ -306,17 +287,61 @@ export const useQuestionChildren = ({
       [codeKey]: newCode,
     }
 
-    const operation =
-      entityType === Entities.answer
-        ? createBufferOperation(question.qid)
-            .answer()
-            .update([...updatedChildren])
-        : createBufferOperation(question.qid)
-            .subquestion()
-            .update([...updatedChildren])
-
-    addToBuffer(operation)
+    addToBuffer(
+      createChildrenUpdateOperation(question.qid, entityType, updatedChildren)
+    )
     handleUpdate({ [childKey]: updatedChildren })
+  }
+
+  const handleChildAssessmentValueUpdate = ({
+    newAssessmentValue = '',
+    childIndex,
+    childArray = [],
+  }) => {
+    const updatedChildren = [...childArray]
+
+    if (updatedChildren[childIndex] === undefined) {
+      reportExtras({
+        extraData: {
+          questionThemeName: question.questionThemeName,
+          updatedEntities: updatedChildren,
+          updateKey: 'answers',
+          index: childIndex,
+          question,
+        },
+        message: `Error while updating assessment value in ${question.questionThemeName} - unable to find item`,
+      })
+      return
+    }
+
+    updatedChildren[childIndex] = {
+      ...updatedChildren[childIndex],
+      assessmentValue: newAssessmentValue,
+    }
+
+    // Mirrors backend rule: numerical, integerOnly, allowEmpty (Yii CNumberValidator)
+    const assessmentValueString = String(newAssessmentValue ?? '')
+    const isValidAssessmentValue =
+      assessmentValueString.trim() === '' ||
+      /^\s*[+-]?\d+\s*$/.test(assessmentValueString)
+
+    if (isValidAssessmentValue) {
+      // An empty field is stored as 0 (DB column is NOT NULL DEFAULT 0), so
+      // send that explicitly. The UI keeps "" while the user is still typing.
+      const childrenToSave = updatedChildren.map((child, index) =>
+        index === childIndex && assessmentValueString.trim() === ''
+          ? { ...child, assessmentValue: 0 }
+          : child
+      )
+
+      const operation = createBufferOperation(question.qid)
+        .answer()
+        .update([...childrenToSave])
+
+      addToBuffer(operation)
+    }
+
+    handleUpdate({ answers: updatedChildren })
   }
 
   const validateCode = ({
@@ -389,6 +414,7 @@ export const useQuestionChildren = ({
     handleOnChildDragEnd,
     handleChildLUpdate,
     handleChildCodeUpdate,
+    handleChildAssessmentValueUpdate,
     activeLanguage,
   }
 }

@@ -61,6 +61,37 @@ class UserStatusTest extends TestBaseClassWeb
     }
 
     /**
+     * Returns the row of a user in the user management grid, found by the user ID column,
+     * so the test does not depend on the order of the rows.
+     *
+     * @param int $uid User ID
+     * @return \Facebook\WebDriver\WebDriverElement The <tr> element of the user
+     */
+    private function findUserRow(int $uid)
+    {
+        return self::$webDriver->findElement(
+            WebDriverBy::xpath('//td[contains(concat(" ", normalize-space(@class), " "), " uid ") and normalize-space(.)="' . $uid . '"]/..')
+        );
+    }
+
+    /**
+     * Returns the entry with the given title from a grid row's action dropdown.
+     *
+     * Looks the entry up by its text, so the test does not depend on the order
+     * of the dropdown entries.
+     *
+     * @param int $dropdownId Numeric part of the dropdown id (dropdown_<id>)
+     * @param string $title Visible text of the dropdown entry
+     * @return \Facebook\WebDriver\WebDriverElement The <li> element of the entry
+     */
+    private function findDropdownMenuItem(int $dropdownId, string $title)
+    {
+        return self::$webDriver->findElement(
+            WebDriverBy::xpath('//ul[@id="dropdownmenu_' . $dropdownId . '"]/li[normalize-space(.)="' . $title . '"]')
+        );
+    }
+
+    /**
      * Verifies that the "Deactivate" action for the superadmin is rendered as a
      * disabled, non-interactive link in the action dropdown.
      *
@@ -80,17 +111,15 @@ class UserStatusTest extends TestBaseClassWeb
             $url = $urlMan->createUrl('userManagement/index');
             $web->get($url);
 
-            // Click on action dropdown
-            $dropdownButton = $web->findByCss('.dropdown.ls-action_dropdown');
+            // Click on the action dropdown of the superadmin
+            $dropdownButton = $this->findUserRow(1)->findElement(WebDriverBy::cssSelector('.dropdown.ls-action_dropdown'));
             $dropdownButton->click();
             // @var string Something like dropdown_3
             $id = $dropdownButton->getAttribute('id');
             $parts = explode('_', $id);
             $this->assertCount(2, $parts);
 
-            // Get belonging <ul>
-            $dropdownMenuItems = $web->findManyByCss('#dropdownmenu_' . (int) $parts[1] . ' li');
-            $deactiveElement = $dropdownMenuItems[1];
+            $deactiveElement = $this->findDropdownMenuItem((int) $parts[1], 'Deactivate');
             $deactiveElementAnchor = $deactiveElement
                 ->findElement(
                     WebDriverBy::cssSelector('a')
@@ -145,9 +174,7 @@ class UserStatusTest extends TestBaseClassWeb
         // Find row for new user
         $uidTds = $web->findManyByCss('.uid');
         $this->assertCount(2, $uidTds, 'Found exactly two uids');
-
-        // Get parent, which is the table row
-        $row = $uidTds[1]->findElement(WebDriverBy::xpath('..'));
+        $row = $this->findUserRow($uid);
 
         // Find action button
         $dropdownButton = $row->findElement(WebDriverBy::cssSelector('.dropdown.ls-action_dropdown'));
@@ -158,9 +185,7 @@ class UserStatusTest extends TestBaseClassWeb
         $parts = explode('_', $id);
         $this->assertCount(2, $parts);
 
-        // Get belonging <ul>
-        $dropdownMenuItems = $web->findManyByCss('#dropdownmenu_' . (int) $parts[1] . ' li');
-        $deactiveElement = $dropdownMenuItems[1];
+        $deactiveElement = $this->findDropdownMenuItem((int) $parts[1], 'Deactivate');
         $deactiveElementAnchor = $deactiveElement
             ->findElement(
                 WebDriverBy::cssSelector('a')

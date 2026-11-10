@@ -23,11 +23,15 @@ class MultipleChoiceProcessor extends AbstractQuestionProcessor
             $fieldNames[] = $this->rt . '_S' . $subQuestion['qid'];
         }
         $hasOther = $this->question['other'] === Question::QT_Y_YES_NO_RADIO;
-        if ($hasOther) {
-            $fieldNames[] = $this->rt . '_Cother';
-        }
+        $otherField = $this->rt . '_Cother';
 
         $counts = $this->batchGetResponseCounts($fieldNames);
+        if ($hasOther) {
+            $survey = \Survey::model()->findByPk($this->surveyId);
+            $counts[$otherField] = $survey && $survey->hasOtherCheckedColumn($this->question['qid'])
+                ? $this->read($this->batch->countAnyNonEmpty([$otherField, $this->rt . '_Cotherchecked']))
+                : $this->countFieldResponses($otherField);
+        }
 
         foreach ($this->question['subQuestions'] ?? [] as $subQuestion) {
             $field = $this->rt . "_S" . $subQuestion['qid'];
@@ -41,9 +45,8 @@ class MultipleChoiceProcessor extends AbstractQuestionProcessor
         }
 
         if ($hasOther) {
-            $field = $this->rt . '_Cother';
             $legend[] = 'other';
-            $dataItems[] = ['key' => 'other', 'title' => 'Other', 'value' => $counts[$field], 'field' => $field];
+            $dataItems[] = ['key' => 'other', 'title' => 'Other', 'value' => $counts[$otherField], 'field' => $otherField];
         }
 
         return [

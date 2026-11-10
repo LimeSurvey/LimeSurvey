@@ -99,7 +99,7 @@ class Zend_Db_Adapter_Pdo_Sqlite extends Zend_Db_Adapter_Pdo_Abstract
             }
         }
 
-        return parent::__construct($config);
+        parent::__construct($config);
     }
 
     /**

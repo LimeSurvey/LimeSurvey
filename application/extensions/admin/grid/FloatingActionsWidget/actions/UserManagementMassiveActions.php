@@ -14,7 +14,6 @@ class UserManagementMassiveActions
     {
         $canUsersUpdate = \Permission::model()->hasGlobalPermission('users', 'update');
         $canUsersDelete = \Permission::model()->hasGlobalPermission('users', 'delete');
-        $canSuperadminCreate = \Permission::model()->hasGlobalPermission('superadmin', 'create');
 
         $aActions = [];
 
@@ -120,8 +119,8 @@ class UserManagementMassiveActions
             ];
         }
 
-        // Add role (in dropdown, for superadmins only)
-        if ($canSuperadminCreate) {
+        // Add role (in dropdown, only if the user can assign at least one role)
+        if ($canUsersUpdate && !empty((new \LimeSurvey\Models\Services\UserManager(\App()->user))->getAssignableRoles())) {
             $aMoreActionsItems[] = [
                 'type'              => 'action',
                 'action'            => 'batchaddrole',

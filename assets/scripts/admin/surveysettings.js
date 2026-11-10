@@ -182,14 +182,15 @@ $(document).on('change', '#integrationPanelPager #pageSize', function () {
 
 if (!window.accessModes) {
     window.accessModes = true;
-    $(document).on('click', '.updateAccessModeBtn', function updateAccessMode(e) {
-        const newAccessMode = e.target.dataset.newaccessmode;
-        const surveyId = e.target.dataset.surveyid;
+    $(document).on('click', '.updateAccessModeBtn', function updateAccessMode() {
+        const newAccessMode = this.dataset.newaccessmode;
+        const surveyId = this.dataset.surveyid;
         const button = document.getElementById('access-mode-dropdown');
 
         // Show loading state
         const originalText = button.innerHTML;
-        button.innerHTML = '<i class="ri-loader-4-line ri-spin"></i> Updating...';
+        button.innerHTML = '<i class="ri-loader-4-line ri-spin me-1"></i>';
+        button.append(button.dataset.updating);
         button.disabled = true;
 
         // Build URL using LS.createUrl helper
@@ -208,14 +209,15 @@ if (!window.accessModes) {
                 if (data.success) {
                     // Update button display
                     if (newAccessMode === 'O') {
-                        button.innerHTML = '<i class="ri-global-line"></i> Anyone with link';
+                        button.innerHTML = '<i class="ri-global-line me-1"></i>';
+                        button.append(this.textContent.trim());
                     } else {
-                        button.innerHTML = '<i class="ri-lock-2-line"></i> Link with access code';
+                        button.innerHTML = '<i class="ri-lock-2-line me-1"></i>';
+                        button.append(this.textContent.trim());
                     }
 
                     // Close dropdown
-                    const dropdownElement = document.getElementById('access-mode-dropdown');
-                    const dropdown = bootstrap.Dropdown.getInstance(dropdownElement);
+                    const dropdown = bootstrap.Dropdown.getInstance(button);
                     if (dropdown) {
                         dropdown.hide();
                     }

@@ -17,7 +17,9 @@
  * About Theme Options Path Treatment - Theme Options Path Prefix
  * =========================
  *
- * Path sanitization is applied to all Theme Options ('options' attribute) that match an existing path or a "virtual" path.
+ * Path sanitization is applied to all Theme Options ('options' attribute) that match an existing path
+ * or a "virtual" path, as long as the value is a "virtual" path or has an image file extension.
+ * Other values are left untouched.
  *
  * The paths allowed in Theme Options are restricted to three categories:
  *
@@ -77,6 +79,20 @@ class SurveyThemeHelper
     public static function isVirtualPath($value)
     {
         return !empty(self::getVirtualPathPrefix($value));
+    }
+
+    /**
+     * Returns true if $value ends with one of the allowed theme image file extensions
+     * (see the 'allowedthemeimageformats' setting).
+     * It doesn't check if the file exists.
+     *
+     * @param string $value
+     * @return boolean
+     */
+    public static function hasImageExtension($value)
+    {
+        $extension = strtolower(pathinfo($value, PATHINFO_EXTENSION));
+        return in_array($extension, LSYii_ImageValidator::getAllowedExtensions(), true);
     }
 
     /**
@@ -438,6 +454,11 @@ class SurveyThemeHelper
         if (stripos($value, 'invalid:', 0) === 0) {
             return $value;
         }
+        // Only image paths are handled. Other values (eg. a CSS file path in a custom theme option)
+        // are kept as they are, otherwise they would be turned into an image virtual path.
+        if (!self::isVirtualPath($value) && !self::hasImageExtension($value)) {
+            return $value;
+        }
         // Validation A - If option value is a path that matches a virtual path, transform the value to the virtual path
         $virtualPath = self::getVirtualThemeFilePath($value, $themeName, $sid);
         if (!empty($virtualPath)) {
@@ -521,10 +542,10 @@ class SurveyThemeHelper
     /**
      * Processes a DOMDocument object to check and potentially modify its structure.
      *
-     * This method specifically looks for 'cssframework' nodes within the given DOMDocument.
-     * If found, it examines child nodes for a default option and 'dropdownoptions'. It ensures that
-     * all 'option' nodes are wrapped within an 'optgroup' element. If any modifications are made,
-     * the DOMDocument is marked as changed.
+     * This method specifically looks for the 'cssframework' theme option (config/options/cssframework)
+     * within the given DOMDocument. If found, it examines child nodes for a default option and
+     * 'dropdownoptions'. It ensures that all 'option' nodes are wrapped within an 'optgroup' element.
+     * If any modifications are made, the DOMDocument is marked as changed.
      *
      * @param \DOMDocument $domDocument The DOMDocument object to be checked and potentially modified.
      *
@@ -532,18 +553,15 @@ class SurveyThemeHelper
      *                           Changes include ensuring 'option' nodes within 'cssframework' are properly
      *                           grouped under an 'optgroup' and setting a default option if not present.
      *
-     * @throws \Exception If an invalid node is found within 'dropdownoptions' or if no 'dropdownoptions'
-     *                    nodes are found when expected.
+     * @throws \Exception If an invalid node is found within 'dropdownoptions'.
      */
     private static function checkDomDocument($domDocument)
     {
         $isChangedDomDocument = false;
 
-        // Find first 'cssframework' nodes in the document
-        $cssFrameworkNodes = $domDocument->getElementsByTagName('cssframework');
-        if ($cssFrameworkNodes) {
-            $cssFrameworkNode = $cssFrameworkNodes->item(0);
-        }
+        // Only the 'cssframework' theme option has dropdown options: The one in 'engine' declares the CSS framework,
+        // the one in 'optionsOrderReact' only sets a category
+        $cssFrameworkNode = (new \DOMXPath($domDocument))->query('/config/options/cssframework')->item(0);
 
         if ($cssFrameworkNode) {
             $defaultOption = '';
@@ -590,8 +608,6 @@ class SurveyThemeHelper
                 } else {
                     $optGroupNode = $optGroupNodeList->item(0);
                 }
-            } else {
-                throw new \Exception('No "dropdownoptions" nodes were found.');
             }
 
             if ($defaultOption === '' && isset($optGroupNode->firstChild)) {

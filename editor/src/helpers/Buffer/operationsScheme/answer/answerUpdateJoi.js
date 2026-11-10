@@ -12,6 +12,7 @@ export const answerUpdateJoi = Joi.object({
         tempId: Joi.alternatives().try(Joi.string(), Joi.number()).optional(),
         appKey: Joi.string().optional(),
         aid: Joi.alternatives().try(Joi.string(), Joi.number()).required(),
+        qid: Joi.alternatives().try(Joi.string(), Joi.number()).optional(),
         code: Joi.alternatives().try(Joi.string(), Joi.number()).required(),
         sortOrder: Joi.alternatives()
           .try(Joi.string(), Joi.number())
@@ -24,8 +25,12 @@ export const answerUpdateJoi = Joi.object({
           .pattern(
             /^[a-zA-Z-]{2,}$/,
             Joi.object({
-              answer: Joi.alternatives()
+              id: Joi.alternatives().try(Joi.string(), Joi.number()).optional(),
+              aid: Joi.alternatives()
                 .try(Joi.string(), Joi.number())
+                .optional(),
+              answer: Joi.alternatives()
+                .try(Joi.string().allow(''), Joi.number())
                 .required(),
               language: Joi.alternatives()
                 .try(Joi.string(), Joi.number())

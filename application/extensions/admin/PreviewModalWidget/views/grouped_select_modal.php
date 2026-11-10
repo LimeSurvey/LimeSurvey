@@ -30,8 +30,8 @@
                                             data-bs-toggle="collapse"
                                             data-bs-parent="#accordion_<?= $this->widgetsJsName ?>"
                                             href="#collapsible_<?= $sGroupTitle ?>"
-                                            aria-expanded="true"
-                                            aria-controls="collapse-question"
+                                            aria-expanded="false"
+                                            aria-controls="collapsible_<?= $sGroupTitle ?>"
                                         >
                                             <?= $aGroupArray[$this->groupTitleKey] ?>
                                         </button>

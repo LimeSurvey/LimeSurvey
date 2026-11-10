@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useMemo } from 'react'
 import { Form } from 'react-bootstrap'
 import ReactSelect from 'react-select'
+import CreatableSelect from 'react-select/creatable'
+import { format } from 'util'
 import classNames from 'classnames'
 import { useQueryClient } from '@tanstack/react-query'
 
@@ -22,6 +24,7 @@ export const Select = ({
   onChange = () => {},
   update = () => {},
   value,
+  disabled = false,
   activeDisabled = false,
   noPermissionDisabled = false,
   noAccessDisabled = false,
@@ -35,6 +38,9 @@ export const Select = ({
   menuPlacement = 'auto',
   menuPosition = 'absolute',
   formatOptionLabel,
+  // Lets the user type a value that is not in the options list
+  isCreatable = false,
+  isClearable = false,
 }) => {
   const [isOpen, setIsOpen] = useState(false)
   const [canUseAppState, setCanUseAppState] = useState(false)
@@ -64,7 +70,7 @@ export const Select = ({
     ? useAppState(STATES.HAS_SURVEY_UPDATE_PERMISSION)
     : [true]
 
-  const disabled =
+  const permissionDisabled =
     (isSurveyActive && activeDisabled) ||
     (!hasSurveyUpdatePermission && noPermissionDisabled) ||
     noAccessDisabled
@@ -73,7 +79,16 @@ export const Select = ({
       ? getTooltipMessages().ACTIVE_DISABLED
       : getTooltipMessages().NO_PERMISSION
 
-  if (
+  if (isCreatable && !isMultiselect && value !== null && value !== undefined) {
+    // A value that is not one of the options was typed in, so show it as is
+    value =
+      value === ''
+        ? null
+        : (optionFilter(options, 'value', value) ?? {
+            label: String(value),
+            value,
+          })
+  } else if (
     value !== null &&
     value !== undefined &&
     !isMultiselect &&
@@ -98,9 +113,24 @@ export const Select = ({
       const updateValue = selectedOption.map((option) => option.value)
       update(updateValue)
     } else {
-      update(selectedOption.value)
+      // selectedOption is null when the selection was cleared
+      update(selectedOption?.value ?? '')
     }
   }
+
+  const handleOnCreateOption = (inputValue) => {
+    const newValue = inputValue.trim()
+    onChange({ label: newValue, value: newValue })
+    update(newValue)
+  }
+
+  const SelectComponent = isCreatable ? CreatableSelect : ReactSelect
+  const creatableProps = isCreatable
+    ? {
+        onCreateOption: handleOnCreateOption,
+        formatCreateLabel: (inputValue) => format(t('Use "%s"'), inputValue),
+      }
+    : {}
 
   const handleOnMenuOpen = () => {
     setIsOpen(true)
@@ -120,8 +150,9 @@ export const Select = ({
       data-testid={dataTestId}
     >
       {labelText && <Form.Label htmlFor="select">{labelText}</Form.Label>}
-      <TooltipContainer tip={toolTip} showTip={disabled}>
-        <ReactSelect
+      <TooltipContainer tip={toolTip} showTip={permissionDisabled}>
+        <SelectComponent
+          {...creatableProps}
           classNames={{
             control: () => 'select',
             menu: () => menuClassName,
@@ -156,6 +187,9 @@ export const Select = ({
               ...base,
               color: '#6E748C',
               minWidth: 'fit-content',
+              // 1px less than the react-select default to make up for the 2px border, so the select is 38px high
+              paddingTop: '7px',
+              paddingBottom: '7px',
             }),
             control: (baseStyles) => ({
               ...baseStyles,
@@ -183,8 +217,8 @@ export const Select = ({
               wordWrap: 'break-word',
             }),
           }}
-          isDisabled={disabled}
-          isClearable={false}
+          isDisabled={disabled || permissionDisabled}
+          isClearable={isClearable}
           onMenuOpen={handleOnMenuOpen}
           onMenuClose={handleOnMenuClose}
         />

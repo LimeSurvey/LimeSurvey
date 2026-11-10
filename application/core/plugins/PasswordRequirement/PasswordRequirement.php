@@ -2,7 +2,7 @@
 
 /**
  * Core plugin for LimeSurvey : password requirement settings
- * @version 1.1.0
+ * @version 1.2.0
  */
 
 class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
@@ -15,8 +15,11 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
 
     const DEFAULT_NEEDS_NUMBER = true;
     const DEFAULT_NEEDS_UPPERCASE = true;
+    const DEFAULT_NEEDS_LOWERCASE = false;
     const DEFAULT_NEEDS_NON_ALPHANUMERIC = false;
     const DEFAULT_MINIMUM_SIZE = 12;
+    /** No maximum length */
+    const DEFAULT_MAXIMUM_SIZE = 0;
     const DEFAULT_SURVEY_SAVE_ACTIVE = false;
     const DEFAULT_SURVEY_SAVE_NEEDS_NUMBER = false;
     const DEFAULT_SURVEY_SAVE_NEEDS_UPPERCASE = false;
@@ -25,6 +28,9 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
 
     /** @inheritdoc this plugin didn't have any public method */
     public $allowedPublicMethods = array();
+
+    /** @var array|null The administration password rules, read once per request */
+    private $adminRules;
 
     protected $settings = [
         'adminPart' => array(
@@ -41,6 +47,11 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
             'type' => 'boolean',
             'default' => self::DEFAULT_NEEDS_UPPERCASE,
         ),
+        'needsLowercase' => array(
+            'label' => 'Require at least one lowercase character',
+            'type' => 'boolean',
+            'default' => self::DEFAULT_NEEDS_LOWERCASE,
+        ),
         'needsNonAlphanumeric' => array(
             'label' => 'Require at least one special character',
             'type' => 'boolean',
@@ -48,6 +59,10 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
         ),
         'minimumSize' => array(
             'label' => 'Minimum password length',
+            'type' => 'int',
+        ),
+        'maximumSize' => array(
+            'label' => 'Maximum password length',
             'type' => 'int',
         ),
         'surveyPart' => array(
@@ -85,21 +100,41 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
     public function init()
     {
         $this->subscribe('checkPasswordRequirement');
+        $this->subscribe('getPasswordRequirements');
         $this->subscribe('createRandomPassword');
+        $this->subscribe('beforeDeactivate');
 
         $this->subscribe('saveSurveyForm', 'validateSaveSurveyForm');
     }
 
+    /**
+     * The password rules for administration users are only set here, so the plugin can't be deactivated.
+     * @return void
+     */
+    public function beforeDeactivate()
+    {
+        $this->getEvent()->set('success', false);
+        $this->getEvent()->set('message', gT('This core plugin can not be disabled.'));
+    }
+
+    /**
+     * @see event checkPasswordRequirement
+     * Check an administration user password against the plugin settings
+     * @return void
+     */
     public function checkPasswordRequirement()
     {
         $oEvent = $this->getEvent();
         $password = $oEvent->get('password');
+        $rules = $this->getAdminRules();
         $errors = $this->checkValidityOfPassword(
             $password,
-            $this->get('needsNumber', null, null, self::DEFAULT_NEEDS_NUMBER),
-            $this->get('needsUppercase', null, null, self::DEFAULT_NEEDS_UPPERCASE),
-            $this->get('needsNonAlphanumeric', null, null, self::DEFAULT_NEEDS_NON_ALPHANUMERIC),
-            $this->get('minimumSize', null, null, self::DEFAULT_MINIMUM_SIZE)
+            $rules['needsNumber'],
+            $rules['needsUppercase'],
+            $rules['needsNonAlphanumeric'],
+            $rules['minimumSize'],
+            $rules['needsLowercase'],
+            $rules['maximumSize']
         );
         if ($errors) {
             $oEvent->set('passwordOk', false);
@@ -144,14 +179,117 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
     }
 
     /**
+     * @see event getPasswordRequirements
+     * Add the administration password rules to the text shown below password fields
+     * @return void
+     */
+    public function getPasswordRequirements()
+    {
+        $requirements = [];
+        $rules = $this->getAdminRules();
+        $minimumSize = $rules['minimumSize'];
+        if ($minimumSize > 0) {
+            $requirements[] = sprintf(gTPlural('At least %d character long.', 'At least %d characters long.', $minimumSize), $minimumSize);
+        }
+        $maximumSize = $rules['maximumSize'];
+        if ($maximumSize > 0) {
+            $requirements[] = sprintf(gTPlural('At most %d character long.', 'At most %d characters long.', $maximumSize), $maximumSize);
+        }
+        if ($rules['needsLowercase']) {
+            $requirements[] = sprintf(gTPlural('At least %d lower case letter.', 'At least %d lower case letters.', 1), 1);
+        }
+        if ($rules['needsUppercase']) {
+            $requirements[] = sprintf(gTPlural('At least %d upper case letter.', 'At least %d upper case letters.', 1), 1);
+        }
+        if ($rules['needsNumber']) {
+            $requirements[] = sprintf(gTPlural('At least %d number.', 'At least %d numbers.', 1), 1);
+        }
+        if ($rules['needsNonAlphanumeric']) {
+            $requirements[] = sprintf(gTPlural('At least %d special character.', 'At least %d special characters.', 1), 1);
+        }
+        $oEvent = $this->getEvent();
+        $oEvent->set('requirements', array_merge((array) $oEvent->get('requirements'), $requirements));
+    }
+
+    /**
+     * @inheritdoc
+     * Nothing is saved when the maximum password length is below the shortest possible password.
+     * The administration password rules are read again after saving.
+     * @return false|void false if the settings were not saved
+     */
+    public function saveSettings($settings)
+    {
+        $rules = $this->getAdminRules();
+        $maximumSize = array_key_exists('maximumSize', $settings) ? (int) $settings['maximumSize'] : $rules['maximumSize'];
+        if ($maximumSize > 0) {
+            $minimumSize = $rules['minimumSize'];
+            if (array_key_exists('minimumSize', $settings)) {
+                $minimumSize = ($settings['minimumSize'] === null || $settings['minimumSize'] === '') ? self::DEFAULT_MINIMUM_SIZE : (int) $settings['minimumSize'];
+            }
+            // Random passwords always have a lowercase character, and one character of each other required kind
+            $requiredCharacters = 1;
+            foreach (['needsUppercase', 'needsNumber', 'needsNonAlphanumeric'] as $setting) {
+                $requiredCharacters += (int) (array_key_exists($setting, $settings) ? !empty($settings[$setting]) : $rules[$setting]);
+            }
+            $shortestSize = max($minimumSize, $requiredCharacters);
+            if ($maximumSize < $shortestSize) {
+                App()->setFlashMessage(
+                    sprintf($this->gT('The settings were not saved: The maximum password length must be at least %d.'), $shortestSize),
+                    'error'
+                );
+                return false;
+            }
+        }
+        $this->adminRules = null;
+        parent::saveSettings($settings);
+    }
+
+    /**
+     * Get the password rules for administration users from the plugin settings
+     * @return array with keys needsNumber, needsUppercase, needsLowercase, needsNonAlphanumeric (bool), minimumSize and maximumSize (int, 0 means no limit)
+     */
+    private function getAdminRules()
+    {
+        if ($this->adminRules === null) {
+            $this->adminRules = [
+                'needsNumber' => (bool) $this->get('needsNumber', null, null, self::DEFAULT_NEEDS_NUMBER),
+                'needsUppercase' => (bool) $this->get('needsUppercase', null, null, self::DEFAULT_NEEDS_UPPERCASE),
+                'needsLowercase' => (bool) $this->get('needsLowercase', null, null, self::DEFAULT_NEEDS_LOWERCASE),
+                'needsNonAlphanumeric' => (bool) $this->get('needsNonAlphanumeric', null, null, self::DEFAULT_NEEDS_NON_ALPHANUMERIC),
+                'minimumSize' => $this->getSize('minimumSize', self::DEFAULT_MINIMUM_SIZE),
+                'maximumSize' => $this->getSize('maximumSize', self::DEFAULT_MAXIMUM_SIZE),
+            ];
+        }
+        return $this->adminRules;
+    }
+
+    /**
+     * Get a password length setting, a setting saved blank uses the default
+     * @param string $setting the setting name
+     * @param int $default
+     * @return int
+     */
+    private function getSize($setting, $default)
+    {
+        $size = $this->get($setting, null, null, $default);
+        if ($size === null || $size === '') {
+            return $default;
+        }
+        return (int) $size;
+    }
+
+    /**
      * Check the validity of a password according to option
      * @param string $password
      * @param boolean $needsNumber
      * @param boolean $needsUppercase
      * @param boolean $needsNonAlphanumeric
+     * @param int $minimumSize
+     * @param boolean $needsLowercase
+     * @param int $maximumSize 0 means no maximum length
      * @return null|array, null means no issue.
      */
-    private function checkValidityOfPassword($password, $needsNumber, $needsUppercase, $needsNonAlphanumeric, $minimumSize = 8)
+    private function checkValidityOfPassword($password, $needsNumber, $needsUppercase, $needsNonAlphanumeric, $minimumSize = 8, $needsLowercase = false, $maximumSize = 0)
     {
         $errors = [];
         if ($needsNumber && preg_match('/\d/', $password) === 0) {
@@ -160,11 +298,17 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
         if ($needsUppercase && strtolower($password) == $password) {
             $errors[] = gT('The password does require at least one uppercase character');
         }
+        if ($needsLowercase && strtoupper($password) == $password) {
+            $errors[] = gT('The password does require at least one lowercase character');
+        }
         if ($needsNonAlphanumeric && ctype_alnum($password)) {
             $errors[] = gT('The password does require at least one special character');
         }
         if ($minimumSize && strlen($password) < $minimumSize) {
             $errors[] = sprintf(gT('The password does not reach the minimum length of %s characters'), $minimumSize);
+        }
+        if ($maximumSize && strlen($password) > $maximumSize) {
+            $errors[] = sprintf(gT('The password exceeds the maximum length of %s characters'), $maximumSize);
         }
         if (empty($errors)) {
             return null;
@@ -172,18 +316,29 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
         return $errors;
     }
 
+    /**
+     * @see event createRandomPassword
+     * Create a random password matching the administration password rules,
+     * unless a plugin dispatched before already created one
+     * @return void
+     */
     public function createRandomPassword()
     {
         $oEvent = $this->getEvent();
+        $password = $oEvent->get('password');
+        if ($password !== null && $password !== '') {
+            return;
+        }
         $targetSize = $oEvent->get('targetSize', 8);
 
-        $minimumSize = $this->get('minimumSize', null, null, self::DEFAULT_MINIMUM_SIZE);
-        $targetSize = $targetSize < $minimumSize ? $minimumSize : $targetSize;
-        $uppercase = $this->get('needsUppercase', null, null, self::DEFAULT_NEEDS_UPPERCASE);
-        $numeric = $this->get('needsNumber', null, null, self::DEFAULT_NEEDS_NUMBER);
-        $nonAlpha = $this->get('needsNonAlphanumeric', null, null, self::DEFAULT_NEEDS_NON_ALPHANUMERIC);
+        $rules = $this->getAdminRules();
+        $targetSize = max($targetSize, $rules['minimumSize']);
+        if ($rules['maximumSize'] > 0) {
+            $targetSize = min($targetSize, $rules['maximumSize']);
+        }
 
-        $randomPassword = $this->getRandomString($targetSize, $uppercase, $numeric, $nonAlpha);
+        // Lowercase characters are always used, so needsLowercase needs nothing more
+        $randomPassword = $this->getRandomString($targetSize, $rules['needsUppercase'], $rules['needsNumber'], $rules['needsNonAlphanumeric']);
 
         $oEvent->set('password', $randomPassword);
     }
@@ -199,9 +354,12 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
         $settings['adminPart']['title'] = $this->gT("Password requirements for administration login");
         $settings['needsNumber']['label'] = $this->gT("Require at least one digit");
         $settings['needsUppercase']['label'] = $this->gT("Require at least one uppercase character");
+        $settings['needsLowercase']['label'] = $this->gT("Require at least one lowercase character");
         $settings['needsNonAlphanumeric']['label'] = $this->gT("Require at least one special character");
         $settings['minimumSize']['label'] = $this->gT("Minimum password length");
         $settings['minimumSize']['help'] = sprintf(gT('Default value will be %d if left blank'), self::DEFAULT_MINIMUM_SIZE);
+        $settings['maximumSize']['label'] = $this->gT("Maximum password length");
+        $settings['maximumSize']['help'] = $this->gT("No maximum length if left blank or 0");
         $settings['surveyPart']['title'] = $this->gT("Password requirements for “Save and return later” feature");
         $settings['surveySaveActive']['label'] = $this->gT("Check password when use “Save and return later” feature");
         $settings['surveySaveNeedsNumber']['label'] = $this->gT("Require at least one digit");

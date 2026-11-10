@@ -69,10 +69,11 @@ $internalConfig = array(
     */
     'modules' => array(
 
-        //Root Modules are real Yii Modules and can be initiate like this:
+        /* Root Modules are real Yii Modules and can be initiate like this:
         'HelloWorld' => array(
           'class' => 'modules.root.HelloWorld.HelloWorldModule',
         ),
+        */
 
         /* Here you can unlock Gii
         'gii'=>array(
@@ -154,6 +155,7 @@ $internalConfig = array(
                 'rest',
                 'admin/remotecontrol',
                 'plugins/unsecure',
+                'optout/oneclick',
             ),
             'csrfCookie' => array(
                 'secure' => ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || (isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == 443)),
@@ -173,6 +175,14 @@ $internalConfig = array(
                 ),
                 'profile' => array(
                     'class' => 'CProfileLogRoute'
+                ),
+                // RemoteControl calls saved in /tmp/runtime/remotecontrol.log, only logged when 'rpc_log' is enabled (see config-defaults.php)
+                'remotecontrol' => array(
+                    'class' => 'CFileLogRoute',
+                    'levels' => 'info, warning',
+                    'categories' => 'remotecontrol',
+                    'logFile' => 'remotecontrol.log',
+                    'maxFileSize' => 10240,
                 ),
 
                 // Log file saved in /tmp/runtime/plugin.log
@@ -244,7 +254,7 @@ $internalConfig = array(
                 'LS_Twig_Extension',
                 '\Twig\Extension\SandboxExtension',
                 '\Twig\Extension\StringLoaderExtension',
-                '\Twig\Extension\DebugExtension',
+                'LS_Twig_Debug_Extension',
                 // 'Twig_Extension_Escaper' // In the future, this extension could be used to build a powerful XSS filter
             ),
             'globals' => array(
@@ -306,6 +316,7 @@ $internalConfig = array(
                 'sprintf'                 => 'sprintf',
                 'gT'                      => 'gT',
                 'ngT'                     => 'ngT',
+                'gTPlural'                => 'gTPlural',
                 'createAbsoluteUrl'       => 'LS_Twig_Extension::createAbsoluteUrl',/* Not in 3.X */
                 'createUrl'               => 'LS_Twig_Extension::createUrl',
                 'json_decode'             => 'LS_Twig_Extension::json_decode',
@@ -433,6 +444,7 @@ $internalConfig = array(
                     'sprintf',
                     'gT',
                     'ngT',
+                    'gTPlural',
                     'createAbsoluteUrl',
                     'createUrl',
                     'json_decode',
@@ -467,7 +479,7 @@ $internalConfig = array(
 
 
 
-$result = CMap::mergeArray($internalConfig, $userConfig);
+$result = \LimeSurvey\Helpers\ConfigMergeHelper::merge($internalConfig, $userConfig);
 /**
  * Some workarounds for erroneous settings in user config.php.
  * seems not to be used anymore...
