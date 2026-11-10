@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { Entities, L10ns } from 'helpers'
+import { Entities, L10ns, RemoveHTMLTagsInString } from 'helpers'
 import { Button, ContentEditor, TooltipContainer } from 'components'
 import { SurveyListComponent } from './SurveyListComponent'
 import { SurveyCodeBadge } from './SurveyCodeBadge'
@@ -18,10 +18,10 @@ export const SurveyTitleSelector = ({
   getError,
   onSurveyCodeSave,
   canEditSurveyCode,
+  showCode = false,
 }) => {
   const [surveyTitleIsFocused, setSurveyTitleIsFocused] = useState(false)
   const [internalFormOpen, setInternalFormOpen] = useState(false)
-  const [saveError, setSaveError] = useState(false)
   const titleRef = useRef(null)
 
   const surveyCode = survey.code || ''
@@ -56,24 +56,25 @@ export const SurveyTitleSelector = ({
     []
   )
 
+  const onTitleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault()
+    }
+  }
+
   const handleOpenForm = () => {
-    setSaveError(false)
     setInternalFormOpen(true)
   }
 
   const handleCloseForm = () => {
     setInternalFormOpen(false)
-    setSaveError(false)
   }
 
-  const handleSave = async (value) => {
-    setSaveError(false)
-    try {
-      await onSurveyCodeSave(value)
-      setInternalFormOpen(false)
-    } catch {
-      setSaveError(true)
-    }
+  // The change is buffered and persisted with the other survey operations;
+  // server-side errors surface through the regular buffer error handling.
+  const handleSave = (value) => {
+    onSurveyCodeSave(value)
+    setInternalFormOpen(false)
   }
 
   return (
@@ -87,17 +88,18 @@ export const SurveyTitleSelector = ({
           surveyCode={surveyCode}
           canEdit={canEditSurveyCode}
           onClick={handleOpenForm}
-          showBadge={survey.showQNumCode?.showNumber}
+          showBadge={showCode}
         />
         <div className="d-flex align-items-center">
           <ContentEditor
-            value={surveyTitle}
+            value={RemoveHTMLTagsInString(surveyTitle)}
             placeholder={t('Survey title')}
             update={onSurveyTitleChange}
             editorRef={titleRef}
             className="survey-title-content-editor"
             onBlur={handleSurveyTitleFocusChange(false)}
             onFocus={handleSurveyTitleFocusChange(true)}
+            onKeyDown={onTitleKeyDown}
             noPermissionDisabled={true}
             toolTipPlacement={'bottom'}
             testId="topbar-survey-title-content-editor"
@@ -107,9 +109,7 @@ export const SurveyTitleSelector = ({
             <Button
               className={classNames('internal-title-plus-btn ms-2', {
                 'pointer-events-none opacity-0':
-                  !canEditSurveyCode ||
-                  !surveyTitleIsFocused ||
-                  !survey.showQNumCode?.showNumber,
+                  !canEditSurveyCode || !surveyTitleIsFocused || !showCode,
               })}
               aria-label={t('Add internal title')}
               onMouseDown={(e) => {
@@ -130,14 +130,12 @@ export const SurveyTitleSelector = ({
             titleRef={titleRef}
             titleSelectOffset={TITLE_SELECT_OFFSET}
             handleSurveySwitch={handleSurveySwitch}
-            showCode={survey.showQNumCode?.showCode}
           />
         </div>
         {internalFormOpen && (
           <SurveyCodeForm
             initialValue={surveyCode}
             isNew={!surveyCode}
-            saveError={saveError}
             onSave={handleSave}
             onCancel={handleCloseForm}
           />
