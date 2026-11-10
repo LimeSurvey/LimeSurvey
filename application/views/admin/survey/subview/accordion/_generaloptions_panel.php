@@ -325,12 +325,7 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
             </div>
         </div>
         <!-- Internal title: survey-only, visible only when question codes are shown (resolved through inheritance) -->
-        <?php
-        $showQNumCode = $oSurvey->showqnumcode ?? null;
-        if ($showQNumCode === 'I') {
-            $showQNumCode = $oSurvey->oOptions->showqnumcode ?? null;
-        }
-        if ($bShowAllOptions === true && in_array($showQNumCode, ['B', 'C'], true)) { ?>
+        <?php if ($bShowAllOptions === true && $oSurvey instanceof Survey && $oSurvey->getShowsQuestionCodes()) { ?>
             <div class="mb-3" >
                 <label id="internal_title_label" class="form-label" for='code'><?php eT("Internal title:"); ?></label>
                 <div class="">

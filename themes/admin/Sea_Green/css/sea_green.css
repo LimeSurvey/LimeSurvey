@@ -18392,6 +18392,21 @@ ol.breadcrumb.title-bar-breadcrumb a:active {
   line-height: 24px;
   margin: 0;
 }
+.box-widget .box-widget-card .box-widget-card-header .box-widget-card-code {
+  display: inline-block;
+  max-width: 100%;
+  margin-top: 8px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: top;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.036px;
+}
+.box-widget .box-widget-card .box-widget-card-header.has-code .box-widget-card-title {
+  -webkit-line-clamp: 1;
+}
 .box-widget .box-widget-card .box-widget-card-text {
   cursor: pointer;
   margin-top: 6px;

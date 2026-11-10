@@ -1596,6 +1596,26 @@ class Survey extends LSActiveRecord implements PermissionInterface
     {
         return ($this->oOptions->showqnumcode === 'Y');
     }
+
+    /**
+     * Whether question codes are shown for this survey ("Show both" or
+     * "Show question code only"), resolving the inherited value if needed.
+     * The survey code (internal title) follows the same visibility.
+     *
+     * @return bool
+     */
+    public function getShowsQuestionCodes(): bool
+    {
+        $showQNumCode = $this->showqnumcode;
+        if ($showQNumCode === 'I') {
+            if ($this->oOptions === null || !property_exists($this->oOptions, 'showqnumcode')) {
+                $this->setOptions($this->gsid);
+            }
+            $showQNumCode = $this->oOptions->showqnumcode ?? null;
+        }
+        return in_array($showQNumCode, ['B', 'C'], true);
+    }
+
     /**
      * @return bool
      */

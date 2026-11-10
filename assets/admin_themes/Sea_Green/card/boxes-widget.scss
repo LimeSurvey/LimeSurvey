@@ -46,6 +46,23 @@
                 line-height        : 24px;
                 margin             : 0;
             }
+            // Survey code (internal title) badge, shown only when question codes are visible
+            .box-widget-card-code {
+                display        : inline-block;
+                max-width      : 100%;
+                margin-top     : 8px;
+                overflow       : hidden;
+                text-overflow  : ellipsis;
+                white-space    : nowrap;
+                vertical-align : top;
+                font-size      : 12px;
+                line-height    : 16px;
+                letter-spacing : 0.036px;
+            }
+            // Keep the fixed card height: the title gets one line when the badge is shown
+            &.has-code .box-widget-card-title {
+                -webkit-line-clamp : 1;
+            }
         }
         .box-widget-card-text {
           cursor : pointer;
