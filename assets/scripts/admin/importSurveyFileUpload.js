@@ -15,6 +15,9 @@ $(document).on('ready  pjax:scriptcomplete', function(){
 
     /**
      * Append file name to text field.
+     *
+     * @param {string} filename Name of the selected or dropped file
+     * @return {void}
      */
     function changeTextAfterFileIsChanged(filename){
         textField.textContent = filename + ('\n');
@@ -58,9 +61,18 @@ $(document).on('ready  pjax:scriptcomplete', function(){
         for (const file of files) {
             changeTextAfterFileIsChanged(file.name);
         }
-        setFileError('');
+        // An empty selection (e.g. the file dialog was cancelled) keeps the error
+        if (files.length > 0) {
+            setFileError('');
+        }
     });
 
+    /**
+     * Put the dropped files into the file input and show their names.
+     *
+     * @param {DragEvent} event Native drop event on the drop zone
+     * @return {void}
+     */
     function dropHandler(event) {
         // Prevent default behavior (Prevent file from being opened)
         event.preventDefault();
@@ -74,7 +86,9 @@ $(document).on('ready  pjax:scriptcomplete', function(){
             changeTextAfterFileIsChanged(file.name);
         }
         inputFieldFile.files = dataTransfer.files;
-        setFileError('');
+        if (inputFieldFile.files.length > 0) {
+            setFileError('');
+        }
     }
 
     //to prevent to just open file content in new tab

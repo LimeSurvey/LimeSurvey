@@ -29,7 +29,7 @@
                 <p class="note"><?php echo sprintf(gT('Fields with %s are required.'), '<span class="required">*</span>'); ?></p>
                 <div class="row">
                     <div class="mb-3">
-                        <label class='form-label ' >
+                        <label class='form-label ' id="fileUpload-instructions">
                             <?php if (isFileUploadSizeLimited()) {
                                 printf(
                                     gT(
@@ -56,7 +56,7 @@
                                     accept='.lss,.lsa,.tsv,.txt'
                                     aria-labelledby="fileUpload-label file-upload-text"
                                     aria-required="true"
-                                    aria-describedby="fileUpload-error"
+                                    aria-describedby="fileUpload-instructions fileUpload-error"
                                     onchange="$('#import-submit').attr('disabled', false).attr('data-bs-toggle', false);"
                                 />
                             </label>
