@@ -105,7 +105,14 @@ export const SurveyTitleSelector = ({
             testId="topbar-survey-title-content-editor"
           />
 
-          <TooltipContainer tip={t('Add internal title')} placement="bottom">
+          <TooltipContainer
+            tip={t(
+              canEditSurveyCode && survey && showCode
+                ? 'Add internal title'
+                : ''
+            )}
+            placement="bottom"
+          >
             <Button
               className={classNames('internal-title-plus-btn ms-2', {
                 'pointer-events-none opacity-0':
