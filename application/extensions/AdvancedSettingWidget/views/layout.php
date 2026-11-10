@@ -40,8 +40,3 @@ $labelAttr .= CHtml::getIdByName($inputBaseName) . '"';
         <?php endif; ?>
     </div>
 </div>
-<script>
-function getNames(){
-    return 'testing';
-}
-</script>
