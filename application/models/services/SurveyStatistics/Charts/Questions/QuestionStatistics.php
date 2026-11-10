@@ -283,6 +283,9 @@ class QuestionStatistics implements StatisticsChartInterface
                     }
                 }
             }
+            if (isset($item['otherAnswers']) && is_callable($item['otherAnswers'])) {
+                $item['otherAnswers'] = $item['otherAnswers']();
+            }
             // Deferred stats block (numerical input); dropped when null.
             if (isset($item['stats']) && is_callable($item['stats'])) {
                 $stats = $item['stats']();
@@ -405,7 +408,7 @@ class QuestionStatistics implements StatisticsChartInterface
         $select = [
             'q.qid', 'q.sid', 'q.gid', 'q.type', 'q.title',
             'q.parent_qid', 'q.scale_id', 'q.question_order', 'q.other',
-            'q.question_theme_name',
+            'q.encrypted', 'q.question_theme_name',
             'ql.question as question_text', 'ql.help as help_text',
             'a.aid', 'a.qid as answer_qid', 'a.code', 'a.sortorder',
             'a.scale_id as answer_scale_id',
@@ -452,6 +455,7 @@ class QuestionStatistics implements StatisticsChartInterface
                         'type' => $row['type'], 'title' => $row['title'],
                         'question' => flattenText($row['question_text'], false, true),
                         'help' => flattenText($row['help_text'], false, true), 'other' => $row['other'],
+                        'encrypted' => $row['encrypted'],
                         'question_theme_name' => $row['question_theme_name'],
                         'subQuestions' => [], 'attributes' => [],
                     ];

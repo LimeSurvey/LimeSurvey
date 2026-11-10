@@ -3,6 +3,7 @@
 namespace LimeSurvey\Models\Services\SurveyStatistics\Charts\Questions\Processors;
 
 use CDbConnection;
+use LSActiveRecord;
 use LimeSurvey\Models\Services\ResponseFilters\ResolvedFilter;
 use LimeSurvey\Models\Services\ResponseFilters\ResponseFilterSqlBuilder;
 use LimeSurvey\Models\Services\SurveyStatistics\StatisticsResponseFilters;
@@ -309,6 +310,67 @@ final class ResponseAggregateBatch
                 . ' FROM (' . $inner . ') median_values',
             $whereParams,
         ];
+    }
+
+    /**
+     * Distinct non-empty values of a text column with how often each occurs,
+     * most frequent first (e.g. the free-text "other" answers).
+     *
+     * @return array<int, array{text: string, count: int}>
+     */
+    public function groupedValueCounts(string $field, bool $encrypted = false): array
+    {
+        $db = $this->getDb();
+        $table = $db->quoteTableName('{{responses_' . $this->surveyId . '}}');
+        $col = $db->quoteColumnName($field);
+        $nonEmpty = $this->nonEmptyCheck($db, $field, false);
+        [$where, $whereParams] = $this->buildWhere();
+        $where = $where === '' ? " WHERE $nonEmpty" : "$where AND $nonEmpty";
+
+        if ($encrypted) {
+            return $this->groupDecryptedValues(
+                $db->createCommand("SELECT $col FROM $table$where")->queryColumn($whereParams)
+            );
+        }
+
+        $sql = "SELECT $col AS " . $db->quoteColumnName('text')
+            . ', COUNT(*) AS ' . $db->quoteColumnName('count')
+            . " FROM $table$where GROUP BY $col ORDER BY COUNT(*) DESC, $col ASC";
+        $rows = $db->createCommand($sql)->queryAll(true, $whereParams);
+
+        return array_map(
+            static fn(array $row): array => ['text' => (string)$row['text'], 'count' => (int)$row['count']],
+            $rows
+        );
+    }
+
+    /**
+     * Encryption gives the same text a different value each time, so
+     * encrypted cells are decrypted and grouped here instead of in SQL.
+     *
+     * @param string[] $values
+     * @return array<int, array{text: string, count: int}>
+     */
+    private function groupDecryptedValues(array $values): array
+    {
+        $counts = [];
+        foreach ($values as $value) {
+            $text = LSActiveRecord::decryptSingle((string)$value);
+            if ($text !== '') {
+                $counts[$text] = ($counts[$text] ?? 0) + 1;
+            }
+        }
+
+        $rows = [];
+        foreach ($counts as $text => $count) {
+            $rows[] = ['text' => (string)$text, 'count' => $count];
+        }
+        usort(
+            $rows,
+            static fn(array $a, array $b): int => [$b['count'], $a['text']] <=> [$a['count'], $b['text']]
+        );
+
+        return $rows;
     }
 
     public function isExecuted(): bool

@@ -10,11 +10,15 @@ import { renderWithProviders } from 'tests/testUtils'
 import { ChartRendererV2 } from './ChartRenderV2'
 
 // Recharts' d3 dependencies are ESM-only and don't load under Jest; stub the
-// charts and expose the orientation they receive.
+// charts and expose the orientation they receive and the "other" click.
 jest.mock('./Charts/index.js', () => {
   const stub = (testId) => {
-    const ChartStub = ({ orientation }) => (
-      <div data-testid={testId} data-orientation={orientation} />
+    const ChartStub = ({ orientation, onViewOther }) => (
+      <div data-testid={testId} data-orientation={orientation}>
+        {onViewOther && (
+          <button data-testid={`${testId}-other`} onClick={onViewOther} />
+        )}
+      </div>
     )
     return ChartStub
   }
@@ -257,5 +261,58 @@ describe('ChartRendererV2 bar chart orientation', () => {
     const [firstChart, secondChart] = screen.getAllByTestId('bar-chart')
     expect(firstChart).toHaveAttribute('data-orientation', 'horizontal')
     expect(secondChart).toHaveAttribute('data-orientation', 'vertical')
+  })
+})
+
+describe('ChartRendererV2 "other" answers', () => {
+  const dataWithOther = [
+    ...data,
+    {
+      key: 'other',
+      title: 'Other',
+      value: 3,
+      otherAnswers: [{ text: 'Darts', count: 3 }],
+    },
+  ]
+
+  const getOtherAnswers = () =>
+    document.querySelector('.responses-statistics-other-answers')
+
+  beforeAll(() => {
+    Element.prototype.scrollIntoView = jest.fn()
+  })
+
+  test('clicking "Other" in the bar chart opens and closes the list', async () => {
+    await renderCard({ data: dataWithOther })
+    expect(getOtherAnswers()).not.toBeInTheDocument()
+
+    await userEvent.click(screen.getByTestId('bar-chart-other'))
+    expect(getOtherAnswers()).toHaveTextContent('Darts')
+
+    await userEvent.click(screen.getByTestId('bar-chart-other'))
+    expect(getOtherAnswers()).not.toBeInTheDocument()
+  })
+
+  test('the list stays open in the table, where the "Other" row closes it', async () => {
+    await renderCard({ data: dataWithOther })
+    await userEvent.click(screen.getByTestId('bar-chart-other'))
+
+    await userEvent.click(
+      screen.getByTestId('toggleButton-chart-view-0-option-2')
+    )
+    expect(getOtherAnswers()).toBeInTheDocument()
+
+    await userEvent.click(
+      document.querySelector('.responses-statistics-table-other')
+    )
+    expect(getOtherAnswers()).not.toBeInTheDocument()
+  })
+
+  test('"Other" is not clickable without its answers', async () => {
+    await renderCard({
+      data: [...data, { key: 'other', title: 'Other', value: 3 }],
+    })
+
+    expect(screen.queryByTestId('bar-chart-other')).not.toBeInTheDocument()
   })
 })

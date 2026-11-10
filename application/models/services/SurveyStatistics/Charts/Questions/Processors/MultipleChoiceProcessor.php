@@ -46,7 +46,13 @@ class MultipleChoiceProcessor extends AbstractQuestionProcessor
 
         if ($hasOther) {
             $legend[] = 'other';
-            $dataItems[] = ['key' => 'other', 'title' => 'Other', 'value' => $counts[$otherField], 'field' => $otherField];
+            $dataItems[] = [
+                'key' => 'other',
+                'title' => 'Other',
+                'value' => $counts[$otherField],
+                'field' => $otherField,
+                'otherAnswers' => $this->groupOtherAnswers($otherField),
+            ];
         }
 
         return [

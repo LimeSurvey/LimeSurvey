@@ -1,16 +1,40 @@
 import { LSTable, TooltipContainer } from 'components'
 
 import {
+  OtherAnswersHint,
+  TooltipMetricLines,
   VALUE_TYPE,
   getDisplayMetric,
   getUnionSegments,
+  hasOtherAnswers,
   ordinal,
   shouldRenderImage,
   wrapTerm,
 } from './ChartsUtils'
 
-const AnswerCell = ({ row, isImage }) =>
-  shouldRenderImage(isImage, row) ? (
+const OtherAnswerCell = ({ row, onViewOther }) => (
+  <TooltipContainer
+    tip={
+      <>
+        <TooltipMetricLines count={row.value} percentage={row.percentage} />
+        <OtherAnswersHint />
+      </>
+    }
+  >
+    <button
+      type="button"
+      className="responses-statistics-table-other"
+      onClick={onViewOther}
+    >
+      {row.title}
+    </button>
+  </TooltipContainer>
+)
+
+const AnswerCell = ({ row, isImage, onViewOther }) =>
+  onViewOther && hasOtherAnswers(row) ? (
+    <OtherAnswerCell row={row} onViewOther={onViewOther} />
+  ) : shouldRenderImage(isImage, row) ? (
     <img
       src={row.title}
       alt={row.title}
@@ -27,6 +51,7 @@ export const StatisticsTable = ({
   data = [],
   isImage = false,
   valueType = VALUE_TYPE.PERCENTAGE,
+  onViewOther,
 }) => {
   const isRanking = data.some((item) => Array.isArray(item?.ranks))
   const isSegmented = data.some((item) => Array.isArray(item?.segments))
@@ -184,7 +209,13 @@ export const StatisticsTable = ({
     {
       id: 'answer',
       header: t('Answer'),
-      cell: ({ row }) => <AnswerCell row={row.original} isImage={isImage} />,
+      cell: ({ row }) => (
+        <AnswerCell
+          row={row.original}
+          isImage={isImage}
+          onViewOther={onViewOther}
+        />
+      ),
     },
     {
       id: 'responses',

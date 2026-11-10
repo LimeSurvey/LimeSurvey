@@ -126,6 +126,19 @@ abstract class AbstractQuestionProcessor
     }
 
     /**
+     * Returns the deferred free-text "other" answers of a column, grouped
+     * with their counts, most frequent first.
+     *
+     * @param string $fieldName Column name in the response table
+     * @return callable Resolves to array<int, array{text: string, count: int}>
+     */
+    protected function groupOtherAnswers(string $fieldName): callable
+    {
+        $encrypted = ($this->question['encrypted'] ?? 'N') === 'Y';
+        return fn() => $this->batch->groupedValueCounts($fieldName, $encrypted);
+    }
+
+    /**
      * Returns deferred non-empty response counts for multiple columns.
      *
      * @param  string[] $fieldNames Column names in the response table

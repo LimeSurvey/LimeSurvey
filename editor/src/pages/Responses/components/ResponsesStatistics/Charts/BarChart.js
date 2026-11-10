@@ -18,6 +18,7 @@ import {
   COLORS,
   CustomTooltip,
   TruncatedTick,
+  hasOtherAnswers,
   formatMetricValue,
   getBarChartMinWidth,
   getLabelInterval,
@@ -66,6 +67,7 @@ export const BarChart = ({
   isImage = false,
   hasComments = false,
   onViewComments,
+  onViewOther,
   scrollable = true,
   orientation = ORIENTATION.VERTICAL,
 }) => {
@@ -199,24 +201,36 @@ export const BarChart = ({
             )}
             <Tooltip
               cursor={{ fill: '#eeeff7' }}
-              content={<CustomTooltip showCommentsHint={hasComments} />}
+              content={
+                <CustomTooltip
+                  showCommentsHint={hasComments}
+                  showOtherHint={!!onViewOther}
+                />
+              }
             />
             <Bar
               maxBarSize={isHorizontal ? HORIZONTAL_BAR_MAX_SIZE : BAR_MAX_SIZE}
               dataKey={dataKey}
               nameKey="title"
               data={data}
-              onClick={
-                hasComments
-                  ? (entry) => onViewComments?.(entry?.key)
-                  : undefined
-              }
+              onClick={(entry) => {
+                if (onViewOther && hasOtherAnswers(entry)) {
+                  onViewOther()
+                } else if (hasComments) {
+                  onViewComments?.(entry?.key)
+                }
+              }}
             >
-              {data.map((_, index) => {
+              {data.map((item, index) => {
                 return (
                   <Cell
                     key={`bar-chart-${index}`}
                     fill={COLORS[index % COLORS.length]}
+                    cursor={
+                      onViewOther && hasOtherAnswers(item)
+                        ? 'pointer'
+                        : undefined
+                    }
                   />
                 )
               })}
