@@ -86,7 +86,39 @@ export const Setting = ({
   const getRawValueFromPath = (attributePath) =>
     attributePath.split('.').reduce((acc, key) => acc?.[key], question)
 
+  const getDefinition = (attributePath) =>
+    (allAttributes.length ? allAttributes : attributes).find(
+      (definition) => definition.attributePath === attributePath
+    )
+
+  // Any non-empty stored value, in any language
+  const hasStoredValue = (attributePath) => {
+    const raw = getRawValueFromPath(attributePath)
+    const values =
+      raw !== null && typeof raw === 'object' ? Object.values(raw) : [raw]
+
+    return values.some(
+      (value) => value !== '' && value !== null && value !== undefined
+    )
+  }
+
+  // A toggle the classic editor doesn't store (e.g. the timer warnings) is on
+  // while one of the attributes it shows has a value.
+  const getImpliedValue = (attributePath) => {
+    const implied = getDefinition(attributePath)?.valueWhenDependentsSet
+    if (!implied || !isAttributeUnset(attributePath, false)) {
+      return undefined
+    }
+
+    return implied.paths.some(hasStoredValue) ? implied.value : undefined
+  }
+
   const getAttributeValueFromPath = (attributePath, languageBased) => {
+    const impliedValue = getImpliedValue(attributePath)
+    if (impliedValue !== undefined) {
+      return impliedValue
+    }
+
     const attribute = getRawValueFromPath(attributePath)
 
     if (!attribute) {
@@ -177,8 +209,24 @@ export const Setting = ({
     const updateValue = getUpdateValueFromPath(value, attribute)
     handleUpdate(updateValue, isAdvancedAttribute)
 
-    // update other attributes that depends on this attribute (in any section)
     const candidates = allAttributes.length ? allAttributes : attributes
+
+    // Store a derived toggle when one of its fields is edited, so it stays on
+    // e.g. while a value is cleared to type a new one
+    candidates.forEach((candidate) => {
+      const implied = candidate.valueWhenDependentsSet
+      if (
+        implied?.paths.includes(attribute.attributePath) &&
+        getImpliedValue(candidate.attributePath) !== undefined
+      ) {
+        handleUpdate(
+          getUpdateValueFromPath(implied.value, candidate),
+          candidate.attributePath.includes('attributes.')
+        )
+      }
+    })
+
+    // update other attributes that depends on this attribute (in any section)
     const handledPaths = new Set()
     candidates.forEach((dependsOnAttribute) => {
       const conditions = getConditions(dependsOnAttribute.dependsOn)
@@ -262,7 +310,8 @@ export const Setting = ({
         const showDefaultValue =
           attribute.props?.defaultValue !== undefined &&
           !attribute.props?.value &&
-          isAttributeUnset(attribute.attributePath, attribute.languageBased)
+          isAttributeUnset(attribute.attributePath, attribute.languageBased) &&
+          getImpliedValue(attribute.attributePath) === undefined
 
         const isDisabledWhenActive =
           ATTRIBUTES_DISABLED_WHEN_ACTIVE.includes(attribute.attributePath) ||

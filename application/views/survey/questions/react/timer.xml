@@ -43,6 +43,8 @@
             <requires>
                 <name>time_limit_warning</name>
             </requires>
+            <!-- Not stored by the classic editor: on while one of its timer fields has a value -->
+            <valueWhenDependentsSet>1</valueWhenDependentsSet>
             <sortorder>107</sortorder>
             <component>ToggleButtons</component>
             <caption>1st time limit warning</caption>
@@ -112,6 +114,8 @@
             <requires>
                 <name>time_limit_warning_2</name>
             </requires>
+            <!-- Not stored by the classic editor: on while one of its timer fields has a value -->
+            <valueWhenDependentsSet>1</valueWhenDependentsSet>
             <sortorder>115</sortorder>
             <component>ToggleButtons</component>
             <caption>2nd time limit warning</caption>

@@ -1,4 +1,8 @@
-import { ExpressionScriptEditor } from 'components/UIComponents'
+import {
+  ExpressionScriptEditor,
+  Select,
+  ToggleButtons,
+} from 'components/UIComponents'
 
 import { getTimerAttributes } from '../attributes'
 import { buildSettingsFromAttributes } from './buildSettingsFromAttributes'
@@ -243,6 +247,74 @@ describe('buildSettingsFromAttributes', () => {
       height: '140px',
       ariaLabel: 'Equation',
       labelText: 'Equation',
+    })
+  })
+
+  it('uses a dropdown for a button group with more than three options', () => {
+    const settings = buildSettingsFromAttributes({
+      button_size: {
+        name: 'button_size',
+        inputtype: 'buttongroup',
+        options: [
+          { value: 'default', text: 'Default' },
+          { value: 'lg', text: 'Large' },
+          { value: 'sm', text: 'Small' },
+          { value: 'xs', text: 'Extra small' },
+        ],
+        attributePath: 'attributes.button_size',
+        tab: 'Display theme options',
+      },
+      show_search: {
+        name: 'show_search',
+        inputtype: 'buttongroup',
+        options: [
+          { value: '0', text: 'No' },
+          { value: '1', text: 'Yes' },
+        ],
+        attributePath: 'attributes.show_search',
+        tab: 'Display theme options',
+      },
+    })
+    const [buttonSize, showSearch] = settings
+      .slice(1)
+      .flatMap((tab) => tab.attributes)
+
+    expect(buttonSize.component).toBe(Select)
+    expect(buttonSize.props.options).toHaveLength(4)
+    expect(showSearch.component).toBe(ToggleButtons)
+  })
+
+  it('derives a toggle from the attributes that depend on it', () => {
+    const settings = buildSettingsFromAttributes({
+      use_first_limit_warning: {
+        name: 'use_first_limit_warning',
+        component: 'ToggleButtons',
+        optionsPreset: 'yesNo',
+        valueWhenDependentsSet: '1',
+        attributePath: 'attributes.use_first_limit_warning',
+        tab: 'Timer',
+      },
+      time_limit_warning: {
+        name: 'time_limit_warning',
+        component: 'Input',
+        dependsOn: [{ attribute: 'use_first_limit_warning' }],
+        attributePath: 'attributes.time_limit_warning',
+        tab: 'Timer',
+      },
+      time_limit: {
+        name: 'time_limit',
+        component: 'Input',
+        attributePath: 'attributes.time_limit',
+        tab: 'Timer',
+      },
+    })
+    const toggle = settings
+      .flatMap((tab) => tab.attributes)
+      .find((attribute) => attribute.name === 'use_first_limit_warning')
+
+    expect(toggle.valueWhenDependentsSet).toEqual({
+      value: '1',
+      paths: ['attributes.time_limit_warning'],
     })
   })
 })

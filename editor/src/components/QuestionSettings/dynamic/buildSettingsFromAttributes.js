@@ -79,6 +79,20 @@ const dependsOnMissingAttribute = (dependsOn, attributesByName) =>
   Array.isArray(dependsOn) &&
   dependsOn.some(({ attribute }) => attribute && !attributesByName[attribute])
 
+// More buttons than this don't fit in the settings panel, so a dropdown is used instead
+const MAX_TOGGLE_OPTIONS = 3
+
+// Paths of the attributes whose <dependsOn> references the attribute `name`
+const getDependentPaths = (name, attributesByName) =>
+  Object.values(attributesByName)
+    .filter(
+      (attribute) =>
+        attribute?.attributePath &&
+        Array.isArray(attribute.dependsOn) &&
+        attribute.dependsOn.some((condition) => condition.attribute === name)
+    )
+    .map((attribute) => attribute.attributePath)
+
 const toDefinition = (attribute, attributesByName) => {
   if (
     attribute.hidden ||
@@ -88,9 +102,18 @@ const toDefinition = (attribute, attributesByName) => {
   }
 
   const fallback = inputtypeFallback[attribute.inputtype] || {}
-  const component = attribute.component
+  const options = getOptions(attribute)
+  let component = attribute.component
     ? componentRegistry[attribute.component]
     : fallback.component
+
+  if (
+    !attribute.component &&
+    component === componentRegistry.ToggleButtons &&
+    options?.length > MAX_TOGGLE_OPTIONS
+  ) {
+    component = componentRegistry.Select
+  }
 
   if (!component) {
     return null
@@ -105,7 +128,6 @@ const toDefinition = (attribute, attributesByName) => {
     props.labelText = attribute.caption
   }
 
-  const options = getOptions(attribute)
   if (options && component === componentRegistry.ToggleButtons) {
     props.toggleOptions = options.map(({ name, label, value }) => ({
       name: name ?? label,
@@ -169,6 +191,18 @@ const toDefinition = (attribute, attributesByName) => {
     definition.returnValues = attribute.returnValues?.length
       ? attribute.returnValues
       : [attribute.attributePath]
+  }
+
+  // A toggle that isn't stored by the classic editor (e.g. the timer warnings):
+  // it is on while one of the attributes it shows has a value
+  if (
+    attribute.valueWhenDependentsSet !== undefined &&
+    attribute.valueWhenDependentsSet !== ''
+  ) {
+    definition.valueWhenDependentsSet = {
+      value: attribute.valueWhenDependentsSet,
+      paths: getDependentPaths(attribute.name, attributesByName),
+    }
   }
 
   if (attribute.optionsSource && optionsSources[attribute.optionsSource]) {

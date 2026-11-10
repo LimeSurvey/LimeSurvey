@@ -461,17 +461,6 @@
         <attribute>
             <name>random_order</name>
             <component>Select</component>
-            <caption>Answer order</caption>
-            <options>
-                <option>
-                    <value>0</value>
-                    <text>Normal</text>
-                </option>
-                <option>
-                    <value>1</value>
-                    <text>Random</text>
-                </option>
-            </options>
             <props>
                 <id>random-order</id>
             </props>
@@ -517,7 +506,6 @@
         <attribute>
             <name>dualscale_headerA</name>
             <component>Input</component>
-            <caption>Header A</caption>
             <props>
                 <dataTestId>header-a-attribute-input</dataTestId>
             </props>
@@ -525,7 +513,6 @@
         <attribute>
             <name>dualscale_headerB</name>
             <component>Input</component>
-            <caption>Header B</caption>
             <props>
                 <dataTestId>header-B-attribute-input</dataTestId>
             </props>
