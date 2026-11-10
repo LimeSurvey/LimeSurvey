@@ -19,7 +19,7 @@
         <?php
         $this->widget('application.extensions.admin.grid.CLSGridView', [
             'id'              => 'list_participant_surveys',
-            'lsCaption'       => gT('List active surveys'),
+            'lsCaption'       => gT('List active surveys', 'unescaped'),
             'dataProvider'    => $surveymodel->search(),
             'columns'         => $surveymodel->columns,
             'htmlOptions'     => ['class' => 'table-responsive grid-view-ls'],
