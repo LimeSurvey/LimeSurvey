@@ -298,11 +298,12 @@ abstract class Zend_Db_Table_Row_Abstract implements ArrayAccess, IteratorAggreg
       * Required by the ArrayAccess implementation
       *
       * @param string $offset
+      * @return void
       */
      #[\ReturnTypeWillChange]
      public function offsetUnset($offset)
      {
-         return $this->__unset($offset);
+         $this->__unset($offset);
      }
 
     /**
@@ -644,6 +645,12 @@ abstract class Zend_Db_Table_Row_Abstract implements ArrayAccess, IteratorAggreg
         return $result;
     }
 
+    /**
+     * Returns an iterator over the column/value data
+     * Required by the IteratorAggregate implementation
+     *
+     * @return Traversable
+     */
     #[\ReturnTypeWillChange]
     public function getIterator(): \Traversable
     {

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE ldml SYSTEM "../../common/dtd/ldml.dtd">
-<!-- Copyright © 1991-2013 Unicode, Inc.
-CLDR data files are interpreted according to the LDML specification (http://unicode.org/reports/tr35/)
+<!-- Copyright © 1991-2026 Unicode, Inc.
 For terms of use, see http://www.unicode.org/copyright.html
+SPDX-License-Identifier: Unicode-3.0
+CLDR data files are interpreted according to the LDML specification (http://unicode.org/reports/tr35/)
 -->
 <ldml>
 	<identity>
-		<version number="$Revision: 9876 $"/>
-		<generation date="$Date: 2014-03-05 23:14:25 -0600 (Wed, 05 Mar 2014) $"/>
+		<version number="$Revision$"/>
 		<language type="lkt"/>
 	</identity>
 	<localeDisplayNames>
@@ -176,15 +176,12 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="MX">Spayóla Makȟóčhe</territory>
 			<territory type="US">Mílahaŋska Tȟamákȟočhe</territory>
 		</territories>
-		<measurementSystemNames>
-			<measurementSystemName type="US">US</measurementSystemName>
-		</measurementSystemNames>
 	</localeDisplayNames>
 	<characters>
-		<exemplarCharacters>[a á {aŋ} b č {čh} {čʼ} e é g ǧ h ȟ i í {iŋ} k {kh} {kȟ} {kʼ} l m n ŋ o ó p {ph} {pȟ} {pʼ} s š t {th} {tȟ} {tʼ} u ú {uŋ} w y z ž ʼ]</exemplarCharacters>
+		<exemplarCharacters>[aá {aŋ} b č {čh} {čʼ} eé g ǧ h ȟ ií {iŋ} k {kh} {kȟ} {kʼ} l m n ŋ oó p {ph} {pȟ} {pʼ} s š t {th} {tȟ} {tʼ} uú {uŋ} w y z ž ʼ]</exemplarCharacters>
 		<exemplarCharacters type="auxiliary">[c d f {ȟʼ} j q r {sʼ} {šʼ} v x]</exemplarCharacters>
 		<exemplarCharacters type="index">[A B Č E G Ǧ H Ȟ I K L M N Ŋ O P S Š T U W Y Z Ž]</exemplarCharacters>
-		<exemplarCharacters type="punctuation">[\- ‐ – — , ; \: ! ? . &quot; “ ” ( ) \[ \] @ * / \&amp; #]</exemplarCharacters>
+		<exemplarCharacters type="punctuation">[\- ‐‑ – — , ; \: ! ? . &quot;“” ( ) \[ \] @ * / \&amp; #]</exemplarCharacters>
 	</characters>
 	<dates>
 		<calendars>
@@ -208,6 +205,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 					<dateFormatLength type="short">
 						<dateFormat>
 							<pattern draft="unconfirmed">M/d/y GGGGG</pattern>
+							<datetimeSkeleton draft="unconfirmed">GGGGGyMd</datetimeSkeleton>
 						</dateFormat>
 					</dateFormatLength>
 				</dateFormats>
@@ -256,44 +254,49 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<dateFormats>
 					<dateFormatLength type="full">
 						<dateFormat>
-							<pattern draft="unconfirmed">EEEE, MMMM d, y</pattern>
+							<pattern draft="contributed">EEEE, MMMM d, y</pattern>
 						</dateFormat>
 					</dateFormatLength>
 					<dateFormatLength type="long">
 						<dateFormat>
-							<pattern draft="unconfirmed">MMMM d, y</pattern>
+							<pattern draft="contributed">MMMM d, y</pattern>
 						</dateFormat>
 					</dateFormatLength>
 					<dateFormatLength type="medium">
 						<dateFormat>
-							<pattern draft="unconfirmed">MMM d, y</pattern>
+							<pattern draft="contributed">MMM d, y</pattern>
 						</dateFormat>
 					</dateFormatLength>
 					<dateFormatLength type="short">
 						<dateFormat>
-							<pattern draft="unconfirmed">M/d/yy</pattern>
+							<pattern draft="contributed">M/d/yy</pattern>
+							<datetimeSkeleton draft="contributed">yyMd</datetimeSkeleton>
 						</dateFormat>
 					</dateFormatLength>
 				</dateFormats>
 				<timeFormats>
 					<timeFormatLength type="full">
 						<timeFormat>
-							<pattern draft="unconfirmed">h:mm:ss a zzzz</pattern>
+							<pattern draft="contributed">h:mm:ss a zzzz</pattern>
+							<datetimeSkeleton draft="contributed">ahmmsszzzz</datetimeSkeleton>
 						</timeFormat>
 					</timeFormatLength>
 					<timeFormatLength type="long">
 						<timeFormat>
-							<pattern draft="unconfirmed">h:mm:ss a z</pattern>
+							<pattern draft="contributed">h:mm:ss a z</pattern>
+							<datetimeSkeleton draft="contributed">ahmmssz</datetimeSkeleton>
 						</timeFormat>
 					</timeFormatLength>
 					<timeFormatLength type="medium">
 						<timeFormat>
-							<pattern draft="unconfirmed">h:mm:ss a</pattern>
+							<pattern draft="contributed">h:mm:ss a</pattern>
+							<datetimeSkeleton draft="contributed">ahmmss</datetimeSkeleton>
 						</timeFormat>
 					</timeFormatLength>
 					<timeFormatLength type="short">
 						<timeFormat>
-							<pattern draft="unconfirmed">h:mm a</pattern>
+							<pattern draft="contributed">h:mm a</pattern>
+							<datetimeSkeleton draft="contributed">ahmm</datetimeSkeleton>
 						</timeFormat>
 					</timeFormatLength>
 				</timeFormats>
@@ -316,7 +319,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Wí</displayName>
 				<relative type="-1">Wí kʼuŋ héhaŋ</relative>
 				<relative type="0">Lé wí kiŋ</relative>
-				<relative type="1">Wí kiŋháŋ</relative>
+				<relative type="1">Tȟokáta wí kiŋháŋ</relative>
 				<relativeTime type="future">
 					<relativeTimePattern count="other">Letáŋhaŋ wíyawapi {0} kiŋháŋ</relativeTimePattern>
 				</relativeTime>
@@ -338,7 +341,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</field>
 			<field type="day">
 				<displayName>Aŋpétu</displayName>
-				<relative type="-1">Lé aŋpétu kiŋ</relative>
+				<relative type="-1">Ȟtálehaŋ</relative>
 				<relative type="0">Lé aŋpétu kiŋ</relative>
 				<relative type="1">Híŋhaŋni kiŋháŋ</relative>
 				<relativeTime type="future">
@@ -397,6 +400,12 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</field>
 			<field type="minute">
 				<displayName>Owápȟe oȟʼáŋkȟo</displayName>
+				<relativeTime type="future">
+					<relativeTimePattern count="other">Letáŋhaŋ oȟ’áŋkȟo {0} kiŋháŋ</relativeTimePattern>
+				</relativeTime>
+				<relativeTime type="past">
+					<relativeTimePattern count="other">Hékta oȟ’áŋkȟo {0} k’uŋ héhaŋ</relativeTimePattern>
+				</relativeTime>
 			</field>
 			<field type="second">
 				<displayName>Okpí</displayName>
@@ -410,18 +419,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 		</fields>
 	</dates>
 	<numbers>
-		<symbols numberSystem="latn">
-			<decimal draft="unconfirmed">.</decimal>
-			<group draft="unconfirmed">,</group>
-			<list draft="unconfirmed">;</list>
-			<percentSign draft="unconfirmed">%</percentSign>
-			<plusSign draft="unconfirmed">+</plusSign>
-			<minusSign draft="unconfirmed">-</minusSign>
-			<exponential draft="unconfirmed">E</exponential>
-			<perMille draft="unconfirmed">‰</perMille>
-			<infinity draft="unconfirmed">∞</infinity>
-			<nan draft="unconfirmed">NaN</nan>
-		</symbols>
 		<currencies>
 			<currency type="USD">
 				<symbol>$</symbol>
@@ -429,112 +426,64 @@ For terms of use, see http://www.unicode.org/copyright.html
 		</currencies>
 	</numbers>
 	<units>
-		<unitLength type="long">
-			<unit type="duration-day">
-				<unitPattern count="other">{0}-čháŋ</unitPattern>
-			</unit>
-			<unit type="duration-hour">
-				<unitPattern count="other">Owápȟe {0}</unitPattern>
-			</unit>
-			<unit type="duration-month">
-				<unitPattern count="other">Wíyawapi {0}</unitPattern>
-			</unit>
-			<unit type="duration-second">
-				<unitPattern count="other">Okpí {0}</unitPattern>
-			</unit>
-			<unit type="duration-week">
-				<unitPattern count="other">okó {0}</unitPattern>
-			</unit>
-			<unit type="duration-year">
-				<unitPattern count="other">ómakȟa {0}</unitPattern>
-			</unit>
-			<unit type="length-foot">
-				<unitPattern count="other">siíyutȟapi {0}</unitPattern>
-			</unit>
-			<unit type="length-inch">
-				<unitPattern count="other">oíyutȟe čísčila {0}</unitPattern>
-			</unit>
-			<unit type="length-mile">
-				<unitPattern count="other">makhíyutȟapi {0}</unitPattern>
-			</unit>
-			<unit type="length-yard">
-				<unitPattern count="other">čhaéglepi {0}</unitPattern>
-			</unit>
-			<unit type="mass-pound">
-				<unitPattern count="other">tkeíyutȟapi {0}</unitPattern>
-			</unit>
-		</unitLength>
 		<unitLength type="short">
+			<unit type="duration-year">
+				<displayName draft="provisional">ómakȟa</displayName>
+				<unitPattern count="other">ómakȟa {0}</unitPattern>
+			</unit>
+			<unit type="duration-month">
+				<displayName draft="provisional">Wíyawapi</displayName>
+				<unitPattern count="other">Wíyawapi {0}</unitPattern>
+			</unit>
+			<unit type="duration-week">
+				<displayName draft="provisional">okó</displayName>
+				<unitPattern count="other">okó {0}</unitPattern>
+			</unit>
 			<unit type="duration-day">
+				<displayName draft="provisional">-čháŋ</displayName>
 				<unitPattern count="other">{0}-čháŋ</unitPattern>
 			</unit>
 			<unit type="duration-hour">
+				<displayName draft="provisional">Owápȟe</displayName>
 				<unitPattern count="other">Owápȟe {0}</unitPattern>
 			</unit>
-			<unit type="duration-month">
-				<unitPattern count="other">Wíyawapi {0}</unitPattern>
-			</unit>
 			<unit type="duration-second">
+				<displayName draft="provisional">Okpí</displayName>
 				<unitPattern count="other">Okpí {0}</unitPattern>
 			</unit>
-			<unit type="duration-week">
-				<unitPattern count="other">okó {0}</unitPattern>
-			</unit>
-			<unit type="duration-year">
-				<unitPattern count="other">ómakȟa {0}</unitPattern>
-			</unit>
-			<unit type="length-foot">
-				<unitPattern count="other">siíyutȟapi {0}</unitPattern>
-			</unit>
-			<unit type="length-inch">
-				<unitPattern count="other">oíyutȟe čísčila {0}</unitPattern>
-			</unit>
 			<unit type="length-mile">
+				<displayName draft="provisional">makhíyutȟapi</displayName>
 				<unitPattern count="other">makhíyutȟapi {0}</unitPattern>
 			</unit>
 			<unit type="length-yard">
+				<displayName draft="provisional">čhaéglepi</displayName>
 				<unitPattern count="other">čhaéglepi {0}</unitPattern>
 			</unit>
+			<unit type="length-foot">
+				<displayName draft="provisional">siíyutȟapi</displayName>
+				<unitPattern count="other">siíyutȟapi {0}</unitPattern>
+			</unit>
+			<unit type="length-inch">
+				<displayName draft="provisional">oíyutȟe čísčila</displayName>
+				<unitPattern count="other">oíyutȟe čísčila {0}</unitPattern>
+			</unit>
 			<unit type="mass-pound">
+				<displayName draft="provisional">tkeíyutȟapi</displayName>
 				<unitPattern count="other">tkeíyutȟapi {0}</unitPattern>
 			</unit>
 		</unitLength>
 		<unitLength type="narrow">
-			<unit type="duration-day">
-				<unitPattern count="other">{0}-čháŋ</unitPattern>
-			</unit>
-			<unit type="duration-hour">
-				<unitPattern count="other">Owápȟe {0}</unitPattern>
-			</unit>
 			<unit type="duration-month">
 				<unitPattern count="other">Wí {0}</unitPattern>
-			</unit>
-			<unit type="duration-second">
-				<unitPattern count="other">Okpí {0}</unitPattern>
-			</unit>
-			<unit type="duration-week">
-				<unitPattern count="other">okó {0}</unitPattern>
-			</unit>
-			<unit type="duration-year">
-				<unitPattern count="other">ómakȟa {0}</unitPattern>
-			</unit>
-			<unit type="length-foot">
-				<unitPattern count="other">siíyutȟapi {0}</unitPattern>
-			</unit>
-			<unit type="length-inch">
-				<unitPattern count="other">{0}″</unitPattern>
 			</unit>
 			<unit type="length-mile">
 				<unitPattern count="other">{0} makh</unitPattern>
 			</unit>
-			<unit type="length-yard">
-				<unitPattern count="other">čhaéglepi {0}</unitPattern>
+			<unit type="length-inch">
+				<unitPattern count="other">{0}″</unitPattern>
 			</unit>
 			<unit type="mass-pound">
 				<unitPattern count="other">{0}#</unitPattern>
-			</unit>
-			<unit type="temperature-celsius">
-				<unitPattern count="other">{0}°C</unitPattern>
 			</unit>
 			<unit type="temperature-fahrenheit">
 				<unitPattern count="other">{0}°</unitPattern>
@@ -542,4 +491,3 @@ For terms of use, see http://www.unicode.org/copyright.html
 		</unitLength>
 	</units>
 </ldml>
-

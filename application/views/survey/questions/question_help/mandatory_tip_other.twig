@@ -1,0 +1,12 @@
+{#
+/**
+ * render the error text when user submit a page with multiple choice Other ticked without text
+ * The id is used by aria-describedby of the Other text field
+ * @var sMandatoryText : string
+ * @var qInfo : from ExpressionManager
+ */
+#}
+<div id='mandatory-other-{{ qInfo.qid }}' class='ls-question-mandatory ls-question-mandatory-other text-danger ' role='alert'>
+    <span class='fa fa-exclamation-circle ri-error-warning-fill' aria-hidden="true"></span>
+    {{ sMandatoryText }}
+</div>

@@ -820,6 +820,8 @@ class SurveyRuntimeHelper
      * - Check surveyid coherence
      * - Init $LEM states.
      * - Decide if Welcome page should be shown
+     * Otherwise, reload the LEM if it belongs to another survey, or end the request with
+     * an error page if it was started in another survey mode.
      *
      * @return void
      */
@@ -850,7 +852,34 @@ class SurveyRuntimeHelper
             }
         } elseif ($this->iSurveyid != LimeExpressionManager::getLEMsurveyId()) {
             $this->initDirtyStep();
+        } elseif ($this->sSurveyMode != LimeExpressionManager::getLEMsurveyMode()) {
+            // The session was replaced in another tab or window of this browser, eg: by the survey preview of the editor
+            $this->renderSessionChangedError();
         }
+    }
+
+    /**
+     * Renders the error page for a survey session that was replaced, with a link to restart the survey, and ends the request.
+     *
+     * @return void
+     */
+    private function renderSessionChangedError()
+    {
+        $aReloadUrlParam = ['lang' => App()->language, 'newtest' => 'Y'];
+        if ($this->sessionState()->getToken() !== null && $this->sessionState()->getToken() !== '') {
+            $aReloadUrlParam['token'] = $this->sessionState()->getToken();
+        }
+        App()->getController()->renderExitMessage(
+            $this->iSurveyid,
+            'session-changed',
+            [gT("The survey was changed or opened in another tab or window of this browser.")],
+            [
+                'url'         => App()->createUrl("/survey/index/sid/{$this->iSurveyid}", $aReloadUrlParam),
+                'type'        => 'restart-survey',
+                'description' => gT("Click here to start the survey.")
+            ],
+            [gT('We are sorry but your session has expired.')]
+        );
     }
 
     /**

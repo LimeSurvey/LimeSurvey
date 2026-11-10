@@ -1,6 +1,7 @@
 <?php
 
 use Anper\Iuliia\Iuliia;
+use LimeSurvey\Models\Services\QuickTranslation;
 
 class QuickTranslationController extends LSBaseController
 {
@@ -468,9 +469,10 @@ class QuickTranslationController extends LSBaseController
     }
 
     /**
-     * translateGoogleApi.php
-     * Creates a JSON interface for the auto-translate feature
+     * Translates the posted text (HTML with expressions) with the Google Translate API
+     * for the auto-translate feature.
      *
+     * @return string JSON with the translated text in 'converted', or an error message in 'error'
      * @psalm-suppress UndefinedClass TODO: Dead code?
      * @psalm-suppress MissingFile
      */
@@ -487,26 +489,23 @@ class QuickTranslationController extends LSBaseController
         $errorMessageText = false;
         $sOutput = '';
         try {
-            $gtranslate = new \GoogleTranslate\Client($translateApiKey);
-            // use curl because http with fopen is disabled
-            $parts = LimeExpressionManager::SplitStringOnExpressions($sToconvert);
-
-            $sparts = array();
-            foreach ($parts as $part) {
-                if ($part[2] == 'EXPRESSION') {
-                    $sparts[] = $part[0];
+            // Translate the whole text in one request so its HTML tags stay balanced, with markers for expressions
+            $protected = QuickTranslation::protectExpressions($sToconvert);
+            if (!$protected['hasText']) {
+                $sOutput = $sToconvert;
+            } else {
+                $gtranslate = new \GoogleTranslate\Client($translateApiKey);
+                $translated = $gtranslate->translate($protected['text'], $destinationLanguage, $sourceLanguage);
+                if ($destinationLanguage == 'sr-Latn') {
+                    $translated = Iuliia::translate($translated, Iuliia::TELEGRAM);
+                }
+                $restored = QuickTranslation::restoreExpressions($translated, $protected['expressions']);
+                if ($restored === null) {
+                    $errorMessageText = gT("The translation service did not keep all expressions of this text, so it was not translated.");
                 } else {
-                    $convertedPart = $gtranslate->translate($part[0], $destinationLanguage, $sourceLanguage);
-
-                    $convertedPart  = str_replace("<br>", "\r\n", $convertedPart);
-                    $convertedPart  = html_entity_decode(stripcslashes($convertedPart));
-                    if ($destinationLanguage == 'sr-Latn') {
-                        $convertedPart = Iuliia::translate($convertedPart, Iuliia::TELEGRAM);
-                    }
-                    $sparts[] = $convertedPart;
+                    $sOutput = $restored;
                 }
             }
-            $sOutput = implode(' ', $sparts);
         } catch (\Exception $ge) {
             // Get the error message and remove the key for security reasons
             $errorMessage = $ge->getMessage();

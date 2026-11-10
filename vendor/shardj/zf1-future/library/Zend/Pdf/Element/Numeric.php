@@ -78,7 +78,7 @@ class Zend_Pdf_Element_Numeric extends Zend_Pdf_Element
      */
     public function toString($factory = null)
     {
-        if (is_integer($this->value)) {
+        if (is_int($this->value)) {
             return (string)$this->value;
         }
 

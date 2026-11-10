@@ -91,13 +91,27 @@ abstract class Zend_Pdf_Resource_Font_Simple_Parsed extends Zend_Pdf_Resource_Fo
         $baseFont = $this->getFontName(Zend_Pdf_Font::NAME_POSTSCRIPT, 'en', 'UTF-8');
         $this->_resource->BaseFont = new Zend_Pdf_Element_Name($baseFont);
 
-        $this->_resource->FirstChar = new Zend_Pdf_Element_Numeric(0);
-        $this->_resource->LastChar  = new Zend_Pdf_Element_Numeric(count($this->_glyphWidths) - 1);
-
-        /* Now convert the scalar glyph widths to Zend_Pdf_Element_Numeric objects.
+        /* The Widths array of a simple font is indexed by character code of
+         * the font's encoding (WinAnsiEncoding, see Zend_Pdf_Resource_Font_Simple),
+         * so map every code to its glyph through the cmap and take that
+         * glyph's advance width; codes without a glyph get the missing width.
          */
+        $this->_resource->FirstChar = new Zend_Pdf_Element_Numeric(32);
+        $this->_resource->LastChar  = new Zend_Pdf_Element_Numeric(255);
+
         $pdfWidths = [];
-        foreach ($this->_glyphWidths as $width) {
+        for ($code = 32; $code <= 255; $code++) {
+            $width = $this->_missingGlyphWidth;
+
+            $utf16 = @iconv('CP1252', 'UTF-16BE', chr($code));
+            if ($utf16 !== false && strlen($utf16) === 2) {
+                $unpacked    = unpack('n', $utf16);
+                $glyphNumber = $this->_cmap->glyphNumberForCharacter($unpacked[1]);
+                if (isset($this->_glyphWidths[$glyphNumber])) {
+                    $width = $this->_glyphWidths[$glyphNumber];
+                }
+            }
+
             $pdfWidths[] = new Zend_Pdf_Element_Numeric($this->toEmSpace($width));
         }
         /* Create the Zend_Pdf_Element_Array object and add it to the font's
