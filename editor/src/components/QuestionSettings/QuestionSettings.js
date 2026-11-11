@@ -18,6 +18,7 @@ import {
   useBuffer,
   useConditionPanelsKey,
   useFocused,
+  useQuestionAttributes,
   useSurvey,
 } from 'hooks'
 import { SideBarHeader } from 'components/SideBar'
@@ -26,6 +27,7 @@ import { ToggleButtons } from 'components/UIComponents'
 
 import { Setting } from './Setting'
 import { getQuestionSettings } from './getQuestionSettings'
+import { buildSettingsFromAttributes } from './dynamic'
 import { getQuestionTypeInfo } from '../QuestionTypes'
 import { ScenarioList } from 'components/ConditionDesigner/ScenarioList'
 import { ConditionDesigner } from 'components/ConditionDesigner/ConditionDesigner'
@@ -93,13 +95,30 @@ export const QuestionSettings = ({ surveyId }) => {
   )
   const isFocusedQuestionInSurvey = Boolean(focusedQuestion)
 
+  const {
+    attributes: { attributesDetails = {} },
+  } = useQuestionAttributes()
+  const themeAttributes =
+    attributesDetails[focused?.questionThemeName]?.attributes
+
   const questionSettings = useMemo(() => {
     if (!focused?.qid) {
       return []
     }
 
+    const settings = buildSettingsFromAttributes(themeAttributes)
+    if (settings.length) {
+      return settings
+    }
+
+    // Falls back to the hardcoded settings when the backend config isn't available.
     return getQuestionSettings()[focused.questionThemeName]
-  }, [focused?.questionThemeName])
+  }, [focused?.qid, focused?.questionThemeName, themeAttributes])
+
+  const allQuestionAttributes = useMemo(
+    () => (questionSettings || []).flatMap((setting) => setting.attributes),
+    [questionSettings]
+  )
 
   const advancedQuestionSettings = useMemo(() => {
     const simpleSettingsTitle = getQuestionAttributesTitles().SIMPLE
@@ -371,6 +390,7 @@ export const QuestionSettings = ({ surveyId }) => {
                 handleUpdate={updateAttribute}
                 title={setting.title}
                 attributes={setting.attributes}
+                allAttributes={allQuestionAttributes}
                 language={activeLanguage}
                 hasDefaultAttributeValues={
                   Object.keys(

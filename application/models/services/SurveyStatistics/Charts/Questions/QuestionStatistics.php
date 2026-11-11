@@ -265,7 +265,7 @@ class QuestionStatistics implements StatisticsChartInterface
     /**
      * Materialize a chart plan: resolve every deferred value against the
      * executed batch and compute the total.
-     * 
+     *
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     private function resolvePlan(array $plan, array $question): StatisticsChartDTO
@@ -390,6 +390,7 @@ class QuestionStatistics implements StatisticsChartInterface
                 // statistics_graphtype question setting; '' = best chart for the type.
                 'chartType' => $question['attributes']['statistics_graphtype'] ?? '',
             ];
+            $meta['question']['mapService'] = $this->getMapService($question);
             // Dual-scale column headers by scale id, same source and defaults
             // as the chart's per-scale titles (DualScaleProcessor).
             if (($question['type'] ?? null) === Question::QT_1_ARRAY_DUAL) {
@@ -400,6 +401,30 @@ class QuestionStatistics implements StatisticsChartInterface
             }
             $dto->setMeta($meta);
         }
+    }
+
+    /**
+     * Map answers are stored as "lat;lng". The Map type (J) and old Short text
+     * questions with a map service are maps; Browser Detection is not, and
+     * neither is a Short text shown as a textarea (display_rows set), same as
+     * the Update_720 migration.
+     *
+     * @return int 0 = not a map, 1 = Google, 100 = OpenStreetMap
+     */
+    private function getMapService(array $question): int
+    {
+        $attributes = $question['attributes'] ?? [];
+        $mapService = (int) ($attributes['location_mapservice'] ?? 0);
+        if (($question['type'] ?? null) === Question::QT_J_MAP) {
+            return $mapService === 1 ? 1 : 100;
+        }
+        $isBrowserDetection = ($question['question_theme_name'] ?? '') === 'browserdetect';
+        $isTextarea = ($attributes['display_rows'] ?? '') !== '';
+        if (($question['type'] ?? null) === Question::QT_S_SHORT_FREE_TEXT && !$isBrowserDetection && !$isTextarea) {
+            // Only 1 and 100 render a map, any other value is a plain text input
+            return in_array($mapService, [1, 100], true) ? $mapService : 0;
+        }
+        return 0;
     }
 
     private function buildBaseQuery(): CDbCommand

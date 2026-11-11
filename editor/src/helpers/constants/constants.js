@@ -68,6 +68,7 @@ export const STATES = {
   SURVEY_LOGIC: 'survey_logic',
   IN_FLIGHT_CONDITION_QIDS: 'in_flight_condition_qids',
   TOPBAR_CONFIG: 'topbar_config',
+  QUESTION_THEME_ATTRIBUTES: 'question_theme_attributes',
 }
 
 export const TUTORIALS = {
