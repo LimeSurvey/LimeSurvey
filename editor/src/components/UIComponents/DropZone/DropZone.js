@@ -7,14 +7,26 @@ import React, {
 } from 'react'
 import { format } from 'util'
 import { useDropzone } from 'react-dropzone'
-import { Form, Button, Image } from 'react-bootstrap'
+import { Form, Button } from 'react-bootstrap'
 
 import NoImageFound from 'assets/images/no-image-found.jpg'
 import { UploadIcon, DeleteIcon, EditIcon } from 'components/icons'
 import { errorToast } from 'helpers/Alert'
 import { FILE_UPLOAD_MAX_SIZE } from 'helpers/constants'
+import { EditedImage } from '../ImageEditor/EditedImage'
 import classNames from 'classnames'
 
+// Height of the edit and delete buttons plus their distance to the bottom edge.
+const IMAGE_BUTTONS_MIN_HEIGHT = '48px'
+
+/**
+ * Image upload area: Shows the uploaded image with buttons to edit and delete
+ * it, or a drop area while there is no image.
+ *
+ * @param {Object} props see the defaults below for the available props
+ * @param {Object} ref gets open(), which opens the file dialog
+ * @returns {JSX.Element} the upload area
+ */
 export const DropZone = forwardRef(
   (
     {
@@ -44,6 +56,11 @@ export const DropZone = forwardRef(
       // exact height. The uploaded image then fills the full width/height
       // of the dropzone and gets cropped (top/bottom) via object-fit: cover.
       fixedHeight,
+      // Settings from the image editor: The preview shows the image with its
+      // frame ratio, crop and corner radius, scaled to previewMaxHeight.
+      imageSettings = null,
+      // Alt text of the preview image.
+      imageAlt = 'Image Select List',
     },
     ref
   ) => {
@@ -186,13 +203,24 @@ export const DropZone = forwardRef(
         style={{
           height: fixedHeight || undefined,
           maxHeight: fixedHeight ? undefined : previewMaxHeight,
+          // A very flat edited frame is only a few px high: Keep room for the
+          // edit and delete buttons, with the image centred vertically.
+          ...(imageSettings && !fixedHeight
+            ? {
+                minHeight: IMAGE_BUTTONS_MIN_HEIGHT,
+                display: 'flex',
+                alignItems: 'center',
+              }
+            : {}),
         }}
       >
         {isLoading ? loadingSpinner : null}
-        <Image
+        <EditedImage
           src={isValidImg ? previewUrl : NoImageFound}
-          alt="Image Select List"
-          style={
+          alt={imageAlt}
+          settings={isValidImg && !fixedHeight ? imageSettings : null}
+          height={previewMaxHeight}
+          fallbackStyle={
             fixedHeight
               ? {
                   width: '100%',

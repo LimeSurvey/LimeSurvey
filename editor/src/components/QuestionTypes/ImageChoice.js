@@ -1,5 +1,4 @@
 import React, { useMemo, useState, useEffect } from 'react'
-import { Image } from 'react-bootstrap'
 import classNames from 'classnames'
 
 import {
@@ -12,6 +11,7 @@ import NoImageFound from 'assets/images/no-image-found.jpg'
 import {
   ContentEditor,
   DropZone,
+  EditedImage,
   FormCheck,
   ImageEditor,
 } from 'components/UIComponents'
@@ -35,7 +35,8 @@ import { useFileService } from 'hooks'
  * @param {boolean} defaultChecked initial checked state
  * @param {Object} errors errors of the option
  * @param {Function} setErrors called with the updated errors
- * @param {Object|null} imageSettings saved image editor settings of the option
+ * @param {Object|null} imageSettings saved image editor settings of the option,
+ *   the image is shown with them in view and edit mode
  * @param {string} imageAltText saved alt text in the current language
  * @param {Function} onImageSettingsSave called with the image editor settings,
  *   including the alt text, when they are saved
@@ -114,7 +115,12 @@ export const ImageChoice = ({
   }, [isValidImg, isNoAnswer])
 
   return (
-    <div className="pe-4">
+    // The option and its image may shrink to the space they get, so that the
+    // image never gets wider than the question.
+    <div
+      className="pe-4"
+      style={{ minWidth: 0, maxWidth: '100%', flexShrink: 1 }}
+    >
       <div className="d-flex gap-2">
         {!isFocused && (
           <FormCheck
@@ -136,14 +142,20 @@ export const ImageChoice = ({
         )}
         {isFocused && <div>&nbsp;</div>}
         {!isNoAnswer && !initLoading && (
-          <div className="image-choice-preview border border-3 border-secondary rounded">
+          <div
+            className="image-choice-preview border border-3 border-secondary rounded"
+            style={{ minWidth: 0, maxWidth: '100%' }}
+          >
             <div className={classNames({ 'd-none': showLoader })}>
-              <Image
+              <EditedImage
                 src={previewUrl && isValidImg ? previewUrl : NoImageFound}
-                alt="Image Select List"
-                height={'100%'}
-                style={{
+                alt={imageAltText || 'Image Select List'}
+                settings={previewUrl && isValidImg ? imageSettings : null}
+                height={IMAGE_PREVIEW_HEIGHT}
+                fallbackStyle={{
+                  height: '100%',
                   maxHeight: IMAGE_PREVIEW_HEIGHT,
+                  maxWidth: '100%',
                   backgroundSize: 'cover',
                 }}
               />
@@ -164,6 +176,8 @@ export const ImageChoice = ({
                     : null
                 }
                 imageName={code}
+                imageSettings={imageSettings}
+                imageAlt={imageAltText || 'Image Select List'}
               />
             </div>
           </div>
