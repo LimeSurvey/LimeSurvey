@@ -324,6 +324,15 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
                 ]); ?>
             </div>
         </div>
+        <!-- Internal title: survey-only, visible only when question codes are shown (resolved through inheritance) -->
+        <?php if ($bShowAllOptions === true && $oSurvey instanceof Survey && $oSurvey->getShowsQuestionCodes()) { ?>
+            <div class="mb-3" >
+                <label id="internal_title_label" class="form-label" for='code'><?php eT("Internal title:"); ?></label>
+                <div class="">
+                    <input type='text' size='30' maxlength='128' class="form-control" id='code' name='code' value='<?php echo htmlspecialchars((string) $oSurvey->code); ?>'/>
+                </div>
+            </div>
+        <?php } ?>
         <!-- Theme -->
         <div class="mb-3" >
             <label id="template_label" class="form-label" for='template'><?php eT("Theme:"); ?></label>

@@ -146,6 +146,7 @@ use LimeSurvey\PluginManager\PluginEvent;
  * @property bool $isShowQnumCode Show question number and/or code
  * @property bool $isShowWelcome Show welcome screen
  * @property bool $isShowProgress how progress bar
+ * @property string $code Survey code / internal title
  * @property bool $showsurveypolicynotice Show the security notice
  * @property bool $isAllowEditAfterCompletion Allow multiple responses or update responses with one token
  * @property string $access_mode Whether the access mode is open (O) or closed (C), if O token-based participation may be supported, if C, it's enforced
@@ -609,6 +610,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
             array('showqnumcode', 'in', 'range' => array('B', 'N', 'C', 'X', 'I'), 'allowEmpty' => true),
             array('format', 'in', 'range' => array('G', 'S', 'A', 'I'), 'allowEmpty' => true),
             array('googleanalyticsstyle', 'numerical', 'integerOnly' => true, 'min' => '0', 'max' => '3', 'allowEmpty' => true),
+            array('code', 'LSYii_Validators'),
+            array('code', 'length', 'max' => 128, 'allowEmpty' => true),
             array('autonumber_start', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
             array('tokenlength', 'default', 'value' => 15),
             array('tokenlength', 'numerical', 'integerOnly' => true, 'allowEmpty' => false),
@@ -622,9 +625,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
             array('additional_languages', 'LSYii_FilterValidator', 'filter' => 'trim', 'skipOnEmpty' => true),
             array('additional_languages', 'LSYii_Validators', 'isLanguageMulti' => true),
             array('running', 'safe', 'on' => 'search'),
-            array('expires', 'date', 'format' => ['yyyy-MM-dd HH:mm:ss','yyyy-M-d H:m:s.???','yyyy-M-d H:m:s','yyyy-M-d H:m'], 'allowEmpty' => true),
-            array('startdate', 'date','format' => ['yyyy-MM-dd HH:mm:ss','yyyy-M-d H:m:s.???','yyyy-M-d H:m:s','yyyy-M-d H:m'],'allowEmpty' => true),
-            array('datecreated', 'date','format' => ['yyyy-MM-dd HH:mm:ss','yyyy-M-d H:m:s.???','yyyy-M-d H:m:s','yyyy-M-d H:m'],'allowEmpty' => true),
+            array('expires', 'date', 'format' => ['yyyy-MM-dd HH:mm:ss', 'yyyy-M-d H:m:s.???', 'yyyy-M-d H:m:s', 'yyyy-M-d H:m'], 'allowEmpty' => true),
+            array('startdate', 'date', 'format' => ['yyyy-MM-dd HH:mm:ss', 'yyyy-M-d H:m:s.???', 'yyyy-M-d H:m:s', 'yyyy-M-d H:m'], 'allowEmpty' => true),
+            array('datecreated', 'date', 'format' => ['yyyy-MM-dd HH:mm:ss', 'yyyy-M-d H:m:s.???', 'yyyy-M-d H:m:s', 'yyyy-M-d H:m'], 'allowEmpty' => true),
             array('expires', 'checkExpireAfterStart'),
             // The Google Analytics Tracking ID is inserted in a JS script. If the following rule is changed, make sure
             // that it doesn't render it vulnerable to XSS attacks.
@@ -1593,6 +1596,26 @@ class Survey extends LSActiveRecord implements PermissionInterface
     {
         return ($this->oOptions->showqnumcode === 'Y');
     }
+
+    /**
+     * Whether question codes are shown for this survey ("Show both" or
+     * "Show question code only"), resolving the inherited value if needed.
+     * The survey code (internal title) follows the same visibility.
+     *
+     * @return bool
+     */
+    public function getShowsQuestionCodes(): bool
+    {
+        $showQNumCode = $this->showqnumcode;
+        if ($showQNumCode === 'I') {
+            if ($this->oOptions === null || !property_exists($this->oOptions, 'showqnumcode')) {
+                $this->setOptions($this->gsid);
+            }
+            $showQNumCode = $this->oOptions->showqnumcode ?? null;
+        }
+        return in_array($showQNumCode, ['B', 'C'], true);
+    }
+
     /**
      * @return bool
      */
@@ -1918,7 +1941,14 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 'type'        => 'raw',
                 'value'       => '$data->hasTokensTable ? gT("Yes"):gT("No")',
                 'htmlOptions' => ['class' => 'has-link'],
-            ]
+            ],
+            'code' => [
+                'header'            => gT('Internal title'),
+                'name'              => 'code',
+                'value'             => '$data->code',
+                'headerHtmlOptions' => ['class' => 'text-nowrap'],
+                'htmlOptions'       => ['class' => 'has-link'],
+            ],
         ];
 
         return $additionalColumns;

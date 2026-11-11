@@ -41,7 +41,8 @@
                  role="link"
                  tabindex="0">
                 <div class="box-widget-card-body">
-                    <div class="box-widget-card-header">
+                    <?php $showSurveyCode = !empty($item['survey']->code) && $item['survey']->getShowsQuestionCodes(); ?>
+                    <div class="box-widget-card-header<?= $showSurveyCode ? ' has-code' : '' ?>">
                         <div class="box-widget-card-title">
                             <?php
                             $surveyls_title = "";
@@ -52,6 +53,12 @@
                             ?>
                             <?php echo viewHelper::filterScript($surveyls_title); ?>
                         </div>
+                        <?php if ($showSurveyCode) : ?>
+                            <span class="badge rounded-pill bg-light box-widget-card-code"
+                                  title="<?= CHtml::encode($item['survey']->code) ?>">
+                                <?= CHtml::encode($item['survey']->code) ?>
+                            </span>
+                        <?php endif; ?>
                     </div>
                     <div class="box-widget-card-text">
                         <div class="box-widget-card-date">

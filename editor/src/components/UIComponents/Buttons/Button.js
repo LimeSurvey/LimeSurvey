@@ -5,6 +5,7 @@ import ContentEditable from 'react-contenteditable'
 export const Button = React.forwardRef(function Button(
   {
     onClick = () => {},
+    onMouseDown = () => {},
     id = '',
     text,
     name = '',
@@ -40,6 +41,7 @@ export const Button = React.forwardRef(function Button(
       href={href}
       active={active}
       size={size}
+      onMouseDown={onMouseDown}
       aria-label={ariaLabel}
       type={type}
     >

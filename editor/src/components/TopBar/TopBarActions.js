@@ -139,7 +139,7 @@ export const TopBarActions = ({
     },
     {
       type: 'item',
-      label: t('Question codes'),
+      label: t('View codes'),
       onClick: handleToggleQuestionCodes,
       checked: !!survey.showQNumCode?.showCode,
     },
