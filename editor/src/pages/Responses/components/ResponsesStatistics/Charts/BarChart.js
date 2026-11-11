@@ -38,7 +38,7 @@ const HORIZONTAL_AXIS_HEIGHT = 30
 const HORIZONTAL_LABEL_WIDTH = 150
 const HORIZONTAL_BAR_MAX_SIZE = 32
 const HORIZONTAL_LABEL_GAP = 8
-const HORIZONTAL_LABEL_LINE_HEIGHT = 16
+const HORIZONTAL_LABEL_LINE_HEIGHT = 13
 
 const WrappedTick = ({ x, y, payload, width, height }) => (
   <foreignObject
@@ -52,6 +52,7 @@ const WrappedTick = ({ x, y, payload, width, height }) => (
         className="responses-statistics-chart-labels"
         title={payload?.value}
         style={{
+          lineHeight: `${HORIZONTAL_LABEL_LINE_HEIGHT}px`,
           WebkitLineClamp: Math.floor(height / HORIZONTAL_LABEL_LINE_HEIGHT),
         }}
       >
@@ -237,7 +238,7 @@ export const BarChart = ({
               <LabelList
                 dataKey={dataKey}
                 position={isHorizontal ? 'right' : 'top'}
-                offset={8}
+                offset={2}
                 formatter={formatBarValue}
                 className="responses-statistics-chart-labels"
               />
