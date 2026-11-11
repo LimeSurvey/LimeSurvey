@@ -154,6 +154,27 @@
     color: $grape;
   }
 
+  // Footer action rendered as a native button (keyboard accessible)
+  .question-footer-icon-button {
+    display: inline-flex;
+    padding: 0;
+    border: 0;
+    background: none;
+    line-height: 0;
+    cursor: pointer;
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: default;
+    }
+
+    &:focus-visible {
+      outline: 2px solid $grape;
+      outline-offset: 2px;
+      border-radius: 2px;
+    }
+  }
+
   .question-type-selector {
     max-width: max-content;
     min-width: 200px !important;
