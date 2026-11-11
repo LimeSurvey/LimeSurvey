@@ -24,6 +24,8 @@ const DAYJS_LOCALE_ALIASES = {
   'ckb': 'ku',
   'fil': 'tl-ph',
   'mya': 'my',
+  'cnr': 'me',
+  'swh': 'sw',
 }
 
 export const getDayjsLocale = (language) =>
@@ -31,6 +33,7 @@ export const getDayjsLocale = (language) =>
     isAvailable: (name) => DAYJS_LOCALES.has(name),
     aliases: DAYJS_LOCALE_ALIASES,
     normalize: (code) => code.toLowerCase(),
+    locales: DAYJS_LOCALES,
   }) ?? 'en'
 
 let latestLocaleRequestId = 0

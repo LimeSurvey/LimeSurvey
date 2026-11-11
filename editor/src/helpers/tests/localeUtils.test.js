@@ -5,11 +5,12 @@ import { dayJsHelper, getDayjsLocale, loadDayjsLocale } from '../dayJsHelper'
 import { getDayPickerLocale } from '../dateRangeUtils'
 
 describe('resolveLocale', () => {
-  const available = new Set(['de', 'pt-br', 'zh-cn'])
+  const available = new Set(['de', 'pt-br', 'zh-cn', 'hy-am'])
   const options = {
     isAvailable: (name) => available.has(name),
     aliases: { 'zh-Hans': 'zh-cn' },
     normalize: (code) => code.toLowerCase(),
+    locales: available,
   }
 
   test.each([
@@ -19,6 +20,7 @@ describe('resolveLocale', () => {
     ['pt-BR', 'pt-br'],
     ['zh-Hans', 'zh-cn'],
     ['de-AT', 'de'],
+    ['hy', 'hy-am'],
   ])('resolves %s to %s', (language, expected) => {
     expect(resolveLocale(language, options)).toBe(expected)
   })
@@ -37,6 +39,13 @@ describe('getDayjsLocale', () => {
     ['zh-Hant-TW', 'zh-tw'],
     ['sr', 'sr-cyrl'],
     ['sr-Latn', 'sr'],
+    ['hy', 'hy-am'],
+    ['pa', 'pa-in'],
+    ['tl', 'tl-ph'],
+    ['ug', 'ug-cn'],
+    ['oc', 'oc-lnc'],
+    ['cnr', 'me'],
+    ['swh', 'sw'],
     ['unknown', 'en'],
   ])('maps %s to %s', (language, expected) => {
     expect(getDayjsLocale(language)).toBe(expected)
