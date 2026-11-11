@@ -34,7 +34,7 @@ export const ArrayRow = ({
   titleValue = '',
   numberOfHorizontalEntities,
   qid,
-  placeholder = 'Subquestion',
+  placeholder,
   itemsKey,
   isNoAnswer = false,
   code,
@@ -124,7 +124,7 @@ export const ArrayRow = ({
           className="flex-row justify-content-start"
         >
           <ContentEditor
-            placeholder={placeholder}
+            placeholder={placeholder ?? t('Subquestion')}
             value={titleValue}
             update={(value) => handleUpdateL10ns(value, index)}
             className="array-subquestion-content-editor choice"
