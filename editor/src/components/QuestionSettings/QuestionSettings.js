@@ -58,13 +58,12 @@ export const QuestionSettings = ({ surveyId }) => {
 
   // The survey is the source of truth for the condition designer; `focused` is
   // only a snapshot and can reference a question that is not in the survey.
-  const question = useMemo(() => {
-    if (!focused?.qid || !survey?.questionGroups) {
-      return undefined
-    }
-
-    return getQuestionById(focused.qid, survey).question
-  }, [focused?.qid, survey])
+  // Not memoized: survey updates mutate the question groups in place, so the
+  // survey reference can stay the same while the question object is replaced.
+  const question =
+    focused?.qid && survey?.questionGroups
+      ? getQuestionById(focused.qid, survey).question
+      : undefined
 
   useEffect(() => {
     closeConditionDesignerPanels()
@@ -200,7 +199,8 @@ export const QuestionSettings = ({ surveyId }) => {
     const question =
       survey?.questionGroups?.[groupIndex]?.questions?.[questionIndex]
 
-    if (!question) {
+    // The indices can point to another question when the focus is stale.
+    if (!question || String(question.qid) !== String(focused.qid)) {
       errorToast('Invalid question group or question')
       return
     }

@@ -58,7 +58,8 @@ export const QuestionGroups = ({
 
     addToBuffer(operation)
 
-    if (!focused.qid && focused.gid === questionGroups[index].gid) {
+    // Unfocus the deleted group itself, or any of its questions.
+    if (focused.gid === questionGroups[index].gid) {
       unFocus()
     }
 

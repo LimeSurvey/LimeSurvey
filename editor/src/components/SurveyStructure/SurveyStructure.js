@@ -91,7 +91,8 @@ export const SurveyStructure = () => {
       .questionGroup()
       .delete()
 
-    if (!focused?.qid && focused?.gid === questionGroup.gid) {
+    // Unfocus the deleted group itself, or any of its questions.
+    if (focused?.gid === questionGroup.gid) {
       unFocus()
     }
 
