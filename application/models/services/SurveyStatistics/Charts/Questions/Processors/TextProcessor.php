@@ -20,10 +20,10 @@ class TextProcessor extends AbstractQuestionProcessor
 
         $legend = ['Answer', 'NoAnswer'];
         $dataItems = [
-            ['key' => 'Answer', 'title' => 'Answer', 'value' => $answered],
+            ['key' => 'Answer', 'title' => gT('Answer'), 'value' => $answered],
             [
                 'key' => 'NoAnswer',
-                'title' => 'No answer',
+                'title' => gT('No answer'),
                 'value' => fn(): int => $totalResponses() - $answered(),
             ],
         ];

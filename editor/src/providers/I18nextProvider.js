@@ -1,6 +1,6 @@
 import { useAppState, useAuth, useUserService } from 'hooks'
 import { I18nextProvider } from 'react-i18next'
-import { STATES } from '../helpers'
+import { STATES, loadDayjsLocale } from '../helpers'
 import { Suspense, useEffect, useState } from 'react'
 
 export const I18Provider = ({ i18n, children, language }) => {
@@ -34,9 +34,11 @@ export const I18Provider = ({ i18n, children, language }) => {
             lang = 'en' // Default to English if browser's language is not supported'
           }
         }
+        loadDayjsLocale(lang)
         setI18nInstance(i18n(lang, auth, setLanguages, languages))
       })
     } else {
+      loadDayjsLocale(language)
       setI18nInstance(i18n(language, auth, setLanguages, languages))
     }
 

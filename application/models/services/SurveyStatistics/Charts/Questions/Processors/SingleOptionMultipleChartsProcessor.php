@@ -24,10 +24,10 @@ class SingleOptionMultipleChartsProcessor extends AbstractQuestionProcessor
                 return $this->buildStackedChart($codes, $labels);
 
             case Question::QT_C_ARRAY_YES_UNCERTAIN_NO:
-                return $this->buildStackedChart(['Y', 'U', 'N'], ['Yes', 'Uncertain', 'No']);
+                return $this->buildStackedChart(['Y', 'U', 'N'], [gT('Yes'), gT('Uncertain'), gT('No')]);
 
             case Question::QT_E_ARRAY_INC_SAME_DEC:
-                return $this->buildStackedChart(['I', 'S', 'D'], ['Increase', 'Same', 'Decrease']);
+                return $this->buildStackedChart(['I', 'S', 'D'], [gT('Increase'), gT('Same'), gT('Decrease')]);
 
             case Question::QT_F_ARRAY:
             case Question::QT_H_ARRAY_COLUMN:

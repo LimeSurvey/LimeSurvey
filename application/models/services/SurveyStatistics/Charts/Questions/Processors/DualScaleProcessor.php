@@ -41,7 +41,7 @@ class DualScaleProcessor extends AbstractQuestionProcessor
                 }
                 $segments[] = [
                     'key' => 'NoAnswer',
-                    'title' => 'No answer',
+                    'title' => gT('No answer'),
                     'value' => $this->read($this->batch->countBlank($field)),
                 ];
 
@@ -76,8 +76,9 @@ class DualScaleProcessor extends AbstractQuestionProcessor
                 }
             }
         }
-        if (!in_array('No answer', $legend, true)) {
-            $legend[] = 'No answer';
+        $noAnswer = gT('No answer');
+        if (!in_array($noAnswer, $legend, true)) {
+            $legend[] = $noAnswer;
         }
 
         return $legend;

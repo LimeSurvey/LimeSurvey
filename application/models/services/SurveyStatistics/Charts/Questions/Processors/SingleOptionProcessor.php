@@ -116,7 +116,7 @@ class SingleOptionProcessor extends AbstractQuestionProcessor
     private function handleGender(): array
     {
         $codes = ['F', 'M'];
-        $labels = ['Female', 'Male'];
+        $labels = [gT('Female'), gT('Male')];
 
         [$legend, $items] = $this->buildItemsFromCodes($this->rt, $codes, $labels);
         return [
@@ -132,7 +132,7 @@ class SingleOptionProcessor extends AbstractQuestionProcessor
     private function handleYesNo(): array
     {
         $codes = ['Y', 'N'];
-        $labels = ['Yes', 'No'];
+        $labels = [gT('Yes'), gT('No')];
 
         [$legend, $items] = $this->buildItemsFromCodes($this->rt, $codes, $labels);
         return [

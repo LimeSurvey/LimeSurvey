@@ -11,7 +11,7 @@ import {
   ResponsiveContainer,
 } from 'recharts'
 
-import { ordinal } from '../ChartsUtils'
+import { rankLabel } from '../ChartsUtils'
 import { htmlToPlainText } from 'helpers'
 import { StatisticsDetailModal } from '../StatisticsDetailModal.js'
 import { StatisticsFilterSelect } from '../StatisticsFilterSelect.js'
@@ -50,7 +50,11 @@ const RankBadgeTick = ({ x, y, index, ranked }) => {
       overflow="visible"
     >
       <div className="responses-statistics-ranking-badge-cell">
-        <span className="responses-statistics-ranking-badge">
+        <span
+          className="responses-statistics-ranking-badge"
+          title={rankLabel(entry.position)}
+          aria-label={rankLabel(entry.position)}
+        >
           {entry.position}
         </span>
       </div>
@@ -109,7 +113,10 @@ export const RankingBarChart = ({ data = [], title = '' }) => {
       }
     })
     .sort((a, b) => (a.averageRank ?? Infinity) - (b.averageRank ?? Infinity))
-    .map((item, index) => ({ ...item, position: ordinal(index + 1) }))
+    .map((item, index) => ({
+      ...item,
+      position: index + 1,
+    }))
 
   const selectedOption = ranked.find((option) => option.key === selectedKey)
 
@@ -179,8 +186,12 @@ export const RankingBarChart = ({ data = [], title = '' }) => {
                 className="responses-statistics-modal-row"
                 key={`rank-${rank.position}`}
               >
-                <span className="responses-statistics-ranking-badge">
-                  {ordinal(rank.position)}
+                <span
+                  className="responses-statistics-ranking-badge"
+                  title={rankLabel(rank.position)}
+                  aria-label={rankLabel(rank.position)}
+                >
+                  {rank.position}
                 </span>
                 <span>
                   {rank.value === 1
