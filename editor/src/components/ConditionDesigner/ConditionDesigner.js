@@ -30,6 +30,8 @@ const scenarioActions = {
 
 export const ConditionDesigner = ({
   question,
+  groupIndex,
+  questionIndex,
   survey,
   update,
   language,
@@ -37,7 +39,7 @@ export const ConditionDesigner = ({
   setPendingScenarioName,
   onNavigateBack = () => {},
 }) => {
-  const { focused, groupIndex, questionIndex } = useFocused()
+  const { focused } = useFocused()
   const { addToBuffer } = useBuffer()
 
   const [scid, setScid] = useState(scenarioToPatch ? scenarioToPatch.scid : 1)

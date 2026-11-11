@@ -52,18 +52,22 @@ export const QuestionSettings = ({ surveyId }) => {
     focused = {},
     unFocus,
     setFocused,
-    groupIndex,
-    questionIndex,
+    groupIndex: focusedGroupIndex,
+    questionIndex: focusedQuestionIndex,
   } = useFocused()
 
-  // The survey is the source of truth for the condition designer; `focused` is
-  // only a snapshot and can reference a question that is not in the survey.
+  // The survey is the source of truth; `focused` is only a snapshot. Its qid
+  // can be missing from the survey, and its indices go stale when groups are
+  // reordered, deleted or inserted, so resolve both from the qid.
   // Not memoized: survey updates mutate the question groups in place, so the
   // survey reference can stay the same while the question object is replaced.
-  const question =
-    focused?.qid && survey?.questionGroups
-      ? getQuestionById(focused.qid, survey).question
-      : undefined
+  const {
+    question,
+    groupIndex = focusedGroupIndex,
+    questionIndex = focusedQuestionIndex,
+  } = focused?.qid && survey?.questionGroups
+    ? getQuestionById(focused.qid, survey)
+    : {}
 
   useEffect(() => {
     closeConditionDesignerPanels()
@@ -267,6 +271,8 @@ export const QuestionSettings = ({ surveyId }) => {
         <ConditionDesigner
           key={`condition-designer-${focused.qid}`}
           question={question}
+          groupIndex={groupIndex}
+          questionIndex={questionIndex}
           survey={survey}
           update={update}
           language={language}
@@ -284,6 +290,8 @@ export const QuestionSettings = ({ surveyId }) => {
         <ExpressionScript
           key={`expression-script-${focused.qid}`}
           question={question}
+          groupIndex={groupIndex}
+          questionIndex={questionIndex}
           onNavigateBack={closeConditionDesignerPanels}
         />
       )
@@ -386,6 +394,8 @@ export const QuestionSettings = ({ surveyId }) => {
               <ScenarioList
                 key={`scenario-list-${focused.qid}-${question.scenarios.length}`}
                 question={question}
+                groupIndex={groupIndex}
+                questionIndex={questionIndex}
                 setScenarioToPatch={setScenarioToPatch}
                 pendingScenarioName={pendingScenarioName}
                 setPendingScenarioName={setPendingScenarioName}
@@ -396,6 +406,8 @@ export const QuestionSettings = ({ surveyId }) => {
               <ExpressionScriptInputBox
                 key={`condition-expression-trigger-${focused.qid}`}
                 question={question}
+                groupIndex={groupIndex}
+                questionIndex={questionIndex}
                 onShowPanel={toggleConditionDesignerPanels}
                 onNavigateBack={closeConditionDesignerPanels}
               />

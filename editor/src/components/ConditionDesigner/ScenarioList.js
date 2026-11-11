@@ -15,13 +15,15 @@ import { getApiOperationActions, showDeleteScenarioOverlay } from './utils'
 
 export const ScenarioList = ({
   question,
+  groupIndex,
+  questionIndex,
   setScenarioToPatch,
   pendingScenarioName,
   setPendingScenarioName,
 }) => {
   const { surveyId } = useParams()
   const { survey, update } = useSurvey(surveyId)
-  const { focused, groupIndex, questionIndex } = useFocused()
+  const { focused } = useFocused()
   const { addToBuffer } = useBuffer()
 
   const scenarios = question.scenarios || []

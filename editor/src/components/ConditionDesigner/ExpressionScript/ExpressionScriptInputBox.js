@@ -1,11 +1,6 @@
 import { useParams } from 'react-router-dom'
 
-import {
-  useBuffer,
-  useExpressionScriptValidation,
-  useFocused,
-  useSurvey,
-} from 'hooks'
+import { useBuffer, useExpressionScriptValidation, useSurvey } from 'hooks'
 import { htmlPopup, QUESTION_RELEVANCE_DEFAULT_VALUE } from 'helpers'
 import { Button } from 'components/UIComponents'
 import { CloseCircleIcon, ExpandIcon } from 'components/icons'
@@ -16,12 +11,13 @@ import { showResetAllConditionsOverlay, showWarningMessage } from '../utils'
 
 export const ExpressionScriptInputBox = ({
   question,
+  groupIndex,
+  questionIndex,
   onShowPanel,
   onNavigateBack,
 }) => {
   const { surveyId } = useParams()
   const { survey, update } = useSurvey(surveyId)
-  const { groupIndex, questionIndex } = useFocused()
   const { addToBuffer } = useBuffer()
 
   const validateExpression = useExpressionScriptValidation(

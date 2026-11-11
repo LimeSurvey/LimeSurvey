@@ -20,10 +20,15 @@ import {
   showUnsavedChangesOverlay,
 } from '../utils'
 
-export const ExpressionScript = ({ question, onNavigateBack = () => {} }) => {
+export const ExpressionScript = ({
+  question,
+  groupIndex,
+  questionIndex,
+  onNavigateBack = () => {},
+}) => {
   const { surveyId } = useParams()
   const { survey, update } = useSurvey(surveyId)
-  const { focused, groupIndex, questionIndex } = useFocused()
+  const { focused } = useFocused()
   const { addToBuffer } = useBuffer()
 
   const validateExpression = useExpressionScriptValidation(
