@@ -209,7 +209,7 @@ abstract class AbstractQuestionProcessor
                 $legend[] = 'NoAnswer';
                 $items[] = [
                     'key' => 'NoAnswer',
-                    'title' => gT('No answer'),
+                    'title' => gT('No answer', 'unescaped'),
                     'value' => $this->read($this->batch->countBlank($field)),
                 ];
             }

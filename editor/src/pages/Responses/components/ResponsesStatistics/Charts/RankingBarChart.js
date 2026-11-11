@@ -33,6 +33,16 @@ const NameLabel = ({ x, y, value }) => (
   </text>
 )
 
+const RankBadge = ({ position }) => (
+  <span
+    className="responses-statistics-ranking-badge"
+    title={rankLabel(position)}
+  >
+    <span aria-hidden="true">{position}</span>
+    <span className="visually-hidden">{rankLabel(position)}</span>
+  </span>
+)
+
 // Rank badge rendered as a YAxis tick so it shares the chart's band scale and
 // stays aligned with its bar (a separately-positioned column drifts because
 // recharts' band scale doesn't space rows by an exact pixel height).
@@ -50,13 +60,7 @@ const RankBadgeTick = ({ x, y, index, ranked }) => {
       overflow="visible"
     >
       <div className="responses-statistics-ranking-badge-cell">
-        <span
-          className="responses-statistics-ranking-badge"
-          title={rankLabel(entry.position)}
-          aria-label={rankLabel(entry.position)}
-        >
-          {entry.position}
-        </span>
+        <RankBadge position={entry.position} />
       </div>
     </foreignObject>
   )
@@ -186,13 +190,7 @@ export const RankingBarChart = ({ data = [], title = '' }) => {
                 className="responses-statistics-modal-row"
                 key={`rank-${rank.position}`}
               >
-                <span
-                  className="responses-statistics-ranking-badge"
-                  title={rankLabel(rank.position)}
-                  aria-label={rankLabel(rank.position)}
-                >
-                  {rank.position}
-                </span>
+                <RankBadge position={rank.position} />
                 <span>
                   {rank.value === 1
                     ? format(t('%s response'), rank.value)
