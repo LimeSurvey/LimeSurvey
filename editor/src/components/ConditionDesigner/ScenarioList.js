@@ -6,7 +6,6 @@ import classNames from 'classnames'
 import { useBuffer, useFocused, useSurvey } from 'hooks'
 import {
   createBufferOperation,
-  getQuestionById,
   QUESTION_RELEVANCE_DEFAULT_VALUE,
 } from 'helpers'
 import { Button } from 'components'
@@ -15,6 +14,7 @@ import { CloseCircleIcon } from 'components/icons'
 import { getApiOperationActions, showDeleteScenarioOverlay } from './utils'
 
 export const ScenarioList = ({
+  question,
   setScenarioToPatch,
   pendingScenarioName,
   setPendingScenarioName,
@@ -24,8 +24,7 @@ export const ScenarioList = ({
   const { focused, groupIndex, questionIndex } = useFocused()
   const { addToBuffer } = useBuffer()
 
-  const question = getQuestionById(focused.qid, survey).question
-  const scenarios = question?.scenarios || []
+  const scenarios = question.scenarios || []
 
   const [hasTempId, setHasTempId] = useState(!!pendingScenarioName)
 

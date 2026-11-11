@@ -6,7 +6,7 @@ import { Button, Input } from 'components'
 import { useBuffer, useFocused, useConditionDesigner } from 'hooks'
 import { SideBarHeader } from 'components/SideBar'
 import { ArrowLeftIcon } from 'components/icons'
-import { getQuestionById, QUESTION_RELEVANCE_DEFAULT_VALUE } from 'helpers'
+import { QUESTION_RELEVANCE_DEFAULT_VALUE } from 'helpers'
 
 import { previousQuestionsHandler } from './handlers/previousQuestions/previousQuestionsHandler'
 import { ConditionItem } from './ConditionItem'
@@ -29,6 +29,7 @@ const scenarioActions = {
 }
 
 export const ConditionDesigner = ({
+  question,
   survey,
   update,
   language,
@@ -38,10 +39,6 @@ export const ConditionDesigner = ({
 }) => {
   const { focused, groupIndex, questionIndex } = useFocused()
   const { addToBuffer } = useBuffer()
-
-  const question = useMemo(() => {
-    return getQuestionById(focused.qid, survey)?.question
-  }, [focused.qid, survey])
 
   const [scid, setScid] = useState(scenarioToPatch ? scenarioToPatch.scid : 1)
 

@@ -6,11 +6,7 @@ import {
   useFocused,
   useSurvey,
 } from 'hooks'
-import {
-  getQuestionById,
-  htmlPopup,
-  QUESTION_RELEVANCE_DEFAULT_VALUE,
-} from 'helpers'
+import { htmlPopup, QUESTION_RELEVANCE_DEFAULT_VALUE } from 'helpers'
 import { Button } from 'components/UIComponents'
 import { CloseCircleIcon, ExpandIcon } from 'components/icons'
 
@@ -18,13 +14,16 @@ import { ExpressionScriptEditorOverlay } from '../Overlays'
 import { handleConditionScriptUpdate } from './handleConditionScriptUpdate'
 import { showResetAllConditionsOverlay, showWarningMessage } from '../utils'
 
-export const ExpressionScriptInputBox = ({ onShowPanel, onNavigateBack }) => {
+export const ExpressionScriptInputBox = ({
+  question,
+  onShowPanel,
+  onNavigateBack,
+}) => {
   const { surveyId } = useParams()
   const { survey, update } = useSurvey(surveyId)
-  const { focused, groupIndex, questionIndex } = useFocused()
+  const { groupIndex, questionIndex } = useFocused()
   const { addToBuffer } = useBuffer()
 
-  const question = getQuestionById(focused.qid, survey).question
   const validateExpression = useExpressionScriptValidation(
     surveyId,
     question.qid

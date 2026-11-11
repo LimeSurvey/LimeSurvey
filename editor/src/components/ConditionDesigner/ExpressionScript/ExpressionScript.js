@@ -8,7 +8,7 @@ import {
   useFocused,
   useSurvey,
 } from 'hooks'
-import { getQuestionById, QUESTION_RELEVANCE_DEFAULT_VALUE } from 'helpers'
+import { QUESTION_RELEVANCE_DEFAULT_VALUE } from 'helpers'
 import { SideBarHeader } from 'components/SideBar'
 import { Button, ExpressionScriptEditor } from 'components/UIComponents'
 import { ArrowLeftIcon } from 'components/icons'
@@ -20,13 +20,12 @@ import {
   showUnsavedChangesOverlay,
 } from '../utils'
 
-export const ExpressionScript = ({ onNavigateBack = () => {} }) => {
+export const ExpressionScript = ({ question, onNavigateBack = () => {} }) => {
   const { surveyId } = useParams()
   const { survey, update } = useSurvey(surveyId)
   const { focused, groupIndex, questionIndex } = useFocused()
   const { addToBuffer } = useBuffer()
 
-  const question = getQuestionById(focused.qid, survey).question
   const validateExpression = useExpressionScriptValidation(
     surveyId,
     question.qid

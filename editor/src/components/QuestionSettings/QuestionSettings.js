@@ -8,6 +8,7 @@ import {
   createBufferOperation,
   getDisabledQuestionTypes,
   errorToast,
+  getQuestionById,
   isTempId,
 } from 'helpers'
 import { useAppState, useBuffer, useFocused, useSurvey } from 'hooks'
@@ -54,6 +55,16 @@ export const QuestionSettings = ({ surveyId }) => {
     groupIndex,
     questionIndex,
   } = useFocused()
+
+  // The survey is the source of truth for the condition designer; `focused` is
+  // only a snapshot and can reference a question that is not in the survey.
+  const question = useMemo(() => {
+    if (!focused?.qid || !survey?.questionGroups) {
+      return undefined
+    }
+
+    return getQuestionById(focused.qid, survey).question
+  }, [focused?.qid, survey])
 
   useEffect(() => {
     closeConditionDesignerPanels()
@@ -250,11 +261,12 @@ export const QuestionSettings = ({ surveyId }) => {
     !!questionSettingsOptions?.isAdvanced &&
     advancedQuestionSettings.length > 0
 
-  if (focused && typeof focused.qid === 'number') {
+  if (question && typeof focused.qid === 'number') {
     if (conditionDesignerPanels.isConditionPanelOpen || scenarioToPatch) {
       return (
         <ConditionDesigner
           key={`condition-designer-${focused.qid}`}
+          question={question}
           survey={survey}
           update={update}
           language={language}
@@ -265,12 +277,13 @@ export const QuestionSettings = ({ surveyId }) => {
       )
     }
     if (
-      focused.relevance !== null &&
+      question.relevance != null &&
       conditionDesignerPanels.isExpressionScriptPanelOpen
     ) {
       return (
         <ExpressionScript
           key={`expression-script-${focused.qid}`}
+          question={question}
           onNavigateBack={closeConditionDesignerPanels}
         />
       )
@@ -362,25 +375,27 @@ export const QuestionSettings = ({ surveyId }) => {
         </>
       )}
       <div id="condition-designer">
-        {!focused || (focused && isTempId(focused.qid)) ? null : (
+        {!question || isTempId(focused.qid) ? null : (
           <>
             <AddScenario
               key={`add-scenario-${focused.qid}`}
               onShowPanel={toggleConditionDesignerPanels}
             />
 
-            {focused.scenarios?.length ? (
+            {question.scenarios?.length ? (
               <ScenarioList
-                key={`scenario-list-${focused.qid}-${focused.scenarios.length}`}
+                key={`scenario-list-${focused.qid}-${question.scenarios.length}`}
+                question={question}
                 setScenarioToPatch={setScenarioToPatch}
                 pendingScenarioName={pendingScenarioName}
                 setPendingScenarioName={setPendingScenarioName}
               />
             ) : null}
 
-            {focused.relevance != null && (
+            {question.relevance != null && (
               <ExpressionScriptInputBox
                 key={`condition-expression-trigger-${focused.qid}`}
+                question={question}
                 onShowPanel={toggleConditionDesignerPanels}
                 onNavigateBack={closeConditionDesignerPanels}
               />
