@@ -136,6 +136,31 @@ export const useQuestionChildren = ({
     handleUpdate({ [childKey]: updatedChildren })
   }
 
+  /**
+   * Append several new answers or subquestions at once, e.g. from a label set.
+   */
+  const handleChildrenAppend = (
+    childArray = [],
+    entityType,
+    newChildren = []
+  ) => {
+    if (!newChildren.length) {
+      return
+    }
+    const childKey = entityType === Entities.answer ? 'answers' : 'subquestions'
+    const updatedChildren = [...childArray, ...newChildren].map(
+      (child, index) => ({
+        ...child,
+        sortOrder: index,
+      })
+    )
+
+    addToBuffer(
+      createChildrenUpdateOperation(question.qid, entityType, updatedChildren)
+    )
+    handleUpdate({ [childKey]: updatedChildren })
+  }
+
   const handleChildDelete = (childId, childArray = [], entityType) => {
     const childKey = entityType === Entities.answer ? 'answers' : 'subquestions'
     const idKey = entityType === Entities.answer ? 'aid' : 'qid'
@@ -410,6 +435,7 @@ export const useQuestionChildren = ({
   return {
     children,
     handleChildAdd,
+    handleChildrenAppend,
     handleChildDelete,
     handleOnChildDragEnd,
     handleChildLUpdate,

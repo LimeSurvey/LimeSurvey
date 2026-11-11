@@ -2,12 +2,24 @@ import { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import classNames from 'classnames'
 
-import { useAppState, useBuffer } from 'hooks'
-import { STATES, createBufferOperation, getSiteUrl } from 'helpers'
+import { useAppState, useBuffer, useSurvey } from 'hooks'
+import {
+  Entities,
+  STATES,
+  createBufferOperation,
+  getSiteUrl,
+  getSurveyLanguages,
+} from 'helpers'
 import { getTooltipMessages } from 'helpers/options'
 import { TooltipContainer } from 'components'
-import { DeleteIcon, CopyIcon, EyeIcon } from 'components/icons'
+import { DeleteIcon, CopyIcon, DownloadIcon, EyeIcon } from 'components/icons'
 import { ConfirmModal } from 'components/Modals'
+import { SaveLabelSetModal } from 'components/LabelSets'
+import {
+  OptionQuestionEditMode,
+  questionEditComponents,
+  singleChoiceThemes,
+} from 'components/QuestionTypes'
 
 export const QuestionFooter = ({
   question,
@@ -20,6 +32,21 @@ export const QuestionFooter = ({
   const { surveyId } = useParams()
   const { addToBuffer } = useBuffer()
   const [showDeleteModal, setShowDeleteModal] = useState(false)
+  const [showSaveLabelSetModal, setShowSaveLabelSetModal] = useState(false)
+  const { survey } = useSurvey(surveyId)
+
+  // Label sets are only supported for list/multiple choice style questions for now
+  const supportsLabelSets =
+    questionEditComponents[question.questionThemeName] ===
+    OptionQuestionEditMode
+  const isSingleChoiceTheme = singleChoiceThemes.includes(
+    question.questionThemeName
+  )
+  const labelSetEntity = isSingleChoiceTheme
+    ? Entities.answer
+    : Entities.subquestion
+  const labelSetChildren =
+    (isSingleChoiceTheme ? question.answers : question.subquestions) || []
 
   const handleRemoveQuestion = () => {
     setShowDeleteModal(true)
@@ -51,10 +78,43 @@ export const QuestionFooter = ({
         )}
         confirmButtonText={t('Delete')}
       />
+      {supportsLabelSets && (
+        <SaveLabelSetModal
+          show={showSaveLabelSetModal}
+          onHide={() => setShowSaveLabelSetModal(false)}
+          _children={labelSetChildren}
+          entityType={labelSetEntity}
+          surveyLanguages={getSurveyLanguages(survey)}
+        />
+      )}
       <div
         data-testid="question-footer"
         className="question-footer align-items-center justify-content-end d-flex gap-3 text-end pt-3 pe-3"
       >
+        {isFocused && supportsLabelSets && (
+          <TooltipContainer
+            tip={
+              isSingleChoiceTheme
+                ? t('Save answers as new label set')
+                : t('Save subquestions as new label set')
+            }
+          >
+            <div
+              className={classNames({
+                'cursor-pointer': labelSetChildren.length > 0,
+                'opacity-50 pointer-events-none': !labelSetChildren.length,
+              })}
+              data-testid="question-footer-save-label-set-icon"
+              onClick={() => setShowSaveLabelSetModal(true)}
+            >
+              <DownloadIcon
+                className="footer-icon fill-current"
+                width={20}
+                height={20}
+              />
+            </div>
+          </TooltipContainer>
+        )}
         <div
           className={classNames('cursor-pointer', {
             'disabled': !isFocused,
