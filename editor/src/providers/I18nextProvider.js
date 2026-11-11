@@ -21,15 +21,30 @@ export const I18Provider = ({ i18n, children, language }) => {
   const [isTranslationLoaded, setIsTranslationLoaded] = useState(false)
 
   useEffect(() => {
+    const controller = new AbortController()
+    const { signal } = controller
+
     const applyLanguage = (lang) => {
       setI18nInstance(i18n(lang, auth, setLanguages, languages))
       setIsTranslationLoaded(true)
     }
 
+    // Creates the i18n instance (which starts fetching the translations) while
+    // the dayjs locale loads, so children first render with the correct one.
+    const applyUiLanguage = async (lang) => {
+      const instance = i18n(lang, auth, setLanguages, languages)
+      await loadDayjsLocale(lang, { signal })
+      if (signal.aborted) {
+        return
+      }
+      setI18nInstance(instance)
+      setIsTranslationLoaded(true)
+    }
+
     if (!auth.isLoggedIn || auth.userId == 0 || process.env.STORYBOOK_DEV) {
       setUserDetail({ lang: 'en' })
-      applyLanguage('en')
-      return
+      applyUiLanguage('en')
+      return () => controller.abort()
     }
 
     // An explicit language (e.g. the survey language) only sets up i18n.
@@ -39,23 +54,22 @@ export const I18Provider = ({ i18n, children, language }) => {
       return
     }
 
-    const controller = new AbortController()
-    const { signal } = controller
-
     const loadUserLanguage = async () => {
-      const userDetail = await userService.getUserDetail(auth.userId)
-      if (!userDetail || signal.aborted) {
-        return
+      let userDetail = null
+      try {
+        userDetail = await userService.getUserDetail(auth.userId)
+      } catch {
+        // Fall back to English below rather than blocking the editor
       }
-      setUserDetail(userDetail)
-
-      const lang = resolveUserLanguage(userDetail.lang)
-      // Wait for the dayjs locale so children first render with the correct one
-      await loadDayjsLocale(lang, { signal })
       if (signal.aborted) {
         return
       }
-      applyLanguage(lang)
+      if (!userDetail) {
+        applyUiLanguage('en')
+        return
+      }
+      setUserDetail(userDetail)
+      applyUiLanguage(resolveUserLanguage(userDetail.lang))
     }
 
     loadUserLanguage()
