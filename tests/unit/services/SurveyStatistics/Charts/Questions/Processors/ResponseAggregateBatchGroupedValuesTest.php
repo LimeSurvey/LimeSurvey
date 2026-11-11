@@ -77,23 +77,29 @@ class ResponseAggregateBatchGroupedValuesTest extends TestBaseClass
     }
 
     /**
+     * @testdox groupedValueCounts() ignores case and surrounding spaces, keeping the first spelling
+     */
+    public function testMergesCaseAndSpaceVariants()
+    {
+        $field = $this->fillSecondOtherField(['Darts', 'darts', ' DARTS ', 'Chess'], false);
+        $batch = new ResponseAggregateBatch(self::$surveyId);
+
+        $this->assertSame(
+            [
+                ['text' => 'Darts', 'count' => 6],
+                ['text' => 'Chess', 'count' => 2],
+            ],
+            $batch->groupedValueCounts($field)
+        );
+    }
+
+    /**
      * @testdox groupedValueCounts() decrypts encrypted texts before grouping them
      */
     public function testDecryptsEncryptedTexts()
     {
-        $question = Question::model()->findByAttributes(['sid' => self::$surveyId, 'title' => 'q2']);
-        $field = 'Q' . $question->qid . '_Cother';
-        $tableName = \Survey::model()->findByPk(self::$surveyId)->responsesTableName;
         // Each text gets a different encrypted value, so SQL can't group them.
-        foreach (self::$responseIds as $index => $responseId) {
-            $text = ['Yoga', 'Chess', 'Yoga', ''][$index % 4];
-            \Yii::app()->db->createCommand()->update(
-                $tableName,
-                [$field => $text === '' ? '' : \LSActiveRecord::encryptSingle($text)],
-                'id = :id',
-                [':id' => $responseId]
-            );
-        }
+        $field = $this->fillSecondOtherField(['Yoga', 'Chess', 'yoga ', ''], true);
         $batch = new ResponseAggregateBatch(self::$surveyId);
 
         $this->assertSame(
@@ -133,5 +139,28 @@ class ResponseAggregateBatchGroupedValuesTest extends TestBaseClass
             ],
             $other['otherAnswers']
         );
+    }
+
+    /**
+     * Writes the texts, in turn, into the "other" column of q2 of every response.
+     *
+     * @param string[] $texts
+     * @return string the column name
+     */
+    private function fillSecondOtherField(array $texts, bool $encrypt): string
+    {
+        $question = Question::model()->findByAttributes(['sid' => self::$surveyId, 'title' => 'q2']);
+        $field = 'Q' . $question->qid . '_Cother';
+        $tableName = \Survey::model()->findByPk(self::$surveyId)->responsesTableName;
+        foreach (self::$responseIds as $index => $responseId) {
+            $text = $texts[$index % count($texts)];
+            \Yii::app()->db->createCommand()->update(
+                $tableName,
+                [$field => $encrypt && $text !== '' ? \LSActiveRecord::encryptSingle($text) : $text],
+                'id = :id',
+                [':id' => $responseId]
+            );
+        }
+        return $field;
     }
 }

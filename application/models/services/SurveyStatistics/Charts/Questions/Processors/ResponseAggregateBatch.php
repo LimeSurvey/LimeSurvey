@@ -328,45 +328,26 @@ final class ResponseAggregateBatch
         [$where, $whereParams] = $this->buildWhere();
         $where = $where === '' ? " WHERE $nonEmpty" : "$where AND $nonEmpty";
 
-        if ($encrypted) {
-            $reader = $db->createCommand("SELECT $col FROM $table$where")->query($whereParams);
-            $reader->setFetchMode(PDO::FETCH_COLUMN, 0);
-            return $this->groupDecryptedValues($reader);
-        }
+        $reader = $db->createCommand(
+            "SELECT $col FROM $table$where ORDER BY " . $db->quoteColumnName('id')
+        )->query($whereParams);
+        $reader->setFetchMode(PDO::FETCH_COLUMN, 0);
 
-        $sql = "SELECT $col AS " . $db->quoteColumnName('text')
-            . ', COUNT(*) AS ' . $db->quoteColumnName('count')
-            . " FROM $table$where GROUP BY $col ORDER BY COUNT(*) DESC, $col ASC";
-        $rows = $db->createCommand($sql)->queryAll(true, $whereParams);
-
-        return array_map(
-            static fn(array $row): array => ['text' => (string)$row['text'], 'count' => (int)$row['count']],
-            $rows
-        );
-    }
-
-    /**
-     * Encryption gives the same text a different value each time, so
-     * encrypted cells are decrypted and grouped here instead of in SQL. The
-     * cells are read one by one, so only the counts are kept in memory.
-     *
-     * @param iterable<string> $values
-     * @return array<int, array{text: string, count: int}>
-     */
-    private function groupDecryptedValues(iterable $values): array
-    {
-        $counts = [];
-        foreach ($values as $value) {
-            $text = LSActiveRecord::decryptSingle((string)$value);
-            if ($text !== '') {
-                $counts[$text] = ($counts[$text] ?? 0) + 1;
+        $groups = [];
+        foreach ($reader as $value) {
+            $text = trim($encrypted ? LSActiveRecord::decryptSingle((string)$value) : (string)$value);
+            if ($text === '') {
+                continue;
+            }
+            $key = mb_strtolower($text);
+            if (isset($groups[$key])) {
+                $groups[$key]['count']++;
+            } else {
+                $groups[$key] = ['text' => $text, 'count' => 1];
             }
         }
 
-        $rows = [];
-        foreach ($counts as $text => $count) {
-            $rows[] = ['text' => (string)$text, 'count' => $count];
-        }
+        $rows = array_values($groups);
         usort(
             $rows,
             static fn(array $a, array $b): int => [$b['count'], $a['text']] <=> [$a['count'], $b['text']]
