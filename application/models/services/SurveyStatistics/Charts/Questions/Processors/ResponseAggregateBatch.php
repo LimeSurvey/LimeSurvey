@@ -4,6 +4,7 @@ namespace LimeSurvey\Models\Services\SurveyStatistics\Charts\Questions\Processor
 
 use CDbConnection;
 use LSActiveRecord;
+use PDO;
 use LimeSurvey\Models\Services\ResponseFilters\ResolvedFilter;
 use LimeSurvey\Models\Services\ResponseFilters\ResponseFilterSqlBuilder;
 use LimeSurvey\Models\Services\SurveyStatistics\StatisticsResponseFilters;
@@ -328,9 +329,9 @@ final class ResponseAggregateBatch
         $where = $where === '' ? " WHERE $nonEmpty" : "$where AND $nonEmpty";
 
         if ($encrypted) {
-            return $this->groupDecryptedValues(
-                $db->createCommand("SELECT $col FROM $table$where")->queryColumn($whereParams)
-            );
+            $reader = $db->createCommand("SELECT $col FROM $table$where")->query($whereParams);
+            $reader->setFetchMode(PDO::FETCH_COLUMN, 0);
+            return $this->groupDecryptedValues($reader);
         }
 
         $sql = "SELECT $col AS " . $db->quoteColumnName('text')
@@ -346,12 +347,13 @@ final class ResponseAggregateBatch
 
     /**
      * Encryption gives the same text a different value each time, so
-     * encrypted cells are decrypted and grouped here instead of in SQL.
+     * encrypted cells are decrypted and grouped here instead of in SQL. The
+     * cells are read one by one, so only the counts are kept in memory.
      *
-     * @param string[] $values
+     * @param iterable<string> $values
      * @return array<int, array{text: string, count: int}>
      */
-    private function groupDecryptedValues(array $values): array
+    private function groupDecryptedValues(iterable $values): array
     {
         $counts = [];
         foreach ($values as $value) {
