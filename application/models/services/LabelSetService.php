@@ -301,7 +301,6 @@ class LabelSetService
      */
     protected function inTransaction(callable $callback)
     {
-        /** @var CDbConnection $db */
         $db = $this->app->db;
         $transaction = $db->beginTransaction();
         try {
