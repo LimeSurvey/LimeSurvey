@@ -5,7 +5,6 @@ import { Direction } from 'react-range'
 import {
   AlignButtons,
   DropZone,
-  ImageEditor,
   InputRange,
   ToggleButtons,
 } from 'components/UIComponents'
@@ -33,7 +32,6 @@ export const ImageAttributes = ({
   wrapperClass = '',
 }) => {
   const charLimit = 125
-  const [show, setShow] = useState(false)
   const [imageState, setImageState] = useState(() =>
     getImageObjectFromJsonData(value)
   )
@@ -144,19 +142,6 @@ export const ImageAttributes = ({
     updateImageState(getClearedImageObject())
     setPreviewUrl(null)
   }
-
-  const handleEditModalSave = (imageObject) => {
-    updateImageState({
-      imageZoom: imageObject.imageZoom,
-      imageRotate: imageObject.imageRotate,
-      imageRadius: imageObject.imageRadius,
-      imagePositionX: imageObject.imagePositionX,
-      imagePositionY: imageObject.imagePositionY,
-      imageStyles: imageObject.imageStyles,
-    })
-  }
-
-  const handleClose = () => setShow(false)
 
   return (
     <>
@@ -287,12 +272,6 @@ export const ImageAttributes = ({
                 </div>
               )}
             </div>
-            <ImageEditor
-              showModal={show}
-              onClose={handleClose}
-              onChange={(imageObject) => handleEditModalSave(imageObject)}
-              imageObject={imageState}
-            />
           </>
         )}
       </div>

@@ -1,4 +1,6 @@
 import { mapValues, pick } from 'lodash'
+import { renderHook } from '@testing-library/react'
+import { QueryClientProvider } from '@tanstack/react-query'
 
 import {
   createBufferOperation,
@@ -8,11 +10,20 @@ import {
   Operations,
   SCALE_1,
   SCALE_2,
+  STATES,
 } from 'helpers'
+import { queryClient } from 'queryClient'
+import {
+  IMAGE_OPTION_ALT_ATTRIBUTE,
+  IMAGE_OPTION_SETTINGS_ATTRIBUTE,
+} from 'components/QuestionTypes/imageOptionSettings'
 import { getOperationScheme } from 'helpers/Buffer/getOperationScheme'
 import { OperationsBuffer } from 'helpers/Buffer/OperationsBuffer'
 
-import { createChildrenUpdateOperation } from './useQuestionChildren'
+import {
+  createChildrenUpdateOperation,
+  useQuestionChildren,
+} from './useQuestionChildren'
 
 const QID = 5
 
@@ -155,5 +166,200 @@ describe('other operations reported while editing a converted question', () => {
         .update({ en: { title: 'Survey' } })
     )
     expect(error.message).toBe('"id" must be [null]')
+  })
+})
+
+describe('image settings of image select options', () => {
+  const wrapper = ({ children }) => (
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+  )
+
+  const imageAttributes = {
+    [IMAGE_OPTION_SETTINGS_ATTRIBUTE]: {
+      '': JSON.stringify({ A1: { width: 400 }, A2: { width: 200 } }),
+    },
+    [IMAGE_OPTION_ALT_ATTRIBUTE]: { en: JSON.stringify({ A1: 'Lime' }) },
+  }
+
+  afterAll(() => {
+    queryClient.removeQueries({ queryKey: [STATES.SURVEY] })
+    queryClient.removeQueries({ queryKey: [STATES.BUFFER] })
+  })
+
+  const renderChildren = (questionThemeName) => {
+    // addToBuffer() only buffers operations while a survey is loaded.
+    queryClient.setQueryData([STATES.SURVEY], { survey: { sid: 1 } })
+    queryClient.setQueryData([STATES.BUFFER], [])
+    const handleUpdate = jest.fn()
+    const answers = [serverAnswer(11, 'A1', 0), serverAnswer(12, 'A2', 0)]
+    const { result } = renderHook(
+      () =>
+        useQuestionChildren({
+          question: {
+            qid: QID,
+            questionThemeName,
+            attributes: imageAttributes,
+            answers,
+          },
+          handleUpdate,
+          surveySettings: { languages: ['en'] },
+          language: 'en',
+        }),
+      { wrapper }
+    )
+    return { result, handleUpdate, answers }
+  }
+
+  const getAttributeOperation = () =>
+    queryClient
+      .getQueryData([STATES.BUFFER])
+      .find((operation) => operation.entity === Entities.questionAttribute)
+
+  test('renaming an option code moves its image settings', () => {
+    const { result, handleUpdate, answers } = renderChildren(
+      'image_select-listradio'
+    )
+
+    result.current.handleChildCodeUpdate({
+      newCode: 'B1',
+      childIndex: 0,
+      childArray: answers,
+      entityType: Entities.answer,
+      entityTitleKey: 'answer',
+    })
+
+    const { attributes } = handleUpdate.mock.calls[0][0]
+    expect(JSON.parse(attributes[IMAGE_OPTION_SETTINGS_ATTRIBUTE][''])).toEqual(
+      { B1: { width: 400 }, A2: { width: 200 } }
+    )
+    expect(JSON.parse(attributes[IMAGE_OPTION_ALT_ATTRIBUTE].en)).toEqual({
+      B1: 'Lime',
+    })
+    const operation = getAttributeOperation()
+    expect(operation.props).toEqual({
+      [IMAGE_OPTION_SETTINGS_ATTRIBUTE]: {
+        '': attributes[IMAGE_OPTION_SETTINGS_ATTRIBUTE][''],
+      },
+      [IMAGE_OPTION_ALT_ATTRIBUTE]: {
+        en: attributes[IMAGE_OPTION_ALT_ATTRIBUTE].en,
+      },
+    })
+    expect(
+      getOperationScheme(
+        Operations.update,
+        Entities.questionAttribute
+      ).validate(operation).error
+    ).toBeUndefined()
+  })
+
+  test('renaming moves the settings from the code the question has, also when the children lag behind', () => {
+    // Sets up the buffer and gives the answers as the children show them.
+    const { handleUpdate, answers } = renderChildren('image_select-listradio')
+    // The question already has A1 → A10, the children passed in still show A1.
+    const questionAnswers = [{ ...answers[0], code: 'A10' }, answers[1]]
+    const attributes = {
+      [IMAGE_OPTION_SETTINGS_ATTRIBUTE]: {
+        '': JSON.stringify({ A10: { width: 400 } }),
+      },
+    }
+    const { result: laggingResult } = renderHook(
+      () =>
+        useQuestionChildren({
+          question: {
+            qid: QID,
+            questionThemeName: 'image_select-listradio',
+            attributes,
+            answers: questionAnswers,
+          },
+          handleUpdate,
+          surveySettings: { languages: ['en'] },
+          language: 'en',
+        }),
+      { wrapper }
+    )
+    laggingResult.current.handleChildCodeUpdate({
+      newCode: 'A105',
+      childIndex: 0,
+      childArray: answers,
+      entityType: Entities.answer,
+      entityTitleKey: 'answer',
+    })
+
+    const { attributes: updated } = handleUpdate.mock.calls[0][0]
+    expect(JSON.parse(updated[IMAGE_OPTION_SETTINGS_ATTRIBUTE][''])).toEqual({
+      A105: { width: 400 },
+    })
+  })
+
+  test('deleting an option removes its image settings', () => {
+    const { result, handleUpdate, answers } = renderChildren(
+      'image_select-listradio'
+    )
+
+    result.current.handleChildDelete(11, answers, Entities.answer)
+
+    const { answers: updatedAnswers, attributes } =
+      handleUpdate.mock.calls[0][0]
+    expect(updatedAnswers.map((answer) => answer.code)).toEqual(['A2'])
+    expect(JSON.parse(attributes[IMAGE_OPTION_SETTINGS_ATTRIBUTE][''])).toEqual(
+      { A2: { width: 200 } }
+    )
+    expect(attributes[IMAGE_OPTION_ALT_ATTRIBUTE].en).toBe('')
+    expect(getAttributeOperation()).toBeDefined()
+  })
+
+  test('a new image resets the image settings of the option', () => {
+    const { result, handleUpdate, answers } = renderChildren(
+      'image_select-listradio'
+    )
+
+    result.current.handleChildLUpdate(
+      '/upload/surveys/1/images/new.jpg',
+      0,
+      answers,
+      Entities.answer
+    )
+
+    const { answers: updatedAnswers, attributes } =
+      handleUpdate.mock.calls[0][0]
+    expect(updatedAnswers[0].l10ns.en.answer).toBe(
+      '/upload/surveys/1/images/new.jpg'
+    )
+    expect(JSON.parse(attributes[IMAGE_OPTION_SETTINGS_ATTRIBUTE][''])).toEqual(
+      { A2: { width: 200 } }
+    )
+    expect(attributes[IMAGE_OPTION_ALT_ATTRIBUTE].en).toBe('')
+  })
+
+  test('the same image keeps the image settings', () => {
+    const { result, handleUpdate, answers } = renderChildren(
+      'image_select-listradio'
+    )
+
+    result.current.handleChildLUpdate(
+      answers[0].l10ns.en.answer,
+      0,
+      answers,
+      Entities.answer
+    )
+
+    expect(handleUpdate.mock.calls[0][0]).not.toHaveProperty('attributes')
+  })
+
+  test('other themes leave the attributes alone', () => {
+    const { result, handleUpdate, answers } = renderChildren('listradio')
+
+    result.current.handleChildCodeUpdate({
+      newCode: 'B1',
+      childIndex: 0,
+      childArray: answers,
+      entityType: Entities.answer,
+      entityTitleKey: 'answer',
+    })
+    result.current.handleChildDelete(12, answers, Entities.answer)
+
+    expect(handleUpdate.mock.calls[0][0]).not.toHaveProperty('attributes')
+    expect(handleUpdate.mock.calls[1][0]).not.toHaveProperty('attributes')
+    expect(getAttributeOperation()).toBeUndefined()
   })
 })

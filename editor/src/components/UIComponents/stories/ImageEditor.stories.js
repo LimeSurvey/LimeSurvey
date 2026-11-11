@@ -6,23 +6,20 @@ export default {
   component: ImageEditor,
 }
 
-const FILE = {
-  origin: 'image3.jpg',
-  zoom: 1,
-  rotate: 0,
-  radius: 0,
-}
-
 export function Basic() {
-  const [selectedFile, setSelectedFile] = useState(FILE)
+  const [settings, setSettings] = useState(null)
+  const [altText, setAltText] = useState('')
 
   return (
     <ImageEditor
       showModal={true}
-      onChange={(file) => {
-        setSelectedFile({ ...file })
+      imageUrl="image3.jpg"
+      settings={settings}
+      altText={altText}
+      onSave={({ altText, ...newSettings }) => {
+        setSettings(newSettings)
+        setAltText(altText)
       }}
-      file={selectedFile}
     />
   )
 }

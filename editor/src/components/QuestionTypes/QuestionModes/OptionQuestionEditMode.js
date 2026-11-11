@@ -3,8 +3,19 @@ import { useParams } from 'react-router-dom'
 import { Draggable } from '@hello-pangea/dnd'
 import { PlusLg } from 'react-bootstrap-icons'
 import classNames from 'classnames'
-import { useAppState, useSurvey, useChildKeyboardShortcuts } from 'hooks'
-import { Entities, hasTempId, L10ns, STATES } from 'helpers'
+import {
+  useAppState,
+  useBuffer,
+  useSurvey,
+  useChildKeyboardShortcuts,
+} from 'hooks'
+import {
+  createBufferOperation,
+  Entities,
+  hasTempId,
+  L10ns,
+  STATES,
+} from 'helpers'
 import { getTooltipMessages } from 'helpers/options'
 import { ContentEditor, DragAndDrop, TooltipContainer } from 'components'
 import { CloseCircleFillIcon, DragIcon } from 'components/icons'
@@ -13,14 +24,40 @@ import { getQuestionTypeInfo } from '../getQuestionTypeInfo'
 import { singleChoiceThemes } from '../singleChoiceThemes'
 import { SubquestionCodeInput } from '../subquestionCodeComponents'
 import { AssessmentValueInput } from '../AssessmentValueInput'
+import {
+  applyAttributeChanges,
+  getImageOptionAltText,
+  getImageOptionSaveChanges,
+  getImageOptionSettings,
+} from '../imageOptionSettings'
 
 const imageThemeComponents = [
   getQuestionTypeInfo().SINGLE_CHOICE_IMAGE_SELECT.theme,
   getQuestionTypeInfo().MULTIPLE_CHOICE_IMAGE_SELECT.theme,
 ]
 
+/**
+ * Edit mode of the choice question types: The options with code, text or
+ * image, assessment value, delete button and drag handle.
+ *
+ * @param {Object} question the question
+ * @param {Function} handleUpdate called with question changes
+ * @param {Function} handleChildLUpdate called when an option text changes
+ * @param {boolean} isFocused whether the user may edit the question
+ * @param {Function} handleChildAdd called to add an option
+ * @param {Function} handleOnChildDragEnd called when an option was moved
+ * @param {Function} handleChildDelete called to delete an option
+ * @param {string} language the active language
+ * @param {Function} handleChildCodeUpdate called when an option code changes
+ * @param {Function} handleChildAssessmentValueUpdate called when an assessment
+ *   value changes
+ * @param {Object[]} _children the answers or subquestions
+ * @param {boolean} isTitleFocused whether the question title has the focus
+ * @returns {JSX.Element} the options in edit mode
+ */
 export const OptionQuestionEditMode = ({
-  question: { questionThemeName, showAssessmentValue } = {},
+  question = {},
+  handleUpdate = () => {},
   handleChildLUpdate,
   isFocused,
   handleChildAdd,
@@ -32,8 +69,10 @@ export const OptionQuestionEditMode = ({
   _children = [],
   isTitleFocused,
 }) => {
+  const { questionThemeName, showAssessmentValue } = question
   const { surveyId } = useParams()
   const { survey } = useSurvey(surveyId)
+  const { addToBuffer } = useBuffer()
   const isSingleChoiceTheme = singleChoiceThemes.includes(questionThemeName)
   const isImageTheme = imageThemeComponents.includes(questionThemeName)
 
@@ -62,6 +101,52 @@ export const OptionQuestionEditMode = ({
   }
 
   const UiComponentToRender = isImageTheme ? ImageChoice : ContentEditor
+
+  /**
+   * Stores the settings from the image editor of an option in the question
+   * attributes.
+   *
+   * @param {string} code the option code
+   * @param {Object} imageSettings the settings from ImageEditor's onSave,
+   *   including the alt text
+   * @returns {void}
+   */
+  const handleImageOptionSave = (code, { altText, ...settings }) => {
+    const codeKey = isSingleChoiceTheme ? 'code' : 'title'
+    const changes = getImageOptionSaveChanges(question.attributes, {
+      code,
+      settings,
+      altText,
+      language,
+      codes: _children.map((child) => child[codeKey]),
+    })
+    addToBuffer(
+      createBufferOperation(question.qid).questionAttribute().update(changes)
+    )
+    handleUpdate({
+      attributes: applyAttributeChanges(question.attributes, changes),
+    })
+  }
+
+  /**
+   * Returns the image settings props of an option for ImageChoice.
+   *
+   * @param {string} code the option code
+   * @returns {Object} the props, empty for themes without images
+   */
+  const getImageOptionProps = (code) =>
+    isImageTheme
+      ? {
+          imageSettings: getImageOptionSettings(question.attributes, code),
+          imageAltText: getImageOptionAltText(
+            question.attributes,
+            code,
+            language
+          ),
+          onImageSettingsSave: (imageSettings) =>
+            handleImageOptionSave(code, imageSettings),
+        }
+      : {}
 
   return (
     <div>
@@ -169,6 +254,9 @@ export const OptionQuestionEditMode = ({
                         hasTempId(child[childrenInfo.idKey]) && !isTitleFocused
                       }
                       showToolbar={true}
+                      {...getImageOptionProps(
+                        isSingleChoiceTheme ? child.code : child.title
+                      )}
                     />
                   </div>
                   {showAssessmentValue && (

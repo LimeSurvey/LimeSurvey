@@ -1,168 +1,436 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useId, useMemo, useRef, useState } from 'react'
+import { format } from 'util'
 import AvatarEditor from 'react-avatar-editor'
 import { Direction } from 'react-range'
 import Modal from 'react-bootstrap/Modal'
-import { Button } from 'react-bootstrap'
+import { Alert, Button, Form } from 'react-bootstrap'
+
 import { InputRange } from '../InputRange/InputRange'
-import { getAndGenerateImageStyles } from 'helpers/surveyImage'
+import {
+  ALT_TEXT_MAX_LENGTH,
+  FRAME_MIN_SIZE,
+  ZOOM_MAX,
+  ZOOM_MIN,
+  formatFileSize,
+  getDefaultFrameSize,
+  getFrameRatio,
+  getVisibleSourceSize,
+  resizeFrame,
+} from './imageEditorUtils'
+
+// Size of the preview area in the modal. Larger frames are shown scaled down.
+const PREVIEW_MAX_WIDTH = 360
+const PREVIEW_MAX_HEIGHT = 300
+// Dimmed area around the frame, showing the parts of the image that are cut off.
+const PREVIEW_BORDER = 24
 
 /**
- * Image editor component for editing images
- * This is not used at the moment, as it still needs some love (design and functionality)
- * @param showModal
- * @param onClose
- * @param imageObject
- * @param onChange
- * @returns {Element}
- * @constructor
+ * Returns the settings the editor starts with: The saved ones, or defaults
+ * based on the image size.
+ *
+ * @param {Object|null} settings settings saved before, see ImageEditor's onSave
+ * @param {{width: number, height: number}|null} naturalSize size of the image
+ *   file, or null while it is loading
+ * @returns {{width: number, height: number, ratio: number|null,
+ *   keepRatio: boolean, zoom: number, positionX: number, positionY: number,
+ *   radius: number}} the start settings. ratio is the frame ratio that "Keep
+ *   aspect ratio" keeps, it is not saved.
  */
-export const ImageEditor = ({ showModal, onClose, imageObject, onChange }) => {
-  const editor = useRef(null)
-  const [selectedFile, setSelectedFile] = useState(null)
-  const [isLoading, setIsLoading] = useState(false)
+const getInitialSettings = (settings, naturalSize) => {
+  const defaultFrame = getDefaultFrameSize(
+    naturalSize?.width,
+    naturalSize?.height
+  )
+  const frame = {
+    width: settings?.width ?? defaultFrame.width,
+    height: settings?.height ?? defaultFrame.height,
+  }
+  return {
+    ...frame,
+    ratio: getFrameRatio(frame),
+    keepRatio: settings?.keepRatio ?? true,
+    zoom: settings?.zoom || ZOOM_MIN,
+    positionX: settings?.positionX ?? 0.5,
+    positionY: settings?.positionY ?? 0.5,
+    radius: settings?.radius || 0,
+  }
+}
 
+/**
+ * Number input for one side of the frame. Valid numbers are applied while
+ * typing. An empty or invalid field shows the current value again when it
+ * loses focus.
+ *
+ * @param {string} id id of the input, linked to its label
+ * @param {string} label visible label
+ * @param {number} value current size in px
+ * @param {Function} onCommit called with the entered size as integer
+ * @param {Object} inputRef ref to the input element, e.g. to focus it
+ * @returns {JSX.Element} the labelled input
+ */
+const FrameSizeInput = ({ id, label, value, onCommit, inputRef }) => {
+  const [draft, setDraft] = useState(null)
+
+  const handleChange = (event) => {
+    setDraft(event.target.value)
+    const number = parseInt(event.target.value, 10)
+    if (number >= FRAME_MIN_SIZE) {
+      onCommit(number)
+    }
+  }
+
+  const handleBlur = () => {
+    const number = parseInt(draft, 10)
+    if (!isNaN(number)) {
+      onCommit(number)
+    }
+    setDraft(null)
+  }
+
+  return (
+    <div className="flex-grow-1">
+      <Form.Label htmlFor={id}>{label}</Form.Label>
+      <Form.Control
+        id={id}
+        ref={inputRef}
+        type="number"
+        min={FRAME_MIN_SIZE}
+        step={1}
+        value={draft ?? value}
+        onChange={handleChange}
+        onBlur={handleBlur}
+      />
+    </div>
+  )
+}
+
+/**
+ * Modal to set how an image is displayed: Frame size, position and zoom of the
+ * image inside the frame, corner radius and alt text. The image file itself is
+ * not changed: The settings are applied with CSS when the image is shown.
+ *
+ * @param {boolean} showModal whether the modal is shown
+ * @param {Function} onClose called when the modal is closed without saving
+ * @param {Function} onSave called with the settings ({width, height, keepRatio,
+ *   zoom, positionX, positionY, radius, crop, altText}) when saving
+ * @param {string} imageUrl URL of the image
+ * @param {Object} settings settings saved before, see onSave
+ * @param {string} altText alt text saved before
+ * @param {boolean} showAltText whether to show the alt text field
+ * @returns {JSX.Element|null} the modal, or null without an image
+ */
+export const ImageEditor = ({
+  showModal,
+  onClose = () => {},
+  onSave = () => {},
+  imageUrl,
+  settings = null,
+  altText = '',
+  showAltText = true,
+}) => {
+  const editorRef = useRef(null)
+  const widthInputRef = useRef(null)
+  const idPrefix = useId()
+  const [naturalSize, setNaturalSize] = useState(null)
+  const [fileSize, setFileSize] = useState(null)
+  const [current, setCurrent] = useState(() =>
+    getInitialSettings(settings, null)
+  )
+  const [currentAltText, setCurrentAltText] = useState(altText)
+  // Sliders keep their own state: Remount them when the values are reset.
+  const [resetCount, setResetCount] = useState(0)
+
+  // Load the image to know its original size.
   useEffect(() => {
-    if (imageObject) {
-      setSelectedFile({ ...imageObject })
+    if (!imageUrl) {
+      return
     }
-  }, [imageObject])
-
-  const handleZoomChange = (value) =>
-    setSelectedFile((prev) => ({ ...prev, imageZoom: value[0] }))
-
-  const handleRotateChange = (value) =>
-    setSelectedFile((prev) => ({ ...prev, imageRotate: value[0] }))
-
-  const handleRadiusChange = (value) =>
-    setSelectedFile((prev) => ({ ...prev, imageRadius: value[0] }))
-
-  // Track position changes when user drags the image
-  const handlePositionChange = (position) => {
-    setSelectedFile((prev) => ({
-      ...prev,
-      imagePositionX: position.x,
-      imagePositionY: position.y,
-    }))
-  }
-
-  // Save just the transformation settings without processing the image
-  const handleSave = () => {
-    setIsLoading(true)
-    try {
-      // Create updated image object with new transformation settings
-      const updatedImageObject = {
-        ...imageObject,
-        imageZoom: selectedFile.imageZoom || 1,
-        imageRotate: selectedFile.imageRotate || 0,
-        imageRadius: selectedFile.imageRadius || 0,
-        imagePositionX:
-          parseFloat(selectedFile.imagePositionX.toFixed(2)) || 0.5,
-        imagePositionY:
-          parseFloat(selectedFile.imagePositionY.toFixed(2)) || 0.5,
+    let cancelled = false
+    const image = new Image()
+    image.onload = () => {
+      if (cancelled) {
+        return
       }
-
-      // Generate and add the CSS styles
-      updatedImageObject.imageStyles =
-        getAndGenerateImageStyles(updatedImageObject)
-
-      // Pass back the updated image object with styles
-      onChange(updatedImageObject)
-      onClose()
-    } catch (error) {
-      // console.error('Error saving image settings:', error);
-      alert(t('Unable to save image settings. Please try again.'))
-    } finally {
-      setIsLoading(false)
+      const size = { width: image.naturalWidth, height: image.naturalHeight }
+      setNaturalSize(size)
+      if (settings?.width == null || settings?.height == null) {
+        const frame = getDefaultFrameSize(size.width, size.height)
+        setCurrent((prev) => ({
+          ...prev,
+          ...frame,
+          ratio: getFrameRatio(frame),
+        }))
+      }
     }
+    image.src = imageUrl
+
+    fetch(imageUrl, { method: 'HEAD' })
+      .then((response) => {
+        const length = parseInt(response.headers.get('content-length'), 10)
+        if (!cancelled && !isNaN(length)) {
+          setFileSize(length)
+        }
+      })
+      .catch(() => {})
+
+    return () => {
+      cancelled = true
+    }
+  }, [imageUrl])
+
+  // Start from the saved values each time the modal is opened.
+  useEffect(() => {
+    if (showModal) {
+      setCurrent(getInitialSettings(settings, naturalSize))
+      setCurrentAltText(altText)
+      setResetCount((count) => count + 1)
+    }
+  }, [showModal])
+
+  const maxRadius = Math.floor(Math.min(current.width, current.height) / 2)
+  const radius = Math.min(current.radius, maxRadius)
+
+  const previewScale = Math.min(
+    1,
+    PREVIEW_MAX_WIDTH / current.width,
+    PREVIEW_MAX_HEIGHT / current.height
+  )
+
+  const visibleSource = useMemo(
+    () =>
+      naturalSize
+        ? getVisibleSourceSize(
+            naturalSize.width,
+            naturalSize.height,
+            current,
+            current.zoom
+          )
+        : null,
+    [naturalSize, current.width, current.height, current.zoom]
+  )
+  const isBlurry =
+    visibleSource &&
+    (visibleSource.width < current.width ||
+      visibleSource.height < current.height)
+
+  const update = (changes) => setCurrent((prev) => ({ ...prev, ...changes }))
+
+  // With "Keep aspect ratio", the other side follows the stored ratio. It isn't
+  // recalculated from the rounded sizes, which would change it while typing.
+  // Without it, the ratio follows the frame, ready for when the box is checked.
+  const handleFrameChange = (side, value) => {
+    if (current.keepRatio) {
+      update(resizeFrame(current, side, value, current.ratio))
+      return
+    }
+    const frame = resizeFrame(current, side, value)
+    update({ ...frame, ratio: getFrameRatio(frame) })
   }
 
-  if (!selectedFile) return <></>
+  const handleReset = () => {
+    setCurrent({
+      ...getInitialSettings(null, naturalSize),
+    })
+    setResetCount((count) => count + 1)
+  }
+
+  const handleSave = () => {
+    const rect = editorRef.current?.getCroppingRect()
+    const round = (value) => Math.round(value * 10000) / 10000
+    // eslint-disable-next-line no-unused-vars
+    const { ratio, ...frameSettings } = current
+    onSave({
+      ...frameSettings,
+      radius,
+      positionX: round(current.positionX),
+      positionY: round(current.positionY),
+      crop: rect
+        ? {
+            x: round(rect.x),
+            y: round(rect.y),
+            width: round(rect.width),
+            height: round(rect.height),
+          }
+        : null,
+      altText: currentAltText.trim(),
+    })
+  }
+
+  if (!imageUrl) {
+    return null
+  }
+
+  const titleId = `${idPrefix}-title`
 
   return (
     <Modal
       show={showModal}
       onHide={onClose}
+      onEntered={() => widthInputRef.current?.focus()}
       size="lg"
-      aria-labelledby="image-editor-title"
+      aria-labelledby={titleId}
+      className="image-editor-modal"
     >
       <Modal.Header closeButton>
-        <Modal.Title id="image-editor-title">{t('Edit image')}</Modal.Title>
+        <Modal.Title id={titleId}>{t('Edit image')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <div className="d-flex gap-4">
-          <div className="w-50">
-            <AvatarEditor
-              ref={editor}
-              border={50}
-              color={[255, 255, 255, 0.6]}
-              image={selectedFile.imagePreviewUrl}
-              scale={selectedFile.imageZoom || 1}
-              rotate={selectedFile.imageRotate || 0}
-              borderRadius={selectedFile.imageRadius || 0}
-              position={{
-                x: selectedFile.imagePositionX || 0.5,
-                y: selectedFile.imagePositionY || 0.5,
+          <div
+            className="image-editor-preview d-flex flex-column align-items-center flex-shrink-0"
+            style={{ width: PREVIEW_MAX_WIDTH + 2 * PREVIEW_BORDER }}
+          >
+            <div
+              className="d-flex align-items-center justify-content-center"
+              style={{
+                width: PREVIEW_MAX_WIDTH + 2 * PREVIEW_BORDER,
+                height: PREVIEW_MAX_HEIGHT + 2 * PREVIEW_BORDER,
               }}
-              onPositionChange={handlePositionChange}
-              width={300}
-              height={300}
-            />
+            >
+              <AvatarEditor
+                ref={editorRef}
+                image={imageUrl}
+                width={Math.round(current.width * previewScale)}
+                height={Math.round(current.height * previewScale)}
+                border={PREVIEW_BORDER}
+                color={[255, 255, 255, 0.6]}
+                scale={current.zoom}
+                rotate={0}
+                borderRadius={radius * previewScale}
+                position={{ x: current.positionX, y: current.positionY }}
+                onPositionChange={({ x, y }) =>
+                  update({ positionX: x, positionY: y })
+                }
+              />
+            </div>
+            <p className="text-muted small mt-2 mb-0">
+              {t('Drag the image to move it inside the frame.')}
+            </p>
+            {naturalSize && (
+              <p
+                className="text-muted small mb-0"
+                data-testid="image-editor-source-info"
+              >
+                {`${naturalSize.width}×${naturalSize.height}px`}
+                {fileSize !== null && ` · ${formatFileSize(fileSize)}`}
+              </p>
+            )}
+            <div aria-live="polite" className="w-100">
+              {isBlurry && (
+                <Alert
+                  variant="warning"
+                  className="small mt-2 mb-0 p-2"
+                  data-testid="image-editor-blurry-warning"
+                >
+                  {format(
+                    t(
+                      'The visible part of the image (%s×%spx) is smaller than the frame (%s×%spx). The image will look blurry.'
+                    ),
+                    visibleSource.width,
+                    visibleSource.height,
+                    current.width,
+                    current.height
+                  )}
+                </Alert>
+              )}
+            </div>
           </div>
-          <div className="w-50">
+          <div
+            className="flex-grow-1 d-flex flex-column gap-3"
+            style={{ minWidth: 0 }}
+          >
             <div>
-              <InputRange
-                onChange={(value) => handleZoomChange(value)}
-                labelText={t('Zoom')}
-                min={1}
-                step={0.1}
-                max={4}
-                direction={Direction.Right}
-                value={selectedFile.imageZoom || 1}
-              />
+              <div className="d-flex gap-2">
+                <FrameSizeInput
+                  id={`${idPrefix}-width`}
+                  label={t('Width (px)')}
+                  value={current.width}
+                  onCommit={(value) => handleFrameChange('width', value)}
+                  inputRef={widthInputRef}
+                />
+                <FrameSizeInput
+                  id={`${idPrefix}-height`}
+                  label={t('Height (px)')}
+                  value={current.height}
+                  onCommit={(value) => handleFrameChange('height', value)}
+                />
+              </div>
+              <Form.Check
+                id={`${idPrefix}-keep-ratio`}
+                className="mt-2 ps-0 d-flex align-items-center justify-content-start gap-2"
+              >
+                <Form.Check.Input
+                  type="checkbox"
+                  className="m-0"
+                  checked={current.keepRatio}
+                  onChange={(event) =>
+                    update({ keepRatio: event.target.checked })
+                  }
+                />
+                <Form.Check.Label>{t('Keep aspect ratio')}</Form.Check.Label>
+              </Form.Check>
             </div>
-            <div>
-              <InputRange
-                onChange={(value) => handleRotateChange(value)}
-                labelText={t('Rotate')}
-                min={0}
-                step={1}
-                max={360}
-                direction={Direction.Right}
-                value={selectedFile.imageRotate || 0}
-              />
-            </div>
-            <div>
-              <InputRange
-                onChange={handleRadiusChange}
-                labelText={t('Radius')}
-                min={0}
-                step={1}
-                max={100}
-                direction={Direction.Right}
-                value={selectedFile.imageRadius || 0}
-              />
-            </div>
+            <InputRange
+              key={`zoom-${resetCount}`}
+              id={`${idPrefix}-zoom`}
+              onChange={(value) => update({ zoom: value[0] })}
+              labelText={t('Zoom')}
+              min={ZOOM_MIN}
+              step={0.1}
+              max={ZOOM_MAX}
+              direction={Direction.Right}
+              value={current.zoom}
+            />
+            <InputRange
+              key={`radius-${resetCount}-${maxRadius}`}
+              id={`${idPrefix}-radius`}
+              onChange={(value) => update({ radius: value[0] })}
+              labelText={t('Corner radius')}
+              min={0}
+              step={1}
+              // The slider needs max > min, also for a frame of 0 or 1px.
+              max={Math.max(1, maxRadius)}
+              direction={Direction.Right}
+              value={radius}
+            />
+            {showAltText && (
+              <div>
+                <Form.Label htmlFor={`${idPrefix}-alt`}>
+                  {t('Alt text')}
+                </Form.Label>
+                <Form.Control
+                  id={`${idPrefix}-alt`}
+                  as="textarea"
+                  rows={3}
+                  maxLength={ALT_TEXT_MAX_LENGTH}
+                  placeholder={t('Image description')}
+                  value={currentAltText}
+                  onChange={(event) => setCurrentAltText(event.target.value)}
+                  aria-describedby={`${idPrefix}-alt-count`}
+                />
+                <div
+                  id={`${idPrefix}-alt-count`}
+                  className="text-muted small text-end"
+                >
+                  {currentAltText.length}/{ALT_TEXT_MAX_LENGTH}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={onClose}>
-          {t('Close')}
+      <Modal.Footer className="justify-content-between">
+        <Button variant="outline-secondary" onClick={handleReset}>
+          {t('Reset')}
         </Button>
-        <Button variant="primary" onClick={handleSave} disabled={isLoading}>
-          {isLoading ? (
-            <>
-              <span
-                className="spinner-border spinner-border-sm me-2"
-                role="status"
-                aria-hidden="true"
-              ></span>
-              {t('Saving...')}
-            </>
-          ) : (
-            t('Save changes')
-          )}
-        </Button>
+        <div className="d-flex gap-2">
+          <Button variant="secondary" onClick={onClose}>
+            {t('Cancel')}
+          </Button>
+          <Button variant="primary" onClick={handleSave}>
+            {t('Save')}
+          </Button>
+        </div>
       </Modal.Footer>
     </Modal>
   )

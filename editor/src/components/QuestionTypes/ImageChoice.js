@@ -17,6 +17,30 @@ import {
 } from 'components/UIComponents'
 import { useFileService } from 'hooks'
 
+/**
+ * One option of the image select themes: The image with its upload drop zone,
+ * and in edit mode the image editor modal.
+ *
+ * @param {number|string} id ID of the answer or subquestion
+ * @param {string} idPrefix prefix for element IDs ('a' answers, 'q' subquestions)
+ * @param {number} index position of the option
+ * @param {string} code the option code, used as image name
+ * @param {string} inputType 'checkbox' or 'radio'
+ * @param {boolean} isFocused whether the question is in edit mode
+ * @param {Function} update called with the new image path, or the checked state
+ * @param {string} value the image path
+ * @param {boolean} isNoAnswer whether this is the "No answer" option
+ * @param {string} groupName name of the radio group
+ * @param {boolean|null} checked controlled checked state
+ * @param {boolean} defaultChecked initial checked state
+ * @param {Object} errors errors of the option
+ * @param {Function} setErrors called with the updated errors
+ * @param {Object|null} imageSettings saved image editor settings of the option
+ * @param {string} imageAltText saved alt text in the current language
+ * @param {Function} onImageSettingsSave called with the image editor settings,
+ *   including the alt text, when they are saved
+ * @returns {JSX.Element} the option
+ */
 export const ImageChoice = ({
   id,
   idPrefix,
@@ -32,6 +56,9 @@ export const ImageChoice = ({
   defaultChecked = false,
   errors,
   setErrors = () => {},
+  imageSettings = null,
+  imageAltText = '',
+  onImageSettingsSave = () => {},
 }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [showImageEditor, setShowImageEditor] = useState(false)
@@ -59,11 +86,10 @@ export const ImageChoice = ({
 
   const showLoader = (isFocused || isLoading) && !initLoading
 
-  // Memoized: The image editor resets its state whenever this object changes.
-  const imageEditorObject = useMemo(
-    () => ({ imagePreviewUrl: previewUrl }),
-    [previewUrl]
-  )
+  const handleImageEditorSave = (settings) => {
+    onImageSettingsSave(settings)
+    setShowImageEditor(false)
+  }
 
   useEffect(() => {
     setPreviewUrl(value ? process.env.REACT_APP_SITE_URL + value : null)
@@ -146,9 +172,10 @@ export const ImageChoice = ({
           <ImageEditor
             showModal={showImageEditor}
             onClose={() => setShowImageEditor(false)}
-            // The settings are not stored yet.
-            onChange={() => {}}
-            imageObject={imageEditorObject}
+            onSave={handleImageEditorSave}
+            imageUrl={previewUrl}
+            settings={imageSettings}
+            altText={imageAltText}
           />
         )}
         {isFocused && initLoading && !isNoAnswer && (

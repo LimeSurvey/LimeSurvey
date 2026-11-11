@@ -19,9 +19,12 @@ export const InputRange = ({
   reverseMinMax = false,
   thumbType = THUMB_TYPES.CIRCLE,
   customUnicode = '',
+  // When set, the label is linked to the number input.
+  id,
 }) => {
   const [values, setValues] = useState([value >= min ? value : min])
-  const [callOnChange, setCallOnChange] = useState(false)
+  // Don't report the initial value as a change.
+  const isInitialValue = React.useRef(true)
   const [horizontal, setHorizontal] = useState(
     direction === Direction.Right || direction === Direction.Left
   )
@@ -32,13 +35,11 @@ export const InputRange = ({
   }
 
   useEffect(() => {
-    setCallOnChange(false)
-    setTimeout(() => {
-      if (callOnChange) {
-        onChange(values)
-      }
-      setCallOnChange(true)
-    }, 0)
+    if (isInitialValue.current) {
+      isInitialValue.current = false
+      return
+    }
+    onChange(values)
   }, [values[0]])
 
   useEffect(() => {
@@ -59,7 +60,7 @@ export const InputRange = ({
 
   return (
     <div className="input-range" data-testid="input-range">
-      {labelText && <Form.Label>{labelText}</Form.Label>}
+      {labelText && <Form.Label htmlFor={id}>{labelText}</Form.Label>}
       <div className="d-flex align-items-center w-100">
         <div
           className={classNames('flex-grow-1 position-relative', {
@@ -126,6 +127,7 @@ export const InputRange = ({
               <div
                 className={`input-range-handle type-${thumbType} ${isDragged ? 'active' : ''}`}
                 {...props}
+                aria-label={labelText}
                 key={props.key}
                 type={props.type}
                 style={getThumbStyle(props.style, isDragged, thumbType)}
@@ -175,6 +177,7 @@ export const InputRange = ({
               }}
               min={min}
               max={max}
+              id={id}
               inputRef={inputRef}
             />
           </div>
