@@ -12,7 +12,7 @@ import {
   wrapTerm,
 } from './ChartsUtils'
 
-const OtherAnswerCell = ({ row, onViewOther }) => (
+const OtherAnswerCell = ({ row, onViewOther, isOtherOpen, otherListId }) => (
   <TooltipContainer
     tip={
       <>
@@ -25,15 +25,22 @@ const OtherAnswerCell = ({ row, onViewOther }) => (
       type="button"
       className="responses-statistics-table-other"
       onClick={onViewOther}
+      aria-expanded={isOtherOpen}
+      aria-controls={isOtherOpen ? otherListId : undefined}
     >
       {row.title}
     </button>
   </TooltipContainer>
 )
 
-const AnswerCell = ({ row, isImage, onViewOther }) =>
+const AnswerCell = ({ row, isImage, onViewOther, isOtherOpen, otherListId }) =>
   onViewOther && hasOtherAnswers(row) ? (
-    <OtherAnswerCell row={row} onViewOther={onViewOther} />
+    <OtherAnswerCell
+      row={row}
+      onViewOther={onViewOther}
+      isOtherOpen={isOtherOpen}
+      otherListId={otherListId}
+    />
   ) : shouldRenderImage(isImage, row) ? (
     <img
       src={row.title}
@@ -44,6 +51,10 @@ const AnswerCell = ({ row, isImage, onViewOther }) =>
     row.title
   )
 
+const AnswerColumnCell = ({ row, column }) => (
+  <AnswerCell row={row.original} {...column.columnDef.meta} />
+)
+
 const withRowIds = (rows) =>
   rows.map((row, index) => ({ ...row, id: row.key ?? `row-${index}` }))
 
@@ -52,6 +63,8 @@ export const StatisticsTable = ({
   isImage = false,
   valueType = VALUE_TYPE.PERCENTAGE,
   onViewOther,
+  isOtherOpen = false,
+  otherListId,
 }) => {
   const isRanking = data.some((item) => Array.isArray(item?.ranks))
   const isSegmented = data.some((item) => Array.isArray(item?.segments))
@@ -209,13 +222,8 @@ export const StatisticsTable = ({
     {
       id: 'answer',
       header: t('Answer'),
-      cell: ({ row }) => (
-        <AnswerCell
-          row={row.original}
-          isImage={isImage}
-          onViewOther={onViewOther}
-        />
-      ),
+      cell: AnswerColumnCell,
+      meta: { isImage, onViewOther, isOtherOpen, otherListId },
     },
     {
       id: 'responses',

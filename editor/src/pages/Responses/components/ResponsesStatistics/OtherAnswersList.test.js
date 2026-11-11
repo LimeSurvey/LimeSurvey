@@ -71,6 +71,7 @@ describe('OtherAnswersList', () => {
 
     await showMore()
     expect(getRowTexts()).toHaveLength(55)
+    expect(screen.getByText('Answer 6').closest('li')).toHaveFocus()
 
     await showMore()
     expect(getRowTexts()).toHaveLength(60)

@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useId, useRef, useState } from 'react'
 import classNames from 'classnames'
 import { Card } from 'react-bootstrap'
 
@@ -250,6 +250,8 @@ const VIEWS = [
       filters,
       filterSet,
       onViewOther,
+      isOtherOpen,
+      otherListId,
     }) =>
       isFileUpload ? (
         <FileUploadTable
@@ -276,6 +278,8 @@ const VIEWS = [
           isImage={isImage}
           valueType={valueType}
           onViewOther={onViewOther}
+          isOtherOpen={isOtherOpen}
+          otherListId={otherListId}
         />
       ),
   },
@@ -383,6 +387,7 @@ export const ChartRendererV2 = ({
   const availableGraphTypes = getStatisticsGraphsForType(question?.type)
   const [commentsAnswer, setCommentsAnswer] = useState(null)
   const [isOtherAnswersOpen, setIsOtherAnswersOpen] = useState(false)
+  const otherListId = useId()
   const otherItem = (data ?? []).find(hasOtherAnswers)
   const cardRef = useRef(null)
   const isImage = isImageTheme(question?.themeName)
@@ -473,6 +478,8 @@ export const ChartRendererV2 = ({
     onViewOther: otherItem
       ? () => setIsOtherAnswersOpen((isOpen) => !isOpen)
       : undefined,
+    isOtherOpen: isOtherAnswersOpen,
+    otherListId,
   }
 
   const storageKey = getStorageKey(surveyId, chartId, index)
@@ -564,6 +571,7 @@ export const ChartRendererV2 = ({
             {isOtherAnswersOpen &&
               OTHER_ANSWERS_VIEWS.includes(activeView?.value) && (
                 <OtherAnswersList
+                  id={otherListId}
                   item={otherItem}
                   onViewComments={
                     hasComments ? () => setCommentsAnswer('other') : undefined

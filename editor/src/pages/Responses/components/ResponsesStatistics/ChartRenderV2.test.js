@@ -308,6 +308,24 @@ describe('ChartRendererV2 "other" answers', () => {
     expect(getOtherAnswers()).not.toBeInTheDocument()
   })
 
+  test('the table "Other" button keeps focus and announces the open list', async () => {
+    await renderCard({ data: dataWithOther })
+    await userEvent.click(
+      screen.getByTestId('toggleButton-chart-view-0-option-2')
+    )
+    const button = document.querySelector('.responses-statistics-table-other')
+    expect(button).toHaveAttribute('aria-expanded', 'false')
+
+    await userEvent.click(button)
+
+    expect(document.querySelector('.responses-statistics-table-other')).toBe(
+      button
+    )
+    expect(button).toHaveFocus()
+    expect(button).toHaveAttribute('aria-expanded', 'true')
+    expect(button.getAttribute('aria-controls')).toBe(getOtherAnswers().id)
+  })
+
   test('"Other" is not clickable without its answers', async () => {
     await renderCard({
       data: [...data, { key: 'other', title: 'Other', value: 3 }],
