@@ -18,6 +18,56 @@
     object-fit: fill;
 }
 
+/*
+ * Options with their own settings from the image editor (see rows/answer_image.twig). They are passed as CSS
+ * variables and only used when the survey theme supports them: it sets the class image-option-settings on the
+ * question container (fruity_twentythree and the themes extending it).
+ * Without it, the frame doesn't take part in the layout and the image keeps the size and fit settings above.
+ */
+.imageselect-answers .imageselect-frame {
+    display: contents;
+}
+
+/*
+ * With support: the frame has the saved width and aspect ratio, but never gets wider than the answer.
+ * The cropped part of the image fills it; the size and fit settings above don't apply.
+ */
+.image-option-settings .imageselect-answers .imageselect-frame {
+    display: block;
+    position: relative;
+    overflow: hidden;
+    width: var(--imageselect-frame-width);
+    max-width: 100%;
+    aspect-ratio: var(--imageselect-frame-ratio);
+    border-radius: var(--imageselect-frame-radius);
+}
+
+.image-option-settings .imageselect-answers .imageselect-frame .imageselect-img {
+    position: absolute;
+    max-width: none;
+    width: var(--imageselect-crop-width);
+    height: var(--imageselect-crop-height);
+    left: var(--imageselect-crop-left);
+    top: var(--imageselect-crop-top);
+    object-fit: fill;
+}
+
+/* Settings without crop: the image covers the frame at the saved position */
+.image-option-settings .imageselect-answers .imageselect-frame-cover .imageselect-img {
+    position: static;
+    max-width: 100%;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: var(--imageselect-crop-position);
+}
+
+/* The label around the frame is an inline-block: without a limit, a wide frame would make it wider than the answer */
+.image-option-settings .imageselect-answers .imageselect-label:has(.imageselect-frame) {
+    box-sizing: border-box;
+    max-width: 100%;
+}
+
 /* Display columns: don't split an answer across two columns */
 .imageselect-answers > li {
     break-inside: avoid;

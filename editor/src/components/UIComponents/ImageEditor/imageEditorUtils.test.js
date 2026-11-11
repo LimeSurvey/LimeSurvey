@@ -1,5 +1,7 @@
 import {
+  applyImageSettings,
   formatFileSize,
+  getCropRect,
   getDefaultFrameSize,
   getFrameRatio,
   getVisibleSourceSize,
@@ -74,6 +76,55 @@ describe('imageEditorUtils', () => {
     expect(
       getVisibleSourceSize(400, 300, { width: 0, height: 300 }, 1)
     ).toBeNull()
+  })
+
+  test('Crop is the part of the image shown in the frame', () => {
+    // A 4:3 image in a square frame: The middle 3/4 of the width.
+    expect(getCropRect(400, 300, { width: 100, height: 100 })).toEqual({
+      x: 0.125,
+      y: 0,
+      width: 0.75,
+      height: 1,
+    })
+    // Zoom 2 at the top left corner: The position is kept inside the image.
+    expect(getCropRect(400, 300, { width: 100, height: 100 }, 2, 0, 0)).toEqual(
+      { x: 0, y: 0, width: 0.375, height: 0.5 }
+    )
+    expect(getCropRect(400, 300, { width: 0, height: 100 })).toBeNull()
+  })
+
+  test('Apply to all keeps the own position and crops for the own size', () => {
+    const settings = {
+      width: 200,
+      height: 100,
+      keepRatio: true,
+      zoom: 2,
+      positionX: 0.1,
+      positionY: 0.1,
+      radius: 10,
+      crop: { x: 0, y: 0, width: 0.5, height: 0.5 },
+    }
+
+    expect(
+      applyImageSettings(settings, { width: 100, height: 100 }, null)
+    ).toEqual({
+      width: 200,
+      height: 100,
+      keepRatio: true,
+      zoom: 2,
+      positionX: 0.5,
+      positionY: 0.5,
+      radius: 10,
+      // A square image in a 2:1 frame at zoom 2: Half the width, a quarter of the height.
+      crop: { x: 0.25, y: 0.375, width: 0.5, height: 0.25 },
+    })
+    expect(
+      applyImageSettings(
+        settings,
+        { width: 100, height: 100 },
+        { positionX: 0.8, positionY: 0.3 }
+      )
+    ).toEqual(expect.objectContaining({ positionX: 0.8, positionY: 0.3 }))
   })
 
   test('File sizes are formatted with a unit', () => {

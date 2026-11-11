@@ -1,7 +1,12 @@
 <!-- Question {{ aQuestion.qid }} -->
 {% set hasImage = aQuestion.image['image_path'] is defined and aQuestion.image['image_path'] %}
+{#
+    image-option-settings: this theme (and the themes extending it) shows the images of image select options with
+    their own settings from the image editor of the new editor (frame, crop, corner radius), see the image select
+    question themes. Other survey themes don't set it and show these images with the question's image settings.
+#}
 
-<div role="group" aria-labelledby="question-text-container-{{ aQuestion.SGQ }}" {{ aQuestion.attributes }} class="row {{ aQuestion.class }} {{ aQuestion.input_error_class }} {{ aSurveyInfo.class.questioncontainer }}{% if aSurveyInfo.options.deselectsinglechoice == 'on' %} deselect-singlechoice{% endif %}" {{ aSurveyInfo.attr.questioncontainer }}>
+<div role="group" aria-labelledby="question-text-container-{{ aQuestion.SGQ }}" {{ aQuestion.attributes }} class="row {{ aQuestion.class }} {{ aQuestion.input_error_class }} {{ aSurveyInfo.class.questioncontainer }}{% if aSurveyInfo.options.deselectsinglechoice == 'on' %} deselect-singlechoice{% endif %} image-option-settings" {{ aSurveyInfo.attr.questioncontainer }}>
     {% if hasImage %}
         {{ include('./subviews/survey/question_subviews/question_image_container.twig') }}
     {% else %}

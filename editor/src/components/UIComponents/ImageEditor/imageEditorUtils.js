@@ -99,6 +99,108 @@ export const getVisibleSourceSize = (
 }
 
 /**
+ * Rounds a relative setting (position, crop) to 4 decimals, enough for images
+ * of up to 10000px, to keep the stored JSON short.
+ *
+ * @param {number} value the value
+ * @returns {number} the rounded value
+ */
+export const roundSetting = (value) => Math.round(value * 10000) / 10000
+
+/**
+ * Returns the part of an image that is shown in a frame, like the image editor
+ * does: The image covers the frame, is zoomed and moved to a position.
+ *
+ * @param {number} naturalWidth width of the image file in px
+ * @param {number} naturalHeight height of the image file in px
+ * @param {{width: number, height: number}} frame the frame size in px
+ * @param {number} zoom zoom factor, 1 = the image just covers the frame
+ * @param {number} positionX horizontal center of the shown part, 0 to 1
+ * @param {number} positionY vertical center of the shown part, 0 to 1
+ * @returns {{x: number, y: number, width: number, height: number}|null} the
+ *   shown part relative to the image size, or null without sizes
+ */
+export const getCropRect = (
+  naturalWidth,
+  naturalHeight,
+  frame,
+  zoom = ZOOM_MIN,
+  positionX = 0.5,
+  positionY = 0.5
+) => {
+  const frameRatio = getFrameRatio(frame)
+  if (!frameRatio || !naturalWidth || !naturalHeight || !zoom) {
+    return null
+  }
+  const imageRatio = naturalWidth / naturalHeight
+  const width = Math.min(1, frameRatio / imageRatio) / zoom
+  const height = Math.min(1, imageRatio / frameRatio) / zoom
+  const clamp = (value, max) => Math.max(0, Math.min(value, max))
+  return {
+    x: clamp(positionX - width / 2, 1 - width),
+    y: clamp(positionY - height / 2, 1 - height),
+    width,
+    height,
+  }
+}
+
+/**
+ * Applies the frame, zoom and corner radius of an edited image to another
+ * image ("Apply to all"). The other image keeps its own position, and its crop
+ * is calculated for its own size.
+ *
+ * @param {Object} settings the settings of the edited image, see ImageEditor's onSave
+ * @param {{width: number, height: number}} naturalSize size of the other image file
+ * @param {Object|null} ownSettings the settings the other image had before
+ * @returns {Object} the settings for the other image
+ */
+export const applyImageSettings = (settings, naturalSize, ownSettings) => {
+  const positionX = ownSettings?.positionX ?? 0.5
+  const positionY = ownSettings?.positionY ?? 0.5
+  const crop = getCropRect(
+    naturalSize.width,
+    naturalSize.height,
+    settings,
+    settings.zoom,
+    positionX,
+    positionY
+  )
+  return {
+    width: settings.width,
+    height: settings.height,
+    keepRatio: settings.keepRatio,
+    zoom: settings.zoom,
+    positionX,
+    positionY,
+    radius: settings.radius,
+    crop: crop
+      ? {
+          x: roundSetting(crop.x),
+          y: roundSetting(crop.y),
+          width: roundSetting(crop.width),
+          height: roundSetting(crop.height),
+        }
+      : null,
+  }
+}
+
+/**
+ * Loads an image to get its size.
+ *
+ * @param {string} url URL of the image
+ * @returns {Promise<{width: number, height: number}|null>} the size, or null
+ *   when the image can't be loaded
+ */
+export const loadImageSize = (url) =>
+  new Promise((resolve) => {
+    const image = new Image()
+    image.onload = () =>
+      resolve({ width: image.naturalWidth, height: image.naturalHeight })
+    image.onerror = () => resolve(null)
+    image.src = url
+  })
+
+/**
  * Formats a file size in bytes for display, e.g. "5.8 MB".
  *
  * @param {number} bytes the file size in bytes

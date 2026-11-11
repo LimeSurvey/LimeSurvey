@@ -76,6 +76,28 @@ describe('imageOptionSettings', () => {
     })
   })
 
+  test('Saving with "Apply to all" stores the settings of the other options too', () => {
+    const changes = getImageOptionSaveChanges(attributes, {
+      code: 'A1',
+      settings: settingsA1,
+      altText: 'Lime',
+      language: 'en',
+      codes: ['A1', 'A2', 'A3'],
+      otherSettings: { A2: settingsA1, A3: settingsA1 },
+    })
+
+    expect(parse(changes, IMAGE_OPTION_SETTINGS_ATTRIBUTE, '')).toEqual({
+      A1: settingsA1,
+      A2: settingsA1,
+      A3: settingsA1,
+    })
+    // The alt texts of the other options stay.
+    expect(parse(changes, IMAGE_OPTION_ALT_ATTRIBUTE, 'en')).toEqual({
+      A1: 'Lime',
+      A2: 'Lemon',
+    })
+  })
+
   test('Saving without alt text removes it, and works without saved values', () => {
     const changes = getImageOptionSaveChanges(
       {},

@@ -3,8 +3,12 @@ import { format } from 'util'
 import AvatarEditor from 'react-avatar-editor'
 import { Direction } from 'react-range'
 import Modal from 'react-bootstrap/Modal'
-import { Alert, Button, Form } from 'react-bootstrap'
+import { Button, Form } from 'react-bootstrap'
+import { ExclamationTriangleFill } from 'react-bootstrap-icons'
+import classNames from 'classnames'
 
+import { AspectRatioIcon } from 'components/icons'
+import { TooltipContainer } from 'components/TooltipContainer/TooltipContainer'
 import { InputRange } from '../InputRange/InputRange'
 import {
   ALT_TEXT_MAX_LENGTH,
@@ -16,11 +20,12 @@ import {
   getFrameRatio,
   getVisibleSourceSize,
   resizeFrame,
+  roundSetting,
 } from './imageEditorUtils'
 
 // Size of the preview area in the modal. Larger frames are shown scaled down.
-const PREVIEW_MAX_WIDTH = 360
-const PREVIEW_MAX_HEIGHT = 300
+const PREVIEW_MAX_WIDTH = 440
+const PREVIEW_MAX_HEIGHT = 420
 // Dimmed area around the frame, showing the parts of the image that are cut off.
 const PREVIEW_BORDER = 24
 
@@ -66,9 +71,18 @@ const getInitialSettings = (settings, naturalSize) => {
  * @param {number} value current size in px
  * @param {Function} onCommit called with the entered size as integer
  * @param {Object} inputRef ref to the input element, e.g. to focus it
+ * @param {boolean} isLocked whether the aspect ratio is locked, shown with a
+ *   highlighted border
  * @returns {JSX.Element} the labelled input
  */
-const FrameSizeInput = ({ id, label, value, onCommit, inputRef }) => {
+const FrameSizeInput = ({
+  id,
+  label,
+  value,
+  onCommit,
+  inputRef,
+  isLocked = false,
+}) => {
   const [draft, setDraft] = useState(null)
 
   const handleChange = (event) => {
@@ -93,6 +107,7 @@ const FrameSizeInput = ({ id, label, value, onCommit, inputRef }) => {
       <Form.Control
         id={id}
         ref={inputRef}
+        className={classNames({ 'image-editor-ratio-locked': isLocked })}
         type="number"
         min={FRAME_MIN_SIZE}
         step={1}
@@ -117,6 +132,8 @@ const FrameSizeInput = ({ id, label, value, onCommit, inputRef }) => {
  * @param {Object} settings settings saved before, see onSave
  * @param {string} altText alt text saved before
  * @param {boolean} showAltText whether to show the alt text field
+ * @param {boolean} showApplyToAll whether to show "Apply to all images of this
+ *   question". onSave then also gets applyToAll.
  * @returns {JSX.Element|null} the modal, or null without an image
  */
 export const ImageEditor = ({
@@ -127,6 +144,7 @@ export const ImageEditor = ({
   settings = null,
   altText = '',
   showAltText = true,
+  showApplyToAll = false,
 }) => {
   const editorRef = useRef(null)
   const widthInputRef = useRef(null)
@@ -137,6 +155,8 @@ export const ImageEditor = ({
     getInitialSettings(settings, null)
   )
   const [currentAltText, setCurrentAltText] = useState(altText)
+  // Not saved: Each save with the box checked applies the settings again.
+  const [applyToAll, setApplyToAll] = useState(false)
   // Sliders keep their own state: Remount them when the values are reset.
   const [resetCount, setResetCount] = useState(0)
 
@@ -183,6 +203,7 @@ export const ImageEditor = ({
     if (showModal) {
       setCurrent(getInitialSettings(settings, naturalSize))
       setCurrentAltText(altText)
+      setApplyToAll(false)
       setResetCount((count) => count + 1)
     }
   }, [showModal])
@@ -236,7 +257,7 @@ export const ImageEditor = ({
 
   const handleSave = () => {
     const rect = editorRef.current?.getCroppingRect()
-    const round = (value) => Math.round(value * 10000) / 10000
+    const round = roundSetting
     // eslint-disable-next-line no-unused-vars
     const { ratio, ...frameSettings } = current
     onSave({
@@ -253,6 +274,7 @@ export const ImageEditor = ({
           }
         : null,
       altText: currentAltText.trim(),
+      ...(showApplyToAll ? { applyToAll } : {}),
     })
   }
 
@@ -261,15 +283,19 @@ export const ImageEditor = ({
   }
 
   const titleId = `${idPrefix}-title`
+  // The button names what a click does, like its tooltip.
+  const ratioLockLabel = current.keepRatio
+    ? t('Unlock aspect ratio')
+    : t('Lock aspect ratio')
 
   return (
     <Modal
       show={showModal}
       onHide={onClose}
       onEntered={() => widthInputRef.current?.focus()}
-      size="lg"
       aria-labelledby={titleId}
       className="image-editor-modal"
+      dialogClassName="image-editor-dialog"
     >
       <Modal.Header closeButton>
         <Modal.Title id={titleId}>{t('Edit image')}</Modal.Title>
@@ -303,35 +329,48 @@ export const ImageEditor = ({
                 }
               />
             </div>
-            <p className="text-muted small mt-2 mb-0">
-              {t('Drag the image to move it inside the frame.')}
-            </p>
             {naturalSize && (
               <p
-                className="text-muted small mb-0"
+                className="text-muted small mt-2 mb-0"
                 data-testid="image-editor-source-info"
               >
                 {`${naturalSize.width}×${naturalSize.height}px`}
                 {fileSize !== null && ` · ${formatFileSize(fileSize)}`}
               </p>
             )}
-            <div aria-live="polite" className="w-100">
+            {/* The hint and the warning keep their space while hidden, so
+                the modal doesn't change its height. */}
+            <p
+              className={classNames('text-muted small mb-0', {
+                invisible: current.zoom <= ZOOM_MIN,
+              })}
+              aria-hidden={current.zoom <= ZOOM_MIN}
+              data-testid="image-editor-drag-hint"
+            >
+              {t('Drag the image to move it inside the frame.')}
+            </p>
+            <div aria-live="polite" className="w-100 image-editor-warning-slot">
               {isBlurry && (
-                <Alert
-                  variant="warning"
-                  className="small mt-2 mb-0 p-2"
+                <div
+                  className="image-editor-warning d-flex align-items-center gap-2 small mt-3"
                   data-testid="image-editor-blurry-warning"
                 >
-                  {format(
-                    t(
-                      'The visible part of the image (%s×%spx) is smaller than the frame (%s×%spx). The image will look blurry.'
-                    ),
-                    visibleSource.width,
-                    visibleSource.height,
-                    current.width,
-                    current.height
-                  )}
-                </Alert>
+                  <ExclamationTriangleFill
+                    className="flex-shrink-0"
+                    aria-hidden="true"
+                  />
+                  <span>
+                    {format(
+                      t(
+                        'The visible part of the image (%s×%spx) is smaller than the frame (%s×%spx). The image will look blurry.'
+                      ),
+                      visibleSource.width,
+                      visibleSource.height,
+                      current.width,
+                      current.height
+                    )}
+                  </span>
+                </div>
               )}
             </div>
           </div>
@@ -339,36 +378,36 @@ export const ImageEditor = ({
             className="flex-grow-1 d-flex flex-column gap-3"
             style={{ minWidth: 0 }}
           >
-            <div>
-              <div className="d-flex gap-2">
-                <FrameSizeInput
-                  id={`${idPrefix}-width`}
-                  label={t('Width (px)')}
-                  value={current.width}
-                  onCommit={(value) => handleFrameChange('width', value)}
-                  inputRef={widthInputRef}
-                />
-                <FrameSizeInput
-                  id={`${idPrefix}-height`}
-                  label={t('Height (px)')}
-                  value={current.height}
-                  onCommit={(value) => handleFrameChange('height', value)}
-                />
-              </div>
-              <Form.Check
-                id={`${idPrefix}-keep-ratio`}
-                className="mt-2 ps-0 d-flex align-items-center justify-content-start gap-2"
-              >
-                <Form.Check.Input
-                  type="checkbox"
-                  className="m-0"
-                  checked={current.keepRatio}
-                  onChange={(event) =>
-                    update({ keepRatio: event.target.checked })
-                  }
-                />
-                <Form.Check.Label>{t('Keep aspect ratio')}</Form.Check.Label>
-              </Form.Check>
+            <div className="d-flex gap-3 align-items-end">
+              <FrameSizeInput
+                id={`${idPrefix}-width`}
+                label={t('Width (px)')}
+                value={current.width}
+                onCommit={(value) => handleFrameChange('width', value)}
+                inputRef={widthInputRef}
+                isLocked={current.keepRatio}
+              />
+              <FrameSizeInput
+                id={`${idPrefix}-height`}
+                label={t('Height (px)')}
+                value={current.height}
+                onCommit={(value) => handleFrameChange('height', value)}
+                isLocked={current.keepRatio}
+              />
+              <TooltipContainer tip={ratioLockLabel} placement="right">
+                <Button
+                  variant="link"
+                  className={classNames('image-editor-ratio-lock', {
+                    locked: current.keepRatio,
+                  })}
+                  aria-label={ratioLockLabel}
+                  aria-pressed={current.keepRatio}
+                  data-testid="image-editor-ratio-lock"
+                  onClick={() => update({ keepRatio: !current.keepRatio })}
+                >
+                  <AspectRatioIcon />
+                </Button>
+              </TooltipContainer>
             </div>
             <InputRange
               key={`zoom-${resetCount}`}
@@ -415,6 +454,22 @@ export const ImageEditor = ({
                   {currentAltText.length}/{ALT_TEXT_MAX_LENGTH}
                 </div>
               </div>
+            )}
+            {showApplyToAll && (
+              <Form.Check
+                id={`${idPrefix}-apply-to-all`}
+                className="ps-0 d-flex align-items-center justify-content-start gap-2"
+              >
+                <Form.Check.Input
+                  type="checkbox"
+                  className="m-0"
+                  checked={applyToAll}
+                  onChange={(event) => setApplyToAll(event.target.checked)}
+                />
+                <Form.Check.Label>
+                  {t('Apply to all images of this question')}
+                </Form.Check.Label>
+              </Form.Check>
             )}
           </div>
         </div>

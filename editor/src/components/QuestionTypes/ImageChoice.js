@@ -190,6 +190,7 @@ export const ImageChoice = ({
             imageUrl={previewUrl}
             settings={imageSettings}
             altText={imageAltText}
+            showApplyToAll={true}
           />
         )}
         {isFocused && initLoading && !isNoAnswer && (

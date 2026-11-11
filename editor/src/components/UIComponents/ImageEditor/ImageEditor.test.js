@@ -69,7 +69,14 @@ describe('ImageEditor', () => {
 
     expect(screen.getByRole('dialog')).toHaveAccessibleName('Edit image')
     expect(screen.getByLabelText('Height (px)')).toHaveValue(300)
-    expect(screen.getByLabelText('Keep aspect ratio')).toBeChecked()
+    expect(screen.getByTestId('image-editor-ratio-lock')).toHaveAttribute(
+      'aria-pressed',
+      'true'
+    )
+    // Zoom 1: There is nothing to drag yet, the hint only keeps its space.
+    expect(screen.getByTestId('image-editor-drag-hint')).toHaveClass(
+      'invisible'
+    )
     expect(screen.getByLabelText('Alt text')).toHaveValue('')
     await waitFor(() =>
       expect(screen.getByTestId('image-editor-source-info')).toHaveTextContent(
@@ -94,7 +101,7 @@ describe('ImageEditor', () => {
   test('Changes only one side without aspect ratio and warns about blur', async () => {
     await renderEditor()
 
-    await userEvent.click(screen.getByLabelText('Keep aspect ratio'))
+    await userEvent.click(screen.getByTestId('image-editor-ratio-lock'))
     const height = screen.getByLabelText('Height (px)')
     await userEvent.clear(height)
     await userEvent.type(height, '400')
@@ -111,7 +118,7 @@ describe('ImageEditor', () => {
   test('Accepts any frame size from 0 without upper limit', async () => {
     await renderEditor()
 
-    await userEvent.click(screen.getByLabelText('Keep aspect ratio'))
+    await userEvent.click(screen.getByTestId('image-editor-ratio-lock'))
     const width = screen.getByLabelText('Width (px)')
     await userEvent.clear(width)
     await userEvent.type(width, '5000')
@@ -124,10 +131,10 @@ describe('ImageEditor', () => {
     expect(width).toHaveValue(0)
   })
 
-  test('Keeps the ratio of the width and height entered before the box was checked', async () => {
+  test('Keeps the ratio of the width and height entered before the ratio was locked', async () => {
     await renderEditor()
 
-    const keepRatio = screen.getByLabelText('Keep aspect ratio')
+    const keepRatio = screen.getByTestId('image-editor-ratio-lock')
     await userEvent.click(keepRatio)
     const width = screen.getByLabelText('Width (px)')
     const height = screen.getByLabelText('Height (px)')
@@ -136,7 +143,7 @@ describe('ImageEditor', () => {
     expect(height).toHaveValue(300)
 
     await userEvent.click(keepRatio)
-    // Checking the box changes nothing.
+    // Locking changes nothing.
     expect(width).toHaveValue(250)
     expect(height).toHaveValue(300)
 
@@ -149,6 +156,51 @@ describe('ImageEditor', () => {
     await userEvent.clear(width)
     await userEvent.type(width, '500')
     expect(height).toHaveValue(600)
+  })
+
+  test('The ratio lock button names what a click does', async () => {
+    await renderEditor()
+
+    const lock = screen.getByRole('button', { name: 'Unlock aspect ratio' })
+    expect(screen.getByLabelText('Width (px)')).toHaveClass(
+      'image-editor-ratio-locked'
+    )
+    await userEvent.click(lock)
+
+    expect(lock).toHaveAccessibleName('Lock aspect ratio')
+    expect(lock).toHaveAttribute('aria-pressed', 'false')
+    expect(screen.getByLabelText('Width (px)')).not.toHaveClass(
+      'image-editor-ratio-locked'
+    )
+  })
+
+  test('Apply to all is only offered when asked for and is passed on save', async () => {
+    const onSave = await renderEditor()
+    expect(
+      screen.queryByLabelText('Apply to all images of this question')
+    ).not.toBeInTheDocument()
+
+    const onSaveAll = jest.fn()
+    await renderWithProviders(
+      <ImageEditor
+        showModal={true}
+        imageUrl={IMAGE_URL}
+        onSave={onSaveAll}
+        showApplyToAll={true}
+      />
+    )
+    const [checkbox] = screen.getAllByLabelText(
+      'Apply to all images of this question'
+    )
+    expect(checkbox).not.toBeChecked()
+    await userEvent.click(checkbox)
+    const saveButtons = screen.getAllByRole('button', { name: 'Save' })
+    await userEvent.click(saveButtons[saveButtons.length - 1])
+
+    expect(onSaveAll).toHaveBeenCalledWith(
+      expect.objectContaining({ applyToAll: true })
+    )
+    expect(onSave).not.toHaveBeenCalled()
   })
 
   test('Saves frame, position, crop and alt text', async () => {
@@ -185,7 +237,13 @@ describe('ImageEditor', () => {
       altText: 'Lime',
     })
 
-    expect(screen.getByLabelText('Keep aspect ratio')).not.toBeChecked()
+    expect(screen.getByTestId('image-editor-ratio-lock')).toHaveAttribute(
+      'aria-pressed',
+      'false'
+    )
+    expect(screen.getByTestId('image-editor-drag-hint')).not.toHaveClass(
+      'invisible'
+    )
     expect(screen.getByTestId('avatar-editor')).toHaveAttribute(
       'data-scale',
       '2'

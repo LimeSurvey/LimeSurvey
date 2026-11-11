@@ -149,7 +149,8 @@ export const getImageOptionAltText = (attributes, code, language) =>
 
 /**
  * Builds the attribute changes for saving the image settings and alt text of
- * one option. Options that no longer exist are removed on the way.
+ * one option, and optionally the settings of other options ("Apply to all").
+ * Options that no longer exist are removed on the way.
  *
  * @param {Object} attributes the question attributes
  * @param {Object} params
@@ -158,17 +159,20 @@ export const getImageOptionAltText = (attributes, code, language) =>
  * @param {string} params.altText the alt text in the given language
  * @param {string} params.language the language of the alt text
  * @param {string[]} params.codes the codes of all existing options
+ * @param {Object} params.otherSettings image settings of other options keyed
+ *   by code, their alt texts stay as they are
  * @returns {Object} the changed values keyed by attribute and language
  */
 export const getImageOptionSaveChanges = (
   attributes,
-  { code, settings, altText, language, codes }
+  { code, settings, altText, language, codes, otherSettings = {} }
 ) => {
   const settingsMap = pruneOptionMap(
     getOptionMaps(attributes, IMAGE_OPTION_SETTINGS_ATTRIBUTE)[NO_LANGUAGE] ??
       {},
     codes
   )
+  Object.assign(settingsMap, otherSettings)
   settingsMap[code] = settings
 
   const altMaps = getOptionMaps(attributes, IMAGE_OPTION_ALT_ATTRIBUTE)

@@ -1,0 +1,56 @@
+{#
+/**
+ * Image of a subquestion.
+ *
+ * Options edited with the image editor of the new editor have their own settings, stored by option code in the
+ * question attributes image_option_settings (frame size, crop, corner radius) and image_option_alt (alt text).
+ * They are only applied when the survey theme supports them: it marks the question container with the class
+ * image-option-settings (fruity_twentythree and the themes extending it). Then they override the image settings
+ * of the question (fix width, fix height, keep aspect ratio, crop or resize): the image is shown in a frame with
+ * the saved aspect ratio and width (never wider than the answer), showing the saved crop of the image, with the
+ * saved corner radius. In other survey themes, and for options without settings, the image is shown with the
+ * image settings of the question, see answer.twig. The alt text is used in all survey themes.
+ *
+ * The settings are only passed as CSS variables, see assets/css/imageselect.css. Only numbers from the settings
+ * are written into the style attribute; other values count as not set.
+ *
+ * @var src         the image URL
+ * @var optionCode  the subquestion code (title)
+ */
+#}
+{% set imageNumber = '/^[0-9]+(\\.[0-9]+)?$/' %}
+{% set imageSettings = json_decode(questionAttributes.image_option_settings|default(''))[optionCode]|default({}) %}
+{% set imageAlt = json_decode(questionAttributes.image_option_alt|default(''))[optionCode]|default('') %}
+{% set frameWidth = imageSettings.width|default('') %}
+{% set frameHeight = imageSettings.height|default('') %}
+{% set hasFrame = frameWidth matches imageNumber and frameHeight matches imageNumber and frameWidth > 0 and frameHeight > 0 %}
+{% if hasFrame %}
+    {% set radius = imageSettings.radius|default(0) %}
+    {% set radius = (radius matches imageNumber) ? radius : 0 %}
+    {% set crop = imageSettings.crop|default({}) %}
+    {% set hasCrop = crop.x|default('') matches imageNumber and crop.y|default('') matches imageNumber
+        and crop.width|default('') matches imageNumber and crop.height|default('') matches imageNumber
+        and crop.width > 0 and crop.height > 0 %}
+    {% set frameStyle = '--imageselect-frame-width: ' ~ frameWidth ~ 'px;'
+        ~ ' --imageselect-frame-ratio: ' ~ frameWidth ~ ' / ' ~ frameHeight ~ ';'
+        ~ ' --imageselect-frame-radius: ' ~ (100 * radius / frameWidth)|round(4) ~ '% / ' ~ (100 * radius / frameHeight)|round(4) ~ '%;' %}
+    {% if hasCrop %}
+        {# The cropped part of the image fills the frame exactly #}
+        {% set frameStyle = frameStyle
+            ~ ' --imageselect-crop-width: ' ~ (100 / crop.width)|round(4) ~ '%;'
+            ~ ' --imageselect-crop-height: ' ~ (100 / crop.height)|round(4) ~ '%;'
+            ~ ' --imageselect-crop-left: ' ~ (-100 * crop.x / crop.width)|round(4) ~ '%;'
+            ~ ' --imageselect-crop-top: ' ~ (-100 * crop.y / crop.height)|round(4) ~ '%;' %}
+    {% else %}
+        {% set positionX = imageSettings.positionX|default(0.5) %}
+        {% set positionY = imageSettings.positionY|default(0.5) %}
+        {% set frameStyle = frameStyle
+            ~ ' --imageselect-crop-position: ' ~ ((positionX matches imageNumber) ? (positionX * 100)|round(4) : 50) ~ '% '
+            ~ ((positionY matches imageNumber) ? (positionY * 100)|round(4) : 50) ~ '%;' %}
+    {% endif %}
+    <span class="imageselect-frame{% if not hasCrop %} imageselect-frame-cover{% endif %}" style="{{ frameStyle }}">
+        <img class="imageselect-img fixed-width unforce-height" src="{{ src|escape('html_attr') }}"{% if imageAlt %} alt="{{ imageAlt|escape('html_attr') }}"{% endif %}/>
+    </span>
+{% else %}
+    <img class="imageselect-img fixed-width unforce-height" src="{{ src|escape('html_attr') }}"{% if imageAlt %} alt="{{ imageAlt|escape('html_attr') }}"{% endif %}/>
+{% endif %}

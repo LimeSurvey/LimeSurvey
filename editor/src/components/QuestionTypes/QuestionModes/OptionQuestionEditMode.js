@@ -25,6 +25,10 @@ import { singleChoiceThemes } from '../singleChoiceThemes'
 import { SubquestionCodeInput } from '../subquestionCodeComponents'
 import { AssessmentValueInput } from '../AssessmentValueInput'
 import {
+  applyImageSettings,
+  loadImageSize,
+} from 'components/UIComponents/ImageEditor/imageEditorUtils'
+import {
   applyAttributeChanges,
   getImageOptionAltText,
   getImageOptionSaveChanges,
@@ -102,23 +106,70 @@ export const OptionQuestionEditMode = ({
 
   const UiComponentToRender = isImageTheme ? ImageChoice : ContentEditor
 
+  const codeKey = isSingleChoiceTheme ? 'code' : 'title'
+
+  /**
+   * Returns the settings of the other options for "Apply to all": Each option
+   * with an image gets the frame, zoom and corner radius, with the crop
+   * calculated for its own image.
+   *
+   * @param {string} code the code of the edited option
+   * @param {Object} settings the settings of the edited option
+   * @returns {Promise<Object>} the settings keyed by option code
+   */
+  const getSettingsForOtherOptions = async (code, settings) => {
+    const otherSettings = {}
+    await Promise.all(
+      _children
+        .filter((child) => child[codeKey] !== code)
+        .map(async (child) => {
+          const imagePath = L10ns({
+            prop: childrenInfo.titleKey,
+            language,
+            l10ns: child.l10ns,
+          })
+          // Options without a valid image path have nothing to apply to.
+          if (!imagePath || /(<([^>]+)>)/i.test(imagePath)) {
+            return
+          }
+          const naturalSize = await loadImageSize(
+            (process.env.REACT_APP_SITE_URL || '') + imagePath
+          )
+          if (naturalSize) {
+            otherSettings[child[codeKey]] = applyImageSettings(
+              settings,
+              naturalSize,
+              getImageOptionSettings(question.attributes, child[codeKey])
+            )
+          }
+        })
+    )
+    return otherSettings
+  }
+
   /**
    * Stores the settings from the image editor of an option in the question
-   * attributes.
+   * attributes, with "Apply to all" also for the other options.
    *
    * @param {string} code the option code
    * @param {Object} imageSettings the settings from ImageEditor's onSave,
-   *   including the alt text
-   * @returns {void}
+   *   including the alt text and applyToAll
+   * @returns {Promise<void>}
    */
-  const handleImageOptionSave = (code, { altText, ...settings }) => {
-    const codeKey = isSingleChoiceTheme ? 'code' : 'title'
+  const handleImageOptionSave = async (
+    code,
+    { altText, applyToAll = false, ...settings }
+  ) => {
+    const otherSettings = applyToAll
+      ? await getSettingsForOtherOptions(code, settings)
+      : {}
     const changes = getImageOptionSaveChanges(question.attributes, {
       code,
       settings,
       altText,
       language,
       codes: _children.map((child) => child[codeKey]),
+      otherSettings,
     })
     addToBuffer(
       createBufferOperation(question.qid).questionAttribute().update(changes)

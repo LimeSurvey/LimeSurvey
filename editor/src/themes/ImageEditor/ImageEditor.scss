@@ -1,0 +1,44 @@
+// Image editor modal, see components/UIComponents/ImageEditor/ImageEditor.js
+.image-editor-dialog {
+  max-width: min(960px, calc(100vw - 2rem));
+}
+
+.image-editor-modal {
+  // Locked aspect ratio: Width and height are highlighted, like the lock button.
+  .image-editor-ratio-locked,
+  .image-editor-ratio-locked:focus {
+    border-color: $grape;
+  }
+
+  .image-editor-ratio-lock {
+    // Same height as the inputs, so the icon lines up with them.
+    display: flex;
+    align-items: center;
+    height: calc(1.5em + 0.75rem + 2px);
+    padding: 0 0.25rem;
+    color: $g-700;
+
+    &.locked,
+    &:hover {
+      color: $grape;
+    }
+  }
+
+  // Room for the warning box, also while there is no warning: Its margin
+  // (mt-3) plus its minimum height, which fits two lines of text.
+  $warning-min-height: 4.75rem;
+
+  .image-editor-warning-slot {
+    min-height: calc(1rem + #{$warning-min-height});
+  }
+
+  .image-editor-warning {
+    min-height: $warning-min-height;
+    padding: 0.75rem 1rem;
+    border: 1px solid $g-900;
+    border-left: 8px solid $warning;
+    border-radius: 4px;
+    color: $g-900;
+    background: $white;
+  }
+}
