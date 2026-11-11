@@ -58,6 +58,27 @@ describe('OtherAnswersList', () => {
     ).not.toBeInTheDocument()
   })
 
+  test('"Show more" reveals 50 more rows per click', async () => {
+    const otherAnswers = Array.from({ length: 60 }, (_, index) => ({
+      text: `Answer ${index + 1}`,
+      count: 1,
+    }))
+    render(
+      <OtherAnswersList item={{ key: 'other', value: 60, otherAnswers }} />
+    )
+    const showMore = () =>
+      userEvent.click(screen.getByRole('button', { name: 'Show more' }))
+
+    await showMore()
+    expect(getRowTexts()).toHaveLength(55)
+
+    await showMore()
+    expect(getRowTexts()).toHaveLength(60)
+    expect(
+      screen.queryByRole('button', { name: 'Show more' })
+    ).not.toBeInTheDocument()
+  })
+
   test('has no "Show more" or "No text" row when not needed', () => {
     render(
       <OtherAnswersList

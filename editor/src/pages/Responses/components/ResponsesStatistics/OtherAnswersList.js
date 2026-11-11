@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { format } from 'util'
 
 export const VISIBLE_OTHER_ANSWERS = 5
+export const OTHER_ANSWERS_PAGE = 50
 
 const formatResponses = (count) =>
   count === 1
@@ -12,7 +13,7 @@ const formatResponses = (count) =>
  * The free-text answers of the "other" option, most frequent first.
  */
 export const OtherAnswersList = ({ item, onViewComments }) => {
-  const [showAll, setShowAll] = useState(false)
+  const [visibleCount, setVisibleCount] = useState(VISIBLE_OTHER_ANSWERS)
   const answers = item?.otherAnswers ?? []
   const noTextCount =
     (item?.value ?? 0) - answers.reduce((sum, { count }) => sum + count, 0)
@@ -20,7 +21,7 @@ export const OtherAnswersList = ({ item, onViewComments }) => {
     ...answers,
     ...(noTextCount > 0 ? [{ text: '', count: noTextCount }] : []),
   ].sort((a, b) => b.count - a.count)
-  const visibleRows = showAll ? rows : rows.slice(0, VISIBLE_OTHER_ANSWERS)
+  const visibleRows = rows.slice(0, visibleCount)
 
   return (
     <div className="responses-statistics-other-answers">
@@ -48,12 +49,14 @@ export const OtherAnswersList = ({ item, onViewComments }) => {
           </li>
         ))}
       </ul>
-      {!showAll && rows.length > VISIBLE_OTHER_ANSWERS && (
+      {visibleCount < rows.length && (
         <div className="responses-statistics-comments-more">
           <button
             type="button"
             className="responses-statistics-comments-more-btn"
-            onClick={() => setShowAll(true)}
+            onClick={() =>
+              setVisibleCount((count) => count + OTHER_ANSWERS_PAGE)
+            }
           >
             {t('Show more')}
           </button>
