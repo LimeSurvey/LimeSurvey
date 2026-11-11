@@ -144,7 +144,8 @@ class Statistics implements CommandInterface
             QuestionColumnMap::fromQuestionFieldMap(
                 createFieldMap($survey, 'full', false, false, $this->statisticsService->getLanguage())
             ),
-            ParticipantResolver::fromSurvey($survey)
+            ParticipantResolver::fromSurvey($survey),
+            (string) $survey->oOptions->encryption_method
         );
 
         return $resolver->resolve($filterSet);

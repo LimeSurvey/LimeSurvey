@@ -158,6 +158,75 @@ $googleAnalyticsStyleOptions = array(
 
         <div class="col-12 col-lg-6">
 
+            <!-- Encryption method -->
+            <?php
+            $optionsEncryptionMethod = array(
+                'B' => gT('Basic', 'unescaped'),
+                'H' => gT('Hardened', 'unescaped'),
+            );
+            if ($bShowInherited) {
+                $optionsEncryptionMethod['I'] = $oSurveyOptions->encryption_method . " ᴵ";
+            }
+            /* Hardened can not be used if a quota uses an encrypted question */
+            $hardenedDisabledByQuota = $oSurvey instanceof Survey
+                && $oSurvey->encryption_method !== 'H'
+                && $oSurvey->hasQuotaOnEncryptedQuestion();
+            if ($hardenedDisabledByQuota) {
+                unset($optionsEncryptionMethod['H']);
+                /* Inherit is hardened too : not available (except if current value) */
+                if ($oSurvey->encryption_method !== 'I' && $oSurvey->getResolvedEncryptionMethod('I') === 'H') {
+                    unset($optionsEncryptionMethod['I']);
+                }
+            }
+            ?>
+            <div class="ex-form-group mb-3">
+                <label class="form-label" id='encryption_method-label' for='encryption_method'><?php eT("Encryption method:"); ?></label>
+                <div>
+                    <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                        'name'          => 'encryption_method',
+                        'htmlOptions'   => [
+                            'aria-labelledby' => 'encryption_method-label',
+                            'aria-describedby' => 'encryption_method-help',
+                            /* Responses are encrypted with this method : can not be changed when survey is active */
+                            'disabled' => $oSurvey instanceof Survey && $oSurvey->isActive,
+                        ],
+                        'checkedOption' => $oSurvey->encryption_method,
+                        'selectOptions' => $optionsEncryptionMethod,
+                    ]); ?>
+                </div>
+                <div class="form-text"  id='encryption_method-help'>
+                    <?php eT("Basic encryption allows filtering and searching in browse responses, as well as statistics generation. Hardened encryption uses stronger cryptographic methods, but encrypted questions and attributes cannot be filtered or searched, and statistics are limited to unencrypted questions."); ?>
+                    <?php eT("With hardened encryption, encrypted questions cannot be used in quotas."); ?>
+                    <?php if ($oSurvey instanceof Survey && $oSurvey->isActive) {
+                        eT("The encryption method cannot be changed while the survey is active.");
+                    } ?>
+                </div>
+                <?php if ($hardenedDisabledByQuota) {
+                    $hardenedAlertText = gT("Hardened encryption is not available: at least one quota uses an encrypted question.");
+                    if ($oSurvey->encryption_method === 'B' && $oSurvey->getResolvedEncryptionMethod('I') === 'H') {
+                        /* Forced to Basic instead of inherited hardened */
+                        $hardenedAlertText .= " " . gT("Basic encryption is used instead of the inherited hardened encryption.");
+                    }
+                    App()->getController()->widget('ext.AlertWidget.AlertWidget', [
+                        'text' => $hardenedAlertText,
+                        'type' => 'warning',
+                        'htmlOptions' => ['class' => 'mt-2'],
+                    ]);
+                } ?>
+                <?php
+                /* Existing participants are not re-encrypted : survey not active with a participant list, or group / global settings (inherited by surveys) */
+                if (!($oSurvey instanceof Survey) || (!$oSurvey->isActive && $oSurvey->hasTokensTable)) {
+                    App()->getController()->widget('ext.AlertWidget.AlertWidget', [
+                        'text' => $oSurvey instanceof Survey
+                            ? gT("Changing the encryption method does not re-encrypt the existing survey participants. After a change, export and re-import the survey participant list, otherwise filters and duplicate checks can miss participants encrypted with the previous method.")
+                            : gT("Changing the encryption method does not re-encrypt the existing survey participants of the surveys inheriting it. After a change, export and re-import the survey participant list of these surveys, otherwise filters and duplicate checks can miss participants encrypted with the previous method."),
+                        'type' => 'warning',
+                        'htmlOptions' => ['class' => 'mt-2'],
+                    ]);
+                }
+                ?>
+            </div>
+
             <!-- Enable assessment mode -->
             <div class="ex-form-group mb-3">
                 <label id="assessments-label" class="form-label"><?php eT("Enable assessment mode:"); ?></label>

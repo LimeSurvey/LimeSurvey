@@ -23,6 +23,7 @@ use LimeSurvey\Exceptions\CPDBException;
  * @property string $firstname
  * @property string $lastname
  * @property string $email
+ * @property string $duplicatefinder
  * @property string $language
  * @property string $blacklisted
  * @property integer $owner_uid
@@ -87,6 +88,7 @@ class Participant extends LSActiveRecord
             array('language', 'length', 'max' => 40),
             array('firstname, lastname, language', 'LSYii_Validators'),
             array('email', 'length', 'max' => 254),
+            array('duplicatefinder', 'length', 'max' => 64),
             array('email', 'LSYii_FilterValidator', 'filter' => 'trim', 'skipOnEmpty' => true, 'except' => 'search'),
             array('email', 'LSYii_EmailIDNAValidator', 'allowEmpty' => true, 'allowMultiple' => true, 'except' => 'search'),
             array('blacklisted', 'length', 'max' => 1),
@@ -106,6 +108,43 @@ class Participant extends LSActiveRecord
             'participantAttributes' => array(self::HAS_MANY, 'ParticipantAttribute', 'participant_id'),
             'shares' => array(self::HAS_MANY, 'ParticipantShare', 'participant_id')
         );
+    }
+
+    /** @inheritdoc */
+    public function scopes()
+    {
+        /* array[] scopes by DBVersion */
+        $scopes = [
+            'invaliduplicatefinder' => [] // in 722
+        ];
+
+        if (App()->getConfig('DBVersion') < 722) {
+            return $scopes;
+        }
+        /* Invalid duplicate finder */
+        $bits = intval(App()->getConfig('CPDB_duplicatefinder_bits', 128));
+        $expectedLength = intval($bits / 4);
+        switch (App()->db->getDriverName()) {
+            case 'mysql':
+                $lengthFunction = 'CHAR_LENGTH';
+                break;
+            case 'pgsql':
+                $lengthFunction = 'LENGTH';
+                break;
+            case 'sqlsrv':
+            case 'dblib':
+            case 'mssql':
+                $lengthFunction = 'LEN';
+                break;
+            default:
+                throw new CException('SGBD non supporté : ' . App()->db->getDriverName());
+        }
+        $scopes['invaliduplicatefinder'] = [
+            'condition' => "{$lengthFunction}(duplicatefinder) <> :expectedLength",
+            'params' => [':expectedLength' => $expectedLength]
+        ];
+
+        return $scopes;
     }
 
     // @todo do we need this?
@@ -361,6 +400,8 @@ class Participant extends LSActiveRecord
      */
     public function getColumns()
     {
+        $hardenedCrypt = App()->getConfig('CPDB_encryption_method', 'S') == "H";
+        $encryptedAttributesColums = $this->getencryptedAttributesColums();
         $cols = [
             [
                 "name"              => 'checkbox',
@@ -373,12 +414,15 @@ class Participant extends LSActiveRecord
             ],
             [
                 "name" => 'lastname',
+                "filter" => $hardenedCrypt && in_array('lastname', $encryptedAttributesColums) ? false : null,
             ],
             [
                 "name" => 'firstname',
+                "filter" => $hardenedCrypt && in_array('firstname', $encryptedAttributesColums) ? false : null,
             ],
             [
                 "name" => 'email',
+                "filter" => $hardenedCrypt && in_array('email', $encryptedAttributesColums) ? false : null,
             ],
             [
                 "name"   => 'language',
@@ -424,8 +468,10 @@ class Participant extends LSActiveRecord
                 "header" => CHtml::encode($attribute['localizedname']) . $this->setEncryptedAttributeLabel(0, 'Participant', $attribute['defaultname']),
                 "type"   => "longtext",
             ];
-            //textbox
-            if ($attribute['attribute_type'] === "TB") {
+            if ($hardenedCrypt && $attribute['encrypted'] == "Y") {
+                $col_array["filter"] = false;
+            } elseif ($attribute['attribute_type'] === "TB") {
+                //textbox
                 $col_array["filter"] = TbHtml::textField("extraAttribute[" . $name . "]", $extraAttributeParams[$name]);
             } elseif ($attribute['attribute_type'] === "DD") {
                 //dropdown
@@ -436,7 +482,6 @@ class Participant extends LSActiveRecord
                 foreach ($options_raw as $option) {
                     $options_array[$option['value']] = $option['value'];
                 }
-
                 $col_array["filter"] = TbHtml::dropDownList("extraAttribute[" . $name . "]", $extraAttributeParams[$name], $options_array);
             } elseif ($attribute['attribute_type'] === "DP") {
                 //date -> still a text field, too many errors with the gridview
@@ -462,17 +507,14 @@ class Participant extends LSActiveRecord
      */
     public function search()
     {
-        $encryptedAttributes = $this->getParticipantsEncryptionOptions();
-        $encryptedAttributesColums = isset($encryptedAttributes) && isset($encryptedAttributes['columns'])
-            ? $encryptedAttributes['columns']
-            : [];
-        $encryptedAttributesColums = array_filter($encryptedAttributesColums, function ($column) {
-            return $column === 'Y';
-        });
-        $encryptedAttributesColums = array_keys($encryptedAttributesColums);
-
+        $encryptedAttributesColums = $this->getencryptedAttributesColums();
         $sort = new CSort();
-        $sort->defaultOrder = 'lastname';
+        /* Can not sort by encrypted attribute : use participant_id */
+        if (in_array('lastname', $encryptedAttributesColums)) {
+            $sort->defaultOrder = 't.participant_id ASC';
+        } else {
+            $sort->defaultOrder = 't.lastname ASC';
+        }
         $sortAttributes = array(
             'lastname' => array(
                 'asc' => 't.lastname',
@@ -574,7 +616,6 @@ class Participant extends LSActiveRecord
             $criteria->mergeWith($this->extraCondition);
         }
         $sort->attributes = $sortAttributes;
-        $sort->defaultOrder = 't.lastname ASC';
 
         // Users can only see:
         // 1) Participants they own;
@@ -600,6 +641,22 @@ class Participant extends LSActiveRecord
         ));
     }
 
+    /**
+     * get the encrypted columns
+     * @return string[]
+     */
+    public function getencryptedAttributesColums()
+    {
+        $encryptedAttributes = $this->getParticipantsEncryptionOptions();
+        $encryptedAttributesColums = isset($encryptedAttributes) && isset($encryptedAttributes['columns'])
+            ? $encryptedAttributes['columns']
+            : [];
+        $encryptedAttributesColums = array_filter($encryptedAttributesColums, function ($column) {
+            return $column === 'Y';
+        });
+        $encryptedAttributesColums = array_keys($encryptedAttributesColums);
+        return $encryptedAttributesColums;
+    }
     /**
      * @param int $selected Owner id
      * @return string HTML
@@ -1831,7 +1888,8 @@ class Participant extends LSActiveRecord
     {
         App()->loadHelper('update.updatedb');
         foreach ($addedAttributeIds as $attributeId) {
-            addColumn("{{tokens_$surveyId}}", $attributeId, 'string');
+            /* text like other participant attributes : encrypted values are longer than plain ones (hardened : 2 × length + 80) */
+            addColumn("{{tokens_$surveyId}}", $attributeId, 'text');
         }
         App()->db->schema->getTable("{{tokens_$surveyId}}", true); // Refresh schema cache just
         Token::model($surveyId)->refreshMetaData(); // Refresh model meta data
@@ -2224,75 +2282,30 @@ class Participant extends LSActiveRecord
             if (is_numeric($tid) && $tid != "") {
                 /* Get the data for this participant from the tokens table */
                 $oTokenDynamic = TokenDynamic::model($survey->sid)->findByPk($tid);
-                if (isset($oTokenDynamic) && $oTokenDynamic) {
-                    $oTokenDynamic->decrypt();
+                if (empty($oTokenDynamic)) {
+                    continue;
                 }
+                $oTokenDynamic->decrypt();
 
                 // First check if token already has a participant_id in central database
-                $existing = null;
-                if (!empty($oTokenDynamic->participant_id)) {
-                    $existing = Participant::model()->findByPk(
-                        $oTokenDynamic->participant_id
-                    );
-                }
-
-                if (
-                    $existing == null
-                    && (!empty($oTokenDynamic->firstname)
-                        || !empty($oTokenDynamic->lastname)
-                        || !empty($oTokenDynamic->email))
-                ) {
-                    // Determine encryption state of each CPDB core attribute
-                    $cpdbCoreAttributes = ParticipantAttributeName::model(
-                    )->findAllByAttributes([
-                        'core_attribute' => 'Y'
-                    ]);
-                    $cpdbEncrypted = [];
-                    foreach ($cpdbCoreAttributes as $attr) {
-                        if (in_array($attr->defaultname, ['firstname', 'lastname', 'email'])) {
-                            $cpdbEncrypted[$attr->defaultname] = ($attr->encrypted === 'Y');
-                        }
-                    }
-
-                    // Build comparison values: re-encrypt if the CPDB column is encrypted
-                    $compareFirstname = !empty($cpdbEncrypted['firstname']) ? LSActiveRecord::encryptSingle(
-                        $oTokenDynamic->firstname
-                    ) : $oTokenDynamic->firstname;
-                    $compareLastname = !empty($cpdbEncrypted['lastname']) ? LSActiveRecord::encryptSingle(
-                        $oTokenDynamic->lastname
-                    ) : $oTokenDynamic->lastname;
-                    $compareEmail = !empty($cpdbEncrypted['email']) ? LSActiveRecord::encryptSingle(
-                        $oTokenDynamic->email
-                    ) : $oTokenDynamic->email;
-
-                    $participantCriteria = new CDbCriteria();
-                    $participantCriteria->addCondition(
-                        'firstname = :firstname'
-                    );
-                    $participantCriteria->addCondition('lastname = :lastname');
-                    $participantCriteria->addCondition('email = :email');
-                    $participantCriteria->params = [
-                        ":firstname" => $compareFirstname,
-                        ":lastname" => $compareLastname,
-                        ":email" => $compareEmail,
-                    ];
-                    $existing = Participant::model()->find(
-                        $participantCriteria
-                    );
-                }
+                // We don't check with permission, see issue #20704
+                // Without participant_id, getDuplicates doesn't search if firstname, lastname and email are all empty
+                $existingParticipants = self::getDuplicates($oTokenDynamic->attributes, false) ?: [];
                 /* If there is already an existing entry, add to the duplicate count */
-                if ($existing != null) {
+                if (!empty($existingParticipants)) {
                     $duplicate++;
-                    // Only overwrite attribute values of central participants the user is allowed to edit
-                    $canOverwrite = $existing->userHasPermissionToEdit();
-                    if ($canOverwrite && $overwriteman && !empty($aMapped)) {
-                        foreach ($aMapped as $cpdbatt => $tatt) {
-                            Participant::model()->updateAttributeValueToken($surveyid, $existing->participant_id, $cpdbatt, $tatt);
+                    foreach ($existingParticipants as $existing) {
+                        // Only overwrite attribute values of central participants the user is allowed to edit
+                        $canOverwrite = $existing->userHasPermissionToEdit();
+                        if ($canOverwrite && $overwriteman && !empty($aMapped)) {
+                            foreach ($aMapped as $cpdbatt => $tatt) {
+                                Participant::model()->updateAttributeValueToken($surveyid, $existing->participant_id, $cpdbatt, $tatt);
+                            }
                         }
-                    }
-                    if ($canOverwrite && $overwriteauto && !empty($aAutoMapped)) {
-                        foreach ($aAutoMapped as $cpdbatt => $tatt) {
-                            Participant::model()->updateAttributeValueToken($surveyid, $existing->participant_id, $cpdbatt, $tatt);
+                        if ($canOverwrite && $overwriteauto && !empty($aAutoMapped)) {
+                            foreach ($aAutoMapped as $cpdbatt => $tatt) {
+                                Participant::model()->updateAttributeValueToken($surveyid, $existing->participant_id, $cpdbatt, $tatt);
+                            }
                         }
                     }
                 } /* If there isn't an existing entry, create one! */ else {
@@ -2414,7 +2427,9 @@ class Participant extends LSActiveRecord
      * Inserts a participant from a CSV import without model validation
      * Note: Only participants with a UUID as participant ID are inserted
      *
-     * @param array $data Participant data, keys participant_id, firstname, lastname, email, language, blacklisted and owner_uid
+     * The values are encrypted here and the duplicatefinder is computed here (on plain values).
+     *
+     * @param array $data Participant data, NOT encrypted, keys participant_id, firstname, lastname, email, language, blacklisted and owner_uid
      * @return bool True if the participant was inserted
      */
     public function insertParticipantCSV($data)
@@ -2422,16 +2437,29 @@ class Participant extends LSActiveRecord
         if (!self::isValidParticipantId($data['participant_id'] ?? null)) {
             return false;
         }
-        $insertData = array(
+        $participant = new self();
+        $participant->setAttributes([
             'participant_id' => $data['participant_id'],
-            'firstname' => $data['firstname'],
-            'lastname' => $data['lastname'],
-            'email' => $data['email'],
-            'language' => $data['language'],
-            'blacklisted' => $data['blacklisted'],
-            'created_by' => $data['owner_uid'],
+            'firstname' => $data['firstname'] ?? '',
+            'lastname' => $data['lastname'] ?? '',
+            'email' => $data['email'] ?? '',
+            'language' => $data['language'] ?? '',
+            'blacklisted' => $data['blacklisted'] ?? 'N',
             'owner_uid' => $data['owner_uid'],
-            'created' => date('Y-m-d H:i:s', time())
+        ], false);
+        /* Computes duplicatefinder on plain values, then encrypts the encrypted attributes */
+        $participant->encrypt();
+        $insertData = array(
+            'participant_id' => $participant->participant_id,
+            'firstname' => $participant->firstname,
+            'lastname' => $participant->lastname,
+            'email' => $participant->email,
+            'language' => $participant->language,
+            'blacklisted' => $participant->blacklisted,
+            'created_by' => $participant->owner_uid,
+            'owner_uid' => $participant->owner_uid,
+            'created' => date('Y-m-d H:i:s', time()),
+            'duplicatefinder' => (string) $participant->duplicatefinder,
         );
         return Yii::app()->db->createCommand()->insert('{{participants}}', $insertData) > 0;
     }
@@ -2696,12 +2724,15 @@ class Participant extends LSActiveRecord
     }
 
     /**
-     * Checks Permissions for given $aActions and returns them as array
+     * Filter the participant mass actions by the permissions of the current user.
+     * Actions without permission are removed; 'add-to-survey' is always kept.
+     * A separator is only kept if it directly follows the kept 'delete' action.
      *
-     * @param array $aActions
-     * @param array $permissions
+     * @param array[] $aActions Action definitions, each with an 'action' key or a 'type' key (e.g. 'separator')
+     * @param array $permissions Permission flags, keyed by 'participantpanel' (isOwner, delete, update, export,
+     *                           editSharedParticipants, sharedParticipantExists) and 'superadmin' (read)
      *
-     * @return array
+     * @return array[] The allowed action definitions, in their original order
      */
     public function permissionCheckedActionsArray(array $aActions, array $permissions): array
     {
@@ -2769,5 +2800,252 @@ class Participant extends LSActiveRecord
             ->select('participant_id')
             ->queryColumn();
         return $oResult;
+    }
+
+    /**
+     * Find duplicates participant and return the array using default core system
+     * If participant_id is is set and not empty : use it
+     * Else duplicate are found using firstname, lastname, email and owner_uid
+     * If firstname, lastname and email are all empty : no duplicate (empty array)
+     * @param string[]
+     * @param false|integer owner_id to use, if false : get in all CPDB, never used if  participant_id is set
+     * @return false|self[] false if duplicates can not be checked (duplicate finder disabled with encrypted core attributes)
+     */
+    public static function getDuplicates(array $participant, $ownerid = false)
+    {
+        
+        /* If participant_id is in $participant : directly use it */
+        if (!empty($participant['participant_id'])) {
+            $duplicates = Participant::model()->findAllByAttributes([
+                'participant_id' => $participant['participant_id'],
+            ]);
+            /* Return decrypted participants, like the duplicatefinder system */
+            foreach ($duplicates as $duplicate) {
+                $duplicate->decrypt();
+            }
+            return $duplicates;
+        }
+
+        $duplicateCriteriaAttributes = [
+            'firstname' => $participant['firstname'] ?? '',
+            'lastname' => $participant['lastname'] ?? '',
+            'email' => $participant['email'] ?? '' ,
+        ];
+        /* No firstname, lastname and email : can not be a duplicate (else all empty participants would match) */
+        if (implode('', array_map('strval', $duplicateCriteriaAttributes)) === '') {
+            return [];
+        }
+        if (self::countCoreAttributeCrypted() == 0) {
+            return self::findDuplicateNotEncrypted($duplicateCriteriaAttributes, $ownerid);
+        }
+        /* One or more core attributes are encrypted: use the duplicate finder */
+        $duplicatefindervalue = self::getDuplicateFinderValue($participant);
+        if ($duplicatefindervalue === false || $duplicatefindervalue === '') {
+            /* Not with the encrypted values, even with Basic : the comparison would be case sensitive, unlike the duplicate finder */
+            return false;
+        }
+        if ($ownerid) {
+            $possibleDuplicates = Participant::model()->findAllByAttributes([
+                'duplicatefinder' => $duplicatefindervalue,
+                'owner_uid' => $ownerid
+            ]);
+        } else {
+            $possibleDuplicates = Participant::model()->findAllByAttributes([
+                'duplicatefinder' => $duplicatefindervalue
+            ]);
+        }
+        $duplicates = [];
+        foreach ($possibleDuplicates as $possibleDuplicate) {
+            $possibleDuplicate->decrypt();
+            if (
+                mb_strtolower($duplicateCriteriaAttributes['firstname']) == mb_strtolower($possibleDuplicate->firstname)
+                && mb_strtolower($duplicateCriteriaAttributes['lastname']) == mb_strtolower($possibleDuplicate->lastname)
+                && mb_strtolower($duplicateCriteriaAttributes['email']) == mb_strtolower($possibleDuplicate->email)
+            ) {
+                $duplicates[] = $possibleDuplicate;
+            }
+        }
+        return $duplicates;
+    }
+
+    /**
+     * Find duplicate with not encrypted database
+     * @param string[], must contain firstname , lastname, email
+     * @param integer|false ownerid
+     * @return self[]
+     */
+    protected static function findDuplicateNotEncrypted(array $participant, $ownerid)
+    {
+        /* pgsql is case sensitive, Mysql and MSSQL no need extra part here , maybe add an index */
+        $caseInsensitive = App()->db->getDriverName() == 'pgsql';
+        $criteria = new CDbCriteria();
+        foreach (['firstname', 'lastname', 'email'] as $column) {
+            /* Force string : null => '' */
+            $value = (string) ($participant[$column] ?? '');
+            if ($value === '') {
+                /* Empty value : can be stored as '' or NULL */
+                $criteria->addCondition("({$column} = '' OR {$column} IS NULL)");
+            } elseif ($caseInsensitive) {
+                $criteria->addCondition("LOWER({$column}) = LOWER(:{$column})");
+                $criteria->params[":{$column}"] = $value;
+            } else {
+                $criteria->addCondition("{$column} = :{$column}");
+                $criteria->params[":{$column}"] = $value;
+            }
+        }
+        if ($ownerid) {
+            $criteria->addCondition('owner_uid = :owner_uid');
+            $criteria->params[':owner_uid'] = $ownerid;
+        }
+        return Participant::model()->findAll($criteria);
+    }
+
+    /**
+    * Check if duplicatefinder columns are up to date with existing settings
+    * @return boolean
+    */
+    public static function isDuplicateFinderUpToDate()
+    {
+        /* duplicatefinder is used only when a core attribute is encrypted (else findDuplicateNotEncrypted) : no need to check */
+        if (self::countCoreAttributeCrypted() == 0) {
+            return true;
+        }
+        /* duplicatefinder can not be used (no key, or disabled) : every value is '', it can not be updated */
+        if (!self::canUseDuplicateFinder()) {
+            return true;
+        }
+        /* Once up to date, it stays up to date : every save computes it. Cache depends on settings (key and bits). */
+        $cacheKey = self::getDuplicateFinderUpToDateCacheKey();
+        if (App()->cache->get($cacheKey) === true) {
+            return true;
+        }
+        $isCurrent = self::getDuplicateFinderInvalidCount() === 0;
+        if ($isCurrent) {
+            App()->cache->set($cacheKey, true);
+        }
+        return $isCurrent;
+    }
+
+    /**
+     * The cache key for duplicatefinder up to date, depends on the settings used to compute it
+     * @return string
+     */
+    private static function getDuplicateFinderUpToDateCacheKey()
+    {
+        return 'participantDuplicateFinderUpToDate_' . md5(
+            App()->getConfig('encryptionduplicateindexkey') . '_' . App()->getConfig('CPDB_duplicatefinder_bits')
+        );
+    }
+
+    /**
+     * Count the duplicatefinder columns not updated
+     * @param \CDbCriteria $extraCriteria
+     * @return integer number of duplicatefinder invalid/outdated
+     */
+    public static function getDuplicateFinderInvalidCount($extraCriteria = null)
+    {
+        /* Force integer : some drivers (pdo_sqlsrv) return count as string */
+        if ($extraCriteria) {
+            return (int) self::model()->invaliduplicatefinder()->count($extraCriteria);
+        }
+        return (int) self::model()->invaliduplicatefinder()->count();
+    }
+
+    /**
+     * Get the duplicate finder value
+     * @param string[] data, attributes of the participant
+     * @return string (empty string if can not be used)
+     */
+    public static function getDuplicateFinderValue(array $participant)
+    {
+        if (!self::canUseDuplicateFinder()) {
+            return "";
+        }
+        $encryptionduplicateindexkey = App()->getConfig('encryptionduplicateindexkey');
+        $duplicatefinderBits = (int) Yii::app()->getConfig('CPDB_duplicatefinder_bits');
+        $string = json_encode([
+            mb_strtolower($participant['firstname'] ?? ''),
+            mb_strtolower($participant['lastname'] ?? ''),
+            mb_strtolower($participant['email'] ?? ''),
+        ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        /* @var string the complete hash before cut */
+        $hash = hash_hmac('sha256', $string, $encryptionduplicateindexkey);
+        return substr($hash, 0, $duplicatefinderBits / 4);
+    }
+
+    /**
+     * Get the number of encrypted attributes
+     * @return integer
+     */
+    public static function countCoreAttributeCrypted()
+    {
+        $criteria = new CDbCriteria();
+        $criteria->compare('encrypted', 'Y');
+        $criteria->addInCondition('defaultname', ['firstname', 'lastname', 'email']);
+        return ParticipantAttributeName::model()->count($criteria);
+    }
+
+    /**
+     * Check if duplicate finder systeml can be used
+     * @throws CHttpException
+     * @return boolean
+     */
+    public static function canUseDuplicateFinder()
+    {
+        /* Initialize the sodium component first : it adds encryptionduplicateindexkey if missing (after an upgrade) */
+        Yii::app()->getComponent('sodium');
+        /* can not use it */
+        if (empty(App()->getConfig('encryptionduplicateindexkey'))) {
+            return false;
+        }
+        $duplicatefinderBits = (int) Yii::app()->getConfig('CPDB_duplicatefinder_bits');
+        /* Disable duplicatefinder : save empty string in database */
+        if ($duplicatefinderBits == 0) {
+            return false;
+        }
+        if ($duplicatefinderBits < 32 || $duplicatefinderBits > 256 || $duplicatefinderBits % 4 !== 0) {
+            throw new CHttpException(500, gT('CPDB_duplicatefinder_bits must be a multiple of 4 between 32 and 256.'));
+        }
+        return true;
+    }
+
+    /**
+     * @inheritdoc
+     * Set the value of duplicatefinder before encrypt
+     * @param boolean $runValidation whether to perform validation before saving the record.
+     * @param array|null $attributes list of attributes that need to be saved. Defaults to null for all attributes.
+     * @return boolean whether the saving succeeds
+     */
+    public function encryptSave($runValidation = true, $attributes = null)
+    {
+        $this->duplicatefinder = strval($this->getDuplicateFinderValue(
+            [
+                'firstname' => $this->getAttribute('firstname'),
+                'lastname' => $this->getAttribute('lastname'),
+                'email' => $this->getAttribute('email'),
+            ]
+        ));
+        /* duplicatefinder depends on firstname, lastname and email : save it too if one of them is saved */
+        if (is_array($attributes) && array_intersect(['firstname', 'lastname', 'email'], $attributes)) {
+            $attributes[] = 'duplicatefinder';
+        }
+        return parent::encryptSave($runValidation, $attributes);
+    }
+
+    /**
+     * @inheritdoc
+     * Set the value of duplicatefinder before encrypt
+     * @return boolean
+     */
+    public function encrypt()
+    {
+        $this->duplicatefinder = strval($this->getDuplicateFinderValue(
+            [
+                'firstname' => $this->getAttribute('firstname'),
+                'lastname' => $this->getAttribute('lastname'),
+                'email' => $this->getAttribute('email'),
+            ]
+        ));
+        return parent::encrypt();
     }
 }

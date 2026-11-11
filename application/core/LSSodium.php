@@ -6,6 +6,7 @@
 class LSSodium
 {
     public $bLibraryExists = false;
+    protected $sEncryptionMethod = null;
     protected $sEncryptionNonce = null;
     protected $sEncryptionSecretBoxKey = null;
 
@@ -23,6 +24,16 @@ class LSSodium
         } else {
             $this->checkIfKeyExists();
         }
+    }
+
+    /**
+     * Set the encryption method
+     * @param string
+     * @return void
+     */
+    public function setEncryptionMethod($string)
+    {
+        $this->sEncryptionMethod = $string;
     }
 
     /**
@@ -46,6 +57,23 @@ class LSSodium
     {
         if (empty(App()->getConfig('encryptionsecretboxkey')) && empty(App()->getConfig('encryptionnonce'))) {
             $this->generateEncryptionKeys();
+        } elseif (empty(App()->getConfig('encryptionduplicateindexkey'))) {
+            $result = $this->addEncryptionDuplicateIndexKey();
+            if (!$result) {
+                Yii::log("Unable to add encryptionduplicateindexkey to security.php", 'error', 'application.LSSodium');
+            }
+            // Add a alert if current user have superadmin permission, usage of Permission::model break
+            if (App()->getCurrentUserId() && Permission::isForcedSuperAdmin(App()->getCurrentUserId())) {
+                if ($result) {
+                    Yii::app()->setFlashMessage(sprintf(gT("The settings encryptionduplicateindexkey was added to %s."), 'application/config/security.php'), 'success');
+                } else {
+                    Yii::app()->setFlashMessage(sprintf(
+                        gT("Unable to add encryptionduplicateindexkey config. Please, see %sLimeSurvey manual%s."),
+                        '<a href="https://www.limesurvey.org/manual/Optional_settings#Encryption">', // Need to update manual when merged
+                        '</a>'
+                    ), 'danger');
+                }
+            }
         }
         if ($this->sEncryptionNonce === null) {
             $this->sEncryptionNonce = $this->getEncryptionNonce();
@@ -116,7 +144,23 @@ class LSSodium
     {
         if ($this->bLibraryExists === true) {
             if (isset($sDataToEncrypt) && $sDataToEncrypt !== "") {
-                $sEncrypted = base64_encode(ParagonIE_Sodium_Compat::crypto_secretbox((string) $sDataToEncrypt, $this->sEncryptionNonce, $this->sEncryptionSecretBoxKey));
+                switch ($this->sEncryptionMethod) {
+                    case 'H':
+                        // generate a random nonce
+                        $nonce = random_bytes(ParagonIE_Sodium_Compat::CRYPTO_SECRETBOX_NONCEBYTES);
+                        // encrypt plaintext with key and nonce
+                        $ciphertext = ParagonIE_Sodium_Compat::crypto_secretbox(
+                            strval($sDataToEncrypt),
+                            $nonce,
+                            $this->sEncryptionSecretBoxKey
+                        );
+                        $sEncrypted = ParagonIE_Sodium_Compat::bin2hex($nonce) . ParagonIE_Sodium_Compat::bin2hex($ciphertext);
+                        break;
+                    case 'B':
+                    default:
+                        $sEncrypted = base64_encode(ParagonIE_Sodium_Compat::crypto_secretbox((string) $sDataToEncrypt, $this->sEncryptionNonce, $this->sEncryptionSecretBoxKey));
+                        break;
+                }
                 return $sEncrypted;
             }
             return '';
@@ -129,23 +173,112 @@ class LSSodium
      * Decrypt encrypted string.
      * @param string $sEncryptedString Encrypted string to decrypt, if it string 'null', didn't try to decode
      * @param bool $bReturnFalseIfError false by default. If TRUE, return false in case of error (bad decryption). Else, return given $encryptedInput value
-     * @return string Return decrypted value (string or unserialized object) if succeeded. Return FALSE if an error occurs (bad password/salt given) or input encryptedString
+     * @return string|false Return decrypted value (string or unserialized object) if succeeded. Return false if an error occurs (bad password/salt given) or input encryptedString
      * @throws SodiumException
      */
-    public function decrypt($sEncryptedString, $bReturnFalseIfError = false): string
+    public function decrypt($sEncryptedString, $bReturnFalseIfError = false): string|false
     {
         if ($this->bLibraryExists === true) {
             if (!empty($sEncryptedString) && $sEncryptedString !== 'null') {
-                $plaintext = ParagonIE_Sodium_Compat::crypto_secretbox_open(base64_decode($sEncryptedString), $this->sEncryptionNonce, $this->sEncryptionSecretBoxKey);
-                if ($plaintext === false) {
-                    throw new SodiumException(sprintf(gT("Wrong decryption key! Decryption key has changed since this data were last saved, so data can't be decrypted. Please consult our manual at %s.", 'unescaped'), 'https://www.limesurvey.org/manual/Data_encryption#Errors'));
-                } else {
-                    return $plaintext;
+                /* Try to decrypt according to sEncryptionMethod */
+                switch ($this->sEncryptionMethod) {
+                    case 'H':
+                        $plaintext = $this->decryptHardened($sEncryptedString);
+                        if ($plaintext !== false) {
+                            return $plaintext;
+                        }
+                        $plaintext = $this->decryptBasic($sEncryptedString);
+                        if ($plaintext !== false) {
+                            return $plaintext;
+                        }
+                        break;
+                    case 'B':
+                    default:
+                        $plaintext = $this->decryptBasic($sEncryptedString);
+                        if ($plaintext !== false) {
+                            return $plaintext;
+                        }
+                        $plaintext = $this->decryptHardened($sEncryptedString);
+                        if ($plaintext !== false) {
+                            return $plaintext;
+                        }
+                        break;
                 }
+                /* We get here : all solution return false */
+                if ($bReturnFalseIfError) {
+                    return false;
+                }
+                throw new SodiumException(sprintf(gT("Wrong decryption key! Decryption key has changed since this data were last saved, so data can't be decrypted. Please consult our manual at %s.", 'unescaped'), 'https://www.limesurvey.org/manual/Data_encryption#Errors'));
             }
             return '';
         }
         return $sEncryptedString;
+    }
+
+    /**
+     * Decrypt encrypted string using Hardened method
+     * @param string $sEncryptedString Encrypted string to decrypt
+     * @return string|false Return decrypted value (string or unserialized object), false if an error occurs (bad password/salt given) or input encryptedString
+    */
+    private function decryptHardened($sEncryptedString)
+    {
+        $minLengthBytes = (
+            ParagonIE_Sodium_Compat::CRYPTO_SECRETBOX_NONCEBYTES +
+            ParagonIE_Sodium_Compat::CRYPTO_SECRETBOX_MACBYTES
+        );
+        $minLengthChars = $minLengthBytes * 2; // each byte is represented by 2 hexadecimal characters (80 characters for 40 bytes)
+        if (
+            !ctype_xdigit($sEncryptedString)
+            || strlen($sEncryptedString) < $minLengthChars
+            || strlen($sEncryptedString) % 2 !== 0
+        ) {
+            // Avoid broke of ParagonIE_Sodium_Compat::hex2bin
+            return false;
+        }
+        $nonceAndCipherText = ParagonIE_Sodium_Compat::hex2bin($sEncryptedString);
+        $nonce = substr($nonceAndCipherText, 0, ParagonIE_Sodium_Compat::CRYPTO_SECRETBOX_NONCEBYTES);
+        $ciphertext = substr($nonceAndCipherText, ParagonIE_Sodium_Compat::CRYPTO_SECRETBOX_NONCEBYTES);
+        return $this->secretboxOpen($ciphertext, $nonce);
+    }
+
+    /**
+     * Decrypt encrypted string using Basic method
+     * @param string $sEncryptedString Encrypted string to decrypt
+     * @return string|false Return decrypted value (string or unsezialized object), false if an error occurs (bad password/salt given) or input encryptedString
+    */
+    private function decryptBasic($sEncryptedString)
+    {
+        $decoded = base64_decode($sEncryptedString, true);
+        if ($decoded === false || strlen($decoded) < ParagonIE_Sodium_Compat::CRYPTO_SECRETBOX_MACBYTES) {
+            return false;
+        }
+        return $this->secretboxOpen($decoded, $this->sEncryptionNonce);
+    }
+
+    /**
+     * Open a secret box with the encryption key
+     * The sodium extension returns false if authentication fails, the sodium_compat PHP implementation
+     * (used without the sodium extension) throws a SodiumException 'Invalid MAC' : return false in both cases.
+     * Other errors (invalid nonce or key length) are thrown.
+     * @param string $ciphertext
+     * @param string $nonce
+     * @return string|false
+     * @throws SodiumException
+     */
+    private function secretboxOpen($ciphertext, $nonce)
+    {
+        try {
+            return ParagonIE_Sodium_Compat::crypto_secretbox_open(
+                $ciphertext,
+                $nonce,
+                $this->sEncryptionSecretBoxKey
+            );
+        } catch (SodiumException $e) {
+            if ($e->getMessage() === 'Invalid MAC') {
+                return false;
+            }
+            throw $e;
+        }
     }
 
     /**
@@ -171,7 +304,7 @@ class LSSodium
         if (empty($sEncryptionNonce) || empty($sEncryptionSecretBoxKey)) {
             return;
         }
-
+        /* Add extra encryptionduplicateindexkey config for CPDB duplicatefinder */
         $sConfig = "<?php if (!defined('BASEPATH')) exit('No direct script access allowed');" . "\n"
             . "/*" . "\n"
             . " * LimeSurvey" . "\n"
@@ -202,16 +335,214 @@ class LSSodium
             $sConfig .= "\$config['encryptionsecretkey'] = '" . $sEncryptionSecretKey . "';" . "\n";
         }
         $sConfig .= "\$config['encryptionnonce'] = '" . $sEncryptionNonce . "';" . "\n"
-            . "\$config['encryptionsecretboxkey'] = '" . $sEncryptionSecretBoxKey . "';" . "\n"
-            . "return \$config;";
+            . "\$config['encryptionsecretboxkey'] = '" . $sEncryptionSecretBoxKey . "';" . "\n";
+        /* Keep an existing duplicate index key (e.g. set in config.php), else create a new one in security.php */
+        $sEncryptionDuplicateIndexKey = (string) App()->getConfig('encryptionduplicateindexkey');
+        if ($sEncryptionDuplicateIndexKey === '') {
+            /* @var string the key to be added to duplicateindex */
+            $sEncryptionDuplicateIndexKey = sodium_bin2hex(random_bytes(32));
+            $sConfig .= "// Changing the duplicate index key will make existing duplicate indexes invalid." . "\n";
+            $sConfig .= "\$config['encryptionduplicateindexkey'] = '" . $sEncryptionDuplicateIndexKey . "';" . "\n";
+        }
+        $sConfig .= "return \$config;";
 
-        Yii::app()->setConfig("encryptionnonce", $sEncryptionNonce);
-        Yii::app()->setConfig("encryptionsecretboxkey", $sEncryptionSecretBoxKey);
         $configdir = \Yii::app()->getConfig('configdir');
-        if (is_writable($configdir)) {
-            file_put_contents($configdir . '/security.php', $sConfig);
-        } else {
+        if (!is_writable($configdir)) {
             throw new CHttpException(500, gT("Configuration directory is not writable"));
         }
+        $configFile = $configdir . DIRECTORY_SEPARATOR . 'security.php';
+        $lock = $this->lockConfigFile($configFile);
+        try {
+            /* Another request may have created the keys while waiting for the lock : never replace them */
+            $existingConfig = $this->readConfigFile($configFile);
+            if (!empty($existingConfig['encryptionsecretboxkey']) || !empty($existingConfig['encryptionnonce'])) {
+                foreach ($existingConfig as $name => $value) {
+                    Yii::app()->setConfig($name, $value);
+                }
+                return;
+            }
+            if (!$this->writeConfigFile($configFile, $sConfig)) {
+                throw new CHttpException(500, gT("Configuration directory is not writable"));
+            }
+        } finally {
+            $this->unlockConfigFile($lock);
+        }
+        Yii::app()->setConfig("encryptionnonce", $sEncryptionNonce);
+        Yii::app()->setConfig("encryptionsecretboxkey", $sEncryptionSecretBoxKey);
+        Yii::app()->setConfig("encryptionduplicateindexkey", $sEncryptionDuplicateIndexKey);
     }
+
+    /**
+     * Add or update the encryptionduplicateindexkey configuration parameter in security.php file
+     *
+     * @return bool True on success, false on failure.
+     */
+    function addEncryptionDuplicateIndexKey()
+    {
+        /* @var string the configfile to write */
+        $configFile = \Yii::app()->getConfig('configdir')
+            . DIRECTORY_SEPARATOR
+            . 'security.php';
+        /* A previous failure : do not retry at each request (retry after one hour) */
+        $failureFile = $this->getDuplicateIndexKeyFailureFile();
+        if ($failureFile && is_file($failureFile) && filemtime($failureFile) > time() - 3600) {
+            return false;
+        }
+        $lock = $this->lockConfigFile($configFile);
+        try {
+            $result = $this->writeEncryptionDuplicateIndexKey($configFile);
+        } finally {
+            $this->unlockConfigFile($lock);
+        }
+        if ($failureFile) {
+            if ($result) {
+                @unlink($failureFile);
+            } else {
+                @touch($failureFile);
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * Write the encryptionduplicateindexkey in security.php, must be called with the lock
+     * @param string $configFile
+     * @return bool True on success, false on failure.
+     */
+    private function writeEncryptionDuplicateIndexKey($configFile)
+    {
+        /* Another request may have added it while waiting for the lock : use it */
+        $existingConfig = $this->readConfigFile($configFile);
+        if (!empty($existingConfig['encryptionduplicateindexkey'])) {
+            Yii::app()->setConfig("encryptionduplicateindexkey", $existingConfig['encryptionduplicateindexkey']);
+            return true;
+        }
+        /* @var string the key to be added to duplicateindex */
+        $sEncryptionDuplicateIndexKey = bin2hex(random_bytes(32));
+        $keyLines = "// Changing the duplicate index key will make existing duplicate indexes invalid.\n"
+            . "\$config['encryptionduplicateindexkey'] = '{$sEncryptionDuplicateIndexKey}';\n";
+        if (is_file($configFile)) {
+            $content = file_get_contents($configFile);
+            if ($content === false) {
+                return false;
+            }
+            $search = 'return $config;';
+            if (strpos($content, $search) === false) {
+                return false;
+            }
+            $content = str_replace($search, $keyLines . $search, $content);
+        } else {
+            // No licence needed
+            $content = "<?php if (!defined('BASEPATH')) exit('No direct script access allowed');\n"
+                . "/*" . "\n"
+                . " * This file is part of LimeSurvey" . "\n"
+                . " * Used for configuration" . "\n"
+                . " */" . "\n"
+                . "\n"
+                . "\$config = array();\n"
+                . $keyLines
+                . "return \$config;\n";
+        }
+        if (!$this->writeConfigFile($configFile, $content)) {
+            return false;
+        }
+        Yii::app()->setConfig("encryptionduplicateindexkey", $sEncryptionDuplicateIndexKey);
+        return true;
+    }
+
+    /**
+     * Get the file used to remember a failure to add encryptionduplicateindexkey
+     * @return string|null
+     */
+    private function getDuplicateIndexKeyFailureFile()
+    {
+        $tempdir = (string) Yii::app()->getConfig('tempdir');
+        if ($tempdir === '' || !is_dir($tempdir) || !is_writable($tempdir)) {
+            return null;
+        }
+        return $tempdir . DIRECTORY_SEPARATOR . 'encryptionduplicateindexkey.failed';
+    }
+
+    /**
+     * Read a config file without the current loaded config
+     * @param string $configFile
+     * @return array
+     */
+    private function readConfigFile($configFile)
+    {
+        if (!is_file($configFile)) {
+            return [];
+        }
+        if (function_exists('opcache_invalidate')) {
+            @opcache_invalidate($configFile, true);
+        }
+        $config = include $configFile;
+        return is_array($config) ? $config : [];
+    }
+
+    /**
+     * Write a config file atomically : write a temporary file in the same directory then rename it,
+     * a concurrent request never reads a partial file.
+     * @param string $configFile
+     * @param string $content
+     * @return bool
+     */
+    private function writeConfigFile($configFile, $content)
+    {
+        $tempFile = @tempnam(dirname($configFile), 'security_');
+        if ($tempFile === false) {
+            return false;
+        }
+        if (@file_put_contents($tempFile, $content) === false) {
+            @unlink($tempFile);
+            return false;
+        }
+        /* tempnam create with 0600 : keep permissions of existing file */
+        @chmod($tempFile, is_file($configFile) ? (fileperms($configFile) & 0777) : 0644);
+        if (!@rename($tempFile, $configFile)) {
+            @unlink($tempFile);
+            return false;
+        }
+        if (function_exists('opcache_invalidate')) {
+            @opcache_invalidate($configFile, true);
+        }
+        return true;
+    }
+
+    /**
+     * Get an exclusive lock for writing a config file
+     * @param string $configFile
+     * @return array|null the lock [handle, file], null if lock can not be created
+     */
+    private function lockConfigFile($configFile)
+    {
+        $lockFile = $configFile . '.lock';
+        $handle = @fopen($lockFile, 'c');
+        if ($handle === false) {
+            return null;
+        }
+        if (!flock($handle, LOCK_EX)) {
+            fclose($handle);
+            return null;
+        }
+        return [$handle, $lockFile];
+    }
+
+    /**
+     * Release a lock from lockConfigFile and remove the lock file.
+     * Removing it is safe : it is done after the config file is written,
+     * and a request getting the lock after always re-reads the config file before writing.
+     * @param array|null $lock
+     * @return void
+     */
+    private function unlockConfigFile($lock)
+    {
+        if ($lock) {
+            [$handle, $lockFile] = $lock;
+            flock($handle, LOCK_UN);
+            fclose($handle);
+            @unlink($lockFile);
+        }
+    }
+
 }

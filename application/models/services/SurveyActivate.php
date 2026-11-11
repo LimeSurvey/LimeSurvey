@@ -34,10 +34,14 @@ class SurveyActivate
     }
 
     /**
+     * Fix the activation settings of the survey (anonymized, datestamp … encryption_method), then activate it
      * @param int $surveyId
      * @param array $params
      * @param bool $force
-     * @return array
+     * @return array On error : 'error' (string) : 'surveysettings' with 'survey' (Survey, with validation errors),
+     *     or the error of SurveyActivator::activate() ('plugin' with 'message', 'surveytablecreation', 'timingstablecreation').
+     *   On success : the result of SurveyActivator::activate() ('status', 'pluginFeedback', 'isAllowRegister',
+     *     'tableWarnings', optional 'warning'), and 'restored' (bool) if the restore of archived data was requested.
      * @throws PermissionDeniedException
      * @throws CException
      */
@@ -67,7 +71,8 @@ class SurveyActivate
                 'ipanonymize',
                 'refurl',
                 'savetimings',
-                'savequotaexit'
+                'savequotaexit',
+                'encryption_method'
             ];
             foreach ($fields as $field) {
                 if (array_key_exists($field, $survey->aOptions)) {
@@ -78,7 +83,13 @@ class SurveyActivate
                     $survey->{$field} = $this->app->request->getPost($field, $params[$field] ?? null);
                 }
             }
-            $survey->save();
+            /* Activation settings are fixed : do not activate if they can not be saved */
+            if (!$survey->save()) {
+                return [
+                    'error' => 'surveysettings',
+                    'survey' => $survey
+                ];
+            }
 
             // Make sure the saved values will be picked up
             $this->survey->resetCache();

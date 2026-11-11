@@ -1616,7 +1616,13 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
     }
     $aQIDReplacements = $aQIDReplacementMappings[$surveyid];
     //checks to see if fieldmap has already been built for this page.
-    if (isset(Yii::app()->session['fieldmap-' . $surveyid . $sLanguage]) && !$force_refresh && $questionid === false) {
+    /* A 'short' fieldmap in session can not be used for a 'full' request (some keys are only set in full) */
+    if (
+        isset(Yii::app()->session['fieldmap-' . $surveyid . $sLanguage])
+        && !$force_refresh
+        && $questionid === false
+        && ($style != 'full' || (Yii::app()->session['fieldmapstyle-' . $surveyid . $sLanguage] ?? null) === 'full')
+    ) {
         return Yii::app()->session['fieldmap-' . $surveyid . $sLanguage];
     }
     /* Check if $sLanguage is a survey valid language (else $fieldmap is empty) */
@@ -2345,6 +2351,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
         }
 
         Yii::app()->session['fieldmap-' . $surveyid . $sLanguage] = $fieldmap;
+        Yii::app()->session['fieldmapstyle-' . $surveyid . $sLanguage] = ($style == 'full') ? 'full' : 'short';
     }
     return $fieldmap;
 }

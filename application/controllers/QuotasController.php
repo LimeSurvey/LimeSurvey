@@ -313,6 +313,18 @@ class QuotasController extends LSBaseController
             if (empty($oQuestion)) {
                 throw new CHttpException(404, gT("Question not found"));
             }
+            /* Hardened encrypted answers can not be compared : quota would never be reached */
+            if ($oQuestion->encrypted === 'Y' && $oSurvey->getResolvedEncryptionMethod() === 'H') {
+                Yii::app()->setFlashMessage(gT("Encrypted questions cannot be used in quotas with hardened encryption."), 'error');
+                $this->redirect($this->createUrl(
+                    'quotas/newAnswer',
+                    [
+                        'surveyid' => $surveyid,
+                        'sSubAction' => 'newanswer',
+                        'quota_id' => $quotaId
+                    ]
+                ));
+            }
 
             $aQuestionAnswers = $quotaService->getQuotaAnswers(
                 $questionId,
@@ -385,6 +397,11 @@ class QuotasController extends LSBaseController
             }
         } else {
             // Save was not successful, redirect back
+            foreach ($oQuotaMembers->getErrors() as $errors) {
+                foreach ($errors as $error) {
+                    Yii::app()->setFlashMessage($error, 'error');
+                }
+            }
             $this->redirect($this->createUrl(
                 'quotas/newAnswer',
                 [

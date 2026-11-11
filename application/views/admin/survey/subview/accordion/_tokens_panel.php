@@ -233,6 +233,20 @@ App()->getClientScript()->registerScript("edit-after-completion-message", "
                             : $optionsOnOff
                     ]); ?>
                 </div>
+                <?php
+                /* Hardened encryption : registration can not check if email already exists */
+                if (
+                    $oSurvey instanceof Survey
+                    && $oSurvey->oOptions->encryption_method == 'H'
+                    && ($oSurvey->getTokenEncryptionOptions()['columns']['email'] ?? 'N') == 'Y'
+                ) {
+                    App()->getController()->widget('ext.AlertWidget.AlertWidget', [
+                        'text' => gT("Public registration cannot handle duplicates: the participant email is encrypted with the hardened method, so registration cannot check whether an email address is already registered. A new participant is created at each registration, even with an email address already used."),
+                        'type' => 'warning',
+                        'htmlOptions' => ['class' => 'mt-2'],
+                    ]);
+                }
+                ?>
             </div>
             <div class="mb-3">
                 <label class="form-label" id='showregisterpolicy-label'><?php  eT("Show privacy policy on register form:") ; ?></label>

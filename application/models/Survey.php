@@ -82,6 +82,7 @@ use LimeSurvey\PluginManager\PluginEvent;
  * @property string $googleanalyticsstyle Google Analytics style: (0: off; 1:Default; 2:Survey-SID/Group)
  * @property string $googleanalyticsapikey Google Analytics Tracking ID
  * @property string $tokenencryptionoptions Token encryption options
+ * @property string $encryption_method Encryption method: I : inherit, B : Basic (allow filter and search), H : Hardened (better crypt method; no filter, no search) see mantis issue #19645
  *
  * @property Permission[] $permissions
  * @property SurveyLanguageSetting[] $languagesettings
@@ -220,6 +221,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
         $this->tokenencryptionoptions = '';
         $this->showregisterpolicy = 'I';
         $this->showtokenpolicy = 'I';
+        $this->encryption_method = 'I';
         // Default setting is to use the global Google Analytics key If one exists
         $globalKey = Yii::app()->getConfig('googleanalyticsapikey');
         if ($globalKey != "") {
@@ -600,6 +602,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
             array('showsurveypolicynotice', 'in', 'range' => array('0', '1', '2'), 'allowEmpty' => true),
             array('showregisterpolicy', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => false),
             array('showtokenpolicy', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => false),
+            array('encryption_method', 'in', 'range' => array('B', 'H', 'I'), 'allowEmpty' => false),
+            array('encryption_method', 'validateEncryptionMethod'),
             array('showprogress', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => true),
             array('questionindex', 'numerical', 'min' => -1, 'max' => 2, 'allowEmpty' => false),
             array('alloweditaftercompletion', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => true),
@@ -2282,6 +2286,148 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
 
     /**
+     * Validate encryption_method : can not use hardened if a quota use an encrypted question
+     * (hardened encrypted answers can not be compared in SQL, the quota would never be reached)
+     * Validated only when changed : allow to save other settings of an existing survey
+     * @param string $attribute
+     * @return void
+     */
+    public function validateEncryptionMethod($attribute)
+    {
+        if (!$this->isAttributeModifiedFromStored($attribute)) {
+            return;
+        }
+        if ($this->getResolvedEncryptionMethod($this->$attribute) !== 'H') {
+            return;
+        }
+        if ($this->hasQuotaOnEncryptedQuestion()) {
+            $this->addError(
+                $attribute,
+                gT("Hardened encryption cannot be used: at least one quota uses an encrypted question. Hardened encrypted answers cannot be counted, so the quota would never be reached.")
+            );
+        }
+    }
+
+    /**
+     * Get the encryption method resolved with inheritance
+     * @param string|null $encryptionMethod, if null : use current value
+     * @return string 'B' or 'H'
+     */
+    public function getResolvedEncryptionMethod($encryptionMethod = null)
+    {
+        $encryptionMethod = $encryptionMethod ?? $this->encryption_method;
+        $gsid = (int) $this->gsid;
+        $checkedGsids = [];
+        while ($encryptionMethod === 'I' && !in_array($gsid, $checkedGsids, true)) {
+            $checkedGsids[] = $gsid;
+            $groupSettings = SurveysGroupsettings::model()->findByPk($gsid);
+            $encryptionMethod = $groupSettings ? $groupSettings->encryption_method : 'B';
+            if ($encryptionMethod === 'I') {
+                /* Go to parent group, then global settings (gsid 0) */
+                $group = $gsid ? SurveysGroups::model()->findByPk($gsid) : null;
+                $gsid = ($group && $group->parent_id) ? (int) $group->parent_id : 0;
+            }
+        }
+        return $encryptionMethod === 'H' ? 'H' : 'B';
+    }
+
+    /**
+     * Force Basic encryption on surveys inheriting hardened encryption while a quota uses an encrypted question.
+     * Used when hardened is set indirectly (group or global settings, group parent, survey group).
+     * Existing data stay readable : decryption tries both methods.
+     * @param integer[]|null $surveyIds limit to these surveys, null : check all surveys
+     * @param boolean $showFlashMessage show a warning with the list of updated surveys
+     * @return integer[] the updated survey ids
+     */
+    public static function forceBasicForInheritedHardenedQuota($surveyIds = null, $showFlashMessage = true)
+    {
+        $command = Yii::app()->db->createCommand()
+            ->selectDistinct('s.sid')
+            ->from('{{surveys}} s')
+            ->join('{{quota_members}} qm', 'qm.sid = s.sid')
+            ->join('{{questions}} q', 'q.qid = qm.qid')
+            ->where("s.encryption_method = 'I' AND q.encrypted = 'Y'");
+        if (is_array($surveyIds)) {
+            if (empty($surveyIds)) {
+                return [];
+            }
+            $command->andWhere(['in', 's.sid', array_map('intval', $surveyIds)]);
+        }
+        $updatedSurveyIds = [];
+        foreach ($command->queryColumn() as $surveyId) {
+            $survey = self::model()->findByPk($surveyId);
+            if ($survey && $survey->getResolvedEncryptionMethod('I') === 'H') {
+                self::model()->updateByPk($surveyId, ['encryption_method' => 'B']);
+                /* updateByPk : the cached survey is outdated */
+                unset(self::$findByPkCache[$surveyId]);
+                $updatedSurveyIds[] = (int) $surveyId;
+            }
+        }
+        if ($showFlashMessage && !empty($updatedSurveyIds)) {
+            self::setForcedBasicFlashMessage($updatedSurveyIds);
+        }
+        return $updatedSurveyIds;
+    }
+
+    /**
+     * Show the warning about surveys forced to Basic encryption
+     * @param integer[] $surveyIds
+     * @return void
+     */
+    public static function setForcedBasicFlashMessage(array $surveyIds)
+    {
+        if (!(Yii::app() instanceof LSYii_Application)) {
+            return;
+        }
+        Yii::app()->setFlashMessage(
+            sprintf(
+                gT("Basic encryption was set for these surveys instead of inherited hardened encryption, because a quota uses an encrypted question: %s. They no longer inherit the encryption method."),
+                implode(', ', $surveyIds)
+            ),
+            'warning'
+        );
+    }
+
+    /**
+     * Check if one quota of this survey use an encrypted question
+     * @return boolean
+     */
+    public function hasQuotaOnEncryptedQuestion()
+    {
+        if (empty($this->sid)) {
+            return false;
+        }
+        $count = Yii::app()->db->createCommand()
+            ->select('COUNT(*)')
+            ->from('{{quota_members}} qm')
+            ->join('{{questions}} q', 'q.qid = qm.qid')
+            ->where('qm.sid = :sid AND q.encrypted = :encrypted', [':sid' => $this->sid, ':encrypted' => 'Y'])
+            ->queryScalar();
+        return $count > 0;
+    }
+
+    /**
+     * Force Basic encryption on this not active survey if it uses hardened encryption (set or inherited)
+     * while a quota uses an encrypted question. Used after import or copy of quotas.
+     * @return boolean true if the encryption method was updated
+     */
+    public function forceBasicIfHardenedQuota()
+    {
+        if (
+            $this->active == 'Y'
+            || $this->getResolvedEncryptionMethod() !== 'H'
+            || !$this->hasQuotaOnEncryptedQuestion()
+        ) {
+            return false;
+        }
+        self::model()->updateByPk($this->sid, ['encryption_method' => 'B']);
+        $this->encryption_method = 'B';
+        /* updateByPk : the cached survey is outdated */
+        unset(self::$findByPkCache[$this->sid]);
+        return true;
+    }
+
+    /**
      * @return Question[]
      */
     public function getQuotableQuestions()
@@ -2856,6 +3002,17 @@ class Survey extends LSActiveRecord implements PermissionInterface
     protected function beforeSave()
     {
         $this->lastmodified = gmdate('Y-m-d H:i:s');
+        /* Moved to another group : can not inherit hardened if a quota uses an encrypted question */
+        if (
+            !$this->getIsNewRecord()
+            && $this->encryption_method === 'I'
+            && $this->isAttributeModifiedFromStored('gsid')
+            && $this->getResolvedEncryptionMethod('I') === 'H'
+            && $this->hasQuotaOnEncryptedQuestion()
+        ) {
+            $this->encryption_method = 'B';
+            self::setForcedBasicFlashMessage([(int) $this->sid]);
+        }
         return parent::beforeSave();
     }
 }

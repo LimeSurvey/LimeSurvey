@@ -415,7 +415,8 @@ class SurveyResponses implements CommandInterface
 
         $resolver = new ResponseFilterResolver(
             QuestionColumnMap::fromQuestionFieldMap($this->getQuestionFieldMap()),
-            ParticipantResolver::fromSurvey($this->survey)
+            ParticipantResolver::fromSurvey($this->survey),
+            (string) $this->survey->oOptions->encryption_method
         );
 
         $builder = new ResponseFilterCriteriaBuilder((int) $this->getSurveyId($request));
