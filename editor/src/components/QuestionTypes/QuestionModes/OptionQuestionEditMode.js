@@ -138,7 +138,9 @@ export const OptionQuestionEditMode = ({
                   >
                     <UiComponentToRender
                       placeholder={
-                        isSingleChoiceTheme ? t('Answer option') : t('Subquestion')
+                        isSingleChoiceTheme
+                          ? t('Answer option')
+                          : t('Subquestion')
                       }
                       className="text-secondary choice"
                       value={L10ns({

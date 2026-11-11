@@ -539,7 +539,9 @@ export const OptionQuestionViewMode = ({
                   ) : !child.isOther ? (
                     <ContentEditor
                       placeholder={
-                        isSingleChoiceTheme ? t('Answer option') : t('Subquestion')
+                        isSingleChoiceTheme
+                          ? t('Answer option')
+                          : t('Subquestion')
                       }
                       className="choice"
                       value={getChildTitle(child.l10ns)}
