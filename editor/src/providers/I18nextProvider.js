@@ -19,9 +19,21 @@ export const I18Provider = ({ i18n, children, language }) => {
       return
     }
 
+    let isCancelled = false
+
+    // Make sure locale initialization is awaited before rerender so children use the correct language
+    const initialize = async (lang) => {
+      await loadDayjsLocale(lang)
+      if (isCancelled) {
+        return
+      }
+      setI18nInstance(i18n(lang, auth, setLanguages, languages))
+      setIsTranslationLoaded(true)
+    }
+
     if (!language) {
       userService.getUserDetail(auth.userId).then((result) => {
-        if (!result) {
+        if (!result || isCancelled) {
           return
         }
         setUserDetail(result)
@@ -34,15 +46,15 @@ export const I18Provider = ({ i18n, children, language }) => {
             lang = 'en' // Default to English if browser's language is not supported'
           }
         }
-        loadDayjsLocale(lang)
-        setI18nInstance(i18n(lang, auth, setLanguages, languages))
+        return initialize(lang)
       })
     } else {
-      loadDayjsLocale(language)
-      setI18nInstance(i18n(language, auth, setLanguages, languages))
+      initialize(language)
     }
 
-    setIsTranslationLoaded(true)
+    return () => {
+      isCancelled = true
+    }
   }, [auth.token, language])
 
   const loadingTranslations = (

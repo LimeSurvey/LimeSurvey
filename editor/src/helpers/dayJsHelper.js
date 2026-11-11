@@ -33,17 +33,24 @@ export const getDayjsLocale = (language) =>
     normalize: (code) => code.toLowerCase(),
   }) ?? 'en'
 
-// Loads the dayjs locale matching the UI language
+let latestLocaleRequestId = 0
+
+// Loads the dayjs locale matching the UI language.
 export const loadDayjsLocale = async (language) => {
+  const requestId = ++latestLocaleRequestId
   const locale = getDayjsLocale(language)
   try {
     if (locale !== 'en') {
       await import(`dayjs/locale/${locale}.js`)
     }
-    dayjs.locale(locale)
+    if (requestId === latestLocaleRequestId) {
+      dayjs.locale(locale)
+    }
     return locale
   } catch {
-    dayjs.locale('en')
+    if (requestId === latestLocaleRequestId) {
+      dayjs.locale('en')
+    }
     return 'en'
   }
 }
