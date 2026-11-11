@@ -14,7 +14,7 @@ use LimeSurvey\Models\Services\LabelSetService;
  * List label sets.
  *
  * Query params:
- * - languages: comma separated language codes, only sets containing all of them are listed
+ * - languages: Comma separated language codes, only sets containing all of them are listed
  * - updatable: '1' to only list sets the current user may overwrite
  */
 class LabelSetList implements CommandInterface
@@ -22,6 +22,12 @@ class LabelSetList implements CommandInterface
     protected ResponseFactory $responseFactory;
     protected LabelSetService $labelSetService;
 
+    /**
+     * Create the command with its dependencies.
+     *
+     * @param ResponseFactory $responseFactory Factory for the API responses
+     * @param LabelSetService $labelSetService Service that reads the label sets
+     */
     public function __construct(
         ResponseFactory $responseFactory,
         LabelSetService $labelSetService
@@ -30,6 +36,12 @@ class LabelSetList implements CommandInterface
         $this->labelSetService = $labelSetService;
     }
 
+    /**
+     * Return the label sets matching the "languages" and "updatable" query params.
+     *
+     * @param Request $request The API request
+     * @return Response The label set list
+     */
     public function run(Request $request): Response
     {
         $languages = $request->getData('languages') ?? [];

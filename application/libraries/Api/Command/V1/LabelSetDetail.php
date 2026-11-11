@@ -22,6 +22,12 @@ class LabelSetDetail implements CommandInterface
     protected ResponseFactory $responseFactory;
     protected LabelSetService $labelSetService;
 
+    /**
+     * Create the command with its dependencies.
+     *
+     * @param ResponseFactory $responseFactory Factory for the API responses
+     * @param LabelSetService $labelSetService Service that reads the label sets
+     */
     public function __construct(
         ResponseFactory $responseFactory,
         LabelSetService $labelSetService
@@ -30,6 +36,12 @@ class LabelSetDetail implements CommandInterface
         $this->labelSetService = $labelSetService;
     }
 
+    /**
+     * Return the label set of the route id with its labels.
+     *
+     * @param Request $request The API request
+     * @return Response The label set, or a "not found" error
+     */
     public function run(Request $request): Response
     {
         try {

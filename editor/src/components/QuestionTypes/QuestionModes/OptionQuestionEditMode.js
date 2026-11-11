@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { Button } from 'react-bootstrap'
 import { useParams } from 'react-router-dom'
 import { Draggable } from '@hello-pangea/dnd'
@@ -46,6 +46,9 @@ export const OptionQuestionEditMode = ({
   const { surveyId } = useParams()
   const { survey } = useSurvey(surveyId)
   const [showLoadLabelSetModal, setShowLoadLabelSetModal] = useState(false)
+  // A label set arrives asynchronously; append it to the children as they are then
+  const latestChildren = useRef(_children)
+  latestChildren.current = _children
   const surveyLanguages = getSurveyLanguages(survey)
   const isSingleChoiceTheme = singleChoiceThemes.includes(questionThemeName)
   const isImageTheme = imageThemeComponents.includes(questionThemeName)
@@ -76,14 +79,21 @@ export const OptionQuestionEditMode = ({
 
   const UiComponentToRender = isImageTheme ? ImageChoice : ContentEditor
 
+  // isFocused is only true when the user may update the survey
+  const canLoadLabelSet = isFocused && !isSurveyActive
+
   const handleLoadLabelSet = (labels) => {
+    if (!canLoadLabelSet) {
+      return
+    }
+    const currentChildren = latestChildren.current ?? []
     handleChildrenAppend(
-      _children,
+      currentChildren,
       childrenInfo.entity,
       labelsToChildren(
         labels,
         question,
-        _children,
+        currentChildren,
         childrenInfo.entity,
         surveyLanguages
       )
@@ -239,32 +249,36 @@ export const OptionQuestionEditMode = ({
             </Button>
           </div>
         </TooltipContainer>
-        <TooltipContainer
-          tip={getTooltipMessages().ACTIVE_DISABLED}
-          showTip={isSurveyActive}
-        >
-          <div>
-            <Button
-              onClick={() => setShowLoadLabelSetModal(true)}
-              variant={'outline'}
-              className={
-                'text-secondary d-flex add-choice-button align-items-center p-0 gap-2 border-none'
-              }
-              data-testid="load-label-set-button"
-              disabled={isSurveyActive}
-            >
-              <UploadIcon className="fill-current" width={20} height={20} />
-              {t('Load label set')}
-            </Button>
-          </div>
-        </TooltipContainer>
+        {isFocused && (
+          <TooltipContainer
+            tip={getTooltipMessages().ACTIVE_DISABLED}
+            showTip={isSurveyActive}
+          >
+            <div>
+              <Button
+                onClick={() => setShowLoadLabelSetModal(true)}
+                variant={'outline'}
+                className={
+                  'text-secondary d-flex add-choice-button align-items-center p-0 gap-2 border-none'
+                }
+                data-testid="load-label-set-button"
+                disabled={isSurveyActive}
+              >
+                <UploadIcon className="fill-current" width={20} height={20} />
+                {t('Load label set')}
+              </Button>
+            </div>
+          </TooltipContainer>
+        )}
       </div>
-      <LoadLabelSetModal
-        show={showLoadLabelSetModal}
-        onHide={() => setShowLoadLabelSetModal(false)}
-        onLoad={handleLoadLabelSet}
-        languages={surveyLanguages}
-      />
+      {isFocused && (
+        <LoadLabelSetModal
+          show={showLoadLabelSetModal}
+          onHide={() => setShowLoadLabelSetModal(false)}
+          onLoad={handleLoadLabelSet}
+          languages={surveyLanguages}
+        />
+      )}
     </div>
   )
 }

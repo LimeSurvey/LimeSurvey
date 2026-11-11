@@ -1,7 +1,8 @@
 // Import shared mocks
 import 'tests/mocks'
 
-import { screen, fireEvent, waitFor } from '@testing-library/react'
+import { useState } from 'react'
+import { act, screen, fireEvent, waitFor } from '@testing-library/react'
 
 import { renderWithProviders } from 'tests/testUtils'
 import { Entities } from 'helpers'
@@ -10,6 +11,8 @@ import { LoadLabelSetModal } from './LoadLabelSetModal'
 import { SaveLabelSetModal } from './SaveLabelSetModal'
 
 const mockLabelSets = { current: [] }
+const mockListError = { current: false }
+const mockRefetch = jest.fn()
 const mockGetLabelSet = jest.fn()
 const mockSaveLabelSet = jest.fn()
 
@@ -17,7 +20,8 @@ jest.mock('hooks/useLabelSets', () => ({
   useLabelSets: () => ({
     labelSets: mockLabelSets.current,
     isFetching: false,
-    isError: false,
+    isError: mockListError.current,
+    refetch: mockRefetch,
   }),
   useLabelSetService: () => ({ getLabelSet: mockGetLabelSet }),
   useSaveLabelSet: () => ({
@@ -33,9 +37,64 @@ const openSelect = (testId) => {
   fireEvent.keyDown(input, { key: 'ArrowDown', keyCode: 40 })
 }
 
+beforeEach(() => {
+  mockLabelSets.current = []
+  mockListError.current = false
+  mockRefetch.mockReset()
+})
+
 describe('LoadLabelSetModal', () => {
   beforeEach(() => {
     mockGetLabelSet.mockReset()
+  })
+
+  test('Shows an error with a retry when the list could not be loaded', async () => {
+    mockListError.current = true
+    await renderWithProviders(<LoadLabelSetModal show languages={['en']} />)
+
+    expect(
+      await screen.findByTestId('load-label-set-list-error')
+    ).toBeInTheDocument()
+    expect(screen.queryByTestId('load-label-set-empty')).not.toBeInTheDocument()
+    expect(getConfirmButton('Load label set')).toBeDisabled()
+
+    fireEvent.click(screen.getByRole('button', { name: 'Try again' }))
+    expect(mockRefetch).toHaveBeenCalled()
+  })
+
+  test('Ignores a label set that arrives after the modal was closed', async () => {
+    mockLabelSets.current = [{ lid: 5, name: 'Yes/No', languages: ['en'] }]
+    let resolveLoad
+    mockGetLabelSet.mockReturnValue(
+      new Promise((resolve) => {
+        resolveLoad = resolve
+      })
+    )
+    const onLoad = jest.fn()
+
+    const Harness = () => {
+      const [show, setShow] = useState(true)
+      return (
+        <LoadLabelSetModal
+          show={show}
+          languages={['en']}
+          onLoad={onLoad}
+          onHide={() => setShow(false)}
+        />
+      )
+    }
+    await renderWithProviders(<Harness />)
+
+    openSelect('load-label-set-select')
+    fireEvent.click(await screen.findByText('Yes/No'))
+    fireEvent.click(getConfirmButton('Load label set'))
+    fireEvent.click(getConfirmButton('Cancel'))
+
+    await act(async () => {
+      resolveLoad({ lid: 5, labels: [{ code: 'A1', l10ns: { en: 'Yes' } }] })
+    })
+
+    expect(onLoad).not.toHaveBeenCalled()
   })
 
   test('Shows a message when no label set has the survey languages', async () => {
@@ -90,7 +149,6 @@ describe('SaveLabelSetModal', () => {
   ]
 
   beforeEach(() => {
-    mockLabelSets.current = []
     mockSaveLabelSet.mockReset()
     mockSaveLabelSet.mockResolvedValue({ lid: 9 })
   })
@@ -147,6 +205,14 @@ describe('SaveLabelSetModal', () => {
 
     openSelect('save-label-set-overwrite-select')
     fireEvent.click(await screen.findByText('Old set'))
+    expect(
+      screen.getByTestId('save-label-set-overwrite-warning')
+    ).toHaveTextContent(
+      'You are about to replace an existing label set with the current answer options.'
+    )
+    expect(
+      screen.queryByTestId('save-label-set-removed-languages')
+    ).not.toBeInTheDocument()
     fireEvent.click(getConfirmButton('Save label set'))
 
     await waitFor(() =>
@@ -154,5 +220,67 @@ describe('SaveLabelSetModal', () => {
         expect.objectContaining({ lid: 4, languages: ['en'] })
       )
     )
+  })
+
+  test('Warns about lost translations and assessment values on overwrite', async () => {
+    mockLabelSets.current = [
+      {
+        lid: 4,
+        name: 'Old set',
+        languages: ['en', 'de', 'fr'],
+        hasAssessmentValues: true,
+      },
+    ]
+    await renderWithProviders(
+      <SaveLabelSetModal
+        show
+        _children={answers}
+        entityType={Entities.answer}
+        surveyLanguages={['en']}
+      />
+    )
+
+    fireEvent.click(screen.getByText('Yes'))
+    openSelect('save-label-set-overwrite-select')
+    fireEvent.click(await screen.findByText('Old set'))
+
+    const removedLanguages = screen.getByTestId(
+      'save-label-set-removed-languages'
+    )
+    expect(removedLanguages).toHaveTextContent(
+      'If you replace the label set these translations will be lost.'
+    )
+    expect(
+      [...removedLanguages.querySelectorAll('li')].map((li) => li.textContent)
+    ).toEqual(['de', 'fr'])
+    expect(
+      screen.getByTestId('save-label-set-assessment-warning')
+    ).toHaveTextContent(
+      'If you replace the label set the existing assessment values will be lost.'
+    )
+    // Like the classic editor, the overwrite is still allowed
+    expect(getConfirmButton('Save label set')).toBeEnabled()
+  })
+
+  test('Shows an error with a retry when the overwrite list could not be loaded', async () => {
+    mockListError.current = true
+    await renderWithProviders(
+      <SaveLabelSetModal
+        show
+        _children={answers}
+        entityType={Entities.answer}
+        surveyLanguages={['en']}
+      />
+    )
+
+    fireEvent.click(screen.getByText('Yes'))
+
+    expect(screen.getByTestId('save-label-set-list-error')).toBeInTheDocument()
+    expect(
+      screen.queryByTestId('save-label-set-overwrite-select')
+    ).not.toBeInTheDocument()
+    expect(getConfirmButton('Save label set')).toBeDisabled()
+    fireEvent.click(screen.getByRole('button', { name: 'Try again' }))
+    expect(mockRefetch).toHaveBeenCalled()
   })
 })

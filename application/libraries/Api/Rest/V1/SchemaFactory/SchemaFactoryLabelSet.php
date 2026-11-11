@@ -8,6 +8,8 @@ class SchemaFactoryLabelSet
 {
     /**
      * Schema of one label as returned and accepted by the label set endpoints.
+     *
+     * @return Schema The label schema
      */
     public function makeLabel(): Schema
     {
@@ -23,6 +25,8 @@ class SchemaFactoryLabelSet
 
     /**
      * Response of GET/POST/PUT label-sets with an id.
+     *
+     * @return Schema The label set schema
      */
     public function make(): Schema
     {
@@ -42,6 +46,8 @@ class SchemaFactoryLabelSet
 
     /**
      * Response of GET label-sets.
+     *
+     * @return Schema The label set list schema
      */
     public function makeList(): Schema
     {
@@ -55,7 +61,8 @@ class SchemaFactoryLabelSet
                         Schema::integer('lid'),
                         Schema::string('name'),
                         Schema::array('languages')->items(Schema::string()),
-                        Schema::integer('labelCount')
+                        Schema::integer('labelCount'),
+                        Schema::boolean('hasAssessmentValues')
                     )
                 )
             );
@@ -63,6 +70,8 @@ class SchemaFactoryLabelSet
 
     /**
      * Request body of POST/PUT label-sets.
+     *
+     * @return Schema The request body schema
      */
     public function makeSaveRequest(): Schema
     {

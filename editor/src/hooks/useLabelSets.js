@@ -33,6 +33,7 @@ export const useLabelSets = ({
     data: labelSets = [],
     isFetching,
     isError,
+    refetch,
   } = useQuery({
     queryKey: [LABEL_SETS_QUERY_KEY, languages, updatable],
     queryFn: () => labelSetService.getLabelSets({ languages, updatable }),
@@ -41,7 +42,7 @@ export const useLabelSets = ({
     staleTime: 0,
   })
 
-  return { labelSets, isFetching, isError }
+  return { labelSets, isFetching, isError, refetch }
 }
 
 export const useSaveLabelSet = () => {

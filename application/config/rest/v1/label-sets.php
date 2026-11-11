@@ -1,9 +1,10 @@
 <?php
 
 use LimeSurvey\Api\Command\V1\{
+    LabelSetCreate,
     LabelSetDetail,
     LabelSetList,
-    LabelSetSave
+    LabelSetOverwrite
 };
 use LimeSurvey\Api\Rest\V1\SchemaFactory\{
     SchemaFactoryError,
@@ -33,7 +34,7 @@ $errorResponses = [
     ]
 ];
 
-// The route with $id must come first: a route without $id also matches requests that have one.
+// The route with $id must come first: A route without $id also matches requests that have one.
 $rest['v1/label-sets/$id'] = [
     'GET' => [
         'tag' => 'label-sets',
@@ -52,7 +53,7 @@ $rest['v1/label-sets/$id'] = [
     'PUT' => [
         'tag' => 'label-sets',
         'description' => 'Overwrite the languages and labels of a label set',
-        'commandClass' => LabelSetSave::class,
+        'commandClass' => LabelSetOverwrite::class,
         'auth' => true,
         'schema' => $labelSetSchemaFactory->makeSaveRequest(),
         'responses' => array_merge([
@@ -94,7 +95,7 @@ $rest['v1/label-sets'] = [
     'POST' => [
         'tag' => 'label-sets',
         'description' => 'Create a label set',
-        'commandClass' => LabelSetSave::class,
+        'commandClass' => LabelSetCreate::class,
         'auth' => true,
         'schema' => $labelSetSchemaFactory->makeSaveRequest(),
         'responses' => array_merge([

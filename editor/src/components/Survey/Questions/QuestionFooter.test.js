@@ -68,11 +68,25 @@ describe('QuestionFooter label sets', () => {
     const icon = await screen.findByTestId(
       'question-footer-save-label-set-icon'
     )
+    expect(icon.tagName).toBe('BUTTON')
+    expect(icon).toHaveAccessibleName('Save subquestions as new label set')
+    expect(icon).toBeEnabled()
     fireEvent.click(icon)
 
     expect(
       await screen.findByTestId('save-label-set-modal')
     ).toBeInTheDocument()
+  })
+
+  test('Disables the save label set button when there is nothing to save', async () => {
+    await renderFooter({
+      questionThemeName: getQuestionTypeInfo().SINGLE_CHOICE_LIST_RADIO.theme,
+      answers: [],
+    })
+
+    expect(
+      await screen.findByTestId('question-footer-save-label-set-icon')
+    ).toBeDisabled()
   })
 
   test('Does not show the save label set icon for unsupported question types', async () => {

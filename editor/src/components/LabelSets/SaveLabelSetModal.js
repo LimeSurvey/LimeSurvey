@@ -9,6 +9,12 @@ import {
   showSuccessMessage,
 } from 'components/ConditionDesigner/utils'
 
+import { LabelSetListError } from './LabelSetListError'
+
+const NAME_INPUT_ID = 'save-label-set-name-input'
+const LANGUAGE_INPUT_ID = 'save-label-set-languages-input'
+const OVERWRITE_INPUT_ID = 'save-label-set-overwrite-input'
+
 /**
  * Saves the answer options or subquestions of a question as a new label set,
  * or overwrites an existing label set.
@@ -27,7 +33,12 @@ export const SaveLabelSetModal = ({
   const [allLanguages] = useAppState(STATES.ALL_AVAILABLE_LANGUAGES)
   const [userDetails] = useAppState(STATES.USER_DETAIL)
   const { saveLabelSet, isSaving } = useSaveLabelSet()
-  const { labelSets: updatableLabelSets, isFetching } = useLabelSets({
+  const {
+    labelSets: updatableLabelSets,
+    isFetching,
+    isError,
+    refetch,
+  } = useLabelSets({
     updatable: true,
     enabled: show && overwrite,
   })
@@ -42,11 +53,13 @@ export const SaveLabelSetModal = ({
   }, [show])
 
   const languageNames = allLanguages?.[userDetails?.lang]
+  const getLanguageName = (language) =>
+    languageNames?.[language]?.description || language
   const languageOptions = useMemo(
     () =>
       surveyLanguages.map((language) => ({
         value: language,
-        label: languageNames?.[language]?.description || language,
+        label: getLanguageName(language),
       })),
     [surveyLanguages, languageNames]
   )
@@ -58,6 +71,17 @@ export const SaveLabelSetModal = ({
         label: labelSet.name,
       })),
     [updatableLabelSets]
+  )
+
+  // Like the classic editor, overwriting replaces all labels and drops the
+  // translations of languages that are not selected, so say what will be lost
+  const overwriteTarget = overwrite
+    ? updatableLabelSets.find(
+        (labelSet) => Number(labelSet.lid) === Number(overwriteLid)
+      )
+    : null
+  const removedLanguages = (overwriteTarget?.languages ?? []).filter(
+    (language) => !languages.includes(language)
   )
 
   const isAnswer = entityType === Entities.answer
@@ -80,12 +104,12 @@ export const SaveLabelSetModal = ({
       })
       showSuccessMessage(
         overwrite
-          ? t('Label set successfully updated.')
+          ? t('Label set successfully updated')
           : t('Label set successfully saved.')
       )
       onHide()
     } catch (error) {
-      showErrorMessage(error?.message || t('Could not save the label set.'))
+      showErrorMessage(error?.message || t('Error'))
     }
   }
 
@@ -106,6 +130,7 @@ export const SaveLabelSetModal = ({
           <div className="label-set-modal-fields">
             {!overwrite && (
               <Input
+                id={NAME_INPUT_ID}
                 labelText={t('Label set name')}
                 value={name}
                 update={(value) => setName(value)}
@@ -121,6 +146,7 @@ export const SaveLabelSetModal = ({
               update={(value) => setLanguages(value)}
               isMultiselect
               dataTestId="save-label-set-languages"
+              inputId={LANGUAGE_INPUT_ID}
             />
             <ToggleButtons
               id="save-label-set-overwrite"
@@ -132,7 +158,13 @@ export const SaveLabelSetModal = ({
               value={overwrite}
               update={(value) => setOverwrite(value)}
             />
-            {overwrite && (
+            {overwrite && isError && !isFetching && (
+              <LabelSetListError
+                onRetry={refetch}
+                testId="save-label-set-list-error"
+              />
+            )}
+            {overwrite && !(isError && !isFetching) && (
               <Select
                 labelText={t('Overwrite label set')}
                 options={overwriteOptions}
@@ -142,7 +174,56 @@ export const SaveLabelSetModal = ({
                 placeholder={isFetching ? t('Loading...') : undefined}
                 disabled={isFetching}
                 dataTestId="save-label-set-overwrite-select"
+                inputId={OVERWRITE_INPUT_ID}
               />
+            )}
+            {overwriteTarget && (
+              <div
+                className="label-set-modal-warning"
+                role="alert"
+                data-testid="save-label-set-overwrite-warning"
+              >
+                {/* Same warnings as the classic editor, plus the names of the lost languages */}
+                {overwriteTarget.hasAssessmentValues && (
+                  <p data-testid="save-label-set-assessment-warning">
+                    {t(
+                      'The existing label set has assessment values assigned.'
+                    )}{' '}
+                    <strong>
+                      {t(
+                        'If you replace the label set the existing assessment values will be lost.'
+                      )}
+                    </strong>
+                  </p>
+                )}
+                {removedLanguages.length > 0 && (
+                  <div data-testid="save-label-set-removed-languages">
+                    <p>
+                      {t(
+                        'The existing label set has different/more languages.'
+                      )}{' '}
+                      <strong>
+                        {t(
+                          'If you replace the label set these translations will be lost.'
+                        )}
+                      </strong>
+                    </p>
+                    <ul className="label-set-modal-removed-languages">
+                      {removedLanguages.map((language) => (
+                        <li key={language}>{getLanguageName(language)}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+                {!overwriteTarget.hasAssessmentValues &&
+                  removedLanguages.length === 0 && (
+                    <p>
+                      {t(
+                        'You are about to replace an existing label set with the current answer options.'
+                      )}
+                    </p>
+                  )}
+              </div>
             )}
           </div>
         </div>
@@ -152,6 +233,7 @@ export const SaveLabelSetModal = ({
       onConfirm={handleSave}
       isLoading={isSaving}
       confirmDisabled={!isValid}
+      onEntered={() => document.getElementById(NAME_INPUT_ID)?.focus()}
     />
   )
 }

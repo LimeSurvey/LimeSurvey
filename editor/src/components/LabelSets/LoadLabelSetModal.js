@@ -1,9 +1,13 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { useLabelSets, useLabelSetService } from 'hooks'
 import { ComponentModal } from 'components/Modals'
 import { Select } from 'components/UIComponents'
 import { showErrorMessage } from 'components/ConditionDesigner/utils'
+
+import { LabelSetListError } from './LabelSetListError'
+
+const SELECT_INPUT_ID = 'load-label-set-select-input'
 
 /**
  * Lets the user pick a label set and hands its labels to onLoad.
@@ -17,17 +21,29 @@ export const LoadLabelSetModal = ({
 }) => {
   const [selectedLid, setSelectedLid] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
+  // Bumped whenever the modal opens or closes, so a load that finishes later is ignored
+  const loadRequestId = useRef(0)
   const labelSetService = useLabelSetService()
-  const { labelSets, isFetching } = useLabelSets({
+  const { labelSets, isFetching, isError, refetch } = useLabelSets({
     languages,
     enabled: show,
   })
 
   useEffect(() => {
+    loadRequestId.current++
+    setIsLoading(false)
     if (show) {
       setSelectedLid(null)
     }
   }, [show])
+
+  // The select is disabled while loading, so focus it again once the list is there
+  const focusSelect = () => document.getElementById(SELECT_INPUT_ID)?.focus()
+  useEffect(() => {
+    if (show && !isFetching) {
+      focusSelect()
+    }
+  }, [show, isFetching])
 
   const options = useMemo(
     () =>
@@ -43,19 +59,60 @@ export const LoadLabelSetModal = ({
       return
     }
 
+    const requestId = ++loadRequestId.current
+    const isCurrentRequest = () => requestId === loadRequestId.current
+
     setIsLoading(true)
     try {
       const labelSet = await labelSetService.getLabelSet(selectedLid)
+      if (!isCurrentRequest()) {
+        return
+      }
       onLoad(labelSet?.labels ?? [])
       onHide()
     } catch (error) {
-      showErrorMessage(error?.message || t('Could not load the label set.'))
+      if (isCurrentRequest()) {
+        showErrorMessage(error?.message || t('Error'))
+      }
     } finally {
-      setIsLoading(false)
+      if (isCurrentRequest()) {
+        setIsLoading(false)
+      }
     }
   }
 
-  const hasNoLabelSets = !isFetching && labelSets.length === 0
+  const renderList = () => {
+    if (isError && !isFetching) {
+      return (
+        <LabelSetListError
+          onRetry={refetch}
+          testId="load-label-set-list-error"
+        />
+      )
+    }
+
+    if (!isFetching && labelSets.length === 0) {
+      return (
+        <p className="label-set-modal-empty" data-testid="load-label-set-empty">
+          {t('No label sets found.')}
+        </p>
+      )
+    }
+
+    return (
+      <Select
+        labelText={t('Label set')}
+        options={options}
+        value={selectedLid}
+        defaultValue={null}
+        update={(value) => setSelectedLid(value)}
+        placeholder={isFetching ? t('Loading...') : t('Please choose...')}
+        disabled={isFetching}
+        dataTestId="load-label-set-select"
+        inputId={SELECT_INPUT_ID}
+      />
+    )
+  }
 
   return (
     <ComponentModal
@@ -69,34 +126,16 @@ export const LoadLabelSetModal = ({
           <p className="label-set-modal-description">
             {t('Select your label set for this question.')}
           </p>
-          {hasNoLabelSets ? (
-            <p
-              className="label-set-modal-empty"
-              data-testid="load-label-set-empty"
-            >
-              {t("There are no label sets for this survey's languages.")}
-            </p>
-          ) : (
-            <Select
-              labelText={t('Label set')}
-              options={options}
-              value={selectedLid}
-              defaultValue={null}
-              update={(value) => setSelectedLid(value)}
-              placeholder={
-                isFetching ? t('Loading...') : t('Please select label set...')
-              }
-              disabled={isFetching}
-              dataTestId="load-label-set-select"
-            />
-          )}
+          {/* The list is fetched when the modal opens */}
+          <div aria-live="polite">{renderList()}</div>
         </div>
       }
       useFooter
       confirmButtonText={t('Load label set')}
       onConfirm={handleLoad}
       isLoading={isLoading}
-      confirmDisabled={!selectedLid}
+      confirmDisabled={!selectedLid || isError}
+      onEntered={focusSelect}
     />
   )
 }

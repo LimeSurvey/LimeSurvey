@@ -47,6 +47,9 @@ export const QuestionFooter = ({
     : Entities.subquestion
   const labelSetChildren =
     (isSingleChoiceTheme ? question.answers : question.subquestions) || []
+  const saveLabelSetLabel = isSingleChoiceTheme
+    ? t('Save answers as new label set')
+    : t('Save subquestions as new label set')
 
   const handleRemoveQuestion = () => {
     setShowDeleteModal(true)
@@ -92,18 +95,12 @@ export const QuestionFooter = ({
         className="question-footer align-items-center justify-content-end d-flex gap-3 text-end pt-3 pe-3"
       >
         {isFocused && supportsLabelSets && (
-          <TooltipContainer
-            tip={
-              isSingleChoiceTheme
-                ? t('Save answers as new label set')
-                : t('Save subquestions as new label set')
-            }
-          >
-            <div
-              className={classNames({
-                'cursor-pointer': labelSetChildren.length > 0,
-                'opacity-50 pointer-events-none': !labelSetChildren.length,
-              })}
+          <TooltipContainer tip={saveLabelSetLabel}>
+            <button
+              type="button"
+              className="question-footer-icon-button"
+              aria-label={saveLabelSetLabel}
+              disabled={!labelSetChildren.length}
               data-testid="question-footer-save-label-set-icon"
               onClick={() => setShowSaveLabelSetModal(true)}
             >
@@ -111,8 +108,9 @@ export const QuestionFooter = ({
                 className="footer-icon fill-current"
                 width={20}
                 height={20}
+                aria-hidden="true"
               />
-            </div>
+            </button>
           </TooltipContainer>
         )}
         <div
