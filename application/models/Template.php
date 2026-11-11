@@ -290,20 +290,12 @@ class Template extends LSActiveRecord
     public static function checkTemplateXML($template)
     {
         // Core templates should never be checked for validity
-        // TODO: we can not trust the filestate and need to be
-        //  able to check the theme type (core or custom) from the database, this should replace the call to getTemplatesData()
-        $templates = array_column(LsDefaultDataSets::getTemplatesData(), 'name');
-        if (in_array($template->name, $templates, true)) {
+        if (self::isCoreTemplate($template)) {
             return true;
         }
         // check if the configuration can be found
-        $userThemePath = App()->getConfig("userthemerootdir") . DIRECTORY_SEPARATOR . $template->folder . DIRECTORY_SEPARATOR . 'config.xml';
-        $standardThemePath = App()->getConfig("standardthemerootdir") . DIRECTORY_SEPARATOR . $template->folder . DIRECTORY_SEPARATOR . 'config.xml';
-        if (is_file($userThemePath)) {
-            $currentThemePath = $userThemePath;
-        } elseif (is_file($standardThemePath)) {
-            $currentThemePath = $standardThemePath;
-        } else {
+        $currentThemePath = self::getConfigXmlPath($template);
+        if ($currentThemePath === null) {
             return false;
         }
 
@@ -314,6 +306,56 @@ class Template extends LSActiveRecord
 
         // all checks succeeded, continue loading the theme
         return true;
+    }
+
+    /**
+     * Check if a custom theme is outdated: It was made for the previous major LimeSurvey version.
+     * Outdated themes stay installed and usable, they are only flagged in the theme list.
+     * Core themes are never outdated.
+     *
+     * @param Template $template The template model
+     * @return bool True if the theme is outdated
+     */
+    public static function isOutdatedTemplate($template): bool
+    {
+        if (self::isCoreTemplate($template)) {
+            return false;
+        }
+        $configXmlPath = self::getConfigXmlPath($template);
+        return $configXmlPath !== null && TemplateConfig::isOutdated($configXmlPath);
+    }
+
+    /**
+     * Check if a template is one of the core themes shipped with LimeSurvey
+     *
+     * @param Template $template The template model
+     * @return bool True for a core theme
+     */
+    private static function isCoreTemplate($template): bool
+    {
+        // TODO: we can not trust the filestate and need to be
+        //  able to check the theme type (core or custom) from the database, this should replace the call to getTemplatesData()
+        $templates = array_column(LsDefaultDataSets::getTemplatesData(), 'name');
+        return in_array($template->name, $templates, true);
+    }
+
+    /**
+     * Get the full path of the config.xml of a template, looking in the user themes first
+     *
+     * @param Template $template The template model
+     * @return string|null The path, or null if no config.xml was found
+     */
+    private static function getConfigXmlPath($template): ?string
+    {
+        $userThemePath = App()->getConfig("userthemerootdir") . DIRECTORY_SEPARATOR . $template->folder . DIRECTORY_SEPARATOR . 'config.xml';
+        $standardThemePath = App()->getConfig("standardthemerootdir") . DIRECTORY_SEPARATOR . $template->folder . DIRECTORY_SEPARATOR . 'config.xml';
+        if (is_file($userThemePath)) {
+            return $userThemePath;
+        }
+        if (is_file($standardThemePath)) {
+            return $standardThemePath;
+        }
+        return null;
     }
 
     /**
