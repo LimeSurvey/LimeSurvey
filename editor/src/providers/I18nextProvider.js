@@ -20,10 +20,11 @@ export const I18Provider = ({ i18n, children, language }) => {
     }
 
     let isCancelled = false
+    const localeController = new AbortController()
 
     // Make sure locale initialization is awaited before rerender so children use the correct language
     const initialize = async (lang) => {
-      await loadDayjsLocale(lang)
+      await loadDayjsLocale(lang, { signal: localeController.signal })
       if (isCancelled) {
         return
       }
@@ -54,6 +55,7 @@ export const I18Provider = ({ i18n, children, language }) => {
 
     return () => {
       isCancelled = true
+      localeController.abort()
     }
   }, [auth.token, language])
 
