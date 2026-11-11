@@ -63,6 +63,34 @@
             </props>
         </attribute>
         <attribute>
+            <name>date_format</name>
+            <component>Select</component>
+            <caption>Date/time format</caption>
+            <options>
+                <option>yyyy-mm-dd</option>
+                <option>yyyy/mm/dd</option>
+                <option>mm-dd-yyyy</option>
+                <option>mm/dd/yyyy</option>
+                <option>dd-mm-yyyy</option>
+                <option>dd/mm/yyyy</option>
+                <option>yyyy-mm-dd HH:MM</option>
+                <option>yyyy/mm/dd HH:MM</option>
+                <option>mm-dd-yyyy HH:MM</option>
+                <option>mm/dd/yyyy HH:MM</option>
+                <option>dd-mm-yyyy HH:MM</option>
+                <option>dd/mm/yyyy HH:MM</option>
+                <option>HH:MM</option>
+            </options>
+            <props>
+                <dataTestId>date-time-format</dataTestId>
+                <!-- Any combination of d/dd, m/mm, yy/yyyy, H/HH and M/MM is allowed, so a custom format can be typed in -->
+                <isCreatable>1</isCreatable>
+                <!-- Cleared means the survey's date format is used -->
+                <isClearable>1</isClearable>
+                <placeholder>Survey date format</placeholder>
+            </props>
+        </attribute>
+        <attribute>
             <name>dropdown_dates_month_style</name>
             <component>ToggleButtons</component>
             <caption>Month display style</caption>
