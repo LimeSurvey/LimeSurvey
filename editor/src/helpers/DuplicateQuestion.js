@@ -1,6 +1,29 @@
 import { NEW_OBJECT_ID_PREFIX, RandomNumber } from 'helpers'
+import { getScenarioConditions } from 'helpers/Buffer/operationsHandlers'
 import { cloneDeep } from 'lodash'
 
+const getConditions = (question) => getScenarioConditions(question?.scenarios)
+
+/**
+ * Whether the question still shows conditions copied from the question it
+ * duplicates (see DuplicateQuestion). They carry the condition IDs of the
+ * original: Changing or deleting one would change the original's condition.
+ * The survey is reloaded once the duplicate was saved, which brings its own
+ * conditions.
+ * @param {object} question
+ * @returns {boolean}
+ */
+export const hasCopiedConditions = (question) =>
+  getConditions(question).some((condition) => condition.isCopy)
+
+/**
+ * A copy of the question with temp IDs, to be created by the server.
+ * Its conditions keep the condition IDs of the original: The server copies
+ * the conditions with these IDs to the new question, under new IDs the
+ * response doesn't return. They are flagged `isCopy` (see hasCopiedConditions).
+ * @param {object} question
+ * @returns {object}
+ */
 export const DuplicateQuestion = (question) => {
   const newDuplicatedQuestionId = `${NEW_OBJECT_ID_PREFIX}${RandomNumber()}`
   const duplicatedQuestion = cloneDeep({
@@ -63,6 +86,10 @@ export const DuplicateQuestion = (question) => {
         qid: tempId,
       }
     }) || []
+
+  getConditions(duplicatedQuestion).forEach((condition) => {
+    condition.isCopy = true
+  })
 
   return duplicatedQuestion
 }

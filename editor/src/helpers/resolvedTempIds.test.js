@@ -52,6 +52,24 @@ describe('resolvedTempIds', () => {
     expect(resolved[1]).toEqual({ cqid: 77 })
   })
 
+  it('only applies the mappings newer than the data, as temp IDs can be drawn again', () => {
+    // A new unsaved question drew temp__501 again, after it was resolved.
+    const version = getResolvedTempIdsVersion()
+    const conditions = [{ cqid: 'temp__501', cfieldname: 'Qtemp__501' }]
+
+    expect(resolveTempIds(conditions, version)).toBe(conditions)
+    expect(isResolvedTempId('temp__501', 77, version)).toBe(false)
+
+    // Its own mapping arrives later.
+    rememberResolvedTempIds([{ tempId: 'temp__501', id: 88 }])
+    expect(resolveTempIds(conditions, version)).toEqual([
+      { cqid: 88, cfieldname: 'Q88' },
+    ])
+    expect(isResolvedTempId('temp__501', 88, version)).toBe(true)
+
+    rememberResolvedTempIds([{ tempId: 'temp__501', id: 77 }])
+  })
+
   it('forgets every mapping when cleared, and tracks changes', () => {
     const version = getResolvedTempIdsVersion()
     clearResolvedTempIds()

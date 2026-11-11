@@ -22,7 +22,6 @@ import {
   isDuplicate,
 } from '../components/ConditionDesigner/utils'
 import { useBuffer } from './useBuffer'
-import { useFocused } from './useFocused'
 
 const getSuccessMessage = (action) =>
   action === 'delete'
@@ -63,8 +62,7 @@ export const useConditionDesigner = ({
   scenarioToPatch = null,
   previousQuestions = [],
 }) => {
-  const { focused } = useFocused()
-  const { addToBuffer } = useBuffer()
+  const { addOperationsToBuffer } = useBuffer()
 
   const [scid, setScid] = useState(scenarioToPatch ? scenarioToPatch.scid : 1)
   const [conditions, setConditions] = useState(() =>
@@ -81,14 +79,17 @@ export const useConditionDesigner = ({
   // server replaces those IDs, switch to the real ones, otherwise the queued
   // operations would point at temp IDs that will never be resolved again.
   // Only resolve again when new temp ID mappings arrived, not on every survey
-  // change (e.g. each keystroke elsewhere in the survey).
-  const resolvedTempIdsVersion = useRef(null)
+  // change (e.g. each keystroke elsewhere in the survey), and only with these
+  // new mappings: An older mapping of the same temp ID is about another
+  // entity (temp IDs can be drawn again).
+  const resolvedTempIdsVersion = useRef(getResolvedTempIdsVersion())
   useEffect(() => {
     const version = getResolvedTempIdsVersion()
-    if (version === resolvedTempIdsVersion.current) return
+    const previousVersion = resolvedTempIdsVersion.current
+    if (version === previousVersion) return
 
     resolvedTempIdsVersion.current = version
-    setConditions((prev) => resolveTempIds(prev))
+    setConditions((prev) => resolveTempIds(prev, previousVersion))
   }, [survey])
 
   const withUpdatedFlag = (condition) =>
@@ -109,8 +110,7 @@ export const useConditionDesigner = ({
       question,
       groupIndex,
       questionIndex,
-      update,
-      focused
+      update
     )
   }
 
@@ -165,15 +165,17 @@ export const useConditionDesigner = ({
   }
 
   const deleteConditions = (deletedConditions) => {
-    deletedConditions.forEach((condition) => {
-      addToBuffer(
+    addOperationsToBuffer(
+      deletedConditions.map((condition) =>
         buildConditionDeleteOperation(
           condition.qid,
           scenarioToPatch.scid,
           condition.cid
         )
       )
+    )
 
+    deletedConditions.forEach((condition) => {
       question.scenarios = question.scenarios
         .map((sc) => {
           if (sc.scid === scenarioToPatch.scid) {
@@ -189,8 +191,6 @@ export const useConditionDesigner = ({
     })
 
     syncQuestion()
-    focused.scenarios = question.scenarios
-    focused.relevance = question.relevance
   }
 
   /**
@@ -247,14 +247,13 @@ export const useConditionDesigner = ({
       }
 
       // One operation per condition, keyed by its cid.
-      buildConditionOperations(question.qid, apiProps.scenarios).forEach(
-        (operation) => addToBuffer(operation)
+      addOperationsToBuffer(
+        buildConditionOperations(question.qid, apiProps.scenarios)
       )
 
       return { saved: Boolean(message), hasDuplicate, message }
     } catch (error) {
       question.scenarios = originalScenarios
-      focused.scenarios = originalScenarios
       throw new Error(`Scenario save failed: ${error.message}`)
     }
   }

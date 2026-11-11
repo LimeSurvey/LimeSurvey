@@ -1,6 +1,4 @@
-import { hasPendingConditionLogicOperations, STATES } from 'helpers'
-
-import { isConditionOperationWaiting } from 'helpers/Buffer/operationsHandlers'
+import { hasConditionLogicOperationsToSend, STATES } from 'helpers'
 
 import { useAppState } from './useAppState'
 import { useBufferOperations } from './useBuffer'
@@ -36,9 +34,6 @@ export const useIsConditionRelevancePending = (question) => {
 
   return (
     (inFlightConditionQids ?? []).includes(String(qid)) ||
-    hasPendingConditionLogicOperations(
-      (operations ?? []).filter((op) => !isConditionOperationWaiting(op)),
-      qid
-    )
+    hasConditionLogicOperationsToSend(operations, qid)
   )
 }

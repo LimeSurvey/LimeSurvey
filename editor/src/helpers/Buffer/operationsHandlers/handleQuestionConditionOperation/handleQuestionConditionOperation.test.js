@@ -2,7 +2,9 @@ import { Operations } from 'helpers'
 import {
   getKnownTempIds,
   handleQuestionConditionOperation,
+  hasUnansweredConditionCreate,
   isConditionOperationWaiting,
+  removeConditionOperationsOfQuestions,
   removeConditionOpsWithUnknownTempIds,
   removeConditionOpsOfFailedCreates,
 } from './handleQuestionConditionOperation'
@@ -168,7 +170,7 @@ describe('handleQuestionConditionOperation', () => {
 
     test('an older delete of the same condition is replaced', () => {
       const result = handleQuestionConditionOperation(
-        [{ ...conditionDelete(5), error: true }],
+        [conditionDelete(5)],
         conditionDelete(5)
       )
 
@@ -207,108 +209,6 @@ describe('handleQuestionConditionOperation', () => {
       expect(result.bufferOperations).toEqual([script()])
       expect(result.newOperation).toEqual(operation)
     })
-
-    test('a restored script is discarded when a newer script replaces it', () => {
-      const newer = script(QID, {
-        props: { qid: QID, action: 'conditionScript', script: 'Q10 == "A2"' },
-      })
-      const result = handleQuestionConditionOperation(
-        [newer],
-        script(QID, { error: true })
-      )
-
-      expect(result.bufferOperations).toEqual([newer])
-      expect(result.addToBuffer).toBe(false)
-    })
-
-    test('a restored script keeps the newer condition changes and resets the server conditions before them', () => {
-      const otherQuestion = conditionOperation(condition(5, { qid: 30 }))
-      const newerCreate = conditionOperation(newCondition('temp__1_1'))
-      const result = handleQuestionConditionOperation(
-        [otherQuestion, newerCreate],
-        script(QID, { error: true })
-      )
-
-      expect(result.bufferOperations).toEqual([
-        otherQuestion,
-        {
-          id: QID,
-          qid: QID,
-          entity: 'questionCondition',
-          op: Operations.delete,
-          props: { qid: QID, action: 'deleteAllConditions' },
-        },
-        newerCreate,
-      ])
-      expect(result.addToBuffer).toBe(false)
-    })
-
-    test('a restored script is added when nothing newer is buffered for the question', () => {
-      const restored = script(QID, { error: true })
-      const result = handleQuestionConditionOperation([], restored)
-
-      expect(result.newOperation).toEqual(restored)
-      expect(result.addToBuffer).toBe(true)
-    })
-  })
-
-  describe('operations put back after a failed request', () => {
-    const restored = (operation) => ({ ...operation, error: true })
-
-    test('are added back when nothing newer is buffered', () => {
-      const operation = restored(conditionOperation(condition(5)))
-      const result = handleQuestionConditionOperation([], operation)
-
-      expect(result.newOperation).toEqual(operation)
-      expect(result.addToBuffer).toBe(true)
-    })
-
-    test('a newer edit of the same condition wins', () => {
-      const newer = conditionOperation(condition(5, { value: 'new' }))
-      const result = handleQuestionConditionOperation(
-        [newer],
-        restored(conditionOperation(condition(5, { value: 'old' })))
-      )
-
-      expect(result.bufferOperations).toEqual([newer])
-      expect(result.addToBuffer).toBe(false)
-    })
-
-    test('a restored create stays a create, with the newer values', () => {
-      const newer = conditionOperation(
-        condition('temp__1_1', { value: 'new' }),
-        2
-      )
-      const result = handleQuestionConditionOperation(
-        [newer],
-        restored(conditionOperation(newCondition('temp__1_1')))
-      )
-
-      expect(result.bufferOperations).toEqual([
-        conditionOperation(newCondition('temp__1_1', { value: 'new' }), 2),
-      ])
-      expect(result.addToBuffer).toBe(false)
-    })
-
-    test('a condition deleted meanwhile is not brought back', () => {
-      const result = handleQuestionConditionOperation(
-        [conditionDelete(5)],
-        restored(conditionOperation(condition(5)))
-      )
-
-      expect(result.bufferOperations).toEqual([conditionDelete(5)])
-      expect(result.addToBuffer).toBe(false)
-    })
-
-    test('a condition replaced meanwhile by a script is not brought back', () => {
-      const result = handleQuestionConditionOperation(
-        [script()],
-        restored(conditionOperation(condition(5)))
-      )
-
-      expect(result.bufferOperations).toEqual([script()])
-      expect(result.addToBuffer).toBe(false)
-    })
   })
 })
 
@@ -337,30 +237,13 @@ describe('removeConditionOpsOfFailedCreates', () => {
     expect(removeConditionOpsOfFailedCreates(buffer)).toEqual([saved])
   })
 
-  test('keeps a create put back after a failed request, and its temp cid', () => {
-    const restoredCreate = {
-      ...conditionOperation(newCondition('temp__1_2', { value: 'A2' })),
-      error: true,
-    }
+  test('keeps the buffered creates, and their temp cids', () => {
     const buffer = [
-      restoredCreate,
+      conditionOperation(newCondition('temp__1_2', { value: 'A2' })),
       conditionOperation(newCondition('temp__1_3')),
     ]
 
     expect(removeConditionOpsOfFailedCreates(buffer)).toBe(buffer)
-  })
-
-  test('drops the delete of a condition whose create came back with the request failure', () => {
-    // The delete is handled first: The restored create is then dropped.
-    const buffer = [conditionDelete('temp__1_2')]
-    const restored = handleQuestionConditionOperation(buffer, {
-      ...conditionOperation(newCondition('temp__1_2')),
-      error: true,
-    })
-
-    expect(
-      removeConditionOpsOfFailedCreates(restored.bufferOperations)
-    ).toEqual([])
   })
 
   test('keeps the buffer as is without such an operation', () => {
@@ -471,5 +354,63 @@ describe('condition operations waiting for a temp ID', () => {
 
     expect([...missing]).toEqual(['temp__36'])
     stringify.mockRestore()
+  })
+})
+
+describe('hasUnansweredConditionCreate', () => {
+  const operationOf = (cid, apiCondition) => ({
+    id: cid,
+    qid: QID,
+    entity: 'questionCondition',
+    op: Operations.update,
+    props: { qid: QID, scenarios: [{ scid: 1, conditions: [apiCondition] }] },
+  })
+  const sent = [
+    operationOf('temp__5_1', newCondition('temp__5_1')),
+    operationOf(40, condition(40)),
+  ]
+
+  test('is false when every sent create got its real cid', () => {
+    expect(
+      hasUnansweredConditionCreate(sent, [{ tempId: 'temp__5_1', id: 900 }])
+    ).toBe(false)
+    expect(hasUnansweredConditionCreate([sent[1]], undefined)).toBe(false)
+  })
+
+  test('is true when a sent create got no real cid', () => {
+    // A failed request has no mappings at all.
+    expect(hasUnansweredConditionCreate(sent, undefined)).toBe(true)
+    // The server skipped the condition without an error.
+    expect(
+      hasUnansweredConditionCreate(sent, [{ tempId: 'temp__6_1', id: 901 }])
+    ).toBe(true)
+  })
+})
+
+describe('removeConditionOperationsOfQuestions', () => {
+  const questionUpdate = { id: QID, entity: 'question', op: Operations.update }
+  const ofOtherQuestion = conditionOperation(condition(7, { qid: 30 }))
+  ofOtherQuestion.qid = 30
+  ofOtherQuestion.props.qid = 30
+
+  test('removes the condition operations of the given questions only', () => {
+    const buffer = [
+      conditionOperation(condition(5)),
+      script(),
+      questionUpdate,
+      ofOtherQuestion,
+    ]
+
+    expect(removeConditionOperationsOfQuestions(buffer, [QID, 99])).toEqual([
+      questionUpdate,
+      ofOtherQuestion,
+    ])
+  })
+
+  test('keeps the buffer as is without such an operation', () => {
+    const buffer = [questionUpdate, ofOtherQuestion]
+
+    expect(removeConditionOperationsOfQuestions(buffer, [QID])).toBe(buffer)
+    expect(removeConditionOperationsOfQuestions(buffer, [])).toBe(buffer)
   })
 })

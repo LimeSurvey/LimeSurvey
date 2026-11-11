@@ -45,7 +45,8 @@ export const SurveyStructure = () => {
     update,
   } = useSurvey(surveyId)
 
-  const { addToBuffer } = useBuffer()
+  const { addToBuffer, removeConditionOperationsOfQuestionsFromBuffer } =
+    useBuffer()
   const { clearSurveyRequestTimestamp } = useSurveyRequestTimestamp()
   const [, setSurveyRefreshRequired] = useAppState(
     STATES.SURVEY_REFRESH_REQUIRED
@@ -96,6 +97,10 @@ export const SurveyStructure = () => {
     }
 
     handleUpdate(updatedQuestionGroups)
+    // The pending condition changes of its questions go with the group.
+    removeConditionOperationsOfQuestionsFromBuffer(
+      (questionGroup.questions ?? []).map((question) => question.qid)
+    )
     addToBuffer(operation)
     setDeleteGroupState({ show: false, questionGroup: null, index: null })
   }

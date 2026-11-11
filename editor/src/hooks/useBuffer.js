@@ -4,6 +4,8 @@ import { useQuery } from '@tanstack/react-query'
 import { queryClient } from 'queryClient'
 import { OperationsBuffer, STATES } from 'helpers'
 
+import { removeConditionOperationsOfQuestions } from 'helpers/Buffer/operationsHandlers'
+
 import { useErrors } from './useErrors'
 
 /**
@@ -54,6 +56,29 @@ export const useBuffer = () => {
     queryClient.setQueryData([STATES.BUFFER], newOperations)
   }, [])
 
+  /**
+   * Adds several operations with a single buffer write (one copy of the
+   * buffer, one save trigger), e.g. the conditions of a scenario.
+   * @param {Array} operations
+   * @returns {void}
+   */
+  const addOperationsToBuffer = (operations = []) => {
+    if (!operations.length) return
+    if (!queryClient.getQueryData([STATES.SURVEY])?.survey) return
+    if (process.env.STORYBOOK_DEV === 'true') return
+
+    const operationBuffer = new OperationsBuffer(
+      queryClient.getQueryData([STATES.BUFFER])
+    )
+    operations.forEach((operation) => operationBuffer.addOperation(operation))
+    operationBuffer.setBufferHash(Math.random())
+
+    setBuffer(operationBuffer.getOperations(), operationBuffer.bufferHash)
+    operations.forEach((operation) =>
+      removeError(operation.id, operation.entity)
+    )
+  }
+
   const addToBuffer = (operation, updateCurrentOperation = true) => {
     const operationBuffer = new OperationsBuffer(
       queryClient.getQueryData([STATES.BUFFER])
@@ -75,9 +100,24 @@ export const useBuffer = () => {
     removeError(operation.id, operation.entity)
   }
 
+  /**
+   * Removes the buffered condition operations of the given questions, e.g.
+   * before their group is deleted.
+   * @param {Array<number|string>} qids
+   * @returns {void}
+   */
+  const removeConditionOperationsOfQuestionsFromBuffer = (qids = []) => {
+    const operations = queryClient.getQueryData([STATES.BUFFER]) ?? []
+    const kept = removeConditionOperationsOfQuestions(operations, qids)
+
+    if (kept !== operations) setBuffer(kept, Math.random())
+  }
+
   return {
     operationsBuffer: new OperationsBuffer(data, hash),
     addToBuffer,
+    addOperationsToBuffer,
+    removeConditionOperationsOfQuestionsFromBuffer,
     clearBuffer,
     setBuffer,
   }

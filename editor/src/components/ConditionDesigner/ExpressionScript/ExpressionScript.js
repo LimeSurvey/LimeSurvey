@@ -24,7 +24,7 @@ import {
 export const ExpressionScript = ({ onNavigateBack = () => {} }) => {
   const { surveyId } = useParams()
   const { survey, update } = useSurvey(surveyId)
-  const { focused, groupIndex, questionIndex } = useFocused()
+  const { focused } = useFocused()
   const { addToBuffer } = useBuffer()
 
   const question = getQuestionById(focused.qid, survey).question
@@ -58,15 +58,7 @@ export const ExpressionScript = ({ onNavigateBack = () => {} }) => {
   }, [question.relevance])
 
   const handleApply = () => {
-    handleConditionScriptUpdate(
-      content,
-      survey,
-      questionIndex,
-      groupIndex,
-      addToBuffer,
-      update,
-      onNavigateBack
-    )
+    handleConditionScriptUpdate(content, addToBuffer, update, onNavigateBack)
   }
 
   const shouldShowUnsavedAlert = () => {
@@ -82,7 +74,7 @@ export const ExpressionScript = ({ onNavigateBack = () => {} }) => {
   const handleApplyClick = () => {
     if (question?.scenarios.length > 0) {
       showConditionOverwriteConfirmationOverlay({
-        onConfirm: () => handleApply(content),
+        onConfirm: handleApply,
         onCancel: onNavigateBack,
       })
     } else {

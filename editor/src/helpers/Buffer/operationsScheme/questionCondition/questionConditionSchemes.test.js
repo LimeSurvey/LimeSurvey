@@ -494,10 +494,6 @@ describe('questionConditionDeleteJoi Schema Validation', () => {
         qid: 2,
         scenarios: [
           {
-            scid: 1,
-            action: 'deleteScenario',
-          },
-          {
             scid: 2,
             conditions: [
               {
@@ -525,7 +521,7 @@ describe('questionConditionDeleteJoi Schema Validation', () => {
         scenarios: [
           {
             scid: 1,
-            action: 'deleteScenario',
+            conditions: [{ cid: 3, action: 'deleteCondition' }],
           },
         ],
       },
@@ -533,6 +529,20 @@ describe('questionConditionDeleteJoi Schema Validation', () => {
 
     const { error } = questionConditionDeleteJoi.validate(invalidData)
     expect(error).toBeDefined()
+  })
+
+  it('rejects a scenario delete: Scenarios are deleted condition by condition', () => {
+    const scenarioDelete = {
+      id: '123',
+      op: 'delete',
+      entity: 'questionCondition',
+      qid: 1,
+      props: { qid: 2, scenarios: [{ scid: 1, action: 'deleteScenario' }] },
+    }
+
+    expect(
+      questionConditionDeleteJoi.validate(scenarioDelete).error
+    ).toBeDefined()
   })
 
   it('should fail if "scenarios" contains invalid data', () => {

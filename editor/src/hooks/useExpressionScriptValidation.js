@@ -20,7 +20,7 @@ export const useExpressionScriptValidation = (surveyId, questionId) => {
       if (
         !surveyId ||
         !questionId ||
-        hasTempId(String(questionId)) ||
+        hasTempId(questionId) ||
         !String(expression).trim()
       ) {
         return { valid: true, diagnostics: [] }

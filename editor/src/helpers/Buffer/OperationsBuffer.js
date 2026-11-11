@@ -45,8 +45,13 @@ export class OperationsBuffer {
     const hasCreateOp = allOperations.some(
       (operation) => operation.op === Operations.create
     )
-    const hasDeletOp = allOperations.some(
+    const hasDeleteOp = allOperations.some(
       (operation) => operation.op === Operations.delete
+    )
+    const hasReadyDeleteOp = allOperations.some(
+      (operation) =>
+        operation.op === Operations.delete &&
+        !this.isOperationWaiting(operation)
     )
 
     return includeAll
@@ -55,7 +60,8 @@ export class OperationsBuffer {
           const result = this.isOperationReadyForPatch(
             operation,
             hasCreateOp,
-            hasDeletOp
+            hasDeleteOp,
+            hasReadyDeleteOp
           )
 
           return includeReady === true ? result : !result
@@ -370,14 +376,48 @@ export class OperationsBuffer {
     return data?.entity && data?.op === Operations.create
   }
 
-  isOperationReadyForPatch(operation, hasCreateOp, hasDeletOp) {
-    // Perform create and delete operations before other operations
-    if (operation.op !== Operations.create && hasCreateOp) {
-      return false
-    } else if (operation.op !== Operations.delete && hasDeletOp) {
-      return false
+  /**
+   * Whether the operation can be sent with the next patch request.
+   *
+   * Operations are sent in phases, one phase per request: The deletes, then
+   * the creates, then everything else. A phase must never wait for an
+   * operation that waits itself, otherwise nothing is sent anymore:
+   * - A delete only waits for its own real ID.
+   * - A create waits for the deletes that can be sent, not for a delete that
+   *   is still waiting for a real ID (it may be this create's ID).
+   * - Every other operation waits until no create or delete is left.
+   *
+   * @param {Object} operation - The buffer operation to check.
+   * @param {boolean} hasCreateOp - Whether the buffer holds a create operation.
+   * @param {boolean} hasDeleteOp - Whether the buffer holds a delete operation.
+   * @param {boolean} hasReadyDeleteOp - Whether the buffer holds a delete
+   *   operation which is not waiting itself.
+   * @returns {boolean} True when the operation can be sent now.
+   */
+  isOperationReadyForPatch(
+    operation,
+    hasCreateOp,
+    hasDeleteOp,
+    hasReadyDeleteOp = false
+  ) {
+    if (operation.op === Operations.create) {
+      if (hasReadyDeleteOp) return false
+    } else if (operation.op !== Operations.delete) {
+      if (hasCreateOp || hasDeleteOp) return false
     }
 
+    return !this.isOperationWaiting(operation)
+  }
+
+  /**
+   * Whether the operation itself can't be sent yet, whatever else is in the
+   * buffer: It failed, or it still refers to a temp ID the server has to
+   * replace first.
+   *
+   * @param {Object} operation - The buffer operation to check.
+   * @returns {boolean} True when the operation has to stay in the buffer.
+   */
+  isOperationWaiting(operation) {
     const isQuestionGroupHasATempIdAndOpIsNotGroupCreate =
       hasTempId(operation.props, 'gid') &&
       operation.op !== Operations.create &&
@@ -416,7 +456,7 @@ export class OperationsBuffer {
     // (question, source question/subquestion, condition being created).
     const isConditionOperationNotReady = isConditionOperationWaiting(operation)
 
-    if (
+    return Boolean(
       isConditionOperationNotReady ||
       isQuestionGroupHasATempIdAndOpIsNotGroupCreate ||
       isAddingQuestionAndQuestionHasAGroupTempId ||
@@ -424,10 +464,6 @@ export class OperationsBuffer {
       isAddingAnswerAndQuestionHasATempid ||
       isNonCreateOperationWithTempId ||
       operation.error
-    ) {
-      return false
-    }
-
-    return true
+    )
   }
 }

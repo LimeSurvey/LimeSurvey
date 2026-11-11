@@ -105,9 +105,10 @@ describe('removeConditionsWithUnknownTempIdsFromSurveyAndBuffer', () => {
     )
 
     expect(result.changedQids).toEqual(['10'])
+    // The relevance the server has (e.g. an expression script) is kept.
     expect(result.survey.questionGroups[0].questions[1]).toMatchObject({
       scenarios: [],
-      relevance: '1',
+      relevance: 'X',
     })
     expect(result.survey.questionGroups[0].questions[0]).toBe(other)
     expect(question.scenarios).toHaveLength(1)

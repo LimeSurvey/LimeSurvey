@@ -3,9 +3,9 @@ import { escapeRegExp } from 'lodash'
 import { isTempId } from './isTempId'
 import { NEW_OBJECT_ID_PREFIX } from './constants'
 
-// The condition temp ID format, "temp__12_1": The temp ID prefix, a seed and
-// a counter (see buildConditionTempId). Defined here only.
-const TEMP_ID_PATTERN = `${escapeRegExp(NEW_OBJECT_ID_PREFIX)}[0-9]+`
+// The temp ID format, "temp__12", as a regex source; Conditions add a counter:
+// "temp__12_1" (see buildConditionTempId). Defined here only.
+export const TEMP_ID_PATTERN = `${escapeRegExp(NEW_OBJECT_ID_PREFIX)}[0-9]+`
 const CONDITION_COUNTER_PATTERN = '_[0-9]+'
 
 // A temp ID, as a whole: "temp__12", or the condition temp ID "temp__12_1".

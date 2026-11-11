@@ -1,6 +1,9 @@
 import { Entities } from './Buffer/Entities'
 import {
   applyQuestionRelevance,
+  applySkippedQuestionRelevance,
+  clearSkippedQuestionRelevance,
+  forgetSkippedQuestionRelevance,
   getConditionLogicQids,
   getQidsWithPendingConditionOperations,
   hasPendingConditionLogicOperations,
@@ -113,5 +116,62 @@ describe('applyQuestionRelevance', () => {
   test('keeps the result as is without returned relevance', () => {
     const mapResult = { survey: survey(), operationsBuffer: buffer([]) }
     expect(applyQuestionRelevance(mapResult, undefined)).toBe(mapResult)
+  })
+})
+
+describe('relevance skipped for newer condition operations', () => {
+  const survey = () => ({
+    questionGroups: [{ gid: 1, questions: [{ qid: 10, relevance: '1' }] }],
+  })
+  const buffer = (operations) => ({ getOperations: () => operations })
+  const newerOperation = conditionOperation({ qid: 10, scenarios: [] })
+  const relevanceOf = (aSurvey) =>
+    aSurvey.questionGroups[0].questions[0].relevance
+
+  // The server returns the relevance of the saved conditions while a newer
+  // condition change of the question is still buffered: It is skipped.
+  const skipRelevance = () => {
+    const result = applyQuestionRelevance(
+      { survey: survey(), operationsBuffer: buffer([newerOperation]) },
+      { 10: 'SAVED' }
+    )
+    expect(relevanceOf(result.survey)).toBe('1')
+    return result.survey
+  }
+
+  afterEach(() => clearSkippedQuestionRelevance())
+
+  test('is applied once the newer change was cancelled locally', () => {
+    const skipped = skipRelevance()
+
+    // Still buffered: Its own response will bring the relevance.
+    expect(applySkippedQuestionRelevance(skipped, [newerOperation])).toEqual([])
+    expect(relevanceOf(skipped)).toBe('1')
+
+    // Cancelled (e.g. the new condition was deleted before being sent).
+    expect(applySkippedQuestionRelevance(skipped, [])).toEqual(['10'])
+    expect(relevanceOf(skipped)).toBe('SAVED')
+
+    // Applied once only.
+    expect(applySkippedQuestionRelevance(survey(), [])).toEqual([])
+  })
+
+  test('is not applied over a newer change that was sent', () => {
+    const skipped = skipRelevance()
+    forgetSkippedQuestionRelevance([newerOperation])
+
+    expect(applySkippedQuestionRelevance(skipped, [])).toEqual([])
+    expect(relevanceOf(skipped)).toBe('1')
+  })
+
+  test('is replaced by a relevance applied later', () => {
+    skipRelevance()
+    const result = applyQuestionRelevance(
+      { survey: survey(), operationsBuffer: buffer([]) },
+      { 10: 'NEWER' }
+    )
+
+    expect(applySkippedQuestionRelevance(result.survey, [])).toEqual([])
+    expect(relevanceOf(result.survey)).toBe('NEWER')
   })
 })

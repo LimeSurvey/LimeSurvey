@@ -1,6 +1,7 @@
 import { getConditionTypeInfo } from './getConditionTypeInfo'
 import {
   determineConditionTargetType,
+  isUsableFieldname,
   toConditionId,
 } from './questionConditionHelpers'
 
@@ -43,5 +44,21 @@ describe('toConditionId', () => {
     expect(toConditionId(null)).toBeNull()
     expect(toConditionId(undefined)).toBeUndefined()
     expect(toConditionId('abc')).toBe('abc')
+  })
+})
+
+describe('isUsableFieldname', () => {
+  it('accepts the field names of saved and unsaved questions', () => {
+    expect(isUsableFieldname('Q238')).toBe(true)
+    expect(isUsableFieldname('+Q238_S239')).toBe(true)
+    expect(isUsableFieldname('Qtemp__12_Stemp__34#1')).toBe(true)
+  })
+
+  it('refuses a missing field name, e.g. while the field names are loading', () => {
+    expect(isUsableFieldname(null)).toBe(false)
+    expect(isUsableFieldname(undefined)).toBe(false)
+    expect(isUsableFieldname('')).toBe(false)
+    expect(isUsableFieldname('+null')).toBe(false)
+    expect(isUsableFieldname('+undefined')).toBe(false)
   })
 })

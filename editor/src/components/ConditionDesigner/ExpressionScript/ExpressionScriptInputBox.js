@@ -23,7 +23,7 @@ import { showResetAllConditionsOverlay, showWarningMessage } from '../utils'
 export const ExpressionScriptInputBox = ({ onShowPanel, onNavigateBack }) => {
   const { surveyId } = useParams()
   const { survey, update } = useSurvey(surveyId)
-  const { focused, groupIndex, questionIndex } = useFocused()
+  const { focused } = useFocused()
   const { addToBuffer } = useBuffer()
 
   const question = getQuestionById(focused.qid, survey).question
@@ -53,9 +53,6 @@ export const ExpressionScriptInputBox = ({ onShowPanel, onNavigateBack }) => {
   const handleApply = (newExpressionScript) => {
     handleConditionScriptUpdate(
       newExpressionScript,
-      survey,
-      questionIndex,
-      groupIndex,
       addToBuffer,
       update,
       onNavigateBack
@@ -75,7 +72,6 @@ export const ExpressionScriptInputBox = ({ onShowPanel, onNavigateBack }) => {
           className="condition-script-open text-muted text-truncate"
           disabled={isRelevancePending}
           onClick={() => {
-            if (isRelevancePending) return
             onShowPanel(null, false, true)
             maybeShowConditionsOverwriteWarning()
           }}

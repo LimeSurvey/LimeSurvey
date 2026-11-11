@@ -3,7 +3,11 @@ import React, { useMemo } from 'react'
 import { useFocused } from 'hooks'
 import { Select } from 'components'
 
-import { getConditionTypeInfo, toConditionId } from '../utils'
+import {
+  getConditionTypeInfo,
+  isUsableFieldname,
+  toConditionId,
+} from '../utils'
 
 export const QuestionsSelect = ({
   index,
@@ -22,6 +26,9 @@ export const QuestionsSelect = ({
         label: `${key + 1}. ${title.replace(/&nbsp;/g, ' ')}`,
         cqid: qid,
         answers,
+        // Not selectable while its field name is unknown (the field names
+        // of the survey are still loading): It would be saved without one.
+        isDisabled: !isUsableFieldname(cfieldname),
       })),
     [previousQuestions]
   )

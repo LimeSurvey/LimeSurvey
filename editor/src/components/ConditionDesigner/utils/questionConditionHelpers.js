@@ -1,8 +1,8 @@
 // Helper functions for condition operations
 import {
   hasTempId,
-  NEW_OBJECT_ID_PREFIX,
   QUESTION_RELEVANCE_DEFAULT_VALUE,
+  TEMP_ID_PATTERN,
 } from 'helpers'
 
 import { getConditionTypeInfo } from './getConditionTypeInfo'
@@ -21,10 +21,23 @@ const allowedMethods = getAllowedMethods()
  * subquestions have temp IDs instead of digits, like Qtemp__123_Stemp__456.
  * Built once: It's used for every condition parsed.
  */
-const FIELDNAME_ID_PATTERN = `(?:\\d+|${NEW_OBJECT_ID_PREFIX}\\d+)`
+const FIELDNAME_ID_PATTERN = `(?:\\d+|${TEMP_ID_PATTERN})`
 const FIELDNAME_REFERENCE_REGEX = new RegExp(
   `^@(Q${FIELDNAME_ID_PATTERN}(?:_[SR]${FIELDNAME_ID_PATTERN})*(?:#\\d+)?)@$`
 )
+
+/**
+ * Whether `fieldname` can be used as the source of a condition. A question
+ * or subquestion has none (null, or e.g. "+null" for a multiple choice
+ * subquestion) while the field names of the survey are still being loaded:
+ * Saved as is, the condition would be broken.
+ * @param {*} fieldname
+ * @returns {boolean}
+ */
+export const isUsableFieldname = (fieldname) =>
+  typeof fieldname === 'string' &&
+  fieldname !== '' &&
+  !/(null|undefined)$/.test(fieldname)
 
 /**
  * An ID of a condition (cid, qid, cqid) as a number when it is numeric (a
@@ -249,22 +262,26 @@ export const updateQuestionScenarios = (scenarios, question, originalScid) => {
   originalScid.current = scid
 }
 
+/**
+ * Puts the question, with its updated scenarios, back into the survey.
+ * @param {object} survey
+ * @param {object} question the question with its updated scenarios
+ * @param {number} groupIndex position of its group in the survey
+ * @param {number} questionIndex position of the question in its group
+ * @param {Function} update survey updater
+ * @returns {void}
+ */
 export const syncSurveyQuestionWithScenarios = (
   survey,
   question,
   groupIndex,
   questionIndex,
-  update,
-  focused
+  update
 ) => {
   const updatedGroups = [...survey.questionGroups]
 
   updatedGroups[groupIndex].questions[questionIndex] = question
   update({ questionGroups: updatedGroups })
-
-  if (Array.isArray(question?.scenarios) && question.scenarios.length > 0) {
-    focused.scenarios = [...question.scenarios].sort((a, b) => a.scid - b.scid)
-  }
 }
 
 export const isValidRelevanceValue = (newRelevance, question) => {

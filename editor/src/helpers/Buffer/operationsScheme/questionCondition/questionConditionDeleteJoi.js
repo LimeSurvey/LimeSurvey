@@ -2,11 +2,6 @@ import Joi from 'joi'
 
 import { CONDITION_TEMP_ID_REGEX } from '../../../replaceTempIdsInObject'
 
-const scenarioSchema = Joi.object({
-  scid: Joi.number().required(),
-  action: Joi.string().valid('deleteScenario').required(),
-})
-
 const conditionSchema = Joi.object({
   scid: Joi.number().required(),
   conditions: Joi.array()
@@ -31,22 +26,8 @@ export const questionConditionDeleteJoi = Joi.object({
   entity: Joi.string().valid('questionCondition').required(),
   qid: Joi.alternatives().try(Joi.number(), Joi.string()).optional(),
   error: Joi.boolean().optional(),
-  props: Joi.alternatives()
-    .try(
-      Joi.object({
-        qid: Joi.alternatives().try(Joi.number(), Joi.string()).optional(),
-        scenarios: Joi.array()
-          .items(
-            Joi.alternatives().try(scenarioSchema, conditionSchema).required()
-          )
-          .min(1)
-          .required(),
-      }),
-      // Deletes every condition of the question.
-      Joi.object({
-        qid: Joi.alternatives().try(Joi.number(), Joi.string()).required(),
-        action: Joi.string().valid('deleteAllConditions').required(),
-      })
-    )
-    .required(),
+  props: Joi.object({
+    qid: Joi.alternatives().try(Joi.number(), Joi.string()).optional(),
+    scenarios: Joi.array().items(conditionSchema.required()).min(1).required(),
+  }).required(),
 })

@@ -71,10 +71,16 @@ export const replaceTempIdsInSurveyAndBuffer = (
   // survey (e.g. condition sources, cfieldname): Replace them everywhere in a
   // single pass. Only the changed groups, questions... are copied, so React
   // re-renders them and keeps the others as they are.
+  // Conditions too: One pass for all the new conditions of a scenario, not
+  // one search of the survey per condition. Their temp IDs ("temp__12_1")
+  // can't be mistaken for those of other entities.
+  // Answers are replaced one by one below, in the answer only: Their temp IDs
+  // have the format of the question ones.
   if (
     entityType === EntitiesType.group ||
     entityType === EntitiesType.question ||
-    entityType === EntitiesType.subquestion
+    entityType === EntitiesType.subquestion ||
+    entityType === EntitiesType.condition
   ) {
     survey.questionGroups = replaceTempIdsInObject(survey.questionGroups, idMap)
 
@@ -94,14 +100,6 @@ export const replaceTempIdsInSurveyAndBuffer = (
   mappings.forEach((tempIdMap) => {
     // Retrieve the entity based on type and temporary ID
     let entityInfo = getEntityInfo(tempIdMap.tempId, survey, entityType)
-
-    if (focused) {
-      if (focused.qid === tempIdMap.tempId) {
-        focused.qid = tempIdMap.id
-      } else if (focused.gid === tempIdMap.tempId) {
-        focused.gid = tempIdMap.id
-      }
-    }
 
     if (Object.keys(entityInfo).length === 0) {
       // eslint-disable-next-line no-console
@@ -129,19 +127,6 @@ export const replaceTempIdsInSurveyAndBuffer = (
           entityInfo.questionIndex
         ].answers[entityInfo.answerIndex] = entityInfo[entityType]
       }
-    } else if (entityType === EntitiesType.condition) {
-      if (
-        !isUndefined(entityInfo.groupIndex) &&
-        !isUndefined(entityInfo.questionIndex) &&
-        !isUndefined(entityInfo.scenarioIndex) &&
-        !isUndefined(entityInfo.conditionIndex)
-      ) {
-        survey.questionGroups[entityInfo.groupIndex].questions[
-          entityInfo.questionIndex
-        ].scenarios[entityInfo.scenarioIndex].conditions[
-          entityInfo.conditionIndex
-        ] = entityInfo[entityType]
-      }
     }
 
     replaceSurveyEntityParentRefs(
@@ -154,38 +139,6 @@ export const replaceTempIdsInSurveyAndBuffer = (
   })
 
   return { survey, operationsBuffer, focused }
-}
-
-export const updateSurveyEntitiesData = (
-  entityType,
-  survey,
-  operationsBuffer,
-  entityDataMap = {}
-) => {
-  if (!entityDataMap || Object.keys(entityDataMap).length === 0) {
-    return { survey, operationsBuffer }
-  }
-
-  if (entityType === EntitiesType.question) {
-    const { qid, ...restData } = entityDataMap
-
-    if (!qid) return { survey, operationsBuffer }
-    let entity = getEntityInfo(entityDataMap.qid, survey, entityType)
-
-    if (!isUndefined(entity.groupIndex) && !isUndefined(entity.questionIndex)) {
-      const question =
-        survey.questionGroups[entity.groupIndex].questions[entity.questionIndex]
-
-      Object.entries(restData ?? {}).forEach(([key, value]) => {
-        question[key] = value
-      })
-
-      survey.questionGroups[entity.groupIndex].questions[entity.questionIndex] =
-        question
-    }
-  }
-
-  return { survey, operationsBuffer }
 }
 
 /**

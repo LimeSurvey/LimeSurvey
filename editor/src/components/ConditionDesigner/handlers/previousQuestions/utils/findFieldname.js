@@ -2,6 +2,11 @@ import { getQuestionTypeInfo } from 'components/QuestionTypes/index.js'
 import { getQuestionById, hasTempId, STATES } from 'helpers'
 import { queryClient } from 'queryClient'
 
+// getQuestionTypeInfo builds the whole type list: Read once.
+let textDisplayType
+const getTextDisplayType = () =>
+  (textDisplayType ??= getQuestionTypeInfo().TEXT_DISPLAY.type)
+
 const hasValue = (value) =>
   value !== undefined && value !== null && value !== ''
 const isSameValue = (a, b) => String(a) === String(b)
@@ -38,28 +43,39 @@ const findSecondScaleSubquestionId = (question, sqid, aid) => {
 
 /**
  * The field names of the survey come from the server, which doesn't know the
- * unsaved questions and subquestions yet: Build theirs locally. Saved ones
- * missing from the server map have no response field (e.g. a text display),
- * so they keep having none, as do unsaved text displays.
+ * unsaved questions and subquestions yet: Build theirs locally. Those just
+ * saved are known: The save response brings the field names together with
+ * the new IDs (SurveyLogicProvider). Saved ones missing from the server map
+ * have no response field (e.g. a text display), so they keep having none, as
+ * do unsaved text displays.
+ *
+ * @param {object} ids
+ * @param {number|string} ids.qid question ID
+ * @param {number|string} [ids.sqid] subquestion ID
+ * @param {string} [ids.aid] answer code
+ * @param {number} [ids.scaleId]
+ * @returns {string|null} null when the question has no response field
  */
 const buildFallbackFieldname = ({ qid, sqid, aid, scaleId }) => {
   if (!hasValue(qid)) return null
 
-  const isTemp = (id) => hasTempId(String(id ?? ''))
+  const isTemp = (id) => hasValue(id) && hasTempId(id)
   // A new second scale subquestion (e.g. a new column of a saved array of
   // numbers) is unsaved too, even when the question and first scale aren't.
   const mayBeUnsaved = isTemp(qid) || isTemp(sqid) || hasValue(aid)
   if (!mayBeUnsaved) return null
 
   const question = findQuestion(qid)
-  const secondScaleSubquestionId = hasValue(sqid)
-    ? findSecondScaleSubquestionId(question, sqid, aid)
-    : null
+  const secondScaleSubquestionId = findSecondScaleSubquestionId(
+    question,
+    sqid,
+    aid
+  )
   if (!isTemp(qid) && !isTemp(sqid) && !isTemp(secondScaleSubquestionId)) {
     return null
   }
 
-  if (question?.type === getQuestionTypeInfo().TEXT_DISPLAY.type) return null
+  if (question?.type === getTextDisplayType()) return null
   let fieldname = `Q${qid}`
 
   if (hasValue(sqid)) {

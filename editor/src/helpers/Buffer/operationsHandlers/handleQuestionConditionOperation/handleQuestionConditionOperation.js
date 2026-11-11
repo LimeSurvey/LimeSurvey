@@ -1,12 +1,15 @@
 import { cloneDeep } from 'lodash'
 
+// Imported directly, not from 'helpers': This module is loaded while
+// 'helpers' is still loading (helpers -> Buffer -> operationsHandlers).
+import { Entities } from '../../Entities'
+import { Operations } from '../../Operations'
+import { hasTempId } from '../../../hasTempId'
+import { NEW_OBJECT_ID_PREFIX } from '../../../constants'
 import {
-  Entities,
-  hasTempId,
   isConditionTempId,
-  Operations,
   TEMP_ID_TOKEN_REGEX,
-} from 'helpers'
+} from '../../../replaceTempIdsInObject'
 
 // The condition actions of the API (see OpHandlerQuestionCondition.php).
 export const CONDITION_ACTIONS = {
@@ -14,7 +17,6 @@ export const CONDITION_ACTIONS = {
   UPDATE: 'updateCondition',
   DELETE: 'deleteCondition',
   SCRIPT: 'conditionScript',
-  DELETE_ALL: 'deleteAllConditions',
 }
 
 /**
@@ -34,94 +36,113 @@ const keepPendingCreate = (createCondition, editCondition) => ({
 const isPendingCreate = (condition) =>
   Boolean(condition?.tempId) || condition?.action === CONDITION_ACTIONS.CREATE
 
-// An edit (updateCondition) of a condition that only has a temp cid, i.e. whose
-// create was not answered by the server yet.
-const isEditOfTempCondition = (condition) =>
-  !isPendingCreate(condition) && hasTempId(String(condition?.cid ?? ''))
-
 // Condition fields that can embed a question or subquestion temp ID (e.g. the
 // cfieldname "Q12_Stemp__34" of an unsaved subquestion).
 const SOURCE_FIELDS = ['cfieldname', 'cquestions', 'prevQuestionSGQA']
 
+/**
+ * The conditions of a list of scenarios (of a question or an operation).
+ * @param {Array<{conditions: Array}>} [scenarios]
+ * @returns {Array}
+ */
+export const getScenarioConditions = (scenarios) =>
+  (scenarios ?? []).flatMap((scenario) => scenario.conditions ?? [])
+
 const getOperationConditions = (op) =>
-  (op?.props?.scenarios ?? []).flatMap((scenario) => scenario.conditions ?? [])
+  getScenarioConditions(op?.props?.scenarios)
 
 /**
  * Condition operations are keyed by condition: Each create (id = temp cid),
  * update (id = cid) or delete (id = cid) carries a single condition in a single
  * scenario, so the changes of one condition replace each other in the buffer.
  * A new condition is sent as an `update` operation with the insertCondition
- * action, not as a `create` operation: The buffer sends nothing while it holds
- * both a create operation and a delete operation, so a new condition would
- * stall every save while a delete operation is waiting.
- * Question-level operations (expression script, reset) use the qid.
+ * action, not as a `create` operation: Every other operation waits until no
+ * create operation is left in the buffer (see isOperationReadyForPatch), so a
+ * new condition waiting for the ID of an unsaved source would hold back the
+ * very operations saving that source (e.g. a subquestion update).
+ * The expression script operation of a question uses the qid.
  */
 
 // A condition create: An update operation carrying an insertCondition.
-const isConditionCreateOperation = (op) =>
+export const isConditionCreateOperation = (op) =>
   getOperationConditions(op).some(isPendingCreate)
 
 /**
  * Whether the condition operation can't be sent yet:
  * - it failed (error), or its own ID is still a temp ID (except the create of
- *   the condition, keyed by its temp cid);
+ *   the condition, keyed by its temp cid): An update or delete of a condition
+ *   whose create is being sent waits for its real cid, the server can't find
+ *   a condition by its temp ID;
  * - it references a question (qid/cqid) that still has a temp ID;
- * - it edits a condition whose create is being sent (temp cid): The server
- *   can't update a condition by its temp ID;
  * - a condition field embeds a temp ID: The server stores these fields as is.
  */
 export const isConditionOperationWaiting = (op) => {
   if (op?.entity !== Entities.questionCondition) return false
   if (op.error) return true
-  if (
-    op.op !== Operations.create &&
-    !isConditionCreateOperation(op) &&
-    hasTempId(String(op.id ?? ''))
-  ) {
-    return true
-  }
+  if (!isConditionCreateOperation(op) && hasTempId(op.id)) return true
   if (op.props && (hasTempId(op.props, 'qid') || hasTempId(op.props, 'cqid'))) {
     return true
   }
 
-  return getOperationConditions(op).some(
-    (condition) =>
-      isEditOfTempCondition(condition) ||
-      SOURCE_FIELDS.some((key) => hasTempId(String(condition[key] ?? '')))
+  return getOperationConditions(op).some((condition) =>
+    SOURCE_FIELDS.some((key) => hasTempId(condition[key]))
   )
 }
 
-const getOperationQid = (op) => op?.props?.qid ?? op?.qid
+/**
+ * The question of a condition operation.
+ * @param {object} op buffer operation
+ * @returns {number|string|undefined}
+ */
+export const getOperationQid = (op) => op?.props?.qid ?? op?.qid
 
-const isConditionOperationOfQuestion = (op, qid) =>
+/**
+ * Whether `op` is a condition operation of the question `qid`: A condition
+ * create, update or delete, or an expression script.
+ * @param {object} op buffer operation
+ * @param {number|string} qid
+ * @returns {boolean}
+ */
+export const isConditionOperationOfQuestion = (op, qid) =>
   op?.entity === Entities.questionCondition &&
   String(getOperationQid(op)) === String(qid)
 
-const isConditionScriptOperation = (op) =>
+/**
+ * Removes the condition operations of the given questions, e.g. those of a
+ * deleted group: Sent after the group was deleted, the server would refuse
+ * them.
+ * Returns `bufferOperations` itself when there is nothing to remove.
+ * @param {Array} bufferOperations
+ * @param {Array<number|string>} qids
+ * @returns {Array}
+ */
+export const removeConditionOperationsOfQuestions = (
+  bufferOperations = [],
+  qids = []
+) => {
+  const removedQids = new Set(qids.map(String))
+  const kept = bufferOperations.filter(
+    (op) =>
+      op.entity !== Entities.questionCondition ||
+      !removedQids.has(String(getOperationQid(op)))
+  )
+
+  return kept.length === bufferOperations.length ? bufferOperations : kept
+}
+
+/**
+ * Whether `op` sets the expression script of a question.
+ * @param {object} op buffer operation
+ * @returns {boolean}
+ */
+export const isConditionScriptOperation = (op) =>
   op?.op === Operations.update && op?.props?.action === CONDITION_ACTIONS.SCRIPT
-
-// Deletes every condition of the question on the server (its id is the qid).
-const isDeleteAllConditionsOperation = (op) =>
-  op?.op === Operations.delete &&
-  op?.props?.action === CONDITION_ACTIONS.DELETE_ALL
-
-// Operations of the whole question, keyed by its qid.
-const isQuestionLevelOperation = (op) =>
-  isConditionScriptOperation(op) || isDeleteAllConditionsOperation(op)
 
 // An operation of the condition `cid`: Its create, update or delete.
 const isOperationOfCondition = (op, cid) =>
   op?.entity === Entities.questionCondition &&
-  !isQuestionLevelOperation(op) &&
+  !isConditionScriptOperation(op) &&
   String(op.id) === String(cid)
-
-const buildDeleteAllConditionsOperation = (qid) => ({
-  id: qid,
-  qid,
-  entity: Entities.questionCondition,
-  op: Operations.delete,
-  props: { qid, action: CONDITION_ACTIONS.DELETE_ALL },
-})
 
 // The scenario and condition of a condition operation.
 const getScenarioCondition = (op) => {
@@ -150,55 +171,30 @@ const removeConditionFromBuffer = (bufferOperations, cid) =>
 
 /**
  * An expression script replaces every condition, so it drops all the buffered
- * condition operations of the question. A script put back after a failed
- * request (error) is older than them:
- * - a newer script replaces it: It's discarded;
- * - newer condition changes were made on top of it (the script cleared the
- *   conditions in the editor), so they stay. The server still has the
- *   conditions the script should have deleted: Delete them first.
+ * condition operations of the question.
  */
-const handleScriptOperation = (bufferOperations, operation, qid) => {
-  const newerOperations = bufferOperations.filter((op) =>
-    isConditionOperationOfQuestion(op, qid)
-  )
-
-  if (operation.error && newerOperations.length) {
-    const hasNewerScript = newerOperations.some(isConditionScriptOperation)
-    const hasReset = newerOperations.some(isDeleteAllConditionsOperation)
-    if (!hasNewerScript && !hasReset) {
-      bufferOperations.splice(
-        bufferOperations.indexOf(newerOperations[0]),
-        0,
-        buildDeleteAllConditionsOperation(qid)
-      )
-    }
-
-    return { bufferOperations, newOperation: {}, addToBuffer: false }
-  }
-
-  return {
-    bufferOperations: bufferOperations.filter(
-      (op) => !isConditionOperationOfQuestion(op, qid)
-    ),
-    newOperation: operation,
-    addToBuffer: true,
-  }
-}
+const handleScriptOperation = (bufferOperations, operation, qid) => ({
+  bufferOperations: bufferOperations.filter(
+    (op) => !isConditionOperationOfQuestion(op, qid)
+  ),
+  newOperation: operation,
+  addToBuffer: true,
+})
 
 /**
  * Deleting a condition replaces its buffered create and edits. Nothing is
  * deleted on the server when the condition only exists locally (its create is
- * still buffered): Queuing such a delete operation would also block the
- * buffer, as it could never be sent.
+ * still buffered): Such a delete operation could never be sent, and every
+ * update would wait for it.
  * A temp condition whose create is no longer buffered is being sent: Its
  * delete waits in the buffer until the real cid replaces the temp one
- * (replaceTempIdsInSurveyAndBuffer), or is dropped with the condition when the
- * create failed (removeConditionOpsOfFailedCreates).
+ * (replaceTempIdsInSurveyAndBuffer), or is dropped when the create failed
+ * (removeConditionOpsOfFailedCreates).
  */
 const handleConditionDelete = (bufferOperations, operation) => {
   const cid = operation.id
   const isLocalOnly =
-    hasTempId(String(cid)) && isConditionInBuffer(bufferOperations, cid)
+    hasTempId(cid) && isConditionInBuffer(bufferOperations, cid)
 
   return {
     bufferOperations: removeConditionFromBuffer(bufferOperations, cid),
@@ -208,55 +204,14 @@ const handleConditionDelete = (bufferOperations, operation) => {
 }
 
 /**
- * A condition operation put back after a failed request (error) is older than
- * the buffered ones, so what changed since then wins:
- * - an expression script or reset of the question replaced every condition;
- * - a newer delete or edit of the condition replaces it, except that a
- *   restored insertCondition stays one, with the newer values.
- */
-const handleRestoredConditionChange = (bufferOperations, operation, qid) => {
-  const dropped = { bufferOperations, newOperation: {}, addToBuffer: false }
-  const isReplacedByQuestionChange = bufferOperations.some(
-    (op) =>
-      isConditionOperationOfQuestion(op, qid) &&
-      (isConditionScriptOperation(op) || isDeleteAllConditionsOperation(op))
-  )
-  if (isReplacedByQuestionChange) return dropped
-
-  const newerIndex = bufferOperations.findIndex((op) =>
-    isOperationOfCondition(op, operation.id)
-  )
-  if (newerIndex === -1) {
-    return { bufferOperations, newOperation: operation, addToBuffer: true }
-  }
-
-  const newer = bufferOperations[newerIndex]
-  if (
-    isConditionCreateOperation(operation) &&
-    newer.op === Operations.update &&
-    !isConditionCreateOperation(newer)
-  ) {
-    const { condition: create } = getScenarioCondition(operation)
-    const { scid, condition: edit } = getScenarioCondition(newer)
-    bufferOperations[newerIndex] = withCondition(
-      newer,
-      scid,
-      keepPendingCreate(create, edit)
-    )
-  }
-
-  return dropped
-}
-
-/**
  * Handles a condition operation in the buffer. Condition operations are keyed
  * by condition (see isConditionCreateOperation), so:
  * - a create, update or delete operation replaces the buffered operation of
  *   the same condition, in place;
  * - an edit of a condition whose create is still buffered is applied to that
  *   create, which keeps the insertCondition action;
- * - question-level operations (expression script, reset) apply to
- *   every condition operation of the question.
+ * - an expression script applies to every condition operation of the
+ *   question.
  */
 export const handleQuestionConditionOperation = (
   _bufferOperations,
@@ -278,16 +233,8 @@ export const handleQuestionConditionOperation = (
     return handleScriptOperation(bufferOperations, operation, qid)
   }
 
-  if (isDeleteAllConditionsOperation(operation)) {
-    return { bufferOperations, newOperation: operation, addToBuffer: true }
-  }
-
   if (operation.op === Operations.delete) {
     return handleConditionDelete(bufferOperations, operation)
-  }
-
-  if (operation.error) {
-    return handleRestoredConditionChange(bufferOperations, operation, qid)
   }
 
   const index = bufferOperations.findIndex((op) =>
@@ -312,10 +259,15 @@ export const handleQuestionConditionOperation = (
 
 // Question, subquestion or group temp IDs found in `value` (condition temp IDs,
 // "temp__12_1", are skipped: They are not condition sources).
-const getEntityTempIds = (value) =>
-  (String(value ?? '').match(TEMP_ID_TOKEN_REGEX) ?? []).filter(
+// Most values hold none: The regex only runs on those with the prefix.
+const getEntityTempIds = (value) => {
+  const string = String(value ?? '')
+  if (!string.includes(NEW_OBJECT_ID_PREFIX)) return []
+
+  return (string.match(TEMP_ID_TOKEN_REGEX) ?? []).filter(
     (token) => !isConditionTempId(token)
   )
+}
 
 /**
  * Whether the condition uses as source a question, subquestion or group temp ID
@@ -344,8 +296,8 @@ export const removeConditionOpsWithUnknownTempIds = (
   bufferOperations.filter((op) => {
     if (op.entity !== Entities.questionCondition) return true
 
-    const qid = String(getOperationQid(op) ?? '')
-    if (hasTempId(qid) && !knownTempIds.has(qid)) return false
+    const qid = getOperationQid(op)
+    if (hasTempId(qid) && !knownTempIds.has(String(qid))) return false
 
     return !getOperationConditions(op).some((c) =>
       usesUnknownTempId(c, knownTempIds)
@@ -374,9 +326,7 @@ export const getConditionTempIds = (bufferOperations = [], survey) => {
     })
   ;(survey?.questionGroups ?? []).forEach((group) =>
     (group.questions ?? []).forEach((question) =>
-      (question.scenarios ?? []).forEach((scenario) =>
-        (scenario.conditions ?? []).forEach(addCondition)
-      )
+      getScenarioConditions(question.scenarios).forEach(addCondition)
     )
   )
 
@@ -431,29 +381,54 @@ export const getKnownTempIds = (survey, bufferOperations = [], wantedIds) => {
  * save), a temp cid left without a buffered create belongs to a condition
  * creation that failed or was refused: The condition doesn't exist on the
  * server, so these operations could never be sent. A waiting delete operation
- * would even block every other operation (deletes are sent first).
- * A create operation put back after a failed request keeps its temp cid: It
- * and the changes merged into it are kept.
+ * would even hold back every update, condition creates included.
  * Returns `bufferOperations` itself when there is nothing to drop.
  * @param {Array} bufferOperations
  * @returns {Array}
  */
 export const removeConditionOpsOfFailedCreates = (bufferOperations = []) => {
+  const conditionOps = bufferOperations.filter(
+    (op) =>
+      op.entity === Entities.questionCondition &&
+      !isConditionScriptOperation(op)
+  )
+  const bufferedCreateCids = new Set(
+    conditionOps.filter(isConditionCreateOperation).map((op) => String(op.id))
+  )
   const orphanCids = new Set(
-    bufferOperations
+    conditionOps
       .filter(
         (op) =>
-          op.entity === Entities.questionCondition &&
-          !isQuestionLevelOperation(op) &&
+          hasTempId(op.id) &&
           !isConditionCreateOperation(op) &&
-          hasTempId(String(op.id)) &&
-          !isConditionInBuffer(bufferOperations, op.id)
+          !bufferedCreateCids.has(String(op.id))
       )
       .map((op) => String(op.id))
   )
   if (!orphanCids.size) return bufferOperations
 
   return bufferOperations.filter(
-    (op) => ![...orphanCids].some((cid) => isOperationOfCondition(op, cid))
+    (op) =>
+      !(orphanCids.has(String(op.id)) && isOperationOfCondition(op, op.id))
+  )
+}
+
+/**
+ * Whether a condition create that was sent got no real cid back: The request
+ * failed, or the server skipped the condition (e.g. it already exists). The
+ * editor still shows that condition, although the server doesn't have it.
+ * @param {Array} sentOperations the operations of the request
+ * @param {Array<{tempId: string, id: number}>} [mappings] the condition ID
+ *   mappings of the response
+ * @returns {boolean}
+ */
+export const hasUnansweredConditionCreate = (sentOperations = [], mappings) => {
+  const answered = new Set((mappings ?? []).map(({ tempId }) => String(tempId)))
+
+  return sentOperations.some(
+    (op) =>
+      op.entity === Entities.questionCondition &&
+      isConditionCreateOperation(op) &&
+      !answered.has(String(op.id))
   )
 }

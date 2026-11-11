@@ -15,7 +15,9 @@ use LimeSurvey\ObjectPatch\{
     Patcher
 };
 use Psr\Container\ContainerInterface;
+use LimeSurvey\Models\Services\QuestionFieldnames;
 use LimeSurvey\Models\Services\SurveyDetailService;
+use Permission;
 use Survey;
 
 class PatcherSurvey extends Patcher
@@ -102,9 +104,33 @@ class PatcherSurvey extends Patcher
             $survey = ($sid ? Survey::model()->findByPk($sid) : $this->surveyDetailService->getSurveyFromEntityMap($entityMap));
             if ($survey) {
                 $this->surveyDetailService->updateSurveyLastModified($survey);
+                $this->addQuestionFieldnames($survey);
             }
             \EmCacheHelper::flushAtEndOfRequest();
         }
         return $this->surveyResponse->buildResponseObject();
+    }
+
+    /**
+     * Adds the field names of the survey's questions to the response when
+     * the patch created questions or subquestions: The editor needs those of
+     * the new ones for conditions, and gets them with the new IDs instead of
+     * fetching them again. Only for users allowed to read the field names
+     * (the same permission as the survey-questions-fieldname endpoint).
+     *
+     * @param Survey $survey The patched survey
+     * @return void
+     */
+    private function addQuestionFieldnames(Survey $survey): void
+    {
+        if (
+            !$this->surveyResponse->hasCreatedQuestionFields()
+            || !Permission::model()->hasSurveyPermission($survey->sid, 'fieldnames')
+        ) {
+            return;
+        }
+        $this->surveyResponse->setQuestionFieldnames(
+            (new QuestionFieldnames())->getBySurvey($survey)
+        );
     }
 }

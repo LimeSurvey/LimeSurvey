@@ -1,6 +1,9 @@
 import { cloneDeep, merge } from 'lodash'
 
-import { Operations, hasTempId } from 'helpers'
+import { Entities, Operations, hasTempId } from 'helpers'
+
+import { isConditionOperationOfQuestion } from '../handleQuestionConditionOperation/handleQuestionConditionOperation'
+import { isCreateBuffered } from '../removeDeletesOfFailedCreates'
 
 export const handleQuestionOperation = (
   _bufferOperations,
@@ -22,19 +25,30 @@ export const handleQuestionOperation = (
   const questionHasATempId = hasTempId(operation.id)
 
   if (operation.op === Operations.delete) {
-    // remove all the operations that depends on this question.
+    // A new question exists only locally while its create is still buffered:
+    // Nothing to delete on the server. Once the create was sent, the delete
+    // is kept: It waits for the real ID, otherwise the question would be
+    // created on the server and stay there.
+    const isLocalOnly =
+      questionHasATempId &&
+      isCreateBuffered(bufferOperations, Entities.question, operation.id)
+
+    // Remove all the operations that depend on this question. Condition
+    // operations are keyed by condition, not by question: Those of the
+    // question go by their qid, and one of another question is kept even when
+    // its cid equals this qid.
     let updatedBufferOperations = bufferOperations.filter((op) => {
-      if (op.id === operation.id) {
-        return false
+      if (op.entity === Entities.questionCondition) {
+        return !isConditionOperationOfQuestion(op, operation.id)
       }
 
-      return true
+      return op.id !== operation.id
     })
 
     return {
       bufferOperations: updatedBufferOperations,
-      newOperation: questionHasATempId ? {} : operation,
-      addToBuffer: !questionHasATempId,
+      newOperation: isLocalOnly ? {} : operation,
+      addToBuffer: !isLocalOnly,
     }
   }
 

@@ -2,6 +2,7 @@ import { createBufferOperation, entity, operation } from './Operation'
 import { OperationsBuffer } from './OperationsBuffer'
 import { Entities } from './Entities.js'
 import { Operations } from './Operations'
+import { removeDeletesOfFailedCreates } from './operationsHandlers/index.js'
 
 describe('Buffer utility functions', () => {
   const id = 123
@@ -181,8 +182,9 @@ describe('OperationsBuffer', () => {
   })
 
   describe('condition operations readiness', () => {
+    // Keyed by the cid, as buildConditionOperations does.
     const conditionOperation = (condition) => ({
-      id: 20,
+      id: condition.cid,
       qid: 20,
       entity: Entities.questionCondition,
       op: Operations.update,
@@ -231,5 +233,162 @@ describe('OperationsBuffer', () => {
         )
       ).toBe(false)
     })
+  })
+})
+
+describe('OperationsBuffer ready operations', () => {
+  const createQuestion = (id, gid = 5) =>
+    createBufferOperation(id)
+      .question()
+      .create({ question: { gid }, questionL10n: {} })
+  const deleteQuestion = (id) => createBufferOperation(id).question().delete()
+  const updateQuestion = (id) =>
+    createBufferOperation(id)
+      .question()
+      .update({ question: { mandatory: 'Y' } })
+
+  const readyOf = (operations) =>
+    new OperationsBuffer(operations).getOperations({ ready: true })
+  const notReadyOf = (operations) =>
+    new OperationsBuffer(operations).getOperations({ ready: false })
+
+  test('a create and a delete in the buffer do not block each other', () => {
+    const operations = [createQuestion('temp__1'), deleteQuestion(10)]
+
+    // The delete goes first, the create follows once the delete is gone.
+    expect(readyOf(operations)).toEqual([deleteQuestion(10)])
+    expect(notReadyOf(operations)).toEqual([createQuestion('temp__1')])
+    expect(readyOf(notReadyOf(operations))).toEqual([createQuestion('temp__1')])
+  })
+
+  test('a delete waiting for a real ID does not hold back the creates', () => {
+    const operations = [createQuestion('temp__1'), deleteQuestion('temp__2')]
+
+    expect(readyOf(operations)).toEqual([createQuestion('temp__1')])
+  })
+
+  test('other operations wait for the creates and the deletes', () => {
+    expect(
+      readyOf([
+        createQuestion('temp__1'),
+        deleteQuestion(10),
+        updateQuestion(11),
+      ])
+    ).toEqual([deleteQuestion(10)])
+    expect(readyOf([createQuestion('temp__1'), updateQuestion(11)])).toEqual([
+      createQuestion('temp__1'),
+    ])
+    expect(readyOf([deleteQuestion('temp__2'), updateQuestion(11)])).toEqual([])
+    expect(readyOf([updateQuestion(11)])).toEqual([updateQuestion(11)])
+  })
+
+  test('a create that is not ready itself stays in the buffer', () => {
+    const operations = [
+      createQuestion('temp__1', 'temp__9'),
+      { ...createQuestion('temp__3'), error: true },
+      deleteQuestion(10),
+    ]
+
+    expect(readyOf(operations)).toEqual([deleteQuestion(10)])
+    expect(readyOf(notReadyOf(operations))).toEqual([])
+  })
+})
+
+describe('OperationsBuffer question delete and condition operations', () => {
+  const conditionOperation = (cid, qid) => ({
+    id: cid,
+    qid,
+    entity: Entities.questionCondition,
+    op: Operations.update,
+    props: {
+      qid,
+      scenarios: [
+        {
+          scid: 1,
+          conditions: [
+            {
+              cid,
+              qid,
+              cqid: 3,
+              cfieldname: 'Q3',
+              cquestions: 'Q3',
+              method: '==',
+              value: 'A1',
+              scenario: 1,
+              action: 'updateCondition',
+              editSourceTab: '#SRCPREVQUEST',
+              editTargetTab: '#CANSWERSTAB',
+              canswers: ['A1'],
+            },
+          ],
+        },
+      ],
+    },
+  })
+
+  test('deleting a question drops its buffered condition operations', () => {
+    const buffer = new OperationsBuffer()
+    buffer.addOperation(conditionOperation(77, 10))
+    buffer.addOperation(createBufferOperation(10).question().delete())
+
+    expect(buffer.getOperations().map((op) => [op.entity, op.id])).toEqual([
+      [Entities.question, 10],
+    ])
+  })
+
+  test('deleting a question keeps the condition of another question whose cid equals its qid', () => {
+    const buffer = new OperationsBuffer()
+    buffer.addOperation(conditionOperation(10, 20))
+    buffer.addOperation(createBufferOperation(10).question().delete())
+
+    expect(buffer.getOperations().map((op) => [op.entity, op.id])).toEqual([
+      [Entities.questionCondition, 10],
+      [Entities.question, 10],
+    ])
+  })
+})
+
+describe('OperationsBuffer delete of a new question while its create is sent', () => {
+  // The save loop took the create out of the buffer and sent it.
+  const bufferAfterSendingCreate = () => new OperationsBuffer([])
+  const deleteNew = (entity, id) =>
+    entity === Entities.question
+      ? createBufferOperation(id).question().delete()
+      : createBufferOperation(id).questionGroup().delete()
+
+  test.each([Entities.question, Entities.questionGroup])(
+    '%s: the delete waits for the real ID, then is sent with it',
+    (entity) => {
+      const buffer = bufferAfterSendingCreate()
+      buffer.addOperation(deleteNew(entity, 'temp__1'))
+
+      expect(buffer.getOperations()).toHaveLength(1)
+      expect(buffer.getOperations({ ready: true })).toEqual([])
+
+      // The response of the create brings the real ID (replaceTempIdsInSurveyAndBuffer)
+      buffer.setOperations(
+        buffer.getOperations().map((o) => ({ ...o, id: 1000 }))
+      )
+      expect(buffer.getOperations({ ready: true })).toEqual([
+        { entity, op: Operations.delete, id: 1000 },
+      ])
+    }
+  )
+
+  test('the create failed: the delete is dropped, the updates go on', () => {
+    const buffer = bufferAfterSendingCreate()
+    buffer.addOperation(deleteNew(Entities.question, 'temp__1'))
+    const update = createBufferOperation(5)
+      .question()
+      .update({ mandatory: 'Y' })
+    buffer.addOperation(update)
+    // Held back by the waiting delete
+    expect(buffer.getOperations({ ready: true })).toEqual([])
+
+    buffer.setOperations(removeDeletesOfFailedCreates(buffer.getOperations()))
+
+    // eslint-disable-next-line no-unused-vars
+    const { error, ...expected } = update
+    expect(buffer.getOperations({ ready: true })).toEqual([expected])
   })
 })

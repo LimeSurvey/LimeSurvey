@@ -4,7 +4,7 @@ import { PlusLg } from 'react-bootstrap-icons'
 import { useQuery } from '@tanstack/react-query'
 
 import { Button, Input } from 'components'
-import { useFocused, useConditionDesigner } from 'hooks'
+import { useFocused, useConditionDesigner, useLatestCallback } from 'hooks'
 import { SideBarHeader } from 'components/SideBar'
 import { ArrowLeftIcon } from 'components/icons'
 import {
@@ -20,6 +20,7 @@ import {
   getAllowedMethods,
   getConditionTypeInfo,
   hasUnsavedChanges,
+  isUsableFieldname,
   showConditionScriptOverwriteConfirmationOverlay,
   showUnsavedChangesOverlay,
   showWarningMessage,
@@ -32,27 +33,84 @@ const scenarioActions = {
   UPDATE: 'update', // when updating an existing scenario
 }
 
-export const ConditionDesigner = ({
+/**
+ * The header of the Condition Designer, with its back button.
+ * @param {object} props
+ * @param {Function} props.onBack called by the back button
+ * @returns {JSX.Element}
+ */
+const ConditionDesignerHeader = ({ onBack }) => (
+  <div
+    className={classNames('survey-settings')}
+    data-testid="condition-designer"
+  >
+    <SideBarHeader className="condition-designer-sidebar right-side-bar-header primary">
+      <div className="d-flex gap-2 fw-bold">
+        <Button
+          className="d-flex align-items-center p-0"
+          variant="btn bg-transparent border-0 shadow-none p-0"
+          onClick={onBack}
+          aria-label={t('Back')}
+        >
+          <ArrowLeftIcon className="text-black" />
+        </Button>
+        <span className="text-start">{t('Condition designer')}</span>
+      </div>
+    </SideBarHeader>
+  </div>
+)
+
+/**
+ * The Condition Designer of the focused question.
+ * It waits for the field names of the survey: Without them the saved
+ * questions can't be used as sources, and a scenario opened for editing
+ * would be read without its sources.
+ * @param {object} props see ConditionDesignerForm
+ * @returns {JSX.Element}
+ */
+export const ConditionDesigner = (props) => {
+  // The field names come from this map (fetched by useSurvey). It is refetched
+  // after a save, after the survey update replacing the temp IDs: The field
+  // names of the just saved questions are only known once it arrives.
+  const { data: questionsFieldNamesMap, isFetched } = useQuery({
+    queryKey: [STATES.SURVEY_QUESTIONS_FIELDNAME],
+    enabled: false,
+  })
+
+  if (isFetched) {
+    return (
+      <ConditionDesignerForm
+        {...props}
+        questionsFieldNamesMap={questionsFieldNamesMap}
+      />
+    )
+  }
+
+  return (
+    <>
+      <ConditionDesignerHeader onBack={props.onNavigateBack} />
+      <div className="p-3 text-center text-muted" role="status">
+        {t('Loading...')}
+      </div>
+    </>
+  )
+}
+
+const ConditionDesignerForm = ({
   survey,
   update,
   language,
   scenarioToPatch = null,
   onNavigateBack = () => {},
+  questionsFieldNamesMap,
 }) => {
-  const { focused, groupIndex, questionIndex } = useFocused()
+  const { focused } = useFocused()
 
-  const question = useMemo(
-    () => getQuestionById(focused.qid, survey).question,
+  // The position comes from the survey: The focus indexes can be stale.
+  const { question, groupIndex, questionIndex } = useMemo(
+    () => getQuestionById(focused.qid, survey),
     [focused.qid, survey]
   )
-
-  // The field names come from this map (fetched by useSurvey). It is refetched
-  // after a save, after the survey update replacing the temp IDs: The field
-  // names of the just saved questions are only known once it arrives.
-  const { data: questionsFieldNamesMap } = useQuery({
-    queryKey: [STATES.SURVEY_QUESTIONS_FIELDNAME],
-    enabled: false,
-  })
 
   // Built from the survey questions: Recomputed when any of them changes
   // (e.g. a temp ID replaced, new answer options, a type change).
@@ -119,7 +177,8 @@ export const ConditionDesigner = ({
 
       const isSourceValid =
         sourceType === conditionTypeInfo.SOURCE.QUESTION
-          ? (typeof cqid === 'number' && cqid > 0) || hasTempId(String(cqid))
+          ? ((typeof cqid === 'number' && cqid > 0) || hasTempId(cqid)) &&
+            isUsableFieldname(cfieldname)
           : Boolean(cfieldname)
 
       return isMethodValid && isValueValid && isScidValid && isSourceValid
@@ -138,8 +197,11 @@ export const ConditionDesigner = ({
     }
   }, [conditions, scenarioToPatch, scid, isUpdateAction, onNavigateBack])
 
+  // Also called by the overwrite confirm dialog, which can outlive a render:
+  // Save with the question and conditions of the latest one.
+  const save = useLatestCallback(() => handleSavingScenario(onNavigateBack))
+
   const handleApplyClick = () => {
-    const save = () => handleSavingScenario(onNavigateBack)
     if (shouldConfirmOverwrite) {
       showConditionScriptOverwriteConfirmationOverlay({
         script: question.relevance,
@@ -162,23 +224,7 @@ export const ConditionDesigner = ({
 
   return (
     <>
-      <div
-        className={classNames('survey-settings')}
-        data-testid="condition-designer"
-      >
-        <SideBarHeader className="condition-designer-sidebar right-side-bar-header primary">
-          <div className="d-flex gap-2 fw-bold">
-            <Button
-              className="d-flex align-items-center p-0"
-              variant="btn bg-transparent border-0 shadow-none p-0"
-              onClick={handleBackClick}
-            >
-              <ArrowLeftIcon className="text-black" />
-            </Button>
-            <span className="text-start">{t('Condition designer')}</span>
-          </div>
-        </SideBarHeader>
-      </div>
+      <ConditionDesignerHeader onBack={handleBackClick} />
       <div className="scenario-container">
         <div className="scenario-header">
           <span className="text-muted fw-bold">
@@ -197,9 +243,7 @@ export const ConditionDesigner = ({
         <div className="conditions-container">
           {conditions.map((condition, index) => (
             <ConditionItem
-              key={
-                condition.uiKey ?? `condition-item-${condition.cid ?? index}`
-              }
+              key={condition.uiKey}
               index={index}
               condition={condition}
               pervCondition={conditions[index - 1]}

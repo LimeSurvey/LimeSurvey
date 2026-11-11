@@ -152,7 +152,37 @@ class SurveyResponse
     }
 
     /**
-     * @return array
+     * Whether the patch created questions or subquestions, i.e. new response
+     * fields: Their field names are then returned (setQuestionFieldnames).
+     *
+     * @return bool True when the temp ID mapping has questions or subquestions
+     */
+    public function hasCreatedQuestionFields(): bool
+    {
+        $mapping = $this->tempIdMapping->getMappingResponseObject()['tempIdMapping'] ?? [];
+        return !empty($mapping['questionsMap']) || !empty($mapping['subquestionsMap']);
+    }
+
+    /**
+     * Adds the field names of the survey's questions to the response
+     * ('extras.questionFieldnames'), so the editor knows those of the new
+     * questions without fetching them again.
+     *
+     * @param array $questionFieldnames The fields of each question, keyed by question ID
+     *   (see QuestionFieldnames::getBySurvey())
+     * @return void
+     */
+    public function setQuestionFieldnames(array $questionFieldnames): void
+    {
+        if (!empty($questionFieldnames)) {
+            $this->additional['extras']['questionFieldnames'] = $questionFieldnames;
+        }
+    }
+
+    /**
+     * Builds the response of the whole patch.
+     *
+     * @return array The operations applied, temp ID mappings, errors and extras
      */
     public function buildResponseObject(): array
     {

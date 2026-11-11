@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react'
+import React, { useState, useMemo, useEffect, useRef } from 'react'
 import classNames from 'classnames'
 import { Button } from 'react-bootstrap'
 
@@ -8,6 +8,8 @@ import {
   createBufferOperation,
   getDisabledQuestionTypes,
   getQuestionById,
+  getResolvedTempIdsVersion,
+  hasCopiedConditions,
   errorToast,
   resolveTempIds,
 } from 'helpers'
@@ -60,10 +62,21 @@ export const QuestionSettings = ({ surveyId }) => {
     questionIndex,
   } = useFocused()
 
-  // The scenario being edited switches to the real IDs with the question.
-  const panelsKey = useConditionPanelsKey(focused?.qid, () =>
-    setScenarioToPatch((scenario) => scenario && resolveTempIds(scenario))
-  )
+  // The scenario being edited switches to the real IDs with the question,
+  // using the temp ID mappings that arrived since it was opened: An older
+  // mapping of the same temp ID is about another entity.
+  const scenarioTempIdsVersion = useRef(0)
+  const openScenario = (scenario) => {
+    scenarioTempIdsVersion.current = getResolvedTempIdsVersion()
+    setScenarioToPatch(scenario)
+  }
+  const panelsKey = useConditionPanelsKey(focused?.qid, () => {
+    const sinceVersion = scenarioTempIdsVersion.current
+    scenarioTempIdsVersion.current = getResolvedTempIdsVersion()
+    setScenarioToPatch(
+      (scenario) => scenario && resolveTempIds(scenario, sinceVersion)
+    )
+  })
 
   useEffect(() => {
     closeConditionDesignerPanels()
@@ -71,15 +84,14 @@ export const QuestionSettings = ({ surveyId }) => {
 
   // The persisted focus can point to a question that isn't in the loaded
   // survey (e.g. one from a previously opened survey) until focus is restored.
-  const isFocusedQuestionInSurvey = useMemo(
+  const focusedQuestion = useMemo(
     () =>
-      Boolean(
-        focused?.qid &&
-        survey?.questionGroups &&
-        getQuestionById(focused.qid, survey).question
-      ),
+      focused?.qid && survey?.questionGroups
+        ? getQuestionById(focused.qid, survey).question
+        : undefined,
     [focused?.qid, survey]
   )
+  const isFocusedQuestionInSurvey = Boolean(focusedQuestion)
 
   const questionSettings = useMemo(() => {
     if (!focused?.qid) {
@@ -135,7 +147,7 @@ export const QuestionSettings = ({ surveyId }) => {
     isConditionPanelOpen = false,
     isExpressionScriptPanelOpen = false
   ) => {
-    setScenarioToPatch(scenario)
+    openScenario(scenario)
     setConditionDesignerPanels({
       isConditionPanelOpen,
       isExpressionScriptPanelOpen,
@@ -286,7 +298,7 @@ export const QuestionSettings = ({ surveyId }) => {
       )
     }
     if (
-      focused.relevance !== null &&
+      focusedQuestion.relevance !== null &&
       conditionDesignerPanels.isExpressionScriptPanelOpen
     ) {
       return (
@@ -383,21 +395,27 @@ export const QuestionSettings = ({ surveyId }) => {
         </>
       )}
       <div id="condition-designer">
-        {!isFocusedQuestionInSurvey ? null : (
+        {/* The conditions and relevance are read from the survey's question,
+            not from the focus: The focus is a copy of the question, which a
+            save or a reload of the survey doesn't refresh.
+            The conditions of a duplicated question are those of the original
+            until the survey is reloaded after its save: Not editable yet. */}
+        {!isFocusedQuestionInSurvey ||
+        hasCopiedConditions(focusedQuestion) ? null : (
           <>
             <AddScenario
               key={`add-scenario-${focused.qid}`}
               onShowPanel={toggleConditionDesignerPanels}
             />
 
-            {focused.scenarios?.length ? (
+            {focusedQuestion.scenarios?.length ? (
               <ScenarioList
-                key={`scenario-list-${focused.qid}-${focused.scenarios.length}`}
-                setScenarioToPatch={setScenarioToPatch}
+                key={`scenario-list-${focused.qid}-${focusedQuestion.scenarios.length}`}
+                setScenarioToPatch={openScenario}
               />
             ) : null}
 
-            {focused.relevance != null && (
+            {focusedQuestion.relevance != null && (
               <ExpressionScriptInputBox
                 key={`condition-expression-trigger-${focused.qid}`}
                 onShowPanel={toggleConditionDesignerPanels}

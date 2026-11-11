@@ -239,4 +239,11 @@ describe('handleQuestionGroupOperation Tests', () => {
     expect(result.addToBuffer).toBe(false)
     expect(result.bufferOperations).toEqual([otherGroupQuestion])
   })
+
+  test('keeps the delete of a new group whose create was already sent, to wait for its real ID', () => {
+    const result = handleQuestionGroupOperation([], deleteOperationWithTempId)
+
+    expect(result.newOperation).toEqual(deleteOperationWithTempId)
+    expect(result.addToBuffer).toBe(true)
+  })
 })

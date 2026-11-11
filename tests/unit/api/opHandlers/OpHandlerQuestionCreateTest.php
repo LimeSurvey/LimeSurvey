@@ -69,6 +69,66 @@ class OpHandlerQuestionCreateTest extends TestBaseClass
     }
 
     /**
+     * @testdox the scenarios of a duplicated question are not saved with the question data
+     */
+    public function testScenariosAreTakenOutOfTheQuestionData()
+    {
+        $data = [
+            'question' => [
+                'title' => 'G01Q01',
+                'scenarios' => [
+                    [
+                        'scid' => 1,
+                        'conditions' => [
+                            ['cid' => 100, 'qid' => 226],
+                            ['cid' => '101', 'qid' => 226],
+                            // Never saved: Nothing to copy from
+                            ['cid' => 'temp__5_1', 'qid' => 226],
+                            ['qid' => 226],
+                        ],
+                    ],
+                    ['scid' => 2, 'conditions' => [['cid' => 102]]],
+                    ['scid' => 3],
+                ],
+            ],
+        ];
+
+        $cids = $this->extractConditionIdsToCopy($data);
+
+        $this->assertSame([100, 101, 102], $cids);
+        // Left in the question data, they would be saved as a question attribute
+        $this->assertSame(['title' => 'G01Q01'], $data['question']);
+    }
+
+    /**
+     * @testdox a question without scenarios has no conditions to copy
+     */
+    public function testNoConditionsToCopyWithoutScenarios()
+    {
+        $data = ['question' => ['title' => 'G01Q01']];
+
+        $this->assertSame([], $this->extractConditionIdsToCopy($data));
+        $this->assertSame(['title' => 'G01Q01'], $data['question']);
+    }
+
+    /**
+     * Calls the private OpHandlerQuestionCreate::extractConditionIdsToCopy().
+     *
+     * @param array $data Transformed operation data, changed in place
+     * @return int[] IDs of the conditions to copy
+     */
+    private function extractConditionIdsToCopy(array &$data): array
+    {
+        $method = new \ReflectionMethod(
+            OpHandlerQuestionCreate::class,
+            'extractConditionIdsToCopy'
+        );
+        $method->setAccessible(true);
+
+        return $method->invokeArgs($this->getOpHandler(), [&$data]);
+    }
+
+    /**
      * @param array $props
      * @param string $type
      * @return OpStandard

@@ -8,13 +8,10 @@
  * - Mapping values to appropriate tab formats (e.g., answers, constants, regex)
  * - Assigning temporary IDs for new conditions
  * - Structuring conditions into grouped scenarios by scenario name
- *
- * Depends on:
- * - getApiOperationActions from utils.js
  */
 import { buildConditionTempId, createBufferOperation } from 'helpers'
 
-import { getApiOperationActions } from './getApiOperationActions'
+import { CONDITION_ACTIONS } from 'helpers/Buffer/operationsHandlers'
 
 const sourceTabs = {
   Question: '#SRCPREVQUEST',
@@ -33,7 +30,6 @@ const targetTabs = {
 let conditionTempIdSeed = Date.now()
 
 export const buildScenarioPayload = (question, conditions, scenarioName) => {
-  const apiActions = getApiOperationActions()
   const qid = question.qid
   const tempIdSeed = ++conditionTempIdSeed
   let tempIdIndex = 1
@@ -49,8 +45,8 @@ export const buildScenarioPayload = (question, conditions, scenarioName) => {
       value: value,
       scenario: scenarioName,
       action: condition.cid
-        ? apiActions.CONDITION.UPDATE
-        : apiActions.CONDITION.CREATE,
+        ? CONDITION_ACTIONS.UPDATE
+        : CONDITION_ACTIONS.CREATE,
       editSourceTab: sourceTabs[condition.sourceType],
       editTargetTab: targetTabs[condition.targetType],
       ...(condition.cid ? { cid: condition.cid } : {}),
@@ -60,7 +56,7 @@ export const buildScenarioPayload = (question, conditions, scenarioName) => {
       apiCondition.csrctoken = apiCondition.cfieldname
     }
 
-    if (apiCondition.action === apiActions.CONDITION.CREATE) {
+    if (apiCondition.action === CONDITION_ACTIONS.CREATE) {
       apiCondition.tempId = buildConditionTempId(tempIdSeed, tempIdIndex++)
       apiCondition.cid = apiCondition.tempId
       apiCondition.tempcids = [apiCondition.tempId]
@@ -147,9 +143,7 @@ export const buildConditionDeleteOperation = (qid, scid, cid) => {
     scenarios: [
       {
         scid,
-        conditions: [
-          { cid, action: getApiOperationActions().CONDITION.DELETE },
-        ],
+        conditions: [{ cid, action: CONDITION_ACTIONS.DELETE }],
       },
     ],
   }

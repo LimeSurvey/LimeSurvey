@@ -210,6 +210,7 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
         $answerOptionsData = $data['answeroptions'] ?? [];
 
         $tempId = $this->extractTempId($questionData);
+        $cids = $this->extractConditionIdsToCopy($data);
 
         $question = $questionService->save(
             $surveyId,
@@ -236,19 +237,39 @@ class OpHandlerQuestionCreate implements OpHandlerInterface
                 true
             )
         );
-        $cids = [];
-        if ($data['question']['scenarios'] ?? false) {
-            foreach ($data['question']['scenarios'] as $scenario) {
-                foreach ($scenario['conditions'] as $rawCondition) {
-                    $cids[] = $rawCondition['cid'];
-                }
-            }
-            $cids = $this->filterConditionIdsBySurvey($cids, $surveyId);
-            if (!empty($cids)) {
-                Condition::model()->copyConditions($cids, $question->qid);
-            }
+        $cids = $this->filterConditionIdsBySurvey($cids, $surveyId);
+        if (!empty($cids)) {
+            Condition::model()->copyConditions($cids, $question->qid);
         }
         return ['tempIdMapping' => $mapping];
+    }
+
+    /**
+     * Takes the scenarios of a duplicated question out of the question data
+     * and returns the IDs of their conditions, which are copied to the new
+     * question once it is saved.
+     * The scenarios must not stay in the question data: Every unknown key of
+     * it is saved as a question attribute, and an array value makes the
+     * attribute validation fail before the conditions are copied.
+     *
+     * @param array $data Transformed operation data, its question scenarios are removed
+     * @return int[] IDs of the conditions to copy, not yet checked against the survey
+     */
+    private function extractConditionIdsToCopy(array &$data): array
+    {
+        $scenarios = $data['question']['scenarios'] ?? [];
+        unset($data['question']['scenarios']);
+
+        $cids = [];
+        foreach (is_array($scenarios) ? $scenarios : [] as $scenario) {
+            foreach ($scenario['conditions'] ?? [] as $rawCondition) {
+                // The condition of an unsaved scenario has no ID to copy from yet
+                if (is_numeric($rawCondition['cid'] ?? null)) {
+                    $cids[] = (int) $rawCondition['cid'];
+                }
+            }
+        }
+        return $cids;
     }
 
     /**

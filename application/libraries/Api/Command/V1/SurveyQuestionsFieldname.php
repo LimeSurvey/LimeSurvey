@@ -6,6 +6,7 @@ use LimeSurvey\Api\Command\CommandInterface;
 use LimeSurvey\Api\Command\Request\Request;
 use LimeSurvey\Api\Command\Response\Response;
 use LimeSurvey\Api\Command\Response\ResponseFactory;
+use LimeSurvey\Models\Services\QuestionFieldnames;
 use LSYii_Application;
 use Permission;
 use Survey;
@@ -95,44 +96,7 @@ class SurveyQuestionsFieldname implements CommandInterface
             return $this->responseFactory->makeErrorNotFound();
         }
 
-        $aDuplicateQIDs = [];
-        $surveyLanguage = $survey->language;
-        $fullFieldMap = createFieldMap($survey, 'full', true, false, $surveyLanguage, $aDuplicateQIDs, [], true);
-
-        $questionsFieldMap = [];
-
-        foreach ($fullFieldMap as $fieldCode => $fieldMeta) {
-            if (strpos($fieldCode, 'Q') !== 0) {
-                continue;
-            }
-
-            if (strpos($fieldMeta['fieldname'], 'comment') !== false) {
-                continue;
-            }
-
-            if (strpos($fieldMeta['fieldname'], 'filecount') !== false) {
-                continue;
-            }
-
-            $questionsFieldMap[$fieldMeta['qid']][] = $fieldMeta;
-        }
-
-        $structuredFieldnames = [];
-
-        foreach ($questionsFieldMap as $questionId => $questionFields) {
-            foreach ($questionFields as $field) {
-                $structuredFieldnames[$questionId][] = [
-                    'fieldname' => $field['fieldname'],
-                    'sid'       => $field['sid'],
-                    'gid'       => $field['gid'],
-                    'qid'       => $field['qid'],
-                    'sqid'      => $field['sqid'] ?? null,
-                    'aid'       => $field['aid'] ?? null,
-                    'title'     => $field['title'],
-                    'scale_id'  => $field['scale_id'] ?? null,
-                ];
-            }
-        }
+        $structuredFieldnames = (new QuestionFieldnames())->getBySurvey($survey);
 
         return $this->responseFactory->makeSuccess($structuredFieldnames);
     }

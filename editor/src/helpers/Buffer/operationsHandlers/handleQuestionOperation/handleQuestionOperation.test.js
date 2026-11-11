@@ -317,4 +317,22 @@ describe('handleQuestionOperation Tests', () => {
       ),
     })
   })
+
+  test('Keeps the delete of a new question whose create was already sent, to wait for its real ID', () => {
+    const textUpdate = {
+      entity: 'questionL10n',
+      op: Operations.update,
+      id: `${NEW_OBJECT_ID_PREFIX}1`,
+      props: { en: { question: 'x' } },
+    }
+
+    const result = handleQuestionOperation(
+      [textUpdate],
+      questionDeleteOperationWithTempId
+    )
+
+    expect(result.bufferOperations).toEqual([])
+    expect(result.newOperation).toEqual(questionDeleteOperationWithTempId)
+    expect(result.addToBuffer).toBe(true)
+  })
 })

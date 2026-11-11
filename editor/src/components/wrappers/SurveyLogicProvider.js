@@ -10,6 +10,7 @@ import {
   useFocused,
   useInFlightConditionQids,
   useSurvey,
+  useSurveyRequestTimestamp,
 } from 'hooks'
 import {
   Entities,
@@ -19,9 +20,12 @@ import {
   STATES,
   errorToast,
   applyQuestionRelevance,
+  applySkippedQuestionRelevance,
+  clearSkippedQuestionRelevance,
+  forgetSkippedQuestionRelevance,
   clearResolvedTempIds,
   getConditionLogicQids,
-  getRefreshedFocus,
+  hasCopiedConditions,
   processValidationErrorsAndUpdateOperations,
   rememberResolvedTempIds,
   removeConditionsWithUnknownTempIdsFromSurveyAndBuffer,
@@ -29,7 +33,10 @@ import {
   dayJsHelper,
   RandomNumber,
 } from 'helpers'
-import { removeConditionOpsOfFailedCreates } from 'helpers/Buffer/operationsHandlers'
+import {
+  hasUnansweredConditionCreate,
+  removeOperationsOfFailedCreates,
+} from 'helpers/Buffer/operationsHandlers'
 
 /**
  * Render children while loading the route's survey and saving buffered edits.
@@ -59,17 +66,7 @@ export const SurveyLogicProvider = ({ children }) => {
     false
   )
   const [, setInFlightConditionQids] = useInFlightConditionQids()
-
-  // Refresh the focused question's data from the survey. Only the data
-  // changes, so no navigation: It would add browser history entries.
-  // Read the focus now, it may have changed while a request was running.
-  const refreshFocusedQuestion = (survey) => {
-    const focusData = getRefreshedFocus(
-      queryClient.getQueryData([STATES.FOCUSED_ENTITY]),
-      survey
-    )
-    if (focusData) queryClient.setQueryData([STATES.FOCUSED_ENTITY], focusData)
-  }
+  const { clearSurveyRequestTimestamp } = useSurveyRequestTimestamp()
 
   /**
    * Clean the condition operations that could never be sent, before each save
@@ -81,25 +78,35 @@ export const SurveyLogicProvider = ({ children }) => {
    * - the operations still on a temp cid without a buffered create (see
    *   removeConditionOpsOfFailedCreates): For example the delete of a
    *   condition whose create was refused, which would otherwise block every
-   *   save.
+   *   save;
+   * - the deletes of new questions and groups whose create failed (see
+   *   removeDeletesOfFailedCreates).
+   * It also applies the relevance of the server that were skipped for newer
+   * condition changes canceled since (see applySkippedQuestionRelevance).
    * @returns {boolean} whether the buffer changed
    */
   const cleanConditionOperations = () => {
-    // Read only: The buffer's own copy, getOperations() would copy it again.
-    const operations = operationsBuffer.operations
+    // The buffer as it is now, not the one of this render: An operation added
+    // since (e.g. by an effect of the same commit) must not be lost when the
+    // cleaned buffer is written back.
+    const operations = queryClient.getQueryData([STATES.BUFFER]) ?? []
     const result = removeConditionsWithUnknownTempIdsFromSurveyAndBuffer(
       queryClient.getQueryData([STATES.SURVEY])?.survey,
       operations
     )
 
-    if (result.changedQids.length) {
-      update({ ...result.survey })
-      refreshFocusedQuestion(result.survey)
-    }
-
-    const cleanedOperations = removeConditionOpsOfFailedCreates(
+    // A relevance of the server skipped for newer condition operations that
+    // were canceled since, instead of being sent.
+    const appliedRelevanceQids = applySkippedQuestionRelevance(
+      result.survey,
       result.operations
     )
+
+    if (result.changedQids.length || appliedRelevanceQids.length) {
+      update({ ...result.survey })
+    }
+
+    const cleanedOperations = removeOperationsOfFailedCreates(result.operations)
     if (cleanedOperations === operations) return false
 
     setBuffer(cleanedOperations, RandomNumber())
@@ -115,6 +122,7 @@ export const SurveyLogicProvider = ({ children }) => {
     setIsAddingQuestionOrGroup(false)
     setInFlightConditionQids([])
     clearResolvedTempIds()
+    clearSkippedQuestionRelevance()
 
     if (surveyId) {
       fetchSurvey(surveyId)
@@ -154,6 +162,7 @@ export const SurveyLogicProvider = ({ children }) => {
       operationsBuffer.clearBuffer({ ready: true })
       clearBuffer({ ready: true })
       setInFlightConditionQids(getConditionLogicQids(readyOperations))
+      forgetSkippedQuestionRelevance(readyOperations)
       setIsPatchSurveyRunning(true)
     }
 
@@ -184,47 +193,32 @@ export const SurveyLogicProvider = ({ children }) => {
         conditionsTempIdMapping,
       ].forEach(rememberResolvedTempIds)
 
+      // Groups, questions, subquestions and conditions: One pass over the survey
+      // and the buffer for all of them (see replaceTempIdsInSurveyAndBuffer).
+      // Answers after them, in the answers only.
       let mapResult = replaceTempIdsInSurveyAndBuffer(
-        groupsTempIdMapping,
-        EntitiesType.group,
+        [
+          ...(groupsTempIdMapping ?? []),
+          ...(questionsTempIdMapping ?? []),
+          ...(subquestionsTempIdMapping ?? []),
+          ...(conditionsTempIdMapping ?? []),
+        ],
+        EntitiesType.question,
         survey,
         currentBuffer,
         focused
       )
 
-      if (mapResult.focused && groupsTempIdMapping) {
+      if (
+        mapResult.focused &&
+        (groupsTempIdMapping?.length || questionsTempIdMapping?.length)
+      ) {
         setFocused(mapResult.focused, groupIndex, questionIndex)
       }
-
-      mapResult = replaceTempIdsInSurveyAndBuffer(
-        questionsTempIdMapping,
-        EntitiesType.question,
-        mapResult.survey,
-        mapResult.operationsBuffer,
-        focused
-      )
-
-      if (mapResult.focused && questionsTempIdMapping) {
-        setFocused(mapResult.focused, groupIndex, questionIndex)
-      }
-
-      mapResult = replaceTempIdsInSurveyAndBuffer(
-        subquestionsTempIdMapping,
-        EntitiesType.subquestion,
-        mapResult.survey,
-        mapResult.operationsBuffer
-      )
 
       mapResult = replaceTempIdsInSurveyAndBuffer(
         answersTempIdMapping,
         EntitiesType.answer,
-        mapResult.survey,
-        mapResult.operationsBuffer
-      )
-
-      mapResult = replaceTempIdsInSurveyAndBuffer(
-        conditionsTempIdMapping,
-        EntitiesType.condition,
         mapResult.survey,
         mapResult.operationsBuffer
       )
@@ -267,7 +261,30 @@ export const SurveyLogicProvider = ({ children }) => {
         ...validationErrors,
         ...exceptionErrors,
       ].some((error) => error.entity === Entities.questionCondition)
-      if (refusedDeletes.length || hasRefusedConditionChange) {
+      // A condition create left without a real cid: The request failed, or
+      // the server skipped the condition. The editor shows a condition the
+      // server doesn't have, and its later changes can't be sent.
+      const hasLostConditionCreate = hasUnansweredConditionCreate(
+        readyOperations,
+        conditionsTempIdMapping
+      )
+      // A duplicated question was created with copies of the original's
+      // conditions, whose new IDs are only known from the survey.
+      const hasCreatedCopiedConditions = readyOperations.some(
+        (operation) =>
+          operation.entity === Entities.question &&
+          operation.op === Operations.create &&
+          hasCopiedConditions(operation.props?.question)
+      )
+      if (
+        refusedDeletes.length ||
+        hasRefusedConditionChange ||
+        hasLostConditionCreate ||
+        hasCreatedCopiedConditions
+      ) {
+        // Reload the whole survey, even if the server reports it as unchanged
+        // since the last request.
+        clearSurveyRequestTimestamp(surveyId)
         refreshRequired = true
         setSurveyRefreshRequired(true)
       }
@@ -284,20 +301,27 @@ export const SurveyLogicProvider = ({ children }) => {
           )
         })
 
-      update({ ...mapResult.survey })
-      refetchQuestionsFieldNamesMap()
-      // A condition operation still on a temp cid without a buffered create
-      // now belongs to a condition creation that failed or was refused.
-      mapResult.operationsBuffer.setOperations(
-        removeConditionOpsOfFailedCreates(
-          mapResult.operationsBuffer.getOperations()
+      // The response brings the field names when it created questions or
+      // subquestions: Those of the new ones are known together with their
+      // IDs. Otherwise (e.g. after a type change) they are fetched again.
+      const questionFieldnames = result.extras?.questionFieldnames
+      if (questionFieldnames) {
+        queryClient.setQueryData(
+          [STATES.SURVEY_QUESTIONS_FIELDNAME],
+          questionFieldnames
         )
+      }
+      update({ ...mapResult.survey })
+      if (!questionFieldnames) refetchQuestionsFieldNamesMap()
+      // An operation still on a temp ID without a buffered create now belongs
+      // to a creation that failed or was refused: A condition change, or the
+      // delete of a new question or group.
+      // Before the reload check of finallyCallback, which needs an empty buffer.
+      mapResult.operationsBuffer.setOperations(
+        removeOperationsOfFailedCreates(mapResult.operationsBuffer.operations)
       )
 
       setBuffer(mapResult.operationsBuffer.getOperations(), RandomNumber())
-
-      // Its URL was already updated with any new ID above.
-      refreshFocusedQuestion(mapResult.survey)
 
       setSaveState(
         format(
@@ -325,23 +349,25 @@ export const SurveyLogicProvider = ({ children }) => {
     }
 
     const catchCallback = (error) => {
-      const updatedOperation = readyOperations.map((operation) => ({
-        ...operation,
-        error: true,
-      }))
+      // Condition operations are not put back, as when the API refuses them
+      // (see processValidationErrorsAndUpdateOperations): The survey is
+      // reloaded after a later save, to show the conditions the server has.
+      // The operations left waiting for the real ID of a condition create are
+      // dropped before the next save (cleanConditionOperations).
+      const updatedOperation = readyOperations
+        .filter((operation) => operation.entity !== Entities.questionCondition)
+        .map((operation) => ({
+          ...operation,
+          error: true,
+        }))
 
       updatedOperation.forEach((operation) => {
         addToBuffer(operation, false)
       })
 
-      // No condition create got its real ID: Drop the operations waiting for
-      // one, except those of the creates put back.
-      setBuffer(
-        removeConditionOpsOfFailedCreates(
-          queryClient.getQueryData([STATES.BUFFER])
-        ),
-        RandomNumber()
-      )
+      if (updatedOperation.length !== readyOperations.length) {
+        setSurveyRefreshRequired(true)
+      }
 
       setErrorsFromPatchResponse([...updatedOperation])
       setSaveState(

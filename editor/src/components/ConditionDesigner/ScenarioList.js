@@ -9,6 +9,7 @@ import { CloseCircleIcon } from 'components/icons'
 
 import {
   buildScenarioConditionDeleteOperations,
+  getLiveFocusedQuestion,
   showDeleteScenarioOverlay,
 } from './utils'
 
@@ -16,41 +17,51 @@ export const ScenarioList = ({ setScenarioToPatch }) => {
   const { surveyId } = useParams()
   const { survey, update } = useSurvey(surveyId)
   const { focused } = useFocused()
-  const { addToBuffer } = useBuffer()
+  const { addOperationsToBuffer } = useBuffer()
 
-  // The position comes from the survey: The focus indexes can be stale.
-  const { question, groupIndex, questionIndex } = getQuestionById(
-    focused.qid,
-    survey
-  )
-  const scenarios = question?.scenarios || []
+  // Read from the survey, not from the focus (a copy of the question that a
+  // save doesn't refresh), in the order of their numbers.
+  const scenarios = [
+    ...(getQuestionById(focused.qid, survey).question?.scenarios || []),
+  ].sort((a, b) => a.scid - b.scid)
 
+  /**
+   * Deletes a scenario of the focused question, once confirmed in a dialog.
+   * The question is looked up now (getLiveFocusedQuestion): While the dialog
+   * was open, a save may have replaced its temp ID or those of its
+   * conditions.
+   * @param {number} scenarioId
+   * @returns {void}
+   */
   const handleDeleteScenario = (scenarioId) => {
-    if (groupIndex === undefined) return
+    const {
+      survey: liveSurvey,
+      question,
+      groupIndex,
+      questionIndex,
+    } = getLiveFocusedQuestion()
+    const scenario = question?.scenarios?.find((s) => s.scid === scenarioId)
+    if (!scenario) return
 
     // Condition by condition (see buildScenarioConditionDeleteOperations):
     // Unsaved conditions are only removed from the buffer.
-    const scenario = scenarios.find((s) => s.scid === scenarioId)
-    buildScenarioConditionDeleteOperations(question.qid, scenario).forEach(
-      (operation) => addToBuffer(operation)
+    addOperationsToBuffer(
+      buildScenarioConditionDeleteOperations(question.qid, scenario)
     )
 
-    question.scenarios = scenarios.filter(
+    question.scenarios = question.scenarios.filter(
       (scenario) => scenario.scid !== scenarioId
     )
 
     if (!question.scenarios.length)
       question.relevance = QUESTION_RELEVANCE_DEFAULT_VALUE
 
-    const updatedQuestionGroups = [...survey.questionGroups]
+    const updatedQuestionGroups = [...liveSurvey.questionGroups]
     updatedQuestionGroups[groupIndex].questions[questionIndex] = question
 
     update({
       questionGroups: updatedQuestionGroups,
     })
-
-    focused.scenarios = question.scenarios
-    focused.relevance = question.relevance
   }
 
   return (

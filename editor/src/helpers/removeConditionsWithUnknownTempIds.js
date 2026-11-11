@@ -1,17 +1,14 @@
-import { isEqual } from 'lodash'
-
-import { QUESTION_RELEVANCE_DEFAULT_VALUE } from './constants'
 import {
   getConditionTempIds,
   getKnownTempIds,
+  getScenarioConditions,
   removeConditionOpsWithUnknownTempIds,
   usesUnknownTempId,
 } from './Buffer/operationsHandlers/handleQuestionConditionOperation/handleQuestionConditionOperation'
 
 /**
  * Removes from the questions of the survey the conditions using an unknown
- * temp ID (see usesUnknownTempId). Questions left without scenarios get the
- * default relevance back.
+ * temp ID (see usesUnknownTempId). The relevance of the questions is kept.
  * Doesn't mutate `survey`: Only the changed groups and questions are copied.
  *
  * @param {object} survey
@@ -25,8 +22,8 @@ const removeSurveyConditionsWithUnknownTempIds = (survey, knownTempIds) => {
   const questionGroups = survey.questionGroups.map((group) => {
     let groupChanged = false
     const questions = (group.questions ?? []).map((question) => {
-      const hasRemoved = (question.scenarios ?? []).some((scenario) =>
-        (scenario.conditions ?? []).some(isRemoved)
+      const hasRemoved = getScenarioConditions(question.scenarios).some(
+        isRemoved
       )
       if (!hasRemoved) return question
 
@@ -39,13 +36,10 @@ const removeSurveyConditionsWithUnknownTempIds = (survey, knownTempIds) => {
         }))
         .filter((scenario) => scenario.conditions.length)
 
-      return {
-        ...question,
-        scenarios,
-        relevance: scenarios.length
-          ? question.relevance
-          : QUESTION_RELEVANCE_DEFAULT_VALUE,
-      }
+      // The relevance is kept: The removed conditions were never sent with
+      // that source, so the server still has the relevance shown before them
+      // (e.g. an expression script they were meant to replace).
+      return { ...question, scenarios }
     })
 
     return groupChanged ? { ...group, questions } : group
@@ -92,8 +86,10 @@ export const removeConditionsWithUnknownTempIdsFromSurveyAndBuffer = (
 
   return {
     ...removeSurveyConditionsWithUnknownTempIds(survey, knownTempIds),
-    operations: isEqual(cleanedOperations, operations)
-      ? operations
-      : cleanedOperations,
+    // A filter: Same length, nothing removed.
+    operations:
+      cleanedOperations.length === operations.length
+        ? operations
+        : cleanedOperations,
   }
 }

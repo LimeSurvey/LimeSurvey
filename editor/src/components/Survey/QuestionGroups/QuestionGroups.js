@@ -26,7 +26,8 @@ export const QuestionGroups = ({
   surveySettings,
 }) => {
   const { focused = {}, setFocused, unFocus } = useFocused()
-  const { addToBuffer } = useBuffer()
+  const { addToBuffer, removeConditionOperationsOfQuestionsFromBuffer } =
+    useBuffer()
   const [deleteState, setDeleteState] = useState({ show: false, index: null })
   const { surveyId } = useParams()
   const { clearSurveyRequestTimestamp } = useSurveyRequestTimestamp()
@@ -56,6 +57,10 @@ export const QuestionGroups = ({
       .questionGroup()
       .delete()
 
+    // The pending condition changes of its questions go with the group.
+    removeConditionOperationsOfQuestionsFromBuffer(
+      (questionGroups[index].questions ?? []).map((question) => question.qid)
+    )
     addToBuffer(operation)
 
     if (!focused.qid && focused.gid === questionGroups[index].gid) {

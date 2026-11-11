@@ -142,6 +142,70 @@ class SurveyResponseTest extends TestBaseClass
         );
     }
 
+    /**
+     * Checks when the patch reports new response fields: Created questions or
+     * subquestions do, other created entities don't.
+     * @testdox response knows when questions or subquestions were created
+     * @return void nothing: The checks are PHPUnit assertions
+     */
+    public function testHasCreatedQuestionFields(): void
+    {
+        $responseFor = function (array $mapping): SurveyResponse {
+            $surveyResponse = new SurveyResponse(
+                new TempIdMapping(),
+                new ValidationErrors(),
+                new ExceptionErrors()
+            );
+            $surveyResponse->handleResponse(['tempIdMapping' => $mapping]);
+            return $surveyResponse;
+        };
+
+        $this->assertFalse($responseFor([])->hasCreatedQuestionFields());
+        $this->assertFalse(
+            $responseFor(['answersMap' => [new TempIdMapItem('temp__1', 5, 'aid')]])
+                ->hasCreatedQuestionFields()
+        );
+        $this->assertTrue(
+            $responseFor(['questionsMap' => [new TempIdMapItem('temp__2', 6, 'qid')]])
+                ->hasCreatedQuestionFields()
+        );
+        $this->assertTrue(
+            $responseFor(['subquestionsMap' => [new TempIdMapItem('temp__3', 7, 'qid')]])
+                ->hasCreatedQuestionFields()
+        );
+    }
+
+    /**
+     * Checks that the field names are returned in 'extras', keyed by qid, next
+     * to the other extras, and that an empty list adds nothing.
+     * @testdox response returns the question field names in extras
+     * @return void nothing: The checks are PHPUnit assertions
+     */
+    public function testSetQuestionFieldnames(): void
+    {
+        $surveyResponse = new SurveyResponse(
+            new TempIdMapping(),
+            new ValidationErrors(),
+            new ExceptionErrors()
+        );
+        $surveyResponse->setQuestionFieldnames([]);
+        $this->assertArrayNotHasKey('extras', $surveyResponse->buildResponseObject());
+
+        $surveyResponse->handleResponse(
+            ['additional' => ['questionRelevance' => [12 => '1']]]
+        );
+        $fieldnames = [6 => [['fieldname' => 'Q6', 'qid' => 6]]];
+        $surveyResponse->setQuestionFieldnames($fieldnames);
+
+        $extras = $surveyResponse->buildResponseObject()['extras'];
+        $this->assertSame($fieldnames, $extras['questionFieldnames']);
+        $this->assertSame([12 => '1'], $extras['questionRelevance']);
+        $this->assertSame(
+            '{"6":[{"fieldname":"Q6","qid":6}]}',
+            json_encode($extras['questionFieldnames'])
+        );
+    }
+
     private static function getResponse()
     {
         $surveyResponse = DI::getContainer()->get(SurveyResponse::class);
