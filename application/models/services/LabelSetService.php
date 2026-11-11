@@ -2,7 +2,6 @@
 
 namespace LimeSurvey\Models\Services;
 
-use CDbCriteria;
 use Label;
 use LabelL10n;
 use LabelSet;
@@ -65,17 +64,19 @@ class LabelSetService
     public function getLabelSets(array $languages = [], bool $onlyUpdatable = false): array
     {
         $languages = $this->normaliseLanguages($languages);
-        $criteria = new CDbCriteria(['order' => 'label_name']);
-        if ($onlyUpdatable) {
-            $criteria->mergeWith($this->getUpdatableCriteria());
-        }
-        $labelSets = $this->labelSet->findAll($criteria);
+        $labelSets = $this->labelSet->findAll(['order' => 'label_name']);
         $labelStats = $this->getLabelStats();
 
         $result = [];
         foreach ($labelSets as $labelSet) {
             $setLanguages = $labelSet->getLanguageArray();
             if (array_diff($languages, $setLanguages)) {
+                continue;
+            }
+            // Same check as overwrite(), so plugins that grant or deny update rights per set
+            // (beforeHasPermission) are respected. Label sets are few, and this only runs for
+            // the overwrite list, so the per-set check is affordable.
+            if ($onlyUpdatable && !$labelSet->hasPermission('labelset', 'update')) {
                 continue;
             }
             $stats = $labelStats[(int)$labelSet->lid] ?? ['labelcount' => 0, 'assessmentcount' => 0];
@@ -201,37 +202,6 @@ class LabelSetService
     }
 
     /**
-     * Criteria for the label sets the current user may update, without checking each set on its own.
-     *
-     * Mirrors LabelSet::hasPermission('labelset', 'update'): The global permission,
-     * ownership or a "labelset" permission row for the set.
-     *
-     * @return CDbCriteria Criteria to merge into a label set query
-     */
-    protected function getUpdatableCriteria(): CDbCriteria
-    {
-        $criteria = new CDbCriteria();
-        if ($this->permission->hasGlobalPermission('labelsets', 'update')) {
-            return $criteria;
-        }
-        // Each placeholder is used once: Native PDO prepares (pgsql, mssql) reject repeated names
-        $userId = (int)$this->app->user->getId();
-        $criteria->addCondition(
-            't.owner_id = :ownerid OR t.lid IN ('
-            . 'SELECT entity_id FROM {{permissions}}'
-            . ' WHERE entity = :permentity AND permission = :permname AND uid = :permuid AND update_p = 1'
-            . ')'
-        );
-        $criteria->params = [
-            ':ownerid' => $userId,
-            ':permentity' => 'labelset',
-            ':permname' => 'labelset',
-            ':permuid' => $userId,
-        ];
-        return $criteria;
-    }
-
-    /**
      * Count the labels, and the labels with an assessment value, of all label sets in one query.
      *
      * @return array<int, array{labelcount: int|string, assessmentcount: int|string}> Counts keyed by label set id
@@ -259,15 +229,25 @@ class LabelSetService
      * Check the languages and labels before anything is written.
      *
      * All checks mirror the Label model and the labels table, so a save can't fail
-     * half-way: Transactions are no-ops on MyISAM tables.
+     * half-way: Transactions are no-ops on MyISAM tables. Languages must be codes
+     * LimeSurvey knows, as strings.
      *
-     * @param string[] $languages Languages to save
+     * @param array $languages Languages to save, as sent by the client
      * @param array $labels Labels to save, in the shape described on the class
      * @return string[] The cleaned language list
      * @throws BadRequestException When a language or label is invalid
      */
     protected function validateInput(array $languages, array $labels): array
     {
+        $this->app->loadHelper('surveytranslator');
+        $knownLanguages = array_keys(getLanguageData());
+        foreach ($languages as $language) {
+            if (!is_string($language) || !in_array($language, $knownLanguages, true)) {
+                throw new BadRequestException(
+                    sprintf('Unknown language "%s"', is_scalar($language) ? (string)$language : gettype($language))
+                );
+            }
+        }
         $languages = $this->normaliseLanguages($languages);
         if (empty($languages)) {
             throw new BadRequestException('No language selected');
