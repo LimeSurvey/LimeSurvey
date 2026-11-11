@@ -67,8 +67,11 @@ class SingleOptionProcessor extends AbstractQuestionProcessor
     }
 
     /**
-     * @param array $legend
-     * @param array $dataItems
+     * Append the "Other" option to the legend and the chart data.
+     *
+     * @param array $legend Legend keys, extended in place
+     * @param array $dataItems Chart data items, extended in place
+     * @return void
      */
     private function addOtherOption(array &$legend, array &$dataItems): void
     {
@@ -77,7 +80,7 @@ class SingleOptionProcessor extends AbstractQuestionProcessor
         $dataItems[] = [
             'key' => 'other',
             'value' => $this->countFieldResponses($mfield),
-            'title' => gT('Other')
+            'title' => gT('Other', 'unescaped')
         ];
     }
 
@@ -111,12 +114,14 @@ class SingleOptionProcessor extends AbstractQuestionProcessor
     }
 
     /**
-     * @return array
+     * Build the chart plan of a gender question.
+     *
+     * @return array Chart plan with the question title, the legend and one data item per gender
      */
     private function handleGender(): array
     {
         $codes = ['F', 'M'];
-        $labels = [gT('Female'), gT('Male')];
+        $labels = [gT('Female', 'unescaped'), gT('Male', 'unescaped')];
 
         [$legend, $items] = $this->buildItemsFromCodes($this->rt, $codes, $labels);
         return [
@@ -127,12 +132,14 @@ class SingleOptionProcessor extends AbstractQuestionProcessor
     }
 
     /**
-     * @return array
+     * Build the chart plan of a yes/no question.
+     *
+     * @return array Chart plan with the question title, the legend and the "Yes" and "No" data items
      */
     private function handleYesNo(): array
     {
         $codes = ['Y', 'N'];
-        $labels = [gT('Yes'), gT('No')];
+        $labels = [gT('Yes', 'unescaped'), gT('No', 'unescaped')];
 
         [$legend, $items] = $this->buildItemsFromCodes($this->rt, $codes, $labels);
         return [

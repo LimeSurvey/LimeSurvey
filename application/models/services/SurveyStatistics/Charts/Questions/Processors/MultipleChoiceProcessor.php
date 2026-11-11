@@ -12,6 +12,11 @@ class MultipleChoiceProcessor extends AbstractQuestionProcessor
         $this->rt = 'Q' . $this->question['qid'];
     }
 
+    /**
+     * Count the responses of each subquestion of a multiple choice question, plus the "Other" option if enabled.
+     *
+     * @return array Chart plan with the question title, the legend and one data item per subquestion
+     */
     #[\Override]
     public function process()
     {
@@ -46,7 +51,7 @@ class MultipleChoiceProcessor extends AbstractQuestionProcessor
 
         if ($hasOther) {
             $legend[] = 'other';
-            $dataItems[] = ['key' => 'other', 'title' => gT('Other'), 'value' => $counts[$otherField], 'field' => $otherField];
+            $dataItems[] = ['key' => 'other', 'title' => gT('Other', 'unescaped'), 'value' => $counts[$otherField], 'field' => $otherField];
         }
 
         return [

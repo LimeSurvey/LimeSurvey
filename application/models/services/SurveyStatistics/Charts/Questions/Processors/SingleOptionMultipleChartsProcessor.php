@@ -6,12 +6,22 @@ use Question;
 
 class SingleOptionMultipleChartsProcessor extends AbstractQuestionProcessor
 {
+    /**
+     * Build the stacked chart plan of an array question with a fixed or custom answer scale.
+     *
+     * @return array Chart plan, or an empty array for unsupported question types
+     */
     #[\Override]
     public function process()
     {
         return $this->buildChartDataByType();
     }
 
+    /**
+     * Build the stacked chart plan matching the question type.
+     *
+     * @return array Chart plan, or an empty array for unsupported question types
+     */
     private function buildChartDataByType(): array
     {
         switch ($this->question['type']) {
@@ -24,10 +34,10 @@ class SingleOptionMultipleChartsProcessor extends AbstractQuestionProcessor
                 return $this->buildStackedChart($codes, $labels);
 
             case Question::QT_C_ARRAY_YES_UNCERTAIN_NO:
-                return $this->buildStackedChart(['Y', 'U', 'N'], [gT('Yes'), gT('Uncertain'), gT('No')]);
+                return $this->buildStackedChart(['Y', 'U', 'N'], [gT('Yes', 'unescaped'), gT('Uncertain', 'unescaped'), gT('No', 'unescaped')]);
 
             case Question::QT_E_ARRAY_INC_SAME_DEC:
-                return $this->buildStackedChart(['I', 'S', 'D'], [gT('Increase'), gT('Same'), gT('Decrease')]);
+                return $this->buildStackedChart(['I', 'S', 'D'], [gT('Increase', 'unescaped'), gT('Same', 'unescaped'), gT('Decrease', 'unescaped')]);
 
             case Question::QT_F_ARRAY:
             case Question::QT_H_ARRAY_COLUMN:
