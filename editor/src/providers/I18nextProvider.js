@@ -21,13 +21,10 @@ export const I18Provider = ({ i18n, children, language }) => {
   const [isTranslationLoaded, setIsTranslationLoaded] = useState(false)
 
   useEffect(() => {
-    // Render right away: The user's language is applied once it is known, so a
-    // slow or failing user detail request never blocks the editor.
-    setIsTranslationLoaded(true)
-
     if (!auth.isLoggedIn || auth.userId == 0 || process.env.STORYBOOK_DEV) {
       setUserDetail({ lang: 'en' })
       setI18nInstance(i18n('en', auth, setLanguages, languages))
+      setIsTranslationLoaded(true)
       loadDayjsLocale('en')
       return
     }
@@ -36,6 +33,7 @@ export const I18Provider = ({ i18n, children, language }) => {
     // The shared dayjs locale is owned by the UI-language provider below.
     if (language) {
       setI18nInstance(i18n(language, auth, setLanguages, languages))
+      setIsTranslationLoaded(true)
       return
     }
 
@@ -68,6 +66,7 @@ export const I18Provider = ({ i18n, children, language }) => {
     }
 
     loadUserLanguage()
+    setIsTranslationLoaded(true)
 
     return () => controller.abort()
   }, [auth.token, language])
