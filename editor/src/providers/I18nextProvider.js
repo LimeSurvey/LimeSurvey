@@ -21,55 +21,50 @@ export const I18Provider = ({ i18n, children, language }) => {
   const [isTranslationLoaded, setIsTranslationLoaded] = useState(false)
 
   useEffect(() => {
-    const controller = new AbortController()
-    const { signal } = controller
-
-    const applyLanguage = (lang) => {
-      setI18nInstance(i18n(lang, auth, setLanguages, languages))
-      setIsTranslationLoaded(true)
-    }
-
-    // Creates the i18n instance (which starts fetching the translations) while
-    // the dayjs locale loads, so children first render with the correct one.
-    const applyUiLanguage = async (lang) => {
-      const instance = i18n(lang, auth, setLanguages, languages)
-      await loadDayjsLocale(lang, { signal })
-      if (signal.aborted) {
-        return
-      }
-      setI18nInstance(instance)
-      setIsTranslationLoaded(true)
-    }
+    // Render right away: The user's language is applied once it is known, so a
+    // slow or failing user detail request never blocks the editor.
+    setIsTranslationLoaded(true)
 
     if (!auth.isLoggedIn || auth.userId == 0 || process.env.STORYBOOK_DEV) {
       setUserDetail({ lang: 'en' })
-      applyUiLanguage('en')
-      return () => controller.abort()
+      setI18nInstance(i18n('en', auth, setLanguages, languages))
+      loadDayjsLocale('en')
+      return
     }
 
     // An explicit language (e.g. the survey language) only sets up i18n.
     // The shared dayjs locale is owned by the UI-language provider below.
     if (language) {
-      applyLanguage(language)
+      setI18nInstance(i18n(language, auth, setLanguages, languages))
       return
     }
+
+    const controller = new AbortController()
+    const { signal } = controller
 
     const loadUserLanguage = async () => {
       let userDetail = null
       try {
-        userDetail = await userService.getUserDetail(auth.userId)
+        userDetail = await userService.getUserDetail(auth.userId, signal)
       } catch {
-        // Fall back to English below rather than blocking the editor
+        // Fall back to English below
       }
       if (signal.aborted) {
         return
       }
-      if (!userDetail) {
-        applyUiLanguage('en')
-        return
+      // Failed requests resolve to an error object or undefined, not the user
+      let lang = 'en'
+      if (userDetail?.lang) {
+        setUserDetail(userDetail)
+        lang = resolveUserLanguage(userDetail.lang)
       }
-      setUserDetail(userDetail)
-      applyUiLanguage(resolveUserLanguage(userDetail.lang))
+      // Create the i18n instance (which starts fetching the translations) while
+      // the dayjs locale loads, so both switch to the new language together
+      const instance = i18n(lang, auth, setLanguages, languages)
+      await loadDayjsLocale(lang, { signal })
+      if (!signal.aborted) {
+        setI18nInstance(instance)
+      }
     }
 
     loadUserLanguage()
