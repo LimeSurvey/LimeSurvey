@@ -3,6 +3,15 @@ import { I18nextProvider } from 'react-i18next'
 import { STATES, loadDayjsLocale } from '../helpers'
 import { Suspense, useEffect, useState } from 'react'
 
+// Resolves the user's language setting, falling back to the browser language for 'auto'.
+const resolveUserLanguage = (lang) => {
+  if (lang !== 'auto') {
+    return lang
+  }
+  const browserLanguage = navigator.language || navigator.userLanguage || ''
+  return browserLanguage.substring(0, 2) || 'en'
+}
+
 export const I18Provider = ({ i18n, children, language }) => {
   const auth = useAuth()
   const [, setUserDetail] = useAppState(STATES.USER_DETAIL)
@@ -12,51 +21,46 @@ export const I18Provider = ({ i18n, children, language }) => {
   const [isTranslationLoaded, setIsTranslationLoaded] = useState(false)
 
   useEffect(() => {
-    if (!auth.isLoggedIn || auth.userId == 0 || process.env.STORYBOOK_DEV) {
-      setUserDetail({ lang: 'en' })
-      setI18nInstance(i18n('en', auth, setLanguages, languages))
-      setIsTranslationLoaded(true)
-      return
-    }
-
-    let isCancelled = false
-    const localeController = new AbortController()
-
-    // Make sure locale initialization is awaited before rerender so children use the correct language
-    const initialize = async (lang) => {
-      await loadDayjsLocale(lang, { signal: localeController.signal })
-      if (isCancelled) {
-        return
-      }
+    const applyLanguage = (lang) => {
       setI18nInstance(i18n(lang, auth, setLanguages, languages))
       setIsTranslationLoaded(true)
     }
 
-    if (!language) {
-      userService.getUserDetail(auth.userId).then((result) => {
-        if (!result || isCancelled) {
-          return
-        }
-        setUserDetail(result)
-        let lang = result.lang
-        if (lang === 'auto') {
-          // Use browser's language
-          const browserLanguage = navigator.language || navigator.userLanguage
-          lang = browserLanguage.substring(0, 2)
-          if (!lang) {
-            lang = 'en' // Default to English if browser's language is not supported'
-          }
-        }
-        return initialize(lang)
-      })
-    } else {
-      initialize(language)
+    if (!auth.isLoggedIn || auth.userId == 0 || process.env.STORYBOOK_DEV) {
+      setUserDetail({ lang: 'en' })
+      applyLanguage('en')
+      return
     }
 
-    return () => {
-      isCancelled = true
-      localeController.abort()
+    // An explicit language (e.g. the survey language) only sets up i18n.
+    // The shared dayjs locale is owned by the UI-language provider below.
+    if (language) {
+      applyLanguage(language)
+      return
     }
+
+    const controller = new AbortController()
+    const { signal } = controller
+
+    const loadUserLanguage = async () => {
+      const userDetail = await userService.getUserDetail(auth.userId)
+      if (!userDetail || signal.aborted) {
+        return
+      }
+      setUserDetail(userDetail)
+
+      const lang = resolveUserLanguage(userDetail.lang)
+      // Wait for the dayjs locale so children first render with the correct one
+      await loadDayjsLocale(lang, { signal })
+      if (signal.aborted) {
+        return
+      }
+      applyLanguage(lang)
+    }
+
+    loadUserLanguage()
+
+    return () => controller.abort()
   }, [auth.token, language])
 
   const loadingTranslations = (
