@@ -27,14 +27,15 @@ use LimeSurvey\Models\Services\SurveyAccessModeService;
  */
 function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $supportArchivedFields = true)
 {
-    $sBaseLanguage         = Survey::model()->findByPk($iNewSID)->language;
+    $oSurvey               = Survey::model()->findByPk($iNewSID);
+    $sBaseLanguage         = $oSurvey->language;
 
     $sXMLdata              = file_get_contents($sFullFilePath);
-    $xml                   = simplexml_load_string($sXMLdata, 'SimpleXMLElement', LIBXML_NONET);
+    $xml                   = @simplexml_load_string($sXMLdata, 'SimpleXMLElement', LIBXML_NONET);
 
 
     if ($xml === false || $xml->LimeSurveyDocType != 'Group') {
-        throw new Exception('This is not a valid LimeSurvey group structure XML file.');
+        throw new Exception(gT('This is not a valid LimeSurvey group structure XML file.'));
     }
 
     // This array will collect all records that need INSERTANS conversion
@@ -62,6 +63,9 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $suppo
         $results['fatalerror'] = gT("The languages of the imported group file must at least include the base language of this survey.");
         return $results;
     }
+
+    // Translated question attributes are only imported in the languages that the file and the survey have in common
+    $aLanguagesSupported = array_values(array_intersect($importlanguages, $oSurvey->allLanguages));
 
     // Import group table ===================================================================================
     $iGroupOrder = Yii::app()->db->createCommand()->select('MAX(group_order)')->from('{{groups}}')->where('sid=:sid', array(':sid' => $iNewSID))->queryScalar();
@@ -515,7 +519,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $suppo
 
         /** @var array<integer,array<string,mixed>> List of "answer order" related attributes, grouped by qid */
         $answerOrderAttributes = [];
-        importQuestionThemeAttributes($xml, $aQIDReplacements);
+        importQuestionThemeAttributes($xml, $aQIDReplacements, $aLanguagesSupported);
         foreach ($xml->question_attributes->rows->row as $row) {
             $insertdata = array();
             foreach ($row as $key => $value) {
@@ -527,6 +531,11 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $suppo
                 continue;
             }
             $insertdata['qid'] = $aQIDReplacements[(int) $insertdata['qid']]; // remap the parent_qid
+
+            // Skip translated attributes in languages not used by the survey
+            if (!empty($insertdata['language']) && !in_array($insertdata['language'], $aLanguagesSupported)) {
+                continue;
+            }
 
             // The question theme was already set by importQuestionThemeAttributes()
             if ($insertdata['attribute'] == 'question_template') {
@@ -555,7 +564,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $suppo
                 $iDBVersion < 156 && isset($aAllAttributes[$insertdata['attribute']]['i18n']) &&
                 $aAllAttributes[$insertdata['attribute']]['i18n']
             ) {
-                foreach ($importlanguages as $sLanguage) {
+                foreach ($aLanguagesSupported as $sLanguage) {
                     $insertdata['language'] = $sLanguage;
                     App()->db->createCommand()->insert('{{question_attributes}}', $insertdata);
                 }
@@ -673,8 +682,8 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $suppo
  * @param bool[] $options Import options: 'autorename' to rename conflicting question codes,
  *                        'translinkfields' to translate links to the old survey (defaults to true if missing)
  * @param bool $supportArchivedFields whether we are looking for old fieldnames
- * @return array
- * @throws CException
+ * @return array The import results, or an array with only 'fatalerror' set if the file is not a valid question file
+ * @throws Exception
  */
 function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array('autorename' => false, 'translinkfields' => true), $supportArchivedFields = true)
 {
@@ -682,9 +691,9 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
     $oSurvey = Survey::model()->findByPk($iNewSID);
     $sBaseLanguage = $oSurvey->language;
     $sXMLdata = file_get_contents($sFullFilePath);
-    $xml = simplexml_load_string($sXMLdata, 'SimpleXMLElement', LIBXML_NONET);
-    if ($xml->LimeSurveyDocType != 'Question') {
-        throw new \CHttpException(500, 'This is not a valid LimeSurvey question structure XML file.');
+    $xml = @simplexml_load_string($sXMLdata, 'SimpleXMLElement', LIBXML_NONET);
+    if ($xml === false || $xml->LimeSurveyDocType != 'Question') {
+        return ['fatalerror' => gT('This is not a valid LimeSurvey question structure XML file.')];
     }
     $iDBVersion = (int) $xml->DBVersion;
     $aQIDReplacements = array();
@@ -1136,6 +1145,9 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
             unset($insertdata['qaid']);
             if (isset($aQIDReplacements[$insertdata['qid']])) {
                 $insertdata['qid'] = $aQIDReplacements[(int) $insertdata['qid']]; // remap the parent_qid
+            } else {
+                // Attribute of a question that is not part of this import: skip it, it must not be set on an existing question
+                continue;
             }
 
             // Skip translated attributes in languages not used by the survey
@@ -1662,15 +1674,18 @@ function polyfillSUBSTRING_INDEX($driver)
 }
 
 /**
- * Generates a temporary table creation script
+ * Generates a temporary table creation script that lists the columns of a response table
+ * together with the question ID of each question column (NULL for other columns)
  *
- * @param string $source
- * @param string $destination
- * @param int $sid
+ * @param string $source Response table name, including the table prefix
+ * @param string $destination Temporary table name
+ * @param int $sid Survey ID
  * @return string
  */
 function generateTemporaryTableCreate(string $source, string $destination, int $sid)
 {
+    // Question columns start with Q and the question ID. The digit check keeps other columns like quota_exit out,
+    // as they also start with Q in case-insensitive collations.
     switch (Yii::app()->db->getDriverName()) {
         case 'mysqli':
         case 'mysql':
@@ -1679,7 +1694,7 @@ function generateTemporaryTableCreate(string $source, string $destination, int $
             SELECT *
             FROM (
                 SELECT CASE
-                           WHEN SUBSTRING(temp.COLUMN_NAME, 1, 1) = 'Q' THEN SUBSTRING(SUBSTRING_INDEX(temp.COLUMN_NAME, '_', 1), 2)
+                           WHEN SUBSTRING(temp.COLUMN_NAME, 1, 1) = 'Q' AND SUBSTRING(temp.COLUMN_NAME, 2, 1) BETWEEN '0' AND '9' THEN SUBSTRING(SUBSTRING_INDEX(temp.COLUMN_NAME, '_', 1), 2)
                        END AS qid,
                        temp.COLUMN_NAME
                 FROM information_schema.columns temp
@@ -1695,7 +1710,7 @@ function generateTemporaryTableCreate(string $source, string $destination, int $
             SELECT *
             FROM (
                 SELECT CASE
-                           WHEN SUBSTRING(temp.COLUMN_NAME, 1, 1) = 'Q' THEN SUBSTRING(SUBSTRING_INDEX(temp.COLUMN_NAME, '_', 1), 2)
+                           WHEN SUBSTRING(temp.COLUMN_NAME, 1, 1) = 'Q' AND SUBSTRING(temp.COLUMN_NAME, 2, 1) BETWEEN '0' AND '9' THEN SUBSTRING(SUBSTRING_INDEX(temp.COLUMN_NAME, '_', 1), 2)
                        END AS qid,
                        temp.COLUMN_NAME
                 FROM information_schema.columns temp
@@ -1712,7 +1727,7 @@ function generateTemporaryTableCreate(string $source, string $destination, int $
             INTO {$destination}
             FROM (
                 SELECT CASE
-                           WHEN SUBSTRING(temp.COLUMN_NAME, 1, 1) = 'Q' THEN SUBSTRING(dbo.SUBSTRING_INDEX(temp.COLUMN_NAME, '_', 1), 2, 3000)
+                           WHEN SUBSTRING(temp.COLUMN_NAME, 1, 1) = 'Q' AND SUBSTRING(temp.COLUMN_NAME, 2, 1) BETWEEN '0' AND '9' THEN SUBSTRING(dbo.SUBSTRING_INDEX(temp.COLUMN_NAME, '_', 1), 2, 3000)
                        END AS qid,
                        temp.COLUMN_NAME
                 FROM information_schema.columns temp
@@ -1821,7 +1836,111 @@ function getUnchangedColumns($sid, $sTimestamp, $qTimestamp)
         $results['new_c'][] = $rawResult['new_c'];
     }
     Yii::app()->db->createCommand(implode("\n\n", generateTemporaryTableDrops($destinationTables, $sid)))->execute();
+    $recreatedSubquestionColumns = getRecreatedSubquestionColumns(
+        (int) $sid,
+        $sourceTables[1],
+        Yii::app()->db->tablePrefix . "old_questions_" . $sid . "_" . $qTimestamp
+    );
+    foreach ($recreatedSubquestionColumns as $oldColumn => $newColumn) {
+        $results['old_c'][] = $oldColumn;
+        $results['new_c'][] = $newColumn;
+    }
     return $results;
+}
+
+/**
+ * Maps the archived response columns of subquestions that were deleted and re-created with the same code
+ * to the response columns of the re-created subquestions. Response column names contain the subquestion ID,
+ * so a re-created subquestion gets a different column name although its code did not change.
+ * A subquestion is only mapped if its main question still exists with the same type and the same scale
+ * has a new subquestion with the same code. Question archives made before the subquestion codes were
+ * archived can't be mapped.
+ *
+ * @param int $sid Survey ID
+ * @param string $archivedResponseTable Archived response table name, including the table prefix
+ * @param string $archivedQuestionTable Archived questions table name, including the table prefix
+ * @return array<string,string> Response column names of the survey indexed by archived response column name
+ * @throws CException If a database query fails
+ */
+function getRecreatedSubquestionColumns(int $sid, string $archivedResponseTable, string $archivedQuestionTable): array
+{
+    $db = Yii::app()->db;
+    $archivedQuestionSchema = $db->schema->getTable($archivedQuestionTable, true);
+    $archivedResponseSchema = $db->schema->getTable($archivedResponseTable, true);
+    $responseSchema = $db->schema->getTable("{{responses_{$sid}}}", true);
+    if (
+        !$archivedQuestionSchema
+        || !$archivedResponseSchema
+        || !$responseSchema
+        || !$archivedQuestionSchema->getColumn('title')
+        || !$archivedQuestionSchema->getColumn('scale_id')
+    ) {
+        return [];
+    }
+    $oldQuestions = $db->createCommand()
+        ->select('qid, parent_qid, type, title, scale_id')
+        ->from($archivedQuestionTable)
+        ->queryAll();
+    $newQuestions = $db->createCommand()
+        ->select('qid, parent_qid, type, title, scale_id')
+        ->from('{{questions}}')
+        ->where('sid = :sid', [':sid' => $sid])
+        ->queryAll();
+    $oldQids = [];
+    $oldTypes = [];
+    $oldSubquestionKeys = [];
+    foreach ($oldQuestions as $question) {
+        $oldQids[(int) $question['qid']] = true;
+        if (empty($question['parent_qid'])) {
+            $oldTypes[(int) $question['qid']] = $question['type'];
+        } else {
+            $oldSubquestionKeys[(int) $question['qid']] = $question['parent_qid'] . '_' . $question['scale_id'] . '_' . $question['title'];
+        }
+    }
+    $newQids = [];
+    $newTypes = [];
+    $newSubquestionQids = [];
+    foreach ($newQuestions as $question) {
+        $newQids[(int) $question['qid']] = true;
+        if (empty($question['parent_qid'])) {
+            $newTypes[(int) $question['qid']] = $question['type'];
+        } else {
+            $newSubquestionQids[$question['parent_qid'] . '_' . $question['scale_id'] . '_' . $question['title']] = (int) $question['qid'];
+        }
+    }
+    // Pair deleted subquestions with subquestions created after the archive was made
+    $subquestionQids = [];
+    foreach ($oldSubquestionKeys as $oldQid => $key) {
+        if (!isset($newQids[$oldQid]) && isset($newSubquestionQids[$key]) && !isset($oldQids[$newSubquestionQids[$key]])) {
+            $subquestionQids[$oldQid] = $newSubquestionQids[$key];
+        }
+    }
+    if (empty($subquestionQids)) {
+        return [];
+    }
+    $archivedColumns = array_flip($archivedResponseSchema->getColumnNames());
+    $targetColumns = array_flip($responseSchema->getColumnNames());
+    $columns = [];
+    foreach (array_keys($archivedColumns) as $column) {
+        if (isset($targetColumns[$column]) || !preg_match('/^Q(\d+)_S\d/', (string) $column, $matches)) {
+            continue;
+        }
+        $parentQid = (int) $matches[1];
+        if (!isset($oldTypes[$parentQid], $newTypes[$parentQid]) || $oldTypes[$parentQid] !== $newTypes[$parentQid]) {
+            continue;
+        }
+        $newColumn = preg_replace_callback(
+            '/_S(\d+)/',
+            function ($subquestionMatches) use ($subquestionQids) {
+                return '_S' . ($subquestionQids[(int) $subquestionMatches[1]] ?? $subquestionMatches[1]);
+            },
+            (string) $column
+        );
+        if ($newColumn !== $column && isset($targetColumns[$newColumn]) && !isset($archivedColumns[$newColumn])) {
+            $columns[$column] = $newColumn;
+        }
+    }
+    return $columns;
 }
 
 /**
@@ -1859,88 +1978,30 @@ function generateTemporaryTableDrops(array $tables, int $sid)
 }
 
 /**
- * Finds the newest archive table from each kind
+ * Finds the archive tables of a survey for each kind of archived table
  *
  * @param int $sid
- * @return array all rows of the query result. Each array element is an array representing a row.
- * An empty array is returned if the query results in nothing.
+ * @return array<string,string> Comma separated archive table names (including the table prefix), sorted by name
+ * and indexed by kind (responses, tokens, timings, questions). Kinds without an archive table are left out.
  * @throws CException execution failed
  */
 function getDeactivatedArchives($sid)
 {
     $sid = intval($sid);
-    $command = "";
-    switch (Yii::app()->db->getDriverName()) {
-        case 'mysqli':
-        case 'mysql':
-            $command = "
-        SELECT n, GROUP_CONCAT(TABLE_NAME) AS table_name
-        FROM
-        (SELECT n, TABLE_NAME
-        FROM information_schema.tables
-        JOIN (
-            SELECT 'responses' AS n
-            UNION
-            SELECT 'tokens' AS n
-            UNION
-            SELECT 'timings' AS n
-            UNION
-            SELECT 'questions' AS n
-        ) t
-        ON TABLE_SCHEMA = DATABASE() AND TABLE_NAME LIKE CONCAT('%', n, '%') AND TABLE_NAME LIKE '%old%' AND TABLE_NAME LIKE '%{$sid}%' AND
-        ((n <> 'responses') OR (TABLE_NAME NOT LIKE '%timings%'))
-        ORDER BY TABLE_NAME) t
-        GROUP BY n;
-        ";
-            break;
-        case 'pgsql':
-            $command = "
-        SELECT n, array_to_string(array_agg(TABLE_NAME), ',') AS table_name
-        FROM
-        (SELECT n, TABLE_NAME
-        FROM information_schema.tables
-        JOIN (
-            SELECT 'responses' AS n
-            UNION
-            SELECT 'tokens' AS n
-            UNION
-            SELECT 'timings' AS n
-            UNION
-            SELECT 'questions' AS n
-        ) t
-        ON TABLE_CATALOG = current_database() AND TABLE_NAME LIKE CONCAT('%', n, '%') AND TABLE_NAME LIKE '%old%' AND TABLE_NAME LIKE '%{$sid}%' AND
-        ((n <> 'responses') OR (TABLE_NAME NOT LIKE '%timings%'))
-        ORDER BY TABLE_NAME) t
-        GROUP BY n;
-            ";
-            break;
-        case 'mssql':
-        case 'sqlsrv':
-            $command = "
-		SELECT n, STRING_AGG(TABLE_NAME, ',') AS table_name
-        FROM
-        (SELECT n, TABLE_NAME
-        FROM information_schema.tables
-        JOIN (
-            SELECT 'responses' AS n
-            UNION
-            SELECT 'tokens' AS n
-            UNION
-            SELECT 'timings' AS n
-            UNION
-            SELECT 'questions' AS n
-        ) t
-        ON TABLE_CATALOG = db_name() AND TABLE_NAME LIKE CONCAT('%', n, '%') AND TABLE_NAME LIKE '%old%' AND TABLE_NAME LIKE '%{$sid}%' AND
-        ((n <> 'responses') OR (TABLE_NAME NOT LIKE '%timings%'))
-        ) t
-        GROUP BY n;
-        ";
-            break;
+    Yii::app()->loadHelper('database');
+    // The LIKE pattern only narrows the list down, the survey ID must match exactly
+    $tableNames = Yii::app()->db->createCommand(dbSelectTablesLike("{{old_%_{$sid}_%}}"))->queryColumn();
+    $pattern = '/^' . preg_quote((string) Yii::app()->db->tablePrefix, '/') . "old_(responses|tokens|timings|questions)_{$sid}_\\d+$/";
+    $archives = [];
+    foreach ($tableNames as $tableName) {
+        if (preg_match($pattern, (string) $tableName, $matches)) {
+            $archives[$matches[1]][] = $tableName;
+        }
     }
-    $rawResults = Yii::app()->db->createCommand($command)->queryAll();
     $results = [];
-    foreach ($rawResults as $rawResult) {
-        $results[$rawResult['n']] = $rawResult["table_name"];
+    foreach ($archives as $kind => $kindTableNames) {
+        sort($kindTableNames);
+        $results[$kind] = implode(',', $kindTableNames);
     }
     return $results;
 }
@@ -1970,14 +2031,14 @@ function copyFromOneTableToTheOther($source, $destination, $preserveIDs = false)
         from information_schema.columns a
         join information_schema.columns b
         on {$filter} and
-          a.TABLE_NAME = '" . $destination . "' and
-          b.TABLE_NAME = '" . $source . "' and
+          a.TABLE_NAME = :destination and
+          b.TABLE_NAME = :source and
           a.COLUMN_NAME = b.COLUMN_NAME
     ";
     if (!$preserveIDs) {
         $command .= " where a.COLUMN_NAME not in ('id', 'tid')";
     }
-    $rawResults = Yii::app()->db->createCommand($command)->queryAll();
+    $rawResults = Yii::app()->db->createCommand($command)->queryAll(true, [':destination' => $destination, ':source' => $source]);
     $columns = [];
     foreach ($rawResults as $rawResult) {
         $columns[] = Yii::app()->db->quoteColumnName($rawResult['cname']);
@@ -1989,8 +2050,8 @@ function copyFromOneTableToTheOther($source, $destination, $preserveIDs = false)
         $oldResponsesTable = str_replace('_timings', '_responses', $source);
         $command = "
             SELECT t1.id as rid, t2.id as tid
-            FROM {$oldResponsesTable} t1
-            LEFT JOIN {$source} t2
+            FROM " . Yii::app()->db->quoteTableName($oldResponsesTable) . " t1
+            LEFT JOIN " . Yii::app()->db->quoteTableName($source) . " t2
             ON t1.id = t2.id
             order by t1.id
         ";
@@ -3158,6 +3219,11 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             }
 
             $insertdata['qid'] = $aQIDReplacements[(int) $insertdata['qid']]; // remap the qid
+
+            // Skip translated attributes in languages not used by the survey
+            if (!empty($insertdata['language']) && !in_array($insertdata['language'], $aLanguagesSupported)) {
+                continue;
+            }
 
             // The question theme was already set by importQuestionThemeAttributes()
             if ($insertdata['attribute'] == 'question_template') {

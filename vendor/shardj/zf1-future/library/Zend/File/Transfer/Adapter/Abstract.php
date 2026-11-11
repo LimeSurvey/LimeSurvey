@@ -1312,11 +1312,6 @@ abstract class Zend_File_Transfer_Adapter_Abstract
             unset($mime);
         }
 
-        if (empty($result) && (function_exists('mime_content_type')
-            && ini_get('mime_magic.magicfile'))) {
-            $result = mime_content_type($file);
-        }
-
         if (empty($result)) {
             $result = 'application/octet-stream';
         }
@@ -1434,8 +1429,9 @@ abstract class Zend_File_Transfer_Adapter_Abstract
      */
     protected function _isPathWriteable($path)
     {
+        // a unique name, so parallel transfers checking the same path do not remove each other's file
         $tempFile = rtrim($path, "/\\");
-        $tempFile .= '/' . 'test.1';
+        $tempFile .= '/' . uniqid('test.', true);
 
         $result = @file_put_contents($tempFile, 'TEST');
 

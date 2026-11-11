@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE ldml SYSTEM "../../common/dtd/ldml.dtd">
-<!-- Copyright © 1991-2013 Unicode, Inc.
-CLDR data files are interpreted according to the LDML specification (http://unicode.org/reports/tr35/)
+<!-- Copyright © 1991-2026 Unicode, Inc.
 For terms of use, see http://www.unicode.org/copyright.html
+SPDX-License-Identifier: Unicode-3.0
+CLDR data files are interpreted according to the LDML specification (http://unicode.org/reports/tr35/)
 -->
 <ldml>
 	<identity>
-		<version number="$Revision: 9728 $"/>
-		<generation date="$Date: 2014-02-12 22:14:13 -0600 (Wed, 12 Feb 2014) $"/>
+		<version number="$Revision$"/>
 		<language type="bm"/>
 	</identity>
 	<localeDisplayNames>
@@ -66,7 +66,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="AI">Angiya</territory>
 			<territory type="AL">Alibani</territory>
 			<territory type="AM">Arimeni</territory>
-			<territory type="AN">Peyiba ka Antiyi</territory>
 			<territory type="AO">Angola</territory>
 			<territory type="AR">Arizantin</territory>
 			<territory type="AS">Samowa amerikani</territory>
@@ -150,7 +149,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="IE">Irilandi</territory>
 			<territory type="IL">Isirayeli</territory>
 			<territory type="IN">Ɛndujamana</territory>
-			<territory type="IO">Angilɛ ka ɛndu dugukolo</territory>
+			<territory type="IO" draft="provisional">Angilɛ ka ɛndu dugukolo</territory>
 			<territory type="IQ">Iraki</territory>
 			<territory type="IR">Iraŋ</territory>
 			<territory type="IS">Isilandi</territory>
@@ -185,7 +184,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="MD">Molidavi</territory>
 			<territory type="MG">Madagasikari</territory>
 			<territory type="MH">Marisali Gun</territory>
-			<territory type="MK">Macedɔni</territory>
 			<territory type="ML">Mali</territory>
 			<territory type="MM">Myanimari</territory>
 			<territory type="MN">Moŋoli</territory>
@@ -319,6 +317,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 					<dateFormatLength type="short">
 						<dateFormat>
 							<pattern>d/M/y GGGGG</pattern>
+							<datetimeSkeleton>GGGGGyMd</datetimeSkeleton>
 						</dateFormat>
 					</dateFormatLength>
 				</dateFormats>
@@ -475,6 +474,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 					<dateFormatLength type="short">
 						<dateFormat>
 							<pattern>d/M/y</pattern>
+							<datetimeSkeleton>yMd</datetimeSkeleton>
 						</dateFormat>
 					</dateFormatLength>
 				</dateFormats>
@@ -512,7 +512,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 						<dateFormatItem id="MMMMd">d MMMM</dateFormatItem>
 						<dateFormatItem id="MMMMEd">E d MMMM</dateFormatItem>
 						<dateFormatItem id="ms">m:ss</dateFormatItem>
-						<dateFormatItem id="y">y</dateFormatItem>
 						<dateFormatItem id="yM">M/y</dateFormatItem>
 						<dateFormatItem id="yMd">d/M/y</dateFormatItem>
 						<dateFormatItem id="yMEd">E d/M/y</dateFormatItem>
@@ -568,9 +567,40 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<currencyFormatLength>
 				<currencyFormat type="standard">
 					<pattern>¤#,##0.00</pattern>
+					<pattern alt="alphaNextToNumber" draft="provisional">¤ #,##0.00</pattern>
 				</currencyFormat>
 				<currencyFormat type="accounting">
 					<pattern>¤#,##0.00;(¤#,##0.00)</pattern>
+					<pattern alt="alphaNextToNumber" draft="provisional">¤ #,##0.00;(¤ #,##0.00)</pattern>
+					<pattern alt="noCurrency" draft="provisional">#,##0.00;(#,##0.00)</pattern>
+				</currencyFormat>
+			</currencyFormatLength>
+			<currencyFormatLength type="short">
+				<currencyFormat type="standard">
+					<pattern type="1000" count="other" draft="provisional">¤0K</pattern>
+					<pattern type="1000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 0K</pattern>
+					<pattern type="10000" count="other" draft="provisional">¤00K</pattern>
+					<pattern type="10000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 00K</pattern>
+					<pattern type="100000" count="other" draft="provisional">¤000K</pattern>
+					<pattern type="100000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 000K</pattern>
+					<pattern type="1000000" count="other" draft="provisional">¤0M</pattern>
+					<pattern type="1000000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 0M</pattern>
+					<pattern type="10000000" count="other" draft="provisional">¤00M</pattern>
+					<pattern type="10000000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 00M</pattern>
+					<pattern type="100000000" count="other" draft="provisional">¤000M</pattern>
+					<pattern type="100000000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 000M</pattern>
+					<pattern type="1000000000" count="other" draft="provisional">¤0G</pattern>
+					<pattern type="1000000000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 0G</pattern>
+					<pattern type="10000000000" count="other" draft="provisional">¤00G</pattern>
+					<pattern type="10000000000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 00G</pattern>
+					<pattern type="100000000000" count="other" draft="provisional">¤000G</pattern>
+					<pattern type="100000000000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 000G</pattern>
+					<pattern type="1000000000000" count="other" draft="provisional">¤0T</pattern>
+					<pattern type="1000000000000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 0T</pattern>
+					<pattern type="10000000000000" count="other" draft="provisional">¤00T</pattern>
+					<pattern type="10000000000000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 00T</pattern>
+					<pattern type="100000000000000" count="other" draft="provisional">¤000T</pattern>
+					<pattern type="100000000000000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 000T</pattern>
 				</currencyFormat>
 			</currencyFormatLength>
 		</currencyFormats>
@@ -627,7 +657,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>ero</displayName>
 			</currency>
 			<currency type="GBP">
-				<displayName>angilɛ Livri Siterlingi</displayName>
+				<displayName>angilɛ Livri</displayName>
 			</currency>
 			<currency type="GHC">
 				<displayName>gana Sedi</displayName>
@@ -666,6 +696,9 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>madagasikari Fraŋ</displayName>
 			</currency>
 			<currency type="MRO">
+				<displayName>mɔritani Uguwiya (1973–2017)</displayName>
+			</currency>
+			<currency type="MRU">
 				<displayName>mɔritani Uguwiya</displayName>
 			</currency>
 			<currency type="MUR">
@@ -701,13 +734,19 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<currency type="SHP">
 				<displayName>Ɛlɛni-Senu Livri</displayName>
 			</currency>
-			<currency type="SLL">
+			<currency type="SLE">
 				<displayName>siyeralewɔni Lewɔni</displayName>
+			</currency>
+			<currency type="SLL">
+				<displayName>siyeralewɔni Lewɔni (1964—2022)</displayName>
 			</currency>
 			<currency type="SOS">
 				<displayName>somali Siling</displayName>
 			</currency>
 			<currency type="STD">
+				<displayName>sawotome Dobra (1977–2017)</displayName>
+			</currency>
+			<currency type="STN">
 				<displayName>sawotome Dobra</displayName>
 			</currency>
 			<currency type="SZL">
@@ -752,4 +791,3 @@ For terms of use, see http://www.unicode.org/copyright.html
 		</messages>
 	</posix>
 </ldml>
-

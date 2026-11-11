@@ -499,6 +499,20 @@ $config['chartfontsize'] = 10;
 */
 $config['updatecheckperiod'] = 7;
 
+/**
+* $maintenancemode - maintenance mode of the site, set in the global settings. One of:
+*   'off'      no maintenance
+*   'soft'     participants can finish surveys they already started, no new participants are allowed
+*   'hard'     no participant can take a survey
+*   'hard-cli' like 'hard', and the administration (web interface, RemoteControl and REST API) is locked
+*              as well, so that nothing can be changed while e.g. a hosting system makes a backup or runs
+*              the database update from the command line. It can only be set and unset with the console
+*              command "console.php setMaintenanceMode hard-cli|off", not in the global settings.
+* The mode is stored in the global settings (settings_global table) only. Do not set it in config.php:
+* the database update reads it from the global settings and would not see a value set there.
+*/
+$config['maintenancemode'] = 'off';
+
 
 /**
 * @var $force_ssl string - forces LimeSurvey to run through HTTPS or to block HTTPS
@@ -891,4 +905,3 @@ $config['twig_getConfig_extraallowlist'] = null;
 $config['editorEnabled'] = true;
 
 return $config;
-//settings deleted

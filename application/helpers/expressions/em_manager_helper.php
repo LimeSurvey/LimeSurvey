@@ -55,6 +55,12 @@ class LimeExpressionManager
      */
     private static $instance;
     /**
+     * Language of the page the posted answers come from, when the survey language changes in the current request.
+     * Static so that it is not saved with the singleton in the session and is only used for the current request.
+     * @var string|null
+     */
+    private static $postedLanguage = null;
+    /**
      * Implements the recursive descent parser that processes expressions
      * @var ExpressionManager
      */
@@ -223,6 +229,14 @@ class LimeExpressionManager
      */
     private $qid2code;
     /**
+     * Mapping of the Other SGQA of a multiple choice question to the column storing its tick.
+     * Only for questions whose response table has that column. It is not an expression variable.
+     *
+     * @example ['Q150_Cother'] = 'Q150_Cotherchecked'
+     * @var array
+     */
+    private $other2otherChecked = [];
+    /**
      * array of mappings of JavaScript Variable names to Question number (qid)
      *
      * @example ['java38612X13X161other'] = '161'
@@ -256,8 +270,8 @@ class LimeExpressionManager
      * JavaScript array of mappings of canonical JavaScript variable name to key attributes.
      * These fragments are used to create the JavaScript varNameAttr array.
      *
-     * @example ['java38612X11X147'] = "'java38612X11X147':{ 'jsName':'java38612X11X147','jsName_on':'java38612X11X147','sgqa':'38612X11X147','qid':147,'gid':11,'type':'G','default':'','rowdivid':'','onlynum':'','gseq':1,'answers':{ 'M':'Male','F':'Female'}}"
-     * @example ['java26626X37X705sq1#1'] = "'java26626X37X705sq1#1':{ 'jsName':'java26626X37X705sq1#1','jsName_on':'java26626X37X705sq1#1','sgqa':'26626X37X705sq1#1','qid':705,'gid':37,'type':'1','default':'','rowdivid':'26626X37X705sq1','onlynum':'','gseq':1,'answers':{ '0~1':'1|Low','0~2':'2|Medium','0~3':'3|High','1~1':'1|Never','1~2':'2|Sometimes','1~3':'3|Always'}}"
+     * @example ['java38612X11X147'] = "'java38612X11X147':{ 'jsName':'java38612X11X147','jsName_on':'java38612X11X147','sgqa':'38612X11X147','qid':147,'gid':11,'type':'G','default':"",'rowdivid':'','onlynum':'','gseq':1,'answers':{ 'M':'Male','F':'Female'}}"
+     * @example ['java26626X37X705sq1#1'] = "'java26626X37X705sq1#1':{ 'jsName':'java26626X37X705sq1#1','jsName_on':'java26626X37X705sq1#1','sgqa':'26626X37X705sq1#1','qid':705,'gid':37,'type':'1','default':"",'rowdivid':'26626X37X705sq1','onlynum':'','gseq':1,'answers':{ '0~1':'1|Low','0~2':'2|Medium','0~3':'3|High','1~1':'1|Never','1~2':'2|Sometimes','1~3':'3|Always'}}"
      *
      * @var array
      */
@@ -717,6 +731,8 @@ class LimeExpressionManager
             $c = __CLASS__;
             self::$instance = new $c();
             unset($_SESSION['LEMdirtyFlag']);
+            // The cached instance is outdated too: Without this, the next request would restore it if this one does not save the new instance
+            unset($_SESSION['LEMsingleton']);
         } elseif (!isset(self::$instance)) {
             if (isset($_SESSION['LEMsingleton'])) {
                 $restored = @unserialize($_SESSION['LEMsingleton'], ['allowed_classes' => [LimeExpressionManager::class, ExpressionManager::class]]);
@@ -823,6 +839,27 @@ class LimeExpressionManager
     public static function getEMlanguage()
     {
         return Yii::app()->session['LEMlang'];
+    }
+
+    /**
+     * Set the language of the page the posted answers come from.
+     * Must be called when the survey language changes in the current request, since dates in POST
+     * are still in the date format of the previous language.
+     * @param string|null $lang Language code, null when the posted answers are in the current language
+     * @return void
+     */
+    public static function setPostedLanguage($lang)
+    {
+        self::$postedLanguage = $lang;
+    }
+
+    /**
+     * Get the language of the page the posted answers come from
+     * @return string
+     */
+    public static function getPostedLanguage()
+    {
+        return self::$postedLanguage ?? $_SESSION['LEMlang'];
     }
 
     /**
@@ -3322,6 +3359,7 @@ class LimeExpressionManager
         $this->qcode2sgqa = [];
         $this->tempVars = [];
         $this->qid2code = [];    // List of codes for each question - needed to know which to NULL if a question is irrelevant
+        $this->other2otherChecked = [];
         $this->jsVar2qid = [];
         $this->qcode2sgq = [];
         $this->alias2varName = [];
@@ -3417,6 +3455,10 @@ class LimeExpressionManager
             }
             $sgqa = $fielddata['fieldname'];
             $type = $fielddata['type'];
+            if (($fielddata['aid'] ?? '') === 'otherchecked') {
+                $this->other2otherChecked["Q{$fielddata['qid']}_Cother"] = $sgqa;
+                continue;
+            }
             $mandatory = $fielddata['mandatory'];
             $groupNum = (isset($fielddata['gid']) ? $fielddata['gid'] : '');
             $aid = (isset($fielddata['aid']) ? $fielddata['aid'] : '');
@@ -3987,8 +4029,8 @@ class LimeExpressionManager
                 //                . "','relevance':'" . (($relevance != '') ? htmlspecialchars(preg_replace('/[[:space:]]/',' ',$relevance),ENT_QUOTES) : 1)
                 //                . "','readWrite':'" . $readWrite
                 //                . "','grelevance':'" . (($grelevance != '') ? htmlspecialchars(preg_replace('/[[:space:]]/',' ',$grelevance),ENT_QUOTES) : 1)
-                . "','default':'" . (is_null($defaultValue) ? '' : json_encode($defaultValue)) // Don't found usage in em_javascript, used in expression ?
-                . "','rowdivid':'" . (is_null($rowdivid) ? '' : $rowdivid)
+                . "','default':" . json_encode($defaultValue ?? '', JSON_HEX_TAG | JSON_HEX_APOS) // Don't found usage in em_javascript, used in expression ?
+                . ",'rowdivid':'" . (is_null($rowdivid) ? '' : $rowdivid)
                 . "','onlynum':'" . ($onlynum ? '1' : '')
                 . "','gseq':" . $groupSeq
                 //                . ",'qseq':" . $questionSeq
@@ -4032,7 +4074,16 @@ class LimeExpressionManager
             }
         } else {
             // Read list of available tokens from the tokens table so that preview and error checking works correctly
-            $attrs = array_keys(getTokenFieldsAndNames($surveyid));
+            if ($survey->hasTokensTable) {
+                // Same columns as a participant row has in the survey (e.g. participant_id)
+                $attrs = Token::model($surveyid)->tableSchema->columnNames;
+            } else {
+                // Without a table, the attributes come from the survey's saved attribute descriptions
+                $attrs = array_merge(
+                    array_keys(getTokenFieldsAndNames($surveyid)),
+                    array_keys($survey->tokenAttributes ?? [])
+                );
+            }
             $blankVal = [
                 'code'       => '',
                 'type'       => '',
@@ -4835,6 +4886,9 @@ class LimeExpressionManager
                         'type'  => $knownVar['type'],
                         'value' => $value,
                     ];
+                    if (isset($LEM->other2otherChecked[$knownVar['sgqa']]) && (string) $value !== '') {
+                        $LEM->setOtherCheckedValue($knownVar['sgqa'], 'Y', $LEM->updatedValues);
+                    }
                 } else {
                     unset($_SESSION[$LEM->sessid]['startingValues'][$k]);
                 }
@@ -5312,11 +5366,6 @@ class LimeExpressionManager
             if ($this->surveyOptions['datestamp'] == true) {
                 $sdata['datestamp'] = $_SESSION[$this->sessid]['datestamp'];
                 $sdata['startdate'] = $_SESSION[$this->sessid]['datestamp'];
-                if($this->surveyOptions['anonymized']){
-                    //all dates should be anonymized
-                    $sdata['datestamp'] = $this->anonymizeDate();
-                    $sdata['startdate'] = $this->anonymizeDate();
-                }
             }
             if ($this->surveyOptions['ipaddr'] == true) {
                 $sdata['ipaddr'] = getIPAddress();
@@ -5396,10 +5445,6 @@ class LimeExpressionManager
             if ($this->surveyOptions['datestamp'] && isset($_SESSION[$this->sessid]['datestamp'])) {
                 $_SESSION[$this->sessid]['datestamp'] = gmdate("Y-m-d H:i:s");
                 $aResponseAttributes['datestamp'] = $_SESSION[$this->sessid]['datestamp'];
-                if($this->surveyOptions['anonymized']){
-                    //all dates should be anonymized
-                    $aResponseAttributes['datestamp'] = $this->anonymizeDate();
-                }
             }
             if ($this->surveyOptions['ipaddr']) {
                 $aResponseAttributes['ipaddr'] = getIPAddress();
@@ -6673,10 +6718,9 @@ class LimeExpressionManager
                         //$mandatoryTip .= "\n".sprintf($this->gT("If you choose '%s' please also specify your choice in the accompanying text field."),$othertext);
                         $sMandatoryText = "\n" . sprintf($this->gT("If you choose '%s' please also specify your choice in the accompanying text field."), $othertext);
                         $mandatoryTip .= App()->twigRenderer->renderPartial(
-                            '/survey/questions/question_help/mandatory_tip.twig',
+                            '/survey/questions/question_help/mandatory_tip_other.twig',
                             [
                                 'sMandatoryText' => $sMandatoryText,
-                                'part'           => 'other',
                                 'qInfo'          => $qInfo
                             ]
                         );
@@ -7087,6 +7131,9 @@ class LimeExpressionManager
                 $_SESSION[$LEM->sessid][$sgqa] = null;
                 $updatedValues[$sgqa] = null;
                 $LEM->updatedValues[$sgqa] = null;
+                if (isset($LEM->other2otherChecked[$sgqa])) {
+                    $LEM->setOtherCheckedValue($sgqa, null, $updatedValues);
+                }
             }
         } elseif ($qInfo['type'] == Question::QT_ASTERISK_EQUATION) {
             // Process relevant equations, even if hidden, and write the result to the database
@@ -7172,6 +7219,9 @@ class LimeExpressionManager
                 $_SESSION[$LEM->sessid][$sq] = null;
                 $updatedValues[$sq] = null;
                 $LEM->updatedValues[$sq] = null;
+                if (isset($LEM->other2otherChecked[$sq])) {
+                    $LEM->setOtherCheckedValue($sq, null, $updatedValues);
+                }
             }
         }
         // Regardless of whether relevant or hidden, always set a $_SESSION for quanda_helper, use default value if exist
@@ -8404,6 +8454,30 @@ class LimeExpressionManager
     }
 
     /**
+     * Set the given replacement fields while running $callback, then restore the previous state of these fields
+     * @param array $replacementFields 'replacement' => "fixed value"
+     * @param callable $callback
+     * @return mixed the return value of $callback
+     */
+    public static function withReplacementFields(array $replacementFields, callable $callback)
+    {
+        $LEM =& LimeExpressionManager::singleton();
+        $previousTempVars = array_intersect_key($LEM->tempVars, $replacementFields);
+        self::updateReplacementFields($replacementFields);
+        try {
+            return $callback();
+        } finally {
+            foreach (array_keys($replacementFields) as $key) {
+                if (array_key_exists($key, $previousTempVars)) {
+                    $LEM->tempVars[$key] = $previousTempVars[$key];
+                } else {
+                    unset($LEM->tempVars[$key]);
+                }
+            }
+        }
+    }
+
+    /**
      * Unit test strings containing expressions
      */
     public static function UnitTestProcessStringContainingExpressions()
@@ -9083,15 +9157,20 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                         case Question::QT_D_DATE: //DATE
                             // Handle Arabic numerals
                             // TODO: Make a wrapper class around date converter, which constructor takes to-lang and from-lang
-                            $lang = $_SESSION['LEMlang'];
+                            // The date was entered in the format of the page language, which differs from the current one after a language change
+                            $lang = self::getPostedLanguage();
                             $value = self::convertNonLatinNumerics($value, $lang);
                             $value = trim($value);
                             if ($value != "" && $value != "INVALID") {
-                                $aAttributes = $LEM->getQuestionAttributesForEM($LEM->sid, $qid, $_SESSION['LEMlang']);
+                                $aAttributes = $LEM->getQuestionAttributesForEM($LEM->sid, $qid, $lang);
                                 if (!isset($aAttributes[$qid])) {
                                     $aAttributes[$qid] = [];
                                 }
-                                $aDateFormatData = getDateFormatDataForQID($aAttributes[$qid], $LEM->surveyOptions);
+                                $aDateFormatData = getDateFormatDataForQID(
+                                    $aAttributes[$qid],
+                                    $lang == $_SESSION['LEMlang'] ? $LEM->surveyOptions : $LEM->sid,
+                                    $lang
+                                );
                                 $dateTime = DateTime::createFromFormat('!' . $aDateFormatData['phpdate'], trim($value));
                                 if ($dateTime === false) {
                                     $message = sprintf(
@@ -9143,6 +9222,9 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                                         $aFiles[$i]->size = floatval($aFiles[$i]->size);
                                     }
                                     $value = ls_json_encode($aFiles);  // so that EM doesn't try to parse it.
+                                } else {
+                                    // All files removed: '' instead of an empty list so its correctly validated when mandatory
+                                    $value = '';
                                 }
                             }
                             break;
@@ -9159,6 +9241,10 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     ];
                     $updatedValues[$sq] = $_update;
                     $LEM->updatedValues[$sq] = $_update;
+                    if (isset($LEM->other2otherChecked[$sq])) {
+                        $otherChecked = (string) $value !== '' || !empty($_POST[$sq . 'cbox']);
+                        $LEM->setOtherCheckedValue($sq, $otherChecked ? 'Y' : '', $updatedValues);
+                    }
                 } else {  // irrelevant, so database will be NULLed separately
                     // Must unset the value, rather than setting to '', so that EM can reuse the default value as needed.
                     unset($_SESSION[$LEM->sessid][$sq]);
@@ -9168,6 +9254,9 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     ];
                     $updatedValues[$sq] = $_update;
                     $LEM->updatedValues[$sq] = $_update;
+                    if (isset($LEM->other2otherChecked[$sq])) {
+                        $LEM->setOtherCheckedValue($sq, null, $updatedValues);
+                    }
                 }
             }
         }
@@ -9178,11 +9267,37 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
     }
 
     /**
+     * Set the tick of the Other option, in session and in the values to save
+     * @param string $sq the Other SGQA, a key of $other2otherChecked
+     * @param string|null $value 'Y', '' or null when irrelevant
+     * @param array $updatedValues
+     */
+    private function setOtherCheckedValue($sq, $value, &$updatedValues)
+    {
+        $otherChecked = $this->other2otherChecked[$sq];
+        $_SESSION[$this->sessid][$otherChecked] = $value;
+        $_update = [
+            'type'  => Question::QT_M_MULTIPLE_CHOICE,
+            'value' => $value,
+        ];
+        $updatedValues[$otherChecked] = $_update;
+        $this->updatedValues[$otherChecked] = $_update;
+    }
+
+    /**
+     * Other is ticked but its text is empty. Uses the stored tick when the response table has the column,
+     * else only the current request (the tick is not stored).
      * @param string $sq
      * @return boolean
      */
     public static function isOtherCheckedWithoutValue($sq)
     {
+        $LEM =& LimeExpressionManager::singleton();
+        if (isset($LEM->other2otherChecked[$sq])) {
+            $values = $_SESSION[$LEM->sessid] ?? [];
+            return ($values[$LEM->other2otherChecked[$sq]] ?? '') === 'Y'
+                && (string) ($values[$sq] ?? '') === '';
+        }
         if (empty($_POST[$sq . 'cbox'])) {
             return false;
         }
@@ -10102,6 +10217,18 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     $rankingItemQids[$rankingItem['title']] = $rankingItem['qid'];
                 }
             }
+            // List answer options: Their filters are stored under the row ids Q{qid}_S{aid}, which the answer list does not know
+            $listAnswerRowdivids = [];
+            if (
+                ($q['info']['type'] == Question::QT_L_LIST || $q['info']['type'] == Question::QT_EXCLAMATION_LIST_DROPDOWN)
+                && !empty($LEM->q2subqInfo[$qid]['subqs'])
+            ) {
+                foreach ($LEM->q2subqInfo[$qid]['subqs'] as $listSubq) {
+                    if ($listSubq['csuffix'] != '_Cother') {
+                        $listAnswerRowdivids[substr($listSubq['sqsuffix'], 1)] = $listSubq['rowdivid'];
+                    }
+                }
+            }
             if (!empty($ansList)) {
                 $_scale = -1;
                 foreach ($ansList as $ans => $value) {
@@ -10118,6 +10245,9 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     $subQeqn = '';
                     $rowdivid = $sgqas[0] . $ansInfo[1];
                     $valueText = '[VALUE: ' . $valInfo[0] . ']';
+                    if (isset($listAnswerRowdivids[$ansInfo[1]])) {
+                        $rowdivid = $listAnswerRowdivids[$ansInfo[1]];
+                    }
                     if (isset($rankingItemQids[$ansInfo[1]])) {
                         $rowdivid = 'Q' . $qid . '_S' . $rankingItemQids[$ansInfo[1]];
                         $valueText = '';
@@ -10284,6 +10414,16 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
     {
         $LEM =& LimeExpressionManager::singleton();
         return $LEM->sid;
+    }
+
+    /**
+     * Returns the survey mode the EM singleton was started with
+     * @return string 'survey', 'group' or 'question'
+     */
+    public static function getLEMsurveyMode()
+    {
+        $LEM =& LimeExpressionManager::singleton();
+        return $LEM->surveyMode;
     }
 
     /**

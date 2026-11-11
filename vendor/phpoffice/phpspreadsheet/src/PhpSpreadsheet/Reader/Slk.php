@@ -104,8 +104,6 @@ class Slk extends BaseReader
         $rowIndex = 0;
         $columnIndex = 0;
         while (($rowData = fgets($fileHandle)) !== false) {
-            $columnIndex = 0;
-
             // convert SYLK encoded $rowData to UTF-8
             $rowData = StringHelper::SYLKtoUTF8($rowData);
 
@@ -371,7 +369,7 @@ class Slk extends BaseReader
             if (array_key_exists($char, self::STYLE_SETTINGS_FONT)) {
                 $styleData['font'][self::STYLE_SETTINGS_FONT[$char]] = true;
             } elseif (array_key_exists($char, self::STYLE_SETTINGS_BORDER)) {
-                $styleData['borders'][self::STYLE_SETTINGS_BORDER[$char]]['borderStyle'] = Border::BORDER_THIN; //* @phpstan-ignore-line
+                $styleData['borders'][self::STYLE_SETTINGS_BORDER[$char]]['borderStyle'] = Border::BORDER_THIN; //* @phpstan-ignore offsetAccess.nonOffsetAccessible (I don't know how to fix this)
             } elseif ($char == 'S') {
                 $styleData['fill']['fillType'] = Fill::FILL_PATTERN_GRAY125;
             } elseif ($char == 'M') {

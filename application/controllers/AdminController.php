@@ -158,6 +158,9 @@ class AdminController extends LSYii_Controller
      */
     public function run($action)
     {
+        // Nothing may be changed while the hosting system makes a backup or runs the database update
+        $this->endRequestIfAdministrationLocked(($action == 'remotecontrol' || Yii::app()->request->isAjaxRequest) ? 'text' : 'html');
+
         // Check if the DB is up to date
         if (Yii::app()->db->schema->getTable('{{surveys}}')) {
             $sDBVersion = Yii::app()->getConfig('DBVersion');
@@ -470,12 +473,7 @@ class AdminController extends LSYii_Controller
         $aData['sAdmintheme'] = $oAdminTheme->name;
         $aData['aPackageScripts'] = $aData['aPackageStyles'] = array();
 
-        $aData['pageTitle'] = null;
-        if (!empty($pageData['topbar'] ?? null) && !empty($pageData['topbar']['title'] ?? null)) {
-            $aData['pageTitle'] = strip_tags((string) $pageData['topbar']['title']);
-        } elseif (!empty($pageData['title_bar'] ?? null) && !empty($pageData['title_bar']['title'] ?? null)) {
-            $aData['pageTitle'] = strip_tags((string) $pageData['title_bar']['title']);
-        }
+        $aData['pageTitle'] = LayoutHelper::getDocumentTitle($pageData);
 
             //foreach ($aData['aPackageStyles'] as &$filename)
             //{

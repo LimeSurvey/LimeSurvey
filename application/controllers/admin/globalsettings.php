@@ -306,7 +306,13 @@ class GlobalSettings extends SurveyCommonAction
         SettingGlobal::setSetting('defaultthemeteeditormode', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('defaultthemeteeditormode', 'default')));
         SettingGlobal::setSetting('javascriptdebugbcknd', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('javascriptdebugbcknd', false)));
         SettingGlobal::setSetting('javascriptdebugfrntnd', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('javascriptdebugfrntnd', false)));
-        SettingGlobal::setSetting('maintenancemode', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('maintenancemode', 'off')));
+        // "hard-cli" would lock the administrator out, it can only be set from the command line (console.php setMaintenanceMode)
+        $maintenanceMode = Yii::app()->getRequest()->getPost('maintenancemode', SettingGlobal::MAINTENANCE_MODE_OFF);
+        $allowedMaintenanceModes = [SettingGlobal::MAINTENANCE_MODE_OFF, SettingGlobal::MAINTENANCE_MODE_SOFT, SettingGlobal::MAINTENANCE_MODE_HARD];
+        if (!in_array($maintenanceMode, $allowedMaintenanceModes, true)) {
+            $maintenanceMode = SettingGlobal::MAINTENANCE_MODE_OFF;
+        }
+        SettingGlobal::setSetting('maintenancemode', $maintenanceMode);
         SettingGlobal::setSetting('defaultBreadcrumbMode', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('defaultBreadcrumbMode', 'short')));
 
         //security: for failed login attempts by user/admin
@@ -661,33 +667,42 @@ class GlobalSettings extends SurveyCommonAction
 
         //Use the current user details for the default administrator name and email
         $user = User::model()->findByPk(Yii::app()->session['loginID']);
-        $sTo = $user->full_name . " <" . $user->email . ">";
-        $sFrom = Yii::app()->getConfig("siteadminname") . " <" . Yii::app()->getConfig("siteadminemail") . ">";
         $sSubject = sprintf(gT('Test email from %s'), $sSiteName);
 
         $body   = array();
         $body[] = sprintf(gT('This is a test email from %s'), $sSiteName);
         $body   = implode("\n", $body);
 
-        $this->sendEmailAndShowResult($body, $sSubject, $sTo, $sFrom);
+        $this->sendEmailAndShowResult(
+            $body,
+            $sSubject,
+            $user->email,
+            $user->full_name,
+            Yii::app()->getConfig("siteadminemail"),
+            Yii::app()->getConfig("siteadminname")
+        );
     }
 
     /**
      * Send Email and show result
+     * Name and email are passed separately, so names containing '<' or '>' don't need to be parsed
      * @param string $body
      * @param string $sSubject
-     * @param string $sTo
-     * @param string $sFrom
+     * @param string $sToEmail recipient email address
+     * @param string $sToName recipient name
+     * @param string $sFromEmail sender email address
+     * @param string $sFromName sender name
+     * @return void
      */
-    private function sendEmailAndShowResult($body, $sSubject, $sTo, $sFrom)
+    private function sendEmailAndShowResult($body, $sSubject, $sToEmail, $sToName, $sFromEmail, $sFromName)
     {
         $mailer = new \LimeMailer();
         $mailer->emailType = 'settings_test';
         $mailer->rawBody = $body;
         $mailer->rawSubject = $sSubject;
         $mailer->SMTPDebug = 2;
-        $mailer->setTo($sTo);
-        $mailer->setFrom($sFrom);
+        $mailer->setTo($sToEmail, (string) $sToName);
+        $mailer->setFrom($sFromEmail, (string) $sFromName);
 
         $success = $mailer->sendMessage();
 

@@ -10,7 +10,9 @@ require_once Yii::getPathOfAlias('application.extensions.admin.grid.FloatingActi
 ?>
 <?= viewHelper::getViewTestTag('surveyFailedEmail') ?>
     <div class='side-body'>
-        <h3><?php eT("Failed email notifications"); ?></h3>
+        <div class="pagetitle">
+            <h1><?php eT("Failed email notifications"); ?></h1>
+        </div>
         <?php
         $this->widget('ext.AlertWidget.AlertWidget', [
             'text' => gT("Please note that failed email notifications will be automatically deleted after 30 days."),

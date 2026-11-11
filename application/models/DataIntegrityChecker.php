@@ -242,7 +242,13 @@ class DataIntegrityChecker
      */
     private function dropOrphanSurveyTables(array $surveyTables, array $aData)
     {
+        // A questions archive can be listed here as well as its responses archive, but it
+        // is already dropped together with that one, so it must not be dropped twice
+        $relatedQuestionsTables = array_filter(array_map(array($this, 'getRelatedArchivedQuestionsTableName'), $surveyTables));
         foreach ($surveyTables as $aSurveyTable) {
+            if (in_array($aSurveyTable, $relatedQuestionsTables, true)) {
+                continue;
+            }
             if ($this->dropTableIfExists($aSurveyTable, $aData)) {
                 $aData['messages'][] = sprintf(gT('Deleting orphan survey table: %s'), $aSurveyTable);
             }
@@ -268,15 +274,10 @@ class DataIntegrityChecker
     public function dropRelatedArchivedQuestionsTable($sSurveyTableName, array $aData)
     {
         $sDBPrefix = Yii::app()->db->tablePrefix;
-        // Only response archive tables (old_responses_<sid>_<date>) have a matching questions archive
-        if (strpos((string) $sSurveyTableName, $sDBPrefix . 'old_responses_') !== 0) {
+        $sQuestionsTableName = $this->getRelatedArchivedQuestionsTableName($sSurveyTableName);
+        if ($sQuestionsTableName === null) {
             return $aData;
         }
-        $sQuestionsTableName = str_replace(
-            $sDBPrefix . 'old_responses_',
-            $sDBPrefix . 'old_questions_',
-            (string) $sSurveyTableName
-        );
         // Not every responses archive has a questions archive (e.g. older archives), so
         // only attempt the drop - and so risk a warning - when there is one.
         if (!tableExists(substr($sQuestionsTableName, strlen((string) $sDBPrefix)))) {
@@ -286,6 +287,29 @@ class DataIntegrityChecker
             $aData['messages'][] = sprintf(gT('Deleting related archived questions table: %s'), $sQuestionsTableName);
         }
         return $aData;
+    }
+
+    /**
+     * Returns the name of the archived questions table (old_questions_<sid>_<date>) that
+     * belongs to an archived survey responses table (old_responses_<sid>_<date>), whether
+     * that questions table exists or not.
+     *
+     * @param string $sSurveyTableName Full (prefixed) name of an archived survey table
+     * @return string|null Full (prefixed) name of the questions archive, or null if the
+     *                     given table is not a responses archive
+     */
+    private function getRelatedArchivedQuestionsTableName($sSurveyTableName)
+    {
+        $sDBPrefix = Yii::app()->db->tablePrefix;
+        // Only response archive tables (old_responses_<sid>_<date>) have a matching questions archive
+        if (strpos((string) $sSurveyTableName, $sDBPrefix . 'old_responses_') !== 0) {
+            return null;
+        }
+        return str_replace(
+            $sDBPrefix . 'old_responses_',
+            $sDBPrefix . 'old_questions_',
+            (string) $sSurveyTableName
+        );
     }
 
     /**

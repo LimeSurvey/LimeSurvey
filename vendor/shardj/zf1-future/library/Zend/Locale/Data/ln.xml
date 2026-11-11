@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE ldml SYSTEM "../../common/dtd/ldml.dtd">
-<!-- Copyright © 1991-2013 Unicode, Inc.
-CLDR data files are interpreted according to the LDML specification (http://unicode.org/reports/tr35/)
+<!-- Copyright © 1991-2026 Unicode, Inc.
 For terms of use, see http://www.unicode.org/copyright.html
+SPDX-License-Identifier: Unicode-3.0
+CLDR data files are interpreted according to the LDML specification (http://unicode.org/reports/tr35/)
 -->
 <ldml>
 	<identity>
-		<version number="$Revision: 9287 $"/>
-		<generation date="$Date: 2013-08-28 21:32:04 -0500 (Wed, 28 Aug 2013) $"/>
+		<version number="$Revision$"/>
 		<language type="ln"/>
 	</identity>
 	<localeDisplayNames>
@@ -101,7 +101,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="154" draft="unconfirmed">Erópa ya Nola</territory>
 			<territory type="155" draft="unconfirmed">Erópa ya Wɛ́sita</territory>
 			<territory type="419" draft="unconfirmed">Ameríka Latína</territory>
-			<territory type="AC" draft="unconfirmed">Esenga ya Mbuta o likoló</territory>
+			<territory type="AC" draft="unconfirmed">Esanga ya Mbuta o Likoló</territory>
 			<territory type="AD">Andorɛ</territory>
 			<territory type="AE">Lɛmila alabo</territory>
 			<territory type="AF">Afiganisitá</territory>
@@ -109,7 +109,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="AI">Angiyɛ</territory>
 			<territory type="AL">Alibani</territory>
 			<territory type="AM">Amɛni</territory>
-			<territory type="AN">Antiyɛ ya Olandɛ</territory>
 			<territory type="AO">Angóla</territory>
 			<territory type="AQ">Antarctique</territory>
 			<territory type="AR">Arizantinɛ</territory>
@@ -128,19 +127,20 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="BH">Bahrɛnɛ</territory>
 			<territory type="BI">Burundi</territory>
 			<territory type="BJ">Benɛ</territory>
+			<territory type="BL" draft="unconfirmed">Sántu Barthélemy</territory>
 			<territory type="BM">Bermuda</territory>
 			<territory type="BN">Brineyi</territory>
 			<territory type="BO">Bolivi</territory>
 			<territory type="BR">Brezílɛ</territory>
 			<territory type="BS">Bahamasɛ</territory>
 			<territory type="BT">Butáni</territory>
-			<territory type="BV" draft="unconfirmed">Esenga Buvé</territory>
+			<territory type="BV" draft="unconfirmed">Esanga Buvé</territory>
 			<territory type="BW">Botswana</territory>
 			<territory type="BY">Byelorisi</territory>
 			<territory type="BZ">Belizɛ</territory>
 			<territory type="CA">Kanada</territory>
 			<territory type="CC" draft="unconfirmed">Bisanga Kokos</territory>
-			<territory type="CD">Repibiki demokratiki ya Kongó</territory>
+			<territory type="CD">Republíki ya Kongó Demokratíki</territory>
 			<territory type="CD" alt="variant" draft="unconfirmed">Kongó-Kinsásá</territory>
 			<territory type="CF">Repibiki ya Afríka ya Káti</territory>
 			<territory type="CG">Kongo</territory>
@@ -152,12 +152,14 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="CM">Kamɛrune</territory>
 			<territory type="CN">Sinɛ</territory>
 			<territory type="CO">Kolombi</territory>
+			<territory type="CP" draft="unconfirmed">Esanga Clipperton</territory>
 			<territory type="CR">Kositarika</territory>
 			<territory type="CU">Kiba</territory>
 			<territory type="CV">Bisanga bya Kapevɛrɛ</territory>
-			<territory type="CX" draft="unconfirmed">Esenga ya Mbótama</territory>
+			<territory type="CX" draft="unconfirmed">Esanga ya Mbótama</territory>
 			<territory type="CY">Sípɛlɛ</territory>
-			<territory type="CZ">Repibiki Tsekɛ</territory>
+			<territory type="CZ">Shekia</territory>
+			<territory type="CZ" alt="variant">Repibiki Tsekɛ</territory>
 			<territory type="DE">Alemani</territory>
 			<territory type="DJ">Dzibuti</territory>
 			<territory type="DK">Danɛmarike</territory>
@@ -176,9 +178,9 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="FI">Filandɛ</territory>
 			<territory type="FJ">Fidzi</territory>
 			<territory type="FK">Bisanga bya Maluni</territory>
-			<territory type="FK" alt="variant" draft="unconfirmed">Bisanga bya Falkland</territory>
+			<territory type="FK" alt="variant" draft="unconfirmed">Bisanga bya Falklandí (Bisanga bya Maluni)</territory>
 			<territory type="FM">Mikronezi</territory>
-			<territory type="FO" draft="unconfirmed">Bisanga ya Fɛróa</territory>
+			<territory type="FO" draft="unconfirmed">Bisanga bya Faloé</territory>
 			<territory type="FR">Falánsɛ</territory>
 			<territory type="GA">Gabɔ</territory>
 			<territory type="GB">Angɛlɛtɛ́lɛ</territory>
@@ -199,6 +201,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="GU">Gwamɛ</territory>
 			<territory type="GW">Ginɛbisau</territory>
 			<territory type="GY">Giyane</territory>
+			<territory type="HK" draft="unconfirmed">Hong Kong (Shina)</territory>
 			<territory type="HK" alt="short" draft="unconfirmed">Hong Kong</territory>
 			<territory type="HM">Ile Heard et Iles McDonald</territory>
 			<territory type="HN">Ondurasɛ</territory>
@@ -211,11 +214,12 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="IL">Isirayelɛ</territory>
 			<territory type="IM" draft="unconfirmed">Esanga ya Man</territory>
 			<territory type="IN">Índɛ</territory>
-			<territory type="IO">Mabelé ya Angɛlɛtɛ́lɛ na mbú ya Indiya</territory>
+			<territory type="IO" draft="provisional">Mabelé ya Angɛlɛtɛ́lɛ na mbú ya Indiya</territory>
 			<territory type="IQ">Iraki</territory>
 			<territory type="IR">Irâ</territory>
 			<territory type="IS">Isilandɛ</territory>
 			<territory type="IT">Itali</territory>
+			<territory type="JE" draft="unconfirmed">Jelezy</territory>
 			<territory type="JM">Zamaiki</territory>
 			<territory type="JO">Zɔdani</territory>
 			<territory type="JP">Zapɔ</territory>
@@ -245,13 +249,13 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="MC">Monako</territory>
 			<territory type="MD">Molidavi</territory>
 			<territory type="ME">Monténégro</territory>
+			<territory type="MF" draft="unconfirmed">Sántu Martin</territory>
 			<territory type="MG">Madagasikari</territory>
 			<territory type="MH">Bisanga bya Marishalɛ</territory>
-			<territory type="MK">Masedwanɛ</territory>
-			<territory type="MK" alt="variant" draft="unconfirmed">Masedoni</territory>
 			<territory type="ML">Malí</territory>
 			<territory type="MM">Birmanie</territory>
 			<territory type="MN">Mongolí</territory>
+			<territory type="MO" draft="unconfirmed">Makau (Shina)</territory>
 			<territory type="MO" alt="short" draft="unconfirmed">Makau</territory>
 			<territory type="MP">Bisanga bya Marianɛ ya nɔ́rdi</territory>
 			<territory type="MQ">Martiniki</territory>
@@ -325,7 +329,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="TJ">Tazikisitá</territory>
 			<territory type="TK">Tokelau</territory>
 			<territory type="TL">Timorɛ ya Moniɛlɛ</territory>
-			<territory type="TL" alt="variant" draft="unconfirmed">Timor ya monyɛlɛ</territory>
+			<territory type="TL" alt="variant" draft="unconfirmed">Timor ya Monyɛlɛ</territory>
 			<territory type="TM">Tikɛménisitá</territory>
 			<territory type="TN">Tinizi</territory>
 			<territory type="TO">Tonga</territory>
@@ -336,6 +340,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="TZ">Tanzani</territory>
 			<territory type="UA">Ikrɛni</territory>
 			<territory type="UG">Uganda</territory>
+			<territory type="UM" draft="unconfirmed">Bisanga Mokɛ́na Mosíká bya Lisangá lya Ameríka</territory>
 			<territory type="US">Ameriki</territory>
 			<territory type="UY">Irigwei</territory>
 			<territory type="UZ">Uzibɛkisitá</territory>
@@ -360,7 +365,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<key type="numbers" draft="unconfirmed">Mamɛlɔ</key>
 		</keys>
 		<types>
-			<type type="gregorian" key="calendar" draft="unconfirmed">Manáka ma Gregɔr</type>
+			<type key="calendar" type="gregorian" draft="unconfirmed">Manáka ma Gregɔr</type>
 		</types>
 		<codePatterns>
 			<codePattern type="language" draft="unconfirmed">lokótá {0}</codePattern>
@@ -368,17 +373,10 @@ For terms of use, see http://www.unicode.org/copyright.html
 		</codePatterns>
 	</localeDisplayNames>
 	<characters>
-		<exemplarCharacters>[a á â ǎ b c d e é ê ě ɛ {ɛ\u0301} {ɛ\u0302} {ɛ\u030C} f g {gb} h i í î ǐ k l m {mb} {mp} n {nd} {ng} {nk} {ns} {nt} {ny} {nz} o ó ô ǒ ɔ {ɔ\u0301} {ɔ\u0302} {ɔ\u030C} p r s t u ú v w y z]</exemplarCharacters>
+		<exemplarCharacters>[aáâǎ b c d eéêě ɛ{ɛ́}{ɛ̂}{ɛ̌} f g {gb} h iíîǐ k l m {mb} {mp} n {nd} {ng} {nk} {ns} {nt} {ny} {nz} oóôǒɔ{ɔ́}{ɔ̂}{ɔ̌} p r s t uú v w y z]</exemplarCharacters>
 		<exemplarCharacters type="auxiliary">[j q x]</exemplarCharacters>
-		<exemplarCharacters type="index">[A B C D E Ɛ F G {Gb} H I K L M {Mb} {Mp} N {Nd} {Ng} {Nk} {Ns} {Nt} {Ny} {Nz} O Ɔ P R S T U V W Y Z]</exemplarCharacters>
-		<moreInformation draft="unconfirmed">?</moreInformation>
+		<exemplarCharacters type="index">[A B C D E Ɛ F G {Gb} H I K L M {Mb} {Mp} N {Nd} {Ng} {Nk} {Ns} {Nt} {Ny} {Nz} OƆ P R S T U V W Y Z]</exemplarCharacters>
 	</characters>
-	<delimiters>
-		<quotationStart>“</quotationStart>
-		<quotationEnd>”</quotationEnd>
-		<alternateQuotationStart>‘</alternateQuotationStart>
-		<alternateQuotationEnd>’</alternateQuotationEnd>
-	</delimiters>
 	<dates>
 		<calendars>
 			<calendar type="generic">
@@ -401,21 +399,17 @@ For terms of use, see http://www.unicode.org/copyright.html
 					<dateFormatLength type="short">
 						<dateFormat>
 							<pattern>d/M/y GGGGG</pattern>
+							<datetimeSkeleton>GGGGGyMd</datetimeSkeleton>
 						</dateFormat>
 					</dateFormatLength>
 				</dateFormats>
 				<dateTimeFormats>
 					<availableFormats>
-						<dateFormatItem id="d">d</dateFormatItem>
 						<dateFormatItem id="Ed">E d</dateFormatItem>
-						<dateFormatItem id="hm">h:mm a</dateFormatItem>
-						<dateFormatItem id="Hm">HH:mm</dateFormatItem>
-						<dateFormatItem id="hms">h:mm:ss a</dateFormatItem>
-						<dateFormatItem id="Hms">HH:mm:ss</dateFormatItem>
-						<dateFormatItem id="M">L</dateFormatItem>
+						<dateFormatItem id="hm">h:mm a</dateFormatItem>
+						<dateFormatItem id="hms">h:mm:ss a</dateFormatItem>
 						<dateFormatItem id="Md">d/M</dateFormatItem>
 						<dateFormatItem id="MEd">E d/M</dateFormatItem>
-						<dateFormatItem id="MMM">LLL</dateFormatItem>
 						<dateFormatItem id="MMMd">d MMM</dateFormatItem>
 						<dateFormatItem id="MMMEd">E d MMM</dateFormatItem>
 						<dateFormatItem id="ms">m:ss</dateFormatItem>
@@ -531,7 +525,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 				</quarters>
 				<dayPeriods>
 					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
+						<dayPeriodWidth type="abbreviated">
 							<dayPeriod type="am">ntɔ́ngɔ́</dayPeriod>
 							<dayPeriod type="pm">mpókwa</dayPeriod>
 						</dayPeriodWidth>
@@ -544,7 +538,9 @@ For terms of use, see http://www.unicode.org/copyright.html
 					</eraNames>
 					<eraAbbr>
 						<era type="0">libóso ya</era>
+						<era type="0" alt="variant" draft="unconfirmed">LYK</era>
 						<era type="1">nsima ya Y</era>
+						<era type="1" alt="variant" draft="unconfirmed">NSYK</era>
 					</eraAbbr>
 				</eras>
 				<dateFormats>
@@ -566,6 +562,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 					<dateFormatLength type="short">
 						<dateFormat>
 							<pattern>d/M/y</pattern>
+							<datetimeSkeleton>yMd</datetimeSkeleton>
 						</dateFormat>
 					</dateFormatLength>
 				</dateFormats>
@@ -593,20 +590,14 @@ For terms of use, see http://www.unicode.org/copyright.html
 				</timeFormats>
 				<dateTimeFormats>
 					<availableFormats>
-						<dateFormatItem id="d">d</dateFormatItem>
 						<dateFormatItem id="Ed">E d</dateFormatItem>
-						<dateFormatItem id="hm">h:mm a</dateFormatItem>
-						<dateFormatItem id="Hm">HH:mm</dateFormatItem>
-						<dateFormatItem id="hms">h:mm:ss a</dateFormatItem>
-						<dateFormatItem id="Hms">HH:mm:ss</dateFormatItem>
-						<dateFormatItem id="M">L</dateFormatItem>
+						<dateFormatItem id="hm">h:mm a</dateFormatItem>
+						<dateFormatItem id="hms">h:mm:ss a</dateFormatItem>
 						<dateFormatItem id="Md">d/M</dateFormatItem>
 						<dateFormatItem id="MEd">E d/M</dateFormatItem>
-						<dateFormatItem id="MMM">LLL</dateFormatItem>
 						<dateFormatItem id="MMMd">d MMM</dateFormatItem>
 						<dateFormatItem id="MMMEd">E d MMM</dateFormatItem>
 						<dateFormatItem id="ms">m:ss</dateFormatItem>
-						<dateFormatItem id="y">y</dateFormatItem>
 						<dateFormatItem id="yM">M/y</dateFormatItem>
 						<dateFormatItem id="yMd">d/M/y</dateFormatItem>
 						<dateFormatItem id="yMEd">E d/M/y</dateFormatItem>
@@ -659,7 +650,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 		</fields>
 		<timeZoneNames>
 			<regionFormat>Ngonga ya {0}</regionFormat>
-			<fallbackFormat>{1} ({0})</fallbackFormat>
 			<metazone type="Africa_Central">
 				<long>
 					<standard draft="unconfirmed">Ntángo ya Lubumbashi</standard>
@@ -691,23 +681,43 @@ For terms of use, see http://www.unicode.org/copyright.html
 		<symbols numberSystem="latn">
 			<decimal>,</decimal>
 			<group>.</group>
-			<percentSign draft="unconfirmed">%</percentSign>
-			<plusSign draft="unconfirmed">+</plusSign>
-			<minusSign draft="unconfirmed">-</minusSign>
-			<perMille draft="unconfirmed">‰</perMille>
-			<infinity draft="unconfirmed">∞</infinity>
 		</symbols>
-		<decimalFormats numberSystem="latn">
-			<decimalFormatLength>
-				<decimalFormat>
-					<pattern>#,##0.###</pattern>
-				</decimalFormat>
-			</decimalFormatLength>
-		</decimalFormats>
 		<currencyFormats numberSystem="latn">
 			<currencyFormatLength>
 				<currencyFormat type="standard">
 					<pattern>#,##0.00 ¤</pattern>
+					<pattern alt="alphaNextToNumber">#,##0.00 ¤</pattern>
+				</currencyFormat>
+				<currencyFormat type="accounting">
+					<pattern alt="alphaNextToNumber">#,##0.00 ¤</pattern>
+				</currencyFormat>
+			</currencyFormatLength>
+			<currencyFormatLength type="short">
+				<currencyFormat type="standard">
+					<pattern type="1000" count="one" draft="provisional">0K ¤</pattern>
+					<pattern type="1000" count="other" draft="provisional">0K ¤</pattern>
+					<pattern type="10000" count="one" draft="provisional">00K ¤</pattern>
+					<pattern type="10000" count="other" draft="provisional">00K ¤</pattern>
+					<pattern type="100000" count="one" draft="provisional">000K ¤</pattern>
+					<pattern type="100000" count="other" draft="provisional">000K ¤</pattern>
+					<pattern type="1000000" count="one" draft="provisional">0M ¤</pattern>
+					<pattern type="1000000" count="other" draft="provisional">0M ¤</pattern>
+					<pattern type="10000000" count="one" draft="provisional">00M ¤</pattern>
+					<pattern type="10000000" count="other" draft="provisional">00M ¤</pattern>
+					<pattern type="100000000" count="one" draft="provisional">000M ¤</pattern>
+					<pattern type="100000000" count="other" draft="provisional">000M ¤</pattern>
+					<pattern type="1000000000" count="one" draft="provisional">0G ¤</pattern>
+					<pattern type="1000000000" count="other" draft="provisional">0G ¤</pattern>
+					<pattern type="10000000000" count="one" draft="provisional">00G ¤</pattern>
+					<pattern type="10000000000" count="other" draft="provisional">00G ¤</pattern>
+					<pattern type="100000000000" count="one" draft="provisional">000G ¤</pattern>
+					<pattern type="100000000000" count="other" draft="provisional">000G ¤</pattern>
+					<pattern type="1000000000000" count="one" draft="provisional">0T ¤</pattern>
+					<pattern type="1000000000000" count="other" draft="provisional">0T ¤</pattern>
+					<pattern type="10000000000000" count="one" draft="provisional">00T ¤</pattern>
+					<pattern type="10000000000000" count="other" draft="provisional">00T ¤</pattern>
+					<pattern type="100000000000000" count="one" draft="provisional">000T ¤</pattern>
+					<pattern type="100000000000000" count="other" draft="provisional">000T ¤</pattern>
 				</currencyFormat>
 			</currencyFormatLength>
 		</currencyFormats>
@@ -715,16 +725,31 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<currency type="AED">
 				<displayName>Dirihamɛ ya Lémila alabo</displayName>
 			</currency>
+			<currency type="ALL">
+				<displayName draft="unconfirmed">Lek</displayName>
+			</currency>
 			<currency type="AOA">
 				<displayName>Kwanza ya Angóla</displayName>
 			</currency>
 			<currency type="ARS">
-				<displayName draft="unconfirmed">Peso y'Argentina</displayName>
-				<displayName count="one" draft="unconfirmed">Peso y'Argentina</displayName>
-				<displayName count="other" draft="unconfirmed">Peso y'Argentina</displayName>
+				<displayName draft="unconfirmed">Peso y’Argentina</displayName>
 			</currency>
 			<currency type="AUD">
 				<displayName>Dolarɛ ya Ositali</displayName>
+			</currency>
+			<currency type="AWG">
+				<displayName draft="unconfirmed">Guldeni y’ Aruba</displayName>
+			</currency>
+			<currency type="BAM">
+				<displayName draft="unconfirmed">Mark ya kobóngwama</displayName>
+			</currency>
+			<currency type="BBD">
+				<displayName draft="unconfirmed">Dolále ya Barbados</displayName>
+			</currency>
+			<currency type="BGN">
+				<displayName draft="unconfirmed">Lev ya Bulgaria</displayName>
+				<displayName count="one" draft="unconfirmed">Lev ya Bulgaria</displayName>
+				<displayName count="other" draft="unconfirmed">Leva ya Bulgaria</displayName>
 			</currency>
 			<currency type="BHD">
 				<displayName>Dinarɛ ya Bahrɛnɛ</displayName>
@@ -734,14 +759,24 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</currency>
 			<currency type="BOB">
 				<displayName draft="unconfirmed">Boliviano</displayName>
-				<displayName count="one" draft="unconfirmed">Boliviano</displayName>
-				<displayName count="other" draft="unconfirmed">Boliviano</displayName>
 			</currency>
 			<currency type="BRL">
 				<displayName draft="unconfirmed">Real ya Brazil</displayName>
 			</currency>
+			<currency type="BSD">
+				<displayName draft="unconfirmed">Dolále ya Bahamas</displayName>
+			</currency>
 			<currency type="BWP">
 				<displayName>Pula ya Botswana</displayName>
+			</currency>
+			<currency type="BYN">
+				<displayName draft="unconfirmed">Rubelé ya Bielorusí</displayName>
+			</currency>
+			<currency type="BYR">
+				<displayName draft="unconfirmed">Rubelé ya Bielorusí (2000–2016)</displayName>
+			</currency>
+			<currency type="BZD">
+				<displayName draft="unconfirmed">Dolále ya Belíze</displayName>
 			</currency>
 			<currency type="CAD">
 				<displayName>Dolarɛ ya Kanadá</displayName>
@@ -752,50 +787,37 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</currency>
 			<currency type="CHF">
 				<displayName>Falánga ya Swisɛ</displayName>
+				<symbol draft="unconfirmed">Fr.</symbol>
 			</currency>
 			<currency type="CLP">
 				<displayName draft="unconfirmed">Peso ya Shili</displayName>
-				<displayName count="one" draft="unconfirmed">Peso ya Shili</displayName>
-				<displayName count="other" draft="unconfirmed">Peso ya Shili</displayName>
 			</currency>
 			<currency type="CNY">
 				<displayName>Yuanɛ Renminbi ya Sinɛ</displayName>
 			</currency>
 			<currency type="COP">
 				<displayName draft="unconfirmed">Peso ya Kolombi</displayName>
-				<displayName count="one" draft="unconfirmed">Peso ya Kolombi</displayName>
-				<displayName count="other" draft="unconfirmed">Peso ya Kolombi</displayName>
 			</currency>
 			<currency type="CRC">
 				<displayName draft="unconfirmed">Colon ya Kosta Rika</displayName>
-				<displayName count="one" draft="unconfirmed">Colon ya Kosta Rika</displayName>
-				<displayName count="other" draft="unconfirmed">Colon ya Kosta Rika</displayName>
 			</currency>
 			<currency type="CUP">
 				<displayName draft="unconfirmed">Peso ya Kuba</displayName>
-				<displayName count="one" draft="unconfirmed">Peso ya Kuba</displayName>
-				<displayName count="other" draft="unconfirmed">Peso ya Kuba</displayName>
 			</currency>
 			<currency type="CVE">
 				<displayName>Esikudo ya Kapevɛrɛ</displayName>
 			</currency>
 			<currency type="CZK">
 				<displayName draft="unconfirmed">Motolé Sheki</displayName>
-				<displayName count="one" draft="unconfirmed">Motolé Sheki</displayName>
-				<displayName count="other" draft="unconfirmed">Motolé Sheki</displayName>
 			</currency>
 			<currency type="DJF">
 				<displayName>Falánga ya Dzibuti</displayName>
 			</currency>
 			<currency type="DKK">
 				<displayName draft="unconfirmed">Motolé ya Danemark</displayName>
-				<displayName count="one" draft="unconfirmed">Motolé ya Danemark</displayName>
-				<displayName count="other" draft="unconfirmed">Motolé ya Danemark</displayName>
 			</currency>
 			<currency type="DOP">
 				<displayName draft="unconfirmed">Peso Dominikani</displayName>
-				<displayName count="one" draft="unconfirmed">Peso Dominikani</displayName>
-				<displayName count="other" draft="unconfirmed">Peso Dominikani</displayName>
 			</currency>
 			<currency type="DZD">
 				<displayName>Dinarɛ ya Alizeri</displayName>
@@ -812,6 +834,9 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<currency type="EUR">
 				<displayName>Ɛlɔ́</displayName>
 			</currency>
+			<currency type="FJD">
+				<displayName draft="unconfirmed">Dolále ya Fiji</displayName>
+			</currency>
 			<currency type="GBP">
 				<displayName>Paunɛ ya Angɛlɛtɛ́lɛ</displayName>
 			</currency>
@@ -820,32 +845,42 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</currency>
 			<currency type="GHS">
 				<displayName draft="unconfirmed">Cedi</displayName>
-				<displayName count="one" draft="unconfirmed">Cedi</displayName>
-				<displayName count="other" draft="unconfirmed">Cedi</displayName>
+			</currency>
+			<currency type="GIP">
+				<displayName draft="unconfirmed">Bojito ya Gibraltar</displayName>
 			</currency>
 			<currency type="GMD">
 				<displayName>Dalasi ya Gambi</displayName>
 			</currency>
 			<currency type="GNF">
 				<displayName draft="unconfirmed">Falánga ya Gine</displayName>
-				<displayName count="one" draft="unconfirmed">Falánga ya Gine</displayName>
-				<displayName count="other" draft="unconfirmed">Falánga ya Gine</displayName>
 			</currency>
 			<currency type="GNS">
 				<displayName>Falánga ya Ginɛ</displayName>
 			</currency>
+			<currency type="GTQ">
+				<displayName draft="unconfirmed">Quetzal</displayName>
+			</currency>
+			<currency type="HNL">
+				<displayName draft="unconfirmed">Lempira</displayName>
+			</currency>
+			<currency type="HRK">
+				<displayName draft="unconfirmed">Kuna ya Kroasia</displayName>
+			</currency>
 			<currency type="HTG">
 				<displayName draft="unconfirmed">Gurde</displayName>
-				<displayName count="one" draft="unconfirmed">Gurde</displayName>
-				<displayName count="other" draft="unconfirmed">Gurde</displayName>
+			</currency>
+			<currency type="HUF">
+				<displayName draft="unconfirmed">Folinte</displayName>
 			</currency>
 			<currency type="INR">
 				<displayName>Rupi ya Índɛ</displayName>
 			</currency>
 			<currency type="ISK">
 				<displayName draft="unconfirmed">Motolé ya Islandi</displayName>
-				<displayName count="one" draft="unconfirmed">Motolé ya Islandi</displayName>
-				<displayName count="other" draft="unconfirmed">Motolé ya Islandi</displayName>
+			</currency>
+			<currency type="JMD">
+				<displayName draft="unconfirmed">Dolále ya Jamaïke</displayName>
 			</currency>
 			<currency type="JPY">
 				<displayName>Yeni ya Zapɔ</displayName>
@@ -856,6 +891,9 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<currency type="KMF">
 				<displayName>Falánga ya Komoro</displayName>
 			</currency>
+			<currency type="KYD">
+				<displayName draft="unconfirmed">Dolále ya Bisanga bya Kayman</displayName>
+			</currency>
 			<currency type="LRD">
 				<displayName>Dolarɛ ya Liberya</displayName>
 			</currency>
@@ -864,13 +902,9 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</currency>
 			<currency type="LTL">
 				<displayName draft="unconfirmed">Litas ya Litwani</displayName>
-				<displayName count="one" draft="unconfirmed">Litas ya Litwani</displayName>
-				<displayName count="other" draft="unconfirmed">Litas ya Litwani</displayName>
 			</currency>
 			<currency type="LVL">
 				<displayName draft="unconfirmed">Lats ya Letoni</displayName>
-				<displayName count="one" draft="unconfirmed">Lats ya Letoni</displayName>
-				<displayName count="other" draft="unconfirmed">Lats ya Letoni</displayName>
 			</currency>
 			<currency type="LYD">
 				<displayName>Dinarɛ ya Libí</displayName>
@@ -881,7 +915,13 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<currency type="MGA">
 				<displayName>Falánga ya Madagasikarɛ</displayName>
 			</currency>
+			<currency type="MKD">
+				<displayName draft="unconfirmed">Denalé</displayName>
+			</currency>
 			<currency type="MRO">
+				<displayName>Ugwiya ya Moritani (1973–2017)</displayName>
+			</currency>
+			<currency type="MRU">
 				<displayName>Ugwiya ya Moritani</displayName>
 			</currency>
 			<currency type="MUR">
@@ -892,11 +932,12 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</currency>
 			<currency type="MXN">
 				<displayName draft="unconfirmed">Peso ya Mexiko</displayName>
-				<displayName count="one" draft="unconfirmed">Peso ya Mexiko</displayName>
-				<displayName count="other" draft="unconfirmed">Peso ya Mexiko</displayName>
 			</currency>
 			<currency type="MZM">
 				<displayName>Metikali ya Mozambiki</displayName>
+			</currency>
+			<currency type="MZN">
+				<displayName draft="unconfirmed">Métikal</displayName>
 			</currency>
 			<currency type="NAD">
 				<displayName>Dolarɛ ya Namibi</displayName>
@@ -906,29 +947,42 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</currency>
 			<currency type="NOK">
 				<displayName draft="unconfirmed">Motolé ya Norvej</displayName>
-				<displayName count="one" draft="unconfirmed">Motolé ya Norvej</displayName>
-				<displayName count="other" draft="unconfirmed">Motolé ya Norvej</displayName>
+			</currency>
+			<currency type="NZD">
+				<displayName draft="unconfirmed">Dolále ya Zeland ya Sika</displayName>
 			</currency>
 			<currency type="PAB">
 				<displayName draft="unconfirmed">Balboa</displayName>
-				<displayName count="one" draft="unconfirmed">Balboa</displayName>
-				<displayName count="other" draft="unconfirmed">Balboa</displayName>
 			</currency>
 			<currency type="PEN">
 				<displayName draft="unconfirmed">Sol Sika</displayName>
-				<displayName count="one" draft="unconfirmed">Sol Sika</displayName>
-				<displayName count="other" draft="unconfirmed">Sol Sika</displayName>
+			</currency>
+			<currency type="PGK">
+				<displayName draft="unconfirmed">Kina</displayName>
+			</currency>
+			<currency type="PLN">
+				<displayName draft="unconfirmed">Sloty</displayName>
 			</currency>
 			<currency type="PYG">
 				<displayName draft="unconfirmed">Guarani</displayName>
-				<displayName count="one" draft="unconfirmed">Guarani</displayName>
-				<displayName count="other" draft="unconfirmed">Guarani</displayName>
+			</currency>
+			<currency type="RON">
+				<displayName draft="unconfirmed">Leu Sika</displayName>
+			</currency>
+			<currency type="RSD">
+				<displayName draft="unconfirmed">Dinalé ya Serbia</displayName>
+			</currency>
+			<currency type="RUB">
+				<displayName draft="unconfirmed">Rubelé ya Rusí</displayName>
 			</currency>
 			<currency type="RWF">
 				<displayName>Falánga ya Rwanda</displayName>
 			</currency>
 			<currency type="SAR">
 				<displayName>Riyalɛ ya Alabi Sawuditɛ</displayName>
+			</currency>
+			<currency type="SBD">
+				<displayName draft="unconfirmed">Dolále ya Bisanga Solomoni</displayName>
 			</currency>
 			<currency type="SCR">
 				<displayName>Rupi ya Sɛshɛlɛ</displayName>
@@ -941,19 +995,26 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</currency>
 			<currency type="SEK">
 				<displayName draft="unconfirmed">Motolé ya Swédi</displayName>
-				<displayName count="one" draft="unconfirmed">Motolé ya Swédi</displayName>
-				<displayName count="other" draft="unconfirmed">Motolé ya Swédi</displayName>
 			</currency>
 			<currency type="SHP">
 				<displayName>Paunɛ ya Sántu elena</displayName>
 			</currency>
-			<currency type="SLL">
+			<currency type="SLE">
 				<displayName>Leonɛ</displayName>
+			</currency>
+			<currency type="SLL">
+				<displayName>Leonɛ (1964—2022)</displayName>
 			</currency>
 			<currency type="SOS">
 				<displayName>Shilingɛ ya Somali</displayName>
 			</currency>
+			<currency type="SSP">
+				<displayName draft="unconfirmed">Bojito ya Sudaní ya Súdi</displayName>
+			</currency>
 			<currency type="STD">
+				<displayName>Dobra ya Sao Tomé mpé Presipe (1977–2017)</displayName>
+			</currency>
+			<currency type="STN">
 				<displayName>Dobra ya Sao Tomé mpé Presipe</displayName>
 			</currency>
 			<currency type="SZL">
@@ -962,8 +1023,17 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<currency type="TND">
 				<displayName>Dinarɛ ya Tinizi</displayName>
 			</currency>
+			<currency type="TOP">
+				<displayName draft="unconfirmed">Pa’Anga</displayName>
+			</currency>
+			<currency type="TTD">
+				<displayName draft="unconfirmed">Dolále ya Trinidad mpé Tobago</displayName>
+			</currency>
 			<currency type="TZS">
 				<displayName>Shilingɛ ya Tanzani</displayName>
+			</currency>
+			<currency type="UAH">
+				<displayName draft="unconfirmed">Griwná</displayName>
 			</currency>
 			<currency type="UGX">
 				<displayName>Shilingɛ ya Uganda</displayName>
@@ -971,11 +1041,24 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<currency type="USD">
 				<displayName>Dolarɛ ya Ameriki</displayName>
 			</currency>
+			<currency type="VUV">
+				<displayName draft="unconfirmed">Vatu</displayName>
+			</currency>
+			<currency type="WST">
+				<displayName draft="unconfirmed">Tala</displayName>
+			</currency>
 			<currency type="XAF">
 				<displayName>Falánga CFA BEAC</displayName>
 			</currency>
+			<currency type="XCD">
+				<displayName draft="unconfirmed">Dolále ya Kalibí Monyɛlɛ</displayName>
+			</currency>
 			<currency type="XOF">
 				<displayName>Falánga CFA BCEAO</displayName>
+			</currency>
+			<currency type="XPF">
+				<displayName draft="unconfirmed">Falánga CFP</displayName>
+				<symbol draft="unconfirmed">F CFP</symbol>
 			</currency>
 			<currency type="ZAR">
 				<displayName>Randɛ ya Afríka Súdi</displayName>
@@ -991,10 +1074,102 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</currency>
 		</currencies>
 	</numbers>
+	<units>
+		<unitLength type="long">
+			<unit type="duration-century">
+				<displayName draft="unconfirmed">sekúlo</displayName>
+				<unitPattern count="one" draft="unconfirmed">{0} sekúlo</unitPattern>
+				<unitPattern count="other" draft="unconfirmed">{0} sekúlo</unitPattern>
+			</unit>
+			<unit type="duration-year">
+				<unitPattern count="one" draft="unconfirmed">{0} mobú</unitPattern>
+				<unitPattern count="other" draft="unconfirmed">{0} mibú</unitPattern>
+			</unit>
+			<unit type="duration-month">
+				<unitPattern count="one" draft="unconfirmed">{0} sánzá</unitPattern>
+				<unitPattern count="other" draft="unconfirmed">{0} sánzá</unitPattern>
+			</unit>
+			<unit type="duration-week">
+				<unitPattern count="one" draft="unconfirmed">{0} mpɔ́sɔ</unitPattern>
+				<unitPattern count="other" draft="unconfirmed">{0} mpɔ́sɔ</unitPattern>
+			</unit>
+			<unit type="duration-hour">
+				<unitPattern count="one" draft="unconfirmed">{0} ngonga</unitPattern>
+				<unitPattern count="other" draft="unconfirmed">{0} ngonga</unitPattern>
+			</unit>
+			<unit type="duration-minute">
+				<displayName draft="unconfirmed">minúti</displayName>
+				<unitPattern count="one" draft="unconfirmed">{0} monúti</unitPattern>
+				<unitPattern count="other" draft="unconfirmed">{0} minúti</unitPattern>
+				<perUnitPattern draft="unconfirmed">{0}/monúti</perUnitPattern>
+			</unit>
+			<unit type="duration-second">
+				<displayName draft="unconfirmed">sekundí</displayName>
+				<unitPattern count="one" draft="unconfirmed">{0} sekundí</unitPattern>
+				<unitPattern count="other" draft="unconfirmed">{0} sekundí</unitPattern>
+			</unit>
+			<unit type="duration-millisecond">
+				<displayName draft="unconfirmed">millisekundí</displayName>
+				<unitPattern count="one" draft="unconfirmed">{0} millisekundí</unitPattern>
+				<unitPattern count="other" draft="unconfirmed">{0} millisekundí</unitPattern>
+			</unit>
+			<unit type="duration-microsecond">
+				<displayName draft="unconfirmed">mikrosekundí</displayName>
+				<unitPattern count="one" draft="unconfirmed">{0} mikrosekundí</unitPattern>
+				<unitPattern count="other" draft="unconfirmed">{0} mikrosekundí</unitPattern>
+			</unit>
+			<unit type="duration-nanosecond">
+				<displayName draft="unconfirmed">nanosekundí</displayName>
+				<unitPattern count="one" draft="unconfirmed">{0} nanosekundí</unitPattern>
+				<unitPattern count="other" draft="unconfirmed">{0} nanosekundí</unitPattern>
+			</unit>
+		</unitLength>
+		<unitLength type="short">
+			<unit type="duration-century">
+				<displayName draft="unconfirmed">sek</displayName>
+				<unitPattern count="one" draft="unconfirmed">{0} sek</unitPattern>
+				<unitPattern count="other" draft="unconfirmed">{0} sek</unitPattern>
+			</unit>
+			<unit type="duration-year">
+				<displayName draft="unconfirmed">mibú</displayName>
+			</unit>
+			<unit type="duration-month">
+				<displayName draft="unconfirmed">sánzá</displayName>
+				<unitPattern count="one" draft="unconfirmed">{0} sán</unitPattern>
+				<unitPattern count="other" draft="unconfirmed">{0} sán</unitPattern>
+				<perUnitPattern draft="unconfirmed">{0}/sán</perUnitPattern>
+			</unit>
+			<unit type="duration-week">
+				<displayName draft="unconfirmed">mpɔ́sɔ</displayName>
+				<unitPattern count="one" draft="unconfirmed">{0} mps</unitPattern>
+				<unitPattern count="other" draft="unconfirmed">{0} mps</unitPattern>
+				<perUnitPattern draft="unconfirmed">{0}/mps</perUnitPattern>
+			</unit>
+			<unit type="duration-day">
+				<displayName draft="unconfirmed">mikɔlɔ</displayName>
+				<unitPattern count="one" draft="unconfirmed">{0} mokɔlɔ</unitPattern>
+				<unitPattern count="other" draft="unconfirmed">{0} mikɔlɔ</unitPattern>
+			</unit>
+			<unit type="duration-hour">
+				<displayName draft="unconfirmed">ngonga</displayName>
+			</unit>
+			<unit type="duration-second">
+				<displayName draft="unconfirmed">s</displayName>
+			</unit>
+		</unitLength>
+		<unitLength type="narrow">
+			<unit type="duration-week">
+				<displayName draft="unconfirmed">mps</displayName>
+			</unit>
+			<unit type="duration-day">
+				<displayName draft="unconfirmed">mokɔlɔ</displayName>
+				<unitPattern count="one" draft="unconfirmed">{0} d</unitPattern>
+				<unitPattern count="other" draft="unconfirmed">{0} d</unitPattern>
+			</unit>
+		</unitLength>
+	</units>
 	<listPatterns>
 		<listPattern>
-			<listPatternPart type="start" draft="unconfirmed">{0}, {1}</listPatternPart>
-			<listPatternPart type="middle" draft="unconfirmed">{0}, {1}</listPatternPart>
 			<listPatternPart type="end" draft="unconfirmed">{0} mpé {1}</listPatternPart>
 			<listPatternPart type="2" draft="unconfirmed">{0} mpé {1}</listPatternPart>
 		</listPattern>
@@ -1006,4 +1181,3 @@ For terms of use, see http://www.unicode.org/copyright.html
 		</messages>
 	</posix>
 </ldml>
-

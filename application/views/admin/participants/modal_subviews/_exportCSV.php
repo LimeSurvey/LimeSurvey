@@ -1,5 +1,5 @@
 <div id="exportcsv" title="exportcsv" role="dialog" tabindex="-1" class="modal fade">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h2 class="modal-title h5"><?php eT("Export participants"); ?> </h2>
@@ -66,7 +66,7 @@
 </div>
 
 <div id='exportcsvallnorow' title='exportcsvallnorow' role="dialog" tabindex="-1" class="modal fade">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h2 class="modal-title h5"><?php eT("Export participants"); ?></h2>

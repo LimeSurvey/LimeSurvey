@@ -83,8 +83,8 @@ class ParticipantListMassiveActions
                 ],
                 'sModalTitle' => gT('Delete one or more participants...'),
                 'htmlModalBody' =>
-                    '<p>' . gT('Please choose one option.') . '</p>' .
-                    '<select name="selectedoption" class="form-select post-value">' .
+                    '<label class="form-label" for="massive-delete-participants-option">' . gT('Please choose one option.') . '</label>' .
+                    '<select name="selectedoption" id="massive-delete-participants-option" class="form-select post-value">' .
                         '<option value="po" selected>' . gT('Delete only from the central panel') . '</option>' .
                         '<option value="ptt">' . gT('Delete from the central panel and associated surveys') . '</option>' .
                         '<option value="ptta">' . gT('Delete from central panel, associated surveys and all associated responses') . '</option>' .

@@ -36,3 +36,14 @@ background-color:lightyellow;
 .table-responsive {
     overflow-x: visible;
 }
+
+/**
+ * Wrap long unbreakable text (URLs, expressions) in the last column instead of letting it widen the table beyond the clipped page
+ */
+#logicfiletable td:last-child {
+    overflow-wrap: anywhere;
+}
+.logicfileattributetable th,
+.logicfileattributetable td:first-child {
+    overflow-wrap: normal;
+}
