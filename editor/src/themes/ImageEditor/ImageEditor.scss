@@ -10,11 +10,31 @@
     border-color: $grape;
   }
 
+  // Height of the frame size inputs, like Bootstrap's form-control.
+  $frame-input-height: calc(1.5em + 0.75rem + 2px);
+
+  // Locked aspect ratio: A line connects width and height, across the gap
+  // (gap-3) between them, at the middle of the inputs. Decorative only: The
+  // lock button tells screen readers the state with aria-pressed.
+  .image-editor-frame-size.locked .image-editor-frame-height {
+    position: relative;
+
+    &::before {
+      content: '';
+      position: absolute;
+      right: 100%;
+      bottom: calc(#{$frame-input-height} / 2 - 1px);
+      width: 1rem;
+      height: 2px;
+      background: $grape;
+    }
+  }
+
   .image-editor-ratio-lock {
     // Same height as the inputs, so the icon lines up with them.
     display: flex;
     align-items: center;
-    height: calc(1.5em + 0.75rem + 2px);
+    height: $frame-input-height;
     padding: 0 0.25rem;
     color: $g-700;
 

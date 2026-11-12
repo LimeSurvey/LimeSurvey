@@ -145,9 +145,36 @@ export const getCropRect = (
 }
 
 /**
- * Tells whether the image can be dragged inside the frame: It is zoomed in, or
- * the frame's aspect ratio differs from the image's, so a part is cut off.
- * Without the image size, only the zoom is known.
+ * Tells in which directions the image can be dragged inside the frame: It is
+ * zoomed in, or the frame's aspect ratio differs from the image's, so a part
+ * is cut off. Without the image size, only the zoom is known.
+ *
+ * @param {number|undefined} naturalWidth width of the image file in px
+ * @param {number|undefined} naturalHeight height of the image file in px
+ * @param {{width: number, height: number}} frame the frame size in px
+ * @param {number} zoom zoom factor, 1 = the image just covers the frame
+ * @returns {{horizontal: boolean, vertical: boolean}} true for each axis on
+ *   which at least one source pixel is cut off
+ */
+export const getMovableAxes = (naturalWidth, naturalHeight, frame, zoom) => {
+  if (!naturalWidth || !naturalHeight) {
+    const zoomed = zoom > ZOOM_MIN
+    return { horizontal: zoomed, vertical: zoomed }
+  }
+  const rect = getCropRect(naturalWidth, naturalHeight, frame, zoom)
+  if (!rect) {
+    return { horizontal: false, vertical: false }
+  }
+  // Rounded frame sizes leave a ratio slightly off: Less than a source pixel
+  // to move doesn't count.
+  return {
+    horizontal: (1 - rect.width) * naturalWidth >= 1,
+    vertical: (1 - rect.height) * naturalHeight >= 1,
+  }
+}
+
+/**
+ * Tells whether the image can be dragged inside the frame in any direction.
  *
  * @param {number|undefined} naturalWidth width of the image file in px
  * @param {number|undefined} naturalHeight height of the image file in px
@@ -156,19 +183,8 @@ export const getCropRect = (
  * @returns {boolean} true if at least one source pixel is cut off on one axis
  */
 export const canMoveImage = (naturalWidth, naturalHeight, frame, zoom) => {
-  if (!naturalWidth || !naturalHeight) {
-    return zoom > ZOOM_MIN
-  }
-  const rect = getCropRect(naturalWidth, naturalHeight, frame, zoom)
-  if (!rect) {
-    return false
-  }
-  // Rounded frame sizes leave a ratio slightly off: Less than a source pixel
-  // to move isn't worth a hint.
-  return (
-    (1 - rect.width) * naturalWidth >= 1 ||
-    (1 - rect.height) * naturalHeight >= 1
-  )
+  const axes = getMovableAxes(naturalWidth, naturalHeight, frame, zoom)
+  return axes.horizontal || axes.vertical
 }
 
 /**

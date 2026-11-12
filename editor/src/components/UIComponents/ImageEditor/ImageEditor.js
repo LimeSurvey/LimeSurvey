@@ -15,10 +15,10 @@ import {
   FRAME_MIN_SIZE,
   ZOOM_MAX,
   ZOOM_MIN,
-  canMoveImage,
   formatFileSize,
   getDefaultFrameSize,
   getFrameRatio,
+  getMovableAxes,
   getVisibleSourceSize,
   resizeFrame,
   roundSetting,
@@ -74,6 +74,7 @@ const getInitialSettings = (settings, naturalSize) => {
  * @param {Object} inputRef ref to the input element, e.g. to focus it
  * @param {boolean} isLocked whether the aspect ratio is locked, shown with a
  *   highlighted border
+ * @param {string} className extra class of the wrapper, e.g. for styling
  * @returns {JSX.Element} the labelled input
  */
 const FrameSizeInput = ({
@@ -83,6 +84,7 @@ const FrameSizeInput = ({
   onCommit,
   inputRef,
   isLocked = false,
+  className = '',
 }) => {
   const [draft, setDraft] = useState(null)
 
@@ -103,7 +105,7 @@ const FrameSizeInput = ({
   }
 
   return (
-    <div className="flex-grow-1">
+    <div className={classNames('flex-grow-1', className)}>
       {/* A block label starts at the top of the column, level with the
           preview. Inline, it would sit lower in its line box. */}
       <Form.Label htmlFor={id} className="d-block">
@@ -238,12 +240,13 @@ export const ImageEditor = ({
     visibleSource &&
     (visibleSource.width < current.width ||
       visibleSource.height < current.height)
-  const isMovable = canMoveImage(
+  const movableAxes = getMovableAxes(
     naturalSize?.width,
     naturalSize?.height,
     current,
     current.zoom
   )
+  const isMovable = movableAxes.horizontal || movableAxes.vertical
 
   const update = (changes) => setCurrent((prev) => ({ ...prev, ...changes }))
 
@@ -317,10 +320,14 @@ export const ImageEditor = ({
             className="image-editor-preview d-flex flex-column align-items-center flex-shrink-0"
             style={{ width: PREVIEW_MAX_WIDTH + 2 * PREVIEW_BORDER }}
           >
-            {/* Top aligned: The canvas starts level with the labels of the
-                width and height inputs, whatever the frame's shape. */}
+            {/* Top aligned: The image starts level with the labels of the
+                width and height inputs. Where the image can move vertically,
+                that is the dimmed strip above the frame. Otherwise the strip
+                stays empty, so it is moved out of the box and cut off, and
+                the frame starts there. Not decided by the current position:
+                The frame would jump while dragging. */}
             <div
-              className="d-flex align-items-start justify-content-center"
+              className="d-flex align-items-start justify-content-center overflow-hidden"
               style={{
                 width: PREVIEW_MAX_WIDTH + 2 * PREVIEW_BORDER,
                 height: PREVIEW_MAX_HEIGHT + 2 * PREVIEW_BORDER,
@@ -332,6 +339,9 @@ export const ImageEditor = ({
                 width={Math.round(current.width * previewScale)}
                 height={Math.round(current.height * previewScale)}
                 border={PREVIEW_BORDER}
+                style={{
+                  marginTop: movableAxes.vertical ? 0 : -PREVIEW_BORDER,
+                }}
                 color={[255, 255, 255, 0.6]}
                 scale={current.zoom}
                 rotate={0}
@@ -391,7 +401,15 @@ export const ImageEditor = ({
             className="flex-grow-1 d-flex flex-column gap-3"
             style={{ minWidth: 0 }}
           >
-            <div className="d-flex gap-3 align-items-end">
+            {/* With the aspect ratio locked, a line between the inputs shows
+                that they are connected (see ImageEditor.scss). */}
+            <div
+              className={classNames(
+                'image-editor-frame-size d-flex gap-3 align-items-end',
+                { locked: current.keepRatio }
+              )}
+              data-testid="image-editor-frame-size"
+            >
               <FrameSizeInput
                 id={`${idPrefix}-width`}
                 label={t('Width (px)')}
@@ -406,6 +424,7 @@ export const ImageEditor = ({
                 value={current.height}
                 onCommit={(value) => handleFrameChange('height', value)}
                 isLocked={current.keepRatio}
+                className="image-editor-frame-height"
               />
               <TooltipContainer tip={ratioLockLabel} placement="right">
                 <Button

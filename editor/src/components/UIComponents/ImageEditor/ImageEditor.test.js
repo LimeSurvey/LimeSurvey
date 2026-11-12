@@ -21,6 +21,7 @@ jest.mock('react-avatar-editor', () => {
         data-width={props.width}
         data-height={props.height}
         data-scale={props.scale}
+        style={props.style}
         onClick={() => props.onPositionChange({ x: 0.3, y: 0.6 })}
       />
     )
@@ -119,6 +120,23 @@ describe('ImageEditor', () => {
     )
   })
 
+  test('Moves the empty dimmed strip above the frame out of view', async () => {
+    await renderEditor()
+    const editor = screen.getByTestId('avatar-editor')
+    // 400×300 image in a 400×300 frame: Nothing above the frame to show, the
+    // frame itself starts at the top.
+    await waitFor(() => expect(editor).toHaveStyle({ marginTop: '-24px' }))
+
+    // A flatter frame cuts off the top and bottom: The image can move up and
+    // down, the dimmed strip above the frame shows its top part.
+    await userEvent.click(screen.getByTestId('image-editor-ratio-lock'))
+    const height = screen.getByLabelText('Height (px)')
+    await userEvent.clear(height)
+    await userEvent.type(height, '100')
+    await userEvent.tab()
+    expect(editor).toHaveStyle({ marginTop: '0px' })
+  })
+
   test('Accepts any frame size from 0 without upper limit', async () => {
     await renderEditor()
 
@@ -169,12 +187,17 @@ describe('ImageEditor', () => {
     expect(screen.getByLabelText('Width (px)')).toHaveClass(
       'image-editor-ratio-locked'
     )
+    // Locked: The line connecting width and height is shown.
+    expect(screen.getByTestId('image-editor-frame-size')).toHaveClass('locked')
     await userEvent.click(lock)
 
     expect(lock).toHaveAccessibleName('Lock aspect ratio')
     expect(lock).toHaveAttribute('aria-pressed', 'false')
     expect(screen.getByLabelText('Width (px)')).not.toHaveClass(
       'image-editor-ratio-locked'
+    )
+    expect(screen.getByTestId('image-editor-frame-size')).not.toHaveClass(
+      'locked'
     )
   })
 

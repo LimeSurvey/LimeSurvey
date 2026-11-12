@@ -5,6 +5,7 @@ import {
   getCropRect,
   getDefaultFrameSize,
   getFrameRatio,
+  getMovableAxes,
   getVisibleSourceSize,
   resizeFrame,
 } from './imageEditorUtils'
@@ -148,6 +149,30 @@ describe('imageEditorUtils', () => {
     )
     // A frame without area has nothing to drag.
     expect(canMoveImage(400, 300, { width: 0, height: 300 }, 2)).toBe(false)
+  })
+
+  test('Tells on which axes the image can move', () => {
+    const square = { width: 100, height: 100 }
+    // Landscape image in a square frame: Only sideways.
+    expect(getMovableAxes(400, 300, square, 1)).toEqual({
+      horizontal: true,
+      vertical: false,
+    })
+    // Portrait image in a square frame: Only up and down.
+    expect(getMovableAxes(300, 400, square, 1)).toEqual({
+      horizontal: false,
+      vertical: true,
+    })
+    // Zoomed in: Both.
+    expect(getMovableAxes(400, 400, square, 2)).toEqual({
+      horizontal: true,
+      vertical: true,
+    })
+    // Without the image size, only the zoom counts.
+    expect(getMovableAxes(undefined, undefined, square, 1)).toEqual({
+      horizontal: false,
+      vertical: false,
+    })
   })
 
   test('File sizes are formatted with a unit', () => {
