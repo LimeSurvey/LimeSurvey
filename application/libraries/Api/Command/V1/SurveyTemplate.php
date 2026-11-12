@@ -68,8 +68,8 @@ class SurveyTemplate implements CommandInterface
      *     "subtitle": "What should we eat for lunch?"
      * }
      *
-     * @param Request $request
-     * @return Response
+     * @param Request $request The REST request, with the survey ID in "_id" and an optional "language"
+     * @return Response The template, title and subtitle, or an error response
      */
     public function run(Request $request)
     {
@@ -103,6 +103,15 @@ class SurveyTemplate implements CommandInterface
             $response['subtitle'] = $languageSettings->surveyls_description;
         }
         $result = $this->getTemplateData($surveyId, $language);
+        if ($result === false) {
+            return $this->responseFactory->makeError(
+                (new ResponseDataError(
+                    'SURVEY_TEMPLATE_UNAVAILABLE',
+                    'Survey template could not be retrieved'
+                )
+                )->toArray()
+            );
+        }
         return $this->responseFactory->makeSuccess(
             array_merge($response, ['template' => $result])
         );
@@ -111,9 +120,11 @@ class SurveyTemplate implements CommandInterface
     /**
      * Ensure Permissions
      *
-     * @param string $authToken
+     * This runs before the survey lookup on purpose: An unknown survey id
+     * gives a 403 as well, so users cannot probe which survey ids exist.
+     *
      * @param int $surveyId
-     * @return Response|false
+     * @return Response|false Forbidden response, or false if access is allowed
      */
     private function ensurePermissions($surveyId)
     {
@@ -128,45 +139,45 @@ class SurveyTemplate implements CommandInterface
                 ->makeErrorForbidden();
         }
 
-        if (!$surveyId) {
-            return $this->responseFactory->makeErrorNotFound(
-                (new ResponseDataError(
-                    'SURVEY_NOT_FOUND',
-                    'Survey not found'
-                )
-                )->toArray()
-            );
-        }
-
         return false;
     }
 
     /**
      * Get template data
      *
-     * @param int $surveyId
-     * @param string $language
-     * @return Response|bool|string
+     * Renders the survey preview by requesting it from this installation
+     * over HTTP, using the session of the current user.
+     *
+     * @param int $surveyId The survey ID
+     * @param string $language The language code to render the survey in
+     * @return string|false The rendered survey page, or false on failure
      */
-    private function getTemplateData($surveyId, $language)
+    protected function getTemplateData($surveyId, $language)
     {
         // @todo This shouldn't require a HTTP request we should be able to
         // - render survey content internally. To handle this correctly
         // - we should refactor the survey view functionality to make it
         // - reusable (move it out of the controllers).
 
+        // Never request a URL the client can choose (SSRF)
+        $root = $this->getTrustedBaseUrl();
+        if ($root === null) {
+            return false;
+        }
+
         $strCookie = $this->session->getSessionName()
         . '=' . $this->session->getSessionID() . '; path=/';
         $this->session->close();
 
         $ch = curl_init();
-        // Use the trusted, server-side base URL instead of the client-supplied
-        // Host header to prevent server-side request forgery (SSRF).
-        $root = App()->getBaseUrl(true);
         curl_setopt(
             $ch,
             CURLOPT_URL,
-            $root . "/{$surveyId}?newtest=Y&lang={$language}&popuppreview=true"
+            $root . '/' . $surveyId . '?' . http_build_query([
+                'newtest' => 'Y',
+                'lang' => $language,
+                'popuppreview' => 'true',
+            ])
         );
         curl_setopt($ch, CURLOPT_TIMEOUT, 10);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -174,15 +185,82 @@ class SurveyTemplate implements CommandInterface
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_COOKIE, $strCookie);
         $result = curl_exec($ch);
-        if (curl_errno($ch)) {
-            return $this->responseFactory->makeErrorNotFound(
-                (new ResponseDataError(
-                    'SURVEY_NOT_FOUND',
-                    'Survey not found'
-                )
-                )->toArray()
-            );
+        if (
+            curl_errno($ch)
+            || !is_string($result)
+            || curl_getinfo($ch, CURLINFO_RESPONSE_CODE) !== 200
+        ) {
+            return false;
         }
         return $result;
+    }
+
+    /**
+     * Get the base URL for the internal survey preview request
+     *
+     * The configured publicurl is used when it is set. Otherwise the URL of
+     * the current request is used, which comes from the client's Host
+     * header. Its hostname is only checked when an allowed hosts list
+     * exists, and its port is never checked, so it is only accepted when an
+     * allowed hosts list exists and the port is the default of the scheme.
+     *
+     * With "Force SSL" on, an http URL is changed to https, because the
+     * preview request would only be redirected to https.
+     *
+     * The URL is rebuilt from its parsed parts, so curl gets exactly the
+     * scheme, host, port and path that were checked here.
+     *
+     * @return string|null The base URL without trailing slash, or null if no trusted base URL is available
+     */
+    protected function getTrustedBaseUrl(): ?string
+    {
+        $defaultPorts = ['http' => 80, 'https' => 443];
+
+        $baseUrl = App()->getPublicBaseUrl(true);
+        $isPublicUrl = $baseUrl === App()->getConfig('publicurl');
+
+        $parts = parse_url((string) $baseUrl);
+        if (
+            empty($parts['scheme'])
+            || empty($parts['host'])
+            || isset($parts['user'])
+            || isset($parts['pass'])
+            || isset($parts['query'])
+            || isset($parts['fragment'])
+        ) {
+            return null;
+        }
+        $scheme = strtolower($parts['scheme']);
+        if (!isset($defaultPorts[$scheme])) {
+            return null;
+        }
+        // Only plain host names, IPv4 addresses and bracketed IPv6 addresses
+        if (!preg_match('/^(?:[a-z0-9.-]+|\[[0-9a-f:.]+\])$/i', $parts['host'])) {
+            return null;
+        }
+
+        if (!$isPublicUrl) {
+            if (empty(App()->loadAllowedHosts())) {
+                return null;
+            }
+            if (isset($parts['port']) && $parts['port'] !== $defaultPorts[$scheme]) {
+                return null;
+            }
+        }
+
+        if (
+            $scheme === 'http'
+            && App()->getConfig('ssl_emergency_override') !== true
+            && strtolower((string) App()->getConfig('force_ssl')) === 'on'
+        ) {
+            $scheme = 'https';
+            if (isset($parts['port']) && $parts['port'] === $defaultPorts['http']) {
+                unset($parts['port']);
+            }
+        }
+
+        return $scheme . '://' . $parts['host']
+            . (isset($parts['port']) ? ':' . $parts['port'] : '')
+            . rtrim($parts['path'] ?? '', '/');
     }
 }

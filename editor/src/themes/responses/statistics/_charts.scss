@@ -271,12 +271,26 @@
     vertical-align: middle;
   }
 
-  .responses-statistics-chart-labels {
+  .responses-statistics-chart-labels,
+  .recharts-cartesian-axis-tick-value {
     font-family: $ibm-font-family;
-    font-size: $font-size-xs;
+    font-size: $font-size-xxs;
     fill: $g-900;
     color: $g-900;
     font-weight: $font-weight-500;
+  }
+
+  .responses-statistics-chart-labels--secondary {
+    fill: $g-700;
+    color: $g-700;
+  }
+
+  .responses-statistics-ranking-chart .responses-statistics-chart-labels {
+    font-size: $font-size-xs;
+  }
+
+  .responses-statistics-stacked-segment-label {
+    font-weight: $font-weight-600;
   }
 
   .responses-statistics-bar-label {
@@ -290,7 +304,6 @@
       display: -webkit-box;
       -webkit-box-orient: vertical;
       overflow: hidden;
-      line-height: 16px;
       overflow-wrap: anywhere;
     }
   }
