@@ -728,7 +728,7 @@ abstract class Zend_Db_Adapter_Abstract
      * @param string|Zend_Db_Select $sql  An SQL SELECT statement.
      * @param mixed                 $bind Data to bind into SELECT placeholders.
      * @param mixed                 $fetchMode Override current fetch mode.
-     * @return array|null
+     * @return array
      */
     public function fetchAll($sql, $bind = [], $fetchMode = null)
     {
@@ -803,7 +803,7 @@ abstract class Zend_Db_Adapter_Abstract
      * Fetches all SQL result rows as an array of key-value pairs.
      *
      * The first column is the key, the second column is the
-     * value.
+     * value. A result with a single column gives null values.
      *
      * @param string|Zend_Db_Select $sql An SQL SELECT statement.
      * @param mixed $bind Data to bind into SELECT placeholders.
@@ -814,7 +814,7 @@ abstract class Zend_Db_Adapter_Abstract
         $stmt = $this->query($sql, $bind);
         $data = [];
         while ($row = $stmt->fetch(Zend_Db::FETCH_NUM)) {
-            $data[$row[0]] = $row[1];
+            $data[$row[0]] = $row[1] ?? null;
         }
         return $data;
     }

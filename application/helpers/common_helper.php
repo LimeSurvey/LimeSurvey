@@ -2255,6 +2255,31 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     $fieldmap[$fieldname]['groupSeq'] = $groupSeq;
                     $fieldmap[$fieldname]['other'] = $arow['other'];
                 }
+                if ($arow['type'] == Question::QT_M_MULTIPLE_CHOICE && $survey->hasOtherCheckedColumn($arow['qid'])) {
+                    // Own variable: question relevance goes on the last $fieldname and EM skips the otherchecked field
+                    $otherCheckedFieldname = "Q{$arow['qid']}_Cotherchecked";
+                    if (isset($fieldmap[$otherCheckedFieldname])) {
+                        $aDuplicateQIDs[$arow['qid']] = array('fieldname' => $otherCheckedFieldname, 'question' => $arow['question'], 'gid' => $arow['gid']);
+                    }
+                    $fieldmap[$otherCheckedFieldname] = array("fieldname" => $otherCheckedFieldname, 'type' => $arow['type'], 'sid' => $surveyid, "gid" => $arow['gid'], "qid" => $arow['qid'], "aid" => "otherchecked", "suffix" => "_Cotherchecked");
+                    if (isset($answerColumnDefinition)) {
+                        $fieldmap[$otherCheckedFieldname]['answertabledefinition'] = $answerColumnDefinition;
+                    }
+
+                    if ($style == "full") {
+                        $fieldmap[$otherCheckedFieldname]['title'] = $arow['title'];
+                        $fieldmap[$otherCheckedFieldname]['question'] = $arow['question'];
+                        $fieldmap[$otherCheckedFieldname]['subquestion'] = gT('Other (selected)');
+                        $fieldmap[$otherCheckedFieldname]['group_name'] = $arow['group_name'];
+                        $fieldmap[$otherCheckedFieldname]['mandatory'] = $arow['mandatory'];
+                        $fieldmap[$otherCheckedFieldname]['encrypted'] = $arow['encrypted'];
+                        $fieldmap[$otherCheckedFieldname]['hasconditions'] = $conditions;
+                        $fieldmap[$otherCheckedFieldname]['usedinconditions'] = $usedinconditions;
+                        $fieldmap[$otherCheckedFieldname]['questionSeq'] = $questionSeq;
+                        $fieldmap[$otherCheckedFieldname]['groupSeq'] = $groupSeq;
+                        $fieldmap[$otherCheckedFieldname]['other'] = $arow['other'];
+                    }
+                }
                 if ($arow['type'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) {
                     $fieldname = "Q{$arow['qid']}_Cothercomment";
                     if (isset($fieldmap[$fieldname])) {
@@ -3276,16 +3301,20 @@ function hasResources($id, $type = 'survey')
 /**
  * Creates a random sequence of characters
  *
+ * Uses a cryptographically secure random number generator, because the result
+ * is used for secrets like participant access codes and password reset keys.
+ *
  * @param integer $length Length of resulting string
  * @param string $pattern To define which characters should be in the resulting string
  * @return string
+ * @throws \Exception If no source of randomness is available
  */
 function randomChars($length, $pattern = "23456789abcdefghijkmnpqrstuvwxyz")
 {
     $patternlength = strlen($pattern) - 1;
     $key = '';
     for ($i = 0; $i < $length; $i++) {
-        $key .= $pattern[mt_rand(0, $patternlength)];
+        $key .= $pattern[random_int(0, $patternlength)];
     }
     return $key;
 }

@@ -428,23 +428,39 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
          */
 
         // Shuffle, as to not have always to start with the loweracse, then uppercase, ...
-        $str = str_shuffle($str);
+        $str = static::secureShuffle($str);
 
         return $str;
     }
 
     /**
-     * Returns a random number using random_int if available or mt_rand if not.
+     * Returns a random number using a cryptographically secure random number generator.
      * @param int $max The highest value to be returned
      * @param int $min The lowest value to be returned
      * @return int
+     * @throws \Exception If no source of randomness is available
      */
     private static function safeRandom($max, $min = 0)
     {
-        if (function_exists('random_int')) {
-            return random_int($min, $max);
+        return random_int($min, $max);
+    }
+
+    /**
+     * Shuffles the characters of a string (Fisher-Yates) using a cryptographically
+     * secure random number generator. str_shuffle() is not used because its order
+     * can be predicted, which would reveal where the required characters are.
+     * @param string $str String to shuffle
+     * @return string Shuffled string
+     * @throws \Exception If no source of randomness is available
+     */
+    private static function secureShuffle($str)
+    {
+        $characters = str_split($str);
+        for ($i = count($characters) - 1; $i > 0; $i--) {
+            $j = static::safeRandom($i);
+            [$characters[$i], $characters[$j]] = [$characters[$j], $characters[$i]];
         }
-        return mt_rand($min, $max);
+        return implode('', $characters);
     }
 
     /**

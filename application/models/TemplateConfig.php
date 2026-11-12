@@ -460,7 +460,7 @@ class TemplateConfig extends CActiveRecord
 
         $aClassAndAttributes['attr']['passwordrowcol']         = ' for="loadpass" ';
         $aClassAndAttributes['attr']['passwordrowcolsmall']    = ' aria-hidden="true"';
-        $aClassAndAttributes['attr']['captcharowcoldivdivimg'] = ' alt="captcha" ';
+        $aClassAndAttributes['attr']['captcharowcoldivdivimg'] = ' alt="' . gT("Image showing the equation to solve") . '" ';
         $aClassAndAttributes['attr']['captcharowcoldivinput']  = '  type="text" size="5" maxlength="3" id="loadsecurity" name="loadsecurity" value="" alt="" ';
         $aClassAndAttributes['attr']['loadrowcolbutton']       = '  type="submit" id="loadbutton" name="loadall"  value="reload" ';
 
@@ -519,7 +519,7 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['attr']['saveformsurveydivdlabelsmall']   = ' aria-hidden="true" ';
         $aClassAndAttributes['attr']['saveformsurveydivelabel']        = ' for="saveemail" ';
         $aClassAndAttributes['attr']['saveformsurveydivflabel']        = ' for="loadsecurity" ';
-        $aClassAndAttributes['attr']['saveformsurveydivfdivdivdivimg'] = ' alt="captcha" ';
+        $aClassAndAttributes['attr']['saveformsurveydivfdivdivdivimg'] = ' alt="' . gT("Image showing the equation to solve") . '" ';
         $aClassAndAttributes['attr']['saveformsurveydivfdivdivinput']  = ' type="text" size="5" maxlength="3" id="loadsecurity" name="loadsecurity" value="" alt="" ';
         $aClassAndAttributes['attr']['saveformsurveydivgdivbutton']    = ' type="submit" id="savebutton" name="savesubmit" value="save"';
 
@@ -670,10 +670,10 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['attr']['modalfooterlink']   = ' data-bs-dismiss="modal" ';
         $aClassAndAttributes['attr']['modalfooterbutton'] = ' type="button" data-bs-dismiss="modal" ';
 
-        // tabindex lets Bootstrap move the focus into the modal when it opens, the title and message give it a name and description for screen readers
+        // tabindex lets Bootstrap move the focus into the modal when it opens, and alertSurveyDialog() move it to the message; the title and message give it a name and description for screen readers
         $aClassAndAttributes['attr']['alertmodal']        = ' tabindex="-1" aria-labelledby="bootstrap-alert-box-modal-title" aria-describedby="bootstrap-alert-box-modal-body" ';
         $aClassAndAttributes['attr']['modaltitle']        = ' id="bootstrap-alert-box-modal-title" ';
-        $aClassAndAttributes['attr']['modalbody']         = ' id="bootstrap-alert-box-modal-body" ';
+        $aClassAndAttributes['attr']['modalbody']         = ' id="bootstrap-alert-box-modal-body" tabindex="-1" ';
 
         $aClassAndAttributes['attr']['modaldialog'] = $aClassAndAttributes['attr']['modalcontent'] = $aClassAndAttributes['attr']['modalfooter'] = '';
 

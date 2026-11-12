@@ -1,7 +1,8 @@
 // Import shared mocks
 import 'tests/mocks'
 
-import { screen } from '@testing-library/react'
+import React from 'react'
+import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { renderWithProviders } from 'tests/testUtils'
@@ -29,6 +30,32 @@ describe('ContentEditor', () => {
     await userEvent.type(contentEditor, 'random text 123')
 
     expect(contentEditor.innerHTML).toBe('random text 123')
+  })
+
+  test('Should keep the edited value after blurring and focusing again', async () => {
+    const ControlledEditor = () => {
+      const [value, setValue] = React.useState('Old title')
+
+      return (
+        <ContentEditor
+          testId="content-editor"
+          value={value}
+          update={setValue}
+        />
+      )
+    }
+
+    await renderWithProviders(<ControlledEditor />)
+
+    const contentEditor = screen.getByTestId('content-editor')
+
+    await userEvent.click(contentEditor)
+    await userEvent.clear(contentEditor)
+    await userEvent.type(contentEditor, 'New title')
+    act(() => contentEditor.blur())
+    act(() => contentEditor.focus())
+
+    expect(contentEditor.innerHTML).toBe('New title')
   })
 
   test('Should render TinyMCE when toolbar is enabled', async () => {

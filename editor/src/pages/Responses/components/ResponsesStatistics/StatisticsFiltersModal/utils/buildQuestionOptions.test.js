@@ -78,6 +78,16 @@ describe('buildQuestionOptions', () => {
     expect(optionFor('S', { encrypted: false }).encrypted).toBe(false)
   })
 
+  it('offers standalone Map questions as free-text filters', () => {
+    expect(optionFor('J').kind).toBe('text')
+  })
+
+  it('excludes Browser Detection themes from response filters', () => {
+    expect(
+      optionFor('S', { questionThemeName: 'browserdetect' })
+    ).toBeUndefined()
+  })
+
   it('leaves out encrypted questions that are filtered by range', () => {
     expect(optionFor('N', { encrypted: true })).toBeUndefined()
     expect(optionFor('D', { encrypted: true })).toBeUndefined()

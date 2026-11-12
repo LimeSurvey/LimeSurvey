@@ -173,23 +173,14 @@ class SurveyIndex extends CAction
         $this->loadLimesurveyLang($surveyid);
 
         // maintenance mode
-        $sMaintenanceMode = Yii::app()->getConfig('maintenancemode');
-        if ($sMaintenanceMode == 'hard') {
+        if (SettingGlobal::areParticipantsLocked()) {
             if ($previewmode === false) {
-                Yii::app()->twigRenderer->renderTemplateFromFile(
-                    "layout_maintenance.twig",
-                    ['oSurvey' => Survey::model()->findByPk($surveyid), 'aSurveyInfo' => $thissurvey],
-                    false
-                );
+                $this->renderMaintenancePage($oSurvey, $param['lang']);
             }
-        } elseif ($sMaintenanceMode == 'soft') {
+        } elseif (SettingGlobal::getMaintenanceMode() === SettingGlobal::MAINTENANCE_MODE_SOFT) {
             if ($move === null) {
                 if ($previewmode === false) {
-                    Yii::app()->twigRenderer->renderTemplateFromFile(
-                        "layout_maintenance.twig",
-                        ['oSurvey' => Survey::model()->findByPk($surveyid), 'aSurveyInfo' => $thissurvey],
-                        false
-                    );
+                    $this->renderMaintenancePage($oSurvey, $param['lang']);
                 }
             }
         }
@@ -739,6 +730,34 @@ class SurveyIndex extends CAction
         Yii::app()->loadHelper("database");
         Yii::app()->loadHelper("frontend");
         Yii::app()->loadHelper("surveytranslator");
+    }
+
+    /**
+     * Renders the theme's maintenance page and ends the request. The page is shown in the requested
+     * language, else in the language of the participant's running survey session, else in the survey's
+     * base language: it comes before the survey language is set up for the page.
+     *
+     * @param Survey $survey The survey the participant wants to take
+     * @param string|null $requestedLanguage The sanitized "lang" parameter of the request
+     * @return void
+     */
+    private function renderMaintenancePage(Survey $survey, $requestedLanguage)
+    {
+        $surveyLanguages = $survey->getAllLanguages();
+        $sessionLanguage = $_SESSION['responses_' . $survey->sid]['s_lang'] ?? null;
+        $language = $survey->language;
+        if (!empty($requestedLanguage) && in_array($requestedLanguage, $surveyLanguages, true)) {
+            $language = $requestedLanguage;
+        } elseif (!empty($sessionLanguage) && in_array($sessionLanguage, $surveyLanguages, true)) {
+            $language = $sessionLanguage;
+        }
+        App()->setLanguage($language);
+        // Renders the page and ends the request
+        Yii::app()->twigRenderer->renderTemplateFromFile(
+            "layout_maintenance.twig",
+            ['oSurvey' => $survey, 'aSurveyInfo' => getSurveyInfo($survey->sid, $language)],
+            false
+        );
     }
 
     private function loadLimesurveyLang($mvSurveyIdOrBaseLang)

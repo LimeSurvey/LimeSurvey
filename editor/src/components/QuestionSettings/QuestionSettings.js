@@ -10,13 +10,20 @@ import {
   errorToast,
   isTempId,
 } from 'helpers'
-import { useAppState, useBuffer, useFocused, useSurvey } from 'hooks'
+import {
+  useAppState,
+  useBuffer,
+  useFocused,
+  useQuestionAttributes,
+  useSurvey,
+} from 'hooks'
 import { SideBarHeader } from 'components/SideBar'
 import { CloseIcon } from 'components/icons'
 import { ToggleButtons } from 'components/UIComponents'
 
 import { Setting } from './Setting'
 import { getQuestionSettings } from './getQuestionSettings'
+import { buildSettingsFromAttributes } from './dynamic'
 import { getQuestionTypeInfo } from '../QuestionTypes'
 import { ScenarioList } from 'components/ConditionDesigner/ScenarioList'
 import { ConditionDesigner } from 'components/ConditionDesigner/ConditionDesigner'
@@ -59,13 +66,30 @@ export const QuestionSettings = ({ surveyId }) => {
     closeConditionDesignerPanels()
   }, [focused?.qid])
 
+  const {
+    attributes: { attributesDetails = {} },
+  } = useQuestionAttributes()
+  const themeAttributes =
+    attributesDetails[focused?.questionThemeName]?.attributes
+
   const questionSettings = useMemo(() => {
     if (!focused?.qid) {
       return []
     }
 
+    const settings = buildSettingsFromAttributes(themeAttributes)
+    if (settings.length) {
+      return settings
+    }
+
+    // Falls back to the hardcoded settings when the backend config isn't available.
     return getQuestionSettings()[focused.questionThemeName]
-  }, [focused?.questionThemeName])
+  }, [focused?.qid, focused?.questionThemeName, themeAttributes])
+
+  const allQuestionAttributes = useMemo(
+    () => (questionSettings || []).flatMap((setting) => setting.attributes),
+    [questionSettings]
+  )
 
   const advancedQuestionSettings = useMemo(() => {
     const simpleSettingsTitle = getQuestionAttributesTitles().SIMPLE
@@ -338,6 +362,7 @@ export const QuestionSettings = ({ surveyId }) => {
                 handleUpdate={updateAttribute}
                 title={setting.title}
                 attributes={setting.attributes}
+                allAttributes={allQuestionAttributes}
                 language={activeLanguage}
                 hasDefaultAttributeValues={
                   Object.keys(

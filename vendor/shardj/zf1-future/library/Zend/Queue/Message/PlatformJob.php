@@ -33,6 +33,7 @@ require_once 'Zend/Queue/Message.php';
  * @subpackage Message
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @deprecated Deprecated since 1.26.1 and will be removed in a future version, together with Zend_Queue_Adapter_PlatformJobQueue
  */
 class Zend_Queue_Message_PlatformJob extends Zend_Queue_Message
 {
