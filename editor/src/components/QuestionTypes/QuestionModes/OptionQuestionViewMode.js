@@ -114,10 +114,12 @@ export const OptionQuestionViewMode = ({
     [questionThemeName]
   )
 
-  const isSingleChoiceButtons =
-    questionThemeName === getQuestionTypeInfo().SINGLE_CHOICE_BUTTONS.theme
+  const isButtonsTheme = [
+    getQuestionTypeInfo().SINGLE_CHOICE_BUTTONS.theme,
+    getQuestionTypeInfo().MULTIPLE_CHOICE_BUTTONS.theme,
+  ].includes(questionThemeName)
   const buttonsPerRow =
-    isSingleChoiceButtons && BUTTONS_PER_ROW[getAttributeValue(max_buttons_row)]
+    isButtonsTheme && BUTTONS_PER_ROW[getAttributeValue(max_buttons_row)]
 
   const isSingleChoiceWithComments = useMemo(() => {
     return (
@@ -451,7 +453,7 @@ export const OptionQuestionViewMode = ({
       <div
         className={classNames('children-parent', {
           'multiple-short-texts': isMultipleShortTexts,
-          'single-choice-buttons': isSingleChoiceButtons,
+          'single-choice-buttons': isButtonsTheme,
           'fixed-columns': buttonsPerRow,
         })}
         style={
@@ -597,7 +599,7 @@ export const OptionQuestionViewMode = ({
                 </div>
               )}
               {child.isOther &&
-                !isSingleChoiceButtons &&
+                !isButtonsTheme &&
                 renderOtherInput(
                   isSingleChoiceTheme ? valueInfo?.otherText : value?.otherText
                 )}
@@ -656,9 +658,14 @@ export const OptionQuestionViewMode = ({
           </div>
         )}
       </div>
-      {isSingleChoiceButtons && supportsOther && (
+      {isButtonsTheme && supportsOther && (
         <div className="single-choice-buttons-other">
-          {renderOtherInput(valueInfo?.otherText)}
+          {renderOtherInput(
+            isSingleChoiceTheme
+              ? valueInfo?.otherText
+              : childrenValuesInOrder[children.findIndex((c) => c.isOther)]
+                  ?.otherText
+          )}
         </div>
       )}
     </>
