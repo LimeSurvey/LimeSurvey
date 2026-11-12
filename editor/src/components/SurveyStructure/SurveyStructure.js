@@ -85,7 +85,10 @@ export const SurveyStructure = () => {
   }
 
   const handleConfirmGroupDeletion = () => {
-    const { questionGroup, index } = deleteGroupState
+    // Use the current group: Its temporary ids may have been replaced by
+    // real ids while the confirm dialog was open
+    const { index } = deleteGroupState
+    const questionGroup = questionGroups[index]
     const [updatedQuestionGroups] = arrayDeleteItem(questionGroups, index)
 
     const operation = createBufferOperation(questionGroup.gid)

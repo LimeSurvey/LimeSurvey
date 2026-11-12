@@ -17,7 +17,9 @@ import {
   getApiUrl,
   getGroupById,
   getQuestionById,
+  getSyncedFocusState,
 } from 'helpers'
+import { queryClient } from 'queryClient'
 
 import { identifyAndReportMissingTranslations } from '../../i18n/scripts/identifyAndReportMissingTranslations'
 
@@ -156,6 +158,26 @@ export const EditorContextController = ({ children }) => {
       unFocus()
     }
   }, [survey.sid])
+
+  // Keep the focus in sync with the survey: Update the stored indexes when
+  // groups or questions move, and remove the focus when the entity is gone
+  useEffect(() => {
+    // Wait for the deep link handling, it sets the initial focus
+    if (!hasNavigated) {
+      return
+    }
+
+    const syncedFocusState = getSyncedFocusState(
+      queryClient.getQueryData([STATES.FOCUSED_ENTITY]),
+      survey
+    )
+
+    if (syncedFocusState === null) {
+      unFocus()
+    } else if (syncedFocusState) {
+      queryClient.setQueryData([STATES.FOCUSED_ENTITY], syncedFocusState)
+    }
+  }, [survey.questionGroups, hasNavigated])
 
   // Permissions & Settings
   useEffect(() => {
