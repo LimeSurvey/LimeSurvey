@@ -697,55 +697,83 @@ class TemplateManifest extends TemplateConfiguration
     /**
      * Installs an available theme
      * Create a new entry in {{templates}} and {{template_configuration}} table using the template manifest
-     * @param string $sTemplateName the name of the template to import
-     * @return boolean true on success | exception
-     * @throws Exception
+     *
+     * @param string $sTemplateName The name of the template to import
+     * @param array<string, mixed> $aDatas Data to complete with the manifest values
+     * @return boolean True on success
+     * @throws Exception If the theme can't be saved
      */
     public static function importManifest($sTemplateName, $aDatas = array())
     {
-        $oTemplate                  = Template::getTemplateConfiguration($sTemplateName, null, null, true);
-        $aDatas['extends']          = $bExtends = (string) $oTemplate->config->metadata->extends;
+        return parent::importManifest($sTemplateName, self::getManifestData($sTemplateName, $aDatas));
+    }
+
+    /**
+     * Refresh the {{templates}} and {{template_configuration}} entries of an already installed theme
+     * from its manifest, e.g. after its files were overwritten by a re-import.
+     * The theme option values that were set by the user are kept.
+     *
+     * @param string $themeName The name of the theme to update
+     * @return boolean True on success
+     * @throws Exception If the theme is not installed or the data can't be saved
+     */
+    public static function updateFromManifest($themeName)
+    {
+        return parent::updateFromManifestData($themeName, self::getManifestData($themeName));
+    }
+
+    /**
+     * Read the data needed for the {{templates}} and {{template_configuration}} tables from the theme manifest.
+     *
+     * @param string $themeName The name of the theme
+     * @param array<string, mixed> $data Data to complete with the manifest values
+     * @return array<string, mixed> The data, with the manifest values added
+     */
+    protected static function getManifestData($themeName, $data = array())
+    {
+        $oTemplate                  = Template::getTemplateConfiguration($themeName, null, null, true);
+        $data['extends']          = $bExtends = (string) $oTemplate->config->metadata->extends;
 
         if ($bExtends && !Template::model()->findByPk($bExtends)) {
-            Yii::app()->setFlashMessage(sprintf(gT("You can't import the theme '%s' because '%s'  is not installed."), $sTemplateName, $bExtends), 'error');
+            Yii::app()->setFlashMessage(sprintf(gT("You can't import the theme '%s' because '%s'  is not installed."), $themeName, $bExtends), 'error');
             Yii::app()->getController()->redirect(array("themeOptions/index"));
         }
 
         // Metadas is never inherited
-        $aDatas['api_version']      = (string) $oTemplate->config->metadata->apiVersion;
-        $aDatas['author_email']     = (string) $oTemplate->config->metadata->authorEmail;
-        $aDatas['author_url']       = (string) $oTemplate->config->metadata->authorUrl;
-        $aDatas['copyright']        = (string) $oTemplate->config->metadata->copyright;
-        $aDatas['version']          = (string) $oTemplate->config->metadata->version;
-        $aDatas['license']          = (string) $oTemplate->config->metadata->license;
-        $aDatas['description']      = (string) $oTemplate->config->metadata->description;
-        $aDatas['title']            = (string) $oTemplate->config->metadata->title;
+        $data['api_version']      = (string) $oTemplate->config->metadata->apiVersion;
+        $data['author_email']     = (string) $oTemplate->config->metadata->authorEmail;
+        $data['author_url']       = (string) $oTemplate->config->metadata->authorUrl;
+        $data['copyright']        = (string) $oTemplate->config->metadata->copyright;
+        $data['version']          = (string) $oTemplate->config->metadata->version;
+        $data['license']          = (string) $oTemplate->config->metadata->license;
+        $data['description']      = (string) $oTemplate->config->metadata->description;
+        $data['title']            = (string) $oTemplate->config->metadata->title;
 
         // Engine, files, and options can be inherited from a moter template
         // It means that the while field should always be inherited, not a subfield (eg: all files, not only css add)
         $oREngineTemplate = (!empty($bExtends)) ? self::getTemplateForXPath($oTemplate, 'engine') : $oTemplate;
 
 
-        $aDatas['view_folder']       = (string) $oREngineTemplate->config->engine->viewdirectory;
-        $aDatas['files_folder']      = (string) $oREngineTemplate->config->engine->filesdirectory;
-        $aDatas['cssframework_name'] = (string) $oREngineTemplate->config->engine->cssframework->name;
-        $aDatas['cssframework_css']  = self::getAssetsToReplaceFormatted($oREngineTemplate->config->engine, 'css'); //self::formatArrayFields($oREngineTemplate, 'engine', 'cssframework_css');
-        $aDatas['cssframework_js']   = self::formatArrayFields($oREngineTemplate, 'engine', 'cssframework_js');
-        $aDatas['packages_to_load']  = self::formatArrayFields($oREngineTemplate, 'engine', 'packages');
+        $data['view_folder']       = (string) $oREngineTemplate->config->engine->viewdirectory;
+        $data['files_folder']      = (string) $oREngineTemplate->config->engine->filesdirectory;
+        $data['cssframework_name'] = (string) $oREngineTemplate->config->engine->cssframework->name;
+        $data['cssframework_css']  = self::getAssetsToReplaceFormatted($oREngineTemplate->config->engine, 'css'); //self::formatArrayFields($oREngineTemplate, 'engine', 'cssframework_css');
+        $data['cssframework_js']   = self::formatArrayFields($oREngineTemplate, 'engine', 'cssframework_js');
+        $data['packages_to_load']  = self::formatArrayFields($oREngineTemplate, 'engine', 'packages');
 
 
         // If empty in manifest, it should be the field in db, so the Mother Template css/js files will be used...
         if (is_object($oTemplate->config->files)) {
-            $aDatas['files_css']         = self::formatArrayFields($oTemplate, 'files', 'css');
-            $aDatas['files_js']          = self::formatArrayFields($oTemplate, 'files', 'js');
-            $aDatas['files_print_css']   = self::formatArrayFields($oTemplate, 'files', 'print_css');
+            $data['files_css']         = self::formatArrayFields($oTemplate, 'files', 'css');
+            $data['files_js']          = self::formatArrayFields($oTemplate, 'files', 'js');
+            $data['files_print_css']   = self::formatArrayFields($oTemplate, 'files', 'print_css');
         } else {
-            $aDatas['files_css'] = $aDatas['files_js'] = $aDatas['files_print_css'] = null;
+            $data['files_css'] = $data['files_js'] = $data['files_print_css'] = null;
         }
 
-        $aDatas['aOptions'] = (!empty($oTemplate->config->options[0]) && count($oTemplate->config->options[0]) == 0) ? array() : $oTemplate->config->options[0]; // If template provide empty options, it must be cleaned to avoid crashes
+        $data['aOptions'] = (!empty($oTemplate->config->options[0]) && count($oTemplate->config->options[0]) == 0) ? array() : $oTemplate->config->options[0]; // If template provide empty options, it must be cleaned to avoid crashes
 
-        return parent::importManifest($sTemplateName, $aDatas);
+        return $data;
     }
 
     /**

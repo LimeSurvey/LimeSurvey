@@ -1025,6 +1025,22 @@ class TemplateConfig extends CActiveRecord
 
 
     /**
+     * Checks if a theme passes the compatibility check of validateTheme() without being uninstalled:
+     * It is compatible with the current LimeSurvey version, or written for a version that is recent enough to be kept.
+     *
+     * @param string $themePath Path of the config.xml of the theme
+     * @return bool|null True if the theme is kept, false if it is too old, null if the config can't be read
+     */
+    public static function isKeptByCompatibilityCheck($themePath)
+    {
+        $extensionConfig = ExtensionConfig::loadFromFile($themePath);
+        if ($extensionConfig === null) {
+            return null;
+        }
+        return $extensionConfig->isCompatible() || !self::isThemeTooOldToKeep($extensionConfig);
+    }
+
+    /**
      * Checks if theme is compatible with the current limesurvey version
      * @param $themePath
      * @return bool|null
@@ -1043,10 +1059,11 @@ class TemplateConfig extends CActiveRecord
 
     /**
      * Create a new entry in {{templates}} and {{template_configuration}} table using the template manifest
-     * @param string $sTemplateName the name of the template to import
-     * @param array $aDatas
-     * @return boolean true on success | exception
-     * @throws Exception|InvalidArgumentException
+     *
+     * @param string $sTemplateName The name of the template to import
+     * @param array<string, mixed> $aDatas The manifest data, see TemplateManifest::getManifestData()
+     * @return boolean True on success
+     * @throws Exception|InvalidArgumentException If the data is empty or the theme can't be saved
      */
     public static function importManifest($sTemplateName, $aDatas)
     {
@@ -1075,14 +1092,8 @@ class TemplateConfig extends CActiveRecord
 
             // Those ones are only filled when importing manifest from upload directory
 
-            $oNewTemplateConfiguration->files_css         = self::formatToJsonArray($aDatas['files_css']);
-            $oNewTemplateConfiguration->files_js          = self::formatToJsonArray($aDatas['files_js']);
-            $oNewTemplateConfiguration->files_print_css   = self::formatToJsonArray($aDatas['files_print_css']);
-            $oNewTemplateConfiguration->cssframework_name = $aDatas['cssframework_name'];
-            $oNewTemplateConfiguration->cssframework_css  = self::formatToJsonArray($aDatas['cssframework_css']);
-            $oNewTemplateConfiguration->cssframework_js   = self::formatToJsonArray($aDatas['cssframework_js']);
+            self::setManifestDataToConfiguration($oNewTemplateConfiguration, $aDatas);
             $oNewTemplateConfiguration->options           = self::convertOptionsToJson($aDatas['aOptions']);
-            $oNewTemplateConfiguration->packages_to_load  = self::formatToJsonArray($aDatas['packages_to_load']);
 
 
             if ($oNewTemplateConfiguration->save()) {
@@ -1101,6 +1112,120 @@ class TemplateConfig extends CActiveRecord
             }
         } else {
             throw new Exception(json_encode($oNewTemplate->getErrors()));
+        }
+    }
+
+    /**
+     * Update the {{templates}} and {{template_configuration}} entries of an installed theme using the template manifest.
+     * In the global configuration, option values already set are kept, options added by the manifest get their
+     * default value and options removed from the manifest are dropped. The other configurations of the theme
+     * (survey, survey group, user) inherit the options added by the manifest.
+     *
+     * @param string $themeName The name of the theme to update
+     * @param array<string, mixed> $data The manifest data, see TemplateManifest::getManifestData()
+     * @return boolean True on success
+     * @throws Exception|InvalidArgumentException If the theme is not installed or the data can't be saved
+     */
+    public static function updateFromManifestData($themeName, $data)
+    {
+        if (empty($data)) {
+            throw new InvalidArgumentException('$data cannot be empty');
+        }
+
+        $template = Template::model()->findByAttributes(['name' => $themeName]);
+        if (empty($template)) {
+            throw new InvalidArgumentException('Theme ' . $themeName . ' is not installed');
+        }
+        $template->title        = $data['title'];
+        $template->api_version  = $data['api_version'];
+        $template->view_folder  = $data['view_folder'];
+        $template->files_folder = $data['files_folder'];
+        $template->description  = $data['description'];
+        $template->extends      = $data['extends'];
+        $template->last_update  = date("Y-m-d H:i:s");
+        if (!$template->save()) {
+            throw new Exception(json_encode($template->getErrors()));
+        }
+
+        $configuration = TemplateConfiguration::model()->find(
+            'template_name=:template_name AND sid IS NULL AND gsid IS NULL AND uid IS NULL',
+            [':template_name' => $themeName]
+        );
+        if (empty($configuration)) {
+            return true;
+        }
+        self::setManifestDataToConfiguration($configuration, $data);
+
+        $manifestOptions = $data['aOptions'];
+        $newOptionsJson = (is_array($manifestOptions) || is_object($manifestOptions))
+            ? self::convertOptionsToJson($manifestOptions)
+            : '""';
+        $newOptions = json_decode($newOptionsJson, true);
+        $currentOptions = json_decode((string) $configuration->options, true);
+        $addedOptionKeys = [];
+        if (is_array($newOptions) && is_array($currentOptions)) {
+            $addedOptionKeys = array_keys(array_diff_key($newOptions, $currentOptions));
+            $newOptionsJson = json_encode(array_merge($newOptions, array_intersect_key($currentOptions, $newOptions)));
+        }
+        $configuration->options = $newOptionsJson;
+
+        if (!$configuration->save()) {
+            throw new Exception(json_encode($configuration->getErrors()));
+        }
+        self::addInheritedOptionKeys($themeName, $addedOptionKeys);
+        return true;
+    }
+
+    /**
+     * Set the files, CSS framework and packages of a theme configuration from the manifest data.
+     *
+     * @param TemplateConfiguration $configuration The configuration to change, it is not saved here
+     * @param array<string, mixed> $data The manifest data, see TemplateManifest::getManifestData()
+     * @return void
+     */
+    private static function setManifestDataToConfiguration($configuration, $data)
+    {
+        $configuration->files_css         = self::formatToJsonArray($data['files_css']);
+        $configuration->files_js          = self::formatToJsonArray($data['files_js']);
+        $configuration->files_print_css   = self::formatToJsonArray($data['files_print_css']);
+        $configuration->cssframework_name = $data['cssframework_name'];
+        $configuration->cssframework_css  = self::formatToJsonArray($data['cssframework_css']);
+        $configuration->cssframework_js   = self::formatToJsonArray($data['cssframework_js']);
+        $configuration->packages_to_load  = self::formatToJsonArray($data['packages_to_load']);
+    }
+
+    /**
+     * Add new theme options to the survey, survey group and user configurations of a theme.
+     * Only configurations that store their own option values are changed: The new options are set to inherit there.
+     * This runs one set-based UPDATE per new option, whatever the number of configurations.
+     *
+     * @param string $themeName The name of the theme
+     * @param string[] $optionKeys The names of the options to add
+     * @return void
+     */
+    private static function addInheritedOptionKeys($themeName, $optionKeys)
+    {
+        $db = App()->db;
+        $optionsColumn = $db->quoteColumnName('options');
+        foreach ($optionKeys as $optionKey) {
+            // Option names are XML element names: Anything else is not written into the SQL.
+            if (!preg_match('/^[A-Za-z_][A-Za-z0-9_.-]*$/', (string) $optionKey)) {
+                continue;
+            }
+            // The stored options are a JSON object: The new option is inserted right after the opening brace.
+            $newOption = $db->quoteValue('{' . json_encode((string) $optionKey) . ':"inherit",');
+            $db->createCommand(
+                "UPDATE {{template_configuration}}"
+                . " SET $optionsColumn = CONCAT($newOption, SUBSTRING($optionsColumn, 2, 2147483647))"
+                . " WHERE template_name = :template_name"
+                . " AND (sid IS NOT NULL OR gsid IS NOT NULL OR uid IS NOT NULL)"
+                . " AND $optionsColumn LIKE :keyed_options"
+                . " AND $optionsColumn NOT LIKE :has_option ESCAPE '!'"
+            )->execute([
+                ':template_name' => $themeName,
+                ':keyed_options' => '{"%',
+                ':has_option' => '%"' . strtr((string) $optionKey, ['!' => '!!', '_' => '!_', '%' => '!%']) . '":%',
+            ]);
         }
     }
 

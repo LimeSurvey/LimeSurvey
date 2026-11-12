@@ -171,14 +171,21 @@ class Themes extends SurveyCommonAction
     }
 
     /**
-     * Responsible to import a template archive.
+     * Responsible to import a template archive: Shows the import form, imports the uploaded archive,
+     * and overwrites an existing theme after confirmation. Also uploads theme image files.
      *
      * @access public
-     * @return void
+     * @return mixed The JSON result of an image upload; the other actions render a page or redirect
+     * @throws CHttpException If a modifying action is not sent as POST request
      */
     public function upload()
     {
         $action = returnGlobal('action');
+        // Modifying actions must be POST requests: Only those are protected by the CSRF token.
+        $modifyingActions = ['templateuploadimagefile', 'templateupload', 'templateoverwrite', 'templateoverwritecancel'];
+        if (in_array($action, $modifyingActions, true) && App()->request->getPost('action') !== $action) {
+            throw new CHttpException(405, gT("Invalid request method."));
+        }
         if ($action == 'templateuploadimagefile' && App()->request->getPost('surveyid')) {
             App()->getController()->forward("/surveyAdministration/uploadimagefile/");
             App()->end();
@@ -196,7 +203,16 @@ class Themes extends SurveyCommonAction
                 return $this->uploadTemplateImageFile($sTemplateName);
             } elseif ($action == 'templateupload') {
                 $aData = $this->uploadTemplate();
+                // An existing theme is only overwritten after confirmation.
+                $aViewUrls = isset($aData['overwriteThemeName']) ? 'importconfirm_view' : 'importuploaded_view';
+            } elseif ($action == 'templateoverwrite') {
+                $aData = $this->overwriteTemplate();
                 $aViewUrls = 'importuploaded_view';
+            } elseif ($action == 'templateoverwritecancel') {
+                if ($this->getConfirmedPendingOverwrite() !== null) {
+                    $this->discardPendingOverwrite();
+                }
+                $this->getController()->redirect(array("themeOptions/index"));
             } else {
                 $aViewUrls = 'importform_view';
                 $aData = array('lid' => $lid);
@@ -287,8 +303,10 @@ class Themes extends SurveyCommonAction
 
     /**
      * Upload template/theme/question theme.
+     * If the uploaded survey theme already exists, nothing is imported yet:
+     * The data for the page asking to confirm the overwrite is returned instead.
      *
-     * @return array $aData
+     * @return array<string, mixed> The data for the import result view, or for the overwrite confirmation view
      */
     protected function uploadTemplate()
     {
@@ -377,6 +395,12 @@ class Themes extends SurveyCommonAction
             $this->getController()->redirect(array("themeOptions/index"));
         }
 
+        // An existing theme can be overwritten, but only after confirmation.
+        $existingThemeName = Template::findNameConflict($sNewDirectoryName);
+        if ($existingThemeName !== null) {
+            return $this->requestOverwriteConfirmation($existingThemeName);
+        }
+
         // Redirect back if $destdir is not writable OR if it already exists.
         $this->checkDestDir($destdir, $sNewDirectoryName, $themeType);
 
@@ -390,32 +414,14 @@ class Themes extends SurveyCommonAction
 
         // TODO: Move all this to new SurveyThemeInstaller class (same as done for QuestionThemeInstaller).
         if (is_file($_FILES['the_file']['tmp_name'])) {
-            $zipExtractor = new \LimeSurvey\Models\Services\ZipExtractor($_FILES['the_file']['tmp_name']);
-            $zipExtractor->setFilterCallback('templateExtractFilter');
-
-            if (!$zipExtractor->extractTo($extractDir)) {
+            $extractResult = $this->extractSurveyThemeZip($_FILES['the_file']['tmp_name'], $extractDir);
+            if ($extractResult === null) {
                 App()->user->setFlash('error', gT("This file is not a valid ZIP file archive. Import failed."));
                 rmdirr($destdir);
                 $this->getController()->redirect(array("admin/themes/sa/upload"));
             } else {
                 // Successfully unpacked
-                $aExtractResult = $zipExtractor->getExtractResult();
-                foreach ($aExtractResult as $sFile) {
-                    if ($sFile['status'] == 'skipped') {
-                        $aErrorFilesInfo[] = array(
-                            "filename" => $sFile['name'],
-                        );
-                    } else {
-                        $aImportedFilesInfo[] = [
-                            "filename" => $sFile['name'],
-                            "status" => gT("OK"),
-                            'is_folder' => $sFile['is_folder']
-                        ];
-                    }
-                    if ($sFile['name'] == "config.xml") {
-                        SurveyThemeHelper::checkConfigFiles($sFile['target_filename']);
-                    }
-                }
+                list($aImportedFilesInfo, $aErrorFilesInfo) = $extractResult;
                 if (Template::checkIfTemplateExists($sNewDirectoryName)) {
                     App()->user->setFlash('error', gT("Can not import a theme that already exists!"));
                     rmdirr($destdir);
@@ -463,6 +469,367 @@ class Themes extends SurveyCommonAction
             'theme' => $themeType,
             'result' => $result
         );
+    }
+
+    /**
+     * Extract a survey theme ZIP archive.
+     *
+     * @param string $zipFile Path of the ZIP archive
+     * @param string $extractDir Existing folder to extract the files to
+     * @return array[]|null The lists of imported and skipped files, or null if the archive is not valid
+     */
+    private function extractSurveyThemeZip(string $zipFile, string $extractDir)
+    {
+        $zipExtractor = new \LimeSurvey\Models\Services\ZipExtractor($zipFile);
+        $zipExtractor->setFilterCallback('templateExtractFilter');
+        if (!$zipExtractor->extractTo($extractDir)) {
+            return null;
+        }
+        $importedFiles = [];
+        $skippedFiles = [];
+        foreach ($zipExtractor->getExtractResult() as $file) {
+            if ($file['status'] == 'skipped') {
+                $skippedFiles[] = ["filename" => $file['name']];
+            } else {
+                $importedFiles[] = [
+                    "filename" => $file['name'],
+                    "status" => gT("OK"),
+                    'is_folder' => $file['is_folder']
+                ];
+            }
+            if ($file['name'] == "config.xml") {
+                Yii::import('application.helpers.SurveyThemeHelper');
+                SurveyThemeHelper::checkConfigFiles($file['target_filename']);
+            }
+        }
+        return [$importedFiles, $skippedFiles];
+    }
+
+    /**
+     * Redirect back with an error if the survey theme can't be overwritten by an import:
+     * Core themes are never overwritten, and replacing the files of an existing theme requires update permission.
+     *
+     * @param string $themeName Name of the existing survey theme
+     * @return string The folder of the theme
+     */
+    private function checkThemeCanBeOverwritten(string $themeName)
+    {
+        Yii::import('application.helpers.SurveyThemeHelper');
+        $themeDir = App()->getConfig('userthemerootdir') . DIRECTORY_SEPARATOR . $themeName;
+        $error = null;
+        if (SurveyThemeHelper::isStandardTemplate($themeName)) {
+            $error = sprintf(gT("The theme '%s' is a core theme and can't be overwritten."), $themeName);
+        } elseif (
+            !Permission::model()->hasGlobalPermission('templates', 'update')
+            || !array_key_exists($themeName, SurveyThemeHelper::getTemplateInUpload())
+        ) {
+            // Without permission, or if it is not a theme folder (e.g. the general files): Same answer as before.
+            $error = sprintf(gT("Template '%s' does already exist."), $themeName);
+        } elseif (!is_writable($themeDir)) {
+            $error = sprintf(gT("Incorrect permissions in your %s folder."), $themeDir);
+        }
+        if ($error !== null) {
+            $this->redirectWithOverwriteError($error);
+        }
+        return $themeDir;
+    }
+
+    /**
+     * Discard the pending overwrite of a survey theme, and redirect back to the import form with an error.
+     *
+     * @param string $error The translated error message
+     * @return void
+     */
+    private function redirectWithOverwriteError(string $error)
+    {
+        $this->discardPendingOverwrite();
+        App()->user->setFlash('error', $error);
+        $this->getController()->redirect(array("admin/themes/sa/upload"));
+    }
+
+    /**
+     * Keep the uploaded ZIP archive of an already existing survey theme,
+     * and return the data for the page asking to confirm that the theme will be overwritten.
+     *
+     * @param string $themeName Name of the existing survey theme
+     * @return array<string, mixed> The data for the confirmation view
+     */
+    private function requestOverwriteConfirmation(string $themeName)
+    {
+        $this->discardPendingOverwrite();
+        $this->removeStaleThemeUploads();
+        $this->checkThemeCanBeOverwritten($themeName);
+
+        $pendingDir = createRandomTempDir(null, 'themeimport_');
+        $pendingFile = $pendingDir . DIRECTORY_SEPARATOR . 'theme.zip';
+        if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $pendingFile)) {
+            rmdirr($pendingDir);
+            App()->setFlashMessage(
+                gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder."),
+                'error'
+            );
+            $this->getController()->redirect(array("admin/themes/sa/upload"));
+        }
+        // The token binds the confirmation page to this upload: A later upload must not be confirmed by an older page.
+        $token = bin2hex(random_bytes(16));
+        App()->session['themeOverwritePending'] = ['dir' => $pendingDir, 'name' => $themeName, 'token' => $token];
+
+        return [
+            'overwriteThemeName' => $themeName,
+            'overwriteToken' => $token,
+            'isInstalled' => Template::model()->findByAttributes(['name' => $themeName]) !== null,
+        ];
+    }
+
+    /**
+     * Get the pending overwrite of a survey theme, if the request carries the token of its confirmation page.
+     *
+     * @return array<string, string>|null The pending overwrite (dir, name, token), or null if there is none for this token
+     */
+    private function getConfirmedPendingOverwrite()
+    {
+        $pending = App()->session['themeOverwritePending'];
+        $token = (string) App()->request->getPost('overwritetoken', '');
+        if (
+            empty($pending['dir']) || empty($pending['name']) || empty($pending['token'])
+            || !hash_equals((string) $pending['token'], $token)
+        ) {
+            return null;
+        }
+        return $pending;
+    }
+
+    /**
+     * Remove the uploaded ZIP archive that waits for the confirmation to overwrite a survey theme.
+     *
+     * @return void
+     */
+    private function discardPendingOverwrite()
+    {
+        $pending = App()->session['themeOverwritePending'];
+        if (!empty($pending['dir']) && is_dir($pending['dir'])) {
+            rmdirr($pending['dir']);
+        }
+        unset(App()->session['themeOverwritePending']);
+    }
+
+    /**
+     * Remove uploaded theme archives whose overwrite was never confirmed or cancelled
+     * (e.g. because the confirmation page was closed), once they are older than a day.
+     *
+     * @return void
+     */
+    private function removeStaleThemeUploads()
+    {
+        $pattern = rtrim((string) App()->getConfig('tempdir'), '/\\') . DIRECTORY_SEPARATOR . 'themeimport_*';
+        $staleBefore = time() - 86400;
+        foreach (glob($pattern, GLOB_ONLYDIR) ?: [] as $dir) {
+            if (filemtime($dir) < $staleBefore) {
+                rmdirr($dir);
+            }
+        }
+    }
+
+    /**
+     * Check the extracted files of an uploaded survey theme before they overwrite an existing theme.
+     *
+     * @param string $themeName Name of the existing survey theme
+     * @param string $extractDir Folder with the extracted files
+     * @param array[]|null $extractResult The result of extractSurveyThemeZip()
+     * @return string|null The translated error message, or null if the theme can be used
+     */
+    private function getOverwriteArchiveError(string $themeName, string $extractDir, $extractResult)
+    {
+        if ($extractResult === null) {
+            return gT("This file is not a valid ZIP file archive. Import failed.");
+        }
+        $configFile = $extractDir . DIRECTORY_SEPARATOR . 'config.xml';
+        $isCompatible = is_file($configFile) ? TemplateConfig::isKeptByCompatibilityCheck($configFile) : null;
+        $config = is_file($configFile) ? simplexml_load_file($configFile) : false;
+        if (count($extractResult[0]) == 0 || $isCompatible === null || $config === false) {
+            return gT("This ZIP archive contains no valid template files. Import failed.");
+        }
+        if ($isCompatible === false) {
+            return gT("The theme is not compatible with your version of LimeSurvey.");
+        }
+        $extends = trim((string) $config->metadata->extends);
+        if ($extends !== '' && !Template::model()->findByPk($extends)) {
+            return sprintf(gT("You can't import the theme '%s' because '%s'  is not installed."), $themeName, $extends);
+        }
+        // The theme must not extend itself, neither directly nor through the themes based on it.
+        if ($extends !== '' && (strcasecmp($extends, $themeName) === 0 || Template::isBasedOn($extends, $themeName))) {
+            return sprintf(gT("The theme '%s' can't extend the theme '%s', because that theme is based on it."), $themeName, $extends);
+        }
+        return null;
+    }
+
+    /**
+     * Prepare overwriting a survey theme: Check that every file can be written,
+     * and keep a copy of each file that will be replaced.
+     *
+     * @param string $sourceDir Folder with the new files
+     * @param string $themeDir Folder of the existing theme
+     * @param string $backupDir Folder to copy the files that will be replaced to
+     * @return string[] The paths of the files and folders that will be added to the theme folder
+     * @throws RuntimeException If a file or folder of the theme can't be written or copied
+     */
+    private function backupThemeFiles(string $sourceDir, string $themeDir, string $backupDir)
+    {
+        $addedPaths = [];
+        $iterator = new RecursiveIteratorIterator(
+            new RecursiveDirectoryIterator($sourceDir, FilesystemIterator::SKIP_DOTS),
+            RecursiveIteratorIterator::SELF_FIRST
+        );
+        foreach ($iterator as $source) {
+            $relativePath = $iterator->getSubPathname();
+            $target = $themeDir . DIRECTORY_SEPARATOR . $relativePath;
+            if (!file_exists($target)) {
+                $addedPaths[] = $target;
+                continue;
+            }
+            // An existing target must be writable, and a folder can't replace a file or the other way round.
+            if (!is_writable($target) || $source->isDir() !== is_dir($target)) {
+                throw new RuntimeException($target);
+            }
+            if ($source->isDir()) {
+                continue;
+            }
+            $backup = $backupDir . DIRECTORY_SEPARATOR . $relativePath;
+            if ((!is_dir(dirname($backup)) && !@mkdir(dirname($backup), 0700, true)) || !@copy($target, $backup)) {
+                throw new RuntimeException($target);
+            }
+        }
+        return $addedPaths;
+    }
+
+    /**
+     * Copy all files and folders of a folder into another one, replacing existing files.
+     *
+     * @param string $sourceDir Folder to copy the files from
+     * @param string $targetDir Existing folder to copy the files to
+     * @return void
+     * @throws RuntimeException If a file or folder can't be written
+     */
+    private function copyThemeFiles(string $sourceDir, string $targetDir)
+    {
+        if (!is_dir($sourceDir)) {
+            return;
+        }
+        $iterator = new RecursiveIteratorIterator(
+            new RecursiveDirectoryIterator($sourceDir, FilesystemIterator::SKIP_DOTS),
+            RecursiveIteratorIterator::SELF_FIRST
+        );
+        foreach ($iterator as $source) {
+            $target = $targetDir . DIRECTORY_SEPARATOR . $iterator->getSubPathname();
+            $isCopied = $source->isDir()
+                ? (is_dir($target) || @mkdir($target))
+                : @copy($source->getPathname(), $target);
+            if (!$isCopied) {
+                throw new RuntimeException($target);
+            }
+        }
+    }
+
+    /**
+     * Put a survey theme back to its state before a failed overwrite.
+     *
+     * @param string $themeDir Folder of the theme
+     * @param string $backupDir Folder with the copies of the replaced files, see backupThemeFiles()
+     * @param string[] $addedPaths The files and folders the overwrite added, see backupThemeFiles()
+     * @return void
+     */
+    private function restoreThemeFiles(string $themeDir, string $backupDir, array $addedPaths)
+    {
+        try {
+            $this->copyThemeFiles($backupDir, $themeDir);
+        } catch (RuntimeException $exception) {
+            Yii::log('Could not restore theme file ' . $exception->getMessage(), CLogger::LEVEL_ERROR, 'application');
+        }
+        // Folders were added before their content: Remove in reverse order.
+        foreach (array_reverse($addedPaths) as $path) {
+            if (is_dir($path)) {
+                @rmdir($path);
+            } elseif (is_file($path)) {
+                @unlink($path);
+            }
+        }
+    }
+
+    /**
+     * Overwrite an existing survey theme with the ZIP archive that was uploaded before the confirmation.
+     * The archive is extracted and checked in a temporary folder first, so a broken archive leaves the theme untouched.
+     * If replacing the files or updating the database fails, the previous files and database entries are restored.
+     * Files of the theme that are not part of the archive (e.g. uploaded images) are kept.
+     *
+     * @return array<string, mixed> The data for the import result view
+     */
+    protected function overwriteTemplate()
+    {
+        // Redirect back if demo mode is set.
+        $this->checkDemoMode();
+
+        $pending = $this->getConfirmedPendingOverwrite();
+        $pendingFile = $pending === null ? '' : $pending['dir'] . DIRECTORY_SEPARATOR . 'theme.zip';
+        if (!is_file($pendingFile)) {
+            // Not discarded: This may be an outdated confirmation page, while a newer upload still waits.
+            App()->user->setFlash('error', gT("The uploaded theme file was not found. Please upload it again."));
+            $this->getController()->redirect(array("admin/themes/sa/upload"));
+        }
+        $themeName = (string) $pending['name'];
+        // The theme could have changed since the confirmation was requested.
+        $themeDir = $this->checkThemeCanBeOverwritten($themeName);
+
+        $extractDir = $pending['dir'] . DIRECTORY_SEPARATOR . 'extracted';
+        $backupDir = $pending['dir'] . DIRECTORY_SEPARATOR . 'backup';
+        // Leftovers of an interrupted attempt.
+        rmdirr($extractDir);
+        rmdirr($backupDir);
+        mkdir($extractDir);
+        $extractResult = $this->extractSurveyThemeZip($pendingFile, $extractDir);
+        $error = $this->getOverwriteArchiveError($themeName, $extractDir, $extractResult);
+        if ($error !== null) {
+            $this->redirectWithOverwriteError($error);
+        }
+        list($importedFiles, $skippedFiles) = $extractResult;
+
+        $addedPaths = [];
+        try {
+            $addedPaths = $this->backupThemeFiles($extractDir, $themeDir, $backupDir);
+        } catch (RuntimeException $exception) {
+            // Nothing was changed yet.
+            $this->redirectWithOverwriteError(sprintf(gT("Incorrect permissions in your %s folder."), $exception->getMessage()));
+        }
+
+        $transaction = App()->db->beginTransaction();
+        try {
+            $this->copyThemeFiles($extractDir, $themeDir);
+            // The asset folder name depends on the modification time of the theme folder.
+            touch($themeDir);
+            $template = Template::model()->findByAttributes(['name' => $themeName]);
+            if ($template !== null) {
+                TemplateManifest::updateFromManifest($themeName);
+                $template->resetAssetVersion();
+            } else {
+                TemplateManifest::importManifest($themeName, ['extends' => $themeDir]);
+            }
+            $transaction->commit();
+        } catch (Throwable $exception) {
+            $transaction->rollback();
+            $this->restoreThemeFiles($themeDir, $backupDir, $addedPaths);
+            Yii::log('Overwriting theme ' . $themeName . ' failed: ' . $exception->getMessage(), CLogger::LEVEL_ERROR, 'application');
+            $this->redirectWithOverwriteError(gT("The theme could not be overwritten. The existing theme was restored."));
+        }
+        $this->discardPendingOverwrite();
+
+        return [
+            'aImportedFilesInfo' => $importedFiles,
+            'aErrorFilesInfo' => $skippedFiles,
+            'aImportErrors' => [],
+            'lid' => null,
+            'newdir' => $themeName,
+            'theme' => 'survey',
+            'result' => count($skippedFiles) == 0 ? 'success' : 'partial'
+        ];
     }
 
     /**
