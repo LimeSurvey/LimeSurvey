@@ -72,13 +72,11 @@ class FreeTextMaxCharsTest extends TestBaseClass
         $sgqa = 'Q' . $qid . '_SQ001_SQ001';
         $LEM = \LimeExpressionManager::singleton();
         $qattr = new \ReflectionProperty(\LimeExpressionManager::class, 'qattr');
-        $qattr->setAccessible(true);
         $originalQattr = $qattr->getValue($LEM);
         $qattr->setValue($LEM, [$qid => []]);
         $this->getInvalidAnswerStringProperty()->setValue($LEM, []);
 
         $method = new \ReflectionMethod(\LimeExpressionManager::class, 'truncateTextAnswer');
-        $method->setAccessible(true);
         $answer = str_repeat('a', \Question::DEFAULT_MAX_CHARS_ARRAY_TEXT);
 
         $this->assertSame($answer, $method->invoke(null, \Question::QT_SEMICOLON_ARRAY_TEXT, $answer, $sgqa, $qid));
@@ -99,11 +97,9 @@ class FreeTextMaxCharsTest extends TestBaseClass
         $sgqa = 'Q' . $qid;
         $LEM = \LimeExpressionManager::singleton();
         $qattr = new \ReflectionProperty(\LimeExpressionManager::class, 'qattr');
-        $qattr->setAccessible(true);
         $originalQattr = $qattr->getValue($LEM);
         $qattr->setValue($LEM, [$qid => []]);
         $sessid = new \ReflectionProperty(\LimeExpressionManager::class, 'sessid');
-        $sessid->setAccessible(true);
         $originalSessid = $sessid->getValue($LEM);
         $sessid->setValue($LEM, 'responses_' . self::$surveyId);
         $this->getInvalidAnswerStringProperty()->setValue($LEM, []);
@@ -111,7 +107,6 @@ class FreeTextMaxCharsTest extends TestBaseClass
         $_SESSION['responses_' . self::$surveyId][$sgqa] = $savedAnswer;
 
         $method = new \ReflectionMethod(\LimeExpressionManager::class, 'truncateTextAnswer');
-        $method->setAccessible(true);
         $this->assertSame($savedAnswer, $method->invoke(null, \Question::QT_T_LONG_FREE_TEXT, $savedAnswer, $sgqa, $qid));
         $this->assertArrayNotHasKey($sgqa, $this->getInvalidAnswerStrings());
         $this->assertSame($savedAnswer, $method->invoke(null, \Question::QT_T_LONG_FREE_TEXT, $savedAnswer . 'b', $sgqa, $qid));
@@ -130,7 +125,6 @@ class FreeTextMaxCharsTest extends TestBaseClass
     {
         $sgqa = 'Q999999';
         $method = new \ReflectionMethod(\LimeExpressionManager::class, 'fitResponseColumn');
-        $method->setAccessible(true);
 
         // No limit: unchanged
         $this->setResponseColumnLimit($sgqa, null);
@@ -160,14 +154,12 @@ class FreeTextMaxCharsTest extends TestBaseClass
         $sgqa = 'Q' . $qid;
         $LEM = \LimeExpressionManager::singleton();
         $qattr = new \ReflectionProperty(\LimeExpressionManager::class, 'qattr');
-        $qattr->setAccessible(true);
         $originalQattr = $qattr->getValue($LEM);
         $qattr->setValue($LEM, [$qid => []]);
         $this->getInvalidAnswerStringProperty()->setValue($LEM, []);
         $this->setResponseColumnLimit($sgqa, ['length' => 5, 'bytes' => true, 'encrypted' => false]);
 
         $method = new \ReflectionMethod(\LimeExpressionManager::class, 'truncateTextAnswer');
-        $method->setAccessible(true);
         $this->assertSame('abcde', $method->invoke(null, \Question::QT_T_LONG_FREE_TEXT, 'abcdefgh', $sgqa, $qid));
         $this->assertArrayHasKey($sgqa, $this->getInvalidAnswerStrings());
 
@@ -182,7 +174,6 @@ class FreeTextMaxCharsTest extends TestBaseClass
     {
         $sgqa = 'Q999999';
         $method = new \ReflectionMethod(\LimeExpressionManager::class, 'truncateEquationResult');
-        $method->setAccessible(true);
         $this->setResponseColumnLimit($sgqa, ['length' => 65535, 'bytes' => true, 'encrypted' => false]);
 
         $this->assertSame(str_repeat('a', 40000), $method->invoke(null, str_repeat('a', 40000), $sgqa, 999999));
@@ -244,11 +235,9 @@ class FreeTextMaxCharsTest extends TestBaseClass
         list($question) = self::$testHelper->getSgqa('Q00', self::$surveyId);
         $LEM = \LimeExpressionManager::singleton();
         $sid = new \ReflectionProperty(\LimeExpressionManager::class, 'sid');
-        $sid->setAccessible(true);
         $originalSid = $sid->getValue($LEM);
         $sid->setValue($LEM, self::$surveyId);
         $method = new \ReflectionMethod(\LimeExpressionManager::class, 'getResponseColumnLimit');
-        $method->setAccessible(true);
         $this->assertSame(
             ['length' => 16777215, 'bytes' => true, 'encrypted' => false],
             $method->invoke(null, $sgqa, $question->qid)
@@ -304,7 +293,6 @@ class FreeTextMaxCharsTest extends TestBaseClass
     private function setResponseColumnLimit($sgqa, $limit)
     {
         $sid = new \ReflectionProperty(\LimeExpressionManager::class, 'sid');
-        $sid->setAccessible(true);
         $property = $this->getResponseColumnLimitsProperty();
         $limits = $property->getValue();
         $limits[intval($sid->getValue(\LimeExpressionManager::singleton())) . ':' . $sgqa] = $limit;
@@ -319,7 +307,6 @@ class FreeTextMaxCharsTest extends TestBaseClass
     private function getResponseColumnLimitsProperty()
     {
         $property = new \ReflectionProperty(\LimeExpressionManager::class, 'responseColumnLimits');
-        $property->setAccessible(true);
         return $property;
     }
 
@@ -341,7 +328,6 @@ class FreeTextMaxCharsTest extends TestBaseClass
     private function getInvalidAnswerStringProperty()
     {
         $property = new \ReflectionProperty(\LimeExpressionManager::class, 'invalidAnswerString');
-        $property->setAccessible(true);
         return $property;
     }
 }
