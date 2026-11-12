@@ -152,6 +152,7 @@ class AdminTheme extends CFormModel
             // that actually use an editor, via PrepareEditorScript(). See bug #19391.
         }
         App()->getClientScript()->registerPackage('select2-bootstrap');
+        $this->registerSelect2Translations();
         // Then we add the different CSS/JS files to load in arrays
         // It will check if it needs or not the RTL files
         // and it will add the directory prefix to the file name (css/ or js/ )
@@ -195,6 +196,71 @@ class AdminTheme extends CFormModel
         }
         App()->getClientScript()->registerPackage('bootstrap-js');
         App()->clientScript->registerPackage('moment'); // register moment for correct dateTime calculation
+    }
+
+    /**
+     * Makes Select2 show its own messages (e.g. "No results found") in the admin language.
+     *
+     * Select2 only ships language files for a part of our languages, so the messages come from our own
+     * translations and are set as the Select2 default language. The script is placed in the head: There it
+     * runs after the Select2 script and before any dropdown is initialised.
+     *
+     * @return void
+     */
+    private function registerSelect2Translations()
+    {
+        // Select2 escapes the messages itself, except "loadingMore", which it inserts as HTML.
+        // "%s" is replaced with a number in the browser.
+        $messages = [
+            'errorLoading'    => gT('The results could not be loaded.', 'unescaped'),
+            'inputTooLong'    => gT('Please delete %s or more characters', 'unescaped'),
+            'inputTooShort'   => gT('Please enter %s or more characters', 'unescaped'),
+            'loadingMore'     => gT('Loading more results...'),
+            'maximumSelected' => gT('Maximum number of items you can select: %s', 'unescaped'),
+            'noResults'       => gT('No results found', 'unescaped'),
+            'searching'       => gT('Searching...', 'unescaped'),
+            'removeAllItems'  => gT('Remove all items', 'unescaped'),
+            'removeItem'      => gT('Remove item', 'unescaped'),
+            'search'          => gT('Search', 'unescaped'),
+        ];
+        $messagesJson = json_encode($messages, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
+        $script = <<<JS
+(function ($) {
+    if (!$.fn.select2) {
+        return;
+    }
+    var messages = $messagesJson;
+    var fixed = function (key) {
+        return function () {
+            return messages[key];
+        };
+    };
+    var counted = function (key, getCount) {
+        return function (args) {
+            return messages[key].replace('%s', getCount(args));
+        };
+    };
+    $.fn.select2.defaults.set('language', {
+        errorLoading: fixed('errorLoading'),
+        inputTooLong: counted('inputTooLong', function (args) {
+            return args.input.length - args.maximum;
+        }),
+        inputTooShort: counted('inputTooShort', function (args) {
+            return args.minimum - args.input.length;
+        }),
+        loadingMore: fixed('loadingMore'),
+        maximumSelected: counted('maximumSelected', function (args) {
+            return args.maximum;
+        }),
+        noResults: fixed('noResults'),
+        searching: fixed('searching'),
+        removeAllItems: fixed('removeAllItems'),
+        removeItem: fixed('removeItem'),
+        search: fixed('search')
+    });
+})(jQuery);
+JS;
+        App()->getClientScript()->registerScript('select2translations', $script, CClientScript::POS_HEAD);
     }
 
     /**
