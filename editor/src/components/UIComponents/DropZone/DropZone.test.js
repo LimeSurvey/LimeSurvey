@@ -90,4 +90,37 @@ describe('DropZone', () => {
       screen.getByRole('button', { name: 'Delete image', hidden: true })
     ).toBeInTheDocument()
   })
+
+  test('Shows the buttons next to the image with buttonsBeside', async () => {
+    await renderWithProviders(
+      <DropZone
+        previewUrlInit="/upload/surveys/1/images/a.png"
+        onEdit={jest.fn()}
+        imageName="A1"
+        buttonsBeside={true}
+        previewBoxClassName="border border-3"
+      />
+    )
+
+    const editButton = screen.getByRole('button', {
+      name: 'Edit image A1',
+      hidden: true,
+    })
+    const buttons = editButton.parentElement
+    const image = screen.getByTestId('dropzone').querySelector('.dropzone-img')
+    // Outside the image and its border, in a space kept free while hidden.
+    expect(image.contains(editButton)).toBe(false)
+    expect(image.parentElement).toHaveClass('border', 'border-3')
+    expect(image.parentElement.contains(editButton)).toBe(false)
+    expect(buttons).toHaveClass('invisible')
+    expect(buttons).not.toHaveClass('d-none')
+
+    // Hovering the area of the buttons shows them, like hovering the image.
+    await userEvent.hover(buttons)
+    expect(buttons).not.toHaveClass('invisible')
+    await userEvent.unhover(screen.getByTestId('dropzone-preview'))
+    expect(buttons).toHaveClass('invisible')
+    await userEvent.hover(image)
+    expect(buttons).not.toHaveClass('invisible')
+  })
 })

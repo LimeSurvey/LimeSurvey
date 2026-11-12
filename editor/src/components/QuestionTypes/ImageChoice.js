@@ -17,6 +17,9 @@ import {
 } from 'components/UIComponents'
 import { useFileService } from 'hooks'
 
+// Border around an option's image.
+const IMAGE_BORDER_CLASSES = 'border border-3 border-secondary rounded'
+
 /**
  * One option of the image select themes: The image with its upload drop zone,
  * and in edit mode the image editor modal.
@@ -142,8 +145,12 @@ export const ImageChoice = ({
         )}
         {isFocused && <div>&nbsp;</div>}
         {!isNoAnswer && !initLoading && (
+          // In edit mode, the border goes around the image only: The edit and
+          // delete buttons are next to it, outside.
           <div
-            className="image-choice-preview border border-3 border-secondary rounded"
+            className={classNames('image-choice-preview', {
+              [IMAGE_BORDER_CLASSES]: !showLoader,
+            })}
             style={{ minWidth: 0, maxWidth: '100%' }}
           >
             <div className={classNames({ 'd-none': showLoader })}>
@@ -178,6 +185,8 @@ export const ImageChoice = ({
                 imageName={code}
                 imageSettings={imageSettings}
                 imageAlt={imageAltText || 'Image Select List'}
+                buttonsBeside={true}
+                previewBoxClassName={IMAGE_BORDER_CLASSES}
               />
             </div>
           </div>

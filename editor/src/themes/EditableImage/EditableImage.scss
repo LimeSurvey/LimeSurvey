@@ -16,4 +16,16 @@
       background: rgba(255, 255, 255, 1);
     }
   }
+
+  // Next to the image instead of on it (DropZone's buttonsBeside): In the
+  // flow, in a space the image never takes.
+  // No border there: Transparent, so the buttons keep their size.
+  &.image-handle-btn-beside {
+    position: static;
+    flex-shrink: 0;
+
+    .image-handle-btn {
+      border-color: transparent;
+    }
+  }
 }

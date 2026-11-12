@@ -16,9 +16,6 @@ import { FILE_UPLOAD_MAX_SIZE } from 'helpers/constants'
 import { EditedImage } from '../ImageEditor/EditedImage'
 import classNames from 'classnames'
 
-// Height of the edit and delete buttons plus their distance to the bottom edge.
-const IMAGE_BUTTONS_MIN_HEIGHT = '48px'
-
 /**
  * Image upload area: Shows the uploaded image with buttons to edit and delete
  * it, or a drop area while there is no image.
@@ -61,6 +58,14 @@ export const DropZone = forwardRef(
       imageSettings = null,
       // Alt text of the preview image.
       imageAlt = 'Image Select List',
+      // When set, the edit and delete buttons are shown to the right of the
+      // image instead of on it, in a space that is always kept free, so they
+      // stay reachable however small the image is. Hovering the image or that
+      // space shows them.
+      buttonsBeside = false,
+      // Extra classes of the box around the image in buttonsBeside mode, e.g.
+      // a border that should not include the buttons.
+      previewBoxClassName = '',
     },
     ref
   ) => {
@@ -195,23 +200,72 @@ export const DropZone = forwardRef(
       </div>
     )
 
-    const preview = (
+    const hoverHandlers = {
+      onMouseOver: handleOnMouseHover,
+      onMouseLeave: handleOnMouseLeave,
+    }
+    const areButtonsShown = !isLoading && showImageButtons
+
+    const imageButtons = (
       <div
-        onMouseOver={handleOnMouseHover}
-        onMouseLeave={handleOnMouseLeave}
+        className={classNames(
+          'image-handle-btn-wrapper',
+          // Beside the image, hidden buttons keep their space: The image
+          // doesn't change its size on hover.
+          buttonsBeside
+            ? ['image-handle-btn-beside', { invisible: !areButtonsShown }]
+            : ['position-absolute', { 'd-none': !areButtonsShown }]
+        )}
+      >
+        {onEdit && (
+          <Button
+            variant="outline-light"
+            className="image-handle-btn ms-1"
+            size="sm"
+            aria-label={
+              imageName
+                ? format(t('Edit image %s'), imageName)
+                : t('Edit image')
+            }
+            data-testid={`${dataTestId}-edit`}
+            onClick={(event) => {
+              // Keep the click from opening the file dialog of the dropzone.
+              event.stopPropagation()
+              setShowImageButtons(false)
+              onEdit()
+            }}
+          >
+            <EditIcon className="text-primary fill-current" />
+          </Button>
+        )}
+        {trashIconEnabled && (
+          <Button
+            variant="outline-light"
+            className="image-handle-btn ms-1"
+            size="sm"
+            aria-label={
+              imageName
+                ? format(t('Delete image %s'), imageName)
+                : t('Delete image')
+            }
+            onClick={(event) => {
+              handleDelete()
+              event.stopPropagation()
+            }}
+          >
+            <DeleteIcon className="text-primary fill-current" />
+          </Button>
+        )}
+      </div>
+    )
+
+    const image = (
+      <div
+        {...(buttonsBeside ? {} : hoverHandlers)}
         className="position-relative dropzone-img"
         style={{
           height: fixedHeight || undefined,
           maxHeight: fixedHeight ? undefined : previewMaxHeight,
-          // A very flat edited frame is only a few px high: Keep room for the
-          // edit and delete buttons, with the image centred vertically.
-          ...(imageSettings && !fixedHeight
-            ? {
-                minHeight: IMAGE_BUTTONS_MIN_HEIGHT,
-                display: 'flex',
-                alignItems: 'center',
-              }
-            : {}),
         }}
       >
         {isLoading ? loadingSpinner : null}
@@ -234,52 +288,25 @@ export const DropZone = forwardRef(
                 }
           }
         />
-        <div
-          className={`position-absolute image-handle-btn-wrapper ${
-            !isLoading && showImageButtons ? '' : 'd-none'
-          }`}
-        >
-          {onEdit && (
-            <Button
-              variant="outline-light"
-              className="image-handle-btn ms-1"
-              size="sm"
-              aria-label={
-                imageName
-                  ? format(t('Edit image %s'), imageName)
-                  : t('Edit image')
-              }
-              data-testid={`${dataTestId}-edit`}
-              onClick={(event) => {
-                // Keep the click from opening the file dialog of the dropzone.
-                event.stopPropagation()
-                setShowImageButtons(false)
-                onEdit()
-              }}
-            >
-              <EditIcon className="text-primary fill-current" />
-            </Button>
-          )}
-          {trashIconEnabled && (
-            <Button
-              variant="outline-light"
-              className="image-handle-btn ms-1"
-              size="sm"
-              aria-label={
-                imageName
-                  ? format(t('Delete image %s'), imageName)
-                  : t('Delete image')
-              }
-              onClick={(event) => {
-                handleDelete()
-                event.stopPropagation()
-              }}
-            >
-              <DeleteIcon className="text-primary fill-current" />
-            </Button>
-          )}
-        </div>
+        {!buttonsBeside && imageButtons}
       </div>
+    )
+
+    // Beside the image, the hover area covers the image and the buttons. The
+    // image shrinks to the space left next to the buttons, never below it.
+    const preview = buttonsBeside ? (
+      <div
+        {...hoverHandlers}
+        className="d-inline-flex align-items-end mw-100"
+        data-testid={`${dataTestId}-preview`}
+      >
+        <div className={previewBoxClassName} style={{ minWidth: 0 }}>
+          {image}
+        </div>
+        {imageButtons}
+      </div>
+    ) : (
+      image
     )
 
     return (
