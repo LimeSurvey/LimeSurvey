@@ -10907,8 +10907,23 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         return Question::getTextMaxChars(
             $type,
             $LEM->qattr[$qid]['maximum_chars'] ?? null,
-            $_SESSION[$LEM->sessid][$sgqa] ?? null
+            self::getStoredAnswer($sgqa)
         );
+    }
+
+    /**
+     * Get the answer currently stored in the survey session for an answer column.
+     *
+     * @param string $sgqa The answer column
+     * @return mixed The answer, null if it is not set or there is no survey session
+     */
+    private static function getStoredAnswer($sgqa)
+    {
+        $LEM =& LimeExpressionManager::singleton();
+        if ($LEM->sessid === null) {
+            return null;
+        }
+        return $_SESSION[$LEM->sessid][$sgqa] ?? null;
     }
 
     /**
@@ -10984,7 +10999,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             return $value;
         }
         $LEM =& LimeExpressionManager::singleton();
-        if (($_SESSION[$LEM->sessid][$sgqa] ?? null) !== $fittingValue) {
+        if (self::getStoredAnswer($sgqa) !== $fittingValue) {
             Yii::log(
                 sprintf("Survey %s: the result of the equation %s is %s bytes long and has been shortened to %s bytes to fit the response column", intval($LEM->sid), $sgqa, strlen($value), strlen($fittingValue)),
                 'error',
