@@ -113,6 +113,10 @@ describe('ImageEditor', () => {
     expect(screen.getByTestId('image-editor-blurry-warning')).toHaveTextContent(
       '(300×300px) is smaller than the frame (400×400px)'
     )
+    // A square frame cuts off the sides of the image: It can move at zoom 1.
+    expect(screen.getByTestId('image-editor-drag-hint')).not.toHaveClass(
+      'invisible'
+    )
   })
 
   test('Accepts any frame size from 0 without upper limit', async () => {

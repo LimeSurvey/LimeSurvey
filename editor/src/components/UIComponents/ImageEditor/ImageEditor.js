@@ -15,6 +15,7 @@ import {
   FRAME_MIN_SIZE,
   ZOOM_MAX,
   ZOOM_MIN,
+  canMoveImage,
   formatFileSize,
   getDefaultFrameSize,
   getFrameRatio,
@@ -103,7 +104,11 @@ const FrameSizeInput = ({
 
   return (
     <div className="flex-grow-1">
-      <Form.Label htmlFor={id}>{label}</Form.Label>
+      {/* A block label starts at the top of the column, level with the
+          preview. Inline, it would sit lower in its line box. */}
+      <Form.Label htmlFor={id} className="d-block">
+        {label}
+      </Form.Label>
       <Form.Control
         id={id}
         ref={inputRef}
@@ -233,6 +238,12 @@ export const ImageEditor = ({
     visibleSource &&
     (visibleSource.width < current.width ||
       visibleSource.height < current.height)
+  const isMovable = canMoveImage(
+    naturalSize?.width,
+    naturalSize?.height,
+    current,
+    current.zoom
+  )
 
   const update = (changes) => setCurrent((prev) => ({ ...prev, ...changes }))
 
@@ -306,8 +317,10 @@ export const ImageEditor = ({
             className="image-editor-preview d-flex flex-column align-items-center flex-shrink-0"
             style={{ width: PREVIEW_MAX_WIDTH + 2 * PREVIEW_BORDER }}
           >
+            {/* Top aligned: The canvas starts level with the labels of the
+                width and height inputs, whatever the frame's shape. */}
             <div
-              className="d-flex align-items-center justify-content-center"
+              className="d-flex align-items-start justify-content-center"
               style={{
                 width: PREVIEW_MAX_WIDTH + 2 * PREVIEW_BORDER,
                 height: PREVIEW_MAX_HEIGHT + 2 * PREVIEW_BORDER,
@@ -342,9 +355,9 @@ export const ImageEditor = ({
                 the modal doesn't change its height. */}
             <p
               className={classNames('text-muted small mb-0', {
-                invisible: current.zoom <= ZOOM_MIN,
+                invisible: !isMovable,
               })}
-              aria-hidden={current.zoom <= ZOOM_MIN}
+              aria-hidden={!isMovable}
               data-testid="image-editor-drag-hint"
             >
               {t('Drag the image to move it inside the frame.')}

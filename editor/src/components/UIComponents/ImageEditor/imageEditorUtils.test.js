@@ -1,5 +1,6 @@
 import {
   applyImageSettings,
+  canMoveImage,
   formatFileSize,
   getCropRect,
   getDefaultFrameSize,
@@ -125,6 +126,28 @@ describe('imageEditorUtils', () => {
         { positionX: 0.8, positionY: 0.3 }
       )
     ).toEqual(expect.objectContaining({ positionX: 0.8, positionY: 0.3 }))
+  })
+
+  test('The image can move when zoomed or cut off by the frame', () => {
+    // Same ratio, zoom 1: The whole image is shown.
+    expect(canMoveImage(400, 300, { width: 400, height: 300 }, 1)).toBe(false)
+    expect(canMoveImage(400, 300, { width: 200, height: 150 }, 1)).toBe(false)
+    // Zoomed in.
+    expect(canMoveImage(400, 300, { width: 400, height: 300 }, 1.5)).toBe(true)
+    // Other ratio at zoom 1: The sides or the top and bottom are cut off.
+    expect(canMoveImage(400, 300, { width: 100, height: 100 }, 1)).toBe(true)
+    expect(canMoveImage(400, 300, { width: 400, height: 100 }, 1)).toBe(true)
+    // A rounded frame size leaves less than a source pixel to move.
+    expect(canMoveImage(1000, 334, { width: 300, height: 100 }, 1)).toBe(false)
+    // Without the image size, only the zoom counts.
+    expect(canMoveImage(undefined, undefined, { width: 1, height: 9 }, 1)).toBe(
+      false
+    )
+    expect(canMoveImage(undefined, undefined, { width: 1, height: 9 }, 2)).toBe(
+      true
+    )
+    // A frame without area has nothing to drag.
+    expect(canMoveImage(400, 300, { width: 0, height: 300 }, 2)).toBe(false)
   })
 
   test('File sizes are formatted with a unit', () => {
