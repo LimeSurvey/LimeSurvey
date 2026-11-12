@@ -17,6 +17,7 @@ import {
   getReorganizedQuestions,
   InsertElementAndIncrementProperty,
   DuplicateQuestion,
+  isFocusInsideGroup,
 } from 'helpers'
 import {
   useFocused,
@@ -97,7 +98,7 @@ export const SurveyStructure = () => {
       .questionGroup()
       .delete()
 
-    if (!focused?.qid && focused?.gid === questionGroup.gid) {
+    if (isFocusInsideGroup(focused, questionGroup)) {
       unFocus()
     }
 

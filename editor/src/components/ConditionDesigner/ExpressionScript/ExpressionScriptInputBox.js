@@ -24,10 +24,10 @@ export const ExpressionScriptInputBox = ({ onShowPanel, onNavigateBack }) => {
   const { focused, groupIndex, questionIndex } = useFocused()
   const { addToBuffer } = useBuffer()
 
-  const question = getQuestionById(focused.qid, survey).question
+  const { question } = getQuestionById(focused?.qid, survey)
   const validateExpression = useExpressionScriptValidation(
     surveyId,
-    question.qid
+    question?.qid
   )
   const hasConditions = (question?.scenarios ?? []).length > 0
 
@@ -52,6 +52,10 @@ export const ExpressionScriptInputBox = ({ onShowPanel, onNavigateBack }) => {
       update,
       onNavigateBack
     )
+  }
+
+  if (!question) {
+    return null
   }
 
   return (
