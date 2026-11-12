@@ -1,11 +1,22 @@
 // Helper functions for condition operations
-import { QUESTION_RELEVANCE_DEFAULT_VALUE } from 'helpers'
+import { isTempId, QUESTION_RELEVANCE_DEFAULT_VALUE } from 'helpers'
+import { FIELDNAME_ID_PATTERN } from 'helpers/constants'
 
 import { getConditionTypeInfo } from './getConditionTypeInfo'
 import { getAllowedMethods } from './getAllowedMethods'
 
 const conditionTypeInfo = getConditionTypeInfo()
 const allowedMethods = getAllowedMethods()
+
+const FIELDNAME_REFERENCE_REGEX = new RegExp(
+  `^@(Q${FIELDNAME_ID_PATTERN}(?:_[SR]${FIELDNAME_ID_PATTERN})*(?:#\\d+)?)@$`
+)
+
+/**
+ * Converts an ID to a number, but keeps temp IDs of entities that aren't
+ * saved yet as they are, so they can be replaced once the real ID is known.
+ */
+export const toConditionId = (id) => (isTempId(id) ? id : +id)
 
 export const getDefaultCondition = () => ({
   qid: '',
@@ -104,9 +115,9 @@ export const hasUnsavedChanges = (
 }
 
 export const getBaseConditionObject = (condition, scenarioId) => ({
-  cid: +condition.cid,
-  qid: +condition.qid,
-  cqid: +condition.cqid,
+  cid: toConditionId(condition.cid),
+  qid: toConditionId(condition.qid),
+  cqid: toConditionId(condition.cqid),
   cfieldname: condition.cfieldname,
   cquestions: condition.cfieldname,
   method: condition.method,
@@ -149,9 +160,10 @@ export const determineConditionTargetType = (
    * then comes either the subquestion, that is, _S or a ranking answer,
    * that is, _R. Then come some digits, representing the subquestion/answer
    * subquestions may be chained, like Q123_S456_S789
-   * and some subquestions have # followed by digits
+   * and some subquestions have # followed by digits.
+   * Unsaved questions and subquestions use their temp ID instead of digits.
    */
-  if (/^@(Q\d+(?:_[SR]\d+)*(?:#\d+)?)@$/.test(condition.value)) {
+  if (FIELDNAME_REFERENCE_REGEX.test(condition.value)) {
     const matchingQuestion = previousQuestions.find((q) => {
       return '@' + q.cfieldname + '@' === condition.value
     })

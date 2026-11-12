@@ -9,8 +9,10 @@ export const defaultTypeHandler = (
   cQuestions,
   cAnswers
 ) => {
+  // Types handled here can be arrays: They have only subquestion fields.
   const fieldname = findFieldname({
     qid: question.qid,
+    hasQuestionField: !question.subquestions?.length,
   })
   createQuestion(cQuestions, question, null, fieldname, language)
 

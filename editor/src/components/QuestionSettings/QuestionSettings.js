@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react'
+import React, { useState, useMemo, useEffect, useRef } from 'react'
 import classNames from 'classnames'
 import { Button } from 'react-bootstrap'
 
@@ -8,7 +8,9 @@ import {
   createBufferOperation,
   getDisabledQuestionTypes,
   errorToast,
+  setRecordingTempIds,
   isTempId,
+  resolveTempIds,
 } from 'helpers'
 import {
   useAppState,
@@ -49,9 +51,6 @@ export const QuestionSettings = ({ surveyId }) => {
   const [, setSurveyRefreshRequired] = useAppState(
     STATES.SURVEY_REFRESH_REQUIRED
   )
-
-  // holds the scenario ID currently has a new conditions (waiting for temp condition IDs to be replaced)
-  const [pendingScenarioName, setPendingScenarioName] = useState(null)
   const [expandedAdvancedSections, setExpandedAdvancedSections] = useState({})
 
   const {
@@ -62,8 +61,21 @@ export const QuestionSettings = ({ surveyId }) => {
     questionIndex,
   } = useFocused()
 
+  // Leaving the settings, e.g. for another page, closes an open panel too:
+  // Stop recording replaced temp IDs.
+  useEffect(() => () => setRecordingTempIds(false), [])
+
+  const previousQidRef = useRef(focused?.qid)
+
   useEffect(() => {
-    closeConditionDesignerPanels()
+    const previousQid = previousQidRef.current
+    previousQidRef.current = focused?.qid
+
+    // The question getting its real ID after saving is still the same
+    // question: Keep the condition designer open.
+    if (resolveTempIds(previousQid) !== focused?.qid) {
+      closeConditionDesignerPanels()
+    }
   }, [focused?.qid])
 
   const {
@@ -137,6 +149,11 @@ export const QuestionSettings = ({ surveyId }) => {
     isConditionPanelOpen = false,
     isExpressionScriptPanelOpen = false
   ) => {
+    // Temp IDs replaced while a panel is open are recorded from the click on:
+    // In an effect, it could miss a replacement of the same render.
+    setRecordingTempIds(
+      Boolean(scenario || isConditionPanelOpen || isExpressionScriptPanelOpen)
+    )
     setScenarioToPatch(scenario)
     setConditionDesignerPanels({
       isConditionPanelOpen,
@@ -274,17 +291,25 @@ export const QuestionSettings = ({ surveyId }) => {
     !!questionSettingsOptions?.isAdvanced &&
     advancedQuestionSettings.length > 0
 
-  if (focused && typeof focused.qid === 'number') {
+  // Until the effect above closes the panels, they still belong to the
+  // previous question: Don't render them for another question.
+  const isPanelQuestion =
+    previousQidRef.current === focused?.qid ||
+    resolveTempIds(previousQidRef.current) === focused?.qid
+
+  if (
+    focused &&
+    isPanelQuestion &&
+    (typeof focused.qid === 'number' || isTempId(focused.qid))
+  ) {
     if (conditionDesignerPanels.isConditionPanelOpen || scenarioToPatch) {
       return (
         <ConditionDesigner
-          key={`condition-designer-${focused.qid}`}
           survey={survey}
           update={update}
           language={language}
           onNavigateBack={closeConditionDesignerPanels}
           scenarioToPatch={scenarioToPatch}
-          setPendingScenarioName={setPendingScenarioName}
         />
       )
     }
@@ -292,12 +317,7 @@ export const QuestionSettings = ({ surveyId }) => {
       focused.relevance !== null &&
       conditionDesignerPanels.isExpressionScriptPanelOpen
     ) {
-      return (
-        <ExpressionScript
-          key={`expression-script-${focused.qid}`}
-          onNavigateBack={closeConditionDesignerPanels}
-        />
-      )
+      return <ExpressionScript onNavigateBack={closeConditionDesignerPanels} />
     }
   }
 
@@ -387,7 +407,7 @@ export const QuestionSettings = ({ surveyId }) => {
         </>
       )}
       <div id="condition-designer">
-        {!focused || (focused && isTempId(focused.qid)) ? null : (
+        {!focused ? null : (
           <>
             <AddScenario
               key={`add-scenario-${focused.qid}`}
@@ -397,9 +417,7 @@ export const QuestionSettings = ({ surveyId }) => {
             {focused.scenarios?.length ? (
               <ScenarioList
                 key={`scenario-list-${focused.qid}-${focused.scenarios.length}`}
-                setScenarioToPatch={setScenarioToPatch}
-                pendingScenarioName={pendingScenarioName}
-                setPendingScenarioName={setPendingScenarioName}
+                onEditScenario={toggleConditionDesignerPanels}
               />
             ) : null}
 

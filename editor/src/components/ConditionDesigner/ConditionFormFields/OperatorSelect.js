@@ -1,8 +1,12 @@
 import React, { useEffect, useMemo, useCallback } from 'react'
 
 import { getQuestionTypeInfo, Select } from 'components'
-import { getQuestionById } from 'helpers'
-import { getAllowedMethods, getConditionTypeInfo } from '../utils'
+import { getQuestionById, resolveTempIds } from 'helpers'
+import {
+  getAllowedMethods,
+  getConditionTypeInfo,
+  toConditionId,
+} from '../utils'
 
 export const OperatorSelect = ({
   index,
@@ -66,7 +70,11 @@ export const OperatorSelect = ({
 
   const filteredOptions = useMemo(() => {
     if (condition.sourceType === conditionTypeInfo.SOURCE.QUESTION) {
-      const cQuestion = getQuestionById(+condition.cqid, survey).question
+      const cQuestion = getQuestionById(
+        // The form may still hold the temp ID of a question saved meanwhile.
+        resolveTempIds(toConditionId(condition.cqid)),
+        survey
+      ).question
       if (
         cQuestion &&
         (cQuestion.type === questionTypeInfo.MULTIPLE_CHOICE.type ||

@@ -1,8 +1,21 @@
 import Joi from 'joi'
+import {
+  CONDITION_TEMP_ID_REGEX,
+  NEW_OBJECT_ID_PREFIX,
+} from 'helpers/constants'
+
+// A question ID, or the temp ID of a question that isn't saved yet.
+export const conditionQuestionIdJoi = Joi.alternatives().try(
+  Joi.number(),
+  Joi.string().pattern(new RegExp(`^${NEW_OBJECT_ID_PREFIX}\\d+$`))
+)
+
+// The temp ID of a condition that isn't saved yet.
+export const conditionTempIdJoi = Joi.string().pattern(CONDITION_TEMP_ID_REGEX)
 
 export const questionConditionBaseJoi = Joi.object({
-  qid: Joi.number().required(),
-  cqid: Joi.number().required(),
+  qid: conditionQuestionIdJoi.required(),
+  cqid: conditionQuestionIdJoi.required(),
   cfieldname: Joi.string().required(),
   cquestions: Joi.string().required(),
   method: Joi.string()

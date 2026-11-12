@@ -15,6 +15,8 @@ import {
   handleSubquestionOperation,
   handleSurveyOperation,
   handleQuestionConditionOperation,
+  isConditionWaitingForTempId,
+  settleTempConditionIds,
 } from './operationsHandlers'
 import { addBreadcrumb, reportExtras } from 'appInstrumentation'
 
@@ -202,7 +204,8 @@ export class OperationsBuffer {
       result = handleQuestionConditionOperation(
         this.operations,
         operation,
-        currentOperation
+        currentOperation,
+        restore
       )
     }
 
@@ -217,6 +220,12 @@ export class OperationsBuffer {
         operationIndex !== -1
       ) {
         this.operations[operationIndex] = result.newOperation
+      }
+
+      // A failed save can bring a condition insert back next to its later
+      // edit or delete: Settle them like before the insert was sent.
+      if (isQuestionConditionOperation) {
+        this.operations = settleTempConditionIds(this.operations)
       }
 
       this.setOperations(this.operations)
@@ -401,6 +410,12 @@ export class OperationsBuffer {
       operation.props &&
       hasTempId(operation.props[0], 'qid')
 
+    // Conditions on or about a question that isn't saved yet, and edits of
+    // conditions whose insert is being saved, wait until the temp IDs
+    // (also those inside fieldnames) are replaced.
+    const isConditionAndReferencesATempId =
+      isConditionWaitingForTempId(operation)
+
     // Block any non-create operation whose own id is still a tempId.
     // This happens when a create is flushed but the backend hasn't yet responded
     // with the real id — updates/deletes must wait for the tempId to be replaced.
@@ -412,6 +427,7 @@ export class OperationsBuffer {
       isAddingQuestionAndQuestionHasAGroupTempId ||
       isAddingSubquestionAndQuestionHasATempId ||
       isAddingAnswerAndQuestionHasATempid ||
+      isConditionAndReferencesATempId ||
       isNonCreateOperationWithTempId ||
       operation.error
     ) {

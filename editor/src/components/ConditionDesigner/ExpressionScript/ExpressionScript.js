@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import classNames from 'classnames'
 
 import {
@@ -8,7 +8,11 @@ import {
   useFocused,
   useSurvey,
 } from 'hooks'
-import { getQuestionById, QUESTION_RELEVANCE_DEFAULT_VALUE } from 'helpers'
+import {
+  getQuestionById,
+  isTempId,
+  QUESTION_RELEVANCE_DEFAULT_VALUE,
+} from 'helpers'
 import { SideBarHeader } from 'components/SideBar'
 import { Button, ExpressionScriptEditor } from 'components/UIComponents'
 import { ArrowLeftIcon } from 'components/icons'
@@ -27,9 +31,10 @@ export const ExpressionScript = ({ onNavigateBack = () => {} }) => {
   const { addToBuffer } = useBuffer()
 
   const question = getQuestionById(focused.qid, survey).question
+  // The server can't validate an expression for a question it doesn't know yet.
   const validateExpression = useExpressionScriptValidation(
     surveyId,
-    question.qid
+    isTempId(question.qid) ? null : question.qid
   )
 
   const [content, setContent] = useState(
@@ -37,14 +42,6 @@ export const ExpressionScript = ({ onNavigateBack = () => {} }) => {
       ? ''
       : question.relevance
   )
-
-  useEffect(() => {
-    setContent(
-      question.relevance === QUESTION_RELEVANCE_DEFAULT_VALUE
-        ? ''
-        : question.relevance
-    )
-  }, [focused])
 
   const handleApply = () => {
     handleConditionScriptUpdate(

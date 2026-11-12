@@ -5,6 +5,34 @@ export const SCALE_1 = 0
 export const SCALE_2 = 1
 
 export const NEW_OBJECT_ID_PREFIX = 'temp__'
+// A temp question or subquestion ID inside a condition fieldname (Q12_S34#0,
+// @Q12@), with the prefix (Q, _S, _R) and the ID as groups. An ID ends at "_",
+// "#", "@" or the end, so temp__1 never matches inside temp__12. Global: Use it
+// with replace() and matchAll() only, test() would keep a position.
+export const FIELDNAME_TEMP_ID_REGEX = new RegExp(
+  `(Q|_[SR])(${NEW_OBJECT_ID_PREFIX}\\d+)(?=[_#@]|$)`,
+  'g'
+)
+// A question or subquestion ID in a fieldname: Digits, or a temp ID.
+export const FIELDNAME_ID_PATTERN = `(?:\\d+|${NEW_OBJECT_ID_PREFIX}\\d+)`
+// A temp condition ID: The server maps it to the real ID after inserting.
+export const CONDITION_TEMP_ID_REGEX = new RegExp(
+  `^${NEW_OBJECT_ID_PREFIX}\\d+_\\d+$`
+)
+// The actions of condition operations (OpHandlerQuestionCondition).
+export const CONDITION_ACTIONS = {
+  CONDITION: {
+    CREATE: 'insertCondition',
+    UPDATE: 'updateCondition',
+    DELETE: 'deleteCondition',
+  },
+  CONDITION_SCRIPT: {
+    UPDATE: 'conditionScript',
+  },
+  SCENARIO: {
+    DELETE: 'deleteScenario',
+  },
+}
 export const APP_KEY_PREFIX = 'ls_ce_editor'
 
 export const SOFT_MANDATORY = 'S'

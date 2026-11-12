@@ -12,6 +12,9 @@ export class SurveyService {
   }
 
   patchSurvey = async (buffer) => {
+    // TEMP test only, don't commit: Delay every save by 20 seconds, so new
+    // questions, subquestions and answers keep their temp IDs meanwhile.
+    await new Promise((resolve) => setTimeout(resolve, 20 * 1000))
     return await this.restClient.patch(
       `/survey-detail/${this.surveyId}`,
       {

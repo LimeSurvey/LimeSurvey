@@ -7,6 +7,8 @@ export const DuplicateQuestion = (question) => {
     ...question,
     qid: newDuplicatedQuestionId,
     tempId: newDuplicatedQuestionId,
+    // The conditions are not copied: Their IDs belong to the original question.
+    scenarios: [],
     // todo: make it like the core app
     title: `Q${RandomNumber()}`,
   })

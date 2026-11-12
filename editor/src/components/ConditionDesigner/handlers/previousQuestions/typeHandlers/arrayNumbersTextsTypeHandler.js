@@ -11,16 +11,17 @@ export const arrayNumbersTextsTypeHandler = (
   ;(question.subquestions ?? [])
     .filter((sq) => sq.scaleId === 1)
     .forEach((sq) => {
-      xAxis[sq.title] = getQuestionText(sq, language)
+      xAxis[sq.title] = { qid: sq.qid, text: getQuestionText(sq, language) }
     })
   ;(question.subquestions ?? [])
     .filter((sq) => sq.scaleId === 0)
     .forEach((sq) => {
-      Object.entries(xAxis).forEach(([key, value]) => {
+      Object.entries(xAxis).forEach(([key, { qid: xSqid, text: value }]) => {
         const fieldname = findFieldname({
           qid: question.qid,
           sqid: sq.qid,
           aid: sq.title + '_' + key,
+          xSqid,
         })
         createQuestion(
           cQuestions,

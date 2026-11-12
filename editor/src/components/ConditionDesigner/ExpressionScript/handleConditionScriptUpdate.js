@@ -1,9 +1,6 @@
-import {
-  createBufferOperation,
-  QUESTION_RELEVANCE_DEFAULT_VALUE,
-} from 'helpers'
+import { QUESTION_RELEVANCE_DEFAULT_VALUE } from 'helpers'
 
-import { getApiOperationActions, showSuccessMessage } from '../utils'
+import { buildConditionScriptOperation, showSuccessMessage } from '../utils'
 
 export const handleConditionScriptUpdate = (
   script,
@@ -22,19 +19,7 @@ export const handleConditionScriptUpdate = (
   )
     return
 
-  const props = {
-    qid: question.qid,
-    action: getApiOperationActions().CONDITION_SCRIPT.UPDATE,
-    script: script.trim(),
-  }
-
-  const operation = createBufferOperation(question.qid)
-    .questionCondition()
-    .update()
-
-  operation.qid = question.qid
-  operation.props = props
-  addToBuffer(operation)
+  addToBuffer(buildConditionScriptOperation(question.qid, script.trim()))
 
   question.relevance = script
   question.scenarios = []

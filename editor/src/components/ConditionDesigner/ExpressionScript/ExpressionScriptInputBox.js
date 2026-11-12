@@ -9,6 +9,7 @@ import {
 import {
   getQuestionById,
   htmlPopup,
+  isTempId,
   QUESTION_RELEVANCE_DEFAULT_VALUE,
 } from 'helpers'
 import { Button } from 'components/UIComponents'
@@ -25,9 +26,10 @@ export const ExpressionScriptInputBox = ({ onShowPanel, onNavigateBack }) => {
   const { addToBuffer } = useBuffer()
 
   const question = getQuestionById(focused.qid, survey).question
+  // The server can't validate an expression for a question it doesn't know yet.
   const validateExpression = useExpressionScriptValidation(
     surveyId,
-    question.qid
+    isTempId(question.qid) ? null : question.qid
   )
   const hasConditions = (question?.scenarios ?? []).length > 0
 

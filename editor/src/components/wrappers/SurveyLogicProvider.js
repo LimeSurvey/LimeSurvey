@@ -16,7 +16,35 @@ import {
   updateSurveyEntitiesData,
   dayJsHelper,
   RandomNumber,
+  isTempId,
+  removeSurveyConditions,
 } from 'helpers'
+import {
+  getInsertedTempConditionIds,
+  isConditionWaitingForTempId,
+  isReplacedByNewerScript,
+  referencesDeletedTempId,
+  removeConditionsWithDeletedTempIds,
+  settleTempConditionIds,
+} from 'helpers/Buffer/operationsHandlers'
+
+/**
+ * Lists the temp IDs of the questions and subquestions in the survey.
+ *
+ * @param {object} survey The survey.
+ * @returns {Set<string>} The temp IDs.
+ */
+const getSurveyTempIds = (survey) =>
+  new Set(
+    (survey?.questionGroups ?? [])
+      .flatMap((group) => group.questions ?? [])
+      .flatMap((question) => [
+        question.qid,
+        ...(question.subquestions ?? []).map((subquestion) => subquestion.qid),
+      ])
+      .filter((id) => isTempId(id))
+      .map(String)
+  )
 
 /**
  * Render children while loading the route's survey and saving buffered edits.
@@ -77,6 +105,33 @@ export const SurveyLogicProvider = ({ children }) => {
   useEffect(() => {
     if (process.env.REACT_APP_DEMO_MODE === 'true' || isPatchSurveyRunning) {
       return
+    }
+
+    // Conditions on questions or subquestions that were deleted before they
+    // were saved would wait for their real ID forever: Drop them, also from
+    // the questions. Without a loaded survey, every temp ID would look deleted.
+    const bufferedOperations = operationsBuffer.getOperations()
+    const currentSurvey = queryClient.getQueryData([STATES.SURVEY])?.survey
+    if (
+      currentSurvey?.questionGroups &&
+      bufferedOperations.some(isConditionWaitingForTempId)
+    ) {
+      const existingTempIds = getSurveyTempIds(currentSurvey)
+      const cleanedOperations = removeConditionsWithDeletedTempIds(
+        bufferedOperations,
+        existingTempIds
+      )
+      if (cleanedOperations !== bufferedOperations) {
+        const cleanedSurvey = removeSurveyConditions(
+          currentSurvey,
+          (condition) => referencesDeletedTempId(condition, existingTempIds)
+        )
+        if (cleanedSurvey !== currentSurvey) {
+          update({ questionGroups: cleanedSurvey.questionGroups })
+        }
+        setBuffer(cleanedOperations, RandomNumber())
+        return
+      }
     }
 
     const readyOperations = operationsBuffer.getOperations({ ready: true })
@@ -179,6 +234,40 @@ export const SurveyLogicProvider = ({ children }) => {
         mapResult.operationsBuffer
       )
 
+      // A sent condition insert without a real ID in the response was
+      // rejected, and is not always put back in the buffer: Settle the edits
+      // and deletes that wait for its ID.
+      const mappedCids = (conditionsTempIdMapping ?? []).map(
+        ({ tempId }) => tempId
+      )
+      const rejectedCids = getInsertedTempConditionIds(readyOperations).filter(
+        (cid) => !mappedCids.includes(cid)
+      )
+      if (rejectedCids.length) {
+        mapResult.operationsBuffer.setOperations(
+          settleTempConditionIds(
+            mapResult.operationsBuffer.getOperations(),
+            rejectedCids
+          )
+        )
+
+        // A rejected insert that doesn't wait to be sent again is not on the
+        // server: Remove it from the question too, it can't be edited.
+        const pendingCids = getInsertedTempConditionIds(
+          mapResult.operationsBuffer.getOperations()
+        )
+        const lostCids = rejectedCids.filter(
+          (cid) => !pendingCids.includes(cid)
+        )
+        if (lostCids.length) {
+          mapResult.survey = removeSurveyConditions(
+            mapResult.survey,
+            (condition) => lostCids.includes(condition.cid)
+          )
+          errorToast(t('Could not insert all conditions.'))
+        }
+      }
+
       // A refused delete already removed the item locally: Drop the operation
       // and reload the survey to show the item again.
       const refusedDeletes = exceptionErrors.filter(
@@ -238,14 +327,36 @@ export const SurveyLogicProvider = ({ children }) => {
     }
 
     const catchCallback = (error) => {
-      const updatedOperation = readyOperations.map((operation) => ({
-        ...operation,
-        error: true,
-      }))
+      // A condition save is obsolete when the user saved an ExpressionScript
+      // for the question while the request was running.
+      const bufferedOperations = queryClient.getQueryData([STATES.BUFFER]) ?? []
+      const isObsolete = (operation) =>
+        isReplacedByNewerScript(operation, bufferedOperations, readyOperations)
+      const updatedOperation = readyOperations
+        .filter((operation) => !isObsolete(operation))
+        .map((operation) => ({
+          ...operation,
+          error: true,
+        }))
+      // The conditions of an obsolete save are never inserted: Edits and
+      // deletes waiting for their real ID are settled like rejected inserts.
+      const droppedCids = getInsertedTempConditionIds(
+        readyOperations.filter(isObsolete)
+      )
 
       updatedOperation.forEach((operation) => {
         addToBuffer(operation, false)
       })
+
+      if (droppedCids.length) {
+        setBuffer(
+          settleTempConditionIds(
+            queryClient.getQueryData([STATES.BUFFER]) ?? [],
+            droppedCids
+          ),
+          RandomNumber()
+        )
+      }
 
       setErrorsFromPatchResponse([...updatedOperation])
       setSaveState(

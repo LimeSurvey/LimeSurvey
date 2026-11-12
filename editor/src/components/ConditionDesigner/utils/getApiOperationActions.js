@@ -1,15 +1,3 @@
-export const getApiOperationActions = () => {
-  return {
-    CONDITION: {
-      CREATE: 'insertCondition',
-      UPDATE: 'updateCondition',
-      DELETE: 'deleteCondition',
-    },
-    CONDITION_SCRIPT: {
-      UPDATE: 'conditionScript',
-    },
-    SCENARIO: {
-      DELETE: 'deleteScenario',
-    },
-  }
-}
+import { CONDITION_ACTIONS } from 'helpers/constants'
+
+export const getApiOperationActions = () => CONDITION_ACTIONS

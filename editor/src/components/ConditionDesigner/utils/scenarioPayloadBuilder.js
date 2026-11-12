@@ -1,18 +1,14 @@
 /**
- * scenarioPayloadBuilder.js
- *
- * This module is responsible for constructing the scenario payload
- * to be sent to the API. It transforms UI condition objects into
- * API-ready format by:
- * - Determining the correct operation (CREATE or UPDATE)
- * - Mapping values to appropriate tab formats (e.g., answers, constants, regex)
- * - Assigning temporary IDs for new conditions
- * - Structuring conditions into grouped scenarios by scenario name
- *
- * Depends on:
- * - getApiOperationActions from utils.js
+ * Turns condition designer form conditions into the API format of
+ * OpHandlerQuestionCondition: New conditions get a temp ID, and conditions
+ * are grouped by scenario. Each condition holds one value: The condition
+ * designer splits comma separated answers before (splitConditionValues).
  */
+import { NEW_OBJECT_ID_PREFIX } from 'helpers/constants'
+
 import { getApiOperationActions } from './getApiOperationActions'
+
+const actions = getApiOperationActions()
 
 const sourceTabs = {
   Question: '#SRCPREVQUEST',
@@ -27,79 +23,76 @@ const targetTabs = {
   RegExp: '#REGEXP',
 }
 
+// The fields the API reads the condition value from, per target tab.
+const targetValueFields = {
+  [targetTabs.Answer]: ({ value }) => ({
+    canswers: value.startsWith('[') ? JSON.parse(value) : [value],
+  }),
+  [targetTabs.Constant]: ({ value }) => ({ ConditionConst: value }),
+  [targetTabs.Question]: ({ value }) => ({ prevQuestionSGQA: value }),
+  [targetTabs.RegExp]: ({ value }) => ({ ConditionRegexp: value }),
+  [targetTabs.Token]: ({ value, cfieldname }) => ({
+    tokenAttr: value,
+    prevQuestionSGQA: cfieldname,
+  }),
+}
+
+const buildApiCondition = (condition, value, scenarioName, newTempId) => {
+  const isNew = !condition.cid
+  const editSourceTab = sourceTabs[condition.sourceType]
+  const editTargetTab = targetTabs[condition.targetType]
+  const tempId = isNew ? newTempId() : undefined
+
+  return {
+    qid: condition.qid,
+    cqid: condition.cqid,
+    cfieldname: condition.cfieldname,
+    cquestions: condition.cquestions,
+    method: condition.method ?? '==', // Ensure a valid default method just before sending
+    value,
+    scenario: scenarioName,
+    action: isNew ? actions.CONDITION.CREATE : actions.CONDITION.UPDATE,
+    editSourceTab,
+    editTargetTab,
+    cid: isNew ? tempId : condition.cid,
+    ...(editSourceTab === sourceTabs.Token
+      ? { csrctoken: condition.cfieldname }
+      : {}),
+    ...(isNew ? { tempId, tempcids: [tempId] } : {}),
+    ...(targetValueFields[editTargetTab]?.({
+      value,
+      cfieldname: condition.cfieldname,
+    }) ?? {}),
+  }
+}
+
+// Temp condition IDs are unique in the session, not random: Buffered saves
+// are merged by condition ID, two equal IDs would drop a condition.
+let payloadCount = 0
+
 export const buildScenarioPayload = (question, conditions, scenarioName) => {
-  const apiActions = getApiOperationActions()
-  const qid = question.qid
-  const tempIdSeed = Math.floor(Math.random() * 1000000)
-  const tempIdPrefix = `temp__${tempIdSeed}`
+  payloadCount += 1
+  const tempIdPrefix = `${NEW_OBJECT_ID_PREFIX}${Date.now()}${payloadCount}`
   let tempIdIndex = 1
+  const newTempId = () => `${tempIdPrefix}_${tempIdIndex++}`
+
   const scenarios = []
 
-  const createApiCondition = (condition, value) => {
-    const apiCondition = {
-      qid: condition.qid,
-      cqid: condition.cqid,
-      cfieldname: condition.cfieldname,
-      cquestions: condition.cquestions,
-      method: condition.method ?? '==', // Ensure a valid default method just before sending
-      value: value,
-      scenario: scenarioName,
-      action: condition.cid
-        ? apiActions.CONDITION.UPDATE
-        : apiActions.CONDITION.CREATE,
-      editSourceTab: sourceTabs[condition.sourceType],
-      editTargetTab: targetTabs[condition.targetType],
-      ...(condition.cid ? { cid: condition.cid } : {}),
-    }
-
-    if (apiCondition.editSourceTab === sourceTabs['Token']) {
-      apiCondition.csrctoken = apiCondition.cfieldname
-    }
-
-    if (apiCondition.action === apiActions.CONDITION.CREATE) {
-      apiCondition.tempId = `${tempIdPrefix}_${tempIdIndex++}`
-      apiCondition.cid = apiCondition.tempId
-      apiCondition.tempcids = [apiCondition.tempId]
-    }
-
-    switch (apiCondition.editTargetTab) {
-      case targetTabs['Answer']:
-        apiCondition.canswers = apiCondition.value.startsWith('[')
-          ? JSON.parse(apiCondition.value)
-          : [apiCondition.value]
-        break
-      case targetTabs['Constant']:
-        apiCondition.ConditionConst = apiCondition.value
-        break
-      case targetTabs['Question']:
-        apiCondition.prevQuestionSGQA = apiCondition.value
-        break
-      case targetTabs['RegExp']:
-        apiCondition.ConditionRegexp = apiCondition.value
-        break
-      case targetTabs['Token']:
-        apiCondition.tokenAttr = apiCondition.value
-        apiCondition.prevQuestionSGQA = apiCondition.cfieldname
-        break
-    }
-    return apiCondition
-  }
-
   conditions.forEach((condition) => {
-    condition.value
-      .toString()
-      .split(',')
-      .forEach((val) => {
-        const apiCondition = createApiCondition(condition, val)
-        let scenario = scenarios.find((s) => s.scid == apiCondition.scenario)
+    const apiCondition = buildApiCondition(
+      condition,
+      condition.value.toString(),
+      scenarioName,
+      newTempId
+    )
+    let scenario = scenarios.find((s) => s.scid == apiCondition.scenario)
 
-        if (!scenario) {
-          scenario = { scid: apiCondition.scenario, conditions: [] }
-          scenarios.push(scenario)
-        }
-        scenario.conditions.push(apiCondition)
-      })
+    if (!scenario) {
+      scenario = { scid: apiCondition.scenario, conditions: [] }
+      scenarios.push(scenario)
+    }
+    scenario.conditions.push(apiCondition)
   })
 
-  return scenarios.length ? { qid, scenarios } : null
+  return scenarios.length ? { qid: question.qid, scenarios } : null
 }

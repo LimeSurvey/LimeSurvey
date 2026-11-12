@@ -3,4 +3,12 @@ export { handleQuestionOperation } from './handleQuestionOperation/handleQuestio
 export { handleAnswerOperation } from './handleAnswerOperation/handleAnswerOperation'
 export { handleSubquestionOperation } from './handleSubquestionOperation/handleSubquestionOperation'
 export { handleSurveyOperation } from './handleSurveyOperation/handleSurveyOperation'
-export { handleQuestionConditionOperation } from './handleQuestionConditionOperation/handleQuestionConditionOperation'
+export {
+  getInsertedTempConditionIds,
+  handleQuestionConditionOperation,
+  isConditionWaitingForTempId,
+  isReplacedByNewerScript,
+  referencesDeletedTempId,
+  removeConditionsWithDeletedTempIds,
+  settleTempConditionIds,
+} from './handleQuestionConditionOperation/handleQuestionConditionOperation'
