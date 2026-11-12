@@ -13,6 +13,7 @@ import {
   DuplicateQuestionGroup,
   getReorganizedQuestionGroups,
   InsertElementAndIncrementProperty,
+  isFocusInsideGroup,
   STATES,
 } from 'helpers'
 import { ConfirmModal } from 'components/Modals'
@@ -58,7 +59,7 @@ export const QuestionGroups = ({
 
     addToBuffer(operation)
 
-    if (!focused.qid && focused.gid === questionGroups[index].gid) {
+    if (isFocusInsideGroup(focused, questionGroups[index])) {
       unFocus()
     }
 
