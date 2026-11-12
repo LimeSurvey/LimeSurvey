@@ -1,5 +1,6 @@
 export * from './L10ns/L10ns'
 export * from './dayJsHelper'
+export * from './localeUtils'
 export * from './maybe'
 export * from './getApiUrl'
 export * from './uuid'

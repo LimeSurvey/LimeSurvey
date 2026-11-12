@@ -8,8 +8,8 @@ export class UserService {
     this.restClient = new RestClient(baseUrl, auth.restHeaders)
   }
 
-  getUserDetail = async (id) => {
-    return await this.restClient.get(`user-detail/${id}`)
+  getUserDetail = async (id, signal) => {
+    return await this.restClient.get(`user-detail/${id}`, {}, signal)
   }
 
   getUserPermissions = async (surveyId, signal) => {

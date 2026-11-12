@@ -356,7 +356,10 @@ class QuestionStatistics implements StatisticsChartInterface
     }
 
     /**
-     * @param StatisticsChartDTO|StatisticsChartDTO[] $output
+     * Reduce the question metadata of the chart DTOs to the fields the client needs.
+     *
+     * @param StatisticsChartDTO|StatisticsChartDTO[] $output One chart DTO or a list of them, modified in place
+     * @return void
      */
     private function trimMeta($output): void
     {
@@ -392,8 +395,8 @@ class QuestionStatistics implements StatisticsChartInterface
             // as the chart's per-scale titles (DualScaleProcessor).
             if (($question['type'] ?? null) === Question::QT_1_ARRAY_DUAL) {
                 $meta['question']['scaleHeaders'] = [
-                    flattenText($question['attributes']['dualscale_headerA'] ?? 'Scale A', false, true),
-                    flattenText($question['attributes']['dualscale_headerB'] ?? 'Scale B', false, true),
+                    flattenText($question['attributes']['dualscale_headerA'] ?? gT('Scale A', 'unescaped'), false, true),
+                    flattenText($question['attributes']['dualscale_headerB'] ?? gT('Scale B', 'unescaped'), false, true),
                 ];
             }
             $dto->setMeta($meta);
