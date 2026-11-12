@@ -341,9 +341,15 @@ class DataEntry extends SurveyCommonAction
 
             $this->renderWrappedTemplate('dataentry', 'import', $aData);
         } else {
+            $sourceTableName = $this->getImportableResponseTable($iSurveyId);
+            if ($sourceTableName === null) {
+                App()->setFlashMessage(gT("The selected table is not an archived response table of this survey."), 'error');
+                $this->getController()->redirect(["admin/dataentry/sa/import/surveyid/{$iSurveyId}"]);
+                return;
+            }
             $aSRIDConversions = array();
             $targetSchema = SurveyDynamic::model($iSurveyId)->getTableSchema();
-            $sourceTable = PluginDynamic::model($_POST['table']);
+            $sourceTable = PluginDynamic::model($sourceTableName);
             $sourceSchema = $sourceTable->getTableSchema();
             $encryptedAttributes = Response::getEncryptedAttributes($iSurveyId);
             $tbl_name = $sourceSchema->name;
@@ -352,7 +358,11 @@ class DataEntry extends SurveyCommonAction
                 $tbl_name = substr((string) $sourceSchema->name, strlen((string) App()->db->tablePrefix));
             }
 
-            $archivedTableSettings = ArchivedTableSettings::model()->findByAttributes(['tbl_name' => $tbl_name]);
+            $archivedTableSettings = ArchivedTableSettings::model()->findByAttributes([
+                'tbl_name' => $tbl_name,
+                'survey_id' => $iSurveyId,
+                'tbl_type' => 'response',
+            ]);
             $archivedEncryptedAttributes = [];
             if ($archivedTableSettings) {
                 $archivedEncryptedAttributes = json_decode((string) $archivedTableSettings->properties);
@@ -575,6 +585,24 @@ class DataEntry extends SurveyCommonAction
         }
     }
 
+
+    /**
+     * Returns the posted source table if it is an archived response table of this survey.
+     *
+     * Only the tables offered by the import form are accepted, so the posted name
+     * can never point to a table of another survey or to any other table.
+     *
+     * @param int $surveyId Survey ID
+     * @return string|null The table name including the table prefix, null if the posted name is not acceptable
+     */
+    protected function getImportableResponseTable($surveyId)
+    {
+        $table = App()->getRequest()->getPost('table');
+        if (!is_string($table) || !in_array($table, App()->getApi()->getOldResponseTables($surveyId), true)) {
+            return null;
+        }
+        return $table;
+    }
 
     /**
      * Sets the PostgreSQL sequence of the response ID so that it continues after the highest existing response ID,
