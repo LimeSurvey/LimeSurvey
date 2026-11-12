@@ -39,7 +39,8 @@ export const multipleChoiceTypeHandler = (
       subquestions[j],
       fieldname,
       language,
-      `Single checkbox`
+      t('Single checkbox'),
+      { isCheckboxField: true }
     )
     createAnswer(cAnswers, 'Y', t('Checked (Y)'), fieldname)
     createAnswer(cAnswers, '', t('Not checked'), fieldname)

@@ -1,3 +1,5 @@
+import { format } from 'util'
+
 import { getQuestionTypeInfo } from 'components/QuestionTypes/index.js'
 
 import { getQuestionText } from '../helpers'
@@ -11,7 +13,7 @@ import { getQuestionText } from '../helpers'
  * @param {string} fieldname The fieldname compared by the condition.
  * @param {string} language The language used for the question texts.
  * @param {string} extraTitle Text added in brackets to the title, e.g. "Single checkbox".
- * @param {string} type The question type deciding how the field is compared, defaults to the type of the question.
+ * @param {object} extraProps Additional properties of the condition question, e.g. isCheckboxField. They can't overwrite the core properties.
  * @returns {void}
  */
 export const createQuestion = (
@@ -21,24 +23,28 @@ export const createQuestion = (
   fieldname,
   language,
   extraTitle = '',
-  type = question.type
+  extraProps = {}
 ) => {
   const baseTitle = getQuestionText(question, language)
   let title = baseTitle
 
   const isRankingQuestion = question.type === getQuestionTypeInfo().RANKING.type
 
+  // Translatable patterns, so translators can adapt the brackets and spacing
   if (extraTitle && (isRankingQuestion || !subquestion)) {
-    title = `[${extraTitle}] ${baseTitle}`
+    title = format(t('[%s] %s'), extraTitle, baseTitle)
   } else if (subquestion) {
     const subquestionText = getQuestionText(subquestion, language)
-    title = `[${subquestionText}]${extraTitle ? `[${extraTitle}]` : ''} ${baseTitle}`
+    title = extraTitle
+      ? format(t('[%s][%s] %s'), subquestionText, extraTitle, baseTitle)
+      : format(t('[%s] %s'), subquestionText, baseTitle)
   }
 
   cQuestions.push({
+    ...extraProps,
     title,
     qid: question.qid,
-    type,
+    type: question.type,
     cfieldname: fieldname,
   })
 }

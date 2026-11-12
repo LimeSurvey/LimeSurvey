@@ -6,7 +6,8 @@ import { getAllowedMethods, getConditionTypeInfo } from '../utils'
 
 /**
  * Comparison operator select of a condition. Checkbox fields of multiple
- * choice questions only allow "equals" and "Not equal to".
+ * choice questions only allow "equals" and "Not equal to", their "Other"
+ * text field allows all operators.
  *
  * @param {object} props
  * @param {number} props.index The index of the condition in the scenario.
@@ -77,19 +78,22 @@ export const OperatorSelect = ({
     [condition.answers.length, condition.targetType]
   )
 
+  const isMultipleChoiceType = (type) =>
+    type === questionTypeInfo.MULTIPLE_CHOICE.type ||
+    type === questionTypeInfo.MULTIPLE_CHOICE_WITH_COMMENTS.type
+
   const filteredOptions = useMemo(() => {
     if (condition.sourceType === conditionTypeInfo.SOURCE.QUESTION) {
-      // The selected field decides, e.g. the "Other" text field of a multiple choice question is a text field
       const selectedField = previousQuestions.find(
         (question) => question.cfieldname === condition.cfieldname
       )
-      const fieldType =
-        selectedField?.type ??
-        getQuestionById(+condition.cqid, survey).question?.type
-      if (
-        fieldType === questionTypeInfo.MULTIPLE_CHOICE.type ||
-        fieldType === questionTypeInfo.MULTIPLE_CHOICE_WITH_COMMENTS.type
-      ) {
+      // Fields not listed (yet) fall back to the type of their question in the survey
+      const isCheckboxField = selectedField
+        ? !!selectedField.isCheckboxField
+        : isMultipleChoiceType(
+            getQuestionById(+condition.cqid, survey).question?.type
+          )
+      if (isCheckboxField) {
         return OPERATOR_OPTIONS.map((option) => ({
           ...option,
           isDisabled: ![
