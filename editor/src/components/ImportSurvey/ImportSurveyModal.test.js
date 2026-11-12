@@ -41,6 +41,19 @@ describe('ImportSurveyModal', () => {
     expect(screen.getByText('4')).toBeInTheDocument()
   })
 
+  test('names the dialog after its title heading', async () => {
+    await renderWithProviders(
+      <ImportSurveyModal maxFileSize={maxFileSize} show />
+    )
+
+    expect(
+      await screen.findByRole('dialog', { name: 'Import survey' })
+    ).toBeInTheDocument()
+    expect(
+      screen.getByRole('heading', { level: 2, name: 'Import survey' })
+    ).toBeInTheDocument()
+  })
+
   test('renders a controlled summary with navigation actions', async () => {
     const user = userEvent.setup()
     const onGoToSurvey = jest.fn()

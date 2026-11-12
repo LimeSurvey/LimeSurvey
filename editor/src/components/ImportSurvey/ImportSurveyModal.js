@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useId, useState } from 'react'
 import { Modal, Spinner } from 'react-bootstrap'
 
 import { Button } from 'components/UIComponents'
@@ -24,6 +24,8 @@ export const ImportSurveyModal = ({
   const [submitting, setSubmitting] = useState(false)
   const [submittedSummary, setSubmittedSummary] = useState(null)
   const summary = controlledSummary || submittedSummary
+  // The title names the dialog for screen readers.
+  const titleId = useId()
 
   useEffect(() => {
     if (!show) {
@@ -87,6 +89,7 @@ export const ImportSurveyModal = ({
 
   return (
     <Modal
+      aria-labelledby={titleId}
       backdrop={submitting ? 'static' : true}
       centered
       className="import-survey-modal"
@@ -95,7 +98,7 @@ export const ImportSurveyModal = ({
       show={show}
     >
       <Modal.Header closeButton={!submitting}>
-        <Modal.Title as="h2">
+        <Modal.Title as="h2" id={titleId}>
           {summary ? t('Import summary') : t('Import survey')}
         </Modal.Title>
       </Modal.Header>
