@@ -15,6 +15,8 @@ class SurveyDynamicTest extends TestBaseClass
         self::importSurvey($filename);
 
         // Activate survey.
+        // The responses are inserted without dates, so the survey must not inherit a date stamp
+        self::$testSurvey->saveAttributes(['datestamp' => 'N']);
         $activator = new \SurveyActivator(self::$testSurvey);
         $activator->activate();
     }
