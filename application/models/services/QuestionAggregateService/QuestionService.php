@@ -372,7 +372,7 @@ class QuestionService
      * @return void Returns normally if "Other" stays on or no condition uses it
      * @throws QuestionHasConditionsException If conditions use the "Other" option
      */
-    private function checkOtherNotUsedInConditions(Question $question, array $data)
+    public function checkOtherNotUsedInConditions(Question $question, array $data)
     {
         if ($question->other !== 'Y') {
             return;
@@ -408,7 +408,7 @@ class QuestionService
         if (!empty($dependentQuestionCodes)) {
             throw new QuestionHasConditionsException(
                 sprintf(
-                    // Unescaped: The new editor shows the message as text, question codes only contain letters and digits
+                    // Plain text: The editors show it as text, the classic save without Ajax encodes it for its HTML flash message
                     gT('"Other" is used in conditions of: %s. Remove them first.', 'unescaped'),
                     implode(', ', $dependentQuestionCodes)
                 )
