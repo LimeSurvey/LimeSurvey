@@ -9,14 +9,14 @@
 export const isFocusInsideGroup = (focused, questionGroup) => {
   if (!focused || !questionGroup) return false
 
-  if (focused.qid !== undefined) {
+  if (focused.qid != null) {
     return (questionGroup.questions ?? []).some(
       (question) => question.qid?.toString() === focused.qid?.toString()
     )
   }
 
   return (
-    focused.gid !== undefined &&
+    focused.gid != null &&
     focused.gid?.toString() === questionGroup.gid?.toString()
   )
 }

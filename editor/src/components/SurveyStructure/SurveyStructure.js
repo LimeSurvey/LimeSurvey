@@ -18,6 +18,7 @@ import {
   InsertElementAndIncrementProperty,
   DuplicateQuestion,
   isFocusInsideGroup,
+  getGroupIndexForDeletion,
 } from 'helpers'
 import {
   useFocused,
@@ -85,10 +86,16 @@ export const SurveyStructure = () => {
   }
 
   const handleConfirmGroupDeletion = () => {
-    // Use the current group: Its temporary ids may have been replaced by
-    // real ids while the confirm dialog was open
-    const { index } = deleteGroupState
+    const index = getGroupIndexForDeletion(
+      questionGroups,
+      deleteGroupState.questionGroup?.gid,
+      deleteGroupState.index
+    )
     const questionGroup = questionGroups[index]
+    if (!questionGroup) {
+      setDeleteGroupState({ show: false, questionGroup: null, index: null })
+      return
+    }
     const [updatedQuestionGroups] = arrayDeleteItem(questionGroups, index)
 
     const operation = createBufferOperation(questionGroup.gid)

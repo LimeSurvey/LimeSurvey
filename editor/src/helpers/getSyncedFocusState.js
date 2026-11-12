@@ -1,5 +1,3 @@
-import { isUndefined } from 'lodash'
-
 import { getQuestionById } from './getQuestionById'
 
 /**
@@ -21,7 +19,7 @@ export const getSyncedFocusState = (focusState, survey) => {
     return undefined
   }
 
-  if (!isUndefined(focused.qid)) {
+  if (focused.qid != null) {
     const { question, groupIndex, questionIndex } = getQuestionById(
       focused.qid,
       survey
@@ -38,7 +36,7 @@ export const getSyncedFocusState = (focusState, survey) => {
     return { ...focusState, groupIndex, questionIndex }
   }
 
-  if (!isUndefined(focused.gid)) {
+  if (focused.gid != null) {
     const groupIndex = survey.questionGroups.findIndex(
       (group) => group.gid?.toString() === focused.gid?.toString()
     )

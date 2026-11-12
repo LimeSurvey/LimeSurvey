@@ -72,7 +72,7 @@ export const ExpressionScript = ({ onNavigateBack = () => {} }) => {
   }
 
   const handleApplyClick = () => {
-    if (question?.scenarios.length > 0) {
+    if ((question?.scenarios ?? []).length > 0) {
       showConditionOverwriteConfirmationOverlay({
         onConfirm: () => handleApply(content),
         onCancel: onNavigateBack,
