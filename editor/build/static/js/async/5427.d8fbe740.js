@@ -1,0 +1,2 @@
+(self.webpackChunklimesurvey_editor=self.webpackChunklimesurvey_editor||[]).push([["5427"],{48734(e){e.exports={name:"en",weekdays:"Sunday_Monday_Tuesday_Wednesday_Thursday_Friday_Saturday".split("_"),months:"January_February_March_April_May_June_July_August_September_October_November_December".split("_"),ordinal:function(e){var r=["th","st","nd","rd"],_=e%100;return"["+e+(r[(_-20)%10]||r[_]||r[0])+"]"}}}}]);
+//# sourceMappingURL=5427.d8fbe740.js.map
