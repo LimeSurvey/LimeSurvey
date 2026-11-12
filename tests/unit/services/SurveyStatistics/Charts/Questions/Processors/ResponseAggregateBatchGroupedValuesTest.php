@@ -36,7 +36,7 @@ class ResponseAggregateBatchGroupedValuesTest extends TestBaseClass
                 'submitdate' => $now,
                 self::$otherField => $text,
             ]);
-            self::$responseIds[] = (int)$db->getLastInsertID();
+            self::$responseIds[] = (int)getLastInsertID($tableName);
         }
     }
 

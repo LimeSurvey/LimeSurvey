@@ -423,16 +423,18 @@ class QuestionStatistics implements StatisticsChartInterface
             ->select($select)
             ->from('{{questions}} q')
             ->leftJoin('{{groups}} g', 'q.gid = g.gid')
-            ->leftJoin('{{question_l10ns}} ql', 'q.qid = ql.qid AND ql.language = :language')
+            ->leftJoin('{{question_l10ns}} ql', 'q.qid = ql.qid AND ql.language = :questionLanguage')
             ->leftJoin('{{answers}} a', 'q.qid = a.qid')
-            ->leftJoin('{{answer_l10ns}} al', 'a.aid = al.aid AND al.language = :language')
+            ->leftJoin('{{answer_l10ns}} al', 'a.aid = al.aid AND al.language = :answerLanguage')
             ->leftJoin('{{question_attributes}} qa', 'q.qid = qa.qid')
             ->where('q.sid = :sid')
             ->order('q.parent_qid ASC, g.group_order ASC, q.scale_id ASC, q.question_order ASC, q.title ASC, a.sortorder ASC, a.code ASC');
 
+        // MSSQL (pdo_sqlsrv) can't bind the same named parameter twice.
         $command->params = [
             ':sid' => $this->surveyId,
-            ':language' => $this->language,
+            ':questionLanguage' => $this->language,
+            ':answerLanguage' => $this->language,
         ];
 
         return $command;
