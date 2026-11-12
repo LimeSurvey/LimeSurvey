@@ -37,6 +37,9 @@ export const I18Provider = ({ i18n, children, language }) => {
       return
     }
 
+    // Drop the role until it is fetched again, so nothing relies on a stale value
+    setUserDetail((userDetail) => ({ ...userDetail, isSuperAdmin: undefined }))
+
     const controller = new AbortController()
     const { signal } = controller
 
