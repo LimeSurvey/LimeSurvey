@@ -69,18 +69,26 @@ export const DropZone = forwardRef(
     },
     ref
   ) => {
-    const [showImageButtons, setShowImageButtons] = useState(false)
+    // The buttons are shown while the pointer is over the image or the focus
+    // is inside the dropzone: Moving the mouse away doesn't hide a focused
+    // button from keyboard users.
+    const [isHovered, setIsHovered] = useState(false)
+    const [hasFocus, setHasFocus] = useState(false)
     const [previewUrl, setPreviewUrl] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
 
-    const handleOnMouseHover = () =>
-      setShowImageButtons(trashIconEnabled || !!onEdit)
-    const handleOnMouseLeave = () => setShowImageButtons(false)
+    const handleOnMouseHover = () => setIsHovered(true)
+    const handleOnMouseLeave = () => setIsHovered(false)
     // Keyboard users reach the buttons by focusing the dropzone first.
+    const handleOnFocus = () => setHasFocus(true)
     const handleOnBlur = (event) => {
       if (!event.currentTarget.contains(event.relatedTarget)) {
-        setShowImageButtons(false)
+        setHasFocus(false)
       }
+    }
+    const hideImageButtons = () => {
+      setIsHovered(false)
+      setHasFocus(false)
     }
 
     const setLoading = (value) => {
@@ -158,7 +166,7 @@ export const DropZone = forwardRef(
     const handleDelete = () => {
       // Deleting - does not delete the file from the server
       // - we just remove the reference in the related data
-      setShowImageButtons(false)
+      hideImageButtons()
       changePreview(null)
       onChange('')
       onDelete()
@@ -204,7 +212,8 @@ export const DropZone = forwardRef(
       onMouseOver: handleOnMouseHover,
       onMouseLeave: handleOnMouseLeave,
     }
-    const areButtonsShown = !isLoading && showImageButtons
+    const areButtonsShown =
+      !isLoading && (trashIconEnabled || !!onEdit) && (isHovered || hasFocus)
 
     const imageButtons = (
       <div
@@ -231,7 +240,7 @@ export const DropZone = forwardRef(
             onClick={(event) => {
               // Keep the click from opening the file dialog of the dropzone.
               event.stopPropagation()
-              setShowImageButtons(false)
+              hideImageButtons()
               onEdit()
             }}
           >
@@ -314,7 +323,7 @@ export const DropZone = forwardRef(
         style={{ cursor: 'pointer', minwidth: '200px' }}
         data-testid={dataTestId}
         {...getRootProps({
-          onFocus: previewUrl ? handleOnMouseHover : undefined,
+          onFocus: previewUrl ? handleOnFocus : undefined,
           onBlur: handleOnBlur,
         })}
       >

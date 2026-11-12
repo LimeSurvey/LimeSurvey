@@ -3,7 +3,7 @@ import 'tests/mocks'
 
 import { renderWithProviders } from 'tests/testUtils'
 import { DropZone } from './DropZone'
-import { screen } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { getNoAnswerLabel } from 'helpers'
 
@@ -122,5 +122,34 @@ describe('DropZone', () => {
     expect(buttons).toHaveClass('invisible')
     await userEvent.hover(image)
     expect(buttons).not.toHaveClass('invisible')
+  })
+
+  test('Keeps the buttons shown while the focus is inside, also when the pointer leaves', async () => {
+    await renderWithProviders(
+      <>
+        <DropZone
+          previewUrlInit="/upload/surveys/1/images/a.png"
+          onEdit={jest.fn()}
+          imageName="A1"
+          buttonsBeside={true}
+        />
+        <button type="button">Outside</button>
+      </>
+    )
+
+    const editButton = screen.getByRole('button', {
+      name: 'Edit image A1',
+      hidden: true,
+    })
+    const buttons = editButton.parentElement
+    const preview = screen.getByTestId('dropzone-preview')
+
+    await userEvent.hover(preview)
+    act(() => editButton.focus())
+    await userEvent.unhover(preview)
+    expect(buttons).not.toHaveClass('invisible')
+
+    act(() => screen.getByRole('button', { name: 'Outside' }).focus())
+    expect(buttons).toHaveClass('invisible')
   })
 })

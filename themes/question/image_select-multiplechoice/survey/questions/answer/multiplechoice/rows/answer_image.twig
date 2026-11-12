@@ -49,8 +49,8 @@
             ~ ((positionY matches imageNumber) ? (positionY * 100)|round(4) : 50) ~ '%;' %}
     {% endif %}
     <span class="imageselect-frame{% if not hasCrop %} imageselect-frame-cover{% endif %}" style="{{ frameStyle }}">
-        <img class="imageselect-img fixed-width unforce-height" src="{{ src|escape('html_attr') }}"{% if imageAlt %} alt="{{ imageAlt|escape('html_attr') }}"{% endif %}/>
+        <img class="imageselect-img fixed-width unforce-height" src="{{ src|escape('html_attr') }}"{% if imageAlt is not empty %} alt="{{ imageAlt|escape('html_attr') }}"{% endif %}/>
     </span>
 {% else %}
-    <img class="imageselect-img fixed-width unforce-height" src="{{ src|escape('html_attr') }}"{% if imageAlt %} alt="{{ imageAlt|escape('html_attr') }}"{% endif %}/>
+    <img class="imageselect-img fixed-width unforce-height" src="{{ src|escape('html_attr') }}"{% if imageAlt is not empty %} alt="{{ imageAlt|escape('html_attr') }}"{% endif %}/>
 {% endif %}

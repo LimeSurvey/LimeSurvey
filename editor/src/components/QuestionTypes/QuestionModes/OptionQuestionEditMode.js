@@ -1,3 +1,4 @@
+import { useRef } from 'react'
 import { Button } from 'react-bootstrap'
 import { useParams } from 'react-router-dom'
 import { Draggable } from '@hello-pangea/dnd'
@@ -77,6 +78,10 @@ export const OptionQuestionEditMode = ({
   const { surveyId } = useParams()
   const { survey } = useSurvey(surveyId)
   const { addToBuffer } = useBuffer()
+  // "Apply to all" waits for the other images to load. Meanwhile, options can
+  // be changed, renamed or deleted: The save uses the question as it is then.
+  const latestQuestion = useRef(question)
+  latestQuestion.current = question
   const isSingleChoiceTheme = singleChoiceThemes.includes(questionThemeName)
   const isImageTheme = imageThemeComponents.includes(questionThemeName)
 
@@ -149,7 +154,9 @@ export const OptionQuestionEditMode = ({
 
   /**
    * Stores the settings from the image editor of an option in the question
-   * attributes, with "Apply to all" also for the other options.
+   * attributes, with "Apply to all" also for the other options. Nothing is
+   * saved when the option was renamed or deleted while the other images were
+   * loading.
    *
    * @param {string} code the option code
    * @param {Object} imageSettings the settings from ImageEditor's onSave,
@@ -163,19 +170,36 @@ export const OptionQuestionEditMode = ({
     const otherSettings = applyToAll
       ? await getSettingsForOtherOptions(code, settings)
       : {}
-    const changes = getImageOptionSaveChanges(question.attributes, {
+    const currentQuestion = latestQuestion.current
+    const codes = (
+      (isSingleChoiceTheme
+        ? currentQuestion.answers
+        : currentQuestion.subquestions) || []
+    ).map((child) => child[codeKey])
+    if (!codes.includes(code)) {
+      return
+    }
+    // Only for the options that still exist.
+    const existingOtherSettings = Object.fromEntries(
+      Object.entries(otherSettings).filter(([otherCode]) =>
+        codes.includes(otherCode)
+      )
+    )
+    const changes = getImageOptionSaveChanges(currentQuestion.attributes, {
       code,
       settings,
       altText,
       language,
-      codes: _children.map((child) => child[codeKey]),
-      otherSettings,
+      codes,
+      otherSettings: existingOtherSettings,
     })
     addToBuffer(
-      createBufferOperation(question.qid).questionAttribute().update(changes)
+      createBufferOperation(currentQuestion.qid)
+        .questionAttribute()
+        .update(changes)
     )
     handleUpdate({
-      attributes: applyAttributeChanges(question.attributes, changes),
+      attributes: applyAttributeChanges(currentQuestion.attributes, changes),
     })
   }
 
