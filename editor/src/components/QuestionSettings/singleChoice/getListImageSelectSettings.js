@@ -32,6 +32,8 @@ const generalSettings = () => {
   ]
 }
 
+// No fix width, fix height, crop or resize and keep aspect ratio: Each
+// option's image is set in the image editor instead.
 const displaySettings = () => {
   const displayAttributes = getDisplayAttributes()
   return [
@@ -43,10 +45,6 @@ const displaySettings = () => {
     displayAttributes.HIDE_TIP,
     displayAttributes.ALWAYS_HIDE_THIS_QUESTION,
     displayAttributes.CSS_CLASSES,
-    displayAttributes.FIX_WIDTH,
-    displayAttributes.FIX_HEIGHT,
-    displayAttributes.CROP_OR_RESIZE,
-    displayAttributes.KEEP_ASPECT_RATIO,
     displayAttributes.HORIZONTAL_SCROLL,
     displayAttributes.DISPLAY_COLUMNS,
   ]
