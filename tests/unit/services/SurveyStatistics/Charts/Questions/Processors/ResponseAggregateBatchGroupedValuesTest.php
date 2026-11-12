@@ -19,7 +19,7 @@ class ResponseAggregateBatchGroupedValuesTest extends TestBaseClass
     public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
-        self::importSurvey(self::$surveysFolder . '/limesurvey_survey_213203_other_checked.lss');
+        self::importSurvey(self::$surveysFolder . '/limesurvey_survey_213203_other_checked.lss', 1, 917007);
         self::$testHelper->activateSurvey(self::$surveyId);
 
         $question = Question::model()->findByAttributes(['sid' => self::$surveyId, 'title' => 'q1']);
@@ -106,6 +106,29 @@ class ResponseAggregateBatchGroupedValuesTest extends TestBaseClass
             [
                 ['text' => 'Yoga', 'count' => 4],
                 ['text' => 'Chess', 'count' => 2],
+            ],
+            $batch->groupedValueCounts($field, true)
+        );
+    }
+
+    /**
+     * @testdox groupedValueCounts() keeps a value that can't be decrypted instead of failing
+     */
+    public function testKeepsValuesThatCannotBeDecrypted()
+    {
+        $field = $this->fillSecondOtherField(['Yoga', ''], true);
+        \Yii::app()->db->createCommand()->update(
+            \Survey::model()->findByPk(self::$surveyId)->responsesTableName,
+            [$field => 'Tennis'],
+            'id = :id',
+            [':id' => self::$responseIds[1]]
+        );
+        $batch = new ResponseAggregateBatch(self::$surveyId);
+
+        $this->assertSame(
+            [
+                ['text' => 'Yoga', 'count' => 4],
+                ['text' => 'Tennis', 'count' => 1],
             ],
             $batch->groupedValueCounts($field, true)
         );

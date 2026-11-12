@@ -3,6 +3,7 @@
 namespace LimeSurvey\Models\Services\SurveyStatistics\Charts\Questions\Processors;
 
 use CDbConnection;
+use Exception;
 use LSActiveRecord;
 use PDO;
 use LimeSurvey\Models\Services\ResponseFilters\ResolvedFilter;
@@ -335,7 +336,7 @@ final class ResponseAggregateBatch
 
         $groups = [];
         foreach ($reader as $value) {
-            $text = trim($encrypted ? LSActiveRecord::decryptSingle((string)$value) : (string)$value);
+            $text = trim($encrypted ? $this->decryptOrKeep((string)$value) : (string)$value);
             if ($text === '') {
                 continue;
             }
@@ -354,6 +355,20 @@ final class ResponseAggregateBatch
         );
 
         return $rows;
+    }
+
+    /**
+     * A cell that can't be decrypted (e.g. saved before encryption was turned
+     * on, or with an older key) keeps its stored value, like
+     * LSActiveRecord::decryptSingleOld(), instead of failing the statistics.
+     */
+    private function decryptOrKeep(string $value): string
+    {
+        try {
+            return LSActiveRecord::decryptSingle($value);
+        } catch (Exception $e) {
+            return $value;
+        }
     }
 
     public function isExecuted(): bool
