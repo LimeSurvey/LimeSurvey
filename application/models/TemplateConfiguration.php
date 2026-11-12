@@ -573,31 +573,56 @@ class TemplateConfiguration extends TemplateConfig
     /**
      * Create a new entry in {{templates}} and {{template_configuration}} table using the template manifest
      *
-     * @param string $sTemplateName the name of the template to import
-     * @param array $aDatas Data
-     * @return boolean true on success | exception
-     * @throws Exception
+     * @param string $sTemplateName The name of the template to import
+     * @param array<string, mixed> $aDatas The manifest data, see TemplateManifest::getManifestData()
+     * @return boolean True on success
+     * @throws Exception If the theme can't be saved
      */
     public static function importManifest($sTemplateName, $aDatas = array())
     {
-        if (!empty($aDatas['extends'])) {
-            $oMotherTemplate = self::getInstanceFromTemplateName($aDatas['extends']);
-            if (is_a($oMotherTemplate, 'TemplateConfiguration')) {
-                $aDatas['api_version']     = $oMotherTemplate->template->api_version;
-                $aDatas['view_folder']     = $oMotherTemplate->template->view_folder;
-                $aDatas['author_email']    = $oMotherTemplate->template->author_email;
-                $aDatas['author_url']      = $oMotherTemplate->template->author_url;
-                $aDatas['copyright']       = $oMotherTemplate->template->copyright;
-                $aDatas['version']         = $oMotherTemplate->template->version;
-                $aDatas['license']         = $oMotherTemplate->template->license;
-                $aDatas['files_folder']    = $oMotherTemplate->template->files_folder;
-                $aDatas['aOptions']        = (empty($aDatas['aOptions']))
-                    ? json_decode($oMotherTemplate->options)
-                    : $aDatas['aOptions'];
-            }
-        }
+        return parent::importManifest($sTemplateName, self::completeManifestDataFromMotherTheme($aDatas));
+    }
 
-        return parent::importManifest($sTemplateName, $aDatas);
+    /**
+     * Update the {{templates}} and {{template_configuration}} entries of an installed theme using the template manifest.
+     * As for the import, a theme extending another one gets the values it doesn't define from its mother theme.
+     *
+     * @param string $themeName The name of the theme to update
+     * @param array<string, mixed> $data The manifest data, see TemplateManifest::getManifestData()
+     * @return boolean True on success
+     * @throws Exception If the theme is not installed or the data can't be saved
+     */
+    public static function updateFromManifestData($themeName, $data)
+    {
+        return parent::updateFromManifestData($themeName, self::completeManifestDataFromMotherTheme($data));
+    }
+
+    /**
+     * Complete the manifest data of a theme extending another one with the values of its mother theme.
+     *
+     * @param array<string, mixed> $data The manifest data, see TemplateManifest::getManifestData()
+     * @return array<string, mixed> The completed manifest data
+     */
+    protected static function completeManifestDataFromMotherTheme($data)
+    {
+        if (empty($data['extends'])) {
+            return $data;
+        }
+        $motherTheme = self::getInstanceFromTemplateName($data['extends']);
+        if (is_a($motherTheme, 'TemplateConfiguration')) {
+            $data['api_version']     = $motherTheme->template->api_version;
+            $data['view_folder']     = $motherTheme->template->view_folder;
+            $data['author_email']    = $motherTheme->template->author_email;
+            $data['author_url']      = $motherTheme->template->author_url;
+            $data['copyright']       = $motherTheme->template->copyright;
+            $data['version']         = $motherTheme->template->version;
+            $data['license']         = $motherTheme->template->license;
+            $data['files_folder']    = $motherTheme->template->files_folder;
+            $data['aOptions']        = (empty($data['aOptions']))
+                ? json_decode($motherTheme->options)
+                : $data['aOptions'];
+        }
+        return $data;
     }
 
     /**
