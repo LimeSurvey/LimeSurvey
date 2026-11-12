@@ -5,6 +5,7 @@ namespace LimeSurvey\Models\Services;
 use CDbException;
 use InvalidArgumentException;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\FilterPatcher;
+use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\CompletionFilter;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\ResponseMappingTrait;
 use LimeSurvey\Libraries\Api\Command\V1\Transformer\Output\TransformerOutputSurveyResponses;
 use LimeSurvey\Models\Services\Export\ExportAnswerFormatter;
@@ -35,6 +36,7 @@ class ExportSurveyResultsService
         'datestamp'     => ['key' => 'dateLastAction',  'header' => 'Date last action'],
         'ipaddr'        => ['key' => 'ipAddr',         'header' => 'IP address'],
         'refurl'        => ['key' => 'refUrl',         'header' => 'Referrer URL'],
+        'quota_exit'    => ['key' => 'quotaExit',      'header' => 'Quota exit'],
     ];
 
     protected $supportedExportTypes = ['csv', 'html'];
@@ -83,6 +85,14 @@ class ExportSurveyResultsService
 
     /** @var string 'long' for full translated answers, 'short' for raw answer codes. */
     protected $answerFormat = 'long';
+    protected string $completionFilter = 'all';
+
+    public function setCompletionFilter(string $completion): self
+    {
+        CompletionFilter::assertValid($completion);
+        $this->completionFilter = $completion;
+        return $this;
+    }
 
     /** @var string CSV field separator character. */
     protected $csvSeparator = ',';
@@ -317,8 +327,9 @@ class ExportSurveyResultsService
 
         // Compute active meta columns from fieldMap
         $metaColumns = [];
+        $model = SurveyDynamic::model($surveyId);
         foreach (self::META_COLUMN_MAP as $fieldMapKey => $meta) {
-            if (isset($this->transformerOutputSurveyResponses->fieldMap[$fieldMapKey])) {
+            if (isset($model->getTableSchema()->columns[$fieldMapKey])) {
                 $meta['header'] = gT($meta['header']);
                 $metaColumns[] = $meta;
             }
@@ -328,9 +339,15 @@ class ExportSurveyResultsService
         $writer = $this->getExportWriter($exportType);
         $writer->init($surveyQuestions, $metadata);
 
+        // buildFilterCriteria() may hand back $this->filterCriteria itself
         $filterCriteria = $this->buildFilterCriteria();
+        $filterCriteria = $filterCriteria === null ? new \CDbCriteria() : clone $filterCriteria;
+        CompletionFilter::apply(
+            $filterCriteria,
+            $this->completionFilter,
+            array_keys($model->getTableSchema()->columns)
+        );
         $totalCount = $this->getTotalResponseCount($surveyId, $filterCriteria);
-        $model = SurveyDynamic::model($surveyId);
 
         for ($offset = 0; $offset < $totalCount; $offset += $this->chunkSize) {
             $chunk = $this->fetchResponseChunkDirect($model, $offset, $this->chunkSize, $filterCriteria);

@@ -3,8 +3,12 @@
 namespace LimeSurvey\Models\Services\SurveyStatistics\Charts\Questions\Processors;
 
 use CDbConnection;
+use InvalidArgumentException;
+use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\CompletionFilter;
+use LimeSurvey\Models\Services\ResponseFilters\NumericRangeSql;
 use LimeSurvey\Models\Services\ResponseFilters\ResolvedFilter;
 use LimeSurvey\Models\Services\ResponseFilters\ResponseFilterSqlBuilder;
+use LimeSurvey\Models\Services\SurveyStatistics\ResponseConditionValues;
 use LimeSurvey\Models\Services\SurveyStatistics\StatisticsResponseFilters;
 use SurveyDynamic;
 
@@ -26,6 +30,7 @@ final class ResponseAggregateBatch
     public const MAX_EXPRESSIONS_PER_QUERY = 1500;
 
     private const MAX_MEDIANS_PER_QUERY = 100;
+    private const MAX_PARAMS_PER_QUERY = 2000;
 
     private const KIND_VALUE = 'value';
     private const KIND_JSON_ELEMENT = 'jsonElement';
@@ -40,7 +45,7 @@ final class ResponseAggregateBatch
     private const KIND_MAX = 'max';
 
     /** Plain decimal test for numeric answers stored in text columns */
-    private const NUMERIC_PATTERN = '^-?[0-9]*\.?[0-9]+$';
+    private const NUMERIC_PATTERN = NumericRangeSql::PATTERN;
 
     /** Separator joining the columns of a multi-field aggregate into one field key */
     private const FIELD_SEPARATOR = "\x1E";
@@ -268,7 +273,8 @@ final class ResponseAggregateBatch
             }
         }
 
-        foreach (array_chunk($selects, self::MAX_MEDIANS_PER_QUERY, true) as $chunk) {
+        $paramsPerSelect = count($params[0] ?? []);
+        foreach (array_chunk($selects, self::medianChunkSize($paramsPerSelect), true) as $chunk) {
             $chunkParams = [];
             foreach (array_keys($chunk) as $index) {
                 $chunkParams += $params[$index];
@@ -282,6 +288,13 @@ final class ResponseAggregateBatch
         }
     }
 
+    private static function medianChunkSize(int $paramsPerSelect): int
+    {
+        return $paramsPerSelect === 0
+            ? self::MAX_MEDIANS_PER_QUERY
+            : max(1, min(self::MAX_MEDIANS_PER_QUERY, intdiv(self::MAX_PARAMS_PER_QUERY, $paramsPerSelect)));
+    }
+
     /**
      * @return array{0: string, 1: array<string,mixed>}
      */
@@ -289,7 +302,7 @@ final class ResponseAggregateBatch
     {
         $col = $db->quoteColumnName($request['field']);
         $isNumericCell = $this->numericCellCheck($db, $request['field'], !empty($request['numeric']));
-        [$where, $whereParams] = $this->buildWhere();
+        [$where, $whereParams] = $this->buildWhere('_' . $alias);
         $where = $where === '' ? " WHERE $isNumericCell" : "$where AND $isNumericCell";
 
         $skip = intdiv($count - 1, 2);
@@ -483,9 +496,10 @@ final class ResponseAggregateBatch
      * condition, and the legacy one keeps its meaning.
      *
      * @return array{0: string, 1: array<string,mixed>} Clause, and the values
-     *     the caller has to bind.
+     *     the caller has to bind. The suffix keeps placeholders unique when
+     *     several selects are merged into one statement.
      */
-    private function buildWhere(): array
+    private function buildWhere(string $suffix = ''): array
     {
         $conditions = $this->legacyConditions();
         $params = [];
@@ -494,6 +508,15 @@ final class ResponseAggregateBatch
         if ($resolved['condition'] !== '') {
             $conditions[] = '(' . $resolved['condition'] . ')';
             $params = $resolved['params'];
+        }
+
+        if ($this->filters !== null && !empty($this->filters->getFilters()['conditions'])) {
+            [$responseConditions, $conditionParams] = $this->buildResponseConditions(
+                $this->filters->getFilters()['conditions'],
+                $suffix
+            );
+            $conditions = array_merge($conditions, $responseConditions);
+            $params += $conditionParams;
         }
 
         return [$conditions ? (' WHERE ' . implode(' AND ', $conditions)) : '', $params];
@@ -516,6 +539,10 @@ final class ResponseAggregateBatch
         if (isset($filters['completed'])) {
             $conditions[] = 'submitdate IS' . ($filters['completed'] ? ' NOT ' : ' ') . 'NULL';
         }
+        $completionCondition = $this->buildCompletionCondition($filters);
+        if ($completionCondition !== null) {
+            $conditions[] = $completionCondition;
+        }
 
         if (isset($filters['minId'])) {
             $conditions[] = 'id >= ' . (int)$filters['minId'];
@@ -530,6 +557,110 @@ final class ResponseAggregateBatch
         }
 
         return $conditions;
+    }
+
+    private function buildCompletionCondition(array $filters): ?string
+    {
+        if (!isset($filters['completion'])) {
+            return null;
+        }
+        return CompletionFilter::predicate(
+            $filters['completion'],
+            isset(SurveyDynamic::model($this->surveyId)->getTableSchema()->columns['quota_exit'])
+        );
+    }
+
+    /**
+     * @return array{0: string[], 1: array<string,mixed>}
+     * @throws InvalidArgumentException on a column that may not be filtered on or a value
+     *     the column cannot hold
+     */
+    private function buildResponseConditions(array $filters, string $suffix = ''): array
+    {
+        $schema = SurveyDynamic::model($this->surveyId)->getTableSchema();
+        $conditions = [];
+        $params = [];
+        foreach ($filters as $index => $filter) {
+            $key = (string)$filter['key'];
+            // Permission for token was checked when the filters were built
+            if (!ResponseConditionValues::isTokenKey($key) && !ResponseConditionValues::isAllowedKey($key)) {
+                throw new InvalidArgumentException('Responses cannot be filtered on column: ' . $key);
+            }
+            $field = in_array($key, ['quotaExit', 'quota_exit'], true) ? 'quota_exit' : $key;
+            if (!isset($schema->columns[$field])) {
+                throw new InvalidArgumentException('Unknown response column: ' . $field);
+            }
+            $column = $schema->columns[$field];
+            $kind = ResponseConditionValues::kindOf((string)$column->type, (string)$column->dbType);
+            $bigint = ResponseConditionValues::isBigint((string)$column->dbType);
+            $col = $this->getDb()->quoteColumnName($field);
+            $prefix = ':condition' . $suffix . '_' . $index . '_';
+
+            if ($filter['filterMethod'] === 'range') {
+                [$rangeCondition, $rangeParams] = $this->buildRangeCondition(
+                    $col,
+                    $kind,
+                    ResponseConditionValues::rangeBounds($filter['value'], $kind, $bigint),
+                    $prefix
+                );
+                $conditions[] = $rangeCondition;
+                $params += $rangeParams;
+                continue;
+            }
+
+            $values = $filter['filterMethod'] === 'equal' ? [$filter['value']] : $filter['value'];
+            if (!is_array($values) || !$values) {
+                throw new InvalidArgumentException('Invalid response condition values');
+            }
+            $alternatives = [];
+            foreach (array_values($values) as $position => $value) {
+                $normalized = ResponseConditionValues::equalValue($value, $kind, $bigint);
+                $holder = $prefix . $position;
+                if ($kind === ResponseConditionValues::KIND_DATETIME && ResponseConditionValues::dateValue($normalized)[1]) {
+                    // A date matches the whole day of a datetime column
+                    $nextHolder = $holder . 'n';
+                    $alternatives[] = "($col >= $holder AND $col < $nextHolder)";
+                    $params[$holder] = $normalized;
+                    $params[$nextHolder] = date('Y-m-d', strtotime($normalized . ' +1 day'));
+                    continue;
+                }
+                $alternatives[] = "$col = $holder";
+                $params[$holder] = $normalized;
+            }
+            $conditions[] = count($alternatives) === 1 ? $alternatives[0] : '(' . implode(' OR ', $alternatives) . ')';
+        }
+        return [$conditions, $params];
+    }
+
+    /**
+     * Range predicate matching RangeConditionHandler: an empty bound leaves
+     * that side open, so it is never bound into BETWEEN.
+     *
+     * Date/datetime and integer columns compare directly, anything else
+     * (numeric answers stored as text) goes through NumericRangeSql. The
+     * bounds are already validated by ResponseConditionValues::rangeBounds().
+     *
+     * @param array{0: ?string, 1: ?string, 2: bool} $bounds min, max, max exclusive
+     * @return array{0: string, 1: array<string,string>}
+     */
+    private function buildRangeCondition(string $col, string $kind, array $bounds, string $holderPrefix): array
+    {
+        [$min, $max, $maxExclusive] = $bounds;
+        $number = $kind !== ResponseConditionValues::KIND_TEXT ? $col : NumericRangeSql::expression($this->getDb(), $col);
+        $minHolder = $holderPrefix . '0';
+        $maxHolder = $holderPrefix . '1';
+        $maxOperator = $maxExclusive ? '<' : '<=';
+
+        if ($min === null) {
+            return ["$number $maxOperator $maxHolder", [$maxHolder => $max]];
+        }
+        if ($max === null) {
+            return ["$number >= $minHolder", [$minHolder => $min]];
+        }
+        if ($maxExclusive) {
+            return ["($number >= $minHolder AND $number < $maxHolder)", [$minHolder => $min, $maxHolder => $max]];
+        }
+        return ["$number BETWEEN $minHolder AND $maxHolder", [$minHolder => $min, $maxHolder => $max]];
     }
 
     /**
