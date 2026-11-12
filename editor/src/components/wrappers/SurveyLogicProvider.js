@@ -215,7 +215,7 @@ export const SurveyLogicProvider = ({ children }) => {
       setSaveState(
         format(
           t('Saved at %s'),
-          dayJsHelper(new Date().getTime()).format('hh:mm')
+          dayJsHelper(new Date().getTime()).format('HH:mm')
         )
       )
       setErrorsFromPatchResponse([...validationErrors, ...exceptionErrors])
