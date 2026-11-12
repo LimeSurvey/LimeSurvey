@@ -170,14 +170,6 @@ export const useQuestionChildren = ({
   }
 
   /**
-   * Deletes an answer or subquestion.
-   *
-   * @param {number|string} childId ID of the answer or subquestion
-   * @param {Object[]} childArray the current answers or subquestions
-   * @param {string} entityType Entities.answer or Entities.subquestion
-   * @returns {void}
-   */
-  /**
    * Returns the code an answer or subquestion has in the question itself. The
    * children passed to the handlers are copied from the question one render
    * later, so while typing fast they can still have an older code. The image
@@ -201,6 +193,14 @@ export const useQuestionChildren = ({
     return (currentChild ?? child)[codeKey]
   }
 
+  /**
+   * Deletes an answer or subquestion.
+   *
+   * @param {number|string} childId ID of the answer or subquestion
+   * @param {Object[]} childArray the current answers or subquestions
+   * @param {string} entityType Entities.answer or Entities.subquestion
+   * @returns {void}
+   */
   const handleChildDelete = (childId, childArray = [], entityType) => {
     const childKey = entityType === Entities.answer ? 'answers' : 'subquestions'
     const idKey = entityType === Entities.answer ? 'aid' : 'qid'
