@@ -39,6 +39,14 @@
     <div class="col-md-8"><a href="<?php echo $metadata->authorUrl; ?>" target="_blank"><?php echo $metadata->authorUrl; ?></a></div>
 </div>
 
+<!-- Documentation -->
+<?php if (trim((string) $metadata->documentationUrl) !== '') : ?>
+    <div class="row mb-2">
+        <div class="col-md-4 text-end fw-bold"><?php eT("Documentation:"); ?></div>
+        <div class="col-md-8"><a href="<?php echo CHtml::encode($metadata->documentationUrl); ?>" target="_blank" rel="noopener"><?php echo CHtml::encode($metadata->documentationUrl); ?></a></div>
+    </div>
+<?php endif; ?>
+
 <!-- Version -->
 <div class="row mb-2">
     <div class="col-md-4 text-end fw-bold"><?php eT("Version:"); ?></div>

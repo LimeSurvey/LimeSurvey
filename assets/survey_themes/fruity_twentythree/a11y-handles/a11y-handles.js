@@ -40,6 +40,55 @@ const A11yHandles = {
 	},
 };
 
+/**
+ * Hides the keyboard focus ring while the participant uses a mouse or touch, and shows it again
+ * as soon as they navigate with the keyboard. The mode is kept across pages in the session storage.
+ * Without JavaScript the class is never set, so the focus ring always stays visible.
+ */
+const initNavigationMode = function initNavigationMode() {
+	const pointerClass = 'ls-pointer-nav';
+	const storageKey = 'lsNavigationMode';
+	// Keys that move the focus or change a choice
+	const navigationKeys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Home', 'End', 'PageUp', 'PageDown', ' '];
+	const textEntrySelector = 'textarea, [contenteditable]:not([contenteditable="false"]), ' +
+		'input:not([type="radio"]):not([type="checkbox"]):not([type="button"]):not([type="submit"])' +
+		':not([type="reset"]):not([type="image"]):not([type="range"]):not([type="file"]):not([type="color"])';
+
+	const setMode = function setMode(mode) {
+		document.documentElement.classList.toggle(pointerClass, mode === 'pointer');
+		try {
+			sessionStorage.setItem(storageKey, mode);
+		} catch (e) {
+			// Storage can be unavailable (private mode, blocked site data): The mode then only lasts for this page
+		}
+	};
+
+	try {
+		if (sessionStorage.getItem(storageKey) === 'pointer') {
+			document.documentElement.classList.add(pointerClass);
+		}
+	} catch (e) {
+		// See setMode()
+	}
+
+	document.addEventListener('pointerdown', function () {
+		setMode('pointer');
+	}, true);
+	document.addEventListener('keydown', function (event) {
+		if (event.key === 'Tab') {
+			setMode('keyboard');
+			return;
+		}
+		// Arrow keys, Space etc. inside a text field edit the text instead of navigating
+		if (navigationKeys.includes(event.key) && !(event.target.matches && event.target.matches(textEntrySelector))) {
+			setMode('keyboard');
+		}
+	}, true);
+};
+
+// Document-level listeners: Register only once, they survive the ajax page loads
+initNavigationMode();
+
 $(document).on('ready pjax:scriptcomplete', function () {
 	A11yHandles.initLiveRegion();
 	A11yHandles.handleTooltip();

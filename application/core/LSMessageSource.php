@@ -106,6 +106,34 @@ class LSMessageSource extends CMessageSource
     }
 
     /**
+     * Translates a gettext plural message (msgid / msgid_plural) and picks the form for $count
+     *
+     * Plural entries are stored in the catalog as "singular\0plural" => "form0\0form1\0...",
+     * the form is chosen by the Plural-Forms header of the catalog.
+     * Falls back to the English source text if there is no translation.
+     *
+     * @param string $singular the source text for one item
+     * @param string $plural the source text for several items
+     * @param int $count the number of items
+     * @param string|null $language the target language, defaults to the application language
+     * @return string
+     */
+    public function translatePlural(string $singular, string $plural, int $count, ?string $language = null): string
+    {
+        $id = $singular . "\0" . $plural;
+        $translation = $this->translate('', $id, $language);
+        if ($translation !== $id) {
+            $forms = explode("\0", $translation);
+            $index = LSGettextPluralForms::getFormIndex($this->translate('', '', $language), $count);
+            $form = $forms[min($index, count($forms) - 1)];
+            if ($form !== '') {
+                return $form;
+            }
+        }
+        return $count === 1 ? $singular : $plural;
+    }
+
+    /**
      * @see CDbMessageSource::getDbConnection
      * @throws CException if {@link connectionID} application component is invalid
      * @return CDbConnection the DB connection used for the message source.

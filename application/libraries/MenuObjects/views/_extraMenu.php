@@ -31,8 +31,9 @@ foreach ($extraMenus as $menu) : ?>
                             data-bs-toggle="dropdown"
                             aria-expanded="false"
                             aria-haspopup="true"
-                            aria-label="<?= $menuLabel ?>">
+                            title="<?= CHtml::encode($menuLabel) ?>">
                         <i class="<?= $menuIconClass ?>" aria-hidden="true"></i>
+                        <span class="dropdown-button-label visually-hidden"><?= CHtml::encode($menuLabel) ?></span>
                     </button>
                     <?php
                 } else { ?>
@@ -45,7 +46,6 @@ foreach ($extraMenus as $menu) : ?>
                         <?= $menuLabel ?>
                     </a>
                 <?php }?>
-                <span class="sr-only">new survey... </span>
                 <ul class="dropdown-menu" <?= $ariaLabelledBy ?>>
                     <?php
                     foreach ($menu->getMenuItems() as $menuItem) : ?>

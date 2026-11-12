@@ -571,6 +571,10 @@ function populateDatabase($oDB)
             }
             $oDB->createCommand()->insert("{{surveymenu}}", $surveyMenuRow);
         }
+        // The default menus have fixed ids, so the PostgreSQL sequence must be moved past them
+        if ($oDB->getDriverName() === 'pgsql') {
+            $oDB->createCommand("SELECT setval(pg_get_serial_sequence('{{surveymenu}}', 'id'), (SELECT MAX(id) FROM {{surveymenu}}))")->execute();
+        }
 
         // Surveymenu entries
 

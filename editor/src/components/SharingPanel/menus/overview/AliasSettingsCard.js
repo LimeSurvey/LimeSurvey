@@ -23,6 +23,7 @@ export const AliasSettingsCard = ({
           onAliasChange={onAliasChange}
           setLink={setLink}
           language={selectedLanguage}
+          showPluginActions
           currentSurveyAccessMode={
             survey?.access_mode || ACCESS_MODES.OPEN_TO_ALL
           }

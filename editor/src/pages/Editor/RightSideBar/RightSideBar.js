@@ -4,11 +4,11 @@ import { useParams } from 'react-router-dom'
 
 import { STATES } from 'helpers'
 import { getSurveyPanels } from 'helpers/options'
-import { QuestionSettings } from 'components/QuestionSettings/QuestionSettings'
 import { WelcomeSettings } from 'components/WelcomeSettings/WelcomeSettings'
 import { GroupSettings } from 'components/GroupSettings/GroupSettings'
 import { getQuestionTypeInfo } from 'components/QuestionTypes'
 import { EndScreenSettings } from 'components/EndScreenSettings/EndScreenSettings'
+import { QuestionSettings } from 'components/QuestionSettings/QuestionSettings'
 
 export const RightSideBar = ({ surveyId }) => {
   const { panel } = useParams()
@@ -16,6 +16,7 @@ export const RightSideBar = ({ surveyId }) => {
     STATES.IS_ADDING_QUESTION_OR_GROUP,
     false
   )
+
   const { focused, groupIndex, questionIndex } = useFocused()
   const shouldDisplay = focused && Object.keys(focused).length > 0
 

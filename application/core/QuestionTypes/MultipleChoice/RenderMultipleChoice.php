@@ -1,5 +1,7 @@
 <?php
 
+use LimeSurvey\Models\Services\SurveySessionState;
+
 /**
  * RenderClass for Boilerplate Question
  *  * The ia Array contains the following
@@ -35,6 +37,12 @@ class RenderMultipleChoice extends QuestionBaseRenderer
 
     /** @var string the text for the "Other" option */
     protected $otherText;
+
+    /** @var string|null id of the shown "please specify" tip, computed once per render */
+    private $otherMandatoryTipId;
+
+    /** @var bool|null whether Other is ticked without text after a blocked submit, computed once per render */
+    private $otherInvalid;
 
     const OTHER_POS_END = 'end';
     const OTHER_POS_START = 'beginning';
@@ -142,13 +150,18 @@ class RenderMultipleChoice extends QuestionBaseRenderer
         ];
     }
 
+    /**
+     * Returns the template data of the "Other" option row.
+     *
+     * @return array
+     */
     public function getOtherRow()
     {
         $sSeparator = (getRadixPointData($this->oQuestion->survey->correct_relation_defaultlanguage->surveyls_numberformat))['separator'];
         $oth_checkconditionFunction = ($this->getQuestionAttribute('other_numbers_only') == 1) ? "fixnum_checkconditions" : "checkconditions";
 
         $myfname = $this->sSGQA . '_Cother';
-        $mSessionValue = $this->setDefaultIfEmpty($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname], '');
+        $mSessionValue = $this->setDefaultIfEmpty(SurveySessionState::forSurvey((int) Yii::app()->getConfig('surveyID'))->getFieldValue($myfname), '');
         $this->inputnames[] = $myfname;
 
         $sValue = '';
@@ -199,6 +212,8 @@ class RenderMultipleChoice extends QuestionBaseRenderer
             'checkedState'               => (
                 $mSessionValue != '' || LimeExpressionManager::isOtherCheckedWithoutValue($myfname) ? CHECKED : ''
             ),
+            'otherMandatoryTipId'        => $this->getOtherMandatoryTipId(),
+            'otherInvalid'               => $this->isOtherInvalid(),
             'relevanceClass'             => $this->getCurrentRelevecanceClass($myfname),
             'other'                      => true,
             'anscount'                   => $this->getQuestionCount(),
@@ -208,6 +223,32 @@ class RenderMultipleChoice extends QuestionBaseRenderer
         );
     }
 
+
+    /**
+     * Id of the "please specify" mandatory tip while it is shown, else empty. The Other text field is described by it.
+     * @return string
+     */
+    protected function getOtherMandatoryTipId()
+    {
+        if ($this->otherMandatoryTipId === null) {
+            $status = LimeExpressionManager::GetQuestionStatus($this->oQuestion->qid);
+            $this->otherMandatoryTipId = !empty($status['mandViolation']) && isMandatoryMessageShown() ? 'mandatory-other-' . $this->oQuestion->qid : '';
+        }
+        return $this->otherMandatoryTipId;
+    }
+
+    /**
+     * The submit was blocked because Other is ticked without text
+     * @return bool
+     */
+    protected function isOtherInvalid()
+    {
+        if ($this->otherInvalid === null) {
+            $this->otherInvalid = $this->getOtherMandatoryTipId() !== ''
+                && LimeExpressionManager::isOtherCheckedWithoutValue($this->sSGQA . '_Cother');
+        }
+        return $this->otherInvalid;
+    }
 
     public function render($sCoreClasses = '')
     {
@@ -234,6 +275,8 @@ class RenderMultipleChoice extends QuestionBaseRenderer
             'otherTextRight'   => $otherTextRight,
             'otherInputSize'   => $otherInputSize,
             'otherMaxLength'   => $otherMaxLength,
+            'otherMandatoryTipId' => $this->getOtherMandatoryTipId(),
+            'otherInvalid'     => $this->isOtherInvalid(),
         ), true);
 
         $this->registerAssets();

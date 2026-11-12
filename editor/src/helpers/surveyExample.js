@@ -51,7 +51,6 @@ export const surveyExample = {
   showProgress: null,
   questionIndex: -1,
   navigationDelay: -1,
-  noKeyboard: null,
   allowedItAfterCompletion: null,
   googleAnalyticsStyle: 0,
   googleAnalyticsApiKey: null,

@@ -2,7 +2,11 @@ import { useState, useEffect, useLayoutEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button, Card, Container } from 'react-bootstrap'
 
-import { ContentEditor, PublicSurveyAlias } from 'components'
+import {
+  ContentEditor,
+  PublicSurveyAlias,
+  SurveyDatabaseAlert,
+} from 'components'
 import { ACCESS_MODES, PAGES, SURVEY_MENU_TITLES } from 'helpers'
 import { useStatisticsAtGlance } from 'hooks'
 import { getSharingPanels } from 'shared/getSharingPanels'
@@ -36,17 +40,18 @@ export const SurveyOverview = ({
     statistics = {},
     refetch,
     isFetching,
-  } = useStatisticsAtGlance(survey?.sid)
-
+  } = useStatisticsAtGlance(survey?.sid, {
+    enabled: survey?.active === true && survey?.hasResponsesTable === true,
+  })
   const surveyTitle = survey?.languageSettings?.[survey?.language]?.title
   const dateCreated = new Date(survey.dateCreated)
 
   useEffect(() => {
     // Refetch statistics every time the modal opens
-    if (survey?.sid) {
+    if (survey?.sid && survey?.hasResponsesTable === true) {
       refetch()
     }
-  }, [survey?.sid, refetch])
+  }, [survey?.sid, survey?.hasResponsesTable, refetch])
 
   const numberRefs = useRef([])
   const statsRef = useRef(null)
@@ -101,6 +106,11 @@ export const SurveyOverview = ({
       ) : (
         <>
           <div className="overview-section overview-main-section w-75">
+            {survey.active && survey.hasResponsesTable === false && (
+              <div className="row mb-4 px-3">
+                <SurveyDatabaseAlert />
+              </div>
+            )}
             {toastMessage && (
               <div className="row mb-4 px-3">
                 <OverViewToast message={toastMessage} />
@@ -117,7 +127,7 @@ export const SurveyOverview = ({
                       className="reg28 text-nowrap"
                       ref={(el) => (numberRefs.current[0] = el)}
                     >
-                      {statistics.totalResponses}
+                      {statistics.totalResponses ?? 0}
                     </span>
                     <div className="reg14-container">
                       <span className="reg14">{t('Total responses')}</span>
@@ -132,8 +142,8 @@ export const SurveyOverview = ({
                       className="reg28 text-nowrap"
                       ref={(el) => (numberRefs.current[1] = el)}
                     >
-                      {statistics.totalResponses -
-                        statistics.incompleteResponses}
+                      {(statistics.totalResponses ?? 0) -
+                        (statistics.incompleteResponses ?? 0)}
                     </span>
                     <div className="reg14-container">
                       <span className="reg14">{t('Full responses')}</span>
@@ -144,7 +154,7 @@ export const SurveyOverview = ({
               <div className="overview-stat-card">
                 <Card className="h-68 w-100">
                   <Card.Body className="d-flex flex-row flex-nowrap align-items-center gap-8px">
-                    {statistics.completionRate ? (
+                    {(statistics.completionRate ?? 0) ? (
                       <>
                         <span
                           className="reg28 text-nowrap"
@@ -171,7 +181,7 @@ export const SurveyOverview = ({
                       className="reg28 text-nowrap"
                       ref={(el) => (numberRefs.current[3] = el)}
                     >
-                      {statistics.incompleteResponses}
+                      {statistics.incompleteResponses ?? 0}
                     </span>
                     <div className="reg14-container">
                       <span className="reg14">{t('Incomplete responses')}</span>

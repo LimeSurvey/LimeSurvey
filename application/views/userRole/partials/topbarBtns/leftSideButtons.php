@@ -11,7 +11,7 @@ $this->widget(
             'class' => 'btn btn-primary RoleControl--action--openmodal',
             'data-href' => App()->createUrl("userRole/editRoleModal"),
             'data-bs-toggle' => 'modal',
-            'title' => gT('Add a new permission role')
+            'title' => gT('Add a new user role')
         ],
     ]
 );
@@ -27,7 +27,7 @@ $this->widget(
             'class' => 'btn btn-outline-secondary RoleControl--action--openmodal',
             'data-href' => App()->createUrl("userRole/showImportXML"),
             'data-bs-toggle' => 'modal',
-            'title' => gT('Import permission role from XML')
+            'title' => gT('Import user role from XML')
         ],
     ]
 );

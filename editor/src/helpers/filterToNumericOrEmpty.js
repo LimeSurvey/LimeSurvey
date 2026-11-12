@@ -1,5 +1,5 @@
 /**
- * Empty stings or numeric values will be returned as they came in. Everything else will be returned as an empty string.
+ * Empty strings or numeric values will be returned as they came in. Everything else will be returned as an empty string.
  * Used for numeric inputs in the survey view mode to mimic the behaviour of the actual survey.
  * @param value
  * @returns {*|string}

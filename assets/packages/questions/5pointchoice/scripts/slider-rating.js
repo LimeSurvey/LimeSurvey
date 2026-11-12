@@ -65,11 +65,32 @@ function getRatingSlider(qID){
     //Method setting the value on the EM-calculateable part
     setValueAndColorize = function(index){
       answersList.find('input[type=radio][value='+index+']').trigger('click');
-      $("#emoji_slider_container_"+qID).find(".slider-label").find('i').removeClass('emoji-color'); //remove all other color-classes
-      $("#emoji_slider_container_"+qID).find(".slider-label-"+index).find('i').addClass('emoji-color');
+      colorize(index);
       if(index==6){ //"no answer" position
          answersList.find('input[type=radio][value=""]').trigger('click');
       }
+    },
+    //Method highlighting the emoji of the given position
+    colorize = function(index){
+      $("#emoji_slider_container_"+qID).find(".slider-label").find('i').removeClass('emoji-color'); //remove all other color-classes
+      $("#emoji_slider_container_"+qID).find(".slider-label-"+index).find('i').addClass('emoji-color');
+    },
+    //Method returning the slider position of a radio button ("no answer" is position 6)
+    getIndexFromRadio = function(radio){
+      return $(radio).val() === "" ? 6 : $(radio).val();
+    },
+    //Method updating the slider when the hidden radio buttons are changed by keyboard
+    onRadioChange = function(){
+      var index = getIndexFromRadio(this);
+      colorize(index);
+      setSliderPosition(getSliderPositionFromIndex(index), package.sliderGrabContainer);
+    },
+    //Method marking the emoji of the hidden radio button that has the keyboard focus
+    onRadioFocus = function(){
+      $("#emoji_slider_container_"+qID).find(".slider-label-"+getIndexFromRadio(this)).addClass('slider-label-focused');
+    },
+    onRadioBlur = function(){
+      $("#emoji_slider_container_"+qID).find(".slider-label").removeClass('slider-label-focused');
     },
     //Method to unset all events on dragend
     onEndDrag = function(e){
@@ -139,6 +160,8 @@ function getRatingSlider(qID){
       });
     //Bind events for clicking on the labels
       $("#emoji_slider_container_"+qID).find('.slider-label').on('click',onSetHandlePosition);
+    //Keep the slider in sync with the hidden radio buttons, which remain usable by keyboard
+      answersList.find('input[type=radio]').on('change', onRadioChange).on('focus', onRadioFocus).on('blur', onRadioBlur);
     },
     pinUpHtml = function(){
       //Fill the inner Element with the labels

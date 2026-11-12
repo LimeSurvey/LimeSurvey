@@ -322,7 +322,8 @@ class Zend_Session_SaveHandler_DbTable
 
         if (count($rows)) {
             if ($this->_getExpirationTime($row = $rows->current()) > time()) {
-                $return = $row->{$this->_dataColumn};
+                // a NULL data column must not reach PHP as null, read() has to return a string
+                $return = (string) $row->{$this->_dataColumn};
             } else {
                 $this->destroy($id);
             }

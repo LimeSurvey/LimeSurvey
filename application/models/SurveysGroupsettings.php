@@ -100,6 +100,7 @@ class SurveysGroupsettings extends LSActiveRecord
         $validator = new LSYii_Validators();
         return array(
             array('autonumber_start, showsurveypolicynotice, tokenlength, questionindex, navigationdelay, owner_id', 'numerical', 'integerOnly' => true),
+            array('tokenlength', 'in', 'range' => Survey::getValidTokenLengths(), 'skipOnError' => true, 'message' => Survey::getInvalidTokenLengthMessage()),
             array('showregisterpolicy', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => false),
             array('showtokenpolicy', 'in', 'range' => array('Y', 'N', 'I'), 'allowEmpty' => false),
             array('admin', 'length', 'max' => 50),
@@ -484,7 +485,7 @@ class SurveysGroupsettings extends LSActiveRecord
             $this->$attribute = -1;
         }
         foreach ($this->optionAttributesChar as $attribute) {
-            //Some attribute created at specifc DBVersion
+            //Some attribute created at specific DBVersion
             $dbversion = App()->getConfig('DBVersion');
             if (
                 !($attribute === 'ipanonymize' && $dbversion < 412)

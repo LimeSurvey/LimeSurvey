@@ -64,7 +64,7 @@ echo viewHelper::getViewTestTag('surveyMenus');
                 </div>
             </div>
 
-            <!-- Survey Menue Entries -->
+            <!-- Survey Menu Entries -->
             <div id="surveymenuentries" class="tab-pane" role="tabpanel" aria-labelledby="menueslist-tab-surveymenuentries">
                 <?php App()->getController()->renderPartial('surveymenu_entries/index', ['model' => $entries_model]); ?>
             </div>

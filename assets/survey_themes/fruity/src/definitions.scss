@@ -2950,7 +2950,9 @@ body {
 
     /* INput errors*/
 
-    .input-error input {
+    /* Inputs with their own subquestion validation are only marked when they are invalid themselves */
+    .input-error input:not(.em_sq_validation),
+    .input-error input.has-warning {
         border: 1px solid $color_warning;
         color:  $color_warning;
 

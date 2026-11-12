@@ -14,7 +14,7 @@ class MandatorySoftTest extends TestBaseClassWeb
 {
 
     /*
-     * Check basic mandatory soft functionnality with multiple page
+     * Check basic mandatory soft functionality with multiple page
      * Warning : some part came for Vanilla theme with a lot of JS
      * @since 2023-05-09
      **/
@@ -42,7 +42,7 @@ class MandatorySoftTest extends TestBaseClassWeb
             /* Check if question Q00 mandatoiry are shown */
             $MandatoryTip = trim(self::$webDriver->findElement(WebDriverBy::cssSelector('#question' . $questions['Q00']->qid . ' .ls-question-mandatory'))->getText());
             $this->assertEquals("Please note that you have not answered this question. You may continue without answering.", $MandatoryTip);
-            /* Find the action button (theme dependant ?) */
+            /* Find the action button (theme dependent ?) */
             $this->assertTrue(
                 !empty(self::$webDriver->findElement(WebDriverBy::id('mandatory-soft-alert-box-modal'))),
                 'Unable to find the action button after try to submit'

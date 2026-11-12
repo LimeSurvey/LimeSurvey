@@ -34,11 +34,13 @@
         </li>
 
         <!-- from LDAP query -->
-        <li role="none">
-            <a class="pjax dropdown-item" role="menuitem" href="<?php echo Yii::App()->createUrl("admin/tokens/sa/importldap/surveyid/$oSurvey->sid") ?>" >
-                <span class="ri-download-2-fill" aria-hidden="true"></span>
-                <?php eT("LDAP query"); ?>
-            </a>
-        </li>
+        <?php if ($isLdapImportAvailable) : ?>
+            <li role="none">
+                <a class="pjax dropdown-item" role="menuitem" href="<?php echo Yii::App()->createUrl("admin/tokens/sa/importldap/surveyid/$oSurvey->sid") ?>" >
+                    <span class="ri-download-2-fill" aria-hidden="true"></span>
+                    <?php eT("LDAP query"); ?>
+                </a>
+            </li>
+        <?php endif; ?>
     <?php endif; ?>
 </ul>

@@ -5,10 +5,14 @@ import {
   getLogicAttributes,
   getDisplayAttributes,
   getGeneralAttributes,
+  getOtherAttributes,
   getTimerAttributes,
-  getLocationAttributes,
 } from '../attributes'
 
+/**
+ * Attributes shown in the simple settings section of a browser detection question.
+ * @returns {Object[]} Attribute definitions.
+ */
 const simpleSettings = () => {
   const generalAttributes = getGeneralAttributes()
   const displayAttributes = getDisplayAttributes()
@@ -20,7 +24,6 @@ const simpleSettings = () => {
     generalAttributes.LOGIC,
     displayAttributes.SHOW_PLATFORM_INFORMATION,
     getStatisticsAttributes().SHOW_IN_STATISTICS,
-    getLocationAttributes().USE_MAPPING_SERVICE,
   ]
 }
 
@@ -41,7 +44,7 @@ const displaySettings = () => {
     displayAttributes.ALWAYS_HIDE_THIS_QUESTION,
     displayAttributes.CSS_CLASSES,
     displayAttributes.SHOW_PLATFORM_INFORMATION,
-    displayAttributes.PAGE_BREAK_IN_PRINTABLE_VIEW,
+    getOtherAttributes().INSERT_PAGE_BREAK_IN_PRINTABLE_VIEW,
     displayAttributes.PLACEHOLDER_ANSWER,
   ]
 }
@@ -75,18 +78,22 @@ const themeOptionsSettings = () => {
   return []
 }
 
+/**
+ * Browser detection questions have no file metadata settings.
+ * @returns {Object[]} Empty list.
+ */
 const fileMetaDataSettings = () => {
   return []
-}
-
-const locationSettings = () => {
-  return Object.values(getLocationAttributes())
 }
 
 const sliderSettings = () => {
   return []
 }
 
+/**
+ * Returns the settings sections of the browser detection question type.
+ * @returns {{title: string, attributes: Object[]}[]} Settings sections.
+ */
 export const getBrowserDetectionSettings = () => {
   return [
     {
@@ -115,10 +122,6 @@ export const getBrowserDetectionSettings = () => {
     {
       title: getQuestionAttributesTitles().FILE_META_DATA,
       attributes: fileMetaDataSettings(),
-    },
-    {
-      title: getQuestionAttributesTitles().LOCATION,
-      attributes: locationSettings(),
     },
     {
       title: getQuestionAttributesTitles().SLIDER,

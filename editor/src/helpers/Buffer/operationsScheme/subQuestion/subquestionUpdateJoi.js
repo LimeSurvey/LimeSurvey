@@ -44,7 +44,7 @@ export const subquestionUpdateJoi = Joi.object({
                 .try(Joi.string(), Joi.number())
                 .optional(),
               question: Joi.string().allow(''),
-              help: Joi.string().allow(''),
+              help: Joi.string().allow('', null),
               script: Joi.any().allow(null),
               language: Joi.string().required(),
             })
@@ -53,6 +53,7 @@ export const subquestionUpdateJoi = Joi.object({
         attributes: Joi.array().items(Joi.any()).required(),
         answers: Joi.array().items(Joi.any()).required(),
         subquestions: Joi.array().items(Joi.any()).optional(),
+        scenarios: Joi.array().items(Joi.any()).optional(),
       })
     )
     .min(0)

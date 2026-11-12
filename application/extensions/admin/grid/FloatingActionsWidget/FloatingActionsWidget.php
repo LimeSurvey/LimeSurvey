@@ -47,6 +47,15 @@ class FloatingActionsWidget extends CWidget
      */
     public $selectAllUrl;
 
+    /**
+     * Show a "Select all" button for a grid with "Select all" enabled
+     * (CLSGridView::$lsSelectAllEnabled). It selects the whole result set; the actions
+     * then post a selectAll flag plus the grid filters instead of the selected ids.
+     *
+     * @var bool
+     */
+    public $lsSelectAllEnabled = false;
+
     /** Modal view names available in MassiveActionsWidget/views/modals/ */
     private const MODAL_VIEW_NAMES = [
         'yes-no',
@@ -157,6 +166,18 @@ class FloatingActionsWidget extends CWidget
     // -------------------------------------------------------------------------
     // Public helpers (called from the view)
     // -------------------------------------------------------------------------
+
+    /**
+     * HTML-encode an action label without double-encoding existing entities.
+     * Labels usually come from gT(), which already HTML-escapes by default.
+     *
+     * @param string $text  Action label
+     * @return string
+     */
+    public function encodeLabel(string $text): string
+    {
+        return htmlspecialchars($text, ENT_QUOTES, Yii::app()->charset, false);
+    }
 
     /**
      * Build a unique modal DOM ID for the given action key and action name.

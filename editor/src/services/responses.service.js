@@ -19,14 +19,16 @@ export class ResponseService {
     sid,
     options = {
       pagination: { pageIndex: 0, pageSize: 10 },
-      filters: [],
+      filters: {},
       sorting: [],
+      filterSet: [],
     }
   ) => {
     const {
       pagination = { pageIndex: 0, pageSize: 10 },
-      filters = [],
+      filters = {},
       sorting = [],
+      filterSet = [],
     } = options
 
     const body = {
@@ -35,7 +37,12 @@ export class ResponseService {
         pageSize: pagination.pageSize,
       },
       sort: {},
-      filters: [],
+    }
+
+    // The condition-designer filter. Sent only when there is one, so requests
+    // without it stay exactly as they were.
+    if (filterSet.length > 0) {
+      body.filterSet = filterSet
     }
 
     if (sorting.length > 0 && sorting[0].id) {
@@ -46,6 +53,7 @@ export class ResponseService {
       ([, { value, filterMethod: type, keys }]) => {
         if (!value?.length && !value) return
 
+        body.filters = body.filters || []
         body.filters.push({
           key: keys[0],
           filterMethod: type,
@@ -59,5 +67,22 @@ export class ResponseService {
 
   getResponsesOverview = async (sid) => {
     return await this.restClient.get(`statistics-overview/${sid}`)
+  }
+
+  exportResponses = async (options) => {
+    const { filterSet = [], ...restOptions } = options
+    const body = { ...restOptions }
+
+    if (filterSet.length > 0) {
+      body.filterSet = filterSet
+    }
+
+    return await this.restClient.post(
+      `survey-responses-export/${this.surveyId}`,
+      body,
+      {},
+      true,
+      { responseType: 'blob' }
+    )
   }
 }

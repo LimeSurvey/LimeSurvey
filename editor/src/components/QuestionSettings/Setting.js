@@ -14,6 +14,7 @@ export const Setting = ({
   language = 'en',
   title = '',
   attributes = [],
+  allAttributes = [],
   simpleSettings = false,
   hasDefaultAttributeValues = false,
   sectionExpanded,
@@ -46,9 +47,79 @@ export const Setting = ({
     return isTrue(dependsOnValue)
   }
 
+  const getConditions = (dependsOn) =>
+    Array.isArray(dependsOn) ? dependsOn : dependsOn ? [dependsOn] : []
+
+  const isConditionSatisfied = (condition, value) => {
+    if (condition.notEmpty) {
+      return Array.isArray(value)
+        ? value.length > 0
+        : value !== '' && value !== null && value !== undefined
+    }
+
+    return isDependsOnSatisfied(condition, value)
+  }
+
+  // `overrides` holds values that were just changed but are not in `question` yet.
+  const areConditionsSatisfied = (dependsOn, overrides = {}) =>
+    getConditions(dependsOn).every((condition) => {
+      const value = Object.prototype.hasOwnProperty.call(
+        overrides,
+        condition.attributePath
+      )
+        ? overrides[condition.attributePath]
+        : getConditionValue(condition)
+
+      return isConditionSatisfied(condition, value)
+    })
+
+  // notEmpty on a raw question path (e.g. answers) checks the raw value, while
+  // attributes are unwrapped so an emptied { '': '' } counts as empty.
+  const getConditionValue = (condition) =>
+    condition.notEmpty && !condition.attributePath.startsWith('attributes.')
+      ? getRawValueFromPath(condition.attributePath)
+      : getAttributeValueFromPath(
+          condition.attributePath,
+          condition.languageBased
+        )
+
+  const getRawValueFromPath = (attributePath) =>
+    attributePath.split('.').reduce((acc, key) => acc?.[key], question)
+
+  const getDefinition = (attributePath) =>
+    (allAttributes.length ? allAttributes : attributes).find(
+      (definition) => definition.attributePath === attributePath
+    )
+
+  // Any non-empty stored value, in any language
+  const hasStoredValue = (attributePath) => {
+    const raw = getRawValueFromPath(attributePath)
+    const values =
+      raw !== null && typeof raw === 'object' ? Object.values(raw) : [raw]
+
+    return values.some(
+      (value) => value !== '' && value !== null && value !== undefined
+    )
+  }
+
+  // A toggle the classic editor doesn't store (e.g. the timer warnings) is on
+  // while one of the attributes it shows has a value.
+  const getImpliedValue = (attributePath) => {
+    const implied = getDefinition(attributePath)?.valueWhenDependentsSet
+    if (!implied || !isAttributeUnset(attributePath, false)) {
+      return undefined
+    }
+
+    return implied.paths.some(hasStoredValue) ? implied.value : undefined
+  }
+
   const getAttributeValueFromPath = (attributePath, languageBased) => {
-    const path = attributePath.split('.')
-    const attribute = path.reduce((acc, key) => acc[key], question)
+    const impliedValue = getImpliedValue(attributePath)
+    if (impliedValue !== undefined) {
+      return impliedValue
+    }
+
+    const attribute = getRawValueFromPath(attributePath)
 
     if (!attribute) {
       return ''
@@ -67,9 +138,29 @@ export const Setting = ({
     return undefined
   }
 
+  // Distinguishes an attribute that has no value yet (e.g. a new question)
+  // from one that was explicitly emptied, so components can show their default.
+  const isAttributeUnset = (attributePath, languageBased) => {
+    const attribute = attributePath
+      .split('.')
+      .reduce((acc, key) => acc?.[key], question)
+
+    if (attribute === undefined || attribute === null) {
+      return true
+    }
+
+    if (typeof attribute === 'object') {
+      return (
+        attribute[language] === undefined &&
+        (languageBased || attribute[''] === undefined)
+      )
+    }
+
+    return false
+  }
+
   const getFullAttributeValueFromPath = (attributePath) => {
-    const path = attributePath.split('.')
-    return path.reduce((acc, key) => acc[key], question) || ''
+    return getRawValueFromPath(attributePath) || ''
   }
 
   const getUpdateValueFromPath = (value, attribute) => {
@@ -118,22 +209,54 @@ export const Setting = ({
     const updateValue = getUpdateValueFromPath(value, attribute)
     handleUpdate(updateValue, isAdvancedAttribute)
 
-    // update other attributes that depends on this attribute
-    attributes.map((dependsOnAttribute) => {
-      if (
-        dependsOnAttribute.dependsOn &&
-        dependsOnAttribute.dependsOn.attributePath === attribute.attributePath
-      ) {
-        if (!isDependsOnSatisfied(dependsOnAttribute.dependsOn, value)) {
-          const isAdvancedAttribute =
-            dependsOnAttribute.attributePath.includes('attributes.')
+    const candidates = allAttributes.length ? allAttributes : attributes
 
-          const updateValue = getUpdateValueFromPath(
-            dependsOnAttribute.onDependsToggle.onFalse,
-            dependsOnAttribute
-          )
-          handleUpdate(updateValue, isAdvancedAttribute)
-        }
+    // Store a derived toggle when one of its fields is edited, so it stays on
+    // e.g. while a value is cleared to type a new one
+    candidates.forEach((candidate) => {
+      const implied = candidate.valueWhenDependentsSet
+      if (
+        implied?.paths.includes(attribute.attributePath) &&
+        getImpliedValue(candidate.attributePath) !== undefined
+      ) {
+        handleUpdate(
+          getUpdateValueFromPath(implied.value, candidate),
+          candidate.attributePath.includes('attributes.')
+        )
+      }
+    })
+
+    // update other attributes that depends on this attribute (in any section)
+    const handledPaths = new Set()
+    candidates.forEach((dependsOnAttribute) => {
+      const conditions = getConditions(dependsOnAttribute.dependsOn)
+      if (
+        handledPaths.has(dependsOnAttribute.attributePath) ||
+        !conditions.some(
+          (condition) => condition.attributePath === attribute.attributePath
+        )
+      ) {
+        return
+      }
+      handledPaths.add(dependsOnAttribute.attributePath)
+
+      if (dependsOnAttribute.onDependsToggle?.keepValue) {
+        return
+      }
+
+      if (
+        !areConditionsSatisfied(dependsOnAttribute.dependsOn, {
+          [attribute.attributePath]: value,
+        })
+      ) {
+        const isAdvancedAttribute =
+          dependsOnAttribute.attributePath.includes('attributes.')
+
+        const updateValue = getUpdateValueFromPath(
+          dependsOnAttribute.onDependsToggle?.onFalse ?? '',
+          dependsOnAttribute
+        )
+        handleUpdate(updateValue, isAdvancedAttribute)
       }
     })
   }
@@ -159,21 +282,16 @@ export const Setting = ({
           )
         }
 
-        // if the attribute depends on another attribute and it's not true, skip this attribute
-        if (attribute.dependsOn) {
-          const dependsOn = attribute.dependsOn
-          const dependsOnValue = getAttributeValueFromPath(
-            dependsOn.attributePath,
-            dependsOn.languageBased
+        // if the attribute depends on other attributes/question data that aren't satisfied, skip this attribute
+        if (
+          attribute.dependsOn &&
+          !areConditionsSatisfied(attribute.dependsOn)
+        ) {
+          return (
+            <React.Fragment
+              key={`${title}-settings-${attribute.attributePath}`}
+            ></React.Fragment>
           )
-
-          if (!isDependsOnSatisfied(dependsOn, dependsOnValue)) {
-            return (
-              <React.Fragment
-                key={`${title}-settings-${attribute.attributePath}`}
-              ></React.Fragment>
-            )
-          }
         }
 
         const value = getAttributeValueFromPath(
@@ -188,6 +306,12 @@ export const Setting = ({
           'defaultAttributeValuesActions',
           'other',
         ]
+
+        const showDefaultValue =
+          attribute.props?.defaultValue !== undefined &&
+          !attribute.props?.value &&
+          isAttributeUnset(attribute.attributePath, attribute.languageBased) &&
+          getImpliedValue(attribute.attributePath) === undefined
 
         const isDisabledWhenActive =
           ATTRIBUTES_DISABLED_WHEN_ACTIVE.includes(attribute.attributePath) ||
@@ -235,11 +359,13 @@ export const Setting = ({
                 noPermissionDisabled={true}
                 hasSurveyUpdatePermission={hasSurveyUpdatePermission}
                 value={
-                  value
-                    ? value
-                    : attributeProps.value
-                      ? attributeProps.value
-                      : ''
+                  showDefaultValue
+                    ? undefined
+                    : value
+                      ? value
+                      : attributeProps.value
+                        ? attributeProps.value
+                        : ''
                 }
                 name={attribute.attributePath}
                 update={(value) =>

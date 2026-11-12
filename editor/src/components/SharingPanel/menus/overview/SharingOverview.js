@@ -61,7 +61,7 @@ export const SharingOverview = () => {
     alias = typeof alias === 'number' ? '' : alias.trim()
     setAliasHasError(false)
 
-    const operation = createBufferOperation(survey.sid)
+    const operation = createBufferOperation(null)
       .languageSetting()
       .update({ [selectedLanguage]: { alias } })
 

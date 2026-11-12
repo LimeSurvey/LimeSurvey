@@ -59,7 +59,7 @@ class Dumpdb extends SurveyCommonAction
      */
     public function index()
     {
-        $this->data['topbar']['title'] = gT('Backup entire database');
+        $this->data['topbar']['title'] = gT('Database backup');
         $this->data['topbar']['backLink'] = App()->createUrl('admin/index');
 
         $event = new PluginEvent('beforeRenderDbDumpView');

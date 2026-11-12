@@ -2,7 +2,7 @@
 
 /**
  * Abstracted user model for TFA admin view.
- * Incorporating an alternative seach method.
+ * Incorporating an alternative search method.
  *
  * @inheritDoc
  */
@@ -49,7 +49,7 @@ class TFAUser extends User
     }
 
     /**
-     * Returns the action columsn buttons
+     * Returns the action columns buttons
      *
      * @return string
      */

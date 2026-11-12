@@ -107,6 +107,16 @@ class SurveyDynamic extends LSActiveRecord
     }
 
     /**
+     * @inheritdoc
+     * Also stores the multiple choice Other tick that goes with the Other text
+     */
+    public function encryptSave($runValidation = true, $attributes = null)
+    {
+        $attributes = Survey::setOtherCheckedFromText($this, $attributes);
+        return parent::encryptSave($runValidation, $attributes);
+    }
+
+    /**
      * Insert records from $data array
      * Still used in em_manager_helper when create response in _UpdateValuesInDatabase function (2026-04-20)
      *
@@ -396,12 +406,12 @@ class SurveyDynamic extends LSActiveRecord
         $oFieldMap = json_decode(base64_decode($base64jsonFieldMap));
         $value     = $this->$colName;
 
-        $sFullValue = viewHelper::flatten(getExtendedAnswer(self::$sid, $oFieldMap->fieldname, $value, $sLanguage));
+        $sFullValue = viewHelper::responseValueToText(getExtendedAnswer(self::$sid, $oFieldMap->fieldname, $value, $sLanguage), $value);
         if (strlen((string) $sFullValue) > 50) {
-            $sElipsizedValue = ellipsize($sFullValue, $this->ellipsize_question_value);
-            $sValue          = '<span data-bs-toggle="tooltip" data-bs-placement="left" title="' . quoteText($sFullValue) . '">' . $sElipsizedValue . '</span>';
+            $sElipsizedValue = ellipsize($sFullValue, $this->ellipsize_question_value, 1, '…', false);
+            $sValue          = '<span data-bs-toggle="tooltip" data-bs-placement="left" title="' . quoteText($sFullValue) . '">' . CHtml::encode($sElipsizedValue) . '</span>';
         } else {
-            $sValue          = $sFullValue;
+            $sValue          = CHtml::encode($sFullValue);
         }
 
         // Upload question
@@ -703,6 +713,7 @@ class SurveyDynamic extends LSActiveRecord
         $criteria->compare('t.id', empty($this->id) ? null : $this->id, false);
         $criteria->compare('t.submitdate', $this->submitdate, true);
         $criteria->compare('t.startlanguage', $this->startlanguage, true);
+        $criteria->compare('t.seed', $this->seed, true);
 
         // Completed filters
         if ($this->completed_filter == "Y") {
@@ -730,6 +741,50 @@ class SurveyDynamic extends LSActiveRecord
             ),
         ));
         return $dataProvider;
+    }
+
+    /**
+     * Returns the ids of all responses matching the filters of the responses grid,
+     * as used by "Select all" massive actions.
+     *
+     * @param int $surveyId
+     * @param string $filterQuery Serialized filter inputs of the responses grid
+     * @param array $excludedIds Response ids deselected by the user
+     * @param int|null $limit Maximum number of responses (lowest ids first), null for no limit
+     * @return array
+     */
+    public static function getIdsByGridFilter(int $surveyId, string $filterQuery, array $excludedIds = [], ?int $limit = null): array
+    {
+        $model = self::model($surveyId);
+        $model->bEncryption = true;
+
+        parse_str($filterQuery, $parsedFilterQuery);
+        $filters = $parsedFilterQuery['SurveyDynamic'] ?? null;
+        $filters = is_array($filters) ? $filters : [];
+        $model->setAttributes($filters, false);
+        // These filters are no table columns, so setAttributes() skips them
+        foreach (['completed_filter', 'firstname_filter', 'lastname_filter', 'email_filter'] as $filterName) {
+            $model->$filterName = $filters[$filterName] ?? null;
+        }
+
+        $criteria = $model->search()->criteria;
+        $criteria->select = 't.id';
+        if ($limit !== null) {
+            $criteria->order = 't.id ASC';
+            $criteria->limit = $limit;
+        }
+
+        $responseIds = $model->getCommandBuilder()
+            ->createFindCommand($model->tableSchema, $criteria)
+            ->queryColumn();
+        if (empty($excludedIds)) {
+            return $responseIds;
+        }
+
+        $excludedIds = array_flip(array_map('strval', $excludedIds));
+        return array_values(array_filter($responseIds, function ($responseId) use ($excludedIds) {
+            return !isset($excludedIds[(string) $responseId]);
+        }));
     }
 
     /**
@@ -836,7 +891,7 @@ class SurveyDynamic extends LSActiveRecord
             : LimeExpressionManager::QuestionIsRelevant($oQuestion->qid);
 
         if (
-            !($isRelevant && $bHonorConditions == true)
+            ($bHonorConditions && !$isRelevant)
             || (is_array($attributes) && $attributes['hidden'] == 1)
         ) {
             return false;
@@ -1032,7 +1087,7 @@ class SurveyDynamic extends LSActiveRecord
             foreach ($oScaleXSubquestions as $oScaleSubquestion) {
                 $tempFieldname = $fieldname . '_S' . $oScaleSubquestion->qid;
                 $aQuestionAttributes['answervalues'][$oScaleSubquestion->title] = $oResponses[$tempFieldname] ?? null;
-                /* Isue with language, need #15907 fixed */
+                /* Issue with language, need #15907 fixed */
                 $aQuestionAttributes['answervalueslabels'][$oScaleSubquestion->title] = $oScaleSubquestion->questionl10ns[$sLanguage]->question ?? null;
             }
         }
@@ -1068,6 +1123,14 @@ class SurveyDynamic extends LSActiveRecord
         }
     }
 
+    /**
+     * Builds the grouped question/answer data for a response, used to render the print-answers page
+     *
+     * @param integer $sSRID Response ID
+     * @param string $sLanguage Language to use for group and question texts
+     * @param boolean $bHonorConditions Whether to skip groups and questions that are not relevant; if false, all are included
+     * @return array Group data keyed by group ID, each holding its questions in 'answerArray'
+     */
     public function getPrintAnswersArray($sSRID, $sLanguage, $bHonorConditions = false)
     {
 
@@ -1080,7 +1143,7 @@ class SurveyDynamic extends LSActiveRecord
         $oGroupList = $oSurvey->groups;
 
         foreach ($oGroupList as $oGroup) {
-            if (!(LimeExpressionManager::GroupIsRelevant($oGroup->gid) && $bHonorConditions == true)) {
+            if ($bHonorConditions && !LimeExpressionManager::GroupIsRelevant($oGroup->gid)) {
                 continue;
             }
 

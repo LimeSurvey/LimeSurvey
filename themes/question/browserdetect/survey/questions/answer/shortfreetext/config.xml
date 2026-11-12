@@ -44,7 +44,6 @@
             <filename>css/browserdetect.css</filename>
         </css>
         <js>
-            <filename>scripts/bowser.min.js</filename>
             <filename>scripts/proxydetect.js</filename>
             <filename>scripts/browserdetect.js</filename>
         </js>

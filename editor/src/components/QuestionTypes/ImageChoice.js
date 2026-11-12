@@ -97,7 +97,7 @@ export const ImageChoice = ({
         )}
         {isFocused && <div>&nbsp;</div>}
         {!isNoAnswer && !initLoading && (
-          <div className="border border-3 border-secondary rounded">
+          <div className="image-choice-preview border border-3 border-secondary rounded">
             <div className={classNames({ 'd-none': showLoader })}>
               <Image
                 src={previewUrl && isValidImg ? previewUrl : NoImageFound}

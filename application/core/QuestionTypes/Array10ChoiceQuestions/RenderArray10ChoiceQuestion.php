@@ -1,5 +1,7 @@
 <?php
 
+use LimeSurvey\Models\Services\SurveySessionState;
+
 /**
  * RenderClass for Array (10 point choice) Question
  *  * The ia Array contains the following
@@ -58,7 +60,7 @@ class RenderArray10ChoiceQuestion extends QuestionBaseRenderer
         } else {
             $answerwidth = 33;
         }
-        // "No answer" column (and header) is shown only if the question is neither mandatory nor soft mandatory
+        // "No answer" column, header and cells are shown only if the question is neither mandatory nor soft mandatory
         $bShowNoAnswerColumn = ($sMandatory != 'Y' && $sMandatory != 'S') && SHOW_NO_ANSWER == 1;
         $cellwidth = 10; // number of columns
         if ($bShowNoAnswerColumn) {
@@ -69,7 +71,8 @@ class RenderArray10ChoiceQuestion extends QuestionBaseRenderer
 
         // Get subquestions using ordering service so keep_codes_order is respected
         $iSurveyId = $this->oQuestion->sid;
-        $sSurveyLanguage = isset($_SESSION['responses_' . $iSurveyId]) ? $_SESSION['responses_' . $iSurveyId]['s_lang'] : $this->oQuestion->survey->language;
+        $sessionState = SurveySessionState::forSurvey((int) $iSurveyId);
+        $sSurveyLanguage = $sessionState->exists() ? $sessionState->getLanguage() : $this->oQuestion->survey->language;
         $aSubquestions = $this->questionOrderingService->getOrderedSubQuestions($this->oQuestion, 0, $sSurveyLanguage);
 
         $sColumns = $this->renderColumns($cellwidth, $bShowNoAnswerColumn);
@@ -85,7 +88,8 @@ class RenderArray10ChoiceQuestion extends QuestionBaseRenderer
                 $myfname,
                 $sSurveyLanguage,
                 $answerwidth,
-                ($sMandatory == 'Y' || $sMandatory == 'S') && in_array($myfname, $aMandatoryViolationSubQ)
+                ($sMandatory == 'Y' || $sMandatory == 'S') && in_array($myfname, $aMandatoryViolationSubQ),
+                $bShowNoAnswerColumn
             );
             $inputnames[] = $myfname;
         }
@@ -181,6 +185,7 @@ class RenderArray10ChoiceQuestion extends QuestionBaseRenderer
      * @param string $sSurveyLanguage Language used for the texts
      * @param int|string $answerwidth Width of the answer text column in percent
      * @param bool $error Whether this subquestion violates the mandatory rule
+     * @param bool $bShowNoAnswerColumn Whether the "No answer" cell is shown
      * @return string
      */
     private function renderRow(
@@ -189,7 +194,8 @@ class RenderArray10ChoiceQuestion extends QuestionBaseRenderer
         string $myfname,
         $sSurveyLanguage,
         $answerwidth,
-        bool $error
+        bool $error,
+        bool $bShowNoAnswerColumn
     ): string {
         $answertext = $ansrow->questionl10ns[$sSurveyLanguage]->question;
 
@@ -215,9 +221,7 @@ class RenderArray10ChoiceQuestion extends QuestionBaseRenderer
             );
         }
 
-        // Legacy quirk: unlike the column and header, the "No answer" cell is only hidden for mandatory 'Y',
-        // so it is still rendered for soft mandatory ('S') questions.
-        if ($this->aFieldArray[6] != "Y" && SHOW_NO_ANSWER == 1) {
+        if ($bShowNoAnswerColumn) {
             $CHECKED = (
                 PRESELECT_NO_ANSWER
                 && (
@@ -250,6 +254,7 @@ class RenderArray10ChoiceQuestion extends QuestionBaseRenderer
                 'sDisplayStyle' => '', // return_display_style() is disabled and always returned an empty string
                 'odd'           => ($j % 2),
                 'answer_tds'    => $answer_tds,
+                'relevanceClass' => $this->getCurrentRelevecanceClass($myfname),
             )
         );
     }

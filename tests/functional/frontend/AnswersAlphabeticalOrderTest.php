@@ -5,7 +5,7 @@ namespace ls\tests;
 use Facebook\WebDriver\WebDriverBy;
 
 /**
- * @since 6.3.7 : alphabetical order with utf8 caracter
+ * @since 6.3.7 : alphabetical order with utf8 character
  * @since 6.3.7 : alphabetical order delete answers
  * @group questions
  */

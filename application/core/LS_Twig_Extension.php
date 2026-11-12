@@ -40,6 +40,7 @@
  * To get the pure HTML, just do: {{ foo($bar) | raw }}
  */
 
+use LimeSurvey\Models\Services\SurveySessionState;
 use Twig\Extension\AbstractExtension;
 
 class LS_Twig_Extension extends AbstractExtension
@@ -252,7 +253,8 @@ class LS_Twig_Extension extends AbstractExtension
             $aQuestionClass .= ' mandatory';
         }
 
-        if ($lemQuestionInfo['anyUnanswered'] && $_SESSION['responses_' . $iSurveyId]['maxstep'] != $_SESSION['responses_' . $iSurveyId]['step']) {
+        $sessionState = SurveySessionState::forSurvey((int) $iSurveyId);
+        if ($lemQuestionInfo['anyUnanswered'] && $sessionState->getMaxStep() != $sessionState->getStep()) {
             $aQuestionClass .= ' missing';
         }
 
@@ -312,7 +314,7 @@ class LS_Twig_Extension extends AbstractExtension
 
     /**
      * @var $sImagePath  string                 the image path relative to the template root
-     * @var $default     string|false                 an alternative image if the provided one cant be found
+     * @var $default     string|false                 an alternative image if the provided one can't be found
      * @return string|false
      */
     public static function imageSrc($sImagePath, $default = false)
@@ -480,7 +482,10 @@ class LS_Twig_Extension extends AbstractExtension
     }
 
     /**
-     * @param string $name
+     * Remove a registered script file, whatever position it was registered at
+     *
+     * @param string $name URL of the script file
+     * @return void
      */
     public static function unregisterScriptFile($name)
     {
@@ -565,7 +570,7 @@ class LS_Twig_Extension extends AbstractExtension
     /**
      * Get html text and remove whole not clean string
      * @param string $string to flatten
-     * @param boolean $encode html entities
+     * @param boolean $encode html special chars, existing html entities are kept as they are (no double encoding)
      * @return string
      */
     public static function flatString($string, $encode = false)
@@ -582,7 +587,8 @@ class LS_Twig_Extension extends AbstractExtension
         $string = preg_replace('/\s+/', ' ', $string);
 
         if ($encode) {
-            return \CHtml::encode($string);
+            // Texts saved from the HTML editor or the XSS filter are already entity-encoded (e.g. &amp;)
+            return htmlspecialchars($string, ENT_QUOTES, Yii::app()->charset, false);
         }
         return $string;
     }
@@ -792,6 +798,9 @@ class LS_Twig_Extension extends AbstractExtension
      *  {{ dump(aResponses) }}
      *
      *  Of course, the survey must use token. If you want to show it after completion, the you must turn on public statistics
+     *
+     * @param int $iSurveyID
+     * @return array[] Attributes of all responses with the participant's access code
      */
     public static function getAllTokenAnswers($iSurveyID)
     {
@@ -799,7 +808,7 @@ class LS_Twig_Extension extends AbstractExtension
         $oResponses = SurveyDynamic::model($iSurveyID)->findAll(
             array(
                                 'condition' => 'token = :token',
-                                'params'    => array( ':token' => $_SESSION['responses_' . $iSurveyID]['token']),
+                                'params'    => array( ':token' => SurveySessionState::forSurvey((int) $iSurveyID)->getToken()),
                             )
         );
 
@@ -854,17 +863,10 @@ class LS_Twig_Extension extends AbstractExtension
             } elseif ($moveInfo['finished']) {
                 $page = 'finished';
             } else {
-                $showgroupinfo = Yii::app()->getConfig('showgroupinfo');
                 if ($survey->format == 'A') {
                     $page = 1;
                 } else {
-                    if (
-                        $showgroupinfo == 'both'
-                        || $showgroupinfo == 'name'
-                        || ($showgroupinfo == 'choose' && !isset($survey->showgroupinfo))
-                        || ($showgroupinfo == 'choose' && $survey->showgroupinfo == 'B')
-                        || ($showgroupinfo == 'choose' && $survey->showgroupinfo == 'N')
-                    ) {
+                    if (!isset($survey->showgroupinfo) || in_array($survey->showgroupinfo, ['B', 'N'])) {
                         $groupInfo = LimeExpressionManager::GetStepIndexInfo($moveInfo['seq']);
                         $groupName = isset($groupInfo['gname']) ? $groupInfo['gname'] : '';
                     }

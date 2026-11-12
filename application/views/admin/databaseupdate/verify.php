@@ -36,6 +36,14 @@
             'type' => 'warning',
         ])
         ?>
+    <?php } elseif (($sIncompleteUpdate = getIncompleteDatabaseUpdateMarker()) !== null) { ?>
+        <?php
+        // The marker also exists while an update is running, so this must come after the lock check
+        App()->getController()->widget('ext.AlertWidget.AlertWidget', [
+            'text' => getIncompleteDatabaseUpdateMessage($sIncompleteUpdate),
+            'type' => 'danger',
+        ])
+        ?>
     <?php } else { ?>
         <p>
             <a class="btn btn-lg btn-primary" href="<?php echo Yii::app()->getController()->createUrl("admin/databaseupdate/sa/db/continue/yes"); ?>" role="button">

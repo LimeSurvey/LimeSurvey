@@ -1,5 +1,6 @@
 import './ajaxupload.js';
 import './modaldialog.js';
+import { applyImagePreviewFallback, PLACEHOLDER_HTML } from './previewfallback.js';
 
 "use strict"
 var uploadHandler = function (qid, options) {
@@ -20,9 +21,11 @@ var uploadHandler = function (qid, options) {
         var previewContainer = $('<div class="file-preview"></div>');
 
         if (isValueInArray(image_extensions, item.ext.toLowerCase())) {
-            previewContainer.append('<img src="' + options.uploadurl + '/filegetcontents/' + item.filename + '" class="uploaded" />');
+            var $previewImage = $('<img src="' + options.uploadurl + '/filegetcontents/' + item.filename + '" class="uploaded" />');
+            applyImagePreviewFallback($previewImage);
+            previewContainer.append($previewImage);
         } else {
-            previewContainer.append('<div class="upload-placeholder"></div>');
+            previewContainer.append(PLACEHOLDER_HTML);
         }
 
         previewContainer.append('<span class="file-name">' + escapeHtml(item.name) + '</span>');
@@ -317,6 +320,15 @@ var uploadHandler = function (qid, options) {
                     $('#uploadstatus').html(uploadLang.errorMoreAllowed.replace('%s', (maxfiles - filecount)));
                     fixParentHeigth();
                 }
+            })
+            .fail(function (jqXHR) {
+                // A plain text answer is a message for the participant, e.g. during maintenance
+                var isText = (jqXHR.getResponseHeader('Content-Type') || '').indexOf('text/plain') === 0;
+                var message = isText && jqXHR.responseText ? jqXHR.responseText : uploadLang.errorUnknown;
+                $('#notice').html(
+                    $('<p class="alert alert-danger" role="alert"><span class="fa fa-exclamation-circle ri-error-warning-fill" aria-hidden="true"></span>&nbsp;</p>')
+                        .append(document.createTextNode(message))
+                );
             });
     };
 

@@ -110,7 +110,7 @@
                                 'id'          : 'savename',
                                 'name'        : 'savename',
                                 'class'       : 'form-control ls-important-field',
-                                'placeholder' : gT('Enter your name'),
+                                'placeholder' : gT('Enter your name', 'unescaped'),
                                 'required'    : true,
                             }
                         %}
@@ -139,7 +139,7 @@
                                     'id'          : 'savepass',
                                     'name'        : 'savepass',
                                     'class'       : 'form-control ls-important-field',
-                                    'placeholder' : gT('Enter password'),
+                                    'placeholder' : gT('Enter password', 'unescaped'),
                                     'required'    : true,
                                 }
                             %}
@@ -164,7 +164,7 @@
                                     'id'          : 'savepass2',
                                     'name'        : 'savepass2',
                                     'class'       : 'form-control ls-important-field',
-                                    'placeholder' : gT('Repeat password'),
+                                    'placeholder' : gT('Repeat password', 'unescaped'),
                                     'required'    : true,
                                 }
                             %}
@@ -189,7 +189,7 @@
                                 'id'          : 'saveemail',
                                 'name'        : 'saveemail',
                                 'class'       : 'form-control ls-important-field',
-                                'placeholder' : gT('Enter e-mail address'),
+                                'placeholder' : gT('Enter e-mail address', 'unescaped'),
                             }
                         %}
 
@@ -204,14 +204,14 @@
 
                 {% if aSurveyInfo.aSaveForm.aCaptcha.show %}
                     <!-- Captcha -->
-                    <div class='{{ aSurveyInfo.class.saveformsurveydivf }} mb-3' {{ aSurveyInfo.attr.saveformsurveydivd }} >
-                        <label class='{{ aSurveyInfo.class.saveformsurveydivflabel }} control-label' {{ aSurveyInfo.attr.saveformsurveydivdlabel }}  >
+                    <div class='{{ aSurveyInfo.class.saveformsurveydivf }} mb-3' {{ aSurveyInfo.attr.saveformsurveydivf }} >
+                        <label class='{{ aSurveyInfo.class.saveformsurveydivflabel }} control-label' {{ aSurveyInfo.attr.saveformsurveydivflabel }}  >
                             {{ gT("Security question") }}
                         </label>
-                        <div class='{{ aSurveyInfo.class.saveformsurveydivfdiv }}' {{ aSurveyInfo.attr.saveformsurveydivddiv }} >
-                            <div class='{{ aSurveyInfo.class.saveformsurveydivfdivdiv }} input-group' {{ aSurveyInfo.attr.saveformsurveydivddivdiv }}>
-                                <div class='{{ aSurveyInfo.class.saveformsurveydivfdivdivdiv }} ls-important-field' {{ aSurveyInfo.attr.saveformsurveydivddivdivdiv }} >
-                                    <img src='{{ aSurveyInfo.aSaveForm.aCaptcha.sImageUrl }}' {{ aSurveyInfo.attr.saveformsurveydivddivdivdivimg }}   />
+                        <div class='{{ aSurveyInfo.class.saveformsurveydivfdiv }}' {{ aSurveyInfo.attr.saveformsurveydivfdiv }} >
+                            <div class='{{ aSurveyInfo.class.saveformsurveydivfdivdiv }} input-group' {{ aSurveyInfo.attr.saveformsurveydivfdivdiv }}>
+                                <div class='{{ aSurveyInfo.class.saveformsurveydivfdivdivdiv }} ls-important-field' {{ aSurveyInfo.attr.saveformsurveydivfdivdivdiv }} >
+                                    <img src='{{ aSurveyInfo.aSaveForm.aCaptcha.sImageUrl }}' {{ aSurveyInfo.attr.saveformsurveydivfdivdivdivimg }}   />
                                 </div>
                                 <input class='{{ aSurveyInfo.class.saveformsurveydivfdivdivinput }}  form-control ls-important-field'  {{ aSurveyInfo.attr.saveformsurveydivfdivdivinput }} placeholder="{{ gT("Enter result here - numbers only") }}"/>
                             </div>

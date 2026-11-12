@@ -18,6 +18,9 @@ class ReactEditor extends \PluginBase
 
     protected static $name = 'ReactEditor';
 
+    /** @inheritdoc this plugin doesn't have any public method */
+    public $allowedPublicMethods = array();
+
     /**
      * @return void
      */
@@ -42,7 +45,7 @@ class ReactEditor extends \PluginBase
     public function beforeDeactivate()
     {
         $this->getEvent()->set('success', false);
-        $this->getEvent()->set('message', gT('Core plugin can not be disabled.'));
+        $this->getEvent()->set('message', gT('This core plugin can not be disabled.'));
     }
 
     /**

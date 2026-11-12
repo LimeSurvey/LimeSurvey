@@ -73,7 +73,7 @@ export const useSurvey = (id) => {
 
     if (!isSameSurvey) {
       setSurvey({}) // triggers the loading UI state.
-      lastRequestedAt = null // Reset last requestedAt if survey ID changes to skipp timestamp in getSurveyDetail
+      lastRequestedAt = null // Reset last requestedAt if survey ID changes to skip timestamp in getSurveyDetail
     }
 
     if (isStorybook || isDemoMode) {
@@ -111,7 +111,7 @@ export const useSurvey = (id) => {
     // Return currentData if the buffer is not empty.
     // We are also checking if the data is defined because when the app first loads the data or the survey is not defined yet.
     if ((operationsBuffer?.length || isPatchSurveyRunning) && data) {
-      // we should schdule a refetch to update the survey data.
+      // we should schedule a refetch to update the survey data.
       setSurveyRefreshRequired(true)
       queryClient.cancelQueries({ queryKey: [STATES.SURVEY] })
       setLoadedSurveyId(id)

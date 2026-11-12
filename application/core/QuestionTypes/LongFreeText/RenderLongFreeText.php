@@ -43,10 +43,10 @@ class RenderLongFreeText extends QuestionBaseRenderer
         $inputsize = null;
         $placeholder = "";
 
-        $drows = $this->setDefaultIfEmpty(
+        $drows = intval($this->setDefaultIfEmpty(
             $this->getQuestionAttribute('display_rows'),
             ($this->oQuestion->type == Question::QT_T_LONG_FREE_TEXT  ? 4 : 30)
-        );
+        ));
 
         // Always apply a maxlength, when 'maximum_chars' is not set the default of the question type is used
         $maxlength = $this->getEffectiveMaxChars();

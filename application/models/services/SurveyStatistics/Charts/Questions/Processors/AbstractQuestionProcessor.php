@@ -44,6 +44,7 @@ abstract class AbstractQuestionProcessor
         Question::QT_1_ARRAY_DUAL,
         Question::QT_SEMICOLON_ARRAY_TEXT,
         Question::QT_S_SHORT_FREE_TEXT,
+        Question::QT_J_MAP,
         Question::QT_T_LONG_FREE_TEXT,
         Question::QT_Q_MULTIPLE_SHORT_TEXT,
     ];

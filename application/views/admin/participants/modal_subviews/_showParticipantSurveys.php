@@ -1,5 +1,7 @@
 <div class="modal-header">
     <h5 class="modal-title" id="participant_edit_modal"><?php eT('List active surveys'); ?></h5>
+    <?php // aria-hidden: only read as part of the dialog name, not again when reading the dialog content ?>
+    <span class="visually-hidden" id="participant_edit_modal-dialogsr" aria-hidden="true"><?= gT('Dialog') ?></span>
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 </div>
 <?php $form = $this->beginWidget(
@@ -12,7 +14,7 @@
 ); ?>
 <div class="modal-body ">
     <input type="hidden" name="actionTarget" value="addParticipantToSurvey"/>
-    <input type="hidden" name="Participant[participant_id]" value="<?php echo $model->participant_id; ?>"/>
+    <input type="hidden" name="Participant[participant_id]" value="<?php echo CHtml::encode($model->participant_id); ?>"/>
     <div class="container-fluid">
         <?php
         $this->widget('application.extensions.admin.grid.CLSGridView', [

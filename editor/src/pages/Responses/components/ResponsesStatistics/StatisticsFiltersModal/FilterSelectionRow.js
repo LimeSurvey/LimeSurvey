@@ -8,10 +8,12 @@ import { FilterSelect } from './FilterSelect'
 import { JOIN, SOURCE } from './utils'
 import { ParticipantSource, QuestionSource, SurveyDataSource } from './sources'
 
-const sourceTabs = () => [
+const sourceTabs = (survey) => [
   { name: t('Question'), value: SOURCE.QUESTION },
   { name: t('Response data'), value: SOURCE.SURVEY_DATA },
-  { name: t('Participant data'), value: SOURCE.PARTICIPANT },
+  ...(survey?.anonymized
+    ? []
+    : [{ name: t('Participant data'), value: SOURCE.PARTICIPANT }]),
 ]
 
 const joinOptions = () => [
@@ -52,7 +54,7 @@ export const FilterSelectionRow = ({
         <div className="responses-statistics-filters-row-tabs">
           <ToggleButtons
             id={`filter-source-${filter.id}`}
-            toggleOptions={sourceTabs()}
+            toggleOptions={sourceTabs(survey)}
             value={filter.source}
             onChange={(value) => update('source', value)}
           />

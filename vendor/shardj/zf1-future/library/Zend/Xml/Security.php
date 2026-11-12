@@ -84,6 +84,7 @@ class Zend_Xml_Security
 
         if (!self::isPhpFpm()) {
             if (LIBXML_VERSION < 20900) {
+                // phpcs:ignore PHPCompatibility.FunctionUse.RemovedFunctions.libxml_disable_entity_loaderDeprecated -- called with libxml before 2.9 only
                 $loadEntities = libxml_disable_entity_loader(true);
             }
             $useInternalXmlErrors = libxml_use_internal_errors(true);
@@ -100,6 +101,7 @@ class Zend_Xml_Security
             // Entity load to previous setting
             if (!self::isPhpFpm()) {
                 if (LIBXML_VERSION < 20900) {
+                    // phpcs:ignore PHPCompatibility.FunctionUse.RemovedFunctions.libxml_disable_entity_loaderDeprecated -- called with libxml before 2.9 only
                     libxml_disable_entity_loader($loadEntities);
                 }
                 libxml_use_internal_errors($useInternalXmlErrors);
@@ -122,6 +124,7 @@ class Zend_Xml_Security
         // Entity load to previous setting
         if (!self::isPhpFpm()) {
             if (LIBXML_VERSION < 20900) {
+                // phpcs:ignore PHPCompatibility.FunctionUse.RemovedFunctions.libxml_disable_entity_loaderDeprecated -- called with libxml before 2.9 only
                 libxml_disable_entity_loader($loadEntities);
             }
             libxml_use_internal_errors($useInternalXmlErrors);

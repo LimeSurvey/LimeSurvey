@@ -30,6 +30,12 @@ class PluginHelper extends SurveyCommonAction
                 $aData['surveybar']['buttons']['view'] = true;
                 $aData['title_bar']['title'] = viewHelper::flatEllipsizeText($oSurvey->defaultlanguage->surveyls_title) . " (" . gT("ID") . ":" . $surveyid . ")";
                 $aData['activated'] = $oSurvey->active;
+                $topbarData = TopbarConfiguration::getSurveyTopbarData($surveyid);
+                $aData['topbar']['middleButtons'] = Yii::app()->getController()->renderPartial(
+                    '/surveyAdministration/partial/topbar/surveyTopbarLeft_view',
+                    $topbarData,
+                    true
+                );
             }
             // Plugin must test to send 404 if needed, maybe want to “create” a new survey, who know …
         }

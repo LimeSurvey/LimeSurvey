@@ -66,7 +66,7 @@ class TestBaseClassWeb extends TestBaseClass
             throw new \Exception('Could not connect to remote web driver');
         }
 
-        // Implicit timout so we don't have to wait manually.
+        // Implicit timeout so we don't have to wait manually.
         self::$webDriver->manage()->timeouts()->implicitlyWait(5);
 
         // Anyone can preview surveys.

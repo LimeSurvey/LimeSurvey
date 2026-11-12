@@ -5,6 +5,11 @@ namespace LimeSurvey\Libraries\Api\Command\V1;
 use CDbException;
 use InvalidArgumentException;
 use LimeSurvey\Models\Services\Exception\NotFoundException;
+use LimeSurvey\Models\Services\Exception\PermissionDeniedException;
+use LimeSurvey\Models\Services\ResponseFilters\ParticipantResolver;
+use LimeSurvey\Models\Services\ResponseFilters\QuestionColumnMap;
+use LimeSurvey\Models\Services\ResponseFilters\ResponseFilterResolver;
+use LimeSurvey\Models\Services\ResponseFilters\ResponseFilterSet;
 use LimeSurvey\Models\Services\SurveyStatistics\StatisticsResponseFilters;
 use LimeSurvey\Models\Services\SurveyStatistics\StatisticsService;
 use Permission;
@@ -78,6 +83,10 @@ class Statistics implements CommandInterface
                 $this->statisticsService->setFilters($this->filters);
             }
 
+            $this->statisticsService->setResolvedFilters(
+                $this->resolveFilterSet($request, $surveyId)
+            );
+
             $this->statisticsService->setPagination(
                 $this->getPage(),
                 $this->getPageSize()
@@ -86,6 +95,8 @@ class Statistics implements CommandInterface
             $statistics = $this->statisticsService->run();
         } catch (InvalidArgumentException $exception) {
             return $this->responseFactory->makeErrorBadRequest($exception->getMessage());
+        } catch (PermissionDeniedException $exception) {
+            return $this->responseFactory->makeErrorUnauthorised();
         } catch (NotFoundException $exception) {
             return $this->responseFactory->makeErrorNotFound($exception->getMessage());
         } catch (CDbException $exception) {
@@ -100,6 +111,43 @@ class Statistics implements CommandInterface
                 'statistics' => $statistics,
                 'pagination' => $this->statisticsService->getPaginationMeta(),
             ]);
+    }
+
+    /**
+     * The `filterSet` param: the filter as the user built it in the modal,
+     * resolved into the response columns it means.
+     *
+     * @return \LimeSurvey\Models\Services\ResponseFilters\ResolvedFilter[]
+     * @throws InvalidArgumentException on a malformed or unresolvable filter,
+     *     which run() turns into a bad request rather than a 500.
+     * @throws PermissionDeniedException when a participant filter is sent by a
+     *     caller who may not read the survey's participants.
+     */
+    private function resolveFilterSet(Request $request, int $surveyId): array
+    {
+        $filterSet = ResponseFilterSet::fromRequestValue($request->getData('filterSet', null));
+        if ($filterSet->isEmpty()) {
+            return [];
+        }
+
+        if (
+            $filterSet->hasParticipantFilter()
+            && !$this->permission->hasSurveyPermission($surveyId, 'tokens')
+        ) {
+            throw new PermissionDeniedException();
+        }
+
+        // Loaded and validated by setSurvey(), which run() calls first.
+        $survey = $this->statisticsService->getSurvey();
+
+        $resolver = new ResponseFilterResolver(
+            QuestionColumnMap::fromQuestionFieldMap(
+                createFieldMap($survey, 'full', false, false, $this->statisticsService->getLanguage())
+            ),
+            ParticipantResolver::fromSurvey($survey)
+        );
+
+        return $resolver->resolve($filterSet);
     }
 
     private function getPage(): int

@@ -5,8 +5,6 @@ var LS = LS || {
 $(document).on('ready  pjax:scriptcomplete', function(){
     wireAddUserGroupForm();
 
-    $(':checkbox:not(:checked)[data-indeterminate=1]').prop('indeterminate', true)
-
     $(".surveysecurity").tablesorter({
         widgets: ['zebra'],
         sortList: [[2,0]],
@@ -208,7 +206,7 @@ var addUserGroupToSurvey = function () {
                     {showCloseButton: true, timeout: 10000}
                 );
             } else {
-                alert('An error occured while trying to save, please reload the page Code:1571926261195');
+                alert('An error occurred while trying to save, please reload the page Code:1571926261195');
             }
         }
     });

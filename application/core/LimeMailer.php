@@ -94,7 +94,7 @@ class LimeMailer extends PHPMailer
     private $_bAttachementTypeDone = false;
 
     /**
-     * @var boolean $ignoremissingattachement allow to send if attachement have issue.
+     * @var boolean $ignoremissingattachement allow to send if attachment have issue.
      **/
     public $ignoremissingattachement = false;
 
@@ -149,7 +149,6 @@ class LimeMailer extends PHPMailer
         $emailmethod = Yii::app()->getConfig('emailmethod');
         $emailsmtphost = Yii::app()->getConfig("emailsmtphost");
         $emailsmtpuser = Yii::app()->getConfig("emailsmtpuser");
-        $emailsmtppassword = LSActiveRecord::decryptSingle(Yii::app()->getConfig("emailsmtppassword"));
         $emailsmtpdebug = Yii::app()->getConfig("emailsmtpdebug");
         $emailsmtpssl = Yii::app()->getConfig("emailsmtpssl");
         $defaultlang = Yii::app()->getConfig("defaultlang");
@@ -172,6 +171,11 @@ class LimeMailer extends PHPMailer
         /* Don't check tls by default : allow own sign certificate */
         $this->SMTPAutoTLS = false;
 
+        /* Collect debug output (SMTP and mail()) instead of echoing it */
+        $this->Debugoutput = function ($str, $level) {
+            $this->addDebug($str);
+        };
+
         switch ($emailmethod) {
             case self::MethodQmail:
                 $this->IsQmail();
@@ -179,9 +183,6 @@ class LimeMailer extends PHPMailer
             case self::MethodSmtp:
                 $this->IsSMTP();
                 $this->SMTPKeepAlive = true;
-                $this->Debugoutput = function ($str, $level) {
-                    $this->addDebug($str);
-                };
                 if ($emailsmtpdebug > 0) {
                     if ($emailsmtpdebug == 1) {
                         // Map "On errors" to PHPMailer debug level 2
@@ -201,7 +202,7 @@ class LimeMailer extends PHPMailer
                     $this->SMTPSecure = $emailsmtpssl;
                 }
                 $this->Username = $emailsmtpuser;
-                $this->Password = $emailsmtppassword;
+                $this->Password = $this->getSmtpPassword();
                 if (trim((string) $emailsmtpuser) != "") {
                     $this->SMTPAuth = true;
                 }
@@ -225,6 +226,22 @@ class LimeMailer extends PHPMailer
             $this->Sender = Yii::app()->getConfig('siteadminbounce');
         }
         $this->eventName = 'beforeEmail';
+    }
+
+    /**
+     * Get the decrypted SMTP password from the global settings
+     * A password that can't be decrypted (e.g. because the encryption keys changed since it was saved) is logged
+     * and replaced by an empty password, so sending fails with a mailer error instead of an exception
+     * @return string
+     */
+    private function getSmtpPassword()
+    {
+        try {
+            return LSActiveRecord::decryptSingle(Yii::app()->getConfig("emailsmtppassword"));
+        } catch (SodiumException $e) {
+            Yii::log('Unable to decrypt the SMTP password: ' . $e->getMessage(), CLogger::LEVEL_ERROR, 'application.LimeMailer');
+            return '';
+        }
     }
 
     /**
@@ -346,6 +363,63 @@ class LimeMailer extends PHPMailer
     }
 
     /**
+     * Add the List-Unsubscribe headers if the message offers an opt-out link
+     * Only token emails whose raw template uses OPTOUTURL or whose body contains the opt-out url get the headers,
+     * so that one click unsubscribe is not offered on emails without an opt-out link (e.g. registration or confirmation)
+     * List-Unsubscribe-Post (one click unsubscribe) is only added if the opt-out url uses HTTPS, as required by RFC 8058
+     * @see https://datatracker.ietf.org/doc/html/rfc2369
+     * @see https://datatracker.ietf.org/doc/html/rfc8058
+     * @return void
+     */
+    private function addListUnsubscribeHeaders()
+    {
+        if (empty($this->oToken)) {
+            return;
+        }
+        /* Do not add unsubscribe URL if not OPTOUTURL in body */
+        $optoutBaseUrl = $this->createListUnsubscribeUrl("/optout/tokens");
+        if (
+            strpos((string) $this->Body, $optoutBaseUrl) === false
+            && strpos((string) $this->rawBody, 'OPTOUTURL') === false
+        ) {
+            return;
+        }
+        // separate one click url, so that the OPTOUTURL replacement field always requires a confirmation
+        $unsubscribeUrl = $this->createListUnsubscribeUrl(
+            "/optout/oneclick",
+            [
+                "surveyid" => $this->surveyId,
+                "token" => $this->oToken->token,
+                "langcode" => $this->mailLanguage,
+            ]
+        );
+        // avoid duplicate headers if the same instance sends the message more than once
+        $this->clearCustomHeader("List-Unsubscribe");
+        $this->clearCustomHeader("List-Unsubscribe-Post");
+        $this->addCustomHeader("List-Unsubscribe", "<$unsubscribeUrl>");
+        // one click unsubscribe requires an HTTPS URI, over plain HTTP the receiver only gets the manual opt-out link
+        if (strtolower((string) parse_url($unsubscribeUrl, PHP_URL_SCHEME)) === 'https') {
+            $this->addCustomHeader("List-Unsubscribe-Post", "List-Unsubscribe=One-Click");
+        }
+    }
+
+    /**
+     * Create an absolute url for the List-Unsubscribe headers the same way as the token replacement urls:
+     * validated against the allowed hosts to prevent host header injection, with a fallback to the request host
+     * @param string $route
+     * @param array<string, mixed> $params
+     * @return string
+     */
+    private function createListUnsubscribeUrl($route, $params = [])
+    {
+        $url = App()->createValidatedAbsoluteUrl($route, $params);
+        if ($url === false) {
+            $url = App()->getController()->createAbsoluteUrl($route, $params);
+        }
+        return $url;
+    }
+
+    /**
      * Sets the email type and raw content for a survey email.
      *
      * This function sets the email type, determines the appropriate language,
@@ -390,29 +464,42 @@ class LimeMailer extends PHPMailer
         $this->rawSubject = $oSurveyLanguageSetting->{$attributeSubject};
         $this->rawBody = $oSurveyLanguageSetting->{$emailColumns[$emailType]};
     }
+
+    /**
+     * Split a «Name <email>» string into its name and email address parts.
+     * The address is the last <…> part at the end, so a name containing '<' or '>' is kept intact.
+     * @param string $string «email», «Name <email>» or «<email>» (forces an empty name)
+     * @return array{name: string|null, address: string} name is null if there is no <…> part at the end,
+     *               and an empty string for «<email>» (explicitly empty name)
+     */
+    public static function parseNameAndAddress($string)
+    {
+        $string = trim((string) $string);
+        if (preg_match('/^(.*)<([^<>]*)>$/s', $string, $matches)) {
+            return array('name' => trim($matches[1]), 'address' => trim($matches[2]));
+        }
+        return array('name' => null, 'address' => $string);
+    }
+
     /**
      * @inheritdoc
      * Fix first parameters if he had email + name ( Name <email> format)
+     * @param string $from email, «Name <email>» or «<email>» (forces an empty name)
+     * @param string|null $fromname name, if null: taken from $from or the current FromName
+     * @param bool $auto see parent
      * @return bool
      */
     public function setFrom($from, $fromname = null, $auto = true)
     {
-        $fromemail = $from;
-        if (strpos($from, '<') !== false) {
-            if (is_null($fromname)) {
-                if (strpos($from, '<')) {
-                    $fromname = trim(substr($from, 0, strpos($from, '<') - 1));
-                } else {
-                    /* Allow to force empty name in token email */
-                    $fromname = '';
-                }
-            }
-            $fromemail = substr($from, strpos($from, '<') + 1, strpos($from, '>') - 1 - strpos($from, '<'));
+        $parsed = self::parseNameAndAddress($from);
+        if (is_null($fromname)) {
+            /* An empty name part (e.g. «<email>») allows to force empty name in token email */
+            $fromname = $parsed['name'];
         }
         if (is_null($fromname)) {
             $fromname = $this->FromName;
         }
-        return parent::setFrom($fromemail, $fromname, $auto);
+        return parent::setFrom($parsed['address'], $fromname, $auto);
     }
 
     /**
@@ -431,17 +518,18 @@ class LimeMailer extends PHPMailer
     /**
      * @inheritdoc
      * Fix first parameters if he had email + name ( Name <email> format)
+     * @param string $addressTo email or «Name <email>»
+     * @param string $name the name, if empty string or null: taken from $addressTo
+     * @return bool
      */
     public function addAddress($addressTo, $name = '')
     {
-        $address = $addressTo;
-        if (strpos($address, '<')) {
-            $address = substr($addressTo, strpos($addressTo, '<') + 1, strpos($addressTo, '>') - 1 - strpos($addressTo, '<'));
-            if (empty($name)) {
-                $name = trim(substr($addressTo, 0, strpos($addressTo, '<') - 1));
-            }
+        $parsed = self::parseNameAndAddress($addressTo);
+        /* Not empty(): a name like "0" must be kept */
+        if ($name === '' || $name === null) {
+            $name = (string) $parsed['name'];
         }
-        return parent::addAddress($address, $name);
+        return parent::addAddress($parsed['address'], $name);
     }
 
     /**
@@ -630,6 +718,7 @@ class LimeMailer extends PHPMailer
             $this->setError(gT('Email was not sent. One or more attachments did not exist.'));
             return false;
         }
+        $this->addListUnsubscribeHeaders();
         /* All core done, next are done for all survey */
         $eventResult = $this->manageEvent();
         if (!is_null($eventResult)) {
@@ -975,7 +1064,7 @@ class LimeMailer extends PHPMailer
         if (empty($this->surveyId)) {
             return true;
         }
-        // No attachement template : no attachments
+        // No attachment template : no attachments
         if (!array_key_exists($this->emailType, $this->_aAttachmentByType)) {
             return true;
         }

@@ -24,6 +24,15 @@ $input-font-size             : 14px;
     }
 }
 
+// iOS Safari zooms into the page when a field with a font size below 16px gets the focus
+@media (pointer: coarse) {
+    .form-control,
+    .form-control.ls-important-field,
+    .form-select {
+        font-size : 16px;
+    }
+}
+
 .form-control[disabled] {
     color            : $color_mercury_approx;
     &.total {
@@ -125,14 +134,14 @@ textarea,
     }
 }
 
-.has-error,
-.input-error {
-    .form-control {
+/* Inputs with their own subquestion validation are only marked when they are invalid themselves */
+.has-error .form-control,
+.input-error .form-control:not(.em_sq_validation),
+.input-error .form-control.has-warning {
+    box-shadow : 4px 4px 0 $error;
+    z-index    : 3;
+    &:focus {
         box-shadow : 4px 4px 0 $error;
-        z-index    : 3;
-        &:focus {
-            box-shadow : 4px 4px 0 $error;
-        }
     }
 }
 

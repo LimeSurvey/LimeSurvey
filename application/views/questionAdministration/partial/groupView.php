@@ -92,7 +92,7 @@
                 'emptyText'    => gT('No question groups found.'),
                 'lsPageSizeCurrentValue' => $pageSize,
 
-                // Columns to dispplay
+                // Columns to display
                 'columns'         => [
                     // Group Id
                     [

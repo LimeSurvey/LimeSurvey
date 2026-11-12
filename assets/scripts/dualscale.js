@@ -13,14 +13,14 @@
  */
 
 /**
- * Update answers part for a dual scale radio question and lauch EM
+ * Update answers part for a dual scale radio question and launch EM
  *
  * @author Denis Chenu (Shnoulle)
  * @param {number} qId The qid of the question where apply.
  * @version 205-01
  */
 function doDualScaleRadio(qID) {
-  // Lauch EM with hidden input
+  // Launch EM with hidden input
   $("#question"+qID+" .ls-answers .noanswer-item :radio").on("click",function(){
     $(this).closest(".answers-list").find(":radio[value='']").prop("checked", true);
     name=$(this).attr("name");
@@ -42,7 +42,7 @@ function doDualScaleRadio(qID) {
 }
 
 /**
- * Update answers part for a dual scale dropdown question and lauch EM
+ * Update answers part for a dual scale dropdown question and launch EM
  * Default system use name, we need to replace # by _ for dualscale
  * Do it for whole input : we can remove this. Unsure of the best solution
  *

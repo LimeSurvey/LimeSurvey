@@ -78,7 +78,7 @@ describe('isTempId', () => {
     expect(hasTempId(mixed, 'id')).toBe(true)
   })
 
-  test('should retun false if the data is null', () => {
+  test('should return false if the data is null', () => {
     expect(hasTempId(null, 'id')).toBe(false)
   })
 })

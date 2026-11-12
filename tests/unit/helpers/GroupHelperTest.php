@@ -80,7 +80,7 @@ class GroupHelperTest extends TestBaseClass
      * Testing that qid and question_order fields change
      * after changing question order with reorderGroup function.
      *
-     * Use questions in the first gruop.
+     * Use questions in the first group.
      */
     public function testQuestionOrderChange()
     {

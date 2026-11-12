@@ -56,7 +56,7 @@ class PluginEventContent
     }
 
     /**
-     * Clears exisiting content
+     * Clears existing content
      *
      * @return PluginEventContent
      */

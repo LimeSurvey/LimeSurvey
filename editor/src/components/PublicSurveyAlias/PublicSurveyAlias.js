@@ -5,6 +5,9 @@ import classNames from 'classnames'
 import { useSurveyUpdatePermission } from 'hooks'
 import { formatUrlPreview, getSurveyAccessLink } from 'helpers'
 import { Button, CustomizeButton, Input } from 'components/UIComponents'
+import { PluginSlot } from 'plugins/PluginSlot'
+import pluginManager from 'plugins/PluginManager'
+import { PLUGIN_SLOTS } from 'plugins/slots'
 
 import CopyButton from './CopyButton'
 import { SurveyAccessModeSelector } from './SurveyAccessMode/SurveyAccessModeSelector'
@@ -17,6 +20,7 @@ export const PublicSurveyAlias = ({
   onAliasChange = () => {},
   setLink,
   editable = true,
+  showPluginActions = false, // Only the sharing overview card opts in to the plugin slot next to "Customize link"
   aliasHasError = false,
   currentSurveyAccessMode,
   onSurveyAccessModeChange = () => {},
@@ -84,6 +88,14 @@ export const PublicSurveyAlias = ({
     }
   }
 
+  const customizeButton = (
+    <CustomizeButton
+      text={t('Customize link')}
+      isDisabled={!hasUpdatePermission}
+      onClick={handleLinkToggle}
+    />
+  )
+
   useEffect(() => {
     if (isEditingAlias) {
       inputRef.current.focus()
@@ -141,11 +153,26 @@ export const PublicSurveyAlias = ({
         />
       </div>
       {editable && !isEditingAlias && (
-        <CustomizeButton
-          text={t('Customize link')}
-          isDisabled={!hasUpdatePermission}
-          onClick={handleLinkToggle}
-        />
+        <>
+          {showPluginActions &&
+          pluginManager.hasPlugin(
+            PLUGIN_SLOTS.SHARING_OVERVIEW_ALIAS_CARD_ACTIONS
+          ) ? (
+            <div className="d-flex flex-wrap justify-content-between align-items-center gap-2">
+              {customizeButton}
+              <PluginSlot
+                slotName={PLUGIN_SLOTS.SHARING_OVERVIEW_ALIAS_CARD_ACTIONS}
+                hasUpdatePermission={hasUpdatePermission}
+                surveyId={survey.sid}
+                selectedLanguage={language}
+                link={link}
+                alias={alias}
+              />
+            </div>
+          ) : (
+            customizeButton
+          )}
+        </>
       )}
       {isEditingAlias && (
         <div className="survey-alias-actions">

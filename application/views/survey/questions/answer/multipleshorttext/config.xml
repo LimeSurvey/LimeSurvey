@@ -115,7 +115,7 @@
             <sortorder>101</sortorder>
             <inputtype>text</inputtype>
             <default></default>
-            <help>Semicolon-separated list of subquestion codes that keep their original database position when subquestions are randomized</help>
+            <help>Semicolon-separated list of subquestion codes that keep their original database position when subquestions are randomized or sorted alphabetically</help>
             <caption>Keep codes at original positions</caption>
             <i18n></i18n>
             <readonly></readonly>
@@ -596,7 +596,7 @@
             </options>
             <help>Select the type of chart to be displayed</help>
             <caption>Chart type</caption>
-            <default>0</default>
+            <default></default>
             <i18n></i18n>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>

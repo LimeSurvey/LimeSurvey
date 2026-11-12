@@ -17,6 +17,7 @@ export const MultiNumericalGrid = ({
   questionCode,
   fields,
   filters,
+  filterSet = [],
 }) => {
   const [containerRef, isInView] = useIsInViewport(null, {
     initialInView: false,
@@ -47,6 +48,7 @@ export const MultiNumericalGrid = ({
     enabled: shouldLoad,
     fields,
     filters,
+    filterSet,
     search,
   })
 

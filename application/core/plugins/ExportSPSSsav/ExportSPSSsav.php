@@ -7,6 +7,9 @@ class ExportSPSSsav extends \LimeSurvey\PluginManager\PluginBase
     protected static $description = 'Core: Export survey results to an SPSS sav file';
     protected static $name = 'SPSS Export';
 
+    /** @inheritdoc this plugin doesn't have any public method */
+    public $allowedPublicMethods = array();
+
     public function init()
     {
         /**

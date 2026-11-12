@@ -91,4 +91,21 @@ abstract class Zend_Filter_Compress_CompressAbstract implements Zend_Filter_Comp
 
         return $this;
     }
+
+    /**
+     * Whether $content names an existing file; the content handed to the
+     * filter is often the (binary) data itself, which file_exists() rejects
+     * with a ValueError when it contains a null byte
+     *
+     * @param  mixed $content
+     * @return boolean
+     */
+    protected function _isExistingFile($content)
+    {
+        if (!is_string($content) || $content === '' || strpos($content, "\0") !== false) {
+            return false;
+        }
+
+        return @file_exists($content);
+    }
 }

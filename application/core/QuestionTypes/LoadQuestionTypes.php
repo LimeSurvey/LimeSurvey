@@ -25,6 +25,7 @@ class LoadQuestionTypes
         Yii::import('questiontypes.GenderDropdown.*');
         Yii::import('questiontypes.HugeFreeText.*');
         Yii::import('questiontypes.Language.*');
+        Yii::import('questiontypes.Map.*');
         Yii::import('questiontypes.ListDropdown.*');
         Yii::import('questiontypes.ListRadio.*');
         Yii::import('questiontypes.ListWithComment.*');
@@ -39,6 +40,12 @@ class LoadQuestionTypes
         Yii::import('questiontypes.YesNoRadio.*');
     }
 
+    /**
+     * Imports the question type classes needed for the given question type.
+     *
+     * @param string $type Question type code
+     * @return void
+     */
     public static function load($type)
     {
         switch ($type) {
@@ -77,6 +84,9 @@ class LoadQuestionTypes
                 break;
             case Question::QT_I_LANGUAGE:
                 Yii::import('questiontypes.Language.*');
+                break;
+            case Question::QT_J_MAP:
+                Yii::import('questiontypes.Map.*');
                 break;
             case Question::QT_Q_MULTIPLE_SHORT_TEXT:
                 Yii::import('questiontypes.MultipleShortText.*');

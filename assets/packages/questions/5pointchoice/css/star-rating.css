@@ -7,7 +7,19 @@
     height: 36px;
     overflow: hidden;
     width: 36px;
+    text-align: center;
 }
+.star-rating.star-focused{
+    outline: 2px solid #333;
+    outline-offset: -2px;
+    border-radius: 4px;
+}
+/* lit stars (chosen or hover preview) show a filled star, all others an outlined one */
+.star-rating .star-icon-filled,
+.star-rating.star-rated-on:not(.star-stub) .star-icon-empty,
+.star-rating.star-drained .star-icon-empty{display: none;}
+.star-rating.star-rated-on:not(.star-stub) .star-icon-filled,
+.star-rating.star-drained .star-icon-filled{display: inline;}
 .star-cancel{color: #727272;}
 .star-cancel.star-drained{color: #932424}
 .star-cancel.star-hover{color: #a12424; text-shadow: 1px 0 #a12424;}
