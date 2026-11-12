@@ -56,6 +56,7 @@ export const SurveyStructure = () => {
   )
 
   const [isSurveyActive] = useAppState(STATES.IS_SURVEY_ACTIVE, false)
+  const canModifyGroups = !isSurveyActive && hasSurveyUpdatePermission
   const [isDraggingOutOfGroup, setIsDraggingOutOfGroup] = useState(false)
   const [deleteGroupState, setDeleteGroupState] = useState({
     show: false,
@@ -80,10 +81,15 @@ export const SurveyStructure = () => {
   }
 
   const handleGroupDeletion = (questionGroup, index) => {
+    if (!canModifyGroups) return
     setDeleteGroupState({ show: true, questionGroup, index })
   }
 
   const handleConfirmGroupDeletion = () => {
+    if (!canModifyGroups) {
+      setDeleteGroupState({ show: false, questionGroup: null, index: null })
+      return
+    }
     const { questionGroup, index } = deleteGroupState
     const [updatedQuestionGroups] = arrayDeleteItem(questionGroups, index)
 
@@ -230,6 +236,7 @@ export const SurveyStructure = () => {
   }
 
   const handleQuestionGroupDuplication = (questionGroup, index) => {
+    if (!canModifyGroups) return
     const duplicatedQuestionGroup = DuplicateQuestionGroup(questionGroup)
 
     const updatedQuestionGroups = InsertElementAndIncrementProperty(
