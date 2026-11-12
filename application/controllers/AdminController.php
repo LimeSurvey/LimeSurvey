@@ -13,7 +13,7 @@
 *
 */
 
-class AdminController extends LSYii_Controller
+class AdminController extends LSYii_Controller implements AdminControllerInterface
 {
     /** Example admin modules removed from the release: Leftovers in installations upgraded over an older release are not loaded */
     private const REMOVED_EXAMPLE_ADMIN_MODULES = ['HelloWorld', 'globalsettings'];

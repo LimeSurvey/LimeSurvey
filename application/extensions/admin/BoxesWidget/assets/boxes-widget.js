@@ -32,11 +32,12 @@ $("#load-more").click(function (event) {
     var page = $(this).attr('data-page')
     var limit = $(this).attr('data-limit')
 
-    var url = '/surveyAdministration/boxList?page=' + page + '&limit=' + limit;
+    var urlParams = {page: page, limit: limit};
     let params = Object.fromEntries(new URLSearchParams(location.search));
     if (params.active) {
-        url += '&active=' + params.active
+        urlParams.active = params.active;
     }
+    var url = LS.createUrl('admin/surveyAdministration/boxList', urlParams);
 
     $.ajax({
         url : url,

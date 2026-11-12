@@ -10,20 +10,20 @@ class EditorRedirector
     /**
      * Routing map
      *
-     * Map of CE URLs to editor routes
+     * Map of CE URLs (path info, with the admin prefix) to editor routes
      *
      * Editor routes can contain variable:
      * - $surveyId
      */
     private $routingMap = [
-        'surveyAdministration/view' => 'survey/$surveyId',
-        'surveyAdministration/rendersidemenulink/subaction/generalsettings/surveyid/' => 'survey/$surveyId/settings/generalsettings',
-        'questionAdministration/view' => 'survey/$surveyId/?question=$questionId',
-        'questionAdministration/edit' => 'survey/$surveyId/?question=$questionId',
-        'questionAdministration/create' => 'survey/$surveyId/structure',
-        'questionGroupsAdministration/add' => 'survey/$surveyId/structure',
-        'questionGroupsAdministration/view' => 'survey/$surveyId?group=$questionGroupId',
-        'questionGroupsAdministration/edit' => 'survey/$surveyId?group=$questionGroupId',
+        'admin/surveyAdministration/view' => 'survey/$surveyId',
+        'admin/surveyAdministration/rendersidemenulink/subaction/generalsettings/surveyid/' => 'survey/$surveyId/settings/generalsettings',
+        'admin/questionAdministration/view' => 'survey/$surveyId/?question=$questionId',
+        'admin/questionAdministration/edit' => 'survey/$surveyId/?question=$questionId',
+        'admin/questionAdministration/create' => 'survey/$surveyId/structure',
+        'admin/questionGroupsAdministration/add' => 'survey/$surveyId/structure',
+        'admin/questionGroupsAdministration/view' => 'survey/$surveyId?group=$questionGroupId',
+        'admin/questionGroupsAdministration/edit' => 'survey/$surveyId?group=$questionGroupId',
         'admin/statistics/sa/simpleStatistics/surveyid/' => 'responses/$surveyId',
     ];
 

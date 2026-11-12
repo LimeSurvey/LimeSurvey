@@ -3,7 +3,7 @@
 /**
  * @class SmtpOAuthController
  */
-class SmtpOAuthController extends LSBaseController
+class SmtpOAuthController extends LSBaseController implements AdminControllerInterface
 {
     /**
      * It's important to have the accessRules set (security issue).

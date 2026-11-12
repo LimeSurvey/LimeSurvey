@@ -1,5 +1,6 @@
 import { format } from 'util'
 import { Badge } from 'react-bootstrap'
+import { getSiteUrl } from 'helpers'
 
 export const FileInfoCell = ({ filesInfo, surveyId, rowId, questionId }) => {
   const filesToRender = filesInfo.map((fileInfo, index) => {
@@ -22,7 +23,9 @@ export const FileInfoCell = ({ filesInfo, surveyId, rowId, questionId }) => {
           <div>
             <span className="file-name">{fileInfo.name}:</span>
             <a
-              href={`${location.protocol}//${location.hostname}/responses/downloadfile?surveyId=${surveyId}&responseId=${rowId}&qid=${questionId}&index=${index}`}
+              href={getSiteUrl(
+                `/admin/responses/downloadfile?surveyId=${surveyId}&responseId=${rowId}&qid=${questionId}&index=${index}`
+              )}
               className="ms-1 file-size"
               target="_blank"
               rel="noreferrer"

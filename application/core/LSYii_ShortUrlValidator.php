@@ -18,7 +18,8 @@ if (!defined('BASEPATH')) {
 /**
  * Validator class for Short URLs (Survey Aliases).
  * Compares the alias against basic route rules and existing controllers, trying
- * to avoid collisions.
+ * to avoid collisions. Administration controllers (AdminControllerInterface) are served
+ * under the "admin/" URL prefix in path URL format, so their names are free for aliases there.
  */
 class LSYii_ShortUrlValidator extends CValidator
 {
@@ -102,14 +103,25 @@ class LSYii_ShortUrlValidator extends CValidator
                     require_once($classFile);
                 }
                 if (class_exists($className, false) && is_subclass_of($className, 'CController')) {
-                    $id[0] = strtolower($id[0]);
-                    return true;
+                    return !$this->isPrefixedAdminController($className);
                 }
                 return false;
             }
             $controllerID .= $id;
             $basePath .= DIRECTORY_SEPARATOR . $id;
         }
+    }
+
+    /**
+     * Whether the controller is only reachable under the "admin/" URL prefix, so it cannot collide with an alias
+     *
+     * @param string $className
+     * @return bool
+     */
+    protected function isPrefixedAdminController($className)
+    {
+        return $this->urlManager->getUrlFormat() === CUrlManager::PATH_FORMAT
+            && is_subclass_of($className, 'AdminControllerInterface');
     }
 
     /**

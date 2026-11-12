@@ -11,7 +11,7 @@ use LimeSurvey\Models\Services\Exception\{
 /**
  * Class QuestionAdministrationController
  */
-class QuestionAdministrationController extends LSBaseController
+class QuestionAdministrationController extends LSBaseController implements AdminControllerInterface
 {
     /**
      * It's import to have the accessRules set (security issue).

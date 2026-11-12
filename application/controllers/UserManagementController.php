@@ -6,7 +6,7 @@ use LimeSurvey\Models\Services\UserManager;
 /**
  * Class UserManagementController
  */
-class UserManagementController extends LSBaseController
+class UserManagementController extends LSBaseController implements AdminControllerInterface
 {
     /**
      * @return array

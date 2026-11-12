@@ -1,3 +1,5 @@
+import getBasePath from '../getBasePath'
+
 export const MINIMUM_INPUT_WIDTH_PERCENT = 15
 export const FOCUS_ANIMATION_DURATION_IN_MS = 1000
 
@@ -118,11 +120,9 @@ export const RESPONSES_TITLES = {
   list: '',
 }
 
-const getBasePath = () => window.location.pathname.split('/editor')[0]
-
 export const URLS = {
   ADMIN: `${getBasePath()}/admin`,
-  SURVEY_OVERVIEW: `${getBasePath()}/surveyAdministration/view/`,
+  SURVEY_OVERVIEW: `${getBasePath()}/admin/surveyAdministration/view/`,
 }
 
 export const placeholderStandardFields = {

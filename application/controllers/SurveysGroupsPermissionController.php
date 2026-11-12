@@ -19,7 +19,7 @@ use LimeSurvey\Models\Services\PermissionManager;
 /**
  * Class SurveysGroupsPermissionController
  */
-class SurveysGroupsPermissionController extends LSBaseController
+class SurveysGroupsPermissionController extends LSBaseController implements AdminControllerInterface
 {
     /** By default : just view */
     public $defaultAction = 'index';

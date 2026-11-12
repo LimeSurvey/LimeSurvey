@@ -3,7 +3,7 @@
 /**
  * Controller for rendering AlertWidget via Ajax call
  */
-class AjaxAlertController extends LSBaseController
+class AjaxAlertController extends LSBaseController implements AdminControllerInterface
 {
     /**
      * Spits out html from AlertWidget

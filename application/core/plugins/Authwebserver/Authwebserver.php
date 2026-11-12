@@ -1,5 +1,15 @@
 <?php
 
+/**
+ * Web server authentication
+ *
+ * Logs the user in with the username the web server passes in $_SERVER (REMOTE_USER by default),
+ * e.g. from Basic, Kerberos or Shibboleth authentication applied to /index.php/admin.
+ * Every administration controller is served under that URL prefix (see AdminControllerInterface),
+ * so protecting /index.php/admin in the web server covers the whole administration.
+ * The web server identity is checked again before every action: when it no longer matches
+ * the logged-in user, the session is ended and the login page is shown.
+ */
 class Authwebserver extends LimeSurvey\PluginManager\AuthPluginBase
 {
     protected $storage = 'DbStorage';
@@ -36,6 +46,7 @@ class Authwebserver extends LimeSurvey\PluginManager\AuthPluginBase
         $this->subscribe('getGlobalBasePermissions');
         $this->subscribe('beforeLogin');
         $this->subscribe('newUserSession');
+        $this->subscribe('beforeControllerAction');
     }
 
     /**
@@ -58,27 +69,43 @@ class Authwebserver extends LimeSurvey\PluginManager\AuthPluginBase
         ));
     }
 
+    /**
+     * Username the web server authenticated, mapped to the LimeSurvey username
+     *
+     * Reads the configured server key, strips the domain part when wanted
+     * and applies the auth_webserver_user_map config setting.
+     *
+     * @return string|null Null when the web server did not pass a username (key missing or empty, e.g. IIS LOGON_USER on anonymous requests)
+     */
+    protected function getWebserverUserName()
+    {
+        $serverKey = $this->get('serverkey');
+        if (empty($serverKey) || !isset($_SERVER[$serverKey]) || $_SERVER[$serverKey] === '') {
+            return null;
+        }
+        $sUser = $_SERVER[$serverKey];
+        // Only strip domain part when desired
+        if ($this->get('strip_domain', null, null, false)) {
+            if (strpos((string) $sUser, "\\") !== false) {
+                // Get username for DOMAIN\USER
+                $sUser = substr((string) $sUser, strrpos((string) $sUser, "\\") + 1);
+            } elseif (strpos((string) $sUser, "@") !== false) {
+                // Get username for USER@DOMAIN
+                $sUser = substr((string) $sUser, 0, strrpos((string) $sUser, "@"));
+            }
+        }
+        $aUserMappings = $this->api->getConfigKey('auth_webserver_user_map', array());
+        if (isset($aUserMappings[$sUser])) {
+            $sUser = $aUserMappings[$sUser];
+        }
+        return $sUser;
+    }
+
     public function beforeLogin()
     {
         // normal login through webserver authentication
-        $serverKey = $this->get('serverkey');
-
-        if (!empty($serverKey) && isset($_SERVER[$serverKey])) {
-            $sUser = $_SERVER[$serverKey];
-            // Only strip domain part when desired
-            if ($this->get('strip_domain', null, null, false)) {
-                if (strpos((string) $sUser, "\\") !== false) {
-                    // Get username for DOMAIN\USER
-                    $sUser = substr((string) $sUser, strrpos((string) $sUser, "\\") + 1);
-                } elseif (strpos((string) $sUser, "@") !== false) {
-                    // Get username for USER@DOMAIN
-                    $sUser = substr((string) $sUser, 0, strrpos((string) $sUser, "@"));
-                }
-            }
-            $aUserMappings = $this->api->getConfigKey('auth_webserver_user_map', array());
-            if (isset($aUserMappings[$sUser])) {
-                $sUser = $aUserMappings[$sUser];
-            }
+        $sUser = $this->getWebserverUserName();
+        if ($sUser !== null) {
             $authEvent = $this->getEvent();
             $oUser = $this->api->getUserByName($sUser);
             if (
@@ -90,6 +117,7 @@ class Authwebserver extends LimeSurvey\PluginManager\AuthPluginBase
                 return;
             }
         }
+        $serverKey = $this->get('serverkey');
         if (!empty($serverKey) && $this->get('is_default', null, null, $this->settings['is_default']['default'])) {
             throw new CHttpException(401, 'Wrong credentials for LimeSurvey administration.');
         }
@@ -149,6 +177,44 @@ class Authwebserver extends LimeSurvey\PluginManager\AuthPluginBase
     }
 
     /**
+     * End the session when the web server now authenticates somebody else
+     *
+     * Runs before every controller action. Only sessions opened through this plugin are checked,
+     * and only when the web server passes a username. A different username means the identity
+     * behind the web server session changed, so the LimeSurvey session is ended and the user is
+     * sent to the login page, where the current web server identity is logged in.
+     *
+     * @return void
+     */
+    public function beforeControllerAction()
+    {
+        if (!$this->hasWebserverUserChanged()) {
+            return;
+        }
+        App()->user->logout();
+        $this->getEvent()->set('run', false);
+        App()->getRequest()->redirect(App()->createUrl('/admin/authentication/sa/login'), false);
+    }
+
+    /**
+     * Whether the session was opened through this plugin but the web server now names another user
+     *
+     * @return bool
+     */
+    public function hasWebserverUserChanged()
+    {
+        if (App()->user->isGuest || App()->user->getState('plugin') !== get_class($this)) {
+            return false;
+        }
+        $sUser = $this->getWebserverUserName();
+        if ($sUser === null) {
+            return false;
+        }
+        $oUser = $this->api->getUserByName($sUser);
+        return $oUser === null || (int) $oUser->uid !== (int) App()->user->getId();
+    }
+
+    /**
      * Modified getPluginSettings to check for invalid settings
      *
      * @param boolean $getValues
@@ -168,6 +234,21 @@ class Authwebserver extends LimeSurvey\PluginManager\AuthPluginBase
                     'type' => 'info',
                 ], true);
             }
+        }
+
+        if (App()->getUrlManager()->getUrlFormat() !== CUrlManager::PATH_FORMAT) {
+            $settings = [
+                'urlformat_warning' => [
+                    'type' => 'info',
+                    'content' => App()->getController()->widget('ext.AlertWidget.AlertWidget', [
+                        'tag' => 'p',
+                        'text' => gT(
+                            "Web server authentication protects a URL path, so the URL format must be \"path\" (urlFormat in config.php). With the current \"get\" format the administration is not covered by the web server's authentication."
+                        ),
+                        'type' => 'warning',
+                    ], true),
+                ],
+            ] + $settings;
         }
 
         return $settings;

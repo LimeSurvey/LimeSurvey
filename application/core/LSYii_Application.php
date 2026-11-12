@@ -532,15 +532,62 @@ class LSYii_Application extends CWebApplication
      */
     public function createController($route, $owner = null)
     {
+        // The "admin/" prefix belongs to the URL, a route carrying it (GET URL format, hard-coded) is accepted as well
+        $route = LSAdminUrlRule::stripPrefix($route);
         $controller = parent::createController($route, $owner);
 
         // If no controller is found by standard ways, check if the route matches
         // an existing survey's alias.
         if (is_null($controller)) {
-            $controller = $this->createControllerFromShortUrl($route);
+            return $this->createControllerFromShortUrl($route);
+        }
+
+        // An administration controller does not own its unprefixed URL any more: a survey alias
+        // of the same name (e.g. "dashboard") is served there, otherwise the prefix is enforced.
+        if ($this->isAdminControllerWithoutPrefix($controller[0])) {
+            $surveyController = $this->createControllerFromShortUrl($route);
+            if (!is_null($surveyController)) {
+                return $surveyController;
+            }
+            $this->enforceAdminUrlPrefix($controller[0], $controller[1]);
         }
 
         return $controller;
+    }
+
+    /**
+     * Whether the request reaches an administration controller without the "admin/" URL prefix
+     *
+     * Always false in GET URL format, there is no URL path to protect there.
+     *
+     * @param CController $controller The resolved controller
+     * @return bool
+     */
+    protected function isAdminControllerWithoutPrefix(CController $controller)
+    {
+        return $controller instanceof AdminControllerInterface
+            && $this->getUrlManager()->getUrlFormat() === CUrlManager::PATH_FORMAT
+            && !LSAdminUrlRule::hasPrefix($this->getRequest()->getPathInfo());
+    }
+
+    /**
+     * Make sure an administration controller is only reached through its "admin/" URL prefix
+     *
+     * A GET or HEAD request to the unprefixed URL is permanently redirected to the prefixed one
+     * (bookmarks and links created before the prefix keep working), any other request is refused with 404.
+     *
+     * @param CController $controller The resolved administration controller
+     * @param string $actionId The resolved action id, empty for the default action
+     * @return void
+     * @throws CHttpException 404 for a non GET request without the prefix
+     */
+    protected function enforceAdminUrlPrefix(CController $controller, $actionId)
+    {
+        if (in_array($this->getRequest()->getRequestType(), ['GET', 'HEAD'])) {
+            $route = $controller->getId() . ($actionId !== '' ? '/' . $actionId : '');
+            $this->getRequest()->redirect($this->createUrl($route, $_GET), true, 301);
+        }
+        throw new CHttpException(404, gT("The requested page is only available under the administration URL."));
     }
 
     /**

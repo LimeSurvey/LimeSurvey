@@ -3,7 +3,7 @@
 use Anper\Iuliia\Iuliia;
 use LimeSurvey\Models\Services\QuickTranslation;
 
-class QuickTranslationController extends LSBaseController
+class QuickTranslationController extends LSBaseController implements AdminControllerInterface
 {
     // Define the language code mappings from LimeSurvey to Google Translate API
     // where the codes are different
