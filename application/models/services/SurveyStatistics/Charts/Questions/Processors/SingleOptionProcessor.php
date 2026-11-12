@@ -77,7 +77,8 @@ class SingleOptionProcessor extends AbstractQuestionProcessor
         $dataItems[] = [
             'key' => 'other',
             'value' => $this->countFieldResponses($mfield),
-            'title' => gT('Other')
+            'title' => gT('Other'),
+            'otherAnswers' => $this->groupOtherAnswers($mfield),
         ];
     }
 

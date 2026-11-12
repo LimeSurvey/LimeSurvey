@@ -1,16 +1,47 @@
 import { LSTable, TooltipContainer } from 'components'
 
 import {
+  OtherAnswersHint,
+  TooltipMetricLines,
   VALUE_TYPE,
   getDisplayMetric,
   getUnionSegments,
+  hasOtherAnswers,
   ordinal,
   shouldRenderImage,
   wrapTerm,
 } from './ChartsUtils'
 
-const AnswerCell = ({ row, isImage }) =>
-  shouldRenderImage(isImage, row) ? (
+const OtherAnswerCell = ({ row, onViewOther, isOtherOpen, otherListId }) => (
+  <TooltipContainer
+    tip={
+      <>
+        <TooltipMetricLines count={row.value} percentage={row.percentage} />
+        <OtherAnswersHint />
+      </>
+    }
+  >
+    <button
+      type="button"
+      className="responses-statistics-table-other"
+      onClick={onViewOther}
+      aria-expanded={isOtherOpen}
+      aria-controls={isOtherOpen ? otherListId : undefined}
+    >
+      {row.title}
+    </button>
+  </TooltipContainer>
+)
+
+const AnswerCell = ({ row, isImage, onViewOther, isOtherOpen, otherListId }) =>
+  onViewOther && hasOtherAnswers(row) ? (
+    <OtherAnswerCell
+      row={row}
+      onViewOther={onViewOther}
+      isOtherOpen={isOtherOpen}
+      otherListId={otherListId}
+    />
+  ) : shouldRenderImage(isImage, row) ? (
     <img
       src={row.title}
       alt={row.title}
@@ -20,6 +51,10 @@ const AnswerCell = ({ row, isImage }) =>
     row.title
   )
 
+const AnswerColumnCell = ({ row, column }) => (
+  <AnswerCell row={row.original} {...column.columnDef.meta} />
+)
+
 const withRowIds = (rows) =>
   rows.map((row, index) => ({ ...row, id: row.key ?? `row-${index}` }))
 
@@ -27,6 +62,9 @@ export const StatisticsTable = ({
   data = [],
   isImage = false,
   valueType = VALUE_TYPE.PERCENTAGE,
+  onViewOther,
+  isOtherOpen = false,
+  otherListId,
 }) => {
   const isRanking = data.some((item) => Array.isArray(item?.ranks))
   const isSegmented = data.some((item) => Array.isArray(item?.segments))
@@ -184,7 +222,8 @@ export const StatisticsTable = ({
     {
       id: 'answer',
       header: t('Answer'),
-      cell: ({ row }) => <AnswerCell row={row.original} isImage={isImage} />,
+      cell: AnswerColumnCell,
+      meta: { isImage, onViewOther, isOtherOpen, otherListId },
     },
     {
       id: 'responses',

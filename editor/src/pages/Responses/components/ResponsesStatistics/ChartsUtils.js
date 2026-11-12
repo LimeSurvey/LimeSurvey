@@ -447,19 +447,31 @@ export const TooltipMetricLines = ({ count, percentage }) => (
   </>
 )
 
+export const hasOtherAnswers = (item) =>
+  item?.key === 'other' && Array.isArray(item?.otherAnswers)
+
+export const OtherAnswersHint = () => (
+  <div style={{ textDecoration: 'underline' }}>
+    {t('Click to view all "other" answers')}
+  </div>
+)
+
 export const CustomTooltip = ({
   active,
   payload,
   showCommentsHint = false,
+  showOtherHint = false,
 }) => {
   if (!active || !payload?.length) return null
 
   const count = payload[0].payload.value
   const percentage = payload[0].payload.percentage
+  const isOther = showOtherHint && hasOtherAnswers(payload[0].payload)
   return (
     <TooltipShell>
       <TooltipMetricLines count={count} percentage={percentage} />
-      {showCommentsHint && (
+      {isOther && <OtherAnswersHint />}
+      {showCommentsHint && !isOther && (
         <div
           style={{
             marginTop: 8,
