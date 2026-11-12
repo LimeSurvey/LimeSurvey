@@ -1,16 +1,7 @@
 import { useParams } from 'react-router-dom'
 
-import {
-  useBuffer,
-  useExpressionScriptValidation,
-  useFocused,
-  useSurvey,
-} from 'hooks'
-import {
-  getQuestionById,
-  htmlPopup,
-  QUESTION_RELEVANCE_DEFAULT_VALUE,
-} from 'helpers'
+import { useBuffer, useExpressionScriptValidation, useSurvey } from 'hooks'
+import { htmlPopup, QUESTION_RELEVANCE_DEFAULT_VALUE } from 'helpers'
 import { Button } from 'components/UIComponents'
 import { CloseCircleIcon, ExpandIcon } from 'components/icons'
 
@@ -18,13 +9,17 @@ import { ExpressionScriptEditorOverlay } from '../Overlays'
 import { handleConditionScriptUpdate } from './handleConditionScriptUpdate'
 import { showResetAllConditionsOverlay, showWarningMessage } from '../utils'
 
-export const ExpressionScriptInputBox = ({ onShowPanel, onNavigateBack }) => {
+export const ExpressionScriptInputBox = ({
+  question,
+  groupIndex,
+  questionIndex,
+  onShowPanel,
+  onNavigateBack,
+}) => {
   const { surveyId } = useParams()
   const { survey, update } = useSurvey(surveyId)
-  const { focused, groupIndex, questionIndex } = useFocused()
   const { addToBuffer } = useBuffer()
 
-  const question = getQuestionById(focused.qid, survey).question
   const validateExpression = useExpressionScriptValidation(
     surveyId,
     question.qid

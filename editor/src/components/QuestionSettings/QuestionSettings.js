@@ -8,6 +8,7 @@ import {
   createBufferOperation,
   getDisabledQuestionTypes,
   errorToast,
+  getQuestionById,
   isTempId,
 } from 'helpers'
 import { useAppState, useBuffer, useFocused, useSurvey } from 'hooks'
@@ -51,9 +52,22 @@ export const QuestionSettings = ({ surveyId }) => {
     focused = {},
     unFocus,
     setFocused,
-    groupIndex,
-    questionIndex,
+    groupIndex: focusedGroupIndex,
+    questionIndex: focusedQuestionIndex,
   } = useFocused()
+
+  // The survey is the source of truth; `focused` is only a snapshot. Its qid
+  // can be missing from the survey, and its indices go stale when groups are
+  // reordered, deleted or inserted, so resolve both from the qid.
+  // Not memoized: survey updates mutate the question groups in place, so the
+  // survey reference can stay the same while the question object is replaced.
+  const {
+    question,
+    groupIndex = focusedGroupIndex,
+    questionIndex = focusedQuestionIndex,
+  } = focused?.qid && survey?.questionGroups
+    ? getQuestionById(focused.qid, survey)
+    : {}
 
   useEffect(() => {
     closeConditionDesignerPanels()
@@ -189,7 +203,8 @@ export const QuestionSettings = ({ surveyId }) => {
     const question =
       survey?.questionGroups?.[groupIndex]?.questions?.[questionIndex]
 
-    if (!question) {
+    // The indices can point to another question when the focus is stale.
+    if (!question || String(question.qid) !== String(focused.qid)) {
       errorToast('Invalid question group or question')
       return
     }
@@ -250,11 +265,14 @@ export const QuestionSettings = ({ surveyId }) => {
     !!questionSettingsOptions?.isAdvanced &&
     advancedQuestionSettings.length > 0
 
-  if (focused && typeof focused.qid === 'number') {
+  if (question && typeof focused.qid === 'number') {
     if (conditionDesignerPanels.isConditionPanelOpen || scenarioToPatch) {
       return (
         <ConditionDesigner
           key={`condition-designer-${focused.qid}`}
+          question={question}
+          groupIndex={groupIndex}
+          questionIndex={questionIndex}
           survey={survey}
           update={update}
           language={language}
@@ -265,12 +283,15 @@ export const QuestionSettings = ({ surveyId }) => {
       )
     }
     if (
-      focused.relevance !== null &&
+      question.relevance != null &&
       conditionDesignerPanels.isExpressionScriptPanelOpen
     ) {
       return (
         <ExpressionScript
           key={`expression-script-${focused.qid}`}
+          question={question}
+          groupIndex={groupIndex}
+          questionIndex={questionIndex}
           onNavigateBack={closeConditionDesignerPanels}
         />
       )
@@ -362,25 +383,31 @@ export const QuestionSettings = ({ surveyId }) => {
         </>
       )}
       <div id="condition-designer">
-        {!focused || (focused && isTempId(focused.qid)) ? null : (
+        {!question || isTempId(focused.qid) ? null : (
           <>
             <AddScenario
               key={`add-scenario-${focused.qid}`}
               onShowPanel={toggleConditionDesignerPanels}
             />
 
-            {focused.scenarios?.length ? (
+            {question.scenarios?.length ? (
               <ScenarioList
-                key={`scenario-list-${focused.qid}-${focused.scenarios.length}`}
+                key={`scenario-list-${focused.qid}-${question.scenarios.length}`}
+                question={question}
+                groupIndex={groupIndex}
+                questionIndex={questionIndex}
                 setScenarioToPatch={setScenarioToPatch}
                 pendingScenarioName={pendingScenarioName}
                 setPendingScenarioName={setPendingScenarioName}
               />
             ) : null}
 
-            {focused.relevance != null && (
+            {question.relevance != null && (
               <ExpressionScriptInputBox
                 key={`condition-expression-trigger-${focused.qid}`}
+                question={question}
+                groupIndex={groupIndex}
+                questionIndex={questionIndex}
                 onShowPanel={toggleConditionDesignerPanels}
                 onNavigateBack={closeConditionDesignerPanels}
               />

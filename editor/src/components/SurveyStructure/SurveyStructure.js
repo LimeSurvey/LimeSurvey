@@ -91,7 +91,8 @@ export const SurveyStructure = () => {
       .questionGroup()
       .delete()
 
-    if (!focused?.qid && focused?.gid === questionGroup.gid) {
+    // Unfocus the deleted group itself, or any of its questions.
+    if (focused?.gid === questionGroup.gid) {
       unFocus()
     }
 
@@ -206,10 +207,15 @@ export const SurveyStructure = () => {
       const sourceGroupIndex = Number(source.droppableId.replace('g', ''))
       const destGroupIndex = Number(destination.droppableId.replace('g', ''))
       // remove question from source and add it to destination group
-      const [sourceQuestions, [movedQuestion]] = arrayDeleteItem(
+      const [sourceQuestions, [removedQuestion]] = arrayDeleteItem(
         questionGroups[sourceGroupIndex].questions,
         source.index
       )
+      // The question now belongs to the destination group.
+      const movedQuestion = {
+        ...removedQuestion,
+        gid: questionGroups[destGroupIndex].gid,
+      }
       const destQuestions = arrayInsertItem(
         questionGroups[destGroupIndex].questions,
         destination.index,
