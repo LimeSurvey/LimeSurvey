@@ -8,6 +8,7 @@ export const StatisticsDetailModal = ({
   title = null,
   modalClassname = '',
   children,
+  ...props
 }) => (
   <ComponentModal
     show={show}
@@ -16,5 +17,6 @@ export const StatisticsDetailModal = ({
     modalClassname={`responses-statistics-modal ${modalClassname}`.trim()}
     componentClassname="responses-statistics-modal-body"
     Component={children}
+    {...props}
   />
 )

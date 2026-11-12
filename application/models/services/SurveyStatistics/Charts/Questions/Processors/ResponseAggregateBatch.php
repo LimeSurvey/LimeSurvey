@@ -27,6 +27,8 @@ final class ResponseAggregateBatch
 
     private const MAX_MEDIANS_PER_QUERY = 100;
 
+    private const MAX_DAY_COUNTS_PER_QUERY = 50;
+
     private const KIND_VALUE = 'value';
     private const KIND_JSON_ELEMENT = 'jsonElement';
     private const KIND_BLANK = 'blank';
@@ -66,10 +68,21 @@ final class ResponseAggregateBatch
      */
     private array $medianRequests = [];
 
+    /**
+     * Per-day counts need a GROUP BY, so like medians they run as separate
+     * grouped queries after the main pass.
+     *
+     * @var array<string, string> alias => field
+     */
+    private array $dayCountRequests = [];
+
     /** @var array<string, string> dedup key => alias */
     private array $aliasIndex = [];
 
-    /** @var array<string, int|float> alias => count, or fractional sum for KIND_SUM */
+    /**
+     * @var array<string, int|float|array<string, int>> alias => count, fractional
+     * sum for KIND_SUM, or a 'Y-m-d' => count map for countByDay()
+     */
     private array $results = [];
 
     private bool $executed = false;
@@ -182,6 +195,26 @@ final class ResponseAggregateBatch
     }
 
     /**
+     * Register a count of answers per calendar day of a date column.
+     *
+     * @param string $field The response column
+     * @return string Alias to read the result with, as [day => count]
+     */
+    public function countByDay(string $field): string
+    {
+        $key = 'day' . "\x1F" . $field;
+        if (isset($this->aliasIndex[$key])) {
+            return $this->aliasIndex[$key];
+        }
+
+        $alias = 'd' . count($this->dayCountRequests);
+        $this->aliasIndex[$key] = $alias;
+        $this->dayCountRequests[$alias] = $field;
+
+        return $alias;
+    }
+
+    /**
      * Total row count (with the response filters applied).
      */
     public function countTotal(): string
@@ -242,8 +275,68 @@ final class ResponseAggregateBatch
         }
 
         $this->executeMedians($db, $table);
+        $this->executeDayCounts($db, $table);
 
         $this->executed = true;
+    }
+
+    /**
+     * Per-day counts via one GROUP BY sub-select per field
+     *
+     * @param CDbConnection $db
+     * @param string $table The quoted response table
+     */
+    private function executeDayCounts(CDbConnection $db, string $table): void
+    {
+        $selects = [];
+        $params = [];
+        foreach ($this->dayCountRequests as $alias => $field) {
+            $this->results[$alias] = [];
+            [$filterWhere, $filterParams] = $this->buildWhere();
+            $col = $db->quoteColumnName($field);
+            $where = $filterWhere === '' ? " WHERE $col IS NOT NULL" : "$filterWhere AND $col IS NOT NULL";
+            $selects[] = 'SELECT ' . $db->quoteValue($alias) . ' AS ' . $db->quoteColumnName('alias')
+                . ", CAST($col AS DATE) AS " . $db->quoteColumnName('day')
+                . ', COUNT(*) AS ' . $db->quoteColumnName('total')
+                . " FROM $table$where GROUP BY CAST($col AS DATE)";
+            $params[] = $filterParams;
+        }
+
+        foreach (array_chunk($selects, self::MAX_DAY_COUNTS_PER_QUERY, true) as $chunk) {
+            $chunkParams = [];
+            foreach (array_keys($chunk) as $index) {
+                $chunkParams += $params[$index];
+            }
+
+            $rows = $db->createCommand(implode(' UNION ALL ', $chunk))->queryAll(true, $chunkParams);
+            foreach ($rows as $row) {
+                $day = substr((string)$row['day'], 0, 10);
+                // Skips MySQL zero dates and anything else that is no real day.
+                if (!$this->isValidDay($day)) {
+                    continue;
+                }
+                $this->results[$row['alias']][$day] = (int)$row['total'];
+            }
+        }
+
+        foreach (array_keys($this->dayCountRequests) as $alias) {
+            ksort($this->results[$alias]);
+        }
+    }
+
+    /**
+     * Whether a day string from the database is a real 'Y-m-d' date.
+     *
+     * @param string $day
+     * @return bool
+     */
+    private function isValidDay(string $day): bool
+    {
+        if (preg_match('/^(\d{4})-(\d{2})-(\d{2})$/', $day, $parts) !== 1) {
+            return false;
+        }
+
+        return checkdate((int)$parts[2], (int)$parts[3], (int)$parts[1]);
     }
 
     /**
@@ -318,13 +411,92 @@ final class ResponseAggregateBatch
 
     /**
      * Resolved value for a previously registered alias (0 before execute()).
-     * Counts are integers; KIND_SUM aggregates may be fractional.
+     * Counts are integers; KIND_SUM aggregates may be fractional; countByDay()
+     * resolves to a 'Y-m-d' => count map.
      *
-     * @return int|float
+     * @return int|float|array<string, int>
      */
     public function value(string $alias)
     {
         return $this->results[$alias] ?? 0;
+    }
+
+    /**
+     * Every distinct stored value of a column with its count, ordered by
+     * value, with the same response filters as the aggregates. A day range
+     * keeps only the values on those days, so only they are read.
+     *
+     * @param string $field The response column, a datetime column
+     * @param string|null $fromDay First day to include, 'Y-m-d'
+     * @param string|null $toDay Last day to include, 'Y-m-d'
+     * @return array<string, int> stored value => count
+     */
+    public function groupedValues(string $field, ?string $fromDay = null, ?string $toDay = null): array
+    {
+        $db = $this->getDb();
+        $table = $db->quoteTableName('{{responses_' . $this->surveyId . '}}');
+        $col = $db->quoteColumnName($field);
+        [$where, $params] = $this->buildWhere();
+        $conditions = ["$col IS NOT NULL"];
+        if ($fromDay !== null) {
+            $conditions[] = "$col >= :dayFrom";
+            $params[':dayFrom'] = $fromDay . ' 00:00:00';
+        }
+        if ($toDay !== null) {
+            $conditions[] = "$col < :dayTo";
+            $params[':dayTo'] = (new \DateTimeImmutable($toDay))->modify('+1 day')->format('Y-m-d') . ' 00:00:00';
+        }
+        $condition = implode(' AND ', $conditions);
+        $where = $where === '' ? " WHERE $condition" : "$where AND $condition";
+
+        $rows = $db->createCommand(
+            "SELECT $col AS " . $db->quoteColumnName('value')
+            . ', COUNT(*) AS ' . $db->quoteColumnName('total')
+            . " FROM $table$where GROUP BY $col ORDER BY $col"
+        )->queryAll(true, $params);
+
+        $counts = [];
+        foreach ($rows as $row) {
+            $counts[(string)$row['value']] = (int)$row['total'];
+        }
+
+        return $counts;
+    }
+
+    /**
+     * Every non-empty stored value of a column, one at a time, with the same
+     * response filters as the aggregates. Read in chunks, so a large table
+     * isn't loaded at once.
+     *
+     * @param string $field The response column
+     * @param int $chunkSize Rows read per query
+     * @return \Generator<int, string>
+     */
+    public function eachValue(string $field, int $chunkSize = 1000): \Generator
+    {
+        $db = $this->getDb();
+        $table = $db->quoteTableName('{{responses_' . $this->surveyId . '}}');
+        $col = $db->quoteColumnName($field);
+        $id = $db->quoteColumnName('id');
+        [$where, $params] = $this->buildWhere();
+        $condition = "$col IS NOT NULL AND $col <> '' AND $id > :lastResponseId";
+        $where = $where === '' ? " WHERE $condition" : "$where AND $condition";
+
+        $sql = $db->getCommandBuilder()->applyLimit(
+            "SELECT $id AS " . $db->quoteColumnName('id') . ", $col AS " . $db->quoteColumnName('value')
+            . " FROM $table$where ORDER BY $id",
+            $chunkSize,
+            0
+        );
+
+        $lastId = 0;
+        do {
+            $rows = $db->createCommand($sql)->queryAll(true, $params + [':lastResponseId' => $lastId]);
+            foreach ($rows as $row) {
+                yield (string)$row['value'];
+            }
+            $lastId = $rows ? (int)end($rows)['id'] : $lastId;
+        } while (count($rows) === $chunkSize);
     }
 
     private function register(string $kind, string $field, string $value, bool $numeric = false): string

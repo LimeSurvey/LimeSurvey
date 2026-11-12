@@ -7,6 +7,8 @@ use LimeSurvey\Models\Services\ResponseFilters\ResolvedFilter;
 use LimeSurvey\Models\Services\ResponseFilters\ResponseFilter;
 use LimeSurvey\Models\Services\SurveyStatistics\Charts\Questions\Processors\ResponseAggregateBatch;
 use LimeSurvey\Models\Services\SurveyStatistics\StatisticsResponseFilters;
+use CDbCommand;
+use CDbConnection;
 use ls\tests\TestCondition;
 use ReflectionMethod;
 
@@ -77,6 +79,45 @@ class ResponseAggregateBatchWhereTest extends TestCondition
 
         $this->assertSame([], array_intersect_key($first, $second));
         $this->assertSame(array_values($first), array_values($second));
+    }
+
+    /**
+     * Two date questions under a filter share one UNION ALL, so each part
+     * needs placeholders of its own (SQL Server can't repeat one).
+     */
+    public function testDayCountsBindEachPlaceholderOnce(): void
+    {
+        $batch = new ResponseAggregateBatch(self::SURVEY_ID, null, [$this->row('gender', 'F')]);
+        $batch->countByDay('Q1');
+        $batch->countByDay('Q2');
+
+        $queries = [];
+        $db = $this->createMock(CDbConnection::class);
+        $db->method('quoteColumnName')->willReturnArgument(0);
+        $db->method('quoteValue')->willReturnCallback(static fn($value) => "'$value'");
+        $db->method('createCommand')->willReturnCallback(
+            function (string $sql) use (&$queries) {
+                $command = $this->createMock(CDbCommand::class);
+                $command->method('queryAll')->willReturnCallback(
+                    static function ($fetchAssociative, array $params) use ($sql, &$queries) {
+                        $queries[] = [$sql, $params];
+                        return [];
+                    }
+                );
+                return $command;
+            }
+        );
+
+        $method = new ReflectionMethod(ResponseAggregateBatch::class, 'executeDayCounts');
+        $method->setAccessible(true);
+        $method->invoke($batch, $db, 'responses');
+
+        $this->assertCount(1, $queries);
+        [$sql, $params] = $queries[0];
+        $this->assertCount(2, $params);
+        foreach (array_keys($params) as $name) {
+            $this->assertSame(1, preg_match_all('/' . preg_quote($name, '/') . '(?!\\w)/', $sql), $name);
+        }
     }
 
     /**
