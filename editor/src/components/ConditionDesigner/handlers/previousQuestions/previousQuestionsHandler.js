@@ -1,9 +1,4 @@
-import {
-  getPreviousQuestions,
-  isTrue,
-  NEW_OBJECT_ID_PREFIX,
-  OTHER_CODE,
-} from 'helpers'
+import { getPreviousQuestions, NEW_OBJECT_ID_PREFIX } from 'helpers'
 import { getQuestionTypeInfo } from 'components/QuestionTypes'
 
 import {
@@ -24,18 +19,6 @@ import {
   fivePointChoiceTypeHandler,
   tenPointChoiceTypeHandler,
 } from './typeHandlers'
-import { createAnswer } from './helpers'
-import { findFieldname } from './utils'
-
-const handleAttributes = (question, cAnswers) => {
-  const fieldname = findFieldname({
-    qid: question.qid,
-  })
-
-  if (isTrue(question.other)) {
-    createAnswer(cAnswers, OTHER_CODE, t('Other'), fieldname)
-  }
-}
 
 export const previousQuestionsHandler = (
   language,
@@ -87,7 +70,6 @@ export const previousQuestionsHandler = (
 
     const handler = handlers[question.type] || defaultTypeHandler
     handler(question, language, cQuestions, cAnswers)
-    handleAttributes(question, cAnswers)
   }
 
   cQuestions.forEach((question) => {

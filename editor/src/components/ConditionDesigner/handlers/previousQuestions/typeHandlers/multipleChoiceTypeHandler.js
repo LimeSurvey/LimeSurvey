@@ -1,7 +1,21 @@
-import { createAnswer, createQuestion } from '../helpers'
+import {
+  addOtherFieldIfEnabled,
+  createAnswer,
+  createQuestion,
+} from '../helpers'
 
 import { findFieldname } from '../utils'
 
+/**
+ * Adds a "Single checkbox" condition question for every subquestion of a
+ * multiple choice question, and one for its "Other" text field when enabled.
+ *
+ * @param {object} question The multiple choice question.
+ * @param {string} language The language used for the question texts.
+ * @param {object[]} cQuestions The condition questions list, extended in place.
+ * @param {object[]} cAnswers The condition answers list, extended in place.
+ * @returns {void}
+ */
 export const multipleChoiceTypeHandler = (
   question,
   language,
@@ -30,4 +44,6 @@ export const multipleChoiceTypeHandler = (
     createAnswer(cAnswers, 'Y', t('Checked (Y)'), fieldname)
     createAnswer(cAnswers, '', t('Not checked'), fieldname)
   }
+
+  addOtherFieldIfEnabled(cQuestions, cAnswers, question, language)
 }
