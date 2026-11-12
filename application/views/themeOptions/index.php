@@ -64,11 +64,17 @@ echo viewHelper::getViewTestTag('templateOptions');
                             <?php foreach ($aTemplatesWithoutDB['valid'] as $key => $oTemplate) : ?>
                                 <tr class="odd">
                                     <td class="col-lg-1"><?php echo $oTemplate->getPreview(); ?></td>
-                                    <td class="col-lg-2"><?php echo CHtml::encode($oTemplate->sTemplateName); ?></td>
+                                    <?php $isOutdated = TemplateConfig::isOutdated($oTemplate->path . 'config.xml'); ?>
+                                    <td class="col-lg-2">
+                                        <?php echo CHtml::encode($oTemplate->sTemplateName); ?>
+                                        <?php if ($isOutdated) : ?>
+                                            <?= TemplateConfig::getOutdatedBadge() ?>
+                                        <?php endif; ?>
+                                    </td>
                                     <td class="col-lg-3"><?php echo $oTemplate->getDescription(); ?></td>
                                     <td class="col-lg-2"><?php eT('XML themes'); ?></td>
                                     <td class="col-lg-1"><?php echo $oTemplate->config->metadata->extends; ?></td>
-                                    <?php if (TemplateConfig::isCompatible($oTemplate->path . 'config.xml')) : ?>
+                                    <?php if ($isOutdated || TemplateConfig::isCompatible($oTemplate->path . 'config.xml')) : ?>
                                         <td class="col-lg-2"><?php echo $oTemplate->getButtons(); ?></td>
                                     <?php else : ?>
                                         <td class="col-lg-2">
