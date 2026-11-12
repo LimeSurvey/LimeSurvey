@@ -24,11 +24,13 @@ import {
   roundSetting,
 } from './imageEditorUtils'
 
-// Size of the preview area in the modal. Larger frames are shown scaled down.
-const PREVIEW_MAX_WIDTH = 440
-const PREVIEW_MAX_HEIGHT = 420
-// Dimmed area around the frame, showing the parts of the image that are cut off.
-const PREVIEW_BORDER = 24
+// Size of the preview area in the modal, including the dimmed strip around
+// the frame. Frames are scaled to fill it.
+const PREVIEW_AREA_WIDTH = 400
+const PREVIEW_AREA_HEIGHT = 400
+// Dimmed strip around the frame, showing the parts of the image that are cut
+// off.
+const PREVIEW_BORDER = 12
 
 /**
  * Returns the settings the editor starts with: The saved ones, or defaults
@@ -127,6 +129,28 @@ const FrameSizeInput = ({
 }
 
 /**
+ * Warning that the image will look blurry, as an outlined alert.
+ *
+ * @param {string} text translated warning text
+ * @param {string} className extra classes, e.g. invisible
+ * @param {Object} props other attributes of the alert, e.g. aria-hidden or
+ *   data-testid
+ * @returns {JSX.Element} the warning
+ */
+const BlurryWarning = ({ text, className = '', ...props }) => (
+  <div
+    className={classNames(
+      'alert alert-outline-warning d-flex align-items-center gap-2 mt-3 mb-0',
+      className
+    )}
+    {...props}
+  >
+    <ExclamationTriangleFill className="flex-shrink-0" aria-hidden="true" />
+    <span>{text}</span>
+  </div>
+)
+
+/**
  * Modal to set how an image is displayed: Frame size, position and zoom of the
  * image inside the frame, corner radius and alt text. The image file itself is
  * not changed: The settings are applied with CSS when the image is shown.
@@ -218,12 +242,6 @@ export const ImageEditor = ({
   const maxRadius = Math.floor(Math.min(current.width, current.height) / 2)
   const radius = Math.min(current.radius, maxRadius)
 
-  const previewScale = Math.min(
-    1,
-    PREVIEW_MAX_WIDTH / current.width,
-    PREVIEW_MAX_HEIGHT / current.height
-  )
-
   const visibleSource = useMemo(
     () =>
       naturalSize
@@ -247,6 +265,30 @@ export const ImageEditor = ({
     current.zoom
   )
   const isMovable = movableAxes.horizontal || movableAxes.vertical
+  // Also needed while the image isn't blurry, to reserve the warning's space.
+  const blurryWarningText = format(
+    t(
+      'The visible part of the image (%s×%spx) is smaller than the frame (%s×%spx). The image will look blurry.'
+    ),
+    visibleSource?.width ?? current.width,
+    visibleSource?.height ?? current.height,
+    current.width,
+    current.height
+  )
+
+  // The dimmed strip around the frame shows the parts of the image that are
+  // cut off. It is only kept on the axes the image can move along: On the
+  // others it would stay empty, and the frame uses its space instead. Not
+  // decided by the current position: The frame would jump while dragging.
+  const previewBorderX = movableAxes.horizontal ? PREVIEW_BORDER : 0
+  const previewBorderY = movableAxes.vertical ? PREVIEW_BORDER : 0
+  // The frame fills the rest of the preview area in width or height, also
+  // when it is smaller and has to be scaled up. A side of 0px counts as 1px,
+  // so the scale stays finite.
+  const previewScale = Math.min(
+    (PREVIEW_AREA_WIDTH - 2 * previewBorderX) / Math.max(current.width, 1),
+    (PREVIEW_AREA_HEIGHT - 2 * previewBorderY) / Math.max(current.height, 1)
+  )
 
   const update = (changes) => setCurrent((prev) => ({ ...prev, ...changes }))
 
@@ -312,25 +354,24 @@ export const ImageEditor = ({
       dialogClassName="image-editor-dialog"
     >
       <Modal.Header closeButton>
-        <Modal.Title id={titleId}>{t('Edit image')}</Modal.Title>
+        <Modal.Title as="h2" id={titleId}>
+          {t('Edit image')}
+        </Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <div className="d-flex gap-4">
           <div
             className="image-editor-preview d-flex flex-column align-items-center flex-shrink-0"
-            style={{ width: PREVIEW_MAX_WIDTH + 2 * PREVIEW_BORDER }}
+            style={{ width: PREVIEW_AREA_WIDTH }}
           >
-            {/* Top aligned: The image starts level with the labels of the
-                width and height inputs. Where the image can move vertically,
-                that is the dimmed strip above the frame. Otherwise the strip
-                stays empty, so it is moved out of the box and cut off, and
-                the frame starts there. Not decided by the current position:
-                The frame would jump while dragging. */}
+            {/* Top aligned: The image (with the dimmed strip, where there is
+                one) starts level with the labels of the width and height
+                inputs. */}
             <div
-              className="d-flex align-items-start justify-content-center overflow-hidden"
+              className="d-flex align-items-start justify-content-center"
               style={{
-                width: PREVIEW_MAX_WIDTH + 2 * PREVIEW_BORDER,
-                height: PREVIEW_MAX_HEIGHT + 2 * PREVIEW_BORDER,
+                width: PREVIEW_AREA_WIDTH,
+                height: PREVIEW_AREA_HEIGHT,
               }}
             >
               <AvatarEditor
@@ -338,10 +379,7 @@ export const ImageEditor = ({
                 image={imageUrl}
                 width={Math.round(current.width * previewScale)}
                 height={Math.round(current.height * previewScale)}
-                border={PREVIEW_BORDER}
-                style={{
-                  marginTop: movableAxes.vertical ? 0 : -PREVIEW_BORDER,
-                }}
+                border={[previewBorderX, previewBorderY]}
                 color={[255, 255, 255, 0.6]}
                 scale={current.zoom}
                 rotate={0}
@@ -372,33 +410,27 @@ export const ImageEditor = ({
             >
               {t('Drag the image to move it inside the frame.')}
             </p>
-            <div aria-live="polite" className="w-100 image-editor-warning-slot">
-              {isBlurry && (
-                <div
-                  className="image-editor-warning d-flex align-items-center gap-2 small mt-3"
-                  data-testid="image-editor-blurry-warning"
-                >
-                  <ExclamationTriangleFill
-                    className="flex-shrink-0"
-                    aria-hidden="true"
+            {/* An invisible copy of the warning reserves exactly the space
+                the warning needs, in every language. The live region on top
+                of it announces the warning when it appears. */}
+            <div className="w-100 image-editor-warning-slot">
+              <BlurryWarning
+                text={blurryWarningText}
+                className="invisible"
+                aria-hidden="true"
+              />
+              <div aria-live="polite">
+                {isBlurry && (
+                  <BlurryWarning
+                    text={blurryWarningText}
+                    data-testid="image-editor-blurry-warning"
                   />
-                  <span>
-                    {format(
-                      t(
-                        'The visible part of the image (%s×%spx) is smaller than the frame (%s×%spx). The image will look blurry.'
-                      ),
-                      visibleSource.width,
-                      visibleSource.height,
-                      current.width,
-                      current.height
-                    )}
-                  </span>
-                </div>
-              )}
+                )}
+              </div>
             </div>
           </div>
           <div
-            className="flex-grow-1 d-flex flex-column gap-3"
+            className="flex-grow-1 d-flex flex-column gap-4"
             style={{ minWidth: 0 }}
           >
             {/* With the aspect ratio locked, a line between the inputs shows
@@ -494,7 +526,7 @@ export const ImageEditor = ({
               >
                 <Form.Check.Input
                   type="checkbox"
-                  className="m-0"
+                  className="form-check-input-admin m-0"
                   checked={applyToAll}
                   onChange={(event) => setApplyToAll(event.target.checked)}
                 />

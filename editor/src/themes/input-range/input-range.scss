@@ -6,25 +6,34 @@
   margin-left: 12px;
 }
 
+// The track is the visible line. The slider measures the inner track, which
+// is inset by half a thumb on each end: At min and max, the edge of the thumb
+// stops where the line ends, instead of sticking out by half a thumb. The
+// inset is set by InputRange.js as --input-range-thumb-inset.
 .input-range-track {
   display: flex;
   height: 4px;
   width: 100%;
+  border-radius: 2px;
 
   .input-range-track-background {
+    // The thumbs are positioned relative to the inner track.
+    position: relative;
+    flex: 1 1 auto;
     align-self: center;
     height: 4px;
-    width: 100%;
-    border-radius: 2px;
+    margin: 0 var(--input-range-thumb-inset, 0);
   }
 
   &.vertical {
+    flex-direction: column;
     height: 200px;
     width: 4px;
 
     .input-range-track-background {
-      height: 100%;
+      height: auto;
       width: 4px;
+      margin: var(--input-range-thumb-inset, 0) 0;
     }
   }
 }

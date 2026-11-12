@@ -21,7 +21,7 @@ jest.mock('react-avatar-editor', () => {
         data-width={props.width}
         data-height={props.height}
         data-scale={props.scale}
-        style={props.style}
+        data-border={props.border.join(',')}
         onClick={() => props.onPositionChange({ x: 0.3, y: 0.6 })}
       />
     )
@@ -120,21 +120,25 @@ describe('ImageEditor', () => {
     )
   })
 
-  test('Moves the empty dimmed strip above the frame out of view', async () => {
+  test('Keeps the dimmed strip only where the image can move, the frame fills the rest', async () => {
     await renderEditor()
     const editor = screen.getByTestId('avatar-editor')
-    // 400×300 image in a 400×300 frame: Nothing above the frame to show, the
-    // frame itself starts at the top.
-    await waitFor(() => expect(editor).toHaveStyle({ marginTop: '-24px' }))
+    // 400×300 image in a 400×300 frame: Nothing is cut off, so there is no
+    // strip and the frame fills the whole width of the preview.
+    await waitFor(() => expect(editor).toHaveAttribute('data-border', '0,0'))
+    expect(editor).toHaveAttribute('data-width', '400')
+    expect(editor).toHaveAttribute('data-height', '300')
 
     // A flatter frame cuts off the top and bottom: The image can move up and
-    // down, the dimmed strip above the frame shows its top part.
+    // down, the strips above and below the frame show the cut off parts.
     await userEvent.click(screen.getByTestId('image-editor-ratio-lock'))
     const height = screen.getByLabelText('Height (px)')
     await userEvent.clear(height)
     await userEvent.type(height, '100')
     await userEvent.tab()
-    expect(editor).toHaveStyle({ marginTop: '0px' })
+    expect(editor).toHaveAttribute('data-border', '0,12')
+    expect(editor).toHaveAttribute('data-width', '400')
+    expect(editor).toHaveAttribute('data-height', '100')
   })
 
   test('Accepts any frame size from 0 without upper limit', async () => {

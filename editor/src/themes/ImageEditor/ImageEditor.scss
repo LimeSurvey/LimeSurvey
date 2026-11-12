@@ -1,6 +1,9 @@
 // Image editor modal, see components/UIComponents/ImageEditor/ImageEditor.js
-.image-editor-dialog {
-  max-width: min(960px, calc(100vw - 2rem));
+// 800px wide. Without min-width: 0, the general min-width: fit-content of
+// .modal-dialog (component-modal.scss) lets the content widen the modal.
+.modal-dialog.image-editor-dialog {
+  min-width: 0;
+  max-width: min(800px, calc(100vw - 2rem));
 }
 
 .image-editor-modal {
@@ -31,11 +34,14 @@
   }
 
   .image-editor-ratio-lock {
-    // Same height as the inputs, so the icon lines up with them.
+    // Same height as the inputs, so the icon lines up with them. No padding
+    // on the right: The icon ends where the inputs below end.
     display: flex;
     align-items: center;
     height: $frame-input-height;
-    padding: 0 0.25rem;
+    // No border either: The transparent border of .btn would leave 1px.
+    padding: 0 0 0 0.25rem;
+    border: 0;
     color: $g-700;
 
     &.locked,
@@ -44,21 +50,17 @@
     }
   }
 
-  // Room for the warning box, also while there is no warning: Its margin
-  // (mt-3) plus its minimum height, which fits two lines of text.
-  $warning-min-height: 4.75rem;
-
+  // The warning lies on top of its invisible copy, which reserves its space
+  // also while there is no warning (see ImageEditor.js).
   .image-editor-warning-slot {
-    min-height: calc(1rem + #{$warning-min-height});
+    display: grid;
+
+    > * {
+      grid-area: 1 / 1;
+    }
   }
 
-  .image-editor-warning {
-    min-height: $warning-min-height;
-    padding: 0.75rem 1rem;
-    border: 1px solid $g-900;
-    border-left: 8px solid $warning;
-    border-radius: 4px;
-    color: $g-900;
-    background: $white;
+  .input-range-input {
+    width: 60px;
   }
 }

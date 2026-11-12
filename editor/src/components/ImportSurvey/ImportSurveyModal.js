@@ -95,7 +95,7 @@ export const ImportSurveyModal = ({
       show={show}
     >
       <Modal.Header closeButton={!submitting}>
-        <Modal.Title>
+        <Modal.Title as="h2">
           {summary ? t('Import summary') : t('Import survey')}
         </Modal.Title>
       </Modal.Header>

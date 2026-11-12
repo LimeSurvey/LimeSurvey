@@ -116,6 +116,31 @@ textarea.form-control {
   }
 }
 
+// Checkboxes in the editor's own forms (e.g. modals), unlike the ones of the
+// question previews above: Smaller, in the colors of the other form fields,
+// grape when checked.
+.form-check-input.form-check-input-admin {
+  width: 20px;
+  height: 20px;
+  outline-color: $g-700;
+
+  &[type='checkbox'] {
+    font-size: $font-size-lg;
+    line-height: 20px;
+  }
+
+  // The outline has the same color with focus: Show keyboard focus with a
+  // ring around it.
+  &:focus-visible {
+    box-shadow: 0 0 0 4px rgba($grape, 0.25);
+  }
+
+  &:checked[type='checkbox'] {
+    color: $grape;
+    outline-color: $grape;
+  }
+}
+
 .ui-label {
   @include label-s-sidebar;
 }

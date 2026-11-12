@@ -6,6 +6,17 @@ import { Input } from '../Input/Input'
 import classNames from 'classnames'
 import { getThumbStyle, THUMB_TYPES } from 'helpers'
 
+// Colors of the filled and the empty part of the track.
+const TRACK_COLORS = ['#8146F6', '#DDDEE8']
+
+/**
+ * Returns the size of the thumb along the track, see getThumbStyle.
+ *
+ * @param {string} thumbType one of THUMB_TYPES
+ * @returns {number} the size in px
+ */
+const getThumbSize = (thumbType) => (thumbType === THUMB_TYPES.CUSTOM ? 16 : 12)
+
 export const InputRange = ({
   labelText,
   min = 0,
@@ -95,6 +106,10 @@ export const InputRange = ({
             direction={direction}
             onChange={handleOnChange}
             data-testid="input-range-slider"
+            // The slider measures the inner track, which is shorter than the
+            // visible line by half a thumb on each end (see input-range.scss):
+            // At min and max, the thumb ends where the line ends. The visible
+            // ends past the inner track get the fill and the empty color.
             renderTrack={({ props, children }) => (
               <div
                 className={
@@ -104,6 +119,8 @@ export const InputRange = ({
                 onTouchStart={props.onTouchStart}
                 style={{
                   ...props.style,
+                  '--input-range-thumb-inset': `${getThumbSize(thumbType) / 2}px`,
+                  'background': `linear-gradient(${direction}, ${TRACK_COLORS[0]} 50%, ${TRACK_COLORS[1]} 50%)`,
                 }}
               >
                 <div
@@ -112,7 +129,7 @@ export const InputRange = ({
                   style={{
                     background: getTrackBackground({
                       values: values,
-                      colors: ['#8146F6', '#DDDEE8'],
+                      colors: TRACK_COLORS,
                       min,
                       max,
                       direction: direction,

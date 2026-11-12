@@ -1,0 +1,43 @@
+// General styling of all modals in the editor. Styles of single modals go
+// into their own file.
+
+.modal-header {
+  border-bottom: 0;
+  padding-left: var(--bs-modal-padding);
+
+  // Bootstrap's close button looks and behaves like the one of the
+  // ComponentModal (e.g. the survey overview): The same icon (CloseIcon) in
+  // black, without fading on hover. It sits at the top of the header, also
+  // next to a title of several lines.
+  .btn-close {
+    align-self: flex-start;
+    --bs-btn-close-bg: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3e%3cpath d='M12.0007 10.586L16.9507 5.63599L18.3647 7.04999L13.4147 12L18.3647 16.95L16.9507 18.364L12.0007 13.414L7.05072 18.364L5.63672 16.95L10.5867 12L5.63672 7.04999L7.05072 5.63599L12.0007 10.586Z'/%3e%3c/svg%3e");
+    --bs-btn-close-opacity: 1;
+    --bs-btn-close-hover-opacity: 1;
+    --bs-btn-close-focus-opacity: 1;
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    background-size: 20px;
+  }
+}
+
+.modal-title {
+  @include reg24;
+}
+.modal-body {
+  padding-top: 0.5rem;
+}
+
+.modal-footer {
+  padding-top: 0;
+  border-top: 0;
+
+  // Grey and dark outline buttons (e.g. Reset) have dark text and border.
+  // Colored ones like outline-danger keep their color.
+  .btn-outline-secondary,
+  .btn-outline-dark {
+    --bs-btn-color: #{$g-900};
+    --bs-btn-border-color: #{$g-900};
+  }
+}
