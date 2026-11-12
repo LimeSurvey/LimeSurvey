@@ -29,6 +29,49 @@
   padding-top: 0.5rem;
 }
 
+// Checkboxes (FormCheck) in modals: Dark box, the label left-aligned next to
+// it (e.g. survey import, image editor).
+.modal {
+  .form-check-ui-component {
+    align-items: center;
+    gap: 16px;
+    justify-content: flex-start;
+    padding-left: 0;
+  }
+
+  .form-check-input[type='checkbox'] {
+    border: 0;
+    border-radius: 4px;
+    flex: 0 0 20px;
+    height: 20px;
+    margin: 0;
+    outline: 2px solid $g-900;
+    width: 20px;
+  }
+
+  .form-check-input:checked[type='checkbox'] {
+    background-color: $g-800;
+    color: $white;
+    outline: 2px solid $g-900;
+
+    &::before {
+      align-items: center;
+      display: flex;
+      font-size: 16px;
+      height: 20px;
+      justify-content: center;
+      line-height: 1;
+      width: 20px;
+    }
+  }
+
+  .form-check-label {
+    font-size: 16px;
+    line-height: 24px;
+    margin: 0;
+  }
+}
+
 .modal-footer {
   padding-top: 0;
   border-top: 0;

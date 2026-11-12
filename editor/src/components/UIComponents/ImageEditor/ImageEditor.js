@@ -9,6 +9,7 @@ import classNames from 'classnames'
 
 import { AspectRatioIcon } from 'components/icons'
 import { TooltipContainer } from 'components/TooltipContainer/TooltipContainer'
+import { FormCheck } from '../FormCheck/FormCheck'
 import { InputRange } from '../InputRange/InputRange'
 import {
   ALT_TEXT_MAX_LENGTH,
@@ -520,20 +521,13 @@ export const ImageEditor = ({
               </div>
             )}
             {showApplyToAll && (
-              <Form.Check
+              <FormCheck
                 id={`${idPrefix}-apply-to-all`}
-                className="ps-0 d-flex align-items-center justify-content-start gap-2"
-              >
-                <Form.Check.Input
-                  type="checkbox"
-                  className="form-check-input-admin m-0"
-                  checked={applyToAll}
-                  onChange={(event) => setApplyToAll(event.target.checked)}
-                />
-                <Form.Check.Label>
-                  {t('Apply to all images of this question')}
-                </Form.Check.Label>
-              </Form.Check>
+                type="checkbox"
+                label={t('Apply to all images of this question')}
+                checked={applyToAll}
+                update={setApplyToAll}
+              />
             )}
           </div>
         </div>
