@@ -504,7 +504,7 @@ class QuestionAdministrationController extends LSBaseController
      * Action called by the FE editor when a save is triggered.
      * This is called for both new question and update.
      *
-     * @return void
+     * @return void Outputs the result as JSON (Ajax) or redirects with a flash message
      * @throws CException
      */
     public function actionSaveQuestionData()
@@ -664,9 +664,14 @@ class QuestionAdministrationController extends LSBaseController
                 throw $e->setRedirectUrl($redirectUrl);
             }
 
+            $message = $e->getMessage();
+            // This message is plain text with question codes: Without Ajax it is shown as HTML flash message
+            if (!$calledWithAjax && $e instanceof QuestionHasConditionsException) {
+                $message = CHtml::encode($message);
+            }
             throw new LSUserException(
                 500,
-                $e->getMessage(),
+                $message,
                 0,
                 $redirectUrl
             );
@@ -1650,7 +1655,10 @@ class QuestionAdministrationController extends LSBaseController
     }
 
     /**
-     * Change the "other" option for applicable question types
+     * Change the "other" option for applicable question types.
+     * Questions whose "Other" is used in conditions keep it on, the response names them.
+     *
+     * @return void Outputs an error message as JSON when questions keep "Other" on
      */
     public function actionChangeMultipleQuestionOtherState()
     {
@@ -1659,8 +1667,18 @@ class QuestionAdministrationController extends LSBaseController
         $sOther = (Yii::app()->request->getPost('other') === '1') ? 'Y' : 'N';
 
         if (Permission::model()->hasSurveyPermission($iSid, 'surveycontent', 'update')) {
-            self::setMultipleQuestionOtherState($aQids, $sOther, $iSid);
+            $refusedQuestionCodes = self::setMultipleQuestionOtherState($aQids, $sOther, $iSid);
             EmCacheHelper::flushAtEndOfRequest();
+            if (!empty($refusedQuestionCodes)) {
+                // An error status, so the mass action shows the message
+                http_response_code(400);
+                $this->renderJSON([
+                    'message' => sprintf(
+                        gT('"Other" could not be switched off for these questions, because conditions use it: %s.', 'unescaped'),
+                        implode(', ', $refusedQuestionCodes)
+                    ),
+                ], false);
+            }
         }
     }
 
@@ -2201,14 +2219,20 @@ class QuestionAdministrationController extends LSBaseController
     /**
      * Set the other state for selected Questions
      *
-     * Note: Questions not belonging to the survey are skipped.
+     * Note: Questions not belonging to the survey are skipped, and so are
+     * questions whose "Other" is used in conditions when switching it off.
      *
      * @param array $aQids All question id's affected
      * @param string $sOther the "other" value 'Y' or 'N'
      * @param int $iSid survey ID
+     * @return string[] The codes of the questions not switched off, because conditions use their "Other"
      */
     public static function setMultipleQuestionOtherState($aQids, $sOther, $iSid)
     {
+        $questionService = \LimeSurvey\DI::getContainer()->get(
+            \LimeSurvey\Models\Services\QuestionAggregateService\QuestionService::class
+        );
+        $refusedQuestionCodes = [];
         foreach ($aQids as $sQid) {
             $iQid = (int)$sQid;
             $oQuestion = Question::model()->findByPk(["qid" => $iQid], 'sid=:sid', [':sid' => $iSid]);
@@ -2217,10 +2241,17 @@ class QuestionAdministrationController extends LSBaseController
             }
             // Only set the other state for question types that have this attribute (and no parent_qid)
             if ($oQuestion->getAllowOther()) {
+                try {
+                    $questionService->checkOtherNotUsedInConditions($oQuestion, ['other' => $sOther]);
+                } catch (QuestionHasConditionsException $e) {
+                    $refusedQuestionCodes[] = $oQuestion->title;
+                    continue;
+                }
                 $oQuestion->other = $sOther;
                 $oQuestion->save();
             }
         }
+        return $refusedQuestionCodes;
     }
 
     /**

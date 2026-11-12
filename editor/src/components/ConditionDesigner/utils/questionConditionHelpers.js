@@ -7,6 +7,15 @@ import { getAllowedMethods } from './getAllowedMethods'
 const conditionTypeInfo = getConditionTypeInfo()
 const allowedMethods = getAllowedMethods()
 
+/**
+ * A condition value referring to the answer of another question: Its fieldname wrapped in @.
+ * Fieldnames start with Q and the qid of the main question, for example Q123, then:
+ * - optionally subquestions (_S) or ranking answers (_R) with their id, which may be chained: Q123_S456_S789
+ * - optionally a _C followed by a code, like the "Other" text field: Q123_Cother
+ * - optionally # followed by the scale digits of some subquestions: Q123_S456#1
+ */
+const QUESTION_FIELD_REFERENCE = /^@Q\d+(?:_[SR]\d+)*(?:_C[a-z]+)?(?:#\d+)?@$/
+
 export const getDefaultCondition = () => ({
   qid: '',
   cqid: '',
@@ -128,6 +137,16 @@ export const determineConditionSourceType = (
     : conditionTypeInfo.SOURCE.QUESTION
 }
 
+/**
+ * Sets the target type of a condition loaded from the survey (regex,
+ * participant data, answer of another question, answer options or constant)
+ * and attaches the answer options of its source question.
+ *
+ * @param {object} condition The stored condition, with method and value.
+ * @param {object} processedCondition The condition prepared for the designer, updated in place.
+ * @param {object[]} previousQuestions The condition questions before the current question.
+ * @returns {void}
+ */
 export const determineConditionTargetType = (
   condition,
   processedCondition,
@@ -143,15 +162,7 @@ export const determineConditionTargetType = (
     return
   }
 
-  /**
-   * Fieldnames start with a Q, referring to the question
-   * then digits follow, representing the qid of the main question
-   * then comes either the subquestion, that is, _S or a ranking answer,
-   * that is, _R. Then come some digits, representing the subquestion/answer
-   * subquestions may be chained, like Q123_S456_S789
-   * and some subquestions have # followed by digits
-   */
-  if (/^@(Q\d+(?:_[SR]\d+)*(?:#\d+)?)@$/.test(condition.value)) {
+  if (QUESTION_FIELD_REFERENCE.test(condition.value)) {
     const matchingQuestion = previousQuestions.find((q) => {
       return '@' + q.cfieldname + '@' === condition.value
     })

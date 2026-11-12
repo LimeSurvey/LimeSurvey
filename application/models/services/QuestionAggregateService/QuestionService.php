@@ -17,7 +17,8 @@ use LimeSurvey\Models\Services\{
     Proxy\ProxyQuestion,
     Exception\PersistErrorException,
     Exception\NotFoundException,
-    Exception\PermissionDeniedException
+    Exception\PermissionDeniedException,
+    Exception\QuestionHasConditionsException
 };
 
 /**
@@ -85,6 +86,7 @@ class QuestionService
      * @return Question
      * @throws NotFoundException
      * @throws PermissionDeniedException
+     * @throws QuestionHasConditionsException
      * @throws PersistErrorException
      */
     public function save($input)
@@ -282,17 +284,20 @@ class QuestionService
     /**
      * Method to store and filter data for editing a question
      *
-     * @param Question $question
-     * @param array $data
-     * @return Question
-     * @throws NotFoundException
-     * @throws PersistErrorException
+     * @param Question $question The question to update
+     * @param array $data The new question data
+     * @return Question The updated question
+     * @throws NotFoundException If the group or parent question is not in the survey
+     * @throws QuestionHasConditionsException If "Other" is switched off while conditions use it
+     * @throws PersistErrorException If the question could not be saved
      */
     private function updateQuestionData(Question $question, $data)
     {
         $data = $this->normalizeQuestionFlags($data);
 
         $this->checkGroupAndParentOfSurvey((int) $question->sid, $data, $question);
+
+        $this->checkOtherNotUsedInConditions($question, $data);
 
         $originalRelevance = $question->relevance;
         $originalTitle = $question->title;
@@ -353,6 +358,61 @@ class QuestionService
             && !Question::model()->exists('qid = :qid AND sid = :sid', [':qid' => $parentQid, ':sid' => $surveyId])
         ) {
             throw new NotFoundException(gT('Invalid question ID'));
+        }
+    }
+
+    /**
+     * Refuses to switch "Other" off while conditions use it: Conditions on the
+     * "Other" text field, on the "Other" answer option, or comparing to the
+     * "Other" text field. "Other" is switched off by setting it to N, or by
+     * changing to a question type without "Other".
+     *
+     * @param Question $question The question before the update
+     * @param array $data The question data of the update
+     * @return void Returns normally if "Other" stays on or no condition uses it
+     * @throws QuestionHasConditionsException If conditions use the "Other" option
+     */
+    public function checkOtherNotUsedInConditions(Question $question, array $data)
+    {
+        if ($question->other !== 'Y') {
+            return;
+        }
+        // "Other" is also switched off by a type change to a type without "Other": The model filters it to N.
+        // The type table is only built on a type change: The current type allows "Other", it is switched on.
+        $newType = $data['type'] ?? $question->type;
+        $newTypeAllowsOther = $newType === $question->type
+            || !empty(\QuestionType::findOne($newType)->other);
+        $newOther = $data['other'] ?? $question->other;
+        if ($newOther === 'Y' && $newTypeAllowsOther) {
+            return;
+        }
+
+        $otherFieldname = "Q{$question->qid}_Cother";
+        // Runs only when "Other" is switched off: One query for all dependent questions
+        $dependentQuestionCodes = $this->yiiApp->db->createCommand()
+            ->selectDistinct('q.title')
+            ->from('{{conditions}} c')
+            ->join('{{questions}} q', 'q.qid = c.qid')
+            ->where(
+                '(c.cqid = :qid AND (c.cfieldname = :otherfield OR c.value = :otheranswer)) OR c.value = :otherreference',
+                [
+                    ':qid' => $question->qid,
+                    ':otherfield' => $otherFieldname,
+                    ':otheranswer' => '-oth-',
+                    ':otherreference' => "@{$otherFieldname}@",
+                ]
+            )
+            ->order('q.title')
+            ->queryColumn();
+
+        if (!empty($dependentQuestionCodes)) {
+            throw new QuestionHasConditionsException(
+                sprintf(
+                    // Plain text: The editors show it as text, the classic save without Ajax encodes it for its HTML flash message
+                    gT('"Other" is used in conditions of: %s. Remove them first.', 'unescaped'),
+                    implode(', ', $dependentQuestionCodes)
+                )
+            );
         }
     }
 
