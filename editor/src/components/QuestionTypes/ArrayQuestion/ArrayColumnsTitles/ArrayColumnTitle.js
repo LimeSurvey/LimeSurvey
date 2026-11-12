@@ -16,7 +16,7 @@ export const ArrayColumnTitle = ({
   index,
   title,
   handleUpdateL10ns,
-  placeholder = 'Answer option',
+  placeholder,
   itemsKey,
   isNoAnswer = false,
   code,
@@ -100,7 +100,7 @@ export const ArrayColumnTitle = ({
             className={classNames(
               'text-center choice array-answer-content-editor'
             )}
-            placeholder={placeholder}
+            placeholder={placeholder ?? t('Answer option')}
             value={title}
             update={(value) => handleUpdateL10ns(value, index)}
             disabled={isNoAnswer}

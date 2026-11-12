@@ -281,7 +281,7 @@ export const ArrayParticipantMode = ({
     let titleKey = 'question'
     let rowName = 'subquestion'
     let codeKey = 'title'
-    let placeholder = 'Subquestion'
+    let placeholder = t('Subquestion')
     let entity = Entities.subquestion
 
     const squestions = cloneDeep(subquestions)
