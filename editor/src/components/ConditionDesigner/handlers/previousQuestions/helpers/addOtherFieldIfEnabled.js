@@ -1,4 +1,5 @@
 import { isTrue } from 'helpers'
+import { getQuestionTypeInfo } from 'components/QuestionTypes/index.js'
 
 import { findFieldname } from '../utils'
 import { createAnswer } from './createAnswer'
@@ -7,7 +8,7 @@ import { createQuestion } from './createQuestion'
 /**
  * Adds the "Other" text field of a multiple choice question with "Other"
  * enabled as a separate condition question.
- * It is compared like a text question: Only "No answer" is predefined.
+ * It is compared like a short text question: Only "No answer" is predefined.
  *
  * @param {object[]} cQuestions The condition questions list, extended in place.
  * @param {object[]} cAnswers The condition answers list, extended in place.
@@ -30,6 +31,14 @@ export const addOtherFieldIfEnabled = (
     return
   }
 
-  createQuestion(cQuestions, question, null, fieldname, language, t('Other'))
+  createQuestion(
+    cQuestions,
+    question,
+    null,
+    fieldname,
+    language,
+    t('Other'),
+    getQuestionTypeInfo().SHORT_TEXT.type
+  )
   createAnswer(cAnswers, '', t('No answer'), fieldname)
 }

@@ -4,11 +4,24 @@ import { getQuestionTypeInfo, Select } from 'components'
 import { getQuestionById } from 'helpers'
 import { getAllowedMethods, getConditionTypeInfo } from '../utils'
 
+/**
+ * Comparison operator select of a condition. Checkbox fields of multiple
+ * choice questions only allow "equals" and "Not equal to".
+ *
+ * @param {object} props
+ * @param {number} props.index The index of the condition in the scenario.
+ * @param {object} props.condition The condition being edited.
+ * @param {Function} props.updateCondition Updates a property of the condition.
+ * @param {object} props.survey The survey, used to find the source question.
+ * @param {object[]} props.previousQuestions The condition questions before the current question.
+ * @returns {JSX.Element} The operator select.
+ */
 export const OperatorSelect = ({
   index,
   condition,
   updateCondition,
   survey,
+  previousQuestions = [],
 }) => {
   const OPERATOR_OPTIONS = [
     { value: '<', label: t('Less than') },
@@ -66,12 +79,16 @@ export const OperatorSelect = ({
 
   const filteredOptions = useMemo(() => {
     if (condition.sourceType === conditionTypeInfo.SOURCE.QUESTION) {
-      const cQuestion = getQuestionById(+condition.cqid, survey).question
+      // The selected field decides, e.g. the "Other" text field of a multiple choice question is a text field
+      const selectedField = previousQuestions.find(
+        (question) => question.cfieldname === condition.cfieldname
+      )
+      const fieldType =
+        selectedField?.type ??
+        getQuestionById(+condition.cqid, survey).question?.type
       if (
-        cQuestion &&
-        (cQuestion.type === questionTypeInfo.MULTIPLE_CHOICE.type ||
-          cQuestion.type ===
-            questionTypeInfo.MULTIPLE_CHOICE_WITH_COMMENTS.type)
+        fieldType === questionTypeInfo.MULTIPLE_CHOICE.type ||
+        fieldType === questionTypeInfo.MULTIPLE_CHOICE_WITH_COMMENTS.type
       ) {
         return OPERATOR_OPTIONS.map((option) => ({
           ...option,
@@ -84,7 +101,13 @@ export const OperatorSelect = ({
     }
 
     return [...OPERATOR_OPTIONS]
-  }, [condition.sourceType, condition.cqid])
+  }, [
+    condition.sourceType,
+    condition.cqid,
+    condition.cfieldname,
+    previousQuestions,
+    survey,
+  ])
 
   return (
     <Select
