@@ -340,8 +340,9 @@ export const ImageEditor = ({
   }
 
   const titleId = `${idPrefix}-title`
-  // The button names what a click does, like its tooltip.
-  const ratioLockLabel = current.keepRatio
+  // The tooltip names what a click does. The button's name stays the same,
+  // aria-pressed tells screen readers whether the ratio is kept.
+  const ratioLockTip = current.keepRatio
     ? t('Unlock aspect ratio')
     : t('Lock aspect ratio')
 
@@ -459,13 +460,13 @@ export const ImageEditor = ({
                 isLocked={current.keepRatio}
                 className="image-editor-frame-height"
               />
-              <TooltipContainer tip={ratioLockLabel} placement="right">
+              <TooltipContainer tip={ratioLockTip} placement="right">
                 <Button
                   variant="link"
                   className={classNames('image-editor-ratio-lock', {
                     locked: current.keepRatio,
                   })}
-                  aria-label={ratioLockLabel}
+                  aria-label={t('Keep aspect ratio')}
                   aria-pressed={current.keepRatio}
                   data-testid="image-editor-ratio-lock"
                   onClick={() => update({ keepRatio: !current.keepRatio })}

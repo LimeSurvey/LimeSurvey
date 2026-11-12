@@ -184,10 +184,11 @@ describe('ImageEditor', () => {
     expect(height).toHaveValue(600)
   })
 
-  test('The ratio lock button names what a click does', async () => {
+  test('The ratio lock button keeps its name and tells its state with aria-pressed', async () => {
     await renderEditor()
 
-    const lock = screen.getByRole('button', { name: 'Unlock aspect ratio' })
+    const lock = screen.getByRole('button', { name: 'Keep aspect ratio' })
+    expect(lock).toHaveAttribute('aria-pressed', 'true')
     expect(screen.getByLabelText('Width (px)')).toHaveClass(
       'image-editor-ratio-locked'
     )
@@ -195,7 +196,7 @@ describe('ImageEditor', () => {
     expect(screen.getByTestId('image-editor-frame-size')).toHaveClass('locked')
     await userEvent.click(lock)
 
-    expect(lock).toHaveAccessibleName('Lock aspect ratio')
+    expect(lock).toHaveAccessibleName('Keep aspect ratio')
     expect(lock).toHaveAttribute('aria-pressed', 'false')
     expect(screen.getByLabelText('Width (px)')).not.toHaveClass(
       'image-editor-ratio-locked'
