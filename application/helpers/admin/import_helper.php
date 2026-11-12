@@ -2038,14 +2038,14 @@ function copyFromOneTableToTheOther($source, $destination, $preserveIDs = false)
         from information_schema.columns a
         join information_schema.columns b
         on {$filter} and
-          a.TABLE_NAME = '" . $destination . "' and
-          b.TABLE_NAME = '" . $source . "' and
+          a.TABLE_NAME = :destination and
+          b.TABLE_NAME = :source and
           a.COLUMN_NAME = b.COLUMN_NAME
     ";
     if (!$preserveIDs) {
         $command .= " where a.COLUMN_NAME not in ('id', 'tid')";
     }
-    $rawResults = Yii::app()->db->createCommand($command)->queryAll();
+    $rawResults = Yii::app()->db->createCommand($command)->queryAll(true, [':destination' => $destination, ':source' => $source]);
     $columns = [];
     foreach ($rawResults as $rawResult) {
         $columns[] = Yii::app()->db->quoteColumnName($rawResult['cname']);
@@ -2057,8 +2057,8 @@ function copyFromOneTableToTheOther($source, $destination, $preserveIDs = false)
         $oldResponsesTable = str_replace('_timings', '_responses', $source);
         $command = "
             SELECT t1.id as rid, t2.id as tid
-            FROM {$oldResponsesTable} t1
-            LEFT JOIN {$source} t2
+            FROM " . Yii::app()->db->quoteTableName($oldResponsesTable) . " t1
+            LEFT JOIN " . Yii::app()->db->quoteTableName($source) . " t2
             ON t1.id = t2.id
             order by t1.id
         ";
