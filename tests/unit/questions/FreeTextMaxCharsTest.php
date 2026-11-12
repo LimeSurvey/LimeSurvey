@@ -35,12 +35,33 @@ class FreeTextMaxCharsTest extends TestBaseClass
     }
 
     /**
-     * Reset the response column limits cached by ExpressionManager.
+     * Reset the response column limits and response tables cached by ExpressionManager.
      */
     protected function tearDown(): void
     {
         $this->getResponseColumnLimitsProperty()->setValue(null, []);
+        (new \ReflectionProperty(\LimeExpressionManager::class, 'responseTables'))->setValue(null, []);
         parent::tearDown();
+    }
+
+    /**
+     * The response table is looked up once per survey, also when the survey has no response table.
+     */
+    public function testResponseTableIsLookedUpOncePerSurvey()
+    {
+        $LEM = \LimeExpressionManager::singleton();
+        $sid = new \ReflectionProperty(\LimeExpressionManager::class, 'sid');
+        $originalSid = $sid->getValue($LEM);
+        $sid->setValue($LEM, self::$surveyId);
+        $method = new \ReflectionMethod(\LimeExpressionManager::class, 'getResponseColumnLimit');
+        $tables = new \ReflectionProperty(\LimeExpressionManager::class, 'responseTables');
+
+        // The survey is not active: no response table
+        $this->assertNull($method->invoke(null, 'Q999998', 999998));
+        $this->assertNull($method->invoke(null, 'Q999999', 999999));
+        $this->assertSame([intval(self::$surveyId) => null], $tables->getValue());
+
+        $sid->setValue($LEM, $originalSid);
     }
 
     /**

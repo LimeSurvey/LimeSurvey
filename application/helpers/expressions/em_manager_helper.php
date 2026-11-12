@@ -722,6 +722,14 @@ class LimeExpressionManager
     private static $responseColumnLimits = [];
 
     /**
+     * Request cache of the response table schema by survey ID, null when the survey has no response table (inactive survey).
+     * Yii does not cache a missing table, so without it each answer column would look the table up again.
+     * Static for the same reason as $responseColumnLimits.
+     * @var array<int, CDbTableSchema|null>
+     */
+    private static $responseTables = [];
+
+    /**
      * Array of values to be updated
      * @var array
      */
@@ -11054,7 +11062,11 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             return self::$responseColumnLimits[$cacheKey];
         }
         $limit = null;
-        $table = Yii::app()->db->schema->getTable('{{responses_' . intval($LEM->sid) . '}}');
+        $surveyId = intval($LEM->sid);
+        if (!array_key_exists($surveyId, self::$responseTables)) {
+            self::$responseTables[$surveyId] = Yii::app()->db->schema->getTable('{{responses_' . $surveyId . '}}');
+        }
+        $table = self::$responseTables[$surveyId];
         $column = $table ? $table->getColumn($sgqa) : null;
         if ($column) {
             $dbType = strtolower((string) $column->dbType);
