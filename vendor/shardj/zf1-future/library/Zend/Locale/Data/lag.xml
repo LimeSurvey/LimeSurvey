@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE ldml SYSTEM "../../common/dtd/ldml.dtd">
-<!-- Copyright © 1991-2013 Unicode, Inc.
-CLDR data files are interpreted according to the LDML specification (http://unicode.org/reports/tr35/)
+<!-- Copyright © 1991-2026 Unicode, Inc.
 For terms of use, see http://www.unicode.org/copyright.html
+SPDX-License-Identifier: Unicode-3.0
+CLDR data files are interpreted according to the LDML specification (http://unicode.org/reports/tr35/)
 -->
 <ldml>
 	<identity>
-		<version number="$Revision: 9275 $"/>
-		<generation date="$Date: 2013-08-25 22:28:21 -0500 (Sun, 25 Aug 2013) $"/>
+		<version number="$Revision$"/>
 		<language type="lag"/>
 	</identity>
 	<localeDisplayNames>
@@ -66,7 +66,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="AI">Anguíila</territory>
 			<territory type="AL">Alubánia</territory>
 			<territory type="AM">Ariménia</territory>
-			<territory type="AN">Antili ya Ʉholáanzi</territory>
 			<territory type="AO">Angóola</territory>
 			<territory type="AR">Ajentíina</territory>
 			<territory type="AS">Samóoa ya Amerɨ́ka</territory>
@@ -150,7 +149,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="IE">Ayaláandi</territory>
 			<territory type="IL">Isiraéeli</territory>
 			<territory type="IN">Índia</territory>
-			<territory type="IO">Ɨsɨ yʉ Ʉɨngeréesa irivii ra Híindi</territory>
+			<territory type="IO" draft="provisional">Ɨsɨ yʉ Ʉɨngeréesa irivii ra Híindi</territory>
 			<territory type="IQ">Iráaki</territory>
 			<territory type="IR">Ʉajéemi</territory>
 			<territory type="IS">Aisiláandi</territory>
@@ -185,7 +184,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="MD">Molidóova</territory>
 			<territory type="MG">Bukíini</territory>
 			<territory type="MH">Visíiwa vya Marisháali</territory>
-			<territory type="MK">Masedónia</territory>
 			<territory type="ML">Máali</territory>
 			<territory type="MM">Miáama</territory>
 			<territory type="MN">Mongólia</territory>
@@ -287,14 +285,12 @@ For terms of use, see http://www.unicode.org/copyright.html
 		</territories>
 	</localeDisplayNames>
 	<characters>
-		<exemplarCharacters>[a á b c d e é f g h i í ɨ j k l m n o ó p q r s t u ú ʉ v w x y z]</exemplarCharacters>
+		<exemplarCharacters>[aá b c d eé f g h ií ɨ j k l m n oó p q r s t uú ʉ v w x y z]</exemplarCharacters>
 		<exemplarCharacters type="index">[A B C D E F G H I Ɨ J K L M N O P Q R S T U Ʉ V W X Y Z]</exemplarCharacters>
 	</characters>
 	<delimiters>
 		<quotationStart>”</quotationStart>
-		<quotationEnd>”</quotationEnd>
 		<alternateQuotationStart>’</alternateQuotationStart>
-		<alternateQuotationEnd>’</alternateQuotationEnd>
 	</delimiters>
 	<dates>
 		<calendars>
@@ -323,19 +319,11 @@ For terms of use, see http://www.unicode.org/copyright.html
 				</dateFormats>
 				<dateTimeFormats>
 					<availableFormats>
-						<dateFormatItem id="d">d</dateFormatItem>
-						<dateFormatItem id="hm">h:mm a</dateFormatItem>
-						<dateFormatItem id="Hm">HH:mm</dateFormatItem>
-						<dateFormatItem id="Hms">HH:mm:ss</dateFormatItem>
-						<dateFormatItem id="M">L</dateFormatItem>
+						<dateFormatItem id="hm">h:mm a</dateFormatItem>
 						<dateFormatItem id="Md">M/d</dateFormatItem>
 						<dateFormatItem id="MEd">E, M/d</dateFormatItem>
-						<dateFormatItem id="MMM">LLL</dateFormatItem>
-						<dateFormatItem id="MMMd">MMM d</dateFormatItem>
 						<dateFormatItem id="MMMEd">E, MMM d</dateFormatItem>
-						<dateFormatItem id="MMMMd">MMMM d</dateFormatItem>
 						<dateFormatItem id="MMMMEd">E, MMMM d</dateFormatItem>
-						<dateFormatItem id="ms">mm:ss</dateFormatItem>
 						<dateFormatItem id="y">y</dateFormatItem>
 						<dateFormatItem id="yM">M/y</dateFormatItem>
 						<dateFormatItem id="yMEd">E, M/d/y</dateFormatItem>
@@ -447,7 +435,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 				</quarters>
 				<dayPeriods>
 					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
+						<dayPeriodWidth type="abbreviated">
 							<dayPeriod type="am">TOO</dayPeriod>
 							<dayPeriod type="pm">MUU</dayPeriod>
 						</dayPeriodWidth>
@@ -488,41 +476,32 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<timeFormats>
 					<timeFormatLength type="full">
 						<timeFormat>
-							<pattern>h:mm:ss a zzzz</pattern>
+							<pattern>HH:mm:ss zzzz</pattern>
 						</timeFormat>
 					</timeFormatLength>
 					<timeFormatLength type="long">
 						<timeFormat>
-							<pattern>h:mm:ss a z</pattern>
+							<pattern>HH:mm:ss z</pattern>
 						</timeFormat>
 					</timeFormatLength>
 					<timeFormatLength type="medium">
 						<timeFormat>
-							<pattern>h:mm:ss a</pattern>
+							<pattern>HH:mm:ss</pattern>
 						</timeFormat>
 					</timeFormatLength>
 					<timeFormatLength type="short">
 						<timeFormat>
-							<pattern>h:mm a</pattern>
+							<pattern>HH:mm</pattern>
 						</timeFormat>
 					</timeFormatLength>
 				</timeFormats>
 				<dateTimeFormats>
 					<availableFormats>
-						<dateFormatItem id="d">d</dateFormatItem>
-						<dateFormatItem id="hm">h:mm a</dateFormatItem>
-						<dateFormatItem id="Hm">HH:mm</dateFormatItem>
-						<dateFormatItem id="Hms">HH:mm:ss</dateFormatItem>
-						<dateFormatItem id="M">L</dateFormatItem>
+						<dateFormatItem id="hm">h:mm a</dateFormatItem>
 						<dateFormatItem id="Md">M/d</dateFormatItem>
 						<dateFormatItem id="MEd">E, M/d</dateFormatItem>
-						<dateFormatItem id="MMM">LLL</dateFormatItem>
-						<dateFormatItem id="MMMd">MMM d</dateFormatItem>
 						<dateFormatItem id="MMMEd">E, MMM d</dateFormatItem>
-						<dateFormatItem id="MMMMd">MMMM d</dateFormatItem>
 						<dateFormatItem id="MMMMEd">E, MMMM d</dateFormatItem>
-						<dateFormatItem id="ms">mm:ss</dateFormatItem>
-						<dateFormatItem id="y">y</dateFormatItem>
 						<dateFormatItem id="yM">M/y</dateFormatItem>
 						<dateFormatItem id="yMEd">E, M/d/y</dateFormatItem>
 						<dateFormatItem id="yMMM">MMM y</dateFormatItem>
@@ -666,6 +645,9 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Mpía ya bukini</displayName>
 			</currency>
 			<currency type="MRO">
+				<displayName>Ungwíiya ya Moritánia (1973–2017)</displayName>
+			</currency>
+			<currency type="MRU">
 				<displayName>Ungwíiya ya Moritánia</displayName>
 			</currency>
 			<currency type="MUR">
@@ -698,13 +680,19 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<currency type="SHP">
 				<displayName>Páundi ya Mʉtakatíifu Heléena</displayName>
 			</currency>
-			<currency type="SLL">
+			<currency type="SLE">
 				<displayName>Leóoni</displayName>
+			</currency>
+			<currency type="SLL">
+				<displayName>Leóoni (1964—2022)</displayName>
 			</currency>
 			<currency type="SOS">
 				<displayName>Shilíingi ya Somália</displayName>
 			</currency>
 			<currency type="STD">
+				<displayName>Dóbura ya SaoTóome na Pirínsipe (1977–2017)</displayName>
+			</currency>
+			<currency type="STN">
 				<displayName>Dóbura ya SaoTóome na Pirínsipe</displayName>
 			</currency>
 			<currency type="SZL">
@@ -750,4 +738,3 @@ For terms of use, see http://www.unicode.org/copyright.html
 		</messages>
 	</posix>
 </ldml>
-

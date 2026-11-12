@@ -315,6 +315,8 @@ class Zend_Test_PHPUnit_Constraint_DomQuery34 extends PHPUnit_Framework_Constrai
      */
     protected function _notMatchContent($result, $match)
     {
+        $match = (string) $match;
+
         if (0 == count($result)) {
             return true;
         }

@@ -1,5 +1,7 @@
 <div class="modal-header">
-    <h5 class="modal-title" id="participant_edit_modal"><?php if ($editType === 'new') : eT('Add attribute'); else: eT('Edit attribute'); endif; ?></h5>
+    <h2 class="modal-title h5" id="participant_edit_modal"><?php if ($editType === 'new') : eT('Add attribute'); else: eT('Edit attribute'); endif; ?></h2>
+    <?php // aria-hidden: only read as part of the dialog name, not again when reading the dialog content ?>
+    <span class="visually-hidden" id="participant_edit_modal-dialogsr" aria-hidden="true"><?= gT('Dialog') ?></span>
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 </div>
 <?php
@@ -17,20 +19,22 @@ $form = $this->beginWidget(
     <?php if ($editType === 'edit') : ?>
         <input type="hidden" id="ParticipantAttributeName_attribute_id" name="ParticipantAttributeName[attribute_id]" value="<?= $model->attribute_id ?>"/>
     <?php endif; ?>
-    <fieldset>
-        <legend><?= gT("Basic settings") ?></legend>
+    <p class="note"><?php echo sprintf(gT('Fields with %s are required.'), '<span class="required">*</span>'); ?></p>
+    <div>
+        <h3 class="h4"><?= gT("Basic settings") ?></h3>
         <?php $baseControlGroupHtmlOptions = [
             'groupOptions' => ['class' => ''],
             'labelOptions' => ['class' => ''],
             'required'     => 'required'
         ]; ?>
-        <?= $form->textFieldControlGroup($model, 'defaultname', $baseControlGroupHtmlOptions) ?>
+        <?= $form->textFieldControlGroup($model, 'defaultname', array_diff_key($baseControlGroupHtmlOptions, ['required' => true])) ?>
         <?= $form->dropDownListControlGroup($model, 'attribute_type', $model->attributeTypeDropdownArray, array_merge($baseControlGroupHtmlOptions, ['class' => 'form-select'])) ?>
         <div class="ex-form-group mb-3" id="">
             <label class='form-label'><?php eT("Should this attribute be visible on the panel?"); ?></label>
             <div>
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                     'name'          => "ParticipantAttributeName[visible]",
+                    'ariaLabel'     => gT("Should this attribute be visible on the panel?"),
                     'checkedOption' => $model['visible'] === 'TRUE' ? '1' : '0',
                     'selectOptions' => [
                         '1' => gT('On'),
@@ -46,6 +50,7 @@ $form = $this->beginWidget(
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                     'name'          => "ParticipantAttributeName[encrypted]",
                     'id'            => "encrypted",
+                    'ariaLabel'     => gT('Encrypted'),
                     'checkedOption' => $model['encrypted'] === 'Y' ? '1' : '0',
                     'selectOptions' => [
                         '1' => gT('On'),
@@ -57,7 +62,8 @@ $form = $this->beginWidget(
                 ]); ?>
             </div>
         </div>
-        <div id="ParticipantAttributeNamesDropdownEdit" class="row ex-form-group mb-3" style="display: none;">
+        <?php // Only shown for drop-down lists: Toggled in participantpanel.js when the attribute type changes ?>
+        <div id="ParticipantAttributeNamesDropdownEdit" class="row ex-form-group mb-3"<?= $model->attribute_type === 'DD' ? '' : ' style="display: none;"' ?>>
             <div class="row">
                 <div class="col-2">
                     <button type="button" class="btn btn-outline-secondary btn-block" id="addDropdownField" data-bs-toggle="tooltip" title="<?php eT('Add dropdown field'); ?>"><i
@@ -65,14 +71,16 @@ $form = $this->beginWidget(
                 </div>
                 <h4 class="col-8 col-offset-2"><?php eT("Dropdown fields") ?></h4>
             </div>
+            <?php // Always sent (empty values are skipped), so removing every field clears the saved values ?>
+            <input type="hidden" name="ParticipantAttributeNamesDropdown[]" value=""/>
             <div id='ParticipantAttributeNamesDropdownEditList'>
                 <?php foreach ($model->getAttributesValues($model->attribute_id) as $attribute_value): ?>
                     <div class="control-group">
                         <div class="dropDownContainer col-8 col-offset-2">
-                            <?= TbHtml::textField('ParticipantAttributeNamesDropdown[]', $attribute_value['value'], ['class' => 'form-control', 'id' => '']) ?>
+                            <?= TbHtml::textField('ParticipantAttributeNamesDropdown[]', $attribute_value['value'], ['class' => 'form-control', 'id' => '', 'aria-label' => gT('Dropdown field')]) ?>
                         </div>
                         <div class="col-1">
-                            <button type="button" class="btn btn-outline-secondary ex-form-group mb-3 action_delDropdownField">
+                            <button type="button" class="btn btn-outline-secondary ex-form-group mb-3 action_delDropdownField" aria-label="<?= gT('Remove dropdown field') ?>">
                                 <i class="ri-delete-bin-fill text-danger"></i>
                             </button>
                         </div>
@@ -80,17 +88,17 @@ $form = $this->beginWidget(
                 <?php endforeach; ?>
                 <div class='control-group'>
                     <div class='dropDownContainer col-8 col-offset-2'>
-                        <input class='form-control' name='ParticipantAttributeNamesDropdown[]' value=''/>
+                        <input class='form-control' name='ParticipantAttributeNamesDropdown[]' value='' aria-label="<?= gT('Dropdown field') ?>"/>
                     </div>
                     <div class="col-1">
-                        <button type="button" class="btn btn-outline-secondary ex-form-group mb-3 action_delDropdownField">
+                        <button type="button" class="btn btn-outline-secondary ex-form-group mb-3 action_delDropdownField" aria-label="<?= gT('Remove dropdown field') ?>">
                             <i class="ri-delete-bin-fill text-danger"></i>
                         </button>
                     </div>
                 </div>
             </div>
         </div>
-    </fieldset>
+    </div>
     <fieldset>
         <legend><?php eT("Languages") ?></legend>
         <div class="col-12 ex-form-group mb-3">
@@ -100,13 +108,15 @@ $form = $this->beginWidget(
                     <?= TbHtml::dropDownList("ParticipantAttributeName_addLanguage_language", '', $languagesForDropdown, ['encode' => false, 'class' => 'form-select']) ?>
                 </div>
                 <div class="col-1">
-                    <button type="button" class="btn btn-outline-secondary ex-form-group ms-2" id="addLanguageField" data-bs-toggle="tooltip" title="<?php eT("Add a new language") ?>">
+                    <button type="button" class="btn btn-outline-secondary ex-form-group ms-2" id="addLanguageField" data-bs-toggle="tooltip" title="<?php eT("Add a new language") ?>" aria-label="<?php eT("Add a new language") ?>">
                         <i class="ri-add-circle-fill text-success"></i>
                     </button>
                 </div>
             </div>
         </div>
-        <div id='languagesList' class="row">
+        <div id='languagesList' class="row"
+             data-remove-language-label="<?= CHtml::encode(gT('Remove %s language', 'unescaped')) ?>"
+             data-at-least-one-language="<?= CHtml::encode(gT('There has to be at least one language.', 'unescaped')) ?>">
             <?php if ($editType !== 'edit') : $languageKey = Yii::app()->getLanguage(); ?>
                 <div class="col-12 ex-form-group mb-3" data-lang="<?= $languageKey ?>">
                     <label class="form-label" for="ParticipantAttributeNameLanguages_<?= $languageKey ?>">
@@ -119,7 +129,9 @@ $form = $this->beginWidget(
                                    id="ParticipantAttributeNameLanguages_<?= $languageKey ?>">
                         </div>
                         <div class="col-1">
-                            <button type="button" class="btn btn-outline-secondary ex-form-group ms-2 action_delLanguageField">
+                            <?php // A new attribute needs at least this language: the button is shown but not usable ?>
+                            <button type="button" class="btn btn-outline-secondary ex-form-group ms-2 action_delLanguageField" disabled
+                                    aria-label="<?= CHtml::encode(sprintf(gT('Remove %s language', 'unescaped'), getLanguageNameFromCode($languageKey, false))) ?>">
                                 <i class="ri-delete-bin-fill text-danger"></i>
                             </button>
                         </div>
@@ -139,7 +151,8 @@ $form = $this->beginWidget(
                                    value="<?= CHtml::encode($languageOfAttribute) ?>">
                         </div>
                         <div class="col-1">
-                            <button type="button" class="btn btn-outline-secondary ex-form-group ms-2 action_delLanguageField">
+                            <button type="button" class="btn btn-outline-secondary ex-form-group ms-2 action_delLanguageField"
+                                    aria-label="<?= CHtml::encode(sprintf(gT('Remove %s language', 'unescaped'), getLanguageNameFromCode($languageKey, false))) ?>">
                                 <i class="ri-delete-bin-fill text-danger"></i>
                             </button>
                         </div>
@@ -162,10 +175,10 @@ $form = $this->beginWidget(
                 </div>
                 <div class='control-group' id="dummyDropdownInputGroup">
                     <div class='dropDownContainer col-8 col-offset-2'>
-                        <input class='form-control' name='dummyParticipantAttributeNamesDropdown' value=''/>
+                        <input class='form-control' name='dummyParticipantAttributeNamesDropdown' value='' aria-label="<?= gT('Dropdown field') ?>"/>
                     </div>
                     <div class="col-1">
-                        <button type="button" class="btn btn-outline-secondary ex-form-group mb-3 action_delDropdownField">
+                        <button type="button" class="btn btn-outline-secondary ex-form-group mb-3 action_delDropdownField" aria-label="<?= gT('Remove dropdown field') ?>">
                             <i class="ri-delete-bin-fill text-danger"></i>
                         </button>
                     </div>
@@ -174,90 +187,6 @@ $form = $this->beginWidget(
         </div>
     </fieldset>
 </div>
-<script>
-    jQuery('#ParticipantAttributeName_attribute_type').on('change', function () {
-        if ($(this).val() == 'DD') {
-            $('#ParticipantAttributeNamesDropdownEdit').slideDown();
-        } else {
-            $('#ParticipantAttributeNamesDropdownEdit').slideUp();
-        }
-    })
-    jQuery('.action_delDropdownField').on('click', function (e) {
-        e.preventDefault();
-        $(this).closest('div.control-group').remove();
-        return false;
-    });
-    jQuery('#addDropdownField').on('click', function (e) {
-        e.preventDefault();
-        jQuery('#dummyDropdownInputGroup')
-            .clone()
-            .appendTo($('#ParticipantAttributeNamesDropdownEditList'))
-            .removeAttr('id')
-            .find('input')
-            .attr('name', 'ParticipantAttributeNamesDropdown[]');
-        return false;
-    });
-    jQuery('#addLanguageField').on('click', function (e) {
-        e.preventDefault();
-        var langKey = $('#ParticipantAttributeName_addLanguage_language').val();
-        if (langKey !== '') {
-            jQuery('#dummyLanguageInputGroup')
-                .clone()
-                .appendTo($('#languagesList'))
-                .data('lang', langKey)
-                .find('input.selector_languageAddInput')
-                .attr('name', 'ParticipantAttributeNameLanguages[' + langKey + ']')
-                .attr('id', 'ParticipantAttributeNameLanguages_' + langKey)
-                .end()
-                .find('label.selector_languageAddLabel')
-                .attr('for', 'ParticipantAttributeNameLanguages_' + langKey)
-                .html($('#ParticipantAttributeName_addLanguage_language option:selected').text());
-        }
-        return false;
-    });
-    jQuery('.action_delLanguageField').on('click', function (e) {
-        e.preventDefault();
-        var self = this,
-            attribute_id = $('#ParticipantAttributeName_attribute_id').val(),
-            formGroup = $(this).closest('div.ex-form-group'),
-            lang = formGroup.data('lang');
-
-        // Adding new attribute no id yet, can't delete
-        if (!attribute_id) {
-            window.LS.ajaxAlerts('<?php eT("There has to be at least one language."); ?>', 'danger');
-            return false;
-        }
-
-        $.ajax({
-            url: deleteLanguageFromAttributeUrl,
-            data: {attribute_id: attribute_id, lang: lang},
-            method: 'POST',
-            dataType: 'json',
-            success: function (result) {
-                if (result.success) {
-                    formGroup.fadeOut(400, function () {
-                        formGroup.remove()
-                    });
-                } else {
-                    window.LS.ajaxAlerts(result.error.message, 'danger');
-                }
-            }
-        })
-
-        return false;
-    });
-    jQuery(document).on('click', '.action_delNewLanguageField', function (e) {
-        e.preventDefault();
-        var formGroup = $(this).closest('div.ex-form-group');
-        formGroup.fadeOut(400, function () {
-            formGroup.remove();
-        });
-        return false;
-    });
-    jQuery(function () {
-        jQuery('#ParticipantAttributeName_attribute_type').trigger('change');
-    });
-</script>
 <div class="modal-footer">
     <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">
         <?php eT('Cancel') ?>
