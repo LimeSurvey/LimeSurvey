@@ -270,25 +270,38 @@ export const EditorTutorial = ({ isSurveyActive = false, survey }) => {
       return
     }
 
-    userSettingsService
-      .getUserSettingByName(TUTORIALS.EDITOR_TUTORIAL)
-      .then((response) => {
-        // starting the tutorial automatically if the user has never started the tutorial before
-        if (
-          response.httpStatus === 404 &&
-          !isSurveyActive &&
-          !hasEditorHelpAppeared
-        ) {
-          setHasEdtiroHelpAppeared(true)
-          handleTutorialStart()
-        }
-      })
+    Promise.all([
+      userSettingsService.getUserSettingByName(TUTORIALS.EDITOR_TUTORIAL),
+      userSettingsService.getUserSettingByName(
+        TUTORIALS.EDITOR_TUTORIAL_DISMISSED
+      ),
+    ]).then(([progressResponse, dismissedResponse]) => {
+      // starting the tutorial automatically if the user has never started the tutorial before
+      // and hasn't chosen to never see it again
+      const isDismissed = dismissedResponse?.httpStatus !== 404
+      if (
+        progressResponse.httpStatus === 404 &&
+        !isDismissed &&
+        !isSurveyActive &&
+        !hasEditorHelpAppeared
+      ) {
+        setHasEdtiroHelpAppeared(true)
+        handleTutorialStart()
+      }
+    })
   }, [isSurveyActive, surveyId])
 
   const handleOnStepChange = (data) => {
     userSettingsService.setUserSettingByName(
       TUTORIALS.EDITOR_TUTORIAL,
       data.index
+    )
+  }
+
+  const handleTutorialDismiss = () => {
+    userSettingsService.setUserSettingByName(
+      TUTORIALS.EDITOR_TUTORIAL_DISMISSED,
+      1
     )
   }
 
@@ -330,6 +343,7 @@ export const EditorTutorial = ({ isSurveyActive = false, survey }) => {
         setTutorialState={setTutorialState}
         onStepChange={handleOnStepChange}
         onTutorialFinish={handleOnTutorialFinish}
+        onTutorialDismiss={handleTutorialDismiss}
       />
     </>
   )

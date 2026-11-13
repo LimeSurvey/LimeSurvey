@@ -12,12 +12,38 @@
   background: $apple !important;
 }
 
-.tutorial-skip-button {
+.tutorial-close-actions {
   position: fixed;
   bottom: 24px;
   right: 100px;
-  width: 172px;
-  height: 44px;
+  z-index: 10001;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 16px;
+}
+
+.tutorial-dismiss-button {
+  height: 36px;
+  padding: 4px 12px;
+  gap: 8px;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  border: 1px solid $lime-green;
+  border-radius: $border-radius;
+  background: rgba(0, 0, 0, 0.2);
+  color: $lime-green;
+  cursor: pointer;
+
+  &:focus-visible {
+    outline: 2px solid $lime-green;
+    outline-offset: 2px;
+  }
+}
+
+.tutorial-skip-button {
+  height: 36px;
   z-index: 10001;
   padding: 4px 12px;
   gap: 8px;
