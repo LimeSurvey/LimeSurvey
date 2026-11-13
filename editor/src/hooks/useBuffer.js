@@ -64,9 +64,22 @@ export const useBuffer = () => {
     removeError(operation.id, operation.entity)
   }
 
+  // Removes all queued operations of an entity
+  const removeFromBuffer = (id, entity) => {
+    const operations = queryClient.getQueryData([STATES.BUFFER]) ?? []
+    const keptOperations = operations.filter(
+      (operation) => !(operation.id == id && operation.entity === entity)
+    )
+    if (keptOperations.length !== operations.length) {
+      setBuffer(keptOperations)
+    }
+    removeError(id, entity)
+  }
+
   return {
     operationsBuffer: new OperationsBuffer(data, hash),
     addToBuffer,
+    removeFromBuffer,
     clearBuffer,
     setBuffer,
   }

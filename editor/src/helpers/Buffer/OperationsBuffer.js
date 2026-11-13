@@ -341,9 +341,13 @@ export class OperationsBuffer {
 
   removeOperation = (id, op, entity) => {
     const operationIndex = this.findIndex(id, op, entity)
+    // splice(-1) would remove the last operation
+    if (operationIndex === -1) {
+      return false
+    }
     this.operations = arrayDeleteItem(this.operations, operationIndex)[0]
 
-    return operationIndex !== -1
+    return true
   }
 
   findIndex = (id, op, entity) => {

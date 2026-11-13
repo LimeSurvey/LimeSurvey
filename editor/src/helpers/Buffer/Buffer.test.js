@@ -149,6 +149,15 @@ describe('OperationsBuffer', () => {
     expect(operationBuffer.getOperations()).toEqual([{ ...operation3 }])
   })
 
+  test('removeOperation keeps the buffer when nothing matches', () => {
+    operationBuffer.addOperation(operation)
+    operationBuffer.addOperation(operation3)
+    const operations = operationBuffer.getOperations()
+
+    expect(operationBuffer.removeOperation(999)).toBe(false)
+    expect(operationBuffer.getOperations()).toEqual(operations)
+  })
+
   test('findIndex should find an item by id', () => {
     operationBuffer.addOperation(operation)
     operationBuffer.addOperation(operation3)
