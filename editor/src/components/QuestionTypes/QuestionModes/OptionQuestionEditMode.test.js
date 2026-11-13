@@ -85,29 +85,45 @@ const startApplyToAllSave = async (handleUpdate) => {
       }}
     />
   )
+  return startSave('A1', { ...settings, altText: 'First', applyToAll: true })
+}
+
+/**
+ * Starts saving the image settings of an option, as the image editor does.
+ *
+ * @param {string} code the option code
+ * @param {Object} imageSettings the settings from ImageEditor's onSave
+ * @returns {Promise<{savePromise: Promise<void>}>} the pending save, wrapped:
+ *   An async function returning the promise itself would wait for it
+ */
+const startSave = async (code, imageSettings) => {
   let savePromise
-  act(() => {
-    savePromise = mockImageChoiceProps.A1.onImageSettingsSave({
-      ...settings,
-      altText: 'First',
-      applyToAll: true,
-    })
+  // Async act: The queued save starts and begins to load the images.
+  await act(async () => {
+    savePromise = mockImageChoiceProps[code].onImageSettingsSave(imageSettings)
   })
   return { savePromise }
 }
 
 /**
- * Lets the other images load and waits for the save to finish.
+ * Lets the images load, the newest first, until the saves are done.
  *
- * @param {Promise<void>} savePromise the pending save
+ * @param {...Promise<void>} savePromises the pending saves
  * @returns {Promise<void>}
  */
-const finishImageLoads = async (savePromise) => {
+const finishImageLoads = async (...savePromises) => {
   await act(async () => {
-    mockImageLoads
-      .splice(0)
-      .forEach((resolve) => resolve({ width: 400, height: 400 }))
-    await savePromise
+    let done = false
+    Promise.all(savePromises).then(() => {
+      done = true
+    })
+    while (!done) {
+      mockImageLoads
+        .splice(0)
+        .reverse()
+        .forEach((resolve) => resolve({ width: 400, height: 400 }))
+      await new Promise((resolve) => setTimeout(resolve, 0))
+    }
   })
 }
 
@@ -154,5 +170,50 @@ describe('OptionQuestionEditMode image option settings', () => {
     await finishImageLoads(savePromise)
 
     expect(handleUpdate).not.toHaveBeenCalled()
+  })
+
+  test('"Apply to all" leaves out an option whose image was replaced while it was loading', async () => {
+    const handleUpdate = jest.fn()
+    const { savePromise } = await startApplyToAllSave(handleUpdate)
+
+    act(() =>
+      setTestQuestion((question) => ({
+        ...question,
+        answers: question.answers.map((answer) =>
+          answer.code === 'A2'
+            ? { ...answer, l10ns: { en: { answer: '/upload/new.png' } } }
+            : answer
+        ),
+      }))
+    )
+    await finishImageLoads(savePromise)
+
+    expect(handleUpdate).toHaveBeenCalledTimes(1)
+    const { attributes } = handleUpdate.mock.calls[0][0]
+    expect(
+      Object.keys(JSON.parse(attributes.image_option_settings['']))
+    ).toEqual(['A3', 'A1'])
+  })
+
+  test('A later "Apply to all" wins, also when the earlier one loads more slowly', async () => {
+    const handleUpdate = jest.fn()
+    const { savePromise: first } = await startApplyToAllSave(handleUpdate)
+    const { savePromise: second } = await startSave('A2', {
+      ...settings,
+      width: 300,
+      altText: 'Second',
+      applyToAll: true,
+    })
+    await finishImageLoads(first, second)
+
+    const { attributes } = handleUpdate.mock.calls.at(-1)[0]
+    const savedSettings = JSON.parse(attributes.image_option_settings[''])
+    expect(savedSettings.A1.width).toBe(300)
+    expect(savedSettings.A2.width).toBe(300)
+    expect(savedSettings.A3.width).toBe(300)
+    expect(JSON.parse(attributes.image_option_alt.en)).toEqual({
+      A1: 'First',
+      A2: 'Second',
+    })
   })
 })

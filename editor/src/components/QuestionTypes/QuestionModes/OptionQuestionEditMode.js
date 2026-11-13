@@ -111,7 +111,30 @@ export const OptionQuestionEditMode = ({
 
   const UiComponentToRender = isImageTheme ? ImageChoice : ContentEditor
 
+  // Image saves run one after another, so that an older "Apply to all"
+  // never overwrites a newer save when its images load more slowly.
+  const imageSaveQueue = useRef(Promise.resolve())
+
   const codeKey = isSingleChoiceTheme ? 'code' : 'title'
+
+  /**
+   * Returns the answers or subquestions of a question.
+   *
+   * @param {Object} questionData the question
+   * @returns {Object[]} its answers or subquestions
+   */
+  const getQuestionChildren = (questionData) =>
+    (isSingleChoiceTheme ? questionData.answers : questionData.subquestions) ||
+    []
+
+  /**
+   * Returns the image path of an option in the active language.
+   *
+   * @param {Object} child the answer or subquestion
+   * @returns {string|undefined} the image path
+   */
+  const getImagePath = (child) =>
+    L10ns({ prop: childrenInfo.titleKey, language, l10ns: child.l10ns })
 
   /**
    * Returns the settings of the other options for "Apply to all": Each option
@@ -120,19 +143,17 @@ export const OptionQuestionEditMode = ({
    *
    * @param {string} code the code of the edited option
    * @param {Object} settings the settings of the edited option
-   * @returns {Promise<Object>} the settings keyed by option code
+   * @returns {Promise<Object>} keyed by option code: the settings, and the
+   *   image path they were calculated for
    */
   const getSettingsForOtherOptions = async (code, settings) => {
+    const { attributes } = latestQuestion.current
     const otherSettings = {}
     await Promise.all(
-      _children
+      getQuestionChildren(latestQuestion.current)
         .filter((child) => child[codeKey] !== code)
         .map(async (child) => {
-          const imagePath = L10ns({
-            prop: childrenInfo.titleKey,
-            language,
-            l10ns: child.l10ns,
-          })
+          const imagePath = getImagePath(child)
           // Options without a valid image path have nothing to apply to.
           if (!imagePath || /(<([^>]+)>)/i.test(imagePath)) {
             return
@@ -141,11 +162,14 @@ export const OptionQuestionEditMode = ({
             (process.env.REACT_APP_SITE_URL || '') + imagePath
           )
           if (naturalSize) {
-            otherSettings[child[codeKey]] = applyImageSettings(
-              settings,
-              naturalSize,
-              getImageOptionSettings(question.attributes, child[codeKey])
-            )
+            otherSettings[child[codeKey]] = {
+              imagePath,
+              settings: applyImageSettings(
+                settings,
+                naturalSize,
+                getImageOptionSettings(attributes, child[codeKey])
+              ),
+            }
           }
         })
     )
@@ -156,14 +180,15 @@ export const OptionQuestionEditMode = ({
    * Stores the settings from the image editor of an option in the question
    * attributes, with "Apply to all" also for the other options. Nothing is
    * saved when the option was renamed or deleted while the other images were
-   * loading.
+   * loading. Other options whose image was replaced or deleted meanwhile
+   * keep their settings.
    *
    * @param {string} code the option code
    * @param {Object} imageSettings the settings from ImageEditor's onSave,
    *   including the alt text and applyToAll
    * @returns {Promise<void>}
    */
-  const handleImageOptionSave = async (
+  const saveImageOption = async (
     code,
     { altText, applyToAll = false, ...settings }
   ) => {
@@ -171,36 +196,53 @@ export const OptionQuestionEditMode = ({
       ? await getSettingsForOtherOptions(code, settings)
       : {}
     const currentQuestion = latestQuestion.current
-    const codes = (
-      (isSingleChoiceTheme
-        ? currentQuestion.answers
-        : currentQuestion.subquestions) || []
-    ).map((child) => child[codeKey])
+    const currentChildren = getQuestionChildren(currentQuestion)
+    const codes = currentChildren.map((child) => child[codeKey])
     if (!codes.includes(code)) {
       return
     }
-    // Only for the options that still exist.
-    const existingOtherSettings = Object.fromEntries(
-      Object.entries(otherSettings).filter(([otherCode]) =>
-        codes.includes(otherCode)
-      )
-    )
+    // Only for the options that still exist and still have the loaded image.
+    const validOtherSettings = {}
+    currentChildren.forEach((child) => {
+      const other = otherSettings[child[codeKey]]
+      if (other && getImagePath(child) === other.imagePath) {
+        validOtherSettings[child[codeKey]] = other.settings
+      }
+    })
     const changes = getImageOptionSaveChanges(currentQuestion.attributes, {
       code,
       settings,
       altText,
       language,
       codes,
-      otherSettings: existingOtherSettings,
+      otherSettings: validOtherSettings,
     })
+    const attributes = applyAttributeChanges(
+      currentQuestion.attributes,
+      changes
+    )
+    // The next queued save may run before the question is rendered again.
+    latestQuestion.current = { ...currentQuestion, attributes }
     addToBuffer(
       createBufferOperation(currentQuestion.qid)
         .questionAttribute()
         .update(changes)
     )
-    handleUpdate({
-      attributes: applyAttributeChanges(currentQuestion.attributes, changes),
-    })
+    handleUpdate({ attributes })
+  }
+
+  /**
+   * Queues the save of an option's image settings, see saveImageOption().
+   *
+   * @param {string} code the option code
+   * @param {Object} imageSettings the settings from ImageEditor's onSave
+   * @returns {Promise<void>} resolves when this save is done
+   */
+  const handleImageOptionSave = (code, imageSettings) => {
+    const save = () => saveImageOption(code, imageSettings)
+    // A failed save doesn't stop the ones after it.
+    imageSaveQueue.current = imageSaveQueue.current.then(save, save)
+    return imageSaveQueue.current
   }
 
   /**
