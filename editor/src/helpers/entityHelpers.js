@@ -108,6 +108,63 @@ const replaceTempIdsInCondition = (condition, idMap) => {
 }
 
 /**
+ * Apply a function to every question of the survey, copying only the groups
+ * whose questions change.
+ *
+ * @param {object} survey The survey.
+ * @param {Function} fn Gets a question, returns it or a changed copy.
+ * @returns {Array|undefined} The question groups, the same array if no question changed.
+ */
+const mapSurveyQuestions = (survey, fn) => {
+  let surveyChanged = false
+  const questionGroups = survey?.questionGroups?.map((group) => {
+    let groupChanged = false
+    const questions = group.questions?.map((question) => {
+      const mapped = fn(question)
+      groupChanged = groupChanged || mapped !== question
+      return mapped
+    })
+
+    if (!groupChanged) return group
+    surveyChanged = true
+    return { ...group, questions }
+  })
+
+  return surveyChanged ? questionGroups : survey?.questionGroups
+}
+
+/**
+ * Remove conditions from scenarios, and the scenarios left without
+ * conditions. Scenarios without a condition list (scenario actions such as a
+ * scenario delete) are kept.
+ *
+ * @param {Array} scenarios Scenarios of a question or condition operation.
+ * @param {Function} shouldRemove Gets a condition and its scenario.
+ * @returns {Array} The scenarios, the same array if no condition was removed.
+ */
+export const removeScenarioConditions = (scenarios, shouldRemove) => {
+  let changed = false
+  const remaining = scenarios
+    .map((scenario) => {
+      if (!Array.isArray(scenario.conditions)) return scenario
+
+      const conditions = scenario.conditions.filter(
+        (condition) => !shouldRemove(condition, scenario)
+      )
+      if (conditions.length === scenario.conditions.length) return scenario
+
+      changed = true
+      return { ...scenario, conditions }
+    })
+    .filter(
+      (scenario) =>
+        !Array.isArray(scenario.conditions) || scenario.conditions.length
+    )
+
+  return changed ? remaining : scenarios
+}
+
+/**
  * Replace temp IDs in the conditions of scenarios.
  *
  * @param {Array} scenarios Scenarios of a question or condition operation.
@@ -145,25 +202,15 @@ const replaceTempIdsInScenarios = (scenarios, idMap) => {
  * @returns {void}
  */
 const replaceTempIdsInConditions = (survey, operationsBuffer, idMap) => {
-  let surveyChanged = false
-  const questionGroups = survey.questionGroups?.map((group) => {
-    let groupChanged = false
-    const questions = group.questions?.map((question) => {
-      if (!question?.scenarios?.length) return question
+  const questionGroups = mapSurveyQuestions(survey, (question) => {
+    if (!question?.scenarios?.length) return question
 
-      const scenarios = replaceTempIdsInScenarios(question.scenarios, idMap)
-      if (scenarios === question.scenarios) return question
-
-      groupChanged = true
-      return { ...question, scenarios }
-    })
-
-    if (!groupChanged) return group
-    surveyChanged = true
-    return { ...group, questions }
+    const scenarios = replaceTempIdsInScenarios(question.scenarios, idMap)
+    return scenarios === question.scenarios
+      ? question
+      : { ...question, scenarios }
   })
-
-  if (surveyChanged) {
+  if (questionGroups !== survey.questionGroups) {
     survey.questionGroups = questionGroups
   }
 
@@ -250,42 +297,27 @@ export const resolveTempIds = (value) => {
  * @returns {object} The survey, a new object if a condition was removed.
  */
 export const removeSurveyConditions = (survey, shouldRemove) => {
-  let surveyChanged = false
-  const questionGroups = survey?.questionGroups?.map((group) => {
-    let groupChanged = false
-    const questions = group.questions?.map((question) => {
-      if (!question?.scenarios?.length) return question
+  const questionGroups = mapSurveyQuestions(survey, (question) => {
+    if (!question?.scenarios?.length) return question
 
-      const scenarios = question.scenarios
-        .map((scenario) => ({
-          ...scenario,
-          conditions: (scenario.conditions ?? []).filter(
-            (condition) => !shouldRemove(condition)
-          ),
-        }))
-        .filter((scenario) => scenario.conditions.length)
-      const conditionCount = (items) =>
-        items.reduce((count, item) => count + (item.conditions?.length ?? 0), 0)
-      if (conditionCount(scenarios) === conditionCount(question.scenarios)) {
-        return question
-      }
+    const scenarios = removeScenarioConditions(
+      question.scenarios,
+      (condition) => shouldRemove(condition)
+    )
+    if (scenarios === question.scenarios) return question
 
-      groupChanged = true
-      return {
-        ...question,
-        scenarios,
-        ...(scenarios.length
-          ? {}
-          : { relevance: QUESTION_RELEVANCE_DEFAULT_VALUE }),
-      }
-    })
-
-    if (!groupChanged) return group
-    surveyChanged = true
-    return { ...group, questions }
+    return {
+      ...question,
+      scenarios,
+      ...(scenarios.length
+        ? {}
+        : { relevance: QUESTION_RELEVANCE_DEFAULT_VALUE }),
+    }
   })
 
-  return surveyChanged ? { ...survey, questionGroups } : survey
+  return questionGroups === survey?.questionGroups
+    ? survey
+    : { ...survey, questionGroups }
 }
 
 export const replaceTempIdsInSurveyAndBuffer = (

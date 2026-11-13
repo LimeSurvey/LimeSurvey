@@ -1,6 +1,11 @@
 import { cloneDeep, merge, uniqWith, isEqual } from 'lodash'
 
-import { Entities, Operations, isTempId } from 'helpers'
+import {
+  Entities,
+  Operations,
+  isTempId,
+  removeScenarioConditions,
+} from 'helpers'
 import { CONDITION_ACTIONS, FIELDNAME_TEMP_ID_REGEX } from 'helpers/constants'
 
 const INSERT_CONDITION = CONDITION_ACTIONS.CONDITION.CREATE
@@ -77,23 +82,13 @@ export const isConditionWaitingForTempId = (operation) =>
 const removeConditions = (operation, shouldRemove) => {
   if (!isConditionOperation(operation)) return operation
 
-  const scenarios = operation.props.scenarios
-    .map((scenario) =>
-      Array.isArray(scenario.conditions)
-        ? {
-            ...scenario,
-            conditions: scenario.conditions.filter(
-              (condition) => !shouldRemove(condition, scenario)
-            ),
-          }
-        : scenario
-    )
-    .filter(
-      (scenario) =>
-        !Array.isArray(scenario.conditions) || scenario.conditions.length
-    )
-
-  return { ...operation, props: { ...operation.props, scenarios } }
+  const scenarios = removeScenarioConditions(
+    operation.props.scenarios,
+    shouldRemove
+  )
+  return scenarios === operation.props.scenarios
+    ? operation
+    : { ...operation, props: { ...operation.props, scenarios } }
 }
 
 const hasScenarios = (operation) =>
@@ -164,21 +159,22 @@ const mergeScenarios = (currentScenarios, newScenarios) => {
     (scenario) => scenario.conditions?.map((condition) => condition.cid) ?? []
   )
 
-  const scenarios = removeConditions(
-    {
-      entity: Entities.questionCondition,
-      props: { scenarios: currentScenarios },
-    },
-    (condition) => newCids.includes(condition.cid)
-  ).props.scenarios
+  const scenarios = [
+    ...removeScenarioConditions(currentScenarios, (condition) =>
+      newCids.includes(condition.cid)
+    ),
+  ]
 
   newScenarios.forEach((newScenario) => {
-    const scenario = scenarios.find(
+    const index = scenarios.findIndex(
       (item) => item.scid == newScenario.scid && Array.isArray(item.conditions)
     )
 
-    if (scenario && Array.isArray(newScenario.conditions)) {
-      scenario.conditions = [...scenario.conditions, ...newScenario.conditions]
+    if (index !== -1 && Array.isArray(newScenario.conditions)) {
+      scenarios[index] = {
+        ...scenarios[index],
+        conditions: [...scenarios[index].conditions, ...newScenario.conditions],
+      }
     } else {
       scenarios.push(newScenario)
     }
@@ -570,7 +566,7 @@ export const settleTempConditionIds = (bufferOperations, rejectedCids = []) => {
       )
 
       // Edited: The edit, with the newest values, becomes the insert.
-      settled.props.scenarios = settled.props.scenarios.map((scenario) =>
+      const scenarios = settled.props.scenarios.map((scenario) =>
         Array.isArray(scenario.conditions)
           ? {
               ...scenario,
@@ -589,7 +585,7 @@ export const settleTempConditionIds = (bufferOperations, rejectedCids = []) => {
           : scenario
       )
 
-      return settled
+      return { ...settled, props: { ...settled.props, scenarios } }
     })
     .filter(hasScenarios)
 }

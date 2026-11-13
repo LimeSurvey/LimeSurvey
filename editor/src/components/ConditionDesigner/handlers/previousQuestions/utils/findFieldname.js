@@ -1,3 +1,5 @@
+import { escapeRegExp } from 'lodash'
+
 import { isTempId, STATES } from 'helpers'
 import { queryClient } from 'queryClient'
 
@@ -51,7 +53,10 @@ export function findFieldname({
     (sqid && !questionFields.some((item) => item.sqid == sqid)) ||
     (xSqid &&
       !questionFields.some((item) =>
-        String(item.fieldname).includes(`_S${xSqid}`)
+        // The whole ID: _S12 must not match _S123.
+        new RegExp(`_S${escapeRegExp(String(xSqid))}(?=[_#]|$)`).test(
+          String(item.fieldname)
+        )
       ))
   if (!qid || !isUnknownToMap || (!sqid && !hasQuestionField)) return null
 

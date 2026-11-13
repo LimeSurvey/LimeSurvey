@@ -1,14 +1,12 @@
 /**
  * Turns condition designer form conditions into the API format of
- * OpHandlerQuestionCondition: New conditions get a temp ID, and conditions
- * are grouped by scenario. Each condition holds one value: The condition
- * designer splits comma separated answers before (splitConditionValues).
+ * OpHandlerQuestionCondition: One scenario, new conditions get a temp ID.
+ * Each condition holds one value: The condition designer splits comma
+ * separated answers before (splitConditionValues).
  */
-import { NEW_OBJECT_ID_PREFIX } from 'helpers/constants'
+import { CONDITION_ACTIONS, NEW_OBJECT_ID_PREFIX } from 'helpers/constants'
 
-import { getApiOperationActions } from './getApiOperationActions'
-
-const actions = getApiOperationActions()
+const actions = CONDITION_ACTIONS
 
 const sourceTabs = {
   Question: '#SRCPREVQUEST',
@@ -76,23 +74,22 @@ export const buildScenarioPayload = (question, conditions, scenarioName) => {
   let tempIdIndex = 1
   const newTempId = () => `${tempIdPrefix}_${tempIdIndex++}`
 
-  const scenarios = []
+  if (!conditions.length) return null
 
-  conditions.forEach((condition) => {
-    const apiCondition = buildApiCondition(
-      condition,
-      condition.value.toString(),
-      scenarioName,
-      newTempId
-    )
-    let scenario = scenarios.find((s) => s.scid == apiCondition.scenario)
-
-    if (!scenario) {
-      scenario = { scid: apiCondition.scenario, conditions: [] }
-      scenarios.push(scenario)
-    }
-    scenario.conditions.push(apiCondition)
-  })
-
-  return scenarios.length ? { qid: question.qid, scenarios } : null
+  return {
+    qid: question.qid,
+    scenarios: [
+      {
+        scid: scenarioName,
+        conditions: conditions.map((condition) =>
+          buildApiCondition(
+            condition,
+            condition.value.toString(),
+            scenarioName,
+            newTempId
+          )
+        ),
+      },
+    ],
+  }
 }

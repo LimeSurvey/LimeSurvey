@@ -3,10 +3,9 @@
  * The backend handler is OpHandlerQuestionCondition (SurveyPatch).
  */
 import { createBufferOperation, Entities, isTempId, Operations } from 'helpers'
+import { CONDITION_ACTIONS } from 'helpers/constants'
 
-import { getApiOperationActions } from './getApiOperationActions'
-
-const actions = getApiOperationActions()
+const actions = CONDITION_ACTIONS
 
 const buildOperation = (id, op, qid, props) => {
   const operation =

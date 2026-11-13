@@ -1,6 +1,5 @@
 export * from './getConditionTypeInfo'
 export * from './getAllowedMethods'
-export * from './getApiOperationActions'
 export * from './questionConditionHelpers'
 export * from './scenarioConditionsParser'
 export * from './scenarioPayloadBuilder'

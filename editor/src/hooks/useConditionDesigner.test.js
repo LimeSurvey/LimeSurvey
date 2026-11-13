@@ -340,4 +340,19 @@ describe('useConditionDesigner: saving a scenario', () => {
       [TEMP_CID, 'A2'],
     ])
   })
+
+  test('a constant with a comma is saved as one condition', () => {
+    const { addToBuffer } = setup({
+      conditions: [formCondition('1,5', { targetType: 'Constant' })],
+    })
+
+    const [operation] = addToBuffer.mock.calls[0]
+    expect(operation.props.scenarios.flatMap((s) => s.conditions)).toEqual([
+      expect.objectContaining({
+        value: '1,5',
+        ConditionConst: '1,5',
+        action: 'insertCondition',
+      }),
+    ])
+  })
 })

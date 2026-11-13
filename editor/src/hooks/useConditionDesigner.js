@@ -11,6 +11,7 @@ import {
   buildDeleteConditionOperation,
   buildSaveConditionsOperation,
   buildScenarioPayload,
+  getConditionTypeInfo,
   getDefaultCondition,
   hasConditionChanged,
   isDuplicate,
@@ -20,12 +21,19 @@ import {
   updateQuestionScenarios,
 } from '../components/ConditionDesigner/utils'
 
-// A form condition can hold several comma separated answers: Each one is
-// saved as its own condition. The condition keeps its ID for the first answer,
-// the other answers become new conditions: One ID can only hold one answer.
+const conditionTypeInfo = getConditionTypeInfo()
+
+// An answer options condition can hold several comma separated answers: Each
+// one is saved as its own condition. The condition keeps its ID for the first
+// answer, the other answers become new conditions: One ID can only hold one
+// answer. Other values (constants, regular expressions) may contain commas.
 const splitConditionValues = (conditions) =>
-  conditions.flatMap(({ value, ...rest }) =>
-    value
+  conditions.flatMap(({ value, ...rest }) => {
+    if (rest.targetType !== conditionTypeInfo.TARGET.ANSWER_OPTIONS) {
+      return [{ ...rest, value }]
+    }
+
+    return value
       .toString()
       .split(',')
       .map((v, index) => {
@@ -33,7 +41,7 @@ const splitConditionValues = (conditions) =>
 
         return { ...omit(rest, 'cid'), value: v, isUpdated: false }
       })
-  )
+  })
 
 // Removes the duplicates within the new conditions of the form.
 const uniqueConditions = (conditions) =>
