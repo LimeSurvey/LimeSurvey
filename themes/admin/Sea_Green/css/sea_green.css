@@ -18722,6 +18722,13 @@ ol.breadcrumb.title-bar-breadcrumb a:active {
 }
 .topbar .ls-topbar-buttons {
   margin-bottom: -4px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  column-gap: 4px;
+}
+.topbar .ls-topbar-buttons.text-end {
+  justify-content: flex-end;
 }
 .topbar .btn {
   margin-bottom: 4px;

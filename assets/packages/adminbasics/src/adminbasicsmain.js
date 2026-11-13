@@ -51,6 +51,7 @@ import dismissTooltipsOnEscapePress from './accessibility/dismissTooltipsOnEscap
 import keepTooltipsHoverable from './accessibility/keepTooltipsHoverable';
 import restoreFocusAfterModal from './accessibility/restoreFocusAfterModal';
 import skipToMainContent from './accessibility/skipToMainContent';
+import announceLoading from './accessibility/announceLoading';
 import tabsControl from './accessibility/tabsControl';
 
 // import components
@@ -104,6 +105,7 @@ const AdminCore = function(){
             keepTooltipsHoverable();
             restoreFocusAfterModal();
             skipToMainContent();
+            appendToLoad(announceLoading);
             AjaxHelper.bindNotLoggedInHandler();
         },
         appendToLoad = (fn, event, root, delay) => {

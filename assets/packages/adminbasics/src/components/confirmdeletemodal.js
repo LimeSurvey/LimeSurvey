@@ -41,6 +41,12 @@ const ConfirmDeleteModal = function (options) {
 
     let modalObject = null;
 
+    // Every link gets its own modal: Unique ids for the title and the text that name the dialog
+    window.LS = window.LS || {};
+    LS._confirmDeleteModalCount = (LS._confirmDeleteModalCount || 0) + 1;
+    const titleId = 'confirm-delete-modal-title-' + LS._confirmDeleteModalCount,
+        textId = 'confirm-delete-modal-text-' + LS._confirmDeleteModalCount;
+
     const combineModal = () => {
             const thisContent = contentBlock.clone();
 
@@ -49,6 +55,7 @@ const ConfirmDeleteModal = function (options) {
             if (confirmTitle !== '') {
                 const thisHeader = headerBlock.clone();
                 headlineBlock.text(confirmTitle);
+                headlineBlock.attr('id', titleId);
                 thisHeader.append(headlineBlock);
                 thisHeader.append(closeIcon.clone());
                 thisContent.prepend(thisHeader);
@@ -61,6 +68,12 @@ const ConfirmDeleteModal = function (options) {
             thisContent.append(thisFooter);
 
             modalObject = outerBlock.clone();
+            // Accessible name of the dialog: The title, or the confirmation question when there is no title
+            if (confirmTitle !== '') {
+                modalObject.attr('aria-labelledby', titleId).attr('aria-describedby', textId);
+            } else {
+                modalObject.attr('aria-labelledby', textId);
+            }
             modalObject.append(innerBlock.clone().append(thisContent));
         },
         addForm = function () {
@@ -81,7 +94,7 @@ const ConfirmDeleteModal = function (options) {
 
             formObject.append($("<input type='hidden'>").attr("name", LS.data.csrfTokenName).attr("value", LS.data.csrfToken));
             modalObject.find('.modal-body').append(formObject)
-            modalObject.find('.modal-body').append('<p>' + confirmText + '</p>');
+            modalObject.find('.modal-body').append($('<p></p>').attr('id', textId).html(confirmText));
 
             if (showTextArea !== '') {
                 modalObject.find('form').append('<textarea id="modalTextArea" name="modalTextArea" class="form-control mb-3"></textarea>');
