@@ -1,18 +1,6 @@
 import { getQuestionById } from './getQuestionById'
 
-/**
- * Find the focused question or group again in the current survey.
- *
- * The focus state stores the indexes of the focused entity. They become
- * wrong when the survey changes (a group is deleted or reordered, the
- * survey is refetched). This looks the entity up by its qid / gid.
- *
- * @param {object} focusState The focus state: { focused, groupIndex, questionIndex }
- * @param {object} survey The current survey
- * @returns {object|null|undefined} The focus state with updated indexes,
- *   null if the focused entity no longer exists, or undefined if nothing
- *   has to change
- */
+// Re-find the focused entity by qid/gid: Returns the updated state, null if gone, undefined if unchanged
 export const getSyncedFocusState = (focusState, survey) => {
   const focused = focusState?.focused
   if (!focused || !Array.isArray(survey?.questionGroups)) {

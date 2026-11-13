@@ -88,8 +88,7 @@ export const SurveyStructure = () => {
   const handleConfirmGroupDeletion = () => {
     const index = getGroupIndexForDeletion(
       questionGroups,
-      deleteGroupState.questionGroup?.gid,
-      deleteGroupState.index
+      deleteGroupState.questionGroup?.gid
     )
     const questionGroup = questionGroups[index]
     if (!questionGroup) {

@@ -53,11 +53,7 @@ export const QuestionGroups = ({
   }
 
   const handleConfirmGroupDeletion = () => {
-    const index = getGroupIndexForDeletion(
-      questionGroups,
-      deleteState.gid,
-      deleteState.index
-    )
+    const index = getGroupIndexForDeletion(questionGroups, deleteState.gid)
     if (index === -1) {
       setDeleteState({ show: false, index: null, gid: null })
       return

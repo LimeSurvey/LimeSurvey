@@ -1,11 +1,4 @@
-/**
- * Check whether the focused entity is the given question group itself
- * or one of the questions inside it.
- *
- * @param {object} focused The currently focused entity
- * @param {object} questionGroup The question group to check against
- * @returns {boolean} True if the focus is on the group or one of its questions
- */
+// Check whether the focus is on the given group or one of its questions
 export const isFocusInsideGroup = (focused, questionGroup) => {
   if (!focused || !questionGroup) return false
 
