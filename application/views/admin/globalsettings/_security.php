@@ -176,14 +176,14 @@
         <div class="col-6">
 
             <div class="">
-                <h3><?= gT('Brute-force protection for administration'); ?></h3>
+                <h2 class="h3"><?= gT('Brute-force protection for administration'); ?></h2>
 
                 <div class="mb-3">
                     <label class="form-label" for='loginIpWhitelist'>
                         <?php eT("IP allowlist:"); ?>
                     </label>
-                    <textarea class="form-control" id='loginIpWhitelist' name='loginIpWhitelist'><?php echo htmlspecialchars((string) Yii::app()->getConfig('loginIpWhitelist')); ?></textarea>
-                    <div class='form-text'><?php eT("List of IP addresses to exclude from the maximum login attempts check. Separate each IP address with a comma or a new line."); ?></div>
+                    <textarea class="form-control" id='loginIpWhitelist' name='loginIpWhitelist' aria-describedby="loginIpWhitelist-hint"><?php echo htmlspecialchars((string) Yii::app()->getConfig('loginIpWhitelist')); ?></textarea>
+                    <div class='form-text' id="loginIpWhitelist-hint"><?php eT("List of IP addresses to exclude from the maximum login attempts check. Separate each IP address with a comma or a new line."); ?></div>
                 </div>
 
                 <div class="mb-3">                      
@@ -191,10 +191,10 @@
                         <?php eT("Maximum number of attempts:"); ?>
                     </label>
                     <div class="">
-                        <input class="form-control" type="number" min="1" step="1" pattern="^\d*$" name="maxLoginAttempt" placeholder="<?= gT("Disabled") ?>"
+                        <input class="form-control" type="number" min="1" step="1" pattern="^\d*$" name="maxLoginAttempt" id="maxLoginAttempt" aria-describedby="maxLoginAttempt-hint" placeholder="<?= gT("Protection disabled") ?>"
                             value="<?= App()->getConfig('maxLoginAttempt') !== "" ? intval(App()->getConfig('maxLoginAttempt')) : "" ?>"
                         />
-                        <div class="form-text"><?= gT("Set an empty value to disable brute force protection. Number of attempts are never checked.") ?></div>
+                        <div class="form-text" id="maxLoginAttempt-hint"><?= gT("Set an empty value to disable brute force protection. Number of attempts are never checked.") ?></div>
                     </div>
                 </div>
                 <div class="mb-3">
@@ -202,10 +202,10 @@
                         <?php eT("Lockout time in seconds (after maximum number of attempts):"); ?>
                     </label>
                     <div class="">
-                        <input class="form-control" type="number" min="0" step="1" pattern="^\d*$" name="timeOutTime" placeholder="<?= gT("Disabled") ?>"
+                        <input class="form-control" type="number" min="0" step="1" pattern="^\d*$" name="timeOutTime" id="timeOutTime" aria-describedby="timeOutTime-hint" placeholder="<?= gT("Protection disabled") ?>"
                             value="<?= App()->getConfig('timeOutTime') !== "" ? intval(App()->getConfig('timeOutTime')) : "" ?>"
                         />
-                        <div class="form-text"><?= gT("Set an empty value or 0 to disable brute force protection. Number of attempts are deleted each time.") ?></div>
+                        <div class="form-text" id="timeOutTime-hint"><?= gT("Set an empty value or 0 to disable brute force protection. Number of attempts are deleted each time.") ?></div>
                     </div>
                 </div>
             </div>
@@ -213,14 +213,14 @@
 
         <!-- Brute-force for participant -->
         <div class="col-6">
-            <h3><?= gT('Brute-force protection for survey participation') ?></h3>
+            <h2 class="h3"><?= gT('Brute-force protection for survey participation') ?></h2>
 
             <div class="mb-3">
                 <label class="form-label" for='tokenIpWhitelist'>
                     <?php eT("IP allowlist:"); ?>
                 </label>
-                <textarea class="form-control" id='tokenIpWhitelist' name='tokenIpWhitelist'><?php echo htmlspecialchars((string) Yii::app()->getConfig('tokenIpWhitelist')); ?></textarea>
-                <span class='form-text'>
+                <textarea class="form-control" id='tokenIpWhitelist' name='tokenIpWhitelist' aria-describedby="tokenIpWhitelist-hint"><?php echo htmlspecialchars((string) Yii::app()->getConfig('tokenIpWhitelist')); ?></textarea>
+                <span class='form-text' id="tokenIpWhitelist-hint">
                     <?php eT("List of IP addresses to exclude from the maximum token validation attempts check. Separate each IP address with a comma or a new line."); ?>
                 </span>
             </div>
@@ -230,10 +230,10 @@
                     <?php eT("Maximum number of attempts:"); ?>
                 </label>
                 <div class="">
-                    <input class="form-control" type="number" min="1" step="1" pattern="^\d*$" name="maxLoginAttemptParticipants" placeholder="<?= gT("Disabled") ?>"
+                    <input class="form-control" type="number" min="1" step="1" pattern="^\d*$" name="maxLoginAttemptParticipants" id="maxLoginAttemptParticipants" aria-describedby="maxLoginAttemptParticipants-hint" placeholder="<?= gT("Protection disabled") ?>"
                         value="<?= App()->getConfig('maxLoginAttemptParticipants') !== "" ? intval(App()->getConfig('maxLoginAttemptParticipants')) : "" ?>"
                     />
-                    <div class="form-text"><?= gT("Set an empty value to disable brute force protection. Number of attempts are never checked.") ?></div>
+                    <div class="form-text" id="maxLoginAttemptParticipants-hint"><?= gT("Set an empty value to disable brute force protection. Number of attempts are never checked.") ?></div>
                 </div>
             </div>
             <div class="mb-3">
@@ -241,21 +241,23 @@
                     <?php eT("Lockout time in seconds (after maximum number of attempts):"); ?>
                 </label>
                 <div class="">
-                    <input class="form-control" type="number" min="0" step="1" pattern="^\d*$" name="timeOutParticipants" placeholder="<?= gT("Disabled") ?>"
+                    <input class="form-control" type="number" min="0" step="1" pattern="^\d*$" name="timeOutParticipants" id="timeOutParticipants" aria-describedby="timeOutParticipants-hint" placeholder="<?= gT("Protection disabled") ?>"
                         value="<?= App()->getConfig('timeOutParticipants') !== "" ? intval(App()->getConfig('timeOutParticipants')) : "" ?>"
                     />
-                    <div class="form-text"><?= gT("Set an empty value or 0 to disable brute force protection. Number of attempts are deleted each time.") ?></div>
+                    <div class="form-text" id="timeOutParticipants-hint"><?= gT("Set an empty value or 0 to disable brute force protection. Number of attempts are deleted each time.") ?></div>
                 </div>
             </div>
 
             <div class="mb-3">
-                <label class="form-label" for='tokenIpWhitelist'>
+                <?php // Not a <label>: it was a second label of the "IP allowlist" field above. It describes the button. ?>
+                <p class="form-label" id="resetFailedLoginParticipants-description">
                     <?php eT("Reset failed login attempts of participants to make survey accessible again:"); ?>
-                </label>
+                </p>
                 <div class="">
                     <button
                         class='btn btn-large btn-warning'
                         type="button"
+                        aria-describedby="resetFailedLoginParticipants-description"
                         data-bs-toggle="modal"
                         data-bs-target="#confirmation-modal"
                         data-post-url='<?= \Yii::app()->createUrl('admin/globalsettings', ["sa" => "resetFailedLoginParticipants"]) ?>'
@@ -269,7 +271,7 @@
 
         <!-- Allowed Hosts -->
         <div class="col-6 mt-4">
-            <h3><?= gT('Allowed hosts (host header injection protection)') ?></h3>
+            <h2 class="h3"><?= gT('Allowed hosts (host header injection protection)') ?></h2>
             <div class="mb-3">
                 <p class="form-text">
                     <?php eT("The following domain names are configured as trusted hosts. Requests from any other hostname will be rejected. The publicurl host is always trusted implicitly. This list is stored in application/config/allowed_hosts.php."); ?>

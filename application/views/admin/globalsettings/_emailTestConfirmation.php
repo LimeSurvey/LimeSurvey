@@ -1,5 +1,7 @@
 <div class="modal-header">
-    <h2 class="modal-title h5"><?php eT("Test email settings"); ?></h2>
+    <h2 class="modal-title h5" id="sendtestemail-confirmation-modal-title"><?php eT("Test email settings"); ?></h2>
+    <?php // Only read as part of the dialog name ("…, Dialog"), see modal_header.php ?>
+    <span class="visually-hidden" id="sendtestemail-confirmation-modal-title-dialogsr" aria-hidden="true"><?php eT('Dialog'); ?></span>
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<?= gT('Close') ?>"></button>
 </div>
 <div class="modal-body">

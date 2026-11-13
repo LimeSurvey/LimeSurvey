@@ -143,7 +143,8 @@
         </div>
     </div>
 </div>
-<div id="sendtestemail-confirmation-modal" class="modal fade" role="dialog">
+<?php // The title is part of the content loaded by ajax (_emailTestConfirmation.php) ?>
+<div id="sendtestemail-confirmation-modal" class="modal fade" role="dialog" aria-modal="true" aria-labelledby="sendtestemail-confirmation-modal-title sendtestemail-confirmation-modal-title-dialogsr">
     <div class="modal-dialog">
         <!-- the ajax loader -->
         <div class="ajaxloader">
