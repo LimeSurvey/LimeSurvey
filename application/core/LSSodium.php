@@ -125,6 +125,25 @@ class LSSodium
     }
 
     /**
+     * Get the maximum length in bytes of a value that, once encrypted with encrypt(), is at most $maxEncryptedLength long.
+     * Used to make sure an encrypted value fits its database column.
+     * The encrypted value is ASCII, so its length is the same in bytes and characters.
+     *
+     * @param int $maxEncryptedLength Maximum length of the encrypted value
+     * @return int
+     */
+    public function getMaxPlaintextBytes(int $maxEncryptedLength): int
+    {
+        if ($this->bLibraryExists !== true) {
+            // encrypt() returns the value unchanged
+            return $maxEncryptedLength;
+        }
+        // base64 of the value plus the MAC: 4 characters per 3 bytes
+        $maxBytes = intdiv($maxEncryptedLength, 4) * 3 - ParagonIE_Sodium_Compat::CRYPTO_SECRETBOX_MACBYTES;
+        return max(0, $maxBytes);
+    }
+
+    /**
      *
      * Decrypt encrypted string.
      * @param string $sEncryptedString Encrypted string to decrypt, if it string 'null', didn't try to decode
