@@ -26,9 +26,9 @@ $form = $this->beginWidget(
 <div class="modal-body edit-participant-modal-body ">
     <input type="hidden" name="oper" value="<?php echo $editType; ?>"/>
     <?= $form->hiddenField($model, 'participant_id') ?>
-    <fieldset>
+    <div>
         <?php
-        echo "<legend>" . gT("Basic attributes") . "</legend>";
+        echo '<h3 class="h4">' . gT("Basic attributes") . "</h3>";
         $baseControlGroupHtmlOptions = [
             'labelOptions' => ['class' => ''],
             'class'        => '',
@@ -106,7 +106,7 @@ $form = $this->beginWidget(
                 ?>
             </div>
         <?php endif; ?>
-    </fieldset>
+    </div>
 
     <?php if (count($extraAttributes) > 0): ?>
         <fieldset>

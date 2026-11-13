@@ -282,7 +282,9 @@ class ParticipantAttributeName extends LSActiveRecord
     }
 
     /**
-     * @return array
+     * Returns the column definitions of the attribute management grid.
+     *
+     * @return array The CGridView column configurations
      */
     public function getColumns()
     {
@@ -293,9 +295,13 @@ class ParticipantAttributeName extends LSActiveRecord
             [
                 "name"              => 'massiveActionCheckbox',
                 "type"              => 'raw',
-                "header"            => "<input type='checkbox' id='action_toggleAllAttributeNames' aria-label='" . CHtml::encode(gT('Select all')) . "' />",
+                // The visually hidden label names both the checkbox and the column header (for the table navigation)
+                "header"            => "<label for='action_toggleAllAttributeNames' class='visually-hidden'>"
+                    . CHtml::encode(gT('Select all')) . "</label>"
+                    . "<input type='checkbox' id='action_toggleAllAttributeNames' />",
                 "filter"            => false,
-                'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
+                // The header only holds a checkbox: Name the column for the screen reader table navigation
+                'headerHtmlOptions' => ['class' => 'ls-sticky-column', 'aria-label' => gT('Selection')],
                 'filterHtmlOptions' => ['class' => 'ls-sticky-column'],
                 'htmlOptions'       => ['class' => 'ls-sticky-column']
             ],
@@ -307,26 +313,30 @@ class ParticipantAttributeName extends LSActiveRecord
             [
                 "name"   => 'attribute_type',
                 "value"  => '$data->getAttributeTypeNice()',
-                "filter" => $this->attributeTypeDropdownArray
+                "filter" => $this->attributeTypeDropdownArray,
+                "filterInputOptions" => ['prompt' => gT('All')]
             ],
             [
                 "name"   => 'visible',
                 "value"  => '$data->getVisibleSwitch()',
                 "type"   => "raw",
-                "filter" => ["TRUE" => gT("Yes"), "FALSE" => gT("No")]
+                "filter" => ["TRUE" => gT("Yes"), "FALSE" => gT("No")],
+                "filterInputOptions" => ['prompt' => gT('All')]
             ],
             [
                 "name"   => 'encrypted',
                 "value"  => '$data->getEncryptedSwitch()',
                 "type"   => "raw",
                 "filter" => ["Y" => gT("Yes"), "N" => gT("No")],
-                "header" => '<span ' . ($bEncrypted === true ? '' : 'title="' . gT("Encryption is disabled because Sodium library isn't installed") . '"') . '>' . gT("Encrypted") . '</span>',
+                "filterInputOptions" => ['prompt' => gT('All')],
+                "header" => '<span ' . ($bEncrypted === true ? '' : 'title="' . CHtml::encode(gT("Encryption is disabled because Sodium library isn't installed")) . '"') . '>' . gT("Encrypted") . '</span>',
             ],
             [
                 "name"   => 'core_attribute',
                 "value"  => '$data->getCoreAttributeSwitch()',
                 "type"   => "raw",
                 "filter" => ["Y" => gT("Yes"), "N" => gT("No")],
+                "filterInputOptions" => ['prompt' => gT('All')],
             ],
             [
                 "name"              => 'buttons',

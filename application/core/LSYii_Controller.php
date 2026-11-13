@@ -213,8 +213,8 @@ abstract class LSYii_Controller extends CController
         // Do not localize/translate this!
 
         $dieoutput = '';
-        if (version_compare(PHP_VERSION, '5.3.3', '<')) {
-            $dieoutput .= 'This script can only be run on PHP version 5.3.3 or later! Your version: ' . PHP_VERSION . '<br />';
+        if (version_compare(PHP_VERSION, InstallerConfigForm::MINIMUM_PHP_VERSION, '<')) {
+            $dieoutput .= 'LimeSurvey requires PHP version ' . InstallerConfigForm::MINIMUM_PHP_VERSION . ' or later. Your version: ' . PHP_VERSION . '<br />';
         }
 
         if (!function_exists('mb_convert_encoding')) {

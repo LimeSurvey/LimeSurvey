@@ -261,7 +261,7 @@ class Zend_Ldap_Collection_Iterator_Default implements Iterator, Countable
             $entry[$attrName] = $data;
             $name = @ldap_next_attribute($this->_ldap->getResource(), $this->_current);
         }
-        ksort($entry, SORT_LOCALE_STRING);
+        ksort($entry, SORT_STRING);
         return $entry;
     }
 

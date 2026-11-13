@@ -1,5 +1,5 @@
 <div class="modal-header">
-    <h5 class="modal-title" id="participant_edit_modal"><?php eT('List active surveys'); ?></h5>
+    <h2 class="modal-title h5" id="participant_edit_modal"><?php eT('List active surveys'); ?></h2>
     <?php // aria-hidden: only read as part of the dialog name, not again when reading the dialog content ?>
     <span class="visually-hidden" id="participant_edit_modal-dialogsr" aria-hidden="true"><?= gT('Dialog') ?></span>
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -19,6 +19,7 @@
         <?php
         $this->widget('application.extensions.admin.grid.CLSGridView', [
             'id'              => 'list_participant_surveys',
+            'lsCaption'       => gT('List active surveys', 'unescaped'),
             'dataProvider'    => $surveymodel->search(),
             'columns'         => $surveymodel->columns,
             'htmlOptions'     => ['class' => 'table-responsive grid-view-ls'],

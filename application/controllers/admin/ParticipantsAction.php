@@ -654,6 +654,14 @@ class ParticipantsAction extends SurveyCommonAction
         }
     }
 
+    /**
+     * Updates the core fields of several participants at once and renders the result for the batch edit modal.
+     *
+     * Reads the participant IDs from the JSON-encoded "sItems" POST value and the fields to change
+     * from the POST values "language", "owner_uid" and "blacklisted" (value "lskeep" means unchanged).
+     *
+     * @return void
+     */
     public function batchEdit()
     {
         $hasUpdatePermission = Permission::model()->hasGlobalPermission('participantpanel', 'update');
@@ -676,6 +684,8 @@ class ParticipantsAction extends SurveyCommonAction
         // First we create the array of fields to update
         $aData = array();
         $aResults['global']['result'] = true;
+        $updatedCount = 0;
+        $failedCount = 0;
 
         // Core Fields
         $aCoreTokenFields = array('language', 'owner_uid', 'blacklisted');
@@ -692,6 +702,7 @@ class ParticipantsAction extends SurveyCommonAction
                 if (empty($oParticipant)) {
                     $aResults[$sParticipantId]['status']  = false;
                     $aResults[$sParticipantId]['message'] = gT('Found no participant');
+                    $failedCount++;
                     continue;
                 }
 
@@ -718,7 +729,9 @@ class ParticipantsAction extends SurveyCommonAction
                 if ($bUpdateSuccess) {
                     $aResults[$sParticipantId]['status']    = true;
                     $aResults[$sParticipantId]['message']   = gT('Updated');
+                    $updatedCount++;
                 } else {
+                    $failedCount++;
                     $aResults[$sParticipantId]['status']    = false;
                     $aResults[$sParticipantId]['message']   = $oParticipant->hasErrors() ? CHtml::encode(implode(' ', array_merge(...array_values($oParticipant->getErrors())))) : gT('Access denied!');
                 }
@@ -728,7 +741,14 @@ class ParticipantsAction extends SurveyCommonAction
             $aResults['global']['message'] = gT('Nothing to update');
         }
 
-        Yii::app()->getController()->renderPartial('/admin/participants/massive_actions/_update_results', array('aResults' => $aResults));
+        Yii::app()->getController()->renderPartial(
+            '/admin/participants/massive_actions/_update_results',
+            array(
+                'aResults' => $aResults,
+                'updatedCount' => $updatedCount,
+                'failedCount' => $failedCount,
+            )
+        );
     }
 
     /**
