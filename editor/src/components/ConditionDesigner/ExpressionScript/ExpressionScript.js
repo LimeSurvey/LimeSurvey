@@ -23,26 +23,29 @@ import {
 export const ExpressionScript = ({ onNavigateBack = () => {} }) => {
   const { surveyId } = useParams()
   const { survey, update } = useSurvey(surveyId)
-  const { focused, groupIndex, questionIndex } = useFocused()
+  const { focused } = useFocused()
   const { addToBuffer } = useBuffer()
 
-  const question = getQuestionById(focused.qid, survey).question
+  const { question, groupIndex, questionIndex } = getQuestionById(
+    focused?.qid,
+    survey
+  )
   const validateExpression = useExpressionScriptValidation(
     surveyId,
-    question.qid
+    question?.qid
   )
 
   const [content, setContent] = useState(
-    question.relevance === QUESTION_RELEVANCE_DEFAULT_VALUE
+    question?.relevance === QUESTION_RELEVANCE_DEFAULT_VALUE
       ? ''
-      : question.relevance
+      : (question?.relevance ?? '')
   )
 
   useEffect(() => {
     setContent(
-      question.relevance === QUESTION_RELEVANCE_DEFAULT_VALUE
+      question?.relevance === QUESTION_RELEVANCE_DEFAULT_VALUE
         ? ''
-        : question.relevance
+        : (question?.relevance ?? '')
     )
   }, [focused])
 
@@ -69,7 +72,7 @@ export const ExpressionScript = ({ onNavigateBack = () => {} }) => {
   }
 
   const handleApplyClick = () => {
-    if (question?.scenarios.length > 0) {
+    if ((question?.scenarios ?? []).length > 0) {
       showConditionOverwriteConfirmationOverlay({
         onConfirm: () => handleApply(content),
         onCancel: onNavigateBack,
@@ -77,6 +80,11 @@ export const ExpressionScript = ({ onNavigateBack = () => {} }) => {
     } else {
       handleApply(content)
     }
+  }
+
+  // The focused question was removed (e.g. its group was deleted)
+  if (!question) {
+    return null
   }
 
   return (

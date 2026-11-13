@@ -19,9 +19,12 @@ export const QuestionGroupBody = ({
       in={showQuestions}
       unmountOnExit={true}
       onEntered={() => {
-        const isFocusingAQuestion = questionIndex
-        if (isFocusingAQuestion) {
-          setFocused(focused, questionGroup, questionIndex)
+        // Re-focus only a question of this group, with this group's index
+        const isFocusInThisGroup = questionGroup.questions?.some(
+          (question) => question.qid?.toString() === focused?.qid?.toString()
+        )
+        if (questionIndex !== undefined && isFocusInThisGroup) {
+          setFocused(focused, groupIndex, questionIndex)
         }
       }}
     >
