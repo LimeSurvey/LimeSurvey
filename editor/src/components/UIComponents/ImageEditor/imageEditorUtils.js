@@ -7,6 +7,10 @@ export const ZOOM_MAX = 4
 
 export const ALT_TEXT_MAX_LENGTH = 125
 
+// Longest wait in ms for an image of "Apply to all" to load. Images that take
+// longer keep their settings.
+export const IMAGE_LOAD_TIMEOUT = 10000
+
 /**
  * Turns a frame side into a whole number of pixels, not below the minimum.
  *

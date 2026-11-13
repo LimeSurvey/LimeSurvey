@@ -27,6 +27,7 @@ import { SubquestionCodeInput } from '../subquestionCodeComponents'
 import { AssessmentValueInput } from '../AssessmentValueInput'
 import {
   applyImageSettings,
+  IMAGE_LOAD_TIMEOUT,
   loadImageSize,
 } from 'components/UIComponents/ImageEditor/imageEditorUtils'
 import {
@@ -158,7 +159,9 @@ export const OptionQuestionEditMode = ({
   /**
    * Returns the settings of the other options for "Apply to all": Each option
    * with an image gets the frame, zoom and corner radius, with the crop
-   * calculated for its own image.
+   * calculated for its own image. An image that doesn't load within
+   * IMAGE_LOAD_TIMEOUT is left out, so a stalled request can't hold up the
+   * saves queued after this one.
    *
    * @param {string} code the code of the edited option
    * @param {Object} settings the settings of the edited option
@@ -177,9 +180,14 @@ export const OptionQuestionEditMode = ({
           if (!imagePath || /(<([^>]+)>)/i.test(imagePath)) {
             return
           }
-          const naturalSize = await loadImageSize(
-            (process.env.REACT_APP_SITE_URL || '') + imagePath
-          )
+          let timeout
+          const naturalSize = await Promise.race([
+            loadImageSize((process.env.REACT_APP_SITE_URL || '') + imagePath),
+            new Promise((resolve) => {
+              timeout = setTimeout(() => resolve(null), IMAGE_LOAD_TIMEOUT)
+            }),
+          ])
+          clearTimeout(timeout)
           if (naturalSize) {
             otherSettings[child[codeKey]] = {
               imagePath,
@@ -198,18 +206,21 @@ export const OptionQuestionEditMode = ({
   /**
    * Stores the settings from the image editor of an option in the question
    * attributes, with "Apply to all" also for the other options. Nothing is
-   * saved when the option was renamed or deleted while the other images were
-   * loading. Other options whose image was replaced or deleted meanwhile
-   * keep their settings. The settings are saved for the active language and
-   * for the languages that show the same image.
+   * saved when the option was renamed or deleted, or got another image, while
+   * the save waited. Other options whose image was replaced or deleted
+   * meanwhile keep their settings. The settings are saved for the active
+   * language and for the languages that show the same image.
    *
    * @param {string} code the option code
+   * @param {string|undefined} editedImagePath the image path of the option
+   *   when its settings were edited
    * @param {Object} imageSettings the settings from ImageEditor's onSave,
    *   including the alt text and applyToAll
    * @returns {Promise<void>}
    */
   const saveImageOption = async (
     code,
+    editedImagePath,
     { altText, applyToAll = false, ...settings }
   ) => {
     const otherSettings = applyToAll
@@ -218,7 +229,8 @@ export const OptionQuestionEditMode = ({
     const currentQuestion = latestQuestion.current
     const currentChildren = getQuestionChildren(currentQuestion)
     const codes = currentChildren.map((child) => child[codeKey])
-    if (!codes.includes(code)) {
+    const editedChild = currentChildren.find((child) => child[codeKey] === code)
+    if (!editedChild || getImagePath(editedChild) !== editedImagePath) {
       return
     }
     // Only for the options that still exist and still have the loaded image.
@@ -258,14 +270,19 @@ export const OptionQuestionEditMode = ({
   }
 
   /**
-   * Queues the save of an option's image settings, see saveImageOption().
+   * Queues the save of an option's image settings, see saveImageOption(). The
+   * option's image path is noted now, to check it when the save runs.
    *
    * @param {string} code the option code
    * @param {Object} imageSettings the settings from ImageEditor's onSave
    * @returns {Promise<void>} resolves when this save is done
    */
   const handleImageOptionSave = (code, imageSettings) => {
-    const save = () => saveImageOption(code, imageSettings)
+    const editedChild = getQuestionChildren(latestQuestion.current).find(
+      (child) => child[codeKey] === code
+    )
+    const editedImagePath = editedChild ? getImagePath(editedChild) : undefined
+    const save = () => saveImageOption(code, editedImagePath, imageSettings)
     // A failed save doesn't stop the ones after it.
     imageSaveQueue.current = imageSaveQueue.current.then(save, save)
     return imageSaveQueue.current

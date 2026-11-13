@@ -15,9 +15,14 @@ jest.mock('components/QuestionTypes/ImageChoice', () => ({
 }))
 
 // The other images of "Apply to all" load only when the test resolves them.
+// Without that, they stop being waited for after mockImageLoadTimeout ms.
 const mockImageLoads = []
+let mockImageLoadTimeout = 60000
 jest.mock('components/UIComponents/ImageEditor/imageEditorUtils', () => ({
   ...jest.requireActual('components/UIComponents/ImageEditor/imageEditorUtils'),
+  get IMAGE_LOAD_TIMEOUT() {
+    return mockImageLoadTimeout
+  },
   loadImageSize: () =>
     new Promise((resolve) => {
       mockImageLoads.push(resolve)
@@ -135,6 +140,61 @@ const finishImageLoads = async (...savePromises) => {
 describe('OptionQuestionEditMode image option settings', () => {
   beforeEach(() => {
     mockImageLoads.splice(0)
+    mockImageLoadTimeout = 60000
+  })
+
+  test('An image that never loads is left out, the saves after it still run', async () => {
+    mockImageLoadTimeout = 20
+    const handleUpdate = jest.fn()
+    const { savePromise: first } = await startApplyToAllSave(handleUpdate)
+    const { savePromise: second } = await startSave('A2', {
+      ...settings,
+      altText: 'Second',
+    })
+    // The images of the first save never load.
+    await act(async () => {
+      await Promise.all([first, second])
+    })
+
+    expect(handleUpdate).toHaveBeenCalledTimes(2)
+    const { attributes } = handleUpdate.mock.calls[1][0]
+    expect(
+      Object.keys(JSON.parse(attributes.image_option_settings.en)).sort()
+    ).toEqual(['A1', 'A2'])
+    expect(JSON.parse(attributes.image_option_alt.en)).toEqual({
+      A1: 'First',
+      A2: 'Second',
+    })
+  })
+
+  test('A queued save is dropped when the option gets another image while it waits', async () => {
+    const handleUpdate = jest.fn()
+    const { savePromise: first } = await startApplyToAllSave(handleUpdate)
+    const { savePromise: second } = await startSave('A2', {
+      ...settings,
+      width: 300,
+      altText: 'Second',
+    })
+    // A2 gets another image before the queued save runs.
+    act(() =>
+      setTestQuestion((question) => ({
+        ...question,
+        answers: question.answers.map((answer) =>
+          answer.code === 'A2'
+            ? { ...answer, l10ns: { en: { answer: '/upload/new.png' } } }
+            : answer
+        ),
+      }))
+    )
+    await finishImageLoads(first, second)
+
+    // Only the first save, without A2: Its image changed.
+    expect(handleUpdate).toHaveBeenCalledTimes(1)
+    const { attributes } = handleUpdate.mock.calls[0][0]
+    expect(
+      Object.keys(JSON.parse(attributes.image_option_settings.en)).sort()
+    ).toEqual(['A1', 'A3'])
+    expect(JSON.parse(attributes.image_option_alt.en)).toEqual({ A1: 'First' })
   })
 
   test('"Apply to all" keeps changes made while the other images were loading', async () => {

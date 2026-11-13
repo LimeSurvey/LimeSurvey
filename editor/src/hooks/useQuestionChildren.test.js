@@ -335,6 +335,45 @@ describe('image settings of image select options', () => {
     })
   })
 
+  test('an option that is gone never takes the settings of another option with the same temporary ID', () => {
+    const { handleUpdate } = renderChildren('image_select-listradio')
+    const attributes = {
+      [IMAGE_OPTION_SETTINGS_ATTRIBUTE]: {
+        en: JSON.stringify({ A1: { width: 100 } }),
+      },
+    }
+    // The question only has A1 left. The children passed in still show the
+    // deleted A2, with the same temporary ID. Outside the render: A new array
+    // on each render would make the hook update its children endlessly.
+    const questionAnswers = [
+      { ...serverAnswer('temp1', 'A1', 0), appKey: 'key-1' },
+    ]
+    const { result } = renderHook(
+      () =>
+        useQuestionChildren({
+          question: {
+            qid: QID,
+            questionThemeName: 'image_select-listradio',
+            attributes,
+            answers: questionAnswers,
+          },
+          handleUpdate,
+          surveySettings: { languages: ['en'] },
+          language: 'en',
+        }),
+      { wrapper }
+    )
+    result.current.handleChildCodeUpdate({
+      newCode: 'A20',
+      childIndex: 0,
+      childArray: [{ ...serverAnswer('temp1', 'A2', 0), appKey: 'key-2' }],
+      entityType: Entities.answer,
+      entityTitleKey: 'answer',
+    })
+
+    expect(handleUpdate.mock.calls[0][0]).not.toHaveProperty('attributes')
+  })
+
   test('deleting an option removes its image settings', () => {
     const { result, handleUpdate, answers } = renderChildren(
       'image_select-listradio'
