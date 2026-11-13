@@ -1,4 +1,8 @@
-<div id="htmleditor-modal" class="modal fade" role="dialog" aria-labelledby="htmleditor-modal-title htmleditor-modal-title-dialogsr" aria-modal="true" tabindex="-1">
+<?php // data-editor-*: accessible name of the editor, see modaleditor.js ?>
+<div id="htmleditor-modal" class="modal fade" role="dialog" aria-labelledby="htmleditor-modal-title htmleditor-modal-title-dialogsr" aria-modal="true" tabindex="-1"
+     data-editor-title="<?= CHtml::encode(gT('%s editor', 'unescaped')) ?>"
+     data-editor-title-default="<?= CHtml::encode(gT('Editor', 'unescaped')) ?>"
+     data-editor-toolbar-hint="<?= CHtml::encode(gT('Press ALT+F10 for the toolbar, ALT+0 for help.', 'unescaped')) ?>">
     <div class="modal-dialog">
         <div class="modal-content">
             <?php
