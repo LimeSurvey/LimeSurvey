@@ -23,7 +23,8 @@ $defaultBreadcrumbMode           = Yii::app()->getConfig('defaultBreadcrumbMode'
 
 <div class="container">
 <div class="row">
-    <div class="col-6">
+    <?php // One column on small screens (WCAG 1.4.10 Reflow) ?>
+    <div class="col-12 col-md-6">
         <!-- Global sitename -->
         <div class="mb-3">
             <label class="col-12 form-label" for='sitename'>
@@ -203,7 +204,8 @@ $defaultBreadcrumbMode           = Yii::app()->getConfig('defaultBreadcrumbMode'
         </div>
     </div>
 
-    <div class="col-6">
+    <?php // One column on small screens (WCAG 1.4.10 Reflow) ?>
+    <div class="col-12 col-md-6">
 
         <!-- Maintenance mode -->
         <div class="mb-3">
@@ -230,11 +232,13 @@ Full lock - none of participants are allowed to take survey, even if they alread
         <!-- Refresh assets -->
         <?php if (Permission::model()->hasGlobalPermission('templates', 'create')) : ?>
             <div class="mb-3">
-                <label class="col-12 form-label" for='clearcache'>
+                <div class="col-12 form-label" id="clearcache-label">
                     <?php eT("Clear frontend cache"); ?> <small>(<?php echo Yii::app()->getConfig('customassetversionnumber'); ?>)</small>
-                </label>
+                </div>
                 <div class="col-12">
+                    <?php // Runs an action (and reloads the page): announced as a button, Space works like on a button (globalsettings.js) ?>
                     <a href="<?php echo App()->createUrl('admin/globalsettings', array("sa" => "clearAssetsAndCache")); ?>"
+                       id="clearcache" role="button" aria-describedby="clearcache-label"
                        class="btn btn-outline-dark btn-large">
                         <?php eT("Clear now"); ?>
                     </a>
