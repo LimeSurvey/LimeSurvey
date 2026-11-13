@@ -41,7 +41,7 @@ echo '<div '
 echo '<div id="pjax-content" class="col-12 mb-5">';
 
 echo '<div id="in_survey_common" '
-    . 'class="container-fluid pe-0 ls-flex-column col-12"'
+    . 'class="container-fluid pe-0 ls-flex-column col-12" role="main"'
     . '>';
 
 //Rendered through /admin/update/_update_notification
