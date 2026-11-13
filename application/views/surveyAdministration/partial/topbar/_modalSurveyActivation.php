@@ -5,7 +5,7 @@
 /** @var array $aSurveysettings */
 ?>
 
-<div id="surveyactivation-modal" class="modal fade" role="dialog">
+<div id="surveyactivation-modal" class="modal fade" role="dialog" aria-modal="true" aria-labelledby="surveyActivationModalTitle surveyActivationModalTitle-dialogsr">
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">
@@ -14,7 +14,7 @@
             //modal header
             App()->getController()->renderPartial(
                 '/layouts/partial_modals/modal_header',
-                ['modalTitle' => gT('Activate survey')]
+                ['modalTitle' => gT('Activate survey'), 'modalTitleId' => 'surveyActivationModalTitle']
             );
             ?>
 
