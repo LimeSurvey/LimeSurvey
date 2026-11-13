@@ -18188,8 +18188,26 @@ ol.breadcrumb.title-bar-breadcrumb a:active {
   .navbar .navbar-nav .nav-link {
     padding: 0.25rem 0.5rem;
   }
-  .navbar #small-screens-menus {
-    display: none !important;
+}
+@media screen and (max-width: 767.98px) {
+  .navbar .navbar-nav {
+    padding-right: 8px;
+    padding-bottom: 8px;
+    gap: 0;
+  }
+  .navbar .navbar-nav > li.nav-item {
+    height: auto;
+    min-height: 44px;
+    flex-wrap: wrap;
+  }
+  .navbar .navbar-nav .dropdown-menu,
+  .navbar .navbar-nav #notification-outer-ul,
+  .navbar .navbar-nav #notification-inner-ul {
+    width: 100%;
+    max-width: 100%;
+  }
+  .navbar .navbar-nav #notification-outer-ul a {
+    white-space: normal;
   }
 }
 .card .card-header {
@@ -18508,6 +18526,14 @@ ol.breadcrumb.title-bar-breadcrumb a:active {
   padding: 5px;
   margin-top: 25px;
 }
+.box-widget .box-widget-loadmore #load-more:focus-visible {
+  outline: 2px solid #8146F6;
+  outline-offset: 2px;
+}
+.box-widget .box-widget-card-title-link:focus-visible {
+  outline: 2px solid #8146F6;
+  outline-offset: 2px;
+}
 .box-widget .survey-state {
   color: #6E748C;
 }
@@ -18672,6 +18698,13 @@ ol.breadcrumb.title-bar-breadcrumb a:active {
 }
 .topbar .ls-topbar-buttons {
   margin-bottom: -4px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  column-gap: 4px;
+}
+.topbar .ls-topbar-buttons.text-end {
+  justify-content: flex-end;
 }
 .topbar .btn {
   margin-bottom: 4px;

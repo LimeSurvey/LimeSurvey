@@ -230,8 +230,31 @@
     .navbar-nav .nav-link {
       padding: 0.25rem 0.5rem;
     }
-    #small-screens-menus {
-      display: none!important;
+  }
+}
+
+// Small screens (and zoomed pages): the complete main and user menus are stacked below the logo
+@media screen and (max-width: 767.98px) {
+  .navbar {
+    .navbar-nav {
+      padding-left: map-get($spacers, 2);
+      padding-bottom: map-get($spacers, 2);
+      gap: 0;
+    }
+    .navbar-nav > li.nav-item {
+      height: auto;
+      min-height: 44px;
+      flex-wrap: wrap;
+    }
+    .navbar-nav .dropdown-menu,
+    .navbar-nav #notification-outer-ul,
+    .navbar-nav #notification-inner-ul {
+      width: 100%;
+      max-width: 100%;
+    }
+    // Long notification titles wrap instead of widening the page
+    .navbar-nav #notification-outer-ul a {
+      white-space: normal;
     }
   }
 }
