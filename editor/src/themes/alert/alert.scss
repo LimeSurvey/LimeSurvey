@@ -129,3 +129,42 @@
     border-left: 1px $g-900 solid;
   }
 }
+
+// Outlined alerts, based on the outlined alerts of the admin theme
+// (assets/admin_themes/Sea_Green/alert/alert.scss): White with a dark border
+// and a colored bar on the left, e.g. <div class="alert alert-outline-warning">.
+// The bar is an inset shadow, so the border also runs along its left side.
+// New classes: Bootstrap's .alert-<state> alerts don't change.
+$alert-outline-bar-width: 8px;
+$alert-outline-status: (
+  primary: var(--bs-primary),
+  secondary: var(--bs-secondary),
+  success: var(--bs-success),
+  warning: var(--bs-warning),
+  danger: var(--bs-danger),
+  info: var(--bs-info),
+  light: var(--bs-light),
+  dark: var(--bs-dark),
+);
+
+@each $state, $color in $alert-outline-status {
+  .alert-outline-#{$state} {
+    --bs-alert-color: #{$g-900};
+    --bs-alert-bg: #{$white};
+    --bs-alert-border-color: #{$g-900};
+    box-shadow: inset $alert-outline-bar-width 0 0 $color;
+    padding: 0.625rem 1rem 0.625rem calc(#{$alert-outline-bar-width} + 0.5rem);
+    font-size: $font-size-sm;
+    line-height: $line-height-20;
+    text-align: start;
+
+    .alert-link {
+      color: $g-900;
+      text-decoration: underline;
+    }
+
+    hr {
+      border-top-color: $color;
+    }
+  }
+}

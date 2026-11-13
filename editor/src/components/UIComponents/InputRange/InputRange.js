@@ -6,6 +6,17 @@ import { Input } from '../Input/Input'
 import classNames from 'classnames'
 import { getThumbStyle, THUMB_TYPES } from 'helpers'
 
+// Colors of the filled and the empty part of the track.
+const TRACK_COLORS = ['#8146F6', '#DDDEE8']
+
+/**
+ * Returns the size of the thumb along the track, see getThumbStyle.
+ *
+ * @param {string} thumbType one of THUMB_TYPES
+ * @returns {number} the size in px
+ */
+const getThumbSize = (thumbType) => (thumbType === THUMB_TYPES.CUSTOM ? 16 : 12)
+
 export const InputRange = ({
   labelText,
   min = 0,
@@ -19,9 +30,12 @@ export const InputRange = ({
   reverseMinMax = false,
   thumbType = THUMB_TYPES.CIRCLE,
   customUnicode = '',
+  // When set, the label is linked to the number input.
+  id,
 }) => {
   const [values, setValues] = useState([value >= min ? value : min])
-  const [callOnChange, setCallOnChange] = useState(false)
+  // Don't report the initial value as a change.
+  const isInitialValue = React.useRef(true)
   const [horizontal, setHorizontal] = useState(
     direction === Direction.Right || direction === Direction.Left
   )
@@ -32,13 +46,11 @@ export const InputRange = ({
   }
 
   useEffect(() => {
-    setCallOnChange(false)
-    setTimeout(() => {
-      if (callOnChange) {
-        onChange(values)
-      }
-      setCallOnChange(true)
-    }, 0)
+    if (isInitialValue.current) {
+      isInitialValue.current = false
+      return
+    }
+    onChange(values)
   }, [values[0]])
 
   useEffect(() => {
@@ -59,7 +71,7 @@ export const InputRange = ({
 
   return (
     <div className="input-range" data-testid="input-range">
-      {labelText && <Form.Label>{labelText}</Form.Label>}
+      {labelText && <Form.Label htmlFor={id}>{labelText}</Form.Label>}
       <div className="d-flex align-items-center w-100">
         <div
           className={classNames('flex-grow-1 position-relative', {
@@ -94,6 +106,10 @@ export const InputRange = ({
             direction={direction}
             onChange={handleOnChange}
             data-testid="input-range-slider"
+            // The slider measures the inner track, which is shorter than the
+            // visible line by half a thumb on each end (see input-range.scss):
+            // At min and max, the thumb ends where the line ends. The visible
+            // ends past the inner track get the fill and the empty color.
             renderTrack={({ props, children }) => (
               <div
                 className={
@@ -103,6 +119,8 @@ export const InputRange = ({
                 onTouchStart={props.onTouchStart}
                 style={{
                   ...props.style,
+                  '--input-range-thumb-inset': `${getThumbSize(thumbType) / 2}px`,
+                  'background': `linear-gradient(${direction}, ${TRACK_COLORS[0]} 50%, ${TRACK_COLORS[1]} 50%)`,
                 }}
               >
                 <div
@@ -111,7 +129,7 @@ export const InputRange = ({
                   style={{
                     background: getTrackBackground({
                       values: values,
-                      colors: ['#8146F6', '#DDDEE8'],
+                      colors: TRACK_COLORS,
                       min,
                       max,
                       direction: direction,
@@ -126,6 +144,7 @@ export const InputRange = ({
               <div
                 className={`input-range-handle type-${thumbType} ${isDragged ? 'active' : ''}`}
                 {...props}
+                aria-label={labelText}
                 key={props.key}
                 type={props.type}
                 style={getThumbStyle(props.style, isDragged, thumbType)}
@@ -175,6 +194,7 @@ export const InputRange = ({
               }}
               min={min}
               max={max}
+              id={id}
               inputRef={inputRef}
             />
           </div>

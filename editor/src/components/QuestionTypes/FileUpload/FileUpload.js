@@ -3,12 +3,23 @@ import { useDropzone } from 'react-dropzone'
 import { cloneDeep } from 'lodash'
 
 import { UploadIcon } from 'components/icons'
-import { ImageEditor } from 'components/UIComponents/ImageEditor/ImageEditor'
 import { FileRejectionItems } from './FileRejectionItems'
 import { FileUploadItem } from './FileUploadItem'
 import { FileUploadParticipantView } from './FileUploadParticipantView'
 import categorizeFileTypes from 'helpers/categorizeFileTypes'
 
+/**
+ * File upload question: The uploaded files with their title and comment, or
+ * the participant view. The files can't be edited with the image editor: It
+ * only supports the options of the image select themes.
+ *
+ * @param {Object} question the question
+ * @param {Object[]} values the uploaded files of the participant
+ * @param {boolean} participantMode whether the question is answered by a
+ *   participant
+ * @param {Function} onValueChange called with the files as JSON and their key
+ * @returns {JSX.Element} the question
+ */
 export const FileUpload = ({
   question,
   values = [],
@@ -16,28 +27,11 @@ export const FileUpload = ({
   onValueChange = () => {},
 }) => {
   const [uploadedImages, setUploadedImages] = useState([])
-  const [show, setShow] = useState(false)
-  const [selectedIndex, setSelectedIndex] = useState(-1)
-  const [selectedFile, setSelectedFile] = useState(null)
   const [files, setFiles] = useState(cloneDeep(values))
 
   const allowedFileTypes = question?.attributes?.allowedFileTypes?.value
   const accept = categorizeFileTypes(allowedFileTypes)
   const maxFileSize = question?.attributes?.maximumFileSizeAllowed?.value
-
-  const handleClose = () => {
-    setShow(false)
-    setSelectedFile(null)
-    setSelectedIndex(-1)
-  }
-
-  const handleChange = (file) => {
-    setUploadedImages((prev) => {
-      const updated = [...prev]
-      updated[selectedIndex] = { ...file }
-      return updated
-    })
-  }
 
   const handleDrop = (acceptedFiles) => {
     setUploadedImages((prev) => [
@@ -67,12 +61,6 @@ export const FileUpload = ({
       updated.splice(index, 1)
       return updated
     })
-  }
-
-  const handleEditImage = (index) => {
-    setSelectedIndex(index)
-    setSelectedFile(uploadedImages[index])
-    setShow(true)
   }
 
   const handleFileMetadataChange = (index, keyToUpdate, newValue) => {
@@ -121,7 +109,6 @@ export const FileUpload = ({
             key={index}
             file={file}
             index={index}
-            onEdit={handleEditImage}
             onDelete={handleDeleteImage}
             onMetadataChange={handleFileMetadataChange}
             question={question}
@@ -139,14 +126,6 @@ export const FileUpload = ({
         </div>
         <p className="label">{t('Choose file or drop image here')}</p>
       </div>
-      {selectedFile && (
-        <ImageEditor
-          showModal={show}
-          onClose={handleClose}
-          onChange={handleChange}
-          file={selectedFile}
-        />
-      )}
     </div>
   )
 }

@@ -17,6 +17,13 @@ import {
 } from 'helpers'
 import { reportExtras } from 'appInstrumentation'
 import { singleChoiceThemes } from 'components/QuestionTypes'
+import {
+  applyAttributeChanges,
+  getImageOptionDeleteChanges,
+  getImageOptionRenameChanges,
+  getImageOptionResetChanges,
+  getImageSelectThemes,
+} from 'components/QuestionTypes/imageOptionSettings'
 import { TestValidation } from 'components/Survey/Questions/QuestionCodeSchema'
 import { showErrorMessage } from 'components/ConditionDesigner/utils'
 
@@ -136,10 +143,76 @@ export const useQuestionChildren = ({
     handleUpdate({ [childKey]: updatedChildren })
   }
 
+  /**
+   * Saves changed image option attributes along with a children update, so
+   * both end up in one question update.
+   *
+   * @param {Object|null} attributeChanges changed values keyed by attribute
+   *   and language, or null when there are none
+   * @returns {Object} the question changes for the attributes, or an empty
+   *   object
+   */
+  const saveImageOptionChanges = (attributeChanges) => {
+    if (
+      !attributeChanges ||
+      !getImageSelectThemes().includes(question.questionThemeName)
+    ) {
+      return {}
+    }
+    addToBuffer(
+      createBufferOperation(question.qid)
+        .questionAttribute()
+        .update(attributeChanges)
+    )
+    return {
+      attributes: applyAttributeChanges(question.attributes, attributeChanges),
+    }
+  }
+
+  /**
+   * Returns the code an answer or subquestion has in the question itself. The
+   * children passed to the handlers are copied from the question one render
+   * later, so while typing fast they can still have an older code. The image
+   * option attributes always match the question.
+   *
+   * @param {Object} child the answer or subquestion
+   * @param {string} entityType Entities.answer or Entities.subquestion
+   * @returns {string|undefined} the code
+   */
+  const getCurrentChildCode = (child, entityType) => {
+    const isAnswer = entityType === Entities.answer
+    const idKey = isAnswer ? 'aid' : 'qid'
+    const codeKey = isAnswer ? 'code' : 'title'
+    const questionChildren =
+      (isAnswer ? question.answers : question.subquestions) || []
+    // With an appKey, only the appKey counts: New options get random
+    // temporary IDs, which can be the same for two of them. Without a match,
+    // the child's own code is used.
+    const currentChild = child.appKey
+      ? questionChildren.find(
+          (questionChild) => questionChild.appKey === child.appKey
+        )
+      : questionChildren.find(
+          (questionChild) => questionChild[idKey] === child[idKey]
+        )
+    return (currentChild ?? child)[codeKey]
+  }
+
+  /**
+   * Deletes an answer or subquestion.
+   *
+   * @param {number|string} childId ID of the answer or subquestion
+   * @param {Object[]} childArray the current answers or subquestions
+   * @param {string} entityType Entities.answer or Entities.subquestion
+   * @returns {void}
+   */
   const handleChildDelete = (childId, childArray = [], entityType) => {
     const childKey = entityType === Entities.answer ? 'answers' : 'subquestions'
     const idKey = entityType === Entities.answer ? 'aid' : 'qid'
 
+    const deletedChild = (childArray || []).find(
+      (child) => child[idKey] === childId
+    )
     const updatedChildren = (childArray || []).filter(
       (child) => child[idKey] !== childId
     )
@@ -147,7 +220,16 @@ export const useQuestionChildren = ({
     addToBuffer(
       createChildrenUpdateOperation(question.qid, entityType, updatedChildren)
     )
-    handleUpdate({ [childKey]: updatedChildren })
+    // Image select themes: Drop the image settings of the deleted option.
+    const attributeUpdate = deletedChild
+      ? saveImageOptionChanges(
+          getImageOptionDeleteChanges(
+            question.attributes,
+            getCurrentChildCode(deletedChild, entityType)
+          )
+        )
+      : {}
+    handleUpdate({ [childKey]: updatedChildren, ...attributeUpdate })
   }
 
   const handleOnChildDragEnd = (
@@ -201,6 +283,16 @@ export const useQuestionChildren = ({
     handleUpdate({ [childKey]: updatedChildren })
   }
 
+  /**
+   * Changes the text of an answer or subquestion in the active language. In
+   * the image select themes, the text is the image path.
+   *
+   * @param {string} newValue the new text or image path
+   * @param {number} childIndex position of the answer or subquestion
+   * @param {Object[]} childArray the current answers or subquestions
+   * @param {string} entityType Entities.answer or Entities.subquestion
+   * @returns {void}
+   */
   const handleChildLUpdate = (
     newValue = '',
     childIndex,
@@ -226,6 +318,7 @@ export const useQuestionChildren = ({
     }
 
     const l10ns = updatedChildren[childIndex]['l10ns'] || {}
+    const imageChanged = l10ns[activeLanguage]?.[l10nsKey] !== newValue
 
     updatedChildren[childIndex] = {
       ...updatedChildren[childIndex],
@@ -242,9 +335,30 @@ export const useQuestionChildren = ({
     addToBuffer(
       createChildrenUpdateOperation(question.qid, entityType, updatedChildren)
     )
-    handleUpdate({ [childKey]: updatedChildren })
+    // Image select themes: A new or removed image starts without settings.
+    const attributeUpdate = imageChanged
+      ? saveImageOptionChanges(
+          getImageOptionResetChanges(
+            question.attributes,
+            getCurrentChildCode(updatedChildren[childIndex], entityType),
+            activeLanguage
+          )
+        )
+      : {}
+    handleUpdate({ [childKey]: updatedChildren, ...attributeUpdate })
   }
 
+  /**
+   * Changes the code of an answer or subquestion, if the new code is valid.
+   *
+   * @param {Object} params
+   * @param {string} params.newCode the new code
+   * @param {number} params.childIndex position of the answer or subquestion
+   * @param {Object[]} params.childArray the current answers or subquestions
+   * @param {string} params.entityType Entities.answer or Entities.subquestion
+   * @param {string} params.entityTitleKey 'answer' or 'question'
+   * @returns {void}
+   */
   const handleChildCodeUpdate = ({
     newCode = '',
     childIndex,
@@ -282,6 +396,7 @@ export const useQuestionChildren = ({
       return
     }
 
+    const oldCode = getCurrentChildCode(updatedChildren[childIndex], entityType)
     updatedChildren[childIndex] = {
       ...updatedChildren[childIndex],
       [codeKey]: newCode,
@@ -290,7 +405,11 @@ export const useQuestionChildren = ({
     addToBuffer(
       createChildrenUpdateOperation(question.qid, entityType, updatedChildren)
     )
-    handleUpdate({ [childKey]: updatedChildren })
+    // Image select themes: The image settings are keyed by code, move them.
+    const attributeUpdate = saveImageOptionChanges(
+      getImageOptionRenameChanges(question.attributes, oldCode, newCode)
+    )
+    handleUpdate({ [childKey]: updatedChildren, ...attributeUpdate })
   }
 
   const handleChildAssessmentValueUpdate = ({

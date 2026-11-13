@@ -1,0 +1,66 @@
+// Image editor modal, see components/UIComponents/ImageEditor/ImageEditor.js
+// 800px wide. Without min-width: 0, the general min-width: fit-content of
+// .modal-dialog (component-modal.scss) lets the content widen the modal.
+.modal-dialog.image-editor-dialog {
+  min-width: 0;
+  max-width: min(800px, calc(100vw - 2rem));
+}
+
+.image-editor-modal {
+  // Locked aspect ratio: Width and height are highlighted, like the lock button.
+  .image-editor-ratio-locked,
+  .image-editor-ratio-locked:focus {
+    border-color: $grape;
+  }
+
+  // Height of the frame size inputs, like Bootstrap's form-control.
+  $frame-input-height: calc(1.5em + 0.75rem + 2px);
+
+  // Locked aspect ratio: A line connects width and height, across the gap
+  // (gap-3) between them, at the middle of the inputs. Decorative only: The
+  // lock button tells screen readers the state with aria-pressed.
+  .image-editor-frame-size.locked .image-editor-frame-height {
+    position: relative;
+
+    &::before {
+      content: '';
+      position: absolute;
+      right: 100%;
+      bottom: calc(#{$frame-input-height} / 2 - 1.5px);
+      width: 1rem;
+      height: 3px;
+      background: $grape;
+    }
+  }
+
+  .image-editor-ratio-lock {
+    // Same height as the inputs, so the icon lines up with them. No padding
+    // on the right: The icon ends where the inputs below end.
+    display: flex;
+    align-items: center;
+    height: $frame-input-height;
+    // No border either: The transparent border of .btn would leave 1px.
+    padding: 0 0 0 0.25rem;
+    border: 0;
+    color: $g-700;
+
+    &.locked,
+    &:hover {
+      color: $grape;
+    }
+  }
+
+  // The warning lies on top of its invisible copy, which reserves its space
+  // also while there is no warning (see ImageEditor.js).
+  .image-editor-warning-slot {
+    display: grid;
+
+    > * {
+      grid-area: 1 / 1;
+    }
+  }
+
+  .input-range-input {
+    width: 60px;
+  }
+}

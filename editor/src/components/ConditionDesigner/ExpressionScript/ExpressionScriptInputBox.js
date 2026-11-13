@@ -27,7 +27,7 @@ export const ExpressionScriptInputBox = ({ onShowPanel, onNavigateBack }) => {
   const question = getQuestionById(focused.qid, survey).question
   const validateExpression = useExpressionScriptValidation(
     surveyId,
-    question.qid
+    question?.qid
   )
   const hasConditions = (question?.scenarios ?? []).length > 0
 
@@ -52,6 +52,10 @@ export const ExpressionScriptInputBox = ({ onShowPanel, onNavigateBack }) => {
       update,
       onNavigateBack
     )
+  }
+
+  if (!question) {
+    return null
   }
 
   return (
