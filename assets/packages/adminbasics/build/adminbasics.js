@@ -474,8 +474,8 @@
 	}
 	var inspectSource = sharedStore.inspectSource;
 
-	var WeakMap$3 = global_1.WeakMap;
-	var weakMapBasicDetection = isCallable(WeakMap$3) && /native code/.test(String(WeakMap$3));
+	var WeakMap$4 = global_1.WeakMap;
+	var weakMapBasicDetection = isCallable(WeakMap$4) && /native code/.test(String(WeakMap$4));
 
 	var keys$1 = shared('keys');
 	var sharedKey = function (key) {
@@ -486,7 +486,7 @@
 
 	var OBJECT_ALREADY_INITIALIZED = 'Object already initialized';
 	var TypeError$1 = global_1.TypeError;
-	var WeakMap$2 = global_1.WeakMap;
+	var WeakMap$3 = global_1.WeakMap;
 	var set$1, get, has;
 	var enforce = function (it) {
 	  return has(it) ? get(it) : set$1(it, {});
@@ -501,7 +501,7 @@
 	  };
 	};
 	if (weakMapBasicDetection || sharedStore.state) {
-	  var store$2 = sharedStore.state || (sharedStore.state = new WeakMap$2());
+	  var store$2 = sharedStore.state || (sharedStore.state = new WeakMap$3());
 	  /* eslint-disable no-self-assign -- prototype methods protection */
 	  store$2.get = store$2.get;
 	  store$2.has = store$2.has;
@@ -2277,7 +2277,7 @@
 	var $Object$1 = Object;
 	var $TypeError$8 = TypeError;
 	var Map$4 = getBuiltIn('Map');
-	var WeakMap$1 = getBuiltIn('WeakMap');
+	var WeakMap$2 = getBuiltIn('WeakMap');
 	var Node = function () {
 	  // keys
 	  this.object = null;
@@ -2290,7 +2290,7 @@
 	  return this[key] || (this[key] = initializer());
 	};
 	Node.prototype.next = function (i, it, IS_OBJECT) {
-	  var store = IS_OBJECT ? this.objectsByIndex[i] || (this.objectsByIndex[i] = new WeakMap$1()) : this.primitives || (this.primitives = new Map$4());
+	  var store = IS_OBJECT ? this.objectsByIndex[i] || (this.objectsByIndex[i] = new WeakMap$2()) : this.primitives || (this.primitives = new Map$4());
 	  var entry = store.get(it);
 	  if (!entry) store.set(it, entry = new Node());
 	  return entry;
@@ -3417,10 +3417,10 @@
 	// TODO: in core-js@4, move /modules/ dependencies to public entries for better optimization by tools like `preset-env`
 
 	var Map$3 = getBuiltIn('Map');
-	var WeakMap = getBuiltIn('WeakMap');
+	var WeakMap$1 = getBuiltIn('WeakMap');
 	var push$2 = functionUncurryThis([].push);
 	var metadata = shared('metadata');
-	var store$1 = metadata.store || (metadata.store = new WeakMap());
+	var store$1 = metadata.store || (metadata.store = new WeakMap$1());
 	var getOrCreateMetadataMap$1 = function (target, targetKey, create) {
 	  var targetMetadata = store$1.get(target);
 	  if (!targetMetadata) {
@@ -17471,6 +17471,157 @@
 	};
 
 	/**
+	 * Keep a Bootstrap 5 tooltip open while the pointer is on it (WCAG 1.4.13 Content on Hover or Focus).
+	 *
+	 * Bootstrap hides a hover tooltip as soon as the pointer leaves its trigger, so the pointer
+	 * can not move onto the tooltip. Here a hide is delayed a moment and cancelled while the pointer
+	 * is on the trigger or on the tooltip. Escape (see dismissTooltipsOnEscapePress) still hides it at once.
+	 *
+	 * Safe to call multiple times — the listeners are only attached once per page load.
+	 */
+	const HIDE_DELAY = 150;
+	const keepTooltipsHoverable = () => {
+	  if (window.LS && LS._tooltipHoverableBound) {
+	    return;
+	  }
+	  LS._tooltipHoverableBound = true;
+	  let escapePressed = false;
+	  document.addEventListener('keydown', function (e) {
+	    if (e.key === 'Escape' || e.keyCode === 27) {
+	      escapePressed = true;
+	      setTimeout(function () {
+	        escapePressed = false;
+	      }, 0);
+	    }
+	  }, true);
+	  document.addEventListener('hide.bs.tooltip', function (e) {
+	    const trigger = e.target;
+	    if (escapePressed || trigger.dataset.lsTooltipHide === 'true' || typeof bootstrap === 'undefined' || !bootstrap.Tooltip) {
+	      return;
+	    }
+	    const tooltip = bootstrap.Tooltip.getInstance(trigger);
+	    const tip = tooltip ? tooltip.getTipElement() : null;
+	    if (!tip || !tip.isConnected) {
+	      return;
+	    }
+	    e.preventDefault();
+	    const hideUnlessHovered = function () {
+	      if (!tip.isConnected || !bootstrap.Tooltip.getInstance(trigger)) {
+	        return;
+	      }
+	      if (trigger.matches(':hover') || tip.matches(':hover')) {
+	        // Check again once the pointer leaves the trigger or the tooltip
+	        const onLeave = function () {
+	          trigger.removeEventListener('mouseleave', onLeave);
+	          tip.removeEventListener('mouseleave', onLeave);
+	          setTimeout(hideUnlessHovered, HIDE_DELAY);
+	        };
+	        trigger.addEventListener('mouseleave', onLeave);
+	        tip.addEventListener('mouseleave', onLeave);
+	        return;
+	      }
+	      trigger.dataset.lsTooltipHide = 'true';
+	      tooltip.hide();
+	      delete trigger.dataset.lsTooltipHide;
+	    };
+	    setTimeout(hideUnlessHovered, HIDE_DELAY);
+	  });
+	};
+
+	/**
+	 * Return the keyboard focus to the element that opened a Bootstrap 5 modal once it is closed
+	 * (WCAG 2.4.3 Focus Order).
+	 *
+	 * Bootstrap only does this for modals opened through data-bs-toggle with a visible trigger.
+	 * When the modal was opened by a script, or from an item of a dropdown menu that is closed now,
+	 * the focus was lost. In that case the focus goes back to the trigger, or to the toggle of
+	 * its dropdown menu when the trigger itself is hidden.
+	 *
+	 * Safe to call multiple times — the listeners are only attached once per page load.
+	 */
+	const isVisible = element => !!element && element.isConnected && !!(element.offsetWidth || element.offsetHeight || element.getClientRects().length) && getComputedStyle(element).visibility !== 'hidden';
+
+	/**
+	 * The toggle of the dropdown menu the hidden trigger belongs to, if any.
+	 *
+	 * @param {HTMLElement} trigger
+	 * @return {HTMLElement|null}
+	 */
+	const getDropdownToggle = trigger => {
+	  // LimeSurvey action dropdowns can render their menu away from the toggle, linked by an id
+	  const menu = trigger.closest('[data-for-ls-dropdown-toggle-id]');
+	  if (menu) {
+	    const id = menu.getAttribute('data-for-ls-dropdown-toggle-id');
+	    const toggle = document.querySelector('[data-ls-dropdown-toggle-id="' + CSS.escape(id) + '"]');
+	    if (toggle) {
+	      return toggle;
+	    }
+	  }
+	  const dropdown = trigger.closest('.dropdown, .dropup, .dropstart, .dropend, .btn-group');
+	  return dropdown ? dropdown.querySelector('[data-bs-toggle="dropdown"]') : null;
+	};
+	const restoreFocusAfterModal = () => {
+	  if (window.LS && LS._restoreFocusAfterModalBound) {
+	    return;
+	  }
+	  LS._restoreFocusAfterModalBound = true;
+	  const triggers = new WeakMap();
+	  document.addEventListener('show.bs.modal', function (e) {
+	    const trigger = e.relatedTarget instanceof HTMLElement ? e.relatedTarget : document.activeElement;
+	    if (trigger && trigger !== document.body && !e.target.contains(trigger)) {
+	      triggers.set(e.target, trigger);
+	    }
+	  });
+	  document.addEventListener('hidden.bs.modal', function (e) {
+	    const trigger = triggers.get(e.target);
+	    triggers.delete(e.target);
+	    if (!trigger) {
+	      return;
+	    }
+	    // Bootstrap or the page already put the focus on a visible element outside the modal
+	    const active = document.activeElement;
+	    if (active && active !== document.body && !e.target.contains(active) && isVisible(active)) {
+	      return;
+	    }
+	    const target = isVisible(trigger) ? trigger : getDropdownToggle(trigger);
+	    if (target && isVisible(target)) {
+	      target.focus();
+	    }
+	  });
+	};
+
+	/**
+	 * "Skip to main content" link of the admin pages (WCAG 2.4.1 Bypass Blocks).
+	 *
+	 * The link targets #in_survey_common_action, but the main content container depends on the layout
+	 * (e.g. #in_survey_common or #pjax-content inside a survey). Move the focus to the first one found.
+	 *
+	 * Safe to call multiple times — the listener is only attached once per page load.
+	 */
+	const MAIN_CONTENT_SELECTORS = ['#in_survey_common_action', '#in_survey_common', '#pjax-content', 'main', '[role="main"]'];
+	const skipToMainContent = () => {
+	  if (window.LS && LS._skipToMainContentBound) {
+	    return;
+	  }
+	  LS._skipToMainContentBound = true;
+	  document.addEventListener('click', function (e) {
+	    const link = e.target.closest ? e.target.closest('.ls-skip-link') : null;
+	    if (!link) {
+	      return;
+	    }
+	    const target = MAIN_CONTENT_SELECTORS.map(selector => document.querySelector(selector)).find(element => element !== null);
+	    if (!target) {
+	      return;
+	    }
+	    e.preventDefault();
+	    if (!target.hasAttribute('tabindex')) {
+	      target.setAttribute('tabindex', '-1');
+	    }
+	    target.focus();
+	  });
+	};
+
+	/**
 	 * Accessible keyboard navigation for Bootstrap tab components (ARIA APG pattern).
 	 *
 	 * - Roving tabindex: only the active tab is reachable via the Tab key;
@@ -18397,6 +18548,9 @@
 	      appendToLoad(focusStatusMessage, 'pjax:scriptcomplete ready ajaxStop');
 	      appendToLoad(tabsControl, 'pjax:scriptcomplete ready ajaxStop');
 	      dismissTooltipsOnEscapePress();
+	      keepTooltipsHoverable();
+	      restoreFocusAfterModal();
+	      skipToMainContent();
 	      bindNotLoggedInHandler();
 	    },
 	    appendToLoad = (fn, event, root, delay) => {

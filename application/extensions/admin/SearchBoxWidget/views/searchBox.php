@@ -12,6 +12,9 @@
 <div class="row">
     <div class="survey-actionbar col-12">
         <?php $form = $this->beginWidget('CActiveForm', ['action' => $this->formUrl, 'method' => 'get', 'id' => 'survey-search']); ?>
+        <?php // Filtering reloads the page: filters.js writes the result into this live region so it gets announced ?>
+        <div id="survey-search-status" class="visually-hidden" role="status" aria-live="polite" aria-atomic="true"
+             data-message="<?= CHtml::encode($this->getResultMessage()) ?>"></div>
         <div class="d-flex align-items-baseline">
 
             <!-- select state -->
@@ -105,15 +108,16 @@
             </div>
 
   <?php if ($this->switch): ?>
-                <div class="survey-actionbar-switch">
+                <?php // One of the two views is always chosen: plain buttons, the chosen one is marked as current (not toggle buttons) ?>
+                <div class="survey-actionbar-switch" role="group" aria-label="<?= gT('View') ?>">
                     <i class="view-switch ri-grid-fill survey-actionbar-item" data-action="box-widget" role="button"
                        tabindex="0"
                        aria-label="<?= gT('Box view') ?>"
-                       aria-pressed="<?= $this->viewtype === 'box-widget' ? 'true' : 'false' ?>" <?= $this->viewtype === 'box-widget' ? 'active' : '' ?>></i>
+                       <?= $this->viewtype === 'box-widget' ? 'aria-current="true" active' : '' ?>></i>
                     <i class="view-switch ri-menu-line survey-actionbar-item" data-action="list-widget" role="button"
                        tabindex="0"
                        aria-label="<?= gT('List view') ?>"
-                       aria-pressed="<?= $this->viewtype === 'list-widget' ? 'true' : 'false' ?>" <?= $this->viewtype === 'list-widget' ? 'active' : '' ?>></i>
+                       <?= $this->viewtype === 'list-widget' ? 'aria-current="true" active' : '' ?>></i>
                 </div>
             <?php endif; ?>
 

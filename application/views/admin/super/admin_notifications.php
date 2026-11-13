@@ -48,14 +48,17 @@
             <span class='caret'></span>
         </a>
 
-        <ul id='notification-outer-ul' class='dropdown-menu dropdown-menu-end'
+        <?php // One list for the screen reader: the notifications; the wrapper, divider and "delete all" are not list items ?>
+        <ul id='notification-outer-ul' class='dropdown-menu dropdown-menu-end' role="none"
             aria-labelledby='admin-notifications-menu-button'>
             <li id='notification-inner-li' role="none">
-                <ul id='notification-inner-ul' class='notification-list' role="none">
+                <ul id='notification-inner-ul' class='notification-list' aria-labelledby='admin-notifications-menu-button'>
                     <?php foreach ($notifications as $not) : ?>
-                        <li role="none">
+                        <li>
+                            <?php // Opens the notification in a modal ?>
                             <a 
                                 class='admin-notification-link'
+                                role='button'
                                 data-url='<?php echo $not->ajaxUrl; ?>'
                                 data-read-url='<?php echo $not->readUrl; ?>'
                                 data-update-url='<?php echo $updateUrl; ?>'
@@ -79,10 +82,10 @@
                     <?php endforeach; ?>
                 </ul>
             </li>
-            <li id='notification-divider' class="dropdown-divider" aria-hidden="true"></li>
+            <li id='notification-divider' class="dropdown-divider" role="none" aria-hidden="true"></li>
 
-            <li id='notification-clear-all'>
-                <a href='#'  class="dropdown-item" onclick='(function() { LS.deleteAllNotifications("<?php echo $clearAllNotificationsUrl ?>", "<?php echo $updateUrl; ?>"); })()' data-params="<?= $clearAllNotificationsParams ?>">
+            <li id='notification-clear-all' role="none">
+                <a href='#'  class="dropdown-item" role="button" onclick='(function() { LS.deleteAllNotifications("<?php echo $clearAllNotificationsUrl ?>", "<?php echo $updateUrl; ?>"); })()' data-params="<?= $clearAllNotificationsParams ?>">
                     <span class='d-flex align-items-center gap-1'>
                         <span class='ri-delete-bin-fill text-danger'></span>
                         <?php eT('Delete all notifications'); ?>

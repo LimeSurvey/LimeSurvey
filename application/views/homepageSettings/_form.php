@@ -69,13 +69,14 @@
                     <span class='caret'></span>
                 </button>
                 <ul class='dropdown-menu'>
-                    <li>
-                        <?php foreach ($icons as $icon) : ?>
+                    <?php // One list item per icon, so the number of icons is announced correctly ?>
+                    <?php foreach ($icons as $icon) : ?>
+                        <li class="d-inline">
                             <a href="#" class="m-2">
                                 <span data-icon='<?php echo $icon['icon']; ?>' data-iconId='<?php echo $icon['id']; ?>' class='option-icon <?php echo $icon['icon']; ?>'></span>
                             </a>
-                        <?php endforeach; ?>
-                    </li>
+                        </li>
+                    <?php endforeach; ?>
                 </ul></div>
             <div class="col-2"><span>&nbsp;<?= gT('Chosen icon:') ?></span>&nbsp;<span id="chosen-icon" class="<?= $model->getIconName() ?> text-success"></span></div>
             <?php echo $form->textField($model, 'ico', array('size' => 60, 'maxlength' => 255, 'class' => 'form-control d-none')); ?>

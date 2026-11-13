@@ -16,7 +16,8 @@
         <?php $this->controller->widget('ext.admin.SearchBoxWidget.SearchBoxWidget', [
             'model'      => new Survey('search'),
             'onlyfilter' => true,
-            'switch'     => $this->switch
+            'switch'     => $this->switch,
+            'resultCount' => (int) $itemsCount,
         ]);
         ?>
     <?php endif; ?>

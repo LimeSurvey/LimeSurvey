@@ -61,12 +61,16 @@ class ListSurveysWidget extends CWidget
 
         require_once Yii::getPathOfAlias('application.extensions.admin.grid.FloatingActionsWidget.actions.SurveyListMassiveActions') . '.php';
 
+        // The same data provider is used for the grid, so the surveys are only counted once
+        $dataProvider = $this->model->search();
+
         $this->controller->widget('ext.admin.SearchBoxWidget.SearchBoxWidget', [
             'model' => new Survey('search'),
-            'switch' => $this->switch
+            'switch' => $this->switch,
+            'resultCount' => (int) $dataProvider->getTotalItemCount(),
         ]);
 
-        $this->render('listSurveys');
+        $this->render('listSurveys', ['dataProvider' => $dataProvider]);
     }
 
     /** Initializes the widget */
