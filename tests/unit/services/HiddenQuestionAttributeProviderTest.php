@@ -20,7 +20,8 @@ class HiddenQuestionAttributeProviderTest extends TestBaseClass
     }
 
     /**
-     * The image select themes get the per-option image attributes, the alt text translated.
+     * The image select themes get the per-option image attributes, both translated: Each language can have its
+     * own image.
      *
      * @return void
      */
@@ -32,7 +33,7 @@ class HiddenQuestionAttributeProviderTest extends TestBaseClass
 
             $this->assertArrayHasKey('image', $definitions);
             $this->assertSame('image_option_settings', $definitions['image_option_settings']['name']);
-            $this->assertFalse($definitions['image_option_settings']['i18n']);
+            $this->assertTrue($definitions['image_option_settings']['i18n']);
             $this->assertSame('image_option_alt', $definitions['image_option_alt']['name']);
             $this->assertTrue($definitions['image_option_alt']['i18n']);
         }
@@ -115,7 +116,12 @@ class HiddenQuestionAttributeProviderTest extends TestBaseClass
     private function setImageOptionAttributes($question)
     {
         $attribute = new \QuestionAttribute();
-        $attribute->setQuestionAttribute($question->qid, 'image_option_settings', '{"A1":{"width":200}}');
+        $attribute->setQuestionAttributeWithLanguage(
+            $question->qid,
+            'image_option_settings',
+            '{"A1":{"width":200}}',
+            self::$testSurvey->language
+        );
         $attribute->setQuestionAttributeWithLanguage(
             $question->qid,
             'image_option_alt',

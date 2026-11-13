@@ -591,7 +591,8 @@ export const OptionQuestionViewMode = ({
                       // Show the image as set up in the image editor.
                       imageSettings: getImageOptionSettings(
                         attributes,
-                        child[childrenInfo.codeKey]
+                        child[childrenInfo.codeKey],
+                        language
                       ),
                       imageAltText: getImageOptionAltText(
                         attributes,

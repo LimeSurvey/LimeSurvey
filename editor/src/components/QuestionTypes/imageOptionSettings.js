@@ -3,14 +3,12 @@ import { getQuestionTypeInfo } from './getQuestionTypeInfo'
 // Per-option image settings of the image select themes, stored as question
 // attributes of the parent question. Both hold a JSON object keyed by the option
 // code (answer code or subquestion title), so that export, import and copy keep
-// them without any ID mapping.
-// Not translated: Frame, position, zoom, radius and crop per option.
+// them without any ID mapping. Both are translated, one JSON object per
+// language, because each language can have its own image.
+// Frame, position, zoom, radius and crop per option.
 export const IMAGE_OPTION_SETTINGS_ATTRIBUTE = 'image_option_settings'
-// Translated: Alt text per option, one JSON object per language.
+// Alt text per option.
 export const IMAGE_OPTION_ALT_ATTRIBUTE = 'image_option_alt'
-
-// Language key of attributes that are not translated.
-const NO_LANGUAGE = ''
 
 /**
  * Returns the themes that store per-option image settings.
@@ -124,15 +122,16 @@ const toChangeSet = (changes) => {
 }
 
 /**
- * Returns the saved image settings of an option.
+ * Returns the saved image settings of an option in a language.
  *
  * @param {Object} attributes the question attributes
  * @param {string} code the option code
+ * @param {string} language the language code
  * @returns {Object|null} the settings (see ImageEditor's onSave, without the
  *   alt text), or null when none were saved
  */
-export const getImageOptionSettings = (attributes, code) =>
-  getOptionMaps(attributes, IMAGE_OPTION_SETTINGS_ATTRIBUTE)[NO_LANGUAGE]?.[
+export const getImageOptionSettings = (attributes, code, language) =>
+  getOptionMaps(attributes, IMAGE_OPTION_SETTINGS_ATTRIBUTE)[language]?.[
     code
   ] ?? null
 
@@ -150,30 +149,54 @@ export const getImageOptionAltText = (attributes, code, language) =>
 /**
  * Builds the attribute changes for saving the image settings and alt text of
  * one option, and optionally the settings of other options ("Apply to all").
- * Options that no longer exist are removed on the way.
+ * The settings are saved for the language, and for the other languages that
+ * show the same image for that option. Options that no longer exist are
+ * removed on the way.
  *
  * @param {Object} attributes the question attributes
  * @param {Object} params
  * @param {string} params.code the option code
  * @param {Object} params.settings the image settings of the option
  * @param {string} params.altText the alt text in the given language
- * @param {string} params.language the language of the alt text
+ * @param {string} params.language the language the image was edited in
  * @param {string[]} params.codes the codes of all existing options
  * @param {Object} params.otherSettings image settings of other options keyed
  *   by code, their alt texts stay as they are
+ * @param {Object} params.sameImageLanguages keyed by option code: the other
+ *   languages in which the option has the same image as in the language
  * @returns {Object} the changed values keyed by attribute and language
  */
 export const getImageOptionSaveChanges = (
   attributes,
-  { code, settings, altText, language, codes, otherSettings = {} }
+  {
+    code,
+    settings,
+    altText,
+    language,
+    codes,
+    otherSettings = {},
+    sameImageLanguages = {},
+  }
 ) => {
-  const settingsMap = pruneOptionMap(
-    getOptionMaps(attributes, IMAGE_OPTION_SETTINGS_ATTRIBUTE)[NO_LANGUAGE] ??
-      {},
-    codes
+  const settingsMaps = Object.fromEntries(
+    Object.entries(
+      getOptionMaps(attributes, IMAGE_OPTION_SETTINGS_ATTRIBUTE)
+    ).map(([mapLanguage, map]) => [mapLanguage, pruneOptionMap(map, codes)])
   )
-  Object.assign(settingsMap, otherSettings)
-  settingsMap[code] = settings
+  Object.entries({ ...otherSettings, [code]: settings }).forEach(
+    ([optionCode, optionSettings]) => {
+      const settingsLanguages = [
+        language,
+        ...(sameImageLanguages[optionCode] ?? []),
+      ]
+      settingsLanguages.forEach((settingsLanguage) => {
+        settingsMaps[settingsLanguage] = {
+          ...(settingsMaps[settingsLanguage] ?? {}),
+          [optionCode]: optionSettings,
+        }
+      })
+    }
+  )
 
   const altMaps = getOptionMaps(attributes, IMAGE_OPTION_ALT_ATTRIBUTE)
   const altChanges = changeAllLanguages(
@@ -190,9 +213,12 @@ export const getImageOptionSaveChanges = (
   altChanges[language] = stringifyOptionMap(altMap)
 
   return {
-    [IMAGE_OPTION_SETTINGS_ATTRIBUTE]: {
-      [NO_LANGUAGE]: stringifyOptionMap(settingsMap),
-    },
+    [IMAGE_OPTION_SETTINGS_ATTRIBUTE]: Object.fromEntries(
+      Object.entries(settingsMaps).map(([mapLanguage, map]) => [
+        mapLanguage,
+        stringifyOptionMap(map),
+      ])
+    ),
     [IMAGE_OPTION_ALT_ATTRIBUTE]: altChanges,
   }
 }
@@ -266,26 +292,26 @@ export const getImageOptionDeleteChanges = (attributes, code) => {
 
 /**
  * Builds the attribute changes for a replaced or removed image: The image
- * settings of the option are removed, and so is its alt text in the language
- * of the image, because it describes the old image.
+ * settings and the alt text of the option are removed in the language of the
+ * image, because they belong to the old image. The other languages keep
+ * theirs.
  *
  * @param {Object} attributes the question attributes
  * @param {string} code the option code
  * @param {string} language the language whose image changed
  * @returns {Object|null} the changed values keyed by attribute and language, or
- *   null when the option has nothing saved
+ *   null when the option has nothing saved in that language
  */
 export const getImageOptionResetChanges = (attributes, code, language) => {
   const changes = getImageOptionDeleteChanges(attributes, code)
   if (!changes) {
     return null
   }
-  const altChanges = changes[IMAGE_OPTION_ALT_ATTRIBUTE]
-  if (altChanges) {
-    Object.keys(altChanges)
-      .filter((altLanguage) => altLanguage !== language)
-      .forEach((altLanguage) => delete altChanges[altLanguage])
-  }
+  Object.values(changes).forEach((languageChanges) =>
+    Object.keys(languageChanges)
+      .filter((changedLanguage) => changedLanguage !== language)
+      .forEach((changedLanguage) => delete languageChanges[changedLanguage])
+  )
   return toChangeSet(changes)
 }
 

@@ -3,7 +3,8 @@
  * Image of an answer option.
  *
  * Options edited with the image editor of the new editor have their own settings, stored by option code in the
- * question attributes image_option_settings (frame size, crop, corner radius) and image_option_alt (alt text).
+ * question attributes image_option_settings (frame size, crop, corner radius) and image_option_alt (alt text),
+ * both per language, because each language can have its own image.
  * They are only applied when the survey theme supports them: it marks the question container with the class
  * image-option-settings (fruity_twentythree and the themes extending it). Then they override the image settings
  * of the question (fix width, fix height, keep aspect ratio, crop or resize): the image is shown in a frame with

@@ -14,11 +14,11 @@ class HiddenQuestionAttributeProvider extends QuestionAttributeProvider
      */
     private const THEME_ATTRIBUTES = [
         'image_select-listradio' => [
-            'image_option_settings' => false,
+            'image_option_settings' => true,
             'image_option_alt' => true,
         ],
         'image_select-multiplechoice' => [
-            'image_option_settings' => false,
+            'image_option_settings' => true,
             'image_option_alt' => true,
         ],
     ];

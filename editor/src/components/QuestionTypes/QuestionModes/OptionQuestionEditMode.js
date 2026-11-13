@@ -137,6 +137,25 @@ export const OptionQuestionEditMode = ({
     L10ns({ prop: childrenInfo.titleKey, language, l10ns: child.l10ns })
 
   /**
+   * Returns the other languages in which an option has the same image as in
+   * the active language: They get the same image settings.
+   *
+   * @param {Object} child the answer or subquestion
+   * @returns {string[]} the language codes
+   */
+  const getSameImageLanguages = (child) => {
+    const imagePath = getImagePath(child)
+    return Object.entries(child.l10ns || {})
+      .filter(
+        ([childLanguage, l10n]) =>
+          childLanguage !== language &&
+          imagePath &&
+          l10n?.[childrenInfo.titleKey] === imagePath
+      )
+      .map(([childLanguage]) => childLanguage)
+  }
+
+  /**
    * Returns the settings of the other options for "Apply to all": Each option
    * with an image gets the frame, zoom and corner radius, with the crop
    * calculated for its own image.
@@ -167,7 +186,7 @@ export const OptionQuestionEditMode = ({
               settings: applyImageSettings(
                 settings,
                 naturalSize,
-                getImageOptionSettings(attributes, child[codeKey])
+                getImageOptionSettings(attributes, child[codeKey], language)
               ),
             }
           }
@@ -181,7 +200,8 @@ export const OptionQuestionEditMode = ({
    * attributes, with "Apply to all" also for the other options. Nothing is
    * saved when the option was renamed or deleted while the other images were
    * loading. Other options whose image was replaced or deleted meanwhile
-   * keep their settings.
+   * keep their settings. The settings are saved for the active language and
+   * for the languages that show the same image.
    *
    * @param {string} code the option code
    * @param {Object} imageSettings the settings from ImageEditor's onSave,
@@ -203,10 +223,15 @@ export const OptionQuestionEditMode = ({
     }
     // Only for the options that still exist and still have the loaded image.
     const validOtherSettings = {}
+    const sameImageLanguages = {}
     currentChildren.forEach((child) => {
-      const other = otherSettings[child[codeKey]]
+      const childCode = child[codeKey]
+      const other = otherSettings[childCode]
       if (other && getImagePath(child) === other.imagePath) {
-        validOtherSettings[child[codeKey]] = other.settings
+        validOtherSettings[childCode] = other.settings
+      }
+      if (childCode === code || validOtherSettings[childCode]) {
+        sameImageLanguages[childCode] = getSameImageLanguages(child)
       }
     })
     const changes = getImageOptionSaveChanges(currentQuestion.attributes, {
@@ -216,6 +241,7 @@ export const OptionQuestionEditMode = ({
       language,
       codes,
       otherSettings: validOtherSettings,
+      sameImageLanguages,
     })
     const attributes = applyAttributeChanges(
       currentQuestion.attributes,
@@ -254,7 +280,11 @@ export const OptionQuestionEditMode = ({
   const getImageOptionProps = (code) =>
     isImageTheme
       ? {
-          imageSettings: getImageOptionSettings(question.attributes, code),
+          imageSettings: getImageOptionSettings(
+            question.attributes,
+            code,
+            language
+          ),
           imageAltText: getImageOptionAltText(
             question.attributes,
             code,

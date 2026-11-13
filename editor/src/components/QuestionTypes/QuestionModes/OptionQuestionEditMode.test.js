@@ -69,10 +69,15 @@ const Harness = ({ initialQuestion, handleUpdate }) => {
  * images to load.
  *
  * @param {Function} handleUpdate gets the question changes
+ * @param {Object[]} answers the options, A1, A2 and A3 with English images by
+ *   default
  * @returns {Promise<{savePromise: Promise<void>}>} the pending save, wrapped:
  *   An async function returning the promise itself would wait for it
  */
-const startApplyToAllSave = async (handleUpdate) => {
+const startApplyToAllSave = async (
+  handleUpdate,
+  answers = [getAnswer(1, 'A1'), getAnswer(2, 'A2'), getAnswer(3, 'A3')]
+) => {
   await renderWithProviders(
     <Harness
       handleUpdate={handleUpdate}
@@ -81,7 +86,7 @@ const startApplyToAllSave = async (handleUpdate) => {
         questionThemeName:
           getQuestionTypeInfo().SINGLE_CHOICE_IMAGE_SELECT.theme,
         attributes: {},
-        answers: [getAnswer(1, 'A1'), getAnswer(2, 'A2'), getAnswer(3, 'A3')],
+        answers,
       }}
     />
   )
@@ -153,7 +158,7 @@ describe('OptionQuestionEditMode image option settings', () => {
       A2: 'Second',
     })
     expect(
-      Object.keys(JSON.parse(attributes.image_option_settings['']))
+      Object.keys(JSON.parse(attributes.image_option_settings.en))
     ).toEqual(['A2', 'A1'])
   })
 
@@ -191,8 +196,35 @@ describe('OptionQuestionEditMode image option settings', () => {
     expect(handleUpdate).toHaveBeenCalledTimes(1)
     const { attributes } = handleUpdate.mock.calls[0][0]
     expect(
-      Object.keys(JSON.parse(attributes.image_option_settings['']))
+      Object.keys(JSON.parse(attributes.image_option_settings.en))
     ).toEqual(['A3', 'A1'])
+  })
+
+  test('The settings also go to the languages with the same image', async () => {
+    const handleUpdate = jest.fn()
+    // A1 and A3 have the same image in German, A2 has its own.
+    const withGerman = (answer, germanImage) => ({
+      ...answer,
+      l10ns: { ...answer.l10ns, de: { answer: germanImage } },
+    })
+    const { savePromise } = await startApplyToAllSave(handleUpdate, [
+      withGerman(getAnswer(1, 'A1'), '/upload/surveys/1/images/A1.png'),
+      withGerman(getAnswer(2, 'A2'), '/upload/surveys/1/images/A2-de.png'),
+      withGerman(getAnswer(3, 'A3'), '/upload/surveys/1/images/A3.png'),
+    ])
+    await finishImageLoads(savePromise)
+
+    const { attributes } = handleUpdate.mock.calls[0][0]
+    expect(
+      Object.keys(JSON.parse(attributes.image_option_settings.en)).sort()
+    ).toEqual(['A1', 'A2', 'A3'])
+    expect(
+      Object.keys(JSON.parse(attributes.image_option_settings.de)).sort()
+    ).toEqual(['A1', 'A3'])
+    // The alt text is only for the language it was written in.
+    expect(attributes.image_option_alt).toEqual({
+      en: JSON.stringify({ A1: 'First' }),
+    })
   })
 
   test('A later "Apply to all" wins, also when the earlier one loads more slowly', async () => {
@@ -207,7 +239,7 @@ describe('OptionQuestionEditMode image option settings', () => {
     await finishImageLoads(first, second)
 
     const { attributes } = handleUpdate.mock.calls.at(-1)[0]
-    const savedSettings = JSON.parse(attributes.image_option_settings[''])
+    const savedSettings = JSON.parse(attributes.image_option_settings.en)
     expect(savedSettings.A1.width).toBe(300)
     expect(savedSettings.A2.width).toBe(300)
     expect(savedSettings.A3.width).toBe(300)

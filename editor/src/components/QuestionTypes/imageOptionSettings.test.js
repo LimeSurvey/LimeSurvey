@@ -16,7 +16,8 @@ const settingsA2 = { width: 200, height: 200, zoom: 2 }
 const attributes = {
   other: { '': 'N' },
   [IMAGE_OPTION_SETTINGS_ATTRIBUTE]: {
-    '': JSON.stringify({ A1: settingsA1, A2: settingsA2 }),
+    en: JSON.stringify({ A1: settingsA1, A2: settingsA2 }),
+    de: JSON.stringify({ A1: settingsA1 }),
   },
   [IMAGE_OPTION_ALT_ATTRIBUTE]: {
     en: JSON.stringify({ A1: 'Lime', A2: 'Lemon' }),
@@ -29,20 +30,23 @@ const parse = (changes, attributeName, language) =>
 
 describe('imageOptionSettings', () => {
   test('Reads settings and alt text by code and language', () => {
-    expect(getImageOptionSettings(attributes, 'A1')).toEqual(settingsA1)
-    expect(getImageOptionSettings(attributes, 'A3')).toBeNull()
+    expect(getImageOptionSettings(attributes, 'A1', 'en')).toEqual(settingsA1)
+    expect(getImageOptionSettings(attributes, 'A2', 'en')).toEqual(settingsA2)
+    expect(getImageOptionSettings(attributes, 'A2', 'de')).toBeNull()
+    expect(getImageOptionSettings(attributes, 'A3', 'en')).toBeNull()
     expect(getImageOptionAltText(attributes, 'A1', 'de')).toBe('Limette')
     expect(getImageOptionAltText(attributes, 'A2', 'de')).toBe('')
     expect(getImageOptionAltText(attributes, 'A1', 'fr')).toBe('')
   })
 
   test('Reads nothing from missing or broken attributes', () => {
-    expect(getImageOptionSettings({}, 'A1')).toBeNull()
-    expect(getImageOptionSettings(undefined, 'A1')).toBeNull()
+    expect(getImageOptionSettings({}, 'A1', 'en')).toBeNull()
+    expect(getImageOptionSettings(undefined, 'A1', 'en')).toBeNull()
     expect(
       getImageOptionSettings(
-        { [IMAGE_OPTION_SETTINGS_ATTRIBUTE]: { '': '{broken' } },
-        'A1'
+        { [IMAGE_OPTION_SETTINGS_ATTRIBUTE]: { en: '{broken' } },
+        'A1',
+        'en'
       )
     ).toBeNull()
     expect(
@@ -64,8 +68,12 @@ describe('imageOptionSettings', () => {
       codes: ['A1', 'A3'],
     })
 
-    expect(parse(changes, IMAGE_OPTION_SETTINGS_ATTRIBUTE, '')).toEqual({
+    expect(parse(changes, IMAGE_OPTION_SETTINGS_ATTRIBUTE, 'en')).toEqual({
       A1: newSettings,
+    })
+    // Other languages keep their settings, without deleted options.
+    expect(parse(changes, IMAGE_OPTION_SETTINGS_ATTRIBUTE, 'de')).toEqual({
+      A1: settingsA1,
     })
     expect(parse(changes, IMAGE_OPTION_ALT_ATTRIBUTE, 'en')).toEqual({
       A1: 'Green lime',
@@ -86,7 +94,7 @@ describe('imageOptionSettings', () => {
       otherSettings: { A2: settingsA1, A3: settingsA1 },
     })
 
-    expect(parse(changes, IMAGE_OPTION_SETTINGS_ATTRIBUTE, '')).toEqual({
+    expect(parse(changes, IMAGE_OPTION_SETTINGS_ATTRIBUTE, 'en')).toEqual({
       A1: settingsA1,
       A2: settingsA1,
       A3: settingsA1,
@@ -110,18 +118,54 @@ describe('imageOptionSettings', () => {
       }
     )
 
-    expect(parse(changes, IMAGE_OPTION_SETTINGS_ATTRIBUTE, '')).toEqual({
-      SQ001: settingsA1,
+    expect(changes[IMAGE_OPTION_SETTINGS_ATTRIBUTE]).toEqual({
+      en: JSON.stringify({ SQ001: settingsA1 }),
     })
     expect(changes[IMAGE_OPTION_ALT_ATTRIBUTE]).toEqual({ en: '' })
+  })
+
+  test('Saving copies the settings to the languages with the same image, the alt text stays in its language', () => {
+    const newSettings = { width: 100, height: 50, zoom: 1.5 }
+    const changes = getImageOptionSaveChanges(attributes, {
+      code: 'A2',
+      settings: newSettings,
+      altText: 'Green lemon',
+      language: 'en',
+      codes: ['A1', 'A2'],
+      otherSettings: { A1: settingsA2 },
+      sameImageLanguages: { A1: [], A2: ['de', 'fr'] },
+    })
+
+    expect(parse(changes, IMAGE_OPTION_SETTINGS_ATTRIBUTE, 'en')).toEqual({
+      A1: settingsA2,
+      A2: newSettings,
+    })
+    // A1 has another image in German: Its German settings stay.
+    expect(parse(changes, IMAGE_OPTION_SETTINGS_ATTRIBUTE, 'de')).toEqual({
+      A1: settingsA1,
+      A2: newSettings,
+    })
+    expect(parse(changes, IMAGE_OPTION_SETTINGS_ATTRIBUTE, 'fr')).toEqual({
+      A2: newSettings,
+    })
+    expect(Object.keys(changes[IMAGE_OPTION_ALT_ATTRIBUTE])).toEqual([
+      'en',
+      'de',
+    ])
+    expect(parse(changes, IMAGE_OPTION_ALT_ATTRIBUTE, 'de')).toEqual({
+      A1: 'Limette',
+    })
   })
 
   test('Renaming a code moves its settings and alt texts in all languages', () => {
     const changes = getImageOptionRenameChanges(attributes, 'A1', 'B1')
 
-    expect(parse(changes, IMAGE_OPTION_SETTINGS_ATTRIBUTE, '')).toEqual({
+    expect(parse(changes, IMAGE_OPTION_SETTINGS_ATTRIBUTE, 'en')).toEqual({
       B1: settingsA1,
       A2: settingsA2,
+    })
+    expect(parse(changes, IMAGE_OPTION_SETTINGS_ATTRIBUTE, 'de')).toEqual({
+      B1: settingsA1,
     })
     expect(parse(changes, IMAGE_OPTION_ALT_ATTRIBUTE, 'en')).toEqual({
       B1: 'Lime',
@@ -154,16 +198,17 @@ describe('imageOptionSettings', () => {
       )
     })
 
-    expect(getImageOptionSettings(current, 'X')).toEqual(settingsA1)
+    expect(getImageOptionSettings(current, 'X', 'de')).toEqual(settingsA1)
     expect(getImageOptionAltText(current, 'X', 'de')).toBe('Limette')
   })
 
   test('Deleting an option removes its settings and alt texts', () => {
     const changes = getImageOptionDeleteChanges(attributes, 'A1')
 
-    expect(parse(changes, IMAGE_OPTION_SETTINGS_ATTRIBUTE, '')).toEqual({
+    expect(parse(changes, IMAGE_OPTION_SETTINGS_ATTRIBUTE, 'en')).toEqual({
       A2: settingsA2,
     })
+    expect(changes[IMAGE_OPTION_SETTINGS_ATTRIBUTE].de).toBe('')
     expect(parse(changes, IMAGE_OPTION_ALT_ATTRIBUTE, 'en')).toEqual({
       A2: 'Lemon',
     })
@@ -175,14 +220,19 @@ describe('imageOptionSettings', () => {
   test('A new image removes the settings and the alt text of its language only', () => {
     const changes = getImageOptionResetChanges(attributes, 'A1', 'de')
 
-    expect(parse(changes, IMAGE_OPTION_SETTINGS_ATTRIBUTE, '')).toEqual({
-      A2: settingsA2,
+    expect(changes).toEqual({
+      [IMAGE_OPTION_SETTINGS_ATTRIBUTE]: { de: '' },
+      [IMAGE_OPTION_ALT_ATTRIBUTE]: { de: '' },
     })
-    expect(changes[IMAGE_OPTION_ALT_ATTRIBUTE]).toEqual({ de: '' })
-    // Nothing saved in that language: Only the settings change.
     expect(
-      getImageOptionResetChanges(attributes, 'A2', 'de')
-    ).not.toHaveProperty(IMAGE_OPTION_ALT_ATTRIBUTE)
+      parse(
+        getImageOptionResetChanges(attributes, 'A2', 'en'),
+        IMAGE_OPTION_SETTINGS_ATTRIBUTE,
+        'en'
+      )
+    ).toEqual({ A1: settingsA1 })
+    // Nothing saved in that language: Nothing changes.
+    expect(getImageOptionResetChanges(attributes, 'A2', 'de')).toBeNull()
     expect(getImageOptionResetChanges(attributes, 'A9', 'en')).toBeNull()
   })
 

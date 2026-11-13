@@ -176,7 +176,8 @@ describe('image settings of image select options', () => {
 
   const imageAttributes = {
     [IMAGE_OPTION_SETTINGS_ATTRIBUTE]: {
-      '': JSON.stringify({ A1: { width: 400 }, A2: { width: 200 } }),
+      en: JSON.stringify({ A1: { width: 400 }, A2: { width: 200 } }),
+      de: JSON.stringify({ A1: { width: 400 } }),
     },
     [IMAGE_OPTION_ALT_ATTRIBUTE]: { en: JSON.stringify({ A1: 'Lime' }) },
   }
@@ -229,16 +230,18 @@ describe('image settings of image select options', () => {
     })
 
     const { attributes } = handleUpdate.mock.calls[0][0]
-    expect(JSON.parse(attributes[IMAGE_OPTION_SETTINGS_ATTRIBUTE][''])).toEqual(
-      { B1: { width: 400 }, A2: { width: 200 } }
-    )
+    expect(JSON.parse(attributes[IMAGE_OPTION_SETTINGS_ATTRIBUTE].en)).toEqual({
+      B1: { width: 400 },
+      A2: { width: 200 },
+    })
     expect(JSON.parse(attributes[IMAGE_OPTION_ALT_ATTRIBUTE].en)).toEqual({
       B1: 'Lime',
     })
     const operation = getAttributeOperation()
     expect(operation.props).toEqual({
       [IMAGE_OPTION_SETTINGS_ATTRIBUTE]: {
-        '': attributes[IMAGE_OPTION_SETTINGS_ATTRIBUTE][''],
+        en: attributes[IMAGE_OPTION_SETTINGS_ATTRIBUTE].en,
+        de: JSON.stringify({ B1: { width: 400 } }),
       },
       [IMAGE_OPTION_ALT_ATTRIBUTE]: {
         en: attributes[IMAGE_OPTION_ALT_ATTRIBUTE].en,
@@ -259,7 +262,7 @@ describe('image settings of image select options', () => {
     const questionAnswers = [{ ...answers[0], code: 'A10' }, answers[1]]
     const attributes = {
       [IMAGE_OPTION_SETTINGS_ATTRIBUTE]: {
-        '': JSON.stringify({ A10: { width: 400 } }),
+        en: JSON.stringify({ A10: { width: 400 } }),
       },
     }
     const { result: laggingResult } = renderHook(
@@ -286,7 +289,7 @@ describe('image settings of image select options', () => {
     })
 
     const { attributes: updated } = handleUpdate.mock.calls[0][0]
-    expect(JSON.parse(updated[IMAGE_OPTION_SETTINGS_ATTRIBUTE][''])).toEqual({
+    expect(JSON.parse(updated[IMAGE_OPTION_SETTINGS_ATTRIBUTE].en)).toEqual({
       A105: { width: 400 },
     })
   })
@@ -299,7 +302,7 @@ describe('image settings of image select options', () => {
     ]
     const attributes = {
       [IMAGE_OPTION_SETTINGS_ATTRIBUTE]: {
-        '': JSON.stringify({ A1: { width: 100 }, A2: { width: 200 } }),
+        en: JSON.stringify({ A1: { width: 100 }, A2: { width: 200 } }),
       },
     }
     const { result } = renderHook(
@@ -326,7 +329,7 @@ describe('image settings of image select options', () => {
     })
 
     const { attributes: updated } = handleUpdate.mock.calls[0][0]
-    expect(JSON.parse(updated[IMAGE_OPTION_SETTINGS_ATTRIBUTE][''])).toEqual({
+    expect(JSON.parse(updated[IMAGE_OPTION_SETTINGS_ATTRIBUTE].en)).toEqual({
       A1: { width: 100 },
       A20: { width: 200 },
     })
@@ -342,14 +345,14 @@ describe('image settings of image select options', () => {
     const { answers: updatedAnswers, attributes } =
       handleUpdate.mock.calls[0][0]
     expect(updatedAnswers.map((answer) => answer.code)).toEqual(['A2'])
-    expect(JSON.parse(attributes[IMAGE_OPTION_SETTINGS_ATTRIBUTE][''])).toEqual(
-      { A2: { width: 200 } }
-    )
+    expect(JSON.parse(attributes[IMAGE_OPTION_SETTINGS_ATTRIBUTE].en)).toEqual({
+      A2: { width: 200 },
+    })
     expect(attributes[IMAGE_OPTION_ALT_ATTRIBUTE].en).toBe('')
     expect(getAttributeOperation()).toBeDefined()
   })
 
-  test('a new image resets the image settings of the option', () => {
+  test('a new image resets the image settings of the option in its language only', () => {
     const { result, handleUpdate, answers } = renderChildren(
       'image_select-listradio'
     )
@@ -366,10 +369,17 @@ describe('image settings of image select options', () => {
     expect(updatedAnswers[0].l10ns.en.answer).toBe(
       '/upload/surveys/1/images/new.jpg'
     )
-    expect(JSON.parse(attributes[IMAGE_OPTION_SETTINGS_ATTRIBUTE][''])).toEqual(
-      { A2: { width: 200 } }
-    )
+    expect(JSON.parse(attributes[IMAGE_OPTION_SETTINGS_ATTRIBUTE].en)).toEqual({
+      A2: { width: 200 },
+    })
     expect(attributes[IMAGE_OPTION_ALT_ATTRIBUTE].en).toBe('')
+    // The German image didn't change: Its settings stay.
+    expect(JSON.parse(attributes[IMAGE_OPTION_SETTINGS_ATTRIBUTE].de)).toEqual({
+      A1: { width: 400 },
+    })
+    expect(
+      getAttributeOperation().props[IMAGE_OPTION_SETTINGS_ATTRIBUTE]
+    ).toEqual({ en: JSON.stringify({ A2: { width: 200 } }) })
   })
 
   test('the same image keeps the image settings', () => {
