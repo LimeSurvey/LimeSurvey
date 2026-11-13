@@ -117,7 +117,9 @@
             {# Announce the search result (number of results or no result) #}
             var $searchStatus = $('#answer{{ name }}-search-status');
             {# Unescaped : used with .text() #}
-            var resultsText = {{ json_encode(gT('Number of results: %s', 'unescaped')) }};
+            {# Same strings and singular handling as the responses statistics in the editor #}
+            var oneResultText = {{ json_encode(gT('1 result found', 'unescaped')) }};
+            var resultsText = {{ json_encode(gT('%s results found', 'unescaped')) }};
             var noResultsText = {{ json_encode(gT('No results matched %s', 'unescaped')) }};
             var searchStatusTimer = null;
             {# No results message as a paragraph outside the listbox, replace the plugin <li class="no-results"> #}
@@ -135,7 +137,13 @@
                 searchStatusTimer = setTimeout(function () {
                     var message = '';
                     if (search !== '') {
-                        message = count ? resultsText.replace('%s', count) : noResultsMessage;
+                        if (count === 0) {
+                            message = noResultsMessage;
+                        } else if (count === 1) {
+                            message = oneResultText;
+                        } else {
+                            message = resultsText.replace('%s', count);
+                        }
                     }
                     $searchStatus.text(message);
                 }, 500);
