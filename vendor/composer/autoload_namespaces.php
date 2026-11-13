@@ -7,4 +7,6 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Zend_' => array($vendorDir . '/shardj/zf1-future/library'),
+    'PHPMD\\' => array($vendorDir . '/phpmd/phpmd/src/main/php'),
+    'JsonMapper' => array($vendorDir . '/netresearch/jsonmapper/src'),
 );

@@ -350,6 +350,23 @@ export class OperationsBuffer {
     return true
   }
 
+  // Discards all queued answer changes of a question
+  removeAnswers = (qid) => {
+    this.operations = this.operations.filter(
+      (operation) =>
+        !(operation.id == qid && operation.entity === Entities.answer)
+    )
+
+    const createOperation = this.getOperation(
+      qid,
+      Operations.create,
+      Entities.question
+    )
+    if (createOperation?.props?.answers) {
+      createOperation.props.answers = []
+    }
+  }
+
   findIndex = (id, op, entity) => {
     return this.operations.findIndex((item) => {
       return (

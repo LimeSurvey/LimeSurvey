@@ -2,7 +2,7 @@ import { useCallback } from 'react'
 import { useQuery } from '@tanstack/react-query'
 
 import { queryClient } from 'queryClient'
-import { OperationsBuffer, STATES } from 'helpers'
+import { Entities, OperationsBuffer, STATES } from 'helpers'
 
 import { useErrors } from './useErrors'
 
@@ -64,22 +64,20 @@ export const useBuffer = () => {
     removeError(operation.id, operation.entity)
   }
 
-  // Removes all queued operations of an entity
-  const removeFromBuffer = (id, entity) => {
-    const operations = queryClient.getQueryData([STATES.BUFFER]) ?? []
-    const keptOperations = operations.filter(
-      (operation) => !(operation.id == id && operation.entity === entity)
+  // Discards all queued answer changes of a question
+  const removeAnswersFromBuffer = (qid) => {
+    const operationBuffer = new OperationsBuffer(
+      queryClient.getQueryData([STATES.BUFFER])
     )
-    if (keptOperations.length !== operations.length) {
-      setBuffer(keptOperations)
-    }
-    removeError(id, entity)
+    operationBuffer.removeAnswers(qid)
+    setBuffer(operationBuffer.getOperations())
+    removeError(qid, Entities.answer)
   }
 
   return {
     operationsBuffer: new OperationsBuffer(data, hash),
     addToBuffer,
-    removeFromBuffer,
+    removeAnswersFromBuffer,
     clearBuffer,
     setBuffer,
   }

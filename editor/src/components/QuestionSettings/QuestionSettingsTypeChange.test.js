@@ -29,7 +29,7 @@ const mockSurvey = {
 }
 const mockUpdate = jest.fn()
 const mockAddToBuffer = jest.fn()
-const mockRemoveFromBuffer = jest.fn()
+const mockRemoveAnswersFromBuffer = jest.fn()
 let mockOperations = []
 
 jest.mock('hooks/useSurvey', () => ({
@@ -47,7 +47,7 @@ jest.mock('hooks/useFocused', () => ({
 jest.mock('hooks/useBuffer', () => ({
   useBuffer: () => ({
     addToBuffer: mockAddToBuffer,
-    removeFromBuffer: mockRemoveFromBuffer,
+    removeAnswersFromBuffer: mockRemoveAnswersFromBuffer,
     operationsBuffer: {
       getOperation: (id, op, entity) =>
         mockOperations.find(
@@ -93,7 +93,7 @@ describe('QuestionSettings type change', () => {
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
     expect(updatedQuestion().type).toBe('!')
     expect(updatedQuestion().answers).toHaveLength(2)
-    expect(mockRemoveFromBuffer).not.toHaveBeenCalled()
+    expect(mockRemoveAnswersFromBuffer).not.toHaveBeenCalled()
   })
 
   test('changes the type without asking when there are no answer options', async () => {
@@ -103,7 +103,7 @@ describe('QuestionSettings type change', () => {
 
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
     expect(updatedQuestion().type).toBe('S')
-    expect(mockRemoveFromBuffer).not.toHaveBeenCalled()
+    expect(mockRemoveAnswersFromBuffer).not.toHaveBeenCalled()
     expect(
       queryClient.getQueryData(['appState', STATES.SURVEY_REFRESH_REQUIRED])
     ).not.toBe(true)
@@ -135,7 +135,7 @@ describe('QuestionSettings type change', () => {
 
     expect(updatedQuestion().type).toBe('S')
     expect(updatedQuestion().answers).toEqual([])
-    expect(mockRemoveFromBuffer).toHaveBeenCalledWith(10, 'answer')
+    expect(mockRemoveAnswersFromBuffer).toHaveBeenCalledWith(10)
     expect(mockAddToBuffer).toHaveBeenCalledWith(
       expect.objectContaining({
         id: 10,

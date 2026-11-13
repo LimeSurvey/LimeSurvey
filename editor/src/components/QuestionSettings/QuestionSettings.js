@@ -9,7 +9,6 @@ import {
   getDisabledQuestionTypes,
   errorToast,
   isTempId,
-  Entities,
 } from 'helpers'
 import { useAppState, useBuffer, useFocused, useSurvey } from 'hooks'
 import { SideBarHeader } from 'components/SideBar'
@@ -35,7 +34,7 @@ export const QuestionSettings = ({ surveyId }) => {
     { isAdvanced: false }
   )
   const { survey, update, language } = useSurvey(surveyId)
-  const { addToBuffer, removeFromBuffer } = useBuffer()
+  const { addToBuffer, removeAnswersFromBuffer } = useBuffer()
   const [conditionDesignerPanels, setConditionDesignerPanels] = useState({
     isConditionPanelOpen: false,
     isExpressionScriptPanelOpen: false,
@@ -248,7 +247,7 @@ export const QuestionSettings = ({ surveyId }) => {
       } else if (deletesAnswerOptions) {
         // The server deletes the answer options and their conditions: Drop queued answer
         // changes, and reload after saving so other questions' conditions are current
-        removeFromBuffer(updatedQuestion.qid, Entities.answer)
+        removeAnswersFromBuffer(updatedQuestion.qid)
         handleUpdate({ ...updatedQuestion, ...value, answers: [] })
         setSurveyRefreshRequired(true)
       } else {
