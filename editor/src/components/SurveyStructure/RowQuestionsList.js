@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { useParams } from 'react-router-dom'
 import { Draggable, Droppable } from '@hello-pangea/dnd'
 import classNames from 'classnames'
 
@@ -34,10 +33,7 @@ export const RowQuestionsList = ({
   const { focused = {}, setFocused, unFocus } = useFocused()
   const [deleteState, setDeleteState] = useState({ show: false, index: null })
   const [isSurveyActive] = useAppState(STATES.IS_SURVEY_ACTIVE, false)
-  const { surveyId } = useParams()
-  // Read once per list instead of per row to avoid a subscription per question
-  const { areCodesVisible, toggleQuestionCodes } =
-    useToggleQuestionCodes(surveyId)
+  const { areCodesVisible, toggleQuestionCodes } = useToggleQuestionCodes()
 
   const getQuestionDragStyle = (draggableStyle) => ({
     userSelect: 'none',

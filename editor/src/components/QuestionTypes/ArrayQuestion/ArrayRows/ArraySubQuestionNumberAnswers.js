@@ -1,7 +1,6 @@
 import classNames from 'classnames'
 import { Select } from 'components/UIComponents'
-import { useParams } from 'react-router-dom'
-import { useSurvey } from '../../../../hooks'
+import { useToggleQuestionCodes } from '../../../../hooks'
 
 export const ArraySubQuestionNumberAnswers = ({
   index,
@@ -12,9 +11,7 @@ export const ArraySubQuestionNumberAnswers = ({
   showBackgroundUnderSubQuestion = false,
   isFocused,
 }) => {
-  const { surveyId } = useParams()
-  const { survey } = useSurvey(surveyId)
-  const showQNumCode = survey.showQNumCode
+  const { areCodesVisible } = useToggleQuestionCodes()
 
   const options = [
     { value: '...', label: '...' },
@@ -36,13 +33,13 @@ export const ArraySubQuestionNumberAnswers = ({
       )}
       style={{
         minHeight: (subQuestionsHeight[subQuestionindex] || 0) + 10,
-        width: `${arrayAnswersWidth[index] + (isFocused && showQNumCode?.showNumber ? 80 : dragIconSize * 2)}px`,
+        width: `${arrayAnswersWidth[index] + (isFocused && areCodesVisible ? 80 : dragIconSize * 2)}px`,
       }}
     >
       <span
         onClick={(e) => e.stopPropagation()}
         style={{
-          width: `${arrayAnswersWidth[index] + (isFocused && showQNumCode?.showNumber ? 60 : dragIconSize)}px`,
+          width: `${arrayAnswersWidth[index] + (isFocused && areCodesVisible ? 60 : dragIconSize)}px`,
         }}
       >
         <Select options={options} />

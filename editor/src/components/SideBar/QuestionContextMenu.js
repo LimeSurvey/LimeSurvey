@@ -1,10 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { OverlayTrigger } from 'react-bootstrap'
-import { useParams } from 'react-router-dom'
 import copy from 'copy-text-to-clipboard'
 
-import { useBuffer, useSurvey } from 'hooks'
-import { createBufferOperation } from 'helpers'
+import { useToggleQuestionCodes } from 'hooks'
 import { ShortcutIcon } from 'components/icons'
 
 export const QuestionContextMenu = ({
@@ -16,9 +14,7 @@ export const QuestionContextMenu = ({
   setContextMenu,
 }) => {
   const [goToMenu, setGoToMenu] = useState(false)
-  const { surveyId } = useParams()
-  const { survey, update } = useSurvey(surveyId)
-  const { addToBuffer } = useBuffer()
+  const { toggleQuestionCodes } = useToggleQuestionCodes()
 
   const buttons = [
     {
@@ -27,17 +23,7 @@ export const QuestionContextMenu = ({
       shortcut: 'H',
       onClick: (e) => {
         e.stopPropagation()
-        let operationAttr = {
-          showQNumCode: {
-            showCode: !survey.showQNumCode?.showCode,
-            showNumber: !survey.showQNumCode?.showNumber,
-          },
-        }
-        update(operationAttr)
-        let operation = createBufferOperation(surveyId)
-          .survey()
-          .update(operationAttr)
-        addToBuffer(operation)
+        toggleQuestionCodes()
         setContextMenu({ position: { x: 0, y: 0 }, toggled: false })
       },
     },
