@@ -30,6 +30,7 @@ const mockSurvey = {
 const mockUpdate = jest.fn()
 const mockAddToBuffer = jest.fn()
 const mockRemoveFromBuffer = jest.fn()
+let mockOperations = []
 
 jest.mock('hooks/useSurvey', () => ({
   useSurvey: () => ({ survey: mockSurvey, update: mockUpdate, language: 'en' }),
@@ -47,6 +48,15 @@ jest.mock('hooks/useBuffer', () => ({
   useBuffer: () => ({
     addToBuffer: mockAddToBuffer,
     removeFromBuffer: mockRemoveFromBuffer,
+    operationsBuffer: {
+      getOperation: (id, op, entity) =>
+        mockOperations.find(
+          (operation) =>
+            operation.id === id &&
+            operation.op === op &&
+            operation.entity === entity
+        ),
+    },
   }),
 }))
 
@@ -63,6 +73,7 @@ const updatedQuestion = () =>
 describe('QuestionSettings type change', () => {
   beforeEach(async () => {
     jest.clearAllMocks()
+    mockOperations = []
     mockSurvey.questionGroups[0].questions[0] = { ...question }
     queryClient.setQueryData(
       ['appState', STATES.HAS_SURVEY_UPDATE_PERMISSION],
@@ -131,5 +142,20 @@ describe('QuestionSettings type change', () => {
         props: expect.objectContaining({ type: 'S' }),
       })
     )
+  })
+
+  test('locks the type while a type change is waiting to be saved', async () => {
+    mockOperations = [
+      {
+        id: 10,
+        op: 'update',
+        entity: 'question',
+        props: { type: 'S', questionThemeName: 'shortfreetext' },
+      },
+    ]
+    await renderWithProviders(<QuestionSettings surveyId={1} />)
+
+    const typeButtons = screen.getAllByTestId('question-type')
+    expect(within(typeButtons.at(-1)).getByRole('button')).toBeDisabled()
   })
 })

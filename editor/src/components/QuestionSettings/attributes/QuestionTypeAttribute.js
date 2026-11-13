@@ -1,7 +1,7 @@
 import { Button, Form, OverlayTrigger, Popover } from 'react-bootstrap'
 import { useState } from 'react'
-import { useAppState } from 'hooks'
-import { STATES } from 'helpers'
+import { useAppState, useBuffer, useFocused } from 'hooks'
+import { Entities, Operations, STATES } from 'helpers'
 
 import { QuestionTypeSelector } from 'components/QuestionTypeSelector'
 import { ArrowDownIcon } from 'components/icons'
@@ -17,8 +17,18 @@ export const QuestionTypeAttribute = ({
   const [hasSurveyUpdatePermission] = useAppState(
     STATES.HAS_SURVEY_UPDATE_PERMISSION
   )
+  const { operationsBuffer } = useBuffer()
+  const { focused } = useFocused()
+  // Locked until a queued type change is sent, so a second change can't merge into it
+  const isTypeChangeQueued = !!operationsBuffer?.getOperation(
+    focused?.qid,
+    Operations.update,
+    Entities.question
+  )?.props?.type
   const disabled =
-    (isSurveyActive && activeDisabled) || !hasSurveyUpdatePermission
+    (isSurveyActive && activeDisabled) ||
+    !hasSurveyUpdatePermission ||
+    isTypeChangeQueued
 
   const questionTypeSelectorPopover = (
     <Popover
