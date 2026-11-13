@@ -19,9 +19,11 @@ class FileUploadService
     }
 
     /**
-     * @param int|string $surveyId
-     * @param array $fileInfoArray
-     * @return array|false[]
+     * Validates an uploaded image and saves it in the survey's images folder.
+     * @param int|string $surveyId Survey ID
+     * @param array $fileInfoArray Uploaded file, $_FILES format with key "file"
+     * @return array Upload result, with the image's filePath and previewUrl under "uploaded"
+     * @throws PermissionDeniedException
      */
     public function storeSurveyImage($surveyId, array $fileInfoArray)
     {
@@ -47,22 +49,13 @@ class FileUploadService
             $destinationDir
         );
 
-        $baseUrl = $this->rTrimPathSeparators(App()->getBaseUrl(true));
-        $returnedData['uploaded']['filePath'] = $this->convertFullIntoRelativePath(
-            $returnedData['debug'][2]
-        );
-        $returnedData['uploaded']['fileUrl'] = $baseUrl . '/'
-            . $returnedData['debug'][2];
-        $returnedData['uploaded']['previewPath'] = $this->getPreviewPath(
-            $returnedData['uploaded']['filePath']
-        );
-        $returnedData['uploaded']['previewUrl'] = $baseUrl . '/'
-            . $returnedData['uploaded']['filePath'];
+        // Includes the install subfolder, like the classic editor
+        $filePath = $this->getSurveyUploadUrl($surveyId) . '/' . $returnedData['fileName'];
+        $returnedData['uploaded'] = [
+            'filePath' => $filePath,
+            'previewUrl' => $this->toAbsoluteUrl($filePath),
+        ];
         unset($returnedData['debug']);
-        $returnedData['allFilesInDir'] = $this->getFilesPathsFromDirectory(
-            $destinationDir,
-            $surveyId
-        );
 
         return $returnedData;
     }
@@ -125,6 +118,32 @@ class FileUploadService
         }
 
         return $this->rTrimPathSeparators($surveyDir . '/' . $directoryName);
+    }
+
+    /**
+     * Returns the URL of a survey's upload folder.
+     * @param int|string $surveyId Survey ID, or "uniq"
+     * @param string $directoryName Folder name
+     * @return string URL like "/limesurvey/upload/surveys/123/images"
+     */
+    private function getSurveyUploadUrl($surveyId, string $directoryName = 'images')
+    {
+        return $this->rTrimPathSeparators((string) App()->getConfig('uploadurl'))
+            . '/surveys/' . $surveyId . '/' . $directoryName;
+    }
+
+    /**
+     * Adds the current host to a URL without one.
+     * @param string $url URL like "/upload/a.png"
+     * @return string URL like "https://example.org/upload/a.png"
+     */
+    private function toAbsoluteUrl(string $url)
+    {
+        $parsedUrl = parse_url($url);
+        if (isset($parsedUrl['host'])) {
+            return $url;
+        }
+        return App()->getRequest()->getHostInfo() . $url;
     }
 
     /**
@@ -257,95 +276,6 @@ class FileUploadService
         return $surveyId;
     }
 
-    /**
-     * Get all fileNames from a directory
-     * @param string $directory
-     * @param int $surveyId
-     * @return array
-     */
-    private function getFilesFromDirectory(string $directory, int $surveyId)
-    {
-        $files = [];
-        if (!is_dir($directory)) {
-            return $files;
-        }
-
-        $items = scandir($directory);
-        foreach ($items as $item) {
-            if ($item === '.' || $item === '..') {
-                continue;
-            }
-            $path = $directory . '/' . $item;
-            if (is_file($path)) {
-                $files[] = $item;
-            } elseif (is_dir($path)) {
-                $subFiles = $this->getFilesFromDirectory(
-                    $path,
-                    $surveyId,
-                    false
-                );
-                foreach ($subFiles as $subFile) {
-                    $files[] = $item . '/' . $subFile;
-                }
-            }
-        }
-
-        return $files;
-    }
-
-    /**
-     * Retrieves files from a directory and returns them in an associative array
-     * with filePath and previewPath for every single file.
-     * @param string $directory
-     * @param int $surveyId
-     * @return array
-     */
-    private function getFilesPathsFromDirectory(
-        string $directory,
-        int $surveyId
-    ) {
-        $baseUrl = $this->rTrimPathSeparators(App()->getBaseUrl(true));
-        $relativePath = $this->convertFullIntoRelativePath($directory);
-        $files = $this->getFilesFromDirectory($directory, $surveyId);
-        foreach ($files as $i => $file) {
-            $filesOutput[$i]['filePath'] = $relativePath . '/' . $file;
-            $filesOutput[$i]['fileUrl'] = $baseUrl . '/' .  $relativePath . '/' . $file;
-            $filesOutput[$i]['previewPath'] = $this->getPreviewPath(
-                $relativePath . '/' . $file
-            );
-            $filesOutput[$i]['previewUrl'] = $baseUrl . '/' . $relativePath . '/' . $file;
-        }
-
-        return $filesOutput;
-    }
-
-    /**
-     * Removes the configured "uploaddir" part from the path which
-     * results in the relative path.
-     * Paths are normalized to forward slashes first, so the result is a
-     * web-compatible path even when generated on Windows (where native
-     * paths use backslashes).
-     * @param string $filePath
-     * @return string
-     */
-    private function convertFullIntoRelativePath(string $filePath)
-    {
-        $normalizedFilePath = str_replace('\\', '/', $filePath);
-        $normalizedUploadPath = str_replace('\\', '/', $this->getUploadPath());
-        return $this->rTrimPathSeparators(
-            substr($normalizedFilePath, strlen($normalizedUploadPath))
-        );
-    }
-
-    private function getUploadPath()
-    {
-        return $this->rTrimPathSeparators(
-            dirname(App()->getConfig(
-                'uploaddir'
-            ))
-        );
-    }
-
     private function rTrimPathSeparators($path)
     {
         return rtrim($path, '/\\');
@@ -359,16 +289,6 @@ class FileUploadService
                 return $this->rTrimPathSeparators($part);
             }, $parts)
         );
-    }
-
-    /**
-     * Logic will be added later, for images previewPath is the same as filePath
-     * @param string $filePath
-     * @return string
-     */
-    private function getPreviewPath(string $filePath)
-    {
-        return $filePath;
     }
 
     /**
