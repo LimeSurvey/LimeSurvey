@@ -341,9 +341,30 @@ export class OperationsBuffer {
 
   removeOperation = (id, op, entity) => {
     const operationIndex = this.findIndex(id, op, entity)
+    // splice(-1) would remove the last operation
+    if (operationIndex === -1) {
+      return false
+    }
     this.operations = arrayDeleteItem(this.operations, operationIndex)[0]
 
-    return operationIndex !== -1
+    return true
+  }
+
+  // Discards all queued answer changes of a question
+  removeAnswers = (qid) => {
+    this.operations = this.operations.filter(
+      (operation) =>
+        !(operation.id == qid && operation.entity === Entities.answer)
+    )
+
+    const createOperation = this.getOperation(
+      qid,
+      Operations.create,
+      Entities.question
+    )
+    if (createOperation?.props?.answers) {
+      createOperation.props.answers = []
+    }
   }
 
   findIndex = (id, op, entity) => {

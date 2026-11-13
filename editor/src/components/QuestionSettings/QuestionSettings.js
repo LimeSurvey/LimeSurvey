@@ -14,9 +14,11 @@ import { useAppState, useBuffer, useFocused, useSurvey } from 'hooks'
 import { SideBarHeader } from 'components/SideBar'
 import { CloseIcon } from 'components/icons'
 import { ToggleButtons } from 'components/UIComponents'
+import { ConfirmModal } from 'components/Modals'
 
 import { Setting } from './Setting'
 import { getQuestionSettings } from './getQuestionSettings'
+import { typeChangeKeepsAnswerOptions } from './typeChangeKeepsAnswerOptions'
 import { getQuestionTypeInfo } from '../QuestionTypes'
 import { ScenarioList } from 'components/ConditionDesigner/ScenarioList'
 import { ConditionDesigner } from 'components/ConditionDesigner/ConditionDesigner'
@@ -32,7 +34,7 @@ export const QuestionSettings = ({ surveyId }) => {
     { isAdvanced: false }
   )
   const { survey, update, language } = useSurvey(surveyId)
-  const { addToBuffer } = useBuffer()
+  const { addToBuffer, removeAnswersFromBuffer } = useBuffer()
   const [conditionDesignerPanels, setConditionDesignerPanels] = useState({
     isConditionPanelOpen: false,
     isExpressionScriptPanelOpen: false,
@@ -46,6 +48,8 @@ export const QuestionSettings = ({ surveyId }) => {
   // holds the scenario ID currently has a new conditions (waiting for temp condition IDs to be replaced)
   const [pendingScenarioName, setPendingScenarioName] = useState(null)
   const [expandedAdvancedSections, setExpandedAdvancedSections] = useState({})
+  // Type change waiting for confirmation: { qid, value }
+  const [pendingTypeChange, setPendingTypeChange] = useState(null)
 
   const {
     focused = {},
@@ -57,6 +61,7 @@ export const QuestionSettings = ({ surveyId }) => {
 
   useEffect(() => {
     closeConditionDesignerPanels()
+    setPendingTypeChange(null)
   }, [focused?.qid])
 
   const questionSettings = useMemo(() => {
@@ -185,12 +190,33 @@ export const QuestionSettings = ({ surveyId }) => {
     })
   }
 
-  const updateAttribute = (value, isAttribute = true) => {
+  // Updates the question and queues the patch
+  const updateAttribute = (
+    value,
+    isAttribute = true,
+    isTypeChangeConfirmed = false
+  ) => {
     const question =
       survey?.questionGroups?.[groupIndex]?.questions?.[questionIndex]
 
     if (!question) {
       errorToast('Invalid question group or question')
+      return
+    }
+
+    const isTypeChange =
+      !isAttribute && !!value.type && value.type !== question.type
+    const hasAnswerOptions = question.answers?.length > 0
+    const keepsAnswerOptions = typeChangeKeepsAnswerOptions(
+      survey.answerOptionLayouts,
+      question.type,
+      value.type
+    )
+    const deletesAnswerOptions =
+      isTypeChange && hasAnswerOptions && !keepsAnswerOptions
+
+    if (deletesAnswerOptions && !isTypeChangeConfirmed) {
+      setPendingTypeChange({ qid: question.qid, value })
       return
     }
 
@@ -218,6 +244,12 @@ export const QuestionSettings = ({ surveyId }) => {
           updatedQuestion.attributes
         )
         setSurveyRefreshRequired(true)
+      } else if (deletesAnswerOptions) {
+        // The server deletes the answer options and their conditions: Drop queued answer
+        // changes, and reload after saving so other questions' conditions are current
+        removeAnswersFromBuffer(updatedQuestion.qid)
+        handleUpdate({ ...updatedQuestion, ...value, answers: [] })
+        setSurveyRefreshRequired(true)
       } else {
         handleUpdate({ ...updatedQuestion, ...value })
       }
@@ -232,6 +264,17 @@ export const QuestionSettings = ({ surveyId }) => {
         })
 
       addToBuffer(operation)
+    }
+  }
+
+  // Applies the confirmed type change if its question is still focused
+  const confirmTypeChange = () => {
+    const { qid, value } = pendingTypeChange
+    setPendingTypeChange(null)
+    const question =
+      survey?.questionGroups?.[groupIndex]?.questions?.[questionIndex]
+    if (question?.qid === qid) {
+      updateAttribute(value, false, true)
     }
   }
 
@@ -283,6 +326,15 @@ export const QuestionSettings = ({ surveyId }) => {
       data-testid="question-settings"
       id="sidebar-question-settings"
     >
+      <ConfirmModal
+        show={!!pendingTypeChange}
+        onHide={() => setPendingTypeChange(null)}
+        onConfirm={confirmTypeChange}
+        title={t('Change question type')}
+        description={t(
+          'Changing the question type will delete its answer options and any conditions on them.'
+        )}
+      />
       <SideBarHeader className="right-side-bar-header primary">
         <div
           onClick={handleOnQuestionCodeClick}
