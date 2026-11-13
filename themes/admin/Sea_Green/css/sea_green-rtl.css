@@ -18188,8 +18188,26 @@ ol.breadcrumb.title-bar-breadcrumb a:active {
   .navbar .navbar-nav .nav-link {
     padding: 0.25rem 0.5rem;
   }
-  .navbar #small-screens-menus {
-    display: none !important;
+}
+@media screen and (max-width: 767.98px) {
+  .navbar .navbar-nav {
+    padding-right: 8px;
+    padding-bottom: 8px;
+    gap: 0;
+  }
+  .navbar .navbar-nav > li.nav-item {
+    height: auto;
+    min-height: 44px;
+    flex-wrap: wrap;
+  }
+  .navbar .navbar-nav .dropdown-menu,
+  .navbar .navbar-nav #notification-outer-ul,
+  .navbar .navbar-nav #notification-inner-ul {
+    width: 100%;
+    max-width: 100%;
+  }
+  .navbar .navbar-nav #notification-outer-ul a {
+    white-space: normal;
   }
 }
 .card .card-header {

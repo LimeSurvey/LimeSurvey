@@ -15,7 +15,8 @@ $colClassRight = $hasPathUrlFormat ? 'col-md-7' : 'col-md-6 pt-3';
 $slidesJson = htmlspecialchars(json_encode($slides), ENT_QUOTES, 'UTF-8');
 ?>
 <!-- Modal to activate/deactivate the react question editor -->
-<div id="activate_editor" class="modal fade" role="dialog"
+<div id="activate_editor" class="modal fade" role="dialog" aria-modal="true"
+     aria-labelledby="activateEditorModalTitle activateEditorModalTitle-dialogsr"
      data-slides="<?= $slidesJson ?>"
      data-image-alt="<?= CHtml::encode(gT('Screenshot of %s', 'unescaped')) ?>">
     <div class="modal-dialog modal-xl">
@@ -39,9 +40,11 @@ $slidesJson = htmlspecialchars(json_encode($slides), ENT_QUOTES, 'UTF-8');
                         <div class="<?= $colClassLeft ?>">
                             <div class="card-body ps-4 pe-4">
                                 <div class="card-body-top">
-                                    <h2 class="card-title reg-24 mb-16">
+                                    <h2 class="card-title reg-24 mb-16" id="activateEditorModalTitle">
                                     <?= gT('Welcome to the new LimeSurvey') ?>
                                     </h2>
+                                    <?php // Only read as part of the dialog name ("…, Dialog"), see modal_header.php ?>
+                                    <span class="visually-hidden" id="activateEditorModalTitle-dialogsr" aria-hidden="true"><?= gT('Dialog') ?></span>
                                     <!-- Slide description (injected by JS) -->
                                     <div class="editor-slider-description-wrap mb-16">
                                         <p class="editor-slider-description reg-14"></p>
