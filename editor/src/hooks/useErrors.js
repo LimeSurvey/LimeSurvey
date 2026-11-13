@@ -63,7 +63,10 @@ export const useErrors = () => {
 
   const organizeErrors = (data) => {
     let errorInfo = {}
-    let errorMessages = extractStrings(data, ['id', 'entity', 'context', 'op'])
+    // Each message once, e.g. when several operations failed with the same error
+    let errorMessages = [
+      ...new Set(extractStrings(data, ['id', 'entity', 'context', 'op'])),
+    ]
 
     data.forEach((item) => {
       const { id, entity, error } = item

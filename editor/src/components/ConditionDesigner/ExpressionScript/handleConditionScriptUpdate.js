@@ -15,7 +15,7 @@ export const handleConditionScriptUpdate = (
 
   if (
     QUESTION_RELEVANCE_DEFAULT_VALUE !== script.trim() &&
-    script.trim() === question.relevance.trim()
+    script.trim() === (question.relevance ?? '').trim()
   )
     return
 

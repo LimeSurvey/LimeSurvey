@@ -152,6 +152,13 @@ export const SurveyLogicProvider = ({ children }) => {
      * update save status, and invalidate responses even if no operations applied.
      */
     const thenCallback = (result) => {
+      // A failed request resolves with the error instead of a save result:
+      // Keep its operations for a retry, like a thrown error
+      if (typeof result?.operationsApplied !== 'number') {
+        catchCallback(result ?? {})
+        return
+      }
+
       const survey = queryClient.getQueryData([STATES.SURVEY]).survey
       const focused = queryClient.getQueryData([STATES.FOCUSED_ENTITY]).focused
       const currentBuffer = new OperationsBuffer(
@@ -358,12 +365,18 @@ export const SurveyLogicProvider = ({ children }) => {
         )
       }
 
-      setErrorsFromPatchResponse([...updatedOperation])
+      // Mark the failed operations with the error message only: Their props are no messages
+      setErrorsFromPatchResponse(
+        updatedOperation.map(({ id, entity, op }) => ({
+          id,
+          entity,
+          op,
+          error: error.message,
+        }))
+      )
       setSaveState(
         `Error happened ${dayJsHelper(new Date().getTime()).format('hh:mm')}`
       )
-
-      errorToast(error.message)
     }
 
     const finallyCallback = () => {

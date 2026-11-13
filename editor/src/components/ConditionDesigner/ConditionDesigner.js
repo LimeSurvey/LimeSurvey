@@ -3,14 +3,15 @@ import classNames from 'classnames'
 import { PlusLg } from 'react-bootstrap-icons'
 
 import { Button, Input } from 'components'
-import { useBuffer, useFocused, useConditionDesigner } from 'hooks'
+import {
+  useBuffer,
+  useFocused,
+  useConditionDesigner,
+  setFocusLeaveGuard,
+} from 'hooks'
 import { SideBarHeader } from 'components/SideBar'
 import { ArrowLeftIcon } from 'components/icons'
-import {
-  getQuestionById,
-  isTempId,
-  QUESTION_RELEVANCE_DEFAULT_VALUE,
-} from 'helpers'
+import { getQuestionById, isTempId, isDefaultRelevance } from 'helpers'
 
 import { previousQuestionsHandler } from './handlers/previousQuestions/previousQuestionsHandler'
 import { ConditionItem } from './ConditionItem'
@@ -32,6 +33,19 @@ const scenarioActions = {
   UPDATE: 'update', // when updating an existing scenario
 }
 
+/**
+ * Returns the number for a new scenario of the question: One more than its
+ * highest scenario, 1 if it has none.
+ *
+ * @param {object|undefined} question The question the condition is for.
+ * @returns {number} The scenario number to start with.
+ */
+export const getNextScenarioId = (question) =>
+  (question?.scenarios ?? []).reduce(
+    (highest, scenario) => Math.max(highest, Number(scenario.scid) || 0),
+    0
+  ) + 1
+
 export const ConditionDesigner = ({
   survey,
   update,
@@ -46,7 +60,10 @@ export const ConditionDesigner = ({
     return getQuestionById(focused.qid, survey)?.question
   }, [focused.qid, survey])
 
-  const [scid, setScid] = useState(scenarioToPatch ? scenarioToPatch.scid : 1)
+  // A new logic starts a new scenario: The one after the highest existing scenario
+  const [scid, setScid] = useState(() =>
+    scenarioToPatch ? scenarioToPatch.scid : getNextScenarioId(question)
+  )
 
   const previousQuestions = useMemo(() => {
     return previousQuestionsHandler(language, survey, groupIndex, questionIndex)
@@ -64,8 +81,7 @@ export const ConditionDesigner = ({
   const [isApplyButtonDisabled, setIsApplyButtonDisabled] = useState(true)
 
   const shouldConfirmOverwrite =
-    question.scenarios.length === 0 &&
-    question.relevance !== QUESTION_RELEVANCE_DEFAULT_VALUE
+    question.scenarios.length === 0 && !isDefaultRelevance(question.relevance)
 
   const hasShownWarningRef = useRef(false)
 
@@ -147,6 +163,26 @@ export const ConditionDesigner = ({
     }
   }
 
+  // Ask before the focus moves to another question while there are unsaved changes
+  const leaveGuardRef = useRef()
+  leaveGuardRef.current = (proceed) => {
+    if (hasUnsavedChanges(conditions, scenarioToPatch, scid, isUpdateAction)) {
+      showUnsavedChangesOverlay(
+        proceed,
+        t(
+          'You are about to leave this question without saving your changes on this scenario. Do you want to proceed?'
+        )
+      )
+    } else {
+      proceed()
+    }
+  }
+
+  useEffect(
+    () => setFocusLeaveGuard((proceed) => leaveGuardRef.current(proceed)),
+    []
+  )
+
   useEffect(() => {
     const shouldDisable =
       !isValidScenario ||
@@ -168,6 +204,7 @@ export const ConditionDesigner = ({
               className="d-flex align-items-center p-0"
               variant="btn bg-transparent border-0 shadow-none p-0"
               onClick={handleBackClick}
+              ariaLabel={t('Back')}
             >
               <ArrowLeftIcon className="text-black" />
             </Button>

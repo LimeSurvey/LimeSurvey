@@ -15,6 +15,7 @@ export const AddScenario = ({ onShowPanel }) => {
               variant="secondary"
               className="add-condition-button d-flex align-items-center justify-content-center"
               onClick={() => onShowPanel(null, true)}
+              ariaLabel={t('New logic')}
             >
               <AddIcon className="text-white fill-current" />
             </Button>

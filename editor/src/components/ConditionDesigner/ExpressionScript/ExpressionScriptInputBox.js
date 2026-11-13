@@ -10,7 +10,7 @@ import {
   getQuestionById,
   htmlPopup,
   isTempId,
-  QUESTION_RELEVANCE_DEFAULT_VALUE,
+  isDefaultRelevance,
 } from 'helpers'
 import { Button } from 'components/UIComponents'
 import { CloseCircleIcon, ExpandIcon } from 'components/icons'
@@ -44,6 +44,11 @@ export const ExpressionScriptInputBox = ({ onShowPanel, onNavigateBack }) => {
     }
   }
 
+  const openExpressionScriptPanel = () => {
+    onShowPanel(null, false, true)
+    maybeShowConditionsOverwriteWarning()
+  }
+
   const handleApply = (newExpressionScript) => {
     handleConditionScriptUpdate(
       newExpressionScript,
@@ -61,12 +66,18 @@ export const ExpressionScriptInputBox = ({ onShowPanel, onNavigateBack }) => {
       <span
         className="text-muted text-truncate"
         style={{ cursor: 'pointer' }}
-        onClick={() => {
-          onShowPanel(null, false, true)
-          maybeShowConditionsOverwriteWarning()
+        role="button"
+        tabIndex={0}
+        aria-label={t('Expression script')}
+        onClick={openExpressionScriptPanel}
+        onKeyDown={(event) => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault()
+            openExpressionScriptPanel()
+          }
         }}
       >
-        {question?.relevance === QUESTION_RELEVANCE_DEFAULT_VALUE
+        {isDefaultRelevance(question?.relevance)
           ? t('Enter expression...')
           : question?.relevance || ''}
       </span>
@@ -74,6 +85,7 @@ export const ExpressionScriptInputBox = ({ onShowPanel, onNavigateBack }) => {
         <Button
           className="d-flex align-items-center p-0 text-secondary"
           variant="link"
+          ariaLabel={t('Edit or copy large conditions')}
           onClick={() => {
             htmlPopup({
               html: (
@@ -92,20 +104,20 @@ export const ExpressionScriptInputBox = ({ onShowPanel, onNavigateBack }) => {
         >
           <ExpandIcon />
         </Button>
-        {question?.relevance &&
-          question.relevance !== QUESTION_RELEVANCE_DEFAULT_VALUE && (
-            <Button
-              className="d-flex align-items-center p-0"
-              variant="link"
-              onClick={() => {
-                showResetAllConditionsOverlay({
-                  onConfirmDelete: () => handleApply('1'),
-                })
-              }}
-            >
-              <CloseCircleIcon />
-            </Button>
-          )}
+        {!isDefaultRelevance(question?.relevance) && (
+          <Button
+            className="d-flex align-items-center p-0"
+            variant="link"
+            ariaLabel={t('Delete all conditions')}
+            onClick={() => {
+              showResetAllConditionsOverlay({
+                onConfirmDelete: () => handleApply('1'),
+              })
+            }}
+          >
+            <CloseCircleIcon />
+          </Button>
+        )}
       </div>
     </div>
   )

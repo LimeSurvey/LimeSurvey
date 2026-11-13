@@ -3,7 +3,7 @@ import { foldGutter, foldService } from '@codemirror/language'
 import { autocompletion } from '@codemirror/autocomplete'
 
 import { ExpressionScriptEditor } from 'components/UIComponents'
-import { QUESTION_RELEVANCE_DEFAULT_VALUE, SwalAlert } from 'helpers'
+import { isDefaultRelevance, SwalAlert } from 'helpers'
 import { Button } from 'components'
 
 import {
@@ -18,10 +18,9 @@ export const ExpressionScriptEditorOverlay = ({
   onApply,
   validateExpression,
 }) => {
-  const expressionScript =
-    question?.relevance === QUESTION_RELEVANCE_DEFAULT_VALUE
-      ? ''
-      : question?.relevance || ''
+  const expressionScript = isDefaultRelevance(question?.relevance)
+    ? ''
+    : question.relevance
 
   const [content, setContent] = useState(
     makeExpressionReadable(expressionScript)

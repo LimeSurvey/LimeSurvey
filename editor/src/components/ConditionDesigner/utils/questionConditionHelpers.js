@@ -258,7 +258,7 @@ export const isValidRelevanceValue = (newRelevance, question) => {
   return (
     newRelevance.trim() === '' ||
     newRelevance === QUESTION_RELEVANCE_DEFAULT_VALUE ||
-    question.relevance.trim() === newRelevance.trim()
+    (question.relevance ?? '').trim() === newRelevance.trim()
   )
 }
 

@@ -1,3 +1,4 @@
+import { format } from 'util'
 import React, { useState } from 'react'
 
 import { Button } from 'components'
@@ -59,6 +60,11 @@ export const ConditionItem = ({
         <Button
           variant="btn bg-transparent border-0 shadow-none p-0"
           onClick={handleToggleDelete}
+          ariaLabel={
+            isUpdateAction && isDeleted
+              ? format(t('Restore condition %s'), index + 1)
+              : format(t('Delete condition %s'), index + 1)
+          }
         >
           {isUpdateAction && isDeleted ? (
             <RecoverIcon width="18" height="18" className="fill-current" />

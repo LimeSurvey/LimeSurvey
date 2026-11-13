@@ -354,10 +354,13 @@ export const replaceTempIdsInSurveyAndBuffer = (
     )
 
     if (Object.keys(entityInfo).length === 0) {
-      // eslint-disable-next-line no-console
-      console.error(
-        `Error: Could not find ${entityType} with tempId ${tempIdMap.tempId}`
-      )
+      // Expected for a condition deleted while its insert was being saved
+      if (entityType !== EntitiesType.condition) {
+        // eslint-disable-next-line no-console
+        console.error(
+          `Error: Could not find ${entityType} with tempId ${tempIdMap.tempId}`
+        )
+      }
       return
     }
 

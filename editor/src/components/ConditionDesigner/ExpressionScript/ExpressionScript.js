@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom'
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import classNames from 'classnames'
 
 import {
@@ -7,12 +7,9 @@ import {
   useExpressionScriptValidation,
   useFocused,
   useSurvey,
+  setFocusLeaveGuard,
 } from 'hooks'
-import {
-  getQuestionById,
-  isTempId,
-  QUESTION_RELEVANCE_DEFAULT_VALUE,
-} from 'helpers'
+import { getQuestionById, isTempId, isDefaultRelevance } from 'helpers'
 import { SideBarHeader } from 'components/SideBar'
 import { Button, ExpressionScriptEditor } from 'components/UIComponents'
 import { ArrowLeftIcon } from 'components/icons'
@@ -38,9 +35,7 @@ export const ExpressionScript = ({ onNavigateBack = () => {} }) => {
   )
 
   const [content, setContent] = useState(
-    question.relevance === QUESTION_RELEVANCE_DEFAULT_VALUE
-      ? ''
-      : question.relevance
+    isDefaultRelevance(question.relevance) ? '' : question.relevance
   )
 
   const handleApply = () => {
@@ -56,14 +51,31 @@ export const ExpressionScript = ({ onNavigateBack = () => {} }) => {
   }
 
   const shouldShowUnsavedAlert = () => {
-    if (
-      content.trim() === '' &&
-      question.relevance.trim() === QUESTION_RELEVANCE_DEFAULT_VALUE
-    )
+    if (content.trim() === '' && isDefaultRelevance(question.relevance))
       return false
 
-    return question.relevance.trim() !== content.trim()
+    return (question.relevance ?? '').trim() !== content.trim()
   }
+
+  // Ask before the focus moves to another question while the script is edited
+  const leaveGuardRef = useRef()
+  leaveGuardRef.current = (proceed) => {
+    if (shouldShowUnsavedAlert()) {
+      showUnsavedChangesOverlay(
+        proceed,
+        t(
+          'You are about to leave this question without saving your changes. Do you want to proceed?'
+        )
+      )
+    } else {
+      proceed()
+    }
+  }
+
+  useEffect(
+    () => setFocusLeaveGuard((proceed) => leaveGuardRef.current(proceed)),
+    []
+  )
 
   const handleApplyClick = () => {
     if (question?.scenarios.length > 0) {
@@ -87,6 +99,7 @@ export const ExpressionScript = ({ onNavigateBack = () => {} }) => {
             <Button
               className="d-flex align-items-center p-0"
               variant="btn bg-transparent border-0 shadow-none p-0"
+              ariaLabel={t('Back')}
               onClick={() => {
                 shouldShowUnsavedAlert()
                   ? showUnsavedChangesOverlay(

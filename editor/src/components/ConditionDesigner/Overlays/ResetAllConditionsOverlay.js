@@ -5,7 +5,7 @@ export const ResetAllConditionsOverlay = ({ onConfirmDelete }) => {
   return (
     <div className="condition-designer-overlay">
       <div className="condition-designer-overlay-title reg24">
-        <p>{t('Delete condition')}</p>
+        <p>{t('Delete all conditions')}</p>
       </div>
 
       <p className="condition-designer-overlay-message reg14">

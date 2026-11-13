@@ -56,9 +56,9 @@ export const ScenarioList = ({ onEditScenario }) => {
             id={`scenario-${scenario.scid}`}
             className="scenario-list-item"
           >
-            <span
-              className="fw-medium"
-              style={{ cursor: 'pointer' }}
+            <Button
+              className="fw-medium p-0 text-reset text-decoration-none"
+              variant="link"
               onClick={() =>
                 onEditScenario({
                   ...scenario,
@@ -67,7 +67,7 @@ export const ScenarioList = ({ onEditScenario }) => {
               }
             >
               {format(t('Scenario %s'), scenario.scid)}
-            </span>
+            </Button>
             <div className="d-flex gap-2">
               <Button
                 className="d-flex align-items-center p-0 text-secondary"
@@ -75,6 +75,7 @@ export const ScenarioList = ({ onEditScenario }) => {
                 onClick={() =>
                   showDeleteScenarioOverlay(scenario.scid, handleDeleteScenario)
                 }
+                ariaLabel={format(t('Delete scenario %s'), scenario.scid)}
               >
                 <CloseCircleIcon />
               </Button>

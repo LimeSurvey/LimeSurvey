@@ -33,7 +33,8 @@ export const subquestionUpdateJoi = Joi.object({
         questionThemeName: Joi.string().allow(null).optional(),
         moduleName: Joi.string().allow(null).optional(),
         gid: Joi.alternatives().try(Joi.string(), Joi.number()).required(),
-        relevance: Joi.string().required(),
+        // Empty for subquestions of imported surveys
+        relevance: Joi.string().allow('').required(),
         sameScript: Joi.boolean().allow(null).optional(),
         l10ns: Joi.object()
           .pattern(

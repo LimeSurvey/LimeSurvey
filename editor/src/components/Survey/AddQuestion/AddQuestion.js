@@ -56,6 +56,7 @@ export const AddQuestion = ({
             'add-question-button d-flex align-items-center justify-content-center'
           )}
           data-testid="add-question-button"
+          aria-label={isAddingQuestionOrGroup ? t('Close') : t('Add question')}
         >
           {isAddingQuestionOrGroup ? (
             <CloseIcon className="text-white fill-current" />

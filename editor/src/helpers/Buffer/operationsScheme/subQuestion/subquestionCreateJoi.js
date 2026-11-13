@@ -29,7 +29,7 @@ export const subquestionCreateJoi = Joi.object({
         encrypted: Joi.boolean().optional(),
         moduleName: Joi.any().allow(null),
         sameDefault: Joi.any().optional(null),
-        relevance: Joi.string().optional(),
+        relevance: Joi.string().allow('').optional(),
         sameScript: Joi.any().allow(null).optional(),
         l10ns: Joi.object()
           .pattern(
