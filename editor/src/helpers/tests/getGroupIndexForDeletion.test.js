@@ -33,6 +33,14 @@ describe('getGroupIndexForDeletion', () => {
     )
   })
 
+  test('prefers a live group over a remembered mapping for a reused temporary gid', () => {
+    const tempId = `${NEW_OBJECT_ID_PREFIX}789`
+    rememberResolvedTempId(tempId, 1)
+    // A new group got the same temporary gid again: It must not resolve to the saved group
+    const withNewGroup = [{ gid: 1 }, { gid: tempId }]
+    expect(getGroupIndexForDeletion(withNewGroup, tempId)).toBe(1)
+  })
+
   test('returns -1 without groups', () => {
     expect(getGroupIndexForDeletion(undefined, 1)).toBe(-1)
   })
