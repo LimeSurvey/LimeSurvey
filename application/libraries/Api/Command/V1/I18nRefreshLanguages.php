@@ -44,7 +44,7 @@ class I18nRefreshLanguages implements CommandInterface
     {
         $lang = (string)$request->getData('_id', 'en');
         App()->setLanguage($lang);
-        $data =  getLanguageData();
+        $data = getLanguageDataRestricted();
         return $this->responseFactory
             ->makeSuccess($data);
     }
