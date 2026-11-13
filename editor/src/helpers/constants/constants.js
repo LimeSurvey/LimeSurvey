@@ -53,6 +53,7 @@ export const STATES = {
   OPERATION_FINISH_SUBSCRIPTIONS: 'operation_finish_subscriptions',
   SURVEY_QUESTIONS_FIELDNAME: 'survey_questions_fieldname',
   START_EDITOR_TUTORIAL: 'start_editor_tutorial',
+  SHOW_QUESTION_CODES_IN_EDITOR: 'show_question_codes_in_editor',
   SURVEY_RESPONSES: 'survey_responses',
   SURVEY_RESPONSE_ANSWERS: 'survey_response_answers',
   SURVEY_RESPONSE_FILES: 'survey_response_files',

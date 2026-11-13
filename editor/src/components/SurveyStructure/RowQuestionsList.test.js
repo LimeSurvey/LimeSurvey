@@ -4,21 +4,12 @@ import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { DragDropContext } from '@hello-pangea/dnd'
 import { renderWithProviders } from 'tests/testUtils'
+import { queryClient } from 'queryClient'
+import { STATES } from 'helpers'
 
 import { RowQuestionsList } from './RowQuestionsList'
 
-let mockShowCode = true
-let mockShowNumber = true
-const mockUpdate = jest.fn()
-jest.mock('hooks/useSurvey', () => ({
-  useSurvey: () => ({
-    survey: {
-      ...require('helpers/data/survey-detail.json').survey,
-      showQNumCode: { showCode: mockShowCode, showNumber: mockShowNumber },
-    },
-    update: mockUpdate,
-  }),
-}))
+const APP_STATE_KEY = ['appState', STATES.SHOW_QUESTION_CODES_IN_EDITOR]
 
 const questions = [
   { qid: 1, title: 'Q1', l10ns: { en: { question: 'One' } }, answers: [] },
@@ -42,34 +33,19 @@ const openMenuAndToggle = async () => {
 }
 
 describe('RowQuestionsList question codes toggle', () => {
-  beforeEach(() => {
-    mockShowCode = true
-    mockShowNumber = true
-    mockUpdate.mockClear()
+  afterEach(() => {
+    queryClient.removeQueries({ queryKey: APP_STATE_KEY, exact: true })
   })
 
-  test('hiding codes also hides them in the canvas', async () => {
+  test('shows question codes in the editor', async () => {
+    queryClient.setQueryData(APP_STATE_KEY, false)
     await openMenuAndToggle()
-    expect(mockUpdate).toHaveBeenCalledWith({
-      showQNumCode: { showCode: false, showNumber: false },
-    })
+    expect(queryClient.getQueryData(APP_STATE_KEY)).toBe(true)
   })
 
-  test('showing codes also shows them in the canvas', async () => {
-    mockShowCode = false
-    mockShowNumber = false
+  test('hides question codes in the editor', async () => {
+    queryClient.setQueryData(APP_STATE_KEY, true)
     await openMenuAndToggle()
-    expect(mockUpdate).toHaveBeenCalledWith({
-      showQNumCode: { showCode: true, showNumber: true },
-    })
-  })
-
-  test('the sidebar code state decides the toggle direction', async () => {
-    mockShowCode = false
-    mockShowNumber = true
-    await openMenuAndToggle()
-    expect(mockUpdate).toHaveBeenCalledWith({
-      showQNumCode: { showCode: true, showNumber: true },
-    })
+    expect(queryClient.getQueryData(APP_STATE_KEY)).toBe(false)
   })
 })

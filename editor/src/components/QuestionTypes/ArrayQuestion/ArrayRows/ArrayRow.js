@@ -1,10 +1,9 @@
 import React from 'react'
 import classNames from 'classnames'
-import { useParams } from 'react-router-dom'
 import { SubquestionCodeInput } from '../../subquestionCodeComponents'
 import { AssessmentValueInput } from '../../AssessmentValueInput'
 import { DragIcon, CloseCircleFillIcon } from 'components/icons'
-import { useAppState, useSurvey } from 'hooks'
+import { useAppState, useToggleQuestionCodes } from 'hooks'
 import {
   TooltipContainer,
   ContentEditor,
@@ -45,15 +44,12 @@ export const ArrayRow = ({
   isTitleFocused,
   id = '',
 }) => {
-  const { surveyId } = useParams()
-
   const [isSurveyActive] = useAppState(STATES.IS_SURVEY_ACTIVE)
-  const { survey } = useSurvey(surveyId)
-  const showQNumCode = survey.showQNumCode
+  const { areCodesVisible } = useToggleQuestionCodes()
   const isArrayByColumn =
     questionThemeName === getQuestionTypeInfo().ARRAY_COLUMN.theme
   const showCode =
-    isFocused && showQuestionCode && showQNumCode?.showNumber && scaleId < 1
+    isFocused && showQuestionCode && areCodesVisible && scaleId < 1
 
   return (
     <div>
@@ -114,7 +110,7 @@ export const ArrayRow = ({
             minWidth: showContentEditor
               ? highestWidth +
                 ARRAY_ROW_LABEL_INSET +
-                (isNoAnswer && isFocused && showQNumCode?.showNumber ? 90 : 0)
+                (isNoAnswer && isFocused && areCodesVisible ? 90 : 0)
               : '100px',
             maxWidth: !showContentEditor && '100px',
             display: showContentEditor ? 'flex' : 'none',

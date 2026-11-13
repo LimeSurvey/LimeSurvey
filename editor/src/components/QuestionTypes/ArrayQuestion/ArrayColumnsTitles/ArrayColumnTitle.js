@@ -1,9 +1,8 @@
 import classNames from 'classnames'
-import { useParams } from 'react-router-dom'
 import { ContentEditor } from 'components'
 import { CloseCircleFillIcon, DragIcon } from 'components/icons'
 import { hasTempId, STATES } from 'helpers'
-import { useAppState, useSurvey } from 'hooks'
+import { useAppState, useToggleQuestionCodes } from 'hooks'
 import { SubquestionCodeInput } from '../../subquestionCodeComponents'
 import { AssessmentValueInput } from '../../AssessmentValueInput'
 
@@ -30,9 +29,7 @@ export const ArrayColumnTitle = ({
   id,
 }) => {
   const [isSurveyActive] = useAppState(STATES.IS_SURVEY_ACTIVE)
-  const { surveyId } = useParams()
-  const { survey } = useSurvey(surveyId)
-  const showQNumCode = survey.showQNumCode
+  const { areCodesVisible } = useToggleQuestionCodes()
 
   return (
     <div>
@@ -68,17 +65,14 @@ export const ArrayColumnTitle = ({
         <div
           style={{
             minHeight: highestHeight,
-            paddingLeft:
-              isFocused && showQNumCode?.showNumber ? '40px' : dragIconSize,
-            paddingRight:
-              isFocused && showQNumCode?.showNumber ? '40px' : dragIconSize,
-            marginTop:
-              isNoAnswer && isFocused && showQNumCode?.showNumber ? '28px' : 0,
+            paddingLeft: isFocused && areCodesVisible ? '40px' : dragIconSize,
+            paddingRight: isFocused && areCodesVisible ? '40px' : dragIconSize,
+            marginTop: isNoAnswer && isFocused && areCodesVisible ? '28px' : 0,
           }}
         >
           {!isNoAnswer && (
             <div className="array-answer-metadata">
-              {isFocused && showQNumCode?.showNumber && (
+              {isFocused && areCodesVisible && (
                 <SubquestionCodeInput
                   isColumnTitle={true}
                   isSurveyActive={isSurveyActive}
