@@ -18532,6 +18532,14 @@ ol.breadcrumb.title-bar-breadcrumb a:active {
   padding: 5px;
   margin-top: 25px;
 }
+.box-widget .box-widget-loadmore #load-more:focus-visible {
+  outline: 2px solid #8146F6;
+  outline-offset: 2px;
+}
+.box-widget .box-widget-card-title-link:focus-visible {
+  outline: 2px solid #8146F6;
+  outline-offset: 2px;
+}
 .box-widget .survey-state {
   color: #6E748C;
 }

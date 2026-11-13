@@ -181,7 +181,15 @@
             display    : inline-block;
             padding    : 5px;
             margin-top : 25px;
+            &:focus-visible {
+                outline        : 2px solid $grape;
+                outline-offset : 2px;
+            }
         }
+    }
+    .box-widget-card-title-link:focus-visible {
+        outline        : 2px solid $grape;
+        outline-offset : 2px;
     }
     .survey-state {
         color : $g-700;
