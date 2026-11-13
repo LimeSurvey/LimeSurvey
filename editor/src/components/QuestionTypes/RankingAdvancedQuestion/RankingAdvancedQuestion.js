@@ -9,6 +9,7 @@ import {
   Entities,
   getInfoFromObjectByIndex,
   getTooltipMessages,
+  runWithSyncQueryNotifications,
   STATES,
   Toast,
 } from 'helpers'
@@ -48,7 +49,13 @@ export const RankingAdvancedQuestion = ({
       return
     }
 
-    handleOnChildDragEnd(dropResult, rankingSubquestions, Entities.subquestion)
+    runWithSyncQueryNotifications(() =>
+      handleOnChildDragEnd(
+        dropResult,
+        rankingSubquestions,
+        Entities.subquestion
+      )
+    )
   }
 
   const handleResponseAnswer = (dropResult) => {

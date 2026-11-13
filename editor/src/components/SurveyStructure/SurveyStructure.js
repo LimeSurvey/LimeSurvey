@@ -17,6 +17,7 @@ import {
   getReorganizedQuestions,
   InsertElementAndIncrementProperty,
   DuplicateQuestion,
+  runWithSyncQueryNotifications,
 } from 'helpers'
 import {
   useFocused,
@@ -344,7 +345,9 @@ export const SurveyStructure = () => {
             }}
           />
           <DragDropContext
-            onDragEnd={handleOnDragEnd}
+            onDragEnd={(dropResult) =>
+              runWithSyncQueryNotifications(() => handleOnDragEnd(dropResult))
+            }
             onDragUpdate={onDragUpdate}
           >
             <Droppable
