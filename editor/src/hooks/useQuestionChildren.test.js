@@ -291,6 +291,47 @@ describe('image settings of image select options', () => {
     })
   })
 
+  test('renaming finds the option by its appKey, also when two new options got the same temporary ID', () => {
+    const { handleUpdate } = renderChildren('image_select-listradio')
+    const newAnswers = [
+      { ...serverAnswer('temp1', 'A1', 0), appKey: 'key-1' },
+      { ...serverAnswer('temp1', 'A2', 0), appKey: 'key-2' },
+    ]
+    const attributes = {
+      [IMAGE_OPTION_SETTINGS_ATTRIBUTE]: {
+        '': JSON.stringify({ A1: { width: 100 }, A2: { width: 200 } }),
+      },
+    }
+    const { result } = renderHook(
+      () =>
+        useQuestionChildren({
+          question: {
+            qid: QID,
+            questionThemeName: 'image_select-listradio',
+            attributes,
+            answers: newAnswers,
+          },
+          handleUpdate,
+          surveySettings: { languages: ['en'] },
+          language: 'en',
+        }),
+      { wrapper }
+    )
+    result.current.handleChildCodeUpdate({
+      newCode: 'A20',
+      childIndex: 1,
+      childArray: newAnswers,
+      entityType: Entities.answer,
+      entityTitleKey: 'answer',
+    })
+
+    const { attributes: updated } = handleUpdate.mock.calls[0][0]
+    expect(JSON.parse(updated[IMAGE_OPTION_SETTINGS_ATTRIBUTE][''])).toEqual({
+      A1: { width: 100 },
+      A20: { width: 200 },
+    })
+  })
+
   test('deleting an option removes its image settings', () => {
     const { result, handleUpdate, answers } = renderChildren(
       'image_select-listradio'

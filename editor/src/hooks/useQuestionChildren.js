@@ -185,11 +185,16 @@ export const useQuestionChildren = ({
     const codeKey = isAnswer ? 'code' : 'title'
     const questionChildren =
       (isAnswer ? question.answers : question.subquestions) || []
-    const currentChild = questionChildren.find(
-      (questionChild) =>
-        (child.appKey && questionChild.appKey === child.appKey) ||
-        questionChild[idKey] === child[idKey]
-    )
+    // The appKey first: New options get random temporary IDs, which can be
+    // the same for two of them.
+    const currentChild =
+      (child.appKey &&
+        questionChildren.find(
+          (questionChild) => questionChild.appKey === child.appKey
+        )) ||
+      questionChildren.find(
+        (questionChild) => questionChild[idKey] === child[idKey]
+      )
     return (currentChild ?? child)[codeKey]
   }
 
