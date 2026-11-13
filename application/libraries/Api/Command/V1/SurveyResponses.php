@@ -7,7 +7,6 @@ use LimeSurvey\Api\Transformer\TransformerException;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\FilterPatcher;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\ResponseFilterCriteriaBuilder;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\ResponseMappingTrait;
-use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\Sorting\ResponseSort;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\SurveyResponseFiles;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\SurveyRequestTrait;
 use LimeSurvey\Models\Services\Exception\PermissionDeniedException;
@@ -29,10 +28,10 @@ use LimeSurvey\Libraries\Api\Command\V1\Transformer\Output\TransformerOutputSurv
 /**
  * Returns the responses of a survey, one entry per response with its answers.
  *
- * Filtering goes through the generic {@see FilterPatcher}, whose filter keys
- * are validated against the survey field map so any filter method (equal,
- * contain, multi-select, …) can target nested question/subquestion columns.
- * Sorting goes through {@see ResponseSort}. A `fields` param additionally restricts the SELECT to a caller-chosen
+ * Filtering and sorting go through the generic {@see FilterPatcher}, whose
+ * filter keys are validated against the survey field map so any filter method
+ * (equal, contain, multi-select, …) can target nested question/subquestion
+ * columns. A `fields` param additionally restricts the SELECT to a caller-chosen
  * subset of response columns; when it is omitted every column is returned.
  * With `unnestFiles`, a single file upload column is listed one row per file
  * instead (see {@see SurveyResponseFiles}).
@@ -183,7 +182,6 @@ class SurveyResponses implements CommandInterface
                 ],
                 'filters' => $request->getData('filters', []),
                 'sort' => $request->getData('sort', []),
-                'sortableColumns' => $this->getResponseSort($request)->getSortableKeys(),
             ],
         ];
     }
@@ -376,44 +374,10 @@ class SurveyResponses implements CommandInterface
             $dataMap,
             $validColumns
         );
-        $sort->defaultOrder = $this->getResponseSort($request)->getOrder($searchParams['sort']);
         $this->applyFilterSet($criteria, $filterSet, $request);
         $this->applyFieldSelection($criteria, $request);
 
         return [$criteria, $sort];
-    }
-
-    /**
-     * Sort builder for the survey, with the participant columns the user may sort by.
-     *
-     * @param Request $request
-     * @return ResponseSort Builder knowing all sortable columns of the survey
-     */
-    protected function getResponseSort(Request $request): ResponseSort
-    {
-        $participantsTable = null;
-        $participantColumns = [];
-        if (
-            $this->survey->hasTokensTable
-            && $this->permission->hasSurveyPermission($this->getSurveyId($request), 'tokens', 'read')
-        ) {
-            $participantsTable = $this->survey->tokensTableName;
-            $encryption = $this->survey->getTokenEncryptionOptions();
-            foreach (ResponseSort::PARTICIPANT_COLUMNS as $key => $column) {
-                // Encrypted values can't be ordered in SQL
-                $encrypted = ($encryption['enabled'] ?? 'N') === 'Y' && ($encryption['columns'][$column] ?? 'N') === 'Y';
-                if (!$encrypted) {
-                    $participantColumns[] = $key;
-                }
-            }
-        }
-
-        return new ResponseSort(
-            $this->transformerOutputSurveyResponses->fieldMap,
-            [],
-            $participantsTable,
-            $participantColumns
-        );
     }
 
     /**

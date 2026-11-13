@@ -1,4 +1,3 @@
-import { format } from 'util'
 import classNames from 'classnames'
 import { flexRender } from '@tanstack/react-table'
 
@@ -11,42 +10,11 @@ import {
   SelectColumnId,
 } from '../../utils'
 
-const ariaSortValues = { asc: 'ascending', desc: 'descending' }
-
-/**
- * Name of a column for screen reader labels.
- *
- * @param {object} header TanStack header of the column
- * @returns {string} Question code and text, the header text, or the column ID
- */
-const getColumnName = (header) => {
-  const { header: label, meta } = header.column.columnDef
-  const text = typeof label === 'string' ? label : ''
-
-  return [meta?.title, text].filter(Boolean).join(' ') || header.id
-}
-
-/**
- * Render the header row of the responses table, with pin and sort controls.
- * A column sorts in two modes: The first click sorts ascending, the next ones
- * switch between ascending and descending. Without a sort, the table shows the
- * newest responses first, which the ID column shows as sorted descending.
- *
- * @param {object} props
- * @param {object} props.table TanStack table instance
- * @param {string[]} props.pinnedColumns IDs of the pinned columns
- * @param {Function} props.setPinnedColumns Setter for the pinned columns
- * @param {string[]} [props.sortableColumns] Column IDs the API can sort by, none when missing (e.g. the overview preview)
- * @returns {JSX.Element} The table head
- */
 export const ResponsesTableHeader = ({
   table,
   pinnedColumns,
   setPinnedColumns,
-  sortableColumns = [],
 }) => {
-  const isDefaultSort = !table.getState().sorting?.length
-
   const handleColumnPin = ({ column, id }) => {
     if (id === SelectColumnId) {
       setPinnedColumns([...pinnedColumns])
@@ -68,12 +36,8 @@ export const ResponsesTableHeader = ({
       {table.getHeaderGroups().map((headerGroup) => (
         <tr key={headerGroup.id}>
           {headerGroup.headers.map((header, index) => {
-            const canSort = sortableColumns.includes(header.id)
-            const sortDir =
-              header.column.getIsSorted() ||
-              (isDefaultSort && header.id === idColumnKey ? 'desc' : false)
-            const toggleSorting = () =>
-              table.setSorting([{ id: header.id, desc: sortDir === 'asc' }])
+            const canSort = header.id === idColumnKey
+            const sortDir = header.column.getIsSorted()
             const questionTitle = header.column.columnDef.meta?.title
 
             // to remove the border
@@ -84,9 +48,8 @@ export const ResponsesTableHeader = ({
             return (
               <th
                 key={header.id}
-                aria-sort={canSort ? ariaSortValues[sortDir] : undefined}
                 className={classNames(`${header.id} table-header`, {
-                  'highlight-cell': header.column.getIsSorted(),
+                  'highlight-cell': sortDir,
                   'columnBeforeActions': isColumnBeforeActions,
                 })}
                 style={{
@@ -144,22 +107,19 @@ export const ResponsesTableHeader = ({
                       'ri-unpin-line': header.column.getIsPinned(),
                     })}
                   ></div>
-                  {canSort && (
-                    <button
-                      type="button"
-                      onClick={toggleSorting}
-                      aria-label={format(
-                        t('Sort by %s'),
-                        getColumnName(header)
-                      )}
-                      className={classNames('sort-icon', {
-                        'is-sorted': sortDir,
-                        'ri-arrow-up-down-line': !sortDir,
-                        'ri-sort-asc': sortDir === 'asc',
-                        'ri-sort-desc': sortDir === 'desc',
-                      })}
-                    ></button>
-                  )}
+                  <div
+                    onClick={
+                      canSort
+                        ? header.column.getToggleSortingHandler()
+                        : undefined
+                    }
+                    className={classNames('sort-icon', {
+                      'ri-sort-desc': !sortDir,
+                      'ri-sort-asc': sortDir === 'desc',
+                      'ri-format-clear': sortDir === 'asc',
+                      'd-none': !canSort,
+                    })}
+                  ></div>
                   <div
                     onMouseDown={header.getResizeHandler()}
                     onTouchStart={header.getResizeHandler()}

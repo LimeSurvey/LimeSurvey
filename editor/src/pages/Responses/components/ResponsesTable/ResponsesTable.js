@@ -531,7 +531,6 @@ export const ResponsesTable = ({
               pinnedColumns={pinnedColumns}
               setPinnedColumns={setPinnedColumns}
               table={table}
-              sortableColumns={responsesData._meta?.sortableColumns}
             />
             <ResponsesTableBody
               cellQuestionInfoRef={cellQuestionInfoRef}
