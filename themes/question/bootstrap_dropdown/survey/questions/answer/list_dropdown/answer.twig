@@ -134,6 +134,8 @@
                 $bsWrapper.find('[role="listbox"] li.no-results').remove();
                 $noResults.text(noResultsMessage).prop('hidden', search === '' || count > 0);
                 clearTimeout(searchStatusTimer);
+                {# Clear then write after a delay, so an identical message is announced again (W3C ARIA19) #}
+                $searchStatus.text('');
                 searchStatusTimer = setTimeout(function () {
                     var message = '';
                     if (search !== '') {
