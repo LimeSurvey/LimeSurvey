@@ -1,6 +1,5 @@
 import {
   applyImageSettings,
-  canMoveImage,
   formatFileSize,
   getCropRect,
   getDefaultFrameSize,
@@ -130,6 +129,16 @@ describe('imageEditorUtils', () => {
   })
 
   test('The image can move when zoomed or cut off by the frame', () => {
+    /**
+     * Tells whether the image can be dragged in any direction.
+     *
+     * @param {...*} args the arguments of getMovableAxes
+     * @returns {boolean} true if it can move on at least one axis
+     */
+    const canMoveImage = (...args) => {
+      const axes = getMovableAxes(...args)
+      return axes.horizontal || axes.vertical
+    }
     // Same ratio, zoom 1: The whole image is shown.
     expect(canMoveImage(400, 300, { width: 400, height: 300 }, 1)).toBe(false)
     expect(canMoveImage(400, 300, { width: 200, height: 150 }, 1)).toBe(false)

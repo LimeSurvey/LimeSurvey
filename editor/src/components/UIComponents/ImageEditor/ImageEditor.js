@@ -21,6 +21,7 @@ import {
   getFrameRatio,
   getMovableAxes,
   getVisibleSourceSize,
+  loadImageSize,
   resizeFrame,
   roundSetting,
 } from './imageEditorUtils'
@@ -198,12 +199,10 @@ export const ImageEditor = ({
       return
     }
     let cancelled = false
-    const image = new Image()
-    image.onload = () => {
-      if (cancelled) {
+    loadImageSize(imageUrl).then((size) => {
+      if (cancelled || !size) {
         return
       }
-      const size = { width: image.naturalWidth, height: image.naturalHeight }
       setNaturalSize(size)
       if (settings?.width == null || settings?.height == null) {
         const frame = getDefaultFrameSize(size.width, size.height)
@@ -213,8 +212,7 @@ export const ImageEditor = ({
           ratio: getFrameRatio(frame),
         }))
       }
-    }
-    image.src = imageUrl
+    })
 
     fetch(imageUrl, { method: 'HEAD' })
       .then((response) => {

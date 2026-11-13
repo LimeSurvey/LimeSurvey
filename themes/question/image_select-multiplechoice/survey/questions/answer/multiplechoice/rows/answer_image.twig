@@ -5,12 +5,13 @@
  * Options edited with the image editor of the new editor have their own settings, stored by option code in the
  * question attributes image_option_settings (frame size, crop, corner radius) and image_option_alt (alt text),
  * both per language, because each language can have its own image.
- * They are only applied when the survey theme supports them: it marks the question container with the class
+ * They are only applied when the survey theme supports them: It marks the question container with the class
  * image-option-settings (fruity_twentythree and the themes extending it). Then they override the image settings
- * of the question (fix width, fix height, keep aspect ratio, crop or resize): the image is shown in a frame with
+ * of the question (fix width, fix height, keep aspect ratio, crop or resize): The image is shown in a frame with
  * the saved aspect ratio and width (never wider than the answer), showing the saved crop of the image, with the
  * saved corner radius. In other survey themes, and for options without settings, the image is shown with the
- * image settings of the question, see answer.twig. The alt text is used in all survey themes.
+ * image settings of the question, see answer.twig. The alt text is used in all survey themes. Without one, the
+ * option code is the alt text, because the image is the only content of the option's label.
  *
  * The settings are only passed as CSS variables, see assets/css/imageselect.css. Only numbers from the settings
  * are written into the style attribute; other values count as not set.
@@ -50,8 +51,8 @@
             ~ ((positionY matches imageNumber) ? (positionY * 100)|round(4) : 50) ~ '%;' %}
     {% endif %}
     <span class="imageselect-frame{% if not hasCrop %} imageselect-frame-cover{% endif %}" style="{{ frameStyle }}">
-        <img class="imageselect-img fixed-width unforce-height" src="{{ src|escape('html_attr') }}"{% if imageAlt is not empty %} alt="{{ imageAlt|escape('html_attr') }}"{% endif %}/>
+        <img class="imageselect-img fixed-width unforce-height" src="{{ src|escape('html_attr') }}" alt="{{ (imageAlt is not empty ? imageAlt : optionCode)|escape('html_attr') }}"/>
     </span>
 {% else %}
-    <img class="imageselect-img fixed-width unforce-height" src="{{ src|escape('html_attr') }}"{% if imageAlt is not empty %} alt="{{ imageAlt|escape('html_attr') }}"{% endif %}/>
+    <img class="imageselect-img fixed-width unforce-height" src="{{ src|escape('html_attr') }}" alt="{{ (imageAlt is not empty ? imageAlt : optionCode)|escape('html_attr') }}"/>
 {% endif %}

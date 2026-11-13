@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useMemo, useRef } from 'react'
 import { Button } from 'react-bootstrap'
 import { useParams } from 'react-router-dom'
 import { Draggable } from '@hello-pangea/dnd'
@@ -21,7 +21,6 @@ import { getTooltipMessages } from 'helpers/options'
 import { ContentEditor, DragAndDrop, TooltipContainer } from 'components'
 import { CloseCircleFillIcon, DragIcon } from 'components/icons'
 import { ImageChoice } from 'components/QuestionTypes/ImageChoice'
-import { getQuestionTypeInfo } from '../getQuestionTypeInfo'
 import { singleChoiceThemes } from '../singleChoiceThemes'
 import { SubquestionCodeInput } from '../subquestionCodeComponents'
 import { AssessmentValueInput } from '../AssessmentValueInput'
@@ -32,15 +31,11 @@ import {
 } from 'components/UIComponents/ImageEditor/imageEditorUtils'
 import {
   applyAttributeChanges,
-  getImageOptionAltText,
+  getImageOptionLanguageMaps,
   getImageOptionSaveChanges,
   getImageOptionSettings,
+  getImageSelectThemes,
 } from '../imageOptionSettings'
-
-const imageThemeComponents = [
-  getQuestionTypeInfo().SINGLE_CHOICE_IMAGE_SELECT.theme,
-  getQuestionTypeInfo().MULTIPLE_CHOICE_IMAGE_SELECT.theme,
-]
 
 /**
  * Edit mode of the choice question types: The options with code, text or
@@ -83,8 +78,13 @@ export const OptionQuestionEditMode = ({
   // be changed, renamed or deleted: The save uses the question as it is then.
   const latestQuestion = useRef(question)
   latestQuestion.current = question
+  // handleUpdate spreads the question of the render it comes from: A save that
+  // waited must use the one from the latest render, or it reverts the changes
+  // made meanwhile (e.g. a deleted option would come back).
+  const latestHandleUpdate = useRef(handleUpdate)
+  latestHandleUpdate.current = handleUpdate
   const isSingleChoiceTheme = singleChoiceThemes.includes(questionThemeName)
-  const isImageTheme = imageThemeComponents.includes(questionThemeName)
+  const isImageTheme = getImageSelectThemes().includes(questionThemeName)
 
   const childrenInfo = {
     idKey: isSingleChoiceTheme ? 'aid' : 'qid',
@@ -266,7 +266,7 @@ export const OptionQuestionEditMode = ({
         .questionAttribute()
         .update(changes)
     )
-    handleUpdate({ attributes })
+    latestHandleUpdate.current({ attributes })
   }
 
   /**
@@ -288,6 +288,15 @@ export const OptionQuestionEditMode = ({
     return imageSaveQueue.current
   }
 
+  // Parsed once per change, not for each option on every render.
+  const imageOptionMaps = useMemo(
+    () =>
+      isImageTheme
+        ? getImageOptionLanguageMaps(question.attributes, language)
+        : null,
+    [isImageTheme, question.attributes, language]
+  )
+
   /**
    * Returns the image settings props of an option for ImageChoice.
    *
@@ -295,18 +304,10 @@ export const OptionQuestionEditMode = ({
    * @returns {Object} the props, empty for themes without images
    */
   const getImageOptionProps = (code) =>
-    isImageTheme
+    imageOptionMaps
       ? {
-          imageSettings: getImageOptionSettings(
-            question.attributes,
-            code,
-            language
-          ),
-          imageAltText: getImageOptionAltText(
-            question.attributes,
-            code,
-            language
-          ),
+          imageSettings: imageOptionMaps.settings[code] ?? null,
+          imageAltText: imageOptionMaps.altTexts[code] ?? '',
           onImageSettingsSave: (imageSettings) =>
             handleImageOptionSave(code, imageSettings),
         }

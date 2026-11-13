@@ -20,7 +20,7 @@
 
 /*
  * Options with their own settings from the image editor (see rows/answer_image.twig). They are passed as CSS
- * variables and only used when the survey theme supports them: it sets the class image-option-settings on the
+ * variables and only used when the survey theme supports them: It sets the class image-option-settings on the
  * question container (fruity_twentythree and the themes extending it).
  * Without it, the frame doesn't take part in the layout and the image keeps the size and fit settings above.
  */
@@ -29,7 +29,7 @@
 }
 
 /*
- * With support: the frame has the saved width and aspect ratio, but never gets wider than the answer.
+ * With support: The frame has the saved width and aspect ratio, but never gets wider than the answer.
  * The cropped part of the image fills it; the size and fit settings above don't apply.
  */
 .image-option-settings .imageselect-answers .imageselect-frame {
@@ -52,7 +52,7 @@
     object-fit: fill;
 }
 
-/* Settings without crop: the image covers the frame at the saved position */
+/* Settings without crop: The image covers the frame at the saved position */
 .image-option-settings .imageselect-answers .imageselect-frame-cover .imageselect-img {
     position: static;
     max-width: 100%;
@@ -62,7 +62,7 @@
     object-position: var(--imageselect-crop-position);
 }
 
-/* The label around the frame is an inline-block: without a limit, a wide frame would make it wider than the answer */
+/* The label around the frame is an inline-block: Without a limit, a wide frame would make it wider than the answer */
 .image-option-settings .imageselect-answers .imageselect-label:has(.imageselect-frame) {
     box-sizing: border-box;
     max-width: 100%;

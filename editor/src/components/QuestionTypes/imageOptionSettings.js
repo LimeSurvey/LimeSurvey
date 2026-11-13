@@ -122,6 +122,25 @@ const toChangeSet = (changes) => {
 }
 
 /**
+ * Returns the saved image settings and alt texts of all options in one
+ * language. Only that language is parsed: Components that render all options
+ * call this once (memoized) and look the options up by code.
+ *
+ * @param {Object} attributes the question attributes
+ * @param {string} language the language code
+ * @returns {{settings: Object, altTexts: Object}} the image settings and the
+ *   alt texts, each keyed by option code
+ */
+export const getImageOptionLanguageMaps = (attributes, language) => ({
+  settings: parseOptionMap(
+    attributes?.[IMAGE_OPTION_SETTINGS_ATTRIBUTE]?.[language]
+  ),
+  altTexts: parseOptionMap(
+    attributes?.[IMAGE_OPTION_ALT_ATTRIBUTE]?.[language]
+  ),
+})
+
+/**
  * Returns the saved image settings of an option in a language.
  *
  * @param {Object} attributes the question attributes
@@ -131,9 +150,7 @@ const toChangeSet = (changes) => {
  *   alt text), or null when none were saved
  */
 export const getImageOptionSettings = (attributes, code, language) =>
-  getOptionMaps(attributes, IMAGE_OPTION_SETTINGS_ATTRIBUTE)[language]?.[
-    code
-  ] ?? null
+  getImageOptionLanguageMaps(attributes, language).settings[code] ?? null
 
 /**
  * Returns the saved alt text of an option in a language.
@@ -144,7 +161,7 @@ export const getImageOptionSettings = (attributes, code, language) =>
  * @returns {string} the alt text, or an empty string
  */
 export const getImageOptionAltText = (attributes, code, language) =>
-  getOptionMaps(attributes, IMAGE_OPTION_ALT_ATTRIBUTE)[language]?.[code] ?? ''
+  getImageOptionLanguageMaps(attributes, language).altTexts[code] ?? ''
 
 /**
  * Builds the attribute changes for saving the image settings and alt text of

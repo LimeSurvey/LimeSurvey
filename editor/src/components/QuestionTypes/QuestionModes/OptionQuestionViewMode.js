@@ -25,10 +25,7 @@ import { getCommentedCheckboxOptions } from 'helpers/options'
 import { MultipleChoiceNumericalSubquestion } from '../MultipleChoice/MultipleChoiceNumericalSubquestion'
 import { cloneDeep } from 'lodash'
 import { singleChoiceThemes } from '../singleChoiceThemes'
-import {
-  getImageOptionAltText,
-  getImageOptionSettings,
-} from '../imageOptionSettings'
+import { getImageOptionLanguageMaps } from '../imageOptionSettings'
 
 const dropdownThemeComponents = [
   getQuestionTypeInfo().SINGLE_CHOICE_DROPDOWN.theme,
@@ -130,6 +127,12 @@ export const OptionQuestionViewMode = ({
   const isSingleChoiceTheme = useMemo(
     () => singleChoiceThemes.includes(questionThemeName),
     [questionThemeName]
+  )
+
+  // Parsed once per change, not for each option on every render.
+  const imageOptionMaps = useMemo(
+    () => getImageOptionLanguageMaps(attributes, language),
+    [attributes, language]
   )
 
   const isSingleChoiceButtons =
@@ -589,16 +592,12 @@ export const OptionQuestionViewMode = ({
                 {...(ChildUiComponentToRender === ImageChoice
                   ? {
                       // Show the image as set up in the image editor.
-                      imageSettings: getImageOptionSettings(
-                        attributes,
-                        child[childrenInfo.codeKey],
-                        language
-                      ),
-                      imageAltText: getImageOptionAltText(
-                        attributes,
-                        child[childrenInfo.codeKey],
-                        language
-                      ),
+                      imageSettings:
+                        imageOptionMaps.settings[child[childrenInfo.codeKey]] ??
+                        null,
+                      imageAltText:
+                        imageOptionMaps.altTexts[child[childrenInfo.codeKey]] ??
+                        '',
                     }
                   : {})}
               />

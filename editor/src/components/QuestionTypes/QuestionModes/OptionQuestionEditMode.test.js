@@ -48,13 +48,22 @@ const settings = {
 }
 
 let setTestQuestion
+/**
+ * Renders the options of a question that the test can change.
+ *
+ * @param {Object} initialQuestion the question to start with
+ * @param {Function} handleUpdate gets the question changes, and the question
+ *   of the render whose handleUpdate was called: The real one spreads the
+ *   changes over it
+ * @returns {JSX.Element} the options in edit mode
+ */
 const Harness = ({ initialQuestion, handleUpdate }) => {
   const [question, setQuestion] = useState(initialQuestion)
   setTestQuestion = setQuestion
   return (
     <OptionQuestionEditMode
       question={question}
-      handleUpdate={handleUpdate}
+      handleUpdate={(change) => handleUpdate(change, question)}
       handleChildLUpdate={jest.fn()}
       isFocused={true}
       handleChildAdd={jest.fn()}
@@ -220,6 +229,26 @@ describe('OptionQuestionEditMode image option settings', () => {
     expect(
       Object.keys(JSON.parse(attributes.image_option_settings.en))
     ).toEqual(['A2', 'A1'])
+  })
+
+  test('"Apply to all" saves over the question of the latest render, so a deleted option stays deleted', async () => {
+    const handleUpdate = jest.fn()
+    const { savePromise } = await startApplyToAllSave(handleUpdate)
+
+    act(() =>
+      setTestQuestion((question) => ({
+        ...question,
+        answers: question.answers.filter((answer) => answer.code !== 'A3'),
+      }))
+    )
+    await finishImageLoads(savePromise)
+
+    expect(handleUpdate).toHaveBeenCalledTimes(1)
+    const [, updatedQuestion] = handleUpdate.mock.calls[0]
+    expect(updatedQuestion.answers.map((answer) => answer.code)).toEqual([
+      'A1',
+      'A2',
+    ])
   })
 
   test('Nothing is saved when the edited option was deleted while the other images were loading', async () => {

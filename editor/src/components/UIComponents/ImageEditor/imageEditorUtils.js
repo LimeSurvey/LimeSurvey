@@ -178,20 +178,6 @@ export const getMovableAxes = (naturalWidth, naturalHeight, frame, zoom) => {
 }
 
 /**
- * Tells whether the image can be dragged inside the frame in any direction.
- *
- * @param {number|undefined} naturalWidth width of the image file in px
- * @param {number|undefined} naturalHeight height of the image file in px
- * @param {{width: number, height: number}} frame the frame size in px
- * @param {number} zoom zoom factor, 1 = the image just covers the frame
- * @returns {boolean} true if at least one source pixel is cut off on one axis
- */
-export const canMoveImage = (naturalWidth, naturalHeight, frame, zoom) => {
-  const axes = getMovableAxes(naturalWidth, naturalHeight, frame, zoom)
-  return axes.horizontal || axes.vertical
-}
-
-/**
  * Applies the frame, zoom and corner radius of an edited image to another
  * image ("Apply to all"). The other image keeps its own position, and its crop
  * is calculated for its own size.
