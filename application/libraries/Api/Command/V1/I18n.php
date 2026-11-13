@@ -50,7 +50,7 @@ class I18n implements CommandInterface
             unset($translations['']);
         }
         $data['translations'] = $translations;
-        $data['languages'] =  getLanguageData();
+        $data['languages'] = getLanguageDataRestricted();
         return $this->responseFactory
             ->makeSuccess([$data]);
     }
