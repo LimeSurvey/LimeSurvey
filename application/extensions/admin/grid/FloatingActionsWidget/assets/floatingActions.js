@@ -33,6 +33,29 @@ LS.floatingActions = (function () {
     }
 
     /**
+     * Shows a footer delivered with the action results (e.g. the download button of an export)
+     * in place of the 'close' footer of the modal.
+     * Left inside the scrolling modal body it is only reachable at the end of a long results list.
+     *
+     * @param {jQuery} $modal
+     * @param {jQuery} $modalBody   Element that received the results HTML
+     * @param {jQuery} $modalClose  Footer with the 'close' button
+     * @returns {jQuery} The footer that is visible now
+     */
+    function _showResultsFooter($modal, $modalBody, $modalClose) {
+        var $resultsFooter = $modalBody.find('.modal-footer').filter(function () {
+            // Not the footer of a modal nested in the results
+            return $(this).closest('.modal').is($modal);
+        }).first();
+        if (!$resultsFooter.length) {
+            return $modalClose;
+        }
+        $resultsFooter.addClass('modal-footer-results').appendTo($modal.find('.modal-content').first());
+        $modalClose.hide();
+        return $resultsFooter;
+    }
+
+    /**
      * Resolve dotted callback paths (e.g. "LS.CPDB.onClickExport") safely.
      * Returns a function bound to its parent object, or null.
      *
@@ -292,6 +315,7 @@ LS.floatingActions = (function () {
         $modal.off('hidden.bs.modal.floating hidden.bs.modal').on('hidden.bs.modal.floating hidden.bs.modal', function () {
             $modalTitle.text($oldModalTitle);
             $modalBody.empty().append($oldModalBody);
+            $modal.find('.modal-footer-results').remove();
             $modalClose.hide();
             $oldModalButtons.show();
             var modalGridReload = $modal.data('grid-reload');
@@ -368,7 +392,7 @@ LS.floatingActions = (function () {
                             syncMassiveActionResultsTableCaption($modal, $modalBody);
                         }
                         // The clicked confirm button is hidden now: Keep keyboard focus inside the modal
-                        $modalClose.find('button').first().trigger('focus');
+                        _showResultsFooter($modal, $modalBody, $modalClose).find('button, a').first().trigger('focus');
                     }
                     if (onSuccess) {
                         var func = _resolveActionCallback(onSuccess);
