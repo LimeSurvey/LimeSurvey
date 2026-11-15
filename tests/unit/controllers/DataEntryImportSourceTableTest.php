@@ -163,9 +163,6 @@ class DataEntryImportSourceTableTest extends TestBaseClass
             'archive of another survey' => [function ($prefix, $surveyId) {
                 return $prefix . 'old_responses_' . $surveyId . '1_' . self::ARCHIVE_TIMESTAMP;
             }],
-            'own archive without table prefix' => [function ($prefix, $surveyId) {
-                return 'old_responses_' . $surveyId . '_' . self::ARCHIVE_TIMESTAMP;
-            }],
             'response table of the survey' => [function ($prefix, $surveyId) {
                 return $prefix . 'responses_' . $surveyId;
             }],
@@ -193,6 +190,18 @@ class DataEntryImportSourceTableTest extends TestBaseClass
     public function testOtherTablesAreRefused(callable $postedTable): void
     {
         $this->assertNull($this->acceptedTable($postedTable((string) \Yii::app()->db->tablePrefix, self::$surveyId)));
+    }
+
+    /**
+     * The name of an own archive is refused if it is posted without the table prefix.
+     * @return void
+     */
+    public function testOwnArchiveWithoutTablePrefixIsRefused(): void
+    {
+        $table = $this->ownArchive();
+        // On an installation without table prefix this is the full name of the archive, which is accepted
+        $expected = (string) \Yii::app()->db->tablePrefix === '' ? $table : null;
+        $this->assertSame($expected, $this->acceptedTable($table));
     }
 
     /**
