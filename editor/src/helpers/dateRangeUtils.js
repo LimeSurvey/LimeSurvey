@@ -13,6 +13,8 @@ import {
 } from 'date-fns'
 import * as dayPickerLocales from '@daypicker/react/locale'
 
+import { resolveLocale } from './localeUtils'
+
 export const WEEK_STARTS_ON = 1
 export const EMPTY_DAY_COUNTS = { upTo: '', from: '' }
 
@@ -25,17 +27,13 @@ const LOCALE_ALIASES = {
 }
 
 export const getDayPickerLocale = (language = 'en') => {
-  const code = language.replace(/-(informal|easy)$/, '')
-  const toExportName = (value) =>
-    value.replace(/-([a-z])/gi, (_, char) => char.toUpperCase())
-  const candidates = [
-    LOCALE_ALIASES[code],
-    toExportName(code),
-    LOCALE_ALIASES[code.split('-')[0]],
-    code.split('-')[0],
-  ]
-
-  const match = candidates.find((name) => name && dayPickerLocales[name])
+  const match = resolveLocale(language, {
+    isAvailable: (name) => !!dayPickerLocales[name],
+    aliases: LOCALE_ALIASES,
+    // "pt-BR" -> "ptBR", the DayPicker export name
+    normalize: (code) =>
+      code.replace(/-([a-z])/gi, (_, char) => char.toUpperCase()),
+  })
   return dayPickerLocales[match] ?? dayPickerLocales.enUS
 }
 

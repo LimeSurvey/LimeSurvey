@@ -1,7 +1,16 @@
 import { useAppState, useAuth, useUserService } from 'hooks'
 import { I18nextProvider } from 'react-i18next'
-import { STATES } from '../helpers'
+import { STATES, loadDayjsLocale } from '../helpers'
 import { Suspense, useEffect, useState } from 'react'
+
+// Resolves the user's language setting, falling back to the browser language for 'auto'.
+const resolveUserLanguage = (lang) => {
+  if (lang !== 'auto') {
+    return lang
+  }
+  const browserLanguage = navigator.language || navigator.userLanguage || ''
+  return browserLanguage.substring(0, 2) || 'en'
+}
 
 export const I18Provider = ({ i18n, children, language }) => {
   const auth = useAuth()
@@ -16,31 +25,53 @@ export const I18Provider = ({ i18n, children, language }) => {
       setUserDetail({ lang: 'en' })
       setI18nInstance(i18n('en', auth, setLanguages, languages))
       setIsTranslationLoaded(true)
+      loadDayjsLocale('en')
       return
     }
 
-    if (!language) {
-      userService.getUserDetail(auth.userId).then((result) => {
-        if (!result) {
-          return
-        }
-        setUserDetail(result)
-        let lang = result.lang
-        if (lang === 'auto') {
-          // Use browser's language
-          const browserLanguage = navigator.language || navigator.userLanguage
-          lang = browserLanguage.substring(0, 2)
-          if (!lang) {
-            lang = 'en' // Default to English if browser's language is not supported'
-          }
-        }
-        setI18nInstance(i18n(lang, auth, setLanguages, languages))
-      })
-    } else {
+    // An explicit language (e.g. the survey language) only sets up i18n.
+    // The shared dayjs locale is owned by the UI-language provider below.
+    if (language) {
       setI18nInstance(i18n(language, auth, setLanguages, languages))
+      setIsTranslationLoaded(true)
+      return
     }
 
+    // Drop the role until it is fetched again, so nothing relies on a stale value
+    setUserDetail((userDetail) => ({ ...userDetail, isSuperAdmin: undefined }))
+
+    const controller = new AbortController()
+    const { signal } = controller
+
+    const loadUserLanguage = async () => {
+      let userDetail = null
+      try {
+        userDetail = await userService.getUserDetail(auth.userId, signal)
+      } catch {
+        // Fall back to English below
+      }
+      if (signal.aborted) {
+        return
+      }
+      // Failed requests resolve to an error object or undefined, not the user
+      let lang = 'en'
+      if (userDetail?.lang) {
+        setUserDetail(userDetail)
+        lang = resolveUserLanguage(userDetail.lang)
+      }
+      // Create the i18n instance (which starts fetching the translations) while
+      // the dayjs locale loads, so both switch to the new language together
+      const instance = i18n(lang, auth, setLanguages, languages)
+      await loadDayjsLocale(lang, { signal })
+      if (!signal.aborted) {
+        setI18nInstance(instance)
+      }
+    }
+
+    loadUserLanguage()
     setIsTranslationLoaded(true)
+
+    return () => controller.abort()
   }, [auth.token, language])
 
   const loadingTranslations = (

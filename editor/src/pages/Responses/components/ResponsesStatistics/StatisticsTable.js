@@ -4,7 +4,7 @@ import {
   VALUE_TYPE,
   getDisplayMetric,
   getUnionSegments,
-  ordinal,
+  rankLabel,
   shouldRenderImage,
   wrapTerm,
 } from './ChartsUtils'
@@ -147,7 +147,7 @@ export const StatisticsTable = ({
       },
       ...(rows[0]?.ranks ?? []).map((rank) => ({
         id: `rank-${rank.position}`,
-        header: ordinal(rank.position),
+        header: rankLabel(rank.position),
         cell: ({ row }) =>
           row.original.ranks?.find((r) => r.position === rank.position)
             ?.value ?? '',
