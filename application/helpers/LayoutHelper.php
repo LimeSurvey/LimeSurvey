@@ -100,7 +100,8 @@ class LayoutHelper
     public static function getDocumentTitle(array $pageData): ?string
     {
         if (!empty($pageData['topbar']['title'])) {
-            return strip_tags((string) $pageData['topbar']['title']);
+            // The topbar title is HTML (names in it are encoded), the document title is plain text
+            return html_entity_decode(strip_tags((string) $pageData['topbar']['title']), ENT_QUOTES | ENT_HTML5, 'UTF-8');
         }
         if (empty($pageData['title_bar']['title'])) {
             return !empty($pageData['pageTitle']) ? strip_tags((string) $pageData['pageTitle']) : null;

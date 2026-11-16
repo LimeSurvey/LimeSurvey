@@ -3225,11 +3225,11 @@ class statistics_helper
 
         //-------------------------- PCHART OUTPUT ----------------------------
         $qsid = $surveyid;
-        $qqid = explode("_", substr($rt, strcspn($rt, '0123456789')))[0];
-        if ($bRanking) {
-            $qqid = substr($rt, strcspn($rt, '0123456789'));
-        }
-        $attrQid = $outputs['parentqid'] > 0 ? $outputs['parentqid'] : $qqid; // use parentqid if exists
+        // The chart ID must be unique per field (subquestion, scale, rank), so it is the whole field name
+        // after the "Q", e.g. "123_S456#0". The field name starts with the question ID.
+        $qqid = substr($rt, strcspn($rt, '0123456789'));
+        $actualQid = (int) explode('_', $qqid)[0];
+        $attrQid = $outputs['parentqid'] > 0 ? $outputs['parentqid'] : $actualQid; // use parentqid if exists
         $aattr = QuestionAttribute::model()->getQuestionAttributes($attrQid);
 
         //PCHART has to be enabled and we need some data

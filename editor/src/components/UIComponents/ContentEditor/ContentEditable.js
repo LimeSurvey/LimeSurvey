@@ -41,7 +41,11 @@ export const ContentEditable = ({
   const handleFocus = () => {
     setIsFocused(true)
     // Show the raw placeholder text while editing, so the badges don't get in the way.
-    setQuestionTitle(removePlaceholderBadges(questionTitle?.toString() ?? ''))
+    // Use the updater form: react-contenteditable skips re-renders while the html
+    // matches the DOM, so this handler can be from an older render with a stale questionTitle.
+    setQuestionTitle((current) =>
+      removePlaceholderBadges(current?.toString() ?? '')
+    )
     onFocus()
   }
 
