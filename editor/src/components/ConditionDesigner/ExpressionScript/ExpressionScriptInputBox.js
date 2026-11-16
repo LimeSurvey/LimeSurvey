@@ -18,13 +18,8 @@ export const ExpressionScriptInputBox = ({
 }) => {
   const { surveyId } = useParams()
   const { survey, update } = useSurvey(surveyId)
-  const { focused } = useFocused()
   const { addToBuffer } = useBuffer()
 
-  const { question, groupIndex, questionIndex } = getQuestionById(
-    focused?.qid,
-    survey
-  )
   const validateExpression = useExpressionScriptValidation(
     surveyId,
     question?.qid
