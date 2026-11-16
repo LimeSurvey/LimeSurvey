@@ -19,9 +19,6 @@ import {
   RandomNumber,
 } from 'helpers'
 
-// Error code of a valid change the current state of the survey doesn't allow (PersistErrorException::CODE_CHANGE_REFUSED)
-const CHANGE_REFUSED_CODE = 409
-
 /**
  * Render children while loading the route's survey and saving buffered edits.
  * Reconcile patch results with local survey state, surface errors, and invalidate
@@ -183,14 +180,11 @@ export const SurveyLogicProvider = ({ children }) => {
         mapResult.operationsBuffer
       )
 
-      // A refused deletion already removed the item locally, and a change the survey
-      // doesn't allow (e.g. switching "Other" off while conditions use it) is already
-      // shown: Drop the operation and reload the survey to show the saved state again.
-      // Other failed updates stay in the buffer marked as error, so the user can correct them.
+      // A refused deletion already removed the item locally: Drop the operation and
+      // reload the survey to show the item again. Failed updates stay in the buffer
+      // marked as error: An update holds all changes of the item, they must not be lost.
       const refusedChanges = exceptionErrors.filter(
-        (error) =>
-          error.op === Operations.delete ||
-          Number(error.code) === CHANGE_REFUSED_CODE
+        (error) => error.op === Operations.delete
       )
       refusedChanges.forEach((error) => {
         mapResult.operationsBuffer.removeOperation(
@@ -287,6 +281,20 @@ export const SurveyLogicProvider = ({ children }) => {
               String(requestedSurveyId) !== String(surveyId) ||
               String(survey?.sid) !== String(surveyId)
             ) {
+              return
+            }
+            // Edits made during the reload are shown already and not saved yet:
+            // Restore the focus with the next reload, after they are saved
+            const hasPendingEdits =
+              !new OperationsBuffer(
+                queryClient.getQueryData([STATES.BUFFER])
+              ).isEmpty() ||
+              queryClient.getQueryData([
+                'appState',
+                STATES.IS_PATCH_SURVEY_RUNNING,
+              ])
+            if (hasPendingEdits) {
+              setSurveyRefreshRequired(true)
               return
             }
             const { focused } =

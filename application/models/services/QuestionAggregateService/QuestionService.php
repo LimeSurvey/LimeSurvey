@@ -293,7 +293,7 @@ class QuestionService
      * @param array $data The new question data
      * @return Question The updated question
      * @throws NotFoundException If the group or parent question is not in the survey
-     * @throws QuestionHasConditionsException If "Other" is switched off while conditions use it
+     * @throws QuestionHasConditionsException If "Other" is switched off while conditions use it (see Question::validateOtherNotUsedInConditions())
      * @throws PersistErrorException If the question could not be saved
      */
     private function updateQuestionData(Question $question, $data)
@@ -301,8 +301,6 @@ class QuestionService
         $data = $this->normalizeQuestionFlags($data);
 
         $this->checkGroupAndParentOfSurvey((int) $question->sid, $data, $question);
-
-        $this->checkOtherNotUsedInConditions($question, $data);
 
         $originalRelevance = $question->relevance;
         $originalTitle = $question->title;
@@ -324,6 +322,13 @@ class QuestionService
         $question->setAttributes($data, false);
 
         if (!$question->save()) {
+            // The validation refuses to switch "Other" off while conditions use it
+            if (!empty($question->getOtherConditionQuestionCodes())) {
+                throw new QuestionHasConditionsException(
+                    $question->getError('other'),
+                    PersistErrorException::CODE_CHANGE_REFUSED
+                );
+            }
             throw new PersistErrorException(
                 gT('Update failed, could not save.')
             );
@@ -378,54 +383,6 @@ class QuestionService
     }
 
     /**
-     * Refuses to switch "Other" off while conditions use it: Conditions on the
-     * "Other" text field, on the "Other" answer option, or comparing to the
-     * "Other" text field. An incompatible type change is not refused: It deletes
-     * these conditions, see removeAnswersAndDependentConditions(). A compatible
-     * type change keeps them, so switching "Other" off with it is refused too.
-     *
-     * @param Question $question The question before the update
-     * @param array $data The question data of the update
-     * @return void Returns normally if "Other" stays on, the type change deletes the conditions or no condition uses it
-     * @throws QuestionHasConditionsException If conditions use the "Other" option
-     */
-    public function checkOtherNotUsedInConditions(Question $question, array $data)
-    {
-        if ($question->other !== 'Y') {
-            return;
-        }
-        $oldType = (string) $question->type;
-        $newType = $this->getNewType($question, $data);
-        if ($newType !== $oldType && !$this->typeChangeKeepsAnswerOptions($oldType, $newType)) {
-            return;
-        }
-        if (($data['other'] ?? $question->other) === 'Y') {
-            return;
-        }
-
-        [$where, $params] = $this->getOtherConditionsCriteria((int) $question->qid, (int) $question->sid, (string) $question->type);
-        // Runs only when "Other" is switched off: One query for all dependent questions
-        $dependentQuestionCodes = $this->yiiApp->db->createCommand()
-            ->selectDistinct('q.title')
-            ->from('{{conditions}} c')
-            ->join('{{questions}} q', 'q.qid = c.qid')
-            ->where($where, $params)
-            ->order('q.title')
-            ->queryColumn();
-
-        if (!empty($dependentQuestionCodes)) {
-            throw new QuestionHasConditionsException(
-                sprintf(
-                    // Plain text: The editors show it as text, the classic save without Ajax encodes it for its HTML flash message
-                    gT('"Other" is used in conditions of: %s. Remove them first.', 'unescaped'),
-                    implode(', ', $dependentQuestionCodes)
-                ),
-                PersistErrorException::CODE_CHANGE_REFUSED
-            );
-        }
-    }
-
-    /**
      * Returns the type the question has after the update: An active survey keeps
      * the stored type, as Question::beforeSave() does, so nothing may be deleted
      * or refused for a type change that isn't saved.
@@ -445,40 +402,6 @@ class QuestionService
             return (string) $question->type;
         }
         return $newType;
-    }
-
-    /**
-     * Returns the criteria of the conditions on the "Other" option of a question:
-     * On its "Other" text field, on its "Other" answer option, or comparing to
-     * its "Other" text field. The conditions are "c", joined with their
-     * questions as "q": The survey limits the search to its questions.
-     *
-     * @param int $questionId The question with the "Other" option
-     * @param int $surveyId The survey of the question
-     * @param string $type The type of the question: Only a type with answer options has the "Other" answer option (-oth-),
-     *                     for other types -oth- can be a typed value
-     * @return array{0: string, 1: array<string, int|string>} The where clause and its parameters
-     */
-    private function getOtherConditionsCriteria(int $questionId, int $surveyId, string $type): array
-    {
-        $questionType = QuestionType::findOne($type);
-        $hasOtherAnswer = !empty($questionType?->other) && $questionType->answerscales > 0;
-        $otherFieldname = "Q{$questionId}_Cother";
-        $params = [
-            ':sid' => $surveyId,
-            ':qid' => $questionId,
-            ':otherfield' => $otherFieldname,
-            ':otherreference' => "@{$otherFieldname}@",
-        ];
-        $onQuestion = 'c.cfieldname = :otherfield';
-        if ($hasOtherAnswer) {
-            $onQuestion .= ' OR c.value = :otheranswer';
-            $params[':otheranswer'] = '-oth-';
-        }
-        return [
-            "q.sid = :sid AND ((c.cqid = :qid AND ({$onQuestion})) OR c.value = :otherreference)",
-            $params,
-        ];
     }
 
     /**
@@ -574,7 +497,7 @@ class QuestionService
             $answer->delete();
         }
         // "Other" goes with the answer options: Its answer option (value -oth-) and its text field
-        [$where, $params] = $this->getOtherConditionsCriteria((int) $questionId, (int) $surveyId, (string) $oldType);
+        [$where, $params] = Question::getOtherConditionsCriteria((int) $questionId, (int) $surveyId, (string) $oldType);
         $otherConditions = $this->yiiApp->db->createCommand()
             ->select('c.cid, c.qid')
             ->from('{{conditions}} c')
@@ -588,14 +511,25 @@ class QuestionService
             }
         }
 
-        foreach (array_keys($qids) as $qid) {
-            // Without conditions left, the upgrade keeps the old relevance: Reset it, as RevertUpgradeConditionsToRelevance() would
-            if (!Condition::model()->exists('qid = :qid', [':qid' => $qid])) {
-                Question::model()->updateByPk($qid, ['relevance' => '1']);
-            }
+        $dependentQuestionIds = array_map('intval', array_keys($qids));
+        if (!empty($dependentQuestionIds)) {
+            // Without conditions left, the upgrade keeps the old relevance: Reset it for all of them
+            // in one statement, as RevertUpgradeConditionsToRelevance() would
+            $this->yiiApp->db->createCommand()->update(
+                '{{questions}}',
+                ['relevance' => '1'],
+                [
+                    'and',
+                    ['in', 'qid', $dependentQuestionIds],
+                    'NOT EXISTS (SELECT 1 FROM {{conditions}} c WHERE c.qid = {{questions}}.qid)',
+                ]
+            );
+        }
+        // The relevance is built from the conditions of one question at a time
+        foreach ($dependentQuestionIds as $qid) {
             LimeExpressionManager::UpgradeConditionsToRelevance(null, $qid);
         }
-        return array_map('intval', array_keys($qids));
+        return $dependentQuestionIds;
     }
 
     /**

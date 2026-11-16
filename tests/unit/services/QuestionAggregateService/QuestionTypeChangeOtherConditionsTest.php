@@ -40,6 +40,25 @@ class QuestionTypeChangeOtherConditionsTest extends TestBaseClass
     }
 
     /**
+     * Checks that the model validation refuses to switch "Other" off while conditions use it.
+     *
+     * @testdox Saving the question model directly (e.g. RemoteControl) refuses to switch "Other" off while conditions use it
+     * @return void
+     */
+    public function testModelRefusesSwitchingOtherOff()
+    {
+        $q4 = $this->getQuestion('Q4');
+        $q4->other = 'N';
+
+        $this->assertFalse($q4->save());
+        $this->assertSame(['Q5'], $q4->getOtherConditionQuestionCodes());
+        $this->assertTrue($q4->hasErrors('other'));
+        $this->assertSame('Y', $this->getQuestion('Q4')->other);
+    }
+
+    /**
+     * Checks that a compatible type change can't switch "Other" off while conditions use it.
+     *
      * @testdox Switching "Other" off with a compatible type change is refused while conditions use it
      * @return void
      */
@@ -68,6 +87,8 @@ class QuestionTypeChangeOtherConditionsTest extends TestBaseClass
     }
 
     /**
+     * Checks that an incompatible type change deletes the answer options and all conditions on them and on "Other".
+     *
      * @testdox Changing List (radio) to Multiple choice deletes the conditions on its answer options and on "Other"
      * @return void
      */
@@ -119,6 +140,8 @@ class QuestionTypeChangeOtherConditionsTest extends TestBaseClass
     }
 
     /**
+     * Checks that a compatible type change keeps the answer options, "Other" and their conditions.
+     *
      * @testdox Changing List (radio) to Dropdown keeps the answer options, "Other" and their conditions
      * @return void
      */
@@ -148,6 +171,8 @@ class QuestionTypeChangeOtherConditionsTest extends TestBaseClass
     }
 
     /**
+     * Checks that the patch response returns the questions whose conditions a type change deleted.
+     *
      * @testdox The patch response of an incompatible type change returns the questions whose conditions were deleted
      * @return void
      */
@@ -173,6 +198,8 @@ class QuestionTypeChangeOtherConditionsTest extends TestBaseClass
     }
 
     /**
+     * Checks that a type change on an active survey deletes nothing and keeps "Other".
+     *
      * @testdox A type change on an active survey isn't saved, so it deletes no conditions
      * @return void
      */
@@ -181,6 +208,8 @@ class QuestionTypeChangeOtherConditionsTest extends TestBaseClass
         \Yii::app()->session['loginID'] = 1;
         $q1 = $this->getQuestion('Q1');
         $q2 = $this->getQuestion('Q2');
+        // Multiple choice after the earlier tests, List (radio) when this test runs alone
+        $originalType = $q1->type;
         $this->addCondition($q2->qid, $q1->qid, "Q{$q1->qid}_Cother", '5');
 
         // Only the flag: The type change is refused before any response table is used
@@ -199,7 +228,7 @@ class QuestionTypeChangeOtherConditionsTest extends TestBaseClass
             Survey::model()->resetCache();
         }
 
-        $this->assertSame(Question::QT_M_MULTIPLE_CHOICE, $this->getQuestion('Q1')->type);
+        $this->assertSame($originalType, $this->getQuestion('Q1')->type, 'The type of an active survey is kept');
         $this->assertSame('Y', $this->getQuestion('Q1')->other, '"Other" stays on: Short text has no "Other", but the type is kept');
         $this->assertCount(
             1,
@@ -209,6 +238,8 @@ class QuestionTypeChangeOtherConditionsTest extends TestBaseClass
     }
 
     /**
+     * Checks that a typed "-oth-" value isn't taken for the "Other" answer option.
+     *
      * @testdox A type change keeps a condition with the typed value "-oth-" on a question without the "Other" answer option
      * @return void
      */
@@ -237,6 +268,8 @@ class QuestionTypeChangeOtherConditionsTest extends TestBaseClass
     }
 
     /**
+     * Checks which question types count as compatible on a type change.
+     *
      * @testdox The answer option layouts group the types whose answer options and "Other" are kept on a type change
      * @return void
      */

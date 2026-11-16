@@ -107,6 +107,15 @@ class Question extends LSActiveRecord
     /** @var QuestionTheme cached question theme*/
     private $relatedQuestionTheme;
 
+    /** @var string|null The "Other" setting as loaded or last saved, see validateOtherNotUsedInConditions() */
+    private $savedOther;
+
+    /** @var string|null The type as loaded or last saved, see validateOtherNotUsedInConditions() */
+    private $savedType;
+
+    /** @var string[] The codes of the questions whose conditions use "Other", see validateOtherNotUsedInConditions() */
+    private $otherConditionQuestionCodes = [];
+
     /**
      * @inheritdoc
      * @return Question
@@ -198,6 +207,8 @@ class Question extends LSActiveRecord
             }
             return 'N';
         });
+        /* After the filter: "Other" can't be switched off while conditions use it */
+        $aRules[] = array('other', 'validateOtherNotUsedInConditions');
         /* Don't save empty or 'core' question theme name */
         $aRules[] = ['question_theme_name', 'filter', 'filter' =>  [$this, 'questionThemeNameValidator'] ];
         /* Specific rules to avoid collapse with column name in database */
@@ -1137,6 +1148,7 @@ class Question extends LSActiveRecord
 
     /**
      * Update the survey's lastmodified timestamp after the question was saved,
+     * remember its saved "Other" setting and type for the next validation,
      * and forget its attribute values kept for this request (type and theme decide which attributes it has).
      *
      * @return void
@@ -1144,10 +1156,104 @@ class Question extends LSActiveRecord
     protected function afterSave()
     {
         parent::afterSave();
+        $this->savedOther = $this->other;
+        $this->savedType = $this->type;
         QuestionAttribute::clearRequestCache($this->qid);
         if (!empty($this->sid)) {
             (new SurveyDetailService())->touchSurveyLastModified((int) $this->sid);
         }
+    }
+
+    /**
+     * Remembers the loaded "Other" setting and type, so the validation knows
+     * when "Other" is switched off.
+     *
+     * @return void
+     */
+    protected function afterFind()
+    {
+        parent::afterFind();
+        $this->savedOther = $this->other;
+        $this->savedType = $this->type;
+    }
+
+    /**
+     * Validates that "Other" isn't switched off while conditions of other
+     * questions use it, whoever saves the question (editors, mass action,
+     * RemoteControl). A type change that deletes these conditions does so
+     * before the save, see QuestionService::removeAnswersAndDependentConditions().
+     *
+     * @param string $attribute The validated attribute, "other"
+     * @return void
+     */
+    public function validateOtherNotUsedInConditions($attribute)
+    {
+        $this->otherConditionQuestionCodes = [];
+        if ($this->getIsNewRecord() || $this->parent_qid || $this->savedOther !== 'Y' || $this->other === 'Y') {
+            return;
+        }
+        [$where, $queryParams] = self::getOtherConditionsCriteria((int) $this->qid, (int) $this->sid, (string) $this->savedType);
+        // Runs only when "Other" is switched off: One query for all dependent questions
+        $questionCodes = Yii::app()->db->createCommand()
+            ->selectDistinct('q.title')
+            ->from('{{conditions}} c')
+            ->join('{{questions}} q', 'q.qid = c.qid')
+            ->where($where, $queryParams)
+            ->order('q.title')
+            ->queryColumn();
+        if (!empty($questionCodes)) {
+            $this->otherConditionQuestionCodes = $questionCodes;
+            // Plain text: The editors show it as text, the classic save without Ajax encodes it for its HTML flash message
+            $this->addError($attribute, sprintf(
+                gT('"Other" is used in conditions of: %s. Remove them first.', 'unescaped'),
+                implode(', ', $questionCodes)
+            ));
+        }
+    }
+
+    /**
+     * Returns the codes of the questions whose conditions use "Other", if the
+     * last validation refused to switch "Other" off.
+     *
+     * @return string[] The question codes, empty if "Other" wasn't refused
+     */
+    public function getOtherConditionQuestionCodes(): array
+    {
+        return $this->otherConditionQuestionCodes;
+    }
+
+    /**
+     * Returns the criteria of the conditions on the "Other" option of a question:
+     * On its "Other" text field, on its "Other" answer option, or comparing to
+     * its "Other" text field. The conditions are "c", joined with their
+     * questions as "q": The survey limits the search to its questions.
+     *
+     * @param int $questionId The question with the "Other" option
+     * @param int $surveyId The survey of the question
+     * @param string $type The type of the question: Only a type with answer options has the "Other" answer option (-oth-),
+     *                     for other types -oth- can be a typed value
+     * @return array{0: string, 1: array<string, int|string>} The where clause and its parameters
+     */
+    public static function getOtherConditionsCriteria(int $questionId, int $surveyId, string $type): array
+    {
+        $questionType = QuestionType::findOne($type);
+        $hasOtherAnswer = !empty($questionType?->other) && $questionType->answerscales > 0;
+        $otherFieldname = "Q{$questionId}_Cother";
+        $params = [
+            ':sid' => $surveyId,
+            ':qid' => $questionId,
+            ':otherfield' => $otherFieldname,
+            ':otherreference' => "@{$otherFieldname}@",
+        ];
+        $onQuestion = 'c.cfieldname = :otherfield';
+        if ($hasOtherAnswer) {
+            $onQuestion .= ' OR c.value = :otheranswer';
+            $params[':otheranswer'] = '-oth-';
+        }
+        return [
+            "q.sid = :sid AND ((c.cqid = :qid AND ({$onQuestion})) OR c.value = :otherreference)",
+            $params,
+        ];
     }
 
     /**

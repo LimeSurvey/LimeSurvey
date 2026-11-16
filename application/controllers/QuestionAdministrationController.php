@@ -2229,9 +2229,6 @@ class QuestionAdministrationController extends LSBaseController
      */
     public static function setMultipleQuestionOtherState($aQids, $sOther, $iSid)
     {
-        $questionService = \LimeSurvey\DI::getContainer()->get(
-            \LimeSurvey\Models\Services\QuestionAggregateService\QuestionService::class
-        );
         $refusedQuestionCodes = [];
         foreach ($aQids as $sQid) {
             $iQid = (int)$sQid;
@@ -2241,14 +2238,11 @@ class QuestionAdministrationController extends LSBaseController
             }
             // Only set the other state for question types that have this attribute (and no parent_qid)
             if ($oQuestion->getAllowOther()) {
-                try {
-                    $questionService->checkOtherNotUsedInConditions($oQuestion, ['other' => $sOther]);
-                } catch (QuestionHasConditionsException $e) {
-                    $refusedQuestionCodes[] = $oQuestion->title;
-                    continue;
-                }
                 $oQuestion->other = $sOther;
-                $oQuestion->save();
+                // The validation refuses to switch "Other" off while conditions use it
+                if (!$oQuestion->save() && !empty($oQuestion->getOtherConditionQuestionCodes())) {
+                    $refusedQuestionCodes[] = $oQuestion->title;
+                }
             }
         }
         return $refusedQuestionCodes;

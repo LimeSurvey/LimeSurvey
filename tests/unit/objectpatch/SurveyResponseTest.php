@@ -80,7 +80,10 @@ class SurveyResponseTest extends TestBaseClass
     }
 
     /**
+     * Checks that the question data of several operations end up in one list of extras.
+     *
      * @testdox extras merge the question data of several operations
+     * @return void
      */
     public function testExtrasMergeQuestionData()
     {
@@ -98,7 +101,10 @@ class SurveyResponseTest extends TestBaseClass
     }
 
     /**
+     * Checks that extras without question data replace the extras of an earlier operation.
+     *
      * @testdox extras without question data replace the extras of an earlier operation
+     * @return void
      */
     public function testExtrasWithoutQuestionDataReplace()
     {
