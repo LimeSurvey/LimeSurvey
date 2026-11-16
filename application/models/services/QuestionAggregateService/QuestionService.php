@@ -306,13 +306,14 @@ class QuestionService
 
         $originalRelevance = $question->relevance;
         $originalTitle = $question->title;
+        $oldType = (string) $question->type;
         $newType = $this->getNewType($question, $data);
         $this->changedDependentQuestionIds = [];
-        if ($question->type !== $newType && !$this->typeChangeKeepsAnswerOptions($question->type, $newType)) {
+        if ($oldType !== $newType && !$this->typeChangeKeepsAnswerOptions($oldType, $newType)) {
             $this->changedDependentQuestionIds = $this->removeAnswersAndDependentConditions(
                 (int) $question->qid,
                 (int) $question->sid,
-                (string) $question->type
+                $oldType
             );
         }
 
@@ -389,8 +390,9 @@ class QuestionService
         if ($question->other !== 'Y') {
             return;
         }
+        $oldType = (string) $question->type;
         $newType = $this->getNewType($question, $data);
-        if ($newType !== $question->type && !$this->typeChangeKeepsAnswerOptions($question->type, $newType)) {
+        if ($newType !== $oldType && !$this->typeChangeKeepsAnswerOptions($oldType, $newType)) {
             return;
         }
         if (($data['other'] ?? $question->other) === 'Y') {
@@ -430,11 +432,15 @@ class QuestionService
      */
     private function getNewType(Question $question, array $data): string
     {
+        $newType = (string) ($data['type'] ?? $question->type);
+        if ($newType === (string) $question->type) {
+            return $newType;
+        }
         $survey = Survey::model()->findByPk($question->sid);
         if (!empty($survey) && $survey->active !== 'N') {
             return (string) $question->type;
         }
-        return (string) ($data['type'] ?? $question->type);
+        return $newType;
     }
 
     /**
