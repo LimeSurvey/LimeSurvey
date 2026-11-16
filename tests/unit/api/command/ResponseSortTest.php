@@ -234,14 +234,18 @@ class ResponseSortTest extends TestBaseClass
         $survey = \Survey::model()->findByPk(self::$surveyId);
         $fieldMap = createFieldMap($survey, 'full', true, false, $survey->language);
 
+        // The test helper activates surveys with date stamps
         $keys = (new ResponseSort($fieldMap))->getSortableKeys();
-        foreach (['id', 'seed', 'language', 'submitDate'] as $key) {
+        foreach (['id', 'seed', 'language', 'submitDate', 'dateLastAction'] as $key) {
             $this->assertContains($key, $keys);
         }
-        // The survey has no date stamps and is not sorted by "completed"
-        $this->assertNotContains('dateLastAction', $keys);
         $this->assertNotContains('completed', $keys);
         $this->assertNotContains('firstName', $keys);
+
+        // Without date stamps, the field map has no date of last action
+        $fieldMapWithoutDateStamps = $fieldMap;
+        unset($fieldMapWithoutDateStamps['datestamp']);
+        $this->assertNotContains('dateLastAction', (new ResponseSort($fieldMapWithoutDateStamps))->getSortableKeys());
 
         $participantsTable = '{{tokens_' . self::$surveyId . '}}';
         // The survey has no participants table, so its field map has no token: Add it as a survey with participants would
