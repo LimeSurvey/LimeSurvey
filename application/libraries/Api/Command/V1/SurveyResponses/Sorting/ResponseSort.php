@@ -48,7 +48,8 @@ class ResponseSort
     /**
      * @param array $fieldMap Field map of the survey, as created by createFieldMap()
      * @param QuestionSorterInterface[] $questionSorters Sorters for question columns, the first that can sort a question wins
-     * @param string|null $participantsTable Participants table name, null when participant columns can't be sorted
+     * @param string|null $participantsTable Participants table name, null when participant columns can't be sorted.
+     *   Ignored when the field map has no token (anonymized survey).
      * @param string[] $participantColumns API keys of the participant columns that can be sorted (not encrypted, readable)
      */
     public function __construct(
@@ -69,7 +70,8 @@ class ResponseSort
         }
         $this->questionSorters = $questionSorters;
         $this->participantsTable = $participantsTable;
-        $this->participantColumns = $participantsTable === null
+        // Anonymized surveys have no token column to find the participant with
+        $this->participantColumns = $participantsTable === null || !isset($fieldMap['token'])
             ? []
             : array_intersect_key(self::PARTICIPANT_COLUMNS, array_flip($participantColumns));
     }

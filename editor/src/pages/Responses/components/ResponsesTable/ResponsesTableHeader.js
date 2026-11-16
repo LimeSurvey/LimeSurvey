@@ -30,7 +30,8 @@ const getColumnName = (header) => {
  * Render the header row of the responses table, with pin and sort controls.
  * A column sorts in two modes: The first click sorts ascending, the next ones
  * switch between ascending and descending. Without a sort, the table shows the
- * newest responses first, which the ID column shows as sorted descending.
+ * newest responses first, which the ID column shows as sorted descending. The
+ * ID column starts descending, so clicking it restores that default order.
  *
  * @param {object} props
  * @param {object} props.table TanStack table instance
@@ -72,8 +73,15 @@ export const ResponsesTableHeader = ({
             const sortDir =
               header.column.getIsSorted() ||
               (isDefaultSort && header.id === idColumnKey ? 'desc' : false)
+            // The ID starts descending, so its first click restores the default order
+            const firstDescending = header.id === idColumnKey
             const toggleSorting = () =>
-              table.setSorting([{ id: header.id, desc: sortDir === 'asc' }])
+              table.setSorting([
+                {
+                  id: header.id,
+                  desc: sortDir ? sortDir === 'asc' : firstDescending,
+                },
+              ])
             const questionTitle = header.column.columnDef.meta?.title
 
             // to remove the border

@@ -44,6 +44,9 @@ class ResponseSortTest extends TestBaseClass
                 'startlanguage' => $language,
                 'submitdate' => $submitDate,
                 'lastpage' => 1,
+                // Required even without date stamps
+                'startdate' => '2026-01-01 09:00:00',
+                'datestamp' => '2026-01-01 09:00:00',
             ]);
             self::$responseIds[$name] = (int) $db->getLastInsertID();
         }
@@ -240,13 +243,20 @@ class ResponseSortTest extends TestBaseClass
         $this->assertNotContains('completed', $keys);
         $this->assertNotContains('firstName', $keys);
 
-        $keys = (new ResponseSort($fieldMap, [], '{{tokens_' . self::$surveyId . '}}', ['firstName', 'email']))
+        $participantsTable = '{{tokens_' . self::$surveyId . '}}';
+        // The survey has no participants table, so its field map has no token: Add it as a survey with participants would
+        $fieldMapWithToken = $fieldMap + ['token' => ['fieldname' => 'token', 'type' => 'token', 'qid' => '']];
+        $keys = (new ResponseSort($fieldMapWithToken, [], $participantsTable, ['firstName', 'email']))
             ->getSortableKeys();
         $this->assertContains('firstName', $keys);
         $this->assertContains('email', $keys);
         $this->assertNotContains('lastName', $keys);
 
-        $keys = (new ResponseSort($fieldMap, [], null, ['firstName']))->getSortableKeys();
+        $keys = (new ResponseSort($fieldMapWithToken, [], null, ['firstName']))->getSortableKeys();
+        $this->assertNotContains('firstName', $keys);
+
+        // Anonymized surveys have no token to find the participant with
+        $keys = (new ResponseSort($fieldMap, [], $participantsTable, ['firstName']))->getSortableKeys();
         $this->assertNotContains('firstName', $keys);
     }
 }

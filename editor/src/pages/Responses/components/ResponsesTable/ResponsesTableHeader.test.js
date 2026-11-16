@@ -107,6 +107,21 @@ describe('ResponsesTableHeader sorting', () => {
     expect(getHeaderCell('ID')).toHaveAttribute('aria-sort', 'ascending')
   })
 
+  test('after sorting another column, the first click on ID restores the newest first', async () => {
+    render(<HeaderWithTable sortableColumns={['id', '23']} />)
+
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Sort by Q1 Favourite fruit' })
+    )
+    await userEvent.click(screen.getByRole('button', { name: 'Sort by ID' }))
+
+    expect(latestSorting).toEqual([{ id: 'id', desc: true }])
+    expect(getHeaderCell('ID')).toHaveAttribute('aria-sort', 'descending')
+
+    await userEvent.click(screen.getByRole('button', { name: 'Sort by ID' }))
+    expect(latestSorting).toEqual([{ id: 'id', desc: false }])
+  })
+
   test('a column switches between ascending and descending, without an unsorted step', async () => {
     render(<HeaderWithTable sortableColumns={['id', '23']} />)
     const button = screen.getByRole('button', {
