@@ -2,5 +2,4 @@
 
 class DataSetDate extends QuestionBaseDataSet
 {
-
 }

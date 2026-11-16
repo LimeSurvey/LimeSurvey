@@ -42,7 +42,7 @@ var RoleControl = function () {
 
     var triggerModalClose = function () {
         $('#RoleControl-action-modal').find('.modal-content').empty();
-        $.fn.yiiGridView.update('rolecontrol--identity-gridPanel', {});
+        $.fn.yiiGridView.update('RoleControl--identity-gridPanel', {});
         $('#RoleControl-action-modal').modal('hide');
     };
 
@@ -201,9 +201,6 @@ var RoleControl = function () {
             $('.RoleControl--selector-roleCheckbox').each(function(){
                 $(this).prop('checked', curVal);
             });
-        });
-        $('#pageSize').on('change', function(){
-            $('#RoleControl--identity-gridPanel').yiiGridView('update',{ data:{ pageSize: $(this).val() }});
         });
         $(document).trigger('actions-updated');
     };

@@ -55,16 +55,16 @@ class DateTimeDefaultAnswerExpressionTest extends TestBaseClass
         );
 
         // Qanda needs this.
-        $_SESSION['survey_' . self::$surveyId]['maxstep'] = 2;
-        $_SESSION['survey_' . self::$surveyId]['step'] = 1;
-        $_SESSION['survey_' . self::$surveyId]['s_lang'] = 'pt';        
+        $_SESSION['responses_' . self::$surveyId]['maxstep'] = 2;
+        $_SESSION['responses_' . self::$surveyId]['step'] = 1;
+        $_SESSION['responses_' . self::$surveyId]['s_lang'] = 'pt';        
 
         // Move one step to run expressions.
         $moveResult = \LimeExpressionManager::NavigateForwards();
 
         // Check result from qanda.
         $qanda = \retrieveAnswers(
-            $_SESSION['survey_' . self::$surveyId]['fieldarray'][0]
+            $_SESSION['responses_' . self::$surveyId]['fieldarray'][0]
         );
 
         $correctDate = date('d/m/Y');
@@ -117,15 +117,15 @@ class DateTimeDefaultAnswerExpressionTest extends TestBaseClass
         );
 
         // Qanda needs this.
-        $_SESSION['survey_' . self::$surveyId]['maxstep'] = 2;
-        $_SESSION['survey_' . self::$surveyId]['step'] = 1;
+        $_SESSION['responses_' . self::$surveyId]['maxstep'] = 2;
+        $_SESSION['responses_' . self::$surveyId]['step'] = 1;
 
         // Move one step to run expressions.
         $moveResult = \LimeExpressionManager::NavigateForwards();
 
         // Check result from qanda.
         $qanda = \retrieveAnswers(
-            $_SESSION['survey_' . self::$surveyId]['fieldarray'][1] // 1 = second question (q2)
+            $_SESSION['responses_' . self::$surveyId]['fieldarray'][1] // 1 = second question (q2)
         );
 
         $correctDate = date('d/m/Y');
@@ -177,15 +177,15 @@ class DateTimeDefaultAnswerExpressionTest extends TestBaseClass
         );
 
         // Qanda needs this.
-        $_SESSION['survey_' . self::$surveyId]['maxstep'] = 2;
-        $_SESSION['survey_' . self::$surveyId]['step'] = 1;
+        $_SESSION['responses_' . self::$surveyId]['maxstep'] = 2;
+        $_SESSION['responses_' . self::$surveyId]['step'] = 1;
 
         // Move one step to run expressions.
         $moveResult = \LimeExpressionManager::NavigateForwards();
 
         // Check result from qanda.
         $qanda = \retrieveAnswers(
-            $_SESSION['survey_' . self::$surveyId]['fieldarray'][2] //  2 = third question (q3)
+            $_SESSION['responses_' . self::$surveyId]['fieldarray'][2] //  2 = third question (q3)
         );
 
         // NB: Empty value, since default answer expression is not parsed by qanda.
@@ -197,6 +197,6 @@ class DateTimeDefaultAnswerExpressionTest extends TestBaseClass
 
         // NB: Value below is todays time in format H:i, which can't be
         // parsed by qanda (expects Y-m-d H:i).
-        //print_r($_SESSION['survey_' . self::$surveyId][$sgqa]);
+        //print_r($_SESSION['responses_' . self::$surveyId][$sgqa]);
     }
 }

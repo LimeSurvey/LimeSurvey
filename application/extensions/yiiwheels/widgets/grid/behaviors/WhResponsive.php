@@ -1,4 +1,5 @@
 <?php
+
 /**
  * WhResponsive class
  * Extends WhGridView to provide responsive Tables
@@ -10,29 +11,29 @@
  */
 class WhResponsive extends CBehavior
 {
-	/**
-	 * @var bool whether to make the grid responsive
-	 */
-	public $responsiveTable = false;
+    /**
+     * @var bool whether to make the grid responsive
+     */
+    public $responsiveTable = false;
 
-	/**
-	 * Writes responsiveCSS
-	 */
-	public function writeResponsiveCss($columns, $gridId)
-	{
-		$cnt = 1;
-		$labels = '';
-		foreach ($columns as $column) {
-			/** @var WhDataColumn $column */
-			ob_start();
-			$column->renderHeaderCell();
-			$name = strip_tags(ob_get_clean());
+    /**
+     * Writes responsiveCSS
+     */
+    public function writeResponsiveCss($columns, $gridId)
+    {
+        $cnt = 1;
+        $labels = '';
+        foreach ($columns as $column) {
+            /** @var WhDataColumn $column */
+            ob_start();
+            $column->renderHeaderCell();
+            $name = strip_tags(ob_get_clean());
 
-			$labels .= "#$gridId td:nth-of-type($cnt):before { content: '{$name}'; }\n";
-			$cnt++;
-		}
+            $labels .= "#$gridId td:nth-of-type($cnt):before { content: '{$name}'; }\n";
+            $cnt++;
+        }
 
-		$css = <<<EOD
+        $css = <<<EOD
 @media
 	only screen and (max-width: 760px),
 	(min-device-width: 768px) and (max-device-width: 1024px)  {
@@ -79,6 +80,6 @@ class WhResponsive extends CBehavior
 		{$labels}
 	}
 EOD;
-		Yii::app()->clientScript->registerCss(__CLASS__ . '#' . $gridId, $css);
-	}
+        Yii::app()->clientScript->registerCss(__CLASS__ . '#' . $gridId, $css);
+    }
 }

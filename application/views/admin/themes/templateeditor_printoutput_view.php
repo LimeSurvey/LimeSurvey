@@ -1,4 +1,4 @@
-<span class='printouttitle'><strong><?php eT("Survey name (ID)") ?></strong> Test survey (46962)</span><br />
+<span class='printouttitle'><strong><?php printf(gT("Survey name (ID): %s (%s)"), "Test survey", "46962"); ?></strong></span><br />
 <table class='printouttable' >
     <tr><th><?php eT("Question") ?></th><th><?php eT("Your answer") ?></th></tr>
     <tr>

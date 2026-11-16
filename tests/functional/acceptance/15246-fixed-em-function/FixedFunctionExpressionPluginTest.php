@@ -30,6 +30,9 @@ class FixedFunctionExpressionPluginTest extends TestBaseClassWeb
     public function testPluginsStats()
     {
         $questions = $this->getAllSurveyQuestions();
+        foreach ($questions['Q03']->subquestions as $subquestion) {
+            $questions[$subquestion->title] = $subquestion;
+        }
         $urlMan = \Yii::app()->urlManager;
         $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
         $url = $urlMan->createUrl(
@@ -61,7 +64,7 @@ class FixedFunctionExpressionPluginTest extends TestBaseClassWeb
                 "Q01 is not hidden by relevance"
             );
             sleep(1);
-            $sgqa = self::$surveyId."X".$questions['Q00']->gid."X".$questions['Q00']->qid;
+            $sgqa = "Q".$questions['Q00']->qid;
             $Input = self::$webDriver->findElement(WebDriverBy::id('answer' . $sgqa ));
             $Input->sendKeys('10');
             $this->assertTrue(
@@ -86,19 +89,19 @@ class FixedFunctionExpressionPluginTest extends TestBaseClassWeb
             $submit->click();
             sleep(1); // Needed ?
             /** Relevance on subquestion **/
-            $sgqa = self::$surveyId."X".$questions['Q03']->gid."X".$questions['Q03']->qid;
+            $sgqa = "Q".$questions['Q03']->qid;
             // Line to be relevant
             $lineRelevance = self::$webDriver->findElements(
-                WebDriverBy::cssSelector("#javatbd".$sgqa."SQ001.ls-irrelevant")
+                WebDriverBy::cssSelector("#javatbdQ" . $questions['SQ001']->parent_qid . "_S" . $questions['SQ001']->qid . ".ls-irrelevant")
             );
             $this->assertCount(0, $lineRelevance, 'Relevance is broken : SQ001 is irrelevant.');
             // Line to be irrelevant
             $lineRelevance = self::$webDriver->findElements(
-                WebDriverBy::cssSelector("#javatbd".$sgqa."SQ003.ls-irrelevant")
+                WebDriverBy::cssSelector("#javatbdQ" . $questions['SQ003']->parent_qid . '_S' . $questions['SQ003']->qid . ".ls-irrelevant")
             );
-            $this->assertCount(1, $lineRelevance, 'Relevance is broken : SQ003 is relevant.');
+            $this->assertCount(1, $lineRelevance, 'Relevance is broken : ' . ("#javatbdQ" . $questions['SQ003']->parent_qid . '_S' . $questions['SQ003']->qid) . ' is relevant.');
             /** Text of subquestion **/
-            $textToCompare = self::$webDriver->findElement(WebDriverBy::id('answertext'.$sgqa.'SQ001'))->getText();
+            $textToCompare = self::$webDriver->findElement(WebDriverBy::id('answertextQ' . $questions['SQ001']->parent_qid . "_S" . $questions['SQ001']->qid))->getText();
             $this->assertEquals(
                 $textToCompare, 
                 "Event #1 (still 7 places)",

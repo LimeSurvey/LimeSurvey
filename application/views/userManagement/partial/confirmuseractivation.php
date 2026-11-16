@@ -3,12 +3,12 @@
 if ($action == 'activate') {
     Yii::app()->getController()->renderPartial(
         '/layouts/partial_modals/modal_header',
-        ['modalTitle' => gT('Activate user')]
+        ['modalTitle' => gT('Activate user'), 'modalTitleId' => 'UserManagement-action-modal-title']
     );
 } else {
     Yii::app()->getController()->renderPartial(
         '/layouts/partial_modals/modal_header',
-        ['modalTitle' => gT('Deactivate user')]
+        ['modalTitle' => gT('Deactivate user'), 'modalTitleId' => 'UserManagement-action-modal-title']
     );
 }
 
@@ -22,9 +22,9 @@ if ($action == 'activate') {
     <?php endif; ?>
 </div>
 <div class="modal-footer">
-    <?=TbHtml::formTb(null, App()->createUrl('userManagement/userActivateDeactivate'), 'post', ["id"=>"UserManagement--modalform"])?>
+    <?=TbHtml::formTb(null, App()->createUrl('userManagement/userActivateDeactivate'), 'post', ["id" => "UserManagement--modalform"])?>
         <input type="hidden" name="userid" value="<?= $userId ?>" />
-        <input type="hidden" name="action" value="<?= $action ?>" />
+        <input type="hidden" name="action" value="<?= CHtml::encode($action) ?>" />
         <button type="button"  class="btn btn-cancel" data-bs-dismiss="modal">&nbsp;<?php eT("Cancel"); ?></button>
         <button class="btn btn-primary">&nbsp;<?php eT("Save"); ?></button>
     <?php echo TbHtml::endForm() ?>

@@ -6,7 +6,6 @@
  *
  * @var $id
  * @var $hint_comment
- * @var $kpclass
  * @var $name
  * @var $tarows
  * @var $has_comment_saved
@@ -39,7 +38,7 @@
         </label>
         {{ C.Html.textArea(name,comment_saved,({
             'id' : id,
-            'class' : "form-control"~kpclass,
+            'class' : "form-control",
             'rows' : tarows
         }))
         }}

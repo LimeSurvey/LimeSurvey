@@ -1,9 +1,11 @@
 <?php
+
 /**
  * Position Widget Ajax Form Group View
  * Display a hidden input that will be used to load dynamically via ajax the position widget
  *
  */
+
 ?>
 
 <!-- PositionWidget : ajax_form_group -->

@@ -115,7 +115,7 @@ class Zend_Amf_Parse_Amf3_Serializer extends Zend_Amf_Parse_Serializer
                 case Zend_Amf_Constants::AMF3_BYTEARRAY:
                     $this->writeByteArray($data);
                     break;
-                case Zend_Amf_Constants::AMF3_XMLSTRING;
+                case Zend_Amf_Constants::AMF3_XMLSTRING:
                     $this->writeXml($data);
                     break;
                 default:
@@ -388,7 +388,7 @@ class Zend_Amf_Parse_Amf3_Serializer extends Zend_Amf_Parse_Serializer
             $object = &$objectByVal;
         }
 
-        $hash = spl_object_hash($object);
+        $hash = spl_object_id($object);
         $ref = array_key_exists($hash, $this->_referenceObjects)
              ? $this->_referenceObjects[$hash]
              : false;

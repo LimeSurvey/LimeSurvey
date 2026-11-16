@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<ruleset name="zf1-future">
+    <file>library</file>
+
+    <!-- Lowest PHP version supported by composer.json, no upper limit -->
+    <config name="testVersion" value="7.4-"/>
+
+    <!-- Warnings are reported but do not fail the run; deprecated calls guarded by a version check carry a phpcs:ignore -->
+    <config name="ignore_warnings_on_exit" value="1"/>
+
+    <rule ref="PHPCompatibility">
+        <!-- func_get_args() & co. behave the same on every PHP version >= 7.0, so there is no difference to detect in the supported range -->
+        <exclude name="PHPCompatibility.FunctionUse.ArgumentFunctionsReportCurrentValue"/>
+        <!-- trim() also strips a form feed by default since PHP 8.6; the library does not rely on keeping one -->
+        <exclude name="PHPCompatibility.ParameterValues.NewTrimCharactersDefault"/>
+        <!-- Classes keep Serializable next to __serialize()/__unserialize(), as code may call or override their serialize()/unserialize() -->
+        <exclude name="PHPCompatibility.Interfaces.RemovedSerializable.RedundantSerializableImplementation"/>
+    </rule>
+
+    <!--
+        Adapters for extensions that are no longer bundled with PHP but can still be installed
+        from PECL (sqlite2, oci8, mcrypt, wddx). They are only usable when the extension is loaded.
+    -->
+    <rule ref="PHPCompatibility.Extensions.RemovedExtensions">
+        <exclude-pattern>*/Zend/Cache/Backend/Sqlite.php</exclude-pattern>
+        <exclude-pattern>*/Zend/Crypt/Math.php</exclude-pattern>
+        <exclude-pattern>*/Zend/Filter/Encrypt/Mcrypt.php</exclude-pattern>
+        <exclude-pattern>*/Zend/Serializer/Adapter/Wddx.php</exclude-pattern>
+        <exclude-pattern>*/Zend/Service/ReCaptcha/MailHide.php</exclude-pattern>
+    </rule>
+    <rule ref="PHPCompatibility.FunctionUse.RemovedFunctions">
+        <exclude-pattern>*/Zend/Cache/Backend/Sqlite.php</exclude-pattern>
+        <exclude-pattern>*/Zend/Crypt/Math.php</exclude-pattern>
+        <exclude-pattern>*/Zend/Db/Adapter/Oracle.php</exclude-pattern>
+        <exclude-pattern>*/Zend/Db/Statement/Oracle.php</exclude-pattern>
+        <exclude-pattern>*/Zend/Filter/Encrypt/Mcrypt.php</exclude-pattern>
+        <exclude-pattern>*/Zend/Serializer/Adapter/Wddx.php</exclude-pattern>
+        <exclude-pattern>*/Zend/Service/ReCaptcha/MailHide.php</exclude-pattern>
+    </rule>
+    <rule ref="PHPCompatibility.Constants.RemovedConstants">
+        <exclude-pattern>*/Zend/Cache/Backend/Sqlite.php</exclude-pattern>
+        <exclude-pattern>*/Zend/Crypt/Math.php</exclude-pattern>
+        <exclude-pattern>*/Zend/Db/Adapter/Oracle.php</exclude-pattern>
+        <exclude-pattern>*/Zend/Db/Statement/Oracle.php</exclude-pattern>
+        <exclude-pattern>*/Zend/Filter/Encrypt/Mcrypt.php</exclude-pattern>
+        <exclude-pattern>*/Zend/Service/ReCaptcha/MailHide.php</exclude-pattern>
+    </rule>
+
+    <!-- Interfaces that extend Serializable, so that their implementations are checked for __serialize()/__unserialize() -->
+    <rule ref="PHPCompatibility.Interfaces.RemovedSerializable">
+        <properties>
+            <property name="serializableInterfaces" type="array">
+                <element value="Zend_Http_UserAgent_Device"/>
+            </property>
+        </properties>
+    </rule>
+
+    <!-- Constraint classes for newer PHPUnit versions, selected at runtime by the PHPUnit version -->
+    <rule ref="PHPCompatibility.FunctionDeclarations.NewParamTypeDeclarations">
+        <exclude-pattern>*/Zend/Test/PHPUnit/Constraint/*80.php</exclude-pattern>
+    </rule>
+    <rule ref="PHPCompatibility.FunctionDeclarations.NewReturnTypeDeclarations">
+        <exclude-pattern>*/Zend/Test/PHPUnit/Constraint/*80.php</exclude-pattern>
+    </rule>
+</ruleset>

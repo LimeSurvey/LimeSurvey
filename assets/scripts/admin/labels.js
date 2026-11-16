@@ -1,6 +1,6 @@
 /*
 * LimeSurvey
-* Copyright (C) 2007-2012 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -77,7 +77,7 @@ $(document).on('ready  pjax:scriptcomplete', function(){
         $(".tab-content div:first .labelDatas").each(function(trindex,trelement){
 
             var tr_code = $(trelement).attr('id');
-            tr_code=tr_code.split('_');// first is row, second langage and last the row number
+            tr_code=tr_code.split('_');// first is row, second language and last the row number
             tr_code=tr_code[2];
             dataToSend['codelist'].push(tr_code);
             dataToSend[tr_code] = {
@@ -92,7 +92,7 @@ $(document).on('ready  pjax:scriptcomplete', function(){
         $("input[name=dataToSend]").remove();
 
         $("#mainform").append("<input type='hidden' id='dataToSend' name='dataToSend' value='' />");
-        $('#dataToSend').val($.toJSON(dataToSend));
+        $('#dataToSend').val(JSON.stringify(dataToSend));
     });
 
     fix_highlighting();
@@ -148,23 +148,10 @@ function quickaddfunction() {
         if (!code || code === '') {
             if (existingCodes.length > 0) {
                 // Generate next code based on the last existing code
-                code = getNextCode(existingCodes[existingCodes.length - 1]);
+                code = getUniqueNextCode(existingCodes[existingCodes.length - 1], existingCodes);
             } else {
                 // Default to L001 if no existing codes
                 code = 'L001';
-            }
-            
-            // Ensure the generated code is unique
-            // NOTE: getNextCode() may return the same value if code has no numeric suffix
-            // To prevent infinite loops, we append '1' if getNextCode returns unchanged
-            while (existingCodes.indexOf(code) !== -1) {
-                const nextCode = getNextCode(code);
-                // If no numeric suffix exists, getNextCode returns unchanged value
-                if (nextCode === code) {
-                    code = code + '1';
-                } else {
-                    code = nextCode;
-                }
             }
         }
 
@@ -198,9 +185,11 @@ function quickaddfunction() {
     retrieveRowHtml(datas)
         .then((result) => {
             $.each(parsedRows, (index, parsedRow) => {
+                // One randomid per label, shared across all language tabs so the save
+                // serializer can correlate title_en_XXXX with title_es_XXXX, etc.
+                const randomid = 'new' + Math.floor(Math.random()*1111111);
                 // We insert each row for each language
                 $.each(result.arrayofhtml, (lang, htmlRow) => {
-                    const randomid = 'new' + Math.floor(Math.random()*1111111);
                     const title = parsedRow.titles[lang] || '';
                     let finalRowHtml = htmlRow;
                     finalRowHtml = finalRowHtml.replaceAll("{{newid_placeholder}}", randomid);
@@ -263,8 +252,8 @@ function sync_label(event)
 {
     event.preventDefault();
     var sRowID = $(event.target).parent().parent().attr('id');
-    aRowInfo=sRowID.split('_');// first is row, second langage and last the row number
-    $(".ui-tabs-panel").each(function(divindex,divelement){
+    aRowInfo=sRowID.split('_');// first is row, second language and last the row number
+    $(".tab-pane").each(function(divindex,divelement){
         var div_language = $(".lslanguage",divelement).val();
         if (typeof(div_language)!="undefined" && div_language!=aRowInfo[1]){
             $("#row_"+div_language+"_"+aRowInfo[2]+" td:first-child").text($("#code_"+aRowInfo[2]).val()); // Sync code
@@ -278,22 +267,35 @@ function sync_label(event)
  * @return {string} Next label code.
  */
 function get_next_code(event) {
-    var next_code;
-    if (event) {
-        if ($(event.target).closest('tr').find('.codeval').size()>0) {
-            next_code = getNextCode($(event.target).closest('tr').find('.codeval').val());
-        } else {
-            next_code = 'L001';
-        }
-
-        while ($('.answertable').find('input[value="'+next_code+'"]').length > 0
-                && next_code != $(event.target).closest('tr').find('.codeval').val()) {
-            next_code = getNextCode(next_code);
-        }
-    } else {
-        next_code='L001';
+    if (!event) {
+        return 'L001';
     }
-    return next_code;
+    var currentCode = $(event.target).closest('tr').find('.codeval');
+    if (currentCode.length == 0) {
+        return 'L001';
+    }
+    // Read the current input values, the value attribute does not change when the user edits a code
+    var existingCodes = $('.first .codeval').map(function() {
+        return $(this).val();
+    }).get();
+    return getUniqueNextCode(currentCode.val(), existingCodes);
+}
+
+/**
+ * Returns the next code after sourcecode that is not in existingCodes.
+ * A code without a numeric suffix (e.g. "B") gets a "1" appended, since getNextCode() returns it unchanged.
+ *
+ * @param {string} sourcecode
+ * @param {string[]} existingCodes
+ * @return {string}
+ */
+function getUniqueNextCode(sourcecode, existingCodes) {
+    var code = getNextCode(sourcecode);
+    while (existingCodes.indexOf(code) !== -1) {
+        var nextCode = getNextCode(code);
+        code = (nextCode === code) ? code + '1' : nextCode;
+    }
+    return code;
 }
 
 /*:: declare function retrieveRowHtml({}): {} */
@@ -378,7 +380,7 @@ function del_label(event) {
     var sRowID = $(event.target).closest('tr').attr('id');
     // tooltip remains after delete label after bootstrap 5 upgrade, so remove tooltip manually here until find better solution.
     $('.tooltip').tooltip('dispose');
-    var aRowInfo = sRowID.split('_');// first is row, second langage and last the row number
+    var aRowInfo = sRowID.split('_');// first is row, second language and last the row number
     $(".tab-pane").each(function(divindex,divelement){
         var div_language = $(".lslanguage",divelement).val();
 

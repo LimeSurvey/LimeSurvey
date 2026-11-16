@@ -1,5 +1,7 @@
 <?php
 
+use LimeSurvey\Models\Services\SurveySessionState;
+
 /**
  * RenderClass for Boilerplate Question
  *  * The ia Array contains the following
@@ -27,12 +29,18 @@ class RenderEquation extends QuestionBaseRenderer
     {
         return '/survey/questions/answer/equation/answer';
     }
+    /**
+     * Renders the equation question (hidden input holding the equation result).
+     *
+     * @param string $sCoreClasses Unused, kept for signature compatibility
+     * @return array{0: string, 1: string[]} Rendered answer HTML and the list of input names
+     */
     public function render($sCoreClasses = '')
     {
         $inputnames = [];
 
         $sEquation  = $this->setDefaultIfEmpty($this->getQuestionAttribute('equation'), $this->aFieldArray[3]);
-        $sValue     = htmlspecialchars((string) $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$this->sSGQA], ENT_QUOTES);
+        $sValue     = htmlspecialchars((string) SurveySessionState::forSurvey((int) Yii::app()->getConfig('surveyID'))->getFieldValue($this->sSGQA), ENT_QUOTES);
 
         $answer =  Yii::app()->twigRenderer->renderQuestion($this->getMainView(), array(
             'ia' => $this->aFieldArray,
@@ -43,7 +51,7 @@ class RenderEquation extends QuestionBaseRenderer
             'coreClass' => 'ls-answers answer-item hidden-item  ' . $sCoreClasses,
             'insideClass' => 'em_equation',
             ), true);
-            
+
         $this->registerAssets();
         $inputnames[] = $this->sSGQA;
         return array($answer, $inputnames);

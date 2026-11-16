@@ -1,0 +1,9 @@
+.phpunit.cache
+.phpunit.result.cache
+.php-cs-fixer.cache
+composer.lock
+phpDocumentor.phar
+
+build/
+public/
+vendor/

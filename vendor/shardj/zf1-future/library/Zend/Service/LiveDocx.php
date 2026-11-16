@@ -165,12 +165,11 @@ class Zend_Service_LiveDocx
     /**
      * Clean up and log out of LiveDocx service
      *
-     * @return boolean
      * @since  LiveDocx 1.0
      */
     public function __destruct()
     {
-        return $this->logOut();
+        $this->logOut();
     }
 
     /**

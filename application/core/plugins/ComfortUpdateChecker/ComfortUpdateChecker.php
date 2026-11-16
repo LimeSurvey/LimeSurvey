@@ -23,15 +23,15 @@ class ComfortUpdateChecker extends PluginBase
 
     protected $settings = [
         'only_security_update' => array(
-            'type' => 'checkbox',
+            'type' => 'boolean',
             'label' => 'Notification only for security updates',
-            'default' => false,
+            'default' => '0',
         ),
 
         'animate_icon' => array(
-            'type' => 'checkbox',
+            'type' => 'boolean',
             'label' => 'Animate update icon',
-            'default' => false,
+            'default' => '0',
         ),
 
     ];
@@ -55,19 +55,19 @@ class ComfortUpdateChecker extends PluginBase
         //Register css and js script
         $this->registerAssets();
 
-        //Append cu-checker class to icon when animate option is true in plugin settings
-        $iconClass = $this->get('animate_icon', null, null, false) ? "cu-checker" : "";
-
-        // Always warn that LimeSurvey 6 is (or is about to be) out of support.
-        $oEvent->append('extraMenus', [$this->getOutOfSupportMenu($iconClass)]);
-
         $updateNotification = $this->getUpdate();
 
         if ($updateNotification && $updateNotification->result) {
+            //Default icon class
+            $iconClass = "";
             $NotificationText = gT("Update available");
 
             if ($updateNotification->security_update) {
                 $NotificationText = gT("Security update available");
+            }
+            //Append cu-checker class to icon when animate option is true in plugin settings
+            if ($this->get('animate_icon', null, null, false)) {
+                $iconClass = "cu-checker";
             }
 
             // Permission check is already handled in getUpdateNotification() so we can display directly
@@ -81,39 +81,13 @@ class ComfortUpdateChecker extends PluginBase
 
             $oNewMenu = new \ComfortUpdateChecker\helpers\CUCMenuClass($aMenuItemAdminOptions);
 
-            //Check if display only for security update is true in plugin settings and display it otherwhise display all
+            //Check if display only for security update is true in plugin settings and display it otherwise display all
             if ($this->get('only_security_update', null, null, false) && $updateNotification->security_update) {
                 $oEvent->append('extraMenus', [$oNewMenu]);
             } elseif (!$this->get('only_security_update', null, null, false)) {
                 $oEvent->append('extraMenus', [$oNewMenu]);
             }
         }
-    }
-
-    /**
-     * Build the permanent "out of support" topbar notice.
-     * Before 1 September 2026 it warns support is ending; on and after that date it warns support has ended.
-     *
-     * @param string $iconClass Extra icon class (e.g. animation class)
-     * @return \ComfortUpdateChecker\helpers\CUCMenuClass
-     */
-    private function getOutOfSupportMenu($iconClass)
-    {
-        if (time() >= strtotime('2026-09-01 00:00:00')) {
-            $NotificationText = gT("LimeSurvey 6 is out of support.") . " - " . gT("Upgrade now!");
-        } else {
-            $NotificationText = gT("LimeSurvey 6 will be out of support on 1 September 2026.") . " - " . gT("Upgrade now!");
-        }
-
-        $aMenuItemAdminOptions = [
-            'isDivider' => false,
-            'isSmallText' => false,
-            'label' => '<strong class="text-warning">' . $NotificationText . '</strong>',
-            'href' => $this->api->createUrl('admin/update', []),
-            'iconClass' => 'ri-shield-check-fill text-warning ' . $iconClass,
-        ];
-
-        return new \ComfortUpdateChecker\helpers\CUCMenuClass($aMenuItemAdminOptions);
     }
 
     /**

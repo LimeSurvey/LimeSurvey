@@ -1,14 +1,17 @@
 <?php
+
 /**
- * Subview: Error messsage in the usermanagement panel
+ * Subview: Error message in the usermanagement panel
  *
  * @package UserManagement
  * @author LimeSurvey GmbH <info@limesurvey.org>
  * @license GPL3.0
  */
+
 ?>
 <div class="modal-header">
-    <h5 class="modal-title"><?= gT('Error') ?></h5>
+    <h5 class="modal-title" id="UserManagement-action-modal-title"><?= gT('Error') ?></h5>
+    <span class="visually-hidden" id="UserManagement-action-modal-title-dialogsr"><?= gT('Dialog') ?></span>
 </div>
 <div class="modal-body">
     <div class="row selector--animated_row">
@@ -33,7 +36,7 @@
     </div>
 </div>
 <div class="modal-footer">
-    <?php if (!isset($noButton)): ?>
+    <?php if (!isset($noButton)) : ?>
         <button id="exitForm" class="btn btn-cancel" data-bs-dismiss="modal">
             <?= gT('Close') ?>
         </button>

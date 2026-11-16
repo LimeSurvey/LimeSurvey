@@ -11,6 +11,7 @@ class Update_485 extends DatabaseUpdateBase
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function up()
     {
         // Update vanilla config. This only applies to records with the previous "default" value (from LsDefaultDataSets).

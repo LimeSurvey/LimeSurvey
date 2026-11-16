@@ -21,18 +21,11 @@ echo viewHelper::getViewTestTag('viewLabelSets');
                 'dataProvider' => $model->search(),
                 // Number of row per page selection
                 'id' => 'labelsets-grid',
+                'lsCaption' => gT('Label set list', 'unescaped'),
                 'emptyText' => gT('No label sets found.'),
                 'ajaxUpdate' => 'labelsets-grid',
                 'massiveActionTemplate' => $massiveAction,
-                'summaryText' => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
-                        gT('%s rows per page'),
-                        CHtml::dropDownList(
-                            'pageSize',
-                            $pageSize,
-                            Yii::app()->params['pageSizeOptions'],
-                            ['class' => 'changePageSize form-select', 'style' => 'display: inline; width: auto']
-                        )
-                    ),
+                'lsPageSizeCurrentValue' => $pageSize,
                 'columns' => [
                     [
                         'id' => 'lid',

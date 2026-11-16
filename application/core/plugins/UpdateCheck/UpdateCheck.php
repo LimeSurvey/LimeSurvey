@@ -2,7 +2,7 @@
 
 /**
  * LimeSurvey
- * Copyright (C) 2007-2015 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -42,7 +42,6 @@ class UpdateCheck extends PluginBase
         $this->subscribe('beforePluginManagerMenuRender');
     }
 
-
     /**
      * Checks if an extension update check is due after a super admin successfully logs in.
      *
@@ -52,6 +51,7 @@ class UpdateCheck extends PluginBase
      * passed or is today, a flag is set in the session to trigger an extension update check.
      *
      * @return void
+     * @throws Exception
      */
     public function afterSuccessfulLogin()
     {
@@ -134,10 +134,15 @@ JS
      * This method should be run at super admin login, max once every day.
      * Run by Ajax to avoid increased page load time.
      * This method can also be run manually for testing.
+     * Requires the same permission as the plugin manager where it is offered.
      * @return void
+     * @throws CHttpException
      */
     public function checkAll()
     {
+        if (!Permission::model()->hasGlobalPermission('settings', 'read')) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
         $service = \Yii::app()->extensionUpdaterServiceLocator;
 
         // Get one updater class for each extension.
@@ -180,7 +185,7 @@ JS
     protected function composeNotification(array $messages, array $errors, bool $foundSecurityVersion)
     {
         $superadmins = User::model()->getSuperAdmins();
-        $title        = $foundSecurityVersion ? gT('Security updates available') : gT('Updates available');
+        $title        = $foundSecurityVersion ? gT('Security update available') : gT('Update available');
         $displayClass = $foundSecurityVersion ? 'danger' : '';
         $importance   = $foundSecurityVersion ? Notification::HIGH_IMPORTANCE : Notification::NORMAL_IMPORTANCE;
         $message = implode($messages);

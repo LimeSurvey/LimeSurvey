@@ -4,7 +4,6 @@ namespace LimeSurvey\PluginManager;
 
 class PluginEventContent
 {
-
     const APPEND = 'append';
     const PREPEND = 'prepend';
 
@@ -57,7 +56,7 @@ class PluginEventContent
     }
 
     /**
-     * Clears exisiting content
+     * Clears existing content
      *
      * @return PluginEventContent
      */

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * WhHtml5Editor widget
  *
@@ -12,6 +13,7 @@
  * @package YiiWheels.widgets.highcharts
  * @uses YiiStrap.helpers.TbArray
  */
+
 Yii::import('yiistrap_fork.helpers.TbArray');
 
 class WhHtml5Editor extends CInputWidget
@@ -44,16 +46,16 @@ class WhHtml5Editor extends CInputWidget
 
     public function init()
     {
-    
-    	$this->attachBehavior('ywplugin', array('class' => 'yiiwheels.behaviors.WhPlugin'));
-    
-    	if (!$style = TbArray::popValue('style', $this->htmlOptions, '')) {
-    		$this->htmlOptions['style'] = $style;
-    	}
-    
-    	$width                      = TbArray::getValue('width', $this->htmlOptions, '100%');
-    	$height                     = TbArray::popValue('height', $this->htmlOptions, '450px');
-    	$this->htmlOptions['style'] = "width:{$width};height:{$height};" . $this->htmlOptions['style'];
+
+        $this->attachBehavior('ywplugin', array('class' => 'yiiwheels.behaviors.WhPlugin'));
+
+        if (!$style = TbArray::popValue('style', $this->htmlOptions, '')) {
+            $this->htmlOptions['style'] = $style;
+        }
+
+        $width                      = TbArray::getValue('width', $this->htmlOptions, '100%');
+        $height                     = TbArray::popValue('height', $this->htmlOptions, '450px');
+        $this->htmlOptions['style'] = "width:{$width};height:{$height};" . $this->htmlOptions['style'];
     }
 
     /**
@@ -68,13 +70,15 @@ class WhHtml5Editor extends CInputWidget
 
         $this->registerClientScript();
 
-        if (!array_key_exists('style', $this->htmlOptions))
+        if (!array_key_exists('style', $this->htmlOptions)) {
             $this->htmlOptions['style'] = "width:{$this->width};height:{$this->height};";
+        }
         // Do we have a model?
-        if ($this->hasModel())
+        if ($this->hasModel()) {
             echo CHtml::activeTextArea($this->model, $this->attribute, $this->htmlOptions);
-        else
+        } else {
             echo CHtml::textArea($name, $this->value, $this->htmlOptions);
+        }
     }
 
     /**
@@ -94,15 +98,17 @@ class WhHtml5Editor extends CInputWidget
             $cs->registerCssFile($assetsUrl . '/css/wysiwyg-color.css');
         }
 
-        $cs->registerScriptFile($assetsUrl . '/js/wysihtml5-0.3.0.js');
-        $cs->registerScriptFile($assetsUrl . '/js/bootstrap-wysihtml5.js');
+        // Register at the page bottom, the head is not reloaded by pjax
+        $cs->registerScriptFile($assetsUrl . '/js/wysihtml5-0.3.0.js', CClientScript::POS_END);
+        $cs->registerScriptFile($assetsUrl . '/js/bootstrap-wysihtml5.js', CClientScript::POS_END);
 
         if (in_array(@$this->pluginOptions['locale'], array('de-DE', 'es-ES', 'fr', 'fr-NL', 'pt-BR', 'sv-SE'))) {
             $cs->registerScriptFile(
-                $assetsUrl . '/js/locale/bootstrap-wysihtml5.' . $this->pluginOptions['locale'] . '.js'
+                $assetsUrl . '/js/locale/bootstrap-wysihtml5.' . $this->pluginOptions['locale'] . '.js',
+                CClientScript::POS_END
             );
         } elseif (in_array($this->lang, array('de-DE', 'es-ES', 'fr', 'fr-NL', 'pt-BR', 'sv-SE'))) {
-            $cs->registerScriptFile($assetsUrl . '/js/locale/bootstrap-wysihtml5.' . $this->lang . '.js');
+            $cs->registerScriptFile($assetsUrl . '/js/locale/bootstrap-wysihtml5.' . $this->lang . '.js', CClientScript::POS_END);
             $this->pluginOptions['locale'] = $this->lang;
         }
 
@@ -111,8 +117,8 @@ class WhHtml5Editor extends CInputWidget
         /* initialize plugin */
         $selector = '#' . TbArray::getValue('id', $this->htmlOptions, $this->getId());
 
-        $this->getApi()->registerPlugin('wysihtml5', $selector, $this->pluginOptions);
-
+        // Run the init only once pjax has loaded the script files
+        $this->getApi()->registerPlugin('wysihtml5', $selector, $this->pluginOptions, LSYii_ClientScript::POS_POSTSCRIPT);
     }
 
     /**
@@ -120,13 +126,14 @@ class WhHtml5Editor extends CInputWidget
      */
     private function normalizeStylesheetsProperty()
     {
-        if (empty($this->pluginOptions['stylesheets']))
+        if (empty($this->pluginOptions['stylesheets'])) {
             $this->pluginOptions['stylesheets'] = array();
-        else if (is_array($this->pluginOptions['stylesheets']))
+        } elseif (is_array($this->pluginOptions['stylesheets'])) {
             $this->pluginOptions['stylesheets'] = array_filter($this->pluginOptions['stylesheets'], 'is_string');
-        else if (is_string($this->pluginOptions['stylesheets']))
+        } elseif (is_string($this->pluginOptions['stylesheets'])) {
             $this->pluginOptions['stylesheets'] = array($this->pluginOptions['stylesheets']);
-        else
+        } else {
             $this->pluginOptions['stylesheets'] = array();
+        }
     }
 }

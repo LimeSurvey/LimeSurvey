@@ -4,7 +4,6 @@ namespace LimeSurvey\Menu;
 
 class MenuButton extends Menu implements MenuButtonInterface
 {
-
     /**
      * @var string
      */

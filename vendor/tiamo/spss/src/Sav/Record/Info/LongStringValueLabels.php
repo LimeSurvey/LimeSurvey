@@ -45,15 +45,17 @@ class LongStringValueLabels extends Info
                 throw new \InvalidArgumentException('values required');
             }
             $width = (int) $data['width'];
-            $localBuffer->writeInt(mb_strlen($varName));
-            $localBuffer->writeString($varName, mb_strlen($varName));
+            $varLengthBytes = $buffer->lengthBytes($varName);
+            $localBuffer->writeInt($varLengthBytes);
+            $localBuffer->writeString($varName, $varLengthBytes);
             $localBuffer->writeInt($width);
             $localBuffer->writeInt(Utils::is_countable($data['values']) ? \count($data['values']) : 0);
             foreach ($data['values'] as $value => $label) {
                 $localBuffer->writeInt($width);
                 $localBuffer->writeString($value, $width);
-                $localBuffer->writeInt(mb_strlen($label));
-                $localBuffer->writeString($label, mb_strlen($label));
+                $labelLengthBytes = $buffer->lengthBytes($label);
+                $localBuffer->writeInt($labelLengthBytes);
+                $localBuffer->writeString($label, $labelLengthBytes);
             }
         }
 

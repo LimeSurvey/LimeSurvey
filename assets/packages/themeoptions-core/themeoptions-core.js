@@ -70,7 +70,7 @@ var ThemeOptions = function () {
                 $(item).val((inheritPossible ? 'inherit' : false));
             }
 
-            optionObject[$(item).attr('name')] = $(item).val();
+            optionObject[$(item).attr('name')] = getOptionFieldValue(item);
         });
 
         globalForm.find('.selector_image_selector').each(function (i, item) {
@@ -121,10 +121,19 @@ var ThemeOptions = function () {
     // Utility Methods
     // -- small utilities i.g. for images or similar, or very specialized functions
 
+    // Color picker text fields are left empty when the value is inherited, so they show the translated placeholder instead of "inherit"
+    var getOptionFieldValue = function (item) {
+        if ($(item).hasClass('selector__color-picker') && $(item).val() === '' && inheritPossible) {
+            return 'inherit';
+        }
+        return $(item).val();
+    };
+
     var applyColorPickerValue = function (item) {
         if ($(item).hasClass('selector__color-picker')) {
             console.ls.log($(item).data('inheritvalue'), $(item).val(), item);
             if ($(item).val() === 'inherit') {
+                $(item).val('');
                 $(item).closest('.input-group').find('.selector__colorpicker-inherit-value').val($(item).data('inheritvalue')).trigger('change');
             } else {
                 $(item).closest('.input-group').find('.selector__colorpicker-inherit-value').val($(item).val()).trigger('change');
@@ -386,7 +395,7 @@ var ThemeOptions = function () {
             var colorField = $(this).closest('.input-group').find('.selector__color-picker');
             console.ls.log(colorField, colorField.data('inheritvalue'));
             $(this).closest('.input-group').find('.selector__colorpicker-inherit-value').val(colorField.data('inheritvalue')).trigger('change');
-            colorField.attr('type', 'text').val('inherit');
+            colorField.attr('type', 'text').val('');
             optionObject[colorField.attr('name')] = 'inherit';
             updateFieldSettings();
         });
@@ -556,11 +565,17 @@ $(function () {
         $('#lightbox-modal').modal('show');
     });
 
+    // Icon values are hexadecimal code points, show them as text so other values can't add markup
+    var iconCharacter = function (hexCode) {
+        hexCode = String(hexCode);
+        var codePoint = parseInt(hexCode, 16);
+        return /^[0-9a-f]{1,6}$/i.test(hexCode) && codePoint <= 0x10FFFF ? String.fromCodePoint(codePoint) : '';
+    };
+
     $('.simple_edit_options_checkicon').on('change', function () {
-        $(this).siblings('.selector__checkicon-preview').find('i').html('&#x' + $(this).val() + ';');
-        if ($(this).val() == 'inherit') {
-            $(this).siblings('.selector__checkicon-preview').find('i').html('&#x' + $(this).siblings('.selector__checkicon-preview').find('i').data('inheritvalue') + ';');
-        }
+        var preview = $(this).siblings('.selector__checkicon-preview').find('i');
+        var hexCode = $(this).val() == 'inherit' ? preview.attr('data-inheritvalue') : $(this).val();
+        preview.text(iconCharacter(hexCode));
     });
 });
 $(function () {
@@ -617,7 +632,7 @@ $(function () {
                         LS.LsGlobalNotifier.createAlert(data.message, 'success', {showCloseButton: true});
                         $progressBar.css('width', '0%');
                         $progressBar.find('span.visually-hidden').text('0%');
-                        onSuccess(options.input);
+                        onSuccess(options.input, data);
                     } else {
                         LS.LsGlobalNotifier.createAlert(data.message, 'danger', {showCloseButton: true});
                         $progressBar.css('width', '0%');
@@ -642,7 +657,10 @@ $(function () {
     new BindUpload({
         form: '#upload_frontend',
         input: '#upload_image',
-        progress: '#upload_progress'
+        progress: '#upload_progress',
+        onSuccess: function (inputId, data) {
+            addUploadedImageToSelectors(data && data.file);
+        }
     });
     new BindUpload({
         form: '#upload_frontend',
@@ -651,18 +669,54 @@ $(function () {
         onBeforeSend: function () {
             $('.simple-template-edit-loading').css('display', 'block');
         },
-        onSuccess: function (inputId) {
-            let url = new URL(window.location.href);
-            let inputElement = document.querySelector(inputId);
-            if (inputElement !== null) {
-                url.hash = inputElement.closest('.CoreThemeOptions--settingsTab') !== null
-                    ? inputElement.closest('.CoreThemeOptions--settingsTab').id
-                    : '';
-            }
-            $(document).trigger('pjax:load', {
-                url: url.href
-            });
+        onSuccess: function (inputId, data) {
+            $('.simple-template-edit-loading').css('display', 'none');
+            addUploadedImageToSelectors(data && data.file);
         }
     });
+
+    // Adds a freshly uploaded image to the theme options image selectors so it becomes
+    // selectable immediately, without a full page reload. Falls back to a reload if the
+    // server didn't return the file info.
+    function addUploadedImageToSelectors(file) {
+        if (!file || !file.filepath) {
+            let url = new URL(window.location.href);
+            let activeTab = document.querySelector('.CoreThemeOptions--settingsTab.active');
+            url.hash = activeTab !== null ? activeTab.id : '';
+            $(document).trigger('pjax:load', { url: url.href });
+            return;
+        }
+        // Group options by their virtual path prefix (e.g. "image::generalfiles::").
+        let prefixMatch = String(file.filepath).match(/^(image::\w+::)/);
+        let prefix = prefixMatch ? prefixMatch[1] : null;
+        $('.selector_image_selector').each(function () {
+            let select = this;
+            // Skip if the image is already listed (e.g. an existing file was overwritten).
+            let exists = Array.prototype.some.call(select.options, function (opt) {
+                return opt.value === file.filepath;
+            });
+            if (exists) {
+                return;
+            }
+            let option = new Option(file.filename, file.filepath);
+            option.setAttribute('data-lightbox-src', file.preview || '');
+            // Insert after the last option of the same group, otherwise append.
+            let insertAfter = null;
+            if (prefix) {
+                Array.prototype.forEach.call(select.options, function (opt) {
+                    if (opt.value.indexOf(prefix) === 0) {
+                        insertAfter = opt;
+                    }
+                });
+            }
+            if (insertAfter && insertAfter.nextSibling) {
+                insertAfter.parentNode.insertBefore(option, insertAfter.nextSibling);
+            } else if (insertAfter) {
+                insertAfter.parentNode.appendChild(option);
+            } else {
+                select.appendChild(option);
+            }
+        });
+    }
 });
 

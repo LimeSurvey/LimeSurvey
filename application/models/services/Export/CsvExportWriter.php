@@ -29,6 +29,9 @@ class CsvExportWriter implements ExportWriterInterface
     /** @var array Active metadata columns from fieldMap */
     private array $metaColumns = [];
 
+    /** @var string Field separator character */
+    private string $separator = ',';
+
     /**
      * Export survey responses to CSV format.
      *
@@ -41,6 +44,7 @@ class CsvExportWriter implements ExportWriterInterface
      * @throws RuntimeException If content cannot be generated or file cannot be created
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
+    #[\Override]
     public function export(array $responses, array $surveyQuestions, array $metadata): array
     {
         $this->init($surveyQuestions, $metadata);
@@ -55,6 +59,7 @@ class CsvExportWriter implements ExportWriterInterface
      * @param array $metadata Additional metadata (surveyId, language, etc.)
      * @return void
      */
+    #[\Override]
     public function init(array $surveyQuestions, array $metadata): void
     {
         if ($this->headersWritten) {
@@ -65,6 +70,7 @@ class CsvExportWriter implements ExportWriterInterface
         $this->responseCount = 0;
         $this->headersWritten = false;
         $this->metaColumns = $metadata['metaColumns'] ?? [];
+        $this->separator = $metadata['csvSeparator'] ?? ',';
 
         $surveyId = $metadata['surveyId'];
         $timestamp = date('YmdHis');
@@ -107,6 +113,7 @@ class CsvExportWriter implements ExportWriterInterface
      * @param array $surveyQuestions The survey questions field map
      * @return void
      */
+    #[\Override]
     public function writeChunk(array $responses, array $surveyQuestions): void
     {
         if ($this->handle === null) {
@@ -146,6 +153,7 @@ class CsvExportWriter implements ExportWriterInterface
      *
      * @return array Export result with content/filePath and metadata
      */
+    #[\Override]
     public function finalize(): array
     {
         if ($this->handle === null) {
@@ -194,7 +202,7 @@ class CsvExportWriter implements ExportWriterInterface
         foreach ($fields as $field) {
             $escaped[] = $this->csvEscape($field);
         }
-        fwrite($this->handle, implode(',', $escaped) . "\r\n");
+        fwrite($this->handle, implode($this->separator, $escaped) . "\r\n");
     }
 
     /**
@@ -218,6 +226,7 @@ class CsvExportWriter implements ExportWriterInterface
      *
      * @return string
      */
+    #[\Override]
     public function getFileExtension(): string
     {
         return 'csv';
@@ -228,6 +237,7 @@ class CsvExportWriter implements ExportWriterInterface
      *
      * @return string
      */
+    #[\Override]
     public function getMimeType(): string
     {
         return 'text/csv';

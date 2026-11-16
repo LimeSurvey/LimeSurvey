@@ -6,10 +6,9 @@ use LimeSurvey\Libraries\Api\Command\V1\UserSettingSetValue;
 use LimeSurvey\Api\Command\V1\{
   UserList
 };
-
 use LimeSurvey\Api\Rest\V1\SchemaFactory\{SchemaFactoryError, SchemaFactoryUser, SchemaFactoryUserList, SchemaFactoryUserSetting};
 
-$errorSchema = (new SchemaFactoryError)->make();
+$errorSchema = (new SchemaFactoryError())->make();
 
 $rest = [];
 
@@ -27,7 +26,7 @@ $rest['v1/user'] = [
         'code' => 200,
         'description' => 'Success',
         'content' => null,
-        'schema' => (new SchemaFactoryUserList)->make()
+        'schema' => (new SchemaFactoryUserList())->make()
       ],
       'unauthorized' => [
         'code' => 401,

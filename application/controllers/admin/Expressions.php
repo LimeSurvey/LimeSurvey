@@ -2,7 +2,7 @@
 
 /*
  * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -18,7 +18,14 @@
 class Expressions extends SurveyCommonAction
 {
     /**
-     * Index
+     * Dispatches the ExpressionScript "test suite" sub-actions (functions list, unit tests,
+     * survey logic overview, conditions-to-relevance conversion, etc.) selected via the
+     * 'sa' query parameter. Sub-actions that read or rewrite data across every survey in
+     * the installation require global superadmin permission; those that write also require
+     * a POST request. Sub-actions scoped to a single survey require read permission on that
+     * survey's content.
+     *
+     * @return void
      **/
     public function index()
     {
@@ -46,6 +53,39 @@ class Expressions extends SurveyCommonAction
 
         if (($aData['sa'] == 'survey_logic_file' || $aData['sa'] == 'navigation_test') && $iSurveyID) {
             $needpermission = true;
+        }
+
+        // These sub-actions read or rewrite data for every survey in the installation
+        // (they take no survey id to scope themselves to), so a per-survey permission
+        // check cannot apply to them. Restrict them to global superadmin instead.
+        $aInstallationWideActions = array(
+            'conditions2relevance',
+            'upgrade_conditions2relevance',
+            'revert_upgrade_conditions2relevance',
+            'upgrade_relevance_location',
+        );
+
+        if (
+            in_array($aData['sa'], $aInstallationWideActions, true)
+            && !Permission::model()->hasGlobalPermission('superadmin', 'read')
+        ) {
+            $message['title'] = gT('Access denied!');
+            $message['message'] = gT('You do not have permission to access this page.');
+            $message['class'] = "error";
+            $this->renderWrappedTemplate('survey', array("message" => $message), $aData);
+            return;
+        }
+
+        // Of the installation-wide actions above, these actually write to the database
+        // and must not be triggerable by a plain (e.g. bookmarked, CSRF-forged GET-based) link.
+        $aWriteActions = array(
+            'upgrade_conditions2relevance',
+            'revert_upgrade_conditions2relevance',
+            'upgrade_relevance_location',
+        );
+
+        if (in_array($aData['sa'], $aWriteActions, true)) {
+            $this->requirePostRequest();
         }
 
         if ($needpermission && !Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'read')) {
@@ -85,7 +125,7 @@ class Expressions extends SurveyCommonAction
     }
 
     /**
-     * Survey Logic file
+     * Survey Logic overview
      * NB: To apply PSR-12 to function name, database must be changed for menu entries.
      **/
     // phpcs:ignore
@@ -111,7 +151,7 @@ class Expressions extends SurveyCommonAction
         $language = Yii::app()->request->getParam('lang', null);
 
         if ($language !== null) {
-            $language = sanitize_languagecode($language);
+            $language = \LSYii_Validators::languageCodeFilter($language);
         }
 
         $aData['lang'] = $language;
@@ -119,8 +159,8 @@ class Expressions extends SurveyCommonAction
         $aData['sid'] = $sid;
         $aData['gid'] = $gid;
         $aData['qid'] = $qid;
-        $aData['title_bar']['title'] = gT("Survey logic file");
-        $aData['subaction'] = gT("Survey logic file");
+        $aData['title_bar']['title'] = gT("Survey logic overview");
+        $aData['subaction'] = gT("Survey logic overview");
         $aData['sidemenu']['state'] = false;
         $aData['survey'] = $oSurvey;
         $LEM_DEBUG_TIMING = Yii::app()->request->getParam('LEM_DEBUG_TIMING', (App()->getConfig('debug') > 0) ? LEM_DEBUG_TIMING : 0);
@@ -288,7 +328,7 @@ class Expressions extends SurveyCommonAction
                 return 'Test Evaluation of Strings Containing Expressions';
                 break;
             case 'survey_logic_file':
-                return 'Survey logic file';
+                return 'Survey logic overview';
                 break;
             case 'syntax_errors':
                 echo 'Show Log of Syntax Errors';

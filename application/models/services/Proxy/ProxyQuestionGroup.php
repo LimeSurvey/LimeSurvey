@@ -22,4 +22,17 @@ class ProxyQuestionGroup
     {
         return QuestionGroup::deleteWithDependency($questionGroupId, $surveyId);
     }
+
+    /**
+     * Checks if questions of other groups have conditions on questions of this group.
+     *
+     * @see getGroupDepsForConditions()
+     * @param int $questionGroupId
+     * @param int $surveyId
+     * @return bool
+     */
+    public function hasDependentConditions(int $questionGroupId, int $surveyId): bool
+    {
+        return getGroupDepsForConditions($surveyId, 'all', $questionGroupId, 'by-targgid') !== null;
+    }
 }

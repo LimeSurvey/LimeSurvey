@@ -4,6 +4,7 @@ namespace LimeSurvey\Helpers\Update;
 
 class Update_422 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
             //update core themes api_version
@@ -12,7 +13,7 @@ class Update_422 extends DatabaseUpdateBase
                 array(
                     'api_version' => "4.0",
                     'version' => "4.0",
-                    'copyright' => "Copyright (C) 2007-2019 The LimeSurvey Project Team\r\nAll rights reserved."
+                    'copyright' => "Copyright (C) 2007-2026 The LimeSurvey Project Team\r\nAll rights reserved."
                 ),
                 "name='fruity'"
             );
@@ -21,7 +22,7 @@ class Update_422 extends DatabaseUpdateBase
                 array(
                     'api_version' => "4.0",
                     'version' => "4.0",
-                    'copyright' => "Copyright (C) 2007-2019 The LimeSurvey Project Team\r\nAll rights reserved."
+                    'copyright' => "Copyright (C) 2007-2026 The LimeSurvey Project Team\r\nAll rights reserved."
                 ),
                 "name='vanilla'"
             );
@@ -30,7 +31,7 @@ class Update_422 extends DatabaseUpdateBase
                 array(
                     'api_version' => "4.0",
                     'version' => "4.0",
-                    'copyright' => "Copyright (C) 2007-2019 The LimeSurvey Project Team\r\nAll rights reserved."
+                    'copyright' => "Copyright (C) 2007-2026 The LimeSurvey Project Team\r\nAll rights reserved."
                 ),
                 "name='bootwatch'"
             );

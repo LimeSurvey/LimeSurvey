@@ -2,5 +2,4 @@
 
 class DataSetMultipleShortText extends QuestionBaseDataSet
 {
-
 }

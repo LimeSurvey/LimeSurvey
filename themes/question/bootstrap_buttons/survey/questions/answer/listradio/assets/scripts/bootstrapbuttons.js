@@ -1,7 +1,10 @@
+/**
+ * Registers change behavior for Bootstrap radio groups with an “other” option.
+ */
 function doBootstrapRadioOther() {
     $("input:radio.button-item.btn-check").on('change', function () {
         var name = $(this).attr('name');
-        // conditionaly show or hide "other" input field
+        // conditionally show or hide "other" input field
         if ($(this).val() === '-oth-') {
             var value = $("#answer" + name + "othertextaux").val();
             $("#div" + name + "other").removeClass('ls-js-hidden');
@@ -9,6 +12,7 @@ function doBootstrapRadioOther() {
             copyOtherInputToHiddenField(name);
         } else {
             $("#div" + name + "other").addClass('ls-js-hidden');
+            $("#answer" + name + "othertext").val("");
             $("#answer" + name + "othertextaux").val('');
         }
     });

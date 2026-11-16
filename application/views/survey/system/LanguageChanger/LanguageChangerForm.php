@@ -12,7 +12,7 @@
 <!-- views/survey/system/LanguageChanger -->
 <form method="get" class="ls-languagechanger-form">
     <?php
-    App()->getController()->renderPartial("/survey/system/LanguageChanger/LanguageChanger",array(
+    App()->getController()->renderPartial("/survey/system/LanguageChanger/LanguageChanger", array(
         'sSelected' => $sSelected ,
         'aListLang' => $aListLang ,
         'sClass'    => $sClass    ,

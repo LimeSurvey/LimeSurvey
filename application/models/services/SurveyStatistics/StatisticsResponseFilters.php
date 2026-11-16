@@ -6,6 +6,9 @@ use InvalidArgumentException;
 
 class StatisticsResponseFilters
 {
+    public const MAX_SEARCH_TERMS = 10;
+    public const MAX_SEARCH_TERM_LENGTH = 250;
+
     /** @var int|null */
     private $minId = null;
 
@@ -14,6 +17,9 @@ class StatisticsResponseFilters
 
     /** @var bool|null */
     private $completed = null;
+
+    /** @var string[] */
+    private $searchTerms = [];
 
     /**
      * @param int|null $minId
@@ -64,7 +70,47 @@ class StatisticsResponseFilters
     }
 
     /**
-     * @return array<string, int|bool|null>
+     * Free-text search terms, response matches when every term appears
+     * (case-insensitively) in at least one of its text answer columns.
+     *
+     * @param string[] $terms
+     * @return self
+     * @throws InvalidArgumentException
+     */
+    public function setSearchTerms(array $terms): self
+    {
+        $clean = [];
+        foreach ($terms as $term) {
+            if (!is_string($term)) {
+                throw new InvalidArgumentException('Search terms must be strings');
+            }
+
+            $term = trim($term);
+            if ($term === '' || in_array($term, $clean, true)) {
+                continue;
+            }
+
+            if (mb_strlen($term) > self::MAX_SEARCH_TERM_LENGTH) {
+                throw new InvalidArgumentException(
+                    'Search terms cannot be longer than ' . self::MAX_SEARCH_TERM_LENGTH . ' characters'
+                );
+            }
+
+            $clean[] = $term;
+        }
+
+        if (count($clean) > self::MAX_SEARCH_TERMS) {
+            throw new InvalidArgumentException(
+                'No more than ' . self::MAX_SEARCH_TERMS . ' search terms are allowed'
+            );
+        }
+
+        $this->searchTerms = $clean;
+        return $this;
+    }
+
+    /**
+     * @return array<string, int|bool|string[]|null>
      */
     public function getFilters(): array
     {
@@ -73,6 +119,7 @@ class StatisticsResponseFilters
                 'minId' => $this->minId,
                 'maxId' => $this->maxId,
                 'completed' => $this->completed,
+                'search' => $this->searchTerms ?: null,
             ],
             static function ($value): bool {
                 return $value !== null;

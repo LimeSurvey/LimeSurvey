@@ -2,7 +2,7 @@
 
 /**
  * LimeSurvey
- * Copyright (C) 2007-2013 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -26,10 +26,14 @@ class EMWarningHTMLBaker
     public function getWarningHTML(array $warnings)
     {
         $message = "<strong>"
-            . ngT(
-                "This question has at least {n} warning.|This question has at least {n} warnings.",
-                count($warnings),
-                'html'
+            . sprintf(
+                gTPlural(
+                    "This question has at least %d warning.",
+                    "This question has at least %d warnings.",
+                    count($warnings),
+                    'html'
+                ),
+                count($warnings)
             )
             . "</strong>";
         $message .= "<ul class='list-unstyled small'>";

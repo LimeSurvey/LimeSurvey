@@ -42,9 +42,13 @@ class UploadValidator
         // There is no way to confirm if the superglobals are empty because 'post_max_size' was
         // exceeded, or because nothing was posted.
         if (empty($this->post) && empty($this->files)) {
+            $postMaxSize = convertPHPSizeToBytes(ini_get('post_max_size'));
+            if ($postMaxSize <= 0) {
+                return gT("No file was uploaded.");
+            }
             return sprintf(
                 gT("No file was uploaded or the request exceeded %01.2f MB."),
-                convertPHPSizeToBytes(ini_get('post_max_size')) / 1024 / 1024
+                $postMaxSize / 1024 / 1024
             );
         }
 

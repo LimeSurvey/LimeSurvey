@@ -1,0 +1,42 @@
+.question-code-tag {
+  padding: 4px 8px;
+  justify-content: center;
+  align-items: center;
+  border-radius: $border-radius-xs;
+  border: 1px solid $g-700;
+  color: $g-900;
+  text-align: center;
+  font-size: $font-size-xxs;
+  font-style: $font-style-base;
+  font-weight: $font-weight-normal;
+  line-height: $line-height-16;
+  letter-spacing: -0.5px;
+  height: 28px;
+  width: 60px;
+  white-space: nowrap; /* Prevents text from wrapping */
+  overflow: hidden; /* Hides overflow text */
+  text-overflow: ellipsis; /* Shows "..." when text overflows */
+  &:focus-visible {
+    outline: 2px solid $g-700;
+    outline-offset: -2px;
+  }
+}
+
+.question-code-icon-error {
+  height: 16px;
+  width: 16px;
+  fill: $error;
+}
+
+.question-code-container {
+  min-width: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.question-code-tag-error {
+  font-size: $font-size-xxs;
+  font-weight: $font-weight-500;
+  margin-left: 20px;
+}

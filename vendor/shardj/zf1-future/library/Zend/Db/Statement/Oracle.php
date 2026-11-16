@@ -49,7 +49,7 @@ class Zend_Db_Statement_Oracle extends Zend_Db_Statement
 
     /**
      * Check if LOB field are returned as string
-     * instead of OCI-Lob object
+     * instead of OCILob objects (OCI-Lob before PHP 8)
      *
      * @var boolean
      */
@@ -161,6 +161,39 @@ class Zend_Db_Statement_Oracle extends Zend_Db_Statement
         }
 
         return oci_num_fields($this->_stmt);
+    }
+
+    /**
+     * Returns metadata for a column in a result set, in the format of
+     * PDOStatement::getColumnMeta() of pdo_oci as far as oci8 reports it:
+     * native_type, name, len, precision, scale and pdo_type. oci8 reports
+     * neither the table nor the flags of a column, and the native_type of a
+     * type it has no name for is the Oracle type code. The pdo_type is the
+     * type of the values fetched: LOB columns come as OCILob objects, or as
+     * strings with the lob_as_string option.
+     *
+     * @param int $column Zero-based index of the column.
+     * @return array|false False when the statement has no result set or no such column.
+     */
+    public function getColumnMeta($column)
+    {
+        $column = (int) $column;
+        if (!$this->_stmt || $column < 0 || $column >= oci_num_fields($this->_stmt)) {
+            return false;
+        }
+
+        $field = $column + 1;
+        $nativeType = oci_field_type($this->_stmt, $field);
+        $isLob = in_array($nativeType, ['BLOB', 'CLOB', 'BFILE'], true);
+
+        return [
+            'native_type' => $nativeType,
+            'name'        => $this->_adapter->foldCase(oci_field_name($this->_stmt, $field)),
+            'len'         => oci_field_size($this->_stmt, $field),
+            'precision'   => oci_field_precision($this->_stmt, $field),
+            'scale'       => oci_field_scale($this->_stmt, $field),
+            'pdo_type'    => $isLob && !$this->getLobAsString() ? Zend_Db::PARAM_LOB : Zend_Db::PARAM_STR,
+        ];
     }
 
 
@@ -345,7 +378,7 @@ class Zend_Db_Statement_Oracle extends Zend_Db_Statement
             unset($row['zend_db_rownum']);
         }
 
-        return $row;
+        return $this->_foldCase($row);
     }
 
     /**
@@ -367,24 +400,18 @@ class Zend_Db_Statement_Oracle extends Zend_Db_Statement
             $style = $this->_fetchMode;
         }
 
+        // oci_fetch_all() has no mode with both numeric and named keys
+        if ($style == Zend_Db::FETCH_BOTH) {
+            $result = [];
+            while (($row = $this->fetch(Zend_Db::FETCH_BOTH)) !== false) {
+                $result[] = $row;
+            }
+            return $result;
+        }
+
         $flags = OCI_FETCHSTATEMENT_BY_ROW;
 
         switch ($style) {
-            case Zend_Db::FETCH_BOTH:
-                /**
-                 * @see Zend_Db_Adapter_Oracle_Exception
-                 */
-                require_once 'Zend/Db/Statement/Oracle/Exception.php';
-                throw new Zend_Db_Statement_Oracle_Exception(
-                    [
-                        'code'    => 'HYC00',
-                        'message' => "OCI8 driver does not support fetchAll(FETCH_BOTH), use fetch() in a loop instead"
-                    ]
-                );
-                // notreached
-                $flags |= OCI_NUM;
-                $flags |= OCI_ASSOC;
-                break;
             case Zend_Db::FETCH_NUM:
                 $flags |= OCI_NUM;
                 break;
@@ -447,7 +474,43 @@ class Zend_Db_Statement_Oracle extends Zend_Db_Statement
             }
         }
 
+        if ($style != Zend_Db::FETCH_COLUMN) {
+            $result = array_map([$this, '_foldCase'], $result);
+        }
+
         return $result;
+    }
+
+    /**
+     * Folds the column names of a row by the CASE_FOLDING option of the adapter,
+     * which oci8 does not do itself.
+     *
+     * @param mixed $row Array, object, or false
+     * @return mixed
+     */
+    protected function _foldCase($row)
+    {
+        if ($this->_adapter->foldCase('Zend') === 'Zend') {
+            return $row;
+        }
+
+        if (is_array($row)) {
+            $folded = [];
+            foreach ($row as $key => $value) {
+                $folded[is_string($key) ? $this->_adapter->foldCase($key) : $key] = $value;
+            }
+            return $folded;
+        }
+
+        if (is_object($row)) {
+            $folded = new stdClass();
+            foreach (get_object_vars($row) as $key => $value) {
+                $folded->{$this->_adapter->foldCase($key)} = $value;
+            }
+            return $folded;
+        }
+
+        return $row;
     }
 
 
@@ -486,8 +549,8 @@ class Zend_Db_Statement_Oracle extends Zend_Db_Statement
         }
 
         if ($this->getLobAsString()) {
-            // instanceof doesn't allow '-', we must use a temporary string
-            $type = 'OCI-Lob';
+            // the LOB class is OCILob since PHP 8 and OCI-Lob before
+            $type = class_exists('OCILob', false) ? 'OCILob' : 'OCI-Lob';
             if ($data instanceof $type) {
                 $data = $data->read($data->size());
             }

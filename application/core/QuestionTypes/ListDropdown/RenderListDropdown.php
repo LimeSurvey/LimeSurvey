@@ -1,5 +1,7 @@
 <?php
 
+use LimeSurvey\Models\Services\SurveySessionState;
+
 /**
  * RenderClass for Boilerplate Question
  *  * The ia Array contains the following
@@ -33,7 +35,7 @@ class RenderListDropdown extends QuestionBaseRenderer
 
     /** @var boolean indicates if 'Other' option has already been rendered */
     protected $otherRendered = false;
-    
+
     private $iRowNum = 0;
 
     const OTHER_POS_BEFORE_NOANSWER = 'default';
@@ -85,7 +87,7 @@ class RenderListDropdown extends QuestionBaseRenderer
                 $opt_select = $this->mSessionValue == $oAnsweroption->code ? SELECTED : '';
 
                 $_prefix = $this->bPrefix ? ++$this->iRowNum . ') ' : '';
-                
+
                 $sOptions .= Yii::app()->twigRenderer->renderQuestion($this->getMainView() . '/rows/option', array(
                     'name' => $this->sSGQA,
                     'value' => $oAnsweroption->code,
@@ -175,15 +177,21 @@ class RenderListDropdown extends QuestionBaseRenderer
                 ), true);
     }
 
+    /**
+     * Renders the text input of the "Other" option.
+     *
+     * @return string
+     */
     public function getOtherInput()
     {
+        $sessionState = SurveySessionState::forSurvey((int) Yii::app()->getConfig('surveyID'));
         return Yii::app()->twigRenderer->renderQuestion($this->getMainView() . '/rows/othertext', [
                 'name' => $this->sSGQA,
                 'checkconditionFunction' => $this->checkconditionFunction,
                 'display' => $this->mSessionValue != '-oth-' ? 'display: none;' : '',
                 'label' => $this->othertext,
-                'value' => (isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$this->sSGQA . "other"]))
-                    ? htmlspecialchars((string) $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$this->sSGQA . "other"], ENT_QUOTES)
+                'value' => $sessionState->hasFieldValue($this->sSGQA . "_Cother")
+                    ? htmlspecialchars((string) $sessionState->getFieldValue($this->sSGQA . "_Cother"), ENT_QUOTES)
                     : ''
             ], true);
     }
@@ -214,19 +222,19 @@ class RenderListDropdown extends QuestionBaseRenderer
         if ($this->getQuestionAttribute('dropdown_size') !== null && $this->getQuestionAttribute('dropdown_size') > 0) {
             $_height    = sanitize_int($this->getQuestionAttribute('dropdown_size'));
             $_maxHeight = $this->getAnswerCount();
-    
+
             if ((!$this->mSessionValue || $this->mSessionValue === '') && ($this->oQuestion->mandatory != 'Y' && $this->oQuestion->mandatory != 'S') && SHOW_NO_ANSWER == 1) {
                 ++$_maxHeight; // for No Answer
             }
-    
+
             if ($this->oQuestion->other == 'Y') {
                 ++$_maxHeight; // for Other
             }
-    
+
             if (is_null($this->mSessionValue)) {
                 ++$_maxHeight; // for 'Please choose:'
             }
-    
+
             if ($_height > $_maxHeight) {
                 $_height = $_maxHeight;
             }
@@ -245,7 +253,7 @@ class RenderListDropdown extends QuestionBaseRenderer
         $inputnames = [];
         $sOther = '';
         $this->sCoreClass = $this->sCoreClass . ' ' . $sCoreClasses;
-        
+
         $sOptions = $this->getRows();
         if ($this->hasOther == 'Y') {
             $sOther = $this->getOtherInput();

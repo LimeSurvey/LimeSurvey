@@ -2,7 +2,7 @@
 
 /*
  * LimeSurvey
- * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2013-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -26,6 +26,18 @@ class OptinController extends LSYii_Controller
 {
     public $layout = 'bare';
     public $defaultAction = 'tokens';
+
+    /**
+     * Ends every action with the maintenance page while participants are locked out, see
+     * LSYii_Controller::filterParticipantsLocked().
+     *
+     * @return array
+     */
+    #[\Override]
+    public function filters()
+    {
+        return array_merge(parent::filters(), ['participantsLocked']);
+    }
 
     /**
      * Display the confirmation for individual survey opt in
@@ -53,7 +65,7 @@ class OptinController extends LSYii_Controller
         if (!isset($languageCode) || $languageCode == "" || !$languageCode) {
             $baseLanguage = $survey->language;
         } else {
-            $baseLanguage = sanitize_languagecode($languageCode);
+            $baseLanguage = \LSYii_Validators::languageCodeFilter($languageCode);
         }
 
         Yii::app()->setLanguage($baseLanguage);
@@ -66,7 +78,7 @@ class OptinController extends LSYii_Controller
         if (!isset($token)) {
             $message = gT('You are not a participant of this survey.');
         } else {
-            if ($token->emailstatus != 'OptOut') {
+            if (!$token->optOutStatus) {
                 $message = gT('You are already a participant of this survey.');
             } else {
                 $message = gT('Please confirm that you want to be added back to this survey by clicking the button below.') . '<br>' . gT("After confirmation you may start receiving invitations and reminders for this survey.");
@@ -91,7 +103,7 @@ class OptinController extends LSYii_Controller
         $accessToken = Token::sanitizeToken(Yii::app()->request->getQuery('token'));
 
         //IF there is no survey ID, redirect back to the default public page
-        if (!$surveyId) {
+        if (!$surveyId || !$accessToken) {
             $this->redirect(['/']);
         }
 
@@ -105,7 +117,7 @@ class OptinController extends LSYii_Controller
         if (!isset($languageCode) || $languageCode == "" || !$languageCode) {
             $baseLanguage = $survey->language;
         } else {
-            $baseLanguage = sanitize_languagecode($languageCode);
+            $baseLanguage = \LSYii_Validators::languageCodeFilter($languageCode);
         }
 
         Yii::app()->setLanguage($baseLanguage);
@@ -119,20 +131,18 @@ class OptinController extends LSYii_Controller
         if (!isset($token)) {
             $message = gT('You are not a participant of this survey.');
         } else {
-            $optedOutFromSurvey = substr((string) $token->emailstatus, 0, strlen('OptOut')) == 'OptOut';
-
             $blacklistHandler = new LimeSurvey\Models\Services\ParticipantBlacklistHandler();
             $participant = $blacklistHandler->getCentralParticipantFromToken($token);
             $isBlacklisted = !empty($participant) && $participant->blacklisted == 'Y';
 
-            if (!Yii::app()->getConfig('allowunblacklist') == "Y") {
-                $message = gT('Removing yourself from the blocklist is currently disabled.');
-            } elseif ($isBlacklisted) {
+            if ($isBlacklisted && Yii::app()->getConfig('allowunblacklist') == "Y") {
                 $message = gT('Please confirm that you want to be added back to the central participant list for this site.');
                 $link = Yii::app()->createUrl('optin/addtokens', ['surveyid' => $surveyId, 'langcode' => $baseLanguage, 'token' => $accessToken, 'global' => true]);
-            } elseif ($optedOutFromSurvey) {
+            } elseif ($token->optOutStatus) {
                 $message = gT('Please confirm that you want to be added back to this survey by clicking the button below.') . '<br>' . gT("After confirmation you may start receiving invitations and reminders for this survey.");
                 $link = Yii::app()->createUrl('optin/addtokens', ['surveyid' => $surveyId, 'langcode' => $baseLanguage, 'token' => $accessToken]);
+            } elseif ($isBlacklisted) {
+                $message = gT('Removing yourself from the blocklist is currently disabled.');
             } elseif (empty($participant)) {
                 $message = gT('You are already a participant of this survey.');
             } else {
@@ -162,7 +172,7 @@ class OptinController extends LSYii_Controller
         Yii::app()->loadHelper('database');
         Yii::app()->loadHelper('sanitize');
 
-        if (!$surveyId) {
+        if (!$surveyId || !$accessToken) {
             $this->redirect(['/']);
         }
 
@@ -176,7 +186,7 @@ class OptinController extends LSYii_Controller
         if (!isset($languageCode) || $languageCode == "" || !$languageCode) {
             $baseLanguage = $survey->language;
         } else {
-            $baseLanguage = sanitize_languagecode($languageCode);
+            $baseLanguage = \LSYii_Validators::languageCodeFilter($languageCode);
         }
 
         Yii::app()->setLanguage($baseLanguage);
@@ -189,9 +199,11 @@ class OptinController extends LSYii_Controller
         if (!isset($token)) {
             $message = gT('You are not a participant of this survey.');
         } else {
-            if ($token->emailstatus == 'OptOut') {
-                $token->emailstatus = 'OK';
-                $token->save();
+            if ($token->optOutStatus) {
+                $token->optIn();
+                if (!$token->save(true, ['emailstatus'])) {
+                    throw new CHttpException(500, gT('An internal error occurred while the Web server was processing your request.'));
+                }
                 $message = gT('You have been successfully added back to this survey.');
             } elseif ($token->emailstatus == 'OK') {
                 $message = gT('You are already a participant of this survey.');

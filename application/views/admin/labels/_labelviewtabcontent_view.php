@@ -7,12 +7,18 @@ $codeids = '';
 
 <div class="tab-content">
     <?php foreach ($lslanguages as $lslanguage) : ?>
-        <div id='neweditlblset<?php echo $i ?>' class="table-responsive tab-pane lang-<?= $lslanguage ?> <?= $i === 0 ? "active show first" : "not_first" ?>">
+        <div id="neweditlblset<?php echo (int) $i ?>"
+             class="table-responsive tab-pane lang-<?= $lslanguage ?> <?= $i === 0 ? "active show first" : "not_first" ?>"
+             role="tabpanel"
+             aria-labelledby="labelview-lang-tab-<?php echo (int) $i ?>">
             <input type='hidden' class='lslanguage' value='<?= $lslanguage ?>' <?= $i === 0 ? 'id="lslanguagemain"' : '' ?>/>
             <table class='answertable table table-hover'>
+                <caption class="sr-only">
+                    <?php echo sprintf(gT("Labels for language: %s"), getLanguageNameFromCode($lslanguage, false)) ?>
+                </caption>
                 <thead>
                 <tr>
-                    <?php if ($first): ?>
+                    <?php if ($first) : ?>
                         <th><?php eT('Position'); ?></th>
                     <?php endif; ?>
                     <th><?php eT("Code") ?></th>
@@ -26,11 +32,10 @@ $codeids = '';
                 <?php $position = 0;
                 $alternate = false; ?>
 
-                    <?php foreach ($results as $row): ?>
+                    <?php foreach ($results as $row) : ?>
                         <?php
                         $sortorderids = $sortorderids . ' ' . $lslanguage . '_' . $row['sortorder'];
-                        if ($first)
-                        {
+                        if ($first) {
                             $codeids = $codeids . ' ' . $row['sortorder'];
                         }
                         ?>
@@ -58,7 +63,7 @@ $codeids = '';
                 if ($updatePermission) : ?>
                     <button type="button" id='btnquickadd_<?php echo $i ?>' class="btnquickadd btn btn-outline-secondary " data-bs-toggle="modal"
                             data-bs-target="#quickadd">
-                        <?php eT('Quick add labels') ?>
+                        <?php eT('Quick-add labels') ?>
                     </button>
                 <?php endif; ?>
             </div>

@@ -2,7 +2,7 @@
 
 /*
    * LimeSurvey
-   * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
+   * Copyright (C) 2013-2026 The LimeSurvey Project Team
    * All rights reserved.
    * License: GNU/GPL License v2 or later, see LICENSE.php
    * LimeSurvey is free software. This version may have been modified pursuant
@@ -120,7 +120,7 @@ class TokenDynamic extends LSActiveRecord
 
     /**
      * Checks to make sure that all required columns exist in this tokens table
-     * (some older tokens tables dont' get udated properly)
+     * (some older token tables don't get updated properly)
      *
      * This method should be moved to db update for 2.05 version so it runs only
      * once per survey participant list / backup survey participant list
@@ -170,9 +170,10 @@ class TokenDynamic extends LSActiveRecord
      * @param string $SQLemailstatuscondition
      * @param string $SQLremindercountcondition
      * @param string $SQLreminderdelaycondition
+     * @param bool $bOnlyCurrentlyValid If true, skip participants whose validity period does not include the current time
      * @return CActiveRecord[]
      */
-    public function findUninvited($aTokenIds = false, $iMaxEmails = 0, $bEmail = true, $SQLemailstatuscondition = '', $SQLremindercountcondition = '', $SQLreminderdelaycondition = '')
+    public function findUninvited($aTokenIds = false, $iMaxEmails = 0, $bEmail = true, $SQLemailstatuscondition = '', $SQLremindercountcondition = '', $SQLreminderdelaycondition = '', $bOnlyCurrentlyValid = false)
     {
         $command = new CDbCriteria();
         $command->condition = '';
@@ -196,6 +197,10 @@ class TokenDynamic extends LSActiveRecord
 
         if ($SQLreminderdelaycondition) {
             $command->addCondition($SQLreminderdelaycondition);
+        }
+
+        if ($bOnlyCurrentlyValid) {
+            $command->addCondition($this->getCurrentlyValidCondition());
         }
 
         if ($aTokenIds) {
@@ -230,9 +235,10 @@ class TokenDynamic extends LSActiveRecord
      * @param string $SQLemailstatuscondition Additional email status condition
      * @param string $SQLremindercountcondition Reminder count condition
      * @param string $SQLreminderdelaycondition Reminder delay condition
+     * @param bool $bOnlyCurrentlyValid If true, skip participants whose validity period does not include the current time
      * @return array Array of token IDs
      */
-    public function findParticipantIDs($aTokenIds = false, $iMaxEmails = 0, $bEmail = true, $SQLemailstatuscondition = '', $SQLremindercountcondition = '', $SQLreminderdelaycondition = '')
+    public function findParticipantIDs($aTokenIds = false, $iMaxEmails = 0, $bEmail = true, $SQLemailstatuscondition = '', $SQLremindercountcondition = '', $SQLreminderdelaycondition = '', $bOnlyCurrentlyValid = false)
     {
         // Optimized version that only fetches and returns IDs to avoid memory exhaustion (issue #20465)
         // Use CDbCommand for safe SQL generation with proper column quoting
@@ -264,6 +270,10 @@ class TokenDynamic extends LSActiveRecord
             $command->andWhere($SQLreminderdelaycondition);
         }
 
+        if ($bOnlyCurrentlyValid) {
+            $command->andWhere($this->getCurrentlyValidCondition());
+        }
+
         if ($aTokenIds) {
             $ids = array_map('intval', $aTokenIds);
             $placeholders = implode(',', array_fill(0, count($ids), '?'));
@@ -288,6 +298,19 @@ class TokenDynamic extends LSActiveRecord
         $ids = array_column($results, 'tid');
 
         return $ids;
+    }
+
+    /**
+     * Returns an SQL condition matching participants whose validity period (valid from/valid until) includes the current time
+     * @return string
+     */
+    private function getCurrentlyValidCondition()
+    {
+        $db = Yii::app()->db;
+        $now = $db->quoteValue(gmdate('Y-m-d H:i:s'));
+        $validFrom = $db->quoteColumnName('validfrom');
+        $validUntil = $db->quoteColumnName('validuntil');
+        return "($validFrom IS NULL OR $validFrom <= $now) AND ($validUntil IS NULL OR $validUntil >= $now)";
     }
 
     /**
@@ -495,7 +518,7 @@ class TokenDynamic extends LSActiveRecord
         }
         $command = Yii::app()->db->createCommand()
             ->select('COUNT(token)')
-            ->from('{{survey_' . intval(self::$sid) . '}}')
+            ->from('{{responses_' . intval(self::$sid) . '}}')
             ->where('token=:token')
             ->bindParam(':token', $sToken, PDO::PARAM_STR);
 
@@ -984,7 +1007,7 @@ class TokenDynamic extends LSActiveRecord
             'url'              => App()->createUrl("admin/participants/sa/displayParticipants", [
                 "#" => json_encode(
                     ["searchcondition" => "participant_id||equal||" . $this->participant_id],
-                    JSON_FORCE_OBJECT
+                    JSON_FORCE_OBJECT | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT
                 )
             ]),
             'iconClass'        => 'ri-shield-user-line',
@@ -992,7 +1015,7 @@ class TokenDynamic extends LSActiveRecord
                 'onclick' => "window.LS.gridButton.postGridAction(event,$(this))",
             ],
             'enabledCondition' => $permission_participantpanel_read
-                && self::model(self::$sid)->count("participant_id is not null")
+                && !empty($this->participant_id)
         ];
 
         return App()->getController()->widget('ext.admin.grid.GridActionsWidget.GridActionsWidget', ['dropdownItems' => $dropdownItems], true);

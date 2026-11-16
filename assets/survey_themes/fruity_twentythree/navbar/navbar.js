@@ -10,16 +10,45 @@ export var NavbarScripts = function () {
         element.innerHTML = replacementContent;
     };
 
-    var initNavbarEvents = function () {
+    /**
+     * Moves the keyboard focus to the first element of the menu matching the selector
+     * Replacing the menu content destroys the focused link, which would otherwise drop the focus to the page body
+     * @param {string} selector
+     */
+    var focusMenuItem = function focusMenuItem(selector) {
+        var item = document.querySelector('#main-dropdown ' + selector);
+        if (item) {
+            item.focus();
+        }
+    };
 
-        $(document).on('click', '[data-navtargetid]', function() {
+    var initNavbarEvents = function () {
+        // Submenu that is currently shown, so the focus can return to its opener on "Back"
+        var openedSubmenuId = null;
+
+        $(document).on('click', '[data-navtargetid]', function(event) {
+            event.preventDefault();
+            openedSubmenuId = $(this).data('navtargetid');
             replaceContent(getContentByElementId('main-dropdown'), 'back-content');
             //replace menu content with submenu content
-            replaceContent(getContentByElementId($(this).data('navtargetid')), 'main-dropdown');
+            replaceContent(getContentByElementId(openedSubmenuId), 'main-dropdown');
+            focusMenuItem('.back-link');
         });
-        $(document).on('click', '.back-link', function() {
+        // The submenu openers are links with role="button", which browsers only activate with Enter, so Space has to open them like a button
+        $(document).on('keydown', '[data-navtargetid]', function(event) {
+            if (event.key === ' ') {
+                event.preventDefault();
+                $(this).trigger('click');
+            }
+        });
+        $(document).on('click', '.back-link', function(event) {
+            event.preventDefault();
             // switch menu content back to original content (this currently works only with one level nested elements)
             replaceContent(getContentByElementId('back-content'), 'main-dropdown');
+            if (openedSubmenuId) {
+                focusMenuItem('[data-navtargetid="' + openedSubmenuId + '"]');
+            }
+            openedSubmenuId = null;
         });
     };
 

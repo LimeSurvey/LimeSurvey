@@ -583,8 +583,12 @@ class Zend_Captcha_Image extends Zend_Captcha_Word
         }
 
         imagepng($img2, $img_file);
-        imagedestroy($img);
-        imagedestroy($img2);
+        if (PHP_VERSION_ID < 80000) {
+            // phpcs:ignore PHPCompatibility.FunctionUse.RemovedFunctions.imagedestroyDeprecated -- called before PHP 8.0 only
+            imagedestroy($img);
+            // phpcs:ignore PHPCompatibility.FunctionUse.RemovedFunctions.imagedestroyDeprecated -- called before PHP 8.0 only
+            imagedestroy($img2);
+        }
     }
 
     /**

@@ -4,17 +4,18 @@
 /** @var string $core_attribute */
 /** @var string $defaultname */
 /** @var string $encrypted */
+/** @var string $localizedname */
 /** @var string $name */
 /** @var string $value */
 /** @var string $visible */
 
 $name = CHtml::encode($name);
-$defaultname = CHtml::encode($defaultname);
-$elementId = 'Attributes_'. $name;
+$localizedname = CHtml::encode($localizedname);
+$elementId = 'Attributes_' . $name;
 $inputName = "Attributes[$name]";
 ?>
 <div class="mb-3">
-    <label class="form-label" for="<?=CHtml::encode($elementId)?>"><?php echo $defaultname; ?></label>
+    <label class="form-label" for="<?=CHtml::encode($elementId)?>"><?php echo $localizedname; ?></label>
     <?php
     $dateFormatDetails = getDateFormatData(App()->session['dateformat']);
 
@@ -27,7 +28,7 @@ $inputName = "Attributes[$name]";
                     'allowInputToggle' => true,
                     'theme' => 'light',
                     'locale' => convertLStoDateTimePickerLocale(
-                            App()->session['adminlang']
+                        App()->session['adminlang']
                     )
             ]
     ]);

@@ -1,87 +1,88 @@
-<?php $this->render('sideMenuLogo'); ?>
+<?php
+$this->render('sideMenuLogo');
+$hasSurveySecurityPermission = Permission::model()->hasSurveyPermission($sid, 'surveysecurity', 'read');
+$hasTranslationsPermission = Permission::model()->hasSurveyPermission($sid, 'translations', 'read');
+?>
 <div class="sidebar-container">
 <div id="left-sidebar" class="fade sidebar sidebar-left show">
     <div class="d-flex">
         <div class="sidebar-icons-container">
             <?php
-            // Define all sidebar icons
+            // Define all sidebar icons, the ones the user has no permission for are left out
             $sidebarIcons = [
                 // Survey structure
                 [
                     'onClick' => "window.location='" . App()->createUrl(
-                            'editorLink/index',
-                            ['route' => 'survey/' . $sid]
-                        ) . "'",
+                        'editorLink/index',
+                        ['route' => 'survey/' . $sid]
+                    ) . "'",
                     'tooltip' => gT('Survey structure'),
-                    'iconClass' => 'ri-bar-chart-horizontal-line'
+                    'icon' => 'ri-bar-chart-horizontal-line',
+                    'iconSize' => 20
                 ],
-                // Survey settings
-                [
+            ];
+            // Survey settings
+            if ($settingsUrl = $this->getPanelUrl('settings')) {
+                $sidebarIcons[] = [
                     'dataTarget' => '#survey-settings-panel',
-                    'onClick' => "window.location='" . App()->createUrl(
-                            'editorLink/index',
-                            [
-                                'route' => 'survey/' . $sid
-                                    . '/settings/generalsettings'
-                            ]
-                        ) . "'",
+                    'onClick' => "window.location='" . $settingsUrl . "'",
                     'tooltip' => gT('Survey settings'),
                     'activePanel' => $this->activePanel == 'survey-settings-panel',
-                    'iconClass' => 'ri-settings-3-fill'
-                ],
-                // Survey presentation
-                [
+                    'icon' => 'ri-settings-3-fill',
+                    'iconSize' => 20
+                ];
+            }
+            // Survey presentation
+            if ($presentationUrl = $this->getPanelUrl('presentation')) {
+                $sidebarIcons[] = [
                     'dataTarget' => '#survey-presentation-panel',
-                    'onClick' => "window.location='" . App()->createUrl(
-                            'editorLink/index',
-                            [
-                                'route' => 'survey/' . $sid
-                                    . '/presentation/theme_options'
-                            ]
-                        ) . "'",
+                    'onClick' => "window.location='" . $presentationUrl . "'",
                     'tooltip' => gT('Survey presentation'),
                     'activePanel' => $this->activePanel == 'survey-presentation-panel',
-                    'iconClass' => 'ri-paint-fill'
-                ],
-                // Survey menu
-                [
+                    'icon' => 'ri-paint-fill'
+                ];
+            }
+            // Survey menu
+            if ($menuUrl = $this->getPanelUrl('menu')) {
+                $sidebarIcons[] = [
                     'dataTarget' => '#survey-menu-panel',
-                    'onClick' => "window.location='" . App()->createUrl(
-                            'admin/tokens/sa/index/surveyid/'
-                            . $sid
-                        ) . "'",
+                    'onClick' => "window.location='" . $menuUrl . "'",
                     'tooltip' => gT('Survey menu'),
                     'activePanel' => $this->activePanel == 'survey-menu-panel',
-                    'iconClass' => 'ri-file-text-line'
-                ],
-                // Survey permissions
-                [
+                    'icon' => 'ri-file-text-line'
+                ];
+            }
+            // Survey permissions
+            if ($hasSurveySecurityPermission) {
+                $sidebarIcons[] = [
                     'dataTarget' => '#survey-permissions-panel',
                     'onClick' => "window.location='" . App()->createUrl(
-                            'surveyPermissions/index/',
-                            ['surveyid' => $sid]
-                        ) . "'",
+                        'surveyPermissions/index/',
+                        ['surveyid' => $sid]
+                    ) . "'",
                     'tooltip' => gT('Survey permissions'),
                     'activePanel' => $this->activePanel == 'survey-permissions-panel',
-                    'iconClass' => 'ri-group-line'
-                ],
-                // Quick translation
-                [
+                    'icon' => 'ri-group-line'
+                ];
+            }
+            // Quick translation
+            if ($hasTranslationsPermission) {
+                $sidebarIcons[] = [
                     'dataTarget' => '#survey-quick-translation',
                     'disabled' => count($this->allLanguages) <= 1,
                     'onClick' => "window.location='" . App()->createUrl(
-                            'quickTranslation/index/',
-                            ['surveyid' => $sid]
-                        ) . "'",
+                        'quickTranslation/index/',
+                        ['surveyid' => $sid]
+                    ) . "'",
                     'tooltip' => gT('Quick translation'),
                     'tooltipDisabled' => gT('Quick translation') . ': '
                         . gT(
                             'Currently there are no additional languages configured for this survey.'
                         ),
                     'activePanel' => $this->activePanel == 'survey-quick-translation',
-                    'iconClass' => 'ri-translate-2'
-                ]
-            ];
+                    'icon' => 'ri-translate-2'
+                ];
+            }
 
             // Render all sidebar icons
             foreach ($sidebarIcons as $iconData) {
@@ -91,11 +92,12 @@
 
         </div>
         <div class="panels">
+            <?php if (!empty($sideMenu['settings'])) : ?>
             <div id="survey-settings-panel" class="side-panel d-flex <?php echo $this->activePanel !== 'survey-settings-panel' ? 'd-none' : ''?>">
                 <div class="survey-structure">
                     <div class="survey-settings">
                         <div class="d-flex sidebar-header align-items-center justify-content-between right-side-bar-header primary">
-                            <?php echo gT('Survey Settings'); ?>
+                            <?php echo gT('Survey settings'); ?>
                             <button type="button" id="btn-close-survey-settings-panel" class="p-0 btn-close-lime btn btn-link">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="text-black fill-current">
                                     <g clip-path="url(#clip0_1_4259)">
@@ -122,6 +124,8 @@
                     </div>
                 </div>
             </div>
+            <?php endif; ?>
+            <?php if (!empty($sideMenu['menu'])) : ?>
             <div id="survey-menu-panel" class="side-panel d-flex <?php echo $this->activePanel !== 'survey-menu-panel' ? 'd-none' : ''?>">
                 <div class="survey-structure">
                     <div class="survey-settings">
@@ -143,7 +147,7 @@
                         <?php foreach ($sideMenu['menu'] as $item) : ?>
                             <a href="<?php echo $item['disabled'] ?? false ? '#' : $item['url']; ?>" class="<?php echo $item['disabled'] ?? false ? 'disabled' : ''; ?>">
                                 <div class="survey-settings-panel-item text-black <?php echo (isset($item['selected']) && $item['selected']) ? ' bg-primary' : ''; ?>">
-                                    <label class=" cursor-pointer mb-0 form-label <?php echo (isset($item['selected']) && $item['selected'])? ' text-white' : ' text-black'; ?>">
+                                    <label class=" cursor-pointer mb-0 form-label <?php echo (isset($item['selected']) && $item['selected']) ? ' text-white' : ' text-black'; ?>">
                                         <?php echo gT($item['name']); ?>
                                     </label>
                                 </div>
@@ -152,6 +156,8 @@
                     </div>
                 </div>
             </div>
+            <?php endif; ?>
+            <?php if (!empty($sideMenu['presentation'])) : ?>
             <div id="survey-presentation-panel" class="side-panel d-flex <?php echo $this->activePanel !== 'survey-presentation-panel' ? 'd-none' : ''?>">
                 <div class="survey-structure">
                     <div class="survey-settings">
@@ -172,7 +178,7 @@
                         </div>
                         <?php foreach ($sideMenu['presentation'] as $item) : ?>
                             <a href="<?php echo $item['url']; ?>">
-                                <div class="survey-settings-panel-item text-black <?php echo (isset($item['selected']) && $item['selected'])? ' bg-primary' : ''; ?>">
+                                <div class="survey-settings-panel-item text-black <?php echo (isset($item['selected']) && $item['selected']) ? ' bg-primary' : ''; ?>">
                                     <label class=" cursor-pointer mb-0 form-label <?php echo (isset($item['selected']) && $item['selected']) ? ' text-white' : ' text-black'; ?>">
                                         <?php echo gT($item['name']); ?>
                                     </label>
@@ -182,6 +188,8 @@
                     </div>
                 </div>
             </div>
+            <?php endif; ?>
+            <?php if ($hasSurveySecurityPermission) : ?>
             <div id="survey-permissions-panel" class="side-panel d-flex <?php echo $this->activePanel !== 'survey-permissions-panel' ? 'd-none' : ''?>">
                 <div class="survey-structure">
                     <div class="survey-settings">
@@ -214,7 +222,8 @@
                     </div>
                 </div>
             </div>
-            <?php if (count($this->allLanguages) > 1) : ?>
+            <?php endif; ?>
+            <?php if ($hasTranslationsPermission && count($this->allLanguages) > 1) : ?>
                 <div id="survey-quick-translation" class="side-panel d-flex <?php echo $this->activePanel !== 'survey-quick-translation' ? 'd-none' : ''?>">
                     <div class="survey-structure">
                         <div class="survey-settings">

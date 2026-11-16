@@ -12,7 +12,10 @@ Yii::app()->getController()->renderPartial(
                 <tr>
                     <th></th>
                     <th><?php eT("Permission"); ?></th>
-                    <th><?php eT("General"); ?></th>
+                    <th>
+                        <input type="checkbox" class="selector--select-all-permissions" id="UserManagement--userpermissions-select-all" aria-label="<?php eT('Select all permissions'); ?>" />
+                        <?php eT("General"); ?>
+                    </th>
                     <th><?php eT("Create"); ?></th>
                     <th><?php eT("View/read"); ?></th>
                     <th><?php eT("Update"); ?></th>
@@ -22,14 +25,27 @@ Yii::app()->getController()->renderPartial(
                 </tr>
             </thead>
         <!-- Permissions -->
+        <?php $hasIndeterminate = false; ?>
         <tbody>
             <?php foreach ($aPermissions as $sPermission => $aCurrentPermissions) : ?>
                 <tr>
                     <td>
-                        <i class="<?php echo $aCurrentPermissions['img'] ?> text-success"></i>
-                        <?= $aCurrentPermissions['description'] ?>
+                        <i
+                            class="<?php echo $aCurrentPermissions['img'] ?> text-success"
+                            tabindex="0"
+                            role="img"
+                            data-bs-toggle="tooltip"
+                            data-bs-placement="right"
+                            title="<?= $aCurrentPermissions['description'] ?>"
+                            aria-label="<?= $aCurrentPermissions['description'] ?>"
+                        ></i>
                     </td>
-                    <td><?= $aCurrentPermissions['title'] ?></td>
+                    <td
+                        tabindex="0"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="right"
+                        title="<?= $aCurrentPermissions['description'] ?>"
+                    ><?= $aCurrentPermissions['title'] ?></td>
                     <!-- checkbox  -->
                     <td>
                         <input type="checkbox" class="general-row-selector" id='all_<?php echo $sPermission; ?>' name='PermissionAll[<?php echo $sPermission; ?>]' />
@@ -38,12 +54,15 @@ Yii::app()->getController()->renderPartial(
                     <?php foreach ($aCurrentPermissions['current'] as $sKey => $aValues) : ?>
                         <td class='specific-settings-block'>
                             <?php if ($aCurrentPermissions[$sKey] && !$aValues['forced']) {
+                                $hasIndeterminate = $hasIndeterminate || $aValues['indeterminate'];
                                 echo CHtml::checkBox(
                                     "set[{$aCurrentPermissions['entity']}][{$sPermission}][$sKey]",
                                     $aValues['checked'],
                                     [
+                                        'class'              => 'specific-permission-selector',
                                         'value'              => 1,
                                         'data-indeterminate' => $aValues['indeterminate'],
+                                        'aria-describedby'   => $aValues['indeterminate'] ? 'permission-indeterminate-help' : null,
                                         'id'                 => CHtml::getIdByName("set[{$aCurrentPermissions['entity']}][{$sPermission}][$sKey]"),
                                         'uncheckValue'       => 0,
                                         /* See issue #14551 : https://bugs.limesurvey.org/view.php?id=14551 */
@@ -57,7 +76,16 @@ Yii::app()->getController()->renderPartial(
             <?php endforeach; ?>
             </tbody>
         </table>
+        <?php if ($hasIndeterminate) : ?>
+            <p id="permission-indeterminate-help" class="form-text">
+                <?= gT("A checkbox with a dash means that the user already has this permission in another way, for example through a global permission.") ?>
+            </p>
+        <?php endif; ?>
 
+        <p class="text-muted small mb-0">
+            <i class="ri-information-line" aria-hidden="true"></i>
+            <?php eT("Hover over a permission title to see a detailed explanation."); ?>
+        </p>
     </div>
 
     <div class="modal-footer">

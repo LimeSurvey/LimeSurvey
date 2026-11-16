@@ -17,7 +17,7 @@ class OpHandlerActiveRecordUpdate implements OpHandlerInterface
     protected $model = null;
     protected $transformer = null;
 
-    public function __construct($entity, CModel $model, TransformerInterface $transformer = null)
+    public function __construct($entity, CModel $model, ?TransformerInterface $transformer = null)
     {
         $this->entity = $entity;
         $this->model = $model;

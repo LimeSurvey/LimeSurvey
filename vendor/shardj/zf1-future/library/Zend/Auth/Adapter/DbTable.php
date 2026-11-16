@@ -275,7 +275,7 @@ class Zend_Auth_Adapter_DbTable implements Zend_Auth_Adapter_Interface
      */
     public function setAmbiguityIdentity($flag)
     {
-        if (is_integer($flag)) {
+        if (is_int($flag)) {
             $this->_ambiguityIdentity = (1 === $flag ? true : false);
         } elseif (is_bool($flag)) {
             $this->_ambiguityIdentity = $flag;

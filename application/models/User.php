@@ -2,7 +2,7 @@
 
 /**
 * LimeSurvey
-* Copyright (C) 2011 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2011-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -13,6 +13,7 @@
 *
 */
 
+use LimeSurvey\Models\Services\PasswordManagement;
 use LimeSurvey\Models\Services\UserManager;
 
 /**
@@ -25,9 +26,9 @@ use LimeSurvey\Models\Services\UserManager;
  * @property integer $parent_id
  * @property string $lang User's preferred language: (auto: automatic | languagecodes eg 'en')
  * @property string $email User's e-mail address
- * @property string $htmleditormode User's prefferred HTML editor mode:(default|inline|popup|none)
- * @property string $templateeditormode User's prefferred template editor mode:(default|full|none)
- * @property string $questionselectormode User's prefferred Question type selector:(default|full|none)
+ * @property string $htmleditormode User's preferred HTML editor mode:(default|inline|popup|none)
+ * @property string $templateeditormode User's preferred template editor mode:(default|full|none)
+ * @property string $questionselectormode User's preferred Question type selector:(default|full|none)
  * @property string $one_time_pw User's one-time-password hash
  * @property integer $dateformat Date format type 1-12
  * @property string $created Time created Time user was created as 'YYYY-MM-DD hh:mm:ss'
@@ -105,11 +106,13 @@ class User extends LSActiveRecord
     public function rules()
     {
         return array(
-            array('users_name, password, email', 'required'),
+            array('users_name, password', 'required'),
+            array('email', 'required', 'on' => 'insert'),
             array('users_name', 'unique'),
             array('users_name', 'length','max' => 64),
             array('full_name', 'length','max' => 50),
-            array('email', 'email'),
+            array('email', 'email', 'allowEmpty' => true),
+            array('email', 'unique', 'allowEmpty' => true, 'message' => gT("Email address '{value}' is already used by another user.", 'unescaped')),
             array('full_name', 'LSYii_Validators'), // XSS if non super-admin
             array('parent_id', 'default', 'value' => 0),
             array('parent_id', 'numerical', 'integerOnly' => true),
@@ -134,6 +137,17 @@ class User extends LSActiveRecord
     }
 
     /** @inheritdoc */
+    protected function beforeSave()
+    {
+        // Normalize empty email to NULL so the database unique index
+        // allows multiple users without an email address.
+        if ($this->email === '') {
+            $this->email = null;
+        }
+        return parent::beforeSave();
+    }
+
+    /** @inheritdoc */
     public function scopes()
     {
         if (App()->getConfig("DBVersion") < 495) {
@@ -146,7 +160,7 @@ class User extends LSActiveRecord
         $notExpiredScope = array(
             'condition' => "expires > :now OR expires IS NULL",
             'params' => array(
-                'now' => dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust")),
+                'now' => gmdate("Y-m-d H:i:s"),
             )
         );
         if (App()->getConfig("DBVersion") < 619) {
@@ -184,8 +198,8 @@ class User extends LSActiveRecord
             'questionselectormode' => gT('Question selector mode'),
             'one_time_pw' => gT('One-time password'),
             'dateformat' => gT('Date format'),
-            'created' => gT('Created at'),
-            'modified' => gT('Modified at'),
+            'created' => gT('Created'),
+            'modified' => gT('Modified'),
             'last_login' => gT('Last recorded login'),
             'expires' => gT("Expiry date/time:"),
             'user_status' => gT("Status"),
@@ -272,9 +286,9 @@ class User extends LSActiveRecord
     private function getFormattedBoolean($data, $attribute)
     {
         if ($data->$attribute) {
-            return '<span class="text-success ri-check-fill"></span><span class="sr-only">' . gT("Yes") . '</span>';
+            return '<span class="text-success ri-check-fill fw-bold"></span><span class="sr-only">' . gT("Yes") . '</span>';
         }
-        return '<span class="sr-only">' . gT("No") . '</span>';
+        return '<span class="text-danger ri-close-fill fw-bold"></span><span class="sr-only">' . gT("No") . '</span>';
     }
 
     /**
@@ -288,7 +302,7 @@ class User extends LSActiveRecord
      * @param string $new_email
      * @param string|null $expires
      * @param boolean $status
-     * @return integer|boolean User ID if success
+     * @return integer|User User ID on success, User model with errors on validation failure
      */
     public static function insertUser($new_user, $new_pass, $new_full_name, $parent_user, $new_email, $expires = null, $status = true)
     {
@@ -299,14 +313,14 @@ class User extends LSActiveRecord
         $oUser->parent_id = $parent_user;
         $oUser->lang = 'auto';
         $oUser->email = $new_email;
-        $oUser->created = date('Y-m-d H:i:s');
-        $oUser->modified = date('Y-m-d H:i:s');
+        $oUser->created = gmdate('Y-m-d H:i:s');
+        $oUser->modified = gmdate('Y-m-d H:i:s');
         $oUser->expires = $expires;
         $oUser->user_status = $status;
         if ($oUser->save()) {
             return $oUser->uid;
         } else {
-            return false;
+            return $oUser;
         }
     }
 
@@ -333,11 +347,22 @@ class User extends LSActiveRecord
      */
     public static function updatePassword($iUserID, $sPassword)
     {
-        return User::model()->updateByPk($iUserID, array('password' => password_hash($sPassword, PASSWORD_DEFAULT)));
+        return User::model()->updateByPk($iUserID, array(
+            'password' => password_hash($sPassword, PASSWORD_DEFAULT),
+            'session_token' => self::generateSessionToken(),
+        ));
     }
 
     /**
      * Set user password with hash
+     *
+     * Also rotates the user's session token, so any other already
+     * authenticated web session for this user (which still caches the
+     * previous token) gets logged out on its next request. See
+     * LSApplicationTrait::getCurrentUserId(). Additionally revokes any
+     * outstanding RemoteControl (JSON-RPC/REST) session tokens for this
+     * user, since those are a separate auth mechanism unaffected by the
+     * session_token rotation above.
      *
      * @param string $sPassword The clear text password
      * @return \User
@@ -345,10 +370,25 @@ class User extends LSActiveRecord
     public function setPassword($sPassword, $save = false)
     {
         $this->password = password_hash($sPassword, PASSWORD_DEFAULT);
+        $this->session_token = self::generateSessionToken();
+        if (!empty($this->users_name)) {
+            Session::model()->deleteAllByAttributes(['data' => $this->users_name]);
+        }
         if ($save) {
             $this->save();
         }
         return $this; // Return current object
+    }
+
+    /**
+     * Generates a new random per-user session token, used to invalidate
+     * other sessions when the password changes.
+     *
+     * @return string
+     */
+    public static function generateSessionToken()
+    {
+        return bin2hex(random_bytes(32));
     }
 
     /**
@@ -377,11 +417,11 @@ class User extends LSActiveRecord
 
 
     /**
-     * Checks the strength of a given password against configured validation rules.
+     * Checks the strength of a given password.
      *
-     * This function evaluates the password strength based on length, presence of lowercase
-     * and uppercase letters, numbers, and special characters. It also allows for plugin-based
-     * additional password requirement checks.
+     * An empty password is always refused. The rules come from the plugins answering the
+     * checkPasswordRequirement event, the PasswordRequirement core plugin by default. Without any
+     * of them, only a minimum length of PasswordManagement::FALLBACK_MIN_PASSWORD_LENGTH characters is checked.
      *
      * @param string $password The password to check for strength
      *
@@ -389,49 +429,20 @@ class User extends LSActiveRecord
      */
     public function checkPasswordStrength(string $password)
     {
-        $settings = Yii::app()->getConfig("passwordValidationRules");
-        $length = strlen($password);
-        $lowercase = preg_match_all('@[a-z]@', $password);
-        $uppercase = preg_match_all('@[A-Z]@', $password);
-        $number    = preg_match_all('@[0-9]@', $password);
-        $specialChars = preg_match_all('@[^\w]@', $password);
-
-        $resultDefaultRules = "";
-        if ((int) $settings['min'] > 0) {
-            if ($length < $settings['min']) {
-                $resultDefaultRules = sprintf(ngT('Password must be at least %d character long|Password must be at least %d characters long', $settings['min']), $settings['min']);
-            }
+        if ($password === '') {
+            return gT("The new password can not be empty.");
         }
-        if ((int) $settings['max'] > 0) {
-            if ($length > $settings['max']) {
-                $resultDefaultRules = sprintf(ngT('Password must be at most %d character long|Password must be at most %d characters long', $settings['max']), $settings['max']);
-            }
+        $passwordError = '';
+        if (!PasswordManagement::hasPasswordRequirementCheck() && strlen($password) < PasswordManagement::FALLBACK_MIN_PASSWORD_LENGTH) {
+            $passwordError = sprintf(
+                gTPlural('Password must be at least %d character long', 'Password must be at least %d characters long', PasswordManagement::FALLBACK_MIN_PASSWORD_LENGTH),
+                PasswordManagement::FALLBACK_MIN_PASSWORD_LENGTH
+            );
         }
-        if ((int) $settings['lower'] > 0) {
-            if ($lowercase < $settings['lower']) {
-                $resultDefaultRules = sprintf(ngT('Password must include at least %d lowercase letter|Password must include at least %d lowercase letters', $settings['lower']), $settings['lower']);
-            }
-        }
-        if ((int) $settings['upper'] > 0) {
-            if ($uppercase < $settings['upper']) {
-                $resultDefaultRules = sprintf(ngT('Password must include at least %d uppercase letter|Password must include at least %d uppercase letters', $settings['upper']), $settings['upper']);
-            }
-        }
-        if ((int) $settings['numeric'] > 0) {
-            if ($number < $settings['numeric']) {
-                $resultDefaultRules = sprintf(ngT('Password must include at least %d number|Password must include at least %d numbers', $settings['numeric']), $settings['numeric']);
-            }
-        }
-        if ((int) $settings['symbol'] > 0) {
-            if ($specialChars < $settings['symbol']) {
-                $resultDefaultRules = sprintf(ngT('Password must include at least %d special character|Password must include at least %d special characters', $settings['symbol']), $settings['symbol']);
-            }
-        }
-        $passwordOk = ($resultDefaultRules === '');
         $oPasswordTestEvent = new PluginEvent('checkPasswordRequirement');
         $oPasswordTestEvent->set('password', $password);
-        $oPasswordTestEvent->set('passwordOk', $passwordOk);
-        $oPasswordTestEvent->set('passwordError', $resultDefaultRules);
+        $oPasswordTestEvent->set('passwordOk', $passwordError === '');
+        $oPasswordTestEvent->set('passwordError', $passwordError);
         Yii::app()->getPluginManager()->dispatchEvent($oPasswordTestEvent);
         return ($oPasswordTestEvent->get('passwordOk') ? '' : $oPasswordTestEvent->get('passwordError'));
     }
@@ -478,51 +489,28 @@ class User extends LSActiveRecord
     }
 
     /**
-     * @todo document me
+     * Returns the text describing the password requirements, shown below password fields.
+     * The requirements come from the plugins answering the getPasswordRequirements event.
+     *
+     * @return string
      */
     public function getPasswordHelpText()
     {
-        $settings =  Yii::app()->getConfig("passwordValidationRules");
-        $txt = gT('A password must meet the following requirements: ');
-        if ((int) $settings['min'] > 0) {
-            $txt .= sprintf(ngT('At least %d character long.|At least %d characters long.', $settings['min']), $settings['min']) . ' ';
+        $requirements = [];
+        if (!PasswordManagement::hasPasswordRequirementCheck()) {
+            $requirements[] = sprintf(
+                gTPlural('At least %d character long.', 'At least %d characters long.', PasswordManagement::FALLBACK_MIN_PASSWORD_LENGTH),
+                PasswordManagement::FALLBACK_MIN_PASSWORD_LENGTH
+            );
         }
-        if ((int) $settings['max'] > 0) {
-            $txt .= sprintf(ngT('At most %d character long.|At most %d characters long.', $settings['max']), $settings['max']) . ' ';
+        $oRequirementsEvent = new PluginEvent('getPasswordRequirements');
+        $oRequirementsEvent->set('requirements', $requirements);
+        Yii::app()->getPluginManager()->dispatchEvent($oRequirementsEvent);
+        $requirements = array_filter((array) $oRequirementsEvent->get('requirements'), 'is_string');
+        if (empty($requirements)) {
+            return '';
         }
-        if ((int) $settings['min'] > 0 && (int) $settings['max'] > 0) {
-            if ($settings['min'] == $settings['max']) {
-                $txt .= sprintf(ngT('Exactly %d character long.|Exactly %d characters long.', $settings['min']), $settings['min']) . ' ';
-            } elseif ($settings['min'] < $settings['max']) {
-                $txt .= sprintf(gT('Between %d and %d characters long.'), $settings['min'], $settings['max']) . ' ';
-            }
-        }
-        if ((int) $settings['lower'] > 0) {
-            $txt .= sprintf(ngT('At least %d lower case letter.|At least %d lower case letters.', $settings['lower']), $settings['lower']) . ' ';
-        }
-        if ((int) $settings['upper'] > 0) {
-            $txt .= sprintf(ngT('At least %d upper case letter.|At least %d upper case letters.', $settings['upper']), $settings['upper']) . ' ';
-        }
-        if ((int) $settings['numeric'] > 0) {
-            $txt .= sprintf(ngT('At least %d number.|At least %d numbers.', $settings['numeric']), $settings['numeric']) . ' ';
-        }
-        if ((int) $settings['symbol'] > 0) {
-            $txt .= sprintf(ngT('At least %d special character.|At least %d special characters.', $settings['symbol']), $settings['symbol']) . ' ';
-        }
-        return($txt);
-    }
-
-    /**
-     * Adds user record
-     *
-     * @access public
-     * @param array $data
-     * @deprecated : just don't use it
-     * @return string
-     */
-    public function insertRecords($data)
-    {
-        return $this->getDb()->insert('users', $data);
+        return gT('A password must meet the following requirements: ') . implode(' ', $requirements);
     }
 
     /**
@@ -601,6 +589,16 @@ class User extends LSActiveRecord
 
         $dropdownItems = [];
         $dropdownItems[] = [
+            'title'            => gT('Edit'),
+            'iconClass'        => "ri-pencil-fill",
+            'linkClass'        => "UserManagement--action--openmodal UserManagement--action--edituser",
+            'linkAttributes'   => [
+                'data-href' => $editUrl,
+            ],
+            'enabledCondition' => $this->canEdit()
+                                && $this->uid != App()->user->getId() // To update self : must use personal settings
+        ];
+        $dropdownItems[] = [
             'title'            => gT('User details'),
             'iconClass'        => "ri-search-line",
             'linkClass'        => "UserManagement--action--openmodal UserManagement--action--userdetail",
@@ -623,6 +621,53 @@ class User extends LSActiveRecord
                 )
         ];
 
+        $dropdownItems[] = [
+            'title'            => gT('Permissions'),
+            'iconClass'        => "ri-lock-fill",
+            'linkClass'        => "UserManagement--action--openmodal UserManagement--action--permissions",
+            'linkAttributes'   => [
+                'data-href'      => $setPermissionsUrl,
+                'data-modalsize' => 'modal-lg',
+            ],
+            'enabledCondition' =>
+                ($permission_superadmin_read
+                    && !(Permission::isForcedSuperAdmin($this->uid)
+                        || $this->uid == App()->user->getId()
+                    )
+                )
+                || (!$permission_superadmin_read
+                    && ($this->uid != App()->session['loginID'] //Can't change your own permissions
+                        && (
+                            $permission_users_update
+                            && $ownedOrCreated
+                        )
+                        && !Permission::isForcedSuperAdmin($this->uid)
+                    )
+                )
+        ];
+        $dropdownItems[] = [
+            'title'            => gT('Roles'),
+            'iconClass'        => "ri-group-fill",
+            'linkClass'        => "UserManagement--action--openmodal UserManagement--action--addrole",
+            'linkAttributes'   => [
+                'data-href' => $setRoleUrl,
+            ],
+            'enabledCondition' => $userManager->canAssignRole() && $this->uid != App()->user->getId()
+        ];
+        $dropdownItems[] = [
+            'title'            => gT('Theme permissions'),
+            'iconClass'        => "ri-brush-fill",
+            'linkClass'        => "UserManagement--action--openmodal UserManagement--action--templatepermissions",
+            'linkAttributes'   => [
+                'data-href' => $setTemplatePermissionsUrl,
+            ],
+            'enabledCondition' =>
+                ($permission_superadmin_read
+                    && !(Permission::isForcedSuperAdmin($this->uid)
+                        || $this->uid == App()->user->getId()
+                    )
+                )
+        ];
         $permission = ( $permission_superadmin_read && !(Permission::isForcedSuperAdmin($this->uid) || $this->uid == App()->user->getId()))
             || (!$permission_superadmin_read && ($this->uid != App()->session['loginID'] //Can't change your own permissions
                     && ( $permission_users_update && $ownedOrCreated)
@@ -654,63 +699,6 @@ class User extends LSActiveRecord
             ];
         }
         $dropdownItems[] = [
-            'title'            => gT('Edit permissions'),
-            'iconClass'        => "ri-lock-fill",
-            'linkClass'        => "UserManagement--action--openmodal UserManagement--action--permissions",
-            'linkAttributes'   => [
-                'data-href'      => $setPermissionsUrl,
-                'data-modalsize' => 'modal-xl',
-            ],
-            'enabledCondition' =>
-                ($permission_superadmin_read
-                    && !(Permission::isForcedSuperAdmin($this->uid)
-                        || $this->uid == App()->user->getId()
-                    )
-                )
-                || (!$permission_superadmin_read
-                    && ($this->uid != App()->session['loginID'] //Can't change your own permissions
-                        && (
-                            $permission_users_update
-                            && $ownedOrCreated
-                        )
-                        && !Permission::isForcedSuperAdmin($this->uid)
-                    )
-                )
-        ];
-        $dropdownItems[] = [
-            'title'            => gT('User role'),
-            'iconClass'        => "ri-group-fill",
-            'linkClass'        => "UserManagement--action--openmodal UserManagement--action--addrole",
-            'linkAttributes'   => [
-                'data-href' => $setRoleUrl,
-            ],
-            'enabledCondition' => $userManager->canAssignRole() && $this->uid != App()->user->getId()
-        ];
-        $dropdownItems[] = [
-            'title'            => gT('Edit user'),
-            'iconClass'        => "ri-pencil-fill",
-            'linkClass'        => "UserManagement--action--openmodal UserManagement--action--edituser",
-            'linkAttributes'   => [
-                'data-href' => $editUrl,
-            ],
-            'enabledCondition' => $this->canEdit()
-                                && $this->uid != App()->user->getId() // To update self : must use personal settings
-        ];
-        $dropdownItems[] = [
-            'title'            => gT('Theme permissions'),
-            'iconClass'        => "ri-brush-fill",
-            'linkClass'        => "UserManagement--action--openmodal UserManagement--action--templatepermissions",
-            'linkAttributes'   => [
-                'data-href' => $setTemplatePermissionsUrl,
-            ],
-            'enabledCondition' =>
-                ($permission_superadmin_read
-                    && !(Permission::isForcedSuperAdmin($this->uid)
-                        || $this->uid == App()->user->getId()
-                    )
-                )
-        ];
-        $dropdownItems[] = [
             'title'            => gT('Take ownership'),
             'iconClass'        => "ri-user-received-fill",
             'linkId'        => "UserManagement--takeown-$this->uid",
@@ -738,7 +726,7 @@ class User extends LSActiveRecord
                 )
         ];
         $dropdownItems[] = [
-            'title'            => gT('Delete User'),
+            'title'            => gT('Delete'),
             'iconClass'        => "ri-delete-bin-fill text-danger",
             'linkClass'        => "UserManagement--action--openmodal UserManagement--action--delete",
             'linkId'           => "UserManagement--delete-$this->uid",
@@ -752,7 +740,7 @@ class User extends LSActiveRecord
                     )
                 )
                 || (!$permission_superadmin_read
-                    && ($this->uid != App()->session['loginID'] // One cant delete onesself
+                    && ($this->uid != App()->session['loginID'] // One can't delete onesself
                         && (
                             $permission_users_delete // Global permission to delete users
                             && $this->parent_id == App()->session['loginID'] // User is owned by current admin
@@ -793,7 +781,9 @@ class User extends LSActiveRecord
     {
         $lastLogin = $this->last_login;
         if ($lastLogin == null) {
-            return '---';
+            return '—';
+        } else {
+            $lastLogin = getDateOfUTC($lastLogin);
         }
 
         $date = new DateTime($lastLogin);
@@ -899,7 +889,7 @@ class User extends LSActiveRecord
                 },
                 "type" => 'raw',
                 "htmlOptions" => ['class' => 'text-center'],
-                "filter" => ['Y' => gT('Yes'), 'N' => gT('No')], // Y/N, default is set to 1
+                "filter" => ['Y' => gT('Active'), 'N' => gT('Inactive')], // Y/N, default is set to 1
             ],
         ];
 
@@ -908,7 +898,7 @@ class User extends LSActiveRecord
         if ($permission_read_surveys) {
             $cols['surveysCreated'] = array(
                 "name" => 'surveysCreated',
-                "header" => gT("No of surveys"),
+                "header" => gT("Owned surveys"),
                 'filter' => false
             );
         }
@@ -920,7 +910,7 @@ class User extends LSActiveRecord
         if ($permission_read_users && $permission_read_usergroups) {
             $cols['groupList'] = array(
                 "name" => 'groupList',
-                "header" => gT("Usergroups"),
+                "header" => gT("User groups"),
                 'filter' => false
             );
         }
@@ -939,7 +929,7 @@ class User extends LSActiveRecord
         if (Permission::model()->hasGlobalPermission('superadmin', 'update')) {
             $cols['isSuperAdmin'] = array(
                 "name" => 'isSuperAdmin',
-                "header" => gT("Super admin"),
+                "header" => gT("Superadmin"),
                 "value"  => function ($data) {
                     return $this->getFormattedBoolean($data, "isSuperAdmin");
                 },
@@ -955,7 +945,7 @@ class User extends LSActiveRecord
         if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
             $cols['haveDbAuthentication'] = array(
                 "name" => 'haveDbAuthentication',
-                "header" => gT("Auth DB"), // need short header
+                "header" => gT("DB auth"), // need short header, use short word for "Database authentication"
                 "value"  => function ($data) {
                     return $this->getFormattedBoolean($data, "haveDbAuthentication");
                 },
@@ -1025,12 +1015,14 @@ class User extends LSActiveRecord
     public function getDateFilter($column)
     {
         $dateFilter = "<div class='input-group'>";
-        $dateFilter .= "<span class='input-group-text'>&gt;=</span>";
+        $dateFilter .= "<span class='input-group-text' style='font-size:1rem;line-height:16px;'>&gt;=</span>";
         $dateFilter .= CHtml::dateField(
             get_class($this) . "[" . $column . "]",
             $this->getAttribute($column),
             [
-                'class' => "form-control"
+                'class' => "form-control",
+                // Native date inputs keep a larger min-height for the picker; the height itself comes from the admin theme like for all other inputs
+                'style' => 'font-size:1rem;min-height:0;'
             ]
         );
         $dateFilter .= "</div>";
@@ -1077,6 +1069,10 @@ class User extends LSActiveRecord
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
+            // A fixed order, else the database may return the users in any order and paging can repeat or skip users
+            'sort' => array(
+                'defaultOrder' => 't.uid ASC'
+            ),
             'pagination' => array(
                 'pageSize' => $pageSize
             )
@@ -1103,7 +1099,7 @@ class User extends LSActiveRecord
      */
     public function setValidationExpiration()
     {
-        $datePlusMaxExpiration = new DateTime();
+        $datePlusMaxExpiration = new DateTime('now', new DateTimeZone('UTC'));
         $datePlusString = 'P' . self::MAX_EXPIRATION_TIME_IN_DAYS . 'D';
         $dateInterval = new DateInterval($datePlusString);
         $datePlusMaxExpiration->add($dateInterval);
@@ -1122,12 +1118,12 @@ class User extends LSActiveRecord
     {
         $expired = false;
         if (!empty($this->expires)) {
-            // Time adjust
-            $now = date("Y-m-d H:i:s", strtotime((string) Yii::app()->getConfig('timeadjust'), strtotime(date("Y-m-d H:i:s"))));
-            $expirationTime = date("Y-m-d H:i:s", strtotime((string) Yii::app()->getConfig('timeadjust'), strtotime((string) $this->expires)));
+            // Compare expiration time (stored in UTC) with current UTC time
+            $now = gmdate("Y-m-d H:i:s");
+            $expirationTime = (string) $this->expires;
 
-            // Time comparison
-            $expired = new DateTime($expirationTime) < new DateTime($now);
+            // Time comparison (treat equality as expired, aligning with notexpired scope: expires > now)
+            $expired = new DateTime($expirationTime) <= new DateTime($now);
         }
         return $expired;
     }
@@ -1179,7 +1175,7 @@ class User extends LSActiveRecord
     }
 
     /**
-     * Get the decription to be used in list
+     * Get the description to be used in list
      * @return string
      */
     public function getDisplayName()
@@ -1207,6 +1203,10 @@ class User extends LSActiveRecord
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
+            // A fixed order, else the database may return the users in any order and paging can repeat or skip users
+            'sort' => array(
+                'defaultOrder' => 't.uid ASC'
+            ),
             'pagination' => array(
                 'pageSize' => $pageSize
             )
@@ -1286,7 +1286,7 @@ class User extends LSActiveRecord
         if (Permission::model()->hasGlobalPermission('superadmin', 'read', $managerId)) {
             return true;
         }
-        /* Finally : simple user can update only childs users */
+        /* Finally : simple user can update only child users */
         return Permission::model()->hasGlobalPermission('users', 'update', $managerId)
                 && $this->parent_id == $managerId;
     }

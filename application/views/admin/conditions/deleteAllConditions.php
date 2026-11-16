@@ -7,7 +7,7 @@
 <p>
     <?php eT("Continue?"); ?>
 </p>
-<?php echo CHtml::beginForm(array("admin/conditions/sa/index/",'subaction'=>'resetsurveylogic','surveyid'=>$iSurveyID)); ?>
+<?php echo CHtml::beginForm(array("admin/conditions/sa/index/",'subaction' => 'resetsurveylogic','surveyid' => $iSurveyID)); ?>
 <button
     class='btn btn-danger'
     type = "submit"

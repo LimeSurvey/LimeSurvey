@@ -84,7 +84,7 @@ class Zend_Rest_Server implements Zend_Server_Interface
     ];
 
     /**
-     * @var string Current Method
+     * @var string|null Current Method
      */
     protected $_method;
 
@@ -478,8 +478,8 @@ class Zend_Rest_Server implements Zend_Server_Interface
      */
     public function fault($exception = null, $code = null)
     {
-        if (isset($this->_functions[$this->_method])) {
-            $function = $this->_functions[$this->_method];
+        if (isset($this->_functions[$this->_method ?? ''])) {
+            $function = $this->_functions[$this->_method ?? ''];
         } elseif (isset($this->_method)) {
             $function = $this->_method;
         } else {

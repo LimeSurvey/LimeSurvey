@@ -5,7 +5,7 @@ if (!defined('BASEPATH')) {
 }
 /*
  * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -228,7 +228,7 @@ function sanitize_system_string($string, $min = '', $max = '')
         // background processing, special commands (backspace, etc.), quotes
         // newlines, or some other special characters
         $string = preg_replace($pattern, '', (string) $string);
-        $string = '"' . preg_replace('/\$/', '\\\$', $string) . '"'; //make sure this is only interpretted as ONE argument
+        $string = '"' . preg_replace('/\$/', '\\\$', $string) . '"'; //make sure this is only interpreted as ONE argument
         $len = strlen($string);
         if ((($min != '') && ($len < $min)) || (($max != '') && ($len > $max))) {
             return false;
@@ -266,7 +266,7 @@ function sanitize_ldap_string($string, $min = '', $max = '')
 }
 
 
-// sanitize a string for HTML (make sure nothing gets interpretted!)
+// sanitize a string for HTML (make sure nothing gets interpreted!)
 function sanitize_html_string($string)
 {
     $pattern[0] = '/\&/';
@@ -316,7 +316,7 @@ function sanitize_int($integer, $min = '', $max = '')
 function sanitize_user($string)
 {
     $username_length = 64;
-    $string = mb_substr($string, 0, $username_length);
+    $string = mb_substr((string) $string, 0, $username_length);
     return $string;
 }
 
@@ -337,12 +337,22 @@ function sanitize_labelname($string)
     return $string;
 }
 
-// make float float!
+/**
+ * Returns the number in a string, with a comma accepted as decimal separator.
+ *
+ * Whole numbers use the GMP library when available, so large values keep their precision.
+ * Anything else (decimals, text) goes through floatval(), text becomes 0.
+ *
+ * @param mixed $float The value to sanitize
+ * @param string|int|float $min Lowest allowed value, '' for no limit
+ * @param string|int|float $max Highest allowed value, '' for no limit
+ * @return string|float|false The number (a string for GMP whole numbers), false when outside min/max
+ */
 function sanitize_float($float, $min = '', $max = '')
 {
-    $float = str_replace(',', '.', (string) $float);
-    // GMP library allows for high precision and high value numbers
-    if (function_exists('gmp_init') && defined('GMP_VERSION') && version_compare(GMP_VERSION, '4.3.2') == 1) {
+    $float = trim(str_replace(',', '.', (string) $float));
+    // GMP library allows for high precision and high value numbers, but only handles whole numbers
+    if (preg_match('/^-?\d+$/', $float) && function_exists('gmp_init') && defined('GMP_VERSION') && version_compare(GMP_VERSION, '4.3.2') == 1) {
         $gNumber = gmp_init($float);
         if (($min != '' && gmp_cmp($gNumber, $min) < 0) || ($max != '' && gmp_cmp($gNumber, $max) > 0)) {
             return false;
@@ -470,7 +480,7 @@ function check($input, $flags, $min = '', $max = '')
  *
  * This function removes any characters that are not letters (a-z), numbers (0-9),
  * or hyphens (-) from the input string. It is case-insensitive in its matching.
- * @todo deprecated 7.0.0 Use LSYii_Validators::languageCodeFilter
+ * @deprecated 7.0.0 Use LSYii_Validators::languageCodeFilter
  *
  * @param string $codetosanitize The language code string to sanitize.
  * @return string The sanitized language code containing only letters and hyphens.
@@ -487,7 +497,7 @@ function sanitize_languagecode($codetosanitize)
  * This function takes a space-separated string of language codes, splits them into an array,
  * sanitizes each individual language code by removing all non-alphanumeric and non-dash characters,
  * and then rejoins them back into a space-separated string.
- * @todo deprecated 7.0.0 Use LSYii_Validators::multiLanguageCodeFilter
+ * @deprecated 7.0.0 Use LSYii_Validators::multiLanguageCodeFilter
  *
  * @param string $codestringtosanitize A space-separated string of language codes to sanitize.
  * @return string A space-separated string of sanitized language codes containing only alphanumeric characters and hyphens.
@@ -571,6 +581,21 @@ function check_absolute_url($string)
     $~ixu';
 
     return preg_match($pattern, $string) == 1;
+}
+
+/**
+ * Returns true if the argument looks like a path/URL to an image file (absolute or relative).
+ * @param string $string
+ * @return boolean
+ */
+function check_image_url($string)
+{
+    if (!is_string($string) || $string === '') {
+        return false;
+    }
+    // Strip query string/fragment before checking the file extension.
+    $path = strtok($string, '?#');
+    return (bool) preg_match('/\.(jpe?g|png|gif|bmp|webp|svg)$/i', (string) $path);
 }
 
 /**

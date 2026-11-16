@@ -16,6 +16,11 @@
                 background-color : $white;
                 color            : $g-800;
             }
+            // font icons (custom boxes) get the same size as the SVG icons rendered by SideBarWidget
+            .btn-icon > i {
+                font-size   : 24px;
+                line-height : 1;
+            }
         }
     }
     .scoped-toolbuttons-right {

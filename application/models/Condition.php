@@ -2,7 +2,7 @@
 
 /*
 * LimeSurvey
-* Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2013-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -48,6 +48,37 @@ class Condition extends LSActiveRecord
     public function tableName()
     {
         return '{{conditions}}';
+    }
+
+    /**
+     * Refuses to save a condition whose source question (cqid) doesn't belong to the survey of the question (qid).
+     *
+     * @return boolean
+     */
+    protected function beforeSave()
+    {
+        if (!empty($this->cqid) && !self::isQuestionOfSameSurvey((int) $this->qid, (int) $this->cqid)) {
+            $this->addError('cqid', gT("The condition must be based on a question of the same survey."));
+            return false;
+        }
+        return parent::beforeSave();
+    }
+
+    /**
+     * Checks whether two questions belong to the same survey.
+     *
+     * @param integer $qid the question ID
+     * @param integer $otherQid the other question ID
+     * @return boolean
+     */
+    public static function isQuestionOfSameSurvey(int $qid, int $otherQid): bool
+    {
+        return (bool) Yii::app()->db->createCommand()
+            ->select('COUNT(*)')
+            ->from('{{questions}} q')
+            ->join('{{questions}} oq', 'oq.sid = q.sid')
+            ->where('q.qid = :qid AND oq.qid = :oqid', [':qid' => $qid, ':oqid' => $otherQid])
+            ->queryScalar();
     }
 
     /**
@@ -114,8 +145,8 @@ class Condition extends LSActiveRecord
         $oResults = $this->findAllByAttributes(array('cqid' => $iQuestionID));
         foreach ($oResults as $oRow) {
             $cfnregs = [];
-            if (preg_match('/(\S*?)' . $iSurveyID . "X" . $iOldGroupID . "X" . $iQuestionID . "(.*)/", $oRow->cfieldname, $cfnregs) > 0) {
-                $sNewCfn = $cfnregs[1] . $iSurveyID . "X" . $iNewGroupID . "X" . $iQuestionID . $cfnregs[2];
+            if (preg_match('/(\S*?)' . "Q" . $iQuestionID . "(.*)/", $oRow->cfieldname, $cfnregs) > 0) {
+                $sNewCfn = $cfnregs[1] . "Q" . $iQuestionID . $cfnregs[2];
                 Yii::app()->db->createCommand()
                     ->update(
                         $this->tableName(),
@@ -130,8 +161,24 @@ class Condition extends LSActiveRecord
 
 
 
+    /**
+     * Inserts a condition, or updates the conditions matching $condition.
+     *
+     * Note: Fails if the source question (cqid) doesn't belong to the survey of the question (qid).
+     *
+     * @param array $data the condition attributes
+     * @param boolean $update whether to update existing conditions instead of inserting one
+     * @param array|string|false $condition the conditions to update
+     * @return boolean|integer save result, or the number of updated rows
+     */
     public function insertRecords($data, $update = false, $condition = false)
     {
+        if (!empty($data['cqid'])) {
+            $qid = $data['qid'] ?? (is_array($condition) ? ($condition['qid'] ?? null) : null);
+            if (empty($qid) || !self::isQuestionOfSameSurvey((int) $qid, (int) $data['cqid'])) {
+                return false;
+            }
+        }
         $record = new self();
         foreach ($data as $k => $v) {
             $v = str_replace(array("'", '"'), '', (string) $v);
@@ -258,8 +305,12 @@ class Condition extends LSActiveRecord
     }
 
     /**
+     * Returns the question-based conditions of one scenario of a question,
+     * ordered by question so conditions on the same field are adjacent
+     * (the condition editor joins adjacent conditions on the same field with "or")
+     *
      * @param int $qid
-     * @param $language
+     * @param string $language
      * @param Condition $scenarionr
      * @return array
      */
@@ -270,6 +321,7 @@ class Condition extends LSActiveRecord
         $quotedQL10ns = $db->quoteTableName('questionl10ns');
         $quotedLanguage = $db->quoteColumnName('language');
         $quotedQGL10ns = $db->quoteTableName('questiongroupl10ns');
+        $quotedGroup = $db->quoteTableName('group');
 
         $results = Condition::model()->with(array(
             'questions' => array(
@@ -288,7 +340,8 @@ class Condition extends LSActiveRecord
             ))->findAll(
                 array(
                     'select' => 't.cid, t.scenario, t.cqid, t.cfieldname, t.method, t.value',
-                    'condition' => 't.qid = ' . $qid . ' and scenario = ' . $scenarionr['scenario'] . ' and cfieldname NOT LIKE \'{%\''
+                    'condition' => 't.qid = ' . $qid . ' and scenario = ' . $scenarionr['scenario'] . ' and cfieldname NOT LIKE \'{%\'',
+                    'order' => $quotedGroup . '.group_order, questions.question_order, t.cfieldname, t.value, t.cid'
                 )
             );
 
@@ -383,7 +436,7 @@ class Condition extends LSActiveRecord
             return true;
         } else {
             if ($isArray) {
-                throw new \Exception(gT("cids must be an array"));
+                throw new \Exception("cids must be an array");
             }
         }
         return false;

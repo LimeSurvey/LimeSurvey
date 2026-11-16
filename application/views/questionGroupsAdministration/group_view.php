@@ -6,7 +6,9 @@
 
 ?>
 <div class='side-body'>
-    <div class="pagetitle h1"><?php eT('Group summary'); ?></div>
+    <div class="pagetitle">
+        <h1><?php eT('Group summary'); ?></h1>
+    </div>
     <div id="groupdetails" class="summary-table">
         <div class="row">
             <div class="col-2"><strong>
@@ -44,7 +46,7 @@
                     ?>
                 </div>
             </div>
-        <?php
+            <?php
         } ?>
         <?php
         if (trim((string) $grow['randomization_group']) != '') {
@@ -69,12 +71,12 @@
                             <a href='<?php echo $this->createUrl("admin/conditions/sa/index/subaction/conditions/surveyid/$surveyid/gid/$depgid/qid/$depqid", array('markcid' => implode("-", $depcid))); ?>'>
                                 [QID: <?= $depqid; ?>]
                             </a>
-                        <?php
+                            <?php
                         }
                     } ?>
                 </div>
             </div>
-        <?php
+            <?php
         } ?>
     </div>
 </div>

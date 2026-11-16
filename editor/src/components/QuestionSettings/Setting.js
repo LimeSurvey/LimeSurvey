@@ -1,0 +1,385 @@
+import React from 'react'
+import { useParams } from 'react-router-dom'
+import { STATES, isTempId, isTrue } from 'helpers'
+import { getTooltipMessages } from 'helpers/options'
+import { useAppState, useExpressionScriptValidation } from 'hooks'
+import { SettingsWrapper } from 'components/UIComponents'
+
+import { TooltipContainer } from '../TooltipContainer/TooltipContainer'
+
+export const Setting = ({
+  question,
+  handleUpdate,
+  isAdvanced = false,
+  language = 'en',
+  title = '',
+  attributes = [],
+  allAttributes = [],
+  simpleSettings = false,
+  hasDefaultAttributeValues = false,
+  sectionExpanded,
+  onSectionToggle,
+}) => {
+  const { surveyId } = useParams()
+  const [isSurveyActive] = useAppState(STATES.IS_SURVEY_ACTIVE)
+  const [hasSurveyUpdatePermission] = useAppState(
+    STATES.HAS_SURVEY_UPDATE_PERMISSION
+  )
+  const validateExpression = useExpressionScriptValidation(
+    surveyId,
+    question?.qid
+  )
+  const isDependsOnSatisfied = (dependsOn, dependsOnValue) => {
+    if (!dependsOn) {
+      return true
+    }
+
+    if (Object.prototype.hasOwnProperty.call(dependsOn, 'value')) {
+      return String(dependsOnValue) === String(dependsOn.value)
+    }
+
+    if (Array.isArray(dependsOn.values)) {
+      return dependsOn.values
+        .map((value) => String(value))
+        .includes(String(dependsOnValue))
+    }
+
+    return isTrue(dependsOnValue)
+  }
+
+  const getConditions = (dependsOn) =>
+    Array.isArray(dependsOn) ? dependsOn : dependsOn ? [dependsOn] : []
+
+  const isConditionSatisfied = (condition, value) => {
+    if (condition.notEmpty) {
+      return Array.isArray(value)
+        ? value.length > 0
+        : value !== '' && value !== null && value !== undefined
+    }
+
+    return isDependsOnSatisfied(condition, value)
+  }
+
+  // `overrides` holds values that were just changed but are not in `question` yet.
+  const areConditionsSatisfied = (dependsOn, overrides = {}) =>
+    getConditions(dependsOn).every((condition) => {
+      const value = Object.prototype.hasOwnProperty.call(
+        overrides,
+        condition.attributePath
+      )
+        ? overrides[condition.attributePath]
+        : getConditionValue(condition)
+
+      return isConditionSatisfied(condition, value)
+    })
+
+  // notEmpty on a raw question path (e.g. answers) checks the raw value, while
+  // attributes are unwrapped so an emptied { '': '' } counts as empty.
+  const getConditionValue = (condition) =>
+    condition.notEmpty && !condition.attributePath.startsWith('attributes.')
+      ? getRawValueFromPath(condition.attributePath)
+      : getAttributeValueFromPath(
+          condition.attributePath,
+          condition.languageBased
+        )
+
+  const getRawValueFromPath = (attributePath) =>
+    attributePath.split('.').reduce((acc, key) => acc?.[key], question)
+
+  const getDefinition = (attributePath) =>
+    (allAttributes.length ? allAttributes : attributes).find(
+      (definition) => definition.attributePath === attributePath
+    )
+
+  // Any non-empty stored value, in any language
+  const hasStoredValue = (attributePath) => {
+    const raw = getRawValueFromPath(attributePath)
+    const values =
+      raw !== null && typeof raw === 'object' ? Object.values(raw) : [raw]
+
+    return values.some(
+      (value) => value !== '' && value !== null && value !== undefined
+    )
+  }
+
+  // A toggle the classic editor doesn't store (e.g. the timer warnings) is on
+  // while one of the attributes it shows has a value.
+  const getImpliedValue = (attributePath) => {
+    const implied = getDefinition(attributePath)?.valueWhenDependentsSet
+    if (!implied || !isAttributeUnset(attributePath, false)) {
+      return undefined
+    }
+
+    return implied.paths.some(hasStoredValue) ? implied.value : undefined
+  }
+
+  const getAttributeValueFromPath = (attributePath, languageBased) => {
+    const impliedValue = getImpliedValue(attributePath)
+    if (impliedValue !== undefined) {
+      return impliedValue
+    }
+
+    const attribute = getRawValueFromPath(attributePath)
+
+    if (!attribute) {
+      return ''
+    }
+
+    if (['string', 'number', 'boolean'].includes(typeof attribute)) {
+      return attribute
+    } else if (typeof attribute === 'object') {
+      if (attribute[''] && !languageBased) {
+        return attribute['']
+      }
+
+      return attribute[language]
+    }
+
+    return undefined
+  }
+
+  // Distinguishes an attribute that has no value yet (e.g. a new question)
+  // from one that was explicitly emptied, so components can show their default.
+  const isAttributeUnset = (attributePath, languageBased) => {
+    const attribute = attributePath
+      .split('.')
+      .reduce((acc, key) => acc?.[key], question)
+
+    if (attribute === undefined || attribute === null) {
+      return true
+    }
+
+    if (typeof attribute === 'object') {
+      return (
+        attribute[language] === undefined &&
+        (languageBased || attribute[''] === undefined)
+      )
+    }
+
+    return false
+  }
+
+  const getFullAttributeValueFromPath = (attributePath) => {
+    return getRawValueFromPath(attributePath) || ''
+  }
+
+  const getUpdateValueFromPath = (value, attribute) => {
+    const attributePath = attribute?.attributePath ?? ''
+    const attributeName = attributePath.toString().includes('attributes.')
+      ? attributePath.replace('attributes.', '')
+      : ''
+
+    // Todo: why is it called advanced attribute?
+    const isAdvancedAttribute = attributePath.includes('attributes.')
+
+    const updateValue = {}
+
+    if (isAdvancedAttribute) {
+      if (attribute.languageBased) {
+        updateValue[attributeName] = {
+          ...getFullAttributeValueFromPath(attributePath),
+          [language]: value,
+        }
+      } else {
+        updateValue[attributeName] = {
+          ['']: value,
+        }
+      }
+    } else {
+      attribute.returnValues.map((returnValue) => {
+        updateValue[returnValue] = value[returnValue]
+          ? value[returnValue]
+          : value
+      })
+    }
+
+    return { ...updateValue }
+  }
+
+  if (!attributes.length) {
+    return <></>
+  }
+
+  const handleUpdateAttribute = (value, attribute) => {
+    // Advanced means the attribute is  inside the attributes object.
+    // Like attributes.numbers_only => is an advanced attribute
+    // But mandatory for instance is not an advanced attribute but a base attribute.
+    const isAdvancedAttribute = attribute.attributePath.includes('attributes.')
+
+    const updateValue = getUpdateValueFromPath(value, attribute)
+    handleUpdate(updateValue, isAdvancedAttribute)
+
+    const candidates = allAttributes.length ? allAttributes : attributes
+
+    // Store a derived toggle when one of its fields is edited, so it stays on
+    // e.g. while a value is cleared to type a new one
+    candidates.forEach((candidate) => {
+      const implied = candidate.valueWhenDependentsSet
+      if (
+        implied?.paths.includes(attribute.attributePath) &&
+        getImpliedValue(candidate.attributePath) !== undefined
+      ) {
+        handleUpdate(
+          getUpdateValueFromPath(implied.value, candidate),
+          candidate.attributePath.includes('attributes.')
+        )
+      }
+    })
+
+    // update other attributes that depends on this attribute (in any section)
+    const handledPaths = new Set()
+    candidates.forEach((dependsOnAttribute) => {
+      const conditions = getConditions(dependsOnAttribute.dependsOn)
+      if (
+        handledPaths.has(dependsOnAttribute.attributePath) ||
+        !conditions.some(
+          (condition) => condition.attributePath === attribute.attributePath
+        )
+      ) {
+        return
+      }
+      handledPaths.add(dependsOnAttribute.attributePath)
+
+      if (dependsOnAttribute.onDependsToggle?.keepValue) {
+        return
+      }
+
+      if (
+        !areConditionsSatisfied(dependsOnAttribute.dependsOn, {
+          [attribute.attributePath]: value,
+        })
+      ) {
+        const isAdvancedAttribute =
+          dependsOnAttribute.attributePath.includes('attributes.')
+
+        const updateValue = getUpdateValueFromPath(
+          dependsOnAttribute.onDependsToggle?.onFalse ?? '',
+          dependsOnAttribute
+        )
+        handleUpdate(updateValue, isAdvancedAttribute)
+      }
+    })
+  }
+
+  return (
+    <SettingsWrapper
+      simpleSettings={simpleSettings}
+      isAdvanced={isAdvanced}
+      title={title}
+      isExpanded={sectionExpanded}
+      onToggle={(isExpanded) => onSectionToggle?.(title, isExpanded)}
+    >
+      {attributes.map((attribute) => {
+        if (
+          (attribute.attributePath === 'relevance' &&
+            process.env.REACT_APP_DEV_MODE) ||
+          attribute.hidden
+        ) {
+          return (
+            <React.Fragment
+              key={`${title}-settings-${attribute.attributePath}`}
+            ></React.Fragment>
+          )
+        }
+
+        // if the attribute depends on other attributes/question data that aren't satisfied, skip this attribute
+        if (
+          attribute.dependsOn &&
+          !areConditionsSatisfied(attribute.dependsOn)
+        ) {
+          return (
+            <React.Fragment
+              key={`${title}-settings-${attribute.attributePath}`}
+            ></React.Fragment>
+          )
+        }
+
+        const value = getAttributeValueFromPath(
+          attribute.attributePath,
+          attribute.languageBased
+        )
+
+        const ATTRIBUTES_DISABLED_WHEN_ACTIVE = [
+          'questionThemeName',
+          'encrypted',
+          'attributes.save_as_default',
+          'defaultAttributeValuesActions',
+          'other',
+        ]
+
+        const showDefaultValue =
+          attribute.props?.defaultValue !== undefined &&
+          !attribute.props?.value &&
+          isAttributeUnset(attribute.attributePath, attribute.languageBased) &&
+          getImpliedValue(attribute.attributePath) === undefined
+
+        const isDisabledWhenActive =
+          ATTRIBUTES_DISABLED_WHEN_ACTIVE.includes(attribute.attributePath) ||
+          attribute.disableWhenActive
+
+        const isDisabledByActiveSurvey = isDisabledWhenActive && isSurveyActive
+
+        const isActionAttribute = !!attribute.action
+        const isActionDisabled =
+          isActionAttribute &&
+          (isTempId(question.qid) || !hasSurveyUpdatePermission)
+
+        const isDisabled = isDisabledByActiveSurvey || isActionDisabled
+
+        const options =
+          typeof attribute.getOptions === 'function'
+            ? attribute.getOptions({ question, language })
+            : undefined
+
+        const attributeProps = {
+          ...attribute.props,
+          ...(options ? { options } : {}),
+          ...(attribute.attributePath === 'attributes.equation'
+            ? { validateExpression }
+            : {}),
+          ...(attribute.action
+            ? {
+                hasDefaultAttributeValues,
+              }
+            : {}),
+        }
+
+        return (
+          <div
+            className="right-side-bar-settings"
+            key={`${question?.qid}-${title}-settings-${attribute.attributePath}${attribute.props.labelText}`}
+          >
+            <TooltipContainer
+              tip={getTooltipMessages().ACTIVE_DISABLED}
+              showTip={isDisabled}
+            >
+              <attribute.component
+                {...attributeProps}
+                activeDisabled={isDisabled}
+                noPermissionDisabled={true}
+                hasSurveyUpdatePermission={hasSurveyUpdatePermission}
+                value={
+                  showDefaultValue
+                    ? undefined
+                    : value
+                      ? value
+                      : attributeProps.value
+                        ? attributeProps.value
+                        : ''
+                }
+                name={attribute.attributePath}
+                update={(value) =>
+                  attribute.action
+                    ? handleUpdate(value, false)
+                    : handleUpdateAttribute(value, attribute)
+                }
+                isSimpleSettings={simpleSettings}
+                theme="light"
+              />
+            </TooltipContainer>
+          </div>
+        )
+      })}
+    </SettingsWrapper>
+  )
+}

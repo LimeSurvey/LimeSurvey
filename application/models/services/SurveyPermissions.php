@@ -203,8 +203,9 @@ class SurveyPermissions
      * Returns a list of users which still not have survey permissions and
      * could be added to survey permissions,
      * including the check for usercontrolSameGroupPolicy (see config file for more information).
+     * The list is sorted alphabetically by username.
      *
-     * @return array
+     * @return array<int, array{userid: int, fullname: string, usersname: string}>
      */
     public function getSurveyUserList()
     {
@@ -212,6 +213,7 @@ class SurveyPermissions
         $criteria = new \CDbCriteria();
         $criteria->select = 't.uid, t.users_name, t.full_name';
         $criteria->addNotInCondition('t.uid', $aUserIds);
+        $criteria->order = 't.users_name';
         $users = \User::model()->findAll($criteria);
 
         $authorizedUsersList = [];
@@ -278,38 +280,64 @@ class SurveyPermissions
     }
 
     /**
-     * Saves (inserts ) the survey permissions for a specific user.
+     * Saves the survey permissions for a specific user.
+     * Only permissions known for surveys are saved, and only the ones the
+     * current user holds on this survey can be changed. All others keep
+     * their current value.
      *
      * @param int $userId
-     * @param array $permissions
+     * @param array $permissions submitted permissions, e.g. ['responses' => ['read' => 1]]
      * @return bool true if all permissions could be saved, false otherwise
      */
     public function saveUserPermissions($userId, $permissions)
     {
         $isSaved = true;
+        $cruds = ['create', 'read', 'update', 'delete', 'import', 'export'];
 
-        //delete current survey permissions and reset the new ones
-        // ...easier as to compare all of them
-        $this->deleteUserPermissions($userId);
+        $currentPermissions = [];
+        $permissionRows = \Permission::model()->findAllByAttributes([
+            'entity_id' => $this->survey->sid,
+            'entity' => 'survey',
+            'uid' => $userId
+        ]);
+        foreach ($permissionRows as $permissionRow) {
+            $currentPermissions[$permissionRow->permission] = $permissionRow;
+        }
 
-        //but user has always 'read' permission for this specific survey ...
-        $permissions['survey']['read'] = 1;
-
-        foreach ($permissions as $permission => $key) {
-            $isSaved = $isSaved && \Permission::model()->insertSomeRecords(
-                [
-                    'entity_id' => $this->survey->sid,
-                    'entity' => 'survey',
-                    'uid' => $userId,
-                    'permission' => $permission,
-                    'create_p' => $key['create'] ?? 0,
-                    'read_p' => $key['read'] ?? 0,
-                    'update_p' => $key['update'] ?? 0,
-                    'delete_p' => $key['delete'] ?? 0,
-                    'import_p' => $key['import'] ?? 0,
-                    'export_p' => $key['export'] ?? 0,
-                ]
-            );
+        foreach (\Survey::getPermissionData() as $permission => $permissionDetails) {
+            $permissionRow = $currentPermissions[$permission] ?? null;
+            $hasNewPermission = false;
+            $isChanged = false;
+            if (!isset($permissionRow)) {
+                $permissionRow = new \Permission();
+                $permissionRow->entity_id = $this->survey->sid;
+                $permissionRow->entity = 'survey';
+                $permissionRow->uid = $userId;
+                $permissionRow->permission = $permission;
+            }
+            foreach ($cruds as $crud) {
+                if (isset($permissionDetails[$crud]) && !$permissionDetails[$crud]) {
+                    // Not available for this permission
+                    continue;
+                }
+                if ($permission === \Survey::getMinimalPermissionRead() && $crud === 'read') {
+                    // User has always 'read' permission for this specific survey
+                    $value = 1;
+                } elseif ($this->survey->hasPermission($permission, $crud)) {
+                    $value = empty($permissions[$permission][$crud]) ? 0 : 1;
+                } else {
+                    // Current user can not give or remove a permission they do not have
+                    continue;
+                }
+                if ((int)$permissionRow->getAttribute("{$crud}_p") !== $value) {
+                    $permissionRow->setAttribute("{$crud}_p", $value);
+                    $isChanged = true;
+                }
+                $hasNewPermission = $hasNewPermission || $value === 1;
+            }
+            if ($isChanged && (!$permissionRow->isNewRecord || $hasNewPermission)) {
+                $isSaved = $permissionRow->save() && $isSaved;
+            }
         }
 
         return $isSaved;
@@ -326,28 +354,15 @@ class SurveyPermissions
     public function saveUserGroupPermissions($userGroupId, $permissions)
     {
         $permissionUserID = \Permission::model()->getUserId();
-        $surveysGroups    = \SurveysGroups::model()->findByPk($this->survey->sid);
-        if ($surveysGroups !== null) {
-            $surveysGroupsOwnerID = $surveysGroups->getOwnerId();
-            /** @var \UserInGroup[] */
-            $oUserInGroups = \UserInGroup::model()->findAll(
-                'ugid = :ugid AND uid <> :currentUserId AND uid <> :surveygroupsOwnerId',
-                array(
-                    ':ugid' => $userGroupId,
-                    ':currentUserId' => $permissionUserID, // Don't need to set to current user
-                    ':surveygroupsOwnerId' => $surveysGroupsOwnerID, // Don't need to set to owner (?) , get from surveyspermission
-                )
-            );
-        } else {
-            /** @var \UserInGroup[] */
-            $oUserInGroups = \UserInGroup::model()->findAll(
-                'ugid = :ugid AND uid <> :currentUserId',
-                array (
-                    ':ugid' => $userGroupId,
-                    ':currentUserId' => $permissionUserID
-                )
-            );
-        }
+        /** @var \UserInGroup[] */
+        $oUserInGroups = \UserInGroup::model()->findAll(
+            'ugid = :ugid AND uid <> :currentUserId AND uid <> :surveyOwnerId',
+            array(
+                ':ugid' => $userGroupId,
+                ':currentUserId' => $permissionUserID, // Don't need to set to current user
+                ':surveyOwnerId' => $this->survey->owner_id, // Owner has all permissions anyway
+            )
+        );
         $success = true;
         foreach ($oUserInGroups as $userInGroup) {
             /* @var $userInGroup \UserInGroup */

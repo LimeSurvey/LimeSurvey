@@ -5,7 +5,7 @@ if (!defined('BASEPATH')) {
 }
 /*
 * LimeSurvey
-* Copyright (C) 2007-2013 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -21,7 +21,6 @@ if (!defined('BASEPATH')) {
  */
 class viewHelper
 {
-
     /**
      * getImageLink returns HTML needed for a link that consists of only an image with alt text.
      *
@@ -33,7 +32,7 @@ class viewHelper
      * @param string $linkTxt Text to show for the link
      * @param string $linkTarget Optional target to use for the link
      * @param string $linkClass Optional class to add to the link
-     * @param array  $attribs Optional array of attirbutes to set on the link
+     * @param array  $attribs Optional array of attributes to set on the link
      */
     public static function getImageLink($imgName, $linkUrl, $linkTxt, $linkTarget = null, $linkClass = 'imagelink', $attribs = array())
     {
@@ -70,7 +69,7 @@ class viewHelper
      * @param string $linkTxt Text to show for the link
      * @param string $linkTarget Optional target to use for the link
      * @param string $linkClass Optional class to add to the link
-     * @param array  $attribs Optional array of attirbutes to set on the link
+     * @param array  $attribs Optional array of attributes to set on the link
      */
     public static function getIconLink($icoClasses, $linkUrl, $linkTxt, $linkTarget = null, $linkClass = 'imagelink', $attribs = array())
     {
@@ -243,7 +242,7 @@ class viewHelper
     }
 
     /**
-     * Deactivate script but show it for debuging
+     * Deactivate script but show it for debugging
      * This only filter script tag
      * @todo : filter inline javascript (onclick etc ..., but don't filter EM javascript)
      * Maybe doing it directly in LEM->GetLastPrettyPrintExpression();
@@ -261,17 +260,26 @@ class viewHelper
      * Purifies HTML and returns the cleaned markup.
      *
      * Configures the purifier to allow target="_blank" and the `rel` values "external", "noreferrer", and "noopener".
+     * Optionally allows data URIs (HTMLPurifier only accepts real PNG, GIF and JPEG content for them).
      *
      * @param string $sHtml HTML to purify.
+     * @param boolean $bAllowDataUri Whether to keep data URIs, e.g. an image filled in from a response value
      * @return string The purified HTML string.
      */
-    public static function purified($sHtml)
+    public static function purified($sHtml, $bAllowDataUri = false)
     {
         $oPurifier = new CHtmlPurifier();
-        $oPurifier->options = array(
+        $aOptions = array(
             'HTML.TargetBlank' => true,
             'Attr.AllowedRel' => ['external', 'noreferrer', 'noopener'],
         );
+        if ($bAllowDataUri) {
+            $aOptions['URI.AllowedSchemes'] = array_merge(
+                HTMLPurifier_Config::createDefault()->get('URI.AllowedSchemes'),
+                ['data' => true]
+            );
+        }
+        $oPurifier->options = $aOptions;
         return $oPurifier->purify($sHtml);
     }
 
@@ -288,6 +296,26 @@ class viewHelper
             'Output.Newline' => ' '
         );
         return (string) $oPurifier->purify($sHtml);
+    }
+
+    /**
+     * Return a response value as plain text for display in the administration
+     *
+     * A value that getExtendedAnswer() returned unchanged is stored as entered by the participant: it is plain text,
+     * a '<' in it is not the start of a HTML tag. Other values contain answer or subquestion texts, which can be HTML:
+     * these are flattened.
+     * The returned text is not HTML escaped.
+     *
+     * @param string|null $sExtendedValue The value returned by getExtendedAnswer()
+     * @param string|null $sRawValue The value stored in the response table
+     * @return string
+     */
+    public static function responseValueToText($sExtendedValue, $sRawValue)
+    {
+        if ((string) $sExtendedValue === (string) $sRawValue) {
+            return (string) $sRawValue;
+        }
+        return html_entity_decode(self::flatten((string) $sExtendedValue), ENT_QUOTES | ENT_HTML5, 'UTF-8');
     }
 
     /**

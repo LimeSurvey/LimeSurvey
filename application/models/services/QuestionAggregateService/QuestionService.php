@@ -12,6 +12,7 @@ use Condition;
 use LSYii_Application;
 use LimeSurvey\DI;
 use LimeSurvey\Models\Services\{
+    QuestionAttributeHelper,
     Proxy\ProxySettingsUser,
     Proxy\ProxyQuestion,
     Exception\PersistErrorException,
@@ -32,6 +33,7 @@ class QuestionService
     private Survey $modelSurvey;
     private Condition $modelCondition;
     private L10nService $l10nService;
+    private QuestionAttributeHelper $questionAttributeHelper;
     private ProxySettingsUser $proxySettingsUser;
     private ProxyQuestion $proxyQuestion;
     private LSYii_Application $yiiApp;
@@ -41,6 +43,7 @@ class QuestionService
         Survey $modelSurvey,
         Condition $modelCondition,
         L10nService $l10nService,
+        QuestionAttributeHelper $questionAttributeHelper,
         ProxySettingsUser $proxySettingsUser,
         ProxyQuestion $proxyQuestion,
         LSYii_Application $yiiApp
@@ -49,6 +52,7 @@ class QuestionService
         $this->modelSurvey = $modelSurvey;
         $this->modelCondition = $modelCondition;
         $this->l10nService = $l10nService;
+        $this->questionAttributeHelper = $questionAttributeHelper;
         $this->proxySettingsUser = $proxySettingsUser;
         $this->proxyQuestion = $proxyQuestion;
         $this->yiiApp = $yiiApp;
@@ -75,8 +79,9 @@ class QuestionService
      *      ?save_as_default: string,
      *      ?clear_default: string,
      *      ...<array-key, mixed>
-     *  }
-     * } $input
+     *  },
+     *  ?questionposition: string
+     * } $input questionposition is only used for a new question: Empty for at the end, 0 for at the beginning, else the wanted question_order
      * @return Question
      * @throws NotFoundException
      * @throws PermissionDeniedException
@@ -96,7 +101,9 @@ class QuestionService
         if (empty($data['question']['qid'])) {
             $data['question']['qid'] = null;
             $question = $this->storeNewQuestionData(
-                $data['question']
+                $data['question'],
+                false,
+                $input['questionposition'] ?? null
             );
         } else {
             $question = $this->getQuestionBySidAndQid(
@@ -130,16 +137,19 @@ class QuestionService
      *
      * @param array $data
      * @param boolean $subQuestion
+     * @param int|string|null $position Empty for at the end, 0 for at the beginning, else the wanted question_order
      * @return Question
+     * @throws NotFoundException
      * @throws PersistErrorException
      */
-    private function storeNewQuestionData($data = null, $subQuestion = false)
+    private function storeNewQuestionData($data = null, $subQuestion = false, $position = null)
     {
         $data = $data ?? [];
         $surveyId = $data['sid'] ?? 0;
         $survey = $this->modelSurvey
             ->findByPk($surveyId);
         $questionGroupId = $data['gid'] ?? 0;
+        $this->checkGroupAndParentOfSurvey((int) $surveyId, $data);
         $type = $this->proxySettingsUser->getUserSettingValue(
             'preselectquestiontype',
             null,
@@ -185,7 +195,7 @@ class QuestionService
                 ->getMaxQuestionOrder($questionGroupId);
         }
 
-        $question = $this->saveQuestionData($data, $questionGroupId);
+        $question = $this->saveQuestionData($data, $questionGroupId, $position);
 
         $this->initL10nService($survey, $question->qid);
 
@@ -197,9 +207,11 @@ class QuestionService
      *
      * @param array $data
      * @param int $questionGroupId
+     * @param int|string|null $position Empty for at the end, 0 for at the beginning, else the wanted question_order
      * @return Question
+     * @throws PersistErrorException
      */
-    private function saveQuestionData($data, $questionGroupId)
+    private function saveQuestionData($data, $questionGroupId, $position = null)
     {
         // We use the container to create a model instance
         // allowing us to mock the model instance via
@@ -221,6 +233,13 @@ class QuestionService
         if ($highestOrderNumber === null) {
             //this means there is no question inside this group ...
             $question->question_order = Question::START_SORTING_VALUE;
+        } elseif (is_numeric($position) && (int) $position >= 0 && (int) $position <= $highestOrderNumber) {
+            // Insert at the wanted position (0 means at the beginning) and move the following questions down
+            $question->question_order = max((int) $position, Question::START_SORTING_VALUE);
+            $this->proxyQuestion->increaseAllOrderNumbersForGroup(
+                $questionGroupId,
+                $question->question_order
+            );
         } else {
             $question->question_order = $highestOrderNumber + 1;
         }
@@ -266,11 +285,14 @@ class QuestionService
      * @param Question $question
      * @param array $data
      * @return Question
+     * @throws NotFoundException
      * @throws PersistErrorException
      */
     private function updateQuestionData(Question $question, $data)
     {
         $data = $this->normalizeQuestionFlags($data);
+
+        $this->checkGroupAndParentOfSurvey((int) $question->sid, $data, $question);
 
         $originalRelevance = $question->relevance;
         $originalTitle = $question->title;
@@ -301,6 +323,37 @@ class QuestionService
         }
 
         return $question;
+    }
+
+    /**
+     * Checks that the group and parent question set in the data belong to the survey.
+     *
+     * Note: The permission was only checked on this survey.
+     *
+     * @param int $surveyId the survey of the question
+     * @param array $data the question data
+     * @param Question|null $question the existing question, null for a new one
+     * @return void
+     * @throws NotFoundException
+     */
+    private function checkGroupAndParentOfSurvey(int $surveyId, array $data, ?Question $question = null)
+    {
+        $groupId = (int) ($data['gid'] ?? 0);
+        if (
+            !empty($groupId)
+            && (empty($question) || $groupId != $question->gid)
+            && !\QuestionGroup::model()->exists('gid = :gid AND sid = :sid', [':gid' => $groupId, ':sid' => $surveyId])
+        ) {
+            throw new NotFoundException(gT('Invalid group ID'));
+        }
+        $parentQid = (int) ($data['parent_qid'] ?? 0);
+        if (
+            !empty($parentQid)
+            && (empty($question) || $parentQid != $question->parent_qid)
+            && !Question::model()->exists('qid = :qid AND sid = :sid', [':qid' => $parentQid, ':sid' => $surveyId])
+        ) {
+            throw new NotFoundException(gT('Invalid question ID'));
+        }
     }
 
     /**
@@ -377,11 +430,17 @@ class QuestionService
             )
             && $data['question']['save_as_default'] == 'Y'
         ) {
+            $advancedSettings = $data['advancedSettings'] ?? [];
+            if (!empty($data['loadCurrentAdvancedSettings'])) {
+                $advancedSettings = $this->getCurrentAdvancedSettings(
+                    (int) $data['question']['qid']
+                );
+            }
             $this->proxySettingsUser->setUserSetting(
                 'question_default_values_'
                 . $data['question']['type'],
                 ls_json_encode(
-                    $data['advancedSettings']
+                    $advancedSettings
                 )
             );
         } elseif (
@@ -396,6 +455,40 @@ class QuestionService
                 . $data['question']['type']
             );
         }
+    }
+
+    /**
+     * Return the currently persisted question attributes in the same shape as
+     * advancedSettings. Patch requests update attributes independently from
+     * the question, so action-only requests do not contain advancedSettings.
+     */
+    private function getCurrentAdvancedSettings(int $questionId): array
+    {
+        $attributes = [];
+        foreach ($this->getQuestionAttributes($questionId) as $attribute) {
+            $attributes[0][$attribute->attribute][$attribute->language] = $attribute->value;
+        }
+        return $attributes;
+    }
+
+    /**
+     * Return the current user's saved advanced attribute defaults for a
+     * question type, flattened to the API's attribute => language => value
+     * representation.
+     */
+    public function getDefaultAttributeValues(string $questionType): array
+    {
+        return $this->questionAttributeHelper
+            ->getUserDefaultsForQuestionType($questionType);
+    }
+
+    /**
+     * Return the current user's saved attribute defaults indexed by question type.
+     */
+    public function getDefaultAttributeValuesByQuestionType(): array
+    {
+        return $this->questionAttributeHelper
+            ->getUserDefaultsByQuestionType();
     }
 
     /**

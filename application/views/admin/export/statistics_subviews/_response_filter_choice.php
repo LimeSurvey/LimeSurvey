@@ -27,10 +27,10 @@
                                     type="checkbox"
                                     id='btn_<?php echo $aGroup['gid']; ?>'
                                     onclick="selectCheckboxes('grp_body_<?php echo $aGroup['gid']; ?>', 'summary[]', 'btn_<?php echo $aGroup['gid']; ?>');"
-                                /> All
+                                /> <?php echo gT('All'); ?>
                             </div>
                             <div id='grp_<?php echo $aGroup['gid']; ?>' class="ls-flex-row wrap filtertable">
-                                <?php foreach ($aGroup['questions'] as  $key1 => $flt) : ?>
+                                <?php foreach ($aGroup['questions'] as $key1 => $flt) : ?>
                                     <!-- Questions -->
                                     <?php $this->renderPartial('/admin/export/statistics_subviews/_question', array(
                                         'key1' => $key1,
@@ -54,5 +54,5 @@
                     </div>
                 </div>
             </div>
-    <?php endforeach; ?>
+        <?php endforeach; ?>
 </div>

@@ -177,7 +177,7 @@ class OpHandlerQuestionGroup implements OpHandlerInterface
             );
         }
         if (!empty($transformedProps['questionGroupI10N'])) {
-            $this->questionGroupService->updateQuestionGroupLanguages(
+            $this->questionGroupService->updateQuestionGroupLanguagesOrFail(
                 $questionGroup,
                 $transformedProps['questionGroupI10N']
             );

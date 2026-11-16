@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE ldml SYSTEM "../../common/dtd/ldml.dtd">
-<!-- Copyright © 1991-2013 Unicode, Inc.
-CLDR data files are interpreted according to the LDML specification (http://unicode.org/reports/tr35/)
+<!-- Copyright © 1991-2026 Unicode, Inc.
 For terms of use, see http://www.unicode.org/copyright.html
+SPDX-License-Identifier: Unicode-3.0
+CLDR data files are interpreted according to the LDML specification (http://unicode.org/reports/tr35/)
 -->
 <ldml>
 	<identity>
-		<version number="$Revision: 9852 $"/>
-		<generation date="$Date: 2014-02-28 23:57:43 -0600 (Fri, 28 Feb 2014) $"/>
+		<version number="$Revision$"/>
 		<language type="dz"/>
 	</identity>
 	<localeDisplayNames>
@@ -352,7 +352,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="IL">ཨིས་ར་ཡེལ</territory>
 			<territory type="IM">ཨ་ཡུལ་ ཨོཕ་ མཱན</territory>
 			<territory type="IN">རྒྱ་གར</territory>
-			<territory type="IO">བྲི་ཊིཤ་རྒྱ་གར་གྱི་རྒྱ་མཚོ་ས་ཁོངས</territory>
+			<territory type="IO" draft="provisional">བྲི་ཊིཤ་རྒྱ་གར་གྱི་རྒྱ་མཚོ་ས་ཁོངས</territory>
 			<territory type="IQ">ཨི་རཱཀ</territory>
 			<territory type="IR">ཨི་རཱན</territory>
 			<territory type="IS">ཨཱའིས་ལེནཌ</territory>
@@ -390,8 +390,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="MF">སེནཊ་ མཱར་ཊིན</territory>
 			<territory type="MG">མ་དཱ་གེས་ཀར</territory>
 			<territory type="MH">མར་ཤེལ་གླིང་ཚོམ</territory>
-			<territory type="MK">མ་སེ་ཌོ་ནི་ཡ</territory>
-			<territory type="MK" alt="variant">མ་སེ་ཌོ་ནི་ཡ་ (ཡུ་གོ་སླཱ་བི་ཡ)</territory>
 			<territory type="ML">མཱ་ལི</territory>
 			<territory type="MM">མི་ཡཱན་མར་ (བྷར་མ)</territory>
 			<territory type="MN">སོག་པོ་ཡུལ</territory>
@@ -510,45 +508,45 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<key type="numbers">ཨང་ཡིག</key>
 		</keys>
 		<types>
-			<type type="arab" key="numbers">ཨེ་ར་བིཀ་-ཨིན་ཌིཀ་ཨང</type>
-			<type type="arabext" key="numbers">ཨེ་ར་བིཀ་-ཨིན་ཌིཀ་རྒྱ་སྐྱེད་ཨང</type>
-			<type type="armn" key="numbers">ཨར་མི་ནི་ཡཱན་ཨང</type>
-			<type type="armnlow" key="numbers">ཨར་མི་ནི་ཡཱན་གྱི་མགྱོགས་ཡིག་ཨང་རྟགས</type>
-			<type type="beng" key="numbers">བངྒ་ལི་ཨང</type>
-			<type type="deva" key="numbers">དེ་ཝ་ན་ག་རི་ཨང</type>
-			<type type="ducet" key="collation">སྔ་སྒྲིག་ཡུ་ནི་ཀོཊ་གི་གོ་རིམ</type>
-			<type type="ethi" key="numbers">ཨི་ཐི་ཡོ་པིཀ་ཨང་རྟགཨ</type>
-			<type type="fullwide" key="numbers">རྒྱ་ཚད་གང་བའི་ཨང</type>
-			<type type="geor" key="numbers">ཇཽར་ཇཱི་ཡཱན་ཨང་རྟགས</type>
-			<type type="gregorian" key="calendar">གྲེག་གོ་རི་ཡཱན་ཟླ་ཐོ</type>
-			<type type="grek" key="numbers">གྲིཀ་ཨང་རྟགས</type>
-			<type type="greklow" key="numbers">གྲིཀ་གི་མགྱོགས་ཡིག་ཨང་རྟགས</type>
-			<type type="gujr" key="numbers">གུ་ཇ་ར་ཏི་ཨང</type>
-			<type type="guru" key="numbers">གུ་རུ་མུ་ཁི་ཨང</type>
-			<type type="hanidec" key="numbers">རྒྱ་མིའི་ཚག་ཅན་མའི་ཨང་རྟགས</type>
-			<type type="hans" key="numbers">འཇམ་སངམ་རྒྱ་མིའི་ཨང་རྟགས</type>
-			<type type="hansfin" key="numbers">འཇམ་སངམ་རྒྱ་མི་གི་དངུལ་འབྲེལ་ཨང་རྟགས</type>
-			<type type="hant" key="numbers">སྔ་དུས་རྒྱ་མིའི་ཨང་རྟགས</type>
-			<type type="hantfin" key="numbers">སྔ་དུས་རྒྱ་མིའི་གི་དངུལ་འབྲེལ་ཨང་རྟགས</type>
-			<type type="hebr" key="numbers">ཧེ་བྲུ་ཨང་རྟགས</type>
-			<type type="jpan" key="numbers">ཇཱ་པཱན་ནིས་ཨང་རྟགས</type>
-			<type type="jpanfin" key="numbers">ཇཱ་པཱན་ནིས་དངུལ་འབྲེལ་ཨང་རྟགས</type>
-			<type type="khmr" key="numbers">ཁེ་མར་ཨང</type>
-			<type type="knda" key="numbers">ཀ་ན་ཌ་ཨང</type>
-			<type type="laoo" key="numbers">ལཱ་འོས་ཨང་</type>
-			<type type="latn" key="numbers">ཕྱི་གླིང་པའི་ཨང</type>
-			<type type="mlym" key="numbers">མ་ལ་ཡ་ལམ་ཨང་</type>
-			<type type="mymr" key="numbers">མི་ཡཱན་མར་ཨང་</type>
-			<type type="orya" key="numbers">ཨོ་རི་ཡ་ཨང་</type>
-			<type type="roman" key="numbers">རོ་མཱན་ཨང་རྟགས</type>
-			<type type="romanlow" key="numbers">རོ་མཱན་གྱི་མགྱོགས་ཡིག་ཨང་རྟགས</type>
-			<type type="search" key="collation">སྤྱི་དོན་འཚོལ་བ</type>
-			<type type="taml" key="numbers">སྔ་དུས་ཊ་མིལ་ཨང་རྟགས</type>
-			<type type="tamldec" key="numbers">ཊ་མིལ་ཨང</type>
-			<type type="telu" key="numbers">ཏེ་ལུ་གུ་ཨང</type>
-			<type type="thai" key="numbers">ཐཱའི་ཨང</type>
-			<type type="tibt" key="numbers">ང་བཅས་ཀྱི་ཨང་ཡིག</type>
-			<type type="traditional" key="collation" draft="unconfirmed">ལུགས་སྲོལ</type>
+			<type key="calendar" type="gregorian">གྲེག་གོ་རི་ཡཱན་ཟླ་ཐོ</type>
+			<type key="collation" type="ducet">སྔ་སྒྲིག་ཡུ་ནི་ཀོཊ་གི་གོ་རིམ</type>
+			<type key="collation" type="search">སྤྱི་དོན་འཚོལ་བ</type>
+			<type key="collation" type="traditional" draft="unconfirmed">ལུགས་སྲོལ</type>
+			<type key="numbers" type="arab">ཨེ་ར་བིཀ་-ཨིན་ཌིཀ་ཨང</type>
+			<type key="numbers" type="arabext">ཨེ་ར་བིཀ་-ཨིན་ཌིཀ་རྒྱ་སྐྱེད་ཨང</type>
+			<type key="numbers" type="armn">ཨར་མི་ནི་ཡཱན་ཨང</type>
+			<type key="numbers" type="armnlow">ཨར་མི་ནི་ཡཱན་གྱི་མགྱོགས་ཡིག་ཨང་རྟགས</type>
+			<type key="numbers" type="beng">བངྒ་ལི་ཨང</type>
+			<type key="numbers" type="deva">དེ་ཝ་ན་ག་རི་ཨང</type>
+			<type key="numbers" type="ethi">ཨི་ཐི་ཡོ་པིཀ་ཨང་རྟགཨ</type>
+			<type key="numbers" type="fullwide">རྒྱ་ཚད་གང་བའི་ཨང</type>
+			<type key="numbers" type="geor">ཇཽར་ཇཱི་ཡཱན་ཨང་རྟགས</type>
+			<type key="numbers" type="grek">གྲིཀ་ཨང་རྟགས</type>
+			<type key="numbers" type="greklow">གྲིཀ་གི་མགྱོགས་ཡིག་ཨང་རྟགས</type>
+			<type key="numbers" type="gujr">གུ་ཇ་ར་ཏི་ཨང</type>
+			<type key="numbers" type="guru">གུ་རུ་མུ་ཁི་ཨང</type>
+			<type key="numbers" type="hanidec">རྒྱ་མིའི་ཚག་ཅན་མའི་ཨང་རྟགས</type>
+			<type key="numbers" type="hans">འཇམ་སངམ་རྒྱ་མིའི་ཨང་རྟགས</type>
+			<type key="numbers" type="hansfin">འཇམ་སངམ་རྒྱ་མི་གི་དངུལ་འབྲེལ་ཨང་རྟགས</type>
+			<type key="numbers" type="hant">སྔ་དུས་རྒྱ་མིའི་ཨང་རྟགས</type>
+			<type key="numbers" type="hantfin">སྔ་དུས་རྒྱ་མིའི་གི་དངུལ་འབྲེལ་ཨང་རྟགས</type>
+			<type key="numbers" type="hebr">ཧེ་བྲུ་ཨང་རྟགས</type>
+			<type key="numbers" type="jpan">ཇཱ་པཱན་ནིས་ཨང་རྟགས</type>
+			<type key="numbers" type="jpanfin">ཇཱ་པཱན་ནིས་དངུལ་འབྲེལ་ཨང་རྟགས</type>
+			<type key="numbers" type="khmr">ཁེ་མར་ཨང</type>
+			<type key="numbers" type="knda">ཀ་ན་ཌ་ཨང</type>
+			<type key="numbers" type="laoo">ལཱ་འོས་ཨང་</type>
+			<type key="numbers" type="latn">ཕྱི་གླིང་པའི་ཨང</type>
+			<type key="numbers" type="mlym">མ་ལ་ཡ་ལམ་ཨང་</type>
+			<type key="numbers" type="mymr">མི་ཡཱན་མར་ཨང་</type>
+			<type key="numbers" type="orya">ཨོ་རི་ཡ་ཨང་</type>
+			<type key="numbers" type="roman">རོ་མཱན་ཨང་རྟགས</type>
+			<type key="numbers" type="romanlow">རོ་མཱན་གྱི་མགྱོགས་ཡིག་ཨང་རྟགས</type>
+			<type key="numbers" type="taml">སྔ་དུས་ཊ་མིལ་ཨང་རྟགས</type>
+			<type key="numbers" type="tamldec">ཊ་མིལ་ཨང</type>
+			<type key="numbers" type="telu">ཏེ་ལུ་གུ་ཨང</type>
+			<type key="numbers" type="thai">ཐཱའི་ཨང</type>
+			<type key="numbers" type="tibt">ང་བཅས་ཀྱི་ཨང་ཡིག</type>
 		</types>
 		<measurementSystemNames>
 			<measurementSystemName type="metric">མེ་ཊྲིཀ་བརྩི་ལུགས</measurementSystemName>
@@ -558,25 +556,18 @@ For terms of use, see http://www.unicode.org/copyright.html
 		<codePatterns>
 			<codePattern type="language">ཁ་སྐད་: {0}</codePattern>
 			<codePattern type="script">ཡིག་གཟུགས་: {0}</codePattern>
-			<codePattern type="territory">{0}</codePattern>
 		</codePatterns>
 	</localeDisplayNames>
 	<characters>
-		<exemplarCharacters>[ཀ ཁ ག ང ཅ ཆ ཇ ཉ ཏ ཐ ད ན པ ཕ བ མ ཙ ཚ ཛ ཝ ཞ ཟ འ ཡ ར ལ ཤ ས ཧ ཨ \u0F72 \u0F74 \u0F7A \u0F7C \u0F90 \u0F91 \u0F92 \u0F94 \u0F97 \u0F99 \u0F9F \u0FA0 \u0FA1 \u0FA3 \u0FA4 \u0FA5 \u0FA6 \u0FA8 \u0FA9 \u0FAA \u0FAB \u0FAD \u0FB1 \u0FB2 \u0FB3 \u0FB5 \u0FB6 \u0FB7]</exemplarCharacters>
-		<exemplarCharacters type="auxiliary">[\u0F84 ཊ ཋ ཌ ཎ \u0F7E ཥ \u0F80 \u0F7B \u0F7D \u0F9A \u0F9B \u0F9C \u0F9E \u0FBA \u0FBB \u0FBC]</exemplarCharacters>
+		<exemplarCharacters>[ཀ ཁ ག ང ཅ ཆ ཇ ཉ ཏ ཐ ད ན པ ཕ བ མ ཙ ཚ ཛ ཝ ཞ ཟ འ ཡ ར ལ ཤ ས ཧ ཨ ི ུ ེ ོ ྐ ྑ ྒ ྔ ྗ ྙ ྟ ྠ ྡ ྣ ྤ ྥ ྦ ྨ ྩ ྪ ྫ ྭ ྱ ྲ ླ ྵ ྶ ྷ]</exemplarCharacters>
+		<exemplarCharacters type="auxiliary">[྄ ཊ ཋ ཌ ཎ ཾ ཥ ྀ ཻ ཽ ྚ ྛ ྜ ྞ ྺ ྻ ྼ]</exemplarCharacters>
 		<exemplarCharacters type="index" draft="contributed">[ཀ ཁ ག ང ཅ ཆ ཇ ཉ ཏ ཐ ད ན པ ཕ བ མ ཙ ཚ ཛ ཝ ཞ ཟ འ ཡ ར ལ ཤ ས ཧ ཨ]</exemplarCharacters>
-		<exemplarCharacters type="punctuation">[\- ‐ – — , ; \: ! ? . … ' ‘ ’ &quot; “ ” ( ) \[ \] ༼ ༽ § @ * / \&amp; # † ‡ ༄ ༅ ༆ ༈ ༉ ༊ ࿐ ࿑ ༒ ࿒ ࿓ ࿔ ༶ ྾ ྿ ༌ ། ༎ ༏ ༐ ༑ ༔ ༴]</exemplarCharacters>
+		<exemplarCharacters type="numbers">[\- ‑ , . % ‰ + 0༠ 1༡ 2༢ 3༣ 4༤ 5༥ 6༦ 7༧ 8༨ 9༩]</exemplarCharacters>
+		<exemplarCharacters type="punctuation">[\- ‐‑ – — , ; \: ! ? . … '‘’ &quot;“” ( ) \[ \] ༼ ༽ § @ * / \&amp; # † ‡ ༄ ༅ ༆ ༈ ༉ ༊ ࿐ ࿑ ༒ ࿒ ࿓ ࿔ ༶ ྾ ྿ ༌།༎༏༐༑༔༴]</exemplarCharacters>
 		<ellipsis type="final">{0}་་་་</ellipsis>
 		<ellipsis type="initial">་་་་{0}</ellipsis>
 		<ellipsis type="medial">{0}་་་་་་ {1}</ellipsis>
-		<moreInformation>?</moreInformation>
 	</characters>
-	<delimiters>
-		<quotationStart>“</quotationStart>
-		<quotationEnd>”</quotationEnd>
-		<alternateQuotationStart>‘</alternateQuotationStart>
-		<alternateQuotationEnd>’</alternateQuotationEnd>
-	</delimiters>
 	<dates>
 		<calendars>
 			<calendar type="generic">
@@ -584,21 +575,24 @@ For terms of use, see http://www.unicode.org/copyright.html
 					<dateFormatLength type="full">
 						<dateFormat>
 							<pattern>EEEE, G སྤྱི་ལོ་y MMMM ཚེས་dd</pattern>
+							<datetimeSkeleton>GyMMMMEEEEdd</datetimeSkeleton>
 						</dateFormat>
 					</dateFormatLength>
 					<dateFormatLength type="long">
 						<dateFormat>
 							<pattern>G སྤྱི་ལོ་y MMMM ཚེས་ dd</pattern>
+							<datetimeSkeleton>GyMMMMdd</datetimeSkeleton>
 						</dateFormat>
 					</dateFormatLength>
 					<dateFormatLength type="medium">
 						<dateFormat>
 							<pattern>G སྤྱི་ལོ་y ཟླ་MMM ཚེས་dd</pattern>
+							<datetimeSkeleton>GyMMMdd</datetimeSkeleton>
 						</dateFormat>
 					</dateFormatLength>
 					<dateFormatLength type="short">
 						<dateFormat>
-							<pattern>GGGGG y-MM-dd</pattern>
+							<pattern>G y-MM-dd</pattern>
 						</dateFormat>
 					</dateFormatLength>
 				</dateFormats>
@@ -624,73 +618,24 @@ For terms of use, see http://www.unicode.org/copyright.html
 						</dateTimeFormat>
 					</dateTimeFormatLength>
 					<availableFormats>
-						<dateFormatItem id="d">d</dateFormatItem>
 						<dateFormatItem id="Ed">d E</dateFormatItem>
-						<dateFormatItem id="Gy">G y</dateFormatItem>
 						<dateFormatItem id="GyMMM">G y སྤྱི་ཟླ་MMM</dateFormatItem>
-						<dateFormatItem id="GyMMMd">G y MMM d</dateFormatItem>
 						<dateFormatItem id="GyMMMEd">གཟའ་E, G ལོy ཟླ་MMM ཚེ་d</dateFormatItem>
 						<dateFormatItem id="h">ཆུ་ཚོད་h a</dateFormatItem>
 						<dateFormatItem id="H">ཆུ་ཚོད་HH</dateFormatItem>
-						<dateFormatItem id="hm">h:mm a</dateFormatItem>
-						<dateFormatItem id="Hm">HH:mm</dateFormatItem>
-						<dateFormatItem id="hms">h:mm:ss a</dateFormatItem>
-						<dateFormatItem id="Hms">HH:mm:ss</dateFormatItem>
-						<dateFormatItem id="M">L</dateFormatItem>
 						<dateFormatItem id="Md">M-d</dateFormatItem>
 						<dateFormatItem id="MEd">E, M-d</dateFormatItem>
 						<dateFormatItem id="MMM">སྤྱི་LLL</dateFormatItem>
 						<dateFormatItem id="MMMd">སྤྱི་LLL ཚེ་d</dateFormatItem>
 						<dateFormatItem id="MMMEd">E, སྤྱི་LLL ཚེ་d</dateFormatItem>
-						<dateFormatItem id="ms">mm:ss</dateFormatItem>
-						<dateFormatItem id="y">G y</dateFormatItem>
-						<dateFormatItem id="yyyy">G y</dateFormatItem>
 						<dateFormatItem id="yyyyM">G y-M</dateFormatItem>
 						<dateFormatItem id="yyyyMd">G y-M-d</dateFormatItem>
 						<dateFormatItem id="yyyyMEd">E, G y-M-d</dateFormatItem>
 						<dateFormatItem id="yyyyMMM">G y སྤྱི་ཟླ་MMM</dateFormatItem>
-						<dateFormatItem id="yyyyMMMd">G y MMM d</dateFormatItem>
 						<dateFormatItem id="yyyyMMMEd">གཟའ་E, G ལོy ཟླ་MMM ཚེ་d</dateFormatItem>
-						<dateFormatItem id="yyyyQQQ">G y QQQ</dateFormatItem>
-						<dateFormatItem id="yyyyQQQQ">G y QQQQ</dateFormatItem>
 					</availableFormats>
 					<intervalFormats>
 						<intervalFormatFallback>{0} – {1}</intervalFormatFallback>
-						<intervalFormatItem id="d">
-							<greatestDifference id="d">d–d</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="h">
-							<greatestDifference id="a">h a – h a</greatestDifference>
-							<greatestDifference id="h">h–h a</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="H">
-							<greatestDifference id="H">HH–HH</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="hm">
-							<greatestDifference id="a">h:mm a – h:mm a</greatestDifference>
-							<greatestDifference id="h">h:mm–h:mm a</greatestDifference>
-							<greatestDifference id="m">h:mm–h:mm a</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="Hm">
-							<greatestDifference id="H">HH:mm–HH:mm</greatestDifference>
-							<greatestDifference id="m">HH:mm–HH:mm</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="hmv">
-							<greatestDifference id="a">h:mm a – h:mm a v</greatestDifference>
-							<greatestDifference id="h">h:mm–h:mm a v</greatestDifference>
-							<greatestDifference id="m">h:mm–h:mm a v</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="Hmv">
-							<greatestDifference id="H">HH:mm–HH:mm v</greatestDifference>
-							<greatestDifference id="m">HH:mm–HH:mm v</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="hv">
-							<greatestDifference id="a">h a – h a v</greatestDifference>
-							<greatestDifference id="h">h–h a v</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="Hv">
-							<greatestDifference id="H">HH–HH v</greatestDifference>
-						</intervalFormatItem>
 						<intervalFormatItem id="M">
 							<greatestDifference id="M">སྤྱི་ཟླ་M–M</greatestDifference>
 						</intervalFormatItem>
@@ -712,9 +657,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 						<intervalFormatItem id="MMMEd">
 							<greatestDifference id="d">E, སྤྱི་ཟླ་MM ཚེས་d – E, ཟླ་MM ཚེས་d</greatestDifference>
 							<greatestDifference id="M">E, སྤྱི་ཟླ་MM ཚེས་d – E, ཟླ་MM ཚེས་d</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="y">
-							<greatestDifference id="y">G y–y</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="yM">
 							<greatestDifference id="M">G y-MM – MM</greatestDifference>
@@ -853,24 +795,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 							<day type="fri">སྤེན་</day>
 							<day type="sat">ཉི་</day>
 						</dayWidth>
-						<dayWidth type="narrow">
-							<day type="sun">ཟླ</day>
-							<day type="mon">མིར</day>
-							<day type="tue">ལྷག</day>
-							<day type="wed">ཕུར</day>
-							<day type="thu">སངྶ</day>
-							<day type="fri">སྤེན</day>
-							<day type="sat">ཉི</day>
-						</dayWidth>
-						<dayWidth type="short">
-							<day type="sun">ཟླ་</day>
-							<day type="mon">མིར་</day>
-							<day type="tue">ལྷག་</day>
-							<day type="wed">ཕུར་</day>
-							<day type="thu">སངས་</day>
-							<day type="fri">སྤེན་</day>
-							<day type="sat">ཉི་</day>
-						</dayWidth>
 						<dayWidth type="wide">
 							<day type="sun">གཟའ་ཟླ་བ་</day>
 							<day type="mon">གཟའ་མིག་དམར་</day>
@@ -882,15 +806,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 						</dayWidth>
 					</dayContext>
 					<dayContext type="stand-alone">
-						<dayWidth type="abbreviated">
-							<day type="sun">ཟླ་</day>
-							<day type="mon">མིར་</day>
-							<day type="tue">ལྷག་</day>
-							<day type="wed">ཕུར་</day>
-							<day type="thu">སངས་</day>
-							<day type="fri">སྤེན་</day>
-							<day type="sat">ཉི་</day>
-						</dayWidth>
 						<dayWidth type="narrow">
 							<day type="sun">ཟླ</day>
 							<day type="mon">མིར</day>
@@ -899,24 +814,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 							<day type="thu">སངྶ</day>
 							<day type="fri">སྤེན</day>
 							<day type="sat">ཉི</day>
-						</dayWidth>
-						<dayWidth type="short">
-							<day type="sun">ཟླ་</day>
-							<day type="mon">མིར་</day>
-							<day type="tue">ལྷག་</day>
-							<day type="wed">ཕུར་</day>
-							<day type="thu">སངས་</day>
-							<day type="fri">སྤེན་</day>
-							<day type="sat">ཉི་</day>
-						</dayWidth>
-						<dayWidth type="wide">
-							<day type="sun">གཟའ་ཟླ་བ་</day>
-							<day type="mon">གཟའ་མིག་དམར་</day>
-							<day type="tue">གཟའ་ལྷག་པ་</day>
-							<day type="wed">གཟའ་ཕུར་བུ་</day>
-							<day type="thu">གཟའ་པ་སངས་</day>
-							<day type="fri">གཟའ་སྤེན་པ་</day>
-							<day type="sat">གཟའ་ཉི་མ་</day>
 						</dayWidth>
 					</dayContext>
 				</days>
@@ -928,12 +825,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 							<quarter type="3">བཞི་དཔྱ་༣</quarter>
 							<quarter type="4">བཞི་དཔྱ་༤</quarter>
 						</quarterWidth>
-						<quarterWidth type="narrow">
-							<quarter type="1">༡</quarter>
-							<quarter type="2">༢</quarter>
-							<quarter type="3">༣</quarter>
-							<quarter type="4">༤</quarter>
-						</quarterWidth>
 						<quarterWidth type="wide">
 							<quarter type="1">བཞི་དཔྱ་དང་པ་</quarter>
 							<quarter type="2">བཞི་དཔྱ་གཉིས་པ་</quarter>
@@ -942,58 +833,39 @@ For terms of use, see http://www.unicode.org/copyright.html
 						</quarterWidth>
 					</quarterContext>
 					<quarterContext type="stand-alone">
-						<quarterWidth type="abbreviated">
-							<quarter type="1">བཞི་དཔྱ་༡</quarter>
-							<quarter type="2">བཞི་དཔྱ་༢</quarter>
-							<quarter type="3">བཞི་དཔྱ་༣</quarter>
-							<quarter type="4">བཞི་དཔྱ་༤</quarter>
-						</quarterWidth>
 						<quarterWidth type="narrow">
 							<quarter type="1">༡</quarter>
 							<quarter type="2">༢</quarter>
 							<quarter type="3">༣</quarter>
 							<quarter type="4">༤</quarter>
 						</quarterWidth>
-						<quarterWidth type="wide">
-							<quarter type="1">བཞི་དཔྱ་དང་པ་</quarter>
-							<quarter type="2">བཞི་དཔྱ་གཉིས་པ་</quarter>
-							<quarter type="3">བཞི་དཔྱ་གསུམ་པ་</quarter>
-							<quarter type="4">བཞི་དཔྱ་བཞི་པ་</quarter>
-						</quarterWidth>
 					</quarterContext>
 				</quarters>
 				<dayPeriods>
 					<dayPeriodContext type="format">
-						<dayPeriodWidth type="narrow">
-							<dayPeriod type="am">སྔ་ཆ་</dayPeriod>
-							<dayPeriod type="pm">ཕྱི་ཆ་</dayPeriod>
-						</dayPeriodWidth>
-						<dayPeriodWidth type="wide">
+						<dayPeriodWidth type="abbreviated">
 							<dayPeriod type="am">སྔ་ཆ་</dayPeriod>
 							<dayPeriod type="pm">ཕྱི་ཆ་</dayPeriod>
 						</dayPeriodWidth>
 					</dayPeriodContext>
 				</dayPeriods>
-				<eras>
-					<eraAbbr>
-						<era type="0">BCE</era>
-						<era type="1">CE</era>
-					</eraAbbr>
-				</eras>
 				<dateFormats>
 					<dateFormatLength type="full">
 						<dateFormat>
 							<pattern>EEEE, སྤྱི་ལོ་y MMMM ཚེས་dd</pattern>
+							<datetimeSkeleton>yMMMMEEEEdd</datetimeSkeleton>
 						</dateFormat>
 					</dateFormatLength>
 					<dateFormatLength type="long">
 						<dateFormat>
 							<pattern>སྤྱི་ལོ་y MMMM ཚེས་ dd</pattern>
+							<datetimeSkeleton>yMMMMdd</datetimeSkeleton>
 						</dateFormat>
 					</dateFormatLength>
 					<dateFormatLength type="medium">
 						<dateFormat>
 							<pattern>སྤྱི་ལོ་y ཟླ་MMM ཚེས་dd</pattern>
+							<datetimeSkeleton>yMMMdd</datetimeSkeleton>
 						</dateFormat>
 					</dateFormatLength>
 					<dateFormatLength type="short">
@@ -1006,21 +878,25 @@ For terms of use, see http://www.unicode.org/copyright.html
 					<timeFormatLength type="full">
 						<timeFormat>
 							<pattern>ཆུ་ཚོད་ h སྐར་མ་ mm:ss a zzzz</pattern>
+							<datetimeSkeleton>ahmmsszzzz</datetimeSkeleton>
 						</timeFormat>
 					</timeFormatLength>
 					<timeFormatLength type="long">
 						<timeFormat>
 							<pattern>ཆུ་ཚོད་ h སྐར་མ་ mm:ss a z</pattern>
+							<datetimeSkeleton>ahmmssz</datetimeSkeleton>
 						</timeFormat>
 					</timeFormatLength>
 					<timeFormatLength type="medium">
 						<timeFormat>
 							<pattern>ཆུ་ཚོད་h:mm:ss a</pattern>
+							<datetimeSkeleton>ahmmss</datetimeSkeleton>
 						</timeFormat>
 					</timeFormatLength>
 					<timeFormatLength type="short">
 						<timeFormat>
 							<pattern>ཆུ་ཚོད་ h སྐར་མ་ mm a</pattern>
+							<datetimeSkeleton>ahmm</datetimeSkeleton>
 						</timeFormat>
 					</timeFormatLength>
 				</timeFormats>
@@ -1046,72 +922,24 @@ For terms of use, see http://www.unicode.org/copyright.html
 						</dateTimeFormat>
 					</dateTimeFormatLength>
 					<availableFormats>
-						<dateFormatItem id="d">d</dateFormatItem>
 						<dateFormatItem id="Ed">d E</dateFormatItem>
-						<dateFormatItem id="Gy">G y</dateFormatItem>
 						<dateFormatItem id="GyMMM">G y སྤྱི་ཟླ་MMM</dateFormatItem>
-						<dateFormatItem id="GyMMMd">G y MMM d</dateFormatItem>
 						<dateFormatItem id="GyMMMEd">གཟའ་E, G ལོy ཟླ་MMM ཚེ་d</dateFormatItem>
 						<dateFormatItem id="h">ཆུ་ཚོད་h a</dateFormatItem>
 						<dateFormatItem id="H">ཆུ་ཚོད་HH</dateFormatItem>
-						<dateFormatItem id="hm">h:mm a</dateFormatItem>
-						<dateFormatItem id="Hm">HH:mm</dateFormatItem>
-						<dateFormatItem id="hms">h:mm:ss a</dateFormatItem>
-						<dateFormatItem id="Hms">HH:mm:ss</dateFormatItem>
-						<dateFormatItem id="M">L</dateFormatItem>
 						<dateFormatItem id="Md">M-d</dateFormatItem>
 						<dateFormatItem id="MEd">E, M-d</dateFormatItem>
 						<dateFormatItem id="MMM">སྤྱི་LLL</dateFormatItem>
 						<dateFormatItem id="MMMd">སྤྱི་LLL ཚེ་d</dateFormatItem>
 						<dateFormatItem id="MMMEd">E, སྤྱི་LLL ཚེ་d</dateFormatItem>
-						<dateFormatItem id="ms">mm:ss</dateFormatItem>
-						<dateFormatItem id="y">y</dateFormatItem>
 						<dateFormatItem id="yM">y-M</dateFormatItem>
 						<dateFormatItem id="yMd">y-M-d</dateFormatItem>
 						<dateFormatItem id="yMEd">E, y-M-d</dateFormatItem>
 						<dateFormatItem id="yMMM">y སྤྱི་ཟླ་MMM</dateFormatItem>
-						<dateFormatItem id="yMMMd">y MMM d</dateFormatItem>
 						<dateFormatItem id="yMMMEd">གཟའ་E, ལོy ཟླ་MMM ཚེ་d</dateFormatItem>
-						<dateFormatItem id="yQQQ">y QQQ</dateFormatItem>
-						<dateFormatItem id="yQQQQ">y QQQQ</dateFormatItem>
 					</availableFormats>
 					<intervalFormats>
 						<intervalFormatFallback>{0} – {1}</intervalFormatFallback>
-						<intervalFormatItem id="d">
-							<greatestDifference id="d">d–d</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="h">
-							<greatestDifference id="a">h a – h a</greatestDifference>
-							<greatestDifference id="h">h–h a</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="H">
-							<greatestDifference id="H">HH–HH</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="hm">
-							<greatestDifference id="a">h:mm a – h:mm a</greatestDifference>
-							<greatestDifference id="h">h:mm–h:mm a</greatestDifference>
-							<greatestDifference id="m">h:mm–h:mm a</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="Hm">
-							<greatestDifference id="H">HH:mm–HH:mm</greatestDifference>
-							<greatestDifference id="m">HH:mm–HH:mm</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="hmv">
-							<greatestDifference id="a">h:mm a – h:mm a v</greatestDifference>
-							<greatestDifference id="h">h:mm–h:mm a v</greatestDifference>
-							<greatestDifference id="m">h:mm–h:mm a v</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="Hmv">
-							<greatestDifference id="H">HH:mm–HH:mm v</greatestDifference>
-							<greatestDifference id="m">HH:mm–HH:mm v</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="hv">
-							<greatestDifference id="a">h a – h a v</greatestDifference>
-							<greatestDifference id="h">h–h a v</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="Hv">
-							<greatestDifference id="H">HH–HH v</greatestDifference>
-						</intervalFormatItem>
 						<intervalFormatItem id="M">
 							<greatestDifference id="M">སྤྱི་ཟླ་M–M</greatestDifference>
 						</intervalFormatItem>
@@ -1134,17 +962,12 @@ For terms of use, see http://www.unicode.org/copyright.html
 							<greatestDifference id="d">E, སྤྱི་ཟླ་MM ཚེས་d – E, ཟླ་MM ཚེས་d</greatestDifference>
 							<greatestDifference id="M">E, སྤྱི་ཟླ་MM ཚེས་d – E, ཟླ་MM ཚེས་d</greatestDifference>
 						</intervalFormatItem>
-						<intervalFormatItem id="y">
-							<greatestDifference id="y">y–y</greatestDifference>
-						</intervalFormatItem>
 						<intervalFormatItem id="yM">
 							<greatestDifference id="M">y-MM – MM</greatestDifference>
-							<greatestDifference id="y">y-MM – y-MM</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="yMd">
 							<greatestDifference id="d">y-MM-dd – dd</greatestDifference>
 							<greatestDifference id="M">y-MM-dd – MM-dd</greatestDifference>
-							<greatestDifference id="y">y-MM-dd – y-MM-dd</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="yMEd">
 							<greatestDifference id="d">E, y-MM-dd – E, y-MM-dd</greatestDifference>
@@ -1256,7 +1079,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</field>
 		</fields>
 		<timeZoneNames>
-			<hourFormat>+HH:mm;-HH:mm</hourFormat>
 			<gmtFormat>ཇི་ཨེམ་ཏི་{0}</gmtFormat>
 			<gmtZeroFormat>ཇི་ཨེམ་ཊི་</gmtZeroFormat>
 			<regionFormat>{0}་ཆུ་ཚོད།</regionFormat>
@@ -1375,26 +1197,14 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<zone type="America/Resolute">
 				<exemplarCity>རི་སོ་ལིའུཊ</exemplarCity>
 			</zone>
-			<zone type="America/Rainy_River">
-				<exemplarCity>རཱེ་ནི་རི་ཝར</exemplarCity>
-			</zone>
 			<zone type="America/Rankin_Inlet">
 				<exemplarCity>རེན་ཀིན་ ཨིན་ལེཊ</exemplarCity>
 			</zone>
 			<zone type="America/Coral_Harbour">
 				<exemplarCity>ཨ་ཏི་ཀོ་ཀཱན</exemplarCity>
 			</zone>
-			<zone type="America/Thunder_Bay">
-				<exemplarCity>ཐན་ཌར་ བའེ</exemplarCity>
-			</zone>
-			<zone type="America/Nipigon">
-				<exemplarCity>ནི་པི་གཱོན</exemplarCity>
-			</zone>
 			<zone type="America/Toronto">
 				<exemplarCity>ཊོ་རོན་ཊོ</exemplarCity>
-			</zone>
-			<zone type="America/Pangnirtung">
-				<exemplarCity>པེང་ནིར་ཏུང</exemplarCity>
 			</zone>
 			<zone type="America/Moncton">
 				<exemplarCity>མཱོངཀ་ཊོན</exemplarCity>
@@ -1726,9 +1536,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<zone type="Pacific/Midway">
 				<exemplarCity draft="unconfirmed">མིཌ་ཝེ</exemplarCity>
 			</zone>
-			<zone type="Pacific/Johnston">
-				<exemplarCity draft="unconfirmed">ཇཱོནསི་ཊོན</exemplarCity>
-			</zone>
 			<zone type="Pacific/Wake">
 				<exemplarCity draft="unconfirmed">ཝེཀ</exemplarCity>
 			</zone>
@@ -1775,9 +1582,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</metazone>
 			<metazone type="Africa_Western">
 				<long>
-					<generic>ནུབ་ཕྱོགས་ཨཕ་རི་ཀཱ་ཆུ་ཚོད</generic>
-					<standard>ནུབ་ཕྱོགས་ཨཕ་རི་ཀཱ་ཚད་ལྡན་ཆུ་ཚོད</standard>
-					<daylight>ནུབ་ཕྱོགས་ཨཕ་རི་ཀཱ་བྱཱར་དུས་ཆུ་ཚོད</daylight>
+					<standard>ནུབ་ཕྱོགས་ཨཕ་རི་ཀཱ་ཆུ་ཚོད</standard>
 				</long>
 			</metazone>
 			<metazone type="Alaska">
@@ -2052,6 +1857,11 @@ For terms of use, see http://www.unicode.org/copyright.html
 					<standard>གུ་ཡ་ན་ཆུ་ཚོད</standard>
 				</long>
 			</metazone>
+			<metazone type="Hawaii">
+				<long>
+					<standard>ཧ་ཝའི་-ཨེ་ལིའུ་ཤེན་ཚད་ལྡན་ཆུ་ཚོད</standard>
+				</long>
+			</metazone>
 			<metazone type="Hawaii_Aleutian">
 				<long>
 					<generic>ཧ་ཝའི་-ཨེ་ལིའུ་ཤེན་ཆུ་ཚོད</generic>
@@ -2294,27 +2104,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 		<otherNumberingSystems>
 			<native>tibt</native>
 		</otherNumberingSystems>
-		<symbols numberSystem="latn">
-			<decimal>.</decimal>
-			<group>,</group>
-			<list>;</list>
-			<percentSign>%</percentSign>
-			<plusSign>+</plusSign>
-			<minusSign>-</minusSign>
-			<exponential>E</exponential>
-			<perMille>‰</perMille>
-			<infinity>∞</infinity>
-			<nan>NaN</nan>
-		</symbols>
 		<symbols numberSystem="tibt">
-			<decimal>.</decimal>
-			<group>,</group>
-			<list>དང་</list>
-			<percentSign>%</percentSign>
-			<plusSign>+</plusSign>
-			<minusSign>-</minusSign>
-			<exponential>E</exponential>
-			<perMille>‰</perMille>
 			<infinity>གྲངས་མེད</infinity>
 			<nan>ཨང་མད</nan>
 		</symbols>
@@ -2341,13 +2131,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 				</decimalFormat>
 			</decimalFormatLength>
 		</decimalFormats>
-		<scientificFormats numberSystem="latn">
-			<scientificFormatLength>
-				<scientificFormat>
-					<pattern>#E0</pattern>
-				</scientificFormat>
-			</scientificFormatLength>
-		</scientificFormats>
 		<percentFormats numberSystem="latn">
 			<percentFormatLength>
 				<percentFormat>
@@ -2359,6 +2142,36 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<currencyFormatLength>
 				<currencyFormat type="standard">
 					<pattern>¤#,##,##0.00</pattern>
+					<pattern alt="alphaNextToNumber" draft="provisional">¤ #,##,##0.00</pattern>
+					<pattern alt="noCurrency" draft="provisional">#,##,##0.00</pattern>
+				</currencyFormat>
+			</currencyFormatLength>
+			<currencyFormatLength type="short">
+				<currencyFormat type="standard">
+					<pattern type="1000" count="other" draft="provisional">¤0K</pattern>
+					<pattern type="1000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 0K</pattern>
+					<pattern type="10000" count="other" draft="provisional">¤00K</pattern>
+					<pattern type="10000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 00K</pattern>
+					<pattern type="100000" count="other" draft="provisional">¤000K</pattern>
+					<pattern type="100000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 000K</pattern>
+					<pattern type="1000000" count="other" draft="provisional">¤0M</pattern>
+					<pattern type="1000000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 0M</pattern>
+					<pattern type="10000000" count="other" draft="provisional">¤00M</pattern>
+					<pattern type="10000000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 00M</pattern>
+					<pattern type="100000000" count="other" draft="provisional">¤000M</pattern>
+					<pattern type="100000000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 000M</pattern>
+					<pattern type="1000000000" count="other" draft="provisional">¤0G</pattern>
+					<pattern type="1000000000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 0G</pattern>
+					<pattern type="10000000000" count="other" draft="provisional">¤00G</pattern>
+					<pattern type="10000000000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 00G</pattern>
+					<pattern type="100000000000" count="other" draft="provisional">¤000G</pattern>
+					<pattern type="100000000000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 000G</pattern>
+					<pattern type="1000000000000" count="other" draft="provisional">¤0T</pattern>
+					<pattern type="1000000000000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 0T</pattern>
+					<pattern type="10000000000000" count="other" draft="provisional">¤00T</pattern>
+					<pattern type="10000000000000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 00T</pattern>
+					<pattern type="100000000000000" count="other" draft="provisional">¤000T</pattern>
+					<pattern type="100000000000000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 000T</pattern>
 				</currencyFormat>
 			</currencyFormatLength>
 			<unitPattern count="other">{0} {1}</unitPattern>
@@ -2382,7 +2195,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</currency>
 			<currency type="BRL">
 				<displayName>བྲ་ཛིལ་གྱི་དངུལ་ རེ་ཡལ</displayName>
-				<symbol>R$</symbol>
 			</currency>
 			<currency type="BTN">
 				<displayName>དངུལ་ཀྲམ</displayName>
@@ -2390,7 +2202,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</currency>
 			<currency type="CAD">
 				<displayName>ཀེ་ན་ཌ་གི་དངུལ་ ཌོ་ལར</displayName>
-				<symbol>CA$</symbol>
 			</currency>
 			<currency type="CHF">
 				<displayName>སུ་ཡིས་ཀྱི་དངུལ་ ཕྲངཀ</displayName>
@@ -2400,7 +2211,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</currency>
 			<currency type="CNY">
 				<displayName>རྒྱ་ནག་གི་དངུལ་ ཡུ་ཝཱན</displayName>
-				<symbol>CN¥</symbol>
 			</currency>
 			<currency type="COP">
 				<displayName>ཀོ་ལོམ་བྷི་ཡ་གི་དངུལ་ པེ་སོ</displayName>
@@ -2419,15 +2229,12 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</currency>
 			<currency type="EUR">
 				<displayName>ཡུ་རོ༌དངུལ་</displayName>
-				<symbol>€</symbol>
 			</currency>
 			<currency type="GBP">
 				<displayName>བྲི་ཊིཤ་ པ་འུནཌ་ ཨིས་ཊར་ལིང</displayName>
-				<symbol>£</symbol>
 			</currency>
 			<currency type="HKD">
 				<displayName>ཧོང་ཀོང་གི་དངུལ་ ཌོ་ལར</displayName>
-				<symbol>HK$</symbol>
 			</currency>
 			<currency type="IDR">
 				<displayName>ཨིན་ཌོ་ནེ་ཤི་ཡ་གི་དངུལ་ རུ་པི་ཡ</displayName>
@@ -2438,7 +2245,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</currency>
 			<currency type="INR">
 				<displayName>རྒྱ་གར་གྱི་དངུལ་ རུ་པི</displayName>
-				<symbol>₹</symbol>
 			</currency>
 			<currency type="IQD">
 				<displayName>ཨི་རཱཀ་གི་དངུལ་ ཌི་ན</displayName>
@@ -2457,7 +2263,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</currency>
 			<currency type="JPY">
 				<displayName>ཇཱ་པཱན་གྱི་དངུལ་ ཡེན</displayName>
-				<symbol>JP¥</symbol>
 			</currency>
 			<currency type="KES">
 				<displayName>ཀེན་ཡ་གི་དངུལ་ ཤི་ལིང</displayName>
@@ -2507,7 +2312,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</currency>
 			<currency type="MXN">
 				<displayName>མེཀ་སི་ཀོ་གི་དངུལ་ པེ་སོ</displayName>
-				<symbol>MX$</symbol>
 			</currency>
 			<currency type="MYR">
 				<displayName>མ་ལེ་ཤི་ཡ་གི་དངུལ་ རིང་གིཊ</displayName>
@@ -2520,7 +2324,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</currency>
 			<currency type="NZD">
 				<displayName>ནིའུ་ཛི་ལེནཌ་གི་དངུལ་ ཌོ་ལར</displayName>
-				<symbol>NZ$</symbol>
 			</currency>
 			<currency type="OMR">
 				<displayName>ཨོ་མཱན་གྱི་དངུལ་ རི་ཨཱལ</displayName>
@@ -2573,7 +2376,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</currency>
 			<currency type="TWD">
 				<displayName>ཊཱའི་ཝཱན་གི་དངུལ ཌོ་ལར</displayName>
-				<symbol>NT$</symbol>
 			</currency>
 			<currency type="TZS">
 				<displayName>ཊཱན་ཛཱ་ནི་ཡ་གི་དངུལ་ ཤི་ལིང</displayName>
@@ -2583,7 +2385,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</currency>
 			<currency type="USD">
 				<displayName>ཡུ་ཨེས་ ཌོ་ལར</displayName>
-				<symbol>US$</symbol>
 			</currency>
 			<currency type="UYU">
 				<displayName>ཡུ་རུ་གུ་ཝའི་གི་དངུལ་ པེ་སོ</displayName>
@@ -2592,6 +2393,9 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>ཨུས་བེ་ཀིས་ཏཱན་གྱི་དངུལ་ སོམ</displayName>
 			</currency>
 			<currency type="VEF">
+				<displayName>བེ་ནི་ཛུ་ཝེ་ལ་གི་དངུལ་ བོ་ལི་བར (2008–2018)</displayName>
+			</currency>
+			<currency type="VES">
 				<displayName>བེ་ནི་ཛུ་ཝེ་ལ་གི་དངུལ་ བོ་ལི་བར</displayName>
 			</currency>
 			<currency type="VND">
@@ -2607,9 +2411,21 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>སཱའུཐ་ ཨཕ་རི་ཀ་གི་དངུལ་ རཱནད</displayName>
 			</currency>
 		</currencies>
+		<minimalPairs>
+			<pluralMinimalPairs count="other">ཉིནམ་ {0}</pluralMinimalPairs>
+		</minimalPairs>
 	</numbers>
 	<units>
 		<unitLength type="long">
+			<unit type="duration-year">
+				<unitPattern count="other">ལོ་འཁོར་ {0}</unitPattern>
+			</unit>
+			<unit type="duration-month">
+				<unitPattern count="other">ཟླཝ་ {0}</unitPattern>
+			</unit>
+			<unit type="duration-week">
+				<unitPattern count="other">བངུན་ཕྲག་ {0}</unitPattern>
+			</unit>
 			<unit type="duration-day">
 				<unitPattern count="other">ཉིན་ཞག་ {0}</unitPattern>
 			</unit>
@@ -2619,17 +2435,31 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<unit type="duration-minute">
 				<unitPattern count="other">སྐར་མ་ {0}</unitPattern>
 			</unit>
-			<unit type="duration-month">
-				<unitPattern count="other">ཟླཝ་ {0}</unitPattern>
-			</unit>
 			<unit type="duration-second">
 				<unitPattern count="other">སྐར་ཆ་ {0}</unitPattern>
 			</unit>
-			<unit type="duration-week">
-				<unitPattern count="other">བངུན་ཕྲག་ {0}</unitPattern>
-			</unit>
+		</unitLength>
+		<unitLength type="short">
 			<unit type="duration-year">
-				<unitPattern count="other">ལོ་འཁོར་ {0}</unitPattern>
+				<displayName draft="provisional">ལོ་འཁོར་</displayName>
+			</unit>
+			<unit type="duration-month">
+				<displayName draft="provisional">ཟླཝ་</displayName>
+			</unit>
+			<unit type="duration-week">
+				<displayName draft="provisional">བངུན་ཕྲག་</displayName>
+			</unit>
+			<unit type="duration-day">
+				<displayName draft="provisional">ཉིན་ཞག་</displayName>
+			</unit>
+			<unit type="duration-hour">
+				<displayName draft="provisional">ཆུ་ཚོད་</displayName>
+			</unit>
+			<unit type="duration-minute">
+				<displayName draft="provisional">སྐར་མ་</displayName>
+			</unit>
+			<unit type="duration-second">
+				<displayName draft="provisional">སྐར་ཆ་</displayName>
 			</unit>
 		</unitLength>
 	</units>
@@ -2648,4 +2478,3 @@ For terms of use, see http://www.unicode.org/copyright.html
 		</messages>
 	</posix>
 </ldml>
-

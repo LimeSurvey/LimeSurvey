@@ -5,7 +5,7 @@
         }
     }
     .select2-selection--single {
-        height : auto;
+        height : $input-fixed-height;
         .select2-selection__rendered {
             line-height : $line-height-16;
         }
@@ -20,7 +20,7 @@
     color: $g-900;
     background-color: $white;
     border-radius: $border-radius;
-    padding: 10px 36px 10px 12px;
+    padding: $input-padding-y 36px $input-padding-y $input-padding-x;
 }
 
 .select2-container--bootstrap-5.select2-container--focus .select2-selection, .select2-container--bootstrap-5.select2-container--open .select2-selection {

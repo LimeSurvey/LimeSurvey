@@ -7,6 +7,12 @@
 class PluginsController extends LSYii_Controller
 {
     /**
+     * Data for the layout, read by the main layout when plugin content is rendered
+     * @var array
+     */
+    public $aData = [];
+
+    /**
      * Launch the event newDirectRequest
      * @param $plugin : the target
      * @param $function : the function to call from the plugin
@@ -52,16 +58,5 @@ class PluginsController extends LSYii_Controller
         if (!empty($sOutput)) {
             $this->renderText($sOutput);
         }
-    }
-
-    /**
-     * Show list of plugins
-     * @deprecated
-     * @return void
-     */
-    public function actionIndex()
-    {
-        // Or shortcut for actionDirect ?
-        $this->redirect($this->createUrl("admin/pluginmanager/sa/index"));
     }
 }

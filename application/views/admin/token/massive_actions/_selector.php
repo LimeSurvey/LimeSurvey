@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Render the selector for surveys massive actions.
  *
  */
+
 ?>
 
 
@@ -59,7 +61,7 @@
                     'sModalTitle'   => gT('Delete survey participants'),
                     'htmlModalBody' => gT('Are you sure you want to delete the selected participants?'),
                     'aCustomDatas'  => array(
-                        array( 'name'=>'sid',  'value'=> $surveyid),
+                        array( 'name' => 'sid',  'value' => $surveyid),
                     ),
                 ),
 
@@ -84,7 +86,7 @@
                     'type'            => 'action',
                     'action'          => 'invite',
                     'disabled'         => !Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'update'),
-                    'url'             =>  App()->createUrl('/admin/tokens/sa/email/surveyid/'.$surveyid),
+                    'url'             =>  App()->createUrl('/admin/tokens/sa/email/surveyid/' . $surveyid),
                     'iconClasses'     => 'ri-mail-send-fill',
                     'text'            =>  gT('Send email invitations'),
 
@@ -102,7 +104,7 @@
                     'type'            => 'action',
                     'action'          => 'remind',
                     'disabled'         => !Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'update'),
-                    'url'             =>  App()->createUrl('/admin/tokens/sa/email/action/remind/surveyid/'.$surveyid),
+                    'url'             =>  App()->createUrl('/admin/tokens/sa/email/action/remind/surveyid/' . $surveyid),
                     'iconClasses'     => 'ri-mail-volume-fill',
                     'text'            =>  gT('Send email reminder'),
 
@@ -134,7 +136,7 @@
                     // li element
                     'type'            => 'action',
                     'action'          => 'addCPDB',
-                    'url'             =>  App()->createUrl('admin/participants/sa/attributeMapToken/sid/'.$surveyid),
+                    'url'             =>  App()->createUrl('admin/participants/sa/attributeMapToken/sid/' . $surveyid),
                     'iconClasses'     => 'ui-icon ui-add-to-cpdb-link',
                     'text'            =>  gT('Add participants to central database'),
                     'disabled'         => !Permission::model()->hasGlobalPermission('participantpanel', 'create'),
@@ -149,4 +151,4 @@
             ),
 
     ));
-?>
+    ?>

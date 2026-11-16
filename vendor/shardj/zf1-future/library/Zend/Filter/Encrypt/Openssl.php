@@ -70,6 +70,18 @@ class Zend_Filter_Encrypt_Openssl implements Zend_Filter_Encrypt_Interface
     protected $_package = false;
 
     /**
+     * Cipher the content is sealed with
+     *
+     * @var string
+     */
+    protected $_cipher = self::DEFAULT_CIPHER;
+
+    /**
+     * Cipher used when none is set; its IV is stored in front of the sealed content
+     */
+    public const DEFAULT_CIPHER = 'aes-256-cbc';
+
+    /**
      * Class constructor
      * Available options
      *   'public'      => public key
@@ -78,6 +90,8 @@ class Zend_Filter_Encrypt_Openssl implements Zend_Filter_Encrypt_Interface
      *   'passphrase'  => passphrase
      *   'compression' => compress value with this compression adapter
      *   'package'     => pack envelope keys into encrypted string, simplifies decryption
+     *   'cipher'      => cipher of openssl_seal(), see openssl_get_cipher_methods(); 'aes-256-cbc' by default,
+     *                    'rc4' for content sealed by versions before 1.26.1 (needs the legacy provider of OpenSSL 3)
      *
      * @param string|array $options Options for this adapter
      */
@@ -103,12 +117,17 @@ class Zend_Filter_Encrypt_Openssl implements Zend_Filter_Encrypt_Interface
 
         if (array_key_exists('compression', $options)) {
             $this->setCompression($options['compression']);
-            unset($options['compress']);
+            unset($options['compression']);
         }
 
         if (array_key_exists('package', $options)) {
             $this->setPackage($options['package']);
             unset($options['package']);
+        }
+
+        if (array_key_exists('cipher', $options)) {
+            $this->setCipher($options['cipher']);
+            unset($options['cipher']);
         }
 
         $this->_setKeys($options);
@@ -147,6 +166,7 @@ class Zend_Filter_Encrypt_Openssl implements Zend_Filter_Encrypt_Interface
                     }
 
                     if (PHP_VERSION_ID < 80000) {
+                        // phpcs:ignore PHPCompatibility.FunctionUse.RemovedFunctions.openssl_free_keyDeprecated -- called before PHP 8.0 only
                         openssl_free_key($test);
                     }
                     $this->_keys['public'][$key] = $cert;
@@ -159,6 +179,7 @@ class Zend_Filter_Encrypt_Openssl implements Zend_Filter_Encrypt_Interface
                     }
 
                     if (PHP_VERSION_ID < 80000) {
+                        // phpcs:ignore PHPCompatibility.FunctionUse.RemovedFunctions.openssl_free_keyDeprecated -- called before PHP 8.0 only
                         openssl_free_key($test);
                     }
                     $this->_keys['private'][$key] = $cert;
@@ -346,6 +367,46 @@ class Zend_Filter_Encrypt_Openssl implements Zend_Filter_Encrypt_Interface
     }
 
     /**
+     * Returns the cipher the content is sealed with
+     *
+     * @return string
+     */
+    public function getCipher()
+    {
+        return $this->_cipher;
+    }
+
+    /**
+     * Sets the cipher the content is sealed with
+     *
+     * @param  string $cipher One of openssl_get_cipher_methods()
+     * @return Zend_Filter_Encrypt_Openssl
+     * @throws Zend_Filter_Exception for a cipher this OpenSSL does not provide
+     */
+    public function setCipher($cipher)
+    {
+        $cipher = strtolower((string) $cipher);
+        if (!in_array($cipher, array_map('strtolower', openssl_get_cipher_methods()), true)) {
+            require_once 'Zend/Filter/Exception.php';
+            throw new Zend_Filter_Exception("The cipher '$cipher' is not available in this OpenSSL");
+        }
+
+        $this->_cipher = $cipher;
+        return $this;
+    }
+
+    /**
+     * Length of the IV of the cipher, 0 when it has none
+     *
+     * @return int
+     */
+    protected function _getIvLength()
+    {
+        $length = openssl_cipher_iv_length($this->_cipher);
+        return $length === false ? 0 : $length;
+    }
+
+    /**
      * Encrypts $value with the defined settings
      * Note that you also need the "encrypted" keys to be able to decrypt
      *
@@ -386,9 +447,11 @@ class Zend_Filter_Encrypt_Openssl implements Zend_Filter_Encrypt_Interface
             $value    = $compress->filter($value);
         }
 
-        $crypt  = openssl_seal($value, $encrypted, $encryptedkeys, $keys, 'RC4');
+        $iv    = '';
+        $crypt = openssl_seal($value, $encrypted, $encryptedkeys, $keys, $this->_cipher, $iv);
         if (PHP_VERSION_ID < 80000) {
             foreach ($keys as $key) {
+                // phpcs:ignore PHPCompatibility.FunctionUse.RemovedFunctions.openssl_free_keyDeprecated -- called before PHP 8.0 only
                 openssl_free_key($key);
             }
         }
@@ -399,6 +462,11 @@ class Zend_Filter_Encrypt_Openssl implements Zend_Filter_Encrypt_Interface
         }
 
         $this->_keys['envelope'] = $encryptedkeys;
+
+        // the IV travels in front of the sealed content
+        if ($this->_getIvLength() > 0) {
+            $encrypted = $iv . $encrypted;
+        }
 
         // Pack data and envelope keys into single string
         if ($this->_package) {
@@ -466,8 +534,20 @@ class Zend_Filter_Encrypt_Openssl implements Zend_Filter_Encrypt_Interface
             $value = substr($value, $length);
         }
 
-        $crypt  = openssl_open($value, $decrypted, $envelope, $keys, 'RC4');
+        $ivLength = $this->_getIvLength();
+        $iv       = '';
+        if ($ivLength > 0) {
+            if (strlen($value) < $ivLength) {
+                require_once 'Zend/Filter/Exception.php';
+                throw new Zend_Filter_Exception('The content is too short to be sealed with ' . $this->_cipher);
+            }
+            $iv    = substr($value, 0, $ivLength);
+            $value = substr($value, $ivLength);
+        }
+
+        $crypt = openssl_open($value, $decrypted, $envelope, $keys, $this->_cipher, $iv);
         if (PHP_VERSION_ID < 80000) {
+            // phpcs:ignore PHPCompatibility.FunctionUse.RemovedFunctions.openssl_free_keyDeprecated -- called before PHP 8.0 only
             openssl_free_key($keys);
         }
 

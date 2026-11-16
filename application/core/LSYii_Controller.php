@@ -5,7 +5,7 @@ if (!defined('BASEPATH')) {
 }
 /*
  * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -35,11 +35,6 @@ abstract class LSYii_Controller extends CController
         parent::__construct($id, $module);
         $this->_checkInstallation();
 
-        //Yii::app()->session->init();
-        // Deprecated function
-        $this->loadHelper('globalsettings');
-        // tracevar function
-        //$this->loadHelper('common');
         $this->loadHelper('expressions.em_manager');
         $this->loadHelper('replacements');
         $this->customInit();
@@ -58,6 +53,133 @@ abstract class LSYii_Controller extends CController
         if (!file_exists($file_name)) {
             $this->redirect(array('/installer'));
         }
+    }
+
+    /**
+     * Ends the request with HTTP 503 and a "site under maintenance" message when the maintenance
+     * mode "hard-cli" locks the administration, see SettingGlobal::isAdministrationLocked().
+     * Called first thing by every administrative entry point (web interface, RemoteControl, REST API).
+     *
+     * @param string $format 'html' for the maintenance page, 'text' for a plain text body (RemoteControl, AJAX), 'json' for a JSON body (REST API)
+     * @return void
+     */
+    protected function endRequestIfAdministrationLocked($format = 'html')
+    {
+        if (!SettingGlobal::isAdministrationLocked()) {
+            return;
+        }
+        $this->endRequestWithMaintenanceMessage(
+            gT('The administration of this site is temporarily locked for maintenance, for example while a backup or an update is being made. Please try again later.'),
+            $format
+        );
+    }
+
+    /**
+     * Ends the request with HTTP 503, a Retry-After header and the given maintenance message.
+     *
+     * @param string $message The message to show
+     * @param string $format 'html' for the admin maintenance page, 'text' for a plain text body, 'json' for a JSON body
+     * @return void
+     */
+    protected function endRequestWithMaintenanceMessage($message, $format)
+    {
+        http_response_code(503);
+        header('Retry-After: 300');
+        if ($format === 'json') {
+            header('Content-Type: application/json');
+            echo CJSON::encode(['error' => ['code' => 'MaintenanceMode', 'message' => $message]]);
+        } elseif ($format === 'text') {
+            header('Content-Type: text/plain; charset=UTF-8');
+            echo $message;
+        } else {
+            $this->renderPartial('/admin/super/administrationlocked', ['message' => $message], false, true);
+        }
+        Yii::app()->end();
+    }
+
+    /**
+     * Filter for the controllers of participant pages that write data (registration, opt-in, opt-out):
+     * while the maintenance mode keeps participants out ("hard" and "hard-cli"), no action runs, every
+     * request ends with a maintenance page. A controller enables it by listing 'participantsLocked' in
+     * its filters(), so new actions are covered without further code.
+     * The survey ID ("surveyid", else "sid") and the language ("langcode", else "lang") only choose how
+     * the page looks: the survey's theme and language for an existing survey, the site's maintenance
+     * page otherwise. The actions read their parameters in different ways, so the filter never relies
+     * on a missing or malformed survey ID to keep an action from writing data.
+     *
+     * @param CFilterChain $filterChain
+     * @return void
+     */
+    public function filterParticipantsLocked($filterChain)
+    {
+        if (!SettingGlobal::areParticipantsLocked()) {
+            $filterChain->run();
+            return;
+        }
+        $request = Yii::app()->request;
+        $surveyId = (int) ($request->getParam('surveyid') ?: $request->getParam('sid'));
+        $survey = $surveyId > 0 ? Survey::model()->findByPk($surveyId) : null;
+        $language = (string) $request->getParam('langcode', $request->getParam('lang', ''));
+        if ($survey) {
+            if (!in_array($language, $survey->getAllLanguages(), true)) {
+                $language = $survey->language;
+            }
+            Yii::app()->setLanguage($language);
+            $this->endRequestIfParticipantsLocked($survey);
+        }
+        $this->endRequestWithSiteMaintenancePage($language);
+    }
+
+    /**
+     * Renders the maintenance page of the site in the default theme, as the public survey list does
+     * during maintenance, and ends the request.
+     *
+     * @param string $language The requested language, the default language is used if the site does not offer it
+     * @return void
+     */
+    protected function endRequestWithSiteMaintenancePage($language)
+    {
+        if (!isset(getLanguageDataRestricted(false, 'short')[$language])) {
+            $language = Yii::app()->getConfig('defaultlang');
+        }
+        Yii::app()->setLanguage($language);
+        LimeExpressionManager::SetSurveyId(0);
+        $template = Template::model()->getInstance(Yii::app()->getConfig('defaulttheme'));
+        $siteName = Yii::app()->getConfig('sitename');
+        $surveyInfo = [
+            'oTemplate' => $template,
+            'sSiteName' => $siteName,
+            'sSiteAdminName' => Yii::app()->getConfig('siteadminname'),
+            'sSiteAdminEmail' => Yii::app()->getConfig('siteadminemail'),
+            'bShowClearAll' => false,
+            'surveyls_title' => $siteName,
+            'alanguageChanger' => ['show' => false],
+        ];
+        // Renders the page and ends the request
+        Yii::app()->twigRenderer->renderTemplateFromFile('layout_maintenance.twig', ['aSurveyInfo' => $surveyInfo], false);
+        Yii::app()->end();
+    }
+
+    /**
+     * Renders the theme's maintenance page and ends the request when the maintenance mode keeps
+     * participants from taking surveys ("hard" and "hard-cli"), see SettingGlobal::areParticipantsLocked().
+     * The language must be set before, so that the page is shown in the survey's theme and language.
+     *
+     * @param Survey $survey The survey the request belongs to
+     * @return void
+     */
+    protected function endRequestIfParticipantsLocked(Survey $survey)
+    {
+        if (!SettingGlobal::areParticipantsLocked()) {
+            return;
+        }
+        Template::model()->getInstance('', $survey->sid);
+        // Renders the page and ends the request
+        Yii::app()->twigRenderer->renderTemplateFromFile(
+            'layout_maintenance.twig',
+            ['oSurvey' => $survey, 'aSurveyInfo' => getSurveyInfo($survey->sid, App()->language)],
+            false
+        );
     }
 
     /**
@@ -91,8 +213,8 @@ abstract class LSYii_Controller extends CController
         // Do not localize/translate this!
 
         $dieoutput = '';
-        if (version_compare(PHP_VERSION, '5.3.3', '<')) {
-            $dieoutput .= 'This script can only be run on PHP version 5.3.3 or later! Your version: ' . PHP_VERSION . '<br />';
+        if (version_compare(PHP_VERSION, InstallerConfigForm::MINIMUM_PHP_VERSION, '<')) {
+            $dieoutput .= 'LimeSurvey requires PHP version ' . InstallerConfigForm::MINIMUM_PHP_VERSION . ' or later. Your version: ' . PHP_VERSION . '<br />';
         }
 
         if (!function_exists('mb_convert_encoding')) {
@@ -103,14 +225,14 @@ abstract class LSYii_Controller extends CController
             throw new CException($dieoutput);
         }
 
-        if (ini_get("max_execution_time") < intval(App()->getConfig('max_execution_time'))) {
-            if(!@set_time_limit(intval(App()->getConfig('max_execution_time')))) {
-                Yii::log("Unable to set time limit to " . App()->getConfig('max_execution_time'), \CLogger::LEVEL_WARNING, 'application.controller');
+        if (ini_get("max_execution_time") < intval(Yii::app()->getConfig('max_execution_time'))) {
+            if (!@set_time_limit(intval(Yii::app()->getConfig('max_execution_time')))) {
+                Yii::log("Unable to set time limit to " . Yii::app()->getConfig('max_execution_time'), \CLogger::LEVEL_WARNING, 'application.controller.customInit.max_execution_time');
             }
         }
         if (ini_get('memory_limit') != -1 && convertPHPSizeToBytes(ini_get("memory_limit")) < convertPHPSizeToBytes(Yii::app()->getConfig('memory_limit') . 'M')) {
             if (@ini_set("memory_limit", Yii::app()->getConfig('memory_limit') . 'M') === false) {
-                Yii::log("Unable to set memory_limit to " . App()->getConfig('memory_limit') . 'M', \CLogger::LEVEL_WARNING, 'application.controller');
+                Yii::log("Unable to set memory_limit to " . App()->getConfig('memory_limit') . 'M', \CLogger::LEVEL_WARNING, 'application.controller.customInit.memory_limit');
             }
         }
 
@@ -122,23 +244,31 @@ abstract class LSYii_Controller extends CController
         //GlobalSettings Helper
         Yii::import("application.helpers.globalsettings");
 
-        enforceSSLMode(); // This really should be at the top but for it to utilise getGlobalSetting() it has to be here
+        enforceSSLMode(); // This really should be at the top but for it to utilise Yii::app()->getConfig() it has to be here
 
         //SET LOCAL TIME
-        $timeadjust = Yii::app()->getConfig("timeadjust");
-        if (substr((string) $timeadjust, 0, 1) != '-' && substr((string) $timeadjust, 0, 1) != '+') {
-            $timeadjust = '+' . $timeadjust;
+        $displayTimezone = Yii::app()->getConfig("displayTimezone");
+        // if the time zone is empty or does not exist, use UTC
+        if (empty($displayTimezone) || !in_array($displayTimezone, timezone_identifiers_list())) {
+            Yii::app()->setConfig("displayTimezone", "UTC");
         }
-        if (strpos((string) $timeadjust, 'hours') === false && strpos((string) $timeadjust, 'minutes') === false && strpos((string) $timeadjust, 'days') === false) {
-            Yii::app()->setConfig("timeadjust", $timeadjust . ' hours');
+
+        // If an admin user is logged in, override with their personal timezone preference if set
+        $loginID = Yii::app()->session['loginID'] ?? null;
+        if (!empty($loginID)) {
+            $userTimezone = SettingsUser::getUserSettingValue('displayTimezone', $loginID);
+            if (!empty($userTimezone) && in_array($userTimezone, timezone_identifiers_list())) {
+                Yii::app()->setConfig("displayTimezone", $userTimezone);
+            }
         }
+
         /* Set the default language, other controller can update if wanted */
         Yii::app()->setLanguage(Yii::app()->getConfig("defaultlang"));
     }
 
     /**
      * Returns an absolute URL based on the given controller and action information.
-     * The functionalty was moved to
+     * The functionality was moved to
      * \LSYii_Application::createPublicUrl, to be safe the function remains here.
      * @param string $route the URL route. This should be in the format of 'ControllerID/ActionID'.
      * @param array $params additional GET parameters (name=>value). Both the name and value will be URL-encoded.

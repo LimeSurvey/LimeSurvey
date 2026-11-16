@@ -4,6 +4,7 @@
  *
  * @var $name
  * @var $id
+ * @var $aid
  * @var $value
  * @var $check_ans
  * @var $checkconditionFunction
@@ -12,7 +13,7 @@
  */
 #}
 <!-- answer_row -->
-<li id='javatbd{{ name }}{{ value }}' class="{{ li_classes }}">
+<li id='javatbd{{ name }}_S{{ aid }}' class="{{ li_classes }}">
     <input
         type="radio"
         name="{{ name }}"

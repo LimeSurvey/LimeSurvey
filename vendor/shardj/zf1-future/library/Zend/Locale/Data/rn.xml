@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE ldml SYSTEM "../../common/dtd/ldml.dtd">
-<!-- Copyright © 1991-2013 Unicode, Inc.
-CLDR data files are interpreted according to the LDML specification (http://unicode.org/reports/tr35/)
+<!-- Copyright © 1991-2026 Unicode, Inc.
 For terms of use, see http://www.unicode.org/copyright.html
+SPDX-License-Identifier: Unicode-3.0
+CLDR data files are interpreted according to the LDML specification (http://unicode.org/reports/tr35/)
 -->
 <ldml>
 	<identity>
-		<version number="$Revision: 9287 $"/>
-		<generation date="$Date: 2013-08-28 21:32:04 -0500 (Wed, 28 Aug 2013) $"/>
+		<version number="$Revision$"/>
 		<language type="rn"/>
 	</identity>
 	<localeDisplayNames>
@@ -60,13 +60,12 @@ For terms of use, see http://www.unicode.org/copyright.html
 		</languages>
 		<territories>
 			<territory type="AD">Andora</territory>
-			<territory type="AE">Leta Zunze Ubumwe z'Abarabu</territory>
+			<territory type="AE">Leta Zunze Ubumwe z’Abarabu</territory>
 			<territory type="AF">Afuganisitani</territory>
 			<territory type="AG">Antigwa na Baribuda</territory>
 			<territory type="AI">Angwila</territory>
 			<territory type="AL">Alubaniya</territory>
 			<territory type="AM">Arumeniya</territory>
-			<territory type="AN">Antiye y'Abaholandi</territory>
 			<territory type="AO">Angola</territory>
 			<territory type="AR">Arijantine</territory>
 			<territory type="AS">Samowa nyamerika</territory>
@@ -129,7 +128,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="GB">Ubwongereza</territory>
 			<territory type="GD">Gerenada</territory>
 			<territory type="GE">Jeworujiya</territory>
-			<territory type="GF">Gwayana y'Abafaransa</territory>
+			<territory type="GF">Gwayana y’Abafaransa</territory>
 			<territory type="GH">Gana</territory>
 			<territory type="GI">Juburalitari</territory>
 			<territory type="GL">Gurunilandi</territory>
@@ -150,7 +149,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="IE">Irilandi</territory>
 			<territory type="IL">Isiraheli</territory>
 			<territory type="IN">Ubuhindi</territory>
-			<territory type="IO">Intara y'Ubwongereza yo mu birwa by'Abahindi</territory>
+			<territory type="IO" draft="provisional">Intara y’Ubwongereza yo mu birwa by’Abahindi</territory>
 			<territory type="IQ">Iraki</territory>
 			<territory type="IR">Irani</territory>
 			<territory type="IS">Ayisilandi</territory>
@@ -164,8 +163,8 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="KI">Kiribati</territory>
 			<territory type="KM">Izinga rya Komore</territory>
 			<territory type="KN">Sekitsi na Nevisi</territory>
-			<territory type="KP">Koreya y'amajaruguru</territory>
-			<territory type="KR">Koreya y'amajepfo</territory>
+			<territory type="KP">Koreya y’amajaruguru</territory>
+			<territory type="KR">Koreya y’amajepfo</territory>
 			<territory type="KW">Koweti</territory>
 			<territory type="KY">Ibirwa bya Keyimani</territory>
 			<territory type="KZ">Kazakisitani</territory>
@@ -185,7 +184,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="MD">Moludavi</territory>
 			<territory type="MG">Madagasikari</territory>
 			<territory type="MH">Izinga rya Marishari</territory>
-			<territory type="MK">Masedoniya</territory>
 			<territory type="ML">Mali</territory>
 			<territory type="MM">Birimaniya</territory>
 			<territory type="MN">Mongoliya</territory>
@@ -215,7 +213,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="OM">Omani</territory>
 			<territory type="PA">Panama</territory>
 			<territory type="PE">Peru</territory>
-			<territory type="PF">Polineziya y'Abafaransa</territory>
+			<territory type="PF">Polineziya y’Abafaransa</territory>
 			<territory type="PG">Papuwa Niyugineya</territory>
 			<territory type="PH">Amazinga ya Filipine</territory>
 			<territory type="PK">Pakisitani</territory>
@@ -256,7 +254,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="TH">Tayilandi</territory>
 			<territory type="TJ">Tajikisitani</territory>
 			<territory type="TK">Tokelawu</territory>
-			<territory type="TL">Timoru y'iburasirazuba</territory>
+			<territory type="TL">Timoru y’iburasirazuba</territory>
 			<territory type="TM">Turukumenisitani</territory>
 			<territory type="TN">Tuniziya</territory>
 			<territory type="TO">Tonga</territory>
@@ -273,15 +271,15 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="VA">Umurwa wa Vatikani</territory>
 			<territory type="VC">Sevensa na Gerenadine</territory>
 			<territory type="VE">Venezuwela</territory>
-			<territory type="VG">Ibirwa by'isugi by'Abongereza</territory>
-			<territory type="VI">Amazinga y'Isugi y'Abanyamerika</territory>
+			<territory type="VG">Ibirwa by’isugi by’Abongereza</territory>
+			<territory type="VI">Amazinga y’Isugi y’Abanyamerika</territory>
 			<territory type="VN">Viyetinamu</territory>
 			<territory type="VU">Vanuwatu</territory>
 			<territory type="WF">Walisi na Futuna</territory>
 			<territory type="WS">Samowa</territory>
 			<territory type="YE">Yemeni</territory>
 			<territory type="YT">Mayote</territory>
-			<territory type="ZA">Afurika y'Epfo</territory>
+			<territory type="ZA">Afurika y’Epfo</territory>
 			<territory type="ZM">Zambiya</territory>
 			<territory type="ZW">Zimbabwe</territory>
 		</territories>
@@ -292,9 +290,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 	</characters>
 	<delimiters>
 		<quotationStart>”</quotationStart>
-		<quotationEnd>”</quotationEnd>
 		<alternateQuotationStart>’</alternateQuotationStart>
-		<alternateQuotationEnd>’</alternateQuotationEnd>
 	</delimiters>
 	<dates>
 		<calendars>
@@ -318,21 +314,17 @@ For terms of use, see http://www.unicode.org/copyright.html
 					<dateFormatLength type="short">
 						<dateFormat>
 							<pattern>d/M/y GGGGG</pattern>
+							<datetimeSkeleton>GGGGGyMd</datetimeSkeleton>
 						</dateFormat>
 					</dateFormatLength>
 				</dateFormats>
 				<dateTimeFormats>
 					<availableFormats>
-						<dateFormatItem id="d">d</dateFormatItem>
 						<dateFormatItem id="Ed">E d</dateFormatItem>
-						<dateFormatItem id="hm">h:mm a</dateFormatItem>
-						<dateFormatItem id="Hm">HH:mm</dateFormatItem>
-						<dateFormatItem id="hms">h:mm:ss a</dateFormatItem>
-						<dateFormatItem id="Hms">HH:mm:ss</dateFormatItem>
-						<dateFormatItem id="M">L</dateFormatItem>
+						<dateFormatItem id="hm">h:mm a</dateFormatItem>
+						<dateFormatItem id="hms">h:mm:ss a</dateFormatItem>
 						<dateFormatItem id="Md">d/M</dateFormatItem>
 						<dateFormatItem id="MEd">E d/M</dateFormatItem>
-						<dateFormatItem id="MMM">LLL</dateFormatItem>
 						<dateFormatItem id="MMMd">d MMM</dateFormatItem>
 						<dateFormatItem id="MMMEd">E d MMM</dateFormatItem>
 						<dateFormatItem id="ms">m:ss</dateFormatItem>
@@ -393,7 +385,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 							<day type="sat">gnd.</day>
 						</dayWidth>
 						<dayWidth type="wide">
-							<day type="sun">Ku w'indwi</day>
+							<day type="sun">Ku w’indwi</day>
 							<day type="mon">Ku wa mbere</day>
 							<day type="tue">Ku wa kabiri</day>
 							<day type="wed">Ku wa gatatu</day>
@@ -412,16 +404,16 @@ For terms of use, see http://www.unicode.org/copyright.html
 							<quarter type="4">I4</quarter>
 						</quarterWidth>
 						<quarterWidth type="wide">
-							<quarter type="1">Igice ca mbere c'umwaka</quarter>
-							<quarter type="2">Igice ca kabiri c'umwaka</quarter>
-							<quarter type="3">Igice ca gatatu c'umwaka</quarter>
-							<quarter type="4">Igice ca kane c'umwaka</quarter>
+							<quarter type="1">Igice ca mbere c’umwaka</quarter>
+							<quarter type="2">Igice ca kabiri c’umwaka</quarter>
+							<quarter type="3">Igice ca gatatu c’umwaka</quarter>
+							<quarter type="4">Igice ca kane c’umwaka</quarter>
 						</quarterWidth>
 					</quarterContext>
 				</quarters>
 				<dayPeriods>
 					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
+						<dayPeriodWidth type="abbreviated">
 							<dayPeriod type="am">Z.MU.</dayPeriod>
 							<dayPeriod type="pm">Z.MW.</dayPeriod>
 						</dayPeriodWidth>
@@ -456,6 +448,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 					<dateFormatLength type="short">
 						<dateFormat>
 							<pattern>d/M/y</pattern>
+							<datetimeSkeleton>yMd</datetimeSkeleton>
 						</dateFormat>
 					</dateFormatLength>
 				</dateFormats>
@@ -483,20 +476,14 @@ For terms of use, see http://www.unicode.org/copyright.html
 				</timeFormats>
 				<dateTimeFormats>
 					<availableFormats>
-						<dateFormatItem id="d">d</dateFormatItem>
 						<dateFormatItem id="Ed">E d</dateFormatItem>
-						<dateFormatItem id="hm">h:mm a</dateFormatItem>
-						<dateFormatItem id="Hm">HH:mm</dateFormatItem>
-						<dateFormatItem id="hms">h:mm:ss a</dateFormatItem>
-						<dateFormatItem id="Hms">HH:mm:ss</dateFormatItem>
-						<dateFormatItem id="M">L</dateFormatItem>
+						<dateFormatItem id="hm">h:mm a</dateFormatItem>
+						<dateFormatItem id="hms">h:mm:ss a</dateFormatItem>
 						<dateFormatItem id="Md">d/M</dateFormatItem>
 						<dateFormatItem id="MEd">E d/M</dateFormatItem>
-						<dateFormatItem id="MMM">LLL</dateFormatItem>
 						<dateFormatItem id="MMMd">d MMM</dateFormatItem>
 						<dateFormatItem id="MMMEd">E d MMM</dateFormatItem>
 						<dateFormatItem id="ms">m:ss</dateFormatItem>
-						<dateFormatItem id="y">y</dateFormatItem>
 						<dateFormatItem id="yM">M/y</dateFormatItem>
 						<dateFormatItem id="yMd">d/M/y</dateFormatItem>
 						<dateFormatItem id="yMEd">E d/M/y</dateFormatItem>
@@ -529,7 +516,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<relative type="1">Ejo (hazoza)</relative>
 			</field>
 			<field type="weekday">
-				<displayName>Iminsi y'iyinga</displayName>
+				<displayName>Iminsi y’iyinga</displayName>
 			</field>
 			<field type="dayperiod">
 				<displayName>M.s/N.s</displayName>
@@ -553,13 +540,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<decimal>,</decimal>
 			<group>.</group>
 		</symbols>
-		<decimalFormats numberSystem="latn">
-			<decimalFormatLength>
-				<decimalFormat>
-					<pattern>#,##0.###</pattern>
-				</decimalFormat>
-			</decimalFormatLength>
-		</decimalFormats>
 		<percentFormats numberSystem="latn">
 			<percentFormatLength>
 				<percentFormat>
@@ -571,12 +551,29 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<currencyFormatLength>
 				<currencyFormat type="standard">
 					<pattern>#,##0.00¤</pattern>
+					<pattern alt="alphaNextToNumber" draft="provisional">#,##0.00 ¤</pattern>
+				</currencyFormat>
+			</currencyFormatLength>
+			<currencyFormatLength type="short">
+				<currencyFormat type="standard">
+					<pattern type="1000" count="other" draft="provisional">0K¤</pattern>
+					<pattern type="10000" count="other" draft="provisional">00K¤</pattern>
+					<pattern type="100000" count="other" draft="provisional">000K¤</pattern>
+					<pattern type="1000000" count="other" draft="provisional">0M¤</pattern>
+					<pattern type="10000000" count="other" draft="provisional">00M¤</pattern>
+					<pattern type="100000000" count="other" draft="provisional">000M¤</pattern>
+					<pattern type="1000000000" count="other" draft="provisional">0G¤</pattern>
+					<pattern type="10000000000" count="other" draft="provisional">00G¤</pattern>
+					<pattern type="100000000000" count="other" draft="provisional">000G¤</pattern>
+					<pattern type="1000000000000" count="other" draft="provisional">0T¤</pattern>
+					<pattern type="10000000000000" count="other" draft="provisional">00T¤</pattern>
+					<pattern type="100000000000000" count="other" draft="provisional">000T¤</pattern>
 				</currencyFormat>
 			</currencyFormatLength>
 		</currencyFormats>
 		<currencies>
 			<currency type="AED">
-				<displayName>Idiramu ryo muri Leta Zunze Ubumwe z'Abarabu</displayName>
+				<displayName>Idiramu ryo muri Leta Zunze Ubumwe z’Abarabu</displayName>
 			</currency>
 			<currency type="AOA">
 				<displayName>Ikwanza ryo muri Angola</displayName>
@@ -585,10 +582,10 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Idolari ryo muri Ositaraliya</displayName>
 			</currency>
 			<currency type="BHD">
-				<displayName>Idinari ry'iribahireyini</displayName>
+				<displayName>Idinari ry’iribahireyini</displayName>
 			</currency>
 			<currency type="BIF">
-				<displayName>Ifaranga ry'Uburundi</displayName>
+				<displayName>Ifaranga ry’Uburundi</displayName>
 				<symbol>FBu</symbol>
 			</currency>
 			<currency type="BWP">
@@ -601,7 +598,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Ifaranga rya Kongo</displayName>
 			</currency>
 			<currency type="CHF">
-				<displayName>Ifaranga ry'Ubusuwisi</displayName>
+				<displayName>Ifaranga ry’Ubusuwisi</displayName>
 			</currency>
 			<currency type="CNY">
 				<displayName>Iyuwani ryo mu Bushinwa</displayName>
@@ -643,7 +640,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Irupiya ryo mu Buhindi</displayName>
 			</currency>
 			<currency type="JPY">
-				<displayName>Iyeni ry'Ubuyapani</displayName>
+				<displayName>Iyeni ry’Ubuyapani</displayName>
 			</currency>
 			<currency type="KES">
 				<displayName>Ishilingi rya Kenya</displayName>
@@ -667,6 +664,9 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Iriyari ryo muri Madagasikari</displayName>
 			</currency>
 			<currency type="MRO">
+				<displayName>Ugwiya ryo muri Moritaniya (1973–2017)</displayName>
+			</currency>
+			<currency type="MRU">
 				<displayName>Ugwiya ryo muri Moritaniya</displayName>
 			</currency>
 			<currency type="MUR">
@@ -685,7 +685,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Inayira ryo muri Nijeriya</displayName>
 			</currency>
 			<currency type="RWF">
-				<displayName>Ifaranga ry'u Rwanda</displayName>
+				<displayName>Ifaranga ry’u Rwanda</displayName>
 			</currency>
 			<currency type="SAR">
 				<displayName>Iriyari ryo muri Arabiya Sawudite</displayName>
@@ -699,13 +699,19 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<currency type="SHP">
 				<displayName>Ipawundi rya Sente Helena</displayName>
 			</currency>
-			<currency type="SLL">
+			<currency type="SLE">
 				<displayName>Ilewone</displayName>
+			</currency>
+			<currency type="SLL">
+				<displayName>Ilewone (1964—2022)</displayName>
 			</currency>
 			<currency type="SOS">
 				<displayName>Ishilingi ryo muri Somaliya</displayName>
 			</currency>
 			<currency type="STD">
+				<displayName>Idobura ryo muri Sawotome na Perensipe (1977–2017)</displayName>
+			</currency>
+			<currency type="STN">
 				<displayName>Idobura ryo muri Sawotome na Perensipe</displayName>
 			</currency>
 			<currency type="SZL">
@@ -718,13 +724,13 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Ishilingi rya Tanzaniya</displayName>
 			</currency>
 			<currency type="UGX">
-				<displayName>Ishilingi ry'Ubugande</displayName>
+				<displayName>Ishilingi ry’Ubugande</displayName>
 			</currency>
 			<currency type="USD">
-				<displayName>Idolari ry'abanyamerika</displayName>
+				<displayName>Idolari ry’abanyamerika</displayName>
 			</currency>
 			<currency type="ZAR">
-				<displayName>Irandi ryo muri Afurika y'Epfo</displayName>
+				<displayName>Irandi ryo muri Afurika y’Epfo</displayName>
 			</currency>
 			<currency type="ZMK">
 				<displayName>Ikwaca ryo muri Zambiya (1968–2012)</displayName>
@@ -744,4 +750,3 @@ For terms of use, see http://www.unicode.org/copyright.html
 		</messages>
 	</posix>
 </ldml>
-

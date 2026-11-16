@@ -25,6 +25,31 @@ function syncMassiveActionResultsTableCaption($modal, $container) {
 }
 
 /**
+ * Safely resolve a dotted global path (e.g. "LS.CPDB.onClickExport") to a callable,
+ * bound to its immediate parent object so method context is preserved.
+ * Used for the 'custom-js' and 'on-success' action callbacks so we avoid eval().
+ *
+ * @param {string} path  Dotted path to a function, resolved from window (e.g. "LS.AjaxHelper.onSuccess").
+ * @return {Function|null}  The bound function, or null if the path does not resolve to a function.
+ */
+function resolveActionCallback(path) {
+    if (typeof path !== 'string' || path === '') {
+        return null;
+    }
+    var parts = path.split('.');
+    var context = null;
+    var current = window;
+    for (var i = 0; i < parts.length; i++) {
+        if (current == null || typeof current[parts[i]] === 'undefined') {
+            return null;
+        }
+        context = current;
+        current = current[parts[i]];
+    }
+    return typeof current === 'function' ? current.bind(context) : null;
+}
+
+/**
  * Define what happen when an action is clicked:
  *
  * - redirection:
@@ -126,9 +151,9 @@ var onClickListAction =  function (e) {
      */
     if (actionType == 'custom') {
         var js = $that.data('custom-js');
-        var func = eval(js);
-        var $oCheckedItems = LS.gridSelection.getAll($grididvalue);
-        func($oCheckedItems);
+        var func = resolveActionCallback(js);
+        var itemIds = LS.gridSelection.getAll($grididvalue);
+        if (func) { func(itemIds); }
         console.log('func itemIds');
         return;
     }
@@ -202,11 +227,14 @@ var onClickListAction =  function (e) {
             }
         }
 
-        // Custom datas comming from the modal (like sid)
+        // Custom datas coming from the modal (like sid)
         var $postDatas  = {sItems:$oCheckedItems};
         if (LS.gridSelection.isSelectAll($grididvalue)) {
             $postDatas['selectAll'] = 1;
             $postDatas['filterQuery'] = LS.gridSelection.getFilterQuery($grididvalue);
+            if (typeof LS.gridSelection.getExcluded === 'function') {
+                $postDatas['excludedItems'] = JSON.stringify(LS.gridSelection.getExcluded($grididvalue));
+            }
         }
         $modal.find('.custom-data').each(function(i, el)
         {
@@ -263,6 +291,9 @@ var onClickListAction =  function (e) {
                 {
                     // This depend on keepopen
                     $modalBody.empty().html(html);                      // Inject the returned HTML in the modal body
+                    syncMassiveActionResultsTableCaption($modal, $modalBody);
+                    // The clicked confirm button is hidden now: Keep keyboard focus inside the modal
+                    $modalClose.find('button').first().trigger('focus');
                 }
 
                 if (html.ajaxHelper) {
@@ -271,8 +302,8 @@ var onClickListAction =  function (e) {
                 }
 
                 if (onSuccess) {
-                    var func = eval(onSuccess);
-                    func(html);
+                    var func = resolveActionCallback(onSuccess);
+                    if (func) { func(html); }
                     return;
                 }
             },
@@ -309,42 +340,6 @@ var onClickListAction =  function (e) {
     bsModal.show();
 };
 
-function prepareBsDateTimePicker($gridid){
-    var dateTimeSettings = getDefaultDateTimePickerSettings();
-    if (dateTimeSettings) {
-        var dateTimeFormat = dateTimeSettings.dateformatsettings.jsdate+ ' HH:mm';
-        $('.date input').each(function(){
-            $(this).datetimepicker({
-                format: dateTimeFormat,
-                showClear: dateTimeSettings.showClear,
-                allowInputToggle: dateTimeSettings.allowInputToggle,
-            });
-    });
-    }
-}
-
-// get user session datetimesettings
-function getDefaultDateTimePickerSettings() {
-    // TODO: Code below can't handle if installation is in a subfolder (not web root).
-    // The correct solution is to fetch datetime format from an <input> element.
-    return null;
-
-    //Switch between path and get based routing
-    if(/\/index\.php(\/)?\?r=admin/.test(window.location.href)){
-        var url = "/index.php?r=surveyAdministration/datetimesettings";
-    } else {
-        var url = "/index.php/surveyAdministration/datetimesettings";
-    }
-    var mydata = [];
-    $.ajaxSetup({
-        async: false
-    });
-    $.getJSON( url, function( data ) {
-        mydata = data;
-    });
-    return mydata;
-}
-
 function bindListItemclick() {
     let listActions = $('.listActions a');
     let listActionsDisabled = $('.listActions .disabled a');
@@ -358,7 +353,6 @@ function bindListItemclick() {
 $(document).off('pjax:scriptcomplete.listActions').on('pjax:scriptcomplete.listActions, ready ', function() {
     // Grid refresh: see point 3
     $(document).on('actions-updated', function(){
-        prepareBsDateTimePicker(gridId);
         bindListItemclick();
     });
     bindListItemclick();

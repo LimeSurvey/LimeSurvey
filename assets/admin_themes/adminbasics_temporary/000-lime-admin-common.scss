@@ -68,7 +68,7 @@
 }
 
 .ls-survey-menu-item.menu-label{
-    padding-left: 33px !important;
+    padding-left: 30px !important;
 }
 
 
@@ -1113,6 +1113,14 @@ textarea,
 .uneditable-input {
     display: inline-block;
     font-size: 14px;
+}
+
+// Fields with .form-control get their border from the admin theme
+input[type="text"]:not(.form-control),
+input[type="password"]:not(.form-control),
+.ui-autocomplete-input:not(.form-control),
+textarea:not(.form-control),
+.uneditable-input:not(.form-control) {
     border: 1px solid #ccc;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
@@ -1543,8 +1551,8 @@ iframe#dialog {
 }
 
 /** Fixed pager width */
-/* jqgrid table must take all place if avalaible, but header and footer must not be outside the screen */
-/* Myabe use a pseudo fixd-y solution is a good idea */
+/* jqgrid table must take all place if available, but header and footer must not be outside the screen */
+/* Maybe use a pseudo fixd-y solution is a good idea */
 .ui-jqgrid,
 .ui-jqgrid-view,
 .ui-jqgrid-titlebar,
@@ -1621,7 +1629,7 @@ td.subquestion-actions span:hover {
     display: none;
 }
 
-/* Box in resopnses list need a little more space */
+/* Box in responses list need a little more space */
 div#gview_displayresponses th#displayresponses_cb {
     width: 35px;
     /* Override jQgrid stuff */
@@ -1750,7 +1758,7 @@ a.explorer-group:focus {
 }
 
 #token-grid table tr.odd .blank_button {
-    /*For older Browsers with compatibilty issues*/
+    /*For older Browsers with compatibility issues*/
     border-color: #f9f9f9;
     background-color: #f9f9f9;
     /*New CSS3 Style of doing it*/
@@ -1850,66 +1858,6 @@ table#responsedetail tr td {
     margin-left: 0;
 }
 
-.notification-list {
-    top: 100%;
-    left: 0;
-    z-index: 1000;
-    float: left;
-    min-width: 160px;
-    padding: 5px 0;
-    margin: 2px 0 0;
-    list-style: none;
-    font-size: 14px;
-    border-radius: 4px;
-    background-clip: padding-box;
-    overflow-y: auto;
-}
-
-.notification-list > li > a {
-    display: block;
-    padding: 3px 20px;
-    clear: both;
-    font-weight: normal;
-    line-height: 1.428571429;
-    white-space: nowrap;
-}
-
-.notification-list > li > a:hover,
-.notification-list > li > a:focus {
-    text-decoration: none;
-}
-
-.notification-list > .active > a,
-.notification-list > .active > a:hover,
-.notification-list > .active > a:focus {
-    text-decoration: none;
-    outline: 0;
-}
-
-.notification-list > .disabled > a,
-.notification-list > .disabled > a:hover,
-.notification-list > .disabled > a:focus {
-}
-
-.notification-list > .disabled > a:hover,
-.notification-list > .disabled > a:focus {
-    text-decoration: none;
-    background-color: transparent;
-    background-image: none;
-    filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
-    cursor: not-allowed;
-}
-
-#notification-outer-ul {
-    height: 400px;
-    width: 400px;
-}
-
-#notification-inner-ul {
-    height: 340px;
-    width: 390px;
-}
-
 /* Override fixed font in select2 CSS */
 .select2-container--bootstrap .select2-selection {
     font-family: Roboto !important;
@@ -1922,7 +1870,7 @@ table#responsedetail tr td {
 
 #responses-grid .filter-container {
     min-width: 6em;
-    /* defaut em is 13px : 75/13 = 5.76… */
+    /* default em is 13px : 75/13 = 5.76… */
 }
 
 .edit-participant-modal-body {

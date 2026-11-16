@@ -1,5 +1,7 @@
 <?php
 
+use LimeSurvey\Models\Services\SurveySessionState;
+
 /**
  * class ResponsesController
  **/
@@ -61,11 +63,21 @@ class ResponsesController extends LSBaseController
     }
 
     /**
+     * Redirect to the response of the given access code
+     *
+     * Note: Needs the responses read permission, otherwise it would disclose whether
+     * an access code has a response and its ID.
+     *
      * @param int $surveyId
      * @param string $token
+     * @return void
      */
     public function actionViewbytoken(int $surveyId, string $token): void
     {
+        if (!Permission::model()->hasSurveyPermission($surveyId, 'responses', 'read')) {
+            App()->user->setFlash('error', gT("You do not have permission to access this page."));
+            $this->redirect(['surveyAdministration/view', 'surveyid' => $surveyId]);
+        }
         // Get Response ID from token
         $oResponse = SurveyDynamic::model($surveyId)->findByAttributes(['token' => $token]);
         if (!$oResponse) {
@@ -108,7 +120,8 @@ class ResponsesController extends LSBaseController
     }
 
     /**
-     * View a single response in detail
+     * View a single response in detail.
+     * Redirects to the response detail view of the new editor when the editor is enabled.
      *
      * @param int $surveyId
      * @param int $id
@@ -119,7 +132,7 @@ class ResponsesController extends LSBaseController
     public function actionView(int $surveyId, int $id, string $browseLang = ''): void
     {
 
-        // logging for webserver when parameter is somehting like $surveyid=125<script ...
+        // logging for webserver when parameter is something like $surveyid=125<script ...
         if (!is_numeric(Yii::app()->request->getParam('surveyId'))) {
             throw new CHttpException(403, gT("Invalid survey ID"));
         }
@@ -131,7 +144,14 @@ class ResponsesController extends LSBaseController
         if (!Permission::model()->hasSurveyPermission($surveyId, 'responses', 'read')) {
             App()->user->setFlash('error', gT("You do not have permission to access this page."));
             $this->redirect(['surveyAdministration/view', 'surveyid' => $surveyId]);
-            App()->end(); // More clear, uneeded.
+            App()->end(); // More clear, unneeded.
+        }
+        // Existing links (e.g. admin notification emails) open the response in the new editor when it is enabled
+        if (App()->getConfig('editorEnabled')) {
+            $this->redirect([
+                'editorLink/index',
+                'route' => 'responses/' . $surveyId . '/results/responses?id=' . $id
+            ]);
         }
         /* TODO : Check if response still exist, after checking survey */
         $aData = $this->getData($surveyId, $id, $browseLang);
@@ -147,7 +167,7 @@ class ResponsesController extends LSBaseController
         // We just check it again here to be sure.
         $exist = SurveyDynamic::model($surveyId)->exist($id);
         if (!$exist) {
-            throw new CHttpException(404, gT("Invalid response id."));
+            throw new CHttpException(404, gT("Invalid response ID"));
         }
         $next = SurveyDynamic::model($surveyId)->next($id, true);
         $previous = SurveyDynamic::model($surveyId)->previous($id, true);
@@ -218,7 +238,17 @@ class ResponsesController extends LSBaseController
                 continue;
             }
 
-            if ($field['type'] != Question::QT_VERTICAL_FILE_UPLOAD) {
+
+            if ($field['type'] == Question::QT_R_RANKING) {
+                $isParent = isRankingQuestionParent($field['aid'] ?? null);
+                if ($isParent) {
+                    $fnames[] = [
+                        $field['fieldname'],
+                        viewHelper::getFieldText($field),
+                        'code' => viewHelper::getFieldCode($field, ['LEMcompat' => true])
+                    ];
+                } 
+            } elseif ($field['type'] != Question::QT_VERTICAL_FILE_UPLOAD) {
                 $fnames[] = [
                     $field['fieldname'],
                     viewHelper::getFieldText($field),
@@ -356,17 +386,24 @@ class ResponsesController extends LSBaseController
                 } else {
                     $answervalue = "";
                 }
+            } elseif (
+                in_array($fnames[$i][0], ['startdate', 'datestamp', 'submitdate'])
+                && !in_array($aResult[$fnames[$i][0]], [null, '', 'N'], true)
+            ) {
+                $date = $aResult[$fnames[$i][0]];
+                $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
+                $date = new Date_Time_Converter(getDateOfUTC($date), "Y-m-d H:i:s");
+                $answervalue = $date->convert($dateformatdetails['phpdate'] . " H:i:s");
             } else {
                 $answervalue = htmlspecialchars(
-                    viewHelper::flatten(
-                        stripJavaScript(
-                            getExtendedAnswer(
-                                $surveyId,
-                                $fnames[$i][0],
-                                $aResult[$fnames[$i][0]],
-                                $sBrowseLanguage
-                            )
-                        )
+                    viewHelper::responseValueToText(
+                        getExtendedAnswer(
+                            $surveyId,
+                            $fnames[$i][0],
+                            $aResult[$fnames[$i][0]],
+                            $sBrowseLanguage
+                        ),
+                        $aResult[$fnames[$i][0]]
                     ),
                     ENT_QUOTES
                 );
@@ -406,13 +443,15 @@ class ResponsesController extends LSBaseController
      * Show responses for survey
      *
      * @param int $surveyId
+     * @param int $surveyid Alias of $surveyId, used if $surveyId is not set
      * @return void
+     * @throws CHttpException
      */
     public function actionBrowse(int $surveyId = 0, int $surveyid = 0): void
     {
         // Force it to accept `surveyid` as well, to maintain consistency with other menu entries.
         $surveyId = !empty($surveyId) ? $surveyId : (!empty($surveyid) ? $surveyid : null);
-        // logging for webserver when parameter is somehting like $surveyid=125<script ...
+        // logging for webserver when parameter is something like $surveyid=125<script ...
         if (!is_numeric($surveyId)) {
             throw new CHttpException(403, gT("Invalid survey ID"));
         }
@@ -463,12 +502,10 @@ class ResponsesController extends LSBaseController
             }
 
             // Model filters
-            if (isset($_SESSION['survey_' . $surveyId])) {
-                $sessionSurveyArray = App()->session->get('survey_' . $surveyId);
-                $visibleColumns = $sessionSurveyArray['filteredColumns'] ?? null;
-                if (!empty($visibleColumns)) {
-                    $model->setAttributes($visibleColumns, false);
-                }
+            $sessionState = SurveySessionState::forSurvey((int) $surveyId);
+            $visibleColumns = $sessionState->getFilteredColumns();
+            if (!empty($visibleColumns)) {
+                $model->setAttributes($visibleColumns, false);
             }
             // Using safe search on dynamic column names would be far too much complex.
             // So we pass over the safe validation and directly set attributes (second parameter of setAttributes to false).
@@ -491,7 +528,7 @@ class ResponsesController extends LSBaseController
             }
 
             // Sets which columns to filter
-            $filteredColumns = !empty(isset($_SESSION['survey_' . $surveyId]['filteredColumns'])) ? $_SESSION['survey_' . $surveyId]['filteredColumns'] : null;
+            $filteredColumns = $sessionState->getFilteredColumns();
             $aData['filteredColumns'] = $filteredColumns;
 
             // rendering
@@ -528,8 +565,8 @@ class ResponsesController extends LSBaseController
                 $oSavedControlModel->setAttributes($aFilters, false);
             }
             $aData['savedModel'] = $oSavedControlModel;
-            if (App()->request->getPost('savedResponsesPageSize')) {
-                App()->user->setState('savedResponsesPageSize', App()->request->getPost('savedResponsesPageSize'));
+            if (App()->request->getParam('savedResponsesPageSize')) {
+                App()->user->setState('savedResponsesPageSize', (int)App()->request->getParam('savedResponsesPageSize'));
             }
             $aData['savedResponsesPageSize'] = App()->user->getState('savedResponsesPageSize', App()->params['defaultPageSize']);
             $aViewUrls[] = 'savedlist_view';
@@ -566,6 +603,8 @@ class ResponsesController extends LSBaseController
      * Saves the hidden columns for response browsing in the session
      * @access public
      * @param int $surveyId
+     * @return void
+     * @throws CHttpException
      */
     public function actionSetFilteredColumns(int $surveyId): void
     {
@@ -583,9 +622,9 @@ class ResponsesController extends LSBaseController
                             $aFilteredColumns[] = $sColumn;
                         }
                     }
-                    $_SESSION['survey_' . $surveyId]['filteredColumns'] = $aFilteredColumns;
+                    SurveySessionState::forSurvey($surveyId)->setFilteredColumns($aFilteredColumns);
                 } else {
-                    $_SESSION['survey_' . $surveyId]['filteredColumns'] = [];
+                    SurveySessionState::forSurvey($surveyId)->setFilteredColumns([]);
                 }
             }
         }
@@ -627,7 +666,7 @@ class ResponsesController extends LSBaseController
 
         // "Select all" posts an explicit flag: act on every response matching the grid filters
         if (empty($aResponseId) && App()->request->getPost('selectAll')) {
-            $aResponseId = $this->getAllResponseIds($surveyId);
+            $aResponseId = $this->getSelectAllResponseIds($surveyId);
         }
 
         $errors = 0;
@@ -651,8 +690,8 @@ class ResponsesController extends LSBaseController
         }
 
         if ($errors || $timingErrors) {
-            $message = ($errors) ? ngT("A response was not deleted.|{n} responses were not deleted.", $errors) : "";
-            $message .= ($timingErrors) ? ngT("A timing record was not deleted.|{n} timing records were not deleted.", $errors) : "";
+            $message = ($errors) ? sprintf(gTPlural("A response was not deleted.", "%d responses were not deleted.", $errors), $errors) : "";
+            $message .= ($timingErrors) ? sprintf(gTPlural("A timing record was not deleted.", "%d timing records were not deleted.", $errors), $errors) : "";
             if (App()->getRequest()->isAjaxRequest) {
                 ls\ajax\AjaxHelper::outputError($message);
             } else {
@@ -706,10 +745,11 @@ class ResponsesController extends LSBaseController
      * @param int $responseId
      * @param int $qid
      * @param int $index
+     * @param int $inline : 1 to display images in the browser instead of downloading
      * @return void
      * @throws CHttpException
      */
-    public function actionDownloadfile(int $surveyId, int $responseId, int $qid, int $index): void
+    public function actionDownloadfile(int $surveyId, int $responseId, int $qid, int $index, int $inline = 0): void
     {
         if (!is_numeric(Yii::app()->request->getParam('surveyId'))) {
             throw new CHttpException(403, gT("Invalid survey ID"));
@@ -736,22 +776,27 @@ class ResponsesController extends LSBaseController
             if (isset($aQuestionFiles[$index])) {
                 $aFile = $aQuestionFiles[$index];
                 // Real path check from here: https://stackoverflow.com/questions/4205141/preventing-directory-traversal-in-php-but-allowing-paths
-                $sDir = Yii::app()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . "surveys" . DIRECTORY_SEPARATOR . $surveyId . DIRECTORY_SEPARATOR . "files" . DIRECTORY_SEPARATOR;
+                // Normalize the directory the same way as the file path, so a trailing separator, "..", or forward slashes on Windows in uploaddir don't break the check
+                $sDir = get_absolute_path(Yii::app()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . "surveys" . DIRECTORY_SEPARATOR . $surveyId . DIRECTORY_SEPARATOR . "files") . DIRECTORY_SEPARATOR;
                 $sFileRealName = $sDir . $aFile['filename'];
                 $sRealUserPath = get_absolute_path($sFileRealName);
-                if ($sRealUserPath === false) {
-                    throw new CHttpException(404, "File not found.");
-                } elseif (strpos((string) $sRealUserPath, $sDir) !== 0) {
+                if (strpos($sRealUserPath, $sDir) !== 0) {
                     throw new CHttpException(403, "File cannot be accessed.");
+                } elseif (!is_file($sRealUserPath)) {
+                    throw new CHttpException(404, "File not found.");
                 } else {
                     $mimeType = CFileHelper::getMimeType($sFileRealName, null, false);
                     if (is_null($mimeType)) {
                         $mimeType = "application/octet-stream";
                     }
+                    // Only raster images are shown inline; SVG can carry script, so it stays a download.
+                    $canInline = $inline && strpos($mimeType, 'image/') === 0 && $mimeType !== 'image/svg+xml';
+                    $fileName = rawurldecode((string) $aFile['name']);
                     @ob_clean();
                     header('Content-Description: File Transfer');
                     header('Content-Type: ' . $mimeType);
-                    header('Content-Disposition: attachment; filename="' . sanitize_filename(rawurldecode((string) $aFile['name'])) . '"');
+                    header('X-Content-Type-Options: nosniff');
+                    header('Content-Disposition: ' . ($canInline ? 'inline' : 'attachment') . '; filename="' . sanitize_filename($fileName) . '"; filename*=UTF-8\'\'' . rawurlencode($fileName));
                     header('Content-Transfer-Encoding: binary');
                     header('Expires: 0');
                     header("Cache-Control: must-revalidate, no-store, no-cache");
@@ -768,7 +813,9 @@ class ResponsesController extends LSBaseController
     }
 
     /**
-     * Construct a zip files from a list of response
+     * Construct a zip files from a list of response.
+     * Without a list, a posted selectAll flag ("Select all" in the grid) zips the files
+     * of all responses matching the posted grid filters, otherwise of all responses.
      *
      * @access public
      * @param int $surveyId : survey ID
@@ -787,7 +834,10 @@ class ResponsesController extends LSBaseController
                 App()->user->setFlash('error', gT('Sorry, this file was not found.'));
                 $this->redirect(["surveyAdministration/view", "surveyid" => $surveyId]);
             }
-            if (!$responseIds) {
+            if (!$responseIds && App()->request->isPostRequest && App()->request->getPost('selectAll')) {
+                // Downloading is not expensive like deleting, so the "Select all" limit does not apply
+                $aResponseId = $this->getSelectAllResponseIds($surveyId, false);
+            } elseif (!$responseIds) {
                 // No response id : get all survey files
                 $oCriteria = new CDbCriteria();
                 $oCriteria->select = "id";
@@ -820,12 +870,12 @@ class ResponsesController extends LSBaseController
      * Delete all uploaded files for one response.
      *
      * @param int $surveyId
-     * @param int|null $responseId
+     * @param ?int $responseId
      * @return void
      * @throws CException
      * @throws CHttpException
      */
-    public function actionDeleteAttachments(int $surveyId, int $responseId = null): void
+    public function actionDeleteAttachments(int $surveyId, ?int $responseId = null): void
     {
         if (!is_numeric(Yii::app()->request->getParam('surveyId'))) {
             throw new CHttpException(403, gT("Invalid survey ID"));
@@ -850,7 +900,7 @@ class ResponsesController extends LSBaseController
 
         // "Select all" posts an explicit flag: act on every response matching the grid filters
         if ($responseId === null && empty($responseIds) && $request->getPost('selectAll')) {
-            $responseIds = $this->getAllResponseIds($surveyId);
+            $responseIds = $this->getSelectAllResponseIds($surveyId);
         }
 
         Yii::import('application.helpers.admin.ajax_helper', true);
@@ -882,7 +932,7 @@ class ResponsesController extends LSBaseController
             App()->user->setFlash('error', $message);
             $this->redirect(["responses/browse", "surveyId" => $surveyId]);
         }
-        $message = sprintf(ngT('%d file deleted.|%d files deleted.', $allSuccess), $allSuccess);
+        $message = sprintf(gTPlural('%d file deleted.', '%d files deleted.', $allSuccess), $allSuccess);
         if ($request->isAjaxRequest) {
             ls\ajax\AjaxHelper::outputSuccess($message);
             App()->end();
@@ -899,6 +949,11 @@ class ResponsesController extends LSBaseController
      */
     public function actionTime(int $surveyId): void
     {
+        if (!Permission::model()->hasSurveyPermission($surveyId, 'responses', 'read')) {
+            App()->user->setFlash('error', gT("You do not have permission to access this page."));
+            $this->redirect(['surveyAdministration/view', 'surveyid' => $surveyId]);
+            App()->end();
+        }
         $aData = $this->getData($surveyId);
 
         $aData['columns'] = [
@@ -928,17 +983,17 @@ class ResponsesController extends LSBaseController
             }
 
             if ($fielddetails['type'] === 'page_time') {
-                $fnames[] = [$fielddetails['fieldname'], gT('Group') . ": " . $fielddetails['group_name']];
+                $fnames[] = [$fielddetails['fieldname'], sprintf(gT('Group: %s'), $fielddetails['group_name'])];
                 $aData['columns'][] = [
-                    'header' => gT('Group: ') . $fielddetails['group_name'],
+                    'header' => sprintf(gT('Group: %s'), $fielddetails['group_name']),
                     'name'   => $fielddetails['fieldname']
                 ];
             }
 
             if ($fielddetails['type'] === 'answer_time') {
-                $fnames[] = [$fielddetails['fieldname'], gT('Question') . ": " . $fielddetails['title']];
+                $fnames[] = [$fielddetails['fieldname'], sprintf(gT('Question: %s'), $fielddetails['title'])];
                 $aData['columns'][] = [
-                    'header' => gT('Question: ') . $fielddetails['title'],
+                    'header' => sprintf(gT('Question: %s'), $fielddetails['title']),
                     'name'   => $fielddetails['fieldname']
                 ];
             }
@@ -1100,7 +1155,7 @@ class ResponsesController extends LSBaseController
         if (!empty($responseId)) {
             /* Check if exists  */
             if (empty(SurveyDynamic::model($surveyId)->findByPk($responseId))) {
-                throw new CHttpException(404, gT("Invalid response id."));
+                throw new CHttpException(404, gT("Invalid response ID"));
             }
             $aData['iId'] = $responseId;
         }
@@ -1161,38 +1216,22 @@ class ResponsesController extends LSBaseController
 
     /**
      * Returns the ids of all responses matching the grid filters posted with the
-     * massive action. Used when the selectAll flag is posted ("Select all" in the grid).
+     * massive action, without the ones deselected by the user. Used when the
+     * selectAll flag is posted ("Select all" in the grid).
      *
      * @param int $surveyId
+     * @param bool $applyCap Whether to apply the "Select all" limit of expensive deletions
      * @return array
      */
-    private function getAllResponseIds(int $surveyId): array
+    private function getSelectAllResponseIds(int $surveyId, bool $applyCap = true): array
     {
-        $model = SurveyDynamic::model($surveyId);
-        $model->bEncryption = true;
-
-        parse_str((string) App()->request->getPost('filterQuery', ''), $parsedFilterQuery);
-        $filters = $parsedFilterQuery['SurveyDynamic'] ?? null;
-        if (is_array($filters) && !empty($filters)) {
-            $model->setAttributes($filters, false);
-            foreach (['completed_filter', 'firstname_filter', 'lastname_filter', 'email_filter'] as $filterName) {
-                if (!empty($filters[$filterName])) {
-                    $model->$filterName = $filters[$filterName];
-                }
-            }
-        }
-
-        $criteria = $model->search()->criteria;
-        $criteria->select = 't.id';
-        $cap = $this->getSelectAllHardCap($surveyId);
-        if ($cap !== null) {
-            $criteria->order = 't.id ASC';
-            $criteria->limit = $cap;
-        }
-
-        return $model->getCommandBuilder()
-            ->createFindCommand($model->tableSchema, $criteria)
-            ->queryColumn();
+        $excludedIds = json_decode((string) App()->request->getPost('excludedItems', '[]'), true);
+        return SurveyDynamic::getIdsByGridFilter(
+            $surveyId,
+            (string) App()->request->getPost('filterQuery', ''),
+            is_array($excludedIds) ? $excludedIds : [],
+            $applyCap ? $this->getSelectAllHardCap($surveyId) : null
+        );
     }
 
     /**

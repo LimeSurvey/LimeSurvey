@@ -1,10 +1,12 @@
 <?php
+
 /**
  * Massive actions Widget, selector view
  * Render:
  *  - a dropup selector that can be injected in the footer of a grid, to display the multiple actions for the items of the grid
  *  - the modal associated associated with each action
  */
+
 $listOfActions = $this->render('listOfActions', get_defined_vars(), true);
 ?>
 
@@ -30,7 +32,7 @@ $listOfActions = $this->render('listOfActions', get_defined_vars(), true);
 </div>
 
 <?php App()->getClientScript()->registerScript("ListQuestions-run-pagination", "
-    var gridId = '".$this->gridid."';
+    var gridId = '" . $this->gridid . "';
 ", LSYii_ClientScript::POS_BEGIN); ?>
 
 

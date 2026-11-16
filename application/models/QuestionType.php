@@ -27,6 +27,7 @@ class QuestionType extends StaticModel
     const QT_G_GENDER = 'G';
     const QT_H_ARRAY_COLUMN = 'H';
     const QT_I_LANGUAGE = 'I';
+    const QT_J_MAP = 'J';
     const QT_K_MULTIPLE_NUMERICAL = 'K';
     const QT_L_LIST = 'L';
     const QT_M_MULTIPLE_CHOICE = 'M';
@@ -45,22 +46,6 @@ class QuestionType extends StaticModel
     const QT_ASTERISK_EQUATION = '*';
     const QT_COLON_ARRAY_NUMBERS = ':';
     const QT_SEMICOLON_ARRAY_TEXT = ';';
-
-    /*
-    * @deprecated The following constants are deprecated and will be removed in LimeSurvey 6 - please use the ones above.
-    */
-    const QT_1_ARRAY_MULTISCALE = '1'; //ARRAY (Flexible Labels) multi scale
-    const QT_A_ARRAY_5_CHOICE_QUESTIONS = 'A'; // ARRAY OF 5 POINT CHOICE QUESTIONS
-    const QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS = 'E';
-    const QT_F_ARRAY_FLEXIBLE_ROW = 'F';
-    const QT_G_GENDER_DROPDOWN = 'G';
-    const QT_H_ARRAY_FLEXIBLE_COLUMN = 'H';
-    const QT_K_MULTIPLE_NUMERICAL_QUESTION = 'K';
-    const QT_R_RANKING_STYLE = 'R';
-    const QT_X_BOILERPLATE_QUESTION = 'X';
-    const QT_COLON_ARRAY_MULTI_FLEX_NUMBERS = ':';
-    const QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT = ';';
-
 
     /** @var Question */
     public $question;
@@ -127,7 +112,7 @@ class QuestionType extends StaticModel
     public function applyToQuestion($oQuestion)
     {
         $this->question = $oQuestion;
-        $aSettingsArray = self::modelsAttributes($oQuestion->survey->language)[$oQuestion->type];
+        $aSettingsArray = self::modelsAttributes($oQuestion->survey->language ?? null)[$oQuestion->type];
         foreach ($aSettingsArray as $settingKey => $setting) {
             $this->$settingKey = $setting;
         }
@@ -141,7 +126,6 @@ class QuestionType extends StaticModel
      * TODO choose between self::modelsAttributes and QuestionTheme::findQuestionMetaData or QuestionTheme::getAllQuestionMetaData
      * TODO QuestionTheme 1591616914305: Needs to be replaced by @link QuestionTheme::getAllQuestionMetaData() however translations inside the xml need to be inserted first
      */
-
     public static function modelsAttributes($language = '')
     {
         return [
@@ -191,7 +175,7 @@ class QuestionType extends StaticModel
             ],
             self::QT_C_ARRAY_YES_UNCERTAIN_NO => [
                 'code' => self::QT_C_ARRAY_YES_UNCERTAIN_NO,
-                'description' => gT("Array (Yes/No/Uncertain)", "html", $language),
+                'description' => gT("Array (Yes/Uncertain/No)", "html", $language),
                 'group' => gT('Arrays'),
                 'subquestions' => 1,
                 'other' => false,
@@ -265,6 +249,17 @@ class QuestionType extends StaticModel
                 'assessable' => 0,
                 'answerscales' => 0,
                 'class' => 'language'
+            ],
+            self::QT_J_MAP => [
+                'code' => self::QT_J_MAP,
+                'description' => gT("Map", "html", $language),
+                'group' => gT("Mask questions"),
+                'subquestions' => 0,
+                'other' => false,
+                'hasdefaultvalues' => 1,
+                'assessable' => 0,
+                'answerscales' => 0,
+                'class' => 'map'
             ],
             self::QT_K_MULTIPLE_NUMERICAL => [
                 'code' => self::QT_K_MULTIPLE_NUMERICAL,
@@ -347,11 +342,11 @@ class QuestionType extends StaticModel
                 'code' => self::QT_R_RANKING,
                 'description' => gT("Ranking", "html", $language),
                 'group' => gT("Mask questions"),
-                'subquestions' => 0,
+                'subquestions' => 1,
                 'other' => false,
                 'hasdefaultvalues' => 0,
                 'assessable' => 1,
-                'answerscales' => 1,
+                'answerscales' => 0,
                 'class' => 'ranking'
             ],
             self::QT_S_SHORT_FREE_TEXT => [
@@ -475,8 +470,13 @@ class QuestionType extends StaticModel
     public static function textCodes()
     {
         return [
-            self::QT_I_LANGUAGE, self::QT_S_SHORT_FREE_TEXT, self::QT_U_HUGE_FREE_TEXT,
-            self::QT_Q_MULTIPLE_SHORT_TEXT, self::QT_T_LONG_FREE_TEXT, self::QT_SEMICOLON_ARRAY_TEXT,
+            self::QT_I_LANGUAGE,
+            self::QT_J_MAP,
+            self::QT_S_SHORT_FREE_TEXT,
+            self::QT_U_HUGE_FREE_TEXT,
+            self::QT_Q_MULTIPLE_SHORT_TEXT,
+            self::QT_T_LONG_FREE_TEXT,
+            self::QT_SEMICOLON_ARRAY_TEXT,
             self::QT_COLON_ARRAY_NUMBERS,
         ];
     }
@@ -489,7 +489,9 @@ class QuestionType extends StaticModel
     public static function charCodes()
     {
         return [
-            self::QT_5_POINT_CHOICE, self::QT_G_GENDER, self::QT_Y_YES_NO_RADIO,
+            self::QT_5_POINT_CHOICE,
+            self::QT_G_GENDER,
+            self::QT_Y_YES_NO_RADIO,
             self::QT_X_TEXT_DISPLAY
         ];
     }

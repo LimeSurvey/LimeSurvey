@@ -12,7 +12,6 @@ namespace LimeSurvey\PluginManager;
  */
 class PluginManagerShutdownFunction
 {
-
     /**
      * @var boolean
      */
@@ -61,6 +60,9 @@ class PluginManagerShutdownFunction
 
     /**
      * Magic method to let object be called as function.
+     * Marks the plugin that caused the fatal error as faulty and shows the error.
+     * A plugin that is not installed is not saved, so it is loaded again on next
+     * scan of the plugin folders (e.g. after the plugin files were fixed).
      * @return void
      */
     public function __invoke()
@@ -83,6 +85,15 @@ class PluginManagerShutdownFunction
         }
 
         $plugin = \Plugin::model()->find('name = :name', [':name' => $this->currentPluginName]);
+        if (empty($plugin)) {
+            $this->showError(
+                [
+                    'installed' => false,
+                    'error'     => $error
+                ]
+            );
+            return;
+        }
 
         $result = \Plugin::handlePluginLoadError(
             $plugin,
@@ -92,15 +103,17 @@ class PluginManagerShutdownFunction
 
         $this->showError(
             [
-                'result' => $result,
-                'error'  => $error
+                'installed' => true,
+                'result'    => $result,
+                'error'     => $error
             ]
         );
     }
 
     /**
      * Echo error message.
-     * @param array $data
+     * @param array $data Array with 'installed' (boolean), 'error' (array from error_get_last)
+     *                    and, for installed plugins, 'result' (rows affected by saving the load error)
      * @return void
      */
     protected function showError(array $data)
@@ -114,7 +127,9 @@ class PluginManagerShutdownFunction
         echo '</h2>';
 
         echo '<p>';
-        if ($data['result']) {
+        if (!$data['installed']) {
+            echo 'This plugin is not installed. Fix or remove the plugin files, then scan the plugin files again.';
+        } elseif ($data['result']) {
             echo 'This plugin has been marked as faulty and will not be loaded again. '
                 . 'See the plugin manager for more details, or contact the plugin author.';
         } else {

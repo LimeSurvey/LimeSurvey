@@ -2,7 +2,7 @@
 
 /**
  * LimeSurvey
- * Copyright (C) 2007-2018 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -21,6 +21,12 @@ class ExtensionConfig
      * @var SimpleXMLElement
      */
     public $xml;
+
+    /**
+     * Per-request cache used by loadFromFileCached(), keyed by file path.
+     * @var array<string, ExtensionConfig>
+     */
+    private static $loadedConfigs = [];
 
     /**
      *
@@ -153,16 +159,42 @@ class ExtensionConfig
         if (!file_exists($file)) {
             return null;
         } else {
-            if (\PHP_VERSION_ID < 80000) {
-                libxml_disable_entity_loader(false);
-            }
             $xml = simplexml_load_file(realpath($file));
-            if (\PHP_VERSION_ID < 80000) {
-                libxml_disable_entity_loader(true);
-            }
             $config = new self($xml);
             return $config;
         }
+    }
+
+    /**
+     * Same as loadFromFile(), but keeps the instance for the rest of the request,
+     * so a config.xml that is read for every question is only parsed once.
+     * Only use it for files that are not modified during the request (e.g. not in
+     * the extension installers), and don't modify the returned instance.
+     * Missing files are not cached.
+     *
+     * @param string $file Full file path.
+     * @return ExtensionConfig|null
+     */
+    public static function loadFromFileCached($file)
+    {
+        if (!isset(self::$loadedConfigs[$file])) {
+            $config = self::loadFromFile($file);
+            if ($config === null) {
+                return null;
+            }
+            self::$loadedConfigs[$file] = $config;
+        }
+        return self::$loadedConfigs[$file];
+    }
+
+    /**
+     * Empties the cache used by loadFromFileCached()
+     *
+     * @return void
+     */
+    public static function clearCache()
+    {
+        self::$loadedConfigs = [];
     }
 
     /**
@@ -186,13 +218,7 @@ class ExtensionConfig
         if ($configString === null) {
             throw new Exception('Config file is empty');
         }
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader(false);
-        }
         $xml = simplexml_load_string($configString);
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader(true);
-        }
         return new self($xml);
     }
 
@@ -213,21 +239,14 @@ class ExtensionConfig
 
     /**
      * Create a version fetcher for every <updater> tag in config.xml.
+     * A missing <updaters> tag is treated like disabled updaters.
      * @return array VersionFetcher[]
+     * @throws \Exception If an <updater> tag cannot be turned into a version fetcher
      */
     public function createVersionFetchers()
     {
-        if (empty($this->xml->updaters)) {
-            throw new \Exception(
-                sprintf(
-                    gT('Extension %s has no updater defined in config.xml'),
-                    $this->getName()
-                )
-            );
-        }
-
-        // Don't create any fetchers if updaters are disabled.
-        if ((string) $this->xml->updaters['disabled'] === 'disabled') {
+        // Don't create any fetchers if updaters are missing or disabled.
+        if (empty($this->xml->updaters) || (string) $this->xml->updaters['disabled'] === 'disabled') {
             return [];
         }
 

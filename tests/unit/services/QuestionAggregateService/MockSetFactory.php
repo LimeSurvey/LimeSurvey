@@ -21,7 +21,7 @@ class MockSetFactory
     /**
      * @param ?MockSet $init
      */
-    public function make(MockSet $init = null): MockSet
+    public function make(?MockSet $init = null): MockSet
     {
         $mockSet = new MockSet;
 

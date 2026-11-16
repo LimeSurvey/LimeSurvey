@@ -12,12 +12,12 @@
 
 <div class="btn-group">
     <!-- main  dropdown header -->
-    <?php if ($oSurvey->isActive):?>
+    <?php if ($oSurvey->isActive) :?>
         <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="ri-exchange-funds-fill"></span>
             <?php eT("Responses"); ?><span class="caret"></span>
         </button>
-    <?php else:?>
+    <?php else :?>
         <button type="button" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php eT("This survey is not active - no responses are available."); ?>" class="readonly btn btn-outline-secondary">
             <span class="ri-exchange-funds-fill"></span>
             <?php eT("Responses"); ?><span class="caret"></span>
@@ -26,7 +26,7 @@
 
     <!-- dropdown -->
     <ul class="dropdown-menu">
-        <?php if ($respstatsread && $oSurvey->isActive):?>
+        <?php if ($respstatsread && $oSurvey->isActive) :?>
             <!-- Responses & statistics -->
             <li>
                 <a class="pjax" href='<?php echo $this->createUrl("responses/index/", ['surveyId' => $oSurvey->sid]);?>' >
@@ -36,7 +36,7 @@
             </li>
         <?php endif; ?>
 
-        <?php if ($responsescreate && $oSurvey->isActive): ?>
+        <?php if ($responsescreate && $oSurvey->isActive) : ?>
             <!-- Data entry screen -->
             <li>
                 <a href='<?php echo $this->createUrl("admin/dataentry/sa/view/surveyid/$oSurvey->sid"); ?>' >
@@ -45,7 +45,7 @@
                 </a>
             </li>
         <?php endif; ?>
-        <?php if ($responsesread && $oSurvey->isActive): ?>
+        <?php if ($responsesread && $oSurvey->isActive) : ?>
             <!-- Partial (saved) responses -->
             <li>
                 <a href='<?php echo $this->createUrl("admin/saved/sa/view/surveyid/$oSurvey->sid"); ?>' >

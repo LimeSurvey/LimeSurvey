@@ -2,7 +2,7 @@
 
 /*
    * LimeSurvey
-   * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
+   * Copyright (C) 2013-2026 The LimeSurvey Project Team
    * All rights reserved.
    * License: GNU/GPL License v2 or later, see LICENSE.php
    * LimeSurvey is free software. This version may have been modified pursuant
@@ -26,8 +26,8 @@
  * @property integer $autoload_url Whether URL is automatically redirected if quota is triggered (0/1)
  *
  * @property QuotaLanguageSetting[] $languagesettings Indexed by language code
- * @property QuotaLanguageSetting $mainLanguagesetting
- * @property QuotaLanguageSetting $currentLanguageSetting
+ * @property QuotaLanguageSetting|null $mainLanguagesetting
+ * @property QuotaLanguageSetting|null $currentLanguageSetting
  * @property Survey $survey
  * @property QuotaMember[] $quotaMembers
  *
@@ -104,25 +104,6 @@ class Quota extends LSActiveRecord
     }
 
     /**
-     * @param $data
-     * @return bool|int
-     * @deprecated at 2018-01-29 use $model->attributes = $data && $model->save()
-     */
-    public function insertRecords($data)
-    {
-        $quota = new self();
-        foreach ($data as $k => $v) {
-            $quota->$k = $v;
-        }
-        try {
-            $quota->save();
-            return $quota->id;
-        } catch (Exception $e) {
-            return false;
-        }
-    }
-
-    /**
      * @param mixed|bool $condition
      * @param bool $recursive
      */
@@ -140,16 +121,23 @@ class Quota extends LSActiveRecord
     }
 
     /**
-     * @return QuotaLanguageSetting
+     * Returns the texts of the quota in the survey's base language.
+     *
+     * @return QuotaLanguageSetting|null Null if the quota has no texts in the base language
      */
     public function getMainLanguagesetting()
     {
-        return $this->languagesettings[$this->survey->language];
+        return $this->languagesettings[$this->survey->language] ?? null;
     }
 
+    /**
+     * Count the completed responses matching all members of this quota
+     *
+     * @return int|string|null Number of completed responses, null if the response table or a member column is missing
+     */
     public function getCompleteCount()
     {
-        if (!tableExists("survey_{$this->sid}")) {
+        if (!tableExists("responses_{$this->sid}")) {
             return null;
         }
         /* Must control if column name exist (@todo : move this to QuotaMember::model(), even with deactivated survey*/
@@ -158,18 +146,24 @@ class Quota extends LSActiveRecord
             // Keep a list of fields for easy reference
             $aQuotaColumns = array();
             foreach ($this->quotaMembers as $member) {
-                if (!in_array($member->memberInfo['fieldname'], $aExistingColumnName)) {
+                $aMemberInfo = $member->memberInfo;
+                if (!in_array($aMemberInfo['fieldname'], $aExistingColumnName)) {
                     \Yii::log(
                         sprintf(
                             "Invalid quota member %s",
-                            $member->memberInfo['fieldname']
+                            $aMemberInfo['fieldname']
                         ),
                         'warning',
                         'application.model.Quota'
                     );
                     return null;
                 }
-                $aQuotaColumns[$member->memberInfo['fieldname']][] = $member->memberInfo['value'];
+                $sValue = $aMemberInfo['value'];
+                // Answers of encrypted questions are stored encrypted: Compare with the encrypted value
+                if ($member->question->encrypted === 'Y') {
+                    $sValue = LSActiveRecord::encryptSingle($sValue);
+                }
+                $aQuotaColumns[$aMemberInfo['fieldname']][] = $sValue;
             }
 
             $oCriteria = new CDbCriteria();
@@ -214,7 +208,7 @@ class Quota extends LSActiveRecord
 
     /**
      * Get the QuotaLanguageSetting for current language
-     * @return QuotaLanguageSetting
+     * @return QuotaLanguageSetting|null Null if the quota has no texts in the current and the base language
      */
     public function getCurrentLanguageSetting()
     {
@@ -226,7 +220,7 @@ class Quota extends LSActiveRecord
         if ($oQuotaLanguageSettings) {
             return $oQuotaLanguageSettings;
         }
-        /* If not exist or found, return the one from survey base languague */
+        /* If not exist or found, return the one from survey base language */
         return $this->getMainLanguagesetting();
     }
 

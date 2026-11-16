@@ -2,5 +2,4 @@
 
 class DataSetListRadio extends QuestionBaseDataSet
 {
-
 }

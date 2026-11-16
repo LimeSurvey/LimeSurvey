@@ -11,7 +11,6 @@
 
 class LSCaptcha extends CCaptcha
 {
-
     public function renderOut()
     {
         $html = $this->renderImage();
@@ -29,7 +28,7 @@ class LSCaptcha extends CCaptcha
         $this->imageOptions['class'] = "img-fluid";
 
         $url = $this->getController()->createUrl($this->captchaAction, array('v' => uniqid()));
-        $alt = $this->imageOptions['alt'] ?? '';
+        $alt = $this->imageOptions['alt'] ?? gT('Image showing the equation to solve', 'unescaped');
         return CHtml::image($url, $alt, $this->imageOptions);
     }
 }

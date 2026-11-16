@@ -2,7 +2,6 @@
 
 class customToken extends PluginBase
 {
-
     protected $storage = 'DbStorage';
     protected static $name = 'customToken';
     protected static $description = 'At token generation this plugin enforces certain token formats like Numeric, non-ambiguous or uppercase tokens';
@@ -53,25 +52,7 @@ class customToken extends PluginBase
                 );
                 break;
             case 3: // 3 = CAPITALS ONLY
-                if (function_exists('crypto_rand_secure')) {
-                    /**
-                     * Adjusted from Yii::app()->securityManager->generateRandomString($length=32)
-                     * https://github.com/LimeSurvey/LimeSurvey/blob/master/application/core/web/LSYii_SecurityManager.php#L71
-                     * Use crypto_rand_secure($min, $max) defined in application/helpers/common_helper.php
-                     */
-                    $codeAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-                    for ($i = 0; $i < $iTokenLength; $i++) {
-                        $token .= $codeAlphabet[crypto_rand_secure(0, strlen($codeAlphabet))];
-                    }
-                } else {
-                    /**
-                     * Secure enough, although not cryptographically secure
-                     * https://www.php.net/manual/en/function.rand.php
-                     */
-                    for ($i = 0; $i < $iTokenLength; $i++) {
-                        $token .= chr(64 + rand(1, 26));
-                    }
-                }
+                $token = randomChars($iTokenLength, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ');
                 break;
             default:
                 // Must never happen
@@ -117,7 +98,7 @@ class customToken extends PluginBase
             $this->set($name, $value, 'Survey', $event->get('survey'));
         }
     }
-    
+
     /**
      * Clean up the plugin settings table
      */

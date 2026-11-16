@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE ldml SYSTEM "../../common/dtd/ldml.dtd">
-<!-- Copyright © 1991-2013 Unicode, Inc.
-CLDR data files are interpreted according to the LDML specification (http://unicode.org/reports/tr35/)
+<!-- Copyright © 1991-2026 Unicode, Inc.
 For terms of use, see http://www.unicode.org/copyright.html
+SPDX-License-Identifier: Unicode-3.0
+CLDR data files are interpreted according to the LDML specification (http://unicode.org/reports/tr35/)
 -->
 <ldml>
 	<identity>
-		<version number="$Revision: 9287 $"/>
-		<generation date="$Date: 2013-08-28 21:32:04 -0500 (Wed, 28 Aug 2013) $"/>
+		<version number="$Revision$"/>
 		<language type="xog"/>
 	</identity>
 	<localeDisplayNames>
@@ -66,7 +66,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="AI">Angwila</territory>
 			<territory type="AL">Alibaniya</territory>
 			<territory type="AM">Arameniya</territory>
-			<territory type="AN">Ebizinga bya Antile by'abaHolandi</territory>
 			<territory type="AO">Angola</territory>
 			<territory type="AR">Arigentina</territory>
 			<territory type="AS">Samowa omumerika</territory>
@@ -150,7 +149,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="IE">Ayalandi</territory>
 			<territory type="IL">Yisirayeri</territory>
 			<territory type="IN">Buyindi</territory>
-			<territory type="IO">Ebizinga bya Cago</territory>
+			<territory type="IO" draft="provisional">Ebizinga bya Cago</territory>
 			<territory type="IQ">Yiraaka</territory>
 			<territory type="IR">Yiraani</territory>
 			<territory type="IS">Ayisirandi</territory>
@@ -185,7 +184,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="MD">Molodova</territory>
 			<territory type="MG">Madagasika</territory>
 			<territory type="MH">Bizinga bya Mariso</territory>
-			<territory type="MK">Masedoniya</territory>
 			<territory type="ML">Mali</territory>
 			<territory type="MM">Myanima</territory>
 			<territory type="MN">Mongoliya</territory>
@@ -203,7 +201,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="NA">Namibiya</territory>
 			<territory type="NC">Kaledonya mupya</territory>
 			<territory type="NE">Nije</territory>
-			<territory type="NF">Kizinga ky'eNorofoko</territory>
+			<territory type="NF">Kizinga ky’eNorofoko</territory>
 			<territory type="NG">Nayijerya</territory>
 			<territory type="NI">Nikaraguwa</territory>
 			<territory type="NL">Holandi</territory>
@@ -273,7 +271,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="VC">Senti Vinsenti ni Gurendadiini</territory>
 			<territory type="VE">Venzwera</territory>
 			<territory type="VG">Ebizinga bya Virigini ebitwalibwa Bungereza</territory>
-			<territory type="VI">Ebizinga bya Virigini eby'Amerika</territory>
+			<territory type="VI">Ebizinga bya Virigini eby’Amerika</territory>
 			<territory type="VN">Vyetinaamu</territory>
 			<territory type="VU">Vanawuwatu</territory>
 			<territory type="WF">Walisi ni Futuna</territory>
@@ -289,12 +287,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 		<exemplarCharacters>[a b c d e f g h i j k l m n o p q r s t u v w x y z]</exemplarCharacters>
 		<exemplarCharacters type="index">[A B C D E F G H I J K L M N O P Q R S T U V W X Y Z]</exemplarCharacters>
 	</characters>
-	<delimiters>
-		<quotationStart>“</quotationStart>
-		<quotationEnd>”</quotationEnd>
-		<alternateQuotationStart>‘</alternateQuotationStart>
-		<alternateQuotationEnd>’</alternateQuotationEnd>
-	</delimiters>
 	<dates>
 		<calendars>
 			<calendar type="generic">
@@ -322,19 +314,11 @@ For terms of use, see http://www.unicode.org/copyright.html
 				</dateFormats>
 				<dateTimeFormats>
 					<availableFormats>
-						<dateFormatItem id="d">d</dateFormatItem>
-						<dateFormatItem id="hm">h:mm a</dateFormatItem>
-						<dateFormatItem id="Hm">HH:mm</dateFormatItem>
-						<dateFormatItem id="Hms">HH:mm:ss</dateFormatItem>
-						<dateFormatItem id="M">L</dateFormatItem>
+						<dateFormatItem id="hm">h:mm a</dateFormatItem>
 						<dateFormatItem id="Md">M/d</dateFormatItem>
 						<dateFormatItem id="MEd">E, M/d</dateFormatItem>
-						<dateFormatItem id="MMM">LLL</dateFormatItem>
-						<dateFormatItem id="MMMd">MMM d</dateFormatItem>
 						<dateFormatItem id="MMMEd">E, MMM d</dateFormatItem>
-						<dateFormatItem id="MMMMd">MMMM d</dateFormatItem>
 						<dateFormatItem id="MMMMEd">E, MMMM d</dateFormatItem>
-						<dateFormatItem id="ms">mm:ss</dateFormatItem>
 						<dateFormatItem id="y">y</dateFormatItem>
 						<dateFormatItem id="yM">M/y</dateFormatItem>
 						<dateFormatItem id="yMEd">E, M/d/y</dateFormatItem>
@@ -446,7 +430,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 				</quarters>
 				<dayPeriods>
 					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
+						<dayPeriodWidth type="abbreviated">
 							<dayPeriod type="am">Munkyo</dayPeriod>
 							<dayPeriod type="pm">Eigulo</dayPeriod>
 						</dayPeriodWidth>
@@ -487,41 +471,32 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<timeFormats>
 					<timeFormatLength type="full">
 						<timeFormat>
-							<pattern>h:mm:ss a zzzz</pattern>
+							<pattern>HH:mm:ss zzzz</pattern>
 						</timeFormat>
 					</timeFormatLength>
 					<timeFormatLength type="long">
 						<timeFormat>
-							<pattern>h:mm:ss a z</pattern>
+							<pattern>HH:mm:ss z</pattern>
 						</timeFormat>
 					</timeFormatLength>
 					<timeFormatLength type="medium">
 						<timeFormat>
-							<pattern>h:mm:ss a</pattern>
+							<pattern>HH:mm:ss</pattern>
 						</timeFormat>
 					</timeFormatLength>
 					<timeFormatLength type="short">
 						<timeFormat>
-							<pattern>h:mm a</pattern>
+							<pattern>HH:mm</pattern>
 						</timeFormat>
 					</timeFormatLength>
 				</timeFormats>
 				<dateTimeFormats>
 					<availableFormats>
-						<dateFormatItem id="d">d</dateFormatItem>
-						<dateFormatItem id="hm">h:mm a</dateFormatItem>
-						<dateFormatItem id="Hm">HH:mm</dateFormatItem>
-						<dateFormatItem id="Hms">HH:mm:ss</dateFormatItem>
-						<dateFormatItem id="M">L</dateFormatItem>
+						<dateFormatItem id="hm">h:mm a</dateFormatItem>
 						<dateFormatItem id="Md">M/d</dateFormatItem>
 						<dateFormatItem id="MEd">E, M/d</dateFormatItem>
-						<dateFormatItem id="MMM">LLL</dateFormatItem>
-						<dateFormatItem id="MMMd">MMM d</dateFormatItem>
 						<dateFormatItem id="MMMEd">E, MMM d</dateFormatItem>
-						<dateFormatItem id="MMMMd">MMMM d</dateFormatItem>
 						<dateFormatItem id="MMMMEd">E, MMMM d</dateFormatItem>
-						<dateFormatItem id="ms">mm:ss</dateFormatItem>
-						<dateFormatItem id="y">y</dateFormatItem>
 						<dateFormatItem id="yM">M/y</dateFormatItem>
 						<dateFormatItem id="yMEd">E, M/d/y</dateFormatItem>
 						<dateFormatItem id="yMMM">MMM y</dateFormatItem>
@@ -577,6 +552,38 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<currencyFormatLength>
 				<currencyFormat type="standard">
 					<pattern>#,##0.00 ¤</pattern>
+					<pattern alt="alphaNextToNumber">#,##0.00 ¤</pattern>
+				</currencyFormat>
+				<currencyFormat type="accounting">
+					<pattern alt="alphaNextToNumber">#,##0.00 ¤</pattern>
+				</currencyFormat>
+			</currencyFormatLength>
+			<currencyFormatLength type="short">
+				<currencyFormat type="standard">
+					<pattern type="1000" count="one" draft="provisional">0K ¤</pattern>
+					<pattern type="1000" count="other" draft="provisional">0K ¤</pattern>
+					<pattern type="10000" count="one" draft="provisional">00K ¤</pattern>
+					<pattern type="10000" count="other" draft="provisional">00K ¤</pattern>
+					<pattern type="100000" count="one" draft="provisional">000K ¤</pattern>
+					<pattern type="100000" count="other" draft="provisional">000K ¤</pattern>
+					<pattern type="1000000" count="one" draft="provisional">0M ¤</pattern>
+					<pattern type="1000000" count="other" draft="provisional">0M ¤</pattern>
+					<pattern type="10000000" count="one" draft="provisional">00M ¤</pattern>
+					<pattern type="10000000" count="other" draft="provisional">00M ¤</pattern>
+					<pattern type="100000000" count="one" draft="provisional">000M ¤</pattern>
+					<pattern type="100000000" count="other" draft="provisional">000M ¤</pattern>
+					<pattern type="1000000000" count="one" draft="provisional">0G ¤</pattern>
+					<pattern type="1000000000" count="other" draft="provisional">0G ¤</pattern>
+					<pattern type="10000000000" count="one" draft="provisional">00G ¤</pattern>
+					<pattern type="10000000000" count="other" draft="provisional">00G ¤</pattern>
+					<pattern type="100000000000" count="one" draft="provisional">000G ¤</pattern>
+					<pattern type="100000000000" count="other" draft="provisional">000G ¤</pattern>
+					<pattern type="1000000000000" count="one" draft="provisional">0T ¤</pattern>
+					<pattern type="1000000000000" count="other" draft="provisional">0T ¤</pattern>
+					<pattern type="10000000000000" count="one" draft="provisional">00T ¤</pattern>
+					<pattern type="10000000000000" count="other" draft="provisional">00T ¤</pattern>
+					<pattern type="100000000000000" count="one" draft="provisional">000T ¤</pattern>
+					<pattern type="100000000000000" count="other" draft="provisional">000T ¤</pattern>
 				</currencyFormat>
 			</currencyFormatLength>
 		</currencyFormats>
@@ -585,10 +592,10 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Diraamu eya Emireeti</displayName>
 			</currency>
 			<currency type="AOA">
-				<displayName>Kwanza y'Angola</displayName>
+				<displayName>Kwanza y’Angola</displayName>
 			</currency>
 			<currency type="AUD">
-				<displayName>Doola y'Awusiturelya</displayName>
+				<displayName>Doola y’Awusiturelya</displayName>
 			</currency>
 			<currency type="BHD">
 				<displayName>Dinaali ya Baareeni</displayName>
@@ -606,7 +613,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Faranga ya Kongo</displayName>
 			</currency>
 			<currency type="CHF">
-				<displayName>Faranga ey'eSwitizirandi</displayName>
+				<displayName>Faranga ey’eSwitizirandi</displayName>
 			</currency>
 			<currency type="CNY">
 				<displayName>Yuwani Reniminibi ya Cayina</displayName>
@@ -618,7 +625,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Faranga ya Jjibuti</displayName>
 			</currency>
 			<currency type="DZD">
-				<displayName>Dinaali y'Aligerya</displayName>
+				<displayName>Dinaali y’Aligerya</displayName>
 			</currency>
 			<currency type="EGP">
 				<displayName>Pawunda ya Misiri</displayName>
@@ -666,68 +673,77 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Dinaali ya Libya</displayName>
 			</currency>
 			<currency type="MAD">
-				<displayName>Diraamu ey'eMoroko</displayName>
+				<displayName>Diraamu ey’eMoroko</displayName>
 			</currency>
 			<currency type="MGA">
-				<displayName>Faranga ey'eMalagase</displayName>
+				<displayName>Faranga ey’eMalagase</displayName>
 			</currency>
 			<currency type="MRO">
-				<displayName>Wugwiya ey'eMawritenya</displayName>
+				<displayName>Wugwiya ey’eMawritenya (1973–2017)</displayName>
+			</currency>
+			<currency type="MRU">
+				<displayName>Wugwiya ey’eMawritenya</displayName>
 			</currency>
 			<currency type="MUR">
-				<displayName>Rupiya ey'eMawurisyasi</displayName>
+				<displayName>Rupiya ey’eMawurisyasi</displayName>
 			</currency>
 			<currency type="MWK">
-				<displayName>Kwaca ey'eMalawi</displayName>
+				<displayName>Kwaca ey’eMalawi</displayName>
 			</currency>
 			<currency type="MZM">
-				<displayName>Metikaali ey'eMozambiiki</displayName>
+				<displayName>Metikaali ey’eMozambiiki</displayName>
 			</currency>
 			<currency type="NGN">
-				<displayName>Nayira ey'eNayijerya</displayName>
+				<displayName>Nayira ey’eNayijerya</displayName>
 			</currency>
 			<currency type="RWF">
-				<displayName>Faranga ey'eRwanda</displayName>
+				<displayName>Faranga ey’eRwanda</displayName>
 			</currency>
 			<currency type="SAR">
-				<displayName>Riyaali ey'eBuwarabu</displayName>
+				<displayName>Riyaali ey’eBuwarabu</displayName>
 			</currency>
 			<currency type="SCR">
-				<displayName>Rupiya ey'eSesere</displayName>
+				<displayName>Rupiya ey’eSesere</displayName>
 			</currency>
 			<currency type="SDG">
-				<displayName>Dinaali ey'eSudaani</displayName>
+				<displayName>Dinaali ey’eSudaani</displayName>
 			</currency>
 			<currency type="SDP">
-				<displayName>Pawunda ey'eSudaani</displayName>
+				<displayName>Pawunda ey’eSudaani</displayName>
 			</currency>
 			<currency type="SHP">
-				<displayName>Pawunda ey'eSenti Herena</displayName>
+				<displayName>Pawunda ey’eSenti Herena</displayName>
 			</currency>
-			<currency type="SLL">
+			<currency type="SLE">
 				<displayName>Lewone</displayName>
 			</currency>
+			<currency type="SLL">
+				<displayName>Lewone (1964—2022)</displayName>
+			</currency>
 			<currency type="SOS">
-				<displayName>Silingi ey'eSomaliya</displayName>
+				<displayName>Silingi ey’eSomaliya</displayName>
 			</currency>
 			<currency type="STD">
-				<displayName>Dobura ey'eSantome ne Purincipe</displayName>
+				<displayName>Dobura ey’eSantome ne Purincipe (1977–2017)</displayName>
+			</currency>
+			<currency type="STN">
+				<displayName>Dobura ey’eSantome ne Purincipe</displayName>
 			</currency>
 			<currency type="SZL">
 				<displayName>Lilangeni</displayName>
 			</currency>
 			<currency type="TND">
-				<displayName>Dinaali ey'eTunizya</displayName>
+				<displayName>Dinaali ey’eTunizya</displayName>
 			</currency>
 			<currency type="TZS">
-				<displayName>Silingi ey'eTanzaniya</displayName>
+				<displayName>Silingi ey’eTanzaniya</displayName>
 			</currency>
 			<currency type="UGX">
 				<displayName>Silingi eya Yuganda</displayName>
 				<symbol>USh</symbol>
 			</currency>
 			<currency type="USD">
-				<displayName>Doola ey'Amerika</displayName>
+				<displayName>Doola ey’Amerika</displayName>
 			</currency>
 			<currency type="XAF">
 				<displayName>Faranga yamu Afirika ya wakati</displayName>
@@ -736,16 +752,16 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Faranga yamu Afirika ya bugwanjuba</displayName>
 			</currency>
 			<currency type="ZAR">
-				<displayName>Randi ey'eSawusafirika</displayName>
+				<displayName>Randi ey’eSawusafirika</displayName>
 			</currency>
 			<currency type="ZMK">
-				<displayName>Kwaca ey'eZambya (1968–2012)</displayName>
+				<displayName>Kwaca ey’eZambya (1968–2012)</displayName>
 			</currency>
 			<currency type="ZMW">
-				<displayName>Kwaca ey'eZambya</displayName>
+				<displayName>Kwaca ey’eZambya</displayName>
 			</currency>
 			<currency type="ZWD">
-				<displayName>Doola ey'eZimbabwe</displayName>
+				<displayName>Doola ey’eZimbabwe</displayName>
 			</currency>
 		</currencies>
 	</numbers>
@@ -756,4 +772,3 @@ For terms of use, see http://www.unicode.org/copyright.html
 		</messages>
 	</posix>
 </ldml>
-

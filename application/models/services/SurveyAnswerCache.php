@@ -42,6 +42,12 @@ class SurveyAnswerCache
                     = $answer->answerl10ns[$language]->answer;
             }
         }
+        // Ranking items are subquestions: add their texts so ranked codes resolve like answer options
+        foreach (\Question::getRankingItemTexts($surveyId, $language) as $rankingQid => $itemTexts) {
+            foreach ($itemTexts as $code => $text) {
+                $this->labels[$rankingQid][0][$code] = $text;
+            }
+        }
 
         $this->loaded = true;
     }

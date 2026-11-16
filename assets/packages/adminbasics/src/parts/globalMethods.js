@@ -22,15 +22,34 @@ const globalWindowMethods = {
         return true ;
     },
     doToolTip: () => {
-        // Destroy all tooltips
-        try {
-            $('.tooltip').tooltip('dispose');
-        } catch (e) {}
+        // A trigger whose tooltip is currently shown (or fading in/out) points to it via aria-describedby
+        const getVisibleTip = (el) => {
+            const tipId = el.getAttribute('aria-describedby');
+            const tip = tipId ? document.getElementById(tipId) : null;
+            return (tip && tip.classList.contains('tooltip')) ? tip : null;
+        };
+        const liveTips = new Set();
 
-        // Reinit all tooltips
-        let tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-        tooltipTriggerList.map(function (tooltipTriggerEl) {
-            return new bootstrap.Tooltip(tooltipTriggerEl);
+        document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (el) {
+            const instance = bootstrap.Tooltip.getInstance(el);
+            if (instance) {
+                // Bootstrap 5.1 does not cancel a running fade transition on dispose, its callback
+                // then crashes on the disposed instance (this._config is null) - so keep visible ones
+                const visibleTip = getVisibleTip(el);
+                if (visibleTip) {
+                    liveTips.add(visibleTip);
+                    return;
+                }
+                try { instance.dispose(); } catch (e) {}
+            }
+            new bootstrap.Tooltip(el);
+        });
+
+        // Remove any orphaned tooltip popups left in the DOM
+        document.querySelectorAll('.tooltip.bs-tooltip-auto, .tooltip.bs-tooltip-top, .tooltip.bs-tooltip-bottom, .tooltip.bs-tooltip-start, .tooltip.bs-tooltip-end, .tooltip.show').forEach(function (el) {
+            if (!liveTips.has(el)) {
+                el.remove();
+            }
         });
     },
     doSelect2: () => {
@@ -43,10 +62,11 @@ const globalWindowMethods = {
     },
     // finds any duplicate array elements using the fewest possible comparison
     arrHasDupes:  ( arrayToCheck ) => {
-        return (_.uniq(arrayToCheck).length !== arrayToCheck.length);
+        return (new Set(arrayToCheck).size !== arrayToCheck.length);
     },
     arrHasDupesWhich: ( arrayToCheck ) => {
-        return (_.difference(_.uniq(arrayToCheck), arrayToCheck)).length > 0;
+        const unique = [...new Set(arrayToCheck)];
+        return unique.filter(item => !arrayToCheck.includes(item)).length > 0;
     },
     getkey :  (e) => {
         return (window.event) ? window.event.keyCode :(e ? e.which : null);
@@ -89,11 +109,11 @@ const globalWindowMethods = {
         const $form = $("<form method='POST'>").attr("action", url);
         if(typeof content == 'string' && content != ''){
             try {
-                contentObject = _.merge(contentObject, JSON.parse(content));
+                Object.assign(contentObject, JSON.parse(content));
             } catch(e) { console.error('JSON parse on sendPost failed!') }
         }
 
-        _.each(contentObject, (value,key) => {
+        Object.entries(contentObject).forEach(([key, value]) => {
             $("<input type='hidden'>").attr("name", key).attr("value", value).appendTo($form);
         });
 

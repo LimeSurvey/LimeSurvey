@@ -1,0 +1,10 @@
+.sharing-panel,
+.overview-modal {
+  .card {
+    border-radius: $border-radius;
+    padding: 20px 32px;
+    box-shadow: 0 2px 6px 0 $elevation-shadow-soft;
+    outline: none;
+    border: none;
+  }
+}

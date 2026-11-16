@@ -9,7 +9,7 @@ use LimeSurvey\Api\Transformer\Transformer;
 /**
  * @testdox API Transformer
  */
-class TransformerOutputTest extends TestBaseClass
+class TransformerTest extends TestBaseClass
 {
     /**
      * @testdox transform() Transformed data only includes fields specified in map.
@@ -162,7 +162,7 @@ class TransformerOutputTest extends TestBaseClass
     public function testCastsViaCallable()
     {
         $castBoolean = function($value) {
-            return (boolean) $value;
+            return (bool) $value;
         };
         $castFloat = function ($value) {
             return (float) $value;

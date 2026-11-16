@@ -8,7 +8,7 @@
  * @var $i
  * @var $extraline
  * @var $sColumnNameForView
- * potentialy not set when controller will try to load them in $aData (so will need default values)
+ * potentially not set when controller will try to load them in $aData (so will need default values)
  * @var $aggregated
  * @var $aggregatedPercentage
  * @var $sumitems
@@ -19,8 +19,6 @@
 ?>
 
 <!-- _statisticsoutput_gross_total -->
-<tr>
-
     <tr>
         <td align='right'>
             <strong>
@@ -34,11 +32,11 @@
         </td>
         <td align='right' colspan="2">
             <strong>
-            <?php if ($sumallitems > 0){ ?>
+            <?php if ($sumallitems > 0) { ?>
                 100.00%
             <?php } else { ?>
                 0.00%
-                <?php } ?>
+            <?php } ?>
             </strong>
         </td>
     </tr>

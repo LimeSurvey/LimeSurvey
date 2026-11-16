@@ -1,4 +1,5 @@
 <?php
+
 /**
  * TbArray class file.
  * @author Christoffer Niska <christoffer.niska@gmail.com>

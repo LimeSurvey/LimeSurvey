@@ -7,10 +7,10 @@ use LimeSurvey\Models\Services\ParticipantAttributeService;
 class ParticipantAttributeFactory
 {
     /**
-     * @param ParticipantAttributeMockSet|null $mockSet
+     * @param ?ParticipantAttributeMockSet $mockSet
      * @return ParticipantAttributeService
      */
-    public function make(ParticipantAttributeMockSet $mockSet = null): ParticipantAttributeService
+    public function make(?ParticipantAttributeMockSet $mockSet = null): ParticipantAttributeService
     {
         $mockSet = (new ParticipantAttributeMockSetFactory())->make($mockSet);
 

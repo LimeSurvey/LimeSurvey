@@ -2,7 +2,7 @@
 
 /**
  * LimeSurvey
- * Copyright (C) 2007-2015 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -16,6 +16,7 @@ namespace LimeSurvey\ExtensionInstaller;
 
 use Exception;
 use ExtensionConfig;
+use Yii;
 
 /**
  * @since 2018-09-26
@@ -199,7 +200,7 @@ abstract class ExtensionUpdater
             return [];
         }
 
-        $allowUnstable = getGlobalSetting('allow_unstable_extension_update');
+        $allowUnstable = Yii::app()->getConfig('allow_unstable_extension_update');
 
         $versions = [];
         foreach ($versionFetchers as $fetcher) {

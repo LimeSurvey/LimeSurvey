@@ -12,7 +12,7 @@
             <?php
             $message = gT('The update is now complete!') . '</br>' .
                 gT("If necessary the database will be updated in a final step.") . '</br>' .
-                gT('However it is very important that you clear your browser cache now. After that please click the button below.');
+                gT('However, it is important that you clear your browser cache now. After that please click the button below.');
             $this->widget('ext.AlertWidget.AlertWidget', [
                 'header' => sprintf(gT('Buildnumber was successfully updated to %s.'), $destinationBuild),
                 'text' => $message,

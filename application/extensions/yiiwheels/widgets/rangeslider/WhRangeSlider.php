@@ -1,4 +1,5 @@
 <?php
+
 /**
  * WhDateRangePicker widget class
  * Implementation of jQRangeSlider. A powerful slider for selecting value ranges, supporting dates and more.
@@ -10,11 +11,11 @@
  * @package YiiWheels.widgets.rangeslider
  * @uses YiiStrap.helpers.TbArray
  */
+
 Yii::import('yiistrap_fork.helpers.TbArray');
 
 class WhRangeSlider extends CInputWidget
 {
-
     /**
      * @var string lets you specify what type of jQRangeSlider you wish to display. Defaults to "range". Possible values
      * are:
@@ -369,8 +370,7 @@ class WhRangeSlider extends CInputWidget
                 )
             );
         }
-        if(!empty($this->pluginOptions))
-        {
+        if (!empty($this->pluginOptions)) {
             $this->options = CMap::mergeArray($this->pluginOptions, $this->options);
         }
     }

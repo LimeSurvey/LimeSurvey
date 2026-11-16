@@ -71,7 +71,7 @@ class SearchBoxWidget extends CWidget
     {
         // Register JavaScript file
         App()->getClientScript()->registerScriptFile(
-            App()->getConfig("extensionsurl") . 'admin/SearchBoxWidget/assets/filters.js',
+            App()->getAssetManager()->publish(dirname(__FILE__) . '/assets/filters.js'),
             CClientScript::POS_END
         );
     }

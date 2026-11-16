@@ -6,6 +6,7 @@ use Exception;
 
 class Update_433 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
         $aTableNames = dbGetTablesLike("tokens%");

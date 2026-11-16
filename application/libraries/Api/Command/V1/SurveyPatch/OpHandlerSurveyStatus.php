@@ -4,6 +4,7 @@ namespace LimeSurvey\Api\Command\V1\SurveyPatch;
 
 use LimeSurvey\ObjectPatch\{
     Op\OpInterface,
+    OpHandler\OpHandlerException,
     OpHandler\OpHandlerInterface,
     OpType\OpTypeUpdate
 };
@@ -81,7 +82,8 @@ class OpHandlerSurveyStatus implements OpHandlerInterface
         if (!isset($props['ok'])) {
             $props['ok'] = true;
         }
-        $surveyActivateService->{$this->action}($op->getEntityId(), $props);
+        $result = $surveyActivateService->{$this->action}($op->getEntityId(), $props);
+        $this->throwOnBlockedStatusChange($result);
         $return = [];
         $survey = Survey::model()->findByPk($op->getEntityId());
         if (($this->action === 'expire') && $survey && $survey->expires) {
@@ -90,6 +92,39 @@ class OpHandlerSurveyStatus implements OpHandlerInterface
             ];
         }
         return $return;
+    }
+
+    /**
+     * Plugins (beforeSurveyActivate, beforeSurveyDeactivate) and failing table
+     * creation stop a status change without throwing. Throw here, so the
+     * editor shows the reason instead of treating the change as done.
+     *
+     * @param mixed $result result of the activate/deactivate service
+     * @return void
+     * @throws OpHandlerException
+     */
+    private function throwOnBlockedStatusChange($result): void
+    {
+        if ($this->action === 'activate' && !empty($result['error'])) {
+            if ($result['error'] === 'plugin') {
+                // SurveyActivator also stored the message as flash for the classic
+                // admin. Remove it, else it shows up on the next classic page.
+                App()->user->getFlash('error');
+            }
+            $message = !empty($result['message'])
+                ? $result['message']
+                : gT('The survey could not be activated.');
+            if ($result['error'] !== 'plugin') {
+                $message .= ' (' . $result['error'] . ')';
+            }
+            throw new OpHandlerException($message);
+        }
+        if (
+            $this->action === 'deactivate'
+            && !empty($result['beforeDeactivate']['message'])
+        ) {
+            throw new OpHandlerException($result['beforeDeactivate']['message']);
+        }
     }
 
     /**

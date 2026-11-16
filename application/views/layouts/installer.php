@@ -26,7 +26,7 @@
 <body>
 <div class="container">
     <div class="row">
-        <div class="col-12">
+        <div class="col-12" style='padding-top:20px'>
             <h1 class="pagetitle"><?php eT("LimeSurvey installer"); ?></h1>
         </div>
     </div>

@@ -360,6 +360,7 @@ abstract class Zend_Db_Table_Rowset_Abstract implements SeekableIterator, Counta
      *
      * @param string $offset
      * @param mixed $value
+     * @return void
      */
     #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value): void
@@ -371,6 +372,7 @@ abstract class Zend_Db_Table_Rowset_Abstract implements SeekableIterator, Counta
      * Required by the ArrayAccess implementation
      *
      * @param string $offset
+     * @return void
      */
     #[\ReturnTypeWillChange]
     public function offsetUnset($offset): void

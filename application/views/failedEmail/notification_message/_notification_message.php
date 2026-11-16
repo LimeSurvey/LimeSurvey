@@ -1,6 +1,6 @@
 <?php
 /**
- * View for the message of the meesage in the notification center
+ * View for the message of the message in the notification center
  * @var array $failedEmailSurveyTitles
  *
  *
@@ -19,6 +19,6 @@
                 Yii::app()->createUrl("failedEmail/index/", ['surveyid' => $surveyId])
             ) ?>
         </li>
-    <?php
+        <?php
     endforeach; ?>
 </ul>

@@ -91,14 +91,14 @@
 
                     <?php
                     if (in_array($sFieldType, array('editanswer', 'addanswer', 'editlabel', 'addlabel'))) {
-                    ?>
+                        ?>
                     var editedtext = oEditor.getData().replace(new RegExp( "\n", "g" ),'');
                     var editedtext = oEditor.getData().replace(new RegExp( "\r", "g" ),'');
-                    <?php
+                        <?php
                     } else {
-                    ?>
+                        ?>
                     var editedtext = oEditor.getData('no strip new line'); // adding a parameter avoids stripping \n
-                    <?php
+                        <?php
                     }
                     ?>
 

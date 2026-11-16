@@ -7,7 +7,6 @@ echo viewHelper::getViewTestTag('dumpdb');
 ?>
 
 <?php if (!$htmlContent) { ?>
-
     <div class="row">
         <div class="col-12">
             <!-- Data redundancy check -->

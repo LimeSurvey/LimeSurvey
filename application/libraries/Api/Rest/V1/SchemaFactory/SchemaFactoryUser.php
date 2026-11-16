@@ -30,6 +30,7 @@ class SchemaFactoryUser
                 Schema::string('created')->default(null),
                 Schema::string('modified')->default(null),
                 Schema::integer('userStatus')->default(null),
+                Schema::boolean('isSuperAdmin')->default(false),
             );
     }
 }

@@ -1,6 +1,6 @@
 {#
     LimeSurvey
-    Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+    Copyright (C) 2007-2026 The LimeSurvey Project Team
     All rights reserved.
     License: GNU/GPL License v2 or later, see LICENSE.php
     LimeSurvey is free software. This version may have been modified pursuant
@@ -34,7 +34,7 @@
     {{ aSurveyInfo.EM.ScriptsAndHiddenInputs  }}
 
     <div class="{{ aSurveyInfo.class.savemessage }} card card-body bg-light clearfix mb-3" {{ aSurveyInfo.attr.savemessage }}>
-        <div class="{{ aSurveyInfo.class.savemessagetitle }} card-title h2" {{ aSurveyInfo.attr.savemessagetitle }}>{{ gT("Load unfinished survey") }}</div>
+        <h2 class="{{ aSurveyInfo.class.savemessagetitle }} card-title" {{ aSurveyInfo.attr.savemessagetitle }}>{{ gT("Load unfinished survey") }}</h2>
         <div class="{{ aSurveyInfo.class.savemessagetext }} text-info" {{ aSurveyInfo.attr.savemessagetext }}>
             <p {{ aSurveyInfo.attr.savemessagetextp }} > {{ gT("You can load a survey that you have previously saved from this screen.") }} </p>
             <p {{ aSurveyInfo.attr.savemessagetextpb }} > {{ gT("Type in the 'name' you used to save the survey, and the password.") }} </p>
@@ -65,7 +65,7 @@
 
         {#
             It generates the opening form tag and the CRSF token
-            It uses the Yii fuction CHtml::form
+            It uses the Yii function CHtml::form
             @see: http://www.yiiframework.com/doc/api/1.1/CHtml#form-detail
         #}
         <!-- Save Form -->
@@ -81,6 +81,8 @@
 
             <!-- Name and Password -->
             <div class="{{ aSurveyInfo.class.saveform }} col-lg-8 offset-lg-2" {{ aSurveyInfo.attr.saveform }}>
+
+                <span class="large mb-2 d-block">{{ gT("Fields marked with an asterisk (*) are mandatory.") }}</span>
 
                 <!-- Saved name  -->
                 <div class="{{ aSurveyInfo.class.saveformrow }} mb-3" {{ aSurveyInfo.attr.saveformrow }}>
@@ -111,7 +113,7 @@
                     <!-- Captcha -->
                     <div class='{{ aSurveyInfo.class.captcharow }} mb-3' {{ aSurveyInfo.attr.captcharow }}>
                         <label class='{{ aSurveyInfo.class.captcharowlabel }} control-label'  {{ aSurveyInfo.attr.captcharowlabel }}>
-                            {{ gT("Security question:") }}
+                            {{ gT("Security question") }}
                         </label>
                         <div class='{{ aSurveyInfo.class.captcharowcol }}' {{ aSurveyInfo.attr.captcharowcol }}>
                             <div class='{{ aSurveyInfo.class.captcharowcoldiv }}' {{ aSurveyInfo.attr.captcharowcoldiv }}>

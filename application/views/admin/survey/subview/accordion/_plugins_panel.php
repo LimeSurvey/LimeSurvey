@@ -1,4 +1,5 @@
 <?php
+
 /**
  * optional plugins options panels
  */
@@ -15,17 +16,16 @@ echo viewHelper::getViewTestTag('surveyPlugins');
     var sParameter = '';
     var sTargetQuestion = '';
     var sNoParametersDefined = '';
-    var sAdminEmailAddressNeeded = '".gT("If you are using token functions or notifications emails you need to set an administrator email address.",'js')."'
+    var sAdminEmailAddressNeeded = '" . gT("If you are using token functions or notifications emails you need to set an administrator email address.", 'js') . "'
     var sURLParameters = '';
     var sAddParam = '';
-", LSYii_ClientScript::POS_BEGIN );
+", LSYii_ClientScript::POS_BEGIN);
 ?>
 
 <div id="advanced-question-editor">
-    <?php if (isset($pluginSettings)):
-            foreach ($pluginSettings as $id => $plugin)
-            {
-                $this->renderPartial('/admin/survey/subview/accordion/_plugin_panel', array('id'=>$id,'plugin'=>$plugin));
-            }
+    <?php if (isset($pluginSettings)) :
+        foreach ($pluginSettings as $id => $plugin) {
+            $this->renderPartial('/admin/survey/subview/accordion/_plugin_panel', array('id' => $id,'plugin' => $plugin));
+        }
     endif; ?>
 </div>

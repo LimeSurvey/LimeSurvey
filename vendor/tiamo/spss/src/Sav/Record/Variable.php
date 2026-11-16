@@ -142,16 +142,10 @@ class Variable extends Record
 
         if ($hasLabel) {
             // Maxlength is 255 bytes, since we write utf8 a char can be multiple bytes
-            $labelLength      = min(mb_strlen($this->label), 255);
-            $label            = mb_substr($this->label, 0, $labelLength);
-            $labelLengthBytes = mb_strlen($label, '8bit');
-            while ($labelLengthBytes > 255) {
-                // Strip one char, can be multiple bytes
-                $label            = mb_substr($label, 0, -1);
-                $labelLengthBytes = mb_strlen($label, '8bit');
-            }
+            $labelLengthBytes = $buffer->lengthBytes($this->label, self::REAL_VLS_CHUNK);
+            $labelLengthBytesRound = Utils::roundUp($labelLengthBytes, 4);
             $buffer->writeInt($labelLengthBytes);
-            $buffer->writeString($label, Utils::roundUp($labelLengthBytes, 4));
+            $buffer->writeString($this->label, $labelLengthBytesRound);
         }
 
         // TODO: test
@@ -181,7 +175,6 @@ class Variable extends Record
                 $buffer->writeInt($format); // Print format
                 $buffer->writeInt($format); // Write format
                 $buffer->writeString($this->getSegmentName($i - 1), 8);
-
                 $this->writeBlank($buffer, $segmentWidth);
             }
         }
@@ -222,6 +215,6 @@ class Variable extends Record
             return mb_strtoupper($this->name);
         }
         $sufix = str_pad($str, 2, "_", STR_PAD_LEFT);
-        return mb_strtoupper(mb_substr($this->name.$sufix, 0, 8));
+        return mb_strtoupper(mb_strcut($this->name.$sufix, 0, 8));
     }
 }

@@ -58,15 +58,6 @@ class SurveymenuEntryController extends SurveyCommonAction
         }
         $data['pageSize'] = Yii::app()->user->getState('pageSize', (int) Yii::app()->params['defaultPageSize']);
         $data['pageTitle'] = gT('Menu entries');
-        $data['fullpagebar'] = [
-            'menus' => [
-                'buttons' => [
-                    'addMenuEntry' => true,
-                    'reset'        => true,
-                    'reorder'      => true,
-                ],
-            ],
-        ];
         App()->getClientScript()->registerPackage('surveymenufunctions');
         $this->renderWrappedTemplate(null, array('surveymenu_entries/index'), $data);
     }
@@ -97,13 +88,24 @@ class SurveymenuEntryController extends SurveyCommonAction
      */
     public function create()
     {
+        if (!Permission::model()->hasGlobalPermission('settings', 'update') || Yii::app()->getConfig('demoMode')) {
+            Yii::app()->user->setFlash('error', gT("Access denied!"));
+            $this->getController()->redirect(Yii::app()->createUrl('/admin'));
+        }
+
         $model = new SurveymenuEntries();
 
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
         if (isset($_POST['SurveymenuEntries'])) {
-            $model->attributes = $_POST['SurveymenuEntries'];
+            $aSurveymenuEntry = $_POST['SurveymenuEntries'];
+            $aSurveymenuEntry['menu_id'] = (int) $aSurveymenuEntry['menu_id'];
+            if (($aSurveymenuEntry['menu_id'] == 1 || $aSurveymenuEntry['menu_id'] == 2) && !Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+                Yii::app()->user->setFlash('error', gT("Access denied!"));
+                $this->getController()->redirect(Yii::app()->createUrl('/admin'));
+            }
+            $model->attributes = $aSurveymenuEntry;
             if ($model->save()) {
                 $this->redirect(array('view', 'id' => $model->id));
             }
@@ -122,7 +124,7 @@ class SurveymenuEntryController extends SurveyCommonAction
     public function update($id)
     {
         if (!(Permission::model()->hasGlobalPermission('settings', 'update')) || Yii::app()->getConfig('demoMode')) {
-            Yii::app()->user->setFlash('error', gT("Access denied"));
+            Yii::app()->user->setFlash('error', gT("Access denied!"));
             $this->getController()->redirect(Yii::app()->createUrl('/admin'));
         }
         //Update or create
@@ -137,7 +139,7 @@ class SurveymenuEntryController extends SurveyCommonAction
         }
         //Don't update  main menu entries when not superadmin
         if (($model->menu_id == 1 || $model->menu_id == 2) && !Permission::model()->hasGlobalPermission('superadmin', 'read')) {
-            Yii::app()->user->setFlash('error', gT("Access denied"));
+            Yii::app()->user->setFlash('error', gT("Access denied!"));
             $this->getController()->redirect(Yii::app()->createUrl('/admin'));
         }
 
@@ -148,6 +150,10 @@ class SurveymenuEntryController extends SurveyCommonAction
             $aSurveymenuEntry['changed_at'] = date('Y-m-d H:i:s');
             $aSurveymenuEntry['created_at'] = date('Y-m-d H:i:s');
             $aSurveymenuEntry['menu_id'] = (int) $aSurveymenuEntry['menu_id'];
+            if (($aSurveymenuEntry['menu_id'] == 1 || $aSurveymenuEntry['menu_id'] == 2) && !Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+                Yii::app()->user->setFlash('error', gT("Access denied!"));
+                $this->getController()->redirect(Yii::app()->createUrl('/admin'));
+            }
             $model->setAttributes($aSurveymenuEntry);
             if ($model->save()) {
                 $model->id = $model->getPrimaryKey();
@@ -186,7 +192,7 @@ class SurveymenuEntryController extends SurveyCommonAction
             $aResults['global']['result'] = true;
 
             // Core Fields
-            $aCoreTokenFields = array('menu_id', 'menu_class', 'permission', 'permission_grade', 'language');
+            $aCoreTokenFields = array('menu_id', 'menu_class', 'permission', 'permission_grade', 'user_id', 'language');
 
             foreach ($aCoreTokenFields as $sCoreTokenField) {
                 if (trim((string) Yii::app()->request->getPost($sCoreTokenField, 'lskeep')) != 'lskeep') {
@@ -231,7 +237,7 @@ class SurveymenuEntryController extends SurveyCommonAction
     public function restore()
     {
         if (!(Permission::model()->hasGlobalPermission('settings', 'delete') && Permission::model()->hasGlobalPermission('settings', 'update'))) {
-            Yii::app()->user->setFlash('error', gT("Access denied"));
+            Yii::app()->user->setFlash('error', gT("Access denied!"));
             $this->getController()->redirect(Yii::app()->createUrl('/admin'));
         }
 
@@ -280,7 +286,7 @@ class SurveymenuEntryController extends SurveyCommonAction
     public function massDelete()
     {
         if (!(Permission::model()->hasGlobalPermission('settings', 'delete'))) {
-            Yii::app()->user->setFlash('error', gT("Access denied"));
+            Yii::app()->user->setFlash('error', gT("Access denied!"));
             $this->getController()->redirect(Yii::app()->createUrl('/admin'));
         }
 
@@ -328,7 +334,7 @@ class SurveymenuEntryController extends SurveyCommonAction
     public function delete()
     {
         if (!(Permission::model()->hasGlobalPermission('settings', 'delete'))) {
-            Yii::app()->user->setFlash('error', gT("Access denied"));
+            Yii::app()->user->setFlash('error', gT("Access denied!"));
             $this->getController()->redirect(Yii::app()->createUrl('/admin'));
         }
 
@@ -338,7 +344,7 @@ class SurveymenuEntryController extends SurveyCommonAction
             $model = SurveymenuEntries::model()->findByPk((int)$menuEntryid);
             //Don't delete  main menu entries when not superadmin
             if (($model->menu_id == 1 || $model->menu_id == 2) && !Permission::model()->hasGlobalPermission('superadmin', 'read')) {
-                Yii::app()->user->setFlash('error', gT("Access denied"));
+                Yii::app()->user->setFlash('error', gT("Access denied!"));
                 $this->getController()->redirect(Yii::app()->createUrl('/admin'));
             }
             $debug = App()->getConfig('debug');
@@ -377,7 +383,7 @@ class SurveymenuEntryController extends SurveyCommonAction
     public function reorder()
     {
         if (!(Permission::model()->hasGlobalPermission('settings', 'update'))) {
-            Yii::app()->user->setFlash('error', gT("Access denied"));
+            Yii::app()->user->setFlash('error', gT("Access denied!"));
             $this->getController()->redirect(Yii::app()->createUrl('/admin'));
         }
 
@@ -409,24 +415,6 @@ class SurveymenuEntryController extends SurveyCommonAction
                 false
             );
         }
-    }
-
-
-    /**
-     * Returns the data model based on the primary key given in the GET variable.
-     * If the data model is not found, an HTTP exception will be raised.
-     * @param integer $id the ID of the model to be loaded
-     * @return SurveymenuEntries the loaded model
-     * @throws CHttpException
-     * * @deprecated do not use this function in future
-     */
-    public function loadModel($id)
-    {
-        $model = SurveymenuEntries::model()->findByPk($id);
-        if ($model === null) {
-                    throw new CHttpException(404, 'The requested page does not exist.');
-        }
-        return $model;
     }
 
     /**

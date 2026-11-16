@@ -93,20 +93,43 @@ class CLSYiiPager extends CLinkPager
      */
     protected function createPageButton($label, $page, $class, $hidden, $selected)
     {
-        if ($hidden || $selected) {
-            $class .= ' ' . ($hidden ? $this->hiddenPageCssClass : 'active');
-            $attrs = ['class' => 'page-link'];
+        $ariaLabel = '';
+        if (is_numeric($label)) {
             if ($selected) {
-                $attrs['aria-current'] = 'page';
+                $ariaLabel = sprintf(gT('Page %s, current page'), $label);
+            } else {
+                $ariaLabel = sprintf(gT('Go to page %s'), $label);
             }
-            if ($hidden) {
-                $attrs['aria-disabled'] = 'true';
-                $attrs['tabindex'] = '-1';
+        } elseif ($label === $this->firstPageLabel) {
+            $ariaLabel = $selected ? gT('First page, current page') : gT('Go to first page');
+        } elseif ($label === $this->prevPageLabel) {
+            $ariaLabel = gT('Go to previous page');
+        } elseif ($label === $this->nextPageLabel) {
+            $ariaLabel = gT('Go to next page');
+        } elseif ($label === $this->lastPageLabel) {
+            $ariaLabel = $selected ? gT('Last page, current page') : gT('Go to last page');
+        }
+
+        if ($hidden) {
+            $class .= ' ' . $this->hiddenPageCssClass;
+            // The link role exposes the aria-label and the disabled state, a plain span would hide them
+            $attrs = ['class' => 'page-link', 'role' => 'link', 'aria-disabled' => 'true', 'tabindex' => '-1'];
+            if ($ariaLabel !== '') {
+                $attrs['aria-label'] = $ariaLabel;
             }
             return '<li class="page-item ' . $class . '">' . CHtml::tag('span', $attrs, $label) . '</li>';
         } else {
-            return '<li class="page-item ' . $class . '">' . CHtml::link($label, $this->createPageUrl($page), ['class' => 'page-link']) . '</li>';
+            $linkOptions = ['class' => 'page-link'];
+            if ($selected) {
+                // The current page stays a real, focusable link, as recommended for pagination
+                $class .= ' active';
+                $linkOptions['aria-current'] = 'page';
+            }
+            if ($ariaLabel !== '') {
+                $linkOptions['aria-label'] = $ariaLabel;
+            }
+            return '<li class="page-item ' . $class . '">' . CHtml::link($label, $this->createPageUrl($page), $linkOptions) . '</li>';
         }
     }
-}
+} 
 

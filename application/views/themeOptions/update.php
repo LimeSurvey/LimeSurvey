@@ -11,9 +11,12 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
 <div class="">
 <?php else : ?>
     <div class="col-12 side-body ls-settings-wrapper" id="theme-option-sidebody">
+    <div class="pagetitle">
+        <h1><?php eT('Survey theme options'); ?></h1>
+    </div>
 <?php endif; ?>
 
-    <!-- Using bootstrap tabs to differ between just hte options and advanced direct settings -->
+    <!-- Using bootstrap tabs to differ between just the options and advanced direct settings -->
     <div class="row">
         <div class="col-12">
             <!-- Nav tabs -->
@@ -49,8 +52,7 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
                                 'enableAjaxValidation' => false,
                                 'htmlOptions'          => ['class' => 'form action_update_options_string_form'],
                                 'action'               => $actionUrl
-                            ]
-                        ); ?>
+                            ]); ?>
                 <?php echo TbHtml::submitButton($model->isNewRecord ? gT('Create') : gT('Save'), ['id' => 'theme-options--submit', 'class' => 'd-none action_update_options_string_button']); ?>
             <!-- Tab panes -->
                 <div class="tab-content">

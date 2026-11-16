@@ -101,6 +101,30 @@ class Box extends CActiveRecord
     }
 
     /**
+     * Returns the box title translated to the current UI language via gT().
+     * Default box titles are stored in English (see
+     * LsDefaultDataSets::getBoxesData()) and get translated normally; a
+     * custom title without a matching translation is returned unchanged,
+     * since gT() falls back to the original string when no translation exists.
+     *
+     * @return string
+     */
+    public function getLocalizedTitle()
+    {
+        return gT($this->title, 'unescaped');
+    }
+
+    /**
+     * Default boxes are stored in English, so translate the description for display.
+     * Custom descriptions without a translation are returned unchanged.
+     * @return string
+     */
+    public function getLocalizedDescription()
+    {
+        return gT((string)$this->desc, 'unescaped');
+    }
+
+    /**
      * @return string
      */
     public function getSpanIcon()
@@ -118,7 +142,7 @@ class Box extends CActiveRecord
 
         // Can't use switch because of empty case
         if (empty($usergroupid) || $usergroupid == '-2') {
-            return gT('Only Superadmin');
+            return gT('Superadmin only');
         } elseif ($usergroupid == '-1') {
             return gT('Everybody');
         } elseif ($usergroupid == '-3') {

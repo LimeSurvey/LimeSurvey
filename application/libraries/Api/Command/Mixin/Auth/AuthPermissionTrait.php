@@ -3,10 +3,6 @@
 namespace LimeSurvey\Api\Command\Mixin\Auth;
 
 use Permission;
-use LimeSurvey\Api\Command\Response\{
-    Response,
-    Status\StatusErrorUnauthorised
-};
 
 trait AuthPermissionTrait
 {
@@ -37,54 +33,38 @@ trait AuthPermissionTrait
     }
 
     /**
-     * @param string $sPermission
-     * @param string $sCRUD
-     * @param ?int $iUserID
-     * @return Response | boolean
+     * Check whether a user has a global permission
+     *
+     * @param string $permission Permission name, e.g. 'surveys'
+     * @param string $crud One of 'create', 'read', 'update', 'delete', 'import', 'export'
+     * @param ?int $userId User id, defaults to the current user
+     * @return bool true if the user has the global permission
      */
-    protected function hasGlobalPermission($sPermission, $sCRUD, $iUserID = null)
+    protected function hasGlobalPermission($permission, $crud, $userId = null): bool
     {
-        $result =
-            $this->getPermissionModel()->hasGlobalPermission(
-                $sPermission,
-                $sCRUD,
-                $iUserID
-            );
-
-        if ($result) {
-            return true;
-        } else {
-            return new Response(
-                array('status' => 'No permission'),
-                new StatusErrorUnauthorised()
-            );
-        }
+        return $this->getPermissionModel()->hasGlobalPermission(
+            $permission,
+            $crud,
+            $userId
+        );
     }
 
     /**
-     * @param int $iSurveyID
-     * @param string $sPermission
-     * @param string $sCRUD
-     * @param ?string $iUserID
-     * @return Response | boolean
+     * Check whether a user has a permission on a survey
+     *
+     * @param int $surveyId Survey id
+     * @param string $permission Permission name, e.g. 'surveycontent'
+     * @param string $crud One of 'create', 'read', 'update', 'delete', 'import', 'export'
+     * @param ?int $userId User id, defaults to the current user
+     * @return bool true if the user has the survey permission
      */
-    protected function hasSurveyPermission($iSurveyID, $sPermission, $sCRUD, $iUserID = null)
+    protected function hasSurveyPermission($surveyId, $permission, $crud, $userId = null): bool
     {
-        $result =
-            $this->getPermissionModel()->hasSurveyPermission(
-                $iSurveyID,
-                $sPermission,
-                $sCRUD,
-                $iUserID
-            );
-
-        if ($result) {
-            return true;
-        } else {
-            return new Response(
-                array('status' => 'No permission'),
-                new StatusErrorUnauthorised()
-            );
-        }
+        return $this->getPermissionModel()->hasSurveyPermission(
+            $surveyId,
+            $permission,
+            $crud,
+            $userId
+        );
     }
 }

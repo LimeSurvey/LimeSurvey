@@ -151,6 +151,7 @@ class Zend_Mail_Storage_Pop3 extends Zend_Mail_Storage_Abstract
      *   - host hostname or ip address of POP3 server
      *   - user username
      *   - password password for user 'username' [optional, default = '']
+     *   - accessToken OAuth 2.0 access token, used instead of the password (XOAUTH2) [optional]
      *   - port port for POP3 server [optional, default = 110]
      *   - ssl 'SSL' or 'TLS' for secure sockets
      *
@@ -188,7 +189,11 @@ class Zend_Mail_Storage_Pop3 extends Zend_Mail_Storage_Abstract
 
         $this->_protocol = new Zend_Mail_Protocol_Pop3();
         $this->_protocol->connect($host, $port, $ssl);
-        $this->_protocol->login($params->user, $password);
+        if (isset($params->accessToken)) {
+            $this->_protocol->authenticateXoauth2($params->user, $params->accessToken);
+        } else {
+            $this->_protocol->login($params->user, $password);
+        }
     }
 
     /**

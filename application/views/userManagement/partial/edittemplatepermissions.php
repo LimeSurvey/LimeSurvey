@@ -2,7 +2,7 @@
 
 Yii::app()->getController()->renderPartial(
     '/layouts/partial_modals/modal_header',
-    ['modalTitle' => gT('Theme permissions')]
+    ['modalTitle' => gT('Theme permissions'), 'modalTitleId' => 'UserManagement-action-modal-title']
 );
 ?>
 
@@ -13,8 +13,16 @@ Yii::app()->getController()->renderPartial(
 ); ?>
 <div class="modal-body">
     <div class="container">
+        <div class="row ls-space margin top-5 bottom-5 d-none" id="UserManagement--errors" role="alert" aria-live="assertive" aria-atomic="true" tabindex="-1">
+        </div>
         <input type="hidden" name="userid" value="<?php echo $oUser->uid; ?>"/>
-        <div class="mb-3">
+        <?php
+        $this->widget('ext.AlertWidget.AlertWidget', [
+            'text' => gT('Regardless of these settings, the user can always use the theme a survey inherits from its survey group or from the global default theme.'),
+            'type' => 'info',
+        ]);
+        ?>
+        <div class="mb-3 d-flex gap-1">
             <button id="UserManagement--action-userthemepermissions-select-all" class="btn btn-outline-secondary">
                 <?php eT('Select all'); ?>
             </button>
@@ -23,6 +31,7 @@ Yii::app()->getController()->renderPartial(
             </button>
         </div>
         <table class="table">
+            <caption class="visually-hidden"><?php eT('Theme permissions'); ?></caption>
             <tr>
                 <th><?php eT('Theme name'); ?></th>
                 <th><?php eT('Access'); ?></th>
@@ -34,6 +43,7 @@ Yii::app()->getController()->renderPartial(
                         <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                             'name'          => 'TemplatePermissions[' . $aTemplate['folder'] . ']',
                             'id'            => $aTemplate['folder'] . '_use',
+                            'ariaLabel'     => sprintf(gT('%s access'), $aTemplate['folder']),
                             'checkedOption' => $aTemplate['value'],
                             'selectOptions' => [
                                 '1' => gT('On'),

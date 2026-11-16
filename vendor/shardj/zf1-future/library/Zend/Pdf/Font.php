@@ -407,6 +407,15 @@ abstract class Zend_Pdf_Font
      */
     public const EMBED_SUPPRESS_EMBED_EXCEPTION = 0x08;
 
+    /**
+     * Embed a TrueType font as a simple font (single-byte WinAnsiEncoding)
+     * instead of a composite Type 0 font. Only characters of the Windows-1252
+     * code page can be drawn with such a font, so this is meant for Latin
+     * fonts; the resulting file is smaller and the font is described as a
+     * plain /TrueType font.
+     */
+    public const EMBED_AS_SIMPLE_FONT = 0x10;
+
 
 
   /**** Class Variables ****/
@@ -589,9 +598,10 @@ abstract class Zend_Pdf_Font
      */
     public static function fontWithPath($filePath, $embeddingOptions = 0)
     {
-        /* First check the cache. Don't duplicate font objects.
+        /* First check the cache. Don't duplicate font objects. The embedding
+         * options are part of the key, they change the resulting font object.
          */
-        $filePathKey = md5($filePath);
+        $filePathKey = md5($filePath . '|' . (int) $embeddingOptions);
         if (isset(Zend_Pdf_Font::$_fontFilePaths[$filePathKey])) {
             return Zend_Pdf_Font::$_fontFilePaths[$filePathKey];
         }
@@ -656,7 +666,6 @@ abstract class Zend_Pdf_Font
              */
             $fontName = $font->getFontName(Zend_Pdf_Font::NAME_POSTSCRIPT, '', '');
             Zend_Pdf_Font::$_fontNames[$fontName] = $font;
-            $filePathKey = md5($filePath);
             Zend_Pdf_Font::$_fontFilePaths[$filePathKey] = $font;
             return $font;
 
@@ -699,7 +708,7 @@ abstract class Zend_Pdf_Font
             $fontParser = new Zend_Pdf_FileParser_Font_OpenType_TrueType($dataSource);
 
             $fontParser->parse();
-            if ($fontParser->isAdobeLatinSubset) {
+            if ($embeddingOptions & self::EMBED_AS_SIMPLE_FONT) {
                 require_once 'Zend/Pdf/Resource/Font/Simple/Parsed/TrueType.php';
                 $font = new Zend_Pdf_Resource_Font_Simple_Parsed_TrueType($fontParser, $embeddingOptions);
             } else {

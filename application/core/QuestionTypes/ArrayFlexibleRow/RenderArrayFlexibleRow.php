@@ -35,6 +35,14 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
 
     public $sCoreClass = "ls-answers subquestion-list questions-list";
 
+    /**
+     * Set up the renderer: mandatory violations, repeated headers and layout.
+     * An empty "Repeat headers" question attribute falls back to the global
+     * repeatheadings/minrepeatheadings config values.
+     *
+     * @param array $aFieldArray Field data of the question
+     * @param boolean $bRenderDirect Whether to render directly
+     */
     public function __construct($aFieldArray, $bRenderDirect = false)
     {
         parent::__construct($aFieldArray, $bRenderDirect);
@@ -44,8 +52,9 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
         $this->repeatheadings    = Yii::app()->getConfig("repeatheadings");
         $this->minrepeatheadings = Yii::app()->getConfig("minrepeatheadings");
 
-        if (ctype_digit((string) $this->repeatheadings) && !empty($this->repeatheadings)) {
-            $this->repeatheadings    = intval($this->getQuestionAttribute('repeat_headings'));
+        $sRepeatHeadings = trim((string) $this->getQuestionAttribute('repeat_headings'));
+        if (ctype_digit($sRepeatHeadings)) {
+            $this->repeatheadings    = intval($sRepeatHeadings);
             $this->minrepeatheadings = 0;
         }
 
@@ -67,7 +76,7 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
             return $combined;
         }, 0);
         // $right_exists is a flag to find out if there are any right hand answer parts.
-        // If there arent we can leave out the right td column
+        // If there aren't we can leave out the right td column
         $this->rightExists = ($iCount > 0);
 
         if (ctype_digit(trim((string) $this->getQuestionAttribute('answer_width')))) {
@@ -156,7 +165,7 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
             );
         }
 
-        if (($this->oQuestion->mandatory != 'Y' && SHOW_NO_ANSWER == 1)) {
+        if ($this->showNoAnswer()) {
             //Question is not mandatory and we can show "no answer"
             $sHeader  .= Yii::app()->twigRenderer->renderQuestion(
                 $this->getMainView() . '/rows/cells/header_answer',
@@ -187,7 +196,7 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
         //$aAnswer->answerl10ns[$sSurveyLanguage]->answer
         $aRows = [];
         foreach ($this->aSubQuestions[0] as $i => $oQuestion) {
-            $myfname        = $this->sSGQA . $oQuestion->title;
+            $myfname        = $this->sSGQA . '_S' . $oQuestion->qid;
             $answertext     = $oQuestion->questionl10ns[$this->sLanguage]['question'];
             // Check the mandatory sub Q violation
             $error = (in_array($myfname, $this->aMandatoryViolationSubQ));
@@ -204,7 +213,7 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
             $options = [];
 
             // Dropdown representation : first choice (activated) must be Please choose... if there are no actual answer
-            $showNoAnswer = ($this->oQuestion->mandatory != 'Y' && SHOW_NO_ANSWER == 1); // Tag if we must show no-answer
+            $showNoAnswer = $this->showNoAnswer(); // Tag if we must show no-answer
             if ($value === '') {
                 $options[] = array(
                     'text' => gT('Please choose...'),
@@ -226,7 +235,9 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
                 $options[] = array(
                     'text' => gT('No answer'),
                     'value' => '',
-                    'selected' => ($value == '') ?  SELECTED : '',
+                    'selected' => (
+                        PRESELECT_NO_ANSWER && $value == ''
+                    ) ? SELECTED : '',
                 );
             }
             unset($showNoAnswer);
@@ -241,6 +252,7 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
                 'answertextright'        => $answertextright,
                 'options'                => $options,
                 'odd'                    => ($i % 2), // true for odd, false for even
+                'relevanceClass'         => $this->getCurrentRelevecanceClass($myfname),
             );
 
             $this->inputnames[] = $myfname;
@@ -264,7 +276,7 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
                 }
             }
 
-            $myfname        = $this->sSGQA . $oQuestion->title;
+            $myfname        = $this->sSGQA . '_S' . $oQuestion->qid;
             $answertext     = $oQuestion->questionl10ns[$this->sLanguage]->question;
             $answertext     = (strpos((string) $answertext, '|') !== false) ? substr((string) $answertext, 0, strpos((string) $answertext, '|')) : $answertext;
 
@@ -290,14 +302,16 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
             }
 
             $aNoAnswerColumn = [];
-            if (($this->oQuestion->mandatory != 'Y' && SHOW_NO_ANSWER == 1)) {
+            if ($this->showNoAnswer()) {
                 $aNoAnswerColumn = array(
                     'basename' => $this->sSGQA,
                     'myfname'                => $myfname,
                     'ld'                     => '',
                     'code' => $oAnswer->code,
                     'label'                  => gT('No answer'),
-                    'checked'                => (is_null($value) || $value === '') ? 'checked' : '',
+                    'checked'                => (
+                        PRESELECT_NO_ANSWER && (is_null($value) || $value === '')
+                    ) ? 'checked' : '',
                 );
             }
 
@@ -315,6 +329,7 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
                     'value'      => $value,
                     'error'      => $error,
                     'odd'        => ($i % 2), // true for odd, false for even
+                    'relevanceClass' => $this->getCurrentRelevecanceClass($myfname),
                 )
                 ];
 
@@ -344,7 +359,7 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
             $oddEven = !$oddEven;
         }
 
-        if (($this->oQuestion->mandatory != 'Y' && SHOW_NO_ANSWER == 1)) {
+        if ($this->showNoAnswer()) {
             //Question is not mandatory
             $aColumns[] = array(
                 'class'     => 'col-no-answer ' . ($oddEven ? 'ls-col-even' : 'ls-col-odd'),
@@ -390,7 +405,17 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
         // Getting answerrcount
         $anscount  = count($this->aAnswerOptions[0]);
         $anscount  = ($this->oQuestion->other == 'Y') ? $anscount + 1 : $anscount; //COUNT OTHER AS AN ANSWER FOR MANDATORY CHECKING!
-        $anscount  = ($this->oQuestion->mandatory != 'Y' && SHOW_NO_ANSWER == 1) ? $anscount + 1 : $anscount; //Count up if "No answer" is showing
+        $anscount  = $this->showNoAnswer() ? $anscount + 1 : $anscount; //Count up if "No answer" is showing
         return $anscount;
+    }
+
+    /**
+     * Whether the "No answer" option is shown: Question is not (soft) mandatory and "No answer" is enabled.
+     *
+     * @return bool
+     */
+    private function showNoAnswer(): bool
+    {
+        return $this->oQuestion->mandatory != 'Y' && $this->oQuestion->mandatory != 'S' && SHOW_NO_ANSWER == 1;
     }
 }

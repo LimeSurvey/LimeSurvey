@@ -73,10 +73,9 @@ class Zend_Translate_Adapter_Tmx extends Zend_Translate_Adapter {
 
         $encoding = $this->_findEncoding($filename);
         $this->_file = xml_parser_create($encoding);
-        xml_set_object($this->_file, $this);
         xml_parser_set_option($this->_file, XML_OPTION_CASE_FOLDING, 0);
-        xml_set_element_handler($this->_file, "_startElement", "_endElement");
-        xml_set_character_data_handler($this->_file, "_contentElement");
+        xml_set_element_handler($this->_file, [$this, '_startElement'], [$this, '_endElement']);
+        xml_set_character_data_handler($this->_file, [$this, '_contentElement']);
 
         try {
             Zend_Xml_Security::scanFile($filename);
@@ -92,7 +91,10 @@ class Zend_Translate_Adapter_Tmx extends Zend_Translate_Adapter {
                           xml_error_string(xml_get_error_code($this->_file)),
                           xml_get_current_line_number($this->_file),
                           $filename);
-            xml_parser_free($this->_file);
+            if (PHP_VERSION_ID < 80000) {
+                // phpcs:ignore PHPCompatibility.FunctionUse.RemovedFunctions.xml_parser_freeDeprecated -- called before PHP 8.0 only
+                xml_parser_free($this->_file);
+            }
             require_once 'Zend/Translate/Exception.php';
             throw new Zend_Translate_Exception($ex);
         }
@@ -195,8 +197,10 @@ class Zend_Translate_Adapter_Tmx extends Zend_Translate_Adapter {
                         $this->_tu = $this->_content;
                     }
 
-                    if (!empty($this->_content) || (!isset($this->_data[$this->_tuv][$this->_tu]))) {
-                        $this->_data[$this->_tuv][$this->_tu] = $this->_content;
+                    $tuv = $this->_tuv ?? '';
+                    $tu  = $this->_tu ?? '';
+                    if (!empty($this->_content) || (!isset($this->_data[$tuv][$tu]))) {
+                        $this->_data[$tuv][$tu] = $this->_content;
                     }
                     break;
                 default:

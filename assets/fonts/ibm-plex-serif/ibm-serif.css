@@ -107,3 +107,7 @@ body {
     /* Emoji fonts*/ "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
     "Noto Color Emoji";
 }
+
+.font-ibm-serif{
+  font-family: "IBMPlexSerif";
+}

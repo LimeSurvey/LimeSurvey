@@ -2950,7 +2950,9 @@ body {
 
     /* INput errors*/
 
-    .input-error input {
+    /* Inputs with their own subquestion validation are only marked when they are invalid themselves */
+    .input-error input:not(.em_sq_validation),
+    .input-error input.has-warning {
         border: 1px solid $color_warning;
         color:  $color_warning;
 
@@ -2965,7 +2967,7 @@ body {
     }
 }
 
-/* Define the color for Awesome Bootsrap Checkboxes ; based on bg-primary background-color*/
+/* Define the color for Awesome Bootstrap Checkboxes ; based on bg-primary background-color */
 body .answer-item label::after {
     background-color: $base-color;
 }

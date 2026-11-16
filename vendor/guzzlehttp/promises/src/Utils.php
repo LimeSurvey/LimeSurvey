@@ -46,7 +46,7 @@ final class Utils
         $promise = new Promise([$queue, 'run']);
         $queue->add(function () use ($task, $promise): void {
             try {
-                if (Is::pending($promise)) {
+                if (State::isPending($promise)) {
                     $promise->resolve($task());
                 }
             } catch (\Throwable $e) {
@@ -156,7 +156,7 @@ final class Utils
                 $results[$idx] = $value;
             },
             function ($reason, $idx, Promise $aggregate): void {
-                if (Is::pending($aggregate)) {
+                if (State::isPending($aggregate)) {
                     $aggregate->reject($reason);
                 }
             }
@@ -168,8 +168,14 @@ final class Utils
 
         if (true === $recursive) {
             $promise = $promise->then(function ($results) use ($recursive, &$promises) {
+                // A consumed generator cannot be traversed again, so a
+                // recursive pass has nothing further to observe.
+                if ($promises instanceof \Generator) {
+                    return $results;
+                }
+
                 foreach ($promises as $promise) {
-                    if (Is::pending($promise)) {
+                    if (State::isPending($promise)) {
                         return self::all($promises, $recursive);
                     }
                 }
@@ -205,7 +211,7 @@ final class Utils
         return Each::of(
             $promises,
             function ($value, $idx, PromiseInterface $p) use (&$results, $count): void {
-                if (Is::settled($p)) {
+                if (State::isSettled($p)) {
                     return;
                 }
                 $results[$idx] = $value;

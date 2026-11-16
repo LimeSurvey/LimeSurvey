@@ -99,19 +99,10 @@ class SurveyArchive implements CommandInterface
         if (!$surveyId) {
             $surveyId = intval($_GET['id']);
         }
-        $rawBaseTable = $_GET['basetable'] ?? 'survey';
-        if (!in_array($rawBaseTable, ['survey', 'tokens', 'all'])) {
-            throw new \Exception("Incorrect base table");
-        }
-        if ($rawBaseTable !== 'all') {
-            $baseTable = "old_{$rawBaseTable}";
-        } else {
-            $baseTable = 'all';
-        }
         if ($response = $this->ensurePermissions($surveyId)) {
             return $response;
         }
-        $survey = Survey::model()->findByPk($surveyId);
+        $survey = $this->survey->findByPk($surveyId);
         if (!$survey) {
             return $this->responseFactory->makeErrorNotFound(
                 (new ResponseDataError(
@@ -122,32 +113,18 @@ class SurveyArchive implements CommandInterface
             );
         }
         require_once "application/helpers/admin/import_helper.php";
-        if ($baseTable !== 'all') {
-            $result = getTableArchivesAndTimestamps($surveyId, $baseTable);
-        } else {
-            $result = getTableArchivesAndTimestamps($surveyId);
-            $tokenResult = getTableArchivesAndTimestamps($surveyId, 'old_tokens');
-            foreach ($tokenResult as $item) {
-                $found = false;
-                for ($index = 0; (!$found) && ($index < count($result)); $index++) {
-                    if ($result[$index]['timestamp'] === $item['timestamp']) {
-                        $found = true;
-                    }
-                }
-                if (!$found) {
-                    $result[] = $item;
-                }
-            }
-        }
+        $result = getTableArchivesAndTimestamps($surveyId);
         return $this->responseFactory->makeSuccess($this->processData($survey, $result));
     }
 
     /**
      * Ensure Permissions
      *
-     * @param string $authToken
+     * This runs before the survey lookup on purpose: An unknown survey id
+     * gives a 403 as well, so users cannot probe which survey ids exist.
+     *
      * @param int $surveyId
-     * @return Response|false
+     * @return Response|false Forbidden response, or false if access is allowed
      */
     private function ensurePermissions($surveyId)
     {
@@ -160,16 +137,6 @@ class SurveyArchive implements CommandInterface
         ) {
             return $this->responseFactory
                 ->makeErrorForbidden();
-        }
-
-        if (!$surveyId) {
-            return $this->responseFactory->makeErrorNotFound(
-                (new ResponseDataError(
-                    'SURVEY_NOT_FOUND',
-                    'Survey not found'
-                )
-                )->toArray()
-            );
         }
 
         return false;

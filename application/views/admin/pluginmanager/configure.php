@@ -5,21 +5,25 @@
 
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('configurePlugin');
+
+/** @var string $activeTab Which tab should be active on render: 'overview' (default) or 'settings' */
+$activeTab = $activeTab ?? 'overview';
+$isOverviewActive = $activeTab !== 'settings';
 ?>
 
 <div class="plugin--configure">
     <div class="row">
         <div class="col-12">
-            <ul class="nav nav-tabs" id="settingTabs">
+            <ul class="nav nav-tabs" id="settingTabs" role="tablist" aria-label="<?php eT('Plugin configuration tabs'); ?>">
                 <li role="presentation" class="nav-item">
-                    <a class="nav-link active" role="tab" data-bs-toggle="tab" href='#overview'><?php eT("Overview"); ?></a>
+                    <a id="overview-tab" class="nav-link<?= $isOverviewActive ? ' active' : '' ?>" role="tab" data-bs-toggle="tab" href='#overview' aria-selected="<?= $isOverviewActive ? 'true' : 'false' ?>" aria-controls="overview" tabindex="<?= $isOverviewActive ? '0' : '-1' ?>"><?php eT("Overview"); ?></a>
                 </li>
-                <li role="presentation">
-                    <a class="nav-link" role="tab" data-bs-toggle="tab" href='#settings'><?php eT("Settings"); ?></a>
+                <li role="presentation" class="nav-item">
+                    <a id="settings-tab" class="nav-link<?= $isOverviewActive ? '' : ' active' ?>" role="tab" data-bs-toggle="tab" href='#settings' aria-selected="<?= $isOverviewActive ? 'false' : 'true' ?>" aria-controls="settings" tabindex="<?= $isOverviewActive ? '-1' : '0' ?>"><?php eT("Settings"); ?></a>
                 </li>
             </ul>
             <div class="tab-content">
-                <div id="overview" class="tab-pane show active">
+                <div id="overview" class="tab-pane<?= $isOverviewActive ? ' show active' : '' ?>" role="tabpanel" aria-labelledby="overview-tab">
                     <?php $this->renderPartial(
                         './pluginmanager/overview',
                         [
@@ -32,8 +36,8 @@ echo viewHelper::getViewTestTag('configurePlugin');
                     ); ?>
                 </div>
 
-                <div id="settings" class="tab-pane">
-                    <?php if ($settings):
+                <div id="settings" class="tab-pane<?= $isOverviewActive ? '' : ' show active' ?>" role="tabpanel" aria-labelledby="settings-tab">
+                    <?php if ($settings) :
                         $this->widget(
                             'ext.SettingsWidget.SettingsWidget',
                             [
@@ -45,10 +49,11 @@ echo viewHelper::getViewTestTag('configurePlugin');
                                 'controlWidth' => 6,
                                 'method' => 'post',
                                 'buttons' => $buttons,
+                                'buttonsPosition' => 'top',
                             ]
                         );
                         ?>
-                    <?php else: ?>
+                    <?php else : ?>
                         <i><?php eT('This plugin has no settings.'); ?></i>
                     <?php endif; ?>
                 </div>
@@ -56,3 +61,4 @@ echo viewHelper::getViewTestTag('configurePlugin');
         </div>
     </div>
 </div>
+

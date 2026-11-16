@@ -2,7 +2,7 @@
 
 /*
    * LimeSurvey
-   * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
+   * Copyright (C) 2013-2026 The LimeSurvey Project Team
    * All rights reserved.
    * License: GNU/GPL License v2 or later, see LICENSE.php
    * LimeSurvey is free software. This version may have been modified pursuant
@@ -74,27 +74,4 @@ class DefaultValue extends LSActiveRecord
             array('qid,sqid,scale_id', 'numerical', 'integerOnly' => true),
         );
     }
-
-    /**
-     * @param $data
-     * @return bool
-     * @deprecated at 2018-02-03 use $model->attributes = $data && $model->save()
-     */
-    public function insertRecords($data)
-    {
-        $oRecord = new self();
-        foreach ($data as $k => $v) {
-            $oRecord->$k = $v;
-        }
-        if ($oRecord->validate()) {
-            return $oRecord->save();
-        }
-        tracevar($oRecord->getErrors());
-    }
-    /*
-    public function getDefaultValue($language = 'en')
-    {
-        $oDefaultValue = $this->with('defaultvaluel10ns')->find('language = :language', array(':language' => $language));
-        return $oDefaultValue->defaultvaluel10ns[$language]->defaultvalue;
-    }*/
 }

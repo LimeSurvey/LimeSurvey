@@ -2,7 +2,7 @@
 
 /*
 * LimeSurvey
-* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2026 The LimeSurvey Project Team
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -43,10 +43,10 @@ class LSHttpRequest extends CHttpRequest
     private $queryParams;
 
     /**
-     * Return the referal url,
+     * Return the referral url,
      * it's used for the "close" buttons, and the "save and close" buttons
      * So it checks if the referrer url is the same than the current url to avoid looping.
-     * If it the case, a paramater can be set to tell what referrer to return.
+     * If it the case, a parameter can be set to tell what referrer to return.
      * If the referrer is an external url, Yii return by default the current url.
      *
      * DEPRECATED
@@ -268,6 +268,46 @@ class LSHttpRequest extends CHttpRequest
     }
 
     /**
+     * Validates the CSRF token of the request.
+     * If the token is missing because PHP dropped the POST variables beyond max_input_vars,
+     * a message pointing to that setting is shown instead of the generic CSRF error.
+     * @param CEvent $event event parameter
+     * @return void
+     * @throws CHttpException if the validation fails
+     */
+    public function validateCsrfToken($event)
+    {
+        try {
+            parent::validateCsrfToken($event);
+        } catch (CHttpException $exception) {
+            if ($this->isPostDataTruncated()) {
+                throw new CHttpException(
+                    400,
+                    gT('The data received seems incomplete. This usually happens due to server limitations (PHP setting max_input_vars). Please contact your system administrator.', 'unescaped')
+                );
+            }
+            throw $exception;
+        }
+    }
+
+    /**
+     * Returns true if the POST data reached the PHP max_input_vars limit, so PHP may have dropped variables.
+     * @return bool
+     */
+    protected function isPostDataTruncated()
+    {
+        $maxInputVars = (int) ini_get('max_input_vars');
+        if (!$this->getIsPostRequest() || $maxInputVars <= 0) {
+            return false;
+        }
+        $postVarsCount = 0;
+        array_walk_recursive($_POST, function () use (&$postVarsCount) {
+            $postVarsCount++;
+        });
+        return $postVarsCount >= $maxInputVars;
+    }
+
+    /**
      * Is this a REST API request
      *
      * @return boolean
@@ -310,7 +350,14 @@ class LSHttpRequest extends CHttpRequest
     {
         $host = parse_url($hostInfo, PHP_URL_HOST);
         if ($host && !App()->isHostAllowed($host)) {
-            throw new CHttpException(400, gT("The requested hostname is invalid.", 'unescaped'));
+            $message = gT("The requested hostname is invalid.", 'unescaped');
+            if (Yii::app()->getConfig('debug') > 0) {
+                $message .= ' ' . sprintf(
+                    gT("Host '%s' is not in the allowed hosts file (application/config/allowed_hosts.php). Add it there, or check the publicurl setting, then try again.", 'unescaped'),
+                    $host
+                );
+            }
+            throw new CHttpException(400, $message);
         }
     }
 }

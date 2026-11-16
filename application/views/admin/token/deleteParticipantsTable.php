@@ -1,7 +1,9 @@
 <?php
+
 /**
  * Delete participant list view
  */
+
 ?>
 <div class="side-body">
     <div class="row welcom survey-action">

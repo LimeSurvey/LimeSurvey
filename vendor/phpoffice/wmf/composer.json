@@ -1,0 +1,32 @@
+{
+    "name": "phpoffice/wmf",
+    "description": "WMF - Manipulate WMF Images",
+    "keywords": ["PHP", "wmf", "emf", "image"],
+    "homepage": "https://phpoffice.github.io/WMF/",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "PhpOffice\\WMF\\": "src/WMF/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\PhpOffice\\WMF\\": "tests/WMF/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Progi1984",
+            "homepage": "https://lefevre.dev"
+        }
+    ],
+    "require": {
+        "php": "^7.1|^8.0",
+        "ext-gd": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.0 || ^8.0 || ^9.0",
+        "phpstan/phpstan": "^0.12.88 || ^1.0.0"
+    }
+}

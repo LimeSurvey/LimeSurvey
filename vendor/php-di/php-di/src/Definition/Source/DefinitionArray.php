@@ -13,30 +13,21 @@ use DI\Definition\Definition;
  */
 class DefinitionArray implements DefinitionSource, MutableDefinitionSource
 {
-    const WILDCARD = '*';
+    public const WILDCARD = '*';
     /**
      * Matches anything except "\".
      */
-    const WILDCARD_PATTERN = '([^\\\\]+)';
+    private const WILDCARD_PATTERN = '([^\\\\]+)';
 
-    /**
-     * DI definitions in a PHP array.
-     * @var array
-     */
-    private $definitions = [];
+    /** DI definitions in a PHP array. */
+    private array $definitions;
 
-    /**
-     * Cache of wildcard definitions.
-     * @var array|null
-     */
-    private $wildcardDefinitions;
+    /** Cache of wildcard definitions. */
+    private ?array $wildcardDefinitions = null;
 
-    /**
-     * @var DefinitionNormalizer
-     */
-    private $normalizer;
+    private DefinitionNormalizer $normalizer;
 
-    public function __construct(array $definitions = [], Autowiring $autowiring = null)
+    public function __construct(array $definitions = [], ?Autowiring $autowiring = null)
     {
         if (isset($definitions[0])) {
             throw new \Exception('The PHP-DI definition is not indexed by an entry name in the definition array');
@@ -44,14 +35,13 @@ class DefinitionArray implements DefinitionSource, MutableDefinitionSource
 
         $this->definitions = $definitions;
 
-        $autowiring = $autowiring ?: new NoAutowiring;
-        $this->normalizer = new DefinitionNormalizer($autowiring);
+        $this->normalizer = new DefinitionNormalizer($autowiring ?: new NoAutowiring);
     }
 
     /**
      * @param array $definitions DI definitions in a PHP array indexed by the definition name.
      */
-    public function addDefinitions(array $definitions)
+    public function addDefinitions(array $definitions) : void
     {
         if (isset($definitions[0])) {
             throw new \Exception('The PHP-DI definition is not indexed by an entry name in the definition array');
@@ -65,10 +55,7 @@ class DefinitionArray implements DefinitionSource, MutableDefinitionSource
         $this->wildcardDefinitions = null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function addDefinition(Definition $definition)
+    public function addDefinition(Definition $definition) : void
     {
         $this->definitions[$definition->getName()] = $definition;
 
@@ -76,21 +63,20 @@ class DefinitionArray implements DefinitionSource, MutableDefinitionSource
         $this->wildcardDefinitions = null;
     }
 
-    public function getDefinition(string $name)
+    public function getDefinition(string $name) : ?Definition
     {
         // Look for the definition by name
         if (array_key_exists($name, $this->definitions)) {
             $definition = $this->definitions[$name];
-            $definition = $this->normalizer->normalizeRootDefinition($definition, $name);
 
-            return $definition;
+            return $this->normalizer->normalizeRootDefinition($definition, $name);
         }
 
         // Build the cache of wildcard definitions
         if ($this->wildcardDefinitions === null) {
             $this->wildcardDefinitions = [];
             foreach ($this->definitions as $key => $definition) {
-                if (strpos($key, self::WILDCARD) !== false) {
+                if (str_contains($key, self::WILDCARD)) {
                     $this->wildcardDefinitions[$key] = $definition;
                 }
             }
@@ -99,13 +85,12 @@ class DefinitionArray implements DefinitionSource, MutableDefinitionSource
         // Look in wildcards definitions
         foreach ($this->wildcardDefinitions as $key => $definition) {
             // Turn the pattern into a regex
-            $key = preg_quote($key);
-            $key = '#' . str_replace('\\' . self::WILDCARD, self::WILDCARD_PATTERN, $key) . '#';
+            $key = preg_quote($key, '#');
+            $key = '#^' . str_replace('\\' . self::WILDCARD, self::WILDCARD_PATTERN, $key) . '#';
             if (preg_match($key, $name, $matches) === 1) {
                 array_shift($matches);
-                $definition = $this->normalizer->normalizeRootDefinition($definition, $name, $matches);
 
-                return $definition;
+                return $this->normalizer->normalizeRootDefinition($definition, $name, $matches);
             }
         }
 
@@ -117,7 +102,7 @@ class DefinitionArray implements DefinitionSource, MutableDefinitionSource
         // Return all definitions except wildcard definitions
         $definitions = [];
         foreach ($this->definitions as $key => $definition) {
-            if (strpos($key, self::WILDCARD) === false) {
+            if (! str_contains($key, self::WILDCARD)) {
                 $definitions[$key] = $definition;
             }
         }

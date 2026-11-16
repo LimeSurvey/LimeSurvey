@@ -1,7 +1,7 @@
 
 {#
     LimeSurvey
-    Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+    Copyright (C) 2007-2026 The LimeSurvey Project Team
     All rights reserved.
     License: GNU/GPL License v2 or later, see LICENSE.php
     LimeSurvey is free software. This version may have been modified pursuant
@@ -105,7 +105,7 @@
                             {{ renderCaptcha().renderOut() }}
                     </div>
                     <div class="{{ aSurveyInfo.class.registerformcaptchadivc }} col-1 align-self-center" {{ aSurveyInfo.attr.registerformcaptchadivc }}>
-                        <a href="#" class="btn btn-sm btn-outline-secondary" id="reloadCaptcha" title="{{ gT("Reload captcha") }}" data-bs-toggle="captcha"><i class="fa fa-refresh"></i></a>
+                        <button type="button" class="btn btn-sm btn-outline-secondary" id="reloadCaptcha" title="{{ gT("Reload captcha") }}" aria-label="{{ gT("Reload captcha") }}" data-bs-toggle="captcha"><i class="fa fa-refresh" aria-hidden="true"></i></button>
                     </div>
                     <div class="col-9 align-self-center">
                         <input class='form-control {{ aSurveyInfo.class.registerformcaptchainput }}' {{ aSurveyInfo.attr.registerformcaptchainput }}>
@@ -134,7 +134,7 @@
             </div>
         </div>
 
-        {# If there is additional form parts, a.e. trhough a plugin render it out here #}
+        {# If there is additional form parts, a.e. through a plugin render it out here #}
     </div>
     <div class='{{ aSurveyInfo.class.registerformcoladdidtions }} col-lg-8 offset-lg-2' {{ aSurveyInfo.attr.registerformcoladdidtions }}>
         {{ aSurveyInfo.formAdditions | raw  }}

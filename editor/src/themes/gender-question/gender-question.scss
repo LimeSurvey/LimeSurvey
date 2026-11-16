@@ -1,0 +1,9 @@
+.gender-buttons {
+  .focused {
+    background-color: $active-green-hover;
+    * {
+      fill: $white;
+      color: $white;
+    }
+  }
+}

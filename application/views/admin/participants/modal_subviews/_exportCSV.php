@@ -1,5 +1,5 @@
 <div id="exportcsv" title="exportcsv" role="dialog" tabindex="-1" class="modal fade">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h2 class="modal-title h5"><?php eT("Export participants"); ?> </h2>
@@ -16,7 +16,8 @@
                             </label>
                         </div>
                         <div class='col-8' role="group" aria-labelledby="export-csv-attributes-label">
-                            <?php $this->widget('yiiwheels.widgets.select2.WhSelect2',
+                            <?php $this->widget(
+                                'yiiwheels.widgets.select2.WhSelect2',
                                 array(
                                     'asDropDownList' => true,
                                     'htmlOptions' => [
@@ -32,7 +33,7 @@
                             ); ?>
                         </div>
                     </div>
-                <?php if (Yii::app()->getConfig('hideblacklisted') != 'N'): ?>
+                <?php if (Yii::app()->getConfig('hideblacklisted') != 'N') : ?>
                     <?php
                     $this->widget('ext.AlertWidget.AlertWidget', [
                         'text' => gT('If you want to export blocklisted participants, set "Hide blocklisted participants" to "No" in CPDB settings.'),
@@ -65,7 +66,7 @@
 </div>
 
 <div id='exportcsvallnorow' title='exportcsvallnorow' role="dialog" tabindex="-1" class="modal fade">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h2 class="modal-title h5"><?php eT("Export participants"); ?></h2>

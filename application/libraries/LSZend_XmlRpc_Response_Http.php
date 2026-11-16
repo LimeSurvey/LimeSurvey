@@ -4,8 +4,6 @@
 
 class LSZend_XmlRpc_Response_Http extends Zend_XmlRpc_Response_Http
 {
-
-
     // Output content in $this->_return.
     public function printXml()
     {

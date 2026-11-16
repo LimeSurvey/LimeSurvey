@@ -6,11 +6,24 @@ use LimeSurvey\Models\Services\SurveyAccessModeService;
 use Survey;
 use Permission;
 
+/**
+ * @group survey
+ */
 class AccessModeChangeTest extends TestBaseClass
 {
     protected $survey = null;
 
     protected SurveyAccessModeService $surveyAccessModeService;
+
+    /**
+     * Log in as the superadmin: The survey import checks the survey group permissions of the current user,
+     * without a user PostgreSQL fails on the empty user ID
+     */
+    public static function setUpBeforeClass(): void
+    {
+        parent::setUpBeforeClass();
+        \Yii::app()->session['loginID'] = 1;
+    }
 
     protected function getSurvey($sid = null)
     {

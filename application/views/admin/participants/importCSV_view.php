@@ -11,14 +11,15 @@ echo viewHelper::getViewTestTag('importParticipants');
             <div class="col-12 list-surveys">
                 <?php echo TbHtml::form(array("admin/participants/sa/attributeMapCSV"), 'post', array('id' => 'addsurvey', 'enctype' => 'multipart/form-data', 'accept-charset' => 'utf-8')); ?>
 
+                <p class="note mt-3"><?php echo sprintf(gT('Fields with %s are required.'), '<span class="required">*</span>'); ?></p>
                 <div class="row ls-space margin top-25 bottom-25">
                     <div class="col-12">
                         <div class="mb-3">
                             <label for="the_file" id="fileupload" class='form-label'>
-                                <?php eT("Choose the file to upload:"); ?>
+                                <?php eT("Choose the file to upload:"); ?> <span class="required" aria-hidden="true">*</span>
                             </label>
                             <div class="col-6">
-                                <input type="file" class="form-control" name="the_file" accept='.csv'/>
+                                <input type="file" class="form-control" name="the_file" id="the_file" accept='.csv' required/>
                             </div>
                         </div>
                     </div>
@@ -32,12 +33,12 @@ echo viewHelper::getViewTestTag('importParticipants');
                             <div class="col-12">
                                 <select id="characterset" name="characterset" class="form-select">
                                     <?php
-                                    foreach (aEncodingsArray() as $key => $encoding):
+                                    foreach (aEncodingsArray() as $key => $encoding) :
                                         ?>
                                         <option value="<?php echo $key; ?>" <?php if ($encoding == gT('Automatic')) {
                                             echo 'selected="selected"';
-                                        } ?> ><?php echo $encoding; ?></option>
-                                    <?php
+                                                       } ?> ><?php echo $encoding; ?></option>
+                                        <?php
                                     endforeach;
                                     ?>
                                 </select>
@@ -61,10 +62,10 @@ echo viewHelper::getViewTestTag('importParticipants');
                                 <select name="separatorused" id="separatorused" class="form-select">
                                     <option value="auto" selected="selected"><?php eT("(Autodetect)"); ?></option>
                                     <?php
-                                    foreach ($separatorused as $key => $separator):
+                                    foreach ($separatorused as $key => $separator) :
                                         ?>
                                         <option value="<?php echo $key; ?>"><?php echo $separator; ?></option>
-                                    <?php
+                                        <?php
                                     endforeach;
                                     ?>
                                 </select>

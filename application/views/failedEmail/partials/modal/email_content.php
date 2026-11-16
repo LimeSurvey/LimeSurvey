@@ -1,4 +1,5 @@
-<?php 
+<?php
+
 /**
  * @var $this FailedEmailController
  * @var $failedEmail FailedEmail

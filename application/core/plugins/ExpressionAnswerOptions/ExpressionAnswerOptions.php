@@ -68,6 +68,7 @@ class ExpressionAnswerOptions extends PluginBase
      * @inheritdoc
      * Update the information content
      */
+    #[\Override]
     public function getPluginSettings($getValues = true)
     {
         $this->subscribe('getPluginTwigPath');
@@ -89,6 +90,7 @@ class ExpressionAnswerOptions extends PluginBase
      * @inheritdoc
      * But do nothing
      */
+    #[\Override]
     public function saveSettings($settings)
     {
         // Nothing saved, not needed

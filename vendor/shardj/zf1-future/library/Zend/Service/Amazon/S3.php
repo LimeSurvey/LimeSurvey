@@ -551,6 +551,21 @@ class Zend_Service_Amazon_S3 extends Zend_Service_Amazon_Abstract
     public function removeObject($object)
     {
         $object = $this->_fixupObjectName($object);
+
+        /**
+         * An object name containing no '/' resolves to a bare bucket name, and S3 reads
+         * DELETE <bucket> as DeleteBucket. A caller that composes "$bucket/$path" therefore
+         * asks to delete the BUCKET whenever $path is empty, which succeeds silently on an
+         * empty bucket. Refuse it; use removeBucket() to remove a bucket.
+         */
+        if (strpos($object, '/') === false) {
+            require_once 'Zend/Service/Amazon/S3/Exception.php';
+            throw new Zend_Service_Amazon_S3_Exception(
+                "Object name \"$object\" resolves to a bucket, not an object;"
+                . " use removeBucket() to remove a bucket"
+            );
+        }
+
         $response = $this->_makeRequest('DELETE', $object);
 
         // Look for a 204 No Content response
@@ -698,7 +713,7 @@ class Zend_Service_Amazon_S3 extends Zend_Service_Amazon_Abstract
             if ($response_code >= 500 && $response_code < 600 && $retry_count <= 5) {
                 $retry = true;
                 $retry_count++;
-                sleep($retry_count / 4 * $retry_count);
+                sleep((int) ($retry_count / 4 * $retry_count));
             }
             else if ($response_code == 307) {
                 // Need to redirect, new S3 endpoint given

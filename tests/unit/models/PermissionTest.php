@@ -13,7 +13,6 @@ class PermissionTest extends BaseModelTestCase
     public static function setupBeforeClass(): void
     {
         \Yii::import('application.helpers.common_helper', true);
-        \Yii::import('application.helpers.globalsettings_helper', true);
     }
 
     /**
@@ -87,6 +86,8 @@ class PermissionTest extends BaseModelTestCase
         $newPassword = createPassword();
         $userName = \Yii::app()->securityManager->generateRandomString(8);
         $userId = \User::insertUser($userName, $newPassword, 'John Doe', 1, $userName . '@example.org');
+        $this->assertFalse($userId instanceof \User, 'Failed to create user: ' . ($userId instanceof \User ? json_encode($userId->getErrors()) : ''));
+        $userId = (int) $userId;
         $surveysGroupGid = 999;
 
         $surveysGroup = $this

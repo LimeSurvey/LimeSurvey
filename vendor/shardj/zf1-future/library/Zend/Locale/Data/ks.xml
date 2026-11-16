@@ -1,30 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE ldml SYSTEM "../../common/dtd/ldml.dtd">
-<!-- Copyright © 1991-2013 Unicode, Inc.
-CLDR data files are interpreted according to the LDML specification (http://unicode.org/reports/tr35/)
+<!-- Copyright © 1991-2026 Unicode, Inc.
 For terms of use, see http://www.unicode.org/copyright.html
+SPDX-License-Identifier: Unicode-3.0
+CLDR data files are interpreted according to the LDML specification (http://unicode.org/reports/tr35/)
 -->
 <ldml>
 	<identity>
-		<version number="$Revision: 9852 $"/>
-		<generation date="$Date: 2014-02-28 23:57:43 -0600 (Fri, 28 Feb 2014) $"/>
+		<version number="$Revision$"/>
 		<language type="ks"/>
 	</identity>
 	<localeDisplayNames>
-		<localeDisplayPattern>
-			<localePattern>{0} ({1})</localePattern>
-			<localeSeparator>{0}, {1}</localeSeparator>
-		</localeDisplayPattern>
 		<languages>
 			<language type="aa">اَفار</language>
 			<language type="ab">اَبخازِیان</language>
 			<language type="ace">اَچَےنیٖز</language>
 			<language type="ach">اَکولی</language>
-			<language type="ada">اَدَنٛگمیے</language>
+			<language type="ada">اَدَنگمیے</language>
 			<language type="ady">اَدَیٖگیے</language>
 			<language type="ae">اَویستَن</language>
-			<language type="af">اَفریٖکانٛز</language>
+			<language type="af">اَفریٖکانز</language>
 			<language type="afh">اَفرِہِلی</language>
+			<language type="agq" draft="unconfirmed">اگہم</language>
 			<language type="ain">اینوٗ</language>
 			<language type="ak">اَکان</language>
 			<language type="akk">اَکادِیَن</language>
@@ -32,14 +29,15 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<language type="alt">جنوٗبی اَلتایی</language>
 			<language type="am">اَمہاری</language>
 			<language type="an">اَراگونی</language>
-			<language type="ang">پرون اَنٛگریٖزی</language>
-			<language type="anp">اَنٛگِکا</language>
+			<language type="ang">پرون اَنگریٖزی</language>
+			<language type="anp">اَنگِکا</language>
 			<language type="ar">عربی</language>
+			<language type="ar_001">ماڈرن معیٲری عربی</language>
 			<language type="arc">اَرَمیک</language>
 			<language type="arn">ایرو کونِیَن</language>
 			<language type="arp">اَراپاہو</language>
 			<language type="arw">اَراوَک</language>
-			<language type="as">اسٲمۍ</language>
+			<language type="as">اسٲمؠ</language>
 			<language type="ast">ایسٹوٗریَن</language>
 			<language type="av">اَوارِک</language>
 			<language type="awa">اَوَدی</language>
@@ -51,7 +49,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<language type="bas">باسا</language>
 			<language type="be">بیلَروٗشیَن</language>
 			<language type="bej">بیجا</language>
-			<language type="bem">بیٚمبا</language>
+			<language type="bem">بیمبا</language>
 			<language type="bg">بینا</language>
 			<language type="bho">بوجپوٗری</language>
 			<language type="bi">بِسلاما</language>
@@ -59,10 +57,10 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<language type="bin">بِنی</language>
 			<language type="bla">سِکسِکا</language>
 			<language type="bm">بَمبارا</language>
-			<language type="bn">بَنٛگٲلۍ</language>
+			<language type="bn">بَنگٲلؠ</language>
 			<language type="bo">تِبتی</language>
 			<language type="br">بریٹَن</language>
-			<language type="bra">برٛج</language>
+			<language type="bra">برج</language>
 			<language type="bs">بوسنِیَن</language>
 			<language type="bua">بُرِیَت</language>
 			<language type="bug">بَگنیٖز</language>
@@ -81,55 +79,58 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<language type="chn">چِنوٗک جارگَن</language>
 			<language type="cho">چوکتَو</language>
 			<language type="chp">شیپویان</language>
-			<language type="chr">چیٚروکی</language>
+			<language type="chr">چیروکی</language>
 			<language type="chy">شییون</language>
 			<language type="co">کارسِکَن</language>
 			<language type="cop">کاپٹِک</language>
 			<language type="cr">کری</language>
 			<language type="crh">کرٕمیٖن تُرکی</language>
-			<language type="cs">چیٚک</language>
+			<language type="cs">چیک</language>
 			<language type="csb">کَشوٗبِیَن</language>
 			<language type="cu">چٔرچ سلاوِک</language>
 			<language type="cv">چُواش</language>
-			<language type="cy">ویٚلش</language>
+			<language type="cy">ویلش</language>
 			<language type="da">ڈینِش</language>
 			<language type="dak">ڈکوٹا</language>
 			<language type="dar">دَرگوا</language>
 			<language type="de">جٔرمَن</language>
 			<language type="de_AT">آسٹرِیَن جٔرمَن</language>
-			<language type="de_CH">سٕوِس ہاےجٔرمَن</language>
-			<language type="del">ڈیٚلوییَر</language>
+			<language type="de_CH">سٕوِس ہائی جٔرمَن</language>
+			<language type="del">ڈیلوییَر</language>
 			<language type="den">سلیو</language>
 			<language type="dgr">ڈاگرِب</language>
 			<language type="din">ڈِنکا</language>
 			<language type="doi">ڈوگری</language>
-			<language type="dsb">بوٚنِم ساربِیَن</language>
+			<language type="dsb">بۆنِم ساربِیَن</language>
 			<language type="dua">دُوالا</language>
 			<language type="dum">وَستی پُرتُگالی</language>
 			<language type="dv">دِویہی</language>
 			<language type="dyu">ڈِیوٗلا</language>
-			<language type="dz">زونٛگکھا</language>
+			<language type="dz">زونگکھا</language>
 			<language type="ee">ایٖو</language>
-			<language type="efi">ایٚفِک</language>
+			<language type="efi">ایفِک</language>
 			<language type="egy">قدیٖمی مِصری</language>
-			<language type="eka">ایٚکاجُک</language>
+			<language type="eka">ایکاجُک</language>
 			<language type="el">یوٗنٲنی</language>
-			<language type="elx">ایٚلامایِٹ</language>
-			<language type="en">اَنٛگیٖزۍ</language>
-			<language type="en_AU">آسٹریلیَن اَنٛگریٖزۍ</language>
-			<language type="en_CA">کینَڈِیٲیی اَنٛگریٖزۍ</language>
-			<language type="en_GB">بَرطانوی اَنٛگریٖزۍ</language>
-			<language type="en_US">یوٗ ایٚس اَنٛگریٖزۍ</language>
-			<language type="enm">وَسطی اَنٛگریٖزۍ</language>
-			<language type="eo">ایٚسپَرینٹو</language>
-			<language type="es">سپینِش</language>
-			<language type="es_419">لیٹٕن امریٖکی سپینِش</language>
-			<language type="es_ES">لِبیریَن سپینِش</language>
-			<language type="et">ایٚسٹونیَن</language>
+			<language type="elx">ایلامایِٹ</language>
+			<language type="en">اَنگیٖزؠ</language>
+			<language type="en_AU">آسٹریلیَن اَنگریٖزؠ</language>
+			<language type="en_CA">کینَڈِیٲیی اَنگریٖزؠ</language>
+			<language type="en_GB">بَرطانوی اَنگریٖزؠ</language>
+			<language type="en_GB" alt="short">UK اَنٛگریٖزؠ</language>
+			<language type="en_US">امریٖکی اَنٛگریٖزؠ</language>
+			<language type="en_US" alt="short">US اَنٛگریٖزؠ</language>
+			<language type="enm">وَسطی اَنگریٖزؠ</language>
+			<language type="eo">ایسپَرینٹو</language>
+			<language type="es">ہسپانوی</language>
+			<language type="es_419">لاطیٖنی امریٖکی ہسپانوی</language>
+			<language type="es_ES">یوٗرپی ہسپانوی</language>
+			<language type="es_MX">میکسیکن ہسپانوی</language>
+			<language type="et">ایسٹونیَن</language>
 			<language type="eu">باسک</language>
-			<language type="ewo">ایٚوونڈو</language>
+			<language type="ewo">ایوونڈو</language>
 			<language type="fa">فارسی</language>
-			<language type="fan">فینٛگ</language>
+			<language type="fan">فینگ</language>
 			<language type="fat">فانٹی</language>
 			<language type="ff">فُلاہ</language>
 			<language type="fi">فِنِش</language>
@@ -137,11 +138,11 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<language type="fj">فِجیَن</language>
 			<language type="fo">فَروس</language>
 			<language type="fon">فون</language>
-			<language type="fr">فریٚنچ</language>
-			<language type="fr_CA">کَنیڈیَن فریٚنچ</language>
-			<language type="fr_CH">سٕوٕس فریٚنچ</language>
-			<language type="frm">وسطی فریٚنچ</language>
-			<language type="fro">پرون فریٚنچ</language>
+			<language type="fr">فرانسیسی</language>
+			<language type="fr_CA">کَنیڈیَن فرانسیسی</language>
+			<language type="fr_CH">سٕوٕس فرانسیسی</language>
+			<language type="frm">وسطی فرینچ</language>
+			<language type="fro">پرون فرینچ</language>
 			<language type="frr">شُمٲلی فرِشیَن</language>
 			<language type="frs">مشرِقی فرِشیَن</language>
 			<language type="fur">فروٗلِیَن</language>
@@ -164,38 +165,38 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<language type="grc">قدیٖم یوٗنٲنی</language>
 			<language type="gsw">سٕوِس جٔرمَن</language>
 			<language type="gu">گُجرٲتی</language>
-			<language type="gv">مینٛکس</language>
+			<language type="gv">مینکس</language>
 			<language type="gwi">گُوِچ اِن</language>
 			<language type="ha">ہاوسا</language>
 			<language type="hai">ہَیدا</language>
 			<language type="haw">ہوایِیَن</language>
-			<language type="he">عبرٲنۍ</language>
+			<language type="he">عبرٲنؠ</language>
 			<language type="hi">ہِندی</language>
 			<language type="hil">ہِلیٖگینَن</language>
 			<language type="hit">ہِتایِت</language>
-			<language type="hmn">ہمونٛگ</language>
+			<language type="hmn">ہمونگ</language>
 			<language type="ho">ہِری موتوٗ</language>
 			<language type="hr">کروشِیَن</language>
-			<language type="hsb">ہیٚرِم ساربِیَن</language>
+			<language type="hsb">ہیرِم ساربِیَن</language>
 			<language type="ht">ہیتِیاں</language>
-			<language type="hu">ہَنٛگیریَن</language>
+			<language type="hu">ہَنگیریَن</language>
 			<language type="hup">ہُپا</language>
 			<language type="hy">اَرمینیَن</language>
-			<language type="hz">ہیٚریٖرو</language>
-			<language type="ia">اِنٹَرلِنٛگوا</language>
+			<language type="hz">ہیریٖرو</language>
+			<language type="ia">اِنٹَرلِنگوا</language>
 			<language type="iba">اِبان</language>
 			<language type="id">اِنڈونیشیا</language>
-			<language type="ie">اِنٹَر لِنٛنگویے</language>
+			<language type="ie">اِنٹَر لِننگویے</language>
 			<language type="ig">اِگبو</language>
 			<language type="ii">سِچوان یٖی</language>
 			<language type="ik">اِنُپِیاک</language>
 			<language type="ilo">اِلوکو</language>
-			<language type="inh">اِنٛگُش</language>
+			<language type="inh">اِنگُش</language>
 			<language type="io">اِڈو</language>
 			<language type="is">آیِسلینڈِک</language>
-			<language type="it">اِٹیلیَن</language>
+			<language type="it">اِطالوی</language>
 			<language type="iu">اِنُکتِتوٗ</language>
-			<language type="ja">جاپٲنۍ</language>
+			<language type="ja">جاپٲنؠ</language>
 			<language type="jbo">لوجبان</language>
 			<language type="jpr">جوڈیو فارسی</language>
 			<language type="jrb">جوڈیو عربی</language>
@@ -210,7 +211,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<language type="kbd">کَبارڈِیَن</language>
 			<language type="kcg">تَیَپ</language>
 			<language type="kfo">کورو</language>
-			<language type="kg">کونٛگو</language>
+			<language type="kg">کونگو</language>
 			<language type="kha">کھاسی</language>
 			<language type="kho">کھوتَنیٖز</language>
 			<language type="ki">کِکُیوٗ</language>
@@ -245,10 +246,10 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<language type="li">لِمبٔرگِش</language>
 			<language type="ln">لِنگالا</language>
 			<language type="lo">لاو</language>
-			<language type="lol">مونٛگو</language>
+			<language type="lol">مونگو</language>
 			<language type="loz">لوزی</language>
 			<language type="lt">لِتھوانِیَن</language>
-			<language type="lu">لوُبا کَتَنٛگا</language>
+			<language type="lu">لوُبا کَتَنگا</language>
 			<language type="lua">لوٗبا لوٗلُوا</language>
 			<language type="lui">لویِسینو</language>
 			<language type="lun">لُندا</language>
@@ -259,7 +260,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<language type="mag">مَگاے</language>
 			<language type="mai">میتَھلی</language>
 			<language type="mak">مَکَسار</language>
-			<language type="man">مَندِنٛگو</language>
+			<language type="man">مَندِنگو</language>
 			<language type="mas">مَساے</language>
 			<language type="mdf">موکشا</language>
 			<language type="mdr">مَندَر</language>
@@ -269,15 +270,15 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<language type="mh">مارشَلیٖز</language>
 			<language type="mi">ماوری</language>
 			<language type="mic">مِکمیک</language>
-			<language type="min">مِنَنٛگکَباو</language>
+			<language type="min">مِنَنگکَباو</language>
 			<language type="mk">میکَڈونیَن</language>
 			<language type="ml">مٔلیالَم</language>
-			<language type="mn">مَنٛگولی</language>
-			<language type="mnc">مانٛچوٗ</language>
+			<language type="mn">مَنگولی</language>
+			<language type="mnc">مانچوٗ</language>
 			<language type="mni">مَنیپوٗری</language>
 			<language type="moh">موہاک</language>
 			<language type="mos">موسی</language>
-			<language type="mr">مَرٲٹھۍ</language>
+			<language type="mr">مَرٲٹھؠ</language>
 			<language type="ms">مَلَے</language>
 			<language type="mt">مَلتیٖس</language>
 			<language type="mul">واریاہ زبان</language>
@@ -285,66 +286,65 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<language type="mwl">مِراندیٖز</language>
 			<language type="mwr">مارواڑی</language>
 			<language type="my">بٔمیٖز</language>
-			<language type="myv">ایٚرزِیا</language>
+			<language type="myv">ایرزِیا</language>
 			<language type="na">ناورُ</language>
 			<language type="nap">نیٖپالیٹَن</language>
 			<language type="nb">ناروییَن بوکمال</language>
 			<language type="nd">شُمال ڈَبیل</language>
-			<language type="nds">بوٚنِم جٔرمَن</language>
-			<language type="ne">نیٚپٲلۍ</language>
-			<language type="new">نیٚواری</language>
-			<language type="ng">ڈونٛگا</language>
+			<language type="nds">بۆنِم جٔرمَن</language>
+			<language type="ne">نیپٲلؠ</language>
+			<language type="new">نیواری</language>
+			<language type="ng">ڈونگا</language>
 			<language type="nia">نِیاس</language>
 			<language type="niu">نِیویَن</language>
 			<language type="nl">ڈَچ</language>
-			<language type="nl_BE">فلیٚمِش</language>
+			<language type="nl_BE">فلیمِش</language>
 			<language type="nn">ناروییَن نَے نورسک</language>
 			<language type="no">ناروییَن</language>
 			<language type="nog">نوگاے</language>
 			<language type="non">پرون نارسی</language>
-			<language type="nqo">ایٚن کو</language>
-			<language type="nr">جنوب ڈیٚبیل</language>
+			<language type="nqo">این کو</language>
+			<language type="nr">جنوب ڈیبیل</language>
 			<language type="nso">شمالی ستھو</language>
 			<language type="nv">نَواجو</language>
 			<language type="nwc">کلاسِکَل نیواری</language>
 			<language type="ny">نِیَنجا</language>
-			<language type="nym">نِیَمویٚزی</language>
+			<language type="nym">نِیَمویزی</language>
 			<language type="nyn">نِیَنکول</language>
 			<language type="nyo">نِیورو</language>
 			<language type="nzi">نَظیٖما</language>
 			<language type="oc">اوکسیٖٹَن</language>
 			<language type="oj">اوجِبوا</language>
-			<language type="om">اوٚرومو</language>
-			<language type="or">اوٚرِیا</language>
-			<language type="os">اوٚسیٚٹِک</language>
-			<language type="osa">اوٚسیج</language>
+			<language type="om">اۆرومو</language>
+			<language type="or">اۆرِیا</language>
+			<language type="os">اۆسیٹِک</language>
+			<language type="osa">اۆسیج</language>
 			<language type="ota">اوٹومَن تُرکِش</language>
-			<language type="pa">پَنجٲبۍ</language>
-			<language type="pag">پَنٛگاسِنَن</language>
+			<language type="pa">پَنجٲبؠ</language>
+			<language type="pag">پَنگاسِنَن</language>
 			<language type="pal">پَہلَوی</language>
-			<language type="pam">پَمپَنٛگا</language>
-			<language type="pap">پَپِیامیٚنٹو</language>
+			<language type="pam">پَمپَنگا</language>
+			<language type="pap">پَپِیامینٹو</language>
 			<language type="pau">پَلااُواں</language>
 			<language type="peo">پرون فارسی</language>
 			<language type="phn">فونیٖشیَن</language>
 			<language type="pi">پالی</language>
 			<language type="pl">پالِش</language>
-			<language type="pon">پانپیٚیَن</language>
-			<language type="pro">پرون پروویٚنچَل</language>
+			<language type="pon">پانپییَن</language>
+			<language type="pro">پرون پرووینچَل</language>
 			<language type="ps">پَشتوٗ</language>
 			<language type="pt">پُرتَگیٖز</language>
-			<language type="pt_BR">برازیٖلی پُتَگیٖز</language>
-			<language type="pt_PT">لِبیریَن پُرتَگیٖز</language>
+			<language type="pt_BR">برازیٖلی پُرتَگیٖز</language>
+			<language type="pt_PT">یوٗرپی پُرتَگیٖز</language>
 			<language type="qu">کُویشُوا</language>
-			<language type="raj">راجِستھٲنۍ</language>
+			<language type="raj">راجِستھٲنؠ</language>
 			<language type="rap">رَپانوی</language>
-			<language type="rar">رَروٹونٛگَن</language>
+			<language type="rar">رَروٹونگَن</language>
 			<language type="rm">رومانش</language>
 			<language type="rn">رُندی</language>
 			<language type="ro">رومٲنی</language>
 			<language type="ro_MD">مولداوِیَن</language>
 			<language type="rom">رومَنی</language>
-			<language type="root">روٗٹ</language>
 			<language type="ru">روٗسی</language>
 			<language type="rup">اَرومانی</language>
 			<language type="rw">کِنیاوِندا</language>
@@ -359,10 +359,10 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<language type="sco">سکاٹس</language>
 			<language type="sd">سِندی</language>
 			<language type="se">شُمٲلی سَمی</language>
-			<language type="sel">سیٚلکُپ</language>
+			<language type="sel">سیلکُپ</language>
 			<language type="sg">سَنگو</language>
 			<language type="sga">پرون ایرِش</language>
-			<language type="sh">سیٚربو کروشِیَن</language>
+			<language type="sh">سیربو کروشِیَن</language>
 			<language type="shn">شان</language>
 			<language type="si">سِنہالا</language>
 			<language type="sid">سِدامو</language>
@@ -379,8 +379,8 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<language type="sog">سوگڈِیَن</language>
 			<language type="sq">البانِیَن</language>
 			<language type="sr">سٔربِیَن</language>
-			<language type="srn">سرٛانَن ٹونٛگو</language>
-			<language type="srr">سیٚریر</language>
+			<language type="srn">سرانَن ٹونگو</language>
+			<language type="srr">سیریر</language>
 			<language type="ss">سواتی</language>
 			<language type="st">جنوبی ستھو</language>
 			<language type="su">سَنڈَنیٖز</language>
@@ -393,7 +393,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<language type="ta">تَمِل</language>
 			<language type="te">تیلگوٗ</language>
 			<language type="tem">ٹِمنیے</language>
-			<language type="ter">ٹیٚریٚنو</language>
+			<language type="ter">ٹیرینو</language>
 			<language type="tet">ٹیٹَم</language>
 			<language type="tg">تاجِک</language>
 			<language type="th">تھاے</language>
@@ -407,11 +407,11 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<language type="tli">ٹِلِنگِت</language>
 			<language type="tmh">تاماشیک</language>
 			<language type="tn">سوانا</language>
-			<language type="to">ٹونٛگا</language>
-			<language type="tog">نیاسا ٹونٛگا</language>
+			<language type="to">ٹونگا</language>
+			<language type="tog">نیاسا ٹونگا</language>
 			<language type="tpi">ٹاک پِسِن</language>
 			<language type="tr">تُرکِش</language>
-			<language type="ts">ژونٛگا</language>
+			<language type="ts">ژونگا</language>
 			<language type="tsi">ژھِمشِیان</language>
 			<language type="tt">تَتار</language>
 			<language type="tum">تُمبُکا</language>
@@ -423,7 +423,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<language type="uga">اُگارتِک</language>
 			<language type="uk">یوٗکرینیٲیی</language>
 			<language type="umb">یُمبُندوٗ</language>
-			<language type="und">اَنزٲنۍ یا نَہ لَگہٕہار زبان</language>
+			<language type="und">اَنزٲنؠ یا نَہ لَگہٕہار زبان</language>
 			<language type="ur">اُردوٗ</language>
 			<language type="uz">اُزبیک</language>
 			<language type="vai">واے</language>
@@ -442,41 +442,45 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<language type="yap">یَپیٖز</language>
 			<language type="yi">یِدِش</language>
 			<language type="yo">یورُبا</language>
-			<language type="za">زُہانٛگ</language>
-			<language type="zap">زَپوتیٚک</language>
+			<language type="za">زُہانگ</language>
+			<language type="zap">زَپوتیک</language>
 			<language type="zen">زیناگا</language>
-			<language type="zh">چیٖنی</language>
-			<language type="zh_Hans">سیٚود چیٖنی</language>
+			<language type="zh">چیٖنی ﴿ترجمع اِشارٕ: خاص طور، مینڈارن چیٖنی۔﴾</language>
+			<language type="zh" alt="menu">چیٖنی، مینڈارن</language>
+			<language type="zh_Hans">سَہل چیٖنی</language>
+			<language type="zh_Hans" alt="long">سَہل مینڈارن چیٖنی</language>
 			<language type="zh_Hant">رِوٲجی چیٖنی</language>
+			<language type="zh_Hant" alt="long">رِوٲجی مینڈارن چیٖنی</language>
 			<language type="zu">زُلوٗ</language>
 			<language type="zun">زوٗنی</language>
-			<language type="zxx">کانٛہہ تہِ لِسانیاتی مواد نہٕ</language>
+			<language type="zxx">کانہہ تہِ لِسانیاتی مواد نہٕ</language>
 			<language type="zza">زازا</language>
 		</languages>
 		<scripts>
-			<script type="Arab">اَربی</script>
+			<script type="Arab">عربی</script>
+			<script type="Aran" draft="contributed">نستعلیق</script>
 			<script type="Armn">اَرمانیَن</script>
 			<script type="Avst">اَویستَن</script>
 			<script type="Bali">بالَنیٖز</script>
 			<script type="Batk">باتَک</script>
-			<script type="Beng">بیٚنگٲلۍ</script>
+			<script type="Beng">بینگٲلؠ</script>
 			<script type="Blis">بِلِس سِمبلز</script>
 			<script type="Bopo">بوپوموفو</script>
-			<script type="Brah">برٛاہمی</script>
+			<script type="Brah">براہمی</script>
 			<script type="Brai">بریل</script>
 			<script type="Bugi">بُگِنیٖز</script>
 			<script type="Buhd">بُہِد</script>
-			<script type="Cans">یُنِفایِڑ کنیڑِیَن ایٚب آرجِنَل سِلیبِک</script>
+			<script type="Cans">یُنِفایِڑ کنیڑِیَن ایب آرجِنَل سِلیبِک</script>
 			<script type="Cari">کاریَن</script>
 			<script type="Cham">چَم</script>
-			<script type="Cher">چیٚروکی</script>
+			<script type="Cher">چیروکی</script>
 			<script type="Cirt">کِرتھ</script>
 			<script type="Copt">کاپٹِک</script>
 			<script type="Cprt">کِپرایِٹ</script>
 			<script type="Cyrl">سَیرِلِک</script>
 			<script type="Cyrs">پرون چٔرچسلیوونِک سَیرِلِک</script>
 			<script type="Deva">دیوناگری</script>
-			<script type="Dsrt">ڈیٚسٔریٚٹ</script>
+			<script type="Dsrt">ڈیسٔریٹ</script>
 			<script type="Egyd">اِجپشِیَن ڈِماٹِک</script>
 			<script type="Egyh">اِجِپشَن ہَیریٹِک</script>
 			<script type="Egyp">اِجِپشَن ہَیروگلِپھس</script>
@@ -487,21 +491,23 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<script type="Goth">گوتھِک</script>
 			<script type="Grek">گرَنتھا</script>
 			<script type="Gujr">گریٖک</script>
-			<script type="Guru">گُجرٲتۍ</script>
-			<script type="Hang">ہانٛگُل</script>
+			<script type="Guru">گُجرٲتؠ</script>
+			<script type="Hang">ہانگُل</script>
 			<script type="Hani">ہان</script>
 			<script type="Hano">ہانُنوٗ</script>
-			<script type="Hans">سِمپلِفایِڑ ہان</script>
-			<script type="Hant">ٹریڑِشَنَل</script>
+			<script type="Hans">سَہل ﴿ترجمع اِشارٕ: یِم ورژن رَسم الخط ہُک ناؤ چھُ چیٖنی باپتھ زَبانٕ ناؤ کِس مجموعَس سٕتؠ اِستعمال یِوان کرنٕہ۔﴾</script>
+			<script type="Hans" alt="stand-alone">سَہل ہان ﴿ترجمع اِشارٕ: یِم ورژن رَسم الخط ہُک ناؤ چھُ چیٖنی باپتھ زَبانٕ ناؤ کِس مجموعَس بغٲرٕ الگ اِستعمال یِوان کرنٕہ۔﴾</script>
+			<script type="Hant">رِوٲجی ﴿ترجمع اِشارٕ: یِم ورژن رَسم الخط ہُک ناؤ چھُ چیٖنی باپتھ زَبانٕ ناؤ کِس مجموعَس سٕتؠ اِستعمال یِوان کرنٕہ۔﴾</script>
+			<script type="Hant" alt="stand-alone">رِوٲجی ہان ﴿ترجمع اِشارٕ: یِم ورژن رَسم الخط ہُک ناؤ چھُ چیٖنی باپتھ زَبانٕ ناؤ کِس مجموعَس بغٲرٕ الگ اِستعمال یِوان کرنٕہ۔﴾</script>
 			<script type="Hebr">ہِبرِو</script>
 			<script type="Hira">ہیٖراگانا</script>
-			<script type="Hmng">پَہاو مانٛگ</script>
+			<script type="Hmng">پَہاو مانگ</script>
 			<script type="Hrkt">کَٹاکانا یا ہِراگانا</script>
 			<script type="Hung">پرون ہَنگیریَن</script>
 			<script type="Inds">اِنڈَس</script>
 			<script type="Ital">اولڈ اِٹیلِک</script>
 			<script type="Java">جاوَنیٖز</script>
-			<script type="Jpan">جیٚپَنیٖز</script>
+			<script type="Jpan">جاپٲنی</script>
 			<script type="Kali">کایا لی</script>
 			<script type="Kana">کَتاکانا</script>
 			<script type="Khar">خَروشتھی</script>
@@ -510,10 +516,10 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<script type="Kore">کوریَن</script>
 			<script type="Lana">لانا</script>
 			<script type="Laoo">لاو</script>
-			<script type="Latf">فرٛکتُر لیٹِن</script>
+			<script type="Latf">فرکتُر لیٹِن</script>
 			<script type="Latg">گیلِک لیٹَن</script>
-			<script type="Latn">لیٹِن</script>
-			<script type="Lepc">لیٚپکا</script>
+			<script type="Latn">لاطیٖنی</script>
+			<script type="Lepc">لیپکا</script>
 			<script type="Limb">لِمبوٗ</script>
 			<script type="Lina">لیٖنیَر اے</script>
 			<script type="Linb">لیٖنیَر بی</script>
@@ -524,11 +530,11 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<script type="Maya">مایَن ہیٖروگلِپھ</script>
 			<script type="Mero">مِرایٹِک</script>
 			<script type="Mlym">مَلیالَم</script>
-			<script type="Mong">مَنٛگولیَن</script>
+			<script type="Mong">مَنگولیَن</script>
 			<script type="Moon">موٗن</script>
 			<script type="Mtei">میتی مایَک</script>
 			<script type="Mymr">مَیَنمار</script>
-			<script type="Nkoo">ایٚن کو</script>
+			<script type="Nkoo">این کو</script>
 			<script type="Ogam">اوگہام</script>
 			<script type="Olck">اول چِکی</script>
 			<script type="Orkh">اورکھون</script>
@@ -539,8 +545,8 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<script type="Phlv">بوٗک پَہَلوی</script>
 			<script type="Phnx">پھونِشِیَن</script>
 			<script type="Plrd">پولاڑ پھونِٹِک</script>
-			<script type="Rjng">ریجَنٛگ</script>
-			<script type="Roro">رونٛگو رونٛگو</script>
+			<script type="Rjng">ریجَنگ</script>
+			<script type="Roro">رونگو رونگو</script>
 			<script type="Runr">رَنِک</script>
 			<script type="Samr">سَمارِٹَن</script>
 			<script type="Sara">سَراتی</script>
@@ -551,15 +557,15 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<script type="Sund">سَنڈَنیٖز</script>
 			<script type="Sylo">سیلوتی ناگری</script>
 			<script type="Syrc">سیٖرِیَک</script>
-			<script type="Syre">ایٚسٹرینجِلو سیٖرِیَک</script>
+			<script type="Syre">ایسٹرینجِلو سیٖرِیَک</script>
 			<script type="Syrj">مغرِبی سیٖریَک</script>
 			<script type="Syrn">مشرَقی سیٖریَک</script>
 			<script type="Tagb">تَگبَنوا</script>
 			<script type="Tale">تَیلیے</script>
-			<script type="Talu">نوٚو تیلو</script>
+			<script type="Talu">نۆو تیلو</script>
 			<script type="Taml">تَمِل</script>
 			<script type="Telu">تیلگوٗ</script>
-			<script type="Teng">تیٚنگوار</script>
+			<script type="Teng">تینگوار</script>
 			<script type="Tfng">تِفِناگ</script>
 			<script type="Tglg">تَگَلوگ</script>
 			<script type="Thaa">تھانا</script>
@@ -571,9 +577,9 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<script type="Xpeo">پرون فارسی</script>
 			<script type="Xsux">سُمیرو اکادیَن کوٗنِفام</script>
 			<script type="Yiii">یٖی</script>
-			<script type="Zxxx">لیٚکھنَے</script>
+			<script type="Zxxx">لیکھنَے</script>
 			<script type="Zyyy">عام</script>
-			<script type="Zzzz">اَن زٲنۍ یا نا لَگہٕ ہار رَسمُل خظ</script>
+			<script type="Zzzz">نامولوٗم رَسم الخط</script>
 		</scripts>
 		<territories>
 			<territory type="001">دُنیا</territory>
@@ -594,8 +600,8 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="034">جنوٗبی ایشیا</territory>
 			<territory type="035">جنوٗبہِ مَشرِقی ایشیا</territory>
 			<territory type="039">جنوٗبی یوٗرَپ</territory>
-			<territory type="053">آسٹریلیا تہٕ نِوزِلینٛڑ</territory>
-			<territory type="054">مٮ۪لَنیٖشِیا</territory>
+			<territory type="053">آسٹریلیشیا</territory>
+			<territory type="054">مؠلَنیٖشِیا</territory>
 			<territory type="057">مَیکرونَیشِیَن خٕطہٕ</territory>
 			<territory type="061">پالنیشِیا</territory>
 			<territory type="142">ایشیا</territory>
@@ -605,161 +611,176 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="151">مشرِقی یوٗرَپ</territory>
 			<territory type="154">شُمٲلی یوٗرَپ</territory>
 			<territory type="155">مغرِبی یوٗرَپ</territory>
-			<territory type="419">لاطیٖنی اَمریٖکا تہٕ کیرَبیٖن</territory>
-			<territory type="AD">اٮ۪نڑورا</territory>
+			<territory type="202">ذیلی سہارن افریقہ</territory>
+			<territory type="419">لاطیٖنی اَمریٖکا</territory>
+			<territory type="AC">ایسنشن جزیرٕ</territory>
+			<territory type="AD">اینڈورا</territory>
 			<territory type="AE">مُتحدہ عرَب امارات</territory>
 			<territory type="AF">اَفغانَستان</territory>
-			<territory type="AG">اٮ۪نٹِگُوا تہٕ باربوڑا</territory>
+			<territory type="AG">اؠنٹِگُوا تہٕ باربوڑا</territory>
 			<territory type="AI">انگوئیلا</territory>
-			<territory type="AL">اٮ۪لبانِیا</territory>
+			<territory type="AL">البانیا</territory>
 			<territory type="AM">اَرمانِیا</territory>
-			<territory type="AN">نَیدَرلینٛڑٕس اٮ۪نٹَیلٕس</territory>
 			<territory type="AO">انگولا</territory>
 			<territory type="AQ">اینٹارٹِکا</territory>
 			<territory type="AR">أرجَنٹینا</territory>
 			<territory type="AS">اَمریٖکَن سَموا</territory>
-			<territory type="AT">آسٹِیا</territory>
+			<territory type="AT">آسٹریا</territory>
 			<territory type="AU">آسٹریلِیا</territory>
 			<territory type="AW">اَروٗبا</territory>
-			<territory type="AX">ایلینٛڑ جٔزیٖرٕ</territory>
-			<territory type="AZ">آزَرباجان</territory>
+			<territory type="AX">ایلینڑ جٔزیٖرٕ</territory>
+			<territory type="AZ">آذربائیجان</territory>
 			<territory type="BA">بوسنِیا تہٕ ہَرزِگووِنا</territory>
-			<territory type="BB">باربیڈاس</territory>
-			<territory type="BD">بَنٛگلادیش</territory>
-			<territory type="BE">بیٛلجِیَم</territory>
+			<territory type="BB">باربیڈوس</territory>
+			<territory type="BD">بَنگلادیش</territory>
+			<territory type="BE">بیلجِیَم</territory>
 			<territory type="BF">بُرکِنا فیسو</territory>
 			<territory type="BG">بَلجیرِیا</territory>
 			<territory type="BH">بحریٖن</territory>
 			<territory type="BI">بورَنڈِ</territory>
 			<territory type="BJ">بِنِن</territory>
-			<territory type="BL">سینٛٹ بارتَھیلمی</territory>
-			<territory type="BM">بٔرمیوڈا</territory>
-			<territory type="BN">بُرنٔے</territory>
+			<territory type="BL">سینٹ بارتَھیلمی</territory>
+			<territory type="BM">برمودا</territory>
+			<territory type="BN">برونے</territory>
 			<territory type="BO">بولِوِیا</territory>
-			<territory type="BQ">برطانوی قُطبہِ جَنوٗبی علاقہٕ</territory>
-			<territory type="BR">برٛازِل</territory>
+			<territory type="BQ">کیریبین نیدرلینڈس</territory>
+			<territory type="BR">برازِل</territory>
 			<territory type="BS">بَہامَس</territory>
 			<territory type="BT">بوٗٹان</territory>
 			<territory type="BV">بووَٹ جٔزیٖرٕ</territory>
 			<territory type="BW">بوتَسوانا</territory>
 			<territory type="BY">بیلاروٗس</territory>
-			<territory type="BZ">بیلِج</territory>
-			<territory type="CA">کینَڑا</territory>
-			<territory type="CC">کوکَس کیٖلِنٛگ جٔزیٖرٕ</territory>
-			<territory type="CD">کونٛگو کِنشاسا</territory>
+			<territory type="BZ">بیلز</territory>
+			<territory type="CA">کینیڈا</territory>
+			<territory type="CC">کوکَس (کیٖلِنگ) جٔزیٖرٕ</territory>
+			<territory type="CD">کونگو کِنشاسا</territory>
+			<territory type="CD" alt="variant">کونگو (ڈی آر سی)</territory>
 			<territory type="CF">مرکٔزی اَفریٖکی جموٗریَت</territory>
-			<territory type="CG">کونٛگو بٔرٛزاوِلی</territory>
-			<territory type="CH">سُوِزَرلینٛڑ</territory>
-			<territory type="CI">اَیوٕری کوسٹ</territory>
+			<territory type="CG">کونگو بٔرزاوِلی</territory>
+			<territory type="CG" alt="variant">کونگو (جمہوریہ)</territory>
+			<territory type="CH">سُوِزَرلینڑ</territory>
+			<territory type="CI">کوٹ ڈلوائر</territory>
 			<territory type="CK">کُک جٔزیٖرٕ</territory>
 			<territory type="CL">چِلی</territory>
-			<territory type="CM">کیٚمِروٗن</territory>
+			<territory type="CM">کیمِروٗن</territory>
 			<territory type="CN">چیٖن</territory>
 			<territory type="CO">کولَمبِیا</territory>
-			<territory type="CR">کوسٹا رِکا</territory>
+			<territory type="CP">کلیپرٹن جزیرٕ</territory>
+			<territory type="CR">کوسٹا ریکا</territory>
 			<territory type="CU">کیوٗبا</territory>
 			<territory type="CV">کیپ ؤرڑی</territory>
+			<territory type="CW">کیوراکو</territory>
 			<territory type="CX">کرِسمَس جٔزیٖرٕ</territory>
-			<territory type="CY">سایفرٛس</territory>
-			<territory type="CZ">چیک جَموٗرِیَت</territory>
+			<territory type="CY">سائپرس</territory>
+			<territory type="CZ">چیکیا</territory>
 			<territory type="DE">جرمٔنی</territory>
+			<territory type="DG">ڈیگو گریشیا</territory>
 			<territory type="DJ">جِبوٗتی</territory>
-			<territory type="DK">ڈینٛمارٕک</territory>
+			<territory type="DK">ڈینمارٕک</territory>
 			<territory type="DM">ڈومِنِکا</territory>
 			<territory type="DO">ڈومِنِکَن جموٗرِیَت</territory>
-			<territory type="DZ">اٮ۪لجیرِیا</territory>
+			<territory type="DZ">اؠلجیرِیا</territory>
+			<territory type="EA">سیوٹا تٕہ مٔلیلا</territory>
 			<territory type="EC">اِکواڑور</territory>
 			<territory type="EE">ایسٹونِیا</territory>
-			<territory type="EG">مِسٔر</territory>
+			<territory type="EG">مصر</territory>
 			<territory type="EH">مشرِقی سَہارا</territory>
 			<territory type="ER">اِرٕٹِیا</territory>
 			<territory type="ES">سٕپین</territory>
 			<territory type="ET">اِتھوپِیا</territory>
-			<territory type="FI">فِنلینٛڑ</territory>
+			<territory type="EU">یوٗرپی یونین</territory>
+			<territory type="EZ">یوٗرو زون</territory>
+			<territory type="FI">فِن لینڈ</territory>
 			<territory type="FJ">فِجی</territory>
-			<territory type="FK">فٕلاکلینٛڑ جٔزیٖرٕ</territory>
-			<territory type="FR">فرٛانس</territory>
+			<territory type="FK">فٕلاکلینڑ جٔزیٖرٕ</territory>
+			<territory type="FM">مائیکرونیشیا</territory>
+			<territory type="FO">فارو جزیرہ</territory>
+			<territory type="FR">فرانس</territory>
 			<territory type="GA">گیبان</territory>
-			<territory type="GB">یُنایٹِڑ کِنٛگڈَم</territory>
-			<territory type="GD">گرٛنیڑا</territory>
+			<territory type="GB">متحدہ مملِکت</territory>
+			<territory type="GD">گرینیڈا</territory>
 			<territory type="GE">جارجِیا</territory>
-			<territory type="GF">فرٛانسِسی گِانا</territory>
-			<territory type="GG">گیوَنَرسے</territory>
+			<territory type="GF">فرانسِسی گِانا</territory>
+			<territory type="GG">گورنسے</territory>
 			<territory type="GH">گانا</territory>
 			<territory type="GI">جِبرالٹَر</territory>
-			<territory type="GL">گریٖنلینٛڑ</territory>
+			<territory type="GL">گرین لینڈ</territory>
 			<territory type="GM">گَمبِیا</territory>
 			<territory type="GN">گِنی</territory>
-			<territory type="GP">گَواڑیلوپ</territory>
+			<territory type="GP">گواڈلوپ</territory>
 			<territory type="GQ">اِکوِٹورِیَل گِنی</territory>
 			<territory type="GR">گریٖس</territory>
-			<territory type="GS">جنوٗبی جارجِیا تہٕ جنوٗبی سینٛڑوٕچ جٔزیٖرٕ</territory>
-			<territory type="GT">گوتیدالا</territory>
+			<territory type="GS">جنوٗبی جارجِیا تہٕ جنوٗبی سینڑوٕچ جٔزیٖرٕ</territory>
+			<territory type="GT">گواٹمالا</territory>
 			<territory type="GU">گُوام</territory>
 			<territory type="GW">گیٖنی بِساو</territory>
 			<territory type="GY">گُیانا</territory>
-			<territory type="HK">ہانٛگ کانٛگ ایس اے آر چیٖن</territory>
-			<territory type="HM">ہَرٕڑ جٔزیٖرٕ تہٕ مٮ۪کڈونالڑٕ جٔزیٖرٕ</territory>
-			<territory type="HN">ہانٛڈوٗرِس</territory>
-			<territory type="HR">کرٛوشِیا</territory>
-			<territory type="HT">ہایتی</territory>
-			<territory type="HU">ہَنٛگری</territory>
-			<territory type="ID">اِنڑونیشِیا</territory>
-			<territory type="IE">اَیَرلینٛڑ</territory>
-			<territory type="IL">اِسرایٖل</territory>
-			<territory type="IM">آیِل آف میٛن</territory>
-			<territory type="IN">ہِنٛدوستان</territory>
-			<territory type="IO">برطانوی بحرِ ہِنٛدۍ علاقہٕ</territory>
+			<territory type="HK">ہانگ کانگ ایس اے آر چیٖن</territory>
+			<territory type="HK" alt="short">ہانگ کانگ</territory>
+			<territory type="HM">ہَرٕڑ تہٕ مؠکڈونالڑٕ جٔزیٖرٕ</territory>
+			<territory type="HN">ہونڈورس</territory>
+			<territory type="HR">کروشِیا</territory>
+			<territory type="HT">ہیتی</territory>
+			<territory type="HU">ہَنگری</territory>
+			<territory type="IC">کینری جزیرٕ</territory>
+			<territory type="ID">انڈونیشیا</territory>
+			<territory type="IE">اَیَرلینڑ</territory>
+			<territory type="IL">اسرا ییل</territory>
+			<territory type="IM">آیِل آف مین</territory>
+			<territory type="IN">ہِندوستان</territory>
+			<territory type="IO" draft="provisional">برطانوی بحرِ ہِندؠ علاقہٕ</territory>
 			<territory type="IQ">ایٖراق</territory>
 			<territory type="IR">ایٖران</territory>
-			<territory type="IS">اَیِسلینٛڑ</territory>
+			<territory type="IS">اَیِسلینڑ</territory>
 			<territory type="IT">اِٹلی</territory>
 			<territory type="JE">جٔرسی</territory>
 			<territory type="JM">جَمایکا</territory>
+			<territory type="JO">جورڈن</territory>
 			<territory type="JP">جاپان</territory>
-			<territory type="KE">کِنٛیا</territory>
-			<territory type="KG">کِرگِستان</territory>
+			<territory type="KE">کِنیا</territory>
+			<territory type="KG">کرغزستان</territory>
 			<territory type="KH">کَمبوڑِیا</territory>
 			<territory type="KI">کِرٕباتی</territory>
 			<territory type="KM">کَمورَس</territory>
-			<territory type="KN">سینٛٹ کِٹَس تہٕ نیوِس</territory>
+			<territory type="KN">سینٹ کِٹَس تہٕ نیوِس</territory>
 			<territory type="KP">شُمٲلی کورِیا</territory>
 			<territory type="KR">جنوٗبی کورِیا</territory>
 			<territory type="KW">کُویت</territory>
 			<territory type="KY">کیمَن جٔزیٖرٕ</territory>
-			<territory type="KZ">کَزاکِستان</territory>
+			<territory type="KZ">قازقستان</territory>
 			<territory type="LA">لاس</territory>
-			<territory type="LB">لٮ۪بنان</territory>
-			<territory type="LC">سینٛٹ لوٗسِیا</territory>
-			<territory type="LI">لِکٹیٛسٹیٖن</territory>
-			<territory type="LK">سِریٖلَنٛکا</territory>
+			<territory type="LB">لؠبنان</territory>
+			<territory type="LC">سینٹ لوٗسِیا</territory>
+			<territory type="LI">لِکٹیسٹیٖن</territory>
+			<territory type="LK">سری لنکا</territory>
 			<territory type="LR">لایبیرِیا</territory>
 			<territory type="LS">لیسوتھو</territory>
 			<territory type="LT">لِتھُوانِیا</territory>
 			<territory type="LU">لَکسَمبٔرٕگ</territory>
-			<territory type="LV">لیٛٹوِیا</territory>
+			<territory type="LV">لیٹوِیا</territory>
 			<territory type="LY">لِبیا</territory>
 			<territory type="MA">موروکو</territory>
-			<territory type="MC">مونیٚکو</territory>
-			<territory type="MD">مولڑاوِیا</territory>
-			<territory type="ME">موٹونیٛگِریو</territory>
-			<territory type="MF">سینٛٹ مارٹِن</territory>
-			<territory type="MG">میڑاگاسکار</territory>
+			<territory type="MC">مونیکو</territory>
+			<territory type="MD">مولڈووا</territory>
+			<territory type="ME">موٹونیگِریو</territory>
+			<territory type="MF">سینٹ مارٹِن</territory>
+			<territory type="MG">میڈاگاسکار</territory>
 			<territory type="MH">مارشَل جٔزیٖرٕ</territory>
-			<territory type="MK">مٮ۪سوڑونِیا</territory>
+			<territory type="MK">شُمالی میسڈونیا</territory>
 			<territory type="ML">مالی</territory>
-			<territory type="MM">مَیَنما بٔرما</territory>
-			<territory type="MN">مَنٛگولِیا</territory>
+			<territory type="MM">میانمار (برما)</territory>
+			<territory type="MN">مَنگولِیا</territory>
 			<territory type="MO">مَکاوو ایس اے آر چیٖن</territory>
+			<territory type="MO" alt="short">ماکاوو</territory>
 			<territory type="MP">شُمٲلی مارِیانا جٔزیٖرٕ</territory>
 			<territory type="MQ">مارٹِنِک</territory>
 			<territory type="MR">مارٕٹانِیا</territory>
-			<territory type="MS">مانٛٹسیراٹ</territory>
+			<territory type="MS">مانٹسیراٹ</territory>
 			<territory type="MT">مالٹا</territory>
 			<territory type="MU">مورِشَس</territory>
 			<territory type="MV">مالدیٖو</territory>
 			<territory type="MW">ملاوی</territory>
-			<territory type="MX">مٮ۪کسِکو</territory>
+			<territory type="MX">مؠکسِکو</territory>
 			<territory type="MY">مَلیشِیا</territory>
 			<territory type="MZ">موزَمبِک</territory>
 			<territory type="NA">نامِبِیا</territory>
@@ -768,24 +789,25 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="NF">نارفاک جٔزیٖرٕ</territory>
 			<territory type="NG">نایجیرِیا</territory>
 			<territory type="NI">ناکاراگُوا</territory>
-			<territory type="NL">نیٖدَرلینٛڑ</territory>
+			<territory type="NL">نیٖدَرلینڑ</territory>
 			<territory type="NO">ناروے</territory>
 			<territory type="NP">نیپال</territory>
 			<territory type="NR">نارووٗ</territory>
 			<territory type="NU">نیوٗ</territory>
-			<territory type="NZ">نیوٗزِلینٛڑ</territory>
+			<territory type="NZ">نیوزی لینڈ</territory>
 			<territory type="OM">اومان</territory>
 			<territory type="PA">پَناما</territory>
 			<territory type="PE">پیٖروٗ</territory>
-			<territory type="PF">فرٛانسی پولِنیشِیا</territory>
+			<territory type="PF">فرانسی پولِنیشِیا</territory>
 			<territory type="PG">پاپُوا نیوٗ گیٖنی</territory>
-			<territory type="PH">فِلِپِینس</territory>
+			<territory type="PH">فلپائن</territory>
 			<territory type="PK">پاکِستان</territory>
-			<territory type="PL">پولینٛڑ</territory>
-			<territory type="PM">سینٛٹ پیٖری تہٕ موکیلِیَن</territory>
-			<territory type="PN">پِٹکیرٕنۍ جٔزیٖرٕ</territory>
+			<territory type="PL">پولینڈ</territory>
+			<territory type="PM">سینٹ پیٖری تہٕ موکیلِیَن</territory>
+			<territory type="PN">پِٹکیرٕنؠ جٔزیٖرٕ</territory>
 			<territory type="PR">پٔرٹو رِکو</territory>
-			<territory type="PS">فَلَستیٖن</territory>
+			<territory type="PS">فلسطینی علاقٕہ</territory>
+			<territory type="PS" alt="short">فلسطین</territory>
 			<territory type="PT">پُرتِگال</territory>
 			<territory type="PW">پَلاو</territory>
 			<territory type="PY">پَراگُے</territory>
@@ -795,87 +817,95 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="RO">رومانِیا</territory>
 			<territory type="RS">سَربِیا</territory>
 			<territory type="RU">روٗس</territory>
-			<territory type="RW">روٗوانٛڈا</territory>
-			<territory type="SA">سوٗدی عربِیہ</territory>
+			<territory type="RW">روٗوانڈا</territory>
+			<territory type="SA">سعودی عرب</territory>
 			<territory type="SB">سولامان جٔزیٖرٕ</territory>
 			<territory type="SC">سیشَلِس</territory>
 			<territory type="SD">سوٗڈان</territory>
-			<territory type="SE">سُوِڈَن</territory>
-			<territory type="SG">ٛسِنٛگاپوٗر</territory>
-			<territory type="SH">سینٛٹ ہٮ۪لِنا</territory>
+			<territory type="SE">سویڈن</territory>
+			<territory type="SG">سِنگاپوٗر</territory>
+			<territory type="SH">سینٹ ہؠلِنا</territory>
 			<territory type="SI">سَلووینِیا</territory>
 			<territory type="SJ">سَوالبریڑ تہٕ جان ماییڑ</territory>
 			<territory type="SK">سَلوواکِیا</territory>
-			<territory type="SL">سیٖرالیوون</territory>
+			<territory type="SL">سیرا لیون</territory>
 			<territory type="SM">سین میرِنو</territory>
 			<territory type="SN">سینیگَل</territory>
 			<territory type="SO">سومالِیا</territory>
 			<territory type="SR">سُرِنام</territory>
-			<territory type="ST">ساو توم تہٕ پرٛنسِپی</territory>
-			<territory type="SV">اٮ۪ل سَلواڑور</territory>
+			<territory type="SS">جنوبی سوڈان</territory>
+			<territory type="ST">ساو توم تہٕ پرنسِپی</territory>
+			<territory type="SV">ایل سلویڈر</territory>
+			<territory type="SX">سِنٹ مارٹِن</territory>
 			<territory type="SY">شام</territory>
-			<territory type="SZ">سُوزِلینٛڑ</territory>
-			<territory type="TC">تُرُک تہٕ کیکوس جٔزیٖرٕ</territory>
+			<territory type="SZ">ایسواتنی</territory>
+			<territory type="SZ" alt="variant">سویزیلینڈ</territory>
+			<territory type="TA">ٹریسٹن ڈا کنہا</territory>
+			<territory type="TC">تُرکس تٕہ کیکو جزیرٕ</territory>
 			<territory type="TD">چاڑ</territory>
-			<territory type="TF">فرٛانسِسی جَنوٗبی عَلاقہٕ</territory>
+			<territory type="TF">فرانسِسی جَنوٗبی عَلاقہٕ</territory>
 			<territory type="TG">ٹوگو</territory>
-			<territory type="TH">تھایلینٛڑ</territory>
+			<territory type="TH">تھائی لینڈ</territory>
 			<territory type="TJ">تاجکِستان</territory>
-			<territory type="TK">توکیلاو</territory>
-			<territory type="TL">مَشرِقی تایمور</territory>
-			<territory type="TM">تُرمِنِستان</territory>
+			<territory type="TK">ٹوکلو</territory>
+			<territory type="TL">تیمور-لیسٹ</territory>
+			<territory type="TM">تُرکمنستان</territory>
 			<territory type="TN">ٹونیشِیا</territory>
-			<territory type="TO">ٹونٛگا</territory>
+			<territory type="TO">ٹونگا</territory>
 			<territory type="TR">تُرکی</territory>
-			<territory type="TT">ٹرٛنِنداد تہٕ ٹوبیگو</territory>
+			<territory type="TT">ٹرنِنداد تہٕ ٹوبیگو</territory>
 			<territory type="TV">توٗوالوٗ</territory>
 			<territory type="TW">تایوان</territory>
 			<territory type="TZ">تَنجانِیا</territory>
 			<territory type="UA">یوٗرِکین</territory>
-			<territory type="UG">یوٗگانٛڑا</territory>
-			<territory type="UM">یوٗنایٹِڑ سِٹیٹِس ماینَر آوُٹلییِنٛگ جٔزیٖرٕ</territory>
+			<territory type="UG">یوٗگانڑا</territory>
+			<territory type="UM">یوٗنایٹِڑ سِٹیٹِس ماینَر آوُٹلییِنگ جٔزیٖرٕ</territory>
+			<territory type="UN">متحدہ مُمٲلک</territory>
 			<territory type="US">یوٗنایٹِڑ سِٹیٹِس</territory>
 			<territory type="UY">یوٗروگے</territory>
 			<territory type="UZ">اُزبِکِستان</territory>
 			<territory type="VA">ویٹِکَن سِٹی</territory>
-			<territory type="VC">سینٛٹ وینسٮ۪ٹ تہٕ گرٛیناڑاینٕز</territory>
+			<territory type="VC">سینٹ وینسؠٹ تہٕ گریناڑاینٕز</territory>
 			<territory type="VE">وینازوٗلا</territory>
 			<territory type="VG">بَرطانوی ؤرجِن جٔزیٖرٕ</territory>
 			<territory type="VI">یوٗ ایس ؤرجِن جٔزیٖرٕ</territory>
-			<territory type="VN">ویٹِنام</territory>
+			<territory type="VN">ویتنام</territory>
 			<territory type="VU">وانوٗتوٗ</territory>
 			<territory type="WF">والِس تہٕ فیوٗچوٗنا</territory>
-			<territory type="WS">سیمووا</territory>
+			<territory type="WS">سامو</territory>
+			<territory type="XA">سوڈو-ایسنٹس</territory>
+			<territory type="XB">سوڈو-بیڈی</territory>
+			<territory type="XK">کوسوو</territory>
 			<territory type="YE">یَمَن</territory>
 			<territory type="YT">مَییٹ</territory>
-			<territory type="ZA">جَنوٗبی اَفریٖکا</territory>
-			<territory type="ZM">جامبِیا</territory>
+			<territory type="ZA">جنوبی افریقہ</territory>
+			<territory type="ZM">زیمبیا</territory>
 			<territory type="ZW">زِمبابے</territory>
-			<territory type="ZZ">نامعلوٗم تہٕ نالَگہار عَلاقہٕ</territory>
+			<territory type="ZZ">نامولوٗم علاقٕہ</territory>
 		</territories>
 		<variants>
-			<variant type="1901">رٮ۪وٲتی جٔرمَن عِلمہِ ہِجا</variant>
+			<variant type="1901">رؠوٲتی جٔرمَن عِلمہِ ہِجا</variant>
 			<variant type="1994">مَیعٲری روٗسی عِلمہِ ہِجا</variant>
 			<variant type="1996">جٔرمَن عِلمہِ ہِجا ۱۹۹۶سُک</variant>
-			<variant type="1606NICT">بعد وَقت وَسطی فرٛانس پٮ۪ٹھ ۱۶٠۶ تام</variant>
+			<variant type="1606NICT">بعد وَقت وَسطی فرانس پؠٹھ ۱۶٠۶ تام</variant>
 			<variant type="AREVELA">مَشرِقی اَمریٖکا</variant>
 			<variant type="BAKU1926">جٔمع کٔرِتھ تُرکی لاطیٖنی اَچھر</variant>
-			<variant type="BISKE">سین جارجِیو/بِلا بوٗلۍ</variant>
+			<variant type="BISKE">سین جارجِیو/بِلا بوٗلؠ</variant>
 			<variant type="FONIPA">آوازیات</variant>
 			<variant type="FONUPA">یوٗ پی اے آوازِیات</variant>
-			<variant type="LIPAW">روٗسی زَبانہِ ہِنٛز لِپوواز بوٗلۍ</variant>
-			<variant type="MONOTON">اَکٔے لہجہٕ واجٮ۪ن زَبان</variant>
-			<variant type="NEDIS">نٮ۪ٹِسون بوٗلۍ</variant>
-			<variant type="NJIVA">نیجِوا بوٗلۍ</variant>
-			<variant type="OSOJS">اُشیکو/اوسوجین بوٗلۍ</variant>
-			<variant type="POLYTON">واریاہ لہجہٕ واجٮ۪ن زَبان</variant>
+			<variant type="LIPAW">روٗسی زَبانہِ ہِنز لِپوواز بوٗلؠ</variant>
+			<variant type="MONOTON">اَکٔے لہجہٕ واجؠن زَبان</variant>
+			<variant type="NEDIS">نؠٹِسون بوٗلؠ</variant>
+			<variant type="NJIVA">نیجِوا بوٗلؠ</variant>
+			<variant type="OSOJS">اُشیکو/اوسوجین بوٗلؠ</variant>
+			<variant type="POLYTON">واریاہ لہجہٕ واجؠن زَبان</variant>
 			<variant type="POSIX">کَمپیوٗٹَر</variant>
 			<variant type="REVISED">دُبارٕ دۄہراونہٕ آمُت عِلمہِ ہِجا</variant>
 			<variant type="ROZAJ">روٗسی</variant>
 			<variant type="SAAHO">سوہو</variant>
-			<variant type="SCOTLAND">سُکاٹِش مَیعٲری اَنٛگریٖزۍ</variant>
+			<variant type="SCOTLAND">سُکاٹِش مَیعٲری اَنگریٖزؠ</variant>
 			<variant type="SCOUSE">سِکوس</variant>
-			<variant type="SOLBA">ثٹولوِزا/سولبِکا بوٗلۍ</variant>
+			<variant type="SOLBA">ثٹولوِزا/سولبِکا بوٗلؠ</variant>
 			<variant type="TARASK">تاراسکیٖوِکا علمہ ہِجاِ</variant>
 		</variants>
 		<keys>
@@ -883,23 +913,30 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<key type="currency">ضَرب</key>
 		</keys>
 		<types>
-			<type type="big5han" key="collation">رٮ۪وٲتی چیٖنی تِرتیٖب</type>
-			<type type="buddhist" key="calendar">بُدَن ہُنٛد کیلنڑَر</type>
-			<type type="chinese" key="calendar">چیٖنی کیلَنڑَر</type>
-			<type type="gregorian" key="calendar">گرگوریَن کیلنڑَر</type>
-			<type type="hebrew" key="calendar">ہِبرِو کیلنڑَر</type>
-			<type type="islamic" key="calendar">اِسلٲمی کیلنڑَر</type>
-			<type type="islamic-civil" key="calendar">اِسلٲمی اِجتمٲیی کیلنڑَر</type>
-			<type type="japanese" key="calendar">جاپٲنۍ کیلنڑَر</type>
-			<type type="phonebook" key="collation">فون بُک تَرتیٖب</type>
-			<type type="pinyin" key="collation">آسان بَناونہٕ آمُت چیٖنی پیٖنیَن تَرتیٖب</type>
-			<type type="roc" key="calendar">جموٗریٲتی چیٖنی کیلَنڑَر</type>
-			<type type="stroke" key="collation">رٮ۪وٲتی چیٖنی سٹروک تَرتیٖب</type>
-			<type type="traditional" key="collation">رٮ۪وٲتی تَرتیٖب</type>
+			<type key="calendar" type="buddhist">بُدَن ہُند کیلنڑَر</type>
+			<type key="calendar" type="chinese">چیٖنی کیلَنڑَر</type>
+			<type key="calendar" type="gregorian">گرگوریَن کیلنڑَر</type>
+			<type key="calendar" type="hebrew">ہِبرِو کیلنڑَر</type>
+			<type key="calendar" type="indian">انڈین نیشنل کیلنڈر</type>
+			<type key="calendar" type="islamic" draft="provisional">اِسلٲمی کیلنڑَر</type>
+			<type key="calendar" type="islamic-civil" draft="provisional">اِسلٲمی اِجتمٲیی کیلنڑَر</type>
+			<type key="calendar" type="iso8601">ISO-8601 کیلنڈر</type>
+			<type key="calendar" type="japanese">جاپٲنؠ کیلنڑَر</type>
+			<type key="calendar" type="roc">جموٗریٲتی چیٖنی کیلَنڑَر</type>
+			<type key="collation" type="phonebook">فون بُک تَرتیٖب</type>
+			<type key="collation" type="pinyin">آسان بَناونہٕ آمُت چیٖنی پیٖنیَن تَرتیٖب</type>
+			<type key="collation" type="standard">معیٲری ترتیٖب آڈر</type>
+			<type key="collation" type="stroke">رؠوٲتی چیٖنی سٹروک تَرتیٖب</type>
+			<type key="collation" type="traditional">رؠوٲتی تَرتیٖب</type>
+			<type key="numbers" type="arab">اَربی-اِنڈِک ہندسٕہ</type>
+			<type key="numbers" type="arabext">توسیٖع شُدہ اَربی-اِنڈِک ہندسٕہ</type>
+			<type key="numbers" type="deva">دیوناگری ہندسٕہ</type>
+			<type key="numbers" type="latn">مغربی ہندسٕہ</type>
 		</types>
 		<measurementSystemNames>
 			<measurementSystemName type="metric">میٖٹرِک</measurementSystemName>
-			<measurementSystemName type="US">یوٗ ایس</measurementSystemName>
+			<measurementSystemName type="UK">یو کے</measurementSystemName>
+			<measurementSystemName type="US">یو ایس</measurementSystemName>
 		</measurementSystemNames>
 		<codePatterns>
 			<codePattern type="language">زَبان: {0}</codePattern>
@@ -913,8 +950,11 @@ For terms of use, see http://www.unicode.org/copyright.html
 		</orientation>
 	</layout>
 	<characters>
-		<exemplarCharacters>[\u06EA\u06ED \u064E \u064F \u0650 \u0654 \u0655 \u0656 \u0657 \u065A \u065B ء آ أ ٲ ؤ ا ٮ ب پ ت ث ٹ ج چ ح خ د ذ ڈ ر ز ڑ ژ س ش ص ض ط ظ ع غ ف ق ک گ ل م ن ں ھ ہ و ۄ ی ۍ ے]</exemplarCharacters>
-		<exemplarCharacters type="auxiliary">[\u200E\u200F]</exemplarCharacters>
+		<exemplarCharacters>[ء آ أ ٲ ؤ ا ب پ ت ث ٹ ج چ ح خ د ذ ڈ ر ز ڑ ژ س ش ص ض ط ظ ع غ ف ق ک گ ل م ن ں ھ ہ و ۄ ۆ ی ؠ ے]</exemplarCharacters>
+		<exemplarCharacters type="auxiliary">[\u200E\u200F َ ُ ِ ٔ ٕ ٟ ٖ ٗ ئ]</exemplarCharacters>
+		<exemplarCharacters type="numbers">[\u200E \- ‑ , ٫ ٬ . % ‰ + 0۰ 1۱ 2۲ 3۳ 4۴ 5۵ 6۶ 7۷ 8۸ 9۹]</exemplarCharacters>
+		<exemplarCharacters type="punctuation" draft="contributed">[\- ‐‑ – — , ; \: ! ? . … '‘’ &quot;“” ( ) \[ \] § @ * / \&amp; # † ‡ ′ ″]</exemplarCharacters>
+		<moreInformation draft="unconfirmed">؟</moreInformation>
 	</characters>
 	<dates>
 		<calendars>
@@ -922,87 +962,213 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<dateFormats>
 					<dateFormatLength type="full">
 						<dateFormat>
-							<pattern>EEEE, MMMM d, Gy</pattern>
+							<pattern>EEEE, MMMM d, y G</pattern>
 						</dateFormat>
 					</dateFormatLength>
 					<dateFormatLength type="long">
 						<dateFormat>
-							<pattern>MMMM d, Gy</pattern>
+							<pattern>MMMM d, y G</pattern>
 						</dateFormat>
 					</dateFormatLength>
 					<dateFormatLength type="medium">
 						<dateFormat>
-							<pattern>MMM d, Gy</pattern>
+							<pattern>MMM d, y G</pattern>
 						</dateFormat>
 					</dateFormatLength>
 					<dateFormatLength type="short">
 						<dateFormat>
-							<pattern>M/d/Gy</pattern>
+							<pattern>M/d/y GGGGG</pattern>
+							<datetimeSkeleton>GyMd</datetimeSkeleton>
 						</dateFormat>
 					</dateFormatLength>
 				</dateFormats>
 				<dateTimeFormats>
 					<dateTimeFormatLength type="full">
 						<dateTimeFormat>
-							<pattern>{1} {0}</pattern>
+							<pattern>{1}, {0}</pattern>
+						</dateTimeFormat>
+						<dateTimeFormat type="atTime">
+							<pattern>{0} پٮ۪ٹھؠ {1}</pattern>
 						</dateTimeFormat>
 					</dateTimeFormatLength>
 					<dateTimeFormatLength type="long">
 						<dateTimeFormat>
-							<pattern>{1} {0}</pattern>
+							<pattern>{1}, {0}</pattern>
+						</dateTimeFormat>
+						<dateTimeFormat type="atTime">
+							<pattern>{0} پٮ۪ٹھؠ {1}</pattern>
 						</dateTimeFormat>
 					</dateTimeFormatLength>
 					<dateTimeFormatLength type="medium">
 						<dateTimeFormat>
-							<pattern>{1} {0}</pattern>
+							<pattern>{1}, {0}</pattern>
 						</dateTimeFormat>
 					</dateTimeFormatLength>
 					<dateTimeFormatLength type="short">
 						<dateTimeFormat>
-							<pattern>{1} {0}</pattern>
+							<pattern>{1}, {0}</pattern>
 						</dateTimeFormat>
 					</dateTimeFormatLength>
 					<availableFormats>
-						<dateFormatItem id="d">d</dateFormatItem>
-						<dateFormatItem id="GGGGyMMMMEEEEdd">EEEE,dd MMMM GGGGy</dateFormatItem>
 						<dateFormatItem id="Gy">Gy</dateFormatItem>
+						<dateFormatItem id="GyMd">M/d/y GGGGG</dateFormatItem>
 						<dateFormatItem id="GyMMM">MMM Gy</dateFormatItem>
-						<dateFormatItem id="GyMMMd">MMM d, Gy</dateFormatItem>
-						<dateFormatItem id="GyMMMEd">EEE, MMM d, Gy</dateFormatItem>
-						<dateFormatItem id="hm">h:mm a</dateFormatItem>
-						<dateFormatItem id="Hm">HH:mm</dateFormatItem>
-						<dateFormatItem id="Hms">HH:mm:ss</dateFormatItem>
-						<dateFormatItem id="M">L</dateFormatItem>
+						<dateFormatItem id="GyMMMd">MMM d, y G</dateFormatItem>
+						<dateFormatItem id="GyMMMEd">E, MMM d, y G</dateFormatItem>
 						<dateFormatItem id="Md">M/d</dateFormatItem>
 						<dateFormatItem id="MEd">E, M/d</dateFormatItem>
-						<dateFormatItem id="MMM">LLL</dateFormatItem>
-						<dateFormatItem id="MMMd">d-MMM</dateFormatItem>
 						<dateFormatItem id="MMMEd">E, MMM d</dateFormatItem>
-						<dateFormatItem id="MMMMd">MMMM d</dateFormatItem>
 						<dateFormatItem id="MMMMEd">E, MMMM d</dateFormatItem>
-						<dateFormatItem id="ms">mm:ss</dateFormatItem>
-						<dateFormatItem id="y">Gy</dateFormatItem>
-						<dateFormatItem id="yyyy">Gy</dateFormatItem>
-						<dateFormatItem id="yyyyM">M/Gy</dateFormatItem>
-						<dateFormatItem id="yyyyMEd">EEE, M/d/Gy</dateFormatItem>
-						<dateFormatItem id="yyyyMMM">MMM Gy</dateFormatItem>
-						<dateFormatItem id="yyyyMMMd">MMM d, Gy</dateFormatItem>
-						<dateFormatItem id="yyyyMMMEd">EEE, MMM d, Gy</dateFormatItem>
-						<dateFormatItem id="yyyyMMMM">MMMM Gy</dateFormatItem>
-						<dateFormatItem id="yyyyQQQ">QQQ Gy</dateFormatItem>
-						<dateFormatItem id="yyyyQQQQ">QQQQ Gy</dateFormatItem>
+						<dateFormatItem id="y">y G</dateFormatItem>
+						<dateFormatItem id="yyyy">y G</dateFormatItem>
+						<dateFormatItem id="yyyyM">M/y GGGGG</dateFormatItem>
+						<dateFormatItem id="yyyyMd">M/d/y GGGGG</dateFormatItem>
+						<dateFormatItem id="yyyyMEd">E, M/d/y GGGGG</dateFormatItem>
+						<dateFormatItem id="yyyyMMM">MMM y G</dateFormatItem>
+						<dateFormatItem id="yyyyMMMd">MMM d, y G</dateFormatItem>
+						<dateFormatItem id="yyyyMMMEd">E, MMM d, y G</dateFormatItem>
+						<dateFormatItem id="yyyyMMMM">MMMM y G</dateFormatItem>
+						<dateFormatItem id="yyyyQQQ">QQQ y G</dateFormatItem>
+						<dateFormatItem id="yyyyQQQQ">QQQQ y G</dateFormatItem>
 					</availableFormats>
+					<intervalFormats>
+						<intervalFormatItem id="Gy">
+							<greatestDifference id="G">y G – y G</greatestDifference>
+							<greatestDifference id="y">y – y G</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="GyM">
+							<greatestDifference id="G">M/y GGGGG – M/y GGGGG</greatestDifference>
+							<greatestDifference id="M">M/y – M/y GGGGG</greatestDifference>
+							<greatestDifference id="y">M/y – M/y GGGGG</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="GyMd">
+							<greatestDifference id="d">M/d/y – M/d/y GGGGG</greatestDifference>
+							<greatestDifference id="G">M/d/y GGGGG – M/d/y GGGGG</greatestDifference>
+							<greatestDifference id="M">M/d/y – M/d/y GGGGG</greatestDifference>
+							<greatestDifference id="y">M/d/y – M/d/y GGGGG</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="GyMEd">
+							<greatestDifference id="d">E, M/d/y – E, M/d/y GGGGG</greatestDifference>
+							<greatestDifference id="G">E, M/d/y GGGGG – E, M/d/y GGGGG</greatestDifference>
+							<greatestDifference id="M">E, M/d/y – E, M/d/y GGGGG</greatestDifference>
+							<greatestDifference id="y">E, M/d/y – E, M/d/y GGGGG</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="GyMMM">
+							<greatestDifference id="G">MMM y G – MMM y G</greatestDifference>
+							<greatestDifference id="M">MMM – MMM y G</greatestDifference>
+							<greatestDifference id="y">MMM y – MMM y G</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="GyMMMd">
+							<greatestDifference id="d">MMM d – d, y G</greatestDifference>
+							<greatestDifference id="G">MMM d, y G – MMM d, y G</greatestDifference>
+							<greatestDifference id="M">MMM d – MMM d, y G</greatestDifference>
+							<greatestDifference id="y">MMM d, y – MMM d, y G</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="GyMMMEd">
+							<greatestDifference id="d">E, MMM d – E, MMM d, y G</greatestDifference>
+							<greatestDifference id="G">E, MMM d, y G – E, MMM d, y G</greatestDifference>
+							<greatestDifference id="M">E, MMM d – E, MMM d, y G</greatestDifference>
+							<greatestDifference id="y">E, MMM d, y – E, MMM d, y G</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="M">
+							<greatestDifference id="M">M – M</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="Md">
+							<greatestDifference id="d">M/d – M/d</greatestDifference>
+							<greatestDifference id="M">M/d – M/d</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="MEd">
+							<greatestDifference id="d">E, M/d – E, M/d</greatestDifference>
+							<greatestDifference id="M">E, M/d – E, M/d</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="MMM">
+							<greatestDifference id="M">MMM – MMM</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="MMMd">
+							<greatestDifference id="d">MMM d – d</greatestDifference>
+							<greatestDifference id="M">MMM d – MMM d</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="MMMEd">
+							<greatestDifference id="d">E, MMM d – E, MMM d</greatestDifference>
+							<greatestDifference id="M">E, MMM d – E, MMM d</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="y">
+							<greatestDifference id="y">y – y G</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="yM">
+							<greatestDifference id="M">M/y – M/y GGGGG</greatestDifference>
+							<greatestDifference id="y">M/y – M/y GGGGG</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="yMd">
+							<greatestDifference id="d">M/d/y – M/d/y GGGGG</greatestDifference>
+							<greatestDifference id="M">M/d/y – M/d/y GGGGG</greatestDifference>
+							<greatestDifference id="y">M/d/y – M/d/y GGGGG</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="yMEd">
+							<greatestDifference id="d">E, M/d/y – E, M/d/y GGGGG</greatestDifference>
+							<greatestDifference id="M">E, M/d/y – E, M/d/y GGGGG</greatestDifference>
+							<greatestDifference id="y">E, M/d/y – E, M/d/y GGGGG</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="yMMM">
+							<greatestDifference id="M">MMM – MMM y G</greatestDifference>
+							<greatestDifference id="y">MMM y – MMM y G</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="yMMMd">
+							<greatestDifference id="d">MMM d – d, y G</greatestDifference>
+							<greatestDifference id="M">MMM d – MMM d, y G</greatestDifference>
+							<greatestDifference id="y">MMM d, y – MMM d, y G</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="yMMMEd">
+							<greatestDifference id="d">E, MMM d – E, MMM d, y G</greatestDifference>
+							<greatestDifference id="M">E, MMM d – E, MMM d, y G</greatestDifference>
+							<greatestDifference id="y">E, MMM d, y – E, MMM d, y G</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="yMMMM">
+							<greatestDifference id="M">MMMM – MMMM y G</greatestDifference>
+							<greatestDifference id="y">MMMM y – MMMM y G</greatestDifference>
+						</intervalFormatItem>
+					</intervalFormats>
 				</dateTimeFormats>
 			</calendar>
 			<calendar type="gregorian">
 				<months>
 					<monthContext type="format">
+						<monthWidth type="abbreviated">
+							<month type="1">جنؤری</month>
+							<month type="2">فرؤری</month>
+							<month type="3">مارٕچ</month>
+							<month type="4">اپریل</month>
+							<month type="5">مئی</month>
+							<month type="6">جوٗن</month>
+							<month type="7">جُلَے</month>
+							<month type="8">اگست</month>
+							<month type="9">ستمبر</month>
+							<month type="10">اکتوٗبر</month>
+							<month type="11">نومبر</month>
+							<month type="12">دسمبر</month>
+						</monthWidth>
 						<monthWidth type="wide">
 							<month type="1">جنؤری</month>
 							<month type="2">فرؤری</month>
 							<month type="3">مارٕچ</month>
 							<month type="4">اپریل</month>
-							<month type="5">میٔ</month>
+							<month type="5">مئی</month>
+							<month type="6">جوٗن</month>
+							<month type="7">جُلَے</month>
+							<month type="8">اگست</month>
+							<month type="9">ستمبر</month>
+							<month type="10">اکتوٗبر</month>
+							<month type="11">نومبر</month>
+							<month type="12">دَسَمبَر</month>
+						</monthWidth>
+					</monthContext>
+					<monthContext type="stand-alone">
+						<monthWidth type="abbreviated">
+							<month type="1">جنؤری</month>
+							<month type="2">فرؤری</month>
+							<month type="3">مارٕچ</month>
+							<month type="4">اپریل</month>
+							<month type="5">مئی</month>
 							<month type="6">جوٗن</month>
 							<month type="7">جوٗلایی</month>
 							<month type="8">اگست</month>
@@ -1011,8 +1177,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 							<month type="11">نومبر</month>
 							<month type="12">دسمبر</month>
 						</monthWidth>
-					</monthContext>
-					<monthContext type="stand-alone">
 						<monthWidth type="narrow">
 							<month type="1">ج</month>
 							<month type="2">ف</month>
@@ -1027,25 +1191,39 @@ For terms of use, see http://www.unicode.org/copyright.html
 							<month type="11">ا</month>
 							<month type="12">ن</month>
 						</monthWidth>
+						<monthWidth type="wide">
+							<month type="1">جنؤری</month>
+							<month type="2">فرؤری</month>
+							<month type="3">مارٕچ</month>
+							<month type="4">اپریل</month>
+							<month type="5">مئی</month>
+							<month type="6">جوٗن</month>
+							<month type="7">جوٗلایی</month>
+							<month type="8">اگست</month>
+							<month type="9">ستمبر</month>
+							<month type="10">اکتوٗبر</month>
+							<month type="11">نومبر</month>
+							<month type="12">دسمبر</month>
+						</monthWidth>
 					</monthContext>
 				</months>
 				<days>
 					<dayContext type="format">
 						<dayWidth type="abbreviated">
 							<day type="sun">آتھوار</day>
-							<day type="mon">ژٔنٛدٕروار</day>
-							<day type="tue">بوٚموار</day>
+							<day type="mon">ژٔندٕروار</day>
+							<day type="tue">بۆموار</day>
 							<day type="wed">بودوار</day>
-							<day type="thu">برٛٮ۪سوار</day>
+							<day type="thu">برؠسوار</day>
 							<day type="fri">جُمہ</day>
 							<day type="sat">بٹوار</day>
 						</dayWidth>
 						<dayWidth type="wide">
 							<day type="sun">اَتھوار</day>
-							<day type="mon">ژٔنٛدرٕروار</day>
-							<day type="tue">بوٚموار</day>
+							<day type="mon">ژٔندرٕروار</day>
+							<day type="tue">بۆموار</day>
 							<day type="wed">بودوار</day>
-							<day type="thu">برٛٮ۪سوار</day>
+							<day type="thu">برؠسوار</day>
 							<day type="fri">جُمہ</day>
 							<day type="sat">بٹوار</day>
 						</dayWidth>
@@ -1065,27 +1243,43 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<quarters>
 					<quarterContext type="format">
 						<quarterWidth type="abbreviated">
-							<quarter type="1">ژۄباگ</quarter>
-							<quarter type="2">دوٚیِم ژۄباگ</quarter>
-							<quarter type="3">ترٛیِم ژۄباگ</quarter>
-							<quarter type="4">ژوٗرِم ژۄباگ</quarter>
+							<quarter type="1">کیو 1</quarter>
+							<quarter type="2">کیو 2</quarter>
+							<quarter type="3">کیو 3</quarter>
+							<quarter type="4">کیو 4</quarter>
 						</quarterWidth>
 						<quarterWidth type="wide">
 							<quarter type="1">گۄڑنیُک ژۄباگ</quarter>
-							<quarter type="2">دوٚیِم ژۄباگ</quarter>
-							<quarter type="3">ترٛیِم ژۄباگ</quarter>
+							<quarter type="2">دۆیِم ژۄباگ</quarter>
+							<quarter type="3">تریِم ژۄباگ</quarter>
 							<quarter type="4">ژوٗرِم ژۄباگ</quarter>
 						</quarterWidth>
 					</quarterContext>
 				</quarters>
+				<dayPeriods>
+					<dayPeriodContext type="format">
+						<dayPeriodWidth type="narrow">
+							<dayPeriod type="am">a</dayPeriod>
+							<dayPeriod type="pm">p</dayPeriod>
+						</dayPeriodWidth>
+						<dayPeriodWidth type="wide">
+							<dayPeriod type="am">اے ایم</dayPeriod>
+							<dayPeriod type="pm">پی ایم</dayPeriod>
+						</dayPeriodWidth>
+					</dayPeriodContext>
+				</dayPeriods>
 				<eras>
 					<eraNames>
 						<era type="0">قبٕل مسیٖح</era>
-						<era type="1">عیٖسوی سنہٕ</era>
+						<era type="0" alt="variant">عام دورٕ برونٹھ</era>
+						<era type="1">اینو ڈومنی</era>
+						<era type="1" alt="variant">عام دور</era>
 					</eraNames>
 					<eraAbbr>
 						<era type="0">بی سی</era>
+						<era type="0" alt="variant">بی سی ای</era>
 						<era type="1">اے ڈی</era>
+						<era type="1" alt="variant">سی ای</era>
 					</eraAbbr>
 				</eras>
 				<dateFormats>
@@ -1107,6 +1301,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 					<dateFormatLength type="short">
 						<dateFormat>
 							<pattern>M/d/yy</pattern>
+							<datetimeSkeleton>yyMd</datetimeSkeleton>
 						</dateFormat>
 					</dateFormatLength>
 				</dateFormats>
@@ -1114,73 +1309,176 @@ For terms of use, see http://www.unicode.org/copyright.html
 					<timeFormatLength type="full">
 						<timeFormat>
 							<pattern>h:mm:ss a zzzz</pattern>
+							<datetimeSkeleton>ahmmsszzzz</datetimeSkeleton>
 						</timeFormat>
 					</timeFormatLength>
 					<timeFormatLength type="long">
 						<timeFormat>
 							<pattern>h:mm:ss a z</pattern>
+							<datetimeSkeleton>ahmmssz</datetimeSkeleton>
 						</timeFormat>
 					</timeFormatLength>
 					<timeFormatLength type="medium">
 						<timeFormat>
 							<pattern>h:mm:ss a</pattern>
+							<datetimeSkeleton>ahmmss</datetimeSkeleton>
 						</timeFormat>
 					</timeFormatLength>
 					<timeFormatLength type="short">
 						<timeFormat>
 							<pattern>h:mm a</pattern>
+							<datetimeSkeleton>ahmm</datetimeSkeleton>
 						</timeFormat>
 					</timeFormatLength>
 				</timeFormats>
 				<dateTimeFormats>
 					<dateTimeFormatLength type="full">
 						<dateTimeFormat>
-							<pattern>{1} {0}</pattern>
+							<pattern>{1}, {0}</pattern>
+						</dateTimeFormat>
+						<dateTimeFormat type="atTime">
+							<pattern>{0} پٮ۪ٹھؠ {1}</pattern>
 						</dateTimeFormat>
 					</dateTimeFormatLength>
 					<dateTimeFormatLength type="long">
 						<dateTimeFormat>
-							<pattern>{1} {0}</pattern>
+							<pattern>{1}, {0}</pattern>
+						</dateTimeFormat>
+						<dateTimeFormat type="atTime">
+							<pattern>{0} پٮ۪ٹھؠ {1}</pattern>
 						</dateTimeFormat>
 					</dateTimeFormatLength>
 					<dateTimeFormatLength type="medium">
 						<dateTimeFormat>
-							<pattern>{1} {0}</pattern>
+							<pattern>{1}, {0}</pattern>
 						</dateTimeFormat>
 					</dateTimeFormatLength>
 					<dateTimeFormatLength type="short">
 						<dateTimeFormat>
-							<pattern>{1} {0}</pattern>
+							<pattern>{1}, {0}</pattern>
 						</dateTimeFormat>
 					</dateTimeFormatLength>
 					<availableFormats>
-						<dateFormatItem id="d">d</dateFormatItem>
-						<dateFormatItem id="GGGGyMMMMEEEEdd">EEEE,dd MMMM GGGGy</dateFormatItem>
-						<dateFormatItem id="Gy">Gy</dateFormatItem>
-						<dateFormatItem id="GyMMM">MMM Gy</dateFormatItem>
-						<dateFormatItem id="GyMMMd">MMM d, Gy</dateFormatItem>
-						<dateFormatItem id="GyMMMEd">EEE, MMM d, Gy</dateFormatItem>
-						<dateFormatItem id="hm">h:mm a</dateFormatItem>
-						<dateFormatItem id="Hm">HH:mm</dateFormatItem>
-						<dateFormatItem id="Hms">HH:mm:ss</dateFormatItem>
-						<dateFormatItem id="M">L</dateFormatItem>
+						<dateFormatItem id="Ed">d E</dateFormatItem>
+						<dateFormatItem id="Gy">y G</dateFormatItem>
+						<dateFormatItem id="GyMd">M/d/y GGGGG</dateFormatItem>
+						<dateFormatItem id="GyMMM">MMM y G</dateFormatItem>
+						<dateFormatItem id="GyMMMd">MMM d, y G</dateFormatItem>
+						<dateFormatItem id="GyMMMEd">E, MMM d, y G</dateFormatItem>
 						<dateFormatItem id="Md">M/d</dateFormatItem>
 						<dateFormatItem id="MEd">E, M/d</dateFormatItem>
-						<dateFormatItem id="MMM">LLL</dateFormatItem>
-						<dateFormatItem id="MMMd">d-MMM</dateFormatItem>
 						<dateFormatItem id="MMMEd">E, MMM d</dateFormatItem>
-						<dateFormatItem id="MMMMd">MMMM d</dateFormatItem>
 						<dateFormatItem id="MMMMEd">E, MMMM d</dateFormatItem>
-						<dateFormatItem id="ms">mm:ss</dateFormatItem>
-						<dateFormatItem id="y">y</dateFormatItem>
+						<dateFormatItem id="MMMMW" count="one">ہفتہ W از MMMM</dateFormatItem>
+						<dateFormatItem id="MMMMW" count="other">ہفتہ W از MMMM</dateFormatItem>
 						<dateFormatItem id="yM">M/y</dateFormatItem>
-						<dateFormatItem id="yMEd">EEE, M/d/y</dateFormatItem>
+						<dateFormatItem id="yMd">M/d/y</dateFormatItem>
+						<dateFormatItem id="yMEd">E, M/d/y</dateFormatItem>
 						<dateFormatItem id="yMMM">MMM y</dateFormatItem>
-						<dateFormatItem id="yMMMEd">EEE, MMM d, y</dateFormatItem>
+						<dateFormatItem id="yMMMEd">E, MMM d, y</dateFormatItem>
 						<dateFormatItem id="yMMMM">MMMM y</dateFormatItem>
 						<dateFormatItem id="yQQQ">QQQ y</dateFormatItem>
 						<dateFormatItem id="yQQQQ">QQQQ y</dateFormatItem>
+						<dateFormatItem id="yw" count="one">ہفتہ w از Y</dateFormatItem>
+						<dateFormatItem id="yw" count="other">ہفتہ w از Y</dateFormatItem>
 					</availableFormats>
+					<intervalFormats>
+						<intervalFormatItem id="GyM">
+							<greatestDifference id="G">M/y G – M/y G</greatestDifference>
+							<greatestDifference id="M">M/y – M/y G</greatestDifference>
+							<greatestDifference id="y">M/y – M/y G</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="GyMd">
+							<greatestDifference id="d">M/d/y – M/d/y G</greatestDifference>
+							<greatestDifference id="G">M/d/y G – M/d/y G</greatestDifference>
+							<greatestDifference id="M">M/d/y – M/d/y G</greatestDifference>
+							<greatestDifference id="y">M/d/y – M/d/y G</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="GyMEd">
+							<greatestDifference id="d">E, M/d/y – E, M/d/y G</greatestDifference>
+							<greatestDifference id="G">E, M/d/y G – E, M/d/y G</greatestDifference>
+							<greatestDifference id="M">E, M/d/y – E, M/d/y G</greatestDifference>
+							<greatestDifference id="y">E, M/d/y – E, M/d/y G</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="GyMMM">
+							<greatestDifference id="G">MMM y G – MMM y G</greatestDifference>
+							<greatestDifference id="M">MMM – MMM y G</greatestDifference>
+							<greatestDifference id="y">MMM y – MMM y G</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="GyMMMd">
+							<greatestDifference id="d">MMM d – d, y G</greatestDifference>
+							<greatestDifference id="G">MMM d, y G – MMM d, y G</greatestDifference>
+							<greatestDifference id="M">MMM d – MMM d, y G</greatestDifference>
+							<greatestDifference id="y">MMM d, y – MMM d, y G</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="GyMMMEd">
+							<greatestDifference id="d">E, MMM d – E, MMM d, y G</greatestDifference>
+							<greatestDifference id="G">E, MMM d, y G – E, MMM d, y G</greatestDifference>
+							<greatestDifference id="M">E, MMM d – E, MMM d, y G</greatestDifference>
+							<greatestDifference id="y">E, MMM d, y – E, MMM d, y G</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="h">
+							<greatestDifference id="a">h a – h a</greatestDifference>
+							<greatestDifference id="h">h – h a</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="M">
+							<greatestDifference id="M">M – M</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="Md">
+							<greatestDifference id="d">M/d – M/d</greatestDifference>
+							<greatestDifference id="M">M/d – M/d</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="MEd">
+							<greatestDifference id="d">E, M/d – E, M/d</greatestDifference>
+							<greatestDifference id="M">E, M/d – E, M/d</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="MMM">
+							<greatestDifference id="M">MMM – MMM</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="MMMd">
+							<greatestDifference id="d">MMM d – d</greatestDifference>
+							<greatestDifference id="M">MMM d – MMM d</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="MMMEd">
+							<greatestDifference id="d">E, MMM d – E, MMM d</greatestDifference>
+							<greatestDifference id="M">E, MMM d – E, MMM d</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="y">
+							<greatestDifference id="y">y – y</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="yM">
+							<greatestDifference id="M">M/y – M/y</greatestDifference>
+							<greatestDifference id="y">M/y – M/y</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="yMd">
+							<greatestDifference id="d">M/d/y – M/d/y</greatestDifference>
+							<greatestDifference id="M">M/d/y – M/d/y</greatestDifference>
+							<greatestDifference id="y">M/d/y – M/d/y</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="yMEd">
+							<greatestDifference id="d">E, M/d/y – E, M/d/y</greatestDifference>
+							<greatestDifference id="M">E, M/d/y – E, M/d/y</greatestDifference>
+							<greatestDifference id="y">E, M/d/y – E, M/d/y</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="yMMM">
+							<greatestDifference id="M">MMM – MMM y</greatestDifference>
+							<greatestDifference id="y">MMM y – MMM y</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="yMMMd">
+							<greatestDifference id="d">MMM d – d, y</greatestDifference>
+							<greatestDifference id="M">MMM d – MMM d, y</greatestDifference>
+							<greatestDifference id="y">MMM d, y – MMM d, y</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="yMMMEd">
+							<greatestDifference id="d">E, MMM d – E, MMM d, y</greatestDifference>
+							<greatestDifference id="M">E, MMM d – E, MMM d, y</greatestDifference>
+							<greatestDifference id="y">E, MMM d, y – E, MMM d, y</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="yMMMM">
+							<greatestDifference id="M">MMMM – MMMM y</greatestDifference>
+							<greatestDifference id="y">MMMM y – MMMM y</greatestDifference>
+						</intervalFormatItem>
+					</intervalFormats>
 				</dateTimeFormats>
 			</calendar>
 			<calendar type="indian">
@@ -1197,11 +1495,16 @@ For terms of use, see http://www.unicode.org/copyright.html
 							<month type="8">شعبان</month>
 							<month type="9">رمضان</month>
 							<month type="10">شوال</month>
-							<month type="11">ذِی القد</month>
+							<month type="11">ذِی القعدہ</month>
 							<month type="12">ذِی الحج</month>
 						</monthWidth>
 					</monthContext>
 				</months>
+				<eras>
+					<eraAbbr>
+						<era type="0">ساکا</era>
+					</eraAbbr>
+				</eras>
 			</calendar>
 		</calendars>
 		<fields>
@@ -1210,12 +1513,25 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</field>
 			<field type="year">
 				<displayName>ؤری</displayName>
+				<relative type="-1">پٔتِم ؤری</relative>
+				<relative type="0">یٕہ ؤری</relative>
+				<relative type="1">نو ؤری</relative>
+			</field>
+			<field type="quarter">
+				<displayName>کوارٹر</displayName>
 			</field>
 			<field type="month">
-				<displayName>رٮ۪تھ</displayName>
+				<displayName>رؠتھ</displayName>
+				<relative type="-1">پٔتِم ریتھؠ</relative>
+				<relative type="0">یٕہ ریتھؠ</relative>
+				<relative type="1">نو ریتھؠ</relative>
 			</field>
 			<field type="week">
 				<displayName>ہفتہٕ</displayName>
+				<relative type="-1">پٔتِم ہفتہ</relative>
+				<relative type="0">یٕہ ہفتہ</relative>
+				<relative type="1">نو ہفتہ</relative>
+				<relativePeriod>{0} ہُک ہفتہ</relativePeriod>
 			</field>
 			<field type="day">
 				<displayName>دۄہ</displayName>
@@ -1227,50 +1543,60 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>ہفتُک دۄہ</displayName>
 			</field>
 			<field type="dayperiod">
-				<displayName>صبح/رات</displayName>
+				<displayName>صُبح/راتھ</displayName>
 			</field>
 			<field type="hour">
-				<displayName>گٲنٛٹہٕ</displayName>
+				<displayName>گٲنٹہٕ</displayName>
 			</field>
 			<field type="minute">
 				<displayName>مِنَٹ</displayName>
 			</field>
 			<field type="second">
-				<displayName>سٮ۪کَنڑ</displayName>
+				<displayName>سؠکَنڈ</displayName>
 			</field>
 			<field type="zone">
-				<displayName>زون</displayName>
+				<displayName>وَکھ زون</displayName>
 			</field>
 		</fields>
 		<timeZoneNames>
-			<hourFormat>+HH:mm;-HH:mm</hourFormat>
-			<gmtFormat>GMT{0}</gmtFormat>
+			<gmtZeroFormat>جی ایم ٹی</gmtZeroFormat>
+			<regionFormat>{0} وَکھ</regionFormat>
+			<regionFormat type="daylight">{0} ڈے لائٹ وَکھ</regionFormat>
+			<regionFormat type="standard">{0} معیٲری وَکھ</regionFormat>
+			<zone type="Pacific/Honolulu">
+				<exemplarCity>ہونولو لو</exemplarCity>
+			</zone>
+			<zone type="Etc/UTC">
+				<long>
+					<standard>کوآرڈنیٹڈ یونیورسل وَکھ</standard>
+				</long>
+			</zone>
 			<zone type="Etc/Unknown">
 				<exemplarCity>غٲر زان</exemplarCity>
 			</zone>
 			<zone type="Europe/Andorra">
-				<exemplarCity>اَنٛڑورا</exemplarCity>
+				<exemplarCity>اَنڈورا</exemplarCity>
 			</zone>
 			<zone type="Asia/Dubai">
-				<exemplarCity>دُبَے</exemplarCity>
+				<exemplarCity>دُبئی</exemplarCity>
 			</zone>
 			<zone type="Asia/Kabul">
 				<exemplarCity>قابُل</exemplarCity>
 			</zone>
 			<zone type="America/Antigua">
-				<exemplarCity>اٮ۪نٹِگُوا</exemplarCity>
+				<exemplarCity>اؠنٹِگُوا</exemplarCity>
 			</zone>
 			<zone type="America/Anguilla">
-				<exemplarCity>اٮ۪نگِولا</exemplarCity>
+				<exemplarCity>اؠنگِولا</exemplarCity>
 			</zone>
 			<zone type="Europe/Tirane">
 				<exemplarCity>ٹِرین</exemplarCity>
 			</zone>
 			<zone type="Asia/Yerevan">
-				<exemplarCity>یےریٚوَن</exemplarCity>
+				<exemplarCity>یےریوَن</exemplarCity>
 			</zone>
 			<zone type="Africa/Luanda">
-				<exemplarCity>لُعٮ۪نٛڑا</exemplarCity>
+				<exemplarCity>لیوانڈا</exemplarCity>
 			</zone>
 			<zone type="Antarctica/Rothera">
 				<exemplarCity>روتھیرا</exemplarCity>
@@ -1279,7 +1605,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>پامَر</exemplarCity>
 			</zone>
 			<zone type="Antarctica/Syowa">
-				<exemplarCity>سیٚووا</exemplarCity>
+				<exemplarCity>سیووا</exemplarCity>
 			</zone>
 			<zone type="Antarctica/Mawson">
 				<exemplarCity>ماسَن</exemplarCity>
@@ -1294,16 +1620,16 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>کیسی</exemplarCity>
 			</zone>
 			<zone type="Antarctica/DumontDUrville">
-				<exemplarCity>ڈُمونٛٹ ڈ اَروِل</exemplarCity>
+				<exemplarCity>ڈُمونٹ ڈ اَروِل</exemplarCity>
 			</zone>
 			<zone type="Antarctica/McMurdo">
-				<exemplarCity>مٮ۪ک مٲڑو</exemplarCity>
+				<exemplarCity>مؠک مٲڑو</exemplarCity>
 			</zone>
 			<zone type="America/Argentina/Rio_Gallegos">
 				<exemplarCity>رِیو گالیگوس</exemplarCity>
 			</zone>
 			<zone type="America/Mendoza">
-				<exemplarCity>مٮ۪نڑوزا</exemplarCity>
+				<exemplarCity>مؠنڑوزا</exemplarCity>
 			</zone>
 			<zone type="America/Argentina/San_Juan">
 				<exemplarCity>سین جُواں</exemplarCity>
@@ -1319,6 +1645,9 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</zone>
 			<zone type="America/Catamarca">
 				<exemplarCity>کیٹامارکا</exemplarCity>
+			</zone>
+			<zone type="America/Argentina/Salta">
+				<exemplarCity>سالٹا</exemplarCity>
 			</zone>
 			<zone type="America/Jujuy">
 				<exemplarCity>جُجویے</exemplarCity>
@@ -1348,16 +1677,13 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>ڈاروِن</exemplarCity>
 			</zone>
 			<zone type="Australia/Adelaide">
-				<exemplarCity>اٮ۪ڑِلیڑ</exemplarCity>
+				<exemplarCity>اؠڑِلیڑ</exemplarCity>
 			</zone>
 			<zone type="Australia/Broken_Hill">
-				<exemplarCity>برٛوکٕن ہِل</exemplarCity>
-			</zone>
-			<zone type="Australia/Currie">
-				<exemplarCity>کیوٗری</exemplarCity>
+				<exemplarCity>بروکٕن ہِل</exemplarCity>
 			</zone>
 			<zone type="Australia/Melbourne">
-				<exemplarCity>مٮ۪لبعارن</exemplarCity>
+				<exemplarCity>مؠلبعارن</exemplarCity>
 			</zone>
 			<zone type="Australia/Hobart">
 				<exemplarCity>حۄبٲٹ</exemplarCity>
@@ -1369,7 +1695,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>سِڑنی</exemplarCity>
 			</zone>
 			<zone type="Australia/Brisbane">
-				<exemplarCity>برٛسبین</exemplarCity>
+				<exemplarCity>برسبین</exemplarCity>
 			</zone>
 			<zone type="Australia/Lord_Howe">
 				<exemplarCity>لعاڑ ہووے</exemplarCity>
@@ -1377,17 +1703,23 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<zone type="America/Aruba">
 				<exemplarCity>اَروٗبا</exemplarCity>
 			</zone>
+			<zone type="Europe/Mariehamn">
+				<exemplarCity>میری ہیم</exemplarCity>
+			</zone>
 			<zone type="Asia/Baku">
 				<exemplarCity>باقوٗ</exemplarCity>
 			</zone>
+			<zone type="Europe/Sarajevo">
+				<exemplarCity>سارا جیوو</exemplarCity>
+			</zone>
 			<zone type="America/Barbados">
-				<exemplarCity>بَرباڑوس</exemplarCity>
+				<exemplarCity>بارباڈوس</exemplarCity>
 			</zone>
 			<zone type="Asia/Dhaka">
 				<exemplarCity>ڈھاکا</exemplarCity>
 			</zone>
 			<zone type="Europe/Brussels">
-				<exemplarCity>برٛسٕلس</exemplarCity>
+				<exemplarCity>برسٕلس</exemplarCity>
 			</zone>
 			<zone type="Africa/Ouagadougou">
 				<exemplarCity>اوآگدوگو</exemplarCity>
@@ -1396,31 +1728,37 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>سوفِیا</exemplarCity>
 			</zone>
 			<zone type="Asia/Bahrain">
-				<exemplarCity>بٮ۪ہریٖن</exemplarCity>
+				<exemplarCity>بؠہریٖن</exemplarCity>
 			</zone>
 			<zone type="Africa/Bujumbura">
 				<exemplarCity>بُجُمبُرا</exemplarCity>
 			</zone>
 			<zone type="Africa/Porto-Novo">
-				<exemplarCity>پوٹو نووو</exemplarCity>
+				<exemplarCity>پورٹو نووو</exemplarCity>
+			</zone>
+			<zone type="America/St_Barthelemy">
+				<exemplarCity>سینٹ بارتھیلمی</exemplarCity>
 			</zone>
 			<zone type="Atlantic/Bermuda">
 				<exemplarCity>برموٗڑا</exemplarCity>
 			</zone>
 			<zone type="Asia/Brunei">
-				<exemplarCity>برٛوٗنَے</exemplarCity>
+				<exemplarCity>بروٗنَے</exemplarCity>
 			</zone>
 			<zone type="America/La_Paz">
 				<exemplarCity>لا پاز</exemplarCity>
+			</zone>
+			<zone type="America/Kralendijk">
+				<exemplarCity>کرالینڈِک</exemplarCity>
 			</zone>
 			<zone type="America/Eirunepe">
 				<exemplarCity>ایٖروٗنیپ</exemplarCity>
 			</zone>
 			<zone type="America/Rio_Branco">
-				<exemplarCity>رِیو برٛانٛکو</exemplarCity>
+				<exemplarCity>رِیو برانکو</exemplarCity>
 			</zone>
 			<zone type="America/Porto_Velho">
-				<exemplarCity>پوٹو وٮ۪لہو</exemplarCity>
+				<exemplarCity>پوٹو وؠلہو</exemplarCity>
 			</zone>
 			<zone type="America/Boa_Vista">
 				<exemplarCity>بوآ وِسٹا</exemplarCity>
@@ -1431,17 +1769,20 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<zone type="America/Cuiaba">
 				<exemplarCity>کوٗیابا</exemplarCity>
 			</zone>
+			<zone type="America/Santarem">
+				<exemplarCity>سانتاریم</exemplarCity>
+			</zone>
 			<zone type="America/Campo_Grande">
-				<exemplarCity>کٮ۪مپو گرینٛڑ</exemplarCity>
+				<exemplarCity>کؠمپو گرینڑ</exemplarCity>
 			</zone>
 			<zone type="America/Belem">
-				<exemplarCity>بٮ۪لٮ۪م</exemplarCity>
+				<exemplarCity>بؠلؠم</exemplarCity>
 			</zone>
 			<zone type="America/Araguaina">
-				<exemplarCity>اٮ۪ریگُوینا</exemplarCity>
+				<exemplarCity>اؠریگُوینا</exemplarCity>
 			</zone>
 			<zone type="America/Sao_Paulo">
-				<exemplarCity>ساو پعالو</exemplarCity>
+				<exemplarCity>ساؤ پالو</exemplarCity>
 			</zone>
 			<zone type="America/Bahia">
 				<exemplarCity>بَہِیا</exemplarCity>
@@ -1453,10 +1794,10 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>میسِیوو</exemplarCity>
 			</zone>
 			<zone type="America/Recife">
-				<exemplarCity>رٮ۪چیٖف</exemplarCity>
+				<exemplarCity>ریسیف</exemplarCity>
 			</zone>
 			<zone type="America/Noronha">
-				<exemplarCity>نورونٛہا</exemplarCity>
+				<exemplarCity>نورونہا</exemplarCity>
 			</zone>
 			<zone type="America/Nassau">
 				<exemplarCity>نساؤں</exemplarCity>
@@ -1465,16 +1806,16 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>تھِمپوٗ</exemplarCity>
 			</zone>
 			<zone type="Africa/Gaborone">
-				<exemplarCity>گٮ۪بورون</exemplarCity>
+				<exemplarCity>گؠبورون</exemplarCity>
 			</zone>
 			<zone type="Europe/Minsk">
-				<exemplarCity>مِنٛسک</exemplarCity>
+				<exemplarCity>مِنسک</exemplarCity>
 			</zone>
 			<zone type="America/Belize">
-				<exemplarCity>بٮ۪لیٖز</exemplarCity>
+				<exemplarCity>بؠلیٖز</exemplarCity>
 			</zone>
 			<zone type="America/Dawson">
-				<exemplarCity>ڑاسَن</exemplarCity>
+				<exemplarCity>ڈاوسن</exemplarCity>
 			</zone>
 			<zone type="America/Whitehorse">
 				<exemplarCity>وایِٹ ہارٕس</exemplarCity>
@@ -1483,61 +1824,52 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>اِنوٗوِک</exemplarCity>
 			</zone>
 			<zone type="America/Vancouver">
-				<exemplarCity>وٮ۪نٛکووَر</exemplarCity>
+				<exemplarCity>وؠنکووَر</exemplarCity>
+			</zone>
+			<zone type="America/Fort_Nelson">
+				<exemplarCity>فورٹ نیلسن</exemplarCity>
 			</zone>
 			<zone type="America/Dawson_Creek">
-				<exemplarCity>ڑاسَن کرٛیٖک</exemplarCity>
+				<exemplarCity>ڈواسَن کریٖک</exemplarCity>
 			</zone>
-			<zone type="America/Yellowknife">
-				<exemplarCity>یٮ۪لو نایِف</exemplarCity>
+			<zone type="America/Creston">
+				<exemplarCity>کریسٹن</exemplarCity>
 			</zone>
 			<zone type="America/Edmonton">
-				<exemplarCity>اٮ۪ڑمَنٹَن</exemplarCity>
+				<exemplarCity>اؠڈمَنٹَن</exemplarCity>
 			</zone>
 			<zone type="America/Swift_Current">
-				<exemplarCity>سٕوِفٹ کَرَنٛٹ</exemplarCity>
+				<exemplarCity>سٕوِفٹ کَرَنٹ</exemplarCity>
 			</zone>
 			<zone type="America/Cambridge_Bay">
 				<exemplarCity>کیمبرِج خلیٖج</exemplarCity>
 			</zone>
 			<zone type="America/Regina">
-				<exemplarCity>رٮ۪جیٖنا</exemplarCity>
+				<exemplarCity>رؠجیٖنا</exemplarCity>
 			</zone>
 			<zone type="America/Winnipeg">
-				<exemplarCity>وِنِپٮ۪گ</exemplarCity>
+				<exemplarCity>وِنِپؠگ</exemplarCity>
 			</zone>
 			<zone type="America/Resolute">
 				<exemplarCity>رِسولیوٗٹ</exemplarCity>
 			</zone>
-			<zone type="America/Rainy_River">
-				<exemplarCity>رینی رِوَر</exemplarCity>
-			</zone>
 			<zone type="America/Rankin_Inlet">
-				<exemplarCity>رینٛکِن اِنلٮ۪ٹ</exemplarCity>
+				<exemplarCity>رینکِن اِنلؠٹ</exemplarCity>
 			</zone>
 			<zone type="America/Coral_Harbour">
-				<exemplarCity>کورَل بٔنٛدٕرگاہ</exemplarCity>
-			</zone>
-			<zone type="America/Thunder_Bay">
-				<exemplarCity>تھَنڑَر خلیٖج</exemplarCity>
-			</zone>
-			<zone type="America/Nipigon">
-				<exemplarCity>نِپِگَن</exemplarCity>
+				<exemplarCity>اٹی کوکنٍ</exemplarCity>
 			</zone>
 			<zone type="America/Toronto">
-				<exemplarCity>ٹورونٛٹو</exemplarCity>
+				<exemplarCity>ٹورونٹو</exemplarCity>
 			</zone>
 			<zone type="America/Iqaluit">
 				<exemplarCity>اِقالیوٗیِت</exemplarCity>
 			</zone>
-			<zone type="America/Pangnirtung">
-				<exemplarCity>پَنٛگنِرٹَنٛگ</exemplarCity>
-			</zone>
 			<zone type="America/Moncton">
-				<exemplarCity>مونٛکٹٕن</exemplarCity>
+				<exemplarCity>مونکٹٕن</exemplarCity>
 			</zone>
 			<zone type="America/Halifax">
-				<exemplarCity>حیلِفٮ۪کس</exemplarCity>
+				<exemplarCity>حیلِفؠکس</exemplarCity>
 			</zone>
 			<zone type="America/Goose_Bay">
 				<exemplarCity>گوٗس خلیٖج</exemplarCity>
@@ -1546,10 +1878,10 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>گلیس خلیٖج</exemplarCity>
 			</zone>
 			<zone type="America/Blanc-Sablon">
-				<exemplarCity>بلانٛک سٮ۪بلَن</exemplarCity>
+				<exemplarCity>بلانک سؠبلَن</exemplarCity>
 			</zone>
 			<zone type="America/St_Johns">
-				<exemplarCity>سٮ۪نٛٹ جونس</exemplarCity>
+				<exemplarCity>سؠنٹ جونس</exemplarCity>
 			</zone>
 			<zone type="Indian/Cocos">
 				<exemplarCity>کوکوس</exemplarCity>
@@ -1558,13 +1890,13 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>کِنشاسا</exemplarCity>
 			</zone>
 			<zone type="Africa/Lubumbashi">
-				<exemplarCity>لُبُمباشی</exemplarCity>
+				<exemplarCity>لوبم باشی</exemplarCity>
 			</zone>
 			<zone type="Africa/Bangui">
-				<exemplarCity>بٮ۪نٛگوٗیی</exemplarCity>
+				<exemplarCity>بؠنگوٗیی</exemplarCity>
 			</zone>
 			<zone type="Africa/Brazzaville">
-				<exemplarCity>برٛازاوِل</exemplarCity>
+				<exemplarCity>برازاوِل</exemplarCity>
 			</zone>
 			<zone type="Europe/Zurich">
 				<exemplarCity>زیوٗرِک</exemplarCity>
@@ -1573,28 +1905,25 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>عابِدجان</exemplarCity>
 			</zone>
 			<zone type="Pacific/Rarotonga">
-				<exemplarCity>راروٹونٛگا</exemplarCity>
+				<exemplarCity>راروٹونگا</exemplarCity>
 			</zone>
 			<zone type="Pacific/Easter">
 				<exemplarCity>ایٖسٹَر</exemplarCity>
 			</zone>
+			<zone type="America/Punta_Arenas">
+				<exemplarCity>پونٹا اریناس</exemplarCity>
+			</zone>
 			<zone type="America/Santiago">
-				<exemplarCity>سینٹِعٮ۪گو</exemplarCity>
+				<exemplarCity>سینٹیاگو</exemplarCity>
 			</zone>
 			<zone type="Africa/Douala">
-				<exemplarCity>دوعالا</exemplarCity>
-			</zone>
-			<zone type="Asia/Kashgar">
-				<exemplarCity>کاشگَر</exemplarCity>
+				<exemplarCity>ڈوولا</exemplarCity>
 			</zone>
 			<zone type="Asia/Urumqi">
-				<exemplarCity>اُرَمچی</exemplarCity>
+				<exemplarCity>اُرومقی</exemplarCity>
 			</zone>
-			<zone type="Asia/Chongqing">
-				<exemplarCity>چونٛگقِنٛگ</exemplarCity>
-			</zone>
-			<zone type="Asia/Harbin">
-				<exemplarCity>حاربِن</exemplarCity>
+			<zone type="Asia/Shanghai">
+				<exemplarCity>شانگے</exemplarCity>
 			</zone>
 			<zone type="America/Bogota">
 				<exemplarCity>بوگوٹا</exemplarCity>
@@ -1617,50 +1946,65 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<zone type="Asia/Nicosia">
 				<exemplarCity>نِکوسِیا</exemplarCity>
 			</zone>
+			<zone type="Asia/Famagusta">
+				<exemplarCity>فاما گوسٹا</exemplarCity>
+			</zone>
+			<zone type="Europe/Prague">
+				<exemplarCity>پراگ</exemplarCity>
+			</zone>
+			<zone type="Europe/Busingen">
+				<exemplarCity>بوسِنگین</exemplarCity>
+			</zone>
 			<zone type="Europe/Berlin">
 				<exemplarCity>بٔرلِن</exemplarCity>
 			</zone>
 			<zone type="Africa/Djibouti">
-				<exemplarCity>ڑِزِبوٹی</exemplarCity>
+				<exemplarCity>ڈِجیبوٹی</exemplarCity>
 			</zone>
 			<zone type="Europe/Copenhagen">
-				<exemplarCity>کوپَنہیگَن</exemplarCity>
+				<exemplarCity>کوپن ہیگن</exemplarCity>
 			</zone>
 			<zone type="America/Dominica">
 				<exemplarCity>ڈومِنِکا</exemplarCity>
 			</zone>
 			<zone type="America/Santo_Domingo">
-				<exemplarCity>سٮ۪نٹو ڑومِنگو</exemplarCity>
+				<exemplarCity>سؠنٹو ڑومِنگو</exemplarCity>
 			</zone>
 			<zone type="Africa/Algiers">
 				<exemplarCity>اَلجیٖرِیا</exemplarCity>
 			</zone>
 			<zone type="Pacific/Galapagos">
-				<exemplarCity>گٮ۪لَپگوس</exemplarCity>
+				<exemplarCity>گؠلَپگوس</exemplarCity>
 			</zone>
 			<zone type="America/Guayaquil">
 				<exemplarCity>گوایاکِوَل</exemplarCity>
 			</zone>
 			<zone type="Europe/Tallinn">
-				<exemplarCity>ٹٮ۪لِن</exemplarCity>
+				<exemplarCity>ٹؠلِن</exemplarCity>
 			</zone>
 			<zone type="Africa/Cairo">
 				<exemplarCity>کَیرو</exemplarCity>
+			</zone>
+			<zone type="Africa/El_Aaiun">
+				<exemplarCity>ال عیون</exemplarCity>
 			</zone>
 			<zone type="Africa/Asmera">
 				<exemplarCity>اَسمیرا</exemplarCity>
 			</zone>
 			<zone type="Atlantic/Canary">
-				<exemplarCity>کٮ۪نَری</exemplarCity>
+				<exemplarCity>کؠنَری</exemplarCity>
 			</zone>
 			<zone type="Africa/Ceuta">
 				<exemplarCity>کیوٗٹا</exemplarCity>
 			</zone>
 			<zone type="Europe/Madrid">
-				<exemplarCity>میڑرِڑ</exemplarCity>
+				<exemplarCity>میڈریڈ</exemplarCity>
+			</zone>
+			<zone type="Africa/Addis_Ababa">
+				<exemplarCity>عدیس ابابا</exemplarCity>
 			</zone>
 			<zone type="Europe/Helsinki">
-				<exemplarCity>حٮ۪لسِنٛکی</exemplarCity>
+				<exemplarCity>حؠلسِنکی</exemplarCity>
 			</zone>
 			<zone type="Pacific/Fiji">
 				<exemplarCity>فِجی</exemplarCity>
@@ -1669,7 +2013,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>سٹینلی</exemplarCity>
 			</zone>
 			<zone type="Pacific/Truk">
-				<exemplarCity>ٹرٛک</exemplarCity>
+				<exemplarCity>ٹرک</exemplarCity>
 			</zone>
 			<zone type="Pacific/Ponape">
 				<exemplarCity>پوناپے</exemplarCity>
@@ -1678,7 +2022,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>کوسراے</exemplarCity>
 			</zone>
 			<zone type="Atlantic/Faeroe">
-				<exemplarCity>فٮ۪رو</exemplarCity>
+				<exemplarCity>فؠرو</exemplarCity>
 			</zone>
 			<zone type="Europe/Paris">
 				<exemplarCity>پیرِس</exemplarCity>
@@ -1690,10 +2034,10 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<long>
 					<daylight>برطٲنوی سَمَر ٹایِم</daylight>
 				</long>
-				<exemplarCity>لَنٛدَن</exemplarCity>
+				<exemplarCity>لَندَن</exemplarCity>
 			</zone>
 			<zone type="America/Grenada">
-				<exemplarCity>گرٛیناڑا</exemplarCity>
+				<exemplarCity>گریناڈا</exemplarCity>
 			</zone>
 			<zone type="Asia/Tbilisi">
 				<exemplarCity>بِلِسی</exemplarCity>
@@ -1701,8 +2045,11 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<zone type="America/Cayenne">
 				<exemplarCity>کَیین</exemplarCity>
 			</zone>
+			<zone type="Europe/Guernsey">
+				<exemplarCity>گویرنسے</exemplarCity>
+			</zone>
 			<zone type="Africa/Accra">
-				<exemplarCity>اٮ۪کرا</exemplarCity>
+				<exemplarCity>اؠکرا</exemplarCity>
 			</zone>
 			<zone type="Europe/Gibraltar">
 				<exemplarCity>گِبرالٹَر</exemplarCity>
@@ -1711,19 +2058,19 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>تھیوٗلے</exemplarCity>
 			</zone>
 			<zone type="America/Godthab">
-				<exemplarCity>گعاڑتھیب</exemplarCity>
+				<exemplarCity>نوٗک</exemplarCity>
 			</zone>
 			<zone type="America/Scoresbysund">
-				<exemplarCity>سکورٕسباےسَنٛڑ</exemplarCity>
+				<exemplarCity>سکورٕسباےسَنڑ</exemplarCity>
 			</zone>
 			<zone type="America/Danmarkshavn">
-				<exemplarCity>ڑٮ۪نمارکشَون</exemplarCity>
+				<exemplarCity>ڈنمارک شاون</exemplarCity>
 			</zone>
 			<zone type="Africa/Banjul">
 				<exemplarCity>بَنجوٗل</exemplarCity>
 			</zone>
 			<zone type="Africa/Conakry">
-				<exemplarCity>کوناکرٛی</exemplarCity>
+				<exemplarCity>کوناکری</exemplarCity>
 			</zone>
 			<zone type="America/Guadeloupe">
 				<exemplarCity>گوڑلوپ</exemplarCity>
@@ -1732,10 +2079,10 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>مالابو</exemplarCity>
 			</zone>
 			<zone type="Europe/Athens">
-				<exemplarCity>اٮ۪تھٕنس</exemplarCity>
+				<exemplarCity>اؠتھٕنس</exemplarCity>
 			</zone>
 			<zone type="Atlantic/South_Georgia">
-				<exemplarCity>ساوتھ جورجِیا</exemplarCity>
+				<exemplarCity>جنوبی جارجیا</exemplarCity>
 			</zone>
 			<zone type="America/Guatemala">
 				<exemplarCity>گواٹیمالا</exemplarCity>
@@ -1750,19 +2097,25 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>گُیانا</exemplarCity>
 			</zone>
 			<zone type="Asia/Hong_Kong">
-				<exemplarCity>حانٛگ کانٛگ</exemplarCity>
+				<exemplarCity>ہانگ کانگ</exemplarCity>
+			</zone>
+			<zone type="America/Tegucigalpa">
+				<exemplarCity>ٹیگوسی گالپا</exemplarCity>
+			</zone>
+			<zone type="Europe/Zagreb">
+				<exemplarCity>زگریب</exemplarCity>
 			</zone>
 			<zone type="America/Port-au-Prince">
-				<exemplarCity>پوٹ آؤں پرِنٛس</exemplarCity>
+				<exemplarCity>پوٹ آؤں پرِنس</exemplarCity>
 			</zone>
 			<zone type="Europe/Budapest">
-				<exemplarCity>بُڑاپیسٹ</exemplarCity>
+				<exemplarCity>بُڈاپیسٹ</exemplarCity>
 			</zone>
 			<zone type="Asia/Jakarta">
 				<exemplarCity>جکارتا</exemplarCity>
 			</zone>
 			<zone type="Asia/Pontianak">
-				<exemplarCity>پونٛتِعانٛک</exemplarCity>
+				<exemplarCity>پونتِعانک</exemplarCity>
 			</zone>
 			<zone type="Asia/Makassar">
 				<exemplarCity>مَکَسَر</exemplarCity>
@@ -1777,7 +2130,13 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>ڈَبلِن</exemplarCity>
 			</zone>
 			<zone type="Asia/Jerusalem">
-				<exemplarCity>یٮ۪روٗسَلَم</exemplarCity>
+				<exemplarCity>یروشلم</exemplarCity>
+			</zone>
+			<zone type="Europe/Isle_of_Man">
+				<exemplarCity>آئل آف مین</exemplarCity>
+			</zone>
+			<zone type="Asia/Calcutta">
+				<exemplarCity draft="unconfirmed">کَلٕکَتا</exemplarCity>
 			</zone>
 			<zone type="Indian/Chagos">
 				<exemplarCity>چاگوس</exemplarCity>
@@ -1786,13 +2145,16 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>بغداد</exemplarCity>
 			</zone>
 			<zone type="Asia/Tehran">
-				<exemplarCity>تٮ۪ہران</exemplarCity>
+				<exemplarCity>تؠہران</exemplarCity>
 			</zone>
 			<zone type="Atlantic/Reykjavik">
-				<exemplarCity>رٮ۪کیاوِک</exemplarCity>
+				<exemplarCity>رؠکیاوِک</exemplarCity>
 			</zone>
 			<zone type="Europe/Rome">
 				<exemplarCity>روم</exemplarCity>
+			</zone>
+			<zone type="Europe/Jersey">
+				<exemplarCity>جرسی</exemplarCity>
 			</zone>
 			<zone type="America/Jamaica">
 				<exemplarCity>جَمَیکا</exemplarCity>
@@ -1810,10 +2172,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>بِشکیک</exemplarCity>
 			</zone>
 			<zone type="Asia/Phnom_Penh">
-				<exemplarCity>نوم پٮ۪نٛہہ</exemplarCity>
-			</zone>
-			<zone type="Pacific/Enderbury">
-				<exemplarCity>اٮ۪نٛڑربیری</exemplarCity>
+				<exemplarCity>نوم پؠنہہ</exemplarCity>
 			</zone>
 			<zone type="Pacific/Kiritimati">
 				<exemplarCity>کِرِتِماتی</exemplarCity>
@@ -1825,13 +2184,13 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>کومورو</exemplarCity>
 			</zone>
 			<zone type="America/St_Kitts">
-				<exemplarCity>سینٛٹ کِٹس</exemplarCity>
+				<exemplarCity>سینٹ کِٹس</exemplarCity>
 			</zone>
 			<zone type="Asia/Pyongyang">
-				<exemplarCity>پیونٛگیانٛگ</exemplarCity>
+				<exemplarCity>پیونگیانگ</exemplarCity>
 			</zone>
 			<zone type="Asia/Seoul">
-				<exemplarCity>سول</exemplarCity>
+				<exemplarCity>سیول</exemplarCity>
 			</zone>
 			<zone type="Asia/Kuwait">
 				<exemplarCity>کُویت</exemplarCity>
@@ -1840,16 +2199,22 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>کیمَن</exemplarCity>
 			</zone>
 			<zone type="Asia/Aqtau">
-				<exemplarCity>اَکتاؤں</exemplarCity>
+				<exemplarCity>اکٹو</exemplarCity>
 			</zone>
 			<zone type="Asia/Oral">
 				<exemplarCity>اورَل</exemplarCity>
 			</zone>
+			<zone type="Asia/Atyrau">
+				<exemplarCity>اٹیرو</exemplarCity>
+			</zone>
 			<zone type="Asia/Aqtobe">
 				<exemplarCity>اَقٹوب</exemplarCity>
 			</zone>
+			<zone type="Asia/Qostanay">
+				<exemplarCity>کوسٹانے</exemplarCity>
+			</zone>
 			<zone type="Asia/Qyzylorda">
-				<exemplarCity>قٮ۪زٮ۪لوڑا</exemplarCity>
+				<exemplarCity>قؠزؠلوڑا</exemplarCity>
 			</zone>
 			<zone type="Asia/Almaty">
 				<exemplarCity>اَلماٹی</exemplarCity>
@@ -1858,10 +2223,10 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>وِیَنتِیین</exemplarCity>
 			</zone>
 			<zone type="Asia/Beirut">
-				<exemplarCity>بیرُت</exemplarCity>
+				<exemplarCity>بیرٹ</exemplarCity>
 			</zone>
 			<zone type="America/St_Lucia">
-				<exemplarCity>سٮ۪نٛٹ لوٗسِیا</exemplarCity>
+				<exemplarCity>سؠنٹ لوٗسِیا</exemplarCity>
 			</zone>
 			<zone type="Europe/Vaduz">
 				<exemplarCity>وادُز</exemplarCity>
@@ -1885,10 +2250,10 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>رِگا</exemplarCity>
 			</zone>
 			<zone type="Africa/Tripoli">
-				<exemplarCity>ترٛپولی</exemplarCity>
+				<exemplarCity>ترپولی</exemplarCity>
 			</zone>
 			<zone type="Africa/Casablanca">
-				<exemplarCity>کٮ۪سابلٮ۪نٛکا</exemplarCity>
+				<exemplarCity>کؠسابلؠنکا</exemplarCity>
 			</zone>
 			<zone type="Europe/Monaco">
 				<exemplarCity>موناکو</exemplarCity>
@@ -1896,8 +2261,14 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<zone type="Europe/Chisinau">
 				<exemplarCity>چِسیٖنو</exemplarCity>
 			</zone>
+			<zone type="Europe/Podgorica">
+				<exemplarCity>پوڈگوریکا</exemplarCity>
+			</zone>
+			<zone type="America/Marigot">
+				<exemplarCity>میریگوٹ</exemplarCity>
+			</zone>
 			<zone type="Indian/Antananarivo">
-				<exemplarCity>اٮ۪نٛٹنانرِوو</exemplarCity>
+				<exemplarCity>اؠنٹنانرِوو</exemplarCity>
 			</zone>
 			<zone type="Pacific/Kwajalein">
 				<exemplarCity>کُوجلین</exemplarCity>
@@ -1905,23 +2276,23 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<zone type="Pacific/Majuro">
 				<exemplarCity>مَجوٗرو</exemplarCity>
 			</zone>
+			<zone type="Europe/Skopje">
+				<exemplarCity>سِکوپیے</exemplarCity>
+			</zone>
 			<zone type="Africa/Bamako">
 				<exemplarCity>بماکو</exemplarCity>
 			</zone>
 			<zone type="Asia/Rangoon">
-				<exemplarCity>رنٛگوٗن</exemplarCity>
+				<exemplarCity>رنگوٗن</exemplarCity>
 			</zone>
 			<zone type="Asia/Hovd">
 				<exemplarCity>حووڑ</exemplarCity>
 			</zone>
 			<zone type="Asia/Ulaanbaatar">
-				<exemplarCity>اُلانباٹَر</exemplarCity>
-			</zone>
-			<zone type="Asia/Choibalsan">
-				<exemplarCity>چویبالسَن</exemplarCity>
+				<exemplarCity>اولن باٹر</exemplarCity>
 			</zone>
 			<zone type="Asia/Macau">
-				<exemplarCity>مقاؤں</exemplarCity>
+				<exemplarCity>مکو</exemplarCity>
 			</zone>
 			<zone type="Pacific/Saipan">
 				<exemplarCity>سَیپان</exemplarCity>
@@ -1939,7 +2310,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>مالٹا</exemplarCity>
 			</zone>
 			<zone type="Indian/Mauritius">
-				<exemplarCity>مورِشیٚس</exemplarCity>
+				<exemplarCity>مورِشیس</exemplarCity>
 			</zone>
 			<zone type="Indian/Maldives">
 				<exemplarCity>مالدیٖوز</exemplarCity>
@@ -1959,14 +2330,23 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<zone type="America/Chihuahua">
 				<exemplarCity>چِہُوا ہُوا</exemplarCity>
 			</zone>
+			<zone type="America/Bahia_Banderas">
+				<exemplarCity>باہیا بندارس</exemplarCity>
+			</zone>
+			<zone type="America/Ojinaga">
+				<exemplarCity>اوجی ناگا</exemplarCity>
+			</zone>
 			<zone type="America/Monterrey">
-				<exemplarCity>موٹیٚری</exemplarCity>
+				<exemplarCity>موٹیری</exemplarCity>
 			</zone>
 			<zone type="America/Mexico_City">
-				<exemplarCity>میٚکسِکو سِٹی</exemplarCity>
+				<exemplarCity>میکسِکو سِٹی</exemplarCity>
+			</zone>
+			<zone type="America/Matamoros">
+				<exemplarCity>میٹاموروس</exemplarCity>
 			</zone>
 			<zone type="America/Merida">
-				<exemplarCity>میٚرِڈا</exemplarCity>
+				<exemplarCity>میرِڈا</exemplarCity>
 			</zone>
 			<zone type="America/Cancun">
 				<exemplarCity>کینکَن</exemplarCity>
@@ -1975,7 +2355,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>کولالَمپوٗر</exemplarCity>
 			</zone>
 			<zone type="Asia/Kuching">
-				<exemplarCity>کُچِنٛگ</exemplarCity>
+				<exemplarCity>کُچِنگ</exemplarCity>
 			</zone>
 			<zone type="Africa/Maputo">
 				<exemplarCity>مَپوٗٹو</exemplarCity>
@@ -1993,7 +2373,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>نورفوک</exemplarCity>
 			</zone>
 			<zone type="Africa/Lagos">
-				<exemplarCity>لیٚگوس</exemplarCity>
+				<exemplarCity>لیگوس</exemplarCity>
 			</zone>
 			<zone type="America/Managua">
 				<exemplarCity>مَناگوا</exemplarCity>
@@ -2020,7 +2400,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>آکلینڈ</exemplarCity>
 			</zone>
 			<zone type="Asia/Muscat">
-				<exemplarCity>مَسکَت</exemplarCity>
+				<exemplarCity>مسقط</exemplarCity>
 			</zone>
 			<zone type="America/Panama">
 				<exemplarCity>پَناما</exemplarCity>
@@ -2059,7 +2439,10 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>پیٖٹو رِکو</exemplarCity>
 			</zone>
 			<zone type="Asia/Gaza">
-				<exemplarCity>غازا</exemplarCity>
+				<exemplarCity>غزہ</exemplarCity>
+			</zone>
+			<zone type="Asia/Hebron">
+				<exemplarCity>ہیبرون</exemplarCity>
 			</zone>
 			<zone type="Atlantic/Azores">
 				<exemplarCity>اَزورَس</exemplarCity>
@@ -2077,13 +2460,16 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>اَسُنچِیَن</exemplarCity>
 			</zone>
 			<zone type="Asia/Qatar">
-				<exemplarCity>قَتَر</exemplarCity>
+				<exemplarCity>قطر</exemplarCity>
 			</zone>
 			<zone type="Indian/Reunion">
 				<exemplarCity>رِیوٗنیَن</exemplarCity>
 			</zone>
 			<zone type="Europe/Bucharest">
-				<exemplarCity>بَچاریٚسٹ</exemplarCity>
+				<exemplarCity>بَچاریسٹ</exemplarCity>
+			</zone>
+			<zone type="Europe/Belgrade">
+				<exemplarCity>بیلگریڈ</exemplarCity>
 			</zone>
 			<zone type="Europe/Kaliningrad">
 				<exemplarCity>کَلِناِنگرَد</exemplarCity>
@@ -2093,6 +2479,18 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</zone>
 			<zone type="Europe/Volgograd">
 				<exemplarCity>وولگوگرَد</exemplarCity>
+			</zone>
+			<zone type="Europe/Saratov">
+				<exemplarCity>ساراٹو</exemplarCity>
+			</zone>
+			<zone type="Europe/Astrakhan">
+				<exemplarCity>ایسٹرا کھان</exemplarCity>
+			</zone>
+			<zone type="Europe/Ulyanovsk">
+				<exemplarCity>اولیانووسک</exemplarCity>
+			</zone>
+			<zone type="Europe/Kirov">
+				<exemplarCity>کیرو</exemplarCity>
 			</zone>
 			<zone type="Europe/Samara">
 				<exemplarCity>سَمارا</exemplarCity>
@@ -2106,11 +2504,23 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<zone type="Asia/Novosibirsk">
 				<exemplarCity>نوووسِبِرسک</exemplarCity>
 			</zone>
+			<zone type="Asia/Barnaul">
+				<exemplarCity>برنول</exemplarCity>
+			</zone>
+			<zone type="Asia/Tomsk">
+				<exemplarCity>ٹومسک</exemplarCity>
+			</zone>
+			<zone type="Asia/Novokuznetsk">
+				<exemplarCity>نوووکُزنیٹسک</exemplarCity>
+			</zone>
 			<zone type="Asia/Krasnoyarsk">
-				<exemplarCity>کرنٛسنویارسک</exemplarCity>
+				<exemplarCity>کرنسنویارسک</exemplarCity>
 			</zone>
 			<zone type="Asia/Irkutsk">
 				<exemplarCity>اِرکُسک</exemplarCity>
+			</zone>
+			<zone type="Asia/Chita">
+				<exemplarCity>چیٹا</exemplarCity>
 			</zone>
 			<zone type="Asia/Yakutsk">
 				<exemplarCity>یکوسک</exemplarCity>
@@ -2118,11 +2528,20 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<zone type="Asia/Vladivostok">
 				<exemplarCity>لادِووستوک</exemplarCity>
 			</zone>
+			<zone type="Asia/Khandyga">
+				<exemplarCity>کھانڈیگا</exemplarCity>
+			</zone>
 			<zone type="Asia/Sakhalin">
 				<exemplarCity>سَکھالِن</exemplarCity>
 			</zone>
+			<zone type="Asia/Ust-Nera">
+				<exemplarCity>اوسٹ-نیرا</exemplarCity>
+			</zone>
 			<zone type="Asia/Magadan">
 				<exemplarCity>مَگادَن</exemplarCity>
+			</zone>
+			<zone type="Asia/Srednekolymsk">
+				<exemplarCity>سریڈنیکولیمسک</exemplarCity>
 			</zone>
 			<zone type="Asia/Kamchatka">
 				<exemplarCity>کَمچھٹکا</exemplarCity>
@@ -2134,7 +2553,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>کِگالی</exemplarCity>
 			</zone>
 			<zone type="Asia/Riyadh">
-				<exemplarCity>رِیاد</exemplarCity>
+				<exemplarCity>ریاض</exemplarCity>
 			</zone>
 			<zone type="Pacific/Guadalcanal">
 				<exemplarCity>گُوادَلچَنَل</exemplarCity>
@@ -2149,13 +2568,25 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>سٹاک ہولم</exemplarCity>
 			</zone>
 			<zone type="Asia/Singapore">
-				<exemplarCity>سِنٛگاپور</exemplarCity>
+				<exemplarCity>سِنگاپور</exemplarCity>
 			</zone>
 			<zone type="Atlantic/St_Helena">
-				<exemplarCity>سینٛٹ ہیٚلِنا</exemplarCity>
+				<exemplarCity>سینٹ ہیلِنا</exemplarCity>
+			</zone>
+			<zone type="Europe/Ljubljana">
+				<exemplarCity>لِیوٗب لِیانا</exemplarCity>
+			</zone>
+			<zone type="Arctic/Longyearbyen">
+				<exemplarCity>لونگ ییئر بئین</exemplarCity>
+			</zone>
+			<zone type="Europe/Bratislava">
+				<exemplarCity>بریٹیسلاوا</exemplarCity>
 			</zone>
 			<zone type="Africa/Freetown">
 				<exemplarCity>فری ٹاوُن</exemplarCity>
+			</zone>
+			<zone type="Europe/San_Marino">
+				<exemplarCity>سین مرینو</exemplarCity>
 			</zone>
 			<zone type="Africa/Dakar">
 				<exemplarCity>دَکار</exemplarCity>
@@ -2166,11 +2597,17 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<zone type="America/Paramaribo">
 				<exemplarCity>پَرامارِبو</exemplarCity>
 			</zone>
+			<zone type="Africa/Juba">
+				<exemplarCity>جوبا</exemplarCity>
+			</zone>
 			<zone type="Africa/Sao_Tome">
 				<exemplarCity>ساو ٹوم</exemplarCity>
 			</zone>
 			<zone type="America/El_Salvador">
-				<exemplarCity>ایٚل سَلویدَر</exemplarCity>
+				<exemplarCity>ایل سَلویدَر</exemplarCity>
+			</zone>
+			<zone type="America/Lower_Princes">
+				<exemplarCity>لوور پرنس کوارٹر</exemplarCity>
 			</zone>
 			<zone type="Asia/Damascus">
 				<exemplarCity>دَمَسکَس</exemplarCity>
@@ -2179,7 +2616,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>مابین</exemplarCity>
 			</zone>
 			<zone type="America/Grand_Turk">
-				<exemplarCity>گرینٛڈ تٔرک</exemplarCity>
+				<exemplarCity>گرینڈ تٔرک</exemplarCity>
 			</zone>
 			<zone type="Africa/Ndjamena">
 				<exemplarCity>جَمیٖنا</exemplarCity>
@@ -2224,19 +2661,13 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>تَیپیے</exemplarCity>
 			</zone>
 			<zone type="Africa/Dar_es_Salaam">
-				<exemplarCity>دارُالسلام</exemplarCity>
-			</zone>
-			<zone type="Europe/Uzhgorod">
-				<exemplarCity>اُزگورود</exemplarCity>
+				<exemplarCity>دارالسلام</exemplarCity>
 			</zone>
 			<zone type="Europe/Kiev">
 				<exemplarCity>کیٖو</exemplarCity>
 			</zone>
 			<zone type="Europe/Simferopol">
-				<exemplarCity>سِمفیٚروپول</exemplarCity>
-			</zone>
-			<zone type="Europe/Zaporozhye">
-				<exemplarCity>زَپوروزَے</exemplarCity>
+				<exemplarCity>سِمفیروپول</exemplarCity>
 			</zone>
 			<zone type="Africa/Kampala">
 				<exemplarCity>کَمپالا</exemplarCity>
@@ -2244,20 +2675,14 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<zone type="Pacific/Midway">
 				<exemplarCity>مِڈویے</exemplarCity>
 			</zone>
-			<zone type="Pacific/Johnston">
-				<exemplarCity>جانسٹَن</exemplarCity>
-			</zone>
 			<zone type="Pacific/Wake">
 				<exemplarCity>ویک</exemplarCity>
 			</zone>
 			<zone type="America/Adak">
-				<exemplarCity>اِدَک</exemplarCity>
+				<exemplarCity>ادک</exemplarCity>
 			</zone>
 			<zone type="America/Nome">
 				<exemplarCity>نوم</exemplarCity>
-			</zone>
-			<zone type="Pacific/Honolulu">
-				<exemplarCity>ہونولو لو</exemplarCity>
 			</zone>
 			<zone type="America/Anchorage">
 				<exemplarCity>اَنکوراج</exemplarCity>
@@ -2265,11 +2690,17 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<zone type="America/Yakutat">
 				<exemplarCity>یکوٗتات</exemplarCity>
 			</zone>
+			<zone type="America/Sitka">
+				<exemplarCity>سِٹکا</exemplarCity>
+			</zone>
 			<zone type="America/Juneau">
 				<exemplarCity>جوٗنی</exemplarCity>
 			</zone>
+			<zone type="America/Metlakatla">
+				<exemplarCity>میٹلا کاٹلا</exemplarCity>
+			</zone>
 			<zone type="America/Los_Angeles">
-				<exemplarCity>لاس ایٚنجٕلز</exemplarCity>
+				<exemplarCity>لاس اینجٕلز</exemplarCity>
 			</zone>
 			<zone type="America/Boise">
 				<exemplarCity>بویِس</exemplarCity>
@@ -2278,10 +2709,13 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>پھِنِکس</exemplarCity>
 			</zone>
 			<zone type="America/Denver">
-				<exemplarCity>ڈیٚنوَر</exemplarCity>
+				<exemplarCity>ڈینوَر</exemplarCity>
+			</zone>
+			<zone type="America/North_Dakota/Beulah">
+				<exemplarCity>بیولاہ، شُمالی ڈیکوٹا</exemplarCity>
 			</zone>
 			<zone type="America/North_Dakota/New_Salem">
-				<exemplarCity>نوو سیلٕم</exemplarCity>
+				<exemplarCity>نوو سیلٕم، شُمالی ڈیکوٹا</exemplarCity>
 			</zone>
 			<zone type="America/North_Dakota/Center">
 				<exemplarCity>مَرکزی جنوٗبی ڈکوٹا</exemplarCity>
@@ -2290,25 +2724,25 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>شِکاگو</exemplarCity>
 			</zone>
 			<zone type="America/Menominee">
-				<exemplarCity>میٚنومِنی</exemplarCity>
+				<exemplarCity>مینومِنی</exemplarCity>
 			</zone>
 			<zone type="America/Indiana/Vincennes">
-				<exemplarCity>وِنسیٚنیٚس</exemplarCity>
+				<exemplarCity>وِنسینیس، انڈیانا</exemplarCity>
 			</zone>
 			<zone type="America/Indiana/Petersburg">
-				<exemplarCity>پِٹس بٔرگ</exemplarCity>
+				<exemplarCity>پِٹس بٔرگ، انڈیانا</exemplarCity>
 			</zone>
 			<zone type="America/Indiana/Tell_City">
-				<exemplarCity>ٹیٚل سِٹی</exemplarCity>
+				<exemplarCity>ٹیل سِٹی، انڈیانا</exemplarCity>
 			</zone>
 			<zone type="America/Indiana/Knox">
 				<exemplarCity>نوکس</exemplarCity>
 			</zone>
 			<zone type="America/Indiana/Winamac">
-				<exemplarCity>وِنیمیک</exemplarCity>
+				<exemplarCity>وِنیمیک، انڈیانا</exemplarCity>
 			</zone>
 			<zone type="America/Indiana/Marengo">
-				<exemplarCity>میٚریٚنگو</exemplarCity>
+				<exemplarCity>میرنگو، انڈیانا</exemplarCity>
 			</zone>
 			<zone type="America/Indianapolis">
 				<exemplarCity>اِنڈیَن پولِس</exemplarCity>
@@ -2317,28 +2751,31 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>لوٗیِس وِل</exemplarCity>
 			</zone>
 			<zone type="America/Indiana/Vevay">
-				<exemplarCity>ویٚویے</exemplarCity>
+				<exemplarCity>ویویے، انڈیانا</exemplarCity>
 			</zone>
 			<zone type="America/Kentucky/Monticello">
-				<exemplarCity>مونٹِسیٚلو</exemplarCity>
+				<exemplarCity>مونٹِسیلو، کینٹوکی</exemplarCity>
 			</zone>
 			<zone type="America/Detroit">
-				<exemplarCity>ڈیٚٹرایِٹ</exemplarCity>
+				<exemplarCity>ڈیٹرایِٹ</exemplarCity>
 			</zone>
 			<zone type="America/New_York">
 				<exemplarCity>نِو یارک</exemplarCity>
 			</zone>
 			<zone type="America/Montevideo">
-				<exemplarCity>مونٹیٚوِڈیو</exemplarCity>
+				<exemplarCity>مونٹیوِڈیو</exemplarCity>
 			</zone>
 			<zone type="Asia/Samarkand">
-				<exemplarCity>سَمَرکَنٛد</exemplarCity>
+				<exemplarCity>سَمَرکَند</exemplarCity>
 			</zone>
 			<zone type="Asia/Tashkent">
-				<exemplarCity>تاشکیٚنٛٹ</exemplarCity>
+				<exemplarCity>تاشکینٹ</exemplarCity>
+			</zone>
+			<zone type="Europe/Vatican">
+				<exemplarCity>ویٹیکن</exemplarCity>
 			</zone>
 			<zone type="America/St_Vincent">
-				<exemplarCity>وِنسیٚنٛٹ</exemplarCity>
+				<exemplarCity>سینٹ وِنسینٹ</exemplarCity>
 			</zone>
 			<zone type="America/Caracas">
 				<exemplarCity>کیرَکَس</exemplarCity>
@@ -2347,13 +2784,13 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>ٹارٹولا</exemplarCity>
 			</zone>
 			<zone type="America/St_Thomas">
-				<exemplarCity>سینٛٹ تھامَس</exemplarCity>
+				<exemplarCity>سینٹ تھامَس</exemplarCity>
 			</zone>
 			<zone type="Asia/Saigon">
 				<exemplarCity>سیگَن</exemplarCity>
 			</zone>
 			<zone type="Pacific/Efate">
-				<exemplarCity>ایٚفاتیے</exemplarCity>
+				<exemplarCity>ایفاتیے</exemplarCity>
 			</zone>
 			<zone type="Pacific/Wallis">
 				<exemplarCity>ویلِس</exemplarCity>
@@ -2362,25 +2799,25 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>آپِیا</exemplarCity>
 			</zone>
 			<zone type="Asia/Aden">
-				<exemplarCity>ایٚڈٕن</exemplarCity>
+				<exemplarCity>ایڈٕن</exemplarCity>
 			</zone>
 			<zone type="Indian/Mayotte">
 				<exemplarCity>میوٹ</exemplarCity>
 			</zone>
 			<zone type="Africa/Johannesburg">
-				<exemplarCity>جانسبٔرگ</exemplarCity>
+				<exemplarCity>جوہانسبرگ</exemplarCity>
 			</zone>
 			<zone type="Africa/Lusaka">
-				<exemplarCity>لُساکا</exemplarCity>
+				<exemplarCity>لوساکا</exemplarCity>
 			</zone>
 			<zone type="Africa/Harare">
 				<exemplarCity>ہَراریے</exemplarCity>
 			</zone>
 			<metazone type="Acre">
 				<long>
-					<generic>اٮ۪کرے ٹایِم</generic>
-					<standard>اٮ۪کرے سٹینڑاڑ ٹایِم</standard>
-					<daylight>اٮ۪کرے سَمَر ٹایِم</daylight>
+					<generic>اؠکرے ٹایِم</generic>
+					<standard>اؠکرے سٹینڑاڑ ٹایِم</standard>
+					<daylight>اؠکرے سَمَر ٹایِم</daylight>
 				</long>
 			</metazone>
 			<metazone type="Afghanistan">
@@ -2405,30 +2842,28 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</metazone>
 			<metazone type="Africa_Western">
 				<long>
-					<generic>مغربی افریٖقا ٹایِم</generic>
-					<standard>مغربی افریٖقا سٹینڑاڑ ٹایِم</standard>
-					<daylight>مغربی افریٖقا سَمَر ٹایِم</daylight>
+					<standard>مغربی افریٖقا ٹایِم</standard>
 				</long>
 			</metazone>
 			<metazone type="Alaska">
 				<long>
-					<generic>اٮ۪لاسکا ٹایِم</generic>
-					<standard>اٮ۪لاسکا سٹینڑاڑ ٹایِم</standard>
-					<daylight>اٮ۪لاسکا ڈےلایِٔٹ ٹایِم</daylight>
+					<generic>اؠلاسکا ٹایِم</generic>
+					<standard>اؠلاسکا سٹینڑاڑ ٹایِم</standard>
+					<daylight>اؠلاسکا ڈےلایِٔٹ ٹایِم</daylight>
 				</long>
 			</metazone>
 			<metazone type="Almaty">
 				<long>
-					<generic>اٮ۪لمٮ۪ٹی ٹایِم</generic>
-					<standard>اٮ۪لمٮ۪ٹی سٹینڑاڑ ٹایِم</standard>
-					<daylight>اٮ۪لمٮ۪ٹی سَمَر ٹایِم</daylight>
+					<generic>اؠلمؠٹی ٹایِم</generic>
+					<standard>اؠلمؠٹی سٹینڑاڑ ٹایِم</standard>
+					<daylight>اؠلمؠٹی سَمَر ٹایِم</daylight>
 				</long>
 			</metazone>
 			<metazone type="Amazon">
 				<long>
-					<generic>اٮ۪مَزَن ٹایِم</generic>
-					<standard>اٮ۪مَزَن سٹینڑاڑ ٹایِم</standard>
-					<daylight>اٮ۪مَزَن سَمَر ٹایِم</daylight>
+					<generic>اؠمَزَن ٹایِم</generic>
+					<standard>اؠمَزَن سٹینڑاڑ ٹایِم</standard>
+					<daylight>اؠمَزَن سَمَر ٹایِم</daylight>
 				</long>
 			</metazone>
 			<metazone type="America_Central">
@@ -2461,58 +2896,58 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</metazone>
 			<metazone type="Anadyr">
 				<long>
-					<generic>اٮ۪نَڑیٖر ٹایِم</generic>
-					<standard>اٮ۪نَڑیٖر سٹینڑاڑ ٹایِم</standard>
-					<daylight>اٮ۪نڑیٖر سَمَر ٹایِم</daylight>
+					<generic>اؠنَڑیٖر ٹایِم</generic>
+					<standard>اؠنَڑیٖر سٹینڑاڑ ٹایِم</standard>
+					<daylight>اؠنڑیٖر سَمَر ٹایِم</daylight>
 				</long>
 			</metazone>
 			<metazone type="Aqtau">
 				<long>
-					<generic>اٮ۪کٹاؤ ٹایِم</generic>
-					<standard>اٮ۪کٹاؤ سٹینڑاڑ ٹایِم</standard>
-					<daylight>اٮ۪کٹاؤ سَمَر ٹایِم</daylight>
+					<generic>اؠکٹاؤ ٹایِم</generic>
+					<standard>اؠکٹاؤ سٹینڑاڑ ٹایِم</standard>
+					<daylight>اؠکٹاؤ سَمَر ٹایِم</daylight>
 				</long>
 			</metazone>
 			<metazone type="Aqtobe">
 				<long>
-					<generic>اٮ۪کٹوب ٹایِم</generic>
-					<standard>اٮ۪کٹوب سٹینڑاڑ ٹایِم</standard>
-					<daylight>اٮ۪کٹوب سَمَر ٹایِم</daylight>
+					<generic>اؠکٹوب ٹایِم</generic>
+					<standard>اؠکٹوب سٹینڑاڑ ٹایِم</standard>
+					<daylight>اؠکٹوب سَمَر ٹایِم</daylight>
 				</long>
 			</metazone>
 			<metazone type="Arabian">
 				<long>
-					<generic>ارٮ۪بِیَن ٹایِم</generic>
-					<standard>ارٮ۪بِیَن سٹینڑاڑ ٹایِم</standard>
-					<daylight>ارٮ۪بِیَن ڈےلایِٔٹ ٹایِم</daylight>
+					<generic>ارؠبِیَن ٹایِم</generic>
+					<standard>ارؠبِیَن سٹینڈرڈ ٹایِم</standard>
+					<daylight>ارؠبِیَن ڈےلایِٔٹ ٹایِم</daylight>
 				</long>
 			</metazone>
 			<metazone type="Argentina">
 				<long>
-					<generic>ارجٮ۪نٹیٖنا ٹایِم</generic>
-					<standard>ارجٮ۪نٹیٖنا سٹینڑاڑ ٹایِم</standard>
-					<daylight>ارجٮ۪نٹیٖنا سَمَر ٹایِم</daylight>
+					<generic>ارجؠنٹیٖنا ٹایِم</generic>
+					<standard>ارجؠنٹیٖنا سٹینڑاڑ ٹایِم</standard>
+					<daylight>ارجؠنٹیٖنا سَمَر ٹایِم</daylight>
 				</long>
 			</metazone>
 			<metazone type="Argentina_Western">
 				<long>
-					<generic>مغربی ارجٮ۪نٹیٖنا ٹایِم</generic>
-					<standard>مغربی ارجٮ۪نٹیٖنا سٹینڑاڑ ٹایِم</standard>
-					<daylight>مغربی ارجٮ۪نٹیٖنا سَمَر ٹایِم</daylight>
+					<generic>مغربی ارجؠنٹیٖنا ٹایِم</generic>
+					<standard>مغربی ارجؠنٹیٖنا سٹینڑاڑ ٹایِم</standard>
+					<daylight>مغربی ارجؠنٹیٖنا سَمَر ٹایِم</daylight>
 				</long>
 			</metazone>
 			<metazone type="Armenia">
 				<long>
 					<generic>ارمیٖنِیا ٹایِم</generic>
-					<standard>ارمیٖنِیا سٹینڑاڑ ٹایِم</standard>
+					<standard>ارمیٖنِیا سٹینڈرڈ ٹایِم</standard>
 					<daylight>ارمیٖنِیا سَمَر ٹایِم</daylight>
 				</long>
 			</metazone>
 			<metazone type="Atlantic">
 				<long>
-					<generic>اٮ۪ٹلانٹِک ٹایِم</generic>
-					<standard>اٮ۪ٹلانٹِک سٹینڑاڑ ٹایِم</standard>
-					<daylight>اٮ۪ٹلانٹِک ڈےلایِٔٹ ٹایِم</daylight>
+					<generic>اؠٹلانٹِک ٹایِم</generic>
+					<standard>اؠٹلانٹِک سٹینڑاڑ ٹایِم</standard>
+					<daylight>اؠٹلانٹِک ڈےلایِٔٹ ٹایِم</daylight>
 				</long>
 			</metazone>
 			<metazone type="Australia_Central">
@@ -2545,23 +2980,23 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</metazone>
 			<metazone type="Azerbaijan">
 				<long>
-					<generic>اَزَربیجان ٹایِم</generic>
-					<standard>اَزَربیجان سٹینڑاڑ ٹایِم</standard>
-					<daylight>اَزَربیجان سَمَر ٹایِم</daylight>
+					<generic>ازربائیجان ٹائم</generic>
+					<standard>ازربائیجان سٹینڈرڈ ٹائم</standard>
+					<daylight>ازربائیجان سَمَر ٹائم</daylight>
 				</long>
 			</metazone>
 			<metazone type="Azores">
 				<long>
-					<generic>اٮ۪زورٕس ٹایِم</generic>
-					<standard>اٮ۪زورٕس سٹینڑاڑ ٹایِم</standard>
-					<daylight>اٮ۪زورٕس سَمَر ٹ</daylight>
+					<generic>اؠزورٕس ٹایِم</generic>
+					<standard>اؠزورٕس سٹینڑاڑ ٹایِم</standard>
+					<daylight>اؠزورٕس سَمَر ٹائم</daylight>
 				</long>
 			</metazone>
 			<metazone type="Bangladesh">
 				<long>
-					<generic>بَنٛگلادیش ٹایِم</generic>
-					<standard>بَنٛگلادیش سٹینڑاڑ ٹایِم</standard>
-					<daylight>بَنٛگلادیش سَمَر ٹایِم</daylight>
+					<generic>بَنگلادیش ٹایِم</generic>
+					<standard>بَنگلادیش سٹینڑاڑ ٹایِم</standard>
+					<daylight>بَنگلادیش سَمَر ٹایِم</daylight>
 				</long>
 			</metazone>
 			<metazone type="Bhutan">
@@ -2576,33 +3011,33 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</metazone>
 			<metazone type="Brasilia">
 				<long>
-					<generic>برٮ۪سِلِیا ٹایِم</generic>
-					<standard>برٮ۪سِلِیا سٹینڑاڑ ٹایِم</standard>
-					<daylight>برٮ۪سِلِیا سَمَر ٹایِم</daylight>
+					<generic>برؠسِلِیا ٹایِم</generic>
+					<standard>برؠسِلِیا سٹینڑاڑ ٹایِم</standard>
+					<daylight>برؠسِلِیا سَمَر ٹایِم</daylight>
 				</long>
 			</metazone>
 			<metazone type="Brunei">
 				<long>
-					<standard>برٛوٗنَے دَروٗسَلَم ٹایِم</standard>
+					<standard>بروٗنَے دَروٗسَلَم ٹایِم</standard>
 				</long>
 			</metazone>
 			<metazone type="Cape_Verde">
 				<long>
 					<generic>کیپ ؤرڑو ٹایِم</generic>
-					<standard>کیپ ؤرڑو سٹینڑاڑ ٹایِم</standard>
+					<standard>کیپ ؤرڑو سٹینڈرڈ ٹایِم</standard>
 					<daylight>کیپ سَمَر ٹایِم</daylight>
 				</long>
 			</metazone>
 			<metazone type="Chamorro">
 				<long>
-					<standard>کٮ۪مورو سٹینڑاڑ ٹایِم</standard>
+					<standard>کؠمورو سٹینڑاڑ ٹایِم</standard>
 				</long>
 			</metazone>
 			<metazone type="Chatham">
 				<long>
-					<generic>کٮ۪تھَم ٹایِم</generic>
-					<standard>کٮ۪تھَم سٹینڑاڑ ٹایِم</standard>
-					<daylight>چٮ۪تھَم سَمَر ٹایِم</daylight>
+					<generic>کؠتھَم ٹایِم</generic>
+					<standard>کؠتھَم سٹینڑاڑ ٹایِم</standard>
+					<daylight>چؠتھَم سَمَر ٹایِم</daylight>
 				</long>
 			</metazone>
 			<metazone type="Chile">
@@ -2615,20 +3050,13 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<metazone type="China">
 				<long>
 					<generic>چَینا ٹایِم</generic>
-					<standard>چَینا سٹینڑاڑ ٹایِم</standard>
+					<standard>چَینا سٹینڈرڈ ٹایِم</standard>
 					<daylight>چَینا ڈےلایِٔٹ ٹایِم</daylight>
-				</long>
-			</metazone>
-			<metazone type="Choibalsan">
-				<long>
-					<generic>کوےبٮ۪لسَن ٹایِم</generic>
-					<standard>کوےبٮ۪لسَن سٹینڑاڑ ٹایِم</standard>
-					<daylight>کوےبٮ۪لسَن سَمَر ٹایِم</daylight>
 				</long>
 			</metazone>
 			<metazone type="Christmas">
 				<long>
-					<standard>کرٛسمَس ٹایِم</standard>
+					<standard>کرسمَس ٹایِم</standard>
 				</long>
 			</metazone>
 			<metazone type="Cocos">
@@ -2674,9 +3102,9 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</metazone>
 			<metazone type="Easter">
 				<long>
-					<generic>ایٖسٹَر ٹایِم</generic>
-					<standard>ایٖسٹَر سٹینڑاڑ ٹایِم</standard>
-					<daylight>ایٖسٹَر سَمَر ٹایِم</daylight>
+					<generic>ایٖسٹَر جزیرٕ ٹایِم</generic>
+					<standard>ایٖسٹَر جزیرٕ سٹینڈرڈ ٹایِم</standard>
+					<daylight>ایٖسٹَر جزیرٕ سَمَر ٹایِم</daylight>
 				</long>
 			</metazone>
 			<metazone type="Ecuador">
@@ -2698,18 +3126,23 @@ For terms of use, see http://www.unicode.org/copyright.html
 					<daylight>مشرقی یوٗرپی سَمَر ٹایِم</daylight>
 				</long>
 			</metazone>
+			<metazone type="Europe_Further_Eastern">
+				<long>
+					<standard>مزید مشرقی یورپی ٹائم</standard>
+				</long>
+			</metazone>
 			<metazone type="Europe_Western">
 				<long>
 					<generic>مغرِبی یوٗرپی ٹایِم</generic>
-					<standard>مغرِبی یوٗرپی سٹینڑاڑ ٹایِم</standard>
+					<standard>مغرِبی یوٗرپی سٹینڈرڈ ٹایِم</standard>
 					<daylight>مغرِبی یوٗرِپی سَمَر ٹایِم</daylight>
 				</long>
 			</metazone>
 			<metazone type="Falkland">
 				<long>
-					<generic>فاکلینڑ ٹایِم</generic>
-					<standard>فاکلینڑ سٹینڑاڑ ٹایِم</standard>
-					<daylight>فاکلینڑ سَمَر ٹایِم</daylight>
+					<generic>فالک لینڈ جزیرٕ ٹائم</generic>
+					<standard>فالک لینڈ جزیرٕ سٹینڈرڈ ٹائم</standard>
+					<daylight>فالک لینڈ جزیرٕ سَمَر ٹائم</daylight>
 				</long>
 			</metazone>
 			<metazone type="Fiji">
@@ -2721,28 +3154,28 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</metazone>
 			<metazone type="French_Guiana">
 				<long>
-					<standard>فرٛٮ۪نٛچ گیوٗٮ۪نا ٹایِم</standard>
+					<standard>فرؠنچ گیوٗؠنا ٹایِم</standard>
 				</long>
 			</metazone>
 			<metazone type="French_Southern">
 				<long>
-					<standard>جنوٗبی فرٮ۪نٛچ ٹایِم</standard>
+					<standard>فرینچ جنوبی تٕہ انٹارکٹِک ٹائم</standard>
 				</long>
 			</metazone>
 			<metazone type="Galapagos">
 				<long>
-					<standard>گٮ۪لٮ۪پیٚگوز ٹایِم</standard>
+					<standard>گؠلؠپیگوز ٹایِم</standard>
 				</long>
 			</metazone>
 			<metazone type="Gambier">
 				<long>
-					<standard>گٮ۪مبِیَر ٹایِم</standard>
+					<standard>گؠمبِیَر ٹایِم</standard>
 				</long>
 			</metazone>
 			<metazone type="Georgia">
 				<long>
 					<generic>جورجِیاہُک ٹایِم</generic>
-					<standard>جورجِیاہُک سٹینڑاڑ ٹایِم</standard>
+					<standard>جورجِیاہُک سٹینڈرڈ ٹایِم</standard>
 					<daylight>جورجِیاہُک سَمَر ٹایِم</daylight>
 				</long>
 			</metazone>
@@ -2753,31 +3186,31 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</metazone>
 			<metazone type="GMT">
 				<long>
-					<standard>گرٛیٖن وِچ میٖن ٹایِم</standard>
+					<standard>گریٖن وِچ میٖن ٹایِم</standard>
 				</long>
 			</metazone>
 			<metazone type="Greenland_Eastern">
 				<long>
-					<generic>مشرِقی گریٖن لینڑُک ٹایِم</generic>
-					<standard>مشرِقی گریٖن لینڑُک سٹینڑاڑ ٹایِم</standard>
-					<daylight>مشرِقی گریٖن لینڑُک سَمَر ٹایِم</daylight>
+					<generic>مشرِقی گریٖن لینڈُک ٹایِم</generic>
+					<standard>مشرِقی گریٖن لینڈُک سٹینڑاڑ ٹایِم</standard>
+					<daylight>مشرِقی گریٖن لینڈُک سَمَر ٹایِم</daylight>
 				</long>
 			</metazone>
 			<metazone type="Greenland_Western">
 				<long>
-					<generic>مغرِبی گریٖن لینڑُک ٹایِم</generic>
-					<standard>مغرِبی گریٖن لینڑُک سٹینڑاڑ ٹایِم</standard>
-					<daylight>مغرِبی گریٖن لینڑُک سَمَر ٹایِم</daylight>
+					<generic>مغرِبی گریٖن لینڈُک ٹایِم</generic>
+					<standard>مغرِبی گریٖن لینڈُک سٹینڑاڑ ٹایِم</standard>
+					<daylight>مغرِبی گریٖن لینڈُک سَمَر ٹایِم</daylight>
 				</long>
 			</metazone>
 			<metazone type="Guam">
 				<long>
-					<standard>گُوٮ۪م ٹایِم</standard>
+					<standard>گُوؠم ٹایِم</standard>
 				</long>
 			</metazone>
 			<metazone type="Gulf">
 				<long>
-					<standard>گَلف سٹینڑاڑ ٹایِم</standard>
+					<standard>گَلف سٹینڈرڈ ٹایِم</standard>
 				</long>
 			</metazone>
 			<metazone type="Guyana">
@@ -2785,35 +3218,40 @@ For terms of use, see http://www.unicode.org/copyright.html
 					<standard>گُیَنا ٹایِم</standard>
 				</long>
 			</metazone>
+			<metazone type="Hawaii">
+				<long>
+					<standard>حَواے اؠلیوٗٹِیَن سٹینڑاڑ ٹایِم</standard>
+				</long>
+			</metazone>
 			<metazone type="Hawaii_Aleutian">
 				<long>
-					<generic>حَواے اٮ۪لیوٗٹِیَن ٹایِم</generic>
-					<standard>حَواے اٮ۪لیوٗٹِیَن سٹینڑاڑ ٹایِم</standard>
-					<daylight>حَواے اٮ۪لیوٗٹِیَن سَمَر ٹایِم</daylight>
+					<generic>حَواے اؠلیوٗٹِیَن ٹایِم</generic>
+					<standard>حَواے اؠلیوٗٹِیَن سٹینڑاڑ ٹایِم</standard>
+					<daylight>حَواے اؠلیوٗٹِیَن سَمَر ٹایِم</daylight>
 				</long>
 			</metazone>
 			<metazone type="Hong_Kong">
 				<long>
-					<generic>حانگ کانٛگ ٹایِم</generic>
-					<standard>حانگ کانٛگ سٹینڑاڑ ٹایِم</standard>
-					<daylight>حانٛگ کانٛگ سَمَر ٹایِم</daylight>
+					<generic>ہانگ کانگ ٹائم</generic>
+					<standard>ہانگ کانگ سٹینڈرڈ ٹائم</standard>
+					<daylight>ہانگ کانگ سَمر ٹائم</daylight>
 				</long>
 			</metazone>
 			<metazone type="Hovd">
 				<long>
 					<generic>حووڑ ٹایِم</generic>
-					<standard>حووڑ سٹینڑاڑ ٹایِم</standard>
+					<standard>حووڑ سٹینڈرڈ ٹایِم</standard>
 					<daylight>حووڑ سَمَر ٹایِم</daylight>
 				</long>
 			</metazone>
 			<metazone type="India">
 				<long>
-					<standard>ہِنٛدوستان</standard>
+					<standard>ہِندوستان</standard>
 				</long>
 			</metazone>
 			<metazone type="Indian_Ocean">
 				<long>
-					<standard>ہِندوستٲنۍ اوشَن ٹایِن</standard>
+					<standard>ہِندوستٲنؠ اوشَن ٹائم</standard>
 				</long>
 			</metazone>
 			<metazone type="Indochina">
@@ -2838,30 +3276,30 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</metazone>
 			<metazone type="Iran">
 				<long>
-					<generic>اِیٖرٲنۍ ٹایِم</generic>
-					<standard>اِیٖرٲنۍ سٹینڑاڑ ٹایِم</standard>
+					<generic>اِیٖرٲنؠ ٹایِم</generic>
+					<standard>اِیٖرٲنؠ سٹینڑاڑ ٹایِم</standard>
 					<daylight>اِیٖرٲنی سَمَر ٹایِم</daylight>
 				</long>
 			</metazone>
 			<metazone type="Irkutsk">
 				<long>
 					<generic>اِرکُٹسک ٹایِم</generic>
-					<standard>اِرکُٹسک سٹینڑاڑ ٹایِم</standard>
+					<standard>اِرکُٹسک سٹینڈرڈ ٹایِم</standard>
 					<daylight>اِرکُٹسک سَمَر ٹایِم</daylight>
 				</long>
 			</metazone>
 			<metazone type="Israel">
 				<long>
 					<generic>اِسرٲیِلی ٹایِم</generic>
-					<standard>اِسرٲیِلی سٹینڑاڑ ٹایِم</standard>
+					<standard>اِسرٲیِلی سٹینڈرڈ ٹایِم</standard>
 					<daylight>اِسرٲیِلی ڑےلایِٔٹ ٹایِم</daylight>
 				</long>
 			</metazone>
 			<metazone type="Japan">
 				<long>
-					<generic>جاپٲنۍ ٹایِم</generic>
-					<standard>جاپٲنۍ سٹینڑاڑ ٹایِم</standard>
-					<daylight>جاپٲنۍ ڑےلایِٔٹ ٹایِم</daylight>
+					<generic>جاپٲنؠ ٹایِم</generic>
+					<standard>جاپٲنؠ سٹینڈرڈ ٹایِم</standard>
+					<daylight>جاپٲنؠ ڑےلایِٔٹ ٹایِم</daylight>
 				</long>
 			</metazone>
 			<metazone type="Kamchatka">
@@ -2873,18 +3311,18 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</metazone>
 			<metazone type="Kazakhstan_Eastern">
 				<long>
-					<standard>مشرِقی کَزاکھِستان ٹایِم</standard>
+					<standard>مشرقی قازقستان ٹائم</standard>
 				</long>
 			</metazone>
 			<metazone type="Kazakhstan_Western">
 				<long>
-					<standard>مغرِبی کَزاکھِستان ٹایِم</standard>
+					<standard>مغربی قازقستان ٹائم</standard>
 				</long>
 			</metazone>
 			<metazone type="Korea">
 				<long>
 					<generic>کورِیا ٹایِم</generic>
-					<standard>کورِیا سٹینڑاڑ ٹایِم</standard>
+					<standard>کورِیا سٹینڈرڈ ٹایِم</standard>
 					<daylight>کورِیا ڑےلایِٔٹ ٹایِم</daylight>
 				</long>
 			</metazone>
@@ -2895,19 +3333,19 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</metazone>
 			<metazone type="Krasnoyarsk">
 				<long>
-					<generic>کرٮ۪سنوےیارسک ٹایِم</generic>
-					<standard>کرٮ۪سنوےیارسک سٹینڑاڑ ٹایِم</standard>
-					<daylight>کرٮ۪سنوےیارسک سَمَر ٹایِم</daylight>
+					<generic>کرؠسنوےیارسک ٹایِم</generic>
+					<standard>کرؠسنوےیارسک سٹینڈرڈ ٹایِم</standard>
+					<daylight>کرؠسنوےیارسک سَمَر ٹایِم</daylight>
 				</long>
 			</metazone>
 			<metazone type="Kyrgystan">
 				<long>
-					<standard>کِرگِستان ٹایِم</standard>
+					<standard>کرغزستان ٹائم</standard>
 				</long>
 			</metazone>
 			<metazone type="Lanka">
 				<long>
-					<standard>لَنٛکا ٹایِم</standard>
+					<standard>لَنکا ٹایِم</standard>
 				</long>
 			</metazone>
 			<metazone type="Line_Islands">
@@ -2932,7 +3370,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<metazone type="Magadan">
 				<long>
 					<generic>مَگَدَن ٹایِم</generic>
-					<standard>مَگَدَن سٹینڑاڑ ٹایِم</standard>
+					<standard>مَگَدَن سٹینڈرڈ ٹایِم</standard>
 					<daylight>مَگَدَن سَمَر ٹایِم</daylight>
 				</long>
 			</metazone>
@@ -2959,7 +3397,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<metazone type="Mauritius">
 				<long>
 					<generic>مورِشَس ٹایِم</generic>
-					<standard>مورِشَس سٹینڑاڑ ٹایِم</standard>
+					<standard>مورِشَس سٹینڈرڈ ٹایِم</standard>
 					<daylight>مورِشَس سَمَر ٹایِم</daylight>
 				</long>
 			</metazone>
@@ -2968,17 +3406,24 @@ For terms of use, see http://www.unicode.org/copyright.html
 					<standard>ماسَن ٹایِم</standard>
 				</long>
 			</metazone>
+			<metazone type="Mexico_Pacific">
+				<long>
+					<generic>میکسیکن پیسیفک ٹائم</generic>
+					<standard>میکسیکن پیسیفک سٹینڈرڈ ٹائم</standard>
+					<daylight>میکسیکن پیسیفک ڈے لائٹ ٹائم</daylight>
+				</long>
+			</metazone>
 			<metazone type="Mongolia">
 				<long>
-					<generic>مونگولِیا ٹایِم</generic>
-					<standard>مونگولِیا سٹینڑاڑ ٹایِم</standard>
-					<daylight>مونگولِیا سَمَر ٹایِم</daylight>
+					<generic>اولن باٹر ٹائم</generic>
+					<standard>اولن باٹر سٹینڈرڈ ٹائم</standard>
+					<daylight>اولن باٹر سَمَر ٹایِم</daylight>
 				</long>
 			</metazone>
 			<metazone type="Moscow">
 				<long>
 					<generic>ماسکَو ٹایِم</generic>
-					<standard>ماسکو سٹینڑاڑ ٹایِم</standard>
+					<standard>ماسکو سٹینڈرڈ ٹایِم</standard>
 					<daylight>ماسکو سَمَر ٹایِم</daylight>
 				</long>
 			</metazone>
@@ -2994,14 +3439,14 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</metazone>
 			<metazone type="Nepal">
 				<long>
-					<standard>نٮ۪پٲلۍ ٹایِم</standard>
+					<standard>نؠپٲلؠ ٹایِم</standard>
 				</long>
 			</metazone>
 			<metazone type="New_Caledonia">
 				<long>
-					<generic>نِو کیلٮ۪ڑونِیا ٹایِم</generic>
-					<standard>نِو کیلٮ۪ڑونِیا سٹینڑاڑ ٹایِم</standard>
-					<daylight>نِو کیلٮ۪ڑونِیس سَمَر ٹایِم</daylight>
+					<generic>نِو کیلؠڑونِیا ٹایِم</generic>
+					<standard>نِو کیلؠڑونِیا سٹینڑاڑ ٹایِم</standard>
+					<daylight>نِو کیلؠڑونِیس سَمَر ٹایِم</daylight>
 				</long>
 			</metazone>
 			<metazone type="New_Zealand">
@@ -3013,9 +3458,9 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</metazone>
 			<metazone type="Newfoundland">
 				<long>
-					<generic>نیوٗ فاونڑلینڑ ٹایِم</generic>
-					<standard>نیوٗ فاونڑلینڑ سٹینڑاڑ ٹایِم</standard>
-					<daylight>نیوٗ فاونڑ لینڑ ڑےلایِٔٹ ٹایِم</daylight>
+					<generic>نیو فاؤنڈ لینڈ ٹائم</generic>
+					<standard>نیو فاؤنڈ لینڈ سٹینڈرڈ ٹائم</standard>
+					<daylight>نیو فاؤنڈ لینڈ ڈے لائٹ ٹائم</daylight>
 				</long>
 			</metazone>
 			<metazone type="Niue">
@@ -3025,14 +3470,16 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</metazone>
 			<metazone type="Norfolk">
 				<long>
-					<standard>نورفعاک ٹایِم</standard>
+					<generic draft="contributed">نورفعاک ٹایِم</generic>
+					<standard draft="contributed">نورفعاک سٹینڑاڑ ٹایِم</standard>
+					<daylight draft="contributed">نورفعاک سَمَر ٹایِم</daylight>
 				</long>
 			</metazone>
 			<metazone type="Noronha">
 				<long>
-					<generic>نورونہا ٹایِم</generic>
-					<standard>نورونہا سٹینڑاڑ ٹایِم</standard>
-					<daylight>نورونہا سَمَر ٹایِم</daylight>
+					<generic>فرنینڈو ڈی نورونہا ٹائم</generic>
+					<standard>فرنینڈو ڈی نورونہا سٹینڈرڈ ٹائم</standard>
+					<daylight>فرنینڈو ڈی نورونہا سَمَر ٹائم</daylight>
 				</long>
 			</metazone>
 			<metazone type="North_Mariana">
@@ -3043,14 +3490,14 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<metazone type="Novosibirsk">
 				<long>
 					<generic>نۄوۄسِبٔرسک ٹایِم</generic>
-					<standard>نۄوۄسِبٔرسک سٹینڑاڑ ٹایِم</standard>
+					<standard>نۄوۄسِبٔرسک سٹینڈرڈ ٹایِم</standard>
 					<daylight>نۄوۄسِبٔرسک سَمَر ٹایِم</daylight>
 				</long>
 			</metazone>
 			<metazone type="Omsk">
 				<long>
 					<generic>اۄمسک ٹایِم</generic>
-					<standard>اۄمسک سٹینڑاڑ ٹایِم</standard>
+					<standard>اۄمسک سٹینڈرڈ ٹایِم</standard>
 					<daylight>اۄمسک سَمَر ٹایِم</daylight>
 				</long>
 			</metazone>
@@ -3068,20 +3515,20 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</metazone>
 			<metazone type="Papua_New_Guinea">
 				<long>
-					<standard>پاپُعا نیوٗ گٮ۪نی ٹایِم</standard>
+					<standard>پاپُعا نیوٗ گؠنی ٹایِم</standard>
 				</long>
 			</metazone>
 			<metazone type="Paraguay">
 				<long>
-					<generic>پیرٮ۪گوے ٹایِم</generic>
-					<standard>پیرٮ۪گوے سٹینڑاڑ ٹایِم</standard>
-					<daylight>پیرٮ۪گوے سَمَر ٹایِم</daylight>
+					<generic>پیرؠگوے ٹایِم</generic>
+					<standard>پیرؠگوے سٹینڈرڈ ٹایِم</standard>
+					<daylight>پیرؠگوے سَمَر ٹایِم</daylight>
 				</long>
 			</metazone>
 			<metazone type="Peru">
 				<long>
 					<generic>پٔروٗ ٹایِم</generic>
-					<standard>پٔروٗ سٹینڑاڑ ٹایِم</standard>
+					<standard>پٔروٗ سٹینڈرڈ ٹایِم</standard>
 					<daylight>پٔروٗ سَمَر ٹایِم</daylight>
 				</long>
 			</metazone>
@@ -3099,9 +3546,9 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</metazone>
 			<metazone type="Pierre_Miquelon">
 				<long>
-					<generic>سینٛٹ پَیری مِقیوٗلَن ٹایِم</generic>
-					<standard>سینٛٹ پَیری مِقیوٗلَن سٹینڑاڑ ٹایِم</standard>
-					<daylight>سینٛٹ پَیری مِقیوٗلَن ڑےلایِٔٹ ٹایِم</daylight>
+					<generic>سینٹ پَیری مِقیوٗلَن ٹایِم</generic>
+					<standard>سینٹ پَیری مِقیوٗلَن سٹینڑاڑ ٹایِم</standard>
+					<daylight>سینٹ پَیری مِقیوٗلَن ڑےلایِٔٹ ٹایِم</daylight>
 				</long>
 			</metazone>
 			<metazone type="Pitcairn">
@@ -3112,6 +3559,11 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<metazone type="Ponape">
 				<long>
 					<standard>پونیپ ٹایِم</standard>
+				</long>
+			</metazone>
+			<metazone type="Pyongyang">
+				<long>
+					<standard>یونگ یانگ ٹائم</standard>
 				</long>
 			</metazone>
 			<metazone type="Qyzylorda">
@@ -3128,43 +3580,43 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</metazone>
 			<metazone type="Rothera">
 				<long>
-					<standard>روتھٮ۪را ٹایِم</standard>
+					<standard>روتھؠرا ٹایِم</standard>
 				</long>
 			</metazone>
 			<metazone type="Sakhalin">
 				<long>
-					<generic>سَکھٮ۪لِن ٹایِم</generic>
-					<standard>سَکھٮ۪لِن سٹینڑاڑ ٹایِم</standard>
-					<daylight>سَکھٮ۪لِن سَمَر ٹایِم</daylight>
+					<generic>سَکھؠلِن ٹایِم</generic>
+					<standard>سَکھؠلِن سٹینڈرڈ ٹایِم</standard>
+					<daylight>سَکھؠلِن سَمَر ٹایِم</daylight>
 				</long>
 			</metazone>
 			<metazone type="Samara">
 				<long>
-					<generic>سمٮ۪را ٹایِم</generic>
-					<standard>سمٮ۪را سٹینڑاڑ ٹایِم</standard>
-					<daylight>سمٮ۪را سَمَر ٹایِم</daylight>
+					<generic>سمؠرا ٹایِم</generic>
+					<standard>سمؠرا سٹینڑاڑ ٹایِم</standard>
+					<daylight>سمؠرا سَمَر ٹایِم</daylight>
 				</long>
 			</metazone>
 			<metazone type="Samoa">
 				<long>
-					<generic>سٮ۪موآ ٹایِم</generic>
-					<standard>سٮ۪موآ سٹینڑاڑ ٹایِم</standard>
-					<daylight>سٮ۪موآ سَمَر ٹایِم</daylight>
+					<generic>سؠموآ ٹایِم</generic>
+					<standard>سؠموآ سٹینڑاڑ ٹایِم</standard>
+					<daylight>سؠموآ سَمَر ٹایِم</daylight>
 				</long>
 			</metazone>
 			<metazone type="Seychelles">
 				<long>
-					<standard>سیشٮ۪لٕز ٹایِم</standard>
+					<standard>سیشؠلٕز ٹایِم</standard>
 				</long>
 			</metazone>
 			<metazone type="Singapore">
 				<long>
-					<standard>سِنٛگاپوٗر ٹایِم</standard>
+					<standard>سِنگاپوٗر ٹایِم</standard>
 				</long>
 			</metazone>
 			<metazone type="Solomon">
 				<long>
-					<standard>سولومَن ججیٖرَن ہُنٛد ٹایِم</standard>
+					<standard>سولومَن ججیٖرَن ہُند ٹایِم</standard>
 				</long>
 			</metazone>
 			<metazone type="South_Georgia">
@@ -3187,21 +3639,28 @@ For terms of use, see http://www.unicode.org/copyright.html
 					<standard>ٹاہِٹی ٹایِم</standard>
 				</long>
 			</metazone>
+			<metazone type="Taipei">
+				<long>
+					<generic>ٹے پے ٹائم</generic>
+					<standard>ٹے پے سٹینڈرڈ ٹائم</standard>
+					<daylight>ٹے پے ڈے لائٹ ٹائم</daylight>
+				</long>
+			</metazone>
 			<metazone type="Tajikistan">
 				<long>
-					<standard>تازِکِستان ٹایِم</standard>
+					<standard>تاجکستان ٹائم</standard>
 				</long>
 			</metazone>
 			<metazone type="Tokelau">
 				<long>
-					<standard>ٹوکٮ۪لو ٹایِم</standard>
+					<standard>ٹوکؠلو ٹایِم</standard>
 				</long>
 			</metazone>
 			<metazone type="Tonga">
 				<long>
-					<generic>ٹعانٛگا ٹایِم</generic>
-					<standard>ٹعانٛگا سٹینڑاڑ ٹایِم</standard>
-					<daylight>ٹعانٛگا سَمَر ٹایِم</daylight>
+					<generic>ٹعانگا ٹایِم</generic>
+					<standard>ٹعانگا سٹینڑاڑ ٹایِم</standard>
+					<daylight>ٹعانگا سَمَر ٹایِم</daylight>
 				</long>
 			</metazone>
 			<metazone type="Truk">
@@ -3209,11 +3668,18 @@ For terms of use, see http://www.unicode.org/copyright.html
 					<standard>ٹٔرک ٹایِم</standard>
 				</long>
 			</metazone>
+			<metazone type="Turkey">
+				<long>
+					<generic>تُرکی ٹایِم</generic>
+					<standard>تُرکی سٹینڑاڑ ٹایِم</standard>
+					<daylight>تُرکی سَمَر ٹایِم</daylight>
+				</long>
+			</metazone>
 			<metazone type="Turkmenistan">
 				<long>
-					<generic>تُرکمٮ۪نِستان ٹایِم</generic>
-					<standard>تُرکمٮ۪نِستان سٹینڑاڑ ٹایِم</standard>
-					<daylight>تُرکمٮ۪نِستان سَمَر ٹایِم</daylight>
+					<generic>ترکمانستان ٹائم</generic>
+					<standard>ترکمانستان سٹینڈرڈ ٹائم</standard>
+					<daylight>تُرکمؠنِستان سَمَر ٹایِم</daylight>
 				</long>
 			</metazone>
 			<metazone type="Tuvalu">
@@ -3223,15 +3689,15 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</metazone>
 			<metazone type="Uruguay">
 				<long>
-					<generic>یوٗرٮ۪گوَے ٹایِم</generic>
-					<standard>یوٗرٮ۪گوَے سٹینڑاڑ ٹایِم</standard>
-					<daylight>یوٗرٮ۪گوَے سَمَر ٹایِم</daylight>
+					<generic>یوٗرؠگوَے ٹایِم</generic>
+					<standard>یوٗرؠگوَے سٹینڈرڈ ٹایِم</standard>
+					<daylight>یوٗرؠگوَے سَمَر ٹایِم</daylight>
 				</long>
 			</metazone>
 			<metazone type="Uzbekistan">
 				<long>
 					<generic>اُزبیکِستان ٹایِم</generic>
-					<standard>اُزبیکِستان سٹینڑاڑ ٹایِم</standard>
+					<standard>اُزبیکِستان سٹینڈرڈ ٹایِم</standard>
 					<daylight>اُزبیکِستانُک سَمَر ٹایِم</daylight>
 				</long>
 			</metazone>
@@ -3244,20 +3710,20 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</metazone>
 			<metazone type="Venezuela">
 				<long>
-					<standard>وٮ۪نٮ۪زیوٗلا ٹایِم</standard>
+					<standard>وؠنؠزیوٗلا ٹایِم</standard>
 				</long>
 			</metazone>
 			<metazone type="Vladivostok">
 				<long>
 					<generic>ولاڑِووسٹوک ٹایِم</generic>
-					<standard>ولاڑِووسٹوک سٹینڑاڑ ٹایِم</standard>
+					<standard>ولاڑِووسٹوک سٹینڈرڈ ٹایِم</standard>
 					<daylight>ولاڑِووسٹوک سَمَر ٹایِم</daylight>
 				</long>
 			</metazone>
 			<metazone type="Volgograd">
 				<long>
 					<generic>وولگوگریڑ ٹایِم</generic>
-					<standard>وولگوگریڑ سٹینڑاڑ ٹایِم</standard>
+					<standard>وولگوگریڑ سٹینڈرڈ ٹایِم</standard>
 					<daylight>وولگوگریڑ سَمَر ٹایِم</daylight>
 				</long>
 			</metazone>
@@ -3279,15 +3745,20 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<metazone type="Yakutsk">
 				<long>
 					<generic>یَکُٹسک ٹایِم</generic>
-					<standard>یَکُٹسک سٹینڑاڑ ٹایِم</standard>
+					<standard>یَکُٹسک سٹینڈرڈ ٹایِم</standard>
 					<daylight>یَکُٹُسک سَمَر ٹایِم</daylight>
 				</long>
 			</metazone>
 			<metazone type="Yekaterinburg">
 				<long>
-					<generic>یٮ۪کَٹٔرِنبٔرگ ٹایِم</generic>
-					<standard>یٮ۪کَٹٔرِنبٔرگ سٹینڑاڑ ٹایِم</standard>
-					<daylight>یٮ۪کَٹرِنبٔرگ سَمَر ٹایِم</daylight>
+					<generic>یؠکَٹٔرِنبٔرگ ٹایِم</generic>
+					<standard>یؠکَٹٔرِنبٔرگ سٹینڈرڈ ٹایِم</standard>
+					<daylight>یؠکَٹرِنبٔرگ سَمَر ٹایِم</daylight>
+				</long>
+			</metazone>
+			<metazone type="Yukon">
+				<long>
+					<standard>یوکون ٹائم</standard>
 				</long>
 			</metazone>
 		</timeZoneNames>
@@ -3297,49 +3768,25 @@ For terms of use, see http://www.unicode.org/copyright.html
 		<otherNumberingSystems>
 			<native>arabext</native>
 		</otherNumberingSystems>
-		<symbols numberSystem="latn">
-			<decimal>.</decimal>
-			<group>,</group>
-			<list>;</list>
-			<percentSign>%</percentSign>
-			<plusSign>‎+</plusSign> <!-- includes LRM before sign -->
-			<minusSign>‎-</minusSign> <!-- includes LRM before sign (002D) -->
-			<exponential>E</exponential>
-			<perMille>‰</perMille>
-			<infinity>?</infinity>
-			<nan>NaN</nan>
+		<symbols numberSystem="arabext">
+			<timeSeparator>:</timeSeparator>
 		</symbols>
-		<decimalFormats numberSystem="latn">
-			<decimalFormatLength>
-				<decimalFormat>
-					<pattern>#,##,##0.###</pattern>
-				</decimalFormat>
-			</decimalFormatLength>
-		</decimalFormats>
-		<scientificFormats numberSystem="latn">
-			<scientificFormatLength>
-				<scientificFormat>
-					<pattern>#E0</pattern>
-				</scientificFormat>
-			</scientificFormatLength>
-		</scientificFormats>
-		<percentFormats numberSystem="latn">
-			<percentFormatLength>
-				<percentFormat>
-					<pattern>#,##,##0%</pattern>
-				</percentFormat>
-			</percentFormatLength>
-		</percentFormats>
+		<symbols numberSystem="latn">
+			<group>،</group>
+		</symbols>
 		<currencyFormats numberSystem="latn">
 			<currencyFormatLength>
 				<currencyFormat type="standard">
-					<pattern>¤ #,##,##0.00</pattern>
+					<pattern>¤#,##0.00</pattern>
+					<pattern alt="alphaNextToNumber" draft="provisional">¤ #,##0.00</pattern>
 				</currencyFormat>
 			</currencyFormatLength>
+			<unitPattern count="one">{0} {1}</unitPattern>
+			<unitPattern count="other">{0} {1}</unitPattern>
 		</currencyFormats>
 		<currencies>
 			<currency type="ADP">
-				<displayName>اٮ۪ڑورَن پیسِٹا</displayName>
+				<displayName>اؠڑورَن پیسِٹا</displayName>
 			</currency>
 			<currency type="AED">
 				<displayName>مُتحدہ عرب اِمارات دِرہم</displayName>
@@ -3348,19 +3795,19 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>افغان افغٲنی</displayName>
 			</currency>
 			<currency type="ALL">
-				<displayName>اٮ۪لبینِیَن لِک</displayName>
+				<displayName>اؠلبینِیَن لِک</displayName>
 			</currency>
 			<currency type="AMD">
-				<displayName>اَرمانٮ۪ن ڈرٛٮ۪م</displayName>
+				<displayName>اَرمانؠن ڈرؠم</displayName>
 			</currency>
 			<currency type="ANG">
-				<displayName>نایدَرلینٛڑ اٮ۪نٹٕلیٖیَن گِلڑَر</displayName>
+				<displayName>نایدَرلینڑ اؠنٹٕلیٖیَن گِلڑَر</displayName>
 			</currency>
 			<currency type="AOA">
-				<displayName>اٮ۪نگولَن کوانزا</displayName>
+				<displayName>اؠنگولَن کوانزا</displayName>
 			</currency>
 			<currency type="AOR">
-				<displayName>اٮ۪نگولَن کوانٛزا رٮ۪جِسٹاڑو</displayName>
+				<displayName>اؠنگولَن کوانزا رؠجِسٹاڑو</displayName>
 			</currency>
 			<currency type="ARA">
 				<displayName>أرجَنٹیٖن اَسٹرل</displayName>
@@ -3369,7 +3816,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>أرجَنٹیٖن پِسو</displayName>
 			</currency>
 			<currency type="ATS">
-				<displayName>آسٹریَن شِلِنٛگ</displayName>
+				<displayName>آسٹریَن شِلِنگ</displayName>
 			</currency>
 			<currency type="AUD">
 				<displayName>آسٹریلِیَن ڈالَر</displayName>
@@ -3393,7 +3840,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>بَنگلادیٖشی ٹَکا</displayName>
 			</currency>
 			<currency type="BEF">
-				<displayName>بَلجِیَن فرینٛک</displayName>
+				<displayName>بَلجِیَن فرینک</displayName>
 			</currency>
 			<currency type="BGN">
 				<displayName>بیلگیرِیَن ہاڑ لِو</displayName>
@@ -3402,13 +3849,13 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>بحریٖنی دیٖنار</displayName>
 			</currency>
 			<currency type="BIF">
-				<displayName>بُرُنڑِین فرینٛک</displayName>
+				<displayName>بُرُنڑِین فرینک</displayName>
 			</currency>
 			<currency type="BMD">
 				<displayName>بٔرمیوٗڑَن ڈالَر</displayName>
 			</currency>
 			<currency type="BND">
-				<displayName>برٛونی ڈالَر</displayName>
+				<displayName>برونی ڈالَر</displayName>
 			</currency>
 			<currency type="BOB">
 				<displayName>بولِوِیَن بولوینو</displayName>
@@ -3420,28 +3867,30 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>بولوِیَن مَوڈال</displayName>
 			</currency>
 			<currency type="BRB">
-				<displayName>برٛازیٖلین کرٛوزِرو نووو</displayName>
+				<displayName>برازیٖلین کروزِرو نووو</displayName>
 			</currency>
 			<currency type="BRC">
-				<displayName>برٛازیٖلین کرٛوزیڑو</displayName>
+				<displayName>برازیٖلین کروزیڑو</displayName>
 			</currency>
 			<currency type="BRE">
-				<displayName>(برٛازیٖلین کرٛوزِرو</displayName>
+				<displayName>برازیٖلین کروزِرو</displayName>
 			</currency>
 			<currency type="BRL">
-				<displayName>برٛازیٖلین رِیَل</displayName>
+				<displayName>برازیٖلی رِیَل</displayName>
+				<displayName count="one">برازیٖلی رِیَل</displayName>
+				<displayName count="other">برازیٖلی رِیَلز</displayName>
 			</currency>
 			<currency type="BRN">
-				<displayName>برٛازیٖلین کرٛوزیڑو نووو</displayName>
+				<displayName>برازیٖلین کروزیڑو نووو</displayName>
 			</currency>
 			<currency type="BRR">
-				<displayName>برٛازیٖلین کرٛوزیرو</displayName>
+				<displayName>برازیٖلین کروزیرو</displayName>
 			</currency>
 			<currency type="BSD">
 				<displayName>بہامِیَن ڈالر</displayName>
 			</currency>
 			<currency type="BTN">
-				<displayName>بوٗٹینیٖز نگُلٹرٛم</displayName>
+				<displayName>بوٗٹینیٖز نگُلٹرم</displayName>
 			</currency>
 			<currency type="BUK">
 				<displayName>بٔرمیٖز کیٹ</displayName>
@@ -3452,8 +3901,11 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<currency type="BYB">
 				<displayName>بِلیروشِیَن نِو رِبٕل</displayName>
 			</currency>
-			<currency type="BYR">
+			<currency type="BYN">
 				<displayName>بِلیروشِیَن رِبٕل</displayName>
+			</currency>
+			<currency type="BYR">
+				<displayName>بِلیروشِیَن رِبٕل (۲۰۰۰–۲۰۱۶)</displayName>
 			</currency>
 			<currency type="BZD">
 				<displayName>بِلِزی ڈالر</displayName>
@@ -3462,7 +3914,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>کینَڑِیَن ڈالر</displayName>
 			</currency>
 			<currency type="CDF">
-				<displayName>کونٛگولیٖز فرٛیک</displayName>
+				<displayName>کونگولیٖز فریک</displayName>
 			</currency>
 			<currency type="CHE">
 				<displayName>وِر یوٗرو</displayName>
@@ -3471,7 +3923,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>سُوِز فریک</displayName>
 			</currency>
 			<currency type="CHW">
-				<displayName>وِر فرٛیک</displayName>
+				<displayName>وِر فریک</displayName>
 			</currency>
 			<currency type="CLF">
 				<displayName>چِلِن یوٗنِڑیدیٖز ڑِ فومیٹو</displayName>
@@ -3480,7 +3932,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>چِلِن پِسو</displayName>
 			</currency>
 			<currency type="CNY">
-				<displayName>چینیٖز یَن رِنمِنبی</displayName>
+				<displayName>چیٖنی یُوان</displayName>
 			</currency>
 			<currency type="COP">
 				<displayName>کولَمبِین پِسو</displayName>
@@ -3492,7 +3944,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>کوسٹا رِکَن کولَن</displayName>
 			</currency>
 			<currency type="CSD">
-				<displayName>پرٛون سٔربِین ڈالر</displayName>
+				<displayName>پرون سٔربِین ڈالر</displayName>
 			</currency>
 			<currency type="CSK">
 				<displayName>چِکوسولوواک ہاڑ کوروٗنا</displayName>
@@ -3513,16 +3965,16 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>جٔرمَن مارٕک</displayName>
 			</currency>
 			<currency type="DKK">
-				<displayName>ڈٔنِش کرٛون</displayName>
+				<displayName>ڈٔنِش کرون</displayName>
 			</currency>
 			<currency type="DOP">
 				<displayName>ڈومِنِکَن پِسو</displayName>
 			</currency>
 			<currency type="DZD">
-				<displayName>اٮ۪لجیرِیَن ڈیٖنار</displayName>
+				<displayName>اؠلجیرِیَن ڈیٖنار</displayName>
 			</currency>
 			<currency type="EEK">
-				<displayName>اٮ۪سٹونِیَن کرٛون</displayName>
+				<displayName>اؠسٹونِیَن کرون</displayName>
 			</currency>
 			<currency type="EGP">
 				<displayName>اِجِپٹِیَن پَوُنڑ</displayName>
@@ -3546,13 +3998,13 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>فِجین ڈالر</displayName>
 			</currency>
 			<currency type="FKP">
-				<displayName>فیکلینٛڑِس آیلینٛڑ پونٛڑ</displayName>
+				<displayName>فیکلینڑِس آیلینڑ پونڑ</displayName>
 			</currency>
 			<currency type="FRF">
-				<displayName>فرٛانسِسی فرٛیک</displayName>
+				<displayName>فرانسِسی فریک</displayName>
 			</currency>
 			<currency type="GBP">
-				<displayName>برطٲنوی پاونٛڑ سٹٔرلِنٛگ</displayName>
+				<displayName>برطٲنوی پوٗنڈ</displayName>
 			</currency>
 			<currency type="GEK">
 				<displayName>جارجِیَن کیوٗپَن لَرِٹ</displayName>
@@ -3561,46 +4013,46 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>جارجِیَن لاری</displayName>
 			</currency>
 			<currency type="GHC">
-				<displayName>گَنیٚیَن سٮ۪ڑی(۱۹۷۹–۲٠٠۷)</displayName>
+				<displayName>گَنییَن سؠڑی(۱۹۷۹–۲٠٠۷)</displayName>
 			</currency>
 			<currency type="GHS">
-				<displayName>گَنیٚیَن سٮ۪ڑی</displayName>
+				<displayName>گَنییَن سؠڑی</displayName>
 			</currency>
 			<currency type="GIP">
-				<displayName>گِبریلٹَر پَاونٛڑ</displayName>
+				<displayName>گِبریلٹَر پَاونڑ</displayName>
 			</currency>
 			<currency type="GMD">
 				<displayName>گیمبِیاہُک دلاسی</displayName>
 			</currency>
 			<currency type="GNF">
-				<displayName>گِنِیَن فرٛینٛک</displayName>
+				<displayName>گِنِیَن فرینک</displayName>
 			</currency>
 			<currency type="GNS">
 				<displayName>گِنِیَن سِلی</displayName>
 			</currency>
 			<currency type="GQE">
-				<displayName>اِکویٹورِیَل گِنِیَن اٮ۪کویٖل</displayName>
+				<displayName>اِکویٹورِیَل گِنِیَن اؠکویٖل</displayName>
 			</currency>
 			<currency type="GRD">
-				<displayName>گریٖسُک ڑرٛٮ۪کما</displayName>
+				<displayName>گریٖسُک ڑرؠکما</displayName>
 			</currency>
 			<currency type="GTQ">
 				<displayName>گواٹَمالَن قیوٗٹزَل</displayName>
 			</currency>
 			<currency type="GWE">
-				<displayName>پورتگیٖزُک گِنی اٮ۪سکیوٗڑو</displayName>
+				<displayName>پورتگیٖزُک گِنی اؠسکیوٗڑو</displayName>
 			</currency>
 			<currency type="GWP">
-				<displayName>گِنی بِساوُک پٮ۪سو</displayName>
+				<displayName>گِنی بِساوُک پؠسو</displayName>
 			</currency>
 			<currency type="GYD">
 				<displayName>گَیَنیٖزُک ڑالَر</displayName>
 			</currency>
 			<currency type="HKD">
-				<displayName>حانٛگ کانٛگُک ڑالَر</displayName>
+				<displayName>حانگ کانگُک ڑالَر</displayName>
 			</currency>
 			<currency type="HNL">
-				<displayName>حونڑورنُک لٮ۪مپیٖرا</displayName>
+				<displayName>حونڑورنُک لؠمپیٖرا</displayName>
 			</currency>
 			<currency type="HRD">
 				<displayName>کروایشنُک دیٖنار</displayName>
@@ -3612,22 +4064,22 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>حیشَنُک گوڑ</displayName>
 			</currency>
 			<currency type="HUF">
-				<displayName>حَنگیرِیَن فورِنٛٹ</displayName>
+				<displayName>حَنگیرِیَن فورِنٹ</displayName>
 			</currency>
 			<currency type="IDR">
 				<displayName>اِنڑونیشیاہُک رُپِیاہ</displayName>
 			</currency>
 			<currency type="IEP">
-				<displayName>اَیرلینڑُک پاونٛڑ</displayName>
+				<displayName>اَیرلینڑُک پاونڑ</displayName>
 			</currency>
 			<currency type="ILP">
-				<displayName>اِزرٲیِلی پاونٛڑ</displayName>
+				<displayName>اِزرٲیِلی پاونڑ</displayName>
 			</currency>
 			<currency type="ILS">
-				<displayName>اِزرٲیِلی نٔوۍ شٮ۪قٕل</displayName>
+				<displayName>اِزرٲیِلی نٔوؠ شؠقٕل</displayName>
 			</currency>
 			<currency type="INR">
-				<displayName>ہِندُستٲنۍ رۄپَے</displayName>
+				<displayName>ہِندُستٲنؠ رۄپَے</displayName>
 			</currency>
 			<currency type="IQD">
 				<displayName>ایٖراقُک دیٖنار</displayName>
@@ -3636,7 +4088,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>ایٖرانُک رِیال</displayName>
 			</currency>
 			<currency type="ISK">
-				<displayName>اَیسلینٛڑُک کرٛونا</displayName>
+				<displayName>اَیسلینڑُک کرونا</displayName>
 			</currency>
 			<currency type="ITL">
 				<displayName>اِٹلیٖ یُک لیٖرا</displayName>
@@ -3649,9 +4101,12 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</currency>
 			<currency type="JPY">
 				<displayName>جاپانُک یَن</displayName>
+				<displayName count="one">جاپٲن یَن</displayName>
+				<displayName count="other">جاپٲن یَن</displayName>
+				<symbol draft="contributed">¥</symbol>
 			</currency>
 			<currency type="KES">
-				<displayName>کٮ۪نیَن شِلِنٛگ</displayName>
+				<displayName>کؠنیَن شِلِنگ</displayName>
 			</currency>
 			<currency type="KGS">
 				<displayName>کِرگِستانُک سوم</displayName>
@@ -3660,7 +4115,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>کَمبوڑِیاہُک رِیال</displayName>
 			</currency>
 			<currency type="KMF">
-				<displayName>کومورِیَن فرٛینٛک</displayName>
+				<displayName>کومورِیَن فرینک</displayName>
 			</currency>
 			<currency type="KPW">
 				<displayName>جنوٗبی کورِیَن وَن</displayName>
@@ -3675,13 +4130,13 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>کیمین ججیٖرُک ڑالَر</displayName>
 			</currency>
 			<currency type="KZT">
-				<displayName>کزاکِستان ٹینٛج</displayName>
+				<displayName>کزاکِستان ٹینج</displayName>
 			</currency>
 			<currency type="LAK">
 				<displayName>لَوٹِیَن کِپ</displayName>
 			</currency>
 			<currency type="LBP">
-				<displayName>لیبنیٖزُک پاونٛڑ</displayName>
+				<displayName>لیبنیٖزُک پاونڑ</displayName>
 			</currency>
 			<currency type="LKR">
 				<displayName>سری لَنکاہٕچ رۄپَے</displayName>
@@ -3696,16 +4151,16 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>لِتھوینِیَن لِٹاس</displayName>
 			</currency>
 			<currency type="LTT">
-				<displayName>لِتھوینِیَن ٹٮ۪لوناس</displayName>
+				<displayName>لِتھوینِیَن ٹؠلوناس</displayName>
 			</currency>
 			<currency type="LUC">
-				<displayName>لَکزٕمبورگِیَن کَنؤرٹِبٕل فرٛینٛک</displayName>
+				<displayName>لَکزٕمبورگِیَن کَنؤرٹِبٕل فرینک</displayName>
 			</currency>
 			<currency type="LUF">
-				<displayName>لَکزٕمبورگِیَن فرٛینٛک</displayName>
+				<displayName>لَکزٕمبورگِیَن فرینک</displayName>
 			</currency>
 			<currency type="LUL">
-				<displayName>لَکزٕمبوگ فَینانشَل فرٛینٛک</displayName>
+				<displayName>لَکزٕمبوگ فَینانشَل فرینک</displayName>
 			</currency>
 			<currency type="LVL">
 				<displayName>لَتوِیَن لیٹس</displayName>
@@ -3720,22 +4175,22 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>موروکَن دِرہَم</displayName>
 			</currency>
 			<currency type="MAF">
-				<displayName>موروکَن فرٛینٛک</displayName>
+				<displayName>موروکَن فرینک</displayName>
 			</currency>
 			<currency type="MDL">
 				<displayName>مولڑووین لیوٗ</displayName>
 			</currency>
 			<currency type="MGA">
-				<displayName>مٮ۪لٮ۪گیسی اٮ۪ریَری</displayName>
+				<displayName>مؠلؠگیسی اؠریَری</displayName>
 			</currency>
 			<currency type="MGF">
-				<displayName>مٮ۪لٮ۪گیسی فرٛینٛک</displayName>
+				<displayName>مؠلؠگیسی فرینک</displayName>
 			</currency>
 			<currency type="MKD">
-				<displayName>مٮ۪کَڑونِیَن دیٖنار</displayName>
+				<displayName>مؠکَڑونِیَن دیٖنار</displayName>
 			</currency>
 			<currency type="MLF">
-				<displayName>میلِیَن فرٛینٛک</displayName>
+				<displayName>میلِیَن فرینک</displayName>
 			</currency>
 			<currency type="MMK">
 				<displayName>مِیانما کیاٹ</displayName>
@@ -3744,43 +4199,46 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>مۄنگولِیَن ٹُگرِک</displayName>
 			</currency>
 			<currency type="MOP">
-				<displayName>مٮ۪کانیٖز پَٹاکا</displayName>
+				<displayName>مؠکانیٖز پَٹاکا</displayName>
 			</currency>
 			<currency type="MRO">
+				<displayName>مورِٹینِیَن عوگیوٗیا (1973–2017)</displayName>
+			</currency>
+			<currency type="MRU">
 				<displayName>مورِٹینِیَن عوگیوٗیا</displayName>
 			</currency>
 			<currency type="MTL">
 				<displayName>مالٹیٖزُک لیٖرا</displayName>
 			</currency>
 			<currency type="MTP">
-				<displayName>مالٹیٖزُک پاونٛڑ</displayName>
+				<displayName>مالٹیٖزُک پاونڑ</displayName>
 			</currency>
 			<currency type="MUR">
-				<displayName>مورٮ۪شِیاہٕچ رۄپَے</displayName>
+				<displayName>مورؠشِیاہٕچ رۄپَے</displayName>
 			</currency>
 			<currency type="MVR">
 				<displayName>مالدِیٖوِیَن رُفِیا</displayName>
 			</currency>
 			<currency type="MWK">
-				<displayName>مٮ۪لیوِیَن کواچا</displayName>
+				<displayName>مؠلیوِیَن کواچا</displayName>
 			</currency>
 			<currency type="MXN">
-				<displayName>مٮ۪کسِکَن پٮ۪سو</displayName>
+				<displayName>مؠکسِکَن پؠسو</displayName>
 			</currency>
 			<currency type="MXP">
-				<displayName>مٮ۪کسِکَن سِلوَر پٮ۪سو (۱۸۶۱–۱۹۹۲)</displayName>
+				<displayName>مؠکسِکَن سِلوَر پؠسو (۱۸۶۱–۱۹۹۲)</displayName>
 			</currency>
 			<currency type="MYR">
-				<displayName>مَلیشِیَن رِنٛگِٹ</displayName>
+				<displayName>مَلیشِیَن رِنگِٹ</displayName>
 			</currency>
 			<currency type="MZE">
 				<displayName>موزیمبِکَن سکیوٗڑو</displayName>
 			</currency>
 			<currency type="MZM">
-				<displayName>پرٛون موزیمبِکَن مٮ۪ٹِکَل</displayName>
+				<displayName>پرون موزیمبِکَن مؠٹِکَل</displayName>
 			</currency>
 			<currency type="MZN">
-				<displayName>موزیمبِکَن مٮ۪ٹِکَل</displayName>
+				<displayName>موزیمبِکَن مؠٹِکَل</displayName>
 			</currency>
 			<currency type="NAD">
 				<displayName>نامِبِیَن ڑالَر</displayName>
@@ -3789,22 +4247,22 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>نَیجیرِیَن ڑالَر</displayName>
 			</currency>
 			<currency type="NIC">
-				<displayName>نِکٮ۪راگُوٮ۪ن کورڑوبا</displayName>
+				<displayName>نِکؠراگُوؠن کورڑوبا</displayName>
 			</currency>
 			<currency type="NIO">
-				<displayName>نِکٮ۪راگُوٮ۪ن کورڑوبا اورو</displayName>
+				<displayName>نِکؠراگُوؠن کورڑوبا اورو</displayName>
 			</currency>
 			<currency type="NLG">
 				<displayName>ڈَچ گِلڑَر</displayName>
 			</currency>
 			<currency type="NOK">
-				<displayName>نورویٚیِنُک کرٛون</displayName>
+				<displayName>نوروییِنُک کرون</displayName>
 			</currency>
 			<currency type="NPR">
 				<displayName>نیپالٕچ رۄپَے</displayName>
 			</currency>
 			<currency type="NZD">
-				<displayName>نِوزیٖلینٛڑُک ڑالَر</displayName>
+				<displayName>نِوزیٖلینڑُک ڑالَر</displayName>
 			</currency>
 			<currency type="OMR">
 				<displayName>اومِنی رِیال</displayName>
@@ -3813,22 +4271,22 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>پانامانِیَن بالبوز</displayName>
 			</currency>
 			<currency type="PEI">
-				<displayName>پٔریوٗوِیَن اِنٛٹی</displayName>
+				<displayName>پٔریوٗوِیَن اِنٹی</displayName>
 			</currency>
 			<currency type="PEN">
-				<displayName>پٔریوٗوِیَن نیوٗاوز سولٕز</displayName>
+				<displayName>پٔریوٗوِیَن سولٕز</displayName>
 			</currency>
 			<currency type="PES">
-				<displayName>پٔریوٗوِیَن سول</displayName>
+				<displayName>پٔریوٗوِیَن سول (۱۸۶۳–۱۹۶۵)</displayName>
 			</currency>
 			<currency type="PGK">
 				<displayName>نیوٗ پیپُعا گِنِیَن کیٖنا</displayName>
 			</currency>
 			<currency type="PHP">
-				<displayName>پھِلِپایِٔن پٮ۪سو</displayName>
+				<displayName>پھِلِپایِٔن پؠسو</displayName>
 			</currency>
 			<currency type="PKR">
-				<displayName>پاکِستٲنۍ رۄپَے</displayName>
+				<displayName>پاکِستٲنؠ رۄپَے</displayName>
 			</currency>
 			<currency type="PLN">
 				<displayName>پولِش زلوٹی</displayName>
@@ -3837,10 +4295,10 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>پولِش زلوٹی(۱۹۵٠–۱۹۹۵)</displayName>
 			</currency>
 			<currency type="PTE">
-				<displayName>پورتُگیٖز اٮ۪سکیوٗڑو</displayName>
+				<displayName>پورتُگیٖز اؠسکیوٗڑو</displayName>
 			</currency>
 			<currency type="PYG">
-				<displayName>پٮ۪رٮ۪گیوٗوَیَن گُعارانی</displayName>
+				<displayName>پؠرؠگیوٗوَیَن گُعارانی</displayName>
 			</currency>
 			<currency type="QAR">
 				<displayName>قطاری رِیال</displayName>
@@ -3849,22 +4307,24 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>رھوڑیشِیَن ڑالَر</displayName>
 			</currency>
 			<currency type="ROL">
-				<displayName>اولڑ رومانِیَن لٮ۪یوٗ</displayName>
+				<displayName>اولڑ رومانِیَن لؠیوٗ</displayName>
 			</currency>
 			<currency type="RON">
-				<displayName>رومانِیَن لٮ۪یوٗ</displayName>
+				<displayName>رومانِیَن لؠیوٗ</displayName>
 			</currency>
 			<currency type="RSD">
 				<displayName>سٔربِیَن دیٖنار</displayName>
 			</currency>
 			<currency type="RUB">
-				<displayName>رٔشیَن رَبٕل</displayName>
+				<displayName>روٗسی رَبٕل</displayName>
+				<displayName count="one">روٗسی رَبٕل</displayName>
+				<displayName count="other">روٗسی رَبٕلز</displayName>
 			</currency>
 			<currency type="RUR">
 				<displayName>رٔشیَن رَبٕل(۱۹۹۱–۱۹۹۸)</displayName>
 			</currency>
 			<currency type="RWF">
-				<displayName>روانٛڑَن فرانٛک</displayName>
+				<displayName>روانڑَن فرانک</displayName>
 			</currency>
 			<currency type="SAR">
 				<displayName>سودیٖیُک رِیال</displayName>
@@ -3876,10 +4336,10 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>پرون سوٗڈانُک دیٖنار</displayName>
 			</currency>
 			<currency type="SDG">
-				<displayName>سوٗڈانُک پونٛڈ</displayName>
+				<displayName>سوٗڈانُک پونڈ</displayName>
 			</currency>
 			<currency type="SDP">
-				<displayName>پرون سوٗڈانُک پونٛڈ</displayName>
+				<displayName>پرون سوٗڈانُک پونڈ</displayName>
 			</currency>
 			<currency type="SEK">
 				<displayName>سویٖڈِش کَرونا</displayName>
@@ -3888,7 +4348,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>سِنگاپورُک ڈالَر</displayName>
 			</currency>
 			<currency type="SHP">
-				<displayName>سینٹ ہیلِنا پونٛڈ</displayName>
+				<displayName>سینٹ ہیلِنا پونڈ</displayName>
 			</currency>
 			<currency type="SIT">
 				<displayName>سلووینُک ٹولَر</displayName>
@@ -3897,7 +4357,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>سلووَک کَرونا</displayName>
 			</currency>
 			<currency type="SOS">
-				<displayName>سومالی شِلِنٛگ</displayName>
+				<displayName>سومالی شِلِنگ</displayName>
 			</currency>
 			<currency type="SRD">
 				<displayName>سُریٖنامُک ڈالَر</displayName>
@@ -3912,10 +4372,10 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>سَلویدَرُک کولَن</displayName>
 			</currency>
 			<currency type="SYP">
-				<displayName>سیٖریاہُک پونٛڈ</displayName>
+				<displayName>سیٖریاہُک پونڈ</displayName>
 			</currency>
 			<currency type="SZL">
-				<displayName>سوازی لِلَنگیٚنی</displayName>
+				<displayName>سوازی لِلَنگینی</displayName>
 			</currency>
 			<currency type="THB">
 				<displayName>تھایھک بات</displayName>
@@ -3933,10 +4393,10 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>ٹُنیشیاہُک دیٖنار</displayName>
 			</currency>
 			<currency type="TOP">
-				<displayName>ٹونگَن پانٛگا</displayName>
+				<displayName>ٹونگَن پانگا</displayName>
 			</currency>
 			<currency type="TPE">
-				<displayName>ٹیموریٚسو ایٚکیٖڈو</displayName>
+				<displayName>ٹیموریسو ایکیٖڈو</displayName>
 			</currency>
 			<currency type="TRL">
 				<displayName>پرون تُرکِش لیرا</displayName>
@@ -3948,10 +4408,10 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>ٹرِنہِ ڈیڈ تہٕ ٹوبیگو ڈالَر</displayName>
 			</currency>
 			<currency type="TWD">
-				<displayName>نوٚو تیوانُک ڈالَر</displayName>
+				<displayName>نۆو تیوانُک ڈالَر</displayName>
 			</currency>
 			<currency type="TZS">
-				<displayName>تَنزانیاہُک شِلِنٛگ</displayName>
+				<displayName>تَنزانیاہُک شِلِنگ</displayName>
 			</currency>
 			<currency type="UAH">
 				<displayName>یوٗکرینیاہُک ہرِوِنیا</displayName>
@@ -3960,28 +4420,31 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>یوٗکرینیاہُک کاربووَنیٹس</displayName>
 			</currency>
 			<currency type="UGS">
-				<displayName>اُگاداہُک شِلِنٛگ(۱۹۶۶–۱۹۸۷)</displayName>
+				<displayName>اُگاداہُک شِلِنگ(۱۹۶۶–۱۹۸۷)</displayName>
 			</currency>
 			<currency type="UGX">
-				<displayName>اُگاداہُک شِلِنٛگ</displayName>
+				<displayName>اُگاداہُک شِلِنگ</displayName>
 			</currency>
 			<currency type="USD">
-				<displayName>یوٗ ایٚس ڈالَر</displayName>
+				<displayName>US ڈالر</displayName>
+				<displayName count="one">US ڈالر</displayName>
+				<displayName count="other">US ڈالرس</displayName>
+				<symbol draft="contributed">$</symbol>
 			</currency>
 			<currency type="USN">
-				<displayName>یوٗ ایٚس ڈالَر(پَگاہ)</displayName>
+				<displayName>یوٗ ایس ڈالَر(پَگاہ)</displayName>
 			</currency>
 			<currency type="USS">
-				<displayName>یوٗ ایٚس ڈالَر(تَمی دًۄہ)</displayName>
+				<displayName>یوٗ ایس ڈالَر(تَمی دًۄہ)</displayName>
 			</currency>
 			<currency type="UYI">
-				<displayName>اُرگایَن پیٚسو یوٗنِڈیڈَس اِنڈیٚکسَس</displayName>
+				<displayName>اُرگایَن پیسو یوٗنِڈیڈَس اِنڈیکسَس</displayName>
 			</currency>
 			<currency type="UYP">
-				<displayName>اُرگایَن پیٚسو(۱۹۷۵–۱۹۹۳)</displayName>
+				<displayName>اُرگایَن پیسو(۱۹۷۵–۱۹۹۳)</displayName>
 			</currency>
 			<currency type="UYU">
-				<displayName>اُروٗگایَن پیٚسو</displayName>
+				<displayName>اُروٗگایَن پیسو</displayName>
 			</currency>
 			<currency type="UZS">
 				<displayName>اُبیکِستان سوم</displayName>
@@ -3990,10 +4453,13 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>وینٕزوٗلیُک بولِوَر (۱۸۷۱–۲۰۰۸)</displayName>
 			</currency>
 			<currency type="VEF">
+				<displayName>وینٕزوٗلیُک بولِوَر (2008–2018)</displayName>
+			</currency>
+			<currency type="VES">
 				<displayName>وینٕزوٗلیُک بولِوَر</displayName>
 			</currency>
 			<currency type="VND">
-				<displayName>وِیَنَمُک ڈانٛگ</displayName>
+				<displayName>وِیَنَمُک ڈانگ</displayName>
 			</currency>
 			<currency type="VUV">
 				<displayName>وَنوٗاَتوٗ وَتوٗ</displayName>
@@ -4002,7 +4468,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>سَمون تَلا</displayName>
 			</currency>
 			<currency type="XAF">
-				<displayName>سی ایٚف اے فرینک بی ایٖ اے سی</displayName>
+				<displayName>سی ایف اے فرینک بی ایٖ اے سی</displayName>
 			</currency>
 			<currency type="XAG">
 				<displayName>رۄپھ</displayName>
@@ -4017,46 +4483,48 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>یوٗرپی مونِٹَری یوٗنِٹ</displayName>
 			</currency>
 			<currency type="XBC">
-				<displayName>یوٗرپی یوٗنِٹ آف ایٚکاوُنٛٹ (ایکس بی سی)</displayName>
+				<displayName>یوٗرپی یوٗنِٹ آف ایکاوُنٹ (ایکس بی سی)</displayName>
 			</currency>
 			<currency type="XBD">
-				<displayName>یوٗرپی یوٗنِٹ آف ایٚکاوُنٛٹ (ایکس بی ڈی)</displayName>
+				<displayName>یوٗرپی یوٗنِٹ آف ایکاوُنٹ (ایکس بی ڈی)</displayName>
 			</currency>
 			<currency type="XCD">
 				<displayName>مَشرِقی کیرِبِیَن ڈالَر</displayName>
 			</currency>
 			<currency type="XDR">
-				<displayName>خاص ڈرایِنٛگ رایٹس</displayName>
+				<displayName>خاص ڈرایِنگ رایٹس</displayName>
 			</currency>
 			<currency type="XEU">
 				<displayName>یوٗرپی کَرَنسی یوٗنِٹ</displayName>
 			</currency>
 			<currency type="XFO">
-				<displayName>فریٚنچ گولڈ فرینک</displayName>
+				<displayName>فرینچ گولڈ فرینک</displayName>
 			</currency>
 			<currency type="XFU">
-				<displayName>فریٛنچ یوٗ اے سی فرینک</displayName>
+				<displayName>فرینچ یوٗ اے سی فرینک</displayName>
 			</currency>
 			<currency type="XOF">
-				<displayName>سی ایٚف اے فرینک بی سی ایٖ اے او</displayName>
+				<displayName>سی ایف اے فرینک بی سی ایٖ اے او</displayName>
 			</currency>
 			<currency type="XPD">
 				<displayName>پُلیڈیَم</displayName>
 			</currency>
 			<currency type="XPF">
-				<displayName>سی ایٚف پی فرینک</displayName>
+				<displayName>سی ایف پی فرینک</displayName>
 			</currency>
 			<currency type="XPT">
 				<displayName>پلیٹِنَم</displayName>
 			</currency>
 			<currency type="XRE">
-				<displayName>آر آے ایٚن ایٖ ٹی فَنٛڈ</displayName>
+				<displayName>آر آے این ایٖ ٹی فَنڈ</displayName>
 			</currency>
 			<currency type="XTS">
-				<displayName>ٹیٚسٹِنٛگ کَرَنسی کوڈ</displayName>
+				<displayName>ٹیسٹِنگ کَرَنسی کوڈ</displayName>
 			</currency>
 			<currency type="XXX">
-				<displayName>اَنزٲنۍ یا نالَگہٕ ہار سِکہٕ</displayName>
+				<displayName>نامولوٗم کرنسی</displayName>
+				<displayName count="one">﴿کرنسی ہُنٛد نامولوٗم سِکٕہ﴾</displayName>
+				<displayName count="other">﴿نانولوٗم کرنسی﴾</displayName>
 			</currency>
 			<currency type="YDD">
 				<displayName>یَمنُک دیٖنار</displayName>
@@ -4092,44 +4560,97 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>زِمبابِیُک ڈالَر</displayName>
 			</currency>
 		</currencies>
+		<minimalPairs>
+			<pluralMinimalPairs count="one" draft="contributed">{0} دۅہ</pluralMinimalPairs>
+			<pluralMinimalPairs count="other" draft="contributed">{0} دوہٕ</pluralMinimalPairs>
+			<ordinalMinimalPairs ordinal="other">{0}th دیچھُن گٔژھیو</ordinalMinimalPairs>
+		</minimalPairs>
 	</numbers>
 	<units>
 		<unitLength type="long">
+			<unit type="duration-year">
+				<unitPattern count="one">{0} ؤری</unitPattern>
+				<unitPattern count="other">{0} ؤری</unitPattern>
+			</unit>
+			<unit type="duration-month">
+				<unitPattern count="one">{0} ریتھ</unitPattern>
+				<unitPattern count="other">{0} ریتھ</unitPattern>
+			</unit>
+			<unit type="duration-week">
+				<unitPattern count="one">{0} ہَفتہٕ</unitPattern>
+				<unitPattern count="other">{0} ہَفتہٕ</unitPattern>
+			</unit>
 			<unit type="duration-day">
 				<unitPattern count="one">{0} دۄہ</unitPattern>
 				<unitPattern count="other">{0} دۄہ</unitPattern>
 			</unit>
 			<unit type="duration-hour">
 				<unitPattern count="one">{0} گَنٹہٕ</unitPattern>
-				<unitPattern count="other">{0} گٲنٛٹہٕ</unitPattern>
+				<unitPattern count="other">{0} گٲنٹہٕ</unitPattern>
 			</unit>
 			<unit type="duration-minute">
 				<unitPattern count="one">{0} مِنَٹ</unitPattern>
 				<unitPattern count="other">{0} مِنَٹ</unitPattern>
 			</unit>
-			<unit type="duration-month">
-				<unitPattern count="one">{0} ریٚتھ</unitPattern>
-				<unitPattern count="other">{0} ریٚتھ</unitPattern>
-			</unit>
 			<unit type="duration-second">
-				<unitPattern count="one">{0} سیٚکَنٛڈ</unitPattern>
-				<unitPattern count="other">{0} سیٚکَنٛڈ</unitPattern>
+				<unitPattern count="one">{0} سیکَنڈ</unitPattern>
+				<unitPattern count="other">{0} سیکَنڈ</unitPattern>
+			</unit>
+			<unit type="length-kilometer">
+				<displayName draft="unconfirmed">کِلومیٖٹر</displayName>
+				<perUnitPattern draft="unconfirmed">{0} فی کِلومیٖٹر</perUnitPattern>
+			</unit>
+			<unit type="length-meter">
+				<displayName draft="unconfirmed">میٖٹَر</displayName>
+			</unit>
+			<unit type="length-centimeter">
+				<displayName draft="unconfirmed">سؠنٹی میٖٹَر</displayName>
+			</unit>
+		</unitLength>
+		<unitLength type="short">
+			<unit type="duration-year">
+				<displayName draft="provisional">ؤری</displayName>
+			</unit>
+			<unit type="duration-month">
+				<displayName draft="provisional">ریتھ</displayName>
 			</unit>
 			<unit type="duration-week">
-				<unitPattern count="one">{0} ہَفتہٕ</unitPattern>
-				<unitPattern count="other">{0} ہَفتہٕ</unitPattern>
+				<displayName draft="provisional">ہَفتہٕ</displayName>
 			</unit>
-			<unit type="duration-year">
-				<unitPattern count="one">{0} ؤری</unitPattern>
-				<unitPattern count="other">{0} ؤری</unitPattern>
+			<unit type="duration-day">
+				<displayName draft="provisional">دۄہ</displayName>
+			</unit>
+			<unit type="duration-hour">
+				<displayName draft="provisional">گٲنٹہٕ</displayName>
+			</unit>
+			<unit type="duration-minute">
+				<displayName draft="provisional">مِنَٹ</displayName>
+			</unit>
+			<unit type="duration-second">
+				<displayName draft="provisional">سیکَنڈ</displayName>
+			</unit>
+			<unit type="length-kilometer">
+				<displayName draft="unconfirmed">کلومیٹر</displayName>
+				<perUnitPattern draft="unconfirmed">{0}/کِلومیٖٹر</perUnitPattern>
 			</unit>
 		</unitLength>
 	</units>
+	<listPatterns>
+		<listPattern>
+			<listPatternPart type="start">{0}، {1}</listPatternPart>
+			<listPatternPart type="middle">{0}، {1}</listPatternPart>
+			<listPatternPart type="end">{0}، تٕہ {1}</listPatternPart>
+			<listPatternPart type="2">{0} تٕہ {1}</listPatternPart>
+		</listPattern>
+	</listPatterns>
 	<posix>
 		<messages>
-			<yesstr>اۭں</yesstr>
+			<yesstr>آ</yesstr>
 			<nostr>نَہ</nostr>
 		</messages>
 	</posix>
+	<personNames>
+		<nameOrderLocales order="givenFirst">und ks</nameOrderLocales>
+		<nameOrderLocales order="surnameFirst">ko si ta te vi yue zh</nameOrderLocales>
+	</personNames>
 </ldml>
-

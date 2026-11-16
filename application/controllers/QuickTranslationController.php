@@ -1,6 +1,7 @@
 <?php
 
 use Anper\Iuliia\Iuliia;
+use LimeSurvey\Models\Services\QuickTranslation;
 
 class QuickTranslationController extends LSBaseController
 {
@@ -60,7 +61,7 @@ class QuickTranslationController extends LSBaseController
     public function actionIndex($surveyid)
     {
         /* existing + read (survey) already checked in SurveyCommonAction : existing use model : then if surveyid is not valid : return a 404 */
-        /* survey : read OK, not survey:tranlations:read … */
+        /* survey : read OK, not survey:translations:read … */
         if (!Permission::model()->hasSurveyPermission($surveyid, 'translations', 'read')) {
             throw new CHttpException(401, "401 Unauthorized");
         }
@@ -118,8 +119,12 @@ class QuickTranslationController extends LSBaseController
             // Only save if the administration user has the correct permission
             //todo: this is only necessary on save ...
             if ($actionvalue == "translateSave" && Permission::model()->hasSurveyPermission($surveyid, 'translations', 'update')) {
-                $this->translateSave($languageToTranslate, $quickTranslation, $surveyid);
-                Yii::app()->setFlashMessage(gT("Saved"), 'success');
+                $failedCount = $this->translateSave($languageToTranslate, $quickTranslation, $surveyid);
+                if ($failedCount > 0) {
+                    Yii::app()->setFlashMessage(ngT("{n} translation could not be saved.|{n} translations could not be saved.", $failedCount), 'error');
+                } else {
+                    Yii::app()->setFlashMessage(gT("Saved"), 'success');
+                }
             }
 
             $tolangdesc = $supportedLanguages[$languageToTranslate]['description'];
@@ -160,12 +165,12 @@ class QuickTranslationController extends LSBaseController
     }
 
     /**
-     * @param $survey Survey the survey object
-     * @param $tolang
-     * @param $baselang
-     * @param $quickTranslation \LimeSurvey\Models\Services\QuickTranslation the quicktranslation object
-     * @param $surveyid
-     * @return void
+     * Saves the posted translations.
+     *
+     * @param string $tolang the language to save the translations for
+     * @param \LimeSurvey\Models\Services\QuickTranslation $quickTranslation the quicktranslation object
+     * @param int $surveyid the survey ID
+     * @return int number of translations that could not be saved (e.g. refused by the validation)
      */
     private function translateSave($tolang, $quickTranslation, $surveyid)
     {
@@ -182,7 +187,8 @@ class QuickTranslationController extends LSBaseController
             }
         }
 
-        $updateOccured = false;
+        $updateOccurred = false;
+        $failedCount = 0;
         foreach ($tab_names_full as $type) {
             $size = (int) Yii::app()->getRequest()->getPost("{$type}_size"); //todo: what is size here?
             // start a loop in order to update each record
@@ -198,21 +204,25 @@ class QuickTranslationController extends LSBaseController
                         $qidOrGid = Yii::app()->getRequest()->getPost("{$type}_id1_{$i}");
                         $answerCode = Yii::app()->getRequest()->getPost("{$type}_id2_{$i}");
                         $iScaleID = Yii::app()->getRequest()->getPost("{$type}_scaleid_{$i}");
-                        $quickTranslation->updateTranslations($type, $tolang, $new, $qidOrGid, $answerCode, $iScaleID);
-                        $updateOccured = true;
+                        if ($quickTranslation->updateTranslations($type, $tolang, $new, $qidOrGid, $answerCode, $iScaleID)) {
+                            $updateOccurred = true;
+                        } else {
+                            $failedCount++;
+                        }
                     }
                 }
                 $i++;
             } // end while
         } // end foreach
 
-        if ($updateOccured) {
+        if ($updateOccurred) {
             $survey = Survey::model()->findByPk($surveyid);
             if ($survey) {
                 $surveyDetailService = new \LimeSurvey\Models\Services\SurveyDetailService();
                 $surveyDetailService->updateSurveyLastModified($survey);
             }
         }
+        return $failedCount;
     }
 
     /**
@@ -267,6 +277,7 @@ class QuickTranslationController extends LSBaseController
                 $associatedData = $quickTranslation->setupTranslateFields($associatedName);
             }
             $singleTabData['type'] = $tabName;
+            $singleTabData['tabTitle'] = $translateFieldOptions['description'];
             //always set first tab active
             $singleTabData['activeTab'] = $tabName === 'title';
 
@@ -446,7 +457,7 @@ class QuickTranslationController extends LSBaseController
     public function actionAjaxtranslategoogleapi($surveyid)
     {
         // Ensure YII_CSRF_TOKEN, we are in admin, then only user with admin right can post
-        /* No Permission check on survey, seems unneded (return a josn with current string posted */
+        /* No Permission check on survey, seems unneeded (return a josn with current string posted */
 
         //todo: check if googletranslate is activated ...
         if (!Permission::model()->hasSurveyPermission($surveyid, 'translations', 'read')) {
@@ -458,9 +469,10 @@ class QuickTranslationController extends LSBaseController
     }
 
     /**
-     * translateGoogleApi.php
-     * Creates a JSON interface for the auto-translate feature
+     * Translates the posted text (HTML with expressions) with the Google Translate API
+     * for the auto-translate feature.
      *
+     * @return string JSON with the translated text in 'converted', or an error message in 'error'
      * @psalm-suppress UndefinedClass TODO: Dead code?
      * @psalm-suppress MissingFile
      */
@@ -477,26 +489,23 @@ class QuickTranslationController extends LSBaseController
         $errorMessageText = false;
         $sOutput = '';
         try {
-            $gtranslate = new \GoogleTranslate\Client($translateApiKey);
-            // use curl because http with fopen is disabled
-            $parts = LimeExpressionManager::SplitStringOnExpressions($sToconvert);
-
-            $sparts = array();
-            foreach ($parts as $part) {
-                if ($part[2] == 'EXPRESSION') {
-                    $sparts[] = $part[0];
+            // Translate the whole text in one request so its HTML tags stay balanced, with markers for expressions
+            $protected = QuickTranslation::protectExpressions($sToconvert);
+            if (!$protected['hasText']) {
+                $sOutput = $sToconvert;
+            } else {
+                $gtranslate = new \GoogleTranslate\Client($translateApiKey);
+                $translated = $gtranslate->translate($protected['text'], $destinationLanguage, $sourceLanguage);
+                if ($destinationLanguage == 'sr-Latn') {
+                    $translated = Iuliia::translate($translated, Iuliia::TELEGRAM);
+                }
+                $restored = QuickTranslation::restoreExpressions($translated, $protected['expressions']);
+                if ($restored === null) {
+                    $errorMessageText = gT("The translation service did not keep all expressions of this text, so it was not translated.");
                 } else {
-                    $convertedPart = $gtranslate->translate($part[0], $destinationLanguage, $sourceLanguage);
-
-                    $convertedPart  = str_replace("<br>", "\r\n", $convertedPart);
-                    $convertedPart  = html_entity_decode(stripcslashes($convertedPart));
-                    if ($destinationLanguage == 'sr-Latn') {
-                        $convertedPart = Iuliia::translate($convertedPart, Iuliia::TELEGRAM);
-                    }
-                    $sparts[] = $convertedPart;
+                    $sOutput = $restored;
                 }
             }
-            $sOutput = implode(' ', $sparts);
         } catch (\Exception $ge) {
             // Get the error message and remove the key for security reasons
             $errorMessage = $ge->getMessage();

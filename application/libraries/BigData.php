@@ -6,9 +6,6 @@
      */
 class BigData
 {
-
-
-
     /**
      * This function combines json_encode and echo.
      * If a stream is passed (or is part of the array) it's content will be
@@ -138,9 +135,17 @@ class BigData
     }
     /**
      * This function encodes PHP data to an XMLRPC response.
+     * A stdClass is encoded like the array it was made of: The API returns some
+     * code keyed maps as stdClass only to keep them a JSON object.
+     *
+     * @param mixed $data
+     * @return void
      */
     public static function xmlrpc_echo($data)
     {
+        if ($data instanceof stdClass) {
+            $data = (array) $data;
+        }
         if (self::isStream($data)) {
             self::xmlrpc_echo_stream($data);
         } elseif ((is_array($data) && self::isAssociative($data)) || is_object($data)) {
@@ -213,7 +218,6 @@ class BigData
 
 class BigFile
 {
-
     public $fileName;
     protected $deleteAfterUse;
     protected $defaultEcho;

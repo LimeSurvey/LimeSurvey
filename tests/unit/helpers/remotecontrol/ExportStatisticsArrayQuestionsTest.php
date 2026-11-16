@@ -1,11 +1,13 @@
 <?php
 
-namespace ls\tests;
+namespace ls\tests\unit\helpers\remotecontrol;
+
+use ls\tests\DummyController;
 
 /**
  * Tests for the LimeSurvey remote API.
  */
-class RemoteControlExportStatisticsArrayQuestionsTest extends BaseTest
+class ExportStatisticsArrayQuestionsTest extends BaseTest
 {
     public static function setUpBeforeClass(): void
     {
@@ -45,48 +47,42 @@ class RemoteControlExportStatisticsArrayQuestionsTest extends BaseTest
         $this->assertSame($questionData[2][2], '30.00%', 'The Percentage is incorrect for this option.');
 
         // Not completed row.
-        $this->assertSame($questionData[3][0], 'Not completed or Not displayed', 'The Answer text is incorrect for this option.');
+        $this->assertSame($questionData[3][0], 'Not completed or not displayed', 'The Answer text is incorrect for this option.');
         $this->assertSame($questionData[3][1], '0', 'The Count is incorrect for this option.');
         $this->assertSame($questionData[3][2], '0.00%', 'The Percentage is incorrect for this option.');
 
-        // A row is left empty.
-        $this->assertEmpty($questionData[4], 'This row should be empty.');
-
         // Total row.
-        $this->assertSame($questionData[5][0], 'Total(gross)', 'The Answer text is incorrect for this option.');
-        $this->assertSame($questionData[5][1], '10', 'The Count is incorrect for this option.');
-        $this->assertSame($questionData[5][2], '100.00%', 'The Percentage is incorrect for this option.');
+        $this->assertSame($questionData[4][0], 'Total(gross)', 'The Answer text is incorrect for this option.');
+        $this->assertSame($questionData[4][1], '10', 'The Count is incorrect for this option.');
+        $this->assertSame($questionData[4][2], '100.00%', 'The Percentage is incorrect for this option.');
 
 
         // Subquestion two
 
         // Option one row.
-        $this->assertSame($questionData[6][0], 'Option one (AO01)', 'The Answer text is incorrect for this option.');
-        $this->assertSame($questionData[6][1], '4', 'The Count is incorrect for this option.');
-        $this->assertSame($questionData[6][2], '40.00%', 'The Percentage is incorrect for this option.');
+        $this->assertSame($questionData[5][0], 'Option one (AO01)', 'The Answer text is incorrect for this option.');
+        $this->assertSame($questionData[5][1], '4', 'The Count is incorrect for this option.');
+        $this->assertSame($questionData[5][2], '40.00%', 'The Percentage is incorrect for this option.');
 
         // Option two row.
-        $this->assertSame($questionData[7][0], 'Option two (AO02)', 'The Answer text is incorrect for this option.');
+        $this->assertSame($questionData[6][0], 'Option two (AO02)', 'The Answer text is incorrect for this option.');
+        $this->assertSame($questionData[6][1], '3', 'The Count is incorrect for this option.');
+        $this->assertSame($questionData[6][2], '30.00%', 'The Percentage is incorrect for this option.');
+
+        // No answer row.
+        $this->assertSame($questionData[7][0], 'No answer', 'The Answer text is incorrect for this option.');
         $this->assertSame($questionData[7][1], '3', 'The Count is incorrect for this option.');
         $this->assertSame($questionData[7][2], '30.00%', 'The Percentage is incorrect for this option.');
 
-        // No answer row.
-        $this->assertSame($questionData[8][0], 'No answer', 'The Answer text is incorrect for this option.');
-        $this->assertSame($questionData[8][1], '3', 'The Count is incorrect for this option.');
-        $this->assertSame($questionData[8][2], '30.00%', 'The Percentage is incorrect for this option.');
-
         // Not completed row.
-        $this->assertSame($questionData[9][0], 'Not completed or Not displayed', 'The Answer text is incorrect for this option.');
-        $this->assertSame($questionData[9][1], '0', 'The Count is incorrect for this option.');
-        $this->assertSame($questionData[9][2], '0.00%', 'The Percentage is incorrect for this option.');
-
-        // A row is left empty.
-        $this->assertEmpty($questionData[10], 'This row should be empty.');
+        $this->assertSame($questionData[8][0], 'Not completed or not displayed', 'The Answer text is incorrect for this option.');
+        $this->assertSame($questionData[8][1], '0', 'The Count is incorrect for this option.');
+        $this->assertSame($questionData[8][2], '0.00%', 'The Percentage is incorrect for this option.');
 
         // Total row.
-        $this->assertSame($questionData[11][0], 'Total(gross)', 'The Answer text is incorrect for this option.');
-        $this->assertSame($questionData[11][1], '10', 'The Count is incorrect for this option.');
-        $this->assertSame($questionData[11][2], '100.00%', 'The Percentage is incorrect for this option.');
+        $this->assertSame($questionData[9][0], 'Total(gross)', 'The Answer text is incorrect for this option.');
+        $this->assertSame($questionData[9][1], '10', 'The Count is incorrect for this option.');
+        $this->assertSame($questionData[9][2], '100.00%', 'The Percentage is incorrect for this option.');
     }
 
     /**
@@ -99,7 +95,10 @@ class RemoteControlExportStatisticsArrayQuestionsTest extends BaseTest
 
         // Get the table.
         $doc = new \DOMDocument();
+        $previous = libxml_use_internal_errors(true);
         $doc->loadHtml($htmlStatistics);
+        libxml_clear_errors();
+        libxml_use_internal_errors($previous);
 
         $tables = $doc->getElementsByTagName('table');
 
@@ -108,11 +107,10 @@ class RemoteControlExportStatisticsArrayQuestionsTest extends BaseTest
         }
 
         foreach ($tables as $table) {
-            $thead = $table->getElementsByTagName('thead')->item(0);
-            // The td tags should be identified with the opening tbody tag but it is not added by export_statistics.
-            $table->removeChild($thead);
+            $tbody = $table->getElementsByTagName('tbody')->item(0);
+            $this->assertNotNull($tbody, 'The statistics table has no tbody element.');
 
-            $rows = $table->getElementsByTagName('tr');
+            $rows = $tbody->getElementsByTagName('tr');
 
             foreach ($rows as $rowKey => $row) {
                 $tds = $row->getElementsByTagName('td');

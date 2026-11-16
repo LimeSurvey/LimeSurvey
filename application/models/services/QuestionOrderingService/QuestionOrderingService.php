@@ -160,11 +160,16 @@ class QuestionOrderingService
     /**
      * Apply alphabetical sorting to items
      *
-     * @param array $groupedItems
-     * @param Question $question
+     * Items are sorted by their visible text in the given language, using that language's
+     * collation. For 'random_alphabetical' the direction (A-Z or Z-A) is chosen randomly.
+     * Items listed in keep_codes_order stay at their original position, the other items
+     * are sorted around them.
+     *
+     * @param array $groupedItems Items (Answer or Question models) grouped by scale_id
+     * @param Question $question The parent question model
      * @param string $context 'answers' or 'subquestions'
-     * @param string|null $language
-     * @return array
+     * @param string|null $language Language to sort by; falls back to the survey base language if empty or invalid
+     * @return array Sorted items grouped by scale_id
      */
     private function applyAlphabeticalSorting(
         array $groupedItems,
@@ -179,13 +184,18 @@ class QuestionOrderingService
         $orderAttribute = $context === 'answers' ? 'answer_order' : 'subquestion_order';
         $textField = $context === 'answers' ? 'answer' : 'question';
         $l10nField = $context === 'answers' ? 'answerl10ns' : 'questionl10ns';
+        $codeField = $context === 'answers' ? 'code' : 'title';
+        $keepCodes = $this->randomizerHelper->getKeepCodes($question);
 
         foreach ($groupedItems as $scaleId => &$scaleArray) {
             $sorted = [];
             foreach ($scaleArray as $key => $item) {
+                if (!empty($keepCodes) && in_array($item->$codeField, $keepCodes, true)) {
+                    continue;
+                }
                 $l10nCollection = $item->$l10nField;
                 /** @var array<string, \AnswerL10n|\QuestionL10n> $l10nCollection */
-                $sorted[$key] = $l10nCollection[$language]->$textField;
+                $sorted[$key] = $this->getSortableText((string) $l10nCollection[$language]->$textField);
             }
 
             $itemOrder = $question->getQuestionAttribute($orderAttribute);
@@ -198,14 +208,31 @@ class QuestionOrderingService
                 SortHelper::SORT_STRING
             );
 
+            // Kept items stay at their position, the free positions are filled in sorted order
+            $sortedKeys = array_keys($sorted);
+            $sortedIndex = 0;
             $sortedItems = [];
-            foreach ($sorted as $key => $text) {
-                $sortedItems[] = $scaleArray[$key];
+            foreach ($scaleArray as $key => $item) {
+                $sortedItems[] = array_key_exists($key, $sorted) ? $scaleArray[$sortedKeys[$sortedIndex++]] : $item;
             }
             $scaleArray = $sortedItems;
         }
 
         return $groupedItems;
+    }
+
+    /**
+     * Get the visible text of an item to be used as alphabetical sort key
+     *
+     * Removes HTML markup and decodes HTML entities, so that e.g. "<p>&Eacute;tats-Unis</p>"
+     * is sorted as "États-Unis".
+     *
+     * @param string $text Raw answer or subquestion text, possibly containing HTML
+     * @return string Plain text sort key
+     */
+    private function getSortableText(string $text): string
+    {
+        return trim(html_entity_decode(strip_tags($text), ENT_QUOTES | ENT_HTML5, 'UTF-8'));
     }
 
     /**

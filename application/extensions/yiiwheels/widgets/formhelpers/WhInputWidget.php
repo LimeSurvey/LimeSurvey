@@ -1,6 +1,7 @@
 <?php
+
  /**
- * 
+ *
  * WhInputWidget.php
  *
  * Date: 06/09/14
@@ -13,7 +14,8 @@
 Yii::import('yiistrap_fork.helpers.TbArray');
 Yii::import('yiistrap_fork.helpers.TbHtml');
 
-class WhInputWidget extends CInputWidget {
+class WhInputWidget extends CInputWidget
+{
     /**
      * @var array the options for the Bootstrap FormHelper plugin.
      */
@@ -60,7 +62,6 @@ class WhInputWidget extends CInputWidget {
             $this->htmlOptions['data-name'] = $this->name;
             $this->htmlOptions['data-value'] = $this->value;
         }
-
     }
 
     /**
@@ -91,7 +92,7 @@ class WhInputWidget extends CInputWidget {
         $cs->registerCssFile($assetsUrl . "/css/bootstrap-formhelpers.min.css");
         $cs->registerScriptFile($assetsUrl . "/js/bootstrap-formhelpers.min.js", CClientScript::POS_END);
 
-        if($this->language) {
+        if ($this->language) {
             $fname = "bootstrap-formhelpers-" . (substr($name, 3)) . ".{$this->language}.js";
             $languageFile = $this->languagePath ? : $assetsUrl . "/i18n/{$this->language}/{$fname}";
             $cs->registerScriptFile($languageFile);
@@ -109,10 +110,8 @@ class WhInputWidget extends CInputWidget {
                 $js[] = "jQuery('#$id').on('$event', $handler);";
             }
         }
-        if(count($js))
-        {
+        if (count($js)) {
             $cs->registerScript($id, implode("\n", $js));
         }
     }
-
-} 
+}

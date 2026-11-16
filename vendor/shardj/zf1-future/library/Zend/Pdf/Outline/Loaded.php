@@ -98,7 +98,7 @@ class Zend_Pdf_Outline_Loaded extends Zend_Pdf_Outline
 
         if ($this->_outlineDictionary->Count === null) {
             // Do Nothing.
-            return this;
+            return $this;
         }
 
         $childrenCount = $this->_outlineDictionary->Count->value;
@@ -318,7 +318,7 @@ class Zend_Pdf_Outline_Loaded extends Zend_Pdf_Outline
         if ($processedDictionaries === null) {
             $processedDictionaries = new SplObjectStorage();
         }
-        $processedDictionaries->attach($dictionary);
+        $processedDictionaries->offsetSet($dictionary);
 
         $this->_outlineDictionary = $dictionary;
 
@@ -339,12 +339,12 @@ class Zend_Pdf_Outline_Loaded extends Zend_Pdf_Outline
             $children = new SplObjectStorage();
             while ($childDictionary !== null) {
                 // Check children structure for cyclic references
-                if ($children->contains($childDictionary)) {
+                if ($children->offsetExists($childDictionary)) {
                     require_once 'Zend/Pdf/Exception.php';
                     throw new Zend_Pdf_Exception('Outline childs load error.');
                 }
 
-                if (!$processedDictionaries->contains($childDictionary)) {
+                if (!$processedDictionaries->offsetExists($childDictionary)) {
                     $this->childOutlines[] = new Zend_Pdf_Outline_Loaded($childDictionary, $processedDictionaries);
                 }
 
@@ -378,7 +378,7 @@ class Zend_Pdf_Outline_Loaded extends Zend_Pdf_Outline
         if ($processedOutlines === null) {
             $processedOutlines = new SplObjectStorage();
         }
-        $processedOutlines->attach($this);
+        $processedOutlines->offsetSet($this);
 
         if ($updateNavigation) {
             $this->_outlineDictionary->touch();
@@ -410,7 +410,7 @@ class Zend_Pdf_Outline_Loaded extends Zend_Pdf_Outline
             $this->_outlineDictionary->First = null;
 
             foreach ($this->childOutlines as $childOutline) {
-                if ($processedOutlines->contains($childOutline)) {
+                if ($processedOutlines->offsetExists($childOutline)) {
                     require_once 'Zend/Pdf/Exception.php';
                     throw new Zend_Pdf_Exception('Outlines cyclyc reference is detected.');
                 }
@@ -436,7 +436,7 @@ class Zend_Pdf_Outline_Loaded extends Zend_Pdf_Outline
             }
         } else {
             foreach ($this->childOutlines as $childOutline) {
-                if ($processedOutlines->contains($childOutline)) {
+                if ($processedOutlines->offsetExists($childOutline)) {
                     require_once 'Zend/Pdf/Exception.php';
                     throw new Zend_Pdf_Exception('Outlines cyclyc reference is detected.');
                 }

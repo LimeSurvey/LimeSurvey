@@ -1,17 +1,17 @@
 <?php
 Yii::app()->getController()->renderPartial(
     '/layouts/partial_modals/modal_header',
-    ['modalTitle' => gT('User details')]
+    ['modalTitle' => gT('User details'), 'modalTitleId' => 'UserManagement-action-modal-title']
 );
 ?>
 
 <div class="modal-body">
-    <table class="table table-striped">
+    <table class="table table-striped" role="presentation">
         <tr>
             <td><?=gT('User groups:')?></td>
-            <td><?=CHTml::encode(join(', ',$usergroups))?></td>
+            <td><?= empty($usergroups) ? '—' : CHTml::encode(join(', ', $usergroups)) ?></td>
         </tr>
-        <?php if ($oUser->parentUser): ?>
+        <?php if ($oUser->parentUser) : ?>
             <tr>
                 <td><?=gT('Created by:')?></td>
                 <td><?=CHTml::encode($oUser->parentUser['full_name'])?></td>

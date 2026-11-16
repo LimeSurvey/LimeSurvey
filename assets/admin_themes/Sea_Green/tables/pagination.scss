@@ -5,5 +5,26 @@
             margin : 0 2px 4px 2px;
             border-radius : 4px;
         }
+        &:not(.active) {
+            .page-link {
+                &:hover {
+                    background-color: $g-200;
+                }
+                &:active {
+                    @include inset-border(1px, $grape);
+                    border-color: $grape;
+                    background-color: $g-200;
+                }
+                &:focus-visible {
+                    @include inset-border(1px, $grape);
+                    border-color: $grape;
+                    background-color: $white;
+                    border-radius: 0;
+                }
+                &:focus {
+                    background-color: $white;
+                }
+            }
+        }
     }
 }

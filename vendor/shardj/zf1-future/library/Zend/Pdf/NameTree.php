@@ -85,6 +85,9 @@ class Zend_Pdf_NameTree implements ArrayAccess, Iterator, Countable
         }
     }
 
+    /**
+     * @return mixed
+     */
     #[\ReturnTypeWillChange]
     public function current()
     {
@@ -92,13 +95,19 @@ class Zend_Pdf_NameTree implements ArrayAccess, Iterator, Countable
     }
 
 
+    /**
+     * @return void
+     */
     #[\ReturnTypeWillChange]
     public function next()
     {
-        return next($this->_items);
+        next($this->_items);
     }
 
 
+    /**
+     * @return string|int|null
+     */
     #[\ReturnTypeWillChange]
     public function key()
     {
@@ -124,6 +133,10 @@ class Zend_Pdf_NameTree implements ArrayAccess, Iterator, Countable
     }
 
 
+    /**
+     * @param string $offset
+     * @return mixed
+     */
     #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {

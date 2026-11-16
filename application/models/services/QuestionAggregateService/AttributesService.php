@@ -81,7 +81,22 @@ class AttributesService
     }
 
     /**
+     * Apply the current user's saved defaults when creating a question.
+     * Explicit attributes from the create request are saved afterwards and
+     * therefore take precedence over these defaults.
+     */
+    public function saveUserDefaults(Question $question): void
+    {
+        $defaults = $this->questionAttributeHelper->getUserDefaultsForQuestionType($question->type);
+        if (!empty($defaults)) {
+            $this->save($question, $defaults);
+        }
+    }
+
+    /**
      * Saves the base attributes of questions as they come in
+     *
+     * Note: The IDs placing the question in a survey (qid, sid, gid, parent_qid) are never changed.
      *
      * @param Question $question
      * @param array {
@@ -102,15 +117,35 @@ class AttributesService
      * } $dataSet
      * @return void
      * @throws PersistErrorException
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function save($question, $dataSet)
     {
         $questionBaseAttributes = $question->attributes;
 
+        // When the survey is active, attributes flagged as read-only while the survey
+        // is active must not be modified, even if they are present in the submitted data.
+        $survey = $question->survey;
+        $surveyIsActive = !empty($survey) && $survey->active === 'Y';
+        $readOnlyAttributes = [];
+        if ($surveyIsActive && !empty($dataSet)) {
+            $attributeSettings = QuestionAttribute::getQuestionAttributesSettings($question->type);
+            foreach ($attributeSettings as $attributeName => $attributeSetting) {
+                if (
+                    !empty($attributeSetting['readonly'])
+                    || !empty($attributeSetting['readonly_when_active'])
+                ) {
+                    $readOnlyAttributes[$attributeName] = true;
+                }
+            }
+        }
+
         foreach ($dataSet as $attributeKey => $attributeValue) {
             if (
                 !isset($attributeValue) ||
-                in_array($attributeKey, ['qid', 'debug', 'tempId'])
+                // The question must not be moved out of the survey the permission was checked on
+                in_array($attributeKey, ['qid', 'sid', 'gid', 'parent_qid', 'debug', 'tempId']) ||
+                isset($readOnlyAttributes[$attributeKey])
             ) {
                 continue;
             }

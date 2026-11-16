@@ -55,14 +55,16 @@ echo viewHelper::getViewTestTag('surveyTexts');
                     name='dateformat_<?php echo $aSurveyLanguageSettings['surveyls_language']; ?>' class="form-select">
                 <?php foreach (getDateFormatData(0, Yii::app()->session['adminlang']) as $index => $dateformatdata) : ?>
                     <option value='<?php echo $index; ?>' 
-                      <?php if ($aSurveyLanguageSettings['surveyls_dateformat'] == $index) : ?> selected='selected' <?php endif; ?>>
+                      <?php if ($aSurveyLanguageSettings['surveyls_dateformat'] == $index) :
+                            ?> selected='selected' <?php
+                      endif; ?>>
                         <?php echo $dateformatdata['dateformat']; ?></option>
                 <?php endforeach; ?>
             </select>
         </div>
         <div class="col-lg-2">
             <!-- Decimal mark -->
-            <label class="form-label "><?php eT("Decimal mark:"); ?></label>
+            <label class="form-label" id="numberformat_<?= $aSurveyLanguageSettings['surveyls_language'] ?>-label"><?php eT("Decimal mark:"); ?></label>
             <?php $aRadixPoint = [];
             foreach (getRadixPointData() as $index => $radixptdata) {
                 $aRadixPoint[$index] = html_entity_decode((string) $radixptdata['desc']);
@@ -71,7 +73,7 @@ echo viewHelper::getViewTestTag('surveyTexts');
                 'name'          => 'numberformat_' . $aSurveyLanguageSettings['surveyls_language'],
                 'checkedOption' => $aSurveyLanguageSettings['surveyls_numberformat'],
                 'selectOptions' => $aRadixPoint,
-                'ariaLabel'     => gT("Decimal mark:"),
+                'ariaLabelledBy' => 'numberformat_' . $aSurveyLanguageSettings['surveyls_language'] . '-label',
                 'htmlOptions'   => [
                     "style" => "z-index:0"
                 ]
@@ -181,7 +183,7 @@ echo viewHelper::getViewTestTag('surveyTexts');
                 <?php echo CHtml::textField(
                     "urldescrip_{$aSurveyLanguageSettings['surveyls_language']}",
                     $aSurveyLanguageSettings['surveyls_urldescription'],
-                    array('class' => 'form-control', 'size' => "80", 'maxlength' => 255, 
+                    array('class' => 'form-control', 'size' => "80", 'maxlength' => 255,
                     'id' => "urldescrip_{$aSurveyLanguageSettings['surveyls_language']}")
                 ); ?>
             </div>

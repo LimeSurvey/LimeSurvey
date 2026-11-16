@@ -21,6 +21,38 @@ use Survey;
  */
 class AttributesServiceTest extends TestBaseClass
 {
+    public function testSaveUserDefaultsPersistsDefaultsForQuestionType()
+    {
+        $modelQuestionAttribute = Mockery::mock(QuestionAttribute::class)
+            ->makePartial();
+        $modelQuestionAttribute
+            ->shouldReceive('setQuestionAttributeWithLanguage')
+            ->with(123, 'random_order', '1', '')
+            ->once()
+            ->andReturn(true);
+
+        $questionAttrHelper = Mockery::mock(QuestionAttributeHelper::class);
+        $questionAttrHelper->shouldReceive('getUserDefaultsForQuestionType')
+            ->with('L')
+            ->once()
+            ->andReturn(['random_order' => ['' => '1']]);
+
+        $question = Mockery::mock(Question::class)->makePartial();
+        $question->qid = 123;
+        $question->type = 'L';
+        $question->shouldReceive('getAttributes')->andReturn([]);
+        $question->shouldReceive('save')->once()->andReturn(true);
+        $question->shouldReceive('refresh')->once();
+
+        $attributesService = new AttributesService(
+            $modelQuestionAttribute,
+            $questionAttrHelper,
+            Mockery::mock(Survey::class)->makePartial()
+        );
+
+        $attributesService->saveUserDefaults($question);
+    }
+
     /**
      * @testdox saveAdvanced() throws PersistErrorException on question save failure
      */

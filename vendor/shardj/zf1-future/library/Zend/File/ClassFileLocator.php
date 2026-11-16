@@ -94,6 +94,7 @@ class Zend_File_ClassFileLocator extends FilterIterator
         $tokens   = token_get_all($contents);
         $count    = count($tokens);
         $t_trait  = defined('T_TRAIT') ? T_TRAIT : -1; // For preserve PHP 5.3 compatibility
+        $t_enum   = defined('T_ENUM') ? T_ENUM : -1; // phpcs:ignore PHPCompatibility.Constants.NewConstants.t_enumFound -- enums exist since PHP 8.1, guarded by defined()
         for ($i = 0; $i < $count; $i++) {
             $token = $tokens[$i];
             if (!is_array($token)) {
@@ -122,7 +123,7 @@ class Zend_File_ClassFileLocator extends FilterIterator
                         switch ($type) {
                             case T_STRING:
                             case T_NS_SEPARATOR:
-                            case T_NAME_QUALIFIED:
+                            case T_NAME_QUALIFIED: // phpcs:ignore PHPCompatibility.Constants.NewConstants.t_name_qualifiedFound -- defined above when missing
                                 $namespace .= $content;
                                 break;
                         }
@@ -132,9 +133,10 @@ class Zend_File_ClassFileLocator extends FilterIterator
                     }
                     break;
                 case $t_trait:
+                case $t_enum:
                 case T_CLASS:
                 case T_INTERFACE:
-                    // Abstract class, class, interface or trait found
+                    // Abstract class, class, interface, trait or enum found
 
                     // Get the classname
                     for ($i++; $i < $count; $i++) {

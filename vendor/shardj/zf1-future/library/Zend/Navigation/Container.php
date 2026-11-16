@@ -512,7 +512,7 @@ abstract class Zend_Navigation_Container implements RecursiveIterator, Countable
     {
         $this->_sort();
         current($this->_index);
-        $hash = key($this->_index);
+        $hash = key($this->_index) ?? '';
 
         if (isset($this->_pages[$hash])) {
             return $this->_pages[$hash];
@@ -598,7 +598,7 @@ abstract class Zend_Navigation_Container implements RecursiveIterator, Countable
      */
     public function getChildren(): ?\RecursiveIterator
     {
-        $hash = key($this->_index);
+        $hash = key($this->_index) ?? '';
 
         if (isset($this->_pages[$hash])) {
             return $this->_pages[$hash];

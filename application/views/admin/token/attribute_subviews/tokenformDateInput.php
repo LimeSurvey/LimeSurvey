@@ -1,4 +1,5 @@
 <?php
+
 /** @var array $attrDescription */
 /** @var string $attrName */
 /** @var string $inputValue */

@@ -1,42 +1,69 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE ldml SYSTEM "../../common/dtd/ldml.dtd">
-<!-- Copyright © 1991-2013 Unicode, Inc.
-CLDR data files are interpreted according to the LDML specification (http://unicode.org/reports/tr35/)
+<!-- Copyright © 1991-2026 Unicode, Inc.
 For terms of use, see http://www.unicode.org/copyright.html
+SPDX-License-Identifier: Unicode-3.0
+CLDR data files are interpreted according to the LDML specification (http://unicode.org/reports/tr35/)
 -->
 <ldml>
 	<identity>
-		<version number="$Revision: 9061 $"/>
-		<generation date="$Date: 2013-07-20 12:27:45 -0500 (Sat, 20 Jul 2013) $"/>
+		<version number="$Revision$"/>
 		<language type="vo"/>
 	</identity>
 	<localeDisplayNames>
 		<languages>
+			<language type="de" draft="unconfirmed">Deutänapük</language>
+			<language type="en" draft="unconfirmed">Linglänapük</language>
+			<language type="eo" draft="unconfirmed">Sperantapük</language>
+			<language type="es" draft="unconfirmed">Spanyänapük</language>
+			<language type="fr" draft="unconfirmed">Fransänapük</language>
+			<language type="it" draft="unconfirmed">Litaliyänapük</language>
+			<language type="ja" draft="unconfirmed">Yapänapük</language>
+			<language type="pt" draft="unconfirmed">Portugänapük</language>
+			<language type="ru" draft="unconfirmed">Rusänapük</language>
 			<language type="vo" draft="unconfirmed">Volapük</language>
+			<language type="zh" draft="unconfirmed">Tsyinänapük</language>
 		</languages>
+		<territories>
+			<territory type="BR" draft="unconfirmed">Brasilän</territory>
+			<territory type="CN" draft="unconfirmed">Tsyinän</territory>
+			<territory type="DE" draft="unconfirmed">Deutän</territory>
+			<territory type="ES" draft="unconfirmed">Spanyän</territory>
+			<territory type="FR" draft="unconfirmed">Fransän</territory>
+			<territory type="GB" draft="unconfirmed">Regän Pebalöl</territory>
+			<territory type="GE" draft="unconfirmed">Grusiyän</territory>
+			<territory type="GR" draft="unconfirmed">Grikän</territory>
+			<territory type="IN" draft="unconfirmed">Lindän</territory>
+			<territory type="IT" draft="unconfirmed">Litaliyän</territory>
+			<territory type="JP" draft="unconfirmed">Yapän</territory>
+			<territory type="MX" draft="unconfirmed">Mäxikän</territory>
+			<territory type="NR" draft="unconfirmed">Naureän</territory>
+			<territory type="PT" draft="unconfirmed">Portugän</territory>
+			<territory type="PW" draft="unconfirmed">Palauäns</territory>
+			<territory type="RU" draft="unconfirmed">Rusän</territory>
+			<territory type="US" draft="unconfirmed">Lamerikän</territory>
+		</territories>
+		<codePatterns>
+			<codePattern type="language" draft="unconfirmed">Pük: {0}</codePattern>
+			<codePattern type="territory" draft="unconfirmed">Topäd: {0}</codePattern>
+		</codePatterns>
 	</localeDisplayNames>
 	<characters>
-		<exemplarCharacters>[a ä b c d e f g h i j k l m n o ö p q r s š t u ü v x y z]</exemplarCharacters>
+		<exemplarCharacters>[a ä b c d e f g h i j k l m n o ö p r s t u ü v x y z]</exemplarCharacters>
 		<exemplarCharacters type="auxiliary">[q w]</exemplarCharacters>
 		<exemplarCharacters type="index">[A Ä B C D E F G H I J K L M N O Ö P R S T U Ü V X Y Z]</exemplarCharacters>
-		<exemplarCharacters type="punctuation">[\- ‐ – — , ; \: ! ? . … ' ‘ ’ &quot; “ ” « » ( ) \[ \] \{ \} § @ * / \&amp; #]</exemplarCharacters>
-		<ellipsis type="final" draft="unconfirmed">{0}…</ellipsis>
+		<exemplarCharacters type="punctuation">[\- ‐‑ – — , ; \: ! ? . … '‘’ &quot;“” « » ( ) \[ \] \{ \} § @ * / \&amp; #]</exemplarCharacters>
 		<ellipsis type="initial" draft="unconfirmed">… {0}</ellipsis>
 		<ellipsis type="medial" draft="unconfirmed">{0} … {1}</ellipsis>
 	</characters>
-	<delimiters>
-		<quotationStart draft="unconfirmed">“</quotationStart>
-		<quotationEnd draft="unconfirmed">”</quotationEnd>
-		<alternateQuotationStart draft="unconfirmed">‘</alternateQuotationStart>
-		<alternateQuotationEnd draft="unconfirmed">’</alternateQuotationEnd>
-	</delimiters>
 	<dates>
 		<calendars>
 			<calendar type="generic">
 				<dateFormats>
 					<dateFormatLength type="full">
 						<dateFormat>
-							<pattern draft="unconfirmed">G y MMMMa 'd'. d'id'</pattern>
+							<pattern draft="unconfirmed">G y MMMM'a' 'd'. d'id'</pattern>
+							<datetimeSkeleton draft="unconfirmed">GyMMMMd</datetimeSkeleton>
 						</dateFormat>
 					</dateFormatLength>
 					<dateFormatLength type="long">
@@ -51,7 +78,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 					</dateFormatLength>
 					<dateFormatLength type="short">
 						<dateFormat>
-							<pattern draft="unconfirmed">GGGGG y-MM-dd</pattern>
+							<pattern draft="unconfirmed">G y-MM-dd</pattern>
 						</dateFormat>
 					</dateFormatLength>
 				</dateFormats>
@@ -60,7 +87,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<months>
 					<monthContext type="format">
 						<monthWidth type="abbreviated">
-							<month type="1" draft="unconfirmed">jan</month>
+							<month type="1" draft="unconfirmed">yan</month>
 							<month type="2" draft="unconfirmed">feb</month>
 							<month type="3" draft="unconfirmed">mäz</month>
 							<month type="4" draft="unconfirmed">prl</month>
@@ -74,9 +101,9 @@ For terms of use, see http://www.unicode.org/copyright.html
 							<month type="12" draft="unconfirmed">dek</month>
 						</monthWidth>
 						<monthWidth type="wide">
-							<month type="1" draft="unconfirmed">janul</month>
+							<month type="1" draft="unconfirmed">yanul</month>
 							<month type="2" draft="unconfirmed">febul</month>
-							<month type="3" draft="unconfirmed">mäzil</month>
+							<month type="3" draft="unconfirmed">mäzul</month>
 							<month type="4" draft="unconfirmed">prilul</month>
 							<month type="5" draft="unconfirmed">mayul</month>
 							<month type="6" draft="unconfirmed">yunul</month>
@@ -90,7 +117,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 					</monthContext>
 					<monthContext type="stand-alone">
 						<monthWidth type="abbreviated">
-							<month type="1" draft="unconfirmed">jan</month>
+							<month type="1" draft="unconfirmed">yan</month>
 							<month type="2" draft="unconfirmed">feb</month>
 							<month type="3" draft="unconfirmed">mäz</month>
 							<month type="4" draft="unconfirmed">prl</month>
@@ -101,10 +128,10 @@ For terms of use, see http://www.unicode.org/copyright.html
 							<month type="9" draft="unconfirmed">set</month>
 							<month type="10" draft="unconfirmed">tob</month>
 							<month type="11" draft="unconfirmed">nov</month>
-							<month type="12" draft="unconfirmed">Dek</month>
+							<month type="12" draft="unconfirmed">dek</month>
 						</monthWidth>
 						<monthWidth type="narrow">
-							<month type="1" draft="unconfirmed">J</month>
+							<month type="1" draft="unconfirmed">Y</month>
 							<month type="2" draft="unconfirmed">F</month>
 							<month type="3" draft="unconfirmed">M</month>
 							<month type="4" draft="unconfirmed">P</month>
@@ -169,12 +196,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 							<quarter type="3" draft="unconfirmed">Yf3</quarter>
 							<quarter type="4" draft="unconfirmed">Yf4</quarter>
 						</quarterWidth>
-						<quarterWidth type="narrow">
-							<quarter type="1" draft="unconfirmed">1</quarter>
-							<quarter type="2" draft="unconfirmed">2</quarter>
-							<quarter type="3" draft="unconfirmed">3</quarter>
-							<quarter type="4" draft="unconfirmed">4</quarter>
-						</quarterWidth>
 						<quarterWidth type="wide">
 							<quarter type="1" draft="unconfirmed">1id yelafoldil</quarter>
 							<quarter type="2" draft="unconfirmed">2id yelafoldil</quarter>
@@ -183,25 +204,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 						</quarterWidth>
 					</quarterContext>
 				</quarters>
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="afternoon" draft="unconfirmed">poszedelo</dayPeriod>
-							<dayPeriod type="am" draft="unconfirmed">posz.</dayPeriod>
-							<dayPeriod type="earlyMorning" draft="unconfirmed">gödo</dayPeriod>
-							<dayPeriod type="evening" draft="unconfirmed">soaro</dayPeriod>
-							<dayPeriod type="morning" draft="unconfirmed">büzedelo</dayPeriod>
-							<dayPeriod type="night" draft="unconfirmed">neito</dayPeriod>
-							<dayPeriod type="noon" draft="unconfirmed">zedelo</dayPeriod>
-							<dayPeriod type="pm" draft="unconfirmed">büz.</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
 				<eras>
-					<eraNames>
-						<era type="0" draft="unconfirmed">b. t. kr.</era>
-						<era type="1" draft="unconfirmed">p. t. kr.</era>
-					</eraNames>
 					<eraAbbr>
 						<era type="0" draft="unconfirmed">b. t. kr.</era>
 						<era type="1" draft="unconfirmed">p. t. kr.</era>
@@ -210,7 +213,8 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<dateFormats>
 					<dateFormatLength type="full">
 						<dateFormat>
-							<pattern draft="unconfirmed">y MMMMa 'd'. d'id'</pattern>
+							<pattern draft="unconfirmed">y MMMM'a' 'd'. d'id'</pattern>
+							<datetimeSkeleton draft="unconfirmed">yMMMMd</datetimeSkeleton>
 						</dateFormat>
 					</dateFormatLength>
 					<dateFormatLength type="long">
@@ -303,10 +307,29 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</field>
 		</fields>
 	</dates>
+	<units>
+		<unitLength type="long">
+			<unit type="duration-year">
+				<displayName draft="unconfirmed">yels</displayName>
+				<unitPattern count="one" draft="unconfirmed">yel {0}</unitPattern>
+				<unitPattern count="other" draft="unconfirmed">yels {0}</unitPattern>
+			</unit>
+			<unit type="duration-month">
+				<displayName draft="unconfirmed">muls</displayName>
+				<unitPattern count="one" draft="unconfirmed">mul {0}</unitPattern>
+				<unitPattern count="other" draft="unconfirmed">muls {0}</unitPattern>
+			</unit>
+			<unit type="duration-week">
+				<displayName draft="unconfirmed">vigs</displayName>
+			</unit>
+			<unit type="duration-day">
+				<displayName draft="unconfirmed">dels</displayName>
+			</unit>
+		</unitLength>
+	</units>
 	<posix>
 		<messages>
 			<yesstr draft="unconfirmed">si:s</yesstr>
-			<nostr draft="unconfirmed">no:n</nostr>
 		</messages>
 	</posix>
 </ldml>

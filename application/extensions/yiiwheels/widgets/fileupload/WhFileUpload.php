@@ -1,4 +1,5 @@
 <?php
+
 /**
  * WhFileUpload widget class
  *
@@ -8,6 +9,7 @@
  * @package YiiWheels.widgets.fileupload
  * @uses YiiStrap.helpers.TbArray
  */
+
 Yii::import('yiistrap_fork.helpers.TbArray');
 Yii::import('zii.widgets.jui.CJuiInputWidget');
 
@@ -169,5 +171,4 @@ class WhFileUpload extends CJuiInputWidget
 
         $this->getApi()->registerPlugin('fileupload', $selector, $this->options);
     }
-
 }

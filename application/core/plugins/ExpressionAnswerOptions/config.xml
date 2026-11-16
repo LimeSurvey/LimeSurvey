@@ -7,6 +7,7 @@
         <lastUpdate>2021-11-23</lastUpdate>
         <author>Denis Chenu (for Respondage)</author>
         <authorUrl>https://www.respondage.nl</authorUrl>
+        <documentationUrl>https://www.limesurvey.org/manual/ExpressionAnswerOptions_plugin</documentationUrl>
         <supportUrl>https://www.limesurvey.org</supportUrl>
         <version>0.2.1</version>
         <license>GNU General Public License version 3 or later</license>
@@ -14,6 +15,7 @@
     </metadata>
 
     <compatibility>
+        <version>7.0</version>
         <version>6.0</version>
         <version>5.0</version>
     </compatibility>

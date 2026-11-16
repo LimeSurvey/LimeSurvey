@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Render the result of the import survey action
  */
@@ -12,7 +13,6 @@ use LimeSurvey\Models\Services\CopySurveyResult;
 
 <!-- Import Failed -->
 <?php if ($copyResults->getErrors()) {?>
-
     <div class="jumbotron message-box message-box-error">
         <h2 class="danger"><?php eT("Copy survey");?></h2>
         <p class="lead text-danger">
@@ -41,7 +41,8 @@ use LimeSurvey\Models\Services\CopySurveyResult;
         <!-- Copy results-->
         <div class="row justify-content-center">
             <div class="col-lg-2">
-                <table class="table table-striped table-condensed ">
+                <?php // Label/count list laid out as a table: Not announced as a data table ?>
+                <table class="table table-striped table-condensed " role="presentation">
                     <tr>
                         <td><?php eT("Surveys"); ?>:</td>
                         <td><?php echo $copyResults->getCntSurveys(); ?></td>
@@ -66,16 +67,19 @@ use LimeSurvey\Models\Services\CopySurveyResult;
                         <td><?php eT("Quotas"); ?>:</td>
                         <td><?php echo $copyResults->getCntQuotas(); ?></td>
                     </tr>
+                    <tr>
+                        <td><?php eT("URL parameters"); ?>:</td>
+                        <td><?php echo $copyResults->getCntUrlParameters(); ?></td>
+                    </tr>
                 </table>
             </div>
         </div>
         <!-- Warnings -->
-        <?php if (count($copyResults->getWarnings())>0): ?>
+        <?php if (count($copyResults->getWarnings()) > 0) : ?>
             <h2 class="warning"><?php eT("Warnings");?>:</h2>
             <ul  class="list-unstyled">
                 <?php
-                foreach ($copyResults->getWarnings() as $warning)
-                { ?>
+                foreach ($copyResults->getWarnings() as $warning) { ?>
                     <li><?php echo $warning; ?></li>
                     <?php
                 } ?>

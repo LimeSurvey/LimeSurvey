@@ -1,10 +1,10 @@
 /*!
- * Chart.js v4.4.7
+ * Chart.js v4.5.1
  * https://www.chartjs.org
- * (c) 2024 Chart.js Contributors
+ * (c) 2025 Chart.js Contributors
  * Released under the MIT License
  */
-import { r as requestAnimFrame, a as resolve, e as effects, c as color, i as isObject, d as defaults, b as isArray, v as valueOrDefault, u as unlistenArrayEvents, l as listenArrayEvents, f as resolveObjectKey, g as isNumberFinite, h as defined, s as sign, j as createContext, k as isNullOrUndef, _ as _arrayUnique, t as toRadians, m as toPercentage, n as toDimension, T as TAU, o as formatNumber, p as _angleBetween, H as HALF_PI, P as PI, q as _getStartAndCountOfVisiblePoints, w as _scaleRangesChanged, x as isNumber, y as _parseObjectDataRadialScale, z as getRelativePosition, A as _rlookupByKey, B as _lookupByKey, C as _isPointInArea, D as getAngleFromPoint, E as toPadding, F as each, G as getMaximumSize, I as _getParentNode, J as readUsedSize, K as supportsEventListenerOptions, L as throttled, M as _isDomSupported, N as _factorize, O as finiteOrDefault, Q as callback, R as _addGrace, S as _limitValue, U as toDegrees, V as _measureText, W as _int16Range, X as _alignPixel, Y as clipArea, Z as renderText, $ as unclipArea, a0 as toFont, a1 as _toLeftRightCenter, a2 as _alignStartEnd, a3 as overrides, a4 as merge, a5 as _capitalize, a6 as descriptors, a7 as isFunction, a8 as _attachContext, a9 as _createResolver, aa as _descriptors, ab as mergeIf, ac as uid, ad as debounce, ae as retinaScale, af as clearCanvas, ag as setsEqual, ah as _elementsEqual, ai as _isClickEvent, aj as _isBetween, ak as _readValueToProps, al as _updateBezierControlPoints, am as _computeSegments, an as _boundSegments, ao as _steppedInterpolation, ap as _bezierInterpolation, aq as _pointInLine, ar as _steppedLineTo, as as _bezierCurveTo, at as drawPoint, au as addRoundedRectPath, av as toTRBL, aw as toTRBLCorners, ax as _boundSegment, ay as _normalizeAngle, az as getRtlAdapter, aA as overrideTextDirection, aB as _textX, aC as restoreTextDirection, aD as drawPointLegend, aE as distanceBetweenPoints, aF as noop, aG as _setMinAndMaxByKey, aH as niceNum, aI as almostWhole, aJ as almostEquals, aK as _decimalPlaces, aL as Ticks, aM as log10, aN as _longestText, aO as _filterBetween, aP as _lookup } from './chunks/helpers.segment.js';
+import { r as requestAnimFrame, a as resolve, e as effects, c as color, i as isObject, d as defaults, b as isArray, v as valueOrDefault, u as unlistenArrayEvents, l as listenArrayEvents, f as resolveObjectKey, g as isNumberFinite, h as defined, s as sign, j as createContext, k as isNullOrUndef, _ as _arrayUnique, t as toRadians, m as toPercentage, n as toDimension, T as TAU, o as formatNumber, p as _angleBetween, H as HALF_PI, P as PI, q as _getStartAndCountOfVisiblePoints, w as _scaleRangesChanged, x as isNumber, y as _parseObjectDataRadialScale, z as getRelativePosition, A as _rlookupByKey, B as _lookupByKey, C as _isPointInArea, D as getAngleFromPoint, E as toPadding, F as each, G as getMaximumSize, I as _getParentNode, J as readUsedSize, K as supportsEventListenerOptions, L as throttled, M as _isDomSupported, N as _factorize, O as finiteOrDefault, Q as callback, R as _addGrace, S as _limitValue, U as toDegrees, V as _measureText, W as _int16Range, X as _alignPixel, Y as clipArea, Z as renderText, $ as unclipArea, a0 as toFont, a1 as _toLeftRightCenter, a2 as _alignStartEnd, a3 as overrides, a4 as merge, a5 as _capitalize, a6 as descriptors, a7 as isFunction, a8 as _attachContext, a9 as _createResolver, aa as _descriptors, ab as mergeIf, ac as uid, ad as debounce, ae as retinaScale, af as clearCanvas, ag as setsEqual, ah as getDatasetClipArea, ai as _elementsEqual, aj as _isClickEvent, ak as _isBetween, al as _normalizeAngle, am as _readValueToProps, an as _updateBezierControlPoints, ao as _computeSegments, ap as _boundSegments, aq as _steppedInterpolation, ar as _bezierInterpolation, as as _pointInLine, at as _steppedLineTo, au as _bezierCurveTo, av as drawPoint, aw as addRoundedRectPath, ax as toTRBL, ay as toTRBLCorners, az as _boundSegment, aA as getRtlAdapter, aB as overrideTextDirection, aC as _textX, aD as restoreTextDirection, aE as drawPointLegend, aF as distanceBetweenPoints, aG as noop, aH as _setMinAndMaxByKey, aI as niceNum, aJ as almostWhole, aK as almostEquals, aL as _decimalPlaces, aM as Ticks, aN as log10, aO as _longestText, aP as _filterBetween, aQ as _lookup } from './chunks/helpers.dataset.js';
 import '@kurkle/color';
 
 class Animator {
@@ -1521,6 +1521,22 @@ class BarController extends DatasetController {
  _getStackCount(index) {
         return this._getStacks(undefined, index).length;
     }
+    _getAxisCount() {
+        return this._getAxis().length;
+    }
+    getFirstScaleIdForIndexAxis() {
+        const scales = this.chart.scales;
+        const indexScaleId = this.chart.options.indexAxis;
+        return Object.keys(scales).filter((key)=>scales[key].axis === indexScaleId).shift();
+    }
+    _getAxis() {
+        const axis = {};
+        const firstScaleAxisId = this.getFirstScaleIdForIndexAxis();
+        for (const dataset of this.chart.data.datasets){
+            axis[valueOrDefault(this.chart.options.indexAxis === 'x' ? dataset.xAxisID : dataset.yAxisID, firstScaleAxisId)] = true;
+        }
+        return Object.keys(axis);
+    }
  _getStackIndex(datasetIndex, name, dataIndex) {
         const stacks = this._getStacks(datasetIndex, dataIndex);
         const index = name !== undefined ? stacks.indexOf(name) : -1;
@@ -1611,10 +1627,13 @@ class BarController extends DatasetController {
         const skipNull = options.skipNull;
         const maxBarThickness = valueOrDefault(options.maxBarThickness, Infinity);
         let center, size;
+        const axisCount = this._getAxisCount();
         if (ruler.grouped) {
             const stackCount = skipNull ? this._getStackCount(index) : ruler.stackCount;
-            const range = options.barThickness === 'flex' ? computeFlexCategoryTraits(index, ruler, options, stackCount) : computeFitCategoryTraits(index, ruler, options, stackCount);
-            const stackIndex = this._getStackIndex(this.index, this._cachedMeta.stack, skipNull ? index : undefined);
+            const range = options.barThickness === 'flex' ? computeFlexCategoryTraits(index, ruler, options, stackCount * axisCount) : computeFitCategoryTraits(index, ruler, options, stackCount * axisCount);
+            const axisID = this.chart.options.indexAxis === 'x' ? this.getDataset().xAxisID : this.getDataset().yAxisID;
+            const axisNumber = this._getAxis().indexOf(valueOrDefault(axisID, this.getFirstScaleIdForIndexAxis()));
+            const stackIndex = this._getStackIndex(this.index, this._cachedMeta.stack, skipNull ? index : undefined) + axisNumber;
             center = range.start + range.chunk * stackIndex + range.chunk / 2;
             size = Math.min(maxBarThickness, range.chunk * range.ratio);
         } else {
@@ -1834,19 +1853,24 @@ class DoughnutController extends DatasetController {
                 labels: {
                     generateLabels (chart) {
                         const data = chart.data;
+                        const { labels: { pointStyle , textAlign , color , useBorderRadius , borderRadius  }  } = chart.legend.options;
                         if (data.labels.length && data.datasets.length) {
-                            const { labels: { pointStyle , color  }  } = chart.legend.options;
                             return data.labels.map((label, i)=>{
                                 const meta = chart.getDatasetMeta(0);
                                 const style = meta.controller.getStyle(i);
                                 return {
                                     text: label,
                                     fillStyle: style.backgroundColor,
-                                    strokeStyle: style.borderColor,
                                     fontColor: color,
-                                    lineWidth: style.borderWidth,
-                                    pointStyle: pointStyle,
                                     hidden: !chart.getDataVisibility(i),
+                                    lineDash: style.borderDash,
+                                    lineDashOffset: style.borderDashOffset,
+                                    lineJoin: style.borderJoinStyle,
+                                    lineWidth: style.borderWidth,
+                                    strokeStyle: style.borderColor,
+                                    textAlign: textAlign,
+                                    pointStyle: pointStyle,
+                                    borderRadius: useBorderRadius && (borderRadius || style.borderRadius),
                                     index: i
                                 };
                             });
@@ -2631,10 +2655,20 @@ var adapters = {
 function binarySearch(metaset, axis, value, intersect) {
     const { controller , data , _sorted  } = metaset;
     const iScale = controller._cachedMeta.iScale;
+    const spanGaps = metaset.dataset ? metaset.dataset.options ? metaset.dataset.options.spanGaps : null : null;
     if (iScale && axis === iScale.axis && axis !== 'r' && _sorted && data.length) {
         const lookupMethod = iScale._reversePixels ? _rlookupByKey : _lookupByKey;
         if (!intersect) {
-            return lookupMethod(data, axis, value);
+            const result = lookupMethod(data, axis, value);
+            if (spanGaps) {
+                const { vScale  } = controller._cachedMeta;
+                const { _parsed  } = metaset;
+                const distanceToDefinedLo = _parsed.slice(0, result.lo + 1).reverse().findIndex((point)=>!isNullOrUndef(point[vScale.axis]));
+                result.lo -= Math.max(0, distanceToDefinedLo);
+                const distanceToDefinedHi = _parsed.slice(result.hi).findIndex((point)=>!isNullOrUndef(point[vScale.axis]));
+                result.hi += Math.max(0, distanceToDefinedHi);
+            }
+            return result;
         } else if (controller._sharedOptions) {
             const el = data[0];
             const range = typeof el.getRange === 'function' && el.getRange(axis);
@@ -5068,18 +5102,22 @@ var registry = /* #__PURE__ */ new Registry();
 
 class PluginService {
     constructor(){
-        this._init = [];
+        this._init = undefined;
     }
  notify(chart, hook, args, filter) {
         if (hook === 'beforeInit') {
             this._init = this._createDescriptors(chart, true);
             this._notify(this._init, chart, 'install');
         }
+        if (this._init === undefined) {
+            return;
+        }
         const descriptors = filter ? this._descriptors(chart).filter(filter) : this._descriptors(chart);
         const result = this._notify(descriptors, chart, hook, args);
         if (hook === 'afterDestroy') {
             this._notify(descriptors, chart, 'stop');
             this._notify(this._init, chart, 'uninstall');
+            this._init = undefined;
         }
         return result;
     }
@@ -5522,7 +5560,7 @@ function needContext(proxy, names) {
     return false;
 }
 
-var version = "4.4.7";
+var version = "4.5.1";
 
 const KNOWN_POSITIONS = [
     'top',
@@ -5591,21 +5629,6 @@ function moveNumericKeys(obj, start, move) {
         return lastEvent;
     }
     return e;
-}
-function getSizeForArea(scale, chartArea, field) {
-    return scale.options.clip ? scale[field] : chartArea[field];
-}
-function getDatasetArea(meta, chartArea) {
-    const { xScale , yScale  } = meta;
-    if (xScale && yScale) {
-        return {
-            left: getSizeForArea(xScale, chartArea, 'left'),
-            right: getSizeForArea(xScale, chartArea, 'right'),
-            top: getSizeForArea(yScale, chartArea, 'top'),
-            bottom: getSizeForArea(yScale, chartArea, 'bottom')
-        };
-    }
-    return chartArea;
 }
 class Chart {
     static defaults = defaults;
@@ -6105,27 +6128,20 @@ class Chart {
     }
  _drawDataset(meta) {
         const ctx = this.ctx;
-        const clip = meta._clip;
-        const useClip = !clip.disabled;
-        const area = getDatasetArea(meta, this.chartArea);
         const args = {
             meta,
             index: meta.index,
             cancelable: true
         };
+        const clip = getDatasetClipArea(this, meta);
         if (this.notifyPlugins('beforeDatasetDraw', args) === false) {
             return;
         }
-        if (useClip) {
-            clipArea(ctx, {
-                left: clip.left === false ? 0 : area.left - clip.left,
-                right: clip.right === false ? this.width : area.right + clip.right,
-                top: clip.top === false ? 0 : area.top - clip.top,
-                bottom: clip.bottom === false ? this.height : area.bottom + clip.bottom
-            });
+        if (clip) {
+            clipArea(ctx, clip);
         }
         meta.controller.draw();
-        if (useClip) {
+        if (clip) {
             unclipArea(ctx);
         }
         args.cancelable = false;
@@ -6438,6 +6454,34 @@ function invalidatePlugins() {
     return each(Chart.instances, (chart)=>chart._plugins.invalidate());
 }
 
+function clipSelf(ctx, element, endAngle) {
+    const { startAngle , x , y , outerRadius , innerRadius , options  } = element;
+    const { borderWidth , borderJoinStyle  } = options;
+    const outerAngleClip = Math.min(borderWidth / outerRadius, _normalizeAngle(startAngle - endAngle));
+    ctx.beginPath();
+    ctx.arc(x, y, outerRadius - borderWidth / 2, startAngle + outerAngleClip / 2, endAngle - outerAngleClip / 2);
+    if (innerRadius > 0) {
+        const innerAngleClip = Math.min(borderWidth / innerRadius, _normalizeAngle(startAngle - endAngle));
+        ctx.arc(x, y, innerRadius + borderWidth / 2, endAngle - innerAngleClip / 2, startAngle + innerAngleClip / 2, true);
+    } else {
+        const clipWidth = Math.min(borderWidth / 2, outerRadius * _normalizeAngle(startAngle - endAngle));
+        if (borderJoinStyle === 'round') {
+            ctx.arc(x, y, clipWidth, endAngle - PI / 2, startAngle + PI / 2, true);
+        } else if (borderJoinStyle === 'bevel') {
+            const r = 2 * clipWidth * clipWidth;
+            const endX = -r * Math.cos(endAngle + PI / 2) + x;
+            const endY = -r * Math.sin(endAngle + PI / 2) + y;
+            const startX = r * Math.cos(startAngle + PI / 2) + x;
+            const startY = r * Math.sin(startAngle + PI / 2) + y;
+            ctx.lineTo(endX, endY);
+            ctx.lineTo(startX, startY);
+        }
+    }
+    ctx.closePath();
+    ctx.moveTo(0, 0);
+    ctx.rect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    ctx.clip('evenodd');
+}
 function clipArc(ctx, element, endAngle) {
     const { startAngle , pixelMargin , x , y , outerRadius , innerRadius  } = element;
     let angleMargin = pixelMargin / outerRadius;
@@ -6601,7 +6645,7 @@ function drawArc(ctx, element, offset, spacing, circular) {
 }
 function drawBorder(ctx, element, offset, spacing, circular) {
     const { fullCircles , startAngle , circumference , options  } = element;
-    const { borderWidth , borderJoinStyle , borderDash , borderDashOffset  } = options;
+    const { borderWidth , borderJoinStyle , borderDash , borderDashOffset , borderRadius  } = options;
     const inner = options.borderAlign === 'inner';
     if (!borderWidth) {
         return;
@@ -6628,6 +6672,9 @@ function drawBorder(ctx, element, offset, spacing, circular) {
     if (inner) {
         clipArc(ctx, element, endAngle);
     }
+    if (options.selfJoin && endAngle - startAngle >= PI && borderRadius === 0 && borderJoinStyle !== 'miter') {
+        clipSelf(ctx, element, endAngle);
+    }
     if (!fullCircles) {
         pathArc(ctx, element, offset, spacing, endAngle, circular);
         ctx.stroke();
@@ -6646,7 +6693,8 @@ class ArcElement extends Element {
         offset: 0,
         spacing: 0,
         angle: undefined,
-        circular: true
+        circular: true,
+        selfJoin: false
     };
     static defaultRoutes = {
         backgroundColor: 'backgroundColor'
@@ -7976,11 +8024,13 @@ function computeCircularBoundary(source) {
 
 function _drawfill(ctx, source, area) {
     const target = _getTarget(source);
-    const { line , scale , axis  } = source;
+    const { chart , index , line , scale , axis  } = source;
     const lineOpts = line.options;
     const fillOption = lineOpts.fill;
     const color = lineOpts.backgroundColor;
     const { above =color , below =color  } = fillOption || {};
+    const meta = chart.getDatasetMeta(index);
+    const clip = getDatasetClipArea(chart, meta);
     if (target && line.points.length) {
         clipArea(ctx, area);
         doFill(ctx, {
@@ -7990,34 +8040,54 @@ function _drawfill(ctx, source, area) {
             below,
             area,
             scale,
-            axis
+            axis,
+            clip
         });
         unclipArea(ctx);
     }
 }
 function doFill(ctx, cfg) {
-    const { line , target , above , below , area , scale  } = cfg;
+    const { line , target , above , below , area , scale , clip  } = cfg;
     const property = line._loop ? 'angle' : cfg.axis;
     ctx.save();
-    if (property === 'x' && below !== above) {
-        clipVertical(ctx, target, area.top);
-        fill(ctx, {
-            line,
-            target,
-            color: above,
-            scale,
-            property
-        });
-        ctx.restore();
-        ctx.save();
-        clipVertical(ctx, target, area.bottom);
+    let fillColor = below;
+    if (below !== above) {
+        if (property === 'x') {
+            clipVertical(ctx, target, area.top);
+            fill(ctx, {
+                line,
+                target,
+                color: above,
+                scale,
+                property,
+                clip
+            });
+            ctx.restore();
+            ctx.save();
+            clipVertical(ctx, target, area.bottom);
+        } else if (property === 'y') {
+            clipHorizontal(ctx, target, area.left);
+            fill(ctx, {
+                line,
+                target,
+                color: below,
+                scale,
+                property,
+                clip
+            });
+            ctx.restore();
+            ctx.save();
+            clipHorizontal(ctx, target, area.right);
+            fillColor = above;
+        }
     }
     fill(ctx, {
         line,
         target,
-        color: below,
+        color: fillColor,
         scale,
-        property
+        property,
+        clip
     });
     ctx.restore();
 }
@@ -8050,15 +8120,44 @@ function clipVertical(ctx, target, clipY) {
     ctx.closePath();
     ctx.clip();
 }
+function clipHorizontal(ctx, target, clipX) {
+    const { segments , points  } = target;
+    let first = true;
+    let lineLoop = false;
+    ctx.beginPath();
+    for (const segment of segments){
+        const { start , end  } = segment;
+        const firstPoint = points[start];
+        const lastPoint = points[_findSegmentEnd(start, end, points)];
+        if (first) {
+            ctx.moveTo(firstPoint.x, firstPoint.y);
+            first = false;
+        } else {
+            ctx.lineTo(clipX, firstPoint.y);
+            ctx.lineTo(firstPoint.x, firstPoint.y);
+        }
+        lineLoop = !!target.pathSegment(ctx, segment, {
+            move: lineLoop
+        });
+        if (lineLoop) {
+            ctx.closePath();
+        } else {
+            ctx.lineTo(clipX, lastPoint.y);
+        }
+    }
+    ctx.lineTo(clipX, target.first().y);
+    ctx.closePath();
+    ctx.clip();
+}
 function fill(ctx, cfg) {
-    const { line , target , property , color , scale  } = cfg;
+    const { line , target , property , color , scale , clip  } = cfg;
     const segments = _segments(line, target, property);
     for (const { source: src , target: tgt , start , end  } of segments){
         const { style: { backgroundColor =color  } = {}  } = src;
         const notShape = target !== true;
         ctx.save();
         ctx.fillStyle = backgroundColor;
-        clipBounds(ctx, scale, notShape && _getBounds(property, start, end));
+        clipBounds(ctx, scale, clip, notShape && _getBounds(property, start, end));
         ctx.beginPath();
         const lineLoop = !!line.pathSegment(ctx, src);
         let loop;
@@ -8082,12 +8181,30 @@ function fill(ctx, cfg) {
         ctx.restore();
     }
 }
-function clipBounds(ctx, scale, bounds) {
-    const { top , bottom  } = scale.chart.chartArea;
+function clipBounds(ctx, scale, clip, bounds) {
+    const chartArea = scale.chart.chartArea;
     const { property , start , end  } = bounds || {};
-    if (property === 'x') {
+    if (property === 'x' || property === 'y') {
+        let left, top, right, bottom;
+        if (property === 'x') {
+            left = start;
+            top = chartArea.top;
+            right = end;
+            bottom = chartArea.bottom;
+        } else {
+            left = chartArea.left;
+            top = start;
+            right = chartArea.right;
+            bottom = end;
+        }
         ctx.beginPath();
-        ctx.rect(start, top, end - start, bottom - top);
+        if (clip) {
+            left = Math.max(left, clip.left);
+            right = Math.min(right, clip.right);
+            top = Math.max(top, clip.top);
+            bottom = Math.min(bottom, clip.bottom);
+        }
+        ctx.rect(left, top, right - left, bottom - top);
         ctx.clip();
     }
 }
@@ -10990,7 +11107,7 @@ const INTERVALS = {
         value = parser(value);
     }
     if (!isNumberFinite(value)) {
-        value = typeof parser === 'string' ? adapter.parse(value,  parser) : adapter.parse(value);
+        value = typeof parser === 'string' ? adapter.parse(value, parser) : adapter.parse(value);
     }
     if (value === null) {
         return null;

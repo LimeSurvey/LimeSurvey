@@ -26,9 +26,9 @@ $form = $this->beginWidget(
 <div class="modal-body edit-participant-modal-body ">
     <input type="hidden" name="oper" value="<?php echo $editType; ?>"/>
     <?= $form->hiddenField($model, 'participant_id') ?>
-    <fieldset>
+    <div>
         <?php
-        echo "<legend>" . gT("Basic attributes") . "</legend>";
+        echo '<h3 class="h4">' . gT("Basic attributes") . "</h3>";
         $baseControlGroupHtmlOptions = [
             'labelOptions' => ['class' => ''],
             'class'        => '',
@@ -78,7 +78,7 @@ $form = $this->beginWidget(
             <div>
                 <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                     'model'         => $model,
-                    'ariaLabel'     => gT("Participant is on blocklist"),
+                    'ariaLabel'     => gT("Participant is on blocklist:"),
                     'attribute'     => 'blacklisted',
                     'checkedOption' => $model->blacklisted ?? 'N',
                     'selectOptions' => [
@@ -91,7 +91,6 @@ $form = $this->beginWidget(
 
         <!-- Change owner -->
         <?php if ($model->isOwnerOrSuperAdmin()): ?>
-            <?php ?>
             <div class='mb-3'>
                 <label id="owner_uid_label" class='form-label' for="owner_uid"><?php eT("Owner:"); ?></label>
                 <?php
@@ -107,7 +106,7 @@ $form = $this->beginWidget(
                 ?>
             </div>
         <?php endif; ?>
-    </fieldset>
+    </div>
 
     <?php if (count($extraAttributes) > 0): ?>
         <fieldset>

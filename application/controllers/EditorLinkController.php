@@ -2,7 +2,7 @@
 
 /*
  * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2026 The LimeSurvey Project Team
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -47,6 +47,8 @@ class EditorLinkController extends LSYii_Controller
     /**
      * Create and set react auth token to cookie.
      *
+     * The cookie also carries the entry script name, see getScriptName().
+     *
      * @return void
      */
     private function setAuthenticationInitCookie()
@@ -65,16 +67,36 @@ class EditorLinkController extends LSYii_Controller
         /** @var \LSYii_Application */
         $app = \App();
 
-        $cookieDataJson = json_encode(
-            $authTokenSimple->getTokenData(
-                $session,
-                $app->user->getId()
-            )
+        $cookieData = $authTokenSimple->getTokenData(
+            $session,
+            $app->user->getId()
         );
+        $cookieData['scriptName'] = $this->getScriptName();
+
+        $cookieDataJson = json_encode($cookieData);
 
         $cookie = new CHttpCookie($cookieName, $cookieDataJson);
         $cookie->expire = time() + 10;
 
         App()->request->cookies[$cookieName] = $cookie;
+    }
+
+    /**
+     * Returns the entry script name the editor has to put into its URLs.
+     *
+     * The editor is a static page, so it cannot know whether the URL manager
+     * is configured to show the script name. Without the script name, the
+     * URLs of the editor (REST API, links to the administration) only work
+     * if the web server rewrites them to the entry script.
+     *
+     * @return string The script name (e.g. "index.php"), or an empty string if "showScriptName" is disabled
+     */
+    private function getScriptName()
+    {
+        if (!App()->getUrlManager()->showScriptName) {
+            return '';
+        }
+
+        return basename(App()->request->getScriptUrl());
     }
 }

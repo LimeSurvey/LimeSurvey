@@ -36,13 +36,14 @@ background-color:lightyellow;
 .table-responsive {
     overflow-x: visible;
 }
-#vue-sidebar-container {
-    display: none;
+
+/**
+ * Wrap long unbreakable text (URLs, expressions) in the last column instead of letting it widen the table beyond the clipped page
+ */
+#logicfiletable td:last-child {
+    overflow-wrap: anywhere;
 }
-#pjax-content {
-    max-width: 100%!important;
-}
-#vue-apps-main-container > .col-11 {
-    width: 100%;
-    max-width: 100%;
+.logicfileattributetable th,
+.logicfileattributetable td:first-child {
+    overflow-wrap: normal;
 }
