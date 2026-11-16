@@ -263,7 +263,7 @@ export const ArrayParticipantMode = ({
         l10ns: {
           [language]: {
             [result.entity === Entities.subquestion ? 'question' : 'answer']:
-              'No answer',
+              t('No answer'),
           },
         },
         scaleId: isArrayDualScale ? undefined : scale,
@@ -297,7 +297,7 @@ export const ArrayParticipantMode = ({
       sortKey = 'sortOrder'
       titleKey = 'answer'
       rowName = 'answer option'
-      placeholder = 'Answer option'
+      placeholder = t('Answer option')
       codeKey = 'code'
       entity = Entities.answer
     } else {
@@ -312,7 +312,7 @@ export const ArrayParticipantMode = ({
       items.push({
         l10ns: {
           [language]: {
-            ['answer']: 'No answer',
+            ['answer']: t('No answer'),
           },
         },
       })
