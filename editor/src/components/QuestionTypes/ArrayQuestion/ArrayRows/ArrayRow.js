@@ -35,7 +35,7 @@ export const ArrayRow = ({
   titleValue = '',
   numberOfHorizontalEntities,
   qid,
-  placeholder = 'Subquestion',
+  placeholder,
   itemsKey,
   isNoAnswer = false,
   code,
@@ -125,7 +125,7 @@ export const ArrayRow = ({
         >
           <ContentEditor
             id={id}
-            placeholder={placeholder}
+            placeholder={placeholder ?? t('Subquestion')}
             value={titleValue}
             update={(value) => handleUpdateL10ns(value, index)}
             className="array-subquestion-content-editor choice"

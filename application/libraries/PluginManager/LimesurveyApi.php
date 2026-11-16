@@ -359,16 +359,19 @@ class LimesurveyApi
 
     /**
      * Gets an array of old response table names for a survey.
+     *
+     * Only tables named <prefix>old_responses_<surveyId>_<timestamp> are returned, so the archives
+     * of another survey whose ID starts with the same digits are never part of the list.
+     *
      * @param int $surveyId
-     * @return string[]
+     * @return string[] Table names including the table prefix
      */
     public function getOldResponseTables($surveyId)
     {
         $tables = array();
-        $base = App()->getDb()->tablePrefix . 'old_responses_' . $surveyId;
-        $timingbase = App()->getDb()->tablePrefix . 'old_timings_' . $surveyId;
+        $pattern = '/^' . preg_quote(App()->getDb()->tablePrefix . 'old_responses_' . (int) $surveyId, '/') . '_\d+$/';
         foreach (App()->getDb()->getSchema()->getTableNames() as $table) {
-            if (strpos((string) $table, $base) === 0 && strpos((string) $table, $timingbase) === false) {
+            if (preg_match($pattern, (string) $table)) {
                 $tables[] = $table;
             }
         }

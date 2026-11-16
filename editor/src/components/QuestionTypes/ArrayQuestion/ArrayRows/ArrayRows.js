@@ -48,7 +48,7 @@ export const ArrayRows = ({
     let sortKey = 'sortOrder'
     let titleKey = 'question'
     let rowName = 'subquestion'
-    let placeholder = 'Subquestion'
+    let placeholder = t('Subquestion')
     let entity = Entities.subquestion
     let codeKey = 'title'
 
@@ -63,7 +63,7 @@ export const ArrayRows = ({
       sortKey = 'sortOrder'
       titleKey = 'answer'
       rowName = 'answer option'
-      placeholder = 'Answer option'
+      placeholder = t('Answer option')
       codeKey = 'code'
       entity = Entities.answer
     } else {

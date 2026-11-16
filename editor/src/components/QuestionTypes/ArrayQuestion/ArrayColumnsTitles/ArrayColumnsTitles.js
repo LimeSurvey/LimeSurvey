@@ -237,7 +237,9 @@ export const ArrayColumnsTitles = ({
             >
               <ContentEditor
                 id={`subquestion-header-${qid}${scaleId}`}
-                placeholder={`Header ${scaleId + 1}`}
+                placeholder={
+                  scaleId === SCALE_1 ? t('Header A') : t('Header B')
+                }
                 value={headerValue}
                 update={(value) => handleHeaderChange(value, scaleId)}
                 style={{ width: 'max-content' }}
