@@ -138,6 +138,14 @@ class CreateQuestionTest extends TestBaseClassWeb
 
             $questionTypeSelector = $web->findByCss('#trigger_questionTypeSelector_button button');
             $questionTypeSelector->click();
+            /* Wait until the dialog has finished opening: Only then it marks the current question type
+               and expands its group. Bootstrap ignores the closing of a dialog that is still opening
+               and the opening of a group while another group is still expanding. */
+            self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::presenceOfElementLocated(
+                    WebDriverBy::cssSelector('#accordion_questionTypeSelector .accordion-collapse.show [aria-current="true"]')
+                )
+            );
             self::$webDriver->wait(10)->until(
                 WebDriverExpectedCondition::elementToBeClickable(
                     WebDriverBy::id('heading_single_choice_questions')
@@ -146,9 +154,10 @@ class CreateQuestionTest extends TestBaseClassWeb
 
             $questionTypeSelector = $web->findById('heading_single_choice_questions');
             $questionTypeSelector->click();
+            /* The group has the "show" class once it is completely expanded */
             self::$webDriver->wait(10)->until(
                 WebDriverExpectedCondition::elementToBeClickable(
-                    WebDriverBy::cssSelector('#collapsible_single_choice_questions a:first-child')
+                    WebDriverBy::cssSelector('#collapsible_single_choice_questions.show a:first-child')
                 )
             );
 
@@ -184,6 +193,7 @@ class CreateQuestionTest extends TestBaseClassWeb
 
             $question = \Question::model()->findByAttributes(['title' => $questionCode]);
             $this->assertNotEmpty($question);
+            $this->assertSame(\Question::QT_5_POINT_CHOICE, $question->type, 'The selected question type is saved');
 
             // Switch to new tab.
             /*
