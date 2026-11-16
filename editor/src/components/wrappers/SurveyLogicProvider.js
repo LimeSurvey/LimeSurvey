@@ -273,28 +273,22 @@ export const SurveyLogicProvider = ({ children }) => {
         pendingOperations.isEmpty() &&
         (surveyRefreshRequired || changeRefused)
       ) {
-        const surveyFetched = fetchSurvey(surveyId)
+        // The question settings show a copy of the focused question: Refresh it too,
+        // also when a refusal waited for later edits. Nothing is pending, so the
+        // reloaded question is the current one.
+        fetchSurvey(surveyId)
+          .then(({ survey } = {}) => {
+            const focus = queryClient.getQueryData([STATES.FOCUSED_ENTITY])
+            const question =
+              survey?.questionGroups?.[focus?.groupIndex]?.questions?.[
+                focus?.questionIndex
+              ]
+            if (question) {
+              setFocused(question, focus.groupIndex, focus.questionIndex, false)
+            }
+          })
+          .catch((error) => errorToast(error.message))
         setSurveyRefreshRequired(false)
-        if (changeRefused) {
-          // The question settings show a copy of the focused question: Refresh it too
-          surveyFetched
-            .then(({ survey } = {}) => {
-              const focus = queryClient.getQueryData([STATES.FOCUSED_ENTITY])
-              const question =
-                survey?.questionGroups?.[focus?.groupIndex]?.questions?.[
-                  focus?.questionIndex
-                ]
-              if (question) {
-                setFocused(
-                  question,
-                  focus.groupIndex,
-                  focus.questionIndex,
-                  false
-                )
-              }
-            })
-            .catch((error) => errorToast(error.message))
-        }
       }
     }
 
