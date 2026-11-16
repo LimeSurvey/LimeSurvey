@@ -7,9 +7,10 @@
         <lastUpdate>2021-01-26</lastUpdate>
         <author>Denis Chenu</author>
         <authorUrl>https://www.sondages.pro</authorUrl>
+        <documentationUrl>https://www.limesurvey.org/manual/ExpressionQuestionHelp_plugin</documentationUrl>
         <version>1.0.1</version>
         <license>GPL</license>
-        <description><![CDATA[Add QCODE.help for expression Manager. <a href="https://manual.limesurvey.org/ExpressionQuestionHelp">More information on LimeSurvey manual.</a>]]></description>
+        <description><![CDATA[Add QCODE.help for expression Manager. <a href="https://www.limesurvey.org/manual/ExpressionQuestionHelp_plugin">More information on LimeSurvey manual.</a>]]></description>
     </metadata>
 
     <compatibility>

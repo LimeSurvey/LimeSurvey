@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE ldml SYSTEM "../../common/dtd/ldml.dtd">
-<!-- Copyright © 1991-2013 Unicode, Inc.
-CLDR data files are interpreted according to the LDML specification (http://unicode.org/reports/tr35/)
+<!-- Copyright © 1991-2026 Unicode, Inc.
 For terms of use, see http://www.unicode.org/copyright.html
+SPDX-License-Identifier: Unicode-3.0
+CLDR data files are interpreted according to the LDML specification (http://unicode.org/reports/tr35/)
 -->
 <ldml>
 	<identity>
-		<version number="$Revision: 9728 $"/>
-		<generation date="$Date: 2014-02-12 22:14:13 -0600 (Wed, 12 Feb 2014) $"/>
+		<version number="$Revision$"/>
 		<language type="mfe"/>
 	</identity>
 	<localeDisplayNames>
@@ -66,7 +66,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="AI">Anguilla</territory>
 			<territory type="AL">Albani</territory>
 			<territory type="AM">Armeni</territory>
-			<territory type="AN">Antiy neerlande</territory>
 			<territory type="AO">Angola</territory>
 			<territory type="AR">Larzantinn</territory>
 			<territory type="AS">Samoa amerikin</territory>
@@ -97,7 +96,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="CF">Repiblik Lafrik Santral</territory>
 			<territory type="CG">Kongo</territory>
 			<territory type="CH">Laswis</territory>
-			<territory type="CI">Côte d'Ivoire</territory>
+			<territory type="CI">Côte d’Ivoire</territory>
 			<territory type="CK">Zil Cook</territory>
 			<territory type="CL">Shili</territory>
 			<territory type="CM">Kamerounn</territory>
@@ -150,7 +149,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="IE">Irland</territory>
 			<territory type="IL">Izrael</territory>
 			<territory type="IN">Lenn</territory>
-			<territory type="IO">Teritwar Britanik Losean Indien</territory>
+			<territory type="IO" draft="provisional">Teritwar Britanik Losean Indien</territory>
 			<territory type="IQ">Irak</territory>
 			<territory type="IR">Iran</territory>
 			<territory type="IS">Island</territory>
@@ -185,7 +184,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="MD">Moldavi</territory>
 			<territory type="MG">Madagaskar</territory>
 			<territory type="MH">Zil Marshall</territory>
-			<territory type="MK">Masedwann</territory>
 			<territory type="ML">Mali</territory>
 			<territory type="MM">Myanmar</territory>
 			<territory type="MN">Mongoli</territory>
@@ -289,13 +287,8 @@ For terms of use, see http://www.unicode.org/copyright.html
 	<characters>
 		<exemplarCharacters>[a b c d e f g h i j k l m n o p r s t u v w x y z]</exemplarCharacters>
 		<exemplarCharacters type="index">[A B C D E F G H I J K L M N O P R S T U V W X Y Z]</exemplarCharacters>
+		<exemplarCharacters type="numbers">[  \- ‑ . % ‰ + 0 1 2 3 4 5 6 7 8 9]</exemplarCharacters>
 	</characters>
-	<delimiters>
-		<quotationStart>“</quotationStart>
-		<quotationEnd>”</quotationEnd>
-		<alternateQuotationStart>‘</alternateQuotationStart>
-		<alternateQuotationEnd>’</alternateQuotationEnd>
-	</delimiters>
 	<dates>
 		<calendars>
 			<calendar type="generic">
@@ -318,6 +311,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 					<dateFormatLength type="short">
 						<dateFormat>
 							<pattern>d/M/y GGGGG</pattern>
+							<datetimeSkeleton>GGGGGyMd</datetimeSkeleton>
 						</dateFormat>
 					</dateFormatLength>
 				</dateFormats>
@@ -473,6 +467,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 					<dateFormatLength type="short">
 						<dateFormat>
 							<pattern>d/M/y</pattern>
+							<datetimeSkeleton>yMd</datetimeSkeleton>
 						</dateFormat>
 					</dateFormatLength>
 				</dateFormats>
@@ -510,7 +505,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 						<dateFormatItem id="MMMMd">d MMMM</dateFormatItem>
 						<dateFormatItem id="MMMMEd">E d MMMM</dateFormatItem>
 						<dateFormatItem id="ms">m:ss</dateFormatItem>
-						<dateFormatItem id="y">y</dateFormatItem>
 						<dateFormatItem id="yM">M/y</dateFormatItem>
 						<dateFormatItem id="yMEd">E d/M/y</dateFormatItem>
 						<dateFormatItem id="yMM">MM/y</dateFormatItem>
@@ -659,6 +653,9 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>fran malgas</displayName>
 			</currency>
 			<currency type="MRO">
+				<displayName>ouguiya moritanien (1973–2017)</displayName>
+			</currency>
+			<currency type="MRU">
 				<displayName>ouguiya moritanien</displayName>
 			</currency>
 			<currency type="MUR">
@@ -695,13 +692,19 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<currency type="SHP">
 				<displayName>liv Sainte-Hélène</displayName>
 			</currency>
-			<currency type="SLL">
+			<currency type="SLE">
 				<displayName>leonn Sierra-Leone</displayName>
+			</currency>
+			<currency type="SLL">
+				<displayName>leonn Sierra-Leone (1964—2022)</displayName>
 			</currency>
 			<currency type="SOS">
 				<displayName>shilingi somalien</displayName>
 			</currency>
 			<currency type="STD">
+				<displayName>dobra santomeen (1977–2017)</displayName>
+			</currency>
+			<currency type="STN">
 				<displayName>dobra santomeen</displayName>
 			</currency>
 			<currency type="SZL">
@@ -746,4 +749,3 @@ For terms of use, see http://www.unicode.org/copyright.html
 		</messages>
 	</posix>
 </ldml>
-

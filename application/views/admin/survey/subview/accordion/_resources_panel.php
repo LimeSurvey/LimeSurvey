@@ -37,7 +37,6 @@ var sAddParam = '';
                 'fileTypeShow',
                 array(
                     'files' => gT('Files', 'unescaped'),
-                    'flash' => gT('Flash', 'unescaped'),
                     'images' => gT('Images', 'unescaped')
                 ),
                 array(
@@ -60,7 +59,7 @@ var sAddParam = '';
         <div class="col-12 file-manager">
             <iframe
                 id="browseiframe"
-                src="<?php echo App()->request->getBaseUrl(); ?>/assets/packages/kcfinder/browse.php?language='<?php echo sTranslateLangCode2CK(App()->language); ?>'"
+                src="<?php echo App()->request->getBaseUrl(); ?>/assets/packages/kcfinder/browse.php?language=<?php echo urlencode(sTranslateLangCode2CK(App()->language)); ?>"
                 width="100%"
                 height="600px">
             </iframe>

@@ -157,7 +157,7 @@ class Zend_OpenId_Provider_Storage_File extends Zend_OpenId_Provider_Storage
             $ret = false;
             $data = stream_get_contents($f);
             if (!empty($data)) {
-                list($storedHandle, $macFunc, $secret, $expires) = unserialize($data);
+                list($storedHandle, $macFunc, $secret, $expires) = unserialize($data, ['allowed_classes' => false]);
                 if ($handle === $storedHandle && $expires > time()) {
                     $ret = true;
                 } else {
@@ -266,7 +266,7 @@ class Zend_OpenId_Provider_Storage_File extends Zend_OpenId_Provider_Storage
             $ret = false;
             $data = stream_get_contents($f);
             if (!empty($data)) {
-                list($storedId, $storedPassword, $trusted) = unserialize($data);
+                list($storedId, $storedPassword, $trusted) = unserialize($data, ['allowed_classes' => false]);
                 if ($id === $storedId) {
                     $ret = true;
                 }
@@ -307,7 +307,7 @@ class Zend_OpenId_Provider_Storage_File extends Zend_OpenId_Provider_Storage
             $ret = false;
             $data = stream_get_contents($f);
             if (!empty($data)) {
-                list($storedId, $storedPassword, $trusted) = unserialize($data);
+                list($storedId, $storedPassword, $trusted) = unserialize($data, ['allowed_classes' => false]);
                 if ($id === $storedId && $password === $storedPassword) {
                     $ret = true;
                 }
@@ -375,7 +375,7 @@ class Zend_OpenId_Provider_Storage_File extends Zend_OpenId_Provider_Storage
             $ret = false;
             $data = stream_get_contents($f);
             if (!empty($data)) {
-                list($storedId, $storedPassword, $trusted) = unserialize($data);
+                list($storedId, $storedPassword, $trusted) = unserialize($data, ['allowed_classes' => false]);
                 if ($id === $storedId) {
                     $ret = $trusted;
                 }
@@ -417,7 +417,7 @@ class Zend_OpenId_Provider_Storage_File extends Zend_OpenId_Provider_Storage
             $ret = false;
             $data = stream_get_contents($f);
             if (!empty($data)) {
-                list($storedId, $storedPassword, $sites) = unserialize($data);
+                list($storedId, $storedPassword, $sites) = unserialize($data, ['allowed_classes' => false]);
                 if ($id === $storedId) {
                     if ($trusted === null) {
                         unset($sites[$site]);

@@ -220,7 +220,8 @@ class Writer
             $this->variables[$idx] = $variable;
 
             if (\is_array($var->values) && (\count($var->values) !== 0)) {
-                if (Record\Variable::isVeryLong($variable->width) !== false) {
+                // Value label records (type 3) only hold strings up to 8 bytes, wider strings need the long string value labels record
+                if ($variable->width > 8) {
                     $this->info[Record\Info\LongStringValueLabels::SUBTYPE][$longName] = [
                         'width'  => $var->width,
                         'values' => $var->values,

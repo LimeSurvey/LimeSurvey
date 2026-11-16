@@ -268,6 +268,46 @@ class LSHttpRequest extends CHttpRequest
     }
 
     /**
+     * Validates the CSRF token of the request.
+     * If the token is missing because PHP dropped the POST variables beyond max_input_vars,
+     * a message pointing to that setting is shown instead of the generic CSRF error.
+     * @param CEvent $event event parameter
+     * @return void
+     * @throws CHttpException if the validation fails
+     */
+    public function validateCsrfToken($event)
+    {
+        try {
+            parent::validateCsrfToken($event);
+        } catch (CHttpException $exception) {
+            if ($this->isPostDataTruncated()) {
+                throw new CHttpException(
+                    400,
+                    gT('The data received seems incomplete. This usually happens due to server limitations (PHP setting max_input_vars). Please contact your system administrator.', 'unescaped')
+                );
+            }
+            throw $exception;
+        }
+    }
+
+    /**
+     * Returns true if the POST data reached the PHP max_input_vars limit, so PHP may have dropped variables.
+     * @return bool
+     */
+    protected function isPostDataTruncated()
+    {
+        $maxInputVars = (int) ini_get('max_input_vars');
+        if (!$this->getIsPostRequest() || $maxInputVars <= 0) {
+            return false;
+        }
+        $postVarsCount = 0;
+        array_walk_recursive($_POST, function () use (&$postVarsCount) {
+            $postVarsCount++;
+        });
+        return $postVarsCount >= $maxInputVars;
+    }
+
+    /**
      * Is this a REST API request
      *
      * @return boolean

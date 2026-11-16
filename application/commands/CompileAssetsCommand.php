@@ -18,6 +18,7 @@ class CompileAssetsCommand extends CConsoleCommand
      * @param array $args
      * @return int
      */
+    #[\Override]
     public function run($args)
     {
         if (isset($args) && count($args) < 2) {
@@ -92,7 +93,6 @@ class CompileAssetsCommand extends CConsoleCommand
             $proc = popen("$cmd 2>&1 ; echo Exit status : $?", 'r');
         }
 
-        $live_output     = "";
         $complete_output = "";
 
         while (!feof($proc)) {

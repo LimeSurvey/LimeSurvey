@@ -89,7 +89,7 @@ export const QuestionContextMenu = ({
         }
         return (
           <React.Fragment key={`${code}-${button?.text}`}>
-            {button.seperator && <hr />}
+            {button.separator && <hr />}
 
             {button.overlay ? (
               <OverlayTrigger

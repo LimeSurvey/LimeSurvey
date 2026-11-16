@@ -198,6 +198,8 @@ export const TinyMCE = ({
             underline: { inline: 'u', exact: true },
           },
           plugins: ['link'],
+          // Pasted or dropped image files would otherwise be embedded as huge base64 data URIs into the text
+          paste_data_images: false,
           verify_html: false,
           disabled,
           toolbar: showToolbar

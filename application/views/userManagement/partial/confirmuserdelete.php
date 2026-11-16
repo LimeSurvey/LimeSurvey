@@ -1,7 +1,7 @@
 <?php
 Yii::app()->getController()->renderPartial(
     '/layouts/partial_modals/modal_header',
-    ['modalTitle' => gT('Delete user')]
+    ['modalTitle' => gT('Delete user'), 'modalTitleId' => 'UserManagement-action-modal-title']
 );
 ?>
 

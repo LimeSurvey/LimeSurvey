@@ -3,12 +3,12 @@
 if ($action == 'activate') {
     Yii::app()->getController()->renderPartial(
         '/layouts/partial_modals/modal_header',
-        ['modalTitle' => gT('Activate user')]
+        ['modalTitle' => gT('Activate user'), 'modalTitleId' => 'UserManagement-action-modal-title']
     );
 } else {
     Yii::app()->getController()->renderPartial(
         '/layouts/partial_modals/modal_header',
-        ['modalTitle' => gT('Deactivate user')]
+        ['modalTitle' => gT('Deactivate user'), 'modalTitleId' => 'UserManagement-action-modal-title']
     );
 }
 

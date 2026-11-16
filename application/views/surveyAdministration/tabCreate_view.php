@@ -29,6 +29,7 @@ App()->getClientScript()->registerScript("tabCreate-view-variables", "
     var standardthemerooturl='" . Yii::app()->getConfig('standardthemerooturl') . "';
     var templaterooturl='" . Yii::app()->getConfig('userthemerooturl') . "';
     var formId = 'addnewsurvey';
+    var sSurveyCreationFailed = '" . gT("Survey could not be created.", 'js') . "';
 
 ", LSYii_ClientScript::POS_BEGIN);
 ?>
@@ -201,9 +202,21 @@ App()->getClientScript()->registerScript("tabCreate-view-variables", "
         $('#addnewsurvey').on('submit', function(event) {
             event.preventDefault();
             // Disable both buttons. Normally there's no need to re-enable them. The 'save-form-button' may already be disabled by it's onclick event.
+            var $saveButton = $('#save-form-button');
+            var saveButtonOnclick = $saveButton.attr('onclick');
             $('#create-survey-submit').prop('disabled', true);
-            $('#save-form-button').addClass('disabled').attr('onclick', 'return false;');
+            $saveButton.addClass('disabled').attr('onclick', 'return false;');
             var form = this;
+            // Re-enable both buttons and show the error, so the user can correct the input or try again
+            var showCreationError = function(message, missingField) {
+                $('#create-survey-submit').prop('disabled', false);
+                $saveButton.removeClass('disabled').prop('disabled', false).attr('onclick', saveButtonOnclick);
+                $saveButton.find('.lsLoadingStateIndicator').remove();
+                LS.LsGlobalNotifier.createAlert(message, 'danger', {showCloseButton: true});
+                if (missingField) {
+                    $(form).find('[name="' + missingField + '"]').trigger('focus');
+                }
+            };
 
             updateCKfields();
             var data = $(form).serializeArray();
@@ -215,14 +228,18 @@ App()->getClientScript()->registerScript("tabCreate-view-variables", "
                 success: function(result) {
                     if (result.redirecturl != undefined) {
                         window.location.href = result.redirecturl;
+                    } else if (result.alertData != undefined) {
+                        showCreationError(result.alertData, result.missingField);
                     } else {
                         window.location.reload();
                     }
                 },
                 error: function(result) {
-                    console.log({
-                        result: result
-                    });
+                    // Logged out: The global ajaxError handler already shows the login modal
+                    if (result.status === 401) {
+                        return;
+                    }
+                    showCreationError(sSurveyCreationFailed);
                 }
             });
             return false;

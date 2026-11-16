@@ -1,63 +1,63 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE ldml SYSTEM "../../common/dtd/ldml.dtd">
-<!-- Copyright © 1991-2013 Unicode, Inc.
-CLDR data files are interpreted according to the LDML specification (http://unicode.org/reports/tr35/)
+<!-- Copyright © 1991-2026 Unicode, Inc.
 For terms of use, see http://www.unicode.org/copyright.html
+SPDX-License-Identifier: Unicode-3.0
+CLDR data files are interpreted according to the LDML specification (http://unicode.org/reports/tr35/)
 -->
 <ldml>
 	<identity>
-		<version number="$Revision: 9728 $"/>
-		<generation date="$Date: 2014-02-12 22:14:13 -0600 (Wed, 12 Feb 2014) $"/>
+		<version number="$Revision$"/>
 		<language type="shi"/>
 		<script type="Latn"/>
 	</identity>
 	<localeDisplayNames>
 		<languages>
-			<language type="ak">takant</language>
-			<language type="am">tamharit</language>
-			<language type="ar">taɛrabt</language>
-			<language type="be">tabilarust</language>
-			<language type="bg">tablɣarit</language>
-			<language type="bn">tabnɣalit</language>
-			<language type="cs">tatcikit</language>
-			<language type="de">talimant</language>
-			<language type="el">tagrigit</language>
-			<language type="en">tanglizt</language>
-			<language type="es">tasbnyulit</language>
-			<language type="fa">tafursit</language>
-			<language type="fr">tafransist</language>
-			<language type="ha">tahawsat</language>
-			<language type="hi">tahindit</language>
-			<language type="hu">tahnɣarit</language>
-			<language type="id">tandunisit</language>
-			<language type="ig">tigbut</language>
-			<language type="it">taṭalyant</language>
-			<language type="ja">tajabbunit</language>
-			<language type="jv">tajavanit</language>
-			<language type="km">taxmirt</language>
-			<language type="ko">takurit</language>
-			<language type="ms">tamalawit</language>
-			<language type="my">tabirmanit</language>
-			<language type="ne">tanibalit</language>
-			<language type="nl">tahulandit</language>
-			<language type="pa">tabnjabit</language>
-			<language type="pl">tabulunit</language>
-			<language type="pt">tabṛṭqizt</language>
-			<language type="ro">tarumanit</language>
-			<language type="ru">tarusit</language>
-			<language type="rw">taruwandit</language>
-			<language type="shi">tamazight</language>
-			<language type="so">tasumalit</language>
-			<language type="sv">taswidit</language>
-			<language type="ta">tatamilt</language>
-			<language type="th">tataylandit</language>
-			<language type="tr">taturkit</language>
-			<language type="uk">tukranit</language>
-			<language type="ur">turdut</language>
-			<language type="vi">tafitnamit</language>
-			<language type="yo">tayrubat</language>
-			<language type="zh">tacinwit</language>
-			<language type="zu">tazulut</language>
+			<language type="ak">Takant</language>
+			<language type="am">Tamharit</language>
+			<language type="ar">Taɛrabt</language>
+			<language type="be">Tabilarust</language>
+			<language type="bg">Tablɣarit</language>
+			<language type="bn">Tabnɣalit</language>
+			<language type="cs">Tatcikit</language>
+			<language type="de">Talimant</language>
+			<language type="el">Tagrigit</language>
+			<language type="en">Tanglizt</language>
+			<language type="es">Tasbnyulit</language>
+			<language type="fa">Tafursit</language>
+			<language type="fr">Tafransist</language>
+			<language type="ha">Tahawsat</language>
+			<language type="hi">Tahindit</language>
+			<language type="hu">Tahnɣarit</language>
+			<language type="id">Tandunisit</language>
+			<language type="ig">Tigbut</language>
+			<language type="it">Taṭalyant</language>
+			<language type="ja">Tajabbunit</language>
+			<language type="jv">Tajavanit</language>
+			<language type="km">Taxmirt</language>
+			<language type="ko">Takurit</language>
+			<language type="ms">Tamalawit</language>
+			<language type="my">Tabirmanit</language>
+			<language type="ne">Tanibalit</language>
+			<language type="nl">Tahulandit</language>
+			<language type="pa">Tabnjabit</language>
+			<language type="pl">Tabulunit</language>
+			<language type="pt">Tabṛṭqizt</language>
+			<language type="ro">Tarumanit</language>
+			<language type="ru">Tarusit</language>
+			<language type="rw">Taruwandit</language>
+			<language type="shi">Tashelḥiyt</language>
+			<language type="so">Tasumalit</language>
+			<language type="sv">Taswidit</language>
+			<language type="ta">Tatamilt</language>
+			<language type="th">Tataylandit</language>
+			<language type="tr">Taturkit</language>
+			<language type="uk">Tukranit</language>
+			<language type="ur">Turdut</language>
+			<language type="vi">Tafitnamit</language>
+			<language type="yo">Tayrubat</language>
+			<language type="zh">Tacinwit</language>
+			<language type="zu">Tazulut</language>
 		</languages>
 		<territories>
 			<territory type="AD">andura</territory>
@@ -67,7 +67,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="AI">angila</territory>
 			<territory type="AL">albanya</territory>
 			<territory type="AM">arminya</territory>
-			<territory type="AN">antiy n hulanda</territory>
 			<territory type="AO">angula</territory>
 			<territory type="AR">arjantin</territory>
 			<territory type="AS">samwa tamirikanit</territory>
@@ -151,7 +150,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="IE">irlanda</territory>
 			<territory type="IL">israyil</territory>
 			<territory type="IN">lhind</territory>
-			<territory type="IO">tamnaḍt tanglizit n ugaru ahindi</territory>
+			<territory type="IO" draft="provisional">tamnaḍt tanglizit n ugaru ahindi</territory>
 			<territory type="IQ">lɛiraq</territory>
 			<territory type="IR">iran</territory>
 			<territory type="IS">island</territory>
@@ -186,7 +185,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="MD">muldufya</territory>
 			<territory type="MG">madaɣacqar</territory>
 			<territory type="MH">tigzirin n marcal</territory>
-			<territory type="MK">masidunya</territory>
 			<territory type="ML">mali</territory>
 			<territory type="MM">myanmar</territory>
 			<territory type="MN">mnɣulya</territory>
@@ -288,9 +286,10 @@ For terms of use, see http://www.unicode.org/copyright.html
 		</territories>
 	</localeDisplayNames>
 	<characters>
-		<exemplarCharacters>[a b c d ḍ e ɛ f g {gʷ} ɣ h ḥ i j k {kʷ} l m n q r ṛ s ṣ t ṭ u w x y z]</exemplarCharacters>
+		<exemplarCharacters>[a b c dḍ e ɛ f g {gʷ} ɣ hḥ i j k {kʷ} l m n q rṛ sṣ tṭ u w x y z]</exemplarCharacters>
 		<exemplarCharacters type="auxiliary">[o p v]</exemplarCharacters>
-		<exemplarCharacters type="index">[A B C D Ḍ E Ɛ F G {Gʷ} Ɣ H Ḥ I J K {Kʷ} L M N Q R Ṛ S Ṣ T Ṭ U W X Y Z]</exemplarCharacters>
+		<exemplarCharacters type="index">[A B C DḌ E Ɛ F G {Gʷ} Ɣ HḤ I J K {Kʷ} L M N Q RṚ SṢ TṬ U W X Y Z]</exemplarCharacters>
+		<exemplarCharacters type="numbers">[  \- ‑ , % ‰ + 0 1 2 3 4 5 6 7 8 9]</exemplarCharacters>
 	</characters>
 	<delimiters>
 		<quotationStart>«</quotationStart>
@@ -320,6 +319,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 					<dateFormatLength type="short">
 						<dateFormat>
 							<pattern>d/M/y GGGGG</pattern>
+							<datetimeSkeleton>GGGGGyMd</datetimeSkeleton>
 						</dateFormat>
 					</dateFormatLength>
 				</dateFormats>
@@ -435,7 +435,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 				</quarters>
 				<dayPeriods>
 					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
+						<dayPeriodWidth type="abbreviated">
 							<dayPeriod type="am">tifawt</dayPeriod>
 							<dayPeriod type="pm">tadggʷat</dayPeriod>
 						</dayPeriodWidth>
@@ -470,31 +470,10 @@ For terms of use, see http://www.unicode.org/copyright.html
 					<dateFormatLength type="short">
 						<dateFormat>
 							<pattern>d/M/y</pattern>
+							<datetimeSkeleton>yMd</datetimeSkeleton>
 						</dateFormat>
 					</dateFormatLength>
 				</dateFormats>
-				<timeFormats>
-					<timeFormatLength type="full">
-						<timeFormat>
-							<pattern>HH:mm:ss zzzz</pattern>
-						</timeFormat>
-					</timeFormatLength>
-					<timeFormatLength type="long">
-						<timeFormat>
-							<pattern>HH:mm:ss z</pattern>
-						</timeFormat>
-					</timeFormatLength>
-					<timeFormatLength type="medium">
-						<timeFormat>
-							<pattern>HH:mm:ss</pattern>
-						</timeFormat>
-					</timeFormatLength>
-					<timeFormatLength type="short">
-						<timeFormat>
-							<pattern>HH:mm</pattern>
-						</timeFormat>
-					</timeFormatLength>
-				</timeFormats>
 				<dateTimeFormats>
 					<availableFormats>
 						<dateFormatItem id="M">M</dateFormatItem>
@@ -507,7 +486,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 						<dateFormatItem id="MMMMd">d MMMM</dateFormatItem>
 						<dateFormatItem id="MMMMEd">E d MMMM</dateFormatItem>
 						<dateFormatItem id="ms">m:ss</dateFormatItem>
-						<dateFormatItem id="y">y</dateFormatItem>
 						<dateFormatItem id="yM">M/y</dateFormatItem>
 						<dateFormatItem id="yMEd">E d/M/y</dateFormatItem>
 						<dateFormatItem id="yMMM">MMM y</dateFormatItem>
@@ -567,6 +545,47 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<currencyFormatLength>
 				<currencyFormat type="standard">
 					<pattern>#,##0.00¤</pattern>
+					<pattern alt="alphaNextToNumber" draft="provisional">#,##0.00 ¤</pattern>
+				</currencyFormat>
+			</currencyFormatLength>
+			<currencyFormatLength type="short">
+				<currencyFormat type="standard">
+					<pattern type="1000" count="one" draft="provisional">0K¤</pattern>
+					<pattern type="1000" count="few" draft="provisional">0K¤</pattern>
+					<pattern type="1000" count="other" draft="provisional">0K¤</pattern>
+					<pattern type="10000" count="one" draft="provisional">00K¤</pattern>
+					<pattern type="10000" count="few" draft="provisional">00K¤</pattern>
+					<pattern type="10000" count="other" draft="provisional">00K¤</pattern>
+					<pattern type="100000" count="one" draft="provisional">000K¤</pattern>
+					<pattern type="100000" count="few" draft="provisional">000K¤</pattern>
+					<pattern type="100000" count="other" draft="provisional">000K¤</pattern>
+					<pattern type="1000000" count="one" draft="provisional">0M¤</pattern>
+					<pattern type="1000000" count="few" draft="provisional">0M¤</pattern>
+					<pattern type="1000000" count="other" draft="provisional">0M¤</pattern>
+					<pattern type="10000000" count="one" draft="provisional">00M¤</pattern>
+					<pattern type="10000000" count="few" draft="provisional">00M¤</pattern>
+					<pattern type="10000000" count="other" draft="provisional">00M¤</pattern>
+					<pattern type="100000000" count="one" draft="provisional">000M¤</pattern>
+					<pattern type="100000000" count="few" draft="provisional">000M¤</pattern>
+					<pattern type="100000000" count="other" draft="provisional">000M¤</pattern>
+					<pattern type="1000000000" count="one" draft="provisional">0G¤</pattern>
+					<pattern type="1000000000" count="few" draft="provisional">0G¤</pattern>
+					<pattern type="1000000000" count="other" draft="provisional">0G¤</pattern>
+					<pattern type="10000000000" count="one" draft="provisional">00G¤</pattern>
+					<pattern type="10000000000" count="few" draft="provisional">00G¤</pattern>
+					<pattern type="10000000000" count="other" draft="provisional">00G¤</pattern>
+					<pattern type="100000000000" count="one" draft="provisional">000G¤</pattern>
+					<pattern type="100000000000" count="few" draft="provisional">000G¤</pattern>
+					<pattern type="100000000000" count="other" draft="provisional">000G¤</pattern>
+					<pattern type="1000000000000" count="one" draft="provisional">0T¤</pattern>
+					<pattern type="1000000000000" count="few" draft="provisional">0T¤</pattern>
+					<pattern type="1000000000000" count="other" draft="provisional">0T¤</pattern>
+					<pattern type="10000000000000" count="one" draft="provisional">00T¤</pattern>
+					<pattern type="10000000000000" count="few" draft="provisional">00T¤</pattern>
+					<pattern type="10000000000000" count="other" draft="provisional">00T¤</pattern>
+					<pattern type="100000000000000" count="one" draft="provisional">000T¤</pattern>
+					<pattern type="100000000000000" count="few" draft="provisional">000T¤</pattern>
+					<pattern type="100000000000000" count="other" draft="provisional">000T¤</pattern>
 				</currencyFormat>
 			</currencyFormatLength>
 		</currencyFormats>
@@ -662,6 +681,9 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>frank n madaɣacqar</displayName>
 			</currency>
 			<currency type="MRO">
+				<displayName>uqiyya n muṛiṭanya (1973–2017)</displayName>
+			</currency>
+			<currency type="MRU">
 				<displayName>uqiyya n muṛiṭanya</displayName>
 			</currency>
 			<currency type="MUR">
@@ -697,13 +719,19 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<currency type="SHP">
 				<displayName>ajnih n santilin</displayName>
 			</currency>
-			<currency type="SLL">
+			<currency type="SLE">
 				<displayName>liyun</displayName>
+			</currency>
+			<currency type="SLL">
+				<displayName>liyun (1964—2022)</displayName>
 			</currency>
 			<currency type="SOS">
 				<displayName>acilin n ṣṣumal</displayName>
 			</currency>
 			<currency type="STD">
+				<displayName>adubra n sanṭumi (1977–2017)</displayName>
+			</currency>
+			<currency type="STN">
 				<displayName>adubra n sanṭumi</displayName>
 			</currency>
 			<currency type="SZL">
@@ -748,4 +776,3 @@ For terms of use, see http://www.unicode.org/copyright.html
 		</messages>
 	</posix>
 </ldml>
-

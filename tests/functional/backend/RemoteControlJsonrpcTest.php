@@ -70,4 +70,75 @@ class RemoteControlJsonrpcTest extends TestBaseClassWeb
         // $sessionKey is an error array, not a valid key — do not attempt to release it
         // self::$client->call('release_session_key', [$sessionKey]);
     }
+
+    /**
+     * Request ids that are falsy in PHP but still identify a request.
+     *
+     * @return array
+     */
+    public static function falsyRequestIdProvider(): array
+    {
+        return [
+            'integer zero' => [0],
+            'string zero' => ['0'],
+        ];
+    }
+
+    /**
+     * A request with an id of 0 or "0" must get a response, not an empty body.
+     *
+     * @dataProvider falsyRequestIdProvider
+     * @param int|string $requestId
+     * @return void
+     */
+    public function testFalsyRequestIdGetsResponse($requestId)
+    {
+        $response = $this->postRawRequest([
+            'jsonrpc' => '2.0',
+            'id' => $requestId,
+            'method' => 'release_session_key',
+            'params' => [Yii::app()->securityManager->generateRandomString(32)],
+        ]);
+        $this->assertNotSame('', trim($response), 'The response body must not be empty.');
+        $decoded = json_decode($response, true);
+        $this->assertIsArray($decoded);
+        $this->assertSame($requestId, $decoded['id']);
+        $this->assertSame('OK', $decoded['result']);
+        $this->assertNull($decoded['error']);
+    }
+
+    /**
+     * A notification (null id) still gets no response.
+     *
+     * @return void
+     */
+    public function testNotificationGetsNoResponse()
+    {
+        $response = $this->postRawRequest([
+            'id' => null,
+            'method' => 'release_session_key',
+            'params' => [Yii::app()->securityManager->generateRandomString(32)],
+        ]);
+        $this->assertSame('', trim($response));
+    }
+
+    /**
+     * Post a JSON-RPC request to the RemoteControl endpoint and return the raw response body.
+     *
+     * @param array $request
+     * @return string
+     */
+    private function postRawRequest(array $request): string
+    {
+        $context = stream_context_create([
+            'http' => [
+                'method' => 'POST',
+                'header' => 'Content-type: application/json',
+                'content' => json_encode($request),
+            ],
+        ]);
+        $response = file_get_contents(App()->createAbsoluteUrl('/admin/remotecontrol'), false, $context);
+        $this->assertNotFalse($response, 'Unable to connect to the RemoteControl endpoint.');
+        return $response;
+    }
 }

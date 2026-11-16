@@ -7,8 +7,11 @@ use Facebook\WebDriver\Exception\NoSuchElementException;
 use Facebook\WebDriver\WebDriverExpectedCondition;
 
 /**
+ * MySQL only: The test drops the database through the current connection and installs with the MySQL driver.
+ *
  * @since 2017-11-24
  * @group survey
+ * @group mysql
  */
 class InstallationControllerTest extends TestBaseClassWeb
 {

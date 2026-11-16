@@ -353,7 +353,7 @@ class Authentication extends SurveyCommonAction
     }
 
     /**
-     * Get's the summary
+     * Gets the summary
      * @param string $sMethod login|logout
      * @param string $sSummary Default summary
      * @return string Summary

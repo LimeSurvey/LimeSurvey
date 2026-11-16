@@ -31,25 +31,34 @@ class ImportSurveyCommand extends CConsoleCommand
 
     /**
      * Sample command: php application/commands/console.php importsurvey tmp/upload/youfile.lss
+     * An optional base language can be appended after a colon: tmp/upload/youfile.lss:de
      *
-     * @param array $args
-     * @return void
+     * @param array $args Command line arguments, the first one is the file to import
+     * @return int Exit code: 0 on success, 1 on failure
      */
+    #[\Override]
     public function run($args)
     {
+        if (empty($args[0])) {
+            echo "Usage: php application/commands/console.php importsurvey <file>[:<baselanguage>]\n";
+            echo "Imports a survey from a .lss, .lsa, .txt or .tsv file and prints the new survey ID.\n";
+            return 1;
+        }
         $source = $args[0];
         $baselang = null;
-        if (strpos($args[0], ':') !== 0) {
-            $split = explode(":", $args[0]);
-            $source = $split[0];
-            $baselang = $split[1];
+        if (strpos($args[0], ':') !== false) {
+            [$source, $baselang] = explode(":", $args[0], 2);
         }
-        $file = $source;
-        $result = $this->importFile($file, $baselang);
+        if (!is_file($source) || !is_readable($source)) {
+            echo "File {$source} not found or not readable.\n";
+            return 1;
+        }
+        $result = $this->importFile($source, $baselang);
         if (is_array($result) && isset($result['newsid'])) {
-            echo $result['newsid'];
-        } else {
-            echo "The import has failed.";
+            echo $result['newsid'] . "\n";
+            return 0;
         }
+        echo "The import has failed.\n";
+        return 1;
     }
 }

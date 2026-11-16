@@ -201,6 +201,41 @@ class QuestionAttributeHelper
     }
 
     /**
+     * Returns the untranslated names of the categories used by the core question attributes.
+     *
+     * @return string[]
+     */
+    public function getCoreCategories()
+    {
+        return array_merge(
+            array_keys($this->getCategoryOrders()),
+            ['Slider', 'Location', 'File metadata', 'Display theme options']
+        );
+    }
+
+    /**
+     * Replaces categories given as the translated name of a core category (ex: gT('Logic')) with the
+     * untranslated name, so these attributes are shown in the same panel as the core attributes.
+     *
+     * @param array $attributes    array of question attribute definitions
+     *
+     * @return array    returns the array of attributes with the core categories untranslated
+     */
+    public function untranslateCoreCategories($attributes)
+    {
+        $coreCategories = [];
+        foreach ($this->getCoreCategories() as $categoryName) {
+            $coreCategories[gT($categoryName)] = $categoryName;
+        }
+        foreach ($attributes as $key => $attribute) {
+            if (is_string($attribute['category'] ?? null) && isset($coreCategories[$attribute['category']])) {
+                $attributes[$key]['category'] = $coreCategories[$attribute['category']];
+            }
+        }
+        return $attributes;
+    }
+
+    /**
      * This function returns an array of the attributes for the particular question
      * including their values set in the database
      *

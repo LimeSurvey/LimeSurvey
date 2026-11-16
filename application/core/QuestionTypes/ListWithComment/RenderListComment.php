@@ -82,7 +82,7 @@ class RenderListComment extends QuestionBaseRenderer
             'name'              => $this->sSGQA . '_Ccomment',
             'tarows'            => floor($tarows),
             'has_comment_saved' => isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$fname2]) && $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$fname2],
-            'comment_saved'     => htmlspecialchars((string) $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$fname2]),
+            'comment_saved'     => (string) $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$fname2],
             'java_name'         => 'java' . $this->sSGQA,
             'java_id'           => 'java' . $this->sSGQA,
             'java_value'        => $this->mSessionValue

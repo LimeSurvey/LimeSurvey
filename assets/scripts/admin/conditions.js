@@ -73,11 +73,11 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     // TODO: Localization
     $('#copyconditions').submit(function() {
         if (!$('input[@id=cbox{$rows[cid]}]:checked').length) {
-            alert("Please select alteast one condition to copy from");
+            alert("Please select at least one condition to copy from");
             return false;
         } 
         if (!$('#copytomultiselect option:selected').length) {
-            alert("Please select alteast one question to copy condition to","js");
+            alert("Please select at least one question to copy condition to","js");
             return false;
         }
     });
@@ -224,12 +224,12 @@ $(document).on('ready  pjax:scriptcomplete', function(){
 /**
  * Object with one public variable: fun, which is
  * the populateCanswersSelect function.
- * @constructur
+ * @constructor
  */
 populateCanswersSelectObject = function() {
 
     // Default values for the original add/edit form
-    // They will be overrided by the quick-add form
+    // They will be overridden by the quick-add form
     this.cquestionsId      = '#cquestions';
     this.canswersId        = '#canswers';
     this.canswersIdNoHash  = 'canswers';

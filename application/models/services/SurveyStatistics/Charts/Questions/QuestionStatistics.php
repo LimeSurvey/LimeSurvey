@@ -5,11 +5,13 @@ namespace LimeSurvey\Models\Services\SurveyStatistics\Charts\Questions;
 use CDbCommand;
 use Exception;
 use InvalidArgumentException;
+use LimeSurvey\Models\Services\ResponseFilters\ResolvedFilter;
 use LimeSurvey\Models\Services\SurveyStatistics\Charts\StatisticsChartDTO;
 use LimeSurvey\Models\Services\SurveyStatistics\Charts\StatisticsChartInterface;
 use LimeSurvey\Models\Services\SurveyStatistics\StatisticsResponseFilters;
 use LimeSurvey\Models\Services\SurveyStatistics\Charts\Questions\Processors\{ArrayNumbersProcessor,
     ArrayTextProcessor,
+    FileUploadProcessor,
     MultipleChoiceProcessor,
     MultipleNumericalProcessor,
     NumericalProcessor,
@@ -23,6 +25,9 @@ use Question;
 use QuestionType;
 use Yii;
 
+/**
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ */
 class QuestionStatistics implements StatisticsChartInterface
 {
     private array $factories;
@@ -33,6 +38,9 @@ class QuestionStatistics implements StatisticsChartInterface
 
     private $filters = null;
 
+    /** @var ResolvedFilter[] The filter the user built in the modal, resolved */
+    private array $resolvedFilters = [];
+
     /** @var int Zero-based page index, used when a page size is set */
     private int $page = 0;
 
@@ -42,15 +50,16 @@ class QuestionStatistics implements StatisticsChartInterface
     /** @var array|null Pagination details of the last run, null when unpaginated */
     private ?array $paginationMeta = null;
 
-    /** @var array<string, string>|null Cached type code -> human-readable description map */
-    private ?array $typeDescriptions = null;
-
     /** @var array<int, string[]> Question id -> its response-table column fieldnames */
     private array $questionFields = [];
 
     /** @var \Survey|null Survey model injected by the service to avoid a second fetch */
     private ?\Survey $survey = null;
 
+    /**
+     * Configure processors for supported question types, including placeholders
+     * for multiple short text questions whose responses are fetched by the client.
+     */
     public function __construct()
     {
         $this->factories = [
@@ -61,7 +70,7 @@ class QuestionStatistics implements StatisticsChartInterface
             Question::QT_T_LONG_FREE_TEXT => fn() => new TextProcessor(),
             Question::QT_S_SHORT_FREE_TEXT => fn() => new TextProcessor(),
             Question::QT_U_HUGE_FREE_TEXT => fn() => new TextProcessor(),
-            Question::QT_Q_MULTIPLE_SHORT_TEXT => fn() => new MultipleChoiceProcessor(),
+            Question::QT_Q_MULTIPLE_SHORT_TEXT => fn() => new ArrayTextProcessor(),
             Question::QT_R_RANKING => fn() => new RankingProcessor(),
             Question::QT_1_ARRAY_DUAL => fn() => new DualScaleProcessor(),
 
@@ -69,7 +78,7 @@ class QuestionStatistics implements StatisticsChartInterface
             Question::QT_K_MULTIPLE_NUMERICAL => fn() => new MultipleNumericalProcessor(),
             Question::QT_ASTERISK_EQUATION => fn() => null,
             Question::QT_D_DATE => fn() => null,
-            Question::QT_VERTICAL_FILE_UPLOAD => fn() => null,
+            Question::QT_VERTICAL_FILE_UPLOAD => fn() => new FileUploadProcessor(),
             Question::QT_SEMICOLON_ARRAY_TEXT => fn() => new ArrayTextProcessor(),
             Question::QT_X_TEXT_DISPLAY => fn() => null,
 
@@ -95,6 +104,7 @@ class QuestionStatistics implements StatisticsChartInterface
         ];
     }
 
+    #[\Override]
     public function run(int $surveyId, string $language = 'en'): array
     {
         $this->surveyId = $surveyId;
@@ -105,7 +115,7 @@ class QuestionStatistics implements StatisticsChartInterface
         $surveyQuestions = $survey['questions'];
         $this->questionFields = $this->buildQuestionFields();
 
-        $batch = new ResponseAggregateBatch($surveyId, $this->filters);
+        $batch = new ResponseAggregateBatch($surveyId, $this->filters, $this->resolvedFilters);
 
         // Pair each chart-producing question with its processor; types without
         // a processor (equations, dates, text display, ...) produce no chart
@@ -141,9 +151,18 @@ class QuestionStatistics implements StatisticsChartInterface
         return $this->output;
     }
 
+    #[\Override]
     public function setFilters(StatisticsResponseFilters $filters): void
     {
         $this->filters = $filters;
+    }
+
+    /**
+     * @param ResolvedFilter[] $filters
+     */
+    public function setResolvedFilters(array $filters): void
+    {
+        $this->resolvedFilters = $filters;
     }
 
     public function setSurveyModel(\Survey $survey): void
@@ -244,6 +263,8 @@ class QuestionStatistics implements StatisticsChartInterface
     /**
      * Materialize a chart plan: resolve every deferred value against the
      * executed batch and compute the total.
+     * 
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     private function resolvePlan(array $plan, array $question): StatisticsChartDTO
     {
@@ -364,6 +385,8 @@ class QuestionStatistics implements StatisticsChartInterface
                 // them as `fields` to survey-responses so the comments/answers
                 // views fetch only this question's columns.
                 'fields' => $this->questionFields[(int) ($question['qid'] ?? 0)] ?? [],
+                // statistics_graphtype question setting; '' = best chart for the type.
+                'chartType' => $question['attributes']['statistics_graphtype'] ?? '',
             ];
             // Dual-scale column headers by scale id, same source and defaults
             // as the chart's per-scale titles (DualScaleProcessor).

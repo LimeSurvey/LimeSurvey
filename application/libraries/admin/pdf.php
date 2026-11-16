@@ -135,7 +135,7 @@ require(APPPATH . 'config/tcpdf' . EXT);
 (!defined('HEAD_MAGNIFICATION')) ? (define('HEAD_MAGNIFICATION', 1.1)) : ''; // never used in TCPDF 6.
 
 /**
-* height of cell repect font height
+* height of cell respect font height
 */
 (!defined('K_CELL_HEIGHT_RATIO')) ? (define('K_CELL_HEIGHT_RATIO', $tcpdf['cell_height_ratio'] ?? 1.25)) : '';
 
@@ -768,11 +768,11 @@ class pdf extends TCPDF
         $margins = $this->getMargins();
         $deadSpace = $margins['left'] + $margins['right'];
         $fullWidth = ($this->GetLineWidth() * 1000) - $deadSpace;
-        $faktor = $fullWidth / array_sum($width);
+        $factor = $fullWidth / array_sum($width);
 
         $arraySize = sizeof($width);
         for ($i = 0; $i < $arraySize; $i++) {
-            $maxlength[$i] = $faktor * $width[$i];
+            $maxlength[$i] = $factor * $width[$i];
         }
         return $maxlength;
     }

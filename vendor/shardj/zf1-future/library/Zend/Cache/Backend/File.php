@@ -46,9 +46,9 @@ class Zend_Cache_Backend_File extends Zend_Cache_Backend implements Zend_Cache_B
      * - Directory where to put the cache files
      *
      * =====> (boolean) file_locking :
-     * - Enable / disable file_locking
-     * - Can avoid cache corruption under bad circumstances but it doesn't work on multithread
-     * webservers and on NFS filesystems for example
+     * - Enable / disable file_locking while reading cache files
+     * - Cache files are written to a temporary file and renamed into place, so a write is
+     * atomic with or without locking
      *
      * =====> (boolean) read_control :
      * - Enable / disable read control
@@ -575,7 +575,7 @@ class Zend_Cache_Backend_File extends Zend_Cache_Backend implements Zend_Cache_B
             return false;
         }
 
-        return @unserialize($result);
+        return @unserialize($result, ['allowed_classes' => false]);
     }
 
     /**
@@ -1003,32 +1003,34 @@ class Zend_Cache_Backend_File extends Zend_Cache_Backend implements Zend_Cache_B
     /**
      * Put the given string into the given file
      *
+     * The string is written to a temporary file next to the target and
+     * renamed into place, so readers see either the previous or the new
+     * content and concurrent writers cannot interleave or duplicate data.
+     *
      * @param  string $file   File complete path
      * @param  string $string String to put in file
      * @return boolean true if no problem
      */
     protected function _filePutContents($file, $string)
     {
-        $result = false;
-        $f = @fopen($file, 'ab+');
-        if ($f) {
-            if ($this->_options['file_locking']) {
-                @flock($f, LOCK_EX);
-            }
-            fseek($f, 0);
-            ftruncate($f, 0);
-            $tmp = @fwrite($f, $string);
-            if (!($tmp === FALSE)) {
-                $result = true;
-            } else {
-                $this->_log("Zend_Cache_Backend_File::_filePutContents() : failed to write contents");
-            }
-            @fclose($f);
-        } else {
-            $this->_log("Zend_Cache_Backend_File::_filePutContents() : we can't obtain handle");
+        $tmpFile = $file . '.' . uniqid('', true) . '.tmp';
+
+        $written = @file_put_contents($tmpFile, $string);
+        if ($written === false || $written !== strlen($string)) {
+            $this->_log("Zend_Cache_Backend_File::_filePutContents() : failed to write contents");
+            @unlink($tmpFile);
+            return false;
         }
-        @chmod($file, $this->_options['cache_file_perm']);
-        return $result;
+
+        @chmod($tmpFile, $this->_options['cache_file_perm']);
+
+        if (!@rename($tmpFile, $file)) {
+            $this->_log("Zend_Cache_Backend_File::_filePutContents() : failed to rename the temporary file");
+            @unlink($tmpFile);
+            return false;
+        }
+
+        return true;
     }
 
     /**

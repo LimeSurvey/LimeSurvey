@@ -37,6 +37,9 @@ class QuestionTheme extends LSActiveRecord
     const THEME_TYPE_CUSTOM = 'customCoreTheme';
     const THEME_TYPE_USER = 'customUserTheme';
 
+    /** @var string|null Filter for the kind of theme in search(), one of the THEME_TYPE_* constants */
+    public $themeKind;
+
     /**
      * @return string the associated database table name
      */
@@ -170,8 +173,29 @@ class QuestionTheme extends LSActiveRecord
         $criteria->compare('extends', $this->extends, true);
         $criteria->compare('group', $this->group, true);
         $criteria->compare('settings', $this->settings, true);
+        switch ($this->themeKind) {
+            case self::THEME_TYPE_CORE:
+                $criteria->compare('core_theme', 1);
+                $criteria->addCondition("(extends = '' OR extends IS NULL)");
+                break;
+            case self::THEME_TYPE_CUSTOM:
+                $criteria->compare('core_theme', 1);
+                $criteria->addCondition("extends <> ''");
+                break;
+            case self::THEME_TYPE_USER:
+                $criteria->compare('core_theme', 0);
+                break;
+        }
         $sort = new CSort();
         $sort->defaultOrder = 'name';
+        $sort->attributes = [
+            // Question types first, then the themes shipped with LimeSurvey, then the user themes
+            'themeKind' => [
+                'asc'  => 'core_theme DESC, extends ASC',
+                'desc' => 'core_theme ASC, extends DESC',
+            ],
+            '*',
+        ];
         return new CActiveDataProvider($this, array(
             'criteria'   => $criteria,
             'sort'      => $sort,
@@ -179,6 +203,37 @@ class QuestionTheme extends LSActiveRecord
                 'pageSize' => $pageSizeTemplateView,
             ),
         ));
+    }
+
+    /**
+     * Returns the labels of the theme kinds, keyed by the THEME_TYPE_* constants
+     *
+     * @return array<string, string>
+     */
+    public static function getThemeKindLabels()
+    {
+        return [
+            self::THEME_TYPE_CORE   => gT('Question type', 'unescaped'),
+            self::THEME_TYPE_CUSTOM => gT('Core theme', 'unescaped'),
+            self::THEME_TYPE_USER   => gT('User theme', 'unescaped'),
+        ];
+    }
+
+    /**
+     * Returns the label of the kind of this theme: A core question type, a theme shipped with LimeSurvey or a theme added by the user
+     *
+     * @return string
+     */
+    public function getThemeKindLabel()
+    {
+        if (!$this->core_theme) {
+            $themeKind = self::THEME_TYPE_USER;
+        } elseif (empty($this->extends)) {
+            $themeKind = self::THEME_TYPE_CORE;
+        } else {
+            $themeKind = self::THEME_TYPE_CUSTOM;
+        }
+        return self::getThemeKindLabels()[$themeKind];
     }
 
     /**
@@ -375,10 +430,12 @@ class QuestionTheme extends LSActiveRecord
     {
         $questionDirectories = self::getQuestionThemeDirectories();
         foreach ($questionDirectories as $key => $questionDirectory) {
-            $questionDirectories[$key] = str_replace('\\', '/', (string) $questionDirectory);
+            $questionDirectories[$key] = self::getPathRelativeToRootDir($questionDirectory);
         }
 
         $pathToXmlFolder = str_replace('\\', '/', $pathToXmlFolder);
+        // Stored paths stay relative to the root dir, so they can be used for the image URL
+        $relativeXmlFolder = self::getPathRelativeToRootDir($pathToXmlFolder);
         $sQuestionConfigFilePath = $pathToXmlFolder . DIRECTORY_SEPARATOR . 'config.xml';
         if (!file_exists($sQuestionConfigFilePath)) {
             throw new Exception(sprintf(gT('Extension configuration file is missing at %s.'), $sQuestionConfigFilePath));
@@ -409,10 +466,10 @@ class QuestionTheme extends LSActiveRecord
         // get custom previewimage if defined
         if (!empty($oQuestionConfig->files->preview->filename)) {
             $previewFileName = json_decode(json_encode($oQuestionConfig->files->preview->filename), true)[0];
-            $questionMetaData['image_path'] = DIRECTORY_SEPARATOR . $pathToXmlFolder . '/assets/' . $previewFileName;
+            $questionMetaData['image_path'] = '/' . $relativeXmlFolder . '/assets/' . $previewFileName;
         }
 
-        $questionMetaData['xml_path'] = $pathToXmlFolder;
+        $questionMetaData['xml_path'] = $relativeXmlFolder;
 
         // set settings as json
         $questionMetaData['settings'] = json_encode([
@@ -425,14 +482,14 @@ class QuestionTheme extends LSActiveRecord
         ]);
 
         // override MetaData depending on directory
-        if (substr($pathToXmlFolder, 0, strlen((string) $questionDirectories[self::THEME_TYPE_CORE])) === $questionDirectories[self::THEME_TYPE_CORE]) {
+        if (substr($relativeXmlFolder, 0, strlen((string) $questionDirectories[self::THEME_TYPE_CORE])) === $questionDirectories[self::THEME_TYPE_CORE]) {
             $questionMetaData['coreTheme'] = 1;
             $questionMetaData['image_path'] = App()->getConfig("imageurl") . '/screenshots/' . self::getQuestionThemeImageName($questionMetaData['questionType']);
         }
-        if (substr($pathToXmlFolder, 0, strlen((string) $questionDirectories[self::THEME_TYPE_CUSTOM])) === $questionDirectories[self::THEME_TYPE_CUSTOM]) {
+        if (substr($relativeXmlFolder, 0, strlen((string) $questionDirectories[self::THEME_TYPE_CUSTOM])) === $questionDirectories[self::THEME_TYPE_CUSTOM]) {
             $questionMetaData['coreTheme'] = 1;
         }
-        if (substr($pathToXmlFolder, 0, strlen((string) $questionDirectories[self::THEME_TYPE_USER])) === $questionDirectories[self::THEME_TYPE_USER]) {
+        if (substr($relativeXmlFolder, 0, strlen((string) $questionDirectories[self::THEME_TYPE_USER])) === $questionDirectories[self::THEME_TYPE_USER]) {
             $questionMetaData['coreTheme'] = 0;
         }
 
@@ -807,6 +864,9 @@ class QuestionTheme extends LSActiveRecord
     /**
      * Returns the Config Path for the selected Question Type base definition
      *
+     * The path is memoized per question type for the current request, because this
+     * is called for every question when loading question attributes.
+     *
      * @param string $type
      *
      * @return string Path to config XML
@@ -814,6 +874,11 @@ class QuestionTheme extends LSActiveRecord
      */
     public static function getQuestionXMLPathForBaseType($type)
     {
+        static $cacheMemo = [];
+        if (isset($cacheMemo[$type])) {
+            return $cacheMemo[$type];
+        }
+
         /** @var QuestionTheme|null */
         $questionTheme = QuestionTheme::model()->findByAttributes([], 'question_type = :question_type AND extends = :extends', ['question_type' => $type, 'extends' => '']);
         if (empty($questionTheme)) {
@@ -821,6 +886,7 @@ class QuestionTheme extends LSActiveRecord
         }
         $configXMLPath = App()->getConfig('rootdir') . '/' . $questionTheme->getXmlPath() . '/config.xml';
 
+        $cacheMemo[$type] = $configXMLPath;
         return $configXMLPath;
     }
 
@@ -1092,10 +1158,11 @@ class QuestionTheme extends LSActiveRecord
     public function getRelativeXmlPath()
     {
         $type = $this->getThemeType();
-        $typeDirectory = self::getQuestionThemeDirectoryForType($type);
+        $typeDirectory = self::getPathRelativeToRootDir(self::getQuestionThemeDirectoryForType($type));
+        $xmlPath = self::getPathRelativeToRootDir($this->xml_path);
 
         // xml_path is supposed to contain the type directory, so we extract the rest of the path
-        $relativePath = substr($this->xml_path, strpos($this->xml_path, $typeDirectory) + strlen($typeDirectory));
+        $relativePath = substr($xmlPath, strpos($xmlPath, $typeDirectory) + strlen($typeDirectory));
         $relativePath = ltrim($relativePath, "\\/");
         return $relativePath;
     }
@@ -1134,5 +1201,22 @@ class QuestionTheme extends LSActiveRecord
     public static function getAbsolutePathForType($relativePath, $themeType)
     {
         return self::getQuestionThemeDirectoryForType($themeType) . '/' . $relativePath;
+    }
+
+    /**
+     * Returns the given path relative to the LimeSurvey root directory, with forward slashes.
+     * Relative paths and paths outside the root directory are only normalized.
+     *
+     * @param string $path Absolute path or path relative to the root directory
+     * @return string
+     */
+    public static function getPathRelativeToRootDir($path)
+    {
+        $path = str_replace('\\', '/', (string) $path);
+        $rootDir = rtrim(str_replace('\\', '/', (string) App()->getConfig('rootdir')), '/') . '/';
+        if (strpos($path, $rootDir) === 0) {
+            return substr($path, strlen($rootDir));
+        }
+        return $path;
     }
 }

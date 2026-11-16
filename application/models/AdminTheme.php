@@ -148,11 +148,11 @@ class AdminTheme extends CFormModel
             App()->getClientScript()->registerPackage('font-icomoon');
             App()->getClientScript()->registerPackage('adminbasics'); // Combined scripts and style
             App()->getClientScript()->registerPackage('adminsidepanel'); // The new admin panel
-            App()->getClientScript()->registerPackage('lstutorial'); // Tutorial scripts
             // CKEditor (and the modaleditor, which depends on it) is only registered on pages
             // that actually use an editor, via PrepareEditorScript(). See bug #19391.
         }
         App()->getClientScript()->registerPackage('select2-bootstrap');
+        $this->registerSelect2Translations();
         // Then we add the different CSS/JS files to load in arrays
         // It will check if it needs or not the RTL files
         // and it will add the directory prefix to the file name (css/ or js/ )
@@ -196,6 +196,71 @@ class AdminTheme extends CFormModel
         }
         App()->getClientScript()->registerPackage('bootstrap-js');
         App()->clientScript->registerPackage('moment'); // register moment for correct dateTime calculation
+    }
+
+    /**
+     * Makes Select2 show its own messages (e.g. "No results found") in the admin language.
+     *
+     * Select2 only ships language files for a part of our languages, so the messages come from our own
+     * translations and are set as the Select2 default language. The script is placed in the head: There it
+     * runs after the Select2 script and before any dropdown is initialised.
+     *
+     * @return void
+     */
+    private function registerSelect2Translations()
+    {
+        // Select2 escapes the messages itself, except "loadingMore", which it inserts as HTML.
+        // "%s" is replaced with a number in the browser.
+        $messages = [
+            'errorLoading'    => gT('The results could not be loaded.', 'unescaped'),
+            'inputTooLong'    => gT('Please delete %s or more characters', 'unescaped'),
+            'inputTooShort'   => gT('Please enter %s or more characters', 'unescaped'),
+            'loadingMore'     => gT('Loading more results...'),
+            'maximumSelected' => gT('Maximum number of items you can select: %s', 'unescaped'),
+            'noResults'       => gT('No results found', 'unescaped'),
+            'searching'       => gT('Searching...', 'unescaped'),
+            'removeAllItems'  => gT('Remove all items', 'unescaped'),
+            'removeItem'      => gT('Remove item', 'unescaped'),
+            'search'          => gT('Search', 'unescaped'),
+        ];
+        $messagesJson = json_encode($messages, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
+        $script = <<<JS
+(function ($) {
+    if (!$.fn.select2) {
+        return;
+    }
+    var messages = $messagesJson;
+    var fixed = function (key) {
+        return function () {
+            return messages[key];
+        };
+    };
+    var counted = function (key, getCount) {
+        return function (args) {
+            return messages[key].replace('%s', getCount(args));
+        };
+    };
+    $.fn.select2.defaults.set('language', {
+        errorLoading: fixed('errorLoading'),
+        inputTooLong: counted('inputTooLong', function (args) {
+            return args.input.length - args.maximum;
+        }),
+        inputTooShort: counted('inputTooShort', function (args) {
+            return args.minimum - args.input.length;
+        }),
+        loadingMore: fixed('loadingMore'),
+        maximumSelected: counted('maximumSelected', function (args) {
+            return args.maximum;
+        }),
+        noResults: fixed('noResults'),
+        searching: fixed('searching'),
+        removeAllItems: fixed('removeAllItems'),
+        removeItem: fixed('removeItem'),
+        search: fixed('search')
+    });
+})(jQuery);
+JS;
+        App()->getClientScript()->registerScript('select2translations', $script, CClientScript::POS_HEAD);
     }
 
     /**
@@ -253,46 +318,6 @@ class AdminTheme extends CFormModel
         return self::$instance;
     }
 
-    /**
-     * @return string[]
-     */
-    public static function getOtherAssets()
-    {
-        return array(
-            // Extension assets
-            'application/extensions/yiiwheels/assets',
-            'application/extensions/yiiwheels/widgets/box/assets',
-            'application/extensions/yiiwheels/widgets/grid/assets',
-            'application/extensions/yiiwheels/widgets/formhelpers/assets',
-            'application/extensions/yiiwheels/widgets/highcharts/assets',
-            'application/extensions/yiiwheels/widgets/maskinput/assets',
-            'application/extensions/yiiwheels/widgets/redactor/assets',
-            'application/extensions/yiiwheels/widgets/switch/assets',
-            'application/extensions/yiiwheels/widgets/datetimepicker/assets',
-            'application/extensions/yiiwheels/widgets/timeago/assets',
-            'application/extensions/yiiwheels/widgets/sparklines/assets',
-            'application/extensions/yiiwheels/widgets/datepicker/assets',
-            'application/extensions/yiiwheels/widgets/multiselect/assets',
-            'application/extensions/yiiwheels/widgets/gallery/assets',
-            'application/extensions/yiiwheels/widgets/select2/assets',
-            'application/extensions/yiiwheels/widgets/ace/assets',
-            'application/extensions/yiiwheels/widgets/modal/assets',
-            'application/extensions/yiiwheels/widgets/maskmoney/assets',
-            'application/extensions/yiiwheels/widgets/rangeslider/assets',
-            'application/extensions/yiiwheels/widgets/fileupload/assets',
-            'application/extensions/yiiwheels/widgets/typeahead/assets',
-            'application/extensions/yiiwheels/widgets/timepicker/assets',
-            'application/extensions/yiiwheels/widgets/html5editor/assets',
-            'application/extensions/yiiwheels/widgets/daterangepicker/assets',
-            'application/extensions/bootstrap/assets',
-            'application/extensions/LimeScript/assets',
-            'application/extensions/SettingsWidget/assets',
-            'application/extensions/FlashMessage/assets',
-            'application/extensions/admin/survey/question/PositionWidget/assets',
-            'application/extensions/admin/grid/MassiveActionsWidget/assets',
-            'application/extensions/admin/survey/question/PositionWidget/assets'
-        );
-    }
 
     /**
      * Return an array containing the configuration object of all templates in a given directory

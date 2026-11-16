@@ -16,6 +16,9 @@ $(document).ready(function () {
         if ($(this).val()) {
             // "other" input field
             $("#answer" + baseName + "other").val($(this).val());
+        }
+        // the "Other" button can be checked without a value, so also rely on its state
+        if ($(this).val() || $("#answer" + myfname + "cbox").is(':checked')) {
             $("#" + baseName + "other-div").removeClass('d-none');
         }
         // execute validation
@@ -29,7 +32,7 @@ $(document).ready(function () {
             $("#" + name + "-div").removeClass('d-none');
         } else {
             $("#" + name + "-div").addClass('d-none');
-            $("#answer" + name).val('');
+            $("#answer" + name).val('').removeAttr('aria-invalid');
         }
     });
 
@@ -37,6 +40,8 @@ $(document).ready(function () {
         var name = $(this).data('name');
         if (!$(this).val()) {
             $("#java" + $(this).attr('name')).val('');
+        } else {
+            $(this).removeAttr('aria-invalid');
         }
         checkconditions(this.value, this.name, this.type);
     });

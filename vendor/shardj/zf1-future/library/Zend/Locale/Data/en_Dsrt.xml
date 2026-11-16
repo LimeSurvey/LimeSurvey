@@ -1,37 +1,28 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE ldml SYSTEM "../../common/dtd/ldml.dtd">
-<!-- Copyright © 1991-2013 Unicode, Inc.
-CLDR data files are interpreted according to the LDML specification (http://unicode.org/reports/tr35/)
+<!-- Copyright © 1991-2026 Unicode, Inc.
 For terms of use, see http://www.unicode.org/copyright.html
+SPDX-License-Identifier: Unicode-3.0
+CLDR data files are interpreted according to the LDML specification (http://unicode.org/reports/tr35/)
 -->
 <ldml>
 	<identity>
-		<version number="$Revision: 9061 $"/>
-		<generation date="$Date: 2013-07-20 12:27:45 -0500 (Sat, 20 Jul 2013) $"/>
+		<version number="$Revision$"/>
 		<language type="en"/>
 		<script type="Dsrt"/>
 	</identity>
 	<localeDisplayNames>
 		<languages>
 			<language type="an">𐐈𐑉𐐲𐑀𐐱𐑌𐐨𐑆</language>
-			<language type="apa">𐐊𐐹𐐰𐐽𐐨 𐐢𐐩𐑍𐐶𐐮𐐾</language>
 			<language type="ar">𐐇𐑉𐐲𐐺𐐮𐐿</language>
-			<language type="art">𐐂𐑉𐐻𐐮𐑁𐐮𐑇𐐲𐑊 𐐢𐐩𐑍𐐶𐐮𐐾</language>
-			<language type="bat">𐐒𐐪𐑊𐐻𐐮𐐿 𐐢𐐩𐑍𐐶𐐮𐐾</language>
-			<language type="ber">𐐒𐐲𐑉𐐺𐐲𐑉</language>
-			<language type="bnt">𐐒𐐰𐑌𐐻𐐭</language>
 			<language type="br">𐐒𐑉𐐯𐐻𐐲𐑌</language>
 			<language type="byn">𐐒𐑊𐐮𐑌</language>
 			<language type="ca">𐐗𐐪𐐻𐐲𐑊𐐪𐑌</language>
-			<language type="cel">𐐗𐐯𐑊𐐻𐐮𐐿 𐐢𐐩𐑍𐐶𐐮𐐾</language>
 			<language type="chr">𐐕𐐯𐑉𐐬𐐿𐐨</language>
 			<language type="chy">𐐟𐐴𐐰𐑌</language>
 			<language type="co">𐐗𐐬𐑉𐑅𐐮𐐿𐐲𐑌</language>
 			<language type="cop">𐐗𐐬𐐹𐐻𐐮𐐿</language>
-			<language type="cpe">𐐀𐑍𐑊𐐮𐑇-𐐺𐐩𐑅𐐻 𐐗𐑉𐐨𐐬𐑊 𐐬𐑉 𐐑𐐮𐐾𐐮𐑌</language>
-			<language type="cpf">𐐙𐑉𐐯𐑌𐐽-𐐺𐐩𐑅𐐻 𐐗𐑉𐐨𐐬𐑊 𐐬𐑉 𐐑𐐮𐐾𐐮𐑌</language>
 			<language type="cr">𐐗𐑉𐐨</language>
-			<language type="crp">𐐗𐑉𐐨𐐬𐑊 𐐬𐑉 𐐑𐐮𐐾𐐮𐑌</language>
 			<language type="cs">𐐕𐐯𐐿</language>
 			<language type="cy">𐐎𐐯𐑊𐑇</language>
 			<language type="da">𐐔𐐩𐑌𐐮𐑇</language>
@@ -50,7 +41,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<language type="fr">𐐙𐑉𐐯𐑌𐐽</language>
 			<language type="frm">𐐣𐐮𐐼𐐲𐑊 𐐙𐑉𐐯𐑌𐐽</language>
 			<language type="ga">𐐌𐑉𐐮𐑇</language>
-			<language type="gem">𐐖𐐲𐑉𐑋𐐰𐑌𐐮𐐿 𐐢𐐩𐑍𐐶𐐮𐐾</language>
 			<language type="gil">𐐘𐐮𐑊𐐺𐐯𐑉𐐻𐐨𐑆</language>
 			<language type="gmh">𐐣𐐮𐐼𐐲𐑊 𐐐𐐴 𐐖𐐲𐑉𐑋𐐲𐑌</language>
 			<language type="got">𐐘𐐱𐑃𐐮𐐿</language>
@@ -64,8 +54,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<language type="hy">𐐂𐑉𐑋𐐨𐑌𐐨𐐲𐑌</language>
 			<language type="ia">𐐆𐑌𐐻𐐲𐑉𐑊𐐮𐑍𐐶𐐲</language>
 			<language type="id">𐐆𐑌𐐼𐐬𐑌𐐨𐑈𐐲𐑌</language>
-			<language type="inc">𐐆𐑌𐐼𐐮𐐿 𐐢𐐩𐑍𐐶𐐮𐐾</language>
-			<language type="ine">𐐆𐑌𐐼𐐬-𐐏𐐯𐑉𐐬𐐹𐐨𐐲𐑌 𐐢𐐩𐑍𐐶𐐮𐐾</language>
 			<language type="is">𐐌𐑅𐑊𐐰𐑌𐐼𐐮𐐿</language>
 			<language type="it">𐐆𐐻𐐰𐑊𐐷𐐲𐑌</language>
 			<language type="ja">𐐖𐐰𐐹𐐲𐑌𐐨𐑆</language>
@@ -84,21 +72,18 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<language type="lv">𐐢𐐰𐐻𐑂𐐨𐐲𐑌</language>
 			<language type="mga">𐐣𐐮𐐼𐐲𐑊 𐐌𐑉𐐮𐑇</language>
 			<language type="mi">𐐣𐐵𐑉𐐨</language>
-			<language type="mis">𐐣𐐮𐑅𐐲𐑊𐐩𐑌𐐨𐐲𐑅 𐐢𐐩𐑍𐐶𐐮𐐾</language>
 			<language type="mk">𐐣𐐰𐑅𐐯𐐼𐐬𐑌𐐨𐐲𐑌</language>
 			<language type="mn">𐐣𐐱𐑍𐐬𐑊𐐨𐐲𐑌</language>
 			<language type="mnc">𐐣𐐰𐑌𐐽𐐭</language>
-			<language type="mo">𐐣𐐬𐑊𐐼𐐩𐑂𐐨𐐲𐑌</language>
 			<language type="moh">𐐐𐐬𐐸𐐪𐐿</language>
 			<language type="mul">𐐣𐐲𐑊𐐻𐐮𐐹𐐲𐑊 𐐢𐐩𐑍𐐶𐐮𐐾𐐲𐑆</language>
 			<language type="mus">𐐗𐑉𐐨𐐿</language>
 			<language type="my">𐐒𐐲𐑉𐑋𐐨𐑆</language>
-			<language type="myn">𐐣𐐴𐐲𐑌 𐐢𐐩𐑍𐐶𐐮𐐾</language>
-			<language type="nai">𐐤𐐬𐑉𐑃 𐐊𐑋𐐯𐑉𐐮𐐿𐐲𐑌 𐐆𐑌𐐼𐐨𐐲𐑌 𐐢𐐩𐑍𐐶𐐮𐐾</language>
 			<language type="nap">𐐤𐐨𐐲𐐹𐐱𐑊𐐮𐐻𐐲𐑌</language>
 			<language type="nds">𐐢𐐬 𐐖𐐯𐑉𐑋𐐲𐑌</language>
 			<language type="nl">𐐔𐐲𐐽</language>
 			<language type="nv">𐐤𐐪𐑂𐐲𐐸𐐬</language>
+			<language type="ro_MD">𐐣𐐬𐑊𐐼𐐩𐑂𐐨𐐲𐑌</language>
 			<language type="tlh">𐐗𐑊𐐮𐑍𐐱𐑌</language>
 			<language type="zbl">𐐒𐑊𐐮𐑅-𐑅𐐮𐑋𐐺𐐲𐑊𐑆</language>
 			<language type="zh">𐐕𐐴𐑌𐐨𐑆</language>
@@ -272,7 +257,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="AI">𐐈𐑍𐑀𐐶𐐮𐑊𐐲</territory>
 			<territory type="AL">𐐈𐑊𐐺𐐩𐑌𐐨𐐲</territory>
 			<territory type="AM">𐐂𐑉𐑋𐐨𐑌𐐨𐐲</territory>
-			<territory type="AN">𐐤𐐯𐑄𐐲𐑉𐑊𐐲𐑌𐐼𐑆 𐐈𐑌𐐻𐐮𐑊𐐨𐑆</territory>
 			<territory type="AO">𐐈𐑌𐑀𐐬𐑊𐐲</territory>
 			<territory type="AQ">𐐈𐑌𐐻𐐪𐑉𐐿𐐻𐐮𐐿𐐲</territory>
 			<territory type="AR">𐐂𐑉𐐾𐐲𐑌𐐻𐐨𐑌𐐲</territory>
@@ -371,7 +355,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="IL">𐐆𐑆𐑉𐐨𐐲𐑊</territory>
 			<territory type="IM">𐐌𐐲𐑊 𐐲𐑁 𐐣𐐰𐑌</territory>
 			<territory type="IN">𐐆𐑌𐐼𐐨𐐲</territory>
-			<territory type="IO">𐐒𐑉𐐮𐐼𐐮𐑇 𐐆𐑌𐐼𐐨𐐲𐑌 𐐄𐑇𐐲𐑌 𐐓𐐯𐑉𐐲𐐻𐐱𐑉𐐨</territory>
+			<territory type="IO" draft="provisional">𐐒𐑉𐐮𐐼𐐮𐑇 𐐆𐑌𐐼𐐨𐐲𐑌 𐐄𐑇𐐲𐑌 𐐓𐐯𐑉𐐲𐐻𐐱𐑉𐐨</territory>
 			<territory type="IQ">𐐆𐑉𐐰𐐿</territory>
 			<territory type="IR">𐐆𐑉𐐪𐑌</territory>
 			<territory type="IS">𐐌𐑅𐑊𐐲𐑌𐐼</territory>
@@ -535,7 +519,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 	</localeDisplayNames>
 	<characters>
 		<exemplarCharacters>[𐐨 𐐩 𐐪 𐐫 𐐬 𐐭 𐐮 𐐯 𐐰 𐐱 𐐲 𐐳 𐐴 𐐵 𐐶 𐐷 𐐸 𐐹 𐐺 𐐻 𐐼 𐐽 𐐾 𐐿 𐑀 𐑁 𐑂 𐑃 𐑄 𐑅 𐑆 𐑇 𐑈 𐑉 𐑊 𐑋 𐑌 𐑍 𐑎 𐑏]</exemplarCharacters>
-		<exemplarCharacters type="auxiliary">[]</exemplarCharacters>
 		<exemplarCharacters type="index" draft="unconfirmed">[𐐀 𐐁 𐐂 𐐃 𐐄 𐐅 𐐆 𐐇 𐐈 𐐉 𐐊 𐐋 𐐌 𐐍 𐐎 𐐏 𐐐 𐐑 𐐒 𐐓 𐐔 𐐕 𐐖 𐐗 𐐘 𐐙 𐐚 𐐛 𐐜 𐐝 𐐞 𐐟 𐐠 𐐡 𐐢 𐐣 𐐤 𐐥 𐐦 𐐧]</exemplarCharacters>
 	</characters>
 	<dates>
@@ -557,20 +540,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 							<month type="11">𐐤𐐬𐑂</month>
 							<month type="12">𐐔𐐨𐑅</month>
 						</monthWidth>
-						<monthWidth type="narrow">
-							<month type="1">𐐖</month>
-							<month type="2">𐐙</month>
-							<month type="3">𐐣</month>
-							<month type="4">𐐁</month>
-							<month type="5">𐐣</month>
-							<month type="6">𐐖</month>
-							<month type="7">𐐖</month>
-							<month type="8">𐐂</month>
-							<month type="9">𐐝</month>
-							<month type="10">𐐉</month>
-							<month type="11">𐐤</month>
-							<month type="12">𐐔</month>
-						</monthWidth>
 						<monthWidth type="wide">
 							<month type="1">𐐖𐐰𐑌𐐷𐐭𐐯𐑉𐐨</month>
 							<month type="2">𐐙𐐯𐐺𐑉𐐭𐐯𐑉𐐨</month>
@@ -587,20 +556,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 						</monthWidth>
 					</monthContext>
 					<monthContext type="stand-alone">
-						<monthWidth type="abbreviated">
-							<month type="1">𐐖𐐰𐑌</month>
-							<month type="2">𐐙𐐯𐐺</month>
-							<month type="3">𐐣𐐪𐑉</month>
-							<month type="4">𐐁𐐹𐑉</month>
-							<month type="5">𐐣𐐩</month>
-							<month type="6">𐐖𐐭𐑌</month>
-							<month type="7">𐐖𐐭𐑊</month>
-							<month type="8">𐐂𐑀</month>
-							<month type="9">𐐝𐐯𐐹</month>
-							<month type="10">𐐉𐐿𐐻</month>
-							<month type="11">𐐤𐐬𐑂</month>
-							<month type="12">𐐔𐐨𐑅</month>
-						</monthWidth>
 						<monthWidth type="narrow">
 							<month type="1">𐐖</month>
 							<month type="2">𐐙</month>
@@ -614,20 +569,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 							<month type="10">𐐉</month>
 							<month type="11">𐐤</month>
 							<month type="12">𐐔</month>
-						</monthWidth>
-						<monthWidth type="wide">
-							<month type="1">𐐖𐐰𐑌𐐷𐐭𐐯𐑉𐐨</month>
-							<month type="2">𐐙𐐯𐐺𐑉𐐭𐐯𐑉𐐨</month>
-							<month type="3">𐐣𐐪𐑉𐐽</month>
-							<month type="4">𐐁𐐹𐑉𐐮𐑊</month>
-							<month type="5">𐐣𐐩</month>
-							<month type="6">𐐖𐐭𐑌</month>
-							<month type="7">𐐖𐐭𐑊𐐴</month>
-							<month type="8">𐐂𐑀𐐲𐑅𐐻</month>
-							<month type="9">𐐝𐐯𐐹𐐻𐐯𐑋𐐺𐐲𐑉</month>
-							<month type="10">𐐉𐐿𐐻𐐬𐐺𐐲𐑉</month>
-							<month type="11">𐐤𐐬𐑂𐐯𐑋𐐺𐐲𐑉</month>
-							<month type="12">𐐔𐐨𐑅𐐯𐑋𐐺𐐲𐑉</month>
 						</monthWidth>
 					</monthContext>
 				</months>
@@ -682,11 +623,11 @@ For terms of use, see http://www.unicode.org/copyright.html
 				</quarters>
 				<dayPeriods>
 					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
+						<dayPeriodWidth type="abbreviated">
 							<dayPeriod type="am">𐐈𐐣</dayPeriod>
-							<dayPeriod type="am" alt="variant">𐐰.𐑋.</dayPeriod>
+							<dayPeriod type="am" alt="variant">𐐰𐑋</dayPeriod>
 							<dayPeriod type="pm">𐐑𐐣</dayPeriod>
-							<dayPeriod type="pm" alt="variant">𐐹.𐑋.</dayPeriod>
+							<dayPeriod type="pm" alt="variant">𐐹𐑋</dayPeriod>
 						</dayPeriodWidth>
 					</dayPeriodContext>
 				</dayPeriods>
@@ -750,17 +691,14 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<gmtFormat>𐐘𐐣𐐓 {0}</gmtFormat>
 			<gmtZeroFormat>𐐘𐐣𐐓</gmtZeroFormat>
 			<regionFormat>{0} 𐐓𐐴𐑋</regionFormat>
+			<zone type="Pacific/Honolulu">
+				<exemplarCity>𐐐𐐪𐑌𐐲𐑊𐐭𐑊𐐭</exemplarCity>
+			</zone>
 			<zone type="Etc/Unknown">
 				<exemplarCity>𐐊𐑌𐑌𐐬𐑌</exemplarCity>
 			</zone>
-			<zone type="Antarctica/South_Pole">
-				<exemplarCity>𐐝𐐵𐑃 𐐑𐐬𐑊</exemplarCity>
-			</zone>
 			<zone type="Pacific/Midway">
 				<exemplarCity>𐐣𐐮𐐼𐐶𐐩</exemplarCity>
-			</zone>
-			<zone type="Pacific/Johnston">
-				<exemplarCity>𐐖𐐪𐑌𐑅𐐻𐐲𐑌</exemplarCity>
 			</zone>
 			<zone type="Pacific/Wake">
 				<exemplarCity>𐐎𐐩𐐿</exemplarCity>
@@ -770,9 +708,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</zone>
 			<zone type="America/Nome">
 				<exemplarCity>𐐤𐐬𐑋</exemplarCity>
-			</zone>
-			<zone type="Pacific/Honolulu">
-				<exemplarCity>𐐐𐐪𐑌𐐲𐑊𐐭𐑊𐐭</exemplarCity>
 			</zone>
 			<zone type="America/Anchorage">
 				<exemplarCity>𐐁𐑍𐐿𐐲𐑉𐐮𐐾</exemplarCity>
@@ -791,9 +726,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</zone>
 			<zone type="America/Phoenix">
 				<exemplarCity>𐐙𐐨𐑌𐐮𐐿𐑅</exemplarCity>
-			</zone>
-			<zone type="America/Shiprock">
-				<exemplarCity>𐐟𐐮𐐹𐑉𐐱𐐿</exemplarCity>
 			</zone>
 			<zone type="America/Denver">
 				<exemplarCity>𐐔𐐯𐑌𐑂𐐲𐑉</exemplarCity>
@@ -913,6 +845,18 @@ For terms of use, see http://www.unicode.org/copyright.html
 	</numbers>
 	<units>
 		<unitLength type="long">
+			<unit type="duration-year">
+				<unitPattern count="one">{0} 𐐷𐐮𐑉</unitPattern>
+				<unitPattern count="other">{0} 𐐷𐐮𐑉𐑆</unitPattern>
+			</unit>
+			<unit type="duration-month">
+				<unitPattern count="one">{0} 𐑋𐐲𐑌𐑃𐑅</unitPattern>
+				<unitPattern count="other">{0} 𐑋𐐲𐑌𐑃</unitPattern>
+			</unit>
+			<unit type="duration-week">
+				<unitPattern count="one">{0} 𐐶𐐨𐐿</unitPattern>
+				<unitPattern count="other">{0} 𐐶𐐨𐐿𐑅</unitPattern>
+			</unit>
 			<unit type="duration-day">
 				<unitPattern count="one">{0} 𐐼𐐩</unitPattern>
 				<unitPattern count="other">{0} 𐐼𐐩𐑆</unitPattern>
@@ -925,21 +869,9 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<unitPattern count="one">{0} 𐑋𐐮𐑌𐐲𐐻</unitPattern>
 				<unitPattern count="other">{0} 𐑋𐐮𐑌𐐲𐐻𐑅</unitPattern>
 			</unit>
-			<unit type="duration-month">
-				<unitPattern count="one">{0} 𐑋𐐲𐑌𐑃𐑅</unitPattern>
-				<unitPattern count="other">{0} 𐑋𐐲𐑌𐑃</unitPattern>
-			</unit>
 			<unit type="duration-second">
 				<unitPattern count="one">{0} 𐑅𐐯𐐿𐐲𐑌𐐼</unitPattern>
 				<unitPattern count="other">{0} 𐑅𐐯𐐿𐐲𐑌𐐼𐑆</unitPattern>
-			</unit>
-			<unit type="duration-week">
-				<unitPattern count="one">{0} 𐐶𐐨𐐿</unitPattern>
-				<unitPattern count="other">{0} 𐐶𐐨𐐿𐑅</unitPattern>
-			</unit>
-			<unit type="duration-year">
-				<unitPattern count="one">{0} 𐐷𐐮𐑉</unitPattern>
-				<unitPattern count="other">{0} 𐐷𐐮𐑉𐑆</unitPattern>
 			</unit>
 		</unitLength>
 	</units>

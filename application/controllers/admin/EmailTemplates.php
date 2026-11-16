@@ -61,16 +61,23 @@ class EmailTemplates extends SurveyCommonAction
             $sEscapeMode = 'unescaped';
         }
         $uploadDir = realpath(Yii::app()->getConfig('uploaddir'));
+        $aTemplateTypes = self::getTabTypeArray($iSurveyId);
+        $aData['missingAttachments'] = array();
         foreach ($grplangs as $key => $grouplang) {
             $SurveyLanguageSetting = SurveyLanguageSetting::model()->findByPk(['surveyls_survey_id' => $iSurveyId, 'surveyls_language' => $grouplang]);
             $aData['bplangs'][$key] = $grouplang;
             $aData['attrib'][$key] = $SurveyLanguageSetting;
             $attachments = $SurveyLanguageSetting->getValidAttachments(false);
-            foreach ($attachments as &$template) {
+            foreach ($attachments as $templateType => &$template) {
                 foreach ($template as &$attachment) {
                     // If the file is missing we add an error message
                     if (!$SurveyLanguageSetting->getAttachmentFileExist($attachment['url'])) {
                         $attachment['error'] = gT("File not found.");
+                        $aData['missingAttachments'][] = array(
+                            'language' => $grouplang,
+                            'template' => $aTemplateTypes[$templateType]['title'] ?? $templateType,
+                            'file' => basename(str_replace('\\', '/', (string) $attachment['url'])),
+                        );
                     }
                     // For security reasons we don't include the full upload path in the frontend
                     if (substr((string) $attachment['url'], 0, strlen($uploadDir)) == $uploadDir) {
@@ -127,6 +134,8 @@ class EmailTemplates extends SurveyCommonAction
         $attachementsPost = App()->getRequest()->getPost('attachments', []);
         if (Permission::model()->hasSurveyPermission($iSurveyId, 'surveylocale', 'update') && $sSaveMethod != '') {
             $languagelist = Survey::model()->findByPk($iSurveyId)->getAllLanguages();
+            $aTemplateTypes = self::getTabTypeArray($iSurveyId);
+            $aRemovedAttachments = [];
             foreach ($languagelist as $langname) {
                 $attachementsLang = [];
                 if (isset($attachementsPost[$langname])) {
@@ -139,6 +148,14 @@ class EmailTemplates extends SurveyCommonAction
                                     $attachment['size'] = filesize($localName);
                                     $attachementsLang[$template][] = $attachment;
                                 }
+                            } else {
+                                // The file does not exist (anymore): the attachment is removed, report it to the user
+                                $aRemovedAttachments[] = sprintf(
+                                    '%s / %s: %s',
+                                    getLanguageNameFromCode($langname, false),
+                                    $aTemplateTypes[$template]['title'] ?? $template,
+                                    basename(str_replace('\\', '/', urldecode((string) $attachment['url'])))
+                                );
                             }
                         }
                     }
@@ -171,6 +188,13 @@ class EmailTemplates extends SurveyCommonAction
                 }
             }
             Yii::app()->session['flashmessage'] = gT("Email templates successfully saved.");
+            if (!empty($aRemovedAttachments)) {
+                Yii::app()->setFlashMessage(
+                    gT("The following email attachments were removed because their files do not exist:")
+                        . '<ul><li>' . implode('</li><li>', array_map('CHtml::encode', $aRemovedAttachments)) . '</li></ul>',
+                    'warning'
+                );
+            }
             if (Yii::app()->request->getPost('close-after-save') == 'true') {
                 $this->getController()->redirect(array('surveyAdministration/view/surveyid/' . $iSurveyId));
             }

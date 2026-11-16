@@ -451,6 +451,55 @@ class Zend_Mail_Protocol_Imap
     }
 
     /**
+     * Login with an OAuth 2.0 access token (SASL XOAUTH2), as used by Gmail and Microsoft 365
+     *
+     * The access token has to be obtained and refreshed by the application.
+     *
+     * @param  string $user        mailbox / user name
+     * @param  string $accessToken OAuth 2.0 access token
+     * @return bool success
+     * @throws Zend_Mail_Protocol_Exception
+     */
+    public function authenticateXoauth2($user, $accessToken)
+    {
+        $credentials = base64_encode('user=' . $user . "\x01auth=Bearer " . $accessToken . "\x01\x01");
+        $this->sendRequest('AUTHENTICATE', ['XOAUTH2', $credentials], $tag);
+
+        while (true) {
+            $line = $this->_nextLine();
+
+            if (strpos($line, '+') === 0) {
+                // continuation: the server sent the reason for a rejected token (base64 encoded JSON)
+                // and waits for an empty line before it sends the tagged NO reply
+                if (@fputs($this->_socket, "\r\n") === false) {
+                    /**
+                     * @see Zend_Mail_Protocol_Exception
+                     */
+                    require_once 'Zend/Mail/Protocol/Exception.php';
+                    throw new Zend_Mail_Protocol_Exception('cannot write - connection closed?');
+                }
+                continue;
+            }
+
+            $parts = explode(' ', $line, 2);
+            if (count($parts) < 2) {
+                /**
+                 * @see Zend_Mail_Protocol_Exception
+                 */
+                require_once 'Zend/Mail/Protocol/Exception.php';
+                throw new Zend_Mail_Protocol_Exception("Malformed response: expected tag and line, got: '$line'");
+            }
+            if ($parts[0] !== $tag) {
+                // untagged response (e.g. CAPABILITY), the tagged result follows
+                continue;
+            }
+
+            $tokens = $this->_decodeLine($parts[1]);
+            return isset($tokens[0]) && $tokens[0] == 'OK';
+        }
+    }
+
+    /**
      * logout of imap server
      *
      * @return bool success

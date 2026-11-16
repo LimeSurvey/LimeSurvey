@@ -48,6 +48,18 @@ class RegisterController extends LSYii_Controller
     /** @var bool Whether to send the registration email or not */
     private $sendRegistrationEmail;
 
+    /**
+     * Ends every action with the maintenance page while participants are locked out, see
+     * LSYii_Controller::filterParticipantsLocked().
+     *
+     * @return array
+     */
+    #[\Override]
+    public function filters()
+    {
+        return array_merge(parent::filters(), ['participantsLocked']);
+    }
+
     public function actions()
     {
         return array(

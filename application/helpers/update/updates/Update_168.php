@@ -4,6 +4,7 @@ namespace LimeSurvey\Helpers\Update;
 
 class Update_168 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
             addColumn('{{participants}}', 'created', 'datetime');

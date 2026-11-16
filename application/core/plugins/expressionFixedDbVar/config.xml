@@ -7,10 +7,10 @@
         <lastUpdate>2021-01-26</lastUpdate>
         <author>Denis Chenu</author>
         <authorUrl>https://www.sondages.pro</authorUrl>
-        <supportUrl>https://manual.limesurvey.org/ExpressionFixedDbVar</supportUrl>
+        <documentationUrl>https://www.limesurvey.org/manual/ExpressionFixedDbVar_plugin</documentationUrl>
         <version>1.0.2</version>
         <license>GPL</license>
-        <description><![CDATA[Adds SEED and other database variable in ExpressionScript Engine. <a href="https://manual.limesurvey.org/ExpressionFixedDbVar">More information in LimeSurvey manual.</a>]]></description>
+        <description><![CDATA[Adds SEED and other database variable in ExpressionScript Engine. <a href="https://www.limesurvey.org/manual/ExpressionFixedDbVar_plugin">More information in LimeSurvey manual.</a>]]></description>
     </metadata>
 
     <compatibility>

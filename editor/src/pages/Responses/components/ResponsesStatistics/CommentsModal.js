@@ -20,6 +20,7 @@ export const CommentsModal = ({
   questionTitle = '',
   fields,
   answerOptions = [],
+  filterSet = [],
   initialAnswer = '',
 }) => {
   const [selectedAnswer, setSelectedAnswer] = useState(initialAnswer)
@@ -47,6 +48,7 @@ export const CommentsModal = ({
     selectedField,
     fields,
     questionType,
+    filterSet,
   })
 
   const options = useMemo(

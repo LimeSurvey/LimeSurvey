@@ -7,7 +7,8 @@
 /** @var string $tooltip */
 /** @var string $tooltipDisabled */
 /** @var boolean $activePanel */
-/** @var string $iconClass */
+/** @var string $icon Key of SurveySidemenuWidget::SIDEBAR_ICON_PATHS */
+/** @var int $iconSize */
 // Set default values for optional parameters
 $class = $class ?? '';
 $dataTarget = $dataTarget ?? '';
@@ -16,7 +17,8 @@ $onClick = $onClick ?? '';
 $tooltip = $tooltip ?? '';
 $tooltipDisabled = $tooltipDisabled ?? '';
 $activePanel = $activePanel ?? false;
-$iconClass = $iconClass ?? '';
+$icon = $icon ?? '';
+$iconSize = $iconSize ?? 24;
 if ($disabled) {
     $onClick = '';
     $tooltip = $tooltipDisabled;
@@ -30,7 +32,11 @@ if ($disabled) {
              title="<?= $tooltip ?>"
              data-bs-offset="0, 20"
              data-bs-placement="right">
-            <i class="<?= $iconClass ?> btn btn-g-800 btn-icon <?= $activePanel ? 'active' : ''?>"></i>
+            <span class="btn btn-g-800 btn-icon <?= $activePanel ? 'active' : ''?>">
+                <svg width="<?= (int)$iconSize ?>" height="<?= (int)$iconSize ?>" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
+                    <path d="<?= SurveySidemenuWidget::SIDEBAR_ICON_PATHS[$icon] ?? '' ?>"></path>
+                </svg>
+            </span>
         </div>
     </div>
 </div>

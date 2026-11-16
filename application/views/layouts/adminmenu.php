@@ -25,7 +25,7 @@
         </a>
         <!-- Only on xs screens -->
         <div class="collapse navbar-collapse " id="small-screens-menus">
-            <ul class="nav navbar-nav">
+            <ul class="nav navbar-nav" id="small-screens-menu-items">
                 <!-- active surveys -->
                 <?php if ($activesurveyscount > 0): ?>
                     <li class="nav-item">
@@ -53,8 +53,7 @@
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
                 <!-- Maintenance mode -->
-                <?php $sMaintenanceMode = Yii::app()->getConfig('maintenancemode');
-                if ($sMaintenanceMode === 'hard' || $sMaintenanceMode === 'soft') { ?>
+                <?php if (SettingGlobal::getMaintenanceMode() !== SettingGlobal::MAINTENANCE_MODE_OFF) { ?>
                     <li class="nav-item">
                         <a class="nav-link text-warning" href="<?php echo $this->createUrl("admin/globalsettings"); ?>"
                             title="<?php eT("Click here to change maintenance mode setting."); ?>">
@@ -73,7 +72,7 @@
 
                 <?php App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'copySurvey.js', LSYii_ClientScript::POS_BEGIN); ?>
 
-                <li class="nav-item d-flex"><a
+                <li class="nav-item d-flex" id="surveys-menu-item"><a
                         href="<?php echo $this->createUrl("surveyAdministration/listsurveys"); ?>"
                         class="nav-link ps-2"><?php eT("Surveys"); ?></a>
                     <?php if ($activesurveyscount > 0): ?>

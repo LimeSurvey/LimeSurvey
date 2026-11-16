@@ -294,6 +294,7 @@ class Zend_Measure_Number extends Zend_Measure_Abstract
 
         // Convert roman numbers
         if ($type === 'ROMAN') {
+            $value = 0;
             $input = strtoupper($input);
             $input = preg_replace(array_keys(self::$_romanconvert), array_values(self::$_romanconvert), $input);
 
@@ -311,8 +312,6 @@ class Zend_Measure_Number extends Zend_Measure_Abstract
 
                 $value += $num;
             }
-
-            str_replace('/', '', $value);
         }
 
         return $value;

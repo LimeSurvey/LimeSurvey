@@ -48,6 +48,11 @@ class Zend_Currency
     public const LEFT     = 32;
 
     /**
+     * Currency sign with the space next to it
+     */
+    protected const SIGN_SPACE_PATTERN = '/[ \x{00A0}\x{202F}]?¤[ \x{00A0}\x{202F}]?/u';
+
+    /**
      * Options array
      *
      * The following options are available
@@ -194,12 +199,12 @@ class Zend_Currency
                                                                'precision'     => $options['precision']]);
 
         if ($options['position'] !== self::STANDARD) {
-            $value = str_replace('¤', '', $value);
+            // keeps the space between the currency sign and the number, the group separator can be a space too
             $space = '';
-            if (iconv_strpos($value, ' ') !== false) {
-                $value = str_replace(' ', '', $value);
-                $space = ' ';
+            if (preg_match(self::SIGN_SPACE_PATTERN, $value, $match)) {
+                $space = str_replace('¤', '', $match[0]);
             }
+            $value = preg_replace(self::SIGN_SPACE_PATTERN, '', $value);
 
             if ($options['position'] == self::LEFT) {
                 $value = '¤' . $space . $value;
@@ -232,7 +237,7 @@ class Zend_Currency
 
                 default:
                     $sign = '';
-                    $value = str_replace(' ', '', $value);
+                    $value = preg_replace(self::SIGN_SPACE_PATTERN, '¤', $value);
                     break;
             }
         }

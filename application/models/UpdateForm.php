@@ -599,7 +599,7 @@ class UpdateForm extends CFormModel
      * Check if an update is available and return notification data.
      * Also checks if assets need to be republished.
      *
-     * Fetches update info from the server (cached in session for 1 day),
+     * Fetches update info from the server (cached in session for 1 day, or until the installed build changes),
      * filters available updates by the 'minimum_update_stability' global setting,
      * and stores results including stability labels in the session.
      *
@@ -611,10 +611,18 @@ class UpdateForm extends CFormModel
         if (Yii::app()->getConfig('updatable') && Permission::model()->hasGlobalPermission('superadmin')) {
             $today = new DateTime("now");
             $next_update_check = Yii::app()->session['next_update_check'];
+            $buildnumber = Yii::app()->getConfig('buildnumber');
 
-            if (is_null($next_update_check) || ($next_update_check < $today) || is_null(Yii::app()->session['update_result'])) {
+            if (
+                is_null($next_update_check)
+                || ($next_update_check < $today)
+                || is_null(Yii::app()->session['update_result'])
+                || Yii::app()->session['update_check_build'] !== $buildnumber
+            ) {
                 // Turn on the alert notification
                 Yii::app()->session['notificationstate'] = 1;
+                // The cached result is only valid for the build it was checked for (e.g. after a manual update)
+                Yii::app()->session['update_check_build'] = $buildnumber;
 
                 $updates = $this->getUpdateInfo('1');
                 $update_available = false;
@@ -859,7 +867,7 @@ class UpdateForm extends CFormModel
             // 2. We're root (UID 0) - root can modify any file, OR
             // 3. File is writable (permissions allow modification)
             if ($currentUid !== false && $fileUid !== false) {
-                return ($currentUid === $fileUid) || ($currentUid === 0);
+                return ($currentUid === $fileUid) || ($currentUid === 0) || is_writable($path);
             }
         }
 
@@ -1085,7 +1093,6 @@ class UpdateForm extends CFormModel
         curl_setopt($ch, CURLOPT_FILE, $pFile);
         curl_exec($ch);
         $content_type = curl_getinfo($ch, CURLINFO_CONTENT_TYPE); // But we want the header to be returned to the controller so we can check if a file has been returned
-        curl_close($ch);
 
         $result = ($content_type == "application/zip") ? array("result" => true) : array('result' => false, 'error' => 'error_while_processing_download');
 
@@ -1124,7 +1131,6 @@ class UpdateForm extends CFormModel
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
             $content = curl_exec($ch);
-            curl_close($ch);
 
             $content_decoded = json_decode(base64_decode($content));
             if (!is_object($content_decoded)) {

@@ -9,6 +9,7 @@ class Update_602 extends DatabaseUpdateBase
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function up()
     {
         $this->getAllBoxIcons();

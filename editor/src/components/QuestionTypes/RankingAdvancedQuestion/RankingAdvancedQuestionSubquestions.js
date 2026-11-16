@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { Draggable } from 'react-beautiful-dnd'
+import { Draggable } from '@hello-pangea/dnd'
 import classNames from 'classnames'
 import { SubquestionCodeInput } from '../subquestionCodeComponents'
 import { useSurvey, useAppState } from 'hooks'
@@ -78,13 +78,12 @@ export const RankingAdvancedQuestionSubquestions = ({
                   >
                     <div
                       className={classNames(
-                        'cursor-pointer position-absolute remove-option-button',
+                        'cursor-pointer remove-option-button me-3',
                         {
                           'd-none disabled': !isFocused,
                         }
                       )}
                       onClick={() => handleRemoveSubquestion(subquestion)}
-                      style={{ left: -24 }}
                     >
                       <CloseCircleFillIcon
                         className={classNames(

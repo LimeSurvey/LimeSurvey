@@ -151,12 +151,12 @@ abstract class Zend_Dojo_Form_Element_Dijit extends Zend_Form_Element
     /**
      * Load default decorators
      *
-     * @return void
+     * @return $this
      */
     public function loadDefaultDecorators()
     {
         if ($this->loadDefaultDecoratorsIsDisabled()) {
-            return;
+            return $this;
         }
 
         $decorators = $this->getDecorators();
@@ -167,6 +167,8 @@ abstract class Zend_Dojo_Form_Element_Dijit extends Zend_Form_Element
                  ->addDecorator('HtmlTag', ['tag' => 'dd'])
                  ->addDecorator('Label', ['tag' => 'dt']);
         }
+
+        return $this;
     }
 
     /**

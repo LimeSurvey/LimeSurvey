@@ -520,14 +520,10 @@ class Zend_Text_Table
      * Magic method which returns the rendered table
      *
      * @return string
+     * @throws Zend_Text_Table_Exception When the table cannot be rendered
      */
     public function __toString()
     {
-        try {
-            return $this->render();
-        } catch (Exception $e) {
-            trigger_error($e->getMessage(), E_USER_ERROR);
-        }
-
+        return $this->render();
     }
 }

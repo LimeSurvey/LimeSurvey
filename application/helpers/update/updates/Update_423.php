@@ -4,6 +4,7 @@ namespace LimeSurvey\Helpers\Update;
 
 class Update_423 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
             //update core themes api_version

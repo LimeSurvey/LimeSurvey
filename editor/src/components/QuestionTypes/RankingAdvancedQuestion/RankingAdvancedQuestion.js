@@ -1,4 +1,4 @@
-import { DragDropContext, Droppable } from 'react-beautiful-dnd'
+import { DragDropContext, Droppable } from '@hello-pangea/dnd'
 import classNames from 'classnames'
 import { PlusLg } from 'react-bootstrap-icons'
 import { Button } from 'react-bootstrap'

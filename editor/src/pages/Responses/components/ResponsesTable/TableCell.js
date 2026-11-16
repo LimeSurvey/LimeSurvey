@@ -1,8 +1,9 @@
 import { flexRender } from '@tanstack/react-table'
+import { isArrayQuestion } from 'helpers'
 import { completedColumnKey, renderCellText } from '../../utils'
 import { Badge } from 'react-bootstrap'
 
-export const TableCell = ({ cell }) => {
+export const TableCell = ({ cell, question = {}, baseLanguage }) => {
   const cellValue = cell.getContext().getValue()
   let value = ''
 
@@ -16,11 +17,25 @@ export const TableCell = ({ cell }) => {
           answerTitle,
           questionThemeName,
           checked,
+          key,
+          subquestion1,
+          subquestion2,
         },
         index
       ) => {
+        if (value === '-oth-') {
+          return <></>
+        }
+
         return (
-          <Badge key={`cell-value-${index}${cell.column.id}`}>
+          <Badge
+            key={`cell-value-${index}${cell.column.id}`}
+            className={
+              isArrayQuestion(questionThemeName)
+                ? 'array-response-badge'
+                : undefined
+            }
+          >
             {renderCellText({
               value,
               comment,
@@ -29,6 +44,11 @@ export const TableCell = ({ cell }) => {
               questionThemeName,
               checked,
               index,
+              key,
+              question,
+              baseLanguage,
+              subquestion1,
+              subquestion2,
             })}
           </Badge>
         )

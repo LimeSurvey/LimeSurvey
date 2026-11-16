@@ -8,6 +8,7 @@
         <author>Carsten Schmitz</author>
         <authorEmail>support@limesurvey.org</authorEmail>
         <authorUrl>https://www.limesurvey.org</authorUrl>
+        <documentationUrl>https://www.limesurvey.org/manual/Audit_log_plugin</documentationUrl>
         <license>GNU General Public License version 2 or later</license>
         <version>1.0.1</version>
         <description><![CDATA[Core: Create an audit log of changes]]></description>

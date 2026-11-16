@@ -5,6 +5,7 @@ import { CloseCircleFillIcon, DragIcon } from 'components/icons'
 import { hasTempId, STATES } from 'helpers'
 import { useAppState, useSurvey } from 'hooks'
 import { SubquestionCodeInput } from '../../subquestionCodeComponents'
+import { AssessmentValueInput } from '../../AssessmentValueInput'
 
 export const ArrayColumnTitle = ({
   isFocused,
@@ -15,11 +16,15 @@ export const ArrayColumnTitle = ({
   index,
   title,
   handleUpdateL10ns,
-  placeholder = 'Answer option',
+  placeholder,
   itemsKey,
   isNoAnswer = false,
   code,
   handleChildCodeUpdate,
+  showAssessmentValue = false,
+  assessmentValue,
+  assessmentScaleNumber,
+  handleAssessmentValueUpdate = () => {},
   qid = '',
   isTitleFocused,
   id,
@@ -71,19 +76,31 @@ export const ArrayColumnTitle = ({
               isNoAnswer && isFocused && showQNumCode?.showNumber ? '28px' : 0,
           }}
         >
-          {isFocused && showQNumCode?.showNumber && !isNoAnswer && (
-            <SubquestionCodeInput
-              isColumnTitle={true}
-              isSurveyActive={isSurveyActive}
-              onChange={(e) => handleChildCodeUpdate(e.target.value, index)}
-              code={code}
-            />
+          {!isNoAnswer && (
+            <div className="array-answer-metadata">
+              {isFocused && showQNumCode?.showNumber && (
+                <SubquestionCodeInput
+                  isColumnTitle={true}
+                  isSurveyActive={isSurveyActive}
+                  onChange={(e) => handleChildCodeUpdate(e.target.value, index)}
+                  code={code}
+                />
+              )}
+              {showAssessmentValue && (
+                <AssessmentValueInput
+                  assessmentValue={assessmentValue}
+                  answerCode={code}
+                  scaleNumber={assessmentScaleNumber}
+                  onChange={(e) => handleAssessmentValueUpdate(e.target.value)}
+                />
+              )}
+            </div>
           )}
           <ContentEditor
             className={classNames(
-              'text-start choice array-answer-content-editor'
+              'text-center choice array-answer-content-editor'
             )}
-            placeholder={placeholder}
+            placeholder={placeholder ?? t('Answer option')}
             value={title}
             update={(value) => handleUpdateL10ns(value, index)}
             disabled={isNoAnswer}

@@ -7,6 +7,7 @@ use Throwable;
 
 class Update_425 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
         $aUserDirectory = QuestionTheme::getAllQuestionXMLPaths(false, false, true);

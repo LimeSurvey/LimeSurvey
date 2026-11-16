@@ -9,7 +9,7 @@
         <div class="mb-3">
             <!-- From -->
             <label for='export_from' class=" form-label">
-                <?php eT("From:"); ?>
+                <?php eT("From response ID:"); ?>
             </label>
             <div class="">
                 <?php printf(
@@ -22,7 +22,7 @@
 
             <!-- To -->
             <label for='export_to' class=" form-label">
-                <?php eT("to:"); ?>
+                <?php eT("To response ID:"); ?>
             </label>
             <div class="">
                 <?php printf(

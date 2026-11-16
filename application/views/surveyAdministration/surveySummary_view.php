@@ -28,14 +28,9 @@ $respstatsread  = Permission::model()->hasSurveyPermission($iSurveyID, 'response
 
 ?>
 <!-- START surveySummary -->
-<!-- <div class="row">
-    <div class="col-12">
-        <div class="h3 pagetitle">
-            <?php eT('Survey summary'); ?> :
-            <?php echo flattenText($oSurvey->currentLanguageSettings->surveyls_title) . " (" . gT("ID") . " " . $oSurvey->sid . ")"; ?>
-        </div>
-    </div>
-</div> -->
+<div class="pagetitle">
+    <h1><?php eT('Survey overview'); ?></h1>
+</div>
 <div class="ls-card-grid">
 <?php
     //survey has been activated in open-access mode

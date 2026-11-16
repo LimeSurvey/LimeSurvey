@@ -1,0 +1,119 @@
+/*
+Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
+For licensing, see LICENSE.md or http://ckeditor.com/license
+*/
+
+/*
+notification.css (part of editor.css)
+=======================================
+
+This file styles the notifications displayed by the "notification" plugin, e.g. the
+"Press Ctrl+V to paste" hint shown when the browser blocks the paste toolbar buttons.
+
+Taken from the moono-lisa skin.
+*/
+
+@-webkit-keyframes fadeIn {
+    from { opacity: 0.4; }
+    to { opacity: 0.95; }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0.4; }
+    to { opacity: 0.95; }
+}
+
+.cke_notifications_area {
+    pointer-events: none;
+}
+
+.cke_notification {
+    pointer-events: auto;
+    position: relative;
+    margin: 10px;
+    width: 300px;
+    color: white;
+    text-align: center;
+    opacity: 0.95;
+    filter: alpha(opacity = 95);
+    -webkit-animation: fadeIn 0.7s;
+    animation: fadeIn 0.7s;
+}
+
+.cke_notification_message a {
+    color: inherit;
+}
+
+.cke_notification_success {
+    background: #72b572;
+    border: 1px solid #63a563;
+}
+
+.cke_notification_warning {
+    background: #c83939;
+    border: 1px solid #902b2b;
+}
+
+.cke_notification_info {
+    background: #2e9ad0;
+    border: 1px solid #0f74a8;
+}
+
+.cke_notification_info span.cke_notification_progress {
+    background-color: #0f74a8;
+    display: block;
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    overflow: hidden;
+    position: absolute;
+    z-index: 1;
+}
+
+.cke_notification_message {
+    position: relative;
+    margin: 4px 23px 3px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    line-height: 18px;
+    z-index: 4;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.cke_notification_close {
+    background-image: url(images/close.png);
+    background-repeat: no-repeat;
+    background-position: 50%;
+    position: absolute;
+    cursor: pointer;
+    text-align: center;
+    height: 20px;
+    width: 20px;
+    top: 1px;
+    right: 1px;
+    padding: 0;
+    margin: 0;
+    z-index: 5;
+    opacity: 0.6;
+    filter: alpha(opacity = 60);
+}
+
+.cke_notification_close:hover {
+    opacity: 1;
+    filter: alpha(opacity = 100);
+}
+
+.cke_notification_close span {
+    display: none;
+}
+
+.cke_notification_warning a.cke_notification_close {
+    opacity: 0.8;
+    filter: alpha(opacity = 80);
+}
+
+.cke_notification_warning a.cke_notification_close:hover {
+    opacity: 1;
+    filter: alpha(opacity = 100);
+}

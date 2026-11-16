@@ -27,6 +27,7 @@
 
 .btn-outline-success {
   &:active,
+  &.active,
   &:hover {
     color: $white !important;
   }

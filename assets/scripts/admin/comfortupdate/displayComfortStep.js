@@ -1,8 +1,8 @@
 $.fn.displayComfortStep = function(options)
 {
     // Will be used later for animation params
-    var defauts={};
-    var params=$.extend(defauts, options);
+    var defaults={};
+    var params=$.extend(defaults, options);
 
     $ajaxLoader = $("#ajaxContainerLoading");
     $ajaxLoader.show();

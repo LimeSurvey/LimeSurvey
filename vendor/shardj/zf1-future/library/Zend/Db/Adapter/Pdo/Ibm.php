@@ -194,13 +194,18 @@ class Zend_Db_Adapter_Pdo_Ibm extends Zend_Db_Adapter_Pdo_Abstract
     {
         $this->_connect();
         $stmtClass = $this->_defaultStmtClass;
+        if (!class_exists($stmtClass)) {
+            require_once 'Zend/Loader.php';
+            Zend_Loader::loadClass($stmtClass);
+        }
         $stmt = new $stmtClass($this, $sql);
         $stmt->setFetchMode($this->_fetchMode);
         return $stmt;
     }
 
     /**
-     * Returns a list of the tables in the database.
+     * Returns a list of the tables in the database, on Db2 of the schema of the
+     * configuration if it has one.
      *
      * @return array
      * @throws Zend_Db_Adapter_Exception
@@ -208,6 +213,9 @@ class Zend_Db_Adapter_Pdo_Ibm extends Zend_Db_Adapter_Pdo_Abstract
     public function listTables()
     {
         $this->_connect();
+        if ($this->_serverType instanceof Zend_Db_Adapter_Pdo_Ibm_Db2 && !empty($this->_config['schema'])) {
+            return $this->_serverType->listTables($this->_config['schema']);
+        }
         return $this->_serverType->listTables();
     }
 

@@ -45,6 +45,8 @@ class DashboardController extends LSBaseController
     public function actionView(): void
     {
         $aData = $this->getData();
+        // Used by the with_sidebar layout for the browser page title
+        $this->aData['pageTitle'] = gT('Dashboard');
         $this->render('welcome', $aData);
     }
 

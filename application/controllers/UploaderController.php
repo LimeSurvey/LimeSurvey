@@ -18,7 +18,10 @@
 class UploaderController extends SurveyController
 {
     /**
-     * @param int $actionID
+     * Handles file upload question requests: file download, delete and upload (mode=upload),
+     * otherwise renders the upload modal content (a fragment for AJAX requests, a full page otherwise).
+     *
+     * @param string $actionID
      * @return void
      */
     public function run($actionID)
@@ -47,6 +50,11 @@ class UploaderController extends SurveyController
         $sMode = Yii::app()->request->getParam('mode');
         $sPreview = (int) Yii::app()->request->getParam('preview', 0);
 
+        // No file may be stored or deleted while the maintenance mode keeps participants from taking surveys
+        if (($bDelete || $sMode == "upload") && SettingGlobal::areParticipantsLocked()) {
+            $this->endRequestWithMaintenanceMessage(gT("Our survey site is currently undergoing maintenance."), 'text');
+        }
+
         // Validate and filter and throw error if problems
         // Using 'futmp_'.randomChars(15).'_'.$pathinfo['extension'] for filename, then remove all other characters
         $sFileGetContentFiltered = preg_replace('/[^a-zA-Z0-9_]/', '', (string) $sFileGetContent);
@@ -55,6 +63,10 @@ class UploaderController extends SurveyController
         if ($sFileGetContent != $sFileGetContentFiltered || $sFileName != $sFileNameFiltered || $sFieldName != $sFieldNameFiltered) {
             // If one seems to be a hack: Bad request
             throw new CHttpException(400); // See for debug > 1
+        }
+        // File content, delete and upload responses are not HTML: Don't append the HTML debug log (debugsql)
+        if ($sFileGetContentFiltered || $bDelete || $sMode == "upload") {
+            viewHelper::disableHtmlLogging();
         }
         if ($sFileGetContentFiltered) {
             if (substr($sFileGetContentFiltered, 0, 6) == 'futmp_') {
@@ -331,7 +343,7 @@ class UploaderController extends SurveyController
                                 "success"       => true,
                                 "file_index"    => $filecount,
                                 "size"          => $size,
-                                "name"          => rawurlencode(basename((string) $filename)),
+                                "name"          => $filename,
                                 "ext"           => $cleanExt,
                                 "filename"      => $randfilename,
                                 "msg"           =>  !empty($message) ? $message : gT("The file has been successfully uploaded.")
@@ -389,12 +401,11 @@ class UploaderController extends SurveyController
         $oEvent = new PluginEvent('beforeSurveyPage');
         $oEvent->set('surveyId', $surveyid);
         App()->getPluginManager()->dispatchEvent($oEvent);
-        if (!is_null($oEvent->get('template'))) {
-            $aSurveyInfo['templatedir'] = $oEvent->get('template');
-        }
+        /* Theme set by a plugin in beforeSurveyPage */
+        $sPluginTemplateName = $oEvent->get('template');
         $sTemplateDir = getTemplatePath($aSurveyInfo['template']);
         $sTemplateUrl = getTemplateURL($aSurveyInfo['template']) . "/";
-        $oTemplate = Template::model()->getInstance('', $surveyid);
+        $oTemplate = Template::model()->getInstance(empty($sPluginTemplateName) ? '' : $sPluginTemplateName, $surveyid);
         $sNeededScriptVar = '
             var uploadurl = uploadurl || "' . $this->createUrl('/uploader/index/mode/upload/') . '";
             var imageurl = imageurl || "' . Yii::app()->getConfig('imageurl') . '/";
@@ -415,7 +426,8 @@ class UploaderController extends SurveyController
                      errorTooMuch: '" . gT('The maximum number of files has been uploaded. You may return back to survey.', 'js') . "',
                      errorNeedMoreConfirm: '" . gT("You need to upload %s more files for this question.\nAre you sure you want to exit?", 'js') . "',
                      deleteFile : '" . gT('Delete', 'js') . "',
-                     editFile : '" . gT('Edit', 'js') . "'
+                     editFile : '" . gT('Edit', 'js') . "',
+                     errorUnknown : '" . gT('An unknown error occurred', 'js') . "'
                     }
         ";
 
@@ -425,10 +437,6 @@ class UploaderController extends SurveyController
         $oTemplate = Template::model()->getInstance('', $surveyid);
         App()->getClientScript()->registerScript('sNeededScriptVar', $sNeededScriptVar, LSYii_ClientScript::POS_BEGIN);
         App()->getClientScript()->registerScript('sLangScriptVar', $sLangScriptVar, LSYii_ClientScript::POS_BEGIN);
-
-        $header = getHeader($meta);
-
-        echo $header;
 
         $fn = $sFieldName;
         $qid = (int) Yii::app()->request->getParam('qid');
@@ -451,7 +459,8 @@ class UploaderController extends SurveyController
             'qid' => $qid,
             'minfiles' => $minfiles,
             'maxfiles' => $maxfiles,
-            'qidattributes' => $qidattributes
+            'qidattributes' => $qidattributes,
+            'preview' => Yii::app()->session['preview']
         ];
 
         $body = '<body class="uploader">';
@@ -473,7 +482,15 @@ class UploaderController extends SurveyController
                     . "});
             });
         </script>";
-        $container = $this->renderPartial('/survey/questions/answer/file_upload/modal-container', $aData, true);
+        /* Render with twig to allow survey themes and question themes to override the modal content */
+        QuestionTemplate::getNewInstance($oQuestion);
+        $container = App()->twigRenderer->renderQuestion('/survey/questions/answer/file_upload/modal-container', $aData);
+        if (App()->request->getIsAjaxRequest()) {
+            /* Loaded into the survey page modal, which already has all assets: no page header or external scripts */
+            echo "<script>\n" . $sNeededScriptVar . $sLangScriptVar . "\n</script>\n" . $container . $scripts;
+            return;
+        }
+        echo getHeader($meta);
         $body .= $container . $scripts;
         $body .= '</body>
         </html>';

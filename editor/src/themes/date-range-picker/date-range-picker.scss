@@ -2,6 +2,12 @@
   background-color: $white;
 
   .date-range-placeholder {
+    display: block;
+    width: 100%;
+    background-color: transparent;
+    color: inherit;
+    font: inherit;
+    text-align: left;
     padding: 10px;
     border: 1px solid $g-200;
     border-radius: $border-radius;
@@ -12,16 +18,351 @@
   .date-range-container {
     position: fixed;
     z-index: 10;
-    outline: 1px solid $g-200;
-    background-color: $white;
-    padding: 10px;
+    border-radius: 6px;
+    box-shadow: 0 4px 16px $elevation-shadow-soft;
+    background-color: $g-100;
+    overflow: hidden;
+    font-size: $font-size-sm;
+    color: $g-900;
+  }
 
-    .action-buttons {
-      display: flex;
-      align-items: center;
-      justify-content: end;
-      margin-top: 20px;
-      gap: 4px;
+  .date-range-component {
+    display: flex;
+  }
+
+  // Presets sidebar
+  .date-range-presets {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 250px;
+    padding: 8px;
+    background-color: $g-100;
+  }
+
+  .date-range-preset {
+    text-align: left;
+    padding: 9px 34px;
+    border: none;
+    border-radius: 4px;
+    background: transparent;
+    color: $g-900;
+    font-size: 15px;
+
+    &:hover {
+      background-color: $g-200;
+    }
+
+    &.active {
+      background-color: $grape;
+      color: $white;
+    }
+  }
+
+  .date-range-day-counts {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 4px 0 0;
+    padding: 12px 26px 0;
+    border-top: 1px solid $g-400;
+  }
+
+  .date-range-days-input {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0;
+    font-size: 15px;
+    font-weight: 500;
+    color: $g-900;
+    cursor: pointer;
+
+    input {
+      width: 58px;
+      height: 30px;
+      padding: 2px 8px;
+      border: 1px solid $g-700;
+      border-radius: 4px;
+      background-color: $white;
+      color: $g-900;
+
+      &:focus {
+        outline: none;
+        border-color: $grape;
+      }
+    }
+  }
+
+  // Main column: header inputs, calendar, footer
+  .date-range-main {
+    display: flex;
+    flex-direction: column;
+    width: 430px;
+  }
+
+  .date-range-inputs {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background-color: $g-100;
+    color: $g-900;
+  }
+
+  .date-range-input {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    min-width: 0;
+    padding: 4px 4px 4px 10px;
+    border: 2px solid $g-750;
+    border-radius: 4px;
+    background-color: $white;
+
+    &:focus-within {
+      border-color: $grape;
+    }
+
+    &.is-invalid {
+      border-color: $error;
+    }
+
+    input {
+      flex: 1;
+      min-width: 0;
+      border: none;
+      outline: none;
+      background: transparent;
+      color: $g-900;
+      font-size: 14px;
+    }
+  }
+
+  .date-range-error {
+    padding: 0 16px 8px;
+    background-color: $g-100;
+    color: $error;
+    font-size: 13px;
+  }
+
+  .date-range-input-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 30px;
+    height: 26px;
+    border: none;
+    border-radius: 3px;
+    background-color: $g-700;
+    color: $white;
+  }
+
+  .date-range-calendar {
+    padding: 8px 16px 12px;
+    background-color: $white;
+
+    .rdp-root {
+      --rdp-accent-color: #{$g-900};
+      --rdp-accent-background-color: transparent;
+      --rdp-range_middle-background-color: transparent;
+      --rdp-range_start-date-background-color: transparent;
+      --rdp-range_end-date-background-color: transparent;
+      --rdp-range_start-color: #{$white};
+      --rdp-range_end-color: #{$white};
+      --rdp-range_middle-color: #{$white};
+      --rdp-selected-border: none;
+      --rdp-day-width: 56px;
+      --rdp-day-height: 42px;
+      --rdp-day_button-width: 44px;
+      --rdp-day_button-height: 34px;
+      --rdp-day_button-border-radius: 17px;
+      --rdp-outside-opacity: 1;
+      --rdp-disabled-opacity: 1;
+      --rdp-nav-height: 44px;
+      --rdp-nav_button-width: 28px;
+      --rdp-nav_button-height: 28px;
+
+      font-size: 14px;
+      color: $g-900;
+    }
+
+    .rdp-months,
+    .rdp-month,
+    .rdp-month_grid {
+      width: 100%;
+      max-width: none;
+    }
+
+    .rdp-month_caption {
+      justify-content: center;
+      gap: 16px;
+      height: 44px;
+      padding: 0 32px;
+      border-bottom: 1px solid $g-400;
+    }
+
+    .rdp-dropdowns {
+      justify-content: space-around;
+      width: 100%;
+    }
+
+    .rdp-caption_label {
+      gap: 8px;
+      color: $g-600;
+      font-size: 15px;
+      font-weight: 400;
+    }
+
+    .rdp-dropdown,
+    .rdp-dropdown:focus,
+    .rdp-dropdown:focus-visible,
+    .rdp-dropdown:focus-visible ~ .rdp-caption_label {
+      outline: none;
+      box-shadow: none;
+    }
+
+    .rdp-dropdown_root:hover .rdp-caption_label {
+      color: $g-800;
+    }
+
+    .rdp-caption_label .rdp-chevron {
+      fill: $g-600;
+      width: 12px;
+      height: 12px;
+    }
+
+    .rdp-button_previous,
+    .rdp-button_next {
+      border-radius: 4px;
+
+      &:hover:not(:disabled) {
+        background-color: $g-200;
+      }
+
+      .rdp-chevron {
+        fill: $g-900;
+        width: 18px;
+        height: 18px;
+      }
+    }
+
+    .rdp-root .rdp-month .rdp-month_grid {
+      table-layout: fixed;
+
+      .rdp-weeks,
+      thead,
+      tbody,
+      tr,
+      th,
+      td {
+        border-bottom: none !important;
+        box-shadow: none;
+      }
+
+      th,
+      td {
+        padding: 0;
+        min-width: 0;
+      }
+
+      .rdp-weekday {
+        padding-top: 10px;
+      }
+    }
+
+    .rdp-weekday {
+      font-size: 13px;
+      font-weight: 500;
+      color: $g-900;
+    }
+
+    .date-range-month-label {
+      padding: 10px 0 0 12px;
+      font-size: 13px;
+      color: $g-600;
+    }
+
+    .rdp-day_button {
+      margin: 0 auto;
+    }
+
+    .rdp-day:not(.rdp-selected):not(.rdp-disabled) .rdp-day_button:hover {
+      background-color: $g-200;
+    }
+
+    .rdp-selected .rdp-day_button {
+      border-radius: var(--rdp-day_button-border-radius);
+      background-color: $g-900;
+      color: $white;
+      font-weight: 400;
+    }
+
+    .rdp-outside .rdp-day_button,
+    .rdp-disabled .rdp-day_button {
+      color: $g-400;
+    }
+
+    .rdp-today:not(.rdp-selected):not(.rdp-outside) .rdp-day_button {
+      color: $grape;
+      font-weight: 600;
+    }
+  }
+
+  // Footer
+  .action-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    background-color: $g-100;
+  }
+
+  .action-buttons-end {
+    display: flex;
+    gap: 12px;
+  }
+
+  .date-range-btn {
+    min-width: 80px;
+    padding: 8px 14px;
+    border-radius: 4px;
+    font-size: 15px;
+    font-weight: 500;
+    border: 1px solid transparent;
+
+    &.date-range-btn-clear {
+      background-color: $white;
+      border-color: $g-900;
+      color: $g-900;
+
+      &:hover {
+        background-color: $g-200;
+      }
+    }
+
+    &.date-range-btn-cancel {
+      background-color: $g-700;
+      color: $white;
+
+      &:hover {
+        background-color: $g-750;
+      }
+    }
+
+    &.date-range-btn-confirm {
+      background-color: $grape;
+      color: $white;
+
+      &:hover:not(:disabled) {
+        filter: brightness(0.92);
+      }
+
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
     }
   }
 }

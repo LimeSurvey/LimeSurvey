@@ -210,6 +210,11 @@ class Zend_Queue_Stomp_Client_Connection
                 throw new Zend_Queue_Exception('Connection lost');
             }
 
+            // nothing arrived yet on the non-blocking socket
+            if ($data === '') {
+                continue;
+            }
+
             // append last character read to $response
             $response .= $data;
 

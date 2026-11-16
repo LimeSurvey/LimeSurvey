@@ -3,9 +3,6 @@ name: QuestionEditor - CI pipeline
 
 on:
   push:
-    paths:
-      - 'editor/**' # Only run when files in the editor folder change
-      - '.github/workflows/editor.yml'
   workflow_dispatch:
 
 # Set the default working directory for all jobs to the editor folder

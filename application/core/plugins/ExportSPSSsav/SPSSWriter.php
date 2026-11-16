@@ -12,6 +12,7 @@ use SPSS\Sav\Variable;
 class SPSSWriter extends Writer
 {
     private $output;
+    private $outputMode;
     private $separator;
     private $hasOutputHeader;
 
@@ -46,6 +47,7 @@ class SPSSWriter extends Writer
     public function init(SurveyObj $survey, $sLanguageCode, FormattingOptions $oOptions)
     {
         parent::init($survey, $sLanguageCode, $oOptions);
+        $this->outputMode = $oOptions->output;
         if ($oOptions->output == 'display') {
             header("Content-Disposition: attachment; filename=survey_" . $survey->id . "_spss.sav");
             header("Content-type: application/download; charset=UTF-8");
@@ -522,6 +524,7 @@ class SPSSWriter extends Writer
             'prodName' => '@(#) IBM SPSS STATISTICS 64-bit Macintosh 23.0.0.0',
             'creationDate' => date('d M y'),
             'creationTime' => date('H:i:s'),
+            'fileLabel' => '',
             'weightIndex' => 0,
         );
 
@@ -548,12 +551,15 @@ class SPSSWriter extends Writer
         }
 
 
-        //write to temporary file then remove
-        $tmpfile = tempnam(Yii::app()->getConfig("tempdir"), "SPSS");
+        $tmpfile = $this->outputMode == 'file'
+            ? $this->filename
+            : tempnam(Yii::app()->getConfig("tempdir"), "SPSS");
         $writer->save($tmpfile);
         $writer->close();
-        echo(file_get_contents($tmpfile));
-        unlink($tmpfile);
+        if ($this->outputMode == 'display') {
+            echo(file_get_contents($tmpfile));
+            unlink($tmpfile);
+        }
 
         fclose($this->handle);
     }

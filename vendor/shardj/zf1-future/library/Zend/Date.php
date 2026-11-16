@@ -2510,13 +2510,13 @@ class Zend_Date extends Zend_Date_DateObject
 
                         if (($calc == 'set') || ($calc == 'cmp')) {
                             if (isset($parsed['month']) && is_numeric($parsed['month']) && $parsed['month'] > 0) {
-                                $parsed['month'] = (int) str_decrement(ltrim((string) $parsed['month'], '0'));
+                                $parsed['month'] = (int) $parsed['month'] - 1;
                             } else {
                                 $parsed['month'] = 0;
                             }
 
                             if (isset($parsed['day']) && is_numeric($parsed['day']) && $parsed['day'] > 0) {
-                                $parsed['day'] = (int) str_decrement(ltrim((string) $parsed['day'], '0'));
+                                $parsed['day'] = (int) $parsed['day'] - 1;
                             } else {
                                 $parsed['day'] = 0;
                             }

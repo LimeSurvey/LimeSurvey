@@ -37,10 +37,18 @@ const displaySettings = () => {
   return [
     displayAttributes.IMAGE_SETTINGS,
     displayAttributes.LABEL_FOR_OTHER_OPTIONS,
+    displayAttributes.OTHER_INPUT_SIZE,
+    displayAttributes.OTHER_MAXIMUM_CHARS,
     displayAttributes.POSITION_FOR_OTHER_OPTION,
     displayAttributes.HIDE_TIP,
     displayAttributes.ALWAYS_HIDE_THIS_QUESTION,
     displayAttributes.CSS_CLASSES,
+    displayAttributes.FIX_WIDTH,
+    displayAttributes.FIX_HEIGHT,
+    displayAttributes.CROP_OR_RESIZE,
+    displayAttributes.KEEP_ASPECT_RATIO,
+    displayAttributes.HORIZONTAL_SCROLL,
+    displayAttributes.DISPLAY_COLUMNS,
   ]
 }
 
@@ -55,6 +63,7 @@ const logicSettings = () => {
 const otherSettings = () => {
   const otherAttributes = getOtherAttributes()
   return [
+    otherAttributes.OTHER_NUMBERS_ONLY,
     otherAttributes.INSERT_PAGE_BREAK_IN_PRINTABLE_VIEW,
     otherAttributes.SPSS_EXPORT_SCALE_TYPE,
   ]

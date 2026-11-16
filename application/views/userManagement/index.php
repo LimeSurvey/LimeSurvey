@@ -33,24 +33,11 @@ echo viewHelper::getViewTestTag('usersIndex');
             'lsCaption' => gT('User management'),
             'lsAfterAjaxUpdate' => [
                 'LS.UserManagement.bindButtons();',
+                'LS.UserManagement.restoreFocus(true);',
                 'showDeactivatedUserTooltip();'
             ],
             'filter' => $model,
             'lsPageSizeCurrentValue' => $pageSize,
-        ]
-    );
-    ?>
-
-    <!-- Floating Actions Widget for User Management -->
-    <?php
-    require_once Yii::getPathOfAlias('application.extensions.admin.grid.FloatingActionsWidget.actions.UserManagementMassiveActions') . '.php';
-    $aActions = \actions\UserManagementMassiveActions::getActions();
-    $this->widget(
-        'ext.admin.grid.FloatingActionsWidget.FloatingActionsWidget',
-        [
-            'pk'       => 'uid',
-            'gridId'   => 'usermanagement--identity-gridPanel',
-            'aActions' => $aActions,
         ]
     );
     ?>
@@ -95,9 +82,10 @@ echo viewHelper::getViewTestTag('usersIndex');
     });
 
 </script>
-<div id='UserManagement-action-modal' class="modal fade UserManagement--selector--modal" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-lg" role="document">
+<div id='UserManagement-action-modal' class="modal fade UserManagement--selector--modal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="UserManagement-action-modal-title UserManagement-action-modal-title-dialogsr" aria-label="<?= CHtml::encode(gT('Loading...')) ?>">
+    <div id="usermanagement-modal-doalog" class="modal-dialog" role="document">
         <div class="modal-content">
         </div>
     </div>
+    <div id="UserManagement-action-modal-status" class="visually-hidden" role="status" data-loading-text="<?= CHtml::encode(gT('Loading...')) ?>"></div>
 </div>

@@ -7,9 +7,10 @@
         <last_update>2022-09-30</last_update>
         <author>Denis Chenu</author>
         <authorUrl>https://www.limesurvey.org</authorUrl>
+        <documentationUrl>https://www.limesurvey.org/manual/StatFunctions_plugin</documentationUrl>
         <version>0.2.1</version>
         <license>GNU General Public License version 2 or later</license>
-        <description><![CDATA[New function for expression manager to count some statictics data : <ul>
+        <description><![CDATA[New function for expression manager to count some statistics data : <ul>
             <li>statCountIf(QuestionCode.sgqa, value[, submitted = true][, self = true])</li>
             <li>statCount(QuestionCode.sgqa[, submitted = true][, self = true])</li>
             </ul>

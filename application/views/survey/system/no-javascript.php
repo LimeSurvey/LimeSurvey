@@ -1,7 +1,7 @@
 <?php
 
 /**
- * javacript alert box
+ * javascript alert box
  */
 
 ?>

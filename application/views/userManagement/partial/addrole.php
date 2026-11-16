@@ -1,7 +1,7 @@
 <?php
 Yii::app()->getController()->renderPartial(
     '/layouts/partial_modals/modal_header',
-    ['modalTitle' => gT('Edit user roles')]
+    ['modalTitle' => gT('Edit user roles'), 'modalTitleId' => 'UserManagement-action-modal-title']
 );
 
 ?>
@@ -19,21 +19,34 @@ Yii::app()->getController()->renderPartial(
         </div>
         <input type="hidden" name="userid" value="<?= $oUser->uid ?>"/>
         <?php
-        $this->widget('ext.AlertWidget.AlertWidget', [
-            'text'        => gT("Note: Adding role(s) to a user will overwrite any individual user permissions!"),
-            'type'        => 'info',
-            'htmlOptions' => ['class' => 'col-12']
-        ]);
+        if ($hasIndividualPermissions) {
+            $this->widget('ext.AlertWidget.AlertWidget', [
+                'text'        => gT("This user has individual permissions. If you assign a role, all of them will be removed and replaced by the permissions of the role."),
+                'type'        => 'warning',
+                'htmlOptions' => ['class' => 'col-12']
+            ]);
+        }
+        if (!empty($aLockedRoles)) {
+            $this->widget('ext.AlertWidget.AlertWidget', [
+                'text'        => sprintf(
+                    gT("This user also has the following roles, which you are not allowed to change: %s"),
+                    CHtml::encode(implode(', ', $aLockedRoles))
+                ),
+                'type'        => 'warning',
+                'htmlOptions' => ['class' => 'col-12']
+            ]);
+        }
         ?>
         <div class="mb-3">
-            <label for="roleselector"><?= gT("Select role(s):") ?></label>
+            <label for="roleselector" id="UserManagement--roleselector-label"><?= gT("Select role(s):") ?></label>
             <?php $this->widget(
                 'yiiwheels.widgets.select2.WhSelect2',
                 [
                     'asDropDownList' => true,
                     'htmlOptions'    => [
                         'style'    => 'width:100%;',
-                        'multiple' => true
+                        'multiple' => true,
+                        'aria-labelledby' => 'UserManagement--roleselector-label'
                     ],
                     'data'           => $aPossibleRoles,
                     'value'          => $aCurrentRoles,
@@ -48,7 +61,19 @@ Yii::app()->getController()->renderPartial(
      <button class="btn btn-cancel" id="exitForm" data-bs-dismiss="modal">
          <?=gT('Cancel')?>
      </button>
-    <button class="btn btn-primary" id="submitForm">
+    <button
+        class="btn btn-primary"
+        id="submitForm"
+        <?php if ($hasIndividualPermissions) : ?>
+            data-confirm-title="<?= CHtml::encode(gT("Remove individual permissions?")) ?>"
+            data-confirm-message="<?= CHtml::encode(gT("Saving will remove all individual permissions of this user. The user will then only have the permissions of the selected roles.")) ?>"
+            data-confirm-btntext="<?= CHtml::encode(gT("Remove permissions and save")) ?>"
+            <?php if (!$hasRoles) : ?>
+                <?php /* Without current roles, the individual permissions are only removed when a role is assigned */ ?>
+                data-confirm-if-filled="roleselector[]"
+            <?php endif; ?>
+        <?php endif; ?>
+    >
         <?=gT('Save')?>
     </button>
 </div>

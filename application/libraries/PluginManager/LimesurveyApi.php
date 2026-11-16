@@ -81,6 +81,12 @@ class LimesurveyApi
         return false;
     }
 
+    /**
+     * Creates an absolute URL for the given route.
+     * @param string $route The controller route, e.g. 'admin/update'.
+     * @param array $params Additional GET parameters (name=>value).
+     * @return string The absolute URL.
+     */
     public function createUrl($route, array $params)
     {
         return App()->createAbsoluteUrl($route, $params);
@@ -140,10 +146,17 @@ class LimesurveyApi
         }
     }
 
+    /**
+     * Deletes a single response from the survey response table.
+     * @param integer $surveyId The survey ID.
+     * @param integer $responseId The response ID.
+     * @return integer The number of deleted rows.
+     */
     public function removeResponse($surveyId, $responseId)
     {
         return \Response::model($surveyId)->deleteByPk($responseId);
     }
+
     /**
      * Check if a table does exist in the database
      *
@@ -345,16 +358,19 @@ class LimesurveyApi
 
     /**
      * Gets an array of old response table names for a survey.
+     *
+     * Only tables named <prefix>old_responses_<surveyId>_<timestamp> are returned, so the archives
+     * of another survey whose ID starts with the same digits are never part of the list.
+     *
      * @param int $surveyId
-     * @return string[]
+     * @return string[] Table names including the table prefix
      */
     public function getOldResponseTables($surveyId)
     {
         $tables = array();
-        $base = App()->getDb()->tablePrefix . 'old_responses_' . $surveyId;
-        $timingbase = App()->getDb()->tablePrefix . 'old_timings_' . $surveyId;
+        $pattern = '/^' . preg_quote(App()->getDb()->tablePrefix . 'old_responses_' . (int) $surveyId, '/') . '_\d+$/';
         foreach (App()->getDb()->getSchema()->getTableNames() as $table) {
-            if (strpos((string) $table, $base) === 0 && strpos((string) $table, $timingbase) === false) {
+            if (preg_match($pattern, (string) $table)) {
                 $tables[] = $table;
             }
         }

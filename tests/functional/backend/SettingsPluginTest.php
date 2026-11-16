@@ -118,8 +118,11 @@ class SettingsPluginTest extends TestBaseClass
         foreach (self::$settingsValue as $key => $value) {
             self::$plugin->setSetting($key, $value);
 
+            // Only the global setting, the survey setting tests store the same keys
             $setting = \PluginSetting::model()->findByAttributes([
                 'plugin_id' => self::$plugin->getId(),
+                'model' => null,
+                'model_id' => null,
                 'key' => $key
             ]);
 
@@ -168,8 +171,11 @@ class SettingsPluginTest extends TestBaseClass
         foreach (self::$settingsValue as $key => $value) {
             self::$plugin->setSetting($key, $value);
 
+            // Only the global setting, the survey setting tests store the same keys
             $setting = \PluginSetting::model()->findByAttributes([
                 'plugin_id' => self::$plugin->getId(),
+                'model' => null,
+                'model_id' => null,
                 'key' => $key
             ]);
 

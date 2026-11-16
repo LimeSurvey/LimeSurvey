@@ -16,7 +16,7 @@ use TemplateConfiguration;
 class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
 {
     /**
-     * All these values are inherited values. For inherted values the output has to be different.
+     * All these values are inherited values. For inherited values the output has to be different.
      */
     const AFFECTED_INHERITED_SETTINGS = [
         'admin', 'adminemail', 'alloweditaftercompletion', 'allowprev', 'allowsave', 'allowregister','anonymized',
@@ -107,6 +107,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         $survey['isEditorCompatible'] = $data->getIsEditorCompatible();
         $survey['languages'] = $data->allLanguages;
         $survey['hasTokens'] = $data->hasTokensTable;
+        $survey['hasResponsesTable'] = (bool) $data->hasResponsesTable;
         $survey['previewLink'] = App()->createUrl(
             "survey/index",
             array(
@@ -207,6 +208,8 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
 
         $survey['attributeDescriptions'] = $data->getDecodedAttributedescriptions();
 
+        $survey['participantEncryptedAttributes'] = $data->getAllEncryptedAttributes($data->sid, 'TokenDynamic');
+
         $survey['themesettings'] = [];
         $survey['templatePreview'] = '';
         $this->transformThemeSettings($survey['themesettings'], $survey['templatePreview'], $data);
@@ -252,6 +255,9 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
             $question['scenarios'] = $this->surveyCondition->getScenariosAndConditionsOfQuestion($questionModel->qid);
 
             $question['conditiontext'] = $this->surveyCondition->getConditionText($questionModel);
+
+            $question['showAssessmentValue'] = $questionModel->survey->isAssessments
+                && $questionModel->getAllowAnswerOptions();
 
             if ($questionModel->subquestions) {
                 $question['subquestions'] = $this->transformerQuestion->transformAll(

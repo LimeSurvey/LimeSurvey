@@ -1,0 +1,9 @@
+parameters:
+  level: 6
+  bootstrapFiles:
+    - vendor/autoload.php
+  paths:
+    - src
+    - tests
+  reportUnmatchedIgnoredErrors: false
+  ignoreErrors:

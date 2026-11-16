@@ -4,11 +4,13 @@ namespace LimeSurvey\Models\Services\SurveyStatistics\Charts\Questions\Processor
 
 class RankingProcessor extends AbstractQuestionProcessor
 {
+    #[\Override]
     public function rt(): void
     {
         $this->rt = $this->question['type'] . 'Q' . $this->question['qid'];
     }
 
+    #[\Override]
     public function process()
     {
         $this->rt();
@@ -47,7 +49,6 @@ class RankingProcessor extends AbstractQuestionProcessor
                     ),
                 ];
             }
-
             $legend[] = $subQuestion['question'];
             $dataItems[] = [
                 'key' => $subQuestion['title'],
@@ -63,7 +64,6 @@ class RankingProcessor extends AbstractQuestionProcessor
                 'ranks' => $ranks,
             ];
         }
-
         return [
             'title' => $this->question['question'],
             'legend' => $legend,

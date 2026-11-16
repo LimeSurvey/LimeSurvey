@@ -155,13 +155,14 @@ $breadcrumb-item-max-width:         80ch; // Per-crumb cap; longer text truncate
 
 // forms
 // input variables
-$input-padding-y:                   10px;
+$input-padding-y:                   9px;
 $input-padding-x:                   12px;
 $input-color:                       $g-900;
 $input-border-radius:               4px;
 $input-font-weight:                 400;
-$input-border-width:                1px;
-$input-border-color:                $g-900;
+$input-border-width:                2px;
+$input-fixed-height:                38px; // Height of all single-line inputs and selects
+$input-border-color:                $g-700;
 $input-border-color-disabled:       $g-600;
 $input-focus-color:                 $g-900;
 $input-focus-border-color:           $g-900;

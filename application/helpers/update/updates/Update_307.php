@@ -4,6 +4,7 @@ namespace LimeSurvey\Helpers\Update;
 
 class Update_307 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
         if (tableExists('{settings_user}')) {

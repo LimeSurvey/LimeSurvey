@@ -131,7 +131,7 @@ class SurveyController extends LSYii_Controller
     //~ }
     /**
      * Show a message and exit
-     * @param int $iSurveyId : type of message
+     * @param int $iSurveyId : survey id
      * @param string $sType : type of message
      * @param string[] $aMessages :  array of message line to be shown
      * @param string[]|null $aUrl : if url can/must be set
@@ -182,9 +182,8 @@ class SurveyController extends LSYii_Controller
         $oSurvey = Survey::model()->findByPk($iSurveyId);
         $oTemplate = $oSurvey->templateModel;
 
-        $aSurveyInfo = $oSurvey->attributes;
-        $aSurveyInfo['admin'] = $oSurvey->oOptions->admin;
-        $aSurveyInfo['adminemail'] = $oSurvey->oOptions->adminemail;
+        // Full survey info (with language settings and inherited options) so the theme can use e.g. surveyls_title
+        $aSurveyInfo = getSurveyInfo($iSurveyId, App()->language);
         $aSurveyInfo['aError'] = $aReplacementData;
 
         Yii::app()->twigRenderer->renderTemplateFromFile(

@@ -45,7 +45,7 @@ class UserDetail implements CommandInterface
         $userId = (int) $request->getData('_id');
         $hasPermission = $this->permission->hasGlobalPermission('users');
         //users should only be able to get their own data (when they don't have permission)
-        if (App()->user->getId() !== $userId && !$hasPermission) {
+        if ((int) App()->user->getId() !== $userId && !$hasPermission) {
             return $this->responseFactory
                 ->makeErrorForbidden();
         }
@@ -64,6 +64,7 @@ class UserDetail implements CommandInterface
 
         $user = $this->transformerOutputSurveyOwner->transform($userModel);
         $user['timezone'] = \Yii::app()->getConfig('displayTimezone') ?: 'UTC';
+        $user['isSuperAdmin'] = (bool) $this->permission->hasGlobalPermission('superadmin', 'read', $userId);
 
         return $this->responseFactory->makeSuccess($user);
     }

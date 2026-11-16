@@ -72,6 +72,20 @@ class Update_700 extends DatabaseUpdateBase
     }
 
     /**
+     * Determines whether the given table name refers to an "orphaned_" backup table
+     * created by this update (a snapshot of a legacy response table that had
+     * orphaned columns). Such tables are left in place for the administrator and
+     * must never be migrated themselves - otherwise every re-run of a failed update
+     * would back them up again, nesting the prefix until the name gets too long.
+     * @param string $tableName
+     * @return bool
+     */
+    protected function isOrphanedBackupTableName(string $tableName): bool
+    {
+        return strpos($tableName, 'orphaned_') === 0;
+    }
+
+    /**
      * equivalent of getSubQuestions
      * Returns all subquestions for a survey+question in the given language.
      *
@@ -232,37 +246,21 @@ class Update_700 extends DatabaseUpdateBase
                         if ($code === '') {
                             return "Q{$qid}";
                         }
-                        $commentText = false;
-                        $currentQuestion = null;
-                        $excludeSubquestion = false;
+                        $subquestionQids = [];
                         foreach ($questions as $question) {
-                            if ($question['title'] === $code) {
-                                $currentQuestion = $question;
-                            } elseif (in_array(
-                                $code,
-                                [
-                                    'other',
-                                    'comment',
-                                    'othercomment',
-                                    $question['title'] . 'other',
-                                    $question['title'] . 'comment',
-                                    $question['title'] . 'othercomment'
-                                ]
-                            )) {
-                                $currentQuestion = $question;
-                                $commentText = $code;
-                                if (strpos($code, $question['title']) === 0) {
-                                    $commentText = substr($code, strlen($question['title']));
-                                } else {
-                                    $excludeSubquestion = true;
-                                }
+                            if ($question['parent_qid']) {
+                                $subquestionQids[$question['title']] = $question['qid'];
                             }
                         }
-                        if ($currentQuestion) {
-                            $newFieldName = 'Q' . $qid . ($excludeSubquestion ? '' : '_S' . $currentQuestion['qid']);
-                            if ($commentText) {
-                                $newFieldName .= '_C' . $commentText;
-                            }
+                        if (isset($subquestionQids[$code])) {
+                            // A subquestion with exactly this code, even if it is coded "other", "comment" or "othercomment"
+                            $newFieldName = "Q{$qid}_S{$subquestionQids[$code]}";
+                        } elseif (strlen($code) > 7 && substr($code, -7) === 'comment' && isset($subquestionQids[substr($code, 0, -7)])) {
+                            // The comment field of a subquestion (multiple choice with comments)
+                            $newFieldName = "Q{$qid}_S{$subquestionQids[substr($code, 0, -7)]}_Ccomment";
+                        } elseif ($code === 'other' || $code === 'othercomment') {
+                            // The "Other" field of the question itself and its comment
+                            $newFieldName = "Q{$qid}_C{$code}";
                         }
                         break;
                     case ';': // QT_SEMICOLON_ARRAY_TEXT
@@ -1449,11 +1447,17 @@ class Update_700 extends DatabaseUpdateBase
      * and all following ranks of that question are moved one column to the left, so the ranks
      * stay gapless and the surplus trailing slots end up empty and can be dropped losslessly.
      *
+     * Old SGQA column names are ambiguous: rank slot 3 of ranking question 1 and the column of
+     * question 13 are both named "{sid}X{gid}X13", so a legacy table only holds one of them.
+     * A column is therefore only treated as a rank slot if the field map assigns it to this
+     * ranking question or leaves it unmapped (a surplus trailing rank slot).
+     *
      * @param string $tableName legacy (old) response table name
      * @param string[] $columnNames all column names of that table
+     * @param array<string,string> $fieldMap old column name => new column name of that table
      * @return void
      */
-    protected function compactLegacyRankingValues(string $tableName, array $columnNames): void
+    protected function compactLegacyRankingValues(string $tableName, array $columnNames, array $fieldMap): void
     {
         $isArchivedTable = $this->isArchivedTableName($tableName);
         // ignore old tables and timings since they are not relevant for this cleanup
@@ -1485,7 +1489,12 @@ class Update_700 extends DatabaseUpdateBase
             // Collect the rank slots of this question in rank order (1..n).
             $rankColumns = [];
             for ($rank = 1; isset($availableColumns["{$sid}X{$gid}X{$qid}{$rank}"]); $rank++) {
-                $rankColumns[] = "{$sid}X{$gid}X{$qid}{$rank}";
+                $rankColumn = "{$sid}X{$gid}X{$qid}{$rank}";
+                $newName = $fieldMap[$rankColumn] ?? null;
+                // Skip columns that belong to another question with a longer qid (e.g. qid 13)
+                if (($newName === $rankColumn) || (strpos((string)$newName, "Q{$qid}_S") === 0)) {
+                    $rankColumns[] = $rankColumn;
+                }
             }
             if (!count($rankColumns)) {
                 continue;
@@ -1993,6 +2002,7 @@ class Update_700 extends DatabaseUpdateBase
     }
 
     /** @SuppressWarnings(PHPMD.ExcessiveMethodLength) */
+    #[\Override]
     public function up()
     {
         $this->db->createCommand($this->deleteRankingSubquestions())->execute();
@@ -2007,8 +2017,8 @@ class Update_700 extends DatabaseUpdateBase
         $scripts = [];
         $responsesTables = $this->db->createCommand($this->scriptMapping['responses'])->queryAll();
         foreach ($responsesTables as $responsesTable) {
-            if (((strpos($responsesTable['old_name'], 'old_') === false) && (strpos($responsesTable['old_name'], 'timing') === false))) {
-                $parts = explode('_', $responsesTable['old_name']);
+            if ($this->isOrphanedBackupTableName($responsesTable['old_name'])) {
+                continue;
             }
             $scripts[$responsesTable['old_name']] = [
                 'new_name' => $responsesTable['new_name'],
@@ -2022,6 +2032,9 @@ class Update_700 extends DatabaseUpdateBase
         }
         $timingsTables = $this->db->createCommand($this->scriptMapping['timings'])->queryAll();
         foreach ($timingsTables as $timingsTable) {
+            if ($this->isOrphanedBackupTableName($timingsTable['old_name'])) {
+                continue;
+            }
             $scripts[$timingsTable['old_name']] = [
                 'new_name' => $timingsTable['new_name'],
                 'old_name' => $timingsTable['old_name'],
@@ -2046,6 +2059,9 @@ class Update_700 extends DatabaseUpdateBase
                 }
             }
             $tableName = $field['TABLE_NAME'];
+            if ($this->isOrphanedBackupTableName($tableName)) {
+                continue;
+            }
             if (!isset($fieldMap[$field['TABLE_NAME']])) {
                 $fieldMap[$field['TABLE_NAME']] = [];
             }
@@ -2078,11 +2094,13 @@ class Update_700 extends DatabaseUpdateBase
         $preinsert = "";
         $postinsert = "";
         foreach ($fieldMap as $TABLE_NAME => $fields) {
-            if (in_array(Yii::app()->db->getDriverName(), [
+            if (
+                in_array(Yii::app()->db->getDriverName(), [
                 'mssql',
                 'sqlsrv',
                 'dblib'
-            ])) {
+                ])
+            ) {
                 $preinsert = "SET IDENTITY_INSERT {$scripts[$TABLE_NAME]['new_name']} ON;";
                 $postinsert = "SET IDENTITY_INSERT {$scripts[$TABLE_NAME]['new_name']} OFF;";
             }
@@ -2136,8 +2154,10 @@ class Update_700 extends DatabaseUpdateBase
             // If there are orphaned columns, snapshot the legacy table as-is (full structure +
             // data, untouched) *before* compactLegacyRankingValues() gets a chance to mutate it
             $scripts[$TABLE_NAME]['BACKUP_ORPHANED'] = null;
-            if (count($orphanedColumns)) {
-                $orphanedTableName = 'orphaned_' . $TABLE_NAME;
+            // A backup left behind by an earlier, failed run of this update already holds the
+            // untouched legacy data (this run's copy may meanwhile have been compacted), so keep it.
+            $orphanedTableName = 'orphaned_' . $TABLE_NAME;
+            if (count($orphanedColumns) && $this->db->schema->getTable($orphanedTableName, true) === null) {
                 $scripts[$TABLE_NAME]['BACKUP_ORPHANED'] = in_array(Yii::app()->db->getDriverName(), [
                     'mssql',
                     'sqlsrv',
@@ -2146,23 +2166,38 @@ class Update_700 extends DatabaseUpdateBase
                     ? "SELECT * INTO {$orphanedTableName} FROM {$TABLE_NAME}"
                     : "CREATE TABLE {$orphanedTableName} AS SELECT * FROM {$TABLE_NAME}";
             }
-            try {
-                if ($scripts[$TABLE_NAME]['BACKUP_ORPHANED'] !== null) {
+            if ($scripts[$TABLE_NAME]['BACKUP_ORPHANED'] !== null) {
+                // The backup is a convenience only: If it cannot be created (e.g. MySQL/MariaDB
+                // refusing a table with too many columns), skip it instead of failing the update
+                setTransactionBookmark('orphanedbackup');
+                try {
                     $this->db->createCommand($scripts[$TABLE_NAME]['BACKUP_ORPHANED'])->execute();
+                } catch (\Exception $ex) {
+                    rollBackToTransactionBookmark('orphanedbackup');
+                    if ($this->db->schema->getTable($orphanedTableName, true) !== null) {
+                        $this->db->createCommand()->dropTable($orphanedTableName);
+                    }
+                    Yii::log(
+                        "Could not create backup table {$orphanedTableName}, skipping it: " . $ex->getMessage(),
+                        \CLogger::LEVEL_WARNING,
+                        'application.update'
+                    );
                 }
+            }
+            try {
                 // The INSERT below copies the legacy rows one-to-one, so ranking answers that
                 // can no longer be mapped to a subquestion title have to be removed - and the
                 // following ranks shifted one column to the left - while the legacy table is
                 // still intact. Otherwise dropping the surplus trailing rank column would
                 // silently discard a valid rank instead of the unmappable one.
-                $this->compactLegacyRankingValues($TABLE_NAME, $allColumnNames);
+                $this->compactLegacyRankingValues($TABLE_NAME, $allColumnNames, $fields);
                 $this->db->createCommand($scripts[$TABLE_NAME]['CREATE'])->execute();
                 foreach ($orphanedColumnsToDrop as $orphanedColumn) {
                     $this->db->createCommand()->dropColumn($scripts[$TABLE_NAME]['new_name'], $orphanedColumn);
                 }
                 $this->db->createCommand($preinsert . $scripts[$TABLE_NAME]['INSERT'] . $postinsert)->execute();
                 // The legacy working copy has now been fully migrated into the new table (its
-                // untouched twin, if orphaned columns existed, was preserved separately above),
+                // untouched twin, if orphaned columns existed, was preserved above where possible),
                 // so it is always safe to drop here.
                 $this->db->createCommand()->dropTable($TABLE_NAME);
             } catch (\Exception $ex) {
@@ -2245,7 +2280,6 @@ class Update_700 extends DatabaseUpdateBase
                             }
                         }
                     }
-
                 }
             }
             $this->convertSurveyInsertans($sid, $questions, $newFields, $additionalNames);

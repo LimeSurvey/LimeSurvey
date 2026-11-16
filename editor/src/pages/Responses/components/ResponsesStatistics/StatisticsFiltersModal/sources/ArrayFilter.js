@@ -30,7 +30,9 @@ export const ArrayFilter = ({ question, filter, onUpdate }) => {
   const renderColumn = ({ options, value, key, label }) => (
     <div className="responses-statistics-filters-row-field">
       {label && (
-        <span className="responses-statistics-filters-col-label">{label}</span>
+        <span className="responses-statistics-filters-row-col-label">
+          {label}
+        </span>
       )}
       <FilterSelect
         options={options}
@@ -85,7 +87,11 @@ export const ArrayFilter = ({ question, filter, onUpdate }) => {
         ) : (
           <div className="responses-statistics-filters-row-field">
             <Input
-              placeholder={t('Filter for keywords ...')}
+              placeholder={
+                question.encrypted
+                  ? t('Exact value ...')
+                  : t('Filter for keywords ...')
+              }
               value={filter.textValue}
               update={(value) => onUpdate('textValue', value)}
             />

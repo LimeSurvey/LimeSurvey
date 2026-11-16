@@ -4,6 +4,7 @@ namespace LimeSurvey\Helpers\Update;
 
 class Update_359 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
         alterColumn('{{notifications}}', 'message', "text", false);

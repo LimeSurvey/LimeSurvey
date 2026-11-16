@@ -1,9 +1,13 @@
-import { useLocation } from 'react-router-dom'
+import { useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import classNames from 'classnames'
 
-import { useAppState, useBuffer, useSurvey } from 'hooks'
 import {
-  createBufferOperation,
+  useAppState,
+  useSurveyImportService,
+  useToggleQuestionCodes,
+} from 'hooks'
+import {
   getSiteUrl,
   getTooltipMessages,
   PAGES,
@@ -18,11 +22,11 @@ import { PluginSlot } from 'plugins/PluginSlot'
 
 import { ActionButton } from './Button/ActionButton'
 import { TopBarQuestionInserter } from './TopBarQuestionInserter'
+import { ImportSurveyModal } from 'components/ImportSurvey'
 
 export const TopBarActions = ({
   surveyId,
   showPreviewButton,
-  showShareButton,
   isSurveyActive,
   survey,
   operationsLength,
@@ -31,14 +35,18 @@ export const TopBarActions = ({
   showShareActionButton,
   showExportResponsesButton,
   showExportStatisticsButton,
+  onExportResponsesClick,
   showPublishSettings,
   triggerPublish,
   isAddingQuestionOrGroup,
-  setShowOverviewModalRef,
 }) => {
   const location = useLocation()
-  const { update } = useSurvey(surveyId)
-  const { addToBuffer } = useBuffer()
+  const navigate = useNavigate()
+  const [showImportSurveyModal, setShowImportSurveyModal] = useState(false)
+  const surveyImportService = useSurveyImportService()
+  const { areCodesVisible, toggleQuestionCodes } =
+    useToggleQuestionCodes(surveyId)
+  const [siteSettings = {}] = useAppState(STATES.SITE_SETTINGS, {})
   const [, startEditorTutorial] = useAppState(
     STATES.START_EDITOR_TUTORIAL,
     false
@@ -46,20 +54,6 @@ export const TopBarActions = ({
 
   const handleStartEditorTutorial = () => {
     startEditorTutorial(true)
-  }
-
-  const handleToggleQuestionCodes = () => {
-    const operationAttr = {
-      showQNumCode: {
-        showCode: !survey.showQNumCode?.showCode,
-        showNumber: !survey.showQNumCode?.showNumber,
-      },
-    }
-    update(operationAttr)
-    const operation = createBufferOperation(surveyId)
-      .survey()
-      .update(operationAttr)
-    addToBuffer(operation)
   }
 
   const isActiveMenuItem = (url) => {
@@ -130,8 +124,8 @@ export const TopBarActions = ({
     {
       type: 'item',
       label: t('Question codes'),
-      onClick: handleToggleQuestionCodes,
-      checked: !!survey.showQNumCode?.showCode,
+      onClick: toggleQuestionCodes,
+      checked: areCodesVisible,
     },
     {
       type: 'divider',
@@ -195,10 +189,7 @@ export const TopBarActions = ({
     {
       type: 'item',
       label: t('Import'),
-      disabled: {
-        state: true,
-        tooltip: t('Coming soon'),
-      },
+      onClick: () => setShowImportSurveyModal(true),
     },
     {
       type: 'divider',
@@ -226,50 +217,55 @@ export const TopBarActions = ({
     title: '',
   }
   return (
-    <div className="topbar-right-area d-flex align-items-center">
-      <span className="small text-muted me-1">
-        {process.env.REACT_APP_DEV_MODE && '(Dev Mode) '}
-        {process.env.REACT_APP_DEMO_MODE && '(Demo Mode) '}
-      </span>
-      <div id="auto-saved" className="d-flex align-items-center me-2">
-        <p
-          className={classNames(`m-0 me-2 auto-saved`, {
-            'text-success': operationsBuffer.isEmpty(),
-            'text-secondary': !operationsBuffer.isEmpty(),
-          })}
-        >
-          {saveState}
-        </p>
-      </div>
-      <Dropdown
-        menuItems={dropdownMenuItems}
-        toggleSettings={dropdownToggleSettings}
-      />
-      {showPreviewButton && survey.sid && <PreviewButton survey={survey} />}
-      {isSurveyActive && showShareButton && (
-        <div
-          onClick={() => setShowOverviewModalRef.current(true)}
-          className="preview-button me-2 d-flex align-items-center justify-content-center btn btn-light"
-        >
-          <i className="ri-share-forward-line"></i>
+    <>
+      <div className="topbar-right-area d-flex align-items-center">
+        <span className="small text-muted me-1">
+          {process.env.REACT_APP_DEV_MODE && '(Dev Mode) '}
+          {process.env.REACT_APP_DEMO_MODE && '(Demo Mode) '}
+        </span>
+        <div id="auto-saved" className="d-flex align-items-center me-2">
+          <p
+            className={classNames(`m-0 me-2 auto-saved`, {
+              'text-success': operationsBuffer.isEmpty(),
+              'text-secondary': !operationsBuffer.isEmpty(),
+            })}
+          >
+            {saveState}
+          </p>
         </div>
-      )}
-      <ActionButton
-        className="me-2"
-        survey={survey}
-        operationsLength={operationsLength}
-        triggerPublish={triggerPublish}
-        showShareActionButton={showShareActionButton}
-        showExportResponsesButton={showExportResponsesButton}
-        showExportStatisticsButton={showExportStatisticsButton}
-        showPublishSettings={showPublishSettings}
-      />
-      <PluginSlot slotName={PLUGIN_SLOTS.TOP_BAR_RIGHT} />
-      <div>
-        {isAddingQuestionOrGroup && (
-          <TopBarQuestionInserter surveyID={survey.sid} />
-        )}
+        <Dropdown
+          menuItems={dropdownMenuItems}
+          toggleSettings={dropdownToggleSettings}
+        />
+        {showPreviewButton && survey.sid && <PreviewButton survey={survey} />}
+        <ActionButton
+          className="me-2"
+          survey={survey}
+          onExportResponsesClick={onExportResponsesClick}
+          operationsLength={operationsLength}
+          triggerPublish={triggerPublish}
+          showShareActionButton={showShareActionButton}
+          showExportResponsesButton={showExportResponsesButton}
+          showExportStatisticsButton={showExportStatisticsButton}
+          showPublishSettings={showPublishSettings}
+        />
+        <PluginSlot slotName={PLUGIN_SLOTS.TOP_BAR_RIGHT} />
+        <div>
+          {isAddingQuestionOrGroup && (
+            <TopBarQuestionInserter surveyID={survey.sid} />
+          )}
+        </div>
       </div>
-    </div>
+      <ImportSurveyModal
+        maxFileSize={siteSettings.maximumFileUploadSize}
+        show={showImportSurveyModal}
+        onImport={surveyImportService.importSurvey}
+        onHide={() => setShowImportSurveyModal(false)}
+        onGoToSurvey={(importedSurveyId) => {
+          setShowImportSurveyModal(false)
+          navigate(`/survey/${importedSurveyId}`)
+        }}
+      />
+    </>
   )
 }

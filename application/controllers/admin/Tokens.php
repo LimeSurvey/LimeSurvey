@@ -176,12 +176,9 @@ class Tokens extends SurveyCommonAction
             'screenout' => 0
         ];
 
-        $result = Yii::app()->db->createCommand(dbSelectTablesLike("{{old_tokens_" . intval($iSurveyId) . "_%}}"))->queryAll();
-        $tcount = count($result);
+        $oldlist = $this->getArchivedTokenTables($iSurveyId);
+        $tcount = count($oldlist);
         if ($tcount > 0) {
-            foreach ($result as $rows) {
-                $oldlist[] = substr((string) reset($rows), strlen((string) Yii::app()->db->tablePrefix), (strlen((string) reset($rows)) - strlen((string) Yii::app()->db->tablePrefix)));
-            }
             $aData['oldlist'] = $oldlist;
         }
 
@@ -212,7 +209,7 @@ class Tokens extends SurveyCommonAction
             return;
         }
 
-        if ($thissurvey['bounceprocessing'] != 'N' || ($thissurvey['bounceprocessing'] == 'G' && Yii::app()->getConfig('bounceaccounttype') != 'off')) {
+        if ($thissurvey['bounceprocessing'] == 'L' || ($thissurvey['bounceprocessing'] == 'G' && Yii::app()->getConfig('bounceaccounttype') != 'off')) {
             if (!function_exists('imap_open')) {
                 eT("The imap PHP library is not installed or not activated. Please contact your system administrator.");
                 return;
@@ -445,6 +442,32 @@ class Tokens extends SurveyCommonAction
     }
 
     /**
+     * Converts a posted sent, remindersent or completed value to the format stored in the participant table.
+     *
+     * The date pickers of the participant forms post the date in the date format of the administrator,
+     * the participant table stores it as 'Y-m-d H:i'. A value already in 'Y-m-d H:i' is kept, e.g. an unchanged
+     * date of a participant in an anonymized survey, where no date picker is shown.
+     *
+     * @param mixed $value Posted value: 'N', 'Y', a date in the administrator's date format or in 'Y-m-d H:i'
+     * @return string 'N', 'Y', the date as 'Y-m-d H:i', or the trimmed value if it is not a valid date
+     */
+    private function convertTokenDateToDbFormat($value): string
+    {
+        $value = trim((string) $value);
+        if ($value === '' || $value === 'N') {
+            return 'N';
+        }
+        if ($value === 'Y') {
+            return 'Y';
+        }
+        $date = convertFromGlobalSettingFormat($value, true);
+        if ($date === null) {
+            return $value;
+        }
+        return (new DateTime($date))->format('Y-m-d H:i');
+    }
+
+    /**
      * Browse Tokens
      * @param int $iSurveyId
      * @param int $limit
@@ -619,8 +642,8 @@ class Tokens extends SurveyCommonAction
                         if ($sCoreTokenField == 'language' && empty($value)) {
                             continue;
                         }
-                        if (($sCoreTokenField == 'sent' || $sCoreTokenField == 'remindersent' || $sCoreTokenField == 'completed') && empty($value)) {
-                            $value = 'N';
+                        if ($sCoreTokenField == 'sent' || $sCoreTokenField == 'remindersent' || $sCoreTokenField == 'completed') {
+                            $value = $this->convertTokenDateToDbFormat($value);
                         }
                         $aData[$sCoreTokenField] = $value;
                     }
@@ -753,9 +776,9 @@ class Tokens extends SurveyCommonAction
                 'emailstatus' => $request->getPost('emailstatus'),
                 'token' => $sanitizedtoken,
                 'language' => \LSYii_Validators::languageCodeFilter($request->getPost('language')),
-                'sent' => $request->getPost('sent'),
-                'remindersent' => $request->getPost('remindersent'),
-                'completed' => $request->getPost('completed'),
+                'sent' => $this->convertTokenDateToDbFormat($request->getPost('sent')),
+                'remindersent' => $this->convertTokenDateToDbFormat($request->getPost('remindersent')),
+                'completed' => $this->convertTokenDateToDbFormat($request->getPost('completed')),
                 'usesleft' => $request->getPost('usesleft'),
                 'validfrom' => $validfrom,
                 'validuntil' => $validuntil,
@@ -885,32 +908,6 @@ class Tokens extends SurveyCommonAction
                 $_POST['validuntil'] = $datetimeobj->convert('Y-m-d H:i:s');
             }
 
-            // completed
-            if (trim($request->getPost('completed', '')) == 'N' || trim($request->getPost('completed', '')) == '') {
-                $_POST['completed'] = 'N';
-            } elseif (trim($request->getPost('completed', '')) == 'Y') {
-                $_POST['completed'] = 'Y';
-            } else {
-                $datetimeobj = new Date_Time_Converter(trim($request->getPost('completed', '')), $dateformatdetails['phpdate'] . ' H:i');
-                $_POST['completed'] = $datetimeobj->convert('Y-m-d H:i');
-            }
-
-            //sent
-            if (trim($request->getPost('sent', '')) == 'N') {
-                $_POST['sent'] = 'N';
-            } else {
-                $datetimeobj = new Date_Time_Converter(trim($request->getPost('sent', '')), $dateformatdetails['phpdate'] . ' H:i');
-                $_POST['sent'] = $datetimeobj->convert('Y-m-d H:i');
-            }
-
-            // remindersent
-            if (trim($request->getPost('remindersent', '')) == 'N') {
-                $_POST['remindersent'] = 'N';
-            } else {
-                $datetimeobj = new Date_Time_Converter(trim($request->getPost('remindersent', '')), $dateformatdetails['phpdate'] . ' H:i');
-                $_POST['remindersent'] = $datetimeobj->convert('Y-m-d H:i');
-            }
-
             $aTokenData['firstname'] = $request->getPost('firstname');
             $aTokenData['lastname'] = $request->getPost('lastname');
             $aTokenData['email'] = $request->getPost('email');
@@ -919,12 +916,12 @@ class Tokens extends SurveyCommonAction
             $sSanitizedToken = Token::sanitizeToken($request->getPost('token'));
             $aTokenData['token'] = $sSanitizedToken;
             $aTokenData['language'] = $request->getPost('language');
-            $aTokenData['sent'] = $request->getPost('sent');
-            $aTokenData['completed'] = $request->getPost('completed');
+            $aTokenData['sent'] = $this->convertTokenDateToDbFormat($request->getPost('sent'));
+            $aTokenData['completed'] = $this->convertTokenDateToDbFormat($request->getPost('completed'));
             $aTokenData['usesleft'] = $request->getPost('usesleft');
             $aTokenData['validfrom'] = $request->getPost('validfrom');
             $aTokenData['validuntil'] = $request->getPost('validuntil');
-            $aTokenData['remindersent'] = $request->getPost('remindersent');
+            $aTokenData['remindersent'] = $this->convertTokenDateToDbFormat($request->getPost('remindersent'));
             $aTokenData['remindercount'] = intval($request->getPost('remindercount'));
             $udresult = Token::model($iSurveyId)->findAll("tid <> :tid and token <> '' and token = :token", [':tid' => $iTokenId, ':token' => $sSanitizedToken]);
             $sOutput = '';
@@ -1270,9 +1267,9 @@ class Tokens extends SurveyCommonAction
         foreach ($aMandatoryAttributes['columns'] as $key => $attribute) {
             $aAttributesDesc[$key] = array(
                 'coreattribute' => true,
-                'mandatory' => $key == 'email' ? true : false,
+                'mandatory' => $key == 'email' ? 'Y' : 'N',
                 'encrypted' => $attribute,
-                'show_register' => true,
+                'show_register' => 'Y',
                 'description' => gT('Mandatory attribute'),
                 'cpdbmap' => ''
             );
@@ -1926,7 +1923,7 @@ class Tokens extends SurveyCommonAction
             }
 
             $oTokenLanguages = Token::model($iSurveyId)->findAll(array('select' => 'language', 'group' => 'language'));
-            $aFilterByLanguage = array('' => gT('All'));
+            $aFilterByLanguage = array();
             foreach ($oTokenLanguages as $oTokenLanguage) {
                 $sLanguageCode = \LSYii_Validators::languageCodeFilter($oTokenLanguage->language);
                 if ($sLanguageCode !== '') {
@@ -2077,6 +2074,7 @@ class Tokens extends SurveyCommonAction
                 . gT("Uploading LDAP Query") . "</strong></td></tr>\n"
                 . "\t<tr><td align='center'>\n";
             $ldapq = Yii::app()->request->getPost('ldapQueries'); // the ldap query id
+            $ldap_queries[$ldapq] = prepareLDAPQuery($ldapq);
 
             $ldap_server_id = $ldap_queries[$ldapq]['ldapServerId'];
             if (
@@ -2187,9 +2185,8 @@ class Tokens extends SurveyCommonAction
                                 if ($ldapencoding != '') {
                                     $myfirstname = @mb_convert_encoding((string) $myfirstname, "UTF-8", $ldapencoding);
                                     $mylastname = @mb_convert_encoding((string) $mylastname, "UTF-8", $ldapencoding);
-                                    foreach ($aTokenAttr as $thisattrfieldname) {
-                                        $attridx = substr((string) $thisattrfieldname, 10); // the 'attribute_' prefix is 10 chars long
-                                        @mb_convert_encoding((string) $myattrArray[$attridx], "UTF-8", $ldapencoding);
+                                    foreach ($myattrArray as $attridx => $attrvalue) {
+                                        $myattrArray[$attridx] = @mb_convert_encoding((string) $attrvalue, "UTF-8", $ldapencoding);
                                     }
                                 }
 
@@ -2419,7 +2416,7 @@ class Tokens extends SurveyCommonAction
                             }
                             // Attribute not in list
                             if (strpos($aFirstLine[$index], 'attribute_') !== false and !in_array($aFirstLine[$index], $aAttrFieldNames) and Yii::app()->request->getPost('showwarningtoken')) {
-                                $aInvalideAttrFieldName[] = $aFirstLine[$index];
+                                $aInvalideAttrFieldName[] = CHtml::encode($aFirstLine[$index]);
                             }
                         }
                         //compare attributes with source csv
@@ -2493,7 +2490,7 @@ class Tokens extends SurveyCommonAction
                             $dupresult = TokenDynamic::model($iSurveyId)->count($oCriteria);
                             if ($dupresult > 0) {
                                 $bDuplicateFound = true;
-                                $aDuplicateList[] = sprintf(gT("Line %s : %s %s (%s)"), $iRecordCount, $aWriteArray['firstname'], $aWriteArray['lastname'], $aWriteArray['email']);
+                                $aDuplicateList[] = sprintf(gT("Line %s : %s %s (%s)"), $iRecordCount, CHtml::encode($aWriteArray['firstname']), CHtml::encode($aWriteArray['lastname']), CHtml::encode($aWriteArray['email']));
                             }
                         }
 
@@ -2822,11 +2819,21 @@ class Tokens extends SurveyCommonAction
 
     /**
      * Creates a token table if it did not exist
+     *
+     * Note: Needs the same permission as newParticipantTable(): Survey settings update or tokens create.
+     *
      * @param int $iSurveyId
      * @return void
+     * @throws CHttpException
      */
     public function startfromscratch(int $iSurveyId)
     {
+        if (
+            !Permission::model()->hasSurveyPermission($iSurveyId, 'surveysettings', 'update') &&
+            !Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'create')
+        ) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
         $survey = Survey::model()->findByPk($iSurveyId);
         if (Yii::app()->request->getPost('createtable') !== "Y") {
             $aData = [
@@ -2846,6 +2853,11 @@ class Tokens extends SurveyCommonAction
 
     /**
      * Bounce Settings Action.
+     *
+     * Shows the bounce settings of the survey and saves them on POST. If the
+     * survey fails validation, the validation errors are shown instead of the
+     * success message.
+     *
      * @param int $iSurveyId
      * @return void
      */
@@ -2884,8 +2896,11 @@ class Tokens extends SurveyCommonAction
             foreach ($fieldvalue as $k => $v) {
                 $survey->$k = $v;
             }
-            $survey->save();
-            App()->user->setFlash('bouncesettings', gT("Bounce settings have been saved."));
+            if ($survey->save()) {
+                App()->user->setFlash('bouncesettings', gT("Bounce settings have been saved."));
+            } else {
+                App()->setFlashMessage(CHtml::errorSummary($survey, '<div><strong>' . gT('The bounce settings could not be saved.') . '</strong></div>'), 'danger');
+            }
 
             $this->getController()->redirect(array("admin/tokens/sa/bouncesettings/surveyid/{$iSurveyId}"));
         }
@@ -2927,13 +2942,17 @@ class Tokens extends SurveyCommonAction
 
     /**
      * Handle token form for addnew/edit actions
+     *
+     * Note: Private since it does no permission check of its own, it is only called by
+     * addnew() (tokens create permission) and edit() (tokens update permission).
+     *
      * @param int $iSurveyId
      * @param string $subaction
      * @param integer $iTokenId
      * @param null $deprecated in 6.5.5, used before to show partial view, move to Yii::app()->request->getIsAjaxRequest()
      * @return void
      */
-    public function handletokenform($iSurveyId, $subaction, $iTokenId = "", $deprecated = null)
+    private function handletokenform($iSurveyId, $subaction, $iTokenId = "", $deprecated = null)
     {
         $oSurvey = Survey::model()->findByPk($iSurveyId);
         /*if (!$oSurvey->hasTokensTable) {
@@ -3041,6 +3060,49 @@ class Tokens extends SurveyCommonAction
     }
 
     /**
+     * Returns the archived participant tables of a survey, without the table prefix
+     *
+     * Only tables named old_tokens_<surveyId>_<timestamp> are returned. The LIKE pattern alone
+     * would also match other surveys whose id starts with this one (the underscore is a wildcard).
+     *
+     * @param int $surveyId
+     * @return string[] Table names without prefix, sorted by name
+     */
+    private function getArchivedTokenTables($surveyId)
+    {
+        Yii::app()->loadHelper('database');
+        $prefix = (string) Yii::app()->db->tablePrefix;
+        $pattern = '/^' . preg_quote($prefix, '/') . 'old_tokens_' . (int) $surveyId . '_\d+$/';
+        $tableNames = Yii::app()->db->createCommand(dbSelectTablesLike("{{old_tokens_" . (int) $surveyId . "_%}}"))->queryColumn();
+        $archives = [];
+        foreach ($tableNames as $tableName) {
+            if (preg_match($pattern, (string) $tableName)) {
+                $archives[] = substr((string) $tableName, strlen($prefix));
+            }
+        }
+        sort($archives);
+        return $archives;
+    }
+
+    /**
+     * Returns the posted 'oldtable' name if it is an archived participant table of this survey
+     *
+     * Only the tables returned by getArchivedTokenTables() are accepted, so the name can never
+     * point to another survey's table or be used to inject SQL.
+     *
+     * @param int $surveyId
+     * @return string|null The table name without prefix, null if the posted name is not acceptable
+     */
+    private function getRestorableTokenTable($surveyId)
+    {
+        $oldTable = Yii::app()->request->getPost('oldtable');
+        if (!is_string($oldTable) || !in_array($oldTable, $this->getArchivedTokenTables($surveyId), true)) {
+            return null;
+        }
+        return $oldTable;
+    }
+
+    /**
      * Show dialogs and create a new tokens table
      * @param int $iSurveyId
      * @return void
@@ -3060,8 +3122,13 @@ class Tokens extends SurveyCommonAction
         //The survey participant list already exist ?
         if ($survey->hasTokensTable) {
             if ((returnGlobal('restoretable') === "Y" && Yii::app()->request->getPost('oldtable'))) {
+                $archivedTable = $this->getRestorableTokenTable($iSurveyId);
+                if ($archivedTable === null) {
+                    Yii::app()->setFlashMessage(gT("There are no matching settings to start the restoration of the participant list."), 'error');
+                    $this->getController()->redirect(array("/surveyAdministration/view/surveyid/{$iSurveyId}"));
+                }
                 require_once "application/helpers/admin/import_helper.php";
-                $source = Yii::app()->db->tablePrefix . Yii::app()->request->getPost('oldtable');
+                $source = Yii::app()->db->tablePrefix . $archivedTable;
                 $destination = Yii::app()->db->tablePrefix . "tokens_" . (int)$iSurveyId;
                 copyFromOneTableToTheOther($source, $destination, $preserveIDs = false);
                 Yii::app()->session['flashmessage'] = gT("Participant list was successfully imported.");
@@ -3098,8 +3165,15 @@ class Tokens extends SurveyCommonAction
             )), $aData);
         } elseif (returnGlobal('restoretable') === "Y" && Yii::app()->request->getPost('oldtable')) {
             /* Restore a previously deleted tokens table */
-            $archivedTable = Yii::app()->request->getPost('oldtable');
-            $archivedTableSettings = ArchivedTableSettings::model()->findByAttributes(['tbl_name' => $archivedTable]);
+            $archivedTable = $this->getRestorableTokenTable($iSurveyId);
+            $archivedTableSettings = null;
+            if ($archivedTable !== null) {
+                $archivedTableSettings = ArchivedTableSettings::model()->findByAttributes([
+                    'tbl_name' => $archivedTable,
+                    'survey_id' => (int) $iSurveyId,
+                    'tbl_type' => 'token',
+                ]);
+            }
 
             // Set the $tokenencryptionoptions from the encryption column in ArchivedTableSettings
             if (isset($archivedTableSettings)) {
@@ -3180,12 +3254,9 @@ class Tokens extends SurveyCommonAction
             if (!$survey->hasTokensTable) {
                 Yii::app()->loadHelper('database');
                 Survey::model()->updateByPk($iSurveyId, array('tokenencryptionoptions' => ls_json_encode($aTokenencryptionoptions)));
-                $result = Yii::app()->db->createCommand(dbSelectTablesLike("{{old_tokens_" . intval($iSurveyId) . "_%}}"))->queryAll();
-                $tcount = count($result);
+                $oldlist = $this->getArchivedTokenTables($iSurveyId);
+                $tcount = count($oldlist);
                 if ($tcount > 0) {
-                    foreach ($result as $rows) {
-                        $oldlist[] = substr((string) reset($rows), strlen((string) Yii::app()->db->tablePrefix), (strlen((string) reset($rows)) - strlen((string) Yii::app()->db->tablePrefix)));
-                    }
                     $aData['oldlist'] = $oldlist;
                 }
 

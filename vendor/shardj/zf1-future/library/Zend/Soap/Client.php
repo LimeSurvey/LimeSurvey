@@ -1030,9 +1030,9 @@ class Zend_Soap_Client
     {
         // Perform request as is
         if ($one_way == null) {
-            return call_user_func([$client,'SoapClient::__doRequest'], $request, $location, $action, $version);
+            return $client->doRequest($request, $location, $action, $version);
         } else {
-            return call_user_func([$client,'SoapClient::__doRequest'], $request, $location, $action, $version, $one_way);
+            return $client->doRequest($request, $location, $action, $version, $one_way);
         }
     }
 

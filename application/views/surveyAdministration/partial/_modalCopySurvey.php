@@ -2,7 +2,7 @@
 
 ?>
 
-<div id="copySurvey_modal" class="modal fade" role="dialog" aria-modal="true" aria-labelledby="copySurveyModalTitle">
+<div id="copySurvey_modal" class="modal fade" role="dialog" aria-modal="true" aria-labelledby="copySurveyModalTitle copySurveyModalTitle-dialogsr">
     <div class="modal-dialog import-modal">
         <!-- Modal content-->
         <div class="modal-content">
@@ -15,15 +15,23 @@
             ?>
             <?php echo CHtml::form(
                 ['surveyAdministration/copy'],
+                'post',
+                [
+                    'id' => 'copysurvey',
+                    'data-error-survey-required' => gT('You have not selected a survey'),
+                ]
             ) ?>
             <div class="modal-body" id="modal-body-copy-survey">
                 <div class="row mb-3">
                     <p class="form-label"><?= gT("Select the options for copying your survey."); ?></p>
+                    <p class="note"><?php echo sprintf(gT('Fields with %s are required.'), '<span class="required">*</span>'); ?></p>
                 </div>
                     <div class="row mb-3">
                         <!-- Source survey -->
-                        <label class="form-label" for='surveyIdToCopy'><?= gT("Source survey:"); ?> </label>
-                        <select id='surveyIdToCopy' name='surveyIdToCopy' class="form-select w-100"></select>
+                        <label class="form-label" for='surveyIdToCopy'><?= gT("Source survey:"); ?> <span class="required">*</span></label>
+                        <select id='surveyIdToCopy' name='surveyIdToCopy' class="form-select w-100" aria-required="true" aria-describedby="surveyIdToCopy-error"></select>
+                        <?php // Filled when the form is submitted without a source survey: The alert role announces it ?>
+                        <div id="surveyIdToCopy-error" class="text-danger mt-1" role="alert"></div>
                     </div>
                     <div class="mb-3">
                         <!-- New survey title -->
@@ -90,6 +98,12 @@
                             <div>
                                 <input id="copyAnswerOptions" name="copyAnswerOptions" type="checkbox" value="1" checked>
                                 <label class=" form-label reg16" for='copyAnswerOptions'><?php eT("Answer options from the original survey"); ?> </label>
+                            </div>
+
+                            <!-- include survey URL parameters -->
+                            <div>
+                                <input id="copySurveyUrlParameters" name="copySurveyUrlParameters" type="checkbox" value="1" checked>
+                                <label class=" form-label reg16" for='copySurveyUrlParameters'><?php eT("Survey URL parameters"); ?> </label>
                             </div>
 
                             <!-- Reset conditions/relevance -->

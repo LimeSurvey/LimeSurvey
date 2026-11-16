@@ -81,8 +81,17 @@ LS.gridSelection = (function () {
         return $('.grid-selection-bar[data-grid-id="' + gridId + '"]');
     }
 
+    /**
+     * The "Select all" settings element, rendered inside the grid when "Select all" is enabled.
+     * @param  {string} gridId
+     * @return {jQuery}
+     */
+    function _selectAllConfig(gridId) {
+        return $('#' + gridId + ' .grid-select-all-config');
+    }
+
     function _selectAllDisableThreshold(gridId) {
-        var threshold = parseInt(_selectionBar(gridId).attr('data-select-all-disable-threshold'), 10);
+        var threshold = parseInt(_selectAllConfig(gridId).attr('data-select-all-disable-threshold'), 10);
         return isNaN(threshold) ? null : threshold;
     }
 
@@ -96,7 +105,7 @@ LS.gridSelection = (function () {
             return _set(gridId).size;
         }
 
-        var total = parseInt(_selectionBar(gridId).attr('data-total-count'), 10);
+        var total = parseInt(_selectAllConfig(gridId).attr('data-total-count'), 10);
         if (total === null) {
             return _set(gridId).size;
         }
@@ -117,7 +126,7 @@ LS.gridSelection = (function () {
             thresholdText = threshold.toLocaleString();
         }
 
-        var messageTemplate = _selectionBar(gridId).attr('data-select-all-warning-message') || SELECT_ALL_WARNING_TEXT;
+        var messageTemplate = _selectAllConfig(gridId).attr('data-select-all-warning-message') || SELECT_ALL_WARNING_TEXT;
         var message = messageTemplate.replace(/\{threshold\}/g, thresholdText === null ? '' : String(thresholdText));
         var timeout = 3000;
 
@@ -312,13 +321,11 @@ LS.gridSelection = (function () {
         _syncMassiveActionButton(gridId);
     });
 
-    // ------------------------------------------------------------------
-    // "Select all" button selects the entire result set (all pages).
-    // ------------------------------------------------------------------
-    $(document).on('click', '.grid-selection-bar .grid-select-all', function () {
-        var gridId = $(this).closest('.grid-selection-bar').data('grid-id');
-        if (!gridId) { return; }
-
+    /**
+     * Selects the entire result set (all pages) of a grid.
+     * @param {string} gridId
+     */
+    function _selectAll(gridId) {
         _selectAllMode.add(gridId);
         _selectAllExcluded.delete(gridId);
         _unlockCheckboxes(gridId);
@@ -326,6 +333,15 @@ LS.gridSelection = (function () {
 
         _syncSelectionBar(gridId);
         _syncMassiveActionButton(gridId);
+    }
+
+    // ------------------------------------------------------------------
+    // "Select all" button selects the entire result set (all pages).
+    // ------------------------------------------------------------------
+    $(document).on('click', '.grid-selection-bar .grid-select-all', function () {
+        var gridId = $(this).closest('.grid-selection-bar').data('grid-id');
+        if (!gridId) { return; }
+        _selectAll(gridId);
     });
 
     $(document).on('click', '.grid-view-ls tbody .grid-selectall-locked-cell', function (e) {
@@ -571,6 +587,28 @@ LS.gridSelection = (function () {
          */
         isSelectAll: function (gridId) {
             return _selectAllMode.has(gridId);
+        },
+
+        /**
+         * Selects the entire result set (all pages) of a grid.
+         *
+         * @param {string} gridId
+         */
+        selectAll: _selectAll,
+
+        /**
+         * Data a massive action posts in select-all mode instead of the selected ids:
+         * The selectAll flag, the grid filters and the ids deselected by the user.
+         *
+         * @param  {string} gridId
+         * @return {Object}
+         */
+        getSelectAllPostData: function (gridId) {
+            return {
+                selectAll: 1,
+                filterQuery: this.getFilterQuery(gridId),
+                excludedItems: JSON.stringify(this.getExcluded(gridId)),
+            };
         },
 
         /**

@@ -31,9 +31,14 @@ class RestController extends LSYii_Controller
      */
     public function run($actionID)
     {
+        // Nothing may be changed while the hosting system makes a backup or runs the database update
+        $this->endRequestIfAdministrationLocked('json');
+
         Yii::app()->loadConfig('rest');
         $action = new CInlineAction($this, 'index');
         if (Yii::app()->beforeControllerAction($this, $action)) {
+            $this->applyUserLanguage();
+
             $endpointFactory = DI::getContainer()
                 ->get(EndpointFactory::class);
 
@@ -43,5 +48,22 @@ class RestController extends LSYii_Controller
 
             Yii::app()->afterControllerAction($this, $action);
         }
+    }
+
+    /**
+     * Applies the logged-in user's language, falling back to the browser language.
+     *
+     * @return void
+     */
+    private function applyUserLanguage()
+    {
+        $user = App()->user->isGuest ? null : User::model()->findByPk(App()->user->id);
+        $lang = $user ? $user->lang : null;
+        if (empty($lang) || $lang === 'auto') {
+            App()->loadHelper('common');
+            $lang = getBrowserLanguage();
+        }
+        // REST calls share the admin's PHP session, so don't persist the language there
+        App()->setLanguage($lang, false);
     }
 }

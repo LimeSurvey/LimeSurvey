@@ -16,7 +16,7 @@ If you're creating a template from scratch, there is no obligation to respect th
     *Those subviews are hard included in other views. So if you create a template from scratch, you can named them as you want (or you can even not create them at all)*
 
 * messages/     
-    Messages sent to the user, such as the modals, alerts, warning, welcome, or assesments results
+    Messages sent to the user, such as the modals, alerts, warning, welcome, or assessments results
     *Those subviews are hard included in other views. So if you create a template from scratch, you can named them as you want (or you can even not create them at all)*
 
 * navigation/

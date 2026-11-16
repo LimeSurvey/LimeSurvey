@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { Entities, L10ns } from 'helpers'
+import { Entities, L10ns, RemoveHTMLTagsInString } from 'helpers'
 import { ContentEditor } from 'components'
 import { SurveyListComponent } from './SurveyListComponent'
 
@@ -55,13 +55,13 @@ export const SurveyTitleSelector = ({
 
   return (
     <div
-      data-error={getError(survey.sid, Entities.languageSetting)}
+      data-error={getError(null, Entities.languageSetting)}
       className="d-flex align-items-center text-align-center top-bar-select align-middle"
       id="top-bar-select"
     >
       <div className="d-flex justify-content-center">
         <ContentEditor
-          value={surveyTitle}
+          value={RemoveHTMLTagsInString(surveyTitle)}
           placeholder={t('Survey title')}
           update={onSurveyTitleChange}
           editorRef={titleRef}

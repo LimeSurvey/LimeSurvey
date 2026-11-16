@@ -503,6 +503,7 @@ class Zend_OpenId
             return sha1($data, true);
         } else if ($func === 'sha256') {
             if (function_exists('mhash')) {
+                // phpcs:ignore PHPCompatibility.FunctionUse.RemovedFunctions.mhashDeprecated, PHPCompatibility.Constants.RemovedConstants.mhash_sha256Deprecated -- fallback without ext/hash
                 return mhash(MHASH_SHA256 , $data);
             }
         }
@@ -755,6 +756,7 @@ class Zend_OpenId
     static public function strlen($str)
     {
         if (extension_loaded('mbstring') &&
+            // phpcs:ignore PHPCompatibility.IniDirectives.RemovedIniDirectives.mbstring_func_overloadDeprecatedRemoved -- the directive exists on PHP 7.4
             (((int)ini_get('mbstring.func_overload')) & 2)) {
             return mb_strlen($str, 'latin1');
         } else {

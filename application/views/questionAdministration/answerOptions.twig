@@ -8,6 +8,8 @@
 {% for lang in allLanguages %}
     <div class="lang-hide lang-{{ lang }} {{ first ? 'base-lang' : 'extra-lang' }}">
         {% for scale_id in range(0, scalecount - 1) %}
+            <!-- One block per scale, so the sticky buttons of a scale stay with its own table -->
+            <div class="scale-block">
 
             {% set position = 1 %}
             {%  if scalecount > 1 %}
@@ -17,7 +19,7 @@
             {% endif %}
 
             <!-- Answer options table -->
-            <div class="answeroptions-table-wrapper" style="max-height: 394px;">
+            <div class="answeroptions-table-wrapper">
                 <table
                     class='answertable answeroptions-table table table-responsive'
                     id='answeroptions_{{lang}}_{{scale_id}}'
@@ -33,7 +35,7 @@
                             <i
                 class="ri-information-fill"
                 data-bs-toggle="tooltip"
-                title="{{ gT("A mandatory unique alpha-numeric code for each answer option (1-5 characters)") }}"
+                title="{{ gT("A mandatory unique alphanumeric code for each answer option (1-5 characters)") }}"
             > </i>                            </th>
 
                             {% if assessmentvisible %}
@@ -41,7 +43,7 @@
                                     {{ gT("Assessment value") }} <i
                 class="ri-information-fill"
                 data-bs-toggle="tooltip"
-                title="{{ gT("A positive or negative integer number as assement value if this option is selected") }}"
+                title="{{ gT("A positive or negative integer number as assessment value if this option is selected") }}"
             > </i>     
                                 </th>
                             {% else %}
@@ -118,6 +120,7 @@
                 <button {{ disabled }}  id='btnquickadd_{{ lang }}_{{ scale_id }}' data-scale-id="{{ scale_id }}" class='btn btn-outline-secondary btnquickadd float-end' type='button'  data-bs-toggle="modal" data-bs-target="#quickaddModal" data-scale-id="{{ scale_id }}">
                     {{ gT('Quick add') }}
                 </button>
+            </div>
             </div>
             {% set position = sprintf("%05d", position) %}
         {% endfor %}

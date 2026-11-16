@@ -91,6 +91,7 @@
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'bPdfQuestionFill',
+                        'ariaLabel' => gT('Add gray background to questions in PDF:'),
                         'checkedOption' => Yii::app()->getConfig('bPdfQuestionFill'),
                         'selectOptions' => [
                             '1' => gT('On'),

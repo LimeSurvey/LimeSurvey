@@ -74,6 +74,10 @@
     .slider-list .ls-slider-answer-row {
         margin-top: 20px;
     }
+    /* The label is above the slider: Leave room for the value tooltip, which sits 44px above the handle */
+    .slider-list .ls-slider-item-horizontal .ls-slider-answer-row {
+        margin-top: 48px;
+    }
     .slider-list .ls-slider-item-horizontal .slider-left {
         order: 4;
     }

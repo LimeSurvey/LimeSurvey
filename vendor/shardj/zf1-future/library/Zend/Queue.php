@@ -328,7 +328,7 @@ class Zend_Queue implements Countable
             throw new Zend_Queue_Exception('$name is not a string');
         }
 
-        if ((null !== $timeout) && !is_integer($timeout)) {
+        if ((null !== $timeout) && !is_int($timeout)) {
             require_once 'Zend/Queue/Exception.php';
             throw new Zend_Queue_Exception('$timeout must be an integer');
         }
@@ -438,12 +438,12 @@ class Zend_Queue implements Countable
      */
     public function receive($maxMessages=null, $timeout=null)
     {
-        if (($maxMessages !== null) && !is_integer($maxMessages)) {
+        if (($maxMessages !== null) && !is_int($maxMessages)) {
             require_once 'Zend/Queue/Exception.php';
             throw new Zend_Queue_Exception('$maxMessages must be an integer or null');
         }
 
-        if (($timeout !== null) && !is_integer($timeout)) {
+        if (($timeout !== null) && !is_int($timeout)) {
             require_once 'Zend/Queue/Exception.php';
             throw new Zend_Queue_Exception('$timeout must be an integer or null');
         }

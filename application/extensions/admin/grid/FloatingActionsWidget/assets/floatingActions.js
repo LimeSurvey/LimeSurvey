@@ -33,6 +33,29 @@ LS.floatingActions = (function () {
     }
 
     /**
+     * Shows a footer delivered with the action results (e.g. the download button of an export)
+     * in place of the 'close' footer of the modal.
+     * Left inside the scrolling modal body it is only reachable at the end of a long results list.
+     *
+     * @param {jQuery} $modal
+     * @param {jQuery} $modalBody   Element that received the results HTML
+     * @param {jQuery} $modalClose  Footer with the 'close' button
+     * @returns {jQuery} The footer that is visible now
+     */
+    function _showResultsFooter($modal, $modalBody, $modalClose) {
+        var $resultsFooter = $modalBody.find('.modal-footer').filter(function () {
+            // Not the footer of a modal nested in the results
+            return $(this).closest('.modal').is($modal);
+        }).first();
+        if (!$resultsFooter.length) {
+            return $modalClose;
+        }
+        $resultsFooter.addClass('modal-footer-results').appendTo($modal.find('.modal-content').first());
+        $modalClose.hide();
+        return $resultsFooter;
+    }
+
+    /**
      * Resolve dotted callback paths (e.g. "LS.CPDB.onClickExport") safely.
      * Returns a function bound to its parent object, or null.
      *
@@ -54,6 +77,29 @@ LS.floatingActions = (function () {
         return typeof current === 'function' ? current.bind(context) : null;
     }
     /**
+     * Whether the whole result set of the grid is selected ("Select all" mode).
+     *
+     * @param {string} gridId
+     * @returns {boolean}
+     */
+    function _isSelectAll(gridId) {
+        return !!(window.LS && LS.gridSelection && typeof LS.gridSelection.isSelectAll === 'function'
+            && LS.gridSelection.isSelectAll(gridId));
+    }
+
+    /**
+     * Append one hidden input per entry of data to a form.
+     *
+     * @param {jQuery} $form
+     * @param {Object} data
+     */
+    function _appendHiddenInputs($form, data) {
+        $.each(data, function (name, value) {
+            $form.append($('<input>', { name: name, value: value, type: 'hidden' }));
+        });
+    }
+
+    /**
      * Count selected rows and update the floating bar visibility.
      * Uses LS.gridSelection.count() (cross-page) when available,
      * falling back to visible DOM checkboxes for grids without gridSelection.
@@ -74,6 +120,8 @@ LS.floatingActions = (function () {
                 .find('.table tbody input[name="' + pkCol + '"]:checked').length;
         }
         $bar.find('.floating-actions-count-number').text(count);
+        // The whole result set is already selected
+        $bar.find('.floating-actions-select-all').toggleClass('d-none', _isSelectAll(gridId));
         if (count > 0) {
             $bar.addClass('floating-actions-bar--visible');
             // Sync position every time the bar becomes visible so it is always
@@ -177,6 +225,8 @@ LS.floatingActions = (function () {
             checkedItems = $grid.yiiGridView('getChecked', pk);
         }
         var checkedItemsJson = JSON.stringify(checkedItems);
+        // In select-all mode no ids are sent; a selectAll flag with the grid filters is posted instead
+        var selectAllData = _isSelectAll(gridId) ? LS.gridSelection.getSelectAllPostData(gridId) : {};
         // ---- redirect action ------------------------------------------
         if (actionType === 'redirect') {
             var newForm = $('<form>', {
@@ -192,6 +242,7 @@ LS.floatingActions = (function () {
                 value : LS.data.csrfToken,
                 type  : 'hidden',
             })).appendTo('body');
+            _appendHiddenInputs(newForm, selectAllData);
             newForm.submit();
             return;
         }
@@ -210,8 +261,16 @@ LS.floatingActions = (function () {
         }
         // ---- window-location-href action ------------------------------
         // Appends the checked ids (comma-separated) to the action URL and navigates.
+        // In select-all mode the select-all data is posted to the action URL instead.
         // Used by "Download files" in the responses list.
         if (actionType === 'window-location-href') {
+            if (_isSelectAll(gridId)) {
+                var selectAllForm = $('<form>', { action: actionUrl, method: 'POST' }).appendTo('body');
+                selectAllData[LS.data.csrfTokenName] = LS.data.csrfToken;
+                _appendHiddenInputs(selectAllForm, selectAllData);
+                selectAllForm.submit().remove();
+                return;
+            }
             window.location.href = actionUrl + checkedItems.join($that.data('input-separator') || ',');
             return;
         }
@@ -256,6 +315,7 @@ LS.floatingActions = (function () {
         $modal.off('hidden.bs.modal.floating hidden.bs.modal').on('hidden.bs.modal.floating hidden.bs.modal', function () {
             $modalTitle.text($oldModalTitle);
             $modalBody.empty().append($oldModalBody);
+            $modal.find('.modal-footer-results').remove();
             $modalClose.hide();
             $oldModalButtons.show();
             var modalGridReload = $modal.data('grid-reload');
@@ -290,7 +350,7 @@ LS.floatingActions = (function () {
                 }
             }
             
-            var postData = { sItems: checkedItemsJson };
+            var postData = $.extend({ sItems: checkedItemsJson }, selectAllData);
             $modal.find('.custom-data').each(function () {
                 if ($(this).hasClass('btn-group')) {
                     $(this).find('input:checked').each(function () {
@@ -331,6 +391,8 @@ LS.floatingActions = (function () {
                         if (typeof syncMassiveActionResultsTableCaption === 'function') {
                             syncMassiveActionResultsTableCaption($modal, $modalBody);
                         }
+                        // The clicked confirm button is hidden now: Keep keyboard focus inside the modal
+                        _showResultsFooter($modal, $modalBody, $modalClose).find('button, a').first().trigger('focus');
                     }
                     if (onSuccess) {
                         var func = _resolveActionCallback(onSuccess);
@@ -524,6 +586,20 @@ LS.floatingActions = (function () {
                             $btn.prop('disabled', false);
                         }
                     });
+                });
+            }
+            // ---- "Select all" of a grid with select-all mode -----------------
+            // Selects the whole result set; actions then post the grid filters.
+            if (!selectAllUrl) {
+                $(document).on('click' + ns, barSelector + ' .floating-actions-select-all', function (e) {
+                    e.preventDefault();
+                    if (!(window.LS && LS.gridSelection && typeof LS.gridSelection.selectAll === 'function')) {
+                        return;
+                    }
+                    LS.gridSelection.selectAll(gridId);
+                    _updateBar(gridId, pk);
+                    // The button is hidden now: Keep keyboard focus in the bar
+                    _bar(gridId).find('.floating-actions-btn:visible').first().trigger('focus');
                 });
             }
             // ---- Scroll: keep bar position in sync with table position ---------

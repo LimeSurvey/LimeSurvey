@@ -614,8 +614,7 @@ abstract class Zend_View_Helper_Navigation_HelperAbstract
     /**
      * Magic overload: Proxy to {@link render()}.
      *
-     * This method will trigger an E_USER_ERROR if rendering the helper causes
-     * an exception to be thrown.
+     * An exception of the rendering is thrown to the caller.
      *
      * Implements {@link Zend_View_Helper_Navigation_Helper::__toString()}.
      *
@@ -623,13 +622,7 @@ abstract class Zend_View_Helper_Navigation_HelperAbstract
      */
     public function __toString()
     {
-        try {
-            return $this->render();
-        } catch (Exception $e) {
-            $msg = get_class($e) . ': ' . $e->getMessage();
-            trigger_error($msg, E_USER_ERROR);
-            return '';
-        }
+        return $this->render();
     }
 
     // Public methods:

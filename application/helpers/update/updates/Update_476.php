@@ -7,6 +7,7 @@ use SurveyThemeHelper;
 
 class Update_476 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
         Yii::import('application.helpers.SurveyThemeHelper');

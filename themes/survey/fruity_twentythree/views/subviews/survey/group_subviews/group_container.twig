@@ -18,7 +18,7 @@
     NOTE: see views/subviews/survey/group.twig comments for more infos
 #}
 
-{% set sGroupName = processString(aGroup.name) %}
+{% set sGroupName = processString(aGroup.name, false, 3, {'GID': aGroup.gid}) %}
 {% set bShowGroupTitle = (aGroup.showgroupinfo == 'N' or aGroup.showgroupinfo == 'B')
     and sGroupName|striptags|replace({'&nbsp;': ' '})|trim != '' %}
 

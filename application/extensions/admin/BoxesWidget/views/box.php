@@ -38,6 +38,7 @@
         <?php if ($item['type'] == BoxesWidget::TYPE_PRODUCT) : ?>
             <div class="box-widget-card align-middle d-inline-block"
                  data-url="<?php echo $item['link'] ?>"
+                 role="link"
                  tabindex="0">
                 <div class="box-widget-card-body">
                     <div class="box-widget-card-header">
@@ -64,7 +65,9 @@
                         <div class="box-widget-card-footer-items">
                             <div class="box-widget-card-footer-response">
                                 <?php
-                                if ($item['survey']->countFullAnswers == 0) {
+                                if (!$item['survey']->isActive) {
+                                    $responsesInfo = '';
+                                } elseif ($item['survey']->countFullAnswers == 0) {
                                     $responsesInfo = gT('No responses');
                                 } else {
                                     $responsesInfo = sprintf(
@@ -86,24 +89,27 @@
                                        class="active"
                                        data-bs-toggle="tooltip"
                                        data-bs-original-title="<?= gT('Activate') ?>"
+                                       aria-label="<?= gT('Activate') ?>"
                                     >
-                                        <i class="ri-check-line"></i>
+                                        <i class="ri-check-line" aria-hidden="true"></i>
                                     </a>
                                 <?php elseif ($item['survey']->active !== "Y") : ?>
                                     <a href="<?= App()->createUrl("/surveyAdministration/view?iSurveyID=" . $item['survey']->sid) ?? '#' ?>"
                                        class="active"
                                        data-bs-toggle="tooltip"
                                        data-bs-original-title="<?= gT('Edit survey') ?>"
+                                       aria-label="<?= gT('Edit survey') ?>"
                                     >
-                                        <i class="ri-edit-line"></i>
+                                        <i class="ri-edit-line" aria-hidden="true"></i>
                                     </a>
                                 <?php elseif ($item['survey']->active === "Y") : ?>
                                     <a href="<?= App()->createUrl("/admin/statistics/sa/simpleStatistics/surveyid/" . $item['survey']->sid) ?? '#' ?>"
                                        class="active"
                                        data-bs-toggle="tooltip"
                                        data-bs-original-title="<?= gT('Statistics') ?>"
+                                       aria-label="<?= gT('Statistics') ?>"
                                     >
-                                        <i class="ri-bar-chart-2-line"></i>
+                                        <i class="ri-bar-chart-2-line" aria-hidden="true"></i>
                                     </a>
                                 <?php endif; ?>
 
@@ -115,9 +121,11 @@
             </div>
         <?php elseif ($item['type'] == BoxesWidget::TYPE_LINK) : ?>
             <div class="box-widget-card card-link align-middle d-inline-block <?= $item['colored'] ? 'card-link-highlight' : ''; ?>"
-                 data-url="<?= $item['link'] ?>" <?= $item['external'] ? 'target="_blank"' : ''?>>
+                 data-url="<?= $item['link'] ?>" <?= $item['external'] ? 'target="_blank"' : ''?>
+                 role="link"
+                 tabindex="0">
                 <div class="box-widget-card-body">
-                    <i class="<?= $item['icon'] ?>"></i>
+                    <i class="<?= $item['icon'] ?>" aria-hidden="true"></i>
                     <?= $item['text'] ?>
                 </div>
             </div>

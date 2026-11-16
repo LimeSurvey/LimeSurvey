@@ -115,8 +115,8 @@ function ldap_doTokenSearch($ds, $ldapq, &$ResArray, $surveyid)
     $totalrescount = 0;
     $userattrs = array();
 
-    // First let's lowercase the ldap query values
-    prepareLDAPQuery($ldapq);
+    // First let's lowercase the ldap query attribute names
+    $ldap_queries[$ldapq] = prepareLDAPQuery($ldapq);
 
     // Retrieve the ldap user attribute-list to read
     $userparams = array('firstname_attr', 'lastname_attr',
@@ -347,10 +347,24 @@ function ldap_doTokenSearch($ds, $ldapq, &$ResArray, $surveyid)
     return $totalrescount;
 }
 
+/**
+ * Returns an LDAP query definition with its attribute name settings in lower case
+ *
+ * Filters, base DNs and other settings are returned unchanged.
+ *
+ * @param int|string $queryId The key of the query in the ldap_queries configuration
+ * @return array The query definition
+ */
 function prepareLDAPQuery($queryId)
 {
     $ldap_queries = Yii::app()->getConfig('ldap_queries');
-    $QueryName = $ldap_queries[$queryId]['name'];
-    $ldap_queries[$queryId] = array_map('strtolower', $ldap_queries[$queryId]);
-    $ldap_queries[$queryId]['name'] = $QueryName;
+    $query = $ldap_queries[$queryId];
+    // ldap_get_entries() returns lower case attribute names: Lower-case the attribute names used to read the result
+    $attributeKeys = array('firstname_attr', 'lastname_attr', 'email_attr', 'token_attr', 'language', 'groupmemberattr');
+    foreach ($query as $key => $value) {
+        if (is_string($value) && (in_array($key, $attributeKeys, true) || preg_match('/^attr\d+$/', (string) $key))) {
+            $query[$key] = strtolower($value);
+        }
+    }
+    return $query;
 }

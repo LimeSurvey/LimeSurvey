@@ -226,7 +226,20 @@ class Zend_Filter implements Zend_Filter_Interface
             $class = new ReflectionClass($className);
             if ($class->implementsInterface('Zend_Filter_Interface')) {
                 if ($class->hasMethod('__construct')) {
-                    $object = $class->newInstanceArgs($args);
+                    $numeric = false;
+                    foreach (array_keys($args) as $key) {
+                        if (is_numeric($key)) {
+                            $numeric = true;
+                            break;
+                        }
+                    }
+
+                    if ($numeric) {
+                        $object = $class->newInstanceArgs($args);
+                    } else {
+                        // string keys are options for the constructor, not named arguments
+                        $object = $class->newInstance($args);
+                    }
                 } else {
                     $object = $class->newInstance();
                 }

@@ -44,6 +44,10 @@ require_once 'Zend/Registry.php';
  * @subpackage PHPUnit
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ *
+ * @property-read Zend_Controller_Request_HttpTestCase $request
+ * @property-read Zend_Controller_Response_HttpTestCase $response
+ * @property-read Zend_Controller_Front $frontController
  */
 abstract class Zend_Test_PHPUnit_ControllerTestCase80 extends TestCase
 {

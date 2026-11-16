@@ -1,4 +1,11 @@
-$(function () {
+// Also bind to pjax:scriptcomplete, not just ready: this admin theme uses pjax for
+// navigation, and a script that only runs on 'ready' never re-attaches its handlers to
+// content a pjax navigation swaps in afterwards - matching every other admin page
+// script in this codebase. (The registerScriptFile() call for this file must be
+// present on every action that (re-)renders #redundancy-check-form - see
+// CheckIntegrity::fixintegrity() - since pjax only re-executes, and only fires
+// pjax:scriptcomplete for, scripts present in the response it just swapped in.)
+$(document).on('ready pjax:scriptcomplete', function () {
     var $form = $('#redundancy-check-form');
 
     if ($form.length === 0) {

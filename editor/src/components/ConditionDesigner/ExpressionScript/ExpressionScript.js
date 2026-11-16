@@ -2,10 +2,15 @@ import { useParams } from 'react-router-dom'
 import React, { useEffect, useState } from 'react'
 import classNames from 'classnames'
 
-import { useBuffer, useFocused, useSurvey } from 'hooks'
+import {
+  useBuffer,
+  useExpressionScriptValidation,
+  useFocused,
+  useSurvey,
+} from 'hooks'
 import { getQuestionById, QUESTION_RELEVANCE_DEFAULT_VALUE } from 'helpers'
 import { SideBarHeader } from 'components/SideBar'
-import { Button } from 'components/UIComponents'
+import { Button, ExpressionScriptEditor } from 'components/UIComponents'
 import { ArrowLeftIcon } from 'components/icons'
 
 import { handleConditionScriptUpdate } from './handleConditionScriptUpdate'
@@ -18,28 +23,31 @@ import {
 export const ExpressionScript = ({ onNavigateBack = () => {} }) => {
   const { surveyId } = useParams()
   const { survey, update } = useSurvey(surveyId)
-  const { focused, groupIndex, questionIndex } = useFocused()
+  const { focused } = useFocused()
   const { addToBuffer } = useBuffer()
 
-  const question = getQuestionById(focused.qid, survey).question
+  const { question, groupIndex, questionIndex } = getQuestionById(
+    focused?.qid,
+    survey
+  )
+  const validateExpression = useExpressionScriptValidation(
+    surveyId,
+    question?.qid
+  )
 
   const [content, setContent] = useState(
-    question.relevance === QUESTION_RELEVANCE_DEFAULT_VALUE
+    question?.relevance === QUESTION_RELEVANCE_DEFAULT_VALUE
       ? ''
-      : question.relevance
+      : (question?.relevance ?? '')
   )
 
   useEffect(() => {
     setContent(
-      question.relevance === QUESTION_RELEVANCE_DEFAULT_VALUE
+      question?.relevance === QUESTION_RELEVANCE_DEFAULT_VALUE
         ? ''
-        : question.relevance
+        : (question?.relevance ?? '')
     )
   }, [focused])
-
-  const handleChange = (e) => {
-    setContent(e.target.value)
-  }
 
   const handleApply = () => {
     handleConditionScriptUpdate(
@@ -64,7 +72,7 @@ export const ExpressionScript = ({ onNavigateBack = () => {} }) => {
   }
 
   const handleApplyClick = () => {
-    if (question?.scenarios.length > 0) {
+    if ((question?.scenarios ?? []).length > 0) {
       showConditionOverwriteConfirmationOverlay({
         onConfirm: () => handleApply(content),
         onCancel: onNavigateBack,
@@ -72,6 +80,11 @@ export const ExpressionScript = ({ onNavigateBack = () => {} }) => {
     } else {
       handleApply(content)
     }
+  }
+
+  // The focused question was removed (e.g. its group was deleted)
+  if (!question) {
+    return null
   }
 
   return (
@@ -114,11 +127,15 @@ export const ExpressionScript = ({ onNavigateBack = () => {} }) => {
           <span className="expression-script-label mb-1">
             {t('Expression script')}
           </span>
-          <div className="d-flex justify-content-center mb-3">
-            <textarea
-              onChange={handleChange}
-              className="expression-script-textarea no-resize"
+          <div className="d-flex justify-content-center mb-3 px-3">
+            <ExpressionScriptEditor
+              id={`expression-script-panel-${question.qid}`}
+              ariaLabel={t('Expression script')}
+              className="expression-script-panel-editor"
+              height="230px"
+              onChange={setContent}
               value={content}
+              validateExpression={validateExpression}
             />
           </div>
         </div>

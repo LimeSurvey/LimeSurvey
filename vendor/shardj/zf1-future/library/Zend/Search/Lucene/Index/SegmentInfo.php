@@ -787,7 +787,8 @@ class Zend_Search_Lucene_Index_SegmentInfo implements Zend_Search_Lucene_Index_T
             $stiFileData = $stiFile->readBytes($this->_directory->fileLength($this->_name . '.sti'));
 
             // Load dictionary index data
-            if (($unserializedData = @unserialize($stiFileData)) !== false) {
+            $allowedClasses = ['Zend_Search_Lucene_Index_Term', 'Zend_Search_Lucene_Index_TermInfo'];
+            if (($unserializedData = @unserialize($stiFileData, ['allowed_classes' => $allowedClasses])) !== false) {
                 [$this->_termDictionary, $this->_termDictionaryInfos] = $unserializedData;
                 return;
             }

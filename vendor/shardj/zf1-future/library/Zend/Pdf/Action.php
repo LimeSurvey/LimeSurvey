@@ -350,20 +350,24 @@ abstract class Zend_Pdf_Action extends Zend_Pdf_Target implements RecursiveItera
 
     /**
      * Go to next child
+     *
+     * @return void
      */
     #[\ReturnTypeWillChange]
     public function next()
     {
-        return next($this->next);
+        next($this->next);
     }
 
     /**
      * Rewind children
+     *
+     * @return void
      */
     #[\ReturnTypeWillChange]
     public function rewind()
     {
-        return reset($this->next);
+        reset($this->next);
     }
 
     /**

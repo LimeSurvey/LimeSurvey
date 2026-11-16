@@ -26,8 +26,10 @@
     color: red;
     font-weight: bold;
   }
+}
 
-  .expression-tooltip .tooltip-inner {
-    max-width: none;
-  }
+.expression-tooltip .tooltip-inner {
+  max-width: none;
+  font-size: 1rem;
+  line-height: 1.4;
 }

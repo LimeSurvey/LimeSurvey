@@ -104,7 +104,7 @@ abstract class CallExpression extends AbstractExpression
             if (!$first) {
                 $compiler->raw(', ');
             }
-            $compiler->raw('$this->env->hasExtension(\Twig\Extension\SandboxExtension::class) && $this->env->getExtension(\Twig\Extension\SandboxExtension::class)->isSandboxed($this->source)');
+            $compiler->raw('$this->env->hasExtension(\Twig\Extension\SandboxExtension::class) && $this->env->getExtension(\Twig\Extension\SandboxExtension::class)->getChecker()->isSandboxed($this->source)');
             $first = false;
         }
 
@@ -125,7 +125,7 @@ abstract class CallExpression extends AbstractExpression
         }
 
         if ($this->hasNode('arguments')) {
-            $arguments = (new CallableArgumentsExtractor($this, $this->getTwigCallable()))->extractArguments($this->getNode('arguments'));
+            $arguments = (new CallableArgumentsExtractor($this, $this->getAttribute('twig_callable')))->extractArguments($this->getNode('arguments'));
             foreach ($arguments as $node) {
                 if (!$first) {
                     $compiler->raw(', ');

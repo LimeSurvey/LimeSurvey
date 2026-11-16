@@ -722,15 +722,11 @@ class Zend_Wildfire_Plugin_FirePhp implements Zend_Wildfire_Plugin_Interface
                         $return[$name] = $this->_encodeObject($members[$raw_name], $objectDepth + 1, 1);
 
                     } else {
-                        if (PHP_VERSION_ID < 80100 && method_exists($property,'setAccessible')) {
+                        // PHP 8.1+ reads non-public properties without setAccessible()
+                        if (PHP_VERSION_ID < 80100) {
                             $property->setAccessible(true);
-                            $return[$name] = $this->_encodeObject($property->getValue($object), $objectDepth + 1, 1);
-                        } else
-                        if ($property->isPublic()) {
-                            $return[$name] = $this->_encodeObject($property->getValue($object), $objectDepth + 1, 1);
-                        } else {
-                            $return[$name] = '** Need PHP 5.3 to get value **';
                         }
+                        $return[$name] = $this->_encodeObject($property->getValue($object), $objectDepth + 1, 1);
                     }
                 } else {
                   $return[$name] = '** Excluded by Filter **';
@@ -743,16 +739,16 @@ class Zend_Wildfire_Plugin_FirePhp implements Zend_Wildfire_Plugin_Interface
 
                 $name = $raw_name = $just_name;
 
-                if ($name[0] == "\0") {
+                if (is_string($name) && $name !== '' && $name[0] == "\0") {
                     $parts = explode("\0", $name);
                     $name = $parts[2];
                 }
                 if (!isset($properties[$name])) {
                     $name = 'undeclared:'.$name;
 
-                    if (!(isset($this->objectFilters[$class])
-                          && is_array($this->objectFilters[$class])
-                          && in_array($just_name,$this->objectFilters[$class]))) {
+                    if (!(isset($this->_objectFilters[$class])
+                          && is_array($this->_objectFilters[$class])
+                          && in_array($just_name,$this->_objectFilters[$class]))) {
 
                       $return[$name] = $this->_encodeObject($value, $objectDepth + 1, 1);
                     } else {

@@ -61,6 +61,7 @@ question_template_attribute.add_platform_info           : {{question_template_at
 {% else %}
 </div>
 {% endif %}
+{{ registerPackage('bowser') }}
 {{ registerScript( "BrowserDetectQuestion" ~ name, "
     var browserCheckObject = new BrowserCheck();
         $('#answer" ~ name ~ "')

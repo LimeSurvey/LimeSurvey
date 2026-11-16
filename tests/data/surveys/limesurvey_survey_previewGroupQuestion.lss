@@ -113,7 +113,7 @@
     <gid><![CDATA[111]]></gid>
     <type><![CDATA[S]]></type>
     <title><![CDATA[G2Q01]]></title>
-    <question><![CDATA[Not hidden]]></question>
+    <question><![CDATA[Not hidden<span class="prefilled-q02">{Q02}</span>]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -245,7 +245,7 @@
     <gid><![CDATA[112]]></gid>
     <type><![CDATA[M]]></type>
     <title><![CDATA[G3Q02]]></title>
-    <question><![CDATA[Hidden by Q01, Sub question hidden by Q03]]></question>
+    <question><![CDATA[Hidden by Q01, Sub question hidden by Q03<span class="prefilled-q03">{Q03}</span>]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>

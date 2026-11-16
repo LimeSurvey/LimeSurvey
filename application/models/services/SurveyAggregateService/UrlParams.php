@@ -46,14 +46,7 @@ class UrlParams
 
         foreach ($params as $param) {
             $param['parameter'] = trim((string) $param['parameter']);
-            if (
-                $param['parameter'] == ''
-                || !preg_match('/^[a-zA-Z_][\w]*$/', $param['parameter'])
-                || $param['parameter'] == 'sid'
-                || $param['parameter'] == 'newtest'
-                || $param['parameter'] == 'token'
-                || $param['parameter'] == 'lang'
-            ) {
+            if (!SurveyURLParameter::isValidParameterName($param['parameter'])) {
                 continue; // this parameter name seems to be invalid - just ignore it
             }
             $param['targetqid'] = $param['qid'];

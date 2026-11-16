@@ -30,6 +30,7 @@ class RelevanceEquationGeneralOption extends GeneralOption
                 'classes' => ['form-control'],
                 'attributes' => [
                     'rows' => 1,
+                    'placeholder' => '1',
                     'data-has-conditions' => count($question->conditions) > 0
                 ],
                 'inputGroup' => [

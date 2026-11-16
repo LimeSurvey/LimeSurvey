@@ -61,7 +61,7 @@ export const SharingOverview = () => {
     alias = typeof alias === 'number' ? '' : alias.trim()
     setAliasHasError(false)
 
-    const operation = createBufferOperation(survey.sid)
+    const operation = createBufferOperation(null)
       .languageSetting()
       .update({ [selectedLanguage]: { alias } })
 
@@ -115,6 +115,7 @@ export const SharingOverview = () => {
         />
         <PluginSlot slotName={PLUGIN_SLOTS.SHARING_OVERVIEW_BOTTOM_LEFT} />
         <PluginSlot slotName={PLUGIN_SLOTS.SHARING_OVERVIEW_BOTTOM_RIGHT} />
+        <PluginSlot slotName={PLUGIN_SLOTS.SHARING_OVERVIEW_CARD_BOTTOM} />
         <ParticipantsListCard
           hasUpdatePermission={hasUpdatePermission}
           surveyId={surveyId}

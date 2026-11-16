@@ -152,7 +152,7 @@
                                             echo CHtml::textField(
                                                 "caption_{$sTokenField}_{$sLanguage}",
                                                 $tokencaptions[$sLanguage][$sTokenField] ?? '',
-                                                array('class' => 'form-control')
+                                                array('class' => 'form-control', 'disabled' => !$customAttribute)
                                             );
                                         ?>
                                     </td>

@@ -7,6 +7,7 @@ namespace LimeSurvey\Helpers\Update;
  */
 class Update_325 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
         $this->db->createCommand()->dropTable('{{templates}}');

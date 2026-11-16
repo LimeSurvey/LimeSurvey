@@ -96,6 +96,9 @@
                  class="{% if( aSurveyInfo.options.notables == "2" ) %}no-tables-general{% elseif(aSurveyInfo.options.notables == "1") %}no-tables-mobile{% endif %}">
             {% block body %}
 
+                {# Skip link for keyboard users: Only visible when focused #}
+                <a href="#{{ aSurveyInfo.id.outerframe }}" class="skip-link visually-hidden-focusable">{{ gT("Skip to main content") }}</a>
+
                 {# Bootstrap Navigation Bar: the top menu #}
                 {% block nav_bar %}
                     {{ include('./subviews/header/nav_bar.twig') }}

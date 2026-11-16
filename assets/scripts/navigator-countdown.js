@@ -8,7 +8,7 @@
  * Update column and line with sum in a text table
  *
  * @param {ids} if of the table
- * @param {_radix} number seperator
+ * @param {_radix} number separator
  */
 
 function navigator_countdown(n)

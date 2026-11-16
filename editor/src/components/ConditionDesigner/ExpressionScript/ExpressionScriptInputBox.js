@@ -1,6 +1,11 @@
 import { useParams } from 'react-router-dom'
 
-import { useBuffer, useFocused, useSurvey } from 'hooks'
+import {
+  useBuffer,
+  useExpressionScriptValidation,
+  useFocused,
+  useSurvey,
+} from 'hooks'
 import {
   getQuestionById,
   htmlPopup,
@@ -16,10 +21,17 @@ import { showResetAllConditionsOverlay, showWarningMessage } from '../utils'
 export const ExpressionScriptInputBox = ({ onShowPanel, onNavigateBack }) => {
   const { surveyId } = useParams()
   const { survey, update } = useSurvey(surveyId)
-  const { focused, groupIndex, questionIndex } = useFocused()
+  const { focused } = useFocused()
   const { addToBuffer } = useBuffer()
 
-  const question = getQuestionById(focused.qid, survey).question
+  const { question, groupIndex, questionIndex } = getQuestionById(
+    focused?.qid,
+    survey
+  )
+  const validateExpression = useExpressionScriptValidation(
+    surveyId,
+    question?.qid
+  )
   const hasConditions = (question?.scenarios ?? []).length > 0
 
   const maybeShowConditionsOverwriteWarning = () => {
@@ -43,6 +55,10 @@ export const ExpressionScriptInputBox = ({ onShowPanel, onNavigateBack }) => {
       update,
       onNavigateBack
     )
+  }
+
+  if (!question) {
+    return null
   }
 
   return (
@@ -69,6 +85,7 @@ export const ExpressionScriptInputBox = ({ onShowPanel, onNavigateBack }) => {
                 <ExpressionScriptEditorOverlay
                   question={question}
                   onApply={handleApply}
+                  validateExpression={validateExpression}
                 />
               ),
               title: '',

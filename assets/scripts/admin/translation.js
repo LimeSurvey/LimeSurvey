@@ -56,10 +56,9 @@ $(document).on('ready  pjax:scriptcomplete',  function(){
             }
 
             if (!bIgnore){
-
-                sToConvert = sToConvert.replace( new RegExp( "\\n", "g" ),'\\n');
-                sToConvert = sToConvert.replace(/"/g,'\\"');
-                setTimeout('fDoTranslateAjax("'+sBaseLang+'","'+sToLang+'","'+sToConvert+'","'+sId+'");',index*intThrottlingRate);
+                setTimeout(function () {
+                    fDoTranslateAjax(sBaseLang, sToLang, sToConvert, sId);
+                }, index * intThrottlingRate);
             }
 
         });

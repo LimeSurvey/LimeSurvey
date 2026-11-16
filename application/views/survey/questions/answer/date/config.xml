@@ -205,30 +205,6 @@
             <readonly_when_active></readonly_when_active>
             <expression></expression>
         </attribute>
-        <attribute>
-            <name>date_min</name>
-            <category>Display</category>
-            <sortorder>110</sortorder>
-            <inputtype>text</inputtype>
-            <expression>2</expression>
-            <help>Minimum date, valid date in YYYY-MM-DD format or any English textual datetime description. Expression Managed can be used (only with YYYY-MM-DD format). For dropdown : only the year is restricted if date use variable not in same page.</help>
-            <caption>Minimum date</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-        </attribute>
-        <attribute>
-            <name>date_max</name>
-            <category>Display</category>
-            <sortorder>111</sortorder>
-            <inputtype>text</inputtype>
-            <expression>2</expression>
-            <help>Maximum date, valid date in any English textual datetime description (YYYY-MM-DD for example). Expression Managed can be used (only with YYYY-MM-DD format) value. For dropdown : only the year is restricted if date use variable not in same page.</help>
-            <caption>Maximum date</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-        </attribute>
         <!-- Display Attributes END -->
         <!-- Logic Attributes START -->
         <attribute>
@@ -242,6 +218,30 @@
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>
             <expression></expression>
+        </attribute>
+        <attribute>
+            <name>date_min</name>
+            <category>Logic</category>
+            <sortorder>190</sortorder>
+            <inputtype>text</inputtype>
+            <expression>2</expression>
+            <help>Minimum date, valid date in YYYY-MM-DD format or any English textual datetime description. Expression Managed can be used (only with YYYY-MM-DD format). For dropdown : only the year is restricted if date use variable not in same page.</help>
+            <caption>Minimum date</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+        </attribute>
+        <attribute>
+            <name>date_max</name>
+            <category>Logic</category>
+            <sortorder>191</sortorder>
+            <inputtype>text</inputtype>
+            <expression>2</expression>
+            <help>Maximum date, valid date in any English textual datetime description (YYYY-MM-DD for example). Expression Managed can be used (only with YYYY-MM-DD format) value. For dropdown : only the year is restricted if date use variable not in same page.</help>
+            <caption>Maximum date</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
         </attribute>
         <attribute>
             <name>em_validation_q</name>
@@ -351,7 +351,7 @@
             </options>
             <help>Select the type of chart to be displayed</help>
             <caption>Chart type</caption>
-            <default>0</default>
+            <default></default>
             <i18n></i18n>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>
@@ -366,10 +366,7 @@
             <category>Input</category>
             <sortorder>100</sortorder>
             <inputtype>text</inputtype>
-            <help>Specify a custom date/time format (the &amp;lt;i&amp;gt;d/dd m/mm yy/yyyy H/HH M/MM&amp;lt;/i&amp;gt;
-                formats and &amp;quot;-./: &amp;quot; characters are allowed for day/month/year/hour/minutes without or
-                with leading zero respectively. Defaults to survey&#039;s date format
-            </help>
+            <help>Specify a custom date/time format (the &lt;i&gt;d/dd m/mm yy/yyyy H/HH M/MM&lt;/i&gt; formats and &quot;-./: &quot; characters are allowed for day/month/year/hour/minutes without or with leading zero respectively. Defaults to survey&#039;s date format</help>
             <caption>Date/Time format</caption>
             <i18n></i18n>
             <readonly></readonly>

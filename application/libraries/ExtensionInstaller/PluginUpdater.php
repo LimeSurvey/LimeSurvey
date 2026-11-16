@@ -27,6 +27,7 @@ class PluginUpdater extends ExtensionUpdater
      * Create a PluginUpdater for every plugin installed.
      * @return array [ExtensionUpdater[] $updaters, string[] $errorMessages]
      */
+    #[\Override]
     public static function createUpdaters(): array
     {
         // Get all installed plugins (both active and non-active).
@@ -48,6 +49,7 @@ class PluginUpdater extends ExtensionUpdater
     /**
      * @return string
      */
+    #[\Override]
     public function getExtensionName()
     {
         return $this->model->name;
@@ -56,6 +58,7 @@ class PluginUpdater extends ExtensionUpdater
     /**
      * @return string
      */
+    #[\Override]
     public function getExtensionType()
     {
         return 'p';
@@ -64,6 +67,7 @@ class PluginUpdater extends ExtensionUpdater
     /**
      * @return ExtensionConfig
      */
+    #[\Override]
     public function getExtensionConfig()
     {
         return $this->model->extensionConfig;
@@ -73,6 +77,7 @@ class PluginUpdater extends ExtensionUpdater
      * Get this extension's current version.
      * @return string
      */
+    #[\Override]
     public function getCurrentVersion()
     {
         return $this->model->version;

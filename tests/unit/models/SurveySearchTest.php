@@ -275,28 +275,16 @@ class SurveySearchTest extends TestBaseClass
         $groupDataProvider = $surveyGroup->search();
         $SG04 = $groupDataProvider->getData()[0];
 
-        $parents = $SG04->getAllParents();
+        // SG04 and all its parents (SG03, SG02, SG01): each of them holds test surveys
+        $groups = array_merge(array($SG04), $SG04->getAllParents());
 
-        // Get surveys
-        $s = new \Survey('search');
-        $s->gsid = $parents[0]->gsid;
-
-        $surveysDataProvider = $s->search();
-        $surveys = $surveysDataProvider->getData();
-
-        // Delete surveys
-        foreach ($surveys as $survey) {
-            \Survey::model()->deleteSurvey($survey->sid);
+        // Delete surveys, group settings and groups
+        foreach ($groups as $group) {
+            foreach (\Survey::model()->findAllByAttributes(array('gsid' => $group->gsid)) as $survey) {
+                \Survey::model()->deleteSurvey($survey->sid);
+            }
+            \SurveysGroupsettings::model()->deleteAllByAttributes(array('gsid' => $group->gsid));
+            $group->delete();
         }
-
-        // Delete groups and group settings
-        foreach ($parents as $parent) {
-            $settingsModel = new \SurveysGroupsettings();
-            $settings = $settingsModel->findByAttributes(array('gsid' => $parent->gsid));
-            $settings->delete();
-            $parent->delete();
-        }
-
-        $SG04->delete();
     }
 }

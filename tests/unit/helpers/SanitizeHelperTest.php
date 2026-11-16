@@ -6,6 +6,23 @@ use ls\tests\TestBaseClass;
 
 class SanitizeHelperTest extends TestBaseClass
 {
+    /**
+     * Decimals and text must not throw when the GMP extension is loaded (gmp_init() only accepts whole numbers).
+     */
+    public function testSanitizeFloatHandlesDecimalsAndText()
+    {
+        \Yii::import('application.helpers.sanitize_helper', true);
+
+        $this->assertEquals(2, sanitize_float('2'));
+        $this->assertEquals(-7, sanitize_float(' -7 '));
+        $this->assertEquals(1.5, sanitize_float('1.5'));
+        $this->assertEquals(1.5, sanitize_float('1,5'));
+        $this->assertEquals(0, sanitize_float('abc'));
+        $this->assertEquals(1, sanitize_float('1abc.txt'));
+        $this->assertFalse(sanitize_float('1.5', 2));
+        $this->assertFalse(sanitize_float('5', '', 4));
+    }
+
     public function testValidatePathComponentAllowsSinglePathComponent()
     {
         \Yii::import('application.helpers.sanitize_helper', true);

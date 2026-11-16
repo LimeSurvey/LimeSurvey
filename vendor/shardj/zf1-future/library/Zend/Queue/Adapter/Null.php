@@ -100,6 +100,7 @@ class Zend_Queue_Adapter_Null extends Zend_Queue_Adapter_AdapterAbstract
     /**
      * Return the approximate number of messages in the queue
      *
+     * @return int
      * @throws Zend_Queue_Exception - not supported.
      */
     #[\ReturnTypeWillChange]

@@ -34,6 +34,7 @@ class InstallCommand extends CConsoleCommand
      * @throws CException
      * @throws Exception
      */
+    #[\Override]
     public function run($args)
     {
         if (isset($args) && isset($args[0]) && isset($args[1]) && isset($args[2]) && isset($args[3])) {

@@ -8,6 +8,8 @@ use PluginSetting;
 use Question;
 use QuestionAttribute;
 use Survey;
+use SurveyURLParameter;
+use TemplateConfiguration;
 
 class CopySurveyTest extends TestBaseClass
 {
@@ -111,6 +113,52 @@ class CopySurveyTest extends TestBaseClass
     }
 
     /**
+     * Test that survey-specific theme options are copied with the survey.
+     *
+     * @return void
+     * @throws \Exception
+     */
+    public function testCopySurveyCopiesSurveyThemeOptions()
+    {
+        $survey = Survey::model()->findByPk(self::$testSurvey->sid);
+        $sourceConfiguration = TemplateConfiguration::model()->findByAttributes([
+            'sid' => $survey->sid,
+            'template_name' => 'vanilla',
+        ]);
+        $this->assertNotNull($sourceConfiguration, 'Expected the imported test survey to have a vanilla theme configuration.');
+
+        $originalOptions = $sourceConfiguration->options;
+        $customOptions = json_encode(['container' => 'off', 'ajaxmode' => 'off']);
+        $sourceConfiguration->options = $customOptions;
+        $this->assertTrue($sourceConfiguration->save(), json_encode($sourceConfiguration->errors));
+
+        $copiedSurvey = null;
+        try {
+            $result = $this->copySurvey($survey);
+
+            $this->assertEquals($result->getErrors(), []);
+
+            $copiedSurvey = $result->getCopiedSurvey();
+            $this->assertNotNull($copiedSurvey);
+
+            $copiedConfiguration = TemplateConfiguration::model()->findByAttributes([
+                'sid' => $copiedSurvey->sid,
+                'template_name' => 'vanilla',
+            ]);
+            $this->assertNotNull($copiedConfiguration, 'Survey theme configuration should be copied with the survey.');
+            $this->assertSame($customOptions, $copiedConfiguration->options);
+            $this->assertSame('inherit', $copiedConfiguration->files_css);
+        } finally {
+            $sourceConfiguration->options = $originalOptions;
+            $sourceConfiguration->save();
+
+            if ($copiedSurvey instanceof Survey) {
+                $copiedSurvey->delete();
+            }
+        }
+    }
+
+    /**
      * Test that multilingual (i18n) question attributes (e.g. 'printable_help', which has one
      * row per survey language) are all copied, not just one language.
      *
@@ -165,9 +213,168 @@ class CopySurveyTest extends TestBaseClass
     }
 
     /**
+     * Test that survey URL parameters are copied and their target question/subquestion ids remapped.
+     *
+     * @return void
+     * @throws \Exception
+     */
+    public function testCopySurveyCopiesUrlParameters()
+    {
+        $survey = Survey::model()->findByPk(self::$testSurvey->sid);
+        $subquestion = Question::model()->find(
+            'sid = :sid AND parent_qid > 0',
+            [':sid' => $survey->sid]
+        );
+        $this->assertNotNull($subquestion, 'Expected the test survey to contain a subquestion.');
+        $parentQuestion = Question::model()->findByPk($subquestion->parent_qid);
+
+        $this->createUrlParameter($survey->sid, 'withoutTarget');
+        $this->createUrlParameter($survey->sid, 'withSubquestion', $parentQuestion->qid, $subquestion->qid);
+
+        $copiedSurvey = null;
+        try {
+            $result = $this->copySurvey($survey);
+            $this->assertEquals($result->getErrors(), []);
+
+            $copiedSurvey = $result->getCopiedSurvey();
+            $this->assertNotNull($copiedSurvey);
+            $this->assertSame(2, $result->getCntUrlParameters());
+
+            $withoutTarget = SurveyURLParameter::model()->findByAttributes([
+                'sid' => $copiedSurvey->sid,
+                'parameter' => 'withoutTarget',
+            ]);
+            $this->assertNotNull($withoutTarget, 'Expected URL parameter without target to be copied.');
+            $this->assertEmpty($withoutTarget->targetqid);
+            $this->assertEmpty($withoutTarget->targetsqid);
+
+            $withSubquestion = SurveyURLParameter::model()->findByAttributes([
+                'sid' => $copiedSurvey->sid,
+                'parameter' => 'withSubquestion',
+            ]);
+            $this->assertNotNull($withSubquestion, 'Expected URL parameter with target to be copied.');
+
+            $copiedParentQuestion = Question::model()->findByAttributes([
+                'sid' => $copiedSurvey->sid,
+                'title' => $parentQuestion->title,
+                'parent_qid' => 0,
+            ]);
+            $copiedSubquestion = Question::model()->findByAttributes([
+                'sid' => $copiedSurvey->sid,
+                'title' => $subquestion->title,
+                'parent_qid' => $copiedParentQuestion->qid,
+            ]);
+            $this->assertEquals($copiedParentQuestion->qid, $withSubquestion->targetqid);
+            $this->assertEquals($copiedSubquestion->qid, $withSubquestion->targetsqid);
+        } finally {
+            SurveyURLParameter::model()->deleteAllByAttributes(['sid' => $survey->sid]);
+            if ($copiedSurvey instanceof Survey) {
+                $copiedSurvey->delete();
+            }
+        }
+    }
+
+    /**
+     * @param int $surveyId
+     * @param string $parameterName
+     * @param int|null $targetQid
+     * @param int|null $targetSqid
+     * @return void
+     */
+    private function createUrlParameter($surveyId, $parameterName, $targetQid = null, $targetSqid = null)
+    {
+        $urlParameter = new SurveyURLParameter();
+        $urlParameter->sid = $surveyId;
+        $urlParameter->parameter = $parameterName;
+        $urlParameter->targetqid = $targetQid;
+        $urlParameter->targetsqid = $targetSqid;
+        $this->assertTrue($urlParameter->save(), json_encode($urlParameter->getErrors()));
+    }
+
+    /**
      * Copy the imported test survey using the default copy options.
      *
      * @param Survey $survey
+     * @return \LimeSurvey\Models\Services\CopySurveyResult
+     * @throws \Exception
+     */
+    /**
+     * Regression test for #20420: copying a survey whose survey group the current
+     * user is not allowed to use must not fail, but place the copy in the default group.
+     *
+     * @return void
+     * @throws \Exception
+     */
+    public function testCopySurveyFallsBackToDefaultGroupWhenSourceGroupIsNotUsable()
+    {
+        $survey = Survey::model()->findByPk(self::$testSurvey->sid);
+        $originalAttributes = $survey->getAttributes(['gsid', 'anonymized', 'adminemail']);
+
+        $restrictedGroup = new \SurveysGroups();
+        $restrictedGroup->name = 'copytest' . bin2hex(random_bytes(4));
+        $restrictedGroup->title = 'Restricted copy test group';
+        $restrictedGroup->alwaysavailable = 0;
+        $restrictedGroup->sortorder = $restrictedGroup->getNextOrderPosition();
+        $restrictedGroup->owner_id = 1;
+        $restrictedGroup->created_by = 1;
+        $this->assertTrue($restrictedGroup->save(), json_encode($restrictedGroup->getErrors()));
+        $restrictedGroupSettings = new \SurveysGroupsettings();
+        $restrictedGroupSettings->setToInherit();
+        $restrictedGroupSettings->gsid = $restrictedGroup->gsid;
+        $restrictedGroupSettings->anonymized = 'Y';
+        $restrictedGroupSettings->adminemail = 'restricted-group@example.org';
+        $this->assertTrue($restrictedGroupSettings->save(), json_encode($restrictedGroupSettings->getErrors()));
+
+        // Source survey inherits these settings from its (restricted) survey group
+        $survey->gsid = $restrictedGroup->gsid;
+        $survey->anonymized = 'I';
+        $survey->adminemail = 'inherit';
+        $this->assertTrue($survey->save(false));
+        $survey = Survey::model()->findByPk($survey->sid);
+
+        $userName = \Yii::app()->securityManager->generateRandomString(8);
+        $user = self::createUserWithPermissions(
+            [
+                'full_name'  => $userName,
+                'users_name' => $userName,
+                'email'      => $userName . '@example.org',
+                'password'   => 'testpassword123',
+            ],
+            [
+                'surveys' => ['create' => 'on', 'read' => 'on', 'export' => 'on'],
+            ]
+        );
+
+        $copiedSurvey = null;
+        try {
+            \Yii::app()->session['loginID'] = $user->uid;
+            $result = $this->copySurvey($survey);
+            \Yii::app()->session['loginID'] = 1;
+
+            $copiedSurvey = $result->getCopiedSurvey();
+            $this->assertNotNull($copiedSurvey, 'Copy should succeed even if the source survey group is not usable.');
+            $this->assertEquals(1, $copiedSurvey->gsid, 'Copy should be placed in the default survey group.');
+            $this->assertNotEmpty($result->getWarnings(), 'A warning about the changed survey group is expected.');
+            $this->assertSame('Y', $copiedSurvey->anonymized, 'Inherited settings must be kept on the copy.');
+            $this->assertSame('restricted-group@example.org', $copiedSurvey->adminemail, 'Inherited settings must be kept on the copy.');
+        } finally {
+            \Yii::app()->session['loginID'] = 1;
+            if ($copiedSurvey instanceof Survey) {
+                $copiedSurvey->delete();
+            }
+            $survey->setAttributes($originalAttributes, false);
+            $survey->save(false);
+            $restrictedGroupSettings->delete();
+            $restrictedGroup->delete();
+            \Permission::model()->deleteAllByAttributes(['uid' => $user->uid]);
+            \User::model()->deleteByPk($user->uid);
+        }
+    }
+
+    /**
+     * Runs the copy survey service with default options.
+     *
+     * @param Survey $survey The source survey
      * @return \LimeSurvey\Models\Services\CopySurveyResult
      * @throws \Exception
      */

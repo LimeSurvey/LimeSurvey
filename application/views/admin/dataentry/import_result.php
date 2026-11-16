@@ -11,8 +11,11 @@
                     <dd> <?php echo sprintf(gT("%s old response(s) and according %s timings were successfully imported."), $imported, $iRecordCountT); ?></dd>
                 <?php } ?>
             <?php } ?>
-            <?php if (count($aWarnings)) {?>
+            <?php if (count($aWarnings) || $skipped) {?>
                 <dt class='warning text-warning h2'><?php eT("Warning"); ?></dt>
+                <?php if ($skipped) { ?>
+                    <dd><?php echo sprintf(gT("%s responses already exist."), $skipped); ?></dd>
+                <?php } ?>
                 <?php foreach ($aWarnings as $srid => $sWarning) { ?>
                     <dd><strong><?php echo sprintf(gT("Error on response ID %s"), $srid); ?></strong>
                         <div><?php echo $sWarning ?></div>

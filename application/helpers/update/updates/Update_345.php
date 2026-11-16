@@ -7,6 +7,7 @@ namespace LimeSurvey\Helpers\Update;
  */
 class Update_345 extends DatabaseUpdateBase
 {
+    #[\Override]
     public function up()
     {
         $fruityConf = $this->db

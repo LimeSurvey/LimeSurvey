@@ -14,6 +14,7 @@
 */
 
 use LimeSurvey\Helpers\questionHelper;
+use LimeSurvey\Models\Services\SurveyDetailService;
 
 /**
  * Class Question
@@ -238,7 +239,7 @@ class Question extends LSActiveRecord
                 $aRules[] = array('other', 'compare', 'compareValue' => 'Y', 'operator' => '!=', 'message' => sprintf(gT("'%s' can not be used if the 'Other' option for this question is activated."), 'other'));
             }
         }
-        if ($this->survey->isActive) {
+        if (!empty($this->survey) && $this->survey->isActive) {
             $aRules = array_merge($aRules, $this->rulesForActiveSurvey());
         }
         /* When question exist and are already set with title, allow keep bad title */
@@ -279,6 +280,12 @@ class Question extends LSActiveRecord
                     'SAVEDID','TOKEN', // current survey related var
                     'QID','GID','SGQ', // current question related var
                     'self','that','this', // EM reserved variables
+                    /* Standard replacement fields (getStandardsReplacementFields): They take precedence over question codes in ExpressionManager */
+                    'ACTIVE','ADMINEMAIL','ADMINNAME','DATESTAMP','EXPIRY',
+                    'MOVENEXTBUTTON','MOVEPREVBUTTON','NAVIGATOR','NUMBEROFGROUPS','NUMBEROFQUESTIONS',
+                    'PERCENTCOMPLETE','PRIVACYHEADING','PRIVACYMESSAGE','SURVEYCONTACT','SURVEYDESCRIPTION',
+                    'SURVEYFORMAT','SURVEYLANGUAGE','SURVEYNAME','SURVEYRESOURCESURL','TEMPLATEURL',
+                    'URL','WELCOME',
                 ),
                 'message' => sprintf(gT("Code: '%s' is a reserved word."), $this->title), // Usage of {attribute} need attributeLabels, {value} never exist in message
                 'except' => 'archiveimport'
@@ -290,7 +297,7 @@ class Question extends LSActiveRecord
                 'except' => 'archiveimport'
             );
             $aRules[] = array(
-                'title', 'match', 'pattern' => '/^[a-zA-z0-9]*$/',
+                'title', 'match', 'pattern' => '/^[a-zA-Z0-9]*$/',
                 'message' => gT('Subquestion codes may only contain alphanumeric characters.'),
                 'except' => 'archiveimport'
             );
@@ -335,19 +342,32 @@ class Question extends LSActiveRecord
 
 
     /**
-     * Fix sort order for questions in a group
-     * All questions in the group will be assigned a sequential question order,
-     * starting in the specified value
+     * Fix sort order for questions in a group (or, for a given parent question and
+     * scale, its subquestions). All matching questions will be assigned a sequential
+     * question order, starting at the specified value, ordered by their current
+     * question_order and using the question code (title) as a tiebreaker for
+     * questions that currently share the same question_order.
+     *
      * @param int $gid
-     * @param int $startingOrder   the starting question order.
+     * @param int $startingOrder the starting question order.
+     * @param int $parentQid 0 for top-level questions, or a question's qid to
+     *            reorder its subquestions instead.
+     * @param int|null $scaleId restrict to this scale_id; null to not filter by it,
+     *            matching this method's original (top-level questions only) behavior.
      */
-    public function updateQuestionOrder($gid, $startingOrder = 1)
+    public function updateQuestionOrder($gid, $startingOrder = 1, $parentQid = 0, $scaleId = null)
     {
+        $criteria = array(':gid' => $gid, ':parent_qid' => $parentQid);
+        $condition = 'gid=:gid AND parent_qid=:parent_qid';
+        if ($scaleId !== null) {
+            $condition .= ' AND scale_id=:scale_id';
+            $criteria[':scale_id'] = $scaleId;
+        }
+
         $data = Yii::app()->db->createCommand()->select('qid')
-            ->where(array('and', 'gid=:gid', 'parent_qid=0'))
+            ->where($condition, $criteria)
             ->order('question_order, title ASC')
             ->from('{{questions}}')
-            ->bindParam(':gid', $gid, PDO::PARAM_INT)
             ->query();
 
         $position = intval($startingOrder);
@@ -396,6 +416,70 @@ class Question extends LSActiveRecord
 //    }
 
     /**
+     * Decodes the stored value of a ranking question (a JSON array of ranked
+     * subquestion codes, rank 1 first) into a list of code strings, or null if
+     * it isn't one.
+     *
+     * Integer codes are accepted and returned as strings. Anything else that is
+     * not a non-empty JSON array of strings or integers (invalid JSON, an
+     * object, an empty array, or floats, booleans, nulls, nested arrays or
+     * objects as elements) returns null, so it never reaches ranking or
+     * subquestion-title resolution.
+     *
+     * @param mixed $rawValue The raw ranking column value
+     * @return string[]|null
+     */
+    public static function decodeRankedCodes($rawValue)
+    {
+        if (!is_string($rawValue) || $rawValue === '') {
+            return null;
+        }
+        // Not decoded as associative arrays, so a JSON object stays a stdClass and is rejected below.
+        $decoded = json_decode($rawValue);
+        if (!is_array($decoded) || $decoded === []) {
+            return null;
+        }
+        foreach ($decoded as $index => $code) {
+            if (is_int($code)) {
+                $decoded[$index] = (string) $code;
+            } elseif (!is_string($code)) {
+                return null;
+            }
+        }
+        return $decoded;
+    }
+
+    /**
+     * Returns the item texts of all ranking questions of a survey in one
+     * language, as [ranking question qid][item code] => item text.
+     *
+     * Ranking items are subquestions; exports use this to resolve ranked codes
+     * to their texts the same way as answer options.
+     *
+     * @param int $surveyId
+     * @param string $language
+     * @return array<int, array<string, string>>
+     */
+    public static function getRankingItemTexts($surveyId, $language)
+    {
+        $rows = Yii::app()->db->createCommand()
+            ->select('sq.parent_qid, sq.title, l10n.question')
+            ->from('{{questions}} sq')
+            ->join('{{questions}} q', 'q.qid = sq.parent_qid')
+            ->join('{{question_l10ns}} l10n', 'l10n.qid = sq.qid')
+            ->where(
+                'q.sid = :sid AND q.type = :type AND l10n.language = :language',
+                [':sid' => (int) $surveyId, ':type' => self::QT_R_RANKING, ':language' => $language]
+            )
+            ->queryAll();
+        $texts = [];
+        foreach ($rows as $row) {
+            $texts[(int) $row['parent_qid']][$row['title']] = $row['question'];
+        }
+        return $texts;
+    }
+
+    /**
      * Return the key=>value answer for a given $qid
      *
      * @staticvar array $questionCache
@@ -432,9 +516,10 @@ class Question extends LSActiveRecord
     }
 
     /**
-     * Delete a bunch of questions in one go
+     * Delete a bunch of questions in one go, including their subquestions, answers, default values
+     * and the texts (l10ns) of all of them
      *
-     * @param mixed $questionsIds
+     * @param int|int[] $questionsIds
      * @return void
      */
     public static function deleteAllById($questionsIds)
@@ -442,6 +527,30 @@ class Question extends LSActiveRecord
         if (!is_array($questionsIds)) {
             $questionsIds = array($questionsIds);
         }
+        $db = Yii::app()->db;
+
+        // The texts are deleted first, the subqueries need the questions, answers and default values they belong to
+        $subquestionIdsSql = $db->createCommand()
+            ->select('qid')
+            ->from(Question::model()->tableName())
+            ->where(array('in', 'parent_qid', $questionsIds))
+            ->getText();
+        $answerIdsSql = $db->createCommand()
+            ->select('aid')
+            ->from(Answer::model()->tableName())
+            ->where(array('in', 'qid', $questionsIds))
+            ->getText();
+        $defaultValueIdsSql = $db->createCommand()
+            ->select('dvid')
+            ->from(DefaultValue::model()->tableName())
+            ->where(array('in', 'qid', $questionsIds))
+            ->getText();
+        $db->createCommand()->delete(
+            QuestionL10n::model()->tableName(),
+            array('or', array('in', 'qid', $questionsIds), "qid IN ($subquestionIdsSql)")
+        );
+        $db->createCommand()->delete(AnswerL10n::model()->tableName(), "aid IN ($answerIdsSql)");
+        $db->createCommand()->delete(DefaultValueL10n::model()->tableName(), "dvid IN ($defaultValueIdsSql)");
 
         Yii::app()->db->createCommand()->delete(Condition::model()->tableName(), array('in', 'qid', $questionsIds));
         Yii::app()->db->createCommand()->delete(QuestionAttribute::model()->tableName(), array('in', 'qid', $questionsIds));
@@ -450,6 +559,7 @@ class Question extends LSActiveRecord
         Yii::app()->db->createCommand()->delete(Question::model()->tableName(), array('in', 'qid', $questionsIds));
         Yii::app()->db->createCommand()->delete(DefaultValue::model()->tableName(), array('in', 'qid', $questionsIds));
         Yii::app()->db->createCommand()->delete(QuotaMember::model()->tableName(), array('in', 'qid', $questionsIds));
+        SurveyURLParameter::removeTargetQuestions($questionsIds);
     }
 
     /**
@@ -467,6 +577,7 @@ class Question extends LSActiveRecord
         QuestionL10n::model()->deleteAll($qidsCriteria);
         QuotaMember::model()->deleteAll($qidsCriteria);
         Condition::model()->deleteAll($qidsCriteria);
+        SurveyURLParameter::removeTargetQuestions($ids);
 
         // delete defaultvalues and defaultvalueL10ns
         $oDefaultValues = DefaultValue::model()->findAll((new CDbCriteria())->addInCondition('qid', $ids));
@@ -480,6 +591,9 @@ class Question extends LSActiveRecord
 
         if (parent::delete()) {
             Question::model()->updateQuestionOrder($this->gid);
+            if (!empty($this->sid)) {
+                (new SurveyDetailService())->touchSurveyLastModified((int) $this->sid);
+            }
             return true;
         }
         return false;
@@ -802,6 +916,7 @@ class Question extends LSActiveRecord
         if (is_numeric(substr($sNewTitle, 0, 1))) {
             $sNewTitle = 'q' . $sNewTitle;
         }
+        $this->title = $sNewTitle;
         /* Maybe there are another question with same title try to fix it 10 times */
         $attempts = 0;
         while (!$this->validate(array('title'))) {
@@ -1002,18 +1117,36 @@ class Question extends LSActiveRecord
     {
         if (parent::beforeSave()) {
             /* No update when surey activated */
-            $surveyIsActive = Survey::model()->findByPk($this->sid)->active !== 'N';
+            $survey = Survey::model()->findByPk($this->sid);
+            $surveyIsActive = !empty($survey) && $survey->active !== 'N';
+            if ($surveyIsActive && $this->getIsNewRecord()) {
+                return false;
+            }
             if ($surveyIsActive) {
                 //don't override questiontype when survey is active, set it back to what it was...
                 $oActualValue = Question::model()->findByPk(array("qid" => $this->qid));
-                $this->type = $oActualValue->type;
-            }
-            if ($surveyIsActive && $this->getIsNewRecord()) {
-                return false;
+                if (!empty($oActualValue)) {
+                    $this->type = $oActualValue->type;
+                }
             }
             return true;
         } else {
             return false;
+        }
+    }
+
+    /**
+     * Update the survey's lastmodified timestamp after the question was saved,
+     * and forget its attribute values kept for this request (type and theme decide which attributes it has).
+     *
+     * @return void
+     */
+    protected function afterSave()
+    {
+        parent::afterSave();
+        QuestionAttribute::clearRequestCache($this->qid);
+        if (!empty($this->sid)) {
+            (new SurveyDetailService())->touchSurveyLastModified((int) $this->sid);
         }
     }
 
@@ -1346,23 +1479,23 @@ class Question extends LSActiveRecord
     }
 
     /**
-     * Increases all question_order numbers for questions belonging to the group by +1
+     * Increases the question_order numbers of the (parent) questions belonging to the group by +1
+     *
+     * Subquestions are not touched, their order is relative to their parent question.
      *
      * @param int $questionGroupId
-     * @param integer|null $after questionorder
+     * @param integer|null $after Only questions with a question_order greater than or equal to this value are moved, all of them if empty
+     * @return void
      */
     public static function increaseAllOrderNumbersForGroup($questionGroupId, $after = null)
     {
-        $criteria = new CDbCriteria();
-        $criteria->compare("gid", $questionGroupId);
+        $condition = 'gid = :gid AND parent_qid = 0';
+        $params = [':gid' => $questionGroupId];
         if ($after) {
-            $criteria->compare("question_order", ">=" . $after);
+            $condition .= ' AND question_order >= :after';
+            $params[':after'] = (int) $after;
         }
-        $questionsInGroup = Question::model()->findAll($criteria);
-        foreach ($questionsInGroup as $question) {
-            $question->question_order = $question->question_order + 1;
-            $question->save();
-        }
+        Question::model()->updateCounters(['question_order' => 1], $condition, $params);
     }
 
     /**
@@ -1436,6 +1569,8 @@ class Question extends LSActiveRecord
 
     /**
      * Used by question create form.
+     * The code is the user's subquestion prefix followed by a zero-padded number (e.g. SQ001),
+     * or just "1" if the prefix is empty, so purely numeric codes have no leading zeros.
      *
      * @return Question
      */
@@ -1443,13 +1578,16 @@ class Question extends LSActiveRecord
     {
         $question = new Question();
         $question->qid = 0;
-        $question->title = (SettingsUser::getUserSettingValue('subquestionprefix', App()->user->id) ?? 'SQ') . '001';
+        $prefix = SettingsUser::getUserSettingValue('subquestionprefix', App()->user->id) ?? 'SQ';
+        $question->title = $prefix === '' ? '1' : $prefix . '001';
         $question->relevance = 1;
         return $question;
     }
 
     /**
      * Used by question create form.
+     * The code is the user's answer option prefix followed by a zero-padded number (e.g. AO01),
+     * or just "1" if the prefix is empty, so purely numeric codes have no leading zeros.
      *
      * @return Answer
      */
@@ -1459,7 +1597,8 @@ class Question extends LSActiveRecord
         // TODO: Assuming no collision.
         $answer->aid = 'new' . rand(1, 100000);
         $answer->sortorder = 0;
-        $answer->code = (SettingsUser::getUserSettingValue('answeroptionprefix', App()->user->id) ?? 'AO') . '01';
+        $prefix = SettingsUser::getUserSettingValue('answeroptionprefix', App()->user->id) ?? 'AO';
+        $answer->code = $prefix === '' ? '1' : $prefix . '01';
 
         $l10n = [];
         foreach ($this->survey->allLanguages as $language) {

@@ -3,7 +3,7 @@ import { PlusLg } from 'react-bootstrap-icons'
 import classNames from 'classnames'
 import { RankingQuestionSubquestion } from './RankingQuestionSubquestion'
 import { DragAndDrop } from 'components/UIComponents'
-import { Draggable } from 'react-beautiful-dnd'
+import { Draggable } from '@hello-pangea/dnd'
 import { Entities, L10ns, STATES } from 'helpers'
 import { useAppState } from 'hooks'
 
