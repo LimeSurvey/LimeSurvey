@@ -221,7 +221,6 @@ class QuestionTypeChangeOtherConditionsTest extends TestBaseClass
      */
     private function getQuestion(string $title): Question
     {
-        Question::model()->resetCache();
         $question = Question::model()->findByAttributes(['sid' => self::$surveyId, 'title' => $title]);
         $this->assertNotNull($question, "Question $title not found");
         return $question;
