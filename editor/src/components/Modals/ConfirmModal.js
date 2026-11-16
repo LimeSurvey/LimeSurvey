@@ -10,7 +10,6 @@ export const ConfirmModal = ({
   title = t('Confirm action'),
   description = t('Are you sure you want to perform this action?'),
   confirmButtonText = t('Confirm'),
-  confirmButtonVariant = 'danger',
   ...props
 }) => {
   return (
@@ -19,7 +18,7 @@ export const ConfirmModal = ({
       show={show}
       centered
       onHide={onHide}
-      className={`confirm-modal confirm-modal--${confirmButtonVariant}`}
+      className="confirm-modal"
     >
       <Modal.Header
         className="border-none d-flex align-items-center gap-2 text-center"
@@ -41,7 +40,7 @@ export const ConfirmModal = ({
         <Button
           size="lg"
           className="text-light confirm-button"
-          variant={confirmButtonVariant}
+          variant="danger"
           onClick={onConfirm}
           testId="confirm-modal-confirm-button"
         >
