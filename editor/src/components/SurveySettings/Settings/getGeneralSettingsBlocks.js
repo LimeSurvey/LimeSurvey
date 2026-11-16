@@ -52,10 +52,8 @@ export const getGeneralSettingsBlocks = () => ({
           },
         },
         selectOptions: (globalStates) => {
-          const allLanguages =
-            globalStates[STATES.ALL_AVAILABLE_LANGUAGES] || {}
-          const userLang = globalStates[STATES.USER_DETAIL]?.lang
-          const languages = allLanguages[userLang] || {}
+          const siteSettings = globalStates[STATES.SITE_SETTINGS] || {}
+          const languages = siteSettings.languages || {}
 
           return Object.keys(languages).map((key) => {
             return {
