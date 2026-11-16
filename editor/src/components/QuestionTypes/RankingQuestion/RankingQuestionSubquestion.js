@@ -6,8 +6,8 @@ import { ContentEditor, DropZone } from 'components/UIComponents'
 import { CloseCircleFillIcon, DragIcon } from 'components/icons'
 import { useParams } from 'react-router-dom'
 import { useSurvey, useAppState } from 'hooks'
-import { STATES } from 'helpers'
-import { SubquestionCodeInput } from '../subquestionCodeComponents'
+import { canUpdateChildren, Entities, STATES } from 'helpers'
+import { CodeInput } from '../codeComponents'
 // Todo: handle switching between image and text using attributes.
 export const RankingQuestionSubquestion = ({
   subquestion,
@@ -50,8 +50,11 @@ export const RankingQuestionSubquestion = ({
         {!subquestion?.preview && isString(subquestion) && (
           <div className="d-flex align-items-center gap-3">
             {isFocused && survey.showQNumCode?.showNumber && (
-              <SubquestionCodeInput
-                isSurveyActive={isSurveyActive}
+              <CodeInput
+                isEditable={canUpdateChildren(
+                  Entities.subquestion,
+                  isSurveyActive
+                )}
                 code={title}
                 onChange={(e) => handleCodeUpdate(e.target.value, index)}
               />

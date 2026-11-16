@@ -1,9 +1,9 @@
 import { useEffect, useRef } from 'react'
 import { Draggable } from '@hello-pangea/dnd'
 import classNames from 'classnames'
-import { SubquestionCodeInput } from '../subquestionCodeComponents'
+import { CodeInput } from '../codeComponents'
 import { useSurvey, useAppState } from 'hooks'
-import { Entities, hasTempId, STATES } from 'helpers'
+import { canUpdateChildren, Entities, hasTempId, STATES } from 'helpers'
 import { useParams } from 'react-router-dom'
 import { ContentEditor } from 'components/UIComponents'
 import { CloseCircleFillIcon, DragIcon } from 'components/icons'
@@ -94,8 +94,11 @@ export const RankingAdvancedQuestionSubquestions = ({
                     </div>
                     <div className="d-flex align-items-center w-100 ranking-advanced-subquestion-main gap-4">
                       {isFocused && survey.showQNumCode?.showNumber && (
-                        <SubquestionCodeInput
-                          isSurveyActive={isSurveyActive}
+                        <CodeInput
+                          isEditable={canUpdateChildren(
+                            Entities.subquestion,
+                            isSurveyActive
+                          )}
                           code={subquestion.title}
                           onChange={(e) =>
                             handleCodeUpdate({

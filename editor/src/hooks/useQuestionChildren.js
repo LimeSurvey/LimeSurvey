@@ -14,6 +14,7 @@ import {
   getNextSubQuestionCode,
   RandomNumber,
   APP_KEY_PREFIX,
+  canUpdateChildren,
 } from 'helpers'
 import { reportExtras } from 'appInstrumentation'
 import { singleChoiceThemes } from 'components/QuestionTypes'
@@ -45,6 +46,16 @@ export const useQuestionChildren = ({
   const { data: activeLanguage = language } = useQuery({
     queryKey: ['appState', STATES.ACTIVE_LANGUAGE],
     queryFn: () => language,
+    staleTime: Infinity,
+    cacheTime: Infinity,
+    meta: {
+      persist: true,
+    },
+  })
+
+  const { data: isSurveyActive = false } = useQuery({
+    queryKey: ['appState', STATES.IS_SURVEY_ACTIVE],
+    queryFn: () => false,
     staleTime: Infinity,
     cacheTime: Infinity,
     meta: {
@@ -89,6 +100,8 @@ export const useQuestionChildren = ({
   }
 
   const handleChildAdd = (childArray = [], entityType, props = {}) => {
+    if (!canUpdateChildren(entityType, isSurveyActive)) return
+
     const childKey = entityType === Entities.answer ? 'answers' : 'subquestions'
 
     const newChild =
@@ -137,6 +150,8 @@ export const useQuestionChildren = ({
   }
 
   const handleChildDelete = (childId, childArray = [], entityType) => {
+    if (!canUpdateChildren(entityType, isSurveyActive)) return
+
     const childKey = entityType === Entities.answer ? 'answers' : 'subquestions'
     const idKey = entityType === Entities.answer ? 'aid' : 'qid'
 
@@ -252,6 +267,8 @@ export const useQuestionChildren = ({
     entityType,
     entityTitleKey,
   }) => {
+    if (!canUpdateChildren(entityType, isSurveyActive)) return
+
     const validationMessage = validateCode({
       entityTitleKey,
       entityItems: childArray,
@@ -351,9 +368,13 @@ export const useQuestionChildren = ({
     entityTitleKey,
   }) => {
     const titleKey = entityTitleKey === 'answer' ? 'code' : 'title'
+    // Codes only have to be unique within their scale: Both scales of a dual scale array can use A1
+    const scaleId = entityItems?.[childIndex]?.scaleId
     const newCodeIndex = entityItems
       ? entityItems.findIndex(
-          (item) => item[titleKey]?.toUpperCase() === newCode.toUpperCase()
+          (item) =>
+            item.scaleId === scaleId &&
+            item[titleKey]?.toUpperCase() === newCode.toUpperCase()
         )
       : -1
 
