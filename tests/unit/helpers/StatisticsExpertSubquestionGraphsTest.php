@@ -32,7 +32,7 @@ class StatisticsExpertSubquestionGraphsTest extends TestBaseClass
 
         Yii::app()->setController(new DummyController('dummyid'));
 
-        self::importSurvey(self::$surveysFolder . '/survey_simple_statistics.lsa');
+        self::importSurvey(self::$surveysFolder . '/survey_simple_statistics.lsa', 1, 920858);
 
         foreach (\QuestionGroup::model()->findAllByAttributes(['sid' => self::$surveyId]) as $group) {
             if ($group->getprimaryTitle() === 'Arrays') {
