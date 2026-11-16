@@ -2134,6 +2134,7 @@ class remotecontrol_handle
      * The parameters $aParticipantData is a 2 dimensionnal array containing needed participant data.
      * @see \Token for all available attribute,
      * @example : `[ {"email":"me@example.com","lastname":"Bond","firstname":"James"},{"email":"me2@example.com","attribute_1":"example"} ]`
+     * Dates (validfrom, validuntil, sent, remindersent, completed) are in UTC, in the format 'YYYY-MM-DD HH:MM:SS'.
      *
      * Returns the inserted data including additional new information like the Token entry ID and the token string. In case of errors in some data, return it in errors.
      *
@@ -2297,6 +2298,7 @@ class remotecontrol_handle
      * Set properties of a survey participant (RPC function)
      *
      * Allow to set properties about a specific participant, only one participant can be updated.
+     * Dates (validfrom, validuntil, sent, remindersent, completed) are in UTC, in the format 'YYYY-MM-DD HH:MM:SS'.
      * @see \Token for available properties
      *
      * @access public
