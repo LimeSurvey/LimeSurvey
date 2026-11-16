@@ -16,14 +16,17 @@ namespace LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\Sorting;
  */
 final class SortSql
 {
-    /** The response ID itself */
-    public const KIND_ID = 'id';
+    /*
+     * Value types: They decide how a column is sorted and which missing values it can hold.
+     */
+    /** The response ID itself: Never missing */
+    public const TYPE_ID = 'id';
     /** Numbers and dates: Only NULL can be missing */
-    public const KIND_VALUE = 'value';
+    public const TYPE_NUMBER_OR_DATE = 'numberOrDate';
     /** Text: Empty strings and NULL can be missing */
-    public const KIND_TEXT = 'text';
+    public const TYPE_TEXT = 'text';
     /** Digits stored as text (e.g. the seed): Sorted by their numeric value */
-    public const KIND_NUMERIC_TEXT = 'numericText';
+    public const TYPE_DIGITS_AS_TEXT = 'digitsAsText';
 
     /** Alias of the responses table in the find command */
     private const TABLE_ALIAS = 't';
@@ -89,31 +92,32 @@ final class SortSql
     }
 
     /**
-     * ORDER BY parts for an expression of a given kind, without the tie-breaker.
+     * ORDER BY parts for an expression of a given value type, without the tie-breaker.
      *
      * @param string $expression SQL expression of the sorted value
-     * @param string $kind One of the KIND_* constants
+     * @param string $type One of the TYPE_* constants
      * @param bool $descending True for descending order
      * @return string[] ORDER BY parts
+     * @throws \InvalidArgumentException If the type is unknown
      */
-    public static function forKind(string $expression, string $kind, bool $descending): array
+    public static function forType(string $expression, string $type, bool $descending): array
     {
         $direction = self::direction($descending);
-        switch ($kind) {
-            case self::KIND_ID:
+        switch ($type) {
+            case self::TYPE_ID:
                 return ["$expression $direction"];
-            case self::KIND_VALUE:
+            case self::TYPE_NUMBER_OR_DATE:
                 return [self::missingLast($expression, $descending, false), "$expression $direction"];
-            case self::KIND_NUMERIC_TEXT:
+            case self::TYPE_DIGITS_AS_TEXT:
                 return [
                     self::missingLast($expression, $descending),
                     self::length($expression) . " $direction",
                     "$expression $direction",
                 ];
-            case self::KIND_TEXT:
+            case self::TYPE_TEXT:
                 return [self::missingLast($expression, $descending), "LOWER($expression) $direction"];
             default:
-                throw new \InvalidArgumentException("Unknown sort kind $kind");
+                throw new \InvalidArgumentException("Unknown value type $type");
         }
     }
 }

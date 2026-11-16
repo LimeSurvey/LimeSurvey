@@ -13,15 +13,15 @@ namespace LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\Sorting;
  */
 class ResponseSort
 {
-    /** Metadata columns: API key => [response table column, SortSql kind] */
+    /** Metadata columns: API key => [response table column, SortSql value type] */
     private const METADATA_COLUMNS = [
-        'id' => ['id', SortSql::KIND_ID],
-        'quotaExit' => ['quota_exit', SortSql::KIND_VALUE],
-        'token' => ['token', SortSql::KIND_TEXT],
-        'dateLastAction' => ['datestamp', SortSql::KIND_VALUE],
-        'seed' => ['seed', SortSql::KIND_NUMERIC_TEXT],
-        'language' => ['startlanguage', SortSql::KIND_TEXT],
-        'submitDate' => ['submitdate', SortSql::KIND_VALUE],
+        'id' => ['id', SortSql::TYPE_ID],
+        'quotaExit' => ['quota_exit', SortSql::TYPE_NUMBER_OR_DATE],
+        'token' => ['token', SortSql::TYPE_TEXT],
+        'dateLastAction' => ['datestamp', SortSql::TYPE_NUMBER_OR_DATE],
+        'seed' => ['seed', SortSql::TYPE_DIGITS_AS_TEXT],
+        'language' => ['startlanguage', SortSql::TYPE_TEXT],
+        'submitDate' => ['submitdate', SortSql::TYPE_NUMBER_OR_DATE],
     ];
 
     /** Participant columns: API key => participants table column */
@@ -31,7 +31,7 @@ class ResponseSort
         'email' => 'email',
     ];
 
-    /** @var array<string, array{0: string, 1: string}> Sortable metadata: API key => [column, kind] */
+    /** @var array<string, array{0: string, 1: string}> Sortable metadata: API key => [column, value type] */
     private array $metadataColumns = [];
 
     /** @var array<string, array[]> Question ID => field map entries of the question */
@@ -129,11 +129,11 @@ class ResponseSort
     private function getOrderParts(string $key, bool $descending): ?array
     {
         if (isset($this->metadataColumns[$key])) {
-            [$column, $kind] = $this->metadataColumns[$key];
-            return SortSql::forKind(SortSql::column($column), $kind, $descending);
+            [$column, $type] = $this->metadataColumns[$key];
+            return SortSql::forType(SortSql::column($column), $type, $descending);
         }
         if (isset($this->participantColumns[$key])) {
-            return SortSql::forKind($this->participantValue($this->participantColumns[$key]), SortSql::KIND_TEXT, $descending);
+            return SortSql::forType($this->participantValue($this->participantColumns[$key]), SortSql::TYPE_TEXT, $descending);
         }
         $sorter = $this->getQuestionSorter($key);
         if ($sorter !== null) {
@@ -178,9 +178,12 @@ class ResponseSort
     private function participantValue(string $column): string
     {
         $db = \Yii::app()->db;
-        $alias = $db->quoteTableName('sortparticipant');
-        return '(SELECT MIN(' . $alias . '.' . $db->quoteColumnName($column) . ')'
-            . ' FROM ' . $db->quoteTableName((string) $this->participantsTable) . ' ' . $alias
-            . ' WHERE ' . $alias . '.' . $db->quoteColumnName('token') . ' = ' . SortSql::column('token') . ')';
+        $alias = 'sortparticipant';
+        $subquery = $db->createCommand()
+            ->select('MIN(' . $db->quoteColumnName("$alias.$column") . ')')
+            ->from([$this->participantsTable . ' ' . $alias])
+            ->where($db->quoteColumnName("$alias.token") . ' = ' . SortSql::column('token'))
+            ->getText();
+        return "($subquery)";
     }
 }

@@ -189,9 +189,9 @@ class ResponseSortTest extends TestBaseClass
         $sorter->method('canSort')->willReturn(true);
         // Sorts by the seed, so the result shows that the sorter's order is used
         $sorter->method('getOrder')->willReturnCallback(
-            static fn(array $fields, bool $descending) => SortSql::forKind(
+            static fn(array $fields, bool $descending) => SortSql::forType(
                 SortSql::column('seed'),
-                SortSql::KIND_NUMERIC_TEXT,
+                SortSql::TYPE_DIGITS_AS_TEXT,
                 $descending
             )
         );
