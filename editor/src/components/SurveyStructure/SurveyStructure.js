@@ -17,6 +17,8 @@ import {
   getReorganizedQuestions,
   InsertElementAndIncrementProperty,
   DuplicateQuestion,
+  isFocusInsideGroup,
+  getGroupIndexForDeletion,
 } from 'helpers'
 import {
   useFocused,
@@ -84,14 +86,22 @@ export const SurveyStructure = () => {
   }
 
   const handleConfirmGroupDeletion = () => {
-    const { questionGroup, index } = deleteGroupState
+    const index = getGroupIndexForDeletion(
+      questionGroups,
+      deleteGroupState.questionGroup?.gid
+    )
+    const questionGroup = questionGroups[index]
+    if (!questionGroup) {
+      setDeleteGroupState({ show: false, questionGroup: null, index: null })
+      return
+    }
     const [updatedQuestionGroups] = arrayDeleteItem(questionGroups, index)
 
     const operation = createBufferOperation(questionGroup.gid)
       .questionGroup()
       .delete()
 
-    if (!focused?.qid && focused?.gid === questionGroup.gid) {
+    if (isFocusInsideGroup(focused, questionGroup)) {
       unFocus()
     }
 

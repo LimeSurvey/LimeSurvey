@@ -34,7 +34,7 @@ export const useConditionDesigner = ({
   setPendingScenarioName,
   onNavigateBack,
 }) => {
-  const originalScenarios = question.scenarios
+  const originalScenarios = question?.scenarios
   const originalScid = useRef(scenarioToPatch ? scid : null)
 
   const removeCondition = (index) => {
