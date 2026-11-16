@@ -2,6 +2,12 @@
   @include med14-c;
   background-color: rgba(0, 0, 0, 0.5);
 
+  // Overrides the global fit-content rule so long descriptions wrap
+  .modal-dialog {
+    min-width: 0;
+    max-width: 664px;
+  }
+
   .modal-title {
     text-align: center;
   }
@@ -50,6 +56,37 @@
       border: none;
       background-color: $error !important;
       color: $white !important;
+    }
+  }
+
+  // Non-destructive confirmations (e.g. assigning answer codes)
+  &--primary {
+    .modal-body {
+      padding-left: 30px;
+      padding-right: 30px;
+
+      h1 {
+        font-size: 28px;
+      }
+
+      .description {
+        color: $g-900;
+        font-size: 16px;
+        line-height: 1.6;
+      }
+    }
+
+    .modal-footer {
+      gap: 8px;
+    }
+
+    .modal-content .confirm-button {
+      background-color: $grape !important;
+
+      &:hover,
+      &:focus-visible {
+        background-color: $grapeDark !important;
+      }
     }
   }
 }

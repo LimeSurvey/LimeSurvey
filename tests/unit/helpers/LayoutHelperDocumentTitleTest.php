@@ -23,6 +23,17 @@ class LayoutHelperDocumentTitleTest extends TestBaseClass
     }
 
     /**
+     * Names encoded in the topbar title are not encoded twice in the document title.
+     */
+    public function testTopbarTitleWithEncodedName()
+    {
+        $title = LayoutHelper::getDocumentTitle([
+            'topbar' => ['title' => 'User group: ' . \CHtml::encode("Grp '1' & <i>")],
+        ]);
+        $this->assertSame("User group: Grp '1' & <i>", $title);
+    }
+
+    /**
      * Pages without topbar or title bar title (e.g. the dashboard) use the page title.
      */
     public function testPageTitleWithoutTopbarAndTitleBar()

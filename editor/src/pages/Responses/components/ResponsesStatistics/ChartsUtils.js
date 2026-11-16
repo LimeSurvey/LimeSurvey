@@ -83,7 +83,6 @@ export const TEXT_QUESTION_TYPES = [
   QT_S_SHORT_FREE_TEXT,
   QT_T_LONG_FREE_TEXT,
   QT_U_HUGE_FREE_TEXT,
-  QT_Q_MULTIPLE_SHORT_TEXT,
   QT_J_MAP,
 ]
 
@@ -124,7 +123,6 @@ const TABLE_QUESTION_TYPES = [
   QT_1_ARRAY_DUAL,
   QT_COLON_ARRAY_NUMBERS,
   QT_SEMICOLON_ARRAY_TEXT,
-  QT_Q_MULTIPLE_SHORT_TEXT,
   QT_R_RANKING,
   QT_N_NUMERICAL,
   QT_K_MULTIPLE_NUMERICAL,
@@ -138,6 +136,8 @@ const GRID_QUESTION_TYPES = [
   QT_U_HUGE_FREE_TEXT,
   QT_N_NUMERICAL,
   QT_K_MULTIPLE_NUMERICAL,
+  QT_Q_MULTIPLE_SHORT_TEXT,
+  QT_J_MAP,
 ]
 
 const getChartsForType = (type) => {
@@ -237,7 +237,7 @@ export const getUnionSegments = (data = []) => {
 export const shouldRenderImage = (isImage, item) =>
   isImage && item?.key !== 'NoAnswer' && !NON_ANSWER_KEYS.includes(item?.key)
 
-export const LABEL_CHAR_WIDTH = 7
+export const LABEL_CHAR_WIDTH = 6
 
 export const getCategoryAxisWidth = (
   data = [],
