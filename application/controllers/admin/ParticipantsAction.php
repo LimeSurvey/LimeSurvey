@@ -1055,7 +1055,7 @@ class ParticipantsAction extends SurveyCommonAction
                     $dupcount++;
                     $canUpdateExisting = $hasUpdatePermission && Participant::model()->isOwner($existingParticipant->participant_id);
                     if ($overwrite == "true" && !$canUpdateExisting) {
-                        // The user requested an overwrite but has no update permission on this particular participant
+                        // The user requested an overwrite but may not update this participant (no global update permission, or the participant is neither owned by nor shared with the user)
                         $noPermissionForExisting = true;
                     } elseif ($overwrite == "true") {
                         // We want all the non filtering internal attributes to be updated,too
