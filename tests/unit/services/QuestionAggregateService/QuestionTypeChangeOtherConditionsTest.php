@@ -208,6 +208,34 @@ class QuestionTypeChangeOtherConditionsTest extends TestBaseClass
     }
 
     /**
+     * @testdox A type change keeps a condition with the typed value "-oth-" on a question without the "Other" answer option
+     * @return void
+     */
+    public function testTypeChangeKeepsTypedOtherValue()
+    {
+        \Yii::app()->session['loginID'] = 1;
+        $q3 = $this->getQuestion('Q3');
+        $q5 = $this->getQuestion('Q5');
+        // Q3 is a Short free text: "-oth-" is a text typed into it, not the "Other" answer option
+        $this->addCondition($q5->qid, $q3->qid, "Q{$q3->qid}", '-oth-');
+
+        DI::getContainer()->get(QuestionService::class)->save([
+            'question' => [
+                'sid' => self::$surveyId,
+                'qid' => $q3->qid,
+                'type' => Question::QT_T_LONG_FREE_TEXT,
+            ],
+        ]);
+
+        $this->assertSame(Question::QT_T_LONG_FREE_TEXT, $this->getQuestion('Q3')->type);
+        $this->assertCount(
+            1,
+            Condition::model()->findAllByAttributes(['cqid' => $q3->qid, 'value' => '-oth-']),
+            'The condition "Q3 == -oth-" must stay'
+        );
+    }
+
+    /**
      * @testdox The answer option layouts group the types whose answer options and "Other" are kept on a type change
      * @return void
      */

@@ -311,7 +311,8 @@ class QuestionService
         if ($question->type !== $newType && !$this->typeChangeKeepsAnswerOptions($question->type, $newType)) {
             $this->changedDependentQuestionIds = $this->removeAnswersAndDependentConditions(
                 (int) $question->qid,
-                (int) $question->sid
+                (int) $question->sid,
+                (string) $question->type
             );
         }
 
@@ -396,7 +397,7 @@ class QuestionService
             return;
         }
 
-        [$where, $params] = $this->getOtherConditionsCriteria((int) $question->qid, (int) $question->sid);
+        [$where, $params] = $this->getOtherConditionsCriteria((int) $question->qid, (int) $question->sid, (string) $question->type);
         // Runs only when "Other" is switched off: One query for all dependent questions
         $dependentQuestionCodes = $this->yiiApp->db->createCommand()
             ->selectDistinct('q.title')
@@ -444,21 +445,29 @@ class QuestionService
      *
      * @param int $questionId The question with the "Other" option
      * @param int $surveyId The survey of the question
+     * @param string $type The type of the question: Only a type with answer options has the "Other" answer option (-oth-),
+     *                     for other types -oth- can be a typed value
      * @return array{0: string, 1: array<string, int|string>} The where clause and its parameters
      */
-    private function getOtherConditionsCriteria(int $questionId, int $surveyId): array
+    private function getOtherConditionsCriteria(int $questionId, int $surveyId, string $type): array
     {
+        $questionType = QuestionType::findOne($type);
+        $hasOtherAnswer = !empty($questionType?->other) && $questionType->answerscales > 0;
         $otherFieldname = "Q{$questionId}_Cother";
+        $params = [
+            ':sid' => $surveyId,
+            ':qid' => $questionId,
+            ':otherfield' => $otherFieldname,
+            ':otherreference' => "@{$otherFieldname}@",
+        ];
+        $onQuestion = 'c.cfieldname = :otherfield';
+        if ($hasOtherAnswer) {
+            $onQuestion .= ' OR c.value = :otheranswer';
+            $params[':otheranswer'] = '-oth-';
+        }
         return [
-            'q.sid = :sid AND ((c.cqid = :qid AND (c.cfieldname = :otherfield OR c.value = :otheranswer))'
-                . ' OR c.value = :otherreference)',
-            [
-                ':sid' => $surveyId,
-                ':qid' => $questionId,
-                ':otherfield' => $otherFieldname,
-                ':otheranswer' => '-oth-',
-                ':otherreference' => "@{$otherFieldname}@",
-            ],
+            "q.sid = :sid AND ((c.cqid = :qid AND ({$onQuestion})) OR c.value = :otherreference)",
+            $params,
         ];
     }
 
@@ -535,9 +544,10 @@ class QuestionService
      *
      * @param int $questionId Question ID.
      * @param int $surveyId The survey of the question
+     * @param string $oldType The type of the question before the change
      * @return int[] The questions whose conditions were deleted
      */
-    private function removeAnswersAndDependentConditions($questionId, $surveyId)
+    private function removeAnswersAndDependentConditions($questionId, $surveyId, $oldType)
     {
         $answers = Answer::model()->findAll('qid = :qid', [':qid' => $questionId]);
         $qids = [];
@@ -554,7 +564,7 @@ class QuestionService
             $answer->delete();
         }
         // "Other" goes with the answer options: Its answer option (value -oth-) and its text field
-        [$where, $params] = $this->getOtherConditionsCriteria((int) $questionId, (int) $surveyId);
+        [$where, $params] = $this->getOtherConditionsCriteria((int) $questionId, (int) $surveyId, (string) $oldType);
         $otherConditions = $this->yiiApp->db->createCommand()
             ->select('c.cid, c.qid')
             ->from('{{conditions}} c')
