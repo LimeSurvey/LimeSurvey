@@ -404,20 +404,35 @@ class QuestionService
     /**
      * Deletes the answer options of a question and the conditions on them.
      *
+     * The relevance of each question that had such a condition is rebuilt from its remaining
+     * conditions, or reset to "1" when none are left.
+     *
      * @param int $questionId Question ID.
      * @return void
      */
     private function removeAnswersAndDependentConditions($questionId)
     {
         $answers = Answer::model()->findAll('qid = :qid', [':qid' => $questionId]);
+        $conditionsByAnswer = [];
         $qids = [];
         foreach ($answers as $answer) {
             $conditions = Condition::model()->findAll(
                 'cqid = :qid and value = :title',
                 [':qid' => $questionId, ':title' => $answer->code]
             );
+            $conditionsByAnswer[$answer->aid] = $conditions;
             foreach ($conditions as $condition) {
                 $qids[$condition->qid] = true;
+            }
+        }
+
+        // Reset the relevance before deleting
+        foreach (array_keys($qids) as $qid) {
+            LimeExpressionManager::RevertUpgradeConditionsToRelevance(null, $qid);
+        }
+
+        foreach ($answers as $answer) {
+            foreach ($conditionsByAnswer[$answer->aid] as $condition) {
                 $condition->delete();
             }
             AnswerL10n::model()->deleteAll('aid = :aid', [':aid' => $answer->aid]);

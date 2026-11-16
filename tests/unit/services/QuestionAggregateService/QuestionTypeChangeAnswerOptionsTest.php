@@ -75,7 +75,8 @@ class QuestionTypeChangeAnswerOptionsTest extends TestBaseClass
     }
 
     /**
-     * A type without answer options deletes them and their conditions.
+     * A type without answer options deletes them and their conditions, and resets the relevance
+     * of questions whose only condition was on them.
      *
      * @depends testChangeToCompatibleTypeKeepsAnswerOptions
      * @return void
@@ -83,12 +84,25 @@ class QuestionTypeChangeAnswerOptionsTest extends TestBaseClass
     public function testChangeToTypeWithoutAnswerOptionsDeletesThem()
     {
         $question = $this->getQuestionByTitle('G01Q03');
+        $dependentQids = array_unique(array_map(
+            function (Condition $condition) {
+                return (int) $condition->qid;
+            },
+            Condition::model()->findAllByAttributes(['cqid' => $question->qid])
+        ));
+        $this->assertNotEmpty($dependentQids);
+        foreach ($dependentQids as $qid) {
+            $this->assertStringContainsString('G01Q03', Question::model()->findByPk($qid)->relevance);
+        }
 
         $this->changeType($question, Question::QT_S_SHORT_FREE_TEXT, 'shortfreetext');
 
         $this->assertSame(Question::QT_S_SHORT_FREE_TEXT, $this->getQuestionByTitle('G01Q03')->type);
         $this->assertSame(0, $this->countAnswers($question->qid));
         $this->assertSame(0, $this->countConditionsOn($question->qid));
+        foreach ($dependentQids as $qid) {
+            $this->assertSame('1', (string) Question::model()->findByPk($qid)->relevance);
+        }
     }
 
     /**
