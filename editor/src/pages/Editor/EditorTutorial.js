@@ -14,6 +14,11 @@ import { useEffect, useMemo, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { UserSettingsService } from 'services'
 
+// RestClient returns the response data on success, and an error object with
+// httpStatus on failure (httpStatus 0 when no response was received)
+const isFailedRequest = (response) =>
+  response === undefined || response?.httpStatus !== undefined
+
 export const EditorTutorial = ({ isSurveyActive = false, survey }) => {
   const { surveyId } = useParams()
   const [, setIsAddingQuestionOrGroup] = useAppState(
@@ -284,10 +289,8 @@ export const EditorTutorial = ({ isSurveyActive = false, survey }) => {
       ),
     ]).then(([progressResponse, dismissedResponse]) => {
       // starting the tutorial automatically if the user has never started the tutorial before
-      // and hasn't chosen to never see it again.
-      // A successful request returns the stored value, a failed one an error object with httpStatus,
-      // so only a successful response counts as dismissed.
-      const isDismissed = !!dismissedResponse && !dismissedResponse.httpStatus
+      // and hasn't chosen to never see it again (only a successful read counts as dismissed)
+      const isDismissed = !isFailedRequest(dismissedResponse)
       if (
         progressResponse.httpStatus === 404 &&
         !isDismissed &&
@@ -313,7 +316,7 @@ export const EditorTutorial = ({ isSurveyActive = false, survey }) => {
       1
     )
 
-    if (result?.httpStatus) {
+    if (isFailedRequest(result)) {
       errorToast(t('Your changes could not be saved.'))
     }
   }
