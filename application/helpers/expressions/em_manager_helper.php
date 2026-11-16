@@ -730,6 +730,13 @@ class LimeExpressionManager
     private static $responseTables = [];
 
     /**
+     * Request cache of the encryption status by question ID, so the cells of an Array (Texts) question do not look up the same question.
+     * Static for the same reason as $responseColumnLimits.
+     * @var array<int, bool>
+     */
+    private static $encryptedQuestions = [];
+
+    /**
      * Array of values to be updated
      * @var array
      */
@@ -5557,6 +5564,12 @@ class LimeExpressionManager
                         if ($val !== null && substr_compare($key, 'other', -strlen('other')) !== 0) {
                             $val = substr($val, 0, 5);
                         }
+                        break;
+                    case Question::QT_T_LONG_FREE_TEXT:
+                    case Question::QT_U_HUGE_FREE_TEXT:
+                    case Question::QT_SEMICOLON_ARRAY_TEXT:
+                        // Submitted answers already fit, but a value set by an expression assignment is not checked before
+                        $val = self::fitResponseColumn($val, $key, $this->knownVars[$key]['qid'] ?? 0);
                         break;
                     default:
                         // @todo : control length of DB string, if answers in single choice is valid too (for example) ?
@@ -10901,7 +10914,9 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
 
     /**
      * Get the maximum characters of a Long (T), Huge (U) free text or Array (Texts) (;) answer.
-     * The answer currently in the session is passed on, so an answer saved before the default limit existed is not shortened.
+     * The answer already stored for the field is passed on: An answer saved before the default limit existed
+     * (for example on PostgreSQL, where the column has no relevant limit) can be longer than the default and is not shortened.
+     * Whether the answer fits the response column is checked separately, see fitResponseColumn().
      *
      * @param string $type Question type
      * @param integer $qid Question ID
@@ -11077,8 +11092,12 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             }
         }
         if ($limit !== null) {
-            $question = Question::model()->findByPk($qid);
-            $limit['encrypted'] = $question && $question->encrypted === 'Y';
+            $qid = intval($qid);
+            if (!array_key_exists($qid, self::$encryptedQuestions)) {
+                $question = Question::model()->findByPk($qid);
+                self::$encryptedQuestions[$qid] = $question && $question->encrypted === 'Y';
+            }
+            $limit['encrypted'] = self::$encryptedQuestions[$qid];
         }
         self::$responseColumnLimits[$cacheKey] = $limit;
         return $limit;

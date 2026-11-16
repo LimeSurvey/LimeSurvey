@@ -41,6 +41,7 @@ class FreeTextMaxCharsTest extends TestBaseClass
     {
         $this->getResponseColumnLimitsProperty()->setValue(null, []);
         (new \ReflectionProperty(\LimeExpressionManager::class, 'responseTables'))->setValue(null, []);
+        (new \ReflectionProperty(\LimeExpressionManager::class, 'encryptedQuestions'))->setValue(null, []);
         parent::tearDown();
     }
 
@@ -52,14 +53,15 @@ class FreeTextMaxCharsTest extends TestBaseClass
         $LEM = \LimeExpressionManager::singleton();
         $sid = new \ReflectionProperty(\LimeExpressionManager::class, 'sid');
         $originalSid = $sid->getValue($LEM);
-        $sid->setValue($LEM, self::$surveyId);
+        // A survey ID without response table, so the test does not depend on the activation test running after it
+        $surveyId = 2147483;
+        $sid->setValue($LEM, $surveyId);
         $method = new \ReflectionMethod(\LimeExpressionManager::class, 'getResponseColumnLimit');
         $tables = new \ReflectionProperty(\LimeExpressionManager::class, 'responseTables');
 
-        // The survey is not active: no response table
         $this->assertNull($method->invoke(null, 'Q999998', 999998));
         $this->assertNull($method->invoke(null, 'Q999999', 999999));
-        $this->assertSame([intval(self::$surveyId) => null], $tables->getValue());
+        $this->assertSame([$surveyId => null], $tables->getValue());
 
         $sid->setValue($LEM, $originalSid);
     }
@@ -262,6 +264,11 @@ class FreeTextMaxCharsTest extends TestBaseClass
         $this->assertSame(
             ['length' => 16777215, 'bytes' => true, 'encrypted' => false],
             $method->invoke(null, $sgqa, $question->qid)
+        );
+        // The encryption status is cached by question, not by answer column
+        $this->assertSame(
+            [intval($question->qid) => false],
+            (new \ReflectionProperty(\LimeExpressionManager::class, 'encryptedQuestions'))->getValue()
         );
         $sid->setValue($LEM, $originalSid);
     }
