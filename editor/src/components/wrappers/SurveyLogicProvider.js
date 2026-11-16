@@ -11,6 +11,7 @@ import {
   OperationsBuffer,
   STATES,
   errorToast,
+  getEntityInfo,
   processValidationErrorsAndUpdateOperations,
   replaceTempIdsInSurveyAndBuffer,
   updateSurveyEntitiesData,
@@ -278,13 +279,34 @@ export const SurveyLogicProvider = ({ children }) => {
         // reloaded question is the current one.
         fetchSurvey(surveyId)
           .then(({ survey } = {}) => {
-            const focus = queryClient.getQueryData([STATES.FOCUSED_ENTITY])
-            const question =
-              survey?.questionGroups?.[focus?.groupIndex]?.questions?.[
-                focus?.questionIndex
-              ]
+            // Another survey was opened meanwhile: Its focus must stay
+            const requestedSurveyId = queryClient.getQueryData([
+              STATES.REQUESTED_SURVEY_ID,
+            ])
+            if (
+              String(requestedSurveyId) !== String(surveyId) ||
+              String(survey?.sid) !== String(surveyId)
+            ) {
+              return
+            }
+            const { focused } =
+              queryClient.getQueryData([STATES.FOCUSED_ENTITY]) || {}
+            if (!focused?.qid || !survey?.questionGroups) {
+              return
+            }
+            // By ID: A restored deletion can move the question to another index
+            const {
+              question,
+              groupIndex: currentGroupIndex,
+              questionIndex: currentQuestionIndex,
+            } = getEntityInfo(focused.qid, survey, EntitiesType.question)
             if (question) {
-              setFocused(question, focus.groupIndex, focus.questionIndex, false)
+              setFocused(
+                question,
+                currentGroupIndex,
+                currentQuestionIndex,
+                false
+              )
             }
           })
           .catch((error) => errorToast(error.message))

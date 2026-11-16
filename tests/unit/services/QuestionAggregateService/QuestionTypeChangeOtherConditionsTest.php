@@ -200,6 +200,7 @@ class QuestionTypeChangeOtherConditionsTest extends TestBaseClass
         }
 
         $this->assertSame(Question::QT_M_MULTIPLE_CHOICE, $this->getQuestion('Q1')->type);
+        $this->assertSame('Y', $this->getQuestion('Q1')->other, '"Other" stays on: Short text has no "Other", but the type is kept');
         $this->assertCount(
             1,
             Condition::model()->findAllByAttributes(['cqid' => $q1->qid, 'cfieldname' => "Q{$q1->qid}_Cother"]),

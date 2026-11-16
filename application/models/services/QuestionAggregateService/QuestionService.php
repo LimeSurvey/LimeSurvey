@@ -308,6 +308,10 @@ class QuestionService
         $originalTitle = $question->title;
         $oldType = (string) $question->type;
         $newType = $this->getNewType($question, $data);
+        if (isset($data['type'])) {
+            // The validation must see the type that is saved: It switches "Other" off for a type without it
+            $data['type'] = $newType;
+        }
         $this->changedDependentQuestionIds = [];
         if ($oldType !== $newType && !$this->typeChangeKeepsAnswerOptions($oldType, $newType)) {
             $this->changedDependentQuestionIds = $this->removeAnswersAndDependentConditions(
