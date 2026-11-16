@@ -80,6 +80,48 @@ class SurveyResponseTest extends TestBaseClass
     }
 
     /**
+     * @testdox extras merge the question data of several operations
+     */
+    public function testExtrasMergeQuestionData()
+    {
+        $surveyResponse = self::getEmptySurveyResponse();
+        // A condition operation returns one question, a type change a list
+        $surveyResponse->handleResponse(['additional' => ['qid' => 5, 'relevance' => '1']]);
+        $surveyResponse->handleResponse(['additional' => [
+            ['qid' => 6, 'relevance' => '1', 'scenarios' => []],
+            ['qid' => 7, 'relevance' => '1', 'scenarios' => []],
+        ]]);
+        $this->assertSame(
+            [5, 6, 7],
+            array_column($surveyResponse->buildResponseObject()['extras'], 'qid')
+        );
+    }
+
+    /**
+     * @testdox extras without question data replace the extras of an earlier operation
+     */
+    public function testExtrasWithoutQuestionDataReplace()
+    {
+        $surveyResponse = self::getEmptySurveyResponse();
+        $surveyResponse->handleResponse(['additional' => ['qid' => 5, 'relevance' => '1']]);
+        $surveyResponse->handleResponse(['additional' => ['expire' => '2030-01-01 00:00:00']]);
+        $this->assertSame(
+            ['expire' => '2030-01-01 00:00:00'],
+            $surveyResponse->buildResponseObject()['extras']
+        );
+    }
+
+    /**
+     * Returns a survey response without operations.
+     *
+     * @return SurveyResponse The empty survey response
+     */
+    private static function getEmptySurveyResponse(): SurveyResponse
+    {
+        return new SurveyResponse(new TempIdMapping(), new ValidationErrors(), new ExceptionErrors());
+    }
+
+    /**
      * @testdox exception error contains validation errors of the error model
      */
     public function testExceptionErrorContainsErrorModelErrors()

@@ -3,6 +3,7 @@
 namespace LimeSurvey\Models\Services\QuestionAggregateService;
 
 use Question;
+use QuestionType;
 use QuestionAttribute;
 use Survey;
 use Answer;
@@ -38,6 +39,10 @@ class QuestionService
     private ProxySettingsUser $proxySettingsUser;
     private ProxyQuestion $proxyQuestion;
     private LSYii_Application $yiiApp;
+    /** @var array<string, string>|null Answer option layout per question type, see getAnswerOptionLayouts() */
+    private ?array $answerOptionLayouts = null;
+    /** @var int[] The questions whose conditions the last update deleted, see getChangedDependentQuestionIds() */
+    private array $changedDependentQuestionIds = [];
 
     public function __construct(
         Question $modelQuestion,
@@ -301,8 +306,13 @@ class QuestionService
 
         $originalRelevance = $question->relevance;
         $originalTitle = $question->title;
-        if ($question->type !== ($data['type'] ?? $question->type)) {
-            $this->removeAnswersAndDependentConditions($question->qid);
+        $newType = $data['type'] ?? $question->type;
+        $this->changedDependentQuestionIds = [];
+        if ($question->type !== $newType && !$this->typeChangeKeepsAnswerOptions($question->type, $newType)) {
+            $this->changedDependentQuestionIds = $this->removeAnswersAndDependentConditions(
+                (int) $question->qid,
+                (int) $question->sid
+            );
         }
 
         $question->setAttributes($data, false);
@@ -364,12 +374,13 @@ class QuestionService
     /**
      * Refuses to switch "Other" off while conditions use it: Conditions on the
      * "Other" text field, on the "Other" answer option, or comparing to the
-     * "Other" text field. "Other" is switched off by setting it to N, or by
-     * changing to a question type without "Other".
+     * "Other" text field. An incompatible type change is not refused: It deletes
+     * these conditions, see removeAnswersAndDependentConditions(). A compatible
+     * type change keeps them, so switching "Other" off with it is refused too.
      *
      * @param Question $question The question before the update
      * @param array $data The question data of the update
-     * @return void Returns normally if "Other" stays on or no condition uses it
+     * @return void Returns normally if "Other" stays on, the type change deletes the conditions or no condition uses it
      * @throws QuestionHasConditionsException If conditions use the "Other" option
      */
     public function checkOtherNotUsedInConditions(Question $question, array $data)
@@ -377,31 +388,21 @@ class QuestionService
         if ($question->other !== 'Y') {
             return;
         }
-        // "Other" is also switched off by a type change to a type without "Other": The model filters it to N.
-        // The type table is only built on a type change: The current type allows "Other", it is switched on.
         $newType = $data['type'] ?? $question->type;
-        $newTypeAllowsOther = $newType === $question->type
-            || !empty(\QuestionType::findOne($newType)->other);
-        $newOther = $data['other'] ?? $question->other;
-        if ($newOther === 'Y' && $newTypeAllowsOther) {
+        if ($newType !== $question->type && !$this->typeChangeKeepsAnswerOptions($question->type, $newType)) {
+            return;
+        }
+        if (($data['other'] ?? $question->other) === 'Y') {
             return;
         }
 
-        $otherFieldname = "Q{$question->qid}_Cother";
+        [$where, $params] = $this->getOtherConditionsCriteria((int) $question->qid, (int) $question->sid);
         // Runs only when "Other" is switched off: One query for all dependent questions
         $dependentQuestionCodes = $this->yiiApp->db->createCommand()
             ->selectDistinct('q.title')
             ->from('{{conditions}} c')
             ->join('{{questions}} q', 'q.qid = c.qid')
-            ->where(
-                '(c.cqid = :qid AND (c.cfieldname = :otherfield OR c.value = :otheranswer)) OR c.value = :otherreference',
-                [
-                    ':qid' => $question->qid,
-                    ':otherfield' => $otherFieldname,
-                    ':otheranswer' => '-oth-',
-                    ':otherreference' => "@{$otherFieldname}@",
-                ]
-            )
+            ->where($where, $params)
             ->order('q.title')
             ->queryColumn();
 
@@ -411,9 +412,47 @@ class QuestionService
                     // Plain text: The editors show it as text, the classic save without Ajax encodes it for its HTML flash message
                     gT('"Other" is used in conditions of: %s. Remove them first.', 'unescaped'),
                     implode(', ', $dependentQuestionCodes)
-                )
+                ),
+                PersistErrorException::CODE_CHANGE_REFUSED
             );
         }
+    }
+
+    /**
+     * Returns the criteria of the conditions on the "Other" option of a question:
+     * On its "Other" text field, on its "Other" answer option, or comparing to
+     * its "Other" text field. The conditions are "c", joined with their
+     * questions as "q": The survey limits the search to its questions.
+     *
+     * @param int $questionId The question with the "Other" option
+     * @param int $surveyId The survey of the question
+     * @return array{0: string, 1: array<string, int|string>} The where clause and its parameters
+     */
+    private function getOtherConditionsCriteria(int $questionId, int $surveyId): array
+    {
+        $otherFieldname = "Q{$questionId}_Cother";
+        return [
+            'q.sid = :sid AND ((c.cqid = :qid AND (c.cfieldname = :otherfield OR c.value = :otheranswer))'
+                . ' OR c.value = :otherreference)',
+            [
+                ':sid' => $surveyId,
+                ':qid' => $questionId,
+                ':otherfield' => $otherFieldname,
+                ':otheranswer' => '-oth-',
+                ':otherreference' => "@{$otherFieldname}@",
+            ],
+        ];
+    }
+
+    /**
+     * Returns the questions whose conditions the last update deleted with an
+     * incompatible type change, so the editor can show their new conditions.
+     *
+     * @return int[] The question IDs, empty if no conditions were deleted
+     */
+    public function getChangedDependentQuestionIds(): array
+    {
+        return $this->changedDependentQuestionIds;
     }
 
     /**
@@ -435,10 +474,52 @@ class QuestionService
     }
 
     /**
-     * @param int $questionId
-     * @return void
+     * Checks whether a type change keeps the answer options, the "Other" option
+     * and the conditions on them: Both types have the same answer option layout.
+     *
+     * @param string $oldType The current question type
+     * @param string $newType The new question type
+     * @return bool True if the answer options, "Other" and their conditions are kept
      */
-    private function removeAnswersAndDependentConditions($questionId)
+    private function typeChangeKeepsAnswerOptions(string $oldType, string $newType): bool
+    {
+        $layouts = $this->getAnswerOptionLayouts();
+        return isset($layouts[$oldType], $layouts[$newType])
+            && $layouts[$oldType] === $layouts[$newType];
+    }
+
+    /**
+     * Returns the answer option layout of each type with answer options or
+     * "Other": Its answer scales, subquestions and "Other". A type change
+     * between types with the same layout keeps the answer options, "Other" and
+     * the conditions on them (e.g. List (radio) and List (dropdown)).
+     *
+     * @return array<string, string> The layout key indexed by question type code
+     */
+    public function getAnswerOptionLayouts(): array
+    {
+        if ($this->answerOptionLayouts === null) {
+            $this->answerOptionLayouts = [];
+            foreach (QuestionType::modelsAttributes() as $type => $settings) {
+                $hasOther = !empty($settings['other']);
+                if ($settings['answerscales'] > 0 || $hasOther) {
+                    $this->answerOptionLayouts[$type] = $settings['answerscales'] . '-'
+                        . $settings['subquestions'] . '-' . (int) $hasOther;
+                }
+            }
+        }
+        return $this->answerOptionLayouts;
+    }
+
+    /**
+     * Deletes the answer options of a question and the conditions on them,
+     * including the conditions on its "Other" option.
+     *
+     * @param int $questionId Question ID.
+     * @param int $surveyId The survey of the question
+     * @return int[] The questions whose conditions were deleted
+     */
+    private function removeAnswersAndDependentConditions($questionId, $surveyId)
     {
         $answers = Answer::model()->findAll('qid = :qid', [':qid' => $questionId]);
         $qids = [];
@@ -454,10 +535,29 @@ class QuestionService
             AnswerL10n::model()->deleteAll('aid = :aid', [':aid' => $answer->aid]);
             $answer->delete();
         }
+        // "Other" goes with the answer options: Its answer option (value -oth-) and its text field
+        [$where, $params] = $this->getOtherConditionsCriteria((int) $questionId, (int) $surveyId);
+        $otherConditions = $this->yiiApp->db->createCommand()
+            ->select('c.cid, c.qid')
+            ->from('{{conditions}} c')
+            ->join('{{questions}} q', 'q.qid = c.qid')
+            ->where($where, $params)
+            ->queryAll();
+        if (!empty($otherConditions)) {
+            Condition::model()->deleteByPk(array_column($otherConditions, 'cid'));
+            foreach ($otherConditions as $condition) {
+                $qids[$condition['qid']] = true;
+            }
+        }
 
         foreach (array_keys($qids) as $qid) {
+            // Without conditions left, the upgrade keeps the old relevance: Reset it, as RevertUpgradeConditionsToRelevance() would
+            if (!Condition::model()->exists('qid = :qid', [':qid' => $qid])) {
+                Question::model()->updateByPk($qid, ['relevance' => '1']);
+            }
             LimeExpressionManager::UpgradeConditionsToRelevance(null, $qid);
         }
+        return array_map('intval', array_keys($qids));
     }
 
     /**

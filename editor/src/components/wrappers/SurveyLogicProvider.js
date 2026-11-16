@@ -18,6 +18,9 @@ import {
   RandomNumber,
 } from 'helpers'
 
+// Error code of a valid change the current state of the survey doesn't allow (PersistErrorException::CODE_CHANGE_REFUSED)
+const CHANGE_REFUSED_CODE = 409
+
 /**
  * Render children while loading the route's survey and saving buffered edits.
  * Reconcile patch results with local survey state, surface errors, and invalidate
@@ -81,7 +84,7 @@ export const SurveyLogicProvider = ({ children }) => {
 
     const readyOperations = operationsBuffer.getOperations({ ready: true })
     // surveyRefreshRequired is only updated on the next render, too late for finallyCallback
-    let deleteRefused = false
+    let changeRefused = false
 
     const beforeCallback = () => {
       // Clear ready buffer items
@@ -179,20 +182,24 @@ export const SurveyLogicProvider = ({ children }) => {
         mapResult.operationsBuffer
       )
 
-      // A refused delete already removed the item locally: Drop the operation
-      // and reload the survey to show the item again.
-      const refusedDeletes = exceptionErrors.filter(
-        (error) => error.op === Operations.delete
+      // A refused deletion already removed the item locally, and a change the survey
+      // doesn't allow (e.g. switching "Other" off while conditions use it) is already
+      // shown: Drop the operation and reload the survey to show the saved state again.
+      // Other failed updates stay in the buffer marked as error, so the user can correct them.
+      const refusedChanges = exceptionErrors.filter(
+        (error) =>
+          error.op === Operations.delete ||
+          Number(error.code) === CHANGE_REFUSED_CODE
       )
-      refusedDeletes.forEach((error) => {
+      refusedChanges.forEach((error) => {
         mapResult.operationsBuffer.removeOperation(
           error.id,
           error.op,
           error.entity
         )
       })
-      if (refusedDeletes.length) {
-        deleteRefused = true
+      if (refusedChanges.length) {
+        changeRefused = true
         setSurveyRefreshRequired(true)
       }
 
@@ -264,10 +271,30 @@ export const SurveyLogicProvider = ({ children }) => {
       )
       if (
         pendingOperations.isEmpty() &&
-        (surveyRefreshRequired || deleteRefused)
+        (surveyRefreshRequired || changeRefused)
       ) {
-        fetchSurvey(surveyId)
+        const surveyFetched = fetchSurvey(surveyId)
         setSurveyRefreshRequired(false)
+        if (changeRefused) {
+          // The question settings show a copy of the focused question: Refresh it too
+          surveyFetched
+            .then(({ survey } = {}) => {
+              const focus = queryClient.getQueryData([STATES.FOCUSED_ENTITY])
+              const question =
+                survey?.questionGroups?.[focus?.groupIndex]?.questions?.[
+                  focus?.questionIndex
+                ]
+              if (question) {
+                setFocused(
+                  question,
+                  focus.groupIndex,
+                  focus.questionIndex,
+                  false
+                )
+              }
+            })
+            .catch((error) => errorToast(error.message))
+        }
       }
     }
 

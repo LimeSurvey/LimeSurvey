@@ -26,10 +26,10 @@ export const addOtherFieldIfEnabled = (
     return
   }
 
-  const fieldname = findFieldname({ qid: question.qid, aid: 'other' })
-  if (!fieldname) {
-    return
-  }
+  // Right after "Other" is switched on, the field map is only reloaded after saving
+  const fieldname =
+    findFieldname({ qid: question.qid, aid: 'other' }) ??
+    `Q${question.qid}_Cother`
 
   createQuestion(cQuestions, question, null, fieldname, language, t('Other'))
   createAnswer(cAnswers, '', t('No answer'), fieldname)

@@ -161,6 +161,20 @@ export const updateSurveyEntitiesData = (
     return { survey, operationsBuffer }
   }
 
+  // A list updates several entities, e.g. the questions whose conditions a type change deleted
+  if (Array.isArray(entityDataMap)) {
+    return entityDataMap.reduce(
+      (result, entityData) =>
+        updateSurveyEntitiesData(
+          entityType,
+          result.survey,
+          result.operationsBuffer,
+          entityData
+        ),
+      { survey, operationsBuffer }
+    )
+  }
+
   if (entityType === EntitiesType.question) {
     const { qid, ...restData } = entityDataMap
 
