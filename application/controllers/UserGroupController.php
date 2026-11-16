@@ -157,7 +157,7 @@ class UserGroupController extends LSBaseController
             $aData["useraddurl"] = "";
         }
 
-        $aData['topbar']['title'] = gT('User group') . ': ' . $userGroup->name;
+        $aData['topbar']['title'] = gT('User group') . ': ' . CHtml::encode($userGroup->name);
         $aData['topbar']['backLink'] = App()->createUrl('userGroup/index');
 
 
