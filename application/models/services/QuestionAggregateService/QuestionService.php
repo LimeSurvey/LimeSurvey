@@ -306,7 +306,7 @@ class QuestionService
 
         $originalRelevance = $question->relevance;
         $originalTitle = $question->title;
-        $newType = $data['type'] ?? $question->type;
+        $newType = $this->getNewType($question, $data);
         $this->changedDependentQuestionIds = [];
         if ($question->type !== $newType && !$this->typeChangeKeepsAnswerOptions($question->type, $newType)) {
             $this->changedDependentQuestionIds = $this->removeAnswersAndDependentConditions(
@@ -388,7 +388,7 @@ class QuestionService
         if ($question->other !== 'Y') {
             return;
         }
-        $newType = $data['type'] ?? $question->type;
+        $newType = $this->getNewType($question, $data);
         if ($newType !== $question->type && !$this->typeChangeKeepsAnswerOptions($question->type, $newType)) {
             return;
         }
@@ -416,6 +416,24 @@ class QuestionService
                 PersistErrorException::CODE_CHANGE_REFUSED
             );
         }
+    }
+
+    /**
+     * Returns the type the question has after the update: An active survey keeps
+     * the stored type, as Question::beforeSave() does, so nothing may be deleted
+     * or refused for a type change that isn't saved.
+     *
+     * @param Question $question The question before the update
+     * @param array $data The question data of the update
+     * @return string The question type after the update
+     */
+    private function getNewType(Question $question, array $data): string
+    {
+        $survey = Survey::model()->findByPk($question->sid);
+        if (!empty($survey) && $survey->active !== 'N') {
+            return (string) $question->type;
+        }
+        return (string) ($data['type'] ?? $question->type);
     }
 
     /**

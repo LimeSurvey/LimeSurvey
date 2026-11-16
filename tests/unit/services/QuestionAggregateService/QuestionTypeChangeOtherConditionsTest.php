@@ -13,6 +13,7 @@ use LimeSurvey\Models\Services\QuestionAggregateService\QuestionService;
 use LimeSurvey\ObjectPatch\Op\OpStandard;
 use ls\tests\TestBaseClass;
 use Question;
+use Survey;
 
 /**
  * A type change keeps the answer options, "Other" and the conditions on them
@@ -168,6 +169,41 @@ class QuestionTypeChangeOtherConditionsTest extends TestBaseClass
         $this->assertSame(
             [['qid' => (int) $q5->qid, 'relevance' => '1', 'scenarios' => []]],
             $response['additional']
+        );
+    }
+
+    /**
+     * @testdox A type change on an active survey isn't saved, so it deletes no conditions
+     * @return void
+     */
+    public function testTypeChangeOnActiveSurveyDeletesNothing()
+    {
+        \Yii::app()->session['loginID'] = 1;
+        $q1 = $this->getQuestion('Q1');
+        $q2 = $this->getQuestion('Q2');
+        $this->addCondition($q2->qid, $q1->qid, "Q{$q1->qid}_Cother", '5');
+
+        // Only the flag: The type change is refused before any response table is used
+        Survey::model()->updateByPk(self::$surveyId, ['active' => 'Y']);
+        Survey::model()->resetCache();
+        try {
+            DI::getContainer()->get(QuestionService::class)->save([
+                'question' => [
+                    'sid' => self::$surveyId,
+                    'qid' => $q1->qid,
+                    'type' => Question::QT_S_SHORT_FREE_TEXT,
+                ],
+            ]);
+        } finally {
+            Survey::model()->updateByPk(self::$surveyId, ['active' => 'N']);
+            Survey::model()->resetCache();
+        }
+
+        $this->assertSame(Question::QT_M_MULTIPLE_CHOICE, $this->getQuestion('Q1')->type);
+        $this->assertCount(
+            1,
+            Condition::model()->findAllByAttributes(['cqid' => $q1->qid, 'cfieldname' => "Q{$q1->qid}_Cother"]),
+            'The condition on the "Other" text of Q1 must stay'
         );
     }
 
