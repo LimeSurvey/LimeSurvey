@@ -299,15 +299,21 @@ class QuestionService
 
         $originalRelevance = $question->relevance;
         $originalTitle = $question->title;
-        $newType = $data['type'] ?? $question->type;
-        if (
-            $question->type !== $newType
-            && !$this->typeChangeKeepsAnswerOptions($question->type, $newType)
-        ) {
-            $this->removeAnswersAndDependentConditions($question->qid);
-        }
+        $originalType = $question->type;
 
         $question->setAttributes($data, false);
+
+        if (
+            $question->type !== $originalType
+            && !$this->typeChangeKeepsAnswerOptions((string) $originalType, (string) $question->type)
+        ) {
+            if (!$question->validate()) {
+                throw new PersistErrorException(
+                    gT('Update failed, could not save.')
+                );
+            }
+            $this->removeAnswersAndDependentConditions($question->qid);
+        }
 
         if (!$question->save()) {
             throw new PersistErrorException(

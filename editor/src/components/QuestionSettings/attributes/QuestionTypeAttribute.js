@@ -19,12 +19,14 @@ export const QuestionTypeAttribute = ({
   )
   const { operationsBuffer } = useBuffer()
   const { focused } = useFocused()
-  // Locked until a queued type change is sent, so a second change can't merge into it
-  const isTypeChangeQueued = !!operationsBuffer?.getOperation(
+  // Locked until a queued type change is sent, so a second change can't merge into it.
+  const queuedQuestionUpdate = operationsBuffer?.getOperation(
     focused?.qid,
     Operations.update,
     Entities.question
-  )?.props?.type
+  )
+  const isTypeChangeQueued =
+    !!queuedQuestionUpdate?.props?.type && !queuedQuestionUpdate.error
   const disabled =
     (isSurveyActive && activeDisabled) ||
     !hasSurveyUpdatePermission ||

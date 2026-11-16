@@ -269,6 +269,9 @@ export const QuestionSettings = ({ surveyId }) => {
 
   // Applies the confirmed type change if its question is still focused
   const confirmTypeChange = () => {
+    if (!pendingTypeChange) {
+      return
+    }
     const { qid, value } = pendingTypeChange
     setPendingTypeChange(null)
     const question =
