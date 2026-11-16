@@ -48,9 +48,11 @@ class ResponseSortTest extends TestBaseClass
                 'startdate' => '2026-01-01 09:00:00',
                 'datestamp' => '2026-01-01 09:00:00',
             ]);
-            // Through the command builder, which passes the table's sequence on PostgreSQL
-            self::$responseIds[$name] = (int) $db->getCommandBuilder()->getLastInsertID($table);
         }
+        // The table was just created, so its IDs in ascending order are the responses in insert order.
+        // Read back rather than as last insert ID, which needs driver-specific handling.
+        $ids = $db->createCommand()->select('id')->from($table)->order('id ASC')->queryColumn();
+        self::$responseIds = array_combine(array_keys($responses), array_map('intval', $ids));
     }
 
     /**
