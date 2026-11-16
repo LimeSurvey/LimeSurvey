@@ -341,8 +341,8 @@ class DataEntry extends SurveyCommonAction
 
             $this->renderWrappedTemplate('dataentry', 'import', $aData);
         } else {
-            $sourceTableName = $this->getImportableResponseTable($iSurveyId);
-            if ($sourceTableName === null) {
+            $sourceTableName = App()->getRequest()->getPost('table');
+            if (!$this->checkResponseTableName($iSurveyId, $sourceTableName)) {
                 App()->setFlashMessage(gT("The selected table is not an archived response table of this survey."), 'error');
                 $this->getController()->redirect(["admin/dataentry/sa/import/surveyid/{$iSurveyId}"]);
                 return;
@@ -587,21 +587,18 @@ class DataEntry extends SurveyCommonAction
 
 
     /**
-     * Returns the posted source table if it is an archived response table of this survey.
+     * Checks if a table name is the name of an archived response table of this survey.
      *
-     * Only the tables offered by the import form are accepted, so the posted name
+     * Only the tables offered by the import form are valid, so a valid name
      * can never point to a table of another survey or to any other table.
      *
      * @param int $surveyId Survey ID
-     * @return string|null The table name including the table prefix, null if the posted name is not acceptable
+     * @param mixed $tableName Table name including the table prefix, usually a posted value
+     * @return bool
      */
-    protected function getImportableResponseTable($surveyId)
+    protected function checkResponseTableName($surveyId, $tableName)
     {
-        $table = App()->getRequest()->getPost('table');
-        if (!is_string($table) || !in_array($table, App()->getApi()->getOldResponseTables($surveyId), true)) {
-            return null;
-        }
-        return $table;
+        return is_string($tableName) && in_array($tableName, App()->getApi()->getOldResponseTables($surveyId), true);
     }
 
     /**

@@ -107,15 +107,14 @@ class DataEntryImportSourceTableTest extends TestBaseClass
     }
 
     /**
-     * Returns the source table the controller accepts for the posted table name.
-     * @param mixed $postedTable Posted 'table' value
-     * @return string|null
+     * Returns whether the controller accepts the table name as source table.
+     * @param mixed $tableName Table name
+     * @return bool
      */
-    private function acceptedTable($postedTable): ?string
+    private function isAccepted($tableName): bool
     {
-        $_POST['table'] = $postedTable;
-        $method = new \ReflectionMethod(\DataEntry::class, 'getImportableResponseTable');
-        return $method->invoke($this->controller, self::$surveyId);
+        $method = new \ReflectionMethod(\DataEntry::class, 'checkResponseTableName');
+        return $method->invoke($this->controller, self::$surveyId, $tableName);
     }
 
     /**
@@ -151,11 +150,11 @@ class DataEntryImportSourceTableTest extends TestBaseClass
     public function testOwnArchiveIsAccepted(): void
     {
         $table = \Yii::app()->db->tablePrefix . $this->ownArchive();
-        $this->assertSame($table, $this->acceptedTable($table));
+        $this->assertTrue($this->isAccepted($table));
     }
 
     /**
-     * @return array[] Callback that builds the posted value from the table prefix and the survey ID
+     * @return array[] Callback that builds the table name from the table prefix and the survey ID
      */
     public static function refusedTableProvider(): array
     {
@@ -182,26 +181,26 @@ class DataEntryImportSourceTableTest extends TestBaseClass
     }
 
     /**
-     * Any other posted table is refused as source.
+     * Any other table name is refused as source.
      * @dataProvider refusedTableProvider
-     * @param callable $postedTable Builds the posted value from the table prefix and the survey ID
+     * @param callable $tableName Builds the table name from the table prefix and the survey ID
      * @return void
      */
-    public function testOtherTablesAreRefused(callable $postedTable): void
+    public function testOtherTablesAreRefused(callable $tableName): void
     {
-        $this->assertNull($this->acceptedTable($postedTable((string) \Yii::app()->db->tablePrefix, self::$surveyId)));
+        $this->assertFalse($this->isAccepted($tableName((string) \Yii::app()->db->tablePrefix, self::$surveyId)));
     }
 
     /**
-     * The name of an own archive is refused if it is posted without the table prefix.
+     * The name of an own archive is refused without the table prefix.
      * @return void
      */
     public function testOwnArchiveWithoutTablePrefixIsRefused(): void
     {
         $table = $this->ownArchive();
         // On an installation without table prefix this is the full name of the archive, which is accepted
-        $expected = (string) \Yii::app()->db->tablePrefix === '' ? $table : null;
-        $this->assertSame($expected, $this->acceptedTable($table));
+        $expected = (string) \Yii::app()->db->tablePrefix === '';
+        $this->assertSame($expected, $this->isAccepted($table));
     }
 
     /**
