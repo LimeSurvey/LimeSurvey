@@ -44,7 +44,7 @@ describe('QuestionGroupHeader', () => {
     expect(openSpy).toHaveBeenCalledTimes(1)
     expect(openSpy).toHaveBeenCalledWith(
       getSiteUrl(
-        `/index.php/survey/index/action/previewgroup/sid/${surveyData.surveyId}/gid/${questionGroup.gid}/lang/en`
+        `/survey/index/action/previewgroup/sid/${surveyData.surveyId}/gid/${questionGroup.gid}/lang/en`
       ),
       '_blank'
     )
