@@ -1,6 +1,13 @@
 import { getQuestionTypeInfo, Tutorial } from 'components'
 import SmallCheckMarkIcon from 'components/icons/SmallCheckMarkIcon'
-import { getApiUrl, sleep, STATES, toastComponent, TUTORIALS } from 'helpers'
+import {
+  errorToast,
+  getApiUrl,
+  sleep,
+  STATES,
+  toastComponent,
+  TUTORIALS,
+} from 'helpers'
 import { getSurveyPanels } from 'helpers/options'
 import { useAppState, useAuth, useFocused } from 'hooks'
 import { useEffect, useMemo, useState } from 'react'
@@ -277,8 +284,10 @@ export const EditorTutorial = ({ isSurveyActive = false, survey }) => {
       ),
     ]).then(([progressResponse, dismissedResponse]) => {
       // starting the tutorial automatically if the user has never started the tutorial before
-      // and hasn't chosen to never see it again
-      const isDismissed = dismissedResponse?.httpStatus !== 404
+      // and hasn't chosen to never see it again.
+      // A successful request returns the stored value, a failed one an error object with httpStatus,
+      // so only a successful response counts as dismissed.
+      const isDismissed = !!dismissedResponse && !dismissedResponse.httpStatus
       if (
         progressResponse.httpStatus === 404 &&
         !isDismissed &&
@@ -298,11 +307,15 @@ export const EditorTutorial = ({ isSurveyActive = false, survey }) => {
     )
   }
 
-  const handleTutorialDismiss = () => {
-    userSettingsService.setUserSettingByName(
+  const handleTutorialDismiss = async () => {
+    const result = await userSettingsService.setUserSettingByName(
       TUTORIALS.EDITOR_TUTORIAL_DISMISSED,
       1
     )
+
+    if (result?.httpStatus) {
+      errorToast(t('Your changes could not be saved.'))
+    }
   }
 
   const handleTutorialStart = () => {

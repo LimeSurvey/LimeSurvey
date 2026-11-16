@@ -23,17 +23,14 @@
   gap: 16px;
 }
 
+.tutorial-skip-button,
 .tutorial-dismiss-button {
   height: 36px;
   padding: 4px 12px;
   gap: 8px;
   display: flex;
   align-items: center;
-  white-space: nowrap;
-  border: 1px solid $lime-green;
   border-radius: $border-radius;
-  background: rgba(0, 0, 0, 0.2);
-  color: $lime-green;
   cursor: pointer;
 
   &:focus-visible {
@@ -42,15 +39,16 @@
   }
 }
 
+.tutorial-dismiss-button {
+  white-space: nowrap;
+  border: 1px solid $lime-green;
+  background: rgba(0, 0, 0, 0.2);
+  color: $lime-green;
+}
+
 .tutorial-skip-button {
-  height: 36px;
-  z-index: 10001;
-  padding: 4px 12px;
-  gap: 8px;
-  display: flex;
   justify-content: center;
-  align-items: center;
-  border-radius: $border-radius;
+  border: none;
   background: $lime-green;
   color: $g-900;
 
