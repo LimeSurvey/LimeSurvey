@@ -171,11 +171,12 @@ $googleAnalyticsStyleOptions = array(
             $hardenedDisabledByQuota = $oSurvey instanceof Survey
                 && $oSurvey->encryption_method !== 'H'
                 && $oSurvey->hasQuotaOnEncryptedQuestion();
+            $disabledEncryptionMethods = [];
             if ($hardenedDisabledByQuota) {
-                unset($optionsEncryptionMethod['H']);
+                $disabledEncryptionMethods[] = 'H';
                 /* Inherit is hardened too : not available (except if current value) */
-                if ($oSurvey->encryption_method !== 'I' && $oSurvey->getResolvedEncryptionMethod('I') === 'H') {
-                    unset($optionsEncryptionMethod['I']);
+                if ($bShowInherited && $oSurvey->encryption_method !== 'I' && $oSurvey->getResolvedEncryptionMethod('I') === 'H') {
+                    $disabledEncryptionMethods[] = 'I';
                 }
             }
             ?>
@@ -189,6 +190,8 @@ $googleAnalyticsStyleOptions = array(
                             'aria-describedby' => 'encryption_method-help',
                             /* Responses are encrypted with this method : can not be changed when survey is active */
                             'disabled' => $oSurvey instanceof Survey && $oSurvey->isActive,
+                            /* Hardened can not be used if a quota uses an encrypted question */
+                            'disabledOptions' => $disabledEncryptionMethods,
                         ],
                         'checkedOption' => $oSurvey->encryption_method,
                         'selectOptions' => $optionsEncryptionMethod,
