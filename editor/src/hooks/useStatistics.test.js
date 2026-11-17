@@ -2,6 +2,8 @@ import React from 'react'
 import { renderHook, waitFor } from '@testing-library/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
+import { STATES } from 'helpers'
+
 import { useStatistics } from './useStatistics'
 
 const mockGetSurveyStatistics = jest.fn()
@@ -131,5 +133,59 @@ describe('useStatistics', () => {
 
     await waitFor(() => expect(result.current.error).not.toBeNull())
     expect(result.current.statistics).toEqual([])
+  })
+
+  describe('when the user comes back to the page', () => {
+    let client
+
+    const sharedWrapper = ({ children }) => (
+      <QueryClientProvider client={client}>{children}</QueryClientProvider>
+    )
+
+    const visit = () =>
+      renderHook(() => useStatistics('100', {}, []), {
+        wrapper: sharedWrapper,
+      })
+
+    beforeEach(() => {
+      client = new QueryClient({
+        defaultOptions: { queries: { retry: false, staleTime: Infinity } },
+      })
+    })
+
+    it('shows the cached charts when nothing was saved', async () => {
+      mockGetSurveyStatistics.mockResolvedValue(charts('Black'))
+      const first = visit()
+      await waitFor(() =>
+        expect(first.result.current.statistics[0]?.title).toBe('Black')
+      )
+      first.unmount()
+
+      mockGetSurveyStatistics.mockResolvedValue(charts('Red'))
+      const second = visit()
+
+      expect(second.result.current.statistics[0].title).toBe('Black')
+      expect(mockGetSurveyStatistics).toHaveBeenCalledTimes(1)
+    })
+
+    it('fetches the edited labels after the editor saved', async () => {
+      mockGetSurveyStatistics.mockResolvedValue(charts('Black'))
+      const first = visit()
+      await waitFor(() =>
+        expect(first.result.current.statistics[0]?.title).toBe('Black')
+      )
+      first.unmount()
+
+      client.invalidateQueries({
+        queryKey: [STATES.SURVEY_STATISTICS, '100'],
+      })
+      mockGetSurveyStatistics.mockResolvedValue(charts('Red'))
+      const second = visit()
+
+      await waitFor(() =>
+        expect(second.result.current.statistics[0]?.title).toBe('Red')
+      )
+      expect(mockGetSurveyStatistics).toHaveBeenCalledTimes(2)
+    })
   })
 })
