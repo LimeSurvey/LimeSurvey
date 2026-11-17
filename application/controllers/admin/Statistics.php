@@ -475,6 +475,13 @@ class Statistics extends SurveyCommonAction
         $aData['showtextinline'] = $showtextinline;
         $aData['usegraph'] = $usegraph;
 
+        /* Hardened : encrypted questions are not in statistics, even with a posted field (field name contains Q<qid>) */
+        if ($hardenedCryptMethod && is_array($summary)) {
+            $summary = array_values(array_filter($summary, function ($field) use ($cryptedQuestions) {
+                return !preg_match('/Q(\d+)/', (string) $field, $matches) || !in_array((int) $matches[1], $cryptedQuestions);
+            }));
+        }
+
         //Show Summary results
         if (isset($summary) && $summary) {
             $outputType = Yii::app()->request->getPost('outputtype', 'html');
