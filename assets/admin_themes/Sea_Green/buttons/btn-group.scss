@@ -120,22 +120,24 @@
         outline-offset: 2px;
     }
 
-    &:has(> .btn-check:disabled) {
+    // Whole group disabled
+    &:has(> .btn-check:disabled):not(:has(> .btn-check:enabled)) {
         background: $g-100;
+    }
 
-        > .btn-outline-secondary {
-            color: $g-400;
-            border-left-color: transparent;
-            opacity: 1;
-        }
+    // Only the disabled options, other options of the group stay enabled
+    > .btn-check:disabled + .btn-outline-secondary {
+        color: $g-400;
+        border-left-color: transparent;
+        opacity: 1;
+    }
 
-        // The selected option keeps its purple bar and dark text, toned down like the disabled toggles in the new editor
-        > .btn-check:checked + .btn-outline-secondary {
-            background-color: $white;
-            border-left-color: $grape;
-            color: $g-750;
-            opacity: .65;
-        }
+    // The selected option keeps its purple bar and dark text, toned down like the disabled toggles in the new editor
+    > .btn-check:checked:disabled + .btn-outline-secondary {
+        background-color: $white;
+        border-left-color: $grape;
+        color: $g-750;
+        opacity: .65;
     }
 }
 
