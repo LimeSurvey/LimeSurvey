@@ -126,46 +126,71 @@ describe('Input with defaultValue', () => {
   })
 })
 
-// React Query notifies subscribers on a setTimeout(0), so wait a tick for the re-render
-const setSurveyActive = (value) =>
-  act(async () => {
-    queryClient.setQueryData(['appState', STATES.IS_SURVEY_ACTIVE], value)
-    await new Promise((resolve) => setTimeout(resolve, 0))
-  })
-
 describe('Input with activeDisabled', () => {
-  afterEach(async () => {
-    await setSurveyActive(false)
-  })
-
-  test('Should be disabled when the survey is active', async () => {
+  test('Should be disabled when activeDisabled is set', async () => {
     await renderWithProviders(
       <Input dataTestId={'active-disabled-input'} activeDisabled={true} />
     )
-    await setSurveyActive(true)
 
     expect(screen.getByTestId('active-disabled-input')).toBeDisabled()
   })
 
-  test('Should stay enabled when the survey is not active', async () => {
-    await renderWithProviders(
-      <Input dataTestId={'active-disabled-input'} activeDisabled={true} />
-    )
-    await setSurveyActive(false)
-
-    expect(screen.getByTestId('active-disabled-input')).toBeEnabled()
-  })
-
-  test('Should stay enabled on an active survey without activeDisabled', async () => {
+  test('Should stay enabled without activeDisabled', async () => {
     await renderWithProviders(<Input dataTestId={'plain-input'} />)
-    await setSurveyActive(true)
 
     expect(screen.getByTestId('plain-input')).toBeEnabled()
   })
 
   test('Should render outside a QueryClientProvider', () => {
-    render(<Input dataTestId={'no-provider-input'} activeDisabled={true} />)
+    render(
+      <>
+        <Input dataTestId={'no-provider-locked'} activeDisabled={true} />
+        <Input dataTestId={'no-provider-input'} noPermissionDisabled={true} />
+      </>
+    )
 
+    expect(screen.getByTestId('no-provider-locked')).toBeDisabled()
     expect(screen.getByTestId('no-provider-input')).toBeEnabled()
+  })
+})
+
+// React Query notifies subscribers on a setTimeout(0), so wait a tick for the re-render
+const setSurveyUpdatePermission = (value) =>
+  act(async () => {
+    queryClient.setQueryData(
+      ['appState', STATES.HAS_SURVEY_UPDATE_PERMISSION],
+      value
+    )
+    await new Promise((resolve) => setTimeout(resolve, 0))
+  })
+
+describe('Input with noPermissionDisabled', () => {
+  afterEach(async () => {
+    await setSurveyUpdatePermission(true)
+  })
+
+  test('Should be disabled without survey update permission', async () => {
+    await renderWithProviders(
+      <Input dataTestId={'permission-input'} noPermissionDisabled={true} />
+    )
+    await setSurveyUpdatePermission(false)
+
+    expect(screen.getByTestId('permission-input')).toBeDisabled()
+  })
+
+  test('Should stay enabled with survey update permission', async () => {
+    await renderWithProviders(
+      <Input dataTestId={'permission-input'} noPermissionDisabled={true} />
+    )
+    await setSurveyUpdatePermission(true)
+
+    expect(screen.getByTestId('permission-input')).toBeEnabled()
+  })
+
+  test('Should stay enabled without permission when noPermissionDisabled is not set', async () => {
+    await renderWithProviders(<Input dataTestId={'plain-input'} />)
+    await setSurveyUpdatePermission(false)
+
+    expect(screen.getByTestId('plain-input')).toBeEnabled()
   })
 })

@@ -8,7 +8,32 @@ import { getTooltipMessages } from 'helpers/options'
 import { TooltipContainer } from '../../TooltipContainer/TooltipContainer'
 import { QueryClientContext } from '@tanstack/react-query'
 
-export const Input = ({
+// Only inputs that are locked without permission subscribe to the permission
+// state, and only inside a QueryClientProvider, where the app state lives.
+export const Input = (props) => {
+  const hasQueryClient = !!useContext(QueryClientContext)
+
+  return props.noPermissionDisabled && hasQueryClient ? (
+    <InputWithPermission {...props} />
+  ) : (
+    <InputField {...props} />
+  )
+}
+
+const InputWithPermission = (props) => {
+  const [hasSurveyUpdatePermission] = useAppState(
+    STATES.HAS_SURVEY_UPDATE_PERMISSION
+  )
+  return (
+    <InputField
+      {...props}
+      hasSurveyUpdatePermission={hasSurveyUpdatePermission}
+    />
+  )
+}
+
+const InputField = ({
+  hasSurveyUpdatePermission = true,
   value = null,
   defaultValue = '',
   dataTestId,
@@ -46,29 +71,17 @@ export const Input = ({
 }) => {
   const inputRef = inputRefProp ? inputRefProp : useRef(null)
 
-  // The app state lives in React Query, so it can only be read inside a
-  // QueryClientProvider. Whether there is one doesn't change while the
-  // input is mounted, so the conditional hook call keeps a stable order.
-  const canUseAppState = !!useContext(QueryClientContext)
-  const [isSurveyActive] = canUseAppState
-    ? useAppState(STATES.IS_SURVEY_ACTIVE, false)
-    : [false]
-  // Not read from the app state yet: That state is only set on the survey
-  // route and persisted between surveys.
-  const hasSurveyUpdatePermission = true
-
   const inputDisabled =
-    (isSurveyActive && activeDisabled) ||
+    activeDisabled ||
     disabled ||
     (!hasSurveyUpdatePermission && noPermissionDisabled) ||
     noAccessDisabled
 
-  const toolTip =
-    isSurveyActive && activeDisabled
-      ? getTooltipMessages().ACTIVE_DISABLED
-      : (!hasSurveyUpdatePermission && noPermissionDisabled) || noAccessDisabled
-        ? getTooltipMessages().NO_PERMISSION
-        : ''
+  const toolTip = activeDisabled
+    ? getTooltipMessages().ACTIVE_DISABLED
+    : (!hasSurveyUpdatePermission && noPermissionDisabled) || noAccessDisabled
+      ? getTooltipMessages().NO_PERMISSION
+      : ''
 
   useEffect(() => {
     if (!inputRef?.current) {
