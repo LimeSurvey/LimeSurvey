@@ -16,23 +16,30 @@ export const ResponseDetailView = ({
   disableUpdatingResponses = false,
 }) => {
   const rowCells = rowInfo.getVisibleCells()
-  const questionsInfo = {}
   const rowData = rowInfo?.original || {}
+  const addedQids = new Set()
+  const questionsInfo = []
 
-  rowCells.map((cell) => {
+  rowCells.forEach((cell) => {
     const question = cell.column.columnDef?.meta?.question
 
-    if (!question || questionsInfo[question.qid]) {
+    if (!question || addedQids.has(question.qid)) {
       return
     }
 
-    questionsInfo[question.qid] = getCellInfo(cell, rowInfo)
+    addedQids.add(question.qid)
+    questionsInfo.push(getCellInfo(cell, rowInfo))
   })
+
+  // Show the questions in survey order, independent of the table's column order and pinning
+  questionsInfo.sort(
+    (a, b) => (a.questionNumber ?? Infinity) - (b.questionNumber ?? Infinity)
+  )
 
   return (
     <div key={rowData?.id} className="response-detail-view">
       <div className="response-questions">
-        {Object.entries(questionsInfo).map(([, questionInfo], index) => {
+        {questionsInfo.map((questionInfo, index) => {
           return (
             <React.Fragment key={'response-detail-view-' + index}>
               <QuestionPreview
