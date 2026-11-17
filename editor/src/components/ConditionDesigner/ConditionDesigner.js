@@ -60,8 +60,9 @@ export const ConditionDesigner = ({
   const [isApplyButtonDisabled, setIsApplyButtonDisabled] = useState(true)
 
   const shouldConfirmOverwrite =
-    question?.scenarios.length === 0 &&
-    question?.relevance !== QUESTION_RELEVANCE_DEFAULT_VALUE
+    !!question &&
+    !question.scenarios?.length &&
+    question.relevance !== QUESTION_RELEVANCE_DEFAULT_VALUE
 
   const hasShownWarningRef = useRef(false)
 
@@ -207,7 +208,7 @@ export const ConditionDesigner = ({
               previousQuestions={previousQuestions}
               updateCondition={updateCondition}
               removeCondition={removeCondition}
-              focused={focused}
+              isFirstQuestion={groupIndex === 0 && questionIndex === 0}
               survey={survey}
               isUpdateAction={isUpdateAction()}
             />

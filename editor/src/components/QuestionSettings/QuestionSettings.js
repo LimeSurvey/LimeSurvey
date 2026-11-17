@@ -48,30 +48,33 @@ export const QuestionSettings = ({ surveyId }) => {
   const [pendingScenarioName, setPendingScenarioName] = useState(null)
   const [expandedAdvancedSections, setExpandedAdvancedSections] = useState({})
 
-  const {
-    focused = {},
-    unFocus,
-    setFocused,
-    groupIndex: focusedGroupIndex,
-    questionIndex: focusedQuestionIndex,
-  } = useFocused()
+  const { focused = {}, unFocus, setFocused } = useFocused()
 
   // The survey is the source of truth; `focused` is only a snapshot. Its qid
-  // can be missing from the survey, and its indices go stale when groups are
-  // reordered, deleted or inserted, so resolve both from the qid.
+  // can be missing from the survey, and its stored indices are only corrected
+  // by EditorContextController in an effect after the survey changes. Resolve
+  // the question and its position from the qid instead.
   // Not memoized: survey updates mutate the question groups in place, so the
   // survey reference can stay the same while the question object is replaced.
-  const {
-    question,
-    groupIndex = focusedGroupIndex,
-    questionIndex = focusedQuestionIndex,
-  } = focused?.qid && survey?.questionGroups
-    ? getQuestionById(focused.qid, survey)
-    : {}
+  const isSurveyLoaded = Array.isArray(survey?.questionGroups)
+  const { question, groupIndex, questionIndex } =
+    focused?.qid != null && isSurveyLoaded
+      ? getQuestionById(focused.qid, survey)
+      : {}
+  const isFocusedQuestionMissing =
+    focused?.qid != null && isSurveyLoaded && !question
 
   useEffect(() => {
     closeConditionDesignerPanels()
   }, [focused?.qid])
+
+  // The focused question is gone, e.g. deleted in another session: close the
+  // panel instead of showing settings that can no longer be saved.
+  useEffect(() => {
+    if (isFocusedQuestionMissing) {
+      unFocus()
+    }
+  }, [isFocusedQuestionMissing])
 
   const questionSettings = useMemo(() => {
     if (!focused?.qid) {
@@ -119,6 +122,9 @@ export const QuestionSettings = ({ surveyId }) => {
   }, [questionSettingsOptions?.isAdvanced, advancedQuestionSettings])
 
   const handleOnQuestionCodeClick = () => {
+    if (!question) {
+      return
+    }
     setFocused(focused, groupIndex, questionIndex)
   }
 
@@ -264,6 +270,10 @@ export const QuestionSettings = ({ surveyId }) => {
     !isQuestionDisabled &&
     !!questionSettingsOptions?.isAdvanced &&
     advancedQuestionSettings.length > 0
+
+  if (isFocusedQuestionMissing) {
+    return null
+  }
 
   if (question && typeof focused.qid === 'number') {
     if (conditionDesignerPanels.isConditionPanelOpen || scenarioToPatch) {

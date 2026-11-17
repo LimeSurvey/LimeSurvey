@@ -202,8 +202,14 @@ export const SurveyStructure = () => {
         .questionGroupReorder()
         .update(props)
       addToBuffer(operation)
-      questionGroups[groupIndex].questions = reorderedQuestions
-      handleUpdate(questionGroups)
+      // New array and group objects, so the focus sync in
+      // EditorContextController sees the change.
+      const updatedQuestionGroups = [...questionGroups]
+      updatedQuestionGroups[groupIndex] = {
+        ...questionGroups[groupIndex],
+        questions: reorderedQuestions,
+      }
+      handleUpdate(updatedQuestionGroups)
       setFocused(movedQuestion, groupIndex, newIndex)
       return true
     }
@@ -220,10 +226,17 @@ export const SurveyStructure = () => {
         questionGroups[sourceGroupIndex].questions,
         source.index
       )
-      // The question now belongs to the destination group.
+      // The question and its subquestions now belong to the destination group.
+      const destGid = questionGroups[destGroupIndex].gid
       const movedQuestion = {
         ...removedQuestion,
-        gid: questionGroups[destGroupIndex].gid,
+        gid: destGid,
+        ...(Array.isArray(removedQuestion.subquestions) && {
+          subquestions: removedQuestion.subquestions.map((subquestion) => ({
+            ...subquestion,
+            gid: destGid,
+          })),
+        }),
       }
       const destQuestions = arrayInsertItem(
         questionGroups[destGroupIndex].questions,
@@ -231,15 +244,23 @@ export const SurveyStructure = () => {
         movedQuestion
       )
 
-      //refresh both affected groups with new updated questions
-      questionGroups[sourceGroupIndex].questions = sourceQuestions
-      questionGroups[destGroupIndex].questions = destQuestions
+      // Refresh both affected groups. New array and group objects, so the
+      // focus sync in EditorContextController sees the change.
+      const updatedQuestionGroups = [...questionGroups]
+      updatedQuestionGroups[sourceGroupIndex] = {
+        ...questionGroups[sourceGroupIndex],
+        questions: sourceQuestions,
+      }
+      updatedQuestionGroups[destGroupIndex] = {
+        ...questionGroups[destGroupIndex],
+        questions: destQuestions,
+      }
 
       const operation = createBufferOperation()
         .questionGroupReorder()
-        .update(getReorganizedQuestionGroups(questionGroups))
+        .update(getReorganizedQuestionGroups(updatedQuestionGroups))
       addToBuffer(operation)
-      handleUpdate(questionGroups)
+      handleUpdate(updatedQuestionGroups)
       setFocused(movedQuestion, destGroupIndex, destination.index)
     }
   }
