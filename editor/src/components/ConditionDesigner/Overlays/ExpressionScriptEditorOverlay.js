@@ -17,6 +17,7 @@ export const ExpressionScriptEditorOverlay = ({
   question,
   onApply,
   validateExpression,
+  popupClass = '',
 }) => {
   const expressionScript =
     question?.relevance === QUESTION_RELEVANCE_DEFAULT_VALUE
@@ -35,11 +36,13 @@ export const ExpressionScriptEditorOverlay = ({
 
   const handleApplyClick = () => {
     if (question?.scenarios?.length > 0) {
+      // Replaces this popup, so it gets the same class to be closed with the panel
       showConditionOverwriteConfirmationOverlay({
         onConfirm: () => {
           SwalAlert.close()
           onApply(cleanContent)
         },
+        popupClass,
       })
     } else {
       SwalAlert.close()

@@ -1,14 +1,19 @@
-import { useEffect, useRef } from 'react'
+import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 
 import { useBuffer, useExpressionScriptValidation, useSurvey } from 'hooks'
-import { htmlPopup, QUESTION_RELEVANCE_DEFAULT_VALUE, SwalAlert } from 'helpers'
+import { htmlPopup, QUESTION_RELEVANCE_DEFAULT_VALUE } from 'helpers'
 import { Button } from 'components/UIComponents'
 import { CloseCircleIcon, ExpandIcon } from 'components/icons'
 
 import { ExpressionScriptEditorOverlay } from '../Overlays'
 import { handleConditionScriptUpdate } from './handleConditionScriptUpdate'
-import { showResetAllConditionsOverlay, showWarningMessage } from '../utils'
+import {
+  closeConditionPopups,
+  getConditionPopupClass,
+  showResetAllConditionsOverlay,
+  showWarningMessage,
+} from '../utils'
 
 export const ExpressionScriptInputBox = ({
   question,
@@ -19,15 +24,15 @@ export const ExpressionScriptInputBox = ({
   const { update } = useSurvey(surveyId)
   const { addToBuffer } = useBuffer()
 
-  // The editor popup is a SweetAlert modal outside of this component, so it
-  // stays open when the panel unmounts, e.g. when the question was removed.
-  const isEditorPopupOpenRef = useRef(false)
+  // The popups are SweetAlert modals outside of this component, so they stay
+  // open when the panel unmounts, e.g. when the question was removed. Every
+  // popup opened from here carries this class, including the confirmation
+  // that replaces the editor popup, and is closed on unmount. The component
+  // is keyed by qid, so the qid captured on mount stays correct.
+  const popupClass = getConditionPopupClass(question?.qid)
   useEffect(() => {
-    return () => {
-      if (isEditorPopupOpenRef.current) {
-        SwalAlert.close()
-      }
-    }
+    const qid = question?.qid
+    return () => closeConditionPopups(qid)
   }, [])
 
   const validateExpression = useExpressionScriptValidation(
@@ -80,20 +85,19 @@ export const ExpressionScriptInputBox = ({
           className="d-flex align-items-center p-0 text-secondary"
           variant="link"
           onClick={() => {
-            isEditorPopupOpenRef.current = true
             htmlPopup({
               html: (
                 <ExpressionScriptEditorOverlay
                   question={question}
                   onApply={handleApply}
                   validateExpression={validateExpression}
+                  popupClass={popupClass}
                 />
               ),
               title: '',
               showCloseButton: false,
               width: '1156px',
-            }).finally(() => {
-              isEditorPopupOpenRef.current = false
+              popupClass,
             })
             maybeShowConditionsOverwriteWarning()
           }}
@@ -108,6 +112,7 @@ export const ExpressionScriptInputBox = ({
               onClick={() => {
                 showResetAllConditionsOverlay({
                   onConfirmDelete: () => handleApply('1'),
+                  popupClass,
                 })
               }}
             >

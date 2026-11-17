@@ -18,6 +18,8 @@ import {
   isValidRelevanceValue,
   showConditionOverwriteConfirmationOverlay,
   showUnsavedChangesOverlay,
+  closeConditionPopups,
+  getConditionPopupClass,
 } from '../utils'
 
 export const ExpressionScript = ({ question, onNavigateBack = () => {} }) => {
@@ -25,6 +27,14 @@ export const ExpressionScript = ({ question, onNavigateBack = () => {} }) => {
   const { update } = useSurvey(surveyId)
   const { focused } = useFocused()
   const { addToBuffer } = useBuffer()
+
+  // Close this panel's confirmation popup when the panel unmounts, e.g. when
+  // the question was removed (see getConditionPopupClass).
+  const popupClass = getConditionPopupClass(question?.qid)
+  useEffect(() => {
+    const qid = question?.qid
+    return () => closeConditionPopups(qid)
+  }, [])
 
   const validateExpression = useExpressionScriptValidation(
     surveyId,
@@ -70,6 +80,7 @@ export const ExpressionScript = ({ question, onNavigateBack = () => {} }) => {
       showConditionOverwriteConfirmationOverlay({
         onConfirm: () => handleApply(content),
         onCancel: onNavigateBack,
+        popupClass,
       })
     } else {
       handleApply(content)

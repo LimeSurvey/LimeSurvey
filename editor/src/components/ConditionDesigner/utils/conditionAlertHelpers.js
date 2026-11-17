@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { htmlPopup, Toast } from 'helpers'
+import { htmlPopup, SwalAlert, Toast } from 'helpers'
 import { CheckIcon, ExclamationIcon, ExclamationMark } from 'components/icons'
 
 import {
@@ -80,18 +80,46 @@ export const showDeleteScenarioOverlay = (scenarioId, onConfirmDelete) => {
   })
 }
 
-export const showResetAllConditionsOverlay = ({ onConfirmDelete }) => {
+/**
+ * Class that marks the condition popups opened for a question. The popups are
+ * SweetAlert modals outside of the React tree, so they stay open when the
+ * question's panel unmounts; the class lets the panel close only its own.
+ * @param {number|string} qid Question ID.
+ * @returns {string}
+ */
+export const getConditionPopupClass = (qid) => `condition-popup-qid-${qid}`
+
+/**
+ * Closes the visible popup if it was opened for the given question, including
+ * a popup that replaced another one (e.g. a confirmation opened from the editor).
+ * Popups opened for anything else are left open.
+ * @param {number|string} qid Question ID.
+ * @returns {void}
+ */
+export const closeConditionPopups = (qid) => {
+  // getPopup() only returns an element while a popup is shown
+  if (SwalAlert.getPopup()?.classList.contains(getConditionPopupClass(qid))) {
+    SwalAlert.close()
+  }
+}
+
+export const showResetAllConditionsOverlay = ({
+  onConfirmDelete,
+  popupClass = '',
+}) => {
   htmlPopup({
     html: <ResetAllConditionsOverlay onConfirmDelete={onConfirmDelete} />,
     title: '',
     showCloseButton: true,
     width: '807px',
+    popupClass,
   })
 }
 
 export const showConditionOverwriteConfirmationOverlay = ({
   onConfirm,
   onCancel = () => {},
+  popupClass = '',
 }) => {
   htmlPopup({
     html: (
@@ -103,6 +131,7 @@ export const showConditionOverwriteConfirmationOverlay = ({
     title: '',
     showCloseButton: true,
     width: '807px',
+    popupClass,
   })
 }
 
