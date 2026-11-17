@@ -1907,8 +1907,6 @@ class Tokens extends SurveyCommonAction
         } else {
             $aData['surveyid'] = $iSurveyId;
             $aData['thissurvey'] = getSurveyInfo($iSurveyId); // For tokenbar view
-            $aData['surveyEncryptionmethod'] = $survey->oOptions->encryption_method;
-            $aData['aEncryptedAttributes'] = TokenDynamic::model($iSurveyId)->getAllEncryptedAttributes($iSurveyId, 'Token');
             $aData['sAction'] = App()->createUrl("admin/tokens", array("sa" => "exportdialog", "surveyid" => $iSurveyId));
             $aData['aButtons'] = array(
                 gT('Export participants') => array(

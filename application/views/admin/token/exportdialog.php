@@ -82,22 +82,12 @@
                         <label class="default form-label" for="filteremail">
                             <?php eT('Filter by email address:'); ?>
                         </label>
-                        <?php
-                            $emailCrypted = in_array('email', $aEncryptedAttributes);
-                            $isDisabled = $surveyEncryptionmethod == 'H' && $emailCrypted;
-                            $helptext = gT('Only export entries which contain this string in the email address.');
-                            if ($isDisabled) {
-                                $helptext = gT('It is not possible to filter by email because email data is encrypted using Hardened method.');
-                            } elseif($emailCrypted) {
-                                $helptext = gT('Since the email is encrypted, export only the data that is exactly that email.');
-                            }
-                        ?>
                         <div class="default controls">
-                            <input type="text" class="form-control" value="" name="filteremail" id="filteremail" aria-describedby="filteremailhelp" <?= $isDisabled ? 'disabled' : '' ?> />
+                            <input type="text" class="form-control" value="" name="filteremail" id="filteremail" aria-describedby="filteremailhelp" />
                         </div>
                         <?php
                         $this->widget('ext.AlertWidget.AlertWidget', [
-                            'text' => $helptext,
+                            'text' => gT('Only export entries which contain this string in the email address.'),
                             'type' => 'info',
                             'htmlOptions' => ['class' => 'mt-1' ,'id' => 'filteremailhelp'],
                         ]);
