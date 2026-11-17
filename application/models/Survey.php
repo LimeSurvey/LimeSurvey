@@ -1449,6 +1449,16 @@ class Survey extends LSActiveRecord implements PermissionInterface
         return ($this->oOptions->datestamp === 'Y');
     }
     /**
+     * Hardened encryption is used (inheritance resolved when the survey was loaded)
+     * Not usable on survey settings page (bShowRealOptionValues false) or with an updated encryption_method / gsid
+     * not saved : use getResolvedEncryptionMethod
+     * @return bool
+     */
+    public function getIsHardenedEncryption()
+    {
+        return ($this->oOptions->encryption_method === 'H');
+    }
+    /**
      * @return bool
      */
     public function getIsUseCookie()
@@ -2311,7 +2321,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
         if ($this->getResolvedEncryptionMethod($this->$attribute) !== 'H') {
             return;
         }
-        if ($this->hasQuotaOnEncryptedQuestion()) {
+        if (Quota::hasEncryptedQuestion($this->sid)) {
             $this->addError(
                 $attribute,
                 gT("Hardened encryption cannot be used: at least one quota uses an encrypted question. Hardened encrypted answers cannot be counted, so the quota would never be reached.")
@@ -2400,24 +2410,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
-     * Check if one quota of this survey use an encrypted question
-     * @return boolean
-     */
-    public function hasQuotaOnEncryptedQuestion()
-    {
-        if (empty($this->sid)) {
-            return false;
-        }
-        $count = Yii::app()->db->createCommand()
-            ->select('COUNT(*)')
-            ->from('{{quota_members}} qm')
-            ->join('{{questions}} q', 'q.qid = qm.qid')
-            ->where('qm.sid = :sid AND q.encrypted = :encrypted', [':sid' => $this->sid, ':encrypted' => 'Y'])
-            ->queryScalar();
-        return $count > 0;
-    }
-
-    /**
      * Force Basic encryption on this not active survey if it uses hardened encryption (set or inherited)
      * while a quota uses an encrypted question. Used after import or copy of quotas.
      * @return boolean true if the encryption method was updated
@@ -2427,7 +2419,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
         if (
             $this->active == 'Y'
             || $this->getResolvedEncryptionMethod() !== 'H'
-            || !$this->hasQuotaOnEncryptedQuestion()
+            || !Quota::hasEncryptedQuestion($this->sid)
         ) {
             return false;
         }
@@ -3019,7 +3011,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             && $this->encryption_method === 'I'
             && $this->isAttributeModifiedFromStored('gsid')
             && $this->getResolvedEncryptionMethod('I') === 'H'
-            && $this->hasQuotaOnEncryptedQuestion()
+            && Quota::hasEncryptedQuestion($this->sid)
         ) {
             $this->encryption_method = 'B';
             self::setForcedBasicFlashMessage([(int) $this->sid]);

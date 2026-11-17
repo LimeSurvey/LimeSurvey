@@ -64,7 +64,7 @@ class QuotaMember extends LSActiveRecord
             return;
         }
         $survey = Survey::model()->findByPk($this->sid);
-        if ($survey && $survey->getResolvedEncryptionMethod() === 'H') {
+        if ($survey && $survey->getIsHardenedEncryption()) {
             $this->addError(
                 $attribute,
                 gT("Encrypted questions cannot be used in quotas with hardened encryption.")

@@ -4,7 +4,7 @@
 /* @var QuotaMember $oQuotaMember */
 if ($oQuotaMember->question) :
     $hardenedEncrypted = $oQuotaMember->question->encrypted === 'Y'
-        && $oQuotaMember->survey->getResolvedEncryptionMethod() === 'H';
+        && $oQuotaMember->survey->getIsHardenedEncryption();
     ?>
 <tr class="<?php echo (!$data['valid'] || $hardenedEncrypted) ? "bg-warning text-danger" : ""; ?>"><!-- because lime-admin-colors.css force tr:nth-child(2n+1) td color, must add text-danger -->
     <td data-bs-toggle="tooltip"  data-container="body"

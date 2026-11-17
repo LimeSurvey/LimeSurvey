@@ -131,6 +131,25 @@ class Quota extends LSActiveRecord
     }
 
     /**
+     * Check if one quota of a survey uses an encrypted question
+     * @param integer $surveyId
+     * @return boolean
+     */
+    public static function hasEncryptedQuestion($surveyId)
+    {
+        if (empty($surveyId)) {
+            return false;
+        }
+        $count = Yii::app()->db->createCommand()
+            ->select('COUNT(*)')
+            ->from('{{quota_members}} qm')
+            ->join('{{questions}} q', 'q.qid = qm.qid')
+            ->where('qm.sid = :sid AND q.encrypted = :encrypted', [':sid' => $surveyId, ':encrypted' => 'Y'])
+            ->queryScalar();
+        return $count > 0;
+    }
+
+    /**
      * Count the completed responses matching all members of this quota
      *
      * @return int|string|null Number of completed responses, null if the response table or a member column is missing
@@ -148,7 +167,7 @@ class Quota extends LSActiveRecord
             foreach ($this->quotaMembers as $member) {
                 $aMemberInfo = $member->memberInfo;
                 /* Hardened encrypted answers can not be compared in SQL : the quota can not be counted */
-                if (!empty($aMemberInfo['encrypted']) && $this->survey->getResolvedEncryptionMethod() === 'H') {
+                if (!empty($aMemberInfo['encrypted']) && $this->survey->getIsHardenedEncryption()) {
                     \Yii::log(
                         sprintf(
                             "Invalid quota member: survey %d, quota %d, question %s is encrypted with the hardened method",

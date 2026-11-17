@@ -170,7 +170,7 @@ $googleAnalyticsStyleOptions = array(
             /* Hardened can not be used if a quota uses an encrypted question */
             $hardenedDisabledByQuota = $oSurvey instanceof Survey
                 && $oSurvey->encryption_method !== 'H'
-                && $oSurvey->hasQuotaOnEncryptedQuestion();
+                && Quota::hasEncryptedQuestion($oSurvey->sid);
             $disabledEncryptionMethods = [];
             if ($hardenedDisabledByQuota) {
                 $disabledEncryptionMethods[] = 'H';

@@ -22,7 +22,7 @@
                             <div class='col-md-5 offset-md-4'>
                                 <?php
                                 /* Hardened encrypted answers can not be compared : encrypted questions are disabled */
-                                $hardenedEncryption = $oQuota->survey->getResolvedEncryptionMethod() === 'H';
+                                $hardenedEncryption = $oQuota->survey->getIsHardenedEncryption();
                                 $hasDisabledQuestion = false;
                                 ?>
                                 <select class='form-select' name="quota_qid" size="15" aria-describedby="quota_qid-help">

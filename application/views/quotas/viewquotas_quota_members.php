@@ -27,7 +27,7 @@ $tooltip = $quotaActions[$oQuota->action]['description'] ?? gT("Unknown action")
 $icon = $quotaActions[$oQuota->action]['icon'] ?? '';
 /* An encrypted member with hardened encryption : the quota can not be counted */
 $hardenedEncryptedQuota = false;
-if ($oSurvey->getResolvedEncryptionMethod() === 'H') {
+if ($oSurvey->getIsHardenedEncryption()) {
     foreach ($oQuota->quotaMembers as $oMember) {
         if (!empty($oMember->memberInfo['encrypted'])) {
             $hardenedEncryptedQuota = true;

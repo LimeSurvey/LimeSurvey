@@ -279,7 +279,7 @@ class Database extends SurveyCommonAction
 
         //@todo  here is something wrong ...
         $oSurvey = $surveyModel->findByPk($surveyId);
-        $previousEncryptionMethod = $oSurvey->getResolvedEncryptionMethod();
+        $previousHardenedEncryption = $oSurvey->getIsHardenedEncryption();
         $languageList = $oSurvey->additionalLanguages;
         $languageList[] = $oSurvey->language;
 
@@ -334,7 +334,7 @@ class Database extends SurveyCommonAction
             if (
                 $savedSurvey
                 && $savedSurvey->hasTokensTable
-                && $savedSurvey->getResolvedEncryptionMethod() !== $previousEncryptionMethod
+                && $savedSurvey->getIsHardenedEncryption() !== $previousHardenedEncryption
             ) {
                 App()->setFlashMessage(
                     gT("The encryption method was changed, but the existing survey participants were not re-encrypted. Filters and duplicate checks can miss participants encrypted with the previous method. To update them, export the survey participant list, delete the participants and import them again."),
