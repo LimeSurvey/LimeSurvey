@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import { Fragment, useEffect, useState } from 'react'
+import { Fragment, useContext, useEffect, useState } from 'react'
 import { ToggleButton, ButtonGroup, Form } from 'react-bootstrap'
 
 import { useAppState } from 'hooks'
@@ -10,7 +10,7 @@ import {
   ONOFF_BOOLEAN,
 } from 'helpers/options'
 import { TooltipContainer } from 'components/TooltipContainer/TooltipContainer'
-import { useQueryClient } from '@tanstack/react-query'
+import { QueryClientContext } from '@tanstack/react-query'
 
 const getTwoConditions = () => getOnOffOptions(ONOFF_BOOLEAN)
 
@@ -20,8 +20,33 @@ const getThreeConditions = () => [
   { name: 'No', value: '-1' },
 ]
 
+// Only toggles that are locked without permission subscribe to the permission
+// state, and only inside a QueryClientProvider, where the app state lives.
+export const ToggleButtons = (props) => {
+  const hasQueryClient = !!useContext(QueryClientContext)
+
+  return props.noPermissionDisabled && hasQueryClient ? (
+    <ToggleButtonsWithPermission {...props} />
+  ) : (
+    <ToggleButtonsField {...props} />
+  )
+}
+
+const ToggleButtonsWithPermission = (props) => {
+  const [hasSurveyUpdatePermission] = useAppState(
+    STATES.HAS_SURVEY_UPDATE_PERMISSION
+  )
+  return (
+    <ToggleButtonsField
+      {...props}
+      hasSurveyUpdatePermission={hasSurveyUpdatePermission}
+    />
+  )
+}
+
 // TODO this component will replace current ToggleButtons
-export const ToggleButtons = ({
+const ToggleButtonsField = ({
+  hasSurveyUpdatePermission = true,
   id,
   toggleOptions,
   value = '',
@@ -41,33 +66,16 @@ export const ToggleButtons = ({
   disabled,
   overlayMessage,
 }) => {
-  const [canUseAppState, setCanUseAppState] = useState(false)
-
-  useEffect(() => {
-    try {
-      useQueryClient()
-      setCanUseAppState(true)
-    } catch (error) {
-      setCanUseAppState(false)
-    }
-  }, [])
-
   const [options, setOptions] = useState([])
-  const [isSurveyActive] = canUseAppState
-    ? useAppState(STATES.IS_SURVEY_ACTIVE)
-    : [true]
-  const [hasSurveyUpdatePermission] = canUseAppState
-    ? useAppState(STATES.HAS_SURVEY_UPDATE_PERMISSION)
-    : [true]
 
   const isDisabled =
     disabled ||
-    (isSurveyActive && activeDisabled) ||
+    activeDisabled ||
     (!hasSurveyUpdatePermission && noPermissionDisabled) ||
     noAccessDisabled
   const toolTip = overlayMessage
     ? overlayMessage
-    : isSurveyActive && activeDisabled
+    : activeDisabled
       ? getTooltipMessages().ACTIVE_DISABLED
       : getTooltipMessages().NO_PERMISSION
 

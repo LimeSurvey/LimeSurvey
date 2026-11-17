@@ -1,11 +1,13 @@
 // Import shared mocks
 import 'tests/mocks'
 
-import { useState } from 'react'
+import { act, useState } from 'react'
 import { renderWithProviders } from 'tests/testUtils'
 import { ToggleButtons } from './ToggleButtons'
-import { screen } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { queryClient } from 'queryClient'
+import { STATES } from 'helpers'
 
 function BasicWrapper() {
   const [value, setValue] = useState(-1)
@@ -121,5 +123,63 @@ describe('ToggleButtons', () => {
       await userEvent.click(offButton)
       expect(output).toHaveTextContent('"0"')
     })
+  })
+})
+
+// React Query notifies subscribers on a setTimeout(0), so wait a tick for the re-render
+const setSurveyUpdatePermission = (value) =>
+  act(async () => {
+    queryClient.setQueryData(
+      ['appState', STATES.HAS_SURVEY_UPDATE_PERMISSION],
+      value
+    )
+    await new Promise((resolve) => setTimeout(resolve, 0))
+  })
+
+// Fails when no option is rendered, so the per-option checks can't pass empty
+const getOptionInputs = () => {
+  const inputs = document.querySelectorAll(
+    '#locked-toggle input, #plain-toggle input'
+  )
+  expect(inputs.length).toBeGreaterThan(0)
+
+  return inputs
+}
+
+describe('ToggleButtons disabled states', () => {
+  afterEach(async () => {
+    await setSurveyUpdatePermission(true)
+  })
+
+  test('is disabled when activeDisabled is set', async () => {
+    await renderWithProviders(
+      <ToggleButtons id="locked-toggle" activeDisabled />
+    )
+
+    getOptionInputs().forEach((input) => expect(input).toBeDisabled())
+  })
+
+  test('is disabled without survey update permission', async () => {
+    await renderWithProviders(
+      <ToggleButtons id="locked-toggle" noPermissionDisabled />
+    )
+    await setSurveyUpdatePermission(false)
+
+    getOptionInputs().forEach((input) => expect(input).toBeDisabled())
+  })
+
+  test('stays enabled with survey update permission', async () => {
+    await renderWithProviders(
+      <ToggleButtons id="locked-toggle" noPermissionDisabled />
+    )
+    await setSurveyUpdatePermission(true)
+
+    getOptionInputs().forEach((input) => expect(input).toBeEnabled())
+  })
+
+  test('renders outside a QueryClientProvider', () => {
+    render(<ToggleButtons id="plain-toggle" noPermissionDisabled />)
+
+    getOptionInputs().forEach((input) => expect(input).toBeEnabled())
   })
 })

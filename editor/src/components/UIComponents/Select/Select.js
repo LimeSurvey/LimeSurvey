@@ -1,10 +1,10 @@
-import React, { useEffect, useState, useMemo } from 'react'
+import React, { useContext, useState, useMemo } from 'react'
 import { Form } from 'react-bootstrap'
 import ReactSelect from 'react-select'
 import CreatableSelect from 'react-select/creatable'
 import { format } from 'util'
 import classNames from 'classnames'
-import { useQueryClient } from '@tanstack/react-query'
+import { QueryClientContext } from '@tanstack/react-query'
 
 import { useAppState } from '../../../hooks'
 import { RemoveHTMLTagsInString, STATES } from '../../../helpers'
@@ -16,7 +16,32 @@ import { TooltipContainer } from '../../TooltipContainer/TooltipContainer'
 const optionFilter = (options, fieldName, value) =>
   options.find((option) => option[fieldName] == value)
 
-export const Select = ({
+// Only selects that are locked without permission subscribe to the permission
+// state, and only inside a QueryClientProvider, where the app state lives.
+export const Select = (props) => {
+  const hasQueryClient = !!useContext(QueryClientContext)
+
+  return props.noPermissionDisabled && hasQueryClient ? (
+    <SelectWithPermission {...props} />
+  ) : (
+    <SelectField {...props} />
+  )
+}
+
+const SelectWithPermission = (props) => {
+  const [hasSurveyUpdatePermission] = useAppState(
+    STATES.HAS_SURVEY_UPDATE_PERMISSION
+  )
+  return (
+    <SelectField
+      {...props}
+      hasSurveyUpdatePermission={hasSurveyUpdatePermission}
+    />
+  )
+}
+
+const SelectField = ({
+  hasSurveyUpdatePermission = true,
   labelText,
   options = [],
   className = '',
@@ -43,7 +68,6 @@ export const Select = ({
   isClearable = false,
 }) => {
   const [isOpen, setIsOpen] = useState(false)
-  const [canUseAppState, setCanUseAppState] = useState(false)
 
   options = useMemo(
     () =>
@@ -54,30 +78,13 @@ export const Select = ({
     [options]
   )
 
-  useEffect(() => {
-    try {
-      useQueryClient()
-      setCanUseAppState(true)
-    } catch (error) {
-      setCanUseAppState(false)
-    }
-  }, [])
-
-  const [isSurveyActive] = canUseAppState
-    ? useAppState(STATES.IS_SURVEY_ACTIVE)
-    : [true]
-  const [hasSurveyUpdatePermission] = canUseAppState
-    ? useAppState(STATES.HAS_SURVEY_UPDATE_PERMISSION)
-    : [true]
-
   const permissionDisabled =
-    (isSurveyActive && activeDisabled) ||
+    activeDisabled ||
     (!hasSurveyUpdatePermission && noPermissionDisabled) ||
     noAccessDisabled
-  const toolTip =
-    isSurveyActive && activeDisabled
-      ? getTooltipMessages().ACTIVE_DISABLED
-      : getTooltipMessages().NO_PERMISSION
+  const toolTip = activeDisabled
+    ? getTooltipMessages().ACTIVE_DISABLED
+    : getTooltipMessages().NO_PERMISSION
 
   if (isCreatable && !isMultiselect && value !== null && value !== undefined) {
     // A value that is not one of the options was typed in, so show it as is
