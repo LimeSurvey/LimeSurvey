@@ -30,7 +30,8 @@ const renderChildren = (isSurveyActive) => {
     ['appState', STATES.IS_SURVEY_ACTIVE],
     isSurveyActive
   )
-  const handleUpdate = jest.fn()
+  const saved = { answers: dualScaleAnswers, subquestions }
+  const handleUpdate = jest.fn((update) => Object.assign(saved, update))
   const { result } = renderHook(
     () =>
       useQuestionChildren({
@@ -47,7 +48,7 @@ const renderChildren = (isSurveyActive) => {
       }),
     { wrapper }
   )
-  return { handlers: result.current, handleUpdate }
+  return { handlers: result.current, handleUpdate, saved }
 }
 
 describe('useQuestionChildren on an active survey', () => {
@@ -82,7 +83,7 @@ describe('useQuestionChildren on an active survey', () => {
   })
 
   test('subquestions keep their codes and can not be added or removed', () => {
-    const { handlers, handleUpdate } = renderChildren(true)
+    const { handlers, saved } = renderChildren(true)
 
     act(() => {
       handlers.handleChildCodeUpdate({
@@ -96,7 +97,10 @@ describe('useQuestionChildren on an active survey', () => {
       handlers.handleChildDelete(7, subquestions, Entities.subquestion)
     })
 
-    expect(handleUpdate).not.toHaveBeenCalled()
+    expect(saved.subquestions).toEqual([
+      subquestion(7, 'SQ001'),
+      subquestion(8, 'SQ002'),
+    ])
   })
 
   test('subquestions are recoded on an inactive survey', () => {

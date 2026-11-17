@@ -5,6 +5,7 @@ import classNames from 'classnames'
 import { max } from 'lodash'
 
 import {
+  canUpdateChildren,
   Entities,
   getAttributeValue,
   L10ns,
@@ -215,6 +216,7 @@ export const ArrayColumnsTitles = ({
           setIsReorderingAnswers(true)
         }}
         droppableId={'droppable-subquestions-answers'}
+        surveyActiveDisable={!canUpdateChildren(entitiesInfo.entity, true)}
         className={classNames('d-flex')}
         direction="horizontal"
       >

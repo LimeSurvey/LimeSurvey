@@ -73,6 +73,7 @@ export const OptionQuestionEditMode = ({
         className="children-parent edit-mode"
         onDragEnd={handleOnDragEnd}
         droppableId={'droppable'}
+        surveyActiveDisable={!canUpdateChildren(childrenInfo.entity, true)}
       >
         {_children?.map((child, index) => (
           <Draggable

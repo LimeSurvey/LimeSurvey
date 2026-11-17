@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { omit } from 'lodash'
 import { useQuery } from '@tanstack/react-query'
 import { useBuffer } from './useBuffer'
+import { useAppState } from './useAppState'
 import {
   Entities,
   SCALE_1,
@@ -53,15 +54,7 @@ export const useQuestionChildren = ({
     },
   })
 
-  const { data: isSurveyActive = false } = useQuery({
-    queryKey: ['appState', STATES.IS_SURVEY_ACTIVE],
-    queryFn: () => false,
-    staleTime: Infinity,
-    cacheTime: Infinity,
-    meta: {
-      persist: true,
-    },
-  })
+  const [isSurveyActive] = useAppState(STATES.IS_SURVEY_ACTIVE, false)
 
   const filterAndSortChildren = (childArray, props, newChild) => {
     let firstScaleChildren = []
