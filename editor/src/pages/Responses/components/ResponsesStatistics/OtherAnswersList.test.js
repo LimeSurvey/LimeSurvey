@@ -38,10 +38,10 @@ describe('OtherAnswersList', () => {
     expect(screen.getAllByText('1 response')).toHaveLength(3)
   })
 
-  test('shows the rest, including "No text", after "Show more"', async () => {
+  test('shows the rest, including "No text", after "Load more"', async () => {
     render(<OtherAnswersList item={item} />)
 
-    await userEvent.click(screen.getByRole('button', { name: 'Show more' }))
+    await userEvent.click(screen.getByRole('button', { name: 'Load more' }))
 
     // 10 "other" responses, 9 of them with text.
     expect(getRowTexts()).toEqual([
@@ -54,11 +54,11 @@ describe('OtherAnswersList', () => {
       'No text',
     ])
     expect(
-      screen.queryByRole('button', { name: 'Show more' })
+      screen.queryByRole('button', { name: 'Load more' })
     ).not.toBeInTheDocument()
   })
 
-  test('"Show more" reveals 50 more rows per click', async () => {
+  test('"Load more" reveals 50 more rows per click', async () => {
     const otherAnswers = Array.from({ length: 60 }, (_, index) => ({
       text: `Answer ${index + 1}`,
       count: 1,
@@ -67,7 +67,7 @@ describe('OtherAnswersList', () => {
       <OtherAnswersList item={{ key: 'other', value: 60, otherAnswers }} />
     )
     const showMore = () =>
-      userEvent.click(screen.getByRole('button', { name: 'Show more' }))
+      userEvent.click(screen.getByRole('button', { name: 'Load more' }))
 
     await showMore()
     expect(getRowTexts()).toHaveLength(55)
@@ -76,11 +76,11 @@ describe('OtherAnswersList', () => {
     await showMore()
     expect(getRowTexts()).toHaveLength(60)
     expect(
-      screen.queryByRole('button', { name: 'Show more' })
+      screen.queryByRole('button', { name: 'Load more' })
     ).not.toBeInTheDocument()
   })
 
-  test('has no "Show more" or "No text" row when not needed', () => {
+  test('has no "Load more" or "No text" row when not needed', () => {
     render(
       <OtherAnswersList
         item={{
@@ -93,7 +93,7 @@ describe('OtherAnswersList', () => {
 
     expect(getRowTexts()).toEqual(['Darts'])
     expect(
-      screen.queryByRole('button', { name: 'Show more' })
+      screen.queryByRole('button', { name: 'Load more' })
     ).not.toBeInTheDocument()
   })
 

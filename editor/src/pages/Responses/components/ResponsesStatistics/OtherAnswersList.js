@@ -7,14 +7,14 @@ export const OTHER_ANSWERS_PAGE = 50
 const formatResponses = (count) =>
   count === 1
     ? format(t('%s response'), count)
-    : format(t('%s responses'), count)
+    : format(t('%d responses'), count)
 
 /**
  * The free-text answers of the "other" option, most frequent first.
  */
 export const OtherAnswersList = ({ id, item, onViewComments }) => {
   const [visibleCount, setVisibleCount] = useState(VISIBLE_OTHER_ANSWERS)
-  // Row to focus after "Show more", so keyboard users continue at the new rows.
+  // Row to focus after "Load more", so keyboard users continue at the new rows.
   const focusRowRef = useRef(null)
   const listRef = useRef(null)
   const answers = item?.otherAnswers ?? []
@@ -75,7 +75,7 @@ export const OtherAnswersList = ({ id, item, onViewComments }) => {
             className="responses-statistics-comments-more-btn"
             onClick={showMore}
           >
-            {t('Show more')}
+            {t('Load more')}
           </button>
         </div>
       )}
