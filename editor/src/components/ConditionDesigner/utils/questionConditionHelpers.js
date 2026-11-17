@@ -189,6 +189,8 @@ export const determineConditionTargetType = (
 export const updateQuestionScenarios = (scenarios, question, originalScid) => {
   const [newScenario] = scenarios
   const { scid, conditions: newConditions } = newScenario
+  // A question that never had a condition can come without a scenarios array.
+  question.scenarios = question.scenarios ?? []
   const exists = question.scenarios.some((s) => s.scid === scid)
 
   if (exists) {

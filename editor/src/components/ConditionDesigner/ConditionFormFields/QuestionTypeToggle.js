@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react'
+import { useLayoutEffect, useMemo } from 'react'
 
 import { ToggleButtons } from 'components'
 
@@ -43,9 +43,10 @@ export const QuestionTypeToggle = ({
   }, [isFirstQuestion, condition.sourceType])
 
   // The first question has no previous questions, so only participant data
-  // can be used as the source. Done in an effect: updateCondition sets the
-  // parent's state, which must not happen while rendering.
-  useEffect(() => {
+  // can be used as the source. Done in a layout effect: updateCondition sets
+  // the parent's state, which must not happen while rendering, and a layout
+  // effect applies it before paint, so the question select never flashes.
+  useLayoutEffect(() => {
     if (
       isFirstQuestion &&
       condition.sourceType !== conditionTypeInfo.SOURCE.PARTICIPANT_DATA

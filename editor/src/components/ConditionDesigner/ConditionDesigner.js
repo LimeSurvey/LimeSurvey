@@ -60,7 +60,7 @@ export const ConditionDesigner = ({
   const [isApplyButtonDisabled, setIsApplyButtonDisabled] = useState(true)
 
   const shouldConfirmOverwrite =
-    !!question &&
+    !!question?.relevance &&
     !question.scenarios?.length &&
     question.relevance !== QUESTION_RELEVANCE_DEFAULT_VALUE
 
