@@ -33,13 +33,16 @@ class Update700RebuildTableTest extends TestBaseClass
     }
 
     /**
-     * Removes the test tables.
+     * Removes the test tables and the helper function Update_700::doPreparations() creates on PostgreSQL.
      *
      * @return void
      */
     protected function tearDown(): void
     {
         $this->dropTables();
+        if (\Yii::app()->db->driverName === 'pgsql') {
+            \Yii::app()->db->createCommand('DROP FUNCTION IF EXISTS show_create_table(text, text)')->execute();
+        }
         parent::tearDown();
     }
 
