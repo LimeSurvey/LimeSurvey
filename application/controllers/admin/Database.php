@@ -279,6 +279,7 @@ class Database extends SurveyCommonAction
 
         //@todo  here is something wrong ...
         $oSurvey = $surveyModel->findByPk($surveyId);
+        $previousEncryptionMethod = $oSurvey->getResolvedEncryptionMethod();
         $languageList = $oSurvey->additionalLanguages;
         $languageList[] = $oSurvey->language;
 
@@ -328,6 +329,18 @@ class Database extends SurveyCommonAction
             );
             Yii::app()
                 ->setFlashMessage(gT('Survey settings were successfully saved.'));
+            /* Existing survey participants are not re-encrypted */
+            $savedSurvey = $surveyModel->findByPkNoCache($surveyId);
+            if (
+                $savedSurvey
+                && $savedSurvey->hasTokensTable
+                && $savedSurvey->getResolvedEncryptionMethod() !== $previousEncryptionMethod
+            ) {
+                App()->setFlashMessage(
+                    gT("The encryption method was changed, but the existing survey participants were not re-encrypted. Filters and duplicate checks can miss participants encrypted with the previous method. To update them, export the survey participant list, delete the participants and import them again."),
+                    'error'
+                );
+            }
         } catch (PersistErrorException $e) {
             // @todo: Should we be catching only this kind of exceptions or all Throwable?
             // BUt that could show sensitive information
