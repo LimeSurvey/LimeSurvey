@@ -2823,7 +2823,10 @@ class Participant extends LSActiveRecord
             foreach ($duplicates as $duplicate) {
                 $duplicate->decrypt();
             }
-            return $duplicates;
+            /* participant_id not in CPDB (external id, deleted participant) : check firstname, lastname and email */
+            if (!empty($duplicates)) {
+                return $duplicates;
+            }
         }
 
         $duplicateCriteriaAttributes = [
