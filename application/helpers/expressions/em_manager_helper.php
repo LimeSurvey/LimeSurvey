@@ -4634,6 +4634,30 @@ class LimeExpressionManager
     }
 
     /**
+     * Hides {PASSTHRU:...} placeholders of an end URL from the Expression Manager syntax check.
+     * At runtime passthruReplace() replaces them before the URL is processed, so they are not expressions.
+     * Each placeholder is swapped for a unique plain-text marker. Pass the pretty-printed result
+     * through strtr() with the returned map to show the original placeholders again.
+     * @param string $url The URL that may contain {PASSTHRU:...} placeholders
+     * @return array{0: string, 1: array<string, string>} The masked URL, and a map of marker => escaped placeholder
+     */
+    public static function maskPassthruPlaceholders($url)
+    {
+        $markers = [];
+        $markerPrefix = 'LSPASSTHRU' . bin2hex(random_bytes(4)) . 'N';
+        $maskedUrl = preg_replace_callback(
+            '/\{PASSTHRU:[^}]*\}/',
+            function ($matches) use (&$markers, $markerPrefix) {
+                $marker = $markerPrefix . count($markers) . 'X';
+                $markers[$marker] = htmlspecialchars($matches[0], ENT_QUOTES, 'UTF-8');
+                return $marker;
+            },
+            (string) $url
+        );
+        return [$maskedUrl, $markers];
+    }
+
+    /**
      * Expand "self.suffix" and "that.qcode.suffix" into canonical list of variable names
      * @param integer $qseq
      * @param string $varname
@@ -9822,8 +9846,9 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             }
             if ($aSurveyInfo['surveyls_url'] != '') {
                 $LEM->em->ResetErrorsAndWarnings();
-                $LEM->ProcessString($aSurveyInfo['surveyls_urldescription'] . " - " . $aSurveyInfo['surveyls_url']);
-                $sPrint = viewHelper::purified($LEM->GetLastPrettyPrintExpression());
+                [$maskedUrl, $passthruMarkers] = self::maskPassthruPlaceholders($aSurveyInfo['surveyls_url']);
+                $LEM->ProcessString($aSurveyInfo['surveyls_urldescription'] . " - " . $maskedUrl);
+                $sPrint = viewHelper::purified(strtr($LEM->GetLastPrettyPrintExpression(), $passthruMarkers));
                 $errClass = "";
                 if ($LEM->em->HasErrors()) {
                     $errClass = 'danger';
