@@ -34,7 +34,7 @@ export const ExpressionScriptEditorOverlay = ({
   }
 
   const handleApplyClick = () => {
-    if (question?.scenarios.length > 0) {
+    if (question?.scenarios?.length > 0) {
       showConditionOverwriteConfirmationOverlay({
         onConfirm: () => {
           SwalAlert.close()

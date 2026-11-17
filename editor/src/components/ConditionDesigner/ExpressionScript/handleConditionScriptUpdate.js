@@ -1,24 +1,43 @@
 import {
   createBufferOperation,
+  getQuestionById,
   QUESTION_RELEVANCE_DEFAULT_VALUE,
+  STATES,
 } from 'helpers'
+import { queryClient } from 'queryClient'
 
 import { getApiOperationActions, showSuccessMessage } from '../utils'
 
+/**
+ * Applies an ExpressionScript condition to a question.
+ *
+ * The question is resolved by its ID against the current survey, not against
+ * a survey passed in by the caller: this runs from popups that can stay open
+ * while the survey is refreshed, so a survey or indices captured when the popup
+ * opened can be outdated, and the question can be gone. Nothing is applied
+ * when the question no longer exists.
+ * @param {string} script The new condition script.
+ * @param {number|string} qid ID of the question to update.
+ * @param {Function} addToBuffer Adds the operation to the buffer.
+ * @param {Function} update Updates the survey.
+ * @param {Function} onNavigateBack Called after the script was applied.
+ * @returns {void}
+ */
 export const handleConditionScriptUpdate = (
   script,
-  survey,
-  questionIndex,
-  groupIndex,
+  qid,
   addToBuffer,
   update,
   onNavigateBack = () => {}
 ) => {
-  const question = survey.questionGroups[groupIndex].questions[questionIndex]
+  const survey = queryClient.getQueryData([STATES.SURVEY])?.survey
+  const { question, groupIndex, questionIndex } = getQuestionById(qid, survey)
+
+  if (!question) return
 
   if (
     QUESTION_RELEVANCE_DEFAULT_VALUE !== script.trim() &&
-    script.trim() === question.relevance.trim()
+    script.trim() === (question.relevance ?? '').trim()
   )
     return
 

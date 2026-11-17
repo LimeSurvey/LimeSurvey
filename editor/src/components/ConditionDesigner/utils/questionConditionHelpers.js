@@ -31,7 +31,7 @@ export const hasConditionChanged = (
   if (!scenarioToPatch) return false
 
   // Find the original condition in the current scenario
-  const scenario = question.scenarios.find(
+  const scenario = question.scenarios?.find(
     (s) => s.scid === scenarioToPatch.scid
   )
   const original = scenario?.conditions.find(
@@ -56,7 +56,8 @@ export const isDuplicateCondition = (
   scid,
   scenarioToPatch
 ) => {
-  return question.scenarios.some((scenario) =>
+  // A question that never had a condition can come without a scenarios array.
+  return (question.scenarios ?? []).some((scenario) =>
     scenario.conditions.some(
       (existing) =>
         existing.cid != condition.cid && // Don't match against self

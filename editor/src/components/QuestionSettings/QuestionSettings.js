@@ -300,8 +300,6 @@ export const QuestionSettings = ({ surveyId }) => {
         <ExpressionScript
           key={`expression-script-${focused.qid}`}
           question={question}
-          groupIndex={groupIndex}
-          questionIndex={questionIndex}
           onNavigateBack={closeConditionDesignerPanels}
         />
       )
@@ -416,8 +414,6 @@ export const QuestionSettings = ({ surveyId }) => {
               <ExpressionScriptInputBox
                 key={`condition-expression-trigger-${focused.qid}`}
                 question={question}
-                groupIndex={groupIndex}
-                questionIndex={questionIndex}
                 onShowPanel={toggleConditionDesignerPanels}
                 onNavigateBack={closeConditionDesignerPanels}
               />

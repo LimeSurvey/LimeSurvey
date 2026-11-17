@@ -1,7 +1,8 @@
+import { useEffect, useRef } from 'react'
 import { useParams } from 'react-router-dom'
 
 import { useBuffer, useExpressionScriptValidation, useSurvey } from 'hooks'
-import { htmlPopup, QUESTION_RELEVANCE_DEFAULT_VALUE } from 'helpers'
+import { htmlPopup, QUESTION_RELEVANCE_DEFAULT_VALUE, SwalAlert } from 'helpers'
 import { Button } from 'components/UIComponents'
 import { CloseCircleIcon, ExpandIcon } from 'components/icons'
 
@@ -11,14 +12,23 @@ import { showResetAllConditionsOverlay, showWarningMessage } from '../utils'
 
 export const ExpressionScriptInputBox = ({
   question,
-  groupIndex,
-  questionIndex,
   onShowPanel,
   onNavigateBack,
 }) => {
   const { surveyId } = useParams()
-  const { survey, update } = useSurvey(surveyId)
+  const { update } = useSurvey(surveyId)
   const { addToBuffer } = useBuffer()
+
+  // The editor popup is a SweetAlert modal outside of this component, so it
+  // stays open when the panel unmounts, e.g. when the question was removed.
+  const isEditorPopupOpenRef = useRef(false)
+  useEffect(() => {
+    return () => {
+      if (isEditorPopupOpenRef.current) {
+        SwalAlert.close()
+      }
+    }
+  }, [])
 
   const validateExpression = useExpressionScriptValidation(
     surveyId,
@@ -40,9 +50,7 @@ export const ExpressionScriptInputBox = ({
   const handleApply = (newExpressionScript) => {
     handleConditionScriptUpdate(
       newExpressionScript,
-      survey,
-      questionIndex,
-      groupIndex,
+      question.qid,
       addToBuffer,
       update,
       onNavigateBack
@@ -72,6 +80,7 @@ export const ExpressionScriptInputBox = ({
           className="d-flex align-items-center p-0 text-secondary"
           variant="link"
           onClick={() => {
+            isEditorPopupOpenRef.current = true
             htmlPopup({
               html: (
                 <ExpressionScriptEditorOverlay
@@ -83,6 +92,8 @@ export const ExpressionScriptInputBox = ({
               title: '',
               showCloseButton: false,
               width: '1156px',
+            }).finally(() => {
+              isEditorPopupOpenRef.current = false
             })
             maybeShowConditionsOverwriteWarning()
           }}

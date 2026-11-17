@@ -20,14 +20,9 @@ import {
   showUnsavedChangesOverlay,
 } from '../utils'
 
-export const ExpressionScript = ({
-  question,
-  groupIndex,
-  questionIndex,
-  onNavigateBack = () => {},
-}) => {
+export const ExpressionScript = ({ question, onNavigateBack = () => {} }) => {
   const { surveyId } = useParams()
-  const { survey, update } = useSurvey(surveyId)
+  const { update } = useSurvey(surveyId)
   const { focused } = useFocused()
   const { addToBuffer } = useBuffer()
 
@@ -53,9 +48,7 @@ export const ExpressionScript = ({
   const handleApply = () => {
     handleConditionScriptUpdate(
       content,
-      survey,
-      questionIndex,
-      groupIndex,
+      question.qid,
       addToBuffer,
       update,
       onNavigateBack
