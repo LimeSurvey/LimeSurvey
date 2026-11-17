@@ -9158,7 +9158,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
      * Remember whether the "No answer" radio of a single choice question on the submitted page was left untouched.
      * An untouched radio group isn't posted at all, while a checked "No answer" radio posts an empty value.
      * @param array $qinfo The question info, as in $questionSeq2relevance
-     * @param string $sgqa The SGQA of the question
+     * @param string $sgqa The field name of the list answer (Q + question ID), without its other or comment field
      * @return void
      */
     private function setNoAnswerUntouched(array $qinfo, $sgqa)
@@ -9212,7 +9212,8 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             $grelevant = (isset($_POST['relevanceG' . $gseq]) ? ($_POST['relevanceG' . $gseq] == 1) : false);
             $_SESSION[$LEM->sessid]['relevanceStatus'][$qid] = $relevant;
             $_SESSION[$LEM->sessid]['relevanceStatus']['G' . $gseq] = $grelevant;
-            $LEM->setNoAnswerUntouched($qinfo['info'], (string) $qinfo['sgqa']);
+            // The list answer itself: Not the other or comment field of the question
+            $LEM->setNoAnswerUntouched($qinfo['info'], 'Q' . $qid);
             // explode subquestions
             foreach (explode('|', (string) $qinfo['sgqa']) as $sq) {
                 $sqrelevant = true;

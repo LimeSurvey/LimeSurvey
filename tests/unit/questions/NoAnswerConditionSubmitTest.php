@@ -3,13 +3,14 @@
 namespace ls\tests;
 
 /**
- * Submitting a page with a mandatory question that has a condition on the "No answer" option of a list (radio)
+ * Submitting a page with a mandatory question that has a condition on the "No answer" option of a single choice
  * question on the same page: The server must agree with the browser on whether the question is shown.
  */
 class NoAnswerConditionSubmitTest extends TestBaseClass
 {
     /**
-     * Import the survey, make the question with the "No answer" condition mandatory and activate the survey.
+     * Import the survey and make the question with the "No answer" condition mandatory.
+     * The survey stays inactive, so the type of the list question can change between tests.
      * @return void
      */
     public static function setUpBeforeClass(): void
@@ -29,8 +30,6 @@ class NoAnswerConditionSubmitTest extends TestBaseClass
         $survey = \Survey::model()->findByPk(self::$surveyId);
         $survey->shownoanswer = 'Y';
         $survey->save();
-
-        self::$testHelper->activateSurvey(self::$surveyId);
     }
 
     /**
@@ -45,12 +44,30 @@ class NoAnswerConditionSubmitTest extends TestBaseClass
     }
 
     /**
-     * An untouched "No answer" radio hides the mandatory question in the browser, so it must not block the page.
-     * @return void
+     * Variants of the list question: Question type, "Other" option and the suffix of the extra field that is
+     * always posted (the comment or the "Other" text), if any.
+     * @return array<string, array{string, string, string|null}>
      */
-    public function testUntouchedNoAnswerDoesNotBlockNavigation()
+    public static function listQuestionProvider()
     {
-        $moveResult = $this->submitFirstPage(false);
+        return [
+            'list' => [\Question::QT_L_LIST, 'N', null],
+            'list with comment' => [\Question::QT_O_LIST_WITH_COMMENT, 'N', '_Ccomment'],
+            'list with other' => [\Question::QT_L_LIST, 'Y', '_Cother'],
+        ];
+    }
+
+    /**
+     * An untouched "No answer" radio hides the mandatory question in the browser, so it must not block the page.
+     * @param string $type The type of the list question
+     * @param string $other Whether the list question has an "Other" option (Y or N)
+     * @param string|null $extraFieldSuffix The suffix of the extra field of the list question, if any
+     * @return void
+     * @dataProvider listQuestionProvider
+     */
+    public function testUntouchedNoAnswerDoesNotBlockNavigation($type, $other, $extraFieldSuffix)
+    {
+        $moveResult = $this->submitFirstPage($type, $other, $extraFieldSuffix, false);
 
         $this->assertFalse((bool) $moveResult['mandViolation'], 'The hidden mandatory question must not block the page');
         $this->assertNotEquals(0, $moveResult['gseq'], 'The survey must move to the next page');
@@ -58,11 +75,15 @@ class NoAnswerConditionSubmitTest extends TestBaseClass
 
     /**
      * An explicitly checked "No answer" shows the mandatory question, so leaving it empty is a violation.
+     * @param string $type The type of the list question
+     * @param string $other Whether the list question has an "Other" option (Y or N)
+     * @param string|null $extraFieldSuffix The suffix of the extra field of the list question, if any
      * @return void
+     * @dataProvider listQuestionProvider
      */
-    public function testExplicitNoAnswerRequiresMandatoryQuestion()
+    public function testExplicitNoAnswerRequiresMandatoryQuestion($type, $other, $extraFieldSuffix)
     {
-        $moveResult = $this->submitFirstPage(true);
+        $moveResult = $this->submitFirstPage($type, $other, $extraFieldSuffix, true);
 
         $this->assertTrue((bool) $moveResult['mandViolation'], 'The shown mandatory question must be answered');
         $this->assertSame(0, $moveResult['gseq'], 'The survey must stay on the first page');
@@ -70,23 +91,30 @@ class NoAnswerConditionSubmitTest extends TestBaseClass
 
     /**
      * Start the survey in group by group mode and submit the first page with the mandatory question left empty.
+     * @param string $type The type of the list question
+     * @param string $other Whether the list question has an "Other" option (Y or N)
+     * @param string|null $extraFieldSuffix The suffix of the extra field of the list question, if any
      * @param boolean $checkNoAnswer Whether the "No answer" radio of the list question is checked
      * @return array The move result
      */
-    private function submitFirstPage($checkNoAnswer)
+    private function submitFirstPage($type, $other, $extraFieldSuffix, $checkNoAnswer)
     {
         list($listQuestion, , $listSgqa) = self::$testHelper->getSgqa('Q00', self::$surveyId);
         list($mandatoryQuestion, , $mandatorySgqa) = self::$testHelper->getSgqa('G01Q02', self::$surveyId);
+        $listQuestion->type = $type;
+        $listQuestion->other = $other;
+        $this->assertTrue($listQuestion->save(), 'The list question must be saved');
 
         \Yii::app()->setConfig('surveyID', self::$surveyId);
         \Yii::app()->setController(new DummyController('dummyid'));
+        \LimeExpressionManager::SetDirtyFlag();
         \buildsurveysession(self::$surveyId);
         \LimeExpressionManager::SetSurveyId(self::$surveyId);
         \LimeExpressionManager::StartSurvey(
             self::$surveyId,
             'group',
             self::$testHelper->getSurveyOptions(self::$surveyId),
-            false,
+            true,
             0
         );
         \LimeExpressionManager::NavigateForwards();
@@ -100,6 +128,10 @@ class NoAnswerConditionSubmitTest extends TestBaseClass
             'sid' => self::$surveyId,
             $mandatorySgqa => '',
         ];
+        if ($extraFieldSuffix !== null) {
+            // The comment or "Other" text field is posted even when the radios are untouched
+            $_POST[$listSgqa . $extraFieldSuffix] = '';
+        }
         if ($checkNoAnswer) {
             $_POST[$listSgqa] = '';
         }
