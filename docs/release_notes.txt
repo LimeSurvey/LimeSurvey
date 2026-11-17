@@ -34,6 +34,38 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 7.10.0 (build 261109) to 7.11.0 (build 261116) November 16, 2026
++New feature #JD-222: Align Single choice buttons editor preview with survey theme (#5513) (Adil Moumni Abdou)
+-Fixed issue: Database update to 7.0 failed with "Incorrect decimal value" or mixed other answers into a ranking question when another question's column name looked like one of its rank columns (Carsten Schmitz)
+-Fixed issue: A11y improvements in import and copy survey (LS-NEW-092 to LS-NEW-101) (#5522) (Anblik Audit Team)
+-Fixed issue: A11y improvements in CPDB share panel filters and participant modals (LS-NEW-073 to LS-NEW-082) (#5507) (Anblik Audit Team)
+-Fixed issue: A11y improvements in CPDB participant modals (LS-NEW-083 to LS-NEW-091) (#5508) (Anblik Audit Team)
+-Fixed issue #LE-921: Deleting question group while focusing an inner question crashes app (#5548) (haythem chibani)
+-Fixed issue #JD-221: Statistics bar charts axes have different font styles (#5516) (SaraDimoska)
+-Fixed issue #JD-196: Redesign question menu in Structure panel (#5462) (Adil Moumni Abdou)
+-Fixed issue #JD-193: Use list view for multiple short text statistics (#5442) (Adil Moumni Abdou)
+-Fixed issue #AT-2327: Edited text reverts to old value when refocusing a content editor (ramishenouda)
+-Fixed issue #AT-2231: Exported survey themes were missing their empty folders (e.g. views), so the re-imported theme failed in the theme editor (#5536) (Tim Willig)
+-Fixed issue #20858: Expert mode statistics showed a graph only for the first subquestion of a question, and it could show the data of another subquestion (Carsten Schmitz)
+-Fixed issue #20856: Messages of searchable dropdowns in the administration (e.g. "No results found") were always shown in English (Carsten Schmitz)
+-Fixed issue #20849: "Download archive" button was not visible after exporting many surveys from the survey list (Carsten Schmitz)
+-Fixed issue #20848: [security] Authorization bypass in import of responses from a deactivated survey table. Severity: Medium (CVSS 5.4, AV:N/AC:L/PR:L/UI:N/S:U/C:L/I:L/A:N). An authenticated user allowed to create responses in their own survey could copy the response records of any other survey into their own survey and read the access codes, IP addresses and timestamps of its respondents. Affects versions 2.05 and later. Reported by: DenisChenu. (#5560) (Carsten Schmitz)
+-Fixed issue #20847: Context change to modal – Incorrect focus management (#5535) (Denis Chenu)
+-Fixed issue #20826: New editor did not load (blank page, then "404 Not Found") on servers without URL rewriting (Carsten Schmitz)
+-Fixed issue #20776: Untranslated question group settings in new editor (#5444) (haythem chibani)
+-Fixed issue #JD-195: Redesign survey structure items (Adil Moumni Abdou)
+-Fixed issue #JD-196: Redesign question menu in Structure panel (Adil Moumni Abdou)
+#Updated translation: Portuguese (Portugal) by algarvio, ricardo.santos, translations_bot, xastrefernando
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by d_inoue, translations_bot
+#Updated translation: German by translations_bot
+#Updated translation: French (France) by DenisChenu, translations_bot
+#Updated translation: Finnish by c_schmitz, Jmantysalo, translations_bot
+#Updated translation: Czech by jelen1, translations_bot
+#Updated translation: Catalan by qualitatuvic, translations_bot
+
+
 Changes from 7.9.1 (build 261102) to 7.10.0 (build 261109) November 9, 2026
 +New feature #JD-123: Bar chart orientation switch (#5441) (SaraDimoska)
 +New feature #JD-195: Re-design survey structure items (Adil Moumni Abdou)
