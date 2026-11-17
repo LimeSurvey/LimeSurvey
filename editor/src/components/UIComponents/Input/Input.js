@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useContext, useEffect, useRef } from 'react'
 import { Form } from 'react-bootstrap'
 
 import { useAppState } from 'hooks'
@@ -6,7 +6,7 @@ import { STATES } from 'helpers'
 import { getTooltipMessages } from 'helpers/options'
 
 import { TooltipContainer } from '../../TooltipContainer/TooltipContainer'
-import { useQueryClient } from '@tanstack/react-query'
+import { QueryClientContext } from '@tanstack/react-query'
 
 export const Input = ({
   value = null,
@@ -44,24 +44,18 @@ export const Input = ({
   allowEmpty = true,
   focus,
 }) => {
-  const [canUseAppState, setCanUseAppState] = useState(false)
   const inputRef = inputRefProp ? inputRefProp : useRef(null)
 
-  useEffect(() => {
-    try {
-      useQueryClient()
-      setCanUseAppState(true)
-    } catch (error) {
-      setCanUseAppState(false)
-    }
-  }, [])
-
+  // The app state lives in React Query, so it can only be read inside a
+  // QueryClientProvider. Whether there is one doesn't change while the
+  // input is mounted, so the conditional hook call keeps a stable order.
+  const canUseAppState = !!useContext(QueryClientContext)
   const [isSurveyActive] = canUseAppState
-    ? useAppState(STATES.IS_SURVEY_ACTIVE)
+    ? useAppState(STATES.IS_SURVEY_ACTIVE, false)
     : [false]
-  const [hasSurveyUpdatePermission] = canUseAppState
-    ? useAppState(STATES.HAS_SURVEY_UPDATE_PERMISSION)
-    : [true]
+  // Not read from the app state yet: That state is only set on the survey
+  // route and persisted between surveys.
+  const hasSurveyUpdatePermission = true
 
   const inputDisabled =
     (isSurveyActive && activeDisabled) ||
