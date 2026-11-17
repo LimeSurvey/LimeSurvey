@@ -1256,6 +1256,15 @@ class Update_700 extends DatabaseUpdateBase
         }
     }
 
+    /**
+     * Returns the SQL that reads the CREATE TABLE statement of an existing table.
+     * SQL Server has no SHOW CREATE TABLE, so the statement is built from sys.columns,
+     * keeping each column's length, precision, scale and collation: The old data is copied
+     * into the re-created table, so any narrower definition truncates or rounds it.
+     *
+     * @param string $tableName Name of the table, including the table prefix
+     * @return string|null SQL returning the statement in the "Create Table" column, null for unsupported drivers
+     */
     public function showCreateTable(string $tableName)
     {
         switch (Yii::app()->db->getDriverName()) {
@@ -1271,11 +1280,19 @@ class Update_700 extends DatabaseUpdateBase
                 SELECT
                         'CREATE TABLE '  + SCHEMA_NAME(t.schema_id) + '.' + t.name + ' (' +
                                 STUFF ((
-                                        SELECT ', [' + c2.name + '] ' + type_name(c2.user_type_id) + 
-                                                            CASE
-                                                                    WHEN type_name(c2.user_type_id) = 'nvarchar' THEN ' (256)'
-                                                                        ELSE ''
-                                                                END +
+                                        SELECT ', [' + c2.name + '] ' + type_name(c2.user_type_id) +
+                                                CASE
+                                                        WHEN type_name(c2.user_type_id) IN ('nvarchar', 'nchar', 'varchar', 'char', 'varbinary', 'binary') AND c2.max_length = -1 THEN '(max)'
+                                                        WHEN type_name(c2.user_type_id) IN ('nvarchar', 'nchar') THEN '(' + CAST(c2.max_length / 2 AS VARCHAR(10)) + ')'
+                                                        WHEN type_name(c2.user_type_id) IN ('varchar', 'char', 'varbinary', 'binary') THEN '(' + CAST(c2.max_length AS VARCHAR(10)) + ')'
+                                                        WHEN type_name(c2.user_type_id) IN ('decimal', 'numeric') THEN '(' + CAST(c2.precision AS VARCHAR(10)) + ',' + CAST(c2.scale AS VARCHAR(10)) + ')'
+                                                        WHEN type_name(c2.user_type_id) IN ('datetime2', 'datetimeoffset', 'time') THEN '(' + CAST(c2.scale AS VARCHAR(10)) + ')'
+                                                        ELSE ''
+                                                END +
+                                                CASE
+                                                        WHEN c2.collation_name IS NOT NULL THEN ' COLLATE ' + c2.collation_name
+                                                        ELSE ''
+                                                END +
                                                 CASE
                                                         WHEN c2.is_nullable = 1 THEN ' NULL'
                                                         ELSE ' NOT NULL'
