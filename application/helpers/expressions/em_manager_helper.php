@@ -4854,6 +4854,7 @@ class LimeExpressionManager
         $LEM->surveyOptions['tempdir'] = (isset($aSurveyOptions['tempdir']) ? $aSurveyOptions['tempdir'] : '/temp/');
         $LEM->surveyOptions['token'] = (isset($aSurveyOptions['token']) ? $aSurveyOptions['token'] : null);
         $LEM->surveyOptions['savequotaexit'] = (isset($aSurveyOptions['savequotaexit']) ? $aSurveyOptions['savequotaexit'] : false);
+        $LEM->surveyOptions['shownoanswer'] = $survey->isShowNoAnswer;
         $LEM->debugLevel = $debugLevel;
         $_SESSION[$LEM->sessid]['LEMdebugLevel'] = $debugLevel; // need access to SESSION to decide whether to cache serialized instance of $LEM
         switch ($surveyMode) {
@@ -6400,6 +6401,10 @@ class LimeExpressionManager
         }
         // cache results
         $relevanceEqn = htmlspecialchars_decode((string) $relevanceEqn, ENT_QUOTES);  // TODO is this needed?
+        // is_noanswer() depends on the page of the question, so the same equation can differ between groups
+        if (strpos($relevanceEqn, 'is_noanswer(') !== false) {
+            unset($LEM->ParseResultCache[$relevanceEqn]);
+        }
         if (isset($LEM->ParseResultCache[$relevanceEqn])) {
             $qrel = $LEM->ParseResultCache[$relevanceEqn]['result'];
             if (($LEM->debugLevel & LEM_PRETTY_PRINT_ALL_SYNTAX) == LEM_PRETTY_PRINT_ALL_SYNTAX) {
@@ -9150,6 +9155,44 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
     }
 
     /**
+     * Remember whether the "No answer" radio of a single choice question on the submitted page was left untouched.
+     * An untouched radio group isn't posted at all, while a checked "No answer" radio posts an empty value.
+     * @param array $qinfo The question info, as in $questionSeq2relevance
+     * @param string $sgqa The SGQA of the question
+     * @return void
+     */
+    private function setNoAnswerUntouched(array $qinfo, $sgqa)
+    {
+        if (!in_array($qinfo['type'], self::NO_ANSWER_RADIO_TYPES, true)) {
+            return;
+        }
+        $hasNoAnswerRadio = ($this->surveyOptions['shownoanswer'] ?? true)
+            && $qinfo['mandatory'] != 'Y'
+            && $qinfo['mandatory'] != 'S';
+        if ($hasNoAnswerRadio && !isset($_POST[$sgqa])) {
+            $_SESSION[$this->sessid]['noAnswerUntouched'][$sgqa] = true;
+        } else {
+            unset($_SESSION[$this->sessid]['noAnswerUntouched'][$sgqa]);
+        }
+    }
+
+    /**
+     * Check whether the "No answer" radio of a question was left untouched and the question is on the page of the
+     * expression being processed: The browser then doesn't count the empty value as "No answer" either.
+     * @param string $sgqa The SGQA of the question
+     * @return boolean True if the radio was left untouched on the same page
+     */
+    public static function isNoAnswerUntouchedOnPage($sgqa)
+    {
+        $LEM =& LimeExpressionManager::singleton();
+        if (empty($_SESSION[$LEM->sessid]['noAnswerUntouched'][$sgqa]) || !isset($LEM->knownVars[$sgqa])) {
+            return false;
+        }
+        $var = $LEM->knownVars[$sgqa];
+        return $LEM->em->isOnCurrentPage($var['gseq'] ?? -1, $var['qseq'] ?? -1);
+    }
+
+    /**
      * Cleanse the $_POSTed data and update $_SESSION variables accordingly
      */
     public static function ProcessCurrentResponses()
@@ -9169,6 +9212,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             $grelevant = (isset($_POST['relevanceG' . $gseq]) ? ($_POST['relevanceG' . $gseq] == 1) : false);
             $_SESSION[$LEM->sessid]['relevanceStatus'][$qid] = $relevant;
             $_SESSION[$LEM->sessid]['relevanceStatus']['G' . $gseq] = $grelevant;
+            $LEM->setNoAnswerUntouched($qinfo['info'], (string) $qinfo['sgqa']);
             // explode subquestions
             foreach (explode('|', (string) $qinfo['sgqa']) as $sq) {
                 $sqrelevant = true;
