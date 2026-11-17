@@ -1463,6 +1463,17 @@ class Survey extends LSActiveRecord implements PermissionInterface
     {
         return ($this->oOptions->allowregister === 'Y');
     }
+
+    /**
+     * Check if the survey participant email is encrypted with the hardened method :
+     * public registration can not check if an email is already registered, then it is not allowed
+     * @return bool
+     */
+    public function getHasHardenedEncryptedEmail()
+    {
+        return ($this->getTokenEncryptionOptions()['columns']['email'] ?? 'N') === 'Y'
+            && $this->getResolvedEncryptionMethod() === 'H';
+    }
     /**
      * @return bool
      */

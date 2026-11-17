@@ -116,7 +116,8 @@ class RegisterController extends LSYii_Controller
         Yii::app()->setLanguage($sLanguage);
         if (!$oSurvey) {
             throw new CHttpException(404, "The survey in which you are trying to participate does not seem to exist. It may have been deleted or the link you were given is outdated or incorrect.");
-        } elseif (!$oSurvey->getIsAllowRegister() || !tableExists("{{tokens_{$iSurveyId}}}")) {
+        } elseif (!$oSurvey->getIsAllowRegister() || !tableExists("{{tokens_{$iSurveyId}}}") || $oSurvey->getHasHardenedEncryptedEmail()) {
+            /* Hardened encrypted email : an already registered email can not be found */
             throw new CHttpException(404, "The survey in which you are trying to register don't accept registration. It may have been updated or the link you were given is outdated or incorrect.");
         } elseif (!is_null($oSurvey->expires) && $oSurvey->expires < gmdate("Y-m-d H:i:s")) {
             $this->redirect(array('survey/index', 'sid' => $iSurveyId, 'lang' => $sLanguage));
