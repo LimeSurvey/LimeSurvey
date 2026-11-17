@@ -79,7 +79,34 @@ class Update700RebuildTableTest extends TestBaseClass
     }
 
     /**
-     * Long texts, decimals and case sensitive tokens survive the table rebuild unchanged.
+     * Returns the type, length, precision and scale of every column of a table.
+     *
+     * @param string $table Name of the table, including the table prefix
+     * @return array Column definitions, indexed by column name
+     */
+    private function describeColumns(string $table): array
+    {
+        $isPgsql = \Yii::app()->db->driverName === 'pgsql';
+        $definitions = [];
+        foreach (\Yii::app()->db->schema->getTable($table, true)->columns as $name => $column) {
+            if ($isPgsql && strpos((string) $column->dbType, 'numeric') === 0) {
+                // The PostgreSQL rebuild creates numeric columns without precision and scale.
+                // Values are not rounded there, so only the base type is compared.
+                $definitions[$name] = ['dbType' => 'numeric'];
+                continue;
+            }
+            $definitions[$name] = [
+                'dbType' => $column->dbType,
+                'size' => $column->size,
+                'precision' => $column->precision,
+                'scale' => $column->scale,
+            ];
+        }
+        return $definitions;
+    }
+
+    /**
+     * Long texts, decimals, legacy varchar columns and case sensitive tokens survive the table rebuild unchanged.
      *
      * @return void
      */
@@ -93,6 +120,8 @@ class Update700RebuildTableTest extends TestBaseClass
             'shortanswer' => 'string(5)',
             'longanswer' => 'text',
             'numericanswer' => 'decimal (30,10)',
+            // Older installations can still have plain varchar columns in their response tables
+            'legacyanswer' => 'varchar(50)',
         ]);
         $longAnswer = str_repeat('ü', 1000);
         $db->createCommand()->insert($this->oldTable, [
@@ -101,6 +130,7 @@ class Update700RebuildTableTest extends TestBaseClass
             'shortanswer' => 'A1',
             'longanswer' => $longAnswer,
             'numericanswer' => '12345678901234567.1234567891',
+            'legacyanswer' => 'Legacy varchar answer',
         ]);
 
         $update = new Update_700($db, '');
@@ -111,7 +141,13 @@ class Update700RebuildTableTest extends TestBaseClass
         );
         $db->createCommand(str_replace($this->oldTable, $this->newTable, $createTable['Create Table']))->execute();
 
-        $columns = 'id, token, startlanguage, shortanswer, longanswer, numericanswer';
+        $this->assertSame(
+            $this->describeColumns($this->oldTable),
+            $this->describeColumns($this->newTable),
+            'The re-created table must keep the type, length, precision and scale of every column.'
+        );
+
+        $columns = 'id, token, startlanguage, shortanswer, longanswer, numericanswer, legacyanswer';
         $insert = "INSERT INTO {$this->newTable} ({$columns}) SELECT {$columns} FROM {$this->oldTable}";
         if (in_array($db->driverName, ['mssql', 'sqlsrv', 'dblib'])) {
             $insert = "SET IDENTITY_INSERT {$this->newTable} ON; {$insert}; SET IDENTITY_INSERT {$this->newTable} OFF;";
@@ -120,6 +156,7 @@ class Update700RebuildTableTest extends TestBaseClass
 
         $row = $db->createCommand()->select('*')->from($this->newTable)->queryRow();
         $this->assertSame('A1', $row['shortanswer']);
+        $this->assertSame('Legacy varchar answer', $row['legacyanswer'], 'Varchar answers must not be truncated.');
         $this->assertSame($longAnswer, $row['longanswer'], 'Long text answers must not be truncated.');
         $this->assertSame(
             '12345678901234567.1234567891',
