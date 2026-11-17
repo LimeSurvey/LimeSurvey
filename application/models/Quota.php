@@ -147,6 +147,20 @@ class Quota extends LSActiveRecord
             $aQuotaColumns = array();
             foreach ($this->quotaMembers as $member) {
                 $aMemberInfo = $member->memberInfo;
+                /* Hardened encrypted answers can not be compared in SQL : the quota can not be counted */
+                if (!empty($aMemberInfo['encrypted']) && $this->survey->getResolvedEncryptionMethod() === 'H') {
+                    \Yii::log(
+                        sprintf(
+                            "Invalid quota member: survey %d, quota %d, question %s is encrypted with the hardened method",
+                            $this->sid,
+                            $this->id,
+                            $aMemberInfo['title']
+                        ),
+                        'warning',
+                        'application.model.Quota'
+                    );
+                    return null;
+                }
                 if (!in_array($aMemberInfo['fieldname'], $aExistingColumnName)) {
                     \Yii::log(
                         sprintf(

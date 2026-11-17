@@ -25,12 +25,25 @@ $quotaActions = [
 
 $tooltip = $quotaActions[$oQuota->action]['description'] ?? gT("Unknown action");
 $icon = $quotaActions[$oQuota->action]['icon'] ?? '';
+/* An encrypted member with hardened encryption : the quota can not be counted */
+$hardenedEncryptedQuota = false;
+if ($oSurvey->getResolvedEncryptionMethod() === 'H') {
+    foreach ($oQuota->quotaMembers as $oMember) {
+        if (!empty($oMember->memberInfo['encrypted'])) {
+            $hardenedEncryptedQuota = true;
+            break;
+        }
+    }
+}
 ?>
 
 <?php /*echo "<pre>".print_r($oQuota->mainLanguagesetting->attributes,true)."</pre>";*/ ?>
 <div class="card card-primary <?= ($oQuota->active == 1 ? 'border-left-success' : 'inactive border-left-warning') ?>">
     <div class="card-header ">
         <div class="float-end small">
+            <?php if ($hardenedEncryptedQuota) : ?>
+                <span class="text-danger fw-bold"><span class="ri-error-warning-fill"></span> <?php eT("Invalid quota"); ?></span>
+            <?php endif; ?>
             <span><span class="<?= $icon ?>"></span> <?= $tooltip ?></span>
             <?php if ($oQuota->autoload_url == 1) :?>
                 <span><span class=" ri-external-link-fill"></span> <?php echo gT('Autoload URL:') . ' ' . htmlentities((string) $oQuota->mainLanguagesetting?->quotals_url);?></span>

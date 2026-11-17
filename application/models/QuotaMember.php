@@ -152,6 +152,7 @@ class QuotaMember extends LSActiveRecord
                 'value' => $sValue,
                 'qid' => $this->qid,
                 'fieldname' => $sFieldName,
+                'encrypted' => $this->question->encrypted === 'Y',
             );
         }
         return [];
