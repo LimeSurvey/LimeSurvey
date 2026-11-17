@@ -50,6 +50,19 @@ define('LEM_PRETTY_PRINT_ALL_SYNTAX', 32);
 class LimeExpressionManager
 {
     /**
+     * Single choice question types with a "No answer" radio: A condition on "No answer" requires that radio
+     * to be checked on the same page, since "No answer" isn't always preselected.
+     * @var string[]
+     */
+    const NO_ANSWER_RADIO_TYPES = [
+        Question::QT_L_LIST,
+        Question::QT_O_LIST_WITH_COMMENT,
+        Question::QT_G_GENDER,
+        Question::QT_Y_YES_NO_RADIO,
+        Question::QT_5_POINT_CHOICE,
+    ];
+
+    /**
      * LimeExpressionManager is a singleton.  $instance is its storage location.
      * @var LimeExpressionManager
      */
@@ -1012,6 +1025,7 @@ class LimeExpressionManager
             }
 
             // fix fieldnames
+            $noAnswerVariable = null;
             if ($row['type'] == '' && preg_match('/^{.+}$/', (string) $row['cfieldname'])) {
                 $fieldname = (string)substr((string) $row['cfieldname'], 1, -1);    // {TOKEN:xxxx}
                 $subqid = $fieldname;
@@ -1049,6 +1063,9 @@ class LimeExpressionManager
                 $fieldname = $row['cfieldname'] . '.NAOK';
                 $subqid = $fieldname;
                 $value = $row['value'];
+                if (in_array($row['type'], self::NO_ANSWER_RADIO_TYPES, true)) {
+                    $noAnswerVariable = $row['cfieldname'];
+                }
             }
             if ($_subqid != -1 && $_subqid != $subqid) {
                 $relAndList[] = '(' . implode(' or ', $relOrList) . ')';
@@ -1073,7 +1090,10 @@ class LimeExpressionManager
             } else {
                 // Condition uses ' ' to mean not answered, but internally it is really stored as ''.  Fix this
                 if ($value === '" "' || $value == '""') {
-                    if ($row['method'] == '==') {
+                    if ($row['method'] == '==' && $noAnswerVariable !== null) {
+                        // Only an explicit "No answer" counts on the same page, not an untouched question
+                        $relOrList[] = "is_noanswer(" . $fieldname . ", " . $noAnswerVariable . ".sgqa)";
+                    } elseif ($row['method'] == '==') {
                         $relOrList[] = "is_empty(" . $fieldname . ")";
                     } elseif ($row['method'] == '!=') {
                         $relOrList[] = "!is_empty(" . $fieldname . ")";

@@ -933,6 +933,29 @@ function LEMempty(v)
     return false;
 }
 
+/**
+ * Check whether a single choice question is answered with "No answer".
+ * When the question is on the current page and has a "No answer" radio, that radio must be checked:
+ * An untouched question (no preselected "No answer") is not answered with "No answer" yet.
+ * Otherwise an empty value means "No answer".
+ * @param {string} v The value of the question
+ * @param {string} sgqa The SGQA of the question, used as name of its radio inputs
+ * @return {boolean}
+ */
+function LEMis_noanswer(v, sgqa)
+{
+    if (!LEMempty(v)) {
+        return false;
+    }
+    var radios = document.getElementsByName(sgqa);
+    for (var i = 0; i < radios.length; i++) {
+        if (radios[i].type === 'radio' && radios[i].value === '') {
+            return radios[i].checked;
+        }
+    }
+    return true;
+}
+
 function LEMbool(v)
 {
     bool = new Boolean(v);
