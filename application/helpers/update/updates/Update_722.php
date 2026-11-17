@@ -21,14 +21,14 @@ class Update_722 extends DatabaseUpdateBase
         if (!isset($surveysTable->columns['encryption_method'])) {
             addColumn('{{surveys}}', 'encryption_method', "string(1) DEFAULT 'I'");
         } else {
-            alterColumn('{{surveys}}', 'encryption_method', "string(1) DEFAULT 'I'");
+            alterColumn('{{surveys}}', 'encryption_method', "string(1)", true, 'I');
         }
 
         $groupSettingsTable = $this->db->schema->getTable('{{surveys_groupsettings}}', true);
         if (!isset($groupSettingsTable->columns['encryption_method'])) {
             addColumn('{{surveys_groupsettings}}', 'encryption_method', "string(1) DEFAULT 'I'");
         } else {
-            alterColumn('{{surveys_groupsettings}}', 'encryption_method', "string(1) DEFAULT 'I'");
+            alterColumn('{{surveys_groupsettings}}', 'encryption_method', "string(1)", true, 'I');
         }
         /* Set global one to B (basic) if it's not hardened (only if I), didn't update any response table */
         $this->db->createCommand()->update("{{surveys_groupsettings}}", ["encryption_method" => "B"], "gsid = 0 AND (encryption_method IS NULL OR encryption_method <> 'H')");
@@ -40,7 +40,7 @@ class Update_722 extends DatabaseUpdateBase
         if (!isset($participantsTable->columns['duplicatefinder'])) {
             addColumn('{{participants}}', 'duplicatefinder', "string(64) NOT NULL DEFAULT ''");
         } else {
-            alterColumn('{{participants}}', 'duplicatefinder', "string(64) NOT NULL DEFAULT ''");
+            alterColumn('{{participants}}', 'duplicatefinder', "string(64)", false, '');
         }
         /* Add the index , do not break if it already exist */
         try {
