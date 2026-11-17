@@ -26,7 +26,7 @@ import {
  */
 export const SurveyLogicProvider = ({ children }) => {
   const { surveyId } = useParams()
-  const { setFocused, groupIndex, questionIndex } = useFocused()
+  const { setFocused } = useFocused()
 
   const { surveyPatch, fetchSurvey, update, refetchQuestionsFieldNamesMap } =
     useSurvey(surveyId)
@@ -99,7 +99,8 @@ export const SurveyLogicProvider = ({ children }) => {
      */
     const thenCallback = (result) => {
       const survey = queryClient.getQueryData([STATES.SURVEY]).survey
-      const focused = queryClient.getQueryData([STATES.FOCUSED_ENTITY]).focused
+      const focusState = queryClient.getQueryData([STATES.FOCUSED_ENTITY]) ?? {}
+      const focused = focusState.focused
       const currentBuffer = new OperationsBuffer(
         queryClient.getQueryData([STATES.BUFFER]),
         RandomNumber()
@@ -120,7 +121,11 @@ export const SurveyLogicProvider = ({ children }) => {
       )
 
       if (mapResult.focused && groupsTempIdMapping) {
-        setFocused(mapResult.focused, groupIndex, questionIndex)
+        setFocused(
+          mapResult.focused,
+          focusState.groupIndex,
+          focusState.questionIndex
+        )
       }
 
       mapResult = replaceTempIdsInSurveyAndBuffer(
@@ -132,7 +137,11 @@ export const SurveyLogicProvider = ({ children }) => {
       )
 
       if (mapResult.focused && questionsTempIdMapping) {
-        setFocused(mapResult.focused, groupIndex, questionIndex)
+        setFocused(
+          mapResult.focused,
+          focusState.groupIndex,
+          focusState.questionIndex
+        )
       }
 
       mapResult = replaceTempIdsInSurveyAndBuffer(

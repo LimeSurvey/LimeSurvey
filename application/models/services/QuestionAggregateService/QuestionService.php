@@ -311,15 +311,27 @@ class QuestionService
             $data['type'] = $newType;
         }
         $this->changedDependentQuestionIds = [];
+
+        $question->setAttributes($data, false);
+
         if ($oldType !== $newType && !$this->typeChangeKeepsAnswerOptions($oldType, $newType)) {
+            // Validate before deleting, so a refused update keeps the answer options. The conditions
+            // on "Other" are deleted with them: Their refusal doesn't count, save() validates again
+            $question->validate();
+            if (!empty($question->getOtherConditionQuestionCodes())) {
+                $question->clearErrors('other');
+            }
+            if ($question->hasErrors()) {
+                throw new PersistErrorException(
+                    gT('Update failed, could not save.')
+                );
+            }
             $this->changedDependentQuestionIds = $this->removeAnswersAndDependentConditions(
                 (int) $question->qid,
                 (int) $question->sid,
                 $oldType
             );
         }
-
-        $question->setAttributes($data, false);
 
         if (!$question->save()) {
             // The validation refuses to switch "Other" off while conditions use it
