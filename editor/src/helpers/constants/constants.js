@@ -74,6 +74,7 @@ export const STATES = {
 
 export const TUTORIALS = {
   EDITOR_TUTORIAL: 'editorTutorial',
+  EDITOR_TUTORIAL_DISMISSED: 'editorTutorialDismissed',
 }
 
 export const SURVEY_MENU_TITLES = {
