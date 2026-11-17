@@ -171,6 +171,51 @@ class QuestionTypeChangeOtherConditionsTest extends TestBaseClass
     }
 
     /**
+     * Checks that a type change to a type without "Other" keeps the answer options and
+     * deletes only the conditions on "Other".
+     *
+     * @testdox Changing Dropdown to List with comment keeps the answer options and deletes only the conditions on "Other"
+     * @depends testCompatibleTypeChangeKeepsConditions
+     * @return void
+     */
+    public function testTypeChangeWithoutOtherKeepsAnswerOptions()
+    {
+        \Yii::app()->session['loginID'] = 1;
+        $q4 = $this->getQuestion('Q4');
+        $q5 = $this->getQuestion('Q5');
+
+        $questionService = DI::getContainer()->get(QuestionService::class);
+        $questionService->save([
+            'question' => [
+                'sid' => self::$surveyId,
+                'qid' => $q4->qid,
+                'type' => Question::QT_O_LIST_WITH_COMMENT,
+            ],
+        ]);
+
+        $this->assertSame(Question::QT_O_LIST_WITH_COMMENT, $this->getQuestion('Q4')->type);
+        $this->assertSame('N', $this->getQuestion('Q4')->other);
+        $this->assertCount(2, Answer::model()->findAllByAttributes(['qid' => $q4->qid]), 'The answer options must stay');
+        $this->assertCount(
+            0,
+            Condition::model()->findAllByAttributes(['cqid' => $q4->qid, 'value' => '-oth-']),
+            'The condition "Q4 = Other" must be deleted'
+        );
+        $this->assertSame([(int) $q5->qid], $questionService->getChangedDependentQuestionIds());
+
+        // Restore Dropdown with "Other" and its condition for the next tests
+        $questionService->save([
+            'question' => [
+                'sid' => self::$surveyId,
+                'qid' => $q4->qid,
+                'type' => Question::QT_EXCLAMATION_LIST_DROPDOWN,
+                'other' => 'Y',
+            ],
+        ]);
+        $this->addCondition($q5->qid, $q4->qid, "Q{$q4->qid}", '-oth-');
+    }
+
+    /**
      * Checks that the patch response returns the questions whose conditions a type change deleted.
      *
      * @testdox The patch response of an incompatible type change returns the questions whose conditions were deleted
@@ -270,22 +315,21 @@ class QuestionTypeChangeOtherConditionsTest extends TestBaseClass
     /**
      * Checks which question types count as compatible on a type change.
      *
-     * @testdox The answer option layouts group the types whose answer options and "Other" are kept on a type change
+     * @testdox The answer option layouts group the types whose answer options are kept on a type change
      * @return void
      */
     public function testAnswerOptionLayouts()
     {
         $layouts = DI::getContainer()->get(QuestionService::class)->getAnswerOptionLayouts();
 
-        // Compatible: Same answer scales, subquestions and "Other"
+        // Compatible: Same answer scales and subquestions, with or without "Other"
         $this->assertSame($layouts[Question::QT_L_LIST], $layouts[Question::QT_EXCLAMATION_LIST_DROPDOWN]);
-        $this->assertSame($layouts[Question::QT_M_MULTIPLE_CHOICE], $layouts[Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS]);
+        $this->assertSame($layouts[Question::QT_L_LIST], $layouts[Question::QT_O_LIST_WITH_COMMENT]);
         $this->assertSame($layouts[Question::QT_F_ARRAY], $layouts[Question::QT_H_ARRAY_COLUMN]);
-        // Not compatible: List with comment has no "Other", Multiple choice no answer options
-        $this->assertNotSame($layouts[Question::QT_L_LIST], $layouts[Question::QT_O_LIST_WITH_COMMENT]);
-        $this->assertNotSame($layouts[Question::QT_L_LIST], $layouts[Question::QT_M_MULTIPLE_CHOICE]);
+        // Not compatible: Different answer scales
         $this->assertNotSame($layouts[Question::QT_F_ARRAY], $layouts[Question::QT_1_ARRAY_DUAL]);
-        // Without answer options and "Other" there is nothing to keep
+        // Without answer options there is nothing to keep
+        $this->assertArrayNotHasKey(Question::QT_M_MULTIPLE_CHOICE, $layouts);
         $this->assertArrayNotHasKey(Question::QT_S_SHORT_FREE_TEXT, $layouts);
     }
 

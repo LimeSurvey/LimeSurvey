@@ -314,11 +314,13 @@ class QuestionService
 
         $question->setAttributes($data, false);
 
-        if ($oldType !== $newType && !$this->typeChangeKeepsAnswerOptions($oldType, $newType)) {
+        $removeAnswers = $oldType !== $newType && !$this->typeChangeKeepsAnswerOptions($oldType, $newType);
+        $removeOther = $oldType !== $newType && !$this->typeChangeKeepsOther($oldType, $newType);
+        if ($removeAnswers || $removeOther) {
             // Validate before deleting, so a refused update keeps the answer options. The conditions
-            // on "Other" are deleted with them: Their refusal doesn't count, save() validates again
+            // on "Other" are deleted by the type change: Their refusal doesn't count, save() validates again
             $question->validate();
-            if (!empty($question->getOtherConditionQuestionCodes())) {
+            if ($removeOther && !empty($question->getOtherConditionQuestionCodes())) {
                 $question->clearErrors('other');
             }
             if ($question->hasErrors()) {
@@ -329,7 +331,9 @@ class QuestionService
             $this->changedDependentQuestionIds = $this->removeAnswersAndDependentConditions(
                 (int) $question->qid,
                 (int) $question->sid,
-                $oldType
+                $oldType,
+                $removeAnswers,
+                $removeOther
             );
         }
 
@@ -446,12 +450,11 @@ class QuestionService
     }
 
     /**
-     * Checks whether a type change keeps the answer options, the "Other" option
-     * and the conditions on them: Both types have the same answer option layout.
+     * Checks whether a type change keeps the answer options (same answer option layout).
      *
      * @param string $oldType The current question type
      * @param string $newType The new question type
-     * @return bool True if the answer options, "Other" and their conditions are kept
+     * @return bool True if the answer options and the conditions on them are kept
      */
     private function typeChangeKeepsAnswerOptions(string $oldType, string $newType): bool
     {
@@ -461,22 +464,41 @@ class QuestionService
     }
 
     /**
-     * Returns the answer option layout of each type with answer options or
-     * "Other": Its answer scales, subquestions and "Other". A type change
-     * between types with the same layout keeps the answer options, "Other" and
-     * the conditions on them (e.g. List (radio) and List (dropdown)).
+     * Checks whether a type change keeps the conditions on the "Other" option: Both types
+     * have "Other" in the same form, as an answer option (e.g. List (radio) and List
+     * (dropdown)) or as a subquestion (Multiple choice with and without comments).
      *
-     * @return array<string, string> The layout key indexed by question type code
+     * @param string $oldType The current question type
+     * @param string $newType The new question type
+     * @return bool True if the conditions on "Other" are kept, also if the current type has no "Other"
+     */
+    private function typeChangeKeepsOther(string $oldType, string $newType): bool
+    {
+        $types = QuestionType::modelsAttributes();
+        if (empty($types[$oldType]['other'])) {
+            return true;
+        }
+        if (empty($types[$newType]['other'])) {
+            return false;
+        }
+        return $types[$oldType]['answerscales'] === $types[$newType]['answerscales']
+            && $types[$oldType]['subquestions'] === $types[$newType]['subquestions'];
+    }
+
+    /**
+     * Returns the answer option layout (answer scales and subquestions) of each type with answer options.
+     *
+     * A type change between types with the same layout keeps the answer options.
+     *
+     * @return array<string, string> Layout key indexed by question type code.
      */
     public function getAnswerOptionLayouts(): array
     {
         if ($this->answerOptionLayouts === null) {
             $this->answerOptionLayouts = [];
             foreach (QuestionType::modelsAttributes() as $type => $settings) {
-                $hasOther = !empty($settings['other']);
-                if ($settings['answerscales'] > 0 || $hasOther) {
-                    $this->answerOptionLayouts[$type] = $settings['answerscales'] . '-'
-                        . $settings['subquestions'] . '-' . (int) $hasOther;
+                if ($settings['answerscales'] > 0) {
+                    $this->answerOptionLayouts[$type] = $settings['answerscales'] . '-' . $settings['subquestions'];
                 }
             }
         }
@@ -484,17 +506,19 @@ class QuestionService
     }
 
     /**
-     * Deletes the answer options of a question and the conditions on them,
-     * including the conditions on its "Other" option.
+     * Deletes the answer options of a question and the conditions on them, and/or
+     * the conditions on its "Other" option.
      *
      * @param int $questionId Question ID.
      * @param int $surveyId The survey of the question
      * @param string $oldType The type of the question before the change
+     * @param bool $removeAnswers True to delete the answer options and the conditions on them
+     * @param bool $removeOther True to delete the conditions on "Other"
      * @return int[] The questions whose conditions were deleted
      */
-    private function removeAnswersAndDependentConditions($questionId, $surveyId, $oldType)
+    private function removeAnswersAndDependentConditions($questionId, $surveyId, $oldType, bool $removeAnswers, bool $removeOther)
     {
-        $answers = Answer::model()->findAll('qid = :qid', [':qid' => $questionId]);
+        $answers = $removeAnswers ? Answer::model()->findAll('qid = :qid', [':qid' => $questionId]) : [];
         $qids = [];
         foreach ($answers as $answer) {
             $conditions = Condition::model()->findAll(
@@ -508,14 +532,17 @@ class QuestionService
             AnswerL10n::model()->deleteAll('aid = :aid', [':aid' => $answer->aid]);
             $answer->delete();
         }
-        // "Other" goes with the answer options: Its answer option (value -oth-) and its text field
-        [$where, $params] = Question::getOtherConditionsCriteria((int) $questionId, (int) $surveyId, (string) $oldType);
-        $otherConditions = $this->yiiApp->db->createCommand()
-            ->select('c.cid, c.qid')
-            ->from('{{conditions}} c')
-            ->join('{{questions}} q', 'q.qid = c.qid')
-            ->where($where, $params)
-            ->queryAll();
+        // "Other" of the old type: Its answer option (value -oth-) and its text field
+        $otherConditions = [];
+        if ($removeOther) {
+            [$where, $params] = Question::getOtherConditionsCriteria((int) $questionId, (int) $surveyId, (string) $oldType);
+            $otherConditions = $this->yiiApp->db->createCommand()
+                ->select('c.cid, c.qid')
+                ->from('{{conditions}} c')
+                ->join('{{questions}} q', 'q.qid = c.qid')
+                ->where($where, $params)
+                ->queryAll();
+        }
         if (!empty($otherConditions)) {
             Condition::model()->deleteByPk(array_column($otherConditions, 'cid'));
             foreach ($otherConditions as $condition) {
