@@ -278,7 +278,8 @@ class SurveyResponsesExport implements CommandInterface
             QuestionColumnMap::fromQuestionFieldMap(
                 createFieldMap($this->surveyModel, 'full', false, false, $language)
             ),
-            ParticipantResolver::fromSurvey($this->surveyModel)
+            ParticipantResolver::fromSurvey($this->surveyModel),
+            (string) $this->surveyModel->oOptions->encryption_method
         );
 
         return $resolver->resolve($filterSet);

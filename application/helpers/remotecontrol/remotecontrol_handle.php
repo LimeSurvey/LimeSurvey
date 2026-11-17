@@ -535,6 +535,7 @@ class remotecontrol_handle
                     unset($aSurveyData['ipaddr']);
                     unset($aSurveyData['refurl']);
                     unset($aSurveyData['savequotaexit']);
+                    unset($aSurveyData['encryption_method']);
                 }
 
                 if (empty($aSurveyData)) {
@@ -612,18 +613,29 @@ class remotecontrol_handle
             'refurl',
             'savetimings',
             'savequotaexit',
+            'encryption_method',
         ];
         // update survey activation settings
         foreach ($activationSettingNames as $activationSettingName) {
             // use inherited value
             $oSurvey->{$activationSettingName} = $oSurvey->oOptions->{$activationSettingName};
             // override inherited value with user input
-            if (isset($userActivationSettings[$activationSettingName]) && in_array($userActivationSettings[$activationSettingName], ['Y', 'N'])) {
+            $allowedValues = ['Y', 'N'];
+            if ($activationSettingName === 'encryption_method') {
+                $allowedValues = ['B', 'H'];
+            }
+            if (isset($userActivationSettings[$activationSettingName]) && in_array($userActivationSettings[$activationSettingName], $allowedValues, true)) {
                 $oSurvey->{$activationSettingName} = $userActivationSettings[$activationSettingName];
             }
         }
-        // persist changes
-        $oSurvey->save();
+        // persist changes : activation settings are fixed, do not activate if they can not be saved
+        if (!$oSurvey->save()) {
+            return array(
+                'status' => 'Error: survey settings could not be saved',
+                'errors' => $oSurvey->getErrors(),
+                'error_code' => self::ERR_CREATION_FAILED
+            );
+        }
         // attempt to activate the survey
         $aActivateResults = $surveyActivator->activate();
         if (isset($aActivateResults['error'])) {
@@ -671,8 +683,14 @@ class remotecontrol_handle
             $sLanguage = $oSurvey->language;
         }
 
-        $oAllQuestions = Question::model()->getQuestionList($iSurveyID);
-        if (!isset($oAllQuestions)) {
+        $oValidQuestions = $oAllQuestions = Question::model()->getQuestionList($iSurveyID);
+        /* Remove hardened encrypted question */
+        if ($oSurvey->oOptions->encryption_method == 'H') {
+            $oValidQuestions = array_filter($oAllQuestions, function ($oQuestion) {
+                return $oQuestion->encrypted != 'Y' && $oQuestion->parent_qid == 0;
+            });
+        }
+        if (empty($oValidQuestions)) {
             return array('status' => 'No available data', 'error_code' => self::ERR_NO_DATA);
         }
 
@@ -698,6 +716,7 @@ class remotecontrol_handle
                 foreach ($oAllQuestions as $key => $aQuestion) {
                     if (!in_array($aQuestion['gid'], $groupIDs)) {
                         unset($oAllQuestions[$key]);
+                        unset($oValidQuestions[$key]);
                     }
                 }
             } else {
@@ -705,13 +724,13 @@ class remotecontrol_handle
             }
         }
 
-        if (!isset($oAllQuestions)) {
+        if (empty($oValidQuestions)) {
             return array('status' => 'No available data', 'error_code' => self::ERR_NO_DATA);
         }
 
-        usort($oAllQuestions, 'groupOrderThenQuestionOrder');
+        usort($oValidQuestions, 'groupOrderThenQuestionOrder');
 
-        $aSummary = getStatisticsFieldNames($iSurveyID, $oAllQuestions, $sLanguage);
+        $aSummary = getStatisticsFieldNames($iSurveyID, $oValidQuestions, $sLanguage);
 
         $helper = new statistics_helper();
         switch ($docType) {
@@ -4206,15 +4225,10 @@ class remotecontrol_handle
                 $participant['participant_id'] = $participant['id'];
             }
 
-            if (isset($participant['participant_id'])) {
-                $model = Participant::model()->findByPk($participant['participant_id']);
-            } else {
-                $model = Participant::model()->findByAttributes(array(
-                    'firstname' => $participant['firstname'],
-                    'lastname' => $participant['lastname'],
-                    'email' => $participant['email'],
-                    'owner_uid' => Yii::app()->session['loginID']
-                ));
+            /* By participant_id if set, else by firstname, lastname and email of current user (works with encrypted attributes) */
+            $duplicates = Participant::getDuplicates($participant, Yii::app()->session['loginID']);
+            if (!empty($duplicates)) {
+                $model = reset($duplicates);
             }
 
             // Participant not found, so we create a new one

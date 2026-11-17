@@ -2123,6 +2123,7 @@ function recoverSurveyResponses(int $surveyId, string $archivedResponseTableName
     $batchData = [];
     $batchModels = [];
     $survey = Survey::model()->findByPk($surveyId);
+    $encryptionMethod = $survey->oOptions->encryption_method;
     $rankingMap = [];
     foreach ($survey->questions as $q) {
         if ((!$q->parent_qid) && ($q->type === Question::QT_R_RANKING)) {
@@ -2145,13 +2146,18 @@ function recoverSurveyResponses(int $surveyId, string $archivedResponseTableName
         for ($index = 0; $index < count($validatedColumns[$to]); $index++) {
             $source = $validatedColumns[$from][$index];
             $target = $validatedColumns[$to][$index];
-            $targetResponse->{$target} = $archivedResponse[$source];
-            if (in_array($source, $archivedEncryptedAttributes, false) && !in_array($target, $encryptedAttributes, false)) {
-                $targetResponse->{$target} = $archivedResponse->decryptSingle($archivedResponse[$source]);
-            } elseif (!in_array($source, $archivedEncryptedAttributes, false) && in_array($target, $encryptedAttributes, false)) {
-                $targetResponse->{$target} = $archivedResponse->encryptSingle($archivedResponse[$source]);
+            $sourceEncrypted = in_array($source, $archivedEncryptedAttributes, false);
+            $value = $archivedResponse[$source];
+            if ($value === null || $value === '') {
+                $targetResponse->{$target} = $value;
+            } elseif (in_array($target, $encryptedAttributes, false)) {
+                /* Encrypt with the (new) encryption method of the survey : archived values can use the previous one, decrypt tries both */
+                $plainValue = $sourceEncrypted ? LSActiveRecord::decryptSingle($value) : $value;
+                $targetResponse->{$target} = LSActiveRecord::encryptSingle($plainValue, $encryptionMethod);
+            } elseif ($sourceEncrypted) {
+                $targetResponse->{$target} = LSActiveRecord::decryptSingle($value);
             } else {
-                $targetResponse->{$target} = $archivedResponse[$source];
+                $targetResponse->{$target} = $value;
             }
             $dataRow[$target] = $targetResponse->{$target};
         }
@@ -2164,12 +2170,19 @@ function recoverSurveyResponses(int $surveyId, string $archivedResponseTableName
                     $rankingJSONs[$newFieldName] = [];
                 }
 
-                $rankingJSONs[$newFieldName][] = $archivedResponse[$oldFieldName];
+                $value = $archivedResponse[$oldFieldName];
+                if (in_array($oldFieldName, $archivedEncryptedAttributes, false)) {
+                    $value = LSActiveRecord::decryptSingle($value);
+                }
+                $rankingJSONs[$newFieldName][] = $value;
             }
         }
 
         foreach ($rankingJSONs as $newFieldName => $value) {
-            $dataRow[$newFieldName] = json_encode($value);
+            /* The whole JSON is stored in the ranking column : encrypt it with the encryption method of the survey */
+            $dataRow[$newFieldName] = in_array($newFieldName, $encryptedAttributes, false)
+                ? LSActiveRecord::encryptSingle(json_encode($value), $encryptionMethod)
+                : json_encode($value);
         }
         $additionalFields = [
             'token',
@@ -3534,6 +3547,11 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 $skippedQuotaMembers
             );
         }
+        /* Hardened encrypted answers can not be counted : use Basic if a quota uses an encrypted question */
+        $importedSurvey = Survey::model()->findByPkNoCache($iNewSID);
+        if ($importedSurvey && $importedSurvey->forceBasicIfHardenedQuota()) {
+            $results['importwarnings'][] = gT("Basic encryption was set for this survey instead of hardened encryption, because a quota uses an encrypted question.");
+        }
     }
 
     // Batch process INSERTANS conversions to minimize database writes
@@ -4193,6 +4211,8 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
     }
     $iIdResponsesKey = (is_int($iIdKey)) ? $iIdKey : 0; // The key for responses id: id column or first column if not exist
 
+    // Lines before the first response in the file (header and optional deleted first line)
+    $iHeaderLines = $aOptions['bDeleteFistLine'] ? 2 : 1;
     // Import each responses line here
     while ($aResponses = array_shift($aFileResponses)) {
         $iNbResponseLine++;
@@ -4210,6 +4230,15 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
                         $oSurvey = new SurveyDynamic();
                         break;
                     case 'replaceanswers':
+                        /* Decrypt existing values : encryptSave encrypts all encrypted columns, including the ones not in the file */
+                        try {
+                            $oSurvey->decrypt();
+                        } catch (Exception $oException) {
+                            /* Existing values can not be decrypted : error on this response only */
+                            $aResponsesError[] = $aResponses[$iIdResponsesKey];
+                            $CSVImportResult['errors'][] = sprintf(gT("Line %s: %s"), $iNbResponseLine + $iHeaderLines, CHtml::encode($oException->getMessage()));
+                            $oSurvey = false;
+                        }
                         break;
                     case 'skip':
                         $oSurvey = false; // Remove existing survey : don't import again
@@ -4312,7 +4341,7 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
                 $oTransaction->rollBack();
                 $aResponsesError[] = $aResponses[$iIdResponsesKey];
                 // Show some error to user ?
-                $CSVImportResult['errors'][] = $oException->getMessage(); // Show it in view
+                $CSVImportResult['errors'][] = sprintf(gT("Line %s: %s"), $iNbResponseLine + $iHeaderLines, CHtml::encode($oException->getMessage())); // Show it in view
                 tracevar($oException->getMessage()); // Show it in console (if debug is set)
             }
         }

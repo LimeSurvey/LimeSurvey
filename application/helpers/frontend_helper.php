@@ -1357,7 +1357,11 @@ function testIfTokenIsValid(array $subscenarios, array $thissurvey, array $aEnte
         if (!$subscenarios['tokenValid']) {
             //Check if there is a clienttoken set
             if ((!isset($clienttoken) || $clienttoken == "")) {
-                if (isset($thissurvey) && $thissurvey['allowregister'] == "Y") {
+                /* Hardened encrypted email : public registration is not allowed */
+                if (
+                    isset($thissurvey) && $thissurvey['allowregister'] == "Y"
+                    && !Survey::model()->findByPk($thissurvey['sid'])->getHasHardenedEncryptedEmail()
+                ) {
                     $renderToken = 'register';
                 } else {
                     $renderToken = 'main';

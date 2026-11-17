@@ -17227,15 +17227,15 @@ body {
   outline: 2px solid #8146F6;
   outline-offset: 2px;
 }
-.btn-group:has(> .btn-check):not(.lime-toggle-btn-group .btn-group):has(> .btn-check:disabled) {
+.btn-group:has(> .btn-check):not(.lime-toggle-btn-group .btn-group):has(> .btn-check:disabled):not(:has(> .btn-check:enabled)) {
   background: #F9F9FB;
 }
-.btn-group:has(> .btn-check):not(.lime-toggle-btn-group .btn-group):has(> .btn-check:disabled) > .btn-outline-secondary {
+.btn-group:has(> .btn-check):not(.lime-toggle-btn-group .btn-group) > .btn-check:disabled + .btn-outline-secondary {
   color: #D3D5DA;
   border-right-color: transparent;
   opacity: 1;
 }
-.btn-group:has(> .btn-check):not(.lime-toggle-btn-group .btn-group):has(> .btn-check:disabled) > .btn-check:checked + .btn-outline-secondary {
+.btn-group:has(> .btn-check):not(.lime-toggle-btn-group .btn-group) > .btn-check:checked:disabled + .btn-outline-secondary {
   background-color: #fff;
   border-right-color: #8146F6;
   color: #515567;

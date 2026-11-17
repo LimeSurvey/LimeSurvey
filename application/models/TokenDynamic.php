@@ -700,6 +700,7 @@ class TokenDynamic extends LSActiveRecord
     }
 
     /**
+     * get the standards columns for grid for this survey
      * @return array
      */
     public function getStandardColsForGrid()
@@ -719,6 +720,10 @@ class TokenDynamic extends LSActiveRecord
      */
     public static function buildStandardColsForGrid($iSurveyId, $labeler)
     {
+        /* Encrypted columns can not be sorted, and can not be filtered with hardened encryption */
+        $oSurvey = Survey::model()->findByPk($iSurveyId);
+        $hardenedCrypt = $oSurvey && $oSurvey->oOptions && $oSurvey->oOptions->encryption_method == 'H';
+        $encryptedAttributes = $labeler->getAllEncryptedAttributes($iSurveyId, 'Token');
         return [
             [
                 'id'                => 'tid',
@@ -726,7 +731,7 @@ class TokenDynamic extends LSActiveRecord
                 'selectableRows'    => '100',
                 'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
                 'filterHtmlOptions' => ['class' => 'ls-sticky-column'],
-                'htmlOptions'       => ['class' => 'ls-sticky-column']
+                'htmlOptions'       => ['class' => 'ls-sticky-column'],
             ],
             [
                 'header'            => gT('ID'),
@@ -741,6 +746,8 @@ class TokenDynamic extends LSActiveRecord
                 'value'             => '$data->firstname',
                 'headerHtmlOptions' => ['class' => ''],
                 'htmlOptions'       => ['class' => ' name'],
+                'filter'            => $hardenedCrypt && in_array('firstname', $encryptedAttributes) ? false : null,
+                'sortable'          => !in_array('firstname', $encryptedAttributes),
             ],
             [
                 'header'            => gT('Last name') . $labeler->setEncryptedAttributeLabel($iSurveyId, 'Token', 'lastname'),
@@ -748,6 +755,8 @@ class TokenDynamic extends LSActiveRecord
                 'value'             => '$data->lastname',
                 'headerHtmlOptions' => ['class' => ''],
                 'htmlOptions'       => ['class' => ' name'],
+                'filter'            => $hardenedCrypt && in_array('lastname', $encryptedAttributes) ? false : null,
+                'sortable'          => !in_array('lastname', $encryptedAttributes),
             ],
             [
                 'header'            => gT('Email address') . $labeler->setEncryptedAttributeLabel($iSurveyId, 'Token', 'email'),
@@ -756,6 +765,8 @@ class TokenDynamic extends LSActiveRecord
                 'value'             => '$data->emailFormated',
                 'headerHtmlOptions' => ['class' => ''],
                 'htmlOptions'       => ['class' => ' name'],
+                'filter'            => $hardenedCrypt && in_array('email', $encryptedAttributes) ? false : null,
+                'sortable'          => !in_array('email', $encryptedAttributes),
             ],
             [
                 'header'            => gT('Email status') . $labeler->setEncryptedAttributeLabel($iSurveyId, 'Token', 'emailstatus'),
@@ -837,6 +848,7 @@ class TokenDynamic extends LSActiveRecord
     }
 
     /**
+     * return attributes for this survey
      * @return array
      */
     public function getAttributesForGrid()
@@ -858,8 +870,11 @@ class TokenDynamic extends LSActiveRecord
     {
         $aCustomAttributesCols = array();
 
-        $oSurvey = Survey::model()->findByAttributes(array("sid" => $iSurveyId));
+        $oSurvey = Survey::model()->findByPk($iSurveyId);
         $aCustomAttributes = $oSurvey->tokenAttributes;
+        /* Encrypted columns can not be sorted, and can not be filtered with hardened encryption */
+        $hardenedCrypt = $oSurvey->oOptions && $oSurvey->oOptions->encryption_method == 'H';
+        $encryptedAttributes = $labeler->getAllEncryptedAttributes($iSurveyId, 'Token');
 
         // Custom attributes
         foreach ($aCustomAttributes as $sColName => $oColumn) {
@@ -879,6 +894,8 @@ class TokenDynamic extends LSActiveRecord
                 'value' => $value,
                 'headerHtmlOptions' => array('class' => ''),
                 'htmlOptions' => array('class' => ''),
+                'filter' => $hardenedCrypt && in_array($sColName, $encryptedAttributes) ? false : null,
+                'sortable' => !in_array($sColName, $encryptedAttributes),
             );
         }
 

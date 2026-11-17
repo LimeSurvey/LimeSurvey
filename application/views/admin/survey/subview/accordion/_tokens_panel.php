@@ -221,18 +221,36 @@ App()->getClientScript()->registerScript("edit-after-completion-message", "
        
         <div class="col-12 col-lg-6">
             <!-- Allow public registration -->
+            <?php
+            /* Hardened encrypted email : registration can not check if email already exists, it is not allowed */
+            $registerDisabledByEncryption = $oSurvey instanceof Survey && $oSurvey->getHasHardenedEncryptedEmail();
+            /* Enable registration is not available (except if current value), inherited registration is blocked when registering */
+            $disabledRegisterOptions = ($registerDisabledByEncryption && $oSurvey->allowregister !== 'Y') ? ['Y'] : [];
+            ?>
             <div class="mb-3">
                 <label id="allowregister-label" class="form-label"><?php eT("Allow public registration:"); ?></label>
                 <div>
                     <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                         'name'          => 'allowregister',
                         'ariaLabelledBy' => 'allowregister-label',
+                        'htmlOptions'   => [
+                            'disabledOptions' => $disabledRegisterOptions,
+                        ],
                         'checkedOption' => $oSurvey->allowregister,
                         'selectOptions' => ($bShowInherited)
                             ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->allowregister . " ᴵ"])
                             : $optionsOnOff
                     ]); ?>
                 </div>
+                <?php
+                if ($registerDisabledByEncryption) {
+                    App()->getController()->widget('ext.AlertWidget.AlertWidget', [
+                        'text' => gT("Public registration is not available: the participant email is encrypted with the hardened method, so registration cannot check whether an email address is already registered."),
+                        'type' => 'warning',
+                        'htmlOptions' => ['class' => 'mt-2'],
+                    ]);
+                }
+                ?>
             </div>
             <div class="mb-3">
                 <label class="form-label" id='showregisterpolicy-label'><?php  eT("Show privacy policy on register form:") ; ?></label>

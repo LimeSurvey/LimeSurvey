@@ -8,6 +8,7 @@
  *
  * @var array $selectOptions [$value => $caption]
  * @var string $checkedOption
+ * @var array $htmlOptions, can contain 'disabled' (all buttons) and 'disabledOptions' (values of the disabled buttons)
  */
 ?>
 
@@ -31,7 +32,7 @@
     <?php $count = 1 ?>
     <?php foreach ($selectOptions as $value => $caption) : ?>
         <input type="radio" class="btn-check" name="<?= CHtml::encode($name) ?>" id="<?= CHtml::encode($id . '_' . $count) ?>" autocomplete="off"
-            value="<?= CHtml::encode($value) ?>" <?= $checkedOption == $value ? 'checked' : '' ?> <?= isset($htmlOptions['disabled']) && $htmlOptions['disabled'] ? 'disabled' : '' ?>>
+            value="<?= CHtml::encode($value) ?>" <?= $checkedOption == $value ? 'checked' : '' ?> <?= (!empty($htmlOptions['disabled']) || in_array($value, $htmlOptions['disabledOptions'] ?? [])) ? 'disabled' : '' ?>>
         <label id="<?= CHtml::encode($id . '_' . $count) ?>_label" class="btn btn-outline-secondary" for="<?= CHtml::encode($id . '_' . $count) ?>">
             <?php if (isset($htmlOptions['icon']) && isset($htmlOptions['icon'][$value])) : ?>
                 <span class="<?= CHtml::encode($htmlOptions['icon'][$value]) ?>" style="margin-right: 5px;"></span>

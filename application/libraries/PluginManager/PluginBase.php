@@ -149,7 +149,7 @@ abstract class PluginBase implements iPlugin
         // backward compatibility. See https://bugs.limesurvey.org/view.php?id=18375#c72133
         if (!empty($data) && in_array($key, $this->encryptedSettings)) {
             try {
-                $json = LSActiveRecord::decryptSingle($data);
+                $json = LSActiveRecord::decryptSingle($data, 'H');
                 $data = !empty($json) ? json_decode((string) $json, true) : $json;
             } catch (\Throwable $e) {
                 // If decryption fails, just leave the value untouched (it was probably saved as plain text)
@@ -306,7 +306,7 @@ abstract class PluginBase implements iPlugin
         // backward compatibility. See https://bugs.limesurvey.org/view.php?id=18375#c72133
         if (!empty($data) && in_array($key, $this->encryptedSettings)) {
             // Data is json encoded before encryption because it might be an array or object.
-            $data = LSActiveRecord::encryptSingle(json_encode($data));
+            $data = LSActiveRecord::encryptSingle(json_encode($data), 'H');
         }
         return $this->getStore()->set($this, $key, $data, $model, $id);
     }

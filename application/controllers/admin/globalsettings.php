@@ -381,7 +381,7 @@ class GlobalSettings extends SurveyCommonAction
         SettingGlobal::setSetting('emailmethod', $emailMethod);
         SettingGlobal::setSetting('emailsmtphost', strip_tags((string) returnGlobal('emailsmtphost')));
         if (returnGlobal('emailsmtppassword') != 'somepassword') {
-            SettingGlobal::setSetting('emailsmtppassword', LSActiveRecord::encryptSingle(returnGlobal('emailsmtppassword')));
+            SettingGlobal::setSetting('emailsmtppassword', returnGlobal('emailsmtppassword'));
         }
         SettingGlobal::setSetting('bounceaccounthost', strip_tags((string) returnGlobal('bounceaccounthost')));
         SettingGlobal::setSetting('bounceaccounttype', Yii::app()->request->getPost('bounceaccounttype', 'off'));
@@ -389,7 +389,7 @@ class GlobalSettings extends SurveyCommonAction
         SettingGlobal::setSetting('bounceaccountuser', strip_tags((string) returnGlobal('bounceaccountuser')));
 
         if (returnGlobal('bounceaccountpass') != 'enteredpassword') {
-            SettingGlobal::setSetting('bounceaccountpass', LSActiveRecord::encryptSingle(returnGlobal('bounceaccountpass')));
+            SettingGlobal::setSetting('bounceaccountpass', returnGlobal('bounceaccountpass'));
         }
 
         SettingGlobal::setSetting('emailsmtpssl', sanitize_paranoid_string(Yii::app()->request->getPost('emailsmtpssl', '')));
@@ -466,6 +466,15 @@ class GlobalSettings extends SurveyCommonAction
             SettingGlobal::setSetting($googleapikey, $fixedValue);
         }
         SettingGlobal::setSetting('surveyPreview_require_Auth', Yii::app()->getRequest()->getPost('surveyPreview_require_Auth'));
+        /* Invalid values : keep the current settings */
+        $cpdbEncryptionMethod = Yii::app()->getRequest()->getPost('CPDB_encryption_method');
+        if (in_array($cpdbEncryptionMethod, ['B', 'H'], true)) {
+            SettingGlobal::setSetting('CPDB_encryption_method', $cpdbEncryptionMethod);
+        }
+        $cpdbDuplicatefinderBits = Yii::app()->getRequest()->getPost('CPDB_duplicatefinder_bits');
+        if (in_array($cpdbDuplicatefinderBits, ['0', '64', '96', '128', '192', '256'], true)) {
+            SettingGlobal::setSetting('CPDB_duplicatefinder_bits', $cpdbDuplicatefinderBits);
+        }
         SettingGlobal::setSetting('RPCInterface', Yii::app()->getRequest()->getPost('RPCInterface'));
         SettingGlobal::setSetting('rpc_publish_api', Yii::app()->getRequest()->getPost('rpc_publish_api'));
         SettingGlobal::setSetting('add_access_control_header', Yii::app()->getRequest()->getPost('add_access_control_header'));

@@ -36,6 +36,9 @@ class ParticipantResolver
     /** @var bool Whether the survey is anonymized, which refuses every participant filter. */
     private bool $anonymized;
 
+    /** @var string Encryption method of the survey : 'B' (Basic) or 'H' (Hardened) */
+    private string $encryptionMethod;
+
     /**
      * @param array<int,string> $attributes Participant columns of this survey.
      *     Empty when the survey has no participant table at all.
@@ -43,10 +46,13 @@ class ParticipantResolver
      *     participants (no token column), and must not be filtered by them.
      * @param array<string,string> $kinds KIND_* per column; columns left out
      *     are treated as text.
+     * @param string $encryptionMethod 'B' (Basic) or 'H' (Hardened) : hardened
+     *     encrypted columns can not be filtered.
      */
-    public function __construct(array $attributes, bool $anonymized = false, array $kinds = [])
+    public function __construct(array $attributes, bool $anonymized = false, array $kinds = [], string $encryptionMethod = 'B')
     {
         $this->anonymized = $anonymized;
+        $this->encryptionMethod = $encryptionMethod;
         $this->allowed = [];
         foreach ($attributes as $attribute) {
             $this->allowed[strtolower((string) $attribute)] = true;
@@ -84,7 +90,7 @@ class ParticipantResolver
             $kinds[$name] = self::KIND_ENCRYPTED;
         }
 
-        return new self(array_keys($table->columns), false, $kinds);
+        return new self(array_keys($table->columns), false, $kinds, (string) $survey->oOptions->encryption_method);
     }
 
     /**
@@ -128,6 +134,10 @@ class ParticipantResolver
                 $operator = ResolvedCondition::OPERATOR_CONTAIN;
                 break;
             case self::KIND_ENCRYPTED:
+                if ($this->encryptionMethod === 'H') {
+                    /* Hardened encryption uses a random nonce : a value never encrypts the same way */
+                    throw new InvalidArgumentException("Participant attribute '$column' is encrypted with the hardened method, so it cannot be filtered.");
+                }
                 $operator = ResolvedCondition::OPERATOR_EQUAL;
                 $value = $this->encryptValue($value);
                 break;
@@ -145,9 +155,12 @@ class ParticipantResolver
         ]);
     }
 
+    /**
+     * Encrypt with the Basic method (fixed nonce), the only one that can be compared
+     */
     protected function encryptValue(string $value): string
     {
-        return (string) \LSActiveRecord::encryptSingle($value);
+        return (string) \LSActiveRecord::encryptSingle($value, 'B');
     }
 
     /**
