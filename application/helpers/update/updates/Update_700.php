@@ -1101,7 +1101,11 @@ class Update_700 extends DatabaseUpdateBase
     }
 
     /**
-     * execute Db scripts for specific database types
+     * Executes database scripts needed by the update for specific database types.
+     * On PostgreSQL this creates the show_create_table() helper function, which builds the
+     * CREATE TABLE statement of a table including the length of text columns and the
+     * precision and scale of numeric columns.
+     *
      * @return void
      */
     public function doPreparations()
@@ -1118,8 +1122,11 @@ class Update_700 extends DatabaseUpdateBase
                     string_agg(column_list.column_expr, ', ' || $2 || '') || 
                     '' || $2 || ');'
                 FROM (
-                  SELECT '    \"' || column_name || '\" ' || data_type || 
-                       coalesce('(' || character_maximum_length || ')', '') || 
+                  SELECT '    \"' || column_name || '\" ' || data_type ||
+                       case when data_type = 'numeric'
+                            then coalesce('(' || numeric_precision || ',' || numeric_scale || ')', '')
+                            else coalesce('(' || character_maximum_length || ')', '')
+                       end ||
                        case when is_nullable = 'YES' then '' else ' NOT NULL' end as column_expr
                   FROM information_schema.columns
                   WHERE table_schema = 'public' AND table_name = $1
@@ -1261,8 +1268,6 @@ class Update_700 extends DatabaseUpdateBase
      * SQL Server has no SHOW CREATE TABLE, so the statement is built from sys.columns,
      * keeping each column's length, precision, scale and collation: The old data is copied
      * into the re-created table, so any narrower definition truncates or rounds it.
-     * The collation is only written when it differs from the database default, which keeps
-     * the statement short for surveys with many columns.
      *
      * @param string $tableName Name of the table, including the table prefix
      * @return string|null SQL returning the statement in the "Create Table" column, null for unsupported drivers
@@ -1293,7 +1298,6 @@ class Update_700 extends DatabaseUpdateBase
                                                 END +
                                                 CASE
                                                         WHEN c2.collation_name IS NOT NULL
-                                                            AND c2.collation_name <> CAST(DATABASEPROPERTYEX(DB_NAME(), 'Collation') AS sysname)
                                                         THEN ' COLLATE ' + c2.collation_name
                                                         ELSE ''
                                                 END +

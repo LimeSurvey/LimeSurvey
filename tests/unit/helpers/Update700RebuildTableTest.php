@@ -62,23 +62,15 @@ class Update700RebuildTableTest extends TestBaseClass
     }
 
     /**
-     * Returns the case sensitive collation used for the token column of response tables.
+     * Returns the case sensitive collation that survey activation uses for the token column of response tables.
      *
      * @return string Collation clause, empty when the driver is case sensitive by default
      */
     private function getTokenCollation(): string
     {
-        switch (\Yii::app()->db->driverName) {
-            case 'mysql':
-            case 'mysqli':
-                return " COLLATE 'utf8mb4_bin'";
-            case 'sqlsrv':
-            case 'dblib':
-            case 'mssql':
-                return " COLLATE SQL_Latin1_General_CP1_CS_AS";
-            default:
-                return '';
-        }
+        $method = new \ReflectionMethod(\SurveyActivator::class, 'getCollation');
+        $method->setAccessible(true);
+        return $method->invoke(new \SurveyActivator());
     }
 
     /**
@@ -89,15 +81,8 @@ class Update700RebuildTableTest extends TestBaseClass
      */
     private function describeColumns(string $table): array
     {
-        $isPgsql = \Yii::app()->db->driverName === 'pgsql';
         $definitions = [];
         foreach (\Yii::app()->db->schema->getTable($table, true)->columns as $name => $column) {
-            if ($isPgsql && strpos((string) $column->dbType, 'numeric') === 0) {
-                // The PostgreSQL rebuild creates numeric columns without precision and scale.
-                // Values are not rounded there, so only the base type is compared.
-                $definitions[$name] = ['dbType' => 'numeric'];
-                continue;
-            }
             $definitions[$name] = [
                 'dbType' => $column->dbType,
                 'size' => $column->size,
