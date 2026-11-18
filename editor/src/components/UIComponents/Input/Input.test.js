@@ -196,13 +196,20 @@ describe('Input when noPermissionDisabled changes', () => {
     )
   }
 
+  afterEach(async () => {
+    await setSurveyUpdatePermission(true)
+  })
+
   test('Should keep the same field and its typed value', async () => {
     await renderWithProviders(<ToggleablePermissionInput />)
+    await setSurveyUpdatePermission(false)
     const input = screen.getByTestId('toggled-input')
+    expect(input).toBeEnabled()
     await userEvent.type(input, 'typed')
 
     await userEvent.click(screen.getByRole('button', { name: 'lock' }))
 
+    expect(input).toBeDisabled()
     expect(screen.getByTestId('toggled-input')).toBe(input)
     expect(input).toHaveValue('typed')
   })

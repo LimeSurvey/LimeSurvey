@@ -109,17 +109,20 @@ describe('Setting default values actions', () => {
       name: 'Save as default values',
     })
     expect(button).toBeDisabled()
-
-    await userEvent.hover(button.closest('.default-values-actions'))
-
-    expect(
-      await screen.findByText('Available once the question is saved.')
-    ).toBeInTheDocument()
+    expect(button).toHaveAccessibleDescription(
+      'Available once the question is saved.'
+    )
     expect(screen.queryByText('Deactivate survey to edit')).toBeNull()
   })
 
   test('hides the actions without survey update permission', async () => {
+    await setAppState(STATES.HAS_SURVEY_UPDATE_PERMISSION, true)
     await renderDefaultValuesActions(1)
+
+    expect(
+      screen.getByRole('button', { name: 'Save as default values' })
+    ).toBeEnabled()
+
     await setAppState(STATES.HAS_SURVEY_UPDATE_PERMISSION, false)
 
     expect(

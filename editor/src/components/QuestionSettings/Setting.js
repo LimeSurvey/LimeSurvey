@@ -245,6 +245,7 @@ export const Setting = ({
             ? {
                 hasDefaultAttributeValues,
                 disabled: isActionDisabled,
+                disabledReason: disabledTip,
               }
             : {}),
         }
@@ -256,7 +257,10 @@ export const Setting = ({
           >
             <TooltipContainer
               tip={disabledTip}
-              showTip={isDisabledByActiveSurvey || isActionDisabled}
+              showTip={
+                !isActionAttribute &&
+                (isDisabledByActiveSurvey || isActionDisabled)
+              }
             >
               <attribute.component
                 {...attributeProps}

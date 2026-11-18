@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useId, useState } from 'react'
 
 import { Button } from 'react-bootstrap'
 import { ArrowDownIcon, ArrowUpIcon, InformationIcon } from 'components/icons'
@@ -36,6 +36,7 @@ const Details = ({ children }) => {
  * @param {boolean} props.hasDefaultAttributeValues Whether saved defaults exist.
  * @param {boolean} props.activeDisabled Whether the actions are locked because the survey is active.
  * @param {boolean} props.disabled Whether the actions are disabled for another reason, such as an unsaved question.
+ * @param {string} props.disabledReason Why the actions are disabled, shown while they are locked.
  * @returns {JSX.Element} Default-values action controls.
  */
 export const DefaultValuesActions = ({
@@ -43,11 +44,20 @@ export const DefaultValuesActions = ({
   hasDefaultAttributeValues = false,
   activeDisabled = false,
   disabled = false,
+  disabledReason = '',
 }) => {
   const isDisabled = activeDisabled || disabled
+  const disabledReasonId = useId()
+  const showDisabledReason = isDisabled && !!disabledReason
+  const describedBy = showDisabledReason ? disabledReasonId : undefined
 
   return (
     <div className="default-values-actions">
+      {showDisabledReason && (
+        <p id={disabledReasonId} className="default-values-disabled-reason">
+          {disabledReason}
+        </p>
+      )}
       <div>
         <Button
           id="save-as-default-values"
@@ -55,6 +65,7 @@ export const DefaultValuesActions = ({
           variant="secondary"
           onClick={() => update({ saveAsDefault: true })}
           disabled={isDisabled}
+          aria-describedby={describedBy}
         >
           {t('Save as default values')}
         </Button>
@@ -72,6 +83,7 @@ export const DefaultValuesActions = ({
             variant="secondary"
             onClick={() => update({ clearDefault: true })}
             disabled={isDisabled}
+            aria-describedby={describedBy}
           >
             {t('Clear default values')}
           </Button>

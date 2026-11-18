@@ -40,5 +40,10 @@
     font-weight: $font-weight-500;
     line-height: 16px;
     color: $grape;
+
+    &.disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
   }
 }

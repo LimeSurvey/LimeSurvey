@@ -35,12 +35,15 @@ export const QuestionTypeAttribute = ({
       bsPrefix="question-type-attribute-selector-container"
     >
       <QuestionTypeSelector
-        callBack={(typeInfo) =>
+        callBack={(typeInfo) => {
+          if (disabled) {
+            return
+          }
           update({
             type: typeInfo.type,
             questionThemeName: typeInfo.questionThemeName,
           })
-        }
+        }}
         attributeTypeSelector={true}
       />
     </Popover>

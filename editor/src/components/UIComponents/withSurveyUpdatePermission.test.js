@@ -51,12 +51,19 @@ describe('withSurveyUpdatePermission', () => {
   })
 
   test('Should lock the expression script editor without permission', async () => {
+    await setSurveyUpdatePermission(true)
     await renderWithProviders(
       <ExpressionScriptEditor
         ariaLabel="Expression"
         noPermissionDisabled={true}
       />
     )
+
+    expect(screen.getByRole('textbox', { name: 'Expression' })).toHaveAttribute(
+      'contenteditable',
+      'true'
+    )
+
     await setSurveyUpdatePermission(false)
 
     expect(screen.getByRole('textbox', { name: 'Expression' })).toHaveAttribute(

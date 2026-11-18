@@ -1,8 +1,9 @@
 import { useContext } from 'react'
 import { QueryClientContext } from '@tanstack/react-query'
 
-import { useAppState } from 'hooks'
-import { STATES } from 'helpers'
+// Direct imports: The hooks and helpers barrels reach the components barrel.
+import { useAppState } from 'hooks/useAppState'
+import { STATES } from 'helpers/constants/constants'
 
 /**
  * Wraps a field so it receives the survey update permission from the app state

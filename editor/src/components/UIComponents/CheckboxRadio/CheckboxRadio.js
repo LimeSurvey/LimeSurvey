@@ -48,6 +48,9 @@ export const CheckboxRadio = ({
   }
 
   const handleReset = () => {
+    if (disabled) {
+      return
+    }
     let falsifiedOptions = {}
     Object.keys(optionsValues).forEach((key) => {
       falsifiedOptions[key] = false
@@ -84,7 +87,11 @@ export const CheckboxRadio = ({
             />
           ))}
           {hasReset && (
-            <span className={'reset'} onClick={() => handleReset()}>
+            <span
+              className={classNames('reset', { disabled })}
+              aria-disabled={disabled}
+              onClick={handleReset}
+            >
               {t('Reset')}
             </span>
           )}

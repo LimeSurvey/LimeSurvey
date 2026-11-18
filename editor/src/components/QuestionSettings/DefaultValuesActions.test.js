@@ -57,4 +57,41 @@ describe('DefaultValuesActions', () => {
       screen.getByRole('button', { name: 'Clear default values' })
     ).toBeDisabled()
   })
+
+  test('shows the disabled reason and references it from both actions', () => {
+    render(
+      <DefaultValuesActions
+        update={jest.fn()}
+        hasDefaultAttributeValues={true}
+        disabled={true}
+        disabledReason="Available once the question is saved."
+      />
+    )
+
+    const save = screen.getByRole('button', { name: 'Save as default values' })
+    const clear = screen.getByRole('button', { name: 'Clear default values' })
+
+    expect(save).toHaveAccessibleDescription(
+      'Available once the question is saved.'
+    )
+    expect(clear).toHaveAccessibleDescription(
+      'Available once the question is saved.'
+    )
+  })
+
+  test('hides the disabled reason when the actions are enabled', () => {
+    render(
+      <DefaultValuesActions
+        update={jest.fn()}
+        disabledReason="Available once the question is saved."
+      />
+    )
+
+    expect(
+      screen.queryByText('Available once the question is saved.')
+    ).not.toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: 'Save as default values' })
+    ).not.toHaveAttribute('aria-describedby')
+  })
 })
