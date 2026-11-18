@@ -162,7 +162,7 @@ class FileUploadService
         $debugInfoArray[] = $destinationDir;
         $debugInfoArray[] = $fileName;
         $debugInfoArray[] = $fullFilePath;
-        Yii::import('application.helpers.common_helper', true);
+        \Yii::import('application.helpers.common_helper', true);
         $relativePath = uploadRelativePath($fullFilePath);
         $changeAllowed = $relativePath === null || uploadPathChangeAllowed($relativePath, 'write');
         if (
