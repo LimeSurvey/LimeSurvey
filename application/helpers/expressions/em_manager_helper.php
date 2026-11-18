@@ -7179,6 +7179,8 @@ class LimeExpressionManager
             $sgqas = explode('|', (string) $LEM->qid2code[$qid]);
             foreach ($sgqas as $sgqa) {
                 $_SESSION[$LEM->sessid][$sgqa] = null;
+                // The answer is discarded: Don't show an explicit "No answer" again if the question becomes relevant
+                unset($_SESSION[$LEM->sessid]['noAnswerChosen'][$sgqa]);
                 $updatedValues[$sgqa] = null;
                 $LEM->updatedValues[$sgqa] = null;
                 if (isset($LEM->other2otherChecked[$sgqa])) {

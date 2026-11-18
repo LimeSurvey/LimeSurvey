@@ -93,6 +93,38 @@ class NoAnswerConditionSubmitTest extends TestBaseClass
     }
 
     /**
+     * An explicit "No answer" is remembered, so the page can show it again after a validation error.
+     * @return void
+     */
+    public function testExplicitNoAnswerIsRemembered()
+    {
+        list(, , $listSgqa) = self::$testHelper->getSgqa('Q00', self::$surveyId);
+
+        $this->submitFirstPage(\Question::QT_L_LIST, 'N', null, true);
+
+        $this->assertTrue(\LimeExpressionManager::isNoAnswerChosen($listSgqa));
+    }
+
+    /**
+     * An explicit "No answer" isn't remembered when the question is irrelevant, since its answer is discarded.
+     * @return void
+     */
+    public function testExplicitNoAnswerOfIrrelevantQuestionIsForgotten()
+    {
+        list($listQuestion, , $listSgqa) = self::$testHelper->getSgqa('Q00', self::$surveyId);
+        $listQuestion->relevance = '0';
+        $this->assertTrue($listQuestion->save(), 'The list question must be saved');
+        try {
+            $this->submitFirstPage(\Question::QT_L_LIST, 'N', null, true);
+
+            $this->assertFalse(\LimeExpressionManager::isNoAnswerChosen($listSgqa));
+        } finally {
+            $listQuestion->relevance = '1';
+            $listQuestion->save();
+        }
+    }
+
+    /**
      * Start the survey in group by group mode and submit the first page with the mandatory question left empty.
      * @param string $type The type of the list question
      * @param string $other Whether the list question has an "Other" option (Y or N)
