@@ -23,6 +23,34 @@ import {
 const CHANGE_REFUSED_CODE = 409
 
 /**
+ * Drops a refused change from the buffer. Only switching "Other" off is refused
+ * with CHANGE_REFUSED_CODE: The other changes merged into the same operation
+ * (e.g. a new code) stay in the buffer and are saved again. Without "Other" in the
+ * operation, the whole operation is dropped, so a refusal is never sent again.
+ *
+ * @param {OperationsBuffer} operationsBuffer The buffer to update
+ * @param {object} error The exception error of the refused operation
+ */
+const dropRefusedChange = (operationsBuffer, error) => {
+  const operation = operationsBuffer.getOperation(
+    error.id,
+    error.op,
+    error.entity
+  )
+  if (
+    Number(error.code) === CHANGE_REFUSED_CODE &&
+    'other' in (operation?.props ?? {})
+  ) {
+    delete operation.props.other
+    if (Object.keys(operation.props).length) {
+      delete operation.error
+      return
+    }
+  }
+  operationsBuffer.removeOperation(error.id, error.op, error.entity)
+}
+
+/**
  * Render children while loading the route's survey and saving buffered edits.
  * Reconcile patch results with local survey state, surface errors, and invalidate
  * response queries after receiving a patch result.
@@ -193,21 +221,17 @@ export const SurveyLogicProvider = ({ children }) => {
       )
 
       // A refused deletion already removed the item locally, and a change the survey
-      // doesn't allow (e.g. switching "Other" off while conditions use it) is already
-      // shown: Drop the operation and reload the survey to show the saved state again.
+      // doesn't allow (switching "Other" off while conditions use it) is already shown:
+      // Drop the refused change (see dropRefusedChange()) and reload the survey to show the saved state again.
       // Other failed updates stay in the buffer marked as error, so the user can correct them.
       const refusedChanges = exceptionErrors.filter(
         (error) =>
           error.op === Operations.delete ||
           Number(error.code) === CHANGE_REFUSED_CODE
       )
-      refusedChanges.forEach((error) => {
-        mapResult.operationsBuffer.removeOperation(
-          error.id,
-          error.op,
-          error.entity
-        )
-      })
+      refusedChanges.forEach((error) =>
+        dropRefusedChange(mapResult.operationsBuffer, error)
+      )
       if (refusedChanges.length) {
         changeRefused = true
         setSurveyRefreshRequired(true)
