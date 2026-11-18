@@ -3,13 +3,7 @@ import { useParams } from 'react-router-dom'
 import classNames from 'classnames'
 
 import { useAppState, useBuffer, useSurvey } from 'hooks'
-import {
-  Entities,
-  STATES,
-  createBufferOperation,
-  getSiteUrl,
-  getSurveyLanguages,
-} from 'helpers'
+import { Entities, STATES, createBufferOperation, getSiteUrl } from 'helpers'
 import { getTooltipMessages } from 'helpers/options'
 import { TooltipContainer } from 'components'
 import { DeleteIcon, CopyIcon, DownloadIcon, EyeIcon } from 'components/icons'
@@ -20,6 +14,9 @@ import {
   questionEditComponents,
   singleChoiceThemes,
 } from 'components/QuestionTypes'
+
+// Stable fallback, so the save modal's language options aren't rebuilt on every render
+const NO_LANGUAGES = []
 
 export const QuestionFooter = ({
   question,
@@ -34,11 +31,18 @@ export const QuestionFooter = ({
   const [showDeleteModal, setShowDeleteModal] = useState(false)
   const [showSaveLabelSetModal, setShowSaveLabelSetModal] = useState(false)
   const { survey } = useSurvey(surveyId)
+  const [permissions] = useAppState(STATES.USER_PERMISSIONS)
+  const surveyLanguages = survey?.languages ?? NO_LANGUAGES
 
+  // Resolved by the backend, incl. per label set update rights
+  const canCreateLabelSet = !!permissions?.effective?.labelSetsCreate
+  const canUpdateLabelSet = !!permissions?.effective?.labelSetsUpdate
   // Label sets are only supported for list/multiple choice style questions for now
   const supportsLabelSets =
     questionEditComponents[question.questionThemeName] ===
     OptionQuestionEditMode
+  const canSaveLabelSet =
+    supportsLabelSets && (canCreateLabelSet || canUpdateLabelSet)
   const isSingleChoiceTheme = singleChoiceThemes.includes(
     question.questionThemeName
   )
@@ -81,20 +85,22 @@ export const QuestionFooter = ({
         )}
         confirmButtonText={t('Delete')}
       />
-      {supportsLabelSets && (
+      {canSaveLabelSet && (
         <SaveLabelSetModal
           show={showSaveLabelSetModal}
           onHide={() => setShowSaveLabelSetModal(false)}
           _children={labelSetChildren}
           entityType={labelSetEntity}
-          surveyLanguages={getSurveyLanguages(survey)}
+          surveyLanguages={surveyLanguages}
+          canCreate={canCreateLabelSet}
+          canUpdate={canUpdateLabelSet}
         />
       )}
       <div
         data-testid="question-footer"
         className="question-footer align-items-center justify-content-end d-flex gap-3 text-end pt-3 pe-3"
       >
-        {isFocused && supportsLabelSets && (
+        {isFocused && canSaveLabelSet && (
           <TooltipContainer tip={saveLabelSetLabel}>
             <button
               type="button"

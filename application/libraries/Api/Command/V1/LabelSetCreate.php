@@ -4,6 +4,7 @@ namespace LimeSurvey\Api\Command\V1;
 
 use LabelSet;
 use LimeSurvey\Api\Command\Request\Request;
+use LimeSurvey\Models\Services\Exception\BadRequestException;
 
 /**
  * Create a label set (POST v1/label-sets).
@@ -21,10 +22,10 @@ class LabelSetCreate extends LabelSetSave
      */
     protected function save(Request $request, array $languages, array $labels): LabelSet
     {
-        return $this->labelSetService->create(
-            (string)$request->getData('name'),
-            $languages,
-            $labels
-        );
+        $name = $request->getData('name') ?? '';
+        if (!is_string($name)) {
+            throw new BadRequestException('Invalid label set name');
+        }
+        return $this->labelSetService->create($name, $languages, $labels);
     }
 }

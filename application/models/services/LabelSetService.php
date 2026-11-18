@@ -29,6 +29,13 @@ class LabelSetService
 {
     /** Length of the labels.code column */
     public const MAX_CODE_LENGTH = 20;
+    /** Length of the label_l10ns.language column */
+    public const MAX_LANGUAGE_LENGTH = 20;
+    /** Length of the labelsets.languages column */
+    public const MAX_LANGUAGES_LENGTH = 255;
+    /** Range of the labels.assessment_value column (integer) */
+    public const MIN_ASSESSMENT_VALUE = -2147483648;
+    public const MAX_ASSESSMENT_VALUE = 2147483647;
 
     protected LabelSet $labelSet;
     protected Permission $permission;
@@ -65,12 +72,10 @@ class LabelSetService
     {
         $languages = $this->normaliseLanguages($languages);
         $labelSets = $this->labelSet->findAll(['order' => 'label_name']);
-        $labelStats = $this->getLabelStats();
 
-        $result = [];
+        $matchingSets = [];
         foreach ($labelSets as $labelSet) {
-            $setLanguages = $labelSet->getLanguageArray();
-            if (array_diff($languages, $setLanguages)) {
+            if (array_diff($languages, $labelSet->getLanguageArray())) {
                 continue;
             }
             // Same check as overwrite(), so plugins that grant or deny update rights per set
@@ -79,11 +84,19 @@ class LabelSetService
             if ($onlyUpdatable && !$labelSet->hasPermission('labelset', 'update')) {
                 continue;
             }
+            $matchingSets[] = $labelSet;
+        }
+
+        $labelStats = $this->getLabelStats(
+            array_map(static fn (LabelSet $labelSet): int => (int)$labelSet->lid, $matchingSets)
+        );
+        $result = [];
+        foreach ($matchingSets as $labelSet) {
             $stats = $labelStats[(int)$labelSet->lid] ?? ['labelcount' => 0, 'assessmentcount' => 0];
             $result[] = [
                 'lid' => (int)$labelSet->lid,
                 'name' => flattenText($labelSet->label_name),
-                'languages' => $setLanguages,
+                'languages' => $labelSet->getLanguageArray(),
                 'labelCount' => (int)$stats['labelcount'],
                 'hasAssessmentValues' => (int)$stats['assessmentcount'] > 0,
             ];
@@ -147,7 +160,8 @@ class LabelSetService
         if ($name === '') {
             throw new BadRequestException('Label set name is empty');
         }
-        $languages = $this->validateInput($languages, $labels);
+        $languages = $this->validateLanguages($languages);
+        $labels = $this->validateLabels($labels, $languages);
 
         return $this->inTransaction(function () use ($name, $languages, $labels) {
             $labelSet = new LabelSet();
@@ -187,7 +201,8 @@ class LabelSetService
         if (!$labelSet->hasPermission('labelset', 'update')) {
             throw new PermissionDeniedException('Access denied');
         }
-        $languages = $this->validateInput($languages, $labels);
+        $languages = $this->validateLanguages($languages);
+        $labels = $this->validateLabels($labels, $languages);
 
         return $this->inTransaction(function () use ($labelSet, $languages, $labels) {
             $labelSet->languages = implode(' ', $languages);
@@ -202,12 +217,16 @@ class LabelSetService
     }
 
     /**
-     * Count the labels, and the labels with an assessment value, of all label sets in one query.
+     * Count the labels, and the labels with an assessment value, of the given label sets in one query.
      *
+     * @param int[] $lids Ids of the label sets to count
      * @return array<int, array{labelcount: int|string, assessmentcount: int|string}> Counts keyed by label set id
      */
-    protected function getLabelStats(): array
+    protected function getLabelStats(array $lids): array
     {
+        if (empty($lids)) {
+            return [];
+        }
         $rows = $this->app->db->createCommand()
             ->select([
                 'lid',
@@ -215,6 +234,7 @@ class LabelSetService
                 'SUM(CASE WHEN assessment_value <> 0 THEN 1 ELSE 0 END) AS assessmentcount',
             ])
             ->from('{{labels}}')
+            ->where(['in', 'lid', $lids])
             ->group('lid')
             ->queryAll();
 
@@ -226,69 +246,156 @@ class LabelSetService
     }
 
     /**
-     * Check the languages and labels before anything is written.
+     * Check the languages before anything is written.
      *
-     * All checks mirror the Label model and the labels table, so a save can't fail
-     * half-way: Transactions are no-ops on MyISAM tables. Languages must be codes
-     * LimeSurvey knows, as strings.
+     * Any well-formed code is accepted, not only the ones LimeSurvey ships, because
+     * surveys can carry other codes (e.g. from an import). All checks mirror the
+     * tables, so a save can't fail half-way: Transactions are no-ops on MyISAM tables.
      *
      * @param array $languages Languages to save, as sent by the client
-     * @param array $labels Labels to save, in the shape described on the class
-     * @return string[] The cleaned language list
-     * @throws BadRequestException When a language or label is invalid
+     * @return string[] The cleaned, unique language list
+     * @throws BadRequestException When a language is invalid
      */
-    protected function validateInput(array $languages, array $labels): array
+    protected function validateLanguages(array $languages): array
     {
-        $this->app->loadHelper('surveytranslator');
-        $knownLanguages = array_keys(getLanguageData());
+        $cleanLanguages = [];
         foreach ($languages as $language) {
-            if (!is_string($language) || !in_array($language, $knownLanguages, true)) {
-                throw new BadRequestException(
-                    sprintf('Unknown language "%s"', is_scalar($language) ? (string)$language : gettype($language))
-                );
+            $language = is_string($language) ? trim($language) : null;
+            if (
+                $language === null
+                || $language === ''
+                || LSYii_Validators::languageCodeFilter($language) !== $language
+                || strlen($language) > self::MAX_LANGUAGE_LENGTH
+            ) {
+                throw new BadRequestException('Invalid language code');
             }
+            $cleanLanguages[$language] = true;
         }
-        $languages = $this->normaliseLanguages($languages);
-        if (empty($languages)) {
+        $cleanLanguages = array_keys($cleanLanguages);
+        if (empty($cleanLanguages)) {
             throw new BadRequestException('No language selected');
         }
+        if (strlen(implode(' ', $cleanLanguages)) > self::MAX_LANGUAGES_LENGTH) {
+            throw new BadRequestException('Too many languages');
+        }
+        return $cleanLanguages;
+    }
+
+    /**
+     * Check the labels before anything is written and bring them into a fixed shape.
+     *
+     * All checks mirror the Label model and the labels table, so a save can't fail
+     * half-way: Transactions are no-ops on MyISAM tables.
+     *
+     * @param array $labels Labels to save, in the shape described on the class
+     * @param string[] $languages Validated languages; translations of other languages are ignored
+     * @return array<int, array{code: string, assessmentValue: int, l10ns: array<string, string>}> The cleaned labels
+     * @throws BadRequestException When a label is invalid
+     */
+    protected function validateLabels(array $labels, array $languages): array
+    {
         if (empty($labels)) {
             throw new BadRequestException('Label set has no labels');
         }
+        $cleanLabels = [];
         $codes = [];
         foreach ($labels as $label) {
-            $code = is_array($label) ? trim((string)($label['code'] ?? '')) : '';
-            if ($code === '') {
-                throw new BadRequestException('Every label needs a code');
+            if (!is_array($label)) {
+                throw new BadRequestException('Invalid label');
             }
-            if (!preg_match('/^[[:alnum:]]+$/', $code)) {
-                throw new BadRequestException(
-                    sprintf('Label code "%s" may only contain alphanumeric characters', $code)
-                );
-            }
-            if (strlen($code) > self::MAX_CODE_LENGTH) {
-                throw new BadRequestException(
-                    sprintf('Label code "%s" is longer than %d characters', $code, self::MAX_CODE_LENGTH)
-                );
-            }
+            $code = $this->validateCode($label['code'] ?? null);
             // The unique (lid, code) index uses a case-insensitive collation, so "A" and "a" clash
             $codeKey = strtolower($code);
             if (isset($codes[$codeKey])) {
                 throw new BadRequestException(sprintf('Label code "%s" is used twice', $code));
             }
             $codes[$codeKey] = true;
+
+            $l10ns = $label['l10ns'] ?? [];
+            if (!is_array($l10ns)) {
+                throw new BadRequestException(sprintf('Invalid translations for label "%s"', $code));
+            }
+            $titles = [];
+            foreach ($languages as $language) {
+                $title = $l10ns[$language] ?? '';
+                if (!is_string($title) && !is_int($title) && !is_float($title)) {
+                    throw new BadRequestException(sprintf('Invalid translation for label "%s"', $code));
+                }
+                $titles[$language] = (string)$title;
+            }
+
+            $cleanLabels[] = [
+                'code' => $code,
+                'assessmentValue' => $this->validateAssessmentValue($label['assessmentValue'] ?? null, $code),
+                'l10ns' => $titles,
+            ];
         }
-        return $languages;
+        return $cleanLabels;
+    }
+
+    /**
+     * Check one label code.
+     *
+     * @param mixed $code Code as sent by the client
+     * @return string The trimmed code
+     * @throws BadRequestException When the code is missing or invalid
+     */
+    protected function validateCode($code): string
+    {
+        if (!is_string($code) && !is_int($code)) {
+            throw new BadRequestException('Every label needs a code');
+        }
+        $code = trim((string)$code);
+        if ($code === '') {
+            throw new BadRequestException('Every label needs a code');
+        }
+        if (!preg_match('/^[[:alnum:]]+$/', $code)) {
+            throw new BadRequestException(
+                sprintf('Label code "%s" may only contain alphanumeric characters', $code)
+            );
+        }
+        if (strlen($code) > self::MAX_CODE_LENGTH) {
+            throw new BadRequestException(
+                sprintf('Label code "%s" is longer than %d characters', $code, self::MAX_CODE_LENGTH)
+            );
+        }
+        return $code;
+    }
+
+    /**
+     * Check one assessment value, like the Label model does (integer, may be empty).
+     *
+     * @param mixed $value Assessment value as sent by the client
+     * @param string $code Code of the label, for the error message
+     * @return int The assessment value; empty means 0, as in the classic editor
+     * @throws BadRequestException When the value isn't an integer or doesn't fit the column
+     */
+    protected function validateAssessmentValue($value, string $code): int
+    {
+        if ($value === null || (is_string($value) && trim($value) === '')) {
+            return 0;
+        }
+        $isInteger = is_int($value)
+            || (is_float($value) && floor($value) === $value)
+            || (is_string($value) && preg_match('/^\s*[+-]?\d+\s*$/', $value));
+        // Float comparison, so values beyond PHP_INT_MAX are caught too
+        if (
+            !$isInteger
+            || (float)$value < self::MIN_ASSESSMENT_VALUE
+            || (float)$value > self::MAX_ASSESSMENT_VALUE
+        ) {
+            throw new BadRequestException(sprintf('Invalid assessment value for label "%s"', $code));
+        }
+        return (int)$value;
     }
 
     /**
      * Delete all labels of the set and create the given ones.
      *
-     * Only translations for $languages are saved; a missing translation is saved as empty text.
-     *
      * @param int $lid Label set id
      * @param string[] $languages Languages to save translations for
-     * @param array $labels Labels to save, in the shape described on the class
+     * @param array<int, array{code: string, assessmentValue: int, l10ns: array<string, string>}> $labels
+     *        Labels as returned by validateLabels()
      * @return void
      * @throws PersistErrorException When a label or translation can't be saved
      */
@@ -304,21 +411,20 @@ class LabelSetService
         foreach (array_values($labels) as $sortOrder => $labelData) {
             $label = new Label();
             $label->lid = $lid;
-            $label->code = trim((string)$labelData['code']);
+            $label->code = $labelData['code'];
             $label->sortorder = $sortOrder;
-            $label->assessment_value = (int)($labelData['assessmentValue'] ?? 0);
+            $label->assessment_value = $labelData['assessmentValue'];
             if (!$label->save()) {
                 throw new PersistErrorException(
                     'Could not save label: ' . $this->formatErrors($label->getErrors())
                 );
             }
 
-            $l10ns = is_array($labelData['l10ns'] ?? null) ? $labelData['l10ns'] : [];
             foreach ($languages as $language) {
                 $labelL10n = new LabelL10n();
                 $labelL10n->label_id = $label->id;
                 $labelL10n->language = $language;
-                $labelL10n->title = (string)($l10ns[$language] ?? '');
+                $labelL10n->title = $labelData['l10ns'][$language];
                 if (!$labelL10n->save()) {
                     throw new PersistErrorException(
                         'Could not save label translation: ' . $this->formatErrors($labelL10n->getErrors())
@@ -343,7 +449,9 @@ class LabelSetService
             return [];
         }
         $languages = array_map(
-            static fn ($language) => LSYii_Validators::languageCodeFilter(trim((string)$language)),
+            static fn ($language) => is_string($language)
+                ? LSYii_Validators::languageCodeFilter(trim($language))
+                : '',
             $languages
         );
         return array_values(array_unique(array_filter($languages)));

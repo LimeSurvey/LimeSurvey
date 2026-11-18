@@ -1,5 +1,6 @@
 <?php
 
+use LimeSurvey\Models\Services\LabelSetService;
 use LimeSurvey\Models\Services\QuestionAggregateService;
 use LimeSurvey\Models\Services\SurveyDetailService;
 use LimeSurvey\Models\Services\Exception\{
@@ -192,16 +193,16 @@ class QuestionAdministrationController extends LSBaseController
     }
 
     /**
-         * Prepare data and render the question create/edit form for the given Question.
-         *
-         * Registers editor assets when the request is not AJAX, initializes file-manager context,
-         * builds advanced and general settings, prepares JS variables and modal HTML, sets UI flags,
-         * and renders the 'create' view with the assembled view data.
-         *
-         * @param Question $question The question model to render/edit.
-         * @return void
-         * @throws CException
-         */
+     * Prepare data and render the question create/edit form for the given Question.
+     *
+     * Registers editor assets when the request is not AJAX, initializes file-manager context,
+     * builds advanced and general settings, prepares JS variables and modal HTML, sets UI flags,
+     * and renders the 'create' view with the assembled view data.
+     *
+     * @param Question $question The question model to render/edit.
+     * @return void
+     * @throws CException
+     */
     private function renderFormAux(Question $question)
     {
         Yii::app()->loadHelper("admin.htmleditor");
@@ -418,11 +419,11 @@ class QuestionAdministrationController extends LSBaseController
         $aData['surveyActivated'] = $oSurvey->getIsActive();
         $this->aData = $aData;
 
-         $aData['hasSurveyContentCreatePermission'] = Permission::model()->hasSurveyPermission(
-             $iSurveyID,
-             'surveycontent',
-             'create'
-         );
+        $aData['hasSurveyContentCreatePermission'] = Permission::model()->hasSurveyPermission(
+            $iSurveyID,
+            'surveycontent',
+            'create'
+        );
 
 
         $this->render("listquestions", $aData);
@@ -571,17 +572,17 @@ class QuestionAdministrationController extends LSBaseController
                 if (empty($sScenario)) {
                     if (
                         App()->request
-                            ->getPost('save-and-close', '')
+                        ->getPost('save-and-close', '')
                     ) {
                         $sScenario = 'save-and-close';
                     } elseif (
                         App()->request
-                            ->getPost('saveandnew', '')
+                        ->getPost('saveandnew', '')
                     ) {
                         $sScenario = 'save-and-new';
                     } elseif (
                         App()->request
-                            ->getPost('saveandnewquestion', '')
+                        ->getPost('saveandnewquestion', '')
                     ) {
                         $sScenario = 'save-and-new-question';
                     }
@@ -1564,10 +1565,10 @@ class QuestionAdministrationController extends LSBaseController
         } catch (QuestionHasConditionsException $e) {
             $message = gT(
                 'Question could not be deleted. '
-                . 'There are conditions for other questions that rely '
-                . 'on this question. '
-                . 'You cannot delete this question until those conditions '
-                . 'are removed.'
+                    . 'There are conditions for other questions that rely '
+                    . 'on this question. '
+                    . 'You cannot delete this question until those conditions '
+                    . 'are removed.'
             );
             Yii::app()->setFlashMessage($message, 'error');
             $this->redirect($redirect);
@@ -2115,27 +2116,21 @@ class QuestionAdministrationController extends LSBaseController
      * This function prepares the data for labelset
      *
      * @param int $sid
-     * @param int $match
+     * @param int $match 1 to only list label sets that contain all the posted "languages"
      * @return void
      */
-    public function actionGetLabelsetPicker($sid, $match = 0, $language = null)
+    public function actionGetLabelsetPicker($sid, $match = 0)
     {
-        $criteria = new CDbCriteria();
-        if ($match == 1 && !empty($language)) {
-            $criteria->addCondition('languages LIKE :language');
-            $criteria->params = [':language' => '%' . $language . '%'];
-        }
+        $languages = $match == 1 ? (array)App()->getRequest()->getParam('languages', []) : [];
+        $labelSetService = \LimeSurvey\DI::getContainer()->get(LabelSetService::class);
 
-        $labelSets = LabelSet::model()->findAll($criteria);
-        // Create languagespecific array
         $result = [];
-        foreach ($labelSets as $labelSet) {
-            $result[] = array_map(
-                function ($attribute) {
-                    return \viewHelper::flatten($attribute);
-                },
-                $labelSet->attributes
-            );
+        foreach ($labelSetService->getLabelSets($languages) as $labelSet) {
+            $result[] = [
+                'lid' => $labelSet['lid'],
+                'label_name' => \viewHelper::flatten($labelSet['name']),
+                'languages' => implode(' ', $labelSet['languages']),
+            ];
         }
 
         return Yii::app()->getController()->renderPartial(

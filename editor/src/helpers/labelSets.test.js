@@ -1,29 +1,7 @@
 import { Entities } from './Buffer/Entities'
-import {
-  childrenToLabels,
-  getSurveyLanguages,
-  labelsToChildren,
-} from './labelSets'
+import { childrenToLabels, getLabelSetCodes } from './labelSets'
 
 const question = { qid: 10, gid: 3, scaleId: 0 }
-
-describe('getSurveyLanguages', () => {
-  test('Returns the base language first, followed by additional languages', () => {
-    expect(
-      getSurveyLanguages({ language: 'en', additionalLanguages: 'de fr' })
-    ).toEqual(['en', 'de', 'fr'])
-  })
-
-  test('Ignores empty and duplicate additional languages', () => {
-    expect(
-      getSurveyLanguages({ language: 'en', additionalLanguages: ' en  de ' })
-    ).toEqual(['en', 'de'])
-  })
-
-  test('Handles a missing survey', () => {
-    expect(getSurveyLanguages(undefined)).toEqual([])
-  })
-})
 
 describe('childrenToLabels', () => {
   test('Turns answers into labels, sorted, only with the selected languages', () => {
@@ -67,82 +45,93 @@ describe('childrenToLabels', () => {
   })
 })
 
-describe('labelsToChildren', () => {
-  const labels = [
-    { code: 'L1', assessmentValue: 2, l10ns: { en: 'Good', de: 'Gut' } },
-    { code: 'A1', assessmentValue: 0, l10ns: { en: 'Bad', de: 'Schlecht' } },
-  ]
+describe('getLabelSetCodes', () => {
+  const labels = (...codes) => codes.map((code) => ({ code }))
 
-  test('Creates answers after the existing ones, keeping free codes', () => {
-    const existingAnswers = [{ code: 'X1', sortOrder: 0 }]
-
-    const answers = labelsToChildren(
-      labels,
-      question,
-      existingAnswers,
-      Entities.answer,
-      ['en', 'de']
-    )
-
-    expect(answers).toHaveLength(2)
-    expect(answers[0]).toMatchObject({
-      qid: 10,
-      code: 'L1',
-      sortOrder: 1,
-      assessmentValue: 2,
-    })
-    expect(answers[0].l10ns.en.answer).toBe('Good')
-    expect(answers[0].l10ns.de.answer).toBe('Gut')
-    expect(answers[1]).toMatchObject({ code: 'A1', sortOrder: 2 })
-    expect(answers[0].appKey).toBeTruthy()
+  test('Keeps the label codes that are free', () => {
+    expect(
+      getLabelSetCodes(
+        labels('L1', 'L2'),
+        question,
+        [{ code: 'X1' }],
+        Entities.answer
+      )
+    ).toEqual(['L1', 'L2'])
   })
 
-  test('Generates a new code when the label code is already used', () => {
-    const existingAnswers = [{ code: 'a1', sortOrder: 0 }]
+  test('Does not rename a later label when an earlier one clashes', () => {
+    // Existing A1, loading A1 and A2: only the clashing A1 gets a new code
+    expect(
+      getLabelSetCodes(
+        labels('A1', 'A2'),
+        question,
+        [{ code: 'A1' }],
+        Entities.answer
+      )
+    ).toEqual(['A003', 'A2'])
+  })
 
-    const answers = labelsToChildren(
-      labels,
+  test('Compares codes case-insensitively', () => {
+    const [code] = getLabelSetCodes(
+      labels('A1'),
       question,
-      existingAnswers,
-      Entities.answer,
-      ['en']
+      [{ code: 'a1' }],
+      Entities.answer
     )
 
-    const codes = answers.map((answer) => answer.code)
-    expect(codes[0]).toBe('L1')
-    expect(codes[1]).not.toBe('A1')
-    expect(codes[1].toUpperCase()).not.toBe('A1')
+    expect(code.toUpperCase()).not.toBe('A1')
+  })
+
+  test('Gives a label set code that is used twice a new code', () => {
+    const codes = getLabelSetCodes(
+      labels('B1', 'b1'),
+      question,
+      [],
+      Entities.answer
+    )
+
+    expect(codes[0]).toBe('B1')
     expect(new Set(codes.map((code) => code.toUpperCase())).size).toBe(2)
   })
 
-  test('Creates subquestions with the title as code', () => {
-    const subquestions = labelsToChildren(
-      labels,
+  test('Replaces label codes that are too long for answer codes', () => {
+    const codes = getLabelSetCodes(
+      labels('ABCDEF', 'ABCDE'),
       question,
       [],
-      Entities.subquestion,
-      ['en']
+      Entities.answer
     )
 
-    expect(subquestions[0]).toMatchObject({
-      title: 'L1',
-      parentQid: 10,
-      gid: 3,
-      sortOrder: 0,
-    })
-    expect(subquestions[0].l10ns.en.question).toBe('Good')
-    expect(subquestions[0]).not.toHaveProperty('assessmentValue', 2)
+    expect(codes[1]).toBe('ABCDE')
+    expect(codes[0]).not.toBe('ABCDEF')
+    expect(codes[0].length).toBeLessThanOrEqual(5)
   })
 
-  test('Leaves the text empty for languages the label set does not have', () => {
-    const [answer] = labelsToChildren(
-      [{ code: 'A9', l10ns: { en: 'Only English' } }],
-      question,
-      [],
-      Entities.answer,
-      ['en', 'fr']
-    )
+  test('Keeps long label codes for subquestions', () => {
+    expect(
+      getLabelSetCodes(
+        [{ code: 'LONGSUBQUESTION1' }],
+        question,
+        [{ title: 'SQ001' }],
+        Entities.subquestion
+      )
+    ).toEqual(['LONGSUBQUESTION1'])
+  })
 
-    expect(answer.l10ns.fr.answer).toBe('')
+  test('Continues numeric answer codes', () => {
+    expect(
+      getLabelSetCodes(
+        labels('1', '2'),
+        question,
+        [{ code: '1' }, { code: '2' }],
+        Entities.answer
+      )
+    ).toEqual(['3', '4'])
+  })
+
+  test('Generates a code for labels without one', () => {
+    expect(
+      getLabelSetCodes([{ code: '' }], question, [], Entities.subquestion)
+    ).toEqual(['SQ001'])
   })
 })

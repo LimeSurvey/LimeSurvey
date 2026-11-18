@@ -18,6 +18,9 @@ const OVERWRITE_INPUT_ID = 'save-label-set-overwrite-input'
 /**
  * Saves the answer options or subquestions of a question as a new label set,
  * or overwrites an existing label set.
+ *
+ * canCreate and canUpdate say which of the two the user may do; with only one
+ * of them, the choice between new and overwrite isn't offered.
  */
 export const SaveLabelSetModal = ({
   show = false,
@@ -25,10 +28,12 @@ export const SaveLabelSetModal = ({
   _children = [],
   entityType = Entities.answer,
   surveyLanguages = [],
+  canCreate = true,
+  canUpdate = true,
 }) => {
   const [name, setName] = useState('')
   const [languages, setLanguages] = useState(surveyLanguages)
-  const [overwrite, setOverwrite] = useState(false)
+  const [overwrite, setOverwrite] = useState(!canCreate)
   const [overwriteLid, setOverwriteLid] = useState(null)
   const [allLanguages] = useAppState(STATES.ALL_AVAILABLE_LANGUAGES)
   const [userDetails] = useAppState(STATES.USER_DETAIL)
@@ -47,7 +52,7 @@ export const SaveLabelSetModal = ({
     if (show) {
       setName('')
       setLanguages(surveyLanguages)
-      setOverwrite(false)
+      setOverwrite(!canCreate)
       setOverwriteLid(null)
     }
   }, [show])
@@ -117,7 +122,11 @@ export const SaveLabelSetModal = ({
     <ComponentModal
       show={show}
       onHide={onHide}
-      title={t('Save as new label set')}
+      title={
+        canCreate
+          ? t('Save as new label set')
+          : t('Overwrite an existing label set')
+      }
       modalClassname="label-set-modal"
       componentClassname="label-set-modal-body"
       Component={
@@ -148,16 +157,18 @@ export const SaveLabelSetModal = ({
               dataTestId="save-label-set-languages"
               inputId={LANGUAGE_INPUT_ID}
             />
-            <ToggleButtons
-              id="save-label-set-overwrite"
-              labelText={t('Overwrite an existing label set')}
-              toggleOptions={[
-                { name: t('Yes'), value: true },
-                { name: t('No'), value: false },
-              ]}
-              value={overwrite}
-              update={(value) => setOverwrite(value)}
-            />
+            {canCreate && canUpdate && (
+              <ToggleButtons
+                id="save-label-set-overwrite"
+                labelText={t('Overwrite an existing label set')}
+                toggleOptions={[
+                  { name: t('Yes'), value: true },
+                  { name: t('No'), value: false },
+                ]}
+                value={overwrite}
+                update={(value) => setOverwrite(value)}
+              />
+            )}
             {overwrite && isError && !isFetching && (
               <LabelSetListError
                 onRetry={refetch}
@@ -187,26 +198,16 @@ export const SaveLabelSetModal = ({
                 {overwriteTarget.hasAssessmentValues && (
                   <p data-testid="save-label-set-assessment-warning">
                     {t(
-                      'The existing label set has assessment values assigned.'
-                    )}{' '}
-                    <strong>
-                      {t(
-                        'If you replace the label set the existing assessment values will be lost.'
-                      )}
-                    </strong>
+                      'The existing label set has assessment values assigned. If you replace the label set the existing assessment values will be lost.'
+                    )}
                   </p>
                 )}
                 {removedLanguages.length > 0 && (
                   <div data-testid="save-label-set-removed-languages">
                     <p>
                       {t(
-                        'The existing label set has different/more languages.'
-                      )}{' '}
-                      <strong>
-                        {t(
-                          'If you replace the label set these translations will be lost.'
-                        )}
-                      </strong>
+                        'The existing label set has different/more languages. If you replace the label set these translations will be lost:'
+                      )}
                     </p>
                     <ul className="label-set-modal-removed-languages">
                       {removedLanguages.map((language) => (

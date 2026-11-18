@@ -1042,7 +1042,8 @@ $(document).on('ready pjax:scriptcomplete', function () {
       data: {
         sid,
         match: 1,
-        language: languageJson.langs.split(';')[0]
+        // Only label sets that contain all survey languages, like the new editor
+        languages: languageJson.langs.split(';')
       },
       success(jsonString) {
         if (jsonString.success !== true) {

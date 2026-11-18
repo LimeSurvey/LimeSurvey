@@ -32,7 +32,7 @@ export const QuestionBody = ({
   const {
     children,
     handleChildAdd,
-    handleChildrenAppend,
+    handleLabelSetLoad,
     handleChildDelete,
     handleOnChildDragEnd,
     handleChildLUpdate,
@@ -61,7 +61,7 @@ export const QuestionBody = ({
           handleUpdate={handleUpdate}
           handleChildLUpdate={handleChildLUpdate}
           handleChildAdd={handleChildAdd}
-          handleChildrenAppend={handleChildrenAppend}
+          handleLabelSetLoad={handleLabelSetLoad}
           handleChildDelete={handleChildDelete}
           handleOnChildDragEnd={handleOnChildDragEnd}
           question={question}

@@ -1,24 +1,12 @@
 import { Entities } from './Buffer/Entities'
-import { getAnswerExample } from './getAnswerExample'
-import { getQuestionExample } from './getQuestionExample'
 import {
   getNextAnswerCode,
   getNextSubQuestionCode,
 } from './questionAndAnswerCodeGenerators'
-import { RandomNumber } from './RandomNumber'
-import { APP_KEY_PREFIX } from './constants/constants'
 
-/**
- * All languages of a survey, base language first.
- */
-export const getSurveyLanguages = (survey = {}) => {
-  const languages = survey.language ? [survey.language] : []
-  const additionalLanguages = (survey.additionalLanguages || '')
-    .split(' ')
-    .filter((language) => language && !languages.includes(language))
-
-  return [...languages, ...additionalLanguages]
-}
+// Length of the answers.code and questions.title columns; label codes can have up to 20
+const MAX_ANSWER_CODE_LENGTH = 5
+const MAX_SUBQUESTION_CODE_LENGTH = 20
 
 const isAnswerEntity = (entityType) => entityType === Entities.answer
 
@@ -46,69 +34,64 @@ export const childrenToLabels = (children = [], entityType, languages = []) => {
 }
 
 /**
- * Turn labels of a label set into new answer options or subquestions,
- * ready to be appended after the existing ones.
+ * Codes for the labels of a label set that is loaded into a question.
  *
- * A label keeps its code unless the code is already used by the question
- * (compared case-insensitively, like the editor's code validation);
- * then the next free code is generated.
+ * A label keeps its code unless the code is already used by the question or by an
+ * earlier label (compared case-insensitively, like the editor's code validation),
+ * or is too long for the entity (answer codes have at most 5 characters).
+ * Those labels get the next free code, which never takes a code another label keeps.
  *
  * @param {object[]} labels Labels from the label set API
- * @param {object} question The question the children are added to
+ * @param {object} question The question the labels are loaded into
  * @param {object[]} existingChildren The question's current answers or subquestions
  * @param {string} entityType Entities.answer or Entities.subquestion
- * @param {string[]} languages Survey languages
+ * @returns {string[]} One code per label, in the order of the labels
  */
-export const labelsToChildren = (
+export const getLabelSetCodes = (
   labels = [],
-  question,
+  question = {},
   existingChildren = [],
-  entityType,
-  languages = []
+  entityType
 ) => {
   const isAnswer = isAnswerEntity(entityType)
   const codeKey = isAnswer ? 'code' : 'title'
-  const textKey = isAnswer ? 'answer' : 'question'
-  const usedChildren = [...existingChildren]
-  const isCodeUsed = (code) =>
-    usedChildren.some(
-      (child) => `${child[codeKey]}`.toUpperCase() === `${code}`.toUpperCase()
+  const maxLength = isAnswer
+    ? MAX_ANSWER_CODE_LENGTH
+    : MAX_SUBQUESTION_CODE_LENGTH
+
+  const usedCodes = existingChildren
+    .map((child) => `${child[codeKey] ?? ''}`)
+    .filter(Boolean)
+  const usedKeys = new Set(usedCodes.map((code) => code.toUpperCase()))
+  const useCode = (code) => {
+    usedCodes.push(code)
+    usedKeys.add(code.toUpperCase())
+    return code
+  }
+
+  // Reserve the codes that are kept first, so a generated code can't take one
+  const keptCodes = labels.map((label) => {
+    const code = `${label.code ?? ''}`
+    if (!code || code.length > maxLength || usedKeys.has(code.toUpperCase())) {
+      return null
+    }
+    return useCode(code)
+  })
+
+  return keptCodes.map((code) => {
+    if (code) {
+      return code
+    }
+    return useCode(
+      isAnswer
+        ? getNextAnswerCode({
+            ...question,
+            answers: usedCodes.map((usedCode) => ({ code: usedCode })),
+          })
+        : getNextSubQuestionCode({
+            ...question,
+            subquestions: usedCodes.map((usedCode) => ({ title: usedCode })),
+          })
     )
-
-  return labels.map((label, index) => {
-    let code = label.code
-    if (!code || isCodeUsed(code)) {
-      code = isAnswer
-        ? getNextAnswerCode({ ...question, answers: usedChildren })
-        : getNextSubQuestionCode({ ...question, subquestions: usedChildren })
-    }
-
-    const sortOrder = existingChildren.length + index
-    const child = isAnswer
-      ? getAnswerExample({
-          qid: question.qid,
-          code,
-          sortOrder,
-          languages,
-        })
-      : getQuestionExample({
-          gid: question.gid,
-          scaleId: question.scaleId,
-          parentQid: question.qid,
-          sortOrder,
-          languages,
-          title: code,
-        })
-
-    if (isAnswer) {
-      child.assessmentValue = Number(label.assessmentValue) || 0
-    }
-    languages.forEach((language) => {
-      child.l10ns[language][textKey] = label.l10ns?.[language] ?? ''
-    })
-    child.appKey = `${entityType}-${APP_KEY_PREFIX}${RandomNumber()}`
-
-    usedChildren.push(child)
-    return child
   })
 }

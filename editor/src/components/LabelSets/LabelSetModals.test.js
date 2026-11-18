@@ -248,7 +248,7 @@ describe('SaveLabelSetModal', () => {
       'save-label-set-removed-languages'
     )
     expect(removedLanguages).toHaveTextContent(
-      'If you replace the label set these translations will be lost.'
+      'If you replace the label set these translations will be lost:'
     )
     expect(
       [...removedLanguages.querySelectorAll('li')].map((li) => li.textContent)
@@ -260,6 +260,49 @@ describe('SaveLabelSetModal', () => {
     )
     // Like the classic editor, the overwrite is still allowed
     expect(getConfirmButton('Save label set')).toBeEnabled()
+  })
+
+  test('Only offers overwriting without the right to create label sets', async () => {
+    mockLabelSets.current = [{ lid: 4, name: 'Old set', languages: ['en'] }]
+    await renderWithProviders(
+      <SaveLabelSetModal
+        show
+        _children={answers}
+        entityType={Entities.answer}
+        surveyLanguages={['en']}
+        canCreate={false}
+      />
+    )
+
+    expect(screen.queryByText('Yes')).not.toBeInTheDocument()
+    expect(screen.queryByTestId('save-label-set-name')).not.toBeInTheDocument()
+    openSelect('save-label-set-overwrite-select')
+    fireEvent.click(await screen.findByText('Old set'))
+    fireEvent.click(getConfirmButton('Save label set'))
+
+    await waitFor(() =>
+      expect(mockSaveLabelSet).toHaveBeenCalledWith(
+        expect.objectContaining({ lid: 4 })
+      )
+    )
+  })
+
+  test('Only offers a new label set without the right to update label sets', async () => {
+    await renderWithProviders(
+      <SaveLabelSetModal
+        show
+        _children={answers}
+        entityType={Entities.answer}
+        surveyLanguages={['en']}
+        canUpdate={false}
+      />
+    )
+
+    expect(screen.queryByText('Yes')).not.toBeInTheDocument()
+    expect(screen.getByTestId('save-label-set-name')).toBeInTheDocument()
+    expect(
+      screen.queryByTestId('save-label-set-overwrite-select')
+    ).not.toBeInTheDocument()
   })
 
   test('Shows an error with a retry when the overwrite list could not be loaded', async () => {

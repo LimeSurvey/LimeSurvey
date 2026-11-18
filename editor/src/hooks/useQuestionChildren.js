@@ -12,6 +12,7 @@ import {
   getNextAnswerCode,
   getQuestionExample,
   getNextSubQuestionCode,
+  getLabelSetCodes,
   RandomNumber,
   APP_KEY_PREFIX,
 } from 'helpers'
@@ -88,46 +89,47 @@ export const useQuestionChildren = ({
     }))
   }
 
-  const handleChildAdd = (childArray = [], entityType, props = {}) => {
-    const childKey = entityType === Entities.answer ? 'answers' : 'subquestions'
-
+  /**
+   * Create a new, empty answer or subquestion of this question in all survey languages.
+   */
+  const createChild = (entityType, code, props = {}) => {
+    const languages = surveySettings?.languages ?? []
     const newChild =
       entityType === Entities.answer
         ? getAnswerExample({
             qid: question.qid,
-            code: getNextAnswerCode(
-              {
-                ...question,
-                answers:
-                  props.scaleId !== undefined
-                    ? childArray.filter((a) => a.scaleId === props.scaleId)
-                    : childArray,
-              },
-              null
-            ),
-            languages: surveySettings.languages,
+            code,
+            languages,
             ...props,
           })
         : getQuestionExample({
             gid: question.gid,
             scaleId: question.scaleId,
             parentQid: question.qid,
-            languages: surveySettings.languages,
-            title: getNextSubQuestionCode(
-              {
-                ...question,
-                subquestions:
-                  props.scaleId !== undefined
-                    ? childArray.filter((sq) => sq.scaleId === props.scaleId)
-                    : childArray,
-              },
-              null
-            ),
+            languages,
+            title: code,
             ...props,
           })
 
     newChild.appKey = `${entityType}-${APP_KEY_PREFIX}${RandomNumber()}`
+    return newChild
+  }
 
+  const handleChildAdd = (childArray = [], entityType, props = {}) => {
+    const childKey = entityType === Entities.answer ? 'answers' : 'subquestions'
+    const scaleChildren =
+      props.scaleId !== undefined
+        ? childArray.filter((child) => child.scaleId === props.scaleId)
+        : childArray
+    const code =
+      entityType === Entities.answer
+        ? getNextAnswerCode({ ...question, answers: scaleChildren }, null)
+        : getNextSubQuestionCode(
+            { ...question, subquestions: scaleChildren },
+            null
+          )
+
+    const newChild = createChild(entityType, code, props)
     const updatedChildren = filterAndSortChildren(childArray, props, newChild)
 
     addToBuffer(
@@ -137,17 +139,28 @@ export const useQuestionChildren = ({
   }
 
   /**
-   * Append several new answers or subquestions at once, e.g. from a label set.
+   * Append the labels of a label set as new answers or subquestions.
    */
-  const handleChildrenAppend = (
-    childArray = [],
-    entityType,
-    newChildren = []
-  ) => {
-    if (!newChildren.length) {
+  const handleLabelSetLoad = (childArray = [], entityType, labels = []) => {
+    if (!labels.length) {
       return
     }
-    const childKey = entityType === Entities.answer ? 'answers' : 'subquestions'
+    const isAnswer = entityType === Entities.answer
+    const childKey = isAnswer ? 'answers' : 'subquestions'
+    const textKey = isAnswer ? 'answer' : 'question'
+    const codes = getLabelSetCodes(labels, question, childArray, entityType)
+
+    const newChildren = labels.map((label, index) => {
+      const child = createChild(entityType, codes[index])
+      if (isAnswer) {
+        child.assessmentValue = Number(label.assessmentValue) || 0
+      }
+      Object.keys(child.l10ns).forEach((language) => {
+        child.l10ns[language][textKey] = label.l10ns?.[language] ?? ''
+      })
+      return child
+    })
+
     const updatedChildren = [...childArray, ...newChildren].map(
       (child, index) => ({
         ...child,
@@ -435,7 +448,7 @@ export const useQuestionChildren = ({
   return {
     children,
     handleChildAdd,
-    handleChildrenAppend,
+    handleLabelSetLoad,
     handleChildDelete,
     handleOnChildDragEnd,
     handleChildLUpdate,

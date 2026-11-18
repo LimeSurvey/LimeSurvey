@@ -5,14 +5,7 @@ import { Draggable } from '@hello-pangea/dnd'
 import { PlusLg } from 'react-bootstrap-icons'
 import classNames from 'classnames'
 import { useAppState, useSurvey, useChildKeyboardShortcuts } from 'hooks'
-import {
-  Entities,
-  getSurveyLanguages,
-  hasTempId,
-  L10ns,
-  labelsToChildren,
-  STATES,
-} from 'helpers'
+import { Entities, hasTempId, L10ns, STATES } from 'helpers'
 import { getTooltipMessages } from 'helpers/options'
 import { ContentEditor, DragAndDrop, TooltipContainer } from 'components'
 import { CloseCircleFillIcon, DragIcon, UploadIcon } from 'components/icons'
@@ -33,7 +26,7 @@ export const OptionQuestionEditMode = ({
   handleChildLUpdate,
   isFocused,
   handleChildAdd,
-  handleChildrenAppend = () => {},
+  handleLabelSetLoad = () => {},
   handleOnChildDragEnd,
   handleChildDelete,
   language,
@@ -41,15 +34,16 @@ export const OptionQuestionEditMode = ({
   handleChildAssessmentValueUpdate,
   _children = [],
   isTitleFocused,
+  surveySettings = {},
 }) => {
   const { questionThemeName, showAssessmentValue } = question
   const { surveyId } = useParams()
   const { survey } = useSurvey(surveyId)
+  const surveyLanguages = surveySettings.languages ?? []
   const [showLoadLabelSetModal, setShowLoadLabelSetModal] = useState(false)
   // A label set arrives asynchronously; append it to the children as they are then
   const latestChildren = useRef(_children)
   latestChildren.current = _children
-  const surveyLanguages = getSurveyLanguages(survey)
   const isSingleChoiceTheme = singleChoiceThemes.includes(questionThemeName)
   const isImageTheme = imageThemeComponents.includes(questionThemeName)
 
@@ -86,17 +80,10 @@ export const OptionQuestionEditMode = ({
     if (!canLoadLabelSet) {
       return
     }
-    const currentChildren = latestChildren.current ?? []
-    handleChildrenAppend(
-      currentChildren,
+    handleLabelSetLoad(
+      latestChildren.current ?? [],
       childrenInfo.entity,
-      labelsToChildren(
-        labels,
-        question,
-        currentChildren,
-        childrenInfo.entity,
-        surveyLanguages
-      )
+      labels
     )
   }
 
