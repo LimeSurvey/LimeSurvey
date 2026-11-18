@@ -43,6 +43,14 @@ describe('withSurveyUpdatePermission', () => {
     expect(screen.getByTestId('probe')).toHaveTextContent('false')
   })
 
+  test('Should use the field default while the permission is unset', async () => {
+    const Probe = withSurveyUpdatePermission(PermissionProbe, 'Probe')
+    await renderWithProviders(<Probe />)
+    await setSurveyUpdatePermission('')
+
+    expect(screen.getByTestId('probe')).toHaveTextContent('default')
+  })
+
   test('Should render with the field default outside a QueryClientProvider', () => {
     const Probe = withSurveyUpdatePermission(PermissionProbe, 'Probe')
     render(<Probe />)

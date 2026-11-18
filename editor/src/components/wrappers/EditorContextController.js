@@ -51,9 +51,6 @@ export const EditorContextController = ({ children }) => {
     STATES.ACTIVE_LANGUAGE,
     survey.language
   )
-  const [hasSurveyUpdatePermission, setHasSurveyUpdatePermission] = useAppState(
-    STATES.HAS_SURVEY_UPDATE_PERMISSION
-  )
   const [userDetails] = useAppState(STATES.USER_DETAIL)
 
   // Survey Metadata & State Calculation
@@ -118,7 +115,7 @@ export const EditorContextController = ({ children }) => {
       history.scrollRestoration = 'manual'
     }
 
-    if (!hasSurveyUpdatePermission || !survey.sid || hasNavigated) {
+    if (!survey.sid || hasNavigated) {
       return
     }
 
@@ -159,7 +156,7 @@ export const EditorContextController = ({ children }) => {
     } else {
       unFocus()
     }
-  }, [survey.sid, hasSurveyUpdatePermission])
+  }, [survey.sid])
 
   // Keep the focus in sync with the survey: Update the stored indexes when
   // groups or questions move, and remove the focus when the entity is gone
@@ -181,11 +178,10 @@ export const EditorContextController = ({ children }) => {
     }
   }, [survey.questionGroups, hasNavigated])
 
-  // Permissions & Settings
+  // Settings: The survey update permission is set by PermissionsProvider
   useEffect(() => {
     setActiveLanguage(survey.language)
-    setHasSurveyUpdatePermission(survey.hasSurveyUpdatePermission || true)
-  }, [survey.sid, survey.hasSurveyUpdatePermission, survey.language])
+  }, [survey.sid, survey.language])
 
   useEffect(() => {
     if (

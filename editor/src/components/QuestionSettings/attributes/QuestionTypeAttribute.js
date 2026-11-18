@@ -1,5 +1,5 @@
 import { Button, Form, OverlayTrigger, Popover } from 'react-bootstrap'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useAppState, useBuffer, useFocused } from 'hooks'
 import { Entities, Operations, STATES } from 'helpers'
 
@@ -28,6 +28,13 @@ export const QuestionTypeAttribute = ({
     !!queuedQuestionUpdate?.props?.type && !queuedQuestionUpdate.error
   const disabled =
     activeDisabled || !hasSurveyUpdatePermission || isTypeChangeQueued
+
+  // Close an open selector once the type is locked, e.g. right after a pick
+  useEffect(() => {
+    if (disabled) {
+      setIsAddingQuestionOrGroup(false)
+    }
+  }, [disabled])
 
   const questionTypeSelectorPopover = (
     <Popover

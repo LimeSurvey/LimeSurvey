@@ -35,13 +35,16 @@
 
   .reset {
     margin-left: auto;
+    padding: 0;
+    border: 0;
+    background: transparent;
     cursor: pointer;
     font-size: $font-size-xs;
     font-weight: $font-weight-500;
     line-height: 16px;
     color: $grape;
 
-    &.disabled {
+    &:disabled {
       cursor: not-allowed;
       opacity: 0.5;
     }

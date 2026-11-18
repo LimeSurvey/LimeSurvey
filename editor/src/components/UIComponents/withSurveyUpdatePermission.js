@@ -22,9 +22,10 @@ import { STATES } from 'helpers/constants/constants'
  */
 export const withSurveyUpdatePermission = (Field, name) => {
   const FieldWithPermission = (props) => {
-    const [hasSurveyUpdatePermission] = useAppState(
-      STATES.HAS_SURVEY_UPDATE_PERMISSION
-    )
+    const [storedPermission] = useAppState(STATES.HAS_SURVEY_UPDATE_PERMISSION)
+    // Unset state reads as '': Leave the prop undefined so the field default applies
+    const hasSurveyUpdatePermission =
+      typeof storedPermission === 'boolean' ? storedPermission : undefined
 
     return (
       <Field

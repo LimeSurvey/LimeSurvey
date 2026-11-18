@@ -87,13 +87,14 @@ export const CheckboxRadio = ({
             />
           ))}
           {hasReset && (
-            <span
-              className={classNames('reset', { disabled })}
-              aria-disabled={disabled}
+            <button
+              type="button"
+              className="reset"
+              disabled={disabled}
               onClick={handleReset}
             >
               {t('Reset')}
-            </span>
+            </button>
           )}
         </Form>
       </TooltipContainer>
