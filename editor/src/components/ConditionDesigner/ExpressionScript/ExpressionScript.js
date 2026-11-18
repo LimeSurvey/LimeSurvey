@@ -2,12 +2,7 @@ import { useParams } from 'react-router-dom'
 import React, { useEffect, useState } from 'react'
 import classNames from 'classnames'
 
-import {
-  useBuffer,
-  useExpressionScriptValidation,
-  useFocused,
-  useSurvey,
-} from 'hooks'
+import { useBuffer, useExpressionScriptValidation, useSurvey } from 'hooks'
 import { QUESTION_RELEVANCE_DEFAULT_VALUE } from 'helpers'
 import { SideBarHeader } from 'components/SideBar'
 import { Button, ExpressionScriptEditor } from 'components/UIComponents'
@@ -18,23 +13,12 @@ import {
   isValidRelevanceValue,
   showConditionOverwriteConfirmationOverlay,
   showUnsavedChangesOverlay,
-  closeConditionPopups,
-  getConditionPopupClass,
 } from '../utils'
 
 export const ExpressionScript = ({ question, onNavigateBack = () => {} }) => {
   const { surveyId } = useParams()
   const { update } = useSurvey(surveyId)
-  const { focused } = useFocused()
   const { addToBuffer } = useBuffer()
-
-  // Close this panel's confirmation popup when the panel unmounts, e.g. when
-  // the question was removed (see getConditionPopupClass).
-  const popupClass = getConditionPopupClass(question?.qid)
-  useEffect(() => {
-    const qid = question?.qid
-    return () => closeConditionPopups(qid)
-  }, [])
 
   const validateExpression = useExpressionScriptValidation(
     surveyId,
@@ -47,13 +31,16 @@ export const ExpressionScript = ({ question, onNavigateBack = () => {} }) => {
       : (question?.relevance ?? '')
   )
 
+  // Reset the editor when the question's condition changes, e.g. another
+  // session changed it and the survey was refreshed, so "Apply" can't write
+  // the old script back
   useEffect(() => {
     setContent(
       question?.relevance === QUESTION_RELEVANCE_DEFAULT_VALUE
         ? ''
         : (question?.relevance ?? '')
     )
-  }, [focused])
+  }, [question?.qid, question?.relevance])
 
   const handleApply = () => {
     handleConditionScriptUpdate(
@@ -80,7 +67,6 @@ export const ExpressionScript = ({ question, onNavigateBack = () => {} }) => {
       showConditionOverwriteConfirmationOverlay({
         onConfirm: () => handleApply(content),
         onCancel: onNavigateBack,
-        popupClass,
       })
     } else {
       handleApply(content)

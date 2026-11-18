@@ -48,8 +48,44 @@ export const showErrorMessage = (message, position = 'bottom-right') => {
   })
 }
 
-export const showUnsavedChangesOverlay = (onIgnoreChanges, message = null) => {
+/**
+ * Class that marks every condition popup. The popups are SweetAlert modals
+ * outside of the React tree, so they stay open when the panel that opened them
+ * unmounts. QuestionSettings closes them in one place (closeConditionPopups)
+ * when the focused question changes, is gone, or its panel unmounts.
+ */
+export const CONDITION_POPUP_CLASS = 'condition-popup'
+
+/**
+ * Opens a condition popup. Open every condition popup through this function,
+ * so it gets CONDITION_POPUP_CLASS and is closed with the question's panel.
+ * @param {Object} options htmlPopup options.
+ * @returns {Promise} The SweetAlert result.
+ */
+export const showConditionPopup = (options) =>
   htmlPopup({
+    title: '',
+    showCloseButton: true,
+    width: '807px',
+    ...options,
+    popupClass: CONDITION_POPUP_CLASS,
+  })
+
+/**
+ * Closes the visible popup if it is a condition popup, including one that
+ * replaced another (e.g. a confirmation opened from the editor popup).
+ * Other popups are left open.
+ * @returns {void}
+ */
+export const closeConditionPopups = () => {
+  // getPopup() only returns an element while a popup is shown
+  if (SwalAlert.getPopup()?.classList.contains(CONDITION_POPUP_CLASS)) {
+    SwalAlert.close()
+  }
+}
+
+export const showUnsavedChangesOverlay = (onIgnoreChanges, message = null) => {
+  showConditionPopup({
     html: (
       <UnsavedChangesOverlay
         onIgnoreChanges={() => {
@@ -58,14 +94,11 @@ export const showUnsavedChangesOverlay = (onIgnoreChanges, message = null) => {
         message={message}
       />
     ),
-    title: '',
-    showCloseButton: true,
-    width: '807px',
   })
 }
 
 export const showDeleteScenarioOverlay = (scenarioId, onConfirmDelete) => {
-  htmlPopup({
+  showConditionPopup({
     html: (
       <DeleteScenarioOverlay
         scenarioId={scenarioId}
@@ -74,64 +107,26 @@ export const showDeleteScenarioOverlay = (scenarioId, onConfirmDelete) => {
         }}
       />
     ),
-    title: '',
-    showCloseButton: true,
-    width: '807px',
   })
 }
 
-/**
- * Class that marks the condition popups opened for a question. The popups are
- * SweetAlert modals outside of the React tree, so they stay open when the
- * question's panel unmounts; the class lets the panel close only its own.
- * @param {number|string} qid Question ID.
- * @returns {string}
- */
-export const getConditionPopupClass = (qid) => `condition-popup-qid-${qid}`
-
-/**
- * Closes the visible popup if it was opened for the given question, including
- * a popup that replaced another one (e.g. a confirmation opened from the editor).
- * Popups opened for anything else are left open.
- * @param {number|string} qid Question ID.
- * @returns {void}
- */
-export const closeConditionPopups = (qid) => {
-  // getPopup() only returns an element while a popup is shown
-  if (SwalAlert.getPopup()?.classList.contains(getConditionPopupClass(qid))) {
-    SwalAlert.close()
-  }
-}
-
-export const showResetAllConditionsOverlay = ({
-  onConfirmDelete,
-  popupClass = '',
-}) => {
-  htmlPopup({
+export const showResetAllConditionsOverlay = ({ onConfirmDelete }) => {
+  showConditionPopup({
     html: <ResetAllConditionsOverlay onConfirmDelete={onConfirmDelete} />,
-    title: '',
-    showCloseButton: true,
-    width: '807px',
-    popupClass,
   })
 }
 
 export const showConditionOverwriteConfirmationOverlay = ({
   onConfirm,
   onCancel = () => {},
-  popupClass = '',
 }) => {
-  htmlPopup({
+  showConditionPopup({
     html: (
       <ConditionOverwriteConfirmation
         onConfirmChanges={onConfirm}
         onCancelChanges={onCancel}
       />
     ),
-    title: '',
-    showCloseButton: true,
-    width: '807px',
-    popupClass,
   })
 }
 
@@ -140,7 +135,7 @@ export const showConditionScriptOverwriteConfirmationOverlay = ({
   onConfirm,
   onCancel = () => {},
 }) => {
-  htmlPopup({
+  showConditionPopup({
     html: (
       <ConditionScriptOverwriteConfirmation
         script={script}
@@ -148,8 +143,5 @@ export const showConditionScriptOverwriteConfirmationOverlay = ({
         onCancelChanges={onCancel}
       />
     ),
-    title: '',
-    showCloseButton: true,
-    width: '807px',
   })
 }

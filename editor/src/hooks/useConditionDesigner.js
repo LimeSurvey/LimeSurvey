@@ -9,6 +9,7 @@ import {
 import {
   buildScenarioPayload,
   getApiOperationActions,
+  getCurrentQuestionInfo,
   getDefaultCondition,
   hasConditionChanged,
   isDuplicateCondition,
@@ -19,13 +20,10 @@ import {
 } from '../components/ConditionDesigner/utils'
 
 export const useConditionDesigner = ({
-  survey,
   question,
   focused,
   scid,
   scenarioToPatch,
-  groupIndex,
-  questionIndex,
   conditions,
   addToBuffer,
   setScid,
@@ -86,14 +84,7 @@ export const useConditionDesigner = ({
 
   const handleQuestionUpdate = (scenarios) => {
     updateQuestionScenarios(scenarios, question, originalScid)
-    syncSurveyQuestionWithScenarios(
-      survey,
-      question,
-      groupIndex,
-      questionIndex,
-      update,
-      focused
-    )
+    syncSurveyQuestionWithScenarios(question, update, focused)
   }
 
   const handleDeletedConditions = (deletedConditions) => {
@@ -134,20 +125,17 @@ export const useConditionDesigner = ({
         question.relevance = QUESTION_RELEVANCE_DEFAULT_VALUE
       }
 
-      syncSurveyQuestionWithScenarios(
-        survey,
-        question,
-        groupIndex,
-        questionIndex,
-        update,
-        focused
-      )
+      syncSurveyQuestionWithScenarios(question, update, focused)
       focused.scenarios = question.scenarios
       focused.relevance = QUESTION_RELEVANCE_DEFAULT_VALUE
     })
   }
 
   const handleSavingScenario = () => {
+    // This can run from a confirmation popup after the question was removed
+    // (e.g. its group was deleted): then there is nothing to save
+    if (!getCurrentQuestionInfo(question.qid).question) return
+
     try {
       const deletedConditions = conditions.filter((c) => c.isDeleted)
       let message = ''

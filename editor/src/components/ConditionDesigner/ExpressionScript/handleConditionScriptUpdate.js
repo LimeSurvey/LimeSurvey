@@ -1,12 +1,13 @@
 import {
   createBufferOperation,
-  getQuestionById,
   QUESTION_RELEVANCE_DEFAULT_VALUE,
-  STATES,
 } from 'helpers'
-import { queryClient } from 'queryClient'
 
-import { getApiOperationActions, showSuccessMessage } from '../utils'
+import {
+  getApiOperationActions,
+  getCurrentQuestionInfo,
+  showSuccessMessage,
+} from '../utils'
 
 /**
  * Applies an ExpressionScript condition to a question.
@@ -30,8 +31,8 @@ export const handleConditionScriptUpdate = (
   update,
   onNavigateBack = () => {}
 ) => {
-  const survey = queryClient.getQueryData([STATES.SURVEY])?.survey
-  const { question, groupIndex, questionIndex } = getQuestionById(qid, survey)
+  const { survey, question, groupIndex, questionIndex } =
+    getCurrentQuestionInfo(qid)
 
   if (!question) return
 

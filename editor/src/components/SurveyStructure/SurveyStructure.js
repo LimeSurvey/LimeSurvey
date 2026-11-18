@@ -43,7 +43,6 @@ export const SurveyStructure = () => {
   const { setFocused, unFocus, focused } = useFocused()
   const {
     survey: { questionGroups = [], language, showWelcome, sid } = {},
-    survey,
     update,
   } = useSurvey(surveyId)
 
@@ -66,8 +65,9 @@ export const SurveyStructure = () => {
   })
 
   const handleUpdate = (questionGroups) => {
-    survey.questionGroups = questionGroups
-    update({ ...survey })
+    // Only the groups: spreading this render's `survey` would write its older
+    // top-level fields back over the current cache
+    update({ questionGroups })
   }
 
   const handleClose = () => {

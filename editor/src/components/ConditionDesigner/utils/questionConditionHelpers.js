@@ -1,5 +1,10 @@
 // Helper functions for condition operations
-import { QUESTION_RELEVANCE_DEFAULT_VALUE } from 'helpers'
+import {
+  getQuestionById,
+  QUESTION_RELEVANCE_DEFAULT_VALUE,
+  STATES,
+} from 'helpers'
+import { queryClient } from 'queryClient'
 
 import { getConditionTypeInfo } from './getConditionTypeInfo'
 import { getAllowedMethods } from './getAllowedMethods'
@@ -227,14 +232,36 @@ export const updateQuestionScenarios = (scenarios, question, originalScid) => {
   originalScid.current = scid
 }
 
-export const syncSurveyQuestionWithScenarios = (
-  survey,
-  question,
-  groupIndex,
-  questionIndex,
-  update,
-  focused
-) => {
+/**
+ * Finds a question by its ID in the current survey of the cache.
+ *
+ * Condition actions run from popups and handlers that can outlive the render
+ * that created them. The survey and indices they captured can be outdated, and
+ * the question can be gone (e.g. its group was deleted). Condition actions
+ * look the question up when they run instead.
+ * @param {number|string} qid Question ID.
+ * @returns {{survey?: Object, question?: Object, groupIndex?: number, questionIndex?: number}}
+ *   Only `survey` is set when the question no longer exists.
+ */
+export const getCurrentQuestionInfo = (qid) => {
+  const survey = queryClient.getQueryData([STATES.SURVEY])?.survey
+  return { survey, ...getQuestionById(qid, survey) }
+}
+
+/**
+ * Writes the question into the survey at its current position.
+ * Does nothing when the question no longer exists in the survey.
+ * @param {Object} question The updated question.
+ * @param {Function} update Updates the survey.
+ * @param {Object} focused The focused entity.
+ * @returns {void}
+ */
+export const syncSurveyQuestionWithScenarios = (question, update, focused) => {
+  const { survey, groupIndex, questionIndex } = getCurrentQuestionInfo(
+    question.qid
+  )
+  if (groupIndex === undefined) return
+
   const updatedGroups = [...survey.questionGroups]
 
   updatedGroups[groupIndex].questions[questionIndex] = question

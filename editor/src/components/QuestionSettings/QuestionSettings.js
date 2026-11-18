@@ -11,7 +11,13 @@ import {
   getQuestionById,
   isTempId,
 } from 'helpers'
-import { useAppState, useBuffer, useFocused, useSurvey } from 'hooks'
+import {
+  useAppState,
+  useBuffer,
+  useCloseConditionPopups,
+  useFocused,
+  useSurvey,
+} from 'hooks'
 import { SideBarHeader } from 'components/SideBar'
 import { CloseIcon } from 'components/icons'
 import { ToggleButtons } from 'components/UIComponents'
@@ -57,10 +63,12 @@ export const QuestionSettings = ({ surveyId }) => {
   // Not memoized: survey updates mutate the question groups in place, so the
   // survey reference can stay the same while the question object is replaced.
   const isSurveyLoaded = Array.isArray(survey?.questionGroups)
-  const { question, groupIndex, questionIndex } =
+  const { question, groupIndex, questionIndex, questionNumber } =
     focused?.qid != null && isSurveyLoaded
       ? getQuestionById(focused.qid, survey)
       : {}
+  // When it is missing, this panel renders nothing. Removing the focus is left
+  // to EditorContextController, which waits for the deep link to be handled.
   const isFocusedQuestionMissing =
     focused?.qid != null && isSurveyLoaded && !question
 
@@ -68,13 +76,9 @@ export const QuestionSettings = ({ surveyId }) => {
     closeConditionDesignerPanels()
   }, [focused?.qid])
 
-  // The focused question is gone, e.g. deleted in another session: close the
-  // panel instead of showing settings that can no longer be saved.
-  useEffect(() => {
-    if (isFocusedQuestionMissing) {
-      unFocus()
-    }
-  }, [isFocusedQuestionMissing])
+  // Close the condition popups when the question changes, is gone, or this
+  // panel unmounts. Condition actions also look the question up when they run.
+  useCloseConditionPopups(focused?.qid, isFocusedQuestionMissing)
 
   const questionSettings = useMemo(() => {
     if (!focused?.qid) {
@@ -206,11 +210,9 @@ export const QuestionSettings = ({ surveyId }) => {
   }
 
   const updateAttribute = (value, isAttribute = true) => {
-    const question =
-      survey?.questionGroups?.[groupIndex]?.questions?.[questionIndex]
-
-    // The indices can point to another question when the focus is stale.
-    if (!question || String(question.qid) !== String(focused.qid)) {
+    // `question` and its indices are resolved from the focused qid above, so
+    // they always belong to the focused question
+    if (!question) {
       errorToast('Invalid question group or question')
       return
     }
@@ -283,6 +285,7 @@ export const QuestionSettings = ({ surveyId }) => {
           question={question}
           groupIndex={groupIndex}
           questionIndex={questionIndex}
+          isFirstQuestion={questionNumber === 1}
           survey={survey}
           update={update}
           language={language}
@@ -402,8 +405,6 @@ export const QuestionSettings = ({ surveyId }) => {
               <ScenarioList
                 key={`scenario-list-${focused.qid}-${question.scenarios.length}`}
                 question={question}
-                groupIndex={groupIndex}
-                questionIndex={questionIndex}
                 setScenarioToPatch={setScenarioToPatch}
                 pendingScenarioName={pendingScenarioName}
                 setPendingScenarioName={setPendingScenarioName}

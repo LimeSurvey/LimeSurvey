@@ -11,18 +11,20 @@ import {
 import { Button } from 'components'
 import { CloseCircleIcon } from 'components/icons'
 
-import { getApiOperationActions, showDeleteScenarioOverlay } from './utils'
+import {
+  getApiOperationActions,
+  getCurrentQuestionInfo,
+  showDeleteScenarioOverlay,
+} from './utils'
 
 export const ScenarioList = ({
   question,
-  groupIndex,
-  questionIndex,
   setScenarioToPatch,
   pendingScenarioName,
   setPendingScenarioName,
 }) => {
   const { surveyId } = useParams()
-  const { survey, update } = useSurvey(surveyId)
+  const { update } = useSurvey(surveyId)
   const { focused } = useFocused()
   const { addToBuffer } = useBuffer()
 
@@ -50,8 +52,19 @@ export const ScenarioList = ({
   }, [question, pendingScenarioName, scenarios])
 
   const handleDeleteScenario = (scenarioId) => {
+    // This runs from the delete confirmation popup, which can outlive this
+    // render: find the question in the current survey, and do nothing if it
+    // was removed meanwhile (e.g. its group was deleted).
+    const {
+      survey,
+      question: currentQuestion,
+      groupIndex,
+      questionIndex,
+    } = getCurrentQuestionInfo(question.qid)
+    if (!currentQuestion) return
+
     const properties = {
-      qid: question.qid,
+      qid: currentQuestion.qid,
       scenarios: [
         {
           scid: scenarioId,
@@ -60,29 +73,29 @@ export const ScenarioList = ({
       ],
     }
 
-    const operation = createBufferOperation(question.qid)
-      .questionCondition(question.qid)
+    const operation = createBufferOperation(currentQuestion.qid)
+      .questionCondition(currentQuestion.qid)
       .delete()
-    operation.qid = question.qid
+    operation.qid = currentQuestion.qid
     operation.props = properties
     addToBuffer(operation)
 
-    question.scenarios = scenarios.filter(
+    currentQuestion.scenarios = (currentQuestion.scenarios ?? []).filter(
       (scenario) => scenario.scid !== scenarioId
     )
 
-    if (!question.scenarios.length)
-      question.relevance = QUESTION_RELEVANCE_DEFAULT_VALUE
+    if (!currentQuestion.scenarios.length)
+      currentQuestion.relevance = QUESTION_RELEVANCE_DEFAULT_VALUE
 
     const updatedQuestionGroups = [...survey.questionGroups]
-    updatedQuestionGroups[groupIndex].questions[questionIndex] = question
+    updatedQuestionGroups[groupIndex].questions[questionIndex] = currentQuestion
 
     update({
       questionGroups: updatedQuestionGroups,
     })
 
-    focused.scenarios = question.scenarios
-    focused.relevance = question.relevance
+    focused.scenarios = currentQuestion.scenarios
+    focused.relevance = currentQuestion.relevance
   }
 
   const isPendingAndHasTempId = useCallback(

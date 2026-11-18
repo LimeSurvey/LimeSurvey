@@ -32,6 +32,7 @@ export const ConditionDesigner = ({
   question,
   groupIndex,
   questionIndex,
+  isFirstQuestion = false,
   survey,
   update,
   language,
@@ -87,9 +88,6 @@ export const ConditionDesigner = ({
   } = useConditionDesigner({
     question,
     scenarioToPatch,
-    survey,
-    groupIndex,
-    questionIndex,
     update,
     focused,
     setPendingScenarioName,
@@ -208,7 +206,7 @@ export const ConditionDesigner = ({
               previousQuestions={previousQuestions}
               updateCondition={updateCondition}
               removeCondition={removeCondition}
-              isFirstQuestion={groupIndex === 0 && questionIndex === 0}
+              isFirstQuestion={isFirstQuestion}
               survey={survey}
               isUpdateAction={isUpdateAction()}
             />
