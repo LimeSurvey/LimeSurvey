@@ -5,6 +5,7 @@ var ModalEditor = function () {
     var oCKeditor;
     var originalContent;
     var fieldType;
+    var triggerButton;
 
     var loaderSpinner = '  <div  id="htmleditor-modal-loader" class="ls-flex ls-flex-column align-items-center align-content-center" style="height: 200px;">';
     loaderSpinner += '    <div class="loader--loaderWidget ls-flex ls-flex-column align-content-center align-items-center" style="min-height: 100%;">';
@@ -149,6 +150,7 @@ var ModalEditor = function () {
 
             modalTitle = $(this).data('modalTitle');
             fieldType = $(this).data('fieldType');
+            triggerButton = this;
             openModal();
         });
     };
@@ -161,6 +163,15 @@ var ModalEditor = function () {
 
         $(document).on('shown.bs.modal', modalSelector, function () {
             // Modal show event
+        });
+
+        // The modal content is replaced when it closes, so the focus would be lost:
+        // move it back to the button that opened the editor
+        $(document).on('hidden.bs.modal', modalSelector, function () {
+            if (triggerButton && document.body.contains(triggerButton)) {
+                triggerButton.focus();
+            }
+            triggerButton = null;
         });
     };
 
