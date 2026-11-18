@@ -267,7 +267,7 @@ App()->getClientScript()->registerScript("edit-after-completion-message", "
                                                            'id'      => 'htmlemailModal',
                                                            'header'  => gT('Warning', 'unescaped'),
                                                            'content' => '<p>' . gT("If you change the email format, you'll have to review your email templates to fit the new format") . '</p>',
-                                                           'footer'  => TbHtml::button('Close', ['data-bs-dismiss' => 'modal', 'class' => 'btn-outline-secondary'])
+                                                           'footer'  => TbHtml::button(gT('Close'), ['data-bs-dismiss' => 'modal', 'class' => 'btn-outline-secondary'])
                                                            ]); ?>
                 </div>
             </div>
@@ -297,12 +297,12 @@ App()->getClientScript()->registerScript("edit-after-completion-message", "
         'id' => 'alertPrivacy1',
         'header' => gT('Warning', 'unescaped'),
         'content' => '<p>' . gT("You can't use 'Anonymized responses' when participant-based response persistence is enabled.") . '</p>',
-        'footer' => TbHtml::button('Close', array('data-bs-dismiss' => 'modal', 'class' => 'btn-outline-secondary'))
+        'footer' => TbHtml::button(gT('Close'), array('data-bs-dismiss' => 'modal', 'class' => 'btn-outline-secondary'))
     ));
     $this->widget('yiistrap_fork.widgets.TbModal', array(
         'id' => 'alertPrivacy2',
         'header' => gT('Warning', 'unescaped'),
         'content' => '<p>' . gT("If the option -Anonymized responses- is activated only a dummy date stamp (1980-01-01) will be used for all responses to ensure the anonymity of your participants.") . '</p>',
-        'footer' => TbHtml::button('Close', array('data-bs-dismiss' => 'modal', 'class' => 'btn-outline-secondary'))
+        'footer' => TbHtml::button(gT('Close'), array('data-bs-dismiss' => 'modal', 'class' => 'btn-outline-secondary'))
     ));
     ?>
