@@ -54,6 +54,9 @@ class NoAnswerConditionSubmitTest extends TestBaseClass
             'list' => [\Question::QT_L_LIST, 'N', null],
             'list with comment' => [\Question::QT_O_LIST_WITH_COMMENT, 'N', '_Ccomment'],
             'list with other' => [\Question::QT_L_LIST, 'Y', '_Cother'],
+            // An untouched dropdown stays on its disabled "Please choose...", which isn't posted
+            'list dropdown' => [\Question::QT_EXCLAMATION_LIST_DROPDOWN, 'N', null],
+            'list dropdown with other' => [\Question::QT_EXCLAMATION_LIST_DROPDOWN, 'Y', '_Cother'],
         ];
     }
 

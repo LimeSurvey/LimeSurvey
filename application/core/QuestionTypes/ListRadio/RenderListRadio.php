@@ -118,10 +118,15 @@ class RenderListRadio extends QuestionBaseRenderer
         return $sRows;
     }
 
+    /**
+     * Render the "No answer" row. It is checked for an unanswered question when the survey preselects "No answer"
+     * or the respondent chose it before the page was shown again.
+     * @return string The HTML of the row
+     */
     public function addNoAnswerRow()
     {
         if (
-            PRESELECT_NO_ANSWER
+            $this->isNoAnswerPreselected()
             && (!isset($this->mSessionValue) || $this->mSessionValue == '' || $this->mSessionValue == ' ')
         ) {
             $check_ans = CHECKED; //Check the "no answer" radio button if there is no answer in session.

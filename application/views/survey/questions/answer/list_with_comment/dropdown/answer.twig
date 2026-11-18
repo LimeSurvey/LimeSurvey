@@ -8,6 +8,8 @@
  * @var $id
  * @var $checkconditionFunction
  * @var $show_noanswer
+ * @var $noanswer_disabled  Whether "Please choose..." can't be chosen, since "No answer" is offered instead
+ * @var $noanswer_chosen    Whether the respondent explicitly chose "No answer" before
  * @var $label_text
  * @var $tarows
  * @var $maxoptionsize
@@ -29,7 +31,7 @@
             id="{{ id }}"
         >
             {% if show_noanswer %}
-                <option class="noanswer-item" value="">
+                <option class="noanswer-item" value="" {% if noanswer_disabled|default(false) %} disabled {% if not noanswer_chosen|default(false) %} selected {% endif %} {% endif %}>
                     {{ gT('Please choose...') }}
                 </option>
             {% endif %}

@@ -34,6 +34,11 @@ class RenderListComment extends QuestionBaseRenderer
         return '/survey/questions/answer/list_with_comment';
     }
 
+    /**
+     * Render the radio list layout of the question.
+     * @param string $sCoreClasses Extra CSS classes for the answer container
+     * @return array The HTML of the answer and the names of its inputs
+     */
     public function renderList($sCoreClasses)
     {
         $sRows = '';
@@ -59,7 +64,7 @@ class RenderListComment extends QuestionBaseRenderer
                 'id' => 'answer' . $this->sSGQA,
                 'value' => '',
                 'check_ans' => (
-                    PRESELECT_NO_ANSWER && ($this->mSessionValue == '' || $this->mSessionValue == ' ')
+                    $this->isNoAnswerPreselected() && ($this->mSessionValue == '' || $this->mSessionValue == ' ')
                 ) ? CHECKED : '',
                 'checkconditionFunction' => $this->checkconditionFunction . '(this.value, this.name, this.type)',
                 'labeltext' => gT('No answer'),
@@ -96,8 +101,18 @@ class RenderListComment extends QuestionBaseRenderer
         return array($answer, $inputnames);
     }
 
+    /**
+     * Render the dropdown layout of the question.
+     * Without "No answer" preselection, "Please choose..." is disabled and "No answer" is offered instead: An
+     * untouched dropdown then isn't posted, so a condition on "No answer" needs an explicit choice.
+     * @param string $sCoreClasses Extra CSS classes for the answer container
+     * @return array The HTML of the answer and the names of its inputs
+     */
     public function renderDropdown($sCoreClasses)
     {
+        $hasNoAnswerOption = $this->oQuestion->mandatory != 'Y'
+            && $this->oQuestion->mandatory != 'S'
+            && SHOW_NO_ANSWER == 1;
         $sOptions = '';
         foreach ($this->aAnswerOptions[0] as $ansrow) {
             $itemData = array(
@@ -112,17 +127,12 @@ class RenderListComment extends QuestionBaseRenderer
             }
         }
 
-        if (
-            ($this->mSessionValue !== "" || PRESELECT_NO_ANSWER)
-            && $this->oQuestion->mandatory != 'Y'
-            && $this->oQuestion->mandatory != 'S'
-            && SHOW_NO_ANSWER == 1
-        ) {
+        if ($hasNoAnswerOption) {
             $itemData = array(
                 'classes' => ' noanswer-item ',
                 'value' => '',
                 'check_ans' => (
-                    PRESELECT_NO_ANSWER && $this->mSessionValue == ''
+                    $this->isNoAnswerPreselected() && $this->mSessionValue == ''
                 ) ? SELECTED : '',
                 'option_text' => gT('No answer'),
             );
@@ -151,6 +161,8 @@ class RenderListComment extends QuestionBaseRenderer
             'id'                     => 'answer' . $this->sSGQA,
             'basename'               => $this->sSGQA,
             'show_noanswer'          => $this->mSessionValue === "",
+            'noanswer_disabled'      => !PRESELECT_NO_ANSWER && $hasNoAnswerOption,
+            'noanswer_chosen'        => $this->isNoAnswerChosen(),
             'label_text'             => gT('Please enter your comment here'),
             'tarows'                 => $tarows,
             'maxoptionsize'          => $this->maxoptionsize,

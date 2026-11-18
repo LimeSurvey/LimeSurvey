@@ -50,12 +50,13 @@ define('LEM_PRETTY_PRINT_ALL_SYNTAX', 32);
 class LimeExpressionManager
 {
     /**
-     * Single choice question types with a "No answer" radio: A condition on "No answer" requires that radio
-     * to be checked on the same page, since "No answer" isn't always preselected.
+     * Single choice question types with a "No answer" option (a radio, or an option of a dropdown): A condition on
+     * "No answer" requires that option to be chosen on the same page, since "No answer" isn't always preselected.
      * @var string[]
      */
-    const NO_ANSWER_RADIO_TYPES = [
+    const NO_ANSWER_OPTION_TYPES = [
         Question::QT_L_LIST,
+        Question::QT_EXCLAMATION_LIST_DROPDOWN,
         Question::QT_O_LIST_WITH_COMMENT,
         Question::QT_G_GENDER,
         Question::QT_Y_YES_NO_RADIO,
@@ -1063,7 +1064,7 @@ class LimeExpressionManager
                 $fieldname = $row['cfieldname'] . '.NAOK';
                 $subqid = $fieldname;
                 $value = $row['value'];
-                if (in_array($row['type'], self::NO_ANSWER_RADIO_TYPES, true)) {
+                if (in_array($row['type'], self::NO_ANSWER_OPTION_TYPES, true)) {
                     $noAnswerVariable = $row['cfieldname'];
                 }
             }
@@ -9155,32 +9156,51 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
     }
 
     /**
-     * Remember whether the "No answer" radio of a single choice question on the submitted page was left untouched.
-     * An untouched radio group isn't posted at all, while a checked "No answer" radio posts an empty value.
+     * Remember whether the "No answer" option of a single choice question on the submitted page was left untouched.
+     * An untouched radio group isn't posted at all, and neither is a dropdown still on its disabled "Please choose...",
+     * while a chosen "No answer" posts an empty value.
      * @param array $qinfo The question info, as in $questionSeq2relevance
      * @param string $sgqa The field name of the list answer (Q + question ID), without its other or comment field
      * @return void
      */
     private function setNoAnswerUntouched(array $qinfo, $sgqa)
     {
-        if (!in_array($qinfo['type'], self::NO_ANSWER_RADIO_TYPES, true)) {
+        if (!in_array($qinfo['type'], self::NO_ANSWER_OPTION_TYPES, true)) {
             return;
         }
-        $hasNoAnswerRadio = ($this->surveyOptions['shownoanswer'] ?? true)
+        $hasNoAnswerOption = ($this->surveyOptions['shownoanswer'] ?? true)
             && $qinfo['mandatory'] != 'Y'
             && $qinfo['mandatory'] != 'S';
-        if ($hasNoAnswerRadio && !isset($_POST[$sgqa])) {
+        if ($hasNoAnswerOption && !isset($_POST[$sgqa])) {
             $_SESSION[$this->sessid]['noAnswerUntouched'][$sgqa] = true;
         } else {
             unset($_SESSION[$this->sessid]['noAnswerUntouched'][$sgqa]);
         }
+        // Without preselection, the page is shown again with this explicit choice, e.g. after a validation error
+        if ($hasNoAnswerOption && isset($_POST[$sgqa]) && trim((string) $_POST[$sgqa]) === '') {
+            $_SESSION[$this->sessid]['noAnswerChosen'][$sgqa] = true;
+        } else {
+            unset($_SESSION[$this->sessid]['noAnswerChosen'][$sgqa]);
+        }
     }
 
     /**
-     * Check whether the "No answer" radio of a question was left untouched and the question is on the page of the
+     * Check whether the respondent explicitly chose "No answer" in a single choice question when its page was last
+     * submitted.
+     * @param string $sgqa The field name of the list answer (Q + question ID)
+     * @return boolean True if "No answer" was chosen
+     */
+    public static function isNoAnswerChosen($sgqa)
+    {
+        $LEM =& LimeExpressionManager::singleton();
+        return !empty($_SESSION[$LEM->sessid]['noAnswerChosen'][$sgqa]);
+    }
+
+    /**
+     * Check whether the "No answer" option of a question was left untouched and the question is on the page of the
      * expression being processed: The browser then doesn't count the empty value as "No answer" either.
      * @param string $sgqa The SGQA of the question
-     * @return boolean True if the radio was left untouched on the same page
+     * @return boolean True if the "No answer" option was left untouched on the same page
      */
     public static function isNoAnswerUntouchedOnPage($sgqa)
     {

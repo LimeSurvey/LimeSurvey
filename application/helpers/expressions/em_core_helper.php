@@ -3401,8 +3401,8 @@ function exprmgr_empty($arg)
 
 /**
  * Determine whether a single choice question is answered with "No answer".
- * An empty value means "No answer", unless the question is on the same page and its "No answer" radio was left
- * untouched when the page was submitted: This matches the JavaScript version, which checks the radio itself.
+ * An empty value means "No answer", unless the question is on the same page and its "No answer" option was left
+ * untouched when the page was submitted: This matches the JavaScript version, which checks the radio or dropdown.
  * @param mixed $value The value of the question
  * @param string $sgqa The SGQA of the question
  * @return boolean True if the question is answered with "No answer"
