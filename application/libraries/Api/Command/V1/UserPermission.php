@@ -19,12 +19,11 @@ class UserPermission implements CommandInterface
     protected ResponseFactory $responseFactory;
 
     /**
-     * Constructor
+     * Creates the user permission command.
      *
-     * @param Permission $permission
-     * @param TransformerOutputUserPermissions $transformOutputUserPermissions
-     * @param AuthTokenSimple $auth
-     * @param ResponseFactory $responseFactory
+     * @param Permission $permission The permission model used for the lookups.
+     * @param TransformerOutputUserPermissions $transformOutputUserPermissions Transforms the user's permission rows for the response.
+     * @param ResponseFactory $responseFactory Builds the command response.
      */
     public function __construct(
         Permission $permission,
@@ -37,10 +36,10 @@ class UserPermission implements CommandInterface
     }
 
     /**
-     * Run user permission command
+     * Returns the current user's permissions, plus the effective permissions on a survey when a surveyId is given.
      *
-     * @param Request $request
-     * @return Response
+     * @param Request $request The request, optionally with a surveyId.
+     * @return Response The success response with the permissions.
      */
     public function run(Request $request)
     {
@@ -59,10 +58,16 @@ class UserPermission implements CommandInterface
     }
 
     /**
-     * Resolved flags incl. owner, global and survey group inheritance.
+     * Resolves the current user's effective permissions on a survey, including
+     * owner, global and survey group inheritance.
      *
-     * @param int $surveyId
-     * @return array<string, bool>
+     * The survey-level "Survey" permission has no update right, so surveyUpdate
+     * is true when the user can update the survey content or the survey settings.
+     * The classic editor checks these two on their own pages; the new editor has
+     * only this one flag, and the server still checks each change.
+     *
+     * @param int $surveyId The survey to resolve the permissions for.
+     * @return array<string, bool> The flags surveyRead, surveyUpdate, responsesRead and responsesUpdate.
      */
     private function getEffectiveSurveyPermissions(int $surveyId): array
     {
@@ -71,7 +76,8 @@ class UserPermission implements CommandInterface
 
         return [
             'surveyRead' => $can('survey', 'read'),
-            'surveyUpdate' => $can('survey', 'update'),
+            'surveyUpdate' => $can('surveycontent', 'update')
+                || $can('surveysettings', 'update'),
             'responsesRead' => $can('responses', 'read')
                 || $can('responses', 'update')
                 || $can('statistics', 'read'),
