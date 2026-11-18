@@ -101,18 +101,8 @@ class RenderListComment extends QuestionBaseRenderer
         return array($answer, $inputnames);
     }
 
-    /**
-     * Render the dropdown layout of the question.
-     * Without "No answer" preselection, "Please choose..." is disabled and "No answer" is offered instead: An
-     * untouched dropdown then isn't posted, so a condition on "No answer" needs an explicit choice.
-     * @param string $sCoreClasses Extra CSS classes for the answer container
-     * @return array The HTML of the answer and the names of its inputs
-     */
     public function renderDropdown($sCoreClasses)
     {
-        $hasNoAnswerOption = $this->oQuestion->mandatory != 'Y'
-            && $this->oQuestion->mandatory != 'S'
-            && SHOW_NO_ANSWER == 1;
         $sOptions = '';
         foreach ($this->aAnswerOptions[0] as $ansrow) {
             $itemData = array(
@@ -127,12 +117,17 @@ class RenderListComment extends QuestionBaseRenderer
             }
         }
 
-        if ($hasNoAnswerOption) {
+        if (
+            ($this->mSessionValue !== "" || PRESELECT_NO_ANSWER)
+            && $this->oQuestion->mandatory != 'Y'
+            && $this->oQuestion->mandatory != 'S'
+            && SHOW_NO_ANSWER == 1
+        ) {
             $itemData = array(
                 'classes' => ' noanswer-item ',
                 'value' => '',
                 'check_ans' => (
-                    $this->isNoAnswerPreselected() && $this->mSessionValue == ''
+                    PRESELECT_NO_ANSWER && $this->mSessionValue == ''
                 ) ? SELECTED : '',
                 'option_text' => gT('No answer'),
             );
@@ -161,8 +156,6 @@ class RenderListComment extends QuestionBaseRenderer
             'id'                     => 'answer' . $this->sSGQA,
             'basename'               => $this->sSGQA,
             'show_noanswer'          => $this->mSessionValue === "",
-            'noanswer_disabled'      => !PRESELECT_NO_ANSWER && $hasNoAnswerOption,
-            'noanswer_chosen'        => $this->isNoAnswerChosen(),
             'label_text'             => gT('Please enter your comment here'),
             'tarows'                 => $tarows,
             'maxoptionsize'          => $this->maxoptionsize,

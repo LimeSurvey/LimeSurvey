@@ -44,16 +44,17 @@ class NoAnswerConditionRelevanceTest extends TestBaseClass
     }
 
     /**
-     * A condition on "No answer" of a list dropdown question also checks its "No answer" option.
+     * A condition on "No answer" of a list dropdown question is unchanged: Its empty "Please choose..." still means
+     * "No answer".
      * @return void
      */
-    public function testListDropdownNoAnswerConditionUsesIsNoAnswer()
+    public function testListDropdownNoAnswerConditionIsUnchanged()
     {
         $question = \Question::model()->findByAttributes(['sid' => self::$surveyId, 'title' => 'Q00']);
         $question->type = \Question::QT_EXCLAMATION_LIST_DROPDOWN;
         $this->assertTrue($question->save());
         try {
-            $this->assertSame('((is_noanswer(Q00.NAOK, Q00.sgqa)))', $this->getRelevanceForQuestion('G01Q02'));
+            $this->assertSame('((is_empty(Q00.NAOK)))', $this->getRelevanceForQuestion('G01Q02'));
         } finally {
             $question->type = \Question::QT_L_LIST;
             $question->save();

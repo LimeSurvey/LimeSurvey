@@ -58,22 +58,6 @@ class RenderListDropdown extends QuestionBaseRenderer
         $this->setAnsweroptions();
     }
 
-    /**
-     * Check whether the dropdown offers a "No answer" option: The question isn't (soft) mandatory and the survey
-     * shows "No answer".
-     * @return boolean True if "No answer" can be chosen
-     */
-    private function hasNoAnswerOption()
-    {
-        return $this->oQuestion->mandatory != 'Y' && $this->oQuestion->mandatory != 'S' && SHOW_NO_ANSWER == 1;
-    }
-
-    /**
-     * Get the options of the dropdown.
-     * Without "No answer" preselection, "Please choose..." is disabled when "No answer" can be chosen instead: An
-     * untouched dropdown then isn't posted, so a condition on "No answer" needs an explicit choice.
-     * @return string The HTML of the options
-     */
     public function getRows()
     {
         $sOptions = '';
@@ -84,8 +68,7 @@ class RenderListDropdown extends QuestionBaseRenderer
             $sOptions .= Yii::app()->twigRenderer->renderQuestion($this->getMainView() . '/rows/option', array(
                 'name' => $this->sSGQA,
                 'value' => '',
-                'opt_select' => $this->isNoAnswerChosen() && !PRESELECT_NO_ANSWER ? '' : SELECTED,
-                'disabled' => !PRESELECT_NO_ANSWER && $this->hasNoAnswerOption(),
+                'opt_select' => SELECTED,
                 'answer' => gT('Please choose...')
                 ), true);
         }
@@ -97,10 +80,6 @@ class RenderListDropdown extends QuestionBaseRenderer
 
         if ($this->optCategorySeparator !== false) {
             $sOptions .= $this->getOptGroupRows($sOptions);
-            if (!PRESELECT_NO_ANSWER) {
-                // "Please choose..." is disabled, so "No answer" must be available with categories too
-                $sOptions .= $this->getNoAnswerOption();
-            }
         } else {
             foreach ($this->aAnswerOptions[0] as $oAnsweroption) {
                 $opt_select = $this->mSessionValue == $oAnsweroption->code ? SELECTED : '';
@@ -209,17 +188,11 @@ class RenderListDropdown extends QuestionBaseRenderer
             ], true);
     }
 
-    /**
-     * Get the "No answer" option. It is shown once an answer was chosen, and always without "No answer" preselection,
-     * where "Please choose..." can't be chosen.
-     * @return string The HTML of the option, empty if there is no "No answer" option
-     */
     public function getNoAnswerOption()
     {
         /** @var string the HTML for the options */
         $options = '';
-        $hasAnswer = !(is_null($this->mSessionValue) || $this->mSessionValue === "");
-        if (($hasAnswer || !PRESELECT_NO_ANSWER) && $this->hasNoAnswerOption()) {
+        if (!(is_null($this->mSessionValue) || $this->mSessionValue === "") && ($this->oQuestion->mandatory != 'Y' && $this->oQuestion->mandatory != 'S') && SHOW_NO_ANSWER == 1) {
             if ($this->hasOther && $this->otherPosition == self::OTHER_POS_BEFORE_NOANSWER) {
                 $options .= $this->getOtherOption();
                 $this->otherRendered = true;
@@ -229,8 +202,7 @@ class RenderListDropdown extends QuestionBaseRenderer
                 'name' => $this->sSGQA,
                 'classes' => 'noanswer-item',
                 'value' => '',
-                // Only selected when chosen explicitly: Otherwise "Please choose..." is selected
-                'opt_select' => !$hasAnswer && !PRESELECT_NO_ANSWER && $this->isNoAnswerChosen() ? SELECTED : '',
+                'opt_select' => '', // Never selected
                 'answer' => $_prefix . gT('No answer')
             ), true);
         }

@@ -54,9 +54,6 @@ class NoAnswerConditionSubmitTest extends TestBaseClass
             'list' => [\Question::QT_L_LIST, 'N', null],
             'list with comment' => [\Question::QT_O_LIST_WITH_COMMENT, 'N', '_Ccomment'],
             'list with other' => [\Question::QT_L_LIST, 'Y', '_Cother'],
-            // An untouched dropdown stays on its disabled "Please choose...", which isn't posted
-            'list dropdown' => [\Question::QT_EXCLAMATION_LIST_DROPDOWN, 'N', null],
-            'list dropdown with other' => [\Question::QT_EXCLAMATION_LIST_DROPDOWN, 'Y', '_Cother'],
         ];
     }
 
@@ -89,6 +86,19 @@ class NoAnswerConditionSubmitTest extends TestBaseClass
         $moveResult = $this->submitFirstPage($type, $other, $extraFieldSuffix, true);
 
         $this->assertTrue((bool) $moveResult['mandViolation'], 'The shown mandatory question must be answered');
+        $this->assertSame(0, $moveResult['gseq'], 'The survey must stay on the first page');
+    }
+
+    /**
+     * A list dropdown keeps counting its empty "Please choose..." as "No answer": The mandatory question is shown.
+     * @return void
+     */
+    public function testListDropdownPleaseChooseStillMeansNoAnswer()
+    {
+        // A dropdown always posts its value: "Please choose..." posts an empty value
+        $moveResult = $this->submitFirstPage(\Question::QT_EXCLAMATION_LIST_DROPDOWN, 'N', null, true);
+
+        $this->assertTrue((bool) $moveResult['mandViolation'], 'The mandatory question is shown and must be answered');
         $this->assertSame(0, $moveResult['gseq'], 'The survey must stay on the first page');
     }
 

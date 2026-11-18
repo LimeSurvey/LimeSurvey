@@ -5,12 +5,11 @@
  * @var $opt_select
  * @var $answer         flattenText($_prefix.$ansrow['answer'])."
  * @var $classes
- * @var $disabled       Whether the option can't be chosen
  */
 #}
 
 <!-- option -->
-<option value='{{ value }}' {{ opt_select }} {% if disabled|default(false) %} disabled {% endif %} {% if classes is not empty %} class="{{ classes }}" {% endif %} >
+<option value='{{ value }}' {{ opt_select }} {% if classes is not empty %} class="{{ classes }}" {% endif %} >
     {{ flatString(processString(answer,1),1) }}
 </option>
 <!-- end of option -->

@@ -50,13 +50,13 @@ define('LEM_PRETTY_PRINT_ALL_SYNTAX', 32);
 class LimeExpressionManager
 {
     /**
-     * Single choice question types with a "No answer" option (a radio, or an option of a dropdown): A condition on
-     * "No answer" requires that option to be chosen on the same page, since "No answer" isn't always preselected.
+     * Single choice question types with a "No answer" radio: A condition on "No answer" requires that radio to be
+     * checked on the same page, since "No answer" isn't always preselected. In a dropdown (list dropdown, or list with
+     * comment shown as a dropdown), the empty "Please choose..." still means "No answer".
      * @var string[]
      */
     const NO_ANSWER_OPTION_TYPES = [
         Question::QT_L_LIST,
-        Question::QT_EXCLAMATION_LIST_DROPDOWN,
         Question::QT_O_LIST_WITH_COMMENT,
         Question::QT_G_GENDER,
         Question::QT_Y_YES_NO_RADIO,
@@ -9158,9 +9158,9 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
     }
 
     /**
-     * Remember whether the "No answer" option of a single choice question on the submitted page was left untouched.
-     * An untouched radio group isn't posted at all, and neither is a dropdown still on its disabled "Please choose...",
-     * while a chosen "No answer" posts an empty value.
+     * Remember whether the "No answer" radio of a single choice question on the submitted page was left untouched.
+     * An untouched radio group isn't posted at all, while a checked "No answer" radio posts an empty value. A dropdown
+     * always posts its value, so its empty "Please choose..." counts as "No answer".
      * @param array $qinfo The question info, as in $questionSeq2relevance
      * @param string $sgqa The field name of the list answer (Q + question ID), without its other or comment field
      * @return void
