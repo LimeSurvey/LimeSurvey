@@ -53,12 +53,16 @@ export const getGeneralSettingsBlocks = () => ({
         },
         selectOptions: (globalStates) => {
           const siteSettings = globalStates[STATES.SITE_SETTINGS] || {}
-          const languages = siteSettings.languages || {}
+          const restrictedLanguages = siteSettings.languages || {}
+          const allLanguages =
+            globalStates[STATES.ALL_AVAILABLE_LANGUAGES] || {}
+          const userLang = globalStates[STATES.USER_DETAIL]?.lang
+          const languages = allLanguages[userLang] || {}
 
-          return Object.keys(languages).map((key) => {
+          return Object.keys(restrictedLanguages).map((key) => {
             return {
               value: key,
-              label: languages
+              label: languages[key]
                 ? languages[key].description
                 : t('No data available'),
             }
