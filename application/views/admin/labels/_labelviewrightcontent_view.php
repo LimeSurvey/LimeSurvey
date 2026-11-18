@@ -1,5 +1,6 @@
 <div class="row">
-  <div class="col-6 offset-3 text-center mt-4">
+  <?php // Full width on small screens / high zoom, so the file field and its "No file chosen" text are not cut off ?>
+  <div class="col-12 col-lg-6 offset-lg-3 text-center mt-4">
     <div id="accordion">
       <div class="card card-primary" id="up_resmgmt">
 
@@ -19,11 +20,12 @@
             <div id="upload-form-container">
 
               <!-- Form browselabelresources -->
-              <?php echo CHtml::form(Yii::app()->baseUrl . '/assets/packages/kcfinder/browse.php?language=' . sTranslateLangCode2CK(App()->language), 'get', array('id' => 'browselabelresources','class' => 'form30','name' => 'browselabelresources','target' => '_blank')); ?>
+              <?php echo CHtml::form(Yii::app()->baseUrl . '/assets/packages/kcfinder/browse.php?language=' . sTranslateLangCode2CK(App()->language), 'get', array('id' => 'browselabelresources','class' => 'form30','name' => 'browselabelresources','target' => '_blank', 'role' => 'presentation')); ?>
 
                   <!-- Browse uploaded resources -->
                     <div class="row mb-2">
-                        <div class="col-8 offset-2">
+                        <div class="col-12 col-md-8 offset-md-2">
+                            <label class="visually-hidden" for="type"><?php eT("Resource type"); ?></label>
                             <?php echo CHtml::dropDownList('type', 'files', array('files' => gT('Files', 'unescaped'), 'images' => gT('Images', 'unescaped')), array('class' => 'form-select')); ?>
                         </div>
                     </div>
@@ -55,6 +57,8 @@
                         'id' => 'importlabelresources',
                         'class' => 'form30',
                         'name' => 'importlabelresources',
+                        // Not a landmark of its own (the name attribute made it one for some screen readers)
+                        'role' => 'presentation',
                         'enctype' => 'multipart/form-data',
                         'onsubmit' => 'return window.LS.validatefilename(this, "' . gT(
                             'Please select a file to import!',
@@ -72,7 +76,7 @@
                     </div>
                     <div class="row">
                         <!-- Select ZIP file -->
-                        <div class="col-8 offset-2 mb-3">
+                        <div class="col-12 col-md-8 offset-md-2 mb-3">
                             <input id='the_file' name="the_file" class="form-control" type="file"/>
                         </div>
                     </div>

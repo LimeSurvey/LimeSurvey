@@ -19482,6 +19482,20 @@ input[type=datetime-local] {
   border: 0;
 }
 
+@media (max-width: 575.98px) {
+  #up_resmgmt {
+    padding-right: 0.5rem;
+    padding-left: 0.5rem;
+  }
+  #up_resmgmt .card-body,
+  #up_resmgmt .container {
+    padding-right: 0;
+    padding-left: 0;
+  }
+  #up_resmgmt .btn {
+    white-space: normal;
+  }
+}
 .welcome #lime-logo {
   animation: fadein 1s;
 }
@@ -21244,6 +21258,9 @@ input[type=checkbox]:checked:after {
   background-color: #1E1E1E;
   border-color: #1E1E1E;
 }
+input[type=checkbox]:focus-visible:after {
+  box-shadow: 0 0 0 2px #fff, 0 0 0 4px #8146F6;
+}
 
 .checkbox input[type=checkbox] {
   position: relative;
@@ -21316,6 +21333,9 @@ input[type=checkbox]:checked:after {
   background-color: #1E1E1E;
   border-color: #1E1E1E;
 }
+.checkbox input[type=checkbox]:focus-visible:after {
+  box-shadow: 0 0 0 2px #fff, 0 0 0 4px #8146F6;
+}
 
 .checkbox-inline input[type=checkbox] {
   position: relative;
@@ -21387,6 +21407,9 @@ input[type=checkbox]:checked:after {
 .checkbox-inline input[type=checkbox]:checked:after {
   background-color: #1E1E1E;
   border-color: #1E1E1E;
+}
+.checkbox-inline input[type=checkbox]:focus-visible:after {
+  box-shadow: 0 0 0 2px #fff, 0 0 0 4px #8146F6;
 }
 
 .form-check-input:focus {

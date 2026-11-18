@@ -83,6 +83,12 @@ $checkbox-selectors: 'input[type="checkbox"]', '.checkbox input[type="checkbox"]
             background-color: $g-900;
             border-color: $g-900;
         }
+
+        // A checked box has the same border and fill colour, so the coloured border alone
+        // does not show the focus: a ring around the box shows it in every state
+        &:focus-visible:after {
+            box-shadow: 0 0 0 2px $white, 0 0 0 4px $grape;
+        }
     }
 }
 
