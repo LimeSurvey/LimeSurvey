@@ -1,5 +1,6 @@
 <?php if (isset($aImportResults['fatalerror'])) :?>
-    <div class="jumbotron message-box message-box-error">
+    <?php // Gets the focus when the page has loaded, so the result is announced (adminbasics statusMessageFocus.js) ?>
+    <div id="admin-status-message" class="jumbotron message-box message-box-error" role="alert" tabindex="-1">
             <h2 class="text-danger"><?php eT("Import label set(s)") ?></h2>
             <p class="lead text-danger"><?php eT("Error") ?></p>
             <p><?php echo $aImportResults['fatalerror']; ?></p>
@@ -11,7 +12,7 @@
             </p>
     </div>
 <?php else :?>
-    <div class="jumbotron message-box">
+    <div id="admin-status-message" class="jumbotron message-box" role="status" aria-live="polite" aria-atomic="true" tabindex="-1">
             <h2 class="text-success"><?php eT("Import label set(s)") ?></h2>
             <p class="lead"><?php eT("File upload succeeded.") ?></p>
             <?php if (count($aImportResults['warnings']) > 0) : ?>

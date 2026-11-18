@@ -120,7 +120,8 @@
                 <?php if ($action === "newlabelset" && Permission::model()->hasGlobalPermission('labelsets', 'import')) : ?>
                     <div id="neweditlblset1" class="tab-pane fade" role="tabpanel" aria-labelledby="editlabel-tab-1">
                         <?php echo CHtml::form(["admin/labels/sa/import"], 'post', ['enctype' => 'multipart/form-data', 'class' => 'form', 'id' => 'importlabels', 'name' => "importlabels"]); ?>
-                        <div class="mb-3 col-6">
+                        <?php // Full width on small screens, so the file field and its "No file chosen" text are not cut off ?>
+                        <div class="mb-3 col-12 col-md-6">
                             <label class="form-label" for='the_file'>
                                 <?php echo gT("Select label set file (*.lsl):");
                                 if (isFileUploadSizeLimited()) {
