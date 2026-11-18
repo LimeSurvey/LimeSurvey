@@ -205,6 +205,10 @@
   &--error {
     border-left-color: $danger;
   }
+
+  &--info {
+    border-left-color: $info;
+  }
 }
 
 @media (max-width: 767px) {

@@ -64,7 +64,7 @@ export const QuestionFooter = ({
 
   const openQuestionPreview = () => {
     const previewUrl = getSiteUrl(
-      `/index.php/survey/index/action/previewquestion/sid/${surveyId}/gid/${question.gid}/qid/${question.qid}/lang/${activeLanguage}`
+      `/survey/index/action/previewquestion/sid/${surveyId}/gid/${question.gid}/qid/${question.qid}/lang/${activeLanguage}`
     )
     window.open(previewUrl, '_blank')
   }
