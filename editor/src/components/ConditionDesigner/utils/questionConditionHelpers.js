@@ -298,7 +298,9 @@ export const isConditionChangedSince = (qid, conditionState) => {
  * @returns {boolean}
  */
 export const isScenarioDraftValid = (conditions, scid) => {
-  const isScidValid = scid !== '' && !isNaN(scid)
+  // Scenario numbers are whole numbers from 1. A cleared input is ''.
+  const isScidValid =
+    scid !== '' && Number.isInteger(Number(scid)) && Number(scid) >= 1
 
   return (
     isScidValid &&

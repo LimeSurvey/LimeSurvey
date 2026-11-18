@@ -312,6 +312,16 @@ describe('condition popups', () => {
 
     expect(mockAddToBuffer).not.toHaveBeenCalled()
     expect(mockUpdate).not.toHaveBeenCalled()
+
+    // Confirming applies: the confirmation was shown for the new scenarios
+    await confirmOverwrite()
+
+    expect(mockAddToBuffer).toHaveBeenCalledTimes(1)
+    const { questionGroups } = mockUpdate.mock.calls[0][0]
+    expect(questionGroups[0].questions[0]).toMatchObject({
+      relevance: 'Q1 == "B"',
+      scenarios: [],
+    })
   })
 
   it('applies the confirmed script when the condition is unchanged', async () => {
@@ -455,6 +465,31 @@ describe('saving a scenario', () => {
     expect(mockUpdate).not.toHaveBeenCalled()
   })
 
+  it('keeps a cleared scenario number empty instead of scenario 0', () => {
+    const setScid = jest.fn()
+    const { result } = renderHook(() =>
+      useConditionDesigner({
+        question: { qid: 11, relevance: '1', scenarios: [] },
+        focused: {},
+        scid: 1,
+        scenarioToPatch: null,
+        conditions: [createCondition()],
+        addToBuffer: mockAddToBuffer,
+        setScid,
+        setConditions: jest.fn(),
+        update: mockUpdate,
+        setPendingScenarioName: jest.fn(),
+        onNavigateBack: jest.fn(),
+      })
+    )
+
+    act(() =>
+      result.current.handleScenarioNameChange({ target: { value: '' } })
+    )
+
+    expect(setScid).toHaveBeenCalledWith('')
+  })
+
   it('does nothing when the question was removed', () => {
     setCachedQuestionGroups([{ gid: 2, questions: [] }])
     const { result } = renderConditionDesigner(
@@ -579,7 +614,12 @@ describe('condition helpers', () => {
       isScenarioDraftValid([validRow, { ...clearedRow, isDeleted: true }], 1)
     ).toBe(true)
     expect(isScenarioDraftValid([validRow, clearedRow], 1)).toBe(false)
+    // Scenario numbers are whole numbers from 1
     expect(isScenarioDraftValid([validRow], '')).toBe(false)
+    expect(isScenarioDraftValid([validRow], 0)).toBe(false)
+    expect(isScenarioDraftValid([validRow], -1)).toBe(false)
+    expect(isScenarioDraftValid([validRow], 1.5)).toBe(false)
+    expect(isScenarioDraftValid([validRow], 2)).toBe(true)
   })
 
   it('replaces visual scenarios with an unchanged script', () => {

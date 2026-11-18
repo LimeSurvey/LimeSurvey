@@ -254,7 +254,9 @@ export const useConditionDesigner = ({
   }
 
   const handleScenarioNameChange = (e) => {
-    const newScid = Number(e.target.value)
+    // Keep a cleared input empty: Number('') would turn it into scenario 0.
+    // An empty scenario number is invalid, so Apply stays disabled.
+    const newScid = e.target.value === '' ? '' : Number(e.target.value)
     if (isNaN(newScid)) return
 
     setScid(newScid)
