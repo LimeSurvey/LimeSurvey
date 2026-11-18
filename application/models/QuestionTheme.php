@@ -752,6 +752,8 @@ class QuestionTheme extends LSActiveRecord
      */
     public static function getQuestionThemeDirectories()
     {
+        Yii::import('application.helpers.common_helper', true);
+        dispatchUploadPathEvent('beforeUploadPathUse', 'themes/question');
         $questionThemeDirectories[self::THEME_TYPE_CORE] = App()->getConfig('corequestiontypedir') . '/survey/questions/answer';
         $questionThemeDirectories[self::THEME_TYPE_CUSTOM] = App()->getConfig('customquestionthemedir');
         $questionThemeDirectories[self::THEME_TYPE_USER] = App()->getConfig('userquestionthemerootdir');

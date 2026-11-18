@@ -347,7 +347,16 @@ class Survey extends LSActiveRecord implements PermissionInterface
             // Remove the survey-specific theme options
             TemplateConfiguration::model()->deleteAllByAttributes(array('sid' => $this->sid));
             // Delete all uploaded files.
-            rmdirr(Yii::app()->getConfig('uploaddir') . '/surveys/' . $this->sid);
+            Yii::import('application.helpers.common_helper', true);
+            $surveyPath = 'surveys/' . $this->sid;
+            if (uploadPathChangeAllowed($surveyPath, 'delete', ['surveyId' => $this->sid])
+                && rmdirr(Yii::app()->getConfig('uploaddir') . '/surveys/' . $this->sid)
+            ) {
+                dispatchUploadPathEvent('afterUploadPathChange', $surveyPath, [
+                    'action' => 'delete',
+                    'surveyId' => $this->sid,
+                ]);
+            }
             // Delete all failed email notifications
             FailedEmail::model()->deleteAllByAttributes(array('surveyid' => $this->sid));
         }

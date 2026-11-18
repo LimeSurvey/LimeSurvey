@@ -19,6 +19,14 @@ class FilterImportedResources
         if (!is_dir($extractdir)) {
             return [[], []];
         }
+        \Yii::import('application.helpers.common_helper', true);
+        $relativeDest = uploadRelativePath($destdir);
+        if ($relativeDest !== null && !uploadPathChangeAllowed($relativeDest, 'write')) {
+            return [[], [[
+                'filename' => $destdir,
+                'status' => gT('Could not create directory'),
+            ]]];
+        }
 
         $directory = opendir($extractdir);
         if (!$directory) {
@@ -29,7 +37,11 @@ class FilterImportedResources
             return [$aImportedFilesInfo, $aErrorFilesInfo];
         }
 
-        return $this->copyDirectory($directory, $extractdir, $destdir);
+        $result = $this->copyDirectory($directory, $extractdir, $destdir);
+        if ($relativeDest !== null && $result[0] !== []) {
+            dispatchUploadPathEvent('afterUploadPathChange', $relativeDest, ['action' => 'write']);
+        }
+        return $result;
     }
 
     /**

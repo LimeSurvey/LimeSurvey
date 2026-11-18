@@ -553,7 +553,9 @@ class PluginManager extends \CApplicationComponent
                 $records = $pluginModel->findAllByAttributes(array('active' => 1));
             }
 
+            Yii::import('application.helpers.common_helper', true);
             foreach ($records as $record) {
+                dispatchUploadPathEvent('beforeUploadPathUse', 'plugins/' . $record->name);
                 if (
                     !$record->getLoadError()
                     // NB: Authdb is hardcoded since updating sometimes causes error.

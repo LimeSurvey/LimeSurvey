@@ -776,6 +776,7 @@ class ResponsesController extends LSBaseController
                 $sDir = get_absolute_path(Yii::app()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . "surveys" . DIRECTORY_SEPARATOR . $surveyId . DIRECTORY_SEPARATOR . "files") . DIRECTORY_SEPARATOR;
                 $sFileRealName = $sDir . $aFile['filename'];
                 $sRealUserPath = get_absolute_path($sFileRealName);
+                dispatchUploadPathEvent('beforeUploadPathUse', 'surveys/' . $surveyId . '/files/' . basename((string) $aFile['filename']));
                 if (strpos($sRealUserPath, $sDir) !== 0) {
                     throw new CHttpException(403, "File cannot be accessed.");
                 } elseif (!is_file($sRealUserPath)) {
