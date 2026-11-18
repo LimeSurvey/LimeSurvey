@@ -6,6 +6,7 @@ import {
 import {
   getApiOperationActions,
   getCurrentQuestionInfo,
+  replaceQuestionInSurvey,
   showSuccessMessage,
 } from '../utils'
 
@@ -31,8 +32,7 @@ export const handleConditionScriptUpdate = (
   update,
   onNavigateBack = () => {}
 ) => {
-  const { survey, question, groupIndex, questionIndex } =
-    getCurrentQuestionInfo(qid)
+  const { question } = getCurrentQuestionInfo(qid)
 
   if (!question) return
 
@@ -56,15 +56,11 @@ export const handleConditionScriptUpdate = (
   operation.props = props
   addToBuffer(operation)
 
-  question.relevance = script
-  question.scenarios = []
-
-  const updatedQuestionGroups = [...survey.questionGroups]
-  updatedQuestionGroups[groupIndex].questions[questionIndex] = question
-
-  update({
-    questionGroups: updatedQuestionGroups,
-  })
+  // A copy: the cached survey must only change through `update`
+  replaceQuestionInSurvey(
+    { ...question, relevance: script, scenarios: [] },
+    update
+  )
 
   onNavigateBack()
 

@@ -1,12 +1,25 @@
-import { act, fireEvent, render, waitFor } from '@testing-library/react'
+import {
+  act,
+  fireEvent,
+  render,
+  renderHook,
+  waitFor,
+} from '@testing-library/react'
 
 import { htmlPopup, STATES, SwalAlert } from 'helpers'
 import { useCloseConditionPopups } from 'hooks/useCloseConditionPopups'
+import { useConditionDesigner } from 'hooks/useConditionDesigner'
 import { queryClient } from 'queryClient'
 
 import { ExpressionScriptInputBox } from './ExpressionScript/ExpressionScriptInputBox'
 import { ScenarioList } from './ScenarioList'
-import { CONDITION_POPUP_CLASS, syncSurveyQuestionWithScenarios } from './utils'
+import {
+  CONDITION_POPUP_CLASS,
+  getConditionTypeInfo,
+  getDefaultCondition,
+  replaceQuestionInSurvey,
+  syncSurveyQuestionWithScenarios,
+} from './utils'
 
 // The popups' open / replace / close behavior is what is tested here, so use
 // the real SweetAlert instead of the shared stubs (__mocks__/sweetalert2.js
@@ -213,6 +226,157 @@ describe('condition popups', () => {
     expect(
       questionGroups[1].questions[0].scenarios.map((scenario) => scenario.scid)
     ).toEqual([2])
+    // A scenario is left, so the condition is kept
+    expect(questionGroups[1].questions[0].relevance).toBe(question.relevance)
+  })
+
+  it('does not delete a scenario that a refresh removed while the popup was open', async () => {
+    const question = createQuestion()
+    setCachedQuestionGroups([{ gid: 1, questions: [question] }])
+    const { container } = render(
+      <ScenarioList question={question} setScenarioToPatch={jest.fn()} />
+    )
+    await openDeleteScenarioPopup(container)
+
+    // A refresh replaced the scenarios with an ExpressionScript condition
+    setCachedQuestionGroups([
+      {
+        gid: 1,
+        questions: [{ ...question, scenarios: [], relevance: 'Q2 == "B"' }],
+      },
+    ])
+    await confirmDeleteScenario()
+
+    expect(mockAddToBuffer).not.toHaveBeenCalled()
+    expect(mockUpdate).not.toHaveBeenCalled()
+  })
+
+  it('deletes the last scenario without changing the cached question', async () => {
+    const question = {
+      ...createQuestion(),
+      scenarios: [{ scid: 1, conditions: [{ cid: 5 }] }],
+    }
+    setCachedQuestionGroups([{ gid: 1, questions: [question] }])
+    const { container } = render(
+      <ScenarioList question={question} setScenarioToPatch={jest.fn()} />
+    )
+    await openDeleteScenarioPopup(container)
+    await confirmDeleteScenario()
+
+    const { questionGroups } = mockUpdate.mock.calls[0][0]
+    const writtenQuestion = questionGroups[0].questions[0]
+    expect(writtenQuestion.scenarios).toEqual([])
+    // The last scenario is gone, so the question has no condition anymore
+    expect(writtenQuestion.relevance).toBe('1')
+    // The cached question only changes through `update`
+    expect(writtenQuestion).not.toBe(question)
+    expect(question.scenarios).toHaveLength(1)
+    expect(question.relevance).toBe('Q1 == "A"')
+  })
+
+  it('asks for confirmation when a refresh added scenarios while the editor popup was open', async () => {
+    // The question had no visual scenarios when the editor popup opened
+    const capturedQuestion = { ...createQuestion(), scenarios: [] }
+    // A refresh added scenarios
+    setCachedQuestionGroups([{ gid: 1, questions: [createQuestion()] }])
+    const { container } = render(<QuestionPanel question={capturedQuestion} />)
+
+    // Applying asks to overwrite the new scenarios instead of applying
+    await openOverwriteConfirmation(container)
+
+    expect(mockAddToBuffer).not.toHaveBeenCalled()
+    expect(mockUpdate).not.toHaveBeenCalled()
+  })
+})
+
+describe('saving a scenario', () => {
+  const conditionTypeInfo = getConditionTypeInfo()
+
+  const createCondition = () => ({
+    ...getDefaultCondition(),
+    qid: 11,
+    cqid: 5,
+    cfieldname: '1X1X5',
+    method: '==',
+    value: 'A1',
+    sourceType: conditionTypeInfo.SOURCE.QUESTION,
+    targetType: conditionTypeInfo.TARGET.CONSTANT,
+    scenario: 1,
+  })
+
+  const renderConditionDesigner = (question, conditions) =>
+    renderHook(() =>
+      useConditionDesigner({
+        question,
+        focused: {},
+        scid: 1,
+        scenarioToPatch: null,
+        conditions,
+        addToBuffer: mockAddToBuffer,
+        setScid: jest.fn(),
+        setConditions: jest.fn(),
+        update: mockUpdate,
+        setPendingScenarioName: jest.fn(),
+        onNavigateBack: jest.fn(),
+      })
+    )
+
+  afterEach(() => {
+    queryClient.removeQueries({ queryKey: [STATES.SURVEY] })
+    jest.clearAllMocks()
+  })
+
+  it('detects a condition that a refresh added while the confirmation was open', () => {
+    // The question had no scenarios when the confirmation opened
+    const capturedQuestion = { qid: 11, relevance: '1', scenarios: [] }
+    // A refresh added the same condition
+    setCachedQuestionGroups([
+      {
+        gid: 1,
+        questions: [
+          {
+            ...capturedQuestion,
+            scenarios: [
+              { scid: 1, conditions: [{ ...createCondition(), cid: 7 }] },
+            ],
+          },
+        ],
+      },
+    ])
+    const { result } = renderConditionDesigner(capturedQuestion, [
+      createCondition(),
+    ])
+
+    act(() => result.current.handleSavingScenario())
+
+    expect(mockAddToBuffer).not.toHaveBeenCalled()
+    expect(mockUpdate).not.toHaveBeenCalled()
+  })
+
+  it('saves a new condition without changing the cached question', () => {
+    const question = { qid: 11, relevance: '1', scenarios: [] }
+    setCachedQuestionGroups([{ gid: 1, questions: [question] }])
+    const { result } = renderConditionDesigner(question, [createCondition()])
+
+    act(() => result.current.handleSavingScenario())
+
+    expect(mockAddToBuffer).toHaveBeenCalledTimes(1)
+    const { questionGroups } = mockUpdate.mock.calls[0][0]
+    expect(questionGroups[0].questions[0].scenarios).toHaveLength(1)
+    expect(question.scenarios).toEqual([])
+  })
+
+  it('does nothing when the question was removed', () => {
+    setCachedQuestionGroups([{ gid: 2, questions: [] }])
+    const { result } = renderConditionDesigner(
+      { qid: 11, relevance: '1', scenarios: [] },
+      [createCondition()]
+    )
+
+    act(() => result.current.handleSavingScenario())
+
+    expect(mockAddToBuffer).not.toHaveBeenCalled()
+    expect(mockUpdate).not.toHaveBeenCalled()
   })
 })
 
@@ -234,7 +398,24 @@ describe('syncSurveyQuestionWithScenarios', () => {
 
     const { questionGroups } = update.mock.calls[0][0]
     expect(questionGroups[0].questions[0]).toBe(otherQuestion)
-    expect(questionGroups[1].questions[0]).toBe(updatedQuestion)
+    // A copy, so later changes of the caller's object stay out of the cache
+    expect(questionGroups[1].questions[0]).toEqual(updatedQuestion)
+    expect(questionGroups[1].questions[0]).not.toBe(updatedQuestion)
+  })
+
+  it('does not change the cached survey', () => {
+    const question = { qid: 11, scenarios: [] }
+    const group = { gid: 1, questions: [question] }
+    setCachedQuestionGroups([group])
+    const update = jest.fn()
+
+    replaceQuestionInSurvey({ ...question, scenarios: [{ scid: 1 }] }, update)
+
+    expect(group.questions[0]).toBe(question)
+    expect(question.scenarios).toEqual([])
+    const { questionGroups } = update.mock.calls[0][0]
+    expect(questionGroups[0]).not.toBe(group)
+    expect(questionGroups[0].questions[0].scenarios).toEqual([{ scid: 1 }])
   })
 
   it('does nothing when the question no longer exists', () => {

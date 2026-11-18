@@ -17,6 +17,7 @@ import {
   updateQuestionScenarios,
   syncSurveyQuestionWithScenarios,
   isDuplicate,
+  replaceQuestionInSurvey,
 } from '../components/ConditionDesigner/utils'
 
 export const useConditionDesigner = ({
@@ -32,7 +33,6 @@ export const useConditionDesigner = ({
   setPendingScenarioName,
   onNavigateBack,
 }) => {
-  const originalScenarios = question?.scenarios
   const originalScid = useRef(scenarioToPatch ? scid : null)
 
   const removeCondition = (index) => {
@@ -82,12 +82,12 @@ export const useConditionDesigner = ({
     )
   }
 
-  const handleQuestionUpdate = (scenarios) => {
-    updateQuestionScenarios(scenarios, question, originalScid)
-    syncSurveyQuestionWithScenarios(question, update, focused)
+  const handleQuestionUpdate = (scenarios, targetQuestion) => {
+    updateQuestionScenarios(scenarios, targetQuestion, originalScid)
+    syncSurveyQuestionWithScenarios(targetQuestion, update, focused)
   }
 
-  const handleDeletedConditions = (deletedConditions) => {
+  const handleDeletedConditions = (deletedConditions, targetQuestion) => {
     Object.values(deletedConditions).forEach((condition) => {
       const props = {
         qid: condition.qid,
@@ -112,29 +112,37 @@ export const useConditionDesigner = ({
       operation.props = props
       addToBuffer(operation)
 
-      question.scenarios = question.scenarios
-        .map((sc) => {
-          if (sc.scid === scenarioToPatch.scid) {
-            sc.conditions = sc.conditions.filter((c) => c.cid != condition.cid)
-          }
-          return sc
-        })
+      // New scenario objects: the scenarios can still be the cached ones
+      targetQuestion.scenarios = (targetQuestion.scenarios ?? [])
+        .map((sc) =>
+          sc.scid === scenarioToPatch.scid
+            ? {
+                ...sc,
+                conditions: sc.conditions.filter((c) => c.cid != condition.cid),
+              }
+            : sc
+        )
         .filter((sc) => sc.conditions.length > 0)
 
-      if (question.scenarios.length === 0) {
-        question.relevance = QUESTION_RELEVANCE_DEFAULT_VALUE
+      if (targetQuestion.scenarios.length === 0) {
+        targetQuestion.relevance = QUESTION_RELEVANCE_DEFAULT_VALUE
       }
 
-      syncSurveyQuestionWithScenarios(question, update, focused)
-      focused.scenarios = question.scenarios
+      syncSurveyQuestionWithScenarios(targetQuestion, update, focused)
+      focused.scenarios = targetQuestion.scenarios
       focused.relevance = QUESTION_RELEVANCE_DEFAULT_VALUE
     })
   }
 
   const handleSavingScenario = () => {
-    // This can run from a confirmation popup after the question was removed
-    // (e.g. its group was deleted): then there is nothing to save
-    if (!getCurrentQuestionInfo(question.qid).question) return
+    // Save against the question as it is in the survey now. This can run from
+    // a confirmation popup, and the question captured when it opened can be
+    // outdated (e.g. a refresh added a scenario, which the duplicate check
+    // must see) or gone (e.g. its group was deleted: nothing to save).
+    // Work on a copy, so the cached survey only changes through `update`.
+    const currentQuestion = getCurrentQuestionInfo(question.qid).question
+    if (!currentQuestion) return
+    const workingQuestion = { ...currentQuestion }
 
     try {
       const deletedConditions = conditions.filter((c) => c.isDeleted)
@@ -155,25 +163,26 @@ export const useConditionDesigner = ({
       )
 
       if (deletedConditions.length) {
-        handleDeletedConditions(deletedConditions)
+        handleDeletedConditions(deletedConditions, workingQuestion)
         message = getSuccessMessage('delete')
         scenarioHasUpdates = true
       }
 
-      const apiProps = { qid: question.qid, scenarios: [] }
+      const apiProps = { qid: workingQuestion.qid, scenarios: [] }
       const updated = conditions.filter((c) => c.isUpdated)
 
       if (updated.length) {
-        const updateProps = buildScenarioPayload(question, updated, scid)
+        const updateProps = buildScenarioPayload(workingQuestion, updated, scid)
         apiProps.scenarios.push(...updateProps.scenarios)
-        handleQuestionUpdate(updateProps.scenarios)
+        handleQuestionUpdate(updateProps.scenarios, workingQuestion)
         message = getSuccessMessage('update')
         scenarioHasUpdates = true
       }
 
       const newConditions = conditions.filter(
         (c) =>
-          !c.cid && !isDuplicateCondition(c, question, scid, scenarioToPatch)
+          !c.cid &&
+          !isDuplicateCondition(c, workingQuestion, scid, scenarioToPatch)
       )
 
       const hasDuplicate =
@@ -188,12 +197,12 @@ export const useConditionDesigner = ({
 
         if (uniqueConditions.length) {
           const createProps = buildScenarioPayload(
-            question,
+            workingQuestion,
             uniqueConditions,
             scid
           )
           apiProps.scenarios.push(...createProps.scenarios)
-          handleQuestionUpdate(createProps.scenarios)
+          handleQuestionUpdate(createProps.scenarios, workingQuestion)
           message = getSuccessMessage('create')
           setPendingScenarioName(scid)
           scenarioHasUpdates = true
@@ -201,10 +210,10 @@ export const useConditionDesigner = ({
       }
 
       if (apiProps.scenarios.length > 0) {
-        const op = createBufferOperation(question.qid)
+        const op = createBufferOperation(workingQuestion.qid)
           .questionCondition()
           .update()
-        op.qid = question.qid
+        op.qid = workingQuestion.qid
         op.props = apiProps
         addToBuffer(op)
       }
@@ -218,8 +227,9 @@ export const useConditionDesigner = ({
       showSuccessMessage(message)
       onNavigateBack()
     } catch (error) {
-      question.scenarios = originalScenarios
-      focused.scenarios = originalScenarios
+      // Write the question back as it was before saving
+      replaceQuestionInSurvey(currentQuestion, update)
+      focused.scenarios = currentQuestion.scenarios
       throw new Error(`Scenario save failed: ${error.message}`)
     }
   }

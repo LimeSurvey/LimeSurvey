@@ -249,6 +249,39 @@ export const getCurrentQuestionInfo = (qid) => {
 }
 
 /**
+ * Writes a question into the survey at its current position.
+ *
+ * Writes a copy of the question, in new copies of its group and questions
+ * array, and never changes the cached survey in place: React Query keeps its
+ * previous data when the new data is deep-equal to it (structural sharing), so
+ * changing cached objects before `update` would hide the change from the
+ * survey's listeners. The copy also keeps later changes of the caller's object
+ * out of the cache.
+ * @param {Object} question The updated question.
+ * @param {Function} update Updates the survey.
+ * @returns {boolean} False when the question no longer exists in the survey.
+ */
+export const replaceQuestionInSurvey = (question, update) => {
+  const { survey, groupIndex, questionIndex } = getCurrentQuestionInfo(
+    question.qid
+  )
+  if (groupIndex === undefined) return false
+
+  const questionGroups = survey.questionGroups.map((group, index) =>
+    index === groupIndex
+      ? {
+          ...group,
+          questions: group.questions.map((existingQuestion, position) =>
+            position === questionIndex ? { ...question } : existingQuestion
+          ),
+        }
+      : group
+  )
+  update({ questionGroups })
+  return true
+}
+
+/**
  * Writes the question into the survey at its current position.
  * Does nothing when the question no longer exists in the survey.
  * @param {Object} question The updated question.
@@ -257,15 +290,7 @@ export const getCurrentQuestionInfo = (qid) => {
  * @returns {void}
  */
 export const syncSurveyQuestionWithScenarios = (question, update, focused) => {
-  const { survey, groupIndex, questionIndex } = getCurrentQuestionInfo(
-    question.qid
-  )
-  if (groupIndex === undefined) return
-
-  const updatedGroups = [...survey.questionGroups]
-
-  updatedGroups[groupIndex].questions[questionIndex] = question
-  update({ questionGroups: updatedGroups })
+  if (!replaceQuestionInSurvey(question, update)) return
 
   if (Array.isArray(question?.scenarios) && question.scenarios.length > 0) {
     focused.scenarios = [...question.scenarios].sort((a, b) => a.scid - b.scid)

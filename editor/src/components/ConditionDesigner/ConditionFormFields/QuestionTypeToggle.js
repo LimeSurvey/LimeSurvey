@@ -43,19 +43,19 @@ export const QuestionTypeToggle = ({
   }, [isFirstQuestion, condition.sourceType])
 
   // The first question has no previous questions, so only participant data
-  // can be used as the source. Done in a layout effect: updateCondition sets
-  // the parent's state, which must not happen while rendering, and a layout
-  // effect applies it before paint, so the question select never flashes.
+  // can be used as the source. Use the same reset as switching the toggle by
+  // hand: a condition that was question-sourced (e.g. the question moved to
+  // the first position) must not keep its question fields, or its question
+  // code in `cfieldname` would be saved as a participant attribute name.
+  // Done in a layout effect: updateCondition sets the parent's state, which
+  // must not happen while rendering, and a layout effect applies it before
+  // paint, so the question select never flashes.
   useLayoutEffect(() => {
     if (
       isFirstQuestion &&
       condition.sourceType !== conditionTypeInfo.SOURCE.PARTICIPANT_DATA
     ) {
-      updateCondition(
-        index,
-        'sourceType',
-        conditionTypeInfo.SOURCE.PARTICIPANT_DATA
-      )
+      handleChange(conditionTypeInfo.SOURCE.PARTICIPANT_DATA)
     }
   }, [isFirstQuestion, condition.sourceType])
 
