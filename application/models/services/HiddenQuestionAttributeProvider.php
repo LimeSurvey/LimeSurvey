@@ -67,6 +67,11 @@ class HiddenQuestionAttributeProvider extends QuestionAttributeProvider
     /**
      * Returns the hidden attributes of a question theme.
      *
+     * The values are JSON objects, so they are not XSS filtered: HTMLPurifier
+     * would entity-encode the texts and the expression filter would break the
+     * JSON on curly braces. The theme templates validate every number and
+     * escape the alt text on output instead.
+     *
      * @param string $questionThemeName the question theme name, e.g. "image_select-listradio"
      * @return array<string,array> The hidden attribute settings for this question theme, empty for other themes
      */
@@ -77,6 +82,7 @@ class HiddenQuestionAttributeProvider extends QuestionAttributeProvider
             $attributes[$attributeName] = self::getBaseDefinition();
             $attributes[$attributeName]['name'] = $attributeName;
             $attributes[$attributeName]['i18n'] = $isTranslated;
+            $attributes[$attributeName]['xssfilter'] = false;
         }
         return $attributes;
     }

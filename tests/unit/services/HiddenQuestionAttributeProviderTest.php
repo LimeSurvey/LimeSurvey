@@ -94,6 +94,48 @@ class HiddenQuestionAttributeProviderTest extends TestBaseClass
     }
 
     /**
+     * The image option attributes are stored unchanged when the XSS filter is active: Filtering would
+     * entity-encode the alt texts and break the JSON on curly braces.
+     *
+     * @return void
+     */
+    public function testImageOptionAttributesAreNotXssFiltered()
+    {
+        $question = $this->getQuestion('image_select-listradio');
+        $values = [
+            'image_option_settings' => '{"A1":{"width":200,"height":100,"radius":8}}',
+            'image_option_alt' => '{"A1":"Fish & Chips {2024} <b>\"quoted\"</b>"}',
+        ];
+
+        $forcedAll = \Yii::app()->getConfig('filterxsshtml_forcedall');
+        $allowForcedSuperadmin = \Yii::app()->getConfig('filterxsshtml_allowforcedsuperadmin');
+        \Yii::app()->setConfig('filterxsshtml_forcedall', true);
+        \Yii::app()->setConfig('filterxsshtml_allowforcedsuperadmin', false);
+        try {
+            foreach ($values as $name => $value) {
+                \QuestionAttribute::model()->deleteAllByAttributes(['qid' => $question->qid, 'attribute' => $name]);
+                $attribute = new \QuestionAttribute();
+                $attribute->qid = $question->qid;
+                $attribute->attribute = $name;
+                $attribute->value = $value;
+                $attribute->language = self::$testSurvey->language;
+                $this->assertTrue($attribute->save(), print_r($attribute->getErrors(), true));
+            }
+        } finally {
+            \Yii::app()->setConfig('filterxsshtml_forcedall', $forcedAll);
+            \Yii::app()->setConfig('filterxsshtml_allowforcedsuperadmin', $allowForcedSuperadmin);
+        }
+
+        foreach ($values as $name => $value) {
+            $stored = \QuestionAttribute::model()->resetScope()->findByAttributes(
+                ['qid' => $question->qid, 'attribute' => $name]
+            );
+            $this->assertSame($value, $stored->value);
+            $this->assertNotNull(json_decode($stored->value));
+        }
+    }
+
+    /**
      * Returns the list question of the test survey with the given question theme.
      *
      * @param string $theme the question theme name to set
