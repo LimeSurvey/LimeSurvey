@@ -61,6 +61,11 @@ class FileFetcherUploadZip extends FileFetcher
         if (empty($destdir)) {
             throw new InvalidArgumentException('Missing destdir argument');
         }
+        \Yii::import('application.helpers.common_helper', true);
+        $relativeDest = uploadRelativePath($destdir);
+        if ($relativeDest !== null && !uploadPathChangeAllowed($relativeDest, 'write')) {
+            return false;
+        }
 
         $tempdir = $this->getTempdir();
         if (empty($tempdir)) {
@@ -84,7 +89,11 @@ class FileFetcherUploadZip extends FileFetcher
             throw new Exception('Could not remove old files.');
         }
 
-        return $this->recurseCopy($tempdir, $destdir);
+        $copied = $this->recurseCopy($tempdir, $destdir);
+        if ($copied && $relativeDest !== null) {
+            dispatchUploadPathEvent('afterUploadPathChange', $relativeDest, ['action' => 'write']);
+        }
+        return $copied;
     }
 
     /**

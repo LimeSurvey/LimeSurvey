@@ -160,11 +160,19 @@ abstract class Response extends Dynamic
     {
         $errors = array();
         $uploaddir = Yii::app()->getConfig('uploaddir') . "/surveys/{$this->dynamicId}/files/";
+        Yii::import('application.helpers.common_helper', true);
         foreach ($this->getFiles() as $fileInfo) {
             $basename = basename((string) $fileInfo['filename']);
-            $result = @unlink($uploaddir . $basename);
+            $relativePath = 'surveys/' . $this->dynamicId . '/files/' . $basename;
+            $result = uploadPathChangeAllowed($relativePath, 'delete', ['surveyId' => $this->dynamicId])
+                && @unlink($uploaddir . $basename);
             if (!$result) {
                 $errors[] = $fileInfo['filename'];
+            } else {
+                dispatchUploadPathEvent('afterUploadPathChange', $relativePath, [
+                    'action' => 'delete',
+                    'surveyId' => $this->dynamicId,
+                ]);
             }
         }
 
@@ -192,6 +200,7 @@ abstract class Response extends Dynamic
         $errors = array();
         $success = 0;
         $uploaddir = Yii::app()->getConfig('uploaddir') . "/surveys/{$this->dynamicId}/files/";
+        Yii::import('application.helpers.common_helper', true);
         $filesData = $this->getFilesAndSqga();
 
         foreach ($filesData as $sgqa => $aQuestion) {
@@ -204,11 +213,17 @@ abstract class Response extends Dynamic
                 $basename = basename((string) $fileInfo['filename']);
                 $fullFilename = $uploaddir . $basename;
 
+                $relativePath = 'surveys/' . $this->dynamicId . '/files/' . $basename;
                 if (file_exists($fullFilename)) {
-                    $result = @unlink($fullFilename);
+                    $result = uploadPathChangeAllowed($relativePath, 'delete', ['surveyId' => $this->dynamicId])
+                        && @unlink($fullFilename);
                     if (!$result) {
                         $errors[] = $fileInfo['filename'];
                     } else {
+                        dispatchUploadPathEvent('afterUploadPathChange', $relativePath, [
+                            'action' => 'delete',
+                            'surveyId' => $this->dynamicId,
+                        ]);
                         $files[$i]['name'] = $fileInfo['name'] . sprintf(' (%s)', gT('deleted'));
 
                         $sEncoded = json_encode($files);

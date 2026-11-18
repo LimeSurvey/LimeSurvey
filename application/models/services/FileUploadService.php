@@ -162,13 +162,22 @@ class FileUploadService
         $debugInfoArray[] = $destinationDir;
         $debugInfoArray[] = $fileName;
         $debugInfoArray[] = $fullFilePath;
+        Yii::import('application.helpers.common_helper', true);
+        $relativePath = uploadRelativePath($fullFilePath);
+        $changeAllowed = $relativePath === null || uploadPathChangeAllowed($relativePath, 'write');
         if (
-            $fileAlreadyExists
-            || @move_uploaded_file(
-                $fileInfoArray['tmp_name'],
-                $fullFilePath
+            $changeAllowed
+            && (
+                $fileAlreadyExists
+                || @move_uploaded_file(
+                    $fileInfoArray['tmp_name'],
+                    $fullFilePath
+                )
             )
         ) {
+            if ($relativePath !== null) {
+                dispatchUploadPathEvent('afterUploadPathChange', $relativePath, ['action' => 'write']);
+            }
             $uploadResult = sprintf(gT("File %s uploaded"), $fileName);
             $success = true;
         } else {

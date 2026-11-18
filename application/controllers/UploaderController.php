@@ -82,6 +82,11 @@ class UploaderController extends SurveyController
             } else {
                 throw new CHttpException(400); // See for debug > 1
             }
+            if (substr($sFileGetContentFiltered, 0, 6) == 'futmp_') {
+                dispatchUploadPathEvent('beforeUploadPathUse', 'tmp/upload/' . $sFileGetContentFiltered);
+            } else {
+                dispatchUploadPathEvent('beforeUploadPathUse', "surveys/{$surveyid}/files/{$sFileGetContentFiltered}");
+            }
             if (is_file($sFileDir . $sFileGetContentFiltered)) {
                 // Validate file before else 500 error by getMimeType
                 $mimeType = LSFileHelper::getMimeType($sFileDir . $sFileGetContentFiltered, null, false);
@@ -126,7 +131,14 @@ class UploaderController extends SurveyController
             }
             //var_dump($sFileDir.$sFilename);
             // Return some json to do a beautiful text
-            if (@unlink($sFileDir . $sFileNameFiltered)) {
+            $deletedPath = substr((string) $sFileNameFiltered, 0, 6) === 'futmp_'
+                ? 'tmp/upload/' . $sFileNameFiltered
+                : "surveys/{$surveyid}/files/{$sFileNameFiltered}";
+            if (uploadPathChangeAllowed($deletedPath, 'delete', ['surveyId' => $surveyid]) && @unlink($sFileDir . $sFileNameFiltered)) {
+                dispatchUploadPathEvent('afterUploadPathChange', $deletedPath, [
+                    'action' => 'delete',
+                    'surveyId' => $surveyid,
+                ]);
                 echo sprintf(gT('File %s deleted'), CHtml::encode($sOriginalFileName));
             } else {
                 echo gT('There was an error deleting the file.');
@@ -351,7 +363,20 @@ class UploaderController extends SurveyController
                 echo ls_json_encode($return);
                 Yii::app()->end();
             }
+            $temporaryPath = 'tmp/upload/' . $randfilename;
+            if (!uploadPathChangeAllowed($temporaryPath, 'write', ['surveyId' => $surveyid])) {
+                $return = array(
+                    "success" => false,
+                    "msg" => gT("An unknown error occurred")
+                );
+                echo ls_json_encode($return);
+                Yii::app()->end();
+            }
             if (move_uploaded_file($uploadfile_tmp_name, $randfileloc)) {
+                dispatchUploadPathEvent('afterUploadPathChange', $temporaryPath, [
+                    'action' => 'write',
+                    'surveyId' => $surveyid,
+                ]);
                 $return = array(
                     "success"  => true,
                     "size"     => $size,

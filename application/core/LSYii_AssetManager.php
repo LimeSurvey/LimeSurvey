@@ -34,6 +34,20 @@ class LSYii_AssetManager extends CAssetManager
 
     /**
      * @inheritdoc
+     * Announces the published hash so a plugin can mirror tmp/assets.
+     */
+    public function publish($path, $hashByName = false, $level = -1, $forceCopy = null)
+    {
+        $published = parent::publish($path, $hashByName, $level, $forceCopy);
+        Yii::import('application.helpers.common_helper', true);
+        if (is_string($published) && preg_match('#/tmp/assets/([^/?]+)#', $published, $match) === 1) {
+            dispatchUploadPathEvent('afterUploadPathChange', 'tmp/assets/' . $match[1], ['action' => 'write']);
+        }
+        return $published;
+    }
+
+    /**
+     * @inheritdoc
      * With db asset version used
      */
     protected function generatePath($file, $hashByName = false)

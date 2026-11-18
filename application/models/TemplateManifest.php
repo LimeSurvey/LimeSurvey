@@ -888,6 +888,11 @@ class TemplateManifest extends TemplateConfiguration
         self::changeNameInDOM($oNewManifest, $sNewName);
         self::changeDateInDOM($oNewManifest);
         $oNewManifest->save($sConfigPath . "/config.xml");
+        Yii::import('application.helpers.common_helper', true);
+        dispatchUploadPathEvent('afterUploadPathChange', 'themes/survey/' . $sNewName, [
+            'action' => 'rename',
+            'previousPath' => 'themes/survey/' . $sOldName,
+        ]);
         self::updateChildrenExtends($sOldName, $sNewName);
     }
 
@@ -1079,6 +1084,11 @@ class TemplateManifest extends TemplateConfiguration
      */
     private function setPath()
     {
+        if (!$this->isStandard && $this->sTemplateName) {
+            Yii::import('application.helpers.common_helper', true);
+            dispatchUploadPathEvent('beforeUploadPathUse', 'themes/survey/' . $this->sTemplateName);
+            dispatchUploadPathEvent('beforeUploadPathUse', 'themes/survey/generalfiles');
+        }
         // If the template is standard, its root is based on standardthemerootdir, else, it is a user template, its root is based on userthemerootdir
         $this->path = ($this->isStandard) ? Yii::app()->getConfig("standardthemerootdir") . DIRECTORY_SEPARATOR . $this->sTemplateName . DIRECTORY_SEPARATOR : Yii::app()->getConfig("userthemerootdir") . DIRECTORY_SEPARATOR . $this->sTemplateName . DIRECTORY_SEPARATOR;
 

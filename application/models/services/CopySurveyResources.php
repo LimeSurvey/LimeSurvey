@@ -30,10 +30,18 @@ class CopySurveyResources
         $targetSurveyId = (int) $targetSurveyId;
         $sourceDir = \Yii::app()->getConfig('uploaddir') . "/surveys/{$sourceSurveyId}/";
         $targetDir = \Yii::app()->getConfig('uploaddir') . "/surveys/{$targetSurveyId}/";
+        $sourcePath = 'surveys/' . $sourceSurveyId;
+        $targetPath = 'surveys/' . $targetSurveyId;
+        \Yii::import('application.helpers.common_helper', true);
+        dispatchUploadPathEvent('beforeUploadPathUse', $sourcePath);
 
         // Only try to copy the resources if the source survey has a resources directory
-        if (is_dir($sourceDir)) {
+        if (is_dir($sourceDir) && uploadPathChangeAllowed($targetPath, 'write', ['surveyId' => $targetSurveyId])) {
             $this->copyDirectory($sourceDir, $targetDir);
+            dispatchUploadPathEvent('afterUploadPathChange', $targetPath, [
+                'action' => 'write',
+                'surveyId' => $targetSurveyId,
+            ]);
         }
 
         return $this->getResult();

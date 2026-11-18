@@ -789,6 +789,16 @@ class SurveyRuntimeHelper
         global $clienttoken;
 
         $radix         = $this->getRadix();
+        $surveyId = $this->aSurveyInfo['sid'] ?? null;
+        Yii::import('application.helpers.common_helper', true);
+        if ($surveyId) {
+            dispatchUploadPathEvent('beforeUploadPathUse', 'surveys/' . $surveyId);
+            $templateName = $this->aSurveyInfo['template'] ?? null;
+            if (is_string($templateName) && $templateName !== '' && $templateName !== 'inherit') {
+                dispatchUploadPathEvent('beforeUploadPathUse', 'themes/survey/' . $templateName);
+                dispatchUploadPathEvent('beforeUploadPathUse', 'themes/survey/generalfiles');
+            }
+        }
 
         $this->aSurveyOptions = array(
             'active'                      => ($this->aSurveyInfo['active'] == 'Y'),

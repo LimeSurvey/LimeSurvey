@@ -111,6 +111,13 @@ class browser extends uploader {
             $this->session['dir'] = $this->type;
         else {
             $type = $this->getTypeFromPath($this->session['dir']);
+            if (class_exists('Yii', false)) {
+                Yii::import('application.helpers.common_helper', true);
+                $prepared = uploadRelativePath($this->config['uploadDir'] . '/' . $this->session['dir']);
+                if ($prepared !== null) {
+                    dispatchUploadPathEvent('beforeUploadPathUse', $prepared);
+                }
+            }
             $dir = $this->config['uploadDir'] . "/" . $this->session['dir'];
             if (($type != $this->type) || !is_dir($dir) || !is_readable($dir))
                 $this->session['dir'] = $this->type;
@@ -129,7 +136,49 @@ class browser extends uploader {
         )
             header("Content-Type: text/plain; charset={$this->charset}");
 
+        $uploadRelative = null;
+        if (class_exists('Yii', false)) {
+            Yii::import('application.helpers.common_helper', true);
+            $sessionDir = isset($this->session['dir']) ? $this->session['dir'] : $this->type;
+            $uploadRelative = uploadRelativePath($this->config['uploadDir'] . '/' . $sessionDir);
+        }
+        $readActions = array('browser', 'init', 'thumb', 'expand', 'chDir', 'download', 'downloadDir', 'downloadSelected', 'downloadClipboard');
+        if ($uploadRelative !== null && in_array($act, $readActions, true)) {
+            dispatchUploadPathEvent('beforeUploadPathUse', $uploadRelative);
+        }
+        $writeActions = array('newDir', 'upload', 'cp_cbd');
+        $deleteActions = array('deleteDir', 'delete', 'rm_cbd');
+        $renameActions = array('renameDir', 'rename', 'mv_cbd');
+        $changeAction = null;
+        if (in_array($act, $writeActions, true)) {
+            $changeAction = 'write';
+        } elseif (in_array($act, $deleteActions, true)) {
+            $changeAction = 'delete';
+        } elseif (in_array($act, $renameActions, true)) {
+            $changeAction = 'rename';
+        }
+        $previousPath = null;
+        if ($changeAction === 'rename' && isset($_POST['dir']) && function_exists('uploadRelativePath')) {
+            $previousPath = uploadRelativePath($this->config['uploadDir'] . '/' . $_POST['dir']);
+        }
+        if ($uploadRelative !== null && $changeAction !== null) {
+            $extra = array('action' => $changeAction);
+            if ($previousPath !== null) {
+                $extra['previousPath'] = $previousPath;
+            }
+            if (!uploadPathChangeAllowed($uploadRelative, $changeAction, $extra)) {
+                header("Content-Type: text/plain; charset={$this->charset}");
+                die(json_encode(array('error' => 'This folder is being edited on another instance.')));
+            }
+        }
         $return = $this->$method();
+        if ($uploadRelative !== null && $changeAction !== null) {
+            $extra = array('action' => $changeAction);
+            if ($previousPath !== null) {
+                $extra['previousPath'] = $previousPath;
+            }
+            dispatchUploadPathEvent('afterUploadPathChange', $uploadRelative, $extra);
+        }
         echo ($return === true)
             ? '{}'
             : $return;

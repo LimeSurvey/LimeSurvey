@@ -9254,11 +9254,21 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                                         $aFiles[$i]->filename = get_absolute_path($aFiles[$i]->filename);
                                         if (file_exists($tmp . $aFiles[$i]->filename)) {
                                             $sDestinationFileName = 'fu_' . randomChars(15);
-                                            if (!is_dir($LEM->surveyOptions['target'])) {
-                                                mkdir($LEM->surveyOptions['target'], 0777, true);
-                                            }
-                                            if (!rename($tmp . $aFiles[$i]->filename, $LEM->surveyOptions['target'] . $sDestinationFileName)) {
+                                            $storedPath = 'surveys/' . $LEM->sid . '/files/' . $sDestinationFileName;
+                                            if (!uploadPathChangeAllowed($storedPath, 'write', ['surveyId' => $LEM->sid])) {
                                                 echo "Error moving file to target destination";
+                                            } else {
+                                                if (!is_dir($LEM->surveyOptions['target'])) {
+                                                    mkdir($LEM->surveyOptions['target'], 0777, true);
+                                                }
+                                                if (!rename($tmp . $aFiles[$i]->filename, $LEM->surveyOptions['target'] . $sDestinationFileName)) {
+                                                    echo "Error moving file to target destination";
+                                                } else {
+                                                    dispatchUploadPathEvent('afterUploadPathChange', $storedPath, [
+                                                        'action' => 'write',
+                                                        'surveyId' => $LEM->sid,
+                                                    ]);
+                                                }
                                             }
                                             $aFiles[$i]->filename = $sDestinationFileName;
                                         }
