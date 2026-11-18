@@ -127,6 +127,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         );
         $survey['questionTypeDefaultAttributeValues'] = $this->questionService
             ->getDefaultAttributeValuesByQuestionType();
+        $survey['answerOptionLayouts'] = $this->questionService->getAnswerOptionLayouts();
 
         // transformAll() can apply required entity sort so we must retain the sort order going forward
         // - We use a lookup array later to access entities without needing to know their position in the collection

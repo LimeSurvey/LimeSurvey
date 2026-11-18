@@ -18,6 +18,7 @@ import { questionGroupCreateJoi } from './operationsScheme/questionGroup/questio
 import { answerCreateJoi } from './operationsScheme/answer/answerCreateJoi'
 import { subquestionCreateJoi } from './operationsScheme/subQuestion/subquestionCreateJoi'
 import { questionGroupDeleteJoi } from './operationsScheme/questionGroup/questionGroupDeleteJoi'
+import { questionGroupReorderJoi } from './operationsScheme/questionGroup/questionGroupReorderJoi'
 import { answerDeleteJoi } from './operationsScheme/answer/answerDeleteJoi'
 import { subquestionDeleteJoi } from './operationsScheme/subQuestion/subquestionDeleteJoi'
 import { languageSettingUpdateJoi } from './operationsScheme/survey/languageSettingUpdateJoi'
@@ -40,6 +41,7 @@ export const getOperationScheme = (operation, entity) => {
       [Entities.subquestion]: subquestionUpdateJoi,
       [Entities.questionL10n]: questionL10nUpdateJoi,
       [Entities.questionGroupL10n]: questionGroupL10nUpdateJoi,
+      [Entities.questionGroupReorder]: questionGroupReorderJoi,
       [Entities.survey]: surveyUpdateJoi,
       [Entities.surveyStatus]: surveyStatusUpdateJoi,
       [Entities.languageSetting]: languageSettingUpdateJoi,
