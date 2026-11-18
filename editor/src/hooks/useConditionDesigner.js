@@ -196,10 +196,10 @@ export const useConditionDesigner = ({
         scenarioHasUpdates = true
       }
 
+      // Checked after the updated rows moved (e.g. by a rename), against the
+      // scenario the new rows are saved to
       const newConditions = savedConditions.filter(
-        (c) =>
-          !c.cid &&
-          !isDuplicateCondition(c, workingQuestion, scid, scenarioToPatch)
+        (c) => !c.cid && !isDuplicateCondition(c, workingQuestion, scid)
       )
 
       hasDuplicate =

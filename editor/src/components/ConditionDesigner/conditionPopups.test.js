@@ -380,21 +380,29 @@ describe('saving a scenario', () => {
     question,
     conditions,
     scenarioToPatch = null
-  ) =>
-    renderHook(() =>
-      useConditionDesigner({
-        question,
-        scid: 1,
-        scenarioToPatch,
-        conditions,
-        addToBuffer: mockAddToBuffer,
-        setScid: jest.fn(),
-        setConditions: jest.fn(),
-        update: mockUpdate,
-        setPendingScenarioName: jest.fn(),
-        onNavigateBack: jest.fn(),
-      })
+  ) => {
+    const props = {
+      question,
+      scid: scenarioToPatch?.scid ?? 1,
+      scenarioToPatch,
+      conditions,
+      addToBuffer: mockAddToBuffer,
+      setScid: jest.fn(),
+      setConditions: jest.fn(),
+      update: mockUpdate,
+      setPendingScenarioName: jest.fn(),
+      onNavigateBack: jest.fn(),
+    }
+    const rendered = renderHook(
+      (hookProps) => useConditionDesigner(hookProps),
+      { initialProps: props }
     )
+    return {
+      ...rendered,
+      // Changes the scenario number after the designer opened, like the user
+      renameScenario: (scid) => rendered.rerender({ ...props, scid }),
+    }
+  }
 
   afterEach(() => {
     queryClient.removeQueries({ queryKey: [STATES.SURVEY] })
@@ -516,6 +524,81 @@ describe('saving a scenario', () => {
     expect(mockAddToBuffer).not.toHaveBeenCalled()
     expect(mockUpdate).not.toHaveBeenCalled()
     expect(draft).toEqual(draftBeforeSave)
+  })
+
+  describe('renaming the scenario', () => {
+    // A condition of scenario 1 that the draft moves to scenario 2
+    const movedRow = { ...createCondition(), cid: 5 }
+    const getWrittenScenarios = () => {
+      const { questionGroups } = mockUpdate.mock.calls[0][0]
+      return questionGroups[0].questions[0].scenarios
+    }
+    const getScenario = (scenarios, scid) =>
+      scenarios.find((scenario) => scenario.scid === scid)
+
+    it('saves a new row when an identical condition stays in the old scenario', () => {
+      const newRow = {
+        ...createCondition(),
+        cqid: 6,
+        cfieldname: '1X1X6',
+        value: 'B1',
+      }
+      // A refresh added a condition identical to the new row to scenario 1
+      const scenario = {
+        scid: 1,
+        conditions: [movedRow, { ...newRow, cid: 9 }],
+      }
+      const question = { qid: 11, relevance: 'X', scenarios: [scenario] }
+      setCachedQuestionGroups([{ gid: 1, questions: [question] }])
+      const { result, renameScenario } = renderConditionDesigner(
+        question,
+        [
+          { ...movedRow, scenario: 2, isUpdated: true },
+          { ...newRow, scenario: 2 },
+        ],
+        { ...scenario, conditions: [movedRow], qid: 11 }
+      )
+      renameScenario(2)
+
+      act(() => result.current.handleSavingScenario())
+
+      const scenarios = getWrittenScenarios()
+      // The refreshed condition stays in scenario 1 ...
+      expect(
+        getScenario(scenarios, 1).conditions.map((condition) => condition.cid)
+      ).toEqual([9])
+      // ... and the new row is saved to scenario 2 with the moved row
+      const renamedScenario = getScenario(scenarios, 2)
+      expect(renamedScenario.conditions).toHaveLength(2)
+      expect(
+        renamedScenario.conditions.some(
+          (condition) => condition.cqid == 6 && condition.value === 'B1'
+        )
+      ).toBe(true)
+    })
+
+    it('rejects a new row identical to a row that moved to the new scenario', () => {
+      const scenario = { scid: 1, conditions: [movedRow] }
+      const question = { qid: 11, relevance: 'X', scenarios: [scenario] }
+      setCachedQuestionGroups([{ gid: 1, questions: [question] }])
+      const { result, renameScenario } = renderConditionDesigner(
+        question,
+        [
+          { ...movedRow, scenario: 2, isUpdated: true },
+          // The same condition as the moved row, added again
+          { ...createCondition(), scenario: 2 },
+        ],
+        { ...scenario, qid: 11 }
+      )
+      renameScenario(2)
+
+      act(() => result.current.handleSavingScenario())
+
+      // Only the moved row is saved, no duplicate is created
+      expect(getScenario(getWrittenScenarios(), 2).conditions).toHaveLength(1)
+      const [operation] = mockAddToBuffer.mock.calls[0]
+      expect(operation.props.scenarios[0].conditions).toHaveLength(1)
+    })
   })
 
   it('does nothing when the question was removed', () => {

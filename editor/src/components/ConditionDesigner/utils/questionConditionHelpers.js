@@ -58,25 +58,32 @@ export const hasConditionChanged = (
         scenario.scid != currentCondition.scenario
 }
 
-// Checks if a condition already exists in the question scenarios (for updating existing scenarios)
-export const isDuplicateCondition = (
-  condition,
-  question,
-  scid,
-  scenarioToPatch
-) => {
+/**
+ * Whether the condition already exists in the scenario it is saved to.
+ *
+ * Only the destination scenario counts. When a scenario is renamed, the save
+ * moves the draft's rows to the new scenario before this check, so the old
+ * scenario only keeps conditions that are not in the draft (e.g. added by a
+ * refresh). Those must not block a new row of the renamed scenario.
+ * @param {Object} condition The new condition row.
+ * @param {Object} question The question, with the draft's moves applied.
+ * @param {number} scid The scenario the row is saved to.
+ * @returns {boolean}
+ */
+export const isDuplicateCondition = (condition, question, scid) => {
   // A question that never had a condition can come without a scenarios array.
-  return (question.scenarios ?? []).some((scenario) =>
-    scenario.conditions.some(
-      (existing) =>
-        existing.cid != condition.cid && // Don't match against self
-        existing.qid == condition.qid &&
-        existing.cqid == condition.cqid &&
-        existing.cfieldname === condition.cfieldname &&
-        existing.method === condition.method &&
-        existing.value === condition.value &&
-        (scenario.scid === scid || scenario.scid === scenarioToPatch?.scid)
-    )
+  return (question.scenarios ?? []).some(
+    (scenario) =>
+      scenario.scid === scid &&
+      scenario.conditions.some(
+        (existing) =>
+          existing.cid != condition.cid && // Don't match against self
+          existing.qid == condition.qid &&
+          existing.cqid == condition.cqid &&
+          existing.cfieldname === condition.cfieldname &&
+          existing.method === condition.method &&
+          existing.value === condition.value
+      )
   )
 }
 
