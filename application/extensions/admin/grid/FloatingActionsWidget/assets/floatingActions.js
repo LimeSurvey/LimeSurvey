@@ -314,7 +314,7 @@ LS.floatingActions = (function () {
         // Reset modal to original state on close
         $modal.off('hidden.bs.modal.floating hidden.bs.modal').on('hidden.bs.modal.floating hidden.bs.modal', function () {
             $modalTitle.text($oldModalTitle);
-            $modalBody.empty().append($oldModalBody);
+            $modalBody.removeAttr('role aria-live').empty().append($oldModalBody);
             $modal.find('.modal-footer-results').remove();
             $modalClose.hide();
             $oldModalButtons.show();
@@ -373,6 +373,9 @@ LS.floatingActions = (function () {
             $modal.find('input.post-value, select.post-value').each(function () {
                 postData[$(this).attr('name')] = $(this).val();
             });
+            // The results replace the form: as a status region they are announced to screen readers
+            // (e.g. "Updated"), the focus alone only announces the "Close" button
+            $modalBody.attr({'role': 'status', 'aria-live': 'polite'});
             $modalBody.empty();
             $oldModalButtons.hide();
             $modalClose.show();

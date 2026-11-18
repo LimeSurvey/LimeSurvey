@@ -43,7 +43,8 @@ echo viewHelper::getViewTestTag('surveyMenuEntries');
 <input type="hidden" id="surveymenu_open_url_selected_entry" value=""/>
 <!-- modal! -->
 
-<div class="modal fade" id="editcreatemenuentry" tabindex="-1" role="dialog">
+<?php // The title is part of the form loaded by ajax (_form.php) ?>
+<div class="modal fade" id="editcreatemenuentry" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="editcreatemenuentry-title editcreatemenuentry-title-dialogsr">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
         </div>
