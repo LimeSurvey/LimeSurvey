@@ -13,6 +13,8 @@ import {
   DuplicateQuestionGroup,
   getReorganizedQuestionGroups,
   InsertElementAndIncrementProperty,
+  isFocusInsideGroup,
+  getGroupIndexForDeletion,
   STATES,
 } from 'helpers'
 import { ConfirmModal } from 'components/Modals'
@@ -27,7 +29,11 @@ export const QuestionGroups = ({
 }) => {
   const { focused = {}, setFocused, unFocus } = useFocused()
   const { addToBuffer } = useBuffer()
-  const [deleteState, setDeleteState] = useState({ show: false, index: null })
+  const [deleteState, setDeleteState] = useState({
+    show: false,
+    index: null,
+    gid: null,
+  })
   const { surveyId } = useParams()
   const { clearSurveyRequestTimestamp } = useSurveyRequestTimestamp()
   const [, setSurveyRefreshRequired] = useAppState(
@@ -43,11 +49,15 @@ export const QuestionGroups = ({
   }
 
   const handleGroupDeletion = (index) => {
-    setDeleteState({ show: true, index })
+    setDeleteState({ show: true, index, gid: questionGroups[index]?.gid })
   }
 
   const handleConfirmGroupDeletion = () => {
-    const { index } = deleteState
+    const index = getGroupIndexForDeletion(questionGroups, deleteState.gid)
+    if (index === -1) {
+      setDeleteState({ show: false, index: null, gid: null })
+      return
+    }
     const updatedQuestionGroups = [...questionGroups]
     updatedQuestionGroups.splice(index, 1)
     update(updatedQuestionGroups)
@@ -58,11 +68,11 @@ export const QuestionGroups = ({
 
     addToBuffer(operation)
 
-    if (!focused.qid && focused.gid === questionGroups[index].gid) {
+    if (isFocusInsideGroup(focused, questionGroups[index])) {
       unFocus()
     }
 
-    setDeleteState({ show: false, index: null })
+    setDeleteState({ show: false, index: null, gid: null })
   }
 
   const handleQuestionGroupDuplication = (questionGroup, index) => {
@@ -120,7 +130,7 @@ export const QuestionGroups = ({
     <div>
       <ConfirmModal
         show={deleteState.show}
-        onHide={() => setDeleteState({ show: false, index: null })}
+        onHide={() => setDeleteState({ show: false, index: null, gid: null })}
         onConfirm={handleConfirmGroupDeletion}
         title={t('Delete question group')}
         description={t(

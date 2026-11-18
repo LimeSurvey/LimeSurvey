@@ -60,7 +60,7 @@ export const QuestionGroupHeader = ({
   ]
   const openQuestionGroupPreview = () => {
     const previewUrl = getSiteUrl(
-      `/index.php/survey/index/action/previewgroup/sid/${surveyId}/gid/${questionGroup.gid}/lang/${language}`
+      `/survey/index/action/previewgroup/sid/${surveyId}/gid/${questionGroup.gid}/lang/${language}`
     )
     window.open(previewUrl, '_blank')
   }

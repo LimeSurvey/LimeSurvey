@@ -41,7 +41,7 @@ describe('QuestionFooter', () => {
     expect(target).toBe('_blank')
     expect(url).toContain(
       getSiteUrl(
-        `/index.php/survey/index/action/previewquestion/sid/${surveyData.surveyId}/gid/${question.gid}/qid/${question.qid}/lang/`
+        `/survey/index/action/previewquestion/sid/${surveyData.surveyId}/gid/${question.gid}/qid/${question.qid}/lang/`
       )
     )
   })
