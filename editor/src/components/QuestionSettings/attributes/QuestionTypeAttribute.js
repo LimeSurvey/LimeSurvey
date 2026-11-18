@@ -13,7 +13,6 @@ export const QuestionTypeAttribute = ({
   activeDisabled = false,
 }) => {
   const [isAddingQuestionOrGroup, setIsAddingQuestionOrGroup] = useState(false)
-  const [isSurveyActive] = useAppState(STATES.IS_SURVEY_ACTIVE)
   const [hasSurveyUpdatePermission] = useAppState(
     STATES.HAS_SURVEY_UPDATE_PERMISSION
   )
@@ -28,9 +27,7 @@ export const QuestionTypeAttribute = ({
   const isTypeChangeQueued =
     !!queuedQuestionUpdate?.props?.type && !queuedQuestionUpdate.error
   const disabled =
-    (isSurveyActive && activeDisabled) ||
-    !hasSurveyUpdatePermission ||
-    isTypeChangeQueued
+    activeDisabled || !hasSurveyUpdatePermission || isTypeChangeQueued
 
   const questionTypeSelectorPopover = (
     <Popover

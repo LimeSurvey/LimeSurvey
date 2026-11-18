@@ -1,13 +1,11 @@
 // Import shared mocks
 import 'tests/mocks'
 
-import { act, useState } from 'react'
-import { renderWithProviders } from 'tests/testUtils'
+import { useState } from 'react'
+import { renderWithProviders, setSurveyUpdatePermission } from 'tests/testUtils'
 import { ToggleButtons } from './ToggleButtons'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { queryClient } from 'queryClient'
-import { STATES } from 'helpers'
 
 function BasicWrapper() {
   const [value, setValue] = useState(-1)
@@ -126,16 +124,6 @@ describe('ToggleButtons', () => {
   })
 })
 
-// React Query notifies subscribers on a setTimeout(0), so wait a tick for the re-render
-const setSurveyUpdatePermission = (value) =>
-  act(async () => {
-    queryClient.setQueryData(
-      ['appState', STATES.HAS_SURVEY_UPDATE_PERMISSION],
-      value
-    )
-    await new Promise((resolve) => setTimeout(resolve, 0))
-  })
-
 // Fails when no option is rendered, so the per-option checks can't pass empty
 const getOptionInputs = () => {
   const inputs = document.querySelectorAll(
@@ -181,5 +169,32 @@ describe('ToggleButtons disabled states', () => {
     render(<ToggleButtons id="plain-toggle" noPermissionDisabled />)
 
     getOptionInputs().forEach((input) => expect(input).toBeEnabled())
+  })
+})
+
+describe('ToggleButtons tooltip', () => {
+  const hoverToggle = () =>
+    userEvent.hover(document.querySelector('.lime-toggle-btn-group'))
+
+  afterEach(async () => {
+    await setSurveyUpdatePermission(true)
+  })
+
+  test('shows no tooltip for a plain disabled lock', async () => {
+    await renderWithProviders(<ToggleButtons id="plain-locked" disabled />)
+    await hoverToggle()
+
+    expect(screen.queryByText('No permission.')).toBeNull()
+    expect(screen.queryByRole('tooltip')).toBeNull()
+  })
+
+  test('shows the no permission message without survey update permission', async () => {
+    await renderWithProviders(
+      <ToggleButtons id="permission-locked" noPermissionDisabled />
+    )
+    await setSurveyUpdatePermission(false)
+    await hoverToggle()
+
+    expect(await screen.findByText('No permission.')).toBeInTheDocument()
   })
 })

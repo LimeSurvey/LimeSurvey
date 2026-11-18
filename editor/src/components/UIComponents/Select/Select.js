@@ -1,44 +1,19 @@
-import React, { useContext, useState, useMemo } from 'react'
+import React, { useState, useMemo } from 'react'
 import { Form } from 'react-bootstrap'
 import ReactSelect from 'react-select'
 import CreatableSelect from 'react-select/creatable'
 import { format } from 'util'
 import classNames from 'classnames'
-import { QueryClientContext } from '@tanstack/react-query'
 
-import { useAppState } from '../../../hooks'
-import { RemoveHTMLTagsInString, STATES } from '../../../helpers'
+import { RemoveHTMLTagsInString } from '../../../helpers'
 import { getTooltipMessages } from 'helpers/options'
 import { TooltipContainer } from '../../TooltipContainer/TooltipContainer'
+import { withSurveyUpdatePermission } from '../withSurveyUpdatePermission'
 
 // the reason for using "==" instead of "===" is that sometimes the backend returns numbers and sometimes strings, we want to make sure it works in both cases
 // till we have a backend that is consistent in the types it returns, we need to keep this logic here
 const optionFilter = (options, fieldName, value) =>
   options.find((option) => option[fieldName] == value)
-
-// Only selects that are locked without permission subscribe to the permission
-// state, and only inside a QueryClientProvider, where the app state lives.
-export const Select = (props) => {
-  const hasQueryClient = !!useContext(QueryClientContext)
-
-  return props.noPermissionDisabled && hasQueryClient ? (
-    <SelectWithPermission {...props} />
-  ) : (
-    <SelectField {...props} />
-  )
-}
-
-const SelectWithPermission = (props) => {
-  const [hasSurveyUpdatePermission] = useAppState(
-    STATES.HAS_SURVEY_UPDATE_PERMISSION
-  )
-  return (
-    <SelectField
-      {...props}
-      hasSurveyUpdatePermission={hasSurveyUpdatePermission}
-    />
-  )
-}
 
 const SelectField = ({
   hasSurveyUpdatePermission = true,
@@ -233,5 +208,7 @@ const SelectField = ({
     </div>
   )
 }
+
+export const Select = withSurveyUpdatePermission(SelectField, 'Select')
 
 export const selectName = Select.name

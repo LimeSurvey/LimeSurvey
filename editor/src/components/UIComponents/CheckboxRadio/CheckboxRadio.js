@@ -24,20 +24,18 @@ export const CheckboxRadio = ({
   value,
   hasReset = true,
 }) => {
-  const [isSurveyActive] = useAppState(STATES.IS_SURVEY_ACTIVE)
   const [optionsValues, setOptionsValues] = useState(value)
   const [hasSurveyUpdatePermission] = useAppState(
     STATES.HAS_SURVEY_UPDATE_PERMISSION
   )
   const disabled =
-    (isSurveyActive && activeDisabled) ||
+    activeDisabled ||
     (!hasSurveyUpdatePermission && noPermissionDisabled) ||
     noAccessDisabled
 
-  const toolTip =
-    isSurveyActive && activeDisabled
-      ? getTooltipMessages().ACTIVE_DISABLED
-      : getTooltipMessages().NO_PERMISSION
+  const toolTip = activeDisabled
+    ? getTooltipMessages().ACTIVE_DISABLED
+    : getTooltipMessages().NO_PERMISSION
 
   const handleOnChange = (selectedOption) => {
     const selectedOptionsValues = {

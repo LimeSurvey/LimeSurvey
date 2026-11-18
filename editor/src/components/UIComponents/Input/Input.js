@@ -1,36 +1,10 @@
-import { useContext, useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { Form } from 'react-bootstrap'
 
-import { useAppState } from 'hooks'
-import { STATES } from 'helpers'
 import { getTooltipMessages } from 'helpers/options'
 
 import { TooltipContainer } from '../../TooltipContainer/TooltipContainer'
-import { QueryClientContext } from '@tanstack/react-query'
-
-// Only inputs that are locked without permission subscribe to the permission
-// state, and only inside a QueryClientProvider, where the app state lives.
-export const Input = (props) => {
-  const hasQueryClient = !!useContext(QueryClientContext)
-
-  return props.noPermissionDisabled && hasQueryClient ? (
-    <InputWithPermission {...props} />
-  ) : (
-    <InputField {...props} />
-  )
-}
-
-const InputWithPermission = (props) => {
-  const [hasSurveyUpdatePermission] = useAppState(
-    STATES.HAS_SURVEY_UPDATE_PERMISSION
-  )
-  return (
-    <InputField
-      {...props}
-      hasSurveyUpdatePermission={hasSurveyUpdatePermission}
-    />
-  )
-}
+import { withSurveyUpdatePermission } from '../withSurveyUpdatePermission'
 
 const InputField = ({
   hasSurveyUpdatePermission = true,
@@ -69,17 +43,16 @@ const InputField = ({
   allowEmpty = true,
   focus,
 }) => {
-  const inputRef = inputRefProp ? inputRefProp : useRef(null)
+  const ownInputRef = useRef(null)
+  const inputRef = inputRefProp ?? ownInputRef
 
-  const inputDisabled =
-    activeDisabled ||
-    disabled ||
-    (!hasSurveyUpdatePermission && noPermissionDisabled) ||
-    noAccessDisabled
+  const isPermissionDisabled =
+    (!hasSurveyUpdatePermission && noPermissionDisabled) || noAccessDisabled
+  const inputDisabled = activeDisabled || disabled || isPermissionDisabled
 
   const toolTip = activeDisabled
     ? getTooltipMessages().ACTIVE_DISABLED
-    : (!hasSurveyUpdatePermission && noPermissionDisabled) || noAccessDisabled
+    : isPermissionDisabled
       ? getTooltipMessages().NO_PERMISSION
       : ''
 
@@ -190,3 +163,5 @@ const InputField = ({
     </>
   )
 }
+
+export const Input = withSurveyUpdatePermission(InputField, 'Input')

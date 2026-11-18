@@ -34,14 +34,18 @@ const Details = ({ children }) => {
  * @param {Object} props Component properties.
  * @param {Function} props.update Handles a default-values action.
  * @param {boolean} props.hasDefaultAttributeValues Whether saved defaults exist.
- * @param {boolean} props.activeDisabled Whether the actions are disabled.
+ * @param {boolean} props.activeDisabled Whether the actions are locked because the survey is active.
+ * @param {boolean} props.disabled Whether the actions are disabled for another reason, such as an unsaved question.
  * @returns {JSX.Element} Default-values action controls.
  */
 export const DefaultValuesActions = ({
   update,
   hasDefaultAttributeValues = false,
   activeDisabled = false,
+  disabled = false,
 }) => {
+  const isDisabled = activeDisabled || disabled
+
   return (
     <div className="default-values-actions">
       <div>
@@ -50,7 +54,7 @@ export const DefaultValuesActions = ({
           className="w-100 justify-content-center"
           variant="secondary"
           onClick={() => update({ saveAsDefault: true })}
-          disabled={activeDisabled}
+          disabled={isDisabled}
         >
           {t('Save as default values')}
         </Button>
@@ -67,7 +71,7 @@ export const DefaultValuesActions = ({
             className="w-100 justify-content-center"
             variant="secondary"
             onClick={() => update({ clearDefault: true })}
-            disabled={activeDisabled}
+            disabled={isDisabled}
           >
             {t('Clear default values')}
           </Button>

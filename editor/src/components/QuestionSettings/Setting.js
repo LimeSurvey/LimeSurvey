@@ -168,10 +168,12 @@ export const Setting = ({
       onToggle={(isExpanded) => onSectionToggle?.(title, isExpanded)}
     >
       {attributes.map((attribute) => {
+        // Actions are hidden, not disabled, for users without update permission
         if (
           (attribute.attributePath === 'relevance' &&
             process.env.REACT_APP_DEV_MODE) ||
-          attribute.hidden
+          attribute.hidden ||
+          (attribute.action && !hasSurveyUpdatePermission)
         ) {
           return (
             <React.Fragment
@@ -222,11 +224,11 @@ export const Setting = ({
         const isDisabledByActiveSurvey = isDisabledWhenActive && isSurveyActive
 
         const isActionAttribute = !!attribute.action
-        const isActionDisabled =
-          isActionAttribute &&
-          (isTempId(question.qid) || !hasSurveyUpdatePermission)
+        const isActionDisabled = isActionAttribute && isTempId(question.qid)
 
-        const isDisabled = isDisabledByActiveSurvey || isActionDisabled
+        const disabledTip = isDisabledByActiveSurvey
+          ? getTooltipMessages().ACTIVE_DISABLED
+          : t('Available once the question is saved.')
 
         const options =
           typeof attribute.getOptions === 'function'
@@ -242,6 +244,7 @@ export const Setting = ({
           ...(attribute.action
             ? {
                 hasDefaultAttributeValues,
+                disabled: isActionDisabled,
               }
             : {}),
         }
@@ -252,14 +255,13 @@ export const Setting = ({
             key={`${question?.qid}-${title}-settings-${attribute.attributePath}${attribute.props.labelText}`}
           >
             <TooltipContainer
-              tip={getTooltipMessages().ACTIVE_DISABLED}
-              showTip={isDisabled}
+              tip={disabledTip}
+              showTip={isDisabledByActiveSurvey || isActionDisabled}
             >
               <attribute.component
                 {...attributeProps}
-                activeDisabled={isDisabled}
+                activeDisabled={isDisabledByActiveSurvey}
                 noPermissionDisabled={true}
-                hasSurveyUpdatePermission={hasSurveyUpdatePermission}
                 value={
                   showDefaultValue
                     ? undefined

@@ -8,8 +8,9 @@ import {
   expressionScriptExtensions,
   expressionScriptTooltips,
 } from './expressionScriptExtensions'
+import { withSurveyUpdatePermission } from '../withSurveyUpdatePermission'
 
-export const ExpressionScriptEditor = ({
+const ExpressionScriptEditorField = ({
   id = 'expression-script-editor',
   value = '',
   update,
@@ -105,3 +106,8 @@ export const ExpressionScriptEditor = ({
     </div>
   )
 }
+
+export const ExpressionScriptEditor = withSurveyUpdatePermission(
+  ExpressionScriptEditorField,
+  'ExpressionScriptEditor'
+)

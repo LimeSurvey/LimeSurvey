@@ -1,13 +1,10 @@
 // Import shared mocks
-import { act } from 'react'
+import { useState } from 'react'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import 'tests/mocks'
-import { renderWithProviders } from 'tests/testUtils'
-
-import { queryClient } from 'queryClient'
-import { STATES } from 'helpers'
+import { renderWithProviders, setSurveyUpdatePermission } from 'tests/testUtils'
 
 import { Input } from './Input'
 
@@ -154,16 +151,6 @@ describe('Input with activeDisabled', () => {
   })
 })
 
-// React Query notifies subscribers on a setTimeout(0), so wait a tick for the re-render
-const setSurveyUpdatePermission = (value) =>
-  act(async () => {
-    queryClient.setQueryData(
-      ['appState', STATES.HAS_SURVEY_UPDATE_PERMISSION],
-      value
-    )
-    await new Promise((resolve) => setTimeout(resolve, 0))
-  })
-
 describe('Input with noPermissionDisabled', () => {
   afterEach(async () => {
     await setSurveyUpdatePermission(true)
@@ -192,5 +179,31 @@ describe('Input with noPermissionDisabled', () => {
     await setSurveyUpdatePermission(false)
 
     expect(screen.getByTestId('plain-input')).toBeEnabled()
+  })
+})
+
+describe('Input when noPermissionDisabled changes', () => {
+  const ToggleablePermissionInput = () => {
+    const [noPermissionDisabled, setNoPermissionDisabled] = useState(false)
+    return (
+      <>
+        <Input
+          dataTestId={'toggled-input'}
+          noPermissionDisabled={noPermissionDisabled}
+        />
+        <button onClick={() => setNoPermissionDisabled(true)}>lock</button>
+      </>
+    )
+  }
+
+  test('Should keep the same field and its typed value', async () => {
+    await renderWithProviders(<ToggleablePermissionInput />)
+    const input = screen.getByTestId('toggled-input')
+    await userEvent.type(input, 'typed')
+
+    await userEvent.click(screen.getByRole('button', { name: 'lock' }))
+
+    expect(screen.getByTestId('toggled-input')).toBe(input)
+    expect(input).toHaveValue('typed')
   })
 })

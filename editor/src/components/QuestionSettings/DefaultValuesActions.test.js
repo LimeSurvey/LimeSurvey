@@ -40,4 +40,21 @@ describe('DefaultValuesActions', () => {
 
     expect(update).toHaveBeenCalledWith({ clearDefault: true })
   })
+
+  test('disables both actions when disabled', () => {
+    render(
+      <DefaultValuesActions
+        update={jest.fn()}
+        hasDefaultAttributeValues={true}
+        disabled={true}
+      />
+    )
+
+    expect(
+      screen.getByRole('button', { name: 'Save as default values' })
+    ).toBeDisabled()
+    expect(
+      screen.getByRole('button', { name: 'Clear default values' })
+    ).toBeDisabled()
+  })
 })

@@ -1,16 +1,14 @@
 import classNames from 'classnames'
-import { Fragment, useContext, useEffect, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { ToggleButton, ButtonGroup, Form } from 'react-bootstrap'
 
-import { useAppState } from 'hooks'
-import { STATES } from 'helpers'
 import {
   getOnOffOptions,
   getTooltipMessages,
   ONOFF_BOOLEAN,
 } from 'helpers/options'
 import { TooltipContainer } from 'components/TooltipContainer/TooltipContainer'
-import { QueryClientContext } from '@tanstack/react-query'
+import { withSurveyUpdatePermission } from '../withSurveyUpdatePermission'
 
 const getTwoConditions = () => getOnOffOptions(ONOFF_BOOLEAN)
 
@@ -20,31 +18,6 @@ const getThreeConditions = () => [
   { name: 'No', value: '-1' },
 ]
 
-// Only toggles that are locked without permission subscribe to the permission
-// state, and only inside a QueryClientProvider, where the app state lives.
-export const ToggleButtons = (props) => {
-  const hasQueryClient = !!useContext(QueryClientContext)
-
-  return props.noPermissionDisabled && hasQueryClient ? (
-    <ToggleButtonsWithPermission {...props} />
-  ) : (
-    <ToggleButtonsField {...props} />
-  )
-}
-
-const ToggleButtonsWithPermission = (props) => {
-  const [hasSurveyUpdatePermission] = useAppState(
-    STATES.HAS_SURVEY_UPDATE_PERMISSION
-  )
-  return (
-    <ToggleButtonsField
-      {...props}
-      hasSurveyUpdatePermission={hasSurveyUpdatePermission}
-    />
-  )
-}
-
-// TODO this component will replace current ToggleButtons
 const ToggleButtonsField = ({
   hasSurveyUpdatePermission = true,
   id,
@@ -68,16 +41,17 @@ const ToggleButtonsField = ({
 }) => {
   const [options, setOptions] = useState([])
 
-  const isDisabled =
-    disabled ||
-    activeDisabled ||
-    (!hasSurveyUpdatePermission && noPermissionDisabled) ||
-    noAccessDisabled
+  const isPermissionDisabled =
+    (!hasSurveyUpdatePermission && noPermissionDisabled) || noAccessDisabled
+  const isDisabled = disabled || activeDisabled || isPermissionDisabled
+  // Only name a reason that applies: A plain disabled lock gets no tooltip
   const toolTip = overlayMessage
     ? overlayMessage
     : activeDisabled
       ? getTooltipMessages().ACTIVE_DISABLED
-      : getTooltipMessages().NO_PERMISSION
+      : isPermissionDisabled
+        ? getTooltipMessages().NO_PERMISSION
+        : ''
 
   useEffect(() => {
     const translateOptions = (opts) => {
@@ -151,3 +125,9 @@ const ToggleButtonsField = ({
     </TooltipContainer>
   )
 }
+
+// TODO this component will replace current ToggleButtons
+export const ToggleButtons = withSurveyUpdatePermission(
+  ToggleButtonsField,
+  'ToggleButtons'
+)

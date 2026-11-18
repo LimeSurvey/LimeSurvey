@@ -53,6 +53,6 @@ describe('Detailed admin notifications email address', () => {
   test('stays editable on an active survey', async () => {
     await renderNotificationSetting('EMAIL_RESPONSE_TO', true)
 
-    expect(screen.getByRole('input')).toBeEnabled()
+    expect(screen.getByDisplayValue('admin@example.com')).toBeEnabled()
   })
 })

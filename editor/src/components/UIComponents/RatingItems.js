@@ -31,11 +31,22 @@ const items = [
   },
 ]
 
+/**
+ * Renders the rating items count and type selects.
+ * @param {Object} props Component properties.
+ * @param {Object} props.itemsCount The items_count attribute.
+ * @param {Object} props.itemsType The items_type attribute.
+ * @param {Function} props.update Saves the changed attribute.
+ * @param {boolean} props.activeDisabled Whether the selects are locked because the survey is active.
+ * @param {boolean} props.noPermissionDisabled Whether the selects are locked without survey update permission.
+ * @returns {JSX.Element} The rating items selects.
+ */
 export const RatingItems = ({
   itemsCount,
   itemsType,
   update,
   activeDisabled = false,
+  noPermissionDisabled = false,
 }) => {
   const Control = ({ children, ...props }) => (
     <components.Control {...props}>
@@ -83,6 +94,7 @@ export const RatingItems = ({
             })
           }}
           activeDisabled={activeDisabled}
+          noPermissionDisabled={noPermissionDisabled}
         />
 
         <Select
@@ -139,6 +151,7 @@ export const RatingItems = ({
             }),
           }}
           activeDisabled={activeDisabled}
+          noPermissionDisabled={noPermissionDisabled}
         />
       </div>
     </div>

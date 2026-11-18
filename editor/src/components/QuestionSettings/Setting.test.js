@@ -3,10 +3,13 @@ import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import 'tests/mocks'
-import { renderWithProviders } from 'tests/testUtils'
+import { renderWithProviders, setAppState } from 'tests/testUtils'
+
+import { NEW_OBJECT_ID_PREFIX, STATES } from 'helpers'
 
 import { Setting } from './Setting'
 import { getOtherAttributes } from './attributes/getOtherAttributes'
+import { getGeneralAttributes } from './attributes/getGeneralAttributes'
 
 const SettingWithState = ({ attributes }) => {
   const [question, setQuestion] = useState({
@@ -76,5 +79,51 @@ describe('Setting input default values', () => {
 
     await userEvent.type(input, '7')
     expect(input.value).toBe('7')
+  })
+})
+
+describe('Setting default values actions', () => {
+  const renderDefaultValuesActions = (qid) =>
+    renderWithProviders(
+      <Setting
+        question={{ qid, type: 'T', attributes: {} }}
+        handleUpdate={() => {}}
+        title="General"
+        simpleSettings
+        attributes={[getGeneralAttributes().SAVE_AS_DEFAULT]}
+      />
+    )
+
+  beforeEach(async () => {
+    await setAppState(STATES.IS_SURVEY_ACTIVE, false)
+  })
+
+  afterEach(async () => {
+    await setAppState(STATES.HAS_SURVEY_UPDATE_PERMISSION, true)
+  })
+
+  test('explains that an unsaved question must be saved first', async () => {
+    await renderDefaultValuesActions(`${NEW_OBJECT_ID_PREFIX}1`)
+    await setAppState(STATES.HAS_SURVEY_UPDATE_PERMISSION, true)
+    const button = screen.getByRole('button', {
+      name: 'Save as default values',
+    })
+    expect(button).toBeDisabled()
+
+    await userEvent.hover(button.closest('.default-values-actions'))
+
+    expect(
+      await screen.findByText('Available once the question is saved.')
+    ).toBeInTheDocument()
+    expect(screen.queryByText('Deactivate survey to edit')).toBeNull()
+  })
+
+  test('hides the actions without survey update permission', async () => {
+    await renderDefaultValuesActions(1)
+    await setAppState(STATES.HAS_SURVEY_UPDATE_PERMISSION, false)
+
+    expect(
+      screen.queryByRole('button', { name: 'Save as default values' })
+    ).toBeNull()
   })
 })

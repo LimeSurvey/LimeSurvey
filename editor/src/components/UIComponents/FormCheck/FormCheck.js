@@ -22,19 +22,17 @@ export const FormCheck = ({
   update = () => {},
   sendValueOnUpdate = false,
 }) => {
-  const [isSurveyActive] = useAppState(STATES.IS_SURVEY_ACTIVE)
   const [hasSurveyUpdatePermission] = useAppState(
     STATES.HAS_SURVEY_UPDATE_PERMISSION
   )
   const disabled =
-    (isSurveyActive && activeDisabled) ||
+    activeDisabled ||
     (!hasSurveyUpdatePermission && noPermissionDisabled) ||
     noAccessDisabled
 
-  const toolTip =
-    isSurveyActive && activeDisabled
-      ? getTooltipMessages().ACTIVE_DISABLED
-      : getTooltipMessages().NO_PERMISSION
+  const toolTip = activeDisabled
+    ? getTooltipMessages().ACTIVE_DISABLED
+    : getTooltipMessages().NO_PERMISSION
 
   return (
     <TooltipContainer tip={toolTip} showTip={disabled}>
