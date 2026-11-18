@@ -11,6 +11,9 @@ import { getConditionTypeInfo } from './getConditionTypeInfo'
 import { getAllowedMethods } from './getAllowedMethods'
 
 const conditionTypeInfo = getConditionTypeInfo()
+
+// The scenario number is stored in a signed 32-bit integer column
+export const MAX_SCENARIO_NUMBER = 2147483647
 const allowedMethods = getAllowedMethods()
 
 export const getDefaultCondition = () => ({
@@ -298,9 +301,13 @@ export const isConditionChangedSince = (qid, conditionState) => {
  * @returns {boolean}
  */
 export const isScenarioDraftValid = (conditions, scid) => {
-  // Scenario numbers are whole numbers from 1. A cleared input is ''.
+  // Scenario numbers are whole numbers from 1 up to the maximum of the
+  // database column (a signed 32-bit integer). A cleared input is ''.
   const isScidValid =
-    scid !== '' && Number.isInteger(Number(scid)) && Number(scid) >= 1
+    scid !== '' &&
+    Number.isInteger(Number(scid)) &&
+    Number(scid) >= 1 &&
+    Number(scid) <= MAX_SCENARIO_NUMBER
 
   return (
     isScidValid &&
@@ -361,22 +368,6 @@ export const replaceQuestionInSurvey = (question, update) => {
   )
   update({ questionGroups })
   return true
-}
-
-/**
- * Writes the question into the survey at its current position.
- * Does nothing when the question no longer exists in the survey.
- * @param {Object} question The updated question.
- * @param {Function} update Updates the survey.
- * @param {Object} focused The focused entity.
- * @returns {void}
- */
-export const syncSurveyQuestionWithScenarios = (question, update, focused) => {
-  if (!replaceQuestionInSurvey(question, update)) return
-
-  if (Array.isArray(question?.scenarios) && question.scenarios.length > 0) {
-    focused.scenarios = [...question.scenarios].sort((a, b) => a.scid - b.scid)
-  }
 }
 
 export const isValidRelevanceValue = (newRelevance, question) => {

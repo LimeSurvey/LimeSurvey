@@ -20,8 +20,8 @@ import {
   getDefaultCondition,
   isConditionChangedSince,
   isScenarioDraftValid,
+  MAX_SCENARIO_NUMBER,
   replaceQuestionInSurvey,
-  syncSurveyQuestionWithScenarios,
   updateQuestionScenarios,
 } from './utils'
 
@@ -384,7 +384,6 @@ describe('saving a scenario', () => {
     renderHook(() =>
       useConditionDesigner({
         question,
-        focused: {},
         scid: 1,
         scenarioToPatch,
         conditions,
@@ -470,7 +469,6 @@ describe('saving a scenario', () => {
     const { result } = renderHook(() =>
       useConditionDesigner({
         question: { qid: 11, relevance: '1', scenarios: [] },
-        focused: {},
         scid: 1,
         scenarioToPatch: null,
         conditions: [createCondition()],
@@ -490,6 +488,36 @@ describe('saving a scenario', () => {
     expect(setScid).toHaveBeenCalledWith('')
   })
 
+  it('changes nothing when a save step fails after a deletion was prepared', () => {
+    const scenario = { scid: 1, conditions: [{ ...createCondition(), cid: 7 }] }
+    const question = { qid: 11, relevance: 'Q1 == "A1"', scenarios: [scenario] }
+    setCachedQuestionGroups([{ gid: 1, questions: [question] }])
+    const draft = [
+      // Deleting the scenario's condition is prepared first ...
+      { ...createCondition(), cid: 7, isDeleted: true },
+      // ... then building the payload of this row fails (invalid JSON)
+      {
+        ...createCondition(),
+        targetType: getConditionTypeInfo().TARGET.ANSWER_OPTIONS,
+        value: '[invalid',
+      },
+    ]
+    const draftBeforeSave = JSON.parse(JSON.stringify(draft))
+    const { result } = renderConditionDesigner(question, draft, {
+      ...scenario,
+      qid: 11,
+    })
+
+    expect(() => result.current.handleSavingScenario()).toThrow(
+      'Scenario save failed'
+    )
+
+    // The deletion is not queued, the survey and the draft are unchanged
+    expect(mockAddToBuffer).not.toHaveBeenCalled()
+    expect(mockUpdate).not.toHaveBeenCalled()
+    expect(draft).toEqual(draftBeforeSave)
+  })
+
   it('does nothing when the question was removed', () => {
     setCachedQuestionGroups([{ gid: 2, questions: [] }])
     const { result } = renderConditionDesigner(
@@ -504,7 +532,7 @@ describe('saving a scenario', () => {
   })
 })
 
-describe('syncSurveyQuestionWithScenarios', () => {
+describe('replaceQuestionInSurvey', () => {
   afterEach(() => {
     queryClient.removeQueries({ queryKey: [STATES.SURVEY] })
   })
@@ -518,7 +546,7 @@ describe('syncSurveyQuestionWithScenarios', () => {
     const update = jest.fn()
     const updatedQuestion = { qid: 11, scenarios: [{ scid: 3 }] }
 
-    syncSurveyQuestionWithScenarios(updatedQuestion, update, {})
+    replaceQuestionInSurvey(updatedQuestion, update)
 
     const { questionGroups } = update.mock.calls[0][0]
     expect(questionGroups[0].questions[0]).toBe(otherQuestion)
@@ -546,7 +574,7 @@ describe('syncSurveyQuestionWithScenarios', () => {
     setCachedQuestionGroups([{ gid: 2, questions: [{ qid: 12 }] }])
     const update = jest.fn()
 
-    syncSurveyQuestionWithScenarios({ qid: 11, scenarios: [] }, update, {})
+    replaceQuestionInSurvey({ qid: 11, scenarios: [] }, update)
 
     expect(update).not.toHaveBeenCalled()
   })
@@ -620,6 +648,11 @@ describe('condition helpers', () => {
     expect(isScenarioDraftValid([validRow], -1)).toBe(false)
     expect(isScenarioDraftValid([validRow], 1.5)).toBe(false)
     expect(isScenarioDraftValid([validRow], 2)).toBe(true)
+    // ... up to the maximum of the database column
+    expect(isScenarioDraftValid([validRow], MAX_SCENARIO_NUMBER)).toBe(true)
+    expect(isScenarioDraftValid([validRow], MAX_SCENARIO_NUMBER + 1)).toBe(
+      false
+    )
   })
 
   it('replaces visual scenarios with an unchanged script', () => {

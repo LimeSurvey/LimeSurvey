@@ -88,7 +88,6 @@ export const ConditionDesigner = ({
     question,
     scenarioToPatch,
     update,
-    focused,
     setPendingScenarioName,
     onNavigateBack,
     scid,

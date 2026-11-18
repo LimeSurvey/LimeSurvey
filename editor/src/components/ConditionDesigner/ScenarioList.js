@@ -93,9 +93,6 @@ export const ScenarioList = ({
       }),
     }
     replaceQuestionInSurvey(updatedQuestion, update)
-
-    focused.scenarios = updatedQuestion.scenarios
-    focused.relevance = updatedQuestion.relevance
   }
 
   const isPendingAndHasTempId = useCallback(

@@ -86,6 +86,10 @@ class SurveyConditionTest extends TestBaseClass
         $condition->scenario = 1;
         $this->assertTrue($condition->save());
 
+        // The script must equal the stored relevance, or this would test the
+        // path for a changed script instead
+        $this->assertSame($relevance, \Question::model()->findByPk($question->qid)->relevance);
+
         $surveyCondition = \LimeSurvey\DI::getContainer()->get(SurveyCondition::class);
         $surveyCondition->conditionScript($question->qid, $relevance);
 
