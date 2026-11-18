@@ -4,6 +4,7 @@ import {
   QUESTION_RELEVANCE_DEFAULT_VALUE,
   STATES,
 } from 'helpers'
+import { isEqual } from 'lodash'
 import { queryClient } from 'queryClient'
 
 import { getConditionTypeInfo } from './getConditionTypeInfo'
@@ -220,9 +221,23 @@ export const updateQuestionScenarios = (scenarios, question, originalScid) => {
   }
 
   if (originalScid.current !== scid) {
-    question.scenarios = question.scenarios.filter(
-      (sc) => sc.scid !== originalScid.current
-    )
+    // The scenario was renamed. The payload moves only these conditions to the
+    // new scenario, so only take them out of the old one: other conditions,
+    // e.g. added by a refresh, stay there as they do on the server.
+    question.scenarios = question.scenarios
+      .map((sc) =>
+        sc.scid === originalScid.current
+          ? {
+              ...sc,
+              conditions: sc.conditions.filter(
+                (c) => !newConditions.some((nc) => nc.cid == c.cid)
+              ),
+            }
+          : sc
+      )
+      .filter(
+        (sc) => sc.scid !== originalScid.current || sc.conditions.length > 0
+      )
   }
 
   question.scenarios = question.scenarios.filter(
@@ -249,6 +264,66 @@ export const getCurrentQuestionInfo = (qid) => {
 }
 
 /**
+ * The question's condition, to check later whether it changed meanwhile (see
+ * isConditionChangedSince).
+ * @param {Object} question
+ * @returns {{relevance: ?string, scenarios: Array}}
+ */
+export const getConditionState = (question) => ({
+  relevance: question?.relevance ?? null,
+  scenarios: question?.scenarios ?? [],
+})
+
+/**
+ * Whether the question's condition in the current survey differs from the one
+ * recorded with getConditionState, e.g. when the survey was refreshed with a
+ * change from another session while a confirmation was open. A confirmation
+ * only applies to the condition it was shown for.
+ * @param {number|string} qid Question ID.
+ * @param {Object} conditionState Recorded with getConditionState.
+ * @returns {boolean} False when the question no longer exists: the condition
+ *   actions skip a missing question themselves.
+ */
+export const isConditionChangedSince = (qid, conditionState) => {
+  const { question } = getCurrentQuestionInfo(qid)
+  return !!question && !isEqual(getConditionState(question), conditionState)
+}
+
+/**
+ * Whether the condition rows of a scenario draft can be saved. Rows marked for
+ * deletion are skipped: they are not saved, and their fields can be empty
+ * (e.g. cleared by the first-question reset in QuestionTypeToggle).
+ * @param {Array} conditions The condition rows of the draft.
+ * @param {number|string} scid The scenario ID of the draft.
+ * @returns {boolean}
+ */
+export const isScenarioDraftValid = (conditions, scid) => {
+  const isScidValid = scid !== '' && !isNaN(scid)
+
+  return (
+    isScidValid &&
+    conditions
+      .filter((condition) => !condition.isDeleted)
+      .every((condition) => {
+        const { method, cqid, targetType, value, sourceType, cfieldname } =
+          condition
+
+        const isMethodValid =
+          Object.values(getAllowedMethods()).includes(method)
+        const isValueValid =
+          targetType === conditionTypeInfo.TARGET.CONSTANT || value !== null
+
+        const isSourceValid =
+          sourceType === conditionTypeInfo.SOURCE.QUESTION
+            ? typeof cqid === 'number' && cqid > 0
+            : Boolean(cfieldname)
+
+        return isMethodValid && isValueValid && isSourceValid
+      })
+  )
+}
+
+/**
  * Writes a question into the survey at its current position.
  *
  * Writes a copy of the question, in new copies of its group and questions
@@ -257,6 +332,11 @@ export const getCurrentQuestionInfo = (qid) => {
  * changing cached objects before `update` would hide the change from the
  * survey's listeners. The copy also keeps later changes of the caller's object
  * out of the cache.
+ *
+ * The copy is shallow: nested values such as `scenarios` are shared with the
+ * caller's object. Replace nested values instead of changing them in place,
+ * e.g. `question.scenarios = [...question.scenarios, scenario]`, never
+ * `question.scenarios.push(scenario)`.
  * @param {Object} question The updated question.
  * @param {Function} update Updates the survey.
  * @returns {boolean} False when the question no longer exists in the survey.

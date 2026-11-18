@@ -12,16 +12,15 @@ import { previousQuestionsHandler } from './handlers/previousQuestions/previousQ
 import { ConditionItem } from './ConditionItem'
 import {
   buildScenarioConditionsForUpdate,
-  getAllowedMethods,
-  getConditionTypeInfo,
+  getConditionState,
   getDefaultCondition,
   hasUnsavedChanges,
+  isScenarioDraftValid,
+  runIfConditionUnchanged,
   showConditionScriptOverwriteConfirmationOverlay,
   showUnsavedChangesOverlay,
   showWarningMessage,
 } from './utils'
-
-const conditionTypeInfo = getConditionTypeInfo()
 
 const scenarioActions = {
   CREATE: 'create', // when creating a new scenario
@@ -105,24 +104,10 @@ export const ConditionDesigner = ({
     }
   }, [focused.qid])
 
-  const isValidScenario = useMemo(() => {
-    return conditions.every((condition) => {
-      const { method, cqid, targetType, value, sourceType, cfieldname } =
-        condition
-
-      const isMethodValid = Object.values(getAllowedMethods()).includes(method)
-      const isValueValid =
-        targetType === conditionTypeInfo.TARGET.CONSTANT || value !== null
-      const isScidValid = scid !== '' && !isNaN(scid)
-
-      const isSourceValid =
-        sourceType === conditionTypeInfo.SOURCE.QUESTION
-          ? typeof cqid === 'number' && cqid > 0
-          : Boolean(cfieldname)
-
-      return isMethodValid && isValueValid && isScidValid && isSourceValid
-    })
-  }, [conditions, scid])
+  const isValidScenario = useMemo(
+    () => isScenarioDraftValid(conditions, scid),
+    [conditions, scid]
+  )
 
   const isUpdateAction = useCallback(() => {
     return scenarioAction === scenarioActions.UPDATE
@@ -139,9 +124,12 @@ export const ConditionDesigner = ({
   const handleApplyClick = () => {
     const save = () => handleSavingScenario()
     if (shouldConfirmOverwrite) {
+      // The confirmation only applies to the script it shows
+      const shownCondition = getConditionState(question)
       showConditionScriptOverwriteConfirmationOverlay({
         script: question.relevance,
-        onConfirm: save,
+        onConfirm: () =>
+          runIfConditionUnchanged(question.qid, shownCondition, save),
         onCancel: onNavigateBack,
       })
     } else {

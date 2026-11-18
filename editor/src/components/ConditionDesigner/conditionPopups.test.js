@@ -12,13 +12,17 @@ import { useConditionDesigner } from 'hooks/useConditionDesigner'
 import { queryClient } from 'queryClient'
 
 import { ExpressionScriptInputBox } from './ExpressionScript/ExpressionScriptInputBox'
+import { handleConditionScriptUpdate } from './ExpressionScript/handleConditionScriptUpdate'
 import { ScenarioList } from './ScenarioList'
 import {
   CONDITION_POPUP_CLASS,
   getConditionTypeInfo,
   getDefaultCondition,
+  isConditionChangedSince,
+  isScenarioDraftValid,
   replaceQuestionInSurvey,
   syncSurveyQuestionWithScenarios,
+  updateQuestionScenarios,
 } from './utils'
 
 // The popups' open / replace / close behavior is what is tested here, so use
@@ -93,9 +97,9 @@ const QuestionPanel = ({ question, isQuestionMissing = false }) => {
  * Opens the editor popup and applies a changed script. The question has
  * scenarios, so the overwrite confirmation replaces the editor popup.
  */
-const openOverwriteConfirmation = async (container) => {
+const openEditorPopup = async (container) => {
   // The expand button
-  fireEvent.click(container.querySelectorAll('button')[0])
+  fireEvent.click(container.querySelector('.condition-script-trigger button'))
   const editor = await waitFor(() => {
     const element = document.querySelector(
       '[data-testid="expression-script-editor"]'
@@ -104,7 +108,14 @@ const openOverwriteConfirmation = async (container) => {
     return element
   })
   expect(getVisiblePopup()).toHaveClass(CONDITION_POPUP_CLASS)
+  return editor
+}
 
+/**
+ * Applies a changed script in the open editor popup. The question has
+ * scenarios, so the overwrite confirmation replaces the editor popup.
+ */
+const applyEditedScript = async (editor) => {
   fireEvent.change(editor, { target: { value: 'Q1 == "B"' } })
   fireEvent.click(
     document.querySelector('.condition-designer-overlay-primary-button')
@@ -115,6 +126,18 @@ const openOverwriteConfirmation = async (container) => {
     ).not.toBeInTheDocument()
   )
   expect(getVisiblePopup()).toHaveClass(CONDITION_POPUP_CLASS)
+}
+
+const openOverwriteConfirmation = async (container) =>
+  applyEditedScript(await openEditorPopup(container))
+
+// Clicks "Save changes" in the open overwrite confirmation
+const confirmOverwrite = async () => {
+  await act(async () => {
+    fireEvent.click(
+      document.querySelector('.condition-designer-overlay-primary-button')
+    )
+  })
 }
 
 const openDeleteScenarioPopup = async (container) => {
@@ -275,15 +298,54 @@ describe('condition popups', () => {
   })
 
   it('asks for confirmation when a refresh added scenarios while the editor popup was open', async () => {
-    // The question had no visual scenarios when the editor popup opened
-    const capturedQuestion = { ...createQuestion(), scenarios: [] }
-    // A refresh added scenarios
+    // The question has no visual scenarios when the editor popup opens
+    const question = { ...createQuestion(), scenarios: [] }
+    setCachedQuestionGroups([{ gid: 1, questions: [question] }])
+    const { container } = render(<QuestionPanel question={question} />)
+    const editor = await openEditorPopup(container)
+
+    // A refresh adds scenarios while the editor popup is open
     setCachedQuestionGroups([{ gid: 1, questions: [createQuestion()] }])
-    const { container } = render(<QuestionPanel question={capturedQuestion} />)
 
     // Applying asks to overwrite the new scenarios instead of applying
+    await applyEditedScript(editor)
+
+    expect(mockAddToBuffer).not.toHaveBeenCalled()
+    expect(mockUpdate).not.toHaveBeenCalled()
+  })
+
+  it('applies the confirmed script when the condition is unchanged', async () => {
+    const question = createQuestion()
+    setCachedQuestionGroups([{ gid: 1, questions: [question] }])
+    const { container } = render(<QuestionPanel question={question} />)
     await openOverwriteConfirmation(container)
 
+    await confirmOverwrite()
+
+    expect(mockAddToBuffer).toHaveBeenCalledTimes(1)
+    const { questionGroups } = mockUpdate.mock.calls[0][0]
+    expect(questionGroups[0].questions[0]).toMatchObject({
+      relevance: 'Q1 == "B"',
+      scenarios: [],
+    })
+  })
+
+  it('does not apply when the condition changed while the confirmation was open', async () => {
+    const question = createQuestion()
+    setCachedQuestionGroups([{ gid: 1, questions: [question] }])
+    const { container } = render(<QuestionPanel question={question} />)
+    await openOverwriteConfirmation(container)
+
+    // A refresh replaces the scenarios with a script from another session
+    setCachedQuestionGroups([
+      {
+        gid: 1,
+        questions: [{ ...question, scenarios: [], relevance: 'Q3 == "C"' }],
+      },
+    ])
+    await confirmOverwrite()
+
+    // The user confirmed overwriting the scenarios, not the new script
     expect(mockAddToBuffer).not.toHaveBeenCalled()
     expect(mockUpdate).not.toHaveBeenCalled()
   })
@@ -304,13 +366,17 @@ describe('saving a scenario', () => {
     scenario: 1,
   })
 
-  const renderConditionDesigner = (question, conditions) =>
+  const renderConditionDesigner = (
+    question,
+    conditions,
+    scenarioToPatch = null
+  ) =>
     renderHook(() =>
       useConditionDesigner({
         question,
         focused: {},
         scid: 1,
-        scenarioToPatch: null,
+        scenarioToPatch,
         conditions,
         addToBuffer: mockAddToBuffer,
         setScid: jest.fn(),
@@ -364,6 +430,29 @@ describe('saving a scenario', () => {
     const { questionGroups } = mockUpdate.mock.calls[0][0]
     expect(questionGroups[0].questions[0].scenarios).toHaveLength(1)
     expect(question.scenarios).toEqual([])
+  })
+
+  it('stops when the edited scenario no longer exists', () => {
+    // A refresh replaced the scenarios with an ExpressionScript condition
+    setCachedQuestionGroups([
+      {
+        gid: 1,
+        questions: [{ qid: 11, relevance: 'Q2 == "B"', scenarios: [] }],
+      },
+    ])
+    const scenario = { scid: 1, conditions: [{ ...createCondition(), cid: 7 }] }
+    const { result } = renderConditionDesigner(
+      { qid: 11, relevance: '1', scenarios: [scenario] },
+      // The draft deletes the scenario's condition
+      [{ ...createCondition(), cid: 7, isDeleted: true }],
+      { ...scenario, qid: 11 }
+    )
+
+    act(() => result.current.handleSavingScenario())
+
+    // No delete is queued, and the new condition is not reset
+    expect(mockAddToBuffer).not.toHaveBeenCalled()
+    expect(mockUpdate).not.toHaveBeenCalled()
   })
 
   it('does nothing when the question was removed', () => {
@@ -425,5 +514,104 @@ describe('syncSurveyQuestionWithScenarios', () => {
     syncSurveyQuestionWithScenarios({ qid: 11, scenarios: [] }, update, {})
 
     expect(update).not.toHaveBeenCalled()
+  })
+})
+
+describe('condition helpers', () => {
+  afterEach(() => {
+    queryClient.removeQueries({ queryKey: [STATES.SURVEY] })
+    jest.clearAllMocks()
+  })
+
+  it('keeps conditions that are not moved when a scenario is renamed', () => {
+    // Condition 9 is not in the draft, e.g. a refresh added it
+    const question = {
+      qid: 11,
+      scenarios: [{ scid: 1, conditions: [{ cid: 5 }, { cid: 9 }] }],
+    }
+
+    updateQuestionScenarios(
+      [{ scid: 2, conditions: [{ cid: 5, scenario: 2 }] }],
+      question,
+      { current: 1 }
+    )
+
+    // As on the server: only the saved condition moved to scenario 2
+    expect(question.scenarios).toEqual([
+      { scid: 1, conditions: [{ cid: 9 }] },
+      { scid: 2, conditions: [{ cid: 5, scenario: 2 }] },
+    ])
+  })
+
+  it('removes the renamed scenario when all its conditions moved', () => {
+    const question = {
+      qid: 11,
+      scenarios: [{ scid: 1, conditions: [{ cid: 5 }] }],
+    }
+
+    updateQuestionScenarios(
+      [{ scid: 2, conditions: [{ cid: 5, scenario: 2 }] }],
+      question,
+      { current: 1 }
+    )
+
+    expect(question.scenarios).toEqual([
+      { scid: 2, conditions: [{ cid: 5, scenario: 2 }] },
+    ])
+  })
+
+  it('skips rows marked for deletion when validating a draft', () => {
+    const conditionTypeInfo = getConditionTypeInfo()
+    const validRow = {
+      ...getDefaultCondition(),
+      cqid: 5,
+      method: '==',
+      value: 'A1',
+      sourceType: conditionTypeInfo.SOURCE.QUESTION,
+    }
+    // E.g. cleared by the first-question reset
+    const clearedRow = {
+      ...getDefaultCondition(),
+      sourceType: conditionTypeInfo.SOURCE.PARTICIPANT_DATA,
+    }
+
+    expect(
+      isScenarioDraftValid([validRow, { ...clearedRow, isDeleted: true }], 1)
+    ).toBe(true)
+    expect(isScenarioDraftValid([validRow, clearedRow], 1)).toBe(false)
+    expect(isScenarioDraftValid([validRow], '')).toBe(false)
+  })
+
+  it('replaces visual scenarios with an unchanged script', () => {
+    // The script equals the relevance generated from the scenarios
+    const question = { ...createQuestion(), relevance: 'Q1 == "A"' }
+    setCachedQuestionGroups([{ gid: 1, questions: [question] }])
+    const update = jest.fn()
+
+    handleConditionScriptUpdate('Q1 == "A"', 11, mockAddToBuffer, update)
+
+    expect(mockAddToBuffer).toHaveBeenCalledTimes(1)
+    const { questionGroups } = update.mock.calls[0][0]
+    expect(questionGroups[0].questions[0].scenarios).toEqual([])
+  })
+
+  it('does nothing for an unchanged script without scenarios', () => {
+    const question = { ...createQuestion(), scenarios: [] }
+    setCachedQuestionGroups([{ gid: 1, questions: [question] }])
+    const update = jest.fn()
+
+    handleConditionScriptUpdate('Q1 == "A"', 11, mockAddToBuffer, update)
+
+    expect(mockAddToBuffer).not.toHaveBeenCalled()
+    expect(update).not.toHaveBeenCalled()
+  })
+
+  it('does not report a removed question as changed', () => {
+    setCachedQuestionGroups([{ gid: 1, questions: [] }])
+
+    // The condition actions skip a removed question themselves
+    expect(isConditionChangedSince(11, { relevance: '1', scenarios: [] })).toBe(
+      false
+    )
   })
 })

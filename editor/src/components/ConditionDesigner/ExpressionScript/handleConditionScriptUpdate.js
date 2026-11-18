@@ -36,7 +36,10 @@ export const handleConditionScriptUpdate = (
 
   if (!question) return
 
+  // Nothing to do for an unchanged script, unless it replaces visual
+  // scenarios (e.g. a refresh added them while the editor was open)
   if (
+    !question.scenarios?.length &&
     QUESTION_RELEVANCE_DEFAULT_VALUE !== script.trim() &&
     script.trim() === (question.relevance ?? '').trim()
   )

@@ -17,11 +17,14 @@ const questionSourcedCondition = {
   sourceType: conditionTypeInfo.SOURCE.QUESTION,
 }
 
+// Not the first row, to check that the reset targets the toggle's row
+const ROW_INDEX = 2
+
 const renderToggle = (isFirstQuestion) => {
   const updateCondition = jest.fn()
   render(
     <QuestionTypeToggle
-      index={0}
+      index={ROW_INDEX}
       condition={questionSourcedCondition}
       updateCondition={updateCondition}
       isFirstQuestion={isFirstQuestion}
@@ -34,6 +37,9 @@ describe('QuestionTypeToggle', () => {
   it('clears the question fields when it forces participant data on the first question', () => {
     const updateCondition = renderToggle(true)
 
+    expect(
+      updateCondition.mock.calls.every(([index]) => index === ROW_INDEX)
+    ).toBe(true)
     const updates = Object.fromEntries(
       updateCondition.mock.calls.map(([, key, value]) => [key, value])
     )

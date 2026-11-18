@@ -13,6 +13,7 @@ import {
   getDefaultCondition,
   hasConditionChanged,
   isDuplicateCondition,
+  showConditionChangedWarning,
   showSuccessMessage,
   updateQuestionScenarios,
   syncSurveyQuestionWithScenarios,
@@ -142,6 +143,18 @@ export const useConditionDesigner = ({
     // Work on a copy, so the cached survey only changes through `update`.
     const currentQuestion = getCurrentQuestionInfo(question.qid).question
     if (!currentQuestion) return
+    // The edited scenario is gone, e.g. a refresh replaced the scenarios with
+    // an ExpressionScript condition: saving the draft (incl. its deleted rows)
+    // would overwrite that change
+    const isEditedScenarioGone =
+      scenarioToPatch &&
+      !(currentQuestion.scenarios ?? []).some(
+        (scenario) => scenario.scid === scenarioToPatch.scid
+      )
+    if (isEditedScenarioGone) {
+      showConditionChangedWarning()
+      return
+    }
     const workingQuestion = { ...currentQuestion }
 
     try {

@@ -10,6 +10,7 @@ import {
   ResetAllConditionsOverlay,
   UnsavedChangesOverlay,
 } from '../Overlays'
+import { isConditionChangedSince } from './questionConditionHelpers'
 
 export const showSuccessMessage = (
   message = t('Condition applied successfully')
@@ -47,6 +48,39 @@ export const showErrorMessage = (message, position = 'bottom-right') => {
     leftIcon: <ExclamationMark className="mb-1 error-fill" />,
   })
 }
+
+/**
+ * Runs a confirmed action only if the question's condition is still the one
+ * the confirmation was shown for. Otherwise nothing is written, and the user
+ * is asked to check the condition and apply again: the survey was refreshed
+ * with a change (e.g. from another session) while the confirmation was open,
+ * and the user did not confirm overwriting that change.
+ * @param {number|string} qid Question ID.
+ * @param {Object} conditionState Recorded with getConditionState when the
+ *   confirmation opened.
+ * @param {Function} action The confirmed action.
+ * @returns {void}
+ */
+export const runIfConditionUnchanged = (qid, conditionState, action) => {
+  if (isConditionChangedSince(qid, conditionState)) {
+    showConditionChangedWarning()
+    return
+  }
+  action()
+}
+
+/**
+ * Tells the user that a condition action was not applied because the
+ * question's condition was changed meanwhile (e.g. by another session).
+ * @returns {void}
+ */
+export const showConditionChangedWarning = () =>
+  showWarningMessage(
+    t(
+      'The condition of this question was changed in the meantime. Please check it and apply again.'
+    ),
+    'bottom-center'
+  )
 
 /**
  * Class that marks every condition popup. The popups are SweetAlert modals

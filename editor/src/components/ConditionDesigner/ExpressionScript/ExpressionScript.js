@@ -10,7 +10,9 @@ import { ArrowLeftIcon } from 'components/icons'
 
 import { handleConditionScriptUpdate } from './handleConditionScriptUpdate'
 import {
+  getConditionState,
   isValidRelevanceValue,
+  runIfConditionUnchanged,
   showConditionOverwriteConfirmationOverlay,
   showUnsavedChangesOverlay,
 } from '../utils'
@@ -64,8 +66,13 @@ export const ExpressionScript = ({ question, onNavigateBack = () => {} }) => {
 
   const handleApplyClick = () => {
     if ((question?.scenarios ?? []).length > 0) {
+      // The confirmation only applies to the scenarios it was shown for
+      const shownCondition = getConditionState(question)
       showConditionOverwriteConfirmationOverlay({
-        onConfirm: () => handleApply(content),
+        onConfirm: () =>
+          runIfConditionUnchanged(question.qid, shownCondition, () =>
+            handleApply(content)
+          ),
         onCancel: onNavigateBack,
       })
     } else {
