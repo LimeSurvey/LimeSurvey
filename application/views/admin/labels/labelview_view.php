@@ -35,7 +35,7 @@
         </ul>
 
         <!-- FORM -->
-        <?php echo CHtml::form(["admin/labels/sa/process"], 'post', ['id' => 'mainform']); ?>
+        <?php echo CHtml::form(["admin/labels/sa/process"], 'post', ['id' => 'mainform', 'role' => 'presentation']); ?>
         <input type='hidden' name='lid' value='<?php echo $lid ?>'/>
         <input type='hidden' name='action' value='modlabelsetanswers'/>
 

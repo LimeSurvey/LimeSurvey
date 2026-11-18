@@ -47,3 +47,22 @@
   white-space: nowrap;
   border: 0;
 }
+
+// "Uploaded resources management" card (label sets): on small screens the nested paddings left
+// too little room for the file field ("No file chosen" was cut off) and the buttons
+@media (max-width: 575.98px) {
+    #up_resmgmt {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+
+        .card-body,
+        .container {
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        .btn {
+            white-space: normal;
+        }
+    }
+}

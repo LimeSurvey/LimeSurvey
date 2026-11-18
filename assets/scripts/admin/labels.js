@@ -57,6 +57,9 @@ $(document).on('ready  pjax:scriptcomplete', function(){
         distance:2
     });
 
+    // Keyboard alternative to dragging: arrow up / down on the drag handle moves the label
+    $(document).off('keydown.labelmove').on('keydown.labelmove', '.label-move-handle', move_label_with_keyboard);
+
     $('#btnqareplace').click(quickaddfunction);
     $('#btnqainsert').click(quickaddfunction);
 
@@ -243,6 +246,52 @@ function sort_complete(event, ui){
     });
 
     fix_highlighting();
+}
+
+/**
+ * Moves a label one position up or down with the arrow keys (keyboard alternative to drag and drop).
+ * The rows of the other languages are moved too, and the new position is announced to screen readers.
+ *
+ * @param {object} event
+ */
+function move_label_with_keyboard(event) {
+    if (event.key !== 'ArrowUp' && event.key !== 'ArrowDown') {
+        return;
+    }
+    event.preventDefault();
+    var $handle = $(event.currentTarget);
+    var $row = $handle.closest('tr');
+    var up = event.key === 'ArrowUp';
+    var $target = up ? $row.prev('tr') : $row.next('tr');
+    if ($target.length) {
+        var aRowInfo = $row.attr('id').split('_'); // row, language, row number
+        var aTargetInfo = $target.attr('id').split('_');
+        $(".tab-pane").each(function (divindex, divelement) {
+            var div_language = $(".lslanguage", divelement).val();
+            if (typeof (div_language) == "undefined") {
+                return;
+            }
+            var $langRow = $("#row_" + div_language + "_" + aRowInfo[2]);
+            var $langTarget = $("#row_" + div_language + "_" + aTargetInfo[2]);
+            if ($langRow.length && $langTarget.length) {
+                if (up) {
+                    $langRow.insertBefore($langTarget);
+                } else {
+                    $langRow.insertAfter($langTarget);
+                }
+            }
+        });
+        fix_highlighting();
+        // Moving the row in the DOM drops the focus
+        $handle.trigger('focus');
+    }
+    var $status = $('#label-move-status');
+    if ($status.length) {
+        $status.text(String($status.data('message') || '')
+            .replace('%1$s', $row.find('.codeval').val())
+            .replace('%2$s', $row.index() + 1)
+            .replace('%3$s', $row.parent().children('tr').length));
+    }
 }
 
 /**
