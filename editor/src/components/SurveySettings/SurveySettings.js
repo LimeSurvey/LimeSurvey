@@ -29,6 +29,7 @@ export const SurveySettings = ({ id }) => {
   const [rerenderSettings, setRerenderSettings] = useState({})
 
   const [surveyHash = {}] = useAppState(STATES.SURVEY_HASH)
+  const [siteSettings = {}] = useAppState(STATES.SITE_SETTINGS)
   const [helperSettings = {}, setHelperSettings] = useAppState(
     STATES.HELPER_SETTINGS
   )
@@ -48,7 +49,7 @@ export const SurveySettings = ({ id }) => {
     return Object.values(panels).find((item) => item.panel === panel) || {}
   }, [panel])
 
-  const globalStates = useGlobalStates(operationsBuffer, surveyHash)
+  const globalStates = useGlobalStates(operationsBuffer, surveyHash, siteSettings)
   const settingsBlocksInfo = getSettingsBlocksInfo(survey)
 
   // Helper settings initialization
