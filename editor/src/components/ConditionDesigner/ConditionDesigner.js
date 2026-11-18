@@ -61,8 +61,8 @@ export const ConditionDesigner = ({
   const [isApplyButtonDisabled, setIsApplyButtonDisabled] = useState(true)
 
   const shouldConfirmOverwrite =
-    question.scenarios.length === 0 &&
-    question.relevance !== QUESTION_RELEVANCE_DEFAULT_VALUE
+    question?.scenarios.length === 0 &&
+    question?.relevance !== QUESTION_RELEVANCE_DEFAULT_VALUE
 
   const hasShownWarningRef = useRef(false)
 
@@ -159,6 +159,10 @@ export const ConditionDesigner = ({
 
     setIsApplyButtonDisabled(shouldDisable)
   }, [isValidScenario, conditions, scenarioAction])
+
+  if (!question) {
+    return null
+  }
 
   return (
     <>
