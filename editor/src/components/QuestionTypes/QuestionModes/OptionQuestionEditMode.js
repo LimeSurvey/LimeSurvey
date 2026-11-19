@@ -346,7 +346,8 @@ export const OptionQuestionEditMode = ({
 
   /**
    * Returns the image settings props of an option for ImageChoice. Settings
-   * saved for another image of the option are left out.
+   * saved for another image of the option are left out. Without permission to
+   * edit the question, there is no save: ImageChoice then has no edit button.
    *
    * @param {Object} child the answer or subquestion
    * @returns {Object} the props, empty for themes without images
@@ -364,8 +365,9 @@ export const OptionQuestionEditMode = ({
     return {
       imageSettings: settings,
       imageAltText: altText,
-      onImageSettingsSave: (imageSettings) =>
-        handleImageOptionSave(code, imageSettings),
+      onImageSettingsSave: isFocused
+        ? (imageSettings) => handleImageOptionSave(code, imageSettings)
+        : null,
     }
   }
 
@@ -465,7 +467,10 @@ export const OptionQuestionEditMode = ({
                       key={`uicomponent-${child.appKey || child[childrenInfo.idKey]}-questionmode`}
                       index={index}
                       code={isSingleChoiceTheme ? child.code : child.title}
-                      isFocused={true}
+                      // Images can only be uploaded, deleted and edited with
+                      // permission to edit the question: Otherwise they are
+                      // only shown.
+                      isFocused={isImageTheme ? isFocused : true}
                       idPrefix={isSingleChoiceTheme ? 'a' : 'q'}
                       id={child[childrenInfo.idKey]}
                       onKeyDown={getKeyDownHandler(

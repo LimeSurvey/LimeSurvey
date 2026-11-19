@@ -41,8 +41,9 @@ const IMAGE_BORDER_CLASSES = 'border border-3 border-secondary rounded'
  * @param {Object|null} imageSettings saved image editor settings of the option,
  *   the image is shown with them in view and edit mode
  * @param {string} imageAltText saved alt text in the current language
- * @param {Function} onImageSettingsSave called with the image editor settings,
- *   including the alt text, when they are saved
+ * @param {Function|null} onImageSettingsSave called with the image editor
+ *   settings, including the alt text, when they are saved. Without it, there
+ *   is no edit button.
  * @returns {JSX.Element} the option
  */
 export const ImageChoice = ({
@@ -62,7 +63,7 @@ export const ImageChoice = ({
   setErrors = () => {},
   imageSettings = null,
   imageAltText = '',
-  onImageSettingsSave = () => {},
+  onImageSettingsSave = null,
 }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [showImageEditor, setShowImageEditor] = useState(false)
@@ -91,7 +92,7 @@ export const ImageChoice = ({
   const showLoader = (isFocused || isLoading) && !initLoading
 
   const handleImageEditorSave = (settings) => {
-    onImageSettingsSave(settings)
+    onImageSettingsSave?.(settings)
     setShowImageEditor(false)
   }
 
@@ -178,7 +179,7 @@ export const ImageChoice = ({
                 isValidImg={isValidImg}
                 onLoading={(value) => setIsLoading(value)}
                 onEdit={
-                  previewUrl && isValidImg
+                  previewUrl && isValidImg && onImageSettingsSave
                     ? () => setShowImageEditor(true)
                     : null
                 }

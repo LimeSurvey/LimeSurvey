@@ -62,9 +62,10 @@ let setTestIsOpen
  * @param {Function} handleUpdate gets the question changes, and the question
  *   of the render whose handleUpdate was called: The real one spreads the
  *   changes over it
+ * @param {boolean} isFocused whether the user may edit the question
  * @returns {JSX.Element} the options in edit mode
  */
-const Harness = ({ initialQuestion, handleUpdate }) => {
+const Harness = ({ initialQuestion, handleUpdate, isFocused = true }) => {
   const [question, setQuestion] = useState(initialQuestion)
   const [isOpen, setIsOpen] = useState(true)
   setTestQuestion = setQuestion
@@ -78,7 +79,7 @@ const Harness = ({ initialQuestion, handleUpdate }) => {
       question={question}
       handleUpdate={(change) => handleUpdate(change, question)}
       handleChildLUpdate={jest.fn()}
-      isFocused={true}
+      isFocused={isFocused}
       handleChildAdd={jest.fn()}
       handleOnChildDragEnd={jest.fn()}
       handleChildDelete={jest.fn()}
@@ -164,6 +165,25 @@ describe('OptionQuestionEditMode image option settings', () => {
     mockImageLoads.splice(0)
     mockImageLoadTimeout = 60000
     mockErrorToast.mockClear()
+  })
+
+  test("Without permission to edit, images are only shown and can't be edited", async () => {
+    await renderWithProviders(
+      <Harness
+        handleUpdate={jest.fn()}
+        isFocused={false}
+        initialQuestion={{
+          qid: 1,
+          questionThemeName:
+            getQuestionTypeInfo().SINGLE_CHOICE_IMAGE_SELECT.theme,
+          attributes: {},
+          answers: [getAnswer(1, 'A1')],
+        }}
+      />
+    )
+
+    expect(mockImageChoiceProps.A1.isFocused).toBe(false)
+    expect(mockImageChoiceProps.A1.onImageSettingsSave).toBeNull()
   })
 
   test('Saves still waiting when the question closes are dropped, with one message', async () => {
