@@ -1052,8 +1052,17 @@ window.addEventListener('message', function(event) {
     public function addUserExtensions($extensions)
     {
         Yii::import('application.helpers.common_helper', true);
+        $extensionRoot = uploadRelativePath((string) Yii::app()->getConfig('usertwigextensionrootdir'));
         foreach ($extensions as $extName) {
-            dispatchUploadPathEvent('beforeUploadPathUse', 'twig/extensions/' . $extName);
+            $extensionName = str_replace('\\', '/', (string) $extName);
+            if (
+                $extensionRoot !== null
+                && $extensionName !== ''
+                && !str_contains($extensionName, '/')
+                && !str_contains($extensionName, '..')
+            ) {
+                dispatchUploadPathEvent('beforeUploadPathUse', $extensionRoot . '/' . $extensionName);
+            }
             Yii::setPathOfAlias('extName_' . $extName, Yii::app()->getConfig('usertwigextensionrootdir') . '/' . $extName . '/');
             Yii::import("extName_" . $extName . ".*");
             $this->_twig->addExtension(new $extName());

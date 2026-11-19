@@ -10,7 +10,10 @@ abstract class Response extends Dynamic
     public function beforeDelete()
     {
         if (parent::beforeDelete()) {
-            $this->deleteFiles();
+            $retained = $this->deleteFiles();
+            if ($this->retainedUploadFiles($retained)) {
+                return false;
+            }
             $this->deleteTimings();
             return true;
         }
@@ -252,9 +255,30 @@ abstract class Response extends Dynamic
     public function delete($deleteFiles = false)
     {
         if ($deleteFiles) {
-            $this->deleteFiles();
+            $retained = $this->deleteFiles();
+            if ($this->retainedUploadFiles($retained)) {
+                return false;
+            }
         }
         return parent::delete();
+    }
+
+    /**
+     * A name from deleteFiles() is retained only while that file is still on disk.
+     * A missing file is not retained: a later pass reports unlink failures for files already removed.
+     *
+     * @param string[] $filenames
+     * @return bool
+     */
+    private function retainedUploadFiles(array $filenames)
+    {
+        $uploaddir = Yii::app()->getConfig('uploaddir') . "/surveys/{$this->dynamicId}/files/";
+        foreach ($filenames as $filename) {
+            if (is_file($uploaddir . basename((string) $filename))) {
+                return true;
+            }
+        }
+        return false;
     }
     public function relations()
     {

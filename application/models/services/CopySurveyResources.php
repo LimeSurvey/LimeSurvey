@@ -35,9 +35,14 @@ class CopySurveyResources
         \Yii::import('application.helpers.common_helper', true);
         dispatchUploadPathEvent('beforeUploadPathUse', $sourcePath);
 
-        // Only try to copy the resources if the source survey has a resources directory
-        if (is_dir($sourceDir) && uploadPathChangeAllowed($targetPath, 'write', ['surveyId' => $targetSurveyId])) {
-            $this->copyDirectory($sourceDir, $targetDir);
+        if (!is_dir($sourceDir)) {
+            return $this->getResult();
+        }
+        if (!uploadPathChangeAllowed($targetPath, 'write', ['surveyId' => $targetSurveyId])) {
+            $this->addError($targetDir, gT("Could not create directory"));
+            return $this->getResult();
+        }
+        if ($this->copyDirectory($sourceDir, $targetDir)) {
             dispatchUploadPathEvent('afterUploadPathChange', $targetPath, [
                 'action' => 'write',
                 'surveyId' => $targetSurveyId,
@@ -51,19 +56,25 @@ class CopySurveyResources
      * Copy $sourceDir to $targetDir.
      * @param string $sourceDir
      * @param string $targetDir
+     * @return bool True when the destination directory or a file in it was created.
      */
     private function copyDirectory($sourceDir, $targetDir)
     {
+        $mutated = false;
         if (is_dir($sourceDir)) {
             $directory = opendir($sourceDir);
             if (!$directory) {
                 $this->addError($sourceDir, gT("Could not open source directory - maybe a permission problem?"));
-                return;
+                return false;
             }
 
+            $targetExisted = is_dir($targetDir);
             // Create target dir if it doesn't exist, return if doesn't exist and cannot be created.
             if (!$this->checkTargetDir($targetDir)) {
-                return;
+                return false;
+            }
+            if (!$targetExisted && is_dir($targetDir)) {
+                $mutated = true;
             }
 
             // Copy source dir contents
@@ -74,17 +85,21 @@ class CopySurveyResources
                             $this->addError($direntry, gT("Copy failed"));
                         } else {
                             $this->addSuccess($direntry, gT("OK"));
+                            $mutated = true;
                         }
                     } elseif (is_dir($sourceDir . "/" . $direntry)) {
                         $subExtractdir = $sourceDir . "/" . $direntry;
                         $subDestdir = $targetDir . "/" . $direntry;
-                        $this->copyDirectory($subExtractdir, $subDestdir);
+                        if ($this->copyDirectory($subExtractdir, $subDestdir)) {
+                            $mutated = true;
+                        }
                     }
                 }
             }
         } else {
             $this->addError($sourceDir, gT("Source directory not found"));
         }
+        return $mutated;
     }
 
     /**

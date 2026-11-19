@@ -374,6 +374,9 @@ function uploadRelativePath($absolutePath)
 
 /**
  * Dispatches a plugin event for a path relative to uploaddir.
+ * The path base is uploaddir. Callers skip the event when uploadRelativePath()
+ * returns null, so a location outside uploaddir (the default tempdir included)
+ * is never announced.
  * With no subscriber this only looks up the event name.
  *
  * Events: beforeUploadPathUse, beforeUploadPathChange, afterUploadPathChange.

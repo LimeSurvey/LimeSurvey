@@ -916,8 +916,15 @@ class TemplateManifest extends TemplateConfiguration
             $ometadata = $oConfig->getElementsByTagName('metadata')->item(0);
             $oExtendsNode = $ometadata->getElementsByTagName('extends')->item(0);
             if ($oExtendsNode !== null && $oExtendsNode->nodeValue === $sOldName) {
+                $childPath = 'themes/survey/' . $sThemeName;
+                Yii::import('application.helpers.common_helper', true);
+                if (!uploadPathChangeAllowed($childPath, 'write')) {
+                    continue;
+                }
                 self::changeExtendsInDom($oManifest, $sNewName);
-                $oManifest->save($sThemePath . '/config.xml');
+                if ($oManifest->save($sThemePath . '/config.xml')) {
+                    dispatchUploadPathEvent('afterUploadPathChange', $childPath, ['action' => 'write']);
+                }
             }
         }
     }
@@ -1106,6 +1113,11 @@ class TemplateManifest extends TemplateConfiguration
                 $this->path = Yii::app()->getConfig("standardthemerootdir") . DIRECTORY_SEPARATOR . $this->sTemplateName . DIRECTORY_SEPARATOR;
             } else {
                 $this->isStandard    = false;
+                Yii::import('application.helpers.common_helper', true);
+                if ($this->sTemplateName) {
+                    dispatchUploadPathEvent('beforeUploadPathUse', 'themes/survey/' . $this->sTemplateName);
+                    dispatchUploadPathEvent('beforeUploadPathUse', 'themes/survey/generalfiles');
+                }
                 $this->path = Yii::app()->getConfig("userthemerootdir") . DIRECTORY_SEPARATOR . $this->sTemplateName . DIRECTORY_SEPARATOR;
             }
         }

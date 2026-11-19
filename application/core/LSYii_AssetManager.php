@@ -34,14 +34,29 @@ class LSYii_AssetManager extends CAssetManager
 
     /**
      * @inheritdoc
-     * Announces the published hash so a plugin can mirror tmp/assets.
+     * Announces the published directory when it is under uploaddir.
+     * The default tempdir/assets location is outside uploaddir and is not announced.
      */
     public function publish($path, $hashByName = false, $level = -1, $forceCopy = null)
     {
         $published = parent::publish($path, $hashByName, $level, $forceCopy);
+        if (!is_string($published)) {
+            return $published;
+        }
+        $baseUrl = rtrim(str_replace('\\', '/', (string) $this->getBaseUrl()), '/');
+        $publishedUrl = explode('?', str_replace('\\', '/', $published), 2)[0];
+        if ($baseUrl === '' || !is_string($publishedUrl) || !str_starts_with($publishedUrl, $baseUrl . '/')) {
+            return $published;
+        }
+        $suffix = substr($publishedUrl, strlen($baseUrl) + 1);
+        $filesystem = $this->getBasePath() . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $suffix);
+        if (is_file($filesystem)) {
+            $filesystem = dirname($filesystem);
+        }
         Yii::import('application.helpers.common_helper', true);
-        if (is_string($published) && preg_match('#/tmp/assets/([^/?]+)#', $published, $match) === 1) {
-            dispatchUploadPathEvent('afterUploadPathChange', 'tmp/assets/' . $match[1], ['action' => 'write']);
+        $relative = uploadRelativePath($filesystem);
+        if ($relative !== null) {
+            dispatchUploadPathEvent('afterUploadPathChange', $relative, ['action' => 'write']);
         }
         return $published;
     }

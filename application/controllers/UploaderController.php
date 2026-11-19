@@ -82,10 +82,9 @@ class UploaderController extends SurveyController
             } else {
                 throw new CHttpException(400); // See for debug > 1
             }
-            if (substr($sFileGetContentFiltered, 0, 6) == 'futmp_') {
-                dispatchUploadPathEvent('beforeUploadPathUse', 'tmp/upload/' . $sFileGetContentFiltered);
-            } else {
-                dispatchUploadPathEvent('beforeUploadPathUse', "surveys/{$surveyid}/files/{$sFileGetContentFiltered}");
+            $readRelative = uploadRelativePath($sFileDir . $sFileGetContentFiltered);
+            if ($readRelative !== null) {
+                dispatchUploadPathEvent('beforeUploadPathUse', $readRelative);
             }
             if (is_file($sFileDir . $sFileGetContentFiltered)) {
                 // Validate file before else 500 error by getMimeType
@@ -108,12 +107,22 @@ class UploaderController extends SurveyController
             } else {
                 throw new CHttpException(400); // See for debug > 1
             }
-            if (isset($_SESSION[$sFieldName])) {
-                // We already have $sFieldName ?
-                $sJSON = $_SESSION[$sFieldName] ?? '';
-                $aFiles = json_decode(stripslashes($sJSON), true) ?? [];
-
-                if (substr((string) $sFileName, 0, 3) == 'fu_') {
+            //var_dump($sFileDir.$sFilename);
+            // Return some json to do a beautiful text
+            $deletedAbsolute = $sFileDir . $sFileNameFiltered;
+            $deletedPath = uploadRelativePath($deletedAbsolute);
+            $deleteAllowed = $deletedPath === null
+                || uploadPathChangeAllowed($deletedPath, 'delete', ['surveyId' => $surveyid]);
+            if ($deleteAllowed && @unlink($deletedAbsolute)) {
+                if ($deletedPath !== null) {
+                    dispatchUploadPathEvent('afterUploadPathChange', $deletedPath, [
+                        'action' => 'delete',
+                        'surveyId' => $surveyid,
+                    ]);
+                }
+                if (isset($_SESSION[$sFieldName]) && substr((string) $sFileName, 0, 3) == 'fu_') {
+                    $sJSON = $_SESSION[$sFieldName] ?? '';
+                    $aFiles = json_decode(stripslashes($sJSON), true) ?? [];
                     $iFileIndex = 0;
                     $found = false;
                     foreach ($aFiles as $aFile) {
@@ -125,20 +134,9 @@ class UploaderController extends SurveyController
                     }
                     if ($found == true) {
                         unset($aFiles[$iFileIndex]);
+                        $_SESSION[$sFieldName] = ls_json_encode($aFiles);
                     }
-                    $_SESSION[$sFieldName] = ls_json_encode($aFiles);
                 }
-            }
-            //var_dump($sFileDir.$sFilename);
-            // Return some json to do a beautiful text
-            $deletedPath = substr((string) $sFileNameFiltered, 0, 6) === 'futmp_'
-                ? 'tmp/upload/' . $sFileNameFiltered
-                : "surveys/{$surveyid}/files/{$sFileNameFiltered}";
-            if (uploadPathChangeAllowed($deletedPath, 'delete', ['surveyId' => $surveyid]) && @unlink($sFileDir . $sFileNameFiltered)) {
-                dispatchUploadPathEvent('afterUploadPathChange', $deletedPath, [
-                    'action' => 'delete',
-                    'surveyId' => $surveyid,
-                ]);
                 echo sprintf(gT('File %s deleted'), CHtml::encode($sOriginalFileName));
             } else {
                 echo gT('There was an error deleting the file.');
@@ -363,8 +361,8 @@ class UploaderController extends SurveyController
                 echo ls_json_encode($return);
                 Yii::app()->end();
             }
-            $temporaryPath = 'tmp/upload/' . $randfilename;
-            if (!uploadPathChangeAllowed($temporaryPath, 'write', ['surveyId' => $surveyid])) {
+            $temporaryPath = uploadRelativePath($randfileloc);
+            if ($temporaryPath !== null && !uploadPathChangeAllowed($temporaryPath, 'write', ['surveyId' => $surveyid])) {
                 $return = array(
                     "success" => false,
                     "msg" => gT("An unknown error occurred")
@@ -373,10 +371,12 @@ class UploaderController extends SurveyController
                 Yii::app()->end();
             }
             if (move_uploaded_file($uploadfile_tmp_name, $randfileloc)) {
-                dispatchUploadPathEvent('afterUploadPathChange', $temporaryPath, [
-                    'action' => 'write',
-                    'surveyId' => $surveyid,
-                ]);
+                if ($temporaryPath !== null) {
+                    dispatchUploadPathEvent('afterUploadPathChange', $temporaryPath, [
+                        'action' => 'write',
+                        'surveyId' => $surveyid,
+                    ]);
+                }
                 $return = array(
                     "success"  => true,
                     "size"     => $size,

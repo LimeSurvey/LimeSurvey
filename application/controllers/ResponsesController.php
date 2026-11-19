@@ -1085,6 +1085,7 @@ class ResponsesController extends LSBaseController
                 * unique. This way we can have 234_1_image1.gif, 234_2_image1.gif as it could be
                 * files from a different source with the same name.
                 */
+                dispatchUploadPathEvent('beforeUploadPathUse', 'surveys/' . $surveyId . '/files/' . basename((string) $fileInfo['filename']));
                 if (file_exists($tmpdir . basename((string) $fileInfo['filename']))) {
                     $filelist[] = [
                         $tmpdir . basename((string) $fileInfo['filename']),

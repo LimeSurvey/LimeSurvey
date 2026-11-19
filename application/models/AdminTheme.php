@@ -81,6 +81,8 @@ class AdminTheme extends CFormModel
             // In fact, it could also be a old 2.06 admin theme just aftet an update (it will then be caught as "non existent" in the next if statement")
             $sTemplateDir = $sUserTemplateDir;
             $sTemplateUrl = Yii::app()->getConfig('uploadurl') . DIRECTORY_SEPARATOR . 'admintheme' . DIRECTORY_SEPARATOR . $sAdminThemeName;
+            Yii::import('application.helpers.common_helper', true);
+            dispatchUploadPathEvent('beforeUploadPathUse', 'admintheme/' . $sAdminThemeName);
         }
 
         // If the theme directory doesn't exist, it can be that:

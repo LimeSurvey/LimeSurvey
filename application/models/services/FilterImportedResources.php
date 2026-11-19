@@ -37,31 +37,36 @@ class FilterImportedResources
             return [$aImportedFilesInfo, $aErrorFilesInfo];
         }
 
-        $result = $this->copyDirectory($directory, $extractdir, $destdir);
-        if ($relativeDest !== null && $result[0] !== []) {
+        [$importedFiles, $errorFiles, $createdDirectory] = $this->copyDirectory($directory, $extractdir, $destdir);
+        if ($relativeDest !== null && ($importedFiles !== [] || $createdDirectory)) {
             dispatchUploadPathEvent('afterUploadPathChange', $relativeDest, ['action' => 'write']);
         }
-        return $result;
+        return [$importedFiles, $errorFiles];
     }
 
     /**
-     * Copy $directory to $destdir and return [$aImportedFilesInfo, $aErrorFilesInfo]
+     * Copy $directory to $destdir.
      * @param resource $directory
      * @param string $extractdir
      * @param string $destdir
      *
-     * @return array An array of failed and imported files/directories
+     * @return array{0: array, 1: array, 2: bool} Imported files, errors, and whether a destination directory was created
      */
     private function copyDirectory($directory, $extractdir, $destdir): array
     {
         $aImportedFilesInfo = [];
         $aErrorFilesInfo = [];
+        $createdDirectory = false;
 
-        if (!is_dir($destdir) && !mkdir($destdir) && !is_dir($destdir)) {
-            $aErrorFilesInfo[] = [
-                "filename" => $destdir,
-                "status"   => gT("Could not create directory")
-            ];
+        if (!is_dir($destdir)) {
+            if (!mkdir($destdir) && !is_dir($destdir)) {
+                $aErrorFilesInfo[] = [
+                    "filename" => $destdir,
+                    "status"   => gT("Could not create directory")
+                ];
+            } else {
+                $createdDirectory = true;
+            }
         }
         while ($direntry = readdir($directory)) {
             if ($direntry !== "." && $direntry !== "..") {
@@ -94,12 +99,13 @@ class FilterImportedResources
                     $subDirectory = opendir($extractdir . "/" . $direntry);
                     $subExtractdir = $extractdir . "/" . $direntry;
                     $subDestdir = $destdir . "/" . $direntry;
-                    list($aSubImportedFilesInfo, $aSubErrorFilesInfo) = $this->copyDirectory($subDirectory, $subExtractdir, $subDestdir);
+                    [$aSubImportedFilesInfo, $aSubErrorFilesInfo, $subCreated] = $this->copyDirectory($subDirectory, $subExtractdir, $subDestdir);
                     $aImportedFilesInfo = array_merge($aImportedFilesInfo, $aSubImportedFilesInfo);
                     $aErrorFilesInfo = array_merge($aErrorFilesInfo, $aSubErrorFilesInfo);
+                    $createdDirectory = $createdDirectory || $subCreated;
                 }
             }
         }
-        return [$aImportedFilesInfo, $aErrorFilesInfo];
+        return [$aImportedFilesInfo, $aErrorFilesInfo, $createdDirectory];
     }
 }

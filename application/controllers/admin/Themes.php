@@ -699,7 +699,7 @@ JAVASCRIPT
                     App()->user->setFlash('error', sprintf(gT("Template could not be renamed to '%s'."), $sNewName) . " " . gT("This name is reserved for standard template."));
                 } elseif (file_exists($sNewDirectoryPath) || Template::findNameConflict($sNewName, $sOldName) !== null) {
                     App()->user->setFlash('error', sprintf(gT("Template could not be renamed to '%s'."), $sNewName) . " " . gT("A template with that name already exists."));
-                } elseif (!uploadPathChangeAllowed('themes/survey/' . $sOldName, 'rename', ['previousPath' => 'themes/survey/' . $sOldName])) {
+                } elseif (!uploadPathChangeAllowed('themes/survey/' . $sNewName, 'rename', ['previousPath' => 'themes/survey/' . $sOldName])) {
                     App()->user->setFlash('error', sprintf(gT("Template could not be renamed to '%s'."), $sNewName));
                 } elseif (rename($sOldDirectoryPath, $sNewDirectoryPath) == false) {
                     App()->user->setFlash('error', sprintf(gT("Template could not be renamed to '%s'."), $sNewName) . " " . gT("Maybe you don't have permission."));
@@ -765,10 +765,11 @@ JAVASCRIPT
                     }
                     // We just copy the whole directory structure, but only the xml and image files
                     $oFileHelper->copyDirectory($copydirname, $newdirname, array('fileTypes' => array('xml', 'png', 'jpg', 'svg'), 'newDirMode' => 0755));
-                    dispatchUploadPathEvent('afterUploadPathChange', 'themes/survey/' . $newname, ['action' => 'write']);
                     //TemplateConfiguration::removeAllNodes($newdirname);
                     TemplateManifest::extendsConfig($copydir, $newname);
-                    TemplateManifest::importManifest($newname, ['extends' => $copydir]);
+                    if (TemplateManifest::importManifest($newname, ['extends' => $copydir])) {
+                        dispatchUploadPathEvent('afterUploadPathChange', 'themes/survey/' . $newname, ['action' => 'write']);
+                    }
                     $this->getController()->redirect(array("admin/themes/sa/view", 'templatename' => $newname));
                 } elseif ($mkdirresult == 2) {
                     Yii::app()->setFlashMessage(sprintf(gT("Directory with the name `%s` already exists - choose another name"), $newname), 'error');
@@ -963,17 +964,16 @@ JAVASCRIPT
                     }
 
                     //$savefilename = $oEditedTemplate
-                    if (!file_exists($oEditedTemplate->path . $relativePathEditfile) && !file_exists($oEditedTemplate->viewPath . $relativePathEditfile)) {
-                        $oEditedTemplate->extendsFile($relativePathEditfile);
-                    }
-
-                    $savefilename = $oEditedTemplate->extendsFile($relativePathEditfile, $relativePathEditfile);
-
-                    $savedRelative = uploadRelativePath($savefilename);
+                    $destination = (pathinfo((string) $relativePathEditfile, PATHINFO_EXTENSION) == 'twig')
+                        ? $oEditedTemplate->viewPath . $relativePathEditfile
+                        : $oEditedTemplate->path . $relativePathEditfile;
+                    $savedRelative = uploadRelativePath($destination);
                     if ($savedRelative !== null && !uploadPathChangeAllowed($savedRelative, 'write')) {
-                        Yii::app()->user->setFlash('error', gT('Could not write file ') . $savefilename);
+                        Yii::app()->user->setFlash('error', gT('Could not write file ') . $destination);
                         $this->getController()->redirect(array("admin/themes/sa/upload"));
                     }
+
+                    $savefilename = $oEditedTemplate->extendsFile($relativePathEditfile);
                     if (is_writable($savefilename)) {
                         if (!$handle = fopen($savefilename, 'w')) {
                             Yii::app()->user->setFlash('error', gT('Could not open file ') . $savefilename);
