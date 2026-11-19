@@ -60,9 +60,38 @@ class ResponseAggregateBatchDatabaseTest extends TestBaseClass
             ['submitdate' => '2026-11-01 00:00:00', $list => '-3', $dual0 => 'A1', $dual1 => 'B2'],
         ];
         $model = \SurveyDynamic::model(self::$surveyId);
+        $db = \Yii::app()->db;
+        $table = $db->quoteTableName($model->tableName());
         foreach ($rows as $row) {
-            self::$ids[] = (int)$model->insertRecords($row + ['startlanguage' => 'en']);
+            // insertRecords() stores 0 and '' as NULL, so the values are written with an update
+            $id = (int)$model->insertRecords(['startlanguage' => 'en']);
+            $sets = [];
+            $params = [':id' => $id];
+            foreach (array_values(array_keys($row)) as $index => $column) {
+                $sets[] = $db->quoteColumnName($column) . ' = :v' . $index;
+                $params[':v' . $index] = $row[$column];
+            }
+            $sql = 'UPDATE ' . $table . ' SET ' . implode(', ', $sets) . ' WHERE id = :id';
+            $db->createCommand($sql)->execute($params);
+            self::$ids[] = $id;
         }
+    }
+
+    /**
+     * The fixture keeps a quota exit of 0 and an empty answer instead of NULL.
+     *
+     * @return void
+     */
+    public function testFixtureKeepsZeroAndEmptyValues(): void
+    {
+        $row = \Yii::app()->db->createCommand()
+            ->select(['quota_exit', self::$list])
+            ->from(\SurveyDynamic::model(self::$surveyId)->tableName())
+            ->where('id = :id', [':id' => self::$ids[4]])
+            ->queryRow();
+        $this->assertSame(0, (int)$row['quota_exit']);
+        $this->assertNotNull($row['quota_exit']);
+        $this->assertSame('', $row[self::$list]);
     }
 
     /**
