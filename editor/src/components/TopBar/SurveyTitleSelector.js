@@ -112,11 +112,11 @@ export const SurveyTitleSelector = ({
           />
 
           <TooltipContainer
-            tip={t(
+            tip={
               canEditSurveyCode && survey && showCode
-                ? 'Add internal title'
+                ? t('Add internal title')
                 : ''
-            )}
+            }
             placement="bottom"
           >
             <Button
