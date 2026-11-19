@@ -344,6 +344,51 @@ export const getImageOptionRenameChanges = (attributes, oldCode, newCode) => {
 }
 
 /**
+ * Builds the attribute changes for several renamed option codes at once, e.g.
+ * when all codes are renumbered. All codes move in one step, so codes that
+ * swap or shift (A1 → A2 while A2 → A3) don't overwrite each other.
+ *
+ * @param {Object} attributes the question attributes
+ * @param {Object} codeMap the new code keyed by the old code
+ * @returns {Object|null} the changed values keyed by attribute and language, or
+ *   null when no option with saved settings was renamed
+ */
+export const getImageOptionRemapChanges = (attributes, codeMap) => {
+  const renamed = Object.entries(codeMap ?? {}).filter(
+    ([oldCode, newCode]) => oldCode !== newCode
+  )
+  if (!renamed.length) {
+    return null
+  }
+  const remap = (map) => {
+    const moved = renamed.filter(([oldCode]) =>
+      Object.prototype.hasOwnProperty.call(map, oldCode)
+    )
+    if (!moved.length) {
+      return null
+    }
+    const result = { ...map }
+    moved.forEach(([oldCode]) => delete result[oldCode])
+    moved.forEach(([oldCode, newCode]) => {
+      result[newCode] = map[oldCode]
+    })
+    return result
+  }
+  return toChangeSet({
+    [IMAGE_OPTION_SETTINGS_ATTRIBUTE]: changeAllLanguages(
+      attributes,
+      IMAGE_OPTION_SETTINGS_ATTRIBUTE,
+      remap
+    ),
+    [IMAGE_OPTION_ALT_ATTRIBUTE]: changeAllLanguages(
+      attributes,
+      IMAGE_OPTION_ALT_ATTRIBUTE,
+      remap
+    ),
+  })
+}
+
+/**
  * Builds the attribute changes for a deleted option: Its settings and alt
  * texts are removed.
  *

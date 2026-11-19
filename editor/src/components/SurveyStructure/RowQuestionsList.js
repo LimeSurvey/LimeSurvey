@@ -19,6 +19,11 @@ import {
   STATES,
 } from 'helpers'
 import { createChildrenUpdateOperation } from 'hooks/useQuestionChildren'
+import {
+  applyAttributeChanges,
+  getImageOptionRemapChanges,
+  getImageSelectThemes,
+} from 'components/QuestionTypes/imageOptionSettings'
 import { ConfirmModal } from 'components/Modals'
 
 import { RowQuestion } from './RowQuestion'
@@ -82,17 +87,57 @@ export const RowQuestionsList = ({
     }, 0)
   }
 
+  /**
+   * Renumbers the answer codes of a question (1, 2, 3, … per scale). In the
+   * image select themes, the image settings and alt texts of the answers are
+   * stored by code: They move to the new codes.
+   *
+   * @param {Object} question the question
+   * @param {number} index position of the question in the list
+   * @returns {boolean} whether the codes changed
+   */
   const assignNumericAnswerCodes = (question, index) => {
     if (hasNumericAnswerCodes(question.answers)) {
       return false
     }
     const answers = getNumericAnswerCodes(question.answers)
-    const updatedQuestion = { ...question, answers }
+    const imageChanges = getImageSelectThemes().includes(
+      question.questionThemeName
+    )
+      ? getImageOptionRemapChanges(
+          question.attributes,
+          Object.fromEntries(
+            question.answers.map((answer, answerIndex) => [
+              answer.code,
+              answers[answerIndex].code,
+            ])
+          )
+        )
+      : null
+    const updatedQuestion = {
+      ...question,
+      answers,
+      ...(imageChanges
+        ? {
+            attributes: applyAttributeChanges(
+              question.attributes,
+              imageChanges
+            ),
+          }
+        : {}),
+    }
     const updatedQuestions = [...questions]
     updatedQuestions[index] = updatedQuestion
     addToBuffer(
       createChildrenUpdateOperation(question.qid, Entities.answer, answers)
     )
+    if (imageChanges) {
+      addToBuffer(
+        createBufferOperation(question.qid)
+          .questionAttribute()
+          .update(imageChanges)
+      )
+    }
     handleUpdate(updatedQuestions)
     if (focused?.qid === question.qid) {
       setFocused(updatedQuestion, groupIndex, index)

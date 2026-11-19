@@ -7,6 +7,7 @@ import {
   getImageOptionDeleteChanges,
   getImageOptionForImage,
   getImageOptionLanguageMaps,
+  getImageOptionRemapChanges,
   getImageOptionRenameChanges,
   getImageOptionResetChanges,
   getImageOptionSaveChanges,
@@ -294,6 +295,50 @@ describe('imageOptionSettings', () => {
         ]
       ).sort()
     ).toEqual(['de', 'en'])
+  })
+
+  test('Renaming all codes at once moves swapped and shifted codes correctly', () => {
+    // A1 and A2 swap.
+    const swapped = getImageOptionRemapChanges(attributes, {
+      A1: 'A2',
+      A2: 'A1',
+    })
+    expect(parse(swapped, IMAGE_OPTION_SETTINGS_ATTRIBUTE, 'en')).toEqual({
+      A2: settingsA1,
+      A1: settingsA2,
+    })
+    expect(parse(swapped, IMAGE_OPTION_ALT_ATTRIBUTE, 'de')).toEqual({
+      A2: 'Limette',
+    })
+
+    // A1 becomes A2 while A2 becomes A3: Nothing is lost on the way.
+    const shifted = getImageOptionRemapChanges(attributes, {
+      A1: 'A2',
+      A2: 'A3',
+    })
+    expect(parse(shifted, IMAGE_OPTION_SETTINGS_ATTRIBUTE, 'en')).toEqual({
+      A2: settingsA1,
+      A3: settingsA2,
+    })
+    expect(parse(shifted, IMAGE_OPTION_ALT_ATTRIBUTE, 'en')).toEqual({
+      A2: 'Lime',
+      A3: 'Lemon',
+    })
+  })
+
+  test('Renaming codes without saved settings changes nothing', () => {
+    expect(getImageOptionRemapChanges(attributes, { A9: '9' })).toBeNull()
+    expect(getImageOptionRemapChanges(attributes, { A1: 'A1' })).toBeNull()
+    expect(getImageOptionRemapChanges(attributes, {})).toBeNull()
+    expect(getImageOptionRemapChanges({}, { A1: '1' })).toBeNull()
+    // Only the languages with a renamed option change.
+    expect(
+      Object.keys(
+        getImageOptionRemapChanges(attributes, { A2: '2' })[
+          IMAGE_OPTION_SETTINGS_ATTRIBUTE
+        ]
+      )
+    ).toEqual(['en'])
   })
 
   test('Deleting an option removes its settings and alt texts', () => {
