@@ -486,6 +486,96 @@ describe('image settings of image select options', () => {
     ).toEqual({ en: JSON.stringify({ A2: { width: 999 } }) })
   })
 
+  /**
+   * Renders the hook for an image select question that the test can change,
+   * like the editor does while an image uploads.
+   *
+   * @param {Object[]} answers the answers to start with
+   * @returns {Object} the hook result, rerender, and the handleUpdate mock
+   */
+  const renderUploadingQuestion = (answers) => {
+    queryClient.setQueryData([STATES.SURVEY], { survey: { sid: 1 } })
+    queryClient.setQueryData([STATES.BUFFER], [])
+    const handleUpdate = jest.fn()
+    const question = {
+      qid: QID,
+      questionThemeName: 'image_select-listradio',
+      attributes: imageAttributes,
+      answers,
+    }
+    const hook = renderHook(
+      (props) =>
+        useQuestionChildren({
+          question: props.question,
+          handleUpdate,
+          surveySettings: { languages: ['en'] },
+          language: 'en',
+        }),
+      { wrapper, initialProps: { question } }
+    )
+    return { ...hook, question, handleUpdate }
+  }
+
+  test('an upload finishing after a rename updates the renamed option', () => {
+    const answers = [serverAnswer(11, 'A1', 0), serverAnswer(12, 'A2', 0)]
+    const { result, rerender, question, handleUpdate } =
+      renderUploadingQuestion(answers)
+    // The upload of A1's image starts with the children of this render.
+    const uploadHandler = result.current.handleChildLUpdate
+    const uploadChildren = result.current.children
+    // Meanwhile, A1 is renamed to B1: Its settings move along.
+    rerender({
+      question: {
+        ...question,
+        attributes: {
+          ...imageAttributes,
+          [IMAGE_OPTION_SETTINGS_ATTRIBUTE]: {
+            en: JSON.stringify({ B1: { width: 400 }, A2: { width: 200 } }),
+          },
+        },
+        answers: [{ ...answers[0], code: 'B1' }, answers[1]],
+      },
+    })
+
+    uploadHandler(
+      '/upload/surveys/1/images/new.jpg',
+      0,
+      uploadChildren,
+      Entities.answer
+    )
+
+    const { answers: updatedAnswers, attributes } =
+      handleUpdate.mock.calls.at(-1)[0]
+    expect(updatedAnswers.map((answer) => answer.code)).toEqual(['B1', 'A2'])
+    expect(updatedAnswers[0].l10ns.en.answer).toBe(
+      '/upload/surveys/1/images/new.jpg'
+    )
+    // The new image of B1 starts without settings, A2 keeps its own.
+    expect(JSON.parse(attributes[IMAGE_OPTION_SETTINGS_ATTRIBUTE].en)).toEqual({
+      A2: { width: 200 },
+    })
+  })
+
+  test('an upload finishing after its option was deleted changes nothing', () => {
+    const answers = [serverAnswer(11, 'A1', 0), serverAnswer(12, 'A2', 0)]
+    const { result, rerender, question, handleUpdate } =
+      renderUploadingQuestion(answers)
+    const uploadHandler = result.current.handleChildLUpdate
+    const uploadChildren = result.current.children
+    rerender({ question: { ...question, answers: [answers[1]] } })
+    handleUpdate.mockClear()
+
+    uploadHandler(
+      '/upload/surveys/1/images/new.jpg',
+      0,
+      uploadChildren,
+      Entities.answer
+    )
+
+    expect(handleUpdate).not.toHaveBeenCalled()
+    expect(getAttributeOperation()).toBeUndefined()
+  })
+
   test('the same image keeps the image settings', () => {
     const { result, handleUpdate, answers } = renderChildren(
       'image_select-listradio'

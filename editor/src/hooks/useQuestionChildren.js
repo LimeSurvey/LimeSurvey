@@ -50,6 +50,9 @@ export const useQuestionChildren = ({
   latestQuestion.current = question
   const latestHandleUpdate = useRef(handleUpdate)
   latestHandleUpdate.current = handleUpdate
+  // The children of the latest render, see getLatestChildArray().
+  const latestChildren = useRef(children)
+  latestChildren.current = children
 
   const isSingleChoiceTheme = singleChoiceThemes.includes(
     question.questionThemeName
@@ -296,8 +299,45 @@ export const useQuestionChildren = ({
   }
 
   /**
+   * Returns the children and position to update. Image uploads finish with
+   * the children of the render where they started: Options renamed, added or
+   * deleted meanwhile would be reverted. So in the image select themes, an
+   * older array is replaced by the latest one, with the option found by its
+   * appKey or ID. Other question types pass their own arrays and keep them.
+   *
+   * @param {number} childIndex position of the answer or subquestion
+   * @param {Object[]} childArray the answers or subquestions passed in
+   * @param {string} entityType Entities.answer or Entities.subquestion
+   * @returns {{childArray: Object[], childIndex: number}|null} the children
+   *   and position to use, or null when the option no longer exists
+   */
+  const getLatestChildArray = (childIndex, childArray, entityType) => {
+    const currentChildren = latestChildren.current
+    if (
+      !getImageSelectThemes().includes(
+        latestQuestion.current.questionThemeName
+      ) ||
+      childArray === currentChildren ||
+      !childArray[childIndex]
+    ) {
+      return { childArray, childIndex }
+    }
+    const child = childArray[childIndex]
+    const idKey = entityType === Entities.answer ? 'aid' : 'qid'
+    const latestIndex = currentChildren.findIndex((currentChild) =>
+      child.appKey
+        ? currentChild.appKey === child.appKey
+        : currentChild[idKey] === child[idKey]
+    )
+    return latestIndex === -1
+      ? null
+      : { childArray: currentChildren, childIndex: latestIndex }
+  }
+
+  /**
    * Changes the text of an answer or subquestion in the active language. In
-   * the image select themes, the text is the image path.
+   * the image select themes, the text is the image path. An older array of
+   * children is updated in the latest one, see getLatestChildArray().
    *
    * @param {string} newValue the new text or image path
    * @param {number} childIndex position of the answer or subquestion
@@ -307,10 +347,20 @@ export const useQuestionChildren = ({
    */
   const handleChildLUpdate = (
     newValue = '',
-    childIndex,
-    childArray = [],
+    passedChildIndex,
+    passedChildArray = [],
     entityType
   ) => {
+    const latest = getLatestChildArray(
+      passedChildIndex,
+      passedChildArray,
+      entityType
+    )
+    if (!latest) {
+      // The option was deleted while its image was uploading.
+      return
+    }
+    const { childArray, childIndex } = latest
     const updatedChildren = [...childArray]
     const l10nsKey = entityType === Entities.answer ? 'answer' : 'question'
     const childKey = entityType === Entities.answer ? 'answers' : 'subquestions'
