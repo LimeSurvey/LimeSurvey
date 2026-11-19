@@ -65,6 +65,15 @@
     }
   }
 
+  // Keyboard focus: The dark outline above would hide the general focus
+  // outline (forms.scss), checked or not. Same indicator as the image
+  // editor's preview.
+  .form-check-input[type='checkbox']:focus-visible,
+  .form-check-input:checked[type='checkbox']:focus-visible {
+    outline-color: $grape;
+    outline-offset: 2px;
+  }
+
   .form-check-label {
     font-size: 16px;
     line-height: 24px;
