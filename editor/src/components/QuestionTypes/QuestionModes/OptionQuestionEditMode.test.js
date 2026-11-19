@@ -262,11 +262,16 @@ describe('OptionQuestionEditMode image option settings', () => {
     const handleUpdate = jest.fn()
     const { savePromise } = await startApplyToAllSave(handleUpdate)
 
-    // Meanwhile, A2 gets an alt text and A3 is deleted.
+    // Meanwhile, A2's image settings and alt text are saved and A3 is deleted.
     act(() =>
       setTestQuestion((question) => ({
         ...question,
-        attributes: { image_option_alt: { en: '{"A2":"Second"}' } },
+        attributes: {
+          image_option_settings: {
+            en: JSON.stringify({ A2: { ...settings, image: 'A2.png' } }),
+          },
+          image_option_alt: { en: '{"A2":"Second"}' },
+        },
         answers: question.answers.filter((answer) => answer.code !== 'A3'),
       }))
     )

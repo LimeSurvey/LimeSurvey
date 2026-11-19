@@ -235,7 +235,8 @@ export const getImageOptionAltText = (attributes, code, language, imagePath) =>
  * one option, and optionally the settings of other options ("Apply to all").
  * The settings are saved for the language, and for the other languages that
  * show the same image for that option. Options that no longer exist are
- * removed on the way.
+ * removed on the way. An option whose stored settings belonged to another
+ * image loses its alt text in that language too: It described the old image.
  *
  * @param {Object} attributes the question attributes
  * @param {Object} params
@@ -263,11 +264,18 @@ export const getImageOptionSaveChanges = (
     sameImageLanguages = {},
   }
 ) => {
-  const settingsMaps = Object.fromEntries(
-    Object.entries(
-      getOptionMaps(attributes, IMAGE_OPTION_SETTINGS_ATTRIBUTE)
-    ).map(([mapLanguage, map]) => [mapLanguage, pruneOptionMap(map, codes)])
+  const storedSettingsMaps = getOptionMaps(
+    attributes,
+    IMAGE_OPTION_SETTINGS_ATTRIBUTE
   )
+  const settingsMaps = Object.fromEntries(
+    Object.entries(storedSettingsMaps).map(([mapLanguage, map]) => [
+      mapLanguage,
+      pruneOptionMap(map, codes),
+    ])
+  )
+  // Options per language whose settings now belong to another image.
+  const reboundCodes = {}
   Object.entries({ ...otherSettings, [code]: settings }).forEach(
     ([optionCode, optionSettings]) => {
       const settingsLanguages = [
@@ -275,6 +283,13 @@ export const getImageOptionSaveChanges = (
         ...(sameImageLanguages[optionCode] ?? []),
       ]
       settingsLanguages.forEach((settingsLanguage) => {
+        const stored = storedSettingsMaps[settingsLanguage]?.[optionCode]
+        if (!stored || stored.image !== optionSettings.image) {
+          reboundCodes[settingsLanguage] = [
+            ...(reboundCodes[settingsLanguage] ?? []),
+            optionCode,
+          ]
+        }
         settingsMaps[settingsLanguage] = {
           ...(settingsMaps[settingsLanguage] ?? {}),
           [optionCode]: optionSettings,
@@ -284,18 +299,21 @@ export const getImageOptionSaveChanges = (
   )
 
   const altMaps = getOptionMaps(attributes, IMAGE_OPTION_ALT_ATTRIBUTE)
-  const altChanges = changeAllLanguages(
-    attributes,
-    IMAGE_OPTION_ALT_ATTRIBUTE,
-    (map) => pruneOptionMap(map, codes)
-  )
-  const altMap = pruneOptionMap(altMaps[language] ?? {}, codes)
-  if (altText) {
-    altMap[code] = altText
-  } else {
-    delete altMap[code]
-  }
-  altChanges[language] = stringifyOptionMap(altMap)
+  const altChanges = {}
+  new Set([...Object.keys(altMaps), language]).forEach((altLanguage) => {
+    const altMap = pruneOptionMap(altMaps[altLanguage] ?? {}, codes)
+    ;(reboundCodes[altLanguage] ?? []).forEach(
+      (reboundCode) => delete altMap[reboundCode]
+    )
+    if (altLanguage === language) {
+      if (altText) {
+        altMap[code] = altText
+      } else {
+        delete altMap[code]
+      }
+    }
+    altChanges[altLanguage] = stringifyOptionMap(altMap)
+  })
 
   return {
     [IMAGE_OPTION_SETTINGS_ATTRIBUTE]: Object.fromEntries(

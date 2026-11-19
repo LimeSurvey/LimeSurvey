@@ -115,6 +115,40 @@ describe('imageOptionSettings', () => {
     ).toBe('')
   })
 
+  test('Apply to all drops the old alt text of an option whose image changed', () => {
+    // A2 got another image in the classic editor: Its settings and its alt
+    // text "Lemon" still belong to lemon.png.
+    const changes = getImageOptionSaveChanges(attributes, {
+      code: 'A1',
+      settings: settingsA1,
+      altText: 'Lime',
+      language: 'en',
+      codes: ['A1', 'A2'],
+      otherSettings: { A2: { width: 400, image: 'orange.png' } },
+    })
+
+    expect(parse(changes, IMAGE_OPTION_ALT_ATTRIBUTE, 'en')).toEqual({
+      A1: 'Lime',
+    })
+    // An option that still shows its image keeps its alt text.
+    const sameImage = getImageOptionSaveChanges(attributes, {
+      code: 'A1',
+      settings: settingsA1,
+      altText: 'Lime',
+      language: 'en',
+      codes: ['A1', 'A2'],
+      otherSettings: { A2: { width: 400, image: 'lemon.png' } },
+    })
+    expect(parse(sameImage, IMAGE_OPTION_ALT_ATTRIBUTE, 'en')).toEqual({
+      A1: 'Lime',
+      A2: 'Lemon',
+    })
+    // Languages without new settings for A2 keep their alt texts.
+    expect(parse(changes, IMAGE_OPTION_ALT_ATTRIBUTE, 'de')).toEqual({
+      A1: 'Limette',
+    })
+  })
+
   test('Saving stores the option and drops deleted options', () => {
     const newSettings = { width: 100, height: 50, zoom: 1.5 }
     const changes = getImageOptionSaveChanges(attributes, {
@@ -148,13 +182,17 @@ describe('imageOptionSettings', () => {
       altText: 'Lime',
       language: 'en',
       codes: ['A1', 'A2', 'A3'],
-      otherSettings: { A2: settingsA1, A3: settingsA1 },
+      // Each option gets the settings with its own image file name.
+      otherSettings: {
+        A2: { ...settingsA1, image: 'lemon.png' },
+        A3: { ...settingsA1, image: 'orange.png' },
+      },
     })
 
     expect(parse(changes, IMAGE_OPTION_SETTINGS_ATTRIBUTE, 'en')).toEqual({
       A1: settingsA1,
-      A2: settingsA1,
-      A3: settingsA1,
+      A2: { ...settingsA1, image: 'lemon.png' },
+      A3: { ...settingsA1, image: 'orange.png' },
     })
     // The alt texts of the other options stay.
     expect(parse(changes, IMAGE_OPTION_ALT_ATTRIBUTE, 'en')).toEqual({
