@@ -193,6 +193,40 @@ describe('DateRangePanel', () => {
     expect(confirmedDays(onConfirm)).toEqual(days([2026, 1, 5], [2026, 1, 9]))
   })
 
+  test('a date can also be typed as a short or ISO date', () => {
+    const { onConfirm } = renderPanel()
+
+    clickButton('Custom range')
+    typeDate('Start date', '01/05/2026')
+    typeDate('End date', '2026-01-09')
+    clickButton('Confirm')
+
+    expect(confirmedDays(onConfirm)).toEqual(days([2026, 1, 5], [2026, 1, 9]))
+  })
+
+  test('the icon of a date input highlights the calendar and moves focus there', () => {
+    renderPanel({
+      initialRange: { from: new Date(2026, 0, 14), to: new Date(2026, 0, 14) },
+    })
+    const calendar = document.querySelector('.date-range-calendar')
+
+    clickButton('Pick the dates on the calendar')
+
+    expect(calendar).toHaveClass('is-highlighted')
+    expect(
+      screen.getByRole('button', { name: /January 14th, 2026/ })
+    ).toHaveFocus()
+
+    clickButton('Pick the dates on the calendar')
+    expect(calendar).toHaveClass('is-highlighted', 'is-highlighted-again')
+
+    fireEvent.animationEnd(calendar.firstElementChild)
+    expect(calendar).toHaveClass('is-highlighted')
+
+    fireEvent.animationEnd(calendar)
+    expect(calendar).not.toHaveClass('is-highlighted')
+  })
+
   test('an end date can also be typed before the start date', () => {
     const { onConfirm } = renderPanel()
 

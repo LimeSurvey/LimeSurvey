@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 import { DayPicker } from '@daypicker/react'
 import { addMonths, endOfMonth } from 'date-fns'
 import { useTranslation } from 'react-i18next'
+import classNames from 'classnames'
 
 import { WEEK_STARTS_ON, getDayPickerLocale } from 'helpers/dateRangeUtils'
 
@@ -69,11 +70,23 @@ export const DateRangeCalendar = ({
   onSelect,
   minDate,
   maxDate,
+  containerRef,
+  highlightCount = 0,
+  onHighlightEnd,
 }) => {
   const { locale, components, weekStartsOn } = useDayPickerSetup(month)
 
   return (
-    <div className="date-range-calendar">
+    <div
+      ref={containerRef}
+      className={classNames('date-range-calendar', {
+        'is-highlighted': highlightCount > 0,
+        'is-highlighted-again': highlightCount > 0 && highlightCount % 2 === 0,
+      })}
+      onAnimationEnd={(e) =>
+        e.target === e.currentTarget && onHighlightEnd?.()
+      }
+    >
       <DayPicker
         mode="range"
         captionLayout="dropdown"

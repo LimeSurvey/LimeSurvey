@@ -113,4 +113,42 @@ class DateProcessorTest extends TestCase
             'hours only' => ['dd/mm/yyyy H', true],
         ];
     }
+
+    /**
+     * @testdox process() plans no day query for a time-only question
+     */
+    public function testProcessSkipsDaysForTimeOnlyAnswers()
+    {
+        [$processor, $batch] = $this->makeProcessor(['attributes' => ['date_format' => 'HH:MM']]);
+
+        $plan = $processor->process();
+
+        $this->assertArrayNotHasKey('stats', $plan['data'][0]);
+
+        $this->injectBatchResults($batch, [$batch->countNonEmpty('Q5', true) => 2]);
+        $this->assertSame(2, $plan['data'][0]['value']());
+    }
+
+    /**
+     * @testdox hasDate() is false only when the question's own format has no day, month or year
+     * @dataProvider hasDateProvider
+     */
+    public function testHasDate(?string $format, bool $expected)
+    {
+        $question = $format === null ? [] : ['attributes' => ['date_format' => $format]];
+
+        $this->assertSame($expected, DateProcessor::hasDate($question));
+    }
+
+    public static function hasDateProvider(): array
+    {
+        return [
+            'no format (survey default has a date)' => [null, true],
+            'empty format' => ['', true],
+            'date only' => ['yyyy-mm-dd', true],
+            'date + time' => ['dd.mm.yyyy HH:MM', true],
+            'month and year' => ['mm/yyyy', true],
+            'time only, uppercase MM is the minute' => ['HH:MM', false],
+        ];
+    }
 }

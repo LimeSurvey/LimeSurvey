@@ -298,4 +298,14 @@ describe('ChartRendererV2 date/time question', () => {
 
     expect(screen.getByTestId('date-time-table')).toBeInTheDocument()
   })
+
+  test('a time-only question has no calendar, only the table', async () => {
+    await renderCard({
+      data: dateData,
+      question: { ...dateQuestion, hasDate: false, hasTime: true },
+    })
+
+    expect(screen.queryByTestId('date-time-calendar')).not.toBeInTheDocument()
+    expect(screen.getByTestId('date-time-table')).toBeInTheDocument()
+  })
 })

@@ -15,14 +15,18 @@ jest.mock('hooks', () => ({
   useQuestionResponses: jest.fn(),
 }))
 
+jest.mock('hooks/useInViewport', () => ({
+  useIsInViewport: () => [{ current: null }, true],
+}))
+
 const BUTTON = 'Decrypt response data and show statistics'
 
-const Table = ({ encrypted }) => {
+const Table = ({ encrypted, ...question }) => {
   const [calendarState, setCalendarState] = useState({})
   return (
     <DateTimeTable
       surveyId={1}
-      question={{ qid: 5, code: 'Q5', title: 'Title', encrypted }}
+      question={{ qid: 5, code: 'Q5', title: 'Title', encrypted, ...question }}
       calendarState={calendarState}
       onCalendarStateChange={setCalendarState}
     />
@@ -72,5 +76,23 @@ describe('DateTimeTable', () => {
 
     expect(screen.queryByRole('button', { name: BUTTON })).toBeNull()
     expect(useQuestionResponses).toHaveBeenCalled()
+  })
+
+  test('a time-only question shows no Date column', () => {
+    useQuestionResponses.mockReturnValue({
+      columns: [{ key: 'Q5' }],
+      rows: [{ responseId: '7', cells: { Q5: '1970-01-01 09:30:00' } }],
+      isLoading: false,
+      hasNextPage: false,
+      fetchNextPage: jest.fn(),
+      isFetchingNextPage: false,
+    })
+    render(<Table encrypted={false} hasDate={false} hasTime />)
+
+    const headers = screen
+      .getAllByRole('columnheader')
+      .map((header) => header.textContent)
+    expect(headers).toEqual(['Response ID', 'Time'])
+    expect(screen.getByText('7')).toBeInTheDocument()
   })
 })

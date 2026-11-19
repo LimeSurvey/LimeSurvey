@@ -4,7 +4,7 @@ namespace LimeSurvey\Models\Services\SurveyStatistics\Charts\Questions\Processor
 
 /**
  * Chart data of a Date/time question: how many answered it and, unless it is
- * encrypted, its answers per day for the calendar.
+ * encrypted or time-only, its answers per day for the calendar.
  */
 class DateProcessor extends AbstractQuestionProcessor
 {
@@ -28,7 +28,7 @@ class DateProcessor extends AbstractQuestionProcessor
             'title' => $this->question['question'],
             'value' => $answered,
         ];
-        if (!$encrypted) {
+        if (!$encrypted && self::hasDate($this->question)) {
             $item['stats'] = $this->daysOf($field);
         }
 
@@ -51,6 +51,20 @@ class DateProcessor extends AbstractQuestionProcessor
         $format = (string)($question['attributes']['date_format'] ?? '');
 
         return preg_match('/[HM]/', $format) === 1;
+    }
+
+    /**
+     * Whether the question's date format records a date. An empty format
+     * falls back to the survey's date format, which always has one.
+     *
+     * @param array $question Question data with its `attributes`
+     * @return bool
+     */
+    public static function hasDate(array $question): bool
+    {
+        $format = (string)($question['attributes']['date_format'] ?? '');
+
+        return $format === '' || preg_match('/[dmy]/', $format) === 1;
     }
 
     /**

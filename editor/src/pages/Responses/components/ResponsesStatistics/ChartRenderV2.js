@@ -78,6 +78,7 @@ const VIEWS = [
     graphType: statisticsGraphs.CALENDAR,
     label: () => t('Calendar'),
     icon: () => <i className="ri-calendar-line"></i>,
+    supports: ({ hasDate }) => hasDate,
     render: ({
       data,
       surveyId,
@@ -429,6 +430,7 @@ export const ChartRendererV2 = ({
   const isText = TEXT_QUESTION_TYPES.includes(question?.type)
   const isArrayNumbers = question?.type === QT_COLON_ARRAY_NUMBERS
   const isDualScale = question?.type === QT_1_ARRAY_DUAL
+  const hasDate = question?.hasDate !== false
   const effectiveValueType =
     isArrayNumbers || isRanking || isDate ? VALUE_TYPE.COUNT : valueType
   // No responses for this question when every answer option has a zero count.
@@ -454,7 +456,7 @@ export const ChartRendererV2 = ({
   const availableViews = VIEWS.filter(
     ({ graphType, supports }) =>
       availableGraphTypes.includes(graphType) &&
-      (!supports || supports({ isDualScale }))
+      (!supports || supports({ isDualScale, hasDate }))
   )
   const [view, setView] = useState(() =>
     getDefaultView(availableViews, viewContext, question?.chartType)

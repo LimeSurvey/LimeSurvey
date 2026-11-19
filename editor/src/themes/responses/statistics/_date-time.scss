@@ -232,21 +232,8 @@
     max-width: min(800px, calc(100vw - 48px));
   }
 
-  // The close button sits on the title's line, not on a row of its own.
-  .modal-header {
-    position: absolute;
-    top: 24px;
-    right: 24px;
-    padding: 0;
-  }
-
-  .responses-statistics-modal-body {
-    padding-top: 24px;
-  }
-
   .responses-statistics-modal-title {
     margin-bottom: 16px;
-    padding-right: 32px;
   }
 
   &-picker {

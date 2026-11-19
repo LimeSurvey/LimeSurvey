@@ -26,7 +26,12 @@ const byRawValue = (rowA, rowB, columnId) =>
   )
 
 const DateTimeTableContent = ({ surveyId, question, filters, filterSet }) => {
-  const { code: questionCode, fields, hasTime = false } = question
+  const {
+    code: questionCode,
+    fields,
+    hasDate = true,
+    hasTime = false,
+  } = question
   const { i18n } = useTranslation()
   const localeCode = getLocaleCode(i18n?.language)
   const [containerRef, isInView] = useIsInViewport(null, {
@@ -75,14 +80,18 @@ const DateTimeTableContent = ({ surveyId, question, filters, filterSet }) => {
         header: t('Response ID'),
         enableSorting: true,
       },
-      {
-        id: 'date',
-        accessorKey: 'date',
-        header: t('Date'),
-        enableSorting: true,
-        sortingFn: byRawValue,
-        cell: ({ row }) => formatDay(row.original.date, localeCode),
-      },
+      ...(hasDate
+        ? [
+            {
+              id: 'date',
+              accessorKey: 'date',
+              header: t('Date'),
+              enableSorting: true,
+              sortingFn: byRawValue,
+              cell: ({ row }) => formatDay(row.original.date, localeCode),
+            },
+          ]
+        : []),
       ...(hasTime
         ? [
             {
@@ -103,7 +112,7 @@ const DateTimeTableContent = ({ surveyId, question, filters, filterSet }) => {
           ]
         : []),
     ],
-    [hasTime, localeCode]
+    [hasDate, hasTime, localeCode]
   )
 
   const table = (items) => (

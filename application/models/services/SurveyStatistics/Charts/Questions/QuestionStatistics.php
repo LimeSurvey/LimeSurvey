@@ -397,9 +397,11 @@ class QuestionStatistics implements StatisticsChartInterface
                     flattenText($question['attributes']['dualscale_headerB'] ?? 'Scale B', false, true),
                 ];
             }
-            // Date/time: whether answers carry a time (Time columns, time
-            // breakdown) and whether the calendar needs decrypting first.
+            // Date/time: whether answers carry a date (Calendar view, Date
+            // column) and a time (Time columns, time breakdown), and whether
+            // the calendar needs decrypting first.
             if (($question['type'] ?? null) === Question::QT_D_DATE) {
+                $meta['question']['hasDate'] = DateProcessor::hasDate($question);
                 $meta['question']['hasTime'] = DateProcessor::hasTime($question);
                 $meta['question']['encrypted'] = DateProcessor::isEncrypted($question);
             }

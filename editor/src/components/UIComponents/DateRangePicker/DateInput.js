@@ -3,6 +3,16 @@ import { format, parse, isValid, isBefore, isAfter, startOfDay } from 'date-fns'
 import { Calendar3 } from 'react-bootstrap-icons'
 import classNames from 'classnames'
 
+const EXTRA_FORMATS = ['P', 'yyyy-MM-dd']
+
+const parseDate = (text, dateFormat, localeOptions) => {
+  for (const pattern of [dateFormat, ...EXTRA_FORMATS]) {
+    const parsed = parse(text, pattern, new Date(), localeOptions)
+    if (isValid(parsed)) return parsed
+  }
+  return new Date(NaN)
+}
+
 export const DateInput = ({
   value,
   dateFormat,
@@ -13,6 +23,7 @@ export const DateInput = ({
   label,
   locale,
   onIconClick,
+  iconLabel,
   readOnly = false,
 }) => {
   const localeOptions = locale ? { locale } : undefined
@@ -38,7 +49,7 @@ export const DateInput = ({
       return
     }
 
-    const parsed = parse(text.trim(), dateFormat, new Date(), localeOptions)
+    const parsed = parseDate(text.trim(), dateFormat, localeOptions)
     const inBounds =
       isValid(parsed) &&
       !isBefore(parsed, startOfDay(minDate)) &&
@@ -84,7 +95,7 @@ export const DateInput = ({
         <button
           type="button"
           className="date-range-input-icon"
-          aria-label={t('Open calendar')}
+          aria-label={iconLabel ?? t('Open calendar')}
           onClick={onIconClick}
         >
           <Calendar3 size={14} />

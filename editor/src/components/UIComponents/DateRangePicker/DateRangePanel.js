@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { format } from 'util'
 import {
   format as formatDate,
@@ -50,6 +50,8 @@ export const DateRangePanel = ({
   // Clear starts the inputs over, along with any invalid text in them.
   const [inputsKey, setInputsKey] = useState(0)
   const [isEnteringEnd, setIsEnteringEnd] = useState(false)
+  const [highlightCount, setHighlightCount] = useState(0)
+  const calendarRef = useRef(null)
   // The end date input shows up once the range has an end of its own.
   const isSingleDay =
     !isEnteringEnd &&
@@ -181,6 +183,13 @@ export const DateRangePanel = ({
     )
   }
 
+  const highlightCalendar = () => {
+    setHighlightCount((count) => count + 1)
+    calendarRef.current
+      ?.querySelector('.rdp-day_button[tabindex="0"]')
+      ?.focus()
+  }
+
   const handleConfirm = () => {
     if (hasInvalidInput || !tempRange.from) return
 
@@ -216,6 +225,8 @@ export const DateRangePanel = ({
             maxDate={maxDate}
             onCommit={handleFromInput}
             onValidityChange={setIsFromValid}
+            onIconClick={highlightCalendar}
+            iconLabel={t('Pick the dates on the calendar')}
           />
           {!isSingleDay && (
             <>
@@ -229,6 +240,8 @@ export const DateRangePanel = ({
                 maxDate={maxDate}
                 onCommit={handleToInput}
                 onValidityChange={setIsToValid}
+                onIconClick={highlightCalendar}
+                iconLabel={t('Pick the dates on the calendar')}
               />
             </>
           )}
@@ -248,6 +261,9 @@ export const DateRangePanel = ({
           onSelect={handleCalendarSelect}
           minDate={minDate}
           maxDate={maxDate}
+          containerRef={calendarRef}
+          highlightCount={highlightCount}
+          onHighlightEnd={() => setHighlightCount(0)}
         />
         <DateRangeActions
           onClear={handleClear}
