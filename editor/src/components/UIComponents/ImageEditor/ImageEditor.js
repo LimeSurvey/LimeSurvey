@@ -337,7 +337,7 @@ export const ImageEditor = ({
   const previewBorderX = movableAxes.horizontal ? PREVIEW_BORDER : 0
   const previewBorderY = movableAxes.vertical ? PREVIEW_BORDER : 0
   // The frame fills the rest of the preview area in width or height, also
-  // when it is smaller and has to be scaled up. A side of 0px counts as 1px,
+  // when it is smaller and has to be scaled up. A side of 0px (only possible in edited data) counts as 1px,
   // so the scale stays finite.
   const previewScale = Math.min(
     (PREVIEW_AREA_WIDTH - 2 * previewBorderX) / Math.max(current.width, 1),
@@ -588,7 +588,7 @@ export const ImageEditor = ({
               labelText={t('Corner radius')}
               min={0}
               step={1}
-              // The slider needs max > min, also for a frame of 0 or 1px.
+              // The slider needs max > min, also for a frame of 1px.
               max={Math.max(1, maxRadius)}
               direction={Direction.Right}
               value={radius}

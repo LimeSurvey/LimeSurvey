@@ -1,6 +1,7 @@
-// Smallest frame size in px. There is no upper limit: In the survey,
+// Smallest frame size in px: A side of 0 has no aspect ratio, and the survey
+// ignores such a frame. There is no upper limit: In the survey,
 // max-width: 100% still applies on small screens.
-export const FRAME_MIN_SIZE = 0
+export const FRAME_MIN_SIZE = 1
 
 export const ZOOM_MIN = 1
 export const ZOOM_MAX = 4

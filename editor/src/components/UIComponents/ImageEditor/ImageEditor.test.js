@@ -221,7 +221,7 @@ describe('ImageEditor', () => {
     expect(editor).toHaveAttribute('data-height', '100')
   })
 
-  test('Accepts any frame size from 0 without upper limit', async () => {
+  test('Accepts any frame size from 1 without upper limit', async () => {
     await renderEditor()
 
     await userEvent.click(screen.getByTestId('image-editor-ratio-lock'))
@@ -234,7 +234,7 @@ describe('ImageEditor', () => {
     await userEvent.clear(width)
     await userEvent.type(width, '0')
     await userEvent.tab()
-    expect(width).toHaveValue(0)
+    expect(width).toHaveValue(1)
   })
 
   test('Keeps the ratio of the width and height entered before the ratio was locked', async () => {

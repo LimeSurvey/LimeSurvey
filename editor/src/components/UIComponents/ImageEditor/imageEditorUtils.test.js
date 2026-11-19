@@ -20,17 +20,28 @@ describe('imageEditorUtils', () => {
     expect(getDefaultFrameSize(0, 0)).toEqual({ width: 300, height: 300 })
   })
 
-  test('Resizing without ratio changes one side, from 0 without upper limit', () => {
+  test('Resizing without ratio changes one side, from 1 without upper limit', () => {
     const frame = { width: 400, height: 300 }
     expect(resizeFrame(frame, 'width', 500)).toEqual({
       width: 500,
       height: 300,
     })
-    expect(resizeFrame(frame, 'height', -10)).toEqual({ width: 400, height: 0 })
+    expect(resizeFrame(frame, 'height', -10)).toEqual({ width: 400, height: 1 })
+    expect(resizeFrame(frame, 'height', 0)).toEqual({ width: 400, height: 1 })
     expect(resizeFrame(frame, 'width', 5000)).toEqual({
       width: 5000,
       height: 300,
     })
+  })
+
+  test('With a ratio, the other side never rounds down to 0', () => {
+    expect(resizeFrame({ width: 400, height: 100 }, 'width', 1, 4)).toEqual({
+      width: 1,
+      height: 1,
+    })
+    expect(resizeFrame({ width: 100, height: 400 }, 'height', 1, 0.25)).toEqual(
+      { width: 1, height: 1 }
+    )
   })
 
   test('Frame ratio is width / height, or null without area', () => {
