@@ -2475,7 +2475,7 @@ class Tokens extends SurveyCommonAction
                                 if (!LimeMailer::validateAddress($sEmailaddress)) {
                                     if ($bAllowInvalidEmail) {
                                         $iInvalidEmailCount++;
-                                        if (empty($aWriteArray['emailstatus']) || strtoupper($aWriteArray['emailstatus'] == "OK")) {
+                                        if (empty($aWriteArray['emailstatus']) || strtoupper((string) $aWriteArray['emailstatus']) == "OK") {
                                             $aWriteArray['emailstatus'] = "invalid";
                                         }
                                     } else {
