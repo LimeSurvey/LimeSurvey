@@ -1206,28 +1206,59 @@ class TokenDynamic extends LSActiveRecord
     }
 
     /**
-     * Returns true if the token can be used
+     * Returns true if the participant can currently enter the survey with this access code.
+     * Uses the same rules as the survey itself (see SurveyIndex): The participant must be inside
+     * the validity period, and unless editing after completion is allowed, must not have completed
+     * the survey and must have uses left.
      * @return bool
      */
     public function canBeUsed()
     {
-        return !empty($this->token)
-            && (
-                $this->completed == "N"
-                || empty($this->completed)
-                || $this->survey->isAllowEditAfterCompletion
-            );
+        if (empty($this->token) || !$this->isWithinValidityPeriod()) {
+            return false;
+        }
+        if ($this->survey->isAllowEditAfterCompletion) {
+            return true;
+        }
+        return !$this->isCompleted() && (int) $this->usesleft > 0;
     }
 
+    /**
+     * Returns true if an invitation or reminder can be sent to this participant:
+     * The access code must be usable, the participant must not have completed the survey
+     * and must have an email address with status OK.
+     * @return bool
+     */
     public function canBeEmailed()
     {
-        return !empty($this->token)
-            && $this->emailstatus == "OK"
-            && $this->email
-            && $this->completed == "N"
-            && (
-                $this->usesleft > 0
-                || $this->survey->isAllowEditAfterCompletion
-            );
+        return !empty($this->email)
+            && $this->emailstatus === 'OK'
+            && !$this->isCompleted()
+            && $this->canBeUsed();
+    }
+
+    /**
+     * Returns true if the participant has completed the survey (or was screened out by a quota)
+     * @return bool
+     */
+    private function isCompleted()
+    {
+        return !empty($this->completed) && $this->completed !== 'N';
+    }
+
+    /**
+     * Returns true if the current time is inside the participant's validity period (valid from/valid until)
+     * @return bool
+     */
+    private function isWithinValidityPeriod()
+    {
+        $now = strtotime(gmdate('Y-m-d H:i:s'));
+        if (!empty($this->validfrom) && $now < strtotime((string) $this->validfrom)) {
+            return false;
+        }
+        if (!empty($this->validuntil) && $now > strtotime((string) $this->validuntil)) {
+            return false;
+        }
+        return true;
     }
 }
