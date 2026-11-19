@@ -189,7 +189,6 @@ class StatisticsCommandFiltersTest extends TestCase
         $permission = $this->createMock(\Permission::class);
         $permission->method('hasSurveyPermission')->willReturn(false);
         $property = new \ReflectionProperty(Statistics::class, 'permission');
-        $property->setAccessible(true);
         $property->setValue($command, $permission);
 
         $this->expectException(\LimeSurvey\Models\Services\Exception\PermissionDeniedException::class);
@@ -258,7 +257,6 @@ class StatisticsCommandFiltersTest extends TestCase
         /** @var Statistics $command */
         $command = $reflection->newInstanceWithoutConstructor();
         $property = $reflection->getProperty('filters');
-        $property->setAccessible(true);
         $property->setValue($command, new StatisticsResponseFilters());
 
         return $command;
