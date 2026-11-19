@@ -32,11 +32,13 @@ class ResponseAggregateBatchDatabaseTest extends TestBaseClass
     public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
-        self::importSurvey(self::$surveysFolder . '/survey-dual-scale-question-api-test.lss');
+        // Other tests import the same file: a free id keeps their leftover response tables out of this one
+        self::importSurvey(self::$surveysFolder . '/survey-dual-scale-question-api-test.lss', 1, self::freeSurveyId());
         $survey = \Survey::model()->findByPk(self::$surveyId);
         $survey->savequotaexit = 'Y';
         $survey->save();
-        (new \SurveyActivator($survey))->activate();
+        $result = (new \SurveyActivator($survey))->activate();
+        self::assertArrayNotHasKey('error', $result, 'The test survey could not be activated');
         \Yii::app()->db->schema->refresh();
         \SurveyDynamic::model(self::$surveyId)->refreshMetaData();
 
@@ -239,6 +241,19 @@ class ResponseAggregateBatchDatabaseTest extends TestBaseClass
     private function condition(string $key, string $method, $value): array
     {
         return ['key' => $key, 'filterMethod' => $method, 'value' => $value];
+    }
+
+    /**
+     * A survey id that is not used by a survey or by a response table.
+     *
+     * @return int
+     */
+    private static function freeSurveyId(): int
+    {
+        do {
+            $surveyId = random_int(100000, 999999);
+        } while (\Survey::model()->findByPk($surveyId) !== null || tableExists("{{responses_{$surveyId}}}"));
+        return $surveyId;
     }
 
     /**
