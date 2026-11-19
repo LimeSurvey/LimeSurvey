@@ -29,8 +29,11 @@ class LabelSetService
 {
     /** Length of the labels.code column */
     public const MAX_CODE_LENGTH = 20;
-    /** Length of the label_l10ns.language column */
+    /** Length limits of the label_l10ns.language column (the minimum is LabelL10n's rule) */
+    public const MIN_LANGUAGE_LENGTH = 2;
     public const MAX_LANGUAGE_LENGTH = 20;
+    /** Bytes the label_l10ns.title column (TEXT on MySQL) can hold; answer texts are MEDIUMTEXT */
+    public const MAX_TITLE_BYTES = 65535;
     /** Length of the labelsets.languages column */
     public const MAX_LANGUAGES_LENGTH = 255;
     /** Range of the labels.assessment_value column (integer) */
@@ -71,17 +74,19 @@ class LabelSetService
     public function getLabelSets(array $languages = [], bool $onlyUpdatable = false): array
     {
         $languages = $this->normaliseLanguages($languages);
+        if ($languages === null) {
+            // No set can contain an invalid language code, so the filter matches nothing
+            return [];
+        }
         $labelSets = $this->labelSet->findAll(['order' => 'label_name']);
+        $hasGlobalUpdate = $onlyUpdatable && $this->hasGlobalUpdatePermission();
 
         $matchingSets = [];
         foreach ($labelSets as $labelSet) {
             if (array_diff($languages, $labelSet->getLanguageArray())) {
                 continue;
             }
-            // Same check as overwrite(), so plugins that grant or deny update rights per set
-            // (beforeHasPermission) are respected. Label sets are few, and this only runs for
-            // the overwrite list, so the per-set check is affordable.
-            if ($onlyUpdatable && !$labelSet->hasPermission('labelset', 'update')) {
+            if ($onlyUpdatable && !$hasGlobalUpdate && !$this->mayUpdate($labelSet)) {
                 continue;
             }
             $matchingSets[] = $labelSet;
@@ -102,6 +107,27 @@ class LabelSetService
             ];
         }
         return $result;
+    }
+
+    /**
+     * Whether the current user may overwrite at least one label set.
+     *
+     * Cheaper than getLabelSets([], true): it stops at the first updatable set and
+     * doesn't count labels, so the editor's permission request can afford it.
+     *
+     * @return bool True when there is a label set the user may overwrite
+     */
+    public function hasUpdatableLabelSet(): bool
+    {
+        if ($this->hasGlobalUpdatePermission()) {
+            return $this->labelSet->exists();
+        }
+        foreach ($this->labelSet->findAll() as $labelSet) {
+            if ($this->mayUpdate($labelSet)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -198,7 +224,7 @@ class LabelSetService
         if (!$labelSet) {
             throw new NotFoundException('Label set not found');
         }
-        if (!$labelSet->hasPermission('labelset', 'update')) {
+        if (!$this->mayUpdate($labelSet)) {
             throw new PermissionDeniedException('Access denied');
         }
         $languages = $this->validateLanguages($languages);
@@ -214,6 +240,33 @@ class LabelSetService
             $this->replaceLabels((int)$labelSet->lid, $languages, $labels);
             return $labelSet;
         });
+    }
+
+    /**
+     * Whether the current user may overwrite the label set.
+     *
+     * The one check for the overwrite list and overwrite(), so plugins that grant or
+     * deny update rights per set (beforeHasPermission) are respected everywhere.
+     *
+     * @param LabelSet $labelSet Label set to check
+     * @return bool True when the user may overwrite it
+     */
+    protected function mayUpdate(LabelSet $labelSet): bool
+    {
+        return $labelSet->hasPermission('labelset', 'update');
+    }
+
+    /**
+     * Whether the current user may update all label sets.
+     *
+     * LabelSet::hasPermission() grants every set when this is true, so checking it once
+     * saves a role and permission query per set.
+     *
+     * @return bool True when the user has the global label set update right
+     */
+    protected function hasGlobalUpdatePermission(): bool
+    {
+        return (bool)$this->permission->hasGlobalPermission('labelsets', 'update');
     }
 
     /**
@@ -265,6 +318,7 @@ class LabelSetService
                 $language === null
                 || $language === ''
                 || LSYii_Validators::languageCodeFilter($language) !== $language
+                || strlen($language) < self::MIN_LANGUAGE_LENGTH
                 || strlen($language) > self::MAX_LANGUAGE_LENGTH
             ) {
                 throw new BadRequestException('Invalid language code');
@@ -321,7 +375,12 @@ class LabelSetService
                 if (!is_string($title) && !is_int($title) && !is_float($title)) {
                     throw new BadRequestException(sprintf('Invalid translation for label "%s"', $code));
                 }
-                $titles[$language] = (string)$title;
+                $title = (string)$title;
+                // Rejected rather than truncated; strict MySQL would fail the insert after the delete
+                if (strlen($title) > self::MAX_TITLE_BYTES) {
+                    throw new BadRequestException(sprintf('Translation for label "%s" is too long', $code));
+                }
+                $titles[$language] = $title;
             }
 
             $cleanLabels[] = [
@@ -435,26 +494,31 @@ class LabelSetService
     }
 
     /**
-     * Clean a list of language codes.
+     * Clean a list of language codes used as a filter.
      *
-     * @param mixed $languages Array, or space or comma separated string, of language codes
-     * @return string[] Unique, filtered language codes
+     * Empty entries are dropped, so an empty list (or [''] from an empty query param)
+     * means no filter. An invalid entry isn't dropped, as that would widen the filter.
+     *
+     * @param array $languages Language codes, as sent by the client
+     * @return string[]|null Unique language codes, or null when an entry isn't a valid code
      */
-    protected function normaliseLanguages($languages): array
+    protected function normaliseLanguages(array $languages): ?array
     {
-        if (is_string($languages)) {
-            $languages = preg_split('/[\s,]+/', $languages);
+        $cleanLanguages = [];
+        foreach ($languages as $language) {
+            if (!is_string($language)) {
+                return null;
+            }
+            $language = trim($language);
+            if ($language === '') {
+                continue;
+            }
+            if (LSYii_Validators::languageCodeFilter($language) !== $language) {
+                return null;
+            }
+            $cleanLanguages[$language] = true;
         }
-        if (!is_array($languages)) {
-            return [];
-        }
-        $languages = array_map(
-            static fn ($language) => is_string($language)
-                ? LSYii_Validators::languageCodeFilter(trim($language))
-                : '',
-            $languages
-        );
-        return array_values(array_unique(array_filter($languages)));
+        return array_keys($cleanLanguages);
     }
 
     /**

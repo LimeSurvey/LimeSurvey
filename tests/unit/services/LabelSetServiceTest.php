@@ -136,6 +136,20 @@ class LabelSetServiceTest extends TestBaseClass
     }
 
     /**
+     * A label set as returned by getLabelSet(), with the translations in a fixed order.
+     *
+     * @param array $labelSet
+     * @return array
+     */
+    private function normaliseLabelSet(array $labelSet): array
+    {
+        foreach ($labelSet['labels'] as &$label) {
+            ksort($label['l10ns']);
+        }
+        return $labelSet;
+    }
+
+    /**
      * A created label set comes back with its labels, translations and order.
      *
      * @return void
@@ -195,8 +209,36 @@ class LabelSetServiceTest extends TestBaseClass
             'number' => [[12]],
             'empty' => [['']],
             'invalid characters' => [['en_GB']],
+            'too short' => [['en', 'x']],
             'too long' => [[str_repeat('a', LabelSetService::MAX_LANGUAGE_LENGTH + 1)]],
         ];
+    }
+
+    /**
+     * An overwrite with invalid languages is rejected before anything is deleted.
+     *
+     * @dataProvider invalidLanguagesProvider
+     * @param array $languages
+     * @return void
+     */
+    public function testOverwriteWithInvalidLanguagesKeepsTheOldLabels(array $languages): void
+    {
+        $labelSet = $this->createLabelSet('keep');
+        $before = $this->getService()->getLabelSet((int)$labelSet->lid);
+
+        try {
+            $this->getService()->overwrite((int)$labelSet->lid, $languages, [
+                ['code' => 'B1', 'l10ns' => ['en' => 'Maybe', 'x' => 'X']],
+            ]);
+            $this->fail('The invalid languages were accepted');
+        } catch (BadRequestException $exception) {
+            // Expected
+        }
+
+        $this->assertSame(
+            $this->normaliseLabelSet($before),
+            $this->normaliseLabelSet($this->getService()->getLabelSet((int)$labelSet->lid))
+        );
     }
 
     /**
@@ -231,6 +273,10 @@ class LabelSetServiceTest extends TestBaseClass
             'assessment value far too large' => [[['code' => 'A1', 'assessmentValue' => '99999999999999999999']]],
             'translations not an array' => [[['code' => 'A1', 'l10ns' => 'Yes']]],
             'translation is an array' => [[['code' => 'A1', 'l10ns' => ['en' => ['Yes']]]]],
+            'translation too long' => [[[
+                'code' => 'A1',
+                'l10ns' => ['en' => str_repeat('a', LabelSetService::MAX_TITLE_BYTES + 1)],
+            ]]],
         ];
     }
 
@@ -255,6 +301,7 @@ class LabelSetServiceTest extends TestBaseClass
     public function testOverwriteWithInvalidLabelsKeepsTheOldLabels(array $labels): void
     {
         $labelSet = $this->createLabelSet('keep');
+        $before = $this->getService()->getLabelSet((int)$labelSet->lid);
 
         try {
             $this->getService()->overwrite((int)$labelSet->lid, ['en'], $labels);
@@ -263,9 +310,11 @@ class LabelSetServiceTest extends TestBaseClass
             // Expected
         }
 
-        $result = $this->getService()->getLabelSet((int)$labelSet->lid);
-        $this->assertSame(['en', 'de'], $result['languages']);
-        $this->assertSame(['A1', 'A2'], array_column($result['labels'], 'code'));
+        // Languages, codes, translations and assessment values are all unchanged
+        $this->assertSame(
+            $this->normaliseLabelSet($before),
+            $this->normaliseLabelSet($this->getService()->getLabelSet((int)$labelSet->lid))
+        );
     }
 
     /**
@@ -346,7 +395,8 @@ class LabelSetServiceTest extends TestBaseClass
         $this->createLabelSet('en', ['en'], [['code' => 'A1', 'l10ns' => ['en' => 'Yes']]]);
 
         $service = $this->getService();
-        $this->assertSame(['en de', 'en'], array_keys($this->onlyTestSets($service->getLabelSets(['en']))));
+        // Sorted by name; created in the reverse order, so this checks the sorting
+        $this->assertSame(['en', 'en de'], array_keys($this->onlyTestSets($service->getLabelSets(['en']))));
         $this->assertSame(['en de'], array_keys($this->onlyTestSets($service->getLabelSets(['en', 'de']))));
         $this->assertSame([], $this->onlyTestSets($service->getLabelSets(['en', 'fr'])));
 
@@ -355,6 +405,22 @@ class LabelSetServiceTest extends TestBaseClass
         $this->assertTrue($sets['en de']['hasAssessmentValues']);
         $this->assertSame(1, $sets['en']['labelCount']);
         $this->assertFalse($sets['en']['hasAssessmentValues']);
+    }
+
+    /**
+     * An invalid language in the filter matches no set instead of being dropped; empty entries mean no filter.
+     *
+     * @return void
+     */
+    public function testListWithInvalidLanguageFilter(): void
+    {
+        $this->createLabelSet('filter');
+        $service = $this->getService();
+
+        $this->assertSame([], $service->getLabelSets(['123']));
+        $this->assertSame([], $service->getLabelSets(['en', 'en_GB']));
+        $this->assertSame([], $service->getLabelSets([['en']]));
+        $this->assertSame(['filter'], array_keys($this->onlyTestSets($service->getLabelSets(['']))));
     }
 
     /**
@@ -369,6 +435,7 @@ class LabelSetServiceTest extends TestBaseClass
         $service = $this->getService();
 
         $this->assertSame([], $this->onlyTestSets($service->getLabelSets([], true)));
+        $this->assertFalse($service->hasUpdatableLabelSet());
         // Using a label set doesn't need a permission
         $this->assertSame(['no rights'], array_keys($this->onlyTestSets($service->getLabelSets())));
 
@@ -404,6 +471,7 @@ class LabelSetServiceTest extends TestBaseClass
         $service = $this->getService();
 
         $this->assertSame(['allowed'], array_keys($this->onlyTestSets($service->getLabelSets([], true))));
+        $this->assertTrue($service->hasUpdatableLabelSet());
         $service->overwrite((int)$allowed->lid, ['en'], [['code' => 'B1']]);
         $this->assertSame(['B1'], array_column($service->getLabelSet((int)$allowed->lid)['labels'], 'code'));
 

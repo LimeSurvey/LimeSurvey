@@ -216,7 +216,26 @@ describe('handleLabelSetLoad', () => {
     expect(answers[1].l10ns.de.answer).toBe('Gut')
     expect(answers[2].l10ns.de.answer).toBe('')
     expect(answers[1].appKey).toBeTruthy()
+
+    // What is queued for saving matches what is shown
     expect(mockAddToBuffer).toHaveBeenCalledTimes(1)
+    const [operation] = mockAddToBuffer.mock.calls[0]
+    expect(operation).toMatchObject({
+      id: QID,
+      entity: Entities.answer,
+      op: Operations.update,
+    })
+    expect(operation.props.map((answer) => answer.code)).toEqual([
+      'A1',
+      'A003',
+      'A2',
+    ])
+    expect(operation.props.map((answer) => answer.sortOrder)).toEqual([0, 1, 2])
+    expect(
+      operation.props.map((answer) =>
+        mapValues(answer.l10ns, (l10n) => l10n.answer)
+      )
+    ).toEqual([{ en: 'A1' }, { en: 'Good', de: 'Gut' }, { en: 'Bad', de: '' }])
   })
 
   test('appends the labels as subquestions with the code as title', () => {

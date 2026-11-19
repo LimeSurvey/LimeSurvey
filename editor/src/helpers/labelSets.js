@@ -11,6 +11,33 @@ const MAX_SUBQUESTION_CODE_LENGTH = 20
 const isAnswerEntity = (entityType) => entityType === Entities.answer
 
 /**
+ * The first free code of the editor's default scheme (A001, A002, ... or SQ001, ...).
+ *
+ * @param {boolean} isAnswer Whether the code is for an answer option
+ * @param {(code: string) => boolean} isFree Whether a code is unused and short enough
+ * @returns {string} The code
+ * @throws {Error} When every code of the scheme that fits is taken
+ */
+const getFirstFreeCode = (isAnswer, isFree) => {
+  const prefix = isAnswer ? 'A' : 'SQ'
+  const maxLength = isAnswer
+    ? MAX_ANSWER_CODE_LENGTH
+    : MAX_SUBQUESTION_CODE_LENGTH
+  // Ends at the first code that is too long; only codes that are taken are skipped
+  for (
+    let number = 1;
+    prefix.length + Math.max(3, `${number}`.length) <= maxLength;
+    number++
+  ) {
+    const code = `${prefix}${`${number}`.padStart(3, '0')}`
+    if (isFree(code)) {
+      return code
+    }
+  }
+  throw new Error(t('There is no free code left for the label set.'))
+}
+
+/**
  * Turn answer options or subquestions into labels for the label set API.
  *
  * @param {object[]} children Answers or subquestions
@@ -69,29 +96,32 @@ export const getLabelSetCodes = (
     return code
   }
 
+  const isFree = (code) =>
+    !!code && code.length <= maxLength && !usedKeys.has(code.toUpperCase())
+
   // Reserve the codes that are kept first, so a generated code can't take one
   const keptCodes = labels.map((label) => {
     const code = `${label.code ?? ''}`
-    if (!code || code.length > maxLength || usedKeys.has(code.toUpperCase())) {
-      return null
-    }
-    return useCode(code)
+    return isFree(code) ? useCode(code) : null
   })
 
   return keptCodes.map((code) => {
     if (code) {
       return code
     }
+    const nextCode = isAnswer
+      ? getNextAnswerCode({
+          ...question,
+          answers: usedCodes.map((usedCode) => ({ code: usedCode })),
+        })
+      : getNextSubQuestionCode({
+          ...question,
+          subquestions: usedCodes.map((usedCode) => ({ title: usedCode })),
+        })
+    // The generator continues after the highest code, which can be too long
+    // (A9999 -> A10000) or, past Number's precision, a code that is taken
     return useCode(
-      isAnswer
-        ? getNextAnswerCode({
-            ...question,
-            answers: usedCodes.map((usedCode) => ({ code: usedCode })),
-          })
-        : getNextSubQuestionCode({
-            ...question,
-            subquestions: usedCodes.map((usedCode) => ({ title: usedCode })),
-          })
+      isFree(nextCode) ? nextCode : getFirstFreeCode(isAnswer, isFree)
     )
   })
 }

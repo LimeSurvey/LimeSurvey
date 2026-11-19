@@ -129,6 +129,51 @@ describe('getLabelSetCodes', () => {
     ).toEqual(['3', '4'])
   })
 
+  test('Keeps generated answer codes within five characters', () => {
+    // The generator would continue with A10000
+    expect(
+      getLabelSetCodes(
+        labels('A9999', 'B1'),
+        question,
+        [{ code: 'A9999' }, { code: 'A001' }],
+        Entities.answer
+      )
+    ).toEqual(['A002', 'B1'])
+  })
+
+  test('Keeps generated numeric answer codes within five characters', () => {
+    expect(
+      getLabelSetCodes(
+        labels('1'),
+        question,
+        [{ code: '99999' }, { code: '1' }],
+        Entities.answer
+      )
+    ).toEqual(['A001'])
+  })
+
+  test('Fails when no answer code that fits is free', () => {
+    const existing = Array.from({ length: 9999 }, (_, index) => ({
+      code: `A${`${index + 1}`.padStart(3, '0')}`,
+    }))
+
+    expect(() =>
+      getLabelSetCodes(labels('A001'), question, existing, Entities.answer)
+    ).toThrow()
+  })
+
+  test('Does not generate a subquestion code that is already used', () => {
+    // 9007199254740992 + 1 can't be represented, so the generator repeats the code
+    expect(
+      getLabelSetCodes(
+        labels('SQ9007199254740992', 'SQ001'),
+        question,
+        [{ title: 'SQ001' }],
+        Entities.subquestion
+      )
+    ).toEqual(['SQ9007199254740992', 'SQ002'])
+  })
+
   test('Generates a code for labels without one', () => {
     expect(
       getLabelSetCodes([{ code: '' }], question, [], Entities.subquestion)

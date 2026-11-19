@@ -12,6 +12,7 @@ import { SaveLabelSetModal } from './SaveLabelSetModal'
 
 const mockLabelSets = { current: [] }
 const mockListError = { current: false }
+const mockListFetching = { current: false }
 const mockRefetch = jest.fn()
 const mockGetLabelSet = jest.fn()
 const mockSaveLabelSet = jest.fn()
@@ -19,7 +20,7 @@ const mockSaveLabelSet = jest.fn()
 jest.mock('hooks/useLabelSets', () => ({
   useLabelSets: () => ({
     labelSets: mockLabelSets.current,
-    isFetching: false,
+    isFetching: mockListFetching.current,
     isError: mockListError.current,
     refetch: mockRefetch,
   }),
@@ -40,8 +41,26 @@ const openSelect = (testId) => {
 beforeEach(() => {
   mockLabelSets.current = []
   mockListError.current = false
+  mockListFetching.current = false
   mockRefetch.mockReset()
 })
+
+// Renders the modal again on demand, so changed list mocks take effect
+const RerenderHarness = (props) => {
+  const [, setRenderCount] = useState(0)
+  return (
+    <>
+      <button
+        type="button"
+        onClick={() => setRenderCount((count) => count + 1)}
+      >
+        Rerender
+      </button>
+      <SaveLabelSetModal {...props} />
+    </>
+  )
+}
+const rerender = () => fireEvent.click(screen.getByText('Rerender'))
 
 describe('LoadLabelSetModal', () => {
   beforeEach(() => {
@@ -325,5 +344,126 @@ describe('SaveLabelSetModal', () => {
     expect(getConfirmButton('Save label set')).toBeDisabled()
     fireEvent.click(screen.getByRole('button', { name: 'Try again' }))
     expect(mockRefetch).toHaveBeenCalled()
+  })
+
+  test('Names the dialog after the selected mode', async () => {
+    await renderWithProviders(
+      <SaveLabelSetModal
+        show
+        _children={answers}
+        entityType={Entities.answer}
+        surveyLanguages={['en']}
+      />
+    )
+
+    expect(
+      screen.getByRole('dialog', { name: 'Save as new label set' })
+    ).toBeInTheDocument()
+    fireEvent.click(screen.getByText('Yes'))
+    expect(
+      screen.getByRole('dialog', { name: 'Overwrite an existing label set' })
+    ).toBeInTheDocument()
+  })
+
+  test('Blocks the overwrite while the list is refreshing or after it failed', async () => {
+    mockLabelSets.current = [{ lid: 4, name: 'Old set', languages: ['en'] }]
+    await renderWithProviders(
+      <RerenderHarness
+        show
+        _children={answers}
+        entityType={Entities.answer}
+        surveyLanguages={['en']}
+        canCreate={false}
+      />
+    )
+
+    openSelect('save-label-set-overwrite-select')
+    fireEvent.click(await screen.findByText('Old set'))
+    expect(getConfirmButton('Save label set')).toBeEnabled()
+
+    // E.g. refetched on window focus: the warnings may be outdated
+    mockListFetching.current = true
+    rerender()
+    expect(getConfirmButton('Save label set')).toBeDisabled()
+
+    mockListFetching.current = false
+    mockListError.current = true
+    rerender()
+    expect(getConfirmButton('Save label set')).toBeDisabled()
+
+    mockListError.current = false
+    rerender()
+    expect(getConfirmButton('Save label set')).toBeEnabled()
+  })
+
+  test('Blocks the overwrite when the selected set is gone from the refreshed list', async () => {
+    mockLabelSets.current = [{ lid: 4, name: 'Old set', languages: ['en'] }]
+    await renderWithProviders(
+      <RerenderHarness
+        show
+        _children={answers}
+        entityType={Entities.answer}
+        surveyLanguages={['en']}
+        canCreate={false}
+      />
+    )
+
+    openSelect('save-label-set-overwrite-select')
+    fireEvent.click(await screen.findByText('Old set'))
+    expect(getConfirmButton('Save label set')).toBeEnabled()
+
+    mockLabelSets.current = [{ lid: 6, name: 'Other set', languages: ['en'] }]
+    rerender()
+    expect(getConfirmButton('Save label set')).toBeDisabled()
+    expect(
+      screen.queryByTestId('save-label-set-overwrite-warning')
+    ).not.toBeInTheDocument()
+  })
+
+  test('A save that finishes after the modal was reopened does not close it', async () => {
+    let resolveSave
+    mockSaveLabelSet.mockReturnValue(
+      new Promise((resolve) => {
+        resolveSave = resolve
+      })
+    )
+    const onHide = jest.fn()
+
+    const Harness = () => {
+      const [show, setShow] = useState(true)
+      return (
+        <>
+          <button type="button" onClick={() => setShow(true)}>
+            Reopen
+          </button>
+          <SaveLabelSetModal
+            show={show}
+            onHide={() => {
+              onHide()
+              setShow(false)
+            }}
+            _children={answers}
+            entityType={Entities.answer}
+            surveyLanguages={['en']}
+          />
+        </>
+      )
+    }
+    await renderWithProviders(<Harness />)
+
+    const nameInput = screen
+      .getByTestId('save-label-set-modal')
+      .querySelector('input[type="text"]')
+    fireEvent.change(nameInput, { target: { value: 'My answers' } })
+    fireEvent.click(getConfirmButton('Save label set'))
+    fireEvent.click(getConfirmButton('Cancel'))
+    expect(onHide).toHaveBeenCalledTimes(1)
+    fireEvent.click(screen.getByText('Reopen'))
+
+    await act(async () => {
+      resolveSave({ lid: 9 })
+    })
+
+    expect(onHide).toHaveBeenCalledTimes(1)
   })
 })

@@ -51,9 +51,10 @@ export const QuestionFooter = ({
     : Entities.subquestion
   const labelSetChildren =
     (isSingleChoiceTheme ? question.answers : question.subquestions) || []
+  // Neutral wording: users with only the update right can only overwrite a set
   const saveLabelSetLabel = isSingleChoiceTheme
-    ? t('Save answers as new label set')
-    : t('Save subquestions as new label set')
+    ? t('Save answers as label set')
+    : t('Save subquestions as label set')
 
   const handleRemoveQuestion = () => {
     setShowDeleteModal(true)

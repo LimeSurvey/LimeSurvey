@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { useAppState, useLabelSets, useSaveLabelSet } from 'hooks'
 import { childrenToLabels, Entities, STATES } from 'helpers'
@@ -35,6 +35,9 @@ export const SaveLabelSetModal = ({
   const [languages, setLanguages] = useState(surveyLanguages)
   const [overwrite, setOverwrite] = useState(!canCreate)
   const [overwriteLid, setOverwriteLid] = useState(null)
+  // Bumped whenever the modal opens or closes, so a save that finishes later
+  // doesn't close the modal after it was reopened
+  const sessionId = useRef(0)
   const [allLanguages] = useAppState(STATES.ALL_AVAILABLE_LANGUAGES)
   const [userDetails] = useAppState(STATES.USER_DETAIL)
   const { saveLabelSet, isSaving } = useSaveLabelSet()
@@ -49,6 +52,7 @@ export const SaveLabelSetModal = ({
   })
 
   useEffect(() => {
+    sessionId.current++
     if (show) {
       setName('')
       setLanguages(surveyLanguages)
@@ -90,16 +94,20 @@ export const SaveLabelSetModal = ({
   )
 
   const isAnswer = entityType === Entities.answer
+  // Overwriting needs the selected set in a freshly loaded list, so the warnings
+  // above describe what is replaced; a set that was deleted meanwhile can't be picked
+  const canOverwrite = !!overwriteTarget && !isFetching && !isError
   const isValid =
     _children.length > 0 &&
     languages.length > 0 &&
-    (overwrite ? !!overwriteLid : name.trim() !== '')
+    (overwrite ? canOverwrite : name.trim() !== '')
 
   const handleSave = async () => {
     if (!isValid) {
       return
     }
 
+    const saveSessionId = sessionId.current
     try {
       await saveLabelSet({
         lid: overwrite ? overwriteLid : undefined,
@@ -112,7 +120,9 @@ export const SaveLabelSetModal = ({
           ? t('Label set successfully updated')
           : t('Label set successfully saved.')
       )
-      onHide()
+      if (saveSessionId === sessionId.current) {
+        onHide()
+      }
     } catch (error) {
       showErrorMessage(error?.message || t('Error'))
     }
@@ -123,9 +133,9 @@ export const SaveLabelSetModal = ({
       show={show}
       onHide={onHide}
       title={
-        canCreate
-          ? t('Save as new label set')
-          : t('Overwrite an existing label set')
+        overwrite
+          ? t('Overwrite an existing label set')
+          : t('Save as new label set')
       }
       modalClassname="label-set-modal"
       componentClassname="label-set-modal-body"

@@ -69,8 +69,8 @@ class UserPermission implements CommandInterface
      * Whether the user may save the question editor's answers as a new label set,
      * or overwrite at least one existing label set.
      *
-     * Update rights can also be granted per label set (or by a plugin), so without the
-     * global permission the updatable sets are checked one by one, like the overwrite list.
+     * Update rights can also be granted per label set (or by a plugin), and the global
+     * right is no use without a set to overwrite, so the sets are checked like the overwrite list.
      *
      * @return array<string, bool>
      */
@@ -78,8 +78,7 @@ class UserPermission implements CommandInterface
     {
         return [
             'labelSetsCreate' => $this->permission->hasGlobalPermission('labelsets', 'create'),
-            'labelSetsUpdate' => $this->permission->hasGlobalPermission('labelsets', 'update')
-                || !empty($this->labelSetService->getLabelSets([], true)),
+            'labelSetsUpdate' => $this->labelSetService->hasUpdatableLabelSet(),
         ];
     }
 

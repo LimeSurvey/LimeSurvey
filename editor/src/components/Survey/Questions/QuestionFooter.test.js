@@ -82,7 +82,7 @@ describe('QuestionFooter label sets', () => {
       'question-footer-save-label-set-icon'
     )
     expect(icon.tagName).toBe('BUTTON')
-    expect(icon).toHaveAccessibleName('Save subquestions as new label set')
+    expect(icon).toHaveAccessibleName('Save subquestions as label set')
     expect(icon).toBeEnabled()
     fireEvent.click(icon)
 
