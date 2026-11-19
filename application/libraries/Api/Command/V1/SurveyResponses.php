@@ -380,7 +380,7 @@ class SurveyResponses implements CommandInterface
         if (!is_string($completion)) {
             throw new \InvalidArgumentException('Invalid completion filter.');
         }
-        CompletionFilter::apply($criteria, $completion, $validColumns);
+        CompletionFilter::apply($criteria, $completion, CompletionFilter::savesQuotaExit($this->getSurveyId($request)));
         $this->applyFilterSet($criteria, $filterSet, $request);
         $this->applyFieldSelection($criteria, $request);
 

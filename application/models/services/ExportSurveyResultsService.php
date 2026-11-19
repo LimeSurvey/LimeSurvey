@@ -342,11 +342,7 @@ class ExportSurveyResultsService
         // buildFilterCriteria() may hand back $this->filterCriteria itself
         $filterCriteria = $this->buildFilterCriteria();
         $filterCriteria = $filterCriteria === null ? new \CDbCriteria() : clone $filterCriteria;
-        CompletionFilter::apply(
-            $filterCriteria,
-            $this->completionFilter,
-            array_keys($model->getTableSchema()->columns)
-        );
+        CompletionFilter::apply($filterCriteria, $this->completionFilter, CompletionFilter::savesQuotaExit($surveyId));
         $totalCount = $this->getTotalResponseCount($surveyId, $filterCriteria);
 
         for ($offset = 0; $offset < $totalCount; $offset += $this->chunkSize) {

@@ -350,10 +350,7 @@ class SurveyResponsesExport implements CommandInterface
             $filters,
             $resolvedFilters
         );
-        $completionSql = CompletionFilter::predicate(
-            $completion,
-            isset(\SurveyDynamic::model($surveyId)->getTableSchema()->columns['quota_exit'])
-        );
+        $completionSql = CompletionFilter::predicate($completion, CompletionFilter::savesQuotaExit($surveyId));
         if ($completionSql !== null) {
             $sqlFilter = $this->filterSql->combineSqlFilters($sqlFilter, '(' . $completionSql . ')');
         }

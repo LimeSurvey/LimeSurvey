@@ -3,6 +3,7 @@
 namespace ls\tests\unit\services;
 
 use InvalidArgumentException;
+use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\CompletionFilter;
 use LimeSurvey\Models\Services\SurveyStatistics\Charts\Questions\Processors\ResponseAggregateBatch;
 use LimeSurvey\Models\Services\SurveyStatistics\StatisticsResponseFilters;
 use ls\tests\TestBaseClass;
@@ -158,6 +159,28 @@ class ResponseAggregateBatchDatabaseTest extends TestBaseClass
         $this->assertSame(2, $this->countMatching([], 'incomplete'));
         $this->assertSame(1, $this->countMatching([], 'screened_out'));
         $this->assertSame(2, $this->countMatching([$this->condition(self::$dualScale0, 'equal', 'A1')], 'completed'));
+    }
+
+    /**
+     * Without the "save quota exit" setting, screened_out is refused instead of finding nothing.
+     *
+     * @return void
+     */
+    public function testScreenedOutNeedsSavedQuotaExits(): void
+    {
+        $this->assertTrue(CompletionFilter::savesQuotaExit(self::$surveyId));
+        \Survey::model()->updateByPk(self::$surveyId, ['savequotaexit' => 'N']);
+        \Survey::model()->resetCache();
+        try {
+            $this->assertFalse(CompletionFilter::savesQuotaExit(self::$surveyId));
+            $this->assertSame(3, $this->countMatching([], 'incomplete'));
+            $this->expectException(InvalidArgumentException::class);
+            $this->expectExceptionMessage('does not save quota exits');
+            $this->countMatching([], 'screened_out');
+        } finally {
+            \Survey::model()->updateByPk(self::$surveyId, ['savequotaexit' => 'Y']);
+            \Survey::model()->resetCache();
+        }
     }
 
     /**

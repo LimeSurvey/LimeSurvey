@@ -13,8 +13,7 @@ use InvalidArgumentException;
  * screened out (quota_exit set) or incomplete (neither).
  *
  * quota_exit is only written when the survey has savequotaexit = Y, so
- * screened_out only finds responses of surveys with that setting on; without
- * it, screened-out responses count as incomplete.
+ * screened_out is refused for surveys without that setting.
  */
 final class CompletionFilter
 {
@@ -45,22 +44,26 @@ final class CompletionFilter
     /**
      * The SQL predicate of a state, null for 'all'.
      *
-     * @param bool $hasQuotaExit whether the responses table has a quota_exit column
+     * @param string $state Completion state
+     * @param bool $savesQuotaExit Whether the survey records quota exits, see savesQuotaExit()
+     * @return string|null
      * @throws InvalidArgumentException
      */
-    public static function predicate(string $state, bool $hasQuotaExit): ?string
+    public static function predicate(string $state, bool $savesQuotaExit): ?string
     {
         self::assertValid($state);
         switch ($state) {
             case self::STATE_COMPLETED:
                 return 'submitdate IS NOT NULL';
             case self::STATE_SCREENED_OUT:
-                if (!$hasQuotaExit) {
-                    throw new InvalidArgumentException('This survey has no quota exit column.');
+                if (!$savesQuotaExit) {
+                    throw new InvalidArgumentException(
+                        'This survey does not save quota exits, so screened-out responses cannot be filtered.'
+                    );
                 }
                 return 'quota_exit IS NOT NULL AND quota_exit <> 0';
             case self::STATE_INCOMPLETE:
-                return $hasQuotaExit
+                return $savesQuotaExit
                     ? 'submitdate IS NULL AND (quota_exit IS NULL OR quota_exit = 0)'
                     : 'submitdate IS NULL';
             default:
@@ -68,11 +71,34 @@ final class CompletionFilter
         }
     }
 
-    public static function apply(CDbCriteria $criteria, string $state, array $columns): void
+    /**
+     * Add the predicate of a state to the criteria.
+     *
+     * @param CDbCriteria $criteria Criteria to extend
+     * @param string $state Completion state
+     * @param bool $savesQuotaExit Whether the survey records quota exits, see savesQuotaExit()
+     * @return void
+     * @throws InvalidArgumentException
+     */
+    public static function apply(CDbCriteria $criteria, string $state, bool $savesQuotaExit): void
     {
-        $predicate = self::predicate($state, in_array('quota_exit', $columns, true));
+        $predicate = self::predicate($state, $savesQuotaExit);
         if ($predicate !== null) {
             $criteria->addCondition($predicate);
         }
+    }
+
+    /**
+     * Whether the survey records quota exits: the setting is on and the responses table has the column.
+     *
+     * @param int $surveyId Survey id
+     * @return bool
+     */
+    public static function savesQuotaExit(int $surveyId): bool
+    {
+        $survey = \Survey::model()->findByPk($surveyId);
+        return $survey !== null
+            && $survey->getIsSaveQuotaExit()
+            && isset(\SurveyDynamic::model($surveyId)->getTableSchema()->columns['quota_exit']);
     }
 }

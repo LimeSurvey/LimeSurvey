@@ -564,10 +564,7 @@ final class ResponseAggregateBatch
         if (!isset($filters['completion'])) {
             return null;
         }
-        return CompletionFilter::predicate(
-            $filters['completion'],
-            isset(SurveyDynamic::model($this->surveyId)->getTableSchema()->columns['quota_exit'])
-        );
+        return CompletionFilter::predicate($filters['completion'], CompletionFilter::savesQuotaExit($this->surveyId));
     }
 
     /**
