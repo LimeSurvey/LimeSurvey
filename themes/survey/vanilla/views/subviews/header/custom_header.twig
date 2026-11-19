@@ -14,12 +14,3 @@
     If you extend a template, and want to add custom headers (js, css, scripts, meta etc), you'd rather do it here.
 
 #}
-
-{# Custom logo option #}
-{% if ( aSurveyInfo.options.brandlogo == "on" ) %}
-    <style>
-        body .top-container {
-            margin-top: 70px;
-        }
-    </style>
-{% endif %}

@@ -21,10 +21,15 @@ export var ThemeScripts = function () {
     /**
      * fix padding of body according to navbar-fixed-top
      * in endpage and in $(window).resize
+     * Since Mantis issue #20854 the core navigation bar is sticky-top (no body padding needed):
+     * padding is only set when a theme still uses a fixed-top navigation bar
      */
     var fixBodyPadding = function fixBodyPadding() {
-        var navHeight = Math.round($('#survey-nav.fixed-top').outerHeight() || 0);
-        $('body').css('padding-top', navHeight + 'px');
+        var $fixedNav = $('#survey-nav.fixed-top');
+        if (!$fixedNav.length) {
+            return;
+        }
+        $('body').css('padding-top', Math.round($fixedNav.outerHeight()) + 'px');
     };
 
     /**
