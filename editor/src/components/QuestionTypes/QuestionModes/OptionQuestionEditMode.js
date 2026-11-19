@@ -1,4 +1,4 @@
-import { useMemo, useRef } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { Button } from 'react-bootstrap'
 import { useParams } from 'react-router-dom'
 import { Draggable } from '@hello-pangea/dnd'
@@ -18,6 +18,7 @@ import {
   STATES,
 } from 'helpers'
 import { getTooltipMessages } from 'helpers/options'
+import { errorToast } from 'helpers/Alert'
 import { ContentEditor, DragAndDrop, TooltipContainer } from 'components'
 import { CloseCircleFillIcon, DragIcon } from 'components/icons'
 import { ImageChoice } from 'components/QuestionTypes/ImageChoice'
@@ -85,6 +86,35 @@ export const OptionQuestionEditMode = ({
   // made meanwhile (e.g. a deleted option would come back).
   const latestHandleUpdate = useRef(handleUpdate)
   latestHandleUpdate.current = handleUpdate
+  // Image saves still waiting when the question closes are dropped: The
+  // latest handleUpdate would focus the question again and write back the
+  // questions of its render. A new edit mode would also start its own queue,
+  // and the old save could then overwrite a newer one.
+  const isMounted = useRef(true)
+  const hasReportedDroppedSave = useRef(false)
+  useEffect(() => {
+    isMounted.current = true
+    return () => {
+      isMounted.current = false
+    }
+  }, [])
+
+  /**
+   * Tells whether an image save can still be applied. Once the question has
+   * closed, it can't: The user is told once that the changes were not saved.
+   *
+   * @returns {boolean} whether the save can go on
+   */
+  const canStillSave = () => {
+    if (isMounted.current) {
+      return true
+    }
+    if (!hasReportedDroppedSave.current) {
+      hasReportedDroppedSave.current = true
+      errorToast(t('Your changes could not be saved.'))
+    }
+    return false
+  }
   const isSingleChoiceTheme = singleChoiceThemes.includes(questionThemeName)
   const isImageTheme = getImageSelectThemes().includes(questionThemeName)
 
@@ -214,7 +244,8 @@ export const OptionQuestionEditMode = ({
    * Stores the settings from the image editor of an option in the question
    * attributes, with "Apply to all" also for the other options. Nothing is
    * saved when the option was renamed or deleted, or got another image, while
-   * the save waited. Other options whose image was replaced or deleted
+   * the save waited, or when the question was closed meanwhile (see
+   * canStillSave()). Other options whose image was replaced or deleted
    * meanwhile keep their settings. The settings are saved for the active
    * language and for the languages that show the same image.
    *
@@ -230,9 +261,15 @@ export const OptionQuestionEditMode = ({
     editedImagePath,
     { altText, applyToAll = false, ...settings }
   ) => {
+    if (!canStillSave()) {
+      return
+    }
     const otherSettings = applyToAll
       ? await getSettingsForOtherOptions(code, settings)
       : {}
+    if (!canStillSave()) {
+      return
+    }
     const currentQuestion = latestQuestion.current
     const currentChildren = getQuestionChildren(currentQuestion)
     const codes = currentChildren.map((child) => child[codeKey])

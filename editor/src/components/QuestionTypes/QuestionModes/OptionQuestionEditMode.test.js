@@ -14,6 +14,12 @@ jest.mock('components/QuestionTypes/ImageChoice', () => ({
   },
 }))
 
+const mockErrorToast = jest.fn()
+jest.mock('helpers/Alert', () => ({
+  ...jest.requireActual('helpers/Alert'),
+  errorToast: (...args) => mockErrorToast(...args),
+}))
+
 // The other images of "Apply to all" load only when the test resolves them.
 // Without that, they stop being waited for after mockImageLoadTimeout ms.
 const mockImageLoads = []
@@ -48,6 +54,7 @@ const settings = {
 }
 
 let setTestQuestion
+let setTestIsOpen
 /**
  * Renders the options of a question that the test can change.
  *
@@ -59,7 +66,13 @@ let setTestQuestion
  */
 const Harness = ({ initialQuestion, handleUpdate }) => {
   const [question, setQuestion] = useState(initialQuestion)
+  const [isOpen, setIsOpen] = useState(true)
   setTestQuestion = setQuestion
+  // Closing the question unmounts its edit mode.
+  setTestIsOpen = setIsOpen
+  if (!isOpen) {
+    return null
+  }
   return (
     <OptionQuestionEditMode
       question={question}
@@ -150,6 +163,25 @@ describe('OptionQuestionEditMode image option settings', () => {
   beforeEach(() => {
     mockImageLoads.splice(0)
     mockImageLoadTimeout = 60000
+    mockErrorToast.mockClear()
+  })
+
+  test('Saves still waiting when the question closes are dropped, with one message', async () => {
+    const handleUpdate = jest.fn()
+    const { savePromise: first } = await startApplyToAllSave(handleUpdate)
+    const { savePromise: second } = await startSave('A2', {
+      ...settings,
+      altText: 'Second',
+    })
+
+    act(() => setTestIsOpen(false))
+    await finishImageLoads(first, second)
+
+    expect(handleUpdate).not.toHaveBeenCalled()
+    expect(mockErrorToast).toHaveBeenCalledTimes(1)
+    expect(mockErrorToast).toHaveBeenCalledWith(
+      'Your changes could not be saved.'
+    )
   })
 
   test('An image that never loads is left out, the saves after it still run', async () => {
