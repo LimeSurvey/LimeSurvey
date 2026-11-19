@@ -111,7 +111,9 @@ class JsonElementConditionHandler implements HandlerInterface, SurveyContextAwar
             $field = substr($field, $dot + 1);
         }
 
-        $column = \SurveyDynamic::model($this->surveyId)->getTableSchema()->getColumn($field);
+        // SurveyDynamic::model() keeps the previous survey's table when this survey doesn't exist
+        $table = App()->db->schema->getTable('{{responses_' . $this->surveyId . '}}');
+        $column = $table === null ? null : $table->getColumn($field);
 
         return $column !== null && preg_match('/^jsonb?$/i', (string) $column->dbType) === 1;
     }
