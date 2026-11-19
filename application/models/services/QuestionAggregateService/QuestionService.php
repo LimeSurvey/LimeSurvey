@@ -337,7 +337,18 @@ class QuestionService
             );
         }
 
-        if (!$question->save()) {
+        $saved = $question->save();
+        if ($saved && $oldType !== $newType) {
+            // The fields of the new type are known only after the save
+            $this->changedDependentQuestionIds = array_values(array_unique(array_merge(
+                $this->changedDependentQuestionIds,
+                $this->removeConditionsOnRemovedFields($question, $oldType)
+            )));
+        }
+        // Also after a refused save: The conditions deleted before it are gone
+        $this->rebuildDependentRelevance($this->changedDependentQuestionIds);
+
+        if (!$saved) {
             // The validation refuses to switch "Other" off while conditions use it
             if (!empty($question->getOtherConditionQuestionCodes())) {
                 throw new QuestionHasConditionsException(
@@ -550,25 +561,120 @@ class QuestionService
             }
         }
 
-        $dependentQuestionIds = array_map('intval', array_keys($qids));
-        if (!empty($dependentQuestionIds)) {
-            // Without conditions left, the upgrade keeps the old relevance: Reset it for all of them
-            // in one statement, as RevertUpgradeConditionsToRelevance() would
-            $this->yiiApp->db->createCommand()->update(
-                '{{questions}}',
-                ['relevance' => '1'],
-                [
-                    'and',
-                    ['in', 'qid', $dependentQuestionIds],
-                    'NOT EXISTS (SELECT 1 FROM {{conditions}} c WHERE c.qid = {{questions}}.qid)',
-                ]
-            );
+        return array_map('intval', array_keys($qids));
+    }
+
+    /**
+     * Deletes the conditions on the fields a question lost with its type change, and the
+     * conditions comparing to them: E.g. Multiple choice has no field for the answer of a
+     * List (radio), so "No answer", constants and regular expressions on it can't work.
+     * Must run after the save: The fields are built from the saved type.
+     *
+     * @param Question $question The saved question with its new type
+     * @param string $oldType The type of the question before the change
+     * @return int[] The questions whose conditions were deleted
+     */
+    private function removeConditionsOnRemovedFields(Question $question, string $oldType): array
+    {
+        $questionId = (int) $question->qid;
+        if (!$this->isInFieldMap($question)) {
+            // createFieldMap() would return no fields, although the question still has them
+            return [];
         }
+        $fieldMap = createFieldMap($question->survey, 'short', true, $questionId);
+        $questionField = 'Q' . $questionId;
+        // "Group of checkboxes" conditions of the multiple choice types are on the question itself,
+        // with a subquestion code as value: They only work between these types
+        $checkboxGroupTypes = [Question::QT_M_MULTIPLE_CHOICE, Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS];
+        $wasCheckboxGroup = in_array($oldType, $checkboxGroupTypes, true);
+        $isCheckboxGroup = in_array((string) $question->type, $checkboxGroupTypes, true);
+        // Comparisons to this question's fields: "@Q12@" or "@Q12_S34@", not "@Q123@"
+        $ownField = '/^@(' . $questionField . '(?:_[^@]*)?)@$/';
+        // Two queries instead of one with OR, so each can use an index
+        $conditions = array_merge(
+            $this->yiiApp->db->createCommand()
+                ->select('cid, qid, cqid, cfieldname, value')
+                ->from('{{conditions}}')
+                ->where('cqid = :qid', [':qid' => $questionId])
+                ->queryAll(),
+            $this->yiiApp->db->createCommand()
+                ->select('c.cid, c.qid, c.cqid, c.cfieldname, c.value')
+                ->from('{{conditions}} c')
+                ->join('{{questions}} q', 'q.qid = c.qid')
+                ->where(
+                    'q.sid = :sid AND c.value LIKE :reference',
+                    [':sid' => (int) $question->sid, ':reference' => '@' . $questionField . '%']
+                )
+                ->queryAll()
+        );
+        $removed = [];
+        foreach ($conditions as $condition) {
+            // A leading "+" marks a condition on a single checkbox of a subquestion
+            $fieldname = ltrim((string) $condition['cfieldname'], '+');
+            if ((int) $condition['cqid'] !== $questionId) {
+                $onRemovedField = false;
+            } elseif ($fieldname === $questionField && ($wasCheckboxGroup || $isCheckboxGroup)) {
+                $onRemovedField = $wasCheckboxGroup !== $isCheckboxGroup;
+            } else {
+                $onRemovedField = !isset($fieldMap[$fieldname]);
+            }
+            $toRemovedField = preg_match($ownField, (string) $condition['value'], $matches)
+                && !isset($fieldMap[$matches[1]]);
+            if ($onRemovedField || $toRemovedField) {
+                $removed[(int) $condition['cid']] = (int) $condition['qid'];
+            }
+        }
+        if (!empty($removed)) {
+            Condition::model()->deleteByPk(array_keys($removed));
+        }
+        return array_values(array_unique($removed));
+    }
+
+    /**
+     * Checks that createFieldMap() includes the question: It only reads questions and
+     * groups that have a text in the base language of the survey.
+     *
+     * @param Question $question The question
+     * @return bool True if the field map includes the question
+     */
+    private function isInFieldMap(Question $question): bool
+    {
+        $language = (string) $question->survey->language;
+        return \QuestionL10n::model()->exists(
+            'qid = :qid AND language = :language',
+            [':qid' => (int) $question->qid, ':language' => $language]
+        ) && \QuestionGroupL10n::model()->exists(
+            'gid = :gid AND language = :language',
+            [':gid' => (int) $question->gid, ':language' => $language]
+        );
+    }
+
+    /**
+     * Rebuilds the relevance of the questions whose conditions were deleted.
+     *
+     * @param int[] $questionIds The questions whose conditions were deleted
+     * @return void
+     */
+    private function rebuildDependentRelevance(array $questionIds): void
+    {
+        if (empty($questionIds)) {
+            return;
+        }
+        // Without conditions left, the upgrade keeps the old relevance: Reset it for all of them
+        // in one statement, as RevertUpgradeConditionsToRelevance() would
+        $this->yiiApp->db->createCommand()->update(
+            '{{questions}}',
+            ['relevance' => '1'],
+            [
+                'and',
+                ['in', 'qid', $questionIds],
+                'NOT EXISTS (SELECT 1 FROM {{conditions}} c WHERE c.qid = {{questions}}.qid)',
+            ]
+        );
         // The relevance is built from the conditions of one question at a time
-        foreach ($dependentQuestionIds as $qid) {
+        foreach ($questionIds as $qid) {
             LimeExpressionManager::UpgradeConditionsToRelevance(null, $qid);
         }
-        return $dependentQuestionIds;
     }
 
     /**
