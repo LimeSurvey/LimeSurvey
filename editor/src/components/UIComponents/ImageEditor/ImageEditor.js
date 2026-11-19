@@ -79,6 +79,8 @@ const getInitialSettings = (settings, naturalSize) => {
  * @param {boolean} isLocked whether the aspect ratio is locked, shown with a
  *   highlighted border
  * @param {string} className extra class of the wrapper, e.g. for styling
+ * @param {boolean} disabled whether the input is disabled, e.g. while the
+ *   image is loading
  * @returns {JSX.Element} the labelled input
  */
 const FrameSizeInput = ({
@@ -89,6 +91,7 @@ const FrameSizeInput = ({
   inputRef,
   isLocked = false,
   className = '',
+  disabled = false,
 }) => {
   const [draft, setDraft] = useState(null)
 
@@ -125,6 +128,7 @@ const FrameSizeInput = ({
         value={draft ?? value}
         onChange={handleChange}
         onBlur={handleBlur}
+        disabled={disabled}
       />
     </div>
   )
@@ -156,6 +160,9 @@ const BlurryWarning = ({ text, className = '', ...props }) => (
  * Modal to set how an image is displayed: Frame size, position and zoom of the
  * image inside the frame, corner radius and alt text. The image file itself is
  * not changed: The settings are applied with CSS when the image is shown.
+ * The frame size, Reset and Save are only enabled once the image has loaded:
+ * The default frame and the crop depend on its size. An image that can't be
+ * loaded can't be saved.
  *
  * @param {boolean} showModal whether the modal is shown
  * @param {Function} onClose called when the modal is closed without saving
@@ -182,7 +189,12 @@ export const ImageEditor = ({
   const editorRef = useRef(null)
   const widthInputRef = useRef(null)
   const idPrefix = useId()
+  const cancelButtonRef = useRef(null)
   const [naturalSize, setNaturalSize] = useState(null)
+  // The preview loads the image itself: Its crop is only known once it has.
+  // Both are kept with the URL they belong to, so a new image starts over.
+  const [previewLoadedUrl, setPreviewLoadedUrl] = useState(null)
+  const [loadErrorUrl, setLoadErrorUrl] = useState(null)
   const [fileSize, setFileSize] = useState(null)
   const [current, setCurrent] = useState(() =>
     getInitialSettings(settings, null)
@@ -199,8 +211,13 @@ export const ImageEditor = ({
       return
     }
     let cancelled = false
+    setNaturalSize(null)
     loadImageSize(imageUrl).then((size) => {
-      if (cancelled || !size) {
+      if (cancelled) {
+        return
+      }
+      if (!size) {
+        setLoadErrorUrl(imageUrl)
         return
       }
       setNaturalSize(size)
@@ -238,6 +255,42 @@ export const ImageEditor = ({
     }
   }, [showModal])
 
+  const hasLoadError = loadErrorUrl === imageUrl
+  const isImageReady =
+    !!naturalSize && previewLoadedUrl === imageUrl && !hasLoadError
+  const isImageLoading = !isImageReady && !hasLoadError
+
+  /**
+   * Moves the focus to an element of the modal, unless the user has already
+   * focused a field of it, e.g. the alt text while the image was loading.
+   *
+   * @param {Object} elementRef ref to the element to focus
+   * @returns {void}
+   */
+  const focusUnlessBusy = (elementRef) => {
+    const active = document.activeElement
+    if (
+      !active ||
+      active === document.body ||
+      active.classList.contains('modal')
+    ) {
+      elementRef.current?.focus()
+    }
+  }
+
+  // The width input is disabled while the image loads: Focus it once it is
+  // ready, or Cancel when the image can't be loaded.
+  useEffect(() => {
+    if (!showModal) {
+      return
+    }
+    if (isImageReady) {
+      focusUnlessBusy(widthInputRef)
+    } else if (hasLoadError) {
+      focusUnlessBusy(cancelButtonRef)
+    }
+  }, [isImageReady, hasLoadError])
+
   const maxRadius = Math.floor(Math.min(current.width, current.height) / 2)
   const radius = Math.min(current.radius, maxRadius)
 
@@ -263,7 +316,9 @@ export const ImageEditor = ({
     current,
     current.zoom
   )
-  const isMovable = movableAxes.horizontal || movableAxes.vertical
+  // Nothing can be moved before the image has loaded.
+  const isMovable =
+    isImageReady && (movableAxes.horizontal || movableAxes.vertical)
   // Also needed while the image isn't blurry, to reserve the warning's space.
   const blurryWarningText = format(
     t(
@@ -311,6 +366,9 @@ export const ImageEditor = ({
   }
 
   const handleSave = () => {
+    if (!isImageReady) {
+      return
+    }
     const rect = editorRef.current?.getCroppingRect()
     const round = roundSetting
     // eslint-disable-next-line no-unused-vars
@@ -348,7 +406,13 @@ export const ImageEditor = ({
     <Modal
       show={showModal}
       onHide={onClose}
-      onEntered={() => widthInputRef.current?.focus()}
+      onEntered={() => {
+        if (isImageReady) {
+          widthInputRef.current?.focus()
+        } else if (hasLoadError) {
+          cancelButtonRef.current?.focus()
+        }
+      }}
       aria-labelledby={titleId}
       className="image-editor-modal"
       dialogClassName="image-editor-dialog"
@@ -368,12 +432,38 @@ export const ImageEditor = ({
                 one) starts level with the labels of the width and height
                 inputs. */}
             <div
-              className="d-flex align-items-start justify-content-center"
+              className="d-flex align-items-start justify-content-center position-relative"
               style={{
                 width: PREVIEW_AREA_WIDTH,
                 height: PREVIEW_AREA_HEIGHT,
               }}
             >
+              <div
+                className="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center pe-none"
+                aria-live="polite"
+                data-testid="image-editor-status"
+              >
+                {isImageLoading && (
+                  <span className="d-flex align-items-center gap-2 text-muted">
+                    <span
+                      className="spinner-border spinner-border-sm"
+                      aria-hidden="true"
+                    />
+                    {t('Loading...')}
+                  </span>
+                )}
+              </div>
+              {hasLoadError && (
+                <div className="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center pe-none">
+                  <div
+                    className="alert alert-outline-danger mb-0"
+                    role="alert"
+                    data-testid="image-editor-load-error"
+                  >
+                    {t('The image could not be loaded.')}
+                  </div>
+                </div>
+              )}
               <AvatarEditor
                 ref={editorRef}
                 image={imageUrl}
@@ -388,6 +478,8 @@ export const ImageEditor = ({
                 onPositionChange={({ x, y }) =>
                   update({ positionX: x, positionY: y })
                 }
+                onLoadSuccess={() => setPreviewLoadedUrl(imageUrl)}
+                onLoadFailure={() => setLoadErrorUrl(imageUrl)}
               />
             </div>
             {naturalSize && (
@@ -438,7 +530,9 @@ export const ImageEditor = ({
             <div
               className={classNames(
                 'image-editor-frame-size d-flex gap-3 align-items-end',
-                { locked: current.keepRatio }
+                // Disabled while the image loads: The locked style would
+                // otherwise make the inputs look active.
+                { 'locked': current.keepRatio, 'opacity-50': !isImageReady }
               )}
               data-testid="image-editor-frame-size"
             >
@@ -449,6 +543,7 @@ export const ImageEditor = ({
                 onCommit={(value) => handleFrameChange('width', value)}
                 inputRef={widthInputRef}
                 isLocked={current.keepRatio}
+                disabled={!isImageReady}
               />
               <FrameSizeInput
                 id={`${idPrefix}-height`}
@@ -457,6 +552,7 @@ export const ImageEditor = ({
                 onCommit={(value) => handleFrameChange('height', value)}
                 isLocked={current.keepRatio}
                 className="image-editor-frame-height"
+                disabled={!isImageReady}
               />
               <TooltipContainer tip={ratioLockTip} placement="right">
                 <Button
@@ -467,6 +563,7 @@ export const ImageEditor = ({
                   aria-label={t('Keep aspect ratio')}
                   aria-pressed={current.keepRatio}
                   data-testid="image-editor-ratio-lock"
+                  disabled={!isImageReady}
                   onClick={() => update({ keepRatio: !current.keepRatio })}
                 >
                   <AspectRatioIcon />
@@ -532,14 +629,22 @@ export const ImageEditor = ({
         </div>
       </Modal.Body>
       <Modal.Footer className="justify-content-between">
-        <Button variant="outline-secondary" onClick={handleReset}>
+        <Button
+          variant="outline-secondary"
+          onClick={handleReset}
+          disabled={!isImageReady}
+        >
           {t('Reset')}
         </Button>
         <div className="d-flex gap-2">
-          <Button variant="secondary" onClick={onClose}>
+          <Button variant="secondary" onClick={onClose} ref={cancelButtonRef}>
             {t('Cancel')}
           </Button>
-          <Button variant="primary" onClick={handleSave}>
+          <Button
+            variant="primary"
+            onClick={handleSave}
+            disabled={!isImageReady}
+          >
             {t('Save')}
           </Button>
         </div>

@@ -2,18 +2,33 @@
 import 'tests/mocks'
 
 import React from 'react'
-import { screen, waitFor } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { renderWithProviders } from 'tests/testUtils'
 import { ImageEditor } from './ImageEditor'
 
-// jsdom has no canvas: Replace the editor by a stub that reports its props.
+// How the images load: 'load' right away, 'fail', or 'wait' until the test
+// calls the functions in mockPendingLoads.
+let mockImageLoad = 'load'
+const mockPendingLoads = []
+
+// jsdom has no canvas: Replace the editor by a stub that reports its props and
+// loads its image like the Image mock below.
 jest.mock('react-avatar-editor', () => {
   const React = require('react')
   const AvatarEditorMock = React.forwardRef((props, ref) => {
     React.useImperativeHandle(ref, () => ({
       getCroppingRect: () => ({ x: 0.125, y: 0, width: 0.75, height: 1 }),
     }))
+    React.useEffect(() => {
+      if (mockImageLoad === 'fail') {
+        props.onLoadFailure?.()
+      } else if (mockImageLoad === 'wait') {
+        mockPendingLoads.push(() => props.onLoadSuccess?.())
+      } else {
+        props.onLoadSuccess?.()
+      }
+    }, [props.image])
     return (
       <button
         type="button"
@@ -33,12 +48,18 @@ jest.mock('react-avatar-editor', () => {
 const IMAGE_URL = '/upload/surveys/1/images/lime.jpg'
 
 beforeAll(() => {
-  // jsdom does not load images: Report a 400×300 image right away.
+  // jsdom does not load images: Report a 400×300 image, see mockImageLoad.
   global.Image = class {
     set src(value) {
       this.naturalWidth = 400
       this.naturalHeight = 300
-      setTimeout(() => this.onload && this.onload(), 0)
+      if (mockImageLoad === 'fail') {
+        setTimeout(() => this.onerror && this.onerror(), 0)
+      } else if (mockImageLoad === 'wait') {
+        mockPendingLoads.push(() => this.onload && this.onload())
+      } else {
+        setTimeout(() => this.onload && this.onload(), 0)
+      }
     }
   }
   global.fetch = jest.fn(() =>
@@ -61,10 +82,69 @@ const renderEditor = async (props = {}) => {
   await waitFor(() =>
     expect(screen.getByLabelText('Width (px)')).toHaveValue(400)
   )
+  await waitFor(() =>
+    expect(screen.getByRole('button', { name: 'Save' })).toBeEnabled()
+  )
   return onSave
 }
 
 describe('ImageEditor', () => {
+  afterEach(() => {
+    mockImageLoad = 'load'
+    mockPendingLoads.splice(0)
+  })
+
+  test('Frame size, Reset and Save wait until the image has loaded', async () => {
+    mockImageLoad = 'wait'
+    const onSave = jest.fn()
+    await renderWithProviders(
+      <ImageEditor showModal={true} imageUrl={IMAGE_URL} onSave={onSave} />
+    )
+
+    const save = screen.getByRole('button', { name: 'Save' })
+    expect(screen.getByTestId('image-editor-status')).toHaveTextContent(
+      'Loading...'
+    )
+    expect(save).toBeDisabled()
+    expect(screen.getByRole('button', { name: 'Reset' })).toBeDisabled()
+    expect(screen.getByLabelText('Width (px)')).toBeDisabled()
+    expect(screen.getByLabelText('Height (px)')).toBeDisabled()
+    expect(screen.getByTestId('image-editor-ratio-lock')).toBeDisabled()
+    // The alt text can already be entered.
+    expect(screen.getByLabelText('Alt text')).toBeEnabled()
+
+    await act(async () => mockPendingLoads.splice(0).forEach((load) => load()))
+
+    await waitFor(() => expect(save).toBeEnabled())
+    expect(screen.getByTestId('image-editor-status')).toHaveTextContent('')
+    expect(screen.getByLabelText('Width (px)')).toHaveValue(400)
+    expect(screen.getByLabelText('Width (px)')).toBeEnabled()
+    await userEvent.click(save)
+    expect(onSave).toHaveBeenCalledWith(
+      expect.objectContaining({
+        width: 400,
+        height: 300,
+        crop: { x: 0.125, y: 0, width: 0.75, height: 1 },
+      })
+    )
+  })
+
+  test("An image that can't be loaded can't be saved", async () => {
+    mockImageLoad = 'fail'
+    const onSave = jest.fn()
+    await renderWithProviders(
+      <ImageEditor showModal={true} imageUrl={IMAGE_URL} onSave={onSave} />
+    )
+
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      'The image could not be loaded.'
+    )
+    expect(screen.getByRole('button', { name: 'Save' })).toBeDisabled()
+    expect(screen.getByLabelText('Width (px)')).toBeDisabled()
+    expect(screen.getByRole('button', { name: 'Cancel' })).toBeEnabled()
+    expect(screen.getByTestId('image-editor-status')).toHaveTextContent('')
+  })
+
   test('Starts with the natural image size and shows the source info', async () => {
     await renderEditor()
 
