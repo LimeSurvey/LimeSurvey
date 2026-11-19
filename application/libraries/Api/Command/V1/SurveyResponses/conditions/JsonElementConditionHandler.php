@@ -12,17 +12,10 @@ use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\HandlerInterface;
 class JsonElementConditionHandler implements HandlerInterface, SurveyContextAwareInterface
 {
     use ConditionHandlerHelperTrait;
+    use SurveyResponseColumnTrait;
 
     /** A column that cannot hold JSON has no element to match. */
     private const NO_MATCH = '1=0';
-
-    /** Set by the builder; needed only to read a column's storage type. */
-    private ?int $surveyId = null;
-
-    public function setSurveyId(?int $surveyId): void
-    {
-        $this->surveyId = $surveyId;
-    }
 
     public function canHandle(string $operation): bool
     {
@@ -99,22 +92,13 @@ class JsonElementConditionHandler implements HandlerInterface, SurveyContextAwar
      * to ask: the other drivers guard per row inside the condition itself.
      *
      * Mirrors ResponseAggregateBatch::isJsonColumn().
+     *
+     * @param string $field Column name, optionally prefixed with a table alias
+     * @return bool
      */
     protected function isJsonColumn(string $field): bool
     {
-        if ($this->surveyId === null) {
-            return false;
-        }
-
-        $dot = strrpos($field, '.');
-        if ($dot !== false) {
-            $field = substr($field, $dot + 1);
-        }
-
-        // SurveyDynamic::model() keeps the previous survey's table when this survey doesn't exist
-        $table = App()->db->schema->getTable('{{responses_' . $this->surveyId . '}}');
-        $column = $table === null ? null : $table->getColumn($field);
-
+        $column = $this->responseColumn($field);
         return $column !== null && preg_match('/^jsonb?$/i', (string) $column->dbType) === 1;
     }
 }

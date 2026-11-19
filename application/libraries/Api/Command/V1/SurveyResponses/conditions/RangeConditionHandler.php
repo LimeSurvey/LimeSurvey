@@ -9,14 +9,7 @@ use LimeSurvey\Models\Services\ResponseFilters\NumericRangeSql;
 class RangeConditionHandler implements HandlerInterface, SurveyContextAwareInterface
 {
     use ConditionHandlerHelperTrait;
-
-    /** Set by the builder; needed only to read a column's storage type. */
-    private ?int $surveyId = null;
-
-    public function setSurveyId(?int $surveyId): void
-    {
-        $this->surveyId = $surveyId;
-    }
+    use SurveyResponseColumnTrait;
 
     public function canHandle(string $operation): bool
     {
@@ -78,22 +71,13 @@ class RangeConditionHandler implements HandlerInterface, SurveyContextAwareInter
     /**
      * Whether the response column is an integer. Without the survey the type
      * is unknown, and the guarded expression is used.
+     *
+     * @param string $field Column name, optionally prefixed with a table alias
+     * @return bool
      */
     protected function isIntegerColumn(string $field): bool
     {
-        if ($this->surveyId === null) {
-            return false;
-        }
-
-        $dot = strrpos($field, '.');
-        if ($dot !== false) {
-            $field = substr($field, $dot + 1);
-        }
-
-        // SurveyDynamic::model() keeps the previous survey's table when this survey doesn't exist
-        $table = App()->db->schema->getTable('{{responses_' . $this->surveyId . '}}');
-        $column = $table === null ? null : $table->getColumn($field);
-
+        $column = $this->responseColumn($field);
         return $column !== null && $column->type === 'integer';
     }
 
