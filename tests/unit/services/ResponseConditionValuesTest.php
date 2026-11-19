@@ -137,10 +137,10 @@ class ResponseConditionValuesTest extends TestCase
 
     public function testKeyAllowlist(): void
     {
-        foreach (['Q12', 'Q12_S3', '123X4X5', '123X4X5SQ001', 'quotaExit', 'id', 'submitdate', 'startdate', 'datestamp', 'lastpage'] as $key) {
+        foreach (['Q12', 'Q12_S3', '123X4X5', '123X4X5SQ001', 'Q12_S3#0', 'Q12_S3#1', 'quotaExit', 'id', 'submitdate', 'startdate', 'datestamp', 'lastpage'] as $key) {
             $this->assertTrue(V::isAllowedKey($key), $key);
         }
-        foreach (['token', 'ipaddr', 'refurl', 'seed', 'startlanguage', 'Q12; DROP', '', 'q'] as $key) {
+        foreach (['token', 'ipaddr', 'refurl', 'seed', 'startlanguage', 'Q12; DROP', '', 'q', 'Q12_S3#2', 'Q12#0#1'] as $key) {
             $this->assertFalse(V::isAllowedKey($key), $key);
         }
         $this->assertTrue(V::isTokenKey(' Token '));

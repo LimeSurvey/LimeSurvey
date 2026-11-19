@@ -27,7 +27,7 @@ final class ResponseConditionValues
      */
     public const SAFE_META_COLUMNS = ['id', 'submitdate', 'startdate', 'datestamp', 'lastpage'];
 
-    private const QUESTION_COLUMN_PATTERN = '/^(Q\d+(_[A-Za-z0-9]+)*|\d+X\d+X\d+[A-Za-z0-9_#]*)$/';
+    private const QUESTION_COLUMN_PATTERN = '/^(Q\d+(_[A-Za-z0-9]+)*(#[01])?|\d+X\d+X\d+[A-Za-z0-9_#]*)$/';
 
     public static function isTokenKey(string $key): bool
     {
