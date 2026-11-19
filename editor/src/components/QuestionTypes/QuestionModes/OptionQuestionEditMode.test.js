@@ -337,4 +337,49 @@ describe('OptionQuestionEditMode image option settings', () => {
       A2: 'Second',
     })
   })
+
+  test('Each saved option keeps the file name of its own image', async () => {
+    const handleUpdate = jest.fn()
+    const { savePromise } = await startApplyToAllSave(handleUpdate)
+    await finishImageLoads(savePromise)
+
+    const { attributes } = handleUpdate.mock.calls.at(-1)[0]
+    const savedSettings = JSON.parse(attributes.image_option_settings.en)
+    expect(savedSettings.A1.image).toBe('A1.png')
+    expect(savedSettings.A2.image).toBe('A2.png')
+    expect(savedSettings.A3.image).toBe('A3.png')
+  })
+
+  test('Settings saved for another image are not shown', async () => {
+    await renderWithProviders(
+      <Harness
+        handleUpdate={jest.fn()}
+        initialQuestion={{
+          qid: 1,
+          questionThemeName:
+            getQuestionTypeInfo().SINGLE_CHOICE_IMAGE_SELECT.theme,
+          attributes: {
+            image_option_settings: {
+              en: JSON.stringify({
+                A1: { ...settings, image: 'A1.png' },
+                A2: { ...settings, image: 'old.png' },
+              }),
+            },
+            image_option_alt: {
+              en: JSON.stringify({ A1: 'First', A2: 'Second' }),
+            },
+          },
+          answers: [getAnswer(1, 'A1'), getAnswer(2, 'A2')],
+        }}
+      />
+    )
+
+    expect(mockImageChoiceProps.A1.imageSettings).toEqual({
+      ...settings,
+      image: 'A1.png',
+    })
+    expect(mockImageChoiceProps.A1.imageAltText).toBe('First')
+    expect(mockImageChoiceProps.A2.imageSettings).toBeNull()
+    expect(mockImageChoiceProps.A2.imageAltText).toBe('')
+  })
 })

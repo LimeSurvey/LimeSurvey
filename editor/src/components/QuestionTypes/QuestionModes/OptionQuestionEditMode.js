@@ -31,10 +31,12 @@ import {
 } from 'components/UIComponents/ImageEditor/imageEditorUtils'
 import {
   applyAttributeChanges,
+  getImageOptionForImage,
   getImageOptionLanguageMaps,
   getImageOptionSaveChanges,
   getImageOptionSettings,
   getImageSelectThemes,
+  withImageFileName,
 } from '../imageOptionSettings'
 
 /**
@@ -194,7 +196,12 @@ export const OptionQuestionEditMode = ({
               settings: applyImageSettings(
                 settings,
                 naturalSize,
-                getImageOptionSettings(attributes, child[codeKey], language)
+                getImageOptionSettings(
+                  attributes,
+                  child[codeKey],
+                  language,
+                  imagePath
+                )
               ),
             }
           }
@@ -240,7 +247,10 @@ export const OptionQuestionEditMode = ({
       const childCode = child[codeKey]
       const other = otherSettings[childCode]
       if (other && getImagePath(child) === other.imagePath) {
-        validOtherSettings[childCode] = other.settings
+        validOtherSettings[childCode] = withImageFileName(
+          other.settings,
+          other.imagePath
+        )
       }
       if (childCode === code || validOtherSettings[childCode]) {
         sameImageLanguages[childCode] = getSameImageLanguages(child)
@@ -248,7 +258,7 @@ export const OptionQuestionEditMode = ({
     })
     const changes = getImageOptionSaveChanges(currentQuestion.attributes, {
       code,
-      settings,
+      settings: withImageFileName(settings, editedImagePath),
       altText,
       language,
       codes,
@@ -298,20 +308,29 @@ export const OptionQuestionEditMode = ({
   )
 
   /**
-   * Returns the image settings props of an option for ImageChoice.
+   * Returns the image settings props of an option for ImageChoice. Settings
+   * saved for another image of the option are left out.
    *
-   * @param {string} code the option code
+   * @param {Object} child the answer or subquestion
    * @returns {Object} the props, empty for themes without images
    */
-  const getImageOptionProps = (code) =>
-    imageOptionMaps
-      ? {
-          imageSettings: imageOptionMaps.settings[code] ?? null,
-          imageAltText: imageOptionMaps.altTexts[code] ?? '',
-          onImageSettingsSave: (imageSettings) =>
-            handleImageOptionSave(code, imageSettings),
-        }
-      : {}
+  const getImageOptionProps = (child) => {
+    if (!imageOptionMaps) {
+      return {}
+    }
+    const code = child[codeKey]
+    const { settings, altText } = getImageOptionForImage(
+      imageOptionMaps,
+      code,
+      getImagePath(child)
+    )
+    return {
+      imageSettings: settings,
+      imageAltText: altText,
+      onImageSettingsSave: (imageSettings) =>
+        handleImageOptionSave(code, imageSettings),
+    }
+  }
 
   return (
     <div>
@@ -421,9 +440,7 @@ export const OptionQuestionEditMode = ({
                         hasTempId(child[childrenInfo.idKey]) && !isTitleFocused
                       }
                       showToolbar={true}
-                      {...getImageOptionProps(
-                        isSingleChoiceTheme ? child.code : child.title
-                      )}
+                      {...getImageOptionProps(child)}
                     />
                   </div>
                   {showAssessmentValue && (

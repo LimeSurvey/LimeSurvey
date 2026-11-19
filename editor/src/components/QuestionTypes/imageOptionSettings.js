@@ -4,8 +4,12 @@ import { getQuestionTypeInfo } from './getQuestionTypeInfo'
 // attributes of the parent question. Both hold a JSON object keyed by the option
 // code (answer code or subquestion title), so that export, import and copy keep
 // them without any ID mapping. Both are translated, one JSON object per
-// language, because each language can have its own image.
-// Frame, position, zoom, radius and crop per option.
+// language, because each language can have its own image. The settings also
+// hold the file name of the image they were made for (image): When the option
+// shows another image, e.g. replaced in the classic editor or a reused code,
+// the settings and the alt text no longer apply. Only the file name counts,
+// because import rewrites the folder and host of the image URL.
+// Frame, position, zoom, radius, crop and image file name per option.
 export const IMAGE_OPTION_SETTINGS_ATTRIBUTE = 'image_option_settings'
 // Alt text per option.
 export const IMAGE_OPTION_ALT_ATTRIBUTE = 'image_option_alt'
@@ -49,7 +53,9 @@ const stringifyOptionMap = (map) =>
   Object.keys(map).length ? JSON.stringify(map) : ''
 
 /**
- * Returns the option maps of an attribute for all its languages.
+ * Returns the option maps of an attribute for all its languages. A value
+ * without language (stored before the attribute was translated) is left out:
+ * It is never read, and the API can't update it together with languages.
  *
  * @param {Object} attributes the question attributes
  * @param {string} attributeName name of the attribute
@@ -61,10 +67,9 @@ const getOptionMaps = (attributes, attributeName) => {
     return {}
   }
   return Object.fromEntries(
-    Object.entries(values).map(([language, json]) => [
-      language,
-      parseOptionMap(json),
-    ])
+    Object.entries(values)
+      .filter(([language]) => language !== '')
+      .map(([language, json]) => [language, parseOptionMap(json)])
   )
 }
 
@@ -141,27 +146,89 @@ export const getImageOptionLanguageMaps = (attributes, language) => ({
 })
 
 /**
- * Returns the saved image settings of an option in a language.
+ * Returns the file name of an image path, without folder, query and fragment.
+ * The survey themes compare it the same way, see rows/answer_image.twig.
  *
- * @param {Object} attributes the question attributes
- * @param {string} code the option code
- * @param {string} language the language code
- * @returns {Object|null} the settings (see ImageEditor's onSave, without the
- *   alt text), or null when none were saved
+ * @param {string|undefined} imagePath the image path or URL of an option
+ * @returns {string} the file name, or an empty string without a path
  */
-export const getImageOptionSettings = (attributes, code, language) =>
-  getImageOptionLanguageMaps(attributes, language).settings[code] ?? null
+export const getImageFileName = (imagePath) =>
+  typeof imagePath === 'string'
+    ? imagePath.split('?')[0].split('#')[0].split('/').pop().trim()
+    : ''
 
 /**
- * Returns the saved alt text of an option in a language.
+ * Adds the file name of the image to the settings of an option, see
+ * getImageOptionForImage().
+ *
+ * @param {Object} settings the image settings of the option
+ * @param {string} imagePath the image path the settings were made for
+ * @returns {Object} the settings with the image file name
+ */
+export const withImageFileName = (settings, imagePath) => ({
+  ...settings,
+  image: getImageFileName(imagePath),
+})
+
+/**
+ * Returns the image settings and the alt text of an option from the maps of
+ * one language, see getImageOptionLanguageMaps(). Both are only returned when
+ * they were saved for the image the option shows now.
+ *
+ * @param {{settings: Object, altTexts: Object}} maps the maps of the language
+ * @param {string} code the option code
+ * @param {string|undefined} imagePath the image path the option shows now
+ * @returns {{settings: Object|null, altText: string}} the settings (see
+ *   ImageEditor's onSave, without the alt text), or null when none apply, and
+ *   the alt text, or an empty string
+ */
+export const getImageOptionForImage = (maps, code, imagePath) => {
+  const settings = maps?.settings?.[code]
+  const fileName = getImageFileName(imagePath)
+  if (!fileName || !settings || settings.image !== fileName) {
+    return { settings: null, altText: '' }
+  }
+  const altText = maps.altTexts?.[code]
+  return {
+    settings,
+    altText: typeof altText === 'string' ? altText : '',
+  }
+}
+
+/**
+ * Returns the saved image settings of an option in a language, when they
+ * were saved for the image the option shows now.
  *
  * @param {Object} attributes the question attributes
  * @param {string} code the option code
  * @param {string} language the language code
+ * @param {string|undefined} imagePath the image path the option shows now
+ * @returns {Object|null} the settings (see ImageEditor's onSave, without the
+ *   alt text), or null when none apply
+ */
+export const getImageOptionSettings = (attributes, code, language, imagePath) =>
+  getImageOptionForImage(
+    getImageOptionLanguageMaps(attributes, language),
+    code,
+    imagePath
+  ).settings
+
+/**
+ * Returns the saved alt text of an option in a language, when it was saved
+ * for the image the option shows now.
+ *
+ * @param {Object} attributes the question attributes
+ * @param {string} code the option code
+ * @param {string} language the language code
+ * @param {string|undefined} imagePath the image path the option shows now
  * @returns {string} the alt text, or an empty string
  */
-export const getImageOptionAltText = (attributes, code, language) =>
-  getImageOptionLanguageMaps(attributes, language).altTexts[code] ?? ''
+export const getImageOptionAltText = (attributes, code, language, imagePath) =>
+  getImageOptionForImage(
+    getImageOptionLanguageMaps(attributes, language),
+    code,
+    imagePath
+  ).altText
 
 /**
  * Builds the attribute changes for saving the image settings and alt text of
@@ -173,12 +240,13 @@ export const getImageOptionAltText = (attributes, code, language) =>
  * @param {Object} attributes the question attributes
  * @param {Object} params
  * @param {string} params.code the option code
- * @param {Object} params.settings the image settings of the option
+ * @param {Object} params.settings the image settings of the option, with the
+ *   image file name (see withImageFileName())
  * @param {string} params.altText the alt text in the given language
  * @param {string} params.language the language the image was edited in
  * @param {string[]} params.codes the codes of all existing options
  * @param {Object} params.otherSettings image settings of other options keyed
- *   by code, their alt texts stay as they are
+ *   by code, each with its image file name, their alt texts stay as they are
  * @param {Object} params.sameImageLanguages keyed by option code: the other
  *   languages in which the option has the same image as in the language
  * @returns {Object} the changed values keyed by attribute and language

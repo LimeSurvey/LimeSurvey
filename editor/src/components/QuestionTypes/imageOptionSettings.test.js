@@ -3,15 +3,21 @@ import {
   IMAGE_OPTION_SETTINGS_ATTRIBUTE,
   applyAttributeChanges,
   getImageOptionAltText,
+  getImageFileName,
   getImageOptionDeleteChanges,
+  getImageOptionForImage,
+  getImageOptionLanguageMaps,
   getImageOptionRenameChanges,
   getImageOptionResetChanges,
   getImageOptionSaveChanges,
   getImageOptionSettings,
+  withImageFileName,
 } from './imageOptionSettings'
 
-const settingsA1 = { width: 400, height: 300, zoom: 1 }
-const settingsA2 = { width: 200, height: 200, zoom: 2 }
+const imageA1 = 'https://example.org/upload/surveys/1/images/lime.png'
+const imageA2 = '/upload/surveys/1/images/lemon.png'
+const settingsA1 = { width: 400, height: 300, zoom: 1, image: 'lime.png' }
+const settingsA2 = { width: 200, height: 200, zoom: 2, image: 'lemon.png' }
 
 const attributes = {
   other: { '': 'N' },
@@ -30,30 +36,80 @@ const parse = (changes, attributeName, language) =>
 
 describe('imageOptionSettings', () => {
   test('Reads settings and alt text by code and language', () => {
-    expect(getImageOptionSettings(attributes, 'A1', 'en')).toEqual(settingsA1)
-    expect(getImageOptionSettings(attributes, 'A2', 'en')).toEqual(settingsA2)
-    expect(getImageOptionSettings(attributes, 'A2', 'de')).toBeNull()
-    expect(getImageOptionSettings(attributes, 'A3', 'en')).toBeNull()
-    expect(getImageOptionAltText(attributes, 'A1', 'de')).toBe('Limette')
-    expect(getImageOptionAltText(attributes, 'A2', 'de')).toBe('')
-    expect(getImageOptionAltText(attributes, 'A1', 'fr')).toBe('')
+    expect(getImageOptionSettings(attributes, 'A1', 'en', imageA1)).toEqual(
+      settingsA1
+    )
+    expect(getImageOptionSettings(attributes, 'A2', 'en', imageA2)).toEqual(
+      settingsA2
+    )
+    expect(getImageOptionSettings(attributes, 'A2', 'de', imageA2)).toBeNull()
+    expect(getImageOptionSettings(attributes, 'A3', 'en', imageA1)).toBeNull()
+    expect(getImageOptionAltText(attributes, 'A1', 'de', imageA1)).toBe(
+      'Limette'
+    )
+    expect(getImageOptionAltText(attributes, 'A2', 'de', imageA2)).toBe('')
+    expect(getImageOptionAltText(attributes, 'A1', 'fr', imageA1)).toBe('')
+  })
+
+  test('Settings and alt text saved for another image are ignored', () => {
+    const maps = getImageOptionLanguageMaps(attributes, 'en')
+
+    // Another file, e.g. replaced in the classic editor.
+    expect(
+      getImageOptionForImage(maps, 'A1', '/upload/surveys/1/images/lemon.png')
+    ).toEqual({ settings: null, altText: '' })
+    // No image.
+    expect(getImageOptionForImage(maps, 'A1', '')).toEqual({
+      settings: null,
+      altText: '',
+    })
+    // Settings saved without the file name of their image.
+    expect(
+      getImageOptionForImage(
+        { settings: { A1: { width: 400 } }, altTexts: { A1: 'Lime' } },
+        'A1',
+        imageA1
+      )
+    ).toEqual({ settings: null, altText: '' })
+    // The same file in another folder or on another host, as after import.
+    expect(
+      getImageOptionForImage(
+        maps,
+        'A1',
+        'https://other.example.com/upload/surveys/2/images/lime.png?v=2'
+      )
+    ).toEqual({ settings: settingsA1, altText: 'Lime' })
+  })
+
+  test('The image file name leaves out folder, query and fragment', () => {
+    expect(getImageFileName(imageA1)).toBe('lime.png')
+    expect(getImageFileName('/a/b/lime.png?x=1/2#top')).toBe('lime.png')
+    expect(getImageFileName('lime.png')).toBe('lime.png')
+    expect(getImageFileName('')).toBe('')
+    expect(getImageFileName(undefined)).toBe('')
+    expect(withImageFileName({ width: 1 }, imageA2)).toEqual({
+      width: 1,
+      image: 'lemon.png',
+    })
   })
 
   test('Reads nothing from missing or broken attributes', () => {
-    expect(getImageOptionSettings({}, 'A1', 'en')).toBeNull()
-    expect(getImageOptionSettings(undefined, 'A1', 'en')).toBeNull()
+    expect(getImageOptionSettings({}, 'A1', 'en', imageA1)).toBeNull()
+    expect(getImageOptionSettings(undefined, 'A1', 'en', imageA1)).toBeNull()
     expect(
       getImageOptionSettings(
         { [IMAGE_OPTION_SETTINGS_ATTRIBUTE]: { en: '{broken' } },
         'A1',
-        'en'
+        'en',
+        imageA1
       )
     ).toBeNull()
     expect(
       getImageOptionAltText(
         { [IMAGE_OPTION_ALT_ATTRIBUTE]: { en: '' } },
         'A1',
-        'en'
+        'en',
+        imageA1
       )
     ).toBe('')
   })
@@ -198,8 +254,46 @@ describe('imageOptionSettings', () => {
       )
     })
 
-    expect(getImageOptionSettings(current, 'X', 'de')).toEqual(settingsA1)
-    expect(getImageOptionAltText(current, 'X', 'de')).toBe('Limette')
+    expect(getImageOptionSettings(current, 'X', 'de', imageA1)).toEqual(
+      settingsA1
+    )
+    expect(getImageOptionAltText(current, 'X', 'de', imageA1)).toBe('Limette')
+  })
+
+  test('A value without language is never sent back', () => {
+    // Stored before the settings were translated.
+    const withOldValue = {
+      ...attributes,
+      [IMAGE_OPTION_SETTINGS_ATTRIBUTE]: {
+        '': JSON.stringify({ A1: { width: 1 } }),
+        ...attributes[IMAGE_OPTION_SETTINGS_ATTRIBUTE],
+      },
+    }
+    const saveChanges = getImageOptionSaveChanges(withOldValue, {
+      code: 'A1',
+      settings: settingsA1,
+      altText: 'Lime',
+      language: 'en',
+      codes: ['A2'],
+    })
+
+    expect(
+      Object.keys(saveChanges[IMAGE_OPTION_SETTINGS_ATTRIBUTE]).sort()
+    ).toEqual(['de', 'en'])
+    expect(
+      Object.keys(
+        getImageOptionRenameChanges(withOldValue, 'A1', 'B1')[
+          IMAGE_OPTION_SETTINGS_ATTRIBUTE
+        ]
+      ).sort()
+    ).toEqual(['de', 'en'])
+    expect(
+      Object.keys(
+        getImageOptionDeleteChanges(withOldValue, 'A1')[
+          IMAGE_OPTION_SETTINGS_ATTRIBUTE
+        ]
+      ).sort()
+    ).toEqual(['de', 'en'])
   })
 
   test('Deleting an option removes its settings and alt texts', () => {

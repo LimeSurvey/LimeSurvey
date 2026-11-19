@@ -25,7 +25,10 @@ import { getCommentedCheckboxOptions } from 'helpers/options'
 import { MultipleChoiceNumericalSubquestion } from '../MultipleChoice/MultipleChoiceNumericalSubquestion'
 import { cloneDeep } from 'lodash'
 import { singleChoiceThemes } from '../singleChoiceThemes'
-import { getImageOptionLanguageMaps } from '../imageOptionSettings'
+import {
+  getImageOptionForImage,
+  getImageOptionLanguageMaps,
+} from '../imageOptionSettings'
 
 const dropdownThemeComponents = [
   getQuestionTypeInfo().SINGLE_CHOICE_DROPDOWN.theme,
@@ -134,6 +137,23 @@ export const OptionQuestionViewMode = ({
     () => getImageOptionLanguageMaps(attributes, language),
     [attributes, language]
   )
+
+  /**
+   * Returns the image settings props of an option for ImageChoice: The image
+   * as set up in the image editor, unless the settings were saved for another
+   * image of the option.
+   *
+   * @param {Object} child the answer or subquestion
+   * @returns {{imageSettings: Object|null, imageAltText: string}} the props
+   */
+  const getImageOptionViewProps = (child) => {
+    const { settings, altText } = getImageOptionForImage(
+      imageOptionMaps,
+      child[childrenInfo.codeKey],
+      L10ns({ prop: childrenInfo.titleKey, language, l10ns: child.l10ns })
+    )
+    return { imageSettings: settings, imageAltText: altText }
+  }
 
   const isSingleChoiceButtons =
     questionThemeName === getQuestionTypeInfo().SINGLE_CHOICE_BUTTONS.theme
@@ -592,15 +612,7 @@ export const OptionQuestionViewMode = ({
                 disabled={ChildUiComponentToRender.name === contentEditorName}
                 isNoAnswer={child.isNoAnswer}
                 {...(ChildUiComponentToRender === ImageChoice
-                  ? {
-                      // Show the image as set up in the image editor.
-                      imageSettings:
-                        imageOptionMaps.settings[child[childrenInfo.codeKey]] ??
-                        null,
-                      imageAltText:
-                        imageOptionMaps.altTexts[child[childrenInfo.codeKey]] ??
-                        '',
-                    }
+                  ? getImageOptionViewProps(child)
                   : {})}
               />
               {isMultipleShortTexts && (

@@ -4,7 +4,10 @@
  *
  * Options edited with the image editor of the new editor have their own settings, stored by option code in the
  * question attributes image_option_settings (frame size, crop, corner radius) and image_option_alt (alt text),
- * both per language, because each language can have its own image.
+ * both per language, because each language can have its own image. The settings hold the file name of the image
+ * they were made for: When the option shows another image (replaced in the classic editor, or a reused code), its
+ * settings and alt text are ignored. Only the file name is compared, because import rewrites the folder and host of
+ * the image URL; the editor compares it the same way (getImageFileName() in imageOptionSettings.js).
  * They are only applied when the survey theme supports them: It marks the question container with the class
  * image-option-settings (fruity_twentythree and the themes extending it). Then they override the image settings
  * of the question (fix width, fix height, keep aspect ratio, crop or resize): The image is shown in a frame with
@@ -21,8 +24,15 @@
  */
 #}
 {% set imageNumber = '/^[0-9]+(\\.[0-9]+)?$/' %}
+{% set imageFileName = src|split('?')|first|split('#')|first|split('/')|last|trim %}
 {% set imageSettings = json_decode(questionAttributes.image_option_settings|default(''))[optionCode]|default({}) %}
-{% set imageAlt = json_decode(questionAttributes.image_option_alt|default(''))[optionCode]|default('') %}
+{% if imageFileName is empty or imageSettings.image|default('') is not same as(imageFileName) %}
+    {# Saved for another image of the option, or nothing saved #}
+    {% set imageSettings = {} %}
+    {% set imageAlt = '' %}
+{% else %}
+    {% set imageAlt = json_decode(questionAttributes.image_option_alt|default(''))[optionCode]|default('') %}
+{% endif %}
 {% set frameWidth = imageSettings.width|default('') %}
 {% set frameHeight = imageSettings.height|default('') %}
 {% set hasFrame = frameWidth matches imageNumber and frameHeight matches imageNumber and frameWidth > 0 and frameHeight > 0 %}
