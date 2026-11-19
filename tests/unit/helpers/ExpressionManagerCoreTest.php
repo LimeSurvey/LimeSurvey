@@ -177,6 +177,125 @@ class ExpressionManagerCoreTest extends TestBaseClass
     }
 
     /**
+     * Expressions using the variable Q1 of an irrelevant question, and their expected result.
+     * @return array
+     */
+    public function irrelevantVariableProvider(): array
+    {
+        return [
+            'variable is null'          => ['is_null(Q1)', true],
+            'regexMatch no match'       => ["regexMatch('/^[A-Za-z]+$/', Q1)", 0],
+            'regexMatch empty match'    => ["regexMatch('/^$/', Q1)", 1],
+            'is_int'                    => ['is_int(Q1)', 0],
+            'htmlspecialchars'          => ['htmlspecialchars(Q1)', ''],
+            'built-in string function'  => ['trim(Q1)', ''],
+            'built-in string parameter' => ["str_replace('a', 'b', Q1)", ''],
+            'built-in float parameter'  => ['number_format(Q1)', '0'],
+            'built-in int parameter'    => ["str_pad('a', Q1)", 'a'],
+            'numeric check kept'        => ['sqrt(Q1)', NAN],
+            'substr start'              => ["substr('abc', Q1)", 'abc'],
+        ];
+    }
+
+    /**
+     * Functions get null for a variable of an irrelevant question and must handle it like PHP did before 8.1, without deprecation notices.
+     *
+     * @see https://bugs.limesurvey.org/view.php?id=20867
+     * @dataProvider irrelevantVariableProvider
+     * @param string $expression
+     * @param mixed $expected
+     * @return void
+     */
+    public function testFunctionWithIrrelevantVariable(string $expression, $expected): void
+    {
+        $this->withKnownVars(
+            [
+                'Q1' => [
+                    'code' => 'abc',
+                    'sgqa' => '1X1X1',
+                    'qid' => 1,
+                    'gseq' => 0,
+                    'jsName' => 'java1X1X1',
+                    'jsName_on' => 'java1X1X1',
+                    'readWrite' => 'Y',
+                    'type' => 'S',
+                ],
+            ],
+            function () use ($expression, $expected) {
+                $em = new \ExpressionManager();
+                $this->assertTrue($em->RDP_Evaluate($expression), implode('; ', array_column($em->GetErrors(), 0)));
+                if (is_float($expected) && is_nan($expected)) {
+                    $this->assertNan($em->GetResult());
+                } else {
+                    $this->assertSame($expected, $em->GetResult());
+                }
+            }
+        );
+    }
+
+    /**
+     * A participant attribute that is NULL in the database is an empty value, without a "null as array offset" notice.
+     *
+     * @return void
+     */
+    public function testParticipantAttributeWithNullValue(): void
+    {
+        $this->withKnownVars(
+            [
+                'TOKEN:VALIDFROM' => [
+                    'code' => null,
+                    'jsName' => '',
+                    'jsName_on' => '',
+                    'readWrite' => 'N',
+                ],
+            ],
+            function () {
+                $em = new \ExpressionManager();
+                $this->assertTrue($em->RDP_Evaluate('TOKEN:VALIDFROM'), implode('; ', array_column($em->GetErrors(), 0)));
+                $this->assertSame('', $em->GetResult());
+            }
+        );
+    }
+
+    /**
+     * A function call PHP rejects with a TypeError is an expression error, whatever the number of arguments, instead of an error page.
+     *
+     * @return void
+     */
+    public function testFunctionTypeErrorIsExpressionError(): void
+    {
+        foreach (["number_format('abc')", "str_repeat('a', 'abc')", "substr('abc', 1, 'abc')"] as $expression) {
+            $em = new \ExpressionManager();
+            $this->assertFalse($em->RDP_Evaluate($expression), $expression);
+            $this->assertNotEmpty($em->GetErrors(), $expression);
+        }
+    }
+
+    /**
+     * Run $test with the expression manager knowing only $vars, inside a survey session without relevance information
+     * @param array $vars
+     * @param callable $test
+     * @return void
+     */
+    private function withKnownVars(array $vars, callable $test): void
+    {
+        \Yii::import('application.helpers.expressions.em_manager_helper', true);
+        $lem = \LimeExpressionManager::singleton();
+        $knownVars = new \ReflectionProperty($lem, 'knownVars');
+        $sessid = new \ReflectionProperty($lem, 'sessid');
+        $savedKnownVars = $knownVars->getValue($lem);
+        $savedSessid = $sessid->getValue($lem);
+        $lem->setKnownVars($vars);
+        $sessid->setValue($lem, 'survey_test');
+        try {
+            $test();
+        } finally {
+            $knownVars->setValue($lem, $savedKnownVars);
+            $sessid->setValue($lem, $savedSessid);
+        }
+    }
+
+    /**
      * @dataProvider expressionProvider
      */
     public function testExpressionEvaluation(string $varValue, string $expression, bool $expected): void
