@@ -1,6 +1,7 @@
 // Import shared mocks
 import 'tests/mocks'
 
+import { useState } from 'react'
 import { renderWithProviders } from 'tests/testUtils'
 import { DropZone } from './DropZone'
 import { act, screen } from '@testing-library/react'
@@ -12,6 +13,37 @@ beforeAll(() => {
   global.URL.createObjectURL = jest.fn(() => 'blob:mock-url')
   global.URL.revokeObjectURL = jest.fn()
 })
+
+let setTestIsEditing
+/**
+ * A dropzone whose edit button opens an editor, as in ImageChoice: The test
+ * closes it with setTestIsEditing(false).
+ *
+ * @returns {JSX.Element} the dropzone
+ */
+const EditableDropZone = () => {
+  const [isEditing, setIsEditing] = useState(false)
+  setTestIsEditing = setIsEditing
+  return (
+    <DropZone
+      previewUrlInit="/upload/surveys/1/images/a.png"
+      onEdit={() => setIsEditing(true)}
+      isEditing={isEditing}
+      imageName="A1"
+      buttonsBeside={true}
+    />
+  )
+}
+
+/**
+ * Renders EditableDropZone.
+ *
+ * @returns {Promise<HTMLElement>} its edit button
+ */
+const renderEditableDropZone = async () => {
+  await renderWithProviders(<EditableDropZone />)
+  return screen.getByRole('button', { name: 'Edit image A1', hidden: true })
+}
 
 describe('DropZone', () => {
   test('Should render DropZone with a label', async () => {
@@ -76,6 +108,31 @@ describe('DropZone', () => {
     expect(onEdit).toHaveBeenCalledTimes(1)
     // The click must not open the file dialog of the dropzone.
     expect(inputClick).not.toHaveBeenCalled()
+  })
+
+  test('The focus goes back to the edit button after editing with the keyboard', async () => {
+    const editButton = await renderEditableDropZone()
+
+    editButton.focus()
+    await userEvent.keyboard('{Enter}')
+    // The editor takes the focus while it is open.
+    act(() => editButton.blur())
+    expect(editButton.parentElement).not.toHaveClass('invisible')
+
+    act(() => setTestIsEditing(false))
+    expect(editButton).toHaveFocus()
+    expect(editButton.parentElement).not.toHaveClass('invisible')
+  })
+
+  test('After editing with the mouse, the buttons are hidden', async () => {
+    const editButton = await renderEditableDropZone()
+
+    await userEvent.click(editButton)
+    act(() => editButton.blur())
+    act(() => setTestIsEditing(false))
+
+    expect(editButton).not.toHaveFocus()
+    expect(editButton.parentElement).toHaveClass('invisible')
   })
 
   test('Should not show an edit button without onEdit', async () => {

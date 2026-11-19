@@ -182,6 +182,7 @@ export const ImageChoice = ({
                     ? () => setShowImageEditor(true)
                     : null
                 }
+                isEditing={showImageEditor}
                 imageName={code}
                 imageSettings={imageSettings}
                 imageAlt={imageAltText || 'Image Select List'}

@@ -1,6 +1,7 @@
 import React, {
   useCallback,
   useEffect,
+  useRef,
   useState,
   useImperativeHandle,
   forwardRef,
@@ -44,6 +45,10 @@ export const DropZone = forwardRef(
       trashIconEnabled = true,
       // When set, an edit button is shown next to the trash icon on hover.
       onEdit = null,
+      // Whether the editor opened by the edit button is open. When it was
+      // opened with the keyboard, the focus goes back to the edit button once
+      // it closes.
+      isEditing = false,
       // Name of the image (e.g. the option code), used to tell the buttons of
       // several dropzones apart for screen readers.
       imageName = '',
@@ -74,6 +79,10 @@ export const DropZone = forwardRef(
     // button from keyboard users.
     const [isHovered, setIsHovered] = useState(false)
     const [hasFocus, setHasFocus] = useState(false)
+    // The editor was opened with the keyboard: The buttons stay visible, so
+    // that the focus can go back to the edit button when the editor closes.
+    const [isKeyboardEdit, setIsKeyboardEdit] = useState(false)
+    const editButtonRef = useRef(null)
     const [previewUrl, setPreviewUrl] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
 
@@ -95,6 +104,15 @@ export const DropZone = forwardRef(
       onLoading(value)
       setIsLoading(value)
     }
+
+    // Hidden buttons can't take the focus back from the closed editor: Focus
+    // the edit button here, while it is still visible.
+    useEffect(() => {
+      if (!isEditing && isKeyboardEdit) {
+        editButtonRef.current?.focus()
+        setIsKeyboardEdit(false)
+      }
+    }, [isEditing])
 
     useEffect(() => {
       if (previewUrlInit || cleanPreviewOnInitValueChange) {
@@ -213,7 +231,9 @@ export const DropZone = forwardRef(
       onMouseLeave: handleOnMouseLeave,
     }
     const areButtonsShown =
-      !isLoading && (trashIconEnabled || !!onEdit) && (isHovered || hasFocus)
+      !isLoading &&
+      (trashIconEnabled || !!onEdit) &&
+      (isHovered || hasFocus || isKeyboardEdit)
 
     const imageButtons = (
       <div
@@ -237,10 +257,18 @@ export const DropZone = forwardRef(
                 : t('Edit image')
             }
             data-testid={`${dataTestId}-edit`}
+            ref={editButtonRef}
             onClick={(event) => {
               // Keep the click from opening the file dialog of the dropzone.
               event.stopPropagation()
-              hideImageButtons()
+              // Clicks from the keyboard have no click count. After a mouse
+              // click, the buttons are hidden: The editor covers the image, so
+              // the mouse leaving it isn't noticed.
+              if (event.detail === 0) {
+                setIsKeyboardEdit(true)
+              } else {
+                hideImageButtons()
+              }
               onEdit()
             }}
           >
