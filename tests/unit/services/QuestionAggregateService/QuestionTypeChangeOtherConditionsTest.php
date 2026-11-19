@@ -379,17 +379,15 @@ class QuestionTypeChangeOtherConditionsTest extends TestBaseClass
         $language = Survey::model()->findByPk(self::$surveyId)->language;
         $l10n = \QuestionL10n::model()->findByAttributes(['qid' => $q3->qid, 'language' => $language]);
         $this->assertNotNull($l10n);
-        $l10nAttributes = $l10n->getAttributes();
-        $l10n->delete();
+        // Move the text to another language and back: Reinserting it with its ID fails on SQL Server (identity column)
+        \QuestionL10n::model()->updateByPk($l10n->id, ['language' => 'xx']);
 
         try {
             DI::getContainer()->get(QuestionService::class)->save([
                 'question' => ['sid' => self::$surveyId, 'qid' => $q3->qid, 'type' => Question::QT_S_SHORT_FREE_TEXT],
             ]);
         } finally {
-            $restored = new \QuestionL10n();
-            $restored->setAttributes($l10nAttributes, false);
-            $restored->save(false);
+            \QuestionL10n::model()->updateByPk($l10n->id, ['language' => $language]);
         }
 
         $this->assertSame(Question::QT_S_SHORT_FREE_TEXT, $this->getQuestion('Q3')->type);
