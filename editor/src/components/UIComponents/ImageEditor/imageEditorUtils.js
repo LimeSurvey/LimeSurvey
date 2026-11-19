@@ -271,22 +271,3 @@ export const loadImageSize = (url) =>
     image.onerror = () => resolve(null)
     image.src = url
   })
-
-/**
- * Formats a file size in bytes for display, e.g. "5.8 MB".
- *
- * @param {number} bytes the file size in bytes
- * @returns {string} the formatted size, or an empty string without a size
- */
-export const formatFileSize = (bytes) => {
-  if (!bytes && bytes !== 0) {
-    return ''
-  }
-  if (bytes < 1024) {
-    return `${bytes} B`
-  }
-  if (bytes < 1024 * 1024) {
-    return `${(bytes / 1024).toFixed(1)} KB`
-  }
-  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
-}

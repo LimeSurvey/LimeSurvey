@@ -197,7 +197,7 @@ export const OptionQuestionEditMode = ({
    *
    * @param {string} code the code of the edited option
    * @param {Object} settings the settings of the edited option
-   * @returns {Promise<Object>} keyed by option code: the settings, and the
+   * @returns {Promise<Object>} keyed by option code: The settings, and the
    *   image path they were calculated for
    */
   const getSettingsForOtherOptions = async (code, settings) => {

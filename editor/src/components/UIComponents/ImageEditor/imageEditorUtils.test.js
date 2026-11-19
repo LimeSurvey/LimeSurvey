@@ -1,6 +1,5 @@
 import {
   applyImageSettings,
-  formatFileSize,
   getCropRect,
   getDefaultFrameSize,
   getFrameRatio,
@@ -222,12 +221,5 @@ describe('imageEditorUtils', () => {
       horizontal: false,
       vertical: false,
     })
-  })
-
-  test('File sizes are formatted with a unit', () => {
-    expect(formatFileSize(500)).toBe('500 B')
-    expect(formatFileSize(2048)).toBe('2.0 KB')
-    expect(formatFileSize(5.8 * 1024 * 1024)).toBe('5.8 MB')
-    expect(formatFileSize(null)).toBe('')
   })
 })

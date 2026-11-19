@@ -9,6 +9,9 @@ import classNames from 'classnames'
 
 import { AspectRatioIcon } from 'components/icons'
 import { TooltipContainer } from 'components/TooltipContainer/TooltipContainer'
+import { STATES } from 'helpers'
+import { formatFileSize } from 'helpers/formatFileSize'
+import { useAppState } from 'hooks'
 import { FormCheck } from '../FormCheck/FormCheck'
 import { InputRange } from '../InputRange/InputRange'
 import {
@@ -16,7 +19,6 @@ import {
   FRAME_MIN_SIZE,
   ZOOM_MAX,
   ZOOM_MIN,
-  formatFileSize,
   getDefaultFrameSize,
   getFrameRatio,
   getMovableAxes,
@@ -208,6 +210,8 @@ export const ImageEditor = ({
   const [previewLoadedUrl, setPreviewLoadedUrl] = useState(null)
   const [loadErrorUrl, setLoadErrorUrl] = useState(null)
   const [fileSize, setFileSize] = useState(null)
+  const [userDetail] = useAppState(STATES.USER_DETAIL)
+  const locale = userDetail?.lang === 'auto' ? undefined : userDetail?.lang
   const [current, setCurrent] = useState(() =>
     getInitialSettings(settings, null)
   )
@@ -541,7 +545,8 @@ export const ImageEditor = ({
                 data-testid="image-editor-source-info"
               >
                 {`${naturalSize.width}×${naturalSize.height}px`}
-                {fileSize !== null && ` · ${formatFileSize(fileSize)}`}
+                {fileSize !== null &&
+                  ` · ${formatFileSize(fileSize / 1024, locale)}`}
               </p>
             )}
             {/* The hint and the warning keep their space while hidden, so

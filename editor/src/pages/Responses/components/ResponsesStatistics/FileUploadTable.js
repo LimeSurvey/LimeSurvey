@@ -10,6 +10,7 @@ import {
   useSearchTerms,
 } from 'components'
 import { getSiteUrl, htmlToPlainText, STATES } from 'helpers'
+import { formatFileSize } from 'helpers/formatFileSize'
 import { useAppState, useQuestionFiles } from 'hooks'
 import { useIsInViewport } from 'hooks/useInViewport'
 
@@ -36,32 +37,7 @@ const fileIcon = (extension) =>
     FILE_ICONS[icon].includes(extension)
   ) ?? 'ri-file-line'
 
-// The unit is formatted by the browser in the user's locale (e.g. "12,5 kB", "12,5 ko"), so it needs no translation.
-const formatNumber = (value, locale, unit) => {
-  const options = {
-    maximumFractionDigits: 1,
-    style: 'unit',
-    unit,
-    unitDisplay: 'short',
-  }
-  try {
-    return value.toLocaleString(locale, options)
-  } catch {
-    return value.toLocaleString(undefined, options)
-  }
-}
-
-// Sizes are stored in kilobytes by the uploader.
-const formatFileSize = (sizeKb, locale) => {
-  const kb = Number(sizeKb) || 0
-  if (kb < 1) {
-    return formatNumber(Math.round(kb * 1024), locale, 'byte')
-  }
-  if (kb < 1024) {
-    return formatNumber(kb, locale, 'kilobyte')
-  }
-  return formatNumber(kb / 1024, locale, 'megabyte')
-}
+// Sizes are stored in kilobytes by the uploader, see formatFileSize.
 
 const fileUrl = (surveyId, responseId, questionId, index, inline = false) =>
   getSiteUrl(

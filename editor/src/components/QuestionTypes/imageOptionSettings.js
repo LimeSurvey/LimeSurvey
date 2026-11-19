@@ -247,7 +247,7 @@ export const getImageOptionAltText = (attributes, code, language, imagePath) =>
  * @param {string[]} params.codes the codes of all existing options
  * @param {Object} params.otherSettings image settings of other options keyed
  *   by code, each with its image file name, their alt texts stay as they are
- * @param {Object} params.sameImageLanguages keyed by option code: the other
+ * @param {Object} params.sameImageLanguages keyed by option code: The other
  *   languages in which the option has the same image as in the language
  * @returns {Object} the changed values keyed by attribute and language
  */

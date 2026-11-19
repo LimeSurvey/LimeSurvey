@@ -157,7 +157,7 @@ export const ImageChoice = ({
             <div className={classNames({ 'd-none': showLoader })}>
               <EditedImage
                 src={previewUrl && isValidImg ? previewUrl : NoImageFound}
-                alt={imageAltText || 'Image Select List'}
+                alt={imageAltText || code}
                 settings={previewUrl && isValidImg ? imageSettings : null}
                 height={IMAGE_PREVIEW_HEIGHT}
                 fallbackStyle={{
@@ -186,7 +186,7 @@ export const ImageChoice = ({
                 isEditing={showImageEditor}
                 imageName={code}
                 imageSettings={imageSettings}
-                imageAlt={imageAltText || 'Image Select List'}
+                imageAlt={imageAltText || code}
                 buttonsBeside={true}
                 previewBoxClassName={IMAGE_BORDER_CLASSES}
               />
