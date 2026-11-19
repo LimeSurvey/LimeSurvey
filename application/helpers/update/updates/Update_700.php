@@ -1103,8 +1103,9 @@ class Update_700 extends DatabaseUpdateBase
     /**
      * Executes database scripts needed by the update for specific database types.
      * On PostgreSQL this creates the show_create_table() helper function, which builds the
-     * CREATE TABLE statement of a table including the length of text columns and the
-     * precision and scale of numeric columns.
+     * CREATE TABLE statement of a table. The column types come from pg_catalog.format_type(),
+     * so they keep the length of text columns and the exact precision and scale of numeric
+     * columns, including unconstrained numerics.
      *
      * @return void
      */
@@ -1122,15 +1123,13 @@ class Update_700 extends DatabaseUpdateBase
                     string_agg(column_list.column_expr, ', ' || $2 || '') || 
                     '' || $2 || ');'
                 FROM (
-                  SELECT '    \"' || column_name || '\" ' || data_type ||
-                       case when data_type = 'numeric'
-                            then coalesce('(' || numeric_precision || ',' || numeric_scale || ')', '')
-                            else coalesce('(' || character_maximum_length || ')', '')
-                       end ||
-                       case when is_nullable = 'YES' then '' else ' NOT NULL' end as column_expr
-                  FROM information_schema.columns
-                  WHERE table_schema = 'public' AND table_name = $1
-                  ORDER BY ordinal_position) column_list;
+                  SELECT '    \"' || a.attname || '\" ' || pg_catalog.format_type(a.atttypid, a.atttypmod) ||
+                       case when a.attnotnull then ' NOT NULL' else '' end as column_expr
+                  FROM pg_catalog.pg_attribute a
+                  JOIN pg_catalog.pg_class c ON c.oid = a.attrelid
+                  JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
+                  WHERE n.nspname = 'public' AND c.relname = $1 AND a.attnum > 0 AND NOT a.attisdropped
+                  ORDER BY a.attnum) column_list;
                 \$BODY\$
                   LANGUAGE SQL STABLE
                 ;
