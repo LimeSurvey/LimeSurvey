@@ -49,7 +49,11 @@ export const SurveySettings = ({ id }) => {
     return Object.values(panels).find((item) => item.panel === panel) || {}
   }, [panel])
 
-  const globalStates = useGlobalStates(operationsBuffer, surveyHash, siteSettings)
+  const globalStates = useGlobalStates(
+    operationsBuffer,
+    surveyHash,
+    siteSettings
+  )
   const settingsBlocksInfo = getSettingsBlocksInfo(survey)
 
   // Helper settings initialization
