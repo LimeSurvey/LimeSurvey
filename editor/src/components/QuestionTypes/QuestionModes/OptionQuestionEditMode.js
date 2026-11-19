@@ -75,9 +75,13 @@ export const OptionQuestionEditMode = ({
 
   // isFocused is only true when the user may update the survey
   const canLoadLabelSet = isFocused && !isSurveyActive
+  // The modal calls onLoad from an earlier render once the label set arrives,
+  // so check the current state: The question may have lost focus or the survey been activated
+  const latestCanLoadLabelSet = useRef(canLoadLabelSet)
+  latestCanLoadLabelSet.current = canLoadLabelSet
 
   const handleLoadLabelSet = (labels) => {
-    if (!canLoadLabelSet) {
+    if (!latestCanLoadLabelSet.current) {
       return
     }
     handleLabelSetLoad(

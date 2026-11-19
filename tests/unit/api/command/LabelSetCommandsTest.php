@@ -174,6 +174,60 @@ class LabelSetCommandsTest extends TestBaseClass
     }
 
     /**
+     * Route ids that are not a label set id.
+     *
+     * @return array<string, array{0: mixed}>
+     */
+    public function invalidRouteIdProvider(): array
+    {
+        return [
+            'trailing letters' => ['12abc'],
+            'zero' => ['0'],
+            'negative' => ['-3'],
+            'decimal' => ['1.5'],
+            'missing' => [null],
+        ];
+    }
+
+    /**
+     * An id that isn't a positive integer gives a 404 instead of being cast to another set.
+     *
+     * @dataProvider invalidRouteIdProvider
+     * @param mixed $id Route id
+     * @return void
+     */
+    public function testDetailRejectsInvalidRouteId($id): void
+    {
+        $service = $this->mockService();
+        $service->shouldNotReceive('getLabelSet');
+
+        $response = (new LabelSetDetail(new ResponseFactory(), $service))->run(new Request(['_id' => $id]));
+
+        $this->assertError($response, new StatusErrorNotFound(), LabelSetDetail::ERROR_LABEL_SET_NOT_FOUND);
+    }
+
+    /**
+     * An id that isn't a positive integer gives a 400 without overwriting anything.
+     *
+     * @dataProvider invalidRouteIdProvider
+     * @param mixed $id Route id
+     * @return void
+     */
+    public function testOverwriteRejectsInvalidRouteId($id): void
+    {
+        $service = $this->mockService();
+        $service->shouldNotReceive('overwrite');
+
+        $response = (new LabelSetOverwrite(new ResponseFactory(), $service))->run(new Request([
+            '_id' => $id,
+            'languages' => ['en'],
+            'labels' => self::LABELS,
+        ]));
+
+        $this->assertError($response, new StatusErrorBadRequest(), LabelSetSave::ERROR_LABEL_SET_INVALID);
+    }
+
+    /**
      * A created label set is returned as it was saved.
      *
      * @return void

@@ -174,6 +174,23 @@ describe('getLabelSetCodes', () => {
     ).toEqual(['SQ9007199254740992', 'SQ002'])
   })
 
+  test('Replaces the reserved subquestion code time', () => {
+    expect(
+      getLabelSetCodes(
+        labels('time', 'Time'),
+        question,
+        [],
+        Entities.subquestion
+      )
+    ).toEqual(['SQ001', 'Time'])
+  })
+
+  test('Keeps the answer code time', () => {
+    expect(
+      getLabelSetCodes(labels('time'), question, [], Entities.answer)
+    ).toEqual(['time'])
+  })
+
   test('Generates a code for labels without one', () => {
     expect(
       getLabelSetCodes([{ code: '' }], question, [], Entities.subquestion)

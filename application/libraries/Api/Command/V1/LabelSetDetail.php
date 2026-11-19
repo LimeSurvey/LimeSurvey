@@ -44,14 +44,31 @@ class LabelSetDetail implements CommandInterface
      */
     public function run(Request $request): Response
     {
+        // The route accepts any path segment, and a cast would turn "12abc" into set 12
+        $lid = filter_var($request->getData('_id'), FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+        if ($lid === false) {
+            return $this->makeNotFound('Label set not found');
+        }
+
         try {
-            $labelSet = $this->labelSetService->getLabelSet((int)$request->getData('_id'));
+            $labelSet = $this->labelSetService->getLabelSet($lid);
         } catch (NotFoundException $e) {
-            return $this->responseFactory->makeErrorNotFound(
-                (new ResponseDataError(self::ERROR_LABEL_SET_NOT_FOUND, $e->getMessage()))->toArray()
-            );
+            return $this->makeNotFound($e->getMessage());
         }
 
         return $this->responseFactory->makeSuccess(['labelSet' => $labelSet]);
+    }
+
+    /**
+     * Make a "not found" response for a label set.
+     *
+     * @param string $message Why the label set wasn't found
+     * @return Response The error response
+     */
+    private function makeNotFound(string $message): Response
+    {
+        return $this->responseFactory->makeErrorNotFound(
+            (new ResponseDataError(self::ERROR_LABEL_SET_NOT_FOUND, $message))->toArray()
+        );
     }
 }

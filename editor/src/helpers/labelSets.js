@@ -65,7 +65,8 @@ export const childrenToLabels = (children = [], entityType, languages = []) => {
  *
  * A label keeps its code unless the code is already used by the question or by an
  * earlier label (compared case-insensitively, like the editor's code validation),
- * or is too long for the entity (answer codes have at most 5 characters).
+ * is too long for the entity (answer codes have at most 5 characters) or is the
+ * reserved subquestion code "time".
  * Those labels get the next free code, which never takes a code another label keeps.
  *
  * @param {object[]} labels Labels from the label set API
@@ -96,8 +97,12 @@ export const getLabelSetCodes = (
     return code
   }
 
+  // Question::rules() rejects "time" (case-sensitive) as a subquestion code
   const isFree = (code) =>
-    !!code && code.length <= maxLength && !usedKeys.has(code.toUpperCase())
+    !!code &&
+    code.length <= maxLength &&
+    !usedKeys.has(code.toUpperCase()) &&
+    (isAnswer || code !== 'time')
 
   // Reserve the codes that are kept first, so a generated code can't take one
   const keptCodes = labels.map((label) => {
