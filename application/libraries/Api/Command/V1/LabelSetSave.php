@@ -12,6 +12,7 @@ use LimeSurvey\Api\Command\{
 };
 use LimeSurvey\Models\Services\Exception\{
     BadRequestException,
+    ConflictException,
     NotFoundException,
     PermissionDeniedException,
     PersistErrorException
@@ -21,13 +22,15 @@ use LimeSurvey\Models\Services\LabelSetService;
 /**
  * Shared request checks and error handling of LabelSetCreate and LabelSetOverwrite.
  *
- * Body: { name: string (create only), languages: string[], labels: [{code, assessmentValue, l10ns: {lang: title}}] }
+ * Body: { name: string (create only), revision: string (overwrite only), languages: string[],
+ *         labels: [{code, assessmentValue, l10ns: {lang: title}}] }
  */
 abstract class LabelSetSave implements CommandInterface
 {
     public const ERROR_LABEL_SET_NOT_FOUND = 'LABEL_SET_NOT_FOUND';
     public const ERROR_LABEL_SET_INVALID = 'LABEL_SET_INVALID';
     public const ERROR_LABEL_SET_NOT_SAVED = 'LABEL_SET_NOT_SAVED';
+    public const ERROR_LABEL_SET_CONFLICT = 'LABEL_SET_CONFLICT';
 
     protected ResponseFactory $responseFactory;
     protected LabelSetService $labelSetService;
@@ -91,6 +94,10 @@ abstract class LabelSetSave implements CommandInterface
             );
         } catch (BadRequestException $e) {
             return $this->makeInvalidRequest($e->getMessage());
+        } catch (ConflictException $e) {
+            return $this->responseFactory->makeErrorConflict(
+                (new ResponseDataError(self::ERROR_LABEL_SET_CONFLICT, $e->getMessage()))->toArray()
+            );
         } catch (PersistErrorException $e) {
             return $this->responseFactory->makeErrorBadRequest(
                 (new ResponseDataError(self::ERROR_LABEL_SET_NOT_SAVED, $e->getMessage()))->toArray()

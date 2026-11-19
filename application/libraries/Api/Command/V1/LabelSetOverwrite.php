@@ -9,6 +9,9 @@ use LimeSurvey\Models\Services\Exception\BadRequestException;
 /**
  * Replace the languages and all labels of a label set (PUT v1/label-sets/$id).
  * Like the classic editor, translations of languages that are not sent are removed.
+ *
+ * The body must contain the revision of the set (from GET v1/label-sets/$id) the user
+ * reviewed, so the overwrite fails instead of replacing changes made since.
  */
 class LabelSetOverwrite extends LabelSetSave
 {
@@ -19,7 +22,7 @@ class LabelSetOverwrite extends LabelSetSave
      * @param string[] $languages Languages to save
      * @param array $labels Labels to save
      * @return LabelSet The saved label set
-     * @throws BadRequestException When the route id is not a positive integer
+     * @throws BadRequestException When the route id is not a positive integer or the revision is missing
      * @throws \LimeSurvey\Models\Services\Exception When the label set can't be saved
      */
     protected function save(Request $request, array $languages, array $labels): LabelSet
@@ -29,6 +32,10 @@ class LabelSetOverwrite extends LabelSetSave
         if ($lid === false) {
             throw new BadRequestException('Invalid label set id');
         }
-        return $this->labelSetService->overwrite($lid, $languages, $labels);
+        $revision = $request->getData('revision');
+        if (!is_string($revision) || $revision === '') {
+            throw new BadRequestException('The revision of the label set is missing');
+        }
+        return $this->labelSetService->overwrite($lid, $languages, $labels, $revision);
     }
 }

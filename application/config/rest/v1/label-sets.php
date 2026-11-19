@@ -67,6 +67,11 @@ $rest['v1/label-sets/$id'] = [
                 'code' => 400,
                 'description' => 'Bad request',
                 'schema' => $errorSchema
+            ],
+            'conflict' => [
+                'code' => 409,
+                'description' => 'The label set changed since its revision was read, or is being saved by someone else',
+                'schema' => $errorSchema
             ]
         ], $errorResponses)
     ]

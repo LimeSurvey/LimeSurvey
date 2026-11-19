@@ -1,6 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 
-import { useAppState, useLabelSets, useSaveLabelSet } from 'hooks'
+import {
+  LABEL_SET_CONFLICT,
+  useAppState,
+  useLabelSet,
+  useLabelSets,
+  useSaveLabelSet,
+} from 'hooks'
 import { childrenToLabels, Entities, STATES } from 'helpers'
 import { ComponentModal } from 'components/Modals'
 import { Input, Select, ToggleButtons } from 'components/UIComponents'
@@ -50,6 +56,17 @@ export const SaveLabelSetModal = ({
     updatable: true,
     enabled: show && overwrite,
   })
+  // The warnings and the revision sent with the overwrite come from the same
+  // freshly loaded set, so the server can reject the overwrite if it changed since
+  const {
+    labelSet: selectedLabelSet,
+    isFetching: isFetchingSelected,
+    isError: isSelectedError,
+    refetch: refetchSelected,
+  } = useLabelSet({
+    lid: overwriteLid,
+    enabled: show && overwrite,
+  })
 
   useEffect(() => {
     sessionId.current++
@@ -84,19 +101,32 @@ export const SaveLabelSetModal = ({
 
   // Like the classic editor, overwriting replaces all labels and drops the
   // translations of languages that are not selected, so say what will be lost
-  const overwriteTarget = overwrite
-    ? updatableLabelSets.find(
-        (labelSet) => Number(labelSet.lid) === Number(overwriteLid)
-      )
-    : null
+  const isListed =
+    overwrite &&
+    updatableLabelSets.some(
+      (labelSet) => Number(labelSet.lid) === Number(overwriteLid)
+    )
+  const overwriteTarget =
+    isListed && Number(selectedLabelSet?.lid) === Number(overwriteLid)
+      ? selectedLabelSet
+      : null
   const removedLanguages = (overwriteTarget?.languages ?? []).filter(
     (language) => !languages.includes(language)
   )
+  const hasAssessmentValues = (overwriteTarget?.labels ?? []).some(
+    (label) => Number(label.assessmentValue) !== 0
+  )
 
   const isAnswer = entityType === Entities.answer
-  // Overwriting needs the selected set in a freshly loaded list, so the warnings
-  // above describe what is replaced; a set that was deleted meanwhile can't be picked
-  const canOverwrite = !!overwriteTarget && !isFetching && !isError
+  // Overwriting needs the selected set in a freshly loaded list and freshly loaded
+  // itself, so the warnings above describe what is replaced; a set that was
+  // deleted meanwhile can't be picked
+  const canOverwrite =
+    !!overwriteTarget &&
+    !isFetching &&
+    !isError &&
+    !isFetchingSelected &&
+    !isSelectedError
   const isValid =
     _children.length > 0 &&
     languages.length > 0 &&
@@ -112,6 +142,7 @@ export const SaveLabelSetModal = ({
       await saveLabelSet({
         lid: overwrite ? overwriteLid : undefined,
         name: name.trim(),
+        ...(overwrite && { revision: overwriteTarget.revision }),
         languages,
         labels: childrenToLabels(_children, entityType, languages),
       })
@@ -124,6 +155,18 @@ export const SaveLabelSetModal = ({
         onHide()
       }
     } catch (error) {
+      if (error?.code === LABEL_SET_CONFLICT) {
+        // Load the set again, so the warnings show what is replaced now and the
+        // user has to confirm the overwrite again
+        refetchSelected()
+        refetch()
+        showErrorMessage(
+          t(
+            'The label set was changed in the meantime. Please check the warnings and save again.'
+          )
+        )
+        return
+      }
       showErrorMessage(error?.message || t('Error'))
     }
   }
@@ -198,6 +241,12 @@ export const SaveLabelSetModal = ({
                 inputId={OVERWRITE_INPUT_ID}
               />
             )}
+            {isListed && isSelectedError && !isFetchingSelected && (
+              <LabelSetListError
+                onRetry={refetchSelected}
+                testId="save-label-set-selected-error"
+              />
+            )}
             {overwriteTarget && (
               <div
                 className="label-set-modal-warning"
@@ -205,7 +254,7 @@ export const SaveLabelSetModal = ({
                 data-testid="save-label-set-overwrite-warning"
               >
                 {/* Same warnings as the classic editor, plus the names of the lost languages */}
-                {overwriteTarget.hasAssessmentValues && (
+                {hasAssessmentValues && (
                   <p data-testid="save-label-set-assessment-warning">
                     {t(
                       'The existing label set has assessment values assigned. If you replace the label set the existing assessment values will be lost.'
@@ -226,14 +275,13 @@ export const SaveLabelSetModal = ({
                     </ul>
                   </div>
                 )}
-                {!overwriteTarget.hasAssessmentValues &&
-                  removedLanguages.length === 0 && (
-                    <p>
-                      {t(
-                        'You are about to replace an existing label set with the current answer options.'
-                      )}
-                    </p>
-                  )}
+                {!hasAssessmentValues && removedLanguages.length === 0 && (
+                  <p>
+                    {t(
+                      'You are about to replace an existing label set with the current answer options.'
+                    )}
+                  </p>
+                )}
               </div>
             )}
           </div>

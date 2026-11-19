@@ -4,6 +4,7 @@ namespace ls\tests;
 
 use LimeSurvey\DI;
 use LimeSurvey\Models\Services\Exception\BadRequestException;
+use LimeSurvey\Models\Services\Exception\ConflictException;
 use LimeSurvey\Models\Services\Exception\NotFoundException;
 use LimeSurvey\Models\Services\Exception\PermissionDeniedException;
 use LimeSurvey\Models\Services\LabelSetService;
@@ -371,6 +372,133 @@ class LabelSetServiceTest extends TestBaseClass
     {
         $this->expectException(NotFoundException::class);
         $this->getService()->overwrite(PHP_INT_MAX, ['en'], [['code' => 'A1']]);
+    }
+
+    /**
+     * An overwrite with the revision the user reviewed replaces the set and gives it a new revision.
+     *
+     * @return void
+     */
+    public function testOverwriteWithCurrentRevision(): void
+    {
+        $labelSet = $this->createLabelSet('current revision');
+        $reviewed = $this->getService()->getLabelSet((int)$labelSet->lid);
+
+        $this->getService()->overwrite((int)$labelSet->lid, ['en'], [
+            ['code' => 'B1', 'l10ns' => ['en' => 'Maybe']],
+        ], $reviewed['revision']);
+
+        $result = $this->getService()->getLabelSet((int)$labelSet->lid);
+        $this->assertSame('B1', $result['labels'][0]['code']);
+        $this->assertNotSame($reviewed['revision'], $result['revision']);
+    }
+
+    /**
+     * An overwrite with an outdated revision fails and keeps what someone else saved meanwhile.
+     *
+     * @return void
+     */
+    public function testOverwriteWithOutdatedRevisionKeepsTheChanges(): void
+    {
+        $labelSet = $this->createLabelSet('outdated revision', ['en']);
+        $lid = (int)$labelSet->lid;
+        $reviewed = $this->getService()->getLabelSet($lid);
+        // Someone else adds German and an assessment value after the user reviewed the set
+        $this->getService()->overwrite($lid, ['en', 'de'], [
+            ['code' => 'A1', 'assessmentValue' => 5, 'l10ns' => ['en' => 'Yes', 'de' => 'Ja']],
+        ]);
+        $changed = $this->getService()->getLabelSet($lid);
+
+        try {
+            $this->getService()->overwrite($lid, ['en'], [
+                ['code' => 'B1', 'l10ns' => ['en' => 'Maybe']],
+            ], $reviewed['revision']);
+            $this->fail('The overwrite with an outdated revision must fail');
+        } catch (ConflictException $exception) {
+            $this->assertSame(
+                $this->normaliseLabelSet($changed),
+                $this->normaliseLabelSet($this->getService()->getLabelSet($lid))
+            );
+        }
+    }
+
+    /**
+     * The revision also changes when the labels are saved without the service, e.g. by the label set editor.
+     *
+     * @return void
+     */
+    public function testRevisionChangesWithEveryWriter(): void
+    {
+        $labelSet = $this->createLabelSet('revision');
+        $lid = (int)$labelSet->lid;
+        $before = $this->getService()->getLabelSet($lid)['revision'];
+
+        $label = \Label::model()->findByAttributes(['lid' => $lid, 'code' => 'A1']);
+        \LabelL10n::model()->updateAll(
+            ['title' => 'Yes indeed'],
+            'label_id = :id AND language = :language',
+            [':id' => $label->id, ':language' => 'en']
+        );
+
+        $this->assertNotSame($before, $this->getService()->getLabelSet($lid)['revision']);
+    }
+
+    /**
+     * On MySQL, an overwrite doesn't run while another overwrite of the same set holds its lock,
+     * and releases the lock when it is done.
+     *
+     * @group mysql
+     * @return void
+     */
+    public function testOverwriteWaitsForTheLockOfTheSet(): void
+    {
+        $labelSet = $this->createLabelSet('lock');
+        $lid = (int)$labelSet->lid;
+        $before = $this->getService()->getLabelSet($lid);
+        // Don't wait 10 seconds for the lock in the test
+        $service = new class (\LabelSet::model(), \Permission::model(), \Yii::app()) extends LabelSetService {
+            protected int $lockTimeout = 0;
+
+            /**
+             * The lock name of a label set.
+             *
+             * @param int $lid Label set id
+             * @return string Lock name
+             */
+            public function lockName(int $lid): string
+            {
+                return $this->getLockName($lid);
+            }
+        };
+        $db = \Yii::app()->db;
+        $otherRequest = new \CDbConnection($db->connectionString, $db->username, $db->password);
+        $otherRequest->active = true;
+        $lockName = $service->lockName($lid);
+
+        try {
+            $this->assertSame(
+                '1',
+                (string)$otherRequest->createCommand('SELECT GET_LOCK(:name, 0)')->queryScalar([':name' => $lockName])
+            );
+            try {
+                $service->overwrite($lid, ['en'], [['code' => 'B1', 'l10ns' => ['en' => 'Maybe']]]);
+                $this->fail('The overwrite must not run while another request holds the lock');
+            } catch (ConflictException $exception) {
+                $this->assertSame($before, $this->getService()->getLabelSet($lid));
+            }
+            $otherRequest->createCommand('SELECT RELEASE_LOCK(:name)')->queryScalar([':name' => $lockName]);
+
+            $service->overwrite($lid, ['en'], [['code' => 'B1', 'l10ns' => ['en' => 'Maybe']]]);
+            $this->assertSame('B1', $this->getService()->getLabelSet($lid)['labels'][0]['code']);
+            $this->assertSame(
+                '1',
+                (string)$otherRequest->createCommand('SELECT GET_LOCK(:name, 0)')->queryScalar([':name' => $lockName]),
+                'The overwrite must release the lock'
+            );
+        } finally {
+            $otherRequest->createCommand('SELECT RELEASE_LOCK(:name)')->queryScalar([':name' => $lockName]);
+            $otherRequest->active = false;
+        }
     }
 
     /**

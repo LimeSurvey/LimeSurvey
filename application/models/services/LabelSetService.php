@@ -5,8 +5,10 @@ namespace LimeSurvey\Models\Services;
 use Label;
 use LabelL10n;
 use LabelSet;
+use CDbExpression;
 use LimeSurvey\Models\Services\Exception\{
     BadRequestException,
+    ConflictException,
     NotFoundException,
     PermissionDeniedException,
     PersistErrorException
@@ -39,6 +41,9 @@ class LabelSetService
     /** Range of the labels.assessment_value column (integer) */
     public const MIN_ASSESSMENT_VALUE = -2147483648;
     public const MAX_ASSESSMENT_VALUE = 2147483647;
+
+    /** Seconds an overwrite waits for another overwrite of the same set on MySQL */
+    protected int $lockTimeout = 10;
 
     protected LabelSet $labelSet;
     protected Permission $permission;
@@ -133,8 +138,12 @@ class LabelSetService
     /**
      * Get one label set with its labels and their translations.
      *
+     * The revision changes whenever the languages, labels or translations change, whoever
+     * saved them. Pass it to overwrite() to reject the overwrite when the set changed since.
+     *
      * @param int $lid Label set id
-     * @return array{lid: int, name: string, languages: string[], labels: array} The label set with its labels
+     * @return array{lid: int, name: string, languages: string[], labels: array, revision: string}
+     *         The label set with its labels
      * @throws NotFoundException When the label set doesn't exist
      */
     public function getLabelSet(int $lid): array
@@ -150,6 +159,7 @@ class LabelSetService
             foreach ($label->labell10ns as $language => $labelL10n) {
                 $l10ns[$language] = (string)$labelL10n->title;
             }
+            ksort($l10ns);
             $labels[] = [
                 'code' => (string)$label->code,
                 'sortOrder' => (int)$label->sortorder,
@@ -158,11 +168,14 @@ class LabelSetService
             ];
         }
 
+        $languages = $labelSet->getLanguageArray();
         return [
             'lid' => (int)$labelSet->lid,
             'name' => flattenText($labelSet->label_name),
-            'languages' => $labelSet->getLanguageArray(),
+            'languages' => $languages,
             'labels' => $labels,
+            // Not a security token, only a fingerprint of what an overwrite replaces
+            'revision' => hash('sha256', serialize([$languages, $labels])),
         ];
     }
 
@@ -208,17 +221,21 @@ class LabelSetService
      * Replace the languages and all labels of an existing label set.
      *
      * Like the classic editor, translations of languages that are not passed are removed.
+     * Overwrites of the same set run one after the other, also on MyISAM tables.
      *
      * @param int $lid Id of the label set to overwrite
      * @param string[] $languages New languages of the label set
      * @param array $labels Labels to save, in the shape described on the class
+     * @param string|null $revision Revision from getLabelSet() the user reviewed; null skips the check
      * @return LabelSet The updated label set
      * @throws NotFoundException When the label set doesn't exist
      * @throws PermissionDeniedException When the user may not update the label set
      * @throws BadRequestException When the languages or labels are invalid
+     * @throws ConflictException When the set changed since the revision was read, or another overwrite
+     *         of it doesn't finish in time
      * @throws PersistErrorException When saving fails
      */
-    public function overwrite(int $lid, array $languages, array $labels): LabelSet
+    public function overwrite(int $lid, array $languages, array $labels, ?string $revision = null): LabelSet
     {
         $labelSet = $this->labelSet->findByPk($lid);
         if (!$labelSet) {
@@ -230,16 +247,96 @@ class LabelSetService
         $languages = $this->validateLanguages($languages);
         $labels = $this->validateLabels($labels, $languages);
 
-        return $this->inTransaction(function () use ($labelSet, $languages, $labels) {
-            $labelSet->languages = implode(' ', $languages);
-            if (!$labelSet->save()) {
-                throw new PersistErrorException(
-                    'Could not save label set: ' . $this->formatErrors($labelSet->getErrors())
-                );
-            }
-            $this->replaceLabels((int)$labelSet->lid, $languages, $labels);
-            return $labelSet;
+        return $this->withLabelSetLock($lid, function () use ($lid, $languages, $labels, $revision) {
+            return $this->inTransaction(function () use ($lid, $languages, $labels, $revision) {
+                $this->lockLabelSetRow($lid);
+                // Read again after the lock: The set may have changed or been deleted meanwhile
+                $labelSet = $this->labelSet->findByPk($lid);
+                if (!$labelSet) {
+                    throw new NotFoundException('Label set not found');
+                }
+                if ($revision !== null && $this->getLabelSet($lid)['revision'] !== $revision) {
+                    throw new ConflictException('The label set was changed in the meantime');
+                }
+
+                $labelSet->languages = implode(' ', $languages);
+                if (!$labelSet->save()) {
+                    throw new PersistErrorException(
+                        'Could not save label set: ' . $this->formatErrors($labelSet->getErrors())
+                    );
+                }
+                $this->replaceLabels($lid, $languages, $labels);
+                return $labelSet;
+            });
         });
+    }
+
+    /**
+     * Run a callback while holding a per-set lock on MySQL.
+     *
+     * Transactions don't serialize writes to MyISAM tables, so two overwrites of the same set
+     * could otherwise interleave and leave labels of both in the set. Other databases are
+     * serialized by lockLabelSetRow() and run the callback right away.
+     *
+     * @param int $lid Id of the label set to lock
+     * @param callable $callback Code to run while the lock is held
+     * @return mixed What the callback returns
+     * @throws ConflictException When the lock isn't free within the lock timeout
+     */
+    protected function withLabelSetLock(int $lid, callable $callback)
+    {
+        $db = $this->app->db;
+        if (!in_array($db->getDriverName(), ['mysql', 'mysqli'], true)) {
+            return $callback();
+        }
+
+        $lockName = $this->getLockName($lid);
+        $locked = $db->createCommand('SELECT GET_LOCK(:name, :timeout)')
+            ->queryScalar([':name' => $lockName, ':timeout' => $this->lockTimeout]);
+        if ((string)$locked !== '1') {
+            throw new ConflictException('The label set is being saved by someone else, please try again');
+        }
+        try {
+            return $callback();
+        } finally {
+            $db->createCommand('SELECT RELEASE_LOCK(:name)')->queryScalar([':name' => $lockName]);
+        }
+    }
+
+    /**
+     * Name of the MySQL lock of a label set.
+     *
+     * Locks are server-wide, so the name includes the database and table prefix of this installation.
+     *
+     * @param int $lid Label set id
+     * @return string Lock name, short enough for MySQL's 64 character limit
+     */
+    protected function getLockName(int $lid): string
+    {
+        $db = $this->app->db;
+        $database = (string)$db->createCommand('SELECT DATABASE()')->queryScalar();
+        return 'limesurvey_labelset_' . md5($database . '.' . $db->tablePrefix . '.' . $lid);
+    }
+
+    /**
+     * Lock the label set row until the transaction ends.
+     *
+     * Updating the row (to its own value) makes a concurrent overwrite of the same set wait
+     * on transactional databases, so the revision check and the replacement are atomic.
+     *
+     * @param int $lid Id of the label set to lock
+     * @return void
+     */
+    protected function lockLabelSetRow(int $lid): void
+    {
+        $db = $this->app->db;
+        $languagesColumn = $db->quoteColumnName('languages');
+        $db->createCommand()->update(
+            '{{labelsets}}',
+            ['languages' => new CDbExpression($languagesColumn)],
+            'lid = :lid',
+            [':lid' => $lid]
+        );
     }
 
     /**

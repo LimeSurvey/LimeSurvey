@@ -37,6 +37,14 @@ export const LoadLabelSetModal = ({
     }
   }, [show])
 
+  // The modal is unmounted without closing it when the question loses focus
+  useEffect(
+    () => () => {
+      loadRequestId.current++
+    },
+    []
+  )
+
   // The select is disabled while loading, so focus it again once the list is there
   const focusSelect = () => document.getElementById(SELECT_INPUT_ID)?.focus()
   useEffect(() => {

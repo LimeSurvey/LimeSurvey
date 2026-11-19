@@ -16,6 +16,7 @@ use LimeSurvey\DI;
 use LimeSurvey\Models\Services\LabelSetService;
 use LimeSurvey\Models\Services\Exception\{
     BadRequestException,
+    ConflictException,
     NotFoundException,
     PermissionDeniedException,
     PersistErrorException
@@ -563,6 +564,9 @@ class Labels extends SurveyCommonAction
             throw new CHttpException(404, gT("Label set not found"));
         } catch (BadRequestException $exception) {
             throw new CHttpException(400, $exception->getMessage());
+        } catch (ConflictException $exception) {
+            // Another overwrite of the same set is still running
+            throw new CHttpException(409, $exception->getMessage());
         } catch (PersistErrorException $exception) {
             throw new CHttpException(500, $exception->getMessage());
         }

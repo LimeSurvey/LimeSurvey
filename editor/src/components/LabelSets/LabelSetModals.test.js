@@ -2,7 +2,7 @@
 import 'tests/mocks'
 
 import { useState } from 'react'
-import { act, screen, fireEvent, waitFor } from '@testing-library/react'
+import { act, screen, fireEvent, waitFor, within } from '@testing-library/react'
 
 import { renderWithProviders } from 'tests/testUtils'
 import { Entities } from 'helpers'
@@ -14,15 +14,44 @@ const mockLabelSets = { current: [] }
 const mockListError = { current: false }
 const mockListFetching = { current: false }
 const mockRefetch = jest.fn()
+// Label sets as returned by the detail request, keyed by lid; by default
+// derived from the list, see mockGetDetail
+const mockDetails = { current: {} }
+const mockDetailError = { current: false }
+const mockDetailFetching = { current: false }
+const mockRefetchDetail = jest.fn()
 const mockGetLabelSet = jest.fn()
 const mockSaveLabelSet = jest.fn()
 
+const mockGetDetail = (lid) => {
+  if (mockDetails.current[lid]) {
+    return mockDetails.current[lid]
+  }
+  const listed = mockLabelSets.current.find((labelSet) => labelSet.lid === lid)
+  return (
+    listed && {
+      lid,
+      name: listed.name,
+      languages: listed.languages,
+      labels: listed.hasAssessmentValues ? [{ assessmentValue: 1 }] : [],
+      revision: `revision-${lid}`,
+    }
+  )
+}
+
 jest.mock('hooks/useLabelSets', () => ({
+  LABEL_SET_CONFLICT: 'LABEL_SET_CONFLICT',
   useLabelSets: () => ({
     labelSets: mockLabelSets.current,
     isFetching: mockListFetching.current,
     isError: mockListError.current,
     refetch: mockRefetch,
+  }),
+  useLabelSet: ({ lid }) => ({
+    labelSet: mockDetailError.current || !lid ? undefined : mockGetDetail(lid),
+    isFetching: mockDetailFetching.current,
+    isError: mockDetailError.current,
+    refetch: mockRefetchDetail,
   }),
   useLabelSetService: () => ({ getLabelSet: mockGetLabelSet }),
   useSaveLabelSet: () => ({
@@ -43,6 +72,10 @@ beforeEach(() => {
   mockListError.current = false
   mockListFetching.current = false
   mockRefetch.mockReset()
+  mockDetails.current = {}
+  mockDetailError.current = false
+  mockDetailFetching.current = false
+  mockRefetchDetail.mockReset()
 })
 
 // Renders the modal again on demand, so changed list mocks take effect
@@ -108,6 +141,44 @@ describe('LoadLabelSetModal', () => {
     fireEvent.click(await screen.findByText('Yes/No'))
     fireEvent.click(getConfirmButton('Load label set'))
     fireEvent.click(getConfirmButton('Cancel'))
+
+    await act(async () => {
+      resolveLoad({ lid: 5, labels: [{ code: 'A1', l10ns: { en: 'Yes' } }] })
+    })
+
+    expect(onLoad).not.toHaveBeenCalled()
+  })
+
+  test('Ignores a label set that arrives after the modal was unmounted', async () => {
+    mockLabelSets.current = [{ lid: 5, name: 'Yes/No', languages: ['en'] }]
+    let resolveLoad
+    mockGetLabelSet.mockReturnValue(
+      new Promise((resolve) => {
+        resolveLoad = resolve
+      })
+    )
+    const onLoad = jest.fn()
+
+    // Like the question editor, which unmounts the modal when the question loses focus
+    const Harness = () => {
+      const [isMounted, setIsMounted] = useState(true)
+      return (
+        <>
+          <button type="button" onClick={() => setIsMounted(false)}>
+            Unmount
+          </button>
+          {isMounted && (
+            <LoadLabelSetModal show languages={['en']} onLoad={onLoad} />
+          )}
+        </>
+      )
+    }
+    await renderWithProviders(<Harness />)
+
+    openSelect('load-label-set-select')
+    fireEvent.click(await screen.findByText('Yes/No'))
+    fireEvent.click(getConfirmButton('Load label set'))
+    fireEvent.click(screen.getByText('Unmount'))
 
     await act(async () => {
       resolveLoad({ lid: 5, labels: [{ code: 'A1', l10ns: { en: 'Yes' } }] })
@@ -236,7 +307,11 @@ describe('SaveLabelSetModal', () => {
 
     await waitFor(() =>
       expect(mockSaveLabelSet).toHaveBeenCalledWith(
-        expect.objectContaining({ lid: 4, languages: ['en'] })
+        expect.objectContaining({
+          lid: 4,
+          revision: 'revision-4',
+          languages: ['en'],
+        })
       )
     )
   })
@@ -465,5 +540,107 @@ describe('SaveLabelSetModal', () => {
     })
 
     expect(onHide).toHaveBeenCalledTimes(1)
+  })
+
+  test('Warns about what the freshly loaded set contains, not the list', async () => {
+    // The list was loaded before someone else added German and assessment values
+    mockLabelSets.current = [{ lid: 4, name: 'Old set', languages: ['en'] }]
+    mockDetails.current = {
+      4: {
+        lid: 4,
+        name: 'Old set',
+        languages: ['en', 'de'],
+        labels: [{ code: 'A1', assessmentValue: 3, l10ns: {} }],
+        revision: 'changed',
+      },
+    }
+    await renderWithProviders(
+      <SaveLabelSetModal
+        show
+        _children={answers}
+        entityType={Entities.answer}
+        surveyLanguages={['en']}
+        canCreate={false}
+      />
+    )
+
+    openSelect('save-label-set-overwrite-select')
+    fireEvent.click(await screen.findByText('Old set'))
+
+    expect(
+      screen.getByTestId('save-label-set-removed-languages')
+    ).toHaveTextContent('de')
+    expect(
+      screen.getByTestId('save-label-set-assessment-warning')
+    ).toBeInTheDocument()
+    fireEvent.click(getConfirmButton('Save label set'))
+    await waitFor(() =>
+      expect(mockSaveLabelSet).toHaveBeenCalledWith(
+        expect.objectContaining({ lid: 4, revision: 'changed' })
+      )
+    )
+  })
+
+  test('Blocks the overwrite while the selected set is loading or after it failed', async () => {
+    mockLabelSets.current = [{ lid: 4, name: 'Old set', languages: ['en'] }]
+    await renderWithProviders(
+      <RerenderHarness
+        show
+        _children={answers}
+        entityType={Entities.answer}
+        surveyLanguages={['en']}
+        canCreate={false}
+      />
+    )
+
+    openSelect('save-label-set-overwrite-select')
+    fireEvent.click(await screen.findByText('Old set'))
+    expect(getConfirmButton('Save label set')).toBeEnabled()
+
+    mockDetailFetching.current = true
+    rerender()
+    expect(getConfirmButton('Save label set')).toBeDisabled()
+
+    mockDetailFetching.current = false
+    mockDetailError.current = true
+    rerender()
+    expect(getConfirmButton('Save label set')).toBeDisabled()
+    expect(
+      screen.queryByTestId('save-label-set-overwrite-warning')
+    ).not.toBeInTheDocument()
+    fireEvent.click(
+      within(screen.getByTestId('save-label-set-selected-error')).getByRole(
+        'button',
+        { name: 'Try again' }
+      )
+    )
+    expect(mockRefetchDetail).toHaveBeenCalled()
+  })
+
+  test('Reloads the set and stays open when it was changed in the meantime', async () => {
+    mockLabelSets.current = [{ lid: 4, name: 'Old set', languages: ['en'] }]
+    mockSaveLabelSet.mockRejectedValue({
+      code: 'LABEL_SET_CONFLICT',
+      message: 'The label set was changed in the meantime',
+    })
+    const onHide = jest.fn()
+    await renderWithProviders(
+      <SaveLabelSetModal
+        show
+        onHide={onHide}
+        _children={answers}
+        entityType={Entities.answer}
+        surveyLanguages={['en']}
+        canCreate={false}
+      />
+    )
+
+    openSelect('save-label-set-overwrite-select')
+    fireEvent.click(await screen.findByText('Old set'))
+    fireEvent.click(getConfirmButton('Save label set'))
+
+    await waitFor(() => expect(mockRefetchDetail).toHaveBeenCalled())
+    expect(mockRefetch).toHaveBeenCalled()
+    expect(onHide).not.toHaveBeenCalled()
   })
 })

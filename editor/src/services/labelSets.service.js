@@ -47,14 +47,16 @@ export class LabelSetService {
    * @param {object} labelSet
    * @param {number} [labelSet.lid]
    * @param {string} [labelSet.name] Only used when creating
+   * @param {string} [labelSet.revision] Only used when overwriting: the revision
+   *   the user reviewed; the overwrite fails with LABEL_SET_CONFLICT when it changed since
    * @param {string[]} labelSet.languages
    * @param {{code: string, assessmentValue: number, l10ns: object}[]} labelSet.labels
    */
-  saveLabelSet = async ({ lid, name, languages, labels }) => {
+  saveLabelSet = async ({ lid, name, revision, languages, labels }) => {
     const data = lid
       ? await this.restClient.put(
           `label-sets/${lid}`,
-          { languages, labels },
+          { revision, languages, labels },
           {},
           true
         )

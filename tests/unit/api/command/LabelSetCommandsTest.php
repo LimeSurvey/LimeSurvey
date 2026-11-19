@@ -7,6 +7,7 @@ use LimeSurvey\Api\Command\Request\Request;
 use LimeSurvey\Api\Command\Response\Response;
 use LimeSurvey\Api\Command\Response\ResponseFactory;
 use LimeSurvey\Api\Command\Response\Status\StatusErrorBadRequest;
+use LimeSurvey\Api\Command\Response\Status\StatusErrorConflict;
 use LimeSurvey\Api\Command\Response\Status\StatusErrorForbidden;
 use LimeSurvey\Api\Command\Response\Status\StatusErrorNotFound;
 use LimeSurvey\Api\Command\Response\Status\StatusSuccess;
@@ -18,6 +19,7 @@ use LimeSurvey\Api\Command\V1\LabelSetSave;
 use LimeSurvey\Api\Command\V1\Transformer\Output\TransformerOutputUserPermissions;
 use LimeSurvey\Api\Command\V1\UserPermission;
 use LimeSurvey\Models\Services\Exception\BadRequestException;
+use LimeSurvey\Models\Services\Exception\ConflictException;
 use LimeSurvey\Models\Services\Exception\NotFoundException;
 use LimeSurvey\Models\Services\Exception\PermissionDeniedException;
 use LimeSurvey\Models\Services\Exception\PersistErrorException;
@@ -42,6 +44,9 @@ class LabelSetCommandsTest extends TestBaseClass
     private const LABELS = [
         ['code' => 'A1', 'assessmentValue' => 0, 'l10ns' => ['en' => 'Yes']],
     ];
+
+    /** Revision of the label set the user reviewed before overwriting it */
+    private const REVISION = 'f00dfeed';
 
     /**
      * Verify the call count expectations of the mocks.
@@ -220,6 +225,7 @@ class LabelSetCommandsTest extends TestBaseClass
 
         $response = (new LabelSetOverwrite(new ResponseFactory(), $service))->run(new Request([
             '_id' => $id,
+            'revision' => self::REVISION,
             'languages' => ['en'],
             'labels' => self::LABELS,
         ]));
@@ -306,6 +312,11 @@ class LabelSetCommandsTest extends TestBaseClass
                 new StatusErrorBadRequest(),
                 LabelSetSave::ERROR_LABEL_SET_NOT_SAVED,
             ],
+            'changed meanwhile' => [
+                new ConflictException('The label set was changed in the meantime'),
+                new StatusErrorConflict(),
+                LabelSetSave::ERROR_LABEL_SET_CONFLICT,
+            ],
         ];
     }
 
@@ -345,12 +356,13 @@ class LabelSetCommandsTest extends TestBaseClass
     {
         $saved = ['lid' => 7, 'name' => 'Yes/No', 'languages' => ['en'], 'labels' => self::LABELS];
         $service = $this->mockService();
-        $service->shouldReceive('overwrite')->once()->with(7, ['en'], self::LABELS)
+        $service->shouldReceive('overwrite')->once()->with(7, ['en'], self::LABELS, self::REVISION)
             ->andReturn($this->makeLabelSet(7));
         $service->shouldReceive('getLabelSet')->once()->with(7)->andReturn($saved);
 
         $response = (new LabelSetOverwrite(new ResponseFactory(), $service))->run(new Request([
             '_id' => '7',
+            'revision' => self::REVISION,
             'languages' => ['en'],
             'labels' => self::LABELS,
         ]));
@@ -380,6 +392,41 @@ class LabelSetCommandsTest extends TestBaseClass
     }
 
     /**
+     * Revisions that are missing or not a string.
+     *
+     * @return array<string, array{0: array}>
+     */
+    public function invalidRevisionProvider(): array
+    {
+        return [
+            'missing' => [[]],
+            'empty' => [['revision' => '']],
+            'not a string' => [['revision' => ['f00dfeed']]],
+        ];
+    }
+
+    /**
+     * An overwrite without the revision the user reviewed gives a 400 without overwriting anything.
+     *
+     * @dataProvider invalidRevisionProvider
+     * @param array $data Revision part of the request data
+     * @return void
+     */
+    public function testOverwriteRequiresTheRevision(array $data): void
+    {
+        $service = $this->mockService();
+        $service->shouldNotReceive('overwrite');
+
+        $response = (new LabelSetOverwrite(new ResponseFactory(), $service))->run(new Request(array_merge([
+            '_id' => 7,
+            'languages' => ['en'],
+            'labels' => self::LABELS,
+        ], $data)));
+
+        $this->assertError($response, new StatusErrorBadRequest(), LabelSetSave::ERROR_LABEL_SET_INVALID);
+    }
+
+    /**
      * Overwriting an unknown label set gives a 404.
      *
      * @return void
@@ -391,6 +438,7 @@ class LabelSetCommandsTest extends TestBaseClass
 
         $response = (new LabelSetOverwrite(new ResponseFactory(), $service))->run(new Request([
             '_id' => 999,
+            'revision' => self::REVISION,
             'languages' => ['en'],
             'labels' => self::LABELS,
         ]));
@@ -415,6 +463,7 @@ class LabelSetCommandsTest extends TestBaseClass
 
         $response = (new LabelSetOverwrite(new ResponseFactory(), $service))->run(new Request([
             '_id' => 7,
+            'revision' => self::REVISION,
             'languages' => ['en'],
             'labels' => self::LABELS,
         ]));

@@ -39,7 +39,9 @@ class SchemaFactoryLabelSet
                     Schema::integer('lid'),
                     Schema::string('name'),
                     Schema::array('languages')->items(Schema::string()),
-                    Schema::array('labels')->items($this->makeLabel())
+                    Schema::array('labels')->items($this->makeLabel()),
+                    Schema::string('revision')
+                        ->description('Changes whenever the languages or labels change; send it with an overwrite')
                 )
             );
     }
@@ -77,13 +79,17 @@ class SchemaFactoryLabelSet
     {
         return Schema::create()
             ->title('Label Set Save Request')
-            ->description('Name is only used when creating a label set')
+            ->description(
+                'Name is only used when creating a label set. Revision is required when overwriting: '
+                . 'The revision of the label set the user reviewed, the overwrite fails with 409 when it changed since'
+            )
             ->type(Schema::TYPE_OBJECT)
             ->required('languages', 'labels')
             ->properties(
                 Schema::string('name'),
                 Schema::array('languages')->items(Schema::string()),
-                Schema::array('labels')->items($this->makeLabel())
+                Schema::array('labels')->items($this->makeLabel()),
+                Schema::string('revision')
             );
     }
 }
