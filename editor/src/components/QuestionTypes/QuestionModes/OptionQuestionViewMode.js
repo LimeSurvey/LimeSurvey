@@ -141,18 +141,20 @@ export const OptionQuestionViewMode = ({
   /**
    * Returns the image settings props of an option for ImageChoice: The image
    * as set up in the image editor, unless the settings were saved for another
-   * image of the option.
+   * image of the option. The code is the alt text of an image without one.
    *
    * @param {Object} child the answer or subquestion
-   * @returns {{imageSettings: Object|null, imageAltText: string}} the props
+   * @returns {{code: string, imageSettings: Object|null,
+   *   imageAltText: string}} the props
    */
   const getImageOptionViewProps = (child) => {
+    const code = child[childrenInfo.codeKey]
     const { settings, altText } = getImageOptionForImage(
       imageOptionMaps,
-      child[childrenInfo.codeKey],
+      code,
       L10ns({ prop: childrenInfo.titleKey, language, l10ns: child.l10ns })
     )
-    return { imageSettings: settings, imageAltText: altText }
+    return { code, imageSettings: settings, imageAltText: altText }
   }
 
   const isSingleChoiceButtons =
