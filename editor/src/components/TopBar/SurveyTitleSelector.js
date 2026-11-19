@@ -26,6 +26,12 @@ export const SurveyTitleSelector = ({
 
   const surveyCode = survey.code || ''
 
+  // The top bar stays mounted when switching surveys: close the form, so a draft
+  // for one survey can't be saved to the next
+  useEffect(() => {
+    setInternalFormOpen(false)
+  }, [surveyId])
+
   const surveyTitle = L10ns({
     prop: 'title',
     language: activeLanguage,
@@ -118,11 +124,17 @@ export const SurveyTitleSelector = ({
                 'pointer-events-none opacity-0':
                   !canEditSurveyCode || !surveyTitleIsFocused || !showCode,
               })}
-              aria-label={t('Add internal title')}
+              ariaLabel={t('Add internal title')}
+              testId="internal-title-plus-button"
+              // Out of the tab order when it can't be used
+              disabled={!canEditSurveyCode || !showCode}
+              // Mouse: open on mousedown, before the title loses focus and hides the button
               onMouseDown={(e) => {
                 e.preventDefault()
                 handleOpenForm()
               }}
+              // Keyboard: Enter and Space click the button
+              onClick={handleOpenForm}
             >
               <i className="ri-add-line" aria-hidden="true" />
             </Button>

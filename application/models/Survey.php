@@ -610,7 +610,10 @@ class Survey extends LSActiveRecord implements PermissionInterface
             array('showqnumcode', 'in', 'range' => array('B', 'N', 'C', 'X', 'I'), 'allowEmpty' => true),
             array('format', 'in', 'range' => array('G', 'S', 'A', 'I'), 'allowEmpty' => true),
             array('googleanalyticsstyle', 'numerical', 'integerOnly' => true, 'min' => '0', 'max' => '3', 'allowEmpty' => true),
-            array('code', 'LSYii_Validators'),
+            // Plain text for everyone, superadmins included: tags are stripped, but nothing is
+            // HTML-encoded ("R&D" stays "R&D"), as every output escapes the value
+            array('code', 'LSYii_FilterValidator', 'filter' => 'strip_tags', 'skipOnEmpty' => true),
+            array('code', 'LSYii_FilterValidator', 'filter' => 'trim', 'skipOnEmpty' => true),
             array('code', 'length', 'max' => 128, 'allowEmpty' => true),
             array('autonumber_start', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
             array('tokenlength', 'default', 'value' => 15),
@@ -2043,6 +2046,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
         $criteria->compare('t.admin', $this->searched_value, true, 'OR');
         $criteria->compare('owner.users_name', $this->searched_value, true, 'OR');
         $criteria->compare('correct_relation_defaultlanguage.surveyls_title', $this->searched_value, true, 'OR');
+        $criteria->compare('t.code', $this->searched_value, true, 'OR');
         $criteria->compare('surveygroup.title', $this->searched_value, true, 'OR');
 
         // Survey group filter

@@ -50,7 +50,8 @@ export const SurveyCodeForm = ({
   }
 
   const onKeyDown = (e) => {
-    if (e.key === 'Enter') {
+    // Enter also confirms a candidate in IME (e.g. CJK) input, which must not save
+    if (e.key === 'Enter' && !e.nativeEvent?.isComposing) {
       e.preventDefault()
       handleSave()
     }

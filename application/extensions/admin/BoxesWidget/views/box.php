@@ -36,27 +36,35 @@
 <?php if (!empty($items)) : ?>
     <?php foreach ($items as $item) : ?>
         <?php if ($item['type'] == BoxesWidget::TYPE_PRODUCT) : ?>
+            <?php
+            $surveyls_title = "";
+            $defaultlanguage = $item['survey']->defaultlanguage;
+            if (isset($defaultlanguage)) {
+                $surveyls_title = $defaultlanguage->surveyls_title;
+            }
+            $surveyCode = (string)$item['survey']->code;
+            // Not empty(): "0" is a valid code
+            $showSurveyCode = $surveyCode !== '' && $item['survey']->getShowsQuestionCodes();
+            // With the code badge the title gets one line and both can be cut off,
+            // so the card's tooltip shows them in full, on hover and on keyboard focus
+            ?>
             <div class="box-widget-card align-middle d-inline-block"
                  data-url="<?php echo $item['link'] ?>"
                  role="link"
-                 tabindex="0">
+                 tabindex="0"
+                <?php if ($showSurveyCode) : ?>
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="bottom"
+                    title="<?= CHtml::encode(flattenText($surveyls_title, false, true) . ' (' . gT('Internal title') . ': ' . $surveyCode . ')') ?>"
+                <?php endif; ?>>
                 <div class="box-widget-card-body">
-                    <?php $showSurveyCode = !empty($item['survey']->code) && $item['survey']->getShowsQuestionCodes(); ?>
                     <div class="box-widget-card-header<?= $showSurveyCode ? ' has-code' : '' ?>">
                         <div class="box-widget-card-title">
-                            <?php
-                            $surveyls_title = "";
-                            $defaultlanguage = $item['survey']->defaultlanguage;
-                            if (isset($defaultlanguage)) {
-                                $surveyls_title = $defaultlanguage->surveyls_title;
-                            }
-                            ?>
                             <?php echo viewHelper::filterScript($surveyls_title); ?>
                         </div>
                         <?php if ($showSurveyCode) : ?>
-                            <span class="badge rounded-pill bg-light box-widget-card-code"
-                                  title="<?= CHtml::encode($item['survey']->code) ?>">
-                                <?= CHtml::encode($item['survey']->code) ?>
+                            <span class="badge rounded-pill bg-light box-widget-card-code">
+                                <?= CHtml::encode($surveyCode) ?>
                             </span>
                         <?php endif; ?>
                     </div>

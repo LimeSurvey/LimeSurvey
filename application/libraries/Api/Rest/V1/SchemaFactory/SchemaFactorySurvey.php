@@ -77,7 +77,7 @@ class SchemaFactorySurvey
                 Schema::integer('googleAnalyticsStyle')->default(null),
                 Schema::string('googleAnalyticsApiKey')->default(null),
                 Schema::integer('showSurveyPolicyNotice')->default(null),
-                Schema::string('code')->default(null),
+                Schema::string('code')->nullable()->default(null),
                 $schemaSurveyDefaultLanguage,
                 ...$properties
             );
