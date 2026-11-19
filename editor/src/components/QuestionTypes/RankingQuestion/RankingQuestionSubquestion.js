@@ -82,6 +82,7 @@ export const RankingQuestionSubquestion = ({
             width={'200px'}
             showControllers={isFocused}
             handleRemoveImage={() => handleSubquestionUpdate('')}
+            imageName={title}
           />
         )}
       </div>

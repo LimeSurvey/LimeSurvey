@@ -7,7 +7,7 @@ import userEvent from '@testing-library/user-event'
 import { FileUploadItem } from './FileUploadItem'
 
 describe('FileUploadItem', () => {
-  test('Has a delete button, but no edit button', async () => {
+  test('Has a delete button named by the position, but no edit button', async () => {
     const onDelete = jest.fn()
     await renderWithProviders(
       <FileUploadItem
@@ -20,7 +20,10 @@ describe('FileUploadItem', () => {
     )
 
     expect(screen.getAllByRole('button')).toHaveLength(1)
-    await userEvent.click(screen.getByRole('button', { name: 'Delete image' }))
+    expect(screen.getByRole('img')).toHaveAttribute('alt', 'a.png')
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Delete image 3' })
+    )
     expect(onDelete).toHaveBeenCalledWith(2)
   })
 })

@@ -1,4 +1,5 @@
 import React from 'react'
+import { format } from 'util'
 import { Button, Form } from 'react-bootstrap'
 import { DeleteIcon } from 'components/icons'
 
@@ -6,8 +7,10 @@ import { DeleteIcon } from 'components/icons'
  * One uploaded file of the file upload question: The image with a delete
  * button, and its title and comment fields where the question shows them.
  *
- * @param {Object} file the file, with its URL in preview
- * @param {number} index position of the file
+ * @param {Object} file the file, with its URL in preview and its file name
+ *   in name
+ * @param {number} index position of the file, starting at 0: The delete
+ *   button is named by it
  * @param {Function} onDelete called with the index to delete the file
  * @param {Function} onMetadataChange called with the index, the changed key
  *   (title or comment) and the new value
@@ -60,7 +63,7 @@ export const FileUploadItem = ({
             variant="outline-light"
             className="image-handle-btn ms-1"
             size="sm"
-            aria-label={t('Delete image')}
+            aria-label={format(t('Delete image %s'), index + 1)}
             onClick={() => onDelete(index)}
           >
             <DeleteIcon className="text-primary fill-current" />

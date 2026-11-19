@@ -1,3 +1,4 @@
+import { format } from 'util'
 import { Button } from 'react-bootstrap'
 
 import { DeleteIcon } from 'components/icons'
@@ -12,6 +13,8 @@ import { DeleteIcon } from 'components/icons'
  *   radius in radius
  * @param {Function} handleRemoveImage called when the delete button is clicked
  * @param {boolean} showControllers whether the delete button is shown
+ * @param {string} imageName name of the image (e.g. the subquestion code),
+ *   used to tell the delete buttons of several images apart for screen readers
  * @returns {JSX.Element} the image
  */
 export const EditableImage = ({
@@ -20,6 +23,7 @@ export const EditableImage = ({
   imageSrc,
   handleRemoveImage = () => {},
   showControllers = true,
+  imageName = '',
 }) => {
   return (
     <div
@@ -46,7 +50,11 @@ export const EditableImage = ({
             variant="outline-light"
             className="image-handle-btn ms-1"
             size="sm"
-            aria-label={t('Delete image')}
+            aria-label={
+              imageName
+                ? format(t('Delete image %s'), imageName)
+                : t('Delete image')
+            }
             onClick={handleRemoveImage}
           >
             <DeleteIcon className="text-primary fill-current" />

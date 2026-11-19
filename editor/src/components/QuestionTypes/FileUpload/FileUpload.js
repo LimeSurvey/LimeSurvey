@@ -38,6 +38,8 @@ export const FileUpload = ({
       ...prev,
       ...acceptedFiles.map((file) => ({
         ...file,
+        // The spread doesn't copy the name: It is a getter of File.
+        name: file.name,
         origin: URL.createObjectURL(file),
         preview: URL.createObjectURL(file),
         zoom: 1,
