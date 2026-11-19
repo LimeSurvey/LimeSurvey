@@ -9,24 +9,22 @@ import {
 import {
   buildScenarioPayload,
   getApiOperationActions,
+  getCurrentQuestionInfo,
   getDefaultCondition,
   hasConditionChanged,
   isDuplicateCondition,
+  showConditionChangedWarning,
   showSuccessMessage,
   updateQuestionScenarios,
-  syncSurveyQuestionWithScenarios,
   isDuplicate,
+  replaceQuestionInSurvey,
   splitConditionValues,
 } from '../components/ConditionDesigner/utils'
 
 export const useConditionDesigner = ({
-  survey,
   question,
-  focused,
   scid,
   scenarioToPatch,
-  groupIndex,
-  questionIndex,
   conditions,
   addToBuffer,
   setScid,
@@ -35,7 +33,6 @@ export const useConditionDesigner = ({
   setPendingScenarioName,
   onNavigateBack,
 }) => {
-  const originalScenarios = question?.scenarios
   const originalScid = useRef(scenarioToPatch ? scid : null)
 
   const removeCondition = (index) => {
@@ -85,21 +82,20 @@ export const useConditionDesigner = ({
     )
   }
 
-  const handleQuestionUpdate = (scenarios) => {
-    updateQuestionScenarios(scenarios, question, originalScid)
-    syncSurveyQuestionWithScenarios(
-      survey,
-      question,
-      groupIndex,
-      questionIndex,
-      update,
-      focused
-    )
-  }
+  /**
+   * Removes the draft's deleted conditions from the working question.
+   * @param {Array} deletedConditions Rows marked for deletion.
+   * @param {Object} targetQuestion The working copy of the question.
+   * @returns {Array} The delete operations to queue.
+   */
+  const applyDeletedConditions = (deletedConditions, targetQuestion) =>
+    deletedConditions.map((condition) => {
+      const operation = createBufferOperation(condition.cid)
+        .questionCondition()
+        .delete()
 
-  const handleDeletedConditions = (deletedConditions) => {
-    Object.values(deletedConditions).forEach((condition) => {
-      const props = {
+      operation.qid = condition.qid
+      operation.props = {
         qid: condition.qid,
         scenarios: [
           {
@@ -114,83 +110,101 @@ export const useConditionDesigner = ({
         ],
       }
 
-      const operation = createBufferOperation(condition.cid)
-        .questionCondition()
-        .delete()
-
-      operation.qid = condition.qid
-      operation.props = props
-      addToBuffer(operation)
-
-      question.scenarios = question.scenarios
-        .map((sc) => {
-          if (sc.scid === scenarioToPatch.scid) {
-            sc.conditions = sc.conditions.filter((c) => c.cid != condition.cid)
-          }
-          return sc
-        })
+      // New scenario objects: the scenarios can still be the cached ones
+      targetQuestion.scenarios = (targetQuestion.scenarios ?? [])
+        .map((sc) =>
+          sc.scid === scenarioToPatch.scid
+            ? {
+                ...sc,
+                conditions: sc.conditions.filter((c) => c.cid != condition.cid),
+              }
+            : sc
+        )
         .filter((sc) => sc.conditions.length > 0)
 
-      if (question.scenarios.length === 0) {
-        question.relevance = QUESTION_RELEVANCE_DEFAULT_VALUE
+      if (targetQuestion.scenarios.length === 0) {
+        targetQuestion.relevance = QUESTION_RELEVANCE_DEFAULT_VALUE
       }
 
-      syncSurveyQuestionWithScenarios(
-        survey,
-        question,
-        groupIndex,
-        questionIndex,
-        update,
-        focused
-      )
-      focused.scenarios = question.scenarios
-      focused.relevance = QUESTION_RELEVANCE_DEFAULT_VALUE
+      return operation
     })
-  }
 
   const handleSavingScenario = () => {
+    // Save against the question as it is in the survey now. This can run from
+    // a confirmation popup, and the question captured when it opened can be
+    // outdated (e.g. a refresh added a scenario, which the duplicate check
+    // must see) or gone (e.g. its group was deleted: nothing to save).
+    const currentQuestion = getCurrentQuestionInfo(question.qid).question
+    if (!currentQuestion) return
+    // The edited scenario is gone, e.g. a refresh replaced the scenarios with
+    // an ExpressionScript condition: saving the draft (incl. its deleted rows)
+    // would overwrite that change
+    const isEditedScenarioGone =
+      scenarioToPatch &&
+      !(currentQuestion.scenarios ?? []).some(
+        (scenario) => scenario.scid === scenarioToPatch.scid
+      )
+    if (isEditedScenarioGone) {
+      showConditionChangedWarning()
+      return
+    }
+
+    // Prepare all changes first, without side effects: on a copy of the
+    // question, with operations collected instead of queued, and without
+    // changing the draft. They are applied only when every step succeeded,
+    // so a failed save leaves the queue, the survey and the draft unchanged,
+    // and can be retried.
+    const workingQuestion = { ...currentQuestion }
+    const operations = []
+    const originalScidBeforeSave = originalScid.current
+    let message = ''
+    let scenarioHasUpdates = false
+    let hasCreatedConditions = false
+    let hasDuplicate = false
+
     try {
       const deletedConditions = conditions.filter((c) => c.isDeleted)
-      let message = ''
-      let scenarioHasUpdates = false
-
-      conditions.splice(
-        0,
-        conditions.length,
-        ...conditions
-          .filter((c) => !c.isDeleted)
-          .flatMap((condition) =>
-            splitConditionValues(condition).map((value) => ({
-              ...condition,
-              value,
-            }))
-          )
-      )
+      // One row per value: Only answer options selected together are joined with commas
+      const savedConditions = conditions
+        .filter((c) => !c.isDeleted)
+        .flatMap((condition) =>
+          splitConditionValues(condition).map((value) => ({
+            ...condition,
+            value,
+          }))
+        )
 
       if (deletedConditions.length) {
-        handleDeletedConditions(deletedConditions)
+        operations.push(
+          ...applyDeletedConditions(deletedConditions, workingQuestion)
+        )
         message = getSuccessMessage('delete')
         scenarioHasUpdates = true
       }
 
-      const apiProps = { qid: question.qid, scenarios: [] }
-      const updated = conditions.filter((c) => c.isUpdated)
+      const apiProps = { qid: workingQuestion.qid, scenarios: [] }
+      const updated = savedConditions.filter((c) => c.isUpdated)
 
       if (updated.length) {
-        const updateProps = buildScenarioPayload(question, updated, scid)
+        const updateProps = buildScenarioPayload(workingQuestion, updated, scid)
         apiProps.scenarios.push(...updateProps.scenarios)
-        handleQuestionUpdate(updateProps.scenarios)
+        updateQuestionScenarios(
+          updateProps.scenarios,
+          workingQuestion,
+          originalScid
+        )
         message = getSuccessMessage('update')
         scenarioHasUpdates = true
       }
 
-      const newConditions = conditions.filter(
-        (c) =>
-          !c.cid && !isDuplicateCondition(c, question, scid, scenarioToPatch)
+      // Checked after the updated rows moved (e.g. by a rename), against the
+      // scenario the new rows are saved to
+      const newConditions = savedConditions.filter(
+        (c) => !c.cid && !isDuplicateCondition(c, workingQuestion, scid)
       )
 
-      const hasDuplicate =
-        conditions.filter((c) => !c.cid).length !== newConditions.length
+      hasDuplicate =
+        savedConditions.filter((c) => !c.cid).length !== newConditions.length
 
       if (newConditions.length) {
         // Filter out duplicates
@@ -201,40 +215,54 @@ export const useConditionDesigner = ({
 
         if (uniqueConditions.length) {
           const createProps = buildScenarioPayload(
-            question,
+            workingQuestion,
             uniqueConditions,
             scid
           )
           apiProps.scenarios.push(...createProps.scenarios)
-          handleQuestionUpdate(createProps.scenarios)
+          updateQuestionScenarios(
+            createProps.scenarios,
+            workingQuestion,
+            originalScid
+          )
           message = getSuccessMessage('create')
-          setPendingScenarioName(scid)
+          hasCreatedConditions = true
           scenarioHasUpdates = true
         }
       }
 
       if (apiProps.scenarios.length > 0) {
-        const op = createBufferOperation(question.qid)
+        const op = createBufferOperation(workingQuestion.qid)
           .questionCondition()
           .update()
-        op.qid = question.qid
+        op.qid = workingQuestion.qid
         op.props = apiProps
-        addToBuffer(op)
+        operations.push(op)
       }
-
-      if (!scenarioHasUpdates && hasDuplicate) {
-        errorToast(t('Condition already exists'), 'center')
-        onNavigateBack()
-        return
-      }
-
-      showSuccessMessage(message)
-      onNavigateBack()
     } catch (error) {
-      question.scenarios = originalScenarios
-      focused.scenarios = originalScenarios
+      // Nothing was applied. Restore the rename tracking that
+      // updateQuestionScenarios advanced, so a retry still renames.
+      originalScid.current = originalScidBeforeSave
       throw new Error(`Scenario save failed: ${error.message}`)
     }
+
+    // Every step succeeded: apply the changes
+    operations.forEach((operation) => addToBuffer(operation))
+    if (operations.length) {
+      replaceQuestionInSurvey(workingQuestion, update)
+    }
+    if (hasCreatedConditions) {
+      setPendingScenarioName(scid)
+    }
+
+    if (!scenarioHasUpdates && hasDuplicate) {
+      errorToast(t('Condition already exists'), 'center')
+      onNavigateBack()
+      return
+    }
+
+    showSuccessMessage(message)
+    onNavigateBack()
   }
 
   const getSuccessMessage = (action) => {
@@ -244,7 +272,9 @@ export const useConditionDesigner = ({
   }
 
   const handleScenarioNameChange = (e) => {
-    const newScid = Number(e.target.value)
+    // Keep a cleared input empty: Number('') would turn it into scenario 0.
+    // An empty scenario number is invalid, so Apply stays disabled.
+    const newScid = e.target.value === '' ? '' : Number(e.target.value)
     if (isNaN(newScid)) return
 
     setScid(newScid)

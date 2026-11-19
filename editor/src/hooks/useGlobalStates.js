@@ -5,9 +5,11 @@ import { queryClient } from 'queryClient'
  * Custom hook to transform query client data into a global states object
  * @param {Object} operationsBuffer - The operations buffer object
  * @param {Object} surveyHash - The survey hash object with updateHash and refetchHash
+ * @param {Object} siteSettings - The site settings appState value, included so the
+ *   snapshot refreshes once site settings (e.g. the restricted languages list) arrive
  * @returns {Object} - The transformed global states object
  */
-export const useGlobalStates = (operationsBuffer, surveyHash) => {
+export const useGlobalStates = (operationsBuffer, surveyHash, siteSettings) => {
   return useMemo(() => {
     const statesArray = queryClient.getQueriesData().map((state) => {
       const key = state[0]
@@ -29,5 +31,6 @@ export const useGlobalStates = (operationsBuffer, surveyHash) => {
     operationsBuffer.bufferHash,
     surveyHash.updateHash,
     surveyHash.refetchHash,
+    siteSettings,
   ])
 }

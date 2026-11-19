@@ -620,10 +620,13 @@ class QuestionGroupService
      * @param int $surveyId
      * @return void
      * @throws PermissionDeniedException
+     * @throws NotFoundException
      */
     public function checkCreatePermission(int $surveyId)
     {
+        $survey = $this->getSurvey($surveyId);
         if (
+            $survey->isActive ||
             !$this->modelPermission->hasSurveyPermission(
                 $surveyId,
                 'surveycontent',
@@ -640,10 +643,11 @@ class QuestionGroupService
      * @param int $surveyId
      * @return void
      * @throws PermissionDeniedException
+     * @throws NotFoundException
      */
     public function checkDeletePermission(int $surveyId)
     {
-        $survey = $this->modelSurvey->findByPk($surveyId);
+        $survey = $this->getSurvey($surveyId);
         if (
             $survey->isActive ||
             !$this->modelPermission->hasSurveyPermission(
