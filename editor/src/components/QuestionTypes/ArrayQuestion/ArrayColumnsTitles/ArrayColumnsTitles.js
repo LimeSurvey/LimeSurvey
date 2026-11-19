@@ -5,6 +5,7 @@ import classNames from 'classnames'
 import { max } from 'lodash'
 
 import {
+  canUpdateChildren,
   Entities,
   getAttributeValue,
   L10ns,
@@ -215,6 +216,7 @@ export const ArrayColumnsTitles = ({
           setIsReorderingAnswers(true)
         }}
         droppableId={'droppable-subquestions-answers'}
+        surveyActiveDisable={!canUpdateChildren(entitiesInfo.entity, true)}
         className={classNames('d-flex')}
         direction="horizontal"
       >
@@ -314,13 +316,13 @@ export const ArrayColumnsTitles = ({
                               entitiesInfo.items[index][entitiesInfo.idKey] ===
                               questionItem[entitiesInfo.idKey]
                           )
+                          // Pass the whole list: The index is taken from it, and a dual scale save has to keep the other scale
                           handleChildCodeUpdate({
                             newCode: value,
                             childIndex: childIndex,
-                            childArray:
-                              isArrayByText || isArrayByNumbers
-                                ? subquestions
-                                : entitiesInfo.items,
+                            childArray: { answers, subquestions }[
+                              entitiesInfo.itemsKey
+                            ],
                             entityType: entitiesInfo.entity,
                             entityTitleKey: entitiesInfo.titleKey,
                           })

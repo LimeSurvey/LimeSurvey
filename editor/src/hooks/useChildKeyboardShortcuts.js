@@ -5,20 +5,21 @@ import { useCallback, useRef } from 'react'
  * - Ctrl+Enter / Cmd+Enter: Add new item after current
  * - Shift+Enter: Add new item after current (alternative)
  * - Ctrl+Delete / Cmd+Delete / Ctrl+Backspace / Cmd+Backspace: Delete current item
+ * Both are ignored when isChildUpdateAllowed is false (e.g. subquestions of an active survey).
  */
 export const useChildKeyboardShortcuts = ({
   children,
   entityType,
   handleChildAdd,
   handleChildDelete,
-  isSurveyActive,
+  isChildUpdateAllowed = true,
 }) => {
   const childrenRef = useRef(children)
   childrenRef.current = children
 
   const getKeyDownHandler = useCallback(
     (childId, index) => (event) => {
-      if (isSurveyActive) return
+      if (!isChildUpdateAllowed) return
       if (event.defaultPrevented || event.repeat) return
 
       const isCtrlOrCmd = event.ctrlKey || event.metaKey
@@ -59,7 +60,7 @@ export const useChildKeyboardShortcuts = ({
         }
       }
     },
-    [entityType, handleChildAdd, handleChildDelete, isSurveyActive]
+    [entityType, handleChildAdd, handleChildDelete, isChildUpdateAllowed]
   )
 
   return { getKeyDownHandler }

@@ -6,6 +6,7 @@ import { useState } from 'react'
 import { cloneDeep } from 'lodash'
 
 import {
+  canUpdateChildren,
   Entities,
   getInfoFromObjectByIndex,
   getTooltipMessages,
@@ -37,6 +38,10 @@ export const RankingAdvancedQuestion = ({
   handleChildCodeUpdate,
 }) => {
   const [isSurveyActive] = useAppState(STATES.IS_SURVEY_ACTIVE)
+  const isChildUpdateAllowed = canUpdateChildren(
+    Entities.subquestion,
+    isSurveyActive
+  )
 
   const [subquestionsHeight, setSubquestionsHeight] = useState([])
   const [subquestionsValue, setSubquestionsValue] = useState(cloneDeep(values))
@@ -176,7 +181,7 @@ export const RankingAdvancedQuestion = ({
       <div className="add-child-button-container">
         <TooltipContainer
           tip={getTooltipMessages().ACTIVE_DISABLED}
-          showTip={isSurveyActive}
+          showTip={!isChildUpdateAllowed}
         >
           <Button
             onClick={() =>
@@ -190,7 +195,7 @@ export const RankingAdvancedQuestion = ({
               }
             )}
             data-testid="single-choice-add-subquestion-button"
-            disabled={isSurveyActive}
+            disabled={!isChildUpdateAllowed}
           >
             <PlusLg /> {t('Add subquestion')}
           </Button>

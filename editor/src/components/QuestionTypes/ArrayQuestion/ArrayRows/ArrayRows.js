@@ -4,7 +4,7 @@ import classNames from 'classnames'
 
 import { DragAndDrop } from 'components/UIComponents/DragAndDrop/DragAndDrop'
 import { getQuestionTypeInfo } from 'components/QuestionTypes/getQuestionTypeInfo'
-import { Entities, L10ns, getNoAnswerLabel } from 'helpers'
+import { canUpdateChildren, Entities, L10ns, getNoAnswerLabel } from 'helpers'
 
 import { ArrayRow } from './ArrayRow'
 
@@ -160,6 +160,7 @@ export const ArrayRows = ({
       <DragAndDrop
         onDragEnd={(dropResult) => onDragEndCallback(dropResult, entitiesInfo)}
         droppableId={'droppable-subquestions'}
+        surveyActiveDisable={!canUpdateChildren(entitiesInfo.entity, true)}
       >
         {entitiesInfo.items?.map((entity, index) => (
           <Draggable

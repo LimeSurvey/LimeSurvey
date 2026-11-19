@@ -7,6 +7,8 @@ import {
   createBufferOperation,
   STATES,
   isTrue,
+  Entities,
+  canUpdateChildren,
 } from 'helpers'
 import { useAppState, useBuffer } from 'hooks'
 import { getTooltipMessages } from 'helpers/options'
@@ -84,6 +86,14 @@ export const ArrayQuestion = ({
   ].includes(question.questionThemeName)
     ? 'subquestion'
     : 'answer option'
+  const canUpdateColumns = canUpdateChildren(
+    colName === 'subquestion' ? Entities.subquestion : Entities.answer,
+    isSurveyActive
+  )
+  const canUpdateRows = canUpdateChildren(
+    verticalEntitiesInfo.entity,
+    isSurveyActive
+  )
 
   const handleOnDragEnd = (dropResult, entitiesInfo) => {
     if (!dropResult.destination) {
@@ -229,7 +239,7 @@ export const ArrayQuestion = ({
           >
             <TooltipContainer
               tip={getTooltipMessages().ACTIVE_DISABLED}
-              showTip={isSurveyActive && colName === 'subquestion'}
+              showTip={!canUpdateColumns}
               placement="left"
             >
               <Button
@@ -238,7 +248,7 @@ export const ArrayQuestion = ({
                   height: '100%',
                   width: '50px',
                 }}
-                disabled={isSurveyActive && colName === 'subquestion'}
+                disabled={!canUpdateColumns}
                 className="add-item-button"
                 testId="add-vertical-item-button"
               >
@@ -272,6 +282,7 @@ export const ArrayQuestion = ({
                 headersHeight={headersHeight}
                 showNoAnswer={showNoAnswer}
                 handleChildLUpdate={handleChildLUpdate}
+                handleChildCodeUpdate={handleChildCodeUpdate}
                 handleChildAssessmentValueUpdate={
                   handleChildAssessmentValueUpdate
                 }
@@ -311,13 +322,13 @@ export const ArrayQuestion = ({
             >
               <TooltipContainer
                 tip={getTooltipMessages().ACTIVE_DISABLED}
-                showTip={isSurveyActive && colName === 'subquestion'}
+                showTip={!canUpdateColumns}
                 placement={'left'}
               >
                 <Button
                   onClick={() => addItem(hoirzontalInfo2)}
                   style={{ height: '100%', width: '50px' }}
-                  disabled={isSurveyActive && colName === 'subquestion'}
+                  disabled={!canUpdateColumns}
                   className="add-item-button"
                   testId="add-vertical-item-button2"
                 >
@@ -336,17 +347,13 @@ export const ArrayQuestion = ({
       >
         <TooltipContainer
           tip={getTooltipMessages().ACTIVE_DISABLED}
-          showTip={
-            isSurveyActive && verticalEntitiesInfo.rowName === 'subquestion'
-          }
+          showTip={!canUpdateRows}
           placement="left"
         >
           <Button
             className={classNames('add-item-button add-horizontal-item w-100')}
             onClick={() => addItem(verticalEntitiesInfo)}
-            disabled={
-              isSurveyActive && verticalEntitiesInfo.rowName === 'subquestion'
-            }
+            disabled={!canUpdateRows}
             testId="add-horizontal-item-button"
           >
             <AddIcon />

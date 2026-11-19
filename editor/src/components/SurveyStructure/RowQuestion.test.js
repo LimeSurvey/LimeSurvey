@@ -288,11 +288,13 @@ describe('RowQuestion menu', () => {
     expect(screen.queryByTestId('confirm-modal-confirm-button')).toBeNull()
   })
 
-  test('assign numeric codes is disabled for active surveys', async () => {
-    await setup({ isSurveyActive: true })
-    expect(screen.getByTestId('assign-numeric-codes-button')).toHaveClass(
-      'disabled'
+  test('assign numeric codes renumbers the answers of an active survey', async () => {
+    const { assignNumericAnswerCodes } = await setup({ isSurveyActive: true })
+    await userEvent.click(screen.getByTestId('assign-numeric-codes-button'))
+    await userEvent.click(
+      await screen.findByTestId('confirm-modal-confirm-button')
     )
+    expect(assignNumericAnswerCodes).toHaveBeenCalledWith(question)
   })
 
   test('opening a second menu closes the first', async () => {

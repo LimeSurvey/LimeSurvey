@@ -1,7 +1,7 @@
 import React from 'react'
 import classNames from 'classnames'
 import { useParams } from 'react-router-dom'
-import { SubquestionCodeInput } from '../../subquestionCodeComponents'
+import { CodeInput } from '../../codeComponents'
 import { AssessmentValueInput } from '../../AssessmentValueInput'
 import { DragIcon, CloseCircleFillIcon } from 'components/icons'
 import { useAppState, useSurvey } from 'hooks'
@@ -10,7 +10,7 @@ import {
   ContentEditor,
   getQuestionTypeInfo,
 } from 'components'
-import { hasTempId, STATES } from 'helpers'
+import { canUpdateChildren, Entities, hasTempId, STATES } from 'helpers'
 import { getTooltipMessages } from 'helpers/options'
 import { ArraySubQuestionRadioAnswers } from './ArraySubQuestionRadioAnswers'
 import { ArraySubQuestionTextAnswers } from './ArraySubQuestionTextAnswers'
@@ -48,6 +48,11 @@ export const ArrayRow = ({
   const { surveyId } = useParams()
 
   const [isSurveyActive] = useAppState(STATES.IS_SURVEY_ACTIVE)
+  const isAnswer = itemsKey === 'answers'
+  const isChildUpdateAllowed = canUpdateChildren(
+    isAnswer ? Entities.answer : Entities.subquestion,
+    isSurveyActive
+  )
   const { survey } = useSurvey(surveyId)
   const showQNumCode = survey.showQNumCode
   const isArrayByColumn =
@@ -65,7 +70,7 @@ export const ArrayRow = ({
           }
         )}
       >
-        {!(isSurveyActive && itemsKey === 'subquestions') && (
+        {isChildUpdateAllowed && (
           <div
             className="cursor-pointer remove-option-button action-item-button remove row"
             onClick={removeItem}
@@ -81,8 +86,9 @@ export const ArrayRow = ({
         )}
         <div className="array-question-code">
           {showCode && (
-            <SubquestionCodeInput
-              isSurveyActive={isSurveyActive}
+            <CodeInput
+              isAnswerCode={isAnswer}
+              isEditable={isChildUpdateAllowed}
               code={code}
               onChange={(e) => handleCodeUpdate(e.target.value, index)}
             />
@@ -90,19 +96,19 @@ export const ArrayRow = ({
         </div>
 
         <TooltipContainer
-          showTip={isSurveyActive}
+          showTip={!isChildUpdateAllowed}
           tip={getTooltipMessages().ACTIVE_DISABLED}
         >
           <div
             className={classNames('action-item-button drag row', {
-              'cursor-not-allowed': isSurveyActive,
+              'cursor-not-allowed': !isChildUpdateAllowed,
             })}
           >
             <div
               {...provided.dragHandleProps}
               className={classNames({
                 'd-none': !isFocused || !showContentEditor || isNoAnswer,
-                'disabled': isSurveyActive,
+                'disabled': !isChildUpdateAllowed,
               })}
             >
               <DragIcon className="text-secondary fill-current" />

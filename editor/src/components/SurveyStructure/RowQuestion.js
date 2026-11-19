@@ -191,10 +191,8 @@ export const RowQuestion = ({
             testId: 'assign-numeric-codes-button',
             hideIconSpace: true,
             disabled: {
-              state: !hasAnswerOptions || isSurveyActive,
-              tooltip: isSurveyActive
-                ? t('Not available while the survey is active.')
-                : t('This question type has no answer options.'),
+              state: !hasAnswerOptions,
+              tooltip: t('This question type has no answer options.'),
             },
           },
         ]}

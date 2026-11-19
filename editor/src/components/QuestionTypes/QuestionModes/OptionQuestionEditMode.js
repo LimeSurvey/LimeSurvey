@@ -4,14 +4,14 @@ import { Draggable } from '@hello-pangea/dnd'
 import { PlusLg } from 'react-bootstrap-icons'
 import classNames from 'classnames'
 import { useAppState, useSurvey, useChildKeyboardShortcuts } from 'hooks'
-import { Entities, hasTempId, L10ns, STATES } from 'helpers'
+import { canUpdateChildren, Entities, hasTempId, L10ns, STATES } from 'helpers'
 import { getTooltipMessages } from 'helpers/options'
 import { ContentEditor, DragAndDrop, TooltipContainer } from 'components'
 import { CloseCircleFillIcon, DragIcon } from 'components/icons'
 import { ImageChoice } from 'components/QuestionTypes/ImageChoice'
 import { getQuestionTypeInfo } from '../getQuestionTypeInfo'
 import { singleChoiceThemes } from '../singleChoiceThemes'
-import { SubquestionCodeInput } from '../subquestionCodeComponents'
+import { CodeInput } from '../codeComponents'
 import { AssessmentValueInput } from '../AssessmentValueInput'
 
 const imageThemeComponents = [
@@ -43,13 +43,17 @@ export const OptionQuestionEditMode = ({
     entity: isSingleChoiceTheme ? Entities.answer : Entities.subquestion,
   }
   const [isSurveyActive] = useAppState(STATES.IS_SURVEY_ACTIVE)
+  const isChildUpdateAllowed = canUpdateChildren(
+    childrenInfo.entity,
+    isSurveyActive
+  )
 
   const { getKeyDownHandler } = useChildKeyboardShortcuts({
     children: _children,
     entityType: childrenInfo.entity,
     handleChildAdd,
     handleChildDelete,
-    isSurveyActive,
+    isChildUpdateAllowed,
   })
 
   const getSubquestionStyle = (draggableStyle) => ({
@@ -69,6 +73,7 @@ export const OptionQuestionEditMode = ({
         className="children-parent edit-mode"
         onDragEnd={handleOnDragEnd}
         droppableId={'droppable'}
+        surveyActiveDisable={!canUpdateChildren(childrenInfo.entity, true)}
       >
         {_children?.map((child, index) => (
           <Draggable
@@ -102,7 +107,7 @@ export const OptionQuestionEditMode = ({
                       className={classNames(
                         'text-danger fill-current cursor-pointer edit-mode-remove-option remove-option-button',
                         {
-                          'd-none': !isFocused || isSurveyActive,
+                          'd-none': !isFocused || !isChildUpdateAllowed,
                         }
                       )}
                     />
@@ -118,8 +123,9 @@ export const OptionQuestionEditMode = ({
                     />
                   </div>
                   {survey.showQNumCode?.showNumber && (
-                    <SubquestionCodeInput
-                      isSurveyActive={isSurveyActive}
+                    <CodeInput
+                      isEditable={isChildUpdateAllowed}
+                      isAnswerCode={isSingleChoiceTheme}
                       code={isSingleChoiceTheme ? child.code : child.title}
                       onChange={(e) =>
                         handleChildCodeUpdate({
@@ -194,7 +200,7 @@ export const OptionQuestionEditMode = ({
       <div className="add-child-button-container mt-4">
         <TooltipContainer
           tip={getTooltipMessages().ACTIVE_DISABLED}
-          showTip={isSurveyActive}
+          showTip={!isChildUpdateAllowed}
         >
           <div>
             <Button
@@ -204,7 +210,7 @@ export const OptionQuestionEditMode = ({
                 'text-primary d-flex add-choice-button align-items-center p-0 gap-2 border-none'
               }
               data-testid="add-child-button"
-              disabled={isSurveyActive}
+              disabled={!isChildUpdateAllowed}
             >
               <PlusLg />
               {isSingleChoiceTheme ? t('Add answer') : t('Add subquestion')}

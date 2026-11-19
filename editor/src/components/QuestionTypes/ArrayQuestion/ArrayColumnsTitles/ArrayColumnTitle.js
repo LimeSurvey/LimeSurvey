@@ -2,9 +2,9 @@ import classNames from 'classnames'
 import { useParams } from 'react-router-dom'
 import { ContentEditor } from 'components'
 import { CloseCircleFillIcon, DragIcon } from 'components/icons'
-import { hasTempId, STATES } from 'helpers'
+import { canUpdateChildren, Entities, hasTempId, STATES } from 'helpers'
 import { useAppState, useSurvey } from 'hooks'
-import { SubquestionCodeInput } from '../../subquestionCodeComponents'
+import { CodeInput } from '../../codeComponents'
 import { AssessmentValueInput } from '../../AssessmentValueInput'
 
 export const ArrayColumnTitle = ({
@@ -30,6 +30,11 @@ export const ArrayColumnTitle = ({
   id,
 }) => {
   const [isSurveyActive] = useAppState(STATES.IS_SURVEY_ACTIVE)
+  const isAnswer = itemsKey === 'answers'
+  const isChildUpdateAllowed = canUpdateChildren(
+    isAnswer ? Entities.answer : Entities.subquestion,
+    isSurveyActive
+  )
   const { surveyId } = useParams()
   const { survey } = useSurvey(surveyId)
   const showQNumCode = survey.showQNumCode
@@ -52,7 +57,7 @@ export const ArrayColumnTitle = ({
         >
           {isFocused && <DragIcon className="text-secondary fill-current" />}
         </div>
-        {!(isSurveyActive && itemsKey === 'subquestions') && (
+        {isChildUpdateAllowed && (
           <div
             className="cursor-pointer remove-option-button action-item-button remove column"
             onClick={() => removeItem(index)}
@@ -79,9 +84,10 @@ export const ArrayColumnTitle = ({
           {!isNoAnswer && (
             <div className="array-answer-metadata">
               {isFocused && showQNumCode?.showNumber && (
-                <SubquestionCodeInput
+                <CodeInput
+                  isAnswerCode={isAnswer}
                   isColumnTitle={true}
-                  isSurveyActive={isSurveyActive}
+                  isEditable={isChildUpdateAllowed}
                   onChange={(e) => handleChildCodeUpdate(e.target.value, index)}
                   code={code}
                 />

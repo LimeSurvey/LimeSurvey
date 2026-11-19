@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { omit } from 'lodash'
 import { useQuery } from '@tanstack/react-query'
 import { useBuffer } from './useBuffer'
+import { useAppState } from './useAppState'
 import {
   Entities,
   SCALE_1,
@@ -14,6 +15,7 @@ import {
   getNextSubQuestionCode,
   RandomNumber,
   APP_KEY_PREFIX,
+  canUpdateChildren,
 } from 'helpers'
 import { reportExtras } from 'appInstrumentation'
 import { singleChoiceThemes } from 'components/QuestionTypes'
@@ -52,6 +54,8 @@ export const useQuestionChildren = ({
     },
   })
 
+  const [isSurveyActive] = useAppState(STATES.IS_SURVEY_ACTIVE, false)
+
   const filterAndSortChildren = (childArray, props, newChild) => {
     let firstScaleChildren = []
     let secondScaleChildren = []
@@ -89,6 +93,8 @@ export const useQuestionChildren = ({
   }
 
   const handleChildAdd = (childArray = [], entityType, props = {}) => {
+    if (!canUpdateChildren(entityType, isSurveyActive)) return
+
     const childKey = entityType === Entities.answer ? 'answers' : 'subquestions'
 
     const newChild =
@@ -137,6 +143,8 @@ export const useQuestionChildren = ({
   }
 
   const handleChildDelete = (childId, childArray = [], entityType) => {
+    if (!canUpdateChildren(entityType, isSurveyActive)) return
+
     const childKey = entityType === Entities.answer ? 'answers' : 'subquestions'
     const idKey = entityType === Entities.answer ? 'aid' : 'qid'
 
@@ -252,6 +260,8 @@ export const useQuestionChildren = ({
     entityType,
     entityTitleKey,
   }) => {
+    if (!canUpdateChildren(entityType, isSurveyActive)) return
+
     const validationMessage = validateCode({
       entityTitleKey,
       entityItems: childArray,
@@ -351,9 +361,13 @@ export const useQuestionChildren = ({
     entityTitleKey,
   }) => {
     const titleKey = entityTitleKey === 'answer' ? 'code' : 'title'
+    // Codes only have to be unique within their scale: Both scales of a dual scale array can use A1
+    const scaleId = entityItems?.[childIndex]?.scaleId
     const newCodeIndex = entityItems
       ? entityItems.findIndex(
-          (item) => item[titleKey]?.toUpperCase() === newCode.toUpperCase()
+          (item) =>
+            item.scaleId === scaleId &&
+            item[titleKey]?.toUpperCase() === newCode.toUpperCase()
         )
       : -1
 

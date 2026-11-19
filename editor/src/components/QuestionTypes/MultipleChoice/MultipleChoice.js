@@ -6,7 +6,7 @@ import { Button, Form } from 'react-bootstrap'
 import { PlusLg } from 'react-bootstrap-icons'
 
 import { useAppState, useChildKeyboardShortcuts } from 'hooks'
-import { STATES, Entities } from 'helpers'
+import { STATES, Entities, canUpdateChildren } from 'helpers'
 import { getTooltipMessages } from 'helpers/options'
 import { DragAndDrop } from 'components/UIComponents'
 import { TooltipContainer } from 'components'
@@ -25,6 +25,10 @@ export const MultipleChoice = ({
   handleChildDelete,
 }) => {
   const [isSurveyActive] = useAppState(STATES.IS_SURVEY_ACTIVE)
+  const isChildUpdateAllowed = canUpdateChildren(
+    Entities.subquestion,
+    isSurveyActive
+  )
   const containersRef = useRef(null)
 
   const subquestionsRef = useRef(null)
@@ -35,7 +39,7 @@ export const MultipleChoice = ({
     entityType: Entities.subquestion,
     handleChildAdd,
     handleChildDelete,
-    isSurveyActive,
+    isChildUpdateAllowed,
   })
 
   const isButtonsTheme =
@@ -114,7 +118,7 @@ export const MultipleChoice = ({
       <div className="add-sub-question-button">
         <TooltipContainer
           tip={getTooltipMessages().ACTIVE_DISABLED}
-          showTip={isSurveyActive}
+          showTip={!isChildUpdateAllowed}
         >
           <Button
             onClick={() => handleChildAdd(subquestions, Entities.subquestion)}
@@ -126,7 +130,7 @@ export const MultipleChoice = ({
               }
             )}
             data-testid="add-sub-question-button"
-            disabled={isSurveyActive}
+            disabled={!isChildUpdateAllowed}
           >
             <PlusLg /> {t('Add subquestion')}
           </Button>
