@@ -102,7 +102,6 @@ class TemplateConfigVariationTest extends TestBaseClass
         App()->setLanguage('ar');
         $child = $this->getChildTemplate(['css/variations/theme_apple-rtl.css']);
         $method = new \ReflectionMethod($child, 'replaceVariationFilesWithRtl');
-        $method->setAccessible(true);
         try {
             $cssFiles = $method->invoke($child, ['css/variations/theme_grape.css', 'css/variations/theme_ltronly.css']);
         } finally {
@@ -168,7 +167,6 @@ class TemplateConfigVariationTest extends TestBaseClass
     private function replaceAncestorVariations(TemplateConfiguration $template, array $settings)
     {
         $method = new \ReflectionMethod($template, 'replaceAncestorVariations');
-        $method->setAccessible(true);
         return $method->invoke($template, $settings);
     }
 }

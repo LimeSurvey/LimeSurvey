@@ -117,7 +117,6 @@ class ExpressionManagerCoreTest extends TestBaseClass
         \Yii::import('application.helpers.expressions.em_manager_helper', true);
         $lem = \LimeExpressionManager::singleton();
         $knownVars = new \ReflectionProperty($lem, 'knownVars');
-        $knownVars->setAccessible(true);
         $savedKnownVars = $knownVars->getValue($lem);
         $lem->setKnownVars([
             'Q1' => [
