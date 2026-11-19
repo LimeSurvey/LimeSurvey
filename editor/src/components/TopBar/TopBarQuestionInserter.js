@@ -39,7 +39,16 @@ export const TopBarQuestionInserter = ({ surveyID }) => {
       ? survey?.questionGroups[groupIndex]
       : survey?.questionGroups[0]
 
+  const [isSurveyActive] = useAppState(STATES.IS_SURVEY_ACTIVE, false)
+  const [hasSurveyUpdatePermission] = useAppState(
+    STATES.HAS_SURVEY_UPDATE_PERMISSION
+  )
+
   const handleAddQuestionGroup = (newQuestionGroup, index) => {
+    if (isSurveyActive || !hasSurveyUpdatePermission) {
+      return
+    }
+
     if (!survey.questionGroups) {
       survey.questionGroups = []
     }
