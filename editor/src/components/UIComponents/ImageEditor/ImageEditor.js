@@ -22,6 +22,7 @@ import {
   getMovableAxes,
   getVisibleSourceSize,
   loadImageSize,
+  moveImagePosition,
   resizeFrame,
   roundSetting,
 } from './imageEditorUtils'
@@ -33,6 +34,17 @@ const PREVIEW_AREA_HEIGHT = 400
 // Dimmed strip around the frame, showing the parts of the image that are cut
 // off.
 const PREVIEW_BORDER = 12
+// How far an arrow key moves the image, as a fraction of its size: 1%, or 10%
+// with Shift.
+const POSITION_STEP = 0.01
+const POSITION_STEP_LARGE = 0.1
+// Direction of each arrow key.
+const ARROW_KEYS = {
+  ArrowLeft: [-1, 0],
+  ArrowRight: [1, 0],
+  ArrowUp: [0, -1],
+  ArrowDown: [0, 1],
+}
 
 /**
  * Returns the settings the editor starts with: The saved ones, or defaults
@@ -358,6 +370,35 @@ export const ImageEditor = ({
     update({ ...frame, ratio: getFrameRatio(frame) })
   }
 
+  /**
+   * Moves the image inside the frame with the arrow keys, for keyboard users
+   * who can't drag it.
+   *
+   * @param {KeyboardEvent} event the key event of the preview
+   * @returns {void}
+   */
+  const handlePreviewKeyDown = (event) => {
+    const direction = ARROW_KEYS[event.key]
+    if (!direction || !isMovable) {
+      return
+    }
+    // The page and the modal body must not scroll instead.
+    event.preventDefault()
+    const step = event.shiftKey ? POSITION_STEP_LARGE : POSITION_STEP
+    const position = moveImagePosition(
+      naturalSize.width,
+      naturalSize.height,
+      current,
+      current.zoom,
+      { x: current.positionX, y: current.positionY },
+      direction[0] * step,
+      direction[1] * step
+    )
+    if (position) {
+      update({ positionX: position.x, positionY: position.y })
+    }
+  }
+
   const handleReset = () => {
     setCurrent({
       ...getInitialSettings(null, naturalSize),
@@ -431,12 +472,24 @@ export const ImageEditor = ({
             {/* Top aligned: The image (with the dimmed strip, where there is
                 one) starts level with the labels of the width and height
                 inputs. */}
+            {/* While the image can move, the preview can be focused and the
+                arrow keys move the image. */}
             <div
-              className="d-flex align-items-start justify-content-center position-relative"
+              className="image-editor-preview-area d-flex align-items-start justify-content-center position-relative"
               style={{
                 width: PREVIEW_AREA_WIDTH,
                 height: PREVIEW_AREA_HEIGHT,
               }}
+              {...(isMovable
+                ? {
+                    'tabIndex': 0,
+                    'role': 'group',
+                    'aria-label': t('Position'),
+                    'aria-describedby': `${idPrefix}-drag-hint`,
+                    'onKeyDown': handlePreviewKeyDown,
+                  }
+                : {})}
+              data-testid="image-editor-preview-area"
             >
               <div
                 className="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center pe-none"
@@ -498,9 +551,12 @@ export const ImageEditor = ({
                 invisible: !isMovable,
               })}
               aria-hidden={!isMovable}
+              id={`${idPrefix}-drag-hint`}
               data-testid="image-editor-drag-hint"
             >
-              {t('Drag the image to move it inside the frame.')}
+              {t(
+                'Drag the image or use the arrow keys to move it inside the frame.'
+              )}
             </p>
             {/* An invisible copy of the warning reserves exactly the space
                 the warning needs, in every language. The live region on top

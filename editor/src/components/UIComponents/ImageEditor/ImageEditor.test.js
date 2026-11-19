@@ -315,6 +315,37 @@ describe('ImageEditor', () => {
     expect(onSave).not.toHaveBeenCalled()
   })
 
+  test('The arrow keys move the image inside the frame', async () => {
+    const onSave = await renderEditor({
+      settings: { width: 400, height: 300, zoom: 2 },
+    })
+
+    const preview = screen.getByTestId('image-editor-preview-area')
+    expect(preview).toHaveAttribute('tabindex', '0')
+    expect(preview).toHaveAccessibleName('Position')
+    expect(preview).toHaveAccessibleDescription(
+      'Drag the image or use the arrow keys to move it inside the frame.'
+    )
+    preview.focus()
+    await userEvent.keyboard('{ArrowRight}{ArrowRight}')
+    await userEvent.keyboard('{Shift>}{ArrowUp}{/Shift}')
+    // Far beyond the edge: The image stops where the frame is still filled.
+    await userEvent.keyboard('{Shift>}{ArrowUp}{ArrowUp}{ArrowUp}{/Shift}')
+    await userEvent.click(screen.getByRole('button', { name: 'Save' }))
+
+    expect(onSave).toHaveBeenCalledWith(
+      expect.objectContaining({ positionX: 0.52, positionY: 0.25 })
+    )
+  })
+
+  test('The preview can only be focused while the image can move', async () => {
+    await renderEditor()
+
+    const preview = screen.getByTestId('image-editor-preview-area')
+    expect(preview).not.toHaveAttribute('tabindex')
+    expect(preview).not.toHaveAttribute('aria-label')
+  })
+
   test('Saves frame, position, crop and alt text', async () => {
     const onSave = await renderEditor()
 

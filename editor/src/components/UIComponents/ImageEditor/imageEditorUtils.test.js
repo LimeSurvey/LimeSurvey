@@ -5,6 +5,7 @@ import {
   getDefaultFrameSize,
   getFrameRatio,
   getMovableAxes,
+  moveImagePosition,
   getVisibleSourceSize,
   resizeFrame,
 } from './imageEditorUtils'
@@ -42,6 +43,34 @@ describe('imageEditorUtils', () => {
     expect(resizeFrame({ width: 100, height: 400 }, 'height', 1, 0.25)).toEqual(
       { width: 1, height: 1 }
     )
+  })
+
+  test('Moving the image keeps the frame filled', () => {
+    // 400×300 image at zoom 2 in a 400×300 frame: Half of the image is
+    // visible, its center can go from 0.25 to 0.75 on both axes.
+    const frame = { width: 400, height: 300 }
+    const center = { x: 0.5, y: 0.5 }
+    expect(moveImagePosition(400, 300, frame, 2, center, 0.01, 0)).toEqual({
+      x: 0.51,
+      y: 0.5,
+    })
+    expect(moveImagePosition(400, 300, frame, 2, center, 0, -0.1)).toEqual({
+      x: 0.5,
+      y: 0.4,
+    })
+    expect(
+      moveImagePosition(400, 300, frame, 2, { x: 0.74, y: 0.5 }, 0.1, 0)
+    ).toEqual({ x: 0.75, y: 0.5 })
+    // A position outside the range starts from its edge.
+    expect(
+      moveImagePosition(400, 300, frame, 2, { x: 0.9, y: 0.5 }, -0.01, 0)
+    ).toEqual({ x: 0.74, y: 0.5 })
+    // Not zoomed: The whole image is visible and nothing moves.
+    expect(moveImagePosition(400, 300, frame, 1, center, 0.1, 0.1)).toEqual({
+      x: 0.5,
+      y: 0.5,
+    })
+    expect(moveImagePosition(0, 0, frame, 2, center, 0.1, 0)).toBeNull()
   })
 
   test('Frame ratio is width / height, or null without area', () => {

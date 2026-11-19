@@ -150,6 +150,44 @@ export const getCropRect = (
 }
 
 /**
+ * Moves the visible part of the image, e.g. with the arrow keys. The position
+ * stays where the frame is still filled: It is the center of the visible part,
+ * as a fraction of the image.
+ *
+ * @param {number} naturalWidth width of the image file in px
+ * @param {number} naturalHeight height of the image file in px
+ * @param {{width: number, height: number}} frame the frame size in px
+ * @param {number} zoom zoom factor, 1 = the image just covers the frame
+ * @param {{x: number, y: number}} position the current position
+ * @param {number} deltaX horizontal move, as a fraction of the image width
+ * @param {number} deltaY vertical move, as a fraction of the image height
+ * @returns {{x: number, y: number}|null} the new position, or null when the
+ *   image size or the frame is unknown
+ */
+export const moveImagePosition = (
+  naturalWidth,
+  naturalHeight,
+  frame,
+  zoom,
+  position,
+  deltaX,
+  deltaY
+) => {
+  const rect = getCropRect(naturalWidth, naturalHeight, frame, zoom)
+  if (!rect) {
+    return null
+  }
+  const clamp = (value, size) =>
+    size >= 1 ? 0.5 : Math.max(size / 2, Math.min(value, 1 - size / 2))
+  return {
+    x: roundSetting(clamp(clamp(position.x, rect.width) + deltaX, rect.width)),
+    y: roundSetting(
+      clamp(clamp(position.y, rect.height) + deltaY, rect.height)
+    ),
+  }
+}
+
+/**
  * Tells in which directions the image can be dragged inside the frame: It is
  * zoomed in, or the frame's aspect ratio differs from the image's, so a part
  * is cut off. Without the image size, only the zoom is known.

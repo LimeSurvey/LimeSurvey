@@ -63,4 +63,10 @@
   .input-range-input {
     width: 60px;
   }
+
+  // The preview can be focused while the image can move (arrow keys).
+  .image-editor-preview-area:focus-visible {
+    outline: 2px solid $grape;
+    outline-offset: 2px;
+  }
 }
