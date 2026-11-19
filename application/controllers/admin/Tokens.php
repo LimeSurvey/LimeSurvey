@@ -325,9 +325,11 @@ class Tokens extends SurveyCommonAction
 
                 if ($bouncetotal > 0) {
                     printf(gT("%s unread messages were scanned out of which %s were marked as bounce by the system."), $checktotal, $bouncetotal);
+                    echo "<br>";
                     eT("You can now close this modal box.");
                 } else {
                     printf(gT("%s unread messages were scanned, none were marked as bounce by the system."), $checktotal);
+                    echo "<br>";
                     eT("You can now close this modal box.");
                 }
             } else {

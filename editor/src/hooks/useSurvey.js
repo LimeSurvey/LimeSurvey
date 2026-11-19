@@ -166,15 +166,22 @@ export const useSurvey = (id) => {
     })
   }
 
+  // Merge into the current cached values, not into this render's `data` and
+  // `surveyHash`: callers can hold an outdated `update` (e.g. from a popup that
+  // stayed open while the survey was refreshed, or several updates in one
+  // handler), and spreading the captured values would restore older fields.
   const updateSurvey = (updateData) => {
-    setSurveyHash({ ...surveyHash, updateHash: Math.random() })
+    setSurveyHash((currentHash) => ({
+      ...(currentHash ?? surveyHash),
+      updateHash: Math.random(),
+    }))
 
-    queryClient.setQueryData([STATES.SURVEY], {
+    queryClient.setQueryData([STATES.SURVEY], (currentData) => ({
       survey: {
-        ...data.survey,
+        ...(currentData?.survey ?? data?.survey),
         ...updateData,
       },
-    })
+    }))
   }
 
   const surveyPatch = useCallback(
