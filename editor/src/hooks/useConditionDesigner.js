@@ -16,6 +16,7 @@ import {
   updateQuestionScenarios,
   syncSurveyQuestionWithScenarios,
   isDuplicate,
+  splitConditionValues,
 } from '../components/ConditionDesigner/utils'
 
 export const useConditionDesigner = ({
@@ -158,11 +159,11 @@ export const useConditionDesigner = ({
         conditions.length,
         ...conditions
           .filter((c) => !c.isDeleted)
-          .flatMap(({ value, ...rest }) =>
-            value
-              .toString()
-              .split(',')
-              .map((v) => ({ ...rest, value: v }))
+          .flatMap((condition) =>
+            splitConditionValues(condition).map((value) => ({
+              ...condition,
+              value,
+            }))
           )
       )
 
