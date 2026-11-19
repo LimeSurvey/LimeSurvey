@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { omit } from 'lodash'
 import { useQuery } from '@tanstack/react-query'
 import { useBuffer } from './useBuffer'
@@ -43,6 +43,13 @@ export const useQuestionChildren = ({
 }) => {
   const { addToBuffer } = useBuffer()
   const [children, setChildren] = useState([])
+  // The latest question and update function: An image upload calls
+  // handleChildLUpdate from the render where it started. The image option
+  // attributes and the question changed meanwhile must not be overwritten.
+  const latestQuestion = useRef(question)
+  latestQuestion.current = question
+  const latestHandleUpdate = useRef(handleUpdate)
+  latestHandleUpdate.current = handleUpdate
 
   const isSingleChoiceTheme = singleChoiceThemes.includes(
     question.questionThemeName
@@ -145,7 +152,8 @@ export const useQuestionChildren = ({
 
   /**
    * Saves changed image option attributes along with a children update, so
-   * both end up in one question update.
+   * both end up in one question update. The changes must be built from the
+   * attributes of the latest question.
    *
    * @param {Object|null} attributeChanges changed values keyed by attribute
    *   and language, or null when there are none
@@ -165,7 +173,10 @@ export const useQuestionChildren = ({
         .update(attributeChanges)
     )
     return {
-      attributes: applyAttributeChanges(question.attributes, attributeChanges),
+      attributes: applyAttributeChanges(
+        latestQuestion.current.attributes,
+        attributeChanges
+      ),
     }
   }
 
@@ -173,7 +184,7 @@ export const useQuestionChildren = ({
    * Returns the code an answer or subquestion has in the question itself. The
    * children passed to the handlers are copied from the question one render
    * later, so while typing fast they can still have an older code. The image
-   * option attributes always match the question.
+   * option attributes always match the latest question.
    *
    * @param {Object} child the answer or subquestion
    * @param {string} entityType Entities.answer or Entities.subquestion
@@ -183,8 +194,9 @@ export const useQuestionChildren = ({
     const isAnswer = entityType === Entities.answer
     const idKey = isAnswer ? 'aid' : 'qid'
     const codeKey = isAnswer ? 'code' : 'title'
+    const currentQuestion = latestQuestion.current
     const questionChildren =
-      (isAnswer ? question.answers : question.subquestions) || []
+      (isAnswer ? currentQuestion.answers : currentQuestion.subquestions) || []
     // With an appKey, only the appKey counts: New options get random
     // temporary IDs, which can be the same for two of them. Without a match,
     // the child's own code is used.
@@ -224,7 +236,7 @@ export const useQuestionChildren = ({
     const attributeUpdate = deletedChild
       ? saveImageOptionChanges(
           getImageOptionDeleteChanges(
-            question.attributes,
+            latestQuestion.current.attributes,
             getCurrentChildCode(deletedChild, entityType)
           )
         )
@@ -339,13 +351,18 @@ export const useQuestionChildren = ({
     const attributeUpdate = imageChanged
       ? saveImageOptionChanges(
           getImageOptionResetChanges(
-            question.attributes,
+            latestQuestion.current.attributes,
             getCurrentChildCode(updatedChildren[childIndex], entityType),
             activeLanguage
           )
         )
       : {}
-    handleUpdate({ [childKey]: updatedChildren, ...attributeUpdate })
+    // Also after an upload: Only the changed children and attributes are
+    // applied, to the latest question.
+    latestHandleUpdate.current({
+      [childKey]: updatedChildren,
+      ...attributeUpdate,
+    })
   }
 
   /**
@@ -407,7 +424,11 @@ export const useQuestionChildren = ({
     )
     // Image select themes: The image settings are keyed by code, move them.
     const attributeUpdate = saveImageOptionChanges(
-      getImageOptionRenameChanges(question.attributes, oldCode, newCode)
+      getImageOptionRenameChanges(
+        latestQuestion.current.attributes,
+        oldCode,
+        newCode
+      )
     )
     handleUpdate({ [childKey]: updatedChildren, ...attributeUpdate })
   }

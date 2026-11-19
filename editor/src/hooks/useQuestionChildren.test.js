@@ -421,6 +421,71 @@ describe('image settings of image select options', () => {
     ).toEqual({ en: JSON.stringify({ A2: { width: 200 } }) })
   })
 
+  test('a finished upload builds on the attributes saved while it was running', () => {
+    queryClient.setQueryData([STATES.SURVEY], { survey: { sid: 1 } })
+    queryClient.setQueryData([STATES.BUFFER], [])
+    const answers = [serverAnswer(11, 'A1', 0), serverAnswer(12, 'A2', 0)]
+    const firstUpdate = jest.fn()
+    const latestUpdate = jest.fn()
+    const { result, rerender } = renderHook(
+      ({ question, handleUpdate }) =>
+        useQuestionChildren({
+          question,
+          handleUpdate,
+          surveySettings: { languages: ['en'] },
+          language: 'en',
+        }),
+      {
+        wrapper,
+        initialProps: {
+          question: {
+            qid: QID,
+            questionThemeName: 'image_select-listradio',
+            attributes: imageAttributes,
+            answers,
+          },
+          handleUpdate: firstUpdate,
+        },
+      }
+    )
+    // The upload of A1's new image starts with the handler of this render.
+    const uploadHandler = result.current.handleChildLUpdate
+    // Meanwhile, A2's image settings and the question title are saved.
+    const newerAttributes = {
+      ...imageAttributes,
+      [IMAGE_OPTION_SETTINGS_ATTRIBUTE]: {
+        ...imageAttributes[IMAGE_OPTION_SETTINGS_ATTRIBUTE],
+        en: JSON.stringify({ A1: { width: 400 }, A2: { width: 999 } }),
+      },
+    }
+    rerender({
+      question: {
+        qid: QID,
+        title: 'Newer title',
+        questionThemeName: 'image_select-listradio',
+        attributes: newerAttributes,
+        answers,
+      },
+      handleUpdate: latestUpdate,
+    })
+
+    uploadHandler(
+      '/upload/surveys/1/images/new.jpg',
+      0,
+      answers,
+      Entities.answer
+    )
+
+    expect(firstUpdate).not.toHaveBeenCalled()
+    const { attributes } = latestUpdate.mock.calls[0][0]
+    expect(JSON.parse(attributes[IMAGE_OPTION_SETTINGS_ATTRIBUTE].en)).toEqual({
+      A2: { width: 999 },
+    })
+    expect(
+      getAttributeOperation().props[IMAGE_OPTION_SETTINGS_ATTRIBUTE]
+    ).toEqual({ en: JSON.stringify({ A2: { width: 999 } }) })
+  })
+
   test('the same image keeps the image settings', () => {
     const { result, handleUpdate, answers } = renderChildren(
       'image_select-listradio'
