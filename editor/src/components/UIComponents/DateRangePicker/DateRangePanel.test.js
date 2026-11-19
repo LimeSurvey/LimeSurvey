@@ -193,6 +193,21 @@ describe('DateRangePanel', () => {
     expect(confirmedDays(onConfirm)).toEqual(days([2026, 1, 5], [2026, 1, 9]))
   })
 
+  test('an empty date input asks for a date', () => {
+    renderPanel()
+
+    clickButton('Custom range')
+
+    expect(screen.getByLabelText('Start date')).toHaveAttribute(
+      'placeholder',
+      'Select a date'
+    )
+    expect(screen.getByLabelText('End date')).toHaveAttribute(
+      'placeholder',
+      'Select a date'
+    )
+  })
+
   test('a date can also be typed as a short or ISO date', () => {
     const { onConfirm } = renderPanel()
 
@@ -204,27 +219,84 @@ describe('DateRangePanel', () => {
     expect(confirmedDays(onConfirm)).toEqual(days([2026, 1, 5], [2026, 1, 9]))
   })
 
-  test('the icon of a date input highlights the calendar and moves focus there', () => {
+  test('the first click on each input icon highlights the calendar', () => {
     renderPanel({
-      initialRange: { from: new Date(2026, 0, 14), to: new Date(2026, 0, 14) },
+      initialRange: { from: new Date(2026, 0, 14), to: new Date(2026, 0, 20) },
     })
     const calendar = document.querySelector('.date-range-calendar')
+    const [startIcon, endIcon] = screen.getAllByRole('button', {
+      name: 'Pick the dates on the calendar',
+    })
 
-    clickButton('Pick the dates on the calendar')
+    fireEvent.click(startIcon)
 
     expect(calendar).toHaveClass('is-highlighted')
     expect(
       screen.getByRole('button', { name: /January 14th, 2026/ })
     ).toHaveFocus()
 
-    clickButton('Pick the dates on the calendar')
-    expect(calendar).toHaveClass('is-highlighted', 'is-highlighted-again')
-
     fireEvent.animationEnd(calendar.firstElementChild)
     expect(calendar).toHaveClass('is-highlighted')
 
     fireEvent.animationEnd(calendar)
     expect(calendar).not.toHaveClass('is-highlighted')
+
+    fireEvent.click(startIcon)
+    expect(calendar).not.toHaveClass('is-highlighted')
+
+    fireEvent.click(endIcon)
+    expect(calendar).toHaveClass('is-highlighted')
+    fireEvent.animationEnd(calendar)
+
+    fireEvent.click(endIcon)
+    expect(calendar).not.toHaveClass('is-highlighted')
+  })
+
+  test('an input is active once picking starts, until the range is complete', () => {
+    renderPanel()
+    const inputBox = (label) => screen.getByLabelText(label).parentElement
+
+    expect(inputBox('Start date')).not.toHaveClass('is-active')
+
+    clickButton('Pick the dates on the calendar')
+    expect(inputBox('Start date')).toHaveClass('is-active')
+
+    clickDay('January 14th, 2026')
+    expect(inputBox('Start date')).not.toHaveClass('is-active')
+    expect(inputBox('End date')).toHaveClass('is-active')
+
+    clickDay('January 20th, 2026')
+    expect(inputBox('Start date')).not.toHaveClass('is-active')
+    expect(inputBox('End date')).not.toHaveClass('is-active')
+  })
+
+  test('the end date icon lets a calendar click change only the end', () => {
+    const { onConfirm } = renderPanel({
+      initialRange: { from: new Date(2026, 0, 14), to: new Date(2026, 0, 20) },
+    })
+    const [, endIcon] = screen.getAllByRole('button', {
+      name: 'Pick the dates on the calendar',
+    })
+
+    fireEvent.click(endIcon)
+    expect(screen.getByLabelText('End date').parentElement).toHaveClass(
+      'is-active'
+    )
+
+    clickDay('January 25th, 2026')
+    clickButton('Confirm')
+
+    expect(confirmedDays(onConfirm)).toEqual(days([2026, 1, 14], [2026, 1, 25]))
+  })
+
+  test('with the end date active, an earlier day becomes the start', () => {
+    const { onConfirm } = renderPanel()
+
+    clickDay('January 14th, 2026')
+    clickDay('January 8th, 2026')
+    clickButton('Confirm')
+
+    expect(confirmedDays(onConfirm)).toEqual(days([2026, 1, 8], [2026, 1, 14]))
   })
 
   test('an end date can also be typed before the start date', () => {

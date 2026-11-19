@@ -361,7 +361,8 @@ export class StatisticsService {
     fields,
     statisticsFilters,
     search,
-    filterSet = []
+    filterSet = [],
+    answerFilters = []
   ) => {
     const { answers, pagination } = await this.fetchQuestionAnswers(
       sid,
@@ -382,6 +383,7 @@ export class StatisticsService {
           ],
           fields
         ),
+        ...answerFilters,
       ],
       filterSet
     )

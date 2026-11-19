@@ -24,6 +24,7 @@ export const DateInput = ({
   locale,
   onIconClick,
   iconLabel,
+  isActive = false,
   readOnly = false,
 }) => {
   const localeOptions = locale ? { locale } : undefined
@@ -61,14 +62,17 @@ export const DateInput = ({
 
   return (
     <div
-      className={classNames('date-range-input', { 'is-invalid': isInvalid })}
+      className={classNames('date-range-input', {
+        'is-active': isActive,
+        'is-invalid': isInvalid,
+      })}
     >
       <input
         type="text"
         aria-label={label}
         aria-invalid={isInvalid}
         title={isInvalid ? t('Invalid date.') : undefined}
-        placeholder={format(new Date(), dateFormat, localeOptions)}
+        placeholder={t('Select a date')}
         value={text}
         {...(readOnly
           ? {

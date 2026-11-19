@@ -50,8 +50,10 @@ export const DateRangePanel = ({
   // Clear starts the inputs over, along with any invalid text in them.
   const [inputsKey, setInputsKey] = useState(0)
   const [isEnteringEnd, setIsEnteringEnd] = useState(false)
-  const [highlightCount, setHighlightCount] = useState(0)
+  const [isCalendarHighlighted, setIsCalendarHighlighted] = useState(false)
+  const [highlightedBy, setHighlightedBy] = useState([])
   const calendarRef = useRef(null)
+  const [pickedInput, setPickedInput] = useState(null)
   // The end date input shows up once the range has an end of its own.
   const isSingleDay =
     !isEnteringEnd &&
@@ -61,6 +63,12 @@ export const DateRangePanel = ({
       tempRange.to &&
       !isSameDay(tempRange.from, tempRange.to)
     )
+  let activeInput = null
+  if (isSingleDay) {
+    activeInput = pickedInput && 'from'
+  } else {
+    activeInput = pickedInput ?? (tempRange.from && !tempRange.to ? 'to' : null)
+  }
   const hasInvalidInput = !isFromValid || (!isSingleDay && !isToValid)
   const selectionMode =
     [...presets, ...trailingPresets].find(({ key }) => key === activeKey)
@@ -86,6 +94,7 @@ export const DateRangePanel = ({
 
   const handlePresetSelect = (preset) => {
     setDaysUpToToday('')
+    setPickedInput(null)
     setIsEnteringEnd(preset.mode === 'range')
 
     if (preset.range) {
@@ -116,6 +125,7 @@ export const DateRangePanel = ({
     const value = e.target.value
     setDaysUpToToday(value)
     setIsEnteringEnd(false)
+    setPickedInput(null)
     setActiveKey(null)
 
     if (!/^[1-9]\d*$/.test(value)) {
@@ -133,6 +143,7 @@ export const DateRangePanel = ({
   // Typing a date always makes it a custom range.
   const startCustomRange = () => {
     setDaysUpToToday('')
+    setPickedInput(null)
     setActiveKey(CUSTOM_RANGE_PRESET)
   }
 
@@ -165,8 +176,9 @@ export const DateRangePanel = ({
     setMonth(to)
   }
 
-  const handleCalendarSelect = (selected, triggerDate) => {
+  const handleCalendarSelect = (_selected, triggerDate) => {
     setDaysUpToToday('')
+    setPickedInput(null)
 
     if (selectionMode !== 'range') {
       setTempRange(clampRange(expandToUnit(triggerDate, selectionMode)))
@@ -174,20 +186,24 @@ export const DateRangePanel = ({
     }
 
     setActiveKey(CUSTOM_RANGE_PRESET)
-    const isSelectingEnd = tempRange.from && !tempRange.to
-    // click outside an in-progress selection starts a new range.
-    setTempRange(
-      isSelectingEnd && selected
-        ? selected
-        : { from: triggerDate, to: undefined }
-    )
+    if (activeInput === 'to' && tempRange.from) {
+      setTempRange(
+        isBefore(triggerDate, tempRange.from)
+          ? { from: triggerDate, to: tempRange.from }
+          : { from: tempRange.from, to: triggerDate }
+      )
+      return
+    }
+    setTempRange({ from: triggerDate, to: undefined })
   }
 
-  const highlightCalendar = () => {
-    setHighlightCount((count) => count + 1)
-    calendarRef.current
-      ?.querySelector('.rdp-day_button[tabindex="0"]')
-      ?.focus()
+  const handleIconClick = (input) => {
+    setPickedInput(input)
+    if (!highlightedBy.includes(input)) {
+      setHighlightedBy([...highlightedBy, input])
+      setIsCalendarHighlighted(true)
+    }
+    calendarRef.current?.querySelector('.rdp-day_button[tabindex="0"]')?.focus()
   }
 
   const handleConfirm = () => {
@@ -201,6 +217,7 @@ export const DateRangePanel = ({
     setDaysUpToToday('')
     setIsEnteringEnd(false)
     setActiveKey(null)
+    setPickedInput(null)
     setInputsKey((key) => key + 1)
   }
 
@@ -225,7 +242,8 @@ export const DateRangePanel = ({
             maxDate={maxDate}
             onCommit={handleFromInput}
             onValidityChange={setIsFromValid}
-            onIconClick={highlightCalendar}
+            isActive={activeInput === 'from'}
+            onIconClick={() => handleIconClick('from')}
             iconLabel={t('Pick the dates on the calendar')}
           />
           {!isSingleDay && (
@@ -240,7 +258,8 @@ export const DateRangePanel = ({
                 maxDate={maxDate}
                 onCommit={handleToInput}
                 onValidityChange={setIsToValid}
-                onIconClick={highlightCalendar}
+                isActive={activeInput === 'to'}
+                onIconClick={() => handleIconClick('to')}
                 iconLabel={t('Pick the dates on the calendar')}
               />
             </>
@@ -262,8 +281,8 @@ export const DateRangePanel = ({
           minDate={minDate}
           maxDate={maxDate}
           containerRef={calendarRef}
-          highlightCount={highlightCount}
-          onHighlightEnd={() => setHighlightCount(0)}
+          highlighted={isCalendarHighlighted}
+          onHighlightEnd={() => setIsCalendarHighlighted(false)}
         />
         <DateRangeActions
           onClear={handleClear}

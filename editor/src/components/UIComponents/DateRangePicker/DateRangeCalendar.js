@@ -71,7 +71,7 @@ export const DateRangeCalendar = ({
   minDate,
   maxDate,
   containerRef,
-  highlightCount = 0,
+  highlighted = false,
   onHighlightEnd,
 }) => {
   const { locale, components, weekStartsOn } = useDayPickerSetup(month)
@@ -80,12 +80,9 @@ export const DateRangeCalendar = ({
     <div
       ref={containerRef}
       className={classNames('date-range-calendar', {
-        'is-highlighted': highlightCount > 0,
-        'is-highlighted-again': highlightCount > 0 && highlightCount % 2 === 0,
+        'is-highlighted': highlighted,
       })}
-      onAnimationEnd={(e) =>
-        e.target === e.currentTarget && onHighlightEnd?.()
-      }
+      onAnimationEnd={(e) => e.target === e.currentTarget && onHighlightEnd?.()}
     >
       <DayPicker
         mode="range"

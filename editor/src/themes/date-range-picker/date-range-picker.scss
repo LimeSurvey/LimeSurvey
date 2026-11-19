@@ -1,15 +1,13 @@
 @import 'day-picker';
 
-@each $name in date-range-calendar-highlight, date-range-calendar-highlight-again {
-  @keyframes #{$name} {
-    0%,
-    50% {
-      box-shadow: inset 0 0 0 2px $grape;
-    }
+@keyframes date-range-calendar-highlight {
+  0%,
+  50% {
+    box-shadow: inset 0 0 0 2px $grape;
+  }
 
-    100% {
-      box-shadow: inset 0 0 0 2px transparent;
-    }
+  100% {
+    box-shadow: inset 0 0 0 2px transparent;
   }
 }
 
@@ -166,6 +164,14 @@
       border-color: $grape;
     }
 
+    &.is-active {
+      border-color: $grape;
+
+      .date-range-input-icon {
+        background-color: $grape;
+      }
+    }
+
     &.is-invalid {
       border-color: $error;
     }
@@ -214,10 +220,6 @@
 
     &.is-highlighted {
       animation: date-range-calendar-highlight 1.2s ease-out;
-    }
-
-    &.is-highlighted-again {
-      animation-name: date-range-calendar-highlight-again;
     }
 
     .rdp-root {

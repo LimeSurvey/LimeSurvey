@@ -109,7 +109,6 @@ class ResponseAggregateBatchWhereTest extends TestCondition
         );
 
         $method = new ReflectionMethod(ResponseAggregateBatch::class, 'executeDayCounts');
-        $method->setAccessible(true);
         $method->invoke($batch, $db, 'responses');
 
         $this->assertCount(1, $queries);
@@ -126,7 +125,6 @@ class ResponseAggregateBatchWhereTest extends TestCondition
     private function buildWhere(ResponseAggregateBatch $batch): array
     {
         $method = new ReflectionMethod(ResponseAggregateBatch::class, 'buildWhere');
-        $method->setAccessible(true);
 
         return $method->invoke($batch);
     }

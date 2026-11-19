@@ -25,13 +25,30 @@ const byRawValue = (rowA, rowB, columnId) =>
     String(rowB.original[columnId] ?? '')
   )
 
+// Only answered responses are loaded, so every page has rows to show. An
+// unanswered date is NULL ("true" means IS NOT NULL); an encrypted one is text
+// and can also be empty.
+const getAnswerFilters = (fields, encrypted) =>
+  (fields ?? [])
+    .slice(0, 1)
+    .map((key) =>
+      encrypted
+        ? { key, filterMethod: 'not-empty', value: '' }
+        : { key, filterMethod: 'equal', value: 'true' }
+    )
+
 const DateTimeTableContent = ({ surveyId, question, filters, filterSet }) => {
   const {
     code: questionCode,
     fields,
+    encrypted,
     hasDate = true,
     hasTime = false,
   } = question
+  const answerFilters = useMemo(
+    () => getAnswerFilters(fields, encrypted),
+    [fields, encrypted]
+  )
   const { i18n } = useTranslation()
   const localeCode = getLocaleCode(i18n?.language)
   const [containerRef, isInView] = useIsInViewport(null, {
@@ -57,6 +74,7 @@ const DateTimeTableContent = ({ surveyId, question, filters, filterSet }) => {
     fields,
     filters,
     filterSet,
+    answerFilters,
   })
 
   const answerKey = columns[0]?.key

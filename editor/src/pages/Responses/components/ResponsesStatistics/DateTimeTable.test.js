@@ -78,6 +78,22 @@ describe('DateTimeTable', () => {
     expect(useQuestionResponses).toHaveBeenCalled()
   })
 
+  test('only answered responses are loaded', () => {
+    render(<Table encrypted={false} fields={['Q5']} />)
+    expect(useQuestionResponses.mock.lastCall[2].answerFilters).toEqual([
+      { key: 'Q5', filterMethod: 'equal', value: 'true' },
+    ])
+  })
+
+  test('an encrypted question skips empty text answers too', () => {
+    render(<Table encrypted fields={['Q5']} />)
+    fireEvent.click(screen.getByRole('button', { name: BUTTON }))
+
+    expect(useQuestionResponses.mock.lastCall[2].answerFilters).toEqual([
+      { key: 'Q5', filterMethod: 'not-empty', value: '' },
+    ])
+  })
+
   test('a time-only question shows no Date column', () => {
     useQuestionResponses.mockReturnValue({
       columns: [{ key: 'Q5' }],
