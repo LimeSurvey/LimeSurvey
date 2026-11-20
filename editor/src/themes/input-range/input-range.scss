@@ -4,6 +4,10 @@
 
 .input-range-input {
   margin-left: 12px;
+
+  input {
+    text-align: center;
+  }
 }
 
 // The track is the visible line. The slider measures the inner track, which
@@ -48,7 +52,6 @@
     .qe-input-group {
       input {
         height: 34px;
-        text-align: center;
       }
     }
   }
