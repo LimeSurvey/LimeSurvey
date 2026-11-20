@@ -110,7 +110,7 @@
                         class='bthsaveaslabel btn btn-outline-secondary'
                         id='bthsaveaslabel_{{ scale_id }}'
                         type='button'
-                        onclick="LS.questionEditor.showLabelSetSaver(event, 'answeroptions-table');"
+                        onclick="LS.questionEditor.showLabelSetSaver(event, 'answeroptions-table', {{ scale_id }});"
                         data-bs-target="#saveaslabelModal"
                     >
                         {{ gT('Save label set') }}

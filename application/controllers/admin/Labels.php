@@ -480,7 +480,9 @@ class Labels extends SurveyCommonAction
     }
 
     /**
-     * Get all label sets with permission to update
+     * Echo the label sets the current user may overwrite, for the overwrite list of the classic question editor.
+     *
+     * The JSON object maps each label set id to the label set name.
      *
      * @return void
      */
@@ -496,11 +498,12 @@ class Labels extends SurveyCommonAction
     }
 
     /**
-     * Save label set via Ajax
-     * Used in question editor
-     * Echoes JSON
+     * Create a label set from the answer options or subquestions posted by the classic question editor.
+     *
+     * Echoes a success message.
      *
      * @return void
+     * @throws CHttpException When the user may not create label sets, or the name, labels or languages are invalid
      */
     public function ajaxSave()
     {
@@ -521,8 +524,12 @@ class Labels extends SurveyCommonAction
     }
 
     /**
-     * Ajax Update
+     * Overwrite a label set with the answer options or subquestions posted by the classic question editor.
+     *
+     * Echoes a success message.
+     *
      * @return void
+     * @throws CHttpException When the label set doesn't exist, the user may not update it, or the labels are invalid
      */
     public function ajaxUpdate()
     {
@@ -584,7 +591,7 @@ class Labels extends SurveyCommonAction
      * answers[<row>][<scale id>][answeroptionl10n|subquestionl10n][<language>] = text,
      * plus the codes (and assessment values) of the rows in the same order.
      *
-     * @param CHttpRequest $request
+     * @param CHttpRequest $request Request with the posted answers, codes and assessment values
      * @return array Labels in the shape LabelSetService expects
      */
     private function getLabelsFromRequest(CHttpRequest $request): array
@@ -619,12 +626,16 @@ class Labels extends SurveyCommonAction
     public function getLabelSetsForQuestion()
     {
         $languages = Yii::app()->request->getParam('languages', null);
-        // Same filter as the new editor: only sets that contain all of the languages
-        $lids = array_column(
-            $this->getLabelSetService()->getLabelSets(is_array($languages) ? $languages : []),
-            'lid'
-        );
-        $aLabelSets = empty($lids) ? [] : LabelSet::model()->findAllByPk($lids, ['order' => 'label_name']);
+        $oCriteria = new CDbCriteria();
+        if ($languages != null) {
+            array_walk(
+                $languages,
+                function ($lng) use (&$oCriteria) {
+                    $oCriteria->compare('languages', $lng, true, 'OR');
+                }
+            );
+        }
+        $aLabelSets = LabelSet::model()->findAll($oCriteria);
 
         $returnArray = [];
         foreach ($aLabelSets as $oLabelSet) {

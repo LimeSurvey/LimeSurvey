@@ -105,7 +105,7 @@ export const QuestionFooter = ({
           <TooltipContainer tip={saveLabelSetLabel}>
             <button
               type="button"
-              className="question-footer-icon-button"
+              className="question-footer-icon-button pt-2 mt-1"
               aria-label={saveLabelSetLabel}
               disabled={!labelSetChildren.length}
               data-testid="question-footer-save-label-set-icon"

@@ -643,4 +643,50 @@ describe('SaveLabelSetModal', () => {
     expect(mockRefetch).toHaveBeenCalled()
     expect(onHide).not.toHaveBeenCalled()
   })
+
+  test('Focuses the set to overwrite when the user may only overwrite', async () => {
+    mockLabelSets.current = [{ lid: 4, name: 'Old set', languages: ['en'] }]
+    await renderWithProviders(
+      <SaveLabelSetModal
+        show
+        _children={answers}
+        entityType={Entities.answer}
+        surveyLanguages={['en']}
+        canCreate={false}
+      />
+    )
+
+    await waitFor(() =>
+      expect(
+        screen
+          .getByTestId('save-label-set-overwrite-select')
+          .querySelector('input')
+      ).toHaveFocus()
+    )
+  })
+
+  test('Focuses the set to overwrite once the list has loaded', async () => {
+    mockListFetching.current = true
+    await renderWithProviders(
+      <RerenderHarness
+        show
+        _children={answers}
+        entityType={Entities.answer}
+        surveyLanguages={['en']}
+        canCreate={false}
+      />
+    )
+    const select = screen
+      .getByTestId('save-label-set-overwrite-select')
+      .querySelector('input')
+    // A browser doesn't focus the disabled select while the list loads, unlike jsdom
+    act(() => select.blur())
+    expect(select).not.toHaveFocus()
+
+    mockListFetching.current = false
+    mockLabelSets.current = [{ lid: 4, name: 'Old set', languages: ['en'] }]
+    rerender()
+
+    await waitFor(() => expect(select).toHaveFocus())
+  })
 })

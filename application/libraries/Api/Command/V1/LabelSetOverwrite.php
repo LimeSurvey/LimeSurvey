@@ -27,9 +27,8 @@ class LabelSetOverwrite extends LabelSetSave
      */
     protected function save(Request $request, array $languages, array $labels): LabelSet
     {
-        // The route accepts any path segment, and a cast would turn "12abc" into set 12
-        $lid = filter_var($request->getData('_id'), FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
-        if ($lid === false) {
+        $lid = $this->getRouteLabelSetId($request);
+        if ($lid === null) {
             throw new BadRequestException('Invalid label set id');
         }
         $revision = $request->getData('revision');

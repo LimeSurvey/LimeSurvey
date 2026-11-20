@@ -1,8 +1,8 @@
 // Import shared mocks
 import 'tests/mocks'
 
-import { act } from 'react'
-import { screen } from '@testing-library/react'
+import { act, useState } from 'react'
+import { fireEvent, screen } from '@testing-library/react'
 
 import { renderWithProviders } from 'tests/testUtils'
 import { getQuestionTypeInfo } from 'components/QuestionTypes'
@@ -102,5 +102,56 @@ describe('OptionQuestionEditMode label sets', () => {
     act(() => onLoadAtConfirmation(labels))
 
     expect(handleLabelSetLoad).not.toHaveBeenCalled()
+  })
+
+  test('Loads into the question as it is when the label set arrives', async () => {
+    const handlerAtConfirmation = jest.fn()
+    const handlerAfterAutosave = jest.fn()
+    const savedAnswer = {
+      aid: 7,
+      code: 'A1',
+      sortOrder: 0,
+      assessmentValue: 0,
+      l10ns: { en: { answer: 'Saved meanwhile' } },
+    }
+
+    // Like QuestionBody after an autosave: A new handler, bound to the new
+    // question data, and the new children
+    const Harness = () => {
+      const [isSaved, setIsSaved] = useState(false)
+      return (
+        <>
+          <button type="button" onClick={() => setIsSaved(true)}>
+            Autosave
+          </button>
+          <OptionQuestionEditMode
+            question={question}
+            isFocused
+            handleLabelSetLoad={
+              isSaved ? handlerAfterAutosave : handlerAtConfirmation
+            }
+            language="en"
+            _children={isSaved ? [savedAnswer] : []}
+            handleChildAdd={() => {}}
+            handleChildDelete={() => {}}
+            handleOnChildDragEnd={() => {}}
+            handleChildLUpdate={() => {}}
+          />
+        </>
+      )
+    }
+    await renderWithProviders(<Harness />)
+    // The modal still holds the callback of the render in which the user confirmed
+    const onLoadAtConfirmation = mockOnLoadCallbacks.at(-1)
+    fireEvent.click(screen.getByText('Autosave'))
+
+    act(() => onLoadAtConfirmation(labels))
+
+    expect(handlerAtConfirmation).not.toHaveBeenCalled()
+    expect(handlerAfterAutosave).toHaveBeenCalledWith(
+      [savedAnswer],
+      expect.anything(),
+      labels
+    )
   })
 })

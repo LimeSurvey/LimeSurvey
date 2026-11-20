@@ -78,6 +78,19 @@ export const SaveLabelSetModal = ({
     }
   }, [show])
 
+  // Users who may only overwrite get no name field: Focus the set to overwrite
+  // instead. The select is disabled while the list loads, so focus it once it's there
+  const focusFirstField = () =>
+    (
+      document.getElementById(NAME_INPUT_ID) ??
+      document.getElementById(OVERWRITE_INPUT_ID)
+    )?.focus()
+  useEffect(() => {
+    if (show && !canCreate && !isFetching) {
+      document.getElementById(OVERWRITE_INPUT_ID)?.focus()
+    }
+  }, [show, canCreate, isFetching])
+
   const languageNames = allLanguages?.[userDetails?.lang]
   const getLanguageName = (language) =>
     languageNames?.[language]?.description || language
@@ -200,7 +213,7 @@ export const SaveLabelSetModal = ({
               />
             )}
             <Select
-              labelText={t('Language')}
+              labelText={t('Languages')}
               options={languageOptions}
               value={languageOptions.filter((option) =>
                 languages.includes(option.value)
@@ -292,7 +305,7 @@ export const SaveLabelSetModal = ({
       onConfirm={handleSave}
       isLoading={isSaving}
       confirmDisabled={!isValid}
-      onEntered={() => document.getElementById(NAME_INPUT_ID)?.focus()}
+      onEntered={focusFirstField}
     />
   )
 }

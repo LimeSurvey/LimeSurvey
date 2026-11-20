@@ -13,6 +13,7 @@ use LimeSurvey\Models\Services\Exception\{
     PermissionDeniedException,
     PersistErrorException
 };
+use LimeSurvey\PluginManager\PluginEvent;
 use LSYii_Application;
 use LSYii_Validators;
 use Permission;
@@ -74,7 +75,8 @@ class LabelSetService
      *
      * @param string[] $languages Only list sets that contain all of these languages
      * @param bool $onlyUpdatable Only list sets the current user may overwrite
-     * @return array<int, array{lid: int, name: string, languages: string[], labelCount: int, hasAssessmentValues: bool}> The label sets without their labels
+     * @return array<int, array{lid: int, name: string, languages: string[], labelCount: int, hasAssessmentValues: bool}>
+     *         The label sets without their labels
      */
     public function getLabelSets(array $languages = [], bool $onlyUpdatable = false): array
     {
@@ -83,18 +85,15 @@ class LabelSetService
             // No set can contain an invalid language code, so the filter matches nothing
             return [];
         }
-        $labelSets = $this->labelSet->findAll(['order' => 'label_name']);
-        $hasGlobalUpdate = $onlyUpdatable && $this->hasGlobalUpdatePermission();
-
         $matchingSets = [];
-        foreach ($labelSets as $labelSet) {
-            if (array_diff($languages, $labelSet->getLanguageArray())) {
-                continue;
+        foreach ($this->labelSet->findAll(['order' => 'label_name']) as $labelSet) {
+            if (!array_diff($languages, $labelSet->getLanguageArray())) {
+                $matchingSets[(int)$labelSet->lid] = $labelSet;
             }
-            if ($onlyUpdatable && !$hasGlobalUpdate && !$this->mayUpdate($labelSet)) {
-                continue;
-            }
-            $matchingSets[] = $labelSet;
+        }
+        if ($onlyUpdatable && !$this->hasGlobalUpdatePermission()) {
+            $ownerIds = array_map(static fn (LabelSet $labelSet): int => (int)$labelSet->owner_id, $matchingSets);
+            $matchingSets = array_intersect_key($matchingSets, array_flip($this->filterUpdatableIds($ownerIds)));
         }
 
         $labelStats = $this->getLabelStats(
@@ -117,8 +116,8 @@ class LabelSetService
     /**
      * Whether the current user may overwrite at least one label set.
      *
-     * Cheaper than getLabelSets([], true): it stops at the first updatable set and
-     * doesn't count labels, so the editor's permission request can afford it.
+     * The editor asks for it on every load, so it costs a fixed number of queries,
+     * however many label sets there are, and doesn't count labels like getLabelSets() does.
      *
      * @return bool True when there is a label set the user may overwrite
      */
@@ -127,12 +126,16 @@ class LabelSetService
         if ($this->hasGlobalUpdatePermission()) {
             return $this->labelSet->exists();
         }
-        foreach ($this->labelSet->findAll() as $labelSet) {
-            if ($this->mayUpdate($labelSet)) {
-                return true;
-            }
+        // Only the ids and owners, no model per set
+        $rows = $this->app->db->createCommand()
+            ->select(['lid', 'owner_id'])
+            ->from('{{labelsets}}')
+            ->queryAll();
+        $ownerIds = [];
+        foreach ($rows as $row) {
+            $ownerIds[(int)$row['lid']] = (int)$row['owner_id'];
         }
-        return false;
+        return !empty($this->filterUpdatableIds($ownerIds));
     }
 
     /**
@@ -153,8 +156,17 @@ class LabelSetService
             throw new NotFoundException('Label set not found');
         }
 
+        // Labels can share a sort order (e.g. after classic edits or .lsl imports): Sort by id too,
+        // so the order and the revision are the same on every read of an unchanged set
+        $labelModels = $labelSet->labels;
+        usort(
+            $labelModels,
+            static fn (Label $first, Label $second): int =>
+                [(int)$first->sortorder, (int)$first->id] <=> [(int)$second->sortorder, (int)$second->id]
+        );
+
         $labels = [];
-        foreach ($labelSet->labels as $label) {
+        foreach ($labelModels as $label) {
             $l10ns = [];
             foreach ($label->labell10ns as $language => $labelL10n) {
                 $l10ns[$language] = (string)$labelL10n->title;
@@ -351,6 +363,64 @@ class LabelSetService
     protected function mayUpdate(LabelSet $labelSet): bool
     {
         return $labelSet->hasPermission('labelset', 'update');
+    }
+
+    /**
+     * Ids of the label sets the current user may overwrite, for a user without the global update right.
+     *
+     * The same decision LabelSet::hasPermission('labelset', 'update') makes per set (see
+     * Permission::hasPermission()): A plugin decision first, else the owner, a superadmin or a
+     * label set permission row. It costs one query for all sets instead of two per set.
+     *
+     * @param array<int, int> $ownerIds Owner id of each label set, keyed by label set id
+     * @return int[] Ids of the sets the user may overwrite
+     */
+    protected function filterUpdatableIds(array $ownerIds): array
+    {
+        $userId = (int)$this->permission->getUserId();
+        $isSuperAdmin = (bool)$this->permission->hasGlobalPermission('superadmin', 'read');
+        $grantedIds = $this->app->db->createCommand()
+            ->select('entity_id')
+            ->from('{{permissions}}')
+            ->where(
+                'entity = :entity AND permission = :permission AND uid = :uid AND update_p <> 0',
+                [':entity' => 'labelset', ':permission' => 'labelset', ':uid' => $userId]
+            )
+            ->queryColumn();
+        $grantedIds = array_flip(array_map('intval', $grantedIds));
+
+        $updatableIds = [];
+        foreach ($ownerIds as $lid => $ownerId) {
+            $mayUpdate = $this->getPluginPermission($lid)
+                ?? ($userId > 0 && ($ownerId === $userId || $isSuperAdmin || isset($grantedIds[$lid])));
+            if ($mayUpdate) {
+                $updatableIds[] = $lid;
+            }
+        }
+        return $updatableIds;
+    }
+
+    /**
+     * What plugins decide about updating a label set, asked the way Permission::hasPermission() asks.
+     *
+     * @param int $lid Label set id
+     * @return bool|null The decision of a plugin, null when no plugin decided
+     */
+    protected function getPluginPermission(int $lid): ?bool
+    {
+        $pluginManager = $this->app->getPluginManager();
+        if (!$pluginManager->hasSubscribers('beforeHasPermission')) {
+            return null;
+        }
+        $event = new PluginEvent('beforeHasPermission');
+        $event->set('iEntityID', $lid);
+        $event->set('sEntityName', 'labelset');
+        $event->set('sPermission', 'labelset');
+        $event->set('sCRUD', 'update');
+        $event->set('iUserID', null);
+        $pluginManager->dispatchEvent($event);
+        $permission = $event->get('bPermission');
+        return isset($permission) ? (bool)$permission : null;
     }
 
     /**

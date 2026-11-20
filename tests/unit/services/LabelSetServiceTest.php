@@ -423,6 +423,28 @@ class LabelSetServiceTest extends TestBaseClass
     }
 
     /**
+     * Labels that share a sort order (e.g. after classic edits or .lsl imports) come back in a fixed
+     * order, so the revision doesn't change between reads and the overwrite works.
+     *
+     * @return void
+     */
+    public function testLabelsWithTheSameSortOrderKeepTheirRevision(): void
+    {
+        $labelSet = $this->createLabelSet('same sort order');
+        $lid = (int)$labelSet->lid;
+        \Label::model()->updateAll(['sortorder' => 0], 'lid = :lid', [':lid' => $lid]);
+
+        $reviewed = $this->getService()->getLabelSet($lid);
+        $this->assertSame(['A1', 'A2'], array_column($reviewed['labels'], 'code'), 'Ties must be sorted by id');
+        $this->assertSame($reviewed['revision'], $this->getService()->getLabelSet($lid)['revision']);
+
+        $this->getService()->overwrite($lid, ['en'], [
+            ['code' => 'B1', 'l10ns' => ['en' => 'Maybe']],
+        ], $reviewed['revision']);
+        $this->assertSame(['B1'], array_column($this->getService()->getLabelSet($lid)['labels'], 'code'));
+    }
+
+    /**
      * The revision also changes when the labels are saved without the service, e.g. by the label set editor.
      *
      * @return void
@@ -586,14 +608,7 @@ class LabelSetServiceTest extends TestBaseClass
     {
         $allowed = $this->createLabelSet('allowed');
         $other = $this->createLabelSet('other');
-        $permission = new \Permission();
-        $permission->entity = 'labelset';
-        $permission->entity_id = $allowed->lid;
-        $permission->uid = self::$users['setUpdater']->uid;
-        $permission->permission = 'labelset';
-        $permission->read_p = 1;
-        $permission->update_p = 1;
-        $this->assertTrue($permission->save());
+        $this->grantUpdate((int)$allowed->lid, (int)self::$users['setUpdater']->uid);
 
         \Yii::app()->user->setId(self::$users['setUpdater']->uid);
         $service = $this->getService();
@@ -605,6 +620,125 @@ class LabelSetServiceTest extends TestBaseClass
 
         $this->expectException(PermissionDeniedException::class);
         $service->overwrite((int)$other->lid, ['en'], [['code' => 'B1']]);
+    }
+
+    /**
+     * The overwrite list, which doesn't check each set on its own, lists exactly the sets the
+     * per-set check of the overwrite allows: Owned sets and sets with an update right.
+     *
+     * @return void
+     */
+    public function testOverwriteListMatchesThePerSetCheck(): void
+    {
+        $adminSet = $this->createLabelSet('admin set');
+        $grantedSet = $this->createLabelSet('granted set');
+        $this->grantUpdate((int)$grantedSet->lid, (int)self::$users['setUpdater']->uid);
+        \Yii::app()->user->setId(self::$users['creator']->uid);
+        $creatorSet = $this->createLabelSet('creator set');
+        $testSets = [$adminSet, $grantedSet, $creatorSet];
+
+        foreach (['none', 'creator', 'setUpdater'] as $userKey) {
+            \Yii::app()->user->setId(self::$users[$userKey]->uid);
+            $expected = [];
+            foreach ($testSets as $labelSet) {
+                if (\LabelSet::model()->findByPk($labelSet->lid)->hasPermission('labelset', 'update')) {
+                    $expected[] = substr($labelSet->label_name, strlen(self::NAME_PREFIX));
+                }
+            }
+
+            $listed = array_keys($this->onlyTestSets($this->getService()->getLabelSets([], true)));
+            sort($expected);
+            sort($listed);
+            $this->assertSame($expected, $listed, 'Overwrite list of ' . $userKey);
+            $this->assertSame(
+                $expected !== [],
+                $this->getService()->hasUpdatableLabelSet(),
+                'Updatable set of ' . $userKey
+            );
+        }
+    }
+
+    /**
+     * Plugins still decide per set (beforeHasPermission), before the owner and the permission rows.
+     *
+     * @return void
+     */
+    public function testPluginDecisionsWinInTheOverwriteList(): void
+    {
+        $adminSet = $this->createLabelSet('plugin grants');
+        \Yii::app()->user->setId(self::$users['creator']->uid);
+        $ownSet = $this->createLabelSet('plugin denies');
+        $service = new class (\LabelSet::model(), \Permission::model(), \Yii::app()) extends LabelSetService {
+            /** @var array<int, bool> Plugin decisions keyed by label set id */
+            public array $pluginPermissions = [];
+
+            /**
+             * The decision of the fake plugin.
+             *
+             * @param int $lid Label set id
+             * @return bool|null The decision, null when the plugin doesn't decide
+             */
+            protected function getPluginPermission(int $lid): ?bool
+            {
+                return $this->pluginPermissions[$lid] ?? null;
+            }
+        };
+        $service->pluginPermissions = [(int)$adminSet->lid => true, (int)$ownSet->lid => false];
+
+        $this->assertSame(['plugin grants'], array_keys($this->onlyTestSets($service->getLabelSets([], true))));
+    }
+
+    /**
+     * The overwrite list and the editor's permission request don't run the per-set check,
+     * which costs two queries per label set.
+     *
+     * @return void
+     */
+    public function testUpdatableChecksDontCheckEachSet(): void
+    {
+        $this->createLabelSet('first');
+        $this->createLabelSet('second');
+        \Yii::app()->user->setId(self::$users['setUpdater']->uid);
+        $service = new class (\LabelSet::model(), \Permission::model(), \Yii::app()) extends LabelSetService {
+            /** @var int How often the per-set check ran */
+            public int $perSetChecks = 0;
+
+            /**
+             * Count the per-set checks.
+             *
+             * @param \LabelSet $labelSet Label set to check
+             * @return bool What the real check returns
+             */
+            protected function mayUpdate(\LabelSet $labelSet): bool
+            {
+                $this->perSetChecks++;
+                return parent::mayUpdate($labelSet);
+            }
+        };
+
+        $service->getLabelSets([], true);
+        $service->hasUpdatableLabelSet();
+
+        $this->assertSame(0, $service->perSetChecks);
+    }
+
+    /**
+     * Give a user the update right on one label set.
+     *
+     * @param int $lid Label set id
+     * @param int $uid User id
+     * @return void
+     */
+    private function grantUpdate(int $lid, int $uid): void
+    {
+        $permission = new \Permission();
+        $permission->entity = 'labelset';
+        $permission->entity_id = $lid;
+        $permission->uid = $uid;
+        $permission->permission = 'labelset';
+        $permission->read_p = 1;
+        $permission->update_p = 1;
+        $this->assertTrue($permission->save());
     }
 
     /**

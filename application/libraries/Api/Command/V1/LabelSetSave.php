@@ -4,10 +4,8 @@ namespace LimeSurvey\Api\Command\V1;
 
 use LabelSet;
 use LimeSurvey\Api\Command\{
-    CommandInterface,
     Request\Request,
     Response\Response,
-    Response\ResponseFactory,
     ResponseData\ResponseDataError
 };
 use LimeSurvey\Models\Services\Exception\{
@@ -17,7 +15,6 @@ use LimeSurvey\Models\Services\Exception\{
     PermissionDeniedException,
     PersistErrorException
 };
-use LimeSurvey\Models\Services\LabelSetService;
 
 /**
  * Shared request checks and error handling of LabelSetCreate and LabelSetOverwrite.
@@ -25,29 +22,11 @@ use LimeSurvey\Models\Services\LabelSetService;
  * Body: { name: string (create only), revision: string (overwrite only), languages: string[],
  *         labels: [{code, assessmentValue, l10ns: {lang: title}}] }
  */
-abstract class LabelSetSave implements CommandInterface
+abstract class LabelSetSave extends LabelSetCommand
 {
-    public const ERROR_LABEL_SET_NOT_FOUND = 'LABEL_SET_NOT_FOUND';
     public const ERROR_LABEL_SET_INVALID = 'LABEL_SET_INVALID';
     public const ERROR_LABEL_SET_NOT_SAVED = 'LABEL_SET_NOT_SAVED';
     public const ERROR_LABEL_SET_CONFLICT = 'LABEL_SET_CONFLICT';
-
-    protected ResponseFactory $responseFactory;
-    protected LabelSetService $labelSetService;
-
-    /**
-     * Create the command with its dependencies.
-     *
-     * @param ResponseFactory $responseFactory Factory for the API responses
-     * @param LabelSetService $labelSetService Service that saves the label set
-     */
-    public function __construct(
-        ResponseFactory $responseFactory,
-        LabelSetService $labelSetService
-    ) {
-        $this->responseFactory = $responseFactory;
-        $this->labelSetService = $labelSetService;
-    }
 
     /**
      * Create or overwrite the label set.
@@ -89,9 +68,7 @@ abstract class LabelSetSave implements CommandInterface
         } catch (PermissionDeniedException $e) {
             return $this->responseFactory->makeErrorForbidden();
         } catch (NotFoundException $e) {
-            return $this->responseFactory->makeErrorNotFound(
-                (new ResponseDataError(self::ERROR_LABEL_SET_NOT_FOUND, $e->getMessage()))->toArray()
-            );
+            return $this->makeNotFound($e->getMessage());
         } catch (BadRequestException $e) {
             return $this->makeInvalidRequest($e->getMessage());
         } catch (ConflictException $e) {

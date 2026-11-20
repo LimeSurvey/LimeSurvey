@@ -1581,11 +1581,10 @@ $(document).on('ready pjax:scriptcomplete', function () {
    *
    * @param {Event} e
    * @param {string} tableClassName 'subquestions-table' or 'answeroptions-table'
+   * @param {number} scaleId Scale whose Save label set button was clicked
    * @return {void}
    */
-  function saveLabelSetAjax(e /*: Event */, tableClassName /*: string */) {
-    // todo: scale id is not defined
-    const scaleId = 1;
+  function saveLabelSetAjax(e /*: Event */, tableClassName /*: string */, scaleId /*: number */) {
     const lasets = document.getElementById('lasets');
     let lid;
     if (lasets instanceof HTMLInputElement) {
@@ -1594,36 +1593,31 @@ $(document).on('ready pjax:scriptcomplete', function () {
       lid = 0;
     }
 
-    // Get question/answer option codes for the current scale
-    const codes = [];
-    const table = document.querySelector('.' + tableClassName);
-    if (table == null) {
-      throw 'found no table with class .' + tableClassName;
+    // Each scale has its own tables (one per language) and its own Save label set button
+    const tables = document.querySelectorAll(`.${tableClassName}[data-scaleid="${scaleId}"]`);
+    if (tables.length === 0) {
+      throw 'found no table with class .' + tableClassName + ' for scale ' + scaleId;
     }
 
-    const codeInputs = table.querySelectorAll('.code');
-    if (codeInputs.length > 0) {
-      // Deactivated survey
-      codeInputs.forEach((codeInput) => {
-        if (codeInput instanceof HTMLInputElement) {
-          codes.push(codeInput.value);
-        } else {
-          throw 'codeInputs is not an HTMLInputElement';
-        }
-      });
-    } else {
-      // Activated survey
-      // TODO
-      $('.answertable input[name^="code_"]').each(function () {
-        if ($(this).attr('name').substr(-1) === scaleId) {
-            codes.push($(this).attr('value'));
-        }
-      });
-    }
+    // Codes and assessment values are in the table of the first language. The server pairs
+    // them by position with the rows of the texts below, which are collected in the same order.
+    const codes = [];
+    const assessmentValues = [];
+    tables[0].querySelectorAll('tbody tr.row-container').forEach((row) => {
+      const codeInput = row.querySelector('input.code');
+      const codeCell = row.querySelector('td.code-title');
+      if (codeInput instanceof HTMLInputElement) {
+        codes.push(codeInput.value);
+      } else {
+        codes.push(codeCell ? codeCell.textContent.trim() : '');
+      }
+      // Subquestions have no assessment value
+      const assessmentInput = row.querySelector('input.assessment');
+      assessmentValues.push(assessmentInput instanceof HTMLInputElement ? assessmentInput.value : 0);
+    });
 
     const answers = {};
 
-    const tables = document.querySelectorAll('.' + tableClassName);
     tables.forEach((table) => {
       table.querySelectorAll('.answer').forEach((answerInput) => {
         if (answerInput instanceof HTMLInputElement) {
@@ -1691,6 +1685,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
         answers,
         labelSetId,
         codes,
+        assessmentvalues: assessmentValues,
         languages: languageJson.langs.split(';')
       },
       /**
@@ -1765,9 +1760,10 @@ $(document).on('ready pjax:scriptcomplete', function () {
   /**
    * @param {Event} event
    * @param {string} tableClassName 'subquestions-table' or 'answeroptions-table'
+   * @param {number} scaleId Scale whose Save label set button was clicked
    * @return {void}
    */
-  function onClickSaveLabelSet(event /*: Event */, tableClassName /*: string */) {
+  function onClickSaveLabelSet(event /*: Event */, tableClassName /*: string */, scaleId /*: number */) {
     // TODO: What is lid?
     // TODO: Where is lasets defined???
     const lid = $('#lasets').val() ? $('#lasets').val() : 0;
@@ -1775,7 +1771,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
       const response = ajaxcheckdup();
       response.then(() => {
         if (check) {
-          saveLabelSetAjax(event, tableClassName);
+          saveLabelSetAjax(event, tableClassName, scaleId);
         }
       });
     } else {
@@ -1784,8 +1780,9 @@ $(document).on('ready pjax:scriptcomplete', function () {
         $('#strReplaceMessage').html(data);
         const modal = new bootstrap.Modal(document.getElementById('dialog-confirm-replaceModal'), {});
         modal.show();
-        $('#btnlconfirmreplace').click(() => {
-          saveLabelSetAjax(event, tableClassName);
+        // Replace the handler of an earlier click, which may be for the other scale
+        $('#btnlconfirmreplace').off('click').on('click', () => {
+          saveLabelSetAjax(event, tableClassName, scaleId);
         });
       });
     }
@@ -2034,16 +2031,17 @@ $(document).on('ready pjax:scriptcomplete', function () {
      * Used in onclick event in Twig template.
      *
      * @param {Event} event
-     * @param {string} source
+     * @param {string} tableClassName 'subquestions-table' or 'answeroptions-table'
+     * @param {number} scaleId Scale whose Save label set button was clicked
      */
-    showLabelSetSaver: function(event /*: Event */, tableClassName /*: string */) {
+    showLabelSetSaver: function(event /*: Event */, tableClassName /*: string */, scaleId /*: number */ = 0) {
       const button = document.getElementById('btnsavelabelset');
       if (button == null) {
         throw 'Found no btnsavelabelset';
       }
       button.onclick = () => {
         event.preventDefault();
-        onClickSaveLabelSet(event, tableClassName);
+        onClickSaveLabelSet(event, tableClassName, scaleId);
       };
       $('#saveaslabelModal').modal('show');
     },

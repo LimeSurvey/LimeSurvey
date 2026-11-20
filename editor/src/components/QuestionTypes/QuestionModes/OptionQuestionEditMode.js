@@ -41,9 +41,6 @@ export const OptionQuestionEditMode = ({
   const { survey } = useSurvey(surveyId)
   const surveyLanguages = surveySettings.languages ?? []
   const [showLoadLabelSetModal, setShowLoadLabelSetModal] = useState(false)
-  // A label set arrives asynchronously; append it to the children as they are then
-  const latestChildren = useRef(_children)
-  latestChildren.current = _children
   const isSingleChoiceTheme = singleChoiceThemes.includes(questionThemeName)
   const isImageTheme = imageThemeComponents.includes(questionThemeName)
 
@@ -75,21 +72,18 @@ export const OptionQuestionEditMode = ({
 
   // isFocused is only true when the user may update the survey
   const canLoadLabelSet = isFocused && !isSurveyActive
-  // The modal calls onLoad from an earlier render once the label set arrives,
-  // so check the current state: The question may have lost focus or the survey been activated
-  const latestCanLoadLabelSet = useRef(canLoadLabelSet)
-  latestCanLoadLabelSet.current = canLoadLabelSet
-
-  const handleLoadLabelSet = (labels) => {
-    if (!latestCanLoadLabelSet.current) {
+  // The modal calls onLoad from an earlier render once the label set arrives.
+  // Meanwhile the question may have lost focus, the survey been activated, or the
+  // question changed (e.g. by an autosave), so use the state of the latest render:
+  // Its handler appends to the current children and updates the current question
+  const loadIntoLatestQuestion = useRef(null)
+  loadIntoLatestQuestion.current = (labels) => {
+    if (!canLoadLabelSet) {
       return
     }
-    handleLabelSetLoad(
-      latestChildren.current ?? [],
-      childrenInfo.entity,
-      labels
-    )
+    handleLabelSetLoad(_children ?? [], childrenInfo.entity, labels)
   }
+  const handleLoadLabelSet = (labels) => loadIntoLatestQuestion.current(labels)
 
   return (
     <div>
