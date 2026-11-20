@@ -5,7 +5,7 @@
 #}
 <div class="list-group index-button index-button-{{ aSurveyInfo.aQuestionIndex.type }}">
     <div class="list-group-item">
-        <div class="h4 list-group-item-heading">{{ gT("Question index") }}</div>
+        <div id="index-button-heading" class="h4 list-group-item-heading">{{ gT("Question index") }}</div>
     </div>
     {% for indexGroup in aSurveyInfo.aQuestionIndex.items %}
     <div class="list-group" data-gid="{{ indexGroup.gid }}">
@@ -13,19 +13,24 @@
             <div class="h5 list-group-item-heading">{{ flatString(indexGroup.text) }}</div>
         </div>
         {% for indexQuestion in indexGroup.questions %}
-        {% set templateClass = ''  %}
-        {% if indexQuestion.stepStatus['index-item-unanswered'] is defined and indexQuestion.stepStatus['index-item-unanswered'] == true  %}
-            {% set templateClass = templateClass ~ ' list-group-item-warning'  %}
-        {% endif %}
-        {% if indexQuestion.stepStatus['index-item-error'] is defined and indexQuestion.stepStatus['index-item-error'] == true   %}
-            {% set templateClass = templateClass ~ ' list-group-item-danger'  %}
-        {% endif %}
-        {% if indexQuestion.stepStatus['index-item-current'] is defined and indexQuestion.stepStatus['index-item-current'] == true %}
-            {% set templateClass = templateClass ~  ' disabled'  %}
-        {% endif %}
-            <button type="submit" name="move" value="{{ indexQuestion.step }}" class="list-group-item {{ indexQuestion.coreClass }} {{ templateClass }}" data-qid="{{ indexQuestion.qid }}">
-                {{ ellipsizeString(indexQuestion.text, 80, 0.6, "…" ) }}
-            </button>
+            {% set templateClass = ''  %}
+            {% if indexQuestion.stepStatus['index-item-unanswered'] is defined and indexQuestion.stepStatus['index-item-unanswered'] == true  %}
+                {% set templateClass = templateClass ~ ' list-group-item-warning'  %}
+            {% endif %}
+            {% if indexQuestion.stepStatus['index-item-error'] is defined and indexQuestion.stepStatus['index-item-error'] == true   %}
+                {% set templateClass = templateClass ~ ' list-group-item-danger'  %}
+            {% endif %}
+            {% if indexQuestion.stepStatus['index-item-current'] is defined and indexQuestion.stepStatus['index-item-current'] == true %}
+                <button type="button" aria-disabled="true" aria-current="step"
+                    class="list-group-item {{ indexQuestion.coreClass }} {{ templateClass }} disabled" data-qid="{{ indexQuestion.qid }}">
+                    {{ ellipsizeString(indexQuestion.text, 80, 0.6, "…" ) }}
+                </button>
+            {% else %}
+                <button type="submit" name="move" value="{{ indexQuestion.step }}"
+                    class="list-group-item {{ indexQuestion.coreClass }} {{ templateClass }}" data-qid="{{ indexQuestion.qid }}">
+                    {{ ellipsizeString(indexQuestion.text, 80, 0.6, "…" ) }}
+                </button>
+            {% endif %}
         {% endfor %}
     </div>
     {% endfor %}

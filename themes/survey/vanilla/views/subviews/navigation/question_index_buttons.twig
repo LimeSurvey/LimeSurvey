@@ -5,7 +5,7 @@
     Show the question index in navigator
 #}
 
-<div class="col-md-6 index-wrapper">
+<nav role="navigation" aria-labelledby="index-button-heading" class="col-md-6 index-wrapper">
     {% if aSurveyInfo.format == 'G' %}
         {{ include('./subviews/navigation/question_index_groups_buttons.twig') }}
     {% endif %}
@@ -13,4 +13,4 @@
     {% if aSurveyInfo.format == 'S' %}
         {{ include('./subviews/navigation/question_index_questions_buttons.twig') }}
     {% endif %}
-</div>
+</nav>

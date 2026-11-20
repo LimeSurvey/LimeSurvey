@@ -29,10 +29,9 @@ There is two possible displays for index, depending on Survey Mode:
     {% if aSurveyInfo.format == 'G' %}
         <!-- Question index, group, {{ aSurveyInfo.aQuestionIndex.type }} -->
         <li class="dropdown nav-item ls-no-js-hidden index-menu-{{ aSurveyInfo.aQuestionIndex.type }}">
-            <a class="dropdown-toggle nav-link" data-bs-toggle="dropdownCustom" data-navtargetid="index-dropdown" role="button" aria-haspopup="true"
-               aria-expanded="false" href="#">
+            <button type="button" class="dropdown-toggle nav-link dropdown-item" data-bs-toggle="dropdownCustom" data-navtargetid="index-dropdown">
                 {{ gT("Question index") }}
-            </a>
+            </button>
             <ul id="index-dropdown" class="dropdown-menu dropdown-menu-end">
                 {{ include('./subviews/navigation/back.twig') }}
                 {# TODO: move back this logic to SurveyRuntime, and provide a ready to use indexItem.statusClass #}
@@ -44,14 +43,18 @@ There is two possible displays for index, depending on Survey Mode:
                     {% if indexItem.stepStatus['index-item-error'] is defined and indexItem.stepStatus['index-item-error'] == true %}
                         {% set statusClass = statusClass ~ ' index-danger' %}
                     {% endif %}
-                    {% if indexItem.stepStatus['index-item-current'] is defined and indexItem.stepStatus['index-item-current'] == true %}
-                        {% set statusClass = statusClass ~  ' disabled' %}
-                    {% endif %}
                     <li class="list-group-item {{ indexItem.coreClass }}">
-                        <a href='{{ indexItem.url }}' data-limesurvey-submit='{{ indexItem.submit }}'
-                           class='dropdown-item  {{ statusClass }}'>
-                            {{ indexItem.text }}
-                        </a>
+                        {% if indexItem.stepStatus['index-item-current'] is defined and indexItem.stepStatus['index-item-current'] == true %}
+                            <button type="button" aria-current="step" aria-disabled="true"
+                               class='dropdown-item {{ statusClass }} disabled'>
+                                {{ indexItem.text }}
+                            </button>
+                        {% else %}
+                            <button type="button" data-limesurvey-submit='{{ indexItem.submit }}'
+                               class='dropdown-item {{ statusClass }}'>
+                                {{ indexItem.text }}
+                            </button>
+                        {% endif %}
                     </li>
                 {% endfor %}
             </ul>
@@ -62,11 +65,10 @@ There is two possible displays for index, depending on Survey Mode:
     {% if aSurveyInfo.format == 'S' %}
         <!-- Question index, question by question, {{ aSurveyInfo.aQuestionIndex.type }} -->
         <li class="dropdown nav-item ls-no-js-hidden dropdown index-menu-{{ aSurveyInfo.aQuestionIndex.type }}">
-            <a class="dropdown-toggle nav-link" data-bs-toggle="dropdown" role="button" aria-haspopup="true"
-               aria-expanded="false">
+            <button type="button" class="dropdown-toggle nav-link dropdown-item" data-bs-toggle="dropdown" aria-expanded="false">
                 {{ gT("Question index") }}
-                <span class="caret"></span>
-            </a>
+                <span class="caret" aria-hidden="true"></span>
+            </button>
             <!-- TODO: Remove this when support is added -->
             <ul class="dropdown-menu dropdown-menu-end">
                 {% for group in aSurveyInfo.aQuestionIndex.items %}
@@ -84,14 +86,18 @@ There is two possible displays for index, depending on Survey Mode:
                                 {% if indexItem.stepStatus['index-item-error'] is defined and indexItem.stepStatus['index-item-error'] == true %}
                                     {% set statusClass = statusClass ~ ' bg-danger' %}
                                 {% endif %}
-                                {% if indexItem.stepStatus['index-item-current'] is defined and indexItem.stepStatus['index-item-current'] == true %}
-                                    {% set statusClass = statusClass ~  ' disabled' %}
-                                {% endif %}
                                 <li class="{{ indexItem.coreClass }} {{ statusClass }}">
-                                    <a href='{{ indexItem.url }}' data-limesurvey-submit='{{ indexItem.submit }}'
-                                       class='animate'>
-                                        {{ flatEllipsizeText(indexItem.text, true, 30, " &hellip; ", 0.6 ) }}
-                                    </a>
+                                    {% if indexItem.stepStatus['index-item-current'] is defined and indexItem.stepStatus['index-item-current'] == true %}
+                                        <button type="button" aria-current="step" aria-disabled="true"
+                                           class='dropdown-item animate disabled'>
+                                            {{ flatEllipsizeText(indexItem.text, true, 30, " &hellip; ", 0.6 ) }}
+                                        </button>
+                                    {% else %}
+                                        <button type="button" data-limesurvey-submit='{{ indexItem.submit }}'
+                                           class='dropdown-item animate'>
+                                            {{ flatEllipsizeText(indexItem.text, true, 30, " &hellip; ", 0.6 ) }}
+                                        </button>
+                                    {% endif %}
                                 </li>
                             {% endfor %}
                 {% endfor %}
