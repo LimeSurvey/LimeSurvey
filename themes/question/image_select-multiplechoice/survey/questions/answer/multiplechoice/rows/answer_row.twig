@@ -17,7 +17,8 @@
  * @var myfname
  * @var sValue
  *
- * The image size and fit come from the image settings, see answer.twig.
+ * The image size and fit come from the image settings, see answer.twig, unless the subquestion has its own
+ * settings from the image editor, see rows/answer_image.twig.
  */
 #}
 
@@ -35,7 +36,7 @@
         />
         <label for="answer{{ myfname }}" class="imageselect-label" onclick='cancelBubbleThis(event); {{ sCheckconditionFunction }}'>
 
-         <img class="imageselect-img fixed-width unforce-height" src="{{ question|escape('html_attr') }}"/>
+         {% include './survey/questions/answer/multiplechoice/rows/answer_image.twig' with {src: question, optionCode: title} %}
         </label>
         <label for="answer{{ myfname }}" class="imageselect-select d-none"></label>
     </div>

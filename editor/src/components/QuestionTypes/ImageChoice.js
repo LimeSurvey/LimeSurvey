@@ -1,5 +1,4 @@
 import React, { useMemo, useState, useEffect } from 'react'
-import { Image } from 'react-bootstrap'
 import classNames from 'classnames'
 
 import {
@@ -9,13 +8,52 @@ import {
   docUrls,
 } from 'helpers'
 import NoImageFound from 'assets/images/no-image-found.jpg'
-import { ContentEditor, DropZone, FormCheck } from 'components/UIComponents'
+import {
+  ContentEditor,
+  DropZone,
+  EditedImage,
+  FormCheck,
+  ImageEditor,
+} from 'components/UIComponents'
 import { useFileService } from 'hooks'
 
+// Border around an option's image.
+const IMAGE_BORDER_CLASSES = 'border border-3 border-secondary rounded'
+
+/**
+ * One option of the image select themes: The image with its upload drop zone,
+ * and in edit mode the image editor modal.
+ *
+ * @param {number|string} id ID of the answer or subquestion
+ * @param {string} idPrefix prefix for element IDs ('a' answers, 'q' subquestions)
+ * @param {number} index position of the option
+ * @param {string} code the option code, used as image name
+ * @param {string} inputType 'checkbox' or 'radio'
+ * @param {boolean} isFocused whether the question is in edit mode
+ * @param {Function} update called with the new image path, or the checked state
+ * @param {string} value the image path
+ * @param {boolean} isNoAnswer whether this is the "No answer" option
+ * @param {string} groupName name of the radio group
+ * @param {boolean|null} checked controlled checked state
+ * @param {boolean} defaultChecked initial checked state
+ * @param {Object} errors errors of the option
+ * @param {Function} setErrors called with the updated errors
+ * @param {Object|null} imageSettings saved image editor settings of the option,
+ *   the image is shown with them in view and edit mode
+ * @param {string} imageAltText saved alt text in the current language
+ * @param {boolean} imageApplyToAll whether "Apply to all images of this
+ *   question" starts checked in the image editor: Its settings are kept for
+ *   images added later
+ * @param {Function|null} onImageSettingsSave called with the image editor
+ *   settings, including the alt text, when they are saved. Without it, there
+ *   is no edit button.
+ * @returns {JSX.Element} the option
+ */
 export const ImageChoice = ({
   id,
   idPrefix,
   index,
+  code = '',
   inputType = 'checkbox',
   isFocused,
   update,
@@ -26,8 +64,13 @@ export const ImageChoice = ({
   defaultChecked = false,
   errors,
   setErrors = () => {},
+  imageSettings = null,
+  imageAltText = '',
+  imageApplyToAll = false,
+  onImageSettingsSave = null,
 }) => {
   const [isLoading, setIsLoading] = useState(false)
+  const [showImageEditor, setShowImageEditor] = useState(false)
   const { fileService } = useFileService()
   // REACT_APP_SITE_URL is needed in development environments
   // - because the react-app runs on a different port to the core app
@@ -52,6 +95,11 @@ export const ImageChoice = ({
 
   const showLoader = (isFocused || isLoading) && !initLoading
 
+  const handleImageEditorSave = (settings) => {
+    onImageSettingsSave?.(settings)
+    setShowImageEditor(false)
+  }
+
   useEffect(() => {
     setPreviewUrl(value ? process.env.REACT_APP_SITE_URL + value : null)
   }, [value])
@@ -75,7 +123,12 @@ export const ImageChoice = ({
   }, [isValidImg, isNoAnswer])
 
   return (
-    <div className="pe-4">
+    // The option and its image may shrink to the space they get, so that the
+    // image never gets wider than the question.
+    <div
+      className="pe-4"
+      style={{ minWidth: 0, maxWidth: '100%', flexShrink: 1 }}
+    >
       <div className="d-flex gap-2">
         {!isFocused && (
           <FormCheck
@@ -97,14 +150,24 @@ export const ImageChoice = ({
         )}
         {isFocused && <div>&nbsp;</div>}
         {!isNoAnswer && !initLoading && (
-          <div className="image-choice-preview border border-3 border-secondary rounded">
+          // In edit mode, the border goes around the image only: The edit and
+          // delete buttons are next to it, outside.
+          <div
+            className={classNames('image-choice-preview', {
+              [IMAGE_BORDER_CLASSES]: !showLoader,
+            })}
+            style={{ minWidth: 0, maxWidth: '100%' }}
+          >
             <div className={classNames({ 'd-none': showLoader })}>
-              <Image
+              <EditedImage
                 src={previewUrl && isValidImg ? previewUrl : NoImageFound}
-                alt="Image Select List"
-                height={'100%'}
-                style={{
+                alt={imageAltText || code}
+                settings={previewUrl && isValidImg ? imageSettings : null}
+                height={IMAGE_PREVIEW_HEIGHT}
+                fallbackStyle={{
+                  height: '100%',
                   maxHeight: IMAGE_PREVIEW_HEIGHT,
+                  maxWidth: '100%',
                   backgroundSize: 'cover',
                 }}
               />
@@ -119,9 +182,32 @@ export const ImageChoice = ({
                 onChangePreview={onChangePreview}
                 isValidImg={isValidImg}
                 onLoading={(value) => setIsLoading(value)}
+                onEdit={
+                  previewUrl && isValidImg && onImageSettingsSave
+                    ? () => setShowImageEditor(true)
+                    : null
+                }
+                isEditing={showImageEditor}
+                imageName={code}
+                imageSettings={imageSettings}
+                imageAlt={imageAltText || code}
+                buttonsBeside={true}
+                previewBoxClassName={IMAGE_BORDER_CLASSES}
               />
             </div>
           </div>
+        )}
+        {showImageEditor && (
+          <ImageEditor
+            showModal={showImageEditor}
+            onClose={() => setShowImageEditor(false)}
+            onSave={handleImageEditorSave}
+            imageUrl={previewUrl}
+            settings={imageSettings}
+            altText={imageAltText}
+            showApplyToAll={true}
+            applyToAll={imageApplyToAll}
+          />
         )}
         {isFocused && initLoading && !isNoAnswer && (
           <div style={{ width: 44, height: 44 }} className="loader ms-4"></div>
