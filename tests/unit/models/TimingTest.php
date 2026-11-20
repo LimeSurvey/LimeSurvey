@@ -84,6 +84,46 @@ class TimingTest extends TestBaseClass
     }
 
     /**
+     * Interview times and the median expected for them
+     *
+     * @return array[]
+     */
+    public function medianProvider()
+    {
+        return [
+            'one value' => [[70], 70],
+            'two values' => [[60, 90], 75],
+            'three values' => [[60, 90, 150], 90],
+            'four values' => [[150, 60, 90, 100], 95],
+            'five values' => [[10, 20, 30, 400, 500], 30],
+        ];
+    }
+
+    /**
+     * The median is the middle value, or the mean of the two middle values for an even number of responses.
+     *
+     * @dataProvider medianProvider
+     * @param float[] $interviewTimes
+     * @param integer $expectedMedian
+     * @return void
+     */
+    public function testMedian(array $interviewTimes, $expectedMedian)
+    {
+        \Response::model(self::$surveyId)->deleteAll();
+        \Timing::model(self::$surveyId)->deleteAll();
+        foreach ($interviewTimes as $interviewTime) {
+            $this->insertResponseWithTiming($interviewTime);
+        }
+
+        $statistics = \Timing::model(self::$surveyId)->statistics();
+
+        $this->assertEquals(count($interviewTimes), $statistics['count']);
+        $this->assertSame($expectedMedian, $statistics['median']);
+        $this->assertSame(intdiv($expectedMedian, 60), $statistics['allmin']);
+        $this->assertSame($expectedMedian % 60, $statistics['allsec']);
+    }
+
+    /**
      * Deleting a response deletes its timings too.
      *
      * @return void
