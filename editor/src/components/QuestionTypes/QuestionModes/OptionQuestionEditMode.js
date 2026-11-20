@@ -257,13 +257,17 @@ export const OptionQuestionEditMode = ({
 
   /**
    * Stores image option attribute changes in the latest question and queues
-   * them for the API.
+   * them for the API. Without changes, nothing is sent.
    *
    * @param {Object} currentQuestion the latest question
-   * @param {Object} changes the changed values keyed by attribute and language
+   * @param {Object|null} changes the changed values keyed by attribute and
+   *   language
    * @returns {void}
    */
   const storeImageOptionChanges = (currentQuestion, changes) => {
+    if (!changes || !Object.keys(changes).length) {
+      return
+    }
     const attributes = applyAttributeChanges(
       currentQuestion.attributes,
       changes

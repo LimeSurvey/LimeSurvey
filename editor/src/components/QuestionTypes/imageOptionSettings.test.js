@@ -142,14 +142,11 @@ describe('imageOptionSettings', () => {
       codes: ['A1', 'A2'],
       otherSettings: { A2: { width: 400, image: 'lemon.png' } },
     })
-    expect(parse(sameImage, IMAGE_OPTION_ALT_ATTRIBUTE, 'en')).toEqual({
-      A1: 'Lime',
-      A2: 'Lemon',
-    })
-    // Languages without new settings for A2 keep their alt texts.
-    expect(parse(changes, IMAGE_OPTION_ALT_ATTRIBUTE, 'de')).toEqual({
-      A1: 'Limette',
-    })
+    // Its alt texts stay as they are: Nothing to send.
+    expect(sameImage[IMAGE_OPTION_ALT_ATTRIBUTE]).toBeUndefined()
+    // Languages without new settings for A2 keep their alt texts: Unchanged
+    // languages are not sent.
+    expect(changes[IMAGE_OPTION_ALT_ATTRIBUTE].de).toBeUndefined()
   })
 
   test('Saving stores the option and drops deleted options', () => {
@@ -165,17 +162,13 @@ describe('imageOptionSettings', () => {
     expect(parse(changes, IMAGE_OPTION_SETTINGS_ATTRIBUTE, 'en')).toEqual({
       A1: newSettings,
     })
-    // Other languages keep their settings, without deleted options.
-    expect(parse(changes, IMAGE_OPTION_SETTINGS_ATTRIBUTE, 'de')).toEqual({
-      A1: settingsA1,
-    })
+    // German has no deleted options: Its settings don't change and are not
+    // sent.
+    expect(changes[IMAGE_OPTION_SETTINGS_ATTRIBUTE].de).toBeUndefined()
     expect(parse(changes, IMAGE_OPTION_ALT_ATTRIBUTE, 'en')).toEqual({
       A1: 'Green lime',
     })
-    // Other languages keep their alt texts, without deleted options.
-    expect(parse(changes, IMAGE_OPTION_ALT_ATTRIBUTE, 'de')).toEqual({
-      A1: 'Limette',
-    })
+    expect(changes[IMAGE_OPTION_ALT_ATTRIBUTE].de).toBeUndefined()
   })
 
   test('Saving with "Apply to all" stores the settings of the other options too', () => {
@@ -197,11 +190,8 @@ describe('imageOptionSettings', () => {
       A2: { ...settingsA1, image: 'lemon.png' },
       A3: { ...settingsA1, image: 'orange.png' },
     })
-    // The alt texts of the other options stay.
-    expect(parse(changes, IMAGE_OPTION_ALT_ATTRIBUTE, 'en')).toEqual({
-      A1: 'Lime',
-      A2: 'Lemon',
-    })
+    // The alt texts of the other options stay: The alt texts don't change.
+    expect(changes[IMAGE_OPTION_ALT_ATTRIBUTE]).toBeUndefined()
   })
 
   test('Saving without alt text removes it, and works without saved values', () => {
@@ -219,7 +209,36 @@ describe('imageOptionSettings', () => {
     expect(changes[IMAGE_OPTION_SETTINGS_ATTRIBUTE]).toEqual({
       en: JSON.stringify({ SQ001: settingsA1 }),
     })
-    expect(changes[IMAGE_OPTION_ALT_ATTRIBUTE]).toEqual({ en: '' })
+    // No alt text before and after: Nothing to send.
+    expect(changes[IMAGE_OPTION_ALT_ATTRIBUTE]).toBeUndefined()
+  })
+
+  test('Saving only sends the languages that change, and nothing when nothing changes', () => {
+    const newSettings = { width: 100, height: 50, zoom: 1.5, image: 'lime.png' }
+    const changes = getImageOptionSaveChanges(attributes, {
+      code: 'A1',
+      settings: newSettings,
+      altText: 'Lime',
+      language: 'de',
+      codes: ['A1', 'A2'],
+    })
+
+    expect(changes).toEqual({
+      [IMAGE_OPTION_SETTINGS_ATTRIBUTE]: {
+        de: JSON.stringify({ A1: newSettings }),
+      },
+      [IMAGE_OPTION_ALT_ATTRIBUTE]: { de: JSON.stringify({ A1: 'Lime' }) },
+    })
+    // The same settings and alt text again: Nothing to send.
+    expect(
+      getImageOptionSaveChanges(attributes, {
+        code: 'A1',
+        settings: settingsA1,
+        altText: 'Lime',
+        language: 'en',
+        codes: ['A1', 'A2'],
+      })
+    ).toBeNull()
   })
 
   test('Saving copies the settings to the languages with the same image, the alt text stays in its language', () => {
@@ -246,13 +265,8 @@ describe('imageOptionSettings', () => {
     expect(parse(changes, IMAGE_OPTION_SETTINGS_ATTRIBUTE, 'fr')).toEqual({
       A2: newSettings,
     })
-    expect(Object.keys(changes[IMAGE_OPTION_ALT_ATTRIBUTE])).toEqual([
-      'en',
-      'de',
-    ])
-    expect(parse(changes, IMAGE_OPTION_ALT_ATTRIBUTE, 'de')).toEqual({
-      A1: 'Limette',
-    })
+    // Only the English alt text changes.
+    expect(Object.keys(changes[IMAGE_OPTION_ALT_ATTRIBUTE])).toEqual(['en'])
   })
 
   test('Renaming a code moves its settings and alt texts in all languages', () => {

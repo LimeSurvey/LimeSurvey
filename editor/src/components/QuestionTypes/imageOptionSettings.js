@@ -263,7 +263,8 @@ export const getImageOptionAltText = (attributes, code, language, imagePath) =>
  *   by code, each with its image file name, their alt texts stay as they are
  * @param {Object} params.sameImageLanguages keyed by option code: The other
  *   languages in which the option has the same image as in the language
- * @returns {Object} the changed values keyed by attribute and language
+ * @returns {Object|null} the changed values keyed by attribute and language,
+ *   only the languages whose value changes, or null when nothing changes
  */
 export const getImageOptionSaveChanges = (
   attributes,
@@ -328,7 +329,7 @@ export const getImageOptionSaveChanges = (
     altChanges[altLanguage] = stringifyOptionMap(altMap)
   })
 
-  return {
+  return withoutUnchangedValues(attributes, {
     [IMAGE_OPTION_SETTINGS_ATTRIBUTE]: Object.fromEntries(
       Object.entries(settingsMaps).map(([mapLanguage, map]) => [
         mapLanguage,
@@ -336,8 +337,32 @@ export const getImageOptionSaveChanges = (
       ])
     ),
     [IMAGE_OPTION_ALT_ATTRIBUTE]: altChanges,
-  }
+  })
 }
+
+/**
+ * Drops the values that are the same as the stored ones from an attribute
+ * change set: Only the changed languages are sent and saved.
+ *
+ * @param {Object} attributes the question attributes
+ * @param {Object} changes the new values keyed by attribute and language
+ * @returns {Object|null} the changed values keyed by attribute and language,
+ *   or null when nothing changed
+ */
+const withoutUnchangedValues = (attributes, changes) =>
+  toChangeSet(
+    Object.fromEntries(
+      Object.entries(changes).map(([attributeName, values]) => [
+        attributeName,
+        Object.fromEntries(
+          Object.entries(values).filter(
+            ([valueLanguage, value]) =>
+              value !== (attributes?.[attributeName]?.[valueLanguage] ?? '')
+          )
+        ),
+      ])
+    )
+  )
 
 /**
  * Builds the attribute changes for a renamed option code: Its settings and alt
