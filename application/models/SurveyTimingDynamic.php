@@ -82,10 +82,11 @@ class SurveyTimingDynamic extends LSActiveRecord
     }
 
     /**
-     * Returns Time statistics for this answer table
+     * Returns the time statistics of the completed responses of this survey
      *
      * @access public
-     * @return array
+     * @return array 'count' is the number of completed responses with timings. If it is not 0, there also are
+     *     the average time ('avgmin', 'avgsec') and the median time ('median' in seconds, 'allmin', 'allsec')
      */
     public function statistics()
     {
@@ -110,7 +111,8 @@ class SurveyTimingDynamic extends LSActiveRecord
                     ->queryAll();
                 $middleval = intval($statistics['count'] / 2);
                 $statistics['middleval'] = $middleval;
-                if ($statistics['count'] % 2 && $statistics['count'] > 1) {
+                if ($statistics['count'] % 2 == 0) {
+                    // Even number of values: The median is the mean of the two middle values
                     $median = (int)(($queryAll[$middleval]['interviewtime'] + $queryAll[$middleval - 1]['interviewtime']) / 2);
                 } else {
                     $median = (int)$queryAll[$middleval]['interviewtime'];
