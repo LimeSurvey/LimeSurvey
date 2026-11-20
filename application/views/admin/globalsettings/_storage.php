@@ -10,15 +10,17 @@
 <div class="container">
     <div class="ls-flex-column ls-space padding left-5 right-35 col-12">
         <div id='global-settings-storage' class="mb-3">
-            <label class="form-label"  for='global-settings-calculate-storage'><?=gT("Recalculates the storage used by all your files in the upload folders")?></label>
+            <?php // Not a <label>: the name of the button stays its visible text "Calculate storage", this text is its description ?>
+            <p class="form-label" id="global-settings-calculate-storage-description"><?=gT("Recalculates the storage used by all your files in the upload folders")?></p>
             <div class="">
                 <input type='hidden' name='global-settings-storage-url' value='<?php echo Yii::app()->createUrl('admin/globalsettings', array('sa' => 'getStorageData')); ?>' />
-                <button id='global-settings-calculate-storage' class='btn btn-outline-secondary ' type="button" >
-                    <i class="ri-settings-5-fill"></i>&nbsp;
+                <button id='global-settings-calculate-storage' class='btn btn-outline-secondary ' type="button"
+                        aria-describedby="global-settings-calculate-storage-description global-settings-calculate-storage-hint">
+                    <i class="ri-settings-5-fill" aria-hidden="true"></i>&nbsp;
                     <?php eT('Calculate storage');?>
 </button>
                 <br/>
-                <span class='hint'>
+                <span class='hint' id="global-settings-calculate-storage-hint">
                     <?php eT('Depending on the number of uploaded files, this might take some time.');?>
                 </span>
             </div>

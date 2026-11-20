@@ -11,6 +11,13 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     $("#defaultlang").change(defaultLanguageChange);
     $('#btnRemove').click(removeLanguages);
     $('#btnAdd').click(addLanguages);
+    // "Clear now" has the button role: Space activates it like a button
+    $('#clearcache').on('keydown', function (e) {
+        if (e.key === ' ' || e.keyCode === 32) {
+            e.preventDefault();
+            this.click();
+        }
+    });
     $("#frmglobalsettings").submit(UpdateRestrictedLanguages);
 
     // Intercept save button clicks to validate before the central save controller runs
@@ -84,6 +91,7 @@ function removeLanguages(ui,evt)
         alert (msgCantRemoveDefaultLanguage);
     }
     var options = $('#includedLanguages option:selected').sort().clone();
+    announceLanguageChange('removed', options);
     $('#excludedLanguages').append(options);    
     $('#includedLanguages option:selected').remove();
     var options = $("#excludedLanguages option");                    // Collect options         
@@ -98,6 +106,7 @@ function removeLanguages(ui,evt)
 function addLanguages(ui,evt)
 {
     var options = $('#excludedLanguages option:selected').sort().clone();
+    announceLanguageChange('added', options);
     $('#includedLanguages').append(options);    
     $('#excludedLanguages option:selected').remove();
     var options = $("#includedLanguages option");                    // Collect options         
@@ -107,6 +116,23 @@ function addLanguages(ui,evt)
         return (at > bt)?1:((at < bt)?-1:0);            // Tell the sort function how to order
     });
     options.appendTo("#includedLanguages");     
+}
+
+/**
+ * Announces the languages that were moved between the visible and hidden list to screen readers.
+ * @param {string} type 'added' or 'removed'
+ * @param {jQuery} options The moved options
+ */
+function announceLanguageChange(type, options)
+{
+    var $status = $('#languageSelection-status');
+    if (!$status.length || !options.length) {
+        return;
+    }
+    var names = options.map(function () {
+        return $.trim($(this).text());
+    }).get().join(', ');
+    $status.text(String($status.data(type) || '%s').replace('%s', names));
 }
 
 function UpdateRestrictedLanguages(){
