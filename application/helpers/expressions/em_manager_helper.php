@@ -9463,8 +9463,9 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 if (array_key_exists('code', $var) && isset($var['code'])) {
                     return $var['code'];    // for static values like TOKEN
                 } else {
-                    // Variables without sgqa (e.g. TOKEN:VALIDFROM when it is NULL) have no answer in the session
-                    if ($sgqa !== null && isset($_SESSION[$this->sessid][$sgqa])) {
+                    $sessionState = $this->sessionState();
+                    if ($sessionState->hasFieldValue((string) $sgqa)) {
+                        $sessionValue = $sessionState->getFieldValue((string) $sgqa);
                         $type = $var['type'];
                         switch ($type) {
                             case Question::QT_Q_MULTIPLE_SHORT_TEXT: //Multiple short text
