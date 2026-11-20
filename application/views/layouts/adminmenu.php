@@ -12,7 +12,9 @@
     App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'surveysettings.js', LSYii_ClientScript::POS_BEGIN);
 ?>
 <!-- admin menu bar -->
-<nav class="navbar navbar-expand-md">
+<header>
+<?php // The logo is part of the banner; the menus inside are the navigation landmarks ?>
+<div class="navbar navbar-expand-md">
     <div class="container-fluid">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#small-screens-menus"
             aria-controls="small-screens-menus" aria-expanded="false">
@@ -24,7 +26,7 @@
             <?= $sitename ?>
         </a>
         <!-- Only on xs screens -->
-        <div class="collapse navbar-collapse " id="small-screens-menus">
+        <div class="collapse navbar-collapse " id="small-screens-menus" role="navigation" aria-label="<?php eT('Main menu'); ?>">
             <ul class="nav navbar-nav" id="small-screens-menu-items">
                 <!-- active surveys -->
                 <?php if ($activesurveyscount > 0): ?>
@@ -50,7 +52,7 @@
             </ul>
         </div>
 
-        <div class="collapse navbar-collapse">
+        <div class="collapse navbar-collapse" role="navigation" aria-label="<?php eT('Main menu'); ?>">
             <ul class="nav navbar-nav">
                 <!-- Maintenance mode -->
                 <?php if (SettingGlobal::getMaintenanceMode() !== SettingGlobal::MAINTENANCE_MODE_OFF) { ?>
@@ -96,7 +98,7 @@
                 <?php $this->renderPartial("application.libraries.MenuObjects.views._extraMenu", ['extraMenus' => $extraMenus, 'middleSection' => true, 'prependedMenu' => false]); ?>
             </ul>
         </div>
-        <div class="collapse navbar-collapse justify-content-end">
+        <div class="collapse navbar-collapse justify-content-end" role="navigation" aria-label="<?php eT('User menu'); ?>">
             <ul class="nav navbar-nav">
                 <!-- Extra menus from plugins -->
                 <?php $this->renderPartial("application.libraries.MenuObjects.views._extraMenu", ['extraMenus' => $extraMenus, 'middleSection' => false, 'prependedMenu' => true]); ?>
@@ -137,7 +139,8 @@
         </div><!-- /.nav-collapse -->
 
     </div>
-</nav>
+</div>
+</header>
 <script type="text/javascript">
     //show tooltips
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
