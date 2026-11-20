@@ -242,7 +242,6 @@ class remotecontrol_handle
 
                     $langsettings = new SurveyLanguageSetting();
                     $langsettings->insertNewSurvey($aInsertData);
-                    Permission::model()->giveAllSurveyPermissions(Yii::app()->session['loginID'], $iNewSurveyid);
 
                     return (int) $iNewSurveyid;
                 } catch (Exception $e) {

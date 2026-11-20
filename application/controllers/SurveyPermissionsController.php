@@ -92,6 +92,7 @@ class SurveyPermissionsController extends LSBaseController
             'basePermissions' => $aBaseSurveyPermissions,
             'userCreatePermission' => Permission::model()->hasSurveyPermission($surveyid, 'surveysecurity', 'create'),
             'surveyid' => $surveyid,
+            'surveyOwner' => $oSurvey->owner,
             'userList' => $oSurveyPermissions->getSurveyUserList(),
             'userListFilteredByGroup' => UserGroup::model()->isFilteredBySameGroupPolicy(),
             'userGroupList' => $oSurveyPermissions->getSurveyUserGroupList(),

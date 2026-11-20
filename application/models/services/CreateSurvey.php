@@ -62,8 +62,8 @@ class CreateSurvey
      * This creates a simple survey with the basic attributes set in param simpleSurveyValues
      *
      * @param SimpleSurveyValues $simpleSurveyValues
-     * @param int $userID the id of user who is creating the survey
-     * @param Permission $permissionModel
+     * @param int $userID Not used anymore: The current user becomes the survey owner, see Survey::init()
+     * @param Permission $permissionModel Not used anymore: The survey owner always has all permissions on the survey
      * @param bool $overrideAdministrator whether to set the administrator name and email from $simpleSurveyValues
      *
      * @return Survey|bool returns the survey or false if survey could not be created for any reason (see getErrorMessage())
@@ -88,9 +88,6 @@ class CreateSurvey
 
             //check realtional tables to be initialised like survey_languagesettings
             $this->createRelationSurveyLanguageSettings($this->newLanguageSettings);
-
-            // Update survey permissions
-            $permissionModel->giveAllSurveyPermissions($userID, $this->survey->sid);
         } catch (\Exception $e) {
             // Don't show the exception message to the user, it could reveal details about the server
             if ($e instanceof \CDbException) {
