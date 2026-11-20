@@ -64,6 +64,17 @@
     width: 60px;
   }
 
+  // As in Figma: The content starts 24px below the title.
+  .modal-body {
+    padding-top: 24px;
+  }
+
+  // As in Figma, "Apply to all" sits right below the alt text: 8px below its
+  // character counter instead of the gap-4 (1.5rem) between the settings.
+  .image-editor-apply-to-all {
+    margin-top: calc(8px - 1.5rem);
+  }
+
   // The preview can be focused while the image can move (arrow keys).
   .image-editor-preview-area:focus-visible {
     outline: 2px solid $grape;

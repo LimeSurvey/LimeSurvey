@@ -698,6 +698,7 @@ export const ImageEditor = ({
             {showApplyToAll && (
               <FormCheck
                 id={`${idPrefix}-apply-to-all`}
+                className="image-editor-apply-to-all"
                 type="checkbox"
                 label={t('Apply to all images of this question')}
                 checked={applyToAll}
