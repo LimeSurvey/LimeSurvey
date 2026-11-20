@@ -3020,32 +3020,45 @@ function dateShift($date, $toDateFormat, $toTimezone = null, $fromTimezone = 'UT
 }
 
 /**
- * Gets the UTC of the date to be stored
- * @param string|null $date
- * @return string|null
+ * Returns the display timezone of the current admin user.
+ * This is their personal timezone if it is set and valid, otherwise the global display timezone,
+ * the same way LSYii_Controller resolves it. An empty personal setting means "use the global setting".
+ * @return string|null Timezone identifier, empty/null if none is configured (UTC)
+ */
+function getAdminDisplayTimezone()
+{
+    $userSetting = \SettingsUser::getUserSetting('displayTimezone');
+    if (!empty($userSetting->stg_value) && in_array($userSetting->stg_value, timezone_identifiers_list(), true)) {
+        return $userSetting->stg_value;
+    }
+    return \Yii::app()->getConfig('displayTimezone');
+}
+
+/**
+ * Converts a date entered in the display timezone of the current admin user to UTC, for storage.
+ * @param string|null $date Date in the admin's display timezone, in a format accepted by DateTime
+ * @return string|null Date in UTC in 'Y-m-d H:i:s' format, unchanged if empty
  */
 function getUTCOfDate(?string $date = null)
 {
     if (!$date) {
         return $date;
     }
-    $userSetting = \SettingsUser::getUserSetting('displayTimezone');
-    $tz = $userSetting->stg_value ?? \Yii::app()->getConfig('displayTimezone');
+    $tz = getAdminDisplayTimezone();
     return dateShift($date, "Y-m-d H:i:s", 'UTC', $tz);
 }
 
 /**
- * Gets the date of the UTC to be displayed
- * @param string|null $date
- * @return string|null
+ * Converts a date stored in UTC to the display timezone of the current admin user.
+ * @param string|null $date Date in UTC, in a format accepted by DateTime
+ * @return string|null Date in the admin's display timezone in 'Y-m-d H:i:s' format, unchanged if empty
  */
 function getDateOfUTC(?string $date = null)
 {
     if (!$date) {
         return $date;
     }
-    $userSetting = \SettingsUser::getUserSetting('displayTimezone');
-    $tz = $userSetting->stg_value ?? \Yii::app()->getConfig('displayTimezone');
+    $tz = getAdminDisplayTimezone();
     return dateShift($date, "Y-m-d H:i:s", $tz, 'UTC');
 }
 

@@ -46,7 +46,6 @@ class NewQuestionPositionTest extends TestBaseClass
     {
         parent::setUp();
         $container = new \ReflectionProperty(DI::class, 'container');
-        $container->setAccessible(true);
         $container->setValue(null, null);
     }
 
