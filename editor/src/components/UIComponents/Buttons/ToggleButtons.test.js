@@ -123,3 +123,23 @@ describe('ToggleButtons', () => {
     })
   })
 })
+
+describe('ToggleButtons with activeDisabled', () => {
+  test('Should be disabled when activeDisabled is set', async () => {
+    await renderWithProviders(
+      <ToggleButtons id="locked" activeDisabled={true} />
+    )
+
+    expect(
+      document.getElementById('toggleButton-locked-option-0')
+    ).toBeDisabled()
+  })
+
+  test('Should stay enabled without activeDisabled', async () => {
+    await renderWithProviders(<ToggleButtons id="unlocked" />)
+
+    expect(
+      document.getElementById('toggleButton-unlocked-option-0')
+    ).toBeEnabled()
+  })
+})

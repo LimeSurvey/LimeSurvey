@@ -1,5 +1,5 @@
 // Import shared mocks
-import { screen } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import 'tests/mocks'
@@ -119,5 +119,27 @@ describe('Input with defaultValue', () => {
     const input = screen.getByTestId('default-value-input')
     expect(input.value).toBe('foo')
     input.remove()
+  })
+})
+
+describe('Input with activeDisabled', () => {
+  test('Should be disabled when activeDisabled is set', async () => {
+    await renderWithProviders(
+      <Input dataTestId={'active-disabled-input'} activeDisabled={true} />
+    )
+
+    expect(screen.getByTestId('active-disabled-input')).toBeDisabled()
+  })
+
+  test('Should stay enabled without activeDisabled', async () => {
+    await renderWithProviders(<Input dataTestId={'plain-input'} />)
+
+    expect(screen.getByTestId('plain-input')).toBeEnabled()
+  })
+
+  test('Should be disabled outside a QueryClientProvider', () => {
+    render(<Input dataTestId={'no-provider-input'} activeDisabled={true} />)
+
+    expect(screen.getByTestId('no-provider-input')).toBeDisabled()
   })
 })
