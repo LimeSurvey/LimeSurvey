@@ -302,10 +302,18 @@ class browser extends uploader {
             $this->errorMsg("This folder is being edited on another instance.");
         if (!dir::isWritable($dir))
             $this->errorMsg("Cannot delete the folder.");
+        $paths = $this->listPrunePaths($dir);
         $result = dir::prune($dir, false);
-        if (is_array($result) && count($result))
+        if (is_array($result) && count($result)) {
+            clearstatcache();
+            foreach ($paths as $path) {
+                if (!file_exists($path))
+                    $this->recordUploadMutation($path, 'delete');
+            }
+            $this->dispatchUploadMutations();
             $this->errorMsg("Failed to delete {count} files/folders.",
                 array('count' => count($result)));
+        }
         $thumbDir = "$this->thumbsTypeDir/{$_POST['dir']}";
         if (is_dir($thumbDir)) dir::prune($thumbDir);
         $this->recordUploadMutation($dir, 'delete');
@@ -1039,6 +1047,31 @@ class browser extends uploader {
             }
         }
         $this->uploadMutations[] = array($relative, $extra);
+    }
+
+    /**
+     * Files and directories prune() will try to remove, children before their parent.
+     * The directory passed in is excluded: a partial failure leaves it in place.
+     *
+     * @param string $dir
+     * @return string[]
+     */
+    protected function listPrunePaths($dir)
+    {
+        $paths = array();
+        $files = dir::content($dir);
+        if ($files === false) {
+            return $paths;
+        }
+        foreach ($files as $file) {
+            if (is_dir($file)) {
+                foreach ($this->listPrunePaths($file) as $child) {
+                    $paths[] = $child;
+                }
+            }
+            $paths[] = $file;
+        }
+        return $paths;
     }
 
     protected function dispatchUploadMutations()
