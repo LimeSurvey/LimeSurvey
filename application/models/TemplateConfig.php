@@ -969,7 +969,8 @@ class TemplateConfig extends CActiveRecord
                     );
                 }
             } else {
-                /** TODO: temporary disabling of uninstalling themes to rework it after LS7 release has been completed #AT-2266 */
+                // Themes made for the previous major version are outdated: They stay installed and usable,
+                // and the theme list marks them as outdated (see isOutdated()).
                 return true;
             }
         } elseif (($isCompatible === null) && $redirect) {
@@ -1023,6 +1024,41 @@ class TemplateConfig extends CActiveRecord
         return true;
     }
 
+    /**
+     * Checks if a theme is outdated: It doesn't declare compatibility with this LimeSurvey version,
+     * but with the previous major version. Outdated themes are kept installed and can still be used,
+     * but they may miss improvements of the core theme files they override.
+     *
+     * @param string $themePath Full path of the theme's config.xml
+     * @return bool True if the theme is outdated, false if it is compatible, too old to keep or not found
+     */
+    public static function isOutdated($themePath): bool
+    {
+        $extensionConfig = ExtensionConfig::loadFromFileCached($themePath);
+        if ($extensionConfig === null || $extensionConfig->isCompatible()) {
+            return false;
+        }
+        return !self::isThemeTooOldToKeep($extensionConfig);
+    }
+
+    /**
+     * Returns the "Outdated" badge shown next to the name of outdated themes in the theme lists
+     *
+     * @return string HTML of the badge
+     */
+    public static function getOutdatedBadge(): string
+    {
+        return CHtml::tag(
+            'span',
+            [
+                'class' => 'badge bg-warning text-dark ms-1',
+                'tabindex' => '0',
+                'data-bs-toggle' => 'tooltip',
+                'title' => gT('This theme was made for an older LimeSurvey version. It can still be used, but it may miss improvements of the theme it extends.', 'unescaped'),
+            ],
+            CHtml::encode(gT('Outdated', 'unescaped'))
+        );
+    }
 
     /**
      * Checks if theme is compatible with the current limesurvey version
