@@ -352,7 +352,12 @@ class LSActiveRecord extends CActiveRecord
         foreach ($attributes as $key => $attribute) {
             if (in_array($key, $encryptedAttributes)) {
                 if ($bReplaceValues) {
-                    $attributes[$key] = $sodium->encrypt($attributes[$key]);
+                    // An array value is an IN condition, so each value is encrypted on its own
+                    if (is_array($attributes[$key])) {
+                        $attributes[$key] = array_map(array($sodium, 'encrypt'), $attributes[$key]);
+                    } else {
+                        $attributes[$key] = $sodium->encrypt($attributes[$key]);
+                    }
                 }
             } else {
                 if ($bEncryptedOnly) {
