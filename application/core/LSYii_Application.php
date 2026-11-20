@@ -136,10 +136,13 @@ class LSYii_Application extends CWebApplication
     {
         parent::init();
         $this->initLanguage();
-        // These take care of dynamically creating a class for each token / response table.
+        // These take care of dynamically creating a class for each token / response / timing table.
         Yii::import('application.helpers.ClassFactory');
         ClassFactory::registerClass('Token_', 'Token');
         ClassFactory::registerClass('Response_', 'Response');
+        ClassFactory::registerClass('Timing_', 'Timing');
+        // Form fields and grid parameters of these models are named after the base class (e.g. Token[email])
+        CHtml::setModelNameConverter(array('Dynamic', 'htmlModelName'));
     }
 
     /* @inheritdoc */

@@ -170,7 +170,7 @@ class Export extends SurveyCommonAction
             // "Select all" in the responses grid posts a flag with the grid filters instead of the response ids
             if ($data['responseIds'] === '' && App()->getRequest()->getPost('selectAll')) {
                 $excludedIds = json_decode((string) App()->getRequest()->getPost('excludedItems', '[]'), true);
-                $data['responseIds'] = implode(',', SurveyDynamic::getIdsByGridFilter(
+                $data['responseIds'] = implode(',', Response::getIdsByGridFilter(
                     $iSurveyID,
                     (string) App()->getRequest()->getPost('filterQuery', ''),
                     is_array($excludedIds) ? $excludedIds : []
@@ -183,9 +183,9 @@ class Export extends SurveyCommonAction
             $data['aFields'] = $aFields;
             $data['aFieldsOptions'] = $aFieldsOptions;
             //get max number of datasets
-            $iMaximum = SurveyDynamic::model($iSurveyID)->getMaxId();
+            $iMaximum = Response::model($iSurveyID)->getMaxId();
             //get min number of datasets
-            $iMinimum = SurveyDynamic::model($iSurveyID)->getMinId();
+            $iMinimum = Response::model($iSurveyID)->getMinId();
 
             $data['max_datasets'] = $iMaximum;
             $data['min_datasets'] = $iMinimum;
@@ -274,8 +274,8 @@ class Export extends SurveyCommonAction
         $options = new FormattingOptions();
         $options->selectedColumns = Yii::app()->request->getPost('colselect');
         // An emptied range field falls back to the lowest/highest response ID
-        $options->responseMinRecord = sanitize_int(Yii::app()->request->getPost('export_from')) ?? SurveyDynamic::model($iSurveyID)->getMinId();
-        $options->responseMaxRecord = sanitize_int(Yii::app()->request->getPost('export_to')) ?? SurveyDynamic::model($iSurveyID)->getMaxId();
+        $options->responseMinRecord = sanitize_int(Yii::app()->request->getPost('export_from')) ?? Response::model($iSurveyID)->getMinId();
+        $options->responseMaxRecord = sanitize_int(Yii::app()->request->getPost('export_to')) ?? Response::model($iSurveyID)->getMaxId();
         $options->aResponses = nice_addslashes(Yii::app()->request->getPost('responses_id'));
         $options->answerFormat = $sAnswerFormat;
         $options->convertY = $bConvertY;

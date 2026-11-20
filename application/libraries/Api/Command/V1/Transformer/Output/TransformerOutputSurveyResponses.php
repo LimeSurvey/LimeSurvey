@@ -5,7 +5,6 @@ namespace LimeSurvey\Libraries\Api\Command\V1\Transformer\Output;
 use LimeSurvey\Api\Transformer\TransformerException;
 use LimeSurvey\Api\Transformer\Output\TransformerOutputActiveRecord;
 use Survey;
-use SurveyDynamic;
 
 class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
 {
@@ -80,12 +79,12 @@ class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
 
     /**
      * Transforms a single survey response item into a structured array.
-     * @param SurveyDynamic $surveyResponse
+     * @param \Response $surveyResponse
      * @param array $options
      * @return array
      * @throws TransformerException
      */
-    private function transformerResponseItem(SurveyDynamic $surveyResponse, array $options): array
+    private function transformerResponseItem(\Response $surveyResponse, array $options): array
     {
         $surveyResponseArray = parent::transform($surveyResponse) ?? [];
         $this->applyTokenData($surveyResponseArray, $surveyResponse, $options);
@@ -154,10 +153,10 @@ class TransformerOutputSurveyResponses extends TransformerOutputActiveRecord
     /**
      * Appends token-related participant data if the survey is not anonymized.
      * @param array &$responseArray
-     * @param SurveyDynamic $surveyResponse
+     * @param \Response $surveyResponse
      * @param array $options
      */
-    private function applyTokenData(array &$responseArray, SurveyDynamic $surveyResponse, array $options): void
+    private function applyTokenData(array &$responseArray, \Response $surveyResponse, array $options): void
     {
         if (!empty($options['survey'])) {
             /** @var Survey $survey */

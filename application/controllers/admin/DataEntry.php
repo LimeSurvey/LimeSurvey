@@ -136,7 +136,6 @@ class DataEntry extends SurveyCommonAction
                 if (!Permission::model()->hasSurveyPermission($surveyid, 'responses', 'update')) {
                     throw new CHttpException(403, gT("You do not have permission to access this page."));
                 }
-                SurveyDynamic::sid($surveyid);
                 Yii::app()->db->createCommand("DELETE from {{responses_$surveyid}} WHERE submitdate IS NULL AND token in (SELECT * FROM ( SELECT answ2.token from {{responses_$surveyid}} AS answ2 WHERE answ2.submitdate IS NOT NULL) tmp )")->execute();
                 // Then set all remaining answers to incomplete state
                 Yii::app()->db->createCommand("UPDATE {{responses_$surveyid}} SET submitdate=NULL, lastpage=NULL")->execute();
@@ -274,7 +273,7 @@ class DataEntry extends SurveyCommonAction
 
         if (!App()->getRequest()->isPostRequest || App()->getRequest()->getPost('table') == 'none') {
             // Schema that serves as the base for compatibility checks.
-            $baseSchema = SurveyDynamic::model($iSurveyId)->getTableSchema();
+            $baseSchema = Response::model($iSurveyId)->getTableSchema();
             $tables = App()->getApi()->getOldResponseTables($iSurveyId);
             $compatible = array();
             $coercible = array();
@@ -348,7 +347,7 @@ class DataEntry extends SurveyCommonAction
                 return;
             }
             $aSRIDConversions = array();
-            $targetSchema = SurveyDynamic::model($iSurveyId)->getTableSchema();
+            $targetSchema = Response::model($iSurveyId)->getTableSchema();
             $sourceTable = PluginDynamic::model($sourceTableName);
             $sourceSchema = $sourceTable->getTableSchema();
             $encryptedAttributes = Response::getEncryptedAttributes($iSurveyId);
@@ -2190,8 +2189,7 @@ class DataEntry extends SurveyCommonAction
                     }
                 }
 
-                SurveyDynamic::sid($surveyid);
-                $new_response = new SurveyDynamic();
+                $new_response = Response::create($surveyid);
                 foreach ($insert_data as $column => $value) {
                     $new_response->$column = $value;
                 }
@@ -2265,7 +2263,7 @@ class DataEntry extends SurveyCommonAction
                             "sent" => gmdate("Y-m-d H:i"),
                             "completed" => "N");
 
-                            $aToken = new TokenDynamic($surveyid);
+                            $aToken = Token::create($surveyid);
                             $aToken->setAttributes($tokendata, false);
                             $aToken->encryptSave(true);
                             $aDataentrymsgs[] = CHtml::tag('font', array('class' => 'successtitle'), gT("A survey participant entry for the saved survey has been created, too."));

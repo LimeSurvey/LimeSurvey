@@ -215,7 +215,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     $_linkreplace = '';
 
     if (isset($thissurvey['sid']) && SurveySessionState::forSurvey((int) $thissurvey['sid'])->getResponseId() !== null && $thissurvey['active'] == 'Y') {
-        $iscompleted = $thissurvey['iscompleted'] = SurveyDynamic::model($surveyid)->isCompleted(SurveySessionState::forSurvey((int) $thissurvey['sid'])->getResponseId());
+        $iscompleted = $thissurvey['iscompleted'] = Response::model($surveyid)->isCompleted(SurveySessionState::forSurvey((int) $thissurvey['sid'])->getResponseId());
     } else {
         $iscompleted = $thissurvey['iscompleted'] = false;
     }

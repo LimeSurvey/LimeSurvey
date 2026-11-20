@@ -6,7 +6,6 @@ use LimeSurvey\Models\Services\SurveySessionState;
 use Yii;
 use User;
 use PluginDynamic;
-use SurveyDynamic;
 use Template;
 use InvalidArgumentException;
 use Exception;
@@ -214,12 +213,12 @@ class LimesurveyApi
      * @param int $surveyId
      * @param int $responseId
      * @param bool $bMapQuestionCodes
-     * @return array|SurveyDynamic|null
+     * @return array|\Response|null
      */
     public function getResponse($surveyId, $responseId, $bMapQuestionCodes = true)
     {
         $survey = \Survey::model()->findByPk($surveyId);
-        $response = \SurveyDynamic::model($surveyId)->findByPk($responseId);
+        $response = \Response::model($surveyId)->findByPk($responseId);
         if (!$bMapQuestionCodes) {
             return $response;
         }

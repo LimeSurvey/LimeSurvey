@@ -3959,7 +3959,7 @@ function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorC
     $aFieldMap = createFieldMap($survey, 'full', false, false, $sLanguageCode);
 
     // Get response data
-    $idrow = SurveyDynamic::model($iSurveyID)->findByAttributes(array('id' => $iResponseID));
+    $idrow = Response::model($iSurveyID)->findByAttributes(array('id' => $iResponseID));
     // If response data not found, throw an exception
     if (!$idrow) {
         throw new CHttpException(401, gT("Response data not found."));

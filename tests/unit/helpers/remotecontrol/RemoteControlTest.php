@@ -176,7 +176,7 @@ class RemoteControlTest extends TestBaseClass
 
         // Check result via API.
         \Survey::model()->refreshMetaData();
-        \SurveyDynamic::model( self::$surveyId )->getMaxId( null, true );
+        \Response::model( self::$surveyId )->getMaxId( null, true );
         $result = $handler->export_responses($sessionKey, self::$surveyId, 'json');
         $this->assertNotNull($result);
         $responses = json_decode(file_get_contents($result->fileName));

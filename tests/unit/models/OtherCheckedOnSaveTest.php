@@ -49,7 +49,7 @@ class OtherCheckedOnSaveTest extends TestBaseClass
     public function testSavingOnlyTheTextAlsoSavesTheTick()
     {
         $id = $this->insert([self::$otherColumn => ''])['id'];
-        $response = \SurveyDynamic::model(self::$surveyId)->findByPk($id);
+        $response = \Response::model(self::$surveyId)->findByPk($id);
         $response->setAttribute(self::$otherColumn, 'only text');
         $this->assertTrue($response->encryptSave(true, [self::$otherColumn]));
         $this->assertSame('Y', $this->read($id)[self::$otherColumn . 'checked']);
@@ -58,7 +58,7 @@ class OtherCheckedOnSaveTest extends TestBaseClass
     public function testSavingOnlyAnEmptyTickKeepsTheTickOfTheText()
     {
         $id = $this->insert([self::$otherColumn => 'some text'])['id'];
-        $response = \SurveyDynamic::model(self::$surveyId)->findByPk($id);
+        $response = \Response::model(self::$surveyId)->findByPk($id);
         $response->setAttribute(self::$otherColumn . 'checked', '');
         $this->assertTrue($response->encryptSave(true, [self::$otherColumn . 'checked']));
         $this->assertSame('Y', $this->read($id)[self::$otherColumn . 'checked']);
@@ -71,8 +71,7 @@ class OtherCheckedOnSaveTest extends TestBaseClass
      */
     private function insert(array $attributes)
     {
-        \SurveyDynamic::sid(self::$surveyId);
-        $response = new \SurveyDynamic();
+        $response = \Response::create(self::$surveyId);
         $defaults = ['startlanguage' => 'en'];
         foreach (['startdate', 'datestamp'] as $dateColumn) {
             if ($response->hasAttribute($dateColumn)) {

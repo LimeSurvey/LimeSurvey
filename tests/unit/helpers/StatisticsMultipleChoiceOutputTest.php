@@ -67,7 +67,7 @@ class StatisticsMultipleChoiceOutputTest extends TestBaseClass
         $this->assertNotNull(self::$question, 'The test survey has no multiple-choice question.');
 
         $output = $this->buildOutputList('MQ' . self::$question->qid);
-        $columns = \SurveyDynamic::model(self::$surveyId)->getTableSchema()->getColumnNames();
+        $columns = \Response::model(self::$surveyId)->getTableSchema()->getColumnNames();
 
         $this->assertNotEmpty($output['alist']);
         foreach ($output['alist'] as $answer) {

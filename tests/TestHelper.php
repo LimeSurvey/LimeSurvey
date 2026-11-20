@@ -161,8 +161,6 @@ class TestHelper extends TestCase
         if (isset($result['error'])) {
             $this->fail('Survey activation error: ' . print_r($result['error'], true));
         }
-        \SurveyDynamic::sid($surveyId);
-        \SurveyDynamic::model()->refreshMetaData();
 
         $db = Yii::app()->getDb();
         $db->schema->getTables();

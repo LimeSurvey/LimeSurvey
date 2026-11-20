@@ -633,8 +633,8 @@ function reinstallParticipantsFilterDatePicker() {
     // Since grid view is updated with Ajax, we need to fetch date format each update
     var dateFormatDetails = document.getElementById('dateFormatDetails');
     var locale = document.getElementById('locale');
-    var validfromElement = document.getElementsByName('TokenDynamic[validfrom]')[0];
-    var validuntilElement = document.getElementsByName('TokenDynamic[validuntil]')[0];
+    var validfromElement = document.getElementsByName('Token[validfrom]')[0];
+    var validuntilElement = document.getElementsByName('Token[validuntil]')[0];
     if ((dateFormatDetails && dateFormatDetails.value) && (locale && locale.value)) {
         dateFormatDetails = JSON.parse(dateFormatDetails.value);
         var dateFormat = dateFormatDetails.jsdate + ' HH:mm';

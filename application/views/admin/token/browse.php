@@ -1,7 +1,7 @@
 <?php
 /**
  * @var $aLanguages array
- * @var $model TokenDynamic
+ * @var $model Token
  * @var $dateformatdetails array
  * @var $massiveAction string
  */

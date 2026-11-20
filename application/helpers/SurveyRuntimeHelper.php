@@ -89,7 +89,7 @@ class SurveyRuntimeHelper
     /**
      * Survey settings:
      * TODO: To respect object oriented design, all those "states" should be
-     * move to SurveyDynamic model, or its related models via relations.
+     * move to Response model, or its related models via relations.
      * The only private variable here should be $oSurvey.
      * Array returned by common_helper::getSurveyInfo(); (survey row + language settings );
      * @var array|null
@@ -227,7 +227,7 @@ class SurveyRuntimeHelper
             $this->saveSubmitIfNeeded();
             $tokenValue = ($this->sessionState()->getFillToken() ?? ($this->sessionState()->getToken() ?? ''));
             if ($tokenValue && $this->sessionState()->getResponseId() !== null) {
-                $oSurveyResponse = SurveyDynamic::model($this->iSurveyid)->findByAttributes(['id' => $this->sessionState()->getResponseId()]);
+                $oSurveyResponse = Response::model($this->iSurveyid)->findByAttributes(['id' => $this->sessionState()->getResponseId()]);
                 if ($oSurveyResponse && $oSurveyResponse->hasAttribute('token')) {
                     $oSurveyResponse->token = $tokenValue;
                     $oSurveyResponse->save();
@@ -1122,7 +1122,7 @@ class SurveyRuntimeHelper
             if ($this->aMoveResult['finished'] == true && $this->sMove != 'movesubmit' && $this->thissurvey['questionindex'] == 2) {
                 /* Issue #14855 : always reset submitdate of current response to null */
                 if (!empty($this->sessionState()->getResponseId())) {
-                    $oSurveyResponse = SurveyDynamic::model($this->iSurveyid)->findByAttributes(['id' => $this->sessionState()->getResponseId()]);
+                    $oSurveyResponse = Response::model($this->iSurveyid)->findByAttributes(['id' => $this->sessionState()->getResponseId()]);
                     $oSurveyResponse->submitdate = null;
                     $oSurveyResponse->save();
                 }
@@ -1253,10 +1253,10 @@ class SurveyRuntimeHelper
                 Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey' => Survey::model()->findByPk($this->iSurveyid), 'aSurveyInfo' => $this->aSurveyInfo), false);
             } else {
                 // Intentional retest of all conditions to be true, to make sure we do have tokens and surveyid
-                // Now update lastpage to the session step in SurveyDynamic, otherwise we land on
+                // Now update lastpage to the session step in the response, otherwise we land on
                 // the previous page when we return.
                 $iResponseID         = $this->sessionState()->getResponseId();
-                $oResponse           = SurveyDynamic::model($this->iSurveyid)->findByPk($iResponseID);
+                $oResponse           = Response::model($this->iSurveyid)->findByPk($iResponseID);
                 if (!$oResponse) {
                     $this->aSurveyInfo['saved'] = array(
                         'success' => false,
@@ -1647,7 +1647,7 @@ class SurveyRuntimeHelper
             // delete the existing response but only if not already completed
             if (
                 $responseId !== null
-                && !SurveyDynamic::model($this->iSurveyid)->isCompleted($responseId) // see bug https://bugs.limesurvey.org/view.php?id=11978
+                && !Response::model($this->iSurveyid)->isCompleted($responseId) // see bug https://bugs.limesurvey.org/view.php?id=11978
             ) {
                 $oResponse = Response::model($this->iSurveyid)->find("id = :srid", array(":srid" => $responseId));
 
@@ -1656,7 +1656,7 @@ class SurveyRuntimeHelper
                 }
 
                 if (Survey::model()->findByPk($this->iSurveyid)->savetimings == "Y") {
-                    SurveyTimingDynamic::model($this->iSurveyid)->deleteAll("id=:srid", array(":srid" => $responseId)); /* delete timings ( @todo must move it to Response )*/
+                    Timing::model($this->iSurveyid)->deleteAll("id=:srid", array(":srid" => $responseId)); /* delete timings ( @todo must move it to Response )*/
                 }
 
                 SavedControl::model()->deleteAll("sid=:sid and srid=:srid", array(":sid" => $this->iSurveyid, ":srid" => $responseId)); /* saved controls (think we can have only one , but maybe ....)( @todo must move it to Response )*/
@@ -1813,7 +1813,7 @@ class SurveyRuntimeHelper
             $postedToken = Yii::app()->request->getPost('token', '');
             if ((Yii::app()->request->getParam('filltoken') === 'true') && is_string($postedToken) && ($postedToken !== '')) {
                 if ($this->sessionState()->getResponseId() !== null) {
-                    $oSurveyResponse = SurveyDynamic::model($this->iSurveyid)->findByAttributes(['id' => $this->sessionState()->getResponseId()]);
+                    $oSurveyResponse = Response::model($this->iSurveyid)->findByAttributes(['id' => $this->sessionState()->getResponseId()]);
                     if ($oSurveyResponse && $oSurveyResponse->hasAttribute('token')) {
                         $oSurveyResponse->token = $postedToken;
                         $oSurveyResponse->save();

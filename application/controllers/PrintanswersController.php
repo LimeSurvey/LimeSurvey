@@ -122,7 +122,7 @@ class PrintanswersController extends LSYii_Controller
         $sAnonymized = $aSurveyInfo['anonymized'];
         //OK. IF WE GOT THIS FAR, THEN THE SURVEY EXISTS AND IT IS ACTIVE, SO LETS GET TO WORK.
         //SHOW HEADER
-        $oResponseRow = SurveyDynamic::model($iSurveyID);
+        $oResponseRow = Response::model($iSurveyID);
         $printanswershonorsconditions = Yii::app()->getConfig('printanswershonorsconditions');
         $groupArray = $oResponseRow->getPrintAnswersArray($sSRID, $sLanguage, $printanswershonorsconditions);
 

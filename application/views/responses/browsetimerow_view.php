@@ -1,6 +1,6 @@
 <?php
 /**
- * @var $model SurveyTimingDynamic
+ * @var $model Timing
  * @var $surveyId int
  * @var $language string
  * @var $pageSize int
@@ -17,7 +17,7 @@
     </script>
     <?php
     $this->widget('application.extensions.admin.grid.CLSGridView', [
-            'dataProvider' => $model->search($surveyId, $language),
+            'dataProvider' => $model->search(),
             'id' => 'time-grid',
             'emptyText' => gT('No surveys found.'),
             'ajaxUpdate' => 'time-grid',

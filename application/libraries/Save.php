@@ -177,7 +177,7 @@ class Save
                     "refurl"        => ($sessionState->getRefUrl() ?? getenv('HTTP_REFERER'))
                 );
 
-                if (SurveyDynamic::model($thissurvey['sid'])->insert($sdata)) {
+                if (Response::model($thissurvey['sid'])->insert($sdata)) {
                     $srid = getLastInsertID($survey->responsesTableName);
                     $sessionState->set('srid', $srid);
                 } else {
@@ -283,7 +283,7 @@ class Save
             . "interviewtime = (CASE WHEN interviewtime IS NULL THEN 0 ELSE interviewtime END) + " . $passedTime
             . " WHERE id = " . SurveySessionState::forSurvey((int) $thissurvey['sid'])->getResponseId();
         } else {
-            $aColumnNames = SurveyTimingDynamic::model($thissurvey['sid'])->getTableSchema()->columnNames;
+            $aColumnNames = Timing::model($thissurvey['sid'])->getTableSchema()->columnNames;
             $setField .= "time";
             if (!in_array($setField, $aColumnNames)) {
                 die('Invalid last group timing fieldname');

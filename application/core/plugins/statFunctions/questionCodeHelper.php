@@ -8,7 +8,6 @@ namespace statFunctions;
 
 use Yii;
 use Survey;
-use SurveyDynamic;
 use CDbCriteria;
 
 class questionCodeHelper
@@ -32,7 +31,7 @@ class questionCodeHelper
      */
     public function getColumnByQCode($qCode)
     {
-        $availableColumns = SurveyDynamic::model($this->surveyId)->getAttributes();
+        $availableColumns = \Response::model($this->surveyId)->getAttributes();
         /* Sample : Q01.sgqa Q01_SQ01.sgqa */
         if (array_key_exists($qCode, $availableColumns)) {
             return $qCode;

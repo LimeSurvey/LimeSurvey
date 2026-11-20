@@ -17,7 +17,7 @@
  * Class TokenEmptyGridFilter
  *
  * Lightweight form model used as the filter for the empty participant grid shown before
- * the participant table exists. The real grid filters with TokenDynamic, but that model
+ * the participant table exists. The real grid filters with the Token model, but that model
  * can't be instantiated without a physical table. This model just needs to expose the
  * grid's column names as attributes so CGridView can render the standard filter inputs.
  * The inputs are only presentational here — there's no data to filter yet.

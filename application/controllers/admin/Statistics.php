@@ -536,7 +536,7 @@ class Statistics extends SurveyCommonAction
             throw new CHttpException(400, gT("Invalid request."));
         }
         // Only real response table columns may be listed or sorted by (mantis #20741)
-        $validColumns = SurveyDynamic::model($surveyid)->getTableSchema()->getColumnNames();
+        $validColumns = Response::model($surveyid)->getTableSchema()->getColumnNames();
         if (
             !in_array($column, $validColumns, true)
             || ($sortby !== '' && !in_array($sortby, $validColumns, true))

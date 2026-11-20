@@ -2,10 +2,10 @@
 
 namespace ls\tests;
 
-use TokenDynamic;
+use Token;
 use PHPUnit\Framework\TestCase;
 
-class TokenDynamicTest extends TestBaseClass
+class TokenUsabilityTest extends TestBaseClass
 {
     public static function setUpBeforeClass(): void
     {
@@ -15,12 +15,12 @@ class TokenDynamicTest extends TestBaseClass
         $surveyFile = self::$surveysFolder . '/survey_archive_265831.lsa';
         self::importSurvey($surveyFile);
 
-        TokenDynamic::model(self::$surveyId);
+        Token::model(self::$surveyId);
     }
 
     public function testTokenCanBeUsedWithoutTokenAttribute()
     {
-        $token = new TokenDynamic(self::$surveyId);
+        $token = Token::create(self::$surveyId);
         $this->assertFalse($token->canBeUsed(), 'There is no token attribute, the token should not be able to be used.');
     }
 
@@ -31,7 +31,7 @@ class TokenDynamicTest extends TestBaseClass
             'completed' => '',
         );
 
-        $token = new TokenDynamic(self::$surveyId);
+        $token = Token::create(self::$surveyId);
         $token->setAttributes($tokenData, false);
 
         $this->assertTrue($token->canBeUsed(), 'The completed attribute was not set, the token should be able to be used.');
@@ -44,7 +44,7 @@ class TokenDynamicTest extends TestBaseClass
             'completed' => 'N',
         );
 
-        $token = new TokenDynamic(self::$surveyId);
+        $token = Token::create(self::$surveyId);
         $token->setAttributes($tokenData, false);
 
         $this->assertTrue($token->canBeUsed(), 'The completed attribute was set to N, the token should be able to be used.');
@@ -59,7 +59,7 @@ class TokenDynamicTest extends TestBaseClass
 
         self::$testSurvey->oOptions->alloweditaftercompletion = 'N';
 
-        $token = new TokenDynamic(self::$surveyId);
+        $token = Token::create(self::$surveyId);
         $token->setAttributes($tokenData, false);
 
         $this->assertTrue($token->canBeUsed(), 'The survey allow edit after completion attribute was set to N, the token should be able to be used.');
@@ -74,7 +74,7 @@ class TokenDynamicTest extends TestBaseClass
 
         self::$testSurvey->oOptions->alloweditaftercompletion = 'Y';
 
-        $token = new TokenDynamic(self::$surveyId);
+        $token = Token::create(self::$surveyId);
         $token->setAttributes($tokenData, false);
 
         $this->assertTrue($token->canBeUsed(), 'The survey allow edit after completion attribute was set to Y, the token should be able to be used.');
@@ -87,7 +87,7 @@ class TokenDynamicTest extends TestBaseClass
             'completed' => 'Y',
         );
 
-        $token = new TokenDynamic(self::$surveyId);
+        $token = Token::create(self::$surveyId);
         $token->setAttributes($tokenData, false);
 
         $this->assertFalse($token->canBeUsed(), 'The completed attribute was set to Y, the token should not be able to be used.');
@@ -102,7 +102,7 @@ class TokenDynamicTest extends TestBaseClass
 
         self::$testSurvey->oOptions->alloweditaftercompletion = 'N';
 
-        $token = new TokenDynamic(self::$surveyId);
+        $token = Token::create(self::$surveyId);
         $token->setAttributes($tokenData, false);
 
         $this->assertFalse($token->canBeUsed(), 'The survey allow edit after completion attribute was set to N, the token should not be able to be used.');
@@ -117,7 +117,7 @@ class TokenDynamicTest extends TestBaseClass
 
         self::$testSurvey->oOptions->alloweditaftercompletion = 'Y';
 
-        $token = new TokenDynamic(self::$surveyId);
+        $token = Token::create(self::$surveyId);
         $token->setAttributes($tokenData, false);
 
         $this->assertFalse($token->canBeUsed(), 'The survey allow edit after completion attribute was set to Y, the token should be able be used.');
@@ -125,7 +125,7 @@ class TokenDynamicTest extends TestBaseClass
 
     public function testTokenCanBeEmailedWithoutTokenAttribute()
     {
-        $token = new TokenDynamic(self::$surveyId);
+        $token = Token::create(self::$surveyId);
         $this->assertFalse($token->canBeEmailed(), 'There is no token attribute, the token should not be able to be emailed.');
     }
 
@@ -141,7 +141,7 @@ class TokenDynamicTest extends TestBaseClass
 
         self::$testSurvey->oOptions->alloweditaftercompletion = 'N';
 
-        $token = new TokenDynamic(self::$surveyId);
+        $token = Token::create(self::$surveyId);
         $token->setAttributes($tokenData, false);
         $this->assertTrue($token->canBeEmailed(), 'Email status is ok, the token should be able to be emailed.');
     }
@@ -158,7 +158,7 @@ class TokenDynamicTest extends TestBaseClass
 
         self::$testSurvey->oOptions->alloweditaftercompletion = 'N';
 
-        $token = new TokenDynamic(self::$surveyId);
+        $token = Token::create(self::$surveyId);
         $token->setAttributes($tokenData, false);
         $this->assertFalse($token->canBeEmailed(), 'Email status is empty, the token should not be able to be emailed.');
     }
@@ -174,7 +174,7 @@ class TokenDynamicTest extends TestBaseClass
 
         self::$testSurvey->oOptions->alloweditaftercompletion = 'N';
 
-        $token = new TokenDynamic(self::$surveyId);
+        $token = Token::create(self::$surveyId);
         $token->setAttributes($tokenData, false);
         $this->assertFalse($token->canBeEmailed(), 'Email was not set, the token should not be able to be emailed.');
     }
@@ -191,7 +191,7 @@ class TokenDynamicTest extends TestBaseClass
 
         self::$testSurvey->oOptions->alloweditaftercompletion = 'N';
 
-        $token = new TokenDynamic(self::$surveyId);
+        $token = Token::create(self::$surveyId);
         $token->setAttributes($tokenData, false);
         $this->assertFalse($token->canBeEmailed(), 'Completes was set to Y, the token should not be able to be emailed.');
     }
@@ -208,7 +208,7 @@ class TokenDynamicTest extends TestBaseClass
 
         self::$testSurvey->oOptions->alloweditaftercompletion = 'N';
 
-        $token = new TokenDynamic(self::$surveyId);
+        $token = Token::create(self::$surveyId);
         $token->setAttributes($tokenData, false);
         $this->assertFalse($token->canBeEmailed(), 'No uses left, the token should not be able to be emailed.');
     }
@@ -225,7 +225,7 @@ class TokenDynamicTest extends TestBaseClass
 
         self::$testSurvey->oOptions->alloweditaftercompletion = 'Y';
 
-        $token = new TokenDynamic(self::$surveyId);
+        $token = Token::create(self::$surveyId);
         $token->setAttributes($tokenData, false);
         $this->assertFalse($token->canBeEmailed(), 'Survey can be edited after completion, the token should not be able to be emailed.');
     }

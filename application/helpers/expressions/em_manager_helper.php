@@ -5452,11 +5452,8 @@ class LimeExpressionManager
             }
 
             $sdata = array_filter($sdata);
-            SurveyDynamic::sid($this->sid);
-            $oSurvey = new SurveyDynamic();
-
             try {
-                $iNewID = $oSurvey->insertRecords($sdata);
+                $iNewID = Response::model($this->sid)->insertRecords($sdata);
                 if (!$iNewID) {
                     throw new Exception("Error, no entry id was returned.", 1);
                 }
@@ -5475,14 +5472,11 @@ class LimeExpressionManager
 
             //Insert Row for Timings, if needed
             if ($this->surveyOptions['savetimings']) {
-                SurveyTimingDynamic::sid($this->sid);
-                $oSurveyTimings = new SurveyTimingDynamic();
-
                 $tdata = [
                     'id'            => $srid,
                     'interviewtime' => 0
                 ];
-                $oSurveyTimings->insertRecords($tdata);
+                Timing::model($this->sid)->insertRecords($tdata);
             }
         }
         if (count($updatedValues) > 0 || $finished) {
