@@ -156,6 +156,20 @@ describe('DateRangePanel', () => {
     )
   })
 
+  test('an invalid date also shows the ISO example', () => {
+    renderPanel()
+
+    typeDate('Start date', 'nonsense')
+
+    const today = new Date()
+    const iso = [
+      today.getFullYear(),
+      String(today.getMonth() + 1).padStart(2, '0'),
+      String(today.getDate()).padStart(2, '0'),
+    ].join('-')
+    expect(screen.getByRole('alert')).toHaveTextContent(iso)
+  })
+
   test('a single day shows one date input', () => {
     renderPanel()
 
@@ -297,6 +311,21 @@ describe('DateRangePanel', () => {
     clickButton('Confirm')
 
     expect(confirmedDays(onConfirm)).toEqual(days([2026, 1, 8], [2026, 1, 14]))
+  })
+
+  test('the end date icon and an earlier day keep the old end date', () => {
+    const { onConfirm } = renderPanel({
+      initialRange: { from: new Date(2026, 0, 14), to: new Date(2026, 0, 20) },
+    })
+    const [, endIcon] = screen.getAllByRole('button', {
+      name: 'Pick the dates on the calendar',
+    })
+
+    fireEvent.click(endIcon)
+    clickDay('January 10th, 2026')
+    clickButton('Confirm')
+
+    expect(confirmedDays(onConfirm)).toEqual(days([2026, 1, 10], [2026, 1, 20]))
   })
 
   test('an end date can also be typed before the start date', () => {

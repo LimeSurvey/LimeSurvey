@@ -189,7 +189,7 @@ export const DateRangePanel = ({
     if (activeInput === 'to' && tempRange.from) {
       setTempRange(
         isBefore(triggerDate, tempRange.from)
-          ? { from: triggerDate, to: tempRange.from }
+          ? { from: triggerDate, to: tempRange.to ?? tempRange.from }
           : { from: tempRange.from, to: triggerDate }
       )
       return
@@ -268,8 +268,9 @@ export const DateRangePanel = ({
         {hasInvalidInput && (
           <div className="date-range-error" role="alert">
             {format(
-              t('Invalid date, please enter a date like "%s".'),
-              formatDate(new Date(), dateFormat, { locale })
+              t('Invalid date, please enter a date like "%s" or "%s".'),
+              formatDate(new Date(), dateFormat, { locale }),
+              formatDate(new Date(), 'yyyy-MM-dd')
             )}
           </div>
         )}
