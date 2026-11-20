@@ -165,13 +165,8 @@ class PrintanswersController extends LSYii_Controller
             $html = Yii::app()->twigRenderer->renderTemplateFromFile('layout_printanswers.twig', $aData, true);
             //filter all scripts
             $html = preg_replace("/<script>[^<]*<\/script>/", '', (string) $html);
-            //replace fontawesome icons
-            $html = preg_replace('/(<i class="ri-checkbox-line"><\/i>|<i class="ri-close-fill"><\/i>)/', '[X]', $html);
-            $html = preg_replace('/<i class="ri-checkbox-indeterminate-line">\<\/i>/', '[-]', $html);
-            $html = preg_replace('/<i class="ri-checkbox-blank-line"><\/i>/', '[ ]', $html);
-            $html = preg_replace('/<i class="ri-add-line"><\/i>/', '+', $html);
-            $html = preg_replace('/<i class="ri-checkbox-blank-circle-fill"><\/i>/', '|', $html);
-            $html = preg_replace('/<i class="ri-subtract-fill"><\/i>/', '-', $html);
+            // Replace icons with text: TCPDF can not print icon fonts
+            $html = pdfHelper::replaceIconsWithText((string) $html);
 
             $oPDF->writeHTML($html, true, false, true, false, '');
 

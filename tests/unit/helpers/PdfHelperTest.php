@@ -132,4 +132,47 @@ class PdfHelperTest extends TestBaseClass
             'Regular style' => ['am', 'freeserif', '', ''],
         ];
     }
+
+    /**
+     * The icons of the print answers views are replaced by text, for every survey theme.
+     *
+     * @dataProvider iconProvider
+     * @param string $html HTML of an answer
+     * @param string $expected Expected HTML after the replacement
+     * @return void
+     */
+    public function testReplaceIconsWithText($html, $expected)
+    {
+        $this->assertSame($expected, \pdfHelper::replaceIconsWithText($html));
+    }
+
+    /**
+     * Provides HTML with icons and the HTML that must be printed in the PDF.
+     *
+     * @return array<string, array{string, string}> HTML and expected HTML, by case
+     */
+    public static function iconProvider()
+    {
+        return [
+            'Remix checked' => ['<i class="ri-checkbox-line"></i>', '[X]'],
+            'Remix no' => ['No <i class="ri-close-fill"></i>', 'No [X]'],
+            'Remix uncertain' => ['<i class="ri-checkbox-indeterminate-line"></i>', '[-]'],
+            'Remix unchecked' => ['<i class="ri-checkbox-blank-line"></i>', '[ ]'],
+            'Remix increase' => ['<i class="ri-add-line"></i>', '+'],
+            'Remix same' => ['<i class="ri-checkbox-blank-circle-fill"></i>', '|'],
+            'Remix decrease' => ['<i class="ri-subtract-fill"></i>', '-'],
+            'FontAwesome checked' => ['<i class="fa fa-check-square-o"></i>', '[X]'],
+            'FontAwesome no' => ['No <i class="fa fa-close"></i>', 'No [X]'],
+            'FontAwesome uncertain' => ['<i class="fa fa-minus-square-o"></i>', '[-]'],
+            'FontAwesome unchecked' => ['<i class="fa fa-square-o"></i>', '[ ]'],
+            'FontAwesome increase' => ['<i class="fa fa-plus"></i>', '+'],
+            'FontAwesome same' => ['<i class="fa fa-circle"></i>', '|'],
+            'FontAwesome decrease' => ['<i class="fa fa-minus"></i>', '-'],
+            'Extra attribute' => ['<i class="fa fa-check-square-o" aria-hidden="true"></i>', '[X]'],
+            'Several icons' => ['<b><i class="ri-checkbox-line"></i></b> A <i class="fa fa-square-o"></i> B', '<b>[X]</b> A [ ] B'],
+            'Unknown icon kept' => ['Male <i class="fa fa-mars"></i>', 'Male <i class="fa fa-mars"></i>'],
+            'Italic text kept' => ['<i class="note">fa-plus</i>', '<i class="note">fa-plus</i>'],
+            'No icon' => ['<p>Plain answer</p>', '<p>Plain answer</p>'],
+        ];
+    }
 }

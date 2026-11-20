@@ -87,4 +87,47 @@ class pdfHelper
         }
         return str_ireplace(str_split($fontStyles), '', $style);
     }
+
+    /**
+     * Replaces the icons of the print answers views with plain text.
+     *
+     * TCPDF can not print icon fonts, so an icon would leave no mark in the PDF.
+     * Both the Remix icons (fruity_twentythree) and the FontAwesome icons
+     * (vanilla and the themes extending it) are replaced. Other icons are kept as they are.
+     *
+     * @param string $html HTML of the print answers page
+     * @return string The HTML with the known icons replaced by text
+     */
+    public static function replaceIconsWithText($html)
+    {
+        $iconTexts = [
+            'ri-checkbox-line' => '[X]',
+            'ri-close-fill' => '[X]',
+            'ri-checkbox-indeterminate-line' => '[-]',
+            'ri-checkbox-blank-line' => '[ ]',
+            'ri-add-line' => '+',
+            'ri-checkbox-blank-circle-fill' => '|',
+            'ri-subtract-fill' => '-',
+            'fa-check-square-o' => '[X]',
+            'fa-close' => '[X]',
+            'fa-minus-square-o' => '[-]',
+            'fa-square-o' => '[ ]',
+            'fa-plus' => '+',
+            'fa-circle' => '|',
+            'fa-minus' => '-',
+        ];
+        $replaced = preg_replace_callback(
+            '/<i\s[^>]*?class="([^"]*)"[^>]*>\s*<\/i>/i',
+            function ($matches) use ($iconTexts) {
+                foreach (preg_split('/\s+/', trim($matches[1])) as $iconClass) {
+                    if (isset($iconTexts[$iconClass])) {
+                        return $iconTexts[$iconClass];
+                    }
+                }
+                return $matches[0];
+            },
+            (string) $html
+        );
+        return $replaced ?? (string) $html;
+    }
 }
