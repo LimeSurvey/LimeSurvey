@@ -41,6 +41,9 @@ const IMAGE_BORDER_CLASSES = 'border border-3 border-secondary rounded'
  * @param {Object|null} imageSettings saved image editor settings of the option,
  *   the image is shown with them in view and edit mode
  * @param {string} imageAltText saved alt text in the current language
+ * @param {boolean} imageApplyToAll whether "Apply to all images of this
+ *   question" starts checked in the image editor: Its settings are kept for
+ *   images added later
  * @param {Function|null} onImageSettingsSave called with the image editor
  *   settings, including the alt text, when they are saved. Without it, there
  *   is no edit button.
@@ -63,6 +66,7 @@ export const ImageChoice = ({
   setErrors = () => {},
   imageSettings = null,
   imageAltText = '',
+  imageApplyToAll = false,
   onImageSettingsSave = null,
 }) => {
   const [isLoading, setIsLoading] = useState(false)
@@ -202,6 +206,7 @@ export const ImageChoice = ({
             settings={imageSettings}
             altText={imageAltText}
             showApplyToAll={true}
+            applyToAll={imageApplyToAll}
           />
         )}
         {isFocused && initLoading && !isNoAnswer && (

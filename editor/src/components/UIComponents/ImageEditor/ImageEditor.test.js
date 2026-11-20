@@ -315,6 +315,24 @@ describe('ImageEditor', () => {
     expect(onSave).not.toHaveBeenCalled()
   })
 
+  test('Apply to all starts checked when asked for and can be unchecked', async () => {
+    const onSave = await renderEditor({
+      showApplyToAll: true,
+      applyToAll: true,
+    })
+    const checkbox = screen.getByLabelText(
+      'Apply to all images of this question'
+    )
+    expect(checkbox).toBeChecked()
+
+    await userEvent.click(checkbox)
+    await userEvent.click(screen.getByRole('button', { name: 'Save' }))
+
+    expect(onSave).toHaveBeenCalledWith(
+      expect.objectContaining({ applyToAll: false })
+    )
+  })
+
   test('The arrow keys move the image inside the frame', async () => {
     const onSave = await renderEditor({
       settings: { width: 400, height: 300, zoom: 2 },

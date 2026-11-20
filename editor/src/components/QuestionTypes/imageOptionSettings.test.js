@@ -1,8 +1,11 @@
 import {
   IMAGE_OPTION_ALT_ATTRIBUTE,
+  IMAGE_OPTION_DEFAULTS_ATTRIBUTE,
   IMAGE_OPTION_SETTINGS_ATTRIBUTE,
   applyAttributeChanges,
   getImageOptionAltText,
+  getImageOptionDefaults,
+  getImageOptionDefaultsChanges,
   getImageFileName,
   getImageOptionDeleteChanges,
   getImageOptionForImage,
@@ -425,5 +428,55 @@ describe('imageOptionSettings', () => {
     })
     // The original attributes are not changed.
     expect(attributes[IMAGE_OPTION_ALT_ATTRIBUTE].de).not.toBe('')
+  })
+
+  test('The settings for new images keep frame, zoom and radius only, for all languages', () => {
+    const changes = getImageOptionDefaultsChanges({
+      ...settingsA1,
+      keepRatio: true,
+      radius: 8,
+      positionX: 0.2,
+      positionY: 0.8,
+      crop: { x: 0, y: 0, width: 1, height: 1 },
+    })
+
+    expect(Object.keys(changes[IMAGE_OPTION_DEFAULTS_ATTRIBUTE])).toEqual([''])
+    const defaults = {
+      width: 400,
+      height: 300,
+      keepRatio: true,
+      zoom: 1,
+      radius: 8,
+    }
+    expect(parse(changes, IMAGE_OPTION_DEFAULTS_ATTRIBUTE, '')).toEqual(
+      defaults
+    )
+    expect(
+      getImageOptionDefaults(applyAttributeChanges(attributes, changes))
+    ).toEqual(defaults)
+  })
+
+  test('Removed, missing or broken settings for new images read as none', () => {
+    const removed = applyAttributeChanges(
+      attributes,
+      getImageOptionDefaultsChanges(null)
+    )
+
+    expect(removed[IMAGE_OPTION_DEFAULTS_ATTRIBUTE]).toEqual({ '': '' })
+    expect(getImageOptionDefaults(removed)).toBeNull()
+    expect(getImageOptionDefaults(attributes)).toBeNull()
+    expect(getImageOptionDefaults(undefined)).toBeNull()
+    expect(
+      getImageOptionDefaults({
+        [IMAGE_OPTION_DEFAULTS_ATTRIBUTE]: { '': '{"width":200' },
+      })
+    ).toBeNull()
+    expect(
+      getImageOptionDefaults({
+        [IMAGE_OPTION_DEFAULTS_ATTRIBUTE]: {
+          '': '{"width":"200","height":100,"zoom":1}',
+        },
+      })
+    ).toBeNull()
   })
 })

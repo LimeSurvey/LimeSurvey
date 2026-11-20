@@ -32,6 +32,8 @@ import {
 } from 'components/UIComponents/ImageEditor/imageEditorUtils'
 import {
   applyAttributeChanges,
+  getImageOptionDefaults,
+  getImageOptionDefaultsChanges,
   getImageOptionForImage,
   getImageOptionLanguageMaps,
   getImageOptionSaveChanges,
@@ -189,11 +191,31 @@ export const OptionQuestionEditMode = ({
   }
 
   /**
+   * Loads an option image to get its size. An image that doesn't load within
+   * IMAGE_LOAD_TIMEOUT counts as not loaded, so a stalled request can't hold
+   * up the saves queued after this one.
+   *
+   * @param {string} imagePath the image path of the option
+   * @returns {Promise<{width: number, height: number}|null>} the size, or null
+   *   when the image didn't load in time
+   */
+  const loadOptionImageSize = async (imagePath) => {
+    let timeout
+    const naturalSize = await Promise.race([
+      loadImageSize((process.env.REACT_APP_SITE_URL || '') + imagePath),
+      new Promise((resolve) => {
+        timeout = setTimeout(() => resolve(null), IMAGE_LOAD_TIMEOUT)
+      }),
+    ])
+    clearTimeout(timeout)
+    return naturalSize
+  }
+
+  /**
    * Returns the settings of the other options for "Apply to all": Each option
    * with an image gets the frame, zoom and corner radius, with the crop
-   * calculated for its own image. An image that doesn't load within
-   * IMAGE_LOAD_TIMEOUT is left out, so a stalled request can't hold up the
-   * saves queued after this one.
+   * calculated for its own image. An image that doesn't load in time is left
+   * out, see loadOptionImageSize().
    *
    * @param {string} code the code of the edited option
    * @param {Object} settings the settings of the edited option
@@ -212,14 +234,7 @@ export const OptionQuestionEditMode = ({
           if (!imagePath || /(<([^>]+)>)/i.test(imagePath)) {
             return
           }
-          let timeout
-          const naturalSize = await Promise.race([
-            loadImageSize((process.env.REACT_APP_SITE_URL || '') + imagePath),
-            new Promise((resolve) => {
-              timeout = setTimeout(() => resolve(null), IMAGE_LOAD_TIMEOUT)
-            }),
-          ])
-          clearTimeout(timeout)
+          const naturalSize = await loadOptionImageSize(imagePath)
           if (naturalSize) {
             otherSettings[child[codeKey]] = {
               imagePath,
@@ -241,13 +256,38 @@ export const OptionQuestionEditMode = ({
   }
 
   /**
+   * Stores image option attribute changes in the latest question and queues
+   * them for the API.
+   *
+   * @param {Object} currentQuestion the latest question
+   * @param {Object} changes the changed values keyed by attribute and language
+   * @returns {void}
+   */
+  const storeImageOptionChanges = (currentQuestion, changes) => {
+    const attributes = applyAttributeChanges(
+      currentQuestion.attributes,
+      changes
+    )
+    // The next queued save may run before the question is rendered again.
+    latestQuestion.current = { ...currentQuestion, attributes }
+    addToBuffer(
+      createBufferOperation(currentQuestion.qid)
+        .questionAttribute()
+        .update(changes)
+    )
+    latestHandleUpdate.current({ attributes })
+  }
+
+  /**
    * Stores the settings from the image editor of an option in the question
    * attributes, with "Apply to all" also for the other options. Nothing is
    * saved when the option was renamed or deleted, or got another image, while
    * the save waited, or when the question was closed meanwhile (see
    * canStillSave()). Other options whose image was replaced or deleted
    * meanwhile keep their settings. The settings are saved for the active
-   * language and for the languages that show the same image.
+   * language and for the languages that show the same image. With "Apply to
+   * all", the frame, zoom and corner radius are also kept for images added
+   * later. Without it, kept ones are removed.
    *
    * @param {string} code the option code
    * @param {string|undefined} editedImagePath the image path of the option
@@ -293,27 +333,135 @@ export const OptionQuestionEditMode = ({
         sameImageLanguages[childCode] = getSameImageLanguages(child)
       }
     })
-    const changes = getImageOptionSaveChanges(currentQuestion.attributes, {
-      code,
-      settings: withImageFileName(settings, editedImagePath),
-      altText,
-      language,
-      codes,
-      otherSettings: validOtherSettings,
-      sameImageLanguages,
+    const hasDefaults = !!getImageOptionDefaults(currentQuestion.attributes)
+    storeImageOptionChanges(currentQuestion, {
+      ...getImageOptionSaveChanges(currentQuestion.attributes, {
+        code,
+        settings: withImageFileName(settings, editedImagePath),
+        altText,
+        language,
+        codes,
+        otherSettings: validOtherSettings,
+        sameImageLanguages,
+      }),
+      ...(applyToAll || hasDefaults
+        ? getImageOptionDefaultsChanges(applyToAll ? settings : null)
+        : {}),
     })
-    const attributes = applyAttributeChanges(
-      currentQuestion.attributes,
-      changes
+  }
+
+  /**
+   * Finds an option in the children of a question, by its appKey (new
+   * options) or its ID, which stay the same when the code changes.
+   *
+   * @param {Object[]} children the answers or subquestions
+   * @param {{appKey: string|undefined, id: number|string}} optionKey the
+   *   appKey and ID of the option
+   * @returns {Object|undefined} the option
+   */
+  const findOption = (children, optionKey) =>
+    children.find((child) =>
+      optionKey.appKey
+        ? child.appKey === optionKey.appKey
+        : child[childrenInfo.idKey] === optionKey.id
     )
-    // The next queued save may run before the question is rendered again.
-    latestQuestion.current = { ...currentQuestion, attributes }
-    addToBuffer(
-      createBufferOperation(currentQuestion.qid)
-        .questionAttribute()
-        .update(changes)
+
+  /**
+   * Gives a new image of an option the frame, zoom and corner radius saved
+   * with "Apply to all", centered and with the crop calculated for the image.
+   * Nothing is saved when the question has no such settings (anymore), when
+   * the image doesn't load in time, when the option was deleted or shows
+   * another image meanwhile, or when its image already got settings.
+   *
+   * @param {{appKey: string|undefined, id: number|string}} optionKey the
+   *   appKey and ID of the option
+   * @param {string} imagePath the new image path
+   * @returns {Promise<void>}
+   */
+  const applyDefaultsToNewImage = async (optionKey, imagePath) => {
+    if (
+      !canStillSave() ||
+      !getImageOptionDefaults(latestQuestion.current.attributes)
+    ) {
+      return
+    }
+    const naturalSize = await loadOptionImageSize(imagePath)
+    if (!naturalSize || !canStillSave()) {
+      return
+    }
+    const currentQuestion = latestQuestion.current
+    const defaults = getImageOptionDefaults(currentQuestion.attributes)
+    const currentChildren = getQuestionChildren(currentQuestion)
+    const child = findOption(currentChildren, optionKey)
+    if (!defaults || !child || getImagePath(child) !== imagePath) {
+      return
+    }
+    const code = child[codeKey]
+    if (
+      getImageOptionSettings(
+        currentQuestion.attributes,
+        code,
+        language,
+        imagePath
+      )
+    ) {
+      return
+    }
+    storeImageOptionChanges(
+      currentQuestion,
+      getImageOptionSaveChanges(currentQuestion.attributes, {
+        code,
+        settings: withImageFileName(
+          applyImageSettings(defaults, naturalSize, null),
+          imagePath
+        ),
+        altText: '',
+        language,
+        codes: currentChildren.map((option) => option[codeKey]),
+        sameImageLanguages: { [code]: getSameImageLanguages(child) },
+      })
     )
-    latestHandleUpdate.current({ attributes })
+  }
+
+  // New images that wait for the settings of "Apply to all". They are queued
+  // once the question shows them, see the effect below.
+  const pendingNewImages = useRef([])
+
+  useEffect(() => {
+    if (!pendingNewImages.current.length) {
+      return
+    }
+    const pending = pendingNewImages.current
+    pendingNewImages.current = []
+    pending.forEach(({ optionKey, imagePath }) => {
+      const save = () => applyDefaultsToNewImage(optionKey, imagePath)
+      imageSaveQueue.current = imageSaveQueue.current.then(save, save)
+    })
+  }, [question])
+
+  /**
+   * Changes the text of an option, in the image select themes its image. A
+   * new image gets the settings of "Apply to all" once the question shows it,
+   * see applyDefaultsToNewImage().
+   *
+   * @param {Object} child the answer or subquestion
+   * @param {number} index position of the option
+   * @param {string} value the new text or image path
+   * @returns {void}
+   */
+  const handleOptionUpdate = (child, index, value) => {
+    if (
+      isImageTheme &&
+      value &&
+      value !== getImagePath(child) &&
+      getImageOptionDefaults(latestQuestion.current.attributes)
+    ) {
+      pendingNewImages.current.push({
+        optionKey: { appKey: child.appKey, id: child[childrenInfo.idKey] },
+        imagePath: value,
+      })
+    }
+    handleChildLUpdate(value, index, _children, childrenInfo.entity)
   }
 
   /**
@@ -343,6 +491,11 @@ export const OptionQuestionEditMode = ({
         : null,
     [isImageTheme, question.attributes, language]
   )
+  // "Apply to all" starts checked while its settings are kept for new images.
+  const hasImageOptionDefaults = useMemo(
+    () => isImageTheme && !!getImageOptionDefaults(question.attributes),
+    [isImageTheme, question.attributes]
+  )
 
   /**
    * Returns the image settings props of an option for ImageChoice. Settings
@@ -365,6 +518,7 @@ export const OptionQuestionEditMode = ({
     return {
       imageSettings: settings,
       imageAltText: altText,
+      imageApplyToAll: hasImageOptionDefaults,
       onImageSettingsSave: isFocused
         ? (imageSettings) => handleImageOptionSave(code, imageSettings)
         : null,
@@ -457,12 +611,7 @@ export const OptionQuestionEditMode = ({
                         l10ns: child.l10ns,
                       })}
                       update={(value) =>
-                        handleChildLUpdate(
-                          value,
-                          index,
-                          _children,
-                          childrenInfo.entity
-                        )
+                        handleOptionUpdate(child, index, value)
                       }
                       key={`uicomponent-${child.appKey || child[childrenInfo.idKey]}-questionmode`}
                       index={index}

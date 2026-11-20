@@ -63,9 +63,16 @@ let setTestIsOpen
  *   of the render whose handleUpdate was called: The real one spreads the
  *   changes over it
  * @param {boolean} isFocused whether the user may edit the question
+ * @param {Function} handleChildLUpdate called when an option text or image
+ *   changes
  * @returns {JSX.Element} the options in edit mode
  */
-const Harness = ({ initialQuestion, handleUpdate, isFocused = true }) => {
+const Harness = ({
+  initialQuestion,
+  handleUpdate,
+  isFocused = true,
+  handleChildLUpdate = jest.fn(),
+}) => {
   const [question, setQuestion] = useState(initialQuestion)
   const [isOpen, setIsOpen] = useState(true)
   setTestQuestion = setQuestion
@@ -78,7 +85,7 @@ const Harness = ({ initialQuestion, handleUpdate, isFocused = true }) => {
     <OptionQuestionEditMode
       question={question}
       handleUpdate={(change) => handleUpdate(change, question)}
-      handleChildLUpdate={jest.fn()}
+      handleChildLUpdate={handleChildLUpdate}
       isFocused={isFocused}
       handleChildAdd={jest.fn()}
       handleOnChildDragEnd={jest.fn()}
@@ -439,4 +446,161 @@ describe('OptionQuestionEditMode image option settings', () => {
     expect(mockImageChoiceProps.A2.imageSettings).toBeNull()
     expect(mockImageChoiceProps.A2.imageAltText).toBe('')
   })
+
+  test('"Apply to all" keeps frame, zoom and radius for new images', async () => {
+    const handleUpdate = jest.fn()
+    const { savePromise } = await startApplyToAllSave(handleUpdate)
+    await finishImageLoads(savePromise)
+
+    const { attributes } = handleUpdate.mock.calls.at(-1)[0]
+    expect(JSON.parse(attributes.image_option_defaults[''])).toEqual({
+      width: 200,
+      height: 100,
+      keepRatio: true,
+      zoom: 1,
+      radius: 0,
+    })
+  })
+
+  test('Saving without "Apply to all" removes the kept settings, and checks the box only while they are kept', async () => {
+    const handleUpdate = jest.fn()
+    await renderWithProviders(
+      <Harness
+        handleUpdate={handleUpdate}
+        initialQuestion={{
+          qid: 1,
+          questionThemeName:
+            getQuestionTypeInfo().SINGLE_CHOICE_IMAGE_SELECT.theme,
+          attributes: { image_option_defaults: { '': defaultsJson } },
+          answers: [getAnswer(1, 'A1')],
+        }}
+      />
+    )
+    expect(mockImageChoiceProps.A1.imageApplyToAll).toBe(true)
+
+    const { savePromise } = await startSave('A1', {
+      ...settings,
+      altText: '',
+      applyToAll: false,
+    })
+    await act(async () => {
+      await savePromise
+    })
+
+    const { attributes } = handleUpdate.mock.calls.at(-1)[0]
+    expect(attributes.image_option_defaults).toEqual({ '': '' })
+    act(() => setTestQuestion((question) => ({ ...question, attributes })))
+    expect(mockImageChoiceProps.A1.imageApplyToAll).toBe(false)
+  })
+
+  test('Saving without "Apply to all" and without kept settings leaves them out', async () => {
+    const handleUpdate = jest.fn()
+    await renderWithProviders(
+      <Harness
+        handleUpdate={handleUpdate}
+        initialQuestion={{
+          qid: 1,
+          questionThemeName:
+            getQuestionTypeInfo().SINGLE_CHOICE_IMAGE_SELECT.theme,
+          attributes: {},
+          answers: [getAnswer(1, 'A1')],
+        }}
+      />
+    )
+    expect(mockImageChoiceProps.A1.imageApplyToAll).toBe(false)
+
+    const { savePromise } = await startSave('A1', { ...settings, altText: '' })
+    await act(async () => {
+      await savePromise
+    })
+
+    const { attributes } = handleUpdate.mock.calls.at(-1)[0]
+    expect(attributes.image_option_defaults).toBeUndefined()
+  })
+
+  test('A new image gets the kept settings of "Apply to all", centered', async () => {
+    const handleUpdate = jest.fn()
+    await renderNewImageUpload(handleUpdate, {
+      image_option_defaults: { '': defaultsJson },
+    })
+
+    expect(handleUpdate).toHaveBeenCalledTimes(1)
+    const { attributes } = handleUpdate.mock.calls[0][0]
+    // A 400×400 image in a 200×100 frame: The middle half of its height.
+    expect(JSON.parse(attributes.image_option_settings.en)).toEqual({
+      A2: {
+        width: 200,
+        height: 100,
+        keepRatio: true,
+        zoom: 1,
+        positionX: 0.5,
+        positionY: 0.5,
+        radius: 8,
+        crop: { x: 0, y: 0.25, width: 1, height: 0.5 },
+        image: 'new.png',
+      },
+    })
+  })
+
+  test('Without kept settings, a new image gets none', async () => {
+    const handleUpdate = jest.fn()
+    await renderNewImageUpload(handleUpdate, {})
+
+    expect(mockImageLoads).toHaveLength(0)
+    expect(handleUpdate).not.toHaveBeenCalled()
+  })
 })
+
+const defaultsJson = JSON.stringify({
+  width: 200,
+  height: 100,
+  keepRatio: true,
+  zoom: 1,
+  radius: 8,
+})
+
+/**
+ * Renders an image select list question with the options A1 and A2 and gives
+ * A2 a new image, as an upload does: The question then shows it. Its image is
+ * loaded, if it is.
+ *
+ * @param {Function} handleUpdate gets the question changes
+ * @param {Object} attributes the question attributes
+ * @returns {Promise<void>}
+ */
+const renderNewImageUpload = async (handleUpdate, attributes) => {
+  const newImage = '/upload/surveys/1/images/new.png'
+  await renderWithProviders(
+    <Harness
+      handleUpdate={handleUpdate}
+      handleChildLUpdate={(value, index) =>
+        setTestQuestion((question) => ({
+          ...question,
+          answers: question.answers.map((answer, answerIndex) =>
+            answerIndex === index
+              ? { ...answer, l10ns: { en: { answer: value } } }
+              : answer
+          ),
+        }))
+      }
+      initialQuestion={{
+        qid: 1,
+        questionThemeName:
+          getQuestionTypeInfo().SINGLE_CHOICE_IMAGE_SELECT.theme,
+        attributes,
+        answers: [getAnswer(1, 'A1'), getAnswer(2, 'A2')],
+      }}
+    />
+  )
+  await act(async () => {
+    mockImageChoiceProps.A2.update(newImage)
+  })
+  await act(async () => {
+    for (let i = 0; i < 5; i++) {
+      mockImageLoads
+        .splice(0)
+        .forEach((resolve) => resolve({ width: 400, height: 400 }))
+      await new Promise((resolve) => setTimeout(resolve, 0))
+    }
+  })
+}

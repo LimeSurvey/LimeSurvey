@@ -9,17 +9,21 @@ class HiddenQuestionAttributeProvider extends QuestionAttributeProvider
 {
     /**
      * Hidden attributes that only exist in some question themes, with whether
-     * they are translated. The new editor sets them per answer option or
-     * subquestion: JSON objects keyed by the option code.
+     * they are translated. The new editor sets them as JSON objects: The image
+     * settings and alt texts per answer option or subquestion, keyed by the
+     * option code, and the image settings that images added later get
+     * (image_option_defaults, one for all languages).
      */
     private const THEME_ATTRIBUTES = [
         'image_select-listradio' => [
             'image_option_settings' => true,
             'image_option_alt' => true,
+            'image_option_defaults' => false,
         ],
         'image_select-multiplechoice' => [
             'image_option_settings' => true,
             'image_option_alt' => true,
+            'image_option_defaults' => false,
         ],
     ];
 

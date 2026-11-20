@@ -21,7 +21,7 @@ class HiddenQuestionAttributeProviderTest extends TestBaseClass
 
     /**
      * The image select themes get the per-option image attributes, both translated: Each language can have its
-     * own image.
+     * own image. The settings for images added later are one for all languages.
      *
      * @return void
      */
@@ -36,6 +36,9 @@ class HiddenQuestionAttributeProviderTest extends TestBaseClass
             $this->assertTrue($definitions['image_option_settings']['i18n']);
             $this->assertSame('image_option_alt', $definitions['image_option_alt']['name']);
             $this->assertTrue($definitions['image_option_alt']['i18n']);
+            $this->assertSame('image_option_defaults', $definitions['image_option_defaults']['name']);
+            $this->assertFalse($definitions['image_option_defaults']['i18n']);
+            $this->assertFalse($definitions['image_option_defaults']['xssfilter']);
         }
     }
 
@@ -72,7 +75,7 @@ class HiddenQuestionAttributeProviderTest extends TestBaseClass
 
     /**
      * Saving a question removes attributes its type doesn't define: The image option attributes
-     * stay for image select themes only.
+     * (including the not translated image_option_defaults) stay for image select themes only.
      *
      * @return void
      */
@@ -84,7 +87,7 @@ class HiddenQuestionAttributeProviderTest extends TestBaseClass
         $this->setImageOptionAttributes($question);
         $attributesService->sanitizeAttributesByType($question);
         $this->assertSame(
-            ['image_option_alt', 'image_option_settings'],
+            ['image_option_alt', 'image_option_defaults', 'image_option_settings'],
             $this->getImageOptionAttributeNames($question)
         );
 
@@ -150,7 +153,7 @@ class HiddenQuestionAttributeProviderTest extends TestBaseClass
     }
 
     /**
-     * Stores both image option attributes for the question.
+     * Stores all image option attributes for the question.
      *
      * @param \Question $question the question
      * @return void
@@ -169,6 +172,12 @@ class HiddenQuestionAttributeProviderTest extends TestBaseClass
             'image_option_alt',
             '{"A1":"Lime"}',
             self::$testSurvey->language
+        );
+        $attribute->setQuestionAttributeWithLanguage(
+            $question->qid,
+            'image_option_defaults',
+            '{"width":200,"height":100}',
+            ''
         );
     }
 

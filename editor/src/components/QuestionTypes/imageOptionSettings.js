@@ -13,6 +13,19 @@ import { getQuestionTypeInfo } from './getQuestionTypeInfo'
 export const IMAGE_OPTION_SETTINGS_ATTRIBUTE = 'image_option_settings'
 // Alt text per option.
 export const IMAGE_OPTION_ALT_ATTRIBUTE = 'image_option_alt'
+// Frame, zoom and corner radius saved with "Apply to all": Images added later
+// get them too. One JSON object for the whole question, not translated: The
+// frame is a design choice for the question.
+export const IMAGE_OPTION_DEFAULTS_ATTRIBUTE = 'image_option_defaults'
+// The settings "Apply to all" gives every image. Position and crop stay per
+// image.
+const IMAGE_OPTION_DEFAULT_KEYS = [
+  'width',
+  'height',
+  'keepRatio',
+  'zoom',
+  'radius',
+]
 
 /**
  * Returns the themes that store per-option image settings.
@@ -462,6 +475,47 @@ export const getImageOptionResetChanges = (attributes, code, language) => {
   )
   return toChangeSet(changes)
 }
+
+/**
+ * Returns the frame, zoom and corner radius saved with "Apply to all", see
+ * IMAGE_OPTION_DEFAULTS_ATTRIBUTE.
+ *
+ * @param {Object} attributes the question attributes
+ * @returns {Object|null} the settings ({width, height, keepRatio, zoom,
+ *   radius}), or null when none are saved or they are invalid
+ */
+export const getImageOptionDefaults = (attributes) => {
+  const value = attributes?.[IMAGE_OPTION_DEFAULTS_ATTRIBUTE]
+  const defaults = parseOptionMap(
+    value && typeof value === 'object' ? value[''] : value
+  )
+  const isNumber = (number) => typeof number === 'number' && isFinite(number)
+  return isNumber(defaults.width) &&
+    isNumber(defaults.height) &&
+    isNumber(defaults.zoom)
+    ? defaults
+    : null
+}
+
+/**
+ * Builds the attribute change that saves or removes the settings for images
+ * added later, see IMAGE_OPTION_DEFAULTS_ATTRIBUTE.
+ *
+ * @param {Object|null} settings the settings of the edited image (see
+ *   ImageEditor's onSave), or null to remove them
+ * @returns {Object} the changed value keyed by attribute and language (none)
+ */
+export const getImageOptionDefaultsChanges = (settings) => ({
+  [IMAGE_OPTION_DEFAULTS_ATTRIBUTE]: {
+    '': settings
+      ? JSON.stringify(
+          Object.fromEntries(
+            IMAGE_OPTION_DEFAULT_KEYS.map((key) => [key, settings[key]])
+          )
+        )
+      : '',
+  },
+})
 
 /**
  * Applies attribute changes to the question attributes, keeping the languages

@@ -188,6 +188,7 @@ const BlurryWarning = ({ text, className = '', ...props }) => (
  * @param {boolean} showAltText whether to show the alt text field
  * @param {boolean} showApplyToAll whether to show "Apply to all images of this
  *   question". onSave then also gets applyToAll.
+ * @param {boolean} applyToAll whether "Apply to all" starts checked
  * @returns {JSX.Element|null} the modal, or null without an image
  */
 export const ImageEditor = ({
@@ -199,6 +200,7 @@ export const ImageEditor = ({
   altText = '',
   showAltText = true,
   showApplyToAll = false,
+  applyToAll: initialApplyToAll = false,
 }) => {
   const editorRef = useRef(null)
   const widthInputRef = useRef(null)
@@ -216,8 +218,8 @@ export const ImageEditor = ({
     getInitialSettings(settings, null)
   )
   const [currentAltText, setCurrentAltText] = useState(altText)
-  // Not saved: Each save with the box checked applies the settings again.
-  const [applyToAll, setApplyToAll] = useState(false)
+  // Each save with the box checked applies the settings again.
+  const [applyToAll, setApplyToAll] = useState(initialApplyToAll)
   // Sliders keep their own state: Remount them when the values are reset.
   const [resetCount, setResetCount] = useState(0)
 
@@ -266,7 +268,7 @@ export const ImageEditor = ({
     if (showModal) {
       setCurrent(getInitialSettings(settings, naturalSize))
       setCurrentAltText(altText)
-      setApplyToAll(false)
+      setApplyToAll(initialApplyToAll)
       setResetCount((count) => count + 1)
     }
   }, [showModal])
