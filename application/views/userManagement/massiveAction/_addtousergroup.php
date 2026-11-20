@@ -9,10 +9,7 @@ $aUsergoups = UserGroup::model()->findAll();
                 <label for="addtousergroup"><?= gT("Select user group to add users to") ?></label>
                 <select class="form-select select post-value" name="addtousergroup" id="addtousergroup" required>
                     <?php foreach ($aUsergoups as $oUsergroup) {
-                        if (
-                            Permission::model()->hasGlobalPermission('usergroups', 'update')
-                            || $oUsergroup->requestEditGroup($oUsergroup->ugid, Yii::app()->session['loginID'])
-                        ) {
+                        if ($oUsergroup->requestEditGroup($oUsergroup->ugid, Yii::app()->session['loginID'])) {
                             echo CHtml::tag('option', ['value' => (int) $oUsergroup->ugid], CHtml::encode($oUsergroup->name));
                         }
                     } ?>
