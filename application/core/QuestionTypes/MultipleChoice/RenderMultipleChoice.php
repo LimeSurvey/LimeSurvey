@@ -91,6 +91,9 @@ class RenderMultipleChoice extends QuestionBaseRenderer
         foreach ($this->aSubQuestions[0] as $oQuestion) {
             $myfname = $this->sSGQA . "_S" . $oQuestion->qid;
             $this->inputnames[] = $myfname;
+            if ($this->isRowStaticallyHidden($myfname)) {
+                continue;
+            }
             ////
             // Insert row
             // Display the answer row

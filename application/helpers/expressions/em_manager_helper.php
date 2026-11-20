@@ -4538,6 +4538,7 @@ class LimeExpressionManager
             }
             $jsVars = $this->em->GetJSVarsUsed();
             $relevanceVars = implode('|', $this->em->GetJSVarsUsed());
+            $varsUsed = $this->em->GetVarsUsed();
             $isExclusiveJS = '';
             $irrelevantAndExclusiveJS = '';
             // Only need to extract JS, since will already have Vars and error counts from main equation
@@ -4561,6 +4562,7 @@ class LimeExpressionManager
                 'numJsVars'                => count($jsVars),
                 'relevancejs'              => $relevanceJS,
                 'relevanceVars'            => $relevanceVars,
+                'varsUsed'                 => $varsUsed,
                 'rowdivid'                 => $rowdivid,
                 'type'                     => $type,
                 'qtype'                    => $qtype,
@@ -7335,6 +7337,42 @@ class LimeExpressionManager
             return $LEM->currentQset[$qid];
         }
         return null;
+    }
+
+    /**
+     * Whether the relevance of a subquestion can not change on the current page:
+     * none of the variables of its relevance equation (array filter, subquestion relevance …) is answered on this page,
+     * so the status computed by the server is final until the next page is loaded.
+     * This is never the case when the whole survey is shown on one page.
+     *
+     * @param int $qid the question id
+     * @param string $rowdivid the row id (field name of the subquestion)
+     * @return boolean
+     */
+    public static function isSubQuestionRelevanceStatic($qid, $rowdivid)
+    {
+        $LEM =& LimeExpressionManager::singleton();
+        if ($LEM->surveyMode == 'survey' || !isset($LEM->subQrelInfo[$qid][$rowdivid])) {
+            return false;
+        }
+        $subQuestionRelevance = $LEM->subQrelInfo[$qid][$rowdivid];
+        if ($subQuestionRelevance['hasErrors']) {
+            return false;
+        }
+        foreach ($subQuestionRelevance['varsUsed'] as $varName) {
+            // Variables not answered in the survey (TOKEN:…, SID …) have no page and can not change
+            if ($LEM->surveyMode == 'question') {
+                $sequence = $LEM->_GetVarAttribute($varName, 'qseq', -1, -1, -1);
+                $onCurrentPage = $sequence !== -1 && (int) $sequence === (int) $LEM->currentQuestionSeq;
+            } else {
+                $sequence = $LEM->_GetVarAttribute($varName, 'gseq', -1, -1, -1);
+                $onCurrentPage = $sequence !== -1 && (int) $sequence === (int) $LEM->currentGroupSeq;
+            }
+            if ($onCurrentPage) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**

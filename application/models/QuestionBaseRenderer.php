@@ -393,6 +393,21 @@ abstract class QuestionBaseRenderer extends StaticModel
         $filterStyle = !empty($this->aQuestionAttributes['array_filter_style']);
         return ($filterStyle) ?  "ls-irrelevant ls-disabled" : "ls-irrelevant ls-hidden";
     }
+
+    /**
+     * Whether a row can be left out of the HTML: It is hidden by its relevance
+     * and nothing answered on the current page can show it again.
+     * Rows that are only disabled (array_filter_style, exclude_all_others) are always rendered.
+     * @param string $myfname The name of the question/row to test
+     * @return boolean
+     */
+    public function isRowStaticallyHidden($myfname)
+    {
+        if ($this->getCurrentRelevecanceClass($myfname) !== 'ls-irrelevant ls-hidden') {
+            return false;
+        }
+        return LimeExpressionManager::isSubQuestionRelevanceStatic($this->oQuestion->qid, $myfname);
+    }
     /**
     * Find the label / input width
     * @param string|int $labelAttributeWidth label width from attribute
