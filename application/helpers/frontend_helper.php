@@ -548,7 +548,7 @@ function sendSubmitNotifications($surveyid, array $emails = [], bool $return = f
                 $responseId = $sRecipient['responseId'];
                 $notificationRecipient = $sRecipient['recipient'];
                 $emailLanguage = $sRecipient['language'];
-                $mailer->addAndReplaceReplacement(['ANSWERTABLE' => getResponseTableReplacement($surveyid, $responseId, $emailLanguage, $bIsHTML)]);
+                // No replacements needed: The stored MIME body and subject are sent as they are
                 $mailer->setTypeWithRaw('admin_notification', $emailLanguage);
                 $mailer->setTo($notificationRecipient);
                 $mailerSuccess = $mailer->resend(json_decode((string) $sRecipient['resendVars'], true));
@@ -596,7 +596,7 @@ function sendSubmitNotifications($surveyid, array $emails = [], bool $return = f
                 $responseId = $sRecipient['responseId'];
                 $responseRecipient = $sRecipient['recipient'];
                 $emailLanguage = $sRecipient['language'];
-                $mailer->addAndReplaceReplacement(['ANSWERTABLE' => getResponseTableReplacement($surveyid, $responseId, $emailLanguage, $bIsHTML)]);
+                // No replacements needed: The stored MIME body and subject are sent as they are
                 $mailer->setTypeWithRaw('admin_responses', $emailLanguage);
                 $mailer->setTo($responseRecipient);
                 $mailerSuccess = $mailer->resend(json_decode((string) $sRecipient['resendVars'], true));
