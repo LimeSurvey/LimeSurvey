@@ -1,6 +1,12 @@
 // General styling of all modals in the editor. Styles of single modals go
 // into their own file.
 
+// The editor font for all texts, inputs and buttons in modals: Bootstrap's
+// body font would be the system font.
+.modal {
+  font-family: $ibm-font-family;
+}
+
 // The header as in the Figma modal: The close button 12px from the top and
 // right edge of the modal, the title 12px lower (11px plus the 1px border of
 // .modal-content).
