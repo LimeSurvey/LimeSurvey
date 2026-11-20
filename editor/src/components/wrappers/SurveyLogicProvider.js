@@ -261,9 +261,12 @@ export const SurveyLogicProvider = ({ children }) => {
       )
       setErrorsFromPatchResponse([...validationErrors, ...exceptionErrors])
 
-      // Refresh responses after survey metadata changes.
+      // Refresh responses and statistics after survey metadata changes.
       queryClient.invalidateQueries({
         queryKey: [STATES.SURVEY_RESPONSES, surveyId],
+      })
+      queryClient.invalidateQueries({
+        queryKey: [STATES.SURVEY_STATISTICS, surveyId],
       })
 
       // Specific errors are already shown as toasts, see SurveyWorkspace
