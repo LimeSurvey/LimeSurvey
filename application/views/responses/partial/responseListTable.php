@@ -3,7 +3,7 @@
  * @var $this AdminController
  * @var $surveyid int
  * @var $dateformatdetails array
- * @var $model SurveyDynamic
+ * @var $model Response
  * @var $bHaveToken bool
  * @var $language string
  * @var $pageSize int
@@ -132,7 +132,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                 'name'   => 'lastpage',
                 'type'   => 'number',
                 'filter' => TbHtml::textField(
-                    'SurveyDynamic[lastpage]',
+                    'Response[lastpage]',
                     $model->lastpage
                 )
             ];
@@ -146,7 +146,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                 'value'  => '$data->completed',
                 'type'   => 'raw',
                 'filter' => TbHtml::dropDownList(
-                    'SurveyDynamic[completed_filter]',
+                    'Response[completed_filter]',
                     $model->completed_filter,
                     ['' => gT('All'), 'Y' => gT('Yes'), 'N' => gT('No')],
                     ['class' => 'form-select']
@@ -174,7 +174,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                     'id'     => 'firstname',
                     'value'  => '$data->firstNameForGrid',
                     'filter' => TbHtml::textField(
-                        'SurveyDynamic[firstname_filter]',
+                        'Response[firstname_filter]',
                         $model->firstname_filter
                     )
                 ];
@@ -188,7 +188,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                     'id'     => 'lastname',
                     'value'  => '$data->lastNameForGrid',
                     'filter' => TbHtml::textField(
-                        'SurveyDynamic[lastname_filter]',
+                        'Response[lastname_filter]',
                         $model->lastname_filter
                     )
                 ];
@@ -201,7 +201,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                     'name'   => 'tokens.email',
                     'id'     => 'email',
                     'filter' => TbHtml::textField(
-                        'SurveyDynamic[email_filter]',
+                        'Response[email_filter]',
                         $model->email_filter
                     )
                 ];
@@ -264,7 +264,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                         'name'              => $column->name,
                         'type'              => 'raw',
                         'filter'            => TbHtml::textField(
-                            'SurveyDynamic[' . $column->name . ']',
+                            'Response[' . $column->name . ']',
                             $model->{$column->name}
                         ),
                         'value'             => $columnValueExpression,

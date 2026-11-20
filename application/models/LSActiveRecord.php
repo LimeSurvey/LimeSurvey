@@ -141,7 +141,7 @@ class LSActiveRecord extends CActiveRecord
      *
      * The value is always queried from the database: a request-level cache keyed by field
      * name would return stale or wrong values for models sharing a field name (e.g.
-     * SurveyDynamic for different surveys) or after new records were inserted.
+     * the responses of different surveys) or after new records were inserted.
      *
      * @param string|null $field The field that contains the Id, when null primary key is used if it is a single field
      * @return false|int|string
@@ -173,7 +173,7 @@ class LSActiveRecord extends CActiveRecord
      *
      * The value is always queried from the database: a request-level cache keyed by field
      * name would return stale or wrong values for models sharing a field name (e.g.
-     * SurveyDynamic for different surveys) or after new records were inserted.
+     * the responses of different surveys) or after new records were inserted.
      *
      * @param string|null $field The field that contains the Id, when null primary key is used if it is a single field
      * @return false|int|string
@@ -305,7 +305,7 @@ class LSActiveRecord extends CActiveRecord
                     }
                 }
             }
-        } elseif ($iSurveyId > 0 && ($sClassName == 'TokenDynamic' || $sClassName == 'Token_' . $iSurveyId || $sClassName == 'Token')) {
+        } elseif ($iSurveyId > 0 && ($sClassName == 'Token_' . $iSurveyId || $sClassName == 'Token')) {
             //core token attributes
             $oSurvey = Survey::model()->findByPk($iSurveyId);
             $aTokenAttributes = $oSurvey->getTokenEncryptionOptions();
@@ -323,7 +323,7 @@ class LSActiveRecord extends CActiveRecord
                     $aAttributes[] = $attribute;
                 }
             }
-        } elseif ($sClassName == 'SurveyDynamic' || $sClassName == 'Response_' . $iSurveyId || $sClassName == 'Survey_' . $iSurveyId) {
+        } elseif ($sClassName == 'Response_' . $iSurveyId || $sClassName == 'Response') {
             // response attributes
             $aAttributes = Response::getEncryptedAttributes($iSurveyId);
         }

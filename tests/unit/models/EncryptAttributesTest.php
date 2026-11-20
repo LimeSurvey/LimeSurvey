@@ -26,7 +26,7 @@ class EncryptAttributesTest extends TestBaseClass
     public function testTokenWithoutValidation()
     {
         // Get our token.
-        $tokens = \TokenDynamic::model(self::$surveyId)->findAll();
+        $tokens = \Token::model(self::$surveyId)->findAll();
         $this->assertNotEmpty($tokens);
         $this->assertCount(1, $tokens);
         $token = $tokens[0];
@@ -37,7 +37,7 @@ class EncryptAttributesTest extends TestBaseClass
         $token->encryptSave(false);
 
         // Load token and decrypt.
-        $tokens = \TokenDynamic::model(self::$surveyId)->findAll();
+        $tokens = \Token::model(self::$surveyId)->findAll();
         $this->assertCount(1, $tokens);
         $token = $tokens[0];
         $token->decrypt();
@@ -45,7 +45,7 @@ class EncryptAttributesTest extends TestBaseClass
         $this->assertEquals('foo@bar.com', $token->email);
 
         // Test the omitting decrypt() works.
-        $tokens = \TokenDynamic::model(self::$surveyId)->findAll();
+        $tokens = \Token::model(self::$surveyId)->findAll();
         $this->assertCount(1, $tokens);
         $token = $tokens[0];
         $this->assertNotEquals('last', $token->lastname);
@@ -58,7 +58,7 @@ class EncryptAttributesTest extends TestBaseClass
     public function testTokenCrypt0()
     {
         // Get our token.
-        $tokens = \TokenDynamic::model(self::$surveyId)->findAll();
+        $tokens = \Token::model(self::$surveyId)->findAll();
         $this->assertNotEmpty($tokens);
         $this->assertCount(1, $tokens);
         $token = $tokens[0];
@@ -69,14 +69,14 @@ class EncryptAttributesTest extends TestBaseClass
         $token->encryptSave(false);
 
         // Load token and decrypt.
-        $tokens = \TokenDynamic::model(self::$surveyId)->findAll();
+        $tokens = \Token::model(self::$surveyId)->findAll();
         $this->assertCount(1, $tokens);
         $token = $tokens[0];
         $token->decrypt();
         $this->assertEquals('0', $token->attribute_1);
 
         // Test the omitting decrypt() works.
-        $tokens = \TokenDynamic::model(self::$surveyId)->findAll();
+        $tokens = \Token::model(self::$surveyId)->findAll();
         $this->assertCount(1, $tokens);
         $token = $tokens[0];
         $this->assertNotEquals('0', $token->attribute_1);
@@ -89,7 +89,7 @@ class EncryptAttributesTest extends TestBaseClass
     public function testTokenCryptEmptyString()
     {
         // Get our token.
-        $tokens = \TokenDynamic::model(self::$surveyId)->findAll();
+        $tokens = \Token::model(self::$surveyId)->findAll();
         $this->assertNotEmpty($tokens);
         $this->assertCount(1, $tokens);
         $token = $tokens[0];
@@ -100,14 +100,14 @@ class EncryptAttributesTest extends TestBaseClass
         $token->encryptSave(false);
 
         // Load token and decrypt.
-        $tokens = \TokenDynamic::model(self::$surveyId)->findAll();
+        $tokens = \Token::model(self::$surveyId)->findAll();
         $this->assertCount(1, $tokens);
         $token = $tokens[0];
         $token->decrypt();
         $this->assertEquals('', $token->attribute_1);
 
         // Test the omitting decrypt works : "" is not cryted
-        $tokens = \TokenDynamic::model(self::$surveyId)->findAll();
+        $tokens = \Token::model(self::$surveyId)->findAll();
         $this->assertCount(1, $tokens);
         $token = $tokens[0];
         /* "" is not encrypted */
@@ -120,7 +120,7 @@ class EncryptAttributesTest extends TestBaseClass
     public function testTokenWithValidation()
     {
         // Get our token.
-        $tokens = \TokenDynamic::model(self::$surveyId)->findAll();
+        $tokens = \Token::model(self::$surveyId)->findAll();
         $this->assertNotEmpty($tokens);
         $this->assertCount(1, $tokens);
         $token = $tokens[0];
@@ -131,7 +131,7 @@ class EncryptAttributesTest extends TestBaseClass
         $token->encryptSave(true);
 
         // Load token and decrypt.
-        $tokens = \TokenDynamic::model(self::$surveyId)->findAll();
+        $tokens = \Token::model(self::$surveyId)->findAll();
         $this->assertCount(1, $tokens);
         $token = $tokens[0];
         $token->decrypt();
@@ -139,7 +139,7 @@ class EncryptAttributesTest extends TestBaseClass
         $this->assertEquals('foo@bar.com', $token->email);
 
         // Test the omitting decrypt() works.
-        $tokens = \TokenDynamic::model(self::$surveyId)->findAll();
+        $tokens = \Token::model(self::$surveyId)->findAll();
         $this->assertCount(1, $tokens);
         $token = $tokens[0];
         $this->assertNotEquals('last', $token->lastname);

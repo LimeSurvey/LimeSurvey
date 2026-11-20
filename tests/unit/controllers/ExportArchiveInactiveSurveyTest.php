@@ -117,7 +117,7 @@ class ExportArchiveInactiveSurveyTest extends TestBaseClass
         try {
             $this->assertFalse($importedSurvey->isActive, 'The survey must stay inactive when the archive contains no responses.');
             $this->assertTrue($importedSurvey->hasTokensTable);
-            $participants = \TokenDynamic::model($importedSurvey->sid)->findAll();
+            $participants = \Token::model($importedSurvey->sid)->findAll();
             $this->assertCount(1, $participants);
             $this->assertSame('participant@example.org', $participants[0]->email);
         } finally {

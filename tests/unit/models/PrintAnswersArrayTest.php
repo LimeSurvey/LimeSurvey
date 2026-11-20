@@ -3,7 +3,7 @@
 namespace ls\tests;
 
 /**
- * Tests for the print-answers data built by SurveyDynamic::getPrintAnswersArray().
+ * Tests for the print-answers data built by Response::getPrintAnswersArray().
  */
 class PrintAnswersArrayTest extends TestBaseClass
 {
@@ -27,7 +27,7 @@ class PrintAnswersArrayTest extends TestBaseClass
         // Cast to int: some PDO drivers (e.g. sqlsrv) return numeric columns as strings, while array keys are ints
         self::$q1Qid = (int) \Question::model()->findByAttributes(['sid' => self::$surveyId, 'title' => 'q1'])->qid;
         self::$nameQid = (int) \Question::model()->findByAttributes(['sid' => self::$surveyId, 'title' => 'name'])->qid;
-        self::$responseId = \SurveyDynamic::model(self::$surveyId)->insertRecords([
+        self::$responseId = \Response::model(self::$surveyId)->insertRecords([
             'startlanguage' => 'en',
             'startdate' => date('Y-m-d H:i:s'),
             'datestamp' => date('Y-m-d H:i:s'),
@@ -58,7 +58,7 @@ class PrintAnswersArrayTest extends TestBaseClass
      */
     public function testHonorConditionsSkipsIrrelevantQuestion(): void
     {
-        $groups = \SurveyDynamic::model(self::$surveyId)->getPrintAnswersArray(self::$responseId, 'en', true);
+        $groups = \Response::model(self::$surveyId)->getPrintAnswersArray(self::$responseId, 'en', true);
 
         $questions = $this->getQuestionIds($groups);
         $this->assertContains(self::$q1Qid, $questions);
@@ -73,7 +73,7 @@ class PrintAnswersArrayTest extends TestBaseClass
      */
     public function testIgnoreConditionsListsAllQuestions(): void
     {
-        $groups = \SurveyDynamic::model(self::$surveyId)->getPrintAnswersArray(self::$responseId, 'en', false);
+        $groups = \Response::model(self::$surveyId)->getPrintAnswersArray(self::$responseId, 'en', false);
 
         $questions = $this->getQuestionIds($groups);
         $this->assertContains(self::$q1Qid, $questions);

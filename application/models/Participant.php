@@ -1864,7 +1864,7 @@ class Participant extends LSActiveRecord
         $blacklistSkipped = 0;
 
         $oParticipants = Participant::model()->findAllByPk($participantIds);
-        $oTokens = TokenDynamic::model($surveyId)->findAll();
+        $oTokens = Token::model($surveyId)->findAll();
 
         foreach ($oParticipants as $oParticipant) {
             if (
@@ -2223,24 +2223,24 @@ class Participant extends LSActiveRecord
         foreach ($tokenids as $tid) {
             if (is_numeric($tid) && $tid != "") {
                 /* Get the data for this participant from the tokens table */
-                $oTokenDynamic = TokenDynamic::model($survey->sid)->findByPk($tid);
-                if (isset($oTokenDynamic) && $oTokenDynamic) {
-                    $oTokenDynamic->decrypt();
+                $token = Token::model($survey->sid)->findByPk($tid);
+                if (isset($token) && $token) {
+                    $token->decrypt();
                 }
 
                 // First check if token already has a participant_id in central database
                 $existing = null;
-                if (!empty($oTokenDynamic->participant_id)) {
+                if (!empty($token->participant_id)) {
                     $existing = Participant::model()->findByPk(
-                        $oTokenDynamic->participant_id
+                        $token->participant_id
                     );
                 }
 
                 if (
                     $existing == null
-                    && (!empty($oTokenDynamic->firstname)
-                        || !empty($oTokenDynamic->lastname)
-                        || !empty($oTokenDynamic->email))
+                    && (!empty($token->firstname)
+                        || !empty($token->lastname)
+                        || !empty($token->email))
                 ) {
                     // Determine encryption state of each CPDB core attribute
                     $cpdbCoreAttributes = ParticipantAttributeName::model(
@@ -2256,14 +2256,14 @@ class Participant extends LSActiveRecord
 
                     // Build comparison values: re-encrypt if the CPDB column is encrypted
                     $compareFirstname = !empty($cpdbEncrypted['firstname']) ? LSActiveRecord::encryptSingle(
-                        $oTokenDynamic->firstname
-                    ) : $oTokenDynamic->firstname;
+                        $token->firstname
+                    ) : $token->firstname;
                     $compareLastname = !empty($cpdbEncrypted['lastname']) ? LSActiveRecord::encryptSingle(
-                        $oTokenDynamic->lastname
-                    ) : $oTokenDynamic->lastname;
+                        $token->lastname
+                    ) : $token->lastname;
                     $compareEmail = !empty($cpdbEncrypted['email']) ? LSActiveRecord::encryptSingle(
-                        $oTokenDynamic->email
-                    ) : $oTokenDynamic->email;
+                        $token->email
+                    ) : $token->email;
 
                     $participantCriteria = new CDbCriteria();
                     $participantCriteria->addCondition(
@@ -2297,8 +2297,8 @@ class Participant extends LSActiveRecord
                     }
                 } /* If there isn't an existing entry, create one! */ else {
                     /* Create entry in participant list */
-                    $black = !empty($oTokenDynamic->blacklisted) ? $oTokenDynamic->blacklisted : 'N';
-                    $pid = $oTokenDynamic->participant_id;
+                    $black = !empty($token->blacklisted) ? $token->blacklisted : 'N';
+                    $pid = $token->participant_id;
                     // Participant IDs must be UUIDs, another ID of the survey participant is replaced
                     if (!self::isValidParticipantId($pid)) {
                         if (!empty($pid)) {
@@ -2309,10 +2309,10 @@ class Participant extends LSActiveRecord
 
                     $writearray = [
                         'participant_id' => $pid,
-                        'firstname'      => $oTokenDynamic->firstname,
-                        'lastname'       => $oTokenDynamic->lastname,
-                        'email'          => $oTokenDynamic->email,
-                        'language'       => $oTokenDynamic->language,
+                        'firstname'      => $token->firstname,
+                        'lastname'       => $token->lastname,
+                        'email'          => $token->email,
+                        'language'       => $token->language,
                         'blacklisted'    => $black,
                         'owner_uid'      => Yii::app()->session['loginID'],
                         'created_by'     => Yii::app()->session['loginID'],
@@ -2323,9 +2323,9 @@ class Participant extends LSActiveRecord
                     $oParticipant->encryptSave(false);
 
                     //Update survey participant list and insert the new UUID
-                    $oTokenDynamic->participant_id = $pid;
+                    $token->participant_id = $pid;
                     /* No rules for participant_id, no need to validate */
-                    $oTokenDynamic->encryptSave(false, ['participant_id']);
+                    $token->encryptSave(false, ['participant_id']);
 
                     /* Now add any new attribute values */
                     if (!empty($aAttributesToBeCreated)) {

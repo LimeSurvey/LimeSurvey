@@ -75,7 +75,7 @@ class SessionStartedBeforeActivationTest extends TestBaseClassWeb
             WebDriverExpectedCondition::presenceOfElementLocated(WebDriverBy::className('completed-text'))
         );
 
-        $responses = \SurveyDynamic::model(self::$surveyId)->findAllByAttributes(['token' => self::TOKEN]);
+        $responses = \Response::model(self::$surveyId)->findAllByAttributes(['token' => self::TOKEN]);
         $this->assertCount(1, $responses, 'The response was not saved');
         $this->assertNotEmpty($responses[0]->submitdate, 'The response was not submitted');
     }

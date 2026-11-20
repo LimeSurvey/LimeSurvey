@@ -11,7 +11,6 @@ use Yii;
 use CHtml;
 use LimeExpressionManager;
 use Survey;
-use SurveyDynamic;
 use CDbCriteria;
 use Permission;
 use LimeSurvey\Models\Services\SurveySessionState;
@@ -59,7 +58,7 @@ class countFunctions
             $oCriteria->compare("id", "<>" . $srid);
         }
         $oCriteria->compare($sComparedColumn, $comparison);
-        return intval(SurveyDynamic::model($surveyId)->count($oCriteria));
+        return intval(\Response::model($surveyId)->count($oCriteria));
     }
 
     /**
@@ -96,7 +95,7 @@ class countFunctions
         if (!$self && $srid !== null) {
             $oCriteria->compare("id", "<>" . $srid);
         }
-        return intval(SurveyDynamic::model($surveyId)->count($oCriteria));
+        return intval(\Response::model($surveyId)->count($oCriteria));
     }
 
     /**

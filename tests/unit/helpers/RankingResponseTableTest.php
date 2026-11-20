@@ -28,7 +28,7 @@ class RankingResponseTableTest extends TestBaseClass
     {
         $question = \Question::model()->findByAttributes(['sid' => self::$surveyId, 'parent_qid' => 0, 'type' => \Question::QT_R_RANKING]);
         $rankingColumn = 'Q' . $question->qid;
-        $responseId = \SurveyDynamic::model(self::$surveyId)->insertRecords([
+        $responseId = \Response::model(self::$surveyId)->insertRecords([
             'startlanguage' => 'fr',
             $rankingColumn => json_encode(['SQ002', 'SQ001']),
         ]);
@@ -54,13 +54,13 @@ class RankingResponseTableTest extends TestBaseClass
     public function testQuestionArrayWithRankingQuestion(): void
     {
         $question = \Question::model()->findByAttributes(['sid' => self::$surveyId, 'parent_qid' => 0, 'type' => \Question::QT_R_RANKING]);
-        $responseId = \SurveyDynamic::model(self::$surveyId)->insertRecords([
+        $responseId = \Response::model(self::$surveyId)->insertRecords([
             'startlanguage' => 'fr',
             'Q' . $question->qid => json_encode(['SQ002', 'SQ001']),
         ]);
-        $response = \SurveyDynamic::model(self::$surveyId)->findByPk($responseId);
+        $response = \Response::model(self::$surveyId)->findByPk($responseId);
 
-        $questionArray = \SurveyDynamic::model(self::$surveyId)->getQuestionArray($question, $response, true, false, false, 'fr');
+        $questionArray = \Response::model(self::$surveyId)->getQuestionArray($question, $response, true, false, false, 'fr');
 
         $this->assertSame(
             [
@@ -80,13 +80,13 @@ class RankingResponseTableTest extends TestBaseClass
     public function testQuestionArrayWithMalformedRankingValue(): void
     {
         $question = \Question::model()->findByAttributes(['sid' => self::$surveyId, 'parent_qid' => 0, 'type' => \Question::QT_R_RANKING]);
-        $responseId = \SurveyDynamic::model(self::$surveyId)->insertRecords([
+        $responseId = \Response::model(self::$surveyId)->insertRecords([
             'startlanguage' => 'fr',
             'Q' . $question->qid => json_encode(['SQ001', ['nested'], '', null, 'SQ999']),
         ]);
-        $response = \SurveyDynamic::model(self::$surveyId)->findByPk($responseId);
+        $response = \Response::model(self::$surveyId)->findByPk($responseId);
 
-        $questionArray = \SurveyDynamic::model(self::$surveyId)->getQuestionArray($question, $response, true, false, false, 'fr');
+        $questionArray = \Response::model(self::$surveyId)->getQuestionArray($question, $response, true, false, false, 'fr');
 
         $this->assertSame(
             [

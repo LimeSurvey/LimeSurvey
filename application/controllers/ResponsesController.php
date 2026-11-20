@@ -79,7 +79,7 @@ class ResponsesController extends LSBaseController
             $this->redirect(['surveyAdministration/view', 'surveyid' => $surveyId]);
         }
         // Get Response ID from token
-        $oResponse = SurveyDynamic::model($surveyId)->findByAttributes(['token' => $token]);
+        $oResponse = Response::model($surveyId)->findByAttributes(['token' => $token]);
         if (!$oResponse) {
             App()->user->setFlash('error', gT("Sorry, this response was not found."));
             $this->redirect(["responses/browse/surveyId/{$surveyId}"]);
@@ -165,12 +165,12 @@ class ResponsesController extends LSBaseController
 
         // Unless the response id is 0, getData() throws an exception if the response does not exist.
         // We just check it again here to be sure.
-        $exist = SurveyDynamic::model($surveyId)->exist($id);
+        $exist = Response::model($surveyId)->exist($id);
         if (!$exist) {
             throw new CHttpException(404, gT("Invalid response ID"));
         }
-        $next = SurveyDynamic::model($surveyId)->next($id, true);
-        $previous = SurveyDynamic::model($surveyId)->previous($id, true);
+        $next = Response::model($surveyId)->next($id, true);
+        $previous = Response::model($surveyId)->previous($id, true);
         $aData['exist'] = $exist;
         $aData['next'] = $next;
         $aData['previous'] = $previous;
@@ -178,7 +178,7 @@ class ResponsesController extends LSBaseController
 
         $fieldmap = createFieldMap($survey, 'full', false, false, $aData['language']);
         // just used to check if the token exists for the given response id before we create the real query
-        $response = SurveyDynamic::model($surveyId)->find('id=:id', [':id' => $id]);
+        $response = Response::model($surveyId)->find('id=:id', [':id' => $id]);
         // Boolean : show (or not) the token
         $bHaveToken = $survey->anonymized == "N"
             && tableExists('tokens_' . $surveyId)
@@ -191,10 +191,10 @@ class ResponsesController extends LSBaseController
 
         $oCriteria = new CDbCriteria();
         if ($bHaveToken) {
-            $oCriteria = SurveyDynamic::model($surveyId)->addTokenCriteria($oCriteria);
+            $oCriteria = Response::model($surveyId)->addTokenCriteria($oCriteria);
         }
         $oCriteria->addCondition("id = {$id}");
-        $iIdresult = SurveyDynamic::model($surveyId)->find($oCriteria);
+        $iIdresult = Response::model($surveyId)->find($oCriteria);
         if ($bHaveToken) {
             $aResult = array_merge(
                 $iIdresult->tokens->decrypt()->attributes,
@@ -488,7 +488,7 @@ class ResponsesController extends LSBaseController
 
             // Basic variables
             $bHaveToken = $survey->anonymized == "N" && tableExists('tokens_' . $surveyId) && Permission::model()->hasSurveyPermission($surveyId, 'tokens', 'read'); // Boolean : show (or not) the token
-            $model = SurveyDynamic::model($surveyId);
+            $model = Response::model($surveyId);
             $model->bEncryption = true;
 
             // Reset filters from stats
@@ -511,8 +511,8 @@ class ResponsesController extends LSBaseController
             // So we pass over the safe validation and directly set attributes (second parameter of setAttributes to false).
             // see: http://www.yiiframework.com/wiki/161/understanding-safe-validation-rules/
             // see: http://www.yiiframework.com/doc/api/1.1/CModel#setAttributes-detail
-            if (App()->request->getParam('SurveyDynamic')) {
-                $model->setAttributes(App()->request->getParam('SurveyDynamic'), false);
+            if (App()->request->getParam('Response')) {
+                $model->setAttributes(App()->request->getParam('Response'), false);
             }
 
             // Virtual attributes filters
@@ -521,7 +521,7 @@ class ResponsesController extends LSBaseController
             // @see: http://www.yiiframework.com/wiki/281/searching-and-sorting-by-related-model-in-cgridview/
             $aVirtualFilters = ['completed_filter', 'firstname_filter', 'lastname_filter', 'email_filter'];
             foreach ($aVirtualFilters as $sFilterName) {
-                $aParam = App()->request->getParam('SurveyDynamic');
+                $aParam = App()->request->getParam('Response');
                 if (!empty($aParam[$sFilterName])) {
                     $model->$sFilterName = $aParam[$sFilterName];
                 }
@@ -550,8 +550,8 @@ class ResponsesController extends LSBaseController
                 true
             );
             // below codes are copied from above actionIndex method for summary page data
-            $aData['num_total_answers'] = SurveyDynamic::model($surveyId)->count();
-            $aData['num_completed_answers'] = SurveyDynamic::model($surveyId)->count('submitdate IS NOT NULL');
+            $aData['num_total_answers'] = Response::model($surveyId)->count();
+            $aData['num_completed_answers'] = Response::model($surveyId)->count('submitdate IS NOT NULL');
             // =============================================================================
 
             // these codes are copied from 'applicatioin\controllers\admin' for "saved but not submitted" table data
@@ -677,7 +677,7 @@ class ResponsesController extends LSBaseController
             foreach (array_chunk($aResponseId, 1000) as $chunk) {
                 $deleted = Response::model($surveyId)->deleteByPk($chunk);
                 if ($saveTimings) {
-                    SurveyTimingDynamic::model($surveyId)->deleteByPk($chunk);
+                    Timing::model($surveyId)->deleteByPk($chunk);
                 }
                 $errors += count($chunk) - $deleted;
             }
@@ -841,7 +841,7 @@ class ResponsesController extends LSBaseController
                 // No response id : get all survey files
                 $oCriteria = new CDbCriteria();
                 $oCriteria->select = "id";
-                $oSurvey = SurveyDynamic::model($surveyId);
+                $oSurvey = Response::model($surveyId);
                 $aResponseId = $oSurvey->getCommandBuilder()
                     ->createFindCommand($oSurvey->tableSchema, $oCriteria)
                     ->queryColumn();
@@ -1013,12 +1013,12 @@ class ResponsesController extends LSBaseController
         }
 
         //interview Time statistics
-        $aData['model'] = SurveyTimingDynamic::model($surveyId);
+        $aData['model'] = Timing::model($surveyId);
 
         $aData['pageSize'] = App()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
-        $aData['statistics'] = SurveyTimingDynamic::model($surveyId)->statistics();
-        $aData['num_total_answers'] = SurveyDynamic::model($surveyId)->count();
-        $aData['num_completed_answers'] = SurveyDynamic::model($surveyId)->count('submitdate IS NOT NULL');
+        $aData['statistics'] = Timing::model($surveyId)->statistics();
+        $aData['num_total_answers'] = Response::model($surveyId)->count();
+        $aData['num_completed_answers'] = Response::model($surveyId)->count('submitdate IS NOT NULL');
 
         //$aData['topBar']['name'] = 'baseTopbar_view';
         //$aData['topBar']['leftSideView'] = 'responsesTopbarLeft_view';
@@ -1154,7 +1154,7 @@ class ResponsesController extends LSBaseController
         $aData['surveyId'] = $aData['surveyid'] = $aData['iSurveyId'] = $surveyId;
         if (!empty($responseId)) {
             /* Check if exists  */
-            if (empty(SurveyDynamic::model($surveyId)->findByPk($responseId))) {
+            if (empty(Response::model($surveyId)->findByPk($responseId))) {
                 throw new CHttpException(404, gT("Invalid response ID"));
             }
             $aData['iId'] = $responseId;
@@ -1226,7 +1226,7 @@ class ResponsesController extends LSBaseController
     private function getSelectAllResponseIds(int $surveyId, bool $applyCap = true): array
     {
         $excludedIds = json_decode((string) App()->request->getPost('excludedItems', '[]'), true);
-        return SurveyDynamic::getIdsByGridFilter(
+        return Response::getIdsByGridFilter(
             $surveyId,
             (string) App()->request->getPost('filterQuery', ''),
             is_array($excludedIds) ? $excludedIds : [],

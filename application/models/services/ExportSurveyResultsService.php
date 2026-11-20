@@ -14,7 +14,6 @@ use LimeSurvey\Models\Services\Export\HtmlExportWriter;
 use LimeSurvey\Models\Services\SurveyAnswerCache;
 use RuntimeException;
 use Survey;
-use SurveyDynamic;
 use Yii;
 
 /**
@@ -330,7 +329,7 @@ class ExportSurveyResultsService
 
         $filterCriteria = $this->buildFilterCriteria();
         $totalCount = $this->getTotalResponseCount($surveyId, $filterCriteria);
-        $model = SurveyDynamic::model($surveyId);
+        $model = \Response::model($surveyId);
 
         for ($offset = 0; $offset < $totalCount; $offset += $this->chunkSize) {
             $chunk = $this->fetchResponseChunkDirect($model, $offset, $this->chunkSize, $filterCriteria);
@@ -443,7 +442,7 @@ class ExportSurveyResultsService
      */
     protected function getTotalResponseCount($surveyId, $filterCriteria = null)
     {
-        $model = SurveyDynamic::model($surveyId);
+        $model = \Response::model($surveyId);
         try {
             return (int) $model->count($filterCriteria);
         } catch (CDbException $e) {
@@ -455,11 +454,11 @@ class ExportSurveyResultsService
     /**
      * Fetch a chunk of responses directly using CDbCriteria.
      *
-     * @param SurveyDynamic $model
+     * @param \Response $model
      * @param int $offset
      * @param int $limit
      * @param \CDbCriteria|null $filterCriteria
-     * @return SurveyDynamic[]
+     * @return \Response[]
      * @throws RuntimeException
      */
     protected function fetchResponseChunkDirect($model, $offset, $limit, $filterCriteria = null)
@@ -482,10 +481,10 @@ class ExportSurveyResultsService
     }
 
     /**
-     * Process a chunk of SurveyDynamic responses through the transformer,
+     * Process a chunk of responses through the transformer,
      * override dates with raw values, format answers, and merge timing data.
      *
-     * @param array $chunk Array of SurveyDynamic objects
+     * @param array $chunk Array of \Response objects
      * @param array $surveyQuestions The survey questions field map
      * @param array $timingsData Timing data indexed by response ID
      * @param array $timingFieldKeys Array of timing field keys
@@ -504,7 +503,7 @@ class ExportSurveyResultsService
         );
 
         foreach ($transformedResponses as $index => &$response) {
-            if (isset($chunk[$index]) && $chunk[$index] instanceof SurveyDynamic) {
+            if (isset($chunk[$index]) && $chunk[$index] instanceof \Response) {
                 $this->overrideDateFields($response, $chunk[$index]->attributes);
             }
 
@@ -535,7 +534,7 @@ class ExportSurveyResultsService
      * Decrypts the encrypted response columns of a chunk of responses in place,
      * so encrypted answers are exported as plain values.
      *
-     * @param SurveyDynamic[] $chunk
+     * @param \Response[] $chunk
      * @return void
      */
     private function decryptResponses(array $chunk)
@@ -645,17 +644,17 @@ class ExportSurveyResultsService
     }
 
     /**
-     * Fetch timing data for a chunk of SurveyDynamic response objects.
+     * Fetch timing data for a chunk of response objects.
      *
      * @param int $surveyId
-     * @param array $chunk Array of SurveyDynamic objects
+     * @param array $chunk Array of \Response objects
      * @return array Timing rows indexed by response ID
      */
     protected function fetchTimingsForChunk($surveyId, array $chunk)
     {
         $ids = [];
         foreach ($chunk as $response) {
-            if ($response instanceof SurveyDynamic) {
+            if ($response instanceof \Response) {
                 $ids[] = $response->id;
             }
         }

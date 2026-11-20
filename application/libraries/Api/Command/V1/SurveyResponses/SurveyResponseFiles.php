@@ -4,7 +4,6 @@ namespace LimeSurvey\Libraries\Api\Command\V1\SurveyResponses;
 
 use LSActiveRecord;
 use LSDbCriteria;
-use SurveyDynamic;
 
 /**
  * Lists the uploaded files of one file upload column as one row per file.
@@ -16,7 +15,7 @@ use SurveyDynamic;
 class SurveyResponseFiles
 {
     /**
-     * @param SurveyDynamic $model
+     * @param \Response $model
      * @param LSDbCriteria $criteria Response filters and order; select is replaced
      * @param string $column File upload JSON column
      * @param bool $encrypted
@@ -26,7 +25,7 @@ class SurveyResponseFiles
      * @return array{files: array, totalItems: int}
      */
     public function list(
-        SurveyDynamic $model,
+        \Response $model,
         LSDbCriteria $criteria,
         string $column,
         bool $encrypted,

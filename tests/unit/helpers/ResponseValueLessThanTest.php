@@ -138,23 +138,23 @@ class ResponseValueLessThanTest extends TestBaseClass
      * Inserts a response.
      *
      * @param array $data Column values
-     * @return \SurveyDynamic
+     * @return \Response
      */
-    private function insertResponse(array $data): \SurveyDynamic
+    private function insertResponse(array $data): \Response
     {
-        \SurveyDynamic::model(self::$surveyId)->deleteAll();
-        $responseId = \SurveyDynamic::model(self::$surveyId)->insertRecords(array_merge(['startlanguage' => 'en'], $data));
-        return \SurveyDynamic::model(self::$surveyId)->findByPk($responseId);
+        \Response::model(self::$surveyId)->deleteAll();
+        $responseId = \Response::model(self::$surveyId)->insertRecords(array_merge(['startlanguage' => 'en'], $data));
+        return \Response::model(self::$surveyId)->findByPk($responseId);
     }
 
     /**
      * Returns the value of a column as shown in the response list.
      *
-     * @param \SurveyDynamic $response
+     * @param \Response $response
      * @param array $field The fieldmap entry of the column
      * @return string
      */
-    private function getExtendedData(\SurveyDynamic $response, array $field): string
+    private function getExtendedData(\Response $response, array $field): string
     {
         return $response->getExtendedData($field['fieldname'], 'en', base64_encode(json_encode($field)));
     }

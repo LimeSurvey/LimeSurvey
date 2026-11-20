@@ -319,8 +319,8 @@ class SurveyResponsesExport implements CommandInterface
 
         $options = new \FormattingOptions();
         $options->selectedColumns = array_keys($fieldMap);
-        $options->responseMinRecord = \SurveyDynamic::model($surveyId)->getMinId();
-        $options->responseMaxRecord = \SurveyDynamic::model($surveyId)->getMaxId();
+        $options->responseMinRecord = \Response::model($surveyId)->getMinId();
+        $options->responseMaxRecord = \Response::model($surveyId)->getMaxId();
         $options->responseCompletionState = 'all';
         $options->headingFormat = 'full';
         $options->answerFormat = $answerFormat ?: 'long';
@@ -388,7 +388,7 @@ class SurveyResponsesExport implements CommandInterface
         }
         $this->exportSurvey->validateFilters(
             $filters,
-            \SurveyDynamic::model($this->surveyModel->sid)->getTableSchema()->getColumnNames()
+            \Response::model($this->surveyModel->sid)->getTableSchema()->getColumnNames()
         );
 
         return [$type, $language, $answerFormat, $csvSeparator, $filters];

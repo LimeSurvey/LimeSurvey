@@ -35,9 +35,9 @@ class LSActiveRecordMaxMinIdTest extends TestBaseClass
         (new \SurveyActivator(self::$testSurvey))->activate();
 
         for ($i = 0; $i < 3; $i++) {
-            self::$firstSurveyResponseIds[] = (int) \SurveyDynamic::model(self::$surveyId)->insertRecords(['startlanguage' => 'en']);
+            self::$firstSurveyResponseIds[] = (int) \Response::model(self::$surveyId)->insertRecords(['startlanguage' => 'en']);
         }
-        self::$secondSurveyResponseIds[] = (int) \SurveyDynamic::model(self::$secondSurvey->sid)->insertRecords(['startlanguage' => 'en']);
+        self::$secondSurveyResponseIds[] = (int) \Response::model(self::$secondSurvey->sid)->insertRecords(['startlanguage' => 'en']);
     }
 
     /**
@@ -66,11 +66,11 @@ class LSActiveRecordMaxMinIdTest extends TestBaseClass
     {
         $this->assertSame(
             max(self::$firstSurveyResponseIds),
-            (int) \SurveyDynamic::model(self::$surveyId)->getMaxId()
+            (int) \Response::model(self::$surveyId)->getMaxId()
         );
         $this->assertSame(
             max(self::$secondSurveyResponseIds),
-            (int) \SurveyDynamic::model(self::$secondSurvey->sid)->getMaxId()
+            (int) \Response::model(self::$secondSurvey->sid)->getMaxId()
         );
     }
 
@@ -82,14 +82,14 @@ class LSActiveRecordMaxMinIdTest extends TestBaseClass
      */
     public function testGetMinIdForDifferentSurveysInSameRequest()
     {
-        \SurveyDynamic::model(self::$surveyId)->deleteByPk(min(self::$firstSurveyResponseIds));
+        \Response::model(self::$surveyId)->deleteByPk(min(self::$firstSurveyResponseIds));
         $this->assertSame(
             min(self::$firstSurveyResponseIds) + 1,
-            (int) \SurveyDynamic::model(self::$surveyId)->getMinId()
+            (int) \Response::model(self::$surveyId)->getMinId()
         );
         $this->assertSame(
             min(self::$secondSurveyResponseIds),
-            (int) \SurveyDynamic::model(self::$secondSurvey->sid)->getMinId()
+            (int) \Response::model(self::$secondSurvey->sid)->getMinId()
         );
     }
 
@@ -100,11 +100,11 @@ class LSActiveRecordMaxMinIdTest extends TestBaseClass
      */
     public function testGetMaxIdAfterInsert()
     {
-        $model = \SurveyDynamic::model(self::$secondSurvey->sid);
+        $model = \Response::model(self::$secondSurvey->sid);
         $before = (int) $model->getMaxId();
         $newId = (int) $model->insertRecords(['startlanguage' => 'en']);
 
         $this->assertGreaterThan($before, $newId);
-        $this->assertSame($newId, (int) \SurveyDynamic::model(self::$secondSurvey->sid)->getMaxId());
+        $this->assertSame($newId, (int) \Response::model(self::$secondSurvey->sid)->getMaxId());
     }
 }

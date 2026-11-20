@@ -15,7 +15,7 @@ use InvalidArgumentException;
 class ParticipantResolver
 {
     /**
-     * The relation on SurveyDynamic that links a response to its participant.
+     * The relation on the Response model that links a response to its participant.
      * Also the alias its table gets in the query.
      */
     public const RELATION = 'tokens';
@@ -80,7 +80,7 @@ class ParticipantResolver
         foreach ($table->columns as $name => $column) {
             $kinds[$name] = self::kindOf($column);
         }
-        foreach ($survey->getAllEncryptedAttributes($survey->sid, 'TokenDynamic') as $name) {
+        foreach ($survey->getAllEncryptedAttributes($survey->sid, 'Token') as $name) {
             $kinds[$name] = self::KIND_ENCRYPTED;
         }
 

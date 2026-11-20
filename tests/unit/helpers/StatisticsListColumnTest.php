@@ -54,7 +54,7 @@ class StatisticsListColumnTest extends TestBaseClass
     public function testListColumnAcceptsResponseTableColumn()
     {
         $column = null;
-        foreach (\SurveyDynamic::model(self::$surveyId)->getTableSchema()->columns as $name => $columnSchema) {
+        foreach (\Response::model(self::$surveyId)->getTableSchema()->columns as $name => $columnSchema) {
             if (preg_match('/^Q\d/', (string) $name) && preg_match('/char|text/i', (string) $columnSchema->dbType)) {
                 $column = (string) $name;
                 break;

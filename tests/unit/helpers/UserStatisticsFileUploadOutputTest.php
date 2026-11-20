@@ -103,14 +103,14 @@ class UserStatisticsFileUploadOutputTest extends TestBaseClass
 
         $dateStamp = date('Y-m-d H:i:s');
         $files = [['name' => 'a.txt', 'size' => '100'], ['name' => 'b.txt', 'size' => '200']];
-        \SurveyDynamic::model(self::$surveyId)->insertRecords([
+        \Response::model(self::$surveyId)->insertRecords([
             'startlanguage' => self::$testSurvey->language,
             'startdate' => $dateStamp,
             'datestamp' => $dateStamp,
             $fieldname => json_encode($files),
             $fieldname . '_Cfilecount' => 2,
         ]);
-        \SurveyDynamic::model(self::$surveyId)->insertRecords([
+        \Response::model(self::$surveyId)->insertRecords([
             'startlanguage' => self::$testSurvey->language,
             'startdate' => $dateStamp,
             'datestamp' => $dateStamp,

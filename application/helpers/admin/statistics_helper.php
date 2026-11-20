@@ -23,7 +23,7 @@ Yii::import('application.helpers.statisticschart_helper', true);
 */
 function getQuestionMapData($sField, $qsid)
 {
-    $aresult = SurveyDynamic::model($qsid)->findAll();
+    $aresult = Response::model($qsid)->findAll();
 
     $d = array();
 
@@ -71,7 +71,7 @@ function buildSelects($allfields, $surveyid, $language)
         $postvars[] = $key;
     }
 
-    $responseModel = SurveyDynamic::model($surveyid);
+    $responseModel = Response::model($surveyid);
 
     // Security (bug #20648): the response table columns are the only identifiers
     // that may be used in the filter query. Every POST key is validated against
@@ -418,7 +418,7 @@ class statistics_helper
             ));
             // Security (mantis #20744): $rt comes from the request, so only keep columns that
             // exist in this survey's response table before they are used in any query.
-            $validColumns = SurveyDynamic::model($surveyid)->getTableSchema()->getColumnNames();
+            $validColumns = Response::model($surveyid)->getTableSchema()->getColumnNames();
             foreach ($rows as $row) {
                 $mfield = substr($rt, 1) . "_S" . $row['qid'];
                 if (!in_array($mfield, $validColumns, true)) {
@@ -1369,7 +1369,7 @@ class statistics_helper
      * Multiple choice Other is selected when it has text, or when its stored tick is set
      *
      * @param integer $surveyid
-     * @param SurveyDynamic $responseModel
+     * @param Response $responseModel
      * @param string $otherColumn the Other text column, Q{qid}_Cother
      * @return string condition to add after the "has text" condition, empty when the response table has no tick column
      */
@@ -1462,7 +1462,7 @@ class statistics_helper
         //loop though the array which contains all answer data
         $ColumnName_RM = array();
 
-        $responseModel = SurveyDynamic::model($surveyid);
+        $responseModel = Response::model($surveyid);
 
         //ranking questions store the whole ranking as a JSON array in a single column;
         //tally the per-rank counts once
@@ -2218,7 +2218,7 @@ class statistics_helper
         $tableXLS  = array();
         $tablePDF2 = array();
 
-        $responseModel = SurveyDynamic::model($surveyid);
+        $responseModel = Response::model($surveyid);
 
         $bRanking = (substr((string) $rt, 0, 1) == "R");
         $rankingCounts = array();
@@ -2744,7 +2744,7 @@ class statistics_helper
                 } elseif (incompleteAnsFilterState() == "complete") {
                     $criteria->addCondition("submitdate IS NOT NULL");
                 }
-                $totalNoAnswers = SurveyDynamic::model($surveyid)->count($criteria);
+                $totalNoAnswers = Response::model($surveyid)->count($criteria);
                 $label[] = $fname;
                 $lbl[$fname] = $totalNoAnswers;
                 if ($totalMultiAnswers > 0) {
@@ -3699,7 +3699,7 @@ class statistics_helper
             $sql = null;
         }
 
-        //Save the filter for the "Browse" button (applied by SurveyDynamic::search() in the responses grid)
+        //Save the filter for the "Browse" button (applied by Response::search() in the responses grid)
         Yii::app()->user->setState('sql_' . $surveyid, $sql);
 
         //only continue if we have something to output
@@ -4230,7 +4230,7 @@ class statistics_helper
     {
         // Security (mantis #20741): quoteColumnName() does not escape identifier quoting
         // characters, so only real response table columns may be passed to it.
-        $validColumns = SurveyDynamic::model($surveyid)->getTableSchema()->getColumnNames();
+        $validColumns = Response::model($surveyid)->getTableSchema()->getColumnNames();
         if (!in_array($column, $validColumns, true) || ($sortby != '' && !in_array($sortby, $validColumns, true))) {
             throw new InvalidArgumentException('Statistics column listing references an unknown column.');
         }
@@ -4271,7 +4271,7 @@ class statistics_helper
             }
             $search['order'] = $sortby . ' ' . $sortmethod;
         }
-        $results = SurveyDynamic::model($surveyid)->findAll($search);
+        $results = Response::model($surveyid)->findAll($search);
         $output = array();
         foreach ($results as $row) {
             $row->decrypt();
@@ -4346,7 +4346,7 @@ class statistics_helper
         } elseif (incompleteAnsFilterState() == "complete") {
             $criteria->addCondition("submitdate IS NOT NULL");
         }
-        return SurveyDynamic::model($surveyid)->count($criteria);
+        return Response::model($surveyid)->count($criteria);
     }
 
     /*
@@ -4385,7 +4385,7 @@ class statistics_helper
         } elseif (incompleteAnsFilterState() == "complete") {
             $criteria->addCondition("submitdate IS NOT NULL");
         }
-        return SurveyDynamic::model($surveyid)->count($criteria);
+        return Response::model($surveyid)->count($criteria);
     }
 
     /**

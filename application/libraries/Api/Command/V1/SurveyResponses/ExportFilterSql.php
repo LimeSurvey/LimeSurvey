@@ -23,7 +23,7 @@ class ExportFilterSql
 
     /**
      * Criteria for the native exporter, which reads the responses through
-     * SurveyDynamic.
+     * the Response model.
      *
      * @param int $surveyId
      * @param ResolvedFilter[] $resolvedFilters

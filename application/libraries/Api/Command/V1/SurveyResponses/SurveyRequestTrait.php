@@ -3,7 +3,6 @@
 namespace LimeSurvey\Libraries\Api\Command\V1\SurveyResponses;
 
 use LimeSurvey\Api\Command\Request\Request;
-use SurveyDynamic;
 
 /**
  * Shared request helpers for survey-response API commands: survey id
@@ -30,9 +29,9 @@ trait SurveyRequestTrait
         return $surveyId;
     }
 
-    protected function getSurveyDynamicModel(Request $request): SurveyDynamic
+    protected function getResponseModel(Request $request): \Response
     {
-        return SurveyDynamic::model($this->getSurveyId($request));
+        return \Response::model($this->getSurveyId($request));
     }
 
     protected function buildPagination(Request $request): array

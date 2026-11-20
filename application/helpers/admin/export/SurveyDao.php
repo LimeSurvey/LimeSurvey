@@ -70,7 +70,7 @@ class SurveyDao
         $survey->languageSettings = $recordSet->read();
         $recordSet->close();
 
-        if (tableExists('tokens_' . $survey->id) && array_key_exists('token', SurveyDynamic::model($survey->id)->attributes) && Permission::model()->hasSurveyPermission($survey->id, 'tokens', 'read')) {
+        if (tableExists('tokens_' . $survey->id) && array_key_exists('token', Response::model($survey->id)->attributes) && Permission::model()->hasSurveyPermission($survey->id, 'tokens', 'read')) {
             // Now add the tokenFields
             $survey->tokenFields = getTokenFieldsAndNames($survey->id);
             unset($survey->tokenFields['token']);
@@ -185,7 +185,7 @@ class SurveyDao
         $oSurvey = Survey::model()->findByPk($survey->id);
         if (
             tableExists($oSurvey->tokensTableName)
-            && array_key_exists('token', SurveyDynamic::model($oSurvey->primaryKey)->attributes)
+            && array_key_exists('token', Response::model($oSurvey->primaryKey)->attributes)
             && Permission::model()->hasSurveyPermission($oSurvey->primaryKey, 'tokens', 'read')
         ) {
             $aResponses = $this->addJoinedRows($aResponses, $oSurvey->tokensTableName, 'token', 'tid', $aFields);

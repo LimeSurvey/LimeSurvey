@@ -142,15 +142,6 @@ class SurveyLink extends LSActiveRecord
 
 
     /**
-     * @return TokenDynamic
-     */
-    public function getTokenDynamicModel()
-    {
-        $TokenDynamic = TokenDynamic::model($this->survey_id);
-        return $TokenDynamic->findByPk($this->token_id);
-    }
-
-    /**
      * @return string
      * // TODO this should be in survey model
      */

@@ -53,10 +53,10 @@ function loadanswers()
         $aParams[':identifier'] = $sLoadName;
         $oCriteria->params = $aParams;
         /* relations saved_control is needed: force */
-        $oResponses = SurveyDynamic::model($surveyid)->with('saved_control')->find($oCriteria);
+        $oResponses = Response::model($surveyid)->with('saved_control')->find($oCriteria);
     } elseif ($sessionState->getResponseId() !== null) {
         /* relations saved_control is not needed : only lazy load */
-        $oResponses = SurveyDynamic::model($surveyid)->findByPk($sessionState->getResponseId());
+        $oResponses = Response::model($surveyid)->findByPk($sessionState->getResponseId());
     } else {
         return false;
     }

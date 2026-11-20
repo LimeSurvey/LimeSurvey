@@ -6,7 +6,6 @@ use CDbConnection;
 use LimeSurvey\Models\Services\ResponseFilters\ResolvedFilter;
 use LimeSurvey\Models\Services\ResponseFilters\ResponseFilterSqlBuilder;
 use LimeSurvey\Models\Services\SurveyStatistics\StatisticsResponseFilters;
-use SurveyDynamic;
 
 /**
  * Collects every aggregate needed for survey statistics and executes them
@@ -429,7 +428,7 @@ final class ResponseAggregateBatch
 
     private function isJsonColumn(string $field): bool
     {
-        $column = SurveyDynamic::model($this->surveyId)->getTableSchema()->getColumn($field);
+        $column = \Response::model($this->surveyId)->getTableSchema()->getColumn($field);
         return $column !== null && preg_match('/^jsonb?$/i', (string)$column->dbType) === 1;
     }
 
@@ -580,7 +579,7 @@ final class ResponseAggregateBatch
         ];
 
         $columns = [];
-        foreach (SurveyDynamic::model($this->surveyId)->getTableSchema()->columns as $name => $column) {
+        foreach (\Response::model($this->surveyId)->getTableSchema()->columns as $name => $column) {
             if (in_array(strtolower((string)$name), $metaColumns, true)) {
                 continue;
             }
@@ -595,6 +594,6 @@ final class ResponseAggregateBatch
 
     private function getDb(): CDbConnection
     {
-        return SurveyDynamic::model($this->surveyId)->getDbConnection();
+        return \Response::model($this->surveyId)->getDbConnection();
     }
 }
