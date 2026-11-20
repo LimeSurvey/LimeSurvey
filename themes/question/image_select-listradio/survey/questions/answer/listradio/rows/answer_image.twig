@@ -8,13 +8,13 @@
  * they were made for: When the option shows another image (replaced in the classic editor, or a reused code), its
  * settings and alt text are ignored. Only the file name is compared, because import rewrites the folder and host of
  * the image URL; the editor compares it the same way (getImageFileName() in imageOptionSettings.js).
- * They are only applied when the survey theme supports them: It marks the question container with the class
- * image-option-settings (fruity_twentythree and the themes extending it). Then they override the image settings
- * of the question (fix width, fix height, keep aspect ratio, crop or resize): The image is shown in a frame with
- * the saved aspect ratio and width (never wider than the answer), showing the saved crop of the image, with the
- * saved corner radius. In other survey themes, and for options without settings, the image is shown with the
- * image settings of the question, see answer.twig. The alt text is used in all survey themes. Without one, the
- * option code is the alt text, because the image is the only content of the option's label.
+ * They are only applied in the survey themes the new editor can edit (fruity_twentythree and the themes extending
+ * it), so that the survey shows what the editor shows: The core sets isEditorCompatibleSurvey for them. Then they
+ * override the image settings of the question (fix width, fix height, keep aspect ratio, crop or resize): The image
+ * is shown in a frame with the saved aspect ratio and width (never wider than the answer), showing the saved crop of
+ * the image, with the saved corner radius. In other survey themes, and for options without settings, the image is
+ * shown with the image settings of the question, see answer.twig. The alt text is used in all survey themes.
+ * Without one, the option code is the alt text, because the image is the only content of the option's label.
  *
  * The settings are only passed as CSS variables, see assets/css/imageselect.css. Only numbers from the settings
  * are written into the style attribute; other values count as not set.
@@ -32,6 +32,10 @@
     {% set imageAlt = '' %}
 {% else %}
     {% set imageAlt = json_decode(questionAttributes.image_option_alt|default(''))[optionCode]|default('') %}
+{% endif %}
+{% if not isEditorCompatibleSurvey|default(false) %}
+    {# Survey theme the new editor can't edit: The question's image settings apply, the alt text still does #}
+    {% set imageSettings = {} %}
 {% endif %}
 {# Lists and objects in the stored JSON count as not set: "matches" and the output need plain values #}
 {% set imageAlt = imageAlt is iterable ? '' : imageAlt %}
