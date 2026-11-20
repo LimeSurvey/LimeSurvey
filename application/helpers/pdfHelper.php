@@ -61,4 +61,30 @@ class pdfHelper
 
         return array('pdffont' => $pdffont, 'pdffontsize' => $pdffontsize, 'lg' => $lg);
     }
+
+    /**
+     * Removes the bold and italic styles a PDF font can not print in a language.
+     *
+     * Some fonts contain the letters of a language only in their regular file.
+     * Bold or italic text would be printed as empty boxes, so the styles listed
+     * in $config['pdfunsupportedfontstyles'] for the font and language are dropped.
+     *
+     * @param string|null $language Language code of the PDF
+     * @param string|null $family Font family the style is requested for
+     * @param string|null $style Font style as used by TCPDF, for example "B", "BI" or "BU"
+     * @return string The font style without the styles the font can not print
+     */
+    public static function removeUnsupportedFontStyles($language, $family, $style)
+    {
+        $style = (string) $style;
+        if ($style === '' || empty($language) || empty($family)) {
+            return $style;
+        }
+        $unsupportedStyles = (array) Yii::app()->getConfig('pdfunsupportedfontstyles');
+        $fontStyles = $unsupportedStyles[strtolower((string) $family)][$language] ?? '';
+        if (!is_string($fontStyles) || $fontStyles === '') {
+            return $style;
+        }
+        return str_ireplace(str_split($fontStyles), '', $style);
+    }
 }
