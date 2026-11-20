@@ -351,6 +351,29 @@ class LS_Twig_Extension extends AbstractExtension
     }
 
     /**
+     * Returns the URL of the home screen icon, unless it would undermine the theme's own branding.
+     *
+     * The icon is only used if it comes from the same theme as the favicon or from a theme closer
+     * to the current one. A theme that replaced the favicon but not the home screen icon therefore
+     * gets no home screen icon instead of the one inherited from its parent theme.
+     *
+     * @return string|false The published URL of the home screen icon, or false if none should be shown
+     */
+    public static function homeScreenIconSrc()
+    {
+        $sIconPath = './files/home-screen-icon-192.png';
+        $iIconLevel = self::getRessourceInheritanceLevel($sIconPath);
+        if ($iIconLevel === false) {
+            return false;
+        }
+        $iFaviconLevel = self::getRessourceInheritanceLevel('./files/favicon.ico');
+        if ($iFaviconLevel !== false && $iFaviconLevel < $iIconLevel) {
+            return false;
+        }
+        return self::imageSrc($sIconPath);
+    }
+
+    /**
      * @var $resourcePath string : the needed resource
      * @var $default string : the default resource if needed resssource didn't exist
      * @return string|false
@@ -454,6 +477,30 @@ class LS_Twig_Extension extends AbstractExtension
             return false;
         }
         return $oRTemplate;
+    }
+
+    /**
+     * Returns how many steps up the theme inheritance chain a resource is found.
+     *
+     * @param string $sRessource The resource path relative to the theme root (e.g. './files/favicon.ico')
+     * @return int|false 0 if the current theme has the resource, 1 if its parent theme has it, and so on; false if no theme in the chain has it
+     */
+    private static function getRessourceInheritanceLevel($sRessource)
+    {
+        $oFoundTemplate = self::getTemplateForRessource($sRessource);
+        if (!$oFoundTemplate) {
+            return false;
+        }
+        $iLevel = 0;
+        $oRTemplate = Template::getLastInstance();
+        while ($oRTemplate->path !== $oFoundTemplate->path) {
+            $oRTemplate = $oRTemplate->oMotherTemplate;
+            if (!($oRTemplate instanceof TemplateConfiguration)) {
+                return false;
+            }
+            $iLevel++;
+        }
+        return $iLevel;
     }
 
     public static function getPost($sName, $sDefaultValue = null)
