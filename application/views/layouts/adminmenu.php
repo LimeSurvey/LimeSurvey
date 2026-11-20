@@ -12,10 +12,13 @@
     App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'surveysettings.js', LSYii_ClientScript::POS_BEGIN);
 ?>
 <!-- admin menu bar -->
-<nav class="navbar navbar-expand-md">
+<header>
+<?php // The logo is part of the banner; the menus inside are the navigation landmarks ?>
+<div class="navbar navbar-expand-md">
     <div class="container-fluid">
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#small-screens-menus"
-            aria-controls="small-screens-menus" aria-expanded="false">
+        <?php // On small screens this button shows/hides the complete main and user menu ?>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminmenu-main, #adminmenu-user"
+            aria-controls="adminmenu-main adminmenu-user" aria-expanded="false" aria-label="<?php eT('Toggle navigation'); ?>">
             <span class="navbar-toggler-icon"></span>
         </button>
         <a class="navbar-brand" href="<?php echo $this->createUrl("/admin/"); ?>">
@@ -23,34 +26,7 @@
                 class="d-inline-block align-bottom" alt="">
             <?= $sitename ?>
         </a>
-        <!-- Only on xs screens -->
-        <div class="collapse navbar-collapse " id="small-screens-menus">
-            <ul class="nav navbar-nav" id="small-screens-menu-items">
-                <!-- active surveys -->
-                <?php if ($activesurveyscount > 0): ?>
-                    <li class="nav-item">
-                        <a class="nav-link"
-                            href="<?php echo $this->createUrl('surveyAdministration/listsurveys/active/Y'); ?>">
-                            <?php eT("Active surveys"); ?> <span class="badge"><?php echo $activesurveyscount ?></span>
-                        </a>
-                    </li>
-                <?php endif; ?>
-                <!-- List surveys -->
-                <li class="nav-item">
-                    <a class="nav-link" href="<?php echo $this->createUrl("surveyAdministration/listsurveys"); ?>">
-                        <?php eT("List surveys"); ?>
-                    </a>
-                </li>
-                <!-- Logout -->
-                <li class="nav-item">
-                    <a class="nav-link" href="<?php echo $this->createUrl("admin/authentication/sa/logout"); ?>">
-                        <?php eT("Logout"); ?>
-                    </a>
-                </li>
-            </ul>
-        </div>
-
-        <div class="collapse navbar-collapse">
+        <div class="collapse navbar-collapse" id="adminmenu-main" role="navigation" aria-label="<?php eT('Main menu'); ?>">
             <ul class="nav navbar-nav">
                 <!-- Maintenance mode -->
                 <?php if (SettingGlobal::getMaintenanceMode() !== SettingGlobal::MAINTENANCE_MODE_OFF) { ?>
@@ -96,7 +72,7 @@
                 <?php $this->renderPartial("application.libraries.MenuObjects.views._extraMenu", ['extraMenus' => $extraMenus, 'middleSection' => true, 'prependedMenu' => false]); ?>
             </ul>
         </div>
-        <div class="collapse navbar-collapse justify-content-end">
+        <div class="collapse navbar-collapse justify-content-end" id="adminmenu-user" role="navigation" aria-label="<?php eT('User menu'); ?>">
             <ul class="nav navbar-nav">
                 <!-- Extra menus from plugins -->
                 <?php $this->renderPartial("application.libraries.MenuObjects.views._extraMenu", ['extraMenus' => $extraMenus, 'middleSection' => false, 'prependedMenu' => true]); ?>
@@ -137,7 +113,8 @@
         </div><!-- /.nav-collapse -->
 
     </div>
-</nav>
+</div>
+</header>
 <script type="text/javascript">
     //show tooltips
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));

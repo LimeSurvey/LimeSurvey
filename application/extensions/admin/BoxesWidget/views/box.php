@@ -36,10 +36,9 @@
 <?php if (!empty($items)) : ?>
     <?php foreach ($items as $item) : ?>
         <?php if ($item['type'] == BoxesWidget::TYPE_PRODUCT) : ?>
+            <?php // The card is clickable with the mouse; keyboard and screen reader users get the title link ?>
             <div class="box-widget-card align-middle d-inline-block"
-                 data-url="<?php echo $item['link'] ?>"
-                 role="link"
-                 tabindex="0">
+                 data-url="<?php echo $item['link'] ?>">
                 <div class="box-widget-card-body">
                     <div class="box-widget-card-header">
                         <div class="box-widget-card-title">
@@ -50,7 +49,9 @@
                                 $surveyls_title = $defaultlanguage->surveyls_title;
                             }
                             ?>
-                            <?php echo viewHelper::filterScript($surveyls_title); ?>
+                            <a href="<?php echo $item['link'] ?>" class="box-widget-card-title-link text-reset text-decoration-none">
+                                <?php echo viewHelper::filterScript($surveyls_title); ?>
+                            </a>
                         </div>
                     </div>
                     <div class="box-widget-card-text">

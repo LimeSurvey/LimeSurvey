@@ -1,11 +1,11 @@
-<div id="deleteSurvey_modal" class="modal fade" role="dialog">
+<div id="deleteSurvey_modal" class="modal fade" role="dialog" aria-modal="true" aria-labelledby="deleteSurveyModalTitle deleteSurveyModalTitle-dialogsr">
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">
             <?php
             App()->getController()->renderPartial(
                 '/layouts/partial_modals/modal_header',
-                ['modalTitle' => gT('Delete survey')]
+                ['modalTitle' => gT('Delete survey'), 'modalTitleId' => 'deleteSurveyModalTitle']
             );
             ?>
             <?php echo CHtml::beginForm(

@@ -24,7 +24,9 @@ $(document).ready(function () {
 
             const updateContent = () => {
                 $title.html(slide.title);
-                $image.attr("src", slide.image).attr("alt", slide.title);
+                // e.g. "Screenshot of Editor preview" (the title may contain markup)
+                const altPattern = $modal.data("image-alt") || "%s";
+                $image.attr("src", slide.image).attr("alt", altPattern.replace("%s", $("<div>").html(slide.title).text()));
                 $desc.html(slide.description);
 
                 // Swap the info panel if custom info is provided for this slide
@@ -156,11 +158,37 @@ $(document).ready(function () {
     });
 
     /**
+     * Arrow keys move through the radio buttons and check them at once: they must not switch
+     * the editor on focus (WCAG 3.2.1). A keyboard user applies the choice with Enter or Space,
+     * a mouse user with a click, and closing the modal saves the checked value.
+     */
+    let changedByArrowKey = false;
+    $(document).on("keydown", "#editor-switch-btn .btn-check", function (e) {
+        if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(e.key)) {
+            changedByArrowKey = true;
+            // The change event follows synchronously: reset for the next interaction
+            setTimeout(function () {
+                changedByArrowKey = false;
+            }, 0);
+        } else if (e.key === "Enter" || (e.key === " " && this.checked)) {
+            // Space on an unchecked radio checks it and triggers the change event itself
+            e.preventDefault();
+            this.checked = true;
+            saveEditorChoice($(this).val());
+        }
+    });
+
+    $(document).on("change", "#editor-switch-btn", function () {
+        if (changedByArrowKey) {
+            return;
+        }
+        saveEditorChoice($(this).find(".btn-check:checked").val());
+    });
+
+    /**
      * Save the user decision if new editor is turned on or off
      */
-    $(document).on("change", "#editor-switch-btn", function () {
-        let newValue = $(this).find(".btn-check:checked").val();
-
+    function saveEditorChoice(newValue) {
         let url = $("#saveUrl").val();
         let data = { optin: newValue };
 
@@ -185,7 +213,7 @@ $(document).ready(function () {
                     showCloseButton: true,
                 });
             });
-    });
+    }
 
     /**
      * "Switch to new editor" button in auto-open mode — saves optin=1
