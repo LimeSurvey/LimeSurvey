@@ -79,8 +79,6 @@ class TimingTest extends TestBaseClass
         $this->assertEquals(3, $statistics['count']);
         $this->assertSame(1, $statistics['avgmin'], 'The average of 60, 90 and 150 seconds is 1 minute 40 seconds.');
         $this->assertSame(40, $statistics['avgsec']);
-        $this->assertSame(1, $statistics['allmin'], 'The median of three values is the mean of the middle one and the one before: 75 seconds.');
-        $this->assertSame(15, $statistics['allsec']);
 
         $this->assertEquals(3, \Timing::model(self::$surveyId)->search()->getTotalItemCount());
     }

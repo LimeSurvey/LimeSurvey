@@ -604,6 +604,11 @@ final class ResponseAggregateBatch
         return $columns;
     }
 
+    /**
+     * Returns the database connection of the responses table.
+     *
+     * @return CDbConnection The connection the queries of this batch run on
+     */
     private function getDb(): CDbConnection
     {
         return \Response::model($this->surveyId)->getDbConnection();

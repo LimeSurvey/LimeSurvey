@@ -14,7 +14,7 @@
  * Relations
  * @property Survey $survey
  * @property Token $tokens The participant of this response. Only available if the survey has
- *     a participant table and the current user is allowed to read it.
+ *     a participant table and the current user is allowed to read it (always in a console application).
  * @property SavedControl $saved_control
  *
  * @property string $completed HTML of the completed state, for the responses list
@@ -383,7 +383,7 @@ abstract class Response extends Dynamic
         if ($record->encryptSave()) {
             return $record->id;
         }
-        /* If error : return false */
+        /* If error: Return false */
         return false;
     }
 
@@ -425,7 +425,7 @@ abstract class Response extends Dynamic
     /**
      * Return true if actual survey is completed
      *
-     * @param integer $srid : actual save survey ID
+     * @param integer $srid Response ID
      *
      * @return boolean
      */
@@ -467,7 +467,7 @@ abstract class Response extends Dynamic
      * This is the button column for response table
      * @see https://www.yiiframework.com/doc/api/1.1/CButtonColumn
      * @see https://bugs.limesurvey.org/view.php?id=14219
-     * @see https://bugs.limesurvey.org/view.php?id=14222: When deleting a single response : all page is reloaded (not only grid)
+     * @see https://bugs.limesurvey.org/view.php?id=14222: When deleting a single response: All page is reloaded (not only grid)
      * @return string
      */
     public function getGridButtons()
@@ -629,7 +629,7 @@ abstract class Response extends Dynamic
     /**
      * Return true if actual response exist in database
      *
-     * @param integer $srid : actual save survey ID
+     * @param integer $srid Response ID
      *
      * @return boolean
      */
@@ -653,7 +653,7 @@ abstract class Response extends Dynamic
     /**
      * Return next id if next response exist in database
      *
-     * @param integer $srId : actual save survey ID
+     * @param integer $srId Response ID
      * @param boolean $useFilterState
      *
      * @return integer
@@ -686,7 +686,7 @@ abstract class Response extends Dynamic
     /**
      * Return previous id if previous response exist in database
      *
-     * @param integer $srId : actual save survey ID
+     * @param integer $srId Response ID
      * @param boolean $useFilterState
      *
      * @return integer
@@ -761,12 +761,20 @@ abstract class Response extends Dynamic
 
     /**
      * Whether the participant data can be shown with the responses:
-     * The survey has a participant table and the current user is allowed to read it
+     * The survey has a participant table and the current user is allowed to read it.
+     * In a console application, the participant table is enough.
      * @return bool
      */
     private function getHaveToken()
     {
-        return tableExists('tokens_' . $this->dynamicId) && Permission::model()->hasSurveyPermission($this->dynamicId, 'tokens', 'read');
+        if (!tableExists('tokens_' . $this->dynamicId)) {
+            return false;
+        }
+        // A console application has no user, and permissions can not be tested there
+        if (Yii::app() instanceof CConsoleApplication) {
+            return true;
+        }
+        return Permission::model()->hasSurveyPermission($this->dynamicId, 'tokens', 'read');
     }
 
     /**

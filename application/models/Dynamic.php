@@ -34,7 +34,7 @@ abstract class Dynamic extends LSActiveRecord
         if (!isset($className)) {
             $className = get_called_class();
         } elseif (is_numeric($className)) {
-            $className = self::baseClassName() . '_' . $className;
+            $className = self::baseClassName() . '_' . (int) $className;
         }
         /** @var self $model */
         $model = parent::model($className);
@@ -43,13 +43,15 @@ abstract class Dynamic extends LSActiveRecord
     }
 
     /**
-     * @param string $scenario
-     * @param integer $id
-     * @return mixed
+     * Creates a new record of the model with the given ID.
+     *
+     * @param integer $id The dynamic part of the class name (e.g. the survey ID)
+     * @param string $scenario The scenario of the new record
+     * @return static The new record
      */
     public static function create($id, $scenario = 'insert')
     {
-        $className = self::baseClassName() . '_' . $id;
+        $className = self::baseClassName() . '_' . (is_numeric($id) ? (int) $id : $id);
         // Make sure the new record gets the current structure of the table
         self::model($className);
         return new $className($scenario);
@@ -67,7 +69,9 @@ abstract class Dynamic extends LSActiveRecord
     protected function refreshOutdatedMetaData()
     {
         $tableSchema = $this->getDbConnection()->getSchema()->getTable($this->tableName());
-        if ($tableSchema !== null && $tableSchema !== $this->getMetaData()->tableSchema) {
+        // The meta data stays null for the rest of the request if it could not be built before (e.g. table not created yet)
+        $metaData = $this->getMetaData();
+        if ($metaData === null || ($tableSchema !== null && $tableSchema !== $metaData->tableSchema)) {
             $this->refreshMetaData();
         }
     }

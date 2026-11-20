@@ -29,6 +29,12 @@ trait SurveyRequestTrait
         return $surveyId;
     }
 
+    /**
+     * Returns the response model of the survey of the request.
+     *
+     * @param Request $request The API request, holding the survey ID
+     * @return \Response The model to query the responses of the survey
+     */
     protected function getResponseModel(Request $request): \Response
     {
         return \Response::model($this->getSurveyId($request));

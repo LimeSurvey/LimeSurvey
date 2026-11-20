@@ -71,4 +71,39 @@ class DynamicModelTest extends TestBaseClass
         $this->assertTrue($token->save(false));
         $this->assertSame('value', Token::model(self::$surveyId)->findByToken('dynamicmodeltest')->attribute_42);
     }
+
+    /**
+     * Numeric strings are normalized, so they use the same class as the integer ID.
+     *
+     * @return void
+     */
+    public function testNumericStringIdUsesTheSameClass()
+    {
+        $className = 'Token_' . self::$surveyId;
+
+        $this->assertSame($className, get_class(Token::model('0' . self::$surveyId)));
+        $this->assertSame($className, get_class(Token::create((string) self::$surveyId)));
+    }
+
+    /**
+     * A model that was requested before its table existed works once the table was created.
+     *
+     * @return void
+     */
+    public function testModelWorksAfterItsTableWasCreated()
+    {
+        $tableName = '{{timings_' . self::$surveyId . '}}';
+        try {
+            \Timing::model(self::$surveyId);
+            $this->fail('The model of a missing table should not be available.');
+        } catch (\CDbException $exception) {
+            // Expected: The table does not exist yet
+        }
+
+        \Yii::app()->db->createCommand()->createTable($tableName, ['id' => 'pk', 'interviewtime' => 'float']);
+        \Yii::app()->db->schema->getTable($tableName, true);
+
+        $this->assertSame(0, (int) \Timing::model(self::$surveyId)->count());
+        $this->assertTrue(\Timing::model(self::$surveyId)->hasAttribute('interviewtime'));
+    }
 }
