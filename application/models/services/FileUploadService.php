@@ -8,6 +8,20 @@ use Permission;
 
 class FileUploadService
 {
+    /** @var int Largest image file for texts (question text etc.), in bytes */
+    public const CONTENT_IMAGE_MAX_SIZE = 10 * 1024 * 1024;
+
+    /** @var int Most pixels of an image for texts, protects against images that need huge memory when decoded */
+    public const CONTENT_IMAGE_MAX_MEGAPIXELS = 40;
+
+    /** @var array<string,int> Allowed extensions of images for texts, with their image type */
+    private const CONTENT_IMAGE_TYPES = [
+        'png' => IMAGETYPE_PNG,
+        'jpg' => IMAGETYPE_JPEG,
+        'jpeg' => IMAGETYPE_JPEG,
+        'webp' => IMAGETYPE_WEBP,
+    ];
+
     private UploadValidator $uploadValidator;
 
     private Permission $modelPermission;
@@ -58,6 +72,103 @@ class FileUploadService
         unset($returnedData['debug']);
 
         return $returnedData;
+    }
+
+    /**
+     * Validates an image inserted into a text (e.g. with the HTML editor of the question text) and saves it in the
+     * survey's images folder, like the images of the classic editor.
+     * Only PNG, JPEG and WebP files up to CONTENT_IMAGE_MAX_SIZE and CONTENT_IMAGE_MAX_MEGAPIXELS are accepted,
+     * and their metadata (e.g. the EXIF location of photos) is removed.
+     *
+     * @param int|string $surveyId Survey ID
+     * @param array $fileInfoArray Uploaded file, $_FILES format with key "file"
+     * @return array Upload result: success, uploadResultMessage, fileName, and the image's filePath and previewUrl
+     *  under "uploaded"
+     * @throws PermissionDeniedException
+     */
+    public function storeContentImage($surveyId, array $fileInfoArray)
+    {
+        $this->checkUpdatePermission($surveyId);
+        $returnedData = ['success' => false];
+
+        if (empty($fileInfoArray['file'])) {
+            $returnedData['uploadResultMessage'] = gT('No file uploaded');
+            return $returnedData;
+        }
+
+        $surveyId = $this->convertSurveyIdWhenUniqUploadDir($surveyId);
+        $destinationDir = $this->getSurveyUploadDirectory($surveyId);
+
+        $this->uploadValidator->setPost(['surveyId' => $surveyId]);
+        $this->uploadValidator->setFiles($fileInfoArray);
+        $validationError = $this->uploadValidator->getError('file', self::CONTENT_IMAGE_MAX_SIZE)
+            ?? $this->validateAndCleanContentImage($fileInfoArray['file']);
+        if ($validationError === null && !is_writeable($destinationDir)) {
+            $validationError = gT("Could not save file");
+        }
+        if ($validationError !== null) {
+            $returnedData['uploadResultMessage'] = $validationError;
+            return $returnedData;
+        }
+
+        $returnedData = $this->saveFileInDirectory(
+            $fileInfoArray['file'],
+            $destinationDir
+        );
+        unset($returnedData['debug']);
+        if (!$returnedData['success']) {
+            return $returnedData;
+        }
+
+        $filePath = $this->getSurveyUploadUrl($surveyId) . '/' . $returnedData['fileName'];
+        $returnedData['uploaded'] = [
+            'filePath' => $filePath,
+            'previewUrl' => $this->toAbsoluteUrl($filePath),
+        ];
+
+        return $returnedData;
+    }
+
+    /**
+     * Checks that an uploaded file is a PNG, JPEG or WebP image matching its extension, not larger than
+     * CONTENT_IMAGE_MAX_MEGAPIXELS, and removes its metadata.
+     * The content of the file is checked, not the MIME type sent by the browser.
+     *
+     * @param array $file Uploaded file, one $_FILES entry with name and tmp_name
+     * @return string|null Error message, null if the image is valid
+     */
+    private function validateAndCleanContentImage(array $file)
+    {
+        $extension = strtolower(pathinfo((string) ($file['name'] ?? ''), PATHINFO_EXTENSION));
+        if (!isset(self::CONTENT_IMAGE_TYPES[$extension])) {
+            return gT("This file type is not allowed to be uploaded.");
+        }
+        $invalidImageError = gT("This file is not a valid PNG, JPEG or WebP image.");
+        $path = (string) ($file['tmp_name'] ?? '');
+        $imageInfo = is_file($path) ? @getimagesize($path) : false;
+        if (
+            $imageInfo === false
+            || $imageInfo[2] !== self::CONTENT_IMAGE_TYPES[$extension]
+            || $imageInfo[0] <= 0
+            || $imageInfo[1] <= 0
+        ) {
+            return $invalidImageError;
+        }
+        // Don't fall back to the extension: The tmp file name doesn't have one
+        $detectedMimeType = \CFileHelper::getMimeType($path, null, false);
+        if (!empty($detectedMimeType) && strtolower((string) $detectedMimeType) !== $imageInfo['mime']) {
+            return $invalidImageError;
+        }
+        if ($imageInfo[0] * $imageInfo[1] > self::CONTENT_IMAGE_MAX_MEGAPIXELS * 1000000) {
+            return sprintf(
+                gT("This image is too large. Images can have at most %s megapixels."),
+                self::CONTENT_IMAGE_MAX_MEGAPIXELS
+            );
+        }
+        if (!(new ImageMetadataRemover())->removeMetadata($path, $imageInfo[2])) {
+            return $invalidImageError;
+        }
+        return null;
     }
 
 

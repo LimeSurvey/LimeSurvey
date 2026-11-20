@@ -68,7 +68,6 @@
 @import 'card/card.scss';
 @import 'imageWrapper/ImageWrapper.scss';
 @import 'contenteditor/content-editor.scss';
-@import 'codemirror/code-mirror.scss';
 @import 'date-picker/date-picker.scss';
 @import 'dropzone/dropzone.scss';
 @import 'dropzone/file-drop-zone.scss';
@@ -119,6 +118,7 @@
 @import 'modals/confirm-modal.scss';
 @import 'modals/component-modal.scss';
 @import 'modals/import-survey-modal.scss';
+@import 'modals/html-editor-modal.scss';
 @import 'survey-logic/survey-logic-modal.scss';
 @import 'input-range/input-range.scss';
 @import 'icon/icon.scss';

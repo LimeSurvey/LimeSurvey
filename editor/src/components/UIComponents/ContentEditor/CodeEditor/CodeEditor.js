@@ -61,6 +61,23 @@ const codeEditorTheme = EditorView.theme({
   },
 })
 
+/**
+ * Code editor (CodeMirror) with HTML highlighting by default.
+ *
+ * @param {string} id id of the editor element
+ * @param {string} value the code
+ * @param {string} height height of the editor
+ * @param {string} width width of the editor
+ * @param {string} className classes of the editor element
+ * @param {Array} extensions CodeMirror extensions
+ * @param {string} title text above the editor
+ * @param {Function} onChange called with the new code on every change. By
+ *   default, the code is stored in the data-value attribute of the element.
+ * @param {Function} onCreateEditor called with the CodeMirror EditorView once
+ *   it exists, e.g. to insert text at the cursor
+ * @param {boolean} autoFocus whether the editor gets the focus when it opens
+ * @returns {JSX.Element} the editor
+ */
 export const CodeEditor = ({
   id = 'code-mirror',
   value = '',
@@ -72,6 +89,8 @@ export const CodeEditor = ({
   onChange = (newValue) => {
     document.getElementById(id)?.setAttribute('data-value', newValue)
   },
+  onCreateEditor,
+  autoFocus = false,
 }) => {
   useEffect(() => {
     document.getElementById(id)?.setAttribute('data-value', value)
@@ -89,6 +108,8 @@ export const CodeEditor = ({
         theme={codeEditorTheme}
         extensions={extensions}
         onChange={onChange}
+        onCreateEditor={onCreateEditor}
+        autoFocus={autoFocus}
       />
     </>
   )

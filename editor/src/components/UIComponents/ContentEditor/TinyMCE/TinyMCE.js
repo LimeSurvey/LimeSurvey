@@ -1,14 +1,13 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { Editor } from '@tinymce/tinymce-react'
 import {
-  htmlPopup,
   RandomNumber,
   removePlaceholderBadges,
   wrapPlaceholdersInBadges,
 } from 'helpers'
 import beautify from 'js-beautify'
 
-import { CodeEditor } from '../CodeEditor/CodeEditor'
+import { ContentHtmlEditor } from '../HtmlEditorModal/ContentHtmlEditor'
 import { mceToolbar } from './mceToolbar'
 import { toolbarActions } from './toolbarActions'
 import { PluginSlot } from 'plugins/PluginSlot'
@@ -44,6 +43,9 @@ export const TinyMCE = ({
   const attributeDescriptionsRef = useRef(attributeDescriptions)
   const editorValueRef = useRef(editorValue)
 
+  // The HTML shown in the HTML editor, null while it is closed
+  const [htmlEditorValue, setHtmlEditorValue] = useState(null)
+
   const openHtmlEditorRef = useRef()
   // If we don't use a ref, the value will be outdated and things will break.
   openHtmlEditorRef.current = () => {
@@ -55,31 +57,14 @@ export const TinyMCE = ({
       preserve_newlines: true,
     })
 
-    htmlPopup({
-      title: t('Edit question using HTML'),
-      html: (
-        <CodeEditor
-          title={t('Use custom HTML to edit and format your question text.')}
-          className="html-editor"
-          value={formattedHTML}
-        />
-      ),
-      showCloseButton: true,
-      showCancelButton: true,
-      showConfirmButton: true,
-      confirmButtonText: 'Save',
-      cancelButtonText: 'Cancel',
-      containerClass: 'html-editor-popup',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        const newHtmlContent =
-          document.getElementById('code-mirror').dataset.value
+    setHtmlEditorValue(formattedHTML)
+  }
 
-        setEditorValue(newHtmlContent)
-        handleOnChange(newHtmlContent)
-        editorValueRef.current = newHtmlContent
-      }
-    })
+  const saveHtml = (newHtmlContent) => {
+    setHtmlEditorValue(null)
+    setEditorValue(newHtmlContent)
+    handleOnChange(newHtmlContent)
+    editorValueRef.current = newHtmlContent
   }
 
   const id = useMemo(() => {
@@ -201,6 +186,9 @@ export const TinyMCE = ({
           // Pasted or dropped image files would otherwise be embedded as huge base64 data URIs into the text
           paste_data_images: false,
           verify_html: false,
+          // Keep URLs as written: TinyMCE would otherwise rewrite image paths
+          // relative to the editor page (/editor/), breaking them in the survey
+          convert_urls: false,
           disabled,
           toolbar: showToolbar
             ? 'alignmentMenu customBold customItalic customUnderline link toolbarActions'
@@ -209,6 +197,13 @@ export const TinyMCE = ({
           forced_root_block: FORCED_ROOT_BLOCK,
         }}
       />
+      {htmlEditorValue !== null && (
+        <ContentHtmlEditor
+          value={htmlEditorValue}
+          onSave={saveHtml}
+          onHide={() => setHtmlEditorValue(null)}
+        />
+      )}
       <PluginSlot
         slotName={PLUGIN_SLOTS.CONTENT_EDITOR}
         value={editorValueRef.current}

@@ -1,0 +1,125 @@
+// "Edit question using HTML" dialog and its "Select image" dialog
+.html-editor-modal,
+.select-image-modal {
+  .modal-header {
+    padding: 24px 36px 16px;
+  }
+
+  .modal-body {
+    padding: 0 36px;
+  }
+
+  .modal-footer {
+    padding: 24px 36px;
+  }
+
+  .modal-title {
+    @include reg24;
+  }
+}
+
+.html-editor-modal {
+  .modal-dialog {
+    max-width: min(1280px, 92vw);
+  }
+
+  .html-editor-modal-editor {
+    border: 2px solid $g-600;
+    border-radius: 2px;
+
+    .cm-editor {
+      border: 0 !important;
+      max-height: 60vh;
+      text-align: start;
+
+      .cm-gutters-before {
+        margin-right: 4px;
+      }
+
+      .cm-lineNumbers {
+        min-width: 28px;
+        background-color: $g-200;
+
+        .cm-gutterElement {
+          @include label-m;
+          font-size: $font-size-xxs;
+        }
+      }
+
+      .cm-line {
+        @include reg16;
+      }
+    }
+  }
+
+  .html-editor-modal-toolbar {
+    border-bottom: 1px solid $g-400;
+    padding: 6px 8px;
+  }
+}
+
+// Above the HTML editor dialog it opens from
+.select-image-modal-backdrop {
+  z-index: 1065;
+}
+
+.select-image-modal {
+  z-index: 1070;
+
+  .modal-dialog {
+    max-width: min(520px, calc(100vw - 32px));
+    min-width: 0;
+  }
+
+  .select-image-dropzone {
+    align-items: center;
+    border: 1px dashed $g-600;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 12px 16px;
+    text-align: center;
+
+    &:focus-visible {
+      outline: 2px solid $grape;
+      outline-offset: 2px;
+    }
+
+    &.is-disabled {
+      cursor: progress;
+      opacity: 0.6;
+    }
+  }
+
+  .select-image-preview {
+    border-radius: 4px;
+    max-height: 120px;
+    max-width: min(240px, 100%);
+    object-fit: contain;
+  }
+
+  .select-image-size {
+    align-items: flex-start;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+
+    .select-image-size-field {
+      flex: 1 1 140px;
+      min-width: 0;
+    }
+
+    .select-image-ratio-button {
+      // Aligned with the inputs below their labels
+      margin-top: 30px;
+    }
+
+    // Locked: A solid colored border, not a focus ring, so the fields don't
+    // look focused. The lock icon shows the state too.
+    &.is-ratio-locked .form-control:not(:focus):not(.is-invalid) {
+      border-color: $grape;
+    }
+  }
+}
