@@ -98,6 +98,26 @@ class FileUploadServiceTest extends TestBaseClass
     }
 
     /**
+     * A different file with the name of an existing one gets a numbered name, so the existing file is kept.
+     * @return void
+     */
+    public function testExistingFileNameGetsNumberedName()
+    {
+        $imagesDir = $this->uploadDir . '/surveys/123456/images';
+        mkdir($imagesDir, 0777, true);
+        file_put_contents($imagesDir . '/logo.png', 'existing');
+        $permission = $this->createMock(Permission::class);
+        $service = new FileUploadService(new UploadValidator(), $permission);
+        $handleDuplicateFileName = new \ReflectionMethod(FileUploadService::class, 'handleDuplicateFileName');
+
+        $this->assertSame('logo(1).png', $handleDuplicateFileName->invoke($service, 'logo.png', $imagesDir));
+
+        file_put_contents($imagesDir . '/logo(1).png', 'existing');
+        $this->assertSame('logo(2).png', $handleDuplicateFileName->invoke($service, 'logo.png', $imagesDir));
+        $this->assertSame('other.png', $handleDuplicateFileName->invoke($service, 'other.png', $imagesDir));
+    }
+
+    /**
      * Uploads a PNG through the service.
      * The same file is put in the folder first, because move_uploaded_file() only works for real uploads.
      * @param int $surveyId Survey ID

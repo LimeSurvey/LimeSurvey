@@ -212,11 +212,12 @@ class FileUploadService
      * until a unique filename is found, mimicking Windows Explorer behavior.
      *
      * @param string $fileName The name of the file to check for duplicates (e.g., "example.txt").
-     * @param string $path The directory path where the file resides.
+     * @param string $path The directory path where the file resides, with or without a trailing slash.
      * @return string A unique filename with no conflicts in the given directory.
      */
     private function handleDuplicateFileName($fileName, $path)
     {
+        $path = $this->rTrimPathSeparators($path) . '/';
         $fileInfo = pathinfo($fileName);
         $baseName = $fileInfo['filename'];
         $extension = isset($fileInfo['extension']) ? '.'
