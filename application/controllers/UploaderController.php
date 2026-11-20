@@ -377,14 +377,11 @@ class UploaderController extends SurveyController
         $meta = '';
         App()->getClientScript()->registerPackage('question-file-upload');
 
-        $aSurveyInfo = getSurveyInfo($surveyid, $sLanguage);
         $oEvent = new PluginEvent('beforeSurveyPage');
         $oEvent->set('surveyId', $surveyid);
         App()->getPluginManager()->dispatchEvent($oEvent);
         /* Theme set by a plugin in beforeSurveyPage */
         $sPluginTemplateName = $oEvent->get('template');
-        $sTemplateDir = getTemplatePath($aSurveyInfo['template']);
-        $sTemplateUrl = getTemplateURL($aSurveyInfo['template']) . "/";
         $oTemplate = Template::model()->getInstance(empty($sPluginTemplateName) ? '' : $sPluginTemplateName, $surveyid);
         $sNeededScriptVar = '
             var uploadurl = uploadurl || "' . $this->createUrl('/uploader/index/mode/upload/') . '";
