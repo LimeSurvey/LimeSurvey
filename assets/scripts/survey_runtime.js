@@ -117,6 +117,14 @@ function addHiddenField(theform,thename,thevalue)
     myel.value = thevalue;
 }
 
+/**
+ * Stop the propagation of an event.
+ * @deprecated No longer used by core templates, kept for custom themes. It
+ * blocks delegated click handlers on parent elements, use a 'change' event
+ * handler instead.
+ * @param {Event} eventObject The event to stop
+ * @return {void}
+ */
 function cancelBubbleThis(eventObject)
 {
     if (!eventObject) var eventObject = window.event;

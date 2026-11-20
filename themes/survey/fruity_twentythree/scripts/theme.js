@@ -1247,7 +1247,7 @@ exports["default"] = void 0;
  *
  * Pointer path: uses mousedown to capture pre-click checked state, then a
  * native capture click listener (so stopPropagation in inline onclick handlers
- * such as cancelBubbleThis cannot block it). The actual deselect is deferred
+ * of custom themes cannot block it). The actual deselect is deferred
  * via setTimeout so our checkconditions('') wins over any inline checkconditions
  * call with the previous value.
  *
@@ -1317,7 +1317,7 @@ var DeselectSinglechoiceScripts = function () {
     });
 
     // Pointer: native capture listener fires top-down before stopPropagation()
-    // in inline onclick handlers (e.g. cancelBubbleThis in image-select questions).
+    // in inline onclick handlers (e.g. in custom themes).
     document.addEventListener('click', function (e) {
       var radio = e.target;
       if (radio.tagName !== 'INPUT' || radio.type !== 'radio') {
