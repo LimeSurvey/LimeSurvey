@@ -302,7 +302,7 @@ class browser extends uploader {
             $this->errorMsg("This folder is being edited on another instance.");
         if (!dir::isWritable($dir))
             $this->errorMsg("Cannot delete the folder.");
-        $result = !dir::prune($dir, false);
+        $result = dir::prune($dir, false);
         if (is_array($result) && count($result))
             $this->errorMsg("Failed to delete {count} files/folders.",
                 array('count' => count($result)));

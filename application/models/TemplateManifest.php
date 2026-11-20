@@ -897,36 +897,71 @@ class TemplateManifest extends TemplateConfiguration
     }
 
     /**
+     * Whether every custom theme that extends $sOldName may be rewritten.
+     * Call this before the parent directory or database row is renamed.
+     * A denial here must cancel the whole rename: a later skip would leave that child
+     * pointing at a parent name that no longer exists.
+     *
+     * @param string $sOldName The previous name of the parent template
+     * @return bool
+     */
+    public static function childExtendsChangeAllowed($sOldName)
+    {
+        Yii::import('application.helpers.common_helper', true);
+        foreach (array_keys(self::themesExtending($sOldName, $sOldName)) as $sThemeName) {
+            if (!uploadPathChangeAllowed('themes/survey/' . $sThemeName, 'write')) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
      * Update the <extends> node in the manifest of every custom theme (installed or not)
      * that references $sOldName, so child themes keep resolving their renamed parent.
+     * Permission is decided by childExtendsChangeAllowed() before this runs.
      *
      * @param string $sOldName The previous name of the parent template
      * @param string $sNewName The new name of the parent template
      */
     public static function updateChildrenExtends($sOldName, $sNewName)
     {
+        Yii::import('application.helpers.common_helper', true);
+        foreach (self::themesExtending($sOldName, $sNewName) as $sThemeName => $sThemePath) {
+            $oManifest = self::getManifestDOM($sThemePath);
+            $childPath = 'themes/survey/' . $sThemeName;
+            self::changeExtendsInDom($oManifest, $sNewName);
+            if ($oManifest->save($sThemePath . '/config.xml')) {
+                dispatchUploadPathEvent('afterUploadPathChange', $childPath, ['action' => 'write']);
+            }
+        }
+    }
+
+    /**
+     * Custom theme directories whose manifest extends $sParentName.
+     *
+     * @param string $sParentName
+     * @param string $sSkipName Theme directory to ignore (the parent itself, before or after the rename)
+     * @return array<string, string> theme name => directory
+     */
+    private static function themesExtending($sParentName, $sSkipName)
+    {
         Yii::import('application.helpers.SurveyThemeHelper');
+        $themes = array();
         $aUserThemes = SurveyThemeHelper::getTemplateInFolder(Yii::app()->getConfig('userthemerootdir'));
         foreach ($aUserThemes as $sThemeName => $sThemePath) {
-            if ($sThemeName === $sNewName || !file_exists($sThemePath . '/config.xml')) {
+            if ($sThemeName === $sSkipName || !file_exists($sThemePath . '/config.xml')) {
                 continue;
             }
             $oManifest = self::getManifestDOM($sThemePath);
             $oConfig = $oManifest->getElementsByTagName('config')->item(0);
             $ometadata = $oConfig->getElementsByTagName('metadata')->item(0);
             $oExtendsNode = $ometadata->getElementsByTagName('extends')->item(0);
-            if ($oExtendsNode !== null && $oExtendsNode->nodeValue === $sOldName) {
-                $childPath = 'themes/survey/' . $sThemeName;
-                Yii::import('application.helpers.common_helper', true);
-                if (!uploadPathChangeAllowed($childPath, 'write')) {
-                    continue;
-                }
-                self::changeExtendsInDom($oManifest, $sNewName);
-                if ($oManifest->save($sThemePath . '/config.xml')) {
-                    dispatchUploadPathEvent('afterUploadPathChange', $childPath, ['action' => 'write']);
-                }
+            if ($oExtendsNode !== null && $oExtendsNode->nodeValue === $sParentName) {
+                $themes[$sThemeName] = $sThemePath;
             }
         }
+        return $themes;
     }
 
     /**

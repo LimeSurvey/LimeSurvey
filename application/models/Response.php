@@ -162,20 +162,39 @@ abstract class Response extends Dynamic
     public function deleteFiles()
     {
         $errors = array();
+        $pending = array();
+        $blocked = false;
         $uploaddir = Yii::app()->getConfig('uploaddir') . "/surveys/{$this->dynamicId}/files/";
         Yii::import('application.helpers.common_helper', true);
         foreach ($this->getFiles() as $fileInfo) {
             $basename = basename((string) $fileInfo['filename']);
             $relativePath = 'surveys/' . $this->dynamicId . '/files/' . $basename;
-            $result = uploadPathChangeAllowed($relativePath, 'delete', ['surveyId' => $this->dynamicId])
-                && @unlink($uploaddir . $basename);
-            if (!$result) {
+            $fullPath = $uploaddir . $basename;
+            if (!uploadPathChangeAllowed($relativePath, 'delete', ['surveyId' => $this->dynamicId])) {
                 $errors[] = $fileInfo['filename'];
-            } else {
-                dispatchUploadPathEvent('afterUploadPathChange', $relativePath, [
+                if (is_file($fullPath)) {
+                    $blocked = true;
+                }
+                continue;
+            }
+            $pending[] = array(
+                'filename' => $fileInfo['filename'],
+                'relativePath' => $relativePath,
+                'fullPath' => $fullPath,
+            );
+        }
+        // A veto on a file still on disk must keep every attachment: the response row stays and still references them.
+        if ($blocked) {
+            return $errors;
+        }
+        foreach ($pending as $file) {
+            if (@unlink($file['fullPath'])) {
+                dispatchUploadPathEvent('afterUploadPathChange', $file['relativePath'], [
                     'action' => 'delete',
                     'surveyId' => $this->dynamicId,
                 ]);
+            } else {
+                $errors[] = $file['filename'];
             }
         }
 

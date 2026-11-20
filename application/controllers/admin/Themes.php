@@ -701,6 +701,8 @@ JAVASCRIPT
                     App()->user->setFlash('error', sprintf(gT("Template could not be renamed to '%s'."), $sNewName) . " " . gT("A template with that name already exists."));
                 } elseif (!uploadPathChangeAllowed('themes/survey/' . $sNewName, 'rename', ['previousPath' => 'themes/survey/' . $sOldName])) {
                     App()->user->setFlash('error', sprintf(gT("Template could not be renamed to '%s'."), $sNewName));
+                } elseif (!TemplateManifest::childExtendsChangeAllowed($sOldName)) {
+                    App()->user->setFlash('error', sprintf(gT("Template could not be renamed to '%s'."), $sNewName));
                 } elseif (rename($sOldDirectoryPath, $sNewDirectoryPath) == false) {
                     App()->user->setFlash('error', sprintf(gT("Template could not be renamed to '%s'."), $sNewName) . " " . gT("Maybe you don't have permission."));
                 } else {
