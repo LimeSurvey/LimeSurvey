@@ -359,6 +359,16 @@ export const ImageEditor = ({
     (PREVIEW_AREA_WIDTH - 2 * previewBorderX) / Math.max(current.width, 1),
     (PREVIEW_AREA_HEIGHT - 2 * previewBorderY) / Math.max(current.height, 1)
   )
+  // The preview area is only as high as the image, so the file info follows
+  // right below it. A spacer at the end of the column takes the rest of the
+  // height, so the modal keeps its height. Until the image has loaded, the
+  // area keeps its full height for the loading and error messages.
+  const previewAreaHeight = isImageReady
+    ? Math.min(
+        Math.round(current.height * previewScale) + 2 * previewBorderY,
+        PREVIEW_AREA_HEIGHT
+      )
+    : PREVIEW_AREA_HEIGHT
 
   const update = (changes) => setCurrent((prev) => ({ ...prev, ...changes }))
 
@@ -482,7 +492,7 @@ export const ImageEditor = ({
               className="image-editor-preview-area d-flex align-items-start justify-content-center position-relative"
               style={{
                 width: PREVIEW_AREA_WIDTH,
-                height: PREVIEW_AREA_HEIGHT,
+                height: previewAreaHeight,
               }}
               {...(isMovable
                 ? {
@@ -581,6 +591,12 @@ export const ImageEditor = ({
                 )}
               </div>
             </div>
+            <div
+              className="flex-shrink-0"
+              style={{ height: PREVIEW_AREA_HEIGHT - previewAreaHeight }}
+              aria-hidden="true"
+              data-testid="image-editor-preview-spacer"
+            />
           </div>
           <div
             className="flex-grow-1 d-flex flex-column gap-4"
