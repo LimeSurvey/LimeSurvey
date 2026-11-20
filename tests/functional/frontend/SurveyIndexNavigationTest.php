@@ -54,8 +54,8 @@ class SurveyIndexNavigationTest extends TestBaseClassWeb
             $web->findElement(WebDriverBy::cssSelector('#navbar-toggler'))->click();
             $web->findElement(WebDriverBy::cssSelector('[data-navtargetid="index-dropdown"]'))->click();
 
-            // Click on menu option
-            $web->findElement(WebDriverBy::cssSelector('#main-dropdown a[href$="move=2"]'))->click();
+            // Click on menu option (button with the step to move to, see questionIndexHelper)
+            $web->findElement(WebDriverBy::cssSelector("#main-dropdown [data-limesurvey-submit='{ \"move\":2 }']"))->click();
 
             // Wait max 10 second to find the second group title
             $groupTitleDiv = self::$webDriver->wait(10)->until(
@@ -72,7 +72,7 @@ class SurveyIndexNavigationTest extends TestBaseClassWeb
             $web->findElement(WebDriverBy::cssSelector('[data-navtargetid="index-dropdown"]'))->click();
 
             //Click on menu option
-            $web->findElement(WebDriverBy::cssSelector('#main-dropdown a[href$="move=1"]'))->click();
+            $web->findElement(WebDriverBy::cssSelector("#main-dropdown [data-limesurvey-submit='{ \"move\":1 }']"))->click();
 
             // Wait max 10 second to find the second group title
             $groupTitleDiv = self::$webDriver->wait(10)->until(
