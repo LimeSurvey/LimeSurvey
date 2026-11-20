@@ -85,7 +85,6 @@ class ResponseAggregateBatchWhereTest extends TestCondition
     private function buildWhere(ResponseAggregateBatch $batch): array
     {
         $method = new ReflectionMethod(ResponseAggregateBatch::class, 'buildWhere');
-        $method->setAccessible(true);
 
         return $method->invoke($batch);
     }

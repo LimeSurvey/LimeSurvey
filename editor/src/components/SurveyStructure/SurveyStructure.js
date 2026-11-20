@@ -43,7 +43,6 @@ export const SurveyStructure = () => {
   const { setFocused, unFocus, focused } = useFocused()
   const {
     survey: { questionGroups = [], language, showWelcome, sid } = {},
-    survey,
     update,
   } = useSurvey(surveyId)
 
@@ -58,6 +57,7 @@ export const SurveyStructure = () => {
   )
 
   const [isSurveyActive] = useAppState(STATES.IS_SURVEY_ACTIVE, false)
+  const canModifyGroups = !isSurveyActive && hasSurveyUpdatePermission
   const [isDraggingOutOfGroup, setIsDraggingOutOfGroup] = useState(false)
   const [deleteGroupState, setDeleteGroupState] = useState({
     show: false,
@@ -66,8 +66,9 @@ export const SurveyStructure = () => {
   })
 
   const handleUpdate = (questionGroups) => {
-    survey.questionGroups = questionGroups
-    update({ ...survey })
+    // Only the groups: spreading this render's `survey` would write its older
+    // top-level fields back over the current cache
+    update({ questionGroups })
   }
 
   const handleClose = () => {
@@ -82,6 +83,7 @@ export const SurveyStructure = () => {
   }
 
   const handleGroupDeletion = (questionGroup, index) => {
+    if (!canModifyGroups) return
     setDeleteGroupState({ show: true, questionGroup, index })
   }
 
@@ -91,7 +93,7 @@ export const SurveyStructure = () => {
       deleteGroupState.questionGroup?.gid
     )
     const questionGroup = questionGroups[index]
-    if (!questionGroup) {
+    if (!canModifyGroups || !questionGroup) {
       setDeleteGroupState({ show: false, questionGroup: null, index: null })
       return
     }
@@ -202,8 +204,14 @@ export const SurveyStructure = () => {
         .questionGroupReorder()
         .update(props)
       addToBuffer(operation)
-      questionGroups[groupIndex].questions = reorderedQuestions
-      handleUpdate(questionGroups)
+      // New array and group objects, so the focus sync in
+      // EditorContextController sees the change.
+      const updatedQuestionGroups = [...questionGroups]
+      updatedQuestionGroups[groupIndex] = {
+        ...questionGroups[groupIndex],
+        questions: reorderedQuestions,
+      }
+      handleUpdate(updatedQuestionGroups)
       setFocused(movedQuestion, groupIndex, newIndex)
       return true
     }
@@ -216,30 +224,51 @@ export const SurveyStructure = () => {
       const sourceGroupIndex = Number(source.droppableId.replace('g', ''))
       const destGroupIndex = Number(destination.droppableId.replace('g', ''))
       // remove question from source and add it to destination group
-      const [sourceQuestions, [movedQuestion]] = arrayDeleteItem(
+      const [sourceQuestions, [removedQuestion]] = arrayDeleteItem(
         questionGroups[sourceGroupIndex].questions,
         source.index
       )
+      // The question and its subquestions now belong to the destination group.
+      const destGid = questionGroups[destGroupIndex].gid
+      const movedQuestion = {
+        ...removedQuestion,
+        gid: destGid,
+        ...(Array.isArray(removedQuestion.subquestions) && {
+          subquestions: removedQuestion.subquestions.map((subquestion) => ({
+            ...subquestion,
+            gid: destGid,
+          })),
+        }),
+      }
       const destQuestions = arrayInsertItem(
         questionGroups[destGroupIndex].questions,
         destination.index,
         movedQuestion
       )
 
-      //refresh both affected groups with new updated questions
-      questionGroups[sourceGroupIndex].questions = sourceQuestions
-      questionGroups[destGroupIndex].questions = destQuestions
+      // Refresh both affected groups. New array and group objects, so the
+      // focus sync in EditorContextController sees the change.
+      const updatedQuestionGroups = [...questionGroups]
+      updatedQuestionGroups[sourceGroupIndex] = {
+        ...questionGroups[sourceGroupIndex],
+        questions: sourceQuestions,
+      }
+      updatedQuestionGroups[destGroupIndex] = {
+        ...questionGroups[destGroupIndex],
+        questions: destQuestions,
+      }
 
       const operation = createBufferOperation()
         .questionGroupReorder()
-        .update(getReorganizedQuestionGroups(questionGroups))
+        .update(getReorganizedQuestionGroups(updatedQuestionGroups))
       addToBuffer(operation)
-      handleUpdate(questionGroups)
+      handleUpdate(updatedQuestionGroups)
       setFocused(movedQuestion, destGroupIndex, destination.index)
     }
   }
 
   const handleQuestionGroupDuplication = (questionGroup, index) => {
+    if (!canModifyGroups) return
     const duplicatedQuestionGroup = DuplicateQuestionGroup(questionGroup)
 
     const updatedQuestionGroups = InsertElementAndIncrementProperty(

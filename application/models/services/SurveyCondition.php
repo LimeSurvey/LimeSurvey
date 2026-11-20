@@ -391,6 +391,11 @@ class SurveyCondition
 
     /**
      * conditionScript action
+     *
+     * Stores the script as the question's relevance and deletes its conditions.
+     * The conditions are deleted even when the script equals the stored
+     * relevance: the relevance generated from the conditions can be submitted
+     * unchanged to replace them with a script.
      * @param int $qid the question id
      * @param string $script the custom script to be stored
      * @return void
@@ -398,7 +403,8 @@ class SurveyCondition
     public function conditionScript(int $qid, string $script)
     {
         $question = \Question::model()->findByPk($qid);
-        if ($script != $question->relevance) {
+        $hasConditions = \Condition::model()->exists('qid = :qid', [':qid' => $qid]);
+        if ($script != $question->relevance || $hasConditions) {
             $question->relevance = $script;
             $question->save();
             \Condition::model()->deleteRecords(array('qid' => $qid));

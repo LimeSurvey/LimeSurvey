@@ -3,6 +3,7 @@
 namespace LimeSurvey\Models\Services\QuestionAggregateService;
 
 use Question;
+use QuestionType;
 use QuestionAttribute;
 use Survey;
 use Answer;
@@ -37,6 +38,8 @@ class QuestionService
     private ProxySettingsUser $proxySettingsUser;
     private ProxyQuestion $proxyQuestion;
     private LSYii_Application $yiiApp;
+    /** @var array<string, string>|null Answer option layout per question type, see getAnswerOptionLayouts() */
+    private ?array $answerOptionLayouts = null;
 
     public function __construct(
         Question $modelQuestion,
@@ -280,11 +283,11 @@ class QuestionService
     }
 
     /**
-     * Method to store and filter data for editing a question
+     * Applies the edited data to a question and saves it.
      *
-     * @param Question $question
-     * @param array $data
-     * @return Question
+     * @param Question $question Question to update.
+     * @param array $data Changed question fields.
+     * @return Question The saved question.
      * @throws NotFoundException
      * @throws PersistErrorException
      */
@@ -296,11 +299,21 @@ class QuestionService
 
         $originalRelevance = $question->relevance;
         $originalTitle = $question->title;
-        if ($question->type !== ($data['type'] ?? $question->type)) {
-            $this->removeAnswersAndDependentConditions($question->qid);
-        }
+        $originalType = $question->type;
 
         $question->setAttributes($data, false);
+
+        if (
+            $question->type !== $originalType
+            && !$this->typeChangeKeepsAnswerOptions((string) $originalType, (string) $question->type)
+        ) {
+            if (!$question->validate()) {
+                throw new PersistErrorException(
+                    gT('Update failed, could not save.')
+                );
+            }
+            $this->removeAnswersAndDependentConditions($question->qid);
+        }
 
         if (!$question->save()) {
             throw new PersistErrorException(
@@ -375,20 +388,51 @@ class QuestionService
     }
 
     /**
-     * @param int $questionId
+     * Checks whether a type change keeps the answer options (same answer option layout).
+     *
+     * @param string $oldType Current type code.
+     * @param string $newType New type code.
+     * @return bool True if the answer options are kept.
+     */
+    private function typeChangeKeepsAnswerOptions(string $oldType, string $newType): bool
+    {
+        $layouts = $this->getAnswerOptionLayouts();
+        return isset($layouts[$oldType], $layouts[$newType])
+            && $layouts[$oldType] === $layouts[$newType];
+    }
+
+    /**
+     * Deletes the answer options of a question and the conditions on them.
+     *
+     * The relevance of each question that had such a condition is rebuilt from its remaining
+     * conditions, or reset to "1" when none are left.
+     *
+     * @param int $questionId Question ID.
      * @return void
      */
     private function removeAnswersAndDependentConditions($questionId)
     {
         $answers = Answer::model()->findAll('qid = :qid', [':qid' => $questionId]);
+        $conditionsByAnswer = [];
         $qids = [];
         foreach ($answers as $answer) {
             $conditions = Condition::model()->findAll(
                 'cqid = :qid and value = :title',
                 [':qid' => $questionId, ':title' => $answer->code]
             );
+            $conditionsByAnswer[$answer->aid] = $conditions;
             foreach ($conditions as $condition) {
                 $qids[$condition->qid] = true;
+            }
+        }
+
+        // Reset the relevance before deleting
+        foreach (array_keys($qids) as $qid) {
+            LimeExpressionManager::RevertUpgradeConditionsToRelevance(null, $qid);
+        }
+
+        foreach ($answers as $answer) {
+            foreach ($conditionsByAnswer[$answer->aid] as $condition) {
                 $condition->delete();
             }
             AnswerL10n::model()->deleteAll('aid = :aid', [':aid' => $answer->aid]);
@@ -480,6 +524,26 @@ class QuestionService
     {
         return $this->questionAttributeHelper
             ->getUserDefaultsForQuestionType($questionType);
+    }
+
+    /**
+     * Returns the answer option layout (answer scales and subquestions) of each type with answer options.
+     *
+     * A type change between types with the same layout keeps the answer options.
+     *
+     * @return array<string, string> Layout key indexed by question type code.
+     */
+    public function getAnswerOptionLayouts(): array
+    {
+        if ($this->answerOptionLayouts === null) {
+            $this->answerOptionLayouts = [];
+            foreach (QuestionType::modelsAttributes() as $type => $settings) {
+                if ($settings['answerscales'] > 0) {
+                    $this->answerOptionLayouts[$type] = $settings['answerscales'] . '-' . $settings['subquestions'];
+                }
+            }
+        }
+        return $this->answerOptionLayouts;
     }
 
     /**

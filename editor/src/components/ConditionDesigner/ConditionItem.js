@@ -23,7 +23,7 @@ export const ConditionItem = ({
   previousQuestions,
   updateCondition,
   removeCondition,
-  focused,
+  isFirstQuestion,
   survey,
   isUpdateAction,
 }) => {
@@ -73,7 +73,7 @@ export const ConditionItem = ({
           index={index}
           condition={condition}
           updateCondition={updateCondition}
-          focused={focused}
+          isFirstQuestion={isFirstQuestion}
         />
 
         <div className="mb-4">

@@ -971,6 +971,8 @@ class ParticipantsAction extends SurveyCommonAction
      * Requires global 'participantpanel' 'import' permission. Existing participants are only
      * overwritten if Participant::userHasPermissionToEdit() allows it, and core participant
      * columns (owner_uid, created_by, ...) are never accepted as mapped attribute names.
+     * Existing participants the user may not edit are reported separately when an overwrite was requested.
+     *
      * @return void
      */
     public function uploadCSV()
@@ -991,6 +993,7 @@ class ParticipantsAction extends SurveyCommonAction
         $overwritten = 0;
         $dupreason = "nameemail"; //Default duplicate comparison method
         $duplicatelist = array();
+        $noPermissionList = array();
         $invalidemaillist = array();
         $invalidformatlist = array();
         $invalidattribute = array();
@@ -1153,11 +1156,14 @@ class ParticipantsAction extends SurveyCommonAction
                     $recordcount++;
                     continue;
                 }
+                $noPermissionForExisting = false;
                 if (!empty($existingParticipant)) {
                     $thisduplicate = 1;
                     $dupcount++;
-                    // Only overwrite existing participants the user is allowed to edit
-                    if ($overwrite == "true" && $existingParticipant->userHasPermissionToEdit()) {
+                    if ($overwrite == "true" && !$existingParticipant->userHasPermissionToEdit()) {
+                        // The user requested an overwrite but may not edit this participant (no global update permission, not the owner and no editable share)
+                        $noPermissionForExisting = true;
+                    } elseif ($overwrite == "true") {
                         // We want all the non filtering internal attributes to be updated,too
                         // Note: Only language and blacklisted, never ownership or other core columns
                         foreach ($writearray as $attribute => $value) {
@@ -1189,7 +1195,12 @@ class ParticipantsAction extends SurveyCommonAction
                 }
                 if ($thisduplicate == 1) {
                     $dupfound = true;
-                    $duplicatelist[] = CHtml::encode($writearray['firstname'] . " " . $writearray['lastname'] . " (" . $writearray['email'] . ")");
+                    $duplicateLabel = CHtml::encode($writearray['firstname'] . " " . $writearray['lastname'] . " (" . $writearray['email'] . ")");
+                    if ($noPermissionForExisting) {
+                        $noPermissionList[] = $duplicateLabel;
+                    } else {
+                        $duplicatelist[] = $duplicateLabel;
+                    }
                 }
 
                 //Checking the email address is in a valid format
@@ -1280,6 +1291,7 @@ class ParticipantsAction extends SurveyCommonAction
         $aData = array();
         $aData['recordcount'] = $recordcount - 1;
         $aData['duplicatelist'] = $duplicatelist;
+        $aData['noPermissionList'] = $noPermissionList;
         $aData['mincriteria'] = $mincriteria;
         $aData['imported'] = $imported;
         $aData['errorinupload'] = $errorinupload;

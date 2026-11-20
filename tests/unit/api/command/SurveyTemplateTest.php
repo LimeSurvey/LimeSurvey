@@ -340,9 +340,6 @@ class SurveyTemplateTest extends TestBaseClass
             SurveyLanguageSetting::model()
         );
         $method = new ReflectionMethod(SurveyTemplate::class, 'getTrustedBaseUrl');
-        if (PHP_VERSION_ID < 80100) {
-            $method->setAccessible(true);
-        }
         return $method->invoke($command);
     }
 }
