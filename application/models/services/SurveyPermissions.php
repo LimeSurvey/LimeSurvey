@@ -266,7 +266,7 @@ class SurveyPermissions
 
         $userGroups = \UserGroup::model()->findAll($criteria);
 
-        $authorizedGroupsList = getUserGroupList();
+        $authorizedGroupsList = \UserGroup::model()->getAuthorizedGroupIds();
         $simpleugidarray = [];
         $index = 0;
         foreach ($userGroups as $userGroup) {
@@ -395,7 +395,7 @@ class SurveyPermissions
     public function getUserGroupNames($userid, $usercontrolSameGroupPolicy)
     {
         $group_names = [];
-        $authorizedGroupsList = getUserGroupList();
+        $authorizedGroupsList = \UserGroup::model()->getAuthorizedGroupIds();
         /** @var \UserInGroup[] */
         $userInGroups = \UserInGroup::model()->with('users')->findAll('users.uid = :uid', array(':uid' => $userid));
         foreach ($userInGroups as $userGroup) {
