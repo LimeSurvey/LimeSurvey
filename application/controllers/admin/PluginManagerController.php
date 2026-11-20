@@ -16,6 +16,7 @@ use LimeSurvey\ExtensionInstaller\FileFetcherUploadZip;
 use LimeSurvey\ExtensionInstaller\PluginInstaller;
 use LimeSurvey\Menu\Menu;
 use LimeSurvey\Menu\MenuItem;
+use LimeSurvey\PluginManager\PasswordSettingMask;
 
 /**
  * @todo Apply new permission 'extensions' instead of 'settings'.
@@ -292,8 +293,11 @@ class PluginManagerController extends SurveyCommonAction
     }
 
     /**
-     * Configure for plugin
-     * @param int $id
+     * Shows the overview and the settings of a plugin and saves the settings when they are submitted.
+     * Stored passwords are not sent to the form, see PasswordSettingMask.
+     *
+     * @param int $id ID of the plugin to configure
+     * @return void
      */
     public function configure($id)
     {
@@ -344,6 +348,15 @@ class PluginManagerController extends SurveyCommonAction
             foreach (array_keys($aSettings) as $name) {
                 $aSave[$name] = App()->request->getPost($name, null);
             }
+            // The form shows a placeholder instead of a stored password: Keep the stored one if it comes back.
+            // A plugin can leave settings out when it returns the current values (AuthLDAP hides the ones
+            // of the other LDAP mode): Those keep their definition, so their type is still known.
+            if (PasswordSettingMask::containsPlaceholder($aSave)) {
+                $aSave = PasswordSettingMask::restore(
+                    $aSave,
+                    array_replace($aSettings, $oPluginObject->getPluginSettings())
+                );
+            }
             $oPluginObject->saveSettings($aSave);
             Yii::app()->user->setFlash('success', gT('The plugin settings were saved.'));
             if (App()->request->getPost('redirect')) {
@@ -351,8 +364,8 @@ class PluginManagerController extends SurveyCommonAction
             }
         }
 
-        // Prepare settings to be send to the view.
-        $aSettings = $oPluginObject->getPluginSettings();
+        // Prepare settings to be send to the view, stored passwords must not reach the browser.
+        $aSettings = PasswordSettingMask::mask($oPluginObject->getPluginSettings());
         // Add button if permission
         $aButtons = array();
         if (Permission::model()->hasGlobalPermission('settings', 'update')) {
