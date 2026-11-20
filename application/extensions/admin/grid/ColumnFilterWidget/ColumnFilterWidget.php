@@ -87,11 +87,11 @@ class ColumnFilterWidget extends CWidget
         if ($this->organize) {
             App()->getClientScript()->registerPackage('sortablejs');
             App()->getClientScript()->registerCssFile(
-                App()->getConfig("extensionsurl") . 'admin/grid/ColumnFilterWidget/assets/columns_organize.css'
+                App()->getAssetManager()->publish(dirname(__FILE__) . '/assets/columns_organize.css')
             );
             App()->getClientScript()->registerScriptFile(
-                App()->getConfig("extensionsurl") . 'admin/grid/ColumnFilterWidget/assets/columns_organize.js',
-                CClientScript::POS_END
+            App()->getAssetManager()->publish(dirname(__FILE__) . '/assets/columns_organize.js'),
+            CClientScript::POS_END
             );
             return;
         }
