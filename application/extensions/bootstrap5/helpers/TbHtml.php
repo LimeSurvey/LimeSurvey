@@ -4590,10 +4590,23 @@ EOD;
         $closeOptions['class'] = 'btn-close';
         $headingOptions = TbArray::popValue('headingOptions', $htmlOptions, array());
         $closeLabel = TbArray::popValue('closeLabel', $htmlOptions, self::CLOSE_TEXT);
+        // The close button only shows an icon: it needs an accessible name
+        TbArray::defaultValue('aria-label', gT('Close'), $closeOptions);
         $closeButton = self::closeButton($closeLabel, $closeOptions);
         self::addCssClass('modal-title', $headingOptions);
-        $header = self::tag('h5', $headingOptions, $content);
-        return self::tag('div', $htmlOptions, $header . $closeButton);
+        // The modal title is a level 2 heading (below the page title) that keeps the look of the former h5
+        self::addCssClass('h5', $headingOptions);
+        $header = self::tag('h2', $headingOptions, $content);
+        // Only read as part of the dialog name ("…, Dialog"), see /layouts/partial_modals/modal_header.php
+        $dialogHint = '';
+        if (!empty($headingOptions['id'])) {
+            $dialogHint = self::tag(
+                'span',
+                array('class' => 'visually-hidden', 'id' => $headingOptions['id'] . '-dialogsr', 'aria-hidden' => 'true'),
+                gT('Dialog')
+            );
+        }
+        return self::tag('div', $htmlOptions, $header . $dialogHint . $closeButton);
     }
 
     /**
