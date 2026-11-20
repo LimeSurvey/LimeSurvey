@@ -117,6 +117,17 @@ export const RowQuestionsList = ({
     unFocus()
     setDeleteState({ show: false, index: null })
   }
+
+  // Built here, not in the Droppable or Draggable render functions: The drag
+  // library runs those again when a drag starts and on every pointer move,
+  // and new callbacks would make the memoized rows render again each time.
+  const questionRows = questions.map((question, index) => ({
+    question,
+    duplicateQuestion: () => duplicateQuestion(question, index),
+    deleteQuestion: () => deleteQuestion(index),
+    assignNumericAnswerCodes: (q) => assignNumericAnswerCodes(q, index),
+  }))
+
   return (
     <>
       <ConfirmModal
@@ -130,7 +141,6 @@ export const RowQuestionsList = ({
         confirmButtonText={t('Delete')}
       />
       <Droppable
-        key={`g${groupIndex}-${questions?.length}`}
         droppableId={`g${groupIndex}`}
         type="question"
         direction="vertical"
@@ -141,49 +151,41 @@ export const RowQuestionsList = ({
             ref={provided.innerRef}
             className="group"
           >
-            {questions.map((question, index) => {
-              return (
-                <Draggable
-                  key={`g${groupIndex}_q${index}_${question.qid}`}
-                  draggableId={`g${groupIndex}_q${index}`}
-                  index={index}
-                >
-                  {(provided, snapshot) => (
-                    <div
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      style={getQuestionDragStyle(
-                        provided.draggableProps.style
-                      )}
-                      data-sortorder={question.sortOrder}
-                      className={classNames({
-                        'focus-element': snapshot.isDragging,
-                      })}
-                    >
-                      <RowQuestion
-                        question={question}
-                        language={language}
-                        provided={provided}
-                        duplicateQuestion={() =>
-                          duplicateQuestion(question, index)
-                        }
-                        deleteQuestion={() => deleteQuestion(index)}
-                        groupIndex={groupIndex}
-                        questionIndex={index}
-                        focused={focused}
-                        snapshot={snapshot}
-                        isSurveyActive={isSurveyActive}
-                        assignNumericAnswerCodes={(q) =>
-                          assignNumericAnswerCodes(q, index)
-                        }
-                        areCodesVisible={areCodesVisible}
-                        toggleQuestionCodes={toggleQuestionCodes}
-                      />
-                    </div>
-                  )}
-                </Draggable>
-              )
-            })}
+            {questionRows.map(({ question, ...rowProps }, index) => (
+              // Keyed by the question, not its position: A reorder moves the
+              // existing rows instead of rebuilding them.
+              <Draggable
+                key={question.qid}
+                draggableId={`question-${question.qid}`}
+                index={index}
+              >
+                {(provided, snapshot) => (
+                  <div
+                    ref={provided.innerRef}
+                    {...provided.draggableProps}
+                    style={getQuestionDragStyle(provided.draggableProps.style)}
+                    data-sortorder={question.sortOrder}
+                    className={classNames({
+                      'focus-element': snapshot.isDragging,
+                    })}
+                  >
+                    <RowQuestion
+                      {...rowProps}
+                      question={question}
+                      language={language}
+                      dragHandleProps={provided.dragHandleProps}
+                      groupIndex={groupIndex}
+                      questionIndex={index}
+                      focused={focused}
+                      snapshot={snapshot}
+                      isSurveyActive={isSurveyActive}
+                      areCodesVisible={areCodesVisible}
+                      toggleQuestionCodes={toggleQuestionCodes}
+                    />
+                  </div>
+                )}
+              </Draggable>
+            ))}
             {provided.placeholder}
             {questions.length === 0 && (
               <div>{t('Question group is empty.')}</div>

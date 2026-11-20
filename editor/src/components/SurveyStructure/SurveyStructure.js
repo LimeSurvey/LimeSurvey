@@ -340,6 +340,23 @@ export const SurveyStructure = () => {
     }
   }
 
+  // Built here, not in the Droppable or Draggable render functions: The drag
+  // library runs those again when a drag starts and on every pointer move,
+  // and new callbacks would make the memoized rows render again each time.
+  const groupRows = questionGroups.map((questionGroup, index) => ({
+    // Keyed by the group, not its position: A reorder moves the existing rows
+    // instead of rebuilding them.
+    key: `questionGroupStructure-${questionGroup.appKey || questionGroup.gid}`,
+    questionGroup,
+    update: (updatedGroup) => handleUpdateQuestionGroup(updatedGroup, index),
+    duplicateGroup: () => handleQuestionGroupDuplication(questionGroup, index),
+    deleteGroup: () => handleGroupDeletion(questionGroup, index),
+    onTitleClick: () => {
+      scrollToElement(`question-group-${questionGroup.gid}`)
+      setFocused({ ...questionGroup }, index)
+    },
+  }))
+
   return (
     <div
       data-testid="editor-structure-panel"
@@ -406,53 +423,34 @@ export const SurveyStructure = () => {
                         : 'auto',
                   }}
                 >
-                  {questionGroups.map((questionGroup, index) => (
-                    <Draggable
-                      index={index}
-                      key={`questionGroupStructure-${index}-${questionGroup.gid}`}
-                      draggableId={`questionGroupStructure-${index}`}
-                    >
-                      {(provided, snapshot) => (
-                        <div
-                          data-ordervalue={questionGroup.sortOrder}
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          style={getQuestionGroupDragStyle(
-                            provided.draggableProps.style
-                          )}
-                          className={classNames({
-                            'focus-element': snapshot.isDragging,
-                          })}
-                        >
-                          <RowQuestionGroup
-                            provided={provided}
-                            questionGroup={questionGroup}
-                            language={language}
-                            update={(questionGroup) =>
-                              handleUpdateQuestionGroup(questionGroup, index)
-                            }
-                            duplicateGroup={() =>
-                              handleQuestionGroupDuplication(
-                                questionGroup,
-                                index
-                              )
-                            }
-                            deleteGroup={() =>
-                              handleGroupDeletion(questionGroup, index)
-                            }
-                            onTitleClick={() => {
-                              scrollToElement(
-                                `question-group-${questionGroup.gid}`
-                              )
-                              setFocused({ ...questionGroup }, index)
-                            }}
-                            groupIndex={index}
-                            isSurveyActive={isSurveyActive}
-                          />
-                        </div>
-                      )}
-                    </Draggable>
-                  ))}
+                  {groupRows.map(
+                    ({ key, questionGroup, ...rowProps }, index) => (
+                      <Draggable index={index} key={key} draggableId={key}>
+                        {(provided, snapshot) => (
+                          <div
+                            data-ordervalue={questionGroup.sortOrder}
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            style={getQuestionGroupDragStyle(
+                              provided.draggableProps.style
+                            )}
+                            className={classNames({
+                              'focus-element': snapshot.isDragging,
+                            })}
+                          >
+                            <RowQuestionGroup
+                              {...rowProps}
+                              dragHandleProps={provided.dragHandleProps}
+                              questionGroup={questionGroup}
+                              language={language}
+                              groupIndex={index}
+                              isSurveyActive={isSurveyActive}
+                            />
+                          </div>
+                        )}
+                      </Draggable>
+                    )
+                  )}
                   {provided.placeholder}
                 </div>
               )}

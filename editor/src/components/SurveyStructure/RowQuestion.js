@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { memo, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import classNames from 'classnames'
 
@@ -20,10 +20,15 @@ import { QuestionListIcon } from 'components/icons'
 
 import { SurveyLogicModal } from './SurveyLogicModal'
 
-export const RowQuestion = ({
+/**
+ * Structure row of a question. Memoized: The drag library renders a dragged
+ * row again on every pointer move (and a displaced one whenever it shifts),
+ * and this skips that work as long as the props stay the same.
+ */
+export const RowQuestion = memo(function RowQuestion({
   question,
   language,
-  provided,
+  dragHandleProps,
   duplicateQuestion,
   deleteQuestion,
   groupIndex,
@@ -34,7 +39,7 @@ export const RowQuestion = ({
   assignNumericAnswerCodes,
   areCodesVisible = false,
   toggleQuestionCodes,
-}) => {
+}) {
   const { setFocused } = useFocused()
   const { surveyId } = useParams()
   const { subscribeToOperationFinish } = useOperationCallback()
@@ -140,7 +145,7 @@ export const RowQuestion = ({
     >
       <SideBarRow
         titlePlaceholder={t("What's your question?")}
-        provided={provided}
+        provided={{ dragHandleProps }}
         menuToggleId="meatball-menu-button"
         title={question.l10ns[language]?.question}
         isFocused={focused?.qid === question?.qid}
@@ -223,4 +228,4 @@ export const RowQuestion = ({
       />
     </div>
   )
-}
+})

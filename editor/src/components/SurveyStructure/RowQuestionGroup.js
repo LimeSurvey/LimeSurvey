@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { memo, useState } from 'react'
 import { useParams } from 'react-router-dom'
 
 import { SideBarRow } from 'components/SideBar/SideBarRow'
@@ -9,18 +9,24 @@ import { useAppState, useFocused } from 'hooks'
 
 import { SurveyLogicModal } from './SurveyLogicModal'
 
-export const RowQuestionGroup = ({
+/**
+ * Structure row of a question group with its question list. Memoized: The
+ * drag library renders a dragged row again on every pointer move (and a
+ * displaced one whenever it shifts), and this skips re-rendering the whole
+ * question list as long as the props stay the same.
+ */
+export const RowQuestionGroup = memo(function RowQuestionGroup({
   questionGroup: { l10ns = {}, questions = [], gid },
   questionGroup = {},
   language,
   update,
-  provided,
+  dragHandleProps,
   duplicateGroup,
   deleteGroup,
   groupIndex,
   onTitleClick = () => {},
   isSurveyActive,
-}) => {
+}) {
   const { setFocused, focused } = useFocused()
   const { surveyId } = useParams()
   const [showLogicModal, setShowLogicModal] = useState(false)
@@ -55,7 +61,7 @@ export const RowQuestionGroup = ({
         testId={`survey-structure-question-group`}
         title={title}
         titlePlaceholder={t('What is your question group about?')}
-        provided={provided}
+        provided={{ dragHandleProps }}
         icon={<ClipBoardIcon />}
         isQuestionGroup={true}
         menuId="group-meatball-menu"
@@ -93,4 +99,4 @@ export const RowQuestionGroup = ({
       />
     </>
   )
-}
+})

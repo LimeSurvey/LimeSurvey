@@ -4,7 +4,7 @@ import 'tests/mocks'
 import { act } from 'react'
 import { renderWithProviders } from 'tests/testUtils'
 import { SurveyStructure } from './SurveyStructure'
-import { screen, waitFor } from '@testing-library/react'
+import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import surveyData from 'helpers/data/survey-detail.json'
 import { queryClient } from 'queryClient'
@@ -34,6 +34,18 @@ const setAppState = (key, value) =>
 
 const getAllGroupsContainer = () =>
   document.querySelector('[data-rfd-droppable-id="all-groups"]')
+
+const getGroupRows = () =>
+  screen.getAllByTestId('survey-structure-question-group')
+
+const dropItem = (type, droppableId, fromIndex, toIndex) =>
+  act(() => {
+    mockDragDropContextProps.onDragEnd({
+      type,
+      source: { droppableId, index: fromIndex },
+      destination: { droppableId, index: toIndex },
+    })
+  })
 
 describe('SurveyStructure', () => {
   const Survey = surveyData.survey
@@ -113,5 +125,43 @@ describe('SurveyStructure', () => {
     })
 
     expect(getAllGroupsContainer()).toHaveStyle({ cursor: 'auto' })
+  })
+
+  test('A group expanded by hand stays expanded after it is moved', async () => {
+    await renderWithProviders(<SurveyStructure />)
+    const movedGroupName = Survey.questionGroups[2].l10ns.en.groupName
+    const toggler = within(getGroupRows()[2]).getByTestId(
+      'sidebar-row-toggler-button'
+    )
+    await userEvent.click(toggler)
+    expect(toggler).toHaveAttribute('aria-expanded', 'true')
+
+    await dropItem('group', 'all-groups', 2, 0)
+
+    const firstRow = getGroupRows()[0]
+    expect(firstRow).toHaveTextContent(movedGroupName)
+    expect(
+      within(firstRow).getByTestId('sidebar-row-toggler-button')
+    ).toHaveAttribute('aria-expanded', 'true')
+
+    await dropItem('group', 'all-groups', 0, 2)
+  })
+
+  test('Reordering questions moves the existing rows instead of rebuilding them', async () => {
+    await renderWithProviders(<SurveyStructure />)
+    await userEvent.click(
+      within(getGroupRows()[0]).getByTestId('sidebar-row-toggler-button')
+    )
+    const getQuestionRows = () =>
+      within(
+        document.querySelector('[data-rfd-droppable-id="g0"]')
+      ).getAllByTestId('sidebar-row-question')
+    const [firstRow] = getQuestionRows()
+
+    await dropItem('question', 'g0', 0, 2)
+
+    expect(getQuestionRows()[2]).toBe(firstRow)
+
+    await dropItem('question', 'g0', 2, 0)
   })
 })

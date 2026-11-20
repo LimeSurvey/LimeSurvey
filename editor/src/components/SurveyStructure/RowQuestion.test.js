@@ -39,7 +39,6 @@ const setup = async (props = {}) => {
     <RowQuestion
       question={question}
       language="en"
-      provided={{}}
       snapshot={{}}
       focused={{}}
       areCodesVisible
@@ -301,14 +300,12 @@ describe('RowQuestion menu', () => {
         <RowQuestion
           question={question}
           language="en"
-          provided={{}}
           snapshot={{}}
           focused={{}}
         />
         <RowQuestion
           question={{ ...question, qid: 2 }}
           language="en"
-          provided={{}}
           snapshot={{}}
           focused={{}}
         />
