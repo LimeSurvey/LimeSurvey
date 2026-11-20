@@ -43,6 +43,7 @@ class ParticipantResolver
      *     participants (no token column), and must not be filtered by them.
      * @param array<string,string> $kinds KIND_* per column; columns left out
      *     are treated as text.
+     * @psalm-suppress RedundantCastGivenDocblockType Column names can be integers at runtime
      */
     public function __construct(array $attributes, bool $anonymized = false, array $kinds = [])
     {
@@ -72,6 +73,7 @@ class ParticipantResolver
         }
 
         $table = \App()->db->schema->getTable($survey->tokensTableName);
+        /** @psalm-suppress DocblockTypeContradiction getTable() returns null when the table does not exist */
         if ($table === null) {
             return new self([]);
         }
@@ -90,6 +92,10 @@ class ParticipantResolver
     /**
      * Text columns are matched with LIKE; PostgreSQL has no LIKE for integers
      * or dates, so those need a different comparison or none at all.
+     *
+     * @param \CDbColumnSchema $column
+     * @return string One of the KIND_* constants
+     * @psalm-suppress RedundantCastGivenDocblockType The cast protects preg_match() from an unset type
      */
     private static function kindOf(\CDbColumnSchema $column): string
     {

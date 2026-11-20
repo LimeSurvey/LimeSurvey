@@ -236,6 +236,7 @@ final class ResponseAggregateBatch
                 $value = $row[$alias] ?? 0;
                 // Counts come back as whole numbers; KIND_SUM may be fractional.
                 // "+ 0" yields an int or float, preserving decimal precision.
+                /** @psalm-suppress InvalidOperand The numeric string is converted on purpose */
                 $this->results[$alias] = is_numeric($value) ? $value + 0 : 0;
             }
         }
@@ -276,6 +277,7 @@ final class ResponseAggregateBatch
             $rows = $db->createCommand(implode(' UNION ALL ', $chunk))->queryAll(true, $chunkParams);
             foreach ($rows as $row) {
                 $value = $row['median'] ?? 0;
+                /** @psalm-suppress InvalidOperand The numeric string is converted on purpose */
                 $this->results[$row['alias']] = is_numeric($value) ? $value + 0 : 0;
             }
         }
@@ -426,6 +428,14 @@ final class ResponseAggregateBatch
         }
     }
 
+    /**
+     * Whether the response column is stored as json.
+     *
+     * @param string $field Column name
+     * @return bool
+     * @psalm-suppress RedundantConditionGivenDocblockType getColumn() returns null for an unknown column
+     * @psalm-suppress RedundantCastGivenDocblockType The cast protects preg_match() from an unset type
+     */
     private function isJsonColumn(string $field): bool
     {
         $column = \Response::model($this->surveyId)->getTableSchema()->getColumn($field);
@@ -502,6 +512,7 @@ final class ResponseAggregateBatch
      * The statistics sidebar's own filters, which inline their values.
      *
      * @return string[]
+     * @psalm-suppress RiskyCast minId and maxId are integers
      */
     private function legacyConditions(): array
     {
@@ -524,7 +535,7 @@ final class ResponseAggregateBatch
             $conditions[] = 'id <= ' . (int)$filters['maxId'];
         }
 
-        if (!empty($filters['search'])) {
+        if (!empty($filters['search']) && is_array($filters['search'])) {
             $conditions = array_merge($conditions, $this->buildSearchConditions($filters['search']));
         }
 
@@ -539,6 +550,7 @@ final class ResponseAggregateBatch
      *
      * @param string[] $terms
      * @return string[]
+     * @psalm-suppress RedundantCastGivenDocblockType Search terms can be numbers at runtime
      */
     private function buildSearchConditions(array $terms): array
     {

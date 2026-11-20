@@ -36,6 +36,7 @@ class ExportSurveyResultsService
         'refurl'        => ['key' => 'refUrl',         'header' => 'Referrer URL'],
     ];
 
+    /** @var string[] The export types this service can write */
     protected $supportedExportTypes = ['csv', 'html'];
 
     /**
@@ -152,8 +153,9 @@ class ExportSurveyResultsService
     }
 
     /**
-     * @param int $chunkSize
+     * @param mixed $chunkSize Number of responses per chunk, must be a positive integer
      * @return $this
+     * @throws InvalidArgumentException If $chunkSize is not a positive integer
      */
     public function setChunkSize($chunkSize)
     {
@@ -282,13 +284,14 @@ class ExportSurveyResultsService
      */
     protected function exportResponsesInChunks($surveyId, $exportType, array $metadata)
     {
-        $language = $metadata['language'] ?? $this->loadedSurvey->language;
+        $survey = $this->getLoadedSurvey();
+        $language = $metadata['language'] ?? $survey->language;
         // gT() calls (headers, Yes/No labels) follow the app language
         App()->setLanguage($language);
 
         // Generate field map for questions (do this once)
         // force_refresh = true to bypass stale session-cached field maps
-        $fieldMap = createFieldMap($this->loadedSurvey, 'full', true, false, $language);
+        $fieldMap = createFieldMap($survey, 'full', true, false, $language);
         $this->encryptedAttributes = array_keys(array_filter($fieldMap, function ($field) {
             return ($field['encrypted'] ?? 'N') === 'Y';
         }));
@@ -305,7 +308,7 @@ class ExportSurveyResultsService
         $surveyQuestions = $this->getQuestionFieldMap();
 
         // Add timing columns if enabled
-        $hasTimings = $this->loadedSurvey->savetimings == "Y"
+        $hasTimings = $survey->savetimings == "Y"
             && (tableExists("survey_{$surveyId}_timings") || tableExists("timings_{$surveyId}"));
         $timingFieldKeys = [];
         if ($hasTimings) {
@@ -387,6 +390,7 @@ class ExportSurveyResultsService
     /**
      * @param array $filters
      * @param array $validColumns Real response table columns
+     * @return void
      * @throws InvalidArgumentException If a filter is malformed or unsupported
      */
     public function validateFilters(array $filters, array $validColumns)
@@ -401,7 +405,7 @@ class ExportSurveyResultsService
     /**
      * Builds the filter criteria using the same FilterPatcher the responses list uses.
      *
-     * @return \LSDbCriteria|null Null when there are no filters
+     * @return \CDbCriteria|null Null when there are no filters
      */
     public function buildFilterCriteria()
     {
@@ -507,7 +511,7 @@ class ExportSurveyResultsService
                 $this->overrideDateFields($response, $chunk[$index]->attributes);
             }
 
-            if (isset($response['answers'])) {
+            if (is_array($response) && isset($response['answers'])) {
                 foreach ($response['answers'] as &$answer) {
                     $key = $answer['key'] ?? null;
                     if ($key !== null && isset($surveyQuestions[$key])) {
@@ -558,8 +562,9 @@ class ExportSurveyResultsService
      *
      * @param array $response
      * @param array $rawAttributes
+     * @return void
      */
-    private function overrideDateFields(array &$response, array $rawAttributes)
+    private function overrideDateFields(array &$response, array $rawAttributes): void
     {
         $dummyDate = '1980-01-01 00:00:00';
 
@@ -585,8 +590,9 @@ class ExportSurveyResultsService
      * @param array $response
      * @param array $timingsData Timing data indexed by response ID
      * @param array $timingFieldKeys
+     * @return void
      */
-    private function mergeTimingData(array &$response, array $timingsData, array $timingFieldKeys)
+    private function mergeTimingData(array &$response, array $timingsData, array $timingFieldKeys): void
     {
         if (empty($timingsData)) {
             return;
@@ -605,6 +611,20 @@ class ExportSurveyResultsService
     }
 
     /**
+     * Returns the survey loaded for the current export.
+     *
+     * @return Survey
+     * @throws RuntimeException If no survey was loaded yet
+     */
+    private function getLoadedSurvey()
+    {
+        if ($this->loadedSurvey === null) {
+            throw new RuntimeException('No survey loaded for the export.');
+        }
+        return $this->loadedSurvey;
+    }
+
+    /**
      * Generate timing field map entries for export headers and data mapping.
      *
      * @param string|null $language
@@ -612,13 +632,14 @@ class ExportSurveyResultsService
      */
     protected function getTimingFieldMap($language = null)
     {
-        $surveyId = $this->loadedSurvey->sid;
+        $survey = $this->getLoadedSurvey();
+        $surveyId = $survey->sid;
         $timingsFieldMap = createTimingsFieldMap(
             $surveyId,
             'full',
             true,
             false,
-            $language ?? $this->loadedSurvey->language
+            $language ?? $survey->language
         );
 
         $result = [];
