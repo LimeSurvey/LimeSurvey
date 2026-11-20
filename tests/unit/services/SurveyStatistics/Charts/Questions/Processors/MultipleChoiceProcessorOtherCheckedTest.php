@@ -38,6 +38,7 @@ class MultipleChoiceProcessorOtherCheckedTest extends TestBaseClass
         $aliasOther = $batch->countAnyNonEmpty([$rt . '_Cother', $rt . '_Cotherchecked']);
         $this->injectBatchResults($batch, [$aliasOther => 4]);
         $this->assertSame(4, $other['value']());
+        $this->assertSame([], $other['otherAnswers']());
     }
 
     /**

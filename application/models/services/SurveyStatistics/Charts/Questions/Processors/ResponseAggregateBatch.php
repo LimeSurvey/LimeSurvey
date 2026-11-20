@@ -3,6 +3,9 @@
 namespace LimeSurvey\Models\Services\SurveyStatistics\Charts\Questions\Processors;
 
 use CDbConnection;
+use Exception;
+use LSActiveRecord;
+use PDO;
 use LimeSurvey\Models\Services\ResponseFilters\ResolvedFilter;
 use LimeSurvey\Models\Services\ResponseFilters\ResponseFilterSqlBuilder;
 use LimeSurvey\Models\Services\SurveyStatistics\StatisticsResponseFilters;
@@ -309,6 +312,63 @@ final class ResponseAggregateBatch
                 . ' FROM (' . $inner . ') median_values',
             $whereParams,
         ];
+    }
+
+    /**
+     * Distinct non-empty values of a text column with how often each occurs,
+     * most frequent first (e.g. the free-text "other" answers).
+     *
+     * @return array<int, array{text: string, count: int}>
+     */
+    public function groupedValueCounts(string $field, bool $encrypted = false): array
+    {
+        $db = $this->getDb();
+        $table = $db->quoteTableName('{{responses_' . $this->surveyId . '}}');
+        $col = $db->quoteColumnName($field);
+        $nonEmpty = $this->nonEmptyCheck($db, $field, false);
+        [$where, $whereParams] = $this->buildWhere();
+        $where = $where === '' ? " WHERE $nonEmpty" : "$where AND $nonEmpty";
+
+        $reader = $db->createCommand(
+            "SELECT $col FROM $table$where ORDER BY " . $db->quoteColumnName('id')
+        )->query($whereParams);
+        $reader->setFetchMode(PDO::FETCH_COLUMN, 0);
+
+        $groups = [];
+        foreach ($reader as $value) {
+            $text = trim($encrypted ? $this->decryptOrKeep((string)$value) : (string)$value);
+            if ($text === '') {
+                continue;
+            }
+            $key = mb_strtolower($text);
+            if (isset($groups[$key])) {
+                $groups[$key]['count']++;
+            } else {
+                $groups[$key] = ['text' => $text, 'count' => 1];
+            }
+        }
+
+        $rows = array_values($groups);
+        usort(
+            $rows,
+            static fn(array $a, array $b): int => [$b['count'], $a['text']] <=> [$a['count'], $b['text']]
+        );
+
+        return $rows;
+    }
+
+    /**
+     * A cell that can't be decrypted (e.g. saved before encryption was turned
+     * on, or with an older key) keeps its stored value, like
+     * LSActiveRecord::decryptSingleOld(), instead of failing the statistics.
+     */
+    private function decryptOrKeep(string $value): string
+    {
+        try {
+            return LSActiveRecord::decryptSingle($value);
+        } catch (Exception $e) {
+            return $value;
+        }
     }
 
     public function isExecuted(): bool

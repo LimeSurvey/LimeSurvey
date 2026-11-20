@@ -10,6 +10,7 @@ import {
 import {
   COLORS,
   CustomTooltip,
+  hasOtherAnswers,
   VALUE_TYPE,
   getDisplayMetric,
   shouldRenderImage,
@@ -260,6 +261,7 @@ export const PieChart = ({
   data,
   valueType = VALUE_TYPE.PERCENTAGE,
   isImage = false,
+  onViewOther,
 }) => {
   const scrollRef = useRef(null)
 
@@ -332,15 +334,26 @@ export const PieChart = ({
               animationBegin={0}
               animationDuration={600}
               fill="#8884d8"
+              onClick={(entry) => {
+                if (onViewOther && hasOtherAnswers(entry?.payload ?? entry)) {
+                  onViewOther()
+                }
+              }}
             >
-              {data.map((_, index) => (
+              {data.map((item, index) => (
                 <Cell
                   key={`peie-cell-${index}`}
                   fill={COLORS[index % COLORS.length]}
+                  cursor={
+                    onViewOther && hasOtherAnswers(item) ? 'pointer' : undefined
+                  }
                 />
               ))}
             </Pie>
-            <Tooltip cursor={{ fill: '#eeeff7' }} content={CustomTooltip} />
+            <Tooltip
+              cursor={{ fill: '#eeeff7' }}
+              content={<CustomTooltip showOtherHint={!!onViewOther} />}
+            />
           </RechartsPieChart>
         </ResponsiveContainer>
       </div>

@@ -728,3 +728,61 @@
     }
   }
 }
+
+.responses-statistics-table-other {
+  padding: 0;
+  border: none;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.responses-statistics-other-answers {
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid $g-400;
+
+  &-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 420px;
+    margin-bottom: 8px;
+  }
+
+  &-title {
+    margin: 0;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-500;
+    color: $g-900;
+  }
+
+  &-list {
+    max-width: 420px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 8px 16px;
+    border-bottom: 1px solid $g-400;
+    font-size: $font-size-xs;
+    color: $g-900;
+  }
+
+  &-text {
+    overflow-wrap: anywhere;
+
+    em {
+      color: $g-700;
+    }
+  }
+}

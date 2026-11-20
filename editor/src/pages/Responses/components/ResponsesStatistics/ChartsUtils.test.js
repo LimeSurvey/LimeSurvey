@@ -1,13 +1,18 @@
+import { render, screen } from '@testing-library/react'
 import {
   BAR_MIN_CATEGORY_WIDTH,
+  CustomTooltip,
   BAR_SCROLL_THRESHOLD,
   getBarChartMinWidth,
   getCategoryAxisWidth,
   getStatisticsGraphsForType,
+  hasOtherAnswers,
   LABEL_CHAR_WIDTH,
   statisticsGraphs,
 } from './ChartsUtils'
 import { QT_Q_MULTIPLE_SHORT_TEXT } from 'helpers'
+
+global.t = (key) => key
 
 describe('getBarChartMinWidth', () => {
   test('keeps the responsive chart width through the density threshold', () => {
@@ -65,4 +70,55 @@ describe('getCategoryAxisWidth', () => {
       )
     }
   )
+})
+
+describe('hasOtherAnswers', () => {
+  it('is true only for the "other" item that carries its answers', () => {
+    expect(hasOtherAnswers({ key: 'other', otherAnswers: [] })).toBe(true)
+    expect(hasOtherAnswers({ key: 'other' })).toBe(false)
+    expect(hasOtherAnswers({ key: 'A1', otherAnswers: [] })).toBe(false)
+  })
+})
+
+describe('CustomTooltip', () => {
+  const OTHER_HINT = 'Click to view all "other" answers'
+  const otherPayload = [
+    {
+      payload: { key: 'other', value: 31, percentage: 23.1, otherAnswers: [] },
+    },
+  ]
+
+  it('shows the "other" hint on the other item when enabled', () => {
+    render(<CustomTooltip active payload={otherPayload} showOtherHint />)
+    expect(screen.getByText(OTHER_HINT)).toBeInTheDocument()
+  })
+
+  it('hides the "other" hint when not enabled', () => {
+    render(<CustomTooltip active payload={otherPayload} />)
+    expect(screen.queryByText(OTHER_HINT)).not.toBeInTheDocument()
+  })
+
+  it('hides the "other" hint on regular items', () => {
+    render(
+      <CustomTooltip
+        active
+        payload={[{ payload: { key: 'A1', value: 5, percentage: 10 } }]}
+        showOtherHint
+      />
+    )
+    expect(screen.queryByText(OTHER_HINT)).not.toBeInTheDocument()
+  })
+
+  it('shows the "other" hint instead of the comments hint on the other item', () => {
+    render(
+      <CustomTooltip
+        active
+        payload={otherPayload}
+        showOtherHint
+        showCommentsHint
+      />
+    )
+    expect(screen.getByText(OTHER_HINT)).toBeInTheDocument()
+    expect(screen.queryByText('Click to view comments')).not.toBeInTheDocument()
+  })
 })
