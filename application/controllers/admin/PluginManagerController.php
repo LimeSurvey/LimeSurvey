@@ -313,6 +313,11 @@ class PluginManagerController extends SurveyCommonAction
         }
 
         $plugin      = Plugin::model()->findByPk($id);
+        if ($plugin === null) {
+            Yii::app()->user->setFlash('error', gT('The plugin was not found.'));
+            $this->getController()->redirect($url);
+        }
+
         $oPluginObject = App()->getPluginManager()->loadPlugin($plugin->name, $plugin->id, false);
 
         if (empty($oPluginObject)) {
@@ -322,11 +327,6 @@ class PluginManagerController extends SurveyCommonAction
 
         if (!$oPluginObject->readConfigFile()) {
             Yii::app()->user->setFlash('error', gT('Found no configuration file for this plugin.'));
-            $this->getController()->redirect($url);
-        }
-
-        if ($plugin === null) {
-            Yii::app()->user->setFlash('error', gT('The plugin was not found.'));
             $this->getController()->redirect($url);
         }
 
