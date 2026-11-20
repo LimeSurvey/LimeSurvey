@@ -486,6 +486,59 @@ describe('image settings of image select options', () => {
     ).toEqual({ en: JSON.stringify({ A2: { width: 999 } }) })
   })
 
+  test('an upload finishing after another question was focused saves without focusing this one', () => {
+    queryClient.setQueryData([STATES.SURVEY], { survey: { sid: 1 } })
+    queryClient.setQueryData([STATES.BUFFER], [])
+    const answers = [serverAnswer(11, 'A1', 0), serverAnswer(12, 'A2', 0)]
+    const question = {
+      qid: QID,
+      questionThemeName: 'image_select-listradio',
+      attributes: imageAttributes,
+      answers,
+    }
+    const handleUpdate = jest.fn()
+    const handleUpdateWithoutFocus = jest.fn()
+    const { result, rerender } = renderHook(
+      ({ isFocused }) =>
+        useQuestionChildren({
+          question,
+          handleUpdate,
+          handleUpdateWithoutFocus,
+          isFocused,
+          surveySettings: { languages: ['en'] },
+          language: 'en',
+        }),
+      { wrapper, initialProps: { isFocused: true } }
+    )
+    // The upload starts while the question is focused, then another
+    // question is focused.
+    const uploadHandler = result.current.handleChildLUpdate
+    rerender({ isFocused: false })
+
+    uploadHandler(
+      '/upload/surveys/1/images/new.jpg',
+      0,
+      answers,
+      Entities.answer
+    )
+
+    expect(handleUpdate).not.toHaveBeenCalled()
+    expect(handleUpdateWithoutFocus).toHaveBeenCalledTimes(1)
+    expect(
+      handleUpdateWithoutFocus.mock.calls[0][0].answers[0].l10ns.en.answer
+    ).toBe('/upload/surveys/1/images/new.jpg')
+
+    // While the question is focused, changes focus it as before.
+    rerender({ isFocused: true })
+    result.current.handleChildLUpdate(
+      '/upload/surveys/1/images/other.jpg',
+      1,
+      answers,
+      Entities.answer
+    )
+    expect(handleUpdate).toHaveBeenCalledTimes(1)
+  })
+
   /**
    * Renders the hook for an image select question that the test can change,
    * like the editor does while an image uploads.

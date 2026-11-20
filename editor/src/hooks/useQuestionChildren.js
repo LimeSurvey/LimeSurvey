@@ -35,9 +35,28 @@ export const createChildrenUpdateOperation = (qid, entityType, children) => {
     : createBufferOperation(qid).subquestion().update(props)
 }
 
+/**
+ * Handlers for the answers and subquestions of a question: Add, delete, move,
+ * change text (or image), code and assessment value.
+ *
+ * @param {Object} params
+ * @param {Object} params.question the question
+ * @param {Function} params.handleUpdate saves question changes and focuses
+ *   the question
+ * @param {Function} [params.handleUpdateWithoutFocus] saves question changes
+ *   without focusing the question: Used when a change arrives while the
+ *   question isn't focused, e.g. an image upload that finishes after another
+ *   question was focused. Without it, handleUpdate is used.
+ * @param {boolean} [params.isFocused] whether the question is focused
+ * @param {Object} params.surveySettings the survey settings
+ * @param {string} params.language the active language
+ * @returns {Object} the children and their handlers
+ */
 export const useQuestionChildren = ({
   question,
   handleUpdate,
+  handleUpdateWithoutFocus,
+  isFocused = true,
   surveySettings,
   language,
 }) => {
@@ -46,10 +65,14 @@ export const useQuestionChildren = ({
   // The latest question and update function: An image upload calls
   // handleChildLUpdate from the render where it started. The image option
   // attributes and the question changed meanwhile must not be overwritten.
+  // Once another question is focused, the upload must not focus this one again.
   const latestQuestion = useRef(question)
   latestQuestion.current = question
   const latestHandleUpdate = useRef(handleUpdate)
-  latestHandleUpdate.current = handleUpdate
+  latestHandleUpdate.current =
+    isFocused || !handleUpdateWithoutFocus
+      ? handleUpdate
+      : handleUpdateWithoutFocus
   // The children of the latest render, see getLatestChildArray().
   const latestChildren = useRef(children)
   latestChildren.current = children

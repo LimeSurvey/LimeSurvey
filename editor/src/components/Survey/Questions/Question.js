@@ -105,6 +105,17 @@ export const Question = ({
     update({ ...question, ...change })
   }
 
+  /**
+   * Saves question changes without focusing the question, e.g. when an image
+   * upload finishes after another question was focused.
+   *
+   * @param {Object} change the changed question properties
+   * @returns {void}
+   */
+  const handleUpdateWithoutFocus = (change) => {
+    update({ ...question, ...change })
+  }
+
   if (!question?.qid) {
     return <></>
   }
@@ -176,6 +187,7 @@ export const Question = ({
                   language={language}
                   question={question}
                   handleUpdate={handleUpdate}
+                  handleUpdateWithoutFocus={handleUpdateWithoutFocus}
                   questionNumber={questionNumber}
                   isFocused={focused.qid === question.qid}
                   isQuestionDisabled={isQuestionDisabled}
