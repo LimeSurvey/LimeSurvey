@@ -26,6 +26,10 @@ class RenderFivePointChoice extends QuestionBaseRenderer
         return '/survey/questions/answer/5pointchoice/answer';
     }
 
+    /**
+     * Get the rows of the 5 point choice, with a "No answer" row if the question isn't (soft) mandatory.
+     * @return array The data of each row for the row template
+     */
     public function getRows()
     {
         $aRows = [];
@@ -50,7 +54,7 @@ class RenderFivePointChoice extends QuestionBaseRenderer
                 'labelText'              => gT('No answer'),
                 'itemExtraClass'         => 'noanswer-item',
                 'checkedState'           => (
-                    PRESELECT_NO_ANSWER && !$this->mSessionValue
+                    $this->isNoAnswerPreselected() && !$this->mSessionValue
                 ) ? ' CHECKED ' : '',
                 'checkconditionFunction' => $this->checkconditionFunction,
             );

@@ -233,6 +233,7 @@ class ExpressionManager
             'implode' => array('exprmgr_implode', 'LEMimplode', gT('Join array elements with a string'), 'string implode(glue,arg1,arg2,...,argN)', 'http://php.net/implode', -2),
             'intval' => array('intval', 'LEMintval', gT('Get the integer value of a variable'), 'int intval(number [, base=10])', 'http://php.net/intval', 1, 2),
             'is_empty' => array('exprmgr_empty', 'LEMempty', gT('Determine whether a variable is considered to be empty'), 'bool is_empty(var)', 'http://php.net/empty', 1),
+            'is_noanswer' => array('exprmgr_is_noanswer', 'LEMis_noanswer', gT('Determine whether a single choice question is answered with "No answer"'), 'bool is_noanswer(var, sgqa)', '', 2),
             'is_float' => array('is_float', 'LEMis_float', gT('Finds whether the type of a variable is float'), 'bool is_float(var)', 'http://php.net/is-float', 1),
             'is_int' => array('exprmgr_int', 'LEMis_int', gT('Check if the content of a variable is a valid integer value'), 'bool is_int(var)', 'http://php.net/is-int', 1),
             'is_nan' => array('is_nan', 'isNaN', gT('Finds whether a value is not a number'), 'bool is_nan(var)', 'http://php.net/is-nan', 1),
@@ -2663,6 +2664,25 @@ class ExpressionManager
         }
     }
 
+    /**
+     * Check whether a question is shown on the same page as the expression being processed.
+     * @param integer $gseq The group sequence of the question
+     * @param integer $qseq The question sequence of the question
+     * @return boolean True if the question is on the same page
+     */
+    public function isOnCurrentPage($gseq, $qseq)
+    {
+        switch ($this->surveyMode) {
+            case 'survey':
+                return true;
+            case 'group':
+                return $this->groupSeq !== null && $this->groupSeq != -1 && $gseq == $this->groupSeq;
+            case 'question':
+                return $this->questionSeq !== null && $this->questionSeq != -1 && $qseq == $this->questionSeq;
+        }
+        return false;
+    }
+
 
     /**
      * Pop a value token off of the stack
@@ -3451,6 +3471,22 @@ function exprmgr_empty($arg)
         return true;
     }
     return false;
+}
+
+/**
+ * Determine whether a single choice question is answered with "No answer".
+ * An empty value means "No answer", unless the question is on the same page and its "No answer" option was left
+ * untouched when the page was submitted: This matches the JavaScript version, which checks the radio itself.
+ * @param mixed $value The value of the question
+ * @param string $sgqa The SGQA of the question
+ * @return boolean True if the question is answered with "No answer"
+ */
+function exprmgr_is_noanswer($value, $sgqa)
+{
+    if (!exprmgr_empty($value)) {
+        return false;
+    }
+    return !LimeExpressionManager::isNoAnswerUntouchedOnPage((string) $sgqa);
 }
 
 /**

@@ -34,6 +34,11 @@ class RenderListComment extends QuestionBaseRenderer
         return '/survey/questions/answer/list_with_comment';
     }
 
+    /**
+     * Render the radio list layout of the question.
+     * @param string $sCoreClasses Extra CSS classes for the answer container
+     * @return array The HTML of the answer and the names of its inputs
+     */
     public function renderList($sCoreClasses)
     {
         $sRows = '';
@@ -59,7 +64,7 @@ class RenderListComment extends QuestionBaseRenderer
                 'id' => 'answer' . $this->sSGQA,
                 'value' => '',
                 'check_ans' => (
-                    PRESELECT_NO_ANSWER && ($this->mSessionValue == '' || $this->mSessionValue == ' ')
+                    $this->isNoAnswerPreselected() && ($this->mSessionValue == '' || $this->mSessionValue == ' ')
                 ) ? CHECKED : '',
                 'checkconditionFunction' => $this->checkconditionFunction . '(this.value, this.name, this.type)',
                 'labeltext' => gT('No answer'),

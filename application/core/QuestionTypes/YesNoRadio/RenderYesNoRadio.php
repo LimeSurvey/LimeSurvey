@@ -67,7 +67,7 @@ class RenderYesNoRadio extends QuestionBaseRenderer
         $noAnswer = false;
         if (($this->aFieldArray[6] != 'Y' && $this->aFieldArray[6] != 'S') && SHOW_NO_ANSWER == 1) {
             $noAnswer = true;
-            if (PRESELECT_NO_ANSWER && empty($sValue)) {
+            if ($this->isNoAnswerPreselected() && empty($sValue)) {
                 $naChecked = CHECKED;
             }
         }

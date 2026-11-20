@@ -50,6 +50,20 @@ define('LEM_PRETTY_PRINT_ALL_SYNTAX', 32);
 class LimeExpressionManager
 {
     /**
+     * Single choice question types with a "No answer" radio: A condition on "No answer" requires that radio to be
+     * checked on the same page, since "No answer" isn't always preselected. In a dropdown (list dropdown, or list with
+     * comment shown as a dropdown), the empty "Please choose..." still means "No answer".
+     * @var string[]
+     */
+    const NO_ANSWER_OPTION_TYPES = [
+        Question::QT_L_LIST,
+        Question::QT_O_LIST_WITH_COMMENT,
+        Question::QT_G_GENDER,
+        Question::QT_Y_YES_NO_RADIO,
+        Question::QT_5_POINT_CHOICE,
+    ];
+
+    /**
      * LimeExpressionManager is a singleton.  $instance is its storage location.
      * @var LimeExpressionManager
      */
@@ -1012,6 +1026,7 @@ class LimeExpressionManager
             }
 
             // fix fieldnames
+            $noAnswerVariable = null;
             if ($row['type'] == '' && preg_match('/^{.+}$/', (string) $row['cfieldname'])) {
                 $fieldname = (string)substr((string) $row['cfieldname'], 1, -1);    // {TOKEN:xxxx}
                 $subqid = $fieldname;
@@ -1049,6 +1064,9 @@ class LimeExpressionManager
                 $fieldname = $row['cfieldname'] . '.NAOK';
                 $subqid = $fieldname;
                 $value = $row['value'];
+                if (in_array($row['type'], self::NO_ANSWER_OPTION_TYPES, true)) {
+                    $noAnswerVariable = $row['cfieldname'];
+                }
             }
             if ($_subqid != -1 && $_subqid != $subqid) {
                 $relAndList[] = '(' . implode(' or ', $relOrList) . ')';
@@ -1073,7 +1091,10 @@ class LimeExpressionManager
             } else {
                 // Condition uses ' ' to mean not answered, but internally it is really stored as ''.  Fix this
                 if ($value === '" "' || $value == '""') {
-                    if ($row['method'] == '==') {
+                    if ($row['method'] == '==' && $noAnswerVariable !== null) {
+                        // Only an explicit "No answer" counts on the same page, not an untouched question
+                        $relOrList[] = "is_noanswer(" . $fieldname . ", " . $noAnswerVariable . ".sgqa)";
+                    } elseif ($row['method'] == '==') {
                         $relOrList[] = "is_empty(" . $fieldname . ")";
                     } elseif ($row['method'] == '!=') {
                         $relOrList[] = "!is_empty(" . $fieldname . ")";
@@ -4835,6 +4856,7 @@ class LimeExpressionManager
         $LEM->surveyOptions['tempdir'] = (isset($aSurveyOptions['tempdir']) ? $aSurveyOptions['tempdir'] : '/temp/');
         $LEM->surveyOptions['token'] = (isset($aSurveyOptions['token']) ? $aSurveyOptions['token'] : null);
         $LEM->surveyOptions['savequotaexit'] = (isset($aSurveyOptions['savequotaexit']) ? $aSurveyOptions['savequotaexit'] : false);
+        $LEM->surveyOptions['shownoanswer'] = $survey->isShowNoAnswer;
         $LEM->debugLevel = $debugLevel;
         $_SESSION[$LEM->sessid]['LEMdebugLevel'] = $debugLevel; // need access to SESSION to decide whether to cache serialized instance of $LEM
         switch ($surveyMode) {
@@ -6381,6 +6403,10 @@ class LimeExpressionManager
         }
         // cache results
         $relevanceEqn = htmlspecialchars_decode((string) $relevanceEqn, ENT_QUOTES);  // TODO is this needed?
+        // is_noanswer() depends on the page of the question, so the same equation can differ between groups
+        if (strpos($relevanceEqn, 'is_noanswer(') !== false) {
+            unset($LEM->ParseResultCache[$relevanceEqn]);
+        }
         if (isset($LEM->ParseResultCache[$relevanceEqn])) {
             $qrel = $LEM->ParseResultCache[$relevanceEqn]['result'];
             if (($LEM->debugLevel & LEM_PRETTY_PRINT_ALL_SYNTAX) == LEM_PRETTY_PRINT_ALL_SYNTAX) {
@@ -7154,6 +7180,8 @@ class LimeExpressionManager
             $sgqas = explode('|', (string) $LEM->qid2code[$qid]);
             foreach ($sgqas as $sgqa) {
                 $_SESSION[$LEM->sessid][$sgqa] = null;
+                // The answer is discarded: Don't show an explicit "No answer" again if the question becomes relevant
+                unset($_SESSION[$LEM->sessid]['noAnswerChosen'][$sgqa]);
                 $updatedValues[$sgqa] = null;
                 $LEM->updatedValues[$sgqa] = null;
                 if (isset($LEM->other2otherChecked[$sgqa])) {
@@ -9131,6 +9159,63 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
     }
 
     /**
+     * Remember whether the "No answer" radio of a single choice question on the submitted page was left untouched.
+     * An untouched radio group isn't posted at all, while a checked "No answer" radio posts an empty value. A dropdown
+     * always posts its value, so its empty "Please choose..." counts as "No answer".
+     * @param array $qinfo The question info, as in $questionSeq2relevance
+     * @param string $sgqa The field name of the list answer (Q + question ID), without its other or comment field
+     * @return void
+     */
+    private function setNoAnswerUntouched(array $qinfo, $sgqa)
+    {
+        if (!in_array($qinfo['type'], self::NO_ANSWER_OPTION_TYPES, true)) {
+            return;
+        }
+        $hasNoAnswerOption = ($this->surveyOptions['shownoanswer'] ?? true)
+            && $qinfo['mandatory'] != 'Y'
+            && $qinfo['mandatory'] != 'S';
+        if ($hasNoAnswerOption && !isset($_POST[$sgqa])) {
+            $_SESSION[$this->sessid]['noAnswerUntouched'][$sgqa] = true;
+        } else {
+            unset($_SESSION[$this->sessid]['noAnswerUntouched'][$sgqa]);
+        }
+        // Without preselection, the page is shown again with this explicit choice, e.g. after a validation error
+        if ($hasNoAnswerOption && isset($_POST[$sgqa]) && trim((string) $_POST[$sgqa]) === '') {
+            $_SESSION[$this->sessid]['noAnswerChosen'][$sgqa] = true;
+        } else {
+            unset($_SESSION[$this->sessid]['noAnswerChosen'][$sgqa]);
+        }
+    }
+
+    /**
+     * Check whether the respondent explicitly chose "No answer" in a single choice question when its page was last
+     * submitted.
+     * @param string $sgqa The field name of the list answer (Q + question ID)
+     * @return boolean True if "No answer" was chosen
+     */
+    public static function isNoAnswerChosen($sgqa)
+    {
+        $LEM =& LimeExpressionManager::singleton();
+        return !empty($_SESSION[$LEM->sessid]['noAnswerChosen'][$sgqa]);
+    }
+
+    /**
+     * Check whether the "No answer" option of a question was left untouched and the question is on the page of the
+     * expression being processed: The browser then doesn't count the empty value as "No answer" either.
+     * @param string $sgqa The SGQA of the question
+     * @return boolean True if the "No answer" option was left untouched on the same page
+     */
+    public static function isNoAnswerUntouchedOnPage($sgqa)
+    {
+        $LEM =& LimeExpressionManager::singleton();
+        if (empty($_SESSION[$LEM->sessid]['noAnswerUntouched'][$sgqa]) || !isset($LEM->knownVars[$sgqa])) {
+            return false;
+        }
+        $var = $LEM->knownVars[$sgqa];
+        return $LEM->em->isOnCurrentPage($var['gseq'] ?? -1, $var['qseq'] ?? -1);
+    }
+
+    /**
      * Cleanse the $_POSTed data and update $_SESSION variables accordingly
      */
     public static function ProcessCurrentResponses()
@@ -9150,6 +9235,8 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             $grelevant = (isset($_POST['relevanceG' . $gseq]) ? ($_POST['relevanceG' . $gseq] == 1) : false);
             $_SESSION[$LEM->sessid]['relevanceStatus'][$qid] = $relevant;
             $_SESSION[$LEM->sessid]['relevanceStatus']['G' . $gseq] = $grelevant;
+            // The list answer itself: Not the other or comment field of the question
+            $LEM->setNoAnswerUntouched($qinfo['info'], 'Q' . $qid);
             // explode subquestions
             foreach (explode('|', (string) $qinfo['sgqa']) as $sq) {
                 $sqrelevant = true;
