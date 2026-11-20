@@ -10,6 +10,9 @@ import {
   isValidRelevanceValue,
   makeExpressionReadable,
   clean,
+  getConditionState,
+  getCurrentQuestionInfo,
+  runIfConditionUnchanged,
   showConditionOverwriteConfirmationOverlay,
 } from '../utils'
 
@@ -34,11 +37,19 @@ export const ExpressionScriptEditorOverlay = ({
   }
 
   const handleApplyClick = () => {
-    if (question?.scenarios.length > 0) {
+    // The popup can stay open while the survey is refreshed: decide on the
+    // question's scenarios as they are now, not when the popup opened
+    const currentQuestion =
+      getCurrentQuestionInfo(question?.qid).question ?? question
+    if (currentQuestion?.scenarios?.length > 0) {
+      // The confirmation only applies to the scenarios it was shown for
+      const shownCondition = getConditionState(currentQuestion)
       showConditionOverwriteConfirmationOverlay({
         onConfirm: () => {
           SwalAlert.close()
-          onApply(cleanContent)
+          runIfConditionUnchanged(currentQuestion.qid, shownCondition, () =>
+            onApply(cleanContent)
+          )
         },
       })
     } else {

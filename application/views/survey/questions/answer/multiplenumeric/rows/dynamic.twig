@@ -11,7 +11,7 @@
  */
 #}
 {% if sumRemainingEqn %}
-    <li class="mb-3 ls-group-remaining ls-group-dynamic align-items-center row">
+    <li class="mb-3 ls-group-remaining ls-group-dynamic align-items-center row" aria-live="polite" aria-atomic="true">
         <div class="control-label mb-md-0 col-12 col-md-{{sLabelWidth}}{% if sLabelWidth == 0 %} d-none{% endif %}">
             {{ gT('Remaining') }}:
         </div>
@@ -41,7 +41,7 @@
             <hr>
         </div>
     </li>
-    <li class="mb-3 ls-group-total ls-group-dynamic align-items-center row">
+    <li class="mb-3 ls-group-total ls-group-dynamic align-items-center row" aria-live="polite" aria-atomic="true">
         <div class="control-label mb-md-0 col-12 col-md-{{sLabelWidth}}{% if sLabelWidth == 0 %} d-none{% endif %}">
             {{ gT('Total:') }}
         </div>
