@@ -41,7 +41,7 @@
                                 <span class="ri-information-fill" id="info-header"></span>
                             </div>
                             <div class="box--info">
-                                <div class="box__title text-center"><?php eT("System overview"); ?></div>
+                                <h2 class="box__title text-center"><?php eT("System overview"); ?></h2>
                                 <dl class="dl-horizontal" role="none">
                                     <div class="row">
                                         <dt class="col-8 text-truncate text-end"><?php eT('Users'); ?></dt>

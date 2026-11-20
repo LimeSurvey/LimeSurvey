@@ -130,15 +130,18 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     });
 
     // Create Update : icons
+    // The handler is bound to the link around the icon, so it also works with the keyboard (Enter)
     if($('.option-icon').length>1){
-        $('.option-icon').on('click', function (ev, that) {
+        $('.option-icon').parent('a').off('click.optionicon').on('click.optionicon', function (ev) {
             ev.preventDefault()
-            var icon = $(ev.currentTarget).attr('data-icon');
-            var iconId = $(ev.currentTarget).attr('data-iconId');
+            var $icon = $(ev.currentTarget).find('.option-icon');
+            var icon = $icon.attr('data-icon');
 
             // Set icon preview and hidden input
             $('input[name="Box[ico]"]').val(icon);
             $('#chosen-icon').attr('class', icon + ' text-success');
+            // Text alternative of the chosen icon
+            $('#chosen-icon-label').text($icon.attr('data-icon-label') || '');
         });
     }
 });

@@ -108,17 +108,8 @@ $('#importsurvey').on('submit', function(e) {
     // If validation fails, the form submission is cancelled before the spinner is shown.
     setTimeout(function() {
         if (!e.isDefaultPrevented()) {
+            // Announced to screen readers by adminbasics (accessibility/announceLoading.js)
             $('#ls-loading').show();
-            // Set the text of the status region again, so the screen reader announces it
-            var loadingText = $('#ls-loading .visually-hidden');
-            // Keep the original text: A second submit must not read the temporarily emptied text
-            var text = loadingText.data('loadingText');
-            if (text === undefined) {
-                text = loadingText.text();
-                loadingText.data('loadingText', text);
-            }
-            loadingText.text('');
-            setTimeout(function () { loadingText.text(text); }, 100);
         }
     }, 100);
 });

@@ -129,8 +129,36 @@ class Box extends CActiveRecord
      */
     public function getSpanIcon()
     {
-        $spanicon = '<span class="' . CHtml::encode($this->getIconName()) . ' text-success"></span>';
+        $iconName = $this->getIconName();
+        // The icon is the only content of its table cell, so it needs a text alternative
+        $spanicon = '<span class="' . CHtml::encode($iconName) . ' text-success" role="img"'
+            . ' aria-label="' . CHtml::encode(self::getIconLabel($iconName)) . '"></span>';
         return $spanicon;
+    }
+
+    /**
+     * Returns a readable name for an icon class, used as its text alternative.
+     * E.g. "ri-add-circle-fill" => "Add circle". The outlined variant of an icon that is also
+     * available filled is told apart: "ri-user-line" => "User (outline)"
+     *
+     * @param string $icon The icon class
+     * @return string
+     */
+    public static function getIconLabel($icon)
+    {
+        static $availableIcons = null;
+        if ($availableIcons === null) {
+            $availableIcons = array_column((new self())->getIcons(), 'icon');
+        }
+        $name = preg_replace('/^ri-/', '', (string) $icon);
+        $suffix = '';
+        if (preg_match('/-(fill|line)$/', $name, $matches)) {
+            $name = substr($name, 0, -strlen($matches[0]));
+            if ($matches[1] === 'line' && in_array('ri-' . $name . '-fill', $availableIcons, true)) {
+                $suffix = ' (outline)';
+            }
+        }
+        return ucfirst(str_replace('-', ' ', $name)) . $suffix;
     }
 
     /**
