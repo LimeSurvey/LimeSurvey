@@ -1,29 +1,19 @@
-import { createBufferOperation } from 'helpers'
+import { useCallback } from 'react'
 
-import { useBuffer } from './useBuffer'
-import { useSurvey } from './useSurvey'
+import { STATES } from 'helpers'
 
-/**
- * Shows or hides question codes for the whole survey.
- * showCode and showNumber are set together: the sidebar reads showCode while
- * the canvas (answer and subquestion codes) reads showNumber.
- */
-export const useToggleQuestionCodes = (surveyId) => {
-  const { survey, update } = useSurvey(surveyId)
-  const { addToBuffer } = useBuffer()
-  const areCodesVisible = !!survey?.showQNumCode?.showCode
+import { useAppState } from './useAppState'
 
-  const toggleQuestionCodes = () => {
-    const next = !areCodesVisible
-    const operationAttr = {
-      showQNumCode: {
-        showCode: next,
-        showNumber: next,
-      },
-    }
-    update(operationAttr)
-    addToBuffer(createBufferOperation(surveyId).survey().update(operationAttr))
-  }
+// Shows or hides question codes in the editor view
+export const useToggleQuestionCodes = () => {
+  const [areCodesVisible = false, setAreCodesVisible] = useAppState(
+    STATES.SHOW_QUESTION_CODES_IN_EDITOR,
+    false
+  )
 
-  return { areCodesVisible, toggleQuestionCodes }
+  const toggleQuestionCodes = useCallback(() => {
+    setAreCodesVisible(!areCodesVisible)
+  }, [areCodesVisible, setAreCodesVisible])
+
+  return { areCodesVisible: !!areCodesVisible, toggleQuestionCodes }
 }
