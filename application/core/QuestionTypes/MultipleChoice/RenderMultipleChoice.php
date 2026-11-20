@@ -71,6 +71,10 @@ class RenderMultipleChoice extends QuestionBaseRenderer
         return '/survey/questions/answer/multiplechoice';
     }
 
+    /**
+     * Build the answer rows, without the rows left out by their relevance, with the "Other" row at its position
+     * @return array[] the data of each row for the row template
+     */
     public function getRows()
     {
         $otherAdded = false;
@@ -90,10 +94,10 @@ class RenderMultipleChoice extends QuestionBaseRenderer
         /// Generate answer rows
         foreach ($this->aSubQuestions[0] as $oQuestion) {
             $myfname = $this->sSGQA . "_S" . $oQuestion->qid;
-            $this->inputnames[] = $myfname;
             if ($this->isRowStaticallyHidden($myfname)) {
                 continue;
             }
+            $this->inputnames[] = $myfname;
             ////
             // Insert row
             // Display the answer row

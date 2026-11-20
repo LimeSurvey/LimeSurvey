@@ -403,10 +403,26 @@ abstract class QuestionBaseRenderer extends StaticModel
      */
     public function isRowStaticallyHidden($myfname)
     {
+        // The rendered question can be cached for other respondents, who need all rows
+        if (Yii::app()->getConfig('emcache_cache_qanda')) {
+            return false;
+        }
         if ($this->getCurrentRelevecanceClass($myfname) !== 'ls-irrelevant ls-hidden') {
             return false;
         }
         return LimeExpressionManager::isSubQuestionRelevanceStatic($this->oQuestion->qid, $myfname);
+    }
+
+    /**
+     * Remove the subquestions whose row is left out of the HTML, so rows and repeated headers can be counted
+     * @param array<int, Question|array> $subQuestions the subquestions of one scale, keys are kept
+     * @return array<int, Question|array>
+     */
+    protected function withoutStaticallyHiddenRows(array $subQuestions)
+    {
+        return array_filter($subQuestions, function ($subQuestion) {
+            return !$this->isRowStaticallyHidden($this->sSGQA . '_S' . $subQuestion['qid']);
+        });
     }
     /**
     * Find the label / input width

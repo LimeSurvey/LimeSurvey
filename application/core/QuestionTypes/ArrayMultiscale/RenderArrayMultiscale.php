@@ -160,6 +160,11 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
         $aData['rightclass'] = ($rightexists) ? " header_answer_text_right" : "";
     }
 
+    /**
+     * Add the rows of the dropdown layout to the view data, without the rows left out by their relevance
+     * @param array $aData the view data, by reference
+     * @return void
+     */
     public function parseSubquestionsDropdown(&$aData)
     {
         $anscount = count($this->aSubQuestions[0]);
@@ -214,21 +219,24 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
         }
     }
 
+    /**
+     * Add the rows of the radio layout to the view data, without the rows left out by their relevance
+     * @param array $aData the view data, by reference
+     * @return void
+     */
     public function parseSubquestionsNoDropdown(&$aData)
     {
         $repeatheadings     = Yii::app()->getConfig("repeatheadings");
         $minrepeatheadings  = Yii::app()->getConfig("minrepeatheadings");
         $repeatheadings     = $this->setDefaultIfEmpty($this->getQuestionAttribute('repeat_headings'), $repeatheadings);
-        $anscount = count($this->aSubQuestions[0]);
+        $subQuestions = $this->withoutStaticallyHiddenRows($this->aSubQuestions[0]);
+        $anscount = count($subQuestions);
 
         //Only use the 0 scale
         $fn = 0;
         $rowIndex = 0;
-        foreach ($this->aSubQuestions[0] as $i => $oQuestionRow) {
+        foreach ($subQuestions as $i => $oQuestionRow) {
             $myfname = $this->sSGQA . '_S' . $oQuestionRow->qid;
-            if ($this->isRowStaticallyHidden($myfname)) {
-                continue;
-            }
             // Build repeat headings if needed
 
             if (isset($repeatheadings) && $repeatheadings > 0 && ($fn - 1) > 0 && ($fn - 1) % $repeatheadings == 0) {

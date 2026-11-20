@@ -34,7 +34,60 @@ class ArrayFilterRowsHiddenOnServerTest extends TestBaseClass
         $_GET = [];
         $_POST = [];
         $_SESSION = [];
+        \Yii::app()->setConfig('deletenonvalues', 1);
         parent::tearDown();
+    }
+
+    /**
+     * With deletenonvalues off, the answer of a row that is left out of the page is kept when the page is submitted again
+     */
+    public function testAnswerOfRowLeftOutIsKeptWithoutDeleteNonValues()
+    {
+        \Yii::app()->setConfig('deletenonvalues', 0);
+        $filter = $this->getQuestion('Filter');
+        $arrayText = $this->getQuestion('QTxt');
+        $row = $this->getSubquestionField($arrayText, 'SQ2');
+        $column = \Question::model()->findByAttributes(['parent_qid' => $arrayText->qid, 'title' => 'X1', 'scale_id' => 1]);
+        $field = $row . '_S' . $column->qid;
+        $pageTwo = [
+            'relevance' . $arrayText->qid => 1,
+            'relevanceG1'                 => 1,
+            'thisstep'                    => 2,
+            'sid'                         => self::$surveyId,
+        ];
+
+        $this->startSurvey();
+        // All rows are relevant: Answer SQ2 and go back
+        $this->submitFilter(['SQ1', 'SQ2', 'SQ3', 'SQ4']);
+        $_POST = $pageTwo + ['relevance' . $row => 1, $field => 'kept', 'moveprev' => 'moveprev'];
+        \LimeExpressionManager::NavigateBackwards();
+        $this->assertSame('kept', $_SESSION['responses_' . self::$surveyId][$field], 'The answer is stored');
+
+        // SQ2 is filtered out now and not in the page: Submitting the page keeps its answer
+        $this->submitFilter(['SQ1', 'SQ3']);
+        $_POST = $pageTwo + ['relevance' . $row => 0, 'movenext' => 'movenext'];
+        \LimeExpressionManager::NavigateForwards();
+        $this->assertSame('kept', $_SESSION['responses_' . self::$surveyId][$field], 'The answer of the row left out is kept');
+    }
+
+    /**
+     * Submit the first page with the given filter options checked
+     * @param string[] $checked the checked subquestion codes of Filter
+     */
+    private function submitFilter(array $checked)
+    {
+        $filter = $this->getQuestion('Filter');
+        $_POST = [
+            'relevance' . $filter->qid => 1,
+            'relevanceG0'              => 1,
+            'movenext'                 => 'movenext',
+            'thisstep'                 => 1,
+            'sid'                      => self::$surveyId,
+        ];
+        foreach ($checked as $code) {
+            $_POST[$this->getSubquestionField($filter, $code)] = 'Y';
+        }
+        \LimeExpressionManager::NavigateForwards();
     }
 
     /**
@@ -132,6 +185,7 @@ class ArrayFilterRowsHiddenOnServerTest extends TestBaseClass
             \setNoAnswerMode($GLOBALS['thissurvey']);
         }
         \buildsurveysession(self::$surveyId);
+        \LimeExpressionManager::SetSurveyId(self::$surveyId);
         \LimeExpressionManager::StartSurvey(
             self::$surveyId,
             'group',

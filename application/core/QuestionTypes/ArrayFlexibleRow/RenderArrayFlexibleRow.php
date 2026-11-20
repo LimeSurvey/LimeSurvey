@@ -186,6 +186,10 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
         }
     }
 
+    /**
+     * Build the rows of the dropdown layout, without the rows left out by their relevance
+     * @return array[] the data of each row for the row template
+     */
     public function getDropdownRows()
     {
         // $labels[] = array(
@@ -265,17 +269,20 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
         return $aRows;
     }
 
+    /**
+     * Build the rows of the radio layout, without the rows left out by their relevance, with the repeated headers
+     * @return array[] template and data of each row
+     */
     public function getNonDropdownRows()
     {
         $aRows = [];
         $rowIndex = 0;
-        foreach ($this->aSubQuestions[0] as $oQuestion) {
+        $subQuestions = $this->withoutStaticallyHiddenRows($this->aSubQuestions[0]);
+        $rowCount = count($subQuestions);
+        foreach ($subQuestions as $oQuestion) {
             $myfname        = $this->sSGQA . '_S' . $oQuestion->qid;
-            if ($this->isRowStaticallyHidden($myfname)) {
-                continue;
-            }
             if (($this->repeatheadings > 0) && ($rowIndex > 0) && ($rowIndex % $this->repeatheadings == 0)) {
-                if (($this->getQuestionCount() - $rowIndex + 1) >= $this->minrepeatheadings) {
+                if (($rowCount - $rowIndex + 1) >= $this->minrepeatheadings) {
                     // Close actual body and open another one
                     $aRows[] = [
                         'template' => '/survey/questions/answer/arrays/array/no_dropdown/rows/repeat_header.twig',

@@ -7376,6 +7376,29 @@ class LimeExpressionManager
     }
 
     /**
+     * Whether the row of a subquestion is left out of the current page: It is irrelevant and its relevance can not change on the page
+     * @see QuestionBaseRenderer::isRowStaticallyHidden()
+     * @param int $qid the question id
+     * @param string $sgqa the field name of the subquestion
+     * @return boolean
+     */
+    private function isSubQuestionLeftOut($qid, $sgqa)
+    {
+        if (empty($this->subQrelInfo[$qid]) || Yii::app()->getConfig('emcache_cache_qanda')) {
+            return false;
+        }
+        foreach (array_keys($this->subQrelInfo[$qid]) as $rowdivid) {
+            // Array texts and numbers add the column to the row id, dual scale adds the scale
+            if ($sgqa === $rowdivid || strpos($sgqa, $rowdivid . '_') === 0 || strpos($sgqa, $rowdivid . '#') === 0) {
+                return isset($_SESSION[$this->sessid]['relevanceStatus'][$rowdivid])
+                    && !$_SESSION[$this->sessid]['relevanceStatus'][$rowdivid]
+                    && self::isSubQuestionRelevanceStatic($qid, $rowdivid);
+            }
+        }
+        return false;
+    }
+
+    /**
      * Get array of info needed to display the Group Index
      * @param string $gseq
      * @return array
@@ -9191,6 +9214,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             // explode subquestions
             foreach (explode('|', (string) $qinfo['sgqa']) as $sq) {
                 $sqrelevant = true;
+                $rowLeftOut = !isset($_POST[$sq]) && $LEM->isSubQuestionLeftOut($qid, $sq);
                 if (isset($LEM->subQrelInfo[$qid][$sq]['rowdivid'])) {
                     $rowdivid = $LEM->subQrelInfo[$qid][$sq]['rowdivid'];
                     if ($rowdivid != '' && isset($_POST['relevance' . $rowdivid])) {
@@ -9205,8 +9229,8 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 // Maybe set current relevance to 0 if count($sqrelevant) == 0 (hand have sq) , for 4.X
                 $type = $qinfo['info']['type'];
                 if (($relevant && $grelevant && $sqrelevant) || !$LEM->surveyOptions['deletenonvalues']) {
-                    if ($qinfo['info']['hidden'] && !isset($_POST[$sq])) {
-                        $value = (isset($_SESSION[$LEM->sessid][$sq]) ? $_SESSION[$LEM->sessid][$sq] : '');    // if always hidden, use the default value, if any
+                    if (($qinfo['info']['hidden'] || $rowLeftOut) && !isset($_POST[$sq])) {
+                        $value = (isset($_SESSION[$LEM->sessid][$sq]) ? $_SESSION[$LEM->sessid][$sq] : '');    // if always hidden or the row is left out of the page, keep the current value, if any
                     } else {
                         $value = (isset($_POST[$sq]) ? $_POST[$sq] : '');
                     }

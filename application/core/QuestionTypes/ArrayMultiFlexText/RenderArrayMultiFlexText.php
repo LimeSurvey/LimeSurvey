@@ -367,13 +367,11 @@ class RenderArrayMultiFlexText extends QuestionBaseRenderer
      */
     private function renderRows(array $aQuestionsY, array $labelans, array $labelans2): string
     {
+        $aQuestionsY = $this->withoutStaticallyHiddenRows($aQuestionsY);
         $anscount = count($aQuestionsY);
         $fn = 1;
         $sRows = '';
         foreach ($aQuestionsY as $ansrow) {
-            if ($this->isRowStaticallyHidden($this->sSGQA . "_S" . $ansrow['qid'])) {
-                continue;
-            }
             if (isset($this->repeatheadings) && $this->repeatheadings > 0 && ($fn - 1) > 0 && ($fn - 1) % $this->repeatheadings == 0) {
                 if (($anscount - $fn + 1) >= $this->minrepeatheadings) {
                     // Close actual body and open another one
