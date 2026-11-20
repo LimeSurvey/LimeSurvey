@@ -86,23 +86,4 @@ class ThemeQuestionAttributeProvider extends QuestionAttributeProvider
 
         return $attributes;
     }
-
-    /**
-     * Extracts the question theme from the $options.
-     * If it's not explicitly set, it tries to use a question object.
-     *
-     * @param array<string,mixed> $options
-     *
-     * @return
-     */
-    private static function getQuestionTheme($options)
-    {
-        if (!empty($options['questionTheme'])) {
-            return $options['questionTheme'];
-        }
-        if (!empty($options['question'])) {
-            return $options['question']->question_theme_name;
-        }
-        return '';
-    }
 }

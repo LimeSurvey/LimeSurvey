@@ -45,7 +45,7 @@ class HiddenQuestionAttributeProvider extends QuestionAttributeProvider
 
         return array_merge(
             $this->getHiddenAttributes($questionType),
-            $this->getThemeAttributes(self::getQuestionThemeName($options))
+            $this->getThemeAttributes(self::getQuestionTheme($options))
         );
     }
 
@@ -89,22 +89,5 @@ class HiddenQuestionAttributeProvider extends QuestionAttributeProvider
             $attributes[$attributeName]['xssfilter'] = false;
         }
         return $attributes;
-    }
-
-    /**
-     * Returns the question theme the attributes are fetched for.
-     *
-     * @param array<string,mixed> $options the fetcher options: "questionTheme" overrides the theme of "question"
-     * @return string The question theme name, or an empty string if unknown
-     */
-    private static function getQuestionThemeName($options)
-    {
-        if (!empty($options['questionTheme'])) {
-            return (string)$options['questionTheme'];
-        }
-        if (!empty($options['question'])) {
-            return (string)$options['question']->question_theme_name;
-        }
-        return '';
     }
 }
