@@ -307,7 +307,7 @@ class browser extends uploader {
         if (is_array($result) && count($result)) {
             clearstatcache();
             foreach ($paths as $path) {
-                if (!file_exists($path))
+                if (!file_exists($path) && !is_link($path))
                     $this->recordUploadMutation($path, 'delete');
             }
             $this->dispatchUploadMutations();
