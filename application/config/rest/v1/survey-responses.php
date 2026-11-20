@@ -30,6 +30,7 @@ $rest['v1/survey-responses/$id'] = [
             'page' => ['type' => 'array'],
             'language' => ['type' => 'string'],
             'fields' => ['type' => 'array'],
+            'completion' => ['type' => 'string'],
             'unnestFiles' => ['type' => 'boolean']
         ],
         'responses' => [
@@ -88,6 +89,7 @@ $rest['v1/survey-responses-export/$id'] = [
             'language' => ['type' => 'string'],
             'type' => ['type' => 'string'],
             'filterSet' => ['type' => 'array'],
+            'completion' => ['type' => 'string'],
         ],
         'responses' => [
             'success' => [
