@@ -31,7 +31,8 @@
         }
     }
 
-    .dropdown-menu > li > a {
+    .dropdown-menu > li > a,
+    .dropdown-menu > li > button {
         color : $g-900;
         //&:hover {
         //    background  : none !important;
@@ -46,7 +47,10 @@
     .dropdown-menu > li > a:focus,
     .dropdown-menu > li > a:active,
     .dropdown-menu > li > a.active,
-    .dropdown-menu > .active > a {
+    .dropdown-menu > .active > a,
+    .dropdown-menu > li > button:hover,
+    .dropdown-menu > li > button:focus,
+    .dropdown-menu > li > button:active {
         color : $base-color-contrast;
     }
 
@@ -54,20 +58,24 @@
         .list-group-item {
             border : none;
 
-            a.disabled {
+            a.disabled,
+            button.disabled {
                 color: $g-600;
             }
-            a.index-warning {
+            a.index-warning,
+            button.index-warning {
                 background  : none;
                 border-left : $warning solid 8px;
             }
 
-            a.index-danger {
+            a.index-danger,
+            button.index-danger {
                 background  : none;
                 border-left : $error solid 8px;
             }
 
-            a:not(.index-danger):not(.index-warning) {
+            a:not(.index-danger):not(.index-warning),
+            button:not(.index-danger):not(.index-warning) {
                 background  : none;
                 border-left : transparent solid 8px;
             }
