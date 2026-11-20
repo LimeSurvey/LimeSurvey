@@ -7,7 +7,7 @@ import {
   LABEL_CHAR_WIDTH,
   statisticsGraphs,
 } from './ChartsUtils'
-import { QT_Q_MULTIPLE_SHORT_TEXT } from 'helpers'
+import { QT_D_DATE, QT_Q_MULTIPLE_SHORT_TEXT } from 'helpers'
 
 describe('getBarChartMinWidth', () => {
   test('keeps the responsive chart width through the density threshold', () => {
@@ -25,6 +25,13 @@ describe('getStatisticsGraphsForType', () => {
   test('uses only the response list for multiple short text', () => {
     expect(getStatisticsGraphsForType(QT_Q_MULTIPLE_SHORT_TEXT)).toEqual([
       statisticsGraphs.GRID,
+    ])
+  })
+
+  test('gives date/time questions a calendar and a table', () => {
+    expect(getStatisticsGraphsForType(QT_D_DATE)).toEqual([
+      statisticsGraphs.CALENDAR,
+      statisticsGraphs.TABLE,
     ])
   })
 })
