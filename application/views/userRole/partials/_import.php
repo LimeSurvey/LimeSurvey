@@ -18,7 +18,7 @@ Yii::app()->getController()->renderPartial(
     </div>
     <div class="mb-3">
         <label class="form-label" for="the_file"><?= gT('Select role-XML file') ?></label>
-        <input type="file" name="the_file" id="the_file" class="form-control"/>
+        <input type="file" name="the_file" id="the_file" class="form-control" accept=".xml" required/>
     </div>
 </div>
 

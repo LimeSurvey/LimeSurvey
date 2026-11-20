@@ -14378,13 +14378,31 @@
 	    adminCoreLSConsole.warn('LS.unrenderBootstrapSwitch is deprecated.');
 	  },
 	  // ==================================================================================
-	  validatefilename: (form, strmessage) => {
-	    if (form.the_file.value == "") {
-	      $('#pleaseselectfile-popup').modal();
-	      form.the_file.focus();
-	      return false;
+	  /**
+	   * Checks that a file was chosen in the "the_file" input of an import form.
+	   * If not, the message is shown at the file input by the browser's form validation,
+	   * which works on every page and inside modals without extra markup.
+	   *
+	   * @param {HTMLFormElement} form The import form, it must contain a file input named "the_file"
+	   * @param {string} message The translated message to show when no file was chosen
+	   * @return {boolean} True if a file was chosen
+	   */
+	  validatefilename: (form, message) => {
+	    const fileInput = form.the_file;
+	    if (fileInput.value !== "") {
+	      fileInput.setCustomValidity('');
+	      return true;
 	    }
-	    return true;
+	    if (message) {
+	      fileInput.setCustomValidity(message);
+	      // The custom message makes the input invalid: Remove it as soon as a file is chosen
+	      fileInput.addEventListener('change', () => fileInput.setCustomValidity(''), {
+	        once: true
+	      });
+	    }
+	    fileInput.focus();
+	    fileInput.reportValidity();
+	    return false;
 	  },
 	  doToolTip: () => {
 	    // A trigger whose tooltip is currently shown (or fading in/out) points to it via aria-describedby
