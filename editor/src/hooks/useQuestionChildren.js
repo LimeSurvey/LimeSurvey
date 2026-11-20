@@ -179,18 +179,21 @@ export const useQuestionChildren = ({
   /**
    * Saves changed image option attributes along with a children update, so
    * both end up in one question update. The changes must be built from the
-   * attributes of the latest question.
+   * attributes of the latest question. They are only built for the image
+   * select themes: Other questions skip parsing the attributes on every
+   * change.
    *
-   * @param {Object|null} attributeChanges changed values keyed by attribute
-   *   and language, or null when there are none
+   * @param {Function} buildChanges returns the changed values keyed by
+   *   attribute and language, or null when there are none
    * @returns {Object} the question changes for the attributes, or an empty
    *   object
    */
-  const saveImageOptionChanges = (attributeChanges) => {
-    if (
-      !attributeChanges ||
-      !getImageSelectThemes().includes(question.questionThemeName)
-    ) {
+  const saveImageOptionChanges = (buildChanges) => {
+    if (!getImageSelectThemes().includes(question.questionThemeName)) {
+      return {}
+    }
+    const attributeChanges = buildChanges()
+    if (!attributeChanges) {
       return {}
     }
     addToBuffer(
@@ -260,7 +263,7 @@ export const useQuestionChildren = ({
     )
     // Image select themes: Drop the image settings of the deleted option.
     const attributeUpdate = deletedChild
-      ? saveImageOptionChanges(
+      ? saveImageOptionChanges(() =>
           getImageOptionDeleteChanges(
             latestQuestion.current.attributes,
             getCurrentChildCode(deletedChild, entityType)
@@ -422,7 +425,7 @@ export const useQuestionChildren = ({
     )
     // Image select themes: A new or removed image starts without settings.
     const attributeUpdate = imageChanged
-      ? saveImageOptionChanges(
+      ? saveImageOptionChanges(() =>
           getImageOptionResetChanges(
             latestQuestion.current.attributes,
             getCurrentChildCode(updatedChildren[childIndex], entityType),
@@ -496,7 +499,7 @@ export const useQuestionChildren = ({
       createChildrenUpdateOperation(question.qid, entityType, updatedChildren)
     )
     // Image select themes: The image settings are keyed by code, move them.
-    const attributeUpdate = saveImageOptionChanges(
+    const attributeUpdate = saveImageOptionChanges(() =>
       getImageOptionRenameChanges(
         latestQuestion.current.attributes,
         oldCode,
