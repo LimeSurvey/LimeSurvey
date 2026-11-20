@@ -1262,7 +1262,8 @@ function LEMval(alias, keepText)
                     return "";
                 }
 
-                var checkNumericRegex = new RegExp(/^(-)?[0-9]*(,|\.)[0-9]*$/);
+                /* Same as the server : comma is accepted only when the radix is comma (#16878), else 1,1 is valid in JS and invalid on submit */
+                var checkNumericRegex = (LEMradix === ',') ? new RegExp(/^(-)?[0-9]*(,|\.)[0-9]*$/) : new RegExp(/^(-)?[0-9]*\.[0-9]*$/);
                 /* Set as number if regexp is OK AND lenght is > 1 (then not fix [-.,] #14533 and no need to fix single number) */
                 if( checkNumericRegex.test(value) && value.length > 1 )
                 {
