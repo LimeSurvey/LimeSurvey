@@ -19,6 +19,8 @@ class SchemaFactorySiteSettings
                 Schema::string('siteName')->default(null),
                 Schema::string('timezone')->default(null),
                 Schema::integer('maximumFileUploadSize')->default(null),
+                Schema::string('adminTheme')->default(null),
+                Schema::object('adminThemeTokens')->additionalProperties(Schema::string())->default(null),
             );
     }
 }

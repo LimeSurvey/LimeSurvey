@@ -1,4 +1,5 @@
 export * from './useAppState'
+export * from './useAdminTheme'
 export * from './useAuth'
 export * from './useAuthService'
 export * from './useFileService'

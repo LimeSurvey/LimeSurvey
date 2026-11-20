@@ -393,6 +393,27 @@ echo $oQuestionSelector->getModal();
                                 </div>
                             </div>
                         </div>
+                        <div class="col-12 col-lg-6">
+                            <!-- Admin theme -->
+                            <div class="mb-3">
+                                <?php echo TbHtml::label(gT("Admin theme:"), 'admintheme', ['class' => " form-label"]); ?>
+                                <div class="">
+                                    <select name='admintheme' id='admintheme' class="form-select" aria-describedby="admintheme-help">
+                                        <option value=""><?php echo sprintf(gT("Use global setting (%s)"), CHtml::encode($globalAdminThemeTitle)); ?></option>
+                                        <?php foreach ($adminThemes as $themeName => $themeConfig) {
+                                            echo "<option value='" . CHtml::encode($themeName) . "'";
+                                            if (($aUserSettings['admintheme'] ?? '') === $themeName) {
+                                                echo " selected='selected'";
+                                            }
+                                            echo ">" . CHtml::encode($themeConfig->metadata->name) . "</option>";
+                                        } ?>
+                                    </select>
+                                </div>
+                                <div id="admintheme-help" class="form-text">
+                                    <?php echo sprintf(gT("%s meets the WCAG 2.2 AA requirements for colour contrast and focus indicators."), CHtml::encode($adminThemes['Sea_Green_High_Contrast']->metadata->name ?? 'Sea Green - High Contrast WCAG 2.2')); ?>
+                                </div>
+                            </div>
+                        </div>
                         <!-- Basic non numerical part of answer options -->
                         <div class="col-12 col-lg-6">
                             <div class="mb-3">

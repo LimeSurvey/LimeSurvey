@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Sea Green - High Contrast WCAG 2.2 configuration for the admin styles.
+    In future versions of LimeSurvey, it will be used to fill a admin_style table,
+    and to give user control on template configuration (like variables to use to render the questions, banners, background, etc.)
+-->
+<config>
+    <metadata>
+        <name>Sea Green - High Contrast WCAG 2.2</name>
+        <creationDate>11/21/2026</creationDate>
+        <author>LimeSurvey GmbH</author>
+        <authorEmail>info@limesurvey.org</authorEmail>
+        <authorUrl>http://www.limesurvey.org</authorUrl>
+        <copyright>Copyright (C) 2005 - 2026 LimeSurvey Gmbh, Inc. All rights reserved.</copyright>
+        <license>GNU General Public License version 2 or later</license>
+        <version>1.0</version>
+        <description>Sea Green with colours and focus indicators that meet the WCAG 2.2 AA contrast requirements.</description>
+        <basecolor>#0B7A3E</basecolor>
+        <lastUpdate>2026-11-21 00:00:00</lastUpdate>
+    </metadata>
+
+    <compatibility>
+        <version>7.0</version>
+    </compatibility>
+
+    <!--
+        Here the list of the css/js files to load.
+        Any file here will be loaded via the asset manager
+    -->
+    <files>
+        <css>
+            <filename>sea_green_high_contrast.css</filename>
+        </css>
+
+        <js></js>
+
+        <!--
+            Those files will be loaded for right to left languages only
+            NOTE 1: If for any reason, you need to edit the RTL behaviors, feel free to contact the LimeSurvey team about it.
+            We'll be always pleased to make better the right to left display
+
+            NOTE 2: those files are generated with the script R2. See: https://github.com/ded/R2
+        -->
+        <rtl>
+            <css>
+                <!-- Still need these files -->
+                <filename>sea_green_high_contrast-rtl.css</filename>
+            </css>
+            <js>
+            </js>
+        </rtl>
+    </files>
+
+    <engine>
+        <!-- If you want to use asset manager, even in debug mode, set this field to true. -->
+        <use_asset_manager_in_debug_mode>false</use_asset_manager_in_debug_mode>
+    </engine>
+</config>

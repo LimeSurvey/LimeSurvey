@@ -4,6 +4,7 @@ import { useLocation, useParams } from 'react-router-dom'
 import { getQuestionTypeInfo } from 'components/QuestionTypes'
 import { SiteSettingsService } from 'services'
 import {
+  useAdminTheme,
   useAppState,
   useFocused,
   useSurvey,
@@ -45,7 +46,7 @@ export const EditorContextController = ({ children }) => {
   const [, setCodeToQuestion] = useAppState(STATES.CODE_TO_QUESTION, {})
   const [, setSaveStatue] = useAppState(STATES.SAVE_STATUS, {})
   const [, setNumberOfQuestions] = useAppState(STATES.NUMBER_OF_QUESTIONS, 0)
-  const [, setSiteSettings] = useAppState(STATES.SITE_SETTINGS, {})
+  const [siteSettings, setSiteSettings] = useAppState(STATES.SITE_SETTINGS, {})
   const [, setSurveyGroups] = useAppState(STATES.SURVEY_GROUPS, {})
   const [, setActiveLanguage] = useAppState(
     STATES.ACTIVE_LANGUAGE,
@@ -55,6 +56,8 @@ export const EditorContextController = ({ children }) => {
     STATES.HAS_SURVEY_UPDATE_PERMISSION
   )
   const [userDetails] = useAppState(STATES.USER_DETAIL)
+
+  useAdminTheme(siteSettings)
 
   // Survey Metadata & State Calculation
   useEffect(() => {
