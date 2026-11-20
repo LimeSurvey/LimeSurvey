@@ -14,6 +14,7 @@ import {
   QT_G_GENDER,
   QT_H_ARRAY_COLUMN,
   QT_I_LANGUAGE,
+  QT_J_MAP,
   QT_K_MULTIPLE_NUMERICAL,
   QT_L_LIST,
   QT_M_MULTIPLE_CHOICE,
@@ -82,6 +83,7 @@ export const TEXT_QUESTION_TYPES = [
   QT_S_SHORT_FREE_TEXT,
   QT_T_LONG_FREE_TEXT,
   QT_U_HUGE_FREE_TEXT,
+  QT_J_MAP,
 ]
 
 // Whether charts display raw response counts or percentages.
@@ -135,6 +137,7 @@ const GRID_QUESTION_TYPES = [
   QT_N_NUMERICAL,
   QT_K_MULTIPLE_NUMERICAL,
   QT_Q_MULTIPLE_SHORT_TEXT,
+  QT_J_MAP,
 ]
 
 const getChartsForType = (type) => {

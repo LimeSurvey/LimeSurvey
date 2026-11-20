@@ -1,10 +1,19 @@
 // Helper functions for condition operations
-import { QUESTION_RELEVANCE_DEFAULT_VALUE } from 'helpers'
+import {
+  getQuestionById,
+  QUESTION_RELEVANCE_DEFAULT_VALUE,
+  STATES,
+} from 'helpers'
+import { isEqual } from 'lodash'
+import { queryClient } from 'queryClient'
 
 import { getConditionTypeInfo } from './getConditionTypeInfo'
 import { getAllowedMethods } from './getAllowedMethods'
 
 const conditionTypeInfo = getConditionTypeInfo()
+
+// The scenario number is stored in a signed 32-bit integer column
+export const MAX_SCENARIO_NUMBER = 2147483647
 const allowedMethods = getAllowedMethods()
 
 export const getDefaultCondition = () => ({
@@ -31,7 +40,7 @@ export const hasConditionChanged = (
   if (!scenarioToPatch) return false
 
   // Find the original condition in the current scenario
-  const scenario = question.scenarios.find(
+  const scenario = question.scenarios?.find(
     (s) => s.scid === scenarioToPatch.scid
   )
   const original = scenario?.conditions.find(
@@ -49,24 +58,32 @@ export const hasConditionChanged = (
         scenario.scid != currentCondition.scenario
 }
 
-// Checks if a condition already exists in the question scenarios (for updating existing scenarios)
-export const isDuplicateCondition = (
-  condition,
-  question,
-  scid,
-  scenarioToPatch
-) => {
-  return question.scenarios.some((scenario) =>
-    scenario.conditions.some(
-      (existing) =>
-        existing.cid != condition.cid && // Don't match against self
-        existing.qid == condition.qid &&
-        existing.cqid == condition.cqid &&
-        existing.cfieldname === condition.cfieldname &&
-        existing.method === condition.method &&
-        existing.value === condition.value &&
-        (scenario.scid === scid || scenario.scid === scenarioToPatch?.scid)
-    )
+/**
+ * Whether the condition already exists in the scenario it is saved to.
+ *
+ * Only the destination scenario counts. When a scenario is renamed, the save
+ * moves the draft's rows to the new scenario before this check, so the old
+ * scenario only keeps conditions that are not in the draft (e.g. added by a
+ * refresh). Those must not block a new row of the renamed scenario.
+ * @param {Object} condition The new condition row.
+ * @param {Object} question The question, with the draft's moves applied.
+ * @param {number} scid The scenario the row is saved to.
+ * @returns {boolean}
+ */
+export const isDuplicateCondition = (condition, question, scid) => {
+  // A question that never had a condition can come without a scenarios array.
+  return (question.scenarios ?? []).some(
+    (scenario) =>
+      scenario.scid === scid &&
+      scenario.conditions.some(
+        (existing) =>
+          existing.cid != condition.cid && // Don't match against self
+          existing.qid == condition.qid &&
+          existing.cqid == condition.cqid &&
+          existing.cfieldname === condition.cfieldname &&
+          existing.method === condition.method &&
+          existing.value === condition.value
+      )
   )
 }
 
@@ -189,6 +206,8 @@ export const determineConditionTargetType = (
 export const updateQuestionScenarios = (scenarios, question, originalScid) => {
   const [newScenario] = scenarios
   const { scid, conditions: newConditions } = newScenario
+  // A question that never had a condition can come without a scenarios array.
+  question.scenarios = question.scenarios ?? []
   const exists = question.scenarios.some((s) => s.scid === scid)
 
   if (exists) {
@@ -212,9 +231,23 @@ export const updateQuestionScenarios = (scenarios, question, originalScid) => {
   }
 
   if (originalScid.current !== scid) {
-    question.scenarios = question.scenarios.filter(
-      (sc) => sc.scid !== originalScid.current
-    )
+    // The scenario was renamed. The payload moves only these conditions to the
+    // new scenario, so only take them out of the old one: other conditions,
+    // e.g. added by a refresh, stay there as they do on the server.
+    question.scenarios = question.scenarios
+      .map((sc) =>
+        sc.scid === originalScid.current
+          ? {
+              ...sc,
+              conditions: sc.conditions.filter(
+                (c) => !newConditions.some((nc) => nc.cid == c.cid)
+              ),
+            }
+          : sc
+      )
+      .filter(
+        (sc) => sc.scid !== originalScid.current || sc.conditions.length > 0
+      )
   }
 
   question.scenarios = question.scenarios.filter(
@@ -224,22 +257,124 @@ export const updateQuestionScenarios = (scenarios, question, originalScid) => {
   originalScid.current = scid
 }
 
-export const syncSurveyQuestionWithScenarios = (
-  survey,
-  question,
-  groupIndex,
-  questionIndex,
-  update,
-  focused
-) => {
-  const updatedGroups = [...survey.questionGroups]
+/**
+ * Finds a question by its ID in the current survey of the cache.
+ *
+ * Condition actions run from popups and handlers that can outlive the render
+ * that created them. The survey and indices they captured can be outdated, and
+ * the question can be gone (e.g. its group was deleted). Condition actions
+ * look the question up when they run instead.
+ * @param {number|string} qid Question ID.
+ * @returns {{survey?: Object, question?: Object, groupIndex?: number, questionIndex?: number}}
+ *   Only `survey` is set when the question no longer exists.
+ */
+export const getCurrentQuestionInfo = (qid) => {
+  const survey = queryClient.getQueryData([STATES.SURVEY])?.survey
+  return { survey, ...getQuestionById(qid, survey) }
+}
 
-  updatedGroups[groupIndex].questions[questionIndex] = question
-  update({ questionGroups: updatedGroups })
+/**
+ * The question's condition, to check later whether it changed meanwhile (see
+ * isConditionChangedSince).
+ * @param {Object} question
+ * @returns {{relevance: ?string, scenarios: Array}}
+ */
+export const getConditionState = (question) => ({
+  relevance: question?.relevance ?? null,
+  scenarios: question?.scenarios ?? [],
+})
 
-  if (Array.isArray(question?.scenarios) && question.scenarios.length > 0) {
-    focused.scenarios = [...question.scenarios].sort((a, b) => a.scid - b.scid)
-  }
+/**
+ * Whether the question's condition in the current survey differs from the one
+ * recorded with getConditionState, e.g. when the survey was refreshed with a
+ * change from another session while a confirmation was open. A confirmation
+ * only applies to the condition it was shown for.
+ * @param {number|string} qid Question ID.
+ * @param {Object} conditionState Recorded with getConditionState.
+ * @returns {boolean} False when the question no longer exists: the condition
+ *   actions skip a missing question themselves.
+ */
+export const isConditionChangedSince = (qid, conditionState) => {
+  const { question } = getCurrentQuestionInfo(qid)
+  return !!question && !isEqual(getConditionState(question), conditionState)
+}
+
+/**
+ * Whether the condition rows of a scenario draft can be saved. Rows marked for
+ * deletion are skipped: they are not saved, and their fields can be empty
+ * (e.g. cleared by the first-question reset in QuestionTypeToggle).
+ * @param {Array} conditions The condition rows of the draft.
+ * @param {number|string} scid The scenario ID of the draft.
+ * @returns {boolean}
+ */
+export const isScenarioDraftValid = (conditions, scid) => {
+  // Scenario numbers are whole numbers from 1 up to the maximum of the
+  // database column (a signed 32-bit integer). A cleared input is ''.
+  const isScidValid =
+    scid !== '' &&
+    Number.isInteger(Number(scid)) &&
+    Number(scid) >= 1 &&
+    Number(scid) <= MAX_SCENARIO_NUMBER
+
+  return (
+    isScidValid &&
+    conditions
+      .filter((condition) => !condition.isDeleted)
+      .every((condition) => {
+        const { method, cqid, targetType, value, sourceType, cfieldname } =
+          condition
+
+        const isMethodValid =
+          Object.values(getAllowedMethods()).includes(method)
+        const isValueValid =
+          targetType === conditionTypeInfo.TARGET.CONSTANT || value !== null
+
+        const isSourceValid =
+          sourceType === conditionTypeInfo.SOURCE.QUESTION
+            ? typeof cqid === 'number' && cqid > 0
+            : Boolean(cfieldname)
+
+        return isMethodValid && isValueValid && isSourceValid
+      })
+  )
+}
+
+/**
+ * Writes a question into the survey at its current position.
+ *
+ * Writes a copy of the question, in new copies of its group and questions
+ * array, and never changes the cached survey in place: React Query keeps its
+ * previous data when the new data is deep-equal to it (structural sharing), so
+ * changing cached objects before `update` would hide the change from the
+ * survey's listeners. The copy also keeps later changes of the caller's object
+ * out of the cache.
+ *
+ * The copy is shallow: nested values such as `scenarios` are shared with the
+ * caller's object. Replace nested values instead of changing them in place,
+ * e.g. `question.scenarios = [...question.scenarios, scenario]`, never
+ * `question.scenarios.push(scenario)`.
+ * @param {Object} question The updated question.
+ * @param {Function} update Updates the survey.
+ * @returns {boolean} False when the question no longer exists in the survey.
+ */
+export const replaceQuestionInSurvey = (question, update) => {
+  const { survey, groupIndex, questionIndex } = getCurrentQuestionInfo(
+    question.qid
+  )
+  if (groupIndex === undefined) return false
+
+  const questionGroups = survey.questionGroups.map((group, index) =>
+    index === groupIndex
+      ? {
+          ...group,
+          questions: group.questions.map((existingQuestion, position) =>
+            position === questionIndex ? { ...question } : existingQuestion
+          ),
+        }
+      : group
+  )
+  update({ questionGroups })
+  return true
 }
 
 export const isValidRelevanceValue = (newRelevance, question) => {

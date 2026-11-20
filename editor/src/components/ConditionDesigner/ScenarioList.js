@@ -6,26 +6,30 @@ import classNames from 'classnames'
 import { useBuffer, useFocused, useSurvey } from 'hooks'
 import {
   createBufferOperation,
-  getQuestionById,
   QUESTION_RELEVANCE_DEFAULT_VALUE,
 } from 'helpers'
 import { Button } from 'components'
 import { CloseCircleIcon } from 'components/icons'
 
-import { getApiOperationActions, showDeleteScenarioOverlay } from './utils'
+import {
+  getApiOperationActions,
+  getCurrentQuestionInfo,
+  replaceQuestionInSurvey,
+  showDeleteScenarioOverlay,
+} from './utils'
 
 export const ScenarioList = ({
+  question,
   setScenarioToPatch,
   pendingScenarioName,
   setPendingScenarioName,
 }) => {
   const { surveyId } = useParams()
-  const { survey, update } = useSurvey(surveyId)
-  const { focused, groupIndex, questionIndex } = useFocused()
+  const { update } = useSurvey(surveyId)
+  const { focused } = useFocused()
   const { addToBuffer } = useBuffer()
 
-  const question = getQuestionById(focused.qid, survey).question
-  const scenarios = question?.scenarios || []
+  const scenarios = question.scenarios || []
 
   const [hasTempId, setHasTempId] = useState(!!pendingScenarioName)
 
@@ -49,8 +53,18 @@ export const ScenarioList = ({
   }, [question, pendingScenarioName, scenarios])
 
   const handleDeleteScenario = (scenarioId) => {
+    // This runs from the delete confirmation popup, which can outlive this
+    // render: find the question in the current survey. Do nothing if the
+    // question or the scenario is gone meanwhile, e.g. the group was deleted,
+    // or a refresh replaced the scenarios with an ExpressionScript condition.
+    const { question: currentQuestion } = getCurrentQuestionInfo(question.qid)
+    const scenarioExists = (currentQuestion?.scenarios ?? []).some(
+      (scenario) => scenario.scid === scenarioId
+    )
+    if (!scenarioExists) return
+
     const properties = {
-      qid: question.qid,
+      qid: currentQuestion.qid,
       scenarios: [
         {
           scid: scenarioId,
@@ -59,29 +73,26 @@ export const ScenarioList = ({
       ],
     }
 
-    const operation = createBufferOperation(question.qid)
-      .questionCondition(question.qid)
+    const operation = createBufferOperation(currentQuestion.qid)
+      .questionCondition(currentQuestion.qid)
       .delete()
-    operation.qid = question.qid
+    operation.qid = currentQuestion.qid
     operation.props = properties
     addToBuffer(operation)
 
-    question.scenarios = scenarios.filter(
+    const remainingScenarios = currentQuestion.scenarios.filter(
       (scenario) => scenario.scid !== scenarioId
     )
-
-    if (!question.scenarios.length)
-      question.relevance = QUESTION_RELEVANCE_DEFAULT_VALUE
-
-    const updatedQuestionGroups = [...survey.questionGroups]
-    updatedQuestionGroups[groupIndex].questions[questionIndex] = question
-
-    update({
-      questionGroups: updatedQuestionGroups,
-    })
-
-    focused.scenarios = question.scenarios
-    focused.relevance = question.relevance
+    // A copy: the cached survey must only change through `update`
+    const updatedQuestion = {
+      ...currentQuestion,
+      scenarios: remainingScenarios,
+      // The last scenario is removed: the question has no condition anymore
+      ...(remainingScenarios.length === 0 && {
+        relevance: QUESTION_RELEVANCE_DEFAULT_VALUE,
+      }),
+    }
+    replaceQuestionInSurvey(updatedQuestion, update)
   }
 
   const isPendingAndHasTempId = useCallback(

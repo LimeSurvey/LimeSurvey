@@ -1,3 +1,5 @@
+import { getScriptPath } from '../getScriptPath'
+
 export const MINIMUM_INPUT_WIDTH_PERCENT = 15
 export const FOCUS_ANIMATION_DURATION_IN_MS = 1000
 
@@ -67,10 +69,12 @@ export const STATES = {
   LOADED_SURVEY_ID: 'loaded_survey_id',
   SURVEY_LOGIC: 'survey_logic',
   TOPBAR_CONFIG: 'topbar_config',
+  QUESTION_THEME_ATTRIBUTES: 'question_theme_attributes',
 }
 
 export const TUTORIALS = {
   EDITOR_TUTORIAL: 'editorTutorial',
+  EDITOR_TUTORIAL_DISMISSED: 'editorTutorialDismissed',
 }
 
 export const SURVEY_MENU_TITLES = {
@@ -117,11 +121,9 @@ export const RESPONSES_TITLES = {
   list: '',
 }
 
-const getBasePath = () => window.location.pathname.split('/editor')[0]
-
 export const URLS = {
-  ADMIN: `${getBasePath()}/admin`,
-  SURVEY_OVERVIEW: `${getBasePath()}/surveyAdministration/view/`,
+  ADMIN: `${getScriptPath()}/admin`,
+  SURVEY_OVERVIEW: `${getScriptPath()}/surveyAdministration/view/`,
 }
 
 export const placeholderStandardFields = {
