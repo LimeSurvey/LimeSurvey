@@ -2648,7 +2648,8 @@ class LimeExpressionManager
             // other_numbers_only
             // Validation:= is_numeric(sqN).
             if (isset($qattr['other_numbers_only']) && trim((string) $qattr['other_numbers_only']) == '1') {
-                $other_numbers_only = 1;
+                // The tip only applies while "Other" is on
+                $other_numbers_only = ($this->questionSeq2relevance[$qinfo['qseq']]['other'] == 'Y') ? 1 : '';
                 $eqn = '';
                 if ($this->questionSeq2relevance[$qinfo['qseq']]['other'] == 'Y') {
                     $sgqa = $qinfo['sgqa'];
