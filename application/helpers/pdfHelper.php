@@ -71,7 +71,7 @@ class pdfHelper
      *
      * @param string|null $language Language code of the PDF
      * @param string|null $family Font family the style is requested for
-     * @param string|null $style Font style as used by TCPDF, for example "B", "BI" or "BU"
+     * @param string|null $style Font style as used by TCPDF, for example "B" or "BI", optionally with "U" for underline
      * @return string The font style without the styles the font can not print
      */
     public static function removeUnsupportedFontStyles($language, $family, $style)
