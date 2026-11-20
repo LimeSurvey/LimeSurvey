@@ -13,25 +13,28 @@
 #}
 <tr class="labelDatas" style='white-space: nowrap;' id='row_{{ language }}_{{ rowId }}'>
     {% if not first %}
-        <td>{{ code|escape }}</td>
+        <td id="codecell_{{ language }}_{{ rowId }}">{{ code|escape }}</td>
         <td>{{ assessmentValue }}</td>
     {% else %}
         <td>
-            <span class="ri-menu-fill bigIcons"></span>
+            {# Drag handle. With the keyboard the label is moved with the arrow up / down keys (labels.js) #}
+            <span class="ri-menu-fill bigIcons label-move-handle" role="button" tabindex="0"
+                  aria-label="{{ sprintf(gT("Move label %s. Use the arrow up and arrow down keys."), code|escape) }}"></span>
         </td>
 
         <td>
             <input type='hidden' class='hiddencode' value='{{ code|escape }}'/>
-            <input type='text' class='codeval  form-control  ' id='code_{{ rowId }}' name='code_{{ rowId }}' maxlength='20' size='20' value='{{ code|escape }}'/>
+            <input type='text' class='codeval  form-control  ' id='code_{{ rowId }}' name='code_{{ rowId }}' maxlength='20' size='20' value='{{ code|escape }}' aria-labelledby="labelth-code-{{ language }}"/>
         </td>
 
         <td>
-            <input type="number" class='assessmentval  form-control  ' id='assessmentvalue_{{ rowId }}' style='text-align: right;' name='assessmentvalue_{{ rowId }}' maxlength='5' size='6' value='{{ assessmentValue }}'/>
+            <input type="number" class='assessmentval  form-control  ' id='assessmentvalue_{{ rowId }}' style='text-align: right;' name='assessmentvalue_{{ rowId }}' maxlength='5' size='6' value='{{ assessmentValue }}' aria-labelledby="labelth-assessment-{{ language }} code_{{ rowId }}"/>
         </td>
     {% endif %}
 
     <td>
-        <input type='text' class=" form-control  " name='title_{{ language }}_{{ rowId }}' id='title_{{ language }}_{{ rowId }}' maxlength='3000' size='80' value="{{ title|escape }}" />
+        <input type='text' class=" form-control  " name='title_{{ language }}_{{ rowId }}' id='title_{{ language }}_{{ rowId }}' maxlength='3000' size='80' value="{{ title|escape }}"
+               aria-labelledby="labelth-title-{{ language }} {{ first ? 'code_' ~ rowId : 'codecell_' ~ language ~ '_' ~ rowId }}" />
     </td>
     <td>
         <div class="icon-btn-row">
@@ -45,11 +48,13 @@
                     <i class="ri-file-edit-line" aria-hidden="true"></i>
                 </button>
                 {% if first %}
-                    <button class="btn btn-outline-secondary btn-sm btnaddanswer" type="button" data-bs-toggle="tooltip" title="{{ gT("Add label") }}">
-                        <i class="ri-add-circle-fill text-primary"></i>
+                    <button class="btn btn-outline-secondary btn-sm btnaddanswer" type="button" data-bs-toggle="tooltip" title="{{ gT("Add label") }}"
+                        aria-label="{{ sprintf(gT("Add label after %s"), code|escape) }}">
+                        <i class="ri-add-circle-fill text-primary" aria-hidden="true"></i>
                     </button>
-                    <button class="btn btn-outline-secondary btn-sm btndelanswer" type="button" data-bs-toggle="tooltip" title="{{ gT("Delete label") }}">
-                        <i class="ri-indeterminate-circle-fill text-danger"></i>
+                    <button class="btn btn-outline-secondary btn-sm btndelanswer" type="button" data-bs-toggle="tooltip" title="{{ gT("Delete label") }}"
+                        aria-label="{{ sprintf(gT("Delete label %s"), code|escape) }}">
+                        <i class="ri-indeterminate-circle-fill text-danger" aria-hidden="true"></i>
                     </button>
                 {% endif %}
             {% endif %}
