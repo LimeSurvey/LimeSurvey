@@ -11,7 +11,12 @@ import { useDropzone } from 'react-dropzone'
 import { Form, Button } from 'react-bootstrap'
 
 import NoImageFound from 'assets/images/no-image-found.jpg'
-import { UploadIcon, DeleteIcon, EditIcon } from 'components/icons'
+import {
+  UploadIcon,
+  DeleteIcon,
+  DeleteIconFilled,
+  EditIcon,
+} from 'components/icons'
 import { errorToast } from 'helpers/Alert'
 import { FILE_UPLOAD_MAX_SIZE } from 'helpers/constants'
 import { EditedImage } from '../ImageEditor/EditedImage'
@@ -235,6 +240,21 @@ export const DropZone = forwardRef(
       (trashIconEnabled || !!onEdit) &&
       (isHovered || hasFocus || isKeyboardEdit)
 
+    // Beside the image, the buttons look like the image buttons of the
+    // sidebar (ImageAttributes.js). On the image, they need a light background
+    // to stand out from it.
+    const imageButtonProps = buttonsBeside
+      ? { variant: 'secondary', className: 'btn-sm-sidebar ms-2' }
+      : {
+          variant: 'outline-light',
+          className: 'image-handle-btn ms-1',
+          size: 'sm',
+        }
+    const imageButtonIconProps = buttonsBeside
+      ? { className: 'fill-current', width: 16, height: 16 }
+      : { className: 'text-primary fill-current' }
+    const DeleteButtonIcon = buttonsBeside ? DeleteIconFilled : DeleteIcon
+
     const imageButtons = (
       <div
         className={classNames(
@@ -248,9 +268,7 @@ export const DropZone = forwardRef(
       >
         {onEdit && (
           <Button
-            variant="outline-light"
-            className="image-handle-btn ms-1"
-            size="sm"
+            {...imageButtonProps}
             aria-label={
               imageName
                 ? format(t('Edit image %s'), imageName)
@@ -272,14 +290,12 @@ export const DropZone = forwardRef(
               onEdit()
             }}
           >
-            <EditIcon className="text-primary fill-current" />
+            <EditIcon {...imageButtonIconProps} />
           </Button>
         )}
         {trashIconEnabled && (
           <Button
-            variant="outline-light"
-            className="image-handle-btn ms-1"
-            size="sm"
+            {...imageButtonProps}
             aria-label={
               imageName
                 ? format(t('Delete image %s'), imageName)
@@ -290,7 +306,7 @@ export const DropZone = forwardRef(
               event.stopPropagation()
             }}
           >
-            <DeleteIcon className="text-primary fill-current" />
+            <DeleteButtonIcon {...imageButtonIconProps} />
           </Button>
         )}
       </div>
