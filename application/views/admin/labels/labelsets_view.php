@@ -11,6 +11,7 @@ echo viewHelper::getViewTestTag('viewLabelSets');
 
 ?>
 <?php $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']); ?>
+<?php $massiveAction = $this->renderPartial('/admin/labels/massive_actions/_selector', [], true); ?>
 <div class="row">
     <div class="col-12 content-right">
         <?php
@@ -23,8 +24,14 @@ echo viewHelper::getViewTestTag('viewLabelSets');
                 'lsCaption' => gT('Label set list', 'unescaped'),
                 'emptyText' => gT('No label sets found.'),
                 'ajaxUpdate' => 'labelsets-grid',
+                'massiveActionTemplate' => $massiveAction,
                 'lsPageSizeCurrentValue' => $pageSize,
                 'columns' => [
+                    [
+                        'id' => 'lid',
+                        'class' => 'CCheckBoxColumn',
+                        'selectableRows' => 100,
+                    ],
                     [
                         'header' => gT('Label set ID'),
                         'name' => 'labelset_id',
