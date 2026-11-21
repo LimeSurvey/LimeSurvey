@@ -21206,6 +21206,12 @@ a.list-group-item.active > .badge {
   color: #0B7A3E;
   background-color: #fff;
 }
+a.list-group-item.active:focus-visible:not(:active) {
+  color: #1E1E1E;
+}
+a.list-group-item.active:focus-visible:not(:active) .list-group-item-text {
+  color: #585D72;
+}
 a.list-group-item .list-group-item-heading {
   color: #333641;
 }
@@ -21583,8 +21589,32 @@ a.ls-link {
   opacity: 1 !important;
 }
 
-.btn-danger, .btn-danger:hover, .btn-danger:focus, .btn-danger:active, .btn-danger.active {
+.btn-danger, .btn-danger:hover, .btn-danger:focus, .btn-danger:active, .btn-danger.active, .btn-danger:active:focus,
+.btn-success,
+.btn-success:hover,
+.btn-success:focus,
+.btn-success:active,
+.btn-success.active,
+.btn-success:active:focus {
   color: #fff;
+}
+
+.btn-outline-warning {
+  color: #806600;
+  stroke: #806600;
+  border-color: #806600;
+}
+.btn-outline-warning:hover {
+  color: #806600;
+  stroke: #806600;
+  border-color: #806600;
+  box-shadow: 0px 0px 0px 3px #9b87ff;
+}
+.btn-outline-warning:focus, .btn-outline-warning:active, .btn-outline-warning.active, .btn-outline-warning:active:focus, .btn-outline-warning.dropdown-toggle.show, .btn-outline-warning.dropdown-toggle.show:focus, .btn-outline-warning.show {
+  color: #806600;
+  stroke: #806600;
+  border-color: #806600;
+  box-shadow: 0 0 0 2px #fff, 0 0 0 4px #5B1FD6;
 }
 
 .btn-check:checked + .btn-outline-secondary,

@@ -115,33 +115,44 @@ class AdminThemeTest extends TestBaseClass
     }
 
     /**
-     * An uploaded theme with a dot in its name can be chosen, a hidden directory can not.
+     * An uploaded theme with a dot or a numeric name can be chosen, a hidden directory can not.
+     * The themes are created in a temporary upload directory, so existing uploaded themes are not touched.
      */
     public function testUploadedThemeNames()
     {
-        $uploadDir = \Yii::app()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . 'admintheme';
+        $originalUploadDir = \Yii::app()->getConfig('uploaddir');
+        $tempUploadDir = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'ls-adminthemetest-' . uniqid();
+        $themeRootDir = $tempUploadDir . DIRECTORY_SEPARATOR . 'admintheme';
         $configXml = file_get_contents(\Yii::app()->getConfig('styledir') . '/Sea_Green/config.xml');
-        $themeDirs = [];
-        foreach (['Company.Blue', '.hidden'] as $themeName) {
-            $themeDirs[$themeName] = $uploadDir . DIRECTORY_SEPARATOR . $themeName;
-            @mkdir($themeDirs[$themeName], 0777, true);
-            file_put_contents($themeDirs[$themeName] . '/config.xml', $configXml);
+        $themeNames = ['Company.Blue', '123', '.hidden'];
+        foreach ($themeNames as $themeName) {
+            mkdir($themeRootDir . DIRECTORY_SEPARATOR . $themeName, 0777, true);
+            file_put_contents($themeRootDir . DIRECTORY_SEPARATOR . $themeName . '/config.xml', $configXml);
         }
+        \Yii::app()->setConfig('uploaddir', $tempUploadDir);
         try {
             $personalThemes = AdminTheme::getPersonalAdminThemeList();
             $this->assertArrayHasKey('Company.Blue', $personalThemes);
+            // A numeric directory name is an integer key, it must not be renumbered
+            $this->assertArrayHasKey(123, $personalThemes);
             $this->assertArrayNotHasKey('.hidden', $personalThemes);
 
             SettingsUser::setUserSetting('admintheme', 'Company.Blue', self::UID);
             $this->assertSame('Company.Blue', AdminTheme::getUserAdminThemeName());
 
+            SettingsUser::setUserSetting('admintheme', '123', self::UID);
+            $this->assertSame('123', AdminTheme::getUserAdminThemeName());
+
             SettingsUser::setUserSetting('admintheme', '.hidden', self::UID);
             $this->assertNull(AdminTheme::getUserAdminThemeName());
         } finally {
-            foreach ($themeDirs as $themeDir) {
-                unlink($themeDir . '/config.xml');
-                rmdir($themeDir);
+            \Yii::app()->setConfig('uploaddir', $originalUploadDir);
+            foreach ($themeNames as $themeName) {
+                unlink($themeRootDir . DIRECTORY_SEPARATOR . $themeName . '/config.xml');
+                rmdir($themeRootDir . DIRECTORY_SEPARATOR . $themeName);
             }
+            rmdir($themeRootDir);
+            rmdir($tempUploadDir);
         }
     }
 

@@ -39,7 +39,8 @@ class AdminTheme extends CFormModel
 
     /**
      * Get the list of admin theme, as an array containing each configuration object for each template
-     * @return array the array of configuration object
+     * @return array the array of configuration objects, theme directory name => configuration object
+     *               (a numeric directory name is an integer key)
      */
     public static function getAdminThemeList()
     {
@@ -48,7 +49,8 @@ class AdminTheme extends CFormModel
 
         $aStandardThemeObjects     = self::getThemeList($sStandardTemplateRootDir); // array containing the configuration files of standard admin themes (styles/...)
         $aUserThemeObjects         = self::getThemeList($sUserTemplateDir); // array containing the configuration files of user admin themes (upload/admintheme/...)
-        $aListOfThemeObjects       = array_merge($aStandardThemeObjects, $aUserThemeObjects);
+        // array_replace() keeps numeric directory names as keys, array_merge() would renumber them
+        $aListOfThemeObjects       = array_replace($aStandardThemeObjects, $aUserThemeObjects);
 
         ksort($aListOfThemeObjects);
         return $aListOfThemeObjects;

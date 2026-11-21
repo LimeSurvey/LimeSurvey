@@ -344,7 +344,7 @@ echo $oQuestionSelector->getModal();
                                             <option value=""><?php echo sprintf(gT("Use global setting (%s)"), CHtml::encode($globalAdminThemeTitle)); ?></option>
                                             <?php foreach ($adminThemes as $themeName => $themeConfig) {
                                                 echo "<option value='" . CHtml::encode($themeName) . "'";
-                                                if (($aUserSettings['admintheme'] ?? '') === $themeName) {
+                                                if (($aUserSettings['admintheme'] ?? '') === (string) $themeName) {
                                                     echo " selected='selected'";
                                                 }
                                                 echo ">" . CHtml::encode($themeConfig->metadata->name) . "</option>";

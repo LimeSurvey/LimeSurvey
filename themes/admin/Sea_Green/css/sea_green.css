@@ -21206,6 +21206,12 @@ a.list-group-item.active > .badge {
   color: #14AE5C;
   background-color: #fff;
 }
+a.list-group-item.active:focus-visible:not(:active) {
+  color: #1E1E1E;
+}
+a.list-group-item.active:focus-visible:not(:active) .list-group-item-text {
+  color: #6E748C;
+}
 a.list-group-item .list-group-item-heading {
   color: #333641;
 }

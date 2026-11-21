@@ -61,15 +61,23 @@ a.ls-link {
     opacity : 1 !important;
 }
 
-// Bootstrap picks dark text for the darker danger colour, white has the better contrast (5.84:1)
-.btn-danger {
+// The darker danger and success colours need white text (danger 5.84:1, success 5.33:1),
+// Sea Green sets dark text for all states including the pressed and focused one
+.btn-danger,
+.btn-success {
     &,
     &:hover,
     &:focus,
     &:active,
-    &.active {
+    &.active,
+    &:active:focus {
         color : $white;
     }
+}
+
+// The warning yellow is too light for text on white, outline warning buttons use a dark yellow
+.btn-outline-warning {
+    @include button-outline-variant($hc-warning-text);
 }
 
 // Selected option of outline toggle buttons (e.g. "Question by question"): dark text on the g-300 background
