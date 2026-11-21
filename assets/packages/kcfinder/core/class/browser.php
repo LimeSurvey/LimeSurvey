@@ -18,6 +18,8 @@ class browser extends uploader {
     protected $action;
     protected $thumbsDir;
     protected $thumbsTypeDir;
+    /** @var array<int, array{0: string, 1: array<string, mixed>}> */
+    protected $uploadMutations = array();
 
     public function __construct() {
         parent::__construct();
@@ -111,6 +113,13 @@ class browser extends uploader {
             $this->session['dir'] = $this->type;
         else {
             $type = $this->getTypeFromPath($this->session['dir']);
+            if (class_exists('Yii', false)) {
+                \Yii::import('application.helpers.common_helper', true);
+                $prepared = uploadRelativePath($this->config['uploadDir'] . '/' . $this->session['dir']);
+                if ($prepared !== null) {
+                    dispatchUploadPathEvent('beforeUploadPathUse', $prepared);
+                }
+            }
             $dir = $this->config['uploadDir'] . "/" . $this->session['dir'];
             if (($type != $this->type) || !is_dir($dir) || !is_readable($dir))
                 $this->session['dir'] = $this->type;
@@ -130,6 +139,7 @@ class browser extends uploader {
             header("Content-Type: text/plain; charset={$this->charset}");
 
         $return = $this->$method();
+        $this->dispatchUploadMutations();
         echo ($return === true)
             ? '{}'
             : $return;
@@ -138,13 +148,16 @@ class browser extends uploader {
     protected function act_browser() {
         if (isset($_GET['dir'])) {
             $dir = "{$this->typeDir}/{$_GET['dir']}";
+            $this->announceUploadUse($dir);
             if ($this->checkFilePath($dir) && is_dir($dir) && is_readable($dir))
                 $this->session['dir'] = path::normalize("{$this->type}/{$_GET['dir']}");
         }
+        $this->announceUploadUse($this->config['uploadDir'] . '/' . $this->session['dir']);
         return $this->output();
     }
 
     protected function act_init() {
+        $this->announceUploadUse($this->config['uploadDir'] . '/' . $this->session['dir']);
         $tree = $this->getDirInfo($this->typeDir);
         $tree['dirs'] = $this->getTree($this->session['dir']);
         if (!is_array($tree['dirs']) || !count($tree['dirs']))
@@ -166,6 +179,8 @@ class browser extends uploader {
         )
             $this->sendDefaultThumb();
 
+        $this->announceUploadUse($this->typeDir . '/' . $_GET['dir'] . '/' . $_GET['file']);
+        $this->announceUploadUse($this->thumbsTypeDir . '/' . $_GET['dir'] . '/' . $_GET['file']);
         $dir = $this->getDir();
         $file = "{$this->thumbsTypeDir}/{$_GET['dir']}/{$_GET['file']}";
 
@@ -201,12 +216,17 @@ class browser extends uploader {
     }
 
     protected function act_expand() {
+        if (isset($_POST['dir'])) {
+            $this->announceUploadUse($this->typeDir . '/' . $_POST['dir']);
+        }
         return json_encode(array('dirs' => $this->getDirs($this->postDir())));
     }
 
     protected function act_chDir() {
+        $requested = isset($_POST['dir']) ? $_POST['dir'] : "";
+        $this->announceUploadUse($this->config['uploadDir'] . '/' . $this->type . '/' . $requested);
         $this->postDir(); // Just for existing check
-        $this->session['dir'] = "{$this->type}/" . ( isset($_POST['dir']) ? $_POST['dir'] : "" );
+        $this->session['dir'] = "{$this->type}/" . $requested;
         $dirWritable = dir::isWritable("{$this->config['uploadDir']}/{$this->session['dir']}");
         return json_encode(array(
             'files' => $this->getFiles($this->session['dir']),
@@ -232,8 +252,11 @@ class browser extends uploader {
             $this->errorMsg("Folder name shouldn't begins with '.'");
         if (file_exists("$dir/$newDir"))
             $this->errorMsg("A file or folder with that name already exists.");
+        if (!$this->uploadChangeAllowed("$dir/$newDir", 'write'))
+            $this->errorMsg("This folder is being edited on another instance.");
         if (!@mkdir("$dir/$newDir", $this->config['dirPerms']))
             $this->errorMsg("Cannot create {dir} folder.", array('dir' => $this->htmlData($newDir)));
+        $this->recordUploadMutation("$dir/$newDir", 'write');
         return true;
     }
 
@@ -254,8 +277,12 @@ class browser extends uploader {
             $this->errorMsg("Unallowable characters in folder name.");
         if (substr((string) $newName, 0, 1) == ".")
             $this->errorMsg("Folder name shouldn't begins with '.'");
-        if (!@rename($dir, dirname((string) $dir) . "/$newName"))
+        $destination = dirname((string) $dir) . "/$newName";
+        if (!$this->uploadChangeAllowed($destination, 'rename', $dir))
+            $this->errorMsg("This folder is being edited on another instance.");
+        if (!@rename($dir, $destination))
             $this->errorMsg("Cannot rename the folder.");
+        $this->recordUploadMutation($destination, 'rename', $dir);
         $thumbDir = "$this->thumbsTypeDir/{$_POST['dir']}";
         if (is_dir($thumbDir))
             @rename($thumbDir, dirname($thumbDir) . "/$newName");
@@ -271,14 +298,25 @@ class browser extends uploader {
 
         $dir = $this->postDir();
 
+        if (!$this->uploadChangeAllowed($dir, 'delete'))
+            $this->errorMsg("This folder is being edited on another instance.");
         if (!dir::isWritable($dir))
             $this->errorMsg("Cannot delete the folder.");
-        $result = !dir::prune($dir, false);
-        if (is_array($result) && count($result))
+        $paths = $this->listPrunePaths($dir);
+        $result = dir::prune($dir, false);
+        if (is_array($result) && count($result)) {
+            clearstatcache();
+            foreach ($paths as $path) {
+                if (!file_exists($path) && !is_link($path))
+                    $this->recordUploadMutation($path, 'delete');
+            }
+            $this->dispatchUploadMutations();
             $this->errorMsg("Failed to delete {count} files/folders.",
                 array('count' => count($result)));
+        }
         $thumbDir = "$this->thumbsTypeDir/{$_POST['dir']}";
         if (is_dir($thumbDir)) dir::prune($thumbDir);
+        $this->recordUploadMutation($dir, 'delete');
         return true;
     }
 
@@ -313,10 +351,12 @@ class browser extends uploader {
         $dir = $this->postDir();
         if (!isset($_POST['dir']) ||
             !isset($_POST['file']) ||
-            !$this->checkFilename($_POST['file']) ||
-            (false === ($file = "$dir/{$_POST['file']}")) ||
-            !file_exists($file) || !is_readable($file)
+            !$this->checkFilename($_POST['file'])
         )
+            $this->errorMsg("Unknown error.");
+        $file = "$dir/{$_POST['file']}";
+        $this->announceUploadUse($file);
+        if (!file_exists($file) || !is_readable($file))
             $this->errorMsg("Unknown error.");
 
         header("Pragma: public");
@@ -364,8 +404,11 @@ class browser extends uploader {
         $ext = file::getExtension($newName);
         if (!$this->validateExtension($ext, $this->type))
             $this->errorMsg("Denied file extension.");
+        if (!$this->uploadChangeAllowed($newName, 'rename', $file))
+            $this->errorMsg("This folder is being edited on another instance.");
         if (!@rename($file, $newName))
             $this->errorMsg("Unknown error.");
+        $this->recordUploadMutation($newName, 'rename', $file);
 
         $thumbDir = "{$this->thumbsTypeDir}/{$_POST['dir']}";
         $thumbFile = "$thumbDir/{$_POST['file']}";
@@ -382,10 +425,14 @@ class browser extends uploader {
             !isset($_POST['file']) ||
             !$this->checkFilename($_POST['file']) ||
             (false === ($file = "$dir/{$_POST['file']}")) ||
-            !file_exists($file) || !is_readable($file) || !file::isWritable($file) ||
-            !@unlink($file)
+            !file_exists($file) || !is_readable($file) || !file::isWritable($file)
         )
             $this->errorMsg("Unknown error.");
+        if (!$this->uploadChangeAllowed($file, 'delete'))
+            $this->errorMsg("This folder is being edited on another instance.");
+        if (!@unlink($file))
+            $this->errorMsg("Unknown error.");
+        $this->recordUploadMutation($file, 'delete');
 
         $thumb = "{$this->thumbsTypeDir}/{$_POST['dir']}/{$_POST['file']}";
         if (file_exists($thumb)) @unlink($thumb);
@@ -424,9 +471,12 @@ class browser extends uploader {
                 $error[] = $this->htmlData($base) . ": " . $this->label("A file or folder with that name already exists.");
             elseif (!is_readable($path) || !is_file($path))
                 $error[] = $this->label("Cannot read '{file}'.", $replace);
+            elseif (!$this->uploadChangeAllowed("$dir/$base", 'write'))
+                $error[] = $this->htmlData($base) . ": This folder is being edited on another instance.";
             elseif (!@copy($path, "$dir/$base"))
                 $error[] = $this->label("Cannot copy '{file}'.", $replace);
             else {
+                $this->recordUploadMutation("$dir/$base", 'write');
                 if (function_exists("chmod"))
                     @chmod("$dir/$base", $this->config['filePerms']);
                 $fromThumb = "{$this->thumbsDir}/$file";
@@ -476,9 +526,12 @@ class browser extends uploader {
                 $error[] = $this->htmlData($base) . ": " . $this->label("A file or folder with that name already exists.");
             elseif (!is_readable($path) || !is_file($path))
                 $error[] = $this->label("Cannot read '{file}'.", $replace);
+            elseif (!$this->uploadChangeAllowed("$dir/$base", 'rename', $path))
+                $error[] = $this->htmlData($base) . ": This folder is being edited on another instance.";
             elseif (!file::isWritable($path) || !@rename($path, "$dir/$base"))
                 $error[] = $this->label("Cannot move '{file}'.", $replace);
             else {
+                $this->recordUploadMutation("$dir/$base", 'rename', $path);
                 if (function_exists("chmod"))
                     @chmod("$dir/$base", $this->config['filePerms']);
                 $fromThumb = "{$this->thumbsDir}/$file";
@@ -517,9 +570,12 @@ class browser extends uploader {
             $replace = array('file' => $this->htmlData($base));
             if (!is_file($path))
                 $error[] = $this->label("The file '{file}' does not exist.", $replace);
+            elseif (!$this->uploadChangeAllowed($path, 'delete'))
+                $error[] = $this->htmlData($base) . ": This folder is being edited on another instance.";
             elseif (!@unlink($path))
                 $error[] = $this->label("Cannot delete '{file}'.", $replace);
             else {
+                $this->recordUploadMutation($path, 'delete');
                 $thumb = "{$this->thumbsDir}/$file";
                 if (is_file($thumb)) @unlink($thumb);
             }
@@ -530,6 +586,9 @@ class browser extends uploader {
     }
 
     protected function act_downloadDir() {
+        if (isset($_POST['dir'])) {
+            $this->announceUploadUse($this->typeDir . '/' . $_POST['dir']);
+        }
         $dir = $this->postDir();
         if (!isset($_POST['dir']) || $this->config['denyZipDownload'])
             $this->errorMsg("Unknown error.");
@@ -562,6 +621,7 @@ class browser extends uploader {
             if ((substr($file, 0, 1) == ".") || (strpos($file, '/') !== false))
                 continue;
             $file = "$dir/$file";
+            $this->announceUploadUse($file);
             if (!is_file($file) || !is_readable($file) || !$this->checkFilePath($file))
                 continue;
             $zipFiles[] = $file;
@@ -604,6 +664,7 @@ class browser extends uploader {
             if ($type != $this->type)
                 continue;
             $file = $this->config['uploadDir'] . "/$file";
+            $this->announceUploadUse($file);
             if (!is_file($file) || !is_readable($file) || !$this->checkFilePath($file))
                 continue;
             $zipFiles[] = $file;
@@ -714,6 +775,10 @@ class browser extends uploader {
 
         $filename = $this->normalizeFilename($file['name']);
         $target = "$dir/" . file::getInexistantFilename($filename, $dir);
+        if (!$this->uploadChangeAllowed($target, 'write')) {
+            @unlink($file['tmp_name']);
+            return $this->htmlData($file['name']) . ": This folder is being edited on another instance.";
+        }
 
         if (!@move_uploaded_file($file['tmp_name'], $target) &&
             !@rename($file['tmp_name'], $target) &&
@@ -721,7 +786,9 @@ class browser extends uploader {
         ) {
             @unlink($file['tmp_name']);
             return $this->htmlData($file['name']) . ": " . $this->label("Cannot move uploaded file to target folder.");
-        } elseif (function_exists('chmod'))
+        }
+        $this->recordUploadMutation($target, 'write');
+        if (function_exists('chmod'))
             chmod($target, $this->config['filePerms']);
 
         $this->makeThumb($target);
@@ -905,6 +972,117 @@ class browser extends uploader {
         }
 
         return "";
+    }
+
+    /**
+     * @return bool
+     */
+    protected function uploadHelpersReady()
+    {
+        if (!class_exists('Yii', false)) {
+            return false;
+        }
+        \Yii::import('application.helpers.common_helper', true);
+        return function_exists('uploadRelativePath');
+    }
+
+    /**
+     * @param string $absolutePath
+     * @param string $action
+     * @param string|null $previousAbsolute
+     * @return bool
+     */
+    protected function uploadChangeAllowed($absolutePath, $action, $previousAbsolute = null)
+    {
+        if (!$this->uploadHelpersReady()) {
+            return true;
+        }
+        $relative = uploadRelativePath($absolutePath);
+        if ($relative === null) {
+            return true;
+        }
+        $extra = array();
+        if ($previousAbsolute !== null) {
+            $previous = uploadRelativePath($previousAbsolute);
+            if ($previous !== null) {
+                $extra['previousPath'] = $previous;
+            }
+        }
+        return uploadPathChangeAllowed($relative, $action, $extra);
+    }
+
+    /**
+     * @param string $absolutePath
+     */
+    protected function announceUploadUse($absolutePath)
+    {
+        if (!$this->uploadHelpersReady()) {
+            return;
+        }
+        $relative = uploadRelativePath($absolutePath);
+        if ($relative !== null) {
+            dispatchUploadPathEvent('beforeUploadPathUse', $relative);
+        }
+    }
+
+    /**
+     * @param string $absolutePath
+     * @param string $action
+     * @param string|null $previousAbsolute
+     */
+    protected function recordUploadMutation($absolutePath, $action, $previousAbsolute = null)
+    {
+        if (!$this->uploadHelpersReady()) {
+            return;
+        }
+        $relative = uploadRelativePath($absolutePath);
+        if ($relative === null) {
+            return;
+        }
+        $extra = array('action' => $action);
+        if ($previousAbsolute !== null) {
+            $previous = uploadRelativePath($previousAbsolute);
+            if ($previous !== null) {
+                $extra['previousPath'] = $previous;
+            }
+        }
+        $this->uploadMutations[] = array($relative, $extra);
+    }
+
+    /**
+     * Files and directories prune() will try to remove, children before their parent.
+     * The directory passed in is excluded: a partial failure leaves it in place.
+     *
+     * @param string $dir
+     * @return string[]
+     */
+    protected function listPrunePaths($dir)
+    {
+        $paths = array();
+        $files = dir::content($dir);
+        if ($files === false) {
+            return $paths;
+        }
+        foreach ($files as $file) {
+            if (is_dir($file)) {
+                foreach ($this->listPrunePaths($file) as $child) {
+                    $paths[] = $child;
+                }
+            }
+            $paths[] = $file;
+        }
+        return $paths;
+    }
+
+    protected function dispatchUploadMutations()
+    {
+        if (!$this->uploadHelpersReady()) {
+            return;
+        }
+        foreach ($this->uploadMutations as $mutation) {
+            dispatchUploadPathEvent('afterUploadPathChange', $mutation[0], $mutation[1]);
+        }
+        $this->uploadMutations = array();
     }
 
     protected function errorMsg($message, ?array $data=null) {

@@ -351,6 +351,81 @@ function calculateTotalFileUploadUsage()
 }
 
 /**
+ * Path under uploaddir, or null when the absolute path is outside it.
+ *
+ * @param string $absolutePath
+ * @return string|null
+ */
+function uploadRelativePath($absolutePath)
+{
+    if (!class_exists('Yii', false) || Yii::app() === null) {
+        return null;
+    }
+    $uploadRoot = rtrim(str_replace('\\', '/', (string) Yii::app()->getConfig('uploaddir')), '/');
+    if ($uploadRoot === '') {
+        return null;
+    }
+    $normalized = rtrim(str_replace('\\', '/', (string) $absolutePath), '/');
+    if (!str_starts_with($normalized, $uploadRoot . '/')) {
+        return null;
+    }
+    return substr($normalized, strlen($uploadRoot) + 1);
+}
+
+/**
+ * Dispatches a plugin event for a path relative to uploaddir.
+ * The path base is uploaddir. Callers skip the event when uploadRelativePath()
+ * returns null, so a location outside uploaddir (the default tempdir included)
+ * is never announced.
+ * With no subscriber this only looks up the event name.
+ *
+ * Events: beforeUploadPathUse, beforeUploadPathChange, afterUploadPathChange.
+ * beforeUploadPathChange may set success to false to cancel the local change.
+ *
+ * @param string $name
+ * @param string $relativePath
+ * @param array<string, mixed> $extra
+ * @return PluginEvent|null
+ */
+function dispatchUploadPathEvent($name, $relativePath, array $extra = [])
+{
+    if (!class_exists('Yii', false) || Yii::app() === null || !Yii::app()->hasComponent('pluginManager')) {
+        return null;
+    }
+    $path = ltrim(str_replace('\\', '/', (string) $relativePath), '/');
+    if ($path === '' || str_contains($path, '..')) {
+        return null;
+    }
+    $event = new PluginEvent($name);
+    $event->set('path', $path);
+    $event->set('success', true);
+    foreach ($extra as $key => $value) {
+        $event->set($key, $value);
+    }
+    return Yii::app()->getPluginManager()->dispatchEvent($event);
+}
+
+/**
+ * @param string $relativePath
+ * @param string $action write, delete or rename
+ * @param array<string, mixed> $extra
+ * @return bool
+ */
+function uploadPathChangeAllowed($relativePath, $action, array $extra = [])
+{
+    $path = ltrim(str_replace('\\', '/', (string) $relativePath), '/');
+    if ($path === '' || str_contains($path, '..')) {
+        return false;
+    }
+    $event = dispatchUploadPathEvent(
+        'beforeUploadPathChange',
+        $path,
+        array_merge(['action' => $action], $extra)
+    );
+    return $event === null || $event->get('success', true) !== false;
+}
+
+/**
  * @param string $directory
  * @return int
  */
