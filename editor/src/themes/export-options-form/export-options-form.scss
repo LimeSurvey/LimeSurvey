@@ -84,11 +84,11 @@
         outline-offset: 2px;
       }
 
+      // No outline rule here: it would remove the focus outline of the selected format
       &:checked {
         background-color: #ffffff !important;
         background-size: initial !important;
         border: 1.33px solid #1e1e1e !important;
-        outline: none !important;
       }
 
       &:checked::after {

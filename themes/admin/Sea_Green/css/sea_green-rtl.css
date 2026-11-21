@@ -16598,8 +16598,8 @@ body {
   box-shadow: 0 0 0 0.25rem rgba(58%, 38.3333333333%, 97%, 0.5);
 }
 .btn-primary:disabled, .btn-primary.disabled {
-  color: #fff;
-  background-color: #8146F6;
+  color: #9094A7;
+  background-color: #D3D5DA;
   border-color: #8146F6;
 }
 .btn-primary {
