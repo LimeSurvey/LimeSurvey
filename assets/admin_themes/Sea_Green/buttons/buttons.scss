@@ -32,12 +32,15 @@
 
 //from lime-admin-colors.scss
 //Buttons
+// Primary buttons are grape, the same as in the React editor. The theme colour "primary"
+// (var(--bs-primary)) stays active green for the other components
 .btn-primary {
+    @include button-variant($grape, $grape, $white, $hover-color: $white, $active-color: $white, $disabled-color: $white);
     color : $white;
-    &:hover, &:focus, &:active, &.active, &:active:focus {
+    &:hover, &:focus, &:active, &.active, &:active:focus, .open &.dropdown-toggle {
         color            : $white;
-        background-color : var(--bs-primary);
-        border-color     : var(--bs-primary);
+        background-color : $grape;
+        border-color     : $grape;
     }
     &:hover {
         box-shadow : $btn-hover-boxshadow;
