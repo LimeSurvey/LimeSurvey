@@ -7,6 +7,19 @@
     box-shadow     : 0 0 0 2px $hc-focus-ring-inner !important;
 }
 
+// Grid rows keep the inner focus outline of Sea Green, the grid container would cut off an outer one
+.grid-view .table tr[tabindex]:focus-visible:not(:active),
+.grid-view-ls .table tr[tabindex]:focus-visible:not(:active) {
+    outline-offset : -2px !important;
+}
+
+// Radio and checkbox buttons: the input is hidden, so the focus indicator goes on the visible button
+.btn-check:focus-visible + .btn {
+    outline        : 2px solid $hc-focus-color !important;
+    outline-offset : 2px !important;
+    box-shadow     : 0 0 0 2px $hc-focus-ring-inner !important;
+}
+
 // Sea Green removes the outline of the sidebar resize button with an ID selector
 #sidebar .resize-handle button:focus-visible {
     outline : 2px solid $hc-focus-color !important;
@@ -77,5 +90,9 @@ a.ls-link {
     }
     .btn-close {
         filter : invert(1) grayscale(100%) brightness(200%);
+        // The filter also changes the focus outline, which is the only focus indicator in forced colours mode
+        @media (forced-colors: active) {
+            filter : none;
+        }
     }
 }

@@ -21508,6 +21508,17 @@ input[type=checkbox]:checked:after {
   box-shadow: 0 0 0 2px #fff !important;
 }
 
+.grid-view .table tr[tabindex]:focus-visible:not(:active),
+.grid-view-ls .table tr[tabindex]:focus-visible:not(:active) {
+  outline-offset: -2px !important;
+}
+
+.btn-check:focus-visible + .btn {
+  outline: 2px solid #5B1FD6 !important;
+  outline-offset: 2px !important;
+  box-shadow: 0 0 0 2px #fff !important;
+}
+
 #sidebar .resize-handle button:focus-visible {
   outline: 2px solid #5B1FD6 !important;
 }
@@ -21573,4 +21584,12 @@ a.ls-link {
 .alert-filled-success .btn-close,
 .alert-filled-danger .btn-close {
   filter: invert(1) grayscale(100%) brightness(200%);
+}
+@media (forced-colors: active) {
+  .alert-filled-primary .btn-close,
+  .alert-filled-secondary .btn-close,
+  .alert-filled-success .btn-close,
+  .alert-filled-danger .btn-close {
+    filter: none;
+  }
 }

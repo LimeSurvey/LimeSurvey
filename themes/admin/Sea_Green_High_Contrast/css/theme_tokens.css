@@ -144,6 +144,11 @@
   outline-offset: 2px !important;
   box-shadow: 0 0 0 2px #fff !important;
 }
+:root .btn-check:focus-visible + .btn {
+  outline: 2px solid #5B1FD6 !important;
+  outline-offset: 2px !important;
+  box-shadow: 0 0 0 2px #fff !important;
+}
 :root .form-check-input:not(:checked) {
   border-color: #585D72;
 }

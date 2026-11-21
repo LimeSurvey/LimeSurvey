@@ -102,6 +102,13 @@ $tokens-focus-color        : $grape !default;
             box-shadow     : 0 0 0 2px $white !important;
         }
 
+        // Radio and checkbox buttons: the input is hidden, so the focus indicator goes on the visible button
+        .btn-check:focus-visible + .btn {
+            outline        : 2px solid $tokens-focus-color !important;
+            outline-offset : 2px !important;
+            box-shadow     : 0 0 0 2px $white !important;
+        }
+
         // Unchecked checkboxes and radio buttons need a visible border (WCAG 1.4.11)
         .form-check-input:not(:checked) {
             border-color : $g-700;
