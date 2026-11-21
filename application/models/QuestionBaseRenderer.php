@@ -251,6 +251,22 @@ abstract class QuestionBaseRenderer extends StaticModel
         return $result;
     }
 
+    /**
+     * Get the maximum characters of the current Long/Huge free text or Array (Texts) question for the maxlength attribute.
+     *
+     * @param mixed $currentAnswer The answer shown in the input, defaults to the session value of the question
+     * @return int
+     * @see Question::getTextMaxChars()
+     */
+    protected function getEffectiveMaxChars($currentAnswer = null)
+    {
+        return Question::getTextMaxChars(
+            $this->oQuestion->type,
+            $this->getQuestionAttribute('maximum_chars'),
+            $currentAnswer ?? $this->mSessionValue
+        );
+    }
+
     protected function setSubquestions($scaleId = null)
     {
         $this->aSubQuestions = $this->questionOrderingService->getOrderedSubQuestions(

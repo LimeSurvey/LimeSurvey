@@ -27,9 +27,6 @@ $(document).on('ready pjax:scriptcomplete',function()
         $(focus_element).focus();
     }
 
-    // Maxlength for textareas TODO limit to not CSS3 compatible browser
-    maxlengthtextarea();
-
 });
 
 /**
@@ -237,31 +234,13 @@ function round (value, precision, mode) {
     return (isHalf ? value : Math.round(value)) / m;
 }
 
-/* Maxlengt on textarea */
+/**
+ * Kept for themes that call it: the maxlength attribute of textarea is handled by the browser.
+ * The removed handlers read the whole value on each key press, which was slow for long answers,
+ * and shortened an answer that was saved longer than the limit as soon as a key was pressed.
+ * @deprecated
+ */
 function maxlengthtextarea(){
-    // Calling this function at document.ready : use maxlength attribute on textarea
-    // Can be replaced by inline javascript
-    $("textarea[maxlength]").change(function(){ // global solution
-        var maxlen=$(this).attr("maxlength");
-        if ($(this).val().length > maxlen) {
-            $(this).val($(this).val().substring(0, maxlen));
-        }
-    });
-    $("textarea[maxlength]").keyup(function(){ // For copy/paste (not for all browser)
-        var maxlen=$(this).attr("maxlength");
-        if ($(this).val().length > maxlen) {
-            $(this).val($(this).val().substring(0, maxlen));
-        }
-    });
-    $("textarea[maxlength]").keydown(function(event){ // No new key after maxlength
-        var maxlen=$(this).attr("maxlength");
-        var k =event.keyCode;
-        if (($(this).val().length >= maxlen) &&
-         !(k == null ||k==0||k==8||k==9||k==13||k==27||k==37||k==38||k==39||k==40||k==46)) {
-            // Don't accept new key except NULL,Backspace,Tab,Enter,Esc,arrows,Delete
-            return false;
-        }
-    });
 }
 /**
  * Add a title on cell with answer
