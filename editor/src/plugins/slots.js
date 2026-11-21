@@ -4,6 +4,9 @@ export const PLUGIN_SLOTS = {
   EDITOR_TOP: 'editor:top',
   EDITOR_LAYOUT_EXTRA: 'editor:layout:extra',
   SHARING_PANEL_EXTRA_MENU: 'sharingpanel:extra:menu',
+  // Below each item of a side bar panel menu, e.g. sub entries of that item.
+  // Props: option (the menu item: menu, panel, labelEditor, ...), page
+  SIDEBAR_PANEL_ITEM_AFTER: 'sidebarpanel:item:after',
   SURVEY_SETTINGS_BLOCK_TOKENS_BOTTOM: 'surveysettingsblock:tokens:bottom',
   SHARING_OVERVIEW_BOTTOM_LEFT: 'sharingoverview:bottom:left',
   SHARING_OVERVIEW_BOTTOM_RIGHT: 'sharingoverview:bottom:right',

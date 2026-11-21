@@ -1,8 +1,11 @@
+import { Fragment } from 'react'
 import { Button } from 'react-bootstrap'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import { SideBarHeader, SideBarPanelItem } from 'components/SideBar'
 import { CloseIcon } from 'components/icons'
+import { PluginSlot } from 'plugins/PluginSlot'
+import { PLUGIN_SLOTS } from 'plugins/slots'
 
 export const SideBarPanel = ({
   label,
@@ -36,11 +39,14 @@ export const SideBarPanel = ({
           </SideBarHeader>
           {options.map((option, id) => {
             return (
-              <SideBarPanelItem
-                key={`${id}-${option.menu}`}
-                page={page}
-                options={option}
-              />
+              <Fragment key={`${id}-${option.menu}`}>
+                <SideBarPanelItem page={page} options={option} />
+                <PluginSlot
+                  slotName={PLUGIN_SLOTS.SIDEBAR_PANEL_ITEM_AFTER}
+                  option={option}
+                  page={page}
+                />
+              </Fragment>
             )
           })}
         </div>
