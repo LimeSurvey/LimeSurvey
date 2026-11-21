@@ -21,6 +21,9 @@
  */
 class AdminTheme extends CFormModel
 {
+    /** @var string[] The admin themes shipped with LimeSurvey, in themes/admin */
+    const STANDARD_ADMIN_THEMES = ['Sea_Green', 'Sea_Green_High_Contrast'];
+
     /** @var string $name Admin Theme's name */
     public $name;
     /** @var string $path Admin Theme's path */
@@ -36,7 +39,8 @@ class AdminTheme extends CFormModel
 
     /**
      * Get the list of admin theme, as an array containing each configuration object for each template
-     * @return array the array of configuration object
+     * @return array the array of configuration objects, theme directory name => configuration object
+     *               (a numeric directory name is an integer key)
      */
     public static function getAdminThemeList()
     {
@@ -45,17 +49,118 @@ class AdminTheme extends CFormModel
 
         $aStandardThemeObjects     = self::getThemeList($sStandardTemplateRootDir); // array containing the configuration files of standard admin themes (styles/...)
         $aUserThemeObjects         = self::getThemeList($sUserTemplateDir); // array containing the configuration files of user admin themes (upload/admintheme/...)
-        $aListOfThemeObjects       = array_merge($aStandardThemeObjects, $aUserThemeObjects);
+        // array_replace() keeps numeric directory names as keys, array_merge() would renumber them
+        $aListOfThemeObjects       = array_replace($aStandardThemeObjects, $aUserThemeObjects);
 
         ksort($aListOfThemeObjects);
         return $aListOfThemeObjects;
     }
 
     /**
+     * Returns whether users can choose their own admin theme in their personal settings
+     * (global setting, a superadministrator can switch it off to use the same admin theme for everyone)
+     *
+     * @return bool
+     */
+    public static function isPersonalAdminThemeAllowed()
+    {
+        return (bool) App()->getConfig('allowpersonaladmintheme');
+    }
+
+    /**
+     * Returns the admin themes users can choose in their personal settings
+     *
+     * @return array the array of configuration objects, theme name => configuration object
+     */
+    public static function getPersonalAdminThemeList()
+    {
+        return array_filter(
+            self::getAdminThemeList(),
+            function ($themeName) {
+                return self::isPlainThemeName((string) $themeName);
+            },
+            ARRAY_FILTER_USE_KEY
+        );
+    }
+
+    /**
+     * Returns the URL of the theme tokens (css/theme_tokens.css, the colours of the theme as CSS variables)
+     * of the current user's admin theme. The React editor loads this file.
+     *
+     * @return string|null The URL with the file time as version, or null if the theme has no theme tokens
+     */
+    public static function getThemeTokensUrl()
+    {
+        $themeName = self::getUserAdminThemeName() ?? App()->getConfig('admintheme');
+        if (!is_string($themeName) || !self::isPlainThemeName($themeName)) {
+            return null;
+        }
+        $tokensFile = self::getThemeRootDir($themeName) . DIRECTORY_SEPARATOR . $themeName
+            . DIRECTORY_SEPARATOR . 'css' . DIRECTORY_SEPARATOR . 'theme_tokens.css';
+        if (!is_file($tokensFile)) {
+            return null;
+        }
+        $themeUrl = in_array($themeName, self::STANDARD_ADMIN_THEMES, true)
+            ? App()->getConfig('styleurl') . $themeName
+            : App()->getConfig('uploadurl') . '/admintheme/' . $themeName;
+        return $themeUrl . '/css/theme_tokens.css?v=' . filemtime($tokensFile);
+    }
+
+    /**
+     * Returns the admin theme the current user chose in their personal settings
+     *
+     * @return string|null The theme name, or null if the user did not choose one, the theme does not exist (anymore)
+     *                     or users cannot choose their own admin theme
+     */
+    public static function getUserAdminThemeName()
+    {
+        if (App()->user->isGuest || !self::isPersonalAdminThemeAllowed()) {
+            return null;
+        }
+        $themeName = SettingsUser::getUserSettingValue('admintheme');
+        // Users can write any of their own settings (e.g. via admin/user/sa/togglesetting),
+        // so only accept plain directory names
+        if (!is_string($themeName) || !self::isPlainThemeName($themeName)) {
+            return null;
+        }
+        $configFile = self::getThemeRootDir($themeName) . DIRECTORY_SEPARATOR . $themeName
+            . DIRECTORY_SEPARATOR . 'config.xml';
+        if (!is_file($configFile)) {
+            return null;
+        }
+        return $themeName;
+    }
+
+    /**
+     * Returns whether a theme name is a plain directory name: no path, not "." or ".." and no hidden directory
+     *
+     * @param string $themeName
+     * @return bool
+     */
+    private static function isPlainThemeName(string $themeName)
+    {
+        return preg_match('/^[A-Za-z0-9_-][A-Za-z0-9_.-]*$/', $themeName) === 1;
+    }
+
+    /**
+     * Returns the directory that contains an admin theme:
+     * themes/admin for the standard themes, upload/admintheme for the others
+     *
+     * @param string $themeName
+     * @return string
+     */
+    private static function getThemeRootDir(string $themeName)
+    {
+        return in_array($themeName, self::STANDARD_ADMIN_THEMES, true)
+            ? App()->getConfig('styledir')
+            : App()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . 'admintheme';
+    }
+
+    /**
      * Initializes the admin theme for the current request.
      *
-     * Resolves the configured admin theme name (from global settings or config-defaults.php),
-     * falls back to Sea_Green if the theme directory does not exist (e.g. after an upgrade
+     * Resolves the admin theme name (the user's personal setting first, then the global settings
+     * or config-defaults.php), falls back to Sea_Green if the theme directory does not exist (e.g. after an upgrade
      * or if a custom theme was deleted), then:
      *  - Sets \->name, \->path, \->sTemplateUrl
      *  - Parses config.xml into \->config
@@ -66,7 +171,8 @@ class AdminTheme extends CFormModel
      */
     public function setAdminTheme()
     {
-        $sAdminThemeName           = App()->getConfig('admintheme'); // We retrieve the admin theme in config ( {{settings_global}} or config-defaults.php )
+        // The user's personal choice wins over the admin theme in config ( {{settings_global}} or config-defaults.php )
+        $sAdminThemeName           = self::getUserAdminThemeName() ?? App()->getConfig('admintheme');
         $sStandardTemplateRootDir  = App()->getConfig("styledir"); // Path for the standard Admin Themes
         $sUserTemplateDir          = App()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . 'admintheme'; // Path for the user Admin Themes
 
@@ -400,6 +506,6 @@ JS;
      */
     private function isStandardAdminTheme($sAdminThemeName)
     {
-        return $sAdminThemeName === 'Sea_Green';
+        return in_array($sAdminThemeName, self::STANDARD_ADMIN_THEMES, true);
     }
 }

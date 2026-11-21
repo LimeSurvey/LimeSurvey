@@ -8,7 +8,12 @@ export const FeedbackIcon = () => {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <rect width="36" height="36" rx="4" fill="#14AE5C" />
+      <rect
+        width="36"
+        height="36"
+        rx="4"
+        style={{ fill: 'var(--ls-active-green, #14AE5C)' }}
+      />
       <path
         d="M17.9999 22.695L12.7102 25.656L13.8914 19.71L9.44019 15.594L15.4604 14.88L17.9999 9.375L20.5394 14.88L26.5597 15.594L22.1084 19.71L23.2897 25.656L17.9999 22.695Z"
         fill="white"

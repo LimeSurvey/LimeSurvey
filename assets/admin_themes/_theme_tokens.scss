@@ -1,0 +1,122 @@
+// Theme tokens: the colours of an admin theme as CSS variables, for the React editor
+// (editor/src/themes/variables.scss uses them, with the Sea Green colours as fallback).
+// Built to themes/admin/<theme>/css/theme_tokens.css; the editor loads the file of the user's admin theme.
+//
+// The including file imports the Bootstrap functions and the theme variables first,
+// and can set the $tokens-* variables below.
+
+// The editor's button hover green; Sea Green's $active-green-hover is a light background colour instead
+$tokens-active-green-hover : #12a155 !default;
+$tokens-link-color         : $active-green !default;
+// Themes that need more than the colours (e.g. focus indicators) set this to true
+$tokens-include-rules      : false !default;
+$tokens-focus-color        : $grape !default;
+
+// Bootstrap button colours as Bootstrap 5.3 CSS variables (the editor uses Bootstrap 5.3)
+@mixin tokens-button($color) {
+    --bs-btn-color                 : #{$white};
+    --bs-btn-bg                    : #{$color};
+    --bs-btn-border-color          : #{$color};
+    --bs-btn-hover-color           : #{$white};
+    --bs-btn-hover-bg              : #{shade-color($color, 15%)};
+    --bs-btn-hover-border-color    : #{shade-color($color, 20%)};
+    --bs-btn-active-color          : #{$white};
+    --bs-btn-active-bg             : #{shade-color($color, 20%)};
+    --bs-btn-active-border-color   : #{shade-color($color, 25%)};
+    --bs-btn-disabled-color        : #{$white};
+    --bs-btn-disabled-bg           : #{$color};
+    --bs-btn-disabled-border-color : #{$color};
+}
+
+@mixin tokens-button-outline($color) {
+    --bs-btn-color               : #{$color};
+    --bs-btn-border-color        : #{$color};
+    --bs-btn-hover-color         : #{$white};
+    --bs-btn-hover-bg            : #{$color};
+    --bs-btn-hover-border-color  : #{$color};
+    --bs-btn-active-color        : #{$white};
+    --bs-btn-active-bg           : #{$color};
+    --bs-btn-active-border-color : #{$color};
+    --bs-btn-disabled-color      : #{$color};
+}
+
+:root {
+    --ls-active-green       : #{$active-green};
+    --ls-active-green-hover : #{$tokens-active-green-hover};
+    --ls-success            : #{$success};
+    --ls-error              : #{$error};
+    --ls-grape              : #{$grape};
+    --ls-g-700              : #{$g-700};
+    --ls-g-600              : #{$g-600};
+}
+
+@if $tokens-include-rules {
+    // Bootstrap colours in the editor's mapping: primary is grape, success is the active green
+    :root {
+        --bs-primary              : #{$grape};
+        --bs-primary-rgb          : #{to-rgb($grape)};
+        --bs-secondary            : #{$g-700};
+        --bs-secondary-rgb        : #{to-rgb($g-700)};
+        --bs-success              : #{$active-green};
+        --bs-success-rgb          : #{to-rgb($active-green)};
+        --bs-danger               : #{$error};
+        --bs-danger-rgb           : #{to-rgb($error)};
+        --bs-link-color           : #{$tokens-link-color};
+        --bs-link-color-rgb       : #{to-rgb($tokens-link-color)};
+        --bs-link-hover-color     : #{shade-color($tokens-link-color, 20%)};
+        --bs-link-hover-color-rgb : #{to-rgb(shade-color($tokens-link-color, 20%))};
+
+        .btn-primary {
+            @include tokens-button($grape);
+        }
+        .btn-secondary {
+            @include tokens-button($g-700);
+        }
+        .btn-success {
+            @include tokens-button($active-green);
+        }
+        .btn-danger {
+            @include tokens-button($error);
+        }
+        .btn-cancel {
+            @include tokens-button($g-600);
+        }
+        .btn-outline-primary {
+            @include tokens-button-outline($grape);
+        }
+        .btn-outline-secondary {
+            @include tokens-button-outline($g-700);
+        }
+        .btn-outline-success {
+            @include tokens-button-outline($active-green);
+        }
+        .btn-outline-danger {
+            @include tokens-button-outline($error);
+        }
+
+        // Visible focus indicator on everything that can get keyboard focus (WCAG 2.4.7, 1.4.11):
+        // An outline plus a white inner ring, so one of both reaches 3:1 on light and on dark backgrounds
+        :focus-visible {
+            outline        : 2px solid $tokens-focus-color !important;
+            outline-offset : 2px !important;
+            box-shadow     : 0 0 0 2px $white !important;
+        }
+
+        // Radio and checkbox buttons: the input is hidden, so the focus indicator goes on the visible button
+        .btn-check:focus-visible + .btn {
+            outline        : 2px solid $tokens-focus-color !important;
+            outline-offset : 2px !important;
+            box-shadow     : 0 0 0 2px $white !important;
+        }
+
+        // Unchecked checkboxes and radio buttons need a visible border (WCAG 1.4.11)
+        .form-check-input:not(:checked) {
+            border-color : $g-700;
+        }
+
+        // Inactive sections (e.g. a hidden welcome screen) stay recognisable as inactive, but readable (about 5:1)
+        .inactive-section-header {
+            opacity : 0.65;
+        }
+    }
+}

@@ -19,7 +19,7 @@
 }
 
 $button-outline-variants : (
-    "primary": var(--bs-primary),
+    "primary": $grape, // Same as the primary buttons, see buttons.scss
     "secondary": $g-900,
     "success": var(--bs-success),
     "danger": var(--bs-danger),

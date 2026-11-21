@@ -1,7 +1,10 @@
 import ReactDOM from 'react-dom/client'
 
 import App from './App'
+import { applyAdminThemeTokens } from './helpers/adminThemeTokens'
 import reportWebVitals from './reportWebVitals'
+
+applyAdminThemeTokens()
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(<App />)

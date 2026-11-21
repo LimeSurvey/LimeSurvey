@@ -43,7 +43,7 @@
     margin: 0;
     padding: 0;
     min-width: unset;
-    border: 1px solid rgba($g-700, 0.5); // note: this opacity is used to make the border style a bit more like Figma.. in figma the border width is 0.5px, but in code it is 1px because we can't have 0.5px in HTML, so opacity makes it feel like 0.5px.
+    border: 1px solid rgba($g-700-base, 0.5); // note: this opacity is used to make the border style a bit more like Figma.. in figma the border width is 0.5px, but in code it is 1px because we can't have 0.5px in HTML, so opacity makes it feel like 0.5px.
     border-radius: 2px;
     background-color: $white;
     color: $g-700;

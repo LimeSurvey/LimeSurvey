@@ -58,6 +58,13 @@ a.list-group-item {
             color: $active-green;
             background-color: $white;
         }
+        // The focus rule below gives the selected item a white background, so its text turns dark
+        &:focus-visible:not(:active) {
+            color: $g-900;
+            .list-group-item-text {
+                color: $g-700;
+            }
+        }
     }
     .list-group-item-heading {
         color: $g-800;

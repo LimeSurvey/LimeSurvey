@@ -1,0 +1,13 @@
+// Sea Green - High Contrast WCAG 2.2 theme tokens for the React editor, see ../_theme_tokens.scss
+
+@import "node_modules/bootstrap/scss/functions.scss";
+@import "assets/bootstrap_5/scss/variables.scss";
+@import "../Sea_Green/sea_green_variables";
+@import "high_contrast_variables";
+
+$tokens-active-green-hover : #0A6E38; // White text: 6.36:1
+$tokens-link-color         : $link-color;
+$tokens-include-rules      : true;
+$tokens-focus-color        : $hc-focus-color;
+
+@import "../theme_tokens";

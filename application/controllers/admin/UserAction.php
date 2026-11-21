@@ -150,7 +150,23 @@ class UserAction extends SurveyCommonAction
                 }
                 // If invalid timezone, silently skip saving (preserves existing setting)
 
+                // Admin theme: empty string means "use the global setting"
+                $postAdminTheme = Yii::app()->request->getPost('admintheme', '');
+                $adminTheme = is_string($postAdminTheme) ? $postAdminTheme : '';
+                $adminThemeChanged = false;
+                if (
+                    AdminTheme::isPersonalAdminThemeAllowed()
+                    && ($adminTheme === '' || array_key_exists($adminTheme, AdminTheme::getPersonalAdminThemeList()))
+                ) {
+                    $adminThemeChanged = $adminTheme !== (string) SettingsUser::getUserSettingValue('admintheme');
+                    SettingsUser::setUserSetting('admintheme', $adminTheme);
+                }
+
                 Yii::app()->setFlashMessage(gT("Your personal settings were successfully saved."));
+                // The admin theme of this request is already loaded, reload the page to show the new one
+                if ($adminThemeChanged && !Yii::app()->request->getPost("saveandclose")) {
+                    $this->getController()->redirect(array("admin/user/sa/personalsettings"));
+                }
             } else {
                 // Show list of error if needed
                 Yii::app()->setFlashMessage(CHtml::errorSummary($oUserModel, gT("There was an error when saving your personal settings.")), 'error');
@@ -212,6 +228,12 @@ class UserAction extends SurveyCommonAction
 
         $globalDisplayTimezone = SettingGlobal::model()->findByPk('displayTimezone');
         $aData['globalDisplayTimezone'] = ($globalDisplayTimezone && !empty($globalDisplayTimezone->stg_value)) ? $globalDisplayTimezone->stg_value : 'UTC';
+
+        // No admin theme selection if the global setting does not allow users to choose their own admin theme
+        $adminThemes = AdminTheme::isPersonalAdminThemeAllowed() ? AdminTheme::getPersonalAdminThemeList() : [];
+        $globalAdminTheme = App()->getConfig('admintheme');
+        $aData['adminThemes'] = $adminThemes;
+        $aData['globalAdminThemeTitle'] = isset($adminThemes[$globalAdminTheme]) ? $adminThemes[$globalAdminTheme]->metadata->name : $globalAdminTheme;
 
         $aData['currentPreselectedQuestiontype'] = $currentPreselectedQuestiontype;
         $aData['currentPreselectedQuestionTheme'] = $currentPreselectedQuestionTheme;

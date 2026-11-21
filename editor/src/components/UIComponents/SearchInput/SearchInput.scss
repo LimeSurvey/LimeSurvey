@@ -22,7 +22,7 @@
   // The inner <input> drops its native outline, so surface focus on the wrapper.
   &.form-control.form-control-sm:focus-within {
     border-color: $grape;
-    box-shadow: 0 0 0 3px rgba($grape, 0.2);
+    box-shadow: 0 0 0 3px rgba($grape-base, 0.2);
   }
 
   &-icon {
@@ -68,7 +68,7 @@
 
 @keyframes search-highlight-in {
   from {
-    background-color: rgba($grape, 0.15);
+    background-color: rgba($grape-base, 0.15);
     color: $g-900;
   }
   to {

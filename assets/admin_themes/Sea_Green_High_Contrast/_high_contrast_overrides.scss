@@ -1,0 +1,106 @@
+// Rules that only exist in Sea Green - High Contrast WCAG 2.2
+
+// Visible focus indicator on everything that can get keyboard focus (WCAG 2.4.7, 1.4.11)
+:focus-visible {
+    outline        : 2px solid $hc-focus-color !important;
+    outline-offset : 2px !important;
+    box-shadow     : 0 0 0 2px $hc-focus-ring-inner !important;
+}
+
+// Grid rows keep the inner focus outline of Sea Green, the grid container would cut off an outer one
+.grid-view .table tr[tabindex]:focus-visible:not(:active),
+.grid-view-ls .table tr[tabindex]:focus-visible:not(:active) {
+    outline-offset : -2px !important;
+}
+
+// Radio and checkbox buttons: the input is hidden, so the focus indicator goes on the visible button
+.btn-check:focus-visible + .btn {
+    outline        : 2px solid $hc-focus-color !important;
+    outline-offset : 2px !important;
+    box-shadow     : 0 0 0 2px $hc-focus-ring-inner !important;
+}
+
+// Sea Green removes the outline of the sidebar resize button with an ID selector
+#sidebar .resize-handle button:focus-visible {
+    outline : 2px solid $hc-focus-color !important;
+}
+
+// Grid summaries ("Displaying 1-10 of 20 result(s).") and other hardcoded light greys
+.summary-container .summary,
+.grid-view .summary,
+.dragPointer.disabled {
+    color : $g-700 !important;
+}
+
+// Admin sidebar and question type selection: dark text on the light hover background
+a.list-group-item {
+    color : $g-800;
+    &:hover {
+        color            : $g-900;
+        background-color : $active-green-hover;
+    }
+    &.active .list-group-item-text,
+    &.active:hover .list-group-item-text {
+        color : $white;
+    }
+}
+
+// Links inside text are underlined, so they do not rely on colour alone (WCAG 1.4.1)
+p a:not(.btn),
+li > a.ls-link,
+.alert a:not(.btn),
+.form-text a,
+.help-block a,
+.hint a,
+a.ls-link {
+    text-decoration : underline;
+}
+
+// The recent activity line on the welcome page is faded out with opacity
+.recent-activity {
+    opacity : 1 !important;
+}
+
+// The darker danger and success colours need white text (danger 5.84:1, success 5.33:1),
+// Sea Green sets dark text for all states including the pressed and focused one
+.btn-danger,
+.btn-success {
+    &,
+    &:hover,
+    &:focus,
+    &:active,
+    &.active,
+    &:active:focus {
+        color : $white;
+    }
+}
+
+// The warning yellow is too light for text on white, outline warning buttons use a dark yellow
+.btn-outline-warning {
+    @include button-outline-variant($hc-warning-text);
+}
+
+// Selected option of outline toggle buttons (e.g. "Question by question"): dark text on the g-300 background
+.btn-check:checked + .btn-outline-secondary,
+.btn-check:active + .btn-outline-secondary {
+    color : $g-900;
+}
+
+// Filled alerts: Sea Green uses dark text, the darker colours of this theme need white text
+.alert-filled-primary,
+.alert-filled-secondary,
+.alert-filled-success,
+.alert-filled-danger {
+    color : $white;
+    .alert-header,
+    .alert-link {
+        color : $white;
+    }
+    .btn-close {
+        filter : invert(1) grayscale(100%) brightness(200%);
+        // The filter also changes the focus outline, which is the only focus indicator in forced colours mode
+        @media (forced-colors: active) {
+            filter : none;
+        }
+    }
+}
