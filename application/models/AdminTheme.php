@@ -55,49 +55,103 @@ class AdminTheme extends CFormModel
     }
 
     /**
-     * Returns the URLs of the theme tokens (css/theme_tokens.css, the colours of the theme as CSS variables)
-     * of all admin themes that have one. The React editor loads the file of the user's admin theme.
+     * Returns whether users can choose their own admin theme in their personal settings
+     * (global setting, a superadministrator can switch it off to use the same admin theme for everyone)
      *
-     * @return array<string, string> Theme name => URL
+     * @return bool
      */
-    public static function getThemeTokensUrls()
+    public static function isPersonalAdminThemeAllowed()
     {
-        $urls = [];
-        foreach (self::getAdminThemeList() as $themeName => $themeConfig) {
-            $tokensFile = $themeConfig->path . 'css' . DIRECTORY_SEPARATOR . 'theme_tokens.css';
-            if (!is_file($tokensFile)) {
-                continue;
-            }
-            $themeUrl = in_array($themeName, self::STANDARD_ADMIN_THEMES, true)
-                ? App()->getConfig('styleurl') . $themeName
-                : App()->getConfig('uploadurl') . '/admintheme/' . $themeName;
-            $urls[$themeName] = $themeUrl . '/css/theme_tokens.css?v=' . filemtime($tokensFile);
+        return (bool) App()->getConfig('allowpersonaladmintheme');
+    }
+
+    /**
+     * Returns the admin themes users can choose in their personal settings
+     *
+     * @return array the array of configuration objects, theme name => configuration object
+     */
+    public static function getPersonalAdminThemeList()
+    {
+        return array_filter(
+            self::getAdminThemeList(),
+            function ($themeName) {
+                return self::isPlainThemeName((string) $themeName);
+            },
+            ARRAY_FILTER_USE_KEY
+        );
+    }
+
+    /**
+     * Returns the URL of the theme tokens (css/theme_tokens.css, the colours of the theme as CSS variables)
+     * of the current user's admin theme. The React editor loads this file.
+     *
+     * @return string|null The URL with the file time as version, or null if the theme has no theme tokens
+     */
+    public static function getThemeTokensUrl()
+    {
+        $themeName = self::getUserAdminThemeName() ?? App()->getConfig('admintheme');
+        if (!is_string($themeName) || !self::isPlainThemeName($themeName)) {
+            return null;
         }
-        return $urls;
+        $tokensFile = self::getThemeRootDir($themeName) . DIRECTORY_SEPARATOR . $themeName
+            . DIRECTORY_SEPARATOR . 'css' . DIRECTORY_SEPARATOR . 'theme_tokens.css';
+        if (!is_file($tokensFile)) {
+            return null;
+        }
+        $themeUrl = in_array($themeName, self::STANDARD_ADMIN_THEMES, true)
+            ? App()->getConfig('styleurl') . $themeName
+            : App()->getConfig('uploadurl') . '/admintheme/' . $themeName;
+        return $themeUrl . '/css/theme_tokens.css?v=' . filemtime($tokensFile);
     }
 
     /**
      * Returns the admin theme the current user chose in their personal settings
      *
-     * @return string|null The theme name, or null if the user did not choose one or the theme does not exist (anymore)
+     * @return string|null The theme name, or null if the user did not choose one, the theme does not exist (anymore)
+     *                     or users cannot choose their own admin theme
      */
     public static function getUserAdminThemeName()
     {
-        if (App()->user->isGuest) {
+        if (App()->user->isGuest || !self::isPersonalAdminThemeAllowed()) {
             return null;
         }
         $themeName = SettingsUser::getUserSettingValue('admintheme');
-        // Users can write any of their own settings (e.g. via admin/user/sa/togglesetting), so only accept plain directory names
-        if (!is_string($themeName) || !preg_match('/^[A-Za-z0-9_-]+$/', $themeName)) {
+        // Users can write any of their own settings (e.g. via admin/user/sa/togglesetting),
+        // so only accept plain directory names
+        if (!is_string($themeName) || !self::isPlainThemeName($themeName)) {
             return null;
         }
-        $themeRootDir = in_array($themeName, self::STANDARD_ADMIN_THEMES, true)
-            ? App()->getConfig('styledir')
-            : App()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . 'admintheme';
-        if (!is_file($themeRootDir . DIRECTORY_SEPARATOR . $themeName . DIRECTORY_SEPARATOR . 'config.xml')) {
+        $configFile = self::getThemeRootDir($themeName) . DIRECTORY_SEPARATOR . $themeName
+            . DIRECTORY_SEPARATOR . 'config.xml';
+        if (!is_file($configFile)) {
             return null;
         }
         return $themeName;
+    }
+
+    /**
+     * Returns whether a theme name is a plain directory name: no path, not "." or ".." and no hidden directory
+     *
+     * @param string $themeName
+     * @return bool
+     */
+    private static function isPlainThemeName(string $themeName)
+    {
+        return preg_match('/^[A-Za-z0-9_-][A-Za-z0-9_.-]*$/', $themeName) === 1;
+    }
+
+    /**
+     * Returns the directory that contains an admin theme:
+     * themes/admin for the standard themes, upload/admintheme for the others
+     *
+     * @param string $themeName
+     * @return string
+     */
+    private static function getThemeRootDir(string $themeName)
+    {
+        return in_array($themeName, self::STANDARD_ADMIN_THEMES, true)
+            ? App()->getConfig('styledir')
+            : App()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . 'admintheme';
     }
 
     /**

@@ -102,6 +102,32 @@ $defaultBreadcrumbMode           = Yii::app()->getConfig('defaultBreadcrumbMode'
             <?php endif; ?>
         </div>
 
+        <!-- Personal administration theme -->
+        <div class="mb-3">
+            <label class="col-12 form-label" id="allowpersonaladmintheme-label">
+                <?php eT("Users can choose their own administration theme:"); ?>
+            </label>
+            <div class="col-12">
+                <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                    'name' => 'allowpersonaladmintheme',
+                    'ariaLabelledBy' => 'allowpersonaladmintheme-label',
+                    'checkedOption' => AdminTheme::isPersonalAdminThemeAllowed() ? '1' : '0',
+                    'selectOptions' => [
+                        '1' => gT('On'),
+                        '0' => gT('Off'),
+                    ],
+                    'htmlOptions' => [
+                        'aria-describedby' => 'allowpersonaladmintheme-hint',
+                    ],
+                ]); ?>
+            </div>
+            <div class="col-12 form-label ">
+                <span class="hint" id="allowpersonaladmintheme-hint">
+                <?php eT("If off, all users get the administration theme selected above."); ?>
+                </span>
+            </div>
+        </div>
+
         <!-- Time zone selector -->
         <div class="mb-3">
             <label class="col-12 form-label" for='displayTimezone'>

@@ -154,7 +154,10 @@ class UserAction extends SurveyCommonAction
                 $postAdminTheme = Yii::app()->request->getPost('admintheme', '');
                 $adminTheme = is_string($postAdminTheme) ? $postAdminTheme : '';
                 $adminThemeChanged = false;
-                if ($adminTheme === '' || array_key_exists($adminTheme, AdminTheme::getAdminThemeList())) {
+                if (
+                    AdminTheme::isPersonalAdminThemeAllowed()
+                    && ($adminTheme === '' || array_key_exists($adminTheme, AdminTheme::getPersonalAdminThemeList()))
+                ) {
                     $adminThemeChanged = $adminTheme !== (string) SettingsUser::getUserSettingValue('admintheme');
                     SettingsUser::setUserSetting('admintheme', $adminTheme);
                 }
@@ -226,7 +229,8 @@ class UserAction extends SurveyCommonAction
         $globalDisplayTimezone = SettingGlobal::model()->findByPk('displayTimezone');
         $aData['globalDisplayTimezone'] = ($globalDisplayTimezone && !empty($globalDisplayTimezone->stg_value)) ? $globalDisplayTimezone->stg_value : 'UTC';
 
-        $adminThemes = AdminTheme::getAdminThemeList();
+        // No admin theme selection if the global setting does not allow users to choose their own admin theme
+        $adminThemes = AdminTheme::isPersonalAdminThemeAllowed() ? AdminTheme::getPersonalAdminThemeList() : [];
         $globalAdminTheme = App()->getConfig('admintheme');
         $aData['adminThemes'] = $adminThemes;
         $aData['globalAdminThemeTitle'] = isset($adminThemes[$globalAdminTheme]) ? $adminThemes[$globalAdminTheme]->metadata->name : $globalAdminTheme;

@@ -368,6 +368,10 @@ class GlobalSettings extends SurveyCommonAction
         // we set the admin theme
         $sAdmintheme = sanitize_paranoid_string(Yii::app()->getRequest()->getPost('admintheme'));
         SettingGlobal::setSetting('admintheme', $sAdmintheme);
+        $allowPersonalAdminTheme = Yii::app()->getRequest()->getPost('allowpersonaladmintheme');
+        if ($allowPersonalAdminTheme !== null) {
+            SettingGlobal::setSetting('allowpersonaladmintheme', $allowPersonalAdminTheme ? '1' : '0');
+        }
 
         $emailMethod = strip_tags(Yii::app()->getRequest()->getPost('emailmethod', ''));
         $emailPlugin = strip_tags(Yii::app()->getRequest()->getPost('emailplugin', ''));

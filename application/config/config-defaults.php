@@ -56,6 +56,7 @@ $config['defaultpass']        = 'password'; // This is the default password for 
 // Styling options
 $config['admintheme']         = 'Sea_Green'; // This setting specifys the directory where the admin finds it theme/css style files, e.g. setting 'default' points to /admin/styles/default
 $config['adminthemeiconsize'] = 32; // This settings describes the icon size for a normal toolbar icon - default for gringegreen is 32
+$config['allowpersonaladmintheme'] = true; // If true, users can choose their own admin theme in their personal settings. Set to false to use the global admin theme for everyone
 
 
 // If the user (admins) enters password incorrectly

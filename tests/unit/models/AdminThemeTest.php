@@ -76,17 +76,72 @@ class AdminThemeTest extends TestBaseClass
     }
 
     /**
-     * The theme tokens of the standard admin themes are found, with a version for cache busting.
+     * The theme tokens URL is the one of the user's admin theme, with a version for cache busting.
      */
-    public function testThemeTokensUrls()
+    public function testThemeTokensUrlOfUserTheme()
     {
-        $urls = AdminTheme::getThemeTokensUrls();
-        foreach (AdminTheme::STANDARD_ADMIN_THEMES as $themeName) {
-            $this->assertArrayHasKey($themeName, $urls);
-            $this->assertMatchesRegularExpression(
-                '#/' . $themeName . '/css/theme_tokens\.css\?v=\d+$#',
-                $urls[$themeName]
-            );
+        SettingsUser::setUserSetting('admintheme', 'Sea_Green_High_Contrast', self::UID);
+        $this->assertMatchesRegularExpression(
+            '#/Sea_Green_High_Contrast/css/theme_tokens\.css\?v=\d+$#',
+            AdminTheme::getThemeTokensUrl()
+        );
+    }
+
+    /**
+     * Without a personal choice, the theme tokens URL is the one of the global admin theme.
+     */
+    public function testThemeTokensUrlOfGlobalTheme()
+    {
+        SettingsUser::setUserSetting('admintheme', '', self::UID);
+        $this->assertMatchesRegularExpression(
+            '#/' . \Yii::app()->getConfig('admintheme') . '/css/theme_tokens\.css\?v=\d+$#',
+            AdminTheme::getThemeTokensUrl()
+        );
+    }
+
+    /**
+     * If users cannot choose their own admin theme, their choice is ignored.
+     */
+    public function testPersonalThemeNotAllowed()
+    {
+        SettingsUser::setUserSetting('admintheme', 'Sea_Green_High_Contrast', self::UID);
+        $allowed = \Yii::app()->getConfig('allowpersonaladmintheme');
+        \Yii::app()->setConfig('allowpersonaladmintheme', false);
+        try {
+            $this->assertNull(AdminTheme::getUserAdminThemeName());
+        } finally {
+            \Yii::app()->setConfig('allowpersonaladmintheme', $allowed);
+        }
+    }
+
+    /**
+     * An uploaded theme with a dot in its name can be chosen, a hidden directory can not.
+     */
+    public function testUploadedThemeNames()
+    {
+        $uploadDir = \Yii::app()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . 'admintheme';
+        $configXml = file_get_contents(\Yii::app()->getConfig('styledir') . '/Sea_Green/config.xml');
+        $themeDirs = [];
+        foreach (['Company.Blue', '.hidden'] as $themeName) {
+            $themeDirs[$themeName] = $uploadDir . DIRECTORY_SEPARATOR . $themeName;
+            @mkdir($themeDirs[$themeName], 0777, true);
+            file_put_contents($themeDirs[$themeName] . '/config.xml', $configXml);
+        }
+        try {
+            $personalThemes = AdminTheme::getPersonalAdminThemeList();
+            $this->assertArrayHasKey('Company.Blue', $personalThemes);
+            $this->assertArrayNotHasKey('.hidden', $personalThemes);
+
+            SettingsUser::setUserSetting('admintheme', 'Company.Blue', self::UID);
+            $this->assertSame('Company.Blue', AdminTheme::getUserAdminThemeName());
+
+            SettingsUser::setUserSetting('admintheme', '.hidden', self::UID);
+            $this->assertNull(AdminTheme::getUserAdminThemeName());
+        } finally {
+            foreach ($themeDirs as $themeDir) {
+                unlink($themeDir . '/config.xml');
+                rmdir($themeDir);
+            }
         }
     }
 

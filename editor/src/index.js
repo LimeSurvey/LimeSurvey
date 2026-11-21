@@ -1,10 +1,10 @@
 import ReactDOM from 'react-dom/client'
 
 import App from './App'
-import { applyStoredAdminThemeTokens } from './hooks/useAdminTheme'
+import { applyAdminThemeTokens } from './helpers/adminThemeTokens'
 import reportWebVitals from './reportWebVitals'
 
-applyStoredAdminThemeTokens()
+applyAdminThemeTokens()
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(<App />)

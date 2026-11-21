@@ -334,6 +334,7 @@ echo $oQuestionSelector->getModal();
                     <fieldset class="border rounded px-3 pt-1 pb-0 mb-4">
                         <legend class="float-none w-auto px-2 mb-2 border-0" style="margin-inline-start: -0.5rem"><h3 class="h6 fw-bold mb-0"><?php eT("Appearance"); ?></h3></legend>
                         <div class="row">
+                            <?php if (!empty($adminThemes)) : ?>
                             <div class="col-12 col-lg-6">
                                 <!-- Admin theme -->
                                 <div class="mb-3">
@@ -355,6 +356,7 @@ echo $oQuestionSelector->getModal();
                                     </div>
                                 </div>
                             </div>
+                            <?php endif; ?>
                             <div class="col-12 col-lg-6">
                                 <!-- Breadcrumb mode -->
                                 <div class="mb-3">

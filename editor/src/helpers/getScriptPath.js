@@ -1,4 +1,5 @@
-const AUTH_INIT_COOKIE_NAME = 'LS_AUTH_INIT'
+import { readAuthInitCookie } from './readAuthInitCookie'
+
 const STORAGE_KEY_PREFIX = 'ls-editor-script-name:'
 const SCRIPT_NAME_PATTERN = /^[\w.-]+\.php$/
 
@@ -32,24 +33,8 @@ const sanitizeScriptName = (scriptName) =>
  * @returns {string|null} null when the cookie is missing or has no script name
  */
 const readScriptNameFromCookie = () => {
-  const prefix = AUTH_INIT_COOKIE_NAME + '='
-  const cookie = document.cookie
-    .split('; ')
-    .find((row) => row.startsWith(prefix))
-
-  if (!cookie) {
-    return null
-  }
-
-  try {
-    // PHP encodes spaces as '+', which decodeURIComponent() leaves alone.
-    const data = JSON.parse(
-      decodeURIComponent(cookie.slice(prefix.length).replace(/\+/g, ' '))
-    )
-    return typeof data?.scriptName === 'string' ? data.scriptName : null
-  } catch (e) {
-    return null
-  }
+  const data = readAuthInitCookie()
+  return typeof data?.scriptName === 'string' ? data.scriptName : null
 }
 
 // Several installations can share one origin, so the key is scoped by path.

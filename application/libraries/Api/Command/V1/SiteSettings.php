@@ -2,7 +2,6 @@
 
 namespace LimeSurvey\Api\Command\V1;
 
-use AdminTheme;
 use Yii;
 use LimeSurvey\Api\Command\{
     CommandInterface,
@@ -46,10 +45,6 @@ class SiteSettings implements CommandInterface
                 'languages' => getLanguageDataRestricted(),
                 'dateFormats' => getDateFormatData(),
                 'maximumFileUploadSize' => getMaximumFileUploadSize(),
-                // The global admin theme; the editor uses a user's personal admin theme setting instead if there is one,
-                // and loads the theme tokens (the colours as CSS variables) of that theme
-                'adminTheme' => Yii::app()->getConfig('admintheme'),
-                'adminThemeTokens' => AdminTheme::getThemeTokensUrls(),
             ]);
     }
 }
