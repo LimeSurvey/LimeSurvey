@@ -155,3 +155,28 @@
 :root .inactive-section-header {
   opacity: 0.65;
 }
+
+:root[data-bs-theme=dark] .btn-outline-primary {
+  --bs-btn-color: #B39BFF;
+  --bs-btn-border-color: #B39BFF;
+}
+:root[data-bs-theme=dark] .btn-outline-secondary {
+  --bs-btn-color: #A4A9BC;
+  --bs-btn-border-color: #A4A9BC;
+}
+:root[data-bs-theme=dark] .btn-outline-success {
+  --bs-btn-color: #4DD08A;
+  --bs-btn-border-color: #4DD08A;
+}
+:root[data-bs-theme=dark] .btn-outline-danger {
+  --bs-btn-color: #FF8A93;
+  --bs-btn-border-color: #FF8A93;
+}
+:root[data-bs-theme=dark] :focus-visible,
+:root[data-bs-theme=dark] .btn-check:focus-visible + .btn {
+  outline-color: #C9B8FF !important;
+  box-shadow: 0 0 0 2px #111217 !important;
+}
+:root[data-bs-theme=dark] .form-check-input:not(:checked) {
+  border-color: #A4A9BC;
+}

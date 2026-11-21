@@ -2,7 +2,7 @@
   padding: 4px 8px;
   border-radius: $border-radius-xs;
   border: 1px solid $grape;
-  color: $grape;
+  color: $grape-text;
   text-align: center;
   font-size: $font-size-xxs;
   font-style: $font-style-base;
@@ -42,9 +42,9 @@
 
 .assessment-value-badge {
   cursor: pointer;
-  background-color: $white;
+  background-color: $surface-bg;
   border: 1px solid $grape;
-  color: $grape;
+  color: $grape-text;
   border-radius: $border-radius-xs;
   font-size: $font-size-xs;
   font-style: $font-style-base;

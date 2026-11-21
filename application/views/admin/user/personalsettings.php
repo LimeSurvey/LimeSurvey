@@ -358,6 +358,26 @@ echo $oQuestionSelector->getModal();
                             </div>
                             <?php endif; ?>
                             <div class="col-12 col-lg-6">
+                                <!-- Appearance mode -->
+                                <div class="mb-3">
+                                    <?php echo TbHtml::label(gT("Appearance mode:"), 'appearancemode', ['class' => " form-label"]); ?>
+                                    <div class="">
+                                        <?php echo CHtml::dropDownList(
+                                            'appearancemode',
+                                            in_array($aUserSettings['appearancemode'] ?? '', AdminTheme::APPEARANCE_MODES, true) ? $aUserSettings['appearancemode'] : '',
+                                            ['' => sprintf(gT("Use global setting (%s)", 'unescaped'), $defaultAppearanceModeTitle)] + $appearanceModes,
+                                            ['class' => "form-select", 'aria-describedby' => 'appearancemode-help']
+                                        ); ?>
+                                    </div>
+                                    <div id="appearancemode-help" class="form-text">
+                                        <?php eT("\"System\" follows the light or dark mode of your device."); ?>
+                                        <?php if (!$adminThemeHasDarkMode) : ?>
+                                            <?php eT("The admin theme in use has no dark mode."); ?>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-6">
                                 <!-- Breadcrumb mode -->
                                 <div class="mb-3">
                                     <?php echo TbHtml::label(gT("Breadcrumb mode:"), 'breadcrumbMode', ['class' => " form-label"]); ?>

@@ -25,7 +25,7 @@
     &:hover,
     &:focus,
     &:active {
-      background-color: $white;
+      background-color: $surface-bg;
       outline: 2px solid $grape;
       box-shadow: none;
       z-index: 9999;
@@ -94,9 +94,9 @@
   }
 
   .tox-collection__group {
-    color: $black;
+    color: $text-black;
     path {
-      fill: $black !important;
+      fill: $text-black !important;
     }
   }
 
@@ -132,10 +132,10 @@
     &:hover,
     &:focus,
     &:active {
-      background-color: $white !important;
+      background-color: $surface-bg !important;
       outline: 2px solid $grape !important;
       box-shadow: none !important;
-      color: black !important;
+      color: $text-black !important;
     }
   }
 }
@@ -186,7 +186,7 @@
 }
 
 .survey-setting .editable-content-editor.textarea {
-  border: 2px solid #6e748c;
+  border: 2px solid $g-700;
   border-radius: $border-radius;
   min-height: calc(6em + 0.75rem + calc(var(--bs-border-width) * 2));
   overflow: auto;
@@ -214,10 +214,10 @@
     justify-content: center;
     align-items: center;
     flex-direction: row;
-    background: $white;
+    background: $surface-bg;
     border-radius: 1px;
     box-shadow: 0 2px 6px 0 $elevation-shadow-soft;
-    outline: 1px solid rgba(30, 30, 30, 1);
+    outline: 1px solid $g-900;
 
     .meatball-icon {
       border-left: $g-900 1px solid;
@@ -233,7 +233,7 @@
       &:hover,
       &:focus,
       &:active {
-        background-color: $white;
+        background-color: $surface-bg;
         outline: 2px solid $grape;
         box-shadow: none;
       }
@@ -252,8 +252,8 @@
   align-items: center;
   flex-direction: column;
   gap: 2px;
-  background: $white;
-  outline: 1px solid rgba(30, 30, 30, 1);
+  background: $surface-bg;
+  outline: 1px solid $g-900;
   border-radius: 1px;
   box-shadow: 0 2px 6px 0 $elevation-shadow-soft;
   padding: 14px;
@@ -307,7 +307,7 @@
     &:hover,
     &:focus,
     &:active {
-      background-color: $white;
+      background-color: $surface-bg;
       outline: 2px solid $grape;
       box-shadow: none;
     }
@@ -324,8 +324,8 @@
 .content-editor-placeholder-menu {
   display: block;
   gap: 2px;
-  background: $white;
-  outline: 1px solid rgba(30, 30, 30, 1);
+  background: $surface-bg;
+  outline: 1px solid $g-900;
   border-radius: 1px;
   box-shadow: 0 2px 6px 0 $elevation-shadow-soft;
   padding: 20px;

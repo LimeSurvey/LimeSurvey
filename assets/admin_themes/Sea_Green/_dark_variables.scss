@@ -1,0 +1,68 @@
+// Bootstrap and Sea Green variables of the dark mode of Sea Green
+// Set after sea_green_components and before the Bootstrap variables
+
+// The top navigation bar stays darker than the page
+$navbar-bg-color        : #111217;
+$navbar-badges-color    : $navbar-bg-color;
+
+$pagination-active-bg           : $g-600;
+$pagination-active-border-color : $g-600;
+
+// Tooltips are light, they have to stand out from the dark page
+$tooltip-color : $dark-on-bright;
+
+// Bootstrap greys: Bootstrap computes its defaults from them
+$gray-100 : $g-100;
+$gray-200 : $g-200;
+$gray-300 : $g-300;
+$gray-400 : $g-400;
+$gray-500 : $g-600;
+$gray-600 : $g-700;
+$gray-700 : $g-750;
+$gray-800 : $g-800;
+$gray-900 : $g-900;
+
+// Bootstrap uses the body background for inputs, tabs and accordions. The page background is set in layout/body.scss
+$body-bg      : $surface-bg;
+$body-color   : $g-900;
+$border-color : $g-400;
+$text-muted   : $g-700;
+
+// Bootstrap defaults that are white, or black with opacity
+$card-bg                        : $surface-bg;
+$card-border-color              : rgba($white, .125);
+$card-cap-bg                    : rgba($white, .03);
+$dropdown-bg                    : $surface-bg;
+$dropdown-border-color          : rgba($white, .15);
+$dropdown-dark-bg               : #0F1014;
+$dropdown-dark-color            : $g-800;
+$modal-content-bg               : $surface-bg;
+$modal-content-border-color     : rgba($white, .2);
+$popover-bg                     : $surface-bg;
+$popover-border-color           : rgba($white, .2);
+$list-group-bg                  : $surface-bg;
+$list-group-border-color        : rgba($white, .125);
+$accordion-border-color         : rgba($white, .125);
+$accordion-button-active-bg     : $active-green-hover;
+$accordion-button-active-color  : $g-900;
+$toast-background-color         : rgba($surface-bg, .85);
+$toast-header-background-color  : rgba($surface-bg, .85);
+$toast-border-color             : rgba($white, .1);
+$toast-header-border-color      : rgba($white, .05);
+$table-striped-bg               : rgba($white, .03);
+$table-active-bg                : rgba($white, .1);
+$form-check-input-border        : 1px solid $g-700;
+$form-switch-color              : rgba($white, .5);
+$kbd-bg                         : $g-400;
+$btn-close-color                : $white;
+$code-color                     : #F4A3C9;
+$form-feedback-valid-color      : $dark-text-green;
+$form-feedback-invalid-color    : $dark-text-red;
+
+// Tinted backgrounds are shaded instead of tinted, their text is tinted instead of shaded
+$alert-bg-scale              : 75%;
+$alert-border-scale          : 50%;
+$alert-color-scale           : -60%;
+$list-group-item-bg-scale    : 75%;
+$list-group-item-color-scale : -60%;
+$table-bg-scale              : 70%;

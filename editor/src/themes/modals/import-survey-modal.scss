@@ -112,7 +112,7 @@
   }
 
   .form-check-input:checked[type='checkbox'] {
-    background-color: $g-800;
+    background-color: $g-800-bg;
     color: $white;
     outline: 2px solid $g-900;
 
@@ -176,11 +176,11 @@
 
 .import-survey-toast {
   align-items: center;
-  background: $white;
+  background: $surface-bg;
   border: 1px solid $g-900;
   border-left-width: 12px;
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba($g-900, 0.2);
+  box-shadow: 0 4px 12px rgba($g-900-base, 0.2);
   display: flex;
   font-size: 18px;
   gap: 14px;

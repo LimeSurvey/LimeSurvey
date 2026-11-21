@@ -307,7 +307,9 @@ class DateTimePicker extends CInputWidget
         $stepping = $this->getValue('data-stepping', $this->htmlOptions, 1);
         $stepping = $stepping != 0 ? $stepping : 1;
         $theme = $this->getValue('data-theme', $this->htmlOptions, null);
-        $themeValue = $theme !== null ? "'$theme'" : "(document.body.hasAttribute('data-thememode') ? document.body.getAttribute('data-thememode') : 'auto')";
+        // Without a theme the picker follows the survey theme (data-thememode), then the appearance mode
+        // of the admin interface (data-bs-theme, see AdminTheme::registerAppearanceMode()), then the device
+        $themeValue = $theme !== null ? "'$theme'" : "(document.body.hasAttribute('data-thememode') ? document.body.getAttribute('data-thememode') : (['light', 'dark'].indexOf(document.documentElement.getAttribute('data-bs-theme')) !== -1 ? document.documentElement.getAttribute('data-bs-theme') : 'auto'))";
         $localization = $this->getLocalizationOptionsString();
         $calendarComponents = $this->getComponentsOptionsString();
         $icons = $this->getCustomIconsString();

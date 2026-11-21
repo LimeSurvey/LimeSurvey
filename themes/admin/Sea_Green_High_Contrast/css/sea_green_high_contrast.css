@@ -16329,6 +16329,14 @@ tr.info, tr.danger {
   font-weight: normal;
 }
 
+:root {
+  --ls-surface-bg: #fff;
+  --ls-page-bg: #EEEFF7;
+  --ls-text-color: #1E1E1E;
+  --ls-muted-text-color: #585D72;
+  --ls-border-color: #D3D5DA;
+}
+
 body {
   background-color: #EEEFF7;
   margin: 0;

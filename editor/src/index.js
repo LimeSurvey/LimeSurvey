@@ -2,8 +2,10 @@ import ReactDOM from 'react-dom/client'
 
 import App from './App'
 import { applyAdminThemeTokens } from './helpers/adminThemeTokens'
+import { applyAppearanceMode } from './helpers/appearanceMode'
 import reportWebVitals from './reportWebVitals'
 
+applyAppearanceMode()
 applyAdminThemeTokens()
 
 const root = ReactDOM.createRoot(document.getElementById('root'))

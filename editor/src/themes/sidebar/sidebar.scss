@@ -1,11 +1,11 @@
 .sidebar {
-  background-color: $white;
+  background-color: $surface-bg;
   display: flex;
   flex-direction: column;
   max-width: $left-side-bar-width;
   font-size: $font-size-xs;
 
-  border-right: 1px #eeeeee solid;
+  border-right: 1px var(--ls-g-300, #eeeeee) solid;
   height: 100vh;
   left: 0;
   position: fixed;
@@ -57,7 +57,7 @@
 .sidebar-section {
   margin: 0 0 1rem 0;
   padding: 0 0.5rem 1.5rem 1.5rem;
-  border-bottom: 1px #dcdcdc solid;
+  border-bottom: 1px var(--ls-g-300, #dcdcdc) solid;
 }
 
 .sidebar-section button {
@@ -80,7 +80,7 @@ h6.section-header {
   }
 
   .accordion-button:not(.collapsed) {
-    background-color: $white;
+    background-color: $surface-bg;
     color: $g-900;
   }
 }

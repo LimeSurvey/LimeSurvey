@@ -25,7 +25,7 @@
 }
 
 .generic-toast {
-  background-color: white;
+  background-color: $surface-bg;
   border: 1px $g-900 solid;
   border-radius: 8px;
   min-width: fit-content;

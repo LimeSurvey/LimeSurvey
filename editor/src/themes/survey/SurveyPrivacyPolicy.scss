@@ -45,7 +45,7 @@
           margin: 0 8px 0 0;
           border: 3px solid $active-green;
           border-radius: 0;
-          background-color: $white;
+          background-color: $surface-bg;
           appearance: none;
           cursor: default;
         }
@@ -54,7 +54,7 @@
           font-weight: $font-weight-600;
           font-size: $font-size-sm;
           line-height: $line-height-20;
-          color: $active-green;
+          color: $active-green-text;
         }
       }
 
@@ -66,7 +66,7 @@
           font-weight: $font-weight-600;
           font-size: $font-size-sm;
           line-height: $line-height-20;
-          color: $active-green;
+          color: $active-green-text;
           cursor: default;
           &:hover {
             color: #0c6938; //mimicking hover on actual survey

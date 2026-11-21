@@ -58,6 +58,16 @@
 @import "lime-admin-colors";
 @import "statistics";
 
+// Colours of the theme as CSS variables, for CSS that is not part of the theme (widgets, plugins).
+// They follow the appearance mode (light or dark)
+:root {
+    --ls-surface-bg       : #{$surface-bg};
+    --ls-page-bg          : #{$g-200};
+    --ls-text-color       : #{$g-900};
+    --ls-muted-text-color : #{$g-700};
+    --ls-border-color     : #{$g-400};
+}
+
 @import "layout/body.scss";
 @import "layout/container/container.scss";
 @import "layout/ls-main-content-container.scss";

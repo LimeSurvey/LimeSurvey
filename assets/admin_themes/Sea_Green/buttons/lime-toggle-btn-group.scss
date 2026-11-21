@@ -8,7 +8,7 @@
     }
 
     .btn-check:checked:disabled + .btn-outline-secondary {
-        background-color: $white;
+        background-color: $surface-bg;
         border-color: $g-100;
     }
 
@@ -45,7 +45,7 @@
         .btn-outline-secondary.active,
         .btn-outline-secondary.dropdown-toggle.show,
         .btn-outline-secondary:active {
-            background-color: $white;
+            background-color: $surface-bg;
             border-color: $g-700;
             color: $g-900;
             border-radius: 3px;

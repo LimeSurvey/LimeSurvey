@@ -28,9 +28,9 @@
     }
     .nav-link.active,
     .nav-item.show .nav-link {
-        background-color : $white;
+        background-color : $surface-bg;
         border-top       : 2px solid $active-green;
-        border-bottom    : 2px solid $white;
+        border-bottom    : 2px solid $surface-bg;
     }
 
     .nav-link.active {
@@ -44,5 +44,5 @@
 }
 .tab-content {
   padding: 1rem;
-  background-color: $white;
+  background-color: $surface-bg;
 }

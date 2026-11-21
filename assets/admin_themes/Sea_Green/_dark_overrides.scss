@@ -1,0 +1,405 @@
+// Rules that only exist in the dark mode of Sea Green and its variants
+
+// Dark scrollbars and form controls of the browser
+:root {
+    color-scheme : dark;
+}
+
+// The theme colours as text, icons and outlines: The colours themselves are made for white text on them,
+// on the dark backgrounds they do not reach 4.5:1
+$dark-text-colors : (
+    "primary": $dark-text-green,
+    "secondary": $g-700,
+    "success": $dark-text-green,
+    "danger": $dark-text-red,
+    "info": $dark-text-grape,
+    "cancel": $g-700,
+    "orange": $dark-text-orange,
+    "light": $g-900,
+    "dark": $g-900,
+    "g-800": $g-800,
+    "black60": $g-700
+);
+@each $name, $color in $dark-text-colors {
+    .text-#{$name} {
+        color : $color !important;
+    }
+    .link-#{$name} {
+        color : $color;
+        &:hover,
+        &:focus {
+            color : tint-color($color, 20%);
+        }
+    }
+    .btn-outline-#{$name} {
+        @include button-outline-variant($color);
+    }
+}
+.btn-outline-g-700 {
+    @include button-outline-variant($g-700);
+}
+.text-black,
+.text-body {
+    color : $g-900 !important;
+}
+.btn-link {
+    &,
+    &:hover,
+    &:focus,
+    &:active,
+    &:active:focus {
+        color : $dark-text-green;
+    }
+}
+
+// Backgrounds that are white or nearly black in the light mode
+.bg-white {
+    background-color : $surface-bg !important;
+}
+.bg-dark {
+    background-color : $navbar-bg-color !important;
+}
+.btn-dark,
+.btn-g-800 {
+    @include button-variant($g-400, $g-400, $white, $hover-color: $white, $active-color: $white);
+    &,
+    &:hover,
+    &:focus,
+    &:active,
+    &.active,
+    &:active:focus {
+        color            : $white;
+        background-color : $g-400;
+        border-color     : $g-400;
+    }
+}
+.btn-g-700 {
+    &,
+    &:hover,
+    &:focus,
+    &:active,
+    &.active,
+    &:active:focus {
+        color            : $white;
+        background-color : $g-600;
+        border-color     : $g-600;
+    }
+}
+
+// Coloured buttons and filled alerts have white text, Sea Green sets the text colour of the page
+.btn-success,
+.btn-danger {
+    &,
+    &:hover,
+    &:focus,
+    &:active,
+    &.active,
+    &:active:focus {
+        color : $white;
+    }
+}
+.alert-filled-primary,
+.alert-filled-secondary,
+.alert-filled-success,
+.alert-filled-danger {
+    color        : $white;
+    border-color : transparent;
+    .alert-header,
+    .alert-link {
+        color : $white;
+    }
+}
+
+// The warning yellow and the orange stay bright, with dark text
+.btn-warning,
+.btn-orange {
+    &,
+    &:hover,
+    &:focus,
+    &:active,
+    &.active,
+    &:active:focus {
+        color : $dark-on-bright;
+    }
+}
+.alert-filled-warning {
+    color        : $dark-on-bright;
+    border-color : transparent;
+    .alert-header,
+    .alert-link {
+        color : $dark-on-bright;
+    }
+    .btn-close {
+        filter : invert(1) grayscale(100%) brightness(0%);
+        @media (forced-colors: active) {
+            filter : none;
+        }
+    }
+}
+.badge.bg-warning,
+.badge.bg-orange,
+.bg-warning,
+.bg-orange {
+    color : $dark-on-bright;
+}
+.badge.bg-success,
+.badge.bg-danger {
+    color : $white;
+}
+// Badge with the colours of the page the other way round
+.badge.reverse-color {
+    color : $dark-on-bright !important;
+}
+
+// Grids: Sea Green sets black text
+.grid-view,
+.grid-view-ls {
+    .table thead tr th .sort-link,
+    .table button:focus,
+    .action-list {
+        color : $g-900;
+    }
+}
+
+// Login page: The panel with the logo stays dark
+.login .sidebar-l {
+    background : $navbar-bg-color;
+}
+
+// HTML editor (CKEditor): the frame is dark, the content keeps the white background of the editor's content styles
+.cke_bottom {
+    background : $surface-bg !important;
+}
+.cke_chrome {
+    background : $g-300 !important;
+}
+
+// ExpressionScript syntax highlighting: a dark background, with lighter colours for the parts of an expression
+.em-expression {
+    background   : #3A3214;
+    border-color : $g-600;
+}
+.em-function {
+    color : $dark-text-blue;
+}
+.em-var-string {
+    color : $g-700;
+}
+.em-var-static,
+a.em-var-static {
+    color : #E5A27A;
+}
+.em-var-before,
+a.em-var-before {
+    color : $dark-text-grape;
+}
+.em-var-after,
+a.em-var-after {
+    color : $dark-text-green;
+}
+.em-var-inpage,
+a.em-var-inpage {
+    color : $dark-text-blue;
+}
+.em-var-error,
+a.em-var-error {
+    color : $dark-text-red;
+}
+.em-warning {
+    color : $dark-text-orange;
+}
+
+// CSS that is not part of the theme and is loaded after it: ":root" lets these rules win
+:root {
+    // Select2 dropdowns
+    .select2-container--bootstrap-5 {
+        .select2-selection,
+        .select2-selection--single .select2-selection__rendered,
+        .select2-dropdown .select2-results__options .select2-results__option {
+            color : $g-900;
+        }
+        .select2-selection--single .select2-selection__rendered .select2-selection__placeholder,
+        .select2-dropdown .select2-results__options .select2-results__option.select2-results__option--disabled,
+        .select2-dropdown .select2-results__options .select2-results__option[aria-disabled=true] {
+            color : $g-700;
+        }
+        .select2-dropdown .select2-results__options .select2-results__option.select2-results__option--highlighted {
+            color            : $g-900;
+            background-color : $g-300;
+        }
+        .select2-dropdown .select2-results__options .select2-results__option.select2-results__option--selected,
+        .select2-dropdown .select2-results__options .select2-results__option[aria-selected=true]:not(.select2-results__option--highlighted) {
+            color : $white;
+        }
+        .select2-dropdown .select2-search .select2-search__field {
+            color            : $g-900;
+            background-color : $surface-bg;
+            border-color     : $g-700;
+        }
+        .select2-selection--multiple .select2-selection__rendered .select2-selection__choice {
+            color        : $g-900;
+            border-color : $g-600;
+        }
+    }
+    .select2-container--bootstrap-5.select2-container--disabled .select2-selection,
+    .select2-container--bootstrap-5.select2-container--disabled .select2-selection--single .select2-selection__rendered {
+        color : $g-700;
+    }
+
+    // Survey logic file (assets/styles-public/expressionlogicfile.css)
+    tr.LEMgroup td {
+        background-color : $g-400;
+    }
+    tr.LEMquestion {
+        background-color : $active-green-hover;
+    }
+    tr.LEManswer td {
+        background-color : $surface-bg;
+    }
+    tr.LEMsubq td {
+        background-color : #3A3214;
+    }
+    .LEMerror {
+        color : $dark-text-red;
+    }
+}
+
+// Labels attached to inputs: Sea Green uses the dark navigation bar colour with white text
+.input-group-text {
+    color            : $g-900;
+    background-color : $g-400;
+}
+
+.dropdown-header {
+    color : $g-700;
+}
+.navbar .mega-dropdown-menu .dropdown-header {
+    color : $g-700;
+}
+
+// Date picker (Tempus Dominus): The admin interface creates most pickers with the "light" theme,
+// so both the light and the dark theme of the picker get the colours of the dark mode
+:root {
+    --td-light                              : #{$surface-bg};
+    --td-widget-background                  : #{$surface-bg};
+    --td-font-color                         : #{$g-900};
+    --td-active-color                       : #{$white};
+    --td-active-border-color                : #{$surface-bg};
+    --td-btn-hover-bg                       : #{$g-300};
+    --td-disabled-color                     : #{$g-600};
+    --td-alternate-color                    : #{$g-700};
+    --td-secondary-border-color             : #{$g-400};
+    --td-secondary-border-color-rgba        : #{rgba($white, .2)};
+    --td-primary-border-color               : #{$surface-bg};
+    --td-dow-color                          : #{$g-700};
+    --td-dark                               : #{$surface-bg};
+    --td-dark-widget-background             : #{$surface-bg};
+    --td-dark-font-color                    : #{$g-900};
+    --td-dark-active-bg                     : #{$active-green};
+    --td-dark-active-border-color           : #{$surface-bg};
+    --td-dark-btn-hover-bg                  : #{$g-300};
+    --td-dark-disabled-color                : #{$g-600};
+    --td-dark-alternate-color               : #{$g-700};
+    --td-dark-secondary-border-color        : #{$g-400};
+    --td-dark-primary-border-color          : #{$surface-bg};
+    --td-dark-dow-color                     : #{$g-700};
+}
+.tempus-dominus-widget {
+    border : 1px solid $g-400;
+}
+:root {
+    --td-active-bg : #{$active-green};
+}
+
+// The close button is white in the dark mode (see $btn-close-color), the high contrast variant must not invert it
+.alert-filled-primary,
+.alert-filled-secondary,
+.alert-filled-success,
+.alert-filled-danger {
+    .btn-close {
+        filter : none;
+    }
+}
+
+// Links in filled alerts: the green link colour is not readable on the coloured backgrounds
+.alert-filled-primary,
+.alert-filled-secondary,
+.alert-filled-success,
+.alert-filled-danger,
+.alert-filled-info,
+.alert-filled-dark {
+    a:not(.btn) {
+        color           : $white;
+        text-decoration : underline;
+    }
+}
+.alert-filled-warning a:not(.btn) {
+    color           : $dark-on-bright;
+    text-decoration : underline;
+}
+
+// HTML editor dialogs (link, image, ...) and toolbar dropdowns: The skin of the editor is light and Sea Green sets
+// the text colour of the page for everything in the editor, so the dialogs get the dark backgrounds.
+// The skin is loaded after the theme, so "!important" is needed
+.cke_dialog_background_cover {
+    background-color : $black !important;
+}
+.cke_dialog_body {
+    background   : $surface-bg !important;
+    border-color : $g-600 !important;
+}
+.cke_dialog_title {
+    background          : $g-200 !important;
+    border-bottom-color : $g-400 !important;
+    text-shadow         : none !important;
+}
+.cke_dialog_contents,
+.cke_dialog_contents_body {
+    background : $surface-bg !important;
+}
+.cke_dialog_footer {
+    background       : $g-200 !important;
+    border-top-color : $g-400 !important;
+}
+.cke_dialog_tabs .cke_dialog_tab {
+    background   : $g-200 !important;
+    border-color : $g-400 !important;
+}
+.cke_dialog_tabs .cke_dialog_tab_selected {
+    background : $surface-bg !important;
+}
+input.cke_dialog_ui_input_text,
+input.cke_dialog_ui_input_password,
+input.cke_dialog_ui_input_tel,
+textarea.cke_dialog_ui_input_textarea,
+select.cke_dialog_ui_input_select {
+    background-color : $surface-bg !important;
+    border-color     : $g-700 !important;
+}
+a.cke_dialog_ui_button {
+    background   : $g-300 !important;
+    border-color : $g-600 !important;
+}
+a.cke_dialog_ui_button_ok {
+    background   : $active-green !important;
+    border-color : $active-green !important;
+}
+.cke_reset_all a.cke_dialog_ui_button_ok span.cke_dialog_ui_button {
+    color : $white !important;
+}
+.cke_dialog_close_button {
+    filter : invert(1);
+}
+.cke_combo_button {
+    background   : $surface-bg !important;
+    border-color : $g-600 !important;
+}
+.cke_combo_arrow {
+    border-top-color : $g-900 !important;
+}
+
+// A filled alert in the "dark" colour: that colour is the light text colour in the dark mode
+.alert-filled-dark {
+    background-color : $g-400;
+    border-color     : transparent;
+}

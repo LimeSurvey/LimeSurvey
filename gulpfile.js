@@ -117,14 +117,17 @@ exports.build_bootstrap = parallel(js_minify, scss_minify, scss_minify_rtl);
 
 // Admin themes: Sea Green and its variants share the SCSS in assets/admin_themes/Sea_Green.
 // The theme tokens (the colours as CSS variables) are loaded by the React editor.
+// "dark" is the dark mode of a theme, it is loaded after the CSS of "source".
 const adminThemes = [
     {
         source: "assets/admin_themes/Sea_Green/sea_green.scss",
+        dark: "assets/admin_themes/Sea_Green/sea_green_dark.scss",
         tokens: "assets/admin_themes/Sea_Green/theme_tokens.scss",
         target: "themes/admin/Sea_Green/css",
     },
     {
         source: "assets/admin_themes/Sea_Green_High_Contrast/sea_green_high_contrast.scss",
+        dark: "assets/admin_themes/Sea_Green_High_Contrast/sea_green_high_contrast_dark.scss",
         tokens: "assets/admin_themes/Sea_Green_High_Contrast/theme_tokens.scss",
         target: "themes/admin/Sea_Green_High_Contrast/css",
     },
@@ -153,7 +156,7 @@ function adminThemeTokensTask(adminTheme) {
     return task;
 }
 
-function adminThemeTask(adminTheme, rtl) {
+function adminThemeTask(adminTheme, rtl, dark = false) {
     const task = function () {
         let plugins = [
             autoprefixer(),
@@ -166,7 +169,7 @@ function adminThemeTask(adminTheme, rtl) {
                 ],
             }),
         ];
-        let stream = src([adminTheme.source]).pipe(sass());
+        let stream = src([dark ? adminTheme.dark : adminTheme.source]).pipe(sass());
         if (rtl) {
             stream = stream.pipe(rtlcss()).pipe(rename({ suffix: "-rtl" }));
         }
@@ -176,13 +179,14 @@ function adminThemeTask(adminTheme, rtl) {
             .pipe(rename({ extname: ".min.css" }))
             .pipe(dest(adminTheme.target));
     };
-    task.displayName = "admintheme:" + adminTheme.target + (rtl ? ":rtl" : "");
+    task.displayName = "admintheme:" + adminTheme.target + (dark ? ":dark" : "") + (rtl ? ":rtl" : "");
     return task;
 }
 
 const adminThemeTasks = adminThemes.flatMap((adminTheme) => [
     adminThemeTask(adminTheme, false),
     adminThemeTask(adminTheme, true),
+    ...(adminTheme.dark ? [adminThemeTask(adminTheme, false, true), adminThemeTask(adminTheme, true, true)] : []),
     adminThemeTokensTask(adminTheme),
 ]);
 

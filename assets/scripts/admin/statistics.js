@@ -224,6 +224,13 @@ LS.Statistics2 = function () {
 
     Chart.defaults.plugins.legend.display = false;
 
+    // Dark appearance mode: Labels and grid lines in the colours of the admin theme, the defaults are made for a white background
+    if (document.documentElement.getAttribute('data-bs-theme') === 'dark') {
+        var themeColors = window.getComputedStyle(document.documentElement);
+        Chart.defaults.color = themeColors.getPropertyValue('--ls-text-color').trim() || '#E9EAF0';
+        Chart.defaults.borderColor = themeColors.getPropertyValue('--ls-border-color').trim() || '#434756';
+    }
+
     if ($('#completionstateSimpleStat').length > 0) {
         $actionUrl = $('#completionstateSimpleStat').data('grid-display-url');
 

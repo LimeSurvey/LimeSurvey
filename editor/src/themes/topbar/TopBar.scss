@@ -1,5 +1,5 @@
 .top-bar {
-  background-color: white;
+  background-color: $surface-bg;
   align-items: center;
   position: sticky;
   top: 0;
@@ -28,8 +28,8 @@
 
     .survey-title-content-editor {
       z-index: 100;
-      color: $black;
-      background-color: $white;
+      color: $text-black;
+      background-color: $surface-bg;
       .content-editable {
         padding: 4px 0;
         min-width: fit-content;
@@ -51,7 +51,7 @@
 
       &:active,
       &:focus {
-        color: black;
+        color: $text-black;
       }
     }
   }
@@ -74,7 +74,7 @@
     font-style: $font-style-base;
     font-weight: 800;
     font-size: 15px;
-    color: #1e1e1e;
+    color: $g-900;
     font-family: 'IBM Plex Sans', sans-serif;
     line-height: 24px;
     width: auto;
@@ -134,7 +134,7 @@
       .btn-outline-lime-toggle.active,
       .btn-outline-lime-toggle.dropdown-toggle.show,
       .btn-outline-lime-toggle:active {
-        background-color: $white;
+        background-color: $surface-bg;
         color: $g-750;
       }
 
@@ -189,7 +189,7 @@
   width: 226px;
   flex-direction: column;
   padding: 8px 12px;
-  background: $white;
+  background: $surface-bg;
   border: 1px solid $g-900;
   border-radius: 2px;
   box-shadow: 0 2px 6px 0 $elevation-shadow-soft;

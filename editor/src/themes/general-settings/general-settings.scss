@@ -7,8 +7,8 @@
     &:hover,
     &:focus,
     &:active {
-      background-color: white;
-      color: black;
+      background-color: $surface-bg;
+      color: $text-black;
     }
   }
 }

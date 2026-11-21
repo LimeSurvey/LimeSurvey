@@ -1,6 +1,6 @@
 .box-widget {
     .box-widget-card {
-        background-color : $white;
+        background-color : $surface-bg;
         position         : relative;
         box-shadow       : $overview-boxShadow;
         color            : $g-900;
@@ -123,7 +123,7 @@
                 }
                 .dropdown.ls-action_dropdown button {
                     box-shadow       : none;
-                    background-color : $white;
+                    background-color : $surface-bg;
                     color            : $g-700;
                     &:focus-visible {
                         box-shadow : none;
@@ -170,7 +170,7 @@
     }
     .box-widget-card.card-placeholder {
         cursor           : default;
-        background-color : $white;
+        background-color : $surface-bg;
         box-shadow       : none;
         border           : none;
     }

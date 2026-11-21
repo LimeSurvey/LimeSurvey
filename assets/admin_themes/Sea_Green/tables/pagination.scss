@@ -18,11 +18,11 @@
                 &:focus-visible {
                     @include inset-border(1px, $grape);
                     border-color: $grape;
-                    background-color: $white;
+                    background-color: $surface-bg;
                     border-radius: 0;
                 }
                 &:focus {
-                    background-color: $white;
+                    background-color: $surface-bg;
                 }
             }
         }

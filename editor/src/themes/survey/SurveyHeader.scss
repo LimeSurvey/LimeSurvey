@@ -1,5 +1,5 @@
 .survey-header-container {
-  background: $white;
+  background: $surface-bg;
   box-shadow: 0 2px 6px 0 $elevation-shadow-soft;
   border-radius: 2px;
   width: 100%;
@@ -34,8 +34,8 @@
 
     *,
     svg {
-      color: $active-green !important;
-      fill: $active-green;
+      color: $active-green-text !important;
+      fill: $active-green-text;
       padding: 0;
       //styleName: LSD/Typography/Sans/Semi14;
       font-family: IBM Plex Sans;
@@ -128,7 +128,7 @@
   }
 
   .border-bottom {
-    border-bottom: 1px rgb(220, 220, 220) solid;
+    border-bottom: 1px var(--ls-g-300, rgb(220, 220, 220)) solid;
   }
 }
 

@@ -13,7 +13,7 @@
                 margin-top : 0;
             }
             .btn-icon[selected] {
-                background-color : $white;
+                background-color : $surface-bg;
                 color            : $g-800;
             }
             // font icons (custom boxes) get the same size as the SVG icons rendered by SideBarWidget
@@ -41,7 +41,7 @@
         }
         a:focus-visible {
             @include inset-border(2px, $grape90);
-            background-color: $white;
+            background-color: $surface-bg;
             color: $g-800;
         }
         a:active {

@@ -12,6 +12,16 @@ $tokens-link-color         : $active-green !default;
 $tokens-include-rules      : false !default;
 $tokens-focus-color        : $grape !default;
 
+// Dark mode of the editor (data-bs-theme="dark" on the html element): The editor has its own dark colours
+// (editor/src/themes/dark-mode.scss, the same as Sea_Green/_dark_palette.scss), which win over the colours below.
+// Themes with rules need these colours for the rules in the dark mode
+$tokens-dark-focus-color      : #C9B8FF !default; // 9.54:1 on the dark surface background
+$tokens-dark-focus-ring-inner : #111217 !default;
+$tokens-dark-text-grape       : #B39BFF !default;
+$tokens-dark-text-green       : #4DD08A !default;
+$tokens-dark-text-red         : #FF8A93 !default;
+$tokens-dark-muted-text       : #A4A9BC !default;
+
 // Bootstrap button colours as Bootstrap 5.3 CSS variables (the editor uses Bootstrap 5.3)
 @mixin tokens-button($color) {
     --bs-btn-color                 : #{$white};
@@ -117,6 +127,37 @@ $tokens-focus-color        : $grape !default;
         // Inactive sections (e.g. a hidden welcome screen) stay recognisable as inactive, but readable (about 5:1)
         .inactive-section-header {
             opacity : 0.65;
+        }
+    }
+
+    // The rules above in the dark mode of the editor: outlines and text need the lighter colours
+    :root[data-bs-theme="dark"] {
+        .btn-outline-primary {
+            --bs-btn-color        : #{$tokens-dark-text-grape};
+            --bs-btn-border-color : #{$tokens-dark-text-grape};
+        }
+        .btn-outline-secondary {
+            --bs-btn-color        : #{$tokens-dark-muted-text};
+            --bs-btn-border-color : #{$tokens-dark-muted-text};
+        }
+        .btn-outline-success {
+            --bs-btn-color        : #{$tokens-dark-text-green};
+            --bs-btn-border-color : #{$tokens-dark-text-green};
+        }
+        .btn-outline-danger {
+            --bs-btn-color        : #{$tokens-dark-text-red};
+            --bs-btn-border-color : #{$tokens-dark-text-red};
+        }
+
+        // A light outline plus a dark inner ring, so one of both reaches 3:1 on dark and on coloured backgrounds
+        :focus-visible,
+        .btn-check:focus-visible + .btn {
+            outline-color : $tokens-dark-focus-color !important;
+            box-shadow    : 0 0 0 2px $tokens-dark-focus-ring-inner !important;
+        }
+
+        .form-check-input:not(:checked) {
+            border-color : $tokens-dark-muted-text;
         }
     }
 }

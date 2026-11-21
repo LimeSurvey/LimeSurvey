@@ -23,7 +23,7 @@
   }
 
   .border-bottom {
-    border-bottom: 1px rgb(220, 220, 220) solid;
+    border-bottom: 1px var(--ls-g-300, rgb(220, 220, 220)) solid;
   }
 
   .finish-button {

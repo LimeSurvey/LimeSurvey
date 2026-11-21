@@ -1,11 +1,11 @@
 .accordion {
-    background-color: $white;
+    background-color: $surface-bg;
 }
 
 .accordion-button {
     font-size: $btn-font-size-sm;
     font-weight: $font-weight-600;
-    background-color: $white;
+    background-color: $surface-bg;
     color: $g-900;
     &:not(.collapsed) {
         background-color: $g-200;
@@ -60,7 +60,7 @@
     .accordion-button {
         font-size: $btn-font-size-sm;
         font-weight: $font-weight-600;
-        background-color: $white;
+        background-color: $surface-bg;
         color: $g-900;
         &:not(.collapsed) {
             background-color: $g-100;

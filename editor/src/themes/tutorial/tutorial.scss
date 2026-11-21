@@ -76,7 +76,7 @@
 .tutorial-finish-modal {
   width: 320px;
   height: 40px;
-  background-color: $white;
+  background-color: $surface-bg;
 
   border-radius: $border-radius;
   border: 1px solid $g-900;
@@ -146,7 +146,7 @@
     .progress-bar {
       width: 25%;
       height: 100%;
-      background-color: $g-900;
+      background-color: $g-900-bg;
     }
   }
 

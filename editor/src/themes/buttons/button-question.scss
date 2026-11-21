@@ -11,17 +11,17 @@
   &:hover {
     background-color: $active-green-hover;
     border-color: $active-green-hover;
-    color: $g-100;
+    color: $g-100-base;
     outline: none;
 
     svg {
-      fill: $g-100;
+      fill: $g-100-base;
     }
   }
 
   &:focus {
     background-color: $active-green-hover;
-    color: $g-100;
+    color: $g-100-base;
     outline: none;
   }
 }

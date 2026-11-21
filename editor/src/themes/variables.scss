@@ -1,9 +1,15 @@
 // sea_green variables copied from limesurvey core
-// Colours that the admin theme variants change are CSS variables with the Sea Green value as fallback,
-// the $*-base variables hold the plain Sea Green value for Sass colour functions. The admin theme's
-// themes/admin/<theme>/css/theme_tokens.css sets the variables (see hooks/useAdminTheme.js)
+// Colours that the admin theme variants or the dark mode change are CSS variables with the Sea Green value
+// as fallback, the $*-base variables hold the plain Sea Green value for Sass colour functions.
+// The dark mode sets the variables in dark-mode.scss, the admin theme's
+// themes/admin/<theme>/css/theme_tokens.css can set them too (see helpers/adminThemeTokens.js)
 $white: #fff;
 $black: #000;
+// Background of everything that lies on the page: cards, inputs, dropdowns, modals, tables.
+// $white is for text on coloured backgrounds
+$surface-bg: var(--ls-surface-bg, #{$white});
+// Black text that follows the dark mode
+$text-black: var(--ls-g-900, #{$black});
 $aubergine: #25003e; // background
 $zucchini: #003e24; // background
 $focus: #3bffb7; // background
@@ -31,6 +37,12 @@ $active-green-hover: var(
   --ls-active-green-hover,
   #{$active-green-hover-base}
 ); // buttons & links
+// The colours as text and icons: the colours themselves in the light mode, lighter ones in the dark mode
+// (the colours are made for white text on them, see dark-mode.scss)
+$grape-text: var(--ls-grape-text, #{$grape});
+$active-green-text: var(--ls-active-green-text, #{$active-green});
+$success-text: var(--ls-success-text, #{$success});
+$error-text: var(--ls-error-text, #{$error});
 $elevation-shadow: rgba(66, 0, 255, 0.2); // LSD/Elevation/Shadow
 $elevation-shadow-soft: rgba(0, 0, 0, 0.2); // LSD/Elevation/ShadowSoft
 
@@ -43,18 +55,34 @@ $grapeDark: #6c28f4;
 $heading-title-color: #152536;
 $heading-sub-title-color: #182535;
 
-$g-900: #1e1e1e;
-$g-800: #333641;
-$g-750: #515567;
+$g-900-base: #1e1e1e;
+$g-900: var(--ls-g-900, #{$g-900-base});
+$g-800-base: #333641;
+$g-800: var(--ls-g-800, #{$g-800-base});
+$g-750-base: #515567;
+$g-750: var(--ls-g-750, #{$g-750-base});
 $g-700-base: #6e748c;
 $g-700: var(--ls-g-700, #{$g-700-base});
 $g-600-base: #9094a7;
 $g-600: var(--ls-g-600, #{$g-600-base});
-$g-500: #a7aaad;
-$g-400: #d3d5da;
-$g-300: #dddee8;
-$g-200: #eeeff7;
-$g-100: #f9f9fb;
+$g-500-base: #a7aaad;
+$g-500: var(--ls-g-500, #{$g-500-base});
+$g-400-base: #d3d5da;
+$g-400: var(--ls-g-400, #{$g-400-base});
+$g-300-base: #dddee8;
+$g-300: var(--ls-g-300, #{$g-300-base});
+$g-200-base: #eeeff7;
+$g-200: var(--ls-g-200, #{$g-200-base});
+$g-100-base: #f9f9fb;
+$g-100: var(--ls-g-100, #{$g-100-base});
+
+// The dark greys as background of white text: the greys themselves in the light mode,
+// greys that keep the white text readable in the dark mode (see dark-mode.scss)
+$g-900-bg: var(--ls-g-900-bg, #{$g-900});
+$g-800-bg: var(--ls-g-800-bg, #{$g-800});
+$g-750-bg: var(--ls-g-750-bg, #{$g-750});
+$g-700-bg: var(--ls-g-700-bg, #{$g-700});
+$g-600-bg: var(--ls-g-600-bg, #{$g-600});
 
 $r-900: #fe3838;
 $r-800: #d52424;
@@ -71,9 +99,9 @@ $theme-colors: (
   'danger': $error-base,
   'warning': $warning,
   'info': $b-900,
-  'light': $g-200,
-  'dark': $g-900,
-  'grey': $g-100,
+  'light': $g-200-base,
+  'dark': $g-900-base,
+  'grey': $g-100-base,
   'black60': $black60,
   'cancel': $g-600-base,
   'orange-light': $orange-light,
@@ -426,7 +454,7 @@ $transition-duration: 0.5s;
 }
 
 @mixin reg28 {
-  color: #000;
+  color: $text-black;
   text-align: center;
 
   /* LSD/Typography/Sans/Reg28 */

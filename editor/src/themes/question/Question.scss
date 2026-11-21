@@ -38,7 +38,7 @@
 
   .star-rating.active-rate {
     .star-rating-counter {
-      color: $grape !important;
+      color: $grape-text !important;
     }
   }
 
@@ -46,7 +46,7 @@
   // container it is still vertically centered by the row's align-items.
   .question-number {
     @include label-s;
-    color: $grape;
+    color: $grape-text;
     position: absolute;
     right: 100%;
     margin-right: var(--question-number-gap);
@@ -151,7 +151,7 @@
   }
 
   .footer-icon.active-icon {
-    color: $grape;
+    color: $grape-text;
   }
 
   .question-type-selector {
@@ -226,7 +226,7 @@
 
 .error-focus {
   border-radius: 2px;
-  background: $white;
+  background: $surface-bg;
   box-shadow: 0 2px 6px 0 $elevation-shadow-soft;
   outline: 2px solid $error;
   z-index: 10;
@@ -258,13 +258,13 @@
 
   &:has(:checked) {
     .single-choice-form-label {
-      color: $active-green;
+      color: $active-green-text;
     }
   }
 }
 
 .add-choice-button {
-  color: $grape;
+  color: $grape-text;
   font-family: 'IBM Plex Sans';
   font-size: $font-size-sm;
   font-style: $font-style-base;
@@ -274,7 +274,7 @@
 }
 
 .added-choice-number {
-  color: $grape;
+  color: $grape-text;
   font-family: 'IBM Plex Sans';
   font-size: $font-size-sm;
   font-style: $font-style-base;

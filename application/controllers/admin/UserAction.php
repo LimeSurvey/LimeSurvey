@@ -162,9 +162,17 @@ class UserAction extends SurveyCommonAction
                     SettingsUser::setUserSetting('admintheme', $adminTheme);
                 }
 
+                // Appearance mode: empty string means "use the global setting"
+                $appearanceMode = Yii::app()->request->getPost('appearancemode', '');
+                $appearanceModeChanged = false;
+                if ($appearanceMode === '' || in_array($appearanceMode, AdminTheme::APPEARANCE_MODES, true)) {
+                    $appearanceModeChanged = $appearanceMode !== (string) SettingsUser::getUserSettingValue('appearancemode');
+                    SettingsUser::setUserSetting('appearancemode', $appearanceMode);
+                }
+
                 Yii::app()->setFlashMessage(gT("Your personal settings were successfully saved."));
                 // The admin theme of this request is already loaded, reload the page to show the new one
-                if ($adminThemeChanged && !Yii::app()->request->getPost("saveandclose")) {
+                if (($adminThemeChanged || $appearanceModeChanged) && !Yii::app()->request->getPost("saveandclose")) {
                     $this->getController()->redirect(array("admin/user/sa/personalsettings"));
                 }
             } else {
@@ -234,6 +242,11 @@ class UserAction extends SurveyCommonAction
         $globalAdminTheme = App()->getConfig('admintheme');
         $aData['adminThemes'] = $adminThemes;
         $aData['globalAdminThemeTitle'] = isset($adminThemes[$globalAdminTheme]) ? $adminThemes[$globalAdminTheme]->metadata->name : $globalAdminTheme;
+
+        $appearanceModes = AdminTheme::getAppearanceModeList();
+        $aData['appearanceModes'] = $appearanceModes;
+        $aData['defaultAppearanceModeTitle'] = $appearanceModes[AdminTheme::getDefaultAppearanceMode()];
+        $aData['adminThemeHasDarkMode'] = AdminTheme::getInstance()->hasDarkMode();
 
         $aData['currentPreselectedQuestiontype'] = $currentPreselectedQuestiontype;
         $aData['currentPreselectedQuestionTheme'] = $currentPreselectedQuestionTheme;

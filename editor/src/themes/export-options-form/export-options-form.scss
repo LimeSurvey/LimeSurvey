@@ -20,7 +20,7 @@
     font-size: 12px;
     line-height: 16px;
     letter-spacing: -0.017em;
-    color: #1e1e1e;
+    color: $g-900;
     display: flex;
     align-items: center;
     gap: 6px;
@@ -67,10 +67,10 @@
       min-width: 24px;
       margin: 0;
       float: none;
-      border: 1.33px solid #1e1e1e;
+      border: 1.33px solid $g-900;
       border-radius: 50% !important;
       outline: none !important;
-      background-color: #ffffff;
+      background-color: $surface-bg;
       position: relative;
       cursor: pointer;
 
@@ -86,9 +86,9 @@
 
       // No outline rule here: it would remove the focus outline of the selected format
       &:checked {
-        background-color: #ffffff !important;
+        background-color: $surface-bg !important;
         background-size: initial !important;
-        border: 1.33px solid #1e1e1e !important;
+        border: 1.33px solid $g-900 !important;
       }
 
       &:checked::after {
@@ -100,7 +100,7 @@
         height: 14px;
         border-radius: 50%;
         background: #333641;
-        border: 1.33px solid #1e1e1e;
+        border: 1.33px solid $g-900;
         transform: translate(-50%, -50%);
       }
     }
@@ -113,7 +113,7 @@
       font-size: 14px;
       line-height: 20px;
       letter-spacing: -0.017em;
-      color: #1e1e1e;
+      color: $g-900;
     }
   }
 }

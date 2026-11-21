@@ -1,0 +1,496 @@
+// Dark mode: the appearance mode of the admin interface (see helpers/appearanceMode.js) sets
+// data-bs-theme="dark" on the html element.
+// The colours are the dark colours of the Sea Green admin theme (assets/admin_themes/Sea_Green/_dark_palette.scss).
+// ":root[data-bs-theme='dark']" wins over the ":root" of the admin theme tokens, which hold the colours of the light mode
+
+$dark-surface-bg: #1b1c22;
+$dark-g-100: #202229;
+$dark-g-200: #272a33;
+$dark-g-300: #32353f;
+$dark-g-400: #434756;
+$dark-g-500: #5a5f73;
+$dark-g-600: #6e748c; // White text: 4.63:1
+$dark-g-700: #a4a9bc; // Muted text, on the surface background: 7.27:1, on g-300: 5.23:1
+$dark-g-750: #b9bdcc;
+$dark-g-800: #d5d8e2;
+$dark-g-900: #e9eaf0; // Text, on the surface background: 14.15:1
+// Coloured backgrounds have white text
+$dark-active-green: #0e8747; // White text: 4.59:1
+$dark-success: #17853c; // White text: 4.71:1
+$dark-error: #d6334c; // White text: 4.73:1
+$dark-grape: #8250f6; // White text: 4.74:1
+// The colours as text and icons on the dark backgrounds, at least 5.2:1 on g-300
+$dark-text-green: #4dd08a;
+$dark-text-red: #ff8a93;
+$dark-text-grape: #b39bff;
+
+:root[data-bs-theme='dark'] {
+  color-scheme: dark;
+
+  --ls-surface-bg: #{$dark-surface-bg};
+  --ls-g-100: #{$dark-g-100};
+  --ls-g-200: #{$dark-g-200};
+  --ls-g-300: #{$dark-g-300};
+  --ls-g-400: #{$dark-g-400};
+  --ls-g-500: #{$dark-g-500};
+  --ls-g-600: #{$dark-g-600};
+  --ls-g-700: #{$dark-g-700};
+  --ls-g-750: #{$dark-g-750};
+  --ls-g-800: #{$dark-g-800};
+  --ls-g-900: #{$dark-g-900};
+  --ls-active-green: #{$dark-active-green};
+  --ls-active-green-hover: #{shade-color($dark-active-green, 15%)};
+  --ls-success: #{$dark-success};
+  --ls-error: #{$dark-error};
+  --ls-grape: #{$dark-grape};
+
+  // Bootstrap
+  --bs-body-bg: #{$dark-surface-bg};
+  --bs-body-bg-rgb: #{to-rgb($dark-surface-bg)};
+  --bs-body-color: #{$dark-g-900};
+  --bs-body-color-rgb: #{to-rgb($dark-g-900)};
+  --bs-emphasis-color: #{$white};
+  --bs-emphasis-color-rgb: #{to-rgb($white)};
+  --bs-secondary-color: #{$dark-g-700};
+  --bs-secondary-color-rgb: #{to-rgb($dark-g-700)};
+  --bs-secondary-bg: #{$dark-g-300};
+  --bs-secondary-bg-rgb: #{to-rgb($dark-g-300)};
+  --bs-tertiary-color: #{$dark-g-700};
+  --bs-tertiary-color-rgb: #{to-rgb($dark-g-700)};
+  --bs-tertiary-bg: #{$dark-g-200};
+  --bs-tertiary-bg-rgb: #{to-rgb($dark-g-200)};
+  --bs-border-color: #{$dark-g-400};
+  --bs-link-color: #{$dark-text-green};
+  --bs-link-color-rgb: #{to-rgb($dark-text-green)};
+  --bs-link-hover-color: #{tint-color($dark-text-green, 20%)};
+  --bs-link-hover-color-rgb: #{to-rgb(tint-color($dark-text-green, 20%))};
+}
+
+// White and light backgrounds. The Bootstrap variables behind them are also used for white and light text
+[data-bs-theme='dark'] {
+  .bg-white {
+    background-color: $dark-surface-bg !important;
+  }
+
+  .bg-light,
+  .bg-grey {
+    background-color: $dark-g-200 !important;
+  }
+
+  .text-black,
+  .text-dark {
+    color: $dark-g-900 !important;
+  }
+}
+
+:root[data-bs-theme='dark'] {
+  // The dark greys as background of white text
+  --ls-g-900-bg: #{$dark-g-400};
+  --ls-g-800-bg: #{$dark-g-400};
+  --ls-g-750-bg: #{$dark-g-600};
+  --ls-g-700-bg: #{$dark-g-600};
+  --ls-g-600-bg: #{$dark-g-600};
+
+  // The colours as text and icons
+  --ls-grape-text: #{$dark-text-grape};
+  --ls-active-green-text: #{$dark-text-green};
+  --ls-success-text: #{$dark-text-green};
+  --ls-error-text: #{$dark-text-red};
+
+  // Loading placeholders (react-loading-skeleton)
+  --base-color: #{$dark-g-300};
+  --highlight-color: #{$dark-g-400};
+}
+
+// Bootstrap buttons: darker colours, so the white text reaches 4.5:1
+@mixin dark-mode-button($color) {
+  --bs-btn-color: #{$white};
+  --bs-btn-bg: #{$color};
+  --bs-btn-border-color: #{$color};
+  --bs-btn-hover-color: #{$white};
+  --bs-btn-hover-bg: #{shade-color($color, 15%)};
+  --bs-btn-hover-border-color: #{shade-color($color, 20%)};
+  --bs-btn-active-color: #{$white};
+  --bs-btn-active-bg: #{shade-color($color, 20%)};
+  --bs-btn-active-border-color: #{shade-color($color, 25%)};
+  --bs-btn-disabled-color: #{$dark-g-700};
+  --bs-btn-disabled-bg: #{$dark-g-400};
+  --bs-btn-disabled-border-color: #{$dark-g-400};
+}
+
+@mixin dark-mode-button-outline($color, $filled-color) {
+  --bs-btn-color: #{$color};
+  --bs-btn-border-color: #{$color};
+  --bs-btn-hover-color: #{$white};
+  --bs-btn-hover-bg: #{$filled-color};
+  --bs-btn-hover-border-color: #{$filled-color};
+  --bs-btn-active-color: #{$white};
+  --bs-btn-active-bg: #{$filled-color};
+  --bs-btn-active-border-color: #{$filled-color};
+  --bs-btn-disabled-color: #{$dark-g-600};
+  --bs-btn-disabled-border-color: #{$dark-g-600};
+}
+
+[data-bs-theme='dark'] {
+  .btn-primary {
+    @include dark-mode-button($dark-grape);
+  }
+
+  .btn-secondary,
+  .btn-cancel {
+    @include dark-mode-button($dark-g-600);
+  }
+
+  .btn-success {
+    @include dark-mode-button($dark-active-green);
+  }
+
+  .btn-danger {
+    @include dark-mode-button($dark-error);
+  }
+
+  .btn-dark {
+    @include dark-mode-button($dark-g-400);
+  }
+
+  .btn-light {
+    --bs-btn-color: #{$dark-g-900};
+    --bs-btn-bg: #{$dark-g-200};
+    --bs-btn-border-color: #{$dark-g-200};
+    --bs-btn-hover-color: #{$dark-g-900};
+    --bs-btn-hover-bg: #{$dark-g-300};
+    --bs-btn-hover-border-color: #{$dark-g-300};
+    --bs-btn-active-color: #{$dark-g-900};
+    --bs-btn-active-bg: #{$dark-g-300};
+    --bs-btn-active-border-color: #{$dark-g-300};
+  }
+
+  .btn-outline-primary {
+    @include dark-mode-button-outline($dark-text-grape, $dark-grape);
+  }
+
+  .btn-outline-secondary {
+    @include dark-mode-button-outline($dark-g-700, $dark-g-600);
+  }
+
+  .btn-outline-success {
+    @include dark-mode-button-outline($dark-text-green, $dark-active-green);
+  }
+
+  .btn-outline-danger {
+    @include dark-mode-button-outline($dark-text-red, $dark-error);
+  }
+
+  .btn-outline-dark {
+    @include dark-mode-button-outline($dark-g-900, $dark-g-400);
+  }
+
+  // The theme colours as text
+  .text-primary,
+  .link-primary {
+    color: $dark-text-grape !important;
+  }
+
+  .text-secondary,
+  .text-muted {
+    color: $dark-g-700 !important;
+  }
+
+  .text-success {
+    color: $dark-text-green !important;
+  }
+
+  .text-danger {
+    color: $dark-text-red !important;
+  }
+
+  // Icons of the sidebar: white on a grey box, the selected one is black on a light box
+  .sidebar-icons {
+    .text-black {
+      color: $g-900-base !important;
+    }
+
+    svg *[fill='#333641' i] {
+      fill: $dark-g-400;
+    }
+
+    svg *[fill='#eeeff7' i] {
+      fill: $g-200-base;
+    }
+  }
+
+  // The logo is black
+  .top-bar-brand .logo {
+    filter: invert(1);
+  }
+
+  // Icons with a fixed colour (SVG attributes) get the colour of the text. CSS wins over SVG attributes
+  svg,
+  svg * {
+    &[fill='#1e1e1e' i],
+    &[fill='#000' i],
+    &[fill='#000000' i],
+    &[fill='black' i],
+    &[fill='#25003e' i] {
+      fill: $dark-g-900;
+    }
+
+    &[fill='#333641' i] {
+      fill: $dark-g-800;
+    }
+
+    &[fill='#6e748c' i] {
+      fill: $dark-g-700;
+    }
+
+    &[fill='#dddee8' i] {
+      fill: $dark-g-300;
+    }
+
+    &[fill='#eeeff7' i] {
+      fill: $dark-g-200;
+    }
+
+    &[fill='#f9f9fb' i] {
+      fill: $dark-g-100;
+    }
+
+    &[fill='#d3d5da' i] {
+      fill: $dark-g-400;
+    }
+
+    &[stroke='#1e1e1e' i],
+    &[stroke='#000' i],
+    &[stroke='#000000' i],
+    &[stroke='black' i],
+    &[stroke='#25003e' i] {
+      stroke: $dark-g-900;
+    }
+
+    &[stroke='#333641' i] {
+      stroke: $dark-g-800;
+    }
+
+    &[stroke='#6e748c' i] {
+      stroke: $dark-g-700;
+    }
+
+    &[stroke='#d3d5da' i] {
+      stroke: $dark-g-400;
+    }
+  }
+
+  // Dropdowns (react-select): The library sets its colours with generated classes
+  .select__control,
+  .pagination-select__control {
+    background-color: $dark-surface-bg;
+    border-color: $dark-g-700;
+  }
+
+  .select__control--is-disabled,
+  .pagination-select__control--is-disabled {
+    background-color: $dark-g-400;
+    border-color: $dark-g-600;
+  }
+
+  .select__single-value,
+  .select__input-container,
+  .pagination-select__single-value,
+  .pagination-select__input-container {
+    color: $dark-g-900;
+  }
+
+  .select__placeholder,
+  .pagination-select__placeholder {
+    color: $dark-g-700;
+  }
+
+  .select__indicator,
+  .pagination-select__indicator {
+    color: $dark-g-700;
+  }
+
+  .select__indicator-separator,
+  .pagination-select__indicator-separator {
+    background-color: $dark-g-400;
+  }
+
+  .select__menu,
+  .pagination-select__menu {
+    background-color: $dark-surface-bg;
+    border: 1px solid $dark-g-400;
+  }
+
+  .select__option,
+  .pagination-select__option {
+    color: $dark-g-900;
+    background-color: transparent;
+
+    &.select__option--is-focused,
+    &.pagination-select__option--is-focused {
+      background-color: $dark-g-300;
+    }
+
+    &.select__option--is-selected,
+    &.pagination-select__option--is-selected {
+      color: $white;
+      background-color: $dark-grape;
+    }
+
+    &.select__option--is-disabled,
+    &.pagination-select__option--is-disabled {
+      color: $dark-g-600;
+    }
+  }
+
+  .select__multi-value {
+    background-color: $dark-g-300;
+  }
+
+  .select__multi-value__label {
+    color: $dark-g-900;
+  }
+
+  .select__multi-value__remove {
+    color: $dark-g-700;
+  }
+}
+
+[data-bs-theme='dark'] {
+  .dropdown-menu {
+    --bs-dropdown-header-color: #{$dark-g-700};
+    --bs-dropdown-link-disabled-color: #{$dark-g-600};
+  }
+
+  // Date and time picker (Material UI): The library sets its colours with generated classes
+  .MuiPaper-root {
+    color: $dark-g-900;
+    background-color: $dark-surface-bg;
+    border: 1px solid $dark-g-400;
+  }
+
+  .MuiPickersCalendarHeader-label,
+  .MuiPickersDay-root,
+  .MuiPickersYear-yearButton,
+  .MuiPickersMonth-monthButton,
+  .MuiMenuItem-root,
+  .MuiIconButton-root,
+  .MuiSvgIcon-root,
+  .MuiInputBase-input {
+    color: $dark-g-900;
+  }
+
+  .MuiDayCalendar-weekDayLabel,
+  .MuiPickersDay-dayOutsideMonth,
+  .MuiInputAdornment-root .MuiSvgIcon-root {
+    color: $dark-g-700;
+  }
+
+  .MuiPickersDay-root.Mui-disabled,
+  .MuiMenuItem-root.Mui-disabled {
+    color: $dark-g-600;
+  }
+
+  .MuiPickersDay-root:hover,
+  .MuiMenuItem-root:hover,
+  .MuiPickersYear-yearButton:hover,
+  .MuiPickersMonth-monthButton:hover {
+    background-color: $dark-g-300;
+  }
+
+  .MuiPickersDay-today {
+    background-color: $dark-g-300;
+    border-color: $dark-g-700;
+  }
+
+  .MuiPickersDay-root.Mui-selected,
+  .MuiMenuItem-root.Mui-selected,
+  .MuiPickersYear-yearButton.Mui-selected,
+  .MuiPickersMonth-monthButton.Mui-selected {
+    color: $white;
+    background-color: $dark-grape;
+  }
+
+  .MuiButton-textPrimary {
+    color: $dark-text-grape;
+  }
+
+  .MuiDivider-root {
+    border-color: $dark-g-400;
+  }
+}
+
+// Charts (Recharts): axis labels, axis lines and grid lines have fixed dark colours
+[data-bs-theme='dark'] .recharts-surface {
+  text:not([fill]) {
+    fill: $dark-g-900;
+  }
+
+  [fill='#666' i],
+  [fill='#666666' i] {
+    fill: $dark-g-700;
+  }
+
+  [stroke='#666' i],
+  [stroke='#666666' i] {
+    stroke: $dark-g-700;
+  }
+
+  [stroke='#ccc' i],
+  [stroke='#cccccc' i] {
+    stroke: $dark-g-400;
+  }
+}
+
+// Placeholder of empty rich text fields (TinyMCE sets a dark colour)
+[data-bs-theme='dark']
+  .mce-content-body[data-mce-placeholder]:not(.mce-visualblocks)::before {
+  color: $dark-g-700;
+}
+
+// Toolbar and menus of the rich text editor (TinyMCE): The skin of the editor is light
+[data-bs-theme='dark'] .tox {
+  .tox-editor-header,
+  .tox-toolbar,
+  .tox-toolbar__primary,
+  .tox-toolbar__overflow,
+  .tox-toolbar-overlord,
+  .tox-menu,
+  .tox-pop__dialog {
+    // The skin sets the background with more specific selectors
+    background-color: $dark-g-300 !important;
+    border-color: $dark-g-400;
+  }
+
+  .tox-tbtn {
+    background-color: transparent;
+  }
+
+  .tox-tbtn,
+  .tox-tbtn__select-label,
+  .tox-collection__item,
+  .tox-collection__item-label {
+    color: $dark-g-900;
+  }
+
+  .tox-tbtn svg,
+  .tox-collection__item-icon svg,
+  .tox-collection__item-caret svg {
+    fill: $dark-g-900;
+  }
+
+  .tox-tbtn:hover,
+  .tox-tbtn:focus,
+  .tox-collection--list .tox-collection__item--active {
+    background-color: $dark-g-400;
+  }
+
+  .tox-tbtn--disabled,
+  .tox-tbtn--disabled:hover {
+    color: $dark-g-600;
+
+    svg {
+      fill: $dark-g-600;
+    }
+  }
+}

@@ -1,7 +1,7 @@
 .question-type-selector-container,
 .question-type-attribute-selector-container {
   z-index: 1030;
-  background: white;
+  background: $surface-bg;
   width: calc(100% - 450px);
   left: 300px;
   min-width: 400px;

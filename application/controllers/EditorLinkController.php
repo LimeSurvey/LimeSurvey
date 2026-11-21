@@ -47,8 +47,9 @@ class EditorLinkController extends LSYii_Controller
     /**
      * Create and set react auth token to cookie.
      *
-     * The cookie also carries the entry script name, see getScriptName(), and the URL of the theme tokens
-     * (the colours as CSS variables) of the user's admin theme, so the editor uses the same colours.
+     * The cookie also carries the entry script name, see getScriptName(), the URL of the theme tokens
+     * (the colours as CSS variables) of the user's admin theme and the appearance mode (light, dark or system),
+     * so the editor uses the same colours.
      *
      * @return void
      */
@@ -74,6 +75,7 @@ class EditorLinkController extends LSYii_Controller
         );
         $cookieData['scriptName'] = $this->getScriptName();
         $cookieData['adminThemeTokens'] = AdminTheme::getThemeTokensUrl();
+        $cookieData['appearanceMode'] = AdminTheme::getUserThemeAppearanceMode();
 
         $cookieDataJson = json_encode($cookieData);
 

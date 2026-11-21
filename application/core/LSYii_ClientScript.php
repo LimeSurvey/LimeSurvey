@@ -418,8 +418,10 @@ class LSYii_ClientScript extends CClientScript
                 }
             }
             if (!empty($package['css'])) {
+                // A package can limit its CSS files to a media type or media query with "cssMedia"
+                $cssMedia = isset($package['cssMedia']) && is_string($package['cssMedia']) ? $package['cssMedia'] : '';
                 foreach ($package['css'] as $css) {
-                                    $cssFiles[$baseUrl . '/' . $css] = '';
+                    $cssFiles[$baseUrl . '/' . $css] = $cssMedia;
                 }
             }
         }

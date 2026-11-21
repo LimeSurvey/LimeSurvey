@@ -128,6 +128,26 @@ $defaultBreadcrumbMode           = Yii::app()->getConfig('defaultBreadcrumbMode'
             </div>
         </div>
 
+        <!-- Default appearance mode -->
+        <div class="mb-3">
+            <label class="col-12 form-label" for="defaultappearancemode">
+                <?php eT("Default appearance mode:"); ?>
+            </label>
+            <div class="col-12">
+                <?php echo CHtml::dropDownList(
+                    'defaultappearancemode',
+                    AdminTheme::getDefaultAppearanceMode(),
+                    AdminTheme::getAppearanceModeList(),
+                    ['class' => 'form-select', 'aria-describedby' => 'defaultappearancemode-hint']
+                ); ?>
+            </div>
+            <div class="col-12 form-label ">
+                <span class="hint" id="defaultappearancemode-hint">
+                <?php eT("\"System\" follows the light or dark mode of the user's device. Users can choose their own appearance mode in their personal settings."); ?>
+                </span>
+            </div>
+        </div>
+
         <!-- Time zone selector -->
         <div class="mb-3">
             <label class="col-12 form-label" for='displayTimezone'>

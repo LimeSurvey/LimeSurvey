@@ -7,7 +7,7 @@
   max-height: calc(100vh - $top-bar-height); // 56px is the topbar height.
   background: $g-100;
   opacity: 1 !important;
-  border-left: 1px #eeeeee solid;
+  border-left: 1px var(--ls-g-300, #eeeeee) solid;
   padding: 8px 6px;
 
   .focused-question-code {
@@ -15,7 +15,7 @@
   }
 
   a {
-    color: black;
+    color: $text-black;
   }
 
   .right-side-bar-settings,
@@ -51,7 +51,7 @@
 }
 
 .right-side-bar.active-side-bar {
-  background: $white !important;
+  background: $surface-bg !important;
 }
 
 .right-sidebar-attribute {

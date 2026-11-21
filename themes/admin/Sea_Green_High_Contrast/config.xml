@@ -35,6 +35,16 @@
         <js></js>
 
         <!--
+            Dark mode: those files will be loaded after the css files above when the dark appearance mode is used.
+            A theme without them has no dark mode.
+        -->
+        <dark>
+            <css>
+                <filename>sea_green_high_contrast_dark.css</filename>
+            </css>
+        </dark>
+
+        <!--
             Those files will be loaded for right to left languages only
             NOTE 1: If for any reason, you need to edit the RTL behaviors, feel free to contact the LimeSurvey team about it.
             We'll be always pleased to make better the right to left display
@@ -48,6 +58,11 @@
             </css>
             <js>
             </js>
+            <dark>
+                <css>
+                    <filename>sea_green_high_contrast_dark-rtl.css</filename>
+                </css>
+            </dark>
         </rtl>
     </files>
 

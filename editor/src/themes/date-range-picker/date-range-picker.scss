@@ -1,5 +1,5 @@
 .date-range-picker {
-  background-color: $white;
+  background-color: $surface-bg;
 
   .date-range-placeholder {
     display: block;
@@ -84,7 +84,7 @@
       padding: 2px 8px;
       border: 1px solid $g-700;
       border-radius: 4px;
-      background-color: $white;
+      background-color: $surface-bg;
       color: $g-900;
 
       &:focus {
@@ -118,7 +118,7 @@
     padding: 4px 4px 4px 10px;
     border: 2px solid $g-750;
     border-radius: 4px;
-    background-color: $white;
+    background-color: $surface-bg;
 
     &:focus-within {
       border-color: $grape;
@@ -142,7 +142,7 @@
   .date-range-error {
     padding: 0 16px 8px;
     background-color: $g-100;
-    color: $error;
+    color: $error-text;
     font-size: 13px;
   }
 
@@ -155,13 +155,13 @@
     height: 26px;
     border: none;
     border-radius: 3px;
-    background-color: $g-700;
+    background-color: $g-700-bg;
     color: $white;
   }
 
   .date-range-calendar {
     padding: 8px 16px 12px;
-    background-color: $white;
+    background-color: $surface-bg;
 
     .rdp-root {
       --rdp-accent-color: #{$g-900};
@@ -294,7 +294,7 @@
 
     .rdp-selected .rdp-day_button {
       border-radius: var(--rdp-day_button-border-radius);
-      background-color: $g-900;
+      background-color: $g-900-bg;
       color: $white;
       font-weight: 400;
     }
@@ -305,7 +305,7 @@
     }
 
     .rdp-today:not(.rdp-selected):not(.rdp-outside) .rdp-day_button {
-      color: $grape;
+      color: $grape-text;
       font-weight: 600;
     }
   }
@@ -333,7 +333,7 @@
     border: 1px solid transparent;
 
     &.date-range-btn-clear {
-      background-color: $white;
+      background-color: $surface-bg;
       border-color: $g-900;
       color: $g-900;
 
@@ -343,11 +343,11 @@
     }
 
     &.date-range-btn-cancel {
-      background-color: $g-700;
+      background-color: $g-700-bg;
       color: $white;
 
       &:hover {
-        background-color: $g-750;
+        background-color: $g-750-bg;
       }
     }
 

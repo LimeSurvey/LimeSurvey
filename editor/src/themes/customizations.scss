@@ -28,7 +28,7 @@ a {
 
 .focus-element {
   border-radius: 2px;
-  background: $white;
+  background: $surface-bg;
   box-shadow: 0 2px 6px 0 $elevation-shadow-soft;
   outline: 3px solid $grape;
   z-index: 10;
@@ -118,7 +118,7 @@ a {
 }
 
 .fill-grape {
-  fill: $grape;
+  fill: $grape-text;
 }
 
 .no-scroll {
@@ -155,5 +155,5 @@ button.no-underline {
 }
 
 .error-fill {
-  fill: $error;
+  fill: $error-text;
 }
