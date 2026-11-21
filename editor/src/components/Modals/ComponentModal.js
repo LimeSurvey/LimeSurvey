@@ -17,6 +17,7 @@ export const ComponentModal = ({
   onConfirm = () => {},
   useFooter = false,
   isLoading = false,
+  confirmDisabled = false,
   ...props
 }) => {
   const titleId = React.useId()
@@ -67,7 +68,7 @@ export const ComponentModal = ({
             className="text-light"
             variant="primary"
             onClick={onConfirm}
-            disabled={isLoading}
+            disabled={isLoading || confirmDisabled}
           >
             {confirmButtonText}
           </Button>

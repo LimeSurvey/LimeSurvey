@@ -12,6 +12,7 @@ use LimeSurvey\Api\Command\Response\{
     Status\StatusErrorBadRequest,
     Status\StatusErrorUnauthorised,
     Status\StatusErrorForbidden,
+    Status\StatusErrorConflict,
 };
 
 class ResponseFactory
@@ -90,6 +91,20 @@ class ResponseFactory
         return $this->make(
             $data,
             new StatusErrorForbidden()
+        );
+    }
+
+    /**
+     * Make a response for a request that conflicts with the current state of the resource.
+     *
+     * @param mixed $data Error data
+     * @return Response The "conflict" response
+     */
+    public function makeErrorConflict($data = null): Response
+    {
+        return $this->make(
+            $data,
+            new StatusErrorConflict()
         );
     }
 

@@ -1,5 +1,6 @@
 <?php
 
+use LimeSurvey\Models\Services\LabelSetService;
 use LimeSurvey\Models\Services\QuestionAggregateService;
 use LimeSurvey\Models\Services\SurveyDetailService;
 use LimeSurvey\Models\Services\Exception\{
@@ -2112,33 +2113,29 @@ class QuestionAdministrationController extends LSBaseController
     }
 
     /**
-     * This function prepares the data for labelset
+     * Echo the label sets for the label set picker of the classic question editor as JSON.
      *
-     * @param int $sid
-     * @param int $match
+     * The JSON view ends the request, so nothing is returned.
+     *
+     * @param int $sid Survey id
+     * @param int $match 1 to only list label sets that contain all the posted "languages"
      * @return void
      */
-    public function actionGetLabelsetPicker($sid, $match = 0, $language = null)
+    public function actionGetLabelsetPicker($sid, $match = 0)
     {
-        $criteria = new CDbCriteria();
-        if ($match == 1 && !empty($language)) {
-            $criteria->addCondition('languages LIKE :language');
-            $criteria->params = [':language' => '%' . $language . '%'];
-        }
+        $languages = $match == 1 ? (array)App()->getRequest()->getParam('languages', []) : [];
+        $labelSetService = \LimeSurvey\DI::getContainer()->get(LabelSetService::class);
 
-        $labelSets = LabelSet::model()->findAll($criteria);
-        // Create languagespecific array
         $result = [];
-        foreach ($labelSets as $labelSet) {
-            $result[] = array_map(
-                function ($attribute) {
-                    return \viewHelper::flatten($attribute);
-                },
-                $labelSet->attributes
-            );
+        foreach ($labelSetService->getLabelSets($languages) as $labelSet) {
+            $result[] = [
+                'lid' => $labelSet['lid'],
+                'label_name' => \viewHelper::flatten($labelSet['name']),
+                'languages' => implode(' ', $labelSet['languages']),
+            ];
         }
 
-        return Yii::app()->getController()->renderPartial(
+        Yii::app()->getController()->renderPartial(
             '/admin/super/_renderJson',
             array(
                 'data' => [

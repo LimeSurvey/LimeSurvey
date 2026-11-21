@@ -12,7 +12,19 @@ import {
 import { getOperationScheme } from 'helpers/Buffer/getOperationScheme'
 import { OperationsBuffer } from 'helpers/Buffer/OperationsBuffer'
 
-import { createChildrenUpdateOperation } from './useQuestionChildren'
+import { act, renderHook } from '@testing-library/react'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { queryClient } from 'queryClient'
+
+import {
+  createChildrenUpdateOperation,
+  useQuestionChildren,
+} from './useQuestionChildren'
+
+const mockAddToBuffer = jest.fn()
+jest.mock('./useBuffer', () => ({
+  useBuffer: () => ({ addToBuffer: mockAddToBuffer }),
+}))
 
 const QID = 5
 
@@ -155,5 +167,112 @@ describe('other operations reported while editing a converted question', () => {
         .update({ en: { title: 'Survey' } })
     )
     expect(error.message).toBe('"id" must be [null]')
+  })
+})
+
+describe('handleLabelSetLoad', () => {
+  const wrapper = ({ children }) => (
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+  )
+
+  const renderChildrenHook = (question) => {
+    const handleUpdate = jest.fn()
+    const { result } = renderHook(
+      () =>
+        useQuestionChildren({
+          question,
+          handleUpdate,
+          surveySettings: { languages: ['en', 'de'] },
+          language: 'en',
+        }),
+      { wrapper }
+    )
+    return { result, handleUpdate }
+  }
+
+  beforeEach(() => mockAddToBuffer.mockReset())
+
+  test('appends the labels as answers in all survey languages', () => {
+    const existingAnswers = [serverAnswer(11, 'A1', SCALE_1)]
+    const { result, handleUpdate } = renderChildrenHook({
+      qid: QID,
+      gid: 2,
+      questionThemeName: 'listradio',
+      answers: existingAnswers,
+    })
+
+    act(() =>
+      result.current.handleLabelSetLoad(existingAnswers, Entities.answer, [
+        { code: 'A1', assessmentValue: 2, l10ns: { en: 'Good', de: 'Gut' } },
+        { code: 'A2', assessmentValue: 0, l10ns: { en: 'Bad' } },
+      ])
+    )
+
+    const { answers } = handleUpdate.mock.calls[0][0]
+    expect(answers.map((answer) => answer.code)).toEqual(['A1', 'A003', 'A2'])
+    expect(answers.map((answer) => answer.sortOrder)).toEqual([0, 1, 2])
+    expect(answers[1]).toMatchObject({ qid: QID, assessmentValue: 2 })
+    expect(answers[1].l10ns.en.answer).toBe('Good')
+    expect(answers[1].l10ns.de.answer).toBe('Gut')
+    expect(answers[2].l10ns.de.answer).toBe('')
+    expect(answers[1].appKey).toBeTruthy()
+
+    // What is queued for saving matches what is shown
+    expect(mockAddToBuffer).toHaveBeenCalledTimes(1)
+    const [operation] = mockAddToBuffer.mock.calls[0]
+    expect(operation).toMatchObject({
+      id: QID,
+      entity: Entities.answer,
+      op: Operations.update,
+    })
+    expect(operation.props.map((answer) => answer.code)).toEqual([
+      'A1',
+      'A003',
+      'A2',
+    ])
+    expect(operation.props.map((answer) => answer.sortOrder)).toEqual([0, 1, 2])
+    expect(
+      operation.props.map((answer) =>
+        mapValues(answer.l10ns, (l10n) => l10n.answer)
+      )
+    ).toEqual([{ en: 'A1' }, { en: 'Good', de: 'Gut' }, { en: 'Bad', de: '' }])
+  })
+
+  test('appends the labels as subquestions with the code as title', () => {
+    const { result, handleUpdate } = renderChildrenHook({
+      qid: QID,
+      gid: 2,
+      questionThemeName: 'multiplechoice',
+      subquestions: [],
+    })
+
+    act(() =>
+      result.current.handleLabelSetLoad([], Entities.subquestion, [
+        { code: 'L1', assessmentValue: 3, l10ns: { en: 'First' } },
+      ])
+    )
+
+    const [subquestion] = handleUpdate.mock.calls[0][0].subquestions
+    expect(subquestion).toMatchObject({
+      title: 'L1',
+      parentQid: QID,
+      gid: 2,
+      sortOrder: 0,
+    })
+    expect(subquestion.l10ns.en.question).toBe('First')
+    expect(subquestion).not.toHaveProperty('assessmentValue')
+  })
+
+  test('does nothing without labels', () => {
+    const { result, handleUpdate } = renderChildrenHook({
+      qid: QID,
+      questionThemeName: 'listradio',
+      answers: [],
+    })
+
+    act(() => result.current.handleLabelSetLoad([], Entities.answer, []))
+
+    expect(handleUpdate).not.toHaveBeenCalled()
+    expect(mockAddToBuffer).not.toHaveBeenCalled()
   })
 })

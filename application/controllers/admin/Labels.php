@@ -12,14 +12,24 @@
 * See COPYRIGHT.php for copyright notices and details.
 */
 
+use LimeSurvey\DI;
+use LimeSurvey\Models\Services\LabelSetService;
+use LimeSurvey\Models\Services\Exception\{
+    BadRequestException,
+    ConflictException,
+    NotFoundException,
+    PermissionDeniedException,
+    PersistErrorException
+};
+
 /**
-* labels
-*
-* @package LimeSurvey
-* @author
-* @copyright 2011
-* @access public
-*/
+ * labels
+ *
+ * @package LimeSurvey
+ * @author
+ * @copyright 2011
+ * @access public
+ */
 class Labels extends SurveyCommonAction
 {
     /**
@@ -470,132 +480,143 @@ class Labels extends SurveyCommonAction
     }
 
     /**
-     * Get all label sets with permission to update
+     * Echo the label sets the current user may overwrite, for the overwrite list of the classic question editor.
+     *
+     * The JSON object maps each label set id to the label set name.
      *
      * @return void
      */
     public function getRestrictedSets()
     {
-        $labelSets = LabelSet::model()->permission()->findAll(array('order' => 'label_name'));
+        // Same list as the overwrite list of the new editor
         $output = array();
-        foreach ($labelSets as $labelSet) {
-            $output[$labelSet->lid] = flattenText($labelSet->getAttribute('label_name'));
+        foreach ($this->getLabelSetService()->getLabelSets([], true) as $labelSet) {
+            $output[$labelSet['lid']] = $labelSet['name'];
         }
         header('Content-type: application/json');
         echo ls_json_encode($output);
     }
 
     /**
-     * Save label set via Ajax
-     * Used in question editor
-     * Echoes JSON
+     * Create a label set from the answer options or subquestions posted by the classic question editor.
+     *
+     * Echoes a success message.
      *
      * @return void
-     * @todo Move save logic into service class.
+     * @throws CHttpException When the user may not create label sets, or the name, labels or languages are invalid
      */
     public function ajaxSave()
     {
         if (!Permission::model()->hasGlobalPermission('labelsets', 'create')) {
             throw new CHttpException(403);
         }
-        $request   = Yii::app()->getRequest();
-        $answers   = $request->getPost('answers');
-        $codes     = $request->getPost('codes');
-        $labelName = $request->getPost('laname');
-        $languages = implode(' ', $request->getPost('languages'));
-        $assessmentValues = $request->getPost('assessmentvalues', []);
-        if (empty($labelName)) {
+        $labelName = Yii::app()->getRequest()->getPost('laname');
+        if (empty($labelName) || !is_string($labelName)) {
             throw new CHttpException(400, gT('Could not save label set: Label set name is empty.'));
         }
-        if (empty($answers)) {
+        if (empty(Yii::app()->getRequest()->getPost('answers'))) {
             throw new CHttpException(400, gT('Could not save label set: Found no answers.'));
         }
-        /* Create new labelset */
-        try {
-            $transaction      = Yii::app()->db->beginTransaction();
-            $lset             = new LabelSet();
-            $lset->label_name = $request->getPost('laname');
-            $lset->languages  = trim($languages);
-            $lset->owner_id   = App()->user->getId();
-            $lset->save();
-            $lid = getLastInsertID($lset->tableName());
-            $this->saveLabelSetAux($lid, $codes, $answers, $assessmentValues);
-            $transaction->commit();
-        } catch (Exception $exception) {
-            $transaction->rollback();
-            throw new CHttpException(500, $exception->getMessage());
-        }
+
+        $this->saveLabelSetFromRequest(null, $labelName);
 
         eT('Label set successfully saved.');
     }
 
     /**
-     * Ajax Update
+     * Overwrite a label set with the answer options or subquestions posted by the classic question editor.
+     *
+     * Echoes a success message.
+     *
      * @return void
+     * @throws CHttpException When the label set doesn't exist, the user may not update it, or the labels are invalid
      */
     public function ajaxUpdate()
     {
-        $request = Yii::app()->request;
         $labelSetId = $this->validateLabelSetId(App()->getRequest()->getParam('labelSetId'), 'update');
-        $answers   = $request->getPost('answers');
-        $codes     = $request->getPost('codes');
-        $assessmentValues = $request->getPost('assessmentvalues', []);
-        $languages = implode(' ', $request->getPost('languages'));
-        /* Update this label set */
-        $labelSet = LabelSet::model()->findByPk($labelSetId);
-        try {
-            $transaction = Yii::app()->db->beginTransaction();
-            $labelSet->languages = $languages;
-            $labelSet->update();
-            $this->saveLabelSetAux($labelSetId, $codes, $answers, $assessmentValues);
-            $transaction->commit();
-        } catch (Exception $exception) {
-            $transaction->rollback();
-            throw new CHttpException(500, $exception->getMessage());
-        }
+
+        $this->saveLabelSetFromRequest((int)$labelSetId);
 
         eT('Label set successfully updated');
     }
 
     /**
-     * Helper function to save label set from question editor.
+     * Get the label set service, which both question editors use to read and write label sets.
      *
-     * @param int   $lid               Label set id
-     * @param array $codes
-     * @param array $answers
-     * @param array $assessmentValues
-     * @return void
-     * @throws Exception
+     * @return LabelSetService
      */
-    private function saveLabelSetAux(int $lid, array $codes, array $answers, array $assessmentValues)
+    private function getLabelSetService(): LabelSetService
     {
-        Label::model()->deleteAll('lid = :lid', [':lid' => $lid]);
-        $i = 0;
-        foreach ($answers as $answer) {
-            foreach ($answer as $answeroptionl10ns) {
-                $label = new Label();
-                $label->lid = $lid;
-                $label->code = $codes[$i];
-                $label->sortorder = $i;
-                $label->assessment_value = $assessmentValues[$i] ?? 0;
-                if (!$label->save()) {
-                    throw new Exception('Could not save label: ' . json_encode($label->getErrors()));
-                }
+        return DI::getContainer()->get(LabelSetService::class);
+    }
 
-                foreach ($answeroptionl10ns as $langs) {
-                    foreach ($langs as $lang => $content) {
-                        $labell10n = new LabelL10n();
-                        $labell10n->language = $lang;
-                        $labell10n->label_id = $label->id;
-                        $labell10n->title = $content;
-                        if (!$labell10n->save()) {
-                            throw new Exception('Could not save label l10n: ' . json_encode($label->getErrors()));
-                        }
+    /**
+     * Create a label set, or overwrite one, from the answers posted by the question editor.
+     *
+     * @param int|null $labelSetId Label set to overwrite, null to create a new one
+     * @param string $labelName Name of the new label set
+     * @return void
+     * @throws CHttpException When the label set can't be saved
+     */
+    private function saveLabelSetFromRequest(?int $labelSetId, string $labelName = '')
+    {
+        $request = Yii::app()->getRequest();
+        $languages = (array)$request->getPost('languages', []);
+        $labels = $this->getLabelsFromRequest($request);
+        try {
+            if ($labelSetId === null) {
+                $this->getLabelSetService()->create($labelName, $languages, $labels);
+            } else {
+                $this->getLabelSetService()->overwrite($labelSetId, $languages, $labels);
+            }
+        } catch (PermissionDeniedException $exception) {
+            throw new CHttpException(403);
+        } catch (NotFoundException $exception) {
+            throw new CHttpException(404, gT("Label set not found"));
+        } catch (BadRequestException $exception) {
+            throw new CHttpException(400, $exception->getMessage());
+        } catch (ConflictException $exception) {
+            // Another overwrite of the same set is still running
+            throw new CHttpException(409, $exception->getMessage());
+        } catch (PersistErrorException $exception) {
+            throw new CHttpException(500, $exception->getMessage());
+        }
+    }
+
+    /**
+     * Turn the answer options or subquestions posted by the classic question editor
+     * into labels for LabelSetService.
+     *
+     * The editor posts the text inputs keyed by their names, which PHP turns into
+     * answers[<row>][<scale id>][answeroptionl10n|subquestionl10n][<language>] = text,
+     * plus the codes (and assessment values) of the rows in the same order.
+     *
+     * @param CHttpRequest $request Request with the posted answers, codes and assessment values
+     * @return array Labels in the shape LabelSetService expects
+     */
+    private function getLabelsFromRequest(CHttpRequest $request): array
+    {
+        $codes = (array)$request->getPost('codes', []);
+        $assessmentValues = (array)$request->getPost('assessmentvalues', []);
+        $labels = [];
+        $rowIndex = 0;
+        foreach ((array)$request->getPost('answers', []) as $row) {
+            foreach ((array)$row as $l10nGroups) {
+                $l10ns = [];
+                foreach ((array)$l10nGroups as $texts) {
+                    foreach ((array)$texts as $language => $text) {
+                        $l10ns[$language] = $text;
                     }
                 }
+                $labels[] = [
+                    'code' => $codes[$rowIndex] ?? null,
+                    'assessmentValue' => $assessmentValues[$rowIndex] ?? null,
+                    'l10ns' => $l10ns,
+                ];
             }
-            $i++;
+            $rowIndex++;
         }
+        return $labels;
     }
 
     /**

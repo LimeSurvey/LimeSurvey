@@ -128,7 +128,10 @@ export const Input = ({
         )}
         {labelText && (
           <TooltipContainer tip={labelTooltip} showTip={!!labelTooltip}>
-            <Form.Label className={`ui-label ${labelClass}`}>
+            <Form.Label
+              className={`ui-label ${labelClass}`}
+              htmlFor={id || undefined}
+            >
               {labelText}
             </Form.Label>
           </TooltipContainer>

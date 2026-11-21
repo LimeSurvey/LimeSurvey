@@ -45,6 +45,10 @@ $rest = [
                 'name' => 'File Upload',
                 'description' => 'File Upload',
             ],
+            'label-sets' => [
+                'name' => 'Label Sets',
+                'description' => 'Label Sets',
+            ],
         ]
     ]
 ];
@@ -63,4 +67,5 @@ return array_merge(
     include_once __DIR__ . '/v1/file-upload.php',
     include_once __DIR__ . '/v1/version-info.php',
     include_once __DIR__ . '/v1/question-attributes.php',
+    include_once __DIR__ . '/v1/label-sets.php',
 );

@@ -1,3 +1,4 @@
+import { useRef, useState } from 'react'
 import { Button } from 'react-bootstrap'
 import { useParams } from 'react-router-dom'
 import { Draggable } from '@hello-pangea/dnd'
@@ -7,7 +8,8 @@ import { useAppState, useSurvey, useChildKeyboardShortcuts } from 'hooks'
 import { Entities, hasTempId, L10ns, STATES } from 'helpers'
 import { getTooltipMessages } from 'helpers/options'
 import { ContentEditor, DragAndDrop, TooltipContainer } from 'components'
-import { CloseCircleFillIcon, DragIcon } from 'components/icons'
+import { CloseCircleFillIcon, DragIcon, UploadIcon } from 'components/icons'
+import { LoadLabelSetModal } from 'components/LabelSets'
 import { ImageChoice } from 'components/QuestionTypes/ImageChoice'
 import { getQuestionTypeInfo } from '../getQuestionTypeInfo'
 import { singleChoiceThemes } from '../singleChoiceThemes'
@@ -20,10 +22,11 @@ const imageThemeComponents = [
 ]
 
 export const OptionQuestionEditMode = ({
-  question: { questionThemeName, showAssessmentValue } = {},
+  question = {},
   handleChildLUpdate,
   isFocused,
   handleChildAdd,
+  handleLabelSetLoad = () => {},
   handleOnChildDragEnd,
   handleChildDelete,
   language,
@@ -31,9 +34,13 @@ export const OptionQuestionEditMode = ({
   handleChildAssessmentValueUpdate,
   _children = [],
   isTitleFocused,
+  surveySettings = {},
 }) => {
+  const { questionThemeName, showAssessmentValue } = question
   const { surveyId } = useParams()
   const { survey } = useSurvey(surveyId)
+  const surveyLanguages = surveySettings.languages ?? []
+  const [showLoadLabelSetModal, setShowLoadLabelSetModal] = useState(false)
   const isSingleChoiceTheme = singleChoiceThemes.includes(questionThemeName)
   const isImageTheme = imageThemeComponents.includes(questionThemeName)
 
@@ -62,6 +69,21 @@ export const OptionQuestionEditMode = ({
   }
 
   const UiComponentToRender = isImageTheme ? ImageChoice : ContentEditor
+
+  // isFocused is only true when the user may update the survey
+  const canLoadLabelSet = isFocused && !isSurveyActive
+  // The modal calls onLoad from an earlier render once the label set arrives.
+  // Meanwhile the question may have lost focus, the survey been activated, or the
+  // question changed (e.g. by an autosave), so use the state of the latest render:
+  // Its handler appends to the current children and updates the current question
+  const loadIntoLatestQuestion = useRef(null)
+  loadIntoLatestQuestion.current = (labels) => {
+    if (!canLoadLabelSet) {
+      return
+    }
+    handleLabelSetLoad(_children ?? [], childrenInfo.entity, labels)
+  }
+  const handleLoadLabelSet = (labels) => loadIntoLatestQuestion.current(labels)
 
   return (
     <div>
@@ -191,7 +213,10 @@ export const OptionQuestionEditMode = ({
           </Draggable>
         ))}
       </DragAndDrop>
-      <div className="add-child-button-container mt-4">
+      <div
+        className="add-child-button-container d-flex align-items-center mt-4"
+        style={{ gap: '20px' }}
+      >
         <TooltipContainer
           tip={getTooltipMessages().ACTIVE_DISABLED}
           showTip={isSurveyActive}
@@ -211,7 +236,36 @@ export const OptionQuestionEditMode = ({
             </Button>
           </div>
         </TooltipContainer>
+        {isFocused && (
+          <TooltipContainer
+            tip={getTooltipMessages().ACTIVE_DISABLED}
+            showTip={isSurveyActive}
+          >
+            <div>
+              <Button
+                onClick={() => setShowLoadLabelSetModal(true)}
+                variant={'outline'}
+                className={
+                  'text-secondary d-flex add-choice-button align-items-center p-0 gap-2 border-none'
+                }
+                data-testid="load-label-set-button"
+                disabled={isSurveyActive}
+              >
+                <UploadIcon className="fill-current" width={20} height={20} />
+                {t('Load label set')}
+              </Button>
+            </div>
+          </TooltipContainer>
+        )}
       </div>
+      {isFocused && (
+        <LoadLabelSetModal
+          show={showLoadLabelSetModal}
+          onHide={() => setShowLoadLabelSetModal(false)}
+          onLoad={handleLoadLabelSet}
+          languages={surveyLanguages}
+        />
+      )}
     </div>
   )
 }

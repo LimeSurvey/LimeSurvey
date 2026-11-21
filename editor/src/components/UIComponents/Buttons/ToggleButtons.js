@@ -106,7 +106,7 @@ export const ToggleButtons = ({
         })}
       >
         {labelText && <Form.Label className="ui-label">{labelText}</Form.Label>}
-        <ButtonGroup id={id}>
+        <ButtonGroup id={id} aria-label={labelText || undefined}>
           {options.map((option, index) => (
             <Fragment key={`toggleButton-${id}-option-${index}`}>
               {option.control ?? (
