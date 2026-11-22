@@ -118,7 +118,9 @@ $dark-text-colors : (
     &:focus,
     &:active,
     &.active,
-    &:active:focus {
+    &:active:focus,
+    &.dropdown-toggle.show,
+    &.dropdown-toggle.show:focus {
         color : $dark-on-bright;
     }
 }
@@ -418,6 +420,8 @@ kbd {
 
 // Help button and its menu: the light mode has white text on a dark grey, which is a light grey here
 .btn-black60 {
+    background-color : $g-400;
+    border-color     : $g-600;
     &:hover,
     &:focus,
     &:active,
@@ -449,6 +453,22 @@ kbd {
     & > tr.warning > th,
     & > tr > td.warning,
     & > tr > th.warning {
-        color : $dark-on-bright;
+        color            : $dark-on-bright;
+        // Also in striped and hovered rows, which have a dark background in the dark mode
+        background-color : $warning;
+    }
+}
+
+// Security update notice: the light mode has dark magenta text
+.alert-security-update {
+    color        : $g-900;
+    border-color : $dark-text-red;
+}
+
+// Arrows of the date picker: the light grey of the light mode is nearly invisible on the dark background
+.tempus-dominus-widget .calendar-header {
+    & .next:not(.disabled),
+    & .previous:not(.disabled) {
+        color : $g-700;
     }
 }

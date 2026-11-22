@@ -240,6 +240,86 @@ class AdminThemeAppearanceModeTest extends TestBaseClass
     }
 
     /**
+     * The React editor is opened by a request in the default language of the site. A theme with dark CSS for
+     * left-to-right languages only is dark there if the language of the administrator is a left-to-right one.
+     */
+    public function testUserThemeAppearanceModeUsesAdminLanguage()
+    {
+        $originalThemeSetting = SettingsUser::getUserSettingValue('admintheme', self::UID);
+        $originalTheme = \Yii::app()->getConfig('admintheme');
+        $originalUploadDir = \Yii::app()->getConfig('uploaddir');
+        $originalAdminLanguage = \Yii::app()->session['adminlang'];
+        $originalLanguage = \Yii::app()->language;
+        $tempUploadDir = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'ls-appearancemodetest-' . uniqid();
+        $themeDir = $tempUploadDir . DIRECTORY_SEPARATOR . 'admintheme' . DIRECTORY_SEPARATOR . 'No_Rtl_Dark_Mode';
+        $configXml = file_get_contents(\Yii::app()->getConfig('styledir') . '/Sea_Green/config.xml');
+        mkdir($themeDir, 0777, true);
+        file_put_contents(
+            $themeDir . '/config.xml',
+            preg_replace('#(<rtl>.*?)<dark>.*?</dark>(.*?</rtl>)#s', '$1$2', $configXml)
+        );
+
+        SettingsUser::setUserSetting('admintheme', '', self::UID);
+        SettingsUser::setUserSetting('appearancemode', 'dark', self::UID);
+        \Yii::app()->setConfig('uploaddir', $tempUploadDir);
+        \Yii::app()->setConfig('admintheme', 'No_Rtl_Dark_Mode');
+        try {
+            \Yii::app()->setLanguage('ar');
+            \Yii::app()->session['adminlang'] = 'en';
+            $this->assertSame('dark', AdminTheme::getUserThemeAppearanceMode());
+
+            \Yii::app()->setLanguage('en');
+            \Yii::app()->session['adminlang'] = 'ar';
+            $this->assertSame('light', AdminTheme::getUserThemeAppearanceMode());
+        } finally {
+            \Yii::app()->setLanguage($originalLanguage);
+            \Yii::app()->session['adminlang'] = $originalAdminLanguage;
+            \Yii::app()->setConfig('admintheme', $originalTheme);
+            \Yii::app()->setConfig('uploaddir', $originalUploadDir);
+            if ($originalThemeSetting === null) {
+                SettingsUser::deleteUserSetting('admintheme', self::UID);
+            } else {
+                SettingsUser::setUserSetting('admintheme', $originalThemeSetting, self::UID);
+            }
+            unlink($themeDir . '/config.xml');
+            rmdir($themeDir);
+            rmdir(dirname($themeDir));
+            rmdir($tempUploadDir);
+        }
+    }
+
+    /**
+     * HTML that is not an admin page (the preview of the theme editor) is rendered without the dark CSS,
+     * the script that sets data-bs-theme and the color-scheme meta tag. Other scripts are kept.
+     */
+    public function testUnregisterAppearanceMode()
+    {
+        $clientScript = \Yii::app()->clientScript;
+        $clientScript->addPackage('admin-theme-dark', [
+            'baseUrl' => '/appearance-mode-test',
+            'css' => ['dark.css'],
+        ]);
+        $clientScript->registerPackage('admin-theme-dark');
+        $clientScript->registerScript('appearancemode', '/* Appearance mode */', \CClientScript::POS_HEAD);
+        $clientScript->registerScript('otherscript', '/* Other script */', \CClientScript::POS_HEAD);
+        $clientScript->registerMetaTag('dark', 'color-scheme', null, [], 'color-scheme');
+        try {
+            AdminTheme::unregisterAppearanceMode();
+            $this->assertFalse($clientScript->isScriptRegistered('appearancemode', \CClientScript::POS_HEAD));
+            $this->assertTrue($clientScript->isScriptRegistered('otherscript', \CClientScript::POS_HEAD));
+
+            $output = '<html><head><title>Preview</title></head><body></body></html>';
+            $clientScript->render($output);
+            $this->assertStringContainsString('Other script', $output);
+            $this->assertStringNotContainsString('Appearance mode', $output);
+            $this->assertStringNotContainsString('color-scheme', $output);
+            $this->assertStringNotContainsString('dark.css', $output);
+        } finally {
+            $clientScript->reset();
+        }
+    }
+
+    /**
      * Parses a config.xml the same way AdminTheme does.
      *
      * @param string $configXml

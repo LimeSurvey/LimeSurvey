@@ -22110,13 +22110,15 @@ a.ls-link {
   color: #fff;
 }
 
-.btn-warning, .btn-warning:hover, .btn-warning:focus, .btn-warning:active, .btn-warning.active, .btn-warning:active:focus,
+.btn-warning, .btn-warning:hover, .btn-warning:focus, .btn-warning:active, .btn-warning.active, .btn-warning:active:focus, .btn-warning.dropdown-toggle.show, .btn-warning.dropdown-toggle.show:focus,
 .btn-orange,
 .btn-orange:hover,
 .btn-orange:focus,
 .btn-orange:active,
 .btn-orange.active,
-.btn-orange:active:focus {
+.btn-orange:active:focus,
+.btn-orange.dropdown-toggle.show,
+.btn-orange.dropdown-toggle.show:focus {
   color: #1E1E1E;
 }
 
@@ -22416,6 +22418,10 @@ kbd {
   filter: invert(1);
 }
 
+.btn-black60 {
+  background-color: #434756;
+  border-color: #6E748C;
+}
 .btn-black60:hover, .btn-black60:focus, .btn-black60:active, .btn-black60.active, .btn-black60.dropdown-toggle.show, .btn-black60.dropdown-toggle.show:focus, .btn-black60[aria-expanded=true] {
   background-color: #434756;
   border-color: #A4A9BC;
@@ -22442,4 +22448,14 @@ kbd {
 .table > tfoot > tr > td.warning,
 .table > tfoot > tr > th.warning {
   color: #1E1E1E;
+  background-color: #FFE046;
+}
+
+.alert-security-update {
+  color: #E9EAF0;
+  border-color: #FF8A93;
+}
+
+.tempus-dominus-widget .calendar-header .next:not(.disabled), .tempus-dominus-widget .calendar-header .previous:not(.disabled) {
+  color: #A4A9BC;
 }

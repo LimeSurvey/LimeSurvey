@@ -220,7 +220,7 @@ function init_chart_js_graph_with_datas($type, $qid) {
     });
 }
 
-/** Label and grid line colours of Chart.js before the first change: they are made for a white background */
+/** Label, grid line and label backdrop colours of Chart.js before the first change: they are made for a white background */
 var lightChartColors = null;
 var followsAppearanceMode = false;
 
@@ -239,15 +239,22 @@ var isDarkAppearance = function () {
  */
 var setChartColors = function (dark) {
     if (lightChartColors === null) {
-        lightChartColors = { color: Chart.defaults.color, borderColor: Chart.defaults.borderColor };
+        lightChartColors = {
+            color: Chart.defaults.color,
+            borderColor: Chart.defaults.borderColor,
+            backdropColor: Chart.defaults.scale.ticks.backdropColor
+        };
     }
     if (dark) {
         var themeColors = window.getComputedStyle(document.documentElement);
         Chart.defaults.color = themeColors.getPropertyValue('--ls-text-color').trim() || '#E9EAF0';
         Chart.defaults.borderColor = themeColors.getPropertyValue('--ls-border-color').trim() || '#434756';
+        // Radar and polar area charts draw a backdrop behind the axis labels, it is nearly white by default
+        Chart.defaults.scale.ticks.backdropColor = themeColors.getPropertyValue('--ls-surface-bg').trim() || '#1B1C22';
     } else {
         Chart.defaults.color = lightChartColors.color;
         Chart.defaults.borderColor = lightChartColors.borderColor;
+        Chart.defaults.scale.ticks.backdropColor = lightChartColors.backdropColor;
     }
     // The charts are stored by question ID, as properties of an array
     Object.keys(window.chartjs || {}).forEach(function (qid) {
@@ -270,6 +277,9 @@ var setChartColors = function (dark) {
                     scale[part].color = Chart.defaults.borderColor;
                 }
             });
+            if (scale.ticks) {
+                scale.ticks.backdropColor = Chart.defaults.scale.ticks.backdropColor;
+            }
         });
         chart.update('none');
     });

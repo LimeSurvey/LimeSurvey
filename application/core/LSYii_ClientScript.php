@@ -108,6 +108,33 @@ class LSYii_ClientScript extends CClientScript
     }
 
     /**
+     * Removes a script block that was registered with registerScript()
+     *
+     * @param string $id ID of the script block
+     * @param int|null $position The position the script block was registered at, null for every position
+     * @return void
+     */
+    public function unregisterScript($id, $position = null)
+    {
+        foreach (array_keys($this->scripts) as $scriptPosition) {
+            if ($position === null || $position === $scriptPosition) {
+                unset($this->scripts[$scriptPosition][$id]);
+            }
+        }
+    }
+
+    /**
+     * Removes a meta tag that was registered with an ID, see registerMetaTag()
+     *
+     * @param string $id ID of the meta tag
+     * @return void
+     */
+    public function unregisterMetaTag($id)
+    {
+        unset($this->metaTags[$id]);
+    }
+
+    /**
      * Remove a script file, whatever position it was registered at.
      * If the file was published through the asset manager (see registerScriptFile), the published URL is removed too.
      *

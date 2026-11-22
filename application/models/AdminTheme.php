@@ -191,13 +191,14 @@ class AdminTheme extends CFormModel
      * These are the files registerStylesAndScripts() loads, so a theme with dark CSS for one direction only
      * is not reported as dark in the other direction.
      *
+     * @param string|null $language Language code, null for the language of the current request
      * @return bool
      */
-    public function hasDarkMode()
+    public function hasDarkMode($language = null)
     {
         App()->loadHelper('surveytranslator');
         $files = $this->config->files ?? null;
-        $darkFiles = getLanguageRTL(App()->language) ? ($files->rtl->dark ?? null) : ($files->dark ?? null);
+        $darkFiles = getLanguageRTL($language ?? App()->language) ? ($files->rtl->dark ?? null) : ($files->dark ?? null);
         return $this->getCssFileList($darkFiles) !== [];
     }
 
@@ -205,11 +206,12 @@ class AdminTheme extends CFormModel
      * Returns the appearance mode this admin theme is shown in:
      * The appearance mode of the current user, or "light" if the theme has no dark mode
      *
+     * @param string|null $language Language code, null for the language of the current request
      * @return string One of APPEARANCE_MODES
      */
-    public function getActiveAppearanceMode()
+    public function getActiveAppearanceMode($language = null)
     {
-        return $this->hasDarkMode() ? self::getAppearanceMode() : 'light';
+        return $this->hasDarkMode($language) ? self::getAppearanceMode() : 'light';
     }
 
     /**
@@ -231,7 +233,10 @@ class AdminTheme extends CFormModel
         }
         $theme = new self();
         $theme->config = json_decode(json_encode((array) simplexml_load_string(file_get_contents($configFile)), 1));
-        return $theme->getActiveAppearanceMode();
+        // The request that opens the editor has the default language of the site, the admin pages have the
+        // language of the administrator: that one decides which CSS files (left-to-right or right-to-left) they load
+        $adminLanguage = App()->session['adminlang'] ?? null;
+        return $theme->getActiveAppearanceMode(is_string($adminLanguage) && $adminLanguage !== '' ? $adminLanguage : null);
     }
 
     /**
@@ -557,7 +562,7 @@ JS;
         }
         if ($appearanceMode !== 'light') {
             // Dark browser background and form controls from the start, before the CSS files are loaded
-            App()->clientScript->registerMetaTag($systemMode ? 'light dark' : 'dark', 'color-scheme');
+            App()->clientScript->registerMetaTag($systemMode ? 'light dark' : 'dark', 'color-scheme', null, [], 'color-scheme');
         }
         $script = $systemMode
             ? '(function () {
@@ -565,13 +570,29 @@ JS;
     var setTheme = function () {
         document.documentElement.setAttribute("data-bs-theme", darkMode.matches ? "dark" : "light");
     };
+    document.documentElement.setAttribute("data-appearance-mode", "system");
     setTheme();
     if (darkMode.addEventListener) {
         darkMode.addEventListener("change", setTheme);
     }
 })();'
-            : 'document.documentElement.setAttribute("data-bs-theme", ' . json_encode($appearanceMode) . ');';
+            : 'document.documentElement.setAttribute("data-appearance-mode", ' . json_encode($appearanceMode) . ');
+document.documentElement.setAttribute("data-bs-theme", ' . json_encode($appearanceMode) . ');';
         App()->clientScript->registerScript('appearancemode', $script, CClientScript::POS_HEAD);
+    }
+
+    /**
+     * Removes the appearance mode from the page that is rendered next: the dark CSS files, the script that sets
+     * data-bs-theme and the color-scheme meta tag.
+     * For HTML that is not an admin page but is rendered during an admin request, like the preview of the theme editor.
+     *
+     * @return void
+     */
+    public static function unregisterAppearanceMode()
+    {
+        App()->clientScript->unregisterPackage('admin-theme-dark');
+        App()->clientScript->unregisterScript('appearancemode', CClientScript::POS_HEAD);
+        App()->clientScript->unregisterMetaTag('color-scheme');
     }
 
     /**

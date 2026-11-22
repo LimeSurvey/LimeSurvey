@@ -1028,6 +1028,8 @@ JAVASCRIPT
 
             /* Must remove all existing scripts / css and js */
             App()->getClientScript()->unregisterPackage('admin-theme'); // We remove the admin package
+            // The preview shows what participants see: no dark mode of the admin interface
+            AdminTheme::unregisterAppearanceMode();
 
             App()->getClientScript()->render($myoutput);
 

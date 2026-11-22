@@ -525,4 +525,42 @@ $dark-text-grape: #b39bff;
   .icon-select-option:hover:not(.selected) {
     background-color: $dark-g-300;
   }
+
+  // "Add" button of the array questions: the light mode has a light grape background
+  .add-item-button:not(:hover):not(:focus):not(:active) {
+    background-color: $dark-g-300;
+  }
+
+  // Welcome and end texts of the survey: fixed dark text colours
+  .survey-header-container,
+  .survey-footer-container {
+    h6,
+    .h6 {
+      color: $dark-g-700;
+    }
+
+    h4,
+    .h4 {
+      color: $dark-g-800 !important;
+    }
+  }
+
+  .survey .survey-card .body p {
+    color: $dark-g-700;
+  }
+
+  // Tutorial: the tooltip keeps its light green background, so its text stays dark
+  .tutorial-tooltip {
+    color: $g-900-base;
+  }
+
+  // Survey logic file: the rows keep their light background colours, so their text stays dark
+  .survey-logic-modal-content {
+    tr.LEMgroup td,
+    tr.LEMquestion td,
+    tr.LEMsubq td,
+    tr td.danger {
+      color: $g-900-base;
+    }
+  }
 }
