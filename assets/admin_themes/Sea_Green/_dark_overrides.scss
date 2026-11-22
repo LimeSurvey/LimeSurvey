@@ -456,6 +456,8 @@ kbd {
         color            : $dark-on-bright;
         // Also in striped and hovered rows, which have a dark background in the dark mode
         background-color : $warning;
+        // Bootstrap paints the hover colour of the row over the cell with an inset shadow
+        --bs-table-accent-bg : transparent;
     }
 }
 
@@ -466,9 +468,10 @@ kbd {
 }
 
 // Arrows of the date picker: the light grey of the light mode is nearly invisible on the dark background
-.tempus-dominus-widget .calendar-header {
-    & .next:not(.disabled),
-    & .previous:not(.disabled) {
-        color : $g-700;
-    }
+// rtl:ignore: Bootstrap's carousel switches on the renaming of "next" to "prev" for the RTL build,
+// and the date picker has no "prev" class
+/*rtl:ignore*/
+.tempus-dominus-widget .calendar-header .next:not(.disabled),
+.tempus-dominus-widget .calendar-header .previous:not(.disabled) {
+    color : $g-700;
 }

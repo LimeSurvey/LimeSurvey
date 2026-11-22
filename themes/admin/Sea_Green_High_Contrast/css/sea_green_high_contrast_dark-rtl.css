@@ -22425,13 +22425,14 @@ kbd {
 .table > tfoot > tr > th.warning {
   color: #1E1E1E;
   background-color: #FFE046;
+  --bs-table-accent-bg: transparent;
 }
 
 .alert-security-update {
   color: #E9EAF0;
   border-color: #FF8A93;
 }
-
-.tempus-dominus-widget .calendar-header .prev:not(.disabled), .tempus-dominus-widget .calendar-header .previous:not(.disabled) {
+.tempus-dominus-widget .calendar-header .next:not(.disabled),
+.tempus-dominus-widget .calendar-header .previous:not(.disabled) {
   color: #A4A9BC;
 }
