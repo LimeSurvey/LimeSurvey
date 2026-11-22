@@ -92,6 +92,17 @@ describe('applyAppearanceMode', () => {
     expect(getTheme()).toBe('light')
   })
 
+  test('printing uses the light mode, the dark mode comes back afterwards', () => {
+    setAuthInitCookie({ appearanceMode: 'dark' })
+
+    applyAppearanceMode()
+    window.dispatchEvent(new Event('beforeprint'))
+    expect(getTheme()).toBe('light')
+
+    window.dispatchEvent(new Event('afterprint'))
+    expect(getTheme()).toBe('dark')
+  })
+
   test('a cookie without a valid mode resets the remembered mode', () => {
     setAuthInitCookie({ token: 'x', appearanceMode: 'dark' })
     applyAppearanceMode()

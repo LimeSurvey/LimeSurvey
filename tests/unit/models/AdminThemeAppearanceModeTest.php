@@ -147,6 +147,33 @@ class AdminThemeAppearanceModeTest extends TestBaseClass
     }
 
     /**
+     * A theme with dark CSS for left-to-right languages only has no dark mode in a right-to-left language,
+     * because the right-to-left CSS is loaded there.
+     */
+    public function testDarkModeFollowsTextDirection()
+    {
+        $configXml = file_get_contents(\Yii::app()->getConfig('styledir') . '/Sea_Green/config.xml');
+        $theme = new AdminTheme();
+        // Remove the dark CSS inside the rtl node only
+        $theme->config = $this->loadThemeConfig(
+            preg_replace('#(<rtl>.*?)<dark>.*?</dark>(.*?</rtl>)#s', '$1$2', $configXml)
+        );
+        $this->assertObjectNotHasProperty('dark', $theme->config->files->rtl);
+        $originalLanguage = \Yii::app()->language;
+        try {
+            \Yii::app()->setLanguage('en');
+            $this->assertTrue($theme->hasDarkMode());
+            \Yii::app()->setLanguage('ar');
+            $this->assertFalse($theme->hasDarkMode());
+
+            $theme->config = $this->loadThemeConfig($configXml);
+            $this->assertTrue($theme->hasDarkMode());
+        } finally {
+            \Yii::app()->setLanguage($originalLanguage);
+        }
+    }
+
+    /**
      * The React editor gets the appearance mode of the user, or "light" if the user's admin theme has no dark mode.
      * The theme without dark mode is created in a temporary upload directory.
      */

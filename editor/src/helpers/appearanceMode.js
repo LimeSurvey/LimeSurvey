@@ -56,7 +56,8 @@ export const getAppearanceMode = () => {
 /**
  * Sets data-bs-theme="light" or data-bs-theme="dark" on the html element,
  * which switches the colours (see themes/dark-mode.scss). In the 'system'
- * mode the editor follows the light or dark mode of the device.
+ * mode the editor follows the light or dark mode of the device. Printing
+ * always uses the light colours, like the admin pages.
  */
 export const applyAppearanceMode = () => {
   const appearanceMode = getAppearanceMode()
@@ -65,8 +66,12 @@ export const applyAppearanceMode = () => {
       ? window.matchMedia(DARK_MODE_QUERY)
       : null
 
+  let isPrinting = false
+
   const setTheme = () => {
-    const isDark = appearanceMode === 'dark' || darkModeQuery?.matches === true
+    const isDark =
+      !isPrinting &&
+      (appearanceMode === 'dark' || darkModeQuery?.matches === true)
     document.documentElement.setAttribute(
       'data-bs-theme',
       isDark ? 'dark' : 'light'
@@ -75,6 +80,17 @@ export const applyAppearanceMode = () => {
 
   setTheme()
   darkModeQuery?.addEventListener?.('change', setTheme)
+
+  if (appearanceMode !== 'light') {
+    window.addEventListener('beforeprint', () => {
+      isPrinting = true
+      setTheme()
+    })
+    window.addEventListener('afterprint', () => {
+      isPrinting = false
+      setTheme()
+    })
+  }
 }
 
 export default applyAppearanceMode

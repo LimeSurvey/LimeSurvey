@@ -494,3 +494,35 @@ $dark-text-grape: #b39bff;
     }
   }
 }
+
+// Icons, texts and backgrounds with fixed colours that are made for the light mode
+:root[data-bs-theme='dark'] {
+  // The arrow of the accordion is a dark background image
+  .accordion-button::after {
+    filter: invert(1);
+  }
+
+  // Month labels of the date range picker: g-600 does not reach 4.5:1 as text on the dark backgrounds
+  .date-range-calendar .rdp-caption_label,
+  .date-range-calendar .date-range-month-label {
+    color: $dark-g-700;
+  }
+
+  // Selected item of the survey structure: white text reaches 4.5:1 on the grape background
+  .structure-item-selected {
+    &,
+    .structure-item-title,
+    .content-editable {
+      color: $white;
+    }
+
+    [data-placeholder]:empty:before {
+      color: $white !important;
+    }
+  }
+
+  // Icon selection of the theme options: the light mode has a light blue hover background
+  .icon-select-option:hover:not(.selected) {
+    background-color: $dark-g-300;
+  }
+}

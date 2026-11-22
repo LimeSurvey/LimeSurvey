@@ -21098,7 +21098,7 @@ table [class^=ri-], table [class*=" ri-"] {
   display: table;
   width: 5px;
   height: 10px;
-  border: 2px solid #fff;
+  border: 2px solid #1B1C22;
   border-top-width: 0;
   border-right-width: 0;
   -webkit-transform: rotate(-45deg);
@@ -21244,7 +21244,7 @@ input[type=checkbox]:checked:before {
   display: table;
   width: 6px;
   height: 12px;
-  border: 2px solid #fff;
+  border: 2px solid #1B1C22;
   border-top-width: 0;
   border-right-width: 0;
   -webkit-transform: rotate(-45deg);
@@ -21260,7 +21260,7 @@ input[type=checkbox]:indeterminate:before {
   display: table;
   width: 12px;
   height: 0;
-  border: 1px solid #fff;
+  border: 1px solid #1B1C22;
 }
 input[type=checkbox]:disabled:after {
   border-color: #6E748C;
@@ -21316,7 +21316,7 @@ input[type=checkbox]:checked:after {
   display: table;
   width: 6px;
   height: 12px;
-  border: 2px solid #fff;
+  border: 2px solid #1B1C22;
   border-top-width: 0;
   border-right-width: 0;
   -webkit-transform: rotate(-45deg);
@@ -21332,7 +21332,7 @@ input[type=checkbox]:checked:after {
   display: table;
   width: 12px;
   height: 0;
-  border: 1px solid #fff;
+  border: 1px solid #1B1C22;
 }
 .checkbox input[type=checkbox]:disabled:after {
   border-color: #6E748C;
@@ -21388,7 +21388,7 @@ input[type=checkbox]:checked:after {
   display: table;
   width: 6px;
   height: 12px;
-  border: 2px solid #fff;
+  border: 2px solid #1B1C22;
   border-top-width: 0;
   border-right-width: 0;
   -webkit-transform: rotate(-45deg);
@@ -21404,7 +21404,7 @@ input[type=checkbox]:checked:after {
   display: table;
   width: 12px;
   height: 0;
-  border: 1px solid #fff;
+  border: 1px solid #1B1C22;
 }
 .checkbox-inline input[type=checkbox]:disabled:after {
   border-color: #6E748C;
@@ -22100,7 +22100,7 @@ a.em-var-error {
   border-color: #A4A9BC;
 }
 :root .select2-container--bootstrap-5 .select2-selection--multiple .select2-selection__rendered .select2-selection__choice {
-  color: #E9EAF0;
+  color: #E9EAF0 !important;
   border-color: #6E748C;
 }
 :root .select2-container--bootstrap-5.select2-container--disabled .select2-selection,
@@ -22265,4 +22265,41 @@ a.cke_dialog_ui_button_ok {
 .alert-filled-dark {
   background-color: #434756;
   border-color: transparent;
+}
+
+kbd {
+  color: #E9EAF0;
+  background-color: #434756;
+}
+
+.accordion-button:not(.collapsed)::after {
+  filter: invert(1);
+}
+
+.btn-black60:hover, .btn-black60:focus, .btn-black60:active, .btn-black60.active, .btn-black60.dropdown-toggle.show, .btn-black60.dropdown-toggle.show:focus, .btn-black60[aria-expanded=true] {
+  background-color: #434756;
+  border-color: #A4A9BC;
+}
+
+#help-button-dropup > .dropdown-menu {
+  background-color: #434756;
+}
+#help-button-dropup > .dropdown-menu > li > a:focus-visible {
+  background-color: #434756;
+}
+
+.form-control[readonly]:not(:disabled) {
+  color: #D5D8E2;
+}
+
+.table > thead > tr.warning > td, .table > thead > tr.warning > th, .table > thead > tr > td.warning, .table > thead > tr > th.warning,
+.table > tbody > tr.warning > td,
+.table > tbody > tr.warning > th,
+.table > tbody > tr > td.warning,
+.table > tbody > tr > th.warning,
+.table > tfoot > tr.warning > td,
+.table > tfoot > tr.warning > th,
+.table > tfoot > tr > td.warning,
+.table > tfoot > tr > th.warning {
+  color: #1E1E1E;
 }

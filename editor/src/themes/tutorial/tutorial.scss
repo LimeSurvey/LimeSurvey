@@ -50,7 +50,8 @@
   justify-content: center;
   border: none;
   background: $lime-green;
-  color: $g-900;
+  // The lime green is the same in the dark mode, so the text stays dark
+  color: $g-900-base;
 
   i {
     display: flex;

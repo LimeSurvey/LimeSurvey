@@ -185,13 +185,20 @@ class AdminTheme extends CFormModel
     }
 
     /**
-     * Returns whether this admin theme has a dark mode: CSS files for it are listed in config.xml (files > dark > css)
+     * Returns whether this admin theme has a dark mode for the text direction of the current language:
+     * CSS files for it are listed in config.xml (files > dark > css, for right-to-left languages
+     * files > rtl > dark > css).
+     * These are the files registerStylesAndScripts() loads, so a theme with dark CSS for one direction only
+     * is not reported as dark in the other direction.
      *
      * @return bool
      */
     public function hasDarkMode()
     {
-        return $this->getCssFileList($this->config->files->dark ?? null) !== [];
+        App()->loadHelper('surveytranslator');
+        $files = $this->config->files ?? null;
+        $darkFiles = getLanguageRTL(App()->language) ? ($files->rtl->dark ?? null) : ($files->dark ?? null);
+        return $this->getCssFileList($darkFiles) !== [];
     }
 
     /**

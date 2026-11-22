@@ -220,16 +220,89 @@ function init_chart_js_graph_with_datas($type, $qid) {
     });
 }
 
+/** Label and grid line colours of Chart.js before the first change: they are made for a white background */
+var lightChartColors = null;
+var followsAppearanceMode = false;
+
+/**
+ * Returns whether the admin interface is shown in the dark appearance mode
+ * @return {boolean}
+ */
+var isDarkAppearance = function () {
+    return document.documentElement.getAttribute('data-bs-theme') === 'dark';
+};
+
+/**
+ * Sets the colours of the chart labels and grid lines, also for the charts that are already drawn:
+ * The colours of the admin theme in the dark appearance mode, the Chart.js defaults otherwise
+ * @param {boolean} dark
+ */
+var setChartColors = function (dark) {
+    if (lightChartColors === null) {
+        lightChartColors = { color: Chart.defaults.color, borderColor: Chart.defaults.borderColor };
+    }
+    if (dark) {
+        var themeColors = window.getComputedStyle(document.documentElement);
+        Chart.defaults.color = themeColors.getPropertyValue('--ls-text-color').trim() || '#E9EAF0';
+        Chart.defaults.borderColor = themeColors.getPropertyValue('--ls-border-color').trim() || '#434756';
+    } else {
+        Chart.defaults.color = lightChartColors.color;
+        Chart.defaults.borderColor = lightChartColors.borderColor;
+    }
+    // The charts are stored by question ID, as properties of an array
+    Object.keys(window.chartjs || {}).forEach(function (qid) {
+        var chart = window.chartjs[qid];
+        // A destroyed chart has no canvas anymore
+        if (!chart || !chart.canvas) {
+            return;
+        }
+        // Chart.js copies the default colours into the axes of a chart when it is created, so they are set again
+        var scales = (chart.config.options && chart.config.options.scales) || {};
+        Object.keys(scales).forEach(function (scaleId) {
+            var scale = scales[scaleId];
+            ['ticks', 'title', 'pointLabels'].forEach(function (part) {
+                if (scale[part]) {
+                    scale[part].color = Chart.defaults.color;
+                }
+            });
+            ['grid', 'border', 'angleLines'].forEach(function (part) {
+                if (scale[part]) {
+                    scale[part].color = Chart.defaults.borderColor;
+                }
+            });
+        });
+        chart.update('none');
+    });
+};
+
+/**
+ * Keeps the chart colours in line with the page: They follow a change of the appearance mode
+ * (the "System" mode follows the device), and charts are printed with the light colours, like the page
+ */
+var followAppearanceMode = function () {
+    if (followsAppearanceMode) {
+        return;
+    }
+    followsAppearanceMode = true;
+    if (typeof MutationObserver !== 'undefined') {
+        new MutationObserver(function () {
+            setChartColors(isDarkAppearance());
+        }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-bs-theme'] });
+    }
+    window.addEventListener('beforeprint', function () {
+        setChartColors(false);
+    });
+    window.addEventListener('afterprint', function () {
+        setChartColors(isDarkAppearance());
+    });
+};
+
 LS.Statistics2 = function () {
 
     Chart.defaults.plugins.legend.display = false;
 
-    // Dark appearance mode: Labels and grid lines in the colours of the admin theme, the defaults are made for a white background
-    if (document.documentElement.getAttribute('data-bs-theme') === 'dark') {
-        var themeColors = window.getComputedStyle(document.documentElement);
-        Chart.defaults.color = themeColors.getPropertyValue('--ls-text-color').trim() || '#E9EAF0';
-        Chart.defaults.borderColor = themeColors.getPropertyValue('--ls-border-color').trim() || '#434756';
-    }
+    setChartColors(isDarkAppearance());
+    followAppearanceMode();
 
     if ($('#completionstateSimpleStat').length > 0) {
         $actionUrl = $('#completionstateSimpleStat').data('grid-display-url');
@@ -876,6 +949,8 @@ var exportImages = function () {
     var zip = new JSZip(),
         overlay = createOverlay();
 
+    // The images have a white background, so the charts are drawn with the light colours for the export
+    setChartColors(false);
     $('.chartjs-container').loadGraph();
     $('.chartjs-container').each(function (i, container) {
         var canvasElements = $(container).find('canvas');
@@ -887,6 +962,7 @@ var exportImages = function () {
             zip.file($(container).data('qid') + '.png', imgData, { base64: true });
         }
     });
+    setChartColors(isDarkAppearance());
     zip.generateAsync({ type: "blob" })
         .then(function (content) {
             // see FileSaver.js

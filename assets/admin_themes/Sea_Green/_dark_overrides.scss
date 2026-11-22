@@ -237,7 +237,8 @@ a.em-var-error {
             border-color     : $g-700;
         }
         .select2-selection--multiple .select2-selection__rendered .select2-selection__choice {
-            color        : $g-900;
+            // The admin interface sets a muted colour with "!important"
+            color        : $g-900 !important;
             border-color : $g-600;
         }
     }
@@ -402,4 +403,52 @@ a.cke_dialog_ui_button_ok {
 .alert-filled-dark {
     background-color : $g-400;
     border-color     : transparent;
+}
+
+// Keyboard hints: the light mode has white text on a dark grey, which is a light grey here
+kbd {
+    color            : $g-900;
+    background-color : $g-400;
+}
+
+// Icons of expanded accordions: they are black in the light mode
+.accordion-button:not(.collapsed)::after {
+    filter : invert(1);
+}
+
+// Help button and its menu: the light mode has white text on a dark grey, which is a light grey here
+.btn-black60 {
+    &:hover,
+    &:focus,
+    &:active,
+    &.active,
+    &.dropdown-toggle.show,
+    &.dropdown-toggle.show:focus,
+    &[aria-expanded="true"] {
+        background-color : $g-400;
+        border-color     : $g-700;
+    }
+}
+#help-button-dropup > .dropdown-menu {
+    background-color : $g-400;
+    & > li > a:focus-visible {
+        background-color : $g-400;
+    }
+}
+
+// Read-only fields can be read and copied, so their text keeps the normal contrast. Disabled fields stay muted
+.form-control[readonly]:not(:disabled) {
+    color : $g-800;
+}
+
+// Table rows and cells in the warning yellow keep dark text
+.table > thead,
+.table > tbody,
+.table > tfoot {
+    & > tr.warning > td,
+    & > tr.warning > th,
+    & > tr > td.warning,
+    & > tr > th.warning {
+        color : $dark-on-bright;
+    }
 }
