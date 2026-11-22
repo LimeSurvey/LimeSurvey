@@ -1,4 +1,4 @@
-// Theme tokens: the colours of an admin theme as CSS variables, for the React editor
+// Theme tokens: The colours of an admin theme as CSS variables, for the React editor
 // (editor/src/themes/variables.scss uses them, with the Sea Green colours as fallback).
 // Built to themes/admin/<theme>/css/theme_tokens.css; the editor loads the file of the user's admin theme.
 //
@@ -61,7 +61,7 @@ $tokens-dark-muted-text       : #A4A9BC !default;
 }
 
 @if $tokens-include-rules {
-    // Bootstrap colours in the editor's mapping: primary is grape, success is the active green
+    // Bootstrap colours in the editor's mapping: Primary is grape, success is the active green
     :root {
         --bs-primary              : #{$grape};
         --bs-primary-rgb          : #{to-rgb($grape)};
@@ -112,7 +112,7 @@ $tokens-dark-muted-text       : #A4A9BC !default;
             box-shadow     : 0 0 0 2px $white !important;
         }
 
-        // Radio and checkbox buttons: the input is hidden, so the focus indicator goes on the visible button
+        // Radio and checkbox buttons: The input is hidden, so the focus indicator goes on the visible button
         .btn-check:focus-visible + .btn {
             outline        : 2px solid $tokens-focus-color !important;
             outline-offset : 2px !important;
@@ -130,7 +130,7 @@ $tokens-dark-muted-text       : #A4A9BC !default;
         }
     }
 
-    // The rules above in the dark mode of the editor: outlines and text need the lighter colours
+    // The rules above in the dark mode of the editor: Outlines and text need the lighter colours
     :root[data-bs-theme="dark"] {
         .btn-outline-primary {
             --bs-btn-color        : #{$tokens-dark-text-grape};

@@ -35,7 +35,7 @@
 // Primary buttons are grape, the same as in the React editor. The theme colour "primary"
 // (var(--bs-primary)) stays active green for the other components
 .btn-primary {
-    // Disabled: the same grey as the generic disabled buttons above, this rule comes later and would override them
+    // Disabled: The same grey as the generic disabled buttons above, this rule comes later and would override them
     @include button-variant($grape, $grape, $surface-bg, $hover-color: $surface-bg, $active-color: $surface-bg, $disabled-background: $g-400, $disabled-color: $g-600);
     color : $white;
     &:hover, &:focus, &:active, &.active, &:active:focus, .open &.dropdown-toggle {

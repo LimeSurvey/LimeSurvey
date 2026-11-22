@@ -26,7 +26,7 @@
 *  @param pCache $cache          An object containing [Hashkey] and [CacheFolder]
 *  @param mixed $sLanguageCode  Language Code
 *  @param string $sQuestionType The question type
-*  @return                false|string
+*  @return false|string    File name of the chart image in the cache directory, false if the chart could not be created
 */
 function createChart($iQuestionID, $iSurveyID, $type, $lbl, $gdata, $grawdata, $cache, $sLanguageCode, $sQuestionType)
 {
@@ -46,7 +46,7 @@ function createChart($iQuestionID, $iSurveyID, $type, $lbl, $gdata, $grawdata, $
     $alternatechartfontfile = Yii::app()->getConfig("alternatechartfontfile");
     $cachefilename = "";
 
-    $adminThemePath = AdminTheme::getInstance()->path;
+    $paletteFile = AdminTheme::getInstance()->getImagePath('limesurvey.pal');
 
     /* Set the fonts for the chart */
     if ($chartfontfile == 'auto') {
@@ -70,7 +70,7 @@ function createChart($iQuestionID, $iSurveyID, $type, $lbl, $gdata, $grawdata, $
             $cachefilename = basename((string) $cache->GetFileFromCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet));
         } else {
             $graph = new pChart(690, 200);
-            $graph->loadColorPalette($adminThemePath . DIRECTORY_SEPARATOR . 'images/limesurvey.pal');
+            $graph->loadColorPalette($paletteFile);
             $graph->setFontProperties($rootdir . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . $chartfontfile, $chartfontsize);
             $graph->setFontProperties($rootdir . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . $chartfontfile, $chartfontsize);
             $graph->drawTitle(0, 0, gT('Sorry, but this question has too many answer options to be shown properly in a graph.', 'unescaped'), 30, 30, 30, 690, 200);
@@ -86,7 +86,7 @@ function createChart($iQuestionID, $iSurveyID, $type, $lbl, $gdata, $grawdata, $
             $cachefilename = basename((string) $cache->GetFileFromCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet));
         } else {
             $graph = new pChart(690, 200);
-            $graph->loadColorPalette($adminThemePath . DIRECTORY_SEPARATOR . 'images/limesurvey.pal');
+            $graph->loadColorPalette($paletteFile);
             $graph->setFontProperties($rootdir . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . $chartfontfile, $chartfontsize);
             $graph->setFontProperties($rootdir . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . $chartfontfile, $chartfontsize);
             $graph->drawTitle(0, 0, gT('Sorry, but this question has no responses yet so a graph cannot be shown.', 'unescaped'), 30, 30, 30, 690, 200);
@@ -163,7 +163,7 @@ function createChart($iQuestionID, $iSurveyID, $type, $lbl, $gdata, $grawdata, $
                 }
                 $graph = new pChart($iWidth, $iHeight);
                 $graph->drawFilledRectangle(0, 0, $iWidth, $iHeight, 254, 254, 254, false);
-                $graph->loadColorPalette($adminThemePath . DIRECTORY_SEPARATOR . 'images/limesurvey.pal');
+                $graph->loadColorPalette($paletteFile);
                 $graph->setFontProperties($sFontFile, $chartfontsize);
                 $graph->drawFilledRoundedRectangle(7, 7, $iWidth - 7, $iHeight - 7, 5, 254, 255, 254);
                 $graph->drawRoundedRectangle(5, 5, $iWidth - 5, $iHeight - 5, 5, 230, 230, 230);
@@ -251,7 +251,7 @@ function createChart($iQuestionID, $iSurveyID, $type, $lbl, $gdata, $grawdata, $
                 }
                 $graph = new pChart(690 + $legendsize[0], $gheight);
                 $graph->drawFilledRectangle(0, 0, 690 + $legendsize[0], $gheight, 254, 254, 254, false);
-                $graph->loadColorPalette($adminThemePath . DIRECTORY_SEPARATOR . 'images/limesurvey.pal');
+                $graph->loadColorPalette($paletteFile);
                 $graph->setFontProperties($rootdir . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . $chartfontfile, $chartfontsize);
                 $graph->setGraphArea(50, 30, 500, $gheight - 60);
                 $graph->drawFilledRoundedRectangle(7, 7, 523 + $legendsize[0], $gheight - 7, 5, 254, 255, 254);
@@ -329,7 +329,7 @@ function createChart($iQuestionID, $iSurveyID, $type, $lbl, $gdata, $grawdata, $
                 $gheight = ceil($gheight);
                 $graph = new pChart(690, $gheight);
                 $graph->drawFilledRectangle(0, 0, 690, $gheight, 254, 254, 254, false);
-                $graph->loadColorPalette($adminThemePath . DIRECTORY_SEPARATOR . 'images/limesurvey.pal');
+                $graph->loadColorPalette($paletteFile);
                 $graph->drawFilledRoundedRectangle(7, 7, 687, $gheight - 3, 5, 254, 255, 254);
                 $graph->drawRoundedRectangle(5, 5, 689, $gheight - 1, 5, 230, 230, 230);
 

@@ -234,16 +234,16 @@ class AdminTheme extends CFormModel
         $theme = new self();
         $theme->config = json_decode(json_encode((array) simplexml_load_string(file_get_contents($configFile)), 1));
         // The request that opens the editor has the default language of the site, the admin pages have the
-        // language of the administrator: that one decides which CSS files (left-to-right or right-to-left) they load
+        // language of the administrator: That one decides which CSS files (left-to-right or right-to-left) they load
         $adminLanguage = App()->session['adminlang'] ?? null;
         return $theme->getActiveAppearanceMode(is_string($adminLanguage) && $adminLanguage !== '' ? $adminLanguage : null);
     }
 
     /**
-     * Returns whether a theme name is a plain directory name: no path, not "." or ".." and no hidden directory
+     * Returns whether a theme name is a plain directory name: No path, not "." or ".." and no hidden directory
      *
-     * @param string $themeName
-     * @return bool
+     * @param string $themeName Name of the admin theme, which is the name of its directory
+     * @return bool True if the name is a plain directory name
      */
     private static function isPlainThemeName(string $themeName)
     {
@@ -254,8 +254,8 @@ class AdminTheme extends CFormModel
      * Returns the directory that contains an admin theme:
      * themes/admin for the standard themes, upload/admintheme for the others
      *
-     * @param string $themeName
-     * @return string
+     * @param string $themeName Name of the admin theme
+     * @return string Path of the directory, without the directory of the theme itself
      */
     private static function getThemeRootDir(string $themeName)
     {
@@ -339,6 +339,8 @@ class AdminTheme extends CFormModel
      * Register all the styles and scripts of the current template.
      * Check if RTL is needed, use asset manager if needed.
      * This function is public because it appears that sometime, the package need to be register again in header (probably a cache problem)
+     *
+     * @return void
      */
     public function registerStylesAndScripts()
     {
@@ -582,7 +584,7 @@ document.documentElement.setAttribute("data-bs-theme", ' . json_encode($appearan
     }
 
     /**
-     * Removes the appearance mode from the page that is rendered next: the dark CSS files, the script that sets
+     * Removes the appearance mode from the page that is rendered next: The dark CSS files, the script that sets
      * data-bs-theme and the color-scheme meta tag.
      * For HTML that is not an admin page but is rendered during an admin request, like the preview of the theme editor.
      *
@@ -593,6 +595,22 @@ document.documentElement.setAttribute("data-bs-theme", ' . json_encode($appearan
         App()->clientScript->unregisterPackage('admin-theme-dark');
         App()->clientScript->unregisterScript('appearancemode', CClientScript::POS_HEAD);
         App()->clientScript->unregisterMetaTag('color-scheme');
+    }
+
+    /**
+     * Returns the path of a file in the "images" directory of the theme.
+     * A theme does not need to have its own images: If it has no such file, the file of Sea Green is used.
+     *
+     * @param string $fileName Name of the file in the "images" directory, e.g. "limesurvey.pal"
+     * @return string The full path of the file
+     */
+    public function getImagePath($fileName)
+    {
+        $themeFile = $this->path . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . $fileName;
+        if (is_file($themeFile)) {
+            return $themeFile;
+        }
+        return App()->getConfig('styledir') . DIRECTORY_SEPARATOR . 'Sea_Green' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . $fileName;
     }
 
     /**

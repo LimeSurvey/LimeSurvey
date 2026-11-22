@@ -31,7 +31,7 @@ $checkbox-selectors: 'input[type="checkbox"]', '.checkbox input[type="checkbox"]
             display: table;
             width: 6px;
             height: 12px;
-            // The colour of the surface: the fill of the box is the text colour, which is light in the dark mode
+            // The colour of the surface: The fill of the box is the text colour, which is light in the dark mode
             border: 2px solid $surface-bg;
             border-top-width: 0;
             border-left-width: 0;

@@ -84,7 +84,7 @@
         outline-offset: 2px;
       }
 
-      // No outline rule here: it would remove the focus outline of the selected format
+      // No outline rule here: It would remove the focus outline of the selected format
       &:checked {
         background-color: $surface-bg !important;
         background-size: initial !important;

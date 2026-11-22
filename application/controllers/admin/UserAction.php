@@ -47,7 +47,9 @@ class UserAction extends SurveyCommonAction
     }
 
     /**
-     * Manage user personal settings
+     * Manage user personal settings: Saves them after the form was submitted, shows the form otherwise
+     *
+     * @return void
      */
     public function personalsettings()
     {
@@ -150,7 +152,7 @@ class UserAction extends SurveyCommonAction
                 }
                 // If invalid timezone, silently skip saving (preserves existing setting)
 
-                // Admin theme: empty string means "use the global setting"
+                // Admin theme: Empty string means "use the global setting"
                 $postAdminTheme = Yii::app()->request->getPost('admintheme', '');
                 $adminTheme = is_string($postAdminTheme) ? $postAdminTheme : '';
                 $adminThemeChanged = false;
@@ -162,7 +164,7 @@ class UserAction extends SurveyCommonAction
                     SettingsUser::setUserSetting('admintheme', $adminTheme);
                 }
 
-                // Appearance mode: empty string means "use the global setting"
+                // Appearance mode: Empty string means "use the global setting"
                 $appearanceMode = Yii::app()->request->getPost('appearancemode', '');
                 $appearanceModeChanged = false;
                 if ($appearanceMode === '' || in_array($appearanceMode, AdminTheme::APPEARANCE_MODES, true)) {

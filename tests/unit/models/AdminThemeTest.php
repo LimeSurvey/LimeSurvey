@@ -165,4 +165,42 @@ class AdminThemeTest extends TestBaseClass
         \Yii::app()->user->setId(null);
         $this->assertNull(AdminTheme::getUserAdminThemeName());
     }
+
+    /**
+     * A theme without its own images uses the images of Sea Green, e.g. the colour palette of the charts.
+     */
+    public function testImagePathFallsBackToSeaGreen()
+    {
+        $styleDir = \Yii::app()->getConfig('styledir');
+        $seaGreenPalette = $styleDir . DIRECTORY_SEPARATOR . 'Sea_Green' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . 'limesurvey.pal';
+        $this->assertFileExists($seaGreenPalette);
+
+        $theme = new AdminTheme();
+        $theme->path = $styleDir . DIRECTORY_SEPARATOR . 'Sea_Green';
+        $this->assertSame($seaGreenPalette, $theme->getImagePath('limesurvey.pal'));
+
+        $theme->path = $styleDir . DIRECTORY_SEPARATOR . 'Sea_Green_High_Contrast';
+        $this->assertFileDoesNotExist($theme->path . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . 'limesurvey.pal');
+        $this->assertSame($seaGreenPalette, $theme->getImagePath('limesurvey.pal'));
+    }
+
+    /**
+     * A theme with its own image uses it.
+     */
+    public function testImagePathOfThemeWithOwnImage()
+    {
+        $themeDir = \Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . 'admintheme_test_' . uniqid();
+        $ownPalette = $themeDir . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . 'limesurvey.pal';
+        mkdir($themeDir . DIRECTORY_SEPARATOR . 'images', 0777, true);
+        file_put_contents($ownPalette, "0,0,0\n");
+        try {
+            $theme = new AdminTheme();
+            $theme->path = $themeDir;
+            $this->assertSame($ownPalette, $theme->getImagePath('limesurvey.pal'));
+        } finally {
+            unlink($ownPalette);
+            rmdir($themeDir . DIRECTORY_SEPARATOR . 'images');
+            rmdir($themeDir);
+        }
+    }
 }

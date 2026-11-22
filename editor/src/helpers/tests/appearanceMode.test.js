@@ -49,7 +49,7 @@ describe('applyAppearanceMode', () => {
 
     expect(getTheme()).toBe('dark')
 
-    // The cookie only lives for a few seconds: a page reload has no cookie
+    // The cookie only lives for a few seconds: A page reload has no cookie
     removeAuthInitCookie()
     document.documentElement.removeAttribute('data-bs-theme')
     applyAppearanceMode()

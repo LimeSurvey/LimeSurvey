@@ -253,7 +253,9 @@ class GlobalSettings extends SurveyCommonAction
     }
 
     /**
-     * Save Settings
+     * Saves the global settings that were submitted with the global settings form, then redirects
+     *
+     * @return void
      */
     private function saveSettings()
     {

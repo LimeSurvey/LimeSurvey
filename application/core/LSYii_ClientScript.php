@@ -422,6 +422,8 @@ class LSYii_ClientScript extends CClientScript
 
     /**
      * Renders the specified core javascript library.
+     *
+     * @return void
      */
     public function renderCoreScripts()
     {

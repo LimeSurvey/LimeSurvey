@@ -220,7 +220,7 @@ function init_chart_js_graph_with_datas($type, $qid) {
     });
 }
 
-/** Label, grid line and label backdrop colours of Chart.js before the first change: they are made for a white background */
+/** Label, grid line and label backdrop colours of Chart.js before the first change: They are made for a white background */
 var lightChartColors = null;
 var followsAppearanceMode = false;
 

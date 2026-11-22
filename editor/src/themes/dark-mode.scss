@@ -1,4 +1,4 @@
-// Dark mode: the appearance mode of the admin interface (see helpers/appearanceMode.js) sets
+// Dark mode: The appearance mode of the admin interface (see helpers/appearanceMode.js) sets
 // data-bs-theme="dark" on the html element.
 // The colours are the dark colours of the Sea Green admin theme (assets/admin_themes/Sea_Green/_dark_palette.scss).
 // ":root[data-bs-theme='dark']" wins over the ":root" of the admin theme tokens, which hold the colours of the light mode
@@ -102,7 +102,7 @@ $dark-text-grape: #b39bff;
   --highlight-color: #{$dark-g-400};
 }
 
-// Bootstrap buttons: darker colours, so the white text reaches 4.5:1
+// Bootstrap buttons: Darker colours, so the white text reaches 4.5:1
 @mixin dark-mode-button($color) {
   --bs-btn-color: #{$white};
   --bs-btn-bg: #{$color};
@@ -204,7 +204,7 @@ $dark-text-grape: #b39bff;
     color: $dark-text-red !important;
   }
 
-  // Icons of the sidebar: white on a grey box, the selected one is black on a light box
+  // Icons of the sidebar: White on a grey box, the selected one is black on a light box
   .sidebar-icons {
     .text-black {
       color: $g-900-base !important;
@@ -420,7 +420,7 @@ $dark-text-grape: #b39bff;
   }
 }
 
-// Charts (Recharts): axis labels, axis lines and grid lines have fixed dark colours
+// Charts (Recharts): Axis labels, axis lines and grid lines have fixed dark colours
 [data-bs-theme='dark'] .recharts-surface {
   text:not([fill]) {
     fill: $dark-g-900;
@@ -508,7 +508,7 @@ $dark-text-grape: #b39bff;
     color: $dark-g-700;
   }
 
-  // Selected item of the survey structure: white text reaches 4.5:1 on the grape background
+  // Selected item of the survey structure: White text reaches 4.5:1 on the grape background
   .structure-item-selected {
     &,
     .structure-item-title,
@@ -521,17 +521,17 @@ $dark-text-grape: #b39bff;
     }
   }
 
-  // Icon selection of the theme options: the light mode has a light blue hover background
+  // Icon selection of the theme options: The light mode has a light blue hover background
   .icon-select-option:hover:not(.selected) {
     background-color: $dark-g-300;
   }
 
-  // "Add" button of the array questions: the light mode has a light grape background
+  // "Add" button of the array questions: The light mode has a light grape background
   .add-item-button:not(:hover):not(:focus):not(:active) {
     background-color: $dark-g-300;
   }
 
-  // Welcome and end texts of the survey: fixed dark text colours
+  // Welcome and end texts of the survey: Fixed dark text colours
   .survey-header-container,
   .survey-footer-container {
     h6,
@@ -549,12 +549,12 @@ $dark-text-grape: #b39bff;
     color: $dark-g-700;
   }
 
-  // Tutorial: the tooltip keeps its light green background, so its text stays dark
+  // Tutorial: The tooltip keeps its light green background, so its text stays dark
   .tutorial-tooltip {
     color: $g-900-base;
   }
 
-  // Survey logic file: the rows keep their light background colours, so their text stays dark
+  // Survey logic file: The rows keep their light background colours, so their text stays dark
   .survey-logic-modal-content {
     tr.LEMgroup td,
     tr.LEMquestion td,

@@ -168,7 +168,7 @@ $dark-text-colors : (
     background : $navbar-bg-color;
 }
 
-// HTML editor (CKEditor): the frame is dark, the content keeps the white background of the editor's content styles
+// HTML editor (CKEditor): The frame is dark, the content keeps the white background of the editor's content styles
 .cke_bottom {
     background : $surface-bg !important;
 }
@@ -176,7 +176,7 @@ $dark-text-colors : (
     background : $g-300 !important;
 }
 
-// ExpressionScript syntax highlighting: a dark background, with lighter colours for the parts of an expression
+// ExpressionScript syntax highlighting: A dark background, with lighter colours for the parts of an expression
 .em-expression {
     background   : #3A3214;
     border-color : $g-600;
@@ -324,7 +324,7 @@ a.em-var-error {
     }
 }
 
-// Links in filled alerts: the green link colour is not readable on the coloured backgrounds
+// Links in filled alerts: The green link colour is not readable on the coloured backgrounds
 .alert-filled-primary,
 .alert-filled-secondary,
 .alert-filled-success,
@@ -401,24 +401,24 @@ a.cke_dialog_ui_button_ok {
     border-top-color : $g-900 !important;
 }
 
-// A filled alert in the "dark" colour: that colour is the light text colour in the dark mode
+// A filled alert in the "dark" colour: That colour is the light text colour in the dark mode
 .alert-filled-dark {
     background-color : $g-400;
     border-color     : transparent;
 }
 
-// Keyboard hints: the light mode has white text on a dark grey, which is a light grey here
+// Keyboard hints: The light mode has white text on a dark grey, which is a light grey here
 kbd {
     color            : $g-900;
     background-color : $g-400;
 }
 
-// Icons of expanded accordions: they are black in the light mode
+// Icons of expanded accordions: They are black in the light mode
 .accordion-button:not(.collapsed)::after {
     filter : invert(1);
 }
 
-// Help button and its menu: the light mode has white text on a dark grey, which is a light grey here
+// Help button and its menu: The light mode has white text on a dark grey, which is a light grey here
 .btn-black60 {
     background-color : $g-400;
     border-color     : $g-600;
@@ -461,13 +461,13 @@ kbd {
     }
 }
 
-// Security update notice: the light mode has dark magenta text
+// Security update notice: The light mode has dark magenta text
 .alert-security-update {
     color        : $g-900;
     border-color : $dark-text-red;
 }
 
-// Arrows of the date picker: the light grey of the light mode is nearly invisible on the dark background
+// Arrows of the date picker: The light grey of the light mode is nearly invisible on the dark background
 // rtl:ignore: Bootstrap's carousel switches on the renaming of "next" to "prev" for the RTL build,
 // and the date picker has no "prev" class
 /*rtl:ignore*/

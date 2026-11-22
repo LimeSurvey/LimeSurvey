@@ -47,7 +47,7 @@ export const getAppearanceMode = () => {
       'light'
     )
   } catch (e) {
-    // The storage can be unavailable (e.g. private mode): the cookie value is
+    // The storage can be unavailable (e.g. private mode): The cookie value is
     // still used for this page load.
     return cookieMode ?? 'light'
   }

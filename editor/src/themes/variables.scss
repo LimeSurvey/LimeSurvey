@@ -5,7 +5,7 @@
 // themes/admin/<theme>/css/theme_tokens.css can set them too (see helpers/adminThemeTokens.js)
 $white: #fff;
 $black: #000;
-// Background of everything that lies on the page: cards, inputs, dropdowns, modals, tables.
+// Background of everything that lies on the page: Cards, inputs, dropdowns, modals, tables.
 // $white is for text on coloured backgrounds
 $surface-bg: var(--ls-surface-bg, #{$white});
 // Black text that follows the dark mode
@@ -37,7 +37,7 @@ $active-green-hover: var(
   --ls-active-green-hover,
   #{$active-green-hover-base}
 ); // buttons & links
-// The colours as text and icons: the colours themselves in the light mode, lighter ones in the dark mode
+// The colours as text and icons: The colours themselves in the light mode, lighter ones in the dark mode
 // (the colours are made for white text on them, see dark-mode.scss)
 $grape-text: var(--ls-grape-text, #{$grape});
 $active-green-text: var(--ls-active-green-text, #{$active-green});
@@ -76,7 +76,7 @@ $g-200: var(--ls-g-200, #{$g-200-base});
 $g-100-base: #f9f9fb;
 $g-100: var(--ls-g-100, #{$g-100-base});
 
-// The dark greys as background of white text: the greys themselves in the light mode,
+// The dark greys as background of white text: The greys themselves in the light mode,
 // greys that keep the white text readable in the dark mode (see dark-mode.scss)
 $g-900-bg: var(--ls-g-900-bg, #{$g-900});
 $g-800-bg: var(--ls-g-800-bg, #{$g-800});

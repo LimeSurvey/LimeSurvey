@@ -62,6 +62,17 @@ describe('applyAdminThemeTokens', () => {
     expect(getTokensLink()).toBeNull()
   })
 
+  test('only loads a file of the same site', () => {
+    setAuthInitCookie({
+      token: 'x',
+      adminThemeTokens: 'https://other.example/css/theme_tokens.css',
+    })
+
+    applyAdminThemeTokens()
+
+    expect(getTokensLink()).toBeNull()
+  })
+
   test('only loads http(s) URLs', () => {
     setAuthInitCookie({
       token: 'x',

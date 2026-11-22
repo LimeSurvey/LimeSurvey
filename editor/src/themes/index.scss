@@ -145,7 +145,7 @@
 @import '../components/UIComponents/SearchInput/SearchInput.scss';
 @import '../components/UIComponents/Collapsible/Collapsible.scss';
 
-// Dark mode: the colours as CSS variables, and rules that only exist in the dark mode
+// Dark mode: The colours as CSS variables, and rules that only exist in the dark mode
 @import 'dark-mode';
 // Last to load - overrides for other styles when survey is active
 @import 'disabled-state';

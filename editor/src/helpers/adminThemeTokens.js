@@ -5,8 +5,9 @@ const STORAGE_KEY_PREFIX = 'ls-editor-admin-theme-tokens:'
 const LINK_ID = 'ls-admin-theme-tokens'
 
 /**
- * Only the theme tokens file of an admin theme is accepted, because the value
- * comes from a cookie or the local storage and is loaded as a stylesheet.
+ * Only the theme tokens file of an admin theme of this site is accepted,
+ * because the value comes from a cookie or the local storage and is loaded as
+ * a stylesheet.
  *
  * @param {*} url
  * @returns {string|null} the URL, or null when it is not a valid one
@@ -18,6 +19,7 @@ const sanitizeTokensUrl = (url) => {
   try {
     const parsedUrl = new URL(url, window.location.href)
     return ['http:', 'https:'].includes(parsedUrl.protocol) &&
+      parsedUrl.origin === window.location.origin &&
       parsedUrl.pathname.endsWith('/css/theme_tokens.css')
       ? url
       : null
@@ -51,7 +53,7 @@ const getAdminThemeTokensUrl = () => {
     }
     return sanitizeTokensUrl(window.localStorage.getItem(getStorageKey()))
   } catch (e) {
-    // The storage can be unavailable (e.g. private mode): the cookie value is
+    // The storage can be unavailable (e.g. private mode): The cookie value is
     // still used for this page load.
     return cookieData !== null
       ? sanitizeTokensUrl(cookieData.adminThemeTokens)
