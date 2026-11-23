@@ -141,6 +141,7 @@ class Zend_Mobile_Push_Message_Mpns_Raw extends Zend_Mobile_Push_Message_Mpns
      */
     public function validate()
     {
+        // @phpstan-ignore isset.property (no token is set until setToken() is called)
         if (!isset($this->_token) || strlen($this->_token) === 0) {
             return false;
         }

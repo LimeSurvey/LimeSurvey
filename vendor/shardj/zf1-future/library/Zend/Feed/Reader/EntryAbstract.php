@@ -44,7 +44,7 @@ abstract class Zend_Feed_Reader_EntryAbstract
     /**
      * Entry instance
      *
-     * @var Zend_Feed_Entry_Interface
+     * @var DOMElement
      */
     protected $_entry = null;
 
@@ -73,7 +73,7 @@ abstract class Zend_Feed_Reader_EntryAbstract
      * Constructor
      *
      * @param  DOMElement  $entry
-     * @param  int         $entryKey
+     * @param  int|string         $entryKey
      * @param  string|null $type
      * @return void
      */
@@ -85,6 +85,7 @@ abstract class Zend_Feed_Reader_EntryAbstract
         if ($type !== null) {
             $this->_data['type'] = $type;
         } else {
+            require_once 'Zend/Feed/Reader.php';
             $this->_data['type'] = Zend_Feed_Reader::detectType(
                 $this->_domDocument
             );
@@ -188,7 +189,7 @@ abstract class Zend_Feed_Reader_EntryAbstract
      * Return an Extension object with the matching name (postfixed with _Entry)
      *
      * @param string $name
-     * @return Zend_Feed_Reader_Extension_EntryAbstract
+     * @return ($name is 'Atom' ? Zend_Feed_Reader_Extension_Atom_Entry|null : ($name is 'Content' ? Zend_Feed_Reader_Extension_Content_Entry|null : ($name is 'DublinCore' ? Zend_Feed_Reader_Extension_DublinCore_Entry|null : ($name is 'Slash' ? Zend_Feed_Reader_Extension_Slash_Entry|null : ($name is 'Thread' ? Zend_Feed_Reader_Extension_Thread_Entry|null : ($name is 'WellFormedWeb' ? Zend_Feed_Reader_Extension_WellFormedWeb_Entry|null : Zend_Feed_Reader_Extension_EntryAbstract|null))))))
      */
     public function getExtension($name)
     {
@@ -227,12 +228,14 @@ abstract class Zend_Feed_Reader_EntryAbstract
      */
     protected function _loadExtensions()
     {
+        require_once 'Zend/Feed/Reader.php';
         $all = Zend_Feed_Reader::getExtensions();
         $feed = $all['entry'];
         foreach ($feed as $extension) {
             if (in_array($extension, $all['core'])) {
                 continue;
             }
+            require_once 'Zend/Feed/Reader.php';
             $className = Zend_Feed_Reader::getPluginLoader()->getClassName($extension);
             $this->_extensions[$extension] = new $className(
                 $this->getElement(), $this->_entryKey, $this->_data['type']

@@ -91,3 +91,9 @@ body > .bootstrap-select {
 body > .bootstrap-select .dropdown-item {
     white-space : nowrap;
 }
+
+// The probe also measures the widest option for the "longest entry" width, so its menu must not shrink to the probe's zero width.
+body > .bootstrap-select .dropdown-menu {
+    width     : auto;
+    max-width : none;
+}

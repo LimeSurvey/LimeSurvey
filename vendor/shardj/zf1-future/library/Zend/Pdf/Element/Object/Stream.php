@@ -44,7 +44,7 @@ class Zend_Pdf_Element_Object_Stream extends Zend_Pdf_Element_Object
      * Required enries:
      * Length
      *
-     * @var Zend_Pdf_Element_Dictionary
+     * @var Zend_Pdf_Element_Dictionary|null
      */
     private $_dictionary;
 
@@ -386,7 +386,7 @@ class Zend_Pdf_Element_Object_Stream extends Zend_Pdf_Element_Object
      */
     public function makeClone(Zend_Pdf_ElementFactory $factory, array &$processed, $mode)
     {
-        $id = spl_object_hash($this);
+        $id = spl_object_id($this);
         if (isset($processed[$id])) {
             // Do nothing if object is already processed
             // return it

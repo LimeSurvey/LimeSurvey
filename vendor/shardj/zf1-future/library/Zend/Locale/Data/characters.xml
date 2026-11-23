@@ -7,8 +7,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 -->
 
 <supplementalData>
-	<version number="$Revision: 9123 $"/>
-	<generation date="$Date: 2013-08-05 13:50:51 -0500 (Mon, 05 Aug 2013) $"/>
+	<version number="$Revision$"/>
 	<characters>
 		<character-fallback>
 			<character value = "©">
@@ -217,6 +216,15 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</character>
 			<character value = "₺">
 				<substitute>TL</substitute>
+			</character>
+			<character value = "₼">
+				<substitute>AZN</substitute>
+			</character>
+			<character value = "₽">
+				<substitute>RUB</substitute>
+			</character>
+			<character value = "₾">
+				<substitute>GEL</substitute>
 			</character>
 			<character value = "℞">
 				<substitute>Rx</substitute>
@@ -521,6 +529,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<character value = "￦">
 				<substitute>KRW</substitute>
 			</character>
-		</character-fallback>
+		</character-fallback> 
 	</characters>
 </supplementalData>

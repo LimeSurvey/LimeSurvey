@@ -33,11 +33,12 @@ require_once 'Zend/Queue/Message.php';
  * @subpackage Message
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @deprecated Deprecated since 1.26.1 and will be removed in a future version, together with Zend_Queue_Adapter_PlatformJobQueue
  */
 class Zend_Queue_Message_PlatformJob extends Zend_Queue_Message
 {
     /**
-     * @var ZendApi_Job
+     * @var ZendAPI_Job
      */
     protected $_job;
 
@@ -52,12 +53,12 @@ class Zend_Queue_Message_PlatformJob extends Zend_Queue_Message
      *
      * The constructor should be an array of options.
      *
-     * If the option 'data' is provided, and is an instance of ZendApi_Job,
+     * If the option 'data' is provided, and is an instance of ZendAPI_Job,
      * that object will be used as the internal job; if that option is not a
-     * ZendApi_Job instance, an exception will be thrown.
+     * ZendAPI_Job instance, an exception will be thrown.
      *
      * Alternately, you may specify the 'script' parameter, which should be a
-     * JobQueue script the job will request. A new ZendApi_Job object will then
+     * JobQueue script the job will request. A new ZendAPI_Job object will then
      * be created using that script and any options you provide.
      *
      * @param  array $options
@@ -69,7 +70,7 @@ class Zend_Queue_Message_PlatformJob extends Zend_Queue_Message
         if (isset($options['data'])) {
             if (!($options['data'] instanceof ZendAPI_Job)) {
                 require_once 'Zend/Queue/Exception.php';
-                throw new Zend_Queue_Exception('Data must be an instance of ZendApi_Job');
+                throw new Zend_Queue_Exception('Data must be an instance of ZendAPI_Job');
             }
             $this->_job = $options['data'];
             parent::__construct($this->_job->getProperties());
@@ -81,7 +82,7 @@ class Zend_Queue_Message_PlatformJob extends Zend_Queue_Message
                 throw new Zend_Queue_Exception('The script is mandatory data');
             }
 
-            $this->_job = new ZendApi_Job($options['script']);
+            $this->_job = new ZendAPI_Job($options['script']);
             $this->_setJobProperties();
         }
     }
@@ -111,9 +112,9 @@ class Zend_Queue_Message_PlatformJob extends Zend_Queue_Message
     }
 
     /**
-     * Retrieve the internal ZendApi_Job instance
+     * Retrieve the internal ZendAPI_Job instance
      *
-     * @return ZendApi_Job
+     * @return ZendAPI_Job
      */
     public function getJob()
     {
@@ -142,10 +143,10 @@ class Zend_Queue_Message_PlatformJob extends Zend_Queue_Message
     }
 
     /**
-     * Sets properties on the ZendApi_Job instance
+     * Sets properties on the ZendAPI_Job instance
      *
      * Any options in the {@link $_data} array will be checked. Those matching
-     * options in ZendApi_Job will be used to set those options in that
+     * options in ZendAPI_Job will be used to set those options in that
      * instance.
      *
      * @return void

@@ -171,6 +171,7 @@ class TransformerOutputSurvey extends TransformerOutputActiveRecord
             'template' => true,
             'format' => true,
             'access_mode' => 'access_mode',
+            'welcome_image' => 'welcomeImage',
         ]);
     }
 

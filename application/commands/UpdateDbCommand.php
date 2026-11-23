@@ -23,19 +23,8 @@
  * GNU General Public License for more details.
  *
  */
-class UpdateDBCommand extends CConsoleCommand
+class UpdateDBCommand extends LSConsoleCommand
 {
-    /**
-     * Configuration loaded from the custom config.php given on the command line, if any.
-     * @var array
-     */
-    public $configuration = [];
-
-    /**
-     * @var CDbConnection
-     */
-    public $connection;
-
     /**
      * Performs a database schema upgrade when the configured target version is greater than the current installed version.
      *
@@ -85,45 +74,6 @@ class UpdateDBCommand extends CConsoleCommand
             echo "no need update : DB is up-to-date\n";
             return 0;
         }
-    }
-
-    /**
-     * Switches the application's database connection to the one defined in a custom config.php file,
-     * the same way InstallFromConfigCommand does, instead of the default application/config/config.php one.
-     *
-     * @param string $configPath Path to a config.php file returning an array with a 'components.db' section.
-     * @return void
-     * @throws CException If the config file cannot be found.
-     */
-    protected function useCustomConfig($configPath)
-    {
-        $readFromConfig = realpath($configPath);
-        if ($readFromConfig === false) {
-            throw new CException("Config file not found: $configPath");
-        }
-
-        $this->configuration = include($readFromConfig);
-        $dbConnectionArray = $this->configuration['components']['db'];
-
-        foreach ($this->configuration as $configKey => $configValue) {
-            Yii::app()->params[$configKey] = $configValue;
-        }
-
-        // Prevent CDbConnection::init() from auto-connecting with whatever connection is
-        // currently configured (the default application/config/config.php one) before we
-        // get a chance to point it at the custom config below.
-        Yii::app()->configure(array('components' => array('db' => array('autoConnect' => false))));
-
-        $this->connection = Yii::app()->getDb();
-        $this->connection->active = false;
-        $this->connection->connectionString = $dbConnectionArray['connectionString'];
-        $this->connection->username = $dbConnectionArray['username'];
-        $this->connection->password = $dbConnectionArray['password'];
-        if (isset($dbConnectionArray['tablePrefix'])) {
-            $this->connection->tablePrefix = $dbConnectionArray['tablePrefix'];
-        }
-        $this->connection->active = true;
-        echo "Using connection string " . $this->connection->connectionString . "\n";
     }
 
     /**

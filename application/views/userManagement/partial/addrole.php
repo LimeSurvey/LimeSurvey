@@ -1,7 +1,7 @@
 <?php
 Yii::app()->getController()->renderPartial(
     '/layouts/partial_modals/modal_header',
-    ['modalTitle' => gT('Edit user roles')]
+    ['modalTitle' => gT('Edit user roles'), 'modalTitleId' => 'UserManagement-action-modal-title']
 );
 
 ?>
@@ -38,14 +38,15 @@ Yii::app()->getController()->renderPartial(
         }
         ?>
         <div class="mb-3">
-            <label for="roleselector"><?= gT("Select role(s):") ?></label>
+            <label for="roleselector" id="UserManagement--roleselector-label"><?= gT("Select role(s):") ?></label>
             <?php $this->widget(
                 'yiiwheels.widgets.select2.WhSelect2',
                 [
                     'asDropDownList' => true,
                     'htmlOptions'    => [
                         'style'    => 'width:100%;',
-                        'multiple' => true
+                        'multiple' => true,
+                        'aria-labelledby' => 'UserManagement--roleselector-label'
                     ],
                     'data'           => $aPossibleRoles,
                     'value'          => $aCurrentRoles,

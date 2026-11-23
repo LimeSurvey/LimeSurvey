@@ -30,6 +30,10 @@ class QuestionResolverTest extends TestCase
             'Q50_S501' => $this->column(['qid' => 50, 'type' => 'M', 'aid' => 'SQ001', 'sqid' => 501]),
             'Q50_S502' => $this->column(['qid' => 50, 'type' => 'M', 'aid' => 'SQ002', 'sqid' => 502]),
             'Q50_Cother' => $this->column(['qid' => 50, 'type' => 'M', 'aid' => 'other']),
+            // Multiple choice of a survey activated with the "Other" tick column.
+            'Q55_S551' => $this->column(['qid' => 55, 'type' => 'M', 'aid' => 'SQ001', 'sqid' => 551]),
+            'Q55_Cother' => $this->column(['qid' => 55, 'type' => 'M', 'aid' => 'other']),
+            'Q55_Cotherchecked' => $this->column(['qid' => 55, 'type' => 'M', 'aid' => 'otherchecked']),
             'Q60_S601' => $this->column(['qid' => 60, 'type' => 'M', 'aid' => 'SQ001', 'sqid' => 601]),
             'Q90_S901' => $this->column(['qid' => 90, 'type' => 'Q', 'aid' => 'SQ001', 'sqid' => 901]),
             'Q90_S902' => $this->column(['qid' => 90, 'type' => 'Q', 'aid' => 'SQ002', 'sqid' => 902]),
@@ -187,6 +191,19 @@ class QuestionResolverTest extends TestCase
 
         $this->assertSame(['Q50_Cother'], $conditions[1]->getKeys());
         $this->assertSame(ResolvedCondition::OPERATOR_NOT_EMPTY, $conditions[1]->getOperator());
+    }
+
+    /**
+     * With the "Other" tick column, Other is found by its tick, so a tick
+     * saved without text matches too. It stores 'Y' like the options do.
+     */
+    public function testMultipleChoiceOtherResolvesToItsTickColumnWhenThereIsOne(): void
+    {
+        $condition = $this->singleCondition(['qid' => 55, 'answerCodes' => [551, '-oth-']]);
+
+        $this->assertSame(['Q55_S551', 'Q55_Cotherchecked'], $condition->getKeys());
+        $this->assertSame(ResolvedCondition::OPERATOR_EQUAL, $condition->getOperator());
+        $this->assertSame('Y', $condition->getValue());
     }
 
     /**

@@ -140,7 +140,7 @@ class Zend_Mail_Protocol_Pop3
      * Send a request
      *
      * @param string $request your request without newline
-     * @return null
+     * @return void
      * @throws Zend_Mail_Protocol_Exception
      */
     public function sendRequest($request)
@@ -226,7 +226,7 @@ class Zend_Mail_Protocol_Pop3
     /**
      * End communication with POP3 server (also closes socket)
      *
-     * @return null
+     * @return void
      */
     public function logout()
     {
@@ -263,7 +263,7 @@ class Zend_Mail_Protocol_Pop3
      *
      * @param  string $user      username
      * @param  string $password  password
-     * @param  bool   $try_apop  should APOP be tried?
+     * @param  bool   $tryApop  should APOP be tried?
      * @return void
      * @throws Zend_Mail_Protocol_Exception
      */
@@ -282,6 +282,93 @@ class Zend_Mail_Protocol_Pop3
         $result = $this->request("PASS $password");
     }
 
+
+    /**
+     * Login with an OAuth 2.0 access token (SASL XOAUTH2), as used by Gmail and Microsoft 365
+     *
+     * The access token has to be obtained and refreshed by the application.
+     *
+     * @param  string $user        mailbox / user name
+     * @param  string $accessToken OAuth 2.0 access token
+     * @return void
+     * @throws Zend_Mail_Protocol_Exception when the server rejects the token
+     */
+    public function authenticateXoauth2($user, $accessToken)
+    {
+        $credentials = base64_encode('user=' . $user . "\x01auth=Bearer " . $accessToken . "\x01\x01");
+
+        // RFC 5034 two step exchange, understood by every server; the server answers the
+        // AUTH command with a "+" continuation and the credentials with +OK or -ERR
+        $this->sendRequest('AUTH XOAUTH2');
+        $this->_expectContinuation();
+        $this->sendRequest($credentials);
+
+        $line = $this->_readLine();
+        if (strpos($line, '+ ') === 0 || $line === '+') {
+            // the server sent the reason for a rejected token (base64 encoded JSON) in another
+            // continuation and waits for an empty line before it sends the -ERR reply
+            $reason = base64_decode(trim(substr($line, 1)), true);
+            $this->sendRequest('');
+            $line = $this->_readLine();
+            if (strpos($line, '+OK') !== 0) {
+                /**
+                 * @see Zend_Mail_Protocol_Exception
+                 */
+                require_once 'Zend/Mail/Protocol/Exception.php';
+                throw new Zend_Mail_Protocol_Exception('XOAUTH2 authentication failed: ' . $line
+                    . ($reason !== false && $reason !== '' ? ' (' . $reason . ')' : ''));
+            }
+            return;
+        }
+
+        if (strpos($line, '+OK') !== 0) {
+            /**
+             * @see Zend_Mail_Protocol_Exception
+             */
+            require_once 'Zend/Mail/Protocol/Exception.php';
+            throw new Zend_Mail_Protocol_Exception('XOAUTH2 authentication failed: ' . $line);
+        }
+    }
+
+    /**
+     * Reads one response line
+     *
+     * @return string line without the line ending
+     * @throws Zend_Mail_Protocol_Exception
+     */
+    protected function _readLine()
+    {
+        $result = @fgets($this->_socket);
+        if (!is_string($result)) {
+            /**
+             * @see Zend_Mail_Protocol_Exception
+             */
+            require_once 'Zend/Mail/Protocol/Exception.php';
+            throw new Zend_Mail_Protocol_Exception('read failed - connection closed?');
+        }
+
+        return rtrim($result, "\r\n");
+    }
+
+    /**
+     * Reads a SASL continuation line ("+" or "+ <data>")
+     *
+     * @return string data after the "+", without base64 decoding
+     * @throws Zend_Mail_Protocol_Exception when the server answered with something else
+     */
+    protected function _expectContinuation()
+    {
+        $line = $this->_readLine();
+        if ($line !== '+' && strpos($line, '+ ') !== 0) {
+            /**
+             * @see Zend_Mail_Protocol_Exception
+             */
+            require_once 'Zend/Mail/Protocol/Exception.php';
+            throw new Zend_Mail_Protocol_Exception('expected a SASL continuation, got: ' . $line);
+        }
+
+        return trim(substr($line, 1));
+    }
 
     /**
      * Make STAT call for message count and size sum
@@ -437,7 +524,7 @@ class Zend_Mail_Protocol_Pop3
     /**
      * Make a NOOP call, maybe needed for keeping the server happy
      *
-     * @return null
+     * @return void
      * @throws Zend_Mail_Protocol_Exception
      */
     public function noop()
@@ -449,7 +536,7 @@ class Zend_Mail_Protocol_Pop3
     /**
      * Make a DELE count to remove a message
      *
-     * @return null
+     * @return void
      * @throws Zend_Mail_Protocol_Exception
      */
     public function delete($msgno)
@@ -461,7 +548,7 @@ class Zend_Mail_Protocol_Pop3
     /**
      * Make RSET call, which rollbacks delete requests
      *
-     * @return null
+     * @return void
      * @throws Zend_Mail_Protocol_Exception
      */
     public function undelete()

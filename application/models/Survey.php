@@ -13,6 +13,7 @@
 *
 */
 
+use LimeSurvey\Models\Services\SurveySessionState;
 use LimeSurvey\Models\Services\SurveyUseCaptcha;
 use LimeSurvey\PluginManager\PluginEvent;
 
@@ -152,6 +153,8 @@ use LimeSurvey\PluginManager\PluginEvent;
  * @property SurveysGroups $surveygroup
  * @property boolean $isDateExpired Whether survey is expired depending on the current time and survey configuration status
  * @property string $lastmodified date as SQL datetime (YYYY-MM-DD HH:mm:ss)
+ * @property string[] $welcome_image image path and settings for uploaded image to be isplayed on welcome screen
+ * @property-read array|null $welcomeImageSettings decoded welcome_image json (image_path, image_align, image_brightness, image_radius, image_alt_text, image_styles)
  * @method mixed active()
  */
 class Survey extends LSActiveRecord implements PermissionInterface
@@ -159,6 +162,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
     use PermissionTrait;
 
     protected static array $findByPkCache = [];
+
+    /** @var WeakMap<CDbTableSchema, array<string, string>>|null tick column => Other text column, per responses table schema */
+    private static $otherCheckedColumns;
 
     // survey options
     public $oOptions;
@@ -439,8 +445,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
             $sLang = Yii::app()->request->getParam('lang');
         } else {
             // SESSION
-            if (isset(Yii::app()->session['responses_' . $this->sid]['s_lang'])) {
-                $sLang = Yii::app()->session['responses_' . $this->sid]['s_lang'];
+            $sessionLanguage = SurveySessionState::forSurvey((int) $this->sid)->getLanguage();
+            if ($sessionLanguage !== null) {
+                $sLang = $sessionLanguage;
             }
         }
         return $sLang;
@@ -1346,6 +1353,77 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
+     * Returns true if the Other option of a multiple choice question stores its tick in Q{qid}_Cotherchecked.
+     * @param integer $qid
+     * @return bool
+     */
+    public function hasOtherCheckedColumn($qid)
+    {
+        if (!$this->getIsActive()) {
+            return true;
+        }
+        $table = Yii::app()->db->schema->getTable($this->responsesTableName);
+        return $table !== null && isset($table->columns["Q{$qid}_Cotherchecked"]);
+    }
+
+    /**
+     * Tick column of a multiple choice Other text column, when the responses table has it
+     * @param string $otherColumn the Other text column, Q{qid}_Cother
+     * @return string|null
+     */
+    public function getOtherCheckedColumn($otherColumn)
+    {
+        if (!preg_match('/^Q(\d+)_Cother$/', (string) $otherColumn, $matches) || !$this->hasOtherCheckedColumn($matches[1])) {
+            return null;
+        }
+        return $otherColumn . 'checked';
+    }
+
+    /**
+     * Multiple choice Other with text is always ticked: set Q{qid}_Cotherchecked to Y where Q{qid}_Cother has text,
+     * so every way of saving a response (imports, RemoteControl, response edit) stores the tick.
+     * A tick without text is kept. Call it before the values are encrypted.
+     * @param CActiveRecord $response a row of the responses table
+     * @param string[]|null $attributes the attributes to save, null for all
+     * @return string[]|null the attributes to save, with the ticks that go with the saved Other texts
+     */
+    public static function setOtherCheckedFromText(CActiveRecord $response, $attributes = null)
+    {
+        foreach (self::getOtherCheckedColumns($response->getTableSchema()) as $checkedColumn => $otherColumn) {
+            if ($attributes !== null && !in_array($otherColumn, $attributes, true) && !in_array($checkedColumn, $attributes, true)) {
+                continue;
+            }
+            if ((string) $response->getAttribute($otherColumn) !== '') {
+                $response->setAttribute($checkedColumn, 'Y');
+                if ($attributes !== null && !in_array($checkedColumn, $attributes, true)) {
+                    $attributes[] = $checkedColumn;
+                }
+            }
+        }
+        return $attributes;
+    }
+
+    /**
+     * Tick columns of a responses table, worked out once per table schema: a created or changed table gets a new schema
+     * @param CDbTableSchema $table
+     * @return array<string, string> tick column => Other text column
+     */
+    private static function getOtherCheckedColumns(CDbTableSchema $table)
+    {
+        self::$otherCheckedColumns ??= new WeakMap();
+        if (!isset(self::$otherCheckedColumns[$table])) {
+            $columns = [];
+            foreach ($table->getColumnNames() as $column) {
+                if (substr((string) $column, -14) === '_Cotherchecked') {
+                    $columns[$column] = substr((string) $column, 0, -7);
+                }
+            }
+            self::$otherCheckedColumns[$table] = $columns;
+        }
+        return self::$otherCheckedColumns[$table];
+    }
+
+    /**
      * @return bool
      */
     public function getIsAnonymized()
@@ -1702,7 +1780,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
         ];
         $items[] = [
             'title' => gT('Activate'),
-            'url' => App()->createUrl('surveyAdministration/rendersidemenulink/subaction/generalsettings', ['surveyid' => $this->sid]),
+            'url' => App()->createUrl('surveyAdministration/view', ['iSurveyID' => $this->sid, 'openActivation' => 1]),
             'iconClass' => 'ri-check-line',
             'enabledCondition' =>
             $this->active === "N"
@@ -1924,6 +2002,14 @@ class Survey extends LSActiveRecord implements PermissionInterface
         );
         $sort->defaultOrder = array('creation_date' => CSort::SORT_DESC);
 
+        // Persist the chosen sort order in session, the same way pageSize is persisted,
+        // since CSort itself only reads from the current request's GET params.
+        if (isset($_GET[$sort->sortVar]) && is_string($_GET[$sort->sortVar])) {
+            Yii::app()->user->setState('surveyListSort', $_GET[$sort->sortVar]);
+        } elseif (($surveyListSort = Yii::app()->user->getState('surveyListSort')) !== null) {
+            $_GET[$sort->sortVar] = $surveyListSort;
+        }
+
         $criteria = new LSDbCriteria();
         $aWithRelations = array('correct_relation_defaultlanguage');
 
@@ -2020,9 +2106,13 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
     /**
      * Get criteria from Permission
-     * @param $userid for this user id , if not set : get current one
+     * Plugins can change the criteria with the getSurveyPermissionCriteria event, for example to
+     * list surveys they give access to with beforeHasPermission. The event gets:
+     * - userid: The user the criteria is for
+     * - hasGlobalRead: Whether the user has the global surveys read permission, the criteria is empty then
+     * - criteria: The core CDbCriteria, plugins can update it (e.g. mergeWith() with 'OR') or set a new one
+     * @param int|null $userid for this user id , if not set : get current one
      * @todo : move to PermissionInterface
-     * @todo : create an event
      * @return CDbCriteria
      */
     protected static function getPermissionCriteria($userid = null)
@@ -2033,7 +2123,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
         // Note: reflect Permission::hasPermission
         $criteriaPerm = new CDbCriteria();
         $criteriaPerm->params = array();
-        if (!Permission::model()->hasGlobalPermission("surveys", 'read', $userid)) {
+        $hasGlobalRead = Permission::model()->hasGlobalPermission("surveys", 'read', $userid);
+        if (!$hasGlobalRead) {
             /* it's the owner of the survey */
             $criteriaPerm->compare('t.owner_id', $userid, false);
 
@@ -2065,7 +2156,15 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 $criteriaPerm->compare("surveysgroupsowner{$userid}.owner_id", $userid, false, 'OR');
             }
         }
-        /* Place for a new event */
+        $event = new PluginEvent('getSurveyPermissionCriteria');
+        $event->set('userid', $userid);
+        $event->set('hasGlobalRead', $hasGlobalRead);
+        $event->set('criteria', $criteriaPerm);
+        App()->getPluginManager()->dispatchEvent($event);
+        $pluginCriteria = $event->get('criteria');
+        if ($pluginCriteria instanceof CDbCriteria) {
+            return $pluginCriteria;
+        }
         return $criteriaPerm;
     }
     /**
@@ -2388,6 +2487,15 @@ class Survey extends LSActiveRecord implements PermissionInterface
         }
         $criteria->addColumnCondition(['type' => $type]);
         return Question::model()->find($criteria);
+    }
+
+    /**
+     * decodes the welcome_image json to be used anywhere necessary
+     * @return array|null
+     */
+    public function getWelcomeImageSettings()
+    {
+        return json_decode_ls($this->welcome_image);
     }
 
     /**

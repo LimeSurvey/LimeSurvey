@@ -36,7 +36,7 @@
   }
 }
 
-.responses-statistics-multi-numerical {
+.responses-statistics-multi-field {
   display: grid;
   grid-template-columns: auto 1fr;
   column-gap: 32px;
@@ -51,8 +51,18 @@
   }
 
   &-value {
+    min-width: 0;
     color: $g-900;
     font-size: $font-size-sm;
+    white-space: pre-wrap;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+  }
+
+  &-more {
+    grid-column: 2;
+    color: $g-700;
+    font-size: $font-size-xs;
   }
 }
 

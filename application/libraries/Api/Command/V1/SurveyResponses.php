@@ -8,13 +8,12 @@ use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\FilterPatcher;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\CompletionFilter;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\ResponseFilterCriteriaBuilder;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\ResponseMappingTrait;
+use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\Sorting\ResponseSort;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\SurveyResponseFiles;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\SurveyRequestTrait;
 use LimeSurvey\Models\Services\Exception\PermissionDeniedException;
-use LimeSurvey\Models\Services\ResponseFilters\ParticipantResolver;
-use LimeSurvey\Models\Services\ResponseFilters\QuestionColumnMap;
-use LimeSurvey\Models\Services\ResponseFilters\ResponseFilterResolver;
 use LimeSurvey\Models\Services\ResponseFilters\ResponseFilterSet;
+use LimeSurvey\Models\Services\ResponseFilters\ResponseFilterSetService;
 use LimeSurvey\Models\Services\SurveyAnswerCache;
 use Permission;
 use Survey;
@@ -29,10 +28,10 @@ use LimeSurvey\Libraries\Api\Command\V1\Transformer\Output\TransformerOutputSurv
 /**
  * Returns the responses of a survey, one entry per response with its answers.
  *
- * Filtering and sorting go through the generic {@see FilterPatcher}, whose
- * filter keys are validated against the survey field map so any filter method
- * (equal, contain, multi-select, …) can target nested question/subquestion
- * columns. A `fields` param additionally restricts the SELECT to a caller-chosen
+ * Filtering goes through the generic {@see FilterPatcher}, whose filter keys
+ * are validated against the survey field map so any filter method (equal,
+ * contain, multi-select, …) can target nested question/subquestion columns.
+ * Sorting goes through {@see ResponseSort}. A `fields` param additionally restricts the SELECT to a caller-chosen
  * subset of response columns; when it is omitted every column is returned.
  * With `unnestFiles`, a single file upload column is listed one row per file
  * instead (see {@see SurveyResponseFiles}).
@@ -69,6 +68,7 @@ class SurveyResponses implements CommandInterface
     protected TransformerOutputSurveyResponses $transformerOutputSurveyResponses;
     protected SurveyAnswerCache $answerCache;
     protected SurveyResponseFiles $surveyResponseFiles;
+    protected ResponseFilterSetService $filterSetService;
 
     /**
      * Constructor
@@ -80,6 +80,7 @@ class SurveyResponses implements CommandInterface
      * @param TransformerOutputSurveyResponses $transformerOutputSurveyResponses
      * @param SurveyAnswerCache $answerCache
      * @param SurveyResponseFiles $surveyResponseFiles
+     * @param ResponseFilterSetService $filterSetService
      */
     public function __construct(
         Survey $survey,
@@ -88,7 +89,8 @@ class SurveyResponses implements CommandInterface
         ResponseFactory $responseFactory,
         TransformerOutputSurveyResponses $transformerOutputSurveyResponses,
         SurveyAnswerCache $answerCache,
-        SurveyResponseFiles $surveyResponseFiles
+        SurveyResponseFiles $surveyResponseFiles,
+        ResponseFilterSetService $filterSetService
     ) {
         $this->survey = $survey;
         $this->permission = $permission;
@@ -97,6 +99,7 @@ class SurveyResponses implements CommandInterface
         $this->transformerOutputSurveyResponses = $transformerOutputSurveyResponses;
         $this->answerCache = $answerCache;
         $this->surveyResponseFiles = $surveyResponseFiles;
+        $this->filterSetService = $filterSetService;
     }
 
     /**
@@ -184,6 +187,7 @@ class SurveyResponses implements CommandInterface
                 ],
                 'filters' => $request->getData('filters', []),
                 'sort' => $request->getData('sort', []),
+                'sortableColumns' => $this->getResponseSort($request)->getSortableKeys(),
             ],
         ];
     }
@@ -376,6 +380,7 @@ class SurveyResponses implements CommandInterface
             $dataMap,
             $validColumns
         );
+        $sort->defaultOrder = $this->getResponseSort($request)->getOrder($searchParams['sort']);
         $completion = $request->getData('completion', 'all');
         if (!is_string($completion)) {
             throw new \InvalidArgumentException('Invalid completion filter.');
@@ -385,6 +390,39 @@ class SurveyResponses implements CommandInterface
         $this->applyFieldSelection($criteria, $request);
 
         return [$criteria, $sort];
+    }
+
+    /**
+     * Sort builder for the survey, with the participant columns the user may sort by.
+     *
+     * @param Request $request
+     * @return ResponseSort Builder knowing all sortable columns of the survey
+     */
+    protected function getResponseSort(Request $request): ResponseSort
+    {
+        $participantsTable = null;
+        $participantColumns = [];
+        if (
+            $this->survey->hasTokensTable
+            && $this->permission->hasSurveyPermission($this->getSurveyId($request), 'tokens', 'read')
+        ) {
+            $participantsTable = $this->survey->tokensTableName;
+            $encryption = $this->survey->getTokenEncryptionOptions();
+            foreach (ResponseSort::PARTICIPANT_COLUMNS as $key => $column) {
+                // Encrypted values can't be ordered in SQL
+                $encrypted = ($encryption['enabled'] ?? 'N') === 'Y' && ($encryption['columns'][$column] ?? 'N') === 'Y';
+                if (!$encrypted) {
+                    $participantColumns[] = $key;
+                }
+            }
+        }
+
+        return new ResponseSort(
+            $this->transformerOutputSurveyResponses->fieldMap,
+            [],
+            $participantsTable,
+            $participantColumns
+        );
     }
 
     /**
@@ -409,24 +447,17 @@ class SurveyResponses implements CommandInterface
         ResponseFilterSet $filterSet,
         Request $request
     ): void {
-        if ($filterSet->isEmpty()) {
+        $resolvedFilters = $this->filterSetService->resolve(
+            $filterSet,
+            $this->survey,
+            fn(): array => $this->getQuestionFieldMap()
+        );
+        if ($resolvedFilters === []) {
             return;
         }
 
-        if (
-            $filterSet->hasParticipantFilter()
-            && !$this->permission->hasSurveyPermission($this->getSurveyId($request), 'tokens')
-        ) {
-            throw new PermissionDeniedException();
-        }
-
-        $resolver = new ResponseFilterResolver(
-            QuestionColumnMap::fromQuestionFieldMap($this->getQuestionFieldMap()),
-            ParticipantResolver::fromSurvey($this->survey)
-        );
-
         $builder = new ResponseFilterCriteriaBuilder((int) $this->getSurveyId($request));
-        $criteria->mergeWith($builder->build($resolver->resolve($filterSet)));
+        $criteria->mergeWith($builder->build($resolvedFilters));
     }
 
     /**

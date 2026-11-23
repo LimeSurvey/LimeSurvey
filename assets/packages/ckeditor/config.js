@@ -316,6 +316,7 @@ CKEDITOR.editorConfig = function (a) {
             ["NumberedList", "BulletedList", "-", "Outdent", "Indent"],
             ["JustifyLeft", "JustifyCenter", "JustifyRight", "JustifyBlock"],
             ["Link", "Unlink", "Image"],
+            ["Format"],
         ];
     
         a.toolbar = [

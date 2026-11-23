@@ -136,7 +136,7 @@ class TbDataColumn extends CDataColumn
                 $this->applyDefaultFilterAriaLabel($filterInputOptions);
                 if (is_array($this->filter)) {
                     $filterInputOptions['class'] = ' form-select ';
-                    $filterInputOptions['prompt'] = '';
+                    $filterInputOptions['prompt'] = $filterInputOptions['prompt'] ?? '';
                     echo TbHtml::activeDropDownList(
                         $this->grid->filter,
                         $this->name,

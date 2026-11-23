@@ -56,6 +56,133 @@ abstract class LSYii_Controller extends CController
     }
 
     /**
+     * Ends the request with HTTP 503 and a "site under maintenance" message when the maintenance
+     * mode "hard-cli" locks the administration, see SettingGlobal::isAdministrationLocked().
+     * Called first thing by every administrative entry point (web interface, RemoteControl, REST API).
+     *
+     * @param string $format 'html' for the maintenance page, 'text' for a plain text body (RemoteControl, AJAX), 'json' for a JSON body (REST API)
+     * @return void
+     */
+    protected function endRequestIfAdministrationLocked($format = 'html')
+    {
+        if (!SettingGlobal::isAdministrationLocked()) {
+            return;
+        }
+        $this->endRequestWithMaintenanceMessage(
+            gT('The administration of this site is temporarily locked for maintenance, for example while a backup or an update is being made. Please try again later.'),
+            $format
+        );
+    }
+
+    /**
+     * Ends the request with HTTP 503, a Retry-After header and the given maintenance message.
+     *
+     * @param string $message The message to show
+     * @param string $format 'html' for the admin maintenance page, 'text' for a plain text body, 'json' for a JSON body
+     * @return void
+     */
+    protected function endRequestWithMaintenanceMessage($message, $format)
+    {
+        http_response_code(503);
+        header('Retry-After: 300');
+        if ($format === 'json') {
+            header('Content-Type: application/json');
+            echo CJSON::encode(['error' => ['code' => 'MaintenanceMode', 'message' => $message]]);
+        } elseif ($format === 'text') {
+            header('Content-Type: text/plain; charset=UTF-8');
+            echo $message;
+        } else {
+            $this->renderPartial('/admin/super/administrationlocked', ['message' => $message], false, true);
+        }
+        Yii::app()->end();
+    }
+
+    /**
+     * Filter for the controllers of participant pages that write data (registration, opt-in, opt-out):
+     * while the maintenance mode keeps participants out ("hard" and "hard-cli"), no action runs, every
+     * request ends with a maintenance page. A controller enables it by listing 'participantsLocked' in
+     * its filters(), so new actions are covered without further code.
+     * The survey ID ("surveyid", else "sid") and the language ("langcode", else "lang") only choose how
+     * the page looks: the survey's theme and language for an existing survey, the site's maintenance
+     * page otherwise. The actions read their parameters in different ways, so the filter never relies
+     * on a missing or malformed survey ID to keep an action from writing data.
+     *
+     * @param CFilterChain $filterChain
+     * @return void
+     */
+    public function filterParticipantsLocked($filterChain)
+    {
+        if (!SettingGlobal::areParticipantsLocked()) {
+            $filterChain->run();
+            return;
+        }
+        $request = Yii::app()->request;
+        $surveyId = (int) ($request->getParam('surveyid') ?: $request->getParam('sid'));
+        $survey = $surveyId > 0 ? Survey::model()->findByPk($surveyId) : null;
+        $language = (string) $request->getParam('langcode', $request->getParam('lang', ''));
+        if ($survey) {
+            if (!in_array($language, $survey->getAllLanguages(), true)) {
+                $language = $survey->language;
+            }
+            Yii::app()->setLanguage($language);
+            $this->endRequestIfParticipantsLocked($survey);
+        }
+        $this->endRequestWithSiteMaintenancePage($language);
+    }
+
+    /**
+     * Renders the maintenance page of the site in the default theme, as the public survey list does
+     * during maintenance, and ends the request.
+     *
+     * @param string $language The requested language, the default language is used if the site does not offer it
+     * @return void
+     */
+    protected function endRequestWithSiteMaintenancePage($language)
+    {
+        if (!isset(getLanguageDataRestricted(false, 'short')[$language])) {
+            $language = Yii::app()->getConfig('defaultlang');
+        }
+        Yii::app()->setLanguage($language);
+        LimeExpressionManager::SetSurveyId(0);
+        $template = Template::model()->getInstance(Yii::app()->getConfig('defaulttheme'));
+        $siteName = Yii::app()->getConfig('sitename');
+        $surveyInfo = [
+            'oTemplate' => $template,
+            'sSiteName' => $siteName,
+            'sSiteAdminName' => Yii::app()->getConfig('siteadminname'),
+            'sSiteAdminEmail' => Yii::app()->getConfig('siteadminemail'),
+            'bShowClearAll' => false,
+            'surveyls_title' => $siteName,
+            'alanguageChanger' => ['show' => false],
+        ];
+        // Renders the page and ends the request
+        Yii::app()->twigRenderer->renderTemplateFromFile('layout_maintenance.twig', ['aSurveyInfo' => $surveyInfo], false);
+        Yii::app()->end();
+    }
+
+    /**
+     * Renders the theme's maintenance page and ends the request when the maintenance mode keeps
+     * participants from taking surveys ("hard" and "hard-cli"), see SettingGlobal::areParticipantsLocked().
+     * The language must be set before, so that the page is shown in the survey's theme and language.
+     *
+     * @param Survey $survey The survey the request belongs to
+     * @return void
+     */
+    protected function endRequestIfParticipantsLocked(Survey $survey)
+    {
+        if (!SettingGlobal::areParticipantsLocked()) {
+            return;
+        }
+        Template::model()->getInstance('', $survey->sid);
+        // Renders the page and ends the request
+        Yii::app()->twigRenderer->renderTemplateFromFile(
+            'layout_maintenance.twig',
+            ['oSurvey' => $survey, 'aSurveyInfo' => getSurveyInfo($survey->sid, App()->language)],
+            false
+        );
+    }
+
+    /**
      * Loads a helper
      *
      * @access public
@@ -86,8 +213,8 @@ abstract class LSYii_Controller extends CController
         // Do not localize/translate this!
 
         $dieoutput = '';
-        if (version_compare(PHP_VERSION, '5.3.3', '<')) {
-            $dieoutput .= 'This script can only be run on PHP version 5.3.3 or later! Your version: ' . PHP_VERSION . '<br />';
+        if (version_compare(PHP_VERSION, InstallerConfigForm::MINIMUM_PHP_VERSION, '<')) {
+            $dieoutput .= 'LimeSurvey requires PHP version ' . InstallerConfigForm::MINIMUM_PHP_VERSION . ' or later. Your version: ' . PHP_VERSION . '<br />';
         }
 
         if (!function_exists('mb_convert_encoding')) {

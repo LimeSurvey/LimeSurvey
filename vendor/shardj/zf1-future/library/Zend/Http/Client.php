@@ -185,14 +185,14 @@ class Zend_Http_Client
     /**
      * Request body content type (for POST requests)
      *
-     * @var string
+     * @var string|null
      */
     protected $enctype = null;
 
     /**
      * The raw post data to send. Could be set by setRawData($data, $enctype).
      *
-     * @var string
+     * @var string|null
      */
     protected $raw_post_data = null;
 
@@ -233,21 +233,21 @@ class Zend_Http_Client
     /**
      * The client's cookie jar
      *
-     * @var Zend_Http_CookieJar
+     * @var Zend_Http_CookieJar|null
      */
     protected $cookiejar = null;
 
     /**
      * The last HTTP request sent by the client, as string
      *
-     * @var string
+     * @var string|null
      */
     protected $last_request = null;
 
     /**
      * The last HTTP response received by the client
      *
-     * @var Zend_Http_Response
+     * @var Zend_Http_Response|null
      */
     protected $last_response = null;
 
@@ -494,7 +494,7 @@ class Zend_Http_Client
      * Set a GET parameter for the request. Wrapper around _setParameter
      *
      * @param string|array $name
-     * @param string $value
+     * @param string|int $value
      * @return Zend_Http_Client
      */
     public function setParameterGet($name, $value = null)
@@ -534,7 +534,7 @@ class Zend_Http_Client
      * @param string $type GET or POST
      * @param string $name
      * @param string $value
-     * @return null
+     * @return void
      */
     protected function _setParameter($type, $name, $value)
     {
@@ -643,6 +643,7 @@ class Zend_Http_Client
         if ($cookiejar instanceof Zend_Http_CookieJar) {
             $this->cookiejar = $cookiejar;
         } elseif ($cookiejar === true) {
+            require_once 'Zend/Http/CookieJar.php';
             $this->cookiejar = new Zend_Http_CookieJar();
         } elseif (! $cookiejar) {
             $this->cookiejar = null;
@@ -670,7 +671,7 @@ class Zend_Http_Client
      * will be added directly to the headers array as "Cookie" headers.
      *
      * @param Zend_Http_Cookie|string $cookie
-     * @param string|null $value If "cookie" is a string, this is the cookie value.
+     * @param string|int|null $value If "cookie" is a string, this is the cookie value.
      * @return Zend_Http_Client
      * @throws Zend_Http_Client_Exception
      */
@@ -698,6 +699,7 @@ class Zend_Http_Client
             if ($cookie instanceof Zend_Http_Cookie) {
                 $this->cookiejar->addCookie($cookie);
             } elseif (is_string($cookie) && $value !== null) {
+                require_once 'Zend/Http/Cookie.php';
                 $cookie = Zend_Http_Cookie::fromString("{$cookie}={$value}",
                                                        $this->uri,
                                                        $this->config['encodecookies']);
@@ -914,7 +916,7 @@ class Zend_Http_Client
      * seperated from ->request() to preserve logic and readability
      *
      * @param Zend_Http_Client_Adapter_Interface|string $adapter
-     * @return null
+     * @return void
      * @throws Zend_Http_Client_Exception
      */
     public function setAdapter($adapter)
@@ -960,7 +962,7 @@ class Zend_Http_Client
     /**
      * Set streaming for received data
      *
-     * @param string|boolean $streamfile Stream file, true for temp file, false/null for no streaming
+     * @param string|boolean|null $streamfile Stream file, true for temp file, false/null for no streaming
      * @return Zend_Http_Client
      */
     public function setStream($streamfile = true)
@@ -1065,6 +1067,7 @@ class Zend_Http_Client
             $this->adapter->connect($uri->getHost(), $uri->getPort(),
                 ($uri->getScheme() == 'https' ? true : false));
 
+            $stream = null;
             if($this->config['output_stream']) {
                 if($this->adapter instanceof Zend_Http_Client_Adapter_Stream) {
                     $stream = $this->_openTempStream();
@@ -1230,6 +1233,7 @@ class Zend_Http_Client
 
         // Load cookies from cookie jar
         if (isset($this->cookiejar)) {
+            require_once 'Zend/Http/CookieJar.php';
             $cookstr = $this->cookiejar->getMatchingCookies($this->uri,
                 true, Zend_Http_CookieJar::COOKIE_STRING_CONCAT);
 
@@ -1270,6 +1274,7 @@ class Zend_Http_Client
         // If mbstring overloads substr and strlen functions, we have to
         // override it's internal encoding
         if (function_exists('mb_internal_encoding') &&
+           // phpcs:ignore PHPCompatibility.IniDirectives.RemovedIniDirectives.mbstring_func_overloadDeprecatedRemoved -- the directive exists on PHP 7.4
            ((int) ini_get('mbstring.func_overload')) & 2) {
 
             $mbIntEnc = mb_internal_encoding();
@@ -1345,7 +1350,6 @@ class Zend_Http_Client
                     require_once 'Zend/Http/Client/Exception.php';
                     throw new Zend_Http_Client_Exception("Cannot handle content type '{$this->enctype}' automatically." .
                         " Please use Zend_Http_Client::setRawData to send this kind of content.");
-                    break;
             }
         }
 

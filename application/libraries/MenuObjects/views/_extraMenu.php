@@ -31,9 +31,9 @@ foreach ($extraMenus as $menu) : ?>
                             data-bs-toggle="dropdown"
                             aria-expanded="false"
                             aria-haspopup="true"
-                            title="<?= CHtml::encode($menuLabel) ?>"
-                            aria-label="<?= CHtml::encode($menuLabel) ?>">
+                            title="<?= CHtml::encode($menuLabel) ?>">
                         <i class="<?= $menuIconClass ?>" aria-hidden="true"></i>
+                        <span class="dropdown-button-label visually-hidden"><?= CHtml::encode($menuLabel) ?></span>
                     </button>
                     <?php
                 } else { ?>
@@ -56,8 +56,9 @@ foreach ($extraMenus as $menu) : ?>
                             <li class="dropdown-divider" role="separator"></li>
                             <?php
                         elseif ($menuItem->isSmallText()) : ?>
-                            <li class="dropdown-header" role="presentation">
-                                <span aria-hidden="true"><?= $menuItemLabel ?></span>
+                            <?php // Not a list item, but announced as the heading of the menu ?>
+                            <li role="none">
+                                <h2 class="dropdown-header"><?= $menuItemLabel ?></h2>
                             </li>
                             <?php
                         else : ?>

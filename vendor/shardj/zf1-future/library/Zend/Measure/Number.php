@@ -136,7 +136,7 @@ class Zend_Measure_Number extends Zend_Measure_Abstract
     /**
      * Zend_Measure_Abstract is an abstract class for the different measurement types
      *
-     * @param  integer            $value  Value
+     * @param  integer|string     $value  Value
      * @param  string             $type   (Optional) A Zend_Measure_Number Type
      * @param  string|Zend_Locale $locale (Optional) A Zend_Locale
      * @throws Zend_Measure_Exception When language is unknown
@@ -154,12 +154,8 @@ class Zend_Measure_Number extends Zend_Measure_Abstract
         }
 
         if (!Zend_Locale::isLocale($locale, true, false)) {
-            if (!Zend_Locale::isLocale($locale, true, false)) {
-                require_once 'Zend/Measure/Exception.php';
-                throw new Zend_Measure_Exception("Language (" . (string) $locale . ") is unknown");
-            }
-
-            $locale = new Zend_Locale($locale);
+            require_once 'Zend/Measure/Exception.php';
+            throw new Zend_Measure_Exception("Language (" . (string) $locale . ") is unknown");
         }
 
         $this->_locale = (string) $locale;
@@ -179,7 +175,7 @@ class Zend_Measure_Number extends Zend_Measure_Abstract
     /**
      * Set a new value
      *
-     * @param  integer            $value  Value
+     * @param  integer|string     $value  Value
      * @param  string             $type   (Optional) A Zend_Measure_Number Type
      * @param  string|Zend_Locale $locale (Optional) A Zend_Locale Type
      * @throws Zend_Measure_Exception
@@ -197,57 +193,57 @@ class Zend_Measure_Number extends Zend_Measure_Abstract
 
         switch($type) {
             case 'BINARY':
-                preg_match('/[01]+/', $value, $ergebnis);
+                preg_match('/[01]+/', (string) $value, $ergebnis);
                 $value = $ergebnis[0];
                 break;
 
             case 'TERNARY':
-                preg_match('/[012]+/', $value, $ergebnis);
+                preg_match('/[012]+/', (string) $value, $ergebnis);
                 $value = $ergebnis[0];
                 break;
 
             case 'QUATERNARY':
-                preg_match('/[0123]+/', $value, $ergebnis);
+                preg_match('/[0123]+/', (string) $value, $ergebnis);
                 $value = $ergebnis[0];
                 break;
 
             case 'QUINARY':
-                preg_match('/[01234]+/', $value, $ergebnis);
+                preg_match('/[01234]+/', (string) $value, $ergebnis);
                 $value = $ergebnis[0];
                 break;
 
             case 'SENARY':
-                preg_match('/[012345]+/', $value, $ergebnis);
+                preg_match('/[012345]+/', (string) $value, $ergebnis);
                 $value = $ergebnis[0];
                 break;
 
             case 'SEPTENARY':
-                preg_match('/[0123456]+/', $value, $ergebnis);
+                preg_match('/[0123456]+/', (string) $value, $ergebnis);
                 $value = $ergebnis[0];
                 break;
 
             case 'OCTAL':
-                preg_match('/[01234567]+/', $value, $ergebnis);
+                preg_match('/[01234567]+/', (string) $value, $ergebnis);
                 $value = $ergebnis[0];
                 break;
 
             case 'NONARY':
-                preg_match('/[012345678]+/', $value, $ergebnis);
+                preg_match('/[012345678]+/', (string) $value, $ergebnis);
                 $value = $ergebnis[0];
                 break;
 
             case 'DUODECIMAL':
-                preg_match('/[0123456789AB]+/', strtoupper($value), $ergebnis);
+                preg_match('/[0123456789AB]+/', strtoupper((string) $value), $ergebnis);
                 $value = $ergebnis[0];
                 break;
 
             case 'HEXADECIMAL':
-                preg_match('/[0123456789ABCDEF]+/', strtoupper($value), $ergebnis);
+                preg_match('/[0123456789ABCDEF]+/', strtoupper((string) $value), $ergebnis);
                 $value = $ergebnis[0];
                 break;
 
             case 'ROMAN':
-                preg_match('/[IVXLCDM_]+/', strtoupper($value), $ergebnis);
+                preg_match('/[IVXLCDM_]+/', strtoupper((string) $value), $ergebnis);
                 $value = $ergebnis[0];
                 break;
 
@@ -273,12 +269,13 @@ class Zend_Measure_Number extends Zend_Measure_Abstract
     /**
      * Convert input to decimal value string
      *
-     * @param  integer $input Input string
+     * @param  integer|string $input Input string
      * @param  string  $type  Type from which to convert to decimal
      * @return string
      */
     private function _toDecimal($input, $type)
     {
+        $input = (string) $input;
         $value = '';
         // Convert base xx values
         if ($this->_units[$type][0] <= 16) {
@@ -294,6 +291,7 @@ class Zend_Measure_Number extends Zend_Measure_Abstract
 
         // Convert roman numbers
         if ($type === 'ROMAN') {
+            $value = 0;
             $input = strtoupper($input);
             $input = preg_replace(array_keys(self::$_romanconvert), array_values(self::$_romanconvert), $input);
 
@@ -311,8 +309,6 @@ class Zend_Measure_Number extends Zend_Measure_Abstract
 
                 $value += $num;
             }
-
-            str_replace('/', '', $value);
         }
 
         return $value;
@@ -321,7 +317,7 @@ class Zend_Measure_Number extends Zend_Measure_Abstract
     /**
      * Convert input to type value string
      *
-     * @param  integer $value Input string
+     * @param  integer|string $value Input string
      * @param  string  $type  Type to convert to
      * @return string
      * @throws Zend_Measure_Exception When more than 200 digits are calculated
@@ -393,7 +389,7 @@ class Zend_Measure_Number extends Zend_Measure_Abstract
      *
      * @param  string $type New type to set
      * @throws Zend_Measure_Exception When a unknown type is given
-     * @return void
+     * @return $this
      */
     public function setType($type)
     {
@@ -407,6 +403,8 @@ class Zend_Measure_Number extends Zend_Measure_Abstract
 
         $this->_value = $value;
         $this->_type  = $type;
+
+        return $this;
     }
 
     /**

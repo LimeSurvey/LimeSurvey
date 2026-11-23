@@ -25,6 +25,19 @@ class SettingGlobal extends LSActiveRecord
 {
     const DBVERSION_NUMBER = 'DBVersion'; //this is the attribute stg_name in table for db version
 
+    /** @var string Maintenance mode: No maintenance */
+    public const MAINTENANCE_MODE_OFF = 'off';
+    /** @var string Maintenance mode: Participants can finish surveys they already started, no new participants are allowed */
+    public const MAINTENANCE_MODE_SOFT = 'soft';
+    /** @var string Maintenance mode: No participant can take a survey */
+    public const MAINTENANCE_MODE_HARD = 'hard';
+    /**
+     * @var string Maintenance mode: Like "hard", and the administration (web interface, RemoteControl and
+     * REST API) is locked as well. Can only be set and unset with "console.php setMaintenanceMode", meant
+     * for the time a hosting system makes a backup or runs the database update from the command line.
+     */
+    public const MAINTENANCE_MODE_HARD_CLI = 'hard-cli';
+
     /**
      * @var string[] settings that must only come from php files
      */
@@ -100,6 +113,44 @@ class SettingGlobal extends LSActiveRecord
         $setting->stg_value = $settingvalue;
         $setting->save();
         return $setting;
+    }
+
+    /**
+     * Returns the current maintenance mode, one of the MAINTENANCE_MODE_* constants.
+     * An empty or unknown value counts as "off".
+     *
+     * @return string
+     */
+    public static function getMaintenanceMode()
+    {
+        $mode = (string) App()->getConfig('maintenancemode', self::MAINTENANCE_MODE_OFF);
+        $modes = [self::MAINTENANCE_MODE_OFF, self::MAINTENANCE_MODE_SOFT, self::MAINTENANCE_MODE_HARD, self::MAINTENANCE_MODE_HARD_CLI];
+        return in_array($mode, $modes, true) ? $mode : self::MAINTENANCE_MODE_OFF;
+    }
+
+    /**
+     * Whether participants are locked out completely: no participant may take a survey, not even
+     * one they already started. True for both maintenance modes "hard" and "hard-cli".
+     *
+     * @param string|null $mode The mode to check, null for the current one
+     * @return bool
+     */
+    public static function areParticipantsLocked($mode = null)
+    {
+        $mode = $mode ?? self::getMaintenanceMode();
+        return in_array($mode, [self::MAINTENANCE_MODE_HARD, self::MAINTENANCE_MODE_HARD_CLI], true);
+    }
+
+    /**
+     * Whether the administration (web interface, RemoteControl and REST API) is locked
+     * (maintenance mode "hard-cli", set from the command line while the hosting system
+     * makes a backup or runs the database update).
+     *
+     * @return bool
+     */
+    public static function isAdministrationLocked()
+    {
+        return self::getMaintenanceMode() === self::MAINTENANCE_MODE_HARD_CLI;
     }
 
     /** @inheritdoc

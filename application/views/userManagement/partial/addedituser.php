@@ -6,7 +6,7 @@ $modalTitle = $oUser->isNewRecord ? gT('Add user') : gT('Edit user');
 $buttonTitle = $oUser->isNewRecord ? gT('Add') : gT('Save');
 Yii::app()->getController()->renderPartial(
     '/layouts/partial_modals/modal_header',
-    ['modalTitle' => $modalTitle]
+    ['modalTitle' => $modalTitle, 'modalTitleId' => 'UserManagement-action-modal-title']
 );
 
 ?>

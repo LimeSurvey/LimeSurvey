@@ -34,6 +34,7 @@ require_once 'Zend/Crypt/Math.php';
  * @package    Zend_Filter
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @deprecated Deprecated since 1.26.1 and will be removed in a future version: the mcrypt extension was removed from PHP 7.2, use Zend_Filter_Encrypt_Openssl
  */
 class Zend_Filter_Encrypt_Mcrypt implements Zend_Filter_Encrypt_Interface
 {
@@ -73,6 +74,8 @@ class Zend_Filter_Encrypt_Mcrypt implements Zend_Filter_Encrypt_Interface
      */
     public function __construct($options)
     {
+        trigger_error(get_class($this) . ' is deprecated and will be removed in a future version', E_USER_DEPRECATED);
+
         if (!extension_loaded('mcrypt')) {
             require_once 'Zend/Filter/Exception.php';
             throw new Zend_Filter_Exception('This filter needs the mcrypt extension');
@@ -318,7 +321,7 @@ class Zend_Filter_Encrypt_Mcrypt implements Zend_Filter_Encrypt_Interface
      *
      * @param  resource $cipher
      * @return Zend_Filter_Encrypt_Mcrypt
-     * @throws
+     * @throws Zend_Filter_Exception
      */
     protected function _initCipher($cipher)
     {

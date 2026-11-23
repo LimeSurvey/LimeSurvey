@@ -40,6 +40,7 @@ class Zend_Xml_Security
     {
         foreach (self::getEntityComparison($xml) as $compare) {
             if (strpos($xml, $compare) !== false) {
+                require_once 'Zend/Xml/Exception.php';
                 throw new Zend_Xml_Exception(self::ENTITY_DETECT);
             }
         }
@@ -64,9 +65,9 @@ class Zend_Xml_Security
      * Scan XML string for potential XXE and XEE attacks
      *
      * @param   string $xml
-     * @param   DomDocument $dom
+     * @param   DOMDocument $dom
      * @throws  Zend_Xml_Exception
-     * @return  SimpleXMLElement|DomDocument|boolean
+     * @return  SimpleXMLElement|DOMDocument|boolean
      */
     public static function scan($xml, ?DOMDocument $dom = null)
     {
@@ -82,49 +83,52 @@ class Zend_Xml_Security
             $dom = new DOMDocument();
         }
 
+        // previous libxml settings, restored after loading
+        $loadEntities = false;
+        $useInternalXmlErrors = false;
         if (!self::isPhpFpm()) {
             if (LIBXML_VERSION < 20900) {
+                // phpcs:ignore PHPCompatibility.FunctionUse.RemovedFunctions.libxml_disable_entity_loaderDeprecated -- called with libxml before 2.9 only
                 $loadEntities = libxml_disable_entity_loader(true);
             }
             $useInternalXmlErrors = libxml_use_internal_errors(true);
         }
 
-        // Load XML with network access disabled (LIBXML_NONET)
-        // error disabled with @ for PHP-FPM scenario
-        set_error_handler(['Zend_Xml_Security', 'loadXmlErrorHandler'], E_WARNING);
+        try {
+            // Load XML with network access disabled (LIBXML_NONET)
+            // error disabled with @ for PHP-FPM scenario
+            set_error_handler(['Zend_Xml_Security', 'loadXmlErrorHandler'], E_WARNING);
+            try {
+                $result = $dom->loadXML($xml, LIBXML_NONET);
+            } finally {
+                restore_error_handler();
+            }
 
-        $result = $dom->loadXML($xml, LIBXML_NONET);
-        restore_error_handler();
+            if (!$result) {
+                return false;
+            }
 
-        if (!$result) {
-            // Entity load to previous setting
+            // Scan for potential XEE attacks using ENTITY, if not PHP-FPM
+            if (!self::isPhpFpm()) {
+                foreach ($dom->childNodes as $child) {
+                    if ($child->nodeType === XML_DOCUMENT_TYPE_NODE) {
+                        if ($child->entities->length > 0) {
+                            require_once 'Exception.php';
+                            require_once 'Zend/Xml/Exception.php';
+                            throw new Zend_Xml_Exception(self::ENTITY_DETECT);
+                        }
+                    }
+                }
+            }
+        } finally {
+            // Entity load and internal errors to previous setting
             if (!self::isPhpFpm()) {
                 if (LIBXML_VERSION < 20900) {
+                    // phpcs:ignore PHPCompatibility.FunctionUse.RemovedFunctions.libxml_disable_entity_loaderDeprecated -- called with libxml before 2.9 only
                     libxml_disable_entity_loader($loadEntities);
                 }
                 libxml_use_internal_errors($useInternalXmlErrors);
             }
-            return false;
-        }
-
-        // Scan for potential XEE attacks using ENTITY, if not PHP-FPM
-        if (!self::isPhpFpm()) {
-            foreach ($dom->childNodes as $child) {
-                if ($child->nodeType === XML_DOCUMENT_TYPE_NODE) {
-                    if ($child->entities->length > 0) {
-                        require_once 'Exception.php';
-                        throw new Zend_Xml_Exception(self::ENTITY_DETECT);
-                    }
-                }
-            }
-        }
-
-        // Entity load to previous setting
-        if (!self::isPhpFpm()) {
-            if (LIBXML_VERSION < 20900) {
-                libxml_disable_entity_loader($loadEntities);
-            }
-            libxml_use_internal_errors($useInternalXmlErrors);
         }
 
         if (isset($simpleXml)) {
@@ -143,12 +147,13 @@ class Zend_Xml_Security
      * @param  string $file
      * @param  DOMDocument $dom
      * @throws Zend_Xml_Exception
-     * @return SimpleXMLElement|DomDocument
+     * @return SimpleXMLElement|DOMDocument
      */
     public static function scanFile($file, ?DOMDocument $dom = null)
     {
         if (!file_exists($file)) {
             require_once 'Exception.php';
+            require_once 'Zend/Xml/Exception.php';
             throw new Zend_Xml_Exception(
                 "The file $file specified doesn't exist"
             );

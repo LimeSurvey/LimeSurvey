@@ -26,7 +26,7 @@ jobs:
       fail-fast: false
       matrix:
         # Specify what versions of php you want to test
-        php-versions: [ '8.1', '8.5' ]
+        php-versions: [ '8.2', '8.5' ]
         # MySQL runs on all PHP versions, PostgreSQL and MSSQL only on the newest (see exclude)
         db-type: [ 'mysql', 'pgsql', 'mssql' ]
         testsuite:
@@ -44,9 +44,9 @@ jobs:
           - security
           - api
         exclude:
-          - php-versions: '8.1'
+          - php-versions: '8.2'
             db-type: 'pgsql'
-          - php-versions: '8.1'
+          - php-versions: '8.2'
             db-type: 'mssql'
     # Env vars for this job
     env:
@@ -89,6 +89,9 @@ jobs:
             php${{ matrix.php-versions }}-sqlite3 \
             libapache2-mod-php${{ matrix.php-versions }}
           sudo update-alternatives --set php /usr/bin/php${{ matrix.php-versions }}
+          # Latest stable Composer 2; "composer install" enforces the "composer" requirement from composer.json
+          sudo composer self-update --2
+          composer --version
 
       # Start the MySQL service - https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu1804-README.md#mysql
       - name: Start the MySQL service
@@ -241,14 +244,14 @@ jobs:
       # for debugging
       # - name: Setup upterm session
       #   uses: lhotari/action-upterm@v1
-      #   if: ${{ contains(matrix.php-versions, '8.1') }}
+      #   if: ${{ contains(matrix.php-versions, '8.2') }}
       - name: Test the server
         run: |
           # Test server.
           wget -O - localhost
           #sudo tail -n 500 /var/log/apache2/error.log || true
           #sudo tail -n 500 /var/log/nginx/error.log || true
-          #sudo tail -n 500 /var/log/php8.1-fpm.log || true
+          #sudo tail -n 500 /var/log/php8.2-fpm.log || true
           #sudo tail -n 500 /var/log/php8.5-fpm.log || true
           # NOTE: php --version might not be the same as setup in apache. Use fwrite(STDERR, phpversion()); in index.php to be sure.
           #which php

@@ -1,5 +1,7 @@
 <?php
 
+use LimeSurvey\Models\Services\SurveySessionState;
+
 /**
  * Service class to activate survey.
  * @todo Move to models/services/survey/ folder.
@@ -72,7 +74,7 @@ class SurveyActivator
         // Clear session cache (e.g. from a survey preview run in
         // the same browser session) before building the response table.
         $iSurveyId = $this->survey->sid;
-        unset($_SESSION['responses_' . $iSurveyId]);
+        SurveySessionState::forSurvey((int) $iSurveyId)->clear();
 
         $this->prepareResponsesTable();
 
@@ -193,6 +195,7 @@ class SurveyActivator
                     $aTableDefinition[$aRow['fieldname']] = (array_key_exists('encrypted', $aRow) && $aRow['encrypted'] == 'Y') ? "text" : (isset($aRow['answertabledefinition']) && !empty($aRow['answertabledefinition']) ? $aRow['answertabledefinition'] : "decimal (30,10)");
                     break;
                 case Question::QT_S_SHORT_FREE_TEXT:
+                case Question::QT_J_MAP:
                     $aTableDefinition[$aRow['fieldname']] = isset($aRow['answertabledefinition']) && !empty($aRow['answertabledefinition']) ? $aRow['answertabledefinition'] : "text";
                     break;
                 case Question::QT_L_LIST:
@@ -200,7 +203,7 @@ class SurveyActivator
                 case Question::QT_M_MULTIPLE_CHOICE:
                 case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:
                 case Question::QT_O_LIST_WITH_COMMENT:
-                    if (strpos((string) $aRow['aid'], 'other') === false && strpos((string) $aRow['aid'], 'comment') === false) {
+                    if ($aRow['aid'] === 'otherchecked' || (strpos((string) $aRow['aid'], 'other') === false && strpos((string) $aRow['aid'], 'comment') === false)) {
                         $aTableDefinition[$aRow['fieldname']] = (array_key_exists('encrypted', $aRow) && $aRow['encrypted'] == 'Y') ? "text" : (isset($aRow['answertabledefinition']) && !empty($aRow['answertabledefinition']) ? $aRow['answertabledefinition'] : "string(5)") ;
                     } else {
                         $aTableDefinition[$aRow['fieldname']] = "text";

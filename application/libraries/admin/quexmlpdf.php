@@ -19,7 +19,7 @@
 * Tested with TCPDF 5.8.008 - see http://www.tcpdf.org/
 */
 
-require('pdf.php');
+Yii::import('application.libraries.admin.pdf', true);
 
 /**
 * A TCPDF based class to produce queXF compatible questionnaire PDF files and banding description XML from queXML
@@ -741,6 +741,16 @@ class quexmlpdf extends pdf
         if (!empty($language)) {
             $this->language = $language;
         }
+    }
+
+    /**
+     * Returns the language code of the questionnaire.
+     *
+     * @return string|null The language code set with setLanguage()
+     */
+    protected function getDocumentLanguage()
+    {
+        return $this->language;
     }
 
     /**

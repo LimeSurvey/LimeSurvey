@@ -176,8 +176,8 @@ class Zend_Oauth_Http_Utility
         // periods and uses urldecode, not rawurldecode.
         $parts = explode('&', $query);
         foreach ($parts as $pair) {
-            $kv = explode('=', $pair);
-            $params[rawurldecode($kv[0])] = rawurldecode($kv[1]);
+            $kv = explode('=', $pair, 2);
+            $params[rawurldecode($kv[0])] = rawurldecode($kv[1] ?? '');
         }
         return $params;
     }
@@ -205,12 +205,12 @@ class Zend_Oauth_Http_Utility
     /**
      * urlencode a value
      *
-     * @param  string $value
+     * @param  string|null $value null is encoded as an empty string, e.g. a missing token secret
      * @return string
      */
     public static function urlEncode($value)
     {
-        $encoded = rawurlencode($value);
+        $encoded = rawurlencode((string) $value);
         $encoded = str_replace('%7E', '~', $encoded);
         return $encoded;
     }

@@ -237,6 +237,11 @@ class Zend_Validate_StringLength extends Zend_Validate_Abstract
             $length = iconv_strlen($value);
         }
 
+        if ($length === false) {
+            $this->_error(self::INVALID);
+            return false;
+        }
+
         if ($length < $this->_min) {
             $this->_error(self::TOO_SHORT);
         }

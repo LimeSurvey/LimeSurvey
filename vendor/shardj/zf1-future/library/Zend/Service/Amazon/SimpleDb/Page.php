@@ -38,7 +38,7 @@ class Zend_Service_Amazon_SimpleDb_Page
     /**
      * Page data
      *
-     * @var string
+     * @var array|string
      */
     protected $_data;
 
@@ -52,7 +52,7 @@ class Zend_Service_Amazon_SimpleDb_Page
     /**
      * Constructor
      *
-     * @param string      $data
+     * @param array|string $data
      * @param string|null $token
      */
     public function __construct($data, $token = null)
@@ -64,7 +64,7 @@ class Zend_Service_Amazon_SimpleDb_Page
     /**
      * Set page data
      *
-     * @param string $data
+     * @param array|string $data
      */
     public function setData($data)
     {
@@ -74,7 +74,7 @@ class Zend_Service_Amazon_SimpleDb_Page
     /**
      * Retrieve page data
      *
-     * @return string
+     * @return array|string
      */
     public function getData()
     {
@@ -88,7 +88,7 @@ class Zend_Service_Amazon_SimpleDb_Page
      */
     public function setToken($token)
     {
-        $this->_token = (trim($token) === '') ? null : $token;
+        $this->_token = (trim((string) $token) === '') ? null : $token;
     }
 
     /**

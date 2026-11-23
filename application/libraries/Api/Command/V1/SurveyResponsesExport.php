@@ -13,10 +13,8 @@ use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\CompletionFilter;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\ExportFilterSql;
 use LimeSurvey\Models\Services\Exception\PermissionDeniedException;
 use LimeSurvey\Models\Services\ExportSurveyResultsService;
-use LimeSurvey\Models\Services\ResponseFilters\ParticipantResolver;
-use LimeSurvey\Models\Services\ResponseFilters\QuestionColumnMap;
-use LimeSurvey\Models\Services\ResponseFilters\ResponseFilterResolver;
 use LimeSurvey\Models\Services\ResponseFilters\ResponseFilterSet;
+use LimeSurvey\Models\Services\ResponseFilters\ResponseFilterSetService;
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermissionTrait;
 use Permission;
 use RuntimeException;
@@ -68,6 +66,13 @@ class SurveyResponsesExport implements CommandInterface
      * @var ExportFilterSql
      */
     protected ExportFilterSql $filterSql;
+
+    /**
+     * Resolves the filter built in the filter modal.
+     *
+     * @var ResponseFilterSetService
+     */
+    protected ResponseFilterSetService $filterSetService;
 
     /**
      * Allowed export formats.
@@ -144,18 +149,21 @@ class SurveyResponsesExport implements CommandInterface
      * @param Permission $permission Permission helper for checking access
      * @param ResponseFactory $responseFactory Factory to create API responses
      * @param ExportSurveyResultsService $exportSurvey Service responsible for exporting survey results
+     * @param ResponseFilterSetService $filterSetService Resolves the filter built in the filter modal
      */
     public function __construct(
         Survey $survey,
         Permission $permission,
         ResponseFactory $responseFactory,
-        ExportSurveyResultsService $exportSurvey
+        ExportSurveyResultsService $exportSurvey,
+        ResponseFilterSetService $filterSetService
     ) {
         $this->permission = $permission;
         $this->survey = $survey;
         $this->responseFactory = $responseFactory;
         $this->exportSurvey = $exportSurvey;
         $this->filterSql = new ExportFilterSql($exportSurvey);
+        $this->filterSetService = $filterSetService;
     }
 
     /**
@@ -217,7 +225,7 @@ class SurveyResponsesExport implements CommandInterface
         }
         CompletionFilter::assertValid($completion);
 
-        $resolvedFilters = $this->resolveFilterSet($request, $surveyId, $language);
+        $resolvedFilters = $this->resolveFilterSet($request, $language);
 
         if (!in_array($type, $this->nativeFormats)) {
             if ($completion === 'screened_out') {
@@ -266,7 +274,6 @@ class SurveyResponsesExport implements CommandInterface
      * field map, as the responses list and the statistics tab do.
      *
      * @param Request $request
-     * @param int $surveyId
      * @param string|null $language
      * @return \LimeSurvey\Models\Services\ResponseFilters\ResolvedFilter[]
      *
@@ -274,28 +281,13 @@ class SurveyResponsesExport implements CommandInterface
      * @throws PermissionDeniedException when a participant filter is sent by a
      *     caller who may not read the survey's participants.
      */
-    protected function resolveFilterSet(Request $request, int $surveyId, ?string $language): array
+    protected function resolveFilterSet(Request $request, ?string $language): array
     {
-        $filterSet = ResponseFilterSet::fromRequestValue($request->getData('filterSet', null));
-        if ($filterSet->isEmpty()) {
-            return [];
-        }
-
-        if (
-            $filterSet->hasParticipantFilter()
-            && !$this->permission->hasSurveyPermission($surveyId, 'tokens')
-        ) {
-            throw new PermissionDeniedException();
-        }
-
-        $resolver = new ResponseFilterResolver(
-            QuestionColumnMap::fromQuestionFieldMap(
-                createFieldMap($this->surveyModel, 'full', false, false, $language)
-            ),
-            ParticipantResolver::fromSurvey($this->surveyModel)
+        return $this->filterSetService->resolve(
+            ResponseFilterSet::fromRequestValue($request->getData('filterSet', null)),
+            $this->surveyModel,
+            fn(): array => createFieldMap($this->surveyModel, 'full', false, false, $language)
         );
-
-        return $resolver->resolve($filterSet);
     }
 
     /**

@@ -33,6 +33,7 @@ echo viewHelper::getViewTestTag('usersIndex');
             'lsCaption' => gT('User management'),
             'lsAfterAjaxUpdate' => [
                 'LS.UserManagement.bindButtons();',
+                'LS.UserManagement.restoreFocus(true);',
                 'showDeactivatedUserTooltip();'
             ],
             'filter' => $model,
@@ -81,9 +82,10 @@ echo viewHelper::getViewTestTag('usersIndex');
     });
 
 </script>
-<div id='UserManagement-action-modal' class="modal fade UserManagement--selector--modal" tabindex="-1" role="dialog">
+<div id='UserManagement-action-modal' class="modal fade UserManagement--selector--modal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="UserManagement-action-modal-title UserManagement-action-modal-title-dialogsr" aria-label="<?= CHtml::encode(gT('Loading...')) ?>">
     <div id="usermanagement-modal-doalog" class="modal-dialog" role="document">
         <div class="modal-content">
         </div>
     </div>
+    <div id="UserManagement-action-modal-status" class="visually-hidden" role="status" data-loading-text="<?= CHtml::encode(gT('Loading...')) ?>"></div>
 </div>

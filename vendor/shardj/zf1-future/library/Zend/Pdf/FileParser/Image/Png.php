@@ -323,7 +323,6 @@ class Zend_Pdf_FileParser_Image_Png extends Zend_Pdf_FileParser_Image
              case Zend_Pdf_Image::PNG_CHANNEL_RGB_ALPHA:
                   require_once 'Zend/Pdf/Exception.php';
                   throw new Zend_Pdf_Exception( "tRNS chunk illegal for Alpha Channel Images" );
-                  break;
          }
     }
 }

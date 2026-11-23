@@ -73,7 +73,7 @@
     "remixicon-react": "^1.0.0",
     "sweetalert2": "^11.7.3",
     "sweetalert2-react-content": "^5.1.0",
-    "tinymce": "^7.7.1",
+    "tinymce": "^8.9.3",
     "util": "^0.12.5"
   },
   "scripts": {

@@ -88,7 +88,7 @@ export const QuestionBodyPreview = ({
       return
     }
 
-    setValue({ ...value, [key]: newValue })
+    setValue((previous) => ({ ...previous, [key]: newValue }))
     setValueIsUpdated(true)
   }
 

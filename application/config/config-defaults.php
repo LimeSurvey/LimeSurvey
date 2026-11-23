@@ -411,6 +411,8 @@ $config['pdfdefaultfont'] = 'auto'; //Default font for the pdf Export
 *  $alternatepdffontfile - array of the font file name used to created pdf in statistics in specific language - this font are included in tcpdf core
 *  Only used if $pdfdefaultfont is set to auto or set to a PDF core fonts
 *  Some language are not tested : need translation for Yes,No and Gender : ckb, swh
+*  The fonts contain the letters of the language, but TCPDF does not join letters of complex scripts:
+*  Text in bn, gu, hi, ml, mr, ne, ory, pa, si and ta is readable, but not typeset correctly
 */
 $config['alternatepdffontfile'] = array(
     'zh-Hans' => 'cid0cs',
@@ -420,16 +422,50 @@ $config['alternatepdffontfile'] = array(
     'ja' => 'cid0jp',
     'ko' => 'cid0kr',
     'pa' => 'freesans',
+    'am' => 'freeserif',
+    'bn' => 'freesans',
+    'gu' => 'freeserif',
+    'hi' => 'freesans',
+    'ml' => 'freesans',
+    'mr' => 'freesans',
+    'ne' => 'freesans',
+    'ory' => 'freeserif',
+    'si' => 'freeserif',
+    'ta' => 'freeserif',
+    'th' => 'freeserif',
+    'ti' => 'freeserif',
+    'ug' => 'freeserif',
 );
 /**
-*  $notsupportlanguages - array of language where no font was found for PDF
-*  Seems not used actually
+*  $pdfunsupportedfontstyles - array of the font styles (B: Bold, I: Italic) a font can not print in a language: font => (language => styles)
+*  The bold and italic files of these fonts do not contain the letters of the language, the text would be printed as empty boxes
+*  Text in these styles is printed in the regular font instead
 */
-$config['notsupportlanguages'] = array(
-    'am', // Amharic
-    'si', // Sinhala
-    'th', // Thai
-    );
+$config['pdfunsupportedfontstyles'] = array(
+    'freesans' => array(
+        'bn' => 'B',
+        'hi' => 'I',
+        'ml' => 'BI',
+        'mr' => 'I',
+        'ne' => 'I',
+        'pa' => 'I',
+    ),
+    'freeserif' => array(
+        'am' => 'BI',
+        'bn' => 'B',
+        'gu' => 'BI',
+        'hi' => 'I',
+        'ml' => 'BI',
+        'mr' => 'I',
+        'ne' => 'I',
+        'ory' => 'BI',
+        'pa' => 'I',
+        'si' => 'I',
+        'ta' => 'BI',
+        'ti' => 'BI',
+        'ug' => 'I',
+    ),
+);
 $config['pdffontsize']    = 9; //Fontsize for normal text; Surveytitle is +4; grouptitle is +2
 $config['pdforientation'] = 'P'; // Set L for Landscape or P for portrait format
 $config['pdfshowsurveytitle'] = 'Y'; // Show header in pdf answer export
@@ -498,6 +534,20 @@ $config['chartfontsize'] = 10;
 * Recommended: 7
 */
 $config['updatecheckperiod'] = 7;
+
+/**
+* $maintenancemode - maintenance mode of the site, set in the global settings. One of:
+*   'off'      no maintenance
+*   'soft'     participants can finish surveys they already started, no new participants are allowed
+*   'hard'     no participant can take a survey
+*   'hard-cli' like 'hard', and the administration (web interface, RemoteControl and REST API) is locked
+*              as well, so that nothing can be changed while e.g. a hosting system makes a backup or runs
+*              the database update from the command line. It can only be set and unset with the console
+*              command "console.php setMaintenanceMode hard-cli|off", not in the global settings.
+* The mode is stored in the global settings (settings_global table) only. Do not set it in config.php:
+* the database update reads it from the global settings and would not see a value set there.
+*/
+$config['maintenancemode'] = 'off';
 
 
 /**
@@ -831,15 +881,6 @@ $config['encryptionpublickey'] = '';
 $config['encryptionsecretkey'] = '';
 $config['encryptionnonce'] = '';
 $config['encryptionsecretboxkey'] = '';
-
-$config['passwordValidationRules'] = array(
-    'min' => 8,
-    'max' => 0,
-    'lower' => 0,
-    'upper' => 1,
-    'numeric' => 1,
-    'symbol' => 0,
-);
 
 // Allowed host of the LimeSurvey instance, avoid Host Header Injection in some case
 // For security purpose : Host Header Injection in password reset function

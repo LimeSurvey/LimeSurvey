@@ -1,7 +1,7 @@
 import { Range as RangeComponent } from '../Range/Range'
 
 export default {
-  title: 'UIComponents/Range',
+  title: 'imageWrapper/Range',
   component: RangeComponent,
 }
 

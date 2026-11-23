@@ -8,12 +8,14 @@ import {
   QT_B_ARRAY_10_CHOICE_QUESTIONS,
   QT_C_ARRAY_YES_UNCERTAIN_NO,
   QT_COLON_ARRAY_NUMBERS,
+  QT_D_DATE,
   QT_E_ARRAY_INC_SAME_DEC,
   QT_EXCLAMATION_LIST_DROPDOWN,
   QT_F_ARRAY,
   QT_G_GENDER,
   QT_H_ARRAY_COLUMN,
   QT_I_LANGUAGE,
+  QT_J_MAP,
   QT_K_MULTIPLE_NUMERICAL,
   QT_L_LIST,
   QT_M_MULTIPLE_CHOICE,
@@ -82,7 +84,7 @@ export const TEXT_QUESTION_TYPES = [
   QT_S_SHORT_FREE_TEXT,
   QT_T_LONG_FREE_TEXT,
   QT_U_HUGE_FREE_TEXT,
-  QT_Q_MULTIPLE_SHORT_TEXT,
+  QT_J_MAP,
 ]
 
 // Whether charts display raw response counts or percentages.
@@ -104,6 +106,8 @@ export const statisticsGraphs = {
   TABLE: 8,
   COMMENTS: 9,
   GRID: 10,
+  // Date/time questions only; not offered in the "Show in statistics" setting.
+  CALENDAR: 11,
 }
 
 const ARRAY_POINT_CHOICE_TYPES = [
@@ -122,11 +126,11 @@ const TABLE_QUESTION_TYPES = [
   QT_1_ARRAY_DUAL,
   QT_COLON_ARRAY_NUMBERS,
   QT_SEMICOLON_ARRAY_TEXT,
-  QT_Q_MULTIPLE_SHORT_TEXT,
   QT_R_RANKING,
   QT_N_NUMERICAL,
   QT_K_MULTIPLE_NUMERICAL,
   QT_VERTICAL_FILE_UPLOAD,
+  QT_D_DATE,
 ]
 
 // Types whose statistics card has a Grid view (one row per response).
@@ -136,6 +140,8 @@ const GRID_QUESTION_TYPES = [
   QT_U_HUGE_FREE_TEXT,
   QT_N_NUMERICAL,
   QT_K_MULTIPLE_NUMERICAL,
+  QT_Q_MULTIPLE_SHORT_TEXT,
+  QT_J_MAP,
 ]
 
 const getChartsForType = (type) => {
@@ -163,6 +169,9 @@ const getChartsForType = (type) => {
   }
   if (type === QT_COLON_ARRAY_NUMBERS) {
     return [statisticsGraphs.GROUPED_BAR]
+  }
+  if (type === QT_D_DATE) {
+    return [statisticsGraphs.CALENDAR]
   }
   return []
 }
@@ -234,6 +243,22 @@ export const getUnionSegments = (data = []) => {
 
 export const shouldRenderImage = (isImage, item) =>
   isImage && item?.key !== 'NoAnswer' && !NON_ANSWER_KEYS.includes(item?.key)
+
+export const LABEL_CHAR_WIDTH = 6
+
+export const getCategoryAxisWidth = (
+  data = [],
+  { isImage = false, maxWidth, imageWidth = 0, gap = 0 }
+) => {
+  const textLengths = data
+    .filter((item) => !shouldRenderImage(isImage, item))
+    .map((item) => String(item?.title ?? '').length)
+  const textWidth = textLengths.length
+    ? Math.min(maxWidth, Math.max(...textLengths) * LABEL_CHAR_WIDTH + gap)
+    : 0
+  const hasImages = textLengths.length < data.length
+  return isImage && hasImages ? Math.max(textWidth, imageWidth) : textWidth
+}
 
 export const getLabelInterval = (count) => {
   if (count > 20) return 2
@@ -350,13 +375,14 @@ export const TruncatedTick = ({
   isImage = false,
   item = null,
   imageWidth = BAR_MAX_SIZE,
+  imageOffset = { x: -imageWidth / 2, y: 4 },
 }) => {
   const value = payload?.value ?? ''
 
   if (shouldRenderImage(isImage, item) && value) {
     const hasCenter = Number.isFinite(cx) && Number.isFinite(cy)
-    let boxX = -imageWidth / 2
-    let boxY = 4
+    let boxX = imageOffset.x
+    let boxY = imageOffset.y
     if (hasCenter) {
       const dirX = x - cx
       const dirY = y - cy

@@ -39,6 +39,17 @@
         //}
     }
 
+    // Highlighted menu items get $base-color as background (see
+    // bootstrap_select_colors.scss); $base-color-contrast keeps the text
+    // WCAG AA readable on it (see theme_color_variables.scss).
+    .dropdown-menu > li > a:hover,
+    .dropdown-menu > li > a:focus,
+    .dropdown-menu > li > a:active,
+    .dropdown-menu > li > a.active,
+    .dropdown-menu > .active > a {
+        color : $base-color-contrast;
+    }
+
     #main-dropdown {
         .list-group-item {
             border : none;

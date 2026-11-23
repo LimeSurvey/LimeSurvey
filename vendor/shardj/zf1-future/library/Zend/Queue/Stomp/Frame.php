@@ -99,7 +99,7 @@ class Zend_Queue_Stomp_Frame
      * Set the value on or off.
      *
      * @param boolean $auto
-     * @return $this;
+     * @return $this
      * @throws Zend_Queue_Exception
      */
     public function setAutoContentLength($auto)
@@ -145,7 +145,7 @@ class Zend_Queue_Stomp_Frame
      * Sets a value for a header
      *
      * @param  string $header
-     * @param  string $value
+     * @param  string|int $value
      * @return Zend_Queue_Stomp_Frame
      * @throws Zend_Queue_Exception
      */

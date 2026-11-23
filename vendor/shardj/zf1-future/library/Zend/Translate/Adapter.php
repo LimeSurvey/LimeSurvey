@@ -48,13 +48,13 @@ abstract class Zend_Translate_Adapter {
 
     /**
      * Internal value to see already routed languages
-     * @var array()
+     * @var array
      */
     private $_routed = [];
 
     /**
      * Internal cache for all adapters
-     * @var Zend_Cache_Core
+     * @var Zend_Cache_Core|null
      */
     protected static $_cache     = null;
 
@@ -120,8 +120,7 @@ abstract class Zend_Translate_Adapter {
      * Generates the adapter
      *
      * @param  string|array|Zend_Config $options Translation options for this adapter
-     * @param  string|array [$content]
-     * @param  string|Zend_Locale [$locale]
+     * Optional further arguments, read with func_get_args(): content (string|array) and locale (string|Zend_Locale).
      * @throws Zend_Translate_Exception
      * @return void
      */
@@ -329,7 +328,8 @@ abstract class Zend_Translate_Adapter {
             $this->_addTranslationData($options);
         }
 
-        if ((isset($this->_translate[$originate]) === true) && (count($this->_translate[$originate]) > 0)) {
+        $originateKey = $originate ?? '';
+        if ((isset($this->_translate[$originateKey]) === true) && (count($this->_translate[$originateKey]) > 0)) {
             $this->setLocale($originate);
         }
 
@@ -585,7 +585,7 @@ abstract class Zend_Translate_Adapter {
      * language is replaced and added otherwise
      *
      * @see    Zend_Locale
-     * @param  array|Zend_Config $content Translation data to add
+     * @param  array|Zend_Config $options Translation data to add
      * @throws Zend_Translate_Exception
      * @return $this
      */
@@ -746,6 +746,7 @@ abstract class Zend_Translate_Adapter {
                     return $messageId;
                 }
 
+                // @phpstan-ignore variable.undefined, variable.undefined (set above together with $plural)
                 $rule = Zend_Translate_Plural::getPlural($number, $plocale);
                 if (!isset($plural[$rule])) {
                     $rule = 0;
@@ -765,6 +766,7 @@ abstract class Zend_Translate_Adapter {
                 return $this->_translate[$locale][$messageId];
             }
 
+            // @phpstan-ignore variable.undefined (set above together with $plural)
             $rule = Zend_Translate_Plural::getPlural($number, $locale);
             if (isset($this->_translate[$locale][$plural[0]][$rule])) {
                 $this->_routed = [];
@@ -781,6 +783,7 @@ abstract class Zend_Translate_Adapter {
                     return $this->_translate[$locale][$messageId];
                 }
 
+                // @phpstan-ignore variable.undefined (set above together with $plural)
                 $rule = Zend_Translate_Plural::getPlural($number, $locale);
                 if (isset($this->_translate[$locale][$plural[0]][$rule])) {
                     $this->_routed = [];
@@ -804,6 +807,7 @@ abstract class Zend_Translate_Adapter {
             return $messageId;
         }
 
+        // @phpstan-ignore variable.undefined, variable.undefined (set above together with $plural)
         $rule = Zend_Translate_Plural::getPlural($number, $plocale);
         if (!isset($plural[$rule])) {
             $rule = 0;
@@ -989,7 +993,6 @@ abstract class Zend_Translate_Adapter {
     /**
      * Internal method to check if the given cache supports tags
      *
-     * @param Zend_Cache $cache
      */
     private static function _getTagSupportForCache()
     {

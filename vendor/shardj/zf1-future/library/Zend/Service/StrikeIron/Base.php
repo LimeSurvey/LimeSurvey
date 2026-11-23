@@ -177,7 +177,7 @@ class Zend_Service_StrikeIron_Base
      *
      * @see    __call()
      * @param  string  $method  Method name called from PHP
-     * @param  mixed   $param   Parameters passed from PHP
+     * @param  mixed   $params   Parameters passed from PHP
      * @return array            [$method, $params] for SOAPClient->__soapCall()
      */
     protected function _transformCall($method, $params)

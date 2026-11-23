@@ -1,6 +1,7 @@
 <?php
 
 use Anper\Iuliia\Iuliia;
+use LimeSurvey\Models\Services\QuickTranslation;
 
 class QuickTranslationController extends LSBaseController
 {
@@ -119,7 +120,9 @@ class QuickTranslationController extends LSBaseController
             //todo: this is only necessary on save ...
             if ($actionvalue == "translateSave" && Permission::model()->hasSurveyPermission($surveyid, 'translations', 'update')) {
                 $failedCount = $this->translateSave($languageToTranslate, $quickTranslation, $surveyid);
-                if ($failedCount > 0) {
+                if ($failedCount === null) {
+                    Yii::app()->setFlashMessage(gT('The data received seems incomplete. This usually happens due to server limitations (PHP setting max_input_vars). Please contact your system administrator.'), 'error');
+                } elseif ($failedCount > 0) {
                     Yii::app()->setFlashMessage(ngT("{n} translation could not be saved.|{n} translations could not be saved.", $failedCount), 'error');
                 } else {
                     Yii::app()->setFlashMessage(gT("Saved"), 'success');
@@ -169,50 +172,33 @@ class QuickTranslationController extends LSBaseController
      * @param string $tolang the language to save the translations for
      * @param \LimeSurvey\Models\Services\QuickTranslation $quickTranslation the quicktranslation object
      * @param int $surveyid the survey ID
-     * @return int number of translations that could not be saved (e.g. refused by the validation)
+     * @return int|null number of translations that could not be saved (e.g. refused by the validation),
+     *                  null if the posted data was incomplete and nothing was saved
      */
     private function translateSave($tolang, $quickTranslation, $surveyid)
     {
-        $tab_names = $quickTranslation->getTabNames();
-        $tab_names_full = $tab_names;
-
-        //todo: this part could also into QuickTranslation
-        foreach ($tab_names as $type) {
-            $amTypeOptions = $quickTranslation->setupTranslateFields($type);
-            $type2 = $amTypeOptions["associated"];
-
-            if (!empty($type2)) {
-                $tab_names_full[] = $type2;
-            }
+        $changes = $this->getPostedTranslations($quickTranslation);
+        if ($changes === null) {
+            return null;
         }
 
         $updateOccurred = false;
         $failedCount = 0;
-        foreach ($tab_names_full as $type) {
-            $size = (int) Yii::app()->getRequest()->getPost("{$type}_size"); //todo: what is size here?
-            // start a loop in order to update each record
-            $i = 0;
-            while ($i <= $size) {
-                // define each variable
-                if (Yii::app()->getRequest()->getPost("{$type}_newvalue_{$i}")) {
-                    $old = Yii::app()->getRequest()->getPost("{$type}_oldvalue_{$i}");
-                    $new = Yii::app()->getRequest()->getPost("{$type}_newvalue_{$i}");
-
-                    // check if the new value is different from old, and then update database
-                    if ($new != $old) {
-                        $qidOrGid = Yii::app()->getRequest()->getPost("{$type}_id1_{$i}");
-                        $answerCode = Yii::app()->getRequest()->getPost("{$type}_id2_{$i}");
-                        $iScaleID = Yii::app()->getRequest()->getPost("{$type}_scaleid_{$i}");
-                        if ($quickTranslation->updateTranslations($type, $tolang, $new, $qidOrGid, $answerCode, $iScaleID)) {
-                            $updateOccurred = true;
-                        } else {
-                            $failedCount++;
-                        }
-                    }
-                }
-                $i++;
-            } // end while
-        } // end foreach
+        foreach ($changes as $change) {
+            $updated = $quickTranslation->updateTranslations(
+                $change['type'],
+                $tolang,
+                $change['value'],
+                $change['id1'],
+                $change['id2'],
+                $change['scaleid']
+            );
+            if ($updated) {
+                $updateOccurred = true;
+            } else {
+                $failedCount++;
+            }
+        }
 
         if ($updateOccurred) {
             $survey = Survey::model()->findByPk($surveyid);
@@ -222,6 +208,57 @@ class QuickTranslationController extends LSBaseController
             }
         }
         return $failedCount;
+    }
+
+    /**
+     * Returns the changed translations of the request.
+     *
+     * The page posts them as one JSON list in the field "translations", see QuickTranslation::parsePostedTranslations().
+     * A request with one set of fields per text (e.g. sent by a script from the browser cache) is still read,
+     * unless PHP dropped a part of its fields because of the setting max_input_vars.
+     *
+     * @param \LimeSurvey\Models\Services\QuickTranslation $quickTranslation the quicktranslation object
+     * @return array[]|null list of changes with the keys type, id1, id2, scaleid and value,
+     *                      null if the posted data is incomplete or invalid
+     */
+    private function getPostedTranslations($quickTranslation)
+    {
+        $request = App()->getRequest();
+        $json = $request->getPost('translations');
+        if ($json !== null) {
+            return is_string($json) ? QuickTranslation::parsePostedTranslations($json) : null;
+        }
+        if ($request->isPostDataTruncated()) {
+            return null;
+        }
+
+        $types = $quickTranslation->getTabNames();
+        foreach ($quickTranslation->getTabNames() as $type) {
+            $associatedType = $quickTranslation->setupTranslateFields($type)["associated"];
+            if (!empty($associatedType)) {
+                $types[] = $associatedType;
+            }
+        }
+
+        $changes = [];
+        foreach ($types as $type) {
+            // The number of the last text of this type
+            $size = (int) $request->getPost("{$type}_size");
+            for ($i = 0; $i <= $size; $i++) {
+                $new = $request->getPost("{$type}_newvalue_{$i}");
+                if (!$new || $new == $request->getPost("{$type}_oldvalue_{$i}")) {
+                    continue;
+                }
+                $changes[] = [
+                    'type' => $type,
+                    'id1' => $request->getPost("{$type}_id1_{$i}"),
+                    'id2' => $request->getPost("{$type}_id2_{$i}"),
+                    'scaleid' => $request->getPost("{$type}_scaleid_{$i}"),
+                    'value' => $new,
+                ];
+            }
+        }
+        return $changes;
     }
 
     /**
@@ -468,9 +505,10 @@ class QuickTranslationController extends LSBaseController
     }
 
     /**
-     * translateGoogleApi.php
-     * Creates a JSON interface for the auto-translate feature
+     * Translates the posted text (HTML with expressions) with the Google Translate API
+     * for the auto-translate feature.
      *
+     * @return string JSON with the translated text in 'converted', or an error message in 'error'
      * @psalm-suppress UndefinedClass TODO: Dead code?
      * @psalm-suppress MissingFile
      */
@@ -487,26 +525,23 @@ class QuickTranslationController extends LSBaseController
         $errorMessageText = false;
         $sOutput = '';
         try {
-            $gtranslate = new \GoogleTranslate\Client($translateApiKey);
-            // use curl because http with fopen is disabled
-            $parts = LimeExpressionManager::SplitStringOnExpressions($sToconvert);
-
-            $sparts = array();
-            foreach ($parts as $part) {
-                if ($part[2] == 'EXPRESSION') {
-                    $sparts[] = $part[0];
+            // Translate the whole text in one request so its HTML tags stay balanced, with markers for expressions
+            $protected = QuickTranslation::protectExpressions($sToconvert);
+            if (!$protected['hasText']) {
+                $sOutput = $sToconvert;
+            } else {
+                $gtranslate = new \GoogleTranslate\Client($translateApiKey);
+                $translated = $gtranslate->translate($protected['text'], $destinationLanguage, $sourceLanguage);
+                if ($destinationLanguage == 'sr-Latn') {
+                    $translated = Iuliia::translate($translated, Iuliia::TELEGRAM);
+                }
+                $restored = QuickTranslation::restoreExpressions($translated, $protected['expressions']);
+                if ($restored === null) {
+                    $errorMessageText = gT("The translation service did not keep all expressions of this text, so it was not translated.");
                 } else {
-                    $convertedPart = $gtranslate->translate($part[0], $destinationLanguage, $sourceLanguage);
-
-                    $convertedPart  = str_replace("<br>", "\r\n", $convertedPart);
-                    $convertedPart  = html_entity_decode(stripcslashes($convertedPart));
-                    if ($destinationLanguage == 'sr-Latn') {
-                        $convertedPart = Iuliia::translate($convertedPart, Iuliia::TELEGRAM);
-                    }
-                    $sparts[] = $convertedPart;
+                    $sOutput = $restored;
                 }
             }
-            $sOutput = implode(' ', $sparts);
         } catch (\Exception $ge) {
             // Get the error message and remove the key for security reasons
             $errorMessage = $ge->getMessage();

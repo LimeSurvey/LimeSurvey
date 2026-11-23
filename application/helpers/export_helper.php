@@ -424,7 +424,7 @@ function SPSSGetValues($field, $qidattributes, $language)
             'size' => numericSize($field['sql_name'], true),
         );
     }
-    if (in_array($field['LStype'], array('Q', 'S', 'T', 'U', ';', '*'))) {
+    if (in_array($field['LStype'], array('Q', 'S', 'J', 'T', 'U', ';', '*'))) {
         return array(
             'SPSStype' => "A",
             'size' => stringSize($field['sql_name']),
@@ -496,6 +496,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage = '')
         Question::QT_N_NUMERICAL => array('name' => 'Numerical input', 'size' => 3, 'SPSStype' => 'F', 'Scale' => 3),
         Question::QT_R_RANKING => array('name' => 'Ranking', 'size' => 1, 'SPSStype' => 'F'),
         Question::QT_S_SHORT_FREE_TEXT => array('name' => 'Short free text', 'size' => 1, 'SPSStype' => 'F'),
+        Question::QT_J_MAP => array('name' => 'Map', 'size' => 1, 'SPSStype' => 'A'),
         Question::QT_Y_YES_NO_RADIO => array('name' => 'Yes/No', 'size' => 1, 'SPSStype' => 'F'),
         Question::QT_COLON_ARRAY_NUMBERS => array('name' => 'Multi flexi numbers', 'size' => 1, 'SPSStype' => 'F', 'Scale' => 3),
         Question::QT_SEMICOLON_ARRAY_TEXT => array('name' => 'Multi flexi text', 'size' => 1, 'SPSStype' => 'A'),
@@ -770,6 +771,8 @@ function SPSSGetQuery($iSurveyID, $limit = null, $offset = null)
  * @param mixed $Query  The table query to build from
  * @param string $tagname  If the XML tag of the resulting question should be named differently than the table name set it here
  * @param string[] $excludes array of columnames not to include in export
+ * @param int $iSurveyID  The survey ID, only needed for the 'responses' and 'tokens' tables
+ * @return void
  */
 function buildXMLFromQuery($xmlwriter, $Query, $tagname = '', $excludes = array(), $iSurveyID = 0)
 {
@@ -786,6 +789,8 @@ function buildXMLFromQuery($xmlwriter, $Query, $tagname = '', $excludes = array(
 
     // Read table in smaller chunks
     $iStart = 0;
+    // The last chunk is empty when the row count is a multiple of the chunk size, so remember the opened table element
+    $isTableOpen = false;
     do {
         $result = array();
         // data need to be converted to model to be able to decrypt responses and tokens
@@ -827,6 +832,7 @@ function buildXMLFromQuery($xmlwriter, $Query, $tagname = '', $excludes = array(
             }
             $xmlwriter->endElement(); // close columns
             $xmlwriter->startElement('rows');
+            $isTableOpen = true;
         }
         foreach ($result as $Row) {
             $xmlwriter->startElement('row');
@@ -857,7 +863,7 @@ function buildXMLFromQuery($xmlwriter, $Query, $tagname = '', $excludes = array(
         }
         $iStart = $iStart + $iChunkSize;
     } while (count($result) == $iChunkSize);
-    if (count($result) > 0) {
+    if ($isTableOpen) {
         $xmlwriter->endElement(); // close rows
         $xmlwriter->endElement(); // close tablename
     }
@@ -1409,8 +1415,8 @@ function quexml_create_multi(&$question, $qid, $varname, $iResponseID, $fieldmap
             //if regular multiple choice question
             quexml_set_default_value($response, $iResponseID, $Row['qid'], $iSurveyID, $fieldmap, false, true);
         } else {
-            //if array multi style question
-            $dvname = substr((string) $varname, stripos((string) $varname, "_") + 1) . "_" . $Row['qid'];
+            //if array multi style question: The response column is Q<qid>_S<row sqid>_S<column sqid>
+            $dvname = substr((string) $varname, stripos((string) $varname, "_") + 1) . "_S" . $Row['qid'];
             quexml_set_default_value($response, $iResponseID, $qid, $iSurveyID, $fieldmap, $dvname);
         }
 
@@ -2013,6 +2019,11 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false, $EMreplace = 
                     case "S": //Short free text
                         // default is fieldlength of 24 characters.
                         $response->appendChild(QueXMLCreateFree("longtext", quexml_get_lengthth($qid, "maximum_chars", "24"), ""));
+                        quexml_set_default_value($response, $iResponseID, $qid, $iSurveyID, $fieldmap);
+                        $question->appendChild($response);
+                        break;
+                    case "J": //Map
+                        $response->appendChild(QueXMLCreateFree("longtext", quexml_get_lengthth($qid, "maximum_chars", "65535"), ""));
                         quexml_set_default_value($response, $iResponseID, $qid, $iSurveyID, $fieldmap);
                         $question->appendChild($response);
                         break;

@@ -120,7 +120,7 @@ class Zend_Search_Lucene implements Zend_Search_Lucene_Interface
     /**
      * File system adapter.
      *
-     * @var Zend_Search_Lucene_Storage_Directory
+     * @var Zend_Search_Lucene_Storage_Directory|null
      */
     private $_directory = null;
 
@@ -134,14 +134,14 @@ class Zend_Search_Lucene implements Zend_Search_Lucene_Interface
     /**
      * Writer for this index, not instantiated unless required.
      *
-     * @var Zend_Search_Lucene_Index_Writer
+     * @var Zend_Search_Lucene_Index_Writer|null
      */
     private $_writer = null;
 
     /**
      * Array of Zend_Search_Lucene_Index_SegmentInfo objects for current version of index.
      *
-     * @var array Zend_Search_Lucene_Index_SegmentInfo
+     * @var array|null Zend_Search_Lucene_Index_SegmentInfo
      */
     private $_segmentInfos = [];
 
@@ -296,8 +296,6 @@ class Zend_Search_Lucene implements Zend_Search_Lucene_Interface
                 throw new Zend_Search_Lucene_Exception($e->getMessage(), $e->getCode(), $e);
             }
         }
-
-        return -1;
     }
 
     /**
@@ -509,6 +507,7 @@ class Zend_Search_Lucene implements Zend_Search_Lucene_Interface
     {
         if ($directory === null) {
             require_once 'Zend/Search/Lucene/Exception.php';
+            require_once 'Zend/Search/Exception.php';
             throw new Zend_Search_Exception('No index directory specified');
         }
 
@@ -726,6 +725,7 @@ class Zend_Search_Lucene implements Zend_Search_Lucene_Interface
             $segmentStartId += $segmentInfo->count();
         }
 
+        // @phpstan-ignore variable.undefined (the id is below the document count, so the loop above stops at a segment)
         return $segmentInfo->isDeleted($id - $segmentStartId);
     }
 
@@ -904,7 +904,7 @@ class Zend_Search_Lucene implements Zend_Search_Lucene_Interface
      *
      * Default value is 10
      *
-     * @param integer $maxMergeDocs
+     * @param integer $mergeFactor
      */
     public function setMergeFactor($mergeFactor)
     {
@@ -1043,11 +1043,11 @@ class Zend_Search_Lucene implements Zend_Search_Lucene_Interface
                     $sortArgs[] = &$sortFieldValues[$fieldName];
                 }
 
-                if ($count + 1 < count($argList)  &&  is_integer($argList[$count+1])) {
+                if ($count + 1 < count($argList)  &&  is_int($argList[$count+1])) {
                     $count++;
                     $sortArgs[] = &$argList[$count];
 
-                    if ($count + 1 < count($argList)  &&  is_integer($argList[$count+1])) {
+                    if ($count + 1 < count($argList)  &&  is_int($argList[$count+1])) {
                         $count++;
                         $sortArgs[] = &$argList[$count];
                     } else {
@@ -1124,10 +1124,12 @@ class Zend_Search_Lucene implements Zend_Search_Lucene_Interface
             $segmentStartId += $segmentInfo->count();
         }
 
+        // @phpstan-ignore variable.undefined (the id is below the document count, so the loop above stops at a segment)
         $fdxFile = $segmentInfo->openCompoundFile('.fdx');
         $fdxFile->seek(($id-$segmentStartId)*8, SEEK_CUR);
         $fieldValuesPosition = $fdxFile->readLong();
 
+        // @phpstan-ignore variable.undefined (the id is below the document count, so the loop above stops at a segment)
         $fdtFile = $segmentInfo->openCompoundFile('.fdt');
         $fdtFile->seek($fieldValuesPosition, SEEK_CUR);
         $fieldCount = $fdtFile->readVInt();
@@ -1137,6 +1139,7 @@ class Zend_Search_Lucene implements Zend_Search_Lucene_Interface
             $fieldNum = $fdtFile->readVInt();
             $bits = $fdtFile->readByte();
 
+            // @phpstan-ignore variable.undefined (the id is below the document count, so the loop above stops at a segment)
             $fieldInfo = $segmentInfo->getField($fieldNum);
 
             if (!($bits & 2)) { // Text data
@@ -1226,6 +1229,7 @@ class Zend_Search_Lucene implements Zend_Search_Lucene_Interface
     {
         $segmentStartDocId = 0;
         $result = new Zend_Search_Lucene_Index_DocsFilter();
+        $subResults = [];
 
         foreach ($this->_segmentInfos as $segmentInfo) {
             $subResults[] = $segmentInfo->termDocs($term, $segmentStartDocId, $docsFilter);
@@ -1328,7 +1332,7 @@ class Zend_Search_Lucene implements Zend_Search_Lucene_Interface
      *
      * @param integer $id
      * @param string $fieldName
-     * @return float
+     * @return float|null
      */
     public function norm($id, $fieldName)
     {
@@ -1345,10 +1349,12 @@ class Zend_Search_Lucene implements Zend_Search_Lucene_Interface
             $segmentStartId += $segInfo->count();
         }
 
+        // @phpstan-ignore variable.undefined (the id is below the document count, so the loop above stops at a segment)
         if ($segInfo->isDeleted($id - $segmentStartId)) {
             return 0;
         }
 
+        // @phpstan-ignore variable.undefined (the id is below the document count, so the loop above stops at a segment)
         return $segInfo->norm($id - $segmentStartId, $fieldName);
     }
 
@@ -1395,6 +1401,7 @@ class Zend_Search_Lucene implements Zend_Search_Lucene_Interface
 
             $segmentStartId += $segmentInfo->count();
         }
+        // @phpstan-ignore variable.undefined (the id is below the document count, so the loop above stops at a segment)
         $segmentInfo->delete($id - $segmentStartId);
 
         $this->_hasChanges = true;
@@ -1499,7 +1506,7 @@ class Zend_Search_Lucene implements Zend_Search_Lucene_Interface
     /**
      * Terms stream priority queue object
      *
-     * @var Zend_Search_Lucene_TermStreamsPriorityQueue
+     * @var Zend_Search_Lucene_TermStreamsPriorityQueue|null
      */
     private $_termsStream = null;
 

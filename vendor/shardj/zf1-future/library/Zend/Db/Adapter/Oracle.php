@@ -92,7 +92,7 @@ class Zend_Db_Adapter_Oracle extends Zend_Db_Adapter_Abstract
 
     /**
      * Check if LOB field are returned as string
-     * instead of OCI-Lob object
+     * instead of OCILob objects (OCI-Lob before PHP 8)
      *
      * @var boolean
      */
@@ -123,11 +123,12 @@ class Zend_Db_Adapter_Oracle extends Zend_Db_Adapter_Abstract
 
         $connectionFuncName = ($this->_config['persistent'] == true) ? 'oci_pconnect' : 'oci_connect';
 
+        // an empty encoding selects the default, null is not accepted by the oci functions
         $this->_connection = @$connectionFuncName(
                 $this->_config['username'],
                 $this->_config['password'],
                 $this->_config['dbname'],
-                $this->_config['charset']);
+                (string) ($this->_config['charset'] ?? ''));
 
         // check the connection
         if (!$this->_connection) {
@@ -167,7 +168,7 @@ class Zend_Db_Adapter_Oracle extends Zend_Db_Adapter_Abstract
     /**
      * Activate/deactivate return of LOB as string
      *
-     * @param string $lob_as_string
+     * @param string $lobAsString
      * @return $this
      */
     public function setLobAsString($lobAsString)
@@ -228,7 +229,7 @@ class Zend_Db_Adapter_Oracle extends Zend_Db_Adapter_Abstract
         if (is_int($value) || is_float($value)) {
             return $value;
         }
-        $value = str_replace("'", "''", $value);
+        $value = str_replace("'", "''", (string) $value);
         return "'" . addcslashes($value, "\000\n\r\\\032") . "'";
     }
 
@@ -293,7 +294,7 @@ class Zend_Db_Adapter_Oracle extends Zend_Db_Adapter_Abstract
      *
      * @param string $tableName   OPTIONAL Name of table.
      * @param string $primaryKey  OPTIONAL Name of primary key column.
-     * @return string
+     * @return string|null
      */
     public function lastInsertId($tableName = null, $primaryKey = null)
     {
@@ -516,14 +517,12 @@ class Zend_Db_Adapter_Oracle extends Zend_Db_Adapter_Abstract
                  */
                 require_once 'Zend/Db/Adapter/Oracle/Exception.php';
                 throw new Zend_Db_Adapter_Oracle_Exception('FETCH_BOUND is not supported yet');
-                break;
             default:
                 /**
                  * @see Zend_Db_Adapter_Oracle_Exception
                  */
                 require_once 'Zend/Db/Adapter/Oracle/Exception.php';
                 throw new Zend_Db_Adapter_Oracle_Exception("Invalid fetch mode '$mode' specified");
-                break;
         }
     }
 
@@ -590,7 +589,6 @@ class Zend_Db_Adapter_Oracle extends Zend_Db_Adapter_Abstract
                  */
                 require_once 'Zend/Db/Adapter/Oracle/Exception.php';
                 throw new Zend_Db_Adapter_Oracle_Exception("Invalid execution mode '$mode' specified");
-                break;
         }
     }
 
@@ -622,7 +620,7 @@ class Zend_Db_Adapter_Oracle extends Zend_Db_Adapter_Abstract
     /**
      * Retrieve server version in PHP style
      *
-     * @return string
+     * @return string|null
      */
     public function getServerVersion()
     {

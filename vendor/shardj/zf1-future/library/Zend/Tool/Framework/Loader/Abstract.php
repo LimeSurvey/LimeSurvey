@@ -40,7 +40,7 @@ abstract class Zend_Tool_Framework_Loader_Abstract
     implements Zend_Tool_Framework_Loader_Interface, Zend_Tool_Framework_Registry_EnabledInterface
 {
     /**
-     * @var Zend_Tool_Framework_Repository_Interface
+     * @var Zend_Tool_Framework_Registry_Interface
      */
     protected $_registry = null;
 
@@ -89,6 +89,7 @@ abstract class Zend_Tool_Framework_Loader_Abstract
         $loadedClasses = [];
 
         $newLevel = (defined('E_STRICT') && version_compare(PHP_VERSION, '8.4.0', '<'))
+            // phpcs:ignore PHPCompatibility.Constants.RemovedConstants.e_strictDeprecated -- used before PHP 8.4 only
             ? (E_ALL | ~E_STRICT)
             : E_ALL;
 

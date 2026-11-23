@@ -37,6 +37,7 @@ require_once 'Zend/Cache/Backend.php';
  * @subpackage Zend_Cache_Backend
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @deprecated Deprecated since 1.26.1 and will be removed in a future version: XCache has not been maintained since 2014
  */
 class Zend_Cache_Backend_Xcache extends Zend_Cache_Backend implements Zend_Cache_Backend_Interface
 {
@@ -72,6 +73,8 @@ class Zend_Cache_Backend_Xcache extends Zend_Cache_Backend implements Zend_Cache
      */
     public function __construct(array $options = [])
     {
+        trigger_error(get_class($this) . ' is deprecated and will be removed in a future version', E_USER_DEPRECATED);
+
         if (!extension_loaded('xcache')) {
             Zend_Cache::throwException('The xcache extension must be loaded for using this backend !');
         }
@@ -85,7 +88,7 @@ class Zend_Cache_Backend_Xcache extends Zend_Cache_Backend implements Zend_Cache
      *
      * @param  string  $id                     cache id
      * @param  boolean $doNotTestCacheValidity if set to true, the cache validity won't be tested
-     * @return string cached datas (or false)
+     * @return string|false cached datas (or false)
      */
     public function load($id, $doNotTestCacheValidity = false)
     {
@@ -125,7 +128,7 @@ class Zend_Cache_Backend_Xcache extends Zend_Cache_Backend implements Zend_Cache
      * @param string $data datas to cache
      * @param string $id cache id
      * @param array $tags array of strings, the cache record will be tagged by each string entry
-     * @param int $specificLifetime if != false, set a specific lifetime for this cache record (null => infinite lifetime)
+     * @param int|false $specificLifetime if != false, set a specific lifetime for this cache record (null => infinite lifetime)
      * @return boolean true if no problem
      */
     public function save($data, $id, $tags = [], $specificLifetime = false)
@@ -162,7 +165,7 @@ class Zend_Cache_Backend_Xcache extends Zend_Cache_Backend implements Zend_Cache
      * @param  string $mode clean mode
      * @param  array  $tags array of tags
      * @throws Zend_Cache_Exception
-     * @return boolean true if no problem
+     * @return boolean|null true if no problem
      */
     public function clean($mode = Zend_Cache::CLEANING_MODE_ALL, $tags = [])
     {
@@ -193,7 +196,6 @@ class Zend_Cache_Backend_Xcache extends Zend_Cache_Backend implements Zend_Cache
                     $_SERVER['PHP_AUTH_PW'] = $backup['PHP_AUTH_PW'];
                 }
                 return true;
-                break;
             case Zend_Cache::CLEANING_MODE_OLD:
                 $this->_log("Zend_Cache_Backend_Xcache::clean() : CLEANING_MODE_OLD is unsupported by the Xcache backend");
                 break;
@@ -204,8 +206,9 @@ class Zend_Cache_Backend_Xcache extends Zend_Cache_Backend implements Zend_Cache
                 break;
             default:
                 Zend_Cache::throwException('Invalid mode for clean() method');
-                break;
         }
+
+        return null;
     }
 
     /**

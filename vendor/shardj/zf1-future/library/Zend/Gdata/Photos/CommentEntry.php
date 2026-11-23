@@ -60,6 +60,7 @@ require_once 'Zend/Gdata/App/Extension/Category.php';
  * @subpackage Photos
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @deprecated Deprecated since 1.27.1 and will be removed in a future version: Google shut down the Google Data APIs it implements and the ClientLogin and AuthSub authentication
  */
 class Zend_Gdata_Photos_CommentEntry extends Zend_Gdata_Entry
 {
@@ -161,7 +162,7 @@ class Zend_Gdata_Photos_CommentEntry extends Zend_Gdata_Entry
     /**
      * Set the value for this element's gphoto:photoid attribute.
      *
-     * @param string $value The desired value for this attribute.
+     * @param Zend_Gdata_Photos_Extension_PhotoId $value The desired value for this attribute.
      * @return Zend_Gdata_Photos_CommentEntry The element being modified.
      */
     public function setGphotoPhotoId($value)
@@ -184,7 +185,7 @@ class Zend_Gdata_Photos_CommentEntry extends Zend_Gdata_Entry
     /**
      * Set the value for this element's gphoto:id attribute.
      *
-     * @param string $value The desired value for this attribute.
+     * @param Zend_Gdata_Photos_Extension_Id $value The desired value for this attribute.
      * @return Zend_Gdata_Photos_CommentEntry The element being modified.
      */
     public function setGphotoId($value)

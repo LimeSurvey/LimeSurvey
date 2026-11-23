@@ -53,12 +53,12 @@ class Zend_Dojo_Form extends Zend_Form
     /**
      * Load the default decorators
      *
-     * @return void
+     * @return $this
      */
     public function loadDefaultDecorators()
     {
         if ($this->loadDefaultDecoratorsIsDisabled()) {
-            return;
+            return $this;
         }
 
         $decorators = $this->getDecorators();
@@ -67,6 +67,8 @@ class Zend_Dojo_Form extends Zend_Form
                  ->addDecorator('HtmlTag', ['tag' => 'dl', 'class' => 'zend_form_dojo'])
                  ->addDecorator('DijitForm');
         }
+
+        return $this;
     }
 
     /**

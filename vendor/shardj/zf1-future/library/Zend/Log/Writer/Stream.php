@@ -39,7 +39,7 @@ class Zend_Log_Writer_Stream extends Zend_Log_Writer_Abstract
     /**
      * Holds the PHP stream to log to.
      *
-     * @var null|stream
+     * @var resource|false|null
      */
     protected $_stream = null;
 

@@ -124,7 +124,7 @@ class Zend_Navigation_Page_Mvc extends Zend_Navigation_Page
      * called more than once during the lifetime of a request. If a property
      * is updated, the cache is invalidated.
      *
-     * @var string
+     * @var string|null
      */
     protected $_hrefCache;
 
@@ -205,9 +205,7 @@ class Zend_Navigation_Page_Mvc extends Zend_Navigation_Page
                 }
             }
 
-            if (count(array_intersect_assoc($reqParams, $myParams)) ==
-                count($myParams)
-            ) {
+            if ($this->_paramsMatch($reqParams, $myParams)) {
                 $this->_active = true;
 
                 return true;
@@ -217,6 +215,37 @@ class Zend_Navigation_Page_Mvc extends Zend_Navigation_Page
         }
 
         return parent::isActive($recursive);
+    }
+
+    /**
+     * Returns whether every page param is present in the request params with the same value
+     *
+     * Scalar values are compared as strings, array values as arrays, so a
+     * nested array in the request params does not end in an
+     * "Array to string conversion" warning.
+     *
+     * @param  array $reqParams request params
+     * @param  array $myParams  page params
+     * @return bool
+     */
+    protected function _paramsMatch(array $reqParams, array $myParams)
+    {
+        foreach ($myParams as $key => $value) {
+            if (!array_key_exists($key, $reqParams)) {
+                return false;
+            }
+
+            $reqValue = $reqParams[$key];
+            if (is_array($value) || is_array($reqValue)) {
+                if ($value != $reqValue) {
+                    return false;
+                }
+            } elseif ((string) $value !== (string) $reqValue) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**

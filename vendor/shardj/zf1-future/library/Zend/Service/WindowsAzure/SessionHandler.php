@@ -110,13 +110,61 @@ class Zend_Service_WindowsAzure_SessionHandler
 	 */
 	public function register()
 	{
-        return session_set_save_handler([$this, 'open'],
-                                        [$this, 'close'],
-                                        [$this, 'read'],
-                                        [$this, 'write'],
-                                        [$this, 'destroy'],
-                                        [$this, 'gc']
-        );
+        // PHP 8.4 deprecated the callbacks form of session_set_save_handler()
+        $handler = new class($this) implements SessionHandlerInterface {
+            /**
+             * @var Zend_Service_WindowsAzure_SessionHandler
+             */
+            private $_handler;
+
+            public function __construct(Zend_Service_WindowsAzure_SessionHandler $handler)
+            {
+                $this->_handler = $handler;
+            }
+
+            #[\ReturnTypeWillChange]
+            public function open($path, $name)
+            {
+                return $this->_handler->open();
+            }
+
+            #[\ReturnTypeWillChange]
+            public function close()
+            {
+                return $this->_handler->close();
+            }
+
+            /**
+             * @param string $id
+             * @return string
+             */
+            #[\ReturnTypeWillChange]
+            public function read($id)
+            {
+                return $this->_handler->read($id);
+            }
+
+            #[\ReturnTypeWillChange]
+            public function write($id, $data)
+            {
+                return $this->_handler->write($id, $data);
+            }
+
+            #[\ReturnTypeWillChange]
+            public function destroy($id)
+            {
+                return $this->_handler->destroy($id);
+            }
+
+            #[\ReturnTypeWillChange]
+            public function gc($maxLifetime)
+            {
+                $result = $this->_handler->gc($maxLifetime);
+                return $result === false ? false : (int) $result;
+            }
+        };
+
+        return session_set_save_handler($handler, false);
 	}
 
     /**
@@ -150,8 +198,8 @@ class Zend_Service_WindowsAzure_SessionHandler
     /**
      * Read a specific session
      *
-     * @param int $id Session Id
-     * @return string
+     * @param string $id Session Id
+     * @return string|false|null
      */
     public function read($id)
     {
@@ -186,12 +234,14 @@ class Zend_Service_WindowsAzure_SessionHandler
 	            return false;
 	        }
     	}
+
+        return null;
     }
 
     /**
      * Write a specific session
      *
-     * @param int $id Session Id
+     * @param string $id Session Id
      * @param string $serializedData Serialized PHP object
      * @throws Exception
      */
@@ -206,6 +256,7 @@ class Zend_Service_WindowsAzure_SessionHandler
     	// Store data
        	if ($this->_storageType == self::STORAGE_TYPE_TABLE) {
     		// In table storage
+       	    require_once 'Zend/Service/WindowsAzure/Storage/DynamicTableEntity.php';
        	    $sessionRecord = new Zend_Service_WindowsAzure_Storage_DynamicTableEntity($this->_sessionContainerPartition, $id);
 	        $sessionRecord->sessionExpires = time();
 	        $sessionRecord->serializedData = $serializedData;
@@ -234,8 +285,8 @@ class Zend_Service_WindowsAzure_SessionHandler
     /**
      * Destroy a specific session
      *
-     * @param int $id Session Id
-     * @return boolean
+     * @param string $id Session Id
+     * @return boolean|null
      */
     public function destroy($id)
     {
@@ -273,6 +324,8 @@ class Zend_Service_WindowsAzure_SessionHandler
 	            return false;
 	        }
     	}
+
+        return null;
     }
 
     /**
@@ -283,7 +336,7 @@ class Zend_Service_WindowsAzure_SessionHandler
      * @see session.gc_maxlifetime 1440
      * @see session.gc_probability 1
      * @usage Execution rate 1/100 (session.gc_probability/session.gc_divisor)
-     * @return boolean
+     * @return boolean|null
      */
     public function gc($lifeTime)
     {
@@ -320,5 +373,7 @@ class Zend_Service_WindowsAzure_SessionHandler
 	            return false;
 	        }
     	}
+
+        return null;
     }
 }

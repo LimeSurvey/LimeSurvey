@@ -47,7 +47,7 @@ App()->getClientScript()->registerScript(
                             [
                                 'header' => gT('Title'),
                                 'name' => 'title',
-                                'value' => '$data->title',
+                                'value' => '$data->getLocalizedTitle()',
                                 'htmlOptions' => ['class' => ''],
                             ],
                             [
@@ -60,7 +60,7 @@ App()->getClientScript()->registerScript(
                             [
                                 'header' => gT('Description'),
                                 'name' => 'desc',
-                                'value' => '$data->desc',
+                                'value' => '$data->getLocalizedDescription()',
                                 'htmlOptions' => ['class' => ''],
                             ],
                             [

@@ -219,7 +219,7 @@ class Zend_Service_WindowsAzure_Storage_Table
 
         $requestBody = $this->_fillTemplate($requestBody, [
             'BaseUrl' => $this->getBaseUrl(),
-            'TableName' => htmlspecialchars($tableName),
+            'TableName' => htmlspecialchars($tableName, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401),
         	'Updated' => $this->isoDate(),
             'AccountName' => $this->_accountName
         ]);
@@ -295,7 +295,7 @@ class Zend_Service_WindowsAzure_Storage_Table
 	 *
 	 * @param string                              $tableName   Table name
 	 * @param Zend_Service_WindowsAzure_Storage_TableEntity $entity      Entity to insert
-	 * @return Zend_Service_WindowsAzure_Storage_TableEntity
+	 * @return Zend_Service_WindowsAzure_Storage_TableEntity|null
 	 * @throws Zend_Service_WindowsAzure_Exception
 	 */
 	public function insertEntity($tableName = '', ?Zend_Service_WindowsAzure_Storage_TableEntity $entity = null)
@@ -416,7 +416,7 @@ class Zend_Service_WindowsAzure_Storage_Table
 	 * @param string $partitionKey Partition key
 	 * @param string $rowKey       Row key
 	 * @param string $entityClass  Entity class name*
-	 * @return Zend_Service_WindowsAzure_Storage_TableEntity
+	 * @return Zend_Service_WindowsAzure_Storage_TableEntity|null
 	 * @throws Zend_Service_WindowsAzure_Exception
 	 */
 	public function retrieveEntityById($tableName, $partitionKey, $rowKey, $entityClass = 'Zend_Service_WindowsAzure_Storage_DynamicTableEntity')
@@ -841,7 +841,7 @@ class Zend_Service_WindowsAzure_Storage_Table
 		        } else if (strtolower($azureValue->Type) == 'edm.datetime') {
 		        	$value[] = $this->_convertToEdmDateTime($azureValue->Value);
 		        } else {
-		            $value[] = htmlspecialchars($azureValue->Value);
+		            $value[] = htmlspecialchars($azureValue->Value, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401);
 		        }
 		    }
 
@@ -858,7 +858,7 @@ class Zend_Service_WindowsAzure_Storage_Table
 	 * @param string $path Path
 	 * @param string $queryString Query string
 	 * @param string $httpVerb HTTP verb the request will use
-	 * @param array $headers x-ms headers to add
+	 * @param array|null $headers x-ms headers to add
 	 * @param boolean $forTableStorage Is the request for table storage?
 	 * @param mixed $rawData Optional RAW HTTP data to be sent over the wire
 	 * @param string $resourceType Resource type

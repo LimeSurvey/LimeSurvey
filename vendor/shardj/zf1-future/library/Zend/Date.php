@@ -320,7 +320,7 @@ class Zend_Date extends Zend_Date_DateObject
      *
      * @param  string                          $calc    Type of calculation to make
      * @param  string|integer|array|Zend_Date  $stamp   Timestamp to calculate, when null the actual timestamp is calculated
-     * @return Zend_Date|integer
+     * @return ($calc is 'cmp' ? integer : $this)
      * @throws Zend_Date_Exception
      */
     private function _timestamp($calc, $stamp)
@@ -892,7 +892,7 @@ class Zend_Date extends Zend_Date_DateObject
     /**
      * Private function to make a comment of a token
      *
-     * @param string $token
+     * @param string|int $token
      * @return string
      */
     private function _toComment($token)
@@ -963,7 +963,7 @@ class Zend_Date extends Zend_Date_DateObject
      * Counts the exact year number
      * < 70 - 2000 added, >70 < 100 - 1900, others just returned
      *
-     * @param  integer  $value year number
+     * @param  integer|string  $value year number
      * @return integer  Number of year
      */
     public static function getFullYear($value)
@@ -1106,7 +1106,7 @@ class Zend_Date extends Zend_Date_DateObject
      * Internal function, returns the offset of a given timezone
      *
      * @param string $zone
-     * @return integer
+     * @return integer|string
      */
     public function getTimezoneFromString($zone)
     {
@@ -1134,7 +1134,7 @@ class Zend_Date extends Zend_Date_DateObject
 
         preg_match('/([[:alpha:]\/_-]{3,30})(?!.*([[:alpha:]\/_-]{3,30}))/', (string) $zone, $match);
         try {
-            if (!empty($match) && (!is_int($match[count($match) - 1]))) {
+            if (!empty($match)) {
                 $oldzone = $this->getTimezone();
                 $this->setTimezone($match[count($match) - 1]);
                 $result = $this->getTimezone();
@@ -1156,7 +1156,7 @@ class Zend_Date extends Zend_Date_DateObject
      * @param  string                    $calc  Calculation to make
      * @param  string|integer            $date  Date for calculation
      * @param  string|integer            $comp  Second date for calculation
-     * @param  boolean|integer           $dst   Use dst correction if option is set
+     * @param  boolean|integer|string           $dst   Use dst correction if option is set
      * @return integer|string|Zend_Date  new timestamp or Zend_Date depending on calculation
      */
     private function _assign($calc, $date, $comp = 0, $dst = false)
@@ -1184,6 +1184,7 @@ class Zend_Date extends Zend_Date_DateObject
 
         // dst-correction if 'fix_dst' = true and dst !== false but only for non UTC and non GMT
         if ((self::$_options['fix_dst'] === true) && ($dst !== false) && ($this->_dst === true)) {
+            /** @var numeric-string $hour */
             $hour = $this->toString(self::HOUR, 'iso');
             if ($hour != $dst) {
                 if (($dst == ($hour + 1)) || ($dst == ($hour - 23))) {
@@ -1227,11 +1228,17 @@ class Zend_Date extends Zend_Date_DateObject
         $locale = (string) $locale;
 
         // Create date parts
+        /** @var numeric-string $year */
         $year   = $this->toString(self::YEAR, 'iso');
+        /** @var numeric-string $month */
         $month  = $this->toString(self::MONTH_SHORT, 'iso');
+        /** @var numeric-string $day */
         $day    = $this->toString(self::DAY_SHORT, 'iso');
+        /** @var numeric-string $hour */
         $hour   = $this->toString(self::HOUR_SHORT, 'iso');
+        /** @var numeric-string $minute */
         $minute = $this->toString(self::MINUTE_SHORT, 'iso');
+        /** @var numeric-string $second */
         $second = $this->toString(self::SECOND_SHORT, 'iso');
         // If object extract value
         if ($date instanceof Zend_Date) {
@@ -1391,6 +1398,7 @@ class Zend_Date extends Zend_Date_DateObject
 
                 // Weekday found
                 if ($cnt < 7) {
+                    // @phpstan-ignore variable.undefined ($cnt below the size of the list means that the name was found)
                     return $this->_assign($calc, $this->mktime(0, 0, 0, 1, 1 + $found, 1970, true),
                                                  $this->mktime(0, 0, 0, 1, 1 + $weekday, 1970, true), $hour);
                 }
@@ -1423,6 +1431,7 @@ class Zend_Date extends Zend_Date_DateObject
 
                 // Weekday found
                 if ($cnt < 7) {
+                    // @phpstan-ignore variable.undefined ($cnt below the size of the list means that the name was found)
                     return $this->_assign($calc, $this->mktime(0, 0, 0, 1, 1 + $found, 1970, true),
                                                  $this->mktime(0, 0, 0, 1, 1 + $weekday, 1970, true), $hour);
                 }
@@ -1486,6 +1495,7 @@ class Zend_Date extends Zend_Date_DateObject
 
                 // Weekday found
                 if ($cnt < 7) {
+                    // @phpstan-ignore variable.undefined ($cnt below the size of the list means that the name was found)
                     return $this->_assign($calc, $this->mktime(0, 0, 0, 1, 1 + $found, 1970, true),
                                                  $this->mktime(0, 0, 0, 1, 1 + $weekday, 1970, true), $hour);
                 }
@@ -1508,6 +1518,7 @@ class Zend_Date extends Zend_Date_DateObject
 
                 // Weekday found
                 if ($cnt < 7) {
+                    // @phpstan-ignore variable.undefined ($cnt below the size of the list means that the name was found)
                     return $this->_assign($calc, $this->mktime(0, 0, 0, 1, 1 + $found, 1970, true),
                                                  $this->mktime(0, 0, 0, 1, 1 + $weekday, 1970, true), $hour);
                 }
@@ -1544,6 +1555,7 @@ class Zend_Date extends Zend_Date_DateObject
                 if ($cnt < 12) {
                     $fixday = 0;
                     if ($calc == 'add') {
+                        // @phpstan-ignore variable.undefined ($cnt below the size of the list means that the name was found)
                         $date += $found;
                         $calc = 'set';
                         if (self::$_options['extend_month'] == false) {
@@ -1553,6 +1565,7 @@ class Zend_Date extends Zend_Date_DateObject
                             }
                         }
                     } else if ($calc == 'sub') {
+                        // @phpstan-ignore variable.undefined ($cnt below the size of the list means that the name was found)
                         $date = $month - $found;
                         $calc = 'set';
                         if (self::$_options['extend_month'] == false) {
@@ -1615,6 +1628,7 @@ class Zend_Date extends Zend_Date_DateObject
                 if ($cnt < 12) {
                     $fixday = 0;
                     if ($calc == 'add') {
+                        // @phpstan-ignore variable.undefined ($cnt below the size of the list means that the name was found)
                         $date += $found;
                         $calc = 'set';
                         if (self::$_options['extend_month'] === false) {
@@ -1624,6 +1638,7 @@ class Zend_Date extends Zend_Date_DateObject
                             }
                         }
                     } else if ($calc == 'sub') {
+                        // @phpstan-ignore variable.undefined ($cnt below the size of the list means that the name was found)
                         $date = $month - $found;
                         $calc = 'set';
                         if (self::$_options['extend_month'] === false) {
@@ -1691,6 +1706,7 @@ class Zend_Date extends Zend_Date_DateObject
                 if ($cnt < 12) {
                     $fixday = 0;
                     if ($calc === 'add') {
+                        // @phpstan-ignore variable.undefined ($cnt below the size of the list means that the name was found)
                         $date += $found;
                         $calc  = 'set';
                         if (self::$_options['extend_month'] === false) {
@@ -1700,6 +1716,7 @@ class Zend_Date extends Zend_Date_DateObject
                             }
                         }
                     } else if ($calc === 'sub') {
+                        // @phpstan-ignore variable.undefined ($cnt below the size of the list means that the name was found)
                         $date = $month - $found;
                         $calc = 'set';
                         if (self::$_options['extend_month'] === false) {
@@ -2510,13 +2527,13 @@ class Zend_Date extends Zend_Date_DateObject
 
                         if (($calc == 'set') || ($calc == 'cmp')) {
                             if (isset($parsed['month']) && is_numeric($parsed['month']) && $parsed['month'] > 0) {
-                                $parsed['month'] = (int) str_decrement(ltrim((string) $parsed['month'], '0'));
+                                $parsed['month'] = (int) $parsed['month'] - 1;
                             } else {
                                 $parsed['month'] = 0;
                             }
 
                             if (isset($parsed['day']) && is_numeric($parsed['day']) && $parsed['day'] > 0) {
-                                $parsed['day'] = (int) str_decrement(ltrim((string) $parsed['day'], '0'));
+                                $parsed['day'] = (int) $parsed['day'] - 1;
                             } else {
                                 $parsed['day'] = 0;
                             }
@@ -2627,7 +2644,7 @@ class Zend_Date extends Zend_Date_DateObject
      * @param  string|integer|array|Zend_Date  $time    Time to calculate with, if null the actual time is taken
      * @param  string                          $format  Timeformat for parsing input
      * @param  string|Zend_Locale              $locale  Locale for parsing input
-     * @return integer|Zend_Date  new time
+     * @return ($calc is 'cmp' ? integer : $this)  new time
      * @throws Zend_Date_Exception
      */
     private function _time($calc, $time, $format, $locale)
@@ -2789,7 +2806,7 @@ class Zend_Date extends Zend_Date_DateObject
      * @param  string|integer|array|Zend_Date  $date    Date to calculate with, if null the actual date is taken
      * @param  string                          $format  Date format for parsing
      * @param  string|Zend_Locale              $locale  Locale for parsing input
-     * @return integer|Zend_Date  new date
+     * @return ($calc is 'cmp' ? integer : $this)  new date
      * @throws Zend_Date_Exception
      */
     private function _date($calc, $date, $format, $locale)
@@ -3319,8 +3336,8 @@ class Zend_Date extends Zend_Date_DateObject
      * @param  string                          $calc    Calculation to make
      * @param  string|integer|array|Zend_Date  $date    Date or Part to calculate
      * @param  string                          $type    Datepart for Calculation
-     * @param  string|Zend_Locale              $locale  Locale for parsing input
-     * @return integer|Zend_Date  new date
+     * @param  string|Zend_Locale|null              $locale  Locale for parsing input
+     * @return ($calc is 'cmp' ? integer : $this)  new date
      * @throws Zend_Date_Exception
      */
     private function _calcdetail($calc, $date, $type, $locale)
@@ -3362,7 +3379,7 @@ class Zend_Date extends Zend_Date_DateObject
      * @param  string                   $parameter
      * @param  string|Zend_Locale       $locale Locale for parsing input
      * @throws Zend_Date_Exception
-     * @return integer|Zend_Date  new date
+     * @return ($calc is 'cmp' ? integer : $this)  new date
      */
     private function _calcvalue($calc, $value, $type, $parameter, $locale)
     {
@@ -3508,7 +3525,7 @@ class Zend_Date extends Zend_Date_DateObject
      * @param  string                          $calc    Calculation to make
      * @param  string|integer|array|Zend_Date  $month   Month to calculate with, if null the actual month is taken
      * @param  string|Zend_Locale              $locale  Locale for parsing input
-     * @return integer|Zend_Date  new time
+     * @return ($calc is 'cmp' ? integer : $this)  new time
      * @throws Zend_Date_Exception
      */
     private function _month($calc, $month, $locale)
@@ -3522,19 +3539,21 @@ class Zend_Date extends Zend_Date_DateObject
             $locale = $this->getLocale();
         }
 
+        if (is_array($month)) {
+            if (isset($month['month']) === true) {
+                $month = $month['month'];
+            } else {
+                require_once 'Zend/Date/Exception.php';
+                throw new Zend_Date_Exception("no month given in array");
+            }
+        }
+
         if ($month instanceof Zend_Date) {
             // extract month from object
             $found = $month->toString(self::MONTH_SHORT, 'iso', $locale);
         } else {
             if (is_numeric($month)) {
                 $found = $month;
-            } else if (is_array($month)) {
-                if (isset($month['month']) === true) {
-                    $month = $month['month'];
-                } else {
-                    require_once 'Zend/Date/Exception.php';
-                    throw new Zend_Date_Exception("no month given in array");
-                }
             } else {
                 $monthlist  = Zend_Locale_Data::getList($locale, 'month');
                 $monthlist2 = Zend_Locale_Data::getList($locale, 'month', ['gregorian', 'format', 'abbreviated']);
@@ -3664,7 +3683,7 @@ class Zend_Date extends Zend_Date_DateObject
      * @param Zend_Date   $day    Day to calculate, when null the actual day is calculated
      * @param Zend_Locale $locale Locale for parsing input
      * @throws Zend_Date_Exception
-     * @return Zend_Date|integer
+     * @return ($calc is 'cmp' ? integer : $this)
      */
     private function _day($calc, $day, $locale)
     {
@@ -3813,7 +3832,7 @@ class Zend_Date extends Zend_Date_DateObject
      * @param  string      $calc     Type of calculation to make
      * @param  Zend_Date   $weekday  Weekday to calculate, when null the actual weekday is calculated
      * @param  Zend_Locale $locale   Locale for parsing input
-     * @return Zend_Date|integer
+     * @return ($calc is 'cmp' ? integer : $this)
      * @throws Zend_Date_Exception
      */
     private function _weekday($calc, $weekday, $locale)

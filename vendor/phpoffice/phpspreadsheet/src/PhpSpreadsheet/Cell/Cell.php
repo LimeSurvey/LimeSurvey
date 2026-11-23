@@ -174,12 +174,17 @@ class Cell implements Stringable
 
     /**
      * Get cell value.
+     *
+     * @psalm-taint-source input
      */
     public function getValue(): mixed
     {
         return $this->value;
     }
 
+    /**
+     * @psalm-taint-source input
+     */
     public function getValueString(): string
     {
         return StringHelper::convertToString($this->value, false);
@@ -187,6 +192,8 @@ class Cell implements Stringable
 
     /**
      * Get cell value with formatting.
+     *
+     * @psalm-taint-source input
      */
     public function getFormattedValue(): string
     {
@@ -366,24 +373,28 @@ class Cell implements Stringable
 
         $this->updateInCollection();
         $cellCoordinate = $this->getCoordinate();
-        self::updateIfCellIsTableHeader($this->getParent()?->getParent(), $this, $oldValue, $value);
-        $worksheet = $this->getWorksheet();
+        $cellCollection = $this->getParent();
+        self::updateIfCellIsTableHeader($cellCollection?->getParent(), $this, $oldValue, $value);
+        // Updating structured references may access other cells, which detaches this one
+        //    from the collection, so retrieve it again to ensure that it is still attached.
+        $cell = $cellCollection?->get($cellCoordinate) ?? $this;
+        $worksheet = $cell->getWorksheet();
         $spreadsheet = $worksheet->getParent();
         if (isset($spreadsheet) && $spreadsheet->getIndex($worksheet, true) >= 0) {
-            $originalSelected = $worksheet->getSelectedCells();
-            $activeSheetIndex = $spreadsheet->getActiveSheetIndex();
-            $style = $this->getStyle();
-            $oldQuotePrefix = $style->getQuotePrefix();
+            // Avoid Worksheet::getStyle() (selection + validation) unless quotePrefix must change.
+            $oldQuotePrefix = $spreadsheet->getCellXfByIndex($cell->getXfIndex())->getQuotePrefix();
             if ($oldQuotePrefix !== $quotePrefix) {
-                $style->setQuotePrefix($quotePrefix);
-            }
-            $worksheet->setSelectedCells($originalSelected);
-            if ($activeSheetIndex >= 0) {
-                $spreadsheet->setActiveSheetIndex($activeSheetIndex);
+                $originalSelected = $worksheet->getSelectedCells();
+                $activeSheetIndex = $spreadsheet->getActiveSheetIndex();
+                $cell->getStyle()->setQuotePrefix($quotePrefix);
+                $worksheet->setSelectedCells($originalSelected);
+                if ($activeSheetIndex >= 0) {
+                    $spreadsheet->setActiveSheetIndex($activeSheetIndex);
+                }
             }
         }
 
-        return $this->getParent()?->get($cellCoordinate) ?? $this;
+        return $cellCollection?->get($cellCoordinate) ?? $cell;
     }
 
     public const CALCULATE_DATE_TIME_ASIS = 0;
@@ -445,6 +456,8 @@ class Cell implements Stringable
      * @param bool $resetLog Whether the calculation engine logger should be reset or not
      *
      * @throws CalculationException
+     *
+     * @psalm-taint-source input
      */
     public function getCalculatedValue(bool $resetLog = true): mixed
     {
@@ -506,7 +519,7 @@ class Cell implements Stringable
                     foreach ($result as $resultRow) {
                         if (is_array($resultRow)) {
                             $newColumn = $column;
-                            foreach ($resultRow as $resultValue) {
+                            foreach ($resultRow as $resultValue) { //* @phpstan-ignore foreach.valueOverwritten (Php syntax demands 'as')
                                 if ($row !== $newRow || $column !== $newColumn) {
                                     $maxCoordinate = $newColumn . $newRow;
                                     if ($thisworksheet->getCell($newColumn . $newRow)->getValue() !== null) {
@@ -517,7 +530,6 @@ class Cell implements Stringable
                                         }
                                     }
                                 }
-                                /** @var string $newColumn */
                                 StringHelper::stringIncrement($newColumn);
                             }
                             ++$newRow;
@@ -1018,6 +1030,19 @@ class Cell implements Stringable
         $this->xfIndex = $indexValue;
 
         return $this->updateInCollection();
+    }
+
+    /**
+     * Set the XF index without triggering updateInCollection().
+     *
+     * This is intended for use by readers that will immediately follow with
+     * setValueExplicit(), avoiding a redundant cache write.
+     *
+     * @internal
+     */
+    public function setXfIndexNoUpdate(int $indexValue): void
+    {
+        $this->xfIndex = $indexValue;
     }
 
     /**

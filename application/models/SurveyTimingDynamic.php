@@ -82,10 +82,11 @@ class SurveyTimingDynamic extends LSActiveRecord
     }
 
     /**
-     * Returns Time statistics for this answer table
+     * Returns the time statistics of the completed responses of this survey
      *
      * @access public
-     * @return array
+     * @return array 'count' is the number of completed responses with timings. If it is not 0, there also are
+     *     the average time ('avgmin', 'avgsec') and the median time ('median' in seconds, 'allmin', 'allsec')
      */
     public function statistics()
     {
@@ -101,20 +102,21 @@ class SurveyTimingDynamic extends LSActiveRecord
                 $statistics['avgmin'] = (int) ($queryAvg['avg'] / 60);
                 $statistics['avgsec'] = ((int)$queryAvg['avg']) % 60;
                 $statistics['count'] = $queryAvg['count'];
-                $queryAll = Yii::app()->db->createCommand()
-                    ->select("interviewtime")
+                // Only the one or two middle values are read for the median, the table can be huge
+                $middleval = intval($statistics['count'] / 2);
+                $statistics['middleval'] = $middleval;
+                $isEvenCount = $statistics['count'] % 2 == 0;
+                $middleValues = Yii::app()->db->createCommand()
+                    ->select("t.interviewtime")
                     ->from($this->tableName() . " t")
                     ->join("{{responses_{$sid}}} s", "t.id = s.id")
                     ->where("s.submitdate IS NOT NULL")
                     ->order("t.interviewtime")
-                    ->queryAll();
-                $middleval = intval($statistics['count'] / 2);
-                $statistics['middleval'] = $middleval;
-                if ($statistics['count'] % 2 && $statistics['count'] > 1) {
-                    $median = (int)(($queryAll[$middleval]['interviewtime'] + $queryAll[$middleval - 1]['interviewtime']) / 2);
-                } else {
-                    $median = (int)$queryAll[$middleval]['interviewtime'];
-                }
+                    // Even number of values: The median is the mean of the two middle values
+                    ->limit($isEvenCount ? 2 : 1, $isEvenCount ? $middleval - 1 : $middleval)
+                    ->queryColumn();
+                // No value can only happen if responses were deleted since the count was read
+                $median = empty($middleValues) ? 0 : (int) (array_sum($middleValues) / count($middleValues));
                 $statistics['median'] = $median;
                 $statistics['allmin'] = (int) ($median / 60);
                 $statistics['allsec'] = ((int)$median) % 60;

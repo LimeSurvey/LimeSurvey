@@ -54,7 +54,7 @@ class Zend_Dojo_View_Helper_Dojo
     protected $_container;
 
     /**
-     * @var bool Whether or not dijits should be declared programmatically
+     * @var bool|int Whether or not dijits should be declared programmatically
      */
     protected static $_useProgrammatic = true;
 
@@ -80,7 +80,7 @@ class Zend_Dojo_View_Helper_Dojo
     /**
      * Set view object
      *
-     * @param  Zend_Dojo_View_Interface $view
+     * @param  Zend_View_Interface $view
      * @return void
      */
     public function setView(Zend_View_Interface $view)

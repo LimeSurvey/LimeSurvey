@@ -29,6 +29,7 @@ require_once 'Zend/Cache/Backend/ExtendedInterface.php';
  * @see Zend_Cache_Backend
  */
 require_once 'Zend/Cache/Backend.php';
+require_once 'Zend/Cache.php';
 
 
 /**
@@ -46,9 +47,9 @@ class Zend_Cache_Backend_File extends Zend_Cache_Backend implements Zend_Cache_B
      * - Directory where to put the cache files
      *
      * =====> (boolean) file_locking :
-     * - Enable / disable file_locking
-     * - Can avoid cache corruption under bad circumstances but it doesn't work on multithread
-     * webservers and on NFS filesystems for example
+     * - Enable / disable file_locking while reading cache files
+     * - Cache files are written to a temporary file and renamed into place, so a write is
+     * atomic with or without locking
      *
      * =====> (boolean) read_control :
      * - Enable / disable read control
@@ -402,7 +403,7 @@ class Zend_Cache_Backend_File extends Zend_Cache_Backend implements Zend_Cache_B
      * - mtime : timestamp of last modification time
      *
      * @param string $id cache id
-     * @return array array of metadatas (false if the cache id is not found)
+     * @return array|false array of metadatas (false if the cache id is not found)
      */
     public function getMetadatas($id)
     {
@@ -575,7 +576,7 @@ class Zend_Cache_Backend_File extends Zend_Cache_Backend implements Zend_Cache_B
             return false;
         }
 
-        return @unserialize($result);
+        return @unserialize($result, ['allowed_classes' => false]);
     }
 
     /**
@@ -741,7 +742,6 @@ class Zend_Cache_Backend_File extends Zend_Cache_Backend implements Zend_Cache_B
                         break;
                     default:
                         Zend_Cache::throwException('Invalid mode for clean() method');
-                        break;
                 }
             }
             if ((is_dir($file)) && ($this->_options['hashed_directory_level']>0)) {
@@ -832,7 +832,6 @@ class Zend_Cache_Backend_File extends Zend_Cache_Backend implements Zend_Cache_B
                         break;
                     default:
                         Zend_Cache::throwException('Invalid mode for _get() method');
-                        break;
                 }
             }
             if ((is_dir($file)) && ($this->_options['hashed_directory_level']>0)) {
@@ -868,7 +867,7 @@ class Zend_Cache_Backend_File extends Zend_Cache_Backend implements Zend_Cache_B
      * @param  string $data        Data
      * @param  string $controlType Type of control 'md5', 'crc32' or 'strlen'
      * @throws Zend_Cache_Exception
-     * @return string Control key
+     * @return string|int Control key
      */
     protected function _hash($data, $controlType)
     {
@@ -917,7 +916,7 @@ class Zend_Cache_Backend_File extends Zend_Cache_Backend implements Zend_Cache_B
      *
      * @param  string $id Cache id
      * @param  boolean $parts if true, returns array of directory parts instead of single string
-     * @return string Complete directory path
+     * @return string|array Complete directory path, or its parts
      */
     protected function _path($id, $parts = false)
     {
@@ -982,7 +981,7 @@ class Zend_Cache_Backend_File extends Zend_Cache_Backend implements Zend_Cache_B
      * Return the file content of the given file
      *
      * @param  string $file File complete path
-     * @return string File content (or false if problem)
+     * @return string|false File content (or false if problem)
      */
     protected function _fileGetContents($file)
     {
@@ -1003,32 +1002,34 @@ class Zend_Cache_Backend_File extends Zend_Cache_Backend implements Zend_Cache_B
     /**
      * Put the given string into the given file
      *
+     * The string is written to a temporary file next to the target and
+     * renamed into place, so readers see either the previous or the new
+     * content and concurrent writers cannot interleave or duplicate data.
+     *
      * @param  string $file   File complete path
      * @param  string $string String to put in file
      * @return boolean true if no problem
      */
     protected function _filePutContents($file, $string)
     {
-        $result = false;
-        $f = @fopen($file, 'ab+');
-        if ($f) {
-            if ($this->_options['file_locking']) {
-                @flock($f, LOCK_EX);
-            }
-            fseek($f, 0);
-            ftruncate($f, 0);
-            $tmp = @fwrite($f, $string);
-            if (!($tmp === FALSE)) {
-                $result = true;
-            } else {
-                $this->_log("Zend_Cache_Backend_File::_filePutContents() : failed to write contents");
-            }
-            @fclose($f);
-        } else {
-            $this->_log("Zend_Cache_Backend_File::_filePutContents() : we can't obtain handle");
+        $tmpFile = $file . '.' . uniqid('', true) . '.tmp';
+
+        $written = @file_put_contents($tmpFile, $string);
+        if ($written === false || $written !== strlen($string)) {
+            $this->_log("Zend_Cache_Backend_File::_filePutContents() : failed to write contents");
+            @unlink($tmpFile);
+            return false;
         }
-        @chmod($file, $this->_options['cache_file_perm']);
-        return $result;
+
+        @chmod($tmpFile, $this->_options['cache_file_perm']);
+
+        if (!@rename($tmpFile, $file)) {
+            $this->_log("Zend_Cache_Backend_File::_filePutContents() : failed to rename the temporary file");
+            @unlink($tmpFile);
+            return false;
+        }
+
+        return true;
     }
 
     /**

@@ -79,7 +79,7 @@ class Zend_Form_Decorator_FormErrors extends Zend_Form_Decorator_Abstract
      * Render errors
      *
      * @param  string $content
-     * @return string
+     * @return string|null
      */
     public function render($content)
     {
@@ -110,6 +110,8 @@ class Zend_Form_Decorator_FormErrors extends Zend_Form_Decorator_Abstract
             case self::PREPEND:
                 return $markup . $this->getSeparator() . $content;
         }
+
+        return null;
     }
 
     /**

@@ -33,6 +33,7 @@ require_once 'Zend/Http/UserAgent/Features/Adapter.php';
  * @subpackage UserAgent
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @deprecated Deprecated since 1.26.1 and will be removed in a future version: Tera-WURFL is discontinued
  */
 class Zend_Http_UserAgent_Features_Adapter_TeraWurfl implements Zend_Http_UserAgent_Features_Adapter
 {
@@ -44,6 +45,8 @@ class Zend_Http_UserAgent_Features_Adapter_TeraWurfl implements Zend_Http_UserAg
      */
     public static function getFromRequest($request, array $config)
     {
+        trigger_error(__CLASS__ . ' is deprecated and will be removed in a future version', E_USER_DEPRECATED);
+
         if (!class_exists('TeraWurfl')) {
             // If TeraWurfl class not found, see if we can load it from
             // configuration

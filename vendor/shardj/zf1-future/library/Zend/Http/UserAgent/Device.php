@@ -110,7 +110,7 @@ interface Zend_Http_UserAgent_Device extends Serializable
     /**
      * Retrieve image format support
      *
-     * @return array
+     * @return array|null
      */
     public function getImageFormatSupport();
 
@@ -124,28 +124,28 @@ interface Zend_Http_UserAgent_Device extends Serializable
     /**
      * Get the maximum image height supported by this device
      *
-     * @return int
+     * @return int|string|null
      */
     public function getMaxImageHeight();
 
     /**
      * Get the maximum image width supported by this device
      *
-     * @return int
+     * @return int|string|null
      */
     public function getMaxImageWidth();
 
     /**
      * Get the physical screen height of this device
      *
-     * @return int
+     * @return int|string|null
      */
     public function getPhysicalScreenHeight();
 
     /**
      * Get the physical screen width of this device
      *
-     * @return int
+     * @return int|string|null
      */
     public function getPhysicalScreenWidth();
 
@@ -166,28 +166,28 @@ interface Zend_Http_UserAgent_Device extends Serializable
     /**
      * Get supported X/HTML version
      *
-     * @return int
+     * @return int|string|null
      */
     public function getXhtmlSupportLevel();
 
     /**
      * Does the device support Flash?
      *
-     * @return bool
+     * @return bool|string|null
      */
     public function hasFlashSupport();
 
     /**
      * Does the device support PDF?
      *
-     * @return bool
+     * @return bool|string|null
      */
     public function hasPdfSupport();
 
     /**
      * Does the device have a phone number associated with it?
      *
-     * @return bool
+     * @return bool|string|null
      */
     public function hasPhoneNumber();
 

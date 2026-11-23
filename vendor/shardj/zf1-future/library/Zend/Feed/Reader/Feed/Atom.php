@@ -25,11 +25,6 @@
 require_once 'Zend/Feed/Reader/FeedAbstract.php';
 
 /**
- * @see Zend_Feed_Reader_Extension_Atom_Feed
- */
-require_once 'Zend/Feed/Reader/Extension/Atom/Feed.php';
-
-/**
  * @category   Zend
  * @package    Zend_Feed_Reader
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
@@ -46,6 +41,9 @@ class Zend_Feed_Reader_Feed_Atom extends Zend_Feed_Reader_FeedAbstract
      */
     public function __construct(DOMDocument $dom, $type = null)
     {
+        require_once 'Zend/Feed/Reader.php';
+        require_once 'Zend/Feed/Reader/Extension/Atom/Feed.php';
+
         parent::__construct($dom, $type);
         $atomClass = Zend_Feed_Reader::getPluginLoader()->getClassName('Atom_Feed');
         $this->_extensions['Atom_Feed'] = new $atomClass($dom, $this->_data['type'], $this->_xpath);

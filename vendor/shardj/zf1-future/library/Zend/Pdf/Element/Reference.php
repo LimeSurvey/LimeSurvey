@@ -97,11 +97,11 @@ class Zend_Pdf_Element_Reference extends Zend_Pdf_Element
             $genNum = 0;
         }
 
-        if ( !(is_integer($objNum) && $objNum > 0) ) {
+        if ( !(is_int($objNum) && $objNum > 0) ) {
             require_once 'Zend/Pdf/Exception.php';
             throw new Zend_Pdf_Exception('Object number must be positive integer');
         }
-        if ( !(is_integer($genNum) && $genNum >= 0) ) {
+        if ( !(is_int($genNum) && $genNum >= 0) ) {
             require_once 'Zend/Pdf/Exception.php';
             throw new Zend_Pdf_Exception('Generation number must be non-negative integer');
         }
@@ -142,7 +142,7 @@ class Zend_Pdf_Element_Reference extends Zend_Pdf_Element
     /**
      * Return reference to the object
      *
-     * @param Zend_Pdf_Factory $factory
+     * @param Zend_Pdf_ElementFactory_Interface|null $factory
      * @return string
      */
     public function toString($factory = null)
@@ -204,7 +204,7 @@ class Zend_Pdf_Element_Reference extends Zend_Pdf_Element
 
         // This code duplicates code in Zend_Pdf_Element_Object class,
         // but allows to avoid unnecessary method call in most cases
-        $id = spl_object_hash($this->_ref);
+        $id = spl_object_id($this->_ref);
         if (isset($processed[$id])) {
             // Do nothing if object is already processed
             // return it

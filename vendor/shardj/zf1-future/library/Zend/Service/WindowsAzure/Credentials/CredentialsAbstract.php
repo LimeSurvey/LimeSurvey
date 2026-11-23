@@ -20,6 +20,8 @@
  */
 
 
+require_once 'Zend/Http/Client.php';
+
 /**
  * @category   Zend
  * @package    Zend_Service_WindowsAzure

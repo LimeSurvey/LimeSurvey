@@ -1,7 +1,7 @@
 <?php
 Yii::app()->getController()->renderPartial(
     '/layouts/partial_modals/modal_header',
-    ['modalTitle' => gT("Edit user permissions")]
+    ['modalTitle' => gT("Edit user permissions"), 'modalTitleId' => 'UserManagement-action-modal-title']
 );
 ?>
 

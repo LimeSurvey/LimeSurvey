@@ -623,21 +623,36 @@ class TokenDynamic extends LSActiveRecord
     }
 
     /**
-     * @return string
+     * Returns the "valid from" date for the participant list, in the display timezone.
+     * @return string HTML of the formatted date, empty string if not set
      */
     public function getValidfromFormated()
     {
-        $field = $this->validfrom;
-        return $this->getYesNoDateFormated($field);
+        return $this->getYesNoDateFormated($this->getValidityDateInDisplayTimezone($this->validfrom));
     }
 
     /**
-     * @return string
+     * Returns the "valid until" date for the participant list, in the display timezone.
+     * @return string HTML of the formatted date, empty string if not set
      */
     public function getValiduntilFormated()
     {
-        $field = $this->validuntil;
-        return $this->getYesNoDateFormated($field);
+        return $this->getYesNoDateFormated($this->getValidityDateInDisplayTimezone($this->validuntil));
+    }
+
+    /**
+     * Converts a validity date (valid from/valid until) stored in UTC to the display timezone of the current request.
+     * Uses the timezone already resolved by LSYii_Controller (same result as getDateOfUTC()),
+     * to avoid a user setting query for every row of the participant list.
+     * @param string|null $date Date in UTC
+     * @return string|null Date in the display timezone, unchanged if empty
+     */
+    private function getValidityDateInDisplayTimezone($date)
+    {
+        if (empty($date)) {
+            return $date;
+        }
+        return dateShift($date, 'Y-m-d H:i:s');
     }
 
     public function getCustomDateAttrFormatted($attrName)
@@ -1031,7 +1046,9 @@ class TokenDynamic extends LSActiveRecord
     }
 
     /**
-     * @return CActiveDataProvider
+     * Returns the participants matching the filters of the participant list.
+     * The "valid from" and "valid until" filters are entered in the display timezone and compared in UTC.
+     * @return CActiveDataProvider Data provider for the participant list
      */
     public function search()
     {
@@ -1145,10 +1162,12 @@ class TokenDynamic extends LSActiveRecord
         $criteria->compare('usesleft', $this->usesleft, false);
 
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
+        // Validity dates are stored in UTC, the filter value is in the display timezone
+        $displayTimezone = Yii::app()->getConfig('displayTimezone');
         if ($this->validfrom) {
             $s = DateTime::createFromFormat($dateformatdetails['phpdate'] . ' H:i', $this->validfrom);
             if (is_object($s)) {
-                $s2 = $s->format('Y-m-d H:i');
+                $s2 = dateShift($s->format('Y-m-d H:i:s'), 'Y-m-d H:i', 'UTC', $displayTimezone);
                 $criteria->addCondition('validfrom <= \'' . $s2 . '\'');
             }
         }
@@ -1156,7 +1175,7 @@ class TokenDynamic extends LSActiveRecord
         if ($this->validuntil) {
             $s = DateTime::createFromFormat($dateformatdetails['phpdate'] . ' H:i', $this->validuntil);
             if (is_object($s)) {
-                $s2 = $s->format('Y-m-d H:i');
+                $s2 = dateShift($s->format('Y-m-d H:i:s'), 'Y-m-d H:i', 'UTC', $displayTimezone);
                 $criteria->addCondition('validuntil >= \'' . $s2 . '\'');
             }
         }
@@ -1187,28 +1206,59 @@ class TokenDynamic extends LSActiveRecord
     }
 
     /**
-     * Returns true if the token can be used
+     * Returns true if the participant can currently enter the survey with this access code.
+     * Uses the same rules as the survey itself (see SurveyIndex): The participant must be inside
+     * the validity period, and unless editing after completion is allowed, must not have completed
+     * the survey and must have uses left.
      * @return bool
      */
     public function canBeUsed()
     {
-        return !empty($this->token)
-            && (
-                $this->completed == "N"
-                || empty($this->completed)
-                || $this->survey->isAllowEditAfterCompletion
-            );
+        if (empty($this->token) || !$this->isWithinValidityPeriod()) {
+            return false;
+        }
+        if ($this->survey->isAllowEditAfterCompletion) {
+            return true;
+        }
+        return !$this->isCompleted() && (int) $this->usesleft > 0;
     }
 
+    /**
+     * Returns true if an invitation or reminder can be sent to this participant:
+     * The access code must be usable, the participant must not have completed the survey
+     * and must have an email address with status OK.
+     * @return bool
+     */
     public function canBeEmailed()
     {
-        return !empty($this->token)
-            && $this->emailstatus == "OK"
-            && $this->email
-            && $this->completed == "N"
-            && (
-                $this->usesleft > 0
-                || $this->survey->isAllowEditAfterCompletion
-            );
+        return !empty($this->email)
+            && $this->emailstatus === 'OK'
+            && !$this->isCompleted()
+            && $this->canBeUsed();
+    }
+
+    /**
+     * Returns true if the participant has completed the survey (or was screened out by a quota)
+     * @return bool
+     */
+    private function isCompleted()
+    {
+        return !empty($this->completed) && $this->completed !== 'N';
+    }
+
+    /**
+     * Returns true if the current time is inside the participant's validity period (valid from/valid until)
+     * @return bool
+     */
+    private function isWithinValidityPeriod()
+    {
+        $now = strtotime(gmdate('Y-m-d H:i:s'));
+        if (!empty($this->validfrom) && $now < strtotime((string) $this->validfrom)) {
+            return false;
+        }
+        if (!empty($this->validuntil) && $now > strtotime((string) $this->validuntil)) {
+            return false;
+        }
+        return true;
     }
 }

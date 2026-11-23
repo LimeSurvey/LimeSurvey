@@ -219,6 +219,7 @@ function isExcludedText(text) {
     'mm/dd/yyyy HH:MM',
     'dd-mm-yyyy HH:MM',
     'dd/mm/yyyy HH:MM',
+    'HH:MM',
     'DD/MM/YYYY',
     // Internal sanity-check error, intentionally not translated
     'Export options not initialized',

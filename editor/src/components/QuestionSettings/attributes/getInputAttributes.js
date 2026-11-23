@@ -8,6 +8,11 @@ export const getInputAttributes = () => ({
     props: {
       labelText: t('Date/time format'),
       dataTestId: 'date-time-format',
+      // Any combination of d/dd, m/mm, yy/yyyy, H/HH and M/MM is allowed, so a custom format can be typed in
+      isCreatable: true,
+      // Cleared means the survey's date format is used
+      isClearable: true,
+      placeholder: t('Survey date format'),
       options: [
         {
           label: 'yyyy-mm-dd',
@@ -56,6 +61,10 @@ export const getInputAttributes = () => ({
         {
           label: 'dd/mm/yyyy HH:MM',
           value: 'dd/mm/yyyy HH:MM',
+        },
+        {
+          label: 'HH:MM',
+          value: 'HH:MM',
         },
       ],
     },

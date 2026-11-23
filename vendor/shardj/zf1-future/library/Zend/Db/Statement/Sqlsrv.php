@@ -53,6 +53,13 @@ class Zend_Db_Statement_Sqlsrv extends Zend_Db_Statement
     protected $_executed = false;
 
     /**
+     * Errors of the last failed execution, which leaves no statement handle
+     *
+     * @var array|null
+     */
+    protected $_executeErrors = null;
+
+    /**
      * Prepares statement handle
      *
      * @param string $sql
@@ -86,7 +93,7 @@ class Zend_Db_Statement_Sqlsrv extends Zend_Db_Statement
      */
     protected function _bindParam($parameter, &$variable, $type = null, $length = null, $options = null)
     {
-        //Sql server doesn't support bind by name
+        // the bound variables are passed to sqlsrv_query() on execute
         return true;
     }
 
@@ -126,12 +133,12 @@ class Zend_Db_Statement_Sqlsrv extends Zend_Db_Statement
      * Retrieves the error code, if any, associated with the last operation on
      * the statement handle.
      *
-     * @return string error code.
+     * @return string|false error code.
      */
     public function errorCode()
     {
         if (!$this->_stmt) {
-            return false;
+            return $this->_executeErrors ? $this->_executeErrors[0]['code'] : false;
         }
 
         $error = sqlsrv_errors();
@@ -147,12 +154,18 @@ class Zend_Db_Statement_Sqlsrv extends Zend_Db_Statement
      * Retrieves an array of error information, if any, associated with the
      * last operation on the statement handle.
      *
-     * @return array
+     * @return array|false
      */
     public function errorInfo()
     {
         if (!$this->_stmt) {
-            return false;
+            if (!$this->_executeErrors) {
+                return false;
+            }
+            return [
+                $this->_executeErrors[0]['code'],
+                $this->_executeErrors[0]['message'],
+            ];
         }
 
         $error = sqlsrv_errors();
@@ -181,10 +194,13 @@ class Zend_Db_Statement_Sqlsrv extends Zend_Db_Statement
             return false;
         }
 
+        // without execute() parameters, the values of bindParam() and bindValue() in their order
+        if ($params === null && $this->_bindParam) {
+            $params = $this->_bindParam;
+            ksort($params);
+        }
+
         if ($params !== null) {
-            if (!is_array($params)) {
-                $params = [$params];
-            }
             $error = false;
 
             // make all params passed by reference
@@ -202,13 +218,16 @@ class Zend_Db_Statement_Sqlsrv extends Zend_Db_Statement
         $this->_stmt = sqlsrv_query($connection, $this->_originalSQL, $params);
 
         if (!$this->_stmt) {
+            $this->_executeErrors = sqlsrv_errors();
             require_once 'Zend/Db/Statement/Sqlsrv/Exception.php';
-            throw new Zend_Db_Statement_Sqlsrv_Exception(sqlsrv_errors());
+            throw new Zend_Db_Statement_Sqlsrv_Exception($this->_executeErrors);
         }
+
+        $this->_executeErrors = null;
 
         $this->_executed = true;
 
-        return (!$this->_stmt);
+        return true;
     }
 
     /**
@@ -241,6 +260,9 @@ class Zend_Db_Statement_Sqlsrv extends Zend_Db_Statement
             return null;
         }
 
+        // the row number of limit() with an offset is no column of the query
+        unset($values['ZEND_DB_ROWNUM']);
+
         if (!$this->_keys) {
             foreach ($values as $key => $value) {
                 $this->_keys[] = $this->_adapter->foldCase($key);
@@ -272,7 +294,6 @@ class Zend_Db_Statement_Sqlsrv extends Zend_Db_Statement
             default:
                 require_once 'Zend/Db/Statement/Sqlsrv/Exception.php';
                 throw new Zend_Db_Statement_Sqlsrv_Exception("Invalid fetch mode '$style' specified");
-                break;
         }
 
         return $row;
@@ -282,7 +303,7 @@ class Zend_Db_Statement_Sqlsrv extends Zend_Db_Statement
      * Returns a single column from the next row of a result set.
      *
      * @param int $col OPTIONAL Position of the column to fetch.
-     * @return string
+     * @return string|false
      * @throws Zend_Db_Statement_Exception
      */
     public function fetchColumn($col = 0)
@@ -299,6 +320,12 @@ class Zend_Db_Statement_Sqlsrv extends Zend_Db_Statement
 
             // If no error, there is simply no record
             return false;
+        }
+
+        // the row number of limit() with an offset is no column of the query
+        $fields = sqlsrv_field_metadata($this->_stmt);
+        if ($fields && $fields[0]['Name'] === 'ZEND_DB_ROWNUM') {
+            $col++;
         }
 
         $data = sqlsrv_get_field($this->_stmt, $col); //0-based
@@ -388,7 +415,7 @@ class Zend_Db_Statement_Sqlsrv extends Zend_Db_Statement
      * last INSERT, DELETE, or UPDATE statement executed by this
      * statement object.
      *
-     * @return int     The number of rows affected.
+     * @return int|false     The number of rows affected.
      * @throws Zend_Db_Statement_Exception
      */
     public function rowCount()

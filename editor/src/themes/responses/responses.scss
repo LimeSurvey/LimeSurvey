@@ -53,8 +53,7 @@
   }
 
   .select,
-  .form-control,
-  .date-range-placeholder {
+  .form-control {
     border: 1px solid $g-200;
     min-width: 100px;
   }
@@ -314,8 +313,23 @@
             cursor: pointer;
           }
 
-          .pin-icon {
+          .sort-icon {
+            padding: 0;
+            border: 0;
+            background: none;
+            color: inherit;
+            line-height: 1;
+          }
+
+          // The sort icon shows on hover, while focused, and on the sorted column
+          .pin-icon,
+          .sort-icon {
             opacity: 0;
+          }
+
+          .sort-icon.is-sorted,
+          .sort-icon:focus-visible {
+            opacity: 1;
           }
 
           &:hover {
@@ -331,6 +345,10 @@
             background: $g-400;
             cursor: col-resize;
           }
+        }
+
+        &:hover .header-actions-container .sort-icon {
+          opacity: 1;
         }
       }
 

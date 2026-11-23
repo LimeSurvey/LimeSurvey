@@ -66,7 +66,7 @@ class Zend_View_Helper_Placeholder_Registry
     /**
      * Retrieve or create registry instnace
      *
-     * @return void
+     * @return Zend_View_Helper_Placeholder_Registry
      */
     public static function getRegistry()
     {
@@ -123,7 +123,7 @@ class Zend_View_Helper_Placeholder_Registry
      * Set the container for an item in the registry
      *
      * @param  string $key
-     * @param  Zend_View_Placeholder_Container_Abstract $container
+     * @param  Zend_View_Helper_Placeholder_Container_Abstract $container
      * @return Zend_View_Helper_Placeholder_Registry
      */
     public function setContainer($key, Zend_View_Helper_Placeholder_Container_Abstract $container)

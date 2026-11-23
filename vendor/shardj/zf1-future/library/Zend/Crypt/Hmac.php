@@ -142,7 +142,7 @@ class Zend_Crypt_Hmac extends Zend_Crypt
      * @param string $data
      * @param string $output
      * @param bool $internal Option to not use hash() functions for testing
-     * @return string
+     * @return string|null
      */
     protected static function _hash($data, $output = self::STRING, $internal = false)
     {
@@ -155,11 +155,15 @@ class Zend_Crypt_Hmac extends Zend_Crypt
 
         if (function_exists('mhash')) {
             if ($output == self::BINARY) {
+                // phpcs:ignore PHPCompatibility.FunctionUse.RemovedFunctions.mhashDeprecated -- fallback without ext/hash
                 return mhash(self::_getMhashDefinition(self::$_hashAlgorithm), $data, self::$_key);
             }
+            // phpcs:ignore PHPCompatibility.FunctionUse.RemovedFunctions.mhashDeprecated -- fallback without ext/hash
             $bin = mhash(self::_getMhashDefinition(self::$_hashAlgorithm), $data, self::$_key);
             return bin2hex($bin);
         }
+
+        return null;
     }
 
     /**
@@ -172,8 +176,11 @@ class Zend_Crypt_Hmac extends Zend_Crypt
      */
     protected static function _getMhashDefinition($hashAlgorithm)
     {
+        $types = [];
+        // phpcs:ignore PHPCompatibility.FunctionUse.RemovedFunctions.mhash_countDeprecated -- fallback without ext/hash
         for ($i = 0; $i <= mhash_count(); $i++)
         {
+            // phpcs:ignore PHPCompatibility.FunctionUse.RemovedFunctions.mhash_get_hash_nameDeprecated -- fallback without ext/hash
             $types[mhash_get_hash_name($i)] = $i;
         }
         return $types[strtoupper($hashAlgorithm)];

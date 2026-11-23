@@ -6,11 +6,7 @@ use CDbException;
 use InvalidArgumentException;
 use LimeSurvey\Models\Services\Exception\NotFoundException;
 use LimeSurvey\Models\Services\Exception\PermissionDeniedException;
-use LimeSurvey\Models\Services\ResponseFilters\ParticipantResolver;
-use LimeSurvey\Models\Services\ResponseFilters\QuestionColumnMap;
-use LimeSurvey\Models\Services\ResponseFilters\ResponseFilterResolver;
-use LimeSurvey\Models\Services\ResponseFilters\ResponseFilterSet;
-use LimeSurvey\Models\Services\SurveyStatistics\ResponseConditionValues;
+use LimeSurvey\Models\Services\ResponseFilters\ResponseFilterSetService;
 use LimeSurvey\Models\Services\SurveyStatistics\StatisticsResponseFilters;
 use LimeSurvey\Models\Services\SurveyStatistics\StatisticsService;
 use Permission;
@@ -22,11 +18,13 @@ use LimeSurvey\Api\Command\{
     Response\ResponseFactory
 };
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermissionTrait;
+use LimeSurvey\Libraries\Api\Command\V1\Statistics\StatisticsFilterParamsTrait;
 use DI\FactoryInterface;
 
 class Statistics implements CommandInterface
 {
     use AuthPermissionTrait;
+    use StatisticsFilterParamsTrait;
 
     /** Default number of charts returned per page */
     private const DEFAULT_PAGE_SIZE = 15;
@@ -38,28 +36,32 @@ class Statistics implements CommandInterface
     protected ResponseFactory $responseFactory;
     protected StatisticsService $statisticsService;
     protected StatisticsResponseFilters $filters;
+    protected ResponseFilterSetService $filterSetService;
 
     /**
      * Constructor
      *
      * @param TransformerOutputSurvey $transformerOutputSurvey
-     * @param FactoryInterface $diFactory
+     * @param Permission $permission
      * @param ResponseFactory $responseFactory
      * @param StatisticsResponseFilters $filters
      * @param StatisticsService $statisticsService
+     * @param ResponseFilterSetService $filterSetService
      */
     public function __construct(
         TransformerOutputSurvey $transformerOutputSurvey,
         Permission $permission,
         ResponseFactory $responseFactory,
         StatisticsResponseFilters $filters,
-        StatisticsService $statisticsService
+        StatisticsService $statisticsService,
+        ResponseFilterSetService $filterSetService
     ) {
         $this->permission = $permission;
         $this->transformerOutputSurvey = $transformerOutputSurvey;
         $this->responseFactory = $responseFactory;
         $this->statisticsService = $statisticsService;
         $this->filters = $filters;
+        $this->filterSetService = $filterSetService;
     }
 
     /**
@@ -84,7 +86,11 @@ class Statistics implements CommandInterface
             }
 
             $this->statisticsService->setResolvedFilters(
-                $this->resolveFilterSet($request, $surveyId)
+                $this->resolveFilterSet(
+                    $request,
+                    $this->statisticsService->getSurvey(),
+                    $this->statisticsService->getLanguage()
+                )
             );
 
             $this->statisticsService->setPagination(
@@ -114,102 +120,26 @@ class Statistics implements CommandInterface
     }
 
     /**
-     * The `filterSet` param: the filter as the user built it in the modal,
-     * resolved into the response columns it means.
+     * The page of charts to return, from the `page` param.
      *
-     * @return \LimeSurvey\Models\Services\ResponseFilters\ResolvedFilter[]
-     * @throws InvalidArgumentException on a malformed or unresolvable filter,
-     *     which run() turns into a bad request rather than a 500.
-     * @throws PermissionDeniedException when a participant filter is sent by a
-     *     caller who may not read the survey's participants.
+     * @param Request $request
+     * @return int Zero-based page number, never negative
      */
-    private function resolveFilterSet(Request $request, int $surveyId): array
-    {
-        $filterSet = ResponseFilterSet::fromRequestValue($request->getData('filterSet', null));
-        if ($filterSet->isEmpty()) {
-            return [];
-        }
-
-        if (
-            $filterSet->hasParticipantFilter()
-            && !$this->permission->hasSurveyPermission($surveyId, 'tokens')
-        ) {
-            throw new PermissionDeniedException();
-        }
-
-        // Loaded and validated by setSurvey(), which run() calls first.
-        $survey = $this->statisticsService->getSurvey();
-
-        $resolver = new ResponseFilterResolver(
-            QuestionColumnMap::fromQuestionFieldMap(
-                createFieldMap($survey, 'full', false, false, $this->statisticsService->getLanguage())
-            ),
-            ParticipantResolver::fromSurvey($survey)
-        );
-
-        return $resolver->resolve($filterSet);
-    }
-
     private function getPage(Request $request): int
     {
         $page = $request->getData('page', 0);
         return max(0, (int)$page);
     }
 
+    /**
+     * The number of charts per page, from the `pageSize` param.
+     *
+     * @param Request $request
+     * @return int Between 1 and MAX_PAGE_SIZE
+     */
     private function getPageSize(Request $request): int
     {
         $pageSize = $request->getData('pageSize', self::DEFAULT_PAGE_SIZE);
         return min(self::MAX_PAGE_SIZE, max(1, (int)$pageSize));
-    }
-
-    public function getFilters(Request $request): StatisticsResponseFilters
-    {
-        $filterMap = [
-            'minId' => 'setMinId',
-            'maxId' => 'setMaxId',
-            'completed' => 'setCompleted',
-        ];
-
-        foreach ($filterMap as $key => $method) {
-            $value = $request->getData($key);
-            if ($value !== null) {
-                $this->filters->$method(
-                    // REST passes query strings, MCP passes JSON booleans
-                    $key === 'completed' ? ($value === true || $value === 'true') : (int)$value
-                );
-            }
-        }
-
-        $search = $request->getData('search');
-        if ($search !== null) {
-            $this->filters->setSearchTerms(is_array($search) ? $search : [$search]);
-        }
-        $conditions = $request->getData('conditions');
-        if ($conditions !== null) {
-            if (!is_array($conditions)) {
-                throw new InvalidArgumentException('conditions must be an array');
-            }
-            $allowToken = false;
-            foreach ($conditions as $condition) {
-                $key = is_array($condition) ? ($condition['key'] ?? null) : null;
-                if (is_string($key) && ResponseConditionValues::isTokenKey($key)) {
-                    $allowToken = $this->permission->hasSurveyPermission((int)$request->getData('_id'), 'tokens');
-                    break;
-                }
-            }
-            $this->filters->setConditions($conditions, $allowToken);
-        }
-        $completion = $request->getData('completion');
-        if ($completion !== null) {
-            if (!is_string($completion)) {
-                throw new InvalidArgumentException('completion must be a string');
-            }
-            if ($completion !== 'all' && $request->getData('completed') !== null) {
-                throw new InvalidArgumentException('Use either completed or completion, not both.');
-            }
-            $this->filters->setCompletion($completion);
-        }
-
-        return $this->filters;
     }
 }

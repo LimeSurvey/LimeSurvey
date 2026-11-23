@@ -109,7 +109,7 @@ class Zend_Mail_Transport_Smtp extends Zend_Mail_Transport_Abstract
      * Constructor.
      *
      * @param  string $host OPTIONAL (Default: 127.0.0.1)
-     * @param  array|null $config OPTIONAL (Default: null)
+     * @param  array $config OPTIONAL (Default: null)
      * @return void
      *
      * @todo Someone please make this compatible
@@ -153,7 +153,7 @@ class Zend_Mail_Transport_Smtp extends Zend_Mail_Transport_Abstract
     /**
      * Sets the connection protocol instance
      *
-     * @param Zend_Mail_Protocol_Abstract $client
+     * @param Zend_Mail_Protocol_Abstract $connection
      *
      * @return void
      */
@@ -223,7 +223,7 @@ class Zend_Mail_Transport_Smtp extends Zend_Mail_Transport_Abstract
      * @access  protected
      * @param   array $headers
      * @return  void
-     * @throws  Zend_Transport_Exception
+     * @throws  Zend_Mail_Transport_Exception
      */
     protected function _prepareHeaders($headers)
     {

@@ -34,6 +34,7 @@ require_once 'Zend/Http/Client/Adapter/Interface.php';
  * @see Zend_Http_Client_Adapter_Stream
  */
 require_once 'Zend/Http/Client/Adapter/Stream.php';
+require_once 'Zend/Http/Client.php';
 
 /**
  * An adapter class for Zend_Http_Client based on the curl extension.
@@ -271,7 +272,7 @@ class Zend_Http_Client_Adapter_Curl implements Zend_Http_Client_Adapter_Interfac
      *
      * @param  string        $method
      * @param  Zend_Uri_Http $uri
-     * @param  float         $http_ver
+     * @param  string|float        $httpVersion
      * @param  array         $headers
      * @param  string        $body
      * @return string        $request
@@ -497,6 +498,7 @@ class Zend_Http_Client_Adapter_Curl implements Zend_Http_Client_Adapter_Interfac
     public function close()
     {
         if(is_resource($this->_curl)) {
+            // phpcs:ignore PHPCompatibility.FunctionUse.RemovedFunctions.curl_closeDeprecated -- a resource is the cURL handle of PHP 7
             curl_close($this->_curl);
         }
         $this->_curl         = null;

@@ -59,7 +59,7 @@ class Zend_Session extends Zend_Session_Abstract
     /**
      * $_throwStartupException
      *
-     * @var bool|bitset This could also be a combiniation of error codes to catch
+     * @var bool|int This could also be a combiniation of error codes to catch
      */
     protected static $_throwStartupExceptions = true;
 
@@ -121,7 +121,8 @@ class Zend_Session extends Zend_Session_Abstract
         'trans_sid_hosts'           => null,
         'sid_length'                => null,
         'sid_bits_per_character'    => null,
-        'cookie_samesite'           => null
+        'cookie_samesite'           => null,
+        'use_strict_mode'           => null
     ];
 
     /**
@@ -266,7 +267,7 @@ class Zend_Session extends Zend_Session_Abstract
     /**
      * setSaveHandler() - Session Save Handler assignment
      *
-     * @param Zend_Session_SaveHandler_Interface $interface
+     * @param Zend_Session_SaveHandler_Interface $saveHandler
      * @throws Zend_Session_Exception When the session_set_save_handler call fails
      * @return void
      */
@@ -278,6 +279,7 @@ class Zend_Session extends Zend_Session_Abstract
             return;
         }
 
+        require_once 'Zend/Session/SaveHandler/SessionHandlerInterfaceAdapter.php';
         $adapter = new Zend_Session_SaveHandler_SessionHandlerInterfaceAdapter($saveHandler);
         $result = session_set_save_handler($adapter, false);
         register_shutdown_function('session_write_close');
@@ -424,14 +426,6 @@ class Zend_Session extends Zend_Session_Abstract
      */
     public static function start($options = false)
     {
-        // Check to see if we've been passed an invalid session ID
-        if ( self::getId() && !self::_checkId(self::getId()) ) {
-            // Generate a valid, temporary replacement
-            self::setId(md5(self::getId()));
-            // Force a regenerate after session is started
-            self::$_regenerateIdState = -1;
-        }
-
         if (self::$_sessionStarted && self::$_destroyed) {
             require_once 'Zend/Session/Exception.php';
             throw new Zend_Session_Exception('The session was explicitly destroyed during this request, attempting to re-start is not allowed.');
@@ -439,6 +433,14 @@ class Zend_Session extends Zend_Session_Abstract
 
         if (self::$_sessionStarted) {
             return; // already started
+        }
+
+        // Check to see if we've been passed an invalid session ID
+        if ( self::getId() && !self::_checkId(self::getId()) ) {
+            // Generate a valid, temporary replacement
+            self::setId(md5(self::getId()));
+            // Force a regenerate after session is started
+            self::$_regenerateIdState = -1;
         }
 
         // make sure our default options (at the least) have been set
@@ -485,19 +487,26 @@ class Zend_Session extends Zend_Session_Abstract
                 set_error_handler(['Zend_Session_Exception', 'handleSessionStartError'], $errorLevel);
             }
 
-            $startedCleanly = session_start();
-
-            if (self::$_throwStartupExceptions) {
-                restore_error_handler();
+            try {
+                $startedCleanly = session_start();
+            } finally {
+                if (self::$_throwStartupExceptions) {
+                    restore_error_handler();
+                }
             }
 
             if (!$startedCleanly || Zend_Session_Exception::$sessionStartError != null) {
                 if (self::$_throwStartupExceptions) {
                     set_error_handler(['Zend_Session_Exception', 'handleSilentWriteClose'], $errorLevel);
                 }
-                session_write_close();
+                try {
+                    session_write_close();
+                } finally {
+                    if (self::$_throwStartupExceptions) {
+                        restore_error_handler();
+                    }
+                }
                 if (self::$_throwStartupExceptions) {
-                    restore_error_handler();
                     throw new Zend_Session_Exception(__CLASS__ . '::' . __FUNCTION__ . '() - ' . Zend_Session_Exception::$sessionStartError);
                 }
             }
@@ -534,20 +543,21 @@ class Zend_Session extends Zend_Session_Abstract
             }
         }
 
+        // reading the directive is not deprecated, only setting it
+        // phpcs:ignore PHPCompatibility.IniDirectives.RemovedIniDirectives.session_sid_bits_per_characterDeprecated
         $hashBitsPerChar = ini_get('session.sid_bits_per_character');
-        if (!$hashBitsPerChar) {
-          $hashBitsPerChar = ini_get('session.hash_bits_per_character');
-        }
         if (!$hashBitsPerChar) {
             $hashBitsPerChar = 5; // the default value
         }
-        $pattern = '';
-        switch($hashBitsPerChar) {
+        switch ($hashBitsPerChar) {
             case 4: $pattern = '^[0-9a-f]*$'; break;
             case 5: $pattern = '^[0-9a-v]*$'; break;
             case 6: $pattern = '^[0-9a-zA-Z-,]*$'; break;
+            default:
+                // Unknown setting, PHP decides what a valid id is
+                return true;
         }
-        return preg_match('#'.$pattern.'#', $id);
+        return (bool) preg_match('#'.$pattern.'#', $id);
     }
 
 

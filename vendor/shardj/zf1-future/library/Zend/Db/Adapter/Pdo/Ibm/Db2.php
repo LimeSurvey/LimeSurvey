@@ -58,12 +58,16 @@ class Zend_Db_Adapter_Pdo_Ibm_Db2
     /**
      * Returns a list of the tables in the database.
      *
+     * @param string $schema OPTIONAL Only the tables of this schema
      * @return array
      */
-    public function listTables()
+    public function listTables($schema = null)
     {
         $sql = "SELECT tabname "
         . "FROM SYSCAT.TABLES ";
+        if ($schema) {
+            $sql .= $this->_adapter->quoteInto('WHERE UPPER(tabschema) = UPPER(?)', $schema);
+        }
         return $this->_adapter->fetchCol($sql);
     }
 
@@ -77,7 +81,7 @@ class Zend_Db_Adapter_Pdo_Ibm_Db2
     public function describeTable($tableName, $schemaName = null)
     {
         $sql = "SELECT DISTINCT c.tabschema, c.tabname, c.colname, c.colno,
-                c.typename, c.default, c.nulls, c.length, c.scale,
+                c.typename, CAST(c.default AS VARCHAR(2000)), c.nulls, c.length, c.scale,
                 c.identity, tc.type AS tabconsttype, k.colseq
                 FROM syscat.columns c
                 LEFT JOIN (syscat.keycoluse k JOIN syscat.tabconst tc
@@ -180,26 +184,16 @@ class Zend_Db_Adapter_Pdo_Ibm_Db2
             throw new Zend_Db_Adapter_Exception("LIMIT argument offset=$offset is not valid");
         }
 
-        if ($offset === 0 && $count > 0) {
+        if ($count === 0) {
+            // no rows are requested
+            return "SELECT z1.* FROM (" . $sql . ") z1 WHERE 1 = 0";
+        }
+
+        if ($offset === 0) {
             return $sql . " FETCH FIRST $count ROWS ONLY";
         }
 
-        /**
-         * DB2 does not implement the LIMIT clause as some RDBMS do.
-         * We have to simulate it with subqueries and ROWNUM.
-         * Unfortunately because we use the column wildcard "*",
-         * this puts an extra column into the query result set.
-         */
-        $limit_sql = "SELECT z2.*
-          FROM (
-              SELECT ROW_NUMBER() OVER() AS \"ZEND_DB_ROWNUM\", z1.*
-              FROM (
-                  " . $sql . "
-              ) z1
-          ) z2
-          WHERE z2.zend_db_rownum BETWEEN " . ($offset+1) . " AND " . ($offset+$count);
-
-        return $limit_sql;
+        return $sql . " OFFSET $offset ROWS FETCH FIRST $count ROWS ONLY";
     }
 
     /**

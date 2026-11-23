@@ -22,7 +22,7 @@ foreach ($filterableColumns as $key => $column) {
 }
 ?>
 
-<div class="modal fade organize-columns-modal" id="<?= $modalId ?>" tabindex="-1" role="dialog" data-target="<?= CHtml::encode($ajaxUpdate) ?>" aria-labelledby="<?= $modalId ?>-label" aria-modal="true">
+<div class="modal fade organize-columns-modal" id="<?= $modalId ?>" tabindex="-1" role="dialog" data-target="<?= CHtml::encode($ajaxUpdate) ?>" aria-labelledby="<?= $modalId ?>-label <?= $modalId ?>-label-dialogsr" aria-modal="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <form class="pjax" method="POST" data-filtered-columns="<?= CHtml::encode(json_encode($filteredColumns)) ?>">

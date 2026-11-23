@@ -53,7 +53,6 @@ class Zend_Server_Reflection_Node
      *
      * @param mixed $value
      * @param Zend_Server_Reflection_Node $parent Optional
-     * @return Zend_Server_Reflection_Node
      */
     public function __construct($value, ?Zend_Server_Reflection_Node $parent = null)
     {
@@ -61,8 +60,6 @@ class Zend_Server_Reflection_Node
         if (null !== $parent) {
             $this->setParent($parent, true);
         }
-
-        return $this;
     }
 
     /**
@@ -182,14 +179,12 @@ class Zend_Server_Reflection_Node
 
             if (null === $value) {
                 $endPoints[] = $this;
-            } elseif ((null !== $value)
-                && $child->hasChildren())
-            {
+            } elseif ($child->hasChildren()) {
                 $childEndPoints = $child->getEndPoints();
                 if (!empty($childEndPoints)) {
                     $endPoints = array_merge($endPoints, $childEndPoints);
                 }
-            } elseif ((null !== $value) && !$child->hasChildren()) {
+            } elseif (!$child->hasChildren()) {
                 $endPoints[] = $child;
             }
         }

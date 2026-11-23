@@ -24,6 +24,7 @@
  * @see Zend_Tool_Project_Provider_Abstract
  */
 require_once 'Zend/Tool/Project/Provider/Abstract.php';
+require_once 'Zend/Tool/Framework/Provider/Pretendable.php';
 
 /**
  * @category   Zend
@@ -69,6 +70,7 @@ class Zend_Tool_Project_Provider_Layout extends Zend_Tool_Project_Provider_Abstr
         $applicationConfigResource = $profile->search('ApplicationConfigFile');
 
         if (!$applicationConfigResource) {
+            require_once 'Zend/Tool/Project/Exception.php';
             throw new Zend_Tool_Project_Exception('A project with an application config file is required to use this provider.');
         }
 
@@ -132,6 +134,7 @@ class Zend_Tool_Project_Provider_Layout extends Zend_Tool_Project_Provider_Abstr
     {
         $applicationConfigResource = $profile->search('ApplicationConfigFile');
         if (!$applicationConfigResource) {
+            require_once 'Zend/Tool/Project/Exception.php';
             throw new Zend_Tool_Project_Exception('A project with an application config file is required to use this provider.');
         }
 

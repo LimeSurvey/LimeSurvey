@@ -100,6 +100,9 @@ class LSBaseController extends LSYii_Controller
      */
     public function run($action)
     {
+        // Nothing may be changed while the hosting system makes a backup or runs the database update
+        $this->endRequestIfAdministrationLocked(Yii::app()->request->isAjaxRequest ? 'text' : 'html');
+
         // Check if the DB is up to date
         $sDBVersion = Yii::app()->getConfig('DBVersion');
 

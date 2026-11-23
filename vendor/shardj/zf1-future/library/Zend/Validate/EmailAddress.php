@@ -120,7 +120,8 @@ class Zend_Validate_EmailAddress extends Zend_Validate_Abstract
         'deep'     => false,
         'domain'   => true,
         'allow'    => Zend_Validate_Hostname::ALLOW_DNS,
-        'hostname' => null
+        'hostname' => null,
+        'utf8'     => false,
     ];
 
     /**
@@ -198,6 +199,10 @@ class Zend_Validate_EmailAddress extends Zend_Validate_Abstract
 
         if (array_key_exists('domain', $options)) {
             $this->setDomainCheck($options['domain']);
+        }
+
+        if (array_key_exists('utf8', $options)) {
+            $this->setUtf8($options['utf8']);
         }
 
         return $this;
@@ -321,7 +326,7 @@ class Zend_Validate_EmailAddress extends Zend_Validate_Abstract
     /**
      * Returns the set domainCheck option
      *
-     * @return unknown
+     * @return mixed
      */
     public function getDomainCheck()
     {
@@ -342,7 +347,36 @@ class Zend_Validate_EmailAddress extends Zend_Validate_Abstract
     }
 
     /**
+     * Returns whether a UTF-8 local part (SMTPUTF8, RFC 6531) is accepted
+     *
+     * @return boolean
+     */
+    public function getUtf8()
+    {
+        return $this->_options['utf8'];
+    }
+
+    /**
+     * Sets whether a UTF-8 local part (SMTPUTF8, RFC 6531) is accepted
+     *
+     * Off by default: the local part is then limited to the ASCII characters
+     * of RFC 5322. When on, non-ASCII characters are accepted as well, except
+     * control, format and other invisible characters (Unicode category C).
+     *
+     * @param boolean $utf8
+     * @return $this
+     */
+    public function setUtf8($utf8 = true)
+    {
+        $this->_options['utf8'] = (bool) $utf8;
+        return $this;
+    }
+
+    /**
      * Returns if the given host is reserved
+     *
+     * A host is reserved when its IPv4 address is a multicast or reserved address (224.0.0.0 and above)
+     * or lies in one of the networks of $_invalidIp.
      *
      * @param string $host
      * @return boolean
@@ -355,56 +389,25 @@ class Zend_Validate_EmailAddress extends Zend_Validate_Abstract
         $octet = explode('.',$host);
         if ((int)$octet[0] >= 224) {
             return true;
-        } else if (array_key_exists($octet[0], $this->_invalidIp)) {
-            foreach ((array)$this->_invalidIp[$octet[0]] as $subnetData) {
-                // we skip the first loop as we already know that octet matches
-                for ($i = 1; $i < 4; $i++) {
-                    if (strpos($subnetData, $octet[$i]) !== $i * 4) {
-                        break;
-                    }
-                }
-
-                $host       = explode("/", $subnetData);
-                $binaryHost = "";
-                $tmp        = explode(".", $host[0]);
-                for ($i = 0; $i < 4 ; $i++) {
-                    $binaryHost .= str_pad(decbin($tmp[$i]), 8, "0", STR_PAD_LEFT);
-                }
-
-                $segmentData = [
-                    'network'   => (int)$this->_toIp(str_pad(substr($binaryHost, 0, $host[1]), 32, 0)),
-                    'broadcast' => (int)$this->_toIp(str_pad(substr($binaryHost, 0, $host[1]), 32, 1))
-                ];
-
-                for ($j = $i; $j < 4; $j++) {
-                    if ((int)$octet[$j] < $segmentData['network'][$j] ||
-                        (int)$octet[$j] > $segmentData['broadcast'][$j]) {
-                        return false;
-                    }
-                }
-            }
-
-            return true;
-        } else {
+        }
+        if (!array_key_exists($octet[0], $this->_invalidIp)) {
             return false;
         }
-    }
 
-    /**
-     * Converts a binary string to an IP address
-     *
-     * @param string $binary
-     * @return array
-     */
-    private function _toIp($binary)
-    {
-        $ip  = [];
-        $tmp = explode(".", chunk_split($binary, 8, "."));
-        for ($i = 0; $i < 4 ; $i++) {
-            $ip[$i] = bindec($tmp[$i]);
+        $address = ip2long($host);
+        if ($address === false) {
+            return true;
         }
 
-        return $ip;
+        foreach ((array)$this->_invalidIp[$octet[0]] as $subnetData) {
+            list($network, $prefixLength) = explode('/', $subnetData);
+            $mask = ~((1 << (32 - (int)$prefixLength)) - 1);
+            if ((($address ^ ip2long($network)) & $mask) === 0) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -421,7 +424,15 @@ class Zend_Validate_EmailAddress extends Zend_Validate_Abstract
         // atext: ALPHA / DIGIT / and "!", "#", "$", "%", "&", "'", "*",
         //        "+", "-", "/", "=", "?", "^", "_", "`", "{", "|", "}", "~"
         $atext = 'a-zA-Z0-9\x21\x23\x24\x25\x26\x27\x2a\x2b\x2d\x2f\x3d\x3f\x5e\x5f\x60\x7b\x7c\x7d\x7e';
-        if (preg_match('/^[' . $atext . ']+(\x2e+[' . $atext . ']+)*$/', $this->_localPart)) {
+        if ($this->_options['utf8']) {
+            // SMTPUTF8 (RFC 6531) adds non-ASCII characters to atext; invisible ones (category C) are left out
+            $atom    = '(?:[' . $atext . ']|(?![\x00-\x7f])\P{C})+';
+            $pattern = '/^' . $atom . '(\x2e+' . $atom . ')*$/u';
+        } else {
+            $pattern = '/^[' . $atext . ']+(\x2e+[' . $atext . ']+)*$/';
+        }
+
+        if (preg_match($pattern, $this->_localPart)) {
             $result = true;
         } else {
             // Try quoted string format (RFC 5321 Chapter 4.1.2)
@@ -430,7 +441,7 @@ class Zend_Validate_EmailAddress extends Zend_Validate_Abstract
             $qtext      = '\x20-\x21\x23-\x5b\x5d-\x7e'; // %d32-33 / %d35-91 / %d93-126
             $quotedPair = '\x20-\x7e'; // %d92 %d32-126
             if ((0 === (strcmp($this->localPart, strip_tags($this->localPart))))
-                && (0 === (strcmp($this->localPart, htmlspecialchars_decode($this->localPart))))
+                && (0 === (strcmp($this->localPart, htmlspecialchars_decode($this->localPart, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401))))
                 && (preg_match('/^"(['. $qtext .']|\x5c[' . $quotedPair . '])*"$/', $this->localPart))) {
                 $result = true;
             } else {
@@ -453,9 +464,12 @@ class Zend_Validate_EmailAddress extends Zend_Validate_Abstract
         $mxHosts = [];
         $hostname = $this->_hostname;
 
-        //decode IDN domain name if possible
+        // the ASCII form of an IDN domain, by IDNA 2008 (UTS #46) like Zend_Validate_Hostname
         if (function_exists('idn_to_ascii')) {
-            $hostname = idn_to_ascii($this->_hostname);
+            $ascii = idn_to_ascii($this->_hostname, IDNA_NONTRANSITIONAL_TO_ASCII, INTL_IDNA_VARIANT_UTS46);
+            if ($ascii !== false) {
+                $hostname = $ascii;
+            }
         }
 
         $result = getmxrr($hostname, $mxHosts);

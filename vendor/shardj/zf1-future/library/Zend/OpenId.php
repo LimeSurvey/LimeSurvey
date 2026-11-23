@@ -503,6 +503,7 @@ class Zend_OpenId
             return sha1($data, true);
         } else if ($func === 'sha256') {
             if (function_exists('mhash')) {
+                // phpcs:ignore PHPCompatibility.FunctionUse.RemovedFunctions.mhashDeprecated, PHPCompatibility.Constants.RemovedConstants.mhash_sha256Deprecated -- fallback without ext/hash
                 return mhash(MHASH_SHA256 , $data);
             }
         }
@@ -557,8 +558,8 @@ class Zend_OpenId
             $bn = 0;
             $len = Zend_OpenId::strlen($bin);
             for ($i = 0; $i < $len; $i++) {
-                $bn = bcmul($bn, 256);
-                $bn = bcadd($bn, ord($bin[$i]));
+                $bn = bcmul($bn, '256');
+                $bn = bcadd($bn, (string) ord($bin[$i]));
             }
             return $bn;
         }
@@ -590,7 +591,7 @@ class Zend_OpenId
         }
 
         if (extension_loaded('bcmath')) {
-            $cmp = bccomp($bn, 0);
+            $cmp = bccomp($bn, '0');
 
             if ($cmp === 0) {
                 return "\0";
@@ -604,9 +605,9 @@ class Zend_OpenId
             }
 
             $bin = "";
-            while (bccomp($bn, 0) > 0) {
-                $bin = chr(bcmod($bn, 256)) . $bin;
-                $bn = bcdiv($bn, 256);
+            while (bccomp($bn, '0') > 0) {
+                $bin = chr((int) bcmod($bn, '256')) . $bin;
+                $bn = bcdiv($bn, '256');
             }
             if (ord($bin[0]) > 127) {
                 $bin = "\0" . $bin;
@@ -655,12 +656,14 @@ class Zend_OpenId
             } else if (extension_loaded('bcmath')) {
                 $bn_pub_key  = bcpowmod($bn_g, $bn_priv_key, $bn_p);
             }
+            // @phpstan-ignore variable.undefined (binToBigNum() above throws without gmp and bcmath)
             $pub_key     = self::bigNumToBin($bn_pub_key);
 
             return [
                 'p'        => $bn_p,
                 'g'        => $bn_g,
                 'priv_key' => $bn_priv_key,
+                // @phpstan-ignore variable.undefined (binToBigNum() above throws without gmp and bcmath)
                 'pub_key'  => $bn_pub_key,
                 'details'  => [
                     'p'        => $p,
@@ -677,7 +680,7 @@ class Zend_OpenId
      * key 'pub_key'.
      *
      * @param mixed $dh Diffie-Hellman key
-     * @return array
+     * @return array|null
      */
     static public function getDhKeyDetails($dh)
     {
@@ -689,6 +692,8 @@ class Zend_OpenId
         } else {
             return $dh['details'];
         }
+
+        return null;
     }
 
     /**
@@ -755,6 +760,7 @@ class Zend_OpenId
     static public function strlen($str)
     {
         if (extension_loaded('mbstring') &&
+            // phpcs:ignore PHPCompatibility.IniDirectives.RemovedIniDirectives.mbstring_func_overloadDeprecatedRemoved -- the directive exists on PHP 7.4
             (((int)ini_get('mbstring.func_overload')) & 2)) {
             return mb_strlen($str, 'latin1');
         } else {

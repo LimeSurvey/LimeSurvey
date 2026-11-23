@@ -919,7 +919,7 @@ class browser extends uploader {
     }
 
     protected function htmlData($str) {
-        return htmlentities((string) $str, null, strtoupper($this->charset));
+        return htmlentities((string) $str, ENT_QUOTES | ENT_SUBSTITUTE, strtoupper($this->charset));
     }
 }
 

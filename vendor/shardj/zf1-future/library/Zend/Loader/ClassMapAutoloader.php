@@ -82,7 +82,7 @@ class Zend_Loader_ClassMapAutoloader implements Zend_Loader_SplAutoloader
      * An autoload map should be an associative array containing
      * classname/file pairs.
      *
-     * @param  string|array $location
+     * @param  string|array $map
      * @return Zend_Loader_ClassMapAutoloader
      */
     public function registerAutoloadMap($map)
@@ -194,12 +194,12 @@ class Zend_Loader_ClassMapAutoloader implements Zend_Loader_SplAutoloader
      *
      * @see    https://bugs.php.net/bug.php?id=52769
      * @param  string $path
-     * @return string
+     * @return string|null
      */
     public static function realPharPath($path)
     {
         if (strpos($path, 'phar:///') !== 0) {
-            return;
+            return null;
         }
 
         $parts = explode('/', str_replace(['/','\\'], '/', substr($path, 8)));
@@ -212,6 +212,8 @@ class Zend_Loader_ClassMapAutoloader implements Zend_Loader_SplAutoloader
         if (file_exists($realPath = 'phar:///' . implode('/', $parts))) {
             return $realPath;
         }
+
+        return null;
     }
 
     /**
