@@ -35,6 +35,9 @@ class SurveyDynamic extends LSActiveRecord
     /** @var  boolean $bHaveToken */
     protected $bHaveToken;
 
+    /** @var TokenDynamic|null The participant of this response once it was decrypted, see getDecryptedParticipant() */
+    private $decryptedParticipant;
+
     /**
      * @inheritdoc
      * @return SurveyDynamic
@@ -602,42 +605,56 @@ class SurveyDynamic extends LSActiveRecord
 
 
     /**
-     * @return string
+     * Returns the participant of this response, decrypted.
+     * A participant must not be decrypted twice, so this is done only once,
+     * whichever participant column of the responses list is shown first.
+     *
+     * @return TokenDynamic|null Null if the response has no participant
+     */
+    private function getDecryptedParticipant()
+    {
+        $participant = $this->tokens;
+        if (!is_object($participant)) {
+            return null;
+        }
+        if ($participant !== $this->decryptedParticipant) {
+            $participant->decrypt();
+            $this->decryptedParticipant = $participant;
+        }
+        return $participant;
+    }
+
+    /**
+     * Returns the first name of the participant, for the responses list
+     *
+     * @return string|null Null if the response has no participant
      */
     public function getFirstNameForGrid()
     {
-        // decrypt token information ( if needed )
-        $tokens = $this->tokens;
-        if (is_object($tokens)) {
-            if (!empty($tokens)) {
-                $tokens->decrypt();
-            }
-            return $tokens->firstname;
-        }
+        $participant = $this->getDecryptedParticipant();
+        return $participant === null ? null : $participant->firstname;
     }
 
     /**
-     * @return string
+     * Returns the last name of the participant, for the responses list
+     *
+     * @return string|null Null if the response has no participant
      */
     public function getLastNameForGrid()
     {
-        // Last name is already decrypted in getFirstNameForGrid method, if we do it again it would try to decrypt it again ( and fail )
-        $tokens = $this->tokens;
-        if (is_object($tokens)) {
-            return $tokens->lastname;
-        }
+        $participant = $this->getDecryptedParticipant();
+        return $participant === null ? null : $participant->lastname;
     }
 
     /**
-     * @return string
+     * Returns the email address of the participant, for the responses list
+     *
+     * @return string|null Null if the response has no participant
      */
     public function getEmailForGrid()
     {
-        // decrypt token information ( if needed )
-        $tokens = $this->tokens;
-        if (is_object($tokens)) {
-            return $tokens->email;
-        }
+        $participant = $this->getDecryptedParticipant();
+        return $participant === null ? null : $participant->email;
     }
 
     /**
