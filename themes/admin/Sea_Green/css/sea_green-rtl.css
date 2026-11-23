@@ -18335,10 +18335,20 @@ ol.breadcrumb.title-bar-breadcrumb a:active {
   border-radius: 4px;
   border: 2px solid rgba(123, 97, 255, 0.4);
 }
-.box-widget .box-widget-card:focus-visible, .box-widget .box-widget-card:has(.box-widget-card-title-link:focus-visible) {
+.box-widget .box-widget-card:focus-visible {
   outline: none;
   border-radius: 0px;
   border: 2px solid rgba(123, 97, 255, 0.9);
+}
+@supports selector(:has(*)) {
+  .box-widget .box-widget-card:has(.box-widget-card-title-link:focus-visible) {
+    outline: none;
+    border-radius: 0px;
+    border: 2px solid rgba(123, 97, 255, 0.9);
+  }
+  .box-widget .box-widget-card:has(.box-widget-card-title-link:focus-visible) .box-widget-card-title-link:focus-visible {
+    outline: none;
+  }
 }
 .box-widget .box-widget-card:active {
   outline: none;
@@ -18516,7 +18526,8 @@ ol.breadcrumb.title-bar-breadcrumb a:active {
   font-weight: inherit;
 }
 .box-widget .box-widget-card-title-link:focus-visible {
-  outline: none;
+  outline: 2px solid #8146F6;
+  outline-offset: -2px;
 }
 .box-widget .survey-state {
   color: #6E748C;
