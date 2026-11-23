@@ -13,12 +13,8 @@ import {
   arrayDeleteItem,
   DuplicateQuestion,
   createBufferOperation,
-  Entities,
-  getNumericAnswerCodes,
-  hasNumericAnswerCodes,
   STATES,
 } from 'helpers'
-import { createChildrenUpdateOperation } from 'hooks/useQuestionChildren'
 import { ConfirmModal } from 'components/Modals'
 
 import { RowQuestion } from './RowQuestion'
@@ -80,24 +76,6 @@ export const RowQuestionsList = ({
     setTimeout(() => {
       setFocused(updatedQuestions[cloneIndex], groupIndex, cloneIndex)
     }, 0)
-  }
-
-  const assignNumericAnswerCodes = (question, index) => {
-    if (hasNumericAnswerCodes(question.answers)) {
-      return false
-    }
-    const answers = getNumericAnswerCodes(question.answers)
-    const updatedQuestion = { ...question, answers }
-    const updatedQuestions = [...questions]
-    updatedQuestions[index] = updatedQuestion
-    addToBuffer(
-      createChildrenUpdateOperation(question.qid, Entities.answer, answers)
-    )
-    handleUpdate(updatedQuestions)
-    if (focused?.qid === question.qid) {
-      setFocused(updatedQuestion, groupIndex, index)
-    }
-    return true
   }
 
   const deleteQuestion = (index) => {
@@ -173,9 +151,6 @@ export const RowQuestionsList = ({
                         focused={focused}
                         snapshot={snapshot}
                         isSurveyActive={isSurveyActive}
-                        assignNumericAnswerCodes={(q) =>
-                          assignNumericAnswerCodes(q, index)
-                        }
                         areCodesVisible={areCodesVisible}
                         toggleQuestionCodes={toggleQuestionCodes}
                       />
