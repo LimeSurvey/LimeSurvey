@@ -563,4 +563,37 @@ $dark-text-grape: #b39bff;
       color: $g-900-base;
     }
   }
+
+  // Privacy policy display mode: Pictograms of a survey page, a dark page with grey blocks.
+  // The selected one is purple, the dark aubergine of the light mode cannot be seen on the dark background
+  .lime-privacy-policy-btn-group {
+    .btn {
+      .privacy-icon-bg {
+        fill: $dark-g-300;
+      }
+      .privacy-icon-accent {
+        fill: $dark-g-600;
+      }
+      rect:not([class]) {
+        fill: $dark-g-400;
+      }
+    }
+
+    .btn-check:active + .btn-outline-lime-svg,
+    .btn-check:checked + .btn-outline-lime-svg,
+    .btn-outline-lime-svg.active,
+    .btn-outline-lime-svg:active,
+    .btn-outline-lime-svg:hover,
+    .btn-check:focus + .btn-outline-lime-svg {
+      .privacy-icon-bg {
+        fill: $dark-grape;
+      }
+      .privacy-icon-accent {
+        fill: $dark-text-grape;
+      }
+      rect:not([class]) {
+        fill: $white;
+      }
+    }
+  }
 }

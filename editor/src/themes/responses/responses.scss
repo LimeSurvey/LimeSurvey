@@ -522,11 +522,12 @@
   box-shadow: 0 2px 6px 0 $elevation-shadow-soft;
   z-index: 10;
 
-  .delete-response-action {
-    fill: red;
+  // The light red of the dark mode as text and icon, red in the light mode
+  .meatball-button.delete-response-action {
+    fill: var(--ls-error-text, red);
 
     span {
-      color: red;
+      color: var(--ls-error-text, red);
     }
   }
 
@@ -540,6 +541,8 @@
     align-items: center;
     padding: 0 8px;
     margin-left: 4px;
+    // The icons have no fill of their own: They take the text colour, which is light in the dark mode
+    fill: currentColor;
 
     &:hover {
       border-radius: 2px;
@@ -548,7 +551,7 @@
     }
 
     .delete-all-response-files {
-      fill: red;
+      fill: var(--ls-error-text, red);
     }
   }
 }
@@ -711,6 +714,7 @@
     width: 240px;
     align-items: center;
     padding: 0 8px;
+    fill: currentColor;
 
     &:hover {
       border-radius: 2px;
@@ -719,7 +723,7 @@
     }
 
     .delete-all-response-files {
-      fill: red;
+      fill: var(--ls-error-text, red);
     }
   }
 }

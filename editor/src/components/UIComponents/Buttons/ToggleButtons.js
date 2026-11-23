@@ -129,7 +129,8 @@ export const ToggleButtons = ({
                     {option.icon && (
                       <option.icon
                         size={24}
-                        color={isChecked(option) ? '#515567' : '#6e748c'} // $g-750 and $g-700
+                        // The text colour of the button, which also follows the admin theme and the dark mode
+                        color="currentColor"
                       />
                     )}
                     {option.name}
