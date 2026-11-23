@@ -151,4 +151,12 @@
     $(document).ajaxComplete(function (handler) {
         window.LS.doToolTip();
     });
+
+    // Links announced as buttons must react to Space like buttons do: Enter already works on links
+    $(document).on('keydown', '#notification-li .admin-notification-link, #notification-clear-all > a, #feature-preview-button', function (e) {
+        if (e.key === ' ') {
+            e.preventDefault();
+            this.click();
+        }
+    });
 </script>
