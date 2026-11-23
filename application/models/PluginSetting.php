@@ -26,6 +26,8 @@
 
 class PluginSetting extends CActiveRecord
 {
+    use TwigSandboxIteratorTrait;
+
     /**
      * @inheritdoc
      * @return PluginSetting
