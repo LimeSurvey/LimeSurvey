@@ -349,6 +349,7 @@ class Zend_Barcode_Renderer_Image extends Zend_Barcode_Renderer_RendererAbstract
         $functionName = 'image' . $this->_imageType;
         call_user_func($functionName, $this->_resource);
         if (PHP_VERSION_ID < 80000) {
+            // phpcs:ignore PHPCompatibility.FunctionUse.RemovedFunctions.imagedestroyDeprecated -- called before PHP 8.0 only
             @imagedestroy($this->_resource);
         }
     }
@@ -385,12 +386,14 @@ class Zend_Barcode_Renderer_Image extends Zend_Barcode_Renderer_RendererAbstract
             if (PHP_VERSION_ID >= 80100) {
                 imagefilledpolygon($this->_resource, $newPoints, $allocatedColor); // phpcs:ignore PHPCompatibility.FunctionUse.RequiredToOptionalFunctionParameters.imagefilledpolygon_num_pointsMissing
             } else {
+                // phpcs:ignore PHPCompatibility.FunctionUse.RemovedFunctionParameters.imagefilledpolygon_num_pointsDeprecated -- called before PHP 8.1 only
                 imagefilledpolygon($this->_resource, $newPoints, 4, $allocatedColor);
             }
         } else {
             if (PHP_VERSION_ID >= 80100) {
                 imagepolygon($this->_resource, $newPoints, $allocatedColor); // phpcs:ignore PHPCompatibility.FunctionUse.RequiredToOptionalFunctionParameters.imagepolygon_num_pointsMissing
             } else {
+                // phpcs:ignore PHPCompatibility.FunctionUse.RemovedFunctionParameters.imagepolygon_num_pointsDeprecated -- called before PHP 8.1 only
                 imagepolygon($this->_resource, $newPoints, 4, $allocatedColor);
             }
         }

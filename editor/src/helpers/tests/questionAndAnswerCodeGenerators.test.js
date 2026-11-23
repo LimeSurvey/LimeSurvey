@@ -65,5 +65,21 @@ describe('questionAndAnswerCodeGenerators', () => {
       }
       expect(getNextAnswerCode(emptyQuestion)).toBe('A001')
     })
+
+    it('continues plain numeric codes', () => {
+      const numericQuestion = {
+        qid: 1,
+        answers: [{ code: '1' }, { code: '2' }, { code: '3' }],
+      }
+      expect(getNextAnswerCode(numericQuestion)).toBe('4')
+    })
+
+    it('keeps the prefixed scheme when codes are mixed', () => {
+      const mixedQuestion = {
+        qid: 1,
+        answers: [{ code: '1' }, { code: 'A002' }],
+      }
+      expect(getNextAnswerCode(mixedQuestion)).toBe('A003')
+    })
   })
 })

@@ -87,6 +87,7 @@ class Zend_Translate_Adapter_Tbx extends Zend_Translate_Adapter {
                           xml_get_current_line_number($this->_file),
                           $filename);
             if (PHP_VERSION_ID < 80000) {
+                // phpcs:ignore PHPCompatibility.FunctionUse.RemovedFunctions.xml_parser_freeDeprecated -- called before PHP 8.0 only
                 xml_parser_free($this->_file);
             }
             require_once 'Zend/Translate/Exception.php';

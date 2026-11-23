@@ -744,6 +744,16 @@ class quexmlpdf extends pdf
     }
 
     /**
+     * Returns the language code of the questionnaire.
+     *
+     * @return string|null The language code set with setLanguage()
+     */
+    protected function getDocumentLanguage()
+    {
+        return $this->language;
+    }
+
+    /**
      * Use corner lines (default) or corner boxes
      *
      * @var bool Defaults to true

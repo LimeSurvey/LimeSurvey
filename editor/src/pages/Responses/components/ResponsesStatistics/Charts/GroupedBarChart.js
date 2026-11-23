@@ -49,14 +49,15 @@ const GroupedTooltip = ({ active, payload, categoryTitle }) => {
 const ROW_HEIGHT = 46
 const CHART_PADDING = 16
 // Secondary text colour ($g-700) for the per-bar labels and values.
-const LABEL_COLOR = '#6e748c'
+const LABEL_CLASS_NAME =
+  'responses-statistics-chart-labels responses-statistics-chart-labels--secondary'
 
 // Column/option name rendered just above its bar (recharts passes the bar's
 // top-left x/y), matching the responses chart layout.
 const renderTopLabel = ({ x, y, value }) => {
   if (x == null || y == null) return null
   return (
-    <text x={x} y={y - 6} fill={LABEL_COLOR} fontSize={12} textAnchor="start">
+    <text className={LABEL_CLASS_NAME} x={x} y={y - 6} textAnchor="start">
       {value}
     </text>
   )
@@ -103,7 +104,7 @@ const CategoryBarChart = ({ category, valueType, dataKey, domainMax }) => {
                 dataKey={dataKey}
                 position="right"
                 formatter={(value) => formatMetricValue(value, valueType)}
-                style={{ fontSize: 12, fill: LABEL_COLOR }}
+                className={LABEL_CLASS_NAME}
               />
             </Bar>
           </RechartsBarChart>

@@ -243,6 +243,7 @@ class Zend_Console_Getopt
     {
         if (!isset($_SERVER['argv'])) {
             require_once 'Zend/Console/Getopt/Exception.php';
+            // phpcs:ignore PHPCompatibility.IniDirectives.RemovedIniDirectives.register_argc_argvDeprecated -- reading the directive is not deprecated
             if (ini_get('register_argc_argv') == false) {
                 throw new Zend_Console_Getopt_Exception(
                     "argv is not available, because ini option 'register_argc_argv' is set Off"

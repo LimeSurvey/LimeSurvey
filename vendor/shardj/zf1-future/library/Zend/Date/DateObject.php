@@ -932,28 +932,46 @@ abstract class Zend_Date_DateObject
     }
 
     /**
+     * Key of date_sun_info() for the horizon of Zend_Date::_checkLocation(),
+     * the sine of the altitude of the sun: the effective horizon, or the
+     * civil (-6 degrees), nautical (-12) or astronomical (-18) twilight
+     *
+     * @param  float $horizon
+     * @param  bool  $rise    true: sunrise; false: sunset
+     * @return string
+     */
+    private function _sunInfoKey($horizon, $rise)
+    {
+        $twilights = [
+            'civil_twilight'        => -0.104528,
+            'nautical_twilight'     => -0.207912,
+            'astronomical_twilight' => -0.309017,
+        ];
+        foreach ($twilights as $twilight => $sine) {
+            if (abs($horizon - $sine) < 0.000001) {
+                return $twilight . ($rise ? '_begin' : '_end');
+            }
+        }
+        return $rise ? 'sunrise' : 'sunset';
+    }
+
+    /**
      * Calculates the sunrise or sunset based on a location
      *
      * @param  array  $location  Location for calculation MUST include 'latitude', 'longitude', 'horizon'
-     * @param  bool   $horizon   true: sunrise; false: sunset
+     * @param  float  $horizon   Sine of the altitude of the sun at the horizon
+     * @param  bool   $rise      true: sunrise; false: sunset
      * @return mixed  - false: midnight sun, integer:
      */
     protected function calcSun($location, $horizon, $rise = false)
     {
         // timestamp within 32bit
         if (abs($this->_unixTimestamp) <= 0x7FFFFFFF) {
-            if (PHP_VERSION_ID >= 80100) { // on php 8.1
-                $suninfo = date_sun_info($this->_unixTimestamp, $location['latitude'], $location['longitude']);
-                $sunrise = $suninfo['sunrise'];
-                $sunset  = $suninfo['sunset'];
-                return $rise === false ? $sunset : $sunrise;
-            }
-            if ($rise === false) {
-                return date_sunset($this->_unixTimestamp, SUNFUNCS_RET_TIMESTAMP, $location['latitude'],
-                                   $location['longitude'], 90 + $horizon, $this->getGmtOffset() / 3600);
-            }
-            return date_sunrise($this->_unixTimestamp, SUNFUNCS_RET_TIMESTAMP, $location['latitude'],
-                                $location['longitude'], 90 + $horizon, $this->getGmtOffset() / 3600);
+            $suninfo = date_sun_info($this->_unixTimestamp, $location['latitude'], $location['longitude']);
+            $time = $suninfo[$this->_sunInfoKey($horizon, $rise)];
+
+            // true: the sun does not set, false: the sun does not rise
+            return is_int($time) ? $time : false;
         }
 
         // self calculation - timestamp bigger than 32bit

@@ -85,11 +85,10 @@ const renderSegmentLabel = (segment, isPercentage) => {
     if (!value || width < 24) return null
     return (
       <text
+        className="responses-statistics-chart-labels responses-statistics-stacked-segment-label"
         x={x + width / 2}
         y={y + height / 2}
-        fill={isDarkFill(segment.color) ? '#fff' : '#1d2b33'}
-        fontSize={12}
-        fontWeight={600}
+        style={{ fill: isDarkFill(segment.color) ? '#fff' : '#1d2b33' }}
         textAnchor="middle"
         dominantBaseline="central"
         // Let hovers fall through to the bar so the tooltip stays visible.

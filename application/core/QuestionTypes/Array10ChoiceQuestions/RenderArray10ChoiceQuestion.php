@@ -77,11 +77,15 @@ class RenderArray10ChoiceQuestion extends QuestionBaseRenderer
 
         $sRows = '';
         $inputnames = [];
-        foreach ($aSubquestions as $j => $ansrow) {
+        $rowIndex = 0;
+        foreach ($aSubquestions as $ansrow) {
             $myfname = $this->sSGQA . "_S" . $ansrow['qid'];
+            if ($this->isRowStaticallyHidden($myfname)) {
+                continue;
+            }
             $sRows .= $this->renderRow(
                 $ansrow,
-                $j,
+                $rowIndex++,
                 $myfname,
                 $sSurveyLanguage,
                 $answerwidth,

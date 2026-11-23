@@ -432,10 +432,18 @@ class Zend_Db_Adapter_Sqlsrv extends Zend_Db_Adapter_Abstract
      */
     public function describeTable($tableName, $schemaName = null)
     {
+        // a schema given as database.schema
+        if ($schemaName != null && strpos($schemaName, '.') !== false) {
+            $schemaName = explode('.', $schemaName)[1];
+        }
+
         /**
          * Discover metadata information about this table.
          */
         $sql    = "exec sp_columns @table_name = " . $this->quoteIdentifier($tableName, true);
+        if ($schemaName != null) {
+            $sql .= ", @table_owner = " . $this->quoteIdentifier($schemaName, true);
+        }
         $stmt   = $this->query($sql);
         $result = $stmt->fetchAll(Zend_Db::FETCH_NUM);
 
@@ -498,7 +506,7 @@ class Zend_Db_Adapter_Sqlsrv extends Zend_Db_Adapter_Abstract
             }
 
             $desc[$this->foldCase($row[$column_name])] = [
-                'SCHEMA_NAME'      => null, // @todo
+                'SCHEMA_NAME'      => $this->foldCase($row[$owner]),
                 'TABLE_NAME'       => $this->foldCase($row[$table_name]),
                 'COLUMN_NAME'      => $this->foldCase($row[$column_name]),
                 'COLUMN_POSITION'  => (int) $row[$column_position],

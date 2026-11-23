@@ -1776,7 +1776,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
         ];
         $items[] = [
             'title' => gT('Activate'),
-            'url' => App()->createUrl('surveyAdministration/rendersidemenulink/subaction/generalsettings', ['surveyid' => $this->sid]),
+            'url' => App()->createUrl('surveyAdministration/view', ['iSurveyID' => $this->sid, 'openActivation' => 1]),
             'iconClass' => 'ri-check-line',
             'enabledCondition' =>
             $this->active === "N"
@@ -1997,6 +1997,14 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
         );
         $sort->defaultOrder = array('creation_date' => CSort::SORT_DESC);
+
+        // Persist the chosen sort order in session, the same way pageSize is persisted,
+        // since CSort itself only reads from the current request's GET params.
+        if (isset($_GET[$sort->sortVar]) && is_string($_GET[$sort->sortVar])) {
+            Yii::app()->user->setState('surveyListSort', $_GET[$sort->sortVar]);
+        } elseif (($surveyListSort = Yii::app()->user->getState('surveyListSort')) !== null) {
+            $_GET[$sort->sortVar] = $surveyListSort;
+        }
 
         $criteria = new LSDbCriteria();
         $aWithRelations = array('correct_relation_defaultlanguage');

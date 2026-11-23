@@ -1312,11 +1312,6 @@ abstract class Zend_File_Transfer_Adapter_Abstract
             unset($mime);
         }
 
-        if (empty($result) && (function_exists('mime_content_type')
-            && ini_get('mime_magic.magicfile'))) {
-            $result = mime_content_type($file);
-        }
-
         if (empty($result)) {
             $result = 'application/octet-stream';
         }

@@ -102,7 +102,7 @@ class SurveyArchive implements CommandInterface
         if ($response = $this->ensurePermissions($surveyId)) {
             return $response;
         }
-        $survey = Survey::model()->findByPk($surveyId);
+        $survey = $this->survey->findByPk($surveyId);
         if (!$survey) {
             return $this->responseFactory->makeErrorNotFound(
                 (new ResponseDataError(
@@ -120,9 +120,11 @@ class SurveyArchive implements CommandInterface
     /**
      * Ensure Permissions
      *
-     * @param string $authToken
+     * This runs before the survey lookup on purpose: An unknown survey id
+     * gives a 403 as well, so users cannot probe which survey ids exist.
+     *
      * @param int $surveyId
-     * @return Response|false
+     * @return Response|false Forbidden response, or false if access is allowed
      */
     private function ensurePermissions($surveyId)
     {
@@ -135,16 +137,6 @@ class SurveyArchive implements CommandInterface
         ) {
             return $this->responseFactory
                 ->makeErrorForbidden();
-        }
-
-        if (!$surveyId) {
-            return $this->responseFactory->makeErrorNotFound(
-                (new ResponseDataError(
-                    'SURVEY_NOT_FOUND',
-                    'Survey not found'
-                )
-                )->toArray()
-            );
         }
 
         return false;

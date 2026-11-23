@@ -470,10 +470,15 @@ function submittokens($quotaexit = false)
 }
 
 /**
- * Send a submit notification to the email address specified in the notifications tab in the survey settings
- * @param array $emails Emailnotifications that should be sent ['responseTo' => [['failedEmailId' => 'failedEmailId1', 'responseid' => 'responseid1', 'recipient' => 'recipient1', 'language' => 'language1'], [...]], 'notificationTo' => [[..., ..., ...][...]]]
- * @param bool $return whether the function should return values
- * @param int $surveyid survey ID of currently used survey
+ * Send the basic and detailed admin notifications of a response.
+ * Without $emails the response of the current session is sent to the addresses from the survey settings,
+ * with $emails the stored failed notifications are sent again.
+ *
+ * @param int $surveyid Survey ID of currently used survey
+ * @param array $emails Failed notifications to send again, by type:
+ *                      ['admin_notification' => [['id' => failed email ID, 'responseId' => response ID, 'recipient' => address, 'language' => language code, 'resendVars' => JSON of LimeMailer::getResendEmailVars()], …], 'admin_responses' => […]]
+ * @param bool $return Whether the function should return the counts
+ * @return array|void If $return is true: ['successfullEmailCount' => int, 'failedEmailCount' => int]
  * @throws \PHPMailer\PHPMailer\Exception
  * @throws CException
  */
@@ -534,6 +539,10 @@ function sendSubmitNotifications($surveyid, array $emails = [], bool $return = f
             array(), /* No tempvars update (except old Replacement like */
             $reData /* Be sure to use current survey */
         );
+        if (empty($emails)) {
+            // Same response and language for all recipients of both notification types: Build the answer table only once
+            $aReplacementVars['ANSWERTABLE'] = getResponseTableReplacement($surveyid, $responseId, $emailLanguage, $bIsHTML);
+        }
     }
 
     // admin_notification (Basic admin notification)
@@ -548,14 +557,13 @@ function sendSubmitNotifications($surveyid, array $emails = [], bool $return = f
                 $responseId = $sRecipient['responseId'];
                 $notificationRecipient = $sRecipient['recipient'];
                 $emailLanguage = $sRecipient['language'];
-                $mailer->addAndReplaceReplacement(['ANSWERTABLE' => getResponseTableReplacement($surveyid, $responseId, $emailLanguage, $bIsHTML)]);
+                // No replacements needed: The stored MIME body and subject are sent as they are
                 $mailer->setTypeWithRaw('admin_notification', $emailLanguage);
                 $mailer->setTo($notificationRecipient);
                 $mailerSuccess = $mailer->resend(json_decode((string) $sRecipient['resendVars'], true));
             } else {
                 $failedNotificationId = null;
                 $notificationRecipient = $sRecipient;
-                $mailer->addAndReplaceReplacement(['ANSWERTABLE' => getResponseTableReplacement($surveyid, $responseId, $emailLanguage, $bIsHTML)]);
                 $mailer->setTo($notificationRecipient);
                 $mailerSuccess = $mailer->SendMessage();
             }
@@ -596,14 +604,13 @@ function sendSubmitNotifications($surveyid, array $emails = [], bool $return = f
                 $responseId = $sRecipient['responseId'];
                 $responseRecipient = $sRecipient['recipient'];
                 $emailLanguage = $sRecipient['language'];
-                $mailer->addAndReplaceReplacement(['ANSWERTABLE' => getResponseTableReplacement($surveyid, $responseId, $emailLanguage, $bIsHTML)]);
+                // No replacements needed: The stored MIME body and subject are sent as they are
                 $mailer->setTypeWithRaw('admin_responses', $emailLanguage);
                 $mailer->setTo($responseRecipient);
                 $mailerSuccess = $mailer->resend(json_decode((string) $sRecipient['resendVars'], true));
             } else {
                 $failedNotificationId = null;
                 $responseRecipient = $sRecipient;
-                $mailer->addAndReplaceReplacement(['ANSWERTABLE' => getResponseTableReplacement($surveyid, $responseId, $emailLanguage, $bIsHTML)]);
                 $mailer->setTo($responseRecipient);
                 $mailerSuccess = $mailer->SendMessage();
             }

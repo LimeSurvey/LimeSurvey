@@ -341,9 +341,15 @@ class DataEntry extends SurveyCommonAction
 
             $this->renderWrappedTemplate('dataentry', 'import', $aData);
         } else {
+            $sourceTableName = App()->getRequest()->getPost('table');
+            if (!$this->checkResponseTableName($iSurveyId, $sourceTableName)) {
+                App()->setFlashMessage(gT("The selected table is not an archived response table of this survey."), 'error');
+                $this->getController()->redirect(["admin/dataentry/sa/import/surveyid/{$iSurveyId}"]);
+                return;
+            }
             $aSRIDConversions = array();
             $targetSchema = SurveyDynamic::model($iSurveyId)->getTableSchema();
-            $sourceTable = PluginDynamic::model($_POST['table']);
+            $sourceTable = PluginDynamic::model($sourceTableName);
             $sourceSchema = $sourceTable->getTableSchema();
             $encryptedAttributes = Response::getEncryptedAttributes($iSurveyId);
             $tbl_name = $sourceSchema->name;
@@ -352,7 +358,11 @@ class DataEntry extends SurveyCommonAction
                 $tbl_name = substr((string) $sourceSchema->name, strlen((string) App()->db->tablePrefix));
             }
 
-            $archivedTableSettings = ArchivedTableSettings::model()->findByAttributes(['tbl_name' => $tbl_name]);
+            $archivedTableSettings = ArchivedTableSettings::model()->findByAttributes([
+                'tbl_name' => $tbl_name,
+                'survey_id' => $iSurveyId,
+                'tbl_type' => 'response',
+            ]);
             $archivedEncryptedAttributes = [];
             if ($archivedTableSettings) {
                 $archivedEncryptedAttributes = json_decode((string) $archivedTableSettings->properties);
@@ -575,6 +585,21 @@ class DataEntry extends SurveyCommonAction
         }
     }
 
+
+    /**
+     * Checks if a table name is the name of an archived response table of this survey.
+     *
+     * Only the tables offered by the import form are valid, so a valid name
+     * can never point to a table of another survey or to any other table.
+     *
+     * @param int $surveyId Survey ID
+     * @param mixed $tableName Table name including the table prefix, usually a posted value
+     * @return bool
+     */
+    protected function checkResponseTableName($surveyId, $tableName)
+    {
+        return is_string($tableName) && in_array($tableName, App()->getApi()->getOldResponseTables($surveyId), true);
+    }
 
     /**
      * Sets the PostgreSQL sequence of the response ID so that it continues after the highest existing response ID,
@@ -1025,7 +1050,7 @@ class DataEntry extends SurveyCommonAction
                         $thisqid = $fname['qid'];
                         $currentvalues = array();
                         $myfname = 'Q' . $fname['qid'];
-                        $questionInput = '<div id="question' . $thisqid . '" class="ranking-answers"><ul class="answers-list select-list">';
+                        $questionInput = '<div id="question' . $thisqid . '" class="ranking-answers"><ul class="answers-list select-list list-unstyled">';
                         $unseen = true;
                         while (isset($fname['type']) && $fname['type'] == "R" && $fname['qid'] == $thisqid) {
                             $isParent = isRankingQuestionParent($fname['aid'] ?? null);
@@ -1062,36 +1087,11 @@ class DataEntry extends SurveyCommonAction
                                 (isset($currentvalues[$i - 1]) && $currentvalues[$i - 1] == $qrow['title']) ? $selected = " selected=\"selected\"" : $selected = "";
                                 $questionInput .= "\t<option value=\"" . $qrow['title'] . "\" $selected>" . flattenText($qrow->questionl10ns[$sDataEntryLanguage]->question) . "</option>\n";
                             }
-                            $questionInput .= "</select\n";
+                            $questionInput .= "</select>\n";
                             $questionInput .= "</li>";
                         }
                         $questionInput .= '</ul>';
-                        $questionInput .= "<div style='display:none' id='ranking-{$thisqid}-maxans'>{$qcount}</div>"
-                            . "<div style='display:none' id='ranking-{$thisqid}-minans'>0</div>"
-                            . "<div style='display:none' id='ranking-{$thisqid}-name'>javatbd{$myfname}</div>";
-                        $questionInput .= "<div style=\"display:none\">";
-                        foreach ($qresult as $qrow) {
-                            $questionInput .= "<div id=\"htmlblock-{$thisqid}-{$qrow['title']}\">{$qrow->questionl10ns[$sDataEntryLanguage]->question}</div>";
-                        }
-                        $questionInput .= "</div>";
                         $questionInput .= '</div>';
-                        App()->getClientScript()->registerPackage('jquery-actual');
-                        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'ranking.js');
-                        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'ranking.css');
-                        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'jquery-ui-custom.css');
-
-                        $questionInput .= "<script type='text/javascript'>\n"
-                            .  "  <!--\n"
-                            . "var aRankingTranslations = {
-                                     choicetitle: '" . gT("Your choices", 'js') . "',
-                                     ranktitle: '" . gT("Your ranking", 'js') . "'
-                                    };\n"
-                            . "function checkconditions(){};"
-                            . "$(function() {"
-                            . " doDragDropRank({$thisqid},0,true,true);\n"
-                            . "});\n"
-                            . " -->\n"
-                            . "</script>\n";
                         $questionInputs[$myfname] = $questionInput;
                         $unseenStatus = [$myfname => $unseen];
 
@@ -2622,9 +2622,6 @@ class DataEntry extends SurveyCommonAction
                                 'params' => [":qid" => $thisqid],
                                 'order' => 'question_order'
                             ]);
-                            App()->getClientScript()->registerPackage('jquery-actual');
-                            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'ranking.js');
-                            App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'ranking.css');
                             break;
                         case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox (Quite tricky really!)
                             if (trim((string) $qidattributes['display_columns']) != '') {

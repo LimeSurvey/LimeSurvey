@@ -39,6 +39,10 @@
               Eg: You can't add a file with the same name as a file in the mother theme. It will always replace it. You must use a different file name.
               Eg: Vanilla manifest already has "<add>css/theme.css</add>". So here, if you use "<add>css/theme.css</add>" it will replace the vanilla css/theme.css
 
+        NOTE: Colour variations must be in the folder css/variations/. A theme uses only one variation:
+              The variation of an extended theme replaces the variation of its mother theme, also when the file name is different.
+              If more than one file of css/variations/ is listed, only the last one is used.
+
         NOTE: If a file in a mother theme, you don't need to add it here again.
               Eg: css/ajaxify.css is already added in vanilla, this theme doesn't replace it, so ne need to add it here.
                   Even if no mention at all about  "css/ajaxify.css" is made here, it will be added because it's in the mother theme configuration
@@ -89,6 +93,9 @@
         <showclearall type="buttons" category="Simple options" width="4" title="Show 'Clear all' button" options="on|off"
                       optionlabels="Yes|No">off
         </showclearall>
+        <showlanguageswitcher type="buttons" category="Simple options" width="4" title="Show language switcher" options="on|off"
+                              optionlabels="Yes|No">on
+        </showlanguageswitcher>
         <questionhelptextposition type="buttons" category="Simple options" width="4" title="Question help text position"
                                   options="top|bottom" optionlabels="Top|Bottom">top
         </questionhelptextposition>
@@ -180,6 +187,7 @@
         <hideprivacyinfo category="Display options" />
         <notables category="Display options" />
         <showclearall category="Display options" />
+        <showlanguageswitcher category="Display options" />
         <questionhelptextposition category="Display options"/>
         <showpopups category="Display options" />
         <fixnumauto category="Display options" />

@@ -138,9 +138,8 @@ class SurveysGroupsPermissionController extends LSBaseController
             $oAddUserList = User::model()->findAll($oCriteria);
             /* User group according to rights */
             $oCriteria = new CDbCriteria();
-            if (shouldFilterUserGroupList()) {
-                $authorizedGroupsList = getUserGroupList();
-                $oCriteria->addInCondition("ugid", $authorizedGroupsList);
+            if (UserGroup::model()->isFilteredBySameGroupPolicy()) {
+                $oCriteria->addInCondition("ugid", UserGroup::model()->getAuthorizedGroupIds());
             }
             $oCriteria->order = "name";
             $oAddGroupList = UserGroup::model()->findAll($oCriteria);
@@ -249,7 +248,7 @@ class SurveysGroupsPermissionController extends LSBaseController
             throw new CHttpException(400, gT("Invalid action"));
         }
         /* Check if logged user can see user group */
-        if (shouldFilterUserGroupList() && !in_array($ugid, getUserGroupList())) {
+        if (!UserGroup::model()->isAuthorizedGroup($ugid)) {
             throw new CHttpException(403, gT("You do not have permission to this user group."));
         }
         $aData = array(
@@ -332,7 +331,7 @@ class SurveysGroupsPermissionController extends LSBaseController
             throw new CHttpException(401, gT("User group not found."));
         }
         /* Check if logged user can see user group */
-        if (shouldFilterUserGroupList() && !in_array($to, getUserGroupList())) {
+        if (!UserGroup::model()->isAuthorizedGroup($to)) {
             throw new CHttpException(403, gT("You do not have permission to access this user group."));
         }
         $this->viewUserOrUserGroup($id, $to, 'group');

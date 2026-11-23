@@ -16,12 +16,18 @@ use LimeSurvey\ExtensionInstaller\FileFetcherUploadZip;
 use LimeSurvey\ExtensionInstaller\PluginInstaller;
 use LimeSurvey\Menu\Menu;
 use LimeSurvey\Menu\MenuItem;
+use LimeSurvey\PluginManager\PasswordSettingMask;
 
 /**
  * @todo Apply new permission 'extensions' instead of 'settings'.
  */
 class PluginManagerController extends SurveyCommonAction
 {
+    /**
+     * Name of the hidden field of the plugin settings form that lists the settings the form shows
+     */
+    public const SHOWN_SETTINGS_FIELD = 'shownPluginSettings';
+
     /**
      * Init
      */
@@ -292,8 +298,43 @@ class PluginManagerController extends SurveyCommonAction
     }
 
     /**
-     * Configure for plugin
-     * @param int $id
+     * Returns the values to save for the settings of a plugin from a submitted settings form.
+     *
+     * The form tells which settings it showed. A plugin can hide settings depending on the
+     * value of other settings, like AuthLDAP does for the settings of the other LDAP mode:
+     * Such settings are left out, so saving does not touch their stored value. A setting the
+     * form showed but did not submit, like an unchecked checkbox, is saved as null.
+     * Without the list of shown settings every setting of the plugin is saved.
+     *
+     * @param array<array-key> $names Names of all settings of the plugin
+     * @param array<array-key,mixed> $post Submitted form values
+     * @return array<array-key,mixed> Values to save indexed by setting name
+     */
+    public static function getSubmittedSettings(array $names, array $post): array
+    {
+        $shownSettings = null;
+        if (isset($post[self::SHOWN_SETTINGS_FIELD]) && is_string($post[self::SHOWN_SETTINGS_FIELD])) {
+            $shownSettings = json_decode($post[self::SHOWN_SETTINGS_FIELD], true);
+        }
+        if (is_array($shownSettings)) {
+            $shownSettings = array_map('strval', array_filter($shownSettings, 'is_scalar'));
+            $names = array_filter($names, function ($name) use ($shownSettings) {
+                return in_array((string) $name, $shownSettings, true);
+            });
+        }
+        $values = [];
+        foreach ($names as $name) {
+            $values[$name] = $post[$name] ?? null;
+        }
+        return $values;
+    }
+
+    /**
+     * Shows the overview and the settings of a plugin and saves the settings when they are submitted.
+     * Stored passwords are not sent to the form, see PasswordSettingMask.
+     *
+     * @param int $id ID of the plugin to configure
+     * @return void
      */
     public function configure($id)
     {
@@ -309,6 +350,11 @@ class PluginManagerController extends SurveyCommonAction
         }
 
         $plugin      = Plugin::model()->findByPk($id);
+        if ($plugin === null) {
+            Yii::app()->user->setFlash('error', gT('The plugin was not found.'));
+            $this->getController()->redirect($url);
+        }
+
         $oPluginObject = App()->getPluginManager()->loadPlugin($plugin->name, $plugin->id, false);
 
         if (empty($oPluginObject)) {
@@ -318,11 +364,6 @@ class PluginManagerController extends SurveyCommonAction
 
         if (!$oPluginObject->readConfigFile()) {
             Yii::app()->user->setFlash('error', gT('Found no configuration file for this plugin.'));
-            $this->getController()->redirect($url);
-        }
-
-        if ($plugin === null) {
-            Yii::app()->user->setFlash('error', gT('The plugin was not found.'));
             $this->getController()->redirect($url);
         }
 
@@ -340,9 +381,15 @@ class PluginManagerController extends SurveyCommonAction
                 $this->getController()->redirect($url);
             }
             $aSettings = $oPluginObject->getPluginSettings(false);
-            $aSave     = array();
-            foreach (array_keys($aSettings) as $name) {
-                $aSave[$name] = App()->request->getPost($name, null);
+            $aSave     = self::getSubmittedSettings(array_keys($aSettings), $_POST);
+            // The form shows a placeholder instead of a stored password: Keep the stored one if it comes back.
+            // A plugin can leave settings out when it returns the current values (AuthLDAP hides the ones
+            // of the other LDAP mode): Those keep their definition, so their type is still known.
+            if (PasswordSettingMask::containsPlaceholder($aSave)) {
+                $aSave = PasswordSettingMask::restore(
+                    $aSave,
+                    array_replace($aSettings, $oPluginObject->getPluginSettings())
+                );
             }
             $oPluginObject->saveSettings($aSave);
             Yii::app()->user->setFlash('success', gT('The plugin settings were saved.'));
@@ -351,8 +398,8 @@ class PluginManagerController extends SurveyCommonAction
             }
         }
 
-        // Prepare settings to be send to the view.
-        $aSettings = $oPluginObject->getPluginSettings();
+        // Prepare settings to be send to the view, stored passwords must not reach the browser.
+        $aSettings = PasswordSettingMask::mask($oPluginObject->getPluginSettings());
         // Add button if permission
         $aButtons = array();
         if (Permission::model()->hasGlobalPermission('settings', 'update')) {

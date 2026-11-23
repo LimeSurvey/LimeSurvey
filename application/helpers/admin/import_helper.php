@@ -1460,7 +1460,7 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
             foreach ($files as $filename) {
                 if (pathinfo((string) $filename, PATHINFO_EXTENSION) == 'lss') {
                     //Import the LSS file
-                    $aImportResults = XMLImportSurvey(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $filename, null, $sNewSurveyName, null, true, false, $targetSurveyGroup);
+                    $aImportResults = XMLImportSurvey(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $filename, null, $sNewSurveyName, $DestSurveyID, true, false, $targetSurveyGroup);
                     if (empty($aImportResults['newsid'])) {
                         break;
                     }
@@ -2031,14 +2031,14 @@ function copyFromOneTableToTheOther($source, $destination, $preserveIDs = false)
         from information_schema.columns a
         join information_schema.columns b
         on {$filter} and
-          a.TABLE_NAME = '" . $destination . "' and
-          b.TABLE_NAME = '" . $source . "' and
+          a.TABLE_NAME = :destination and
+          b.TABLE_NAME = :source and
           a.COLUMN_NAME = b.COLUMN_NAME
     ";
     if (!$preserveIDs) {
         $command .= " where a.COLUMN_NAME not in ('id', 'tid')";
     }
-    $rawResults = Yii::app()->db->createCommand($command)->queryAll();
+    $rawResults = Yii::app()->db->createCommand($command)->queryAll(true, [':destination' => $destination, ':source' => $source]);
     $columns = [];
     foreach ($rawResults as $rawResult) {
         $columns[] = Yii::app()->db->quoteColumnName($rawResult['cname']);
@@ -2050,8 +2050,8 @@ function copyFromOneTableToTheOther($source, $destination, $preserveIDs = false)
         $oldResponsesTable = str_replace('_timings', '_responses', $source);
         $command = "
             SELECT t1.id as rid, t2.id as tid
-            FROM {$oldResponsesTable} t1
-            LEFT JOIN {$source} t2
+            FROM " . Yii::app()->db->quoteTableName($oldResponsesTable) . " t1
+            LEFT JOIN " . Yii::app()->db->quoteTableName($source) . " t2
             ON t1.id = t2.id
             order by t1.id
         ";
@@ -3700,8 +3700,6 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
         }
     }
 
-    // Set survey rights
-    Permission::model()->giveAllSurveyPermissions(Yii::app()->session['loginID'], $iNewSID);
     $aOldNewFieldmap = reverseTranslateFieldNames($iOldSID, $iNewSID, $aGIDReplacements, $aQIDReplacements);
     $results['FieldReMap'] = $aOldNewFieldmap;
     LimeExpressionManager::SetSurveyId($iNewSID);
@@ -4528,6 +4526,8 @@ function TSVImportSurvey($sFullFilePath)
 
     /* Keep track of id for group */
     $groupIds = [];
+    /* Group id in the file => group id used for the import */
+    $fileGroupIds = [];
     /* Keep track of id for question (can come from tsv and can be broken : issue #17980 */
     $questionsIds = [];
     $rownumber = 1;
@@ -4575,6 +4575,10 @@ function TSVImportSurvey($sFullFilePath)
                     } else {
                         $gidNew += 1;
                         $gid = $gidNew;
+                    }
+                    // Group assessments reference the group id from the file in their related_id column
+                    if (!empty($row['id']) && !isset($fileGroupIds[$row['id']])) {
+                        $fileGroupIds[$row['id']] = $gid;
                     }
                     $group['gid'] = $gid;
                     $groupIds[] = $gid;
@@ -4783,7 +4787,14 @@ function TSVImportSurvey($sFullFilePath)
                 $assessment = array();
                 $assessment['sid'] = $iNewSID;
                 $assessment['scope'] = $row['type/scale'] ?? '';
-                $assessment['gid'] = $gid;
+                if ($assessment['scope'] !== 'G') {
+                    $assessment['gid'] = 0;
+                } elseif (isset($row['related_id']) && isset($fileGroupIds[$row['related_id']])) {
+                    $assessment['gid'] = $fileGroupIds[$row['related_id']];
+                } else {
+                    // No group id in the file: Use the group of the previous group row
+                    $assessment['gid'] = $gid;
+                }
                 $assessment['name'] = $row['name'] ?? '';
                 $assessment['minimum'] = $row['min_num_value'] ?? '';
                 $assessment['maximum'] = $row['max_num_value'] ?? '';

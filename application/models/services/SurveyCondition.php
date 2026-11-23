@@ -391,6 +391,11 @@ class SurveyCondition
 
     /**
      * conditionScript action
+     *
+     * Stores the script as the question's relevance and deletes its conditions.
+     * The conditions are deleted even when the script equals the stored
+     * relevance: the relevance generated from the conditions can be submitted
+     * unchanged to replace them with a script.
      * @param int $qid the question id
      * @param string $script the custom script to be stored
      * @return void
@@ -398,7 +403,8 @@ class SurveyCondition
     public function conditionScript(int $qid, string $script)
     {
         $question = \Question::model()->findByPk($qid);
-        if ($script != $question->relevance) {
+        $hasConditions = \Condition::model()->exists('qid = :qid', [':qid' => $qid]);
+        if ($script != $question->relevance || $hasConditions) {
             $question->relevance = $script;
             $question->save();
             \Condition::model()->deleteRecords(array('qid' => $qid));
@@ -1605,7 +1611,7 @@ class SurveyCondition
                 }
                 // If we have a condition, all ways reset the condition, this can fix old import (see #09344)
                 // LimeExpressionManager::UpgradeConditionsToRelevance(NULL,$qid);
-            } elseif (!empty(trim((string) $oQuestion->relevance)) ||  trim((string) $oQuestion->relevance) == '1') {
+            } elseif (trim((string) $oQuestion->relevance) !== '' && trim((string) $oQuestion->relevance) !== '1') {
                 $aViewUrls['output'] = $caller->renderPartialView('customized_conditions', $aData, true);
             } else {
                 // no condition ==> disable delete all conditions button, and display a simple comment
@@ -1683,18 +1689,36 @@ class SurveyCondition
      */
     public function getScenariosAndConditionsOfQuestion($qid)
     {
-        $results = [];
+        return $this->getScenariosAndConditionsOfQuestions([(int) $qid])[(int) $qid];
+    }
+
+    /**
+     * Returns the scenarios and conditions of several questions with one query,
+     * in the format of getScenariosAndConditionsOfQuestion().
+     *
+     * @param int[] $qids The question IDs
+     * @return array<int, array> The scenarios of each question indexed by question ID, empty for a question without conditions
+     */
+    public function getScenariosAndConditionsOfQuestions(array $qids): array
+    {
+        $results = array_fill_keys(array_map('intval', $qids), []);
+        if (empty($results)) {
+            return [];
+        }
+        $criteria = new \CDbCriteria();
+        $criteria->addInCondition('qid', array_keys($results));
+        $criteria->order = 'qid, scenario';
         $keys = [];
-        $conditions = \Condition::model()->findAllByAttributes(["qid" => $qid], ['order' => 'scenario']);
-        foreach ($conditions as $condition) {
-            if (!isset($keys[$condition->scenario])) {
-                $keys[$condition->scenario] = count($results);
-                $results [] = [
+        foreach (\Condition::model()->findAll($criteria) as $condition) {
+            $qid = (int) $condition->qid;
+            if (!isset($keys[$qid][$condition->scenario])) {
+                $keys[$qid][$condition->scenario] = count($results[$qid]);
+                $results[$qid][] = [
                     "scid" => (int)$condition->scenario,
                     "conditions" => []
                 ];
             }
-            $results[$keys[$condition->scenario]]["conditions"] [] = [
+            $results[$qid][$keys[$qid][$condition->scenario]]["conditions"][] = [
                 "cid" => $condition->cid,
                 "qid" => $qid,
                 "cqid" => $condition->cqid,

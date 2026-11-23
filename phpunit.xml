@@ -4,6 +4,7 @@
     bootstrap="tests/bootstrap.php"
     stderr="true"
     colors="true"
+    convertDeprecationsToExceptions="true"
     xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.6/phpunit.xsd"
     >
   <coverage processUncoveredFiles="true">

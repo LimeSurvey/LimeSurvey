@@ -54,7 +54,10 @@ class Zend_Db_Statement_Mysqli extends Zend_Db_Statement
     protected $_values;
 
     /**
-     * @var array
+     * Result set metadata, false for a statement without a result set,
+     * null before the first execution.
+     *
+     * @var mysqli_result|false|null
      */
     protected $_meta = null;
 
@@ -145,6 +148,93 @@ class Zend_Db_Statement_Mysqli extends Zend_Db_Statement
             return $this->_meta->field_count;
         }
         return 0;
+    }
+
+    /**
+     * Returns metadata for a column in a result set, in the format of
+     * PDOStatement::getColumnMeta() of pdo_mysql: native_type, flags, table,
+     * name, len, precision and pdo_type. The pdo_type is the type of the
+     * values fetched: integer columns come as integers from mysqli.
+     *
+     * @param int $column Zero-based index of the column.
+     * @return array|false False when the statement has no result set or no such column.
+     */
+    public function getColumnMeta($column)
+    {
+        $column = (int) $column;
+        if (!$this->_meta || $column < 0 || $column >= $this->_meta->field_count) {
+            return false;
+        }
+
+        $field = $this->_meta->fetch_field_direct($column);
+        if (!$field) {
+            return false;
+        }
+
+        $meta = [];
+        $nativeTypes = [
+            MYSQLI_TYPE_STRING      => 'STRING',
+            MYSQLI_TYPE_VAR_STRING  => 'VAR_STRING',
+            MYSQLI_TYPE_TINY        => 'TINY',
+            MYSQLI_TYPE_BIT         => 'BIT',
+            MYSQLI_TYPE_SHORT       => 'SHORT',
+            MYSQLI_TYPE_LONG        => 'LONG',
+            MYSQLI_TYPE_LONGLONG    => 'LONGLONG',
+            MYSQLI_TYPE_INT24       => 'INT24',
+            MYSQLI_TYPE_FLOAT       => 'FLOAT',
+            MYSQLI_TYPE_DOUBLE      => 'DOUBLE',
+            MYSQLI_TYPE_DECIMAL     => 'DECIMAL',
+            MYSQLI_TYPE_NEWDECIMAL  => 'NEWDECIMAL',
+            MYSQLI_TYPE_GEOMETRY    => 'GEOMETRY',
+            MYSQLI_TYPE_TIMESTAMP   => 'TIMESTAMP',
+            MYSQLI_TYPE_YEAR        => 'YEAR',
+            MYSQLI_TYPE_SET         => 'SET',
+            MYSQLI_TYPE_ENUM        => 'ENUM',
+            MYSQLI_TYPE_DATE        => 'DATE',
+            MYSQLI_TYPE_NEWDATE     => 'NEWDATE',
+            MYSQLI_TYPE_TIME        => 'TIME',
+            MYSQLI_TYPE_DATETIME    => 'DATETIME',
+            MYSQLI_TYPE_TINY_BLOB   => 'TINY_BLOB',
+            MYSQLI_TYPE_MEDIUM_BLOB => 'MEDIUM_BLOB',
+            MYSQLI_TYPE_LONG_BLOB   => 'LONG_BLOB',
+            MYSQLI_TYPE_BLOB        => 'BLOB',
+            MYSQLI_TYPE_NULL        => 'NULL',
+        ];
+        // pdo_mysql leaves the key out for the types it has no name for
+        if (isset($nativeTypes[$field->type])) {
+            $meta['native_type'] = $nativeTypes[$field->type];
+        }
+
+        $flags = [];
+        $flagNames = [
+            MYSQLI_NOT_NULL_FLAG     => 'not_null',
+            MYSQLI_PRI_KEY_FLAG      => 'primary_key',
+            MYSQLI_MULTIPLE_KEY_FLAG => 'multiple_key',
+            MYSQLI_UNIQUE_KEY_FLAG   => 'unique_key',
+            MYSQLI_BLOB_FLAG         => 'blob',
+        ];
+        foreach ($flagNames as $flag => $name) {
+            if ($field->flags & $flag) {
+                $flags[] = $name;
+            }
+        }
+        $meta['flags'] = $flags;
+
+        $meta['table']     = $field->table;
+        $meta['name']      = $field->name;
+        $meta['len']       = $field->length;
+        $meta['precision'] = $field->decimals;
+
+        $integerTypes = [
+            MYSQLI_TYPE_BIT, MYSQLI_TYPE_YEAR, MYSQLI_TYPE_TINY, MYSQLI_TYPE_SHORT,
+            MYSQLI_TYPE_INT24, MYSQLI_TYPE_LONG,
+        ];
+        if (PHP_INT_SIZE == 8) {
+            $integerTypes[] = MYSQLI_TYPE_LONGLONG;
+        }
+        $meta['pdo_type'] = in_array($field->type, $integerTypes, true) ? Zend_Db::PARAM_INT : Zend_Db::PARAM_STR;
+
+        return $meta;
     }
 
     /**

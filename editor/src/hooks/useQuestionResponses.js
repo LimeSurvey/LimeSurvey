@@ -11,6 +11,7 @@ export function useQuestionResponses(
     filters = {},
     filterSet = [],
     search = [],
+    answerFilters = [],
   } = {}
 ) {
   const {
@@ -29,6 +30,7 @@ export function useQuestionResponses(
         filters,
         filterSet,
         search,
+        answerFilters,
       ],
       queryFn: ({ pageParam = 0 }) =>
         statisticsService.getQuestionResponses(
@@ -40,7 +42,8 @@ export function useQuestionResponses(
           fields,
           filters,
           search,
-          filterSet
+          filterSet,
+          answerFilters
         ),
     }),
     { enabled, fields, pageItems: 'rows' }
