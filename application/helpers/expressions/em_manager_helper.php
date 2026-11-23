@@ -1190,8 +1190,10 @@ class LimeExpressionManager
      * Process all question attributes that apply to EM
      * (1) subquestion-level relevance:  e.g. array_filter, array_filter_exclude, relevance equations entered in SQ-mask
      * (2) Validations: e.g. min/max number of answers; min/max/eq sum of answers
-     * @param integer|null $onlyThisQseq - only process these attributes for the specified question
-     * @return void
+     * The equations are stored in $this->subQrelInfo, $this->qid2validationEqn and $this->qid2exclusiveAuto.
+     *
+     * @param integer|null $onlyThisQseq Only process the attributes of the question with this sequence number, all questions if null
+     * @return void Nothing, the equations are stored in the class properties
      */
     public function _CreateSubQLevelRelevanceAndValidationEqns($onlyThisQseq = null)
     {
@@ -1309,15 +1311,11 @@ class LimeExpressionManager
                                     if (!isset($this->q2subqInfo[$fqid])) {
                                         continue;
                                     }
-                                    if ($this->q2subqInfo[$fqid]['type'] == Question::QT_R_RANKING) {
-                                        $rankables = [];
-                                        foreach ($this->qans[$fqid] as $k => $v) {
-                                            $rankable = explode('~', (string) $k);
-                                            $rankables[] = '_' . $rankable[1];
-                                        }
-                                        if (array_search($sq['sqsuffix'], $rankables) === false) {
-                                            continue;
-                                        }
+                                    if (
+                                        $this->q2subqInfo[$fqid]['type'] == Question::QT_R_RANKING
+                                        && !in_array($sq['sqsuffix'], $this->getRankingItemSuffixes($fqid), true)
+                                    ) {
+                                        continue;
                                     }
                                     $fsqs = [];
                                     foreach ($this->q2subqInfo[$fqid]['subqs'] as $fsq) {
@@ -1347,15 +1345,11 @@ class LimeExpressionManager
                                     if (!isset($this->q2subqInfo[$fqid])) {
                                         continue;
                                     }
-                                    if ($this->q2subqInfo[$fqid]['type'] == Question::QT_R_RANKING) {
-                                        $rankables = [];
-                                        foreach ($this->qans[$fqid] as $k => $v) {
-                                            $rankable = explode('~', (string) $k);
-                                            $rankables[] = '_' . $rankable[1];
-                                        }
-                                        if (array_search($sq['sqsuffix'], $rankables) === false) {
-                                            continue;
-                                        }
+                                    if (
+                                        $this->q2subqInfo[$fqid]['type'] == Question::QT_R_RANKING
+                                        && !in_array($sq['sqsuffix'], $this->getRankingItemSuffixes($fqid), true)
+                                    ) {
+                                        continue;
                                     }
                                     $fsqs = [];
                                     foreach ($this->q2subqInfo[$fqid]['subqs'] as $fsq) {
@@ -3313,6 +3307,23 @@ class LimeExpressionManager
             ];
         }
         //        $this->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
+    }
+
+    /**
+     * Get the item codes of a ranking question as subquestion suffixes (e.g. '_A1'), to match them with the
+     * subquestions of a question that uses the ranking question as array filter.
+     *
+     * @param int $qid The ranking question id
+     * @return string[] The ranking item (subquestion) codes, each prefixed with '_'
+     */
+    private function getRankingItemSuffixes($qid)
+    {
+        return array_map(
+            function ($subquestion) {
+                return '_' . $subquestion['title'];
+            },
+            getSubQuestions($this->sid, $qid, self::emSessionState()->getLanguage())
+        );
     }
 
     /**
