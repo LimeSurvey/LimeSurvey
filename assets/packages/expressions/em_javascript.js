@@ -93,7 +93,8 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
 
     var decimalValue;
     var newval = new String(value);
-    var checkNumericRegex = new RegExp(/^(-)?[0-9]*(,|\.|)[0-9]*$/);
+    /* Comma is accepted only when the radix is comma (#16878) */
+    var checkNumericRegex = (LEMradix === ',') ? new RegExp(/^(-)?[0-9]*(,|\.|)[0-9]*$/) : new RegExp(/^(-)?[0-9]*\.?[0-9]*$/);
     var cleansedValue = newval.replace(numRegex,'');
     /**
     * If have to use parsed value.
@@ -105,7 +106,7 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
                 decimalValue = new Decimal(cleansedValue);
             } catch(e){
                 try{
-                    decimalValue = new Decimal(cleansedValue.replace(',','.'));
+                    decimalValue = new Decimal((LEMradix === ',') ? cleansedValue.replace(',','.') : cleansedValue);
                 } catch(e){
                     decimalValue = new Decimal(NaN);
                 }
@@ -157,7 +158,7 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
                 decimalValue = new Decimal(cleansedValue);
             } catch(e){
                 try{
-                    decimalValue = new Decimal(cleansedValue.replace(',','.'));
+                    decimalValue = new Decimal((LEMradix === ',') ? cleansedValue.replace(',','.') : cleansedValue);
                 } catch(e){
                     decimalValue = new Decimal(NaN);
 
