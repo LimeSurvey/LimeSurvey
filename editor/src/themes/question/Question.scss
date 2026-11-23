@@ -175,12 +175,14 @@
   width: 90%;
 }
 
+$children-parent-gap: 24px;
+
 .children-parent {
   display: flex;
   flex-direction: column;
   align-items: start;
   text-align: left;
-  gap: 24px;
+  gap: $children-parent-gap;
   width: 100%;
 
   .child-ui-component {
@@ -188,6 +190,18 @@
     max-width: 300px;
   }
   &.edit-mode {
+    // The drag-and-drop list: Rows are spaced by their own margin instead of
+    // the gap, because the drag library counts margins but not the gap, and
+    // rows jumped while dragging. The margin has to be the same on every row
+    // (it is measured once, when the drag starts). The negative margin takes
+    // back the space after the last row, which the gap did not add.
+    gap: 0;
+    margin-bottom: -$children-parent-gap;
+
+    > .child {
+      margin-bottom: $children-parent-gap;
+    }
+
     .child-ui-component {
       max-width: none;
       // Let only the text column shrink/wrap; min-width: 0 allows it to go

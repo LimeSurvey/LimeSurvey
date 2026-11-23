@@ -77,115 +77,115 @@ export const OptionQuestionEditMode = ({
             index={index}
           >
             {(provided, snapshot) => (
-              <div className="w-100">
+              // A direct child of the list: The drag library measures this
+              // element and inserts its placeholder next to it.
+              <div
+                ref={provided.innerRef}
+                {...provided.draggableProps}
+                style={getSubquestionStyle(provided.draggableProps.style)}
+                className={classNames('child', {
+                  'focus-element': snapshot.isDragging,
+                })}
+                data-testid="child-option"
+              >
                 <div
-                  ref={provided.innerRef}
-                  {...provided.draggableProps}
-                  style={getSubquestionStyle(provided.draggableProps.style)}
-                  className={classNames('child', {
-                    'focus-element': snapshot.isDragging,
-                  })}
-                  data-testid="child-option"
+                  onClick={() =>
+                    handleChildDelete(
+                      child[childrenInfo.idKey],
+                      _children,
+                      childrenInfo.entity
+                    )
+                  }
+                  data-testid="remove-subquestion-button"
+                  className="remove-option-button-parent"
                 >
-                  <div
-                    onClick={() =>
-                      handleChildDelete(
-                        child[childrenInfo.idKey],
+                  <CloseCircleFillIcon
+                    className={classNames(
+                      'text-danger fill-current cursor-pointer edit-mode-remove-option remove-option-button',
+                      {
+                        'd-none': !isFocused || isSurveyActive,
+                      }
+                    )}
+                  />
+                </div>
+                <div
+                  className="question-drag-handle"
+                  {...provided.dragHandleProps}
+                >
+                  <DragIcon
+                    className={classNames('text-secondary fill-current', {
+                      'd-none': !isFocused,
+                    })}
+                  />
+                </div>
+                {survey.showQNumCode?.showNumber && (
+                  <SubquestionCodeInput
+                    isSurveyActive={isSurveyActive}
+                    code={isSingleChoiceTheme ? child.code : child.title}
+                    onChange={(e) =>
+                      handleChildCodeUpdate({
+                        newCode: e.target.value,
+                        childIndex: index,
+                        childArray: _children,
+                        entityType: childrenInfo.entity,
+                        entityTitleKey: childrenInfo.titleKey,
+                      })
+                    }
+                  />
+                )}
+                <div
+                  data-testid="child-ui-component"
+                  className="child-ui-component"
+                >
+                  <UiComponentToRender
+                    placeholder={
+                      isSingleChoiceTheme
+                        ? t('Answer option')
+                        : t('Subquestion')
+                    }
+                    className="text-secondary choice"
+                    value={L10ns({
+                      prop: childrenInfo.titleKey,
+                      language,
+                      l10ns: child.l10ns,
+                    })}
+                    update={(value) =>
+                      handleChildLUpdate(
+                        value,
+                        index,
                         _children,
                         childrenInfo.entity
                       )
                     }
-                    data-testid="remove-subquestion-button"
-                    className="remove-option-button-parent"
-                  >
-                    <CloseCircleFillIcon
-                      className={classNames(
-                        'text-danger fill-current cursor-pointer edit-mode-remove-option remove-option-button',
-                        {
-                          'd-none': !isFocused || isSurveyActive,
-                        }
-                      )}
-                    />
-                  </div>
-                  <div
-                    className="question-drag-handle"
-                    {...provided.dragHandleProps}
-                  >
-                    <DragIcon
-                      className={classNames('text-secondary fill-current', {
-                        'd-none': !isFocused,
-                      })}
-                    />
-                  </div>
-                  {survey.showQNumCode?.showNumber && (
-                    <SubquestionCodeInput
-                      isSurveyActive={isSurveyActive}
-                      code={isSingleChoiceTheme ? child.code : child.title}
-                      onChange={(e) =>
-                        handleChildCodeUpdate({
-                          newCode: e.target.value,
-                          childIndex: index,
-                          childArray: _children,
-                          entityType: childrenInfo.entity,
-                          entityTitleKey: childrenInfo.titleKey,
-                        })
-                      }
-                    />
-                  )}
-                  <div
-                    data-testid="child-ui-component"
-                    className="child-ui-component"
-                  >
-                    <UiComponentToRender
-                      placeholder={
-                        isSingleChoiceTheme
-                          ? t('Answer option')
-                          : t('Subquestion')
-                      }
-                      className="text-secondary choice"
-                      value={L10ns({
-                        prop: childrenInfo.titleKey,
-                        language,
-                        l10ns: child.l10ns,
-                      })}
-                      update={(value) =>
-                        handleChildLUpdate(
-                          value,
-                          index,
-                          _children,
-                          childrenInfo.entity
-                        )
-                      }
-                      key={`uicomponent-${child.appKey || child[childrenInfo.idKey]}-questionmode`}
-                      index={index}
-                      isFocused={true}
-                      idPrefix={isSingleChoiceTheme ? 'a' : 'q'}
-                      id={child[childrenInfo.idKey]}
-                      onKeyDown={getKeyDownHandler(
-                        child[childrenInfo.idKey],
-                        index
-                      )}
-                      // Focus newly created child as long as question title is not focused.
-                      focus={
-                        hasTempId(child[childrenInfo.idKey]) && !isTitleFocused
-                      }
-                      showToolbar={true}
-                    />
-                  </div>
-                  {showAssessmentValue && (
-                    <AssessmentValueInput
-                      assessmentValue={child.assessmentValue}
-                      answerCode={child.code}
-                      onChange={(e) =>
-                        handleChildAssessmentValueUpdate({
-                          newAssessmentValue: e.target.value,
-                          childIndex: index,
-                          childArray: _children,
-                        })
-                      }
-                    />
-                  )}
+                    key={`uicomponent-${child.appKey || child[childrenInfo.idKey]}-questionmode`}
+                    index={index}
+                    isFocused={true}
+                    idPrefix={isSingleChoiceTheme ? 'a' : 'q'}
+                    id={child[childrenInfo.idKey]}
+                    onKeyDown={getKeyDownHandler(
+                      child[childrenInfo.idKey],
+                      index
+                    )}
+                    // Focus newly created child as long as question title is not focused.
+                    focus={
+                      hasTempId(child[childrenInfo.idKey]) && !isTitleFocused
+                    }
+                    showToolbar={true}
+                  />
                 </div>
+                {showAssessmentValue && (
+                  <AssessmentValueInput
+                    assessmentValue={child.assessmentValue}
+                    answerCode={child.code}
+                    onChange={(e) =>
+                      handleChildAssessmentValueUpdate({
+                        newAssessmentValue: e.target.value,
+                        childIndex: index,
+                        childArray: _children,
+                      })
+                    }
+                  />
+                )}
               </div>
             )}
           </Draggable>
