@@ -6,7 +6,6 @@ use CDbConnection;
 use LimeSurvey\Models\Services\ResponseFilters\ResolvedFilter;
 use LimeSurvey\Models\Services\ResponseFilters\ResponseFilterSqlBuilder;
 use LimeSurvey\Models\Services\SurveyStatistics\StatisticsResponseFilters;
-use SurveyDynamic;
 
 /**
  * Collects every aggregate needed for survey statistics and executes them
@@ -270,6 +269,7 @@ final class ResponseAggregateBatch
                 $value = $row[$alias] ?? 0;
                 // Counts come back as whole numbers; KIND_SUM may be fractional.
                 // "+ 0" yields an int or float, preserving decimal precision.
+                /** @psalm-suppress InvalidOperand The numeric string is converted on purpose */
                 $this->results[$alias] = is_numeric($value) ? $value + 0 : 0;
             }
         }
@@ -370,6 +370,7 @@ final class ResponseAggregateBatch
             $rows = $db->createCommand(implode(' UNION ALL ', $chunk))->queryAll(true, $chunkParams);
             foreach ($rows as $row) {
                 $value = $row['median'] ?? 0;
+                /** @psalm-suppress InvalidOperand The numeric string is converted on purpose */
                 $this->results[$row['alias']] = is_numeric($value) ? $value + 0 : 0;
             }
         }
@@ -599,9 +600,17 @@ final class ResponseAggregateBatch
         }
     }
 
+    /**
+     * Whether the response column is stored as json.
+     *
+     * @param string $field Column name
+     * @return bool
+     * @psalm-suppress RedundantConditionGivenDocblockType getColumn() returns null for an unknown column
+     * @psalm-suppress RedundantCastGivenDocblockType The cast protects preg_match() from an unset type
+     */
     private function isJsonColumn(string $field): bool
     {
-        $column = SurveyDynamic::model($this->surveyId)->getTableSchema()->getColumn($field);
+        $column = \Response::model($this->surveyId)->getTableSchema()->getColumn($field);
         return $column !== null && preg_match('/^jsonb?$/i', (string)$column->dbType) === 1;
     }
 
@@ -675,6 +684,7 @@ final class ResponseAggregateBatch
      * The statistics sidebar's own filters, which inline their values.
      *
      * @return string[]
+     * @psalm-suppress RiskyCast minId and maxId are integers
      */
     private function legacyConditions(): array
     {
@@ -697,7 +707,7 @@ final class ResponseAggregateBatch
             $conditions[] = 'id <= ' . (int)$filters['maxId'];
         }
 
-        if (!empty($filters['search'])) {
+        if (!empty($filters['search']) && is_array($filters['search'])) {
             $conditions = array_merge($conditions, $this->buildSearchConditions($filters['search']));
         }
 
@@ -712,6 +722,7 @@ final class ResponseAggregateBatch
      *
      * @param string[] $terms
      * @return string[]
+     * @psalm-suppress RedundantCastGivenDocblockType Search terms can be numbers at runtime
      */
     private function buildSearchConditions(array $terms): array
     {
@@ -752,7 +763,7 @@ final class ResponseAggregateBatch
         ];
 
         $columns = [];
-        foreach (SurveyDynamic::model($this->surveyId)->getTableSchema()->columns as $name => $column) {
+        foreach (\Response::model($this->surveyId)->getTableSchema()->columns as $name => $column) {
             if (in_array(strtolower((string)$name), $metaColumns, true)) {
                 continue;
             }
@@ -765,8 +776,13 @@ final class ResponseAggregateBatch
         return $columns;
     }
 
+    /**
+     * Returns the database connection of the responses table.
+     *
+     * @return CDbConnection The connection the queries of this batch run on
+     */
     private function getDb(): CDbConnection
     {
-        return SurveyDynamic::model($this->surveyId)->getDbConnection();
+        return \Response::model($this->surveyId)->getDbConnection();
     }
 }

@@ -6,7 +6,6 @@ use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\Sorting\QuestionSorterIn
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\Sorting\ResponseSort;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\Sorting\SortSql;
 use ls\tests\TestBaseClass;
-use SurveyDynamic;
 
 /**
  * Sorting of the response list: The orders run against a real responses table,
@@ -64,7 +63,7 @@ class ResponseSortTest extends TestBaseClass
      */
     private function getSortedNames(ResponseSort $responseSort, $sort): array
     {
-        $rows = SurveyDynamic::model(self::$surveyId)->findAll(['order' => $responseSort->getOrder($sort)]);
+        $rows = \Response::model(self::$surveyId)->findAll(['order' => $responseSort->getOrder($sort)]);
         $names = array_flip(self::$responseIds);
         return array_map(static fn($row) => $names[(int) $row->id], $rows);
     }

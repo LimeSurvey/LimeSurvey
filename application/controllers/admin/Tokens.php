@@ -128,10 +128,10 @@ class Tokens extends SurveyCommonAction
         $aData['sidemenu']['state'] = false;
 
         /// FOR GRID View
-        $model = $survey->hasTokensTable ? TokenDynamic::model($iSurveyId) : null;
+        $model = $survey->hasTokensTable ? Token::model($iSurveyId) : null;
         if ($model) {
             $model->bEncryption = true;
-            $filterForm = Yii::app()->request->getPost('TokenDynamic', false);
+            $filterForm = Yii::app()->request->getPost('Token', false);
             if ($filterForm) {
                 $model->setAttributes($filterForm, false);
             }
@@ -143,7 +143,7 @@ class Tokens extends SurveyCommonAction
         $aData['emptyGridDataProvider'] = null;
         $aData['emptyGridFilter'] = null;
         if (!$model) {
-            $emptyGridColumns = TokenDynamic::buildAttributesForGrid($iSurveyId, $survey);
+            $emptyGridColumns = Token::buildAttributesForGrid($iSurveyId, $survey);
             $aSortableNames = array();
             foreach ($emptyGridColumns as $aColumn) {
                 if (!empty($aColumn['name']) && $aColumn['name'] !== 'actions') {
@@ -367,7 +367,7 @@ class Tokens extends SurveyCommonAction
         }
         $deletedTokenCount = 0;
         foreach (array_chunk($aTokenIds, 1000) as $chunk) {
-            $deletedTokenCount += TokenDynamic::model($iSid)->deleteRecords($chunk);
+            $deletedTokenCount += Token::model($iSid)->deleteAllByAttributes(array('tid' => $chunk));
         }
         if ($deletedTokenCount > 0) {
             ls\ajax\AjaxHelper::outputSuccess(sprintf(gTPlural('Deleted %d survey participant.', 'Deleted %d survey participants.', $deletedTokenCount), $deletedTokenCount));
@@ -396,7 +396,7 @@ class Tokens extends SurveyCommonAction
         if (!Permission::model()->hasSurveyPermission($iSid, 'tokens', 'delete')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
-        $deletedTokenCount = TokenDynamic::model($iSid)->deleteRecords(array($aTokenId));
+        $deletedTokenCount = Token::model($iSid)->deleteAllByAttributes(array('tid' => (array) $aTokenId));
         if ($deletedTokenCount > 0) {
             Yii::app()->setFlashMessage(sprintf(gTPlural('Deleted %d survey participant.', 'Deleted %d survey participants.', $deletedTokenCount), $deletedTokenCount));
         } else {
@@ -413,10 +413,10 @@ class Tokens extends SurveyCommonAction
      */
     private function getFilteredTokenIds(int $surveyId): array
     {
-        $model = TokenDynamic::model($surveyId);
+        $model = Token::model($surveyId);
         $model->bEncryption = true;
         parse_str((string) Yii::app()->request->getPost('filterQuery', ''), $parsedFilterQuery);
-        $filters = $parsedFilterQuery['TokenDynamic'] ?? null;
+        $filters = $parsedFilterQuery['Token'] ?? null;
         if (is_array($filters) && !empty($filters)) {
             $model->setAttributes($filters, false);
         }
@@ -592,9 +592,9 @@ class Tokens extends SurveyCommonAction
         $aData['sidemenu']['state'] = false;
 
         /// FOR GRID View
-        $model = TokenDynamic::model($iSurveyId);
+        $model = Token::model($iSurveyId);
         $model->bEncryption = true;
-        $filterForm = Yii::app()->request->getPost('TokenDynamic', false);
+        $filterForm = Yii::app()->request->getPost('Token', false);
         if ($filterForm) {
             $model->setAttributes($filterForm, false);
         }
@@ -1271,7 +1271,7 @@ class Tokens extends SurveyCommonAction
         $aData['tokencaptions'] = $captions;
         $aData['nrofattributes'] = 0;
         // The example row can only be read from an existing participant table
-        $oToken = $bTokenExists ? TokenDynamic::model($iSurveyId)->find() : null;
+        $oToken = $bTokenExists ? Token::model($iSurveyId)->find() : null;
         $aData['examplerow'] = $oToken;
         $aData['aCPDBAttributes'][''] = gT('(none)');
         foreach (ParticipantAttributeName::model()->getCPDBAttributes() as $aCPDBAttribute) {
@@ -1644,9 +1644,9 @@ class Tokens extends SurveyCommonAction
             $SQLremindercountcondition = $this->getSQLremindercountcondition();
             $SQLreminderdelaycondition = $this->getSQLreminderdelaycondition($bIsInvitation);
 
-            $tokenDynamic = TokenDynamic::model($iSurveyId);
+            $tokenModel = Token::model($iSurveyId);
             if (Yii::app()->request->getPost('partialonly')) {
-                $tokenDynamic->with([
+                $tokenModel->with([
                     'responses' => [
                         'select' => false,
                         'joinType' => 'INNER JOIN',
@@ -1655,7 +1655,7 @@ class Tokens extends SurveyCommonAction
                 ]);
             }
 
-            $ctresult = $tokenDynamic->findUninvited($aTokenIds, 0, $bIsInvitation, $SQLemailstatuscondition, $SQLremindercountcondition, $SQLreminderdelaycondition);
+            $ctresult = $tokenModel->findUninvited($aTokenIds, 0, $bIsInvitation, $SQLemailstatuscondition, $SQLremindercountcondition, $SQLreminderdelaycondition);
             $ctcount = count($ctresult);
 
             $emresult = array_slice($ctresult, 0, $iMaxEmails);
@@ -2459,7 +2459,7 @@ class Tokens extends SurveyCommonAction
                             if (!empty($aParams)) {
                                 $oCriteria->params = $aParams;
                             }
-                            $dupresult = TokenDynamic::model($iSurveyId)->count($oCriteria);
+                            $dupresult = Token::model($iSurveyId)->count($oCriteria);
                             if ($dupresult > 0) {
                                 $bDuplicateFound = true;
                                 $aDuplicateList[] = sprintf(gT("Line %s : %s %s (%s)"), $iRecordCount, CHtml::encode($aWriteArray['firstname']), CHtml::encode($aWriteArray['lastname']), CHtml::encode($aWriteArray['email']));
@@ -3400,7 +3400,7 @@ class Tokens extends SurveyCommonAction
             }
         }
         if (empty($aData['tokenids'])) {
-            $aData['tokenids'] = TokenDynamic::model($iSurveyId)->findParticipantIDs($aTokenIds, 0, $bEmail, $SQLemailstatuscondition);
+            $aData['tokenids'] = Token::model($iSurveyId)->findParticipantIDs($aTokenIds, 0, $bEmail, $SQLemailstatuscondition);
         }
         $aData['countInvalidAttachments'] = $countInvalidAttachments;
         if (Yii::app()->request->getParam('action') == "remind") {

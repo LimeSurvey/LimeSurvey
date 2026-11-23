@@ -177,13 +177,15 @@ class Save
                     "refurl"        => ($sessionState->getRefUrl() ?? getenv('HTTP_REFERER'))
                 );
 
-                if (SurveyDynamic::model($thissurvey['sid'])->insert($sdata)) {
-                    $srid = getLastInsertID($survey->responsesTableName);
-                    $sessionState->set('srid', $srid);
-                } else {
-                    // TODO: $this->aSaveErrors
+                $response = Response::create($thissurvey['sid']);
+                // Only the columns the responses table has are set (date stamp, IP address and referrer URL are optional)
+                $response->setAttributes($sdata, false);
+                if (!$response->save()) {
+                    // E.g. a plugin cancelled the save: Without a response there is nothing to save for later
                     $this->aSaveErrors[] = "Unable to insert record into survey table.";
+                    return array('success' => false, 'aSaveErrors' => $this->aSaveErrors);
                 }
+                $sessionState->set('srid', $response->id);
             }
 
             //CREATE ENTRY INTO "saved_control"
@@ -283,7 +285,7 @@ class Save
             . "interviewtime = (CASE WHEN interviewtime IS NULL THEN 0 ELSE interviewtime END) + " . $passedTime
             . " WHERE id = " . SurveySessionState::forSurvey((int) $thissurvey['sid'])->getResponseId();
         } else {
-            $aColumnNames = SurveyTimingDynamic::model($thissurvey['sid'])->getTableSchema()->columnNames;
+            $aColumnNames = Timing::model($thissurvey['sid'])->getTableSchema()->columnNames;
             $setField .= "time";
             if (!in_array($setField, $aColumnNames)) {
                 die('Invalid last group timing fieldname');

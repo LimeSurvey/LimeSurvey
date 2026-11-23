@@ -141,7 +141,7 @@ class Quota extends LSActiveRecord
             return null;
         }
         /* Must control if column name exist (@todo : move this to QuotaMember::model(), even with deactivated survey*/
-        $aExistingColumnName = SurveyDynamic::model($this->sid)->getTableSchema()->getColumnNames();
+        $aExistingColumnName = Response::model($this->sid)->getTableSchema()->getColumnNames();
         if (count($this->quotaMembers) > 0) {
             // Keep a list of fields for easy reference
             $aQuotaColumns = array();
@@ -175,7 +175,7 @@ class Quota extends LSActiveRecord
                     $oCriteria->addInCondition(Yii::app()->db->quoteColumnName($sColumn), $aValue); // NO need params : addInCondition bind
                 }
             }
-            $return = SurveyDynamic::model($this->sid)->count($oCriteria);
+            $return = Response::model($this->sid)->count($oCriteria);
             return $return;
         } else {
             return 0;

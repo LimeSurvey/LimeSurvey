@@ -893,7 +893,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
      */
     public function hasTokens()
     {
-        return $this->getHasTokensTable() && (TokenDynamic::model($this->sid)->find('1=1') !== null);
+        return $this->getHasTokensTable() && (Token::model($this->sid)->find('1=1') !== null);
     }
 
     /**

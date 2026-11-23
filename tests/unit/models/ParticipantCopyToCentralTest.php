@@ -29,7 +29,7 @@ class ParticipantCopyToCentralTest extends TestBaseClass
         \Yii::app()->session['participantid'] = '["1"]';
         $result = \Participant::model()->copyToCentral(self::$surveyId, [], []);
 
-        $token = \TokenDynamic::model(self::$surveyId)->findByPk(1);
+        $token = \Token::model(self::$surveyId)->findByPk(1);
         try {
             $this->assertEquals(1, $result['success']);
             $this->assertEquals(1, $result['replacedparticipantid']);

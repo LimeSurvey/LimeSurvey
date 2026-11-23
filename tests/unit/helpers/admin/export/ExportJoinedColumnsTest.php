@@ -7,7 +7,7 @@ use ls\tests\TestBaseClass;
 use Plugin;
 use SurveyActivator;
 use SurveyDao;
-use SurveyDynamic;
+use Response;
 use Token;
 use Yii;
 
@@ -41,7 +41,7 @@ class ExportJoinedColumnsTest extends TestBaseClass
         $plugin = Plugin::model()->findByAttributes(['name' => 'Authdb']);
         App()->getPluginManager()->loadPlugin('Authdb', $plugin->id);
 
-        // Own survey ID: other tests import this fixture too, and models like SurveyDynamic are
+        // Own survey ID: other tests import this fixture too, and models like Response are
         // cached per survey ID for the whole PHP process, so they would see this survey's token column
         self::importSurvey(self::$surveysFolder . '/limesurvey_survey_917744.lss', 1, 191040);
         Token::createTable(self::$surveyId);
@@ -56,7 +56,7 @@ class ExportJoinedColumnsTest extends TestBaseClass
 
         $textQuestion = \Question::model()->findByAttributes(['sid' => self::$surveyId, 'title' => 'dummy']);
         self::$textFieldName = 'Q' . $textQuestion->qid;
-        self::$responseId = SurveyDynamic::model(self::$surveyId)->insertRecords([
+        self::$responseId = Response::model(self::$surveyId)->insertRecords([
             'startlanguage' => 'en',
             'startdate' => date('Y-m-d H:i:s'),
             'datestamp' => date('Y-m-d H:i:s'),
@@ -129,7 +129,7 @@ class ExportJoinedColumnsTest extends TestBaseClass
         $options = new FormattingOptions();
         $options->selectedColumns = [self::$textFieldName, 'firstname', 'interviewtime'];
         $options->responseMinRecord = 1;
-        $options->responseMaxRecord = SurveyDynamic::model(self::$surveyId)->getMaxId();
+        $options->responseMaxRecord = Response::model(self::$surveyId)->getMaxId();
         $options->responseCompletionState = 'all';
         $options->headingFormat = 'code';
         $options->answerFormat = 'short';

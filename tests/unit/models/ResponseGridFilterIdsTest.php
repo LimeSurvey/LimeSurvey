@@ -3,11 +3,11 @@
 namespace ls\tests;
 
 /**
- * Tests for SurveyDynamic::getIdsByGridFilter(), used by "Select all" in the responses grid.
+ * Tests for Response::getIdsByGridFilter(), used by "Select all" in the responses grid.
  *
  * @see https://bugs.limesurvey.org/view.php?id=15320
  */
-class SurveyDynamicGridFilterIdsTest extends TestBaseClass
+class ResponseGridFilterIdsTest extends TestBaseClass
 {
     /** @var int[] Ids of the completed responses */
     private static $completedIds = [];
@@ -27,7 +27,7 @@ class SurveyDynamicGridFilterIdsTest extends TestBaseClass
         self::importSurvey(self::$surveysFolder . '/limesurvey_survey_161359_quickTranslation.lss');
         (new \SurveyActivator(self::$testSurvey))->activate();
 
-        $model = \SurveyDynamic::model(self::$surveyId);
+        $model = \Response::model(self::$surveyId);
         for ($i = 0; $i < 3; $i++) {
             self::$completedIds[] = (int) $model->insertRecords(['startlanguage' => 'en', 'submitdate' => '2026-01-01 00:00:00']);
             self::$incompleteIds[] = (int) $model->insertRecords(['startlanguage' => 'en']);
@@ -43,11 +43,11 @@ class SurveyDynamicGridFilterIdsTest extends TestBaseClass
     {
         $this->assertSame(
             self::$completedIds,
-            $this->getIds('SurveyDynamic[id]=&SurveyDynamic[completed_filter]=Y')
+            $this->getIds('Response[id]=&Response[completed_filter]=Y')
         );
         $this->assertSame(
             self::$incompleteIds,
-            $this->getIds('SurveyDynamic[id]=&SurveyDynamic[completed_filter]=N')
+            $this->getIds('Response[id]=&Response[completed_filter]=N')
         );
     }
 
@@ -60,7 +60,7 @@ class SurveyDynamicGridFilterIdsTest extends TestBaseClass
     {
         $this->assertSame(
             [self::$completedIds[0], self::$completedIds[2]],
-            $this->getIds('SurveyDynamic[id]=&SurveyDynamic[completed_filter]=Y', [(string) self::$completedIds[1]])
+            $this->getIds('Response[id]=&Response[completed_filter]=Y', [(string) self::$completedIds[1]])
         );
     }
 
@@ -74,10 +74,10 @@ class SurveyDynamicGridFilterIdsTest extends TestBaseClass
         $allIds = array_merge(self::$completedIds, self::$incompleteIds);
         sort($allIds);
 
-        $this->assertSame($allIds, $this->getIds('SurveyDynamic[id]=&SurveyDynamic[completed_filter]='));
+        $this->assertSame($allIds, $this->getIds('Response[id]=&Response[completed_filter]='));
         $this->assertSame(
             array_slice($allIds, 0, 2),
-            $this->getIds('SurveyDynamic[id]=&SurveyDynamic[completed_filter]=', [], 2)
+            $this->getIds('Response[id]=&Response[completed_filter]=', [], 2)
         );
     }
 
@@ -91,7 +91,7 @@ class SurveyDynamicGridFilterIdsTest extends TestBaseClass
      */
     private function getIds(string $filterQuery, array $excludedIds = [], ?int $limit = null): array
     {
-        $ids = array_map('intval', \SurveyDynamic::getIdsByGridFilter(self::$surveyId, $filterQuery, $excludedIds, $limit));
+        $ids = array_map('intval', \Response::getIdsByGridFilter(self::$surveyId, $filterQuery, $excludedIds, $limit));
         sort($ids);
         return $ids;
     }

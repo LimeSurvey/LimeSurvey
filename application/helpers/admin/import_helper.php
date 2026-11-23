@@ -2104,7 +2104,7 @@ function recoverSurveyResponses(int $surveyId, string $archivedResponseTableName
         $validatedColumns = [];
     }
     $pluginDynamicArchivedResponseModel = PluginDynamic::model($archivedResponseTableName);
-    $targetSchema = SurveyDynamic::model($surveyId)->getTableSchema();
+    $targetSchema = Response::model($surveyId)->getTableSchema();
     $encryptedAttributes = Response::getEncryptedAttributes($surveyId);
     if ((App()->db->tablePrefix) && (strpos($archivedResponseTableName, App()->db->tablePrefix) === 0)) {
         $tbl_name = substr($archivedResponseTableName, strlen(App()->db->tablePrefix));
@@ -3898,7 +3898,7 @@ function XMLImportResponses($sFullFilePath, $iSurveyID, $aFieldReMap = array())
     }
     if (Yii::app()->db->schema->getTable($survey->responsesTableName) !== null) {
         // Refresh metadata to make sure it reflects the current survey
-        SurveyDynamic::model($iSurveyID)->refreshMetadata();
+        Response::resetMetaData($iSurveyID);
         $DestinationFields = Yii::app()->db->schema->getTable($survey->responsesTableName)->getColumnNames();
         while ($oXMLReader->read()) {
             if ($oXMLReader->name === 'LimeSurveyDocType' && $oXMLReader->nodeType == XMLReader::ELEMENT) {
@@ -4004,8 +4004,7 @@ function XMLImportResponses($sFullFilePath, $iSurveyID, $aFieldReMap = array())
                             if (in_array('startdate', $DestinationFields) && (!isset($aInsertData['startdate']) || empty($aInsertData['startdate']))) {
                                 $aInsertData['startdate'] = date('1980-01-01 00:00:00');
                             }
-                            SurveyDynamic::sid($iSurveyID);
-                            $response = new SurveyDynamic();
+                            $response = Response::create($iSurveyID);
                             $response->setAttributes($aInsertData, false);
                             if (!$response->encryptSave()) {
                                 throw new Exception("Failed to save response data.");
@@ -4086,7 +4085,7 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
         array_shift($aFileResponses);
     }
 
-    $aRealFieldNames = Yii::app()->db->getSchema()->getTable(SurveyDynamic::model($iSurveyId)->tableName())->getColumnNames();
+    $aRealFieldNames = Yii::app()->db->getSchema()->getTable(Response::model($iSurveyId)->tableName())->getColumnNames();
     $aCsvHeader = array_shift($aFileResponses);
     LimeExpressionManager::SetDirtyFlag(); // Be sure survey EM code are up to date
     $aLemFieldNames = LimeExpressionManager::getLEMqcode2sgqa($iSurveyId);
@@ -4196,16 +4195,15 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
         $iNbResponseLine++;
         $bExistingsId = false;
         if ($iIdKey !== false) {
-            $oSurvey = SurveyDynamic::model($iSurveyId)->findByPk($aResponses[$iIdKey]);
+            $oSurvey = Response::model($iSurveyId)->findByPk($aResponses[$iIdKey]);
             if ($oSurvey) {
                 $bExistingsId = true;
                 $aExistingsId[] = $aResponses[$iIdKey];
                 // Do according to option
                 switch ($aOptions['sExistingId']) {
                     case 'replace':
-                        SurveyDynamic::model($iSurveyId)->deleteByPk($aResponses[$iIdKey]);
-                        SurveyDynamic::sid($iSurveyId);
-                        $oSurvey = new SurveyDynamic();
+                        Response::model($iSurveyId)->deleteByPk($aResponses[$iIdKey]);
+                        $oSurvey = Response::create($iSurveyId);
                         break;
                     case 'replaceanswers':
                         break;
@@ -4214,17 +4212,14 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
                         break;
                     case 'renumber':
                     default: // Must not happen, keep it in case
-                        SurveyDynamic::sid($iSurveyId);
-                        $oSurvey = new SurveyDynamic();
+                        $oSurvey = Response::create($iSurveyId);
                         break;
                 }
             } else {
-                SurveyDynamic::sid($iSurveyId);
-                $oSurvey = new SurveyDynamic();
+                $oSurvey = Response::create($iSurveyId);
             }
         } else {
-            SurveyDynamic::sid($iSurveyId);
-            $oSurvey = new SurveyDynamic();
+            $oSurvey = Response::create($iSurveyId);
         }
         if ($oSurvey) {
             // First rule for id and submitdate
@@ -4401,7 +4396,7 @@ function XMLImportTimings($sFullFilePath, $iSurveyID, $aFieldReMap = array())
             $insertdata[$key] = (string) $value;
         }
 
-        if (!SurveyTimingDynamic::model($iSurveyID)->insertRecords($insertdata)) {
+        if (!Timing::model($iSurveyID)->insertRecords($insertdata)) {
             throw new Exception(gT("Error") . ": Failed to insert timings data");
         }
 

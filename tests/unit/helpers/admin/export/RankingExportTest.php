@@ -14,7 +14,7 @@ use Question;
 use QuestionL10n;
 use Survey;
 use SurveyActivator;
-use SurveyDynamic;
+use Response;
 use Yii;
 
 /**
@@ -126,7 +126,7 @@ class RankingExportTest extends TestBaseClass
         $this->insertRankings([json_encode(['SQ03', 'SQ01'])]);
         $this->assertStringNotContainsString(
             'SQ03',
-            (string) SurveyDynamic::model(self::$surveyId)->findByPk(1)->getAttribute($this->rankFieldName),
+            (string) Response::model(self::$surveyId)->findByPk(1)->getAttribute($this->rankFieldName),
             'The ranking was not stored encrypted.'
         );
 
@@ -173,7 +173,7 @@ class RankingExportTest extends TestBaseClass
     {
         foreach ($values as $value) {
             // insertRecords() encrypts the values of encrypted questions
-            SurveyDynamic::model(self::$surveyId)->insertRecords([
+            Response::model(self::$surveyId)->insertRecords([
                 'startlanguage' => 'en',
                 'submitdate' => date('Y-m-d H:i:s'),
                 $this->rankFieldName => $value,
@@ -205,7 +205,7 @@ class RankingExportTest extends TestBaseClass
         $options = new FormattingOptions();
         $options->selectedColumns = [$this->rankFieldName];
         $options->responseMinRecord = 1;
-        $options->responseMaxRecord = SurveyDynamic::model(self::$surveyId)->getMaxId();
+        $options->responseMaxRecord = Response::model(self::$surveyId)->getMaxId();
         $options->responseCompletionState = 'all';
         $options->headingFormat = $headingFormat;
         $options->answerFormat = $answerFormat;

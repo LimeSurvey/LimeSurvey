@@ -772,7 +772,7 @@ class remotecontrol_handle
             return array('status' => 'No available data', 'error_code' => self::ERR_NO_DATA);
         }
 
-        $oResponses = SurveyDynamic::model($iSurveyID)->timeline($sType, $dStart, $dEnd);
+        $oResponses = Response::model($iSurveyID)->timeline($sType, $dStart, $dEnd);
         if (empty($oResponses)) {
             return array('status' => 'No valid Data', 'error_code' => self::ERR_NO_DATA);
         }
@@ -859,9 +859,9 @@ class remotecontrol_handle
 
                 if (in_array($sStatName, $aPermittedSurveyStats) || $sStatName == 'all') {
                     if (tableExists($oSurvey->responsesTableName)) {
-                        $aSummary['completed_responses'] = SurveyDynamic::model($iSurveyID)->count('submitdate is NOT NULL');
-                        $aSummary['incomplete_responses'] = SurveyDynamic::model($iSurveyID)->countByAttributes(array('submitdate' => null));
-                        $aSummary['full_responses'] = SurveyDynamic::model($iSurveyID)->count();
+                        $aSummary['completed_responses'] = Response::model($iSurveyID)->count('submitdate is NOT NULL');
+                        $aSummary['incomplete_responses'] = Response::model($iSurveyID)->countByAttributes(array('submitdate' => null));
+                        $aSummary['full_responses'] = Response::model($iSurveyID)->count();
                     } elseif ($sStatName != 'all') {
                         return array('status' => 'No available data', 'error_code' => self::ERR_NO_DATA);
                     }
@@ -1334,7 +1334,7 @@ class remotecontrol_handle
                 return array('status' => 'No permission', 'error_code' => self::ERR_NO_PERMISSION);
             }
             $iSurveyID = (int) $iSurveyID;
-            $responses = SurveyDynamic::model($iSurveyID)->findAllByAttributes(array('token' => $sToken));
+            $responses = Response::model($iSurveyID)->findAllByAttributes(array('token' => $sToken));
             $result = array();
             foreach ($responses as $response) {
                 $result[] = (int) $response->id;
@@ -3347,7 +3347,7 @@ class remotecontrol_handle
             $iMaxEmails = (int) Yii::app()->getConfig('maxemails');
             $SQLemailstatuscondition = "emailstatus = 'OK'";
 
-            $oTokens = TokenDynamic::model($iSurveyID);
+            $oTokens = Token::model($iSurveyID);
             $aResultTokens = $oTokens->findUninvited($aTokenIds, $iMaxEmails, $bEmail, $SQLemailstatuscondition, '', '', true);
             $aAllTokens = $oTokens->findParticipantIDs(false, 0, true, $SQLemailstatuscondition, '', '', true);
             $iAllTokensCount = count($aAllTokens);
@@ -3437,7 +3437,7 @@ class remotecontrol_handle
                 $SQLremindercountcondition = 'remindercount < ' . $iMaxReminders;
             }
 
-            $oTokens = TokenDynamic::model($iSurveyID);
+            $oTokens = Token::model($iSurveyID);
             $aAllTokens = $oTokens->findParticipantIDs(false, 0, false, $SQLemailstatuscondition, $SQLremindercountcondition, $SQLreminderdelaycondition, true);
             $iAllTokensCount = count($aAllTokens);
             unset($aAllTokens);  // save some memory before the next query
@@ -3519,8 +3519,7 @@ class remotecontrol_handle
                 }
             }
 
-            SurveyDynamic::sid($iSurveyID);
-            $survey_dynamic = new SurveyDynamic();
+            $survey_dynamic = Response::create($iSurveyID);
             $aBasicDestinationFields = $survey_dynamic->tableSchema->columnNames;
             $aInvalidFields = array_diff_key($aResponseData, array_flip($aBasicDestinationFields));
             if (!empty($aInvalidFields)) {
@@ -3618,13 +3617,12 @@ class remotecontrol_handle
                 return array('status' => 'Missing response identifier (id|token)', 'error_code' => self::ERR_MISSING_IDENTIFIER);
             }
 
-            SurveyDynamic::sid($iSurveyID);
-            $oSurveyDynamic = new SurveyDynamic();
+            $responseModel = Response::model($iSurveyID);
 
             if (isset($aResponseData['id'])) {
-                $aResponses = $oSurveyDynamic->findAllByPk((int) $aResponseData['id']);
+                $aResponses = $responseModel->findAllByPk((int) $aResponseData['id']);
             } else {
-                $aResponses = $oSurveyDynamic->findAllByAttributes(array('token' => $aResponseData['token']));
+                $aResponses = $responseModel->findAllByAttributes(array('token' => $aResponseData['token']));
                 // Token was only used to identify the response, not to update it.
                 unset($aResponseData['token']);
             }
@@ -3639,7 +3637,7 @@ class remotecontrol_handle
                 );
             }
 
-            $aBasicDestinationFields = $oSurveyDynamic->tableSchema->columnNames;
+            $aBasicDestinationFields = $responseModel->tableSchema->columnNames;
             $aInvalidFields = array_diff_key($aResponseData, array_flip($aBasicDestinationFields));
             if (count($aInvalidFields) > 0) {
                 return array('status' => 'Invalid Column names supplied: ' . implode(', ', array_keys($aInvalidFields)), 'error_code' => self::ERR_INVALID_COLUMNS);
@@ -3898,7 +3896,7 @@ class remotecontrol_handle
         if (!tableExists($survey->responsesTableName)) {
             return array('status' => 'No Data, survey table does not exist.', 'error_code' => self::ERR_NO_RESPONSE_TABLE);
         }
-        if (!($maxId = SurveyDynamic::model($iSurveyID)->getMaxId())) {
+        if (!($maxId = Response::model($iSurveyID)->getMaxId())) {
             return array('status' => 'No Data, could not get max id.', 'error_code' => self::ERR_NO_DATA);
         }
         if (!empty($sLanguageCode) && !in_array($sLanguageCode, $survey->getAllLanguages())) {
@@ -3988,7 +3986,7 @@ class remotecontrol_handle
         if (!tableExists($survey->responsesTableName)) {
             return array('status' => 'No Data, survey table does not exist.', 'error_code' => self::ERR_NO_RESPONSE_TABLE);
         }
-        if (!($maxId = SurveyDynamic::model($iSurveyID)->getMaxId())) {
+        if (!($maxId = Response::model($iSurveyID)->getMaxId())) {
             return array('status' => 'No Data, could not get max id.', 'error_code' => self::ERR_NO_DATA);
         }
         if (!empty($sLanguageCode) && !in_array($sLanguageCode, $survey->getAllLanguages())) {
@@ -4005,7 +4003,7 @@ class remotecontrol_handle
                 $tokenFilter = ' IN (' . implode(',', $aTokensQuoted) . ')';
             }
         } else {
-            if (!SurveyDynamic::model($iSurveyID)->findByAttributes(array('token' => $aTokens))) {
+            if (!Response::model($iSurveyID)->findByAttributes(array('token' => $aTokens))) {
                 return array('status' => 'No Response found for Token', 'error_code' => self::ERR_NOT_FOUND);
             }
             $tokenFilter = '=' . App()->db->quoteValue("$aTokens");

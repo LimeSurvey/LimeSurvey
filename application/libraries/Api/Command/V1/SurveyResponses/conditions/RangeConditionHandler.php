@@ -129,7 +129,9 @@ class RangeConditionHandler implements HandlerInterface, SurveyContextAwareInter
             $field = substr($field, $dot + 1);
         }
 
-        $column = \SurveyDynamic::model($this->surveyId)->getTableSchema()->getColumn($field);
+        // Without the responses table the type is unknown too
+        $tableSchema = \Yii::app()->db->schema->getTable('{{responses_' . intval($this->surveyId) . '}}');
+        $column = $tableSchema === null ? null : $tableSchema->getColumn($field);
 
         return $column !== null && $column->type === 'integer';
     }

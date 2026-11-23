@@ -133,7 +133,7 @@ class SurveyResponses implements CommandInterface
         }
 
         $this->getSurvey($request);
-        $model = $this->getSurveyDynamicModel($request);
+        $model = $this->getResponseModel($request);
         $language = $this->getLanguage($request);
         $this->transformerOutputSurveyResponses->fieldMap =
             createFieldMap($this->survey, 'full', true, false, $language);
@@ -196,11 +196,11 @@ class SurveyResponses implements CommandInterface
      * matched per file; every other filter narrows the responses as usual.
      *
      * @param Request $request
-     * @param \SurveyDynamic $model
+     * @param \Response $model
      * @return array
      * @throws \InvalidArgumentException
      */
-    protected function processFiles(Request $request, \SurveyDynamic $model): array
+    protected function processFiles(Request $request, \Response $model): array
     {
         $fileColumns = array_keys(array_filter(
             array_intersect_key(
@@ -327,7 +327,7 @@ class SurveyResponses implements CommandInterface
             return [];
         }
 
-        $model = \SurveyTimingDynamic::model($this->survey->sid);
+        $model = \Timing::model($this->survey->sid);
         $fieldNames = array_values(array_intersect(
             $fieldNames,
             $model->getTableSchema()->getColumnNames()

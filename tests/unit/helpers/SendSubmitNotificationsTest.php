@@ -33,7 +33,7 @@ class SendSubmitNotificationsTest extends TestBaseClass
         self::$testHelper->activateSurvey(self::$surveyId);
 
         $questions = \Question::model()->findAllByAttributes(['sid' => self::$surveyId, 'title' => 'q1']);
-        self::$responseId = \SurveyDynamic::model(self::$surveyId)->insertRecords([
+        self::$responseId = \Response::model(self::$surveyId)->insertRecords([
             'startlanguage' => 'en',
             'startdate' => date('Y-m-d H:i:s'),
             'datestamp' => date('Y-m-d H:i:s'),
@@ -100,7 +100,7 @@ class SendSubmitNotificationsTest extends TestBaseClass
         $countResponseLoad = function () {
             $this->responseLoads++;
         };
-        $responseModel = \SurveyDynamic::model(self::$surveyId);
+        $responseModel = \Response::model(self::$surveyId);
         $responseModel->attachEventHandler('onBeforeFind', $countResponseLoad);
         $pluginManager->subscribe($listener, 'beforeSurveyEmail');
         try {

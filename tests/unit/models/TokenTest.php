@@ -51,4 +51,45 @@ class TokenTest extends TestBaseClass
             $this->assertTrue($token->save(), 'Saved participant again');
         }
     }
+
+    /**
+     * Add a participant to the survey
+     *
+     * @param array $attributes
+     * @return Token
+     */
+    private function addParticipant(array $attributes)
+    {
+        $token = Token::create(self::$surveyId);
+        $token->setAttributes($attributes, false);
+        $this->assertTrue($token->save(), 'Saved participant');
+        return $token;
+    }
+
+    /**
+     * The participant list shows the participants after the participant summary was read.
+     *
+     * @return void
+     */
+    public function testParticipantListAfterSummary()
+    {
+        Token::model(self::$surveyId)->deleteAll();
+        $first = $this->addParticipant(['firstname' => 'First', 'token' => 'summarytest1', 'sent' => '2026-01-02 10:00']);
+        $second = $this->addParticipant(['firstname' => 'Second']);
+        \Yii::app()->session['dateformat'] = 6;
+
+        $model = Token::model(self::$surveyId);
+        $summary = $model->summary();
+        $participantIds = array_map(
+            function ($participant) {
+                return (int) $participant->tid;
+            },
+            $model->search()->getData()
+        );
+
+        $this->assertEquals(2, $summary['count']);
+        $this->assertEquals(1, $summary['invalid'], 'One participant has no access code.');
+        $this->assertEquals(1, $summary['sent']);
+        $this->assertSame([(int) $first->tid, (int) $second->tid], $participantIds);
+    }
 }

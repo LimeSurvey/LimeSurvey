@@ -140,14 +140,14 @@ class SurveyLink extends LSActiveRecord
         return $dateFormat['phpdate'];
     }
 
-
     /**
-     * @return TokenDynamic
+     * Returns the survey participant this link points to
+     *
+     * @return Token|null The participant, null if it does not exist any more
      */
-    public function getTokenDynamicModel()
+    public function getTokenModel()
     {
-        $TokenDynamic = TokenDynamic::model($this->survey_id);
-        return $TokenDynamic->findByPk($this->token_id);
+        return Token::model($this->survey_id)->findByPk($this->token_id);
     }
 
     /**
@@ -164,7 +164,7 @@ class SurveyLink extends LSActiveRecord
      */
     public function getLastInvited()
     {
-        $inviteDate = $this->tokenDynamicModel['sent'];
+        $inviteDate = $this->tokenModel['sent'];
         if ($inviteDate != "N") {
             $date = new DateTime($inviteDate);
             return $date->format($this->dateFormat);
@@ -177,7 +177,7 @@ class SurveyLink extends LSActiveRecord
      */
     public function getLastReminded()
     {
-        $reminddate = $this->tokenDynamicModel['remindersent'];
+        $reminddate = $this->tokenModel['remindersent'];
         if ($reminddate != "N") {
             $date = new DateTime($reminddate);
             return $date->format($this->dateFormat);
@@ -214,7 +214,7 @@ class SurveyLink extends LSActiveRecord
      */
     public function getIsSubmitted()
     {
-        $submitDate = $this->tokenDynamicModel['completed'];
+        $submitDate = $this->tokenModel['completed'];
         return (($submitDate == "N") ? false : $submitDate);
     }
 

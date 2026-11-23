@@ -2,9 +2,9 @@
 
 namespace ls\tests;
 
-use TokenDynamic;
+use Token;
 
-class TokenDynamicTest extends TestBaseClass
+class TokenUsabilityTest extends TestBaseClass
 {
     public static function setUpBeforeClass(): void
     {
@@ -14,7 +14,7 @@ class TokenDynamicTest extends TestBaseClass
         $surveyFile = self::$surveysFolder . '/survey_archive_265831.lsa';
         self::importSurvey($surveyFile);
 
-        TokenDynamic::model(self::$surveyId);
+        Token::model(self::$surveyId);
     }
 
     /**
@@ -22,11 +22,11 @@ class TokenDynamicTest extends TestBaseClass
      * The "allow edit after completion" setting is set on the survey instance that the participant uses.
      * @param array $attributes Participant attributes
      * @param bool $allowEditAfterCompletion Value of the survey setting "Allow editing after completion"
-     * @return TokenDynamic
+     * @return Token
      */
-    private function createParticipant(array $attributes, bool $allowEditAfterCompletion = false): TokenDynamic
+    private function createParticipant(array $attributes, bool $allowEditAfterCompletion = false): Token
     {
-        $participant = new TokenDynamic(self::$surveyId);
+        $participant = Token::create(self::$surveyId);
         $participant->setAttributes($attributes, false);
         $participant->survey->oOptions->alloweditaftercompletion = $allowEditAfterCompletion ? 'Y' : 'N';
         return $participant;

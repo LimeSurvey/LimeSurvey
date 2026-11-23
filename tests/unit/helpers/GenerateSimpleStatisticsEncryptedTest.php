@@ -51,7 +51,7 @@ class GenerateSimpleStatisticsEncryptedTest extends TestBaseClass
         ];
         foreach ($responses as $response) {
             // insertRecords() encrypts the values of encrypted questions
-            \SurveyDynamic::model(self::$surveyId)->insertRecords(array_merge([
+            \Response::model(self::$surveyId)->insertRecords(array_merge([
                 'startlanguage' => 'en',
                 'submitdate' => date('Y-m-d H:i:s'),
             ], $response));

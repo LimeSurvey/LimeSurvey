@@ -56,6 +56,10 @@ use LimeSurvey\PluginManager\PluginEvent;
  * @property SurveyLink $surveylink
  * @property Response[] $responses
  * @property CDbTableSchema $tableSchema
+ *
+ * @property string[] $standardCols Names of the core columns of the participant table
+ * @property array $custom_attributes Columns of the custom attributes
+ * @property array $attributesForGrid Columns of the participant list
  */
 abstract class Token extends Dynamic
 {
@@ -128,26 +132,43 @@ abstract class Token extends Dynamic
         return $result;
     }
 
-    /** @inheritdoc
-     * Delete related SurveyLink at same time
+    /**
+     * @inheritdoc
+     * Deletes the related SurveyLink at the same time
      */
     public function deleteAllByAttributes($attributes, $condition = '', $params = array())
     {
-        $builder = $this->getCommandBuilder();
-        $participantCriteria = $builder->createCriteria($condition, $params);
-        $participantCriteria->select = array('tid','participant_id');
-        $participantCriteria->addCondition('participant_id is not null');
-        $oParticipantToDelete = self::model($this->dynamicId)->findAll($participantCriteria);
+        $linkedTokenIds = $this->findLinkedTokenIds($attributes, $condition, $params);
         $result = parent::deleteAllByAttributes($attributes, $condition, $params);
-        if ($result && !empty($oParticipantToDelete)) {
-            /* Get the participant not deleted : we must not delete survey link */
-            $oParticipantNotDeleted = self::model($this->dynamicId)->findAll($participantCriteria);
-            $tidToDelete = array_diff(CHtml::listData($oParticipantToDelete, 'tid', 'tid'), CHtml::listData($oParticipantNotDeleted, 'tid', 'tid'));
-            if (!empty($tidToDelete)) {
-                SurveyLink::model()->deleteAllByAttributes(array('token_id' => $tidToDelete,'survey_id' => $this->dynamicId));
+        if ($result && !empty($linkedTokenIds)) {
+            // Participants that were not deleted keep their survey link
+            $deletedTokenIds = array_diff($linkedTokenIds, $this->findLinkedTokenIds($attributes, $condition, $params));
+            foreach (array_chunk($deletedTokenIds, 1000) as $tokenIds) {
+                SurveyLink::model()->deleteAllByAttributes(array('token_id' => $tokenIds, 'survey_id' => $this->dynamicId));
             }
         }
         return $result;
+    }
+
+    /**
+     * Returns the IDs of the participants matching the attributes and the condition
+     * that are linked to a participant of the central participant database.
+     * Only the participants that deleteAllByAttributes() deletes are read, not all participants of the survey.
+     *
+     * @param array $attributes Attribute values (indexed by attribute names) the participants have to match
+     * @param mixed $condition Query condition or criteria
+     * @param array $params Parameters to be bound to the query
+     * @return array The participant IDs (tid)
+     */
+    private function findLinkedTokenIds($attributes, $condition, $params)
+    {
+        $builder = $this->getCommandBuilder();
+        $table = $this->getTableSchema();
+        $alias = $this->getTableAlias(true, false);
+        $criteria = $builder->createColumnCriteria($table, $attributes, $condition, $params, $alias . '.');
+        $criteria->addCondition($alias . '.participant_id IS NOT NULL');
+        $criteria->select = $alias . '.tid';
+        return $builder->createFindCommand($table, $criteria)->queryColumn();
     }
 
     /**
@@ -235,6 +256,8 @@ abstract class Token extends Dynamic
             //table already exists, skipping
         }
 
+        // The responses get their relation to the participants only if the participant table exists
+        Response::resetMetaData($surveyId);
         // Refresh schema cache just in case the table existed in the past, and return if table exist
         return $db->schema->getTable($sTableName, true);
     }
@@ -412,10 +435,11 @@ abstract class Token extends Dynamic
         return parent::create($id, $scenario);
     }
 
+    /** @inheritdoc */
     public function relations()
     {
         $result = array(
-            'responses' => array(self::HAS_MANY, 'Responses_' . $this->dynamicId, array('token' => 'token')),
+            'responses' => array(self::HAS_MANY, 'Response_' . $this->dynamicId, array('token' => 'token')),
             'survey' =>  array(self::BELONGS_TO, 'Survey', '', 'on' => "sid = {$this->dynamicId}"),
             'surveylink' => array(self::BELONGS_TO, 'SurveyLink', array('participant_id' => 'participant_id'), 'on' => "survey_id = {$this->dynamicId}")
         );
@@ -486,11 +510,16 @@ abstract class Token extends Dynamic
     }
 
     /**
-     * @return CDbDataReader|mixed
+     * Returns the numbers of the participant summary: All, without access code, invited, opted out, completed and screened out
+     *
+     * @return array|false The numbers indexed by count, invalid, sent, optout, completed and screenout
      */
     public function summary()
     {
-        $criteria = $this->getDbCriteria();
+        $criteria = clone $this->getDbCriteria();
+        // Like the find methods, this query uses up the scopes of the model.
+        // The columns selected here must not get into the next query of the model, e.g. the one of the participant list.
+        $this->resetScope(false);
         $criteria->select = array(
             "COUNT(*) as count",
             "COUNT(CASE WHEN (token IS NULL OR token='') THEN 1 ELSE NULL END) as invalid",
@@ -569,5 +598,868 @@ abstract class Token extends Dynamic
     public function optIn()
     {
         $this->emailstatus = 'OK';
+    }
+
+    /**
+     * @param int[]|bool $aTokenIds
+     * @param int $iMaxEmails
+     * @param bool $bEmail
+     * @param string $SQLemailstatuscondition
+     * @param string $SQLremindercountcondition
+     * @param string $SQLreminderdelaycondition
+     * @param bool $bOnlyCurrentlyValid If true, skip participants whose validity period does not include the current time
+     * @return CActiveRecord[]
+     */
+    public function findUninvited($aTokenIds = false, $iMaxEmails = 0, $bEmail = true, $SQLemailstatuscondition = '', $SQLremindercountcondition = '', $SQLreminderdelaycondition = '', $bOnlyCurrentlyValid = false)
+    {
+        $command = new CDbCriteria();
+        $command->condition = '';
+        $command->addCondition("(completed ='N') or (completed='')");
+        $command->addCondition("t.token <> ''");
+        $command->addCondition("email <> ''");
+
+        if ($bEmail) {
+            $command->addCondition("(sent = 'N') or (sent = '')");
+        } else {
+            $command->addCondition("(sent <> 'N') AND (sent <> '')");
+        }
+
+        if ($SQLemailstatuscondition) {
+            $command->addCondition($SQLemailstatuscondition);
+        }
+
+        if ($SQLremindercountcondition) {
+            $command->addCondition($SQLremindercountcondition);
+        }
+
+        if ($SQLreminderdelaycondition) {
+            $command->addCondition($SQLreminderdelaycondition);
+        }
+
+        if ($bOnlyCurrentlyValid) {
+            $command->addCondition($this->getCurrentlyValidCondition());
+        }
+
+        if ($aTokenIds) {
+            $command->addInCondition("tid", $aTokenIds);
+        }
+
+        if ($iMaxEmails) {
+            $command->limit = $iMaxEmails;
+        }
+
+        $command->order = 'tid';
+
+        $oResult = $this->findAll($command);
+        foreach ($oResult as $key => $result) {
+            $oResult[$key] = $result->decrypt();
+        }
+
+        $cpdbBlacklisted = Participant::model()->getBlacklistedParticipantIds();
+        $oResult = array_filter($oResult, function ($item) use ($cpdbBlacklisted) {
+            return empty($item->participant_id) || !in_array($item->participant_id, $cpdbBlacklisted);
+        });
+
+        return $oResult;
+    }
+
+    /**
+     * Find participant IDs matching email criteria (invitations or reminders)
+     * Optimized to fetch only IDs without loading full token records (issue #20465)
+     * @param int[]|bool $aTokenIds Optional array of specific token IDs to filter
+     * @param int $iMaxEmails Maximum number of records to return
+     * @param bool $bEmail If true, find uninvited participants; if false, find reminded participants
+     * @param string $SQLemailstatuscondition Additional email status condition
+     * @param string $SQLremindercountcondition Reminder count condition
+     * @param string $SQLreminderdelaycondition Reminder delay condition
+     * @param bool $bOnlyCurrentlyValid If true, skip participants whose validity period does not include the current time
+     * @return array Array of token IDs
+     */
+    public function findParticipantIDs($aTokenIds = false, $iMaxEmails = 0, $bEmail = true, $SQLemailstatuscondition = '', $SQLremindercountcondition = '', $SQLreminderdelaycondition = '', $bOnlyCurrentlyValid = false)
+    {
+        // Optimized version that only fetches and returns IDs to avoid memory exhaustion (issue #20465)
+        // Use CDbCommand for safe SQL generation with proper column quoting
+        $db = Yii::app()->db;
+        $command = $db->createCommand()
+            ->select('tid, participant_id')
+            ->from($this->tableName());
+
+        // Build conditions using Yii's safe quoting methods
+        $command->andWhere($db->quoteColumnName('completed') . " IN ('N', '')");
+        $command->andWhere($db->quoteColumnName('token') . ' <> ' . $db->quoteValue(''));
+        $command->andWhere($db->quoteColumnName('email') . ' <> ' . $db->quoteValue(''));
+
+        if ($bEmail) {
+            $command->andWhere($db->quoteColumnName('sent') . " IN ('N', '')");
+        } else {
+            $command->andWhere($db->quoteColumnName('sent') . " NOT IN ('N', '')");
+        }
+
+        if ($SQLemailstatuscondition) {
+            $command->andWhere($SQLemailstatuscondition);
+        }
+
+        if ($SQLremindercountcondition) {
+            $command->andWhere($SQLremindercountcondition);
+        }
+
+        if ($SQLreminderdelaycondition) {
+            $command->andWhere($SQLreminderdelaycondition);
+        }
+
+        if ($bOnlyCurrentlyValid) {
+            $command->andWhere($this->getCurrentlyValidCondition());
+        }
+
+        if ($aTokenIds) {
+            $ids = array_map('intval', $aTokenIds);
+            $placeholders = implode(',', array_fill(0, count($ids), '?'));
+            $command->andWhere($db->quoteColumnName('tid') . " IN ($placeholders)", $ids);
+        }
+
+        $command->order('tid');
+
+        if ($iMaxEmails) {
+            $command->limit($iMaxEmails);
+        }
+
+        $results = $command->queryAll();
+
+        // Filter out blocklisted participants (same approach as findUninvited)
+        $cpdbBlocklisted = Participant::model()->getBlacklistedParticipantIds();
+        $results = array_filter($results, function ($item) use ($cpdbBlocklisted) {
+            return empty($item['participant_id']) || !in_array($item['participant_id'], $cpdbBlocklisted);
+        });
+
+        // Extract IDs only
+        $ids = array_column($results, 'tid');
+
+        return $ids;
+    }
+
+    /**
+     * Returns an SQL condition matching participants whose validity period (valid from/valid until) includes the current time
+     * @return string
+     */
+    private function getCurrentlyValidCondition()
+    {
+        $db = Yii::app()->db;
+        $now = $db->quoteValue(gmdate('Y-m-d H:i:s'));
+        $validFrom = $db->quoteColumnName('validfrom');
+        $validUntil = $db->quoteColumnName('validuntil');
+        return "($validFrom IS NULL OR $validFrom <= $now) AND ($validUntil IS NULL OR $validUntil >= $now)";
+    }
+
+    /**
+     * Whether the survey has at least one response with the given access code
+     * @param string $sToken The access code
+     * @return boolean
+     */
+    public function getHasResponses($sToken)
+    {
+        $oSurvey = Survey::model()->findByPk(intval($this->dynamicId));
+        if (!$oSurvey->hasResponsesTable) {
+            return false;
+        }
+        $command = Yii::app()->db->createCommand()
+            ->select('COUNT(token)')
+            ->from('{{responses_' . intval($this->dynamicId) . '}}')
+            ->where('token=:token')
+            ->bindParam(':token', $sToken, PDO::PARAM_STR);
+
+        return ((int)$command->queryScalar() > 0);
+    }
+
+    /**
+     * The names of the core columns of the participant table
+     * @return string[]
+     */
+    public function getStandardCols()
+    {
+        return array(
+            "tid",
+            "participant_id",
+            "firstname",
+            "lastname",
+            "email",
+            "emailstatus",
+            "token",
+            "language",
+            "blacklisted",
+            "sent",
+            "remindersent",
+            "remindercount",
+            "completed",
+            "usesleft",
+            "validfrom",
+            "validuntil",
+            "mpid",
+        );
+    }
+
+    /**
+     * The columns of the custom attributes: All columns that are no core columns
+     * @return CDbColumnSchema[] indexed by column name
+     */
+    // phpcs:ignore
+    public function getCustom_attributes()
+    {
+        $columns = $this->getMetaData()->columns;
+        $attributes = array();
+
+        foreach ($columns as $sColName => $oColumn) {
+            if (!in_array($sColName, $this->standardCols)) {
+                $attributes[$sColName] = $oColumn;
+            }
+        }
+
+        return $attributes;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSentFormated()
+    {
+        $field = $this->sent;
+        return $this->getYesNoDateFormated($field);
+    }
+
+    /**
+     * @return string
+     */
+    public function getRemindersentFormated()
+    {
+        $field = $this->remindersent;
+        return $this->getYesNoDateFormated($field);
+    }
+
+    /**
+     * @return string
+     */
+    public function getCompletedFormated()
+    {
+        $field = $this->completed;
+        return $this->getYesNoDateFormated($field);
+    }
+
+    /**
+     * Returns the "valid from" date for the participant list, in the display timezone.
+     * @return string HTML of the formatted date, empty string if not set
+     */
+    public function getValidfromFormated()
+    {
+        return $this->getYesNoDateFormated($this->getValidityDateInDisplayTimezone($this->validfrom));
+    }
+
+    /**
+     * Returns the "valid until" date for the participant list, in the display timezone.
+     * @return string HTML of the formatted date, empty string if not set
+     */
+    public function getValiduntilFormated()
+    {
+        return $this->getYesNoDateFormated($this->getValidityDateInDisplayTimezone($this->validuntil));
+    }
+
+    /**
+     * Converts a validity date (valid from/valid until) stored in UTC to the display timezone of the current request.
+     * Uses the timezone already resolved by LSYii_Controller (same result as getDateOfUTC()),
+     * to avoid a user setting query for every row of the participant list.
+     * @param string|null $date Date in UTC
+     * @return string|null Date in the display timezone, unchanged if empty
+     */
+    private function getValidityDateInDisplayTimezone($date)
+    {
+        if (empty($date)) {
+            return $date;
+        }
+        return dateShift($date, 'Y-m-d H:i:s');
+    }
+
+    /**
+     * Returns the value of a custom date attribute in the display format, for the participant list
+     * @param string $attrName Name of the attribute (e.g. attribute_1)
+     * @return string
+     */
+    public function getCustomDateAttrFormatted($attrName)
+    {
+        $diContainer = \LimeSurvey\DI::getContainer();
+        $attributeService = $diContainer->get(
+            LimeSurvey\Models\Services\ParticipantAttributeService::class
+        );
+        $field = $this->{$attrName};
+        return $attributeService->convertDateAttributeToDisplayFormat(
+            0,
+            $field,
+            false
+        );
+    }
+
+    /**
+     * @param string $field
+     * @return string
+     */
+    private function getYesNoDateFormated($field)
+    {
+        if ($field != 'N' && $field != '') {
+            if ($field == 'Q') {
+                $field     = '<span class="text-danger">' . gT('Quota out') . '</span>';
+            } elseif ($field != 'Y') {
+                $fieldDate = convertToGlobalSettingFormat($field);
+                $field     = '<span class="text-success">' . CHtml::encode($fieldDate) . '</span>';
+            } else {
+                $field     = '<span class="text-success ri-check-fill"></span>';
+            }
+        } elseif ($field != '') {
+            $field = '<i class="ri-subtract-fill text-danger"></i>';
+        }
+        return $field;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmailFormated()
+    {
+        if (substr($this->emailstatus, 0, 7) == "bounced") {
+            return '<span class="text-danger"><strong> ' . CHtml::encode($this->email) . '</strong></span>';
+        } else {
+            return CHtml::encode($this->email);
+        }
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmailstatusFormated()
+    {
+        if (substr($this->emailstatus, 0, 7) == "bounced") {
+            return '<span class="text-danger"><strong> ' . CHtml::encode($this->emailstatus) . '</strong></span>';
+        } else {
+            return CHtml::encode($this->emailstatus);
+        }
+    }
+
+    /**
+     * Builds the standard (core) grid columns for a survey participant table.
+     *
+     * Static so it works for both the populated grid and the empty grid that is
+     * shown before the participant table exists.
+     *
+     * @param int $iSurveyId
+     * @param LSActiveRecord $labeler
+     * @return array
+     */
+    public static function buildStandardColsForGrid($iSurveyId, $labeler)
+    {
+        return [
+            [
+                'id'                => 'tid',
+                'class'             => 'CCheckBoxColumn',
+                'selectableRows'    => '100',
+                'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
+                'filterHtmlOptions' => ['class' => 'ls-sticky-column'],
+                'htmlOptions'       => ['class' => 'ls-sticky-column']
+            ],
+            [
+                'header'            => gT('ID'),
+                'name'              => 'tid',
+                'value'             => '$data->tid',
+                'headerHtmlOptions' => ['class' => ''],
+                'htmlOptions'       => ['class' => ' text-end'],
+            ],
+            [
+                'header'            => gT('First name') . $labeler->setEncryptedAttributeLabel($iSurveyId, 'Token', 'firstname'),
+                'name'              => 'firstname',
+                'value'             => '$data->firstname',
+                'headerHtmlOptions' => ['class' => ''],
+                'htmlOptions'       => ['class' => ' name'],
+            ],
+            [
+                'header'            => gT('Last name') . $labeler->setEncryptedAttributeLabel($iSurveyId, 'Token', 'lastname'),
+                'name'              => 'lastname',
+                'value'             => '$data->lastname',
+                'headerHtmlOptions' => ['class' => ''],
+                'htmlOptions'       => ['class' => ' name'],
+            ],
+            [
+                'header'            => gT('Email address') . $labeler->setEncryptedAttributeLabel($iSurveyId, 'Token', 'email'),
+                'name'              => 'email',
+                'type'              => 'raw',
+                'value'             => '$data->emailFormated',
+                'headerHtmlOptions' => ['class' => ''],
+                'htmlOptions'       => ['class' => ' name'],
+            ],
+            [
+                'header'            => gT('Email status') . $labeler->setEncryptedAttributeLabel($iSurveyId, 'Token', 'emailstatus'),
+                'name'              => 'emailstatus',
+                'value'             => '$data->emailstatusFormated',
+                'type'              => 'raw',
+                'headerHtmlOptions' => ['class' => ''],
+                'htmlOptions'       => ['class' => ''],
+            ],
+            [
+                'header'            => gT('Access code'),
+                'name'              => 'token',
+                'value'             => '$data->token',
+                'headerHtmlOptions' => ['class' => ''],
+                'htmlOptions'       => ['class' => ''],
+            ],
+            [
+                'header'            => gT('Language'),
+                'name'              => 'language',
+                'value'             => '$data->language',
+                'headerHtmlOptions' => ['class' => ''],
+                'htmlOptions'       => ['class' => ''],
+            ],
+            [
+                'header'            => gT('Invitation sent?'),
+                'name'              => 'sent',
+                'type'              => 'raw',
+                'value'             => '$data->sentFormated',
+                'headerHtmlOptions' => ['class' => ''],
+                'htmlOptions'       => ['class' => '  text-center'],
+            ],
+            [
+                'header'            => gT('Reminder sent?'),
+                'name'              => 'remindersent',
+                'type'              => 'raw',
+                'value'             => '$data->remindersentFormated',
+                'headerHtmlOptions' => ['class' => ''],
+                'htmlOptions'       => ['class' => ' text-center'],
+            ],
+            [
+                'header'            => gT('Reminder count'),
+                'name'              => 'remindercount',
+                'value'             => '$data->remindercount',
+                'headerHtmlOptions' => ['class' => ''],
+                'htmlOptions'       => ['class' => ' text-end'],
+            ],
+            [
+                'header'            => gT('Completed?'),
+                'name'              => 'completed',
+                'type'              => 'raw',
+                'value'             => '$data->completedFormated',
+                'headerHtmlOptions' => ['class' => ''],
+                'htmlOptions'       => ['class' => ' text-center'],
+            ],
+            [
+                'header'            => gT('Uses left'),
+                'name'              => 'usesleft',
+                'value'             => '$data->usesleft',
+                'headerHtmlOptions' => ['class' => ''],
+                'htmlOptions'       => ['class' => ' text-end'],
+            ],
+            [
+                'header'            => gT('Valid from'),
+                'name'              => 'validfrom',
+                'type'              => 'raw',
+                'value'             => '$data->validfromFormated',
+                'headerHtmlOptions' => ['class' => ''],
+                'htmlOptions'       => ['class' => ' name'],
+            ],
+            [
+                'header'            => gT('Valid until'),
+                'type'              => 'raw',
+                'name'              => 'validuntil',
+                'value'             => '$data->validuntilFormated',
+                'headerHtmlOptions' => ['class' => ''],
+                'htmlOptions'       => ['class' => ' name'],
+            ],
+        ];
+    }
+
+    /**
+     * The columns of the participant list: Core columns, custom attributes and the action column
+     * @return array
+     */
+    public function getAttributesForGrid()
+    {
+        return self::buildAttributesForGrid($this->dynamicId, $this);
+    }
+
+    /**
+     * Builds the full grid column set (standard + custom attributes + action column) for a survey.
+     *
+     * Extracted as static so it can be reused for the empty-state grid rendered before the
+     * participant table exists. $labeler is any LSActiveRecord used only for encryption labels.
+     *
+     * @param int $iSurveyId
+     * @param LSActiveRecord $labeler
+     * @return array
+     */
+    public static function buildAttributesForGrid($iSurveyId, $labeler)
+    {
+        $aCustomAttributesCols = array();
+
+        $oSurvey = Survey::model()->findByAttributes(array("sid" => $iSurveyId));
+        $aCustomAttributes = $oSurvey->tokenAttributes;
+
+        // Custom attributes
+        foreach ($aCustomAttributes as $sColName => $oColumn) {
+            $desc = ($oColumn['description'] != '') ? $oColumn['description'] : $sColName;
+            if (array_key_exists('type', $oColumn) && $oColumn['type'] == 'DP') {
+                $value = '$data->getCustomDateAttrFormatted(\'' . $sColName . '\')';
+                $type = 'raw';
+            } else {
+                $value = '$data->' . $sColName;
+                $type = 'longtext';
+            }
+
+            $aCustomAttributesCols[] = array(
+                'header' => $desc . $labeler->setEncryptedAttributeLabel($iSurveyId, 'Token', $sColName), // $aAttributedescriptions->$sColName->description,
+                'name' => $sColName,
+                'type' => $type,
+                'value' => $value,
+                'headerHtmlOptions' => array('class' => ''),
+                'htmlOptions' => array('class' => ''),
+            );
+        }
+
+        $actionColumn = [
+            [
+                "name"              => 'actions',
+                "type"              => 'raw',
+                "header"            => gT("Action"),
+                "filter"            => false,
+                'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
+                'filterHtmlOptions' => ['class' => 'ls-sticky-column'],
+                'htmlOptions'       => ['class' => 'ls-sticky-column']
+            ]
+        ];
+
+        return array_merge(self::buildStandardColsForGrid($iSurveyId, $labeler), $aCustomAttributesCols, $actionColumn);
+    }
+
+    /**
+     * Return the buttons columns
+     * @see https://www.yiiframework.com/doc/api/1.1/CButtonColumn
+     * @see https://bugs.limesurvey.org/view.php?id=14219
+     * @see https://bugs.limesurvey.org/view.php?id=14222: When deleting a single response: All page is reloaded (not only grid)
+     * @return string HTML of the action dropdown of a row in the participant list
+     */
+    public function getActions()
+    {
+        $permission_responses_read = Permission::model()->hasSurveyPermission($this->dynamicId, 'responses', 'read');
+        $permission_reponses_create = intval(Permission::model()->hasSurveyPermission($this->dynamicId, 'responses', 'create'));
+        $permission_tokens_update = Permission::model()->hasSurveyPermission($this->dynamicId, 'tokens', 'update');
+        $permission_tokens_delete = Permission::model()->hasSurveyPermission($this->dynamicId, 'tokens', 'delete');
+        $permission_participantpanel_read = Permission::model()->hasGlobalPermission('participantpanel', 'read');
+
+        $dropdownItems = [];
+        $dropdownItems[] = [
+            'title'            => gT('View response details'),
+            'url'              => App()->createUrl("responses/viewbytoken", [
+                "surveyId" => $this->dynamicId,
+                "token"    => $this->token
+            ]),
+            'iconClass'        => 'ri-list-unordered',
+            'enabledCondition' => $permission_responses_read
+                && $this->survey->active === "Y"
+                && $this->survey->anonymized !== "Y"
+                && $this->getHasResponses($this->token)
+        ];
+        $dropdownItems[] = [
+            'title'            => gT('Preview the survey with this participant'),
+            'url'              => App()->createUrl("/survey/index", [
+                "sid"     => $this->dynamicId,
+                "token"   => $this->token,
+                "newtest" => "Y"
+            ]),
+            'linkAttributes'   => ['target' => "_blank"],
+            'iconClass'        => 'ri-eye-fill',
+            'enabledCondition' => $permission_reponses_create
+                && !$this->survey->isActive
+                && $this->canBeUsed()
+        ];
+        $dropdownItems[] = [
+            'title'            => gT('Launch the survey with this participant'),
+            'url'              => App()->createUrl("/survey/index", [
+                "sid"     => $this->dynamicId,
+                "token"   => $this->token,
+                "newtest" => "Y"
+            ]),
+            'linkAttributes'   => ['target' => "_blank"],
+            'iconClass'        => 'ri-play-fill',
+            'enabledCondition' => $permission_reponses_create
+                && $this->survey->isActive
+                && $this->canBeUsed()
+        ];
+        $dropdownItems[] = [
+            'title'            => gT('Send email invitation'),
+            'url'              => App()->createUrl("/admin/tokens/sa/email", [
+                "surveyid" => $this->dynamicId,
+                "tokenids" => $this->tid,
+            ]),
+            'iconClass'        => 'ri-mail-send-fill',
+            'enabledCondition' => $permission_tokens_update
+                && ($this->sent === "N" || empty($this->sent))
+                && $this->canBeEmailed()
+        ];
+        $dropdownItems[] = [
+            'title'            => gT('Send email reminder'),
+            'url'              => App()->createUrl("/admin/tokens/sa/email/action/remind", [
+                "surveyid" => $this->dynamicId,
+                "tokenids" => $this->tid
+            ]),
+            'iconClass'        => 'ri-mail-send-fill',
+            'enabledCondition' => $permission_tokens_update
+                && !($this->sent === "N" || empty($this->sent))
+                && $this->canBeEmailed()
+        ];
+        $dropdownItems[] = [
+            'title'            => gT('Edit this survey participant'),
+            'url'              => App()->createUrl("/admin/tokens/sa/edit", [
+                "iSurveyId" => $this->dynamicId,
+                "iTokenId"  => $this->tid
+            ]),
+            'iconClass'        => 'ri-pencil-fill',
+            'linkAttributes'    => [
+                'onclick'  => "startEditToken(event, $(this))",
+                'data-sid' => $this->dynamicId
+            ],
+            'enabledCondition' => $permission_tokens_update
+        ];
+        $dropdownItems[] = [
+            'title'            => gT('Delete survey participant'),
+            'iconClass'        => 'ri-delete-bin-fill text-danger',
+            'linkAttributes'    => [
+                'data-bs-toggle'  => "modal",
+                'data-bs-target'  => '#confirmation-modal',
+                'data-btnclass' => 'btn-danger',
+                'data-message'    => gT('Do you really want to delete this participant'),
+                'data-post-url'   => App()->createUrl("/admin/tokens/sa/deleteToken", [
+                    "sid"   => $this->dynamicId,
+                    "sItem" => $this->tid
+                ]),
+                'data-btntext'    => gT('Delete'),
+            ],
+            'enabledCondition' => $permission_tokens_delete
+        ];
+        $dropdownItems[] = [
+            'title'            => gT('View this participant in the central participants database'),
+            'url'              => App()->createUrl("admin/participants/sa/displayParticipants", [
+                "#" => json_encode(
+                    ["searchcondition" => "participant_id||equal||" . $this->participant_id],
+                    JSON_FORCE_OBJECT | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT
+                )
+            ]),
+            'iconClass'        => 'ri-shield-user-line',
+            'linkAttributes'    => [
+                'onclick' => "window.LS.gridButton.postGridAction(event,$(this))",
+            ],
+            'enabledCondition' => $permission_participantpanel_read
+                && !empty($this->participant_id)
+        ];
+
+        return App()->getController()->widget('ext.admin.grid.GridActionsWidget.GridActionsWidget', ['dropdownItems' => $dropdownItems], true);
+    }
+
+    /**
+     * Returns the participants matching the filters of the participant list.
+     * The "valid from" and "valid until" filters are entered in the display timezone and compared in UTC.
+     * @return CActiveDataProvider Data provider for the participant list
+     */
+    public function search()
+    {
+        $pageSizeTokenView = Yii::app()->user->getState('pageSizeTokenView', Yii::app()->params['defaultPageSize']);
+
+        $sort = new CSort();
+        $sort->defaultOrder = 'tid ASC';
+        $sort->attributes = array(
+            'tid' => array(
+            'asc' => 'tid',
+            'desc' => 'tid desc',
+            ),
+            'partcipant' => array(
+            'asc' => 'partcipant',
+            'desc' => 'partcipant desc',
+            ),
+
+            'firstname' => array(
+            'asc' => 'firstname',
+            'desc' => 'firstname desc',
+            ),
+
+            'lastname' => array(
+            'asc' => 'lastname',
+            'desc' => 'lastname desc',
+            ),
+
+            'email' => array(
+            'asc' => 'email',
+            'desc' => 'email desc',
+            ),
+
+            'emailstatus' => array(
+            'asc' => 'emailstatus',
+            'desc' => 'emailstatus desc',
+            ),
+
+            'token' => array(
+            'asc' => 'token',
+            'desc' => 'token desc',
+            ),
+
+            'language' => array(
+            'asc' => 'language',
+            'desc' => 'language desc',
+            ),
+
+            'blacklisted' => array(
+            'asc' => 'blacklisted',
+            'desc' => 'blacklisted desc',
+            ),
+
+            'sent' => array(
+            'asc' => 'sent',
+            'desc' => 'sent desc',
+            ),
+
+            'remindersent' => array(
+            'asc' => 'remindersent',
+            'desc' => 'remindersent desc',
+            ),
+
+            'remindercount' => array(
+                'asc' => 'remindercount',
+                'desc' => 'remindercount desc',
+            ),
+
+            'completed' => array(
+            'asc' => 'completed',
+            'desc' => 'completed desc',
+            ),
+
+            'usesleft' => array(
+            'asc' => 'usesleft',
+            'desc' => 'usesleft desc',
+            ),
+
+            'validfrom' => array(
+            'asc' => 'validfrom',
+            'desc' => 'validfrom desc',
+            ),
+
+            'validuntil' => array(
+            'asc' => 'validuntil',
+            'desc' => 'validuntil desc',
+            ),
+        );
+
+        // Make sortable custom attributes
+        foreach ($this->custom_attributes as $sColName => $oColumn) {
+            $sort->attributes[$sColName] = array(
+                'asc' => $sColName,
+                'desc' => $sColName . ' desc',
+            );
+        }
+        $this->decryptEncryptAttributes('encrypt');
+
+        $criteria = new LSDbCriteria();
+        $criteria->compare('tid', $this->tid, false);
+        $criteria->compare('token', $this->token, true);
+        $criteria->compare('firstname', $this->firstname, true);
+        $criteria->compare('lastname', $this->lastname, true);
+        $criteria->compare('email', $this->email, true);
+        $criteria->compare('emailstatus', $this->emailstatus, true);
+        $criteria->compare('token', $this->token, true);
+        $criteria->compare('language', $this->language, true);
+        $criteria->compare('sent', $this->sent, true);
+        $criteria->compare('remindersent', $this->remindersent, true);
+        $criteria->compare('remindercount', $this->remindercount, false);
+        $criteria->compare('completed', $this->completed, true);
+        $criteria->compare('usesleft', $this->usesleft, false);
+
+        $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
+        // Validity dates are stored in UTC, the filter value is in the display timezone
+        $displayTimezone = Yii::app()->getConfig('displayTimezone');
+        if ($this->validfrom) {
+            $s = DateTime::createFromFormat($dateformatdetails['phpdate'] . ' H:i', $this->validfrom);
+            if (is_object($s)) {
+                $s2 = dateShift($s->format('Y-m-d H:i:s'), 'Y-m-d H:i', 'UTC', $displayTimezone);
+                $criteria->addCondition('validfrom <= \'' . $s2 . '\'');
+            }
+        }
+
+        if ($this->validuntil) {
+            $s = DateTime::createFromFormat($dateformatdetails['phpdate'] . ' H:i', $this->validuntil);
+            if (is_object($s)) {
+                $s2 = dateShift($s->format('Y-m-d H:i:s'), 'Y-m-d H:i', 'UTC', $displayTimezone);
+                $criteria->addCondition('validuntil >= \'' . $s2 . '\'');
+            }
+        }
+
+        foreach ($this->custom_attributes as $sColName => $oColumn) {
+            $criteria->compare($sColName, $this->$sColName, true);
+        }
+
+        $dataProvider = new LSCActiveDataProvider(get_class($this), array(
+            'sort' => $sort,
+            'criteria' => $criteria,
+            'pagination' => array(
+                'pageSize' => $pageSizeTokenView,
+            ),
+        ));
+        $this->decryptEncryptAttributes();
+
+        return $dataProvider;
+    }
+
+    /**
+     * Returns true if the participant can currently enter the survey with this access code.
+     * Uses the same rules as the survey itself (see SurveyIndex): The participant must be inside
+     * the validity period, and unless editing after completion is allowed, must not have completed
+     * the survey and must have uses left.
+     * @return bool
+     */
+    public function canBeUsed()
+    {
+        if (empty($this->token) || !$this->isWithinValidityPeriod()) {
+            return false;
+        }
+        if ($this->survey->isAllowEditAfterCompletion) {
+            return true;
+        }
+        return !$this->isCompleted() && (int) $this->usesleft > 0;
+    }
+
+    /**
+     * Returns true if an invitation or reminder can be sent to this participant:
+     * The access code must be usable, the participant must not have completed the survey
+     * and must have an email address with status OK.
+     * @return bool
+     */
+    public function canBeEmailed()
+    {
+        return !empty($this->email)
+            && $this->emailstatus === 'OK'
+            && !$this->isCompleted()
+            && $this->canBeUsed();
+    }
+
+    /**
+     * Returns true if the participant has completed the survey (or was screened out by a quota)
+     * @return bool
+     */
+    private function isCompleted()
+    {
+        return !empty($this->completed) && $this->completed !== 'N';
+    }
+
+    /**
+     * Returns true if the current time is inside the participant's validity period (valid from/valid until)
+     * @return bool
+     */
+    private function isWithinValidityPeriod()
+    {
+        $now = strtotime(gmdate('Y-m-d H:i:s'));
+        if (!empty($this->validfrom) && $now < strtotime((string) $this->validfrom)) {
+            return false;
+        }
+        if (!empty($this->validuntil) && $now > strtotime((string) $this->validuntil)) {
+            return false;
+        }
+        return true;
     }
 }

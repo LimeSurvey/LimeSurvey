@@ -1780,7 +1780,7 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false, $EMreplace = 
     if ($oSurvey->anonymized == 'N' && $oSurvey->hasTokensTable && (int) $iResponseID > 0) {
         $response = Response::model($iSurveyID)->findByPk($iResponseID);
         if (!empty($response)) {
-            $token = TokenDynamic::model($iSurveyID)->findByAttributes(array('token' => $response->token));
+            $token = Token::model($iSurveyID)->findByAttributes(array('token' => $response->token));
             if (!empty($token)) {
                 $RowQReplacements['TOKEN'] = $token->token;
                 $RowQReplacements['TOKEN:EMAIL'] = $token->email;
@@ -2520,8 +2520,8 @@ function tokensExport($iSurveyID)
     // Export token line by line and fill $aExportedTokens with token exported
     Yii::import('application.libraries.Date_Time_Converter', true);
 
-    // creating TokenDynamic object to be able to decrypt easier
-    $token = TokenDynamic::model($iSurveyID);
+    // Creating a Token object to be able to decrypt easier
+    $token = Token::create($iSurveyID);
     $attributes = array_keys($token->getAttributes());
     $aExportedTokens = [];
     $countRecordSetSelector = clone $oRecordSet;
@@ -2538,8 +2538,8 @@ function tokensExport($iSurveyID)
         $bresult = $oRecordSetQuery->query();
         // fetching all records into array, values need to be decrypted
         foreach ($bresult as $tokenValue) {
-            // Populate TokenDynamic object with values
-            // NB: $tokenValue also contains values not belonging to TokenDynamic model (joined with survey)
+            // Populate the Token object with values
+            // NB: $tokenValue also contains values not belonging to the Token model (joined with survey)
             foreach ($tokenValue as $key => $value) {
                 if (in_array($key, $attributes)) {
                     $token->$key = $value;

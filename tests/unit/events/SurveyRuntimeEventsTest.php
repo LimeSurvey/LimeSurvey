@@ -40,8 +40,6 @@ class SurveyRuntimeEventsTest extends TestBaseClass
         // The survey model and the survey info cached by the import are still inactive
         Survey::model()->resetCache();
         \getSurveyInfo(self::$surveyId, '', true);
-        // The response model can still have the table structure of the survey of an earlier test
-        \SurveyDynamic::model(self::$surveyId);
     }
 
     /**

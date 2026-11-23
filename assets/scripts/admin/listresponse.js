@@ -21,8 +21,8 @@ function reinstallResponsesFilterDatePicker() {
     // Since grid view is updated with Ajax, we need to fetch date format each update
     var input = document.getElementById('dateFormatDetails');
     var locale = document.getElementById('locale');
-    var startdateElement = document.getElementById('SurveyDynamic_startdate');
-    var datestampElement = document.getElementById('SurveyDynamic_datestamp');
+    var startdateElement = document.getElementById('Response_startdate');
+    var datestampElement = document.getElementById('Response_datestamp');
 
     if ((input && input.value) && (locale && locale.value)) {
         var dateFormatDetails = JSON.parse(input.value);

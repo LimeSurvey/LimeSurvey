@@ -4,7 +4,6 @@ namespace ls\tests;
 
 use SettingsUser;
 use Token;
-use TokenDynamic;
 
 /**
  * The "valid from" and "valid until" dates of a survey participant are stored in UTC, and entered and shown
@@ -135,7 +134,7 @@ class TokenValidityTimezoneTest extends TestBaseClass
     public function testParticipantListShowsDisplayTimezone()
     {
         \Yii::app()->session['dateformat'] = 6;
-        $token = TokenDynamic::model(self::$surveyId)->findByPk(self::$tokenId);
+        $token = Token::model(self::$surveyId)->findByPk(self::$tokenId);
         $this->assertStringContainsString('2026-01-15', $token->getValidfromFormated());
         // Stored as the 16th in UTC, but still the 15th in Toronto
         $this->assertStringContainsString('2026-01-15', $token->getValiduntilFormated());
@@ -150,7 +149,7 @@ class TokenValidityTimezoneTest extends TestBaseClass
     {
         \Yii::app()->session['dateformat'] = 6;
         $filteredIds = function (array $filter) {
-            $model = new TokenDynamic(self::$surveyId);
+            $model = Token::create(self::$surveyId);
             $model->unsetAttributes();
             $model->setAttributes($filter, false);
             return array_map('intval', array_column(

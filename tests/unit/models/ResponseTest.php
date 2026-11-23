@@ -4,7 +4,7 @@ namespace ls\tests;
 
 use Yii;
 
-class SurveyDynamicTest extends TestBaseClass
+class ResponseTest extends TestBaseClass
 {
     public static function setUpBeforeClass(): void
     {
@@ -29,11 +29,11 @@ class SurveyDynamicTest extends TestBaseClass
      */
     public function testInsertResponse()
     {
-        $responseId = \SurveyDynamic::model(self::$surveyId)->insertRecords(array('startlanguage' => 'en'));
-        $response = \SurveyDynamic::model()->findByPk($responseId);
+        $responseId = \Response::model(self::$surveyId)->insertRecords(array('startlanguage' => 'en'));
+        $response = \Response::model(self::$surveyId)->findByPk($responseId);
 
         $this->assertIsNumeric($responseId, 'The newly inserted response id should have been returned.');
-        $this->assertInstanceOf('SurveyDynamic', $response, 'The newly inserted response should have been returned.');
+        $this->assertInstanceOf('Response', $response, 'The newly inserted response should have been returned.');
     }
 
     /**
@@ -45,7 +45,7 @@ class SurveyDynamicTest extends TestBaseClass
         $this->expectException(\CException::class);
 
         // Table column name incorrectly spelled.
-        $responseId = \SurveyDynamic::model(self::$surveyId)->insertRecords(array('starlanguage' => 'en'));
+        $responseId = \Response::model(self::$surveyId)->insertRecords(array('starlanguage' => 'en'));
     }
 
     /**
@@ -53,10 +53,10 @@ class SurveyDynamicTest extends TestBaseClass
      */
     public function testSearchFiltersBySeed()
     {
-        $matchingId = \SurveyDynamic::model(self::$surveyId)->insertRecords(array('startlanguage' => 'en', 'seed' => '123456789'));
-        $otherId = \SurveyDynamic::model(self::$surveyId)->insertRecords(array('startlanguage' => 'en', 'seed' => '987654321'));
+        $matchingId = \Response::model(self::$surveyId)->insertRecords(array('startlanguage' => 'en', 'seed' => '123456789'));
+        $otherId = \Response::model(self::$surveyId)->insertRecords(array('startlanguage' => 'en', 'seed' => '987654321'));
 
-        $model = \SurveyDynamic::model(self::$surveyId);
+        $model = \Response::model(self::$surveyId);
         $model->setAttributes(array('seed' => '123456789'), false);
         $responseIds = array_map(
             function ($response) {

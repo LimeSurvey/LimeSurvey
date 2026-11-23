@@ -805,7 +805,7 @@ class LS_Twig_Extension extends AbstractExtension
     public static function getAllTokenAnswers($iSurveyID)
     {
 
-        $oResponses = SurveyDynamic::model($iSurveyID)->findAll(
+        $oResponses = Response::model($iSurveyID)->findAll(
             array(
                                 'condition' => 'token = :token',
                                 'params'    => array( ':token' => SurveySessionState::forSurvey((int) $iSurveyID)->getToken()),

@@ -23,7 +23,7 @@ Yii::import('application.helpers.statisticschart_helper', true);
 */
 function getQuestionMapData($sField, $qsid)
 {
-    $aresult = SurveyDynamic::model($qsid)->findAll();
+    $aresult = Response::model($qsid)->findAll();
 
     $d = array();
 
@@ -69,7 +69,7 @@ function buildSelects($allfields, $surveyid, $language)
     // this list before being passed to quoteColumnName(), which does not escape
     // identifier quoting characters and is not injection-safe on its own.
     $validColumns = array();
-    $responseSchema = SurveyDynamic::model($surveyid)->getTableSchema();
+    $responseSchema = Response::model($surveyid)->getTableSchema();
     if ($responseSchema !== null) {
         foreach ($responseSchema->getColumnNames() as $columnName) {
             $validColumns[strtolower($columnName)] = $columnName;
@@ -404,7 +404,7 @@ class userstatistics_helper
             ));
             // Security (mantis #20744): $rt comes from the request, so only keep columns that
             // exist in this survey's response table before they are used in any query.
-            $validColumns = SurveyDynamic::model($surveyid)->getTableSchema()->getColumnNames();
+            $validColumns = Response::model($surveyid)->getTableSchema()->getColumnNames();
             foreach ($result as $row) {
                 $mfield = substr($rt, 1) . "_S" . $row['qid'];
                 if (!in_array($mfield, $validColumns, true)) {
@@ -1770,7 +1770,7 @@ class userstatistics_helper
             } elseif (self::completionFilterState() == "complete") {
                 $criteria->addCondition("submitdate IS NOT NULL");
             }
-            $multiNotDisplayed = SurveyDynamic::model($surveyid)->count($criteria);
+            $multiNotDisplayed = Response::model($surveyid)->count($criteria);
             if (isset($_POST['noncompleted']) and ($_POST['noncompleted'] == "on")) {
                 //counter
                 $i = 0;
@@ -2819,7 +2819,7 @@ class userstatistics_helper
     {
         // Security (mantis #20741): quoteColumnName() does not escape identifier quoting
         // characters, so only real response table columns may be passed to it.
-        $validColumns = SurveyDynamic::model($surveyid)->getTableSchema()->getColumnNames();
+        $validColumns = Response::model($surveyid)->getTableSchema()->getColumnNames();
         if (!in_array($column, $validColumns, true) || ($sortby != '' && !in_array($sortby, $validColumns, true))) {
             throw new InvalidArgumentException('Statistics column listing references an unknown column.');
         }
@@ -2860,7 +2860,7 @@ class userstatistics_helper
             }
             $search['order'] = $sortby . ' ' . $sortmethod;
         }
-        $results = SurveyDynamic::model($surveyid)->findAll($search);
+        $results = Response::model($surveyid)->findAll($search);
         $output = array();
         foreach ($results as $row) {
             $output[] = array("id" => $row['id'], "value" => $row[$column]);

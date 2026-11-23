@@ -21,7 +21,6 @@ use LimeSurvey\Api\Command\{
 };
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermissionTrait;
 use Survey;
-use SurveyDynamic;
 
 /**
  * API Command to retrieve statistical overview of a survey.

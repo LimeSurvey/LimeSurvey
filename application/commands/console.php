@@ -77,6 +77,7 @@ if (isset($config)) {
     Yii::import('application.helpers.ClassFactory');
     ClassFactory::registerClass('Token_', 'Token');
     ClassFactory::registerClass('Response_', 'Response');
+    ClassFactory::registerClass('Timing_', 'Timing');
 }
 
 $app->run();

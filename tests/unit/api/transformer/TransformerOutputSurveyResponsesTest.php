@@ -60,9 +60,9 @@ class TransformerOutputSurveyResponsesTest extends TestBaseClass
         $this->assertSame('Completed quota', $result[0]['quotaExitName']);
     }
 
-    private function makeResponse(int $quotaId): \SurveyDynamic
+    private function makeResponse(int $quotaId): \Response
     {
-        return new class (['quota_exit' => $quotaId]) extends \SurveyDynamic {
+        return new class (['quota_exit' => $quotaId]) extends \Response {
             private array $testAttributes;
 
             public function __construct(array $attributes)
