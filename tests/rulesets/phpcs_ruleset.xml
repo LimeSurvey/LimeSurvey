@@ -21,6 +21,7 @@
     </rule>
 
     <!-- Ignore third-party libs -->
+    <exclude-pattern>*/vendor/*</exclude-pattern>
     <exclude-pattern>application/helpers/Zend/*</exclude-pattern>
     <exclude-pattern>application/helpers/adodb/*</exclude-pattern>
     <exclude-pattern>application/extensions/yiiwheels/*</exclude-pattern>
