@@ -1,10 +1,9 @@
-import React, { useEffect, useState, useMemo } from 'react'
+import React, { useState, useMemo } from 'react'
 import { Form } from 'react-bootstrap'
 import ReactSelect from 'react-select'
 import CreatableSelect from 'react-select/creatable'
 import { format } from 'util'
 import classNames from 'classnames'
-import { useQueryClient } from '@tanstack/react-query'
 
 import { useAppState } from '../../../hooks'
 import { RemoveHTMLTagsInString, STATES } from '../../../helpers'
@@ -43,7 +42,9 @@ export const Select = ({
   isClearable = false,
 }) => {
   const [isOpen, setIsOpen] = useState(false)
-  const [canUseAppState, setCanUseAppState] = useState(false)
+  const [hasSurveyUpdatePermission] = useAppState(
+    STATES.HAS_SURVEY_UPDATE_PERMISSION
+  )
 
   options = useMemo(
     () =>
@@ -54,30 +55,15 @@ export const Select = ({
     [options]
   )
 
-  useEffect(() => {
-    try {
-      useQueryClient()
-      setCanUseAppState(true)
-    } catch (error) {
-      setCanUseAppState(false)
-    }
-  }, [])
-
-  const [isSurveyActive] = canUseAppState
-    ? useAppState(STATES.IS_SURVEY_ACTIVE)
-    : [true]
-  const [hasSurveyUpdatePermission] = canUseAppState
-    ? useAppState(STATES.HAS_SURVEY_UPDATE_PERMISSION)
-    : [true]
-
+  // Callers pass activeDisabled already resolved against the survey's active
+  // state, so it locks the select on its own.
   const permissionDisabled =
-    (isSurveyActive && activeDisabled) ||
+    activeDisabled ||
     (!hasSurveyUpdatePermission && noPermissionDisabled) ||
     noAccessDisabled
-  const toolTip =
-    isSurveyActive && activeDisabled
-      ? getTooltipMessages().ACTIVE_DISABLED
-      : getTooltipMessages().NO_PERMISSION
+  const toolTip = activeDisabled
+    ? getTooltipMessages().ACTIVE_DISABLED
+    : getTooltipMessages().NO_PERMISSION
 
   if (isCreatable && !isMultiselect && value !== null && value !== undefined) {
     // A value that is not one of the options was typed in, so show it as is
