@@ -39,12 +39,6 @@ class LSCheckBoxColumn extends CCheckBoxColumn
     }
 
     /**
-     * Returns the aria-label of the checkbox in the given row.
-     *
-     * @param integer $row The row number (zero-based)
-     * @return string
-     */
-    /**
      * Renders the header cell. A header cell holding only the "select all" checkbox has no text,
      * so it gets an accessible name for the screen reader table navigation.
      *
@@ -59,6 +53,12 @@ class LSCheckBoxColumn extends CCheckBoxColumn
         parent::renderHeaderCell();
     }
 
+    /**
+     * Returns the aria-label of the checkbox in the given row.
+     *
+     * @param integer $row The row number (zero-based)
+     * @return string The aria-label of the row checkbox
+     */
     protected function getRowAriaLabel($row)
     {
         if ($this->ariaLabel !== null) {
