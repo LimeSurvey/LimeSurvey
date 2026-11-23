@@ -44,7 +44,9 @@ export var NavbarScripts = function () {
                 $(this).trigger('click');
             }
         });
-        $(document).on('click', '.back-link', function() {
+        $(document).on('click', '.back-link', function(event) {
+            // Customized themes can still have a link with href="#": no navigation
+            event.preventDefault();
             // switch menu content back to original content (this currently works only with one level nested elements)
             replaceContent(getContentByElementId('back-content'), 'main-dropdown');
             if (openedSubmenuId) {
