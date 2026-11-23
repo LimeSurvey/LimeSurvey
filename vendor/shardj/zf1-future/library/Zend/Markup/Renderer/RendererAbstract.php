@@ -65,14 +65,14 @@ abstract class Zend_Markup_Renderer_RendererAbstract
     /**
      * What filter to use
      *
-     * @var bool
+     * @var Zend_Filter_Interface|bool
      */
     protected $_filter;
 
     /**
      * Filter chain
      *
-     * @var Zend_Filter
+     * @var Zend_Filter_Interface
      */
     protected $_defaultFilter;
 
@@ -296,7 +296,7 @@ abstract class Zend_Markup_Renderer_RendererAbstract
     /**
      * Render function
      *
-     * @param  Zend_Markup_TokenList|string $tokenList
+     * @param  Zend_Markup_TokenList|string $value
      * @return string
      */
     public function render($value)
@@ -367,6 +367,7 @@ abstract class Zend_Markup_Renderer_RendererAbstract
     protected function _execute(Zend_Markup_Token $token)
     {
         // first return the normal text tags
+        require_once 'Zend/Markup/Token.php';
         if ($token->getType() == Zend_Markup_Token::TYPE_NONE) {
             return $this->_filter($token->getTag());
         }
@@ -473,7 +474,7 @@ abstract class Zend_Markup_Renderer_RendererAbstract
      *
      * @param Zend_Markup_Token $token
      *
-     * @return string
+     * @return string|false
      */
     protected function _getMarkupName(Zend_Markup_Token $token)
     {
@@ -547,7 +548,7 @@ abstract class Zend_Markup_Renderer_RendererAbstract
     /**
      * Get the default filter
      *
-     * @return Zend_Filter
+     * @return Zend_Filter_Interface
      */
     public function getDefaultFilter()
     {
@@ -561,7 +562,7 @@ abstract class Zend_Markup_Renderer_RendererAbstract
     /**
      * Add a default filter
      *
-     * @param string $filter
+     * @param Zend_Filter_Interface $filter
      *
      * @return void
      */
@@ -593,7 +594,7 @@ abstract class Zend_Markup_Renderer_RendererAbstract
      *
      * @param string $markup
      *
-     * @return Zend_Filter_Interface
+     * @return Zend_Filter_Interface|false
      */
     public function getFilter($markup)
     {

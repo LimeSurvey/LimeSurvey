@@ -19,6 +19,11 @@
  * @version    $Id$
  */
 
+require_once 'Zend/Config/Ini.php';
+require_once 'Zend/Config/Xml.php';
+require_once 'Zend/Config/Json.php';
+require_once 'Zend/Config/Yaml.php';
+
 /**
  * @category   Zend
  * @package    Zend_Application
@@ -104,6 +109,7 @@ class Zend_Application
             } elseif ($options instanceof Zend_Config) {
                 $options = $options->toArray();
             } elseif (!is_array($options)) {
+                require_once 'Zend/Application/Exception.php';
                 throw new Zend_Application_Exception(
                     'Invalid options provided; must be location of config file,'
                     . ' a config object, or an array'
@@ -196,6 +202,7 @@ class Zend_Application
                 $this->setBootstrap($bootstrap);
             } elseif (is_array($bootstrap)) {
                 if (empty($bootstrap['path'])) {
+                    require_once 'Zend/Application/Exception.php';
                     throw new Zend_Application_Exception(
                         'No bootstrap path provided'
                     );
@@ -210,6 +217,7 @@ class Zend_Application
 
                 $this->setBootstrap($path, $class);
             } else {
+                require_once 'Zend/Application/Exception.php';
                 throw new Zend_Application_Exception(
                     'Invalid bootstrap information provided'
                 );
@@ -347,7 +355,9 @@ class Zend_Application
 
         if (!class_exists($class, false)) {
             require_once $path;
+            // @phpstan-ignore booleanNot.alwaysTrue (the file loaded above may define the class)
             if (!class_exists($class, false)) {
+                require_once 'Zend/Application/Exception.php';
                 throw new Zend_Application_Exception(
                     'Bootstrap class not found'
                 );
@@ -356,6 +366,7 @@ class Zend_Application
         $this->_bootstrap = new $class($this);
 
         if (!$this->_bootstrap instanceof Zend_Application_Bootstrap_Bootstrapper) {
+            require_once 'Zend/Application/Exception.php';
             throw new Zend_Application_Exception(
                 'Bootstrap class does not implement'
                 . ' Zend_Application_Bootstrap_Bootstrapper'
@@ -373,6 +384,7 @@ class Zend_Application
     public function getBootstrap()
     {
         if (null === $this->_bootstrap) {
+            require_once 'Zend/Application/Bootstrap/Bootstrap.php';
             $this->_bootstrap = new Zend_Application_Bootstrap_Bootstrap($this);
         }
         return $this->_bootstrap;
@@ -438,15 +450,16 @@ class Zend_Application
             case 'inc':
                 $config = include $file;
                 if (!is_array($config)) {
+                    require_once 'Zend/Application/Exception.php';
                     throw new Zend_Application_Exception(
                         'Invalid configuration file provided; PHP file does not'
                         . ' return array value'
                     );
                 }
                 return $config;
-                break;
 
             default:
+                require_once 'Zend/Application/Exception.php';
                 throw new Zend_Application_Exception(
                     'Invalid configuration file provided; unknown config type'
                 );

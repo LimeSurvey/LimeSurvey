@@ -82,7 +82,7 @@ class Zend_Feed_Writer_Extension_ITunes_Renderer_Entry
     protected function _setAuthors(DOMDocument $dom, DOMElement $root)
     {
         $authors = $this->getDataContainer()->getItunesAuthors();
-        if (!$authors || empty($authors)) {
+        if (!$authors) {
             return;
         }
         foreach ($authors as $author) {
@@ -164,7 +164,7 @@ class Zend_Feed_Writer_Extension_ITunes_Renderer_Entry
     protected function _setKeywords(DOMDocument $dom, DOMElement $root)
     {
         $keywords = $this->getDataContainer()->getItunesKeywords();
-        if (!$keywords || empty($keywords)) {
+        if (!$keywords) {
             return;
         }
         $el = $dom->createElement('itunes:keywords');

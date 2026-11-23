@@ -39,13 +39,13 @@ class Zend_Loader_PluginLoader implements Zend_Loader_PluginLoader_Interface
 {
     /**
      * Class map cache file
-     * @var string
+     * @var string|null
      */
     protected static $_includeFileCache;
 
     /**
      * Class map cache file handler
-     * @var resource
+     * @var resource|false|null
      */
     protected static $_includeFileCacheHandler;
 
@@ -400,6 +400,7 @@ class Zend_Loader_PluginLoader implements Zend_Loader_PluginLoader_Interface
                 $loadFile = $path . $classFile;
                 if (Zend_Loader::isReadable($loadFile)) {
                     include_once $loadFile;
+                    // @phpstan-ignore if.alwaysFalse (the file loaded above may define the class)
                     if (class_exists($className, false)) {
                         if (null !== $incFile) {
                             self::_appendIncFile($loadFile);
@@ -425,10 +426,13 @@ class Zend_Loader_PluginLoader implements Zend_Loader_PluginLoader_Interface
        }
 
         if ($this->_useStaticRegistry) {
+            // @phpstan-ignore variable.undefined ($found is set together with $className)
             self::$_staticLoadedPlugins[$this->_useStaticRegistry][$name]     = $className;
         } else {
+            // @phpstan-ignore variable.undefined ($found is set together with $className)
             $this->_loadedPlugins[$name]     = $className;
         }
+        // @phpstan-ignore variable.undefined ($found is set together with $className)
         return $className;
     }
 

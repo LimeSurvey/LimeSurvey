@@ -108,6 +108,9 @@ class ParagonIE_Sodium_Core_Base64_UrlSafe
         }
 
         if ($strictPadding) {
+            if (($srcLen & 3) !== 0) {
+                throw new RangeException('Incorrect padding');
+            }
             if (($srcLen & 3) === 0) {
                 if ($src[$srcLen - 1] === '=') {
                     $srcLen--;
@@ -165,6 +168,7 @@ class ParagonIE_Sodium_Core_Base64_UrlSafe
                     ((($c1 << 4) | ($c2 >> 2)) & 0xff)
                 );
                 $err |= ($c0 | $c1 | $c2) >> 8;
+                $err |= ($c2 & 0x03);
             } elseif ($i + 1 < $srcLen) {
                 $c1 = self::decode6Bits($chunk[2]);
                 $dest .= pack(
@@ -172,6 +176,7 @@ class ParagonIE_Sodium_Core_Base64_UrlSafe
                     ((($c0 << 2) | ($c1 >> 4)) & 0xff)
                 );
                 $err |= ($c0 | $c1) >> 8;
+                $err |= ($c1 & 0x0f);
             } elseif ($i < $srcLen && $strictPadding) {
                 $err |= 1;
             }
@@ -194,24 +199,14 @@ class ParagonIE_Sodium_Core_Base64_UrlSafe
         #[SensitiveParameter]
         $encodedString
     ) {
-        $srcLen = strlen($encodedString);
-        if ($srcLen === 0) {
-            return '';
+        $srcLen = ParagonIE_Sodium_Core_Util::strlen($encodedString);
+        if (($srcLen & 3) === 1 || strpos($encodedString, '=') !== false) {
+            throw new InvalidArgumentException(
+                "decodeNoPadding() doesn't tolerate padding or incomplete quartets"
+            );
         }
-        if (($srcLen & 3) === 0) {
-            // If $strLen is not zero, and it is divisible by 4, then it's at least 4.
-            if ($encodedString[$srcLen - 1] === '=' || $encodedString[$srcLen - 2] === '=') {
-                throw new InvalidArgumentException(
-                    "decodeNoPadding() doesn't tolerate padding"
-                );
-            }
-        }
-        return self::decode(
-            $encodedString,
-            true
-        );
+        return self::decode($encodedString);
     }
-
     // COPY ParagonIE_Sodium_Core_Base64_Common ENDING HERE
     /**
      * Uses bitwise operators instead of table-lookups to turn 6-bit integers

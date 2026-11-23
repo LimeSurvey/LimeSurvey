@@ -281,7 +281,7 @@ class Zend_Service_Rackspace_Files_Object
     /**
      * Get the CDN URL of the object
      *
-     * @return string
+     * @return string|false
      */
     public function getCdnUrl()
     {
@@ -297,7 +297,7 @@ class Zend_Service_Rackspace_Files_Object
     /**
      * Get the CDN SSL URL of the object
      *
-     * @return string
+     * @return string|false
      */
     public function getCdnUrlSsl()
     {

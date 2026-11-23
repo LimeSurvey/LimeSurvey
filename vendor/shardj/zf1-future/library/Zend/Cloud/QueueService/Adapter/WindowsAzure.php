@@ -29,6 +29,7 @@ require_once 'Zend/Service/WindowsAzure/Storage/Queue.php';
  * @subpackage QueueService
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @deprecated Deprecated since 1.27.1 and will be removed in a future version: the Simple Cloud API is not developed any further; use the SDK of the cloud provider
  */
 class Zend_Cloud_QueueService_Adapter_WindowsAzure
     extends Zend_Cloud_QueueService_Adapter_AbstractAdapter
@@ -67,6 +68,8 @@ class Zend_Cloud_QueueService_Adapter_WindowsAzure
      */
     public function __construct($options = [])
     {
+        trigger_error(get_class($this) . ' is deprecated and will be removed in a future version', E_USER_DEPRECATED);
+
         if ($options instanceof Zend_Config) {
             $options = $options->toArray();
         }
@@ -107,7 +110,7 @@ class Zend_Cloud_QueueService_Adapter_WindowsAzure
                 $this->_storageClient->setProxy(true, $proxyHost, $proxyPort, $proxyCredentials);
             }
             if (isset($options[self::HTTP_ADAPTER])) {
-                $this->_storageClient->setHttpClientChannel($httpAdapter);
+                $this->_storageClient->setHttpClientChannel($options[self::HTTP_ADAPTER]);
             }
         } catch(Zend_Service_WindowsAzure_Exception $e) {
             throw new Zend_Cloud_QueueService_Exception('Error on create: '.$e->getMessage(), $e->getCode(), $e);
@@ -147,7 +150,7 @@ class Zend_Cloud_QueueService_Adapter_WindowsAzure
             if ($queueId instanceof Zend_Service_WindowsAzure_Storage_QueueInstance) {
                 $queueId = $queueId->Name;
             }
-            return $this->_storageClient->deleteQueue($queueId);
+            $this->_storageClient->deleteQueue($queueId);
         } catch (Zend_Service_WindowsAzure_Exception $e) {
             throw new Zend_Cloud_QueueService_Exception('Error on queue deletion: '.$e->getMessage(), $e->getCode(), $e);
         }
@@ -213,7 +216,7 @@ class Zend_Cloud_QueueService_Adapter_WindowsAzure
             if ($queueId instanceof Zend_Service_WindowsAzure_Storage_QueueInstance) {
                 $queueId = $queueId->Name;
             }
-            return $this->_storageClient->setQueueMetadata($queueId, $metadata);
+            $this->_storageClient->setQueueMetadata($queueId, $metadata);
         } catch (Zend_Service_WindowsAzure_Exception $e) {
             throw new Zend_Cloud_QueueService_Exception('Error on setting queue metadata: '.$e->getMessage(), $e->getCode(), $e);
         }
@@ -233,7 +236,7 @@ class Zend_Cloud_QueueService_Adapter_WindowsAzure
             if ($queueId instanceof Zend_Service_WindowsAzure_Storage_QueueInstance) {
                 $queueId = $queueId->Name;
             }
-            return $this->_storageClient->putMessage(
+            $this->_storageClient->putMessage(
                 $queueId, $message, $options[self::MESSAGE_TTL]
             );
         } catch (Zend_Service_WindowsAzure_Exception $e) {
@@ -303,7 +306,7 @@ class Zend_Cloud_QueueService_Adapter_WindowsAzure
                 $message = $message->getMessage();
             }
             if ($message instanceof Zend_Service_WindowsAzure_Storage_QueueMessage) {
-                return $this->_storageClient->deleteMessage($queueId, $message);
+                $this->_storageClient->deleteMessage($queueId, $message);
             } else {
                 throw new Zend_Cloud_QueueService_Exception('Cannot delete the message: message object required');
             }

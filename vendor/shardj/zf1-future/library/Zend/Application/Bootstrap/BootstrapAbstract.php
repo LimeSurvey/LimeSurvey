@@ -269,6 +269,7 @@ abstract class Zend_Application_Bootstrap_BootstrapAbstract
         }
 
         if (!is_string($resource)) {
+            require_once 'Zend/Application/Bootstrap/Exception.php';
             throw new Zend_Application_Bootstrap_Exception('Invalid resource provided to ' . __METHOD__);
         }
 
@@ -293,6 +294,7 @@ abstract class Zend_Application_Bootstrap_BootstrapAbstract
         }
 
         if (!is_string($resource)) {
+            require_once 'Zend/Application/Bootstrap/Exception.php';
             throw new Zend_Application_Bootstrap_Exception('Unknown resource type provided to ' . __METHOD__);
         }
 
@@ -329,6 +331,7 @@ abstract class Zend_Application_Bootstrap_BootstrapAbstract
             if (!$this->_pluginResources[$resource] instanceof Zend_Application_Resource_Resource) {
                 $resourceName = $this->_loadPluginResource($resource, $this->_pluginResources[$resource]);
                 if (!$resourceName) {
+                    require_once 'Zend/Application/Bootstrap/Exception.php';
                     throw new Zend_Application_Bootstrap_Exception(sprintf('Unable to resolve plugin "%s"; no corresponding plugin with that name', $resource));
                 }
                 $resource = $resourceName;
@@ -422,6 +425,7 @@ abstract class Zend_Application_Bootstrap_BootstrapAbstract
                 'ZendX_Application_Resource' => 'ZendX/Application/Resource'
             ];
 
+            require_once 'Zend/Loader/PluginLoader.php';
             $this->_pluginLoader = new Zend_Loader_PluginLoader($options);
         }
 
@@ -441,10 +445,12 @@ abstract class Zend_Application_Bootstrap_BootstrapAbstract
             || ($application instanceof Zend_Application_Bootstrap_Bootstrapper)
         ) {
             if ($application === $this) {
+                require_once 'Zend/Application/Bootstrap/Exception.php';
                 throw new Zend_Application_Bootstrap_Exception('Cannot set application to same object; creates recursion');
             }
             $this->_application = $application;
         } else {
+            require_once 'Zend/Application/Bootstrap/Exception.php';
             throw new Zend_Application_Bootstrap_Exception('Invalid application provided to bootstrap constructor (received "' . get_class($application) . '" instance)');
         }
         return $this;
@@ -489,6 +495,7 @@ abstract class Zend_Application_Bootstrap_BootstrapAbstract
     public function setContainer($container)
     {
         if (!is_object($container)) {
+            require_once 'Zend/Application/Bootstrap/Exception.php';
             throw new Zend_Application_Bootstrap_Exception('Resource containers must be objects');
         }
         $this->_container = $container;
@@ -503,6 +510,7 @@ abstract class Zend_Application_Bootstrap_BootstrapAbstract
     public function getContainer()
     {
         if (null === $this->_container) {
+            require_once 'Zend/Registry.php';
             $this->setContainer(new Zend_Registry());
         }
         return $this->_container;
@@ -606,6 +614,7 @@ abstract class Zend_Application_Bootstrap_BootstrapAbstract
             return $this->bootstrap($resource);
         }
 
+        require_once 'Zend/Application/Bootstrap/Exception.php';
         throw new Zend_Application_Bootstrap_Exception('Invalid method "' . $method . '"');
     }
 
@@ -636,6 +645,7 @@ abstract class Zend_Application_Bootstrap_BootstrapAbstract
                 $this->_executeResource($r);
             }
         } else {
+            require_once 'Zend/Application/Bootstrap/Exception.php';
             throw new Zend_Application_Bootstrap_Exception('Invalid argument passed to ' . __METHOD__);
         }
     }
@@ -663,6 +673,7 @@ abstract class Zend_Application_Bootstrap_BootstrapAbstract
         }
 
         if (isset($this->_started[$resourceName]) && $this->_started[$resourceName]) {
+            require_once 'Zend/Application/Bootstrap/Exception.php';
             throw new Zend_Application_Bootstrap_Exception('Circular resource dependency detected');
         }
 
@@ -695,6 +706,7 @@ abstract class Zend_Application_Bootstrap_BootstrapAbstract
             return;
         }
 
+        require_once 'Zend/Application/Bootstrap/Exception.php';
         throw new Zend_Application_Bootstrap_Exception('Resource matching "' . $resource . '" not found');
     }
 

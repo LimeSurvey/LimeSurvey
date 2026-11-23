@@ -128,7 +128,7 @@ class Zend_Form_Decorator_Description extends Zend_Form_Decorator_Abstract
     /**
      * Get escape flag
      *
-     * @return true
+     * @return true|bool
      */
     public function getEscape()
     {

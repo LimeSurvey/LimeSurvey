@@ -85,7 +85,7 @@ class Zend_Feed_Writer_Extension_Atom_Renderer_Feed
     protected function _setFeedLinks(DOMDocument $dom, DOMElement $root)
     {
         $flinks = $this->getDataContainer()->getFeedLinks();
-        if(!$flinks || empty($flinks)) {
+        if(!$flinks) {
             return;
         }
         foreach ($flinks as $type => $href) {
@@ -109,7 +109,7 @@ class Zend_Feed_Writer_Extension_Atom_Renderer_Feed
     protected function _setHubs(DOMDocument $dom, DOMElement $root)
     {
         $hubs = $this->getDataContainer()->getHubs();
-        if (!$hubs || empty($hubs)) {
+        if (!$hubs) {
             return;
         }
         foreach ($hubs as $hubUrl) {

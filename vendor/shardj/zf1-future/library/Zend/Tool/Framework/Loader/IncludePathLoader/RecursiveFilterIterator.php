@@ -75,7 +75,7 @@ class Zend_Tool_Framework_Loader_IncludePathLoader_RecursiveFilterIterator exten
      * the $_denyDirectoryPattern and the $_acceptFilePattern when sub iterators of this filter
      * are needed to be created.
      *
-     * @return object
+     * @return RecursiveFilterIterator|null
      */
     public function getChildren(): ?\RecursiveFilterIterator
     {

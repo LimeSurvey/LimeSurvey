@@ -33,7 +33,8 @@ class Zend_Soap_Server_Proxy
     /**
      * Constructor
      *
-     * @param object $service
+     * @param object|string $className Class name or object
+     * @param array $classArgs
      */
     public function  __construct($className, $classArgs = [])
     {

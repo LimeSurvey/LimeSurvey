@@ -34,7 +34,7 @@ class Zend_Queue_Stomp_Client
     /**
      * Array of $client Zend_Queue_Stomp_Client_Interface
      *
-     * @var array
+     * @var Zend_Queue_Stomp_Client_ConnectionInterface|null
      */
     protected $_connection;
 
@@ -118,7 +118,7 @@ class Zend_Queue_Stomp_Client
     /**
      * Get client connection
      *
-     * @return array
+     * @return Zend_Queue_Stomp_Client_ConnectionInterface|null
      */
     public function getConnection()
     {
@@ -131,7 +131,7 @@ class Zend_Queue_Stomp_Client
      * Returns true if the frame was successfully sent.
      *
      * @param Zend_Queue_Stomp_FrameInterface $frame
-     * @return StompClientMock|Zend_Queue_Stomp_Client
+     * @return Zend_Queue_Stomp_Client
      */
     public function send(Zend_Queue_Stomp_FrameInterface $frame)
     {

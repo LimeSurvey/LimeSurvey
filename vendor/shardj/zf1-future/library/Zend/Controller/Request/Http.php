@@ -56,7 +56,7 @@ class Zend_Controller_Request_Http extends Zend_Controller_Request_Abstract
 
     /**
      * REQUEST_URI
-     * @var string;
+     * @var string
      */
     protected $_requestUri;
 
@@ -199,7 +199,7 @@ class Zend_Controller_Request_Http extends Zend_Controller_Request_Abstract
      */
     public function set($key, $value)
     {
-        return $this->__set($key, $value);
+        $this->__set($key, $value);
     }
 
     /**
@@ -543,6 +543,7 @@ class Zend_Controller_Request_Http extends Zend_Controller_Request_Abstract
             // out of baseUrl. $pos !== 0 makes sure it is not matching a value
             // from PATH_INFO or QUERY_STRING
             if ((strlen($requestUri) >= strlen($baseUrl))
+                // @phpstan-ignore notIdentical.alwaysTrue (position 0 is handled by the checks above)
                 && ((false !== ($pos = strpos($requestUri, $baseUrl))) && ($pos !== 0)))
             {
                 $baseUrl = substr($requestUri, 0, $pos + strlen($baseUrl));
@@ -680,7 +681,7 @@ class Zend_Controller_Request_Http extends Zend_Controller_Request_Abstract
      *
      * Can be empty array, or contain one or more of '_GET' or '_POST'.
      *
-     * @param  array $paramSoures
+     * @param  array $paramSources
      * @return $this
      */
     public function setParamSources(array $paramSources = [])
@@ -759,13 +760,17 @@ class Zend_Controller_Request_Http extends Zend_Controller_Request_Abstract
         $return       = $this->_params;
         $paramSources = $this->getParamSources();
         if (in_array('_GET', $paramSources)
+            // @phpstan-ignore isset.variable (the application may unset or replace the superglobal)
             && isset($_GET)
+            // @phpstan-ignore function.alreadyNarrowedType (the application may unset or replace the superglobal)
             && is_array($_GET)
         ) {
             $return += $_GET;
         }
         if (in_array('_POST', $paramSources)
+            // @phpstan-ignore isset.variable (the application may unset or replace the superglobal)
             && isset($_POST)
+            // @phpstan-ignore function.alreadyNarrowedType (the application may unset or replace the superglobal)
             && is_array($_POST)
         ) {
             $return += $_POST;

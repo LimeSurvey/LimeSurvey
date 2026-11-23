@@ -37,9 +37,9 @@ require_once 'Zend/Service/WindowsAzure/Diagnostics/LogLevel.php';
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  *
- * @property	int		BufferQuotaInMB						Buffer quota in MB
- * @property	int		ScheduledTransferPeriodInMinutes	Scheduled transfer period in minutes
- * @property	string	ScheduledTransferLogLevelFilter		Scheduled transfer log level filter
+ * @property	int		$BufferQuotaInMB						Buffer quota in MB
+ * @property	int		$ScheduledTransferPeriodInMinutes	Scheduled transfer period in minutes
+ * @property	string	$ScheduledTransferLogLevelFilter		Scheduled transfer log level filter
  */
 class Zend_Service_WindowsAzure_Diagnostics_ConfigurationLogs
 	extends Zend_Service_WindowsAzure_Diagnostics_ConfigurationObjectBaseAbstract

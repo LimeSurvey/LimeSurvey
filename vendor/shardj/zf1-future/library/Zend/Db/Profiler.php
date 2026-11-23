@@ -99,7 +99,7 @@ class Zend_Db_Profiler
      * is less than this value in seconds will be unset from
      * the self::$_queryProfiles array.
      *
-     * @var integer
+     * @var integer|null
      */
     protected $_filterElapsedSecs = null;
 

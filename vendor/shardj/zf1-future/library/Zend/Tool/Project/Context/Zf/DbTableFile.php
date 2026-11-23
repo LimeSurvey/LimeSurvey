@@ -20,6 +20,8 @@
  * @version    $Id$
  */
 
+require_once 'Zend/Tool/Project/Context/Zf/AbstractClassFile.php';
+
 /**
  * This class is the front most class for utilizing Zend_Tool_Project
  *
@@ -57,7 +59,7 @@ class Zend_Tool_Project_Context_Zf_DbTableFile extends Zend_Tool_Project_Context
         $this->_dbTableName = $this->_resource->getAttribute('dbTableName');
         $this->_actualTableName = $this->_resource->getAttribute('actualTableName');
         $this->_filesystemName = ucfirst($this->_dbTableName) . '.php';
-        parent::init();
+        return parent::init();
     }
 
     public function getPersistentAttributes()
@@ -69,6 +71,9 @@ class Zend_Tool_Project_Context_Zf_DbTableFile extends Zend_Tool_Project_Context
     {
         $className = $this->getFullClassName($this->_dbTableName, 'Model_DbTable');
 
+        require_once 'Zend/CodeGenerator/Php/Property.php';
+        require_once 'Zend/CodeGenerator/Php/Class.php';
+        require_once 'Zend/CodeGenerator/Php/File.php';
         $codeGenFile = new Zend_CodeGenerator_Php_File([
             'fileName' => $this->getPath(),
             'classes' => [

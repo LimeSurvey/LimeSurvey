@@ -68,7 +68,7 @@ class Zend_Feed_Pubsubhubbub
     /**
      * Singleton instance if required of the HTTP client
      *
-     * @var Zend_Http_Client
+     * @var Zend_Http_Client|null
      */
     protected static $httpClient = null;
 
@@ -85,9 +85,9 @@ class Zend_Feed_Pubsubhubbub
     {
         if (is_string($source)) {
             $feed = Zend_Feed_Reader::import($source);
-        } elseif (is_object($source) && $source instanceof Zend_Feed_Reader_FeedAbstract) {
+        } elseif ($source instanceof Zend_Feed_Reader_FeedAbstract) {
             $feed = $source;
-        } elseif (is_object($source) && $source instanceof Zend_Feed_Abstract) {
+        } elseif ($source instanceof Zend_Feed_Abstract) {
             $feed = Zend_Feed_Reader::importFeed($source);
         } else {
             require_once 'Zend/Feed/Pubsubhubbub/Exception.php';

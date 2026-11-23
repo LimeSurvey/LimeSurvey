@@ -159,6 +159,7 @@ class Zend_Feed_Writer_Renderer_Entry_Atom
 
         $updated = $dom->createElement('updated');
         $root->appendChild($updated);
+        require_once 'Zend/Date.php';
         $text = $dom->createTextNode(
             $this->getDataContainer()->getDateModified()->get(Zend_Date::ISO_8601)
         );
@@ -179,6 +180,7 @@ class Zend_Feed_Writer_Renderer_Entry_Atom
         }
         $el = $dom->createElement('published');
         $root->appendChild($el);
+        require_once 'Zend/Date.php';
         $text = $dom->createTextNode(
             $this->getDataContainer()->getDateCreated()->get(Zend_Date::ISO_8601)
         );
@@ -195,7 +197,7 @@ class Zend_Feed_Writer_Renderer_Entry_Atom
     protected function _setAuthors(DOMDocument $dom, DOMElement $root)
     {
         $authors = $this->_container->getAuthors();
-        if ((!$authors || empty($authors))) {
+        if (!$authors) {
             /**
              * This will actually trigger an Exception at the feed level if
              * a feed level author is not set.
@@ -234,7 +236,7 @@ class Zend_Feed_Writer_Renderer_Entry_Atom
     protected function _setEnclosure(DOMDocument $dom, DOMElement $root)
     {
         $data = $this->_container->getEnclosure();
-        if ((!$data || empty($data))) {
+        if (!$data) {
             return;
         }
         $enclosure = $this->_dom->createElement('link');
@@ -291,6 +293,7 @@ class Zend_Feed_Writer_Renderer_Entry_Atom
             $this->getDataContainer()->setId(
                 $this->getDataContainer()->getLink());
         }
+        require_once 'Zend/Uri.php';
         if (!Zend_Uri::check($this->getDataContainer()->getId()) &&
         !preg_match("#^urn:[a-zA-Z0-9][a-zA-Z0-9\-]{1,31}:([a-zA-Z0-9\(\)\+\,\.\:\=\@\;\$\_\!\*\-]|%[0-9a-fA-F]{2})*#",
             $this->getDataContainer()->getId()
@@ -327,6 +330,7 @@ class Zend_Feed_Writer_Renderer_Entry_Atom
                 $dvalid = true;
             }
 
+            require_once 'Zend/Validate/EmailAddress.php';
             $validator = new Zend_Validate_EmailAddress;
 
             if ($validator->isValid($matches['name'])) {

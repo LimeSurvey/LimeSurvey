@@ -47,7 +47,7 @@ class Zend_Service_Rackspace_Files_ContainerList implements Countable, Iterator,
      */
     protected $iteratorKey = 0;
     /**
-     * @var RackspaceFiles
+     * @var Zend_Service_Rackspace_Files
      */
     protected $service;
     /**
