@@ -161,6 +161,19 @@ $dark-text-colors : (
     .action-list {
         color : $g-900;
     }
+    // Action icons: The same light purple as the outline buttons ("Create survey")
+    .action-list a i::before {
+        color : $dark-text-grape;
+    }
+}
+// Icon of the selected view (boxes or list) next to "Create survey"
+.survey-actionbar .survey-actionbar-switch i[active] {
+    color : $dark-text-grape;
+}
+
+// Survey structure in the side menu: The side panel package sets a white background
+#sidebar #questionexplorer {
+    background-color : $surface-bg;
 }
 
 // Login page: The panel with the logo stays dark

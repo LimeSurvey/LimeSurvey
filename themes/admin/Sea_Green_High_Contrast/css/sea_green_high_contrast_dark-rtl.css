@@ -22139,6 +22139,18 @@ a.ls-link {
 .grid-view-ls .action-list {
   color: #E9EAF0;
 }
+.grid-view .action-list a i::before,
+.grid-view-ls .action-list a i::before {
+  color: #B39BFF;
+}
+
+.survey-actionbar .survey-actionbar-switch i[active] {
+  color: #B39BFF;
+}
+
+#sidebar #questionexplorer {
+  background-color: #1B1C22;
+}
 
 .login .sidebar-l {
   background: #111217;
