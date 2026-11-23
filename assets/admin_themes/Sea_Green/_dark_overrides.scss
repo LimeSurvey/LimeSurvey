@@ -475,3 +475,9 @@ kbd {
 .tempus-dominus-widget .calendar-header .previous:not(.disabled) {
     color : $g-700;
 }
+
+// Overlay that blocks clicks while a page of the survey menu is loaded: The light mode fades it out in white,
+// which flashes over the dark page. With "body": The side panel CSS with the white overlay is loaded after the theme
+body > #pjaxClickInhibitor {
+    background : rgba($g-200, 0.4);
+}

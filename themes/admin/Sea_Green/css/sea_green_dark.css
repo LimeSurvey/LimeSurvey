@@ -22346,3 +22346,7 @@ kbd {
 .tempus-dominus-widget .calendar-header .previous:not(.disabled) {
   color: #A4A9BC;
 }
+
+body > #pjaxClickInhibitor {
+  background: rgba(39, 42, 51, 0.4);
+}
