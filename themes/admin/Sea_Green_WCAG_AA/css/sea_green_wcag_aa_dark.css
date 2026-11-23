@@ -21562,6 +21562,17 @@ input[type=checkbox]:checked:after {
   box-shadow: 0 0 0 2px #111217 !important;
 }
 
+.select2-container .select2-selection:has(.select2-search--inline .select2-search__field:focus-visible) {
+  outline: 2px solid #C9B8FF !important;
+  outline-offset: 2px !important;
+  box-shadow: 0 0 0 2px #111217 !important;
+}
+
+.select2-container .select2-search--inline .select2-search__field:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
 #sidebar .resize-handle button:focus-visible {
   outline: 2px solid #C9B8FF !important;
 }

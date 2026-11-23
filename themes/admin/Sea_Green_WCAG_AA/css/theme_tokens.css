@@ -149,6 +149,22 @@
   outline-offset: 2px !important;
   box-shadow: 0 0 0 2px #fff !important;
 }
+:root [class*=__control]:has(> [class*=__value-container] > [class*=__input-container] > input:focus-visible) {
+  outline: 2px solid #5B1FD6 !important;
+  outline-offset: 2px !important;
+  box-shadow: 0 0 0 2px #fff !important;
+}
+:root [class*=__input-container] > input:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
+:root .lime-toggle-btn-group .btn-group .btn.btn-outline-lime-toggle.toggle-button:not(.disabled) {
+  color: #1E1E1E !important;
+}
+:root .lime-toggle-btn-group .btn-group .btn.btn-outline-lime-toggle.toggle-button.disabled {
+  color: #666B82 !important;
+  opacity: 1;
+}
 :root .form-check-input:not(:checked) {
   border-color: #585D72;
 }
@@ -173,10 +189,17 @@
   --bs-btn-border-color: #FF8A93;
 }
 :root[data-bs-theme=dark] :focus-visible,
-:root[data-bs-theme=dark] .btn-check:focus-visible + .btn {
+:root[data-bs-theme=dark] .btn-check:focus-visible + .btn,
+:root[data-bs-theme=dark] [class*=__control]:has(> [class*=__value-container] > [class*=__input-container] > input:focus-visible) {
   outline-color: #C9B8FF !important;
   box-shadow: 0 0 0 2px #111217 !important;
 }
 :root[data-bs-theme=dark] .form-check-input:not(:checked) {
   border-color: #A4A9BC;
+}
+:root[data-bs-theme=dark] .lime-toggle-btn-group .btn-group .btn.btn-outline-lime-toggle.toggle-button:not(.disabled) {
+  color: #E9EAF0 !important;
+}
+:root[data-bs-theme=dark] .lime-toggle-btn-group .btn-group .btn.btn-outline-lime-toggle.toggle-button.disabled {
+  color: #8F94AA !important;
 }

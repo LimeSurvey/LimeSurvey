@@ -20,6 +20,18 @@
     box-shadow     : 0 0 0 2px $wcag-focus-ring-inner !important;
 }
 
+// Select2 with several values: The keyboard focus is on the small search field after the selected values,
+// so the focus indicator goes around the whole field instead
+.select2-container .select2-selection:has(.select2-search--inline .select2-search__field:focus-visible) {
+    outline        : 2px solid $wcag-focus-color !important;
+    outline-offset : 2px !important;
+    box-shadow     : 0 0 0 2px $wcag-focus-ring-inner !important;
+}
+.select2-container .select2-search--inline .select2-search__field:focus-visible {
+    outline    : none !important;
+    box-shadow : none !important;
+}
+
 // Sea Green removes the outline of the sidebar resize button with an ID selector
 #sidebar .resize-handle button:focus-visible {
     outline : 2px solid $wcag-focus-color !important;

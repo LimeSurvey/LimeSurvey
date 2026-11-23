@@ -11,6 +11,7 @@ $tokens-link-color         : $active-green !default;
 // Themes that need more than the colours (e.g. focus indicators) set this to true
 $tokens-include-rules      : false !default;
 $tokens-focus-color        : $grape !default;
+$tokens-disabled-text      : #666B82 !default; // 4.59:1 on g-200, 5.1:1 on g-100
 
 // Dark mode of the editor (data-bs-theme="dark" on the html element): The editor has its own dark colours
 // (editor/src/themes/dark-mode.scss, the same as Sea_Green/_dark_palette.scss), which win over the colours below.
@@ -21,6 +22,8 @@ $tokens-dark-text-grape       : #B39BFF !default;
 $tokens-dark-text-green       : #4DD08A !default;
 $tokens-dark-text-red         : #FF8A93 !default;
 $tokens-dark-muted-text       : #A4A9BC !default;
+$tokens-dark-disabled-text    : #8F94AA !default; // 4.77:1 on the dark g-200, 5.5:1 on the dark surface background
+$tokens-dark-text             : #E9EAF0 !default; // 11.94:1 on the dark g-200
 
 // Bootstrap button colours as Bootstrap 5.3 CSS variables (the editor uses Bootstrap 5.3)
 @mixin tokens-button($color) {
@@ -119,6 +122,30 @@ $tokens-dark-muted-text       : #A4A9BC !default;
             box-shadow     : 0 0 0 2px $white !important;
         }
 
+        // Dropdowns (react-select): The keyboard focus is on the small text input inside,
+        // so the focus indicator goes around the whole field instead
+        [class*="__control"]:has(> [class*="__value-container"] > [class*="__input-container"] > input:focus-visible) {
+            outline        : 2px solid $tokens-focus-color !important;
+            outline-offset : 2px !important;
+            box-shadow     : 0 0 0 2px $white !important;
+        }
+        [class*="__input-container"] > input:focus-visible {
+            outline    : none !important;
+            box-shadow : none !important;
+        }
+
+        // Toggle buttons (e.g. the survey navigation): The options that can be chosen have the text colour,
+        // so a disabled option can be told apart while it still reaches 4.5:1.
+        // "!important": The survey navigation sets its colours with very specific selectors
+        .lime-toggle-btn-group .btn-group .btn.btn-outline-lime-toggle.toggle-button:not(.disabled) {
+            color : $g-900 !important;
+        }
+        // Disabled options (e.g. "Results" while the survey is not active): Readable (4.5:1), but lighter
+        .lime-toggle-btn-group .btn-group .btn.btn-outline-lime-toggle.toggle-button.disabled {
+            color   : $tokens-disabled-text !important;
+            opacity : 1;
+        }
+
         // Unchecked checkboxes and radio buttons need a visible border (WCAG 1.4.11)
         .form-check-input:not(:checked) {
             border-color : $g-700;
@@ -151,13 +178,21 @@ $tokens-dark-muted-text       : #A4A9BC !default;
 
         // A light outline plus a dark inner ring, so one of both reaches 3:1 on dark and on coloured backgrounds
         :focus-visible,
-        .btn-check:focus-visible + .btn {
+        .btn-check:focus-visible + .btn,
+        [class*="__control"]:has(> [class*="__value-container"] > [class*="__input-container"] > input:focus-visible) {
             outline-color : $tokens-dark-focus-color !important;
             box-shadow    : 0 0 0 2px $tokens-dark-focus-ring-inner !important;
         }
 
         .form-check-input:not(:checked) {
             border-color : $tokens-dark-muted-text;
+        }
+
+        .lime-toggle-btn-group .btn-group .btn.btn-outline-lime-toggle.toggle-button:not(.disabled) {
+            color : $tokens-dark-text !important;
+        }
+        .lime-toggle-btn-group .btn-group .btn.btn-outline-lime-toggle.toggle-button.disabled {
+            color : $tokens-dark-disabled-text !important;
         }
     }
 }
