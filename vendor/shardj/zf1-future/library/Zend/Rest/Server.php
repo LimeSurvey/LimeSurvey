@@ -169,7 +169,7 @@ class Zend_Rest_Server implements Zend_Server_Interface
     /**
      * Implement Zend_Server_Interface::handle()
      *
-     * @param  array $request
+     * @param  array|false $request
      * @throws Zend_Rest_Server_Exception
      * @return string|void
      */
@@ -472,7 +472,7 @@ class Zend_Rest_Server implements Zend_Server_Interface
      *
      * Creates XML error response, returning DOMDocument with response.
      *
-     * @param string|Exception $fault Message
+     * @param string|Exception $exception Message
      * @param int $code Error Code
      * @return DOMDocument
      */

@@ -36,6 +36,7 @@ require_once 'Zend/Xml/Security.php';
  * @subpackage Audioscrobbler
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @deprecated Deprecated since 1.27.1 and will be removed in a future version: the Audioscrobbler 1.0 web services were shut down in favour of the Last.fm API 2.0
  */
 class Zend_Service_Audioscrobbler
 {
@@ -69,6 +70,8 @@ class Zend_Service_Audioscrobbler
      */
     public function __construct()
     {
+        trigger_error(get_class($this) . ' is deprecated and will be removed in a future version', E_USER_DEPRECATED);
+
         $this->set('version', '1.0');
 
         ini_set('output_encoding', 'UTF-8');
@@ -187,9 +190,13 @@ class Zend_Service_Audioscrobbler
         }
 
         set_error_handler([$this, '_errorHandler']);
-
-        if (!$simpleXmlElementResponse = Zend_Xml_Security::scan($responseBody)) {
+        try {
+            $simpleXmlElementResponse = Zend_Xml_Security::scan($responseBody);
+        } finally {
             restore_error_handler();
+        }
+
+        if (!$simpleXmlElementResponse) {
             /**
              * @see Zend_Service_Exception
              */
@@ -199,8 +206,6 @@ class Zend_Service_Audioscrobbler
             $exception->response = $responseBody;
             throw $exception;
         }
-
-        restore_error_handler();
 
         return $simpleXmlElementResponse;
     }

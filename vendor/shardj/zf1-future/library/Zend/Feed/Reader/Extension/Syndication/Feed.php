@@ -57,6 +57,7 @@ class Zend_Feed_Reader_Extension_Syndication_Feed
             case 'yearly':
                 return $period;
             default:
+                require_once 'Zend/Feed/Exception.php';
                 throw new Zend_Feed_Exception("Feed specified invalid update period: '$period'."
                     .  " Must be one of hourly, daily, weekly or yearly"
                 );

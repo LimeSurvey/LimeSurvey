@@ -41,6 +41,7 @@ require_once 'Zend/Version.php';
  * @subpackage Gdata
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @deprecated Deprecated since 1.27.1 and will be removed in a future version: Google shut down the Google Data APIs it implements and the ClientLogin and AuthSub authentication
  */
 class Zend_Gdata_ClientLogin
 {
@@ -76,7 +77,7 @@ class Zend_Gdata_ClientLogin
      * @throws Zend_Gdata_App_AuthException
      * @throws Zend_Gdata_App_HttpException
      * @throws Zend_Gdata_App_CaptchaRequiredException
-     * @return Zend_Gdata_HttpClient
+     * @return Zend_Gdata_HttpClient|null
      */
     public static function getHttpClient($email, $password, $service = 'xapi',
         $client = null,
@@ -176,6 +177,8 @@ class Zend_Gdata_ClientLogin
                     (isset($goog_resp['Error']) ? $goog_resp['Error'] : 'Unspecified.'));
             }
         }
+
+        return null;
     }
 
 }

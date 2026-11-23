@@ -30,6 +30,7 @@ require_once 'Zend/Cache/Backend/ExtendedInterface.php';
  * @see Zend_Cache_Backend
  */
 require_once 'Zend/Cache/Backend.php';
+require_once 'Zend/Cache.php';
 
 
 /**
@@ -254,14 +255,13 @@ class Zend_Cache_Backend_Memcached extends Zend_Cache_Backend implements Zend_Ca
      * @param  string $mode Clean mode
      * @param  array  $tags Array of tags
      * @throws Zend_Cache_Exception
-     * @return boolean True if no problem
+     * @return boolean|null True if no problem
      */
     public function clean($mode = Zend_Cache::CLEANING_MODE_ALL, $tags = [])
     {
         switch ($mode) {
             case Zend_Cache::CLEANING_MODE_ALL:
                 return $this->_memcache->flush();
-                break;
             case Zend_Cache::CLEANING_MODE_OLD:
                 $this->_log("Zend_Cache_Backend_Memcached::clean() : CLEANING_MODE_OLD is unsupported by the Memcached backend");
                 break;
@@ -272,8 +272,9 @@ class Zend_Cache_Backend_Memcached extends Zend_Cache_Backend implements Zend_Ca
                 break;
                default:
                 Zend_Cache::throwException('Invalid mode for clean() method');
-                   break;
         }
+
+        return null;
     }
 
     /**
@@ -420,7 +421,7 @@ class Zend_Cache_Backend_Memcached extends Zend_Cache_Backend implements Zend_Ca
      * - mtime : timestamp of last modification time
      *
      * @param string $id cache id
-     * @return array array of metadatas (false if the cache id is not found)
+     * @return array|false array of metadatas (false if the cache id is not found)
      */
     public function getMetadatas($id)
     {

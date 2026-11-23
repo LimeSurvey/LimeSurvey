@@ -307,7 +307,7 @@ class Zend_Dojo_BuildLayer
      * Add a single build profile option
      *
      * @param  string $key
-     * @param  value $value
+     * @param  mixed $value
      * @return Zend_Dojo_BuildLayer
      */
     public function addProfileOption($key, $value)
@@ -522,7 +522,7 @@ class Zend_Dojo_BuildLayer
     /**
      * Filter a JSON build profile to JavaScript
      *
-     * @param  string $profile
+     * @param  string|array $profile
      * @return string
      */
     protected function _filterJsonProfileToJavascript($profile)
@@ -530,7 +530,7 @@ class Zend_Dojo_BuildLayer
         require_once 'Zend/Json.php';
         $profile = Zend_Json::encode($profile);
         $profile = trim($profile, '"');
-        $profile = preg_replace('/' . preg_quote('\\') . '/', '', $profile);
+        $profile = preg_replace('/' . preg_quote('\\', '/') . '/', '', $profile);
         return $profile;
     }
 }

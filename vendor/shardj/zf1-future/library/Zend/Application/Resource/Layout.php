@@ -63,6 +63,7 @@ class Zend_Application_Resource_Layout
     public function getLayout()
     {
         if (null === $this->_layout) {
+            require_once 'Zend/Layout.php';
             $this->_layout = Zend_Layout::startMvc($this->getOptions());
         }
         return $this->_layout;

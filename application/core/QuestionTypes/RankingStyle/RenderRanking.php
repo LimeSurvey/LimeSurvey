@@ -1,5 +1,7 @@
 <?php
 
+use LimeSurvey\Models\Services\SurveySessionState;
+
 /**
  * RenderClass for Boilerplate Question
  *  * The ia Array contains the following
@@ -53,6 +55,11 @@ class RenderRanking extends QuestionBaseRenderer
         return '/survey/questions/answer/ranking';
     }
 
+    /**
+     * Renders the select boxes of the ranking items.
+     *
+     * @return string
+     */
     public function getRows()
     {
         // Get the max number of line needed
@@ -90,7 +97,7 @@ class RenderRanking extends QuestionBaseRenderer
             $this->sLabeltext = $oSubQuestion->questionl10ns[$this->sLanguage]->question;
             $aItemData = [];
 
-            $mSessionValue = $this->setDefaultIfEmpty($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname], false);
+            $mSessionValue = $this->setDefaultIfEmpty(SurveySessionState::forSurvey((int) Yii::app()->getConfig('surveyID'))->getFieldValue($myfname), false);
 
             if (!$mSessionValue) {
                 $aItemData[] = array(

@@ -32,6 +32,7 @@
  * @subpackage Parse
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @deprecated Deprecated since 1.27.1 and will be removed in a future version: AMF is the data format of Adobe Flash Player, which reached its end of life on 2020-12-31
  */
 abstract class Zend_Amf_Parse_Deserializer
 {
@@ -58,7 +59,7 @@ abstract class Zend_Amf_Parse_Deserializer
      * for deserializing those marker types. Markers are the data type of
      * the following value.
      *
-     * @param  int $typeMarker
+     * @param  int $markerType
      * @return mixed Whatever the data type is of the marker in php
      */
     public abstract function readTypeMarker($markerType = null);

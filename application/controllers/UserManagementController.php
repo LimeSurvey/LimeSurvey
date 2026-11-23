@@ -1463,7 +1463,7 @@ class UserManagementController extends LSBaseController
             throw new CHttpException(404, gT("Group not found"));
         }
         /* check if have permission */
-        if (!Permission::model()->hasGlobalPermission('superadmin', 'read') && $oUserGroup->requestEditGroup($oUserGroup->ugid, App()->getCurrentUserId())) {
+        if (!$oUserGroup->requestEditGroup($oUserGroup->ugid, App()->getCurrentUserId())) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
 

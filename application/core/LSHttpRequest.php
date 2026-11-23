@@ -294,7 +294,7 @@ class LSHttpRequest extends CHttpRequest
      * Returns true if the POST data reached the PHP max_input_vars limit, so PHP may have dropped variables.
      * @return bool
      */
-    protected function isPostDataTruncated()
+    public function isPostDataTruncated()
     {
         $maxInputVars = (int) ini_get('max_input_vars');
         if (!$this->getIsPostRequest() || $maxInputVars <= 0) {

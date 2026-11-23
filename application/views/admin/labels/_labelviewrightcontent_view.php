@@ -73,7 +73,7 @@
                     <div class="row">
                         <!-- Select ZIP file -->
                         <div class="col-8 offset-2 mb-3">
-                            <input id='the_file' name="the_file" class="form-control" type="file"/>
+                            <input id='the_file' name="the_file" class="form-control" type="file" accept=".zip" required/>
                         </div>
                     </div>
                     <div class="row">

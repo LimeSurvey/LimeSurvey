@@ -87,7 +87,7 @@ abstract class Zend_Controller_Action implements Zend_Controller_Action_Interfac
 
     /**
      * View object
-     * @var Zend_View_Interface
+     * @var Zend_View_Interface|null
      */
     public $view;
 

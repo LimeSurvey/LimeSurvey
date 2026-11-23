@@ -156,6 +156,7 @@ class Zend_Barcode_Renderer_Image extends Zend_Barcode_Renderer_RendererAbstract
      */
     public function setResource($image)
     {
+        // @phpstan-ignore identical.alwaysFalse (a GD image is a GdImage object since PHP 8.0)
         if ((gettype($image) === 'resource' && get_resource_type($image) === 'gd') || get_class($image) === 'GdImage') {
             $this->_resource = $image;
             return $this;

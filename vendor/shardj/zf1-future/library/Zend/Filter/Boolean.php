@@ -215,7 +215,7 @@ class Zend_Filter_Boolean implements Zend_Filter_Interface
     /**
      * Set the working mode
      *
-     * @param  boolean $locale When true this filter works like cast
+     * @param  boolean $casting When true this filter works like cast
      *                         When false it recognises only true and false
      *                         and all other values are returned as is
      * @throws Zend_Filter_Exception
@@ -232,8 +232,8 @@ class Zend_Filter_Boolean implements Zend_Filter_Interface
      *
      * Returns a boolean representation of $value
      *
-     * @param  string $value
-     * @return string
+     * @param  mixed $value
+     * @return string|bool
      */
     public function filter($value)
     {
@@ -351,7 +351,7 @@ class Zend_Filter_Boolean implements Zend_Filter_Interface
      * @param  string $value
      * @param  boolean $yes
      * @param  array $locale
-     * @return boolean
+     * @return boolean|null
      */
     protected function _getLocalizedQuestion($value, $yes, $locale)
     {
@@ -371,5 +371,7 @@ class Zend_Filter_Boolean implements Zend_Filter_Interface
                 }
             }
         }
+
+        return null;
     }
 }

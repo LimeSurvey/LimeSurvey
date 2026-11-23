@@ -24,6 +24,8 @@ if (!defined('K_PATH_CACHE')) {
 # include TCPDF
 require(APPPATH . 'config/tcpdf' . EXT);
 
+Yii::import('application.helpers.pdfHelper');
+
 /**
 * page format
 */
@@ -506,6 +508,41 @@ class pdf extends TCPDF
 
         # image settings
         $this->setImageScale($this->_config['image_scale']);
+    }
+
+    /**
+     * Loads a font, without the bold and italic styles the font can not print in the language of the PDF.
+     *
+     * Every font selection of TCPDF goes through this method, including the fonts of HTML content.
+     *
+     * @see TCPDF::AddFont()
+     * @see pdfHelper::removeUnsupportedFontStyles()
+     * @param string $family Font family, an empty string keeps the current family
+     * @param string $style Font style: Empty for regular, or any combination of B, I, U, D and O
+     * @param string $fontfile The font definition file, by default built from the family and style
+     * @param mixed $subset Whether to embed only a subset of the font
+     * @return array|false The font data, or false in case of error
+     */
+    public function AddFont($family, $style = '', $fontfile = '', $subset = 'default')
+    {
+        if (empty($fontfile)) {
+            $style = pdfHelper::removeUnsupportedFontStyles(
+                $this->getDocumentLanguage(),
+                empty($family) ? $this->FontFamily : $family,
+                $style
+            );
+        }
+        return parent::AddFont($family, $style, $fontfile, $subset);
+    }
+
+    /**
+     * Returns the language code of the PDF, as set with setLanguageArray().
+     *
+     * @return string|null The language code, null if no language was set
+     */
+    protected function getDocumentLanguage()
+    {
+        return $this->l['a_meta_language'] ?? null;
     }
 
     /**

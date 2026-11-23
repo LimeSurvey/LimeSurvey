@@ -74,8 +74,9 @@ abstract class Zend_Feed_Reader_Extension_FeedAbstract
     /**
      * Constructor
      *
-     * @param  Zend_Feed_Abstract $feed The source Zend_Feed object
+     * @param  DOMDocument $dom The source feed document
      * @param  string $type Feed type
+     * @param  DOMXPath|null $xpath
      * @return void
      */
     public function __construct(DOMDocument $dom, $type = null, ?DOMXPath $xpath = null)

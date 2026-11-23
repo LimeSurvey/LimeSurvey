@@ -328,10 +328,11 @@ class RenderArrayMultiFlexNumbers extends QuestionBaseRenderer
      */
     private function renderRows(array $aSubquestions, array $labelans, array $labelcode, array $labeltitle): string
     {
+        $aSubquestions = $this->withoutStaticallyHiddenRows($aSubquestions);
         $anscount = count($aSubquestions);
         $fn = 1;
         $sAnswerRows = '';
-        foreach ($aSubquestions as $j => $aSubquestion) {
+        foreach ($aSubquestions as $aSubquestion) {
             if (isset($this->repeatheadings) && $this->repeatheadings > 0 && ($fn - 1) > 0 && ($fn - 1) % $this->repeatheadings == 0) {
                 if (($anscount - $fn + 1) >= $this->minrepeatheadings) {
                     $sAnswerRows .= Yii::app()->twigRenderer->renderQuestion('/survey/questions/answer/arrays/multiflexi/rows/repeat_header', array(
@@ -345,7 +346,7 @@ class RenderArrayMultiFlexNumbers extends QuestionBaseRenderer
                     ));
                 }
             }
-            $sAnswerRows .= $this->renderRow($aSubquestion, $j, $labelans, $labelcode, $labeltitle);
+            $sAnswerRows .= $this->renderRow($aSubquestion, $fn - 1, $labelans, $labelcode, $labeltitle);
             $fn++;
         }
         return $sAnswerRows;

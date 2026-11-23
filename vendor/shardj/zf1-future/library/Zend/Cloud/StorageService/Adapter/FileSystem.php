@@ -28,6 +28,7 @@ require_once 'Zend/Cloud/StorageService/Exception.php';
  * @subpackage StorageService
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @deprecated Deprecated since 1.27.1 and will be removed in a future version: the Simple Cloud API is not developed any further; use the SDK of the cloud provider
  */
 class Zend_Cloud_StorageService_Adapter_FileSystem implements Zend_Cloud_StorageService_Adapter
 {
@@ -51,6 +52,8 @@ class Zend_Cloud_StorageService_Adapter_FileSystem implements Zend_Cloud_Storage
      */
     public function __construct($options = [])
     {
+        trigger_error(get_class($this) . ' is deprecated and will be removed in a future version', E_USER_DEPRECATED);
+
         if ($options instanceof Zend_Config) {
             $options = $options->toArray();
         }
@@ -135,7 +138,7 @@ class Zend_Cloud_StorageService_Adapter_FileSystem implements Zend_Cloud_Storage
      * @TODO Support streams for those services that don't support natively
      *
      * @param  string $sourcePath
-     * @param  string $destination path
+     * @param  string $destinationPath path
      * @param  array $options
      * @return void
      */
@@ -153,7 +156,7 @@ class Zend_Cloud_StorageService_Adapter_FileSystem implements Zend_Cloud_Storage
      * @TODO Support streams for those services that don't support natively
      *
      * @param  string $sourcePath
-     * @param  string $destination path
+     * @param  string $destinationPath path
      * @param  array $options
      * @return void
      */
@@ -236,7 +239,6 @@ class Zend_Cloud_StorageService_Adapter_FileSystem implements Zend_Cloud_Storage
      * Delete a key/value array of metadata at the given path.
      *
      * @param  string $path
-     * @param  array $options
      * @return void
      */
     public function deleteMetadata($path)
@@ -258,7 +260,7 @@ class Zend_Cloud_StorageService_Adapter_FileSystem implements Zend_Cloud_Storage
 
     /**
      * Get the concrete client.
-     * @return strings
+     * @return string
      */
     public function getClient()
     {

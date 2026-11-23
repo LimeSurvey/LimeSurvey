@@ -56,7 +56,7 @@ class Zend_Mail_Storage_Writable_Maildir extends    Zend_Mail_Storage_Folder_Mai
      * If the given dir is already a valid maildir this will not fail.
      *
      * @param string $dir directory for the new maildir (may already exist)
-     * @return null
+     * @return void
      * @throws Zend_Mail_Storage_Exception
      */
     public static function initMaildir($dir)
@@ -218,7 +218,7 @@ class Zend_Mail_Storage_Writable_Maildir extends    Zend_Mail_Storage_Folder_Mai
      * remove a folder
      *
      * @param   string|Zend_Mail_Storage_Folder $name      name or instance of folder
-     * @return  null
+     * @return void
      * @throws  Zend_Mail_Storage_Exception
      */
     public function removeFolder($name)
@@ -322,7 +322,7 @@ class Zend_Mail_Storage_Writable_Maildir extends    Zend_Mail_Storage_Folder_Mai
      *
      * @param   string|Zend_Mail_Storage_Folder $oldName name or instance of folder
      * @param   string                          $newName new global name of folder
-     * @return  null
+     * @return void
      * @throws  Zend_Mail_Storage_Exception
      */
     public function renameFolder($oldName, $newName)
@@ -455,6 +455,7 @@ class Zend_Mail_Storage_Writable_Maildir extends    Zend_Mail_Storage_Folder_Mai
         // if you change this variable take into account that it can take up to $max_tries seconds
         // normally we should have a valid unique name after the first try, we're just following the "standard" here
         $max_tries = 5;
+        $fh = false;
         for ($i = 0; $i < $max_tries; ++$i) {
             $uniq = $this->_createUniqueId();
             if (!file_exists($tmpdir . $uniq)) {
@@ -532,7 +533,7 @@ class Zend_Mail_Storage_Writable_Maildir extends    Zend_Mail_Storage_Folder_Mai
     /**
      * append a new message to mail storage
      *
-     * @param   string|stream                              $message message as string or stream resource
+     * @param   string|resource                            $message message as string or stream resource
      * @param   null|string|Zend_Mail_Storage_Folder       $folder  folder for new message, else current folder is taken
      * @param   null|array                                 $flags   set flags for new message, else a default set is used
      * @param   bool                                       $recent  handle this mail as if recent flag has been set,
@@ -611,7 +612,7 @@ class Zend_Mail_Storage_Writable_Maildir extends    Zend_Mail_Storage_Folder_Mai
      *
      * @param   int                             $id     number of message
      * @param   string|Zend_Mail_Storage_Folder $folder name or instance of targer folder
-     * @return  null
+     * @return void
      * @throws  Zend_Mail_Storage_Exception
      */
     public function copyMessage($id, $folder)
@@ -690,7 +691,7 @@ class Zend_Mail_Storage_Writable_Maildir extends    Zend_Mail_Storage_Folder_Mai
      *
      * @param  int                             $id     number of message
      * @param  string|Zend_Mail_Storage_Folder $folder name or instance of targer folder
-     * @return null
+     * @return void
      * @throws Zend_Mail_Storage_Exception
      */
     public function moveMessage($id, $folder) {
@@ -786,7 +787,7 @@ class Zend_Mail_Storage_Writable_Maildir extends    Zend_Mail_Storage_Folder_Mai
     /**
      * stub for not supported message deletion
      *
-     * @return  null
+     * @return void
      * @throws  Zend_Mail_Storage_Exception
      */
     public function removeMessage($id)
@@ -821,7 +822,7 @@ class Zend_Mail_Storage_Writable_Maildir extends    Zend_Mail_Storage_Folder_Mai
      * define your quota. Order of these fields does matter!
      *
      * @param bool|array $value new quota value
-     * @return null
+     * @return void
      */
     public function setQuota($value) {
         $this->_quota = $value;

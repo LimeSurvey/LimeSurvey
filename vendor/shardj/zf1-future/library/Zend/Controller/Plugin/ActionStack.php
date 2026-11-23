@@ -261,7 +261,7 @@ class Zend_Controller_Plugin_ActionStack extends Zend_Controller_Plugin_Abstract
     /**
      * Forward request with next action
      *
-     * @param  array $next
+     * @param  Zend_Controller_Request_Abstract $next
      * @return void
      */
     public function forward(Zend_Controller_Request_Abstract $next)

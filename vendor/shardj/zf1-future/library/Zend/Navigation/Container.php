@@ -434,7 +434,7 @@ abstract class Zend_Navigation_Container implements RecursiveIterator, Countable
      *                           Default is false.
      * @param  bool   $useRegex  [optional] if true PHP's preg_match is used.
      *                           Default is false.
-     * @return Zend_Navigation_Page|null  matching page or null
+     * @return Zend_Navigation_Page|array|null  matching page or null
      */
     public function findBy($property, $value, $all = false, $useRegex = false)
     {
@@ -482,7 +482,7 @@ abstract class Zend_Navigation_Container implements RecursiveIterator, Countable
     /**
      * Returns an array representation of all pages in container
      *
-     * @return Zend_Navigation_Page[]
+     * @return array
      */
     public function toArray()
     {
@@ -511,7 +511,6 @@ abstract class Zend_Navigation_Container implements RecursiveIterator, Countable
     public function current()
     {
         $this->_sort();
-        current($this->_index);
         $hash = key($this->_index) ?? '';
 
         if (isset($this->_pages[$hash])) {

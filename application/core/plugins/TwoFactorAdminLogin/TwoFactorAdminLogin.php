@@ -159,9 +159,9 @@ class TwoFactorAdminLogin extends AuthPluginBase
         $this->subscribe('afterSuccessfulLogin');
 
         //Login events
-        $this->subscribe('newLoginForm');
-        $this->subscribe('afterLoginFormSubmit');
-        $this->subscribe('newUserSession');
+        $this->subscribe('beforeSuccessfulLogin');
+        $this->subscribe('newSecondFactorForm');
+        $this->subscribe('verifySecondFactor');
     }
 
     //##############  Plugin event handlers ##############//
@@ -229,52 +229,73 @@ class TwoFactorAdminLogin extends AuthPluginBase
 
 
     /**
-     * Add Two-Factor field to login page.
+     * Require the 2FA key as second login step if the user has a 2FA key
+     * Runs after the auth plugin (Authdb, AuthLDAP, ...) accepted the credentials.
      *
      * @return void
      */
-    public function newLoginForm()
+    public function beforeSuccessfulLogin()
     {
         $oEvent = $this->getEvent();
-        $extraLine = ""
-            . "<span>"
-            . "<label for='twofactor'>"  . gT("2FA key (optional)") . "</label>
-            <input class='form-control' name='twofactor' id='twofactor' type='text' value='' />"
-            . "</span>";
-
-        $oEvent->getContent('Authdb')->addContent($extraLine, 'append');
+        // Skip 2FA when a verified one-time password was used
+        if ($oEvent->get('identity')->usedOneTimePassword) {
+            return;
+        }
+        $oUser = $oEvent->get('user');
+        if (TFAUserKey::model()->findByPk($oUser->uid) !== null) {
+            $oEvent->set('secondFactorPlugin', get_class($this));
+        }
     }
 
     /**
-     * Control if login is successful by checking the transmitted 2FA-token value
+     * Add the 2FA key field to the second login step page
      *
      * @return void
      */
-    public function newUserSession()
+    public function newSecondFactorForm()
     {
         $oEvent = $this->getEvent();
-        $onepass = App()->request->getParam('onepass');
+        $oTFAModel = TFAUserKey::model()->findByPk($oEvent->get('user')->uid);
+        $help = ($oTFAModel !== null && $oTFAModel->authType == 'yubi')
+            ? gT('Insert your YubiKey and touch it.')
+            : gT('Enter the code shown in your authenticator app.');
+        $field = "<label for='twofactor'>" . gT("2FA key") . "</label>"
+            . CHtml::textField('twofactor', '', [
+                'class' => 'form-control',
+                'autocomplete' => 'one-time-code',
+                'autofocus' => 'autofocus',
+                'required' => 'required',
+                'aria-describedby' => 'twofactor-help',
+            ])
+            . CHtml::tag('div', ['id' => 'twofactor-help', 'class' => 'form-text'], CHtml::encode($help));
+        $oEvent->getContent($this)->addContent(CHtml::tag('span', [], $field));
+    }
 
-        // skip 2fa when there's an active and verified one-time password used (verification is already done before getting here)
-        if (App()->getConfig('use_one_time_passwords') && isset($onepass)) {
+    /**
+     * Check the 2FA key submitted on the second login step page
+     *
+     * @return void
+     */
+    public function verifySecondFactor()
+    {
+        $oEvent = $this->getEvent();
+        $oTFAModel = TFAUserKey::model()->findByPk($oEvent->get('user')->uid);
+        if ($oTFAModel === null) {
+            // Key was deleted meanwhile: nothing left to check
+            $oEvent->set('result', new LSAuthResult(self::ERROR_NONE));
             return;
         }
-
-        $oIdentity = $oEvent->get('identity');
-        $oTFAModel =  TFAUserKey::model()->findByPk($oIdentity->id);
-
-        if ($oTFAModel != null) {
-            if (!in_array($oTFAModel->authType, ['totp', 'yubi'])) {
-                $this->setAuthFailure(null, gT('Authentication method not supported'));
-                return;
-            }
-            $oTFAModel->decrypt();
-            $authenticationKey = Yii::app()->getRequest()->getPost('twofactor', false);
-            if (!$authenticationKey || !$this->confirmKey($oTFAModel, $authenticationKey)) {
-                $this->setAuthFailure(null, gT('Incorrect 2FA key'));
-            }
+        if (!in_array($oTFAModel->authType, ['totp', 'yubi'])) {
+            $oEvent->set('result', new LSAuthResult(self::ERROR_AUTH_METHOD_INVALID, gT('Authentication method not supported')));
+            return;
         }
-        return;
+        $oTFAModel->decrypt();
+        $authenticationKey = trim((string) App()->getRequest()->getPost('twofactor', ''));
+        if ($authenticationKey === '' || !$this->confirmKey($oTFAModel, $authenticationKey)) {
+            $oEvent->set('result', new LSAuthResult(self::ERROR_PASSWORD_INVALID, gT('Incorrect 2FA key')));
+            return;
+        }
+        $oEvent->set('result', new LSAuthResult(self::ERROR_NONE));
     }
 
     /**

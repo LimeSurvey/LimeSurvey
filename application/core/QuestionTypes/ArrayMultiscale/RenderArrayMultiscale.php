@@ -160,12 +160,21 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
         $aData['rightclass'] = ($rightexists) ? " header_answer_text_right" : "";
     }
 
+    /**
+     * Add the rows of the dropdown layout to the view data, without the rows left out by their relevance
+     * @param array $aData the view data, by reference
+     * @return void
+     */
     public function parseSubquestionsDropdown(&$aData)
     {
         $anscount = count($this->aSubQuestions[0]);
 
+        $rowIndex = 0;
         foreach ($this->aSubQuestions[0] as $i => $oQuestionRow) {
             $myfname = $this->sSGQA . '_S' . $oQuestionRow->qid;
+            if ($this->isRowStaticallyHidden($myfname)) {
+                continue;
+            }
             $myfname0 = $this->sSGQA . '_S' . $oQuestionRow->qid . "#0";
             $myfid0 = $this->sSGQA . '_S' . $oQuestionRow->qid . "_0";
             $myfname1 = $this->sSGQA . '_S' . $oQuestionRow->qid . "#1";
@@ -184,7 +193,8 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
             $aData['aSubQuestions'][$i]['myfid1'] = $myfid1;
             $aData['aSubQuestions'][$i]['sActualAnswer0'] = $sActualAnswer0;
             $aData['aSubQuestions'][$i]['sActualAnswer1'] = $sActualAnswer1;
-            $aData['aSubQuestions'][$i]['odd'] = ($i % 2);
+            $aData['aSubQuestions'][$i]['odd'] = ($rowIndex % 2);
+            $rowIndex++;
             $aData['aSubQuestions'][$i]['relevanceClass'] = $this->getCurrentRelevecanceClass($myfname);
             // Set mandatory alert
             $aData['aSubQuestions'][$i]['alert'] = (($this->oQuestion->mandatory == 'Y' || $this->oQuestion->mandatory == 'S') && (in_array($myfname0, $this->aMandatoryViolationSubQ) || in_array($myfname1, $this->aMandatoryViolationSubQ)));
@@ -209,16 +219,24 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
         }
     }
 
+    /**
+     * Add the rows of the radio layout to the view data, without the rows left out by their relevance
+     * @param array $aData the view data, by reference
+     * @return void
+     */
     public function parseSubquestionsNoDropdown(&$aData)
     {
         $repeatheadings     = Yii::app()->getConfig("repeatheadings");
         $minrepeatheadings  = Yii::app()->getConfig("minrepeatheadings");
         $repeatheadings     = $this->setDefaultIfEmpty($this->getQuestionAttribute('repeat_headings'), $repeatheadings);
-        $anscount = count($this->aSubQuestions[0]);
+        $subQuestions = $this->withoutStaticallyHiddenRows($this->aSubQuestions[0]);
+        $anscount = count($subQuestions);
 
         //Only use the 0 scale
         $fn = 0;
-        foreach ($this->aSubQuestions[0] as $i => $oQuestionRow) {
+        $rowIndex = 0;
+        foreach ($subQuestions as $i => $oQuestionRow) {
+            $myfname = $this->sSGQA . '_S' . $oQuestionRow->qid;
             // Build repeat headings if needed
 
             if (isset($repeatheadings) && $repeatheadings > 0 && ($fn - 1) > 0 && ($fn - 1) % $repeatheadings == 0) {
@@ -244,7 +262,6 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
                 $answertextcenter = "";
             }
 
-            $myfname = $this->sSGQA . '_S' . $oQuestionRow->qid;
             $myfname0 = $this->sSGQA . '_S' . $oQuestionRow->qid . '#0';
             $myfid0 = $this->sSGQA . '_S' . $oQuestionRow->qid . '_0';
             $myfname1 = $this->sSGQA . '_S' . $oQuestionRow->qid . '#1'; // new multi-scale-answer
@@ -261,7 +278,8 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
             $aData['aSubQuestions'][$i]['answertextcenter'] = $answertextcenter;
             $aData['aSubQuestions'][$i]['answertextright'] = $answertextright;
 
-            $aData['aSubQuestions'][$i]['odd'] = ($i % 2);
+            $aData['aSubQuestions'][$i]['odd'] = ($rowIndex % 2);
+            $rowIndex++;
             $aData['aSubQuestions'][$i]['relevanceClass'] = $this->getCurrentRelevecanceClass($myfname);
 
             // Check the Sub Q mandatory violation

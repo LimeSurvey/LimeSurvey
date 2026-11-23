@@ -57,7 +57,7 @@ class Zend_Search_Lucene_Analysis_TokenFilter_StopWords extends Zend_Search_Luce
      * Normalize Token or remove it (if null is returned)
      *
      * @param Zend_Search_Lucene_Analysis_Token $srcToken
-     * @return Zend_Search_Lucene_Analysis_Token
+     * @return Zend_Search_Lucene_Analysis_Token|null
      */
     public function normalize(Zend_Search_Lucene_Analysis_Token $srcToken) {
         if (array_key_exists($srcToken->getTermText(), $this->_stopSet)) {

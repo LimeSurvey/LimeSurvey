@@ -31,6 +31,7 @@ require_once 'Zend/Service/Exception.php';
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
+ * @deprecated Deprecated since 1.27.1 and will be removed in a future version: reCAPTCHA v1 was shut down on 2018-03-31; use Zend_Captcha_SiteVerify / Zend_Service_SiteVerify
  */
 class Zend_Service_ReCaptcha_Exception extends Zend_Service_Exception
 {}

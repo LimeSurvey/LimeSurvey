@@ -235,6 +235,7 @@ class Zend_Controller_Plugin_Broker extends Zend_Controller_Plugin_Abstract
             try {
                 $plugin->routeStartup($request);
             } catch (\Throwable $e) {
+                require_once 'Zend/Controller/Front.php';
                 if (Zend_Controller_Front::getInstance()->throwExceptions()) {
                     throw new Zend_Controller_Exception($e->getMessage() . $e->getTraceAsString(), $e->getCode(), $e);
                 }
@@ -258,6 +259,7 @@ class Zend_Controller_Plugin_Broker extends Zend_Controller_Plugin_Abstract
             try {
                 $plugin->routeShutdown($request);
             } catch (\Throwable $e) {
+                require_once 'Zend/Controller/Front.php';
                 if (Zend_Controller_Front::getInstance()->throwExceptions()) {
                     throw new Zend_Controller_Exception($e->getMessage() . $e->getTraceAsString(), $e->getCode(), $e);
                 }
@@ -285,6 +287,7 @@ class Zend_Controller_Plugin_Broker extends Zend_Controller_Plugin_Abstract
             try {
                 $plugin->dispatchLoopStartup($request);
             } catch (\Throwable $e) {
+                require_once 'Zend/Controller/Front.php';
                 if (Zend_Controller_Front::getInstance()->throwExceptions()) {
                     throw new Zend_Controller_Exception($e->getMessage() . $e->getTraceAsString(), $e->getCode(), $e);
                 }
@@ -307,6 +310,7 @@ class Zend_Controller_Plugin_Broker extends Zend_Controller_Plugin_Abstract
             try {
                 $plugin->preDispatch($request);
             } catch (\Throwable $e) {
+                require_once 'Zend/Controller/Front.php';
                 if (Zend_Controller_Front::getInstance()->throwExceptions()) {
                     throw new Zend_Controller_Exception($e->getMessage() . $e->getTraceAsString(), $e->getCode(), $e);
                 }
@@ -331,6 +335,7 @@ class Zend_Controller_Plugin_Broker extends Zend_Controller_Plugin_Abstract
             try {
                 $plugin->postDispatch($request);
             } catch (\Throwable $e) {
+                require_once 'Zend/Controller/Front.php';
                 if (Zend_Controller_Front::getInstance()->throwExceptions()) {
                     throw new Zend_Controller_Exception($e->getMessage() . $e->getTraceAsString(), $e->getCode(), $e);
                 }
@@ -343,7 +348,6 @@ class Zend_Controller_Plugin_Broker extends Zend_Controller_Plugin_Abstract
     /**
      * Called before Zend_Controller_Front exits its dispatch loop.
      *
-     * @param Zend_Controller_Request_Abstract $request
      * @return void
      * @throws Zend_Controller_Exception
      */
@@ -353,6 +357,7 @@ class Zend_Controller_Plugin_Broker extends Zend_Controller_Plugin_Abstract
            try {
                 $plugin->dispatchLoopShutdown();
             } catch (\Throwable $e) {
+                require_once 'Zend/Controller/Front.php';
                 if (Zend_Controller_Front::getInstance()->throwExceptions()) {
                     throw new Zend_Controller_Exception($e->getMessage() . $e->getTraceAsString(), $e->getCode(), $e);
                 }

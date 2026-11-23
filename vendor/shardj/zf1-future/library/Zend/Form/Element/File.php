@@ -416,7 +416,7 @@ class Zend_Form_Element_File extends Zend_Form_Element_Xhtml
     /**
      * Validate upload
      *
-     * @param  string $value   File, can be optional, give null to validate all files
+     * @param  string|null $value   File, can be optional, give null to validate all files
      * @param  mixed  $context
      * @return bool
      */
@@ -528,7 +528,7 @@ class Zend_Form_Element_File extends Zend_Form_Element_Xhtml
      *
      * @param  string  $value (Optional) Element or file to return
      * @param  boolean $path  (Optional) Return also the path, defaults to true
-     * @return string
+     * @return string|array|null
      */
     public function getFileName($value = null, $path = true)
     {

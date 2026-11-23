@@ -75,6 +75,7 @@ class Zend_Application_Resource_Log
     {
         if (null === $this->_log) {
             $options = $this->getOptions();
+            require_once 'Zend/Log.php';
             $log = Zend_Log::factory($options);
             $this->setLog($log);
         }

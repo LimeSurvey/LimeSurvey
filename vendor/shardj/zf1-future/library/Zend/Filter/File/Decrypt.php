@@ -37,7 +37,7 @@ class Zend_Filter_File_Decrypt extends Zend_Filter_Decrypt
     /**
      * New filename to set
      *
-     * @var string
+     * @var string|null
      */
     protected $_filename;
 

@@ -35,6 +35,7 @@ require_once 'Zend/Xml/Security.php';
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @uses       Zend_Service_Ebay_Abstract
+ * @deprecated Deprecated since 1.27.0 and will be removed in a future version: the eBay Finding API was decommissioned on 2025-02-05
  */
 class Zend_Service_Ebay_Finding extends Zend_Service_Ebay_Abstract
 {
@@ -79,6 +80,8 @@ class Zend_Service_Ebay_Finding extends Zend_Service_Ebay_Abstract
      */
     public function __construct($options)
     {
+        trigger_error(get_class($this) . ' is deprecated and will be removed in a future version', E_USER_DEPRECATED);
+
         // prepare options
         if (is_string($options)) {
             // application id was given
@@ -162,7 +165,7 @@ class Zend_Service_Ebay_Finding extends Zend_Service_Ebay_Abstract
     /**
      * Finds items in a specific category. Results can be filtered and sorted.
      *
-     * @param  integer           $categoryId
+     * @param  integer|string           $categoryId
      * @param  Zend_Config|array $options
      * @link   http://developer.ebay.com/DevZone/finding/CallRef/findItemsByCategory.html
      * @return Zend_Service_Ebay_Finding_Response_Items
@@ -199,7 +202,7 @@ class Zend_Service_Ebay_Finding extends Zend_Service_Ebay_Abstract
     /**
      * Finds items based upon a product ID, such as an ISBN, UPC, EAN, or ePID.
      *
-     * @param  integer           $productId
+     * @param  integer|string           $productId
      * @param  string            $productIdType Default value is ReferenceID
      * @param  Zend_Config|array $options
      * @link   http://developer.ebay.com/DevZone/finding/CallRef/findItemsByProduct.html

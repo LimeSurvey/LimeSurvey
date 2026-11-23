@@ -88,7 +88,7 @@ class Zend_Feed_Reader_Extension_Slash_Entry
     /**
      * Get the entry comments
      *
-     * @return int
+     * @return int|null
      */
     public function getCommentCount()
     {
