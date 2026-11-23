@@ -43,17 +43,6 @@ jest.mock('hooks/useFocused', () => ({
     unFocus: jest.fn(),
     setFocused: jest.fn(),
   }),
-  useExpressionScriptValidation: () => jest.fn(),
-  // The real hook fetches the question theme attributes through useAuth,
-  // which imports from the hooks index that this mock replaces
-  useQuestionAttributes: () => ({ attributes: {}, isFetching: false }),
-  // Records the arguments, and closes the popups for real
-  useCloseConditionPopups: (...args) => {
-    mockUseCloseConditionPopups(...args)
-    return jest
-      .requireActual('hooks/useCloseConditionPopups')
-      .useCloseConditionPopups(...args)
-  },
 }))
 jest.mock('hooks/useExpressionScriptValidation', () => ({
   useExpressionScriptValidation: () => jest.fn(),
