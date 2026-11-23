@@ -145,7 +145,9 @@ class CLSGridView extends TbGridView
 
     /**
      * Renders the pager.
-     * Overrides parent to render it as a navigation landmark ("Pagination") instead of a plain div.
+     * Overrides parent to render it as a navigation landmark instead of a plain div.
+     * The landmark is named after the table caption, so pages with several grids
+     * get distinguishable landmarks.
      *
      * @return void
      */
@@ -156,7 +158,8 @@ class CLSGridView extends TbGridView
         $pager = ob_get_clean();
         $prefix = '<div class="' . $this->pagerCssClass . '">';
         if (strpos($pager, $prefix) === 0) {
-            $pager = '<nav class="' . $this->pagerCssClass . '" aria-label="' . CHtml::encode(gT('Pagination')) . '">'
+            $label = empty($this->lsCaption) ? gT('Pagination') : sprintf(gT('Pagination: %s'), $this->lsCaption);
+            $pager = '<nav class="' . $this->pagerCssClass . '" aria-label="' . CHtml::encode($label) . '">'
                 . substr($pager, strlen($prefix), -strlen('</div>')) . '</nav>';
         }
         echo $pager;
