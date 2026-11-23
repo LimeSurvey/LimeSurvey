@@ -74,10 +74,7 @@ gT('Themes');
                             <p><?php eT("Some piece-of-cake steps to create your very own first survey:"); ?></p>
                             <div>
                                 <ol>
-                                    <li><?php echo sprintf(
-                                        gT('Create a new survey by clicking on the %s icon.'),
-                                        "<i class='ri-add-circle-fill text-success'></i>"
-                                        ); ?></li>
+                                    <li><?php echo sprintf(gT('Create a new survey by clicking on the %s icon.'), "<i class='ri-add-circle-fill text-success'></i>"); ?></li>
                                     <li><?php eT('Create a new question group inside your survey.'); ?></li>
                                     <li><?php eT('Create one or more questions inside the new question group.'); ?></li>
                                     <li><?php
@@ -145,6 +142,11 @@ gT('Themes');
     <?php endif; ?>
 
     <div class="survey-dashboard">
+        <?php
+        $viewType = App()->request->getQuery('viewtype');
+        $showListWidget = (!empty($viewType) && $viewType === 'list-widget')
+            || (empty($viewType) && SettingsUser::getUserSettingValue('welcome_page_widget') === 'list-widget');
+        ?>
         <?php if (empty(App()->request->getQuery('viewtype')) && empty(SettingsUser::getUserSettingValue('welcome_page_widget'))) : ?>
             <div class="col-12">
                 <?php $this->widget('ext.admin.BoxesWidget.BoxesWidget', [
@@ -159,14 +161,7 @@ gT('Themes');
                 ]);
                 ?>
             </div>
-        <?php elseif (
-            (!empty(App()->request->getQuery('viewtype'))
-                && App()->request->getQuery('viewtype') === 'list-widget'
-            )
-                    || (empty(App()->request->getQuery('viewtype'))
-                    && (SettingsUser::getUserSettingValue('welcome_page_widget') === 'list-widget')
-            )
-        ) : ?>
+        <?php elseif ($showListWidget) : ?>
                 <div class="col-12">
                     <?php $this->widget('ext.admin.survey.ListSurveysWidget.ListSurveysWidget', [
                         'model' => $oSurveySearch,

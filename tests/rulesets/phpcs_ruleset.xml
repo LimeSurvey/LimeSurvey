@@ -2,18 +2,27 @@
 <ruleset name="LimeSurveyTestsPSR12">
     <rule ref="PSR12">
         <exclude name="PSR1.Classes.ClassDeclaration.MissingNamespace" />
-        <!-- TODO: This rule should be disabled when support for PHP 7.0 is dropped -->
-        <exclude name="PSR12.Properties.ConstantVisibility.NotFound" />
         <exclude name="Generic.Files.LineLength"/>
         <exclude name="Squiz.WhiteSpace.SuperfluousWhitespace"/>
+        <!-- Renaming classes, methods, properties and constants would break the plugin and theme API -->
+        <exclude name="PSR1.Methods.CamelCapsMethodName"/>
+        <exclude name="Squiz.Classes.ValidClassName"/>
+        <exclude name="PSR2.Classes.PropertyDeclaration.Underscore"/>
+        <exclude name="PSR2.Methods.MethodDeclaration.Underscore"/>
+        <exclude name="Generic.NamingConventions.UpperCaseConstantName"/>
+        <!-- Legacy files mix declarations with side effects or contain several classes -->
+        <exclude name="PSR1.Files.SideEffects"/>
+        <exclude name="PSR1.Classes.ClassDeclaration.MultipleClasses"/>
     </rule>
 
-    <rule ref="Squiz.Classes.ValidClassName.NotCamelCaps">
-        <!-- Ignore funny class names for updates, like Update_123 -->
-        <exclude-pattern>application/helpers/update/updates/*</exclude-pattern>
+    <!-- Views that only contain HTML -->
+    <rule ref="Internal.NoCodeFound">
+        <severity>0</severity>
     </rule>
 
     <!-- Ignore third-party libs -->
     <exclude-pattern>application/helpers/Zend/*</exclude-pattern>
     <exclude-pattern>application/helpers/adodb/*</exclude-pattern>
+    <exclude-pattern>application/extensions/yiiwheels/*</exclude-pattern>
+    <exclude-pattern>application/extensions/bootstrap5/*</exclude-pattern>
 </ruleset>

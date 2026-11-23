@@ -11,7 +11,7 @@ class ConfigMergeHelper
      * Params holding integer-keyed option lists that must be replaced as a whole by the user configuration.
      * @var string[]
      */
-    const REPLACED_PARAMS = ['pageSizeOptions', 'pageSizeOptionsTokens'];
+    public const REPLACED_PARAMS = ['pageSizeOptions', 'pageSizeOptionsTokens'];
 
     /**
      * Merges the user configuration into the internal configuration.

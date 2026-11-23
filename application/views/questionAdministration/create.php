@@ -58,11 +58,7 @@ $questionTheme = !empty($oQuestion->questionTheme) ? $oQuestion->questionTheme :
     <input type="hidden" name="sid" value="<?= $oSurvey->sid; ?>"/>
     <input type="hidden" name="question[qid]" value="<?= $oQuestion->qid; ?>"/>
     <input type="hidden" name="tabOverviewEditor" id='tab-overview-editor-input' value="<?= $this->aData['tabOverviewEditor'] ?>"/>
-    <?php
-
-/** this btn is trigger by save&close topbar button in copyQuestiontobar_view  */
-
-    ?>
+    <?php // this btn is trigger by save&close topbar button in copyQuestiontobar_view ?>
     <input
         type='submit'
         style="display:none"

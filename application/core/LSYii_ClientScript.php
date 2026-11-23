@@ -36,8 +36,8 @@ class LSYii_ClientScript extends CClientScript
      * The script is rendered at the end of the body section.
      * only for scripts not script files
      */
-    const POS_POSTSCRIPT = 5;
-    const POS_PREBEGIN = 6;
+    public const POS_POSTSCRIPT = 5;
+    public const POS_PREBEGIN = 6;
     /**
      * Packages that must never be published through the asset manager.
      * These packages reference sibling packages using runtime-relative paths

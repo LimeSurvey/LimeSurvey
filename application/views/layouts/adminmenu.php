@@ -28,7 +28,7 @@
         <div class="collapse navbar-collapse " id="small-screens-menus">
             <ul class="nav navbar-nav" id="small-screens-menu-items">
                 <!-- active surveys -->
-                <?php if ($activesurveyscount > 0): ?>
+                <?php if ($activesurveyscount > 0) : ?>
                     <li class="nav-item">
                         <a class="nav-link"
                             href="<?php echo $this->createUrl('surveyAdministration/listsurveys/active/Y'); ?>">
@@ -76,7 +76,7 @@
                 <li class="nav-item d-flex" id="surveys-menu-item"><a
                         href="<?php echo $this->createUrl("surveyAdministration/listsurveys"); ?>"
                         class="nav-link ps-2"><?php eT("Surveys"); ?></a>
-                    <?php if ($activesurveyscount > 0): ?>
+                    <?php if ($activesurveyscount > 0) : ?>
                         <a class="nav-link ps-0 active-surveys"
                             href="<?php echo $this->createUrl('surveyAdministration/listsurveys/active/Y'); ?>">
                             <span class="visually-hidden"><?php eT("List active surveys"); ?></span>

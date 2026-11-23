@@ -44,9 +44,9 @@ class RenderMultipleChoice extends QuestionBaseRenderer
     /** @var bool|null whether Other is ticked without text after a blocked submit, computed once per render */
     private $otherInvalid;
 
-    const OTHER_POS_END = 'end';
-    const OTHER_POS_START = 'beginning';
-    const OTHER_POS_AFTER_SUBQUESTION = 'specific';
+    public const OTHER_POS_END = 'end';
+    public const OTHER_POS_START = 'beginning';
+    public const OTHER_POS_AFTER_SUBQUESTION = 'specific';
 
     public function __construct($aFieldArray, $bRenderDirect = false)
     {

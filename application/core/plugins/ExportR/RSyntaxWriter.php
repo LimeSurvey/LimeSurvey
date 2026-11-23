@@ -19,7 +19,7 @@ class RSyntaxWriter extends Writer
      */
     protected $answerFormat = 'long';
 
-    function __construct()
+    public function __construct()
     {
         $this->output = '';
         $this->separator = ',';

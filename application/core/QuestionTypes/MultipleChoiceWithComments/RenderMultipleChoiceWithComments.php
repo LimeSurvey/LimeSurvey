@@ -38,9 +38,9 @@ class RenderMultipleChoiceWithComments extends QuestionBaseRenderer
     /** @var string the title of the subquestion after which the 'Other' option should be placed (if $otherPosition == 3) */
     protected $subquestionBeforeOther;
 
-    const OTHER_POS_END = 'end';
-    const OTHER_POS_START = 'beginning';
-    const OTHER_POS_AFTER_SUBQUESTION = 'specific';
+    public const OTHER_POS_END = 'end';
+    public const OTHER_POS_START = 'beginning';
+    public const OTHER_POS_AFTER_SUBQUESTION = 'specific';
 
     public function __construct($aFieldArray, $bRenderDirect = false)
     {
