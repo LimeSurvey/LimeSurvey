@@ -164,4 +164,71 @@ describe('SurveyStructure', () => {
 
     await dropItem('question', 'g0', 2, 0)
   })
+
+  describe('Dropping does not move the focus to the dragged item', () => {
+    const getFocusState = () =>
+      queryClient.getQueryData([STATES.FOCUSED_ENTITY])
+
+    const dropQuestionInGroup = (fromGroup, fromIndex, toGroup, toIndex) =>
+      act(() => {
+        mockDragDropContextProps.onDragEnd({
+          type: 'question',
+          source: { droppableId: `g${fromGroup}`, index: fromIndex },
+          destination: { droppableId: `g${toGroup}`, index: toIndex },
+        })
+      })
+
+    test('A dropped question or group does not take the focus', async () => {
+      await renderWithProviders(<SurveyStructure />)
+      const welcome = await screen.findByTestId('survey-structure-header')
+      await userEvent.click(welcome)
+      await waitFor(() =>
+        expect(welcome).toHaveAttribute('aria-current', 'true')
+      )
+
+      await dropItem('question', 'g0', 0, 2)
+      await dropItem('group', 'all-groups', 1, 3)
+
+      const currentRows = [
+        ...document.querySelectorAll('[aria-current="true"]'),
+      ].map((row) => row.getAttribute('data-testid'))
+      expect(currentRows).toEqual(['survey-structure-header'])
+      expect(getFocusState().focused.qid).toBeUndefined()
+
+      await dropItem('group', 'all-groups', 3, 1)
+      await dropItem('question', 'g0', 2, 0)
+    })
+
+    test('The focused question keeps the focus, with its new group, when it is dragged', async () => {
+      await renderWithProviders(<SurveyStructure />)
+      const question = Survey.questionGroups[0].questions[0]
+      const destinationGid = Survey.questionGroups[1].gid
+      await userEvent.click(
+        within(getGroupRows()[0]).getByTestId('sidebar-row-toggler-button')
+      )
+      await userEvent.click(
+        within(
+          document.querySelector('[data-rfd-droppable-id="g0"]')
+        ).getAllByTestId('sidebar-row-question')[0]
+      )
+      await waitFor(() =>
+        expect(getFocusState().focused.qid).toBe(question.qid)
+      )
+
+      await dropQuestionInGroup(0, 0, 1, 1)
+
+      expect(getFocusState()).toEqual(
+        expect.objectContaining({
+          focused: expect.objectContaining({
+            qid: question.qid,
+            gid: destinationGid,
+          }),
+          groupIndex: 1,
+          questionIndex: 1,
+        })
+      )
+
+      await dropQuestionInGroup(1, 1, 0, 0)
+    })
+  })
 })

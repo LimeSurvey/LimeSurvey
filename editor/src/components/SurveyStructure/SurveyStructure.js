@@ -1,8 +1,11 @@
-import { useState } from 'react'
+import { useLayoutEffect, useRef, useState } from 'react'
 import { DragDropContext, Draggable, Droppable } from '@hello-pangea/dnd'
 import classNames from 'classnames'
+import { cloneDeep } from 'lodash'
 import Button from 'react-bootstrap/Button'
 import { useNavigate, useParams } from 'react-router-dom'
+
+import { queryClient } from 'queryClient'
 
 import {
   arrayDeleteItem,
@@ -20,6 +23,9 @@ import {
   runWithSyncQueryNotifications,
   isFocusInsideGroup,
   getGroupIndexForDeletion,
+  captureCanvasPosition,
+  getFocusedCanvasElementId,
+  restoreCanvasPosition,
 } from 'helpers'
 import {
   useFocused,
@@ -121,6 +127,66 @@ export const SurveyStructure = () => {
     setDeleteGroupState({ show: false, questionGroup: null, index: null })
   }
 
+  // Where the canvas was on screen before a drop, restored by the layout
+  // effect below once the reorder is in the DOM
+  const canvasPositionRef = useRef(null)
+
+  /**
+   * Returns the ids of the canvas elements a drop moves: The dragged
+   * question, or the dragged group's header and its questions.
+   */
+  const getMovedCanvasElementIds = ({ type, source }) => {
+    if (type === 'group') {
+      const group = questionGroups[source.index]
+      return group
+        ? [
+            `question-group-${group.gid}`,
+            ...(group.questions ?? []).map(({ qid }) => `${qid}-question`),
+          ]
+        : []
+    }
+    const groupIndex = Number(source.droppableId.replace('g', ''))
+    const question = questionGroups[groupIndex]?.questions?.[source.index]
+    return question ? [`${question.qid}-question`] : []
+  }
+
+  /** Applies a drop without letting the canvas jump to the dragged item. */
+  const handleDragEndKeepingCanvasInPlace = (dropResult) => {
+    const position = dropResult.destination
+      ? captureCanvasPosition(
+          getFocusedCanvasElementId(
+            focused,
+            getQuestionTypeInfo().WELCOME_SCREEN,
+            getQuestionTypeInfo().END_SCREEN
+          ),
+          getMovedCanvasElementIds(dropResult)
+        )
+      : null
+    canvasPositionRef.current = position
+
+    runWithSyncQueryNotifications(() => handleOnDragEnd(dropResult))
+
+    // A drop that changes nothing renders nothing, so the layout effect does
+    // not run: Resume the browser's scroll anchoring anyway
+    if (position) {
+      requestAnimationFrame(() => {
+        if (canvasPositionRef.current === position) {
+          canvasPositionRef.current = null
+          restoreCanvasPosition(position)
+        }
+      })
+    }
+  }
+
+  // Runs after the drop's re-render is in the DOM, before it is painted
+  useLayoutEffect(() => {
+    const position = canvasPositionRef.current
+    if (position) {
+      canvasPositionRef.current = null
+      restoreCanvasPosition(position)
+    }
+  })
+
   const handleOnDragEnd = (dropResult) => {
     setIsDraggingOutOfGroup(false)
     const { source, destination, type } = dropResult
@@ -161,6 +227,23 @@ export const SurveyStructure = () => {
     setIsDraggingOutOfGroup(isOutOfGroup)
   }
 
+  // A drop does not move the focus to the dragged item.
+  // EditorContextController updates the stored position of whatever is
+  // focused. When that is the moved question itself, its stored copy also
+  // needs the new group, so it is refreshed here. Written to the cache
+  // directly, like that sync does, because setFocused would also change the
+  // URL and scroll the canvas to the question.
+  const refreshFocusedQuestion = (movedQuestion, groupIndex, questionIndex) => {
+    if (focused?.qid === undefined || focused.qid !== movedQuestion.qid) {
+      return
+    }
+    queryClient.setQueryData([STATES.FOCUSED_ENTITY], {
+      focused: cloneDeep(movedQuestion),
+      groupIndex,
+      questionIndex,
+    })
+  }
+
   const reorderGroup = (type, currentIndex, newIndex) => {
     if (type === 'group') {
       const reorderedQuestionGroups = moveQuestionGroup(
@@ -174,12 +257,6 @@ export const SurveyStructure = () => {
         .update(getReorganizedQuestionGroups(reorderedQuestionGroups))
       addToBuffer(operation)
       handleUpdate(reorderedQuestionGroups)
-      if (
-        focused.gid === reorderedQuestionGroups[currentIndex].gid &&
-        focused.qid === undefined
-      ) {
-        setFocused({ ...reorderedQuestionGroups[newIndex] }, newIndex)
-      }
 
       return true
     }
@@ -221,7 +298,7 @@ export const SurveyStructure = () => {
         questions: reorderedQuestions,
       }
       handleUpdate(updatedQuestionGroups)
-      setFocused(movedQuestion, groupIndex, newIndex)
+      refreshFocusedQuestion(movedQuestion, groupIndex, newIndex)
       return true
     }
     return false
@@ -272,7 +349,7 @@ export const SurveyStructure = () => {
         .update(getReorganizedQuestionGroups(updatedQuestionGroups))
       addToBuffer(operation)
       handleUpdate(updatedQuestionGroups)
-      setFocused(movedQuestion, destGroupIndex, destination.index)
+      refreshFocusedQuestion(movedQuestion, destGroupIndex, destination.index)
     }
   }
 
@@ -405,9 +482,7 @@ export const SurveyStructure = () => {
             }}
           />
           <DragDropContext
-            onDragEnd={(dropResult) =>
-              runWithSyncQueryNotifications(() => handleOnDragEnd(dropResult))
-            }
+            onDragEnd={handleDragEndKeepingCanvasInPlace}
             onDragUpdate={onDragUpdate}
           >
             <Droppable

@@ -42,7 +42,11 @@ export const RowQuestionsList = ({
 
   const getQuestionDragStyle = (draggableStyle) => ({
     userSelect: 'none',
-    margin: '0',
+    // The 6px gap between rows (the margin-bottom of .structure-item). The
+    // drag library measures this element only, and the inner margin collapses
+    // through it uncounted: Without the gap here, it sizes rows 6px too short,
+    // so rows jump while dragging and the dropped row snaps into place.
+    margin: '0 0 6px 0',
     ...draggableStyle,
   })
 
