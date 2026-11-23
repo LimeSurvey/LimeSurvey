@@ -50,6 +50,12 @@ $isOverviewActive = $activeTab !== 'settings';
                                 'method' => 'post',
                                 'buttons' => $buttons,
                                 'buttonsPosition' => 'top',
+                                // Tells the save action which settings this form shows: The others keep their value
+                                'additionalHtml' => CHtml::hiddenField(
+                                    PluginManagerController::SHOWN_SETTINGS_FIELD,
+                                    json_encode(array_keys($settings)),
+                                    ['id' => false]
+                                ),
                             ]
                         );
                         ?>

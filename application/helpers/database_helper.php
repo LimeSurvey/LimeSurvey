@@ -19,6 +19,7 @@ if (!defined('BASEPATH')) {
 /**
  * Return the database-specific random function to use in ORDER BY sql statements
  *
+ * @deprecated Not used by core anymore, will be removed in a future version
  * @return string
  */
 function dbRandom()

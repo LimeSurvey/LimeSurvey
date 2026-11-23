@@ -909,16 +909,8 @@ class ParticipantsAction extends SurveyCommonAction
             $aFirstLine = fgets($oCSVFile);
             rewind($oCSVFile);
 
-            $sSeparator = Yii::app()->request->getPost('separatorused');
-            if ($sSeparator == 'auto') {
-                $aCount = array();
-                $aCount[','] = substr_count($aFirstLine, ',');
-                $aCount[';'] = substr_count($aFirstLine, ';');
-                $aCount['|'] = substr_count($aFirstLine, '|');
-                $aResult = array_keys($aCount, max($aCount));
-                $sSeparator = $aResult[0];
-            }
-            $firstline = fgetcsv($oCSVFile, 1000, $sSeparator[0], '"', "\\");
+            $separator = $this->getCsvSeparator((string) Yii::app()->request->getPost('separatorused'), (string) $aFirstLine);
+            $firstline = fgetcsv($oCSVFile, 1000, $separator, '"', "\\");
 
             $selectedcsvfields = array();
             $fieldlist = array();
@@ -1063,22 +1055,7 @@ class ParticipantsAction extends SurveyCommonAction
                 $buffer = removeBOM($buffer);
 
                 //For Attributes
-                switch ($separator) {
-                    case 'comma':
-                        $separator = ',';
-                        break;
-                    case 'semicolon':
-                        $separator = ';';
-                        break;
-                    default:
-                        $comma = substr_count((string) $buffer, ',');
-                        $semicolon = substr_count((string) $buffer, ';');
-                        if ($semicolon > $comma) {
-                            $separator = ';';
-                        } else {
-                            $separator = ',';
-                        }
-                }
+                $separator = $this->getCsvSeparator((string) $separator, $buffer);
                 $firstline = str_getcsv((string) $buffer, $separator, '"', "\\");
                 $firstline = array_map('trim', $firstline);
                 $ignoredcolumns = array();
@@ -3099,6 +3076,32 @@ class ParticipantsAction extends SurveyCommonAction
             }
         }
         return $result;
+    }
+
+    /**
+     * Return the CSV separator character for the separator chosen in the CPDB CSV import form
+     *
+     * Used by both import steps (field mapping and import), so they always read the file the same way.
+     *
+     * @param string $selectedSeparator The posted choice: 'comma', 'semicolon' or 'auto'
+     * @param string $headerLine The first line of the CSV file, used for the automatic detection
+     * @return string The separator character
+     */
+    private function getCsvSeparator(string $selectedSeparator, string $headerLine): string
+    {
+        if ($selectedSeparator === 'comma') {
+            return ',';
+        }
+        if ($selectedSeparator === 'semicolon') {
+            return ';';
+        }
+        // Automatic detection: The most frequent candidate wins, ties prefer the earlier one
+        $counts = [
+            ',' => substr_count($headerLine, ','),
+            ';' => substr_count($headerLine, ';'),
+            '|' => substr_count($headerLine, '|'),
+        ];
+        return (string) array_search(max($counts), $counts, true);
     }
 
     /**

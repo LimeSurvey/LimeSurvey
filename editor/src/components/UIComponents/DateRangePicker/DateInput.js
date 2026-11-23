@@ -3,6 +3,16 @@ import { format, parse, isValid, isBefore, isAfter, startOfDay } from 'date-fns'
 import { Calendar3 } from 'react-bootstrap-icons'
 import classNames from 'classnames'
 
+const EXTRA_FORMATS = ['P', 'yyyy-MM-dd']
+
+const parseDate = (text, dateFormat, localeOptions) => {
+  for (const pattern of [dateFormat, ...EXTRA_FORMATS]) {
+    const parsed = parse(text, pattern, new Date(), localeOptions)
+    if (isValid(parsed)) return parsed
+  }
+  return new Date(NaN)
+}
+
 export const DateInput = ({
   value,
   dateFormat,
@@ -11,8 +21,14 @@ export const DateInput = ({
   onCommit,
   onValidityChange = () => {},
   label,
+  locale,
+  onIconClick,
+  iconLabel,
+  isActive = false,
+  readOnly = false,
 }) => {
-  const formatted = value ? format(value, dateFormat) : ''
+  const localeOptions = locale ? { locale } : undefined
+  const formatted = value ? format(value, dateFormat, localeOptions) : ''
   const [text, setText] = useState(formatted)
   const [isInvalid, setIsInvalid] = useState(false)
 
@@ -34,7 +50,7 @@ export const DateInput = ({
       return
     }
 
-    const parsed = parse(text.trim(), dateFormat, new Date())
+    const parsed = parseDate(text.trim(), dateFormat, localeOptions)
     const inBounds =
       isValid(parsed) &&
       !isBefore(parsed, startOfDay(minDate)) &&
@@ -46,25 +62,53 @@ export const DateInput = ({
 
   return (
     <div
-      className={classNames('date-range-input', { 'is-invalid': isInvalid })}
+      className={classNames('date-range-input', {
+        'is-active': isActive,
+        'is-invalid': isInvalid,
+      })}
     >
       <input
         type="text"
         aria-label={label}
         aria-invalid={isInvalid}
         title={isInvalid ? t('Invalid date.') : undefined}
-        placeholder={format(new Date(), dateFormat)}
+        placeholder={t('Select a date')}
         value={text}
-        onChange={(e) => {
-          setText(e.target.value)
-          setIsInvalid(false)
-        }}
-        onBlur={commit}
-        onKeyDown={(e) => e.key === 'Enter' && commit()}
+        {...(readOnly
+          ? {
+              'readOnly': true,
+              'aria-haspopup': 'dialog',
+              'onClick': onIconClick,
+              'onKeyDown': (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault()
+                  onIconClick()
+                }
+              },
+            }
+          : {
+              onChange: (e) => {
+                setText(e.target.value)
+                setIsInvalid(false)
+              },
+              onBlur: commit,
+              onKeyDown: (e) => e.key === 'Enter' && commit(),
+            })}
       />
-      <span className="date-range-input-icon">
-        <Calendar3 size={14} />
-      </span>
+      {onIconClick ? (
+        <button
+          type="button"
+          className="date-range-input-icon"
+          aria-label={iconLabel ?? t('Open calendar')}
+          onClick={onIconClick}
+        >
+          <Calendar3 size={14} />
+        </button>
+      ) : (
+        <span className="date-range-input-icon">
+          <Calendar3 size={14} />
+        </span>
+      )}
     </div>
   )
 }

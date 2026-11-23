@@ -994,7 +994,7 @@ class LimeMailer extends PHPMailer
             $aTokenReplacements["GLOBALOPTINURL"] = App()->getController()
                 ->createAbsoluteUrl("/optin/participants", array("surveyid" => $this->surveyId, "token" => $token,"langcode" => $language));
         }
-        $this->addUrlsPlaceholders("GLOBALOPTINURL");
+        $this->addUrlsPlaceholders("GLOBALOPTIN");
         $aTokenReplacements["SURVEYURL"] = $survey->getSurveyUrl($language, ["token" => $token]);
         // Validate the survey URL host against allowed hosts to prevent host header injection
         $parsedSurveyUrl = parse_url($aTokenReplacements["SURVEYURL"]);
