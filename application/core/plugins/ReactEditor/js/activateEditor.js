@@ -160,7 +160,7 @@ $(document).ready(function () {
     });
 
     /**
-     * Arrow keys move through the radio buttons and check them at once: they must not switch
+     * Arrow keys move through the radio buttons and check them at once: They must not switch
      * the editor on focus (WCAG 3.2.1). A keyboard user applies the choice with Enter or Space,
      * a mouse user with a click, and closing the modal applies a changed choice the same way.
      */
@@ -168,7 +168,7 @@ $(document).ready(function () {
     $(document).on("keydown", "#editor-switch-btn .btn-check", function (e) {
         if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(e.key)) {
             changedByArrowKey = true;
-            // The change event follows synchronously: reset for the next interaction
+            // The change event follows synchronously: Reset for the next interaction
             setTimeout(function () {
                 changedByArrowKey = false;
             }, 0);
