@@ -1,7 +1,6 @@
 import { applyAdminThemeTokens } from '../adminThemeTokens'
 
-const TOKENS_URL =
-  '/themes/admin/Sea_Green_WCAG_AA/css/theme_tokens.css?v=1'
+const TOKENS_URL = '/themes/admin/Sea_Green_WCAG_AA/css/theme_tokens.css?v=1'
 
 const setAuthInitCookie = (data) => {
   document.cookie =
