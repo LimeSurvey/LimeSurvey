@@ -10,11 +10,12 @@
 $layoutHelper = new LayoutHelper();
 $layoutHelper->getAdminHeader(false, false, ['pageTitle' => gT('Site under maintenance')]);
 ?>
-<div class="container-fluid">
+<?php // The main landmark is the target of the "Skip to main content" link in the header ?>
+<main class="container-fluid">
     <div class="jumbotron message-box">
         <h2><?php eT('Site under maintenance'); ?></h2>
         <p class="lead"><?php echo CHtml::encode($message); ?></p>
     </div>
-</div>
+</main>
 </body>
 </html>
