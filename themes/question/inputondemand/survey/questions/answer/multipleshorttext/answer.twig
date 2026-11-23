@@ -12,7 +12,7 @@
 <div class="container-center" id="selector--inputondemand-{{ basename }}">
     <div class="row">
         <div class="col-12">
-            <ul id="inputondemand-list-{{ basename }}" class="{{ coreClass }} list-unstyled form-horizontal selector--inputondemand-list" role="group" aria-labelledby="ls-question-text-{{ basename }}">
+            <ul id="inputondemand-list-{{ basename }}" class="{{ coreClass }} list-unstyled form-horizontal selector--inputondemand-list" role="group" aria-labelledby="ls-question-text-{{ basename }}" aria-describedby="ls-question-help-{{ basename }} ls-question-validation-{{ basename }}">
                 {% if aRows is empty %}
                     {% include 'survey/questions/answer/multipleshorttext/empty.twig' %}
                 {% else %}

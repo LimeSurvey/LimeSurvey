@@ -13,6 +13,7 @@
 
 <!-- answer -->
 <input type="hidden" name="MULTI{{name}}" value="{{anscount}}" />
+<div role="group" aria-labelledby="ls-question-text-{{ name }}" aria-describedby="ls-question-help-{{ name }} ls-question-validation-{{ name }}">
 <ul class="list-unstyled {{coreClass}} {% if iNbCols > 1 %} ls-column-count-{{iNbCols}}{% endif %}"{% if iNbCols > 1 %} data-column-count={{iNbCols}}{% endif %}>
     {% for aRow in aRows %}
         {% set rowTemplate = aRow.other ? './survey/questions/answer/multiplechoice/rows/answer_row_other.twig' : './survey/questions/answer/multiplechoice/rows/answer_row.twig' %}
@@ -20,3 +21,4 @@
         {% include rowTemplate with aRow %}
     {% endfor %}
 </ul>
+</div>
