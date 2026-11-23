@@ -47,7 +47,7 @@ class Zend_CodeGenerator_Php_Docblock_Tag_License extends Zend_CodeGenerator_Php
     /**
      * fromReflection()
      *
-     * @param Zend_Reflection_Docblock_Tag $reflectionTagReturn
+     * @param Zend_Reflection_Docblock_Tag $reflectionTagLicense
      * @return Zend_CodeGenerator_Php_Docblock_Tag_License
      */
     public static function fromReflection(Zend_Reflection_Docblock_Tag $reflectionTagLicense)

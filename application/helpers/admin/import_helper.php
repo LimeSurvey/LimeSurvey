@@ -598,6 +598,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $suppo
         }
     }
 
+    convertLegacyMapQuestions($importedQuestions);
 
     // Import defaultvalues ------------------------------------------------------
     importDefaultValues($xml, $importlanguages, $aQIDReplacements, $results, $allImportedQuestions, $newOldQidMapping, $oldNewFieldRoots);
@@ -1218,6 +1219,8 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
         $results['question_attributes']++;
     }
 
+    convertLegacyMapQuestions($importedQuestions);
+
     // Import defaultvalues ------------------------------------------------------
     importDefaultValues($xml, $aLanguagesSupported, $aQIDReplacements, $results, $allImportedQuestions, $newOldQidMapping, $oldNewFieldRoots);
 
@@ -1456,7 +1459,9 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
                 $aImportResults['error'] = gT("This is not a valid LimeSurvey LSA file.");
                 return $aImportResults;
             }
-            // Step 1 - import the LSS file and activate the survey
+            // Archives of inactive surveys contain no responses file, so the survey is only activated if there is one
+            $bHasResponsesFile = !empty(array_filter($files, fn($filename) => pathinfo((string) $filename, PATHINFO_EXTENSION) == 'lsr'));
+            // Step 1 - import the LSS file and activate the survey if needed
             foreach ($files as $filename) {
                 if (pathinfo((string) $filename, PATHINFO_EXTENSION) == 'lss') {
                     //Import the LSS file
@@ -1466,11 +1471,13 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
                     }
                     $SurveyIntegrity = new LimeSurvey\Models\Services\SurveyIntegrity(Survey::model()->findByPk($aImportResults['newsid']));
                     $SurveyIntegrity->fixSurveyIntegrity();
-                    // Activate the survey
-                    Yii::app()->loadHelper("admin.activate");
-                    $survey = Survey::model()->findByPk($aImportResults['newsid']);
-                    $surveyActivator = new SurveyActivator($survey);
-                    $surveyActivator->activate();
+                    if ($bHasResponsesFile) {
+                        // Activate the survey
+                        Yii::app()->loadHelper("admin.activate");
+                        $survey = Survey::model()->findByPk($aImportResults['newsid']);
+                        $surveyActivator = new SurveyActivator($survey);
+                        $surveyActivator->activate();
+                    }
                     unlink(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $filename);
                     break;
                 }
@@ -3287,6 +3294,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
         }
     }
 
+    convertLegacyMapQuestions($importedQuestions);
 
     // Import defaultvalues ------------------------------------------------------
     importDefaultValues($xml, $aLanguagesSupported, $aQIDReplacements, $results, $allImportedQuestions, $newOldQidMapping, $oldNewFieldRoots);
@@ -3700,8 +3708,6 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
         }
     }
 
-    // Set survey rights
-    Permission::model()->giveAllSurveyPermissions(Yii::app()->session['loginID'], $iNewSID);
     $aOldNewFieldmap = reverseTranslateFieldNames($iOldSID, $iNewSID, $aGIDReplacements, $aQIDReplacements);
     $results['FieldReMap'] = $aOldNewFieldmap;
     LimeExpressionManager::SetSurveyId($iNewSID);
@@ -4528,6 +4534,8 @@ function TSVImportSurvey($sFullFilePath)
 
     /* Keep track of id for group */
     $groupIds = [];
+    /* Group id in the file => group id used for the import */
+    $fileGroupIds = [];
     /* Keep track of id for question (can come from tsv and can be broken : issue #17980 */
     $questionsIds = [];
     $rownumber = 1;
@@ -4575,6 +4583,10 @@ function TSVImportSurvey($sFullFilePath)
                     } else {
                         $gidNew += 1;
                         $gid = $gidNew;
+                    }
+                    // Group assessments reference the group id from the file in their related_id column
+                    if (!empty($row['id']) && !isset($fileGroupIds[$row['id']])) {
+                        $fileGroupIds[$row['id']] = $gid;
                     }
                     $group['gid'] = $gid;
                     $groupIds[] = $gid;
@@ -4783,7 +4795,14 @@ function TSVImportSurvey($sFullFilePath)
                 $assessment = array();
                 $assessment['sid'] = $iNewSID;
                 $assessment['scope'] = $row['type/scale'] ?? '';
-                $assessment['gid'] = $gid;
+                if ($assessment['scope'] !== 'G') {
+                    $assessment['gid'] = 0;
+                } elseif (isset($row['related_id']) && isset($fileGroupIds[$row['related_id']])) {
+                    $assessment['gid'] = $fileGroupIds[$row['related_id']];
+                } else {
+                    // No group id in the file: Use the group of the previous group row
+                    $assessment['gid'] = $gid;
+                }
                 $assessment['name'] = $row['name'] ?? '';
                 $assessment['minimum'] = $row['min_num_value'] ?? '';
                 $assessment['maximum'] = $row['max_num_value'] ?? '';
@@ -5570,4 +5589,51 @@ function convertRankingSubquestionType(array &$insertdata, array $importedQuesti
     ) {
         $insertdata['type'] = Question::QT_R_RANKING;
     }
+}
+
+/**
+ * Convert imported legacy map questions (Short text with a map service enabled) to the Map question type.
+ * Mirrors the Update_719 database migration.
+ *
+ * @param Question[] $importedQuestions Imported parent questions keyed by new qid (updated in place)
+ * @return int[] The converted question ids
+ */
+function convertLegacyMapQuestions(array $importedQuestions): array
+{
+    if (empty($importedQuestions)) {
+        return [];
+    }
+    $mapQuestionIds = App()->db->createCommand()
+        ->select('q.qid')
+        ->from('{{questions}} q')
+        ->join('{{question_attributes}} qa', 'qa.qid = q.qid')
+        ->where(['in', 'q.qid', array_map('intval', array_keys($importedQuestions))])
+        ->andWhere('q.parent_qid = 0')
+        ->andWhere('q.type = :type', [':type' => Question::QT_S_SHORT_FREE_TEXT])
+        // Questions on a custom Short Text theme stay untouched to keep their theme views and settings.
+        ->andWhere("q.question_theme_name IS NULL OR q.question_theme_name IN ('', 'core', 'shortfreetext', 'browserdetect')")
+        ->andWhere('qa.attribute = :attribute', [':attribute' => 'location_mapservice'])
+        ->andWhere("qa.value IN ('1', '100')")
+        // Short Text rendered a textarea, not a map, when display_rows was set.
+        ->andWhere("NOT EXISTS (SELECT 1 FROM {{question_attributes}} dr WHERE dr.qid = q.qid AND dr.attribute = 'display_rows' AND dr.value <> '')")
+        ->group('q.qid')
+        ->queryColumn();
+
+    if (empty($mapQuestionIds)) {
+        return [];
+    }
+
+    $criteria = new CDbCriteria();
+    $criteria->addInCondition('qid', $mapQuestionIds);
+    Question::model()->updateAll(
+        ['type' => Question::QT_J_MAP, 'question_theme_name' => 'map'],
+        $criteria
+    );
+    foreach ($mapQuestionIds as $qid) {
+        if (isset($importedQuestions[$qid])) {
+            $importedQuestions[$qid]->type = Question::QT_J_MAP;
+            $importedQuestions[$qid]->question_theme_name = 'map';
+        }
+    }
+    return array_map('intval', $mapQuestionIds);
 }

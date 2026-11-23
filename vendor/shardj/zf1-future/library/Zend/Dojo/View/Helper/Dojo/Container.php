@@ -168,7 +168,7 @@ class Zend_Dojo_View_Helper_Dojo_Container
     /**
      * Set view object
      *
-     * @param  Zend_Dojo_View_Interface $view
+     * @param  Zend_View_Interface $view
      * @return void
      */
     public function setView(Zend_View_Interface $view)
@@ -514,8 +514,6 @@ class Zend_Dojo_View_Helper_Dojo_Container
     /**
      * Set Dojo configuration
      *
-     * @param  string $option
-     * @param  mixed $value
      * @return Zend_Dojo_View_Helper_Dojo_Container
      */
     public function setDjConfig(array $config)
@@ -960,6 +958,7 @@ EOJ;
 
         $this->_isXhtml = $this->view->doctype()->isXhtml();
 
+        require_once 'Zend/Dojo/View/Helper/Dojo.php';
         if (Zend_Dojo_View_Helper_Dojo::useDeclarative()) {
             if (null === $this->getDjConfigOption('parseOnLoad')) {
                 $this->setDjConfigOption('parseOnLoad', true);

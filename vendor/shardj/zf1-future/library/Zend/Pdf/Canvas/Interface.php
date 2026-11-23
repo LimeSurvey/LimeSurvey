@@ -132,7 +132,7 @@ interface Zend_Pdf_Canvas_Interface
      * Phase is shift from the beginning of line.
      *
      * @param mixed $pattern
-     * @param float $phase
+     * @param float|int $phase
      * @return Zend_Pdf_Canvas_Interface
      */
     public function setLineDashingPattern($pattern, $phase = 0);
@@ -305,7 +305,7 @@ interface Zend_Pdf_Canvas_Interface
     /**
      * Draw an image at the specified position on the page.
      *
-     * @param Zend_Pdf_Image $image
+     * @param Zend_Pdf_Resource_Image $image
      * @param float $x1
      * @param float $y1
      * @param float $x2
@@ -317,7 +317,7 @@ interface Zend_Pdf_Canvas_Interface
     /**
      * Draw a LayoutBox at the specified position on the page.
      *
-     * @internal (not implemented now)
+     * @internal not implemented now
      *
      * @param Zend_Pdf_Element_LayoutBox $box
      * @param float $x
@@ -410,7 +410,7 @@ interface Zend_Pdf_Canvas_Interface
      /**
      * Close the path by drawing a straight line back to it's beginning.
      *
-     * @internal (needs implementation)
+     * @internal needs implementation
      *
      * @throws Zend_Pdf_Exception    - if a path hasn't been started with pathMove()
      * @return Zend_Pdf_Canvas_Interface
@@ -420,7 +420,7 @@ interface Zend_Pdf_Canvas_Interface
     /**
      * Continue the open path in a straight line to the specified position.
      *
-     * @internal (needs implementation)
+     * @internal needs implementation
      *
      * @param float $x  - the X co-ordinate to move to
      * @param float $y  - the Y co-ordinate to move to
@@ -432,7 +432,7 @@ interface Zend_Pdf_Canvas_Interface
      * Start a new path at the specified position. If a path has already been started,
      * move the cursor without drawing a line.
      *
-     * @internal (needs implementation)
+     * @internal needs implementation
      *
      * @param float $x  - the X co-ordinate to move to
      * @param float $y  - the Y co-ordinate to move to

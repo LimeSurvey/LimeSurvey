@@ -28,13 +28,14 @@ require_once 'Zend/Cloud/Infrastructure/Instance.php';
  * @subpackage Adapter
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @deprecated Deprecated since 1.27.1 and will be removed in a future version: the Simple Cloud API is not developed any further; use the SDK of the cloud provider
  */
 abstract class Zend_Cloud_Infrastructure_Adapter_AbstractAdapter implements Zend_Cloud_Infrastructure_Adapter
 {
     /**
      * Store the last response from the adpter
      *
-     * @var array
+     * @var array|bool
      */
     protected $adapterResult;
 
@@ -89,7 +90,7 @@ abstract class Zend_Cloud_Infrastructure_Adapter_AbstractAdapter implements Zend
      * Run arbitrary shell script on an instance
      *
      * @param  string $id
-     * @param  array $param
+     * @param  array $params
      * @param  string|array $cmd
      * @return string|array
      */

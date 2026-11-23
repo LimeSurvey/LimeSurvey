@@ -90,6 +90,7 @@ class Zend_Service_WindowsAzure_CommandLine_Deployment
 			$deploymentSlot = 'production';
 		}
 
+		$client = new Zend_Service_WindowsAzure_Management_Client($subscriptionId, $certificate, $certificatePassphrase);
 		$client->createDeployment($serviceName, $deploymentSlot, $deploymentName, $label, $packageUrl, $serviceConfigurationLocation, $startImmediately, $warningsAsErrors);
 
 		if ($waitForOperation) {

@@ -119,6 +119,12 @@ class Zend_Locale_Math_PhpMath extends Zend_Locale_Math
         // Provide the same behavior
         $op2 = ($op2 > 0) ? floor($op2) : ceil($op2);
 
+        // zero to a negative power is a division by zero (deprecated since PHP 8.4)
+        if ($op1 == 0 && $op2 < 0) {
+            require_once 'Zend/Locale/Math/Exception.php';
+            throw new Zend_Locale_Math_Exception("power overflow: $op1 ^ $op2", $op1, $op2, INF);
+        }
+
         $result = pow($op1, $op2);
         if (is_infinite($result)  ||  is_nan($result)) {
             require_once 'Zend/Locale/Math/Exception.php';

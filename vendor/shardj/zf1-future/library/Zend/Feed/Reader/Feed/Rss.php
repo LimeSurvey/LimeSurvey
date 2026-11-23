@@ -61,6 +61,8 @@ class Zend_Feed_Reader_Feed_Rss extends Zend_Feed_Reader_FeedAbstract
      */
     public function __construct(DOMDocument $dom, $type = null)
     {
+        require_once 'Zend/Feed/Reader.php';
+
         parent::__construct($dom, $type);
 
         $dublinCoreClass = Zend_Feed_Reader::getPluginLoader()->getClassName('DublinCore_Feed');
@@ -143,7 +145,7 @@ class Zend_Feed_Reader_Feed_Rss extends Zend_Feed_Reader_FeedAbstract
             }
         }
 
-        if (count($authors ?? []) === 0) {
+        if (count($authors) === 0) {
             $authors = $this->getExtension('Atom')->getAuthors();
         } else {
             $authors = new Zend_Feed_Reader_Collection_Author(
@@ -666,8 +668,10 @@ class Zend_Feed_Reader_Feed_Rss extends Zend_Feed_Reader_FeedAbstract
 
         if ($this->getType() !== Zend_Feed_Reader::TYPE_RSS_10 &&
             $this->getType() !== Zend_Feed_Reader::TYPE_RSS_090) {
+            /** @var DOMNodeList<DOMElement> $list */
             $list = $this->_xpath->query('/rss/channel//category');
         } else {
+            /** @var DOMNodeList<DOMElement> $list */
             $list = $this->_xpath->query('/rdf:RDF/rss:channel//rss:category');
         }
 

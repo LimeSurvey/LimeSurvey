@@ -63,7 +63,7 @@ class Zend_Service_LiveDocx_MailMerge extends Zend_Service_LiveDocx
      * Constructor (LiveDocx.MailMerge SOAP Service)
      *
      * @return void
-     * @return throws Zend_Service_LiveDocx_Exception
+     * @throws Zend_Service_LiveDocx_Exception
      * @since  LiveDocx 1.0
      */
     public function __construct($options = null)
@@ -148,6 +148,7 @@ class Zend_Service_LiveDocx_MailMerge extends Zend_Service_LiveDocx
     {
         $this->logIn();
 
+        $method = 'assocArrayToArrayOfArrayOfString';
         foreach ($values as $value) {
             if (is_array($value)) {
                 $method = 'multiAssocArrayToArrayOfArrayOfString';
@@ -324,7 +325,7 @@ class Zend_Service_LiveDocx_MailMerge extends Zend_Service_LiveDocx
     /**
      * Merge assigned data with template to generate document
      *
-     * @throws Zend_Service_LiveDocx_Excpetion
+     * @throws Zend_Service_LiveDocx_Exception
      * @return void
      * @since  LiveDocx 1.0
      */

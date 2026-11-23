@@ -1,11 +1,23 @@
 import { getQuestionTypeInfo, Tutorial } from 'components'
 import SmallCheckMarkIcon from 'components/icons/SmallCheckMarkIcon'
-import { getApiUrl, sleep, STATES, toastComponent, TUTORIALS } from 'helpers'
+import {
+  errorToast,
+  getApiUrl,
+  sleep,
+  STATES,
+  toastComponent,
+  TUTORIALS,
+} from 'helpers'
 import { getSurveyPanels } from 'helpers/options'
 import { useAppState, useAuth, useFocused } from 'hooks'
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { UserSettingsService } from 'services'
+
+// RestClient returns the response data on success, and an error object with
+// httpStatus on failure (httpStatus 0 when no response was received)
+const isFailedRequest = (response) =>
+  response === undefined || response?.httpStatus !== undefined
 
 export const EditorTutorial = ({ isSurveyActive = false, survey }) => {
   const { surveyId } = useParams()
@@ -270,19 +282,25 @@ export const EditorTutorial = ({ isSurveyActive = false, survey }) => {
       return
     }
 
-    userSettingsService
-      .getUserSettingByName(TUTORIALS.EDITOR_TUTORIAL)
-      .then((response) => {
-        // starting the tutorial automatically if the user has never started the tutorial before
-        if (
-          response.httpStatus === 404 &&
-          !isSurveyActive &&
-          !hasEditorHelpAppeared
-        ) {
-          setHasEdtiroHelpAppeared(true)
-          handleTutorialStart()
-        }
-      })
+    Promise.all([
+      userSettingsService.getUserSettingByName(TUTORIALS.EDITOR_TUTORIAL),
+      userSettingsService.getUserSettingByName(
+        TUTORIALS.EDITOR_TUTORIAL_DISMISSED
+      ),
+    ]).then(([progressResponse, dismissedResponse]) => {
+      // starting the tutorial automatically if the user has never started the tutorial before
+      // and hasn't chosen to never see it again (only a successful read counts as dismissed)
+      const isDismissed = !isFailedRequest(dismissedResponse)
+      if (
+        progressResponse.httpStatus === 404 &&
+        !isDismissed &&
+        !isSurveyActive &&
+        !hasEditorHelpAppeared
+      ) {
+        setHasEdtiroHelpAppeared(true)
+        handleTutorialStart()
+      }
+    })
   }, [isSurveyActive, surveyId])
 
   const handleOnStepChange = (data) => {
@@ -290,6 +308,17 @@ export const EditorTutorial = ({ isSurveyActive = false, survey }) => {
       TUTORIALS.EDITOR_TUTORIAL,
       data.index
     )
+  }
+
+  const handleTutorialDismiss = async () => {
+    const result = await userSettingsService.setUserSettingByName(
+      TUTORIALS.EDITOR_TUTORIAL_DISMISSED,
+      1
+    )
+
+    if (isFailedRequest(result)) {
+      errorToast(t('Your changes could not be saved.'))
+    }
   }
 
   const handleTutorialStart = () => {
@@ -330,6 +359,7 @@ export const EditorTutorial = ({ isSurveyActive = false, survey }) => {
         setTutorialState={setTutorialState}
         onStepChange={handleOnStepChange}
         onTutorialFinish={handleOnTutorialFinish}
+        onTutorialDismiss={handleTutorialDismiss}
       />
     </>
   )

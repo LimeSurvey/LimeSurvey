@@ -433,10 +433,11 @@ class Permission extends LSActiveRecord
 
     /**
      * Give all permission of a specific user without permission control of current user
-     * Used when create survey
-     * @see mantis #16967: https://bugs.limesurvey.org/view.php?id=16967
+     * @deprecated since 7.0 Not used by core anymore: The survey owner always has all permissions on the survey,
+     *     see mantis #16967: https://bugs.limesurvey.org/view.php?id=16967
      * @param integer $iUserID
      * @param integer $iSurveyID
+     * @return void
      */
     public function giveAllSurveyPermissions($iUserID, $iSurveyID)
     {

@@ -13,9 +13,14 @@ export const FeedbackButton = () => {
       placement="top"
       tip={t('Help us with your feedback')}
     >
-      <span className="cursor-pointer" onClick={() => showFeedbackForm()}>
+      <button
+        type="button"
+        className="d-block p-0 border-0 bg-transparent"
+        aria-label={t('Help us with your feedback')}
+        onClick={() => showFeedbackForm()}
+      >
         <FeedbackIcon />
-      </span>
+      </button>
     </TooltipContainer>
   )
 }

@@ -51,7 +51,7 @@ class Zend_Tag_Item implements Zend_Tag_Taggable
     /**
      * Custom parameters
      *
-     * @var string
+     * @var string|array
      */
     protected $_params = [];
 

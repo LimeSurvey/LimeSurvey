@@ -143,7 +143,7 @@ class Zend_View_Helper_HeadLink extends Zend_View_Helper_Placeholder_Container_S
      *
      * @param mixed $method
      * @param mixed $args
-     * @return void
+     * @return mixed
      */
     public function __call($method, $args)
     {
@@ -225,7 +225,7 @@ class Zend_View_Helper_HeadLink extends Zend_View_Helper_Placeholder_Container_S
             throw $e;
         }
 
-        return $this->getContainer()->append($value);
+        $this->getContainer()->append($value);
     }
 
     /**
@@ -245,7 +245,7 @@ class Zend_View_Helper_HeadLink extends Zend_View_Helper_Placeholder_Container_S
             throw $e;
         }
 
-        return $this->getContainer()->offsetSet($index, $value);
+        $this->getContainer()->offsetSet($index, $value);
     }
 
     /**
@@ -263,7 +263,7 @@ class Zend_View_Helper_HeadLink extends Zend_View_Helper_Placeholder_Container_S
             throw $e;
         }
 
-        return $this->getContainer()->prepend($value);
+        $this->getContainer()->prepend($value);
     }
 
     /**
@@ -281,7 +281,7 @@ class Zend_View_Helper_HeadLink extends Zend_View_Helper_Placeholder_Container_S
             throw $e;
         }
 
-        return $this->getContainer()->set($value);
+        $this->getContainer()->set($value);
     }
 
 

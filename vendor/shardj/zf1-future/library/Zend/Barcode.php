@@ -307,8 +307,8 @@ class Zend_Barcode
     /**
      * Proxy to renderer render() method
      *
-     * @param string | Zend_Barcode_Object | array | Zend_Config $barcode
-     * @param string | Zend_Barcode_Renderer $renderer
+     * @param string | Zend_Barcode_Object_ObjectAbstract | array | Zend_Config $barcode
+     * @param string | Zend_Barcode_Renderer_RendererAbstract $renderer
      * @param array | Zend_Config $barcodeConfig
      * @param array | Zend_Config $rendererConfig
      */
@@ -324,8 +324,8 @@ class Zend_Barcode
     /**
      * Proxy to renderer draw() method
      *
-     * @param string | Zend_Barcode_Object | array | Zend_Config $barcode
-     * @param string | Zend_Barcode_Renderer $renderer
+     * @param string | Zend_Barcode_Object_ObjectAbstract | array | Zend_Config $barcode
+     * @param string | Zend_Barcode_Renderer_RendererAbstract $renderer
      * @param array | Zend_Config $barcodeConfig
      * @param array | Zend_Config $rendererConfig
      * @return DOMDocument|null

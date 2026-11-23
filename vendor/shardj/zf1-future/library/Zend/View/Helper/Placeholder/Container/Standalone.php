@@ -55,7 +55,7 @@ abstract class Zend_View_Helper_Placeholder_Container_Standalone extends Zend_Vi
     /**
      * Flag wheter to automatically escape output, must also be
      * enforced in the child class if __toString/toString is overriden
-     * @var book
+     * @var bool
      */
     protected $_autoEscape = true;
 
@@ -300,7 +300,7 @@ abstract class Zend_View_Helper_Placeholder_Container_Standalone extends Zend_Vi
     #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value)
     {
-        return $this->getContainer()->offsetSet($offset, $value);
+        $this->getContainer()->offsetSet($offset, $value);
     }
 
     /**
@@ -312,7 +312,7 @@ abstract class Zend_View_Helper_Placeholder_Container_Standalone extends Zend_Vi
     #[\ReturnTypeWillChange]
     public function offsetUnset($offset)
     {
-        return $this->getContainer()->offsetUnset($offset);
+        $this->getContainer()->offsetUnset($offset);
     }
 
     /**

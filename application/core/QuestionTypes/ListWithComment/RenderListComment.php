@@ -1,5 +1,7 @@
 <?php
 
+use LimeSurvey\Models\Services\SurveySessionState;
+
 /**
  * RenderClass for Boilerplate Question
  *  * The ia Array contains the following
@@ -35,9 +37,10 @@ class RenderListComment extends QuestionBaseRenderer
     }
 
     /**
-     * Render the radio list layout of the question.
-     * @param string $sCoreClasses Extra CSS classes for the answer container
-     * @return array The HTML of the answer and the names of its inputs
+     * Renders the question as a radio list with a comment field.
+     *
+     * @param string $sCoreClasses Additional CSS classes for the answer container
+     * @return array{0: string, 1: string[]} Rendered answer HTML and the list of input names
      */
     public function renderList($sCoreClasses)
     {
@@ -74,6 +77,7 @@ class RenderListComment extends QuestionBaseRenderer
         }
 
         $fname2 = $this->sSGQA . '_Ccomment';
+        $sessionState = SurveySessionState::forSurvey((int) Yii::app()->getConfig('surveyID'));
         $tarows = ($this->getAnswerCount() > 8) ? $this->getAnswerCount() / 1.2 : 4;
 
         $this->sCoreClass .= " " . $sCoreClasses;
@@ -86,8 +90,8 @@ class RenderListComment extends QuestionBaseRenderer
             'hint_comment'      => gT('Please enter your comment here'),
             'name'              => $this->sSGQA . '_Ccomment',
             'tarows'            => floor($tarows),
-            'has_comment_saved' => isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$fname2]) && $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$fname2],
-            'comment_saved'     => (string) $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$fname2],
+            'has_comment_saved' => $sessionState->hasFieldValue($fname2) && $sessionState->getFieldValue($fname2),
+            'comment_saved'     => (string) $sessionState->getFieldValue($fname2),
             'java_name'         => 'java' . $this->sSGQA,
             'java_id'           => 'java' . $this->sSGQA,
             'java_value'        => $this->mSessionValue
@@ -101,6 +105,12 @@ class RenderListComment extends QuestionBaseRenderer
         return array($answer, $inputnames);
     }
 
+    /**
+     * Renders the question as a dropdown with a comment field.
+     *
+     * @param string $sCoreClasses Additional CSS classes for the answer container
+     * @return array{0: string, 1: string[]} Rendered answer HTML and the list of input names
+     */
     public function renderDropdown($sCoreClasses)
     {
         $sOptions = '';
@@ -159,7 +169,7 @@ class RenderListComment extends QuestionBaseRenderer
             'label_text'             => gT('Please enter your comment here'),
             'tarows'                 => $tarows,
             'maxoptionsize'          => $this->maxoptionsize,
-            'comment_saved'          => htmlspecialchars((string) $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$fname2]),
+            'comment_saved'          => htmlspecialchars((string) SurveySessionState::forSurvey((int) Yii::app()->getConfig('surveyID'))->getFieldValue($fname2)),
             'value'                  => $this->mSessionValue,
             ), true);
 

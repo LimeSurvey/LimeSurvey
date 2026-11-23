@@ -29,6 +29,7 @@
  * @subpackage Gdata
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @deprecated Deprecated since 1.27.1 and will be removed in a future version: Google shut down the Google Data APIs it implements and the ClientLogin and AuthSub authentication
  */
 class Zend_Gdata_MimeFile
 {
@@ -36,14 +37,14 @@ class Zend_Gdata_MimeFile
     /**
      * A handle to the file that is part of the message.
      *
-     * @var resource
+     * @var resource|string
      */
     protected $_fileHandle = null;
 
     /**
      * Create a new MimeFile object.
      *
-     * @param string $fileHandle An open file handle to the file being
+     * @param string|resource|false $fileHandle An open file handle to the file being
      *               read.
      */
     public function __construct($fileHandle)

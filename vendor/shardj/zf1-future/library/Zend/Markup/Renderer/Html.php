@@ -97,6 +97,7 @@ class Zend_Markup_Renderer_Html extends Zend_Markup_Renderer_RendererAbstract
             $options = $options->toArray();
         }
 
+        require_once 'Zend/Loader/PluginLoader.php';
         $this->_pluginLoader = new Zend_Loader_PluginLoader([
             'Zend_Markup_Renderer_Html' => 'Zend/Markup/Renderer/Html/'
         ]);

@@ -60,7 +60,7 @@ class Zend_Pdf_StringParser
     /**
      * Current reference context
      *
-     * @var Zend_Pdf_Element_Reference_Context
+     * @var Zend_Pdf_Element_Reference_Context|null
      */
     private $_context = null;
 
@@ -74,7 +74,7 @@ class Zend_Pdf_StringParser
     /**
      * PDF objects factory.
      *
-     * @var Zend_Pdf_ElementFactory_Interface
+     * @var Zend_Pdf_ElementFactory_Interface|null
      */
     private $_objFactory = null;
 
@@ -169,20 +169,11 @@ class Zend_Pdf_StringParser
 
 
     /**
-     * Skip comment
+     * Skip comment: moves the offset to the end of the current line
      */
     public function skipComment()
     {
-        while ($this->offset < strlen($this->data))
-        {
-            if (ord($this->data[$this->offset]) != 0x0A || // Line feed
-                ord($this->data[$this->offset]) != 0x0d    // Carriage return
-               ) {
-                $this->offset++;
-            } else {
-                return;
-            }
-        }
+        $this->offset += strcspn($this->data, "\r\n", $this->offset);
     }
 
 
@@ -243,16 +234,13 @@ class Zend_Pdf_StringParser
                 case '<<':
                     $this->offset += 2;
                     return '<<';
-                    break;
 
                 case '>>':
                     $this->offset += 2;
                     return '>>';
-                    break;
 
                 default:
                     return $this->data[$this->offset++];
-                    break;
             }
         } else {
             $start = $this->offset;
@@ -478,7 +466,7 @@ class Zend_Pdf_StringParser
      * Read reference PDF object
      *
      * @param string $nextLexeme
-     * @return Zend_Pdf_Element_Reference
+     * @return Zend_Pdf_Element_Reference|null
      */
     private function _readReference($nextLexeme = null)
     {
@@ -715,7 +703,7 @@ class Zend_Pdf_StringParser
      * Note: PHP duplicates string, which is sent by value, only of it's updated.
      * Thus we don't need to care about overhead
      *
-     * @param string $pdfString
+     * @param string $source
      * @param Zend_Pdf_ElementFactory_Interface $factory
      */
     public function __construct($source, Zend_Pdf_ElementFactory_Interface $factory)

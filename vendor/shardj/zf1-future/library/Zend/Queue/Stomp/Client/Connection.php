@@ -49,7 +49,7 @@ class Zend_Queue_Stomp_Client_Connection
     /**
      * tcp/udp socket
      *
-     * @var resource
+     * @var resource|false
      */
     protected $_socket = false;
 
@@ -61,7 +61,7 @@ class Zend_Queue_Stomp_Client_Connection
      * @param  string $host
      * @param  int $port
      * @param  array $options Accepts "timeout_sec" and "timeout_usec" keys
-     * @return true;
+     * @return true
      * @throws Zend_Queue_Exception
      */
     public function open($scheme, $host, $port, array $options = [])
@@ -147,7 +147,7 @@ class Zend_Queue_Stomp_Client_Connection
      *
      * example: $response = $client->write($frame)->read();
      *
-     * @param Zend_Queue_Stom_FrameInterface $frame
+     * @param Zend_Queue_Stomp_FrameInterface $frame
      * @return $this
      */
     public function write(Zend_Queue_Stomp_FrameInterface $frame)
@@ -241,7 +241,7 @@ class Zend_Queue_Stomp_Client_Connection
      * This must be a Zend_Queue_Stomp_FrameInterface.
      *
      * @param  string $classname - class is an instance of Zend_Queue_Stomp_FrameInterface
-     * @return $this;
+     * @return $this
      */
     public function setFrameClass($classname)
     {

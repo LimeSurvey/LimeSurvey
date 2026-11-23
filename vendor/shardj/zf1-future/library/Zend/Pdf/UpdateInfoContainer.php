@@ -54,14 +54,17 @@ class Zend_Pdf_UpdateInfoContainer
     /**
      * String representation of the object
      *
-     * @var Zend_Memory_Container|null
+     * @var Zend_Memory_Container_Interface|string|null
      */
     private $_dump = null;
 
     /**
      * Object constructor
      *
-     * @param integer $objCount
+     * @param integer $objNum
+     * @param integer $genNum
+     * @param boolean $isFree
+     * @param string|null $dump
      */
     public function __construct($objNum, $genNum, $isFree, $dump = null)
     {

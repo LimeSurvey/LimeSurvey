@@ -30,7 +30,7 @@ class Zend_View_Helper_PaginationControl
     /**
      * View instance
      *
-     * @var Zend_View_Instance
+     * @var Zend_View_Interface
      */
     public $view = null;
 
@@ -88,7 +88,7 @@ class Zend_View_Helper_PaginationControl
     public function paginationControl(?Zend_Paginator $paginator = null, $scrollingStyle = null, $partial = null, $params = null)
     {
         if ($paginator === null) {
-            if (isset($this->view->paginator) && $this->view->paginator !== null && $this->view->paginator instanceof Zend_Paginator) {
+            if (isset($this->view->paginator) && $this->view->paginator instanceof Zend_Paginator) {
                 $paginator = $this->view->paginator;
             } else {
                 /**

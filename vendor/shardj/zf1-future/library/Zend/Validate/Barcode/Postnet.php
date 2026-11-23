@@ -34,7 +34,7 @@ class Zend_Validate_Barcode_Postnet extends Zend_Validate_Barcode_AdapterAbstrac
 {
     /**
      * Allowed barcode lengths
-     * @var integer
+     * @var integer|array
      */
     protected $_length = [6, 7, 10, 12];
 

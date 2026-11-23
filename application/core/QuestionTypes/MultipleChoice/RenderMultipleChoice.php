@@ -1,5 +1,7 @@
 <?php
 
+use LimeSurvey\Models\Services\SurveySessionState;
+
 /**
  * RenderClass for Boilerplate Question
  *  * The ia Array contains the following
@@ -71,6 +73,10 @@ class RenderMultipleChoice extends QuestionBaseRenderer
         return '/survey/questions/answer/multiplechoice';
     }
 
+    /**
+     * Build the answer rows, without the rows left out by their relevance, with the "Other" row at its position
+     * @return array[] the data of each row for the row template
+     */
     public function getRows()
     {
         $otherAdded = false;
@@ -90,6 +96,9 @@ class RenderMultipleChoice extends QuestionBaseRenderer
         /// Generate answer rows
         foreach ($this->aSubQuestions[0] as $oQuestion) {
             $myfname = $this->sSGQA . "_S" . $oQuestion->qid;
+            if ($this->isRowStaticallyHidden($myfname)) {
+                continue;
+            }
             $this->inputnames[] = $myfname;
             ////
             // Insert row
@@ -148,13 +157,18 @@ class RenderMultipleChoice extends QuestionBaseRenderer
         ];
     }
 
+    /**
+     * Returns the template data of the "Other" option row.
+     *
+     * @return array
+     */
     public function getOtherRow()
     {
         $sSeparator = (getRadixPointData($this->oQuestion->survey->correct_relation_defaultlanguage->surveyls_numberformat))['separator'];
         $oth_checkconditionFunction = ($this->getQuestionAttribute('other_numbers_only') == 1) ? "fixnum_checkconditions" : "checkconditions";
 
         $myfname = $this->sSGQA . '_Cother';
-        $mSessionValue = $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname] ?? '';
+        $mSessionValue = $this->setDefaultIfEmpty(SurveySessionState::forSurvey((int) Yii::app()->getConfig('surveyID'))->getFieldValue($myfname), '');
         $this->inputnames[] = $myfname;
 
         $sValue = '';

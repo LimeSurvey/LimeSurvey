@@ -126,7 +126,7 @@ class Zend_Oauth_Consumer extends Zend_Oauth
      *
      * @param  null|array $customServiceParameters
      * @param  null|Zend_Oauth_Token_Request $token
-     * @param  null|Zend_OAuth_Http_UserAuthorization $redirect
+     * @param  null|Zend_Oauth_Http_UserAuthorization $redirect
      * @return string
      */
     public function getRedirectUrl(
@@ -161,10 +161,6 @@ class Zend_Oauth_Consumer extends Zend_Oauth
         ?Zend_Oauth_Token_Request $token = null,
         ?Zend_Oauth_Http_UserAuthorization $request = null
     ) {
-        if ($token instanceof Zend_Oauth_Http_UserAuthorization) {
-            $request = $token;
-            $token = null;
-        }
         $redirectUrl = $this->getRedirectUrl($customServiceParameters, $token, $request);
         header('Location: ' . $redirectUrl);
         exit(1);
@@ -209,17 +205,12 @@ class Zend_Oauth_Consumer extends Zend_Oauth
         } else {
             $request->setMethod($this->getRequestMethod());
         }
-        if (isset($token)) {
-            if ($authorizedToken->getToken() !== $token->getToken()) {
-                require_once 'Zend/Oauth/Exception.php';
-                throw new Zend_Oauth_Exception(
-                    'Authorized token from Service Provider does not match'
-                    . ' supplied Request Token details'
-                );
-            }
-        } else {
+        if ($authorizedToken->getToken() !== $token->getToken()) {
             require_once 'Zend/Oauth/Exception.php';
-            throw new Zend_Oauth_Exception('Request token must be passed to method');
+            throw new Zend_Oauth_Exception(
+                'Authorized token from Service Provider does not match'
+                . ' supplied Request Token details'
+            );
         }
         $this->_requestToken = $token;
         $this->_accessToken = $request->execute();
