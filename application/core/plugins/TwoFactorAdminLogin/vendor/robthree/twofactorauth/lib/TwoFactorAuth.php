@@ -28,13 +28,13 @@ class TwoFactorAuth
     private static array $_base32lookup = array();
 
     public function __construct(
-        private readonly ?string   $issuer = null,
-        private readonly int       $digits = 6,
-        private readonly int       $period = 30,
+        private readonly ?string $issuer = null,
+        private readonly int $digits = 6,
+        private readonly int $period = 30,
         private readonly Algorithm $algorithm = Algorithm::Sha1,
-        private ?IQRCodeProvider   $qrcodeprovider = null,
-        private ?IRNGProvider      $rngprovider = null,
-        private ?ITimeProvider     $timeprovider = null
+        private ?IQRCodeProvider $qrcodeprovider = null,
+        private ?IRNGProvider $rngprovider = null,
+        private ?ITimeProvider $timeprovider = null
     ) {
         if ($this->digits <= 0) {
             throw new TwoFactorAuthException('Digits must be > 0');

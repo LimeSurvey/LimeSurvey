@@ -25,7 +25,7 @@ class BaconQrCodeProvider implements IQRCodeProvider
         private readonly int $borderWidth = 4,
         private string|array $backgroundColour = '#ffffff',
         private string|array $foregroundColour = '#000000',
-        private string       $format = 'png',
+        private string $format = 'png',
     ) {
         $this->backgroundColour = $this->handleColour($this->backgroundColour);
         $this->foregroundColour = $this->handleColour($this->foregroundColour);
