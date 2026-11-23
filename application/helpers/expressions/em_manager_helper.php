@@ -4774,8 +4774,8 @@ class LimeExpressionManager
                         continue;
                     }
                 }
-                $sgq = 'Q' . $kv['qid'];
-                $ext = (string)substr((string) $kv['qcode'], strlen($sgq));
+                // The subquestion part of the variable name, e.g. 'SQ001' of 'Q1_SQ001'
+                $ext = (string)substr((string) $kv['qcode'], strlen((string) $kv['rootVarName']) + 1);
                 if ($sqpatt != '') {
                     if (!preg_match('/' . $sqpatt . '/', $ext)) {
                         continue;
