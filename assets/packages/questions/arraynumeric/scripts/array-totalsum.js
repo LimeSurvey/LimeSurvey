@@ -62,7 +62,7 @@ function sumTable(element) {
         //find the elements in the current row and sum it
         $(this).find('input:enabled:visible').each(function () {
             //sum the values
-            var value = normalizeValue($(this).val());
+            var value = getSumValue($(this).val());
             sum = sum.plus(value);
         });
         //set the value of currents rows sum to the total-combat element in the current row
@@ -84,7 +84,7 @@ function sumTable(element) {
             var sum = new Decimal(0);
             $iRow.each(function () {
                 var item = $($(this).find('td').get((i - 1))).find('input:enabled:visible'),
-                    val = normalizeValue($(item).val());
+                    val = getSumValue($(item).val());
                 //sum the values
                 sum = sum.plus(val);
             });
@@ -102,6 +102,19 @@ function formatValue(sValue) {
     var sRadix = LSvar.sLEMradix;
     sValue = sValue.replace('.', sRadix);
     return sValue;
+}
+
+/**
+ * Get the value to add to the totals
+ * Comma is a number only when the radix is comma (#16878) : count 0 and keep the answer as typed
+ * @param {string} aValue
+ * @return {Decimal|number|boolean}
+ */
+function getSumValue(aValue) {
+    if (LSvar.sLEMradix !== ',' && String(aValue).indexOf(',') !== -1) {
+        return new Decimal(0);
+    }
+    return normalizeValue(aValue);
 }
 
 function normalizeValue(aValue) {
