@@ -180,12 +180,12 @@ class Save
                 $response = Response::create($thissurvey['sid']);
                 // Only the columns the responses table has are set (date stamp, IP address and referrer URL are optional)
                 $response->setAttributes($sdata, false);
-                if ($response->save()) {
-                    $sessionState->set('srid', $response->id);
-                } else {
-                    // TODO: $this->aSaveErrors
+                if (!$response->save()) {
+                    // E.g. a plugin cancelled the save: Without a response there is nothing to save for later
                     $this->aSaveErrors[] = "Unable to insert record into survey table.";
+                    return array('success' => false, 'aSaveErrors' => $this->aSaveErrors);
                 }
+                $sessionState->set('srid', $response->id);
             }
 
             //CREATE ENTRY INTO "saved_control"

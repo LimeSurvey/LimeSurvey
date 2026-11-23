@@ -31,6 +31,9 @@ abstract class Response extends Dynamic
     /** @var string $email_filter Filter of the responses list on the email address of the participant */
     public $email_filter;
 
+    /** @var Token|null The participant of this response once it was decrypted, see getDecryptedParticipant() */
+    private $decryptedParticipant;
+
     /**
      * @inheritdoc
      * Also deletes the uploaded files and the timings of the response
@@ -789,42 +792,52 @@ abstract class Response extends Dynamic
     }
 
     /**
-     * Returns the first name of the participant, for the responses list.
-     * Also decrypts the participant, so it has to be called before the getters of last name and email.
+     * Returns the participant of this response, decrypted.
+     * A participant must not be decrypted twice, so this is done only once,
+     * whichever participant column of the responses list is shown first.
+     *
+     * @return Token|null Null if there is no participant, see getParticipant()
+     */
+    private function getDecryptedParticipant()
+    {
+        $participant = $this->getParticipant();
+        if ($participant !== null && $participant !== $this->decryptedParticipant) {
+            $participant->decrypt();
+            $this->decryptedParticipant = $participant;
+        }
+        return $participant;
+    }
+
+    /**
+     * Returns the first name of the participant, for the responses list
      *
      * @return string|null Null if there is no participant
      */
     public function getFirstNameForGrid()
     {
-        $participant = $this->getParticipant();
-        if ($participant === null) {
-            return null;
-        }
-        $participant->decrypt();
-        return $participant->firstname;
+        $participant = $this->getDecryptedParticipant();
+        return $participant === null ? null : $participant->firstname;
     }
 
     /**
-     * Returns the last name of the participant, for the responses list.
-     * The participant is already decrypted by getFirstNameForGrid(): Doing it again would fail.
+     * Returns the last name of the participant, for the responses list
      *
      * @return string|null Null if there is no participant
      */
     public function getLastNameForGrid()
     {
-        $participant = $this->getParticipant();
+        $participant = $this->getDecryptedParticipant();
         return $participant === null ? null : $participant->lastname;
     }
 
     /**
-     * Returns the email address of the participant, for the responses list.
-     * The participant is already decrypted by getFirstNameForGrid(): Doing it again would fail.
+     * Returns the email address of the participant, for the responses list
      *
      * @return string|null Null if there is no participant
      */
     public function getEmailForGrid()
     {
-        $participant = $this->getParticipant();
+        $participant = $this->getDecryptedParticipant();
         return $participant === null ? null : $participant->email;
     }
 
