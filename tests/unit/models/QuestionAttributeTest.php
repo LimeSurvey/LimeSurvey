@@ -79,4 +79,47 @@ class QuestionAttributeTest extends BaseModelTestCase
         $this->assertArrayNotHasKey('testAttribute', \QuestionAttribute::getOwnQuestionAttributesViaPlugin());
         $this->assertSame(1, $plugin->dispatchCount);
     }
+
+    /**
+     * The attributes of all question types contain the advanced attributes of every base question theme with their
+     * i18n flag, but not the general attributes (question columns).
+     */
+    public function testAllAttributesSettingsContainAttributesOfAllQuestionTypes()
+    {
+        $allAttributes = \QuestionAttribute::getAllAttributesSettings();
+
+        // Attributes of single question types
+        $this->assertArrayHasKey('dualscale_headerA', $allAttributes);
+        $this->assertArrayHasKey('max_num_value_n', $allAttributes);
+        $this->assertArrayHasKey('equation', $allAttributes);
+        // Name of each definition is its key
+        $this->assertSame('cssclass', $allAttributes['cssclass']['name']);
+        // i18n flags
+        $this->assertNotEmpty($allAttributes['prefix']['i18n']);
+        $this->assertNotEmpty($allAttributes['em_validation_q_tip']['i18n']);
+        $this->assertEmpty($allAttributes['hidden']['i18n']);
+        // General attributes are question columns, not question attributes
+        $this->assertArrayNotHasKey('mandatory', $allAttributes);
+        $this->assertArrayNotHasKey('relevance', $allAttributes);
+        $this->assertArrayNotHasKey('question_template', $allAttributes);
+    }
+
+    /**
+     * The attributes of all question types contain the attributes added by plugins, whatever question type they apply to.
+     */
+    public function testAllAttributesSettingsContainPluginAttributes()
+    {
+        require_once __DIR__ . '/../../data/plugins/NewQuestionAttributesPlugin.php';
+        $pluginManager = App()->getPluginManager();
+        $plugin = new \NewQuestionAttributesPlugin($pluginManager, 0);
+        $plugin->init();
+        try {
+            $allAttributes = \QuestionAttribute::getAllAttributesSettings();
+            $this->assertArrayHasKey('testAttribute', $allAttributes);
+            $this->assertArrayHasKey('testAttributeForArray', $allAttributes);
+        } finally {
+            $pluginManager->unsubscribe($plugin, 'newQuestionAttributes');
+        }
+        $this->assertArrayNotHasKey('testAttribute', \QuestionAttribute::getAllAttributesSettings());
+    }
 }

@@ -32,8 +32,10 @@ class questionHelper
      * Return all the definitions of Question attributes core+extended value
      * @return array[]
      *
-     *@deprecated  used only as fall back method and for import/exports of LS v1 and for Survey Logic overview
-     * use QuestionAttribute::getQuestionAttributesSettings function to get attributes
+     * @deprecated Not used by the core anymore, the attribute definitions are read from the question themes.
+     * Use QuestionAttribute::getQuestionAttributesSettings() or the QuestionAttributeFetcher for the attributes of
+     * a question type or question, and QuestionAttribute::getAllAttributesSettings() for the attributes of all
+     * question types.
      */
     public static function getAttributesDefinitions()
     {

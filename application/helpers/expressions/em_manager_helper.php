@@ -23,7 +23,6 @@
  * @author Denis Chenu <http://sondages.pro>
  */
 
-use LimeSurvey\Helpers\questionHelper;
 use LimeSurvey\Models\Services\ExpressionManagerSessionState;
 use LimeSurvey\Models\Services\Quotas;
 use LimeSurvey\Models\Services\SurveySessionState;
@@ -9867,7 +9866,8 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         $LEM->em->resetErrorsAndWarningsOnEachPart = false;
         $emLanguage = self::emSessionState()->getLanguage();
         $aSurveyInfo = getSurveyInfo($sid, $emLanguage);
-        $aAttributesDefinitions = questionHelper::getAttributesDefinitions();
+        /* @var array[] Attribute definitions by question type and question theme */
+        $attributeDefinitionsByTheme = [];
         /* All final survey string must be shown in survey language #12208 */
         Yii::app()->setLanguage($emLanguage);
         /* @var boolean , did have error */
@@ -10132,6 +10132,14 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 $attrs['other'] = $LEM->questionSeq2relevance[$qseq]['other'];
             }
             if (count($attrs) > 0) {
+                $question = $questions[$qid];
+                $definitionsKey = $question->type . '|' . $question->question_theme_name;
+                if (!isset($attributeDefinitionsByTheme[$definitionsKey])) {
+                    $questionAttributeFetcher = new \LimeSurvey\Models\Services\QuestionAttributeFetcher();
+                    $questionAttributeFetcher->setQuestion($question);
+                    $attributeDefinitionsByTheme[$definitionsKey] = $questionAttributeFetcher->fetch();
+                }
+                $attributeDefinitions = $attributeDefinitionsByTheme[$definitionsKey];
                 $attrTable = "<table class='logicfileattributetable'><tr><th>" . $LEM->gT("Question attribute") . "</th><th>" . $LEM->gT("Value") . "</th></tr>\n";
                 $count = 0;
                 foreach ($attrs as $key => $value) {
@@ -10145,11 +10153,11 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     if ($key == 'relevance') {/* BUt : it's not an attribute ? */
                         continue;
                     }
-                    if (isset($aAttributesDefinitions[$key]['default']) && $value == $aAttributesDefinitions[$key]['default']) {
+                    if (isset($attributeDefinitions[$key]['default']) && $value == $attributeDefinitions[$key]['default']) {
                         continue;
                     }
-                    if (isset($aAttributesDefinitions[$key]['expression']) && $aAttributesDefinitions[$key]['expression'] > 0) {
-                        if ($aAttributesDefinitions[$key]['expression'] > 1) {
+                    if (isset($attributeDefinitions[$key]['expression']) && $attributeDefinitions[$key]['expression'] > 0) {
+                        if ($attributeDefinitions[$key]['expression'] > 1) {
                             $value = '{' . $value . '}';
                         }
                         $LEM->ProcessString($value, $qid, $qReplacement, 1, 1, false, false);

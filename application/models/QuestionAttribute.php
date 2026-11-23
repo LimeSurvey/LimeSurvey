@@ -509,9 +509,7 @@ class QuestionAttribute extends LSActiveRecord
      *
      * @param string $sType : type of question (this is the attribute 'question_type' in table question_theme)
      * @param boolean $advancedOnly If true, only fetch advanced attributes
-     * @return array The attribute settings for this question type
-     *                 returns values from getGeneralAttributesFromXml and getAdvancedAttributesFromXml if this fails
-     *                 getAttributesDefinition and getDefaultSettings are returned
+     * @return array The attribute settings for this question type, from the config.xml of its base question theme
      *
      * @throws CException
      */
@@ -526,25 +524,40 @@ class QuestionAttribute extends LSActiveRecord
         }
         $advancedAttributes = self::getAdvancedAttributesFromXml($sXmlFilePath);
         self::$questionAttributesSettings[$sType] = array_merge($generalAttributes, $advancedAttributes);
+        return self::$questionAttributesSettings[$sType];
+    }
 
-        // if empty, fall back to getting attributes from questionHelper
-        if (empty(self::$questionAttributesSettings[$sType])) {
-            self::$questionAttributesSettings[$sType] = array();
-            $attributes = \LimeSurvey\Helpers\questionHelper::getAttributesDefinitions();
-            /* Filter to get this question type setting */
-            $aQuestionTypeAttributes = array_filter($attributes, function ($attribute) use ($sType) {
-                return stripos((string) $attribute['types'], $sType) !== false;
-            });
-            foreach ($aQuestionTypeAttributes as $attribute => $settings) {
-                  self::$questionAttributesSettings[$sType][$attribute] = array_merge(
-                      QuestionAttribute::getDefaultSettings(),
-                      array("category" => gT("Plugins")),
-                      $settings,
-                      array("name" => $attribute)
-                  );
+    /**
+     * Returns the definitions of the attributes of all question types: The advanced attributes of the base question
+     * themes and the attributes added by plugins. The general attributes (question columns like mandatory or
+     * relevance) are not included.
+     * An attribute used by several question types is returned once, with the definition of the first question type
+     * using it: Settings that can differ between question types (like the default value) must be read with
+     * getQuestionAttributesSettings() or the QuestionAttributeFetcher for the question.
+     *
+     * @return array<string,array<string,mixed>> The attribute definitions, by attribute name
+     */
+    public static function getAllAttributesSettings()
+    {
+        $questionTypes = App()->db->createCommand()
+            ->selectDistinct('question_type')
+            ->from('{{question_themes}}')
+            ->where("extends = ''")
+            ->order('question_type')
+            ->queryColumn();
+        $providers = [
+            new \LimeSurvey\Models\Services\CoreQuestionAttributeProvider(),
+            new \LimeSurvey\Models\Services\PluginQuestionAttributeProvider(),
+        ];
+        $questionAttributeHelper = new QuestionAttributeHelper();
+        $allAttributes = [];
+        foreach ($questionTypes as $questionType) {
+            foreach ($providers as $provider) {
+                $attributes = $provider->getDefinitions(['questionType' => $questionType, 'advancedOnly' => true]);
+                $allAttributes += $questionAttributeHelper->sanitizeQuestionAttributes($attributes);
             }
         }
-        return self::$questionAttributesSettings[$sType];
+        return $allAttributes;
     }
 
     /**

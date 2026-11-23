@@ -1,7 +1,5 @@
 <?php
 
-use LimeSurvey\Helpers\questionHelper;
-
 /**
  * This is the model class for table "{{question_themes}}".
  *
