@@ -313,7 +313,7 @@ No system CA bundle could be found in any of the the common system locations.
 PHP versions earlier than 5.6 are not properly configured to use the system's
 CA bundle by default. In order to verify peer certificates, you will need to
 supply the path on disk to a certificate bundle to the 'verify' request option:
-https://github.com/guzzle/guzzle/blob/7.16/docs/request-options.md#verify. If
+https://github.com/guzzle/guzzle/blob/7.17/docs/request-options.md#verify. If
 you do not need a specific certificate bundle, then Mozilla provides a commonly
 used CA bundle which can be downloaded here (provided by the maintainer of
 cURL): https://curl.se/ca/cacert.pem. Once you have a CA bundle available on
@@ -905,7 +905,12 @@ EOT
             }
             if ($uri->getHost() !== $asciiHost) {
                 // Replace URI only if the ASCII version is different
-                $uri = $uri->withHost($asciiHost);
+                try {
+                    $uri = $uri->withHost($asciiHost);
+                } catch (\InvalidArgumentException $e) {
+                    // The conversion can map a character to a URI delimiter.
+                    throw new InvalidArgumentException('IDN conversion failed', 0, $e);
+                }
             }
         }
 
@@ -934,7 +939,17 @@ EOT
     private static function idnToAsci(string $domain, int $options, ?array &$info = [])
     {
         if (\function_exists('idn_to_ascii') && \defined('INTL_IDNA_VARIANT_UTS46')) {
-            return \idn_to_ascii($domain, $options, \INTL_IDNA_VARIANT_UTS46, $info);
+            // ICU can take quadratic time, and no valid name needs more bytes.
+            if (\strlen($domain) > 4096) {
+                return false;
+            }
+
+            try {
+                return \idn_to_ascii($domain, $options, \INTL_IDNA_VARIANT_UTS46, $info);
+            } catch (\IntlException $e) {
+                // With intl.use_exceptions, a label too long to encode throws.
+                return false;
+            }
         }
 
         throw new \Error('ext-idn or symfony/polyfill-intl-idn not loaded or too old');

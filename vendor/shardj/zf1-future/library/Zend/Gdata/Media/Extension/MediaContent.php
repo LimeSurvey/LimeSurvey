@@ -37,6 +37,7 @@ require_once 'Zend/Gdata/Extension.php';
  * @subpackage Media
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @deprecated Deprecated since 1.27.1 and will be removed in a future version: Google shut down the Google Data APIs it implements and the ClientLogin and AuthSub authentication
  */
 class Zend_Gdata_Media_Extension_MediaContent extends Zend_Gdata_Extension
 {
@@ -49,7 +50,7 @@ class Zend_Gdata_Media_Extension_MediaContent extends Zend_Gdata_Extension
     protected $_url = null;
 
     /**
-     * @var int
+     * @var int|string|null
      */
     protected $_fileSize = null;
 
@@ -64,7 +65,7 @@ class Zend_Gdata_Media_Extension_MediaContent extends Zend_Gdata_Extension
     protected $_medium = null;
 
     /**
-     * @var string
+     * @var string|bool
      */
     protected $_isDefault = null;
 
@@ -74,37 +75,37 @@ class Zend_Gdata_Media_Extension_MediaContent extends Zend_Gdata_Extension
     protected $_expression = null;
 
     /**
-     * @var int
+     * @var int|string|null
      */
     protected $_bitrate = null;
 
     /**
-     * @var int
+     * @var int|string|null
      */
     protected $_framerate = null;
 
     /**
-     * @var int
+     * @var int|string|null
      */
     protected $_samplingrate = null;
 
     /**
-     * @var int
+     * @var int|string|null
      */
     protected $_channels = null;
 
     /**
-     * @var int
+     * @var int|string|null
      */
     protected $_duration = null;
 
     /**
-     * @var int
+     * @var int|string|null
      */
     protected $_height = null;
 
     /**
-     * @var int
+     * @var int|string|null
      */
     protected $_width = null;
 
@@ -339,7 +340,7 @@ class Zend_Gdata_Media_Extension_MediaContent extends Zend_Gdata_Extension
     }
 
     /**
-     * @return bool
+     * @return bool|string
      */
     public function getIsDefault()
     {

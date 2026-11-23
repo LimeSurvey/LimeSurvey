@@ -397,7 +397,7 @@ abstract class Zend_Search_Lucene_Search_Similarity
      * value.
      *
      * @param float $f
-     * @return integer
+     * @return integer|float
      */
     static function encodeNorm($f)
     {
@@ -407,7 +407,7 @@ abstract class Zend_Search_Lucene_Search_Similarity
     /**
      * Float to byte conversion
      *
-     * @param integer $b
+     * @param float $f
      * @return float
      */
     private static function _floatToByte($f)

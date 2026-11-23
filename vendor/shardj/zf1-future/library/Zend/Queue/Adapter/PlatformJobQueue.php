@@ -33,6 +33,7 @@ require_once 'Zend/Queue/Adapter/AdapterAbstract.php';
  * @subpackage Adapter
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @deprecated Deprecated since 1.26.1 and will be removed in a future version: Zend Platform and its Job Queue are discontinued
  */
 class Zend_Queue_Adapter_PlatformJobQueue extends Zend_Queue_Adapter_AdapterAbstract
 {
@@ -50,6 +51,8 @@ class Zend_Queue_Adapter_PlatformJobQueue extends Zend_Queue_Adapter_AdapterAbst
      */
     public function __construct($options, ?Zend_Queue $queue = null)
     {
+        trigger_error(get_class($this) . ' is deprecated and will be removed in a future version', E_USER_DEPRECATED);
+
         parent::__construct($options, $queue);
 
         if (!extension_loaded("jobqueue_client")) {
@@ -73,7 +76,7 @@ class Zend_Queue_Adapter_PlatformJobQueue extends Zend_Queue_Adapter_AdapterAbst
             throw new Zend_Queue_Exception('Platform Job Queue password should be provided');
         }
 
-        $this->_zendQueue = new ZendApi_Queue($options['host']);
+        $this->_zendQueue = new ZendAPI_Queue($options['host']);
 
         if (!$this->_zendQueue) {
             require_once 'Zend/Queue/Exception.php';
@@ -111,7 +114,7 @@ class Zend_Queue_Adapter_PlatformJobQueue extends Zend_Queue_Adapter_AdapterAbst
      *
      * @param  string  $name    queue name
      * @param  integer $timeout default visibility timeout
-     * @return void
+     * @return never
      * @throws Zend_Queue_Exception
      */
     public function create($name, $timeout=null)
@@ -124,7 +127,7 @@ class Zend_Queue_Adapter_PlatformJobQueue extends Zend_Queue_Adapter_AdapterAbst
      * Delete a queue and all of its messages
      *
      * @param  string $name queue name
-     * @return void
+     * @return never
      * @throws Zend_Queue_Exception
      */
     public function delete($name)
@@ -136,7 +139,7 @@ class Zend_Queue_Adapter_PlatformJobQueue extends Zend_Queue_Adapter_AdapterAbst
     /**
      * Get an array of all available queues
      *
-     * @return void
+     * @return never
      * @throws Zend_Queue_Exception
      */
     public function getQueues()
@@ -169,7 +172,7 @@ class Zend_Queue_Adapter_PlatformJobQueue extends Zend_Queue_Adapter_AdapterAbst
     /**
      * Send a message to the queue
      *
-     * @param  array | ZendAPI_job $message Message to send to the active queue
+     * @param  array | ZendAPI_Job $message Message to send to the active queue
      * @param  Zend_Queue $queue     Not supported
      * @return Zend_Queue_Message
      * @throws Zend_Queue_Exception
@@ -290,7 +293,6 @@ class Zend_Queue_Adapter_PlatformJobQueue extends Zend_Queue_Adapter_AdapterAbst
      * $array['function name'] = true or false
      * true is supported, false is not supported.
      *
-     * @param  string $name
      * @return array
      */
     public function getCapabilities()
@@ -330,7 +332,7 @@ class Zend_Queue_Adapter_PlatformJobQueue extends Zend_Queue_Adapter_AdapterAbst
     {
         $options = $this->_options['daemonOptions'];
 
-        $this->_zendQueue = new ZendApi_Queue($options['host']);
+        $this->_zendQueue = new ZendAPI_Queue($options['host']);
 
         if (!$this->_zendQueue) {
             require_once 'Zend/Queue/Exception.php';

@@ -81,7 +81,7 @@ class Zend_Validate_File_MimeType extends Zend_Validate_Abstract
     /**
      * Finfo object to use
      *
-     * @var resource
+     * @var resource|null
      */
     protected $_finfo;
 
@@ -117,7 +117,7 @@ class Zend_Validate_File_MimeType extends Zend_Validate_Abstract
     /**
      * Holds error information returned by finfo_open
      *
-     * @var array
+     * @var ErrorException|null
      */
     protected $_finfoError;
 
@@ -186,8 +186,11 @@ class Zend_Validate_File_MimeType extends Zend_Validate_Abstract
         } else {
             $const = defined('FILEINFO_MIME_TYPE') ? FILEINFO_MIME_TYPE : FILEINFO_MIME;
             set_error_handler([$this, '_errorHandler'], E_NOTICE | E_WARNING);
-            $this->_finfo = finfo_open($const, $file);
-            restore_error_handler();
+            try {
+                $this->_finfo = finfo_open($const, $file);
+            } finally {
+                restore_error_handler();
+            }
             if (empty($this->_finfo)) {
                 $this->_finfo = null;
                 require_once 'Zend/Validate/Exception.php';
@@ -382,7 +385,7 @@ class Zend_Validate_File_MimeType extends Zend_Validate_Abstract
     /**
      * Throws an error of the given type
      *
-     * @param  string $file
+     * @param  string|array $file
      * @param  string $errorType
      * @return false
      */
@@ -409,24 +412,25 @@ class Zend_Validate_File_MimeType extends Zend_Validate_Abstract
 
             if (!empty($mimefile) && empty($this->_finfo)) {
                 set_error_handler([$this, '_errorHandler'], E_NOTICE | E_WARNING);
-                $this->_finfo = finfo_open($const, $mimefile);
-                restore_error_handler();
+                try {
+                    $this->_finfo = finfo_open($const, $mimefile);
+                } finally {
+                    restore_error_handler();
+                }
             }
 
             if (empty($this->_finfo)) {
                 set_error_handler([$this, '_errorHandler'], E_NOTICE | E_WARNING);
-                $this->_finfo = finfo_open($const);
-                restore_error_handler();
+                try {
+                    $this->_finfo = finfo_open($const);
+                } finally {
+                    restore_error_handler();
+                }
             }
 
             if (!empty($this->_finfo)) {
                 $type = finfo_file($this->_finfo, $file);
             }
-        }
-
-        if (empty($type) &&
-            (function_exists('mime_content_type') && ini_get('mime_magic.magicfile'))) {
-                $type = mime_content_type($file);
         }
 
         return $type;

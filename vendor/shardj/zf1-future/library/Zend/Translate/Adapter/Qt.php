@@ -57,8 +57,8 @@ class Zend_Translate_Adapter_Qt extends Zend_Translate_Adapter {
      * @param  string  $locale    Locale/Language to add data for, identical with locale identifier,
      *                            see Zend_Locale for more information
      * @param  string  $filename  QT file to add, full path must be given for access
-     * @param  array   $option    OPTIONAL Options to use
-     * @throws Zend_Translation_Exception
+     * @param  array   $options   OPTIONAL Options to use
+     * @throws Zend_Translate_Exception
      * @return array
      */
     protected function _loadTranslationData($filename, $locale, array $options = [])
@@ -92,6 +92,7 @@ class Zend_Translate_Adapter_Qt extends Zend_Translate_Adapter {
                           xml_get_current_line_number($this->_file),
                           $filename);
             if (PHP_VERSION_ID < 80000) {
+                // phpcs:ignore PHPCompatibility.FunctionUse.RemovedFunctions.xml_parser_freeDeprecated -- called before PHP 8.0 only
                 xml_parser_free($this->_file);
             }
             require_once 'Zend/Translate/Exception.php';

@@ -27,6 +27,7 @@
  * @subpackage Util
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @deprecated Deprecated since 1.27.1 and will be removed in a future version: AMF is the data format of Adobe Flash Player, which reached its end of life on 2020-12-31
  */
 class Zend_Amf_Util_BinaryStream
 {
@@ -74,6 +75,7 @@ class Zend_Amf_Util_BinaryStream
 
         $this->_stream       = $stream;
         $this->_needle       = 0;
+        // phpcs:ignore PHPCompatibility.IniDirectives.RemovedIniDirectives.mbstring_func_overloadDeprecatedRemoved -- the directive exists on PHP 7.4
         $this->_mbStringFunctionsOverloaded = function_exists('mb_strlen') && (ini_get('mbstring.func_overload') !== '') && ((int)ini_get('mbstring.func_overload') & 2);
         $this->_streamLength = $this->_mbStringFunctionsOverloaded ? mb_strlen($stream, '8bit') : strlen($stream);
         $this->_bigEndian    = (pack('l', 1) === "\x00\x00\x00\x01");
@@ -93,7 +95,7 @@ class Zend_Amf_Util_BinaryStream
      * Read the number of bytes in a row for the length supplied.
      *
      * @todo   Should check that there are enough bytes left in the stream we are about to read.
-     * @param  int $length
+     * @param  int|float $length
      * @return string
      * @throws Zend_Amf_Exception for buffer underrun
      */
@@ -146,7 +148,7 @@ class Zend_Amf_Util_BinaryStream
     /**
      * Writes the passed string into a signed byte on the stream.
      *
-     * @param  string $stream
+     * @param  string|int $stream
      * @return Zend_Amf_Util_BinaryStream
      */
     public function writeByte($stream)

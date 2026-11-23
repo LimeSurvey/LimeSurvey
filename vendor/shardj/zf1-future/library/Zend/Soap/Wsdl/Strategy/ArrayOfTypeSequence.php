@@ -55,8 +55,10 @@ class Zend_Soap_Wsdl_Strategy_ArrayOfTypeSequence extends Zend_Soap_Wsdl_Strateg
                 $this->_addElementFromWsdlAndChildTypes($complexTypeName, $childTypeName);
             }
             // adding the PHP type which is resolved to a nested XSD type. therefore add only once.
+            // @phpstan-ignore variable.undefined (the loop above runs at least once)
             $this->getContext()->addType($complexTypeName);
 
+            // @phpstan-ignore variable.undefined (the loop above runs at least once)
             return "tns:$complexTypeName";
         } else if (!in_array($type, $this->getContext()->getTypes())) {
             // New singular complex type

@@ -29,6 +29,7 @@ require_once 'Zend/Cache/Backend/Interface.php';
  * @see Zend_Cache_Backend
  */
 require_once 'Zend/Cache/Backend.php';
+require_once 'Zend/Cache.php';
 
 /**
  * @package    Zend_Cache
@@ -213,7 +214,7 @@ class Zend_Cache_Backend_Static
      * @param  string $data            Datas to cache
      * @param  string $id              Cache id
      * @param  array $tags             Array of strings, the cache record will be tagged by each string entry
-     * @param  int   $specificLifetime If != false, set a specific lifetime for this cache record (null => infinite lifetime)
+     * @param  int|false   $specificLifetime If != false, set a specific lifetime for this cache record (null => infinite lifetime)
      * @return boolean true if no problem
      */
     public function save($data, $id, $tags = [], $specificLifetime = false)
@@ -406,6 +407,7 @@ class Zend_Cache_Backend_Static
             case Zend_Cache::CLEANING_MODE_MATCHING_TAG:
             case Zend_Cache::CLEANING_MODE_MATCHING_ANY_TAG:
                 if (empty($tags)) {
+                    require_once 'Zend/Exception.php';
                     throw new Zend_Exception('Cannot use tag matching modes as no tags were defined');
                 }
                 if ($this->_tagged === null && $tagged = $this->getInnerCache()->load(self::INNER_CACHE_NAME)) {
@@ -446,6 +448,7 @@ class Zend_Cache_Backend_Static
                 break;
             case Zend_Cache::CLEANING_MODE_NOT_MATCHING_TAG:
                 if (empty($tags)) {
+                    require_once 'Zend/Exception.php';
                     throw new Zend_Exception('Cannot use tag matching modes as no tags were defined');
                 }
                 if ($this->_tagged === null) {
@@ -468,7 +471,6 @@ class Zend_Cache_Backend_Static
                 break;
             default:
                 Zend_Cache::throwException('Invalid mode for clean() method');
-                break;
         }
         return $result;
     }
@@ -560,7 +562,7 @@ class Zend_Cache_Backend_Static
      * otherwise return the non-string (assumed octal or decimal int already)
      *
      * @param string $val The potential octal in need of conversion
-     * @return int
+     * @return int|string
      */
     protected function _octdec($val)
     {

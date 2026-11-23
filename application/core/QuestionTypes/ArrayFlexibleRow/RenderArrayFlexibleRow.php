@@ -186,6 +186,10 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
         }
     }
 
+    /**
+     * Build the rows of the dropdown layout, without the rows left out by their relevance
+     * @return array[] the data of each row for the row template
+     */
     public function getDropdownRows()
     {
         // $labels[] = array(
@@ -195,8 +199,12 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
 
         //$aAnswer->answerl10ns[$sSurveyLanguage]->answer
         $aRows = [];
-        foreach ($this->aSubQuestions[0] as $i => $oQuestion) {
+        $rowIndex = 0;
+        foreach ($this->aSubQuestions[0] as $oQuestion) {
             $myfname        = $this->sSGQA . '_S' . $oQuestion->qid;
+            if ($this->isRowStaticallyHidden($myfname)) {
+                continue;
+            }
             $answertext     = $oQuestion->questionl10ns[$this->sLanguage]['question'];
             // Check the mandatory sub Q violation
             $error = (in_array($myfname, $this->aMandatoryViolationSubQ));
@@ -251,21 +259,30 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
                 'right_exists'           => $this->rightExists,
                 'answertextright'        => $answertextright,
                 'options'                => $options,
-                'odd'                    => ($i % 2), // true for odd, false for even
+                'odd'                    => ($rowIndex % 2), // true for odd, false for even
                 'relevanceClass'         => $this->getCurrentRelevecanceClass($myfname),
             );
 
             $this->inputnames[] = $myfname;
+            $rowIndex++;
         }
         return $aRows;
     }
 
+    /**
+     * Build the rows of the radio layout, without the rows left out by their relevance, with the repeated headers
+     * @return array[] template and data of each row
+     */
     public function getNonDropdownRows()
     {
         $aRows = [];
-        foreach ($this->aSubQuestions[0] as $i => $oQuestion) {
-            if (($this->repeatheadings > 0) && ($i > 0) && ($i % $this->repeatheadings == 0)) {
-                if (($this->getQuestionCount() - $i + 1) >= $this->minrepeatheadings) {
+        $rowIndex = 0;
+        $subQuestions = $this->withoutStaticallyHiddenRows($this->aSubQuestions[0]);
+        $rowCount = count($subQuestions);
+        foreach ($subQuestions as $oQuestion) {
+            $myfname        = $this->sSGQA . '_S' . $oQuestion->qid;
+            if (($this->repeatheadings > 0) && ($rowIndex > 0) && ($rowIndex % $this->repeatheadings == 0)) {
+                if (($rowCount - $rowIndex + 1) >= $this->minrepeatheadings) {
                     // Close actual body and open another one
                     $aRows[] = [
                         'template' => '/survey/questions/answer/arrays/array/no_dropdown/rows/repeat_header.twig',
@@ -276,7 +293,6 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
                 }
             }
 
-            $myfname        = $this->sSGQA . '_S' . $oQuestion->qid;
             $answertext     = $oQuestion->questionl10ns[$this->sLanguage]->question;
             $answertext     = (strpos((string) $answertext, '|') !== false) ? substr((string) $answertext, 0, strpos((string) $answertext, '|')) : $answertext;
 
@@ -328,12 +344,13 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
                     'right_exists' => intval($this->rightExists),
                     'value'      => $value,
                     'error'      => $error,
-                    'odd'        => ($i % 2), // true for odd, false for even
+                    'odd'        => ($rowIndex % 2), // true for odd, false for even
                     'relevanceClass' => $this->getCurrentRelevecanceClass($myfname),
                 )
                 ];
 
             $this->inputnames[] = $myfname;
+            $rowIndex++;
         }
 
         return $aRows;

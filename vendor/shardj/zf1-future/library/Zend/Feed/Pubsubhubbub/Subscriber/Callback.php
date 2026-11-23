@@ -56,7 +56,7 @@ class Zend_Feed_Pubsubhubbub_Subscriber_Callback
      * but is part of the Callback URL path, requiring manual retrieval e.g.
      * using a route and the Zend_Controller_Action::_getParam() method.
      *
-     * @var string
+     * @var string|null
      */
     protected $_subscriptionKey = null;
 

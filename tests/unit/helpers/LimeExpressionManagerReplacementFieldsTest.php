@@ -28,7 +28,6 @@ class LimeExpressionManagerReplacementFieldsTest extends TestBaseClass
     private function getTempVars()
     {
         $property = new \ReflectionProperty(LimeExpressionManager::class, 'tempVars');
-        $property->setAccessible(true);
         return $property->getValue(LimeExpressionManager::singleton());
     }
 

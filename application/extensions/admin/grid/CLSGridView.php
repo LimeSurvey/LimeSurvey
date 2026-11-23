@@ -145,7 +145,9 @@ class CLSGridView extends TbGridView
 
     /**
      * Renders the pager.
-     * Overrides parent to render it as a navigation landmark ("Pagination") instead of a plain div.
+     * Overrides parent to render it as a navigation landmark instead of a plain div.
+     * The landmark is named after the table caption, so pages with several grids
+     * get distinguishable landmarks.
      *
      * @return void
      */
@@ -156,7 +158,8 @@ class CLSGridView extends TbGridView
         $pager = ob_get_clean();
         $prefix = '<div class="' . $this->pagerCssClass . '">';
         if (strpos($pager, $prefix) === 0) {
-            $pager = '<nav class="' . $this->pagerCssClass . '" aria-label="' . CHtml::encode(gT('Pagination')) . '">'
+            $label = empty($this->lsCaption) ? gT('Pagination') : sprintf(gT('Pagination: %s'), $this->lsCaption);
+            $pager = '<nav class="' . $this->pagerCssClass . '" aria-label="' . CHtml::encode($label) . '">'
                 . substr($pager, strlen($prefix), -strlen('</div>')) . '</nav>';
         }
         echo $pager;
@@ -457,6 +460,9 @@ class CLSGridView extends TbGridView
     /**
      * Appends columns to the gridview based on the selected columns of the columnFilter param.
      * If available loads saved column filter from user settings.
+     * The grid id is used to detect the column selection request and as storage key, since
+     * ajaxUpdate may list further elements to refresh, while the "ajax" request variable is
+     * always the id of the grid itself.
      * @return void
      */
     protected function appendAdditionalColumns(): void
@@ -484,24 +490,25 @@ class CLSGridView extends TbGridView
             'filter'            => false
         ];
         /* Updating the columns to be added */
-        if (App()->request->getParam('selectColumns') && $this->ajaxUpdate === $ajaxUpdate) {
+        $settingName = 'gridview_columns_' . $this->id;
+        if (App()->request->getParam('selectColumns') && $this->id === $ajaxUpdate) {
             $columnsSelected = (array) App()->request->getQuery('columnsSelected');
             if ($this->lsOrganizeColumns) {
-                App()->session['gridview_columns_' . $this->ajaxUpdate] = array_values(array_filter($columnsSelected, 'is_string'));
+                App()->session[$settingName] = array_values(array_filter($columnsSelected, 'is_string'));
             } elseif (empty($columnsSelected)) {
                 // If there are no columns selected, we delete the user setting.
-                SettingsUser::deleteUserSetting('gridview_columns_' . $this->ajaxUpdate);
+                SettingsUser::deleteUserSetting($settingName);
             } else {
-                SettingsUser::setUserSetting('gridview_columns_' . $this->ajaxUpdate, json_encode($columnsSelected));
+                SettingsUser::setUserSetting($settingName, json_encode($columnsSelected));
             }
         }
         if ($this->lsOrganizeColumns) {
-            $sessionColumns = App()->session['gridview_columns_' . $this->ajaxUpdate];
+            $sessionColumns = App()->session[$settingName];
             $this->addColumns(is_array($sessionColumns) ? $sessionColumns : $this->lsAdditionalColumnsDefault);
             return;
         }
         /* get the columns to be added */
-        $userColumns = SettingsUser::getUserSettingValue('gridview_columns_' . $this->ajaxUpdate);
+        $userColumns = SettingsUser::getUserSettingValue($settingName);
         if (!empty($userColumns)) {
             $columnsSelected = json_decode($userColumns, false);
             if (is_array($columnsSelected)) {

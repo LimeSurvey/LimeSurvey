@@ -63,7 +63,7 @@ class Zend_Dojo_Form_Element_DateTextBox extends Zend_Dojo_Form_Element_Validati
     /**
      * Set am,pm flag
      *
-     * @param  bool $am,pm
+     * @param  bool $flag
      * @return Zend_Dojo_Form_Element_DateTextBox
      */
     public function setAmPm($flag)
@@ -88,7 +88,7 @@ class Zend_Dojo_Form_Element_DateTextBox extends Zend_Dojo_Form_Element_Validati
     /**
      * Set strict flag
      *
-     * @param  bool $strict
+     * @param  bool $flag
      * @return Zend_Dojo_Form_Element_DateTextBox
      */
     public function setStrict($flag)

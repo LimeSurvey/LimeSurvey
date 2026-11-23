@@ -326,7 +326,7 @@ class Zend_Validate_EmailAddress extends Zend_Validate_Abstract
     /**
      * Returns the set domainCheck option
      *
-     * @return unknown
+     * @return mixed
      */
     public function getDomainCheck()
     {
@@ -375,6 +375,9 @@ class Zend_Validate_EmailAddress extends Zend_Validate_Abstract
     /**
      * Returns if the given host is reserved
      *
+     * A host is reserved when its IPv4 address is a multicast or reserved address (224.0.0.0 and above)
+     * or lies in one of the networks of $_invalidIp.
+     *
      * @param string $host
      * @return boolean
      */
@@ -386,56 +389,25 @@ class Zend_Validate_EmailAddress extends Zend_Validate_Abstract
         $octet = explode('.',$host);
         if ((int)$octet[0] >= 224) {
             return true;
-        } else if (array_key_exists($octet[0], $this->_invalidIp)) {
-            foreach ((array)$this->_invalidIp[$octet[0]] as $subnetData) {
-                // we skip the first loop as we already know that octet matches
-                for ($i = 1; $i < 4; $i++) {
-                    if (strpos($subnetData, $octet[$i]) !== $i * 4) {
-                        break;
-                    }
-                }
-
-                $host       = explode("/", $subnetData);
-                $binaryHost = "";
-                $tmp        = explode(".", $host[0]);
-                for ($i = 0; $i < 4 ; $i++) {
-                    $binaryHost .= str_pad(decbin($tmp[$i]), 8, "0", STR_PAD_LEFT);
-                }
-
-                $segmentData = [
-                    'network'   => (int)$this->_toIp(str_pad(substr($binaryHost, 0, $host[1]), 32, 0)),
-                    'broadcast' => (int)$this->_toIp(str_pad(substr($binaryHost, 0, $host[1]), 32, 1))
-                ];
-
-                for ($j = $i; $j < 4; $j++) {
-                    if ((int)$octet[$j] < $segmentData['network'][$j] ||
-                        (int)$octet[$j] > $segmentData['broadcast'][$j]) {
-                        return false;
-                    }
-                }
-            }
-
-            return true;
-        } else {
+        }
+        if (!array_key_exists($octet[0], $this->_invalidIp)) {
             return false;
         }
-    }
 
-    /**
-     * Converts a binary string to an IP address
-     *
-     * @param string $binary
-     * @return array
-     */
-    private function _toIp($binary)
-    {
-        $ip  = [];
-        $tmp = explode(".", chunk_split($binary, 8, "."));
-        for ($i = 0; $i < 4 ; $i++) {
-            $ip[$i] = bindec($tmp[$i]);
+        $address = ip2long($host);
+        if ($address === false) {
+            return true;
         }
 
-        return $ip;
+        foreach ((array)$this->_invalidIp[$octet[0]] as $subnetData) {
+            list($network, $prefixLength) = explode('/', $subnetData);
+            $mask = ~((1 << (32 - (int)$prefixLength)) - 1);
+            if ((($address ^ ip2long($network)) & $mask) === 0) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -492,9 +464,12 @@ class Zend_Validate_EmailAddress extends Zend_Validate_Abstract
         $mxHosts = [];
         $hostname = $this->_hostname;
 
-        //decode IDN domain name if possible
+        // the ASCII form of an IDN domain, by IDNA 2008 (UTS #46) like Zend_Validate_Hostname
         if (function_exists('idn_to_ascii')) {
-            $hostname = idn_to_ascii($this->_hostname);
+            $ascii = idn_to_ascii($this->_hostname, IDNA_NONTRANSITIONAL_TO_ASCII, INTL_IDNA_VARIANT_UTS46);
+            if ($ascii !== false) {
+                $hostname = $ascii;
+            }
         }
 
         $result = getmxrr($hostname, $mxHosts);

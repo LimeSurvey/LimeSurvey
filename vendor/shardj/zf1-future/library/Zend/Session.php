@@ -59,7 +59,7 @@ class Zend_Session extends Zend_Session_Abstract
     /**
      * $_throwStartupException
      *
-     * @var bool|bitset This could also be a combiniation of error codes to catch
+     * @var bool|int This could also be a combiniation of error codes to catch
      */
     protected static $_throwStartupExceptions = true;
 
@@ -267,7 +267,7 @@ class Zend_Session extends Zend_Session_Abstract
     /**
      * setSaveHandler() - Session Save Handler assignment
      *
-     * @param Zend_Session_SaveHandler_Interface $interface
+     * @param Zend_Session_SaveHandler_Interface $saveHandler
      * @throws Zend_Session_Exception When the session_set_save_handler call fails
      * @return void
      */
@@ -279,6 +279,7 @@ class Zend_Session extends Zend_Session_Abstract
             return;
         }
 
+        require_once 'Zend/Session/SaveHandler/SessionHandlerInterfaceAdapter.php';
         $adapter = new Zend_Session_SaveHandler_SessionHandlerInterfaceAdapter($saveHandler);
         $result = session_set_save_handler($adapter, false);
         register_shutdown_function('session_write_close');
@@ -486,19 +487,26 @@ class Zend_Session extends Zend_Session_Abstract
                 set_error_handler(['Zend_Session_Exception', 'handleSessionStartError'], $errorLevel);
             }
 
-            $startedCleanly = session_start();
-
-            if (self::$_throwStartupExceptions) {
-                restore_error_handler();
+            try {
+                $startedCleanly = session_start();
+            } finally {
+                if (self::$_throwStartupExceptions) {
+                    restore_error_handler();
+                }
             }
 
             if (!$startedCleanly || Zend_Session_Exception::$sessionStartError != null) {
                 if (self::$_throwStartupExceptions) {
                     set_error_handler(['Zend_Session_Exception', 'handleSilentWriteClose'], $errorLevel);
                 }
-                session_write_close();
+                try {
+                    session_write_close();
+                } finally {
+                    if (self::$_throwStartupExceptions) {
+                        restore_error_handler();
+                    }
+                }
                 if (self::$_throwStartupExceptions) {
-                    restore_error_handler();
                     throw new Zend_Session_Exception(__CLASS__ . '::' . __FUNCTION__ . '() - ' . Zend_Session_Exception::$sessionStartError);
                 }
             }
@@ -535,10 +543,9 @@ class Zend_Session extends Zend_Session_Abstract
             }
         }
 
+        // reading the directive is not deprecated, only setting it
+        // phpcs:ignore PHPCompatibility.IniDirectives.RemovedIniDirectives.session_sid_bits_per_characterDeprecated
         $hashBitsPerChar = ini_get('session.sid_bits_per_character');
-        if (!$hashBitsPerChar) {
-          $hashBitsPerChar = ini_get('session.hash_bits_per_character');
-        }
         if (!$hashBitsPerChar) {
             $hashBitsPerChar = 5; // the default value
         }

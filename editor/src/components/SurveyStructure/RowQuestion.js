@@ -19,6 +19,8 @@ export const RowQuestion = ({
   snapshot,
   focused,
   isSurveyActive,
+  areCodesVisible = false,
+  toggleQuestionCodes,
 }) => {
   const { setFocused } = useFocused()
   const { surveyId } = useParams()
@@ -59,11 +61,23 @@ export const RowQuestion = ({
             testId: 'delete-button',
             disabled: { state: isSurveyActive },
           },
+          { type: 'divider' },
           {
             type: 'item',
             label: t('Check logic'),
             onClick: () => setShowLogicModal(true),
             testId: 'show-logic-button',
+            hideIconSpace: true,
+          },
+          {
+            type: 'item',
+            // The label and icon show the action, not the current state
+            label: areCodesVisible
+              ? t('Hide question codes')
+              : t('Show question codes'),
+            onClick: toggleQuestionCodes,
+            testId: 'toggle-question-codes-button',
+            trailingIcon: areCodesVisible ? 'ri-eye-off-line' : 'ri-eye-line',
           },
         ]}
         icon={<QuestionListIcon />}

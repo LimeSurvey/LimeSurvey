@@ -605,9 +605,9 @@ class Worksheet extends BIFFwriter
     public function getData(): string
     {
         // Return data stored in memory
-        if (isset($this->_data)) {
-            $tmp = $this->_data;
-            $this->_data = null;
+        if (isset($this->biffData)) {
+            $tmp = $this->biffData;
+            $this->biffData = null;
 
             return $tmp;
         }
@@ -1610,18 +1610,10 @@ class Worksheet extends BIFFwriter
 
         // Determine which pane should be active. There is also the undocumented
         // option to override this should it be necessary: may be removed later.
-        $pnnAct = 0;
-        if ($x != 0 && $y != 0) {
-            $pnnAct = 0; // Bottom right
-        }
-        if ($x != 0 && $y == 0) {
-            $pnnAct = 1; // Top right
-        }
-        if ($x == 0 && $y != 0) {
-            $pnnAct = 2; // Bottom left
-        }
-        if ($x == 0 && $y == 0) {
-            $pnnAct = 3; // Top left
+        if ($x == 0) {
+            $pnnAct = ($y == 0) ? 3 : 2; // top left, bottom left
+        } else {
+            $pnnAct = ($y == 0) ? 1 : 0; // top right, bottom right
         }
 
         $this->activePane = $pnnAct; // Used in writeSelection

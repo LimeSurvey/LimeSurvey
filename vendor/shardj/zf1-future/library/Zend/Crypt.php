@@ -76,7 +76,7 @@ class Zend_Crypt
      * @param string $algorithm
      * @param string $data
      * @param bool $binaryOutput
-     * @return unknown
+     * @return mixed
      */
     public static function hash($algorithm, $data, $binaryOutput = false)
     {
@@ -144,6 +144,7 @@ class Zend_Crypt
     protected static function _digestMhash($algorithm, $data, $binaryOutput)
     {
         $constant = constant('MHASH_' . strtoupper($algorithm));
+        // phpcs:ignore PHPCompatibility.FunctionUse.RemovedFunctions.mhashDeprecated -- fallback without ext/hash
         $binary = mhash($constant, $data);
         if ($binaryOutput) {
             return $binary;

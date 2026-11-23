@@ -37,6 +37,7 @@ require_once 'Zend/Xml/Exception.php';
  * @subpackage Adapter
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @deprecated Deprecated since 1.26.1 and will be removed in a future version: the wddx extension was removed from PHP 7.4
  */
 class Zend_Serializer_Adapter_Wddx extends Zend_Serializer_Adapter_AdapterAbstract
 {
@@ -56,6 +57,8 @@ class Zend_Serializer_Adapter_Wddx extends Zend_Serializer_Adapter_AdapterAbstra
      */
     public function __construct($opts = [])
     {
+        trigger_error(get_class($this) . ' is deprecated and will be removed in a future version', E_USER_DEPRECATED);
+
         if (!extension_loaded('wddx')) {
             require_once 'Zend/Serializer/Exception.php';
             throw new Zend_Serializer_Exception('PHP extension "wddx" is required for this adapter');

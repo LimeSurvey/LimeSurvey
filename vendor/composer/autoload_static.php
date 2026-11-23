@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInita33ab0ef5816c4172c683747e68a37fe
+class ComposerStaticInit1022e9823ff73693f3eb7c0c5841c5b8
 {
     public static $files = array (
         '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
@@ -63,6 +63,7 @@ class ComposerStaticInita33ab0ef5816c4172c683747e68a37fe
             'Psr\\Http\\Message\\' => 17,
             'Psr\\Http\\Client\\' => 16,
             'Psr\\Container\\' => 14,
+            'PhpOffice\\WMF\\' => 14,
             'PhpOffice\\PhpSpreadsheet\\' => 25,
             'ParagonIE\\ConstantTime\\' => 23,
             'PHPMailer\\PHPMailer\\' => 20,
@@ -184,6 +185,10 @@ class ComposerStaticInita33ab0ef5816c4172c683747e68a37fe
         'Psr\\Container\\' =>
         array (
             0 => __DIR__ . '/..' . '/psr/container/src',
+        ),
+        'PhpOffice\\WMF\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/phpoffice/wmf/src/WMF',
         ),
         'PhpOffice\\PhpSpreadsheet\\' =>
         array (
@@ -366,10 +371,10 @@ class ComposerStaticInita33ab0ef5816c4172c683747e68a37fe
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInita33ab0ef5816c4172c683747e68a37fe::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInita33ab0ef5816c4172c683747e68a37fe::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInita33ab0ef5816c4172c683747e68a37fe::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInita33ab0ef5816c4172c683747e68a37fe::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit1022e9823ff73693f3eb7c0c5841c5b8::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit1022e9823ff73693f3eb7c0c5841c5b8::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit1022e9823ff73693f3eb7c0c5841c5b8::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInit1022e9823ff73693f3eb7c0c5841c5b8::$classMap;
 
         }, null, ClassLoader::class);
     }

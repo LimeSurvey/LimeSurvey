@@ -106,8 +106,8 @@ class Zend_Service_Amazon_Authentication_V2 extends Zend_Service_Amazon_Authenti
      *    values before constructing this string. Do not use any separator
      *    characters when appending strings.
      *
-     * @param  string $queue_url  Queue URL
-     * @param  array  $parameters the parameters for which to get the signature.
+     * @param  string $url  Queue URL
+     * @param  array  $paramaters the parameters for which to get the signature.
      *
      * @return string the signed data.
      */

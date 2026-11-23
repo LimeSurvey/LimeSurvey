@@ -82,7 +82,7 @@ class Zend_Text_Table
     /**
      * Plugin loader for decorators
      *
-     * @var string
+     * @var Zend_Loader_PluginLoader|null
      */
     protected $_pluginLoader = null;
 
@@ -114,7 +114,6 @@ class Zend_Text_Table
     /**
      * Create a basic table object
      *
-     * @param  array             $columnsWidths List of all column widths
      * @param  Zend_Config|array $options       Configuration options
      * @throws Zend_Text_Table_Exception When no columns widths were set
      */
@@ -292,7 +291,6 @@ class Zend_Text_Table
     /**
      * Get the input charset for column contents
      *
-     * @param string $charset
      */
     public static function getInputCharset()
     {
@@ -312,7 +310,6 @@ class Zend_Text_Table
     /**
      * Get the output charset for column contents
      *
-     * @param string $charset
      */
     public static function getOutputCharset()
     {
@@ -520,14 +517,10 @@ class Zend_Text_Table
      * Magic method which returns the rendered table
      *
      * @return string
+     * @throws Zend_Text_Table_Exception When the table cannot be rendered
      */
     public function __toString()
     {
-        try {
-            return $this->render();
-        } catch (Exception $e) {
-            trigger_error($e->getMessage(), E_USER_ERROR);
-        }
-
+        return $this->render();
     }
 }

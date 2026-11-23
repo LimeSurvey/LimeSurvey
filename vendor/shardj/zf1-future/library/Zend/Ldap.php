@@ -54,7 +54,7 @@ class Zend_Ldap
     /**
      * The raw LDAP extension resource.
      *
-     * @var resource
+     * @var resource|null
      */
     protected $_resource = null;
 
@@ -70,14 +70,14 @@ class Zend_Ldap
     /**
      * Caches the RootDSE
      *
-     * @var Zend_Ldap_Node
+     * @var Zend_Ldap_Node_RootDse|null
      */
     protected $_rootDse = null;
 
     /**
      * Caches the schema
      *
-     * @var Zend_Ldap_Node
+     * @var Zend_Ldap_Node_Schema|null
      */
     protected $_schema = null;
 
@@ -574,7 +574,7 @@ class Zend_Ldap
 
     /**
      * @param  string $acctname The name to canonicalize
-     * @param  int    $type     The desired form of canonicalization
+     * @param  int    $form     The desired form of canonicalization
      * @return string The canonicalized name in the desired form
      * @throws Zend_Ldap_Exception
      */
@@ -804,10 +804,17 @@ class Zend_Ldap
             $port = ($useSsl) ? 636 : 389;
         }
 
-        /* Only OpenLDAP 2.2 + supports URLs so if SSL is not requested, just
-         * use the old form.
-         */
-        $resource = ($useUri) ? @ldap_connect($this->_connectString) : @ldap_connect($host, $port);
+        // ldap_connect() takes an LDAP URI, the host and port form is deprecated since PHP 8.3
+        if ($useUri) {
+            $uri = $this->_connectString;
+        } else {
+            $uris = [];
+            foreach (preg_split('/\s+/', trim($host)) as $hostName) {
+                $uris[] = 'ldap://' . $hostName . (preg_match('/:\d+$/', $hostName) ? '' : ':' . $port);
+            }
+            $uri = implode(' ', $uris);
+        }
+        $resource = @ldap_connect($uri);
 
         if ($this->isConnection($resource) === true) {
             $this->_resource = $resource;
@@ -1171,7 +1178,7 @@ class Zend_Ldap
      * @param  string|Zend_Ldap_Dn $dn
      * @param  array               $attributes
      * @param  boolean             $throwOnNotFound
-     * @return array
+     * @return array|null
      * @throws Zend_Ldap_Exception
      */
     public function getEntry($dn, array $attributes = [], $throwOnNotFound = false)

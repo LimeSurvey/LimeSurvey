@@ -275,7 +275,7 @@ abstract class Zend_XmlRpc_Value
             return self::XMLRPC_TYPE_ARRAY;
         } elseif (is_int($value)) {
             return ($value > PHP_INT_MAX) ? self::XMLRPC_TYPE_I8 : self::XMLRPC_TYPE_INTEGER;
-        } elseif (is_double($value)) {
+        } elseif (is_float($value)) {
             return self::XMLRPC_TYPE_DOUBLE;
         } elseif (is_bool($value)) {
             return self::XMLRPC_TYPE_BOOLEAN;
@@ -454,7 +454,6 @@ abstract class Zend_XmlRpc_Value
             default:
                 require_once 'Zend/XmlRpc/Value/Exception.php';
                 throw new Zend_XmlRpc_Value_Exception('Value type \''. $type .'\' parsed from the XML string is not a known XML-RPC native type');
-                break;
         }
         $xmlrpcValue->_setXML($xml->asXML());
 
@@ -488,7 +487,7 @@ abstract class Zend_XmlRpc_Value
     {
         // Fix key() and current() deprecation for objects in PHP 8.1
         $xmlVars = get_object_vars($xml);
-        list($type, $value) = [key($xmlVars), current($xmlVars)];
+        list($type, $value) = $xmlVars ? [key($xmlVars), current($xmlVars)] : [null, null];
 
         if (!$type && $value === null) {
             $namespaces = ['ex' => 'http://ws.apache.org/xmlrpc/namespaces/extensions'];

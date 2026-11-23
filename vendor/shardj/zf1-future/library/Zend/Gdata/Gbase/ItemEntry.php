@@ -36,6 +36,7 @@ require_once 'Zend/Gdata/Gbase/Entry.php';
  * @subpackage Gbase
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @deprecated Deprecated since 1.27.1 and will be removed in a future version: Google shut down the Google Data APIs it implements and the ClientLogin and AuthSub authentication
  */
 class Zend_Gdata_Gbase_ItemEntry extends Zend_Gdata_Gbase_Entry
 {

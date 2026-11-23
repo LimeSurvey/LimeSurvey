@@ -201,7 +201,7 @@ class Zend_Db_Adapter_Pdo_Ibm_Ids
      * and column location
      *
      * @param int $tabid
-     * @return array
+     * @return array|null
      */
     protected function _getPrimaryInfo($tabid)
     {
@@ -237,6 +237,8 @@ class Zend_Db_Adapter_Pdo_Ibm_Ids
 
             $cols[$colno] = $position;
         }
+
+        return null;
     }
 
     /**

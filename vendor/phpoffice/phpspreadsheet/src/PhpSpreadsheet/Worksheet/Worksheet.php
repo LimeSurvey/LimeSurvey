@@ -469,6 +469,9 @@ class Worksheet
         if (str_replace(self::INVALID_CHARACTERS, '', $sheetTitle) !== $sheetTitle) {
             throw new Exception('Invalid character found in sheet title');
         }
+        if (str_starts_with($sheetTitle, "'") || str_ends_with($sheetTitle, "'")) {
+            throw new Exception('Sheet title cannot start or end with apostrophe');
+        }
 
         // Enforce maximum characters allowed for sheet title
         if (StringHelper::countCharacters($sheetTitle) > self::SHEET_TITLE_MAXIMUM_LENGTH) {
@@ -638,7 +641,7 @@ class Worksheet
      */
     public function getChartByName(string $chartName)
     {
-        foreach ($this->chartCollection as $index => $chart) {
+        foreach ($this->chartCollection as $chart) {
             if ($chart->getName() == $chartName) {
                 return $chart;
             }
@@ -2164,12 +2167,18 @@ class Worksheet
     /**
      * Add Table.
      *
+     * @param bool $updateTotalsRowCells Set the empty cells of the table's totals row
+     *            from the totals row formula, function or label of its columns
+     *
      * @return $this
      */
-    public function addTable(Table $table): self
+    public function addTable(Table $table, bool $updateTotalsRowCells = true): self
     {
         $table->setWorksheet($this);
         $this->tableCollection[] = $table;
+        if ($updateTotalsRowCells) {
+            $table->updateTotalsRowCells();
+        }
 
         return $this;
     }
@@ -2824,8 +2833,7 @@ class Worksheet
         $maxPossibleColumnsToBeRemoved = $highestColumnIndex - $pColumnIndex + 1;
 
         for ($c = 0, $n = min($maxPossibleColumnsToBeRemoved, $numberOfColumns); $c < $n; ++$c) {
-            $this->cellCollection->removeColumn($highestColumn);
-            $highestColumn = Coordinate::stringFromColumnIndex(Coordinate::columnIndexFromString($highestColumn) - 1);
+            $this->cellCollection->removeColumn(Coordinate::stringFromColumnIndex($highestColumnIndex - $c));
         }
         $this->cachedHighestColumn = $newHighestColumn;
 
@@ -3270,6 +3278,8 @@ class Worksheet
      * @param bool $oldCalculatedValue If calculateFormulas is false and this is true, use oldCalculatedFormula instead.
      *
      * @return mixed[][]
+     *
+     * @psalm-taint-source input
      */
     public function rangeToArray(
         string $range,
@@ -3381,7 +3391,6 @@ class Worksheet
         $hideColumns = !empty($hiddenColumns);
 
         $keys = $this->cellCollection->getSortedCoordinatesInt();
-        $keyIndex = 0;
         $keysCount = count($keys);
         // Loop through rows
         for ($row = $minRow; $row <= $maxRow; ++$row) {
@@ -3533,6 +3542,8 @@ class Worksheet
      * @param bool $oldCalculatedValue If calculateFormulas is false and this is true, use oldCalculatedFormula instead.
      *
      * @return mixed[][]
+     *
+     * @psalm-taint-source input
      */
     public function namedRangeToArray(
         string $definedName,
@@ -3574,6 +3585,8 @@ class Worksheet
      * @param bool $oldCalculatedValue If calculateFormulas is false and this is true, use oldCalculatedFormula instead.
      *
      * @return mixed[][]
+     *
+     * @psalm-taint-source input
      */
     public function toArray(
         mixed $nullValue = null,
@@ -3786,13 +3799,14 @@ class Worksheet
         }
 
         // or if cell is part of a data validation range
+        $isRange = Preg::isMatch('/[: ]/', $cellCoordinate);
         foreach ($this->dataValidationCollection as $key => $dataValidation) {
             $keyParts = explode(' ', $key);
             foreach ($keyParts as $keyPart) {
                 if ($keyPart === $cellCoordinate) {
                     return $dataValidation;
                 }
-                if (str_contains($keyPart, ':')) {
+                if (!$isRange && str_contains($keyPart, ':')) {
                     if (Coordinate::coordinateIsInsideRange($keyPart, $cellCoordinate)) {
                         return $dataValidation;
                     }
@@ -3837,13 +3851,14 @@ class Worksheet
         if (isset($this->dataValidationCollection[$coordinate])) {
             return true;
         }
+        $isRange = Preg::isMatch('/[: ]/', $coordinate);
         foreach ($this->dataValidationCollection as $key => $dataValidation) {
             $keyParts = explode(' ', $key);
             foreach ($keyParts as $keyPart) {
                 if ($keyPart === $coordinate) {
                     return true;
                 }
-                if (str_contains($keyPart, ':')) {
+                if (!$isRange && str_contains($keyPart, ':')) {
                     if (Coordinate::coordinateIsInsideRange($keyPart, $coordinate)) {
                         return true;
                     }
@@ -4042,7 +4057,7 @@ class Worksheet
                     foreach ($currentCollection as $item) {
                         $newTable = clone $item;
                         $newTable->setName($item->getName() . 'clone');
-                        $this->addTable($newTable);
+                        $this->addTable($newTable, false);
                     }
                 } elseif ($key === 'chartCollection') {
                     $currentCollection = $this->chartCollection;

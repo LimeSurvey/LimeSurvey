@@ -64,8 +64,8 @@ class Zend_Translate {
      * Generates the standard translation object
      *
      * @param  array|string|Zend_Config|Zend_Translate_Adapter $options Options to use
-     * @param  string|array [$content] Path to content, or content itself
-     * @param  string|Zend_Locale [$locale]
+     * Optional further arguments, read with func_get_args(): content (string|array, path to content, or
+     * content itself) and locale (string|Zend_Locale).
      * @throws Zend_Translate_Exception
      */
     public function __construct($options = [])
@@ -99,8 +99,8 @@ class Zend_Translate {
      * Sets a new adapter
      *
      * @param  array|Zend_Config|Zend_Translate_Adapter $options Options to use
-     * @param  string|array [$content] Path to content, or content itself
-     * @param  string|Zend_Locale [$locale]
+     * Optional further arguments, read with func_get_args(): content (string|array, path to content, or
+     * content itself) and locale (string|Zend_Locale).
      * @throws Zend_Translate_Exception
      */
     public function setAdapter($options = [])

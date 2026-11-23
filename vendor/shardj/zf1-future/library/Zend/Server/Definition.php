@@ -146,7 +146,7 @@ class Zend_Server_Definition implements Countable, Iterator
      * Get a given method definition
      *
      * @param  string $method
-     * @return null|Zend_Server_Method_Definition
+     * @return Zend_Server_Method_Definition|false|null
      */
     public function getMethod($method)
     {
@@ -240,7 +240,7 @@ class Zend_Server_Definition implements Countable, Iterator
     /**
      * Iterator: advance to next method
      *
-     * @return void
+     * @return mixed
      */
     #[\ReturnTypeWillChange]
     public function next()
@@ -251,7 +251,7 @@ class Zend_Server_Definition implements Countable, Iterator
     /**
      * Iterator: return to first method
      *
-     * @return void
+     * @return mixed
      */
     #[\ReturnTypeWillChange]
     public function rewind()

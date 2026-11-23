@@ -68,7 +68,7 @@ class Zend_Search_Lucene_Index_SegmentWriter_StreamWriter extends Zend_Search_Lu
     /**
      * Close segment, write it to disk and return segment info
      *
-     * @return Zend_Search_Lucene_Index_SegmentInfo
+     * @return Zend_Search_Lucene_Index_SegmentInfo|null
      */
     public function close()
     {

@@ -168,7 +168,7 @@ class Zend_Locale_Math
      * Normalizes an input to standard english notation
      * Fixes a problem of BCMath with setLocale which is PHP related
      *
-     * @param   integer  $value  Value to normalize
+     * @param   integer|float|string  $value  Value to normalize
      * @return  string           Normalized string without BCMath problems
      */
     public static function normalize($value)
@@ -209,9 +209,9 @@ class Zend_Locale_Math
      * Changes exponential numbers to plain string numbers
      * Fixes a problem of BCMath with numbers containing exponents
      *
-     * @param integer $value Value to erase the exponent
+     * @param integer|string $value Value to erase the exponent
      * @param integer $scale (Optional) Scale to use
-     * @return string
+     * @return string|int
      */
     public static function exponent($value, $scale = null)
     {

@@ -14,7 +14,7 @@
 <!-- admin menu bar -->
 <header>
 <?php // The logo is part of the banner; the menus inside are the navigation landmarks ?>
-<div class="navbar navbar-expand-md">
+<nav class="navbar navbar-expand-md">
     <div class="container-fluid">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#small-screens-menus"
             aria-controls="small-screens-menus" aria-expanded="false">
@@ -139,7 +139,7 @@
         </div><!-- /.nav-collapse -->
 
     </div>
-</div>
+</nav>
 </header>
 <script type="text/javascript">
     //show tooltips

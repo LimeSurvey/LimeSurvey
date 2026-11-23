@@ -133,6 +133,7 @@ class Zend_XmlRpc_Server_System
 
             if (!$fault) {
                 try {
+                    require_once 'Zend/XmlRpc/Request.php';
                     $request = new Zend_XmlRpc_Request();
                     $request->setMethod($method['methodName']);
                     $request->setParams($method['params']);

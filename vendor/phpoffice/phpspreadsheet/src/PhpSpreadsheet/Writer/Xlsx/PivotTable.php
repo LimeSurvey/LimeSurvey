@@ -20,6 +20,12 @@ use PhpOffice\PhpSpreadsheet\Worksheet\PivotTable\PivotTable as WorksheetPivotTa
 class PivotTable
 {
     /**
+     * Reserved OOXML field index for the virtual "Values" field, which carries
+     * the data fields on an axis when more than one of them is present.
+     */
+    private const VALUES_FIELD_INDEX = -2;
+
+    /**
      * Build the pivotTableDefinition part.
      *
      * @param int $cacheId the workbook-level cache id referenced by this table
@@ -61,8 +67,26 @@ class PivotTable
         $objWriter->endElement();
 
         self::writePivotFields($objWriter, $pivotTable);
-        self::writeAxisFields($objWriter, 'rowFields', $pivotTable->getRowFields());
-        self::writeAxisFields($objWriter, 'colFields', $pivotTable->getColumnFields());
+
+        // Field indices per axis. More than one data field is laid out across
+        // the column axis under the virtual "Values" field, which OOXML
+        // addresses with the reserved index -2; without it Excel reports the
+        // workbook as damaged and drops the pivot table.
+        $rowIndices = self::axisFieldIndices($pivotTable->getRowFields());
+        $columnIndices = self::axisFieldIndices($pivotTable->getColumnFields());
+        // Counted from the <dataFields> entries, not the fields flagged as
+        // data fields: one source column aggregated twice is two entries.
+        $dataFieldCount = count($pivotTable->getDataFieldDefinitions());
+        if ($dataFieldCount > 1) {
+            $columnIndices[] = self::VALUES_FIELD_INDEX;
+        }
+
+        // The item list is mandatory whenever an axis declares fields: Excel
+        // discards the whole pivot table when it is missing.
+        self::writeAxisFields($objWriter, 'rowFields', $rowIndices);
+        self::writeAxisItems($objWriter, 'rowItems', $rowIndices, 1);
+        self::writeAxisFields($objWriter, 'colFields', $columnIndices);
+        self::writeAxisItems($objWriter, 'colItems', $columnIndices, $dataFieldCount);
         self::writePageFields($objWriter, $pivotTable->getPageFields());
         self::writeDataFields($objWriter, $pivotTable);
 
@@ -166,9 +190,7 @@ class PivotTable
 
     private static function writeNumericGroup(XMLWriter $objWriter, PivotFieldGroup $group): void
     {
-        $start = $group->getStartNum() ?? 0.0;
-        $end = $group->getEndNum() ?? ($start + $group->getInterval());
-        $interval = $group->getInterval() > 0 ? $group->getInterval() : 1.0;
+        [$start, $end, $interval] = $group->effectiveNumericRange();
 
         // Source values are numeric.
         $objWriter->startElement('sharedItems');
@@ -188,11 +210,7 @@ class PivotTable
 
         // Group items: "<lower>-<upper>" buckets plus the sentinel bounds Excel
         // expects (values below the start and above the end).
-        $buckets = [];
-        for ($lower = $start; $lower < $end; $lower += $interval) {
-            $upper = min($lower + $interval, $end);
-            $buckets[] = self::num($lower) . '-' . self::num($upper);
-        }
+        $buckets = $group->numericBuckets();
         $objWriter->startElement('groupItems');
         $objWriter->writeAttribute('count', (string) (count($buckets) + 2));
         self::writeGroupItem($objWriter, '<' . self::num($start));
@@ -215,9 +233,8 @@ class PivotTable
 
     private static function writeDateGroup(XMLWriter $objWriter, PivotFieldGroup $group): void
     {
-        $groupByUnits = $group->getGroupBy() === [] ? [PivotFieldGroup::GROUP_BY_MONTHS] : $group->getGroupBy();
         // Excel groups by a single unit per field; use the first requested unit.
-        $groupBy = $groupByUnits[0];
+        $groupBy = $group->effectiveGroupBy();
 
         // A date field group is only valid when its bounds are present: the
         // sharedItems must carry minDate/maxDate and the rangePr must carry
@@ -244,7 +261,7 @@ class PivotTable
 
         // Provide the standard group item labels for the chosen unit; the
         // spreadsheet application rebuilds the exact set on refresh.
-        $items = self::dateGroupItems($groupBy);
+        $items = $group->dateGroupItems();
         $objWriter->startElement('groupItems');
         $objWriter->writeAttribute('count', (string) count($items));
         foreach ($items as $item) {
@@ -260,28 +277,6 @@ class PivotTable
         $objWriter->startElement('s');
         $objWriter->writeAttribute('v', $value);
         $objWriter->endElement();
-    }
-
-    /**
-     * The canonical group-item labels Excel uses for each date grouping unit.
-     *
-     * @return string[]
-     */
-    private static function dateGroupItems(string $groupBy): array
-    {
-        switch ($groupBy) {
-            case PivotFieldGroup::GROUP_BY_QUARTERS:
-                return ['<1/1/1900', 'Qtr1', 'Qtr2', 'Qtr3', 'Qtr4', '>12/31/9999'];
-            case PivotFieldGroup::GROUP_BY_MONTHS:
-                return [
-                    '<1/1/1900', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-                    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', '>12/31/9999',
-                ];
-            //case PivotFieldGroup::GROUP_BY_YEARS:
-            default:
-                // Years are enumerated by the application on refresh.
-                return ['<1/1/1900', '>12/31/9999'];
-        }
     }
 
     /**
@@ -355,6 +350,7 @@ class PivotTable
     private static function writePivotFields(XMLWriter $objWriter, WorksheetPivotTable $pivotTable): void
     {
         $fields = $pivotTable->getFields();
+        $cache = $pivotTable->getCacheDefinition();
         $objWriter->startElement('pivotFields');
         $objWriter->writeAttribute('count', (string) count($fields));
 
@@ -366,9 +362,15 @@ class PivotTable
             } elseif ($field->getAxis() !== PivotField::AXIS_NONE) {
                 $objWriter->writeAttribute('axis', $field->getAxis());
                 $objWriter->writeAttribute('showAll', '0');
-                // items are rebuilt on refresh; emit the default placeholder.
+
+                $itemCount = self::getFieldItemCount($cache, $field->getName());
                 $objWriter->startElement('items');
-                $objWriter->writeAttribute('count', '1');
+                $objWriter->writeAttribute('count', (string) ($itemCount + 1));
+                for ($i = 0; $i < $itemCount; ++$i) {
+                    $objWriter->startElement('item');
+                    $objWriter->writeAttribute('x', (string) $i);
+                    $objWriter->endElement();
+                }
                 $objWriter->startElement('item');
                 $objWriter->writeAttribute('t', 'default');
                 $objWriter->endElement();
@@ -382,23 +384,108 @@ class PivotTable
         $objWriter->endElement();
     }
 
-    /**
-     * @param PivotField[] $fields
-     */
-    private static function writeAxisFields(XMLWriter $objWriter, string $element, array $fields): void
+    private static function getFieldItemCount(?PivotCacheDefinition $cache, string $fieldName): int
     {
-        if ($fields === []) {
+        if ($cache === null) {
+            return 0;
+        }
+
+        $group = $cache->getFieldGroup($fieldName);
+        if ($group !== null) {
+            // The group owns the enumeration, so the <items> here and the
+            // <groupItems> in the cache definition cannot drift apart.
+            return $group->renderedItemCount();
+        }
+
+        return min(count($cache->getSharedItems($fieldName)), PivotFieldGroup::MAX_ITEMS);
+    }
+
+    /**
+     * The field indices of an axis, in order.
+     *
+     * @param PivotField[] $fields
+     *
+     * @return int[]
+     */
+    private static function axisFieldIndices(array $fields): array
+    {
+        return array_map(
+            static fn (PivotField $field): int => $field->getIndex(),
+            $fields
+        );
+    }
+
+    /**
+     * @param int[] $fieldIndices
+     */
+    private static function writeAxisFields(XMLWriter $objWriter, string $element, array $fieldIndices): void
+    {
+        if ($fieldIndices === []) {
             return;
         }
 
         $objWriter->startElement($element);
-        $objWriter->writeAttribute('count', (string) count($fields));
-        foreach ($fields as $field) {
+        $objWriter->writeAttribute('count', (string) count($fieldIndices));
+        foreach ($fieldIndices as $fieldIndex) {
             $objWriter->startElement('field');
-            $objWriter->writeAttribute('x', (string) $field->getIndex());
+            $objWriter->writeAttribute('x', (string) $fieldIndex);
             $objWriter->endElement();
         }
         $objWriter->endElement();
+    }
+
+    /**
+     * Emit the <rowItems>/<colItems> list that accompanies an axis.
+     *
+     * The real item rows are rebuilt when the application refreshes the pivot
+     * table, so only the minimum the schema accepts is written here. A grand
+     * total carries no per-field item index, so it is a single <i t="grand">
+     * with one <x/>, however many fields the axis declares.
+     *
+     * When the virtual "Values" field puts several data fields on the axis,
+     * each of them needs its own entry ahead of that grand total, indexed by
+     * its position in <dataFields>.
+     *
+     * @param int[] $fieldIndices
+     * @param int $dataFieldCount number of data fields laid out on this axis
+     */
+    private static function writeAxisItems(XMLWriter $objWriter, string $element, array $fieldIndices, int $dataFieldCount): void
+    {
+        if ($fieldIndices === []) {
+            return;
+        }
+
+        $valuesOnAxis = in_array(self::VALUES_FIELD_INDEX, $fieldIndices, true) && $dataFieldCount > 1;
+        $entries = $valuesOnAxis ? $dataFieldCount : 1;
+
+        $objWriter->startElement($element);
+        $objWriter->writeAttribute('count', (string) $entries);
+
+        if ($valuesOnAxis) {
+            // One entry per data field: the first defaults to index 0, the
+            // rest repeat the previous entry's fields (i="1") and name their
+            // own data-field index.
+            for ($i = 0; $i < $dataFieldCount; ++$i) {
+                $objWriter->startElement('i');
+                if ($i > 0) {
+                    $objWriter->writeAttribute('i', '1');
+                }
+                $objWriter->startElement('x');
+                if ($i > 0) {
+                    $objWriter->writeAttribute('v', (string) $i);
+                }
+                $objWriter->endElement(); // x
+                $objWriter->endElement(); // i
+            }
+        } else {
+            $objWriter->startElement('i');
+            $objWriter->writeAttribute('t', 'grand');
+            $objWriter->startElement('x');
+            $objWriter->endElement();
+            $objWriter->endElement(); // i
+        }
+
+        $objWriter->endElement(); // rowItems/colItems
     }
 
     /**
@@ -422,21 +509,22 @@ class PivotTable
 
     private static function writeDataFields(XMLWriter $objWriter, WorksheetPivotTable $pivotTable): void
     {
-        $dataFields = $pivotTable->getDataFields();
+        // One entry per aggregation: the same fld may appear more than once.
+        $dataFields = $pivotTable->getDataFieldDefinitions();
         if ($dataFields === []) {
             return;
         }
 
         $objWriter->startElement('dataFields');
         $objWriter->writeAttribute('count', (string) count($dataFields));
-        foreach ($dataFields as $field) {
+        foreach ($dataFields as $dataField) {
             $objWriter->startElement('dataField');
-            $caption = $field->getDataFieldCaption();
+            $caption = $dataField->getCaption();
             if ($caption !== null && $caption !== '') {
                 $objWriter->writeAttribute('name', $caption);
             }
-            $objWriter->writeAttribute('fld', (string) $field->getIndex());
-            $subtotal = $field->getSubtotal();
+            $objWriter->writeAttribute('fld', (string) $dataField->getFieldIndex());
+            $subtotal = $dataField->getSubtotal();
             if ($subtotal !== null && $subtotal !== PivotField::SUBTOTAL_SUM) {
                 $objWriter->writeAttribute('subtotal', $subtotal);
             }

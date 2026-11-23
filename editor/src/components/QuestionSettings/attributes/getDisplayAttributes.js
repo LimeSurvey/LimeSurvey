@@ -9,32 +9,16 @@ import {
   YESNO_LONGSTRING,
   getOnOffOptions,
 } from 'helpers/options'
-import { L10ns } from 'helpers'
 import { Input, Select, ToggleButtons } from 'components/UIComponents'
-import { getQuestionTypeInfo } from 'components/QuestionTypes'
 
 import { ImageAttributes } from '../attributes'
-
-const imageChoiceThemes = [
-  getQuestionTypeInfo().SINGLE_CHOICE_IMAGE_SELECT.theme,
-  getQuestionTypeInfo().MULTIPLE_CHOICE_IMAGE_SELECT.theme,
-]
+import { getAnswerOrSubquestionOptions } from '../dynamic/optionsSources'
 
 export const getDisplayAttributes = () => ({
   IMAGE_SETTINGS: {
     component: ImageAttributes,
     attributePath: 'attributes.image',
     props: {},
-  },
-  PAGE_BREAK_IN_PRINTABLE_VIEW: {
-    component: ToggleButtons,
-    attributePath: 'attributes.page_break',
-    props: {
-      id: 'insert-page-break-in-printable-view',
-      labelText: t('Page break in printable view'),
-      toggleOptions: getYesNoOptions(),
-      defaultValue: '0',
-    },
   },
   INPUT_ON_DEMAND: {
     component: ToggleButtons,
@@ -421,37 +405,7 @@ export const getDisplayAttributes = () => ({
   OTHER_POSITION_CODE: {
     component: Select,
     attributePath: 'attributes.other_position_code',
-    getOptions: ({ question, language }) => {
-      const answers = question?.answers || []
-      const subquestions = question?.subquestions || []
-      const isImageChoiceTheme = imageChoiceThemes.includes(
-        question?.questionThemeName
-      )
-
-      if (answers.length) {
-        return answers.map((answer = {}) => ({
-          label: isImageChoiceTheme
-            ? answer.code
-            : L10ns({
-                prop: 'answer',
-                language,
-                l10ns: answer.l10ns,
-              }) || answer.code,
-          value: answer.code,
-        }))
-      }
-
-      return subquestions.map((subquestion = {}) => ({
-        label: isImageChoiceTheme
-          ? subquestion.title
-          : L10ns({
-              prop: 'question',
-              language,
-              l10ns: subquestion.l10ns,
-            }) || subquestion.title,
-        value: subquestion.title,
-      }))
-    },
+    getOptions: getAnswerOrSubquestionOptions,
     dependsOn: {
       attributePath: 'attributes.other_position',
       value: 'specific',

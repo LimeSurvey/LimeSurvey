@@ -155,6 +155,7 @@ $internalConfig = array(
                 'rest',
                 'admin/remotecontrol',
                 'plugins/unsecure',
+                'optout/oneclick',
             ),
             'csrfCookie' => array(
                 'secure' => ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || (isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == 443)),
@@ -315,6 +316,7 @@ $internalConfig = array(
                 'sprintf'                 => 'sprintf',
                 'gT'                      => 'gT',
                 'ngT'                     => 'ngT',
+                'gTPlural'                => 'gTPlural',
                 'createAbsoluteUrl'       => 'LS_Twig_Extension::createAbsoluteUrl',/* Not in 3.X */
                 'createUrl'               => 'LS_Twig_Extension::createUrl',
                 'json_decode'             => 'LS_Twig_Extension::json_decode',
@@ -442,6 +444,7 @@ $internalConfig = array(
                     'sprintf',
                     'gT',
                     'ngT',
+                    'gTPlural',
                     'createAbsoluteUrl',
                     'createUrl',
                     'json_decode',

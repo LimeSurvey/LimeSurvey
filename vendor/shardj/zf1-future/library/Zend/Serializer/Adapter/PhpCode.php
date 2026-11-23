@@ -62,6 +62,7 @@ class Zend_Serializer_Adapter_PhpCode extends Zend_Serializer_Adapter_AdapterAbs
                 require_once 'Zend/Serializer/Exception.php';
                 throw new Zend_Serializer_Exception('eval failed: ' . $lastErr['message']);
         }
+        // @phpstan-ignore variable.undefined (assigned by the evaluated code)
         return $ret;
     }
 }

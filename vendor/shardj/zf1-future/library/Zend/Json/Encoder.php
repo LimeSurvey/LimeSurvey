@@ -249,7 +249,7 @@ class Zend_Json_Encoder
     /**
      * JSON encode a string value by escaping characters as necessary
      *
-     * @param string& $value
+     * @param string& $string
      * @return string
      */
     protected function _encodeString(&$string)

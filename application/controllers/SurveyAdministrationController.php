@@ -9,6 +9,7 @@ use LimeSurvey\Models\Services\GroupHelper;
 use LimeSurvey\Models\Services\SurveyAccessModeService;
 use LimeSurvey\Models\Services\SurveyDetailService;
 use LimeSurvey\Models\Services\SurveyThemeConfiguration;
+use LimeSurvey\PluginManager\PasswordSettingMask;
 
 /**
  * Class SurveyAdministrationController
@@ -226,6 +227,18 @@ class SurveyAdministrationController extends LSBaseController
      //   $aData['subaction'] = gT('Overview');
         $surveyActivationFeedback = Yii::app()->request->getParam('surveyActivationFeedback', null);
         $aData['surveyActivationFeedback'] = $surveyActivationFeedback;
+
+        // Open the activation modal directly, e.g. when coming from the "Activate" action in the survey list
+        if (Yii::app()->request->getParam('openActivation')) {
+            Yii::app()->getClientScript()->registerScript(
+                'openSurveyActivationModal',
+                "var activateBtn = document.getElementById('ls-activate-survey');
+                if (activateBtn && !activateBtn.disabled && typeof openModalActivate === 'function') {
+                    openModalActivate();
+                }",
+                CClientScript::POS_READY
+            );
+        }
 
         $this->aData = $aData;
         $this->render('sidebody');
@@ -2892,7 +2905,7 @@ class SurveyAdministrationController extends LSBaseController
 
         foreach ($groups as $iGID => $oGroup) {
             $groupData[$iGID]['gid'] = $oGroup->gid;
-            $groupData[$iGID]['group_text'] = $oGroup->gid . ' ' . $oGroup->questiongroupl10ns[$sBaseLanguage]->group_name;
+            $groupData[$iGID]['group_text'] = $oGroup->questiongroupl10ns[$sBaseLanguage]->group_name;
             LimeExpressionManager::StartProcessingGroup($oGroup->gid, false, $iSurveyID);
             if (!$initializedReplacementFields) {
                 templatereplace("{SITENAME}"); // Hack to ensure the EM sets values of LimeReplacementFields
@@ -2904,9 +2917,8 @@ class SurveyAdministrationController extends LSBaseController
             foreach ($oGroup->questions as $question) {
                 $relevance = $question->relevance == '' ? 1 : $question->relevance;
                 $questionText = sprintf(
-                    '[{%s}] %s % s',
+                    '[{%s}] %s',
                     $relevance,
-                    $question->title,
                     $question->questionl10ns[$sBaseLanguage]->question
                 );
                 LimeExpressionManager::ProcessString($questionText, $question->qid);
@@ -2957,7 +2969,8 @@ class SurveyAdministrationController extends LSBaseController
      *
      * @param Survey $survey Given Survey
      *
-     * @return array
+     * @return array Data for the view: The settings panels of the plugins under the key "pluginSettings",
+     *               with stored passwords replaced by a placeholder
      *
      * This method is called via call_user_func in self::rendersidemenulink()
      * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
@@ -2970,6 +2983,12 @@ class SurveyAdministrationController extends LSBaseController
         App()->getPluginManager()->dispatchEvent($beforeSurveySettings);
         $pluginSettings = $beforeSurveySettings->get('surveysettings');
         if (is_array($pluginSettings)) {
+            // Stored passwords must not reach the browser
+            foreach ($pluginSettings as $pluginId => $plugin) {
+                if (isset($plugin['settings']) && is_array($plugin['settings'])) {
+                    $pluginSettings[$pluginId]['settings'] = PasswordSettingMask::mask($plugin['settings']);
+                }
+            }
             // Sort the plugin panels by their displayed name, keeping the plugin IDs as keys
             uasort($pluginSettings, function ($a, $b) {
                 return strnatcasecmp((string) ($a['name'] ?? ''), (string) ($b['name'] ?? ''));

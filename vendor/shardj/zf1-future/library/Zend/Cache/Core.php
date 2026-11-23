@@ -20,6 +20,8 @@
  */
 
 
+require_once 'Zend/Cache.php';
+
 /**
  * @package    Zend_Cache
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
@@ -181,7 +183,7 @@ class Zend_Cache_Core
             $directives[$directive] = $this->_options[$directive];
         }
         $this->_backend->setDirectives($directives);
-        if (in_array('Zend_Cache_Backend_ExtendedInterface', class_implements($this->_backend))) {
+        if ($this->_backend instanceof Zend_Cache_Backend_ExtendedInterface) {
             $this->_extendedBackend = true;
             $this->_backendCapabilities = $this->_backend->getCapabilities();
         }
@@ -476,7 +478,7 @@ class Zend_Cache_Core
      */
     public function getIdsMatchingTags($tags = [])
     {
-        if (!$this->_extendedBackend) {
+        if (!$this->_backend instanceof Zend_Cache_Backend_ExtendedInterface) {
             Zend_Cache::throwException(self::BACKEND_NOT_IMPLEMENTS_EXTENDED_IF);
         }
         if (!($this->_backendCapabilities['tags'])) {
@@ -509,7 +511,7 @@ class Zend_Cache_Core
      */
     public function getIdsNotMatchingTags($tags = [])
     {
-        if (!$this->_extendedBackend) {
+        if (!$this->_backend instanceof Zend_Cache_Backend_ExtendedInterface) {
             Zend_Cache::throwException(self::BACKEND_NOT_IMPLEMENTS_EXTENDED_IF);
         }
         if (!($this->_backendCapabilities['tags'])) {
@@ -542,7 +544,7 @@ class Zend_Cache_Core
      */
     public function getIdsMatchingAnyTags($tags = [])
     {
-        if (!$this->_extendedBackend) {
+        if (!$this->_backend instanceof Zend_Cache_Backend_ExtendedInterface) {
             Zend_Cache::throwException(self::BACKEND_NOT_IMPLEMENTS_EXTENDED_IF);
         }
         if (!($this->_backendCapabilities['tags'])) {
@@ -572,7 +574,7 @@ class Zend_Cache_Core
      */
     public function getIds()
     {
-        if (!$this->_extendedBackend) {
+        if (!$this->_backend instanceof Zend_Cache_Backend_ExtendedInterface) {
             Zend_Cache::throwException(self::BACKEND_NOT_IMPLEMENTS_EXTENDED_IF);
         }
 
@@ -599,7 +601,7 @@ class Zend_Cache_Core
      */
     public function getTags()
     {
-        if (!$this->_extendedBackend) {
+        if (!$this->_backend instanceof Zend_Cache_Backend_ExtendedInterface) {
             Zend_Cache::throwException(self::BACKEND_NOT_IMPLEMENTS_EXTENDED_IF);
         }
         if (!($this->_backendCapabilities['tags'])) {
@@ -615,7 +617,7 @@ class Zend_Cache_Core
      */
     public function getFillingPercentage()
     {
-        if (!$this->_extendedBackend) {
+        if (!$this->_backend instanceof Zend_Cache_Backend_ExtendedInterface) {
             Zend_Cache::throwException(self::BACKEND_NOT_IMPLEMENTS_EXTENDED_IF);
         }
         return $this->_backend->getFillingPercentage();
@@ -634,7 +636,7 @@ class Zend_Cache_Core
      */
     public function getMetadatas($id)
     {
-        if (!$this->_extendedBackend) {
+        if (!$this->_backend instanceof Zend_Cache_Backend_ExtendedInterface) {
             Zend_Cache::throwException(self::BACKEND_NOT_IMPLEMENTS_EXTENDED_IF);
         }
         $id = $this->_id($id); // cache id may need prefix
@@ -650,7 +652,7 @@ class Zend_Cache_Core
      */
     public function touch($id, $extraLifetime)
     {
-        if (!$this->_extendedBackend) {
+        if (!$this->_backend instanceof Zend_Cache_Backend_ExtendedInterface) {
             Zend_Cache::throwException(self::BACKEND_NOT_IMPLEMENTS_EXTENDED_IF);
         }
         $id = $this->_id($id); // cache id may need prefix

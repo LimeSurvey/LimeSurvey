@@ -109,7 +109,7 @@ class Root extends PPS
     private function calcSize(array &$raList): array
     {
         // Calculate Basic Setting
-        [$iSBDcnt, $iBBcnt, $iPPScnt] = [0, 0, 0];
+        $iBBcnt = 0;
         $iSBcnt = 0;
         $iCount = count($raList);
         for ($i = 0; $i < $iCount; ++$i) {
@@ -326,7 +326,11 @@ class Root extends PPS
         $iCnt = count($raList);
         $iBCnt = $this->bigBlockSize / OLE::OLE_PPS_SIZE;
         if ($iCnt % $iBCnt) {
-            fwrite($this->fileHandle, str_repeat("\x00", ($iBCnt - ($iCnt % $iBCnt)) * OLE::OLE_PPS_SIZE));
+            // MS-CFB 2.6.3: unused entries are zero except for NOSTREAM tree pointers.
+            $unusedEntry = str_repeat("\x00", 68)
+                . str_repeat("\xFF", 12)
+                . str_repeat("\x00", 48);
+            fwrite($this->fileHandle, str_repeat($unusedEntry, (int) ($iBCnt - ($iCnt % $iBCnt))));
         }
     }
 

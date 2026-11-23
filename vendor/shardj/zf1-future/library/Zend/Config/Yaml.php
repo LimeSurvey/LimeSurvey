@@ -166,8 +166,11 @@ class Zend_Config_Yaml extends Zend_Config
 
         // Suppress warnings and errors while loading file
         set_error_handler([$this, '_loadFileErrorHandler']);
-        $yaml = file_get_contents($yaml);
-        restore_error_handler();
+        try {
+            $yaml = file_get_contents($yaml);
+        } finally {
+            restore_error_handler();
+        }
 
         // Check if there was a error while loading file
         if ($this->_loadFileErrorStr !== null) {

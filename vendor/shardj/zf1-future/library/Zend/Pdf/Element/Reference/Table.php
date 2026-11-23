@@ -33,7 +33,7 @@ class Zend_Pdf_Element_Reference_Table
     /**
      * Parent reference table
      *
-     * @var Zend_Pdf_Element_Reference_Table
+     * @var Zend_Pdf_Element_Reference_Table|null
      */
     private $_parent;
 
@@ -86,7 +86,7 @@ class Zend_Pdf_Element_Reference_Table
      * Add reference to the reference table
      *
      * @param string $ref
-     * @param integer $offset
+     * @param integer|string $offset
      * @param boolean $inuse
      */
     public function addReference($ref, $offset, $inuse = true)
@@ -124,7 +124,7 @@ class Zend_Pdf_Element_Reference_Table
      * Get object offset
      *
      * @param string $ref
-     * @return integer
+     * @return integer|null
      */
     public function getOffset($ref)
     {
@@ -175,7 +175,7 @@ class Zend_Pdf_Element_Reference_Table
      * Get next generation number for free object
      *
      * @param integer $objNum
-     * @return unknown
+     * @return mixed
      */
     public function getNewGeneration($objNum)
     {

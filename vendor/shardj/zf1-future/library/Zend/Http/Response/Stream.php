@@ -21,6 +21,8 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
+require_once 'Zend/Http/Response.php';
+
 /**
  * Zend_Http_Response represents an HTTP 1.0 / 1.1 response message. It
  * includes easy access to all the response's different elemts, as well as some
@@ -36,7 +38,7 @@ class Zend_Http_Response_Stream extends Zend_Http_Response
     /**
      * Response as stream
      *
-     * @var resource
+     * @var resource|null
      */
     protected $stream;
 
@@ -69,7 +71,7 @@ class Zend_Http_Response_Stream extends Zend_Http_Response
     /**
      * Set the response stream
      *
-     * @param resourse $stream
+     * @param resource $stream
      * @return Zend_Http_Response_Stream
      */
     public function setStream($stream)
@@ -131,7 +133,7 @@ class Zend_Http_Response_Stream extends Zend_Http_Response
      *
      * @param int $code Response code (200, 404, ...)
      * @param array $headers Headers array
-     * @param string $body Response body
+     * @param string|resource $body Response body
      * @param string $version HTTP version
      * @param string $message Response code as text
      * @throws Zend_Http_Exception
@@ -204,7 +206,7 @@ class Zend_Http_Response_Stream extends Zend_Http_Response
      *
      * Function reads the remainder of the body from the stream and closes the stream.
      *
-     * @return string
+     * @return string|null
      */
     protected function readStream()
     {
@@ -212,13 +214,11 @@ class Zend_Http_Response_Stream extends Zend_Http_Response
             return '';
         }
 
-        if(isset($headers['content-length'])) {
-            $this->body = stream_get_contents($this->stream, $headers['content-length']);
-        } else {
-            $this->body = stream_get_contents($this->stream);
-        }
+        $this->body = stream_get_contents($this->stream);
         fclose($this->stream);
         $this->stream = null;
+
+        return null;
     }
 
     public function __destruct()

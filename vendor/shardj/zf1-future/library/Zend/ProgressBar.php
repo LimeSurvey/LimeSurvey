@@ -72,7 +72,7 @@ class Zend_ProgressBar
     /**
      * Namespace for keeping the progressbar persistent
      *
-     * @var string
+     * @var Zend_Session_Namespace|null
      */
     protected $_persistenceNamespace = null;
 

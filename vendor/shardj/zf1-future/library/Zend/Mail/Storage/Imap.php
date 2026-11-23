@@ -295,7 +295,7 @@ class Zend_Mail_Storage_Imap extends Zend_Mail_Storage_Abstract
      * Close resource for mail lib. If you need to control, when the resource
      * is closed. Otherwise the destructor would call this.
      *
-     * @return null
+     * @return void
      */
     public function close()
     {
@@ -306,7 +306,7 @@ class Zend_Mail_Storage_Imap extends Zend_Mail_Storage_Abstract
     /**
      * Keep the server busy.
      *
-     * @return null
+     * @return void
      * @throws Zend_Mail_Storage_Exception
      */
     public function noop()
@@ -326,7 +326,7 @@ class Zend_Mail_Storage_Imap extends Zend_Mail_Storage_Abstract
      * identify the message.
      *
      * @param   int $id number of message
-     * @return  null
+     * @return void
      * @throws  Zend_Mail_Storage_Exception
      */
     public function removeMessage($id)
@@ -440,7 +440,7 @@ class Zend_Mail_Storage_Imap extends Zend_Mail_Storage_Abstract
                     array_push($folderStack, $parentFolder);
                     $parentFolder = $folder;
                     break;
-                } else if ($stack) {
+                } else {
                     $parent = array_pop($stack);
                     $parentFolder = array_pop($folderStack);
                 }
@@ -463,7 +463,7 @@ class Zend_Mail_Storage_Imap extends Zend_Mail_Storage_Abstract
      * folder must be selectable!
      *
      * @param  Zend_Mail_Storage_Folder|string $globalName global name of folder or instance for subfolder
-     * @return null
+     * @return void
      * @throws Zend_Mail_Storage_Exception
      * @throws Zend_Mail_Protocol_Exception
      */
@@ -500,7 +500,7 @@ class Zend_Mail_Storage_Imap extends Zend_Mail_Storage_Abstract
      *
      * @param  string                          $name         global name of folder, local name if $parentFolder is set
      * @param  string|Zend_Mail_Storage_Folder $parentFolder parent folder for new folder, else root folder is parent
-     * @return null
+     * @return void
      * @throws Zend_Mail_Storage_Exception
      */
     public function createFolder($name, $parentFolder = null)
@@ -527,7 +527,7 @@ class Zend_Mail_Storage_Imap extends Zend_Mail_Storage_Abstract
      * remove a folder
      *
      * @param  string|Zend_Mail_Storage_Folder $name      name or instance of folder
-     * @return null
+     * @return void
      * @throws Zend_Mail_Storage_Exception
      */
     public function removeFolder($name)
@@ -552,7 +552,7 @@ class Zend_Mail_Storage_Imap extends Zend_Mail_Storage_Abstract
      *
      * @param  string|Zend_Mail_Storage_Folder $oldName name or instance of folder
      * @param  string                          $newName new global name of folder
-     * @return null
+     * @return void
      * @throws Zend_Mail_Storage_Exception
      */
     public function renameFolder($oldName, $newName)
@@ -604,7 +604,7 @@ class Zend_Mail_Storage_Imap extends Zend_Mail_Storage_Abstract
      *
      * @param  int                             $id     number of message
      * @param  string|Zend_Mail_Storage_Folder $folder name or instance of targer folder
-     * @return null
+     * @return void
      * @throws Zend_Mail_Storage_Exception
      */
     public function copyMessage($id, $folder)
@@ -625,7 +625,7 @@ class Zend_Mail_Storage_Imap extends Zend_Mail_Storage_Abstract
      *
      * @param  int                             $id     number of message
      * @param  string|Zend_Mail_Storage_Folder $folder name or instance of targer folder
-     * @return null
+     * @return void
      * @throws Zend_Mail_Storage_Exception
      */
     public function moveMessage($id, $folder) {

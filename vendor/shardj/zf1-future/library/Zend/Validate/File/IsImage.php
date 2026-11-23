@@ -147,7 +147,7 @@ class Zend_Validate_File_IsImage extends Zend_Validate_File_MimeType
      * Throws an error of the given type
      * Duplicates parent method due to OOP Problem with late static binding in PHP 5.2
      *
-     * @param  string $file
+     * @param  string|array $file
      * @param  string $errorType
      * @return false
      */

@@ -1084,6 +1084,9 @@ class Worksheet extends WriterPart
             $objWriter->startElement('hyperlinks');
 
             foreach ($hyperlinkCollection as $coordinate => $hyperlink) {
+                if ($hyperlink->getUrl() === '') {
+                    continue;
+                }
                 $objWriter->startElement('hyperlink');
 
                 $objWriter->writeAttribute('ref', $coordinate);
@@ -1873,7 +1876,7 @@ class Worksheet extends WriterPart
     private function writeExtLst(XMLWriter $objWriter, PhpspreadsheetWorksheet $worksheet): void
     {
         $conditionalFormattingRuleExtList = [];
-        foreach ($worksheet->getConditionalStylesCollection() as $cellCoordinate => $conditionalStyles) {
+        foreach ($worksheet->getConditionalStylesCollection() as $conditionalStyles) {
             /** @var Conditional $conditional */
             foreach ($conditionalStyles as $conditional) {
                 $dataBar = $conditional->getDataBar();

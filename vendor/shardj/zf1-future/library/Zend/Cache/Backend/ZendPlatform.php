@@ -38,6 +38,7 @@ require_once 'Zend/Cache/Backend/Interface.php';
  * @subpackage Zend_Cache_Backend
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @deprecated Deprecated since 1.26.1 and will be removed in a future version: Zend Platform is discontinued
  */
 class Zend_Cache_Backend_ZendPlatform extends Zend_Cache_Backend implements Zend_Cache_Backend_Interface
 {
@@ -56,6 +57,8 @@ class Zend_Cache_Backend_ZendPlatform extends Zend_Cache_Backend implements Zend
      */
     public function __construct(array $options = [])
     {
+        trigger_error(get_class($this) . ' is deprecated and will be removed in a future version', E_USER_DEPRECATED);
+
         if (!function_exists('accelerator_license_info')) {
             Zend_Cache::throwException('The Zend Platform extension must be loaded for using this backend !');
         }
@@ -81,7 +84,7 @@ class Zend_Cache_Backend_ZendPlatform extends Zend_Cache_Backend implements Zend
      *
      * @param  string  $id                     Cache id
      * @param  boolean $doNotTestCacheValidity If set to true, the cache validity won't be tested
-     * @return string Cached data (or false)
+     * @return string|false Cached data (or false)
      */
     public function load($id, $doNotTestCacheValidity = false)
     {
@@ -124,7 +127,7 @@ class Zend_Cache_Backend_ZendPlatform extends Zend_Cache_Backend implements Zend
      * @param  string $data             Data to cache
      * @param  string $id               Cache id
      * @param  array  $tags             Array of strings, the cache record will be tagged by each string entry
-     * @param  int    $specificLifetime If != false, set a specific lifetime for this cache record (null => infinite lifetime)
+     * @param  int|false    $specificLifetime If != false, set a specific lifetime for this cache record (null => infinite lifetime)
      * @return boolean true if no problem
      */
     public function save($data, $id, $tags = [], $specificLifetime = false)
@@ -195,7 +198,6 @@ class Zend_Cache_Backend_ZendPlatform extends Zend_Cache_Backend implements Zend
                 }
                 $cache_dir .= '/.php_cache_api/';
                 return $this->_clean($cache_dir, $mode);
-                break;
             case Zend_Cache::CLEANING_MODE_MATCHING_TAG:
                 $idlist = null;
                 foreach ($tags as $tag) {
@@ -219,11 +221,9 @@ class Zend_Cache_Backend_ZendPlatform extends Zend_Cache_Backend implements Zend
                     }
                 }
                 return true;
-                break;
             case Zend_Cache::CLEANING_MODE_NOT_MATCHING_TAG:
                 $this->_log("Zend_Cache_Backend_ZendPlatform::clean() : CLEANING_MODE_NOT_MATCHING_TAG is not supported by the Zend Platform backend");
                 return false;
-                break;
             case Zend_Cache::CLEANING_MODE_MATCHING_ANY_TAG:
                 $idlist = null;
                 foreach ($tags as $tag) {
@@ -247,10 +247,8 @@ class Zend_Cache_Backend_ZendPlatform extends Zend_Cache_Backend implements Zend
                     }
                 }
                 return true;
-                break;
             default:
                 Zend_Cache::throwException('Invalid mode for clean() method');
-                break;
         }
     }
 

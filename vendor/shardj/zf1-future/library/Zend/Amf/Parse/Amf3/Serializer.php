@@ -37,6 +37,7 @@ require_once 'Zend/Amf/Parse/TypeLoader.php';
  * @subpackage Parse_Amf3
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @deprecated Deprecated since 1.27.1 and will be removed in a future version: AMF is the data format of Adobe Flash Player, which reached its end of life on 2020-12-31
  */
 class Zend_Amf_Parse_Amf3_Serializer extends Zend_Amf_Parse_Serializer
 {
@@ -177,7 +178,7 @@ class Zend_Amf_Parse_Amf3_Serializer extends Zend_Amf_Parse_Serializer
     /**
      * Write an AMF3 integer
      *
-     * @param int|float $data
+     * @param int|float $int
      * @return Zend_Amf_Parse_Amf3_Serializer
      */
     public function writeInteger($int)
@@ -388,7 +389,7 @@ class Zend_Amf_Parse_Amf3_Serializer extends Zend_Amf_Parse_Serializer
             $object = &$objectByVal;
         }
 
-        $hash = spl_object_hash($object);
+        $hash = spl_object_id($object);
         $ref = array_key_exists($hash, $this->_referenceObjects)
              ? $this->_referenceObjects[$hash]
              : false;
@@ -406,7 +407,7 @@ class Zend_Amf_Parse_Amf3_Serializer extends Zend_Amf_Parse_Serializer
     /**
      * Write object to ouput stream
      *
-     * @param  mixed $data
+     * @param  mixed $object
      * @return Zend_Amf_Parse_Amf3_Serializer
      */
     public function writeObject($object)
@@ -519,7 +520,6 @@ class Zend_Amf_Parse_Amf3_Serializer extends Zend_Amf_Parse_Serializer
                 case Zend_Amf_Constants::ET_EXTERNAL:
                     require_once 'Zend/Amf/Exception.php';
                     throw new Zend_Amf_Exception('External Object Encoding not implemented');
-                    break;
                 default:
                     require_once 'Zend/Amf/Exception.php';
                     throw new Zend_Amf_Exception('Unknown Object Encoding type: ' . $encoding);
