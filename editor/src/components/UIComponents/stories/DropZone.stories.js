@@ -2,7 +2,7 @@ import { DropZone as DropZoneComponent } from '../DropZone/DropZone'
 import { getNoAnswerLabel } from 'helpers'
 
 export default {
-  title: 'UIComponents/DropZone',
+  title: 'imageWrapper/DropZone',
   component: DropZoneComponent,
 }
 

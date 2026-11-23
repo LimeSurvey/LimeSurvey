@@ -1618,7 +1618,7 @@ class remotecontrol_handle
      * @return array|int On success: new question ID. On failure: array with 'status' and 'error_code' keys.
      *              Possible error codes: ERR_INVALID_SESSION, ERR_INVALID_SURVEY, ERR_NO_PERMISSION,
      *              ERR_SURVEY_ACTIVE, ERR_INVALID_GROUP, ERR_ALREADY_EXISTS, ERR_INVALID_EXTENSION, ERR_INVALID_XML,
-     *              ERR_CREATION_FAILED.
+     *              ERR_CREATION_FAILED, ERR_UPDATE_FAILED.
      */
     public function import_question($sSessionKey, $iSurveyID, $iGroupID, $sImportData, $sImportDataType, $sMandatory = 'N', $sNewQuestionTitle = null, $sNewqQuestion = null, $sNewQuestionHelp = null)
     {
@@ -1704,7 +1704,8 @@ class remotecontrol_handle
             if (!$oQuestion->save()) {
                 return array(
                     'status' => 'Error when update question',
-                    'errors' => $oQuestion->getErrors()
+                    'errors' => $oQuestion->getErrors(),
+                    'error_code' => self::ERR_UPDATE_FAILED
                 );
             }
 
@@ -1728,7 +1729,8 @@ class remotecontrol_handle
             if (!empty($errors)) {
                 return array(
                     'status' => 'Error when update question',
-                    'errors' => $errors
+                    'errors' => $errors,
+                    'error_code' => self::ERR_UPDATE_FAILED
                 );
             }
 
@@ -2363,7 +2365,8 @@ class remotecontrol_handle
      *              If a value is invalid: array with a 'status' key that holds the validation messages
      *              of each invalid field.
      *              Possible error codes: ERR_INVALID_SESSION, ERR_INVALID_SURVEY, ERR_NO_PARTICIPANT_TABLE,
-     *              ERR_NO_PERMISSION, ERR_NOT_FOUND, ERR_MULTIPLE_MATCHES, ERR_INVALID_TOKEN, ERR_NO_DATA.
+     *              ERR_NO_PERMISSION, ERR_NOT_FOUND, ERR_MULTIPLE_MATCHES, ERR_INVALID_TOKEN, ERR_NO_DATA,
+     *              ERR_UPDATE_FAILED.
      */
     public function set_participant_properties($sSessionKey, $iSurveyID, $aTokenQueryProperties, $aTokenData)
     {
@@ -2412,7 +2415,7 @@ class remotecontrol_handle
                 if ($oToken->encryptSave(true)) {
                     return $oToken->attributes;
                 } else {
-                    return array('status' => $oToken->getErrors());
+                    return array('status' => $oToken->getErrors(), 'error_code' => self::ERR_UPDATE_FAILED);
                 }
             } else {
                 return array('status' => 'No permission', 'error_code' => self::ERR_NO_PERMISSION);
@@ -3082,7 +3085,7 @@ class remotecontrol_handle
      * @param int $uid Optional; ID of the user
      * @param string $username Optional; name of the user
      * @return array On success: list of users. On failure: array with 'status' and 'error_code' keys.
-     *              Possible error codes: ERR_INVALID_SESSION, ERR_INVALID_USER, ERR_NO_DATA.
+     *              Possible error codes: ERR_INVALID_SESSION, ERR_NO_PERMISSION, ERR_INVALID_USER, ERR_NO_DATA.
      */
     public function list_users($sSessionKey = null, $uid = null, $username = null)
     {
@@ -3153,7 +3156,7 @@ class remotecontrol_handle
                 }
                 return $data;
             } else {
-                return array('status' => 'Permission denied.');
+                return array('status' => 'Permission denied.', 'error_code' => self::ERR_NO_PERMISSION);
             }
         } else {
             return array('status' => self::INVALID_SESSION_KEY, 'error_code' => self::ERR_INVALID_SESSION);
@@ -3793,6 +3796,69 @@ class remotecontrol_handle
             'filename' => $randfilename,
             'msg' => gT('The file has been successfully uploaded.')
         );
+    }
+
+    /**
+     * List available response export formats.
+     *
+     * Each entry contains the 'type' to use as document type in export_responses
+     * and export_responses_by_token, a plain-text 'label' and 'tooltip' (tooltip can be null)
+     * and 'isDefault', which flags the default export format.
+     * Labels and tooltips are always in English.
+     *
+     * @access public
+     * @param string $sSessionKey Auth credentials
+     * @return array On success: list of export formats. On failure: array with 'status' and 'error_code' keys.
+     *              Possible error codes: ERR_INVALID_SESSION, ERR_NO_DATA.
+     */
+    public function list_response_exports($sSessionKey)
+    {
+        if (!$this->_checkSessionKey($sSessionKey)) {
+            return array('status' => self::INVALID_SESSION_KEY, 'error_code' => self::ERR_INVALID_SESSION);
+        }
+
+        Yii::app()->loadHelper('admin.exportresults');
+        $oExport = new ExportSurveyResultsService();
+        $sOriginalLanguage = Yii::app()->getLanguage();
+        try {
+            Yii::app()->setLanguage('en');
+            $aExportOptions = $oExport->getExportOptions();
+        } finally {
+            Yii::app()->setLanguage($sOriginalLanguage);
+        }
+
+        if (empty($aExportOptions)) {
+            return array('status' => 'No export formats found', 'error_code' => self::ERR_NO_DATA);
+        }
+
+        ksort($aExportOptions, SORT_STRING);
+        $aExportFormats = array();
+        foreach ($aExportOptions as $sType => $aExportOption) {
+            $aExportFormats[] = array(
+                'type' => (string) $sType,
+                'label' => $this->htmlToPlainText($aExportOption['label']),
+                'tooltip' => $this->htmlToPlainText($aExportOption['tooltip']),
+                'isDefault' => $aExportOption['default'],
+            );
+        }
+
+        return $aExportFormats;
+    }
+
+    /**
+     * Convert an HTML fragment meant for the admin GUI to plain text,
+     * keeping words on both sides of a tag apart
+     *
+     * @param string|null $sHtml The HTML fragment
+     * @return string|null The plain text, or null if no or an empty fragment was given
+     */
+    protected function htmlToPlainText($sHtml)
+    {
+        if ($sHtml === null || $sHtml === '') {
+            return null;
+        }
+        $sText = flattenText(str_replace('<', ' <', (string) $sHtml), false, true);
+        return trim(preg_replace('~\s+~u', ' ', $sText));
     }
 
     /**

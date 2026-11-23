@@ -1,5 +1,8 @@
 <?php
 
+use LimeSurvey\Models\Services\ExpressionManagerSessionState;
+use LimeSurvey\Models\Services\SurveySessionState;
+
 if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
@@ -47,6 +50,7 @@ function eT($sToTranslate, $sEscapeMode = 'html')
 
 /**
  * Translation helper function for plural forms
+ * @deprecated Use gTPlural(), translators get only one field for both forms of "singular|plural"
  * @param string $sTextToTranslate
  * @param integer $iCount
  * @param string $sEscapeMode
@@ -59,6 +63,7 @@ function ngT($sTextToTranslate, $iCount, $sEscapeMode = 'html')
 
 /**
  * Translation helper function for plural forms which outputs right away
+ * @deprecated Use eTPlural(), translators get only one field for both forms of "singular|plural"
  * @param string $sToTranslate
  * @param integer $iCount
  * @param string $sEscapeMode
@@ -66,6 +71,43 @@ function ngT($sTextToTranslate, $iCount, $sEscapeMode = 'html')
 function neT($sToTranslate, $iCount, $sEscapeMode = 'html')
 {
     echo ngT($sToTranslate, $iCount, $sEscapeMode);
+}
+
+/**
+ * Translation helper function for gettext plural forms (msgid / msgid_plural)
+ *
+ * Unlike ngT(), translators get one field per plural form of their language.
+ * Placeholders are not replaced, use sprintf(), e.g.
+ * sprintf(gTPlural('%d file', '%d files', $count), $count)
+ *
+ * @param string $sSingular The source text for one item
+ * @param string $sPlural The source text for several items
+ * @param integer $iCount The number of items, selects the plural form
+ * @param string $sEscapeMode Valid values are html (this is the default, js and unescaped)
+ * @param string|null $sLanguage Defaults to the application language
+ * @return string
+ */
+function gTPlural($sSingular, $sPlural, $iCount, $sEscapeMode = 'html', $sLanguage = null)
+{
+    return quoteText(
+        App()->getMessages()->translatePlural($sSingular, $sPlural, (int)$iCount, $sLanguage),
+        $sEscapeMode
+    );
+}
+
+/**
+ * As gTPlural(), but echoes directly
+ *
+ * @param string $sSingular The source text for one item
+ * @param string $sPlural The source text for several items
+ * @param integer $iCount The number of items, selects the plural form
+ * @param string $sEscapeMode Valid values are html (this is the default, js and unescaped)
+ * @param string|null $sLanguage Defaults to the application language
+ * @return void
+ */
+function eTPlural($sSingular, $sPlural, $iCount, $sEscapeMode = 'html', $sLanguage = null)
+{
+    echo gTPlural($sSingular, $sPlural, $iCount, $sEscapeMode, $sLanguage);
 }
 
 
@@ -1261,6 +1303,7 @@ function getStatisticsFieldNames($iSurveyID, $aFilters, $sLanguage)
             case Question::QT_T_LONG_FREE_TEXT: // Long free text
             case Question::QT_U_HUGE_FREE_TEXT: // Huge free text
             case Question::QT_S_SHORT_FREE_TEXT: // Short free text
+            case Question::QT_J_MAP: // Map
                 $myfield = "T$myfield";
                 $allfields[] = $myfield;
                 break;
@@ -1463,6 +1506,7 @@ function getFieldName(string $tableName, string $fieldName, array $rawQuestions,
                 case \Question::QT_G_GENDER:
                 case \Question::QT_I_LANGUAGE:
                 case \Question::QT_S_SHORT_FREE_TEXT:
+                case \Question::QT_J_MAP:
                 case \Question::QT_T_LONG_FREE_TEXT:
                 case \Question::QT_U_HUGE_FREE_TEXT:
                 case \Question::QT_X_TEXT_DISPLAY:
@@ -2285,10 +2329,8 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
 
     if ($questionid === false) {
         // If the fieldmap was randomized, the master will contain the proper order.  Copy that fieldmap with the new language settings.
-        if (isset(Yii::app()->session['responses_' . $surveyid]['fieldmap-' . $surveyid . '-randMaster'])) {
-            $masterFieldmap = Yii::app()->session['responses_' . $surveyid]['fieldmap-' . $surveyid . '-randMaster'];
-            $mfieldmap = Yii::app()->session['responses_' . $surveyid][$masterFieldmap];
-
+        $mfieldmap = SurveySessionState::forSurvey((int) $surveyid)->getRandomizedFieldMap();
+        if ($mfieldmap !== null) {
             foreach ($mfieldmap as $fieldname => $mf) {
                 if (isset($fieldmap[$fieldname])) {
                     // This array holds the keys of translatable attributes
@@ -5182,19 +5224,20 @@ function getLabelSets($languages = null)
 
 /**
  * get the header
- * @param bool $meta : not used in any call (2016-10-18)
+ * @param bool $meta Not used in any call (2016-10-18)
  * @return string
  */
 function getHeader($meta = false)
 {
     /* Todo : move this to layout/public.html */
-    $surveyid = Yii::app()->session['LEMsid'];
+    $surveyid = ExpressionManagerSessionState::current()->getSurveyId();
     $oSurvey = Survey::model()->findByPk($surveyid);
     Yii::app()->loadHelper('surveytranslator');
 
     // Set Language // TODO remove one of the Yii::app()->session see bug #5901
-    if (Yii::app()->session['responses_' . $surveyid]['s_lang']) {
-        $languagecode = Yii::app()->session['responses_' . $surveyid]['s_lang'];
+    $sessionLanguage = SurveySessionState::forSurvey((int) $surveyid)->getLanguage();
+    if ($sessionLanguage) {
+        $languagecode = $sessionLanguage;
     } elseif (isset($surveyid) && $surveyid && $oSurvey) {
         $languagecode = $oSurvey->language;
     } else {
