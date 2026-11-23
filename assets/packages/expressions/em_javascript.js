@@ -1275,7 +1275,8 @@ function LEMval(alias, keepText)
                 }
 
                 /* Set as number if regexp is OK AND lenght is > 1 (then not fix [-.,] #14533 and no need to fix single number) */
-                if( /[,.]/.test(value) && isLEMnumeric(value) && value.length > 1 )
+                /* Need a digit : Decimal throws an error on -. and -, */
+                if( /[,.]/.test(value) && /[0-9]/.test(value) && isLEMnumeric(value) && value.length > 1 )
                 {
                     var length = value.length;
                     var firstLetterIsNull = value.split("").shift() === '0';
