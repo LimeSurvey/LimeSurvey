@@ -26,7 +26,9 @@ $(document).ready(function () {
                 $title.html(slide.title);
                 // e.g. "Screenshot of Editor preview" (the title may contain markup)
                 const altPattern = $modal.data("image-alt") || "%s";
-                $image.attr("src", slide.image).attr("alt", altPattern.replace("%s", $("<div>").html(slide.title).text()));
+                // DOMParser doesn't load images or run handlers; the replacer function ignores "$" patterns
+                const titleText = new DOMParser().parseFromString(slide.title || "", "text/html").body.textContent;
+                $image.attr("src", slide.image).attr("alt", altPattern.replace("%s", () => titleText));
                 $desc.html(slide.description);
 
                 // Swap the info panel if custom info is provided for this slide
