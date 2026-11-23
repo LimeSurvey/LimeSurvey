@@ -78,7 +78,6 @@ class ExpressionWarningTest extends TestBaseClass
         \Yii::import('application.helpers.expressions.em_manager_helper', true);
         $lem = \LimeExpressionManager::singleton();
         $knownVars = new \ReflectionProperty($lem, 'knownVars');
-        $knownVars->setAccessible(true);
         $savedKnownVars = $knownVars->getValue($lem);
         // Unanswered question, like when checking the survey logic.
         $lem->setKnownVars([

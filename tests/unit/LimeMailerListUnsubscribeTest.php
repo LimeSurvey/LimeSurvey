@@ -146,7 +146,6 @@ class LimeMailerListUnsubscribeTest extends TestBaseClass
     private function getListUnsubscribeHeaders(\LimeMailer $mailer)
     {
         $method = new \ReflectionMethod(\LimeMailer::class, 'addListUnsubscribeHeaders');
-        $method->setAccessible(true);
         $method->invoke($mailer);
 
         $headers = ['List-Unsubscribe' => [], 'List-Unsubscribe-Post' => []];

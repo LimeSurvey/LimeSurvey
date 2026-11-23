@@ -959,6 +959,12 @@ class LimeMailer extends PHPMailer
             foreach ($this->oToken->attributes as $attribute => $value) {
                 $aTokenReplacements[strtoupper((string) $attribute)] = $value;
             }
+            // Validity dates are stored in UTC. Show them in the display timezone (the timezone of the sending admin).
+            foreach (['VALIDFROM', 'VALIDUNTIL'] as $validityField) {
+                if (!empty($aTokenReplacements[$validityField])) {
+                    $aTokenReplacements[$validityField] = dateShift($aTokenReplacements[$validityField], 'Y-m-d H:i:s');
+                }
+            }
         }
         /* Set the minimal url and add it to Placeholders - use validated URLs to prevent host header injection */
         $aTokenReplacements["OPTOUTURL"] = App()
@@ -988,7 +994,7 @@ class LimeMailer extends PHPMailer
             $aTokenReplacements["GLOBALOPTINURL"] = App()->getController()
                 ->createAbsoluteUrl("/optin/participants", array("surveyid" => $this->surveyId, "token" => $token,"langcode" => $language));
         }
-        $this->addUrlsPlaceholders("GLOBALOPTINURL");
+        $this->addUrlsPlaceholders("GLOBALOPTIN");
         $aTokenReplacements["SURVEYURL"] = $survey->getSurveyUrl($language, ["token" => $token]);
         // Validate the survey URL host against allowed hosts to prevent host header injection
         $parsedSurveyUrl = parse_url($aTokenReplacements["SURVEYURL"]);

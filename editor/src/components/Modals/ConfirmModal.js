@@ -11,14 +11,24 @@ export const ConfirmModal = ({
   description = t('Are you sure you want to perform this action?'),
   confirmButtonText = t('Confirm'),
   confirmButtonVariant = 'danger',
+  onEntered,
   ...props
 }) => {
+  const titleId = React.useId()
+  const cancelButtonRef = React.useRef(null)
+
   return (
     <Modal
       {...props}
       show={show}
       centered
       onHide={onHide}
+      aria-labelledby={titleId}
+      onEntered={(...args) => {
+        // Focus the safe choice once the modal is shown
+        cancelButtonRef.current?.focus()
+        onEntered?.(...args)
+      }}
       className={`confirm-modal confirm-modal--${confirmButtonVariant}`}
     >
       <Modal.Header
@@ -26,11 +36,14 @@ export const ConfirmModal = ({
         closeButton
       ></Modal.Header>
       <Modal.Body>
-        <h1 className="reg24">{title}</h1>
+        <h1 className="reg24" id={titleId}>
+          {title}
+        </h1>
         <h3 className="reg14 description">{description}</h3>
       </Modal.Body>
       <Modal.Footer className="border-none  p-0 d-flex justify-content-end text-center">
         <Button
+          ref={cancelButtonRef}
           size="lg"
           className="cancel-button"
           variant="secondary"

@@ -190,8 +190,9 @@ class Tokens extends SurveyCommonAction
     }
 
     /**
-     * tokens::bounceprocessing()
-     * @param int $iSurveyId
+     * Scans the bounce email account of the survey and marks the matching participants as bounced.
+     * Outputs the result as an HTML fragment for the bounce processing modal.
+     * @param int $iSurveyId Survey ID
      * @return void
      */
     public function bounceprocessing($iSurveyId)
@@ -324,27 +325,25 @@ class Tokens extends SurveyCommonAction
                 imap_close($mbox);
 
                 if ($bouncetotal > 0) {
-                    printf(gT("%s unread messages were scanned out of which %s were marked as bounce by the system."), $checktotal, $bouncetotal);
-                    eT("You can now close this modal box.");
+                    echo CHtml::tag('p', [], sprintf(gT("%s unread messages were scanned out of which %s were marked as bounce by the system."), $checktotal, $bouncetotal));
                 } else {
-                    printf(gT("%s unread messages were scanned, none were marked as bounce by the system."), $checktotal);
-                    eT("You can now close this modal box.");
+                    echo CHtml::tag('p', [], sprintf(gT("%s unread messages were scanned, none were marked as bounce by the system."), $checktotal));
                 }
+                echo CHtml::tag('p', [], gT("You can now close this modal box."));
             } else {
-                $sSettingsUrl = App()->createUrl('admin/tokens/sa/bouncesettings/surveyid/' . $iSurveyId);
-                eT("Failed to open the inbox of the bounce email account.");
-                echo "<br><strong>";
-                printf(gT("Please %s check your settings %s."), '<a href="' . $sSettingsUrl . '" title="Bounce settings" >', '</a>');
-                echo "</strong><br> <br/>";
-                eT("Error message returned by IMAP:");
-                echo "<br>";
-                $aErrors = @imap_errors();
-
-                foreach ($aErrors as $sError) {
-                    echo $sError . '<br/>';
+                $settingsUrl = App()->createUrl('admin/tokens/sa/bouncesettings/surveyid/' . $iSurveyId);
+                echo CHtml::tag('p', [], gT("Failed to open the inbox of the bounce email account."));
+                echo CHtml::tag('p', [], CHtml::tag('strong', [], sprintf(gT("Please %s check your settings %s."), '<a href="' . $settingsUrl . '">', '</a>')));
+                $imapErrors = imap_errors();
+                if (!empty($imapErrors)) {
+                    echo CHtml::tag('p', [], gT("Error message returned by IMAP:"));
+                    echo CHtml::openTag('ul');
+                    foreach ($imapErrors as $imapError) {
+                        echo CHtml::tag('li', [], CHtml::encode($imapError));
+                    }
+                    echo CHtml::closeTag('ul');
                 }
-                echo "<br><br/>";
-                eT("You can now close this modal box.");
+                echo CHtml::tag('p', [], gT("You can now close this modal box."));
             }
         } else {
             eT("Bounce processing is deactivated either application-wide or for this survey in particular.");
@@ -468,6 +467,35 @@ class Tokens extends SurveyCommonAction
     }
 
     /**
+     * Converts a participant validity date (valid from/valid until) entered in the admin's date format
+     * and display timezone into the UTC database format.
+     * A value that can not be parsed is returned unchanged, so that the date validation of the model rejects it.
+     *
+     * @param mixed $value Date as entered by the admin
+     * @return string|null UTC date in 'Y-m-d H:i:s' format, null if empty
+     */
+    private function convertValidityDateToDbFormat($value): ?string
+    {
+        $value = trim((string) $value);
+        if ($value === '') {
+            return null;
+        }
+        // A date without time means midnight. Otherwise convertFromGlobalSettingFormat() lets PHP guess
+        // the format, which reads e.g. dd/mm/yyyy as mm/dd/yyyy.
+        $dateFormat = getDateFormatData(Yii::app()->session['dateformat'] ?? 1);
+        $dateOnly = DateTime::createFromFormat('!' . $dateFormat['phpdate'], $value);
+        $parseErrors = DateTime::getLastErrors();
+        if ($dateOnly !== false && ($parseErrors === false || ($parseErrors['warning_count'] === 0 && $parseErrors['error_count'] === 0))) {
+            $value .= ' 00:00';
+        }
+        $date = convertFromGlobalSettingFormat($value, true);
+        if ($date === null) {
+            return $value;
+        }
+        return getUTCOfDate($date);
+    }
+
+    /**
      * Browse Tokens
      * @param int $iSurveyId
      * @param int $limit
@@ -585,7 +613,9 @@ class Tokens extends SurveyCommonAction
     }
 
     /**
-     * The fields with a value "lskeep" will not be updated
+     * Updates the selected participants with the values of the bulk edit form.
+     * The fields with a value "lskeep" will not be updated.
+     * @return void
      */
     public function editMultiple()
     {
@@ -608,20 +638,12 @@ class Tokens extends SurveyCommonAction
                 $aResults['global']['result'] = true;
                 // Valid from
                 if (trim(Yii::app()->request->getPost('validfrom', 'lskeep')) != 'lskeep') {
-                    if (trim(Yii::app()->request->getPost('validfrom', 'lskeep')) == '') {
-                        $aData['validfrom'] = null;
-                    } else {
-                        $aData['validfrom'] = date('Y-m-d H:i:s', strtotime(trim((string) $_POST['validfrom'])));
-                    }
+                    $aData['validfrom'] = $this->convertValidityDateToDbFormat(Yii::app()->request->getPost('validfrom'));
                 }
 
                 // Valid until
                 if (trim(Yii::app()->request->getPost('validuntil', 'lskeep')) != 'lskeep') {
-                    if (trim(Yii::app()->request->getPost('validuntil', '')) == '') {
-                        $aData['validuntil'] = null;
-                    } else {
-                        $aData['validuntil'] = date('Y-m-d H:i:s', strtotime(trim((string) $_POST['validuntil'])));
-                    }
+                    $aData['validuntil'] = $this->convertValidityDateToDbFormat(Yii::app()->request->getPost('validuntil'));
                 }
 
                 // Email
@@ -728,8 +750,6 @@ class Tokens extends SurveyCommonAction
         }*/
         App()->loadHelper("surveytranslator");
 
-        $dateformatdetails = getDateFormatData(App()->session['dateformat']);
-
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title . " ("
             . gT("ID") . ":" . $iSurveyId . ")";
         $aData['sidemenu']["token_menu"] = true;
@@ -745,28 +765,10 @@ class Tokens extends SurveyCommonAction
             $this->verifyAndCreateTokenTable($survey);
 
             // TODO: This part could be refactored into function like "insertToken()"
-            Yii::import('application.libraries.Date_Time_Converter');
 
             // Fix up dates and match to database format
-            if (trim($request->getPost('validfrom', '')) == '') {
-                $validfrom = null;
-            } else {
-                $datetimeobj = new Date_Time_Converter(
-                    trim($request->getPost('validfrom', '')),
-                    $dateformatdetails['phpdate'] . ' H:i'
-                );
-                $validfrom = $datetimeobj->convert('Y-m-d H:i:s');
-            }
-
-            if (trim(App()->request->getPost('validuntil', '')) == '') {
-                $validuntil = null;
-            } else {
-                $datetimeobj = new Date_Time_Converter(
-                    trim($request->getPost('validuntil', '')),
-                    $dateformatdetails['phpdate'] . ' H:i'
-                );
-                $validuntil = $datetimeobj->convert('Y-m-d H:i:s');
-            }
+            $validfrom = $this->convertValidityDateToDbFormat($request->getPost('validfrom'));
+            $validuntil = $this->convertValidityDateToDbFormat($request->getPost('validuntil'));
             /** @var string : used to find if token already exist */
             $sanitizedtoken = Token::sanitizeToken($request->getPost('token'));
             $aData = array(
@@ -885,28 +887,10 @@ class Tokens extends SurveyCommonAction
         }
 
         Yii::app()->loadHelper("surveytranslator");
-        $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
 
         if ($request->getPost('subaction')) {
             Yii::import('application.helpers.admin.ajax_helper', true);
-            Yii::import('application.libraries.Date_Time_Converter', true);
             $aTokenData = [];
-
-            // validfrom
-            if (trim($request->getPost('validfrom', '')) == '') {
-                $_POST['validfrom'] = null;
-            } else {
-                $datetimeobj = new Date_Time_Converter(trim($request->getPost('validfrom', '')), $dateformatdetails['phpdate'] . ' H:i');
-                $_POST['validfrom'] = $datetimeobj->convert('Y-m-d H:i:s');
-            }
-
-            // validuntil
-            if (trim($request->getPost('validuntil', '')) == '') {
-                $_POST['validuntil'] = null;
-            } else {
-                $datetimeobj = new Date_Time_Converter(trim($request->getPost('validuntil', '')), $dateformatdetails['phpdate'] . ' H:i');
-                $_POST['validuntil'] = $datetimeobj->convert('Y-m-d H:i:s');
-            }
 
             $aTokenData['firstname'] = $request->getPost('firstname');
             $aTokenData['lastname'] = $request->getPost('lastname');
@@ -919,8 +903,8 @@ class Tokens extends SurveyCommonAction
             $aTokenData['sent'] = $this->convertTokenDateToDbFormat($request->getPost('sent'));
             $aTokenData['completed'] = $this->convertTokenDateToDbFormat($request->getPost('completed'));
             $aTokenData['usesleft'] = $request->getPost('usesleft');
-            $aTokenData['validfrom'] = $request->getPost('validfrom');
-            $aTokenData['validuntil'] = $request->getPost('validuntil');
+            $aTokenData['validfrom'] = $this->convertValidityDateToDbFormat($request->getPost('validfrom'));
+            $aTokenData['validuntil'] = $this->convertValidityDateToDbFormat($request->getPost('validuntil'));
             $aTokenData['remindersent'] = $this->convertTokenDateToDbFormat($request->getPost('remindersent'));
             $aTokenData['remindercount'] = intval($request->getPost('remindercount'));
             $udresult = Token::model($iSurveyId)->findAll("tid <> :tid and token <> '' and token = :token", [':tid' => $iTokenId, ':token' => $sSanitizedToken]);
@@ -1079,22 +1063,10 @@ class Tokens extends SurveyCommonAction
             $this->verifyAndCreateTokenTable($survey);
 
             $message = '';
-            $this->getController()->loadLibrary('Date_Time_Converter');
-            $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
 
             //Fix up dates and match to database format
-            if (trim(Yii::app()->request->getPost('validfrom', '')) == '') {
-                $aData['validfrom'] = null;
-            } else {
-                $datetimeobj = new Date_Time_Converter(trim(Yii::app()->request->getPost('validfrom', '')), $dateformatdetails['phpdate'] . ' H:i');
-                $aData['validfrom'] = $datetimeobj->convert('Y-m-d H:i:s');
-            }
-            if (trim(Yii::app()->request->getPost('validuntil', '')) == '') {
-                $aData['validuntil'] = null;
-            } else {
-                $datetimeobj = new Date_Time_Converter(trim(Yii::app()->request->getPost('validuntil', '')), $dateformatdetails['phpdate'] . ' H:i');
-                $aData['validuntil'] = $datetimeobj->convert('Y-m-d H:i:s');
-            }
+            $aData['validfrom'] = $this->convertValidityDateToDbFormat(Yii::app()->request->getPost('validfrom'));
+            $aData['validuntil'] = $this->convertValidityDateToDbFormat(Yii::app()->request->getPost('validuntil'));
 
             $aData['firstname'] = App()->request->getPost('firstname', '');
             $aData['lastname'] = App()->request->getPost('lastname', '');
@@ -2500,7 +2472,7 @@ class Tokens extends SurveyCommonAction
                                 if (!LimeMailer::validateAddress($sEmailaddress)) {
                                     if ($bAllowInvalidEmail) {
                                         $iInvalidEmailCount++;
-                                        if (empty($aWriteArray['emailstatus']) || strtoupper($aWriteArray['emailstatus'] == "OK")) {
+                                        if (empty($aWriteArray['emailstatus']) || strtoupper((string) $aWriteArray['emailstatus']) == "OK") {
                                             $aWriteArray['emailstatus'] = "invalid";
                                         }
                                     } else {

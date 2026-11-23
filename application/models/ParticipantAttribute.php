@@ -72,11 +72,20 @@ class ParticipantAttribute extends LSActiveRecord
     }
 
     /**
-     * @param array $data
+     * Inserts or updates the value of one attribute for one participant.
+     *
+     * @param array $data Row data with keys participant_id, attribute_id and value
      * @return void
+     * @throws InvalidArgumentException If the attribute ID is not a plain positive integer
      */
     public function updateParticipantAttributeValue($data)
     {
+        // Callers pick encryption and date format by the ID as given, so an ID that a cast would change is refused
+        $attributeId = (int) $data['attribute_id'];
+        if ($attributeId < 1 || (string) $attributeId !== (string) $data['attribute_id']) {
+            throw new InvalidArgumentException('Invalid participant attribute ID');
+        }
+        $data['attribute_id'] = $attributeId;
         $result = Yii::app()->db->createCommand()
             ->select('COUNT(*)')
             ->where(
@@ -86,8 +95,14 @@ class ParticipantAttribute extends LSActiveRecord
             ->from('{{participant_attribute}}')
             ->queryScalar();
         if ($result > 0) {
+            // The column values are bound as :participant_id and :attribute_id by update(), so the condition needs its own names
             Yii::app()->db->createCommand()
-                ->update('{{participant_attribute}}', $data, "participant_id = '" . $data['participant_id'] . "' AND attribute_id = " . $data['attribute_id']);
+                ->update(
+                    '{{participant_attribute}}',
+                    $data,
+                    "participant_id = :where_participant_id AND attribute_id = :where_attribute_id",
+                    [':where_participant_id' => $data['participant_id'], ':where_attribute_id' => $data['attribute_id']]
+                );
         } else {
             Yii::app()->db->createCommand()
                 ->insert('{{participant_attribute}}', $data);

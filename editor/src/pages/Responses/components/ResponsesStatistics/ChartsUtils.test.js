@@ -9,6 +9,7 @@ import {
   TEXT_QUESTION_TYPES,
 } from './ChartsUtils'
 import {
+  QT_D_DATE,
   QT_J_MAP,
   QT_Q_MULTIPLE_SHORT_TEXT,
   QT_S_SHORT_FREE_TEXT,
@@ -45,6 +46,13 @@ describe('getStatisticsGraphsForType', () => {
     expect(getStatisticsGraphsForType(QT_J_MAP)).toEqual(
       getStatisticsGraphsForType(QT_S_SHORT_FREE_TEXT)
     )
+  })
+
+  test('gives date/time questions a calendar and a table', () => {
+    expect(getStatisticsGraphsForType(QT_D_DATE)).toEqual([
+      statisticsGraphs.CALENDAR,
+      statisticsGraphs.TABLE,
+    ])
   })
 })
 

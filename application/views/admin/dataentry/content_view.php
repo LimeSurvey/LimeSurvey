@@ -258,29 +258,6 @@ echo viewHelper::getViewTestTag('dataEntryView');
                     }
                     ?>
         </ul>
-        <div style="display:none" id="ranking-<?php echo $thisqid ?>-maxans"><?php echo $qcount ?></div>
-        <div style="display:none" id="ranking-<?php echo $thisqid ?>-minans">0</div>
-        <div style="display:none" id="ranking-<?php echo $thisqid ?>-name">javatbd<?php echo $fieldname ?></div>
-        <div style="display:none">
-                <?php foreach ($questions as $qrow) {
-                    echo "<div id=\"htmlblock-{$thisqid}-{$qrow['title']}\">{$qrow->questionl10ns[$sDataEntryLanguage]->question}</div>";
-                }
-                ?>
-        </div>
-        <script type='text/javascript'>
-            <!--
-            var aRankingTranslations = {
-                choicetitle: '<?php echo gT("Available items", 'js') ?>',
-                ranktitle: '<?php echo gT("Your ranking", 'js') ?>'
-            };
-            function checkconditions(){
-                // Some space so the EM won't kick in
-            };
-            $(function() {
-                doDragDropRank(<?php echo $thisqid ?>,0,true,true);
-            });
-            -->
-        </script>
         </div></div>
                 <?php
                 break;
