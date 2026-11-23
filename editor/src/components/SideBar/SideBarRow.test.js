@@ -1,32 +1,17 @@
 import 'tests/mocks'
 
-import { screen } from '@testing-library/react'
+import { fireEvent, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { renderWithProviders } from 'tests/testUtils'
 
 import { SideBarRow } from './SideBarRow'
 
-let mockShowCode = true
-jest.mock('hooks/useSurvey', () => ({
-  useSurvey: () => ({
-    survey: {
-      ...require('helpers/data/survey-detail.json').survey,
-      showQNumCode: { showCode: mockShowCode },
-    },
-    update: () => {},
-  }),
-}))
-
 const menuItems = [{ type: 'item', label: 'Delete', onClick: () => {} }]
 
 describe('SideBarRow', () => {
-  beforeEach(() => {
-    mockShowCode = true
-  })
-
   test('shows the question code badge when question codes are enabled', async () => {
     await renderWithProviders(
-      <SideBarRow title="Q" code="Q006" menuItems={menuItems} />
+      <SideBarRow title="Q" code="Q006" menuItems={menuItems} showCode />
     )
     expect(await screen.findByTestId('question-code-badge')).toHaveTextContent(
       'Q006'
@@ -34,7 +19,6 @@ describe('SideBarRow', () => {
   })
 
   test('hides the question code badge when question codes are disabled', async () => {
-    mockShowCode = false
     await renderWithProviders(
       <SideBarRow title="Q" code="Q006" menuItems={menuItems} />
     )
@@ -255,5 +239,21 @@ describe('SideBarRow', () => {
     await userEvent.click(b)
     expect(b).toHaveAttribute('aria-expanded', 'true')
     expect(a).toHaveAttribute('aria-expanded', 'false')
+  })
+
+  test('opens the question context menu on right click and closes it on an outside click', async () => {
+    await renderWithProviders(
+      <SideBarRow title="Q" code="Q006" testId="row" menuItems={menuItems} />
+    )
+    const row = await screen.findByTestId('row')
+    expect(screen.queryByText('Copy question code')).toBeNull()
+
+    fireEvent.contextMenu(row, { clientX: 10, clientY: 10 })
+    expect(screen.getByText('Copy question code').closest('menu')).toHaveClass(
+      'active'
+    )
+
+    await userEvent.click(document.body)
+    expect(screen.queryByText('Copy question code')).toBeNull()
   })
 })

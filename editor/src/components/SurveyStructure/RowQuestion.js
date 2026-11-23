@@ -1,9 +1,8 @@
 import { memo, useState } from 'react'
-import { useParams } from 'react-router-dom'
 import classNames from 'classnames'
 
 import { queryClient } from 'queryClient'
-import { useFocused, useOperationCallback } from 'hooks'
+import { useOperationCallback } from 'hooks'
 import {
   Entities,
   findQuestionCodeReferences,
@@ -21,27 +20,32 @@ import { QuestionListIcon } from 'components/icons'
 import { SurveyLogicModal } from './SurveyLogicModal'
 
 /**
- * Structure row of a question. Memoized: The drag library renders a dragged
- * row again on every pointer move (and a displaced one whenever it shifts),
- * and this skips that work as long as the props stay the same.
+ * Structure row of a question. Memoized, so it only renders again when its own
+ * props change: Not on every pointer move of a drag, and not for changes to
+ * other questions, the focus or the URL. That needs props that keep their
+ * identity, so the handlers get the question and its index as arguments
+ * instead of being created for each row.
  */
 export const RowQuestion = memo(function RowQuestion({
   question,
   language,
+  surveyId,
   dragHandleProps,
-  duplicateQuestion,
-  deleteQuestion,
-  groupIndex,
   questionIndex,
-  snapshot,
-  focused,
+  isDragging = false,
+  isFocused = false,
   isSurveyActive,
-  assignNumericAnswerCodes,
   areCodesVisible = false,
+  /* (question, questionIndex) */
+  onSelect,
+  /* (question, questionIndex) */
+  duplicateQuestion,
+  /* (questionIndex) */
+  deleteQuestion,
+  /* (question, questionIndex), returns whether the codes changed */
+  assignNumericAnswerCodes,
   toggleQuestionCodes,
 }) {
-  const { setFocused } = useFocused()
-  const { surveyId } = useParams()
   const { subscribeToOperationFinish } = useOperationCallback()
   const hasAnswerOptions = (question.answers?.length ?? 0) > 0
   const [numericCodesConfirm, setNumericCodesConfirm] = useState({
@@ -90,7 +94,7 @@ export const RowQuestion = memo(function RowQuestion({
     setNumericCodesConfirm({ show: false, references: [] })
     let changed
     try {
-      changed = assignNumericAnswerCodes(question)
+      changed = assignNumericAnswerCodes(question, questionIndex)
     } catch (error) {
       showAssignError(error)
       return
@@ -139,7 +143,7 @@ export const RowQuestion = memo(function RowQuestion({
   return (
     <div
       className={classNames({
-        'focus-element': snapshot.isDragging,
+        'focus-element': isDragging,
         'opacity-25': question.attributes?.hide_question?.value,
       })}
     >
@@ -148,7 +152,7 @@ export const RowQuestion = memo(function RowQuestion({
         provided={{ dragHandleProps }}
         menuToggleId="meatball-menu-button"
         title={question.l10ns[language]?.question}
-        isFocused={focused?.qid === question?.qid}
+        isFocused={isFocused}
         menuItems={[
           {
             type: 'header',
@@ -158,7 +162,7 @@ export const RowQuestion = memo(function RowQuestion({
             type: 'item',
             label: t('Duplicate question'),
             icon: 'ri-file-copy-2-line',
-            onClick: duplicateQuestion,
+            onClick: () => duplicateQuestion(question, questionIndex),
             testId: 'duplicate-button',
             disabled: { state: isSurveyActive },
           },
@@ -166,7 +170,7 @@ export const RowQuestion = memo(function RowQuestion({
             type: 'item',
             label: t('Delete question'),
             icon: 'ri-delete-bin-fill',
-            onClick: deleteQuestion,
+            onClick: () => deleteQuestion(questionIndex),
             className: 'text-danger',
             testId: 'delete-button',
             disabled: { state: isSurveyActive },
@@ -206,9 +210,8 @@ export const RowQuestion = memo(function RowQuestion({
         icon={<QuestionListIcon />}
         code={question.title}
         testId={`sidebar-row-question`}
-        onRowClick={() =>
-          setFocused({ ...question }, groupIndex, questionIndex)
-        }
+        showCode={areCodesVisible}
+        onRowClick={() => onSelect(question, questionIndex)}
       />
       <ConfirmModal
         show={numericCodesConfirm.show}

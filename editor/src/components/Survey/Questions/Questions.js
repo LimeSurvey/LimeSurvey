@@ -108,12 +108,22 @@ export const Questions = ({
     setFocused(updatedQuestions[cloneIndex], groupIndex, cloneIndex)
   }
 
+  // Keyed by the question code and group, not the position: A reorder moves
+  // the existing question editors instead of rebuilding them. Not by the qid,
+  // which changes when a new question is first saved. The position is only
+  // added when two questions share a code, so the keys stay unique.
+  const usedKeys = new Set()
+  const getQuestionKey = (question, index) => {
+    const key = `question-${question.title}-${question.gid}`
+    const uniqueKey = usedKeys.has(key) ? `${key}-${index}` : key
+    usedKeys.add(uniqueKey)
+    return uniqueKey
+  }
+
   return (
     <>
       {questions.map((question, index) => (
-        <React.Fragment
-          key={`question-${question.title}-${index}-${question.gid}`}
-        >
+        <React.Fragment key={getQuestionKey(question, index)}>
           <Question
             language={language}
             question={question}

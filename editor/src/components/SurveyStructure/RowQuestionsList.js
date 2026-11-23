@@ -6,6 +6,7 @@ import classNames from 'classnames'
 import {
   useAppState,
   useBuffer,
+  useEventCallback,
   useFocused,
   useToggleQuestionCodes,
 } from 'hooks'
@@ -118,15 +119,18 @@ export const RowQuestionsList = ({
     setDeleteState({ show: false, index: null })
   }
 
-  // Built here, not in the Droppable or Draggable render functions: The drag
-  // library runs those again when a drag starts and on every pointer move,
-  // and new callbacks would make the memoized rows render again each time.
-  const questionRows = questions.map((question, index) => ({
-    question,
-    duplicateQuestion: () => duplicateQuestion(question, index),
-    deleteQuestion: () => deleteQuestion(index),
-    assignNumericAnswerCodes: (q) => assignNumericAnswerCodes(q, index),
-  }))
+  // Same functions on every render, so the memoized rows only render again
+  // when their own props change (the drag library also renders the rows on
+  // every pointer move)
+  const handleSelect = useEventCallback((question, index) =>
+    setFocused({ ...question }, groupIndex, index)
+  )
+  const handleDuplicate = useEventCallback(duplicateQuestion)
+  const handleDelete = useEventCallback(deleteQuestion)
+  const handleAssignNumericAnswerCodes = useEventCallback(
+    assignNumericAnswerCodes
+  )
+  const handleToggleQuestionCodes = useEventCallback(toggleQuestionCodes)
 
   return (
     <>
@@ -151,7 +155,7 @@ export const RowQuestionsList = ({
             ref={provided.innerRef}
             className="group"
           >
-            {questionRows.map(({ question, ...rowProps }, index) => (
+            {questions.map((question, index) => (
               // Keyed by the question, not its position: A reorder moves the
               // existing rows instead of rebuilding them.
               <Draggable
@@ -170,17 +174,20 @@ export const RowQuestionsList = ({
                     })}
                   >
                     <RowQuestion
-                      {...rowProps}
                       question={question}
                       language={language}
+                      surveyId={surveyId}
                       dragHandleProps={provided.dragHandleProps}
-                      groupIndex={groupIndex}
                       questionIndex={index}
-                      focused={focused}
-                      snapshot={snapshot}
+                      isDragging={snapshot.isDragging}
+                      isFocused={focused?.qid === question.qid}
                       isSurveyActive={isSurveyActive}
                       areCodesVisible={areCodesVisible}
-                      toggleQuestionCodes={toggleQuestionCodes}
+                      onSelect={handleSelect}
+                      duplicateQuestion={handleDuplicate}
+                      deleteQuestion={handleDelete}
+                      assignNumericAnswerCodes={handleAssignNumericAnswerCodes}
+                      toggleQuestionCodes={handleToggleQuestionCodes}
                     />
                   </div>
                 )}

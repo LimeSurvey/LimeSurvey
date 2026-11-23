@@ -25,6 +25,7 @@ import {
   useFocused,
   useAppState,
   useBuffer,
+  useEventCallback,
   useSurvey,
   useSurveyRequestTimestamp,
 } from 'hooks'
@@ -43,9 +44,16 @@ export const SurveyStructure = () => {
   const navigate = useNavigate()
   const { setFocused, unFocus, focused } = useFocused()
   const {
-    survey: { questionGroups = [], language, showWelcome, sid } = {},
+    survey: {
+      questionGroups = [],
+      language,
+      showWelcome,
+      sid,
+      showQNumCode,
+    } = {},
     update,
   } = useSurvey(surveyId)
+  const showCode = !!showQNumCode?.showCode
 
   const { addToBuffer } = useBuffer()
   const { clearSurveyRequestTimestamp } = useSurveyRequestTimestamp()
@@ -340,22 +348,17 @@ export const SurveyStructure = () => {
     }
   }
 
-  // Built here, not in the Droppable or Draggable render functions: The drag
-  // library runs those again when a drag starts and on every pointer move,
-  // and new callbacks would make the memoized rows render again each time.
-  const groupRows = questionGroups.map((questionGroup, index) => ({
-    // Keyed by the group, not its position: A reorder moves the existing rows
-    // instead of rebuilding them.
-    key: `questionGroupStructure-${questionGroup.appKey || questionGroup.gid}`,
-    questionGroup,
-    update: (updatedGroup) => handleUpdateQuestionGroup(updatedGroup, index),
-    duplicateGroup: () => handleQuestionGroupDuplication(questionGroup, index),
-    deleteGroup: () => handleGroupDeletion(questionGroup, index),
-    onTitleClick: () => {
-      scrollToElement(`question-group-${questionGroup.gid}`)
-      setFocused({ ...questionGroup }, index)
-    },
-  }))
+  // Same functions on every render, so the memoized group rows only render
+  // again when their own props change (the drag library also renders the rows
+  // on every pointer move)
+  const handleGroupUpdate = useEventCallback(handleUpdateQuestionGroup)
+  const handleGroupDuplicate = useEventCallback(handleQuestionGroupDuplication)
+  const handleGroupDelete = useEventCallback(handleGroupDeletion)
+  const handleGroupTitleClick = useEventCallback((questionGroup, index) => {
+    setFocused(questionGroup, index, undefined, false)
+    scrollToElement(`question-group-${questionGroup.gid}`)
+    setFocused({ ...questionGroup }, index)
+  })
 
   return (
     <div
@@ -390,6 +393,7 @@ export const SurveyStructure = () => {
           </SideBarHeader>
           <RowPinned
             testId="survey-structure-header"
+            showCode={showCode}
             title={t('Welcome')}
             disabled={!showWelcome}
             isFocused={
@@ -423,9 +427,18 @@ export const SurveyStructure = () => {
                         : 'auto',
                   }}
                 >
-                  {groupRows.map(
-                    ({ key, questionGroup, ...rowProps }, index) => (
-                      <Draggable index={index} key={key} draggableId={key}>
+                  {questionGroups.map((questionGroup, index) => {
+                    // Keyed by the group, not its position: A reorder moves
+                    // the existing rows instead of rebuilding them.
+                    const groupKey = `questionGroupStructure-${questionGroup.appKey || questionGroup.gid}`
+                    const isGroupOpen = focused?.gid === questionGroup.gid
+
+                    return (
+                      <Draggable
+                        index={index}
+                        key={groupKey}
+                        draggableId={groupKey}
+                      >
                         {(provided, snapshot) => (
                           <div
                             data-ordervalue={questionGroup.sortOrder}
@@ -439,18 +452,27 @@ export const SurveyStructure = () => {
                             })}
                           >
                             <RowQuestionGroup
-                              {...rowProps}
-                              dragHandleProps={provided.dragHandleProps}
                               questionGroup={questionGroup}
                               language={language}
+                              surveyId={surveyId}
+                              dragHandleProps={provided.dragHandleProps}
                               groupIndex={index}
+                              isOpen={isGroupOpen}
+                              isFocused={
+                                isGroupOpen && focused?.qid === undefined
+                              }
                               isSurveyActive={isSurveyActive}
+                              showCode={showCode}
+                              update={handleGroupUpdate}
+                              duplicateGroup={handleGroupDuplicate}
+                              deleteGroup={handleGroupDelete}
+                              onTitleClick={handleGroupTitleClick}
                             />
                           </div>
                         )}
                       </Draggable>
                     )
-                  )}
+                  })}
                   {provided.placeholder}
                 </div>
               )}
@@ -459,6 +481,7 @@ export const SurveyStructure = () => {
           {questionGroups.length > 0 ? (
             <RowPinned
               testId="survey-structure-footer"
+              showCode={showCode}
               title={t('End')}
               isFocused={
                 focused?.info?.type === getQuestionTypeInfo().END_SCREEN.type

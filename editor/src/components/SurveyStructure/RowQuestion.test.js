@@ -16,11 +16,6 @@ jest.mock('helpers/Alert', () => ({
   Toast: jest.fn(),
 }))
 
-const mockSetFocused = jest.fn()
-jest.mock('hooks/useFocused', () => ({
-  useFocused: () => ({ setFocused: mockSetFocused, focused: {} }),
-}))
-
 const question = {
   qid: 1,
   title: 'Q1',
@@ -30,6 +25,7 @@ const question = {
 
 const setup = async (props = {}) => {
   const handlers = {
+    onSelect: jest.fn(),
     duplicateQuestion: jest.fn(),
     deleteQuestion: jest.fn(),
     assignNumericAnswerCodes: jest.fn(() => true),
@@ -39,8 +35,7 @@ const setup = async (props = {}) => {
     <RowQuestion
       question={question}
       language="en"
-      snapshot={{}}
-      focused={{}}
+      questionIndex={0}
       areCodesVisible
       {...handlers}
       {...props}
@@ -53,7 +48,6 @@ const setup = async (props = {}) => {
 
 describe('RowQuestion menu', () => {
   beforeEach(() => {
-    mockSetFocused.mockClear()
     queryClient.setQueryData([STATES.OPERATION_FINISH_SUBSCRIPTIONS], new Map())
   })
 
@@ -99,10 +93,10 @@ describe('RowQuestion menu', () => {
   })
 
   test('toggle calls the handler and menu clicks do not activate the row', async () => {
-    const { toggleQuestionCodes } = await setup()
+    const { toggleQuestionCodes, onSelect } = await setup()
     await userEvent.click(screen.getByTestId('toggle-question-codes-button'))
     expect(toggleQuestionCodes).toHaveBeenCalledTimes(1)
-    expect(mockSetFocused).not.toHaveBeenCalled()
+    expect(onSelect).not.toHaveBeenCalled()
   })
 
   test('Escape closes the menu and focuses the toggle', async () => {
@@ -127,7 +121,7 @@ describe('RowQuestion menu', () => {
     ).toBeInTheDocument()
     expect(assignNumericAnswerCodes).not.toHaveBeenCalled()
     await userEvent.click(screen.getByTestId('confirm-modal-confirm-button'))
-    expect(assignNumericAnswerCodes).toHaveBeenCalledWith(question)
+    expect(assignNumericAnswerCodes).toHaveBeenCalledWith(question, 0)
   })
 
   test('the confirmation lists questions whose logic uses the code', async () => {
@@ -297,18 +291,8 @@ describe('RowQuestion menu', () => {
   test('opening a second menu closes the first', async () => {
     await renderWithProviders(
       <>
-        <RowQuestion
-          question={question}
-          language="en"
-          snapshot={{}}
-          focused={{}}
-        />
-        <RowQuestion
-          question={{ ...question, qid: 2 }}
-          language="en"
-          snapshot={{}}
-          focused={{}}
-        />
+        <RowQuestion question={question} language="en" />
+        <RowQuestion question={{ ...question, qid: 2 }} language="en" />
       </>
     )
     const [a, b] = await screen.findAllByRole('button', {
@@ -320,5 +304,23 @@ describe('RowQuestion menu', () => {
     expect(b).toHaveAttribute('aria-expanded', 'true')
     await waitFor(() => expect(a).toHaveAttribute('aria-expanded', 'false'))
     expect(document.querySelectorAll('.dropdown-menu.show')).toHaveLength(1)
+  })
+})
+
+describe('RowQuestion handlers', () => {
+  test('pass the question and its index, so the list can share them between rows', async () => {
+    const { toggle, onSelect, duplicateQuestion, deleteQuestion } = await setup(
+      { questionIndex: 3 }
+    )
+
+    await userEvent.click(screen.getByTestId('duplicate-button'))
+    expect(duplicateQuestion).toHaveBeenCalledWith(question, 3)
+
+    await userEvent.click(toggle)
+    await userEvent.click(screen.getByTestId('delete-button'))
+    expect(deleteQuestion).toHaveBeenCalledWith(3)
+
+    await userEvent.click(screen.getByTestId('sidebar-row-question'))
+    expect(onSelect).toHaveBeenCalledWith(question, 3)
   })
 })
