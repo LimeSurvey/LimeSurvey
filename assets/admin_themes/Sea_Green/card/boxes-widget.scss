@@ -189,8 +189,12 @@
             }
         }
     }
-    .box-widget-card-title-link:focus-visible {
-        outline : none;
+    .box-widget-card-title-link {
+        // Keep the title looking as before it became a link: Links are medium weight by default
+        font-weight : inherit;
+        &:focus-visible {
+            outline : none;
+        }
     }
     .survey-state {
         color : $g-700;

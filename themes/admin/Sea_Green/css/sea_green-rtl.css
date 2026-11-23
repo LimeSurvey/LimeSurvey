@@ -18512,6 +18512,9 @@ ol.breadcrumb.title-bar-breadcrumb a:active {
   outline: 2px solid #8146F6;
   outline-offset: 2px;
 }
+.box-widget .box-widget-card-title-link {
+  font-weight: inherit;
+}
 .box-widget .box-widget-card-title-link:focus-visible {
   outline: none;
 }
