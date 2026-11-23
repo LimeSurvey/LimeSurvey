@@ -26,7 +26,7 @@
 *  @param pCache $cache          An object containing [Hashkey] and [CacheFolder]
 *  @param mixed $sLanguageCode  Language Code
 *  @param string $sQuestionType The question type
-*  @return                false|string
+*  @return false|string    File name of the chart image in the cache directory, false if the chart could not be created
 */
 function createChart($iQuestionID, $iSurveyID, $type, $lbl, $gdata, $grawdata, $cache, $sLanguageCode, $sQuestionType)
 {
@@ -46,7 +46,9 @@ function createChart($iQuestionID, $iSurveyID, $type, $lbl, $gdata, $grawdata, $
     $alternatechartfontfile = Yii::app()->getConfig("alternatechartfontfile");
     $cachefilename = "";
 
-    $adminThemePath = AdminTheme::getInstance()->path;
+    $paletteFile = AdminTheme::getInstance()->getImagePath('limesurvey.pal');
+    // Users can choose admin themes with different palettes, they must not share the cached chart images
+    $cacheId = "graph" . $iSurveyID . $sLanguageCode . $iQuestionID . "_" . md5_file($paletteFile);
 
     /* Set the fonts for the chart */
     if ($chartfontfile == 'auto') {
@@ -66,32 +68,32 @@ function createChart($iQuestionID, $iSurveyID, $type, $lbl, $gdata, $grawdata, $
     }
     if (count($lbl) > 72) {
         $DataSet = array(1 => array(1 => 1));
-        if ($cache->IsInCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet) && Yii::app()->getConfig('debug') < 2) {
-            $cachefilename = basename((string) $cache->GetFileFromCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet));
+        if ($cache->IsInCache($cacheId, $DataSet) && Yii::app()->getConfig('debug') < 2) {
+            $cachefilename = basename((string) $cache->GetFileFromCache($cacheId, $DataSet));
         } else {
             $graph = new pChart(690, 200);
-            $graph->loadColorPalette($adminThemePath . DIRECTORY_SEPARATOR . 'images/limesurvey.pal');
+            $graph->loadColorPalette($paletteFile);
             $graph->setFontProperties($rootdir . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . $chartfontfile, $chartfontsize);
             $graph->setFontProperties($rootdir . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . $chartfontfile, $chartfontsize);
             $graph->drawTitle(0, 0, gT('Sorry, but this question has too many answer options to be shown properly in a graph.', 'unescaped'), 30, 30, 30, 690, 200);
-            $cache->WriteToCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet, $graph);
-            $cachefilename = basename((string) $cache->GetFileFromCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet));
+            $cache->WriteToCache($cacheId, $DataSet, $graph);
+            $cachefilename = basename((string) $cache->GetFileFromCache($cacheId, $DataSet));
             unset($graph);
         }
         return  $cachefilename;
     }
     if (array_sum($gdata) == 0) {
         $DataSet = array(1 => array(1 => 1));
-        if ($cache->IsInCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet) && Yii::app()->getConfig('debug') < 2) {
-            $cachefilename = basename((string) $cache->GetFileFromCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet));
+        if ($cache->IsInCache($cacheId, $DataSet) && Yii::app()->getConfig('debug') < 2) {
+            $cachefilename = basename((string) $cache->GetFileFromCache($cacheId, $DataSet));
         } else {
             $graph = new pChart(690, 200);
-            $graph->loadColorPalette($adminThemePath . DIRECTORY_SEPARATOR . 'images/limesurvey.pal');
+            $graph->loadColorPalette($paletteFile);
             $graph->setFontProperties($rootdir . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . $chartfontfile, $chartfontsize);
             $graph->setFontProperties($rootdir . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . $chartfontfile, $chartfontsize);
             $graph->drawTitle(0, 0, gT('Sorry, but this question has no responses yet so a graph cannot be shown.', 'unescaped'), 30, 30, 30, 690, 200);
-            $cache->WriteToCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet, $graph);
-            $cachefilename = basename((string) $cache->GetFileFromCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet));
+            $cache->WriteToCache($cacheId, $DataSet, $graph);
+            $cachefilename = basename((string) $cache->GetFileFromCache($cacheId, $DataSet));
             unset($graph);
         }
         return  $cachefilename;
@@ -143,7 +145,7 @@ function createChart($iQuestionID, $iSurveyID, $type, $lbl, $gdata, $grawdata, $
             $DataSet->SetAbsciseLabelSerie('Serie2');
 
             // Line and radar chart of the same data must not share the cached image
-            $sCacheID = "graph" . $iSurveyID . $sLanguageCode . $iQuestionID . "_" . $iChartType;
+            $sCacheID = $cacheId . "_" . $iChartType;
             if ($cache->IsInCache($sCacheID, $DataSet->GetData()) && Yii::app()->getConfig('debug') < 2) {
                 $cachefilename = basename((string) $cache->GetFileFromCache($sCacheID, $DataSet->GetData()));
             } else {
@@ -163,7 +165,7 @@ function createChart($iQuestionID, $iSurveyID, $type, $lbl, $gdata, $grawdata, $
                 }
                 $graph = new pChart($iWidth, $iHeight);
                 $graph->drawFilledRectangle(0, 0, $iWidth, $iHeight, 254, 254, 254, false);
-                $graph->loadColorPalette($adminThemePath . DIRECTORY_SEPARATOR . 'images/limesurvey.pal');
+                $graph->loadColorPalette($paletteFile);
                 $graph->setFontProperties($sFontFile, $chartfontsize);
                 $graph->drawFilledRoundedRectangle(7, 7, $iWidth - 7, $iHeight - 7, 5, 254, 255, 254);
                 $graph->drawRoundedRectangle(5, 5, $iWidth - 5, $iHeight - 5, 5, 230, 230, 230);
@@ -236,7 +238,7 @@ function createChart($iQuestionID, $iSurveyID, $type, $lbl, $gdata, $grawdata, $
             }
 
             // The labels are only stored as serie names, which the cache hash ignores
-            $sCacheID = "graph" . $iSurveyID . $sLanguageCode . $iQuestionID . "_" . md5(implode("\n", $lblout));
+            $sCacheID = $cacheId . "_" . md5(implode("\n", $lblout));
             if ($cache->IsInCache($sCacheID, $DataSet->GetData()) && Yii::app()->getConfig('debug') < 2) {
                 $cachefilename = basename((string) $cache->GetFileFromCache($sCacheID, $DataSet->GetData()));
             } else {
@@ -251,7 +253,7 @@ function createChart($iQuestionID, $iSurveyID, $type, $lbl, $gdata, $grawdata, $
                 }
                 $graph = new pChart(690 + $legendsize[0], $gheight);
                 $graph->drawFilledRectangle(0, 0, 690 + $legendsize[0], $gheight, 254, 254, 254, false);
-                $graph->loadColorPalette($adminThemePath . DIRECTORY_SEPARATOR . 'images/limesurvey.pal');
+                $graph->loadColorPalette($paletteFile);
                 $graph->setFontProperties($rootdir . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . $chartfontfile, $chartfontsize);
                 $graph->setGraphArea(50, 30, 500, $gheight - 60);
                 $graph->drawFilledRoundedRectangle(7, 7, 523 + $legendsize[0], $gheight - 7, 5, 254, 255, 254);
@@ -323,13 +325,13 @@ function createChart($iQuestionID, $iSurveyID, $type, $lbl, $gdata, $grawdata, $
             $DataSet->AddAllSeries();
             $DataSet->SetAbsciseLabelSerie("Serie2");
 
-            if ($cache->IsInCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet->GetData()) && Yii::app()->getConfig('debug') < 2) {
-                $cachefilename = basename((string) $cache->GetFileFromCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet->GetData()));
+            if ($cache->IsInCache($cacheId, $DataSet->GetData()) && Yii::app()->getConfig('debug') < 2) {
+                $cachefilename = basename((string) $cache->GetFileFromCache($cacheId, $DataSet->GetData()));
             } else {
                 $gheight = ceil($gheight);
                 $graph = new pChart(690, $gheight);
                 $graph->drawFilledRectangle(0, 0, 690, $gheight, 254, 254, 254, false);
-                $graph->loadColorPalette($adminThemePath . DIRECTORY_SEPARATOR . 'images/limesurvey.pal');
+                $graph->loadColorPalette($paletteFile);
                 $graph->drawFilledRoundedRectangle(7, 7, 687, $gheight - 3, 5, 254, 255, 254);
                 $graph->drawRoundedRectangle(5, 5, 689, $gheight - 1, 5, 230, 230, 230);
 
@@ -338,8 +340,8 @@ function createChart($iQuestionID, $iSurveyID, $type, $lbl, $gdata, $grawdata, $
                 $graph->drawPieGraph($DataSet->GetData(), $DataSet->GetDataDescription(), 225, round($gheight / 2), 170, PIE_PERCENTAGE, true, 50, 20, 5);
                 $graph->setFontProperties($rootdir . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . $chartfontfile, $chartfontsize);
                 $graph->drawPieLegend(430, 12, $DataSet->GetData(), $DataSet->GetDataDescription(), 250, 250, 250);
-                $cache->WriteToCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet->GetData(), $graph);
-                $cachefilename = basename((string) $cache->GetFileFromCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet->GetData()));
+                $cache->WriteToCache($cacheId, $DataSet->GetData(), $graph);
+                $cachefilename = basename((string) $cache->GetFileFromCache($cacheId, $DataSet->GetData()));
                 unset($graph);
             }
         }    //end else -> pie charts

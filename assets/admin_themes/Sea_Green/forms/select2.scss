@@ -18,7 +18,7 @@
     font-size: $dropdown-font-size;
     line-height: $line-height-16;
     color: $g-900;
-    background-color: $white;
+    background-color: $surface-bg;
     border-radius: $border-radius;
     padding: $input-padding-y 36px $input-padding-y $input-padding-x;
 }
@@ -46,7 +46,7 @@
 
 .select2-container--bootstrap-5 .select2-dropdown {
     color: $g-900;
-    background-color: $white;
+    background-color: $surface-bg;
     border-color: $g-200;
     border-radius: $border-radius;
 }

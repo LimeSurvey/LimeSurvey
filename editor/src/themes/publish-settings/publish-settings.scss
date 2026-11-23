@@ -3,7 +3,7 @@
   border-radius: 2px;
   border: 2px solid rgba(0, 0, 0, 0.05);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-  background-color: $white;
+  background-color: $surface-bg;
   margin-top: 10px;
 
   font-size: 16px;
@@ -43,7 +43,7 @@
     padding: 8px;
     margin: 0;
     border: none;
-    color: #1e1e1e;
+    color: $g-900;
     border-radius: 2px;
     background-color: transparent !important;
   }

@@ -1,7 +1,7 @@
 // CKEDITOR overrides are loaded before original css gets dynamically inserted into the page so definitions have to
 // include !important tag
 .cke_top {
-    background : $white !important;
+    background : $surface-bg !important;
     border     : 1px solid $g-900 !important;
 }
 

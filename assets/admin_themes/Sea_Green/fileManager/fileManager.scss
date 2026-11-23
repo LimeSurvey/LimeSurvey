@@ -6,7 +6,7 @@
 
 .file-manager-body {
   all: unset;
-  background: $white !important;
+  background: $surface-bg !important;
   color: $g-900 !important;
   box-shadow: $boxshadow-small !important;
   .ri-delete-bin-line {
@@ -69,13 +69,13 @@
     .ui-menu {
       box-shadow: none !important;
       border: 1px solid $g-900 !important;
-      background: $white !important;
+      background: $surface-bg !important;
 
       .ui-menu-divider {
         border-color: $g-700 !important;
       }
       .ui-state-active {
-        background: $white !important;
+        background: $surface-bg !important;
         text-shadow: none !important;
         box-shadow: $btn-hover-boxshadow !important;
         color: $g-900 !important;
@@ -127,7 +127,7 @@
     box-shadow: none !important;
     border: 1px solid $g-900 !important;
     border-radius: 0 !important;
-    background: $white !important;
+    background: $surface-bg !important;
 
     a {
       width: 65px !important;
@@ -142,7 +142,7 @@
       .folder.current,
       .folder.regular {
         color: $g-900 !important;
-        background-color: $white !important;
+        background-color: $surface-bg !important;
         background-image: none !important;
         padding: 0 !important;
         text-shadow: none !important;
@@ -162,7 +162,7 @@
     }
   }
   #files {
-    background: $white !important;
+    background: $surface-bg !important;
     border: 1px solid $g-900 !important;
     box-shadow: none !important;
     border-radius: 0 !important;
@@ -201,7 +201,7 @@
   #settings {
     fieldset {
       margin-top: 5px !important;
-      background: $white !important;
+      background: $surface-bg !important;
       border: 1px solid $g-900 !important;
       border-radius: 4px !important;
       color: $g-900 !important;
@@ -209,7 +209,7 @@
       .radio,
       .checker {
         background: none !important;
-        background-color: $white !important;
+        background-color: $surface-bg !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
@@ -261,7 +261,7 @@
           display: table;
           width: 5px;
           height: 10px;
-          border: 2px solid #fff;
+          border: 2px solid $surface-bg;
           border-top-width: 0;
           border-left-width: 0;
           -webkit-transform: rotate(45deg);

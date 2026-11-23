@@ -12,7 +12,7 @@
 .form-control {
   padding: 9px 12px;
   position: relative;
-  background: $white;
+  background: $surface-bg;
   border: 2px solid $g-700;
   font-size: $font-size-sm;
   line-height: $line-height-16;
@@ -95,7 +95,7 @@ textarea.form-control {
   &:checked {
     &[type='checkbox'] {
       background-color: transparent;
-      color: $active-green;
+      color: $active-green-text;
       font-family: 'remixicon';
       border-radius: 1px;
       outline: solid 2px $active-green;

@@ -84,7 +84,7 @@
       padding: 2px 20px 2px 8px;
       border: 1px solid $g-700;
       border-radius: 4px;
-      background-color: $white;
+      background-color: $surface-bg;
       color: $g-900;
       appearance: textfield;
 
@@ -158,7 +158,7 @@
     padding: 5px 4px 5px 13px;
     border: 2px solid $g-700;
     border-radius: 4px;
-    background-color: $white;
+    background-color: $surface-bg;
 
     &:focus-within {
       border-color: $grape;
@@ -190,7 +190,7 @@
   .date-range-error {
     padding: 0 16px 8px;
     background-color: $g-100;
-    color: $error;
+    color: $error-text;
     font-size: 13px;
   }
 
@@ -204,7 +204,7 @@
     padding: 0;
     border: none;
     border-radius: 3px;
-    background-color: $g-700;
+    background-color: $g-700-bg;
     color: $white;
     cursor: pointer;
 
@@ -216,7 +216,7 @@
 
   .date-range-calendar {
     padding: 8px 21px 12px;
-    background-color: $white;
+    background-color: $surface-bg;
 
     &.is-highlighted {
       animation: date-range-calendar-highlight 1.2s ease-out;
@@ -267,7 +267,7 @@
     }
 
     .rdp-today:not(.rdp-selected):not(.rdp-outside) .rdp-day_button {
-      color: $grape;
+      color: $grape-text;
       font-weight: 600;
     }
   }
@@ -302,7 +302,7 @@
     }
 
     &.date-range-btn-clear {
-      background-color: $white;
+      background-color: $surface-bg;
       border-color: $g-900;
       color: $g-900;
 
@@ -312,11 +312,11 @@
     }
 
     &.date-range-btn-cancel {
-      background-color: $g-700;
+      background-color: $g-700-bg;
       color: $white;
 
       &:hover {
-        background-color: $g-750;
+        background-color: $g-750-bg;
       }
     }
 

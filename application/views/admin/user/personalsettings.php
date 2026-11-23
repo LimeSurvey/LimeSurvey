@@ -261,276 +261,340 @@ echo $oQuestionSelector->getModal();
                 <!-- TAB: My personal settings -->
                 <div role="tabpanel" class="tab-pane fade" id="your-personal-settings" aria-labelledby="tab-your-personal-settings" tabindex="0">
                     <h2 class="pagetitle h3"><?php eT("My personal settings"); ?></h2>
-                    <div class="row">
-                        <div class="col-12 col-lg-6">
-                            <!-- Interface language -->
-                            <div class="mb-3">
-                                <?php echo TbHtml::label(gT("Interface language:"), 'lang', ['class' => " form-label"]); ?>
-                                <div class="selector_contain_select2">
-                                    <?php $this->widget(
-                                        'yiiwheels.widgets.select2.WhSelect2',
-                                        [
-                                            'asDropDownList' => true,
-                                            'name'           => 'lang',
-                                            'data'           => $aLanguageData,
-                                            'pluginOptions'  => [
-                                                'buttonWidth' => '100%',
-                                                'htmlOptions' => [
-                                                    'id'    => 'lang',
-                                                    'style' => "width:100%;"
+                    <fieldset class="border rounded px-3 pt-1 pb-0 mb-4">
+                        <legend class="float-none w-auto px-2 mb-2 border-0" style="margin-inline-start: -0.5rem"><h3 class="h6 fw-bold mb-0"><?php eT("Language and region"); ?></h3></legend>
+                        <div class="row">
+                            <div class="col-12 col-lg-6">
+                                <!-- Interface language -->
+                                <div class="mb-3">
+                                    <?php echo TbHtml::label(gT("Interface language:"), 'lang', ['class' => " form-label"]); ?>
+                                    <div class="selector_contain_select2">
+                                        <?php $this->widget(
+                                            'yiiwheels.widgets.select2.WhSelect2',
+                                            [
+                                                'asDropDownList' => true,
+                                                'name'           => 'lang',
+                                                'data'           => $aLanguageData,
+                                                'pluginOptions'  => [
+                                                    'buttonWidth' => '100%',
+                                                    'htmlOptions' => [
+                                                        'id'    => 'lang',
+                                                        'style' => "width:100%;"
+                                                    ]
+                                                ],
+                                                'value'          => $sSavedLanguage,
+                                                'htmlOptions'    => [
+                                                    'class'      => "form-control",
+                                                    'style'      => "width:100%;",
+                                                    'data-width' => '100%'
                                                 ]
-                                            ],
-                                            'value'          => $sSavedLanguage,
-                                            'htmlOptions'    => [
-                                                'class'      => "form-control",
-                                                'style'      => "width:100%;",
-                                                'data-width' => '100%'
                                             ]
+                                        ); ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-6">
+                                <!-- Date format -->
+                                <div class="mb-3">
+                                    <?php echo TbHtml::label(gT("Date format:"), 'dateformat', ['class' => " form-label"]); ?>
+                                    <div class="">
+                                        <select name='dateformat' id='dateformat' class="form-select">
+                                            <?php foreach (getDateFormatData(0, App()->session['adminlang']) as $index => $dateformatdata) {
+                                                echo "<option value='{$index}'";
+                                                if ($index == App()->session['dateformat']) {
+                                                    echo " selected='selected'";
+                                                }
+
+                                                echo ">" . $dateformatdata['dateformat'] . '</option>';
+                                            } ?>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-6">
+                                <!-- Personal time zone -->
+                                <div class="mb-3">
+                                    <?php echo TbHtml::label(gT("Personal time zone:"), 'displayTimezone', ['class' => " form-label"]); ?>
+                                    <div class="">
+                                        <select name='displayTimezone' id='displayTimezone' class="form-select">
+                                            <option value=""><?php echo sprintf(gT("Use global setting (%s)"), htmlspecialchars($globalDisplayTimezone)); ?></option>
+                                            <?php foreach (DateTimeZone::listIdentifiers() as $tz) {
+                                                echo "<option value='" . $tz . "'";
+                                                if (($aUserSettings['displayTimezone'] ?? '') === $tz) {
+                                                    echo " selected='selected'";
+                                                }
+                                                echo ">" . $tz . "</option>";
+                                            } ?>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset class="border rounded px-3 pt-1 pb-0 mb-4">
+                        <legend class="float-none w-auto px-2 mb-2 border-0" style="margin-inline-start: -0.5rem"><h3 class="h6 fw-bold mb-0"><?php eT("Appearance"); ?></h3></legend>
+                        <div class="row">
+                            <?php if (!empty($adminThemes)) : ?>
+                            <div class="col-12 col-lg-6">
+                                <!-- Admin theme -->
+                                <div class="mb-3">
+                                    <?php echo TbHtml::label(gT("Admin theme:"), 'admintheme', ['class' => " form-label"]); ?>
+                                    <div class="">
+                                        <select name='admintheme' id='admintheme' class="form-select" aria-describedby="admintheme-help">
+                                            <option value=""><?php echo sprintf(gT("Use global setting (%s)"), CHtml::encode($globalAdminThemeTitle)); ?></option>
+                                            <?php foreach ($adminThemes as $themeName => $themeConfig) {
+                                                echo "<option value='" . CHtml::encode($themeName) . "'";
+                                                if (($aUserSettings['admintheme'] ?? '') === (string) $themeName) {
+                                                    echo " selected='selected'";
+                                                }
+                                                echo ">" . CHtml::encode($themeConfig->metadata->name) . "</option>";
+                                            } ?>
+                                        </select>
+                                    </div>
+                                    <div id="admintheme-help" class="form-text">
+                                        <?php echo sprintf(gT("%s has stronger colour contrast and focus outlines."), CHtml::encode($adminThemes['Sea_Green_WCAG_AA']->metadata->name ?? 'Sea Green - WCAG AA')); ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <?php endif; ?>
+                            <div class="col-12 col-lg-6">
+                                <!-- Appearance mode -->
+                                <div class="mb-3">
+                                    <?php echo TbHtml::label(gT("Appearance mode:"), 'appearancemode', ['class' => " form-label"]); ?>
+                                    <div class="">
+                                        <?php echo CHtml::dropDownList(
+                                            'appearancemode',
+                                            in_array($aUserSettings['appearancemode'] ?? '', AdminTheme::APPEARANCE_MODES, true) ? $aUserSettings['appearancemode'] : '',
+                                            ['' => sprintf(gT("Use global setting (%s)", 'unescaped'), $defaultAppearanceModeTitle)] + $appearanceModes,
+                                            ['class' => "form-select", 'aria-describedby' => 'appearancemode-help']
+                                        ); ?>
+                                    </div>
+                                    <div id="appearancemode-help" class="form-text">
+                                        <?php eT("\"System\" follows the light or dark mode of your device."); ?>
+                                        <?php if (!$adminThemeHasDarkMode) : ?>
+                                            <?php eT("The admin theme in use has no dark mode."); ?>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-6">
+                                <!-- Breadcrumb mode -->
+                                <div class="mb-3">
+                                    <?php echo TbHtml::label(gT("Breadcrumb mode:"), 'breadcrumbMode', ['class' => " form-label"]); ?>
+                                    <div class="">
+                                        <?php echo TbHtml::dropDownList(
+                                            'breadcrumbMode',
+                                            ($aUserSettings['breadcrumbMode'] ?? 'default'),
+                                            [
+                                                'default' => gT("Default"),
+                                                'long'    => gT("Long"),
+                                                'short'   => gT("Short"),
+                                            ],
+                                            ['class' => "form-select"]
+                                        ); ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset class="border rounded px-3 pt-1 pb-0 mb-4">
+                        <legend class="float-none w-auto px-2 mb-2 border-0" style="margin-inline-start: -0.5rem"><h3 class="h6 fw-bold mb-0"><?php eT("Text and theme editors"); ?></h3></legend>
+                        <div class="row">
+                            <div class="col-12 col-lg-6">
+                                <!-- HTML editor mode -->
+                                <div class="mb-3">
+                                    <?php echo TbHtml::label(gT("HTML editor mode:"), 'htmleditormode', ['class' => " form-label"]); ?>
+                                    <div class="">
+                                        <?php echo TbHtml::dropDownList(
+                                            'htmleditormode',
+                                            App()->session['htmleditormode'],
+                                            [
+                                                'default' => gT("Default", 'unescaped'),
+                                                'inline'  => gT("Inline HTML editor", 'unescaped'),
+                                                'popup'   => gT("Pop-up HTML editor", 'unescaped'),
+                                                'none'    => gT("Sourcecode editor", 'unescaped'),
+                                            ],
+                                            ['class' => "form-select"]
+                                        ); ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-6">
+                                <!-- Template editor mode -->
+                                <div class="mb-3">
+                                    <?php echo TbHtml::label(gT("Template editor mode:"), 'templateeditormode', ['class' => " form-label"]); ?>
+                                    <div class="">
+                                        <?php echo TbHtml::dropDownList(
+                                            'templateeditormode',
+                                            App()->session['templateeditormode'],
+                                            [
+                                                'default' => gT("Default"),
+                                                'full'    => gT("Full template editor"),
+                                                'none'    => gT("Simple template editor")
+                                            ],
+                                            ['class' => "form-select"]
+                                        ); ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset class="border rounded px-3 pt-1 pb-0 mb-4">
+                        <legend class="float-none w-auto px-2 mb-2 border-0" style="margin-inline-start: -0.5rem"><h3 class="h6 fw-bold mb-0"><?php eT("New surveys"); ?></h3></legend>
+                        <div class="row">
+                            <!-- Create example question group and question -->
+                            <div class="col-12 col-lg-6">
+                                <div class="mb-3">
+                                    <?php echo TbHtml::label(gT("Create example question group and question:"), 'createsample', ['class' => " form-label"]); ?>
+                                    <div>
+                                        <?php
+                                        $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                            'name'          => 'createsample',
+                                            'ariaLabel'     => gT("Create example question group and question"),
+                                            'checkedOption' => $aUserSettings['createsample'] ?? 'default',
+                                            'selectOptions' =>    [
+                                                '1' => gT("Yes", 'unescaped'),
+                                                '0' => gT("No", 'unescaped'),
+                                                'default' => gT("Default", 'unescaped'),
+                                            ],
+                                            'htmlOptions' => []
+                                        ]); ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset class="border rounded px-3 pt-1 pb-0 mb-4" aria-describedby="personal-settings-group-5-note">
+                        <legend class="float-none w-auto px-2 mb-2 border-0" style="margin-inline-start: -0.5rem"><h3 class="h6 fw-bold mb-0"><?php eT("Classic question editor"); ?></h3></legend>
+                        <p id="personal-settings-group-5-note" class="form-text mt-0 mb-3"><?php eT("Only used when a survey is edited in the classic editor."); ?></p>
+                        <div class="row">
+                            <div class="col-12 col-lg-6">
+                                <!-- Question type selector -->
+                                <div class="mb-3">
+                                    <?php echo TbHtml::label(gT("Question type selector:"), 'questionselectormode', ['class' => " form-label"]); ?>
+                                    <div class="">
+                                        <?php echo TbHtml::dropDownList(
+                                            'questionselectormode',
+                                            App()->session['questionselectormode'],
+                                            [
+                                                'default' => gT("Default", 'unescaped'),
+                                                'full'    => gT("Full selector", 'unescaped'),
+                                                'none'    => gT("Simple selector", 'unescaped')
+                                            ],
+                                            ['class' => "form-select"]
+                                        ); ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-6">
+                                <!-- Question type preselect -->
+                                <div class="mb-3">
+                                    <?php echo TbHtml::label(gT("Preselected question type:"), 'preselectquestiontype', ['class' => " form-label"]); ?>
+                                    <?= $oQuestionSelector->getButtonOrSelect(true) ?>
+                                    <?php $this->endWidget('ext.admin.PreviewModalWidget.PreviewModalWidget'); ?>
+                                    <?php echo TbHtml::hiddenField('preselectquestiontheme', $currentPreselectedQuestionTheme); ?>
+                                </div>
+                            </div>
+                            <!-- Basic non numerical part of answer options -->
+                            <div class="col-12 col-lg-6">
+                                <div class="mb-3">
+                                    <?php echo TbHtml::label(gT("Non-numerical answer option prefix:"), 'answeroptionprefix', ['class' => " form-label"]); ?>
+                                    <?php echo TbHtml::textField(
+                                        'answeroptionprefix',
+                                        ($aUserSettings['answeroptionprefix'] ?? 'AO'),
+                                        [
+                                            'class'            => "form-control",
+                                            'pattern'          => "[A-Za-z]{0,3}",
+                                            'placeholder'      => gT("e.g. ANS"),
+                                            'title'            => gT("Enter up to 3 letters (A-Z)."),
+                                            'aria-describedby' => 'answeroptionprefix-help'
                                         ]
                                     ); ?>
+                                    <div id="answeroptionprefix-help" class="form-text">
+                                        <?php eT("Enter up to 3 letters (A-Z)."); ?>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-12 col-lg-6">
-                            <!-- HTML editor mode -->
-                            <div class="mb-3">
-                                <?php echo TbHtml::label(gT("HTML editor mode:"), 'htmleditormode', ['class' => " form-label"]); ?>
-                                <div class="">
-                                    <?php echo TbHtml::dropDownList(
-                                        'htmleditormode',
-                                        App()->session['htmleditormode'],
+                            <!-- Basic non numerical part of subquestions -->
+                            <div class="col-12 col-lg-6">
+                                <div class="mb-3">
+                                    <?php echo TbHtml::label(gT("Non-numerical subquestions prefix:"), 'subquestionprefix', ['class' => " form-label"]); ?>
+                                    <?php echo TbHtml::textField(
+                                        'subquestionprefix',
+                                        ($aUserSettings['subquestionprefix'] ?? 'SQ'),
                                         [
-                                            'default' => gT("Default", 'unescaped'),
-                                            'inline'  => gT("Inline HTML editor", 'unescaped'),
-                                            'popup'   => gT("Pop-up HTML editor", 'unescaped'),
-                                            'none'    => gT("Sourcecode editor", 'unescaped'),
-                                        ],
-                                        ['class' => "form-select"]
-                                    ); ?>
+                                            'class'            => "form-control",
+                                            'pattern'          => "[A-Za-z]{0,3}",
+                                            'placeholder'      => gT("e.g. SUB"),
+                                            'title'            => gT("Enter up to 3 letters (A-Z)."),
+                                            'aria-describedby' => 'subquestionprefix-help'
+                                        ]
+                                    );
+    ?>
+                                    <div id="subquestionprefix-help" class="form-text">
+                                        <?php eT("Enter up to 3 letters (A-Z)."); ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Show script field in question editor -->
+                            <div class="col-12 col-lg-6">
+                                <div class="mb-3">
+                                    <?php echo TbHtml::label(gT("Show script field:"), 'showScriptEdit', ['class' => " form-label"]); ?>
+                                    <div>
+                                        <?php
+                                        $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                            'name'          => 'showScriptEdit',
+                                            'ariaLabel'     => gT("Show script field"),
+                                            'checkedOption' => $aUserSettings['showScriptEdit'] ?? 0,
+                                            'selectOptions' =>    [
+                                                '1' => gT("Yes", 'unescaped'),
+                                                '0' => gT("No", 'unescaped'),
+                                            ],
+                                            'htmlOptions' => []
+                                        ]); ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Directly show edit mode -->
+                            <div class="col-12 col-lg-6">
+                                <div class="mb-3">
+                                    <?php echo TbHtml::label(gT("Directly show edit mode:"), 'noViewMode', ['class' => " form-label"]); ?>
+                                    <div>
+                                        <?php
+                                        $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                            'name'          => 'noViewMode',
+                                            'ariaLabel'     => gT("Directly show edit mode"),
+                                            'checkedOption' => $aUserSettings['noViewMode'] ?? 0,
+                                            'selectOptions' =>    [
+                                                '1' => gT("Yes", 'unescaped'),
+                                                '0' => gT("No", 'unescaped'),
+                                            ],
+                                            'htmlOptions' => []
+                                        ]); ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Lock questionorganizer in sidebar -->
+                            <div class="col-12 col-lg-6">
+                                <div class="mb-3">
+                                    <?php echo TbHtml::label(gT("Lock question organizer in sidebar by default:"), 'lock_organizer', ['class' => " form-label"]); ?>
+                                    <div>
+                                        <?php
+                                        $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                                            'name'          => 'lock_organizer',
+                                            'ariaLabel'     => gT("Lock question organizer in sidebar by default"),
+                                            'checkedOption' => $aUserSettings['lock_organizer'] ?? 0,
+                                            'selectOptions' =>    [
+                                                '1' => gT("Yes", 'unescaped'),
+                                                '0' => gT("No", 'unescaped'),
+                                            ],
+                                            'htmlOptions' => []
+                                        ]); ?>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12 col-lg-6">
-                            <!-- Question type selector -->
-                            <div class="mb-3">
-                                <?php echo TbHtml::label(gT("Question type selector:"), 'questionselectormode', ['class' => " form-label"]); ?>
-                                <div class="">
-                                    <?php echo TbHtml::dropDownList(
-                                        'questionselectormode',
-                                        App()->session['questionselectormode'],
-                                        [
-                                            'default' => gT("Default", 'unescaped'),
-                                            'full'    => gT("Full selector", 'unescaped'),
-                                            'none'    => gT("Simple selector", 'unescaped')
-                                        ],
-                                        ['class' => "form-select"]
-                                    ); ?>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12 col-lg-6">
-                            <!-- Question type preselect -->
-                            <div class="mb-3">
-                                <?php echo TbHtml::label(gT("Preselected question type:"), 'preselectquestiontype', ['class' => " form-label"]); ?>
-                                <?= $oQuestionSelector->getButtonOrSelect(true) ?>
-                                <?php $this->endWidget('ext.admin.PreviewModalWidget.PreviewModalWidget'); ?>
-                                <?php echo TbHtml::hiddenField('preselectquestiontheme', $currentPreselectedQuestionTheme); ?>
-                            </div>
-                        </div>
-                        <div class="col-12 col-lg-6">
-                            <!-- Template editor mode -->
-                            <div class="mb-3">
-                                <?php echo TbHtml::label(gT("Template editor mode:"), 'templateeditormode', ['class' => " form-label"]); ?>
-                                <div class="">
-                                    <?php echo TbHtml::dropDownList(
-                                        'templateeditormode',
-                                        App()->session['templateeditormode'],
-                                        [
-                                            'default' => gT("Default"),
-                                            'full'    => gT("Full template editor"),
-                                            'none'    => gT("Simple template editor")
-                                        ],
-                                        ['class' => "form-select"]
-                                    ); ?>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12 col-lg-6">
-                            <!-- Date format -->
-                            <div class="mb-3">
-                                <?php echo TbHtml::label(gT("Date format:"), 'dateformat', ['class' => " form-label"]); ?>
-                                <div class="">
-                                    <select name='dateformat' id='dateformat' class="form-select">
-                                        <?php foreach (getDateFormatData(0, App()->session['adminlang']) as $index => $dateformatdata) {
-                                            echo "<option value='{$index}'";
-                                            if ($index == App()->session['dateformat']) {
-                                                echo " selected='selected'";
-                                            }
-
-                                            echo ">" . $dateformatdata['dateformat'] . '</option>';
-                                        } ?>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12 col-lg-6">
-                            <!-- Personal time zone -->
-                            <div class="mb-3">
-                                <?php echo TbHtml::label(gT("Personal time zone:"), 'displayTimezone', ['class' => " form-label"]); ?>
-                                <div class="">
-                                    <select name='displayTimezone' id='displayTimezone' class="form-select">
-                                        <option value=""><?php echo sprintf(gT("Use global setting (%s)"), htmlspecialchars($globalDisplayTimezone)); ?></option>
-                                        <?php foreach (DateTimeZone::listIdentifiers() as $tz) {
-                                            echo "<option value='" . $tz . "'";
-                                            if (($aUserSettings['displayTimezone'] ?? '') === $tz) {
-                                                echo " selected='selected'";
-                                            }
-                                            echo ">" . $tz . "</option>";
-                                        } ?>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Basic non numerical part of answer options -->
-                        <div class="col-12 col-lg-6">
-                            <div class="mb-3">
-                                <?php echo TbHtml::label(gT("Non-numerical answer option prefix:"), 'answeroptionprefix', ['class' => " form-label"]); ?>
-                                <?php echo TbHtml::textField(
-                                    'answeroptionprefix',
-                                    ($aUserSettings['answeroptionprefix'] ?? 'AO'),
-                                    [
-                                        'class'            => "form-control",
-                                        'pattern'          => "[A-Za-z]{0,3}",
-                                        'placeholder'      => gT("e.g. ANS"),
-                                        'title'            => gT("Enter up to 3 letters (A-Z)."),
-                                        'aria-describedby' => 'answeroptionprefix-help'
-                                    ]
-                                ); ?>
-                                <div id="answeroptionprefix-help" class="form-text">
-                                    <?php eT("Enter up to 3 letters (A-Z)."); ?>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Basic non numerical part of subquestions -->
-                        <div class="col-12 col-lg-6">
-                            <div class="mb-3">
-                                <?php echo TbHtml::label(gT("Non-numerical subquestions prefix:"), 'subquestionprefix', ['class' => " form-label"]); ?>
-                                <?php echo TbHtml::textField(
-                                    'subquestionprefix',
-                                    ($aUserSettings['subquestionprefix'] ?? 'SQ'),
-                                    [
-                                        'class'            => "form-control",
-                                        'pattern'          => "[A-Za-z]{0,3}",
-                                        'placeholder'      => gT("e.g. SUB"),
-                                        'title'            => gT("Enter up to 3 letters (A-Z)."),
-                                        'aria-describedby' => 'subquestionprefix-help'
-                                    ]
-                                );
-?>
-                                <div id="subquestionprefix-help" class="form-text">
-                                    <?php eT("Enter up to 3 letters (A-Z)."); ?>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12 col-lg-6">
-                            <!-- Breadcrumb mode -->
-                            <div class="mb-3">
-                                <?php echo TbHtml::label(gT("Breadcrumb mode:"), 'breadcrumbMode', ['class' => " form-label"]); ?>
-                                <div class="">
-                                    <?php echo TbHtml::dropDownList(
-                                        'breadcrumbMode',
-                                        ($aUserSettings['breadcrumbMode'] ?? 'default'),
-                                        [
-                                            'default' => gT("Default"),
-                                            'long'    => gT("Long"),
-                                            'short'   => gT("Short"),
-                                        ],
-                                        ['class' => "form-select"]
-                                    ); ?>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Show script field in question editor -->
-                        <div class="col-12 col-lg-6">
-                            <div class="mb-3">
-                                <?php echo TbHtml::label(gT("Show script field:"), 'showScriptEdit', ['class' => " form-label"]); ?>
-                                <div>
-                                    <?php
-                                    $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
-                                        'name'          => 'showScriptEdit',
-                                        'ariaLabel'     => gT("Show script field"),
-                                        'checkedOption' => $aUserSettings['showScriptEdit'] ?? 0,
-                                        'selectOptions' =>    [
-                                            '1' => gT("Yes", 'unescaped'),
-                                            '0' => gT("No", 'unescaped'),
-                                        ],
-                                        'htmlOptions' => []
-                                    ]); ?>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Directly show edit mode -->
-                        <div class="col-12 col-lg-6">
-                            <div class="mb-3">
-                                <?php echo TbHtml::label(gT("Directly show edit mode:"), 'noViewMode', ['class' => " form-label"]); ?>
-                                <div>
-                                    <?php
-                                    $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
-                                        'name'          => 'noViewMode',
-                                        'ariaLabel'     => gT("Directly show edit mode"),
-                                        'checkedOption' => $aUserSettings['noViewMode'] ?? 0,
-                                        'selectOptions' =>    [
-                                            '1' => gT("Yes", 'unescaped'),
-                                            '0' => gT("No", 'unescaped'),
-                                        ],
-                                        'htmlOptions' => []
-                                    ]); ?>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Lock questionorganizer in sidebar -->
-                        <div class="col-12 col-lg-6">
-                            <div class="mb-3">
-                                <?php echo TbHtml::label(gT("Lock question organizer in sidebar by default:"), 'lock_organizer', ['class' => " form-label"]); ?>
-                                <div>
-                                    <?php
-                                    $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
-                                        'name'          => 'lock_organizer',
-                                        'ariaLabel'     => gT("Lock question organizer in sidebar by default"),
-                                        'checkedOption' => $aUserSettings['lock_organizer'] ?? 0,
-                                        'selectOptions' =>    [
-                                            '1' => gT("Yes", 'unescaped'),
-                                            '0' => gT("No", 'unescaped'),
-                                        ],
-                                        'htmlOptions' => []
-                                    ]); ?>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Create example question group and question -->
-                        <div class="col-12 col-lg-6">
-                            <div class="mb-3">
-                                <?php echo TbHtml::label(gT("Create example question group and question:"), 'createsample', ['class' => " form-label"]); ?>
-                                <div>
-                                    <?php
-                                    $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
-                                        'name'          => 'createsample',
-                                        'ariaLabel'     => gT("Create example question group and question"),
-                                        'checkedOption' => $aUserSettings['createsample'] ?? 'default',
-                                        'selectOptions' =>    [
-                                            '1' => gT("Yes", 'unescaped'),
-                                            '0' => gT("No", 'unescaped'),
-                                            'default' => gT("Default", 'unescaped'),
-                                        ],
-                                        'htmlOptions' => []
-                                    ]); ?>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    </fieldset>
                 </div>
                 <div role="tabpanel" class="tab-pane fade" id="your-personal-menues" aria-labelledby="tab-your-personal-menues" tabindex="0">
                     <?php $this->renderPartial('/admin/surveymenu/shortlist', $surveymenu_data); ?>

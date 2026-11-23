@@ -4,12 +4,12 @@
 // Blacks, whites and greys
 
 $primary: #328637;
-$primary-2: #35363f;
+$primary-2: #35363f !default;
 
 $notification-pulse-1: #eeeeee;
 $notification-pulse-2: #ffaaaa;
 
-$help-block: #8a8a8a;
+$help-block: #8a8a8a !default;
 //$default-icon-bar: #878787;
 $label-default: #6b6b6b;
 $list-group-item: #545454;
@@ -33,8 +33,8 @@ $warning-border-hover: #5c2e15;
 
 $mark_bg: #ff6cb6;
 
-$code: #c6254e;
-$code-bg: #f9f1f3;
+$code: #c6254e !default;
+$code-bg: #f9f1f3 !default;
 
 $alert: #800052;
 
@@ -43,7 +43,7 @@ $primary-hover_2: #0f3e12;
 $primary-active: #afdbb1;
 $primary-bg-success: #c0e3c2;
 $primary-bg_hover_success: #9dd39f;
-$primary-bg_hover: #9cba9e;
+$primary-bg_hover: #9cba9e !default;
 $primary-bg-hover_2: #8bc68e;
 
 $primary-navbar: #84b39a;
@@ -59,11 +59,11 @@ $navbar-light-toggler-border-color: $primary;
 $navbar-light-brand-color: $primary;
 $navbar-light-brand-hover-color: $primary-hover;
 
-$hover_active_td: #e8e8e8;
+$hover_active_td: #e8e8e8 !default;
 
 $primary-bg_hover_btn: #22722b;
 
-$side-menu-container-background: #f8f8f8;
+$side-menu-container-background: #f8f8f8 !default;
 $primary-bg_hover_tabbutton: #163c19;
 $primary-bg_menuopen: #5cc262;
 $primary-bg_selected: #49bb50;
@@ -307,7 +307,7 @@ a {
 }
 // Thumbnails
 .img-thumbnail {
-  background-color: $white;
+  background-color: $surface-bg;
   border: 1px solid $gray-08;
 }
 // Separators
@@ -464,7 +464,7 @@ fieldset[disabled] {
       background-color: $gray-20;
     }
     //.icon-bar {
-    //    background-color: $white;
+    //    background-color: $surface-bg;
     //}
   }
   .navbar-form {
@@ -656,7 +656,7 @@ fieldset[disabled] {
 
 // Thumbnails
 .thumbnail {
-  background-color: $white;
+  background-color: $surface-bg;
   border: 1px solid $gray-08;
   .caption {
     color: $primary-2;
@@ -762,7 +762,7 @@ fieldset[disabled] {
 
 // Popover
 .popover {
-  background-color: $white;
+  background-color: $surface-bg;
   //border: 1px solid $gray-09;
   border: 1px solid $black_opac_20;
   box-shadow: 0 5px 10px $black_opac_20;
@@ -817,7 +817,7 @@ fieldset[disabled] {
     background-color: rgba(0, 0, 0, 0);
   }
   .active {
-    background-color: $white;
+    background-color: $surface-bg;
   }
 }
 .carousel-caption {
@@ -831,7 +831,7 @@ fieldset[disabled] {
 
 // Notification list imitates the dropdown menu //
 .notification-list {
-  background-color: $white;
+  background-color: $surface-bg;
   .divider {
     background-color: $gray-06;
   }
@@ -848,21 +848,21 @@ fieldset[disabled] {
       &:focus,
       &:active {
         color: $primary-2;
-        background-color: $white;
+        background-color: $surface-bg;
         border: 1px solid $grape;
       }
     }
 
     .active > a {
       color: $primary-2;
-      background-color: $white;
+      background-color: $surface-bg;
       border: 1px solid $grape;
 
       &:hover,
       &:focus,
       &:active {
         color: $primary-2;
-        background-color: $white;
+        background-color: $surface-bg;
         border: 1px solid $grape;
       }
     }
@@ -888,7 +888,7 @@ fieldset[disabled] {
   animation-iteration-count: 5;
 }
 .alert-security-update {
-  background-color: $white;
+  background-color: $surface-bg;
   border: 1px solid $alert;
   color: $alert;
 }
@@ -1025,7 +1025,7 @@ output {
 
 // Datepicker
 #ui-datepicker-div {
-  background-color: $white;
+  background-color: $surface-bg;
   border: 1px solid $gray-09;
 }
 
@@ -1033,7 +1033,7 @@ output {
 .surveybar {
   border-bottom: 1px solid $gray-07;
   box-shadow: 0 3px 3px $brown-opac-10;
-  background-color: $white;
+  background-color: $surface-bg;
 }
 
 // Icons
@@ -1097,7 +1097,7 @@ table.cke_editor {
   }
   .active > a > .badge {
     color: $primary;
-    background-color: $white;
+    background-color: $surface-bg;
   }
 }
 .nav-tabs-justified > .active > a {
@@ -1112,15 +1112,15 @@ table.cke_editor {
 
 // Side menu
 .absolute-wrapper {
-  background-color: $white;
+  background-color: $surface-bg;
   border-right: 1px solid $gray-07;
   box-shadow: 3px 0 3px $gray_approx_100_10;
 }
 .side-menu {
-  background-color: $white;
+  background-color: $surface-bg;
   border-right: 1px solid $gray-07;
   .navbar {
-    background-color: $white;
+    background-color: $surface-bg;
   }
   .navbar-header {
     border-bottom: 1px solid $gray-07;
@@ -1245,7 +1245,7 @@ input[type="checkbox"]:checked:after,
 .ui-dialog,
 .ui-jqdialog,
 .ui-dialog.ui-widget.ui-widget-content.ui-corner-all.ui-front.ui-dialog-buttons.ui-draggable.ui-resizable {
-  background-color: $white;
+  background-color: $surface-bg;
   border: 1px solid $gray-09;
 }
 .ui-jqdialog-titlebar {
@@ -1286,8 +1286,8 @@ input[type="checkbox"]:checked:after,
       circle at center,
       adjust-color($primary, $alpha: 0.5) 0px,
       adjust-color($primary, $alpha: 0.5) 1px,
-      $white 2px,
-      $white 100%
+      $surface-bg 2px,
+      $surface-bg 100%
     );
   }
   10% {
@@ -1295,8 +1295,8 @@ input[type="checkbox"]:checked:after,
       circle at center,
       adjust-color($primary, $alpha: 0.5) 0px,
       adjust-color($primary, $alpha: 0.5) 2px,
-      $white 3px,
-      $white 100%
+      $surface-bg 3px,
+      $surface-bg 100%
     );
   }
   20% {
@@ -1304,8 +1304,8 @@ input[type="checkbox"]:checked:after,
       circle at center,
       adjust-color($primary, $alpha: 0.5) 0px,
       adjust-color($primary, $alpha: 0.5) 3px,
-      $white 4px,
-      $white 100%
+      $surface-bg 4px,
+      $surface-bg 100%
     );
   }
   30% {
@@ -1313,8 +1313,8 @@ input[type="checkbox"]:checked:after,
       circle at center,
       adjust-color($primary, $alpha: 0.5) 0px,
       adjust-color($primary, $alpha: 0.5) 4px,
-      $white 5px,
-      $white 100%
+      $surface-bg 5px,
+      $surface-bg 100%
     );
   }
   40% {
@@ -1322,8 +1322,8 @@ input[type="checkbox"]:checked:after,
       circle at center,
       adjust-color($primary, $alpha: 0.5) 0px,
       adjust-color($primary, $alpha: 0.5) 5px,
-      $white 6px,
-      $white 100%
+      $surface-bg 6px,
+      $surface-bg 100%
     );
   }
   50% {
@@ -1331,8 +1331,8 @@ input[type="checkbox"]:checked:after,
       circle at center,
       adjust-color($primary, $alpha: 0.5) 0px,
       adjust-color($primary, $alpha: 0.5) 6px,
-      $white 7px,
-      $white 100%
+      $surface-bg 7px,
+      $surface-bg 100%
     );
   }
   60% {
@@ -1340,8 +1340,8 @@ input[type="checkbox"]:checked:after,
       circle at center,
       adjust-color($primary, $alpha: 0.5) 0px,
       adjust-color($primary, $alpha: 0.5) 7px,
-      $white 8px,
-      $white 100%
+      $surface-bg 8px,
+      $surface-bg 100%
     );
   }
   70% {
@@ -1349,8 +1349,8 @@ input[type="checkbox"]:checked:after,
       circle at center,
       adjust-color($primary, $alpha: 0.5) 0px,
       adjust-color($primary, $alpha: 0.5) 8px,
-      $white 9px,
-      $white 100%
+      $surface-bg 9px,
+      $surface-bg 100%
     );
   }
   80% {
@@ -1358,8 +1358,8 @@ input[type="checkbox"]:checked:after,
       circle at center,
       adjust-color($primary, $alpha: 0.5) 0px,
       adjust-color($primary, $alpha: 0.5) 9px,
-      $white 10px,
-      $white 100%
+      $surface-bg 10px,
+      $surface-bg 100%
     );
   }
   90% {
@@ -1367,8 +1367,8 @@ input[type="checkbox"]:checked:after,
       circle at center,
       adjust-color($primary, $alpha: 0.5) 0px,
       adjust-color($primary, $alpha: 0.5) 10px,
-      $white 10px,
-      $white 100%
+      $surface-bg 10px,
+      $surface-bg 100%
     );
   }
   100% {
@@ -1376,8 +1376,8 @@ input[type="checkbox"]:checked:after,
       circle at center,
       adjust-color($primary, $alpha: 0.5) 0px,
       adjust-color($primary, $alpha: 0.5) 8px,
-      $white 9px,
-      $white 100%
+      $surface-bg 9px,
+      $surface-bg 100%
     );
   }
 }

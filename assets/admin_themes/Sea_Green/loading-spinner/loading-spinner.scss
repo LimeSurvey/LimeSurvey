@@ -5,7 +5,7 @@
     left: 0;
     position: fixed;
     opacity: 0.7;
-    background-color: #fff;
+    background-color: $surface-bg; // Dark in the dark mode, the overlay does not flash white over the page
     z-index: 3501;
     text-align: center;
     display: none; /* hidden by default */

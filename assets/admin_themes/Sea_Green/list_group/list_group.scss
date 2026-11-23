@@ -3,7 +3,7 @@
 }
 
 .list-group-item {
-    background-color : $white;
+    background-color : $surface-bg;
     border           : none;
     .selector__toggle_full_text {
         padding : 4px 0;
@@ -56,7 +56,14 @@ a.list-group-item {
         }
         > .badge {
             color: $active-green;
-            background-color: $white;
+            background-color: $surface-bg;
+        }
+        // The focus rule below gives the selected item a white background, so its text turns dark
+        &:focus-visible:not(:active) {
+            color: $g-900;
+            .list-group-item-text {
+                color: $g-700;
+            }
         }
     }
     .list-group-item-heading {
@@ -67,7 +74,7 @@ a.list-group-item {
     }
     &:focus-visible:not(:active) {
         @include inset-border(2px, $grape90);
-        background-color: $white;
+        background-color: $surface-bg;
     }
     &:active {
         color: $g-900;

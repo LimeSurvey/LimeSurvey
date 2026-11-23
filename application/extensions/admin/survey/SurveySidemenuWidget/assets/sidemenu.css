@@ -1,5 +1,5 @@
 .sidebar-left {
-    border-right: 1px #eeeeee solid;
+    border-right: 1px var(--ls-page-bg, #eeeeee) solid;
     height: 100vh;
     position: fixed;
     left: 0;
@@ -7,7 +7,7 @@
     max-height: calc(100vh - 60px);
 }
 .sidebar {
-    background-color: #fff;
+    background-color: var(--ls-surface-bg, #fff);
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -22,7 +22,7 @@
 }
 
 .sidebar-header.primary {
-    background-color: #eeeff7;
+    background-color: var(--ls-page-bg, #eeeff7);
 }
 .sidebar-header {
     margin-bottom: 16px;
@@ -33,7 +33,7 @@
     height: 47.375px
 }
 .sidebar-header .btn-close-lime {
-    color: #1e1e1e;
+    color: var(--ls-text-color, #1e1e1e);
     font-size: .855em;
     opacity: 1;
 }
@@ -44,7 +44,7 @@
     */
 }
 #left-sidebar .form-label {
-    color: #1e1e1e;
+    color: var(--ls-text-color, #1e1e1e);
     font-size: 1.25em;
     font-weight: 500;
     line-height: 16px;
@@ -77,7 +77,7 @@
 }
 .sidebar-row {
     align-items: center;
-    color: #1e1e1e;
+    color: var(--ls-text-color, #1e1e1e);
     display: flex;
     flex-direction: row;
     font-size: 14px;
@@ -173,7 +173,7 @@
     min-width: 365px;
 }
 .side-menu-logo a{
-    color: black;
+    color: var(--ls-text-color, black);
     font-size: 15px;
     font-weight: 800;
     line-height: 24px;

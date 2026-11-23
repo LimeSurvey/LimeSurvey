@@ -324,6 +324,14 @@ div[class*=" col-"].nofloat {
   line-height: 1;
 }
 
+#sidebar .q-group div.toggle-questiongroup,
+#sidebar .q-group .questiongroup-dropdown-toggle.btn {
+  display: flex;
+  align-items: center;
+  height: 24px;
+  min-height: 0;
+}
+
 #sidebar .q-group .questiongroup-link {
   padding-left: 70px;
 }

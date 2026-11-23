@@ -5,6 +5,46 @@
       globalThis.t = () => {}
       globalThis.st = () => {}
     </script>
+    <script>
+      // Dark mode before the first paint: Without it the page is white until the bundle has loaded.
+      // Short version of helpers/appearanceMode.js, which runs later and also handles the changes.
+      ;(function () {
+        var mode = null
+        try {
+          var cookie = document.cookie
+            .split('; ')
+            .find(function (row) {
+              return row.indexOf('LS_AUTH_INIT=') === 0
+            })
+          if (cookie) {
+            var data = JSON.parse(
+              decodeURIComponent(cookie.slice(13).replace(/\+/g, ' '))
+            )
+            mode = data && data.appearanceMode
+          } else {
+            mode = window.localStorage.getItem(
+              'ls-editor-appearance-mode:' +
+                window.location.pathname.split('/editor')[0]
+            )
+          }
+        } catch (e) {}
+        var isDark =
+          mode === 'dark' ||
+          (mode === 'system' &&
+            typeof window.matchMedia === 'function' &&
+            window.matchMedia('(prefers-color-scheme: dark)').matches)
+        document.documentElement.setAttribute(
+          'data-bs-theme',
+          isDark ? 'dark' : 'light'
+        )
+      })()
+    </script>
+    <style>
+      html[data-bs-theme='dark'] {
+        color-scheme: dark;
+        background-color: #1b1c22;
+      }
+    </style>
     <meta charset="utf-8" />
     <link rel="icon" href="<%= assetPrefix %>/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />

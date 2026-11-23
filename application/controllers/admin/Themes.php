@@ -987,15 +987,17 @@ JAVASCRIPT
      * Load CodeMirror editor and various files information.
      *
      * @access protected
-     * @param string $templatename
-     * @param string $screenname
-     * @param string $editfile
-     * @param string $templates
-     * @param string $files
-     * @param string $cssfiles
-     * @param array $otherfiles
-     * @param array $myoutput
-     * @return array
+     * @param string $templatename Name of the theme that is edited
+     * @param string $screenname Name of the screen that is shown in the preview
+     * @param string $editfile Path of the file that is edited
+     * @param string $relativePathEditfile Path of the edited file, relative to the directory of the theme
+     * @param array $templates All themes, as returned by Template::getTemplateList()
+     * @param string[] $files The view files of the screen
+     * @param string[] $cssfiles The CSS files of the theme
+     * @param string[] $jsfiles The JavaScript files of the theme
+     * @param array $otherfiles The other files of the theme, e.g. images
+     * @param string $myoutput HTML of the preview
+     * @return array The views to render, with their data
      */
     protected function templatesummary($templatename, $screenname, $editfile, $relativePathEditfile, $templates, $files, $cssfiles, $jsfiles, $otherfiles, $myoutput)
     {
@@ -1028,6 +1030,8 @@ JAVASCRIPT
 
             /* Must remove all existing scripts / css and js */
             App()->getClientScript()->unregisterPackage('admin-theme'); // We remove the admin package
+            // The preview shows what participants see: No dark mode of the admin interface
+            AdminTheme::unregisterAppearanceMode();
 
             App()->getClientScript()->render($myoutput);
 

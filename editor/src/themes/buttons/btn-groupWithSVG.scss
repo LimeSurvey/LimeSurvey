@@ -59,12 +59,12 @@
     }
     .right-side {
       width: 50%;
-      background-color: $g-600;
+      background-color: $g-600-bg;
     }
     .center-side {
       width: 100%;
       font-size: $font-size-xxl;
-      background-color: $g-600;
+      background-color: $g-600-bg;
     }
   }
   .btn-check:active + .btn-outline-lime-svg,
@@ -96,7 +96,7 @@
     padding: 0;
 
     .privacy-icon-bg {
-      fill: $g-200;
+      fill: $g-200-base;
     }
     .privacy-icon-accent {
       fill: $g-400;

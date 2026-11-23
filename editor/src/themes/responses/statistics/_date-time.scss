@@ -81,7 +81,7 @@
     padding: 8px 0 0;
     border: none;
     background: none;
-    color: $grape;
+    color: $grape-text;
     font-size: $font-size-sm;
 
     &:hover {
@@ -151,11 +151,11 @@
     border-color: $g-900;
 
     &:hover {
-      background-color: $g-900;
+      background-color: $g-900-bg;
     }
 
     .responses-statistics-calendar-day-count {
-      color: $g-400;
+      color: $g-400-base;
       font-weight: $font-weight-normal;
     }
   }

@@ -58,7 +58,7 @@
     &:focus,
     &.text-danger:focus {
       outline: 1px solid $grape;
-      background-color: $white;
+      background-color: $surface-bg;
     }
   }
 }

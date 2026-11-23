@@ -18,7 +18,11 @@ function getConfig(options, locale, dateFormat) {
     let stepping = getValueFromConfigObject(options, 'stepping', 1);
     let mindate = getValueFromConfigObject(options, 'mindate', undefined);
     let maxdate = getValueFromConfigObject(options, 'maxdate', undefined);
-    let theme = getValueFromConfigObject(options, 'theme', 'auto');
+    // Without a theme option the picker follows the appearance mode of the admin interface, then the device.
+    // In the "System" appearance mode the picker follows the device itself, so it also follows a later change
+    let pageTheme = document.documentElement.getAttribute('data-bs-theme');
+    let followsDevice = document.documentElement.getAttribute('data-appearance-mode') === 'system';
+    let theme = getValueFromConfigObject(options, 'theme', !followsDevice && ['light', 'dark'].indexOf(pageTheme) !== -1 ? pageTheme : 'auto');
     let startofweek = parseInt(getValueFromConfigObject(options, 'startoftheweek', 0), 10);
 
     return {

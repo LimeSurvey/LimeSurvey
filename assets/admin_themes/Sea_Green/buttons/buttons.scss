@@ -32,12 +32,16 @@
 
 //from lime-admin-colors.scss
 //Buttons
+// Primary buttons are grape, the same as in the React editor. The theme colour "primary"
+// (var(--bs-primary)) stays active green for the other components
 .btn-primary {
+    // Disabled: The same grey as the generic disabled buttons above, this rule comes later and would override them
+    @include button-variant($grape, $grape, $surface-bg, $hover-color: $surface-bg, $active-color: $surface-bg, $disabled-background: $g-400, $disabled-color: $g-600);
     color : $white;
-    &:hover, &:focus, &:active, &.active, &:active:focus {
+    &:hover, &:focus, &:active, &.active, &:active:focus, .open &.dropdown-toggle {
         color            : $white;
-        background-color : var(--bs-primary);
-        border-color     : var(--bs-primary);
+        background-color : $grape;
+        border-color     : $grape;
     }
     &:hover {
         box-shadow : $btn-hover-boxshadow;
@@ -197,25 +201,25 @@
 
 // outline variants
 *[class*="btn-outline-"] {
-    background-color : $white;
+    background-color : $surface-bg;
     border           : 1px solid $g-900;
     &:hover {
         // default_outline_hover
         box-shadow       : $btn-hover-boxshadow;
-        background-color : $white;
+        background-color : $surface-bg;
     }
     &:focus, &:active, &.active, &.dropdown-toggle.show, &.dropdown-toggle.show:focus, &.show {
         // default_outline_focus
         box-shadow       : $btn-focus-boxshadow;
-        background-color : $white;
+        background-color : $surface-bg;
     }
     &.disabled, &[disabled] {
-        background-color : $white;
+        background-color : $surface-bg;
         border           : 1px solid $g-600;
         color            : $g-600;
         stroke           : $g-600;
         &:hover, &:focus, &:active, &.active {
-            background-color : $white;
+            background-color : $surface-bg;
             border           : 1px solid $g-600;
         }
     }

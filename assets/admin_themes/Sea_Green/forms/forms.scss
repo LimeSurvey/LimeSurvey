@@ -46,7 +46,7 @@ input[type="file"]::file-selector-button {
     transform     : translateY(-50%);
     margin        : 0;
     padding       : 6px 12px;
-    background    : $white;
+    background    : $surface-bg;
     color         : $g-900;
     border        : 1px solid $g-900 !important;
     border-radius : $btn-border-radius;

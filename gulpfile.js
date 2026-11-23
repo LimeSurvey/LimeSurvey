@@ -115,54 +115,86 @@ exports.watch_bootstrap = function () {
 
 exports.build_bootstrap = parallel(js_minify, scss_minify, scss_minify_rtl);
 
-function theme() {
-    let plugins = [
-        autoprefixer(),
-        cssnano({
-            preset: [
-                "default",
-                {
-                    colormin: false,
-                },
-            ],
-        }),
-    ];
-    return src(["assets/admin_themes/Sea_Green/sea_green.scss"])
-        .pipe(sass())
-        .pipe(dest("themes/admin/Sea_Green/css"))
-        .pipe(gulppostcss(plugins))
-        .pipe(rename({ extname: ".min.css" }))
-        .pipe(dest("themes/admin/Sea_Green/css"));
+// Admin themes: Sea Green and its variants share the SCSS in assets/admin_themes/Sea_Green.
+// The theme tokens (the colours as CSS variables) are loaded by the React editor.
+// "dark" is the dark mode of a theme, it is loaded after the CSS of "source".
+const adminThemes = [
+    {
+        source: "assets/admin_themes/Sea_Green/sea_green.scss",
+        dark: "assets/admin_themes/Sea_Green/sea_green_dark.scss",
+        tokens: "assets/admin_themes/Sea_Green/theme_tokens.scss",
+        target: "themes/admin/Sea_Green/css",
+    },
+    {
+        source: "assets/admin_themes/Sea_Green_WCAG_AA/sea_green_wcag_aa.scss",
+        dark: "assets/admin_themes/Sea_Green_WCAG_AA/sea_green_wcag_aa_dark.scss",
+        tokens: "assets/admin_themes/Sea_Green_WCAG_AA/theme_tokens.scss",
+        target: "themes/admin/Sea_Green_WCAG_AA/css",
+    },
+];
+
+function adminThemeTokensTask(adminTheme) {
+    const task = function () {
+        let plugins = [
+            cssnano({
+                preset: [
+                    "default",
+                    {
+                        colormin: false,
+                    },
+                ],
+            }),
+        ];
+        return src([adminTheme.tokens])
+            .pipe(sass())
+            .pipe(dest(adminTheme.target))
+            .pipe(gulppostcss(plugins))
+            .pipe(rename({ extname: ".min.css" }))
+            .pipe(dest(adminTheme.target));
+    };
+    task.displayName = "admintheme:" + adminTheme.target + ":tokens";
+    return task;
 }
 
-function theme_rtl() {
-    let plugins = [
-        autoprefixer(),
-        cssnano({
-            preset: [
-                "default",
-                {
-                    colormin: false,
-                },
-            ],
-        }),
-    ];
-    return src(["assets/admin_themes/Sea_Green/sea_green.scss"])
-        .pipe(sass())
-        .pipe(rtlcss())
-        .pipe(rename({ suffix: "-rtl" }))
-        .pipe(dest("themes/admin/Sea_Green/css"))
-        .pipe(gulppostcss(plugins))
-        .pipe(rename({ extname: ".min.css" }))
-        .pipe(dest("themes/admin/Sea_Green/css"));
+function adminThemeTask(adminTheme, rtl, dark = false) {
+    const task = function () {
+        let plugins = [
+            autoprefixer(),
+            cssnano({
+                preset: [
+                    "default",
+                    {
+                        colormin: false,
+                    },
+                ],
+            }),
+        ];
+        let stream = src([dark ? adminTheme.dark : adminTheme.source]).pipe(sass());
+        if (rtl) {
+            stream = stream.pipe(rtlcss()).pipe(rename({ suffix: "-rtl" }));
+        }
+        return stream
+            .pipe(dest(adminTheme.target))
+            .pipe(gulppostcss(plugins))
+            .pipe(rename({ extname: ".min.css" }))
+            .pipe(dest(adminTheme.target));
+    };
+    task.displayName = "admintheme:" + adminTheme.target + (dark ? ":dark" : "") + (rtl ? ":rtl" : "");
+    return task;
 }
+
+const adminThemeTasks = adminThemes.flatMap((adminTheme) => [
+    adminThemeTask(adminTheme, false),
+    adminThemeTask(adminTheme, true),
+    ...(adminTheme.dark ? [adminThemeTask(adminTheme, false, true), adminThemeTask(adminTheme, true, true)] : []),
+    adminThemeTokensTask(adminTheme),
+]);
 
 exports.watch_admintheme = function () {
-    watch("assets/admin_themes/**/*.scss", theme);
-    watch("assets/admin_themes/**/*.scss", theme_rtl);
+    watch("assets/admin_themes/**/*.scss", parallel(...adminThemeTasks));
 };
 
-exports.build_admintheme = parallel(theme, theme_rtl);
+exports.build_admintheme = parallel(...adminThemeTasks);
 
 function survey_theme_fruity() {
     let variations = [

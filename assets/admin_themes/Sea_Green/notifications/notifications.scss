@@ -7,7 +7,7 @@
     width: 390px;
 }
 .notification-list {
-    background-color: $white;
+    background-color: $surface-bg;
     top: 100%;
     left: 0;
     z-index: 1000;
@@ -38,7 +38,7 @@
                 text-decoration: none;
             }
             &:focus-visible, &:active {
-                background-color: $white;
+                background-color: $surface-bg;
                 text-decoration: none;
                 border-color: $grape;
             }

@@ -42,7 +42,7 @@ $sidebar-row-padding: 0 0.5rem 0 1.5rem;
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  color: $grape;
+  color: $grape-text;
   text-decoration: none;
   cursor: pointer;
   font-weight: $font-weight-500;
@@ -54,7 +54,7 @@ $sidebar-row-padding: 0 0.5rem 0 1.5rem;
   &:hover,
   &:focus,
   &:active {
-    color: $grape;
+    color: $grape-text;
     text-decoration: none;
   }
 

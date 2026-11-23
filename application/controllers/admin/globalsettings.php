@@ -253,7 +253,9 @@ class GlobalSettings extends SurveyCommonAction
     }
 
     /**
-     * Save Settings
+     * Saves the global settings that were submitted with the global settings form, then redirects
+     *
+     * @return void
      */
     private function saveSettings()
     {
@@ -368,6 +370,14 @@ class GlobalSettings extends SurveyCommonAction
         // we set the admin theme
         $sAdmintheme = sanitize_paranoid_string(Yii::app()->getRequest()->getPost('admintheme'));
         SettingGlobal::setSetting('admintheme', $sAdmintheme);
+        $allowPersonalAdminTheme = Yii::app()->getRequest()->getPost('allowpersonaladmintheme');
+        if ($allowPersonalAdminTheme !== null) {
+            SettingGlobal::setSetting('allowpersonaladmintheme', $allowPersonalAdminTheme ? '1' : '0');
+        }
+        $defaultAppearanceMode = Yii::app()->getRequest()->getPost('defaultappearancemode');
+        if (in_array($defaultAppearanceMode, AdminTheme::APPEARANCE_MODES, true)) {
+            SettingGlobal::setSetting('defaultappearancemode', $defaultAppearanceMode);
+        }
 
         $emailMethod = strip_tags(Yii::app()->getRequest()->getPost('emailmethod', ''));
         $emailPlugin = strip_tags(Yii::app()->getRequest()->getPost('emailplugin', ''));

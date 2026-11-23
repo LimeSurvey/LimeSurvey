@@ -21,7 +21,7 @@
     align-items: center;
     justify-content: center;
     font-size: $font-size-sm;
-    background-color: $g-700;
+    background-color: $g-700-bg;
     border-radius: 2px;
     color: $white;
   }
@@ -89,7 +89,7 @@
       border-top: 2px solid $grape;
       border-radius: 2px;
       border-color: inherit;
-      color: $grape;
+      color: $grape-text;
       pointer-events: none;
     }
 
@@ -102,7 +102,7 @@
       border-top: 2px solid $grape;
       border-radius: 2px;
       border-color: inherit;
-      color: $grape;
+      color: $grape-text;
       pointer-events: none;
     }
 

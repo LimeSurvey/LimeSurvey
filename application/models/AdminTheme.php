@@ -21,6 +21,12 @@
  */
 class AdminTheme extends CFormModel
 {
+    /** @var string[] The admin themes shipped with LimeSurvey, in themes/admin */
+    const STANDARD_ADMIN_THEMES = ['Sea_Green', 'Sea_Green_WCAG_AA'];
+
+    /** @var string[] The appearance modes: "system" follows the light or dark mode of the user's device */
+    const APPEARANCE_MODES = ['light', 'dark', 'system'];
+
     /** @var string $name Admin Theme's name */
     public $name;
     /** @var string $path Admin Theme's path */
@@ -36,7 +42,8 @@ class AdminTheme extends CFormModel
 
     /**
      * Get the list of admin theme, as an array containing each configuration object for each template
-     * @return array the array of configuration object
+     * @return array the array of configuration objects, theme directory name => configuration object
+     *               (a numeric directory name is an integer key)
      */
     public static function getAdminThemeList()
     {
@@ -45,17 +52,223 @@ class AdminTheme extends CFormModel
 
         $aStandardThemeObjects     = self::getThemeList($sStandardTemplateRootDir); // array containing the configuration files of standard admin themes (styles/...)
         $aUserThemeObjects         = self::getThemeList($sUserTemplateDir); // array containing the configuration files of user admin themes (upload/admintheme/...)
-        $aListOfThemeObjects       = array_merge($aStandardThemeObjects, $aUserThemeObjects);
+        // array_replace() keeps numeric directory names as keys, array_merge() would renumber them
+        $aListOfThemeObjects       = array_replace($aStandardThemeObjects, $aUserThemeObjects);
 
         ksort($aListOfThemeObjects);
         return $aListOfThemeObjects;
     }
 
     /**
+     * Returns whether users can choose their own admin theme in their personal settings
+     * (global setting, a superadministrator can switch it off to use the same admin theme for everyone)
+     *
+     * @return bool
+     */
+    public static function isPersonalAdminThemeAllowed()
+    {
+        return (bool) App()->getConfig('allowpersonaladmintheme');
+    }
+
+    /**
+     * Returns the admin themes users can choose in their personal settings
+     *
+     * @return array the array of configuration objects, theme name => configuration object
+     */
+    public static function getPersonalAdminThemeList()
+    {
+        return array_filter(
+            self::getAdminThemeList(),
+            function ($themeName) {
+                return self::isPlainThemeName((string) $themeName);
+            },
+            ARRAY_FILTER_USE_KEY
+        );
+    }
+
+    /**
+     * Returns the URL of the theme tokens (css/theme_tokens.css, the colours of the theme as CSS variables)
+     * of the current user's admin theme. The React editor loads this file.
+     *
+     * @return string|null The URL with the file time as version, or null if the theme has no theme tokens
+     */
+    public static function getThemeTokensUrl()
+    {
+        $themeName = self::getUserAdminThemeName() ?? App()->getConfig('admintheme');
+        if (!is_string($themeName) || !self::isPlainThemeName($themeName)) {
+            return null;
+        }
+        $tokensFile = self::getThemeRootDir($themeName) . DIRECTORY_SEPARATOR . $themeName
+            . DIRECTORY_SEPARATOR . 'css' . DIRECTORY_SEPARATOR . 'theme_tokens.css';
+        if (!is_file($tokensFile)) {
+            return null;
+        }
+        $themeUrl = in_array($themeName, self::STANDARD_ADMIN_THEMES, true)
+            ? App()->getConfig('styleurl') . $themeName
+            : App()->getConfig('uploadurl') . '/admintheme/' . $themeName;
+        return $themeUrl . '/css/theme_tokens.css?v=' . filemtime($tokensFile);
+    }
+
+    /**
+     * Returns the admin theme the current user chose in their personal settings
+     *
+     * @return string|null The theme name, or null if the user did not choose one, the theme does not exist (anymore)
+     *                     or users cannot choose their own admin theme
+     */
+    public static function getUserAdminThemeName()
+    {
+        if (App()->user->isGuest || !self::isPersonalAdminThemeAllowed()) {
+            return null;
+        }
+        $themeName = SettingsUser::getUserSettingValue('admintheme');
+        // Users can write any of their own settings (e.g. via admin/user/sa/togglesetting),
+        // so only accept plain directory names
+        if (!is_string($themeName) || !self::isPlainThemeName($themeName)) {
+            return null;
+        }
+        $configFile = self::getThemeRootDir($themeName) . DIRECTORY_SEPARATOR . $themeName
+            . DIRECTORY_SEPARATOR . 'config.xml';
+        if (!is_file($configFile)) {
+            return null;
+        }
+        return $themeName;
+    }
+
+    /**
+     * Returns the appearance modes with their translated names
+     *
+     * @return array<string,string> appearance mode => name
+     */
+    public static function getAppearanceModeList()
+    {
+        return [
+            'light'  => gT("Light", 'unescaped'),
+            'dark'   => gT("Dark", 'unescaped'),
+            'system' => gT("System", 'unescaped'),
+        ];
+    }
+
+    /**
+     * Returns the default appearance mode (global setting), used for everyone who did not choose their own
+     *
+     * @return string One of APPEARANCE_MODES
+     */
+    public static function getDefaultAppearanceMode()
+    {
+        $appearanceMode = App()->getConfig('defaultappearancemode');
+        return in_array($appearanceMode, self::APPEARANCE_MODES, true) ? $appearanceMode : 'light';
+    }
+
+    /**
+     * Returns the appearance mode the current user chose in their personal settings
+     *
+     * @return string|null One of APPEARANCE_MODES, or null if the user did not choose one
+     */
+    public static function getUserAppearanceMode()
+    {
+        if (App()->user->isGuest) {
+            return null;
+        }
+        $appearanceMode = SettingsUser::getUserSettingValue('appearancemode');
+        // Users can write any of their own settings (e.g. via admin/user/sa/togglesetting)
+        return in_array($appearanceMode, self::APPEARANCE_MODES, true) ? $appearanceMode : null;
+    }
+
+    /**
+     * Returns the appearance mode of the current user: Their personal choice first, then the global setting
+     *
+     * @return string One of APPEARANCE_MODES
+     */
+    public static function getAppearanceMode()
+    {
+        return self::getUserAppearanceMode() ?? self::getDefaultAppearanceMode();
+    }
+
+    /**
+     * Returns whether this admin theme has a dark mode for the text direction of the current language:
+     * CSS files for it are listed in config.xml (files > dark > css, for right-to-left languages
+     * files > rtl > dark > css).
+     * These are the files registerStylesAndScripts() loads, so a theme with dark CSS for one direction only
+     * is not reported as dark in the other direction.
+     *
+     * @param string|null $language Language code, null for the language of the current request
+     * @return bool
+     */
+    public function hasDarkMode($language = null)
+    {
+        App()->loadHelper('surveytranslator');
+        $files = $this->config->files ?? null;
+        $darkFiles = getLanguageRTL($language ?? App()->language) ? ($files->rtl->dark ?? null) : ($files->dark ?? null);
+        return $this->getCssFileList($darkFiles) !== [];
+    }
+
+    /**
+     * Returns the appearance mode this admin theme is shown in:
+     * The appearance mode of the current user, or "light" if the theme has no dark mode
+     *
+     * @param string|null $language Language code, null for the language of the current request
+     * @return string One of APPEARANCE_MODES
+     */
+    public function getActiveAppearanceMode($language = null)
+    {
+        return $this->hasDarkMode($language) ? self::getAppearanceMode() : 'light';
+    }
+
+    /**
+     * Returns the appearance mode the admin theme of the current user is shown in, without loading the theme.
+     * For code outside the admin pages (the React editor); the admin pages use getActiveAppearanceMode().
+     *
+     * @return string One of APPEARANCE_MODES, "light" if the admin theme has no dark mode
+     */
+    public static function getUserThemeAppearanceMode()
+    {
+        $themeName = self::getUserAdminThemeName() ?? App()->getConfig('admintheme');
+        if (!is_string($themeName) || !self::isPlainThemeName($themeName)) {
+            return 'light';
+        }
+        $configFile = self::getThemeRootDir($themeName) . DIRECTORY_SEPARATOR . $themeName
+            . DIRECTORY_SEPARATOR . 'config.xml';
+        if (!is_file($configFile)) {
+            return 'light';
+        }
+        $theme = new self();
+        $theme->config = json_decode(json_encode((array) simplexml_load_string(file_get_contents($configFile)), 1));
+        // The request that opens the editor has the default language of the site, the admin pages have the
+        // language of the administrator: That one decides which CSS files (left-to-right or right-to-left) they load
+        $adminLanguage = App()->session['adminlang'] ?? null;
+        return $theme->getActiveAppearanceMode(is_string($adminLanguage) && $adminLanguage !== '' ? $adminLanguage : null);
+    }
+
+    /**
+     * Returns whether a theme name is a plain directory name: No path, not "." or ".." and no hidden directory
+     *
+     * @param string $themeName Name of the admin theme, which is the name of its directory
+     * @return bool True if the name is a plain directory name
+     */
+    private static function isPlainThemeName(string $themeName)
+    {
+        return preg_match('/^[A-Za-z0-9_-][A-Za-z0-9_.-]*$/', $themeName) === 1;
+    }
+
+    /**
+     * Returns the directory that contains an admin theme:
+     * themes/admin for the standard themes, upload/admintheme for the others
+     *
+     * @param string $themeName Name of the admin theme
+     * @return string Path of the directory, without the directory of the theme itself
+     */
+    private static function getThemeRootDir(string $themeName)
+    {
+        return in_array($themeName, self::STANDARD_ADMIN_THEMES, true)
+            ? App()->getConfig('styledir')
+            : App()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . 'admintheme';
+    }
+
+    /**
      * Initializes the admin theme for the current request.
      *
-     * Resolves the configured admin theme name (from global settings or config-defaults.php),
-     * falls back to Sea_Green if the theme directory does not exist (e.g. after an upgrade
+     * Resolves the admin theme name (the user's personal setting first, then the global settings
+     * or config-defaults.php), falls back to Sea_Green if the theme directory does not exist (e.g. after an upgrade
      * or if a custom theme was deleted), then:
      *  - Sets \->name, \->path, \->sTemplateUrl
      *  - Parses config.xml into \->config
@@ -66,7 +279,8 @@ class AdminTheme extends CFormModel
      */
     public function setAdminTheme()
     {
-        $sAdminThemeName           = App()->getConfig('admintheme'); // We retrieve the admin theme in config ( {{settings_global}} or config-defaults.php )
+        // The user's personal choice wins over the admin theme in config ( {{settings_global}} or config-defaults.php )
+        $sAdminThemeName           = self::getUserAdminThemeName() ?? App()->getConfig('admintheme');
         $sStandardTemplateRootDir  = App()->getConfig("styledir"); // Path for the standard Admin Themes
         $sUserTemplateDir          = App()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . 'admintheme'; // Path for the user Admin Themes
 
@@ -125,6 +339,8 @@ class AdminTheme extends CFormModel
      * Register all the styles and scripts of the current template.
      * Check if RTL is needed, use asset manager if needed.
      * This function is public because it appears that sometime, the package need to be register again in header (probably a cache problem)
+     *
+     * @return void
      */
     public function registerStylesAndScripts()
     {
@@ -158,7 +374,6 @@ class AdminTheme extends CFormModel
         // and it will add the directory prefix to the file name (css/ or js/ )
         // This last step is needed for the package (yii package use a single baseUrl / basePath for css and js files )
 
-        $aCssFiles = [];
         // Shorter writing.
         $files = $this->config->files;
         // We check if RTL is needed
@@ -171,27 +386,12 @@ class AdminTheme extends CFormModel
                 throw new CException("Invalid template configuration: No CSS files found for right-to-left languages");
             }
 
-            if (is_array($files->rtl->css->filename)) {
-                foreach ($files->rtl->css->filename as $cssfile) {
-                    $aCssFiles[] = 'css/' . $cssfile; // add the 'css/' prefix to the RTL css files
-                }
-            } elseif (is_string($files->rtl->css->filename)) {
-                $aCssFiles[] = 'css/' . $files->rtl->css->filename;
-            }
-
             App()->getClientScript()->registerPackage('font-roboto');
-            $this->registerAdminTheme($files, $aCssFiles);
+            $this->registerAdminTheme($files, $this->getCssFileList($files->rtl), $this->getCssFileList($files->rtl->dark ?? null));
             App()->getClientScript()->registerPackage('adminsidepanelrtl');
         } else {
             // LTR style
-            if (is_array($files->css->filename)) {
-                foreach ($files->css->filename as $cssfile) {
-                    $aCssFiles[] = 'css/' . $cssfile; // add the 'css/' prefix to the css files
-                }
-            } elseif (is_string($files->css->filename)) {
-                $aCssFiles[] = 'css/' . $files->css->filename;
-            }
-            $this->registerAdminTheme($files, $aCssFiles);
+            $this->registerAdminTheme($files, $this->getCssFileList($files), $this->getCssFileList($files->dark ?? null));
             App()->getClientScript()->registerPackage('adminsidepanelltr');
         }
         App()->getClientScript()->registerPackage('bootstrap-js');
@@ -264,12 +464,42 @@ JS;
     }
 
     /**
-     * Register admin-theme package
-     * @param $files
-     * @param $aCssFiles
+     * Returns the CSS files listed in a part of config.xml, with the "css/" directory
+     * (Yii packages use a single base URL / base path for their CSS and JS files)
+     *
+     * @param object|null $files A node of config.xml that contains the CSS files as css > filename
+     *                           (files, files > rtl, files > dark or files > rtl > dark)
+     * @return string[]
+     */
+    private function getCssFileList($files)
+    {
+        $fileNames = $files->css->filename ?? [];
+        if (is_string($fileNames)) {
+            $fileNames = [$fileNames];
+        }
+        $cssFiles = [];
+        if (is_array($fileNames)) {
+            foreach ($fileNames as $fileName) {
+                if (is_string($fileName) && $fileName !== '') {
+                    $cssFiles[] = 'css/' . $fileName;
+                }
+            }
+        }
+        return $cssFiles;
+    }
+
+    /**
+     * Register the admin-theme package, and the admin-theme-dark package if the dark mode is used.
+     *
+     * The dark mode CSS files are loaded after the other CSS files of the theme, only for screens:
+     * always in the "dark" appearance mode, and if the device of the user is in dark mode in the "system" appearance mode.
+     *
+     * @param object $files The files node of config.xml
+     * @param string[] $aCssFiles The CSS files of the theme, with the "css/" directory
+     * @param string[] $darkCssFiles The dark mode CSS files of the theme, with the "css/" directory
      * @return void
      */
-    private function registerAdminTheme($files, $aCssFiles)
+    private function registerAdminTheme($files, $aCssFiles, $darkCssFiles = [])
     {
         $aJsFiles = [];
         if (!empty($files->js->filename)) {
@@ -290,15 +520,97 @@ JS;
         // When defining the package with a base path (a directory on the file system), the asset manager is used
         // When defining the package with a base url, the file is directly registered without the asset manager
         // See : http://www.yiiframework.com/doc/api/1.1/CClientScript#packages-detail
+        $packageBase = [];
         if (!YII_DEBUG || self::$use_asset_manager || App()->getConfig('use_asset_manager')) {
             Yii::setPathOfAlias('admin.theme.path', $this->path);
-            $package['basePath'] = 'admin.theme.path'; // add the base path to the package, so it will use the asset manager
+            $packageBase['basePath'] = 'admin.theme.path'; // add the base path to the package, so it will use the asset manager
         } else {
-            $package['baseUrl'] = $this->sTemplateUrl; // add the base url to the package, so it will not use the asset manager
+            $packageBase['baseUrl'] = $this->sTemplateUrl; // add the base url to the package, so it will not use the asset manager
         }
 
-        App()->clientScript->addPackage('admin-theme', $package); // add the package
+        App()->clientScript->addPackage('admin-theme', $package + $packageBase); // add the package
         App()->clientScript->registerPackage('admin-theme'); // register the package
+
+        $this->registerAppearanceMode($darkCssFiles, $packageBase);
+    }
+
+    /**
+     * Registers what the appearance mode of the current user needs: The dark mode CSS files of the theme,
+     * the "color-scheme" meta tag and a script that sets the data-bs-theme attribute of the html element
+     * to "light" or "dark" (for scripts and CSS that need to know the mode in use, e.g. the date picker).
+     *
+     * @param string[] $darkCssFiles The dark mode CSS files of the theme, with the "css/" directory
+     * @param array $packageBase The base path or base URL of the theme, as part of a package definition
+     * @return void
+     */
+    private function registerAppearanceMode($darkCssFiles, $packageBase)
+    {
+        $appearanceMode = $darkCssFiles === [] ? 'light' : self::getAppearanceMode();
+        $systemMode = $appearanceMode === 'system';
+        $darkMediaQuery = '(prefers-color-scheme: dark)';
+
+        if ($appearanceMode !== 'light') {
+            $package = $packageBase;
+            $package['css'] = $darkCssFiles;
+            // Not for print: Browsers do not print backgrounds by default, so the light text would be unreadable
+            $package['cssMedia'] = $systemMode ? 'screen and ' . $darkMediaQuery : 'screen';
+            $package['depends'] = ['admin-theme'];
+            App()->clientScript->addPackage('admin-theme-dark', $package);
+            App()->clientScript->registerPackage('admin-theme-dark');
+        }
+
+        if (App()->request->getQuery('isAjax', false)) {
+            return;
+        }
+        if ($appearanceMode !== 'light') {
+            // Dark browser background and form controls from the start, before the CSS files are loaded
+            App()->clientScript->registerMetaTag($systemMode ? 'light dark' : 'dark', 'color-scheme', null, [], 'color-scheme');
+        }
+        $script = $systemMode
+            ? '(function () {
+    var darkMode = window.matchMedia(' . json_encode($darkMediaQuery) . ');
+    var setTheme = function () {
+        document.documentElement.setAttribute("data-bs-theme", darkMode.matches ? "dark" : "light");
+    };
+    document.documentElement.setAttribute("data-appearance-mode", "system");
+    setTheme();
+    if (darkMode.addEventListener) {
+        darkMode.addEventListener("change", setTheme);
+    }
+})();'
+            : 'document.documentElement.setAttribute("data-appearance-mode", ' . json_encode($appearanceMode) . ');
+document.documentElement.setAttribute("data-bs-theme", ' . json_encode($appearanceMode) . ');';
+        App()->clientScript->registerScript('appearancemode', $script, CClientScript::POS_HEAD);
+    }
+
+    /**
+     * Removes the appearance mode from the page that is rendered next: The dark CSS files, the script that sets
+     * data-bs-theme and the color-scheme meta tag.
+     * For HTML that is not an admin page but is rendered during an admin request, like the preview of the theme editor.
+     *
+     * @return void
+     */
+    public static function unregisterAppearanceMode()
+    {
+        App()->clientScript->unregisterPackage('admin-theme-dark');
+        App()->clientScript->unregisterScript('appearancemode', CClientScript::POS_HEAD);
+        App()->clientScript->unregisterMetaTag('color-scheme');
+    }
+
+    /**
+     * Returns the path of a file in the "images" directory of the theme.
+     * A theme does not need to have its own images: If it has no such file, the file of Sea Green is used.
+     *
+     * @param string $fileName Name of the file in the "images" directory, e.g. "limesurvey.pal"
+     * @return string The full path of the file
+     */
+    public function getImagePath($fileName)
+    {
+        $themeFile = $this->path . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . $fileName;
+        if (is_file($themeFile)) {
+            return $themeFile;
+        }
+        return App()->getConfig('styledir') . DIRECTORY_SEPARATOR . 'Sea_Green' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . $fileName;
     }
 
     /**
@@ -400,6 +712,6 @@ JS;
      */
     private function isStandardAdminTheme($sAdminThemeName)
     {
-        return $sAdminThemeName === 'Sea_Green';
+        return in_array($sAdminThemeName, self::STANDARD_ADMIN_THEMES, true);
     }
 }

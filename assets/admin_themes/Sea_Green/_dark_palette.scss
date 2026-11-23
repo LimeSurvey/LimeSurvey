@@ -1,0 +1,73 @@
+// Colours of the dark mode of Sea Green
+// Set after sea_green_palette and before sea_green_components, so everything computed from the colours follows.
+// Every text colour reaches 4.5:1 against the backgrounds it is used on (WCAG 1.4.3)
+
+// Backgrounds: The lighter a background is, the more it stands out from the surface
+// (in the light mode the backgrounds get darker instead)
+$surface-bg : #1B1C22; // Cards, inputs, dropdowns, modals, tables
+$g-100      : #202229;
+$g-200      : #272A33; // Page background, hover background
+$g-300      : #32353F;
+$g-400      : #434756; // Disabled buttons, separators
+
+// Text and borders
+$g-600      : #6E748C; // Secondary buttons, white text: 4.63:1. Borders on g-200: 3.10:1
+$g-700      : #A4A9BC; // Muted text, on surface: 7.27:1, on g-200: 6.13:1, on g-300: 5.23:1
+$g-750      : #B9BDCC;
+$g-800      : #D5D8E2;
+$g-900      : #E9EAF0; // Text, on surface: 14.15:1, on g-200: 11.94:1, on g-400: 7.69:1
+$black60    : $g-700;
+
+$heading-title-color     : $g-900;
+$heading-sub-title-color : $g-900;
+
+// Coloured backgrounds (buttons, badges, filled alerts) have white text
+$active-green       : #0E8747; // White text: 4.59:1
+$success            : #17853C; // White text: 4.71:1
+$error              : #D6334C; // White text: 4.73:1
+$grape              : #8250F6; // White text: 4.74:1
+$active-green-hover : #1E3A2B; // Hover background for light text
+$orange-light       : #3A2A14;
+$action             : #B39BFF;
+
+// The colours as text, icons and outlines on the dark backgrounds, at least 5.2:1 on g-300
+$dark-text-green  : #4DD08A;
+$dark-text-red    : #FF8A93;
+$dark-text-grape  : #B39BFF;
+$dark-text-blue   : #8FB8FF;
+$dark-text-orange : #FFB870;
+// Text on the colours that stay bright (warning yellow, orange)
+$dark-on-bright   : #1E1E1E;
+
+// Links get lighter on hover
+$link-color              : $dark-text-green;
+$link-hover-color        : tint-color($link-color, 20%);
+$link-hover-color-action : tint-color($action, 20%);
+$navbar-link-hover-color : #CCCCCC;
+
+// Greys and colours of the old admin theme colours (default_colors.scss, lime-admin-colors.scss)
+$gray-03 : #202229;
+$gray-04 : #23252D;
+$gray-05 : $g-200;
+$gray-06 : #2C2F39;
+$gray-07 : $g-300;
+$gray-08 : #3A3D49;
+$gray-09 : $g-400;
+$gray-11 : $g-600;
+$gray-15 : #8F94AA;
+$gray-17 : $g-700;
+$gray-20 : $g-800;
+$primary-2                      : $g-900;
+$help-block                     : $g-700;
+$code                           : #F4A3C9; // On g-300: 6.37:1
+$code-bg                        : $g-300;
+$hover_active_td                : $g-300;
+$side-menu-container-background : $g-100;
+$primary-bg_hover               : #2F4A38;
+
+// Date picker (datetimepicker/datetimepicker.scss)
+$td-light                  : $surface-bg;
+$td-font-color             : $g-900;
+$td-active-color           : $white;
+$td-disabled-color         : $g-600;
+$td-secondary-border-color : $g-400;

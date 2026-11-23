@@ -83,7 +83,7 @@
     font-size: 12px;
     text-align: center;
     outline: none;
-    background: #fff;
+    background: $surface-bg;
 
     &:focus {
       border-color: $primary;

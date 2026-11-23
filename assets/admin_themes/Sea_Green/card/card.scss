@@ -6,7 +6,7 @@
 }
 
 .card.card-primary {
-    background-color : $white;
+    background-color : $surface-bg;
     position         : relative;
     box-shadow       : $overview-boxShadow;
     border-radius    : 2px;
@@ -147,7 +147,7 @@
 // old panel related card CSS:
 // Panels (for example to be found in quota settings)
 .panel {
-    background-color : $white;
+    background-color : $surface-bg;
     //box-shadow: 0 1px 1px $black_opac_05;
     box-shadow       : $boxshadow;
 

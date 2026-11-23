@@ -12,7 +12,7 @@
     }
     .modal-header {
       margin: 4px;
-      background: $white;
+      background: $surface-bg;
     }
 
     .responses-statistics-modal-title {
@@ -29,7 +29,7 @@
       background: $g-100;
       padding: 0;
       .fill-current {
-        fill: $grape;
+        fill: $grape-text;
       }
     }
     .modal-close-button {
@@ -70,7 +70,7 @@
     gap: 12px;
     padding: 16px;
     border-radius: $border-radius;
-    background: $white;
+    background: $surface-bg;
 
     // "Filter selection #N" caption above the source tabs.
     &-label {
@@ -104,7 +104,7 @@
       color: $g-700;
 
       &:hover {
-        color: $grape;
+        color: $grape-text;
       }
     }
 
@@ -226,7 +226,7 @@
   &-date-popover {
     position: fixed;
     z-index: 9999;
-    background: $white;
+    background: $surface-bg;
     border: 1px solid $g-400;
     border-radius: $border-radius;
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
@@ -235,7 +235,7 @@
   // "+ Add filter" link button.
   &-add {
     align-self: flex-start;
-    color: $grape;
+    color: $grape-text;
     font-size: $font-size-sm;
     font-weight: $font-weight-500;
   }

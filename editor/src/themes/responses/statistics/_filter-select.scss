@@ -24,13 +24,13 @@
     border-radius: $border-radius;
     color: $g-900;
     font-size: $font-size-sm;
-    background: $white;
+    background: $surface-bg;
 
     &:hover,
     &:focus,
     &:active {
       color: $g-900 !important;
-      background: $white !important;
+      background: $surface-bg !important;
       border-color: $g-400 !important;
       box-shadow: none !important;
     }

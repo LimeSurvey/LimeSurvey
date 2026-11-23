@@ -71,7 +71,7 @@
 
   .survey-card {
     border-radius: 2px;
-    background-color: white;
+    background-color: $surface-bg;
 
     .image {
       display: flex;
@@ -127,7 +127,7 @@
 
       button {
         border-color: #aaa9a9;
-        color: #1e1e1e;
+        color: $g-900;
         min-width: 110px;
         border-radius: 0;
       }
@@ -166,7 +166,7 @@
   }
 
   .add-question {
-    color: $active-green;
+    color: $active-green-text;
     z-index: 3;
 
     .add-question-container {

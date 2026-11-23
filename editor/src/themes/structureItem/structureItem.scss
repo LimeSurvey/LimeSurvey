@@ -10,7 +10,7 @@
   flex-direction: row;
   align-items: center;
   border-radius: $border-radius;
-  background-color: $white;
+  background-color: $surface-bg;
   color: $g-800;
   cursor: pointer;
   position: relative;
@@ -173,7 +173,7 @@
 
   &.structure-item-selected {
     background-color: $grape;
-    color: $g-200;
+    color: $g-200-base;
 
     svg,
     svg path {
@@ -182,7 +182,7 @@
 
     .structure-item-title,
     .content-editable {
-      color: $g-200;
+      color: $g-200-base;
     }
 
     .structure-item-arrow,
@@ -195,7 +195,7 @@
     }
 
     [data-placeholder]:empty:before {
-      color: $g-200 !important;
+      color: $g-200-base !important;
     }
   }
 

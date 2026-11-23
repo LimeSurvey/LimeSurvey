@@ -6,7 +6,7 @@ $pagination-padding-x:              14px;
 //$pagination-padding-x-lg:           1.5rem;
 
 $pagination-color:                  $g-900;
-$pagination-bg:                     $white;
+$pagination-bg:                     $surface-bg;
 //$pagination-border-width:           $border-width;
 //$pagination-border-radius:          $border-radius;
 //$pagination-margin-start:           -$pagination-border-width;
@@ -26,7 +26,7 @@ $pagination-active-bg:              $g-800;
 $pagination-active-border-color:    $g-800;
 
 $pagination-disabled-color:         $g-600;
-$pagination-disabled-bg:            $white;
+$pagination-disabled-bg:            $surface-bg;
 $pagination-disabled-border-color:  $g-600;
 
 //$pagination-transition:              color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;

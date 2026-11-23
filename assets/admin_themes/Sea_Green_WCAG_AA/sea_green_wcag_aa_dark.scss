@@ -1,0 +1,19 @@
+// Dark mode of Sea Green - WCAG AA: The dark mode of Sea Green with the focus indicators
+// and the other rules of the WCAG AA variant.
+// The file is loaded after sea_green_wcag_aa.css when the dark appearance mode is used.
+
+// 1. Include functions first (so you can manipulate colors, SVGs, calc, etc)
+@import "node_modules/bootstrap/scss/functions.scss";
+
+// 2. Sea Green colours, the dark colours, everything that is computed from them, then the WCAG AA overrides
+@import "assets/bootstrap_5/scss/variables.scss";
+@import "../Sea_Green/sea_green_palette";
+@import "../Sea_Green/dark_palette";
+@import "../Sea_Green/sea_green_components";
+@import "../Sea_Green/dark_variables";
+@import "wcag_aa_dark_variables";
+
+// 3. Shared Sea Green rules, then the rules that only exist in this variant and in the dark mode
+@import "../Sea_Green/sea_green_base";
+@import "wcag_aa_overrides";
+@import "../Sea_Green/dark_overrides";

@@ -1,0 +1,16 @@
+// Dark mode of Sea Green: Sea Green compiled with dark colours.
+// The file is loaded after sea_green.css when the dark appearance mode is used, see AdminTheme::registerAppearanceMode()
+
+// 1. Include functions first (so you can manipulate colors, SVGs, calc, etc)
+@import "node_modules/bootstrap/scss/functions.scss";
+
+// 2. Sea Green colours, the dark colours, then everything that is computed from them
+@import "assets/bootstrap_5/scss/variables.scss";
+@import "sea_green_palette";
+@import "dark_palette";
+@import "sea_green_components";
+@import "dark_variables";
+
+// 3. Shared Sea Green rules, then the rules that only exist in the dark mode
+@import "sea_green_base";
+@import "dark_overrides";

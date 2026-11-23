@@ -40,7 +40,7 @@ $spacing-xlarge: 32px;
     @include label-s;
     display: flex;
     margin-right: 24px;
-    color: $grape !important;
+    color: $grape-text !important;
     text-decoration: none;
 
     &-icon {
@@ -225,13 +225,13 @@ $spacing-xlarge: 32px;
 }
 
 .green-link {
-  color: $active-green !important;
+  color: $active-green-text !important;
   text-decoration: none;
   cursor: pointer;
 }
 
 .grape-link {
-  color: $grape !important;
+  color: $grape-text !important;
   text-decoration: none;
   cursor: pointer;
 }

@@ -67,7 +67,7 @@
     z-index: 2;
     transition: all 0.5s ease-out;
     height: 42px !important;
-    background: $white;
+    background: $surface-bg;
     padding: 4px 12px !important;
     border-radius: $border-radius;
     border: 1px solid $g-900;
@@ -84,8 +84,8 @@
     }
 
     .primary {
-      color: $grape !important;
-      fill: $grape !important;
+      color: $grape-text !important;
+      fill: $grape-text !important;
     }
 
     .button {
@@ -143,8 +143,8 @@
 
   .form-check-input {
     transform: scale(0.8);
-    color: $black !important;
-    outline-color: $black !important;
+    color: $text-black !important;
+    outline-color: $text-black !important;
   }
 
   .card {
@@ -230,7 +230,7 @@
     .table-container {
       border-radius: $border-radius;
       box-shadow: 0 2px 6px 0 $elevation-shadow-soft;
-      background-color: $white;
+      background-color: $surface-bg;
       padding: 8px;
     }
 
@@ -384,7 +384,7 @@
     align-items: center;
     display: flex;
     justify-content: center;
-    background-color: $white;
+    background-color: $surface-bg;
     min-width: 156px;
     border: 1px solid $g-900;
     border-radius: $border-radius;
@@ -430,7 +430,7 @@
 }
 
 .response-detail-view {
-  background-color: $white;
+  background-color: $surface-bg;
   position: relative;
   height: 80vh;
   width: 100%;
@@ -475,7 +475,7 @@
       border-radius: 2px;
       padding: 4px 12px;
       margin: 8px 4px;
-      background: $white !important;
+      background: $surface-bg !important;
       overflow-wrap: break-word;
     }
   }
@@ -500,7 +500,7 @@
       font-size: 60px !important;
       border: none;
       outline: none;
-      color: $g-200;
+      color: $g-200-base;
 
       &:hover {
         border: none;
@@ -517,16 +517,17 @@
   min-height: 200px;
   border-radius: 2px;
   border: 1px solid $g-400;
-  background: $white;
+  background: $surface-bg;
   padding: 8px 4px !important;
   box-shadow: 0 2px 6px 0 $elevation-shadow-soft;
   z-index: 10;
 
-  .delete-response-action {
-    fill: red;
+  // The light red of the dark mode as text and icon, red in the light mode
+  .meatball-button.delete-response-action {
+    fill: var(--ls-error-text, red);
 
     span {
-      color: red;
+      color: var(--ls-error-text, red);
     }
   }
 
@@ -540,6 +541,8 @@
     align-items: center;
     padding: 0 8px;
     margin-left: 4px;
+    // The icons have no fill of their own: They take the text colour, which is light in the dark mode
+    fill: currentColor;
 
     &:hover {
       border-radius: 2px;
@@ -548,7 +551,7 @@
     }
 
     .delete-all-response-files {
-      fill: red;
+      fill: var(--ls-error-text, red);
     }
   }
 }
@@ -646,12 +649,12 @@
     align-items: center;
     justify-content: center;
     transform: scale(0.8);
-    color: $black !important;
-    outline-color: $black !important;
+    color: $text-black !important;
+    outline-color: $text-black !important;
 
     &:checked[type='checkbox'] {
       color: $white !important;
-      background-color: $g-900 !important;
+      background-color: $g-900-bg !important;
       background-image: none !important;
       outline-color: $g-900 !important;
 
@@ -680,7 +683,7 @@
     align-items: center;
     padding: 0.5rem;
     margin-bottom: 0.5rem;
-    background-color: $white;
+    background-color: $surface-bg;
     border: 1px solid $g-300;
     border-radius: 0.25rem;
     user-select: none;
@@ -697,7 +700,7 @@
 .column-meatball-menu {
   z-index: 9999 !important;
   min-width: 250px;
-  background: $white;
+  background: $surface-bg;
   padding: 6px !important;
   border-radius: $border-radius;
   box-shadow: 0 2px 6px 0 $elevation-shadow-soft;
@@ -711,6 +714,7 @@
     width: 240px;
     align-items: center;
     padding: 0 8px;
+    fill: currentColor;
 
     &:hover {
       border-radius: 2px;
@@ -719,7 +723,7 @@
     }
 
     .delete-all-response-files {
-      fill: red;
+      fill: var(--ls-error-text, red);
     }
   }
 }
@@ -798,7 +802,7 @@
       font-size: 24px;
       line-height: 32px;
       letter-spacing: -0.017em;
-      color: #1e1e1e;
+      color: $g-900;
     }
   }
 
