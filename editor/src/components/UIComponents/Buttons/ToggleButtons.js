@@ -2,6 +2,8 @@ import classNames from 'classnames'
 import { Fragment, useEffect, useState } from 'react'
 import { ToggleButton, ButtonGroup, Form } from 'react-bootstrap'
 
+import { useAppState } from 'hooks'
+import { STATES } from 'helpers'
 import {
   getOnOffOptions,
   getTooltipMessages,
@@ -32,13 +34,21 @@ export const ToggleButtons = ({
   update = () => {},
   activeDisabled = false,
   theme = 'light',
+  noPermissionDisabled = false,
   noAccessDisabled = false,
   optionTextClassName = '',
   disabled,
   overlayMessage,
 }) => {
   const [options, setOptions] = useState([])
-  const isDisabled = disabled || activeDisabled || noAccessDisabled
+  const [hasSurveyUpdatePermission] = useAppState(
+    STATES.HAS_SURVEY_UPDATE_PERMISSION
+  )
+  const isDisabled =
+    disabled ||
+    activeDisabled ||
+    (!hasSurveyUpdatePermission && noPermissionDisabled) ||
+    noAccessDisabled
   const toolTip = overlayMessage
     ? overlayMessage
     : activeDisabled

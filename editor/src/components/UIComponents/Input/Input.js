@@ -1,6 +1,8 @@
 import { useEffect, useRef } from 'react'
 import { Form } from 'react-bootstrap'
 
+import { useAppState } from 'hooks'
+import { STATES } from 'helpers'
 import { getTooltipMessages } from 'helpers/options'
 
 import { TooltipContainer } from '../../TooltipContainer/TooltipContainer'
@@ -35,18 +37,24 @@ export const Input = ({
   showClassWhenValue = false,
   update = () => {},
   activeDisabled = false,
+  noPermissionDisabled = false,
   noAccessDisabled = false,
   autoComplete = true,
   allowEmpty = true,
   focus,
 }) => {
   const inputRef = inputRefProp ? inputRefProp : useRef(null)
+  const [hasSurveyUpdatePermission] = useAppState(
+    STATES.HAS_SURVEY_UPDATE_PERMISSION
+  )
 
-  const inputDisabled = activeDisabled || disabled || noAccessDisabled
+  const permissionDisabled =
+    (!hasSurveyUpdatePermission && noPermissionDisabled) || noAccessDisabled
+  const inputDisabled = activeDisabled || disabled || permissionDisabled
 
   const toolTip = activeDisabled
     ? getTooltipMessages().ACTIVE_DISABLED
-    : noAccessDisabled
+    : permissionDisabled
       ? getTooltipMessages().NO_PERMISSION
       : ''
 

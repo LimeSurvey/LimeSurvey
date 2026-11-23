@@ -5,7 +5,8 @@ import CreatableSelect from 'react-select/creatable'
 import { format } from 'util'
 import classNames from 'classnames'
 
-import { RemoveHTMLTagsInString } from '../../../helpers'
+import { useAppState } from '../../../hooks'
+import { RemoveHTMLTagsInString, STATES } from '../../../helpers'
 import { getTooltipMessages } from 'helpers/options'
 import { TooltipContainer } from '../../TooltipContainer/TooltipContainer'
 
@@ -24,6 +25,7 @@ export const Select = ({
   value,
   disabled = false,
   activeDisabled = false,
+  noPermissionDisabled = false,
   noAccessDisabled = false,
   onMenuClose = () => {},
   onMenuOpen = () => {},
@@ -40,6 +42,9 @@ export const Select = ({
   isClearable = false,
 }) => {
   const [isOpen, setIsOpen] = useState(false)
+  const [hasSurveyUpdatePermission] = useAppState(
+    STATES.HAS_SURVEY_UPDATE_PERMISSION
+  )
 
   options = useMemo(
     () =>
@@ -52,7 +57,10 @@ export const Select = ({
 
   // Callers pass activeDisabled already resolved against the survey's active
   // state, so it locks the select on its own.
-  const permissionDisabled = activeDisabled || noAccessDisabled
+  const permissionDisabled =
+    activeDisabled ||
+    (!hasSurveyUpdatePermission && noPermissionDisabled) ||
+    noAccessDisabled
   const toolTip = activeDisabled
     ? getTooltipMessages().ACTIVE_DISABLED
     : getTooltipMessages().NO_PERMISSION
