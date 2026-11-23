@@ -47,10 +47,27 @@ class LSCheckBoxColumn extends CCheckBoxColumn
     #[\Override]
     public function renderHeaderCell()
     {
-        if ($this->header === null && !isset($this->headerHtmlOptions['aria-label'])) {
+        if ($this->header === null && !isset($this->headerHtmlOptions['aria-label']) && $this->hasSelectAllCheckBox()) {
             $this->headerHtmlOptions['aria-label'] = gT('Select all');
         }
         parent::renderHeaderCell();
+    }
+
+    /**
+     * Checks whether the header cell renders the "select all" checkbox,
+     * using the same conditions as CCheckBoxColumn::getHeaderCellContent().
+     *
+     * @return boolean True if the header cell contains the "select all" checkbox
+     */
+    protected function hasSelectAllCheckBox()
+    {
+        if (trim((string) $this->headerTemplate) === '') {
+            return false;
+        }
+        if ($this->selectableRows === null) {
+            return $this->grid->selectableRows > 1;
+        }
+        return $this->selectableRows > 1;
     }
 
     /**
