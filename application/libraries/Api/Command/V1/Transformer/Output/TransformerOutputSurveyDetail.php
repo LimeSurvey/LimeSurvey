@@ -82,13 +82,11 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
     }
 
     /**
-     * Transform
+     * Transforms a survey with its groups, questions and settings for the editor.
      *
-     * Returns an array of entity references indexed by the specified key.
-     *
-     * @param ?mixed $data
-     * @param ?mixed $options
-     * @return ?mixed
+     * @param ?mixed $data The survey model, anything else returns null
+     * @param ?mixed $options The transformer options
+     * @return ?mixed The transformed survey, null if $data is no survey
      * @throws \LimeSurvey\Api\Transformer\TransformerException
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
@@ -127,6 +125,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         );
         $survey['questionTypeDefaultAttributeValues'] = $this->questionService
             ->getDefaultAttributeValuesByQuestionType();
+        $survey['answerOptionLayouts'] = $this->questionService->getAnswerOptionLayouts();
 
         // transformAll() can apply required entity sort so we must retain the sort order going forward
         // - We use a lookup array later to access entities without needing to know their position in the collection
@@ -169,7 +168,10 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
             $this->transformQuestions(
                 $questionLookup,
                 $questionGroupModel->questions,
-                $options
+                $options,
+                $this->surveyCondition->getScenariosAndConditionsOfQuestions(
+                    array_map(static fn($questionModel) => (int) $questionModel->qid, $questionGroupModel->questions)
+                )
             );
         }
         $survey['hasSurveyUpdatePermission'] = $data->hasPermission(
@@ -220,18 +222,21 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
     /**
      * Transform Questions
      *
-     * Returns an array of entity references indexed by the specified key.
+     * Adds the related data of the questions to their transformed entities.
      *
-     * @param array $questionLookup
-     * @param array $questions
-     * @param ?array $options
+     * @param array $questionLookup The transformed questions indexed by question ID, see createCollectionLookup()
+     * @param \Question[] $questions The question models
+     * @param ?array $options The transformer options
+     * @param array<int, array> $scenariosOfQuestions The scenarios of the questions indexed by question ID, see
+     * SurveyCondition::getScenariosAndConditionsOfQuestions(): Subquestions have none
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      * @return void
      */
     private function transformQuestions(
         $questionLookup,
         $questions,
-        $options = []
+        $options = [],
+        array $scenariosOfQuestions = []
     ) {
         foreach ($questions as $questionModel) {
             // questions from the model relation may be different than from the transformed data
@@ -252,7 +257,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
                 ),
                 $options
             );
-            $question['scenarios'] = $this->surveyCondition->getScenariosAndConditionsOfQuestion($questionModel->qid);
+            $question['scenarios'] = $scenariosOfQuestions[(int) $questionModel->qid] ?? [];
 
             $question['conditiontext'] = $this->surveyCondition->getConditionText($questionModel);
 

@@ -2127,7 +2127,7 @@ class LimeExpressionManager
                 }
             }
             // Fix min_num_value_n and max_num_value_n for multinumeric with slider: see bug #7798
-            if ($type == Question::QT_K_MULTIPLE_NUMERICAL && isset($qattr['slider_min']) && (!isset($qattr['min_num_value_n']) || trim((string) $qattr['min_num_value_n']) == '')) {
+            if ($type == Question::QT_K_MULTIPLE_NUMERICAL && isset($qattr['slider_layout']) && $qattr['slider_layout'] == '1' && isset($qattr['slider_min']) && (!isset($qattr['min_num_value_n']) || trim((string) $qattr['min_num_value_n']) == '')) {
                 $qattr['min_num_value_n'] = $qattr['slider_min'];
             }
             // min_num_value_n
@@ -2187,7 +2187,7 @@ class LimeExpressionManager
             }
 
             // Fix min_num_value_n and max_num_value_n for multinumeric with slider: see bug #7798
-            if ($type == Question::QT_K_MULTIPLE_NUMERICAL && isset($qattr['slider_max']) && (!isset($qattr['max_num_value_n']) || trim((string) $qattr['max_num_value_n']) == '')) {
+            if ($type == Question::QT_K_MULTIPLE_NUMERICAL && isset($qattr['slider_layout']) && $qattr['slider_layout'] == '1' && isset($qattr['slider_max']) && (!isset($qattr['max_num_value_n']) || trim((string) $qattr['max_num_value_n']) == '')) {
                 $qattr['max_num_value_n'] = $qattr['slider_max'];
             }
             // max_num_value_n
@@ -2680,7 +2680,8 @@ class LimeExpressionManager
             // other_numbers_only
             // Validation:= is_numeric(sqN).
             if (isset($qattr['other_numbers_only']) && trim((string) $qattr['other_numbers_only']) == '1') {
-                $other_numbers_only = 1;
+                // The tip only applies while "Other" is on
+                $other_numbers_only = ($this->questionSeq2relevance[$qinfo['qseq']]['other'] == 'Y') ? 1 : '';
                 $eqn = '';
                 if ($this->questionSeq2relevance[$qinfo['qseq']]['other'] == 'Y') {
                     $sgqa = $qinfo['sgqa'];
@@ -4591,6 +4592,7 @@ class LimeExpressionManager
             }
             $jsVars = $this->em->GetJSVarsUsed();
             $relevanceVars = implode('|', $this->em->GetJSVarsUsed());
+            $varsUsed = $this->em->GetVarsUsed();
             $isExclusiveJS = '';
             $irrelevantAndExclusiveJS = '';
             // Only need to extract JS, since will already have Vars and error counts from main equation
@@ -4614,6 +4616,7 @@ class LimeExpressionManager
                 'numJsVars'                => count($jsVars),
                 'relevancejs'              => $relevanceJS,
                 'relevanceVars'            => $relevanceVars,
+                'varsUsed'                 => $varsUsed,
                 'rowdivid'                 => $rowdivid,
                 'type'                     => $type,
                 'qtype'                    => $qtype,
@@ -4687,6 +4690,30 @@ class LimeExpressionManager
     {
         $LEM =& LimeExpressionManager::singleton();
         return $LEM->em->GetLastPrettyPrintExpression();
+    }
+
+    /**
+     * Hides {PASSTHRU:...} placeholders of an end URL from the Expression Manager syntax check.
+     * At runtime passthruReplace() replaces them before the URL is processed, so they are not expressions.
+     * Each placeholder is swapped for a unique plain-text marker. Pass the pretty-printed result
+     * through strtr() with the returned map to show the original placeholders again.
+     * @param string $url The URL that may contain {PASSTHRU:...} placeholders
+     * @return array{0: string, 1: array<string, string>} The masked URL, and a map of marker => escaped placeholder
+     */
+    public static function maskPassthruPlaceholders($url)
+    {
+        $markers = [];
+        $markerPrefix = 'LSPASSTHRU' . bin2hex(random_bytes(4)) . 'N';
+        $maskedUrl = preg_replace_callback(
+            '/\{PASSTHRU:[^}]*\}/',
+            function ($matches) use (&$markers, $markerPrefix) {
+                $marker = $markerPrefix . count($markers) . 'X';
+                $markers[$marker] = htmlspecialchars($matches[0], ENT_QUOTES, 'UTF-8');
+                return $marker;
+            },
+            (string) $url
+        );
+        return [$maskedUrl, $markers];
     }
 
     /**
@@ -7375,6 +7402,66 @@ class LimeExpressionManager
     }
 
     /**
+     * Whether the relevance of a subquestion can not change on the current page:
+     * none of the variables of its relevance equation (array filter, subquestion relevance …) is answered on this page,
+     * so the status computed by the server is final until the next page is loaded.
+     * This is never the case when the whole survey is shown on one page.
+     *
+     * @param int $qid the question id
+     * @param string $rowdivid the row id (field name of the subquestion)
+     * @return boolean
+     */
+    public static function isSubQuestionRelevanceStatic($qid, $rowdivid)
+    {
+        $LEM =& LimeExpressionManager::singleton();
+        if ($LEM->surveyMode == 'survey' || !isset($LEM->subQrelInfo[$qid][$rowdivid])) {
+            return false;
+        }
+        $subQuestionRelevance = $LEM->subQrelInfo[$qid][$rowdivid];
+        if ($subQuestionRelevance['hasErrors']) {
+            return false;
+        }
+        foreach ($subQuestionRelevance['varsUsed'] as $varName) {
+            // Variables not answered in the survey (TOKEN:…, SID …) have no page and can not change
+            if ($LEM->surveyMode == 'question') {
+                $sequence = $LEM->_GetVarAttribute($varName, 'qseq', -1, -1, -1);
+                $onCurrentPage = $sequence !== -1 && (int) $sequence === (int) $LEM->currentQuestionSeq;
+            } else {
+                $sequence = $LEM->_GetVarAttribute($varName, 'gseq', -1, -1, -1);
+                $onCurrentPage = $sequence !== -1 && (int) $sequence === (int) $LEM->currentGroupSeq;
+            }
+            if ($onCurrentPage) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Whether the row of a subquestion is left out of the current page: It is irrelevant and its relevance can not change on the page
+     * @see QuestionBaseRenderer::isRowStaticallyHidden()
+     * @param int $qid the question id
+     * @param string $sgqa the field name of the subquestion
+     * @return boolean
+     */
+    private function isSubQuestionLeftOut($qid, $sgqa)
+    {
+        if (empty($this->subQrelInfo[$qid]) || Yii::app()->getConfig('emcache_cache_qanda')) {
+            return false;
+        }
+        foreach (array_keys($this->subQrelInfo[$qid]) as $rowdivid) {
+            // Array texts and numbers add the column to the row id, dual scale adds the scale
+            if ($sgqa === $rowdivid || strpos($sgqa, $rowdivid . '_') === 0 || strpos($sgqa, $rowdivid . '#') === 0) {
+                $rowRelevance = $this->sessionState()->getRelevance($rowdivid);
+                return $rowRelevance !== null
+                    && !$rowRelevance
+                    && self::isSubQuestionRelevanceStatic($qid, $rowdivid);
+            }
+        }
+        return false;
+    }
+
+    /**
      * Get array of info needed to display the Group Index
      * @param string $gseq
      * @return array
@@ -9183,6 +9270,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             // explode subquestions
             foreach (explode('|', (string) $qinfo['sgqa']) as $sq) {
                 $sqrelevant = true;
+                $rowLeftOut = !isset($_POST[$sq]) && $LEM->isSubQuestionLeftOut($qid, $sq);
                 if (isset($LEM->subQrelInfo[$qid][$sq]['rowdivid'])) {
                     $rowdivid = $LEM->subQrelInfo[$qid][$sq]['rowdivid'];
                     if ($rowdivid != '' && isset($_POST['relevance' . $rowdivid])) {
@@ -9197,8 +9285,8 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 // Maybe set current relevance to 0 if count($sqrelevant) == 0 (hand have sq) , for 4.X
                 $type = $qinfo['info']['type'];
                 if (($relevant && $grelevant && $sqrelevant) || !$LEM->surveyOptions['deletenonvalues']) {
-                    if ($qinfo['info']['hidden'] && !isset($_POST[$sq])) {
-                        $value = $sessionState->getFieldValue($sq, '');    // if always hidden, use the default value, if any
+                    if (($qinfo['info']['hidden'] || $rowLeftOut) && !isset($_POST[$sq])) {
+                        $value = $sessionState->getFieldValue($sq, '');    // if always hidden or the row is left out of the page, keep the current value, if any
                     } else {
                         $value = (isset($_POST[$sq]) ? $_POST[$sq] : '');
                     }
@@ -9892,8 +9980,9 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             }
             if ($aSurveyInfo['surveyls_url'] != '') {
                 $LEM->em->ResetErrorsAndWarnings();
-                $LEM->ProcessString($aSurveyInfo['surveyls_urldescription'] . " - " . $aSurveyInfo['surveyls_url']);
-                $sPrint = viewHelper::purified($LEM->GetLastPrettyPrintExpression());
+                [$maskedUrl, $passthruMarkers] = self::maskPassthruPlaceholders($aSurveyInfo['surveyls_url']);
+                $LEM->ProcessString($aSurveyInfo['surveyls_urldescription'] . " - " . $maskedUrl);
+                $sPrint = viewHelper::purified(strtr($LEM->GetLastPrettyPrintExpression(), $passthruMarkers));
                 $errClass = "";
                 if ($LEM->em->HasErrors()) {
                     $errClass = 'danger';

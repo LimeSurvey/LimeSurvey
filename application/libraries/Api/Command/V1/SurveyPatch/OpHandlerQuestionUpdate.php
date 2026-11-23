@@ -7,7 +7,9 @@ use LimeSurvey\Models\Services\{
     Exception\NotFoundException,
     Exception\PermissionDeniedException,
     Exception\PersistErrorException,
-    QuestionAggregateService
+    QuestionAggregateService,
+    QuestionAggregateService\QuestionService,
+    SurveyCondition
 };
 use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\{OpHandlerSurveyTrait,
     OpHandlerExceptionTrait,
@@ -29,13 +31,26 @@ class OpHandlerQuestionUpdate implements OpHandlerInterface
 
     protected QuestionAggregateService $questionAggregateService;
     protected TransformerInputQuestion $transformer;
+    protected SurveyCondition $surveyCondition;
+    protected QuestionService $questionService;
 
+    /**
+     * @param QuestionAggregateService $questionAggregateService The service that saves the question
+     * @param TransformerInputQuestion $transformer The transformer of the patch props
+     * @param SurveyCondition $surveyCondition The service that reads the conditions of a question
+     * @param QuestionService $questionService The question service used by the save: It knows the questions whose conditions the save deleted
+     * @return void
+     */
     public function __construct(
         QuestionAggregateService $questionAggregateService,
-        TransformerInputQuestion $transformer
+        TransformerInputQuestion $transformer,
+        SurveyCondition $surveyCondition,
+        QuestionService $questionService
     ) {
         $this->questionAggregateService = $questionAggregateService;
         $this->transformer = $transformer;
+        $this->surveyCondition = $surveyCondition;
+        $this->questionService = $questionService;
     }
 
     /**
@@ -65,14 +80,20 @@ class OpHandlerQuestionUpdate implements OpHandlerInterface
      *     }
      * }
      *
-     * @param OpInterface $op
+     * An incompatible type change deletes the conditions of other questions on
+     * this question (on its answer options or its "Other"): The response then
+     * returns their relevance and conditions, so the editor shows the change
+     * without a reload.
+     *
+     * @param OpInterface $op The question update operation
+     * @return array The response, with the questions whose conditions changed in "additional"
      * @throws OpHandlerException
      * @throws TransformerException
      * @throws NotFoundException
      * @throws PermissionDeniedException
      * @throws PersistErrorException
      */
-    public function handle(OpInterface $op): void
+    public function handle(OpInterface $op): array
     {
         $surveyId = $this->getSurveyIdFromContext($op);
         $this->questionAggregateService->checkUpdatePermission($surveyId);
@@ -93,6 +114,26 @@ class OpHandlerQuestionUpdate implements OpHandlerInterface
                 'loadCurrentAdvancedSettings' => true
             ]
         );
+        // Only an incompatible type change deletes conditions of other questions
+        $dependentQuestionIds = $this->questionService->getChangedDependentQuestionIds();
+        if (empty($dependentQuestionIds)) {
+            return [];
+        }
+        $relevances = \Yii::app()->db->createCommand()
+            ->select('qid, relevance')
+            ->from('{{questions}}')
+            ->where(['in', 'qid', $dependentQuestionIds])
+            ->queryAll();
+        $scenarios = $this->surveyCondition->getScenariosAndConditionsOfQuestions($dependentQuestionIds);
+        $dependentQuestions = [];
+        foreach ($relevances as $row) {
+            $dependentQuestions[] = [
+                'qid' => (int) $row['qid'],
+                'relevance' => $row['relevance'] ?? '1',
+                'scenarios' => $scenarios[(int) $row['qid']] ?? [],
+            ];
+        }
+        return ['additional' => $dependentQuestions];
     }
 
     /**

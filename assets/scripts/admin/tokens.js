@@ -448,6 +448,10 @@ $(document).on('ready pjax:scriptcomplete', function(){
             success: function(html) {
                 $ajaxLoader.hide();
                 $modalBodyText.append(html);
+                // Show the updated email status of bounced participants
+                if ($('#token-grid').length > 0) {
+                    $('#token-grid').yiiGridView('update');
+                }
             },
             error :  function(html, statut){
                 $ajaxLoader.hide();

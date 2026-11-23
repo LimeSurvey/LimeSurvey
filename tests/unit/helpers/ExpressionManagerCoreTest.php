@@ -55,6 +55,56 @@ class ExpressionManagerCoreTest extends TestBaseClass
     }
 
     /**
+     * Each entry: [expression, expected result]
+     * @return array
+     */
+    public function leadingDotNumberProvider(): array
+    {
+        return [
+            'alone'                  => ['.5', 0.5],
+            'after an operator'      => ['2*.5', 1.0],
+            'before an operator'     => ['.5+.25', 0.75],
+            'as function argument'   => ['sum(1, .5)', 1.5],
+            'equation of the report' => ['sum(500,350,500,500)/100/20*.1*100', 9.25],
+        ];
+    }
+
+    /**
+     * A number written without the leading zero (.5) is a number, not an unknown variable.
+     *
+     * @see https://bugs.limesurvey.org/view.php?id=8342
+     * @dataProvider leadingDotNumberProvider
+     * @param string $expression
+     * @param float $expected
+     * @return void
+     */
+    public function testNumberWithLeadingDot(string $expression, float $expected): void
+    {
+        $em = new \ExpressionManager();
+        $result = $em->RDP_Evaluate($expression);
+        $this->assertTrue($result, 'Expression should evaluate without errors (errors: ' . implode('; ', array_column($em->GetErrors(), 0)) . ')');
+        $this->assertEqualsWithDelta($expected, $em->GetResult(), 1e-12);
+    }
+
+    /**
+     * The check for a number with a leading dot must not change how variables with attributes are read.
+     *
+     * @return void
+     */
+    public function testVariableWithAttributeIsStillOneWord(): void
+    {
+        $em = new \ExpressionManager();
+        foreach (['Q1.NAOK', 'self.sq_1.value', 'that.Q1.sq_1.shown', 'TOKEN:ATTRIBUTE_1', 'Q1.1'] as $name) {
+            $tokens = $em->Tokenize($name, false);
+            $this->assertCount(1, $tokens, $name);
+            $this->assertSame($name, $tokens[0][0], $name);
+            $this->assertSame('WORD', $tokens[0][2], $name);
+        }
+        $tokens = $em->Tokenize('Q1*.5', false);
+        $this->assertSame(['WORD', 'BINARYOP', 'NUMBER'], array_column($tokens, 2));
+    }
+
+    /**
      * A non-breaking space (as inserted by the HTML editor) is whitespace between tokens.
      *
      * @see https://bugs.limesurvey.org/view.php?id=18493
@@ -117,7 +167,6 @@ class ExpressionManagerCoreTest extends TestBaseClass
         \Yii::import('application.helpers.expressions.em_manager_helper', true);
         $lem = \LimeExpressionManager::singleton();
         $knownVars = new \ReflectionProperty($lem, 'knownVars');
-        $knownVars->setAccessible(true);
         $savedKnownVars = $knownVars->getValue($lem);
         $lem->setKnownVars([
             'Q1' => [
@@ -137,6 +186,52 @@ class ExpressionManagerCoreTest extends TestBaseClass
         }
         $this->assertSame($keepTextCount, substr_count($js, "LEMval('Q1.NAOK', true)"), $js);
         $this->assertSame($convertedCount, substr_count($js, "LEMval('Q1.NAOK') "), $js);
+    }
+
+    /**
+     * Each entry: [expression, whether the page must round the result like PHP prints it]
+     * @return array
+     */
+    public function roundedReplacementProvider(): array
+    {
+        return [
+            'calculation'            => ['Q1 / 100 * 0.1', true],
+            'function'               => ['sqrt(Q1)', true],
+            'plain variable'         => ['Q1', false],
+            'variable with attribute' => ['Q1.NAOK', false],
+        ];
+    }
+
+    /**
+     * A calculated result is rounded in the page to the digits PHP prints (9.25, not 9.250000000000002),
+     * an answer shown as it was entered is not.
+     *
+     * @see https://bugs.limesurvey.org/view.php?id=8342
+     * @dataProvider roundedReplacementProvider
+     * @param string $expression
+     * @param bool $rounded
+     * @return void
+     */
+    public function testCalculatedResultIsRoundedInPage(string $expression, bool $rounded): void
+    {
+        $this->withKnownVars(
+            [
+                'Q1' => [
+                    'code' => '1850',
+                    'jsName' => 'java563168X136X5376',
+                    'jsName_on' => 'java563168X136X5376',
+                    'readWrite' => 'Y',
+                    'type' => 'N',
+                ],
+            ],
+            function () use ($expression, $rounded) {
+                $em = new \ExpressionManager();
+                $this->assertTrue($em->RDP_Evaluate($expression), "Expression should evaluate without errors: $expression");
+                $js = $em->GetJavaScriptFunctionForReplacement(1, 'LEMtailor_Q_1_1', $expression);
+                $this->assertStringContainsString('.html(LEMfixnum(', $js);
+                $this->assertSame($rounded ? 1 : 0, substr_count($js, 'LEMroundFloat('), $js);
+            }
+        );
     }
 
     /**
@@ -173,6 +268,125 @@ class ExpressionManagerCoreTest extends TestBaseClass
             $this->assertFalse($em->RDP_Evaluate('Q1_S2'));
         } finally {
             $knownVars->setValue($lem, $savedKnownVars);
+        }
+    }
+
+    /**
+     * Expressions using the variable Q1 of an irrelevant question, and their expected result.
+     * @return array
+     */
+    public function irrelevantVariableProvider(): array
+    {
+        return [
+            'variable is null'          => ['is_null(Q1)', true],
+            'regexMatch no match'       => ["regexMatch('/^[A-Za-z]+$/', Q1)", 0],
+            'regexMatch empty match'    => ["regexMatch('/^$/', Q1)", 1],
+            'is_int'                    => ['is_int(Q1)', 0],
+            'htmlspecialchars'          => ['htmlspecialchars(Q1)', ''],
+            'built-in string function'  => ['trim(Q1)', ''],
+            'built-in string parameter' => ["str_replace('a', 'b', Q1)", ''],
+            'built-in float parameter'  => ['number_format(Q1)', '0'],
+            'built-in int parameter'    => ["str_pad('a', Q1)", 'a'],
+            'numeric check kept'        => ['sqrt(Q1)', NAN],
+            'substr start'              => ["substr('abc', Q1)", 'abc'],
+        ];
+    }
+
+    /**
+     * Functions get null for a variable of an irrelevant question and must handle it like PHP did before 8.1, without deprecation notices.
+     *
+     * @see https://bugs.limesurvey.org/view.php?id=20867
+     * @dataProvider irrelevantVariableProvider
+     * @param string $expression
+     * @param mixed $expected
+     * @return void
+     */
+    public function testFunctionWithIrrelevantVariable(string $expression, $expected): void
+    {
+        $this->withKnownVars(
+            [
+                'Q1' => [
+                    'code' => 'abc',
+                    'sgqa' => '1X1X1',
+                    'qid' => 1,
+                    'gseq' => 0,
+                    'jsName' => 'java1X1X1',
+                    'jsName_on' => 'java1X1X1',
+                    'readWrite' => 'Y',
+                    'type' => 'S',
+                ],
+            ],
+            function () use ($expression, $expected) {
+                $em = new \ExpressionManager();
+                $this->assertTrue($em->RDP_Evaluate($expression), implode('; ', array_column($em->GetErrors(), 0)));
+                if (is_float($expected) && is_nan($expected)) {
+                    $this->assertNan($em->GetResult());
+                } else {
+                    $this->assertSame($expected, $em->GetResult());
+                }
+            }
+        );
+    }
+
+    /**
+     * A participant attribute that is NULL in the database is an empty value, without a "null as array offset" notice.
+     *
+     * @return void
+     */
+    public function testParticipantAttributeWithNullValue(): void
+    {
+        $this->withKnownVars(
+            [
+                'TOKEN:VALIDFROM' => [
+                    'code' => null,
+                    'jsName' => '',
+                    'jsName_on' => '',
+                    'readWrite' => 'N',
+                ],
+            ],
+            function () {
+                $em = new \ExpressionManager();
+                $this->assertTrue($em->RDP_Evaluate('TOKEN:VALIDFROM'), implode('; ', array_column($em->GetErrors(), 0)));
+                $this->assertSame('', $em->GetResult());
+            }
+        );
+    }
+
+    /**
+     * A function call PHP rejects with a TypeError is an expression error, whatever the number of arguments, instead of an error page.
+     *
+     * @return void
+     */
+    public function testFunctionTypeErrorIsExpressionError(): void
+    {
+        foreach (["number_format('abc')", "str_repeat('a', 'abc')", "substr('abc', 1, 'abc')"] as $expression) {
+            $em = new \ExpressionManager();
+            $this->assertFalse($em->RDP_Evaluate($expression), $expression);
+            $this->assertNotEmpty($em->GetErrors(), $expression);
+        }
+    }
+
+    /**
+     * Run $test with the expression manager knowing only $vars, inside a survey session without relevance information
+     * @param array $vars
+     * @param callable $test
+     * @return void
+     */
+    private function withKnownVars(array $vars, callable $test): void
+    {
+        \Yii::import('application.helpers.expressions.em_manager_helper', true);
+        $lem = \LimeExpressionManager::singleton();
+        $knownVars = new \ReflectionProperty($lem, 'knownVars');
+        $sessid = new \ReflectionProperty($lem, 'sessid');
+        $savedKnownVars = $knownVars->getValue($lem);
+        $savedSessid = $sessid->getValue($lem);
+        $lem->setKnownVars($vars);
+        $sessid->setValue($lem, 'survey_test');
+        try {
+            $test();
+        } finally {
+            $knownVars->setValue($lem, $savedKnownVars);
+            $sessid->setValue($lem, $savedSessid);
         }
     }
 

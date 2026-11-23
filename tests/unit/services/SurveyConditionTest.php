@@ -61,4 +61,42 @@ class SurveyConditionTest extends TestBaseClass
         $this->assertStringContainsString('Visible subquestion text', $labels);
         $this->assertStringNotContainsString('conditionsLabelMarker', $labels);
     }
+
+    /**
+     * A script that equals the stored relevance still replaces the question's
+     * conditions, e.g. when the relevance generated from the conditions is
+     * submitted unchanged to convert them to a script.
+     *
+     * @return void
+     */
+    public function testConditionScriptReplacesConditionsWhenScriptIsUnchanged()
+    {
+        $questions = $this->getAllSurveyQuestions();
+        $question = $questions['Q01'];
+        $relevance = '((Q01_SQ001.NAOK == "Y"))';
+        \Question::model()->updateByPk($question->qid, ['relevance' => $relevance]);
+
+        // The condition's source doesn't matter here, only that it exists
+        $condition = new \Condition();
+        $condition->qid = $question->qid;
+        $condition->cqid = $question->qid;
+        $condition->cfieldname = self::$surveyId . 'X' . $question->gid . 'X' . $question->qid . 'SQ001';
+        $condition->method = '==';
+        $condition->value = 'Y';
+        $condition->scenario = 1;
+        $this->assertTrue($condition->save());
+
+        // The script must equal the stored relevance, or this would test the
+        // path for a changed script instead
+        $this->assertSame($relevance, \Question::model()->findByPk($question->qid)->relevance);
+
+        $surveyCondition = \LimeSurvey\DI::getContainer()->get(SurveyCondition::class);
+        $surveyCondition->conditionScript($question->qid, $relevance);
+
+        $this->assertFalse(
+            \Condition::model()->exists('qid = :qid', [':qid' => $question->qid]),
+            'The conditions must be deleted'
+        );
+        $this->assertSame($relevance, \Question::model()->findByPk($question->qid)->relevance);
+    }
 }

@@ -403,6 +403,37 @@ abstract class QuestionBaseRenderer extends StaticModel
         $filterStyle = !empty($this->aQuestionAttributes['array_filter_style']);
         return ($filterStyle) ?  "ls-irrelevant ls-disabled" : "ls-irrelevant ls-hidden";
     }
+
+    /**
+     * Whether a row can be left out of the HTML: It is hidden by its relevance
+     * and nothing answered on the current page can show it again.
+     * Rows that are only disabled (array_filter_style, exclude_all_others) are always rendered.
+     * @param string $myfname The name of the question/row to test
+     * @return boolean
+     */
+    public function isRowStaticallyHidden($myfname)
+    {
+        // The rendered question can be cached for other respondents, who need all rows
+        if (Yii::app()->getConfig('emcache_cache_qanda')) {
+            return false;
+        }
+        if ($this->getCurrentRelevecanceClass($myfname) !== 'ls-irrelevant ls-hidden') {
+            return false;
+        }
+        return LimeExpressionManager::isSubQuestionRelevanceStatic($this->oQuestion->qid, $myfname);
+    }
+
+    /**
+     * Remove the subquestions whose row is left out of the HTML, so rows and repeated headers can be counted
+     * @param array<int, Question|array> $subQuestions the subquestions of one scale, keys are kept
+     * @return array<int, Question|array>
+     */
+    protected function withoutStaticallyHiddenRows(array $subQuestions)
+    {
+        return array_filter($subQuestions, function ($subQuestion) {
+            return !$this->isRowStaticallyHidden($this->sSGQA . '_S' . $subQuestion['qid']);
+        });
+    }
     /**
     * Find the label / input width
     * @param string|int $labelAttributeWidth label width from attribute
