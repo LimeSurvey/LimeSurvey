@@ -1560,7 +1560,7 @@ function getFieldName(string $tableName, string $fieldName, array $rawQuestions,
                         if (($iRankingSuffix > 0) && isset($subQuestions[($iRankingSuffix - 1)])) {
                             $qid = $subQuestions[($iRankingSuffix - 1)]->qid;
                             $newFieldName = "Q{$rootQuestion->qid}_{$prefix}" . $qid;
-                        } else if (count($subQuestions)) {
+                        } elseif (count($subQuestions)) {
                             $minSortOrder = $subQuestions[0]->question_order;
                             $diff = 0;
                             if ($minSortOrder === 0) {
@@ -3080,7 +3080,8 @@ function dateShiftRelative($date, $toDateFormat, $modifier, $timeZone = 'UTC')
 }
 
 
-function convertTimezoneDiffToHours(){
+function convertTimezoneDiffToHours()
+{
     $desiredTimezone = new DateTimeZone(Yii::app()->getConfig('displayTimezone') ?: 'UTC');
     // Get the current time in the desired timezone
     $currentDateTime = new DateTime('now', new DateTimeZone(date_default_timezone_get()));
@@ -6153,6 +6154,7 @@ function sortByKeyLengthDescending($input)
  * @param int|null $aid The answer ID (null for parent questions)
  * @return bool
  */
-function isRankingQuestionParent($aid) {
+function isRankingQuestionParent($aid)
+{
     return !isset($aid);
 }

@@ -12,11 +12,11 @@
  */
 class SettingsUser extends LSActiveRecord
 {
-    const ENTITY_SURVEY = 100;
-    const ENTITY_SURVEYGROUP = 90;
-    const ENTITY_THEME = 80;
-    const ENTITY_EDITOR = 70;
-    const ENTITY_PLUGIN = 50;
+    public const ENTITY_SURVEY = 100;
+    public const ENTITY_SURVEYGROUP = 90;
+    public const ENTITY_THEME = 80;
+    public const ENTITY_EDITOR = 70;
+    public const ENTITY_PLUGIN = 50;
     /**
      * @return string the associated database table name
      */

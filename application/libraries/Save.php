@@ -72,7 +72,7 @@ class Save
      * @param int $iSurveyId
      * @return array
      */
-    function getSaveFormDatas($iSurveyId)
+    public function getSaveFormDatas($iSurveyId)
     {
         //Show 'SAVE FORM' only when click the 'Save so far' button the first time, or when duplicate is found on SAVE FORM.
         //~ global $errormsg, $thissurvey, $surveyid, $clienttoken, $thisstep;
@@ -107,7 +107,7 @@ class Save
      * @return array On success: 'success' => true and 'message' with the text to show to the participant,
      *               which mentions it if the email could not be sent. Otherwise 'success' => false and 'aSaveErrors'.
      */
-    function saveSurvey()
+    public function saveSurvey()
     {
         //This data will be saved to the "saved_control" table with one row per response.
         // - a unique "saved_id" value (autoincremented)
@@ -258,7 +258,7 @@ class Save
      * @return void
      * @throws CDbException If a database query or timing update fails.
      */
-    function set_answer_time()
+    public function set_answer_time()
     {
         global $thissurvey;
         $survey = Survey::model()->findByPk($thissurvey['sid']);

@@ -31,7 +31,7 @@ echo viewHelper::getViewTestTag('surveyTexts');
 
 <div id="editdatasecele-<?php echo $i; ?>" class="tab-pane fade <?php if ($i == 0) {
                                                                     echo "show active";
-                                                                } ?> center-box" role="tabpanel" aria-label="<?= CHtml::encode(gT('Privacy policy settings') . ' - ' . getLanguageNameFromCode($aSurveyLanguageSettings['surveyls_language'], false)) ?>">
+                        } ?> center-box" role="tabpanel" aria-label="<?= CHtml::encode(gT('Privacy policy settings') . ' - ' . getLanguageNameFromCode($aSurveyLanguageSettings['surveyls_language'], false)) ?>">
     <div class="row mt-4">
         <div class="col-12 col-xl-6 mb-3">
             <!-- Privacy policy checkbox label -->

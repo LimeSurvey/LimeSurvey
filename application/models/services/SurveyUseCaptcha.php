@@ -14,29 +14,29 @@ class SurveyUseCaptcha
     /**
      * Code/Mapping for useCaptcha
      */
-    const USE_CAPTCHA = ['A', 'B', 'C', 'D', 'X', 'R', 'S', 'N', 'E', 'F', 'G',
+    public const USE_CAPTCHA = ['A', 'B', 'C', 'D', 'X', 'R', 'S', 'N', 'E', 'F', 'G',
         'H', 'I', 'J', 'K', 'L', 'M', 'O', 'P', 'T', 'U', '1', '2', '3', '4', '5', '6'];
 
     /**
      * Code/Mapping for useCaptcha in survey access
      */
-    const SURVEY_ACCESS_YES = ['A', 'B', 'C', 'X', 'F', 'H', 'K', 'O', 'T'];
-    const SURVEY_ACCESS_NO = ['P', 'U', '3', '5', '6', 'D', 'R', 'S', 'N'];
-    const SURVEY_ACCESS_INHERIT = ['E', 'G', 'I', 'J', 'L', 'M', '1', '2', '4'];
+    public const SURVEY_ACCESS_YES = ['A', 'B', 'C', 'X', 'F', 'H', 'K', 'O', 'T'];
+    public const SURVEY_ACCESS_NO = ['P', 'U', '3', '5', '6', 'D', 'R', 'S', 'N'];
+    public const SURVEY_ACCESS_INHERIT = ['E', 'G', 'I', 'J', 'L', 'M', '1', '2', '4'];
 
     /**
      * Code/Mapping for useCaptcha in registration
      */
-    const REGISTRATION_YES = ['A', 'B', 'D', 'R', 'F', 'G', 'I', 'M', 'U'];
-    const REGISTRATION_NO = ['L', 'T', '2', '4', '5', 'C', 'X', 'S', 'N'];
-    const REGISTRATION_INHERIT = ['E', 'H', 'J', 'K', 'O', 'P', '1', '3', '6'];
+    public const REGISTRATION_YES = ['A', 'B', 'D', 'R', 'F', 'G', 'I', 'M', 'U'];
+    public const REGISTRATION_NO = ['L', 'T', '2', '4', '5', 'C', 'X', 'S', 'N'];
+    public const REGISTRATION_INHERIT = ['E', 'H', 'J', 'K', 'O', 'P', '1', '3', '6'];
 
     /**
      * Code/Mapping for useCaptcha in save and load
      */
-    const SAVE_LOAD_YES = ['A', 'C', 'D', 'S', 'G', 'H', 'J', 'L', 'P'];
-    const SAVE_LOAD_NO = ['M', 'O', '1', '4', '6', 'B', 'X', 'R', 'N'];
-    const SAVE_LOAD_INHERIT = ['E', 'F', 'I', 'K', 'T', 'U', '2', '3', '5'];
+    public const SAVE_LOAD_YES = ['A', 'C', 'D', 'S', 'G', 'H', 'J', 'L', 'P'];
+    public const SAVE_LOAD_NO = ['M', 'O', '1', '4', '6', 'B', 'X', 'R', 'N'];
+    public const SAVE_LOAD_INHERIT = ['E', 'F', 'I', 'K', 'T', 'U', '2', '3', '5'];
 
 
     /** @var \Survey|null */

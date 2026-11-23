@@ -1895,7 +1895,7 @@ class LimeExpressionManager
                             continue;
                         }
                         $exclusiveOptionSGQA = $this->qcode2sgqa[$qinfo['rootVarName'] . '_' . $exclusive_option] ?? '';
-                        if ($exclusiveOptionSGQA === ''){
+                        if ($exclusiveOptionSGQA === '') {
                             continue;
                         }
                         $subqs = $qinfo['subqs'];
@@ -5702,7 +5702,8 @@ class LimeExpressionManager
      *
      * @return string
      */
-    private function anonymizeDate() {
+    private function anonymizeDate()
+    {
         return date("Y-m-d H:i:s", mktime(0, 0, 0, 1, 1, 1980));
     }
 

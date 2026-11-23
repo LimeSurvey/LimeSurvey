@@ -24,8 +24,8 @@
                 </label>
                 <div class='col-md-8'>
                     <select name='survey_id' id="addToSurvey_survey_id" class='form-select' aria-labelledby="addToSurvey_survey_label">
-                        <?php foreach ($surveys as $survey): ?>
-                            <?php if ($hasGlobalPermission || Permission::model()->hasSurveyPermission($survey->sid, 'tokens', 'update')): ?>
+                        <?php foreach ($surveys as $survey) : ?>
+                            <?php if ($hasGlobalPermission || Permission::model()->hasSurveyPermission($survey->sid, 'tokens', 'update')) : ?>
                                 <option value='<?php echo $survey->sid; ?>'><?php echo $survey->languagesettings[$survey->language]->surveyls_title; ?> (<?php echo $survey->sid; ?>)</option>
                             <?php endif; ?>
                         <?php endforeach; ?>

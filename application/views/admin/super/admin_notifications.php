@@ -11,7 +11,7 @@
         <a aria-expanded='false' class="nav-link"
             href='#'>
             <span class='ri-notification-2-line text-read'></span>
-	    <span class='visually-hidden'><?php eT('Notifications'); ?></span>
+        <span class='visually-hidden'><?php eT('Notifications'); ?></span>
         </a>
     </li>
 <?php elseif ($showLoader) : ?>

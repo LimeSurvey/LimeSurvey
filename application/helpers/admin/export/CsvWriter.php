@@ -25,7 +25,7 @@ class CsvWriter extends Writer
      */
     protected $doHeaders = true;
 
-    function __construct()
+    public function __construct()
     {
         $this->output = '';
         $this->separator = ';';
