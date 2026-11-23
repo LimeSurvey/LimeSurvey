@@ -21443,7 +21443,7 @@ input[type=checkbox]:checked:after {
   right: 0;
   position: fixed;
   opacity: 0.7;
-  background-color: #fff;
+  background-color: #1B1C22;
   z-index: 3501;
   text-align: center;
   display: none; /* hidden by default */
