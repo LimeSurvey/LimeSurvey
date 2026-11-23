@@ -1,6 +1,7 @@
 import 'tests/mocks'
 
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
+import { renderWithQueryClient } from 'tests/testUtils'
 import userEvent from '@testing-library/user-event'
 
 import { StatisticsFiltersBuilder } from './StatisticsFiltersBuilder'
@@ -20,7 +21,7 @@ describe('StatisticsFiltersBuilder', () => {
   })
 
   test('starts from the applied filters so they survive reopening the modal', () => {
-    render(
+    renderWithQueryClient(
       <StatisticsFiltersBuilder
         survey={survey}
         appliedFilters={[createAppliedFilter(), createAppliedFilter()]}
@@ -32,7 +33,9 @@ describe('StatisticsFiltersBuilder', () => {
   })
 
   test('shows only "Add filter" when nothing is applied', () => {
-    render(<StatisticsFiltersBuilder survey={survey} appliedFilters={[]} />)
+    renderWithQueryClient(
+      <StatisticsFiltersBuilder survey={survey} appliedFilters={[]} />
+    )
 
     expect(screen.queryByText('Filter selection #1')).not.toBeInTheDocument()
     expect(screen.getByText('Add filter')).toBeInTheDocument()
@@ -44,7 +47,7 @@ describe('StatisticsFiltersBuilder', () => {
     const onApply = jest.fn()
     const applied = [createAppliedFilter()]
 
-    render(
+    renderWithQueryClient(
       <StatisticsFiltersBuilder
         survey={survey}
         appliedFilters={applied}
@@ -61,7 +64,7 @@ describe('StatisticsFiltersBuilder', () => {
     const user = userEvent.setup()
     const onApply = jest.fn()
 
-    render(
+    renderWithQueryClient(
       <StatisticsFiltersBuilder
         survey={survey}
         appliedFilters={[createAppliedFilter()]}
@@ -79,7 +82,7 @@ describe('StatisticsFiltersBuilder', () => {
     const user = userEvent.setup()
     const onApply = jest.fn()
 
-    render(
+    renderWithQueryClient(
       <StatisticsFiltersBuilder
         survey={survey}
         appliedFilters={[createAppliedFilter()]}

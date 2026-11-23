@@ -61,6 +61,8 @@ class SurveyDynamic extends LSActiveRecord
 
         //We need to refresh if we changed sid
         if ($refresh === true) {
+            // The model is shared by all surveys: Forget whether the previous survey had a participant table
+            $model->bHaveToken = null;
             $model->refreshMetaData();
         }
 
@@ -721,7 +723,7 @@ class SurveyDynamic extends LSActiveRecord
         );
 
         // Join the survey participant list and filter tokens if needed
-        if ($this->bHaveToken && $this->survey->anonymized != 'Y') {
+        if ($this->getbHaveToken() && $this->survey->anonymized != 'Y') {
             $this->joinWithToken($criteria, $sort);
         }
 

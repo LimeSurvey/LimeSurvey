@@ -21,7 +21,7 @@ class ResponseParticipantForGridTest extends TestBaseClass
     {
         parent::setUpBeforeClass();
         // The participant columns are only available to users who may read the participants.
-        // Must be set before the first use of the response model, which checks it once.
+        // Must be set before the response model checks it.
         \Yii::app()->session['loginID'] = 1;
 
         self::importSurvey(self::$surveysFolder . '/limesurvey_survey_get_participant_properties.lsa');
@@ -29,10 +29,6 @@ class ResponseParticipantForGridTest extends TestBaseClass
             $activator = new \SurveyActivator(self::$testSurvey);
             $activator->activate();
         }
-        // The import uses the response model before the participant table exists, and the model keeps that state
-        $responseModel = \SurveyDynamic::model(self::$surveyId);
-        (new \ReflectionProperty($responseModel, 'bHaveToken'))->setValue($responseModel, null);
-        $responseModel->refreshMetaData();
         foreach (\SurveyDynamic::model(self::$surveyId)->findAll() as $response) {
             $response->delete();
         }
@@ -87,5 +83,39 @@ class ResponseParticipantForGridTest extends TestBaseClass
         $participant = \Token::model(self::$surveyId)->findByToken('gridtest1')->decrypt();
         $this->assertSame($participant->firstname, $firstName);
         $this->assertSame($participant->lastname, $lastName);
+    }
+
+    /**
+     * The responses list of a survey without participant table works after the list of a survey with one.
+     * The response model is shared by all surveys, so it must not keep the participant table state of the previous survey.
+     *
+     * @return void
+     */
+    public function testResponseListOfSurveyWithoutParticipantTableAfterSurveyWithOne()
+    {
+        $participantJoin = 'tokens_' . self::$surveyId;
+        $this->assertStringContainsString($participantJoin, \SurveyDynamic::model(self::$surveyId)->search()->getCriteria()->join);
+
+        \Survey::model()->resetCache();
+        $result = \importSurveyFile(self::$surveysFolder . '/limesurvey_survey_161359_quickTranslation.lss', false);
+        $this->assertEmpty($result['error'] ?? null, 'The survey without participant table could not be imported.');
+        $otherSurvey = \Survey::model()->findByPk($result['newsid']);
+        try {
+            (new \SurveyActivator($otherSurvey))->activate();
+            $this->assertFalse(tableExists('tokens_' . $otherSurvey->sid));
+
+            $otherSearch = \SurveyDynamic::model($otherSurvey->sid)->search();
+            $this->assertSame(0, (int) $otherSearch->getTotalItemCount());
+            $this->assertStringNotContainsString('tokens_', (string) $otherSearch->getCriteria()->join);
+            $this->assertStringContainsString(
+                $participantJoin,
+                \SurveyDynamic::model(self::$surveyId)->search()->getCriteria()->join,
+                'The participant table of the first survey is joined again.'
+            );
+        } finally {
+            \Yii::app()->session['loginID'] = 1;
+            \Yii::app()->db->schema->refresh();
+            $otherSurvey->delete();
+        }
     }
 }
