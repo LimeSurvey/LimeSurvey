@@ -12,6 +12,7 @@ use LimeSurvey\Models\Services\SurveyStatistics\StatisticsResponseFilters;
 use LimeSurvey\Models\Services\SurveyStatistics\Charts\Questions\Processors\{
     ArrayNumbersProcessor,
     ArrayTextProcessor,
+    DateProcessor,
     FileUploadProcessor,
     MultipleChoiceProcessor,
     MultipleNumericalProcessor,
@@ -76,11 +77,11 @@ class QuestionStatistics implements StatisticsChartInterface
             Question::QT_Q_MULTIPLE_SHORT_TEXT => fn() => new ArrayTextProcessor(),
             Question::QT_R_RANKING => fn() => new RankingProcessor(),
             Question::QT_1_ARRAY_DUAL => fn() => new DualScaleProcessor(),
+            Question::QT_D_DATE => fn() => new DateProcessor(),
 
             // No statistics for these types of questions
             Question::QT_K_MULTIPLE_NUMERICAL => fn() => new MultipleNumericalProcessor(),
             Question::QT_ASTERISK_EQUATION => fn() => null,
-            Question::QT_D_DATE => fn() => null,
             Question::QT_VERTICAL_FILE_UPLOAD => fn() => new FileUploadProcessor(),
             Question::QT_SEMICOLON_ARRAY_TEXT => fn() => new ArrayTextProcessor(),
             Question::QT_X_TEXT_DISPLAY => fn() => null,
@@ -121,7 +122,7 @@ class QuestionStatistics implements StatisticsChartInterface
         $batch = new ResponseAggregateBatch($surveyId, $this->filters, $this->resolvedFilters);
 
         // Pair each chart-producing question with its processor; types without
-        // a processor (equations, dates, text display, ...) produce no chart
+        // a processor (equations, text display, ...) produce no chart
         // and never occupy a page slot.
         $eligible = [];
         foreach ($surveyQuestions as $question) {
@@ -400,6 +401,14 @@ class QuestionStatistics implements StatisticsChartInterface
                     flattenText($question['attributes']['dualscale_headerB'] ?? 'Scale B', false, true),
                 ];
             }
+            // Date/time: whether answers carry a date (Calendar view, Date
+            // column) and a time (Time columns, time breakdown), and whether
+            // the calendar needs decrypting first.
+            if (($question['type'] ?? null) === Question::QT_D_DATE) {
+                $meta['question']['hasDate'] = DateProcessor::hasDate($question);
+                $meta['question']['hasTime'] = DateProcessor::hasTime($question);
+                $meta['question']['encrypted'] = DateProcessor::isEncrypted($question);
+            }
             $dto->setMeta($meta);
         }
     }
@@ -441,6 +450,7 @@ class QuestionStatistics implements StatisticsChartInterface
             'q.question_order',
             'q.other',
             'q.question_theme_name',
+            'q.encrypted',
             'ql.question as question_text',
             'ql.help as help_text',
             'a.aid',
@@ -497,6 +507,7 @@ class QuestionStatistics implements StatisticsChartInterface
                         'help' => flattenText($row['help_text'], false, true),
                         'other' => $row['other'],
                         'question_theme_name' => $row['question_theme_name'],
+                        'encrypted' => $row['encrypted'],
                         'subQuestions' => [],
                         'attributes' => [],
                     ];

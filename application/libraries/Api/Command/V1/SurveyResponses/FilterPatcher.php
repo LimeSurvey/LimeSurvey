@@ -10,6 +10,7 @@ use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\conditions\NullCondition
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\conditions\RangeConditionHandler;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\conditions\DateRangeConditionHandler;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\conditions\GreaterThanConditionHandler;
+use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\conditions\NotEmptyConditionHandler;
 
 class FilterPatcher
 {
@@ -135,6 +136,7 @@ class FilterPatcher
         $this->addHandler(DateRangeConditionHandler::class);
         $this->addHandler(MultiSelectConditionHandler::class);
         $this->addHandler(GreaterThanConditionHandler::class);
+        $this->addHandler(NotEmptyConditionHandler::class);
     }
 
     public function addHandler(string $handler): void

@@ -22,14 +22,22 @@ jest.mock('react-router-dom', () => ({
   useParams: () => ({ surveyId: '1' }),
 }))
 
-jest.mock('hooks', () => ({
-  ...jest.requireActual('hooks'),
+// Mock the defining files, not the hooks barrel: spreading
+// jest.requireActual('hooks') copies exports that are not defined yet due to
+// circular imports (useAuth imports useAuthService from the barrel)
+jest.mock('hooks/useAppState', () => ({
   useAppState: (key, initValue) => [initValue, jest.fn()],
+}))
+jest.mock('hooks/useSurvey', () => ({
   useSurvey: () => ({ survey: mockSurvey, update: mockUpdate, language: 'en' }),
+}))
+jest.mock('hooks/useBuffer', () => ({
   useBuffer: () => ({
     addToBuffer: mockAddToBuffer,
     removeAnswersFromBuffer: jest.fn(),
   }),
+}))
+jest.mock('hooks/useFocused', () => ({
   useFocused: () => ({
     focused: mockFocused,
     unFocus: jest.fn(),
@@ -47,6 +55,24 @@ jest.mock('hooks', () => ({
       .useCloseConditionPopups(...args)
   },
 }))
+jest.mock('hooks/useExpressionScriptValidation', () => ({
+  useExpressionScriptValidation: () => jest.fn(),
+}))
+// The question theme attributes come from the API, these tests don't need them
+jest.mock('hooks/useQuestionAttributes', () => ({
+  useQuestionAttributes: () => ({ attributes: {}, isFetching: false }),
+}))
+// Records the arguments, and closes the popups for real
+jest.mock('hooks/useCloseConditionPopups', () => {
+  const actual = jest.requireActual('hooks/useCloseConditionPopups')
+  return {
+    ...actual,
+    useCloseConditionPopups: (...args) => {
+      mockUseCloseConditionPopups(...args)
+      return actual.useCloseConditionPopups(...args)
+    },
+  }
+})
 
 // CodeMirror can't be typed into in jsdom. Mock the defining file only:
 // spreading the components/UIComponents barrel copies exports that are not

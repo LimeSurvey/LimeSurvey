@@ -101,6 +101,7 @@ export const ConditionItem = ({
               condition={condition}
               updateCondition={updateCondition}
               survey={survey}
+              previousQuestions={previousQuestions}
             />
           </div>
         )}

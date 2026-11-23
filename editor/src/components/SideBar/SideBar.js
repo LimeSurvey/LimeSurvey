@@ -48,27 +48,35 @@ export const SideBar = ({
           .map((item, index) => {
             return (
               <React.Fragment key={index + 'sidebar'}>
-                <div
-                  onClick={() => {
-                    if (!item.isDisabled) {
-                      onIconClick(item.panel)
-                    }
-                  }}
-                  className={classNames('cursor-pointer', {
-                    'margin-top-10': index > 0,
-                    'sidebar-icon-disabled': item.isDisabled,
-                  })}
-                  data-testid={`btn-${item.panel}-open`}
-                  id={`btn-${item.panel}-open`}
+                <TooltipContainer
+                  offset={[0, 20]}
+                  placement="right"
+                  tip={
+                    item.isDisabled && item.disabledMessage
+                      ? item.disabledMessage
+                      : item.tip || item.label
+                  }
                 >
-                  <TooltipContainer
-                    offset={[0, 20]}
-                    placement="right"
-                    tip={
-                      item.isDisabled && item.disabledMessage
-                        ? item.disabledMessage
-                        : item.tip || item.label
-                    }
+                  {/* aria-disabled instead of disabled: keeps the button focusable, so keyboard users get the tooltip */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (!item.isDisabled) {
+                        onIconClick(item.panel)
+                      }
+                    }}
+                    className={classNames(
+                      'd-block p-0 border-0 bg-transparent cursor-pointer',
+                      {
+                        'margin-top-10': index > 0,
+                        'sidebar-icon-disabled': item.isDisabled,
+                      }
+                    )}
+                    aria-label={item.tip || item.label}
+                    aria-pressed={item.panel === currentPanel}
+                    aria-disabled={item.isDisabled ? 'true' : undefined}
+                    data-testid={`btn-${item.panel}-open`}
+                    id={`btn-${item.panel}-open`}
                   >
                     <item.icon
                       className={classNames('fill-current', {
@@ -79,8 +87,8 @@ export const SideBar = ({
                         currentPanel === item.panel ? '#EEEFF7' : '#333641'
                       }`}
                     />
-                  </TooltipContainer>
-                </div>
+                  </button>
+                </TooltipContainer>
               </React.Fragment>
             )
           })}

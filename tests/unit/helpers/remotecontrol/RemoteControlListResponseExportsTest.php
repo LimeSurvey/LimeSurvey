@@ -163,7 +163,6 @@ class RemoteControlListResponseExportsTest extends BaseTest
     public function testHtmlToPlainText()
     {
         $method = new \ReflectionMethod($this->handler, 'htmlToPlainText');
-        $method->setAccessible(true);
 
         $this->assertSame(
             'Microsoft Excel (Iconv Library not installed)',
