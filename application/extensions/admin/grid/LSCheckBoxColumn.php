@@ -61,7 +61,8 @@ class LSCheckBoxColumn extends CCheckBoxColumn
      */
     protected function hasSelectAllCheckBox()
     {
-        if (trim((string) $this->headerTemplate) === '') {
+        // The checkbox replaces the {item} placeholder: Without it, the template renders only its own text
+        if (strpos((string) $this->headerTemplate, '{item}') === false) {
             return false;
         }
         if ($this->selectableRows === null) {
