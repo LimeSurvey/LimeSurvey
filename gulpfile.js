@@ -126,10 +126,10 @@ const adminThemes = [
         target: "themes/admin/Sea_Green/css",
     },
     {
-        source: "assets/admin_themes/Sea_Green_High_Contrast/sea_green_high_contrast.scss",
-        dark: "assets/admin_themes/Sea_Green_High_Contrast/sea_green_high_contrast_dark.scss",
-        tokens: "assets/admin_themes/Sea_Green_High_Contrast/theme_tokens.scss",
-        target: "themes/admin/Sea_Green_High_Contrast/css",
+        source: "assets/admin_themes/Sea_Green_WCAG_AA/sea_green_wcag_aa.scss",
+        dark: "assets/admin_themes/Sea_Green_WCAG_AA/sea_green_wcag_aa_dark.scss",
+        tokens: "assets/admin_themes/Sea_Green_WCAG_AA/theme_tokens.scss",
+        target: "themes/admin/Sea_Green_WCAG_AA/css",
     },
 ];
 

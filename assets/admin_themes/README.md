@@ -43,9 +43,9 @@ Watches all `assets/admin_themes/**/*.scss` files and rebuilds all CSS files of 
 | Theme | Source File | Dark mode | Theme tokens |
 |-------|-------------|-----------|--------------|
 | `Sea_Green` | `Sea_Green/sea_green.scss` | `Sea_Green/sea_green_dark.scss` | `Sea_Green/theme_tokens.scss` |
-| `Sea_Green_High_Contrast` | `Sea_Green_High_Contrast/sea_green_high_contrast.scss` | `Sea_Green_High_Contrast/sea_green_high_contrast_dark.scss` | `Sea_Green_High_Contrast/theme_tokens.scss` |
+| `Sea_Green_WCAG_AA` | `Sea_Green_WCAG_AA/sea_green_wcag_aa.scss` | `Sea_Green_WCAG_AA/sea_green_wcag_aa_dark.scss` | `Sea_Green_WCAG_AA/theme_tokens.scss` |
 
-The high contrast theme is a variant of Sea Green: It sets its own variables and then uses the SCSS of `Sea_Green`.
+The WCAG AA theme is a variant of Sea Green: It sets its own variables and then uses the SCSS of `Sea_Green`.
 A new theme that is built here needs an entry in the `adminThemes` list in `gulpfile.js`.
 
 ## Source Files
@@ -55,9 +55,9 @@ A new theme that is built here needs an entry in the `adminThemes` list in `gulp
 | `Sea_Green/sea_green.scss` | Main SCSS entry point for the Sea Green admin theme |
 | `Sea_Green/_sea_green_base.scss` | The rules of Sea Green, shared with its variants |
 | `Sea_Green/sea_green_variables.scss` | The variables of Sea Green: The palette, then everything that is computed from it |
-| `Sea_Green_High_Contrast/sea_green_high_contrast.scss` | Main SCSS entry point for the high contrast theme |
-| `Sea_Green_High_Contrast/_high_contrast_variables.scss` | The colours and focus indicators of the high contrast theme |
-| `Sea_Green_High_Contrast/_high_contrast_overrides.scss` | Rules that only exist in the high contrast theme |
+| `Sea_Green_WCAG_AA/sea_green_wcag_aa.scss` | Main SCSS entry point for the WCAG AA theme |
+| `Sea_Green_WCAG_AA/_wcag_aa_variables.scss` | The colours and focus indicators of the WCAG AA theme |
+| `Sea_Green_WCAG_AA/_wcag_aa_overrides.scss` | Rules that only exist in the WCAG AA theme |
 | `_theme_tokens.scss` | Shared code of the theme tokens, used by `theme_tokens.scss` of each theme |
 
 The files of the dark mode are listed in the "Dark mode" section below.
@@ -65,8 +65,8 @@ The files of the dark mode are listed in the "Dark mode" section below.
 ## Build Output
 
 Compiled files are written directly into the theme directories under `themes/admin/`. Each file also has a minified
-version (`.min.css`). `<name>` is `sea_green` in `Sea_Green` and `sea_green_high_contrast` in
-`Sea_Green_High_Contrast`:
+version (`.min.css`). `<name>` is `sea_green` in `Sea_Green` and `sea_green_wcag_aa` in
+`Sea_Green_WCAG_AA`:
 
 | Output | Description |
 |--------|-------------|
@@ -112,8 +112,8 @@ The dark mode of Sea Green is Sea Green compiled a second time with dark colours
 | `Sea_Green/_sea_green_components.scss` | Everything that is computed from the colours |
 | `Sea_Green/_dark_variables.scss` | Bootstrap and Sea Green variables of the dark mode |
 | `Sea_Green/_dark_overrides.scss` | Rules that only exist in the dark mode |
-| `Sea_Green_High_Contrast/sea_green_high_contrast_dark.scss` | Entry point of the dark mode of the high contrast theme |
-| `Sea_Green_High_Contrast/_high_contrast_dark_variables.scss` | The focus indicators of the high contrast theme in the dark mode |
+| `Sea_Green_WCAG_AA/sea_green_wcag_aa_dark.scss` | Entry point of the dark mode of the WCAG AA theme |
+| `Sea_Green_WCAG_AA/_wcag_aa_dark_variables.scss` | The focus indicators of the WCAG AA theme in the dark mode |
 
 Rules for the SCSS of the theme, so it works in both modes:
 
@@ -132,4 +132,4 @@ The React editor (survey editor, responses, statistics) gets the appearance mode
 
 The theme tokens of an admin theme (`_theme_tokens.scss`) set colours in `:root`. In the dark mode the editor's own
 dark colours win over them. Rules of a theme that must be different in the dark mode go into
-`:root[data-bs-theme="dark"]` (see the high contrast theme).
+`:root[data-bs-theme="dark"]` (see the WCAG AA theme).

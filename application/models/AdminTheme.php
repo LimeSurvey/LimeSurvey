@@ -22,7 +22,7 @@
 class AdminTheme extends CFormModel
 {
     /** @var string[] The admin themes shipped with LimeSurvey, in themes/admin */
-    const STANDARD_ADMIN_THEMES = ['Sea_Green', 'Sea_Green_High_Contrast'];
+    const STANDARD_ADMIN_THEMES = ['Sea_Green', 'Sea_Green_WCAG_AA'];
 
     /** @var string[] The appearance modes: "system" follows the light or dark mode of the user's device */
     const APPEARANCE_MODES = ['light', 'dark', 'system'];

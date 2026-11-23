@@ -1,13 +1,13 @@
-// Sea Green - High Contrast WCAG 2.2: Sea Green with colours and focus indicators that meet the WCAG 2.2 AA contrast criteria
+// Sea Green - WCAG AA: Sea Green with colours and focus indicators that meet the WCAG 2.2 AA contrast criteria
 
 // 1. Include functions first (so you can manipulate colors, SVGs, calc, etc)
 @import "node_modules/bootstrap/scss/functions.scss";
 
-// 2. Sea Green variables, then the high contrast overrides
+// 2. Sea Green variables, then the WCAG AA overrides
 @import "assets/bootstrap_5/scss/variables.scss";
 @import "../Sea_Green/sea_green_variables";
-@import "high_contrast_variables";
+@import "wcag_aa_variables";
 
 // 3. Shared Sea Green rules, then the rules that only exist in this variant
 @import "../Sea_Green/sea_green_base";
-@import "high_contrast_overrides";
+@import "wcag_aa_overrides";

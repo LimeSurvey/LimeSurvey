@@ -44,8 +44,8 @@ class AdminThemeTest extends TestBaseClass
      */
     public function testUserChoiceIsUsed()
     {
-        SettingsUser::setUserSetting('admintheme', 'Sea_Green_High_Contrast', self::UID);
-        $this->assertSame('Sea_Green_High_Contrast', AdminTheme::getUserAdminThemeName());
+        SettingsUser::setUserSetting('admintheme', 'Sea_Green_WCAG_AA', self::UID);
+        $this->assertSame('Sea_Green_WCAG_AA', AdminTheme::getUserAdminThemeName());
     }
 
     /**
@@ -80,9 +80,9 @@ class AdminThemeTest extends TestBaseClass
      */
     public function testThemeTokensUrlOfUserTheme()
     {
-        SettingsUser::setUserSetting('admintheme', 'Sea_Green_High_Contrast', self::UID);
+        SettingsUser::setUserSetting('admintheme', 'Sea_Green_WCAG_AA', self::UID);
         $this->assertMatchesRegularExpression(
-            '#/Sea_Green_High_Contrast/css/theme_tokens\.css\?v=\d+$#',
+            '#/Sea_Green_WCAG_AA/css/theme_tokens\.css\?v=\d+$#',
             AdminTheme::getThemeTokensUrl()
         );
     }
@@ -104,7 +104,7 @@ class AdminThemeTest extends TestBaseClass
      */
     public function testPersonalThemeNotAllowed()
     {
-        SettingsUser::setUserSetting('admintheme', 'Sea_Green_High_Contrast', self::UID);
+        SettingsUser::setUserSetting('admintheme', 'Sea_Green_WCAG_AA', self::UID);
         $allowed = \Yii::app()->getConfig('allowpersonaladmintheme');
         \Yii::app()->setConfig('allowpersonaladmintheme', false);
         try {
@@ -161,7 +161,7 @@ class AdminThemeTest extends TestBaseClass
      */
     public function testGuestHasNoUserTheme()
     {
-        SettingsUser::setUserSetting('admintheme', 'Sea_Green_High_Contrast', self::UID);
+        SettingsUser::setUserSetting('admintheme', 'Sea_Green_WCAG_AA', self::UID);
         \Yii::app()->user->setId(null);
         $this->assertNull(AdminTheme::getUserAdminThemeName());
     }
@@ -179,7 +179,7 @@ class AdminThemeTest extends TestBaseClass
         $theme->path = $styleDir . DIRECTORY_SEPARATOR . 'Sea_Green';
         $this->assertSame($seaGreenPalette, $theme->getImagePath('limesurvey.pal'));
 
-        $theme->path = $styleDir . DIRECTORY_SEPARATOR . 'Sea_Green_High_Contrast';
+        $theme->path = $styleDir . DIRECTORY_SEPARATOR . 'Sea_Green_WCAG_AA';
         $this->assertFileDoesNotExist($theme->path . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . 'limesurvey.pal');
         $this->assertSame($seaGreenPalette, $theme->getImagePath('limesurvey.pal'));
     }

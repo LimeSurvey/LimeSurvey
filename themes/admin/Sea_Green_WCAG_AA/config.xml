@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-    Sea Green - High Contrast WCAG 2.2 configuration for the admin styles.
+    Sea Green - WCAG AA configuration for the admin styles.
     In future versions of LimeSurvey, it will be used to fill a admin_style table,
     and to give user control on template configuration (like variables to use to render the questions, banners, background, etc.)
 -->
 <config>
     <metadata>
-        <name>Sea Green - High Contrast WCAG 2.2</name>
+        <name>Sea Green - WCAG AA</name>
         <creationDate>11/21/2026</creationDate>
         <author>LimeSurvey GmbH</author>
         <authorEmail>info@limesurvey.org</authorEmail>
@@ -29,7 +29,7 @@
     -->
     <files>
         <css>
-            <filename>sea_green_high_contrast.css</filename>
+            <filename>sea_green_wcag_aa.css</filename>
         </css>
 
         <js></js>
@@ -40,7 +40,7 @@
         -->
         <dark>
             <css>
-                <filename>sea_green_high_contrast_dark.css</filename>
+                <filename>sea_green_wcag_aa_dark.css</filename>
             </css>
         </dark>
 
@@ -54,13 +54,13 @@
         <rtl>
             <css>
                 <!-- Still need these files -->
-                <filename>sea_green_high_contrast-rtl.css</filename>
+                <filename>sea_green_wcag_aa-rtl.css</filename>
             </css>
             <js>
             </js>
             <dark>
                 <css>
-                    <filename>sea_green_high_contrast_dark-rtl.css</filename>
+                    <filename>sea_green_wcag_aa_dark-rtl.css</filename>
                 </css>
             </dark>
         </rtl>

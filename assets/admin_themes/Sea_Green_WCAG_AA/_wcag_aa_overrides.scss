@@ -1,10 +1,10 @@
-// Rules that only exist in Sea Green - High Contrast WCAG 2.2
+// Rules that only exist in Sea Green - WCAG AA
 
 // Visible focus indicator on everything that can get keyboard focus (WCAG 2.4.7, 1.4.11)
 :focus-visible {
-    outline        : 2px solid $hc-focus-color !important;
+    outline        : 2px solid $wcag-focus-color !important;
     outline-offset : 2px !important;
-    box-shadow     : 0 0 0 2px $hc-focus-ring-inner !important;
+    box-shadow     : 0 0 0 2px $wcag-focus-ring-inner !important;
 }
 
 // Grid rows keep the inner focus outline of Sea Green, the grid container would cut off an outer one
@@ -15,14 +15,14 @@
 
 // Radio and checkbox buttons: The input is hidden, so the focus indicator goes on the visible button
 .btn-check:focus-visible + .btn {
-    outline        : 2px solid $hc-focus-color !important;
+    outline        : 2px solid $wcag-focus-color !important;
     outline-offset : 2px !important;
-    box-shadow     : 0 0 0 2px $hc-focus-ring-inner !important;
+    box-shadow     : 0 0 0 2px $wcag-focus-ring-inner !important;
 }
 
 // Sea Green removes the outline of the sidebar resize button with an ID selector
 #sidebar .resize-handle button:focus-visible {
-    outline : 2px solid $hc-focus-color !important;
+    outline : 2px solid $wcag-focus-color !important;
 }
 
 // Grid summaries ("Displaying 1-10 of 20 result(s).") and other hardcoded light greys
@@ -77,7 +77,7 @@ a.ls-link {
 
 // The warning yellow is too light for text on white, outline warning buttons use a dark yellow
 .btn-outline-warning {
-    @include button-outline-variant($hc-warning-text);
+    @include button-outline-variant($wcag-warning-text);
 }
 
 // Selected option of outline toggle buttons (e.g. "Question by question"): Dark text on the g-300 background

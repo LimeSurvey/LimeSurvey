@@ -352,7 +352,7 @@ echo $oQuestionSelector->getModal();
                                         </select>
                                     </div>
                                     <div id="admintheme-help" class="form-text">
-                                        <?php echo sprintf(gT("%s has stronger colour contrast and focus outlines."), CHtml::encode($adminThemes['Sea_Green_High_Contrast']->metadata->name ?? 'Sea Green - High Contrast WCAG 2.2')); ?>
+                                        <?php echo sprintf(gT("%s has stronger colour contrast and focus outlines."), CHtml::encode($adminThemes['Sea_Green_WCAG_AA']->metadata->name ?? 'Sea Green - WCAG AA')); ?>
                                     </div>
                                 </div>
                             </div>

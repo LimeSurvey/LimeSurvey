@@ -1,4 +1,4 @@
-// Colour overrides for Sea Green - High Contrast WCAG 2.2
+// Colour overrides for Sea Green - WCAG AA
 // Every text colour reaches 4.5:1 against the backgrounds it is used on (WCAG 1.4.3),
 // borders, icons and focus indicators reach 3:1 (WCAG 1.4.11)
 
@@ -9,15 +9,15 @@ $error              : #C41E3A; // White text: 5.84:1
 $grape              : #6C28F4; // White text: 6.47:1, as text on g-200: 5.64:1
 $g-700              : #585D72; // Muted text on g-200: 5.68:1, on g-300: 4.87:1
 $g-600              : #6E748C; // Secondary buttons, white text: 4.63:1
-$hc-warning-text    : #806600; // Warning colour as text, on white: 5.50:1
+$wcag-warning-text  : #806600; // Warning colour as text, on white: 5.50:1
 
 // Focus indicator: An outline plus a white inner ring, so one of both reaches 3:1 on light and on dark backgrounds
-$hc-focus-color       : #5B1FD6; // 8.04:1 on white
-$hc-focus-ring-inner  : $white;
-$grape75              : $hc-focus-color;
-$grape90              : $hc-focus-color;
-$btn-hover-boxshadow  : 0px 0px 0px 3px $grape-light;
-$btn-focus-boxshadow  : 0 0 0 2px $white, 0 0 0 4px $hc-focus-color;
+$wcag-focus-color      : #5B1FD6; // 8.04:1 on white
+$wcag-focus-ring-inner : $white;
+$grape75               : $wcag-focus-color;
+$grape90               : $wcag-focus-color;
+$btn-hover-boxshadow   : 0px 0px 0px 3px $grape-light;
+$btn-focus-boxshadow   : 0 0 0 2px $white, 0 0 0 4px $wcag-focus-color;
 
 $link-color             : #0A6E38; // 5.55:1 on g-200, 4.75:1 on g-300
 $link-hover-color       : shift-color($link-color, $link-shade-percentage);

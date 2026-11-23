@@ -331,7 +331,7 @@ a.em-var-error {
     --td-active-bg : #{$active-green};
 }
 
-// The close button is white in the dark mode (see $btn-close-color), the high contrast variant must not invert it
+// The close button is white in the dark mode (see $btn-close-color), the WCAG AA variant must not invert it
 .alert-filled-primary,
 .alert-filled-secondary,
 .alert-filled-success,
