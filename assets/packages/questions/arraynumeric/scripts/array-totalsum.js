@@ -107,14 +107,15 @@ function formatValue(sValue) {
 /**
  * Get the value to add to the totals
  * Comma is a number only when the radix is comma (#16878) : count 0 and keep the answer as typed
+ * An invalid value (like -.) counts 0 too : Decimal throws an error on false
  * @param {string} aValue
- * @return {Decimal|number|boolean}
+ * @return {Decimal}
  */
 function getSumValue(aValue) {
     if (LSvar.sLEMradix !== ',' && String(aValue).indexOf(',') !== -1) {
         return new Decimal(0);
     }
-    return normalizeValue(aValue);
+    return normalizeValue(aValue) || new Decimal(0);
 }
 
 function normalizeValue(aValue) {

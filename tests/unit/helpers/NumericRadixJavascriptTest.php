@@ -48,7 +48,7 @@ class NumericRadixJavascriptTest extends TestCase
         context.checkconditions = () => {};
         const lemval = context.LEMval('test.NAOK');
         context.fixnum_checkconditions(value, 'X1', 'text', 'keyup');
-        const total = /[0-9]/.test(value) ? new context.Decimal(2).plus(context.getSumValue(value)).toString() : null;
+        const total = new context.Decimal(2).plus(context.getSumValue(value)).toString();
         console.log(JSON.stringify({lemval: lemval, rewritten: rewritten, total: total}));
 JS;
 
@@ -63,8 +63,8 @@ JS;
             'period: integer keeps zeros' => ['.', '007', '007', '7', '9'],
             'comma: comma is a number'    => [',', '1,1', 1.1, null, '3.1'],
             'comma: period is converted'  => [',', '1.1', 1.1, '1,1', '3.1'],
-            'period: no digit yet'        => ['.', '-.', '-.', null, null],
-            'comma: no digit yet'         => [',', '-,', '-,', null, null],
+            'period: no digit yet'        => ['.', '-.', '-.', null, '2'],
+            'comma: no digit yet'         => [',', '-,', '-,', null, '2'],
         ];
     }
 
@@ -74,10 +74,10 @@ JS;
      * @param string $value
      * @param string|float $lemval
      * @param string|null $rewritten
-     * @param string|null $total
+     * @param string $total
      * @return void
      */
-    public function testValueFollowsRadix(string $radix, string $value, $lemval, ?string $rewritten, ?string $total): void
+    public function testValueFollowsRadix(string $radix, string $value, $lemval, ?string $rewritten, string $total): void
     {
         foreach (['array-totalsum.js', 'array-totalsum.min.js'] as $file) {
             $result = $this->runNode('assets/packages/questions/arraynumeric/scripts/' . $file, $radix, $value);
