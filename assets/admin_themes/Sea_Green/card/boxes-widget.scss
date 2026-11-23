@@ -17,7 +17,9 @@
         &:hover {
            @include state-border(2px, $grape75, 4px);
         }
-        &:focus-visible {
+        // The title link sits in a clamped box with overflow hidden, which would clip its outline: Show the focus on the card
+        &:focus-visible,
+        &:has(.box-widget-card-title-link:focus-visible) {
             @include state-border(2px, $grape90, 0px);
         }
         &:active {
@@ -188,8 +190,7 @@
         }
     }
     .box-widget-card-title-link:focus-visible {
-        outline        : 2px solid $grape;
-        outline-offset : 2px;
+        outline : none;
     }
     .survey-state {
         color : $g-700;
