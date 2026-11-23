@@ -39,6 +39,10 @@ abstract class Dynamic extends LSActiveRecord
         /** @var self $model */
         $model = parent::model($className);
         $model->refreshOutdatedMetaData();
+        // The behaviors are missing if the model was requested before its table existed
+        if ($model->asa('CTimestampBehavior') === null) {
+            $model->attachBehaviors($model->behaviors());
+        }
         return $model;
     }
 

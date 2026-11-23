@@ -778,51 +778,67 @@ abstract class Response extends Dynamic
     }
 
     /**
-     * @return string
+     * Returns the participant of this response.
+     *
+     * @return Token|null Null if the response has no participant, or if the participants are not available
+     *     (no participant table, or the current user is not allowed to read it)
+     */
+    private function getParticipant()
+    {
+        return isset($this->tokens) ? $this->tokens : null;
+    }
+
+    /**
+     * Returns the first name of the participant, for the responses list.
+     * Also decrypts the participant, so it has to be called before the getters of last name and email.
+     *
+     * @return string|null Null if there is no participant
      */
     public function getFirstNameForGrid()
     {
-        // decrypt token information ( if needed )
-        $tokens = $this->tokens;
-        if (is_object($tokens)) {
-            if (!empty($tokens)) {
-                $tokens->decrypt();
-            }
-            return $tokens->firstname;
+        $participant = $this->getParticipant();
+        if ($participant === null) {
+            return null;
         }
+        $participant->decrypt();
+        return $participant->firstname;
     }
 
     /**
-     * @return string
+     * Returns the last name of the participant, for the responses list.
+     * The participant is already decrypted by getFirstNameForGrid(): Doing it again would fail.
+     *
+     * @return string|null Null if there is no participant
      */
     public function getLastNameForGrid()
     {
-        // Last name is already decrypted in getFirstNameForGrid method, if we do it again it would try to decrypt it again ( and fail )
-        $tokens = $this->tokens;
-        if (is_object($tokens)) {
-            return $tokens->lastname;
-        }
+        $participant = $this->getParticipant();
+        return $participant === null ? null : $participant->lastname;
     }
 
     /**
-     * @return string
+     * Returns the email address of the participant, for the responses list.
+     * The participant is already decrypted by getFirstNameForGrid(): Doing it again would fail.
+     *
+     * @return string|null Null if there is no participant
      */
     public function getEmailForGrid()
     {
-        // decrypt token information ( if needed )
-        $tokens = $this->tokens;
-        if (is_object($tokens)) {
-            return $tokens->email;
-        }
+        $participant = $this->getParticipant();
+        return $participant === null ? null : $participant->email;
     }
 
     /**
-     * @return string
+     * Returns the access code of this response for the responses list:
+     * A button to edit the participant, or only the code if there is no participant.
+     *
+     * @return string HTML
      */
     public function getTokenForGrid()
     {
-        if (is_object($this->tokens) && !is_null($this->tokens->tid)) {
-            $sToken = "<a class='btn btn-outline-secondary btn-xs edit-token' href='#' data-sid='" . $this->dynamicId . "' data-tid='" . $this->tokens->tid . "'  data-url='" . App()->createUrl("admin/tokens", array("sa" => "edit", "iSurveyId" => $this->dynamicId, "iTokenId" => $this->tokens->tid, 'ajax' => 'true')) . "' data-bs-toggle='tooltip' title='" . gT("Edit this survey participant") . "'>" . CHtml::encode($this->token) . "&nbsp;&nbsp;&nbsp;<span class='ri-pencil-fill'></span></a>";
+        $participant = $this->getParticipant();
+        if ($participant !== null && !is_null($participant->tid)) {
+            $sToken = "<a class='btn btn-outline-secondary btn-xs edit-token' href='#' data-sid='" . $this->dynamicId . "' data-tid='" . $participant->tid . "'  data-url='" . App()->createUrl("admin/tokens", array("sa" => "edit", "iSurveyId" => $this->dynamicId, "iTokenId" => $participant->tid, 'ajax' => 'true')) . "' data-bs-toggle='tooltip' title='" . gT("Edit this survey participant") . "'>" . CHtml::encode($this->token) . "&nbsp;&nbsp;&nbsp;<span class='ri-pencil-fill'></span></a>";
         } else {
             $sToken = '<span class="badge rounded-pill">' . CHtml::encode($this->token) . '</span>';
         }
@@ -1081,15 +1097,6 @@ abstract class Response extends Dynamic
 
         $aQuestionAttributes = $oQuestion->attributes;
         $aQuestionAttributes['language'] = $sLanguage;
-
-        $aQuestionAttributes['questionSrc'] = $oQuestion->questionl10ns[$sLanguage]->question;
-        $result = LimeExpressionManager::ProcessString($oQuestion->questionl10ns[$sLanguage]->question, 40, null, 1, 1);
-        $aQuestionAttributes['question'] = $result;
-
-        $aQuestionAttributes['helpSrc'] = $oQuestion->questionl10ns[$sLanguage]->help;
-        $result = LimeExpressionManager::ProcessString($oQuestion->questionl10ns[$sLanguage]->help, 40, null, 1, 1);
-        $aQuestionAttributes['help'] = $result;
-
 
         $aQuestionAttributes['questionSrc'] = $oQuestion->questionl10ns[$sLanguage]->question;
         $result = LimeExpressionManager::ProcessString($oQuestion->questionl10ns[$sLanguage]->question, 40, null, 1, 1);

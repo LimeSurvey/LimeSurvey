@@ -105,5 +105,8 @@ class DynamicModelTest extends TestBaseClass
 
         $this->assertSame(0, (int) \Timing::model(self::$surveyId)->count());
         $this->assertTrue(\Timing::model(self::$surveyId)->hasAttribute('interviewtime'));
+        $this->assertNotNull(\Timing::model(self::$surveyId)->asa('CTimestampBehavior'), 'The behaviors are attached now.');
+        // Needs the plugin event behavior
+        $this->assertSame(0, \Timing::model(self::$surveyId)->deleteAllByAttributes(['id' => 1]));
     }
 }

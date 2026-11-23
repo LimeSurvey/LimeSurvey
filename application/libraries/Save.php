@@ -177,9 +177,11 @@ class Save
                     "refurl"        => ($sessionState->getRefUrl() ?? getenv('HTTP_REFERER'))
                 );
 
-                if (Response::model($thissurvey['sid'])->insert($sdata)) {
-                    $srid = getLastInsertID($survey->responsesTableName);
-                    $sessionState->set('srid', $srid);
+                $response = Response::create($thissurvey['sid']);
+                // Only the columns the responses table has are set (date stamp, IP address and referrer URL are optional)
+                $response->setAttributes($sdata, false);
+                if ($response->save()) {
+                    $sessionState->set('srid', $response->id);
                 } else {
                     // TODO: $this->aSaveErrors
                     $this->aSaveErrors[] = "Unable to insert record into survey table.";

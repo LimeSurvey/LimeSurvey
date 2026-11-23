@@ -141,11 +141,12 @@ abstract class Timing extends Dynamic
             switchMSSQLIdentityInsert($rawTableName, true);
         }
         try {
-            $record->save();
+            $isSaved = $record->save();
             if (isset($data['id'])) {
                 switchMSSQLIdentityInsert($rawTableName, false);
             }
-            return $record->id;
+            // The record is not saved if a plugin cancelled it
+            return $isSaved ? $record->id : false;
         } catch (Exception $e) {
             if (isset($data['id'])) {
                 switchMSSQLIdentityInsert($rawTableName, false);

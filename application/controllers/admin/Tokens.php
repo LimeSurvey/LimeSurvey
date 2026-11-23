@@ -397,7 +397,7 @@ class Tokens extends SurveyCommonAction
         if (!Permission::model()->hasSurveyPermission($iSid, 'tokens', 'delete')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
-        $deletedTokenCount = Token::model($iSid)->deleteAllByAttributes(array('tid' => array($aTokenId)));
+        $deletedTokenCount = Token::model($iSid)->deleteAllByAttributes(array('tid' => (array) $aTokenId));
         if ($deletedTokenCount > 0) {
             Yii::app()->setFlashMessage(sprintf(gTPlural('Deleted %d survey participant.', 'Deleted %d survey participants.', $deletedTokenCount), $deletedTokenCount));
         } else {

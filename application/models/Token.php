@@ -132,26 +132,43 @@ abstract class Token extends Dynamic
         return $result;
     }
 
-    /** @inheritdoc
-     * Delete related SurveyLink at same time
+    /**
+     * @inheritdoc
+     * Deletes the related SurveyLink at the same time
      */
     public function deleteAllByAttributes($attributes, $condition = '', $params = array())
     {
-        $builder = $this->getCommandBuilder();
-        $participantCriteria = $builder->createCriteria($condition, $params);
-        $participantCriteria->select = array('tid','participant_id');
-        $participantCriteria->addCondition('participant_id is not null');
-        $oParticipantToDelete = self::model($this->dynamicId)->findAll($participantCriteria);
+        $linkedTokenIds = $this->findLinkedTokenIds($attributes, $condition, $params);
         $result = parent::deleteAllByAttributes($attributes, $condition, $params);
-        if ($result && !empty($oParticipantToDelete)) {
-            /* Get the participant not deleted : we must not delete survey link */
-            $oParticipantNotDeleted = self::model($this->dynamicId)->findAll($participantCriteria);
-            $tidToDelete = array_diff(CHtml::listData($oParticipantToDelete, 'tid', 'tid'), CHtml::listData($oParticipantNotDeleted, 'tid', 'tid'));
-            if (!empty($tidToDelete)) {
-                SurveyLink::model()->deleteAllByAttributes(array('token_id' => $tidToDelete,'survey_id' => $this->dynamicId));
+        if ($result && !empty($linkedTokenIds)) {
+            // Participants that were not deleted keep their survey link
+            $deletedTokenIds = array_diff($linkedTokenIds, $this->findLinkedTokenIds($attributes, $condition, $params));
+            foreach (array_chunk($deletedTokenIds, 1000) as $tokenIds) {
+                SurveyLink::model()->deleteAllByAttributes(array('token_id' => $tokenIds, 'survey_id' => $this->dynamicId));
             }
         }
         return $result;
+    }
+
+    /**
+     * Returns the IDs of the participants matching the attributes and the condition
+     * that are linked to a participant of the central participant database.
+     * Only the participants that deleteAllByAttributes() deletes are read, not all participants of the survey.
+     *
+     * @param array $attributes Attribute values (indexed by attribute names) the participants have to match
+     * @param mixed $condition Query condition or criteria
+     * @param array $params Parameters to be bound to the query
+     * @return array The participant IDs (tid)
+     */
+    private function findLinkedTokenIds($attributes, $condition, $params)
+    {
+        $builder = $this->getCommandBuilder();
+        $table = $this->getTableSchema();
+        $alias = $this->getTableAlias(true, false);
+        $criteria = $builder->createColumnCriteria($table, $attributes, $condition, $params, $alias . '.');
+        $criteria->addCondition($alias . '.participant_id IS NOT NULL');
+        $criteria->select = $alias . '.tid';
+        return $builder->createFindCommand($table, $criteria)->queryColumn();
     }
 
     /**
@@ -493,11 +510,16 @@ abstract class Token extends Dynamic
     }
 
     /**
-     * @return CDbDataReader|mixed
+     * Returns the numbers of the participant summary: All, without access code, invited, opted out, completed and screened out
+     *
+     * @return array|false The numbers indexed by count, invalid, sent, optout, completed and screenout
      */
     public function summary()
     {
-        $criteria = $this->getDbCriteria();
+        $criteria = clone $this->getDbCriteria();
+        // Like the find methods, this query uses up the scopes of the model.
+        // The columns selected here must not get into the next query of the model, e.g. the one of the participant list.
+        $this->resetScope(false);
         $criteria->select = array(
             "COUNT(*) as count",
             "COUNT(CASE WHEN (token IS NULL OR token='') THEN 1 ELSE NULL END) as invalid",
