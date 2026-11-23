@@ -2797,22 +2797,30 @@ function upgradeQuestionAttributes148()
         'time_limit_warning_2_message',
         'time_limit_warning_message',
     ];
-    $sSurveyQuery = "SELECT sid,language,additional_languages FROM {{surveys}}";
-    $oSurveyResult = Yii::app()->db->createCommand($sSurveyQuery)->query();
-    foreach ($oSurveyResult->readAll() as $aSurveyRow) {
-        $iSurveyID = $aSurveyRow['sid'];
-        $aLanguages = array_merge(array($aSurveyRow['language']), explode(' ', (string) $aSurveyRow['additional_languages']));
-        $sAttributeQuery = "select q.qid,attribute,value from {{question_attributes}} qa , {{questions}} q where q.qid=qa.qid and sid={$iSurveyID}";
-        $oAttributeResult =  Yii::app()->db->createCommand($sAttributeQuery)->query();
-        foreach ($oAttributeResult->readAll() as $aAttributeRow) {
-            if (in_array($aAttributeRow['attribute'], $i18nAttributes, true)) {
-                Yii::app()->getDb()->createCommand("delete from {{question_attributes}} where qid={$aAttributeRow['qid']} and attribute='{$aAttributeRow['attribute']}'")->execute();
-                foreach ($aLanguages as $sLanguage) {
-                    $sAttributeInsertQuery = "insert into {{question_attributes}} (qid,attribute,value,language) VALUES({$aAttributeRow['qid']},'{$aAttributeRow['attribute']}','{$aAttributeRow['value']}','{$sLanguage}' )";
-                    modifyDatabase("", $sAttributeInsertQuery);
-                }
-            }
+    $db = Yii::app()->getDb();
+    $attributeList = implode(',', array_map([$db, 'quoteValue'], $i18nAttributes));
+    // All the rows have no language yet: The language column was just added
+    $surveyAttributesCondition = "language IS NULL AND attribute IN ({$attributeList})"
+        . " AND qid IN (SELECT qid FROM {{questions}} WHERE sid = :sid)";
+    $surveys = $db->createCommand("SELECT sid, language, additional_languages FROM {{surveys}}")->queryAll();
+    foreach ($surveys as $survey) {
+        $languages = array_unique(array_filter(array_merge(
+            [$survey['language']],
+            explode(' ', trim((string) $survey['additional_languages']))
+        )));
+        if (empty($languages)) {
+            continue;
         }
+        // Copy the values to each language first, then delete the rows without language: A failure doesn't lose values
+        foreach ($languages as $language) {
+            $db->createCommand(
+                "INSERT INTO {{question_attributes}} (qid, attribute, value, language)"
+                . " SELECT qid, attribute, value, :language FROM {{question_attributes}}"
+                . " WHERE {$surveyAttributesCondition}"
+            )->execute([':language' => $language, ':sid' => $survey['sid']]);
+        }
+        $db->createCommand("DELETE FROM {{question_attributes}} WHERE {$surveyAttributesCondition}")
+            ->execute([':sid' => $survey['sid']]);
     }
 }
 
