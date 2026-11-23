@@ -122,4 +122,24 @@ class QuestionAttributeTest extends BaseModelTestCase
         }
         $this->assertArrayNotHasKey('testAttribute', \QuestionAttribute::getAllAttributesSettings());
     }
+
+    /**
+     * A missing question theme config.xml gives no attributes, so that the general and advanced attributes can be
+     * merged.
+     */
+    public function testMissingXmlFileGivesNoAttributes()
+    {
+        $questionAttribute = new class extends \QuestionAttribute {
+            /**
+             * Returns the general and advanced attributes of the XML file, merged as getQuestionAttributesSettings() does.
+             * @param string $xmlFilePath
+             * @return array
+             */
+            public static function getAttributesFromXml($xmlFilePath)
+            {
+                return array_merge(self::getGeneralAttibutesFromXml($xmlFilePath), self::getAdvancedAttributesFromXml($xmlFilePath));
+            }
+        };
+        $this->assertSame([], $questionAttribute::getAttributesFromXml('/nonexistent/question/theme/config.xml'));
+    }
 }

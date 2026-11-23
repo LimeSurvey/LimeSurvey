@@ -565,7 +565,7 @@ class QuestionAttribute extends LSActiveRecord
      *
      * @param string $sXmlFilePath Path to XML
      *
-     * @return ?array The advanced attribute settings for this question type
+     * @return array The advanced attribute settings for this question type, empty if the file does not exist
      */
     protected static function getAdvancedAttributesFromXml($sXmlFilePath)
     {
@@ -583,7 +583,7 @@ class QuestionAttribute extends LSActiveRecord
                 $aXmlAttributes['attribute'][0] = $aTemp;
             }
         } else {
-            return null;
+            return [];
         }
 
         // set $aAttributes array with attribute data
@@ -623,7 +623,7 @@ class QuestionAttribute extends LSActiveRecord
      *
      * @param string $sXmlFilePath Path to XML
      *
-     * @return ?array The general attribute settings for this question type
+     * @return array The general attribute settings for this question type, empty if the file does not exist
      * @todo What's the opposite of a "general" attribute? How many types of attributes are there?
      */
     protected static function getGeneralAttibutesFromXml($sXmlFilePath)
@@ -641,7 +641,7 @@ class QuestionAttribute extends LSActiveRecord
                 $aXmlAttributes['attribute'][0] = $aTemp;
             }
         } else {
-            return null;
+            return [];
         }
 
         // set $aAttributes array with attribute data
