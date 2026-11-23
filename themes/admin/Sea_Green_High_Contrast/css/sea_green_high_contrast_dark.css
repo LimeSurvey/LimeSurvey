@@ -22175,6 +22175,9 @@ a.ls-link {
 #sidebar #questionexplorer {
   background-color: #1B1C22;
 }
+#sidebar #questionexplorer .list-group .list-group-item:last-of-type {
+  border-bottom-color: #434756;
+}
 
 .login .sidebar-l {
   background: #111217;
