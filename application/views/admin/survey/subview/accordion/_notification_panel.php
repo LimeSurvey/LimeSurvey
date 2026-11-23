@@ -195,7 +195,7 @@ $googleAnalyticsStyleOptions = array(
                         <label id="emailnotificationto-label" class=" form-label" for='emailnotificationto'><?php eT("Send basic admin notification email to:"); ?></label>
                         <input class="form-control inherit-edit 
                             <?php echo ($bShowInherited && $emailnotificationto === 'inherit' ? 'd-none' : 'd-block'); ?>" type='
-                            <?php echo ($bShowInherited) ? 'text' : 'email'; ?>' size='50' id='emailnotificationto' name='emailnotificationto'
+                            <?php echo ($bShowInherited) ? 'text' : 'email'; ?>' size='50' autocomplete='email' id='emailnotificationto' name='emailnotificationto'
                             value="<?php echo htmlspecialchars((string) $emailnotificationto); ?>" data-inherit-value="inherit"
                             data-saved-value="<?php echo htmlspecialchars((string) $emailnotificationto); ?>" />
                         <input class="form-control inherit-readonly
@@ -226,7 +226,7 @@ $googleAnalyticsStyleOptions = array(
                         <label id="emailresponseto-label" class=" form-label" for='emailresponseto'><?php eT("Send detailed admin notification email to:"); ?></label>
                         <input class="form-control inherit-edit
                             <?php echo ($bShowInherited && $emailresponseto === 'inherit' ? 'd-none' : 'd-block'); ?>" type='
-                            <?php echo ($bShowInherited) ? 'text' : 'email'; ?>' size='50' id='emailresponseto' name='emailresponseto'
+                            <?php echo ($bShowInherited) ? 'text' : 'email'; ?>' size='50' autocomplete='email' id='emailresponseto' name='emailresponseto'
                             value="<?php echo htmlspecialchars((string) $emailresponseto); ?>" data-inherit-value="inherit"
                             data-saved-value="<?php echo htmlspecialchars((string) $emailresponseto); ?>" />
                         <input class="form-control inherit-readonly 

@@ -126,6 +126,12 @@ class TbModal extends CWidget
         TbArray::defaultValue('id', $this->getId(), $this->htmlOptions);
         TbArray::defaultValue('role', 'dialog', $this->htmlOptions);
         TbArray::defaultValue('tabindex', '-1', $this->htmlOptions);
+        // The dialog is named by its title, announced as "<title>, Dialog"
+        $titleId = $this->htmlOptions['id'] . '-title';
+        TbArray::defaultValue('aria-modal', 'true', $this->htmlOptions);
+        if ($this->header !== null && $this->header !== '') {
+            TbArray::defaultValue('aria-labelledby', $titleId . ' ' . $titleId . '-dialogsr', $this->htmlOptions);
+        }
 
         TbHtml::addCssClass('modal', $this->htmlOptions);
         if ($this->fade) {
@@ -142,7 +148,7 @@ class TbModal extends CWidget
         echo TbHtml::openTag('div', $this->htmlOptions) . PHP_EOL;
         echo TbHtml::openTag('div', array('class' => 'modal-dialog' . $this->size)) . PHP_EOL;
         echo TbHtml::openTag('div', array('class' => 'modal-content')) . PHP_EOL;
-        echo TbHtml::modalHeader($this->header);
+        echo TbHtml::modalHeader($this->header, array('headingOptions' => array('id' => $titleId)));
 
         if (!isset($this->content)) {
             ob_start();
