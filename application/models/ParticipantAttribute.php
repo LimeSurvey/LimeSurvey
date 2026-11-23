@@ -76,10 +76,16 @@ class ParticipantAttribute extends LSActiveRecord
      *
      * @param array $data Row data with keys participant_id, attribute_id and value
      * @return void
+     * @throws InvalidArgumentException If the attribute ID is not a plain positive integer
      */
     public function updateParticipantAttributeValue($data)
     {
-        $data['attribute_id'] = (int) $data['attribute_id'];
+        // Callers pick encryption and date format by the ID as given, so an ID that a cast would change is refused
+        $attributeId = (int) $data['attribute_id'];
+        if ($attributeId < 1 || (string) $attributeId !== (string) $data['attribute_id']) {
+            throw new InvalidArgumentException('Invalid participant attribute ID');
+        }
+        $data['attribute_id'] = $attributeId;
         $result = Yii::app()->db->createCommand()
             ->select('COUNT(*)')
             ->where(

@@ -49,17 +49,52 @@ class ParticipantAttributeTest extends BaseModelTestCase
     }
 
     /**
-     * A non-numeric attribute ID never reaches the database as SQL.
+     * An attribute ID that is not a plain positive integer is refused and nothing is saved.
+     *
+     * The callers decide by the ID as given whether the value is encrypted, so an ID like "7 trailing" must not be
+     * cast to 7: The value would be saved to attribute 7 without encryption.
+     *
+     * @dataProvider invalidAttributeIdProvider
+     * @param mixed $attributeId The attribute ID to save a value for
+     * @return void
      */
-    public function testUpdateParticipantAttributeValueCastsAttributeId()
+    public function testUpdateParticipantAttributeValueRefusesInvalidAttributeId($attributeId)
     {
-        $model = \ParticipantAttribute::model();
-        $model->updateParticipantAttributeValue(['participant_id' => self::PARTICIPANT_ID, 'attribute_id' => '7 trailing', 'value' => 'first']);
-        $model->updateParticipantAttributeValue(['participant_id' => self::PARTICIPANT_ID, 'attribute_id' => '7 trailing', 'value' => 'second']);
+        $refused = false;
+        try {
+            \ParticipantAttribute::model()->updateParticipantAttributeValue(
+                ['participant_id' => self::PARTICIPANT_ID, 'attribute_id' => $attributeId, 'value' => 'first']
+            );
+        } catch (\InvalidArgumentException $exception) {
+            $refused = true;
+        }
 
-        $rows = \ParticipantAttribute::model()->findAll();
-        $this->assertCount(1, $rows);
-        $this->assertSame(7, (int) $rows[0]->attribute_id);
-        $this->assertSame('second', $rows[0]->value);
+        $this->assertTrue($refused, 'The attribute ID was not refused');
+        $this->assertCount(0, \ParticipantAttribute::model()->findAll());
+    }
+
+    /**
+     * Attribute IDs that are not a plain positive integer.
+     *
+     * @return array<string, array{0: mixed}> One attribute ID per case
+     */
+    public function invalidAttributeIdProvider()
+    {
+        return [
+            'trailing text' => ['7 trailing'],
+            'leading space' => [' 7'],
+            'trailing line break' => ["7\n"],
+            'leading zeros' => ['007'],
+            'plus sign' => ['+7'],
+            'negative' => ['-7'],
+            'zero' => ['0'],
+            'integer zero' => [0],
+            'decimal' => ['7.0'],
+            'float' => [7.5],
+            'too big for an integer' => ['99999999999999999999'],
+            'text' => ['seven'],
+            'empty' => [''],
+            'null' => [null],
+        ];
     }
 }
