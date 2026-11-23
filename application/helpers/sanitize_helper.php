@@ -78,6 +78,10 @@ if (!defined('BASEPATH')) {
 //
 /////////////////////////////////////////
 
+/*
+ * Flags for sanitize() and check()
+ * Deprecated since 7.11.0: Only used by the deprecated functions sanitize() and check(), will be removed in a future version
+ */
 define("PARANOID", 1);
 //define("SQL", 2);
 define("SYSTEM", 4);
@@ -219,7 +223,16 @@ function sanitize_cquestions($string, $min = '', $max = '')
     }
 }
 
-// sanitize a string in prep for passing a single argument to system() (or similar)
+/**
+ * Sanitizes a string in prep for passing a single argument to system() (or similar)
+ *
+ * @deprecated 7.11.0 Not used by core anymore, will be removed in a future version, use escapeshellarg()
+ *
+ * @param mixed $string The string to sanitize
+ * @param string|int $min Lowest allowed length, '' for no limit
+ * @param string|int $max Highest allowed length, '' for no limit
+ * @return string|false|null The quoted string, false when the length is outside min/max, null when $string is null
+ */
 function sanitize_system_string($string, $min = '', $max = '')
 {
     if (isset($string)) {
@@ -247,14 +260,30 @@ function sanitize_xss_string($string)
 
 
 
-// sanitize a string for SQL input (simple slash out quotes and slashes)
+/**
+ * Removes special characters from a database table name
+ *
+ * @deprecated 7.11.0 Not used by core anymore, will be removed in a future version, use App()->db->quoteTableName()
+ *
+ * @param mixed $string The table name to sanitize
+ * @return string
+ */
 function sanitize_sql_db_tablename($string)
 {
     $bad = array('*', '^', '&', '\'', '-', ';', '\"', '(', ')', '%', '$', '?');
     return str_replace($bad, "", (string) $string);
 }
 
-// sanitize a string for SQL input (simple slash out quotes and slashes)
+/**
+ * Removes the characters ( ) | & from a string used in an LDAP filter
+ *
+ * @deprecated 7.11.0 Not used by core anymore, will be removed in a future version, use ldap_escape()
+ *
+ * @param mixed $string The string to sanitize
+ * @param string|int $min Lowest allowed length, '' for no limit
+ * @param string|int $max Highest allowed length, '' for no limit
+ * @return string|false The sanitized string, false when the length is outside min/max
+ */
 function sanitize_ldap_string($string, $min = '', $max = '')
 {
     $pattern = '/(\)|\(|\||&)/';
@@ -307,11 +336,13 @@ function sanitize_int($integer, $min = '', $max = '')
     return (int) $int;
 }
 
-// sanitize a username
-// TODO: define the exact format of the username
-// allow for instance 0-9a-zA-Z@_-.
 /**
- * @param string $string
+ * Cuts a user name to 64 characters
+ *
+ * @deprecated 7.11.0 Not used by core anymore, will be removed in a future version
+ *
+ * @param string $string The user name
+ * @return string
  */
 function sanitize_user($string)
 {
@@ -320,9 +351,14 @@ function sanitize_user($string)
     return $string;
 }
 
-// sanitize a username
-// TODO: define the exact format of the username
-// allow for instance 0-9a-zA-Z@_-.
+/**
+ * Cuts the full name of a user to 50 characters
+ *
+ * @deprecated 7.11.0 Not used by core anymore, will be removed in a future version
+ *
+ * @param string $string The full name
+ * @return string
+ */
 function sanitize_userfullname($string)
 {
     $username_length = 50;
@@ -330,6 +366,14 @@ function sanitize_userfullname($string)
     return $string;
 }
 
+/**
+ * Cuts a label set name to 100 characters
+ *
+ * @deprecated 7.11.0 Not used by core anymore, will be removed in a future version
+ *
+ * @param string $string The label set name
+ * @return string
+ */
 function sanitize_labelname($string)
 {
     $labelname_length = 100;
@@ -370,7 +414,17 @@ function sanitize_float($float, $min = '', $max = '')
 }
 
 
-// glue together all the other functions
+/**
+ * Runs the sanitize functions selected by the flags on a value
+ *
+ * @deprecated 7.11.0 Not used by core anymore, will be removed in a future version, call the specific sanitize function instead
+ *
+ * @param mixed $input The value to sanitize
+ * @param int $flags Bitwise combination of PARANOID, INT, FLOAT, HTML, LDAP and SYSTEM
+ * @param string|int|float $min Lowest allowed value or length, '' for no limit
+ * @param string|int|float $max Highest allowed value or length, '' for no limit
+ * @return mixed The sanitized value, false when outside min/max
+ */
 function sanitize($input, $flags, $min = '', $max = '')
 {
     if ($flags & PARANOID) {
@@ -394,6 +448,16 @@ function sanitize($input, $flags, $min = '', $max = '')
     return $input;
 }
 
+/**
+ * Returns true when sanitize_paranoid_string() would not change the value
+ *
+ * @deprecated 7.11.0 Not used by core anymore, will be removed in a future version
+ *
+ * @param mixed $input The value to check
+ * @param string|int|float $min Lowest allowed value or length, '' for no limit
+ * @param string|int|float $max Highest allowed value or length, '' for no limit
+ * @return bool
+ */
 function check_paranoid_string($input, $min = '', $max = '')
 {
     if ($input != sanitize_paranoid_string($input, $min, $max)) {
@@ -402,6 +466,16 @@ function check_paranoid_string($input, $min = '', $max = '')
     return true;
 }
 
+/**
+ * Returns true when sanitize_int() would not change the value
+ *
+ * @deprecated 7.11.0 Not used by core anymore, will be removed in a future version
+ *
+ * @param mixed $input The value to check
+ * @param string|int|float $min Lowest allowed value or length, '' for no limit
+ * @param string|int|float $max Highest allowed value or length, '' for no limit
+ * @return bool
+ */
 function check_int($input, $min = '', $max = '')
 {
     if ($input != sanitize_int($input, $min, $max)) {
@@ -410,6 +484,16 @@ function check_int($input, $min = '', $max = '')
     return true;
 }
 
+/**
+ * Returns true when sanitize_float() would not change the value
+ *
+ * @deprecated 7.11.0 Not used by core anymore, will be removed in a future version
+ *
+ * @param mixed $input The value to check
+ * @param string|int|float $min Lowest allowed value or length, '' for no limit
+ * @param string|int|float $max Highest allowed value or length, '' for no limit
+ * @return bool
+ */
 function check_float($input, $min = '', $max = '')
 {
     if ($input != sanitize_float($input, $min, $max)) {
@@ -418,6 +502,16 @@ function check_float($input, $min = '', $max = '')
     return true;
 }
 
+/**
+ * Returns true when sanitize_html_string() would not change the value
+ *
+ * @deprecated 7.11.0 Not used by core anymore, will be removed in a future version
+ *
+ * @param mixed $input The value to check
+ * @param string $min Not used
+ * @param string $max Not used
+ * @return bool
+ */
 function check_html_string($input, $min = '', $max = '')
 {
     if ($input != sanitize_html_string($input)) {
@@ -427,6 +521,16 @@ function check_html_string($input, $min = '', $max = '')
 }
 
 
+/**
+ * Returns true when sanitize_system_string() would not change the value
+ *
+ * @deprecated 7.11.0 Not used by core anymore, will be removed in a future version
+ *
+ * @param mixed $input The value to check
+ * @param string|int|float $min Lowest allowed value or length, '' for no limit
+ * @param string|int|float $max Highest allowed value or length, '' for no limit
+ * @return bool
+ */
 function check_system_string($input, $min = '', $max = '')
 {
     if ($input != sanitize_system_string($input, $min, $max)) {
@@ -435,14 +539,17 @@ function check_system_string($input, $min = '', $max = '')
     return true;
 }
 
-// glue together all the other functions
 /**
- * @param $input
- * @param $flags
- * @param string $min
- * @param string $max
+ * Returns true when the sanitize functions selected by the flags would not change the value
+ *
+ * @deprecated 7.11.0 Not used by core anymore, will be removed in a future version
+ *
+ * @param mixed $input The value to check
+ * @param int $flags Bitwise combination of PARANOID, INT, FLOAT, HTML, LDAP and SYSTEM
+ * @param string|int|float $min Lowest allowed value or length, '' for no limit
+ * @param string|int|float $max Highest allowed value or length, '' for no limit
  * @return bool
- * @throws Exception
+ * @throws Exception When the flag UTF8 is set
  */
 function check($input, $flags, $min = '', $max = '')
 {
@@ -520,6 +627,16 @@ function sanitize_googleapikey($string)
     return preg_replace('/[^A-Za-z0-9_-]/', '', trim(strval($string)));
 }
 
+/**
+ * Casts a value to an integer, negative numbers are kept
+ *
+ * @deprecated 7.11.0 Not used by core anymore, will be removed in a future version
+ *
+ * @param mixed $integer The value to sanitize
+ * @param string|int $min Lowest allowed value, '' for no limit
+ * @param string|int $max Highest allowed value, '' for no limit
+ * @return int|false The integer, false when outside min/max
+ */
 function sanitize_signedint($integer, $min = '', $max = '')
 {
     $int = (int) $integer;

@@ -11,12 +11,44 @@ import {
   OperationsBuffer,
   STATES,
   errorToast,
+  getEntityInfo,
   processValidationErrorsAndUpdateOperations,
   replaceTempIdsInSurveyAndBuffer,
   updateSurveyEntitiesData,
   dayJsHelper,
   RandomNumber,
 } from 'helpers'
+
+// Error code of a valid change the current state of the survey doesn't allow (PersistErrorException::CODE_CHANGE_REFUSED)
+const CHANGE_REFUSED_CODE = 409
+
+/**
+ * Drops a refused change from the buffer. Only switching "Other" off is refused
+ * with CHANGE_REFUSED_CODE: The other changes merged into the same operation
+ * (e.g. a new code) stay in the buffer and are saved again. Without "Other" in the
+ * operation, the whole operation is dropped, so a refusal is never sent again.
+ *
+ * @param {OperationsBuffer} operationsBuffer The buffer to update
+ * @param {object} error The exception error of the refused operation
+ */
+const dropRefusedChange = (operationsBuffer, error) => {
+  const operation = operationsBuffer.getOperation(
+    error.id,
+    error.op,
+    error.entity
+  )
+  if (
+    Number(error.code) === CHANGE_REFUSED_CODE &&
+    'other' in (operation?.props ?? {})
+  ) {
+    delete operation.props.other
+    if (Object.keys(operation.props).length) {
+      delete operation.error
+      return
+    }
+  }
+  operationsBuffer.removeOperation(error.id, error.op, error.entity)
+}
 
 /**
  * Render children while loading the route's survey and saving buffered edits.
@@ -81,7 +113,7 @@ export const SurveyLogicProvider = ({ children }) => {
 
     const readyOperations = operationsBuffer.getOperations({ ready: true })
     // surveyRefreshRequired is only updated on the next render, too late for finallyCallback
-    let deleteRefused = false
+    let changeRefused = false
 
     const beforeCallback = () => {
       // Clear ready buffer items
@@ -188,20 +220,20 @@ export const SurveyLogicProvider = ({ children }) => {
         mapResult.operationsBuffer
       )
 
-      // A refused delete already removed the item locally: Drop the operation
-      // and reload the survey to show the item again.
-      const refusedDeletes = exceptionErrors.filter(
-        (error) => error.op === Operations.delete
+      // A refused deletion already removed the item locally, and a change the survey
+      // doesn't allow (switching "Other" off while conditions use it) is already shown:
+      // Drop the refused change (see dropRefusedChange()) and reload the survey to show the saved state again.
+      // Other failed updates stay in the buffer marked as error, so the user can correct them.
+      const refusedChanges = exceptionErrors.filter(
+        (error) =>
+          error.op === Operations.delete ||
+          Number(error.code) === CHANGE_REFUSED_CODE
       )
-      refusedDeletes.forEach((error) => {
-        mapResult.operationsBuffer.removeOperation(
-          error.id,
-          error.op,
-          error.entity
-        )
-      })
-      if (refusedDeletes.length) {
-        deleteRefused = true
+      refusedChanges.forEach((error) =>
+        dropRefusedChange(mapResult.operationsBuffer, error)
+      )
+      if (refusedChanges.length) {
+        changeRefused = true
         setSurveyRefreshRequired(true)
       }
 
@@ -273,9 +305,58 @@ export const SurveyLogicProvider = ({ children }) => {
       )
       if (
         pendingOperations.isEmpty() &&
-        (surveyRefreshRequired || deleteRefused)
+        (surveyRefreshRequired || changeRefused)
       ) {
+        // The question settings show a copy of the focused question: Refresh it too,
+        // also when a refusal waited for later edits. Nothing is pending, so the
+        // reloaded question is the current one.
         fetchSurvey(surveyId)
+          .then(({ survey } = {}) => {
+            // Another survey was opened meanwhile: Its focus must stay
+            const requestedSurveyId = queryClient.getQueryData([
+              STATES.REQUESTED_SURVEY_ID,
+            ])
+            if (
+              String(requestedSurveyId) !== String(surveyId) ||
+              String(survey?.sid) !== String(surveyId)
+            ) {
+              return
+            }
+            // Edits made during the reload are shown already and not saved yet:
+            // Restore the focus with the next reload, after they are saved
+            const hasPendingEdits =
+              !new OperationsBuffer(
+                queryClient.getQueryData([STATES.BUFFER])
+              ).isEmpty() ||
+              queryClient.getQueryData([
+                'appState',
+                STATES.IS_PATCH_SURVEY_RUNNING,
+              ])
+            if (hasPendingEdits) {
+              setSurveyRefreshRequired(true)
+              return
+            }
+            const { focused } =
+              queryClient.getQueryData([STATES.FOCUSED_ENTITY]) || {}
+            if (!focused?.qid || !survey?.questionGroups) {
+              return
+            }
+            // By ID: A restored deletion can move the question to another index
+            const {
+              question,
+              groupIndex: currentGroupIndex,
+              questionIndex: currentQuestionIndex,
+            } = getEntityInfo(focused.qid, survey, EntitiesType.question)
+            if (question) {
+              setFocused(
+                question,
+                currentGroupIndex,
+                currentQuestionIndex,
+                false
+              )
+            }
+          })
+          .catch((error) => errorToast(error.message))
         setSurveyRefreshRequired(false)
       }
     }

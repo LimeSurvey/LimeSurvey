@@ -154,8 +154,12 @@ class RenderArrayOfIncSameDecQuestions extends QuestionBaseRenderer
         array &$inputnames
     ): string {
         $sRows = '';
-        foreach ($aSubquestions as $i => $ansrow) {
+        $rowIndex = 0;
+        foreach ($aSubquestions as $ansrow) {
             $myfname    = $this->sSGQA . "_S" . $ansrow['qid'];
+            if ($this->isRowStaticallyHidden($myfname)) {
+                continue;
+            }
             $answertext = $ansrow->questionl10ns[$sSurveyLanguage]->question;
             /* Check the sub question mandatory violation */
             $error = ($this->isMandatory() && in_array($myfname, $aMandatoryViolationSubQ)) ? true : false;
@@ -181,11 +185,12 @@ class RenderArrayOfIncSameDecQuestions extends QuestionBaseRenderer
                     'checkconditionFunction' => $this->checkconditionFunction,
                     'error'                  => $error,
                     'no_answer'              => $this->showNoAnswer(),
-                    'odd'                    => ($i % 2),
+                    'odd'                    => ($rowIndex % 2),
                     'relevanceClass'         => $this->getCurrentRelevecanceClass($myfname),
                 )
             );
             $inputnames[] = $myfname;
+            $rowIndex++;
         }
         return $sRows;
     }

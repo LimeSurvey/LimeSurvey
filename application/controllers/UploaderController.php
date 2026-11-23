@@ -54,6 +54,8 @@ class UploaderController extends SurveyController
         $sOriginalFileName = Yii::app()->request->getParam('name', ''); // Used for javascript return only
         $sMode = Yii::app()->request->getParam('mode');
         $sPreview = (int) Yii::app()->request->getParam('preview', 0);
+        // Set by RenderFileUpload when the question is shown: 1 for question/group preview and for surveys that are not active
+        $isPreview = (int) $sessionState->get('preview', 0);
 
         // No file may be stored or deleted while the maintenance mode keeps participants from taking surveys
         if (($bDelete || $sMode == "upload") && SettingGlobal::areParticipantsLocked()) {
@@ -208,8 +210,7 @@ class UploaderController extends SurveyController
             $event->set('surveyId', $surveyid);
             $event->set('responseId', $sessionState->get('srid')); // NULL if not exist
             $event->set('qid', $oQuestion->qid);
-            // Kept for backward compatibility of plugins: Always null
-            $event->set('preview', null);
+            $event->set('preview', $isPreview);
             $event->set('fieldname', $sFieldName);
             $event->set('maxfilesize', $maxfilesize);
             $event->set('valid_extensions_array', $valid_extensions_array);
@@ -339,8 +340,8 @@ class UploaderController extends SurveyController
                 echo ls_json_encode($return);
                 Yii::app()->end();
             }
-            // if everything went fine and the file was uploaded successfully,
-            // send the file related info back to the client
+            // If everything went fine and the file was uploaded successfully, send the file related info back to the client.
+            // Preview uploads are stored the same way: The preview page needs the file to show it
             $iFileUploadTotalSpaceMB = Yii::app()->getConfig("iFileUploadTotalSpaceMB");
             if ($iFileUploadTotalSpaceMB > 0 && ((calculateTotalFileUploadUsage() + ($size / 1024 / 1024)) > $iFileUploadTotalSpaceMB)) {
                 $return = array(
@@ -381,14 +382,11 @@ class UploaderController extends SurveyController
         $meta = '';
         App()->getClientScript()->registerPackage('question-file-upload');
 
-        $aSurveyInfo = getSurveyInfo($surveyid, $sLanguage);
         $oEvent = new PluginEvent('beforeSurveyPage');
         $oEvent->set('surveyId', $surveyid);
         App()->getPluginManager()->dispatchEvent($oEvent);
         /* Theme set by a plugin in beforeSurveyPage */
         $sPluginTemplateName = $oEvent->get('template');
-        $sTemplateDir = getTemplatePath($aSurveyInfo['template']);
-        $sTemplateUrl = getTemplateURL($aSurveyInfo['template']) . "/";
         $oTemplate = Template::model()->getInstance(empty($sPluginTemplateName) ? '' : $sPluginTemplateName, $surveyid);
         $sNeededScriptVar = '
             var uploadurl = uploadurl || "' . $this->createUrl('/uploader/index/mode/upload/') . '";
@@ -444,7 +442,7 @@ class UploaderController extends SurveyController
             'minfiles' => $minfiles,
             'maxfiles' => $maxfiles,
             'qidattributes' => $qidattributes,
-            'preview' => null
+            'preview' => $isPreview
         ];
 
         $body = '<body class="uploader">';
