@@ -1,7 +1,5 @@
 <?php
 
-use LimeSurvey\Models\Services\SurveySessionState;
-
 /**
  * abstract Class QuestionTypeRoot
  * The aFieldArray Array contains the following
@@ -44,24 +42,19 @@ abstract class QuestionBaseRenderer extends StaticModel
     protected $aStyles = [];
     protected $questionOrderingService;
 
-    /**
-     * @param array $aFieldArray Question field array, see the class description
-     * @param bool $bRenderDirect
-     */
     public function __construct($aFieldArray, $bRenderDirect = false)
     {
         $this->aFieldArray = $aFieldArray;
         $this->sSGQA = $this->aFieldArray[1];
         $this->oQuestion = Question::model()->findByPk($aFieldArray[0]);
         $this->bRenderDirect = $bRenderDirect;
-        $sessionState = SurveySessionState::forSurvey((int) $this->oQuestion->sid);
-        $this->sLanguage = $this->setDefaultIfEmpty(@$aFieldArray['language'], $sessionState->getLanguage());
+        $this->sLanguage = $this->setDefaultIfEmpty(@$aFieldArray['language'], @$_SESSION['responses_' . $this->oQuestion->sid]['s_lang']);
         if (!$this->sLanguage) {
                 $this->sLanguage = $this->oQuestion->survey->language;
         }
 
         $this->aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($this->oQuestion->qid);
-        $this->aSurveySessionArray = $sessionState->exists() ? $sessionState->toArray() : null;
+        $this->aSurveySessionArray = @$_SESSION['responses_' . $this->oQuestion->sid];
         $this->mSessionValue = @$this->setDefaultIfEmpty($this->aSurveySessionArray[$this->sSGQA], '');
 
         $oQuestionTemplate = QuestionTemplate::getNewInstance($this->oQuestion);
@@ -106,15 +99,17 @@ abstract class QuestionBaseRenderer extends StaticModel
         Yii::app()->getClientScript()->registerPackage('timer-addition');
 
         $surveyId = App()->getConfig('surveyID');
-        $sessionState = SurveySessionState::forSurvey((int) $surveyId);
         /**
-         * The following lines cover for previewing questions, because no session field array exists.
+         * The following lines cover for previewing questions, because no $_SESSION['responses_'.$surveyId]['fieldarray'] exists.
          * This just stops error messages occurring
          */
-        if (!$sessionState->hasFieldArray()) {
-            $sessionState->setFieldArray([]);
+        if (!isset($_SESSION['responses_' . $surveyId]['fieldarray'])) {
+            $_SESSION['responses_' . $surveyId]['fieldarray'] = [];
         }
         /* End */
+
+        //Used to count how many timer questions in a page, and ensure scripts only load once
+        $_SESSION['responses_' . $oSurvey->sid]['timercount'] = (isset($_SESSION['responses_' . $oSurvey->sid]['timercount'])) ? $_SESSION['responses_' . $oSurvey->sid]['timercount']++ : 1;
 
         /* Work in all mode system : why disable it ? */
         //~ if ($thissurvey['format'] != "S")
@@ -171,8 +166,8 @@ abstract class QuestionBaseRenderer extends StaticModel
         $time_limit_warning_2_message = str_replace("{TIME}", $timer_html, $time_limit_warning_2_message);
 
         $timersessionname = "timer_question_" . $oQuestion->qid;
-        if ($sessionState->hasFieldValue($timersessionname)) {
-            $time_limit = $sessionState->getFieldValue($timersessionname);
+        if (isset($_SESSION['responses_' . $surveyId][$timersessionname])) {
+            $time_limit = $_SESSION['responses_' . $surveyId][$timersessionname];
         }
 
         $disable = null;
@@ -188,36 +183,38 @@ abstract class QuestionBaseRenderer extends StaticModel
             true
         );
 
-        $iAction = '';
-        if ($oSurvey->format == "G") {
-            $qcount = 0;
-            foreach (SurveySessionState::forSurvey((int) $oSurvey->sid)->getFieldArray() as $ib) {
-                if ($ib[5] == $oQuestion->gid) {
-                    $qcount++;
+        if ($_SESSION['responses_' . $oSurvey->sid]['timercount'] < 2) {
+            $iAction = '';
+            if ($oSurvey->format == "G") {
+                $qcount = 0;
+                foreach ($_SESSION['responses_' . $oSurvey->sid]['fieldarray'] as $ib) {
+                    if ($ib[5] == $oQuestion->gid) {
+                        $qcount++;
+                    }
+                }
+                // Override all other options and just allow freezing, survey is presented in group by group mode
+                // Why don't allow submit in Group by group mode, this surely broke 'mandatory' question, but this remove a great system for user (Denis 140224)
+                if ($qcount > 1) {
+                    $iAction = '3';
                 }
             }
-            // Override all other options and just allow freezing, survey is presented in group by group mode
-            // Why don't allow submit in Group by group mode, this surely broke 'mandatory' question, but this remove a great system for user (Denis 140224)
-            if ($qcount > 1) {
+
+            /* If this is a preview, don't allow the page to submit/reload */
+            $thisaction = returnglobal('action');
+            if ($thisaction == "previewquestion" || $thisaction == "previewgroup" || $this->bPreview == true) {
                 $iAction = '3';
             }
-        }
 
-        /* If this is a preview, don't allow the page to submit/reload */
-        $thisaction = returnglobal('action');
-        if ($thisaction == "previewquestion" || $thisaction == "previewgroup" || $this->bPreview == true) {
-            $iAction = '3';
+            $output .= Yii::app()->twigRenderer->renderQuestion('/survey/questions/question_timer/timer_javascript', array(
+                'timersessionname' => $timersessionname,
+                'time_limit' => $time_limit,
+                'iAction' => $iAction,
+                'disable_next' => $disable_next,
+                'disable_prev' => $disable_prev,
+                'time_limit_countdown_message' => $time_limit_countdown_message,
+                'time_limit_message_delay' => $time_limit_message_delay
+                ), true);
         }
-
-        $output .= Yii::app()->twigRenderer->renderQuestion('/survey/questions/question_timer/timer_javascript', array(
-            'timersessionname' => $timersessionname,
-            'time_limit' => $time_limit,
-            'iAction' => $iAction,
-            'disable_next' => $disable_next,
-            'disable_prev' => $disable_prev,
-            'time_limit_countdown_message' => $time_limit_countdown_message,
-            'time_limit_message_delay' => $time_limit_message_delay
-            ), true);
 
         $output .= Yii::app()->twigRenderer->renderQuestion(
             '/survey/questions/question_timer/timer_content',
@@ -279,16 +276,9 @@ abstract class QuestionBaseRenderer extends StaticModel
         return count($this->aSubQuestions[$iScaleId]);
     }
 
-    /**
-     * Returns a value from the survey session of the question's survey.
-     *
-     * @param string $sIndex Session key, e.g. a field name
-     * @param mixed $default Returned if the value is not set or null
-     * @return mixed
-     */
     protected function getFromSurveySession($sIndex, $default = "")
     {
-        return SurveySessionState::forSurvey((int) $this->oQuestion->sid)->get($sIndex, $default);
+        return $_SESSION['responses_' . $this->oQuestion->sid][$sIndex] ?? $default;
     }
 
     protected function applyPackages()
@@ -354,6 +344,56 @@ abstract class QuestionBaseRenderer extends StaticModel
         return trim((string) $value) == '' ? $default : $value;
     }
 
+    /**
+     * 解析 max_answers / min_answers 这类"可选个数"限制。
+     *
+     * 属性值既可以是数字，也可以是表达式；只有纯数字才能在浏览器端
+     * 用于"阻止继续勾选"，表达式一律视为不限（否则会误阻止用户）。
+     *
+     * @param mixed $raw
+     * @return int|null
+     */
+    protected function parseAnswerLimit($raw): ?int
+    {
+        $value = trim((string) $raw);
+        if ($value === '' || !ctype_digit($value)) {
+            return null;
+        }
+        $limit = (int) $value;
+        return $limit > 0 ? $limit : null;
+    }
+
+    /**
+     * 为多选题注册"最多可选 N 项"的前端拦截脚本。
+     *
+     * 提示文案由 PHP 侧翻译，JS 只做占位符替换，符合上游国际化要求。
+     *
+     * @param int $maxAnswers
+     * @return void
+     */
+    protected function registerAnswerLimitScript(int $maxAnswers)
+    {
+        $this->aScriptFiles[] = [
+            'path' => Yii::app()->getConfig('generalscripts') . 'multiplechoice_answer_limit.js',
+            'position' => LSYii_ClientScript::POS_BEGIN,
+        ];
+        // 名字必须带 qid：CClientScript 用 $scripts[$position][$id] 存储，
+        // 同名会互相覆盖，导致同一页只有最后一道限题生效。
+        $this->addScript(
+            'multiAnswerLimit_' . $this->oQuestion->qid,
+            sprintf(
+                'LSMultiAnswerLimit.init(%d, %d, %s);',
+                $this->oQuestion->qid,
+                $maxAnswers,
+                json_encode(
+                    sprintf(gT("You can select at most %s answer(s)."), '{limit}'),
+                    JSON_UNESCAPED_UNICODE
+                )
+            ),
+            LSYii_ClientScript::POS_POSTSCRIPT
+        );
+    }
+
     protected function registerAssets()
     {
         $this->applyPackages();
@@ -369,8 +409,8 @@ abstract class QuestionBaseRenderer extends StaticModel
     */
     public function getCurrentRelevecanceClass($myfname)
     {
-        $sessionState = SurveySessionState::forSurvey((int) $this->oQuestion->sid);
-        $relevanceStatus = !$sessionState->hasRelevance($myfname) || $sessionState->getRelevance($myfname);
+        $aSurveySessionArray = $_SESSION["responses_{$this->oQuestion->sid}"];
+        $relevanceStatus = !isset($aSurveySessionArray['relevanceStatus'][$myfname]) || $aSurveySessionArray['relevanceStatus'][$myfname];
         if ($relevanceStatus) {
             return "";
         }
@@ -391,8 +431,8 @@ abstract class QuestionBaseRenderer extends StaticModel
                     continue;
                 }
                 if (
-                    (!$sessionState->hasRelevance($sExcludeField) || $sessionState->getRelevance($sExcludeField))
-                    && $sessionState->getFieldValue($sExcludeField, '') === "Y"
+                    (!isset($aSurveySessionArray['relevanceStatus'][$sExcludeField]) || $aSurveySessionArray['relevanceStatus'][$sExcludeField])
+                    && ($aSurveySessionArray[$sExcludeField] ?? '') === "Y"
                 ) {
                     return "ls-irrelevant ls-disabled";
                 }
@@ -402,37 +442,6 @@ abstract class QuestionBaseRenderer extends StaticModel
         // Currently null/0/false=> hidden , 1 : disabled
         $filterStyle = !empty($this->aQuestionAttributes['array_filter_style']);
         return ($filterStyle) ?  "ls-irrelevant ls-disabled" : "ls-irrelevant ls-hidden";
-    }
-
-    /**
-     * Whether a row can be left out of the HTML: It is hidden by its relevance
-     * and nothing answered on the current page can show it again.
-     * Rows that are only disabled (array_filter_style, exclude_all_others) are always rendered.
-     * @param string $myfname The name of the question/row to test
-     * @return boolean
-     */
-    public function isRowStaticallyHidden($myfname)
-    {
-        // The rendered question can be cached for other respondents, who need all rows
-        if (Yii::app()->getConfig('emcache_cache_qanda')) {
-            return false;
-        }
-        if ($this->getCurrentRelevecanceClass($myfname) !== 'ls-irrelevant ls-hidden') {
-            return false;
-        }
-        return LimeExpressionManager::isSubQuestionRelevanceStatic($this->oQuestion->qid, $myfname);
-    }
-
-    /**
-     * Remove the subquestions whose row is left out of the HTML, so rows and repeated headers can be counted
-     * @param array<int, Question|array> $subQuestions the subquestions of one scale, keys are kept
-     * @return array<int, Question|array>
-     */
-    protected function withoutStaticallyHiddenRows(array $subQuestions)
-    {
-        return array_filter($subQuestions, function ($subQuestion) {
-            return !$this->isRowStaticallyHidden($this->sSGQA . '_S' . $subQuestion['qid']);
-        });
     }
     /**
     * Find the label / input width

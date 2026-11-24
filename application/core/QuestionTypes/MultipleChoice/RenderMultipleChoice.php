@@ -44,6 +44,12 @@ class RenderMultipleChoice extends QuestionBaseRenderer
     /** @var bool|null whether Other is ticked without text after a blocked submit, computed once per render */
     private $otherInvalid;
 
+    /** @var int|null 最多可选个数（max_answers），null 表示不限 */
+    private $maxAnswers;
+
+    /** @var int|null 最少可选个数（min_answers），null 表示不限制 */
+    private $minAnswers;
+
     const OTHER_POS_END = 'end';
     const OTHER_POS_START = 'beginning';
     const OTHER_POS_AFTER_SUBQUESTION = 'specific';
@@ -66,7 +72,11 @@ class RenderMultipleChoice extends QuestionBaseRenderer
             $this->subquestionBeforeOther = $this->getQuestionAttribute('other_position_code');
         }
         $this->otherText = $this->setDefaultIfEmpty($this->getQuestionAttribute('other_replace_text', $this->sLanguage), gT('Other:'));
+
+        $this->maxAnswers = $this->parseAnswerLimit($this->getQuestionAttribute('max_answers'));
+        $this->minAnswers = $this->parseAnswerLimit($this->getQuestionAttribute('min_answers'));
     }
+
 
     public function getMainView()
     {
@@ -275,6 +285,9 @@ class RenderMultipleChoice extends QuestionBaseRenderer
             'basename'         => $this->sSGQA,
             'anscount'         => $this->getQuestionCount(),
             'iNbCols'          => $this->iNbCols,
+            'maxAnswers'       => $this->maxAnswers,
+            'minAnswers'       => $this->minAnswers,
+            'questionId'       => $this->oQuestion->qid,
             /* @deprecated since 6.3.3 : Leave it for old question theme compatibility, be sure to don't add columns */
             'iMaxRowsByColumn' => $this->getQuestionCount() + 3,
             'coreClass'        => $this->sCoreClasses,
@@ -285,6 +298,10 @@ class RenderMultipleChoice extends QuestionBaseRenderer
             'otherMandatoryTipId' => $this->getOtherMandatoryTipId(),
             'otherInvalid'     => $this->isOtherInvalid(),
         ), true);
+
+        if ($this->maxAnswers !== null) {
+            $this->registerAnswerLimitScript($this->maxAnswers);
+        }
 
         $this->registerAssets();
         $this->inputnames[] = $this->sSGQA;

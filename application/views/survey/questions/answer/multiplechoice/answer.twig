@@ -7,13 +7,19 @@
  * @var $name
  * @var $anscount
  * @var $othertext
+ * @var $maxAnswers : int|null 最多可选个数（max_answers）
+ * @var $questionId : int 题目 ID（超限提示定位用）
+ * @var $minAnswers : int|null 最少可选个数（min_answers）
  */
  #}
 <!-- Multiple Choice -->
 
 <!-- answer -->
 <input type="hidden" name="MULTI{{name}}" value="{{anscount}}" />
-<ul class="list-unstyled {{coreClass}} {% if iNbCols > 1 %} ls-column-count-{{iNbCols}}{% endif %}"{% if iNbCols > 1 %} data-column-count={{iNbCols}}{% endif %}>
+<ul class="list-unstyled {{coreClass}} {% if iNbCols > 1 %} ls-column-count-{{iNbCols}}{% endif %}"
+    {%- if iNbCols > 1 %} data-column-count={{iNbCols}}{% endif %}
+    {%- if maxAnswers is not null %} data-max-answers="{{ maxAnswers }}" data-question-id="{{ questionId }}"{% endif %}
+    {%- if minAnswers is not null %} data-min-answers="{{ minAnswers }}"{% endif %}>
     {% for aRow in aRows %}
         {% set rowTemplate = aRow.other ? './survey/questions/answer/multiplechoice/rows/answer_row_other.twig' : './survey/questions/answer/multiplechoice/rows/answer_row.twig' %}
         <!-- Row {{loop.index}} -->
