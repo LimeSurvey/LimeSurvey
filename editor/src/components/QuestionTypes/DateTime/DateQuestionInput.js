@@ -1,4 +1,4 @@
-import { useId, useMemo, useState } from 'react'
+import { useId, useMemo, useRef, useState } from 'react'
 import { format as sprintf } from 'util'
 
 import { DateTimePickerComponent } from 'components/UIComponents/DateTimePicker/DateTimePicker'
@@ -8,6 +8,7 @@ import {
   dayJsHelper,
   getDateQuestionSettings,
   isDateInLimits,
+  isFullDateFormat,
   DATE_QUESTION_STORAGE_FORMAT,
 } from 'helpers'
 
@@ -41,6 +42,8 @@ export const DateQuestionInput = ({
   const errorId = useId()
   const [siteSettings] = useAppState(STATES.SITE_SETTINGS)
   const [error, setError] = useState('')
+  // The picker's last validation error, e.g. "invalidDate" or "minDate"
+  const pickerErrorRef = useRef(null)
   const valueInfo = values?.[0]
 
   const settings = useMemo(
@@ -68,14 +71,20 @@ export const DateQuestionInput = ({
     return parsed.isValid() ? parsed : null
   }, [participantMode, valueInfo?.value])
 
+  // The limits are full dates: Show them in the question's format only when it shows a full
+  // date too, otherwise (e.g. mm/yyyy or HH:MM) in the survey's date format
+  const limitFormat = [settings.format, settings.surveyFormat].find(
+    isFullDateFormat
+  )
+
   /**
-   * Formats a limit for the "between" message, in the format the question shows.
+   * Formats a limit for the "between" message.
    *
    * @param {string} limit The limit from the settings
    * @returns {string} The formatted limit
    */
   const formatLimit = (limit) =>
-    dayJsHelper(limit).format(settings.format || DATE_QUESTION_STORAGE_FORMAT)
+    dayJsHelper(limit).format(limitFormat || 'YYYY-MM-DD')
   const rangeMessage = sprintf(
     t('Answer must be between %s and %s'),
     formatLimit(settings.minDate),
@@ -118,7 +127,30 @@ export const DateQuestionInput = ({
   }
 
   const handlePickerError = (reason) => {
+    pickerErrorRef.current = reason
+    // An invalid date is only reported on leaving the field (see handlePickerBlur), as MUI
+    // also reports it while a date is still being typed
     setError(RANGE_ERRORS.includes(reason) ? rangeMessage : '')
+  }
+
+  /**
+   * Explains an invalid typed date (e.g. 31/02/2001) once the input loses focus.
+   *
+   * @param {FocusEvent} event The blur event, bubbled up from the picker's input
+   * @returns {void}
+   */
+  const handlePickerBlur = (event) => {
+    if (
+      event.target?.tagName === 'INPUT' &&
+      pickerErrorRef.current === 'invalidDate'
+    ) {
+      setError(
+        sprintf(
+          t('Date %s is invalid, please review your answer.'),
+          event.target.value
+        )
+      )
+    }
   }
 
   return (
@@ -131,23 +163,26 @@ export const DateQuestionInput = ({
           onPartialChange={handleDropdownPartialChange}
           disabled={!participantMode}
           ariaLabel={formatLabel}
-          ariaDescribedBy={describedBy}
+          invalid={Boolean(error)}
+          errorId={errorId}
         />
       ) : (
-        <DateTimePickerComponent
-          minDate={settings.minDate}
-          maxDate={settings.maxDate}
-          format={settings.format}
-          views={settings.views}
-          minuteStep={settings.minuteStep}
-          values={participantMode ? values : []}
-          onValueChange={onValueChange}
-          onError={handlePickerError}
-          participantMode={participantMode}
-          previewDisabled={!participantMode}
-          ariaLabel={formatLabel}
-          ariaDescribedBy={describedBy}
-        />
+        <div onBlur={handlePickerBlur}>
+          <DateTimePickerComponent
+            minDate={settings.minDate}
+            maxDate={settings.maxDate}
+            format={settings.format}
+            views={settings.views}
+            minuteStep={settings.minuteStep}
+            values={participantMode ? values : []}
+            onValueChange={onValueChange}
+            onError={handlePickerError}
+            participantMode={participantMode}
+            previewDisabled={!participantMode}
+            ariaLabel={formatLabel}
+            ariaDescribedBy={describedBy}
+          />
+        </div>
       )}
       {settings.showTip && !settings.dropdown && settings.displayFormat && (
         <p id={tipId} className="form-text mb-0">

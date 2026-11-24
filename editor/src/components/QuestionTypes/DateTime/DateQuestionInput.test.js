@@ -99,6 +99,25 @@ describe('DateQuestionInput in dropdown mode', () => {
     )
   })
 
+  it('shows the limits as full dates when the format has no day', () => {
+    const onValueChange = jest.fn()
+    renderDropdowns(
+      { date_format: 'mm/yyyy', date_min: '2024-05-15' },
+      { onValueChange }
+    )
+
+    select('Month', '5')
+    select('Year', '2024')
+
+    expect(savedValues(onValueChange)).toEqual([])
+    expect(screen.getByRole('alert').textContent).toBe(
+      'Answer must be between 15.05.2024 and 31.12.2187'
+    )
+
+    select('Month', '6')
+    expect(savedValues(onValueChange)).toEqual(['2024-06-01 00:00:00'])
+  })
+
   it('does not save an impossible date', () => {
     const onValueChange = jest.fn()
     renderDropdowns({}, { onValueChange })
@@ -108,7 +127,23 @@ describe('DateQuestionInput in dropdown mode', () => {
     select('Year', '2001')
 
     expect(savedValues(onValueChange)).toEqual([])
-    expect(screen.getByRole('alert')).toBeTruthy()
+    const alert = screen.getByRole('alert')
+    expect(alert.textContent).toBe(
+      'Date 31.02.2001 is invalid, please review your answer.'
+    )
+    screen.getAllByRole('combobox').forEach((element) => {
+      expect(element.getAttribute('aria-invalid')).toBe('true')
+      expect(element.getAttribute('aria-describedby')).toBe(alert.id)
+    })
+
+    // Correcting the day makes the date valid again and clears the invalid state
+    select('Day', '28')
+    expect(savedValues(onValueChange)).toEqual(['2001-02-28 00:00:00'])
+    expect(screen.queryByRole('alert')).toBeNull()
+    screen.getAllByRole('combobox').forEach((element) => {
+      expect(element.hasAttribute('aria-invalid')).toBe(false)
+      expect(element.hasAttribute('aria-describedby')).toBe(false)
+    })
   })
 
   it('shows the stored answer and the minute step', () => {

@@ -4,6 +4,7 @@ import {
   DATE_QUESTION_DEFAULT_MAX,
   DATE_QUESTION_DEFAULT_MIN,
   convertSurveyDateFormat,
+  formatDateParts,
   getDateFormatParts,
   getDatePickerViews,
   getDateQuestionLimit,
@@ -11,6 +12,7 @@ import {
   getDateQuestionYears,
   getSurveyDateFormatsByLanguage,
   isDateInLimits,
+  isFullDateFormat,
   normalizeDateToViews,
 } from './dateQuestionUtils'
 
@@ -100,6 +102,7 @@ describe('getDateQuestionSettings', () => {
       minDate: '1900-01-01',
       maxDate: '2030-06-30 23:59:59',
       format: 'DD.MM.YYYY',
+      surveyFormat: 'DD.MM.YYYY',
       displayFormat: 'dd.mm.yyyy',
       views: ['year', 'month', 'day'],
       dropdown: true,
@@ -142,6 +145,26 @@ describe('getDateFormatParts', () => {
 
   it('returns nothing without a format', () => {
     expect(getDateFormatParts(undefined)).toEqual([])
+  })
+})
+
+describe('formatDateParts', () => {
+  const values = { year: '2001', month: '2', day: '31', hour: '9', minute: '5' }
+
+  it('writes the parts in the format, also for dates that do not exist', () => {
+    expect(formatDateParts('DD/MM/YYYY', values)).toBe('31/02/2001')
+    expect(formatDateParts('D.M.YY', values)).toBe('31.2.01')
+    expect(formatDateParts('DD.MM.YYYY HH:mm', values)).toBe('31.02.2001 09:05')
+  })
+})
+
+describe('isFullDateFormat', () => {
+  it('requires year, month and day', () => {
+    expect(isFullDateFormat('DD.MM.YYYY')).toBe(true)
+    expect(isFullDateFormat('YYYY-MM-DD HH:mm')).toBe(true)
+    expect(isFullDateFormat('MM/YYYY')).toBe(false)
+    expect(isFullDateFormat('HH:mm')).toBe(false)
+    expect(isFullDateFormat(undefined)).toBe(false)
   })
 })
 

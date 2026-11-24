@@ -133,6 +133,42 @@ export const getDateFormatParts = (format) => {
 }
 
 /**
+ * Writes date part values in a dayjs format, also for dates dayjs can't format because they
+ * don't exist (e.g. 31 February).
+ *
+ * @param {string|undefined} format The dayjs format, e.g. "DD/MM/YYYY"
+ * @param {{year: (string|number), month: (string|number), day: (string|number), hour: (string|number), minute: (string|number)}} values The part values
+ * @returns {string} The formatted date, e.g. "31/02/1989"
+ */
+export const formatDateParts = (format, values) =>
+  getDateFormatParts(format)
+    .map(({ type, token }) => {
+      if (type === 'separator') {
+        return token
+      }
+
+      const value = String(values?.[type] ?? '')
+      if (token === 'YY') {
+        return value.slice(-2)
+      }
+
+      return token.length === 2 ? value.padStart(2, '0') : value
+    })
+    .join('')
+
+/**
+ * Checks whether a dayjs format shows a full date: Year, month and day.
+ *
+ * @param {string|undefined} format The dayjs format
+ * @returns {boolean} True when the format contains year, month and day
+ */
+export const isFullDateFormat = (format) => {
+  const types = getDateFormatParts(format).map((part) => part.type)
+
+  return ['year', 'month', 'day'].every((type) => types.includes(type))
+}
+
+/**
  * Resets the parts of a date its format doesn't show, like the survey does when it saves a
  * date answer: A missing year becomes 1970, month January, day 1 and hours or minutes 0.
  *
@@ -217,7 +253,8 @@ export const getSurveyDateFormatsByLanguage = (survey) =>
  * @param {string} language The current language code
  * @param {number|string|undefined} surveyDateFormat The survey language's date format index
  * @param {object|undefined} dateFormats The site's date formats (index => {dateformat, jsdate})
- * @returns {{minDate: string, maxDate: string, format: (string|undefined), displayFormat: string,
+ * @returns {{minDate: string, maxDate: string, format: (string|undefined),
+ *   surveyFormat: (string|undefined), displayFormat: string,
  *   views: (string[]|undefined), dropdown: boolean, minuteStep: number, monthStyle: number,
  *   reverse: boolean, showTip: boolean}} The date question settings
  */
@@ -251,6 +288,7 @@ export const getDateQuestionSettings = (
       true
     ),
     format,
+    surveyFormat: surveyFormat?.jsdate || undefined,
     displayFormat: questionFormat || surveyFormat?.dateformat || '',
     views: getDatePickerViews(format),
     dropdown: getAttributeString(question, 'dropdown_dates', language) === '1',

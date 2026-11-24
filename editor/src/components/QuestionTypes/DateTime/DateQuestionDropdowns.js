@@ -1,6 +1,11 @@
 import { useId, useMemo, useState } from 'react'
 
-import { dayJsHelper, getDateFormatParts, getDateQuestionYears } from 'helpers'
+import {
+  dayJsHelper,
+  formatDateParts,
+  getDateFormatParts,
+  getDateQuestionYears,
+} from 'helpers'
 
 const PART_ORDER = ['year', 'month', 'day', 'hour', 'minute']
 
@@ -94,10 +99,11 @@ const withCurrentValue = (numbers, current) => {
  * @param {object} props.settings The settings from getDateQuestionSettings()
  * @param {import('dayjs').Dayjs|null} props.value The current date
  * @param {Function} props.onChange Called with the complete date, or null when all dropdowns are cleared
- * @param {Function} props.onPartialChange Called with "incomplete" or "invalid" while no complete date is selected
+ * @param {Function} props.onPartialChange Called with "incomplete", or "invalid" and the date in the question's format, while no savable date is selected
  * @param {boolean} [props.disabled] Disable all dropdowns
  * @param {string} [props.ariaLabel] Accessible name of the group
- * @param {string} [props.ariaDescribedBy] Id of the element describing the group
+ * @param {boolean} [props.invalid] True while an error is shown: Marks the dropdowns invalid
+ * @param {string} [props.errorId] Id of the error message the dropdowns point to while invalid
  * @returns {JSX.Element} The dropdowns
  */
 export const DateQuestionDropdowns = ({
@@ -107,7 +113,8 @@ export const DateQuestionDropdowns = ({
   onPartialChange,
   disabled = false,
   ariaLabel,
-  ariaDescribedBy,
+  invalid = false,
+  errorId,
 }) => {
   const id = useId()
   const [selected, setSelected] = useState(() => getSelectedParts(value))
@@ -162,7 +169,12 @@ export const DateQuestionDropdowns = ({
     const date = dayJsHelper(dateString, 'YYYY-MM-DD HH:mm', true)
 
     if (!date.isValid()) {
-      onPartialChange('invalid', dateString)
+      // dayjs can't format a date that doesn't exist, so write the selected parts in the
+      // question's format
+      onPartialChange(
+        'invalid',
+        formatDateParts(settings.format || 'YYYY-MM-DD', nextSelected)
+      )
       return
     }
 
@@ -240,6 +252,8 @@ export const DateQuestionDropdowns = ({
           value={selected[type]}
           onChange={handleSelect(type)}
           disabled={disabled}
+          aria-invalid={invalid || undefined}
+          aria-describedby={invalid ? errorId : undefined}
         >
           <option value="">{labels[type]}</option>
           {options.map((option) => (
@@ -257,7 +271,6 @@ export const DateQuestionDropdowns = ({
       className="row g-1 align-items-center"
       role="group"
       aria-label={ariaLabel}
-      aria-describedby={ariaDescribedBy}
       data-testid="date-question-dropdowns"
     >
       {parts.map((part, index) =>

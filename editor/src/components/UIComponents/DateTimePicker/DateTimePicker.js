@@ -105,6 +105,22 @@ export const DateTimePickerComponent = ({
   const isSavable = (date) =>
     date.isValid() && !date.isBefore(minDateTime) && !date.isAfter(maxDateTime)
 
+  /**
+   * Drops the pending change of a date that can't be saved and reports why, like MUI's own
+   * validation does.
+   *
+   * @param {import('dayjs').Dayjs} date The date that can't be saved
+   * @returns {void}
+   */
+  const reportOutOfLimits = (date) => {
+    onParticipantValueChange(null, valueInfo?.key, true)
+    if (!date.isValid()) {
+      onError('invalidDate')
+    } else {
+      onError(date.isBefore(minDateTime) ? 'minDate' : 'maxDate')
+    }
+  }
+
   const handleOnAccept = (acceptedValue) => {
     if (!acceptedValue) {
       return
@@ -112,6 +128,7 @@ export const DateTimePickerComponent = ({
 
     const value = normalizeDateToViews(dayJsHelper(acceptedValue), views)
     if (!isSavable(value)) {
+      reportOutOfLimits(value)
       return
     }
 
@@ -139,6 +156,14 @@ export const DateTimePickerComponent = ({
     }
 
     const newValue = normalizeDateToViews(changedValue, views)
+    // Resetting the parts the format doesn't show can move the date outside the limits,
+    // e.g. May 2024 becomes 2024-05-01 with a minimum of 2024-05-15
+    if (newValue && !isSavable(newValue)) {
+      setValue(newValue)
+      reportOutOfLimits(newValue)
+      return
+    }
+
     if (newValue) {
       update(newValue.toJSON())
       setValue(newValue)
