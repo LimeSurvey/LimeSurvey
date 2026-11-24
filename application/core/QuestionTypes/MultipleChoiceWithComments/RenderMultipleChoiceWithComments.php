@@ -42,6 +42,9 @@ class RenderMultipleChoiceWithComments extends QuestionBaseRenderer
     const OTHER_POS_START = 'beginning';
     const OTHER_POS_AFTER_SUBQUESTION = 'specific';
 
+    /** @var int|null 最多可选个数（max_answers），null 表示不限 */
+    private $maxAnswers;
+
     public function __construct($aFieldArray, $bRenderDirect = false)
     {
         parent::__construct($aFieldArray, $bRenderDirect);
@@ -53,6 +56,8 @@ class RenderMultipleChoiceWithComments extends QuestionBaseRenderer
         }
 
         /*Find the col-sm width : if none is set : default, if one is set, set another one to be 12, if two is set : no change */
+
+        $this->maxAnswers = $this->parseAnswerLimit($this->getQuestionAttribute('max_answers'));
 
         $this->attributeInputContainerWidth = intval(trim((string) $this->getQuestionAttribute('text_input_columns')));
         if ($this->attributeInputContainerWidth < 1 || $this->attributeInputContainerWidth > 12) {
@@ -270,6 +275,10 @@ class RenderMultipleChoiceWithComments extends QuestionBaseRenderer
                 true
             );
         }
+        if ($this->maxAnswers !== null) {
+            $this->registerAnswerLimitScript($this->maxAnswers);
+        }
+
         $this->registerAssets();
 
         $answer .=  Yii::app()->twigRenderer->renderQuestion($this->getMainView() . '/answer', array(
@@ -277,7 +286,9 @@ class RenderMultipleChoiceWithComments extends QuestionBaseRenderer
             'coreClass' => $this->sCoreClasses,
             'name' => 'MULTI' . $this->sSGQA,
             'basename' => $this->sSGQA,
-            'value' => $this->getQuestionCount()
+            'value' => $this->getQuestionCount(),
+            'maxAnswers' => $this->maxAnswers,
+            'questionId' => $this->oQuestion->qid,
            ), true);
 
         $this->inputnames[] = $this->sSGQA;

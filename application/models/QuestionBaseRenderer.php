@@ -354,6 +354,54 @@ abstract class QuestionBaseRenderer extends StaticModel
         return trim((string) $value) == '' ? $default : $value;
     }
 
+    /**
+     * 解析 max_answers / min_answers 这类"可选个数"限制。
+     *
+     * 属性值既可以是数字，也可以是表达式；只有纯数字才能在浏览器端
+     * 用于"阻止继续勾选"，表达式一律视为不限（否则会误阻止用户）。
+     *
+     * @param mixed $raw
+     * @return int|null
+     */
+    protected function parseAnswerLimit($raw): ?int
+    {
+        $value = trim((string) $raw);
+        if ($value === '' || !ctype_digit($value)) {
+            return null;
+        }
+        $limit = (int) $value;
+        return $limit > 0 ? $limit : null;
+    }
+
+    /**
+     * 为多选题注册"最多可选 N 项"的前端拦截脚本。
+     *
+     * 提示文案由 PHP 侧翻译，JS 只做占位符替换，符合上游国际化要求。
+     *
+     * @param int $maxAnswers
+     * @return void
+     */
+    protected function registerAnswerLimitScript(int $maxAnswers)
+    {
+        $this->aScriptFiles[] = [
+            'path' => Yii::app()->getConfig('generalscripts') . 'multiplechoice_answer_limit.js',
+            'position' => LSYii_ClientScript::POS_BEGIN,
+        ];
+        $this->addScript(
+            'multiAnswerLimit',
+            sprintf(
+                'LSMultiAnswerLimit.init(%d, %d, %s);',
+                $this->oQuestion->qid,
+                $maxAnswers,
+                json_encode(
+                    sprintf(gT("You can select at most %s answer(s)."), '{limit}'),
+                    JSON_UNESCAPED_UNICODE
+                )
+            ),
+            LSYii_ClientScript::POS_POSTSCRIPT
+        );
+    }
+
     protected function registerAssets()
     {
         $this->applyPackages();
