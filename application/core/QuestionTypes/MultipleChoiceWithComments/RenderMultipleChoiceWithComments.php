@@ -1,7 +1,5 @@
 <?php
 
-use LimeSurvey\Models\Services\SurveySessionState;
-
 /**
  * RenderClass for MultipleChoiceWithComments Question
  *  * The ia Array contains the following
@@ -102,11 +100,6 @@ class RenderMultipleChoiceWithComments extends QuestionBaseRenderer
         return '/survey/questions/answer/multiplechoice_with_comments';
     }
 
-    /**
-     * Returns the template data of all subquestion rows, including the "Other" row.
-     *
-     * @return array[]
-     */
     public function getRows()
     {
         $otherAdded = false;
@@ -122,15 +115,20 @@ class RenderMultipleChoiceWithComments extends QuestionBaseRenderer
         }
 
         $checkconditionFunction = "checkconditions";
-        $sessionState = SurveySessionState::forSurvey((int) Yii::app()->getConfig('surveyID'));
         foreach ($this->aSubQuestions[0] as $oQuestion) {
             $myfname = $this->sSGQA . "_S" . $oQuestion->qid;
             $myfname2 = $myfname . "_Ccomment";
-            $mSessionValue = $this->setDefaultIfEmpty($sessionState->getFieldValue($myfname), '');
-            $mSessionValue2 = $this->setDefaultIfEmpty($sessionState->getFieldValue($myfname2), '');
+            // 会话里可能还没有这个题的键（例如题目刚加入、或跨页恢复），
+            // 直接下标访问会在 PHP 8 下产生 "Undefined array key" 警告并把页面打断。
+            $sessionResponses = $_SESSION['responses_' . Yii::app()->getConfig('surveyID')] ?? [];
+            $mSessionValue = $this->setDefaultIfEmpty($sessionResponses[$myfname] ?? '', '');
+            $mSessionValue2 = $this->setDefaultIfEmpty($sessionResponses[$myfname2] ?? '', '');
 
-            if ($this->iLabelWidth < strlen(trim(strip_tags((string) $oQuestion->questionl10ns[$this->sLanguage]->question)))) {
-                $this->iLabelWidth = strlen(trim(strip_tags((string) $oQuestion->questionl10ns[$this->sLanguage]->question)));
+            // 子题可能缺少当前语言的 l10n 记录（导入/手工数据），
+            // 直接访问会在 PHP 8 下产生警告并中断渲染
+            $subQuestionText = (string) ($oQuestion->questionl10ns[$this->sLanguage]->question ?? '');
+            if ($this->iLabelWidth < strlen(trim(strip_tags($subQuestionText)))) {
+                $this->iLabelWidth = strlen(trim(strip_tags($subQuestionText)));
             }
 
             $this->inputnames[] = $myfname;
@@ -147,7 +145,7 @@ class RenderMultipleChoiceWithComments extends QuestionBaseRenderer
                 'value'                => 'Y', // TODO : check if it should be the same than javavalue
                 'classes'              => '',
                 'otherNumber'          => $this->getQuestionAttribute('other_numbers_only'),
-                'labeltext'            => $oQuestion->questionl10ns[$this->sLanguage]->question,
+                'labeltext'            => $subQuestionText,
                 'javainput'            => true,
                 'javaname'             => 'java' . $myfname,
                 'javavalue'            => $mSessionValue,
@@ -172,11 +170,6 @@ class RenderMultipleChoiceWithComments extends QuestionBaseRenderer
         return $aRows;
     }
 
-    /**
-     * Returns the template data of the "Other" option row with its comment.
-     *
-     * @return array
-     */
     public function getOtherRow()
     {
 
@@ -185,9 +178,8 @@ class RenderMultipleChoiceWithComments extends QuestionBaseRenderer
         $myfname = $this->sSGQA . '_Cother';
         $myfname2 = $myfname . "comment";
 
-        $sessionState = SurveySessionState::forSurvey((int) Yii::app()->getConfig('surveyID'));
-        $mSessionValue = $this->setDefaultIfEmpty($sessionState->getFieldValue($myfname), '');
-        $mSessionValue2 = $this->setDefaultIfEmpty($sessionState->getFieldValue($myfname2), '');
+        $mSessionValue = $this->setDefaultIfEmpty($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname], '');
+        $mSessionValue2 = $this->setDefaultIfEmpty($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname2], '');
 
         $this->inputnames[] = $myfname;
         $this->inputnames[] = $myfname2;

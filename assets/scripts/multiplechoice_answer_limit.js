@@ -74,6 +74,32 @@
     }
 
     /**
+     * 判断题目是否参与校验。
+     *
+     * LimeSurvey 用 .ls-irrelevant / .ls-hidden 标记当前不展示的题目；
+     * 这类题目的历史答案不应阻止用户继续（否则用户会卡在一个看不见的错误上）。
+     *
+     * @param {{hasHiddenAncestor: boolean}} state
+     * @returns {boolean}
+     */
+    function isQuestionActive(state) {
+        return !(state && state.hasHiddenAncestor);
+    }
+
+    /**
+     * 该题是否应当在浏览器端被拦截。
+     *
+     * @param {{limit: (number|null), active: boolean}} state
+     * @returns {boolean}
+     */
+    function shouldEnforceLimit(state) {
+        if (!state) {
+            return false;
+        }
+        return parseLimit(state.limit) !== null && isQuestionActive({ hasHiddenAncestor: !state.active });
+    }
+
+    /**
      * 拦截超限勾选，并在超限时给出可见提示。
      *
      * 依赖 jQuery（LimeSurvey 前端到处都在用），只在浏览器里调用；
@@ -92,8 +118,66 @@
         }
         var $ = jq;
 
-        // 内联脚本可能在题目 DOM 渲染完成之前执行；若容器还不存在，
-        // 等 document ready 后再试一次，而不是直接放弃。
+        /**
+         * 题目当前是否展示。
+         *
+         * LimeSurvey 的「不相关」有两种粒度：
+         *   - 题目级：question 容器带 .ls-irrelevant
+         *   - 选项级：单个 <li> 带 .ls-irrelevant（子题相关/array_filter 排除了这一项）
+         * 两者都要考虑，否则一个看不见的选项仍会把计数顶到上限之外。
+         *
+         * @param {object} $list
+         * @returns {boolean}
+         */
+        function isActive($list) {
+            return isQuestionActive({
+                hasHiddenAncestor: $list.closest('.ls-hidden').length > 0
+                    || $list.closest('.question-container.ls-irrelevant').length > 0,
+            });
+        }
+
+        /**
+         * 统计实际可选的已勾选项数量（排除被标记为不相关的选项）。
+         *
+         * @param {object} $list
+         * @returns {number}
+         */
+        function countActiveChecked($list) {
+            return $list.find('input[type=checkbox]:checked').filter(function () {
+                return $(this).closest('li').not('.ls-irrelevant').length > 0;
+            }).length;
+        }
+
+        /**
+         * 在指定题目容器前显示/更新提示。
+         *
+         * @param {object} $list 题目答案容器
+         * @param {number} lim 该题上限
+         */
+        function showMessageFor($list, lim) {
+            var id = $list.attr('data-question-id') || qid;
+            var $msg = $('#ls-answer-limit-msg-' + id);
+            if (!$msg.length) {
+                $msg = $('<div class="ls-multi-answer-limit-message alert alert-danger"></div>')
+                    .attr('id', 'ls-answer-limit-msg-' + id)
+                    .attr('role', 'alert');
+                // 放在题目容器内部靠前的位置：在 PJAX/主题布局里
+                // 直接插到 <ul> 前可能落在被隐藏的区块中
+                var $host = $list.closest('.question-container, .answer-container') || $list.parent();
+                $host.prepend($msg);
+            }
+            $msg.text(formatLimitMessage(template, lim));
+            $msg.show();
+        }
+
+        /**
+         * 绑定这一道题的点击拦截。
+         *
+         * 每道限题各自调用一次 init，因此这里是"一题一绑"，
+         * 而不是全局只绑一次 —— 后者会导致同页只有最后一道题生效。
+         *
+         * @returns {void}
+         */
         function bind() {
             var $container = $('#question' + qid + ' .ls-answers');
             if (!$container.length || $container.data('lsAnswerLimitBound')) {
@@ -101,86 +185,76 @@
             }
             $container.data('lsAnswerLimitBound', true);
 
-            function selectedCount() {
-                return $container.find('input[type=checkbox]:checked').length;
-            }
-
-            /**
-             * 在指定题目容器前显示/更新提示。
-             *
-             * @param {object} $list 题目答案容器
-             * @param {number} lim 该题上限
-             */
-            function showMessageFor($list, lim) {
-                var id = $list.attr('data-question-id') || qid;
-                var $msg = $('#ls-answer-limit-msg-' + id);
-                if (!$msg.length) {
-                    $msg = $('<div class="ls-multi-answer-limit-message alert alert-danger"></div>')
-                        .attr('id', 'ls-answer-limit-msg-' + id)
-                        .attr('role', 'alert');
-                    // 放在题目容器内部靠前的位置：在 PJAX/主题布局里
-                    // 直接插到 <ul> 前可能落在被隐藏的区块中
-                    var $host = $list.closest('.ls-answers, .question-container, .answer-container');
-                    if (!$host.length) {
-                        $host = $list.parent();
-                    }
-                    $host.prepend($msg);
-                }
-                $msg.text(formatLimitMessage(template, lim));
-                $msg.show();
-            }
-
-            function showMessage() {
-                showMessageFor($container, limit);
-            }
-
-            function clearMessage() {
-                $container.find('.ls-multi-answer-limit-message').hide();
-            }
-
-            // 提交拦截：页面里已有的答案可能已经超限（回填、多标签页、脚本绕过），
-            // 点「下一题」时必须拦下，而不是一路走到问卷末尾才报错。
-            var $form = $container.closest('form');
-            if ($form.length && !$form.data('lsAnswerLimitGuard')) {
-                $form.data('lsAnswerLimitGuard', true);
-                $form.on('submit', function () {
-                    var over = false;
-                    $('ul.ls-answers[data-max-answers]').each(function () {
-                        var $list = $(this);
-                        var lim = parseLimit($list.attr('data-max-answers'));
-                        if (lim === null) {
-                            return;
-                        }
-                        if ($list.find('input[type=checkbox]:checked').length > lim) {
-                            over = true;
-                            showMessageFor($list, lim);
-                        }
-                    });
-                    if (!over) {
-                        return true;
-                    }
-                    // 阻止提交，并把用户视线带回第一个提示
-                    var $msg = $('.ls-multi-answer-limit-message:visible').first();
-                    if ($msg.length && $msg[0].scrollIntoView) {
-                        $msg[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    }
-                    return false;
-                });
-            }
-
             $container.on('click', 'input[type=checkbox]', function (event) {
                 var $box = $(this);
-                if ($box.is(':checked') && !canSelect(selectedCount() - 1, limit)) {
+                if (!$box.is(':checked')) {
+                    return true;
+                }
+                if (!shouldEnforceLimit({ limit: limit, active: isActive($container) })) {
+                    return true;
+                }
+                var selected = countActiveChecked($container);
+                if (!canSelect(selected - 1, limit)) {
                     // 取消本次勾选，让界面状态与"最多 N 项"保持一致
                     $box.prop('checked', false);
                     event.preventDefault();
-                    showMessage();
+                    showMessageFor($container, limit);
                     return false;
                 }
-                clearMessage();
+                $('#ls-answer-limit-msg-' + ($container.attr('data-question-id') || qid)).hide();
+                return true;
+            });
+
+            bindSubmitGuard($container);
+        }
+
+        /**
+         * 提交守卫：页面里已有的答案可能已经超限（回填、多标签页、脚本绕过），
+         * 点「下一题」时必须拦下，而不是一路走到问卷末尾才报错。
+         *
+         * 整个 form 只需要挂一次监听，因此用 data 标记做幂等。
+         *
+         * @param {object} $container
+         * @returns {void}
+         */
+        function bindSubmitGuard($container) {
+            var $form = $container.closest('form');
+            if (!$form.length || $form.data('lsAnswerLimitGuard')) {
+                return;
+            }
+            $form.data('lsAnswerLimitGuard', true);
+            $form.on('submit', function () {
+                var over = false;
+                $('ul.ls-answers[data-max-answers]').each(function () {
+                    var $list = $(this);
+                    var lim = parseLimit($list.attr('data-max-answers'));
+                    if (lim === null) {
+                        return;
+                    }
+                    // 不相关/隐藏的题目带着历史答案时不应阻止用户继续，
+                    // 否则用户会卡在一个看不见的错误上且没有任何提示
+                    if (!isActive($list)) {
+                        return;
+                    }
+                    if (countActiveChecked($list) > lim) {
+                        over = true;
+                        showMessageFor($list, lim);
+                    }
+                });
+                if (!over) {
+                    return true;
+                }
+                // 阻止提交，并把用户视线带回第一个提示
+                var $msg = $('.ls-multi-answer-limit-message:visible').first();
+                if ($msg.length && $msg[0].scrollIntoView) {
+                    $msg[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+                return false;
             });
         }
 
+        // 内联脚本可能在题目 DOM 渲染完成之前执行；若容器还不存在，
+        // 等 document ready 后再试一次，而不是直接放弃。
         function bindWhenReady() {
             if ($('#question' + qid + ' .ls-answers').length) {
                 bind();
@@ -200,6 +274,8 @@
         parseLimit: parseLimit,
         canSelect: canSelect,
         formatLimitMessage: formatLimitMessage,
+        isQuestionActive: isQuestionActive,
+        shouldEnforceLimit: shouldEnforceLimit,
         init: init
     };
 }));

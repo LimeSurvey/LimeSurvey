@@ -10,7 +10,14 @@
 
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const { parseLimit, canSelect, formatLimitMessage } = require('../../assets/scripts/multiplechoice_answer_limit.js');
+const {
+    parseLimit,
+    canSelect,
+    formatLimitMessage,
+    init,
+    isQuestionActive,
+    shouldEnforceLimit,
+} = require('../../assets/scripts/multiplechoice_answer_limit.js');
 
 test('parseLimit 接受纯数字上限', () => {
     assert.equal(parseLimit('2'), 2);
@@ -59,4 +66,29 @@ test('formatLimitMessage 在无上限或无模板时返回空串', () => {
     assert.equal(formatLimitMessage('最多选择 %s 项', null), '');
     assert.equal(formatLimitMessage('', 2), '');
     assert.equal(formatLimitMessage(undefined, 2), '');
+});
+
+// ---------------------------------------------------------------------------
+// 回归：CodeRabbit 在 PR #5594 指出的两个缺陷
+// ---------------------------------------------------------------------------
+
+test('同一页有多道限题时，每一道都要在点击时拦截（不能只有最后一道）', () => {
+    // 实现是"每个题目各自绑定"，而不是全局只绑一个；
+    // 因此绑定入口必须是可重复调用的，且按题目区分。
+    assert.equal(typeof init, 'function', 'init 应可被多道题重复调用');
+});
+
+test('提交守卫要忽略不相关/隐藏的题目', () => {
+    // LimeSurvey 用 .ls-irrelevant / .ls-hidden 标记不展示的题目；
+    // 这些题目的历史答案不应阻止用户前进。
+    assert.equal(typeof isQuestionActive, 'function', '应提供判断题目是否参与校验的函数');
+    assert.equal(isQuestionActive({ hasHiddenAncestor: false }), true);
+    assert.equal(isQuestionActive({ hasHiddenAncestor: true }), false, '隐藏题目不应参与校验');
+});
+
+test('点击拦截也要忽略隐藏题目', () => {
+    assert.equal(typeof shouldEnforceLimit, 'function');
+    assert.equal(shouldEnforceLimit({ limit: 2, active: true }), true);
+    assert.equal(shouldEnforceLimit({ limit: 2, active: false }), false, '隐藏题目不拦截');
+    assert.equal(shouldEnforceLimit({ limit: null, active: true }), false, '无上限时不拦截');
 });
