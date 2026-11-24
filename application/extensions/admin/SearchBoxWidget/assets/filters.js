@@ -43,9 +43,11 @@ $('.search-bar input').keydown(function (e) {
 $('.search-bar input').on('blur', function (e) {
     if ($(this).val() !== $(this).data('original-value')) {
         $(this).data('original-value', $(this).val());
-        // The user left the field towards another element (e.g. Tab to the status): That one gets the focus back.
-        // Without an identifiable target (e.g. a click on the page background) the search field gets it back.
-        rememberFilterFocus(e.relatedTarget && e.relatedTarget.id ? e.relatedTarget : this, true);
+        // The user left the field towards another filter control (e.g. Tab to the status): That one gets the focus back.
+        // Anything else (page background, result rows whose IDs change with the result) gives it back to the search field.
+        var target = e.relatedTarget;
+        var keepTarget = target && target.id && $(target).closest('#survey-search').length > 0;
+        rememberFilterFocus(keepTarget ? target : this, true);
         $('#survey-search').submit();
     }
 });
