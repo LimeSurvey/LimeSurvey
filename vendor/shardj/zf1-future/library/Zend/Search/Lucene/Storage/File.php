@@ -122,7 +122,7 @@ abstract class Zend_Search_Lucene_Storage_File
      * Read num bytes from the current position in the file
      * and advances the file pointer.
      *
-     * @param integer $num
+     * @param integer|float $num
      * @return string
      */
     public function readBytes($num)
@@ -207,7 +207,7 @@ abstract class Zend_Search_Lucene_Storage_File
     /**
      * Writes long integer to the end of file
      *
-     * @param integer $value
+     * @param integer|float $value
      * @throws Zend_Search_Lucene_Exception
      */
     public function writeLong($value)

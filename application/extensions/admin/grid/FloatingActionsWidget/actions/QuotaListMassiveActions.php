@@ -23,7 +23,6 @@ class QuotaListMassiveActions
 
         // ------------------------------------------------------------------ activate / deactivate / change texts
         if (\Permission::model()->hasSurveyPermission($surveyId, 'quotas', 'update')) {
-
             // Activate
             $buttons[] = [
                 'type'          => 'action',
@@ -99,4 +98,3 @@ class QuotaListMassiveActions
         return $buttons;
     }
 }
-

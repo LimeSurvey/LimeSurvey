@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Modal content shown by the adminbasics AjaxHelper when an ajax call fails because the user is logged out.
  * "Log in" reloads the current page, which redirects to the login form and back to the page after login.
  */
+
 ?>
 <div class="modal-header">
     <h2 class="modal-title h5"><?php eT("You have been logged out"); ?></h2>

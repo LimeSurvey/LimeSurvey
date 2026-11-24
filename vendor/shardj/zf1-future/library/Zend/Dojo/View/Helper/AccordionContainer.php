@@ -53,7 +53,7 @@ class Zend_Dojo_View_Helper_AccordionContainer extends Zend_Dojo_View_Helper_Dij
      * @param  string $content
      * @param  array $params  Parameters to use for dijit creation
      * @param  array $attribs HTML attributes
-     * @return string
+     * @return $this|string
      */
     public function accordionContainer($id = null, $content = '', array $params = [], array $attribs = [])
     {

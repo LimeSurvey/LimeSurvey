@@ -19,7 +19,7 @@ $isStoredValueMissing = $storedValue !== '' && !in_array($storedValue, $optionVa
 <div class='mb-3'>
     <select class="form-select" name="Attributes[<?= CHtml::encode($name) ?>]" id="<?= $selectId ?>">
         <option></option>  <!-- Nothing selected -->
-        <?php foreach ($optionValues as $optionValue): ?>
+        <?php foreach ($optionValues as $optionValue) : ?>
             <option
                 <?= $optionValue === $storedValue ? 'selected' : '' ?>
                 value='<?= CHtml::encode($optionValue) ?>'
@@ -27,7 +27,7 @@ $isStoredValueMissing = $storedValue !== '' && !in_array($storedValue, $optionVa
                 <?= CHtml::encode($optionValue) ?>
             </option>
         <?php endforeach; ?>
-        <?php if ($isStoredValueMissing): ?>
+        <?php if ($isStoredValueMissing) : ?>
             <option selected value='<?= CHtml::encode($storedValue) ?>'>
                 <?= CHtml::encode(sprintf(gT('%s (no longer in the list)'), $storedValue)) ?>
             </option>

@@ -140,7 +140,7 @@ class Zend_Mail_Protocol_Pop3
      * Send a request
      *
      * @param string $request your request without newline
-     * @return null
+     * @return void
      * @throws Zend_Mail_Protocol_Exception
      */
     public function sendRequest($request)
@@ -226,7 +226,7 @@ class Zend_Mail_Protocol_Pop3
     /**
      * End communication with POP3 server (also closes socket)
      *
-     * @return null
+     * @return void
      */
     public function logout()
     {
@@ -263,7 +263,7 @@ class Zend_Mail_Protocol_Pop3
      *
      * @param  string $user      username
      * @param  string $password  password
-     * @param  bool   $try_apop  should APOP be tried?
+     * @param  bool   $tryApop  should APOP be tried?
      * @return void
      * @throws Zend_Mail_Protocol_Exception
      */
@@ -524,7 +524,7 @@ class Zend_Mail_Protocol_Pop3
     /**
      * Make a NOOP call, maybe needed for keeping the server happy
      *
-     * @return null
+     * @return void
      * @throws Zend_Mail_Protocol_Exception
      */
     public function noop()
@@ -536,7 +536,7 @@ class Zend_Mail_Protocol_Pop3
     /**
      * Make a DELE count to remove a message
      *
-     * @return null
+     * @return void
      * @throws Zend_Mail_Protocol_Exception
      */
     public function delete($msgno)
@@ -548,7 +548,7 @@ class Zend_Mail_Protocol_Pop3
     /**
      * Make RSET call, which rollbacks delete requests
      *
-     * @return null
+     * @return void
      * @throws Zend_Mail_Protocol_Exception
      */
     public function undelete()

@@ -87,7 +87,6 @@ abstract class Zend_Pdf_Resource_Font_CidFont extends Zend_Pdf_Resource_Font
      *
      * @param Zend_Pdf_FileParser_Font_OpenType $fontParser Font parser object
      *   containing OpenType file.
-     * @param integer $embeddingOptions Options for font embedding.
      * @throws Zend_Pdf_Exception
      */
     public function __construct(Zend_Pdf_FileParser_Font_OpenType $fontParser)
@@ -173,6 +172,7 @@ abstract class Zend_Pdf_Resource_Font_CidFont extends Zend_Pdf_Resource_Font
                 $sequenceStartCode = $charCode;
             } else if ($charCode != $lastCharCode + 1) {
                 // New chracters sequence detected
+                // @phpstan-ignore variable.undefined, variable.undefined (set in the first iteration)
                 $widthsSequences[$sequenceStartCode] = $charCodesSequense;
                 $charCodesSequense = [];
                 $sequenceStartCode = $charCode;
@@ -182,6 +182,7 @@ abstract class Zend_Pdf_Resource_Font_CidFont extends Zend_Pdf_Resource_Font
         }
         // Save last sequence, if widths array is not empty (it may happens for monospaced fonts)
         if (count($charWidths) !== 0) {
+            // @phpstan-ignore variable.undefined (set in the first iteration)
             $widthsSequences[$sequenceStartCode] = $charCodesSequense;
         }
 
@@ -380,7 +381,7 @@ abstract class Zend_Pdf_Resource_Font_CidFont extends Zend_Pdf_Resource_Font
      *
      * See also {@link widthForChar()}.
      *
-     * @param array &$glyphNumbers Array of glyph numbers.
+     * @param array $charCodes Array of character codes.
      * @return array Array of glyph widths (integers).
      */
     public function widthsForChars($charCodes)

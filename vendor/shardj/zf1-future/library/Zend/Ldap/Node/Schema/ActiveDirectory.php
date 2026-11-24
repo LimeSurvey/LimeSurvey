@@ -68,11 +68,13 @@ class Zend_Ldap_Node_Schema_ActiveDirectory extends Zend_Ldap_Node_Schema
     protected function _parseSchema(Zend_Ldap_Dn $dn, Zend_Ldap $ldap)
     {
         parent::_parseSchema($dn, $ldap);
+        require_once 'Zend/Ldap.php';
         foreach ($ldap->search('(objectClass=classSchema)', $dn,
                 Zend_Ldap::SEARCH_SCOPE_ONE) as $node) {
             $val = new Zend_Ldap_Node_Schema_ObjectClass_ActiveDirectory($node);
             $this->_objectClasses[$val->getName()] = $val;
         }
+        require_once 'Zend/Ldap.php';
         foreach ($ldap->search('(objectClass=attributeSchema)', $dn,
                 Zend_Ldap::SEARCH_SCOPE_ONE) as $node) {
             $val = new Zend_Ldap_Node_Schema_AttributeType_ActiveDirectory($node);

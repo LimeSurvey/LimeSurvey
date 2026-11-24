@@ -71,7 +71,7 @@ class Zend_Cache_Backend_WinCache extends Zend_Cache_Backend implements Zend_Cac
      *
      * @param  string  $id                     cache id
      * @param  boolean $doNotTestCacheValidity if set to true, the cache validity won't be tested
-     * @return string cached datas (or false)
+     * @return string|false cached datas (or false)
      */
     public function load($id, $doNotTestCacheValidity = false)
     {
@@ -106,7 +106,7 @@ class Zend_Cache_Backend_WinCache extends Zend_Cache_Backend implements Zend_Cac
      * @param string $data datas to cache
      * @param string $id cache id
      * @param array $tags array of strings, the cache record will be tagged by each string entry
-     * @param int $specificLifetime if != false, set a specific lifetime for this cache record (null => infinite lifetime)
+     * @param int|false $specificLifetime if != false, set a specific lifetime for this cache record (null => infinite lifetime)
      * @return boolean true if no problem
      */
     public function save($data, $id, $tags = [], $specificLifetime = false)
@@ -143,14 +143,13 @@ class Zend_Cache_Backend_WinCache extends Zend_Cache_Backend implements Zend_Cac
      * @param  string $mode clean mode
      * @param  array  $tags array of tags
      * @throws Zend_Cache_Exception
-     * @return boolean true if no problem
+     * @return boolean|null true if no problem
      */
     public function clean($mode = Zend_Cache::CLEANING_MODE_ALL, $tags = [])
     {
         switch ($mode) {
             case Zend_Cache::CLEANING_MODE_ALL:
                 return wincache_ucache_clear();
-                break;
             case Zend_Cache::CLEANING_MODE_OLD:
                 $this->_log("Zend_Cache_Backend_WinCache::clean() : CLEANING_MODE_OLD is unsupported by the WinCache backend");
                 break;
@@ -161,8 +160,9 @@ class Zend_Cache_Backend_WinCache extends Zend_Cache_Backend implements Zend_Cac
                 break;
             default:
                 Zend_Cache::throwException('Invalid mode for clean() method');
-                break;
         }
+
+        return null;
     }
 
     /**
@@ -278,7 +278,7 @@ class Zend_Cache_Backend_WinCache extends Zend_Cache_Backend implements Zend_Cac
      * - mtime : timestamp of last modification time
      *
      * @param string $id cache id
-     * @return array array of metadatas (false if the cache id is not found)
+     * @return array|false array of metadatas (false if the cache id is not found)
      */
     public function getMetadatas($id)
     {

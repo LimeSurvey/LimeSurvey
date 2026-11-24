@@ -133,7 +133,6 @@ class Zend_Mail_Protocol_Smtp extends Zend_Mail_Protocol_Abstract
                      */
                     require_once 'Zend/Mail/Protocol/Exception.php';
                     throw new Zend_Mail_Protocol_Exception($config['ssl'] . ' is unsupported SSL type');
-                    break;
             }
         }
 

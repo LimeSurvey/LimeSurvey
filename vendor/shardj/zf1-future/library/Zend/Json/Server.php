@@ -128,6 +128,7 @@ class Zend_Json_Server extends Zend_Server_Abstract
             }
         }
 
+        // @phpstan-ignore variable.undefined (the loop above ends with a method, or the request is answered with a fault)
         $definition = $this->_buildSignature($method);
         $this->_addMethodServiceMap($definition);
 
@@ -180,7 +181,7 @@ class Zend_Json_Server extends Zend_Server_Abstract
     /**
      * Handle request
      *
-     * @param Zend_Json_Server_Request $request
+     * @param Zend_Json_Server_Request|false $request
      * @return null|Zend_Json_Server_Response
      * @throws Zend_Json_Server_Exception
      * @throws Zend_Server_Exception
@@ -205,7 +206,7 @@ class Zend_Json_Server extends Zend_Server_Abstract
         // Emit response?
         if ($this->autoEmitResponse()) {
             echo $response;
-            return;
+            return null;
         }
 
         // or return it?
@@ -404,7 +405,7 @@ class Zend_Json_Server extends Zend_Server_Abstract
     /**
      * Get method param type
      *
-     * @param  Zend_Server_Reflection_Function_Abstract $method
+     * @param  Zend_Server_Method_Definition $method
      * @return array
      */
     protected function _getParams(Zend_Server_Method_Definition $method)
@@ -466,7 +467,7 @@ class Zend_Json_Server extends Zend_Server_Abstract
     /**
      * Get method return type
      *
-     * @param  Zend_Server_Reflection_Function_Abstract $method
+     * @param  Zend_Server_Method_Definition $method
      * @return string|array
      */
     protected function _getReturnType(Zend_Server_Method_Definition $method)
@@ -558,6 +559,7 @@ class Zend_Json_Server extends Zend_Server_Abstract
                 } elseif( $refParam->isOptional() ) {
                     $orderedParams[ $refParam->getName() ] = $refParam->getDefaultValue();
                 } else {
+                    require_once 'Zend/Server/Exception.php';
                     throw new Zend_Server_Exception(
                         'Method ' . $request->getMethod() .  ' is missing required parameter: ' . $refParam->getName()
                     );

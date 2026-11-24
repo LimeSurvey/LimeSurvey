@@ -22,6 +22,7 @@ namespace LimeSurvey\Helpers;
 
 use Yii;
 use LimeExpressionManager;
+use LimeSurvey\Models\Services\SurveySessionState;
 
 class questionIndexHelper
 {
@@ -115,14 +116,15 @@ class questionIndexHelper
 
     /**
      * return the index item in group by group mode
-     * @param integer $type : 0 : None , 1 : Incremental, 2: full
+     * @param integer $type 0: None, 1: Incremental, 2: Full
+     * @return array[]
      */
     private function getIndexItemsGroups($type)
     {
         if (!$type) {
             return array();
         }
-        $sessionLem = Yii::app()->session["responses_{$this->iSurveyId}"];
+        $sessionLem = SurveySessionState::forSurvey((int) $this->iSurveyId)->toArray();
         if (empty($sessionLem['grouplist'])) {
             return array();
         }
@@ -164,11 +166,11 @@ class questionIndexHelper
 
     /**
      * return the index item in question by question mode
-     * @return array[][] : array of question in array of group
+     * @return array[][] Array of question in array of group
      */
     private function getIndexItemsQuestions()
     {
-        $sessionLem = Yii::app()->session["responses_{$this->iSurveyId}"];
+        $sessionLem = SurveySessionState::forSurvey((int) $this->iSurveyId)->toArray();
         /* get field map : have more info*/
         /* get group list : for information about group ...*/
         $groupList = $sessionLem['grouplist'];

@@ -14,6 +14,7 @@ use Survey;
 use SurveyDynamic;
 use CDbCriteria;
 use Permission;
+use LimeSurvey\Models\Services\SurveySessionState;
 use LimeSurvey\PluginManager\LimesurveyApi as LimesurveyApi;
 
 class countFunctions
@@ -53,8 +54,8 @@ class countFunctions
         if ($submitted) {
             $oCriteria->addCondition("submitdate IS NOT NULL");
         }
-        if (!$self && isset($_SESSION['responses_' . $surveyId]['srid'])) {
-            $srid = $_SESSION['responses_' . $surveyId]['srid'];
+        $srid = SurveySessionState::forSurvey((int) $surveyId)->getResponseId();
+        if (!$self && $srid !== null) {
             $oCriteria->compare("id", "<>" . $srid);
         }
         $oCriteria->compare($sComparedColumn, $comparison);
@@ -91,8 +92,8 @@ class countFunctions
         if ($submitted) {
             $oCriteria->addCondition("submitdate IS NOT NULL");
         }
-        if (!$self && isset($_SESSION['responses_' . $surveyId]['srid'])) {
-            $srid = $_SESSION['responses_' . $surveyId]['srid'];
+        $srid = SurveySessionState::forSurvey((int) $surveyId)->getResponseId();
+        if (!$self && $srid !== null) {
             $oCriteria->compare("id", "<>" . $srid);
         }
         return intval(SurveyDynamic::model($surveyId)->count($oCriteria));

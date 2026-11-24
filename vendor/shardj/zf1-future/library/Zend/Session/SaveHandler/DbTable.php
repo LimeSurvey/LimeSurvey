@@ -101,7 +101,7 @@ class Zend_Session_SaveHandler_DbTable
     /**
      * Session lifetime
      *
-     * @var int
+     * @var int|false
      */
     protected $_lifetime = false;
 

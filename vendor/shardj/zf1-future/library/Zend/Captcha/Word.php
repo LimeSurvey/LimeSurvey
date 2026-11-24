@@ -65,7 +65,7 @@ abstract class Zend_Captcha_Word extends Zend_Captcha_Base
     /**
      * Session
      *
-     * @var Zend_Session_Namespace
+     * @var Zend_Session_Namespace|null
      */
     protected $_session;
 
@@ -276,9 +276,7 @@ abstract class Zend_Captcha_Word extends Zend_Captcha_Base
     public function setSession(Zend_Session_Namespace $session)
     {
         $this->_session = $session;
-        if ($session) {
-            $this->_keepSession = true;
-        }
+        $this->_keepSession = true;
         return $this;
     }
 

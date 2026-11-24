@@ -21,6 +21,7 @@
 
 /** Zend_Search_Lucene_Interface */
 require_once 'Zend/Search/Lucene/Interface.php';
+require_once 'Zend/Search/Lucene.php';
 
 
 /**
@@ -38,7 +39,7 @@ class Zend_Search_Lucene_Proxy implements Zend_Search_Lucene_Interface
     /**
      * Index object
      *
-     * @var Zend_Search_Lucene_Interface
+     * @var Zend_Search_Lucene_Interface|null
      */
     private $_index;
 
@@ -85,11 +86,11 @@ class Zend_Search_Lucene_Proxy implements Zend_Search_Lucene_Interface
      * Get segments file name
      *
      * @param integer $generation
-     * @return void
+     * @return string
      */
     public static function getSegmentFileName($generation)
     {
-        Zend_Search_Lucene::getSegmentFileName($generation);
+        return Zend_Search_Lucene::getSegmentFileName($generation);
     }
 
     /**
@@ -322,7 +323,7 @@ class Zend_Search_Lucene_Proxy implements Zend_Search_Lucene_Interface
      *
      * Default value is 10
      *
-     * @param integer $maxMergeDocs
+     * @param integer $mergeFactor
      */
     public function setMergeFactor($mergeFactor)
     {
@@ -416,7 +417,7 @@ class Zend_Search_Lucene_Proxy implements Zend_Search_Lucene_Interface
      *
      * @param Zend_Search_Lucene_Index_Term $term
      * @param Zend_Search_Lucene_Index_DocsFilter|null $docsFilter
-     * @return integer
+     * @return array
      */
     public function termFreqs(Zend_Search_Lucene_Index_Term $term, $docsFilter = null)
     {

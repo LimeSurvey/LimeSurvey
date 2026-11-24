@@ -38,6 +38,7 @@ require_once 'Zend/Service/ReCaptcha/Response.php';
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  * @deprecated Uses the reCAPTCHA v1 API, which Google shut down in 2018; use Zend_Service_SiteVerify
+ * @deprecated Deprecated since 1.27.1 and will be removed in a future version: reCAPTCHA v1 was shut down on 2018-03-31; use Zend_Captcha_SiteVerify / Zend_Service_SiteVerify
  */
 class Zend_Service_ReCaptcha extends Zend_Service_Abstract
 {
@@ -129,6 +130,8 @@ class Zend_Service_ReCaptcha extends Zend_Service_Abstract
     public function __construct($publicKey = null, $privateKey = null,
                                 $params = null, $options = null, $ip = null)
     {
+        trigger_error(get_class($this) . ' is deprecated and will be removed in a future version', E_USER_DEPRECATED);
+
         if ($publicKey !== null) {
             $this->setPublicKey($publicKey);
         }

@@ -41,7 +41,7 @@ class Zend_Tool_Framework_Provider_Repository
 {
 
     /**
-     * @var Zend_Tool_Framework_Registry
+     * @var Zend_Tool_Framework_Registry_Interface
      */
     protected $_registry = null;
 
@@ -257,7 +257,7 @@ class Zend_Tool_Framework_Provider_Repository
     /**
      * _parseName - internal method to determine the name of an action when one is not explicity provided.
      *
-     * @param Zend_Tool_Framework_Action_Interface $action
+     * @param Zend_Tool_Framework_Provider_Interface $provider
      * @return string
      */
     protected function _parseName(Zend_Tool_Framework_Provider_Interface $provider)

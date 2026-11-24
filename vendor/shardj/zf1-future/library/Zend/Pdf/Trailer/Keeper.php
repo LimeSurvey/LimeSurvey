@@ -121,7 +121,7 @@ class Zend_Pdf_Trailer_Keeper extends Zend_Pdf_Trailer
      * Returns object number of last free object
      *
      * @throws Zend_Pdf_Exception
-     * @return integer
+     * @return integer|null
      */
     public function getLastFreeObject()
     {
@@ -137,7 +137,10 @@ class Zend_Pdf_Trailer_Keeper extends Zend_Pdf_Trailer
                 return 0;
             }
 
+            require_once 'Zend/Pdf/Exception.php';
             throw new Zend_Pdf_Exception($e->getMessage(), $e->getCode(), $e);
         }
+
+        return null;
     }
 }

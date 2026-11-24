@@ -15,6 +15,9 @@
  * And by soon I mean yesterday
  */
 
+use LimeSurvey\Models\Services\ExpressionManagerSessionState;
+use LimeSurvey\Models\Services\SurveySessionState;
+
 class UploaderController extends SurveyController
 {
     /**
@@ -23,10 +26,11 @@ class UploaderController extends SurveyController
      *
      * @param string $actionID
      * @return void
+     * @throws CHttpException
      */
     public function run($actionID)
     {
-        $surveyid = Yii::app()->session['LEMsid'];
+        $surveyid = ExpressionManagerSessionState::current()->getSurveyId();
         if (empty($surveyid)) {
             throw new CHttpException(401, gT("We are sorry but your session has expired."));
         }
@@ -35,7 +39,8 @@ class UploaderController extends SurveyController
             throw new CHttpException(400);
         }
 
-        $sLanguage = Yii::app()->session['responses_' . $surveyid]['s_lang'] ?? "";
+        $sessionState = SurveySessionState::forSurvey($surveyid);
+        $sLanguage = $sessionState->getLanguage() ?? "";
         Yii::app()->setLanguage($sLanguage);
         $uploaddir = Yii::app()->getConfig("uploaddir");
         $tempdir = Yii::app()->getConfig("tempdir");
@@ -50,7 +55,7 @@ class UploaderController extends SurveyController
         $sMode = Yii::app()->request->getParam('mode');
         $sPreview = (int) Yii::app()->request->getParam('preview', 0);
         // Set by RenderFileUpload when the question is shown: 1 for question/group preview and for surveys that are not active
-        $isPreview = (int) (Yii::app()->session['responses_' . $surveyid]['preview'] ?? 0);
+        $isPreview = (int) $sessionState->get('preview', 0);
 
         // No file may be stored or deleted while the maintenance mode keeps participants from taking surveys
         if (($bDelete || $sMode == "upload") && SettingGlobal::areParticipantsLocked()) {
@@ -203,7 +208,7 @@ class UploaderController extends SurveyController
             $event = new PluginEvent('beforeProcessFileUpload');
             /* Current state */
             $event->set('surveyId', $surveyid);
-            $event->set('responseId', Yii::app()->session['responses_' . $surveyid]['srid'] ?? null); // NULL if not exist
+            $event->set('responseId', $sessionState->get('srid')); // NULL if not exist
             $event->set('qid', $oQuestion->qid);
             $event->set('preview', $isPreview);
             $event->set('fieldname', $sFieldName);

@@ -147,7 +147,7 @@ class Zend_Pdf
     /**
      * Document level javascript
      *
-     * @var string
+     * @var string|array|null
      */
     protected $_javaScript = null;
 
@@ -633,9 +633,7 @@ class Zend_Pdf
 
         foreach ($root->AcroForm->Fields->items as $field) {
             /* We only support fields that are textfields and have a name */
-            if ($field->FT && $field->FT->value == 'Tx' && $field->T
-                && $field->T !== null
-            ) {
+            if ($field->FT && $field->FT->value == 'Tx' && $field->T) {
                 $this->_formFields[$field->T->value] = $field;
             }
         }
@@ -1369,7 +1367,6 @@ class Zend_Pdf
                             default:
                                 require_once 'Zend/Pdf/Exception.php';
                                 throw new Zend_Pdf_Exception('Wrong Trapped document property vale: \'' . $value . '\'. Only true, false and null values are allowed.');
-                                break;
                         }
 
                     case 'CreationDate':

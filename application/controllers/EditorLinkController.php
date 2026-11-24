@@ -18,7 +18,7 @@ use LimeSurvey\Api\Authentication\AuthenticationTokenSimple;
 
 class EditorLinkController extends LSYii_Controller
 {
-    const REACT_APP_BASE_PATH = '/editor/#/';
+    public const REACT_APP_BASE_PATH = '/editor/#/';
 
     /**
      * Create react auth key cookie and redirect.

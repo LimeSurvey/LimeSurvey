@@ -279,7 +279,7 @@ class Zend_Http_Cookie
      * @param Zend_Uri_Http|string $refUri Reference URI for default values (domain, path)
      * @param boolean $encodeValue Whether or not the cookie's value should be
      *                             passed through urlencode/urldecode
-     * @return Zend_Http_Cookie A new Zend_Http_Cookie object or false on failure.
+     * @return Zend_Http_Cookie|false A new Zend_Http_Cookie object or false on failure.
      */
     public static function fromString($cookieStr, $refUri = null, $encodeValue = true)
     {
@@ -396,7 +396,7 @@ class Zend_Http_Cookie
 
         // Check for either exact match or suffix match
         return ($cookieDomain == $host ||
-                preg_match('/\.' . preg_quote($cookieDomain) . '$/', $host));
+                preg_match('/\.' . preg_quote($cookieDomain, '/') . '$/', $host));
     }
 
     /**

@@ -10,7 +10,6 @@ import {
   ONOFF_BOOLEAN,
 } from 'helpers/options'
 import { TooltipContainer } from 'components/TooltipContainer/TooltipContainer'
-import { useQueryClient } from '@tanstack/react-query'
 
 const getTwoConditions = () => getOnOffOptions(ONOFF_BOOLEAN)
 
@@ -41,33 +40,18 @@ export const ToggleButtons = ({
   disabled,
   overlayMessage,
 }) => {
-  const [canUseAppState, setCanUseAppState] = useState(false)
-
-  useEffect(() => {
-    try {
-      useQueryClient()
-      setCanUseAppState(true)
-    } catch (error) {
-      setCanUseAppState(false)
-    }
-  }, [])
-
   const [options, setOptions] = useState([])
-  const [isSurveyActive] = canUseAppState
-    ? useAppState(STATES.IS_SURVEY_ACTIVE)
-    : [true]
-  const [hasSurveyUpdatePermission] = canUseAppState
-    ? useAppState(STATES.HAS_SURVEY_UPDATE_PERMISSION)
-    : [true]
-
+  const [hasSurveyUpdatePermission] = useAppState(
+    STATES.HAS_SURVEY_UPDATE_PERMISSION
+  )
   const isDisabled =
     disabled ||
-    (isSurveyActive && activeDisabled) ||
+    activeDisabled ||
     (!hasSurveyUpdatePermission && noPermissionDisabled) ||
     noAccessDisabled
   const toolTip = overlayMessage
     ? overlayMessage
-    : isSurveyActive && activeDisabled
+    : activeDisabled
       ? getTooltipMessages().ACTIVE_DISABLED
       : getTooltipMessages().NO_PERMISSION
 

@@ -65,7 +65,6 @@ class Zend_Tool_Framework_System_Provider_Config extends Zend_Tool_Framework_Pro
     protected $_specialties = ['Manifest', 'Provider'];
 
     /**
-     * @param string $type
      */
     public function create()
     {

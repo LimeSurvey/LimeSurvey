@@ -52,12 +52,8 @@
                                          echo "no";
                                      }?>"
                     <?php
-
-                    /**
-                     * It the action type is 'modal', a modal will be generated for this action, with the id: massive-actions-modal- $this->gridid - $aAction['action'] -  $key
-                     * It will be shown by a javascript call in listAction.js
-                     */
-
+                    // If the action type is 'modal', a modal will be generated for this action, with the id: massive-actions-modal- $this->gridid - $aAction['action'] -  $key
+                    // It will be shown by a javascript call in listAction.js
                     ?>
                     <?php if ($aAction['actionType'] == "modal") :?>
                         data-modal-id="massive-actions-modal-<?php echo $this->gridid;?>-<?php echo $aAction['action'];?>-<?php echo $key; ?>"

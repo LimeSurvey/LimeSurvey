@@ -1,7 +1,5 @@
 <?php
 
-use LimeSurvey\Helpers\questionHelper;
-
 /**
  * This is the model class for table "{{question_themes}}".
  *
@@ -33,9 +31,9 @@ use LimeSurvey\Helpers\questionHelper;
  */
 class QuestionTheme extends LSActiveRecord
 {
-    const THEME_TYPE_CORE = 'coreQuestion';
-    const THEME_TYPE_CUSTOM = 'customCoreTheme';
-    const THEME_TYPE_USER = 'customUserTheme';
+    public const THEME_TYPE_CORE = 'coreQuestion';
+    public const THEME_TYPE_CUSTOM = 'customCoreTheme';
+    public const THEME_TYPE_USER = 'customUserTheme';
 
     /** @var string|null Filter for the kind of theme in search(), one of the THEME_TYPE_* constants */
     public $themeKind;
