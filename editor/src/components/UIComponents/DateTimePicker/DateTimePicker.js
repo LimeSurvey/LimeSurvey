@@ -44,7 +44,7 @@ const parseInitialValue = (rawValue) => {
  * @param {*} [props.maxDate] The latest selectable date
  * @param {string} [props.format] The dayjs display and input format; MUI's default when not set
  * @param {string[]} [props.views] The picker views; the parts not in it are reset before saving
- * @param {number} [props.minuteStep] The step of the minutes the picker offers
+ * @param {number} [props.minuteStep] The step of the minutes the picker offers; MUI's default (5) when not set
  * @param {Function} [props.onError] Called with MUI's validation error (e.g. "minDate") or null
  * @param {string} [props.ariaLabel] Accessible name of the input
  * @param {string} [props.ariaDescribedBy] Id of the element describing the input
@@ -65,7 +65,7 @@ export const DateTimePickerComponent = ({
   maxDate = DATE_QUESTION_DEFAULT_MAX,
   format,
   views,
-  minuteStep = 1,
+  minuteStep,
   onError = () => {},
   ariaLabel,
   ariaDescribedBy,
@@ -260,7 +260,7 @@ export const DateTimePickerComponent = ({
               ampm={false}
               format={format}
               views={views}
-              timeSteps={{ minutes: minuteStep }}
+              timeSteps={minuteStep ? { minutes: minuteStep } : undefined}
               minDateTime={minDateTime}
               maxDateTime={maxDateTime}
               onError={onError}

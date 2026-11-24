@@ -94,10 +94,12 @@ export const DateQuestionInput = ({
     t('Date in the format: %s'),
     settings.displayFormat || settings.format || DATE_QUESTION_STORAGE_FORMAT
   )
+  // The format hint is only shown in picker mode and when the format is known
+  const showTip =
+    settings.showTip && !settings.dropdown && Boolean(settings.displayFormat)
   const describedBy =
-    [settings.showTip && !settings.dropdown ? tipId : '', error ? errorId : '']
-      .filter(Boolean)
-      .join(' ') || undefined
+    [showTip ? tipId : '', error ? errorId : ''].filter(Boolean).join(' ') ||
+    undefined
 
   const handleDropdownChange = (date) => {
     if (date && !isDateInLimits(date, settings.minDate, settings.maxDate)) {
@@ -184,7 +186,7 @@ export const DateQuestionInput = ({
           />
         </div>
       )}
-      {settings.showTip && !settings.dropdown && settings.displayFormat && (
+      {showTip && (
         <p id={tipId} className="form-text mb-0">
           {sprintf(t('Format: %s'), settings.displayFormat)}
         </p>

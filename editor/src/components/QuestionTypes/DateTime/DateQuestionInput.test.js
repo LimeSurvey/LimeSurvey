@@ -183,3 +183,45 @@ describe('DateQuestionInput in dropdown mode', () => {
       .forEach((element) => expect(element.disabled).toBe(true))
   })
 })
+
+describe('DateQuestionInput in picker mode', () => {
+  // jsdom has no matchMedia, which MUI uses to choose the desktop picker
+  beforeAll(() => {
+    window.matchMedia = (query) => ({
+      matches: query.includes('pointer: fine'),
+      media: query,
+      addListener: () => {},
+      removeListener: () => {},
+      addEventListener: () => {},
+      removeEventListener: () => {},
+    })
+  })
+
+  const renderPicker = (attributes, surveyDateFormat) =>
+    render(
+      <DateQuestionInput
+        question={{ qid: 1, attributes }}
+        language="en"
+        surveySettings={{ dateFormats: { en: surveyDateFormat } }}
+        participantMode={true}
+        values={[{ key: '123X1X1', value: '' }]}
+      />
+    )
+
+  it('links the input to the format hint', () => {
+    renderPicker({}, 1)
+
+    const input = screen.getByLabelText('Date in the format: dd.mm.yyyy')
+    const hint = document.getElementById(input.getAttribute('aria-describedby'))
+    expect(hint.textContent).toBe('Format: dd.mm.yyyy')
+  })
+
+  it('does not point to a hint that is not shown', () => {
+    // An unknown survey date format: No format, so no hint
+    renderPicker({}, 99)
+
+    const input = screen.getByRole('textbox')
+    expect(input.hasAttribute('aria-describedby')).toBe(false)
+    expect(screen.queryByText(/^Format:/)).toBeNull()
+  })
+})
