@@ -22,6 +22,9 @@
  */
 class TemplateManifest extends TemplateConfiguration
 {
+    /** @var string[] Image file options that older config.xml files declare as type "dropdown" */
+    const LEGACY_IMAGEFILE_OPTIONS = ['brandlogofile', 'backgroundimagefile'];
+
     public $templateEditor;
     public $sPreviewImgTag;
 
@@ -1424,6 +1427,8 @@ class TemplateManifest extends TemplateConfiguration
 
     /**
      * Loads the options definition from XML file
+     *
+     * @param string $path The theme folder, with a trailing directory separator
      * @return array|false returns the array of options or false on failing to load the file
      */
     public static function getOptionAttributes($path)
@@ -1510,6 +1515,9 @@ class TemplateManifest extends TemplateConfiguration
                 } else {
                     $aOptions['optionAttributes'][$key]['dropdownoptions'] = '';
                 }
+                if (self::isLegacyImagefileOption($key, $aOptions['optionAttributes'][$key])) {
+                    $aOptions['optionAttributes'][$key]['type'] = 'imagefile';
+                }
 
                 if (!in_array($aOptions['optionAttributes'][$key]['category'], $aOptions['categories'])) {
                     $aOptions['categories'][] = $aOptions['optionAttributes'][$key]['category'];
@@ -1527,6 +1535,23 @@ class TemplateManifest extends TemplateConfiguration
             return $aOptions;
         }
         return false;
+    }
+
+    /**
+     * Checks if a theme option is an image file selector declared the old way: Older config.xml files (and themes
+     * extended from them) declare the logo and background image options as a dropdown, and the image dropdowns
+     * of the "Images" category have no dropdown options of their own.
+     *
+     * @param string $key The option name
+     * @param array $attribute The option attributes read from config.xml (type, category, dropdownoptions)
+     * @return bool True if the option must be handled as an "imagefile" option
+     */
+    private static function isLegacyImagefileOption(string $key, array $attribute): bool
+    {
+        if (in_array($key, self::LEGACY_IMAGEFILE_OPTIONS)) {
+            return in_array($attribute['type'], ['', 'dropdown']);
+        }
+        return $attribute['type'] === 'dropdown' && $attribute['category'] === 'Images' && $attribute['dropdownoptions'] === '';
     }
 
     /**

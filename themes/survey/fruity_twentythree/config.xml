@@ -124,12 +124,12 @@
         <backgroundimage type="buttons" category="Images" width="4" title="Background image" options="on|off"
                          optionlabels="Yes|No">off
         </backgroundimage>
-        <backgroundimagefile type="dropdown" category="Images" width="6" title="Background image file"
+        <backgroundimagefile type="imagefile" category="Images" width="6" title="Background image file"
                              parent="backgroundimage">./files/pattern.png
         </backgroundimagefile>
         <brandlogo type="buttons" category="Images" width="4" title="Logo" options="on|off" optionlabels="Yes|No">off
         </brandlogo>
-        <brandlogofile type="dropdown" category="Images" width="6" title="Logo file" parent="brandlogo">
+        <brandlogofile type="imagefile" category="Images" width="6" title="Logo file" parent="brandlogo">
             ./files/logo.png
         </brandlogofile>
         <!-- fonts -->
