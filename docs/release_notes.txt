@@ -34,6 +34,12 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 7.12.0 (build 261124) to 7.12.1 (build 261125) November 24, 2026
+-Fixed issue: Welcome image safeguard when update hasn't been executed (#5596) (Stefan K)
+-Fixed issue: After updating from LimeSurvey 7.8–7.11 to 7.12.0 every survey failed with "Property Survey.welcome_image is not defined" (Carsten Schmitz)
+-Fixed issue: A11y improvements in dashboard menus and editor switch (LS-NEW-124 to LS-NEW-133) (#5525) (Anblik Audit Team)
+
+
 Changes from 7.11.0 (build 261116) to 7.12.0 (build 261124) November 24, 2026
 +New feature: Survey archive export for inactive surveys with participants (Carsten Schmitz)
 +New feature #JD-12: Visualize charts of date/time questions in statistics (#5515) (SaraDimoska)
