@@ -32,7 +32,7 @@
     "date-fns": "^4.1.0",
     "dayjs": "^1.11.9",
     "html-react-parser": "^5.2.2",
-    "i18next": "^24.0.5",
+    "i18next": "^27.2.6",
     "i18next-chained-backend": "^4.6.2",
     "i18next-localstorage-backend": "^4.2.0",
     "joi": "^17.13.3",
