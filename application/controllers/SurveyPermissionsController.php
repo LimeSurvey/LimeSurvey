@@ -92,8 +92,9 @@ class SurveyPermissionsController extends LSBaseController
             'basePermissions' => $aBaseSurveyPermissions,
             'userCreatePermission' => Permission::model()->hasSurveyPermission($surveyid, 'surveysecurity', 'create'),
             'surveyid' => $surveyid,
+            'surveyOwner' => $oSurvey->owner,
             'userList' => $oSurveyPermissions->getSurveyUserList(),
-            'userListFilteredByGroup' => shouldFilterUserGroupList(),
+            'userListFilteredByGroup' => UserGroup::model()->isFilteredBySameGroupPolicy(),
             'userGroupList' => $oSurveyPermissions->getSurveyUserGroupList(),
             'tableContent' => $oSurveyPermissions->getUsersSurveyPermissions(),
             'oSurveyPermissions' => $oSurveyPermissions,
@@ -283,7 +284,7 @@ class SurveyPermissionsController extends LSBaseController
                 break;
             case 'usergroup':
                 $userGroupId = sanitize_int(Yii::app()->request->getPost('ugid'));
-                if (shouldFilterUserGroupList() && !in_array($userGroupId, getUserGroupList())) {
+                if (!UserGroup::model()->isAuthorizedGroup($userGroupId)) {
                     throw new CHttpException(403, gT("You do not have permission to this user group."));
                 }
                 $success = $oSurveyPermissions->saveUserGroupPermissions($userGroupId, $setOfPermissions['Survey']);

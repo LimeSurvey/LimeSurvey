@@ -4,6 +4,7 @@ namespace ls\tests\unit\api\opHandlers;
 
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\conditions\EmptyConditionHandler;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\conditions\NotEmptyConditionHandler;
+use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\FilterPatcher;
 use ls\tests\TestCondition;
 
 /**
@@ -106,5 +107,23 @@ class OpHandlerResponsePresenceConditionTest extends TestCondition
         $criteria = $handler->execute('Q42_S101#1', null);
 
         $this->assertStringContainsString('#1', $criteria->condition);
+    }
+
+    public function testFilterPatcherAppliesNotEmpty(): void
+    {
+        $criteria = new \LSDbCriteria();
+        $sort = new \CSort();
+
+        (new FilterPatcher())->apply(
+            ['filters' => [['key' => 'Q40', 'filterMethod' => 'not-empty', 'value' => '']]],
+            $criteria,
+            $sort
+        );
+
+        $this->assertFieldConditions(
+            $criteria->condition,
+            "([0] IS NOT NULL AND [0] <> '')",
+            ['Q40']
+        );
     }
 }

@@ -130,6 +130,7 @@ class Zend_Application_Resource_Frontcontroller extends Zend_Application_Resourc
                 case 'actionhelperpaths':
                     if (is_array($value)) {
                         foreach ($value as $helperPrefix => $helperPath) {
+                            require_once 'Zend/Controller/Action/HelperBroker.php';
                             Zend_Controller_Action_HelperBroker::addPath($helperPath, $helperPrefix);
                         }
                     }
@@ -172,6 +173,7 @@ class Zend_Application_Resource_Frontcontroller extends Zend_Application_Resourc
     public function getFrontController()
     {
         if (null === $this->_front) {
+            require_once 'Zend/Controller/Front.php';
             $this->_front = Zend_Controller_Front::getInstance();
         }
         return $this->_front;

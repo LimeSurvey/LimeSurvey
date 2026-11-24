@@ -54,7 +54,7 @@ class Zend_Memory_AccessController implements Zend_Memory_Container_Interface
     /**
      * Object constructor
      *
-     * @param Zend_Memory_Container_Movable $memoryManager
+     * @param Zend_Memory_Container_Movable $memContainer
      */
     public function __construct(Zend_Memory_Container_Movable $memContainer)
     {
@@ -76,7 +76,7 @@ class Zend_Memory_AccessController implements Zend_Memory_Container_Interface
      * _Must_ be used for value access before PHP v 5.2
      * or _may_ be used for performance considerations
      *
-     * @return &string
+     * @return string
      */
     public function &getRef()
     {

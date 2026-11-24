@@ -62,6 +62,7 @@ class Zend_Oauth_Http_UserAuthorization extends Zend_Oauth_Http
             'oauth_token' => $this->_consumer->getLastRequestToken()->getToken(),
         ];
 
+        require_once 'Zend/Oauth/Client.php';
         if (!Zend_Oauth_Client::$supportsRevisionA) {
             $callback = $this->_consumer->getCallbackUrl();
             if (!empty($callback)) {

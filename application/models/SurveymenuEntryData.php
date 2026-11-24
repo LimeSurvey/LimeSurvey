@@ -2,6 +2,8 @@
 
 class SurveymenuEntryData extends CFormModel
 {
+    use TwigSandboxIteratorTrait;
+
     public $rawData = null;
     public $render = null;
     public $link = "surveyAdministration/rendersidemenulink";

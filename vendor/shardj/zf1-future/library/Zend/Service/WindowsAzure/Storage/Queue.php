@@ -390,9 +390,9 @@ class Zend_Service_WindowsAzure_Storage_Queue extends Zend_Service_WindowsAzure_
 	 * Get queue messages
 	 *
 	 * @param string $queueName         Queue name
-	 * @param string $numOfMessages     Optional. A nonzero integer value that specifies the number of messages to retrieve from the queue, up to a maximum of 32. By default, a single message is retrieved from the queue with this operation.
+	 * @param string|int $numOfMessages     Optional. A nonzero integer value that specifies the number of messages to retrieve from the queue, up to a maximum of 32. By default, a single message is retrieved from the queue with this operation.
 	 * @param int    $visibilityTimeout Optional. An integer value that specifies the message's visibility timeout in seconds. The maximum value is 2 hours. The default message visibility timeout is 30 seconds.
-	 * @param string $peek              Peek only?
+	 * @param string|bool $peek              Peek only?
 	 * @return array
 	 * @throws Zend_Service_WindowsAzure_Exception
 	 */
@@ -468,7 +468,7 @@ class Zend_Service_WindowsAzure_Storage_Queue extends Zend_Service_WindowsAzure_
 	 * Peek queue messages
 	 *
 	 * @param string $queueName         Queue name
-	 * @param string $numOfMessages     Optional. A nonzero integer value that specifies the number of messages to retrieve from the queue, up to a maximum of 32. By default, a single message is retrieved from the queue with this operation.
+	 * @param string|int $numOfMessages     Optional. A nonzero integer value that specifies the number of messages to retrieve from the queue, up to a maximum of 32. By default, a single message is retrieved from the queue with this operation.
 	 * @return array
 	 * @throws Zend_Service_WindowsAzure_Exception
 	 */

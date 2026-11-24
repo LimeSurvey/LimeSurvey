@@ -48,7 +48,6 @@ class GetFieldNameTest extends TestBaseClass
         );
         $update = new Update_700(\Yii::app()->db, '');
         $method = new \ReflectionMethod($update, 'getFieldName');
-        $method->setAccessible(true);
         $this->assertSame(
             $expected,
             $method->invoke($update, 'lime_survey_1', $oldFieldName, $questions, 1, 10),

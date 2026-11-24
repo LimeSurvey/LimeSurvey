@@ -52,12 +52,12 @@ class Zend_Service_Amazon_S3_Stream
     private $_objectSize = 0;
 
     /**
-     * @var string File name to interact with
+     * @var string|null File name to interact with
      */
     private $_objectName = null;
 
     /**
-     * @var string Current read/write buffer
+     * @var string|null Current read/write buffer
      */
     private $_objectBuffer = null;
 
@@ -179,7 +179,7 @@ class Zend_Service_Amazon_S3_Stream
      * parameter to fread().
      *
      * @param  integer $count
-     * @return string
+     * @return string|false
      */
     public function stream_read($count)
     {
@@ -314,7 +314,7 @@ class Zend_Service_Amazon_S3_Stream
     /**
      * Returns data array of stream variables
      *
-     * @return array
+     * @return array|false
      */
     public function stream_stat()
     {

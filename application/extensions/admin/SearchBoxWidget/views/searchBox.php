@@ -107,7 +107,7 @@
                 </div>
             </div>
 
-  <?php if ($this->switch): ?>
+  <?php if ($this->switch) : ?>
                 <?php // One of the two views is always chosen: plain buttons, the chosen one is marked as current (not toggle buttons) ?>
                 <div class="survey-actionbar-switch" role="group" aria-label="<?= gT('View') ?>">
                     <i class="view-switch ri-grid-fill survey-actionbar-item" data-action="box-widget" role="button"
@@ -119,7 +119,7 @@
                        aria-label="<?= gT('List view') ?>"
                        <?= $this->viewtype === 'list-widget' ? 'aria-current="true" active' : '' ?>></i>
                 </div>
-            <?php endif; ?>
+  <?php endif; ?>
 
 
         </div>

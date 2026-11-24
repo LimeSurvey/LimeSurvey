@@ -32,7 +32,7 @@
 
 <!-- answer -->
 <div class="{{coreClass}}">
-    <ul class="list-unstyled ls-js-hidden-sr answers-list select-list " role="group" aria-labelledby="ls-question-text-{{basename}} ls-question-validation-{{basename}}">
+    <ul class="list-unstyled ls-js-hidden-sr answers-list select-list " role="group" aria-labelledby="ls-question-text-{{ basename }}" aria-describedby="ls-question-help-{{ basename }} ls-question-validation-{{ basename }}">
             {# rows/answer_row.twig #}
             {{sSelects}}
     </ul>
@@ -56,9 +56,9 @@
         </div>
         <div class="col-md-6 col-6 ranking-sorted-items">
             <strong class="sortable-subtitle sortable-rank-subtitle">{{rank_title}}</strong>
-            <ul id="sortable-rank-{{qId}}" class="sortable-rank sortable-list list-group">
+            <ol id="sortable-rank-{{qId}}" class="sortable-rank sortable-list list-group">
                 <li class="d-none ls-remove"></li>
-            </ul>
+            </ol>
         </div>
     </div>
 </div>

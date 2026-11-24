@@ -45,7 +45,7 @@ class Zend_View_Helper_Partial extends Zend_View_Helper_Abstract
 
     /**
      * Variable to which object will be assigned
-     * @var string
+     * @var string|null
      */
     protected $_objectKey;
 
@@ -64,11 +64,11 @@ class Zend_View_Helper_Partial extends Zend_View_Helper_Abstract
      * get_object_vars() is passed.
      *
      * @param  string $name Name of view script
-     * @param  string|array $module If $model is empty, and $module is an array,
+     * @param  string|array|object $module If $model is empty, and $module is an array,
      *                              these are the variables to populate in the
      *                              view. Otherwise, the module in which the
      *                              partial resides
-     * @param  array $model Variables to populate in the view
+     * @param  array|object $model Variables to populate in the view
      * @return string|Zend_View_Helper_Partial
      */
     public function partial($name = null, $module = null, $model = null)
@@ -78,12 +78,8 @@ class Zend_View_Helper_Partial extends Zend_View_Helper_Abstract
         }
 
         $view = $this->cloneView();
-        if (isset($this->partialCounter)) {
-            $view->partialCounter = $this->partialCounter;
-        }
-        if (isset($this->partialTotalCount)) {
-            $view->partialTotalCount = $this->partialTotalCount;
-        }
+        $view->partialCounter = $this->partialCounter;
+        $view->partialTotalCount = $this->partialTotalCount;
 
         if ((null !== $module) && is_string($module)) {
             require_once 'Zend/Controller/Front.php';
@@ -96,9 +92,7 @@ class Zend_View_Helper_Partial extends Zend_View_Helper_Abstract
             }
             $viewsDir = dirname($moduleDir) . '/views';
             $view->addBasePath($viewsDir);
-        } elseif ((null == $model) && (null !== $module)
-            && (is_array($module) || is_object($module)))
-        {
+        } elseif ((null == $model) && (is_array($module) || is_object($module))) {
             $model = $module;
         }
 

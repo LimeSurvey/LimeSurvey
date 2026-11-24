@@ -140,6 +140,10 @@ class StreamHandler
             throw new \InvalidArgumentException('Passing the "on_trailers" request option to the stream handler is not supported because the stream handler cannot observe trailers.');
         }
 
+        if (\strpbrk($request->getMethod(), "\r\n\0") !== false) {
+            throw new RequestException('HTTP method must not contain a carriage return, line feed or NUL byte.', $request);
+        }
+
         $protocolVersion = $request->getProtocolVersion();
 
         if ('' === $protocolVersion) {
@@ -496,7 +500,7 @@ class StreamHandler
 
         return $this->createResource(
             function () use ($uri, $contextResource, $context, $options, $request) {
-                $resource = @\fopen((string) $uri, 'r', false, $contextResource);
+                $resource = @\fopen((string) $uri->withFragment(''), 'r', false, $contextResource);
 
                 if (false === $resource) {
                     throw new ConnectException(sprintf('Connection refused for URI %s', Psr7\Utils::redactUserInfo($uri)), $request, null, $context);
@@ -663,6 +667,15 @@ class StreamHandler
             }
 
             foreach ($value as $val) {
+                $val = (string) $val;
+                if (\strpbrk("$name$val", "\r\n\0") !== false) {
+                    throw new RequestException('Request header fields must not contain a carriage return, line feed or NUL byte.', $request);
+                }
+
+                if (1 !== \preg_match('/^[a-zA-Z0-9\'`#$%&*+.^_|~!-]+$/D', (string) $name)) {
+                    throw new RequestException('Request header names must be valid HTTP tokens.', $request);
+                }
+
                 $headers .= "$name: $val\r\n";
             }
         }
@@ -1032,8 +1045,9 @@ class StreamHandler
 
         if (\is_array($parsed) && isset($parsed['scheme']) && Psr7\Utils::caselessEquals($parsed['scheme'], 'http')) {
             if (isset($parsed['host'], $parsed['port'])) {
-                $user = $parsed['user'] ?? '';
-                $pass = $parsed['pass'] ?? '';
+                // Each part is percent-decoded on its own, to match libcurl.
+                $user = \rawurldecode($parsed['user'] ?? '');
+                $pass = \rawurldecode($parsed['pass'] ?? '');
                 $auth = ($user !== '' || $pass !== '') ? 'Basic '.\base64_encode("{$user}:{$pass}") : null;
 
                 return [

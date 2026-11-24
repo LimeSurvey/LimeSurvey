@@ -1,4 +1,5 @@
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { queryClient, persistOptions } from 'queryClient'
 import { I18Provider } from 'providers'
 import { i18nInstance } from 'i18nInit'
@@ -19,7 +20,26 @@ const JestWrapWithProviders = ({ children }) => {
         client={queryClient}
         persistOptions={persistOptions}
       >
-        <I18Provider language={'en'} i18n={() => i18nInstance('en')}>
+        <I18Provider
+          language={'en'}
+          i18n={(
+            _lang,
+            _auth,
+            _setLanguages,
+            _languages,
+            _isSurveyTranslation,
+            onReady
+          ) =>
+            i18nInstance(
+              'en',
+              undefined,
+              undefined,
+              undefined,
+              undefined,
+              onReady
+            )
+          }
+        >
           <Routes>
             <Route
               path="/survey/:surveyId/:panel?/:menu?"
@@ -35,5 +55,19 @@ const JestWrapWithProviders = ({ children }) => {
 export async function renderWithProviders(ui) {
   await act(async () => {
     render(<JestWrapWithProviders>{ui}</JestWrapWithProviders>)
+  })
+}
+
+/**
+ * Renders a component with only a fresh QueryClient around it, for components
+ * that read app state but don't need the survey, router or translations.
+ */
+export function renderWithQueryClient(ui) {
+  const client = new QueryClient()
+
+  return render(ui, {
+    wrapper: ({ children }) => (
+      <QueryClientProvider client={client}>{children}</QueryClientProvider>
+    ),
   })
 }

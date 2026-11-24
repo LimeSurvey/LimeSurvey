@@ -69,7 +69,7 @@ abstract class Zend_Queue_Adapter_AdapterAbstract
     /**
      * Contains the Zend_Queue that this object
      *
-     * @var Zend_Queue_Adapter_Abstract
+     * @var Zend_Queue|null
      */
     protected $_queue = null;
 
@@ -91,7 +91,7 @@ abstract class Zend_Queue_Adapter_AdapterAbstract
      * host           => (string) What host to connect to, defaults to localhost
      * port           => (string) The port of the database
      *
-     * @param  array|Zend_Config $config An array having configuration data
+     * @param  array|Zend_Config $options An array having configuration data
      * @param  Zend_Queue $queue The Zend_Queue object that created this class
      * @return void
      * @throws Zend_Queue_Exception
@@ -147,7 +147,7 @@ abstract class Zend_Queue_Adapter_AdapterAbstract
     /**
      * get the Zend_Queue class that is attached to this object
      *
-     * @return Zend_Queue_Adapter_Abstract|null
+     * @return Zend_Queue|null
      */
     public function getQueue()
     {

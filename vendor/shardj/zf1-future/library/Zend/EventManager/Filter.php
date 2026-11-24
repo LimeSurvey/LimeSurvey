@@ -58,7 +58,7 @@ interface Zend_EventManager_Filter
     /**
      * Get all intercepting filters
      *
-     * @return array
+     * @return array|Zend_EventManager_Filter_FilterIterator
      */
     public function getFilters();
 

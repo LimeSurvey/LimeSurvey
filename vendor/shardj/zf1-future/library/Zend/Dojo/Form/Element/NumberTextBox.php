@@ -149,7 +149,7 @@ class Zend_Dojo_Form_Element_NumberTextBox extends Zend_Dojo_Form_Element_Valida
     /**
      * Set strict flag
      *
-     * @param  bool $strict
+     * @param  bool $flag
      * @return Zend_Dojo_Form_Element_NumberTextBox
      */
     public function setStrict($flag)

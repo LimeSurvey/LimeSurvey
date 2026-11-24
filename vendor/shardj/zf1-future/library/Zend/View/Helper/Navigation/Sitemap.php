@@ -77,7 +77,7 @@ class Zend_View_Helper_Navigation_Sitemap
     /**
      * Server url
      *
-     * @var string
+     * @var string|null
      */
     protected $_serverUrl;
 

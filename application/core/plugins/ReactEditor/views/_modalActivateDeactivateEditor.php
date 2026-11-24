@@ -17,8 +17,7 @@ $slidesJson = htmlspecialchars(json_encode($slides), ENT_QUOTES, 'UTF-8');
 <!-- Modal to activate/deactivate the react question editor -->
 <div id="activate_editor" class="modal fade" role="dialog" aria-modal="true"
      aria-labelledby="activateEditorModalTitle activateEditorModalTitle-dialogsr"
-     data-slides="<?= $slidesJson ?>"
-     data-image-alt="<?= CHtml::encode(gT('Screenshot of %s', 'unescaped')) ?>">
+     data-slides="<?= $slidesJson ?>">
     <div class="modal-dialog modal-xl">
         <!-- Modal content-->
         <div class="modal-content">
@@ -64,7 +63,7 @@ $slidesJson = htmlspecialchars(json_encode($slides), ENT_QUOTES, 'UTF-8');
                                     </div>
                                     <!-- Manual mode: toggle between classic/new (shown when opened manually) -->
                                     <div class="editor-manual-section row mb-16">
-                                        <label class="label-s mb-1" for='editor-switch-btn'><?php eT("Editor version"); ?></label>
+                                        <label class="label-s mb-1" id="editor-switch-label"><?php eT("Editor version"); ?></label>
                                         <div class="lime-toggle-btn-group isSecondary">
                                         <?php
                                         App()->getController()->widget(
@@ -72,7 +71,7 @@ $slidesJson = htmlspecialchars(json_encode($slides), ENT_QUOTES, 'UTF-8');
                                             [
                                                 'name'          => 'editor-switch-btn',
                                                 'id'            => 'editor-switch-btn',
-                                                'ariaLabel'     => gT('Editor version'),
+                                                'ariaLabelledBy' => 'editor-switch-label',
                                                 'checkedOption' => $activated,
                                                 'selectOptions' => [
                                                     '0' => gT('Classic'),

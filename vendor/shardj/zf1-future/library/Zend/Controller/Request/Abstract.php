@@ -144,7 +144,7 @@ abstract class Zend_Controller_Request_Abstract
     /**
      * Set the action name
      *
-     * @param string $value
+     * @param string|null $value
      * @return $this
      */
     public function setActionName($value)

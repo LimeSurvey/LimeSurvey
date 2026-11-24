@@ -111,6 +111,7 @@ class Zend_Pdf_Filter_AsciiHex implements Zend_Pdf_Filter_Interface
                         // Even pass.
                         // Add decoded character to the output
                         // ($hexCodeHigh is stored in previous pass)
+                        // @phpstan-ignore variable.undefined (set in the preceding odd pass)
                         $output .= chr($hexCodeHigh*16 + $code);
                     }
                     $oddCode = !$oddCode;
@@ -127,6 +128,7 @@ class Zend_Pdf_Filter_AsciiHex implements Zend_Pdf_Filter_Interface
 
         /* Last '0' character is omitted */
         if (!$oddCode) {
+            // @phpstan-ignore variable.undefined (set in the preceding odd pass)
             $output .= chr($hexCodeHigh*16);
         }
 

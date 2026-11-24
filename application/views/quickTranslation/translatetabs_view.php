@@ -60,10 +60,7 @@ $captionId = 'translation-table-caption-' . $type;
                     foreach ($fieldData['translateFields'] as $field) {
                         if (strlen(trim((string)$field['textfrom'])) > 0) {
                             $this->renderPartial('translateFieldData', $field);
-                        } else { ?>
-                            <input type='hidden' name='<?php echo $type; ?>_newvalue[<?php echo $field['j']; ?>]'
-                                   value='<?php echo $field['textto']; ?>'/>
-                        <?php }
+                        }
                     }
                 }
             } ?>

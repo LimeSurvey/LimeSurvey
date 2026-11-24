@@ -39,12 +39,6 @@ class LSCheckBoxColumn extends CCheckBoxColumn
     }
 
     /**
-     * Returns the aria-label of the checkbox in the given row.
-     *
-     * @param integer $row The row number (zero-based)
-     * @return string
-     */
-    /**
      * Renders the header cell. A header cell holding only the "select all" checkbox has no text,
      * so it gets an accessible name for the screen reader table navigation.
      *
@@ -53,12 +47,36 @@ class LSCheckBoxColumn extends CCheckBoxColumn
     #[\Override]
     public function renderHeaderCell()
     {
-        if ($this->header === null && !isset($this->headerHtmlOptions['aria-label'])) {
+        if ($this->header === null && !isset($this->headerHtmlOptions['aria-label']) && $this->hasSelectAllCheckBox()) {
             $this->headerHtmlOptions['aria-label'] = gT('Select all');
         }
         parent::renderHeaderCell();
     }
 
+    /**
+     * Checks whether the header cell renders the "select all" checkbox,
+     * using the same conditions as CCheckBoxColumn::getHeaderCellContent().
+     *
+     * @return boolean True if the header cell contains the "select all" checkbox
+     */
+    protected function hasSelectAllCheckBox()
+    {
+        // The checkbox replaces the {item} placeholder: Without it, the template renders only its own text
+        if (strpos((string) $this->headerTemplate, '{item}') === false) {
+            return false;
+        }
+        if ($this->selectableRows === null) {
+            return $this->grid->selectableRows > 1;
+        }
+        return $this->selectableRows > 1;
+    }
+
+    /**
+     * Returns the aria-label of the checkbox in the given row.
+     *
+     * @param integer $row The row number (zero-based)
+     * @return string The aria-label of the row checkbox
+     */
     protected function getRowAriaLabel($row)
     {
         if ($this->ariaLabel !== null) {

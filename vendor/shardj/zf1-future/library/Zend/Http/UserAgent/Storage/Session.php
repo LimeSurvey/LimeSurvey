@@ -146,7 +146,7 @@ class Zend_Http_UserAgent_Storage_Session implements Zend_Http_UserAgent_Storage
     /**
      * Defined by Zend_Http_UserAgent_Storage
      *
-     * @param  mixed $contents
+     * @param  mixed $content
      * @return void
      */
     public function write($content)

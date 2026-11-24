@@ -132,7 +132,7 @@ class Zend_View_Helper_HeadStyle extends Zend_View_Helper_Placeholder_Container_
      *
      * @param  string $method
      * @param  array $args
-     * @return void
+     * @return mixed
      * @throws Zend_View_Exception When no $content provided or invalid method
      */
     public function __call($method, $args)
@@ -180,7 +180,6 @@ class Zend_View_Helper_HeadStyle extends Zend_View_Helper_Placeholder_Container_
      * Determine if a value is a valid style tag
      *
      * @param  mixed $value
-     * @param  string $method
      * @return boolean
      */
     protected function _isValid($value)
@@ -210,7 +209,7 @@ class Zend_View_Helper_HeadStyle extends Zend_View_Helper_Placeholder_Container_
             throw $e;
         }
 
-        return $this->getContainer()->append($value);
+        $this->getContainer()->append($value);
     }
 
     /**
@@ -230,7 +229,7 @@ class Zend_View_Helper_HeadStyle extends Zend_View_Helper_Placeholder_Container_
             throw $e;
         }
 
-        return $this->getContainer()->offsetSet($index, $value);
+        $this->getContainer()->offsetSet($index, $value);
     }
 
     /**
@@ -248,7 +247,7 @@ class Zend_View_Helper_HeadStyle extends Zend_View_Helper_Placeholder_Container_
             throw $e;
         }
 
-        return $this->getContainer()->prepend($value);
+        $this->getContainer()->prepend($value);
     }
 
     /**
@@ -266,14 +265,14 @@ class Zend_View_Helper_HeadStyle extends Zend_View_Helper_Placeholder_Container_
             throw $e;
         }
 
-        return $this->getContainer()->set($value);
+        $this->getContainer()->set($value);
     }
 
     /**
      * Start capture action
      *
-     * @param  mixed $captureType
-     * @param  string $typeOrAttrs
+     * @param  mixed $type
+     * @param  string $attrs
      * @return void
      */
     public function captureStart($type = Zend_View_Helper_Placeholder_Container_Abstract::APPEND, $attrs = null)

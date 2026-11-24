@@ -1,5 +1,5 @@
 <?php if ($oQuestion->qid !== 0) : ?>
-    <?php if ($showToolsMenu) : ?>
+    <?php if (!empty($showToolsMenu)) : ?>
         <?php $toolsDropDownItems = $this->renderPartial(
             '/questionAdministration/partial/topbarBtns/questionToolsDropdownMenu',
             get_defined_vars(),

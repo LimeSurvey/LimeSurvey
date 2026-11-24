@@ -5,7 +5,7 @@ class GeneralOptionWidget extends CWidget
     /** @var GeneralOption */
     public $generalOption;
 
-    const SINGLEINPUTTYPE = array(
+    public const SINGLEINPUTTYPE = array(
         'questiongroup',
         'questiontheme',
         'text',

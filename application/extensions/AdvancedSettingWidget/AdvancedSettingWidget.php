@@ -8,7 +8,7 @@ class AdvancedSettingWidget extends CWidget
     /** @var Survey */
     public $survey;
 
-    const SINGLEINPUTTYPE = array(
+    public const SINGLEINPUTTYPE = array(
         'columns',
         'integer',
         'float',

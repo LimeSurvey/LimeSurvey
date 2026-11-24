@@ -92,11 +92,11 @@
             </div>
             <?php
             if (isset($validfrom) && $validfrom != 'N') {
-                $validfrom = convertToGlobalSettingFormat($validfrom, true);
+                $validfrom = convertToGlobalSettingFormat(getDateOfUTC($validfrom), true);
             }
 
             if (isset($validuntil) && $validuntil != 'N') {
-                $validuntil = convertToGlobalSettingFormat($validuntil, true);
+                $validuntil = convertToGlobalSettingFormat(getDateOfUTC($validuntil), true);
             }
             ?>
             <div class="row">

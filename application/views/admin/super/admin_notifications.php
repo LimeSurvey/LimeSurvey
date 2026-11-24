@@ -11,7 +11,7 @@
         <a aria-expanded='false' class="nav-link"
             href='#'>
             <span class='ri-notification-2-line text-read'></span>
-	    <span class='visually-hidden'><?php eT('Notifications'); ?></span>
+        <span class='visually-hidden'><?php eT('Notifications'); ?></span>
         </a>
     </li>
 <?php elseif ($showLoader) : ?>
@@ -48,11 +48,10 @@
             <span class='caret'></span>
         </a>
 
-        <?php // One list for the screen reader: the notifications; the wrapper, divider and "delete all" are not list items ?>
-        <ul id='notification-outer-ul' class='dropdown-menu dropdown-menu-end' role="none"
-            aria-labelledby='admin-notifications-menu-button'>
+        <?php // One list for the screen reader: The notifications; the wrapper, divider and "delete all" are not list items ?>
+        <ul id='notification-outer-ul' class='dropdown-menu dropdown-menu-end' role="none">
             <li id='notification-inner-li' role="none">
-                <ul id='notification-inner-ul' class='notification-list' aria-labelledby='admin-notifications-menu-button'>
+                <ul id='notification-inner-ul' class='notification-list' aria-label='<?php eT('Notifications'); ?>'>
                     <?php foreach ($notifications as $not) : ?>
                         <li>
                             <?php // Opens the notification in a modal ?>

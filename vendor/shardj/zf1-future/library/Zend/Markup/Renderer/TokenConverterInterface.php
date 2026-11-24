@@ -36,7 +36,7 @@ interface Zend_Markup_Renderer_TokenConverterInterface
      * Convert the token
      *
      * @param Zend_Markup_Token $token
-     * @param string $text
+     * @param string|null $text
      *
      * @return string
      */

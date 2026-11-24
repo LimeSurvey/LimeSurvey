@@ -198,10 +198,13 @@ class Zend_Tool_Framework_Client_Console_HelpSystem
         }
 
         // get the metadata's for the things to display
+        /** @var Zend_Tool_Framework_Metadata_Tool[] $displayProviderMetadatas */
         $displayProviderMetadatas = $manifest->getMetadatas($providerMetadatasSearch);
+        /** @var Zend_Tool_Framework_Metadata_Tool[] $displayActionMetadatas */
         $displayActionMetadatas = $manifest->getMetadatas($actionMetadatasSearch);
 
         // create index of actionNames
+        $displayActionNames = [];
         for ($i = 0; $i < count($displayActionMetadatas); $i++) {
             $displayActionNames[] = $displayActionMetadatas[$i]->getActionName();
         }
@@ -224,6 +227,7 @@ class Zend_Tool_Framework_Client_Console_HelpSystem
                     $actionMetadata = $displayActionMetadatas[$foundActionIndex];
                 }
 
+                /** @var Zend_Tool_Framework_Metadata_Tool $specialtyMetadata */
                 $specialtyMetadata = $manifest->getMetadata([
                     'type'          => 'Tool',
                     'name'          => 'specialtyName',
@@ -233,6 +237,7 @@ class Zend_Tool_Framework_Client_Console_HelpSystem
                     ]);
 
                 // lets do the main _Global action first
+                /** @var Zend_Tool_Framework_Metadata_Tool $actionableGlobalLongParamMetadata */
                 $actionableGlobalLongParamMetadata = $manifest->getMetadata([
                     'type'          => 'Tool',
                     'name'          => 'actionableMethodLongParams',
@@ -242,6 +247,7 @@ class Zend_Tool_Framework_Client_Console_HelpSystem
                     'clientName'    => 'console'
                     ]);
 
+                /** @var Zend_Tool_Framework_Metadata_Tool[] $actionableGlobalMetadatas */
                 $actionableGlobalMetadatas = $manifest->getMetadatas([
                     'type'          => 'Tool',
                     'name'          => 'actionableMethodLongParams',
@@ -280,6 +286,7 @@ class Zend_Tool_Framework_Client_Console_HelpSystem
                             continue;
                         }
 
+                        /** @var Zend_Tool_Framework_Metadata_Tool $specialtyMetadata */
                         $specialtyMetadata = $manifest->getMetadata([
                             'type'          => 'Tool',
                             'name'          => 'specialtyName',
@@ -288,6 +295,7 @@ class Zend_Tool_Framework_Client_Console_HelpSystem
                             'clientName'    => 'console'
                             ]);
 
+                        /** @var Zend_Tool_Framework_Metadata_Tool $actionableSpecialtyLongMetadata */
                         $actionableSpecialtyLongMetadata = $manifest->getMetadata([
                             'type'          => 'Tool',
                             'name'          => 'actionableMethodLongParams',

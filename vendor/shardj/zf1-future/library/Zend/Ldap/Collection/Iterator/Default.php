@@ -44,14 +44,14 @@ class Zend_Ldap_Collection_Iterator_Default implements Iterator, Countable
     /**
      * Result identifier resource
      *
-     * @var resource
+     * @var resource|null
      */
     protected $_resultId = null;
 
     /**
      * Current result entry identifier
      *
-     * @var resource
+     * @var resource|null
      */
     protected $_current = null;
 
@@ -65,7 +65,7 @@ class Zend_Ldap_Collection_Iterator_Default implements Iterator, Countable
     /**
      * The method that will be applied to the attribute's names.
      *
-     * @var  integer|callback
+     * @var  integer|callable
      */
     protected $_attributeNameTreatment = self::ATTRIBUTE_TO_LOWER;
 
@@ -103,6 +103,7 @@ class Zend_Ldap_Collection_Iterator_Default implements Iterator, Countable
         $this->_ldap = $ldap;
         $this->_resultId = $resultId;
         $this->_itemCount = @ldap_count_entries($ldap->getResource(), $resultId);
+        // @phpstan-ignore identical.alwaysFalse (ldap_count_entries() returns false on failure)
         if ($this->_itemCount === false) {
             /**
              * @see Zend_Ldap_Exception
@@ -170,12 +171,13 @@ class Zend_Ldap_Collection_Iterator_Default implements Iterator, Countable
      * or a valid callback accepting the attribute's name as it's only
      * argument and returning the new attribute's name.
      *
-     * @param  integer|callback $attributeNameTreatment
+     * @param  integer|callable $attributeNameTreatment
      * @return $this
      */
     public function setAttributeNameTreatment($attributeNameTreatment)
     {
         if (is_callable($attributeNameTreatment)) {
+            // @phpstan-ignore function.alreadyNarrowedType (a callable string may name a static method, which is not a function)
             if (is_string($attributeNameTreatment) && !function_exists($attributeNameTreatment)) {
                 $this->_attributeNameTreatment = self::ATTRIBUTE_TO_LOWER;
             } else if (is_array($attributeNameTreatment) &&
@@ -203,7 +205,7 @@ class Zend_Ldap_Collection_Iterator_Default implements Iterator, Countable
     /**
      * Returns the currently set attribute name treatment
      *
-     * @return integer|callback
+     * @return integer|callable
      */
     public function getAttributeNameTreatment()
     {

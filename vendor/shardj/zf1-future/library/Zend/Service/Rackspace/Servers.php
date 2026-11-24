@@ -88,8 +88,8 @@ class Zend_Service_Rackspace_Servers extends Zend_Service_Rackspace_Abstract
     /**
      * Get the specified server
      *
-     * @param  string $id
-     * @return Zend_Service_Rackspace_Servers_Server
+     * @param  string|int $id
+     * @return Zend_Service_Rackspace_Servers_Server|false
      */
     public function getServer($id)
     {
@@ -901,7 +901,7 @@ class Zend_Service_Rackspace_Servers extends Zend_Service_Rackspace_Abstract
      *
      * @param  string $serverId
      * @param  string $name
-     * @return Zend_Service_Rackspace_Servers_Image
+     * @return Zend_Service_Rackspace_Servers_Image|false
      */
     public function createImage($serverId,$name)
     {
@@ -1161,7 +1161,7 @@ class Zend_Service_Rackspace_Servers extends Zend_Service_Rackspace_Abstract
     /**
      * Get the shared IP group
      *
-     * @param  integer $id
+     * @param  integer|string $id
      * @return Zend_Service_Rackspace_Servers_SharedIpGroup|boolean
      */
     public function getSharedIpGroup($id)

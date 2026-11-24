@@ -56,19 +56,19 @@ class Zend_Mail extends Zend_Mime_Message
      */
 
     /**
-     * @var Zend_Mail_Transport_Abstract
+     * @var Zend_Mail_Transport_Abstract|null
      * @static
      */
     protected static $_defaultTransport = null;
 
     /**
-     * @var array
+     * @var array|null
      * @static
      */
     protected static $_defaultFrom;
 
     /**
-     * @var array
+     * @var array|null
      * @static
      */
     protected static $_defaultReplyTo;
@@ -93,7 +93,7 @@ class Zend_Mail extends Zend_Mime_Message
 
     /**
      * From: address
-     * @var string
+     * @var string|null
      */
     protected $_from = null;
 
@@ -111,31 +111,31 @@ class Zend_Mail extends Zend_Mime_Message
 
     /**
      * Reply-To header
-     * @var string
+     * @var string|null
      */
     protected $_replyTo = null;
 
     /**
      * Return-Path header
-     * @var string
+     * @var string|null
      */
     protected $_returnPath = null;
 
     /**
      * Subject: header
-     * @var string
+     * @var string|null
      */
     protected $_subject = null;
 
     /**
      * Date: header
-     * @var string
+     * @var string|null
      */
     protected $_date = null;
 
     /**
      * Message-ID: header
-     * @var string
+     * @var string|null
      */
     protected $_messageId = null;
 
@@ -991,6 +991,7 @@ class Zend_Mail extends Zend_Mime_Message
                 }
                 $date = date('r', $date);
             } else if ($date instanceof Zend_Date) {
+                require_once 'Zend/Date.php';
                 $date = $date->get(Zend_Date::RFC_2822);
             } else {
                 /**

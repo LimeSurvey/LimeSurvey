@@ -99,4 +99,3 @@ class ParticipantListMassiveActions
         return \Participant::model()->permissionCheckedActionsArray($actions, $permissions);
     }
 }
-

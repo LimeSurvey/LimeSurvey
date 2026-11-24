@@ -452,6 +452,55 @@ class UserGroup extends LSActiveRecord
 
 
     /**
+     * Checks whether the user groups the current user can see must be limited
+     * by the 'usercontrolSameGroupPolicy' setting.
+     * They are never limited for users with the global permission to read superadmin.
+     *
+     * @return bool
+     */
+    public function isFilteredBySameGroupPolicy(): bool
+    {
+        return App()->getConfig('usercontrolSameGroupPolicy', true)
+            && !Permission::model()->hasGlobalPermission('superadmin', 'read');
+    }
+
+    /**
+     * Returns the ids of the user groups the current user can see, sorted by group name.
+     * If the 'usercontrolSameGroupPolicy' setting limits the groups (see isFilteredBySameGroupPolicy()),
+     * these are only the groups the current user is a member or the owner of, otherwise all groups.
+     *
+     * @return int[]
+     */
+    public function getAuthorizedGroupIds(): array
+    {
+        $command = App()->db->createCommand()
+            ->select('ugid')
+            ->from($this->tableName())
+            ->order('name');
+        if ($this->isFilteredBySameGroupPolicy()) {
+            $userId = (int) App()->session['loginID'];
+            $command->where(
+                'owner_id = :ownerId OR ugid IN (SELECT ugid FROM {{user_in_groups}} WHERE uid = :memberId)',
+                [':ownerId' => $userId, ':memberId' => $userId]
+            );
+        }
+        return array_map('intval', $command->queryColumn());
+    }
+
+    /**
+     * Checks whether the current user can see the given user group,
+     * according to the 'usercontrolSameGroupPolicy' setting.
+     *
+     * @param int|string $userGroupId
+     * @return bool
+     */
+    public function isAuthorizedGroup($userGroupId): bool
+    {
+        return !$this->isFilteredBySameGroupPolicy()
+            || in_array($userGroupId, $this->getAuthorizedGroupIds());
+    }
+
+    /**
      * Checks whether the specified UID is part of that group
      *
      * @param integer $uid

@@ -24,6 +24,8 @@
  */
 class QuestionTemplate extends CFormModel
 {
+    use TwigSandboxIteratorTrait;
+
     // Main variables
     /** @var Question $oQuestion The current question */
     public $oQuestion;
@@ -491,6 +493,7 @@ class QuestionTemplate extends CFormModel
             "G" => 'gender',
             "H" => 'arrays/column',
             "I" => 'language',
+            "J" => 'map',
             "K" => 'multiplenumeric',
             "L" => 'listradio',
             "M" => 'multiplechoice',

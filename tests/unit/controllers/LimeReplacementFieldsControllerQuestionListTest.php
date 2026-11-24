@@ -35,10 +35,8 @@ class LimeReplacementFieldsControllerQuestionListTest extends TestBaseClass
     {
         $controller = new \LimeReplacementFieldsController('limereplacementfields');
         $property = new \ReflectionProperty($controller, 'groupOrders');
-        $property->setAccessible(true);
         $property->setValue($controller, $this->groupOrders);
         $method = new \ReflectionMethod($controller, 'getQuestionList');
-        $method->setAccessible(true);
         return $method->invoke($controller, 'editanswer', $gid, $qid, $fieldmap ?? $this->fieldmap, 'editanswer', 'G');
     }
 

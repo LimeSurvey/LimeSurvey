@@ -49,11 +49,13 @@ class Zend_Text_MultiByte
             return '';
         }
 
-        if ($breakWidth === null) {
+        if ($breakWidth === 0) {
+            require_once 'Zend/Text/Exception.php';
             throw new Zend_Text_Exception('Break string cannot be empty');
         }
 
         if ($width === 0 && $cut) {
+            require_once 'Zend/Text/Exception.php';
             throw new Zend_Text_Exception('Can\'t force cut when width is zero');
         }
 
@@ -115,7 +117,7 @@ class Zend_Text_MultiByte
         if ($padStringLength === 0 || $lengthOfPadding <= 0) {
             $return = $input;
         } else {
-            $repeatCount = floor($lengthOfPadding / $padStringLength);
+            $repeatCount = (int) floor($lengthOfPadding / $padStringLength);
 
             if ($padType === STR_PAD_BOTH) {
                 $lastStringLeft  = '';
@@ -123,7 +125,7 @@ class Zend_Text_MultiByte
                 $repeatCountLeft = $repeatCountRight = ($repeatCount - $repeatCount % 2) / 2;
 
                 $lastStringLength       = $lengthOfPadding - 2 * $repeatCountLeft * $padStringLength;
-                $lastStringLeftLength   = $lastStringRightLength = floor($lastStringLength / 2);
+                $lastStringLeftLength   = $lastStringRightLength = (int) floor($lastStringLength / 2);
                 $lastStringRightLength += $lastStringLength % 2;
 
                 $lastStringLeft  = iconv_substr($padString, 0, $lastStringLeftLength, $charset);

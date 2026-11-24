@@ -57,7 +57,7 @@ class Zend_Application_Resource_Dojo
     /**
      * Retrieve Dojo View Helper
      *
-     * @return Zend_Dojo_View_Dojo_Container
+     * @return Zend_Dojo_View_Helper_Dojo_Container
      */
     public function getDojo()
     {
@@ -65,6 +65,7 @@ class Zend_Application_Resource_Dojo
             $this->getBootstrap()->bootstrap('view');
             $view = $this->getBootstrap()->view;
 
+            require_once 'Zend/Dojo.php';
             Zend_Dojo::enableView($view);
             $view->dojo()->setOptions($this->getOptions());
 

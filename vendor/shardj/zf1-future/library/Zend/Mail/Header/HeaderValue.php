@@ -121,7 +121,7 @@ final class Zend_Mail_Header_HeaderValue
         $byte = ord($value[$i]);
 
         // ASCII character (1 byte): 0x00 - 0x7F
-        if ($byte >= 0x00 && $byte <= 0x7F) {
+        if ($byte <= 0x7F) {
             $i++;
             return true;
         }
@@ -156,7 +156,7 @@ final class Zend_Mail_Header_HeaderValue
      * Raises an exception if invalid.
      *
      * @param string $value
-     * @throws Exception\RuntimeException
+     * @throws Zend_Mail_Exception
      * @return void
      */
     public static function assertValid($value)

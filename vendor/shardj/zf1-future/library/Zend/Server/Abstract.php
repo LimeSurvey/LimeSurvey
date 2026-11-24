@@ -104,7 +104,7 @@ abstract class Zend_Server_Abstract implements Zend_Server_Interface
      *
      * Returns an array of method definitions.
      *
-     * @return Zend_Server_Definition
+     * @return Zend_Server_Definition|array
      */
     public function getFunctions()
     {
@@ -117,7 +117,7 @@ abstract class Zend_Server_Abstract implements Zend_Server_Interface
      * Lowercase's a string by reference
      *
      * @deprecated
-     * @param  string $string value
+     * @param  string $value value
      * @param  string $key
      * @return string Lower cased string
      */

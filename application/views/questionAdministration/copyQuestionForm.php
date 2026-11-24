@@ -26,11 +26,7 @@
             'post',
             array('class' => 'form30 ', 'id' => 'form_copy_question', 'name' => 'frmeditquestion')
         ); ?>
-        <?php
-
-/** this btn is trigger by save&close topbar button in copyQuestiontobar_view  */
-
-        ?>
+        <?php // this btn is trigger by save&close topbar button in copyQuestiontobar_view ?>
         <input type="hidden" name="sid" value="<?= $oSurvey->sid; ?>" />
         <input
                 type='submit'

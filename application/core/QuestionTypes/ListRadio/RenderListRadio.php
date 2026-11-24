@@ -1,5 +1,7 @@
 <?php
 
+use LimeSurvey\Models\Services\SurveySessionState;
+
 /**
  * RenderClass for Boilerplate Question
  *  * The ia Array contains the following
@@ -35,10 +37,10 @@ class RenderListRadio extends QuestionBaseRenderer
     /** @var string the code of the answer after which the 'Other' option should be placed (if $otherPosition == 3) */
     protected $answerBeforeOther;
 
-    const OTHER_POS_BEFORE_NOANSWER = 'default';
-    const OTHER_POS_START = 'beginning';
-    const OTHER_POS_END = 'end';
-    const OTHER_POS_AFTER_OPTION = 'specific';
+    public const OTHER_POS_BEFORE_NOANSWER = 'default';
+    public const OTHER_POS_START = 'beginning';
+    public const OTHER_POS_END = 'end';
+    public const OTHER_POS_AFTER_OPTION = 'specific';
 
     public function __construct($aFieldArray, $bRenderDirect = false)
     {
@@ -169,7 +171,12 @@ class RenderListRadio extends QuestionBaseRenderer
         ];
     }
 
-        public function addOtherRow()
+    /**
+     * Renders the "Other" option row with its text input.
+     *
+     * @return string
+     */
+    public function addOtherRow()
     {
         $sSeparator = getRadixPointData($this->oQuestion->survey->correct_relation_defaultlanguage->surveyls_numberformat);
         $sSeparator = $sSeparator['separator'];
@@ -179,8 +186,9 @@ class RenderListRadio extends QuestionBaseRenderer
 
         $myfname = $thisfieldname = $this->sSGQA . '_Cother';
 
-        if (isset($_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$thisfieldname])) {
-            $dispVal = $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$thisfieldname];
+        $sessionState = SurveySessionState::forSurvey((int) Yii::app()->getConfig('surveyID'));
+        if ($sessionState->hasFieldValue($thisfieldname)) {
+            $dispVal = $sessionState->getFieldValue($thisfieldname);
             if ($this->getQuestionAttribute('other_numbers_only') == 1) {
                 $dispVal = str_replace('.', $sSeparator, (string) $dispVal);
             }

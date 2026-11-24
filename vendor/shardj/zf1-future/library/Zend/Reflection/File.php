@@ -125,6 +125,7 @@ class Zend_Reflection_File implements Reflector
     {
         require_once 'Zend/Loader.php';
         $includePaths = Zend_Loader::explodeIncludePath();
+        $foundRealpath = false;
         while (count($includePaths) > 0) {
             $filePath = array_shift($includePaths) . DIRECTORY_SEPARATOR . $fileName;
 

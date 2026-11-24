@@ -16,7 +16,7 @@
 <!-- Multiple Numerical -->
 
 <!-- answer -->
-<ul class='{{coreClass}} list-unstyled  form-horizontal' role="group" aria-describedby="ls-question-text-{{basename}}">
+<ul class='{{coreClass}} list-unstyled  form-horizontal' role="group" aria-labelledby="ls-question-text-{{ basename }}" aria-describedby="ls-question-help-{{ basename }} ls-question-validation-{{ basename }}">
     {% block rows %}
     {#} rows/answer_row.php #}
     {{sRows}}
