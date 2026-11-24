@@ -32,9 +32,9 @@
             id="answer{{ myfname }}"
             value="Y"
             {{ checkedState }}
-            onclick='cancelBubbleThis(event); {{ sCheckconditionFunction }}'
+            onclick='{{ sCheckconditionFunction }}'
         />
-        <label for="answer{{ myfname }}" class="imageselect-label" onclick='cancelBubbleThis(event); {{ sCheckconditionFunction }}'>
+        <label for="answer{{ myfname }}" class="imageselect-label">
 
          {% include './survey/questions/answer/multiplechoice/rows/answer_image.twig' with {src: question, optionCode: title} %}
         </label>

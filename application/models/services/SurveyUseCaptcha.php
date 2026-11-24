@@ -39,15 +39,22 @@ class SurveyUseCaptcha
     const SAVE_LOAD_INHERIT = ['E', 'F', 'I', 'K', 'T', 'U', '2', '3', '5'];
 
 
-    /** @var \Survey */
+    /** @var \Survey|null */
     private $survey;
 
+    /**
+     * The survey is only needed by the methods that read or save the survey's own usecaptcha value.
+     * The pure conversion methods work without one, so no survey is looked up if no ID is given.
+     *
+     * @param int|null $surveyId ID of the survey to load, ignored if $survey is given
+     * @param Survey|null $survey Already loaded survey
+     */
     public function __construct($surveyId = null, ?Survey $survey = null)
     {
-        if ($survey === null) {
-            $this->survey = Survey::model()->findByPk($surveyId);
-        } else {
+        if ($survey !== null) {
             $this->survey = $survey;
+        } elseif ($surveyId !== null) {
+            $this->survey = Survey::model()->findByPk($surveyId);
         }
     }
 

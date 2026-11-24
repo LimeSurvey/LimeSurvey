@@ -13,7 +13,6 @@
  * @var code
  * @var answer
  * @var checkedState
- * @var sCheckconditionFunction
  * @var myfname
  * @var sValue
  *
@@ -33,9 +32,9 @@
             id="answer{{ name}}{{ code }}"
             value="{{code}}"
             {{ checkedState }}
-            onclick='cancelBubbleThis(event); if (document.getElementById("answer{{ name }}othertext") != null) document.getElementById("answer{{ name }}othertext").value=""; {{ sCheckconditionFunction }}'
+            onclick='if (document.getElementById("answer{{ name }}othertext") != null) document.getElementById("answer{{ name }}othertext").value=""; checkconditions(this.value, this.name, this.type)'
         />
-        <label for="answer{{ name }}{{ code }}" class="imageselect-label" onclick='cancelBubbleThis(event); if (document.getElementById("answer{{ name }}othertext") != null) document.getElementById("answer{{ name }}othertext").value=""; {{ sCheckconditionFunction }}'>
+        <label for="answer{{ name }}{{ code }}" class="imageselect-label">
 
          {% include './survey/questions/answer/listradio/rows/answer_image.twig' with {src: answer, optionCode: code} %}
         </label>

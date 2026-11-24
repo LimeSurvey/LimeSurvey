@@ -2,6 +2,7 @@
 /* @var $basePermissions array the base permissions a user could have */
 /* @var $userCreatePermission bool true if current user has permission to set survey permission for other users */
 /* @var $surveyid int */
+/* @var $surveyOwner User|null owner of the survey, null if the user does not exist anymore */
 /* @var $userList array users that could be added to survey permissions */
 /* @var $userListFilteredByGroup bool true if $userList only contains users sharing a user group with the current user */
 /* @var $userGroupList array user groups that could be added to survey permissions */
@@ -100,6 +101,19 @@
             ?>
         </div>
     </div>
+    <?php if ($surveyOwner) : ?>
+        <?php
+        $surveyOwnerName = $surveyOwner->full_name === '' || $surveyOwner->full_name === null
+            ? $surveyOwner->users_name
+            : sprintf('%s (%s)', $surveyOwner->users_name, $surveyOwner->full_name);
+        ?>
+        <p id="survey-owner-info">
+            <?= sprintf(
+                gT("Survey owner: %s. The survey owner always has all permissions on this survey."),
+                CHtml::encode($surveyOwnerName)
+            ) ?>
+        </p>
+    <?php endif; ?>
     <div class="row">
         <?php
         $baseColumns = [];

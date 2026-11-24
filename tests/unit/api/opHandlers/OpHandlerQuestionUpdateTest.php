@@ -8,6 +8,8 @@ use LimeSurvey\DI;
 use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerQuestionUpdate;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestion;
 use LimeSurvey\Models\Services\QuestionAggregateService;
+use LimeSurvey\Models\Services\SurveyCondition;
+use LimeSurvey\Models\Services\QuestionAggregateService\QuestionService;
 use LimeSurvey\ObjectPatch\{
     ObjectPatchException,
     Op\OpStandard,
@@ -118,7 +120,9 @@ class OpHandlerQuestionUpdateTest extends TestBaseClass
         )->makePartial();
         return new OpHandlerQuestionUpdate(
             $mockQuestionAggregateService,
-            DI::getContainer()->get(TransformerInputQuestion::class)
+            DI::getContainer()->get(TransformerInputQuestion::class),
+            DI::getContainer()->get(SurveyCondition::class),
+            DI::getContainer()->get(QuestionService::class)
         );
     }
 }

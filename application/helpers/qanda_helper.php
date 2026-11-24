@@ -57,16 +57,23 @@ define('SELECTED', ' selected="selected"');
 /**
  * Defines the SHOW_NO_ANSWER and PRESELECT_NO_ANSWER constants from the survey settings
  *
+ * A constant can be defined only once: when several survey pages are rendered in the same
+ * process (unit tests), the constants keep the values of the first survey.
+ *
  * @param array $thissurvey Survey info as returned by getSurveyInfo()
  * @return void
  */
 function setNoAnswerMode($thissurvey)
 {
-    define('SHOW_NO_ANSWER', $thissurvey['shownoanswer'] == 'N' ? 0 : 1);
+    if (!defined('SHOW_NO_ANSWER')) {
+        define('SHOW_NO_ANSWER', $thissurvey['shownoanswer'] == 'N' ? 0 : 1);
+    }
 
     // Default to the historic behaviour when rendering legacy/imported data
     // that does not contain the setting yet.
-    define('PRESELECT_NO_ANSWER', ($thissurvey['preselectnoanswer'] ?? 'Y') === 'Y' ? 1 : 0);
+    if (!defined('PRESELECT_NO_ANSWER')) {
+        define('PRESELECT_NO_ANSWER', ($thissurvey['preselectnoanswer'] ?? 'Y') === 'Y' ? 1 : 0);
+    }
 }
 
 /**

@@ -3708,8 +3708,6 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
         }
     }
 
-    // Set survey rights
-    Permission::model()->giveAllSurveyPermissions(Yii::app()->session['loginID'], $iNewSID);
     $aOldNewFieldmap = reverseTranslateFieldNames($iOldSID, $iNewSID, $aGIDReplacements, $aQIDReplacements);
     $results['FieldReMap'] = $aOldNewFieldmap;
     LimeExpressionManager::SetSurveyId($iNewSID);
@@ -4536,6 +4534,8 @@ function TSVImportSurvey($sFullFilePath)
 
     /* Keep track of id for group */
     $groupIds = [];
+    /* Group id in the file => group id used for the import */
+    $fileGroupIds = [];
     /* Keep track of id for question (can come from tsv and can be broken : issue #17980 */
     $questionsIds = [];
     $rownumber = 1;
@@ -4583,6 +4583,10 @@ function TSVImportSurvey($sFullFilePath)
                     } else {
                         $gidNew += 1;
                         $gid = $gidNew;
+                    }
+                    // Group assessments reference the group id from the file in their related_id column
+                    if (!empty($row['id']) && !isset($fileGroupIds[$row['id']])) {
+                        $fileGroupIds[$row['id']] = $gid;
                     }
                     $group['gid'] = $gid;
                     $groupIds[] = $gid;
@@ -4791,7 +4795,14 @@ function TSVImportSurvey($sFullFilePath)
                 $assessment = array();
                 $assessment['sid'] = $iNewSID;
                 $assessment['scope'] = $row['type/scale'] ?? '';
-                $assessment['gid'] = $gid;
+                if ($assessment['scope'] !== 'G') {
+                    $assessment['gid'] = 0;
+                } elseif (isset($row['related_id']) && isset($fileGroupIds[$row['related_id']])) {
+                    $assessment['gid'] = $fileGroupIds[$row['related_id']];
+                } else {
+                    // No group id in the file: Use the group of the previous group row
+                    $assessment['gid'] = $gid;
+                }
                 $assessment['name'] = $row['name'] ?? '';
                 $assessment['minimum'] = $row['min_num_value'] ?? '';
                 $assessment['maximum'] = $row['max_num_value'] ?? '';
