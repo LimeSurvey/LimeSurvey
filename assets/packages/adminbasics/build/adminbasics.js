@@ -17752,11 +17752,15 @@
 	  loading.dataset.announceLoadingBound = '1';
 	  const text = textElement.textContent;
 	  let wasVisible = window.getComputedStyle(loading).display !== 'none';
+	  // Pending restore of the text: A newer appearance of the overlay replaces it, so that one gets the full delay
+	  let restoreTimeout = null;
 	  new MutationObserver(() => {
 	    const isVisible = window.getComputedStyle(loading).display !== 'none';
 	    if (isVisible && !wasVisible) {
+	      window.clearTimeout(restoreTimeout);
 	      textElement.textContent = '';
-	      window.setTimeout(() => {
+	      restoreTimeout = window.setTimeout(() => {
+	        restoreTimeout = null;
 	        textElement.textContent = text;
 	      }, 100);
 	    }
@@ -17968,11 +17972,14 @@
 	      thisFooter.append(confirmButton.clone());
 	      thisContent.append(thisFooter);
 	      modalObject = outerBlock.clone();
-	      // Accessible name of the dialog: The title, or the confirmation question when there is no title
+	      // Accessible name of the dialog: The title, or the confirmation question when there is no title.
+	      // The question is copied as text, since AJAX responses replace the body that holds it.
 	      if (confirmTitle !== '') {
 	        modalObject.attr('aria-labelledby', titleId).attr('aria-describedby', textId);
 	      } else {
-	        modalObject.attr('aria-labelledby', textId);
+	        // DOMParser: Reads the text without loading images or running handlers of the markup
+	        const questionText = new DOMParser().parseFromString(String(confirmText), 'text/html').body.textContent;
+	        modalObject.attr('aria-label', questionText.trim());
 	      }
 	      modalObject.append(innerBlock.clone().append(thisContent));
 	    },

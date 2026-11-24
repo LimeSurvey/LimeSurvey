@@ -143,5 +143,12 @@ $(document).on('ready  pjax:scriptcomplete', function(){
             // Text alternative of the chosen icon
             $('#chosen-icon-label').text($icon.attr('data-icon-label') || '');
         });
+        // The links are announced as buttons, so Space chooses the icon too (Enter already works on links)
+        $('.option-icon').parent('a').off('keydown.optionicon').on('keydown.optionicon', function (ev) {
+            if (ev.key === ' ') {
+                ev.preventDefault();
+                $(ev.currentTarget).trigger('click');
+            }
+        });
     }
 });

@@ -19,12 +19,16 @@ const announceLoading = () => {
     loading.dataset.announceLoadingBound = '1';
     const text = textElement.textContent;
     let wasVisible = window.getComputedStyle(loading).display !== 'none';
+    // Pending restore of the text: A newer appearance of the overlay replaces it, so that one gets the full delay
+    let restoreTimeout = null;
 
     new MutationObserver(() => {
         const isVisible = window.getComputedStyle(loading).display !== 'none';
         if (isVisible && !wasVisible) {
+            window.clearTimeout(restoreTimeout);
             textElement.textContent = '';
-            window.setTimeout(() => {
+            restoreTimeout = window.setTimeout(() => {
+                restoreTimeout = null;
                 textElement.textContent = text;
             }, 100);
         }

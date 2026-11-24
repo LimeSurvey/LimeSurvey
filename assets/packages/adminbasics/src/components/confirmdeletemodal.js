@@ -68,11 +68,14 @@ const ConfirmDeleteModal = function (options) {
             thisContent.append(thisFooter);
 
             modalObject = outerBlock.clone();
-            // Accessible name of the dialog: The title, or the confirmation question when there is no title
+            // Accessible name of the dialog: The title, or the confirmation question when there is no title.
+            // The question is copied as text, since AJAX responses replace the body that holds it.
             if (confirmTitle !== '') {
                 modalObject.attr('aria-labelledby', titleId).attr('aria-describedby', textId);
             } else {
-                modalObject.attr('aria-labelledby', textId);
+                // DOMParser: Reads the text without loading images or running handlers of the markup
+                const questionText = new DOMParser().parseFromString(String(confirmText), 'text/html').body.textContent;
+                modalObject.attr('aria-label', questionText.trim());
             }
             modalObject.append(innerBlock.clone().append(thisContent));
         },
