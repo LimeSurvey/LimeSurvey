@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 
 import { Button } from 'components'
 import { QuestionPreview } from 'components/Survey'
@@ -15,6 +15,15 @@ export const ResponseDetailView = ({
   rowInfo = {},
   disableUpdatingResponses = false,
 }) => {
+  // Built once per survey, so the date questions' settings aren't computed again on every render
+  const surveySettings = useMemo(
+    () => ({
+      showNoAnswer: survey.showNoAnswer,
+      languages: survey.languages,
+      dateFormats: getSurveyDateFormatsByLanguage(survey),
+    }),
+    [survey.showNoAnswer, survey.languages, survey.languageSettings]
+  )
   // All cells, so questions hidden in the table's column management are shown too
   const rowCells = rowInfo.getAllCells()
   const rowData = rowInfo?.original || {}
@@ -44,11 +53,7 @@ export const ResponseDetailView = ({
               <QuestionPreview
                 language={language}
                 valueInfo={questionInfo}
-                surveySettings={{
-                  showNoAnswer: survey.showNoAnswer,
-                  languages: survey.languages,
-                  dateFormats: getSurveyDateFormatsByLanguage(survey),
-                }}
+                surveySettings={surveySettings}
                 onSave={onSave}
                 onCancel={() => {}}
                 disableUpdatingResponses={disableUpdatingResponses}

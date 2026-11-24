@@ -222,8 +222,8 @@ export const getDateQuestionYears = (minDate, maxDate, reverse = false) => {
  * Checks whether a date is between the minimum and maximum date.
  *
  * @param {import('dayjs').Dayjs} date The date to check
- * @param {string} minDate The minimum date
- * @param {string} maxDate The maximum date
+ * @param {string|import('dayjs').Dayjs} minDate The minimum date
+ * @param {string|import('dayjs').Dayjs} maxDate The maximum date
  * @returns {boolean} True when the date is inside the limits
  */
 export const isDateInLimits = (date, minDate, maxDate) =>

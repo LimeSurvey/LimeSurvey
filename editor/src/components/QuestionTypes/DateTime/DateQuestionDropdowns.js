@@ -77,18 +77,23 @@ const getSelectedParts = (date) => {
 
 /**
  * Adds the current value to the options when the list doesn't contain it, so existing answers
- * outside the limits or the minute step are still shown.
+ * outside the limits or the minute step are still shown. The list keeps its order, ascending or
+ * descending (reversed years).
  *
- * @param {number[]} numbers The offered numbers
+ * @param {number[]} numbers The offered numbers, sorted ascending or descending
  * @param {string} current The selected value
- * @returns {number[]} The numbers including the current value
+ * @returns {number[]} The numbers including the current value, in the same order
  */
 const withCurrentValue = (numbers, current) => {
   if (current === '' || numbers.includes(Number(current))) {
     return numbers
   }
 
-  return [...numbers, Number(current)].sort((a, b) => a - b)
+  const descending = numbers.length > 1 && numbers[0] > numbers[1]
+
+  return [...numbers, Number(current)].sort((a, b) =>
+    descending ? b - a : a - b
+  )
 }
 
 /**
@@ -212,9 +217,6 @@ export const DateQuestionDropdowns = ({
         value: String(year),
         label: String(year),
       }))
-      if (settings.reverse) {
-        options.sort((a, b) => Number(b.value) - Number(a.value))
-      }
     } else if (type === 'month') {
       options = monthLabels.map((label, monthIndex) => ({
         value: String(monthIndex + 1),

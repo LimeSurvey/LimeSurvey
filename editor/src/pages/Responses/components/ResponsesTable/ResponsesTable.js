@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import {
   useReactTable,
   getCoreRowModel,
@@ -76,6 +76,15 @@ export const ResponsesTable = ({
   const [showFiltersColumn, setShowFiltersColumn] = useState(false)
   const [showQuestionComponent, setShowQuestionComponent] = useState(false)
   const [showSurveyDetails, setShowSurveyDetails] = useState(false)
+  // Built once per survey, so the date questions' settings aren't computed again on every render
+  const surveySettings = useMemo(
+    () => ({
+      showNoAnswer: survey.showNoAnswer,
+      languages: survey.languages,
+      dateFormats: getSurveyDateFormatsByLanguage(survey),
+    }),
+    [survey.showNoAnswer, survey.languages, survey.languageSettings]
+  )
   const [columnVisibility, setColumnVisibility] = useState({})
   const cellQuestionInfoRef = useRef({})
   const [showResponseInfoOnNextPage, setShowResponseInfoOnNextPage] =
@@ -613,11 +622,7 @@ export const ResponsesTable = ({
         saveTimings={survey.saveTimings}
         QuestionComponent={
           <QuestionPreview
-            surveySettings={{
-              showNoAnswer: survey.showNoAnswer,
-              languages: survey.languages,
-              dateFormats: getSurveyDateFormatsByLanguage(survey),
-            }}
+            surveySettings={surveySettings}
             language={survey.language}
             valueInfo={cellQuestionInfoRef.current}
             onSave={(valueInfo) =>

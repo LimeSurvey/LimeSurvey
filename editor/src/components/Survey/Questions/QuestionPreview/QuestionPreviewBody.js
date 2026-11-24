@@ -18,8 +18,10 @@ export const QuestionBodyPreview = ({
   disableUpdatingResponses,
 }) => {
   const [children, setChildren] = useState([])
-  const [valueIsUpdated, setValueIsUpdated] = useState(false)
-  const [value, setValue] = useState({})
+  // The changed response values and whether there are unconfirmed changes, kept together so
+  // every change can be applied as one functional update
+  const [pending, setPending] = useState({ value: {}, isUpdated: false })
+  const { value, isUpdated: valueIsUpdated } = pending
   const lastToastTimeRef = useRef(0)
 
   const QuestionViewComponent = useMemo(
@@ -68,8 +70,7 @@ export const QuestionBodyPreview = ({
 
   // Drop local overrides once refreshed response values arrive from the parent
   useEffect(() => {
-    setValue({})
-    setValueIsUpdated(false)
+    setPending({ value: {}, isUpdated: false })
   }, [valuesSignature])
 
   /**
@@ -82,10 +83,12 @@ export const QuestionBodyPreview = ({
    */
   const handleOnValueChange = (newValue, key, isInvalid = false) => {
     if (isInvalid) {
-      // eslint-disable-next-line no-unused-vars
-      const { [key]: _dropped, ...rest } = value
-      setValue(rest)
-      setValueIsUpdated(Object.keys(rest).length > 0)
+      setPending((previous) => {
+        // eslint-disable-next-line no-unused-vars
+        const { [key]: _dropped, ...rest } = previous.value
+
+        return { value: rest, isUpdated: Object.keys(rest).length > 0 }
+      })
       return
     }
 
@@ -104,8 +107,10 @@ export const QuestionBodyPreview = ({
       return
     }
 
-    setValue((previous) => ({ ...previous, [key]: newValue }))
-    setValueIsUpdated(true)
+    setPending((previous) => ({
+      value: { ...previous.value, [key]: newValue },
+      isUpdated: true,
+    }))
   }
 
   const handleOnSave = () => {
@@ -113,7 +118,7 @@ export const QuestionBodyPreview = ({
       return
     }
 
-    setValueIsUpdated(false)
+    setPending((previous) => ({ ...previous, isUpdated: false }))
     onSave(value)
     Toast({
       message: t('Responses updated!'),

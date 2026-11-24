@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Form } from 'react-bootstrap'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
@@ -14,6 +14,7 @@ import {
   DATE_QUESTION_DEFAULT_MIN,
   DATE_QUESTION_DEFAULT_MAX,
   DATE_QUESTION_STORAGE_FORMAT,
+  isDateInLimits,
   normalizeDateToViews,
 } from 'helpers'
 
@@ -89,8 +90,15 @@ export const DateTimePickerComponent = ({
   const showNoPermissionTip =
     (noPermissionDisabled && !hasSurveyUpdatePermission) || noAccessDisabled
   const disabled = showNoPermissionTip || previewDisabled
-  const minDateTime = dayJsHelper(minDate ?? DATE_QUESTION_DEFAULT_MIN)
-  const maxDateTime = dayJsHelper(maxDate ?? DATE_QUESTION_DEFAULT_MAX)
+  // Kept stable between renders, so MUI doesn't validate again on every render
+  const minDateTime = useMemo(
+    () => dayJsHelper(minDate ?? DATE_QUESTION_DEFAULT_MIN),
+    [minDate]
+  )
+  const maxDateTime = useMemo(
+    () => dayJsHelper(maxDate ?? DATE_QUESTION_DEFAULT_MAX),
+    [maxDate]
+  )
   const [siteSettings] = useAppState(STATES.SITE_SETTINGS)
   const [userDetails] = useAppState(STATES.USER_DETAIL)
   const appTimezone = siteSettings?.timezone ? siteSettings.timezone : null
@@ -103,7 +111,7 @@ export const DateTimePickerComponent = ({
    * @returns {boolean} True when the date may be saved
    */
   const isSavable = (date) =>
-    date.isValid() && !date.isBefore(minDateTime) && !date.isAfter(maxDateTime)
+    date.isValid() && isDateInLimits(date, minDateTime, maxDateTime)
 
   /**
    * Drops the pending change of a date that can't be saved and reports why, like MUI's own

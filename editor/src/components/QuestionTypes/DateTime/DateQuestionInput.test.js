@@ -65,6 +65,19 @@ describe('DateQuestionInput in dropdown mode', () => {
     expect(years).toEqual(['1983', '1982', '1981', '1980'])
   })
 
+  it('keeps a stored year outside the limits in the reversed year order', () => {
+    renderDropdowns(
+      { date_min: '1980', date_max: '1983', reverse: '1' },
+      { values: [{ key: '123X1X1', value: '1975-06-01 00:00:00' }] }
+    )
+
+    const years = Array.from(screen.getByLabelText('Year').options)
+      .map((option) => option.value)
+      .filter(Boolean)
+    expect(years).toEqual(['1983', '1982', '1981', '1980', '1975'])
+    expect(screen.getByLabelText('Year').value).toBe('1975')
+  })
+
   it('saves a complete date in the storage format', () => {
     const onValueChange = jest.fn()
     renderDropdowns({ date_min: '1900' }, { onValueChange })
