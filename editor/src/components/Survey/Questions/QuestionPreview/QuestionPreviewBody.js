@@ -72,7 +72,23 @@ export const QuestionBodyPreview = ({
     setValueIsUpdated(false)
   }, [valuesSignature])
 
-  const handleOnValueChange = (newValue, key) => {
+  /**
+   * Keeps a changed response value until it is confirmed.
+   *
+   * @param {*} newValue The new value
+   * @param {string} key The response field
+   * @param {boolean} [isInvalid] True when the input can't be saved (e.g. a date outside its limits): Drops the pending change
+   * @returns {void}
+   */
+  const handleOnValueChange = (newValue, key, isInvalid = false) => {
+    if (isInvalid) {
+      // eslint-disable-next-line no-unused-vars
+      const { [key]: _dropped, ...rest } = value
+      setValue(rest)
+      setValueIsUpdated(Object.keys(rest).length > 0)
+      return
+    }
+
     if (disableUpdatingResponses) {
       // Debounce toast messages to prevent spam (only show once per 3 seconds)
       const now = Date.now()

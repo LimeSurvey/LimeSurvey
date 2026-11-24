@@ -3,7 +3,7 @@ import React from 'react'
 import { Button } from 'components'
 import { QuestionPreview } from 'components/Survey'
 import { getCellInfo } from '../utils'
-import { getSiteUrl } from 'helpers'
+import { getSiteUrl, getSurveyDateFormatsByLanguage } from 'helpers'
 
 export const ResponseDetailView = ({
   language,
@@ -47,6 +47,7 @@ export const ResponseDetailView = ({
                 surveySettings={{
                   showNoAnswer: survey.showNoAnswer,
                   languages: survey.languages,
+                  dateFormats: getSurveyDateFormatsByLanguage(survey),
                 }}
                 onSave={onSave}
                 onCancel={() => {}}

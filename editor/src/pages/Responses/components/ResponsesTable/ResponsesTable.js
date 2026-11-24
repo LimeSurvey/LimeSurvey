@@ -22,7 +22,7 @@ import {
   readColumnVisibility,
   writeColumnVisibility,
 } from '../../utils'
-import { Toast } from 'helpers'
+import { Toast, getSurveyDateFormatsByLanguage } from 'helpers'
 
 import { BulkActions, ResponseDetailView } from '../'
 import { ResponseModals } from '../'
@@ -616,6 +616,7 @@ export const ResponsesTable = ({
             surveySettings={{
               showNoAnswer: survey.showNoAnswer,
               languages: survey.languages,
+              dateFormats: getSurveyDateFormatsByLanguage(survey),
             }}
             language={survey.language}
             valueInfo={cellQuestionInfoRef.current}

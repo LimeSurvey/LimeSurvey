@@ -1,0 +1,150 @@
+import { fireEvent, render, screen } from '@testing-library/react'
+
+import { STATES } from 'helpers'
+
+import { DateQuestionInput } from './DateQuestionInput'
+
+jest.mock('hooks', () => ({
+  ...jest.requireActual('hooks'),
+  useAppState: jest.fn((key) => {
+    if (key === 'site_settings') {
+      return [
+        {
+          dateFormats: {
+            1: { dateformat: 'dd.mm.yyyy', jsdate: 'DD.MM.YYYY' },
+          },
+        },
+      ]
+    }
+
+    return [undefined]
+  }),
+}))
+
+global.t = (key) => key
+
+const renderDropdowns = (attributes, props = {}) =>
+  render(
+    <DateQuestionInput
+      question={{ qid: 1, attributes: { dropdown_dates: '1', ...attributes } }}
+      language="en"
+      surveySettings={{ dateFormats: { en: 1 } }}
+      participantMode={true}
+      values={[{ key: '123X1X1', value: '' }]}
+      {...props}
+    />
+  )
+
+// The values reported as savable (calls without the "can't be saved" flag)
+const savedValues = (mock) =>
+  mock.mock.calls.filter((call) => !call[2]).map((call) => call[0])
+
+const select = (label, value) =>
+  fireEvent.change(screen.getByLabelText(label), { target: { value } })
+
+describe('DateQuestionInput in dropdown mode', () => {
+  it('checks the site settings state key used by the mock', () => {
+    expect(STATES.SITE_SETTINGS).toBe('site_settings')
+  })
+
+  it('shows the dropdowns in the order of the date format', () => {
+    renderDropdowns({})
+
+    const labels = screen
+      .getAllByRole('combobox')
+      .map((element) => element.className.split(' ').pop())
+    expect(labels).toEqual(['day', 'month', 'year'])
+  })
+
+  it('offers only the years between the limits, latest first with reverse', () => {
+    renderDropdowns({ date_min: '1980', date_max: '1983', reverse: '1' })
+
+    const years = Array.from(screen.getByLabelText('Year').options)
+      .map((option) => option.value)
+      .filter(Boolean)
+    expect(years).toEqual(['1983', '1982', '1981', '1980'])
+  })
+
+  it('saves a complete date in the storage format', () => {
+    const onValueChange = jest.fn()
+    renderDropdowns({ date_min: '1900' }, { onValueChange })
+
+    select('Day', '17')
+    select('Month', '4')
+    expect(savedValues(onValueChange)).toEqual([])
+    expect(onValueChange).toHaveBeenLastCalledWith(null, '123X1X1', true)
+
+    select('Year', '1985')
+    expect(onValueChange).toHaveBeenLastCalledWith(
+      '1985-04-17 00:00:00',
+      '123X1X1'
+    )
+  })
+
+  it('does not save a date outside the limits and says why', () => {
+    const onValueChange = jest.fn()
+    renderDropdowns(
+      { date_min: '1985-04-18', date_max: '1990' },
+      { onValueChange }
+    )
+
+    select('Day', '17')
+    select('Month', '4')
+    select('Year', '1985')
+
+    expect(savedValues(onValueChange)).toEqual([])
+    expect(onValueChange).toHaveBeenLastCalledWith(null, '123X1X1', true)
+    expect(screen.getByRole('alert').textContent).toBe(
+      'Answer must be between 18.04.1985 and 31.12.1990'
+    )
+  })
+
+  it('does not save an impossible date', () => {
+    const onValueChange = jest.fn()
+    renderDropdowns({}, { onValueChange })
+
+    select('Day', '31')
+    select('Month', '2')
+    select('Year', '2001')
+
+    expect(savedValues(onValueChange)).toEqual([])
+    expect(screen.getByRole('alert')).toBeTruthy()
+  })
+
+  it('shows the stored answer and the minute step', () => {
+    renderDropdowns(
+      { date_format: 'dd.mm.yyyy HH:MM', dropdown_dates_minute_step: '15' },
+      { values: [{ key: '123X1X1', value: '1985-04-17 10:30:00' }] }
+    )
+
+    expect(screen.getByLabelText('Day').value).toBe('17')
+    expect(screen.getByLabelText('Hour').value).toBe('10')
+    expect(screen.getByLabelText('Minute').value).toBe('30')
+    expect(
+      Array.from(screen.getByLabelText('Minute').options)
+        .map((option) => option.value)
+        .filter(Boolean)
+    ).toEqual(['0', '15', '30', '45'])
+  })
+
+  it('withdraws a saved change when the date becomes incomplete', () => {
+    const onValueChange = jest.fn()
+    renderDropdowns({}, { onValueChange })
+
+    select('Day', '17')
+    select('Month', '4')
+    select('Year', '1985')
+    expect(savedValues(onValueChange)).toEqual(['1985-04-17 00:00:00'])
+
+    select('Day', '')
+    expect(onValueChange).toHaveBeenLastCalledWith(null, '123X1X1', true)
+  })
+
+  it('is a disabled preview outside the response editor', () => {
+    renderDropdowns({}, { participantMode: false })
+
+    screen
+      .getAllByRole('combobox')
+      .forEach((element) => expect(element.disabled).toBe(true))
+  })
+})
