@@ -762,7 +762,15 @@ class LimeMailer extends PHPMailer
                 return $event->get('error') == null;
             }
         }
-        return parent::Send();
+        // PHPMailer changes the content type to multipart/alternative when the email has a plain text alternative.
+        // Restore it: This mailer instance can be reused for the next recipient and getIsHtml() must stay right,
+        // else the next email gets no links and no HTML wrapper.
+        $contentType = $this->ContentType;
+        try {
+            return parent::Send();
+        } finally {
+            $this->ContentType = $contentType;
+        }
     }
 
     /**
