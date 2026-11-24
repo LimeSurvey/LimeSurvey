@@ -14192,9 +14192,9 @@ body.error-page .error-illustration {
 body.error-page .error-title {
   margin: 0 0 16px;
   font-weight: 600;
-  font-size: 0.875rem;
+  font-size: 1.14rem;
   line-height: 20px;
-  color: #9094a7;
+  color: #6e748c;
 }
 body.error-page .error-image {
   display: block;
@@ -14206,28 +14206,28 @@ body.error-page .error-heading {
   margin: 16px 0 24px;
   font-family: "IBMPlexSerif", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-weight: 600;
-  font-size: 2.5rem;
+  font-size: 2.85rem;
   line-height: 52px;
   letter-spacing: -0.017em;
   color: #1e1e1e;
 }
 body.error-page .error-content {
   font-weight: 400;
-  font-size: 1.125rem;
+  font-size: 1.2825rem;
   line-height: 24px;
   letter-spacing: -0.017em;
   color: #1e1e1e;
 }
 body.error-page .error-link {
   font-weight: 400;
-  font-size: 1.125rem;
+  font-size: 1.2825rem;
   line-height: 24px;
 }
 body.error-page .error-trace {
   margin-top: 24px;
   max-height: 50vh;
   overflow: auto;
-  font-size: 0.75rem;
+  font-size: 0.855rem;
 }
 @media (max-width: 991.98px) {
   body.error-page .error-illustration {
@@ -14236,7 +14236,7 @@ body.error-page .error-trace {
 }
 @media (max-width: 768px) {
   body.error-page .error-heading {
-    font-size: 1.5rem;
+    font-size: 1.71rem;
     line-height: 32px;
   }
 }

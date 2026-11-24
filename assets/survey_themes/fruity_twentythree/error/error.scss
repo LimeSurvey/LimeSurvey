@@ -30,9 +30,9 @@ body.error-page {
   .error-title {
     margin: 0 0 16px;
     font-weight: $font-weight-600;
-    font-size: 0.875rem; // 14px
+    font-size: $font-size-base;
     line-height: $line-height-20;
-    color: $g-600;
+    color: $g-700;
   }
 
   .error-image {
@@ -46,7 +46,7 @@ body.error-page {
     margin: 16px 0 24px;
     font-family: $ibm-serif-font-family;
     font-weight: $font-weight-600;
-    font-size: 2.5rem;
+    font-size: $font-size-2xl;
     line-height: $line-height-52;
     letter-spacing: -0.017em;
     color: $g-900;
@@ -54,7 +54,7 @@ body.error-page {
 
   .error-content {
     font-weight: $font-weight-normal;
-    font-size: 1.125rem;
+    font-size: $font-size-md;
     line-height: $line-height-24;
     letter-spacing: -0.017em;
     color: $g-900;
@@ -62,7 +62,7 @@ body.error-page {
 
   .error-link {
     font-weight: $font-weight-normal;
-    font-size: 1.125rem;
+    font-size: $font-size-md;
     line-height: $line-height-24;
   }
 
@@ -70,7 +70,7 @@ body.error-page {
     margin-top: 24px;
     max-height: 50vh;
     overflow: auto;
-    font-size: 0.75rem;
+    font-size: $font-size-xs;
   }
 
   @media (max-width: 991.98px) {
@@ -81,7 +81,7 @@ body.error-page {
 
   @media (max-width: 768px) {
     .error-heading {
-      font-size: 1.5rem; // 24px
+      font-size: $font-size-xl;
       line-height: 32px;
     }
   }
