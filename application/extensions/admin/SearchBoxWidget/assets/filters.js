@@ -91,10 +91,14 @@ $(function () {
     }
     if (state.id && document.getElementById(state.id)) {
         document.getElementById(state.id).focus();
-        // The survey grid would move the focus to its "No surveys found." message (CLSGridView): Keep it here
-        window.LS = window.LS || {};
-        LS.gridView = LS.gridView || {};
-        LS.gridView.keepFocusOnLoad = true;
+        // The survey grid would move the focus to its "No surveys found." message (CLSGridView): Keep it here.
+        // After a filter change the result is announced below, after a view switch the grid announces it.
+        // Only with the grid on the page (not in the box view), otherwise a later grid would read the flag
+        if (document.getElementById('survey-grid')) {
+            window.LS = window.LS || {};
+            LS.gridView = LS.gridView || {};
+            LS.gridView.focusRestoredOnLoad = {announced: !!state.announce};
+        }
     }
 
     // Announce the result of the filtering, e.g. "No surveys found."
