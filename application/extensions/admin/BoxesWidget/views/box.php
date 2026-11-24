@@ -48,8 +48,12 @@
                             if (isset($defaultlanguage)) {
                                 $surveyls_title = $defaultlanguage->surveyls_title;
                             }
+                            // Without a title the link would have no accessible name: Name it after the survey ID
+                            $titleLinkLabel = trim((string) $surveyls_title) === ''
+                                ? ' aria-label="' . CHtml::encode(sprintf(gT('Survey %s'), $item['survey']->sid)) . '"'
+                                : '';
                             ?>
-                            <a href="<?php echo $item['link'] ?>" class="box-widget-card-title-link text-reset text-decoration-none">
+                            <a href="<?php echo $item['link'] ?>" class="box-widget-card-title-link text-reset text-decoration-none"<?php echo $titleLinkLabel; ?>>
                                 <?php echo viewHelper::filterScript($surveyls_title); ?>
                             </a>
                         </div>

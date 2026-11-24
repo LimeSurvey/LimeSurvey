@@ -2252,8 +2252,10 @@ $(document).on('ready pjax:scriptcomplete', function () {
           },
           error: (data) => {
             $('#ls-loading').hide();
-            if (data.responseJSON) {
-              LS.LsGlobalNotifier.createAlert(data.responseJSON.message, 'danger', {showCloseButton: true});
+            const response = data.responseJSON;
+            if (response) {
+              // "error" is the plain text, "message" wraps it in HTML
+              LS.LsGlobalNotifier.createAlert(response.error || response.message, 'danger', {showCloseButton: true});
             } else {
               alert('Internal error from saveFormWithAjax: no data.responseJSON found');
               throw 'abort';

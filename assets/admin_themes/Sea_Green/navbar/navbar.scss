@@ -59,6 +59,16 @@
   }
   .navbar-toggler {
     margin: map-get($spacers, 2);
+    // The default (light navbar) border and icon are dark and hardly visible on the dark navbar
+    border-color: $navbar-color;
+    // Same keyboard focus frame as the menu links
+    &:focus-visible {
+      @include state-border(1px, $grape-light, 0px);
+      @include inset-border(1px, $grape-light);
+    }
+  }
+  .navbar-toggler-icon {
+    background-image: escape-svg(url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'><path stroke='#{$navbar-color}' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/></svg>"));
   }
   .nav-link {
     color: $navbar-color;
@@ -256,5 +266,21 @@
     .navbar-nav #notification-outer-ul a {
       white-space: normal;
     }
+  }
+}
+
+// Forced colours mode (e.g. Windows high contrast) makes the navbar light and drops box shadows: The white menu button
+// icon is drawn in the system text colour instead, and the keyboard focus gets an outline, as the focus frame is a shadow.
+@media (forced-colors: active) {
+  .navbar .navbar-toggler-icon {
+    forced-color-adjust: none;
+    background-image: none;
+    background-color: ButtonText;
+    mask: escape-svg(url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'><path stroke='#000' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/></svg>")) center / 100% no-repeat;
+  }
+
+  .navbar .navbar-toggler:focus-visible {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
   }
 }

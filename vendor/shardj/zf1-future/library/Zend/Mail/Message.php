@@ -51,7 +51,7 @@ class Zend_Mail_Message extends Zend_Mail_Part implements Zend_Mail_Message_Inte
      * - file  filename or file handle of a file with raw message content
      * - flags array with flags for message, keys are ignored, use constants defined in Zend_Mail_Storage
      *
-     * @param  string $rawMessage  full message with or without headers
+     * @param  array $params  options, see above and Zend_Mail_Part::__construct()
      * @throws Zend_Mail_Exception
      */
     public function __construct(array $params)

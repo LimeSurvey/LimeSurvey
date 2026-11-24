@@ -18065,6 +18065,17 @@ ol.breadcrumb.title-bar-breadcrumb a:active {
 }
 .navbar .navbar-toggler {
   margin: 8px;
+  border-color: #fff;
+}
+.navbar .navbar-toggler:focus-visible {
+  outline: none;
+  border-radius: 0px;
+  border: 1px solid #9b87ff;
+  outline: none;
+  box-shadow: inset 1px 0 0 #9b87ff, inset -1px 0 0 #9b87ff, inset 0 -1px 0 #9b87ff, inset 0 1px 0 #9b87ff;
+}
+.navbar .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%23fff' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
 }
 .navbar .nav-link {
   color: #fff;
@@ -18234,6 +18245,18 @@ ol.breadcrumb.title-bar-breadcrumb a:active {
     white-space: normal;
   }
 }
+@media (forced-colors: active) {
+  .navbar .navbar-toggler-icon {
+    forced-color-adjust: none;
+    background-image: none;
+    background-color: ButtonText;
+    mask: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%23000' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") center/100% no-repeat;
+  }
+  .navbar .navbar-toggler:focus-visible {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+  }
+}
 .card .card-header {
   background-color: unset;
 }
@@ -18381,6 +18404,16 @@ ol.breadcrumb.title-bar-breadcrumb a:active {
   outline: none;
   border-radius: 0px;
   border: 2px solid rgba(123, 97, 255, 0.9);
+}
+@supports selector(:has(*)) {
+  .box-widget .box-widget-card:has(.box-widget-card-title-link:focus-visible) {
+    outline: none;
+    border-radius: 0px;
+    border: 2px solid rgba(123, 97, 255, 0.9);
+  }
+  .box-widget .box-widget-card:has(.box-widget-card-title-link:focus-visible) .box-widget-card-title-link:focus-visible {
+    outline: none;
+  }
 }
 .box-widget .box-widget-card:active {
   outline: none;
@@ -18554,9 +18587,12 @@ ol.breadcrumb.title-bar-breadcrumb a:active {
   outline: 2px solid #8146F6;
   outline-offset: 2px;
 }
+.box-widget .box-widget-card-title-link {
+  font-weight: inherit;
+}
 .box-widget .box-widget-card-title-link:focus-visible {
   outline: 2px solid #8146F6;
-  outline-offset: 2px;
+  outline-offset: -2px;
 }
 .box-widget .survey-state {
   color: #6E748C;

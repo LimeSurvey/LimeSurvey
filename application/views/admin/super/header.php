@@ -53,7 +53,7 @@
     <?php //$this->widget('ext.LimeDebug.LimeDebug'); ?>
 </head>
 <body>
-    <?php // First focusable element: skip the navigation bars (see adminbasics accessibility/skipToMainContent.js) ?>
+    <?php // First focusable element: Skip the navigation bars (see adminbasics accessibility/skipToMainContent.js) ?>
     <a href="#in_survey_common_action" class="ls-skip-link visually-hidden-focusable btn btn-primary position-absolute top-0 start-0 m-2" style="z-index: 2000;"><?php eT('Skip to main content'); ?></a>
     <div id="beginScripts">
         <###begin###>

@@ -1,4 +1,4 @@
-<div id="deleteSurvey_modal" class="modal fade" role="dialog" aria-modal="true" aria-labelledby="deleteSurveyModalTitle deleteSurveyModalTitle-dialogsr">
+<div id="deleteSurvey_modal" class="modal fade" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="deleteSurveyModalTitle deleteSurveyModalTitle-dialogsr">
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">

@@ -41,7 +41,7 @@ class Zend_XmlRpc_Value_Boolean extends Zend_XmlRpc_Value_Scalar
      * Set the value of a boolean native type
      * We hold the boolean type as an integer (0 or 1)
      *
-     * @param bool $value
+     * @param bool|string $value
      */
     public function __construct($value)
     {

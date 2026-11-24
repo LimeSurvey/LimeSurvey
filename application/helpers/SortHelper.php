@@ -30,11 +30,11 @@ use Yii;
 class SortHelper
 {
     /** @var integer flag for regular sort */
-    const SORT_REGULAR = 0;
+    public const SORT_REGULAR = 0;
     /** @var integer flag for numeric sort */
-    const SORT_NUMERIC = 1;
+    public const SORT_NUMERIC = 1;
     /** @var integer flag for string sort */
-    const SORT_STRING = 2;
+    public const SORT_STRING = 2;
 
     /**
      * @var self Singleton

@@ -35,6 +35,7 @@ require_once 'Zend/Xml/Security.php';
  * @subpackage Amazon
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @deprecated Deprecated since 1.27.1 and will be removed in a future version: the Product Advertising API 4.0 was shut down in 2020
  */
 class Zend_Service_Amazon
 {
@@ -85,6 +86,8 @@ class Zend_Service_Amazon
      */
     public function __construct($appId, $countryCode = 'US', $secretKey = null)
     {
+        trigger_error(get_class($this) . ' is deprecated and will be removed in a future version', E_USER_DEPRECATED);
+
         $this->appId = (string) $appId;
         $this->_secretKey = $secretKey;
 

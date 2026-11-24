@@ -10,7 +10,7 @@
  */ #}
 
 {% if sumRemainingEqn %}
-    <li class="row mb-3 ls-group-remaining">
+    <li class="row mb-3 ls-group-remaining" aria-live="polite" aria-atomic="true">
         <div class="col-12 col-md-{{ sInputContainerWidth }} offset-md-{{ sLabelWidth }} px-md-5">
             {{ gT('Remaining') }}:
             {% if prefix %}
@@ -31,7 +31,7 @@
 {% endif %}
 
 {% if sumEqn %}
-    <li class="row mb-3 ls-group-total">
+    <li class="row mb-3 ls-group-total" aria-live="polite" aria-atomic="true">
         <div class="col-12 col-md-{{ sInputContainerWidth }} offset-md-{{ sLabelWidth }} px-md-5">
             {{ gT('Total:') }}
             <span id="totalvalue_{{ id }}" class="form-control-static numeric dynamic-total" data-number="1">

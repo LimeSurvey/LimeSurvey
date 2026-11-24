@@ -24,9 +24,9 @@ $(document).ready(function () {
 
             const updateContent = () => {
                 $title.html(slide.title);
-                // e.g. "Screenshot of Editor preview" (the title may contain markup)
-                const altPattern = $modal.data("image-alt") || "%s";
-                $image.attr("src", slide.image).attr("alt", altPattern.replace("%s", $("<div>").html(slide.title).text()));
+                // The alt text is the slide title as plain text: DOMParser strips markup without loading images or running handlers
+                const titleText = new DOMParser().parseFromString(slide.title || "", "text/html").body.textContent;
+                $image.attr("src", slide.image).attr("alt", titleText);
                 $desc.html(slide.description);
 
                 // Swap the info panel if custom info is provided for this slide
@@ -149,8 +149,12 @@ $(document).ready(function () {
         return { init: init };
     })();
 
+    // Editor choice when the modal opened, to tell on close whether the user changed it
+    let editorChoiceOnShow = null;
+
     // Initialise slider and toggle auto-open vs manual sections
     $(document).on("show.bs.modal", "#activate_editor", function () {
+        editorChoiceOnShow = $("#editor-switch-btn").find(".btn-check:checked").val();
         EditorSlider.init(this);
         const isAutoOpen = $(this).data("auto-open") === true;
         $(this).find(".editor-auto-open-section").toggleClass("d-none", !isAutoOpen);
@@ -158,15 +162,15 @@ $(document).ready(function () {
     });
 
     /**
-     * Arrow keys move through the radio buttons and check them at once: they must not switch
+     * Arrow keys move through the radio buttons and check them at once: They must not switch
      * the editor on focus (WCAG 3.2.1). A keyboard user applies the choice with Enter or Space,
-     * a mouse user with a click, and closing the modal saves the checked value.
+     * a mouse user with a click, and closing the modal applies a changed choice the same way.
      */
     let changedByArrowKey = false;
     $(document).on("keydown", "#editor-switch-btn .btn-check", function (e) {
         if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(e.key)) {
             changedByArrowKey = true;
-            // The change event follows synchronously: reset for the next interaction
+            // The change event follows synchronously: Reset for the next interaction
             setTimeout(function () {
                 changedByArrowKey = false;
             }, 0);
@@ -186,20 +190,29 @@ $(document).ready(function () {
     });
 
     /**
-     * Save the user decision if new editor is turned on or off
+     * Close the modal and apply the user decision to turn the new editor on or off.
+     * @param {string} newValue - "1" for the new editor, "0" for the classic editor.
+     * @returns {void}
      */
     function saveEditorChoice(newValue) {
-        let url = $("#saveUrl").val();
-        let data = { optin: newValue };
+        // The hide handler must not save the choice a second time
+        savedViaSwitch = true;
+        $("#activate_editor").modal("hide");
+        applyEditorChoice(newValue);
+    }
 
-        $.post(url, data)
+    /**
+     * Save the editor choice, show the result and reload the page so the chosen editor is used.
+     * @param {string} newValue - "1" for the new editor, "0" for the classic editor.
+     * @returns {void}
+     */
+    function applyEditorChoice(newValue) {
+        $.post($("#saveUrl").val(), { optin: newValue })
             .done(function () {
-                savedViaSwitch = true;
                 let successMessage =
                     newValue === "1"
                         ? $("#successMsgFeatureOptin").val()
                         : $("#successMsgFeatureOptout").val();
-                $("#activate_editor").modal("hide");
                 LS.ajaxAlerts(successMessage, "alert-success", {
                     showCloseButton: true,
                 });
@@ -208,7 +221,6 @@ $(document).ready(function () {
                 }, 2000);
             })
             .fail(function () {
-                $("#activate_editor").modal("hide");
                 LS.ajaxAlerts($("#errorOnSave").val(), "alert-danger", {
                     showCloseButton: true,
                 });
@@ -257,13 +269,18 @@ $(document).ready(function () {
                 let currentValue = $("#editor-switch-btn")
                     .find(".btn-check:checked")
                     .val();
-                $.post($("#saveUrl").val(), { optin: currentValue }).fail(
-                    function () {
-                        LS.ajaxAlerts($("#errorOnSave").val(), "alert-danger", {
-                            showCloseButton: true,
-                        });
-                    },
-                );
+                if (currentValue !== editorChoiceOnShow) {
+                    // Changed with the arrow keys but not applied yet: Apply it like Enter does
+                    applyEditorChoice(currentValue);
+                } else {
+                    $.post($("#saveUrl").val(), { optin: currentValue }).fail(
+                        function () {
+                            LS.ajaxAlerts($("#errorOnSave").val(), "alert-danger", {
+                                showCloseButton: true,
+                            });
+                        },
+                    );
+                }
             }
         }
         // Remove auto-open flag so next open (manual) shows the toggle

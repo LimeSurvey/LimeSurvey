@@ -51,7 +51,7 @@
                 <li class="nav-item d-flex" id="surveys-menu-item"><a
                         href="<?php echo $this->createUrl("surveyAdministration/listsurveys"); ?>"
                         class="nav-link ps-2"><?php eT("Surveys"); ?></a>
-                    <?php if ($activesurveyscount > 0): ?>
+                    <?php if ($activesurveyscount > 0) : ?>
                         <a class="nav-link ps-0 active-surveys"
                             href="<?php echo $this->createUrl('surveyAdministration/listsurveys/active/Y'); ?>">
                             <span class="visually-hidden"><?php eT("List active surveys"); ?></span>
@@ -80,7 +80,7 @@
                 <?php echo $adminNotifications; ?>
 
                 <li class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown"
+                    <a href="#" id="admin-menu-user-button" class="nav-link dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown"
                         role="button" aria-expanded="false">
                         <!-- <i class="ri-user-fill"></i> <?php echo Yii::app()->session['user']; ?> <span class="caret"></span></a> -->
                         <span class='rounded-circle text-center d-flex align-items-center justify-content-center me-1'>
@@ -88,7 +88,7 @@
                         </span>
                         <?= Yii::app()->session['user']; ?>
                         <span class="caret"></span></a>
-                    <ul class="dropdown-menu dropdown-menu-end" role="menu">
+                    <ul class="dropdown-menu dropdown-menu-end">
                         <li id="admin-menu-item-account">
                             <a class="dropdown-item"
                                 href="<?php echo $this->createUrl("/admin/user/sa/personalsettings"); ?>">
@@ -115,14 +115,3 @@
     </div>
 </div>
 </header>
-<script type="text/javascript">
-    //show tooltips
-    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl);
-    })
-
-    $(document).ajaxComplete(function (handler) {
-        window.LS.doToolTip();
-    });
-</script>

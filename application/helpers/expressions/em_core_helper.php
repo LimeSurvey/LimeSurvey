@@ -35,7 +35,7 @@ class ExpressionManager
      * so it does not end a single-quoted string. A quote directly followed by an operator word
      * (e.g. 'a'and'b') still ends the string.
      */
-    const RDP_REGEX_INNER_APOSTROPHE = '(?<=\\p{L}\')(?!(?:and|or|eq|ne|lt|le|gt|ge)\\b)\\p{L}';
+    public const RDP_REGEX_INNER_APOSTROPHE = '(?<=\\p{L}\')(?!(?:and|or|eq|ne|lt|le|gt|ge)\\b)\\p{L}';
 
     // These are the allowable variable suffixes for variables - each represents an attribute of a variable that can be updated on same page
     private $aRDP_regexpVariableAttribute = array(
@@ -107,7 +107,7 @@ class ExpressionManager
     private $hyperlinkSyntaxHighlighting = true; // TODO - change this back to false
     private $sgqaNaming = false;
 
-    function __construct()
+    public function __construct()
     {
         /* EM core string must be in adminlang : keep the actual for resetting at end. See bug #12208 */
         /**
@@ -135,7 +135,8 @@ class ExpressionManager
         // Legacy SGQA field names (123X45X678sq1#0) and the dual scale cell field names since 7.0 (Q678_S910#0):
         // only these may contain a '#', every other field name is tokenized as a WORD
         $RDP_regex_sgqa = '(?:(?:INSERTANS:)?[0-9]+X[0-9]+X[0-9]+[A-Z0-9_]*\#?[01]?|Q[0-9]+_S[0-9]+\#[01])(?:\.(?:[a-zA-Z0-9_]*))?';
-        $RDP_regex_word = '(?:TOKEN:)?(?:[A-Z][A-Z0-9_]*)?(?:\.(?:[A-Z][A-Z0-9_]*))*(?:\.(?:[a-zA-Z0-9_]*))?';
+        // A dot followed by a digit starts a number (.5), not a WORD: Without the lookahead the attribute part matches it
+        $RDP_regex_word = '(?!\.[0-9])(?:TOKEN:)?(?:[A-Z][A-Z0-9_]*)?(?:\.(?:[A-Z][A-Z0-9_]*))*(?:\.(?:[a-zA-Z0-9_]*))?';
         $RDP_regex_number = '[0-9]+\.?[0-9]*|\.[0-9]+';
         $RDP_regex_andor = '\band\b|\bor\b|&&|\|\|';
         $RDP_regex_lcb = '{';
@@ -1493,6 +1494,16 @@ class ExpressionManager
     }
 
     /**
+     * Whether the most recent expression only reads one variable, like {Q1} or {Q1.shown}.
+     * PHP then prints the answer as it is stored, so the page must not round it.
+     * @return boolean
+     */
+    private function isSingleVariableExpression()
+    {
+        return count($this->RDP_tokens) === 1 && in_array($this->RDP_tokens[0][2], array('WORD', 'SGQA'));
+    }
+
+    /**
      * Generate the function needed to dynamically change the value of a <span> section
      * @param integer $questionNum No longer used
      * @param string $elementId - the ID name for the function
@@ -1502,8 +1513,13 @@ class ExpressionManager
     public function GetJavaScriptFunctionForReplacement($questionNum, $elementId, $eqn)
     {
         $jsParts = array();
+        $jsExpression = $this->GetJavaScriptEquivalentOfExpression();
+        if ($jsExpression !== '' && !$this->isSingleVariableExpression()) {
+            // PHP prints a calculated float with a limited number of digits: Show the same number in the page
+            $jsExpression = "LEMroundFloat(\n" . $jsExpression . ")";
+        }
         $jsParts[] = "jQuery('#{$elementId}').html(LEMfixnum(\n";
-        $jsParts[] = $this->GetJavaScriptEquivalentOfExpression();
+        $jsParts[] = $jsExpression;
         $jsParts[] = "));\n";
         // Add an event after html is updated (see #11937 and really good helper for template manager)
         $jsParts[] = "jQuery('#{$elementId}').trigger('html:updated');\n"; // See http://learn.jquery.com/events/introduction-to-custom-events/#naming-custom-events for colons in name
@@ -2163,7 +2179,7 @@ class ExpressionManager
      * @param string $src
      * @return string
      */
-    function ExpandThisVar($src)
+    public function ExpandThisVar($src)
     {
         /** @var array */
         static $cache = [];
@@ -2275,7 +2291,7 @@ class ExpressionManager
                         switch ($funcName) {
                             case 'sprintf':
                                 /* function with any number of params */
-                                $result = call_user_func_array('sprintf', $params);
+                                $result = call_user_func_array('sprintf', self::replaceNullArguments('sprintf', $params));
                                 break;
                             default:
                                 /* function with array as param*/
@@ -2285,6 +2301,8 @@ class ExpressionManager
                     }
                 // Call  function with the params passed
                 } elseif (in_array($argsPassed, $numArgsAllowed)) {
+                    // Only for the calls below that don't check is_numeric() first: Those must still see null
+                    $callParams = self::replaceNullArguments($funcName, $params);
                     switch ($argsPassed) {
                         case 0:
                             if (!$this->RDP_onlyparse) {
@@ -2313,7 +2331,7 @@ class ExpressionManager
                                         }
                                         break;
                                     default:
-                                        $result = call_user_func($funcName, $params[0]);
+                                        $result = call_user_func($funcName, $callParams[0]);
                                         break;
                                 }
                             }
@@ -2330,12 +2348,7 @@ class ExpressionManager
                                         }
                                         break;
                                     default:
-                                        try {
-                                            $result = call_user_func($funcName, $params[0], $params[1]);
-                                        } catch (\Throwable $e) {
-                                            $this->RDP_AddError($e->getMessage(), $funcNameToken);
-                                            return false;
-                                        }
+                                        $result = call_user_func($funcName, $callParams[0], $callParams[1]);
                                         break;
                                 }
                             }
@@ -2352,7 +2365,7 @@ class ExpressionManager
                                         }
                                         break;
                                     default:
-                                        $result = call_user_func($funcName, $params[0], $params[1], $params[2]);
+                                        $result = call_user_func($funcName, $callParams[0], $callParams[1], $callParams[2]);
                                 }
                             }
                             break;
@@ -2362,7 +2375,7 @@ class ExpressionManager
                         default:
                             /* We can accept any fixed numbers of params with call_user_func_array */
                             if (!$this->RDP_onlyparse) {
-                                $result = call_user_func_array($funcName, $params);
+                                $result = call_user_func_array($funcName, $callParams);
                             }
                             break;
                     }
@@ -2378,7 +2391,8 @@ class ExpressionManager
                         return false;
                     }
                 }
-            } catch (Exception $e) {
+            } catch (\Throwable $e) {
+                // Also PHP 8 TypeErrors, e.g. number_format('') for an unanswered question
                 $this->RDP_AddError($e->getMessage(), $funcNameToken);
                 return false;
             }
@@ -2390,6 +2404,64 @@ class ExpressionManager
             $this->RDP_StackPush($token);
             return true;
         }
+    }
+
+    /**
+     * Replace null arguments of a built-in PHP function by the value PHP used for them before PHP 8.1
+     * ('' for a string parameter, 0 for an int parameter, …), because passing null there is deprecated.
+     * Variables of irrelevant questions are null in expressions, so this happens in surveys all the time.
+     * Functions written in PHP (exprmgr_* and plugin functions) get their arguments unchanged.
+     * @param callable $funcName
+     * @param array $params
+     * @return array
+     */
+    private static function replaceNullArguments($funcName, array $params): array
+    {
+        static $replacementsByFunction = [];
+        if (!in_array(null, $params, true) || !is_string($funcName) || !function_exists($funcName)) {
+            return $params;
+        }
+        if (!isset($replacementsByFunction[$funcName])) {
+            $replacementsByFunction[$funcName] = self::getNullReplacements(new ReflectionFunction($funcName));
+        }
+        foreach ($replacementsByFunction[$funcName] as $position => $replacement) {
+            if (array_key_exists($position, $params) && $params[$position] === null) {
+                $params[$position] = $replacement;
+            }
+        }
+        return $params;
+    }
+
+    /**
+     * Get the value PHP used in place of null for each scalar parameter of a built-in function that doesn't accept null
+     * @param ReflectionFunction $function
+     * @return array Replacement values by parameter position
+     */
+    private static function getNullReplacements(ReflectionFunction $function): array
+    {
+        $replacements = [];
+        if (!$function->isInternal()) {
+            return $replacements;
+        }
+        foreach ($function->getParameters() as $parameter) {
+            $type = $parameter->getType();
+            if ($type === null || $type->allowsNull()) {
+                continue;
+            }
+            $typeNames = $type instanceof ReflectionUnionType
+                ? array_map(function ($unionType) {
+                    return $unionType->getName();
+                }, $type->getTypes())
+                : [$type->getName()];
+            // Same order of preference as PHP's own conversion of scalar values to a union type
+            foreach (['int' => 0, 'float' => 0.0, 'string' => '', 'bool' => false] as $typeName => $replacement) {
+                if (in_array($typeName, $typeNames, true)) {
+                    $replacements[$parameter->getPosition()] = $replacement;
+                    break;
+                }
+            }
+        }
+        return $replacements;
     }
 
     /**
@@ -2692,7 +2764,7 @@ class ExpressionManager
      * Show a table of allowable ExpressionScript Engine functions
      * @return string
      */
-    static function ShowAllowableFunctions()
+    public static function ShowAllowableFunctions()
     {
         $em = new ExpressionManager();
         $output = "<div class='h3'>Functions Available within ExpressionScript Engine</div>\n";
@@ -2715,7 +2787,7 @@ class ExpressionManager
      * Show a table of allowable ExpressionScript Engine functions
      * @return string
      */
-    static function GetAllowableFunctions()
+    public static function GetAllowableFunctions()
     {
         $em = new ExpressionManager();
         return $em->RDP_ValidFunctions;
@@ -2896,7 +2968,7 @@ function exprmgr_stripos($haystack, $needle, $offset = 0)
     if ($offset > mb_strlen($haystack)) {
         return false;
     }
-    return mb_stripos($haystack, ($needle ?? ''), $offset, 'UTF-8');
+    return mb_stripos($haystack, ($needle ?? ''), ($offset ?? 0), 'UTF-8');
 }
 /**
  * Finds first occurrence of a unicode string within another, case-insensitive
@@ -2931,7 +3003,7 @@ function exprmgr_strpos($haystack, $needle, $offset = 0)
     if ($offset > mb_strlen($haystack)) {
         return false;
     }
-    return mb_strpos($haystack, ($needle ?? ''), $offset, 'UTF-8');
+    return mb_strpos($haystack, ($needle ?? ''), ($offset ?? 0), 'UTF-8');
 }
 /**
  * Finds first occurrence of a unicode string within another
@@ -2971,7 +3043,7 @@ function exprmgr_strtoupper($string)
  */
 function exprmgr_substr($string, $start, $end = null)
 {
-    return mb_substr(($string ?? ''), $start, $end, 'UTF-8');
+    return mb_substr(($string ?? ''), ($start ?? 0), $end, 'UTF-8');
 }
 /**
  * Sum values from a list that satisfy a comparison against a reference value.
@@ -3121,7 +3193,7 @@ function exprmgr_date($format, $timestamp = null)
     if (!is_numeric($timestamp)) {
         return false;
     }
-    return date($format, $timestamp);
+    return date($format ?? '', $timestamp);
 }
 
 function exprmgr_abs($num)
@@ -3185,6 +3257,8 @@ function exprmgr_if($testDone, $iftrue, $iffalse = '')
  */
 function exprmgr_int($arg)
 {
+    // Irrelevant variables are null: Test them as empty string, as PHP did before 8.1
+    $arg = (string) $arg;
     if (strpos($arg, ".")) {
         // DECIMAL from SQL return always .00000000, the remove all 0 and one . , see #09550
         $arg = preg_replace("/\.$/", "", rtrim(strval($arg), "0"));
@@ -3363,7 +3437,7 @@ function exprmgr_implode($args)
         return "";
     }
     $joiner = array_shift($args);
-    return implode($joiner, $args);
+    return implode($joiner ?? '', $args);
 }
 
 /**
@@ -3417,7 +3491,7 @@ function exprmgr_stddev($args)
  */
 function expr_mgr_htmlspecialchars($string)
 {
-    return htmlspecialchars($string, ENT_QUOTES);
+    return htmlspecialchars($string ?? '', ENT_QUOTES);
 }
 
 /**
@@ -3427,7 +3501,7 @@ function expr_mgr_htmlspecialchars($string)
  */
 function expr_mgr_htmlspecialchars_decode($string)
 {
-    return htmlspecialchars_decode($string, ENT_QUOTES);
+    return htmlspecialchars_decode($string ?? '', ENT_QUOTES);
 }
 
 /**
@@ -3443,7 +3517,8 @@ function exprmgr_regexMatch($pattern, $input)
         return false; // invalid : true or false ?
     }
     // 'u' is the regexp modifier for unicode so that non-ASCII string will be validated properly
-    return preg_match($pattern . 'u', $input);
+    // Irrelevant variables are null: Test them as empty string, as PHP did before 8.1
+    return preg_match($pattern . 'u', $input ?? '');
 }
 /**
  * Return error information from pattern of regular expression $pattern

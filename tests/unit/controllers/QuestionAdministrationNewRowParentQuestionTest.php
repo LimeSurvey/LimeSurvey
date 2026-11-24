@@ -48,7 +48,6 @@ class QuestionAdministrationNewRowParentQuestionTest extends TestBaseClass
     private function invokePrivate($methodName, ...$args)
     {
         $method = new \ReflectionMethod($this->controller, $methodName);
-        $method->setAccessible(true);
         return $method->invoke($this->controller, ...$args);
     }
 

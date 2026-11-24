@@ -199,7 +199,7 @@ class Zend_Service_WindowsAzure_SessionHandler
      * Read a specific session
      *
      * @param string $id Session Id
-     * @return string
+     * @return string|false|null
      */
     public function read($id)
     {
@@ -234,6 +234,8 @@ class Zend_Service_WindowsAzure_SessionHandler
 	            return false;
 	        }
     	}
+
+        return null;
     }
 
     /**
@@ -254,6 +256,7 @@ class Zend_Service_WindowsAzure_SessionHandler
     	// Store data
        	if ($this->_storageType == self::STORAGE_TYPE_TABLE) {
     		// In table storage
+       	    require_once 'Zend/Service/WindowsAzure/Storage/DynamicTableEntity.php';
        	    $sessionRecord = new Zend_Service_WindowsAzure_Storage_DynamicTableEntity($this->_sessionContainerPartition, $id);
 	        $sessionRecord->sessionExpires = time();
 	        $sessionRecord->serializedData = $serializedData;
@@ -283,7 +286,7 @@ class Zend_Service_WindowsAzure_SessionHandler
      * Destroy a specific session
      *
      * @param string $id Session Id
-     * @return boolean
+     * @return boolean|null
      */
     public function destroy($id)
     {
@@ -321,6 +324,8 @@ class Zend_Service_WindowsAzure_SessionHandler
 	            return false;
 	        }
     	}
+
+        return null;
     }
 
     /**
@@ -331,7 +336,7 @@ class Zend_Service_WindowsAzure_SessionHandler
      * @see session.gc_maxlifetime 1440
      * @see session.gc_probability 1
      * @usage Execution rate 1/100 (session.gc_probability/session.gc_divisor)
-     * @return boolean
+     * @return boolean|null
      */
     public function gc($lifeTime)
     {
@@ -368,5 +373,7 @@ class Zend_Service_WindowsAzure_SessionHandler
 	            return false;
 	        }
     	}
+
+        return null;
     }
 }

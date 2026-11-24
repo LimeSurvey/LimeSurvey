@@ -42,7 +42,7 @@ abstract class Zend_Dojo_View_Helper_DijitContainer extends Zend_Dojo_View_Helpe
 
     /**
      * Metadata information to use with captured content
-     * @var array
+     * @var array<string, array{params: array, attribs: array}>
      */
     protected $_captureInfo = [];
 

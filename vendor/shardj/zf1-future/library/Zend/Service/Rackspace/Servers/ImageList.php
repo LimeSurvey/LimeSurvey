@@ -52,7 +52,7 @@ class Zend_Service_Rackspace_Servers_ImageList implements Countable, Iterator, A
     /**
      * Construct
      *
-     * @param  RackspaceServers $service
+     * @param  Zend_Service_Rackspace_Servers $service
      * @param  array $list
      * @return void
      */

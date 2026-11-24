@@ -97,6 +97,7 @@ class Zend_Application_Bootstrap_Bootstrap
         $front   = $this->getResource('FrontController');
         $default = $front->getDefaultModule();
         if (null === $front->getControllerDirectory($default)) {
+            require_once 'Zend/Application/Bootstrap/Exception.php';
             throw new Zend_Application_Bootstrap_Exception(
                 'No default controller directory registered with front controller'
             );
@@ -133,6 +134,7 @@ class Zend_Application_Bootstrap_Bootstrap
         ) {
             $r    = new ReflectionClass($this);
             $path = $r->getFileName();
+            require_once 'Zend/Application/Module/Autoloader.php';
             $this->setResourceLoader(
                 new Zend_Application_Module_Autoloader(
                     [

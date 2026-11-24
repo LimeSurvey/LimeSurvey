@@ -21,10 +21,10 @@ Show the privacy message and the data security message will be available in a mo
 {%endif %}
 {% if aSurveyInfo.datasecurity_notice %}
     <div class="ls-privacy-block">
-        <div id="datasecurity_notice_label" class="fw-bold text-uppercase">
+        <div id="datasecurity_notice_label" class="med-12 text-uppercase">
             {{ gT("Privacy policy") }}
         </div>
-        <div class="{{ aSurveyInfo.class.privacydatasectextbody }}" id="datasecurity_notice">
+        <div class="{{ aSurveyInfo.class.privacydatasectextbody }} reg-12" id="datasecurity_notice">
             {{ aSurveyInfo.datasecurity_notice }}
         </div>
     </div>
@@ -34,7 +34,7 @@ Show the privacy message and the data security message will be available in a mo
     <div class="ls-privacy-block">
         <div class="{{ aSurveyInfo.class.activealert }} alert alert-danger alert-dismissible alert-dismissible {% if not aSurveyInfo.datasecuritynotaccepted %} ls-js-hidden {% endif %}" {{ aSurveyInfo.attr.activealert }}
              id="datasecurity_error">
-            <a {{ aSurveyInfo.attr.activealertbutton }} class="{{ aSurveyInfo.class.activealertbutton }} btn-close" aria-hidden="true"></a>
+            <button {{ aSurveyInfo.attr.activealertbutton }} class="{{ aSurveyInfo.class.activealertbutton }} btn-close"></button>
             {{ aSurveyInfo.datasecurity_error }}
         </div>
         {% if aSurveyInfo.datasecuritynotaccepted %}

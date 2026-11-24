@@ -148,7 +148,6 @@ class Zend_Service_Amazon_Sqs extends Zend_Service_Amazon_Abstract
      * For the actual region list please check:
      * http://docs.amazonwebservices.com/AWSSimpleQueueService/2009-02-01/APIReference/index.html?QueueServiceWsdlArticle.html
      *
-     * @param  string  $region region
      * @return array
      */
     public function getEndpoints()
@@ -383,7 +382,7 @@ class Zend_Service_Amazon_Sqs extends Zend_Service_Amazon_Abstract
      *
      * @param  string $queue_url  Queue URL
      * @param  string $attribute
-     * @return string
+     * @return string|array
      * @throws Zend_Service_Amazon_Sqs_Exception
      */
     public function getAttribute($queue_url, $attribute = 'All')
@@ -414,7 +413,7 @@ class Zend_Service_Amazon_Sqs extends Zend_Service_Amazon_Abstract
     /**
      * Make a request to Amazon SQS
      *
-     * @param  string           $queue  Queue Name
+     * @param  string|null      $queue_url  Queue URL, null for actions without a queue
      * @param  string           $action SQS action
      * @param  array            $params
      * @return SimpleXMLElement
@@ -512,7 +511,7 @@ class Zend_Service_Amazon_Sqs extends Zend_Service_Amazon_Abstract
      *    characters when appending strings.
      *
      * @param  string $queue_url  Queue URL
-     * @param  array  $parameters the parameters for which to get the signature.
+     * @param  array  $paramaters the parameters for which to get the signature.
      *
      * @return string the signed data.
      */

@@ -57,6 +57,7 @@ class Zend_XmlRpc_Request_Stdin extends Zend_XmlRpc_Request
     {
         $fh = fopen('php://stdin', 'r');
         if (!$fh) {
+            require_once 'Zend/XmlRpc/Server/Exception.php';
             $this->_fault = new Zend_XmlRpc_Server_Exception(630);
             return;
         }

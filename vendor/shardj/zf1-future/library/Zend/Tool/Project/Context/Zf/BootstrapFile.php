@@ -20,6 +20,8 @@
  * @version    $Id$
  */
 
+require_once 'Zend/Tool/Project/Context/Filesystem/File.php';
+
 /**
  * This class is the front most class for utilizing Zend_Tool_Project
  *
@@ -76,7 +78,7 @@ class Zend_Tool_Project_Context_Zf_BootstrapFile extends Zend_Tool_Project_Conte
             throw new Exception('To use the BootstrapFile context, your project requires the use of both the "ApplicationConfigFile" and "ApplicationDirectory" contexts.');
         }
 
-
+        return $this;
     }
 
     /**
@@ -87,6 +89,8 @@ class Zend_Tool_Project_Context_Zf_BootstrapFile extends Zend_Tool_Project_Conte
     public function getContents()
     {
 
+        require_once 'Zend/CodeGenerator/Php/Class.php';
+        require_once 'Zend/CodeGenerator/Php/File.php';
         $codeGenFile = new Zend_CodeGenerator_Php_File([
             'classes' => [
                 new Zend_CodeGenerator_Php_Class([
@@ -107,6 +111,7 @@ class Zend_Tool_Project_Context_Zf_BootstrapFile extends Zend_Tool_Project_Conte
                 $applicationOptions = [];
                 $applicationOptions['config'] = $this->_applicationConfigFile->getPath();
 
+                require_once 'Zend/Application.php';
                 $this->_applicationInstance = new Zend_Application(
                     'development',
                     $applicationOptions

@@ -35,6 +35,7 @@ require_once 'Zend/Cloud/DocumentService/Query.php';
  * @subpackage DocumentService
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @deprecated Deprecated since 1.27.1 and will be removed in a future version: the Simple Cloud API is not developed any further; use the SDK of the cloud provider
  */
 abstract class Zend_Cloud_DocumentService_Adapter_AbstractAdapter
     implements Zend_Cloud_DocumentService_Adapter

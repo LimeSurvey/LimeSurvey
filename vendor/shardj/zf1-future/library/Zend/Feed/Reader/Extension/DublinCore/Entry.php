@@ -46,8 +46,8 @@ class Zend_Feed_Reader_Extension_DublinCore_Entry
     /**
      * Get an author entry
      *
-     * @param DOMElement $element
-     * @return string
+     * @param int $index
+     * @return string|null
      */
     public function getAuthor($index = 0)
     {
@@ -63,7 +63,7 @@ class Zend_Feed_Reader_Extension_DublinCore_Entry
     /**
      * Get an array with feed authors
      *
-     * @return array
+     * @return Zend_Feed_Reader_Collection_Author|null
      */
     public function getAuthors()
     {

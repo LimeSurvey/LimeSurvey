@@ -9,7 +9,7 @@ let cardHeaderRedirection = function () {
         }
     })
 
-    // Link cards are links themselves (role="link"): activate them with Enter
+    // Link cards are links themselves (role="link"): Activate them with Enter
     $('.box-widget-card[data-url][role="link"]')
         .off('keydown.boxesWidget')
         .on('keydown.boxesWidget', function (event) {

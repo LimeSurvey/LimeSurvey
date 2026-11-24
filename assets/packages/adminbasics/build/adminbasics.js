@@ -14378,13 +14378,31 @@
 	    adminCoreLSConsole.warn('LS.unrenderBootstrapSwitch is deprecated.');
 	  },
 	  // ==================================================================================
-	  validatefilename: (form, strmessage) => {
-	    if (form.the_file.value == "") {
-	      $('#pleaseselectfile-popup').modal();
-	      form.the_file.focus();
-	      return false;
+	  /**
+	   * Checks that a file was chosen in the "the_file" input of an import form.
+	   * If not, the message is shown at the file input by the browser's form validation,
+	   * which works on every page and inside modals without extra markup.
+	   *
+	   * @param {HTMLFormElement} form The import form, it must contain a file input named "the_file"
+	   * @param {string} message The translated message to show when no file was chosen
+	   * @return {boolean} True if a file was chosen
+	   */
+	  validatefilename: (form, message) => {
+	    const fileInput = form.the_file;
+	    if (fileInput.value !== "") {
+	      fileInput.setCustomValidity('');
+	      return true;
 	    }
-	    return true;
+	    if (message) {
+	      fileInput.setCustomValidity(message);
+	      // The custom message makes the input invalid: Remove it as soon as a file is chosen
+	      fileInput.addEventListener('change', () => fileInput.setCustomValidity(''), {
+	        once: true
+	      });
+	    }
+	    fileInput.focus();
+	    fileInput.reportValidity();
+	    return false;
 	  },
 	  doToolTip: () => {
 	    // A trigger whose tooltip is currently shown (or fading in/out) points to it via aria-describedby
@@ -17443,11 +17461,134 @@
 	};
 
 	/**
+	 * Keep a Bootstrap 5 tooltip open while the pointer is on it (WCAG 1.4.13 Content on Hover or Focus).
+	 *
+	 * Bootstrap hides a hover tooltip as soon as the pointer leaves its trigger, so the pointer
+	 * can not move onto the tooltip. Here a hide is delayed a moment and cancelled while the pointer
+	 * is on the trigger or on the tooltip, or while the trigger is active again (e.g. focused).
+	 * A hide with data-ls-tooltip-hide="true" on the trigger (Escape, see dismissTooltipsOnEscapePress)
+	 * is not delayed.
+	 *
+	 * Safe to call multiple times — the listeners are only attached once per page load.
+	 */
+	const HIDE_DELAY = 150;
+
+	/**
+	 * Hide a tooltip right away, bypassing the delayed hide below.
+	 * @param {HTMLElement} trigger - The element the tooltip belongs to.
+	 * @param {Object} tooltip - The Bootstrap tooltip instance of the trigger.
+	 * @returns {void}
+	 */
+	const hideTooltipNow = (trigger, tooltip) => {
+	  trigger.dataset.lsTooltipHide = 'true';
+	  try {
+	    tooltip.hide();
+	  } finally {
+	    delete trigger.dataset.lsTooltipHide;
+	  }
+	};
+
+	/**
+	 * Attach the listeners that delay the hiding of tooltips.
+	 * @returns {void}
+	 */
+	const keepTooltipsHoverable = () => {
+	  if (window.LS && LS._tooltipHoverableBound) {
+	    return;
+	  }
+	  LS._tooltipHoverableBound = true;
+
+	  // One pending hide per trigger, so repeated hide events don't start parallel checks
+	  const pendingHides = new WeakMap();
+
+	  /**
+	   * Stop the pending hide of a trigger: Clear its timer and remove its mouseleave listeners.
+	   * @param {HTMLElement} trigger - The element the tooltip belongs to.
+	   * @returns {void}
+	   */
+	  const cancelPendingHide = trigger => {
+	    const pending = pendingHides.get(trigger);
+	    if (!pending) {
+	      return;
+	    }
+	    clearTimeout(pending.timer);
+	    pending.trigger.removeEventListener('mouseleave', pending.onLeave);
+	    pending.tip.removeEventListener('mouseleave', pending.onLeave);
+	    pendingHides.delete(trigger);
+	  };
+
+	  /**
+	   * Start the delayed hide of a tooltip, which checks again after every mouseleave
+	   * of the trigger or the tooltip until neither is hovered.
+	   * @param {HTMLElement} trigger - The element the tooltip belongs to.
+	   * @param {Object} tooltip - The Bootstrap tooltip instance of the trigger.
+	   * @param {HTMLElement} tip - The tooltip element.
+	   * @returns {void}
+	   */
+	  const startPendingHide = (trigger, tooltip, tip) => {
+	    const pending = {
+	      trigger: trigger,
+	      tip: tip,
+	      timer: null,
+	      onLeave: null
+	    };
+	    const hideUnlessHovered = function () {
+	      pending.timer = null;
+	      if (!tip.isConnected || bootstrap.Tooltip.getInstance(trigger) !== tooltip) {
+	        cancelPendingHide(trigger);
+	        return;
+	      }
+	      if (trigger.matches(':hover') || tip.matches(':hover')) {
+	        // Wait for the mouseleave listeners
+	        return;
+	      }
+	      cancelPendingHide(trigger);
+	      const isActiveAgain = typeof tooltip._isWithActiveTrigger === 'function' ? tooltip._isWithActiveTrigger() : trigger.matches(':focus');
+	      if (isActiveAgain) {
+	        // E.g. focused during the delay: Bootstrap hides it again when that ends
+	        return;
+	      }
+	      hideTooltipNow(trigger, tooltip);
+	    };
+	    pending.onLeave = function () {
+	      clearTimeout(pending.timer);
+	      pending.timer = setTimeout(hideUnlessHovered, HIDE_DELAY);
+	    };
+	    trigger.addEventListener('mouseleave', pending.onLeave);
+	    tip.addEventListener('mouseleave', pending.onLeave);
+	    pendingHides.set(trigger, pending);
+	    pending.timer = setTimeout(hideUnlessHovered, HIDE_DELAY);
+	  };
+	  document.addEventListener('hide.bs.tooltip', function (e) {
+	    const trigger = e.target;
+	    if (trigger.dataset.lsTooltipHide === 'true' || typeof bootstrap === 'undefined' || !bootstrap.Tooltip) {
+	      return;
+	    }
+	    const tooltip = bootstrap.Tooltip.getInstance(trigger);
+	    const tip = tooltip ? tooltip.getTipElement() : null;
+	    if (!tip || !tip.isConnected) {
+	      return;
+	    }
+	    e.preventDefault();
+	    if (!pendingHides.has(trigger)) {
+	      startPendingHide(trigger, tooltip, tip);
+	    }
+	  });
+
+	  // A tooltip hidden some other way needs no pending hide anymore
+	  document.addEventListener('hidden.bs.tooltip', function (e) {
+	    cancelPendingHide(e.target);
+	  });
+	};
+
+	/**
 	 * Dismiss all visible Bootstrap 5 tooltips when the user presses Escape.
 	 *
 	 * Safe to call multiple times — a guard flag on the window object ensures
 	 * the keydown listener is only attached once per page load, regardless of
 	 * how many modules or scripts call this function.
+	 *
+	 * @returns {void}
 	 */
 	const dismissTooltipsOnEscapePress = () => {
 	  if (window.LS && LS._tooltipEscapeDismissBound) {
@@ -17464,67 +17605,10 @@
 	    document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (el) {
 	      var t = bootstrap.Tooltip.getInstance(el);
 	      if (t) {
-	        t.hide();
+	        // Bypass the delayed hide of keepTooltipsHoverable: Escape hides at once
+	        hideTooltipNow(el, t);
 	      }
 	    });
-	  });
-	};
-
-	/**
-	 * Keep a Bootstrap 5 tooltip open while the pointer is on it (WCAG 1.4.13 Content on Hover or Focus).
-	 *
-	 * Bootstrap hides a hover tooltip as soon as the pointer leaves its trigger, so the pointer
-	 * can not move onto the tooltip. Here a hide is delayed a moment and cancelled while the pointer
-	 * is on the trigger or on the tooltip. Escape (see dismissTooltipsOnEscapePress) still hides it at once.
-	 *
-	 * Safe to call multiple times — the listeners are only attached once per page load.
-	 */
-	const HIDE_DELAY = 150;
-	const keepTooltipsHoverable = () => {
-	  if (window.LS && LS._tooltipHoverableBound) {
-	    return;
-	  }
-	  LS._tooltipHoverableBound = true;
-	  let escapePressed = false;
-	  document.addEventListener('keydown', function (e) {
-	    if (e.key === 'Escape' || e.keyCode === 27) {
-	      escapePressed = true;
-	      setTimeout(function () {
-	        escapePressed = false;
-	      }, 0);
-	    }
-	  }, true);
-	  document.addEventListener('hide.bs.tooltip', function (e) {
-	    const trigger = e.target;
-	    if (escapePressed || trigger.dataset.lsTooltipHide === 'true' || typeof bootstrap === 'undefined' || !bootstrap.Tooltip) {
-	      return;
-	    }
-	    const tooltip = bootstrap.Tooltip.getInstance(trigger);
-	    const tip = tooltip ? tooltip.getTipElement() : null;
-	    if (!tip || !tip.isConnected) {
-	      return;
-	    }
-	    e.preventDefault();
-	    const hideUnlessHovered = function () {
-	      if (!tip.isConnected || !bootstrap.Tooltip.getInstance(trigger)) {
-	        return;
-	      }
-	      if (trigger.matches(':hover') || tip.matches(':hover')) {
-	        // Check again once the pointer leaves the trigger or the tooltip
-	        const onLeave = function () {
-	          trigger.removeEventListener('mouseleave', onLeave);
-	          tip.removeEventListener('mouseleave', onLeave);
-	          setTimeout(hideUnlessHovered, HIDE_DELAY);
-	        };
-	        trigger.addEventListener('mouseleave', onLeave);
-	        tip.addEventListener('mouseleave', onLeave);
-	        return;
-	      }
-	      trigger.dataset.lsTooltipHide = 'true';
-	      tooltip.hide();
-	      delete trigger.dataset.lsTooltipHide;
-	    };
-	    setTimeout(hideUnlessHovered, HIDE_DELAY);
 	  });
 	};
 
@@ -17618,6 +17702,32 @@
 	      target.setAttribute('tabindex', '-1');
 	    }
 	    target.focus();
+	  });
+	};
+
+	/**
+	 * Links of the admin menu that are announced as buttons (role="button") must react to Space like
+	 * buttons do (WCAG 2.1.1 Keyboard). Enter already works on links.
+	 *
+	 * Safe to call multiple times — the listener is only attached once per page load.
+	 */
+	const BUTTON_LINK_SELECTORS = ['#notification-li .admin-notification-link', '#notification-clear-all > a', '#feature-preview-button', '#admin-menu-user-button'].join(', ');
+
+	/**
+	 * Lets Space activate the admin menu links that are announced as buttons.
+	 *
+	 * @return {void}
+	 */
+	const spaceActivatesButtonLinks = () => {
+	  if (window.LS && LS._spaceActivatesButtonLinksBound) {
+	    return;
+	  }
+	  LS._spaceActivatesButtonLinksBound = true;
+	  $(document).on('keydown', BUTTON_LINK_SELECTORS, function (e) {
+	    if (e.key === ' ') {
+	      e.preventDefault();
+	      this.click();
+	    }
 	  });
 	};
 
@@ -18589,6 +18699,8 @@
 	      appendToLoad(fileManagerStyle);
 	      appendToLoad(panelClickable);
 	      appendToLoad(window.LS.doToolTip);
+	      // Content loaded by AJAX (e.g. grid updates) may bring new tooltips
+	      appendToLoad(window.LS.doToolTip, 'ajaxComplete');
 	      appendToLoad(panelsAnimation, null, null, 200);
 	      appendToLoad(notificationSystem.initNotification);
 	      appendToLoad(activateSubSubMenues);
@@ -18600,6 +18712,7 @@
 	      keepTooltipsHoverable();
 	      restoreFocusAfterModal();
 	      skipToMainContent();
+	      spaceActivatesButtonLinks();
 	      appendToLoad(announceLoading);
 	      bindNotLoggedInHandler();
 	    },

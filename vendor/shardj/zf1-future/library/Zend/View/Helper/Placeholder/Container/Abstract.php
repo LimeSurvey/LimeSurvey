@@ -259,7 +259,7 @@ abstract class Zend_View_Helper_Placeholder_Container_Abstract extends ArrayObje
      * Start capturing content to push into placeholder
      *
      * @param int|string $type How to capture content into placeholder; append, prepend, or set
-     * @param null       $key
+     * @param int|string|null $key
      * @throws Zend_View_Helper_Placeholder_Container_Exception
      * @return void
      */

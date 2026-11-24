@@ -65,7 +65,7 @@ class STATAxmlWriter extends Writer
      *
      * @param array $pluginsettings Plugin settings array; must contain ['statafileversion']['current'] with the target STATA XML version number.
      */
-    function __construct($pluginsettings)
+    public function __construct($pluginsettings)
     {
         $this->output          = '';
         $this->separator       = ',';
@@ -141,7 +141,7 @@ class STATAxmlWriter extends Writer
      * @param FormattingOptions $oOptions Formatting and export options (controls selectedColumns, convertY/convertN and their values).
      * @return array The cleaned STATA fieldmap containing 'questions', 'answers', 'tokenFields' and 'info'.
      */
-    function createStataFieldmap($survey, $sLanguage, $oOptions)
+    public function createStataFieldmap($survey, $sLanguage, $oOptions)
     {
         App()->setLanguage($sLanguage);
 

@@ -1,5 +1,7 @@
 <?php
 
+use LimeSurvey\Models\Services\SurveySessionState;
+
 /**
  * RenderClass for File Upload Question
  *  * The ia Array contains the following
@@ -52,8 +54,8 @@ class RenderFileUpload extends QuestionBaseRenderer
         $sAction = Yii::app()->request->getParam('action');
         // Preview is launched from question or group level, or the survey is not active
         $bPreview = $sAction == "previewgroup" || $sAction == "previewquestion" || $this->oQuestion->survey->active != "Y";
-        $_SESSION['responses_' . $iSurveyId]['fieldname'] = $this->sSGQA;
-        $_SESSION['responses_' . $iSurveyId]['preview'] = (int) $bPreview;
+        // Read by the upload controller to tell plugins that the file is uploaded in preview mode
+        SurveySessionState::forSurvey((int) $iSurveyId)->set('preview', (int) $bPreview);
 
         $uploadurl = Yii::app()->getController()->createUrl(
             'uploader/index',
@@ -85,7 +87,7 @@ class RenderFileUpload extends QuestionBaseRenderer
             'scriptloc' => Yii::app()->getController()->createUrl('/uploader/index/mode/upload/'),
             'showTitle' => $this->getQuestionAttribute('show_title'),
             'showComment' => $this->getQuestionAttribute('show_comment'),
-            'uploadButtonLabel' => ngT("Upload file|Upload files", $this->getQuestionAttribute('max_num_of_files'))
+            'uploadButtonLabel' => gTPlural("Upload file", "Upload files", $this->getQuestionAttribute('max_num_of_files'))
         ));
 
         $this->registerAssets();

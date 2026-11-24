@@ -41,7 +41,7 @@ abstract class Zend_Validate_Barcode_AdapterAbstract
 
     /**
      * Allowed barcode characters
-     * @var string
+     * @var string|int
      */
     protected $_characters;
 
@@ -159,7 +159,7 @@ abstract class Zend_Validate_Barcode_AdapterAbstract
     /**
      * Returns the allowed characters
      *
-     * @return string
+     * @return string|int
      */
     public function getCharacters()
     {

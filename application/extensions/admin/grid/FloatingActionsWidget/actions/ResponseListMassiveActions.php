@@ -1,5 +1,7 @@
 <?php
+
 namespace actions;
+
 class ResponseListMassiveActions
 {
     public static function getActions(int $surveyId): array

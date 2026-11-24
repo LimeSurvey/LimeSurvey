@@ -186,7 +186,7 @@ class Zend_Ldap_Collection implements Iterator, Countable
      * Return the current result item key
      * Implements Iterator
      *
-     * @return int|null
+     * @return int|string|null
      */
     #[\ReturnTypeWillChange]
     public function key()

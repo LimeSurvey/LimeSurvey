@@ -15,6 +15,8 @@
  */
 class Box extends CActiveRecord
 {
+    use TwigSandboxIteratorTrait;
+
     /** @inheritdoc */
     public function tableName()
     {

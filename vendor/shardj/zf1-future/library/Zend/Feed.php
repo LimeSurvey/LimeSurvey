@@ -311,6 +311,7 @@ class Zend_Feed
 
         // Try to fetch a feed for each link tag that appears to refer to a feed
         $feeds = [];
+        // @phpstan-ignore isset.offset (preg_match_all() leaves $matches empty on a PCRE error)
         if (isset($matches[1]) && count($matches[1]) > 0) {
             foreach ($matches[1] as $link) {
                 // force string to be an utf-8 one
@@ -335,6 +336,7 @@ class Zend_Feed
                 try {
                     // checks if we need to canonize the given uri
                     try {
+                        require_once 'Zend/Uri.php';
                         $uri = Zend_Uri::factory((string) $attributes['href']);
                     } catch (Zend_Uri_Exception $e) {
                         // canonize the uri
@@ -350,6 +352,7 @@ class Zend_Feed
                         if (strpos($query, '#') !== false) {
                             list($query, $fragment) = explode('#', $query, 2);
                         }
+                        require_once 'Zend/Uri.php';
                         $uri = Zend_Uri::factory($client->getUri(true));
                         $uri->setPath($path);
                         $uri->setQuery($query);

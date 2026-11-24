@@ -105,7 +105,7 @@ abstract class Zend_Ldap_Node_Schema_Item implements ArrayAccess, Countable
      *
      * @param  string $name
      * @param  mixed $value
-     * @return null
+     * @return void
      * @throws BadMethodCallException
      */
     public function offsetSet($name, $value): void
@@ -132,7 +132,7 @@ abstract class Zend_Ldap_Node_Schema_Item implements ArrayAccess, Countable
      * This method is needed for a full implementation of ArrayAccess
      *
      * @param  string $name
-     * @return null
+     * @return void
      * @throws BadMethodCallException
      */
     public function offsetUnset($name): void
