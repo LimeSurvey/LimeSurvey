@@ -42,6 +42,12 @@ class LSETwigViewRenderer extends ETwigViewRenderer
     private $questionTemplateDataCache = [];
 
     /**
+     * @var array<int,bool> Whether the new editor can edit the survey, cached per survey id
+     * @see LSETwigViewRenderer::renderQuestion()
+     */
+    private $editorCompatibleSurveyCache = [];
+
+    /**
      * @var array Custom LS Users Extensions
      * Example: array('HelloWorld_Twig_Extension')
      */
@@ -271,6 +277,8 @@ window.addEventListener('message', function(event) {
      * This method is called from qanda helper to render a question view file.
      * It first checks if the question use a template (set in display attributes)
      * If it is the case, it will use the views of that template, else, it will render the core view.
+     * Question views also get surveyInfo and isEditorCompatibleSurvey: Whether the new editor can edit the
+     * survey (see Survey::getIsEditorCompatible()), e.g. for the image editor settings of image select options.
      *
      * @param string $sView the view (layout) to render
      * @param array $aData the datas needed for the view rendering
@@ -322,8 +330,15 @@ window.addEventListener('message', function(event) {
                 $aData = array_merge($aData, $this->getQuestionTemplateData($oQuestionModel));
                 $aData['question_template_attribute'] = $oQuestionTemplate->getCustomAttributes();
                 $surveyId = ExpressionManagerSessionState::current()->getSurveyId();
-                $sBaseLanguage = Survey::model()->findByPk($surveyId)->language;
+                $oSurvey = Survey::model()->findByPk($surveyId);
+                $sBaseLanguage = $oSurvey->language;
                 $aData['surveyInfo'] = getSurveyInfo($surveyId, $sBaseLanguage);
+                // Settings made in the new editor (e.g. the image editor of image select options) only apply in
+                // the survey themes it can edit: Then the survey shows what the editor shows.
+                if (!isset($this->editorCompatibleSurveyCache[$surveyId])) {
+                    $this->editorCompatibleSurveyCache[$surveyId] = $oSurvey->getIsEditorCompatible();
+                }
+                $aData['isEditorCompatibleSurvey'] = $this->editorCompatibleSurveyCache[$surveyId];
                 $aData['this'] = App()->getController();
             } else {
                 $aData['question_template_attribute'] = null;
