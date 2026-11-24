@@ -38,9 +38,9 @@ $slidesJson = htmlspecialchars(json_encode($slides), ENT_QUOTES, 'UTF-8');
                         <div class="<?= $colClassLeft ?>">
                             <div class="card-body ps-4 pe-4">
                                 <div class="card-body-top">
-                                    <h1 class="card-title reg-24 mb-16">
+                                    <h2 class="card-title reg-24 mb-16">
                                     <?= gT('Welcome to the new LimeSurvey') ?>
-                                    </h1>
+                                    </h2>
                                     <!-- Slide description (injected by JS) -->
                                     <div class="editor-slider-description-wrap mb-16">
                                         <p class="editor-slider-description reg-14"></p>
@@ -60,7 +60,7 @@ $slidesJson = htmlspecialchars(json_encode($slides), ENT_QUOTES, 'UTF-8');
                                     </div>
                                     <!-- Manual mode: toggle between classic/new (shown when opened manually) -->
                                     <div class="editor-manual-section row mb-16">
-                                        <label class="label-s mb-1" for='editor-switch-btn'><?php eT("Editor version"); ?></label>
+                                        <label class="label-s mb-1" id="editor-switch-label"><?php eT("Editor version"); ?></label>
                                         <div class="lime-toggle-btn-group isSecondary">
                                         <?php
                                         App()->getController()->widget(
@@ -68,6 +68,7 @@ $slidesJson = htmlspecialchars(json_encode($slides), ENT_QUOTES, 'UTF-8');
                                             [
                                                 'name'          => 'editor-switch-btn',
                                                 'id'            => 'editor-switch-btn',
+                                                'ariaLabelledBy' => 'editor-switch-label',
                                                 'checkedOption' => $activated,
                                                 'selectOptions' => [
                                                     '0' => gT('Classic'),

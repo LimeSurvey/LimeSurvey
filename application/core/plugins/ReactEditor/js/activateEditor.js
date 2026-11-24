@@ -24,7 +24,9 @@ $(document).ready(function () {
 
             const updateContent = () => {
                 $title.html(slide.title);
-                $image.attr("src", slide.image).attr("alt", slide.title);
+                // The alt text is the slide title as plain text: DOMParser strips markup without loading images or running handlers
+                const titleText = new DOMParser().parseFromString(slide.title || "", "text/html").body.textContent;
+                $image.attr("src", slide.image).attr("alt", titleText);
                 $desc.html(slide.description);
 
                 // Swap the info panel if custom info is provided for this slide

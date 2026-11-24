@@ -13,7 +13,8 @@
 ?>
 <!-- admin menu bar -->
 <header>
-<nav class="navbar navbar-expand-md">
+<?php // The logo is part of the banner; the menus inside are the navigation landmarks ?>
+<div class="navbar navbar-expand-md">
     <div class="container-fluid">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#small-screens-menus"
             aria-controls="small-screens-menus" aria-expanded="false">
@@ -25,7 +26,7 @@
             <?= $sitename ?>
         </a>
         <!-- Only on xs screens -->
-        <div class="collapse navbar-collapse " id="small-screens-menus">
+        <div class="collapse navbar-collapse " id="small-screens-menus" role="navigation" aria-label="<?php eT('Main menu'); ?>">
             <ul class="nav navbar-nav" id="small-screens-menu-items">
                 <!-- active surveys -->
                 <?php if ($activesurveyscount > 0) : ?>
@@ -51,7 +52,7 @@
             </ul>
         </div>
 
-        <div class="collapse navbar-collapse">
+        <div class="collapse navbar-collapse" role="navigation" aria-label="<?php eT('Main menu'); ?>">
             <ul class="nav navbar-nav">
                 <!-- Maintenance mode -->
                 <?php if (SettingGlobal::getMaintenanceMode() !== SettingGlobal::MAINTENANCE_MODE_OFF) { ?>
@@ -97,7 +98,7 @@
                 <?php $this->renderPartial("application.libraries.MenuObjects.views._extraMenu", ['extraMenus' => $extraMenus, 'middleSection' => true, 'prependedMenu' => false]); ?>
             </ul>
         </div>
-        <div class="collapse navbar-collapse justify-content-end">
+        <div class="collapse navbar-collapse justify-content-end" role="navigation" aria-label="<?php eT('User menu'); ?>">
             <ul class="nav navbar-nav">
                 <!-- Extra menus from plugins -->
                 <?php $this->renderPartial("application.libraries.MenuObjects.views._extraMenu", ['extraMenus' => $extraMenus, 'middleSection' => false, 'prependedMenu' => true]); ?>
@@ -113,7 +114,7 @@
                         </span>
                         <?= Yii::app()->session['user']; ?>
                         <span class="caret"></span></a>
-                    <ul class="dropdown-menu dropdown-menu-end" role="menu">
+                    <ul class="dropdown-menu dropdown-menu-end">
                         <li id="admin-menu-item-account">
                             <a class="dropdown-item"
                                 href="<?php echo $this->createUrl("/admin/user/sa/personalsettings"); ?>">
@@ -138,7 +139,7 @@
         </div><!-- /.nav-collapse -->
 
     </div>
-</nav>
+</div>
 </header>
 <script type="text/javascript">
     //show tooltips
@@ -149,5 +150,13 @@
 
     $(document).ajaxComplete(function (handler) {
         window.LS.doToolTip();
+    });
+
+    // Links announced as buttons must react to Space like buttons do: Enter already works on links
+    $(document).on('keydown', '#notification-li .admin-notification-link, #notification-clear-all > a, #feature-preview-button', function (e) {
+        if (e.key === ' ') {
+            e.preventDefault();
+            this.click();
+        }
     });
 </script>
