@@ -185,6 +185,72 @@ describe('getLabelSetCodes', () => {
     ).toEqual(['SQ001', 'Time'])
   })
 
+  test('Replaces the subquestion code other while the question has Other on', () => {
+    expect(
+      getLabelSetCodes(
+        labels('other', 'OTHER'),
+        { ...question, other: 'Y' },
+        [],
+        Entities.subquestion
+      )
+    ).toEqual(['SQ001', 'SQ002'])
+  })
+
+  test('Keeps the subquestion code other while the question has Other off', () => {
+    expect(
+      getLabelSetCodes(
+        labels('other'),
+        { ...question, other: false },
+        [],
+        Entities.subquestion
+      )
+    ).toEqual(['other'])
+  })
+
+  test('Replaces subquestion codes ending in comment in multiple choice with comments', () => {
+    expect(
+      getLabelSetCodes(
+        labels('comment', 'L1comment'),
+        { ...question, type: 'P' },
+        [],
+        Entities.subquestion
+      )
+    ).toEqual(['SQ001', 'SQ002'])
+  })
+
+  test('Keeps subquestion codes with comment elsewhere or in other case in multiple choice with comments', () => {
+    expect(
+      getLabelSetCodes(
+        labels('L1Comment', 'commentL1'),
+        { ...question, type: 'P' },
+        [],
+        Entities.subquestion
+      )
+    ).toEqual(['L1Comment', 'commentL1'])
+  })
+
+  test('Keeps subquestion codes ending in comment in other question types', () => {
+    expect(
+      getLabelSetCodes(
+        labels('L1comment'),
+        { ...question, type: 'M' },
+        [],
+        Entities.subquestion
+      )
+    ).toEqual(['L1comment'])
+  })
+
+  test('Keeps the answer code other while the question has Other on', () => {
+    expect(
+      getLabelSetCodes(
+        labels('other'),
+        { ...question, other: 'Y' },
+        [],
+        Entities.answer
+      )
+    ).toEqual(['other'])
+  })
+
   test('Keeps the answer code time', () => {
     expect(
       getLabelSetCodes(labels('time'), question, [], Entities.answer)

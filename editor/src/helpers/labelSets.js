@@ -1,4 +1,6 @@
 import { Entities } from './Buffer/Entities'
+import { QT_P_MULTIPLE_CHOICE_WITH_COMMENTS } from './constants/questionTypes'
+import { isTrue } from './isTrue'
 import {
   getNextAnswerCode,
   getNextSubQuestionCode,
@@ -65,8 +67,8 @@ export const childrenToLabels = (children = [], entityType, languages = []) => {
  *
  * A label keeps its code unless the code is already used by the question or by an
  * earlier label (compared case-insensitively, like the editor's code validation),
- * is too long for the entity (answer codes have at most 5 characters) or is the
- * reserved subquestion code "time".
+ * is too long for the entity (answer codes have at most 5 characters) or is a
+ * subquestion code the question doesn't allow (see isReservedSubquestionCode).
  * Those labels get the next free code, which never takes a code another label keeps.
  *
  * @param {object[]} labels Labels from the label set API
@@ -97,12 +99,21 @@ export const getLabelSetCodes = (
     return code
   }
 
-  // Question::rules() rejects "time" (case-sensitive) as a subquestion code
+  // Subquestion codes that Question::rules() rejects: "time" (case-sensitive),
+  // "other" (case-insensitive) while the question has "Other" on, and, in
+  // multiple choice with comments, codes ending in "comment" (case-sensitive)
+  const hasOther = isTrue(question.other)
+  const isCommentType = question.type === QT_P_MULTIPLE_CHOICE_WITH_COMMENTS
+  const isReservedSubquestionCode = (code) =>
+    code === 'time' ||
+    (hasOther && code.toUpperCase() === 'OTHER') ||
+    (isCommentType && code.endsWith('comment'))
+
   const isFree = (code) =>
     !!code &&
     code.length <= maxLength &&
     !usedKeys.has(code.toUpperCase()) &&
-    (isAnswer || code !== 'time')
+    (isAnswer || !isReservedSubquestionCode(code))
 
   // Reserve the codes that are kept first, so a generated code can't take one
   const keptCodes = labels.map((label) => {
