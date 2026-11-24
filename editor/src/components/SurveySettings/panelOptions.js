@@ -1,7 +1,6 @@
 import {
   PAGES,
   SURVEY_MENU_TITLES,
-  decodeHTMLEntities,
   getSiteUrl,
 } from 'helpers'
 import { getTooltipMessages } from 'helpers/options'
