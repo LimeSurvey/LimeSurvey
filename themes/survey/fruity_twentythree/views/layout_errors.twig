@@ -53,24 +53,27 @@
 
 <body class="error-page {{ aSurveyInfo.class.body }} lang-{{ aSurveyInfo.languagecode }} {{ surveyformat }}" marginwidth="0"
       marginheight="0" {{ aSurveyInfo.attr.body }}>
-    <div class="container m-auto ">
-        <div class="row align-items-center">
-            <div class="col">
-                {% if( aSurveyInfo.options.brandlogo == "on") %}
-                    <div class="error-logo-container">
-                        {{ image(aSurveyInfo.options.brandlogofile, '', {"class": "logo img-fluid"}) }}
-                    </div>
+    <main class="error-container">
+        <div class="error-main">
+            {% if( aSurveyInfo.options.brandlogo == "on") %}
+                <div class="error-logo-container">
+                    {{ image(aSurveyInfo.options.brandlogofile, '', {"class": "logo img-fluid"}) }}
+                </div>
+            {% endif %}
+            {# The actual error is the page heading for assistive technology; the generic text below is only visually prominent #}
+            <h1 class="error-title">
+                {% if aError.error %}
+                    {{ aError.error }}
                 {% endif %}
-                <h2 class="error-title">
-                    {% if aError.error %}
-                        {{ aError.error }}
-                    {% endif %}
-                    {{ aError.title }}
-                </h2>
-                <div class="error-content">{{ aError.message }}</div>
-                {% if aError.URL %}
-                    <div class="error-content">{{ aError.URL }}</div>
-                {% endif %}
+                {{ aError.title }}
+            </h1>
+            {{ image("./files/error_dog.png", "", {"class": "error-image", "width": 310, "height": 400}) }}
+            <p class="error-heading">{{ gT("Something’s wrong, I can smell it…") }}</p>
+            <div class="error-content">{{ aError.message }}</div>
+            {% if aError.URL %}
+                <div class="error-content">{{ aError.URL }}</div>
+            {% endif %}
+            <div class="error-content">
                 {% if aError.contact %}
                     {{ aError.contact }}
                 {% else %}
@@ -80,19 +83,13 @@
                         <a class="error-link" href='mailto:{{ aSurveyInfo.adminemail }}'>{{ aSurveyInfo.adminemail }}</a>
                     {% endif %}
                 {% endif %}
-                {% if aError.trace is not empty %}
-                    <pre>
-                            {{ aError.trace }}
-                    </pre>
-                {% endif %}
             </div>
-            <div class="col d-flex">
-              {% if(imageSrc('./files/error.png')) %}
-                {{ image("./files/error.png", "Survey Error", {class: 'm-auto'}) }}
-              {% endif %}
-            </div>      
+            {% if aError.trace is not empty %}
+                <pre class="error-trace">{{ aError.trace }}</pre>
+            {% endif %}
         </div>
-    </div>
+        {{ image("./files/error.png", "", {"class": "error-illustration", "width": 507, "height": 399}) }}
+    </main>
 {% block footer %}
     {{ include('./subviews/footer/footer.twig') }}
 {% endblock %}

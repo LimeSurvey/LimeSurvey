@@ -14098,37 +14098,81 @@ input[type=checkbox]:checked:after,
 }
 
 body.error-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
   margin: 0;
   padding: 0;
   background: #ffffff;
-  height: 100vh;
-  font-family: Arial, Helvetica, sans-serif;
+  color: #1E1E1E;
 }
-body.error-page .container {
+body.error-page .error-container {
   display: flex;
-  height: 90%;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  padding: 3rem 1rem;
+}
+body.error-page .error-main {
+  flex: 0 1 514px;
+  min-width: 0;
+}
+body.error-page .error-illustration {
+  flex: 0 1 507px;
+  min-width: 0;
+  height: auto;
 }
 body.error-page .error-title {
+  margin: 0 0 16px;
   font-weight: 600;
-  font-size: 2.85rem;
+  font-size: 0.875rem;
+  line-height: 20px;
+  color: #9094A7;
+}
+body.error-page .error-image {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto;
+}
+body.error-page .error-heading {
+  margin: 16px 0 24px;
+  font-family: "IBMPlexSerif", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-weight: 600;
+  font-size: 2.5rem;
   line-height: 52px;
   letter-spacing: -0.017em;
-}
-body.error-page .error-title p {
-  color: #1E1E1E !important;
+  color: #1E1E1E;
 }
 body.error-page .error-content {
-  font-style: normal;
   font-weight: 400;
-  font-size: 1.2825rem;
+  font-size: 1.125rem;
   line-height: 24px;
   letter-spacing: -0.017em;
   color: #1E1E1E;
 }
 body.error-page .error-link {
   font-weight: 400;
-  font-size: 1.2825rem;
+  font-size: 1.125rem;
   line-height: 24px;
+}
+body.error-page .error-trace {
+  margin-top: 24px;
+  max-height: 50vh;
+  overflow: auto;
+  font-size: 0.75rem;
+}
+@media (max-width: 991.98px) {
+  body.error-page .error-illustration {
+    display: none;
+  }
+}
+@media (max-width: 768px) {
+  body.error-page .error-heading {
+    font-size: 1.5rem;
+    line-height: 32px;
+  }
 }
 
 .date-timepicker-group .input-group-addon {
