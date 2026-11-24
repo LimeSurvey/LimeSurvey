@@ -442,11 +442,18 @@ class CLSGridView extends TbGridView
             "jQuery('#$id').yiiGridView($options);",
             LSYii_ClientScript::POS_POSTSCRIPT
         );
-        // Under PJAX this inline script runs before afterAjaxUpdate.js is loaded, so defer until it is available
+        // Under PJAX this inline script runs before afterAjaxUpdate.js is loaded, so defer until it is available.
+        // A page script may already have restored the focus (e.g. the dashboard filter after filtering, see
+        // SearchBoxWidget filters.js): Leave it there, that script then announces the result itself.
         $cs->registerScript(
             __CLASS__ . '-emptyAnnounce#' . $id,
             'jQuery(function(){
-                var announceEmpty = function() { LS.gridView.announceEmptyMessage(' . CJavaScript::encode($id) . '); };
+                var announceEmpty = function() {
+                    if (LS.gridView.keepFocusOnLoad) {
+                        return;
+                    }
+                    LS.gridView.announceEmptyMessage(' . CJavaScript::encode($id) . ');
+                };
                 if (window.LS && LS.gridView && LS.gridView.announceEmptyMessage) {
                     announceEmpty();
                 } else {

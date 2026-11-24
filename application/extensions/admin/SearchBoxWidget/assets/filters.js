@@ -91,6 +91,10 @@ $(function () {
     }
     if (state.id && document.getElementById(state.id)) {
         document.getElementById(state.id).focus();
+        // The survey grid would move the focus to its "No surveys found." message (CLSGridView): Keep it here
+        window.LS = window.LS || {};
+        LS.gridView = LS.gridView || {};
+        LS.gridView.keepFocusOnLoad = true;
     }
 
     // Announce the result of the filtering, e.g. "No surveys found."
