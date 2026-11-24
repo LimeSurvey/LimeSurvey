@@ -5,6 +5,7 @@ var ModalEditor = function () {
     var oCKeditor;
     var originalContent;
     var fieldType;
+    var triggerButton;
 
     var loaderSpinner = '  <div  id="htmleditor-modal-loader" class="ls-flex ls-flex-column align-items-center align-content-center" style="height: 200px;">';
     loaderSpinner += '    <div class="loader--loaderWidget ls-flex ls-flex-column align-content-center align-items-center" style="min-height: 100%;">';
@@ -44,8 +45,6 @@ var ModalEditor = function () {
         // Load global settings
         settings = ckSettings || {}; 
 
-        CKEDITOR.on('instanceReady',CKeditor_OnComplete);
-
         ckeConfig = {
             height: '200',
             width:  '98%',
@@ -59,6 +58,8 @@ var ModalEditor = function () {
             //LimeReplacementFieldsAction: "",
             LimeReplacementFieldsPath : settings.replacementFieldsPath,
             language : settings.language,
+            // Accessible name of the editing area, e.g. "Title editor. Press ALT+F10 for the toolbar, ALT+0 for help."
+            title: getEditorTitle(),
         };
 
         // Override language direction if 'data-contents-dir' attribute is set in the target field
@@ -71,12 +72,58 @@ var ModalEditor = function () {
             'htmleditor-modal-textarea',
             ckeConfig
         );
+        // Bound to this instance only: a global listener would be added again every time the modal opens
+        oCKeditor.on('instanceReady', CKeditor_OnComplete);
+    };
+
+    /**
+     * Returns the name of the field that is edited: the title given by the button,
+     * otherwise the label of the field or the header of its table column.
+     */
+    var getFieldLabel = function () {
+        if (modalTitle) {
+            return String(modalTitle);
+        }
+        var $field = $(targetField);
+        var label = $field.attr('aria-label') || $('label[for="' + $field.attr('id') + '"]').first().text();
+        if (!label) {
+            var $cell = $field.closest('td, th');
+            if ($cell.length) {
+                label = $cell.closest('table').find('thead th').eq($cell.index()).text();
+            }
+        }
+        return $.trim(label || '').replace(/[:*\s]+$/, '');
+    };
+
+    /**
+     * Accessible name of the editing area. It names the edited field instead of the id of the
+     * textarea, and tells how to reach the toolbar with the keyboard.
+     */
+    var getEditorTitle = function () {
+        var $modal = $(modalSelector);
+        var fieldLabel = getFieldLabel();
+        var title = fieldLabel && $modal.data('editorTitle')
+            ? String($modal.data('editorTitle')).replace('%s', fieldLabel)
+            : ($modal.data('editorTitleDefault') || 'Editor');
+        var hint = $modal.data('editorToolbarHint');
+        return hint ? title + '. ' + hint : title;
     };
 
     var CKeditor_OnComplete = function(evt) {
-        $('#htmleditor-modal-loader').remove();
         var editor = evt.editor;
+        if (editor.name !== 'htmleditor-modal-textarea') {
+            return;
+        }
+        $('#htmleditor-modal-loader').remove();
         editor.setData($(targetField).val());
+
+        // Escape in the toolbar returns to the editing area (handled by CKEditor).
+        // It must not reach the modal, which would close and discard the changes.
+        editor.container.$.addEventListener('keydown', function (e) {
+            if ((e.key === 'Escape' || e.keyCode === 27) && e.target.closest && e.target.closest('.cke_top')) {
+                e.stopPropagation();
+            }
+        });
     };
 
     var modalSave = function() {
@@ -103,6 +150,7 @@ var ModalEditor = function () {
 
             modalTitle = $(this).data('modalTitle');
             fieldType = $(this).data('fieldType');
+            triggerButton = this;
             openModal();
         });
     };
@@ -115,6 +163,15 @@ var ModalEditor = function () {
 
         $(document).on('shown.bs.modal', modalSelector, function () {
             // Modal show event
+        });
+
+        // The modal content is replaced when it closes, so the focus would be lost:
+        // move it back to the button that opened the editor
+        $(document).on('hidden.bs.modal', modalSelector, function () {
+            if (triggerButton && document.body.contains(triggerButton)) {
+                triggerButton.focus();
+            }
+            triggerButton = null;
         });
     };
 

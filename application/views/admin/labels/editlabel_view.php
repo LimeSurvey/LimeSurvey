@@ -54,15 +54,15 @@
                     <!-- Set name -->
                     <div class="row">
                         <div class="mb-3 col-lg-6">
-                            <label class="form-label" for='label_name'><?php eT("Set name:"); ?></label>
+                            <label class="form-label required" for='label_name'><?php eT("Set name:"); ?> <span class="required" aria-hidden="true">*</span></label>
                             <div class="">
-                                <?php echo CHtml::textField('label_name', $lbname ?? "", ['maxlength' => 100, 'size' => 50, 'class' => 'form-control']); ?>
+                                <?php echo CHtml::textField('label_name', $lbname ?? "", ['maxlength' => 100, 'size' => 50, 'class' => 'form-control', 'aria-required' => 'true']); ?>
                             </div>
                         </div>
 
                         <!-- Languages -->
                         <div class="mb-3 col-lg-6">
-                            <label class="form-label" id="languageids-label" for="languageids"><?php eT("Languages:"); ?></label>
+                            <label class="form-label required" id="languageids-label" for="languageids"><?php eT("Languages:"); ?> <span class="required" aria-hidden="true">*</span></label>
                             <div class="">
                                 <?php
                                 $aAllLanguages = getLanguageDataRestricted(false, 'short');
@@ -89,9 +89,13 @@
                                     ]
                                 ); ?>
                                 <input type='hidden' name='oldlanguageids' id='oldlanguageids' value='<?php echo $langids; ?>'/>
+                                <?php // Shown instead of the browser message of the (hidden) select, and announced to screen readers ?>
+                                <div id="languageids-error" class="text-danger mt-1" role="alert"
+                                     data-message="<?= CHtml::encode(gT('Please select at least one language.', 'unescaped')) ?>"></div>
                             </div>
                         </div>
                     </div>
+                    <p class="note"><?php printf(gT('Fields with %s*%s are required.'), '<span class="required">', '</span>'); ?></p>
 
 
                     <p>
@@ -148,3 +152,35 @@
         </div>
     </div>
 </div>
+<?php
+App()->getClientScript()->registerScript('LabelSetLanguagesRequired', "
+(function () {
+    var \$languages = $('#languageids');
+    var \$error = $('#languageids-error');
+    // The field the keyboard focus goes to is the search field of Select2
+    var searchField = function () {
+        return \$languages.next('.select2-container').find('.select2-search__field');
+    };
+    var markRequired = function () {
+        searchField().attr('aria-required', 'true').attr('aria-describedby', 'languageids-error');
+        // The combobox that is named by the \"Languages\" label
+        \$languages.next('.select2-container').find('.select2-selection').attr('aria-required', 'true');
+    };
+    markRequired();
+    \$languages.on('invalid', function (e) {
+        // Replaces the browser message, which is attached to the hidden select
+        e.preventDefault();
+        \$error.text(\$error.data('message'));
+        searchField().attr('aria-invalid', 'true').trigger('focus');
+        $('#ls-loading').hide();
+    });
+    \$languages.on('change', function () {
+        markRequired();
+        if (\$languages.val() && \$languages.val().length) {
+            \$error.text('');
+            searchField().removeAttr('aria-invalid');
+        }
+    });
+})();
+", LSYii_ClientScript::POS_POSTSCRIPT);
+?>

@@ -5,6 +5,9 @@ $sortorderids = '';
 $codeids = '';
 ?>
 
+<?php // Announces the new position of a label moved with the keyboard (labels.js) ?>
+<div id="label-move-status" class="visually-hidden" role="status" aria-live="polite" aria-atomic="true"
+     data-message="<?= CHtml::encode(gT('%1$s moved to position %2$s of %3$s', 'unescaped')) ?>"></div>
 <div class="tab-content">
     <?php foreach ($lslanguages as $lslanguage) : ?>
         <div id="neweditlblset<?php echo (int) $i ?>"
@@ -18,12 +21,13 @@ $codeids = '';
                 </caption>
                 <thead>
                 <tr>
+                    <?php // The ids are used to name the input fields of the rows (labelRow.twig) ?>
                     <?php if ($first) : ?>
                         <th><?php eT('Position'); ?></th>
                     <?php endif; ?>
-                    <th><?php eT("Code") ?></th>
-                    <th><?php eT("Assessment value") ?></th>
-                    <th><?php eT("Title") ?></th>
+                    <th id="labelth-code-<?= $lslanguage ?>"><?php eT("Code") ?></th>
+                    <th id="labelth-assessment-<?= $lslanguage ?>"><?php eT("Assessment value") ?></th>
+                    <th id="labelth-title-<?= $lslanguage ?>"><?php eT("Title") ?></th>
                     <th><?php eT("Action") ?></th>
                 </tr>
                 </thead>
