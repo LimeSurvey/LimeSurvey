@@ -449,7 +449,9 @@ class CLSGridView extends TbGridView
             __CLASS__ . '-emptyAnnounce#' . $id,
             'jQuery(function(){
                 var announceEmpty = function() {
+                    // Only for this page load: Grids loaded later (e.g. by PJAX) announce as usual
                     if (LS.gridView.keepFocusOnLoad) {
+                        delete LS.gridView.keepFocusOnLoad;
                         return;
                     }
                     LS.gridView.announceEmptyMessage(' . CJavaScript::encode($id) . ');
