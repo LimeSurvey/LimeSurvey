@@ -36,8 +36,6 @@ class QuestionAttribute extends LSActiveRecord
     /** @var string A date limit (date_min/date_max) given as YYYY-MM-DD date, optionally followed by HH:MM or HH:MM:SS */
     public const DATE_LIMIT_PATTERN = '/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])([ T]([01][0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?)?$/D';
 
-    protected static $questionAttributesSettings = array();
-
     protected $xssFilterAttributes = ['value'];
 
     /**
@@ -518,16 +516,16 @@ class QuestionAttribute extends LSActiveRecord
      */
     public static function getQuestionAttributesSettings($sType, $advancedOnly = false)
     {
-        $sXmlFilePath = QuestionTheme::getQuestionXMLPathForBaseType($sType);
-        if ($advancedOnly) {
-            $generalAttributes = [];
-        } else {
-            // Get attributes from config.xml
-            $generalAttributes = self::getGeneralAttibutesFromXml($sXmlFilePath);
+        $coreProvider = new \LimeSurvey\Models\Services\CoreQuestionAttributeProvider();
+        $attributes = $coreProvider->getDefinitions(['questionType' => $sType, 'advancedOnly' => $advancedOnly]);
+        // The provider leaves out the defaults that only this method returns (xssfilter, min, max)
+        $defaultSettings = self::getDefaultSettings();
+        foreach ($attributes as $attributeName => $attribute) {
+            $attributes[$attributeName] = array_merge($defaultSettings, $attribute);
         }
-        $advancedAttributes = self::getAdvancedAttributesFromXml($sXmlFilePath);
-        self::$questionAttributesSettings[$sType] = array_merge($generalAttributes, $advancedAttributes);
-        return self::$questionAttributesSettings[$sType];
+        // Filter all pesky '[]' values (empty values should be null, e.g. <default></default>).
+        $questionAttributeHelper = new QuestionAttributeHelper();
+        return $questionAttributeHelper->sanitizeQuestionAttributes($attributes);
     }
 
     /**
@@ -561,107 +559,6 @@ class QuestionAttribute extends LSActiveRecord
             }
         }
         return $allAttributes;
-    }
-
-    /**
-     * Read question attributes from XML file and convert it to array
-     *
-     * @param string $sXmlFilePath Path to XML
-     *
-     * @return array The advanced attribute settings for this question type, empty if the file does not exist
-     */
-    protected static function getAdvancedAttributesFromXml($sXmlFilePath)
-    {
-        $aXmlAttributes = array();
-        $aAttributes = array();
-
-        if (file_exists($sXmlFilePath)) {
-            // load xml file
-            $xml_config = simplexml_load_file($sXmlFilePath);
-            $aXmlAttributes = json_decode(json_encode((array)$xml_config->attributes), true);
-            // if only one attribute, then it doesn't return numeric index
-            if (!empty($aXmlAttributes) && !array_key_exists('0', $aXmlAttributes['attribute'])) {
-                $aTemp = $aXmlAttributes['attribute'];
-                unset($aXmlAttributes);
-                $aXmlAttributes['attribute'][0] = $aTemp;
-            }
-        } else {
-            return [];
-        }
-
-        // set $aAttributes array with attribute data
-        if (!empty($aXmlAttributes['attribute'])) {
-            foreach ($aXmlAttributes['attribute'] as $key => $value) {
-                if (empty($value['name'])) {
-                    /* Allow comments in attributes */
-                    continue;
-                }
-                /* settings the default value */
-                $aAttributes[$value['name']] = self::getDefaultSettings();
-                /* settings the xml value */
-                foreach ($value as $key2 => $value2) {
-                    if ($key2 === 'options' && !empty($value2)) {
-                        foreach ($value2['option'] as $key3 => $value3) {
-                            if (isset($value3['value'])) {
-                                $value4 = is_array($value3['value']) ? '' : $value3['value'];
-                                $aAttributes[$value['name']]['options'][$value4] = $value3['text'];
-                            }
-                        }
-                    } else {
-                        $aAttributes[$value['name']][$key2] = $value2;
-                    }
-                }
-            }
-        }
-
-        // Filter all pesky '[]' values (empty values should be null, e.g. <default></default>).
-        $questionAttributeHelper = new QuestionAttributeHelper();
-        $aAttributes = $questionAttributeHelper->sanitizeQuestionAttributes($aAttributes);
-
-        return $aAttributes;
-    }
-
-    /**
-     * Read question attributes from XML file and convert it to array
-     *
-     * @param string $sXmlFilePath Path to XML
-     *
-     * @return array The general attribute settings for this question type, empty if the file does not exist
-     * @todo What's the opposite of a "general" attribute? How many types of attributes are there?
-     */
-    protected static function getGeneralAttibutesFromXml($sXmlFilePath)
-    {
-        $aAttributes = array();
-
-        if (file_exists($sXmlFilePath)) {
-            // load xml file
-            $xml_config = simplexml_load_file($sXmlFilePath);
-            $aXmlAttributes = json_decode(json_encode((array)$xml_config->generalattributes), true);
-            // if only one attribute, then it doesn't return numeric index
-            if (!empty($aXmlAttributes) && !array_key_exists('0', $aXmlAttributes['attribute'])) {
-                $aTemp = $aXmlAttributes['attribute'];
-                unset($aXmlAttributes);
-                $aXmlAttributes['attribute'][0] = $aTemp;
-            }
-        } else {
-            return [];
-        }
-
-        // set $aAttributes array with attribute data
-        if (!empty($aXmlAttributes['attribute'])) {
-            foreach ($aXmlAttributes['attribute'] as $key => $xmlAttribute) {
-                /* settings the default value */
-                $aAttributes[$xmlAttribute] = self::getDefaultSettings();
-                /* settings the xml value */
-                $aAttributes[$xmlAttribute]['name'] = $xmlAttribute;
-            }
-        }
-
-        // Filter all pesky '[]' values (empty values should be null, e.g. <default></default>).
-        $questionAttributeHelper = new QuestionAttributeHelper();
-        $aAttributes = $questionAttributeHelper->sanitizeQuestionAttributes($aAttributes);
-
-        return $aAttributes;
     }
 
     /**

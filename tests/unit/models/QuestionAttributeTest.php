@@ -124,22 +124,42 @@ class QuestionAttributeTest extends BaseModelTestCase
     }
 
     /**
+     * The settings of a question type contain the general and advanced attributes of its base question theme, with
+     * all default settings filled in. With $advancedOnly, the general attributes are left out.
+     */
+    public function testQuestionAttributesSettings()
+    {
+        $allSettings = \QuestionAttribute::getQuestionAttributesSettings('T');
+        $advancedSettings = \QuestionAttribute::getQuestionAttributesSettings('T', true);
+
+        $this->assertArrayHasKey('cssclass', $advancedSettings);
+        $this->assertArrayHasKey('mandatory', $allSettings);
+        $this->assertArrayNotHasKey('mandatory', $advancedSettings);
+        $this->assertSame([], array_diff_key($advancedSettings, $allSettings));
+        $defaultSettingNames = array_keys(\QuestionAttribute::getDefaultSettings());
+        foreach ($allSettings as $attributeName => $attributeSettings) {
+            $this->assertSame($attributeName, $attributeSettings['name']);
+            $this->assertSame([], array_diff($defaultSettingNames, array_keys($attributeSettings)), $attributeName);
+        }
+    }
+
+    /**
      * A missing question theme config.xml gives no attributes, so that the general and advanced attributes can be
      * merged.
      */
     public function testMissingXmlFileGivesNoAttributes()
     {
-        $questionAttribute = new class extends \QuestionAttribute {
+        $coreProvider = new class extends \LimeSurvey\Models\Services\CoreQuestionAttributeProvider {
             /**
-             * Returns the general and advanced attributes of the XML file, merged as getQuestionAttributesSettings() does.
+             * Returns the general and advanced attributes of the XML file, merged as getDefinitions() does.
              * @param string $xmlFilePath
              * @return array
              */
-            public static function getAttributesFromXml($xmlFilePath)
+            public function getAttributesFromXml($xmlFilePath)
             {
-                return array_merge(self::getGeneralAttibutesFromXml($xmlFilePath), self::getAdvancedAttributesFromXml($xmlFilePath));
+                return array_merge($this->getGeneralAttibutesFromXml($xmlFilePath), $this->getAdvancedAttributesFromXml($xmlFilePath));
             }
         };
-        $this->assertSame([], $questionAttribute::getAttributesFromXml('/nonexistent/question/theme/config.xml'));
+        $this->assertSame([], $coreProvider->getAttributesFromXml('/nonexistent/question/theme/config.xml'));
     }
 }
