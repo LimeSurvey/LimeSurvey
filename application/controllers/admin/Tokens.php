@@ -190,8 +190,9 @@ class Tokens extends SurveyCommonAction
     }
 
     /**
-     * tokens::bounceprocessing()
-     * @param int $iSurveyId
+     * Scans the bounce email account of the survey and marks the matching participants as bounced.
+     * Outputs the result as an HTML fragment for the bounce processing modal.
+     * @param int $iSurveyId Survey ID
      * @return void
      */
     public function bounceprocessing($iSurveyId)
@@ -324,29 +325,25 @@ class Tokens extends SurveyCommonAction
                 imap_close($mbox);
 
                 if ($bouncetotal > 0) {
-                    printf(gT("%s unread messages were scanned out of which %s were marked as bounce by the system."), $checktotal, $bouncetotal);
-                    echo "<br>";
-                    eT("You can now close this modal box.");
+                    echo CHtml::tag('p', [], sprintf(gT("%s unread messages were scanned out of which %s were marked as bounce by the system."), $checktotal, $bouncetotal));
                 } else {
-                    printf(gT("%s unread messages were scanned, none were marked as bounce by the system."), $checktotal);
-                    echo "<br>";
-                    eT("You can now close this modal box.");
+                    echo CHtml::tag('p', [], sprintf(gT("%s unread messages were scanned, none were marked as bounce by the system."), $checktotal));
                 }
+                echo CHtml::tag('p', [], gT("You can now close this modal box."));
             } else {
-                $sSettingsUrl = App()->createUrl('admin/tokens/sa/bouncesettings/surveyid/' . $iSurveyId);
-                eT("Failed to open the inbox of the bounce email account.");
-                echo "<br><strong>";
-                printf(gT("Please %s check your settings %s."), '<a href="' . $sSettingsUrl . '" title="Bounce settings" >', '</a>');
-                echo "</strong><br> <br/>";
-                eT("Error message returned by IMAP:");
-                echo "<br>";
-                $aErrors = @imap_errors();
-
-                foreach ($aErrors as $sError) {
-                    echo $sError . '<br/>';
+                $settingsUrl = App()->createUrl('admin/tokens/sa/bouncesettings/surveyid/' . $iSurveyId);
+                echo CHtml::tag('p', [], gT("Failed to open the inbox of the bounce email account."));
+                echo CHtml::tag('p', [], CHtml::tag('strong', [], sprintf(gT("Please %s check your settings %s."), '<a href="' . $settingsUrl . '">', '</a>')));
+                $imapErrors = imap_errors();
+                if (!empty($imapErrors)) {
+                    echo CHtml::tag('p', [], gT("Error message returned by IMAP:"));
+                    echo CHtml::openTag('ul');
+                    foreach ($imapErrors as $imapError) {
+                        echo CHtml::tag('li', [], CHtml::encode($imapError));
+                    }
+                    echo CHtml::closeTag('ul');
                 }
-                echo "<br><br/>";
-                eT("You can now close this modal box.");
+                echo CHtml::tag('p', [], gT("You can now close this modal box."));
             }
         } else {
             eT("Bounce processing is deactivated either application-wide or for this survey in particular.");

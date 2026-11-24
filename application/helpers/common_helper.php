@@ -720,7 +720,7 @@ function getUserList($outputformat = 'fullinfoarray')
         $usercontrolSameGroupPolicy == true
     ) {
         if (isset($myuid)) {
-            $userGroupList = getUserGroupList();
+            $userGroupList = UserGroup::model()->getAuthorizedGroupIds();
             $criteria = new CDBCriteria();
             $criteria->order = 'full_name, users_name, t.uid';
             $criteria->with = 'groups';
@@ -5088,45 +5088,22 @@ function checkMoveQuestionConstraintsForConditions($sid, $qid, $newgid = "all")
 
 /**
 * Determines whether the list of user groups will need filtering before viewing.
-* @returns bool
+* @deprecated 7.11.0 Use UserGroup::model()->isFilteredBySameGroupPolicy() instead
+* @return bool
 */
 function shouldFilterUserGroupList()
 {
-    $bUserControlSameGroupPolicy = Yii::app()->getConfig('usercontrolSameGroupPolicy', true);
-    $bUserHasSuperAdminReadPermissions = Permission::model()->hasGlobalPermission('superadmin', 'read');
-    return $bUserControlSameGroupPolicy && !$bUserHasSuperAdminReadPermissions;
+    return UserGroup::model()->isFilteredBySameGroupPolicy();
 }
 
 /**
-* Get a list of all user groups
-* All user group or filtered according to usercontrolSameGroupPolicy
-* @returns array
+* Get the ids of all user groups, or filtered according to usercontrolSameGroupPolicy
+* @deprecated 7.11.0 Use UserGroup::model()->getAuthorizedGroupIds() instead
+* @return int[]
 */
 function getUserGroupList()
 {
-    $sQuery = "SELECT distinct a.ugid, a.name, a.owner_id FROM {{user_groups}} AS a LEFT JOIN {{user_in_groups}} AS b ON a.ugid = b.ugid WHERE 1=1 ";
-    if (shouldFilterUserGroupList()) {
-        $userid = intval(App()->session['loginID']);
-        $sQuery .= " AND (b.uid = {$userid})";
-        $sQuery .= " OR (a.owner_id = {$userid})";
-    }
-    $sQuery .= " ORDER BY name";
-
-    $sresult = App()->db->createCommand($sQuery)->query(); //Checked
-    if (!$sresult) {
-        return "Database Error";
-    }
-    $aGroupNames = [];
-    foreach ($sresult->readAll() as $row) {
-        $aGroupNames[] = $row;
-    }
-    $simplegidarray = array();
-    if (isset($aGroupNames)) {
-        foreach ($aGroupNames as $gn) {
-            $simplegidarray[] = $gn['ugid'];
-        }
-    }
-    return $simplegidarray;
+    return UserGroup::model()->getAuthorizedGroupIds();
 }
 
 /**

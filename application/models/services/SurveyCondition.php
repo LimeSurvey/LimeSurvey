@@ -1689,18 +1689,36 @@ class SurveyCondition
      */
     public function getScenariosAndConditionsOfQuestion($qid)
     {
-        $results = [];
+        return $this->getScenariosAndConditionsOfQuestions([(int) $qid])[(int) $qid];
+    }
+
+    /**
+     * Returns the scenarios and conditions of several questions with one query,
+     * in the format of getScenariosAndConditionsOfQuestion().
+     *
+     * @param int[] $qids The question IDs
+     * @return array<int, array> The scenarios of each question indexed by question ID, empty for a question without conditions
+     */
+    public function getScenariosAndConditionsOfQuestions(array $qids): array
+    {
+        $results = array_fill_keys(array_map('intval', $qids), []);
+        if (empty($results)) {
+            return [];
+        }
+        $criteria = new \CDbCriteria();
+        $criteria->addInCondition('qid', array_keys($results));
+        $criteria->order = 'qid, scenario';
         $keys = [];
-        $conditions = \Condition::model()->findAllByAttributes(["qid" => $qid], ['order' => 'scenario']);
-        foreach ($conditions as $condition) {
-            if (!isset($keys[$condition->scenario])) {
-                $keys[$condition->scenario] = count($results);
-                $results [] = [
+        foreach (\Condition::model()->findAll($criteria) as $condition) {
+            $qid = (int) $condition->qid;
+            if (!isset($keys[$qid][$condition->scenario])) {
+                $keys[$qid][$condition->scenario] = count($results[$qid]);
+                $results[$qid][] = [
                     "scid" => (int)$condition->scenario,
                     "conditions" => []
                 ];
             }
-            $results[$keys[$condition->scenario]]["conditions"] [] = [
+            $results[$qid][$keys[$qid][$condition->scenario]]["conditions"][] = [
                 "cid" => $condition->cid,
                 "qid" => $qid,
                 "cqid" => $condition->cqid,

@@ -12,7 +12,6 @@ class ThemeQuestionAttributeProvider extends QuestionAttributeProvider
     #[\Override]
     public function getDefinitions($options = [])
     {
-        /** @var string question theme from the filter or, if not set, from the question */
         $questionTheme = self::getQuestionTheme($options);
         if (empty($questionTheme) || $questionTheme == \Question::DEFAULT_QUESTION_THEME) {
             return [];
@@ -85,24 +84,5 @@ class ThemeQuestionAttributeProvider extends QuestionAttributeProvider
         }
 
         return $attributes;
-    }
-
-    /**
-     * Extracts the question theme from the $options.
-     * If it's not explicitly set, it tries to use a question object.
-     *
-     * @param array<string,mixed> $options
-     *
-     * @return
-     */
-    private static function getQuestionTheme($options)
-    {
-        if (!empty($options['questionTheme'])) {
-            return $options['questionTheme'];
-        }
-        if (!empty($options['question'])) {
-            return $options['question']->question_theme_name;
-        }
-        return '';
     }
 }

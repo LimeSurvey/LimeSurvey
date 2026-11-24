@@ -14,7 +14,9 @@
 {#
     Image display settings.
     The effective values are worked out here, in one place; the markup below only uses the results.
-    When further settings are added (e.g. from the new editor), only this block needs to decide which value wins.
+    Options with their own settings from the image editor of the new editor ignore the size and fit settings
+    below in survey themes that support them (fruity_twentythree and the themes extending it), see
+    rows/answer_image.twig. Columns and horizontal scroll still apply to them.
     - imageselectWidth / imageselectHeight: size in px, or '' if not set
     - imageselectFit: how the image fills that size: 'contain' (whole image, not distorted),
       'cover' (fills the size, overflow is cut off) or 'fill' (stretched to the size)

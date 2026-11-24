@@ -8,9 +8,26 @@ import {
   questionEditComponents,
 } from '../../QuestionTypes'
 
+/**
+ * The options of a question (answers, subquestions) in edit or view mode.
+ *
+ * @param {Object} question the question
+ * @param {Function} handleUpdate saves question changes and focuses the
+ *   question
+ * @param {Function} handleUpdateWithoutFocus saves question changes without
+ *   focusing the question, see useQuestionChildren
+ * @param {string} language the active language
+ * @param {boolean} isFocused whether the question is focused
+ * @param {boolean} isHovered whether the question is hovered
+ * @param {boolean} isQuestionDisabled whether the question type is disabled
+ * @param {Object} surveySettings the survey settings
+ * @param {boolean} isTitleFocused whether the question title has the focus
+ * @returns {JSX.Element} the question body
+ */
 export const QuestionBody = ({
   question,
   handleUpdate,
+  handleUpdateWithoutFocus,
   language,
   isFocused,
   isHovered,
@@ -42,6 +59,8 @@ export const QuestionBody = ({
   } = useQuestionChildren({
     question,
     handleUpdate,
+    handleUpdateWithoutFocus,
+    isFocused,
     surveySettings,
     language,
   })
