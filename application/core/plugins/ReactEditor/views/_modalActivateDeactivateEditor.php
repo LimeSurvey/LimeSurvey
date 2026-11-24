@@ -15,7 +15,7 @@ $colClassRight = $hasPathUrlFormat ? 'col-md-7' : 'col-md-6 pt-3';
 $slidesJson = htmlspecialchars(json_encode($slides), ENT_QUOTES, 'UTF-8');
 ?>
 <!-- Modal to activate/deactivate the react question editor -->
-<div id="activate_editor" class="modal fade" role="dialog" aria-modal="true"
+<div id="activate_editor" class="modal fade" tabindex="-1" role="dialog" aria-modal="true"
      aria-labelledby="activateEditorModalTitle activateEditorModalTitle-dialogsr"
      data-slides="<?= $slidesJson ?>">
     <div class="modal-dialog modal-xl">
@@ -24,7 +24,7 @@ $slidesJson = htmlspecialchars(json_encode($slides), ENT_QUOTES, 'UTF-8');
             <div class="modal-body position-relative p-0">
                 <button type="button"
                         class="btn-close position-absolute top-0 end-0 m-3"
-                        data-bs-dismiss="modal" aria-label="Close"
+                        data-bs-dismiss="modal" aria-label="<?= gT('Close') ?>"
                         style="z-index: 1050;"></button> <!-- TODO inline style-->
                 <input type="hidden" id="saveUrl" name="saveUrl"
                        value="<?= $saveUrl ?>">

@@ -33,8 +33,8 @@ class SearchBoxWidget extends CWidget
     public bool $switch = false;
 
     /**
-     * @var int|null $resultCount Number of surveys matching the current filters.
-     * When set and a filter is active, it is announced to screen readers after the page has been reloaded.
+     * @var int|null $resultCount Number of surveys matching the current filters, null if unknown.
+     * When set, it is announced to screen readers after the user changed a filter (see filters.js).
      */
     public ?int $resultCount = null;
 
@@ -64,18 +64,14 @@ class SearchBoxWidget extends CWidget
 
     /**
      * Returns the message announced to screen readers after filtering, e.g. "No surveys found.".
-     * Empty when no filter is active or the number of results is unknown.
+     * It is always rendered; filters.js only announces it when the page was reloaded by a filter change,
+     * so clearing a filter is announced too, while a plain page load stays silent.
      *
-     * @return string
+     * @return string The result message, empty when the number of results is unknown.
      */
     public function getResultMessage(): string
     {
-        $request = App()->request;
-        $search = $request->getQuery('Survey');
-        $isFiltered = !empty($request->getQuery('active'))
-            || !empty($request->getQuery('gsid'))
-            || (is_array($search) && isset($search['searched_value']) && $search['searched_value'] !== '');
-        if (!$isFiltered || $this->resultCount === null) {
+        if ($this->resultCount === null) {
             return '';
         }
         if ($this->resultCount === 0) {

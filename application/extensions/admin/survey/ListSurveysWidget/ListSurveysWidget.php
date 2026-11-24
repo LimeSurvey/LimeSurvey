@@ -31,8 +31,10 @@ class ListSurveysWidget extends CWidget
     public bool $switch = false;
 
     /**
-     * Run
-     **/
+     * Renders the search box with the number of matching surveys and the survey list below it.
+     *
+     * @return void
+     */
     public function run()
     {
         // Search

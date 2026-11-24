@@ -8,6 +8,7 @@
     * @var array $items The list of survey items to render.
     * @var object $switch Optionally used in the search box widget.
     * @var object $itemsCount max number of surveys.
+    * @var int|null $resultCount Number of surveys for the search box, null if there is no survey item.
     *
     */
 ?>
@@ -17,7 +18,7 @@
             'model'      => new Survey('search'),
             'onlyfilter' => true,
             'switch'     => $this->switch,
-            'resultCount' => (int) $itemsCount,
+            'resultCount' => $resultCount,
         ]);
         ?>
     <?php endif; ?>
