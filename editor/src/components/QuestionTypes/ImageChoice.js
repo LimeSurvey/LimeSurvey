@@ -129,9 +129,14 @@ export const ImageChoice = ({
       className="pe-4"
       style={{ minWidth: 0, maxWidth: '100%', flexShrink: 1 }}
     >
-      <div className="d-flex gap-2">
+      {/* In view mode, the image is as far from the radio/checkbox as the
+          text of other choice questions (24px): Without an empty label in
+          between, which would take its minimum width. mt-1 keeps the input
+          where the 32px high label row centered it. */}
+      <div className={classNames('d-flex', isFocused ? 'gap-2' : 'gap-4')}>
         {!isFocused && (
           <FormCheck
+            className={isNoAnswer ? '' : 'mt-1'}
             type={inputType}
             name={'image-choice-' + idSuffix}
             data-testid={'image-choice-' + idSuffix}
@@ -140,11 +145,13 @@ export const ImageChoice = ({
             groupName={groupName}
             update={(value) => update(value)}
             label={
-              <ContentEditor
-                className="choice"
-                value={isNoAnswer ? getNoAnswerLabel(true) : ''}
-                disabled={true}
-              />
+              isNoAnswer ? (
+                <ContentEditor
+                  className="choice"
+                  value={getNoAnswerLabel(true)}
+                  disabled={true}
+                />
+              ) : undefined
             }
           />
         )}
