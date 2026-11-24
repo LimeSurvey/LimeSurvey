@@ -15,7 +15,8 @@ $colClassRight = $hasPathUrlFormat ? 'col-md-7' : 'col-md-6 pt-3';
 $slidesJson = htmlspecialchars(json_encode($slides), ENT_QUOTES, 'UTF-8');
 ?>
 <!-- Modal to activate/deactivate the react question editor -->
-<div id="activate_editor" class="modal fade" role="dialog"
+<div id="activate_editor" class="modal fade" tabindex="-1" role="dialog" aria-modal="true"
+     aria-labelledby="activateEditorModalTitle activateEditorModalTitle-dialogsr"
      data-slides="<?= $slidesJson ?>">
     <div class="modal-dialog modal-xl">
         <!-- Modal content-->
@@ -23,7 +24,7 @@ $slidesJson = htmlspecialchars(json_encode($slides), ENT_QUOTES, 'UTF-8');
             <div class="modal-body position-relative p-0">
                 <button type="button"
                         class="btn-close position-absolute top-0 end-0 m-3"
-                        data-bs-dismiss="modal" aria-label="Close"
+                        data-bs-dismiss="modal" aria-label="<?= gT('Close') ?>"
                         style="z-index: 1050;"></button> <!-- TODO inline style-->
                 <input type="hidden" id="saveUrl" name="saveUrl"
                        value="<?= $saveUrl ?>">
@@ -38,9 +39,11 @@ $slidesJson = htmlspecialchars(json_encode($slides), ENT_QUOTES, 'UTF-8');
                         <div class="<?= $colClassLeft ?>">
                             <div class="card-body ps-4 pe-4">
                                 <div class="card-body-top">
-                                    <h2 class="card-title reg-24 mb-16">
+                                    <h2 class="card-title reg-24 mb-16" id="activateEditorModalTitle">
                                     <?= gT('Welcome to the new LimeSurvey') ?>
                                     </h2>
+                                    <?php // Only read as part of the dialog name ("…, Dialog"), see modal_header.php ?>
+                                    <span class="visually-hidden" id="activateEditorModalTitle-dialogsr" aria-hidden="true"><?= gT('Dialog') ?></span>
                                     <!-- Slide description (injected by JS) -->
                                     <div class="editor-slider-description-wrap mb-16">
                                         <p class="editor-slider-description reg-14"></p>

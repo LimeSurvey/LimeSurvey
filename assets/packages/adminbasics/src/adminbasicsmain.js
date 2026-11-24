@@ -51,6 +51,7 @@ import dismissTooltipsOnEscapePress from './accessibility/dismissTooltipsOnEscap
 import keepTooltipsHoverable from './accessibility/keepTooltipsHoverable';
 import restoreFocusAfterModal from './accessibility/restoreFocusAfterModal';
 import skipToMainContent from './accessibility/skipToMainContent';
+import spaceActivatesButtonLinks from './accessibility/spaceActivatesButtonLinks';
 import tabsControl from './accessibility/tabsControl';
 
 // import components
@@ -93,6 +94,8 @@ const AdminCore = function(){
             appendToLoad(fileManagerStyle);
             appendToLoad(panelClickable);
             appendToLoad(window.LS.doToolTip);
+            // Content loaded by AJAX (e.g. grid updates) may bring new tooltips
+            appendToLoad(window.LS.doToolTip, 'ajaxComplete');
             appendToLoad(panelsAnimation, null, null, 200);
             appendToLoad(notificationSystem.initNotification);
             appendToLoad(activateSubSubMenues);
@@ -104,6 +107,7 @@ const AdminCore = function(){
             keepTooltipsHoverable();
             restoreFocusAfterModal();
             skipToMainContent();
+            spaceActivatesButtonLinks();
             AjaxHelper.bindNotLoggedInHandler();
         },
         appendToLoad = (fn, event, root, delay) => {

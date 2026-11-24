@@ -43,13 +43,18 @@ class BoxesWidget extends CWidget
         );
     }
 
-    /** Executes the widget
+    /**
+     * Executes the widget: Collects the boxes (links and surveys) and renders them with the search box.
+     *
+     * @return void
      * @throws CException
      */
     public function run()
     {
         $boxes = [];
         $itemsCount = 0;
+        // Number of surveys for the search box, unknown (null) as long as there is no survey item
+        $resultCount = null;
         foreach ($this->items as $item) {
             $item = (object)$item;
 
@@ -70,6 +75,7 @@ class BoxesWidget extends CWidget
                     $item->model->active = $_GET['active'];
                 }
                 $itemsCount = $item->model->search()->totalItemCount;
+                $resultCount = (int) $itemsCount;
 
                 // Set number of page
                 App()->user->setState('pageSize', $item->limit);
@@ -122,7 +128,8 @@ class BoxesWidget extends CWidget
         $this->render('boxes', [
             'items' => $boxes,
             'limit' => $this->limit,
-            'itemsCount' => $itemsCount
+            'itemsCount' => $itemsCount,
+            'resultCount' => $resultCount,
         ]);
     }
 
