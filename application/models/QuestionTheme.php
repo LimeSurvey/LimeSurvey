@@ -990,6 +990,9 @@ class QuestionTheme extends LSActiveRecord
      * -- gets additional attributes from extended theme (if theme is extended)
      * -- gets "own" attributes via plugin
      *
+     * @deprecated 7.12.2 Not used by core anymore, will be removed in a future version, use
+     *             LimeSurvey\Models\Services\QuestionAttributeFetcher
+     *
      * @param string  $type question type (this is the attribute 'question_type' in table question_theme)
      * @param string  $sQuestionThemeName : question theme name
      *
@@ -1025,6 +1028,9 @@ class QuestionTheme extends LSActiveRecord
     /**
      * Gets the additional attributes for an extended theme from xml file.
      * If there are no attributes, an empty array is returned
+     *
+     * @deprecated 7.12.2 Not used by core anymore, will be removed in a future version, use
+     *             LimeSurvey\Models\Services\ThemeQuestionAttributeProvider
      *
      * @param string $sQuestionThemeName the question theme name (see table question theme "name")
      * @param string $type   the extended typ (see table question_themes "extends")

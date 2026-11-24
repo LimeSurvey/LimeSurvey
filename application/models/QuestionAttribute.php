@@ -414,6 +414,9 @@ class QuestionAttribute extends LSActiveRecord
     /**
      * Insert additional attributes from an extended question theme
      *
+     * @deprecated 7.12.2 Not used by core anymore, will be removed in a future version, use
+     *             LimeSurvey\Models\Services\QuestionAttributeFetcher
+     *
      * @param array $aAttributeNames array of attributes (see getQuestionAttributesSettings())
      * @param Question $oQuestion
      * @return array|mixed returns $aAttributeNames with appended additional attributes
