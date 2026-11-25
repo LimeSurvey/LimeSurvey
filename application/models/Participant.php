@@ -3037,6 +3037,10 @@ class Participant extends LSActiveRecord
      */
     public function encryptSave($runValidation = true, $attributes = null)
     {
+        /* Validate first : the validation normalizes the values (trimmed email) used for duplicatefinder */
+        if ($runValidation && !$this->validate($attributes)) {
+            return false;
+        }
         $this->duplicatefinder = strval($this->getDuplicateFinderValue(
             [
                 'firstname' => $this->getAttribute('firstname'),
@@ -3048,7 +3052,8 @@ class Participant extends LSActiveRecord
         if (is_array($attributes) && array_intersect(['firstname', 'lastname', 'email'], $attributes)) {
             $attributes[] = 'duplicatefinder';
         }
-        return parent::encryptSave($runValidation, $attributes);
+        /* Already validated */
+        return parent::encryptSave(false, $attributes);
     }
 
     /**

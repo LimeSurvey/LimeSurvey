@@ -162,6 +162,35 @@ class ParticipantDuplicateFinderTest extends TestBaseClass
         $this->assertSame([], Participant::getDuplicates(['firstname' => 'John', 'lastname' => 'Connor', 'email' => 'sara@example.org']));
     }
 
+    /** The validation trims the email : duplicatefinder is computed with the trimmed email, the one saved. */
+    public function testDuplicateFinderUsesTheValidatedEmail(): void
+    {
+        $participant = $this->createParticipant(['firstname' => 'Ellen', 'lastname' => 'Ripley', 'email' => ' ellen@example.org ']);
+
+        $stored = Yii::app()->db->createCommand()
+            ->select('duplicatefinder')
+            ->from('{{participants}}')
+            ->where('participant_id = :id', [':id' => $participant->participant_id])
+            ->queryScalar();
+        $values = ['firstname' => 'Ellen', 'lastname' => 'Ripley', 'email' => 'ellen@example.org'];
+        $this->assertSame(Participant::getDuplicateFinderValue($values), $stored);
+        $this->assertCount(1, Participant::getDuplicates($values));
+    }
+
+    /** Validation fails : nothing is saved. */
+    public function testEncryptSaveStopsWhenValidationFails(): void
+    {
+        $participant = new Participant();
+        $participant->participant_id = Participant::genUuid();
+        $participant->firstname = 'Bad';
+        $participant->email = 'not an email';
+        $participant->blacklisted = 'N';
+        $participant->owner_uid = 1;
+
+        $this->assertFalse($participant->encryptSave());
+        $this->assertNull(Participant::model()->findByPk($participant->participant_id));
+    }
+
     /** With an owner, only the participants of this owner are duplicates. */
     public function testDuplicatesAreFilteredByOwner(): void
     {
