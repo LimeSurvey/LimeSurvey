@@ -187,6 +187,11 @@ class ReactQuestionAttributeConfig
         }, array_values($options));
     }
 
+    /**
+     * Reads the attribute overlays and the simple mode lists from the XML files of the overlay directory, once.
+     *
+     * @return void
+     */
     private function load(): void
     {
         if ($this->overlays !== null) {
@@ -196,6 +201,10 @@ class ReactQuestionAttributeConfig
 
         $files = glob($this->directory . '/*.xml') ?: [];
         foreach ($files as $file) {
+            // The question type list of the editor is not an attribute overlay
+            if (basename($file) === ReactQuestionTypeConfig::FILE) {
+                continue;
+            }
             $xml = simplexml_load_file($file);
             if ($xml === false) {
                 continue;

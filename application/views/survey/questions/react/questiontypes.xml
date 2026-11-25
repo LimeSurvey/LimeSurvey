@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Question types offered by the editor's question type selector, by category and in order.
+    A <theme> is a question theme name from the question_themes table. Its title comes from the theme
+    unless <title> sets an editor-specific one. <devOnly>1</devOnly> hides the theme outside dev mode.
+    An entry without a question theme needs an explicit <type> (editor-only question type).
+    Themes not listed here are not offered in the selector.
+    Titles set here must also be listed in translations.php.
+-->
+<questiontypes>
+    <categories>
+        <category>
+            <name>singleChoice</name>
+            <title>Single choice</title>
+            <icon>QuestionInserterSingleChoiceIcon</icon>
+            <themes>
+                <theme>
+                    <name>listradio</name>
+                </theme>
+                <theme>
+                    <name>list_with_comment</name>
+                    <title>List with comment (Radio)</title>
+                </theme>
+                <theme>
+                    <name>image_select-listradio</name>
+                    <title>List image select (Radio)</title>
+                </theme>
+                <theme>
+                    <name>5pointchoice</name>
+                </theme>
+                <theme>
+                    <name>bootstrap_dropdown</name>
+                    <title>Dropdown</title>
+                </theme>
+                <theme>
+                    <name>bootstrap_buttons</name>
+                    <title>Single choice buttons</title>
+                </theme>
+            </themes>
+        </category>
+        <category>
+            <name>multipleChoice</name>
+            <title>Multiple choice</title>
+            <icon>QuestionInserterMultipleChoiceIcon</icon>
+            <themes>
+                <theme>
+                    <name>multiplechoice</name>
+                </theme>
+                <theme>
+                    <name>multiplechoice_with_comments</name>
+                </theme>
+                <theme>
+                    <name>bootstrap_buttons_multi</name>
+                    <title>Multiple choice buttons</title>
+                </theme>
+                <theme>
+                    <name>image_select-multiplechoice</name>
+                </theme>
+            </themes>
+        </category>
+        <category>
+            <name>rankingRating</name>
+            <title>Ranking &amp; rating</title>
+            <icon>QuestionInserterRankIcon</icon>
+            <themes>
+                <theme>
+                    <name>ranking</name>
+                    <devOnly>1</devOnly>
+                </theme>
+                <theme>
+                    <name>ranking_advanced</name>
+                </theme>
+                <theme>
+                    <name>rating</name>
+                    <type>RT</type>
+                    <title>Rating</title>
+                    <devOnly>1</devOnly>
+                </theme>
+                <theme>
+                    <name>gender</name>
+                </theme>
+                <theme>
+                    <name>yesno</name>
+                </theme>
+            </themes>
+        </category>
+        <category>
+            <name>datesData</name>
+            <title>Dates &amp; data</title>
+            <icon>QuestionInserterDataIcon</icon>
+            <themes>
+                <theme>
+                    <name>map</name>
+                </theme>
+                <theme>
+                    <name>browserdetect</name>
+                </theme>
+                <theme>
+                    <name>date</name>
+                    <title>Date/time</title>
+                </theme>
+                <theme>
+                    <name>file_upload</name>
+                </theme>
+            </themes>
+        </category>
+        <category>
+            <name>text</name>
+            <title>Text</title>
+            <icon>QuestionInserterTextIcon</icon>
+            <themes>
+                <theme>
+                    <name>shortfreetext</name>
+                    <title>Short text</title>
+                </theme>
+                <theme>
+                    <name>longfreetext</name>
+                    <title>Long text</title>
+                </theme>
+                <theme>
+                    <name>multipleshorttext</name>
+                </theme>
+                <theme>
+                    <name>boilerplate</name>
+                </theme>
+            </themes>
+        </category>
+        <category>
+            <name>number</name>
+            <title>Number</title>
+            <icon>QuestionInserterNumberIcon</icon>
+            <themes>
+                <theme>
+                    <name>numerical</name>
+                </theme>
+                <theme>
+                    <name>multiplenumeric</name>
+                </theme>
+                <theme>
+                    <name>equation</name>
+                </theme>
+            </themes>
+        </category>
+        <category>
+            <name>array</name>
+            <title>Array</title>
+            <icon>TableIcon</icon>
+            <themes>
+                <theme>
+                    <name>arrays/array</name>
+                    <title>Array (Point choice)</title>
+                </theme>
+                <theme>
+                    <name>arrays/texts</name>
+                </theme>
+                <theme>
+                    <name>arrays/multiflexi</name>
+                </theme>
+                <theme>
+                    <name>arrays/column</name>
+                </theme>
+                <theme>
+                    <name>arrays/dualscale</name>
+                </theme>
+            </themes>
+        </category>
+    </categories>
+</questiontypes>

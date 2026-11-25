@@ -1,13 +1,11 @@
 import { MeatballMenu } from 'components/MeatballMenu/MeatballMenu'
 import { Badge } from 'components/UIComponents'
-import { getQuestionTypeInfo } from 'components/QuestionTypes'
+import { useQuestionTypes } from 'hooks'
 
-const resolveThemeTitle = (type, themeName, fallback) => {
+const resolveThemeTitle = (questionTypes, type, themeName, fallback) => {
   if (!themeName) return fallback
-  const info = Object.values(getQuestionTypeInfo()).find(
-    (entry) => entry.type === type && entry.theme === themeName
-  )
-  return info?.title ?? fallback
+  const questionType = questionTypes[themeName]
+  return questionType?.type === type ? questionType.title : fallback
 }
 
 export const ChartHeader = ({
@@ -20,7 +18,13 @@ export const ChartHeader = ({
   help,
   actions = [],
 }) => {
-  const themeTitle = resolveThemeTitle(type, themeName, typeLabel)
+  const { questionTypes } = useQuestionTypes()
+  const themeTitle = resolveThemeTitle(
+    questionTypes,
+    type,
+    themeName,
+    typeLabel
+  )
 
   return (
     <div className="responses-statistics-chart-header">

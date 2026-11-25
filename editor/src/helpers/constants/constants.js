@@ -71,6 +71,7 @@ export const STATES = {
   SURVEY_LOGIC: 'survey_logic',
   TOPBAR_CONFIG: 'topbar_config',
   QUESTION_THEME_ATTRIBUTES: 'question_theme_attributes',
+  QUESTION_TYPES: 'question_types',
 }
 
 export const TUTORIALS = {

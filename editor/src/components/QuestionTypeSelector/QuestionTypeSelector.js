@@ -8,6 +8,7 @@ import Col from 'react-bootstrap/Col'
 import { ClockArrowIcon, AddIcon } from 'components/icons'
 import { Input } from 'components/UIComponents'
 import searchIcon from 'assets/icons/search-icon.svg'
+import { useQuestionTypes } from 'hooks'
 
 import { getQuestionGroupItem, getQuestionItemsList } from './constants'
 
@@ -23,26 +24,27 @@ export const QuestionTypeSelector = ({
   const listItemRef = useRef(null)
   const [searchedQuestionTypeOrGroup, setSearchedQuestionTypeOrGroup] =
     useState([])
+  const { categories, questionTypes } = useQuestionTypes()
 
-  const filteredItemsLists = getQuestionItemsList().reduce(
-    (result, currentItem) => {
-      const filteredItems = currentItem.items.filter(
-        (item) => item.label.toLowerCase().includes(searchTerm.toLowerCase())
-        // && !item.hidden
-      )
+  const filteredItemsLists = getQuestionItemsList(
+    categories,
+    questionTypes
+  ).reduce((result, currentItem) => {
+    const filteredItems = currentItem.items.filter(
+      (item) => item.label.toLowerCase().includes(searchTerm.toLowerCase())
+      // && !item.hidden
+    )
 
-      if (filteredItems.length) {
-        result.push({
-          title: currentItem.title,
-          icon: currentItem.icon,
-          items: filteredItems,
-        })
-      }
+    if (filteredItems.length) {
+      result.push({
+        title: currentItem.title,
+        icon: currentItem.icon,
+        items: filteredItems,
+      })
+    }
 
-      return result
-    },
-    []
-  )
+    return result
+  }, [])
 
   useEffect(() => {
     searchInputRef.current.focus({ preventScroll: true })

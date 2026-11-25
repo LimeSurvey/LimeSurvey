@@ -3,14 +3,80 @@ import 'tests/mocks'
 
 import { renderWithProviders } from 'tests/testUtils'
 import { QuestionTypeSelector } from './'
+import { getQuestionItemsList } from './constants'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { getQuestionTypeInfo } from 'components/QuestionTypes/getQuestionTypeInfo'
+import questionTypesData from 'helpers/data/question-types.json'
+
+// Tests run in demo mode, where useQuestionTypes returns this fixture
+const offeredItems = getQuestionItemsList(
+  questionTypesData.categories,
+  questionTypesData.questionTypes
+).flatMap((category) => category.items)
+
+describe('getQuestionItemsList', () => {
+  const categories = [
+    { name: 'first', title: 'First', icon: 'TableIcon' },
+    { name: 'second', title: 'Second', icon: 'UnknownIcon' },
+  ]
+  const makeType = (name, props) => ({
+    name,
+    type: 'L',
+    title: name,
+    category: 'first',
+    sortOrder: 0,
+    devOnly: false,
+    visible: true,
+    ...props,
+  })
+
+  test('Should group the themes by category in their order', () => {
+    const list = getQuestionItemsList(categories, {
+      bootstrap_buttons: makeType('bootstrap_buttons', { sortOrder: 1 }),
+      listradio: makeType('listradio', { title: 'List' }),
+      yesno: makeType('yesno', { type: 'Y', category: 'second' }),
+    })
+
+    expect(list.map((category) => category.title)).toEqual(['First', 'Second'])
+    expect(list[0].icon).not.toBeNull()
+    expect(list[1].icon).toBeNull()
+    expect(list[0].items).toEqual([
+      { value: 'L', label: 'List', theme: 'listradio', hidden: false },
+      {
+        value: 'L',
+        label: 'bootstrap_buttons',
+        theme: 'bootstrap_buttons',
+        hidden: false,
+      },
+    ])
+    expect(list[1].items.map((item) => item.theme)).toEqual(['yesno'])
+  })
+
+  test('Should leave out hidden, unlisted and not renderable themes', () => {
+    const list = getQuestionItemsList(categories, {
+      listradio: makeType('listradio', { visible: false }),
+      hugefreetext: makeType('hugefreetext', { category: null }),
+      my_custom_theme: makeType('my_custom_theme'),
+      yesno: makeType('yesno'),
+    })
+
+    expect(list[0].items.map((item) => item.theme)).toEqual(['yesno'])
+  })
+
+  test('Should hide the dev-only themes outside dev mode', () => {
+    const list = getQuestionItemsList(categories, {
+      ranking: makeType('ranking', { devOnly: true }),
+    })
+
+    expect(list[0].items[0].hidden).toBe(!process.env.REACT_APP_DEV_MODE)
+  })
+})
 
 describe('QuestionTypeSelector', () => {
   let selectedType
 
   beforeEach(async () => {
+    selectedType = undefined
     await renderWithProviders(
       <QuestionTypeSelector
         callBack={(value) => {
@@ -21,13 +87,10 @@ describe('QuestionTypeSelector', () => {
   })
 
   test('Should use the labels exactly one time', async () => {
-    for (const key of Object.keys(getQuestionTypeInfo())) {
-      if (!getQuestionTypeInfo()[key].isQuestionType) {
-        continue
-      }
-
+    expect(offeredItems.length).toBeGreaterThan(0)
+    for (const item of offeredItems) {
       const questionTypeInputs = screen.getAllByTestId(
-        `question-type-${getQuestionTypeInfo()[key].theme}`
+        `question-type-${item.theme}`
       )
 
       expect(questionTypeInputs.length).toBe(1)
@@ -35,16 +98,12 @@ describe('QuestionTypeSelector', () => {
   })
 
   test('Should be mapping the labels to the correct values', async () => {
-    for (const key of Object.keys(getQuestionTypeInfo())) {
-      if (!getQuestionTypeInfo()[key].isQuestionType) {
-        continue
-      }
-
+    for (const item of offeredItems.filter((item) => !item.hidden)) {
       const questionTypeInput = screen.getByTestId(
-        `question-type-${getQuestionTypeInfo()[key].theme}`
+        `question-type-${item.theme}`
       )
       await userEvent.click(questionTypeInput)
-      expect(selectedType).toBe(getQuestionTypeInfo()[key].type)
+      expect(selectedType).toBe(item.value)
     }
   })
 
