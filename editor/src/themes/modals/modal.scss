@@ -1,0 +1,115 @@
+// General styling of all modals in the editor. Styles of single modals go
+// into their own file.
+
+// The editor font for all texts, inputs and buttons in modals: Bootstrap's
+// body font would be the system font.
+.modal {
+  font-family: $ibm-font-family;
+}
+
+// The header as in the Figma modal: The close button 12px from the top and
+// right edge of the modal, the title 12px lower (11px plus the 1px border of
+// .modal-content).
+.modal-header {
+  align-items: flex-start;
+  border-bottom: 0;
+  padding: 11px 11px 0 var(--bs-modal-padding);
+
+  // Bootstrap's close button looks and behaves like the one of the
+  // ComponentModal (e.g. the survey overview): The same icon (CloseIcon) in
+  // black, 24px, without fading on hover. It sits at the top of the header,
+  // also next to a title of several lines.
+  .btn-close {
+    align-self: flex-start;
+    margin: 0 0 0 auto;
+    --bs-btn-close-bg: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3e%3cpath d='M12.0007 10.586L16.9507 5.63599L18.3647 7.04999L13.4147 12L18.3647 16.95L16.9507 18.364L12.0007 13.414L7.05072 18.364L5.63672 16.95L10.5867 12L5.63672 7.04999L7.05072 5.63599L12.0007 10.586Z'/%3e%3c/svg%3e");
+    --bs-btn-close-opacity: 1;
+    --bs-btn-close-hover-opacity: 1;
+    --bs-btn-close-focus-opacity: 1;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    background-size: 24px;
+  }
+}
+
+.modal-title {
+  @include reg24;
+  padding-top: 12px;
+}
+// The text below the title starts 12px lower, as in the Figma modal.
+.modal-body {
+  padding-top: 12px;
+}
+
+// Checkboxes (FormCheck) in modals, as Checkbox_M in Figma: A 20px dark box
+// with 2px space around it, the label 8px next to it (e.g. survey import,
+// image editor).
+.modal {
+  .form-check-ui-component {
+    align-items: center;
+    gap: 8px;
+    justify-content: flex-start;
+    padding-left: 0;
+  }
+
+  // The 1.5px stroke is an inset shadow: Chrome rounds borders and outlines
+  // down to whole pixels, 1.5px would become 1px. Also while focused, where
+  // Bootstrap sets its own shadow.
+  .form-check-input[type='checkbox'],
+  .form-check-input[type='checkbox']:focus {
+    border: 0;
+    border-radius: 3px;
+    box-shadow: inset 0 0 0 1.5px $g-900;
+    flex: 0 0 20px;
+    height: 20px;
+    margin: 2px;
+    outline: 0;
+    width: 20px;
+  }
+
+  .form-check-input:checked[type='checkbox'] {
+    background-color: $g-800;
+    color: $white;
+
+    &::before {
+      align-items: center;
+      display: flex;
+      font-size: 16px;
+      height: 20px;
+      justify-content: center;
+      line-height: 1;
+      width: 20px;
+    }
+  }
+
+  // Keyboard focus, checked or not: The outline is removed above, so the
+  // general focus outline (forms.scss) has to come back. Same indicator as
+  // the image editor's preview.
+  .form-check-input[type='checkbox']:focus-visible,
+  .form-check-input:checked[type='checkbox']:focus-visible {
+    outline: 2px solid $grape;
+    outline-offset: 2px;
+  }
+
+  // IBM Plex Sans 14/20, as in Figma: Bootstrap's body font would be the
+  // system font. reg14's $font-size-base is larger than 14px.
+  .form-check-label {
+    @include reg14;
+    font-size: 14px;
+    margin: 0;
+  }
+}
+
+.modal-footer {
+  padding-top: 0;
+  border-top: 0;
+
+  // Grey and dark outline buttons (e.g. Reset) have dark text and border.
+  // Colored ones like outline-danger keep their color.
+  .btn-outline-secondary,
+  .btn-outline-dark {
+    --bs-btn-color: #{$g-900};
+    --bs-btn-border-color: #{$g-900};
+  }
+}

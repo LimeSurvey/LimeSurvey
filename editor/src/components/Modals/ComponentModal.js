@@ -38,7 +38,7 @@ export const ComponentModal = ({
         closeButton={false}
       >
         {title && (
-          <h2 id={titleId} className="modal-title h5 mb-0">
+          <h2 id={titleId} className="modal-title mb-0">
             {title}
           </h2>
         )}

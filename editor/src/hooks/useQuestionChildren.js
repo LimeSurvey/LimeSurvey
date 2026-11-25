@@ -1,3 +1,4 @@
+import { useRef } from 'react'
 import { omit } from 'lodash'
 import { useQuery } from '@tanstack/react-query'
 import { useBuffer } from './useBuffer'
@@ -16,6 +17,13 @@ import {
 } from 'helpers'
 import { reportExtras } from 'appInstrumentation'
 import { singleChoiceThemes } from 'components/QuestionTypes'
+import {
+  applyAttributeChanges,
+  getImageOptionDeleteChanges,
+  getImageOptionRenameChanges,
+  getImageOptionResetChanges,
+  getImageSelectThemes,
+} from 'components/QuestionTypes/imageOptionSettings'
 import { TestValidation } from 'components/Survey/Questions/QuestionCodeSchema'
 import { showErrorMessage } from 'components/ConditionDesigner/utils'
 
@@ -27,13 +35,44 @@ export const createChildrenUpdateOperation = (qid, entityType, children) => {
     : createBufferOperation(qid).subquestion().update(props)
 }
 
+/**
+ * Handlers for the answers and subquestions of a question: Add, delete, move,
+ * change text (or image), code and assessment value.
+ *
+ * @param {Object} params
+ * @param {Object} params.question the question
+ * @param {Function} params.handleUpdate saves question changes and focuses
+ *   the question
+ * @param {Function} [params.handleUpdateWithoutFocus] saves question changes
+ *   without focusing the question: Used when a change arrives while the
+ *   question isn't focused, e.g. an image upload that finishes after another
+ *   question was focused. Without it, handleUpdate is used.
+ * @param {boolean} [params.isFocused] whether the question is focused
+ * @param {Object} params.surveySettings the survey settings
+ * @param {string} params.language the active language
+ * @returns {Object} the children and their handlers
+ */
 export const useQuestionChildren = ({
   question,
   handleUpdate,
+  handleUpdateWithoutFocus,
+  isFocused = true,
   surveySettings,
   language,
 }) => {
   const { addToBuffer } = useBuffer()
+  // The latest question and update function: An image upload calls
+  // handleChildLUpdate from the render where it started. The image option
+  // attributes and the question changed meanwhile must not be overwritten.
+  // Once another question is focused, the upload must not focus this one again.
+  const latestQuestion = useRef(question)
+  latestQuestion.current = question
+  const latestHandleUpdate = useRef(handleUpdate)
+  latestHandleUpdate.current =
+    isFocused || !handleUpdateWithoutFocus
+      ? handleUpdate
+      : handleUpdateWithoutFocus
+
   const isSingleChoiceTheme = singleChoiceThemes.includes(
     question.questionThemeName
   )
@@ -42,6 +81,9 @@ export const useQuestionChildren = ({
   const children = isSingleChoiceTheme
     ? question.answers
     : question.subquestions
+  // The children of the latest render, see getLatestChildArray().
+  const latestChildren = useRef(children)
+  latestChildren.current = children
 
   // Use useQuery directly to avoid circular dependencies
   const { data: activeLanguage = language } = useQuery({
@@ -138,10 +180,84 @@ export const useQuestionChildren = ({
     handleUpdate({ [childKey]: updatedChildren })
   }
 
+  /**
+   * Saves changed image option attributes along with a children update, so
+   * both end up in one question update. The changes must be built from the
+   * attributes of the latest question. They are only built for the image
+   * select themes: Other questions skip parsing the attributes on every
+   * change.
+   *
+   * @param {Function} buildChanges returns the changed values keyed by
+   *   attribute and language, or null when there are none
+   * @returns {Object} the question changes for the attributes, or an empty
+   *   object
+   */
+  const saveImageOptionChanges = (buildChanges) => {
+    if (!getImageSelectThemes().includes(question.questionThemeName)) {
+      return {}
+    }
+    const attributeChanges = buildChanges()
+    if (!attributeChanges) {
+      return {}
+    }
+    addToBuffer(
+      createBufferOperation(question.qid)
+        .questionAttribute()
+        .update(attributeChanges)
+    )
+    return {
+      attributes: applyAttributeChanges(
+        latestQuestion.current.attributes,
+        attributeChanges
+      ),
+    }
+  }
+
+  /**
+   * Returns the code an answer or subquestion has in the question itself. The
+   * children passed to the handlers are copied from the question one render
+   * later, so while typing fast they can still have an older code. The image
+   * option attributes always match the latest question.
+   *
+   * @param {Object} child the answer or subquestion
+   * @param {string} entityType Entities.answer or Entities.subquestion
+   * @returns {string|undefined} the code
+   */
+  const getCurrentChildCode = (child, entityType) => {
+    const isAnswer = entityType === Entities.answer
+    const idKey = isAnswer ? 'aid' : 'qid'
+    const codeKey = isAnswer ? 'code' : 'title'
+    const currentQuestion = latestQuestion.current
+    const questionChildren =
+      (isAnswer ? currentQuestion.answers : currentQuestion.subquestions) || []
+    // With an appKey, only the appKey counts: New options get random
+    // temporary IDs, which can be the same for two of them. Without a match,
+    // the child's own code is used.
+    const currentChild = child.appKey
+      ? questionChildren.find(
+          (questionChild) => questionChild.appKey === child.appKey
+        )
+      : questionChildren.find(
+          (questionChild) => questionChild[idKey] === child[idKey]
+        )
+    return (currentChild ?? child)[codeKey]
+  }
+
+  /**
+   * Deletes an answer or subquestion.
+   *
+   * @param {number|string} childId ID of the answer or subquestion
+   * @param {Object[]} childArray the current answers or subquestions
+   * @param {string} entityType Entities.answer or Entities.subquestion
+   * @returns {void}
+   */
   const handleChildDelete = (childId, childArray = [], entityType) => {
     const childKey = entityType === Entities.answer ? 'answers' : 'subquestions'
     const idKey = entityType === Entities.answer ? 'aid' : 'qid'
 
+    const deletedChild = (childArray || []).find(
+      (child) => child[idKey] === childId
+    )
     const updatedChildren = (childArray || []).filter(
       (child) => child[idKey] !== childId
     )
@@ -149,7 +265,16 @@ export const useQuestionChildren = ({
     addToBuffer(
       createChildrenUpdateOperation(question.qid, entityType, updatedChildren)
     )
-    handleUpdate({ [childKey]: updatedChildren })
+    // Image select themes: Drop the image settings of the deleted option.
+    const attributeUpdate = deletedChild
+      ? saveImageOptionChanges(() =>
+          getImageOptionDeleteChanges(
+            latestQuestion.current.attributes,
+            getCurrentChildCode(deletedChild, entityType)
+          )
+        )
+      : {}
+    handleUpdate({ [childKey]: updatedChildren, ...attributeUpdate })
   }
 
   const handleOnChildDragEnd = (
@@ -203,12 +328,69 @@ export const useQuestionChildren = ({
     handleUpdate({ [childKey]: updatedChildren })
   }
 
+  /**
+   * Returns the children and position to update. Image uploads finish with
+   * the children of the render where they started: Options renamed, added or
+   * deleted meanwhile would be reverted. So in the image select themes, an
+   * older array is replaced by the latest one, with the option found by its
+   * appKey or ID. Other question types pass their own arrays and keep them.
+   *
+   * @param {number} childIndex position of the answer or subquestion
+   * @param {Object[]} childArray the answers or subquestions passed in
+   * @param {string} entityType Entities.answer or Entities.subquestion
+   * @returns {{childArray: Object[], childIndex: number}|null} the children
+   *   and position to use, or null when the option no longer exists
+   */
+  const getLatestChildArray = (childIndex, childArray, entityType) => {
+    const currentChildren = latestChildren.current
+    if (
+      !getImageSelectThemes().includes(
+        latestQuestion.current.questionThemeName
+      ) ||
+      childArray === currentChildren ||
+      !childArray[childIndex]
+    ) {
+      return { childArray, childIndex }
+    }
+    const child = childArray[childIndex]
+    const idKey = entityType === Entities.answer ? 'aid' : 'qid'
+    const latestIndex = currentChildren.findIndex((currentChild) =>
+      child.appKey
+        ? currentChild.appKey === child.appKey
+        : currentChild[idKey] === child[idKey]
+    )
+    return latestIndex === -1
+      ? null
+      : { childArray: currentChildren, childIndex: latestIndex }
+  }
+
+  /**
+   * Changes the text of an answer or subquestion in the active language. In
+   * the image select themes, the text is the image path. An older array of
+   * children is updated in the latest one, see getLatestChildArray().
+   *
+   * @param {string} newValue the new text or image path
+   * @param {number} childIndex position of the answer or subquestion
+   * @param {Object[]} childArray the current answers or subquestions
+   * @param {string} entityType Entities.answer or Entities.subquestion
+   * @returns {void}
+   */
   const handleChildLUpdate = (
     newValue = '',
-    childIndex,
-    childArray = [],
+    passedChildIndex,
+    passedChildArray = [],
     entityType
   ) => {
+    const latest = getLatestChildArray(
+      passedChildIndex,
+      passedChildArray,
+      entityType
+    )
+    if (!latest) {
+      // The option was deleted while its image was uploading.
+      return
+    }
+    const { childArray, childIndex } = latest
     const updatedChildren = [...childArray]
     const l10nsKey = entityType === Entities.answer ? 'answer' : 'question'
     const childKey = entityType === Entities.answer ? 'answers' : 'subquestions'
@@ -228,6 +410,7 @@ export const useQuestionChildren = ({
     }
 
     const l10ns = updatedChildren[childIndex]['l10ns'] || {}
+    const imageChanged = l10ns[activeLanguage]?.[l10nsKey] !== newValue
 
     updatedChildren[childIndex] = {
       ...updatedChildren[childIndex],
@@ -244,9 +427,35 @@ export const useQuestionChildren = ({
     addToBuffer(
       createChildrenUpdateOperation(question.qid, entityType, updatedChildren)
     )
-    handleUpdate({ [childKey]: updatedChildren })
+    // Image select themes: A new or removed image starts without settings.
+    const attributeUpdate = imageChanged
+      ? saveImageOptionChanges(() =>
+          getImageOptionResetChanges(
+            latestQuestion.current.attributes,
+            getCurrentChildCode(updatedChildren[childIndex], entityType),
+            activeLanguage
+          )
+        )
+      : {}
+    // Also after an upload: Only the changed children and attributes are
+    // applied, to the latest question.
+    latestHandleUpdate.current({
+      [childKey]: updatedChildren,
+      ...attributeUpdate,
+    })
   }
 
+  /**
+   * Changes the code of an answer or subquestion, if the new code is valid.
+   *
+   * @param {Object} params
+   * @param {string} params.newCode the new code
+   * @param {number} params.childIndex position of the answer or subquestion
+   * @param {Object[]} params.childArray the current answers or subquestions
+   * @param {string} params.entityType Entities.answer or Entities.subquestion
+   * @param {string} params.entityTitleKey 'answer' or 'question'
+   * @returns {void}
+   */
   const handleChildCodeUpdate = ({
     newCode = '',
     childIndex,
@@ -284,6 +493,7 @@ export const useQuestionChildren = ({
       return
     }
 
+    const oldCode = getCurrentChildCode(updatedChildren[childIndex], entityType)
     updatedChildren[childIndex] = {
       ...updatedChildren[childIndex],
       [codeKey]: newCode,
@@ -292,7 +502,15 @@ export const useQuestionChildren = ({
     addToBuffer(
       createChildrenUpdateOperation(question.qid, entityType, updatedChildren)
     )
-    handleUpdate({ [childKey]: updatedChildren })
+    // Image select themes: The image settings are keyed by code, move them.
+    const attributeUpdate = saveImageOptionChanges(() =>
+      getImageOptionRenameChanges(
+        latestQuestion.current.attributes,
+        oldCode,
+        newCode
+      )
+    )
+    handleUpdate({ [childKey]: updatedChildren, ...attributeUpdate })
   }
 
   const handleChildAssessmentValueUpdate = ({

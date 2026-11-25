@@ -1,0 +1,85 @@
+{#
+/**
+ * Image of an answer option.
+ *
+ * Options edited with the image editor of the new editor have their own settings, stored by option code in the
+ * question attributes image_option_settings (frame size, crop, corner radius) and image_option_alt (alt text),
+ * both per language, because each language can have its own image. The settings hold the file name of the image
+ * they were made for: When the option shows another image (replaced in the classic editor, or a reused code), its
+ * settings and alt text are ignored. Only the file name is compared, because import rewrites the folder and host of
+ * the image URL; the editor compares it the same way (getImageFileName() in imageOptionSettings.js).
+ * They are only applied in the survey themes the new editor can edit (fruity_twentythree and the themes extending
+ * it), so that the survey shows what the editor shows: The core sets isEditorCompatibleSurvey for them. Then they
+ * override the image settings of the question (fix width, fix height, keep aspect ratio, crop or resize): The image
+ * is shown in a frame with the saved aspect ratio and width (never wider than the answer), showing the saved crop of
+ * the image, with the saved corner radius. In other survey themes, and for options without settings, the image is
+ * shown with the image settings of the question, see answer.twig. The alt text is used in all survey themes.
+ * Without one, the option code is the alt text, because the image is the only content of the option's label.
+ *
+ * The settings are only passed as CSS variables, see assets/css/imageselect.css. Only numbers from the settings
+ * are written into the style attribute; other values count as not set.
+ *
+ * @var src         the image URL
+ * @var optionCode  the answer code
+ */
+#}
+{% set imageNumber = '/^[0-9]+(\\.[0-9]+)?$/' %}
+{% set imageFileName = src|split('?')|first|split('#')|first|split('/')|last|trim %}
+{% set imageSettings = json_decode(questionAttributes.image_option_settings|default(''))[optionCode]|default({}) %}
+{% if imageFileName is empty or imageSettings.image|default('') is not same as(imageFileName) %}
+    {# Saved for another image of the option, or nothing saved #}
+    {% set imageSettings = {} %}
+    {% set imageAlt = '' %}
+{% else %}
+    {% set imageAlt = json_decode(questionAttributes.image_option_alt|default(''))[optionCode]|default('') %}
+{% endif %}
+{% if not isEditorCompatibleSurvey|default(false) %}
+    {# Survey theme the new editor can't edit: The question's image settings apply, the alt text still does #}
+    {% set imageSettings = {} %}
+{% endif %}
+{# Lists and objects in the stored JSON count as not set: "matches" and the output need plain values #}
+{% set imageAlt = imageAlt is iterable ? '' : imageAlt %}
+{% set frameWidth = imageSettings.width|default('') %}
+{% set frameWidth = frameWidth is iterable ? '' : frameWidth %}
+{% set frameHeight = imageSettings.height|default('') %}
+{% set frameHeight = frameHeight is iterable ? '' : frameHeight %}
+{% set hasFrame = frameWidth matches imageNumber and frameHeight matches imageNumber and frameWidth > 0 and frameHeight > 0 %}
+{% if hasFrame %}
+    {% set radius = imageSettings.radius|default(0) %}
+    {% set radius = (radius is not iterable and radius matches imageNumber) ? radius : 0 %}
+    {% set crop = imageSettings.crop|default({}) %}
+    {% set crop = crop is iterable ? crop : {} %}
+    {% set cropX = crop.x|default('') %}
+    {% set cropY = crop.y|default('') %}
+    {% set cropWidth = crop.width|default('') %}
+    {% set cropHeight = crop.height|default('') %}
+    {% set hasCrop = cropX is not iterable and cropX matches imageNumber
+        and cropY is not iterable and cropY matches imageNumber
+        and cropWidth is not iterable and cropWidth matches imageNumber
+        and cropHeight is not iterable and cropHeight matches imageNumber
+        and cropWidth > 0 and cropHeight > 0 %}
+    {% set frameStyle = '--imageselect-frame-width: ' ~ frameWidth ~ 'px;'
+        ~ ' --imageselect-frame-ratio: ' ~ frameWidth ~ ' / ' ~ frameHeight ~ ';'
+        ~ ' --imageselect-frame-radius: ' ~ (100 * radius / frameWidth)|round(4) ~ '% / ' ~ (100 * radius / frameHeight)|round(4) ~ '%;' %}
+    {% if hasCrop %}
+        {# The cropped part of the image fills the frame exactly #}
+        {% set frameStyle = frameStyle
+            ~ ' --imageselect-crop-width: ' ~ (100 / cropWidth)|round(4) ~ '%;'
+            ~ ' --imageselect-crop-height: ' ~ (100 / cropHeight)|round(4) ~ '%;'
+            ~ ' --imageselect-crop-left: ' ~ (-100 * cropX / cropWidth)|round(4) ~ '%;'
+            ~ ' --imageselect-crop-top: ' ~ (-100 * cropY / cropHeight)|round(4) ~ '%;' %}
+    {% else %}
+        {% set positionX = imageSettings.positionX|default(0.5) %}
+        {% set positionX = (positionX is not iterable and positionX matches imageNumber) ? positionX : 0.5 %}
+        {% set positionY = imageSettings.positionY|default(0.5) %}
+        {% set positionY = (positionY is not iterable and positionY matches imageNumber) ? positionY : 0.5 %}
+        {% set frameStyle = frameStyle
+            ~ ' --imageselect-crop-position: ' ~ (positionX * 100)|round(4) ~ '% '
+            ~ (positionY * 100)|round(4) ~ '%;' %}
+    {% endif %}
+    <span class="imageselect-frame{% if not hasCrop %} imageselect-frame-cover{% endif %}" style="{{ frameStyle }}">
+        <img class="imageselect-img fixed-width unforce-height" src="{{ src|escape('html_attr') }}" alt="{{ (imageAlt is not empty ? imageAlt : optionCode)|escape('html_attr') }}"/>
+    </span>
+{% else %}
+    <img class="imageselect-img fixed-width unforce-height" src="{{ src|escape('html_attr') }}" alt="{{ (imageAlt is not empty ? imageAlt : optionCode)|escape('html_attr') }}"/>
+{% endif %}
