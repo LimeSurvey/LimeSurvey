@@ -34,7 +34,7 @@ if (empty($errorinupload)) {
     $infoSummary .= "<li>" . sprintf(gT("%s records met minimum requirements"), $mincriteria) . "</li>";
     $infoSummary .= "<li>" . sprintf(gT("%s new participants were created"), $imported) . "</li>";
     if ($overwritten > 0) {
-        $infoSummary .= "<li>" . sprintf(gT("%s records were updated"), $overwritten) . "</li>";
+        $infoSummary .= "<li>" . sprintf(gT("%s existing participants were updated"), $overwritten) . "</li>";
     }
     if (count($duplicatelist) || count($noPermissionList) || count($invalidemaillist) || count($invalidparticipantid) || count($invalidattribute) || count($aInvalidFormatlist)) {
         $warningSummary .= "<div class='warningheader'>" . gT('Warnings') . "</div><ul>";
