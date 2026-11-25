@@ -67,7 +67,6 @@ class DataEntryOtherCheckedEncryptionTest extends TestBaseClass
 
         $controller = new \DataEntry(new DummyController('dummyid'), 'dataentry');
         $method = new \ReflectionMethod(\DataEntry::class, 'fillOtherCheckedFromText');
-        $method->setAccessible(true);
         $allIds = array_merge(self::$withTextIds, [self::$withoutTextId]);
         $method->invoke(
             $controller,

@@ -71,9 +71,7 @@ class GeneralSettingsUpdateEncryptionMethodTest extends TestBaseClass
         $quotaQuestion = Question::model()->findByAttributes(['sid' => self::$surveyId, 'title' => 'G02Q03']);
         $detailTransformer = DI::getContainer()->get(TransformerOutputSurveyDetail::class);
         $resolveInherited = new \ReflectionMethod($detailTransformer, 'setInheritedBetaOptions');
-        $resolveInherited->setAccessible(true);
         $hardenedDisabled = new \ReflectionMethod($detailTransformer, 'isEncryptionHardenedDisabled');
-        $hardenedDisabled->setAccessible(true);
 
         Survey::model()->updateByPk(self::$surveyId, ['encryption_method' => 'I']);
         Question::model()->updateByPk($quotaQuestion->qid, ['encrypted' => 'N']);
