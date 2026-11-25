@@ -916,7 +916,8 @@ function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude = array())
         $cquery = "SELECT DISTINCT {{conditions}}.*
         FROM {{conditions}}, {{questions}}
         WHERE {{conditions}}.qid={{questions}}.qid
-        AND {{questions}}.sid=$iSurveyID";
+        AND {{questions}}.sid=$iSurveyID
+        ORDER BY {{conditions}}.cid";
         buildXMLFromQuery($xmlwriter, $cquery);
     }
 
@@ -975,11 +976,13 @@ function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude = array())
     if ($platform == 'mssql' || $platform == 'sqlsrv' || $platform == 'dblib') {
         $query = "SELECT qa.qid, qa.attribute, cast(qa.value as varchar(4000)) as value, qa.language
         FROM {{question_attributes}} qa JOIN {{questions}}  q ON q.qid = qa.qid AND q.sid={$iSurveyID}
-        group by qa.qid, qa.attribute,  cast(qa.value as varchar(4000)), qa.language";
+        group by qa.qid, qa.attribute,  cast(qa.value as varchar(4000)), qa.language
+        ORDER BY qa.qid, qa.attribute, qa.language, cast(qa.value as varchar(4000))";
     } else {
         $query = "SELECT qa.qid, qa.attribute, qa.value, qa.language
         FROM {{question_attributes}} qa JOIN {{questions}}  q ON q.qid = qa.qid AND q.sid={$iSurveyID}
-        group by qa.qid, qa.attribute, qa.value, qa.language";
+        group by qa.qid, qa.attribute, qa.value, qa.language
+        ORDER BY qa.qid, qa.attribute, qa.language, qa.value";
     }
 
     buildXMLFromQuery($xmlwriter, $query, 'question_attributes');
@@ -2238,7 +2241,8 @@ function groupGetXMLStructure($xml, $gid)
     WHERE (c.cqid=q.qid)
     AND (c.qid=b.qid)
     AND (q.gid={$gid})
-    AND (b.gid={$gid})";
+    AND (b.gid={$gid})
+    ORDER BY c.cid";
     buildXMLFromQuery($xml, $cquery, 'conditions');
 
     //Question attributes
@@ -2251,12 +2255,14 @@ function groupGetXMLStructure($xml, $gid)
         $query = "SELECT qa.qid, qa.attribute, cast(qa.value as varchar(4000)) as value, qa.language
         FROM {{question_attributes}} qa JOIN {{questions}}  q ON q.qid = qa.qid AND q.sid={$iSurveyID} and q.gid={$gid}
         JOIN {{question_l10ns}} ql10n ON ql10n.qid = q.qid
-        where ql10n.language='{$sBaseLanguage}' group by qa.qid, qa.attribute,  cast(qa.value as varchar(4000)), qa.language";
+        where ql10n.language='{$sBaseLanguage}' group by qa.qid, qa.attribute,  cast(qa.value as varchar(4000)), qa.language
+        ORDER BY qa.qid, qa.attribute, qa.language, cast(qa.value as varchar(4000))";
     } else {
         $query = "SELECT qa.qid, qa.attribute, qa.value, qa.language
         FROM {{question_attributes}} qa JOIN {{questions}}  q ON q.qid = qa.qid AND q.sid={$iSurveyID} and q.gid={$gid}
         JOIN {{question_l10ns}} ql10n ON ql10n.qid = q.qid
-        where ql10n.language='{$sBaseLanguage}' group by qa.qid, qa.attribute, qa.value, qa.language";
+        where ql10n.language='{$sBaseLanguage}' group by qa.qid, qa.attribute, qa.value, qa.language
+        ORDER BY qa.qid, qa.attribute, qa.language, qa.value";
     }
     buildXMLFromQuery($xml, $query, 'question_attributes');
 
@@ -2385,11 +2391,13 @@ function questionGetXMLStructure($xml, $gid, $qid)
     if ($platform == 'mssql' || $platform == 'sqlsrv' || $platform == 'dblib') {
         $query = "SELECT qa.qid, qa.attribute, cast(qa.value as varchar(4000)) as value, qa.language
         FROM {{question_attributes}} qa JOIN {{questions}}  q ON q.qid = qa.qid AND q.sid={$iSurveyID} and q.qid={$qid}
-        group by qa.qid, qa.attribute,  cast(qa.value as varchar(4000)), qa.language";
+        group by qa.qid, qa.attribute,  cast(qa.value as varchar(4000)), qa.language
+        ORDER BY qa.qid, qa.attribute, qa.language, cast(qa.value as varchar(4000))";
     } else {
         $query = "SELECT qa.qid, qa.attribute, qa.value, qa.language
         FROM {{question_attributes}} qa JOIN {{questions}}  q ON q.qid = qa.qid AND q.sid={$iSurveyID} and q.qid={$qid}
-        group by qa.qid, qa.attribute, qa.value, qa.language";
+        group by qa.qid, qa.attribute, qa.value, qa.language
+        ORDER BY qa.qid, qa.attribute, qa.language, qa.value";
     }
     buildXMLFromQuery($xml, $query);
 
