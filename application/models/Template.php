@@ -340,22 +340,21 @@ class Template extends LSActiveRecord
     }
 
     /**
-     * Get the full path of the config.xml of a template, looking in the user themes first
+     * Get the full path of the config.xml of a template, from the same root directory that
+     * getTemplatePath() uses for rendering: The standard themes for a standard theme, otherwise the user themes.
      *
      * @param Template $template The template model
      * @return string|null The path, or null if no config.xml was found
+     * @throws CException
      */
     private static function getConfigXmlPath($template): ?string
     {
-        $userThemePath = App()->getConfig("userthemerootdir") . DIRECTORY_SEPARATOR . $template->folder . DIRECTORY_SEPARATOR . 'config.xml';
-        $standardThemePath = App()->getConfig("standardthemerootdir") . DIRECTORY_SEPARATOR . $template->folder . DIRECTORY_SEPARATOR . 'config.xml';
-        if (is_file($userThemePath)) {
-            return $userThemePath;
-        }
-        if (is_file($standardThemePath)) {
-            return $standardThemePath;
-        }
-        return null;
+        Yii::import('application.helpers.SurveyThemeHelper');
+        $rootDir = SurveyThemeHelper::isStandardTemplate($template->name)
+            ? App()->getConfig("standardthemerootdir")
+            : App()->getConfig("userthemerootdir");
+        $configXmlPath = $rootDir . DIRECTORY_SEPARATOR . $template->folder . DIRECTORY_SEPARATOR . 'config.xml';
+        return is_file($configXmlPath) ? $configXmlPath : null;
     }
 
     /**
