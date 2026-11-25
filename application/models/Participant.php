@@ -2918,6 +2918,7 @@ class Participant extends LSActiveRecord
             return true;
         }
         /* Once up to date, it stays up to date : every save computes it. Cache depends on settings (key and bits). */
+        self::checkDuplicateFinderSettingsChange();
         $cacheKey = self::getDuplicateFinderUpToDateCacheKey();
         if (App()->cache->get($cacheKey) === true) {
             return true;
@@ -2938,6 +2939,21 @@ class Participant extends LSActiveRecord
         return 'participantDuplicateFinderUpToDate_' . md5(
             App()->getConfig('encryptionduplicateindexkey') . '_' . App()->getConfig('CPDB_duplicatefinder_bits')
         );
+    }
+
+    /**
+     * Forget the cached up to date state when the settings (key or size) changed since the last check :
+     * back to a previous size, the state cached before the change can be outdated.
+     * Works for a change in global settings or in config.php.
+     * @return void
+     */
+    public static function checkDuplicateFinderSettingsChange()
+    {
+        $cacheKey = self::getDuplicateFinderUpToDateCacheKey();
+        if (App()->cache->get('participantDuplicateFinderSettings') !== $cacheKey) {
+            App()->cache->delete($cacheKey);
+            App()->cache->set('participantDuplicateFinderSettings', $cacheKey);
+        }
     }
 
     /**

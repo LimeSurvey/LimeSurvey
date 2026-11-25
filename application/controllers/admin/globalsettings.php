@@ -472,8 +472,14 @@ class GlobalSettings extends SurveyCommonAction
             SettingGlobal::setSetting('CPDB_encryption_method', $cpdbEncryptionMethod);
         }
         $cpdbDuplicatefinderBits = Yii::app()->getRequest()->getPost('CPDB_duplicatefinder_bits');
+        $duplicateFinderBitsChanged = false;
         if (in_array($cpdbDuplicatefinderBits, ['0', '64', '96', '128', '192', '256'], true)) {
+            $duplicateFinderBitsChanged = (string) App()->getConfig('CPDB_duplicatefinder_bits') !== $cpdbDuplicatefinderBits;
             SettingGlobal::setSetting('CPDB_duplicatefinder_bits', $cpdbDuplicatefinderBits);
+            if ($duplicateFinderBitsChanged) {
+                App()->setConfig('CPDB_duplicatefinder_bits', (int) $cpdbDuplicatefinderBits);
+                Participant::checkDuplicateFinderSettingsChange();
+            }
         }
         SettingGlobal::setSetting('RPCInterface', Yii::app()->getRequest()->getPost('RPCInterface'));
         SettingGlobal::setSetting('rpc_publish_api', Yii::app()->getRequest()->getPost('rpc_publish_api'));
@@ -508,6 +514,18 @@ class GlobalSettings extends SurveyCommonAction
             Yii::app()->setFlashMessage($warning, 'warning');
         }
         Yii::app()->setFlashMessage(gT("Global settings were saved."), 'success');
+
+        /* The duplicate index size changed : the participants must be updated */
+        if ($duplicateFinderBitsChanged && Participant::countCoreAttributeCrypted() > 0 && Participant::canUseDuplicateFinder()) {
+            Yii::app()->setFlashMessage(sprintf(
+                gT("%s participants must have their duplicate index updated. Warning: the duplicate index size was changed, duplicate participants are not found until their index is updated."),
+                Participant::getDuplicateFinderInvalidCount()
+            ), 'warning');
+            if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+                Yii::app()->getController()->redirect(App()->createUrl('admin/participants/sa/encryptionMaintenance'));
+                return;
+            }
+        }
 
         // Redirect if user clicked save-and-close-button
         if (Yii::app()->getRequest()->getPost('saveandclose')) {

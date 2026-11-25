@@ -289,6 +289,25 @@ class ParticipantDuplicateFinderTest extends TestBaseClass
         );
     }
 
+    /**
+     * Back to a previous index size (global settings or config.php), the state cached before the change
+     * is not used : the index updated with the other size is reported as outdated.
+     */
+    public function testUpToDateCacheIsNotUsedAfterASizeChange(): void
+    {
+        $this->createParticipant(['firstname' => 'Danny', 'lastname' => 'Dyson', 'email' => 'danny@example.org']);
+        Yii::app()->cache->flush();
+        $this->assertTrue(Participant::isDuplicateFinderUpToDate(), 'Up to date with 128 bits, cached.');
+
+        /* Index updated with 64 bits by the maintenance, then back to 128 bits */
+        Yii::app()->setConfig('CPDB_duplicatefinder_bits', 64);
+        $this->runMaintenance('recalculateDuplicateFinder');
+        $this->assertTrue(Participant::isDuplicateFinderUpToDate(), 'Up to date with 64 bits.');
+        Yii::app()->setConfig('CPDB_duplicatefinder_bits', 128);
+
+        $this->assertFalse(Participant::isDuplicateFinderUpToDate(), 'The state cached with 128 bits before the change is not used.');
+    }
+
     /** The duplicate index update action computes the missing duplicatefinder. */
     public function testDuplicateFinderActionComputesTheMissingIndex(): void
     {

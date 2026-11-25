@@ -3261,6 +3261,7 @@ class ParticipantsAction extends SurveyCommonAction
             throw new \CHttpException(403, gT('Access denied'));
         }
         $stateId = 'currentDuplicateFinderInvalidParticipantId';
+        Participant::checkDuplicateFinderSettingsChange();
         /* The duplicate index size used since the first participant of the current run */
         $bitsStateId = 'currentDuplicateFinderBits';
         $bits = intval(App()->getConfig('CPDB_duplicatefinder_bits', 128));
