@@ -99,6 +99,10 @@ class TransformerInputSurvey extends Transformer
                 'key' => 'savequotaexit',
                 'formatter' => ['ynToBool' => ['revert' => true]]
             ],
+            'encryptionMethod' => [
+                'key' => 'encryption_method',
+                'range' => ['B', 'H', 'I']
+            ],
             'dateCreated' => [
                 'key' => 'datecreated',
                 'date',
