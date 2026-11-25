@@ -272,7 +272,7 @@ class Zend_Service_WindowsAzure_Storage_Blob extends Zend_Service_WindowsAzure_S
 	 *
 	 * @param string $containerName Container name
 	 * @param bool   $signedIdentifiers Display only private/blob/container or display signed identifiers?
-	 * @return string Acl, to be compared with Zend_Service_WindowsAzure_Storage_Blob::ACL_*
+	 * @return string|array Acl, to be compared with Zend_Service_WindowsAzure_Storage_Blob::ACL_*
 	 * @throws Zend_Service_WindowsAzure_Exception
 	 */
 	public function getContainerAcl($containerName = '', $signedIdentifiers = false)
@@ -802,7 +802,7 @@ class Zend_Service_WindowsAzure_Storage_Blob extends Zend_Service_WindowsAzure_S
 	 * @param string $containerName Container name
 	 * @param string $blobName      Blob name
 	 * @param string $identifier    Block ID
-	 * @param array  $contents      Contents of the block
+	 * @param array|string|false  $contents      Contents of the block
 	 * @param string $leaseId       Lease identifier
 	 * @throws Zend_Service_WindowsAzure_Exception
 	 */

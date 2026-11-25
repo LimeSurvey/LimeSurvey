@@ -173,6 +173,8 @@ class GeneralSettings
         }
 
         if (!empty($meta['updateFields'])) {
+            $this->validateLanguages($survey, $initAttributes);
+
             $this->languageConsistency->update(
                 $survey,
                 $initAttributes['language']
@@ -469,6 +471,47 @@ class GeneralSettings
         }
 
         return $languages;
+    }
+
+    /**
+     * Check that the base language and the additional languages of the survey are known languages
+     *
+     * A language the survey already had before the update stays allowed, so a survey using a
+     * language code that is no longer available can still be saved.
+     *
+     * @param Survey $survey Survey with the updated attribute values
+     * @param array $initAttributes Attributes of the survey before the update
+     * @throws PersistErrorException If the base language or an additional language is not known
+     * @return void
+     */
+    private function validateLanguages(Survey $survey, array $initAttributes)
+    {
+        $allowedLanguages = array_merge(
+            array_keys(getLanguageData()),
+            [(string) $initAttributes['language']],
+            array_filter(explode(' ', trim((string) $initAttributes['additional_languages'])))
+        );
+        $languagesByAttribute = [
+            'language' => [(string) $survey->language],
+            'additional_languages' => array_filter(
+                explode(' ', trim((string) $survey->additional_languages))
+            )
+        ];
+        foreach ($languagesByAttribute as $attribute => $languages) {
+            foreach ($languages as $language) {
+                if (!in_array($language, $allowedLanguages, true)) {
+                    $survey->addError($attribute, gT('Invalid language'));
+                    $e = new PersistErrorException(
+                        sprintf(
+                            'Invalid language for survey #%s',
+                            $survey->sid
+                        )
+                    );
+                    $e->setErrorModel($survey);
+                    throw $e;
+                }
+            }
+        }
     }
 
     /**

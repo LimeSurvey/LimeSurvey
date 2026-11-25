@@ -41,7 +41,7 @@ require_once 'Zend/Xml/Security.php';
 class Zend_Json
 {
     /**
-     * How objects should be encoded -- arrays or as StdClass. TYPE_ARRAY is 1
+     * How objects should be encoded -- arrays or as stdClass. TYPE_ARRAY is 1
      * so that it is a boolean true value, allowing it to be used with
      * ext/json's functions.
      */

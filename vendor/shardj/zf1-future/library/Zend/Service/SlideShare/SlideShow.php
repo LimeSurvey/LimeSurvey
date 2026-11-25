@@ -101,7 +101,7 @@ class Zend_Service_SlideShare_SlideShow
     /**
      * The ID of the slide show on the server
      *
-     * @var int the Slide show ID number on the server
+     * @var int|string the Slide show ID number on the server
      */
     protected $_slideShowId;
 
@@ -239,7 +239,7 @@ class Zend_Service_SlideShare_SlideShow
     /**
      * Sets the ID for the slide show
      *
-     * @param int $id The slide show ID
+     * @param int|string $id The slide show ID
      * @return Zend_Service_SlideShare_SlideShow
      */
     public function setId($id)
@@ -349,7 +349,7 @@ class Zend_Service_SlideShare_SlideShow
     /**
      * Sets the numeric status of the slide show on the server
      *
-     * @param int $status The numeric status on the server
+     * @param int|string $status The numeric status on the server
      * @return Zend_Service_SlideShare_SlideShow
      */
     public function setStatus($status)
@@ -443,7 +443,7 @@ class Zend_Service_SlideShare_SlideShow
     /**
      * Sets the number of views the slide show has received
      *
-     * @param int $views The number of views
+     * @param int|string $views The number of views
      * @return Zend_Service_SlideShare_SlideShow
      */
     public function setNumViews($views)

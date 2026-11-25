@@ -270,11 +270,9 @@ class Zend_Db_Adapter_Pdo_Mssql extends Zend_Db_Adapter_Pdo_Abstract
         foreach ($result as $key => $row) {
             $identity = false;
             $words = explode(' ', $row[$type_name], 2);
-            if (isset($words[0])) {
-                $type = $words[0];
-                if (isset($words[1])) {
-                    $identity = (bool) preg_match('/identity/', $words[1]);
-                }
+            $type = $words[0];
+            if (isset($words[1])) {
+                $identity = (bool) preg_match('/identity/', $words[1]);
             }
 
             $isPrimary = array_key_exists($row[$column_name], $primaryKeyColumn);
@@ -402,7 +400,7 @@ class Zend_Db_Adapter_Pdo_Mssql extends Zend_Db_Adapter_Pdo_Abstract
     /**
      * Retrieve server version in PHP style
      * Pdo_Mssql doesn't support getAttribute(PDO::ATTR_SERVER_VERSION)
-     * @return string
+     * @return string|null
      */
     public function getServerVersion()
     {
@@ -428,7 +426,7 @@ class Zend_Db_Adapter_Pdo_Mssql extends Zend_Db_Adapter_Pdo_Abstract
     {
         if (!is_int($value) && !is_float($value)) {
             // Fix for null-byte injection
-            $value = addcslashes($value, "\000\032");
+            $value = addcslashes((string) $value, "\000\032");
         }
         return parent::_quote($value);
     }

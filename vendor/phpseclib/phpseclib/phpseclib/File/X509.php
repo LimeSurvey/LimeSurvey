@@ -1079,7 +1079,7 @@ class X509
         if ($names = $this->getExtension('id-ce-subjectAltName')) {
             foreach ($names as $name) {
                 foreach ($name as $key => $value) {
-                    $value = preg_quote($value);
+                    $value = preg_quote($value, '#');
                     $value = str_replace('\*', '[^.]*', $value);
                     switch ($key) {
                         case 'dNSName':
@@ -1110,7 +1110,8 @@ class X509
         }
 
         if ($value = $this->getDNProp('id-at-commonName')) {
-            $value = str_replace(['.', '*'], ['\.', '[^.]*'], $value[0]);
+            $value = preg_quote($value[0], '#');
+            $value = str_replace('\*', '[^.]*', $value);
             return preg_match('#^' . $value . '$#', $components['host']) === 1;
         }
 
@@ -1244,7 +1245,8 @@ class X509
                     $temp = fread($fsock, 1024);
                     $meta = stream_get_meta_data($fsock);
                     // on Windows, PHP 8.3+ says a read timed out when it returned buffered data and
-                    // nothing more had come in, so a read has only timed out when it got nothing
+                    // nothing more had come in (https://github.com/php/php-src/issues/25148), so a
+                    // read has only timed out when it got nothing
                     if ($temp === false || ($temp === '' && $meta['timed_out'])) {
                         return false;
                     }

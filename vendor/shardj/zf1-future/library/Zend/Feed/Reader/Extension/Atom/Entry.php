@@ -78,7 +78,7 @@ class Zend_Feed_Reader_Extension_Atom_Entry
     /**
      * Get an array with feed authors
      *
-     * @return array
+     * @return Zend_Feed_Reader_Collection_Author|null
      */
     public function getAuthors()
     {
@@ -87,12 +87,14 @@ class Zend_Feed_Reader_Extension_Atom_Entry
         }
 
         $authors = [];
+        /** @var DOMNodeList<DOMElement> $list */
         $list = $this->getXpath()->query($this->getXpathPrefix() . '//atom:author');
 
         if (!$list->length) {
             /**
              * TODO: Limit query to feed level els only!
              */
+            /** @var DOMNodeList<DOMElement> $list */
             $list = $this->getXpath()->query('//atom:author');
         }
 
@@ -130,6 +132,7 @@ class Zend_Feed_Reader_Extension_Atom_Entry
 
         $content = null;
 
+        /** @var DOMNodeList<DOMElement> $el */
         $el = $this->getXpath()->query($this->getXpathPrefix() . '/atom:content');
         if($el->length > 0) {
             $el = $el->item(0);
@@ -268,7 +271,7 @@ class Zend_Feed_Reader_Extension_Atom_Entry
     /**
      * Get the entry enclosure
      *
-     * @return string
+     * @return stdClass|null
      */
     public function getEnclosure()
     {
@@ -278,6 +281,7 @@ class Zend_Feed_Reader_Extension_Atom_Entry
 
         $enclosure = null;
 
+        /** @var DOMNodeList<DOMElement> $nodeList */
         $nodeList = $this->getXpath()->query($this->getXpathPrefix() . '/atom:link[@rel="enclosure"]');
 
         if ($nodeList->length > 0) {
@@ -352,7 +356,7 @@ class Zend_Feed_Reader_Extension_Atom_Entry
      * Get a specific link
      *
      * @param  int $index
-     * @return string
+     * @return string|null
      */
     public function getLink($index = 0)
     {
@@ -380,6 +384,7 @@ class Zend_Feed_Reader_Extension_Atom_Entry
 
         $links = [];
 
+        /** @var DOMNodeList<DOMAttr> $list */
         $list = $this->getXpath()->query(
             $this->getXpathPrefix() . '//atom:link[@rel="alternate"]/@href' . '|' .
             $this->getXpathPrefix() . '//atom:link[not(@rel)]/@href'
@@ -442,6 +447,7 @@ class Zend_Feed_Reader_Extension_Atom_Entry
         $count = null;
 
         $this->getXpath()->registerNamespace('thread10', 'http://purl.org/syndication/thread/1.0');
+        /** @var DOMNodeList<DOMAttr> $list */
         $list = $this->getXpath()->query(
             $this->getXpathPrefix() . '//atom:link[@rel="replies"]/@thread10:count'
         );
@@ -468,6 +474,7 @@ class Zend_Feed_Reader_Extension_Atom_Entry
 
         $link = null;
 
+        /** @var DOMNodeList<DOMAttr> $list */
         $list = $this->getXpath()->query(
             $this->getXpathPrefix() . '//atom:link[@rel="replies" and @type="text/html"]/@href'
         );
@@ -495,6 +502,7 @@ class Zend_Feed_Reader_Extension_Atom_Entry
 
         $link = null;
 
+        /** @var DOMNodeList<DOMAttr> $list */
         $list = $this->getXpath()->query(
             $this->getXpathPrefix() . '//atom:link[@rel="replies" and @type="application/'.$type.'+xml"]/@href'
         );
@@ -521,6 +529,7 @@ class Zend_Feed_Reader_Extension_Atom_Entry
         }
 
         if ($this->_getAtomType() == Zend_Feed_Reader::TYPE_ATOM_10) {
+            /** @var DOMNodeList<DOMElement> $list */
             $list = $this->getXpath()->query($this->getXpathPrefix() . '//atom:category');
         } else {
             /**
@@ -529,6 +538,7 @@ class Zend_Feed_Reader_Extension_Atom_Entry
              * may have been retrofittied to use Atom 1.0 instead.
              */
             $this->getXpath()->registerNamespace('atom10', Zend_Feed_Reader::NAMESPACE_ATOM_10);
+            /** @var DOMNodeList<DOMElement> $list */
             $list = $this->getXpath()->query($this->getXpathPrefix() . '//atom10:category');
         }
 
@@ -564,6 +574,7 @@ class Zend_Feed_Reader_Extension_Atom_Entry
         $source = null;
         // TODO: Investigate why _getAtomType() fails here. Is it even needed?
         if ($this->getType() == Zend_Feed_Reader::TYPE_ATOM_10) {
+            /** @var DOMNodeList<DOMElement> $list */
             $list = $this->getXpath()->query($this->getXpathPrefix() . '/atom:source[1]');
             if ($list->length) {
                 $element = $list->item(0);

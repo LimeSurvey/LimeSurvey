@@ -113,6 +113,6 @@ class Zend_Dojo_View_Helper_CustomDijit extends Zend_Dojo_View_Helper_DijitConta
             $this->_module = $this->_defaultDojoType;
         }
 
-        return parent::captureStart($id, $params, $attribs);
+        parent::captureStart($id, $params, $attribs);
     }
 }

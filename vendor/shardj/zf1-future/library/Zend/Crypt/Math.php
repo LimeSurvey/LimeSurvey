@@ -66,7 +66,7 @@ class Zend_Crypt_Math extends Zend_Crypt_Math_BigInteger
      *
      * @param  integer $length
      * @param  boolean $strong
-     * @return string
+     * @return string|false
      */
     public static function randBytes($length, $strong = false)
     {

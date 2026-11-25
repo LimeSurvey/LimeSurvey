@@ -23,7 +23,7 @@
  */
 class SettingGlobal extends LSActiveRecord
 {
-    const DBVERSION_NUMBER = 'DBVersion'; //this is the attribute stg_name in table for db version
+    public const DBVERSION_NUMBER = 'DBVersion'; //this is the attribute stg_name in table for db version
 
     /** @var string Maintenance mode: No maintenance */
     public const MAINTENANCE_MODE_OFF = 'off';

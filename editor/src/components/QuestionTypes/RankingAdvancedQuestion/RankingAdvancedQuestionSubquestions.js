@@ -2,9 +2,8 @@ import { useEffect, useRef } from 'react'
 import { Draggable } from '@hello-pangea/dnd'
 import classNames from 'classnames'
 import { SubquestionCodeInput } from '../subquestionCodeComponents'
-import { useSurvey, useAppState } from 'hooks'
+import { useToggleQuestionCodes, useAppState } from 'hooks'
 import { Entities, hasTempId, STATES } from 'helpers'
-import { useParams } from 'react-router-dom'
 import { ContentEditor } from 'components/UIComponents'
 import { CloseCircleFillIcon, DragIcon } from 'components/icons'
 import { L10ns } from 'helpers'
@@ -21,8 +20,7 @@ export const RankingAdvancedQuestionSubquestions = ({
   isTitleFocused,
 }) => {
   const subquestionsRef = useRef(null)
-  const { surveyId } = useParams()
-  const { survey } = useSurvey(surveyId)
+  const { areCodesVisible } = useToggleQuestionCodes()
   const [isSurveyActive] = useAppState(STATES.IS_SURVEY_ACTIVE)
 
   useEffect(() => {
@@ -93,7 +91,7 @@ export const RankingAdvancedQuestionSubquestions = ({
                       />
                     </div>
                     <div className="d-flex align-items-center w-100 ranking-advanced-subquestion-main gap-4">
-                      {isFocused && survey.showQNumCode?.showNumber && (
+                      {isFocused && areCodesVisible && (
                         <SubquestionCodeInput
                           isSurveyActive={isSurveyActive}
                           code={subquestion.title}

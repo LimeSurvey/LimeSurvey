@@ -106,6 +106,7 @@ class Zend_Tool_Project_Context_Zf_ApplicationConfigFile extends Zend_Tool_Proje
 
     public function getAsZendConfig($section = 'production')
     {
+        require_once 'Zend/Config/Ini.php';
         return new Zend_Config_Ini($this->getPath(), $section);
     }
 

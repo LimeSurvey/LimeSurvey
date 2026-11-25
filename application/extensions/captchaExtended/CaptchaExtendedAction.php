@@ -51,7 +51,7 @@
 */
 class CaptchaExtendedAction extends CCaptchaAction
 {
-    const
+    public const
         MODE_MATH = 'math',
         MODE_MATHVERBAL = 'mathverbal',
         MODE_DEFAULT = 'default',

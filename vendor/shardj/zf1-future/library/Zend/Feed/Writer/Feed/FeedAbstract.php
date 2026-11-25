@@ -95,7 +95,9 @@ class Zend_Feed_Writer_Feed_FeedAbstract
     /**
      * Set a single author
      *
-     * @param  int $index
+     * @param  array|string $name Author name, or an array with the keys name, email and uri
+     * @param  string|null $email
+     * @param  string|null $uri
      * @return void
      */
     public function addAuthor($name, $email = null, $uri = null)
@@ -512,7 +514,7 @@ class Zend_Feed_Writer_Feed_FeedAbstract
     /**
      * Add a feed category
      *
-     * @param string $category
+     * @param array $category
      */
     public function addCategory(array $category)
     {
@@ -568,7 +570,7 @@ class Zend_Feed_Writer_Feed_FeedAbstract
     /**
      * Get an array with feed authors
      *
-     * @return array
+     * @return array|null
      */
     public function getAuthors()
     {
@@ -672,7 +674,7 @@ class Zend_Feed_Writer_Feed_FeedAbstract
     /**
      * Get the feed image URI
      *
-     * @return array
+     * @return array|null
      */
     public function getImage()
     {
@@ -685,7 +687,7 @@ class Zend_Feed_Writer_Feed_FeedAbstract
     /**
      * Get the feed icon URI
      *
-     * @return array
+     * @return array|null
      */
     public function getIcon()
     {

@@ -12,24 +12,24 @@ abstract class AuthPluginBase extends PluginBase
      * These constants reflect the error codes to be used by the identity, they
      * are copied from LSUserIdentity and CBaseUserIdentity for easier access.
      */
-    const ERROR_NONE = 0;
-    const ERROR_NOT_ADDED = 5;
-    const ERROR_USERNAME_INVALID = 10;
-    const ERROR_PASSWORD_INVALID = 20;
-    const ERROR_AUTH_METHOD_INVALID = 30;
-    const ERROR_IP_LOCKED_OUT = 98;
-    const ERROR_UNKNOWN_HANDLER = 99;
-    const ERROR_UNKNOWN_IDENTITY = 100;
-    const ERROR_INVALID_EMAIL = 110;
-    const ERROR_ALREADY_EXISTING_USER = 120;
-    const ERROR_LDAP_CONNECTION = 130;
-    const ERROR_LDAP_MODE = 135;
-    const ERROR_LDAP_NO_EMAIL = 140;
-    const ERROR_LDAP_NO_FULLNAME = 150;
-    const ERROR_LDAP_NO_BIND = 160;
-    const ERROR_LDAP_NO_SEARCH_RESULT = 170;
+    public const ERROR_NONE = 0;
+    public const ERROR_NOT_ADDED = 5;
+    public const ERROR_USERNAME_INVALID = 10;
+    public const ERROR_PASSWORD_INVALID = 20;
+    public const ERROR_AUTH_METHOD_INVALID = 30;
+    public const ERROR_IP_LOCKED_OUT = 98;
+    public const ERROR_UNKNOWN_HANDLER = 99;
+    public const ERROR_UNKNOWN_IDENTITY = 100;
+    public const ERROR_INVALID_EMAIL = 110;
+    public const ERROR_ALREADY_EXISTING_USER = 120;
+    public const ERROR_LDAP_CONNECTION = 130;
+    public const ERROR_LDAP_MODE = 135;
+    public const ERROR_LDAP_NO_EMAIL = 140;
+    public const ERROR_LDAP_NO_FULLNAME = 150;
+    public const ERROR_LDAP_NO_BIND = 160;
+    public const ERROR_LDAP_NO_SEARCH_RESULT = 170;
 
-    const LDAP_INVALID_PASSWORD_TEXT = "INVALID_PASSWORD-LDAP_USER";
+    public const LDAP_INVALID_PASSWORD_TEXT = "INVALID_PASSWORD-LDAP_USER";
 
     protected $_username = null;
     protected $_password = null;

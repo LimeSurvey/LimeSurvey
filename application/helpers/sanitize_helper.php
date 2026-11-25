@@ -646,7 +646,7 @@ function sanitize_signedint($integer, $min = '', $max = '')
     }
 
     return $int;
-};
+}
 
 /**
  * Checks the validity of IP address $ip

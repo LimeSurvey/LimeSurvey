@@ -54,6 +54,7 @@ require_once 'Zend/Auth.php';
  * @subpackage Server
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @deprecated Deprecated since 1.27.1 and will be removed in a future version: AMF is the data format of Adobe Flash Player, which reached its end of life on 2020-12-31
  */
 class Zend_Amf_Server implements Zend_Server_Interface
 {
@@ -109,7 +110,7 @@ class Zend_Amf_Server implements Zend_Server_Interface
 
     /**
      * Namespace allows all AMF calls to not clobber other PHP session variables
-     * @var Zend_Session_NameSpace default session namespace zend_amf
+     * @var string|Zend_Session_Namespace default session namespace zend_amf
      */
     protected $_sesionNamespace = 'zend_amf';
 
@@ -136,6 +137,8 @@ class Zend_Amf_Server implements Zend_Server_Interface
      */
     public function __construct()
     {
+        trigger_error(get_class($this) . ' is deprecated and will be removed in a future version', E_USER_DEPRECATED);
+
         Zend_Amf_Parse_TypeLoader::setResourceLoader(new Zend_Loader_PluginLoader(["Zend_Amf_Parse_Resource" => "Zend/Amf/Parse/Resource"]));
     }
 
@@ -234,7 +237,7 @@ class Zend_Amf_Server implements Zend_Server_Interface
     /**
      * Check if the ACL allows accessing the function or method
      *
-     * @param string|object $object Object or class being accessed
+     * @param string|object|null $object Object or class being accessed
      * @param string $function Function or method being accessed
      * @return bool
      * @throws Zend_Acl_Exception
@@ -423,7 +426,6 @@ class Zend_Amf_Server implements Zend_Server_Interface
             default :
                 require_once 'Zend/Amf/Server/Exception.php';
                 throw new Zend_Amf_Server_Exception('CommandMessage::' . $message->operation . ' not implemented');
-                break;
         }
         return $return;
     }
@@ -769,7 +771,7 @@ class Zend_Amf_Server implements Zend_Server_Interface
      *
      * @param string|object $class
      * @param string $namespace Optional
-     * @param mixed $arg Optional arguments to pass to a method
+     * @param mixed $argv Optional arguments to pass to a method
      * @return Zend_Amf_Server
      * @throws Zend_Amf_Server_Exception on invalid input
      * @throws Zend_Server_Reflection_Exception

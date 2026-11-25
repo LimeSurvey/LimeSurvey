@@ -59,7 +59,7 @@
     }
   }
 
-  // Non-destructive confirmations (e.g. assigning answer codes)
+  // Non-destructive confirmations (confirmButtonVariant="primary")
   &--primary {
     .modal-body {
       padding-left: 30px;

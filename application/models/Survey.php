@@ -2644,6 +2644,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
      */
     public function getWelcomeImageSettings()
     {
+        if (!$this->hasAttribute('welcome_image')) {
+            return [];
+        }
         return json_decode_ls($this->welcome_image);
     }
 

@@ -56,16 +56,16 @@ class Zend_Service_WindowsAzure_Storage_BlobInstance
      *
      * @param string  $containerName   Container name
      * @param string  $name            Name
-     * @param string  $snapshotId      Snapshot id
+     * @param string|null  $snapshotId      Snapshot id
      * @param string  $etag            Etag
      * @param string  $lastModified    Last modified date
      * @param string  $url             Url
-     * @param int     $size            Size
+     * @param int|array|string|null     $size            Size
      * @param string  $contentType     Content Type
      * @param string  $contentEncoding Content Encoding
      * @param string  $contentLanguage Content Language
-     * @param string  $cacheControl    Cache control
-     * @param string  $blobType        Blob type
+     * @param string|false  $cacheControl    Cache control
+     * @param string|array  $blobType        Blob type
      * @param string  $leaseStatus     Lease status
      * @param boolean $isPrefix        Is Prefix?
      * @param array   $metadata        Key/value pairs of meta data

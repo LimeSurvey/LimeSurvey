@@ -96,7 +96,8 @@ class LSGettextPluralForms
      */
     private function parse(string $expression): array
     {
-        if (!preg_match_all('/\s*(\d+|n|\|\||&&|[=!<>]=|[-+*\/%<>!?:()])/A', $expression, $matches)
+        if (
+            !preg_match_all('/\s*(\d+|n|\|\||&&|[=!<>]=|[-+*\/%<>!?:()])/A', $expression, $matches)
             || implode('', $matches[0]) !== rtrim($expression)
         ) {
             throw new InvalidArgumentException('Invalid plural expression');

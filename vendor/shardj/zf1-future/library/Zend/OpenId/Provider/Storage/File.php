@@ -62,7 +62,7 @@ class Zend_OpenId_Provider_Storage_File extends Zend_OpenId_Provider_Storage
                 }
             }
             $user = get_current_user();
-            if (is_string($user) && !empty($user)) {
+            if (!empty($user)) {
                 $tmp .= '/' . $user;
             }
             $dir = $tmp . '/openid/provider';
@@ -70,18 +70,21 @@ class Zend_OpenId_Provider_Storage_File extends Zend_OpenId_Provider_Storage
         $this->_dir = $dir;
         if (!is_dir($this->_dir)) {
             if (!@mkdir($this->_dir, 0700, 1)) {
+                require_once 'Zend/OpenId/Exception.php';
                 throw new Zend_OpenId_Exception(
                     "Cannot access storage directory $dir",
                     Zend_OpenId_Exception::ERROR_STORAGE);
             }
         }
-        if (($f = fopen($this->_dir.'/assoc.lock', 'w+')) === null) {
+        if (($f = @fopen($this->_dir.'/assoc.lock', 'w+')) === false) {
+            require_once 'Zend/OpenId/Exception.php';
             throw new Zend_OpenId_Exception(
                 'Cannot create a lock file in the directory ' . $dir,
                 Zend_OpenId_Exception::ERROR_STORAGE);
         }
         fclose($f);
-        if (($f = fopen($this->_dir.'/user.lock', 'w+')) === null) {
+        if (($f = @fopen($this->_dir.'/user.lock', 'w+')) === false) {
+            require_once 'Zend/OpenId/Exception.php';
             throw new Zend_OpenId_Exception(
                 'Cannot create a lock file in the directory ' . $dir,
                 Zend_OpenId_Exception::ERROR_STORAGE);
@@ -353,7 +356,7 @@ class Zend_OpenId_Provider_Storage_File extends Zend_OpenId_Provider_Storage
      * by $id
      *
      * @param string $id user identity URL
-     * @return array
+     * @return array|false
      */
     public function getTrustedSites($id)
     {

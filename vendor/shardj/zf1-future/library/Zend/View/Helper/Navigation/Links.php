@@ -101,7 +101,7 @@ class Zend_View_Helper_Navigation_Links
      *
      * @see _findRoot()
      *
-     * @var Zend_Navigation_Container
+     * @var Zend_Navigation_Container|null
      */
     protected $_root;
 
@@ -611,7 +611,7 @@ class Zend_View_Helper_Navigation_Links
      * makes sure finder methods will not traverse above the container given
      * to the render method.
      *
-     * @param  Zend_Navigaiton_Page $page  page to find root for
+     * @param  Zend_Navigation_Page $page  page to find root for
      * @return Zend_Navigation_Container   the root container of the given page
      */
     protected function _findRoot(Zend_Navigation_Page $page)
@@ -661,6 +661,7 @@ class Zend_View_Helper_Navigation_Links
             }
         } elseif (is_string($mixed)) {
             // value is a string; make an URI page
+            require_once 'Zend/Navigation/Page.php';
             return Zend_Navigation_Page::factory([
                 'type' => 'uri',
                 'uri'  => $mixed
@@ -678,6 +679,7 @@ class Zend_View_Helper_Navigation_Links
             } else {
                 // pass array to factory directly
                 try {
+                    require_once 'Zend/Navigation/Page.php';
                     $page = Zend_Navigation_Page::factory($mixed);
                     return $page;
                 } catch (Exception $e) {

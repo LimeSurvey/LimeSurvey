@@ -36,6 +36,7 @@ require_once 'Zend/Gdata/App/Util.php';
  * @subpackage Gdata
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @deprecated Deprecated since 1.27.1 and will be removed in a future version: Google shut down the Google Data APIs it implements and the ClientLogin and AuthSub authentication
  */
 class Zend_Gdata_Query
 {
@@ -58,7 +59,7 @@ class Zend_Gdata_Query
      * Base URL
      * TODO: Add setters and getters
      *
-     * @var string
+     * @var string|null
      */
     protected $_url = null;
 
@@ -267,7 +268,7 @@ class Zend_Gdata_Query
     }
 
     /**
-     * @return string rss or atom
+     * @return string|null rss or atom
      */
     public function getAlt()
     {
@@ -279,7 +280,7 @@ class Zend_Gdata_Query
     }
 
     /**
-     * @return int maxResults
+     * @return int|null maxResults
      */
     public function getMaxResults()
     {
@@ -291,7 +292,7 @@ class Zend_Gdata_Query
     }
 
     /**
-     * @return string query
+     * @return string|null query
      */
     public function getQuery()
     {
@@ -303,7 +304,7 @@ class Zend_Gdata_Query
     }
 
     /**
-     * @return int startIndex
+     * @return int|null startIndex
      */
     public function getStartIndex()
     {
@@ -315,7 +316,7 @@ class Zend_Gdata_Query
     }
 
     /**
-     * @return string updatedMax
+     * @return string|null updatedMax
      */
     public function getUpdatedMax()
     {
@@ -327,7 +328,7 @@ class Zend_Gdata_Query
     }
 
     /**
-     * @return string updatedMin
+     * @return string|null updatedMin
      */
     public function getUpdatedMin()
     {
@@ -339,7 +340,7 @@ class Zend_Gdata_Query
     }
 
     /**
-     * @return string publishedMax
+     * @return string|null publishedMax
      */
     public function getPublishedMax()
     {
@@ -351,7 +352,7 @@ class Zend_Gdata_Query
     }
 
     /**
-     * @return string publishedMin
+     * @return string|null publishedMin
      */
     public function getPublishedMin()
     {
@@ -363,7 +364,7 @@ class Zend_Gdata_Query
     }
 
     /**
-     * @return string author
+     * @return string|null author
      */
     public function getAuthor()
     {

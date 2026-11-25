@@ -2,53 +2,78 @@
 
 namespace LimeSurvey\Helpers\Update;
 
-use CException;
+use CDbColumnSchema;
 
 class Update_722 extends DatabaseUpdateBase
 {
+    private const COLUMN = 'welcome_image';
+
     /**
-     * Adds the encryption_method column to surveys and surveys_groupsettings tables.
-     * Sets the global default (gsid=0) to 'B' (Basic encryption method).
+     * Makes sure the surveys table has the welcome_image column, as a nullable long text column
      *
-     * @inheritDoc
-     * @throws CException
+     * 7.12.0 shipped this column in DB version 718, which installations from 7.8.0 to 7.11.0 had already passed as an
+     * empty update, so they never got it. Some administrators then added it by hand, possibly with another name case,
+     * a shorter type or NOT NULL: Such a column is converted, its values are kept.
+     *
+     * @return void
      */
     #[\Override]
     public function up()
     {
-        /* Create or alter encryption_method column, handling cases where dev git users may already have it */
-        $surveysTable = $this->db->schema->getTable('{{surveys}}', true);
-        if (!isset($surveysTable->columns['encryption_method'])) {
-            addColumn('{{surveys}}', 'encryption_method', "string(1) DEFAULT 'I'");
-        } else {
-            alterColumn('{{surveys}}', 'encryption_method', "string(1)", true, 'I');
+        $table = $this->db->tablePrefix . 'surveys';
+        $column = $this->findColumn($table);
+        $isMysql = in_array($this->db->driverName, ['mysql', 'mysqli'], true);
+        if ($column === null) {
+            addColumn($table, self::COLUMN, $isMysql ? 'mediumtext NULL' : 'text NULL');
+            return;
         }
+        if ($column->name !== self::COLUMN) {
+            $this->db->createCommand()->renameColumn($table, $column->name, self::COLUMN);
+        }
+        if (!$this->hasExpectedType($column)) {
+            alterColumn($table, self::COLUMN, $isMysql ? 'mediumtext' : 'text');
+        }
+        $this->db->schema->getTable($table, true);
+    }
 
-        $groupSettingsTable = $this->db->schema->getTable('{{surveys_groupsettings}}', true);
-        if (!isset($groupSettingsTable->columns['encryption_method'])) {
-            addColumn('{{surveys_groupsettings}}', 'encryption_method', "string(1) DEFAULT 'I'");
-        } else {
-            alterColumn('{{surveys_groupsettings}}', 'encryption_method', "string(1)", true, 'I');
+    /**
+     * Returns the welcome_image column of the table, also when it was added by hand with another name case
+     *
+     * @param string $table The table name with prefix
+     * @return CDbColumnSchema|null
+     */
+    private function findColumn(string $table): ?CDbColumnSchema
+    {
+        foreach ($this->db->schema->getTable($table, true)->columns as $column) {
+            if (strcasecmp($column->name, self::COLUMN) === 0) {
+                return $column;
+            }
         }
-        /* Set global one to B (basic) if it's not hardened (only if I), didn't update any response table */
-        $this->db->createCommand()->update("{{surveys_groupsettings}}", ["encryption_method" => "B"], "gsid = 0 AND (encryption_method IS NULL OR encryption_method <> 'H')");
-        /* Active surveys : existing responses are encrypted with Basic, the method can not be changed while active */
-        $this->db->createCommand()->update("{{surveys}}", ["encryption_method" => "B"], "active = 'Y' AND (encryption_method IS NULL OR encryption_method = 'I')");
+        return null;
+    }
 
-        /* Create the duplicatefinder in participants for checking duplicate */
-        $participantsTable = $this->db->schema->getTable('{{participants}}', true);
-        if (!isset($participantsTable->columns['duplicatefinder'])) {
-            addColumn('{{participants}}', 'duplicatefinder', "string(64) NOT NULL DEFAULT ''");
-        } else {
-            alterColumn('{{participants}}', 'duplicatefinder', "string(64)", false, '');
+    /**
+     * Checks whether the column is nullable and can hold at least as much text as the column of a fresh installation
+     *
+     * @param CDbColumnSchema $column
+     * @return bool
+     */
+    private function hasExpectedType(CDbColumnSchema $column): bool
+    {
+        if (!$column->allowNull) {
+            return false;
         }
-        /* Add the index , do not break if it already exist */
-        try {
-            setTransactionBookmark();
-            $this->db->createCommand()->createIndex('{{participants_duplicatefinder}}', '{{participants}}', ['duplicatefinder'], false);
-        } catch (\Exception $e) {
-            rollBackToTransactionBookmark();
+        $dbType = strtolower((string) $column->dbType);
+        switch ($this->db->driverName) {
+            case 'mysql':
+            case 'mysqli':
+                return in_array($dbType, ['mediumtext', 'longtext'], true);
+            case 'pgsql':
+                return $dbType === 'text';
+            default:
+                // MSSQL: nvarchar(max) and varchar(max) have the size -1
+                return in_array($dbType, ['ntext', 'text'], true)
+                    || (in_array($dbType, ['nvarchar', 'varchar'], true) && (int) $column->size === -1);
         }
-        /* Existing participants keep an empty duplicatefinder : filled by the CPDB maintenance (invaliduplicatefinder scope) */
     }
 }

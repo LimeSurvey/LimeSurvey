@@ -1,8 +1,7 @@
-import { useParams } from 'react-router-dom'
 import classNames from 'classnames'
 
 import { Input } from 'components/UIComponents'
-import { useSurvey } from 'hooks'
+import { useToggleQuestionCodes } from 'hooks'
 
 export const ArraySubQuestionTextAnswers = ({
   subQuestionindex,
@@ -13,10 +12,7 @@ export const ArraySubQuestionTextAnswers = ({
   showBackgroundUnderSubQuestion = false,
   isFocused,
 }) => {
-  const { surveyId } = useParams()
-  const { survey } = useSurvey(surveyId)
-
-  const showQNumCode = survey.showQNumCode
+  const { areCodesVisible } = useToggleQuestionCodes()
 
   return (
     <div
@@ -34,7 +30,7 @@ export const ArraySubQuestionTextAnswers = ({
       <Input
         disabled
         style={{
-          width: `${arrayAnswersWidth[index] + (isFocused && showQNumCode?.showNumber ? 80 : dragIconSize * 2)}px`,
+          width: `${arrayAnswersWidth[index] + (isFocused && areCodesVisible ? 80 : dragIconSize * 2)}px`,
           padding: '0 10px',
         }}
         className="disabled"

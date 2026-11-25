@@ -166,6 +166,7 @@ class Zend_Feed_Writer_Extension_ITunes_Feed
      */
     public function setItunesImage($value)
     {
+        require_once 'Zend/Uri.php';
         if (!Zend_Uri::check($value)) {
             require_once 'Zend/Feed/Exception.php';
             throw new Zend_Feed_Exception('invalid parameter: "image" may only'
@@ -251,6 +252,7 @@ class Zend_Feed_Writer_Extension_ITunes_Feed
      */
     public function setItunesNewFeedUrl($value)
     {
+        require_once 'Zend/Uri.php';
         if (!Zend_Uri::check($value)) {
             require_once 'Zend/Feed/Exception.php';
             throw new Zend_Feed_Exception('invalid parameter: "newFeedUrl" may only'
@@ -277,7 +279,7 @@ class Zend_Feed_Writer_Extension_ITunes_Feed
     /**
      * Add feed owner
      *
-     * @param  string $value
+     * @param  array $value
      * @return Zend_Feed_Writer_Extension_ITunes_Feed
      */
     public function addItunesOwner(array $value)
@@ -344,6 +346,7 @@ class Zend_Feed_Writer_Extension_ITunes_Feed
      */
     public function __call($method, array $params)
     {
+        require_once 'Zend/Feed/Writer.php';
         $point = Zend_Feed_Writer::lcfirst(substr($method, 9));
         if (!method_exists($this, 'setItunes' . ucfirst($point))
             && !method_exists($this, 'addItunes' . ucfirst($point))

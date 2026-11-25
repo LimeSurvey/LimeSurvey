@@ -2783,7 +2783,7 @@ function tsvSurveyExport($surveyid)
     $aSurveyLanguages = $survey->getAllLanguages();
 
     // Advanced question attributes : @todo get used question attribute by question in survey ?
-    $aQuestionAttributes = array_keys(\LimeSurvey\Helpers\questionHelper::getAttributesDefinitions());
+    $aQuestionAttributes = array_keys(QuestionAttribute::getAllAttributesSettings());
     sort($aQuestionAttributes);
     $fields = array_merge($aBaseFields, $aQuestionAttributes);
     // Reusing existing XML function to get data for exporting into TSV format

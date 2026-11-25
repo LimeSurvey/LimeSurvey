@@ -117,7 +117,7 @@ class Zend_Dojo_View_Helper_ComboBox extends Zend_Dojo_View_Helper_Dijit
      * Renders to dojo view helper
      *
      * @param  array $params
-     * @return string|false
+     * @return string|bool
      */
     protected function _renderStore(array $params, $id)
     {

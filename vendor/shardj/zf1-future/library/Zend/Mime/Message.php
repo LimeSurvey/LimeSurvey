@@ -235,6 +235,7 @@ class Zend_Mime_Message
         // no more parts, find end boundary
         $p = strpos($body, '--' . $boundary . '--', $start);
         if ($p === false) {
+            require_once 'Zend/Exception.php';
             throw new Zend_Exception('Not a valid Mime Message: End Missing');
         }
 
@@ -292,6 +293,7 @@ class Zend_Mime_Message
                         $newPart->language = $value;
                         break;
                     default:
+                        require_once 'Zend/Exception.php';
                         throw new Zend_Exception(
                             'Unknown header ignored for MimePart:' . $key
                         );

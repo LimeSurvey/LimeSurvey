@@ -22,6 +22,7 @@
 
 /** Zend_View_Helper_Abstract.php */
 require_once 'Zend/View/Helper/Abstract.php';
+require_once 'Zend/Controller/Action/HelperBroker.php';
 
 /**
  * Helper for rendering output of a controller action
@@ -62,6 +63,7 @@ class Zend_View_Helper_Action extends Zend_View_Helper_Abstract
      */
     public function __construct()
     {
+        require_once 'Zend/Controller/Front.php';
         $front   = Zend_Controller_Front::getInstance();
         $modules = $front->getControllerDirectory();
         if (empty($modules)) {

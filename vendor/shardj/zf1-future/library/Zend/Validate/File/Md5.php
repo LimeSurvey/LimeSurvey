@@ -51,9 +51,9 @@ class Zend_Validate_File_Md5 extends Zend_Validate_File_Hash
     ];
 
     /**
-     * Hash of the file
+     * Hashes of the file: hash => algorithm
      *
-     * @var string
+     * @var array
      */
     protected $_hash;
 

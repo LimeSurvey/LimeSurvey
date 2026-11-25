@@ -23,7 +23,6 @@
  * @author Denis Chenu <http://sondages.pro>
  */
 
-use LimeSurvey\Helpers\questionHelper;
 use LimeSurvey\Models\Services\ExpressionManagerSessionState;
 use LimeSurvey\Models\Services\Quotas;
 use LimeSurvey\Models\Services\SurveySessionState;
@@ -1191,8 +1190,10 @@ class LimeExpressionManager
      * Process all question attributes that apply to EM
      * (1) subquestion-level relevance:  e.g. array_filter, array_filter_exclude, relevance equations entered in SQ-mask
      * (2) Validations: e.g. min/max number of answers; min/max/eq sum of answers
-     * @param integer|null $onlyThisQseq - only process these attributes for the specified question
-     * @return void
+     * The equations are stored in $this->subQrelInfo, $this->qid2validationEqn and $this->qid2exclusiveAuto.
+     *
+     * @param integer|null $onlyThisQseq Only process the attributes of the question with this sequence number, all questions if null
+     * @return void Nothing, the equations are stored in the class properties
      */
     public function _CreateSubQLevelRelevanceAndValidationEqns($onlyThisQseq = null)
     {
@@ -1310,15 +1311,11 @@ class LimeExpressionManager
                                     if (!isset($this->q2subqInfo[$fqid])) {
                                         continue;
                                     }
-                                    if ($this->q2subqInfo[$fqid]['type'] == Question::QT_R_RANKING) {
-                                        $rankables = [];
-                                        foreach ($this->qans[$fqid] as $k => $v) {
-                                            $rankable = explode('~', (string) $k);
-                                            $rankables[] = '_' . $rankable[1];
-                                        }
-                                        if (array_search($sq['sqsuffix'], $rankables) === false) {
-                                            continue;
-                                        }
+                                    if (
+                                        $this->q2subqInfo[$fqid]['type'] == Question::QT_R_RANKING
+                                        && !in_array($sq['sqsuffix'], $this->getRankingItemSuffixes($fqid), true)
+                                    ) {
+                                        continue;
                                     }
                                     $fsqs = [];
                                     foreach ($this->q2subqInfo[$fqid]['subqs'] as $fsq) {
@@ -1348,15 +1345,11 @@ class LimeExpressionManager
                                     if (!isset($this->q2subqInfo[$fqid])) {
                                         continue;
                                     }
-                                    if ($this->q2subqInfo[$fqid]['type'] == Question::QT_R_RANKING) {
-                                        $rankables = [];
-                                        foreach ($this->qans[$fqid] as $k => $v) {
-                                            $rankable = explode('~', (string) $k);
-                                            $rankables[] = '_' . $rankable[1];
-                                        }
-                                        if (array_search($sq['sqsuffix'], $rankables) === false) {
-                                            continue;
-                                        }
+                                    if (
+                                        $this->q2subqInfo[$fqid]['type'] == Question::QT_R_RANKING
+                                        && !in_array($sq['sqsuffix'], $this->getRankingItemSuffixes($fqid), true)
+                                    ) {
+                                        continue;
                                     }
                                     $fsqs = [];
                                     foreach ($this->q2subqInfo[$fqid]['subqs'] as $fsq) {
@@ -1895,7 +1888,7 @@ class LimeExpressionManager
                             continue;
                         }
                         $exclusiveOptionSGQA = $this->qcode2sgqa[$qinfo['rootVarName'] . '_' . $exclusive_option] ?? '';
-                        if ($exclusiveOptionSGQA === ''){
+                        if ($exclusiveOptionSGQA === '') {
                             continue;
                         }
                         $subqs = $qinfo['subqs'];
@@ -3314,6 +3307,23 @@ class LimeExpressionManager
             ];
         }
         //        $this->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
+    }
+
+    /**
+     * Get the item codes of a ranking question as subquestion suffixes (e.g. '_A1'), to match them with the
+     * subquestions of a question that uses the ranking question as array filter.
+     *
+     * @param int $qid The ranking question id
+     * @return string[] The ranking item (subquestion) codes, each prefixed with '_'
+     */
+    private function getRankingItemSuffixes($qid)
+    {
+        return array_map(
+            function ($subquestion) {
+                return '_' . $subquestion['title'];
+            },
+            getSubQuestions($this->sid, $qid, self::emSessionState()->getLanguage())
+        );
     }
 
     /**
@@ -4774,8 +4784,8 @@ class LimeExpressionManager
                         continue;
                     }
                 }
-                $sgq = 'Q' . $kv['qid'];
-                $ext = (string)substr((string) $kv['qcode'], strlen($sgq));
+                // The subquestion part of the variable name, e.g. 'SQ001' of 'Q1_SQ001'
+                $ext = (string)substr((string) $kv['qcode'], strlen((string) $kv['rootVarName']) + 1);
                 if ($sqpatt != '') {
                     if (!preg_match('/' . $sqpatt . '/', $ext)) {
                         continue;
@@ -5702,7 +5712,8 @@ class LimeExpressionManager
      *
      * @return string
      */
-    private function anonymizeDate() {
+    private function anonymizeDate()
+    {
         return date("Y-m-d H:i:s", mktime(0, 0, 0, 1, 1, 1980));
     }
 
@@ -9866,7 +9877,8 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         $LEM->em->resetErrorsAndWarningsOnEachPart = false;
         $emLanguage = self::emSessionState()->getLanguage();
         $aSurveyInfo = getSurveyInfo($sid, $emLanguage);
-        $aAttributesDefinitions = questionHelper::getAttributesDefinitions();
+        /* @var array[] Attribute definitions by question type and question theme */
+        $attributeDefinitionsByTheme = [];
         /* All final survey string must be shown in survey language #12208 */
         Yii::app()->setLanguage($emLanguage);
         /* @var boolean , did have error */
@@ -10131,6 +10143,14 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 $attrs['other'] = $LEM->questionSeq2relevance[$qseq]['other'];
             }
             if (count($attrs) > 0) {
+                $question = $questions[$qid];
+                $definitionsKey = $question->type . '|' . $question->question_theme_name;
+                if (!isset($attributeDefinitionsByTheme[$definitionsKey])) {
+                    $questionAttributeFetcher = new \LimeSurvey\Models\Services\QuestionAttributeFetcher();
+                    $questionAttributeFetcher->setQuestion($question);
+                    $attributeDefinitionsByTheme[$definitionsKey] = $questionAttributeFetcher->fetch();
+                }
+                $attributeDefinitions = $attributeDefinitionsByTheme[$definitionsKey];
                 $attrTable = "<table class='logicfileattributetable'><tr><th>" . $LEM->gT("Question attribute") . "</th><th>" . $LEM->gT("Value") . "</th></tr>\n";
                 $count = 0;
                 foreach ($attrs as $key => $value) {
@@ -10144,11 +10164,11 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     if ($key == 'relevance') {/* BUt : it's not an attribute ? */
                         continue;
                     }
-                    if (isset($aAttributesDefinitions[$key]['default']) && $value == $aAttributesDefinitions[$key]['default']) {
+                    if (isset($attributeDefinitions[$key]['default']) && $value == $attributeDefinitions[$key]['default']) {
                         continue;
                     }
-                    if (isset($aAttributesDefinitions[$key]['expression']) && $aAttributesDefinitions[$key]['expression'] > 0) {
-                        if ($aAttributesDefinitions[$key]['expression'] > 1) {
+                    if (isset($attributeDefinitions[$key]['expression']) && $attributeDefinitions[$key]['expression'] > 0) {
+                        if ($attributeDefinitions[$key]['expression'] > 1) {
                             $value = '{' . $value . '}';
                         }
                         $LEM->ProcessString($value, $qid, $qReplacement, 1, 1, false, false);

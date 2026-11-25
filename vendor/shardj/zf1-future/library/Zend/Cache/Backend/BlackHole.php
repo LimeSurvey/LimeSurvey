@@ -29,6 +29,7 @@ require_once 'Zend/Cache/Backend/ExtendedInterface.php';
  * @see Zend_Cache_Backend
  */
 require_once 'Zend/Cache/Backend.php';
+require_once 'Zend/Cache.php';
 
 /**
  * @package    Zend_Cache
@@ -72,7 +73,7 @@ class Zend_Cache_Backend_BlackHole
      * @param  string $data             Datas to cache
      * @param  string $id               Cache id
      * @param  array  $tags             Array of strings, the cache record will be tagged by each string entry
-     * @param  int    $specificLifetime If != false, set a specific lifetime for this cache record (null => infinite lifetime)
+     * @param  int|false    $specificLifetime If != false, set a specific lifetime for this cache record (null => infinite lifetime)
      * @return boolean true if no problem
      */
     public function save($data, $id, $tags = [], $specificLifetime = false)

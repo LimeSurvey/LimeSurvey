@@ -13,12 +13,12 @@ use DateTime;
 class PasswordManagement
 {
     // NB: PHP 7.0 does not support class constant visibility
-    const MIN_PASSWORD_LENGTH = 8;
+    public const MIN_PASSWORD_LENGTH = 8;
     /** Minimum password length when the PasswordRequirement core plugin is not loaded */
-    const FALLBACK_MIN_PASSWORD_LENGTH = 14;
-    const EMAIL_TYPE_REGISTRATION = 'registration';
-    const EMAIL_TYPE_RESET_PW = 'resetPassword';
-    const MIN_TIME_NEXT_FORGOT_PW_EMAIL = 5; //forgot pw email is send again, only after 5 min delay
+    public const FALLBACK_MIN_PASSWORD_LENGTH = 14;
+    public const EMAIL_TYPE_REGISTRATION = 'registration';
+    public const EMAIL_TYPE_RESET_PW = 'resetPassword';
+    public const MIN_TIME_NEXT_FORGOT_PW_EMAIL = 5; //forgot pw email is send again, only after 5 min delay
 
     /** @var \User */
     private $user;

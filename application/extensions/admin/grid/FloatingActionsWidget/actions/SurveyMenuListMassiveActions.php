@@ -57,4 +57,3 @@ class SurveyMenuListMassiveActions
         return $buttons;
     }
 }
-

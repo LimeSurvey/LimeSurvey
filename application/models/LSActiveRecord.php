@@ -19,6 +19,8 @@
  */
 class LSActiveRecord extends CActiveRecord
 {
+    use TwigSandboxIteratorTrait;
+
     /** @var string[] Array of attributes that should be XSS filtered on mass updates */
     protected $xssFilterAttributes = [];
 

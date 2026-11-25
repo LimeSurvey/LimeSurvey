@@ -531,6 +531,7 @@ class Zend_Captcha_SiteVerify extends Zend_Captcha_Base
     public function render(?Zend_View_Interface $view = null, $element = null)
     {
         $escape = function ($value) use ($view) {
+            // @phpstan-ignore function.alreadyNarrowedType (escape() is not part of Zend_View_Interface, a view of another engine may lack it)
             if ($view !== null && method_exists($view, 'escape')) {
                 return $view->escape((string) $value);
             }

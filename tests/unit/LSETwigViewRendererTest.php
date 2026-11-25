@@ -150,6 +150,58 @@ class LSETwigViewRendererTest extends TestBaseClass
         $this->assertRenderQuestionThrowsWithQuestionTemplate($questionTemplate, 'received: ' . \stdClass::class);
     }
 
+    public function testSandboxHidesSurveyAttributesOutsideAllowListFromIteration()
+    {
+        $survey = \Survey::model()->findByPk(self::$surveyId);
+        $survey->bounceaccountuser = 'bounce-user';
+        $survey->bounceaccountpass = 'bounce-pass';
+        $renderer = \Yii::app()->twigRenderer;
+
+        $forOutput = $renderer->convertTwigToHtml(
+            '{% for key, value in oSurvey %}{{ key }}={{ value }};{% endfor %}',
+            ['oSurvey' => $survey]
+        );
+        $this->assertStringContainsString('sid=' . self::$surveyId . ';', $forOutput);
+        $this->assertStringNotContainsString('bounceaccount', $forOutput);
+
+        $mergeOutput = $renderer->convertTwigToHtml(
+            '{% set attributes = {}|merge(oSurvey) %}{{ attributes.sid }}|{{ attributes.bounceaccountpass }}',
+            ['oSurvey' => $survey]
+        );
+        $this->assertSame(self::$surveyId . '|', $mergeOutput);
+    }
+
+    public function testSandboxStillBlocksDirectAccessToSurveyAttributesOutsideAllowList()
+    {
+        $this->expectException(\Twig\Sandbox\SecurityNotAllowedPropertyError::class);
+        \Yii::app()->twigRenderer->convertTwigToHtml(
+            '{{ oSurvey.bounceaccountpass }}',
+            ['oSurvey' => \Survey::model()->findByPk(self::$surveyId)]
+        );
+    }
+
+    public function testBounceAccountIsRemovedFromSurveyInfoForTemplates()
+    {
+        $surveyInfo = \getSurveyInfo(self::$surveyId);
+        $surveyInfo['bounceaccountuser'] = 'bounce-user';
+        $surveyInfo['bounceaccountpass'] = 'bounce-pass';
+
+        $output = \Yii::app()->twigRenderer->convertTwigToHtml(
+            '{{ aSurveyInfo.sid }}|{{ aSurveyInfo.bounceaccountuser }}|{{ aSurveyInfo.bounceaccountpass }}|'
+            . '{% for key in aSurveyInfo|keys %}{{ key }},{% endfor %}',
+            ['aSurveyInfo' => $surveyInfo]
+        );
+        $this->assertStringStartsWith(self::$surveyId . '|||sid,', $output);
+        $this->assertStringNotContainsString('bounceaccount', $output);
+    }
+
+    public function testModelIterationIsNotRestrictedOutsideTwigRendering()
+    {
+        $attributes = iterator_to_array(\Survey::model()->findByPk(self::$surveyId));
+        $this->assertArrayHasKey('sid', $attributes);
+        $this->assertArrayHasKey('bounceaccountpass', $attributes);
+    }
+
     /**
      * Returns a private method of the twig renderer, made accessible.
      *

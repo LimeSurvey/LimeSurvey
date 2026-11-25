@@ -207,7 +207,6 @@ export const getNotificationsDataSettingsBlocks = (survey) => ({
         props: {
           id: 'emailResponseTo',
           mainText: t('Detailed admin notifications email address'),
-          activeDisabled: true,
           noPermissionDisabled: true,
           childOnNewLine: true,
           childComponent: Input,
