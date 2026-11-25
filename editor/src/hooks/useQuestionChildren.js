@@ -168,6 +168,8 @@ export const useQuestionChildren = ({
     if (!dropResult.destination) {
       return
     }
+    if (!canUpdateChildren(entityType, isSurveyActive)) return
+
     const childKey = entityType === Entities.answer ? 'answers' : 'subquestions'
 
     let firstScaleChildren = []

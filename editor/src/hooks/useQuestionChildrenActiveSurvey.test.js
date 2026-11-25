@@ -103,6 +103,52 @@ describe('useQuestionChildren on an active survey', () => {
     ])
   })
 
+  test('answer options are reordered', () => {
+    const { handlers, saved } = renderChildren(true)
+
+    act(() => {
+      handlers.handleOnChildDragEnd(
+        { source: { index: 0 }, destination: { index: 1 } },
+        dualScaleAnswers,
+        Entities.answer,
+        { scaleId: SCALE_1 }
+      )
+    })
+
+    expect(saved.answers.map((a) => a.code)).toEqual(['A2', 'A1', 'B1', 'B2'])
+  })
+
+  test('subquestions keep their order', () => {
+    const { handlers, saved } = renderChildren(true)
+
+    act(() => {
+      handlers.handleOnChildDragEnd(
+        { source: { index: 0 }, destination: { index: 1 } },
+        subquestions,
+        Entities.subquestion
+      )
+    })
+
+    expect(saved.subquestions).toEqual([
+      subquestion(7, 'SQ001'),
+      subquestion(8, 'SQ002'),
+    ])
+  })
+
+  test('subquestions are reordered on an inactive survey', () => {
+    const { handlers, saved } = renderChildren(false)
+
+    act(() => {
+      handlers.handleOnChildDragEnd(
+        { source: { index: 0 }, destination: { index: 1 } },
+        subquestions,
+        Entities.subquestion
+      )
+    })
+
+    expect(saved.subquestions.map((s) => s.title)).toEqual(['SQ002', 'SQ001'])
+  })
+
   test('subquestions are recoded on an inactive survey', () => {
     const { handlers, handleUpdate } = renderChildren(false)
 

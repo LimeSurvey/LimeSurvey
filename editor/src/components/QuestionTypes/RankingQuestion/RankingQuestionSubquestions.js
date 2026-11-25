@@ -4,8 +4,15 @@ import classNames from 'classnames'
 import { RankingQuestionSubquestion } from './RankingQuestionSubquestion'
 import { DragAndDrop } from 'components/UIComponents'
 import { Draggable } from '@hello-pangea/dnd'
-import { Entities, L10ns, STATES } from 'helpers'
+import {
+  canUpdateChildren,
+  Entities,
+  getTooltipMessages,
+  L10ns,
+  STATES,
+} from 'helpers'
 import { useAppState } from 'hooks'
+import { TooltipContainer } from 'components'
 
 export const RankingQuestionSubquestions = ({
   question: { subquestions = [] } = {},
@@ -17,6 +24,11 @@ export const RankingQuestionSubquestions = ({
   handleChildCodeUpdate,
 }) => {
   const [activeLanguage] = useAppState(STATES.ACTIVE_LANGUAGE)
+  const [isSurveyActive] = useAppState(STATES.IS_SURVEY_ACTIVE)
+  const isChildUpdateAllowed = canUpdateChildren(
+    Entities.subquestion,
+    isSurveyActive
+  )
 
   const getSubquestionStyle = (draggableStyle) => ({
     userSelect: 'none',
@@ -79,16 +91,22 @@ export const RankingQuestionSubquestions = ({
         ))}
       </DragAndDrop>
       <div>
-        <Button
-          onClick={() => handleChildAdd(subquestions, Entities.subquestion)}
-          variant={'outline'}
-          className={classNames('text-primary add-choice-button px-0 mt-2', {
-            'd-none disabled': !isFocused,
-          })}
-          data-testid="single-choice-add-subquestion-button"
+        <TooltipContainer
+          tip={getTooltipMessages().ACTIVE_DISABLED}
+          showTip={!isChildUpdateAllowed}
         >
-          <PlusLg /> {t('Add subquestion')}
-        </Button>
+          <Button
+            onClick={() => handleChildAdd(subquestions, Entities.subquestion)}
+            variant={'outline'}
+            className={classNames('text-primary add-choice-button px-0 mt-2', {
+              'd-none disabled': !isFocused,
+            })}
+            data-testid="single-choice-add-subquestion-button"
+            disabled={!isChildUpdateAllowed}
+          >
+            <PlusLg /> {t('Add subquestion')}
+          </Button>
+        </TooltipContainer>
       </div>
     </>
   )

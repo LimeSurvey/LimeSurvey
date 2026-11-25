@@ -19,11 +19,16 @@ export const RankingAdvancedQuestionSubquestions = ({
   language,
   handleCodeUpdate,
   isTitleFocused,
+  participantMode,
 }) => {
   const subquestionsRef = useRef(null)
   const { surveyId } = useParams()
   const { survey } = useSurvey(surveyId)
   const [isSurveyActive] = useAppState(STATES.IS_SURVEY_ACTIVE)
+  const isChildUpdateAllowed = canUpdateChildren(
+    Entities.subquestion,
+    isSurveyActive
+  )
 
   useEffect(() => {
     if (!setSubQuestionsHeight) {
@@ -67,6 +72,7 @@ export const RankingAdvancedQuestionSubquestions = ({
             key={`advanced-subquestion${subquestion.appKey || subquestion.qid}-${index}`}
             draggableId={`advanced-subquestion${subquestion.appKey || subquestion.qid}-${index}`}
             index={index}
+            isDragDisabled={!participantMode && !isChildUpdateAllowed}
           >
             {(provided, snapshot) => {
               return (
@@ -80,7 +86,8 @@ export const RankingAdvancedQuestionSubquestions = ({
                       className={classNames(
                         'cursor-pointer remove-option-button me-3',
                         {
-                          'd-none disabled': !isFocused,
+                          'd-none disabled':
+                            !isFocused || !isChildUpdateAllowed,
                         }
                       )}
                       onClick={() => handleRemoveSubquestion(subquestion)}
@@ -95,10 +102,7 @@ export const RankingAdvancedQuestionSubquestions = ({
                     <div className="d-flex align-items-center w-100 ranking-advanced-subquestion-main gap-4">
                       {isFocused && survey.showQNumCode?.showNumber && (
                         <CodeInput
-                          isEditable={canUpdateChildren(
-                            Entities.subquestion,
-                            isSurveyActive
-                          )}
+                          isEditable={isChildUpdateAllowed}
                           code={subquestion.title}
                           onChange={(e) =>
                             handleCodeUpdate({

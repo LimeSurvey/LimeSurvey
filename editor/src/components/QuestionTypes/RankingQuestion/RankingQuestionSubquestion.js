@@ -23,6 +23,10 @@ export const RankingQuestionSubquestion = ({
   const { surveyId } = useParams()
   const { survey } = useSurvey(surveyId)
   const [isSurveyActive] = useAppState(STATES.IS_SURVEY_ACTIVE)
+  const isChildUpdateAllowed = canUpdateChildren(
+    Entities.subquestion,
+    isSurveyActive
+  )
 
   const handleSubquestionUpdate = (value) => {
     onChange(value)
@@ -32,7 +36,7 @@ export const RankingQuestionSubquestion = ({
     <div className="d-flex align-items-center position-relative remove-option-button-parent">
       <div
         className={classNames('cursor-pointer remove-option-button me-1', {
-          'd-none': !isFocused,
+          'd-none': !isFocused || !isChildUpdateAllowed,
         })}
         onClick={() => handleRemovingSubquestions(qid)}
       >
@@ -51,10 +55,7 @@ export const RankingQuestionSubquestion = ({
           <div className="d-flex align-items-center gap-3">
             {isFocused && survey.showQNumCode?.showNumber && (
               <CodeInput
-                isEditable={canUpdateChildren(
-                  Entities.subquestion,
-                  isSurveyActive
-                )}
+                isEditable={isChildUpdateAllowed}
                 code={title}
                 onChange={(e) => handleCodeUpdate(e.target.value, index)}
               />

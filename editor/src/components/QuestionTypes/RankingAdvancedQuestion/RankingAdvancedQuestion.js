@@ -152,6 +152,7 @@ export const RankingAdvancedQuestion = ({
                 language={language}
                 handleCodeUpdate={handleChildCodeUpdate}
                 isTitleFocused={isTitleFocused}
+                participantMode={participantMode}
               />
               {provided.placeholder}
             </div>
