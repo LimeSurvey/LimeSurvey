@@ -138,6 +138,13 @@ export const DateTimePickerComponent = ({
     }
   }
 
+  /**
+   * Saves a date accepted in the picker when it is within the limits, and clears an earlier
+   * error: MUI doesn't know about the limits checked here, so it never clears it itself.
+   *
+   * @param {import('dayjs').Dayjs|null} acceptedValue The date accepted in the picker
+   * @returns {void}
+   */
   const handleOnAccept = (acceptedValue) => {
     if (!acceptedValue) {
       return
@@ -149,6 +156,7 @@ export const DateTimePickerComponent = ({
       return
     }
 
+    onError(null)
     onParticipantValueChange(
       value.format(DATE_QUESTION_STORAGE_FORMAT),
       valueInfo?.key
@@ -185,6 +193,8 @@ export const DateTimePickerComponent = ({
       return
     }
 
+    // MUI doesn't know about the limits checked here, so it never clears their error itself
+    onError(null)
     if (newValue) {
       update(newValue.toJSON())
       setValue(newValue)
@@ -201,8 +211,15 @@ export const DateTimePickerComponent = ({
     )
   }
 
+  /**
+   * Clears the date and any error shown for it, and closes the picker.
+   *
+   * @param {MouseEvent} e The click event of the clear button
+   * @returns {void}
+   */
   const handleClear = (e) => {
     e.stopPropagation()
+    onError(null)
     update(null)
     onParticipantValueChange(null, valueInfo?.key)
     setValue(null)

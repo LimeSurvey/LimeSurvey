@@ -268,6 +268,21 @@ describe('DateQuestionInput in picker mode', () => {
     expect(savedValues(onValueChange)).toEqual(['2024-05-01 00:00:00'])
   })
 
+  it('removes the range error of a time once a time within the limits is entered', () => {
+    // The time picker gets no limits from us, so MUI never reports or clears the range error
+    renderPicker({ date_format: 'HH:MM', date_min: '1970-01-01 10:00' }, 1)
+
+    fireEvent.change(screen.getByRole('textbox'), {
+      target: { value: '09:00' },
+    })
+    expect(screen.getByRole('alert').textContent).toMatch(/must be between/)
+
+    fireEvent.change(screen.getByRole('textbox'), {
+      target: { value: '11:00' },
+    })
+    expect(screen.queryByRole('alert')).toBeNull()
+  })
+
   it('links the input to the format hint', () => {
     renderPicker({}, 1)
 
