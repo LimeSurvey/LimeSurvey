@@ -221,8 +221,8 @@ $googleAnalyticsStyleOptions = array(
                 if (!($oSurvey instanceof Survey) || (!$oSurvey->isActive && $oSurvey->hasTokensTable)) {
                     App()->getController()->widget('ext.AlertWidget.AlertWidget', [
                         'text' => $oSurvey instanceof Survey
-                            ? gT("Changing the encryption method does not re-encrypt the existing survey participants. After a change, export and re-import the survey participant list, otherwise filters and duplicate checks can miss participants encrypted with the previous method.")
-                            : gT("Changing the encryption method does not re-encrypt the existing survey participants of the surveys inheriting it. After a change, export and re-import the survey participant list of these surveys, otherwise filters and duplicate checks can miss participants encrypted with the previous method."),
+                            ? gT("Changing the encryption method does not re-encrypt the existing survey participants. After a change, export the survey participant list and check the file, delete the existing participants, then import the file again with the original access codes. Otherwise filters and duplicate checks can miss participants encrypted with the previous method.")
+                            : gT("Changing the encryption method does not re-encrypt the existing survey participants of the surveys inheriting it. After a change, for each of these surveys: export the survey participant list and check the file, delete the existing participants, then import the file again with the original access codes. Otherwise filters and duplicate checks can miss participants encrypted with the previous method."),
                         'type' => 'warning',
                         'htmlOptions' => ['class' => 'mt-2'],
                     ]);
