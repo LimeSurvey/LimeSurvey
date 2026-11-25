@@ -14196,6 +14196,13 @@ body.error-page .error-title {
   line-height: 20px;
   color: #6e748c;
 }
+body.error-page .error-title p,
+body.error-page .error-title ul {
+  margin: 0;
+}
+body.error-page .error-title .text-danger {
+  color: inherit !important;
+}
 body.error-page .error-image {
   display: block;
   max-width: 100%;

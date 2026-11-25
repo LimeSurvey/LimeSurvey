@@ -33,6 +33,15 @@ body.error-page {
     font-size: $font-size-base;
     line-height: $line-height-20;
     color: $g-700;
+
+    p,
+    ul {
+      margin: 0;
+    }
+
+    .text-danger {
+      color: inherit !important;
+    }
   }
 
   .error-image {
