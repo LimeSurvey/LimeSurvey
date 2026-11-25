@@ -76,17 +76,18 @@ class CPDImportParticipantsPermissionTest extends TestBaseClass
     {
         parent::setUp();
         $this->deleteTestParticipants();
-        \Yii::app()->db->createCommand()->insert('{{participants}}', [
-            'participant_id' => self::EXISTING_PARTICIPANT_ID,
-            'firstname' => 'Max',
-            'lastname' => 'Original',
-            'email' => 'max.original@example.com',
-            'language' => 'en',
-            'blacklisted' => 'N',
-            'owner_uid' => 1,
-            'created_by' => 1,
-            'created' => date('Y-m-d H:i:s'),
-        ]);
+        $participant = new \Participant();
+        $participant->participant_id = self::EXISTING_PARTICIPANT_ID;
+        $participant->firstname = 'Max';
+        $participant->lastname = 'Original';
+        $participant->email = 'max.original@example.com';
+        $participant->language = 'en';
+        $participant->blacklisted = 'N';
+        $participant->owner_uid = 1;
+        $participant->created_by = 1;
+        $participant->created = date('Y-m-d H:i:s');
+        // The core attributes are encrypted by default on a new installation
+        $this->assertTrue($participant->encryptSave(), 'Could not create the existing participant');
     }
 
     /**
