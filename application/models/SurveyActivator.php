@@ -90,6 +90,13 @@ class SurveyActivator
             );
         }
 
+        /* Responses are encrypted with this method : fix the inherited one, whatever the activation path (archive import, command) */
+        if ($this->survey->encryption_method === 'I') {
+            $encryptionMethod = $this->survey->getResolvedEncryptionMethod('I');
+            Survey::model()->updateByPk($this->survey->sid, ['encryption_method' => $encryptionMethod]);
+            $this->survey->encryption_method = $encryptionMethod;
+        }
+
         if (!$this->createResponseTable()) {
             return ['error' => $this->error];
         }
