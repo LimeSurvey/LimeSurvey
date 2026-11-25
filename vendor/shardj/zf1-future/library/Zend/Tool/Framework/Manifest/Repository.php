@@ -36,7 +36,7 @@ class Zend_Tool_Framework_Manifest_Repository
 {
 
     /**
-     * @var Zend_Tool_Framework_Provider_Registry_Interface
+     * @var Zend_Tool_Framework_Registry_Interface
      */
     protected $_registry = null;
 
@@ -124,6 +124,7 @@ class Zend_Tool_Framework_Manifest_Repository
 
             foreach ($actions as $action) {
                 if (is_string($action)) {
+                    require_once 'Zend/Tool/Framework/Action/Base.php';
                     $action = new Zend_Tool_Framework_Action_Base($action);
                 }
                 $actionRepository->addAction($action);
@@ -150,7 +151,7 @@ class Zend_Tool_Framework_Manifest_Repository
     /**
      * addMetadata() - add a metadata peice by peice
      *
-     * @param Zend_Tool_Framework_Manifest_Metadata $metadata
+     * @param Zend_Tool_Framework_Metadata_Interface $metadata
      * @return Zend_Tool_Framework_Manifest_Repository
      */
     public function addMetadata(Zend_Tool_Framework_Metadata_Interface $metadata)
@@ -211,7 +212,7 @@ class Zend_Tool_Framework_Manifest_Repository
      *
      * @param array $searchProperties
      * @param bool $includeNonExistentProperties
-     * @return Zend_Tool_Framework_Manifest_Metadata[]
+     * @return Zend_Tool_Framework_Metadata_Interface[]
      */
     public function getMetadatas(Array $searchProperties = [], $includeNonExistentProperties = true)
     {
@@ -253,7 +254,7 @@ class Zend_Tool_Framework_Manifest_Repository
      *
      * @param array $searchProperties
      * @param bool $includeNonExistentProperties
-     * @return Zend_Tool_Framework_Manifest_Metadata
+     * @return Zend_Tool_Framework_Metadata_Interface
      */
     public function getMetadata(Array $searchProperties = [], $includeNonExistentProperties = true)
     {

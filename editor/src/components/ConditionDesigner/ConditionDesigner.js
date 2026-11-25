@@ -6,22 +6,21 @@ import { Button, Input } from 'components'
 import { useBuffer, useFocused, useConditionDesigner } from 'hooks'
 import { SideBarHeader } from 'components/SideBar'
 import { ArrowLeftIcon } from 'components/icons'
-import { getQuestionById, QUESTION_RELEVANCE_DEFAULT_VALUE } from 'helpers'
+import { QUESTION_RELEVANCE_DEFAULT_VALUE } from 'helpers'
 
 import { previousQuestionsHandler } from './handlers/previousQuestions/previousQuestionsHandler'
 import { ConditionItem } from './ConditionItem'
 import {
   buildScenarioConditionsForUpdate,
-  getAllowedMethods,
-  getConditionTypeInfo,
+  getConditionState,
   getDefaultCondition,
   hasUnsavedChanges,
+  isScenarioDraftValid,
+  runIfConditionUnchanged,
   showConditionScriptOverwriteConfirmationOverlay,
   showUnsavedChangesOverlay,
   showWarningMessage,
 } from './utils'
-
-const conditionTypeInfo = getConditionTypeInfo()
 
 const scenarioActions = {
   CREATE: 'create', // when creating a new scenario
@@ -29,6 +28,10 @@ const scenarioActions = {
 }
 
 export const ConditionDesigner = ({
+  question,
+  groupIndex,
+  questionIndex,
+  isFirstQuestion = false,
   survey,
   update,
   language,
@@ -36,12 +39,8 @@ export const ConditionDesigner = ({
   setPendingScenarioName,
   onNavigateBack = () => {},
 }) => {
-  const { focused, groupIndex, questionIndex } = useFocused()
+  const { focused } = useFocused()
   const { addToBuffer } = useBuffer()
-
-  const question = useMemo(() => {
-    return getQuestionById(focused.qid, survey)?.question
-  }, [focused.qid, survey])
 
   const [scid, setScid] = useState(scenarioToPatch ? scenarioToPatch.scid : 1)
 
@@ -61,7 +60,8 @@ export const ConditionDesigner = ({
   const [isApplyButtonDisabled, setIsApplyButtonDisabled] = useState(true)
 
   const shouldConfirmOverwrite =
-    question.scenarios.length === 0 &&
+    !!question?.relevance &&
+    !question.scenarios?.length &&
     question.relevance !== QUESTION_RELEVANCE_DEFAULT_VALUE
 
   const hasShownWarningRef = useRef(false)
@@ -87,11 +87,7 @@ export const ConditionDesigner = ({
   } = useConditionDesigner({
     question,
     scenarioToPatch,
-    survey,
-    groupIndex,
-    questionIndex,
     update,
-    focused,
     setPendingScenarioName,
     onNavigateBack,
     scid,
@@ -107,24 +103,10 @@ export const ConditionDesigner = ({
     }
   }, [focused.qid])
 
-  const isValidScenario = useMemo(() => {
-    return conditions.every((condition) => {
-      const { method, cqid, targetType, value, sourceType, cfieldname } =
-        condition
-
-      const isMethodValid = Object.values(getAllowedMethods()).includes(method)
-      const isValueValid =
-        targetType === conditionTypeInfo.TARGET.CONSTANT || value !== null
-      const isScidValid = scid !== '' && !isNaN(scid)
-
-      const isSourceValid =
-        sourceType === conditionTypeInfo.SOURCE.QUESTION
-          ? typeof cqid === 'number' && cqid > 0
-          : Boolean(cfieldname)
-
-      return isMethodValid && isValueValid && isScidValid && isSourceValid
-    })
-  }, [conditions, scid])
+  const isValidScenario = useMemo(
+    () => isScenarioDraftValid(conditions, scid),
+    [conditions, scid]
+  )
 
   const isUpdateAction = useCallback(() => {
     return scenarioAction === scenarioActions.UPDATE
@@ -141,9 +123,12 @@ export const ConditionDesigner = ({
   const handleApplyClick = () => {
     const save = () => handleSavingScenario()
     if (shouldConfirmOverwrite) {
+      // The confirmation only applies to the script it shows
+      const shownCondition = getConditionState(question)
       showConditionScriptOverwriteConfirmationOverlay({
         script: question.relevance,
-        onConfirm: save,
+        onConfirm: () =>
+          runIfConditionUnchanged(question.qid, shownCondition, save),
         onCancel: onNavigateBack,
       })
     } else {
@@ -159,6 +144,10 @@ export const ConditionDesigner = ({
 
     setIsApplyButtonDisabled(shouldDisable)
   }, [isValidScenario, conditions, scenarioAction])
+
+  if (!question) {
+    return null
+  }
 
   return (
     <>
@@ -204,7 +193,7 @@ export const ConditionDesigner = ({
               previousQuestions={previousQuestions}
               updateCondition={updateCondition}
               removeCondition={removeCondition}
-              focused={focused}
+              isFirstQuestion={isFirstQuestion}
               survey={survey}
               isUpdateAction={isUpdateAction()}
             />

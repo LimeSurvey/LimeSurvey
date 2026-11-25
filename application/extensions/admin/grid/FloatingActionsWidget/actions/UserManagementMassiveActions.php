@@ -169,4 +169,3 @@ class UserManagementMassiveActions
         return $aActions;
     }
 }
-

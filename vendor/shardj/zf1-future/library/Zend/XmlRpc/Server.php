@@ -319,7 +319,7 @@ class Zend_XmlRpc_Server extends Zend_Server_Abstract
     /**
      * Handle an xmlrpc call
      *
-     * @param Zend_XmlRpc_Request $request Optional
+     * @param Zend_XmlRpc_Request|false $request Optional
      * @return Zend_XmlRpc_Response|Zend_XmlRpc_Fault
      */
     public function handle($request = false)
@@ -554,7 +554,7 @@ class Zend_XmlRpc_Server extends Zend_Server_Abstract
      *
      * @param Zend_XmlRpc_Request $request
      * @return Zend_XmlRpc_Response
-     * @throws Zend_XmlRpcServer_Exception|Exception
+     * @throws Zend_XmlRpc_Server_Exception|Exception
      * Zend_XmlRpcServer_Exceptions are thrown for internal errors; otherwise,
      * any other exception may be thrown by the callback
      */

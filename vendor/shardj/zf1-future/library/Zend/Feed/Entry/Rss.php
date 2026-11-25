@@ -67,7 +67,7 @@ class Zend_Feed_Entry_Rss extends Zend_Feed_Entry_Abstract
      * to content:encoded element.
      *
      * @param  string $var The property to change.
-     * @param  string $val The property's new value.
+     * @param  string $value The property's new value.
      * @return void
      */
     public function __set($var, $value)

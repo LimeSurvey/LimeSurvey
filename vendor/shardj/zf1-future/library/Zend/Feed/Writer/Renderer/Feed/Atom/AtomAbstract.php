@@ -19,17 +19,11 @@
  * @version    $Id$
  */
 
-/** @see Zend_Feed_Writer_Feed */
-require_once 'Zend/Feed/Writer/Feed.php';
-
 /** @see Zend_Version */
 require_once 'Zend/Version.php';
 
 /** @see Zend_Feed_Writer_Renderer_RendererInterface */
 require_once 'Zend/Feed/Writer/Renderer/RendererInterface.php';
-
-/** @see Zend_Feed_Writer_Renderer_Entry_Atom */
-require_once 'Zend/Feed/Writer/Renderer/Entry/Atom.php';
 
 /** @see Zend_Feed_Writer_Renderer_RendererAbstract */
 require_once 'Zend/Feed/Writer/Renderer/RendererAbstract.php';
@@ -143,6 +137,7 @@ class Zend_Feed_Writer_Renderer_Feed_Atom_AtomAbstract
 
         $updated = $dom->createElement('updated');
         $root->appendChild($updated);
+        require_once 'Zend/Date.php';
         $text = $dom->createTextNode(
             $this->getDataContainer()->getDateModified()->get(Zend_Date::ISO_8601)
         );
@@ -241,7 +236,7 @@ class Zend_Feed_Writer_Renderer_Feed_Atom_AtomAbstract
     protected function _setAuthors(DOMDocument $dom, DOMElement $root)
     {
         $authors = $this->_container->getAuthors();
-        if (!$authors || empty($authors)) {
+        if (!$authors) {
             /**
              * Technically we should defer an exception until we can check
              * that all entries contain an author. If any entry is missing

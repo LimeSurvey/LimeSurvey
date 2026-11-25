@@ -142,7 +142,7 @@ class Zend_Crypt_Hmac extends Zend_Crypt
      * @param string $data
      * @param string $output
      * @param bool $internal Option to not use hash() functions for testing
-     * @return string
+     * @return string|null
      */
     protected static function _hash($data, $output = self::STRING, $internal = false)
     {
@@ -162,6 +162,8 @@ class Zend_Crypt_Hmac extends Zend_Crypt
             $bin = mhash(self::_getMhashDefinition(self::$_hashAlgorithm), $data, self::$_key);
             return bin2hex($bin);
         }
+
+        return null;
     }
 
     /**
@@ -174,6 +176,7 @@ class Zend_Crypt_Hmac extends Zend_Crypt
      */
     protected static function _getMhashDefinition($hashAlgorithm)
     {
+        $types = [];
         // phpcs:ignore PHPCompatibility.FunctionUse.RemovedFunctions.mhash_countDeprecated -- fallback without ext/hash
         for ($i = 0; $i <= mhash_count(); $i++)
         {

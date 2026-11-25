@@ -104,6 +104,7 @@ require_once 'Zend/Gdata/Books/Extension/Viewability.php';
  * @subpackage Books
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @deprecated Deprecated since 1.27.1 and will be removed in a future version: Google shut down the Google Data APIs it implements and the ClientLogin and AuthSub authentication
  */
 class Zend_Gdata_Books_VolumeEntry extends Zend_Gdata_Entry
 {
@@ -647,7 +648,7 @@ class Zend_Gdata_Books_VolumeEntry extends Zend_Gdata_Entry
     /**
      * Gets the thumbnail link
      *
-     * @return Zend_Gdata_App_Extension_link|null The thumbnail link
+     * @return Zend_Gdata_App_Extension_Link|null The thumbnail link
      */
     public function getThumbnailLink()
     {

@@ -1,10 +1,21 @@
 import {
   addNoAnswerIfAllowed,
+  addOtherAnswerIfEnabled,
   createQuestion,
   createStandardAnswers,
 } from '../helpers'
 import { findFieldname } from '../utils'
 
+/**
+ * Adds the condition question of a single choice question with its answer
+ * options, the "Other" option when enabled and "No answer" when allowed.
+ *
+ * @param {object} question The single choice question.
+ * @param {string} language The language used for the question and answer texts.
+ * @param {object[]} cQuestions The condition questions list, extended in place.
+ * @param {object[]} cAnswers The condition answers list, extended in place.
+ * @returns {void}
+ */
 export const singleChoiceTypeHandler = (
   question,
   language,
@@ -25,5 +36,6 @@ export const singleChoiceTypeHandler = (
     fieldname,
     language
   )
+  addOtherAnswerIfEnabled(cAnswers, question, fieldname)
   addNoAnswerIfAllowed(cAnswers, question, fieldname)
 }

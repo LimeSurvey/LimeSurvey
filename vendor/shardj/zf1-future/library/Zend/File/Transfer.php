@@ -88,7 +88,7 @@ class Zend_File_Transfer
      * @param boolean $direction On null, all directions are returned
      *                           On false, download direction is returned
      *                           On true, upload direction is returned
-     * @return array|Zend_File_Transfer_Adapter
+     * @return array|Zend_File_Transfer_Adapter_Abstract
      */
     public function getAdapter($direction = null)
     {

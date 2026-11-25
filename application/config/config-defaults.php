@@ -411,6 +411,8 @@ $config['pdfdefaultfont'] = 'auto'; //Default font for the pdf Export
 *  $alternatepdffontfile - array of the font file name used to created pdf in statistics in specific language - this font are included in tcpdf core
 *  Only used if $pdfdefaultfont is set to auto or set to a PDF core fonts
 *  Some language are not tested : need translation for Yes,No and Gender : ckb, swh
+*  The fonts contain the letters of the language, but TCPDF does not join letters of complex scripts:
+*  Text in bn, gu, hi, ml, mr, ne, ory, pa, si and ta is readable, but not typeset correctly
 */
 $config['alternatepdffontfile'] = array(
     'zh-Hans' => 'cid0cs',
@@ -420,16 +422,50 @@ $config['alternatepdffontfile'] = array(
     'ja' => 'cid0jp',
     'ko' => 'cid0kr',
     'pa' => 'freesans',
+    'am' => 'freeserif',
+    'bn' => 'freesans',
+    'gu' => 'freeserif',
+    'hi' => 'freesans',
+    'ml' => 'freesans',
+    'mr' => 'freesans',
+    'ne' => 'freesans',
+    'ory' => 'freeserif',
+    'si' => 'freeserif',
+    'ta' => 'freeserif',
+    'th' => 'freeserif',
+    'ti' => 'freeserif',
+    'ug' => 'freeserif',
 );
 /**
-*  $notsupportlanguages - array of language where no font was found for PDF
-*  Seems not used actually
+*  $pdfunsupportedfontstyles - array of the font styles (B: Bold, I: Italic) a font can not print in a language: font => (language => styles)
+*  The bold and italic files of these fonts do not contain the letters of the language, the text would be printed as empty boxes
+*  Text in these styles is printed in the regular font instead
 */
-$config['notsupportlanguages'] = array(
-    'am', // Amharic
-    'si', // Sinhala
-    'th', // Thai
-    );
+$config['pdfunsupportedfontstyles'] = array(
+    'freesans' => array(
+        'bn' => 'B',
+        'hi' => 'I',
+        'ml' => 'BI',
+        'mr' => 'I',
+        'ne' => 'I',
+        'pa' => 'I',
+    ),
+    'freeserif' => array(
+        'am' => 'BI',
+        'bn' => 'B',
+        'gu' => 'BI',
+        'hi' => 'I',
+        'ml' => 'BI',
+        'mr' => 'I',
+        'ne' => 'I',
+        'ory' => 'BI',
+        'pa' => 'I',
+        'si' => 'I',
+        'ta' => 'BI',
+        'ti' => 'BI',
+        'ug' => 'I',
+    ),
+);
 $config['pdffontsize']    = 9; //Fontsize for normal text; Surveytitle is +4; grouptitle is +2
 $config['pdforientation'] = 'P'; // Set L for Landscape or P for portrait format
 $config['pdfshowsurveytitle'] = 'Y'; // Show header in pdf answer export
@@ -845,15 +881,6 @@ $config['encryptionpublickey'] = '';
 $config['encryptionsecretkey'] = '';
 $config['encryptionnonce'] = '';
 $config['encryptionsecretboxkey'] = '';
-
-$config['passwordValidationRules'] = array(
-    'min' => 8,
-    'max' => 0,
-    'lower' => 0,
-    'upper' => 1,
-    'numeric' => 1,
-    'symbol' => 0,
-);
 
 // Allowed host of the LimeSurvey instance, avoid Host Header Injection in some case
 // For security purpose : Host Header Injection in password reset function

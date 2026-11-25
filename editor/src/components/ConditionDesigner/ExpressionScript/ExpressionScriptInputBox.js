@@ -1,33 +1,30 @@
 import { useParams } from 'react-router-dom'
 
-import {
-  useBuffer,
-  useExpressionScriptValidation,
-  useFocused,
-  useSurvey,
-} from 'hooks'
-import {
-  getQuestionById,
-  htmlPopup,
-  QUESTION_RELEVANCE_DEFAULT_VALUE,
-} from 'helpers'
+import { useBuffer, useExpressionScriptValidation, useSurvey } from 'hooks'
+import { QUESTION_RELEVANCE_DEFAULT_VALUE } from 'helpers'
 import { Button } from 'components/UIComponents'
 import { CloseCircleIcon, ExpandIcon } from 'components/icons'
 
 import { ExpressionScriptEditorOverlay } from '../Overlays'
 import { handleConditionScriptUpdate } from './handleConditionScriptUpdate'
-import { showResetAllConditionsOverlay, showWarningMessage } from '../utils'
+import {
+  showConditionPopup,
+  showResetAllConditionsOverlay,
+  showWarningMessage,
+} from '../utils'
 
-export const ExpressionScriptInputBox = ({ onShowPanel, onNavigateBack }) => {
+export const ExpressionScriptInputBox = ({
+  question,
+  onShowPanel,
+  onNavigateBack,
+}) => {
   const { surveyId } = useParams()
-  const { survey, update } = useSurvey(surveyId)
-  const { focused, groupIndex, questionIndex } = useFocused()
+  const { update } = useSurvey(surveyId)
   const { addToBuffer } = useBuffer()
 
-  const question = getQuestionById(focused.qid, survey).question
   const validateExpression = useExpressionScriptValidation(
     surveyId,
-    question.qid
+    question?.qid
   )
   const hasConditions = (question?.scenarios ?? []).length > 0
 
@@ -45,13 +42,15 @@ export const ExpressionScriptInputBox = ({ onShowPanel, onNavigateBack }) => {
   const handleApply = (newExpressionScript) => {
     handleConditionScriptUpdate(
       newExpressionScript,
-      survey,
-      questionIndex,
-      groupIndex,
+      question.qid,
       addToBuffer,
       update,
       onNavigateBack
     )
+  }
+
+  if (!question) {
+    return null
   }
 
   return (
@@ -73,7 +72,7 @@ export const ExpressionScriptInputBox = ({ onShowPanel, onNavigateBack }) => {
           className="d-flex align-items-center p-0 text-secondary"
           variant="link"
           onClick={() => {
-            htmlPopup({
+            showConditionPopup({
               html: (
                 <ExpressionScriptEditorOverlay
                   question={question}
@@ -81,7 +80,6 @@ export const ExpressionScriptInputBox = ({ onShowPanel, onNavigateBack }) => {
                   validateExpression={validateExpression}
                 />
               ),
-              title: '',
               showCloseButton: false,
               width: '1156px',
             })

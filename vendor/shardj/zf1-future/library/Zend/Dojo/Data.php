@@ -33,7 +33,7 @@ class Zend_Dojo_Data implements ArrayAccess,Iterator,Countable
 {
     /**
      * Identifier field of item
-     * @var string|int
+     * @var string|int|null
      */
     protected $_identifier;
 
@@ -45,7 +45,7 @@ class Zend_Dojo_Data implements ArrayAccess,Iterator,Countable
 
     /**
      * Label field of item
-     * @var string
+     * @var string|null
      */
     protected $_label;
 
@@ -92,7 +92,7 @@ class Zend_Dojo_Data implements ArrayAccess,Iterator,Countable
      * Set an individual item, optionally by identifier (overwrites)
      *
      * @param  array|object $item
-     * @param  string|null $identifier
+     * @param  string|null $id
      * @return Zend_Dojo_Data
      */
     public function setItem($item, $id = null)
@@ -172,7 +172,7 @@ class Zend_Dojo_Data implements ArrayAccess,Iterator,Countable
      * Item retrieved will be flattened to an array.
      *
      * @param  string $id
-     * @return array
+     * @return array|null
      */
     public function getItem($id)
     {
@@ -485,7 +485,7 @@ class Zend_Dojo_Data implements ArrayAccess,Iterator,Countable
     /**
      * Iterator: get next item
      *
-     * @return void
+     * @return mixed
      */
     #[\ReturnTypeWillChange]
     public function next()
@@ -496,7 +496,7 @@ class Zend_Dojo_Data implements ArrayAccess,Iterator,Countable
     /**
      * Iterator: rewind to first value in collection
      *
-     * @return void
+     * @return mixed
      */
     #[\ReturnTypeWillChange]
     public function rewind()

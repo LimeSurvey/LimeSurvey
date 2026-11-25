@@ -54,7 +54,7 @@ class Zend_Service_StrikeIron
      * Factory method to return a preconfigured Zend_Service_StrikeIron_*
      * instance.
      *
-     * @param  null|string  $options  Service options
+     * @param  string|array|null  $options  Service options
      * @return object       Zend_Service_StrikeIron_* instance
      * @throws Zend_Service_StrikeIron_Exception
      */

@@ -139,6 +139,7 @@ class Zend_Application_Resource_Multidb extends Zend_Application_Resource_Resour
             return $this->_dbs[$db];
         }
 
+        require_once 'Zend/Application/Resource/Exception.php';
         throw new Zend_Application_Resource_Exception(
             'A DB adapter was tried to retrieve, but was not configured'
         );

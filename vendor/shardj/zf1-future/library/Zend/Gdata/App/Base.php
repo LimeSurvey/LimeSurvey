@@ -37,6 +37,7 @@ require_once 'Zend/Xml/Security.php';
  * @subpackage App
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @deprecated Deprecated since 1.27.1 and will be removed in a future version: Google shut down the Google Data APIs it implements and the ClientLogin and AuthSub authentication
  */
 abstract class Zend_Gdata_App_Base
 {
@@ -47,7 +48,7 @@ abstract class Zend_Gdata_App_Base
     protected $_rootElement = null;
 
     /**
-     * @var string The XML namespace prefix
+     * @var string|null The XML namespace prefix
      */
     protected $_rootNamespace = 'atom';
 
@@ -499,7 +500,7 @@ abstract class Zend_Gdata_App_Base
      * TODO Remove ability to bypass getFoo() methods??
      *
      * @param string $name
-     * @param string $value
+     * @param string $val
      */
     public function __set($name, $val)
     {

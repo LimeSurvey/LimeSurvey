@@ -33,14 +33,14 @@ class Zend_Soap_Client_Common extends SoapClient
     /**
      * doRequest() pre-processing method
      *
-     * @var callback
+     * @var callable
      */
     protected $_doRequestCallback;
 
     /**
      * Common Soap Client constructor
      *
-     * @param callable $doRequestMethod
+     * @param callable $doRequestCallback
      * @param string $wsdl
      * @param array $options
      */

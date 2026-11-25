@@ -68,7 +68,6 @@ class UserManagementBatchPermissionsTest extends TestBaseClass
     {
         $controller = new \UserManagementController('userManagement');
         $reflectionMethod = new \ReflectionMethod($controller, $method);
-        $reflectionMethod->setAccessible(true);
         return $reflectionMethod->invokeArgs($controller, $args);
     }
 

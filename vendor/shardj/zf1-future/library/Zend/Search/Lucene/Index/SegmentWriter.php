@@ -129,7 +129,7 @@ abstract class Zend_Search_Lucene_Index_SegmentWriter
     /**
      * '.fdx'  file - Stored Fields, the field index.
      *
-     * @var Zend_Search_Lucene_Storage_File
+     * @var Zend_Search_Lucene_Storage_File|null
      */
     protected $_fdxFile = null;
 
@@ -351,28 +351,28 @@ abstract class Zend_Search_Lucene_Index_SegmentWriter
     /**
      * Last saved term
      *
-     * @var Zend_Search_Lucene_Index_Term
+     * @var Zend_Search_Lucene_Index_Term|null
      */
     private $_prevTerm;
 
     /**
      * Last saved term info
      *
-     * @var Zend_Search_Lucene_Index_TermInfo
+     * @var Zend_Search_Lucene_Index_TermInfo|null
      */
     private $_prevTermInfo;
 
     /**
      * Last saved index term
      *
-     * @var Zend_Search_Lucene_Index_Term
+     * @var Zend_Search_Lucene_Index_Term|null
      */
     private $_prevIndexTerm;
 
     /**
      * Last saved index term info
      *
-     * @var Zend_Search_Lucene_Index_TermInfo
+     * @var Zend_Search_Lucene_Index_TermInfo|null
      */
     private $_prevIndexTermInfo;
 

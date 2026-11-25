@@ -114,7 +114,7 @@ class Zend_Pdf_Filter_RunLength implements Zend_Pdf_Filter_Interface
                 $output .= substr($data, $offset, $length);
 
                 $offset += $length;
-            } else if ($length > 128) {
+            } else {
                 $output .= str_repeat($data[$offset], 257 - $length);
 
                 $offset++;

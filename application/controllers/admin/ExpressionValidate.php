@@ -70,7 +70,7 @@ class ExpressionValidate extends SurveyCommonAction
                 );
                 $aExpressions['url_' . $sLang] = array(
                     'title' => sprintf(gT("URL (%s)"), $sLang),
-                    'expression' => $this->getHtmlExpression($oQuotaLanguageSetting->quotals_url, array(), __METHOD__),
+                    'expression' => $this->getHtmlExpression($oQuotaLanguageSetting->quotals_url, array(), __METHOD__, true),
                 );
                 $aExpressions['urldescrip_' . $sLang] = array(
                     'title' => sprintf(gT("URL description (%s)"), $sLang),
@@ -252,14 +252,20 @@ class ExpressionValidate extends SurveyCommonAction
      * @param string $sExpression : the string to parse
      * @param array $aReplacement : optional array of replacemement
      * @param string $sDebugSource : optional debug source (for templatereplace)
+     * @param bool $isUrl : true if the string is an end URL, whose {PASSTHRU:...} placeholders are not expressions
+     * @return string The HTML of the pretty-printed string
      * @uses ExpressionValidate::$iSurveyId
      * @uses ExpressionValidate::$sLang
      *
      * @author Denis Chenu
      * @version 1.0
      */
-    private function getHtmlExpression($sExpression, $aReplacement = array(), $sDebugSource = __CLASS__)
+    private function getHtmlExpression($sExpression, $aReplacement = array(), $sDebugSource = __CLASS__, $isUrl = false)
     {
+        $passthruMarkers = [];
+        if ($isUrl) {
+            [$sExpression, $passthruMarkers] = LimeExpressionManager::maskPassthruPlaceholders($sExpression);
+        }
         $LEM = LimeExpressionManager::singleton();
         $LEM::SetDirtyFlag(); // Not sure it's needed
         $LEM::SetPreviewMode('logic');
@@ -274,6 +280,6 @@ class ExpressionValidate extends SurveyCommonAction
         templatereplace(viewHelper::filterScript($sExpression), $aReplacement, $aReData, $sDebugSource, false, null, array(), true);
         $oFilter = new CHtmlPurifier();
 
-        return $oFilter->purify($LEM::GetLastPrettyPrintExpression());
+        return $oFilter->purify(strtr($LEM::GetLastPrettyPrintExpression(), $passthruMarkers));
     }
 }

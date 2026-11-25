@@ -87,18 +87,17 @@ Yii::app()->getController()->renderPartial(
         </div>
         <?php echo $form->error($oUser, 'expires'); ?>
     </div>
-    <?php if (!$oUser->isNewRecord): ?>
+    <?php if (!$oUser->isNewRecord) : ?>
         <div class="mb-3">
             <?php echo $form->labelEx($oUser, 'last_login', ['for' => 'User_Form_last_login']); ?>
             <input class="form-control" type="text"
-                   value="<?= !empty($oUser->last_login) ? convertToGlobalSettingFormat($oUser->last_login,
-                       true) : gT("Never") ?>" disabled="true"/>
+                   value="<?= !empty($oUser->last_login) ? convertToGlobalSettingFormat($oUser->last_login, true) : gT("Never") ?>" disabled="true"/>
         </div>
         <div class="mb-3">
             <input type="checkbox" id="utility_change_password">
             <label for="utility_change_password"><?= gT("Change password?") ?></label>
         </div>
-    <?php else: ?>
+    <?php else : ?>
         <div class="mb-3" id="utility_set_password">
             <div class="col-6">
                 <label id="UserManagement--set_password_grouplabel"><?= gT("Set password now?") ?></label>

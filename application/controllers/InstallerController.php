@@ -179,13 +179,16 @@ class InstallerController extends CController
     }
 
     /**
-     * display the license file as IIS for example
-     * does not display it via the server.
+     * Outputs the LimeSurvey license file as plain text.
+     * Needed because some webservers (IIS for example) do not serve the file directly.
+     *
+     * @return void
      */
     public function stepViewLicense()
     {
         header('Content-Type: text/plain; charset=UTF-8');
-        readfile(dirname((string) BASEPATH) . '/LICENSE');
+        // APPPATH is the application folder: the license file is in its parent, the LimeSurvey root folder
+        readfile(dirname((string) APPPATH) . '/LICENSE');
         exit;
     }
 

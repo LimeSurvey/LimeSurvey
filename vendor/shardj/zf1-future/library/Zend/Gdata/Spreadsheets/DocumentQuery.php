@@ -41,6 +41,7 @@ require_once('Zend/Gdata/Query.php');
  * @subpackage   Spreadsheets
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @deprecated Deprecated since 1.27.1 and will be removed in a future version: Google shut down the Google Data APIs it implements and the ClientLogin and AuthSub authentication
  */
 class Zend_Gdata_Spreadsheets_DocumentQuery extends Zend_Gdata_Query
 {
@@ -197,7 +198,7 @@ class Zend_Gdata_Spreadsheets_DocumentQuery extends Zend_Gdata_Query
 
     /**
      * Gets the title attribute for this query.
-     * @return string title
+     * @return string|null title
      */
     public function getTitle()
     {
@@ -210,7 +211,7 @@ class Zend_Gdata_Spreadsheets_DocumentQuery extends Zend_Gdata_Query
 
     /**
      * Gets the title-exact attribute for this query.
-     * @return string title-exact
+     * @return string|null title-exact
      */
     public function getTitleExact()
     {

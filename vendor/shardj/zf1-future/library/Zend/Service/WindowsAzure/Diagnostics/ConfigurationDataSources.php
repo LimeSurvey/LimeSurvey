@@ -52,12 +52,12 @@ require_once 'Zend/Service/WindowsAzure/Diagnostics/ConfigurationDirectories.php
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  *
- * @property	int																				OverallQuotaInMB				Overall quota in MB
- * @property	Zend_Service_WindowsAzure_Diagnostics_ConfigurationLogs							Logs							Logs
- * @property	Zend_Service_WindowsAzure_Diagnostics_ConfigurationDiagnosticInfrastructureLogs	DiagnosticInfrastructureLogs	Diagnostic infrastructure logs
- * @property	Zend_Service_WindowsAzure_Diagnostics_ConfigurationPerformanceCounters				PerformanceCounters				Performance counters
- * @property	Zend_Service_WindowsAzure_Diagnostics_ConfigurationWindowsEventLog					WindowsEventLog					Windows Event Log
- * @property	Zend_Service_WindowsAzure_Diagnostics_ConfigurationDirectories						Directories						Directories
+ * @property	int																				$OverallQuotaInMB				Overall quota in MB
+ * @property	Zend_Service_WindowsAzure_Diagnostics_ConfigurationLogs							$Logs							Logs
+ * @property	Zend_Service_WindowsAzure_Diagnostics_ConfigurationDiagnosticInfrastructureLogs	$DiagnosticInfrastructureLogs	Diagnostic infrastructure logs
+ * @property	Zend_Service_WindowsAzure_Diagnostics_ConfigurationPerformanceCounters				$PerformanceCounters				Performance counters
+ * @property	Zend_Service_WindowsAzure_Diagnostics_ConfigurationWindowsEventLog					$WindowsEventLog					Windows Event Log
+ * @property	Zend_Service_WindowsAzure_Diagnostics_ConfigurationDirectories						$Directories						Directories
  */
 class Zend_Service_WindowsAzure_Diagnostics_ConfigurationDataSources
 	extends Zend_Service_WindowsAzure_Diagnostics_ConfigurationObjectBaseAbstract

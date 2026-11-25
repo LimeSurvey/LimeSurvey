@@ -87,7 +87,7 @@ class Zend_Service_Console_Command
 	 * Writes output to STDERR, followed by a newline (optional)
 	 *
 	 * @param string $errorMessage
-	 * @param string $newLine
+	 * @param string|true $newLine
 	 */
 	public static function stderr($errorMessage, $newLine = true)
 	{
