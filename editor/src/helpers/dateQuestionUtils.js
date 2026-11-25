@@ -171,14 +171,26 @@ export const isFullDateFormat = (format) => {
 /**
  * Resets the parts of a date its format doesn't show, like the survey does when it saves a
  * date answer: A missing year becomes 1970, month January, day 1 and hours or minutes 0.
+ * 29 February without a year doesn't exist in 1970, so the survey rejects it: It becomes an
+ * invalid date instead of silently turning into 28 February.
  *
  * @param {import('dayjs').Dayjs} date The picked date
  * @param {string[]|undefined} views The picker views from getDatePickerViews()
- * @returns {import('dayjs').Dayjs} The normalized date
+ * @returns {import('dayjs').Dayjs} The normalized date, invalid when it doesn't exist in 1970
  */
 export const normalizeDateToViews = (date, views) => {
   if (!date || !views) {
     return date
+  }
+
+  if (
+    !views.includes('year') &&
+    views.includes('month') &&
+    views.includes('day') &&
+    date.month() === 1 &&
+    date.date() === 29
+  ) {
+    return dayJsHelper(NaN)
   }
 
   let normalized = date.second(0).millisecond(0)

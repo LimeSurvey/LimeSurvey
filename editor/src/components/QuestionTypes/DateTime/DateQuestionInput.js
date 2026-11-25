@@ -45,6 +45,8 @@ export const DateQuestionInput = ({
   // The picker's last validation error, e.g. "invalidDate" or "minDate"
   const pickerErrorRef = useRef(null)
   const valueInfo = values?.[0]
+  // Without the site's date formats the survey's format is unknown: Only allow editing once they're loaded
+  const isEditable = participantMode && Boolean(siteSettings?.dateFormats)
 
   const settings = useMemo(
     () =>
@@ -163,7 +165,7 @@ export const DateQuestionInput = ({
           value={initialValue}
           onChange={handleDropdownChange}
           onPartialChange={handleDropdownPartialChange}
-          disabled={!participantMode}
+          disabled={!isEditable}
           ariaLabel={formatLabel}
           invalid={Boolean(error)}
           errorId={errorId}
@@ -180,7 +182,7 @@ export const DateQuestionInput = ({
             onValueChange={onValueChange}
             onError={handlePickerError}
             participantMode={participantMode}
-            previewDisabled={!participantMode}
+            previewDisabled={!isEditable}
             ariaLabel={formatLabel}
             ariaDescribedBy={describedBy}
           />

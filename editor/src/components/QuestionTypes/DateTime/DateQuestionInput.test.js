@@ -4,22 +4,24 @@ import { STATES } from 'helpers'
 
 import { DateQuestionInput } from './DateQuestionInput'
 
+const loadedSiteSettings = {
+  dateFormats: {
+    1: { dateformat: 'dd.mm.yyyy', jsdate: 'DD.MM.YYYY' },
+  },
+}
+// The site settings the mocked app state returns; undefined while they're still loading
+let mockSiteSettings = loadedSiteSettings
+
 jest.mock('hooks', () => ({
   ...jest.requireActual('hooks'),
-  useAppState: jest.fn((key) => {
-    if (key === 'site_settings') {
-      return [
-        {
-          dateFormats: {
-            1: { dateformat: 'dd.mm.yyyy', jsdate: 'DD.MM.YYYY' },
-          },
-        },
-      ]
-    }
-
-    return [undefined]
-  }),
+  useAppState: jest.fn((key) =>
+    key === 'site_settings' ? [mockSiteSettings] : [undefined]
+  ),
 }))
+
+afterEach(() => {
+  mockSiteSettings = loadedSiteSettings
+})
 
 global.t = (key) => key
 
@@ -195,6 +197,29 @@ describe('DateQuestionInput in dropdown mode', () => {
       .getAllByRole('combobox')
       .forEach((element) => expect(element.disabled).toBe(true))
   })
+
+  it('can only be edited once the site date formats are loaded', () => {
+    mockSiteSettings = undefined
+    const { rerender } = renderDropdowns({})
+
+    screen
+      .getAllByRole('combobox')
+      .forEach((element) => expect(element.disabled).toBe(true))
+
+    mockSiteSettings = loadedSiteSettings
+    rerender(
+      <DateQuestionInput
+        question={{ qid: 1, attributes: { dropdown_dates: '1' } }}
+        language="en"
+        surveySettings={{ dateFormats: { en: 1 } }}
+        participantMode={true}
+        values={[{ key: '123X1X1', value: '' }]}
+      />
+    )
+    screen
+      .getAllByRole('combobox')
+      .forEach((element) => expect(element.disabled).toBe(false))
+  })
 })
 
 describe('DateQuestionInput in picker mode', () => {
@@ -210,7 +235,7 @@ describe('DateQuestionInput in picker mode', () => {
     })
   })
 
-  const renderPicker = (attributes, surveyDateFormat) =>
+  const renderPicker = (attributes, surveyDateFormat, props = {}) =>
     render(
       <DateQuestionInput
         question={{ qid: 1, attributes }}
@@ -218,8 +243,30 @@ describe('DateQuestionInput in picker mode', () => {
         surveySettings={{ dateFormats: { en: surveyDateFormat } }}
         participantMode={true}
         values={[{ key: '123X1X1', value: '' }]}
+        {...props}
       />
     )
+
+  it('offers only a time picker for a time format', () => {
+    renderPicker({ date_format: 'HH:MM' }, 1)
+
+    fireEvent.click(screen.getByRole('textbox'))
+    expect(screen.queryByRole('grid')).toBeNull()
+    expect(screen.getByRole('listbox', { name: /hours/i })).toBeTruthy()
+  })
+
+  it('checks the limits on the date with the hidden parts reset', () => {
+    const onValueChange = jest.fn()
+    renderPicker({ date_format: 'mm/yyyy', date_max: '2024-05-15' }, 1, {
+      values: [{ key: '123X1X1', value: '2024-03-20 00:00:00' }],
+      onValueChange,
+    })
+
+    fireEvent.change(screen.getByRole('textbox'), {
+      target: { value: '05/2024' },
+    })
+    expect(savedValues(onValueChange)).toEqual(['2024-05-01 00:00:00'])
+  })
 
   it('links the input to the format hint', () => {
     renderPicker({}, 1)

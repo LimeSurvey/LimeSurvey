@@ -259,4 +259,17 @@ describe('normalizeDateToViews', () => {
   it('leaves the date alone without views', () => {
     expect(normalizeDateToViews(date, undefined)).toBe(date)
   })
+
+  it('rejects 29 February in formats without a year, like the survey', () => {
+    const leapDay = dayjs('2028-02-29 00:00:00')
+
+    expect(normalizeDateToViews(leapDay, ['month', 'day']).isValid()).toBe(
+      false
+    )
+    expect(
+      normalizeDateToViews(leapDay, ['year', 'month', 'day']).format(
+        'YYYY-MM-DD'
+      )
+    ).toBe('2028-02-29')
+  })
 })

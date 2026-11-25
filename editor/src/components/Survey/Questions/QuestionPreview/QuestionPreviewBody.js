@@ -18,10 +18,13 @@ export const QuestionBodyPreview = ({
   disableUpdatingResponses,
 }) => {
   const [children, setChildren] = useState([])
-  // The changed response values and whether there are unconfirmed changes, kept together so
-  // every change can be applied as one functional update
-  const [pending, setPending] = useState({ value: {}, isUpdated: false })
-  const { value, isUpdated: valueIsUpdated } = pending
+  // The changed response values, the fields whose input can't be saved and whether there are
+  // unconfirmed changes, kept together so every change can be applied as one functional update
+  const emptyPending = { value: {}, invalidKeys: [], isUpdated: false }
+  const [pending, setPending] = useState(emptyPending)
+  const { value, invalidKeys, isUpdated: valueIsUpdated } = pending
+  // An invalid input keeps Cancel available, so it can be reset, but can't be confirmed
+  const showButtons = valueIsUpdated || invalidKeys.length > 0
   const lastToastTimeRef = useRef(0)
 
   const QuestionViewComponent = useMemo(
@@ -70,7 +73,7 @@ export const QuestionBodyPreview = ({
 
   // Drop local overrides once refreshed response values arrive from the parent
   useEffect(() => {
-    setPending({ value: {}, isUpdated: false })
+    setPending(emptyPending)
   }, [valuesSignature])
 
   /**
@@ -78,7 +81,7 @@ export const QuestionBodyPreview = ({
    *
    * @param {*} newValue The new value
    * @param {string} key The response field
-   * @param {boolean} [isInvalid] True when the input can't be saved (e.g. a date outside its limits): Drops the pending change
+   * @param {boolean} [isInvalid] True when the input can't be saved (e.g. a date outside its limits): Drops the pending change and marks the field invalid
    * @returns {void}
    */
   const handleOnValueChange = (newValue, key, isInvalid = false) => {
@@ -87,7 +90,14 @@ export const QuestionBodyPreview = ({
         // eslint-disable-next-line no-unused-vars
         const { [key]: _dropped, ...rest } = previous.value
 
-        return { value: rest, isUpdated: Object.keys(rest).length > 0 }
+        return {
+          value: rest,
+          invalidKeys:
+            disableUpdatingResponses || previous.invalidKeys.includes(key)
+              ? previous.invalidKeys
+              : [...previous.invalidKeys, key],
+          isUpdated: Object.keys(rest).length > 0,
+        }
       })
       return
     }
@@ -109,12 +119,20 @@ export const QuestionBodyPreview = ({
 
     setPending((previous) => ({
       value: { ...previous.value, [key]: newValue },
+      invalidKeys: previous.invalidKeys.filter(
+        (invalidKey) => invalidKey !== key
+      ),
       isUpdated: true,
     }))
   }
 
+  /**
+   * Saves the pending changes, unless an input can't be saved.
+   *
+   * @returns {void}
+   */
   const handleOnSave = () => {
-    if (disableUpdatingResponses) {
+    if (disableUpdatingResponses || invalidKeys.length > 0) {
       return
     }
 
@@ -145,7 +163,7 @@ export const QuestionBodyPreview = ({
       />
       <div
         className={classNames('d-flex justify-content-end gap-2 mt-3', {
-          'opacity-0 disabled pointer-events-none': !valueIsUpdated,
+          'opacity-0 disabled pointer-events-none': !showButtons,
         })}
       >
         <Button
@@ -161,6 +179,7 @@ export const QuestionBodyPreview = ({
           className="text-light"
           variant="danger"
           onClick={handleOnSave}
+          disabled={invalidKeys.length > 0}
         >
           {t('Confirm')}
         </Button>

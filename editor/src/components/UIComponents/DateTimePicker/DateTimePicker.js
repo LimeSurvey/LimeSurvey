@@ -3,6 +3,7 @@ import { Form } from 'react-bootstrap'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
+import { TimePicker } from '@mui/x-date-pickers/TimePicker'
 import { DateIcon, CloseIcon } from 'components/icons'
 
 import { TooltipContainer } from 'components/TooltipContainer/TooltipContainer'
@@ -99,6 +100,14 @@ export const DateTimePickerComponent = ({
     () => dayJsHelper(maxDate ?? DATE_QUESTION_DEFAULT_MAX),
     [maxDate]
   )
+  // A format with only a time (e.g. HH:MM) gets a time picker: The date time picker would open a day calendar
+  const isTimeOnly = Boolean(
+    views?.length &&
+    !views.some((view) => ['year', 'month', 'day'].includes(view))
+  )
+  const Picker = isTimeOnly ? TimePicker : DateTimePicker
+  // The time picker only compares times; the full limits are checked by isSavable()
+  const limitProps = isTimeOnly ? {} : { minDateTime, maxDateTime }
   const [siteSettings] = useAppState(STATES.SITE_SETTINGS)
   const [userDetails] = useAppState(STATES.USER_DETAIL)
   const appTimezone = siteSettings?.timezone ? siteSettings.timezone : null
@@ -151,21 +160,25 @@ export const DateTimePickerComponent = ({
     }
   }
 
-  const handleChange = (changedValue, context) => {
-    // MUI reports an invalid date while a typed value is still incomplete, and a validation
-    // error when it is outside the limits: Show it, but don't save it
-    if (
-      changedValue &&
-      (!changedValue.isValid?.() || context?.validationError)
-    ) {
+  /**
+   * Applies a picked or typed date: Resets the parts the format doesn't show, then saves it
+   * when it is within the limits.
+   *
+   * @param {import('dayjs').Dayjs|null} changedValue The date from MUI, invalid while a typed value is incomplete
+   * @returns {void}
+   */
+  const handleChange = (changedValue) => {
+    // MUI reports an invalid date while a typed value is still incomplete: Show it, but don't save it
+    if (changedValue && !changedValue.isValid?.()) {
       setValue(changedValue)
       onParticipantValueChange(null, valueInfo?.key, true)
       return
     }
 
+    // The limits are checked on the normalized date, not by MUI on the picked one: With mm/yyyy
+    // and a maximum of 2024-05-15, May 2024 is allowed although the stored day may be later, and
+    // May 2024 isn't allowed with a minimum of 2024-05-15
     const newValue = normalizeDateToViews(changedValue, views)
-    // Resetting the parts the format doesn't show can move the date outside the limits,
-    // e.g. May 2024 becomes 2024-05-01 with a minimum of 2024-05-15
     if (newValue && !isSavable(newValue)) {
       setValue(newValue)
       reportOutOfLimits(newValue)
@@ -228,7 +241,7 @@ export const DateTimePickerComponent = ({
           showTip={showNoPermissionTip}
         >
           <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DateTimePicker
+            <Picker
               slotProps={{
                 textField: {
                   onClick: () => setOpen(true),
@@ -269,8 +282,7 @@ export const DateTimePickerComponent = ({
               format={format}
               views={views}
               timeSteps={minuteStep ? { minutes: minuteStep } : undefined}
-              minDateTime={minDateTime}
-              maxDateTime={maxDateTime}
+              {...limitProps}
               onError={onError}
               timezone={participantMode ? null : timezone} // Using the timezone might display a different value than the one written inside the table.
               value={value}
