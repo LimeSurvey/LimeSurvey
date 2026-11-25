@@ -3119,12 +3119,24 @@ class ParticipantsAction extends SurveyCommonAction
             throw new \CHttpException(403, gT('Access denied'));
         }
         $stateId = 'currentReencryptLastParticipantId';
+        /* The encryption method used since the first participant of the current run */
+        $methodStateId = 'currentReencryptMethod';
+        $cryptMethod = App()->getConfig('CPDB_encryption_method', 'B');
         if (App()->getRequest()->getPost('rencrypt') == 'reset') {
             $lastParticipantId = '';
             App()->user->setState($stateId, null);
         } else {
             $lastParticipantId = strval(App()->user->getState($stateId, ''));
+            if ($lastParticipantId !== '' && App()->user->getState($methodStateId) !== $cryptMethod) {
+                /* The method changed during the run : the participants already done use the previous one */
+                App()->user->setState($stateId, null);
+                App()->user->setState($methodStateId, null);
+                App()->setFlashMessage(gT("The encryption method changed during the re-encryption. Please restart the re-encryption from the first participant."), 'warning');
+                App()->getController()->redirect(['admin/participants/sa/encryptionMaintenance']);
+                return;
+            }
         }
+        App()->user->setState($methodStateId, $cryptMethod);
         $limit = intval(App()->getConfig('CPDB_reencrypt_limit', 0));
         $processed = 0;
         $failed = 0;
@@ -3144,7 +3156,6 @@ class ParticipantsAction extends SurveyCommonAction
             ->from('{{participant_attribute_names}}')
             ->where("encrypted = 'Y' AND core_attribute <> 'Y'")
             ->queryColumn());
-        $cryptMethod = App()->getConfig('CPDB_encryption_method', 'B');
         foreach ($oParticipants as $oParticipant) {
             /* Participant and its attributes in one step : all or nothing */
             $transaction = App()->db->getCurrentTransaction() ? null : App()->db->beginTransaction();
@@ -3180,6 +3191,7 @@ class ParticipantsAction extends SurveyCommonAction
         }
         if ($stilltoProcess == 0) {
             App()->user->setState($stateId, null);
+            App()->user->setState($methodStateId, null);
         }
         if ($stilltoProcess == 0 && $failed == 0) {
             App()->setFlashMessage(gT("All participant data have been re-encrypted."));
@@ -3247,12 +3259,24 @@ class ParticipantsAction extends SurveyCommonAction
             throw new \CHttpException(403, gT('Access denied'));
         }
         $stateId = 'currentDuplicateFinderInvalidParticipantId';
+        /* The duplicate index size used since the first participant of the current run */
+        $bitsStateId = 'currentDuplicateFinderBits';
+        $bits = intval(App()->getConfig('CPDB_duplicatefinder_bits', 128));
         if (App()->getRequest()->getPost('rencrypt') == 'reset') {
             $lastParticipantId = '';
             App()->user->setState($stateId, null);
         } else {
             $lastParticipantId = strval(App()->user->getState($stateId, ''));
+            if ($lastParticipantId !== '' && App()->user->getState($bitsStateId) !== $bits) {
+                /* The size changed during the run : the participants already done use the previous one */
+                App()->user->setState($stateId, null);
+                App()->user->setState($bitsStateId, null);
+                App()->setFlashMessage(gT("The duplicate index size changed during the update. Please restart the update from the first participant."), 'warning');
+                App()->getController()->redirect(['admin/participants/sa/encryptionMaintenance']);
+                return;
+            }
         }
+        App()->user->setState($bitsStateId, $bits);
         $limit = intval(App()->getConfig('CPDB_reencrypt_limit', 0));
         $processed = 0;
         $failed = 0;
@@ -3284,6 +3308,7 @@ class ParticipantsAction extends SurveyCommonAction
         }
         if ($stilltoProcess == 0) {
             App()->user->setState($stateId, null);
+            App()->user->setState($bitsStateId, null);
         }
         if ($stilltoProcess == 0 && $failed == 0) {
             App()->setFlashMessage(gT("All participant duplicate indexes are up to date."));
