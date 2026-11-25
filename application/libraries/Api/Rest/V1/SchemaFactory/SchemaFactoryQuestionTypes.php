@@ -10,8 +10,8 @@ class SchemaFactoryQuestionTypes
     /**
      * Returns the schema of the editor question type list.
      *
-     * @param SchemaContract ...$properties
-     * @return Schema
+     * @param SchemaContract ...$properties Unused, kept for the signature shared by the schema factories
+     * @return Schema Schema of the categories and the question types keyed by theme name
      */
     public function make(SchemaContract ...$properties): Schema
     {

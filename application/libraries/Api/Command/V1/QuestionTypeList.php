@@ -11,7 +11,7 @@ use LimeSurvey\Api\Command\{
 use LimeSurvey\Models\Services\ReactQuestionTypeConfig;
 
 /**
- * Returns the question types of the editor: every installed question theme, merged with the
+ * Returns the question types of the editor: Every installed question theme, merged with the
  * categories, order and editor-specific titles from react/questiontypes.xml.
  */
 class QuestionTypeList implements CommandInterface
@@ -20,8 +20,10 @@ class QuestionTypeList implements CommandInterface
     protected ReactQuestionTypeConfig $reactQuestionTypeConfig;
 
     /**
-     * @param ResponseFactory $responseFactory
-     * @param ReactQuestionTypeConfig $reactQuestionTypeConfig
+     * Creates the command with its dependencies.
+     *
+     * @param ResponseFactory $responseFactory Factory of the command response
+     * @param ReactQuestionTypeConfig $reactQuestionTypeConfig Reader of react/questiontypes.xml
      */
     public function __construct(
         ResponseFactory $responseFactory,
@@ -34,8 +36,8 @@ class QuestionTypeList implements CommandInterface
     /**
      * Returns the selector categories and the question types keyed by theme name.
      *
-     * @param Request $request
-     * @return Response
+     * @param Request $request The request, it has no parameters
+     * @return Response Success response with the categories and question types
      */
     public function run(Request $request): Response
     {
@@ -49,7 +51,7 @@ class QuestionTypeList implements CommandInterface
     /**
      * Returns the selector categories in order, with translated titles.
      *
-     * @return array<int, array{name: string, title: string, icon: string}>
+     * @return array<int, array{name: string, title: string, icon: string}> Categories with name, title and icon name
      */
     protected function getCategories(): array
     {
@@ -63,17 +65,21 @@ class QuestionTypeList implements CommandInterface
      * Returns every question theme of the question_themes table, plus the editor-only types of
      * questiontypes.xml, keyed by theme name.
      *
-     * @return array<string, array<string, mixed>>
+     * @return array<string, array<string, mixed>> Question types keyed by theme name
      */
     protected function getQuestionTypes(): array
     {
         $overlays = $this->reactQuestionTypeConfig->getThemes();
 
         $result = [];
+        // A theme name is only unique per extended question type: For a name used twice, the core theme wins
         /** @var \QuestionTheme[] $questionThemes */
-        $questionThemes = \QuestionTheme::model()->findAll();
+        $questionThemes = \QuestionTheme::model()->findAll(['order' => 'core_theme DESC, id ASC']);
         foreach ($questionThemes as $questionTheme) {
             $name = (string) $questionTheme->name;
+            if (isset($result[$name])) {
+                continue;
+            }
             $overlay = $overlays[$name] ?? null;
             $settings = json_decode((string) $questionTheme->settings, true);
             $result[$name] = $this->makeQuestionType($name, $overlay, [
@@ -115,7 +121,7 @@ class QuestionTypeList implements CommandInterface
      * @param string $name Question theme name
      * @param array{category: string, sortOrder: int, title: string, type: string, devOnly: bool}|null $overlay
      * @param array<string, mixed> $data Theme data, with the untranslated theme title
-     * @return array<string, mixed>
+     * @return array<string, mixed> Question type with translated title, category, sort order and dev-only flag
      */
     private function makeQuestionType(string $name, ?array $overlay, array $data): array
     {
@@ -133,8 +139,8 @@ class QuestionTypeList implements CommandInterface
      * Translates a text for React, which escapes on render. An empty text stays empty
      * (gettext would return the catalog header).
      *
-     * @param string $text
-     * @return string
+     * @param string $text Text in English, as written in the XML or the question theme
+     * @return string Translation into the current language, not HTML-escaped
      */
     private function translate(string $text): string
     {

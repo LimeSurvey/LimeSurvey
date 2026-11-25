@@ -30,9 +30,8 @@ export const QuestionTypeSelector = ({
     categories,
     questionTypes
   ).reduce((result, currentItem) => {
-    const filteredItems = currentItem.items.filter(
-      (item) => item.label.toLowerCase().includes(searchTerm.toLowerCase())
-      // && !item.hidden
+    const filteredItems = currentItem.items.filter((item) =>
+      item.label.toLowerCase().includes(searchTerm.toLowerCase())
     )
 
     if (filteredItems.length) {
@@ -136,7 +135,7 @@ export const QuestionTypeSelector = ({
                   <ListGroup.Item
                     key={'list-item' + listItemIndex}
                     onClick={() => {
-                      if (listItem.hidden || disableAddingQuestions) {
+                      if (disableAddingQuestions) {
                         return
                       }
                       const temp = [...searchedQuestionTypeOrGroup]
@@ -151,7 +150,6 @@ export const QuestionTypeSelector = ({
                       'focus-element':
                         selectedItemIndex === offsetIndex + listItemIndex,
                       'disabled': disableAddingQuestions,
-                      'd-none': listItem.hidden,
                     })}
                     ref={
                       selectedItemIndex === offsetIndex + listItemIndex

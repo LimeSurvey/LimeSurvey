@@ -6,7 +6,7 @@ use SimpleXMLElement;
 
 /**
  * Reads the editor (React) question type list from application/views/survey/questions/react/questiontypes.xml:
- * the categories of the question type selector and, per question theme, its category, order,
+ * The categories of the question type selector and, per question theme, its category, order,
  * editor-specific title and flags.
  */
 class ReactQuestionTypeConfig
@@ -22,6 +22,8 @@ class ReactQuestionTypeConfig
     private array $themes = [];
 
     /**
+     * Creates a reader for the questiontypes.xml of a directory. The file is read on first use.
+     *
      * @param string|null $directory Directory of questiontypes.xml, defaults to the react overlay directory
      */
     public function __construct(?string $directory = null)
@@ -34,7 +36,7 @@ class ReactQuestionTypeConfig
     /**
      * Returns the categories of the question type selector, in order. Titles are not translated.
      *
-     * @return array<int, array{name: string, title: string, icon: string}>
+     * @return array<int, array{name: string, title: string, icon: string}> Categories with name, title and icon name
      */
     public function getCategories(): array
     {
@@ -46,7 +48,7 @@ class ReactQuestionTypeConfig
      * Returns the listed question themes keyed by theme name. Title and type are empty strings when the
      * XML doesn't set them, sortOrder is the position inside the category. Titles are not translated.
      *
-     * @return array<string, array{category: string, sortOrder: int, title: string, type: string, devOnly: bool}>
+     * @return array<string, array{category: string, sortOrder: int, title: string, type: string, devOnly: bool}> Listed themes keyed by theme name
      */
     public function getThemes(): array
     {

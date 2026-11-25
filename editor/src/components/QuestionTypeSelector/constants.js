@@ -28,22 +28,26 @@ export const getQuestionGroupItem = () => ({
 
 /**
  * Returns the question types grouped by category for the question type selector.
- * Only themes the editor can render are offered, and not the ones an administrator hid.
+ * Only themes the editor can render (same theme and type) are offered, not the ones an administrator hid,
+ * and the dev-only ones only in dev mode.
  * @param {{name: string, title: string, icon: string}[]} categories Categories from useQuestionTypes
  * @param {Object<string, Object>} questionTypes Question types from useQuestionTypes, keyed by theme name
- * @returns {{title: string, icon: ?JSX.Element, items: {value: string, label: string, theme: string, hidden: boolean}[]}[]}
+ * @returns {{title: string, icon: ?JSX.Element, items: {value: string, label: string, theme: string}[]}[]}
  */
 export const getQuestionItemsList = (categories = [], questionTypes = {}) => {
-  const renderableThemes = new Set(
+  // A custom theme can reuse the name of a core theme for another question type
+  const renderableTypes = new Set(
     Object.values(getQuestionTypeInfo())
       .filter((info) => info.isQuestionType !== false)
-      .map((info) => info.theme)
+      .map((info) => `${info.type}:${info.theme}`)
   )
+  const isDevMode = !!process.env.REACT_APP_DEV_MODE
   const offeredTypes = Object.values(questionTypes).filter(
     (questionType) =>
       questionType.category &&
       questionType.visible !== false &&
-      renderableThemes.has(questionType.name)
+      (isDevMode || !questionType.devOnly) &&
+      renderableTypes.has(`${questionType.type}:${questionType.name}`)
   )
 
   return categories.map((category) => {
@@ -59,7 +63,6 @@ export const getQuestionItemsList = (categories = [], questionTypes = {}) => {
           value: questionType.type,
           label: questionType.title,
           theme: questionType.name,
-          hidden: !!questionType.devOnly && !process.env.REACT_APP_DEV_MODE,
         })),
     }
   })

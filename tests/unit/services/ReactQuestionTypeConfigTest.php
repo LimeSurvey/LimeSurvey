@@ -43,6 +43,11 @@ class ReactQuestionTypeConfigTest extends TestBaseClass
         return new ReactQuestionTypeConfig($this->directory);
     }
 
+    /**
+     * Categories keep their order, themes get their category, position, title, type and dev-only flag.
+     *
+     * @return void
+     */
     public function testCategoriesAndThemesAreReadInOrder(): void
     {
         $config = $this->makeConfig(
@@ -74,6 +79,11 @@ class ReactQuestionTypeConfigTest extends TestBaseClass
         );
     }
 
+    /**
+     * A theme listed twice keeps its first entry, and the skipped entry doesn't count for the order.
+     *
+     * @return void
+     */
     public function testFirstEntryOfADuplicateThemeWins(): void
     {
         $config = $this->makeConfig(
@@ -90,6 +100,11 @@ class ReactQuestionTypeConfigTest extends TestBaseClass
         $this->assertSame(0, $themes['yesno']['sortOrder']);
     }
 
+    /**
+     * Without questiontypes.xml, there are no categories and no themes.
+     *
+     * @return void
+     */
     public function testMissingFileGivesEmptyLists(): void
     {
         $config = $this->makeConfig(null);
@@ -98,6 +113,11 @@ class ReactQuestionTypeConfigTest extends TestBaseClass
         $this->assertSame([], $config->getThemes());
     }
 
+    /**
+     * A malformed questiontypes.xml gives empty lists instead of an error.
+     *
+     * @return void
+     */
     public function testMalformedFileGivesEmptyLists(): void
     {
         $config = $this->makeConfig('<questiontypes><categories><category>');
@@ -106,6 +126,11 @@ class ReactQuestionTypeConfigTest extends TestBaseClass
         $this->assertSame([], $config->getThemes());
     }
 
+    /**
+     * The shipped questiontypes.xml lists the selector categories in order, with the editor titles.
+     *
+     * @return void
+     */
     public function testShippedFileListsTheSelectorCategories(): void
     {
         $config = new ReactQuestionTypeConfig();

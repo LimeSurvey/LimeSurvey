@@ -46,12 +46,17 @@ class QuestionTypeListTest extends TestBaseClass
         return $data;
     }
 
+    /**
+     * Every installed question theme is returned with its type and visibility.
+     *
+     * @return void
+     */
     public function testEveryInstalledThemeIsReturnedWithItsType(): void
     {
         $questionTypes = $this->runCommand()['questionTypes'];
 
         /** @var QuestionTheme[] $questionThemes */
-        $questionThemes = QuestionTheme::model()->findAll();
+        $questionThemes = QuestionTheme::model()->findAllByAttributes(['core_theme' => true]);
         $this->assertNotEmpty($questionThemes);
         foreach ($questionThemes as $questionTheme) {
             $this->assertArrayHasKey($questionTheme->name, $questionTypes);
@@ -62,6 +67,11 @@ class QuestionTypeListTest extends TestBaseClass
         }
     }
 
+    /**
+     * The editor title of questiontypes.xml wins, without one the theme title is used.
+     *
+     * @return void
+     */
     public function testEditorTitleWinsOverThemeTitle(): void
     {
         $questionTypes = $this->runCommand()['questionTypes'];
@@ -71,6 +81,11 @@ class QuestionTypeListTest extends TestBaseClass
         $this->assertSame('Huge free text', $questionTypes['hugefreetext']['title']);
     }
 
+    /**
+     * Listed themes get their category, order and dev-only flag, others have no category.
+     *
+     * @return void
+     */
     public function testListedThemesGetCategoryAndOrder(): void
     {
         $data = $this->runCommand();
@@ -85,6 +100,11 @@ class QuestionTypeListTest extends TestBaseClass
         $this->assertNull($questionTypes['hugefreetext']['sortOrder']);
     }
 
+    /**
+     * An entry with an explicit type and no question theme is added as editor-only type.
+     *
+     * @return void
+     */
     public function testEditorOnlyTypeIsAdded(): void
     {
         $rating = $this->runCommand()['questionTypes']['rating'];
@@ -95,6 +115,11 @@ class QuestionTypeListTest extends TestBaseClass
         $this->assertTrue($rating['devOnly']);
     }
 
+    /**
+     * Every theme of the shipped questiontypes.xml is installed or declares a type (guards typos in the XML).
+     *
+     * @return void
+     */
     public function testEveryListedThemeIsInstalledOrEditorOnly(): void
     {
         $installed = array_map(function (QuestionTheme $questionTheme) {
@@ -109,6 +134,11 @@ class QuestionTypeListTest extends TestBaseClass
         }
     }
 
+    /**
+     * A listed theme that is not installed and has no type is not returned.
+     *
+     * @return void
+     */
     public function testListedThemeWithoutInstallationOrTypeIsSkipped(): void
     {
         $this->directory = sys_get_temp_dir() . '/react-question-types-' . uniqid();
@@ -126,5 +156,34 @@ class QuestionTypeListTest extends TestBaseClass
         $this->assertArrayNotHasKey('not_installed_theme', $questionTypes);
         $this->assertSame('Custom title', $questionTypes['listradio']['title']);
         $this->assertSame('first', $questionTypes['listradio']['category']);
+    }
+
+    /**
+     * A custom theme reusing the name of a core theme for another question type doesn't replace the core theme.
+     *
+     * @return void
+     */
+    public function testCoreThemeWinsOverCustomThemeWithTheSameName(): void
+    {
+        $coreTheme = QuestionTheme::model()->findByAttributes(['name' => 'bootstrap_buttons', 'extends' => 'L']);
+        $this->assertNotNull($coreTheme);
+        // Saved as active record, which casts core_theme for the database (tinyint, boolean or bit)
+        $customTheme = new QuestionTheme();
+        $customTheme->setAttributes($coreTheme->getAttributes(), false);
+        $customTheme->id = null;
+        $customTheme->question_type = 'M';
+        $customTheme->extends = 'M';
+        $customTheme->core_theme = 0;
+        $customTheme->title = 'Custom buttons';
+        $this->assertTrue($customTheme->save(false));
+
+        try {
+            $questionTypes = $this->runCommand()['questionTypes'];
+        } finally {
+            $customTheme->delete();
+        }
+
+        $this->assertSame('L', $questionTypes['bootstrap_buttons']['type']);
+        $this->assertSame('Single choice buttons', $questionTypes['bootstrap_buttons']['title']);
     }
 }

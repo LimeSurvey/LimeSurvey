@@ -41,13 +41,8 @@ describe('getQuestionItemsList', () => {
     expect(list[0].icon).not.toBeNull()
     expect(list[1].icon).toBeNull()
     expect(list[0].items).toEqual([
-      { value: 'L', label: 'List', theme: 'listradio', hidden: false },
-      {
-        value: 'L',
-        label: 'bootstrap_buttons',
-        theme: 'bootstrap_buttons',
-        hidden: false,
-      },
+      { value: 'L', label: 'List', theme: 'listradio' },
+      { value: 'L', label: 'bootstrap_buttons', theme: 'bootstrap_buttons' },
     ])
     expect(list[1].items.map((item) => item.theme)).toEqual(['yesno'])
   })
@@ -55,20 +50,41 @@ describe('getQuestionItemsList', () => {
   test('Should leave out hidden, unlisted and not renderable themes', () => {
     const list = getQuestionItemsList(categories, {
       listradio: makeType('listradio', { visible: false }),
-      hugefreetext: makeType('hugefreetext', { category: null }),
+      hugefreetext: makeType('hugefreetext', { type: 'U', category: null }),
       my_custom_theme: makeType('my_custom_theme'),
-      yesno: makeType('yesno'),
+      // A custom theme reusing a core theme name for another question type
+      bootstrap_buttons: makeType('bootstrap_buttons', { type: 'M' }),
+      yesno: makeType('yesno', { type: 'Y' }),
     })
 
     expect(list[0].items.map((item) => item.theme)).toEqual(['yesno'])
   })
 
-  test('Should hide the dev-only themes outside dev mode', () => {
-    const list = getQuestionItemsList(categories, {
-      ranking: makeType('ranking', { devOnly: true }),
-    })
+  test('Should offer the dev-only themes only in dev mode', () => {
+    const devMode = process.env.REACT_APP_DEV_MODE
+    const questionTypes = {
+      ranking: makeType('ranking', { type: 'R', devOnly: true }),
+    }
 
-    expect(list[0].items[0].hidden).toBe(!process.env.REACT_APP_DEV_MODE)
+    try {
+      delete process.env.REACT_APP_DEV_MODE
+      expect(getQuestionItemsList(categories, questionTypes)[0].items).toEqual(
+        []
+      )
+
+      process.env.REACT_APP_DEV_MODE = 'true'
+      expect(
+        getQuestionItemsList(categories, questionTypes)[0].items.map(
+          (item) => item.theme
+        )
+      ).toEqual(['ranking'])
+    } finally {
+      if (devMode === undefined) {
+        delete process.env.REACT_APP_DEV_MODE
+      } else {
+        process.env.REACT_APP_DEV_MODE = devMode
+      }
+    }
   })
 })
 
@@ -98,7 +114,7 @@ describe('QuestionTypeSelector', () => {
   })
 
   test('Should be mapping the labels to the correct values', async () => {
-    for (const item of offeredItems.filter((item) => !item.hidden)) {
+    for (const item of offeredItems) {
       const questionTypeInput = screen.getByTestId(
         `question-type-${item.theme}`
       )

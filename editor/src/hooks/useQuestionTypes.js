@@ -1,19 +1,18 @@
-import { useQuery } from '@tanstack/react-query'
+import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { getApiUrl, STATES } from 'helpers'
-import questionTypesData from 'helpers/data/question-types.json'
+import { getDefaultQuestionTypes } from 'helpers/getDefaultQuestionTypes'
 import { QuestionTypeService } from 'services'
 
 import useAuth from './useAuth'
 
-const EMPTY_CATEGORIES = []
-const EMPTY_QUESTION_TYPES = {}
-
 /**
  * Returns the question types of the editor (react/questiontypes.xml merged with the installed question themes):
- * the categories of the question type selector, and every question theme keyed by theme name.
+ * The categories of the question type selector, and every question theme keyed by theme name.
+ * Until the first response, and when the request fails, the question types of a default installation
+ * are returned, so that questions can always be added.
  * @returns {{
  *   categories: {name: string, title: string, icon: string}[],
  *   questionTypes: Object<string, {name: string, type: string, title: string, category: ?string, sortOrder: ?number, devOnly: boolean, visible: boolean}>,
@@ -37,15 +36,21 @@ export const useQuestionTypes = () => {
   const { data, isFetching } = useQuery({
     queryKey: [STATES.QUESTION_TYPES, language],
     queryFn: () => questionTypeService.getQuestionTypes(),
-    // Demo mode and storybook have no backend: Use the question types of a default installation
-    initialData: isDemoMode ? questionTypesData : undefined,
+    // Demo mode and storybook have no backend: They use the default question types below
     enabled: !isDemoMode,
+    // After a language change, keep the previous titles until the translated ones arrive
+    placeholderData: keepPreviousData,
     staleTime: Infinity,
     gcTime: Infinity,
   })
 
-  const categories = data?.categories ?? EMPTY_CATEGORIES
-  const questionTypes = data?.questionTypes ?? EMPTY_QUESTION_TYPES
+  const { categories, questionTypes } = useMemo(
+    () =>
+      data?.categories && data?.questionTypes
+        ? data
+        : getDefaultQuestionTypes(language),
+    [data, language]
+  )
 
   const getTitle = useCallback(
     (themeName, fallback = '') => questionTypes[themeName]?.title ?? fallback,

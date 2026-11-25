@@ -33,10 +33,16 @@ const readQuestionTypesXml = () => {
       title: text(category, 'title'),
       icon: text(category, 'icon'),
     })
-    category.querySelectorAll('themes > theme').forEach((theme, index) => {
-      themes[text(theme, 'name')] = {
+    // Like ReactQuestionTypeConfig: The first entry of a theme wins, skipped entries don't count for the order
+    let sortOrder = 0
+    category.querySelectorAll('themes > theme').forEach((theme) => {
+      const themeName = text(theme, 'name')
+      if (!themeName || themes[themeName]) {
+        return
+      }
+      themes[themeName] = {
         category: categoryName,
-        sortOrder: index,
+        sortOrder: sortOrder++,
         title: text(theme, 'title'),
         type: text(theme, 'type'),
         devOnly: !['', '0'].includes(text(theme, 'devOnly')),
