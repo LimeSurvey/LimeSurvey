@@ -906,15 +906,15 @@ class ParticipantsAction extends SurveyCommonAction
             if ($oCSVFile === false) {
                 safeDie('File not found.');
             }
-            $aFirstLine = fgets($oCSVFile);
+            $aFirstLine = (string) fgets($oCSVFile);
             rewind($oCSVFile);
-
-            $separator = $this->getCsvSeparator((string) Yii::app()->request->getPost('separatorused'), (string) $aFirstLine);
-            $firstline = fgetcsv($oCSVFile, 1000, $separator, '"', "\\");
-            // Remove UTF-8 BOM from the first field
-            if (!empty($firstline)) {
-                $firstline[0] = preg_replace('/^\xEF\xBB\xBF/', '', $firstline[0]);
+            // Skip the UTF-8 BOM before parsing, like uploadCSV() (removeBOM) : a quoted first column name is then parsed the same way
+            if (removeBOM($aFirstLine) !== $aFirstLine) {
+                fseek($oCSVFile, 3);
             }
+
+            $separator = $this->getCsvSeparator((string) Yii::app()->request->getPost('separatorused'), $aFirstLine);
+            $firstline = fgetcsv($oCSVFile, 1000, $separator, '"', "\\");
             $selectedcsvfields = array();
             $fieldlist = array();
             foreach ($firstline as $key => $value) {
