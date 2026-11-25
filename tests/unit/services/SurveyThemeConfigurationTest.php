@@ -127,4 +127,34 @@ class SurveyThemeConfigurationTest extends TestBaseClass
         $this->assertArrayNotHasKey('inheritedvaluelabel', $optionAttributes['optionAttributes']['unknown']);
         $this->assertArrayNotHasKey('inheritedvaluelabel', $optionAttributes['optionAttributes']['fontcolor']);
     }
+
+    /**
+     * Changing the theme color replaces the variation file, whether the survey ID is an int or a string,
+     * and repairs an empty entry saved before.
+     */
+    public function testUpdateThemeColorReplacesVariationFile()
+    {
+        \Yii::app()->session['loginID'] = 1;
+        $survey = \Survey::model()->insertNewSurvey(['language' => 'en', 'template' => 'fruity_twentythree', 'admin' => 'test']);
+        $criteria = ['sid' => $survey->sid, 'template_name' => 'fruity_twentythree'];
+        $service = new SurveyThemeConfiguration(new \Permission());
+        try {
+            foreach (['blueberry' => (int)$survey->sid, 'grape' => (string)$survey->sid] as $color => $sid) {
+                \Template::resetInstance();
+                \TemplateConfiguration::$aPreparedToRender = [];
+                $service->updateThemeOption($sid, ['templateName' => 'fruity_twentythree', 'cssframework' => $color]);
+                $filesCss = json_decode(\TemplateConfiguration::model()->findByAttributes($criteria)->files_css, true);
+                $this->assertSame("css/variations/theme_$color.css", $filesCss['add'][0]);
+            }
+
+            $broken = str_replace('css/variations/theme_grape.css', '', \TemplateConfiguration::model()->findByAttributes($criteria)->files_css);
+            \TemplateConfiguration::model()->updateAll(['files_css' => $broken], 'sid = :sid', [':sid' => $survey->sid]);
+            $service->updateThemeOption((int)$survey->sid, ['templateName' => 'fruity_twentythree', 'cssframework' => 'mango']);
+            $filesCss = json_decode(\TemplateConfiguration::model()->findByAttributes($criteria)->files_css, true);
+            $this->assertSame('css/variations/theme_mango.css', $filesCss['add'][0]);
+        } finally {
+            $survey->delete();
+            \Template::resetInstance();
+        }
+    }
 }
