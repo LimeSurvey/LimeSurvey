@@ -1678,6 +1678,7 @@ class DataEntry extends SurveyCommonAction
     /**
      * Imported responses from a table without the tick column of multiple choice Other: text always ticks Other.
      * One query per Other column and per 1000 responses, not per response.
+     * Except with hardened encryption : each response gets its own encrypted value (random nonce).
      * @param integer $iSurveyId
      * @param CDbTableSchema $targetSchema
      * @param array $fieldMap imported source column => target column
@@ -1700,16 +1701,32 @@ class DataEntry extends SurveyCommonAction
             if (!$targetSchema->getColumn($otherColumn)) {
                 continue;
             }
-            $checked = in_array($checkedColumn, $encryptedAttributes, false) ? LSActiveRecord::encryptSingle('Y', $encryptionMethod) : 'Y';
+            $encrypted = in_array($checkedColumn, $encryptedAttributes, false);
+            $hardened = $encrypted && $encryptionMethod === 'H';
+            $checked = $encrypted ? LSActiveRecord::encryptSingle('Y', $encryptionMethod) : 'Y';
             $quotedChecked = $db->quoteColumnName($checkedColumn);
             $quotedOther = $db->quoteColumnName($otherColumn);
+            $quotedId = $db->quoteColumnName('id');
             foreach (array_chunk($importedIds, 1000) as $ids) {
-                $db->createCommand()->update(
-                    "{{responses_$iSurveyId}}",
-                    [$checkedColumn => $checked],
-                    "($quotedChecked IS NULL OR $quotedChecked = '') AND $quotedOther IS NOT NULL AND $quotedOther <> ''"
-                    . " AND " . $db->quoteColumnName('id') . " IN (" . implode(',', array_map('intval', $ids)) . ")"
-                );
+                $condition = "($quotedChecked IS NULL OR $quotedChecked = '') AND $quotedOther IS NOT NULL AND $quotedOther <> ''"
+                    . " AND $quotedId IN (" . implode(',', array_map('intval', $ids)) . ")";
+                if (!$hardened) {
+                    $db->createCommand()->update("{{responses_$iSurveyId}}", [$checkedColumn => $checked], $condition);
+                    continue;
+                }
+                $matchingIds = $db->createCommand()
+                    ->select('id')
+                    ->from("{{responses_$iSurveyId}}")
+                    ->where($condition)
+                    ->queryColumn();
+                foreach ($matchingIds as $id) {
+                    $db->createCommand()->update(
+                        "{{responses_$iSurveyId}}",
+                        [$checkedColumn => LSActiveRecord::encryptSingle('Y', 'H')],
+                        "$quotedId = :id",
+                        [':id' => (int) $id]
+                    );
+                }
             }
         }
     }
