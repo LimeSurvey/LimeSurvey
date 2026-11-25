@@ -989,15 +989,16 @@ class TemplateConfig extends CActiveRecord
     }
 
     /**
-     * Returns true when all compatibility versions declared in the theme config are strictly below
-     * the minimum allowed major version (current LimeSurvey major version minus one).
+     * Returns true when no compatibility version declared in the theme config is within the supported
+     * major versions: The previous LimeSurvey major version (current minus one) and the current one.
      *
-     * Example: if the running LS is 7.x the minimum allowed major is 6, so a theme that only
-     * declares compatibility with 5.x or lower is considered too old and should be uninstalled.
-     * A theme that declares at least one version >= minimum allowed major is kept.
+     * Example: if the running LS is 7.x, a theme that only declares compatibility with 5.x or lower,
+     * or only with 8.x or higher, is not supported and should be uninstalled.
+     * A theme that declares at least one 6.x or 7.x version is kept.
+     * Themes without any declared compatibility are kept too.
      *
-     * @param ExtensionConfig|null $extensionConfig
-     * @return bool
+     * @param ExtensionConfig|null $extensionConfig Config of the theme to check
+     * @return bool True if the theme should be uninstalled, false if it can be kept
      */
     private static function isThemeTooOldToKeep(?ExtensionConfig $extensionConfig): bool
     {
@@ -1016,8 +1017,9 @@ class TemplateConfig extends CActiveRecord
         $minimumAllowedMajor = $currentMajor - 1;
 
         foreach ($extensionConfig->xml->compatibility->version as $version) {
-            if ((int) substr((string) $version, 0, 1) >= $minimumAllowedMajor) {
-                // At least one declared compatibility version is recent enough to keep
+            $versionMajor = (int) substr((string) $version, 0, 1);
+            if ($versionMajor >= $minimumAllowedMajor && $versionMajor <= $currentMajor) {
+                // At least one declared compatibility version is within the supported major versions
                 return false;
             }
         }
@@ -1030,12 +1032,17 @@ class TemplateConfig extends CActiveRecord
      * but they may miss improvements of the core theme files they override.
      *
      * @param string $themePath Full path of the theme's config.xml
-     * @return bool True if the theme is outdated, false if it is compatible, too old to keep or not found
+     * @return bool True if the theme is outdated, false if it is compatible, declares no compatibility,
+     *              is not supported anymore or was not found
      */
     public static function isOutdated($themePath): bool
     {
         $extensionConfig = ExtensionConfig::loadFromFileCached($themePath);
-        if ($extensionConfig === null || $extensionConfig->isCompatible()) {
+        if (
+            $extensionConfig === null
+            || $extensionConfig->isCompatible()
+            || !isset($extensionConfig->xml->compatibility->version)
+        ) {
             return false;
         }
         return !self::isThemeTooOldToKeep($extensionConfig);
