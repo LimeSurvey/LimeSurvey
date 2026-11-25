@@ -544,5 +544,4 @@ class LSSodium
             @unlink($lockFile);
         }
     }
-
 }

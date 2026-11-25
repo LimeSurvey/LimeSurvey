@@ -74,27 +74,27 @@
                     <?php if (count($aCoreNoEncryptedAttributes) > 0 || $surveyEncryptionmethod != 'H') : ?>
                         <div class="mb-3">
                             <?php $help = false;
-                                if (count($aCoreEncryptedAttributes) > 0)  { // Construct the help string
-                                    switch($surveyEncryptionmethod) {
-                                        case 'B':
-                                            $help = gT("Duplicate check uses: First Name, Last Name, Email. Encrypted columns use case-sensitive comparison");
-                                            break;
-                                        case 'H';
-                                            switch(count($aCoreNoEncryptedAttributes)) {
-                                                case 1:
-                                                    $help = sprintf(gT("Duplicate check uses: “%s” attribute."), $aCoreNoEncryptedAttributes[0]);
-                                                    break;
-                                                case 2:
-                                                    $help = sprintf(gT("Duplicate check uses: “%s” and “%s” attributes."), $aCoreNoEncryptedAttributes[0], $aCoreNoEncryptedAttributes[1]);
-                                                    break;
-                                                default:
-                                                    // can not happen
-                                            }
-                                            break;
-                                        default:
-                                            // can not happen currently
-                                    }
+                            if (count($aCoreEncryptedAttributes) > 0) { // Construct the help string
+                                switch ($surveyEncryptionmethod) {
+                                    case 'B':
+                                        $help = gT("Duplicate check uses: First Name, Last Name, Email. Encrypted columns use case-sensitive comparison");
+                                        break;
+                                    case 'H':
+                                        switch (count($aCoreNoEncryptedAttributes)) {
+                                            case 1:
+                                                $help = sprintf(gT("Duplicate check uses: “%s” attribute."), $aCoreNoEncryptedAttributes[0]);
+                                                break;
+                                            case 2:
+                                                $help = sprintf(gT("Duplicate check uses: “%s” and “%s” attributes."), $aCoreNoEncryptedAttributes[0], $aCoreNoEncryptedAttributes[1]);
+                                                break;
+                                            default:
+                                                // can not happen
+                                        }
+                                        break;
+                                    default:
+                                        // can not happen currently
                                 }
+                            }
                             ?>
                             <label for='filterduplicatetoken'  class=" form-label"><?php echo eT("Filter duplicate records:"); ?></label>
                             <?php if ($help) : ?>
@@ -102,7 +102,9 @@
                             <?php endif; ?>
                             <div class="">
                                 <input type='checkbox' id='filterduplicatetoken' name='filterduplicatetoken' checked='checked'
-                                    <?php if ($help) : ?> aria-describedby='filterduplicatetoken-help' <?php endif; ?>/>
+                                    <?php if ($help) :
+                                        ?> aria-describedby='filterduplicatetoken-help' <?php 
+                                    endif; ?>/>
                             </div>
 
                         </div>

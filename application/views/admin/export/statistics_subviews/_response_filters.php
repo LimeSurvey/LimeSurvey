@@ -2,12 +2,12 @@
 <div id="statisticsresponsefilters" class="statisticsfilters scrollheight_400">
     <input type='hidden' id='filterchoice_state' name='filterchoice_state' value='<?php echo $filterchoice_state; ?>' />
     <?php
-        if ($warningCryptedQuestionHidden) {
-            $this->widget('ext.AlertWidget.AlertWidget', [
-                'text' => gT('Encrypted questions cannot be filtered or selected in statistics when hardened encryption is enabled.'),
-                'type' => 'warning',
-            ]);
-        }
+    if ($warningCryptedQuestionHidden) {
+        $this->widget('ext.AlertWidget.AlertWidget', [
+            'text' => gT('Encrypted questions cannot be filtered or selected in statistics when hardened encryption is enabled.'),
+            'type' => 'warning',
+        ]);
+    }
     ?>
     <?php
         $dshresults = $dshresults ?? '';
