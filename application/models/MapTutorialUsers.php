@@ -10,6 +10,8 @@
  */
 class MapTutorialUsers extends CActiveRecord
 {
+    use TwigSandboxIteratorTrait;
+
     /**
      * @return string the associated database table name
      */

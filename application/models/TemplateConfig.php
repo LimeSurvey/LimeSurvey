@@ -22,6 +22,8 @@
  */
 class TemplateConfig extends CActiveRecord
 {
+    use TwigSandboxIteratorTrait;
+
     /** @var string $sTemplateName The template name */
     public $sTemplateName = '';
 
@@ -864,7 +866,7 @@ class TemplateConfig extends CActiveRecord
     public function __toString()
     {
         $s = '';
-        foreach ($this as $k => $v) {
+        foreach ($this->getAttributes() as $k => $v) {
             $s .= " <strong> $k : </strong>  $v  <br/>";
         }
 

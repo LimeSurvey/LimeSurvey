@@ -6,6 +6,8 @@
  */
 class StaticModel extends CModel
 {
+    use TwigSandboxIteratorTrait;
+
     /**
      * Models attributes as array indexed by primary key
      * @return array

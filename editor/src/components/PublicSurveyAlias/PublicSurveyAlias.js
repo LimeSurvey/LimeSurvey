@@ -1,10 +1,11 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
+import { Button } from 'react-bootstrap'
 import copy from 'copy-text-to-clipboard'
 import classNames from 'classnames'
 
 import { useSurveyUpdatePermission } from 'hooks'
 import { formatUrlPreview, getSiteUrl, getSurveyAccessLink } from 'helpers'
-import { Button, CustomizeButton, Input } from 'components/UIComponents'
+import { CustomizeButton, Input } from 'components/UIComponents'
 import { PluginSlot } from 'plugins/PluginSlot'
 import pluginManager from 'plugins/PluginManager'
 import { PLUGIN_SLOTS } from 'plugins/slots'

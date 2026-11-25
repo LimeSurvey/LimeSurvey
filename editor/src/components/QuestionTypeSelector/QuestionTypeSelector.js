@@ -26,9 +26,11 @@ export const QuestionTypeSelector = ({
 
   const filteredItemsLists = getQuestionItemsList().reduce(
     (result, currentItem) => {
+      // Hidden items are left out, so that the keyboard navigation can't reach them
       const filteredItems = currentItem.items.filter(
-        (item) => item.label.toLowerCase().includes(searchTerm.toLowerCase())
-        // && !item.hidden
+        (item) =>
+          item.label.toLowerCase().includes(searchTerm.toLowerCase()) &&
+          !item.hidden
       )
 
       if (filteredItems.length) {
@@ -111,9 +113,9 @@ export const QuestionTypeSelector = ({
 
   const renderData = (data) => {
     const rows = []
+    // Items are numbered across all rows, like in the Enter handler
+    let previousItemsTotal = 0
     for (let i = 0; i < data.length; i += 3) {
-      let previousItemsTotal = 0
-
       const rowItems =
         data.slice(i, i + 3).length === 3
           ? data.slice(i, i + 3)

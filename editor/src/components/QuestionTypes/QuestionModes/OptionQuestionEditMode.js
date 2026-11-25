@@ -9,6 +9,7 @@ import {
   useBuffer,
   useSurvey,
   useChildKeyboardShortcuts,
+  useToggleQuestionCodes,
 } from 'hooks'
 import {
   createBufferOperation,
@@ -117,6 +118,7 @@ export const OptionQuestionEditMode = ({
     }
     return false
   }
+  const { areCodesVisible } = useToggleQuestionCodes()
   const isSingleChoiceTheme = singleChoiceThemes.includes(questionThemeName)
   const isImageTheme = getImageSelectThemes().includes(questionThemeName)
 
@@ -583,7 +585,7 @@ export const OptionQuestionEditMode = ({
                       })}
                     />
                   </div>
-                  {survey.showQNumCode?.showNumber && (
+                  {areCodesVisible && (
                     <SubquestionCodeInput
                       isSurveyActive={isSurveyActive}
                       code={isSingleChoiceTheme ? child.code : child.title}

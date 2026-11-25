@@ -189,7 +189,7 @@ class Zend_Feed_Reader_Entry_Atom extends Zend_Feed_Reader_EntryAbstract impleme
     /**
      * Get the entry enclosure
      *
-     * @return string
+     * @return stdClass|null
      */
     public function getEnclosure()
     {
@@ -226,7 +226,7 @@ class Zend_Feed_Reader_Entry_Atom extends Zend_Feed_Reader_EntryAbstract impleme
      * Get a specific link
      *
      * @param  int $index
-     * @return string
+     * @return string|null
      */
     public function getLink($index = 0)
     {

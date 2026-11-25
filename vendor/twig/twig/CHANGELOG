@@ -1,3 +1,51 @@
+# 3.31.1 (2026-11-24)
+
+ * Fix a security issue in the sandbox mode allowing the `join` filter to expose the properties of non-iterable objects
+ * Fix a security issue in the sandbox mode allowing assignment expressions to call `__toString()` on objects without checking the policy
+ * Fix a security issue in the sandbox mode allowing `html_cva` to expose the properties of objects used as classes or variant values
+ * Fix sandboxed templates being able to replace the content of a `Markup` object by calling its constructor
+ * Fix the sandbox not checking filters, functions, tests, and `__toString()` calls in a dynamic `embed` parent expression
+ * Fix sandbox `__toString()` policy bypasses through test inputs
+ * Fix sandbox `__toString()` policy bypasses through test results
+ * Fix sandbox `__toString()` policy bypasses through spread arguments
+ * Fix the `html_to_markdown` filter keeping an unbounded number of converters in memory
+ * Fix compiled template cache collisions for resolved autoescaping strategies and sandbox always-allowed registrations
+ * Fix the `cache` tag calling `__toString()` on its key and tags without checking the sandbox policy
+ * Fix the PHP warning when an arrow function is used in the parent expression of an `extends` or `embed` tag
+
+# 3.31.0 (2026-11-23)
+
+ * Fix `FilesystemLoader` template names depending on leading slashes, `.` and `..` segments, or the `@__main__` prefix used to load a template first
+ * Fix `IntlExtension` caching formatters built from long patterns, attributes, or symbols
+ * Fix compiled templates depending on the directory of their source when debug is disabled
+ * Speed up the `with` tag by adding the globals to the new context in place
+ * Fix a variable not being escaped when it has the name of a macro import alias of another block or macro
+ * Fix `html_cva()` ignoring a boolean default variant
+ * Fix a PHP 8.5 deprecation in `html_cva()` when a recipe value is `null`
+ * Add the `collate` function to `twig/intl-extra` to compare strings in the alphabetical order of a locale
+ * Fix environments with different `optimizations` levels sharing compiled templates
+ * Fix reading an attribute through its getter initializing a lazy object when the property is not public
+ * Fix compiled float literals depending on the `serialize_precision` ini setting
+ * Fix the `loop` variable being undefined when used in the sequence of a nested `for` tag
+ * Reject a deprecated `Template` instance created by another environment in `Environment::resolveTemplate()`
+ * Fix a compilation error inside an `autoescape` tag leaking its escaping strategy into the next compiled template
+ * Fix `FilesystemLoader` template names depending on the slash style used to load a template first
+ * Fix the non-selected branch of a `guard` tag registering its parent, blocks, and macros
+ * Speed up reading object attributes backed by getters or class constants
+ * Fix the sandbox not reporting the line of a rejected `guard` tag
+ * Fix the spread operator compiling to invalid PHP outside sequences, mappings, and call arguments
+ * Fix the `deprecated` tag generating invalid PHP for an integer message
+ * Add a third argument to `FilesystemLoader::addPath()` and `FilesystemLoader::prependPath()` to skip checking that the directory exists
+ * Speed up traversing nodes with node visitors
+ * Speed up loading compiled templates that OPcache already holds
+ * Speed up applying `html_cva()` recipes that resolve to classes already seen
+ * Fix a class marked safe for `html_attr` not being considered safe in `html` and `html_attr_relaxed` contexts
+ * Add a way to mark a `Twig\Markup` instance as safe for some escaping strategies only
+ * Make `Environment::getExtension()` return the runtime of an extension class registered with `AttributeExtension`
+ * Make `Environment::getRuntime()` fall back to the registered extension of the same class
+ * Allow extending `AttributeExtension` to declare an extension's filters, functions, and tests with attributes
+ * Speed up calling a macro declared by a parent template
+
 # 3.30.0 (2026-09-25)
 
  * Fix `split`, `random`, and `shuffle` merging a trailing newline into the last character of a string

@@ -110,4 +110,3 @@ class BaselineModalWidget extends CWidget
         );
     }
 }
-

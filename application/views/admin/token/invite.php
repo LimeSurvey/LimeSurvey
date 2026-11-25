@@ -99,7 +99,7 @@
                     </div>
                     <ul class="nav nav-tabs" role="tablist">
                         <?php $c = true ?>
-                        <?php foreach ($oSurvey->allLanguages as $language): ?>
+                        <?php foreach ($oSurvey->allLanguages as $language) : ?>
                             <?php $tabId = 'invite-tab-' . CHtml::encode($language); ?>
                             <li class="nav-item" role="presentation">
                                 <a class="nav-link <?= $c ? "active" : "" ?>"
@@ -143,9 +143,9 @@
                             <?php $tabId = 'invite-tab-' . CHtml::encode($language); ?>
                             <div id="<?php echo $language; ?>"
                                  class="tab-pane fade <?php if ($c) {
-                                     $c = false;
-                                     echo 'show active';
-                                 } ?>"
+                                        $c = false;
+                                        echo 'show active';
+                                                      } ?>"
                                  role="tabpanel"
                                  aria-labelledby="<?= $tabId ?>">
 

@@ -36,6 +36,7 @@ require_once 'Zend/Service/Ebay/Finding.php';
  * @subpackage Ebay
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @deprecated Deprecated since 1.27.0 and will be removed in a future version: the eBay Finding API was decommissioned on 2025-02-05
  */
 abstract class Zend_Service_Ebay_Finding_Abstract
 {
@@ -137,7 +138,7 @@ abstract class Zend_Service_Ebay_Finding_Abstract
     /**
      * @param  string $path
      * @param  string $type
-     * @param  string $array When true means it expects more than one node occurence
+     * @param  string|bool $array When true means it expects more than one node occurence
      * @return mixed
      */
     protected function _query($path, $type, $array = false)

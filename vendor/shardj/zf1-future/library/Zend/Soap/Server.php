@@ -56,7 +56,7 @@ class Zend_Soap_Server implements Zend_Server_Interface
 
     /**
      * Class registered with this server
-     * @var string
+     * @var string|null
      */
     protected $_class;
 
@@ -521,7 +521,7 @@ class Zend_Soap_Server implements Zend_Server_Interface
     /**
      * Set the SOAP Wsdl Caching Options
      *
-     * @param string|int|boolean $caching
+     * @param string|int|boolean $options
      * @return Zend_Soap_Server
      */
     public function setWsdlCache($options)
@@ -675,7 +675,7 @@ class Zend_Soap_Server implements Zend_Server_Interface
     /**
      * Unimplemented: Load server definition
      *
-     * @param array $array
+     * @param array $definition
      * @return void
      * @throws Zend_Soap_Server_Exception Unimplemented
      */
@@ -727,6 +727,7 @@ class Zend_Soap_Server implements Zend_Server_Interface
      */
     protected function _setRequest($request)
     {
+        $xml = null;
         if ($request instanceof DOMDocument) {
             $xml = $request->saveXML();
         } elseif ($request instanceof DOMNode) {
@@ -819,7 +820,13 @@ class Zend_Soap_Server implements Zend_Server_Interface
         $server  = new SoapServer($this->_wsdl, $options);
 
         if (!empty($this->_functions)) {
-            $server->addFunction($this->_functions);
+            $functions = $this->_functions;
+            if (!is_array($functions) && $functions == self::SOAP_FUNCTIONS_ALL) {
+                // PHP 8.4 deprecates passing SOAP_FUNCTIONS_ALL to SoapServer::addFunction()
+                $defined   = get_defined_functions();
+                $functions = array_merge($defined['internal'], $defined['user']);
+            }
+            $server->addFunction($functions);
         }
 
         if (!empty($this->_class)) {
@@ -871,36 +878,41 @@ class Zend_Soap_Server implements Zend_Server_Interface
         // Set Zend_Soap_Server error handler
         $displayErrorsOriginalState = $this->_initializeSoapErrorContext();
 
-        $setRequestException = null;
-        /**
-         * @see Zend_Soap_Server_Exception
-         */
-        require_once 'Zend/Soap/Server/Exception.php';
         try {
-            $this->_setRequest($request);
-        } catch (Zend_Soap_Server_Exception $e) {
-            $setRequestException = $e;
-        }
-
-        $soap = $this->_getSoap();
-
-        $fault = false;
-        ob_start();
-        if ($setRequestException instanceof Exception) {
-            // Create SOAP fault message if we've caught a request exception
-            $fault = $this->fault($setRequestException->getMessage(), 'Sender');
-        } else {
+            $setRequestException = null;
+            /**
+             * @see Zend_Soap_Server_Exception
+             */
+            require_once 'Zend/Soap/Server/Exception.php';
             try {
-                $soap->handle($this->_request);
-            } catch (Exception $e) {
-                $fault = $this->fault($e);
+                $this->_setRequest($request);
+            } catch (Zend_Soap_Server_Exception $e) {
+                $setRequestException = $e;
             }
-        }
-        $this->_response = ob_get_clean();
 
-        // Restore original error handler
-        restore_error_handler();
-        ini_set('display_errors', $displayErrorsOriginalState);
+            $soap = $this->_getSoap();
+
+            $fault = false;
+            ob_start();
+            try {
+                if ($setRequestException instanceof Exception) {
+                    // Create SOAP fault message if we've caught a request exception
+                    $fault = $this->fault($setRequestException->getMessage(), 'Sender');
+                } else {
+                    try {
+                        $soap->handle($this->_request);
+                    } catch (Exception $e) {
+                        $fault = $this->fault($e);
+                    }
+                }
+            } finally {
+                $this->_response = ob_get_clean();
+            }
+        } finally {
+            // Restore original error handler
+            restore_error_handler();
+            ini_set('display_errors', $displayErrorsOriginalState);
+        }
 
         // Send a fault, if we have one
         if ($fault) {
@@ -978,7 +990,7 @@ class Zend_Soap_Server implements Zend_Server_Interface
      *
      * @link   http://www.w3.org/TR/soap12-part1/#faultcodes
      * @param  string|Exception $fault
-     * @param  string $code SOAP Fault Codes
+     * @param  string|int $code SOAP Fault Codes
      * @return SoapFault
      */
     public function fault($fault = null, $code = "Receiver")

@@ -118,14 +118,14 @@ class Zend_Paginator implements Countable, IteratorAggregate
     /**
      * Number of items in the current page
      *
-     * @var integer
+     * @var integer|null
      */
     protected $_currentItemCount = null;
 
     /**
      * Current page items
      *
-     * @var Traversable
+     * @var Traversable|null
      */
     protected $_currentItems = null;
 
@@ -1035,7 +1035,7 @@ class Zend_Paginator implements Countable, IteratorAggregate
      * Used to store item in cache from that Paginator instance
      *  and that current page
      *
-     * @param int $page
+     * @param int|string $page
      * @return string
      */
     protected function _getCacheId($page = null)

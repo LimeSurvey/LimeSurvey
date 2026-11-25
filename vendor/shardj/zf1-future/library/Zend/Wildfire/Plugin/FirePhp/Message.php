@@ -65,7 +65,7 @@ class Zend_Wildfire_Plugin_FirePhp_Message
 
     /**
      * Random unique ID used to identify message in comparison operations
-     * @var string
+     * @var string|false
      */
     protected $_ruid = false;
 
@@ -212,6 +212,7 @@ class Zend_Wildfire_Plugin_FirePhp_Message
     public function setOption($key, $value)
     {
       if(!array_key_exists($key,$this->_options)) {
+        require_once 'Zend/Wildfire/Exception.php';
         throw new Zend_Wildfire_Exception('Option with name "'.$key.'" does not exist!');
       }
       $previous = $this->_options[$key];
@@ -228,6 +229,7 @@ class Zend_Wildfire_Plugin_FirePhp_Message
     public function getOption($key)
     {
       if(!array_key_exists($key,$this->_options)) {
+        require_once 'Zend/Wildfire/Exception.php';
         throw new Zend_Wildfire_Exception('Option with name "'.$key.'" does not exist!');
       }
       return $this->_options[$key];

@@ -18,9 +18,9 @@
  */
 class Notification extends LSActiveRecord
 {
-    const NORMAL_IMPORTANCE   = 1; // Just notification in admin menu
-    const NAG_ONCE_IMPORTANCE = 2; // Like 3 but always only shown once.
-    const HIGH_IMPORTANCE     = 3; // Popup on page load
+    public const NORMAL_IMPORTANCE   = 1; // Just notification in admin menu
+    public const NAG_ONCE_IMPORTANCE = 2; // Like 3 but always only shown once.
+    public const HIGH_IMPORTANCE     = 3; // Popup on page load
 
     /**
      * See example usage at manual page: https://www.limesurvey.org/manual/Notifications#Examples

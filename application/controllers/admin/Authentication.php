@@ -29,13 +29,13 @@
 class Authentication extends SurveyCommonAction
 {
     /** Session key holding a login that waits for its second authentication step */
-    const SECOND_FACTOR_SESSION_KEY = 'pendingSecondFactorLogin';
+    public const SECOND_FACTOR_SESSION_KEY = 'pendingSecondFactorLogin';
 
     /** Seconds the user has to complete the second authentication step */
-    const SECOND_FACTOR_TIMEOUT = 300;
+    public const SECOND_FACTOR_TIMEOUT = 300;
 
     /** Wrong second-factor keys allowed before the user has to log in again */
-    const SECOND_FACTOR_MAX_ATTEMPTS = 5;
+    public const SECOND_FACTOR_MAX_ATTEMPTS = 5;
 
     /**
      * Show login screen and parse login data

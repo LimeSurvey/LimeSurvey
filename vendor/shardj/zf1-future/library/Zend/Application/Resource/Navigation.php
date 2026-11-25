@@ -58,12 +58,14 @@ class Zend_Application_Resource_Navigation
             $options = $this->getOptions();
 
             if (isset($options['defaultPageType'])) {
+                require_once 'Zend/Navigation/Page.php';
                 Zend_Navigation_Page::setDefaultPageType(
                     $options['defaultPageType']
                 );
             }
 
             $pages = isset($options['pages']) ? $options['pages'] : [];
+            require_once 'Zend/Navigation.php';
             $this->_container = new Zend_Navigation($pages);
         }
 
@@ -104,6 +106,7 @@ class Zend_Application_Resource_Navigation
             $key = self::DEFAULT_REGISTRY_KEY;
         }
 
+        require_once 'Zend/Registry.php';
         Zend_Registry::set($key, $this->getContainer());
     }
 

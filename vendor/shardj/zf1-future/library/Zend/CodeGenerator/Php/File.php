@@ -110,6 +110,7 @@ class Zend_CodeGenerator_Php_File extends Zend_CodeGenerator_Php_Abstract
         $realpath = realpath($filePath);
 
         if ($realpath === false) {
+            require_once 'Zend/Reflection/File.php';
             if ( ($realpath = Zend_Reflection_File::findRealpathInIncludePath($filePath)) === false) {
                 require_once 'Zend/CodeGenerator/Php/Exception.php';
                 throw new Zend_CodeGenerator_Php_Exception('No file for ' . $realpath . ' was found.');
@@ -124,6 +125,7 @@ class Zend_CodeGenerator_Php_File extends Zend_CodeGenerator_Php_Abstract
             include $realpath;
         }
 
+        require_once 'Zend/Reflection/File.php';
         $codeGenerator = self::fromReflection(($fileReflector = new Zend_Reflection_File($realpath)));
 
         if (!isset(self::$_fileCodeGenerators[$fileReflector->getFileName()])) {

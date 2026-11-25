@@ -1,5 +1,9 @@
 <?php
 
+if (!defined('PARAGONIE_SODIUM_MLDSA44_MESSAGEBYTES_MAX')) {
+    define('PARAGONIE_SODIUM_MLDSA44_MESSAGEBYTES_MAX', PHP_INT_MAX - 2420);
+}
+
 /**
  * Libsodium compatibility layer
  *
@@ -99,6 +103,25 @@ class ParagonIE_Sodium_Compat
     const CRYPTO_KDF_BYTES_MAX = 64;
     const CRYPTO_KDF_CONTEXTBYTES = 8;
     const CRYPTO_KDF_KEYBYTES = 32;
+    const CRYPTO_KEM_MLKEM768_PUBLICKEYBYTES = 1184;
+    const CRYPTO_KEM_MLKEM768_SECRETKEYBYTES = 2400;
+    const CRYPTO_KEM_MLKEM768_SEEDBYTES = 64;
+    const CRYPTO_KEM_MLKEM768_CIPHERTEXTBYTES = 1088;
+    const CRYPTO_KEM_MLKEM768_SHAREDSECRETBYTES = 32;
+    const CRYPTO_KEM_MLKEM768_KEYPAIRBYTES = 3584;
+    const CRYPTO_KEM_XWING_PUBLICKEYBYTES = 1216;
+    const CRYPTO_KEM_XWING_SECRETKEYBYTES = 32;
+    const CRYPTO_KEM_XWING_SEEDBYTES = 32;
+    const CRYPTO_KEM_XWING_CIPHERTEXTBYTES = 1120;
+    const CRYPTO_KEM_XWING_SHAREDSECRETBYTES = 32;
+    const CRYPTO_KEM_XWING_KEYPAIRBYTES = 1248;
+    const CRYPTO_KEM_PUBLICKEYBYTES = 1216;
+    const CRYPTO_KEM_SECRETKEYBYTES = 32;
+    const CRYPTO_KEM_SEEDBYTES = 32;
+    const CRYPTO_KEM_CIPHERTEXTBYTES = 1120;
+    const CRYPTO_KEM_SHAREDSECRETBYTES = 32;
+    const CRYPTO_KEM_KEYPAIRBYTES = 1248;
+    const CRYPTO_KEM_PRIMITIVE = 'xwing';
     const CRYPTO_KX_BYTES = 32;
     const CRYPTO_KX_PRIMITIVE = 'x25519blake2b';
     const CRYPTO_KX_SEEDBYTES = 32;
@@ -145,6 +168,13 @@ class ParagonIE_Sodium_Compat
     const CRYPTO_SECRETSTREAM_XCHACHA20POLY1305_TAG_REKEY = 2;
     const CRYPTO_SECRETSTREAM_XCHACHA20POLY1305_TAG_FINAL = 3;
     const CRYPTO_SECRETSTREAM_XCHACHA20POLY1305_MESSAGEBYTES_MAX = 0x3fffffff80;
+    const CRYPTO_SIGN_MLDSA44_PUBLICKEYBYTES = 1312;
+    const CRYPTO_SIGN_MLDSA44_SECRETKEYBYTES = 2560;
+    const CRYPTO_SIGN_MLDSA44_SEEDBYTES = 32;
+    const CRYPTO_SIGN_MLDSA44_BYTES = 2420;
+    const CRYPTO_SIGN_MLDSA44_KEYPAIRBYTES = 3872;
+    const CRYPTO_SIGN_MLDSA44_CONTEXTBYTES_MAX = 255;
+    const CRYPTO_SIGN_MLDSA44_MESSAGEBYTES_MAX = PARAGONIE_SODIUM_MLDSA44_MESSAGEBYTES_MAX;
     const CRYPTO_SIGN_BYTES = 64;
     const CRYPTO_SIGN_SEEDBYTES = 32;
     const CRYPTO_SIGN_PUBLICKEYBYTES = 32;
@@ -229,6 +259,9 @@ class ParagonIE_Sodium_Compat
         } catch (Exception $ex) {
             if ($ex instanceof SodiumException) {
                 throw $ex;
+            }
+            if (PHP_VERSION_ID < 50300) {
+                throw new SodiumException('invalid base64 string');
             }
             throw new SodiumException('invalid base64 string', 0, $ex);
         }
@@ -1994,6 +2027,610 @@ class ParagonIE_Sodium_Compat
     }
 
     /**
+     * Generate an ML-KEM-768 keypair.
+     * @param bool $dontFallback
+     * @return string
+     * @throws SodiumException
+     * @throws TypeError
+     * @psalm-suppress MixedArgument
+     */
+    public static function crypto_kem_mlkem768_keypair($dontFallback = false)
+    {
+        if (!$dontFallback && self::useNewSodiumAPI('sodium_crypto_kem_mlkem768_keypair')) {
+            return sodium_crypto_kem_mlkem768_keypair();
+        }
+        return ParagonIE_Sodium_Core_MLKEM768::seedKeypair(random_bytes(64));
+    }
+
+    /**
+     * Generate an ML-KEM-768 keypair from a seed.
+     *
+     * @param string $seed
+     * @param bool $dontFallback
+     * @return string
+     * @throws SodiumException
+     * @throws TypeError
+     * @psalm-suppress MixedArgument
+     */
+    public static function crypto_kem_mlkem768_seed_keypair(
+        #[\SensitiveParameter]
+        $seed,
+        $dontFallback = false
+    ) {
+        /* Type checks: */
+        ParagonIE_Sodium_Core_Util::declareScalarType($seed, 'string', 1);
+
+        /* Input validation: */
+        if (ParagonIE_Sodium_Core_Util::strlen($seed) !== self::CRYPTO_KEM_MLKEM768_SEEDBYTES) {
+            throw new SodiumException('Argument 1 must be CRYPTO_KEM_MLKEM768_SEEDBYTES long.');
+        }
+
+        if (!$dontFallback && self::useNewSodiumAPI('sodium_crypto_kem_mlkem768_seed_keypair')) {
+            return sodium_crypto_kem_mlkem768_seed_keypair($seed);
+        }
+        return ParagonIE_Sodium_Core_MLKEM768::seedKeypair($seed);
+    }
+
+    /**
+     * Extract the ML-KEM-768 secret key from a keypair.
+     *
+     * @param string $keypair
+     * @param bool $dontFallback
+     * @return string
+     * @throws SodiumException
+     * @throws TypeError
+     * @psalm-suppress MixedArgument
+     */
+    public static function crypto_kem_mlkem768_secretkey(
+        #[\SensitiveParameter]
+        $keypair,
+        $dontFallback = false
+    ) {
+        /* Type checks: */
+        ParagonIE_Sodium_Core_Util::declareScalarType($keypair, 'string', 1);
+
+        /* Input validation: */
+        if (ParagonIE_Sodium_Core_Util::strlen($keypair) !== self::CRYPTO_KEM_MLKEM768_KEYPAIRBYTES) {
+            throw new SodiumException('Argument 1 must be CRYPTO_KEM_MLKEM768_KEYPAIRBYTES long.');
+        }
+
+        if (!$dontFallback && self::useNewSodiumAPI('sodium_crypto_kem_mlkem768_secretkey')) {
+            return sodium_crypto_kem_mlkem768_secretkey($keypair);
+        }
+        return ParagonIE_Sodium_Core_Util::substr($keypair, 0, 2400);
+    }
+
+    /**
+     * Extract the ML-KEM-768 public key from a keypair.
+     *
+     * @param string $keypair
+     * @param bool $dontFallback
+     * @return string
+     * @throws SodiumException
+     * @throws TypeError
+     * @psalm-suppress MixedArgument
+     */
+    public static function crypto_kem_mlkem768_publickey(
+        #[\SensitiveParameter]
+        $keypair,
+        $dontFallback = false
+    ) {
+        /* Type checks: */
+        ParagonIE_Sodium_Core_Util::declareScalarType($keypair, 'string', 1);
+
+        /* Input validation: */
+        if (ParagonIE_Sodium_Core_Util::strlen($keypair) !== self::CRYPTO_KEM_MLKEM768_KEYPAIRBYTES) {
+            throw new SodiumException('Argument 1 must be CRYPTO_KEM_MLKEM768_KEYPAIRBYTES long.');
+        }
+
+        if (!$dontFallback && self::useNewSodiumAPI('sodium_crypto_kem_mlkem768_publickey')) {
+            return sodium_crypto_kem_mlkem768_publickey($keypair);
+        }
+        return ParagonIE_Sodium_Core_Util::substr($keypair, 2400, 1184);
+    }
+
+    /**
+     * Encapsulate an ML-KEM-768 shared secret.
+     *
+     * @param string $publicKey
+     * @param bool $dontFallback
+     * @return array
+     * @throws SodiumException
+     * @throws TypeError
+     * @psalm-suppress MixedArgument
+     */
+    public static function crypto_kem_mlkem768_enc(
+        $publicKey,
+        $dontFallback = false
+    ) {
+        /* Type checks: */
+        ParagonIE_Sodium_Core_Util::declareScalarType($publicKey, 'string', 1);
+
+        /* Input validation: */
+        if (ParagonIE_Sodium_Core_Util::strlen($publicKey) !== self::CRYPTO_KEM_MLKEM768_PUBLICKEYBYTES) {
+            throw new SodiumException('Argument 1 must be CRYPTO_KEM_MLKEM768_PUBLICKEYBYTES long.');
+        }
+
+        if (!$dontFallback && self::useNewSodiumAPI('sodium_crypto_kem_mlkem768_enc')) {
+            return sodium_crypto_kem_mlkem768_enc($publicKey);
+        }
+        return ParagonIE_Sodium_Core_MLKEM768::enc($publicKey, random_bytes(32));
+    }
+
+    /**
+     * Encapsulate an ML-KEM-768 shared secret using the supplied seed.
+     *
+     * @param string $publicKey
+     * @param string $seed
+     * @param bool $dontFallback
+     * @return array
+     * @throws SodiumException
+     * @throws TypeError
+     * @psalm-suppress MixedArgument
+     */
+    public static function crypto_kem_mlkem768_enc_deterministic(
+        $publicKey,
+        #[\SensitiveParameter]
+        $seed,
+        $dontFallback = false
+    ) {
+        /* Type checks: */
+        ParagonIE_Sodium_Core_Util::declareScalarType($publicKey, 'string', 1);
+        ParagonIE_Sodium_Core_Util::declareScalarType($seed, 'string', 2);
+
+        /* Input validation: */
+        if (ParagonIE_Sodium_Core_Util::strlen($publicKey) !== self::CRYPTO_KEM_MLKEM768_PUBLICKEYBYTES) {
+            throw new SodiumException('Argument 1 must be CRYPTO_KEM_MLKEM768_PUBLICKEYBYTES long.');
+        }
+        if (ParagonIE_Sodium_Core_Util::strlen($seed) !== 32) {
+            throw new SodiumException('Argument 2 must be 32 bytes');
+        }
+
+        if (!$dontFallback && self::useNewSodiumAPI('sodium_crypto_kem_mlkem768_enc_deterministic')) {
+            return sodium_crypto_kem_mlkem768_enc_deterministic($publicKey, $seed);
+        }
+        return ParagonIE_Sodium_Core_MLKEM768::enc($publicKey, $seed);
+    }
+
+    /**
+     * Decapsulate an ML-KEM-768 shared secret.
+     *
+     * @param string $ciphertext
+     * @param string $secretKey
+     * @param bool $dontFallback
+     * @return string
+     * @throws SodiumException
+     * @throws TypeError
+     * @psalm-suppress MixedArgument
+     */
+    public static function crypto_kem_mlkem768_dec(
+        $ciphertext,
+        #[\SensitiveParameter]
+        $secretKey,
+        $dontFallback = false
+    ) {
+        /* Type checks: */
+        ParagonIE_Sodium_Core_Util::declareScalarType($ciphertext, 'string', 1);
+        ParagonIE_Sodium_Core_Util::declareScalarType($secretKey, 'string', 2);
+
+        /* Input validation: */
+        if (ParagonIE_Sodium_Core_Util::strlen($ciphertext) !== self::CRYPTO_KEM_MLKEM768_CIPHERTEXTBYTES) {
+            throw new SodiumException('Argument 1 must be CRYPTO_KEM_MLKEM768_CIPHERTEXTBYTES long.');
+        }
+        if (ParagonIE_Sodium_Core_Util::strlen($secretKey) !== self::CRYPTO_KEM_MLKEM768_SECRETKEYBYTES) {
+            throw new SodiumException('Argument 2 must be CRYPTO_KEM_MLKEM768_SECRETKEYBYTES long.');
+        }
+
+        if (!$dontFallback && self::useNewSodiumAPI('sodium_crypto_kem_mlkem768_dec')) {
+            ParagonIE_Sodium_Core_MLKEM768::validateSecretKey($secretKey);
+            return sodium_crypto_kem_mlkem768_dec($ciphertext, $secretKey);
+        }
+        return ParagonIE_Sodium_Core_MLKEM768::dec($ciphertext, $secretKey);
+    }
+
+    /**
+     * Generate an XWing keypair.
+     * @param bool $dontFallback
+     * @return string
+     * @throws SodiumException
+     * @throws TypeError
+     * @psalm-suppress MixedArgument
+     */
+    public static function crypto_kem_xwing_keypair($dontFallback = false)
+    {
+        if (!$dontFallback && self::useNewSodiumAPI('sodium_crypto_kem_xwing_keypair')) {
+            return sodium_crypto_kem_xwing_keypair();
+        }
+        return ParagonIE_Sodium_Core_XWing::seedKeypair(random_bytes(32));
+    }
+
+    /**
+     * Generate an XWing keypair from a seed.
+     *
+     * @param string $seed
+     * @param bool $dontFallback
+     * @return string
+     * @throws SodiumException
+     * @throws TypeError
+     * @psalm-suppress MixedArgument
+     */
+    public static function crypto_kem_xwing_seed_keypair(
+        #[\SensitiveParameter]
+        $seed,
+        $dontFallback = false
+    ) {
+        /* Type checks: */
+        ParagonIE_Sodium_Core_Util::declareScalarType($seed, 'string', 1);
+
+        /* Input validation: */
+        if (ParagonIE_Sodium_Core_Util::strlen($seed) !== self::CRYPTO_KEM_XWING_SEEDBYTES) {
+            throw new SodiumException('Argument 1 must be CRYPTO_KEM_XWING_SEEDBYTES long.');
+        }
+
+        if (!$dontFallback && self::useNewSodiumAPI('sodium_crypto_kem_xwing_seed_keypair')) {
+            return sodium_crypto_kem_xwing_seed_keypair($seed);
+        }
+        return ParagonIE_Sodium_Core_XWing::seedKeypair($seed);
+    }
+
+    /**
+     * Extract the XWing secret key from a keypair.
+     *
+     * @param string $keypair
+     * @param bool $dontFallback
+     * @return string
+     * @throws SodiumException
+     * @throws TypeError
+     * @psalm-suppress MixedArgument
+     */
+    public static function crypto_kem_xwing_secretkey(
+        #[\SensitiveParameter]
+        $keypair,
+        $dontFallback = false
+    ) {
+        /* Type checks: */
+        ParagonIE_Sodium_Core_Util::declareScalarType($keypair, 'string', 1);
+
+        /* Input validation: */
+        if (ParagonIE_Sodium_Core_Util::strlen($keypair) !== self::CRYPTO_KEM_XWING_KEYPAIRBYTES) {
+            throw new SodiumException('Argument 1 must be CRYPTO_KEM_XWING_KEYPAIRBYTES long.');
+        }
+
+        if (!$dontFallback && self::useNewSodiumAPI('sodium_crypto_kem_xwing_secretkey')) {
+            return sodium_crypto_kem_xwing_secretkey($keypair);
+        }
+        return ParagonIE_Sodium_Core_Util::substr($keypair, 0, 32);
+    }
+
+    /**
+     * Extract the XWing public key from a keypair.
+     *
+     * @param string $keypair
+     * @param bool $dontFallback
+     * @return string
+     * @throws SodiumException
+     * @throws TypeError
+     * @psalm-suppress MixedArgument
+     */
+    public static function crypto_kem_xwing_publickey(
+        #[\SensitiveParameter]
+        $keypair,
+        $dontFallback = false
+    ) {
+        /* Type checks: */
+        ParagonIE_Sodium_Core_Util::declareScalarType($keypair, 'string', 1);
+
+        /* Input validation: */
+        if (ParagonIE_Sodium_Core_Util::strlen($keypair) !== self::CRYPTO_KEM_XWING_KEYPAIRBYTES) {
+            throw new SodiumException('Argument 1 must be CRYPTO_KEM_XWING_KEYPAIRBYTES long.');
+        }
+
+        if (!$dontFallback && self::useNewSodiumAPI('sodium_crypto_kem_xwing_publickey')) {
+            return sodium_crypto_kem_xwing_publickey($keypair);
+        }
+        return ParagonIE_Sodium_Core_Util::substr($keypair, 32, 1216);
+    }
+
+    /**
+     * Encapsulate an XWing shared secret.
+     *
+     * @param string $publicKey
+     * @param bool $dontFallback
+     * @return array
+     * @throws SodiumException
+     * @throws TypeError
+     * @psalm-suppress MixedArgument
+     */
+    public static function crypto_kem_xwing_enc(
+        $publicKey,
+        $dontFallback = false
+    ) {
+        /* Type checks: */
+        ParagonIE_Sodium_Core_Util::declareScalarType($publicKey, 'string', 1);
+
+        /* Input validation: */
+        if (ParagonIE_Sodium_Core_Util::strlen($publicKey) !== self::CRYPTO_KEM_XWING_PUBLICKEYBYTES) {
+            throw new SodiumException('Argument 1 must be CRYPTO_KEM_XWING_PUBLICKEYBYTES long.');
+        }
+
+        if (!$dontFallback && self::useNewSodiumAPI('sodium_crypto_kem_xwing_enc')) {
+            return sodium_crypto_kem_xwing_enc($publicKey);
+        }
+        return ParagonIE_Sodium_Core_XWing::enc($publicKey, random_bytes(64));
+    }
+
+    /**
+     * Encapsulate an XWing shared secret using the supplied seed.
+     *
+     * @param string $publicKey
+     * @param string $seed
+     * @param bool $dontFallback
+     * @return array
+     * @throws SodiumException
+     * @throws TypeError
+     * @psalm-suppress MixedArgument
+     */
+    public static function crypto_kem_xwing_enc_deterministic(
+        $publicKey,
+        #[\SensitiveParameter]
+        $seed,
+        $dontFallback = false
+    ) {
+        /* Type checks: */
+        ParagonIE_Sodium_Core_Util::declareScalarType($publicKey, 'string', 1);
+        ParagonIE_Sodium_Core_Util::declareScalarType($seed, 'string', 2);
+
+        /* Input validation: */
+        if (ParagonIE_Sodium_Core_Util::strlen($publicKey) !== self::CRYPTO_KEM_XWING_PUBLICKEYBYTES) {
+            throw new SodiumException('Argument 1 must be CRYPTO_KEM_XWING_PUBLICKEYBYTES long.');
+        }
+        if (ParagonIE_Sodium_Core_Util::strlen($seed) !== 64) {
+            throw new SodiumException('Argument 2 must be 64 bytes');
+        }
+
+        if (!$dontFallback && self::useNewSodiumAPI('sodium_crypto_kem_xwing_enc_deterministic')) {
+            return sodium_crypto_kem_xwing_enc_deterministic($publicKey, $seed);
+        }
+        return ParagonIE_Sodium_Core_XWing::enc($publicKey, $seed);
+    }
+
+    /**
+     * Decapsulate an XWing shared secret.
+     *
+     * @param string $ciphertext
+     * @param string $secretKey
+     * @param bool $dontFallback
+     * @return string
+     * @throws SodiumException
+     * @throws TypeError
+     * @psalm-suppress MixedArgument
+     */
+    public static function crypto_kem_xwing_dec(
+        $ciphertext,
+        #[\SensitiveParameter]
+        $secretKey,
+        $dontFallback = false
+    ) {
+        /* Type checks: */
+        ParagonIE_Sodium_Core_Util::declareScalarType($ciphertext, 'string', 1);
+        ParagonIE_Sodium_Core_Util::declareScalarType($secretKey, 'string', 2);
+
+        /* Input validation: */
+        if (ParagonIE_Sodium_Core_Util::strlen($ciphertext) !== self::CRYPTO_KEM_XWING_CIPHERTEXTBYTES) {
+            throw new SodiumException('Argument 1 must be CRYPTO_KEM_XWING_CIPHERTEXTBYTES long.');
+        }
+        if (ParagonIE_Sodium_Core_Util::strlen($secretKey) !== self::CRYPTO_KEM_XWING_SECRETKEYBYTES) {
+            throw new SodiumException('Argument 2 must be CRYPTO_KEM_XWING_SECRETKEYBYTES long.');
+        }
+
+        if (!$dontFallback && self::useNewSodiumAPI('sodium_crypto_kem_xwing_dec')) {
+            return sodium_crypto_kem_xwing_dec($ciphertext, $secretKey);
+        }
+        return ParagonIE_Sodium_Core_XWing::dec($ciphertext, $secretKey);
+    }
+
+    /**
+     * Generate an XWing keypair.
+     * @param bool $dontFallback
+     * @return string
+     * @throws SodiumException
+     * @throws TypeError
+     * @psalm-suppress MixedArgument
+     */
+    public static function crypto_kem_keypair($dontFallback = false)
+    {
+        if (!$dontFallback && self::useNewSodiumAPI('sodium_crypto_kem_keypair')) {
+            return sodium_crypto_kem_keypair();
+        }
+        return self::crypto_kem_xwing_keypair($dontFallback);
+    }
+
+    /**
+     * Generate an XWing keypair from a seed.
+     *
+     * @param string $seed
+     * @param bool $dontFallback
+     * @return string
+     * @throws SodiumException
+     * @throws TypeError
+     * @psalm-suppress MixedArgument
+     */
+    public static function crypto_kem_seed_keypair(
+        #[\SensitiveParameter]
+        $seed,
+        $dontFallback = false
+    ) {
+        /* Type checks: */
+        ParagonIE_Sodium_Core_Util::declareScalarType($seed, 'string', 1);
+
+        /* Input validation: */
+        if (ParagonIE_Sodium_Core_Util::strlen($seed) !== self::CRYPTO_KEM_SEEDBYTES) {
+            throw new SodiumException('Argument 1 must be CRYPTO_KEM_SEEDBYTES long.');
+        }
+
+        if (!$dontFallback && self::useNewSodiumAPI('sodium_crypto_kem_seed_keypair')) {
+            return sodium_crypto_kem_seed_keypair($seed);
+        }
+        return self::crypto_kem_xwing_seed_keypair($seed, $dontFallback);
+    }
+
+    /**
+     * Extract the XWing secret key from a keypair.
+     *
+     * @param string $keypair
+     * @param bool $dontFallback
+     * @return string
+     * @throws SodiumException
+     * @throws TypeError
+     * @psalm-suppress MixedArgument
+     */
+    public static function crypto_kem_secretkey(
+        #[\SensitiveParameter]
+        $keypair,
+        $dontFallback = false
+    ) {
+        /* Type checks: */
+        ParagonIE_Sodium_Core_Util::declareScalarType($keypair, 'string', 1);
+
+        /* Input validation: */
+        if (ParagonIE_Sodium_Core_Util::strlen($keypair) !== self::CRYPTO_KEM_KEYPAIRBYTES) {
+            throw new SodiumException('Argument 1 must be CRYPTO_KEM_KEYPAIRBYTES long.');
+        }
+
+        if (!$dontFallback && self::useNewSodiumAPI('sodium_crypto_kem_secretkey')) {
+            return sodium_crypto_kem_secretkey($keypair);
+        }
+        return self::crypto_kem_xwing_secretkey($keypair, $dontFallback);
+    }
+
+    /**
+     * Extract the XWing public key from a keypair.
+     *
+     * @param string $keypair
+     * @param bool $dontFallback
+     * @return string
+     * @throws SodiumException
+     * @throws TypeError
+     * @psalm-suppress MixedArgument
+     */
+    public static function crypto_kem_publickey(
+        #[\SensitiveParameter]
+        $keypair,
+        $dontFallback = false
+    ) {
+        /* Type checks: */
+        ParagonIE_Sodium_Core_Util::declareScalarType($keypair, 'string', 1);
+
+        /* Input validation: */
+        if (ParagonIE_Sodium_Core_Util::strlen($keypair) !== self::CRYPTO_KEM_KEYPAIRBYTES) {
+            throw new SodiumException('Argument 1 must be CRYPTO_KEM_KEYPAIRBYTES long.');
+        }
+
+        if (!$dontFallback && self::useNewSodiumAPI('sodium_crypto_kem_publickey')) {
+            return sodium_crypto_kem_publickey($keypair);
+        }
+        return self::crypto_kem_xwing_publickey($keypair, $dontFallback);
+    }
+
+    /**
+     * Encapsulate an XWing shared secret.
+     *
+     * @param string $publicKey
+     * @param bool $dontFallback
+     * @return array
+     * @throws SodiumException
+     * @throws TypeError
+     * @psalm-suppress MixedArgument
+     */
+    public static function crypto_kem_enc(
+        $publicKey,
+        $dontFallback = false
+    ) {
+        /* Type checks: */
+        ParagonIE_Sodium_Core_Util::declareScalarType($publicKey, 'string', 1);
+
+        /* Input validation: */
+        if (ParagonIE_Sodium_Core_Util::strlen($publicKey) !== self::CRYPTO_KEM_PUBLICKEYBYTES) {
+            throw new SodiumException('Argument 1 must be CRYPTO_KEM_PUBLICKEYBYTES long.');
+        }
+
+        if (!$dontFallback && self::useNewSodiumAPI('sodium_crypto_kem_enc')) {
+            return sodium_crypto_kem_enc($publicKey);
+        }
+        return self::crypto_kem_xwing_enc($publicKey, $dontFallback);
+    }
+
+    /**
+     * Encapsulate an XWing shared secret using the supplied seed.
+     *
+     * @param string $publicKey
+     * @param string $seed
+     * @param bool $dontFallback
+     * @return array
+     * @throws SodiumException
+     * @throws TypeError
+     * @psalm-suppress MixedArgument
+     */
+    public static function crypto_kem_enc_deterministic(
+        $publicKey,
+        #[\SensitiveParameter]
+        $seed,
+        $dontFallback = false
+    ) {
+        /* Type checks: */
+        ParagonIE_Sodium_Core_Util::declareScalarType($publicKey, 'string', 1);
+        ParagonIE_Sodium_Core_Util::declareScalarType($seed, 'string', 2);
+
+        /* Input validation: */
+        if (ParagonIE_Sodium_Core_Util::strlen($publicKey) !== self::CRYPTO_KEM_PUBLICKEYBYTES) {
+            throw new SodiumException('Argument 1 must be CRYPTO_KEM_PUBLICKEYBYTES long.');
+        }
+        if (ParagonIE_Sodium_Core_Util::strlen($seed) !== 64) {
+            throw new SodiumException('Argument 2 must be 64 bytes');
+        }
+
+        if (!$dontFallback && self::useNewSodiumAPI('sodium_crypto_kem_enc_deterministic')) {
+            return sodium_crypto_kem_enc_deterministic($publicKey, $seed);
+        }
+        return self::crypto_kem_xwing_enc_deterministic($publicKey, $seed, $dontFallback);
+    }
+
+    /**
+     * Decapsulate an XWing shared secret.
+     *
+     * @param string $ciphertext
+     * @param string $secretKey
+     * @param bool $dontFallback
+     * @return string
+     * @throws SodiumException
+     * @throws TypeError
+     * @psalm-suppress MixedArgument
+     */
+    public static function crypto_kem_dec(
+        $ciphertext,
+        #[\SensitiveParameter]
+        $secretKey,
+        $dontFallback = false
+    ) {
+        /* Type checks: */
+        ParagonIE_Sodium_Core_Util::declareScalarType($ciphertext, 'string', 1);
+        ParagonIE_Sodium_Core_Util::declareScalarType($secretKey, 'string', 2);
+
+        /* Input validation: */
+        if (ParagonIE_Sodium_Core_Util::strlen($ciphertext) !== self::CRYPTO_KEM_CIPHERTEXTBYTES) {
+            throw new SodiumException('Argument 1 must be CRYPTO_KEM_CIPHERTEXTBYTES long.');
+        }
+        if (ParagonIE_Sodium_Core_Util::strlen($secretKey) !== self::CRYPTO_KEM_SECRETKEYBYTES) {
+            throw new SodiumException('Argument 2 must be CRYPTO_KEM_SECRETKEYBYTES long.');
+        }
+
+        if (!$dontFallback && self::useNewSodiumAPI('sodium_crypto_kem_dec')) {
+            return sodium_crypto_kem_dec($ciphertext, $secretKey);
+        }
+        return self::crypto_kem_xwing_dec($ciphertext, $secretKey, $dontFallback);
+    }
+
+    /**
      * Perform a key exchange, between a designated client and a server.
      *
      * Typically, you would designate one machine to be the client and the
@@ -3056,6 +3693,259 @@ class ParagonIE_Sodium_Compat
             return ParagonIE_Sodium_Crypto32::sign_open($signedMessage, $publicKey);
         }
         return ParagonIE_Sodium_Crypto::sign_open($signedMessage, $publicKey);
+    }
+
+    /**
+     * Generate an ML-DSA-44 keypair.
+     * @param bool $dontFallback
+     * @return string
+     * @throws SodiumException
+     * @throws TypeError
+     * @psalm-suppress MixedArgument
+     */
+    public static function crypto_sign_mldsa44_keypair($dontFallback = false)
+    {
+        if (!$dontFallback && self::useNewSodiumAPI('sodium_crypto_sign_mldsa44_keypair')) {
+            return sodium_crypto_sign_mldsa44_keypair();
+        }
+        return ParagonIE_Sodium_Core_MLDSA44::seedKeypair(random_bytes(32));
+    }
+
+    /**
+     * Generate an ML-DSA-44 keypair from a seed.
+     *
+     * @param string $seed
+     * @param bool $dontFallback
+     * @return string
+     * @throws SodiumException
+     * @throws TypeError
+     * @psalm-suppress MixedArgument
+     */
+    public static function crypto_sign_mldsa44_seed_keypair(
+        #[\SensitiveParameter]
+        $seed,
+        $dontFallback = false
+    ) {
+        /* Type checks: */
+        ParagonIE_Sodium_Core_Util::declareScalarType($seed, 'string', 1);
+
+        /* Input validation: */
+        if (ParagonIE_Sodium_Core_Util::strlen($seed) !== self::CRYPTO_SIGN_MLDSA44_SEEDBYTES) {
+            throw new SodiumException('Argument 1 must be CRYPTO_SIGN_MLDSA44_SEEDBYTES long.');
+        }
+
+        if (!$dontFallback && self::useNewSodiumAPI('sodium_crypto_sign_mldsa44_seed_keypair')) {
+            return sodium_crypto_sign_mldsa44_seed_keypair($seed);
+        }
+        return ParagonIE_Sodium_Core_MLDSA44::seedKeypair($seed);
+    }
+
+    /**
+     * Extract the ML-DSA-44 secret key from a keypair.
+     *
+     * @param string $keypair
+     * @param bool $dontFallback
+     * @return string
+     * @throws SodiumException
+     * @throws TypeError
+     * @psalm-suppress MixedArgument
+     */
+    public static function crypto_sign_mldsa44_secretkey(
+        #[\SensitiveParameter]
+        $keypair,
+        $dontFallback = false
+    ) {
+        /* Type checks: */
+        ParagonIE_Sodium_Core_Util::declareScalarType($keypair, 'string', 1);
+
+        /* Input validation: */
+        if (ParagonIE_Sodium_Core_Util::strlen($keypair) !== self::CRYPTO_SIGN_MLDSA44_KEYPAIRBYTES) {
+            throw new SodiumException('Argument 1 must be CRYPTO_SIGN_MLDSA44_KEYPAIRBYTES long.');
+        }
+
+        if (!$dontFallback && self::useNewSodiumAPI('sodium_crypto_sign_mldsa44_secretkey')) {
+            return sodium_crypto_sign_mldsa44_secretkey($keypair);
+        }
+        return ParagonIE_Sodium_Core_Util::substr($keypair, 0, 2560);
+    }
+
+    /**
+     * Extract the ML-DSA-44 public key from a keypair.
+     *
+     * @param string $keypair
+     * @param bool $dontFallback
+     * @return string
+     * @throws SodiumException
+     * @throws TypeError
+     * @psalm-suppress MixedArgument
+     */
+    public static function crypto_sign_mldsa44_publickey(
+        #[\SensitiveParameter]
+        $keypair,
+        $dontFallback = false
+    ) {
+        /* Type checks: */
+        ParagonIE_Sodium_Core_Util::declareScalarType($keypair, 'string', 1);
+
+        /* Input validation: */
+        if (ParagonIE_Sodium_Core_Util::strlen($keypair) !== self::CRYPTO_SIGN_MLDSA44_KEYPAIRBYTES) {
+            throw new SodiumException('Argument 1 must be CRYPTO_SIGN_MLDSA44_KEYPAIRBYTES long.');
+        }
+
+        if (!$dontFallback && self::useNewSodiumAPI('sodium_crypto_sign_mldsa44_publickey')) {
+            return sodium_crypto_sign_mldsa44_publickey($keypair);
+        }
+        return ParagonIE_Sodium_Core_Util::substr($keypair, 2560, 1312);
+    }
+
+    /**
+     * Sign a message with ML-DSA-44.
+     *
+     * @param string $message
+     * @param string $secretKey
+     * @param bool $dontFallback
+     * @return string
+     * @throws SodiumException
+     * @throws TypeError
+     * @psalm-suppress MixedArgument
+     */
+    public static function crypto_sign_mldsa44_detached(
+        $message,
+        #[\SensitiveParameter]
+        $secretKey,
+        $dontFallback = false
+    ) {
+        /* Type checks: */
+        ParagonIE_Sodium_Core_Util::declareScalarType($message, 'string', 1);
+        ParagonIE_Sodium_Core_Util::declareScalarType($secretKey, 'string', 2);
+
+        /* Input validation: */
+        if (ParagonIE_Sodium_Core_Util::strlen($secretKey) !== self::CRYPTO_SIGN_MLDSA44_SECRETKEYBYTES) {
+            throw new SodiumException('Argument 2 must be CRYPTO_SIGN_MLDSA44_SECRETKEYBYTES long.');
+        }
+
+        if (!$dontFallback && self::useNewSodiumAPI('sodium_crypto_sign_mldsa44_detached')) {
+            return sodium_crypto_sign_mldsa44_detached($message, $secretKey);
+        }
+        return ParagonIE_Sodium_Core_MLDSA44::sign($message, $secretKey);
+    }
+
+    /**
+     * Sign a message with ML-DSA-44 and a context.
+     *
+     * @param string $message
+     * @param string $context
+     * @param string $secretKey
+     * @param bool $dontFallback
+     * @return string
+     * @throws SodiumException
+     * @throws TypeError
+     * @psalm-suppress MixedArgument
+     */
+    public static function crypto_sign_mldsa44_detached_ctx(
+        $message,
+        $context,
+        #[\SensitiveParameter]
+        $secretKey,
+        $dontFallback = false
+    ) {
+        /* Type checks: */
+        ParagonIE_Sodium_Core_Util::declareScalarType($message, 'string', 1);
+        ParagonIE_Sodium_Core_Util::declareScalarType($context, 'string', 2);
+        ParagonIE_Sodium_Core_Util::declareScalarType($secretKey, 'string', 3);
+
+        /* Input validation: */
+        if (ParagonIE_Sodium_Core_Util::strlen($secretKey) !== self::CRYPTO_SIGN_MLDSA44_SECRETKEYBYTES) {
+            throw new SodiumException('Argument 3 must be CRYPTO_SIGN_MLDSA44_SECRETKEYBYTES long.');
+        }
+        if (ParagonIE_Sodium_Core_Util::strlen($context) > self::CRYPTO_SIGN_MLDSA44_CONTEXTBYTES_MAX) {
+            throw new SodiumException('Context must be at most CRYPTO_SIGN_MLDSA44_CONTEXTBYTES_MAX bytes.');
+        }
+
+        if (!$dontFallback && self::useNewSodiumAPI('sodium_crypto_sign_mldsa44_detached_ctx')) {
+            return sodium_crypto_sign_mldsa44_detached_ctx($message, $context, $secretKey);
+        }
+        return ParagonIE_Sodium_Core_MLDSA44::sign($message, $secretKey, $context);
+    }
+
+    /**
+     * Verify an ML-DSA-44 detached signature.
+     *
+     * @param string $signature
+     * @param string $message
+     * @param string $publicKey
+     * @param bool $dontFallback
+     * @return bool
+     * @throws SodiumException
+     * @throws TypeError
+     * @psalm-suppress MixedArgument
+     */
+    public static function crypto_sign_mldsa44_verify_detached(
+        $signature,
+        $message,
+        $publicKey,
+        $dontFallback = false
+    ) {
+        /* Type checks: */
+        ParagonIE_Sodium_Core_Util::declareScalarType($signature, 'string', 1);
+        ParagonIE_Sodium_Core_Util::declareScalarType($message, 'string', 2);
+        ParagonIE_Sodium_Core_Util::declareScalarType($publicKey, 'string', 3);
+
+        /* Input validation: */
+        if (ParagonIE_Sodium_Core_Util::strlen($signature) !== self::CRYPTO_SIGN_MLDSA44_BYTES) {
+            throw new SodiumException('Argument 1 must be CRYPTO_SIGN_MLDSA44_BYTES long.');
+        }
+        if (ParagonIE_Sodium_Core_Util::strlen($publicKey) !== self::CRYPTO_SIGN_MLDSA44_PUBLICKEYBYTES) {
+            throw new SodiumException('Argument 3 must be CRYPTO_SIGN_MLDSA44_PUBLICKEYBYTES long.');
+        }
+
+        if (!$dontFallback && self::useNewSodiumAPI('sodium_crypto_sign_mldsa44_verify_detached')) {
+            return sodium_crypto_sign_mldsa44_verify_detached($signature, $message, $publicKey);
+        }
+        return ParagonIE_Sodium_Core_MLDSA44::verify($signature, $message, $publicKey);
+    }
+
+    /**
+     * Verify an ML-DSA-44 detached signature with a context.
+     *
+     * @param string $signature
+     * @param string $message
+     * @param string $context
+     * @param string $publicKey
+     * @param bool $dontFallback
+     * @return bool
+     * @throws SodiumException
+     * @throws TypeError
+     * @psalm-suppress MixedArgument
+     */
+    public static function crypto_sign_mldsa44_verify_detached_ctx(
+        $signature,
+        $message,
+        $context,
+        $publicKey,
+        $dontFallback = false
+    ) {
+        /* Type checks: */
+        ParagonIE_Sodium_Core_Util::declareScalarType($signature, 'string', 1);
+        ParagonIE_Sodium_Core_Util::declareScalarType($message, 'string', 2);
+        ParagonIE_Sodium_Core_Util::declareScalarType($context, 'string', 3);
+        ParagonIE_Sodium_Core_Util::declareScalarType($publicKey, 'string', 4);
+
+        /* Input validation: */
+        if (ParagonIE_Sodium_Core_Util::strlen($signature) !== self::CRYPTO_SIGN_MLDSA44_BYTES) {
+            throw new SodiumException('Argument 1 must be CRYPTO_SIGN_MLDSA44_BYTES long.');
+        }
+        if (ParagonIE_Sodium_Core_Util::strlen($publicKey) !== self::CRYPTO_SIGN_MLDSA44_PUBLICKEYBYTES) {
+            throw new SodiumException('Argument 4 must be CRYPTO_SIGN_MLDSA44_PUBLICKEYBYTES long.');
+        }
+        if (ParagonIE_Sodium_Core_Util::strlen($context) > self::CRYPTO_SIGN_MLDSA44_CONTEXTBYTES_MAX) {
+            throw new SodiumException('Context must be at most CRYPTO_SIGN_MLDSA44_CONTEXTBYTES_MAX bytes.');
+        }
+
+        if (!$dontFallback && self::useNewSodiumAPI('sodium_crypto_sign_mldsa44_verify_detached_ctx')) {
+            return sodium_crypto_sign_mldsa44_verify_detached_ctx($signature, $message, $context, $publicKey);
+        }
+        return ParagonIE_Sodium_Core_MLDSA44::verify($signature, $message, $publicKey, $context);
     }
 
     /**
@@ -4512,10 +5402,11 @@ class ParagonIE_Sodium_Compat
      * Libsodium as implemented in PHP 7.2
      * and/or ext/sodium (via PECL)
      *
+     * @param string|null $function Require a specific native sodium function.
      * @ref https://wiki.php.net/rfc/libsodium
      * @return bool
      */
-    protected static function useNewSodiumAPI()
+    protected static function useNewSodiumAPI($function = null)
     {
         static $res = null;
         if ($res === null) {
@@ -4524,6 +5415,13 @@ class ParagonIE_Sodium_Compat
         if (self::$disableFallbackForUnitTests) {
             // Don't fallback. Use the PHP implementation.
             return false;
+        }
+        if ($res === true && $function !== null) {
+            if (!function_exists($function)) {
+                return false;
+            }
+            $reflection = new ReflectionFunction($function);
+            return $reflection->isInternal() && $reflection->getExtensionName() === 'sodium';
         }
         return (bool) $res;
     }

@@ -30,6 +30,7 @@
         {% if inputsize %} cols="{{ inputsize }}" {% endif %}
         {% if maxlength %} maxlength="{{ maxlength }}" {% endif %}
         aria-labelledby="ls-question-text-{{ basename }}"
+        aria-describedby="ls-question-help-{{ basename }} ls-question-validation-{{ basename }}"
     >{{ dispVal }}</textarea>
 {% if withColumn %}
     </div>

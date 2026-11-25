@@ -81,9 +81,6 @@ class Zend_Validate_Sitemap_Changefreq extends Zend_Validate_Abstract
         }
 
         $this->_setValue($value);
-        if (!is_string($value)) {
-            return false;
-        }
 
         if (!in_array($value, $this->_changeFreqs, true)) {
             $this->_error(self::NOT_VALID);

@@ -5,13 +5,13 @@ $tabs = emailtemplates::getTabTypeArray($surveyid);
     <ul class="nav nav-tabs" role="tablist">
         <?php $count = 0;
         $state = 'active'; ?>
-        <?php foreach ($tabs as $tab => $details): ?>
+        <?php foreach ($tabs as $tab => $details) : ?>
             <?php $tabId = 'tab-' . CHtml::encode($grouplang) . '-' . CHtml::encode($tab) . '-tab'; ?>
             <li role="presentation" class="nav-item">
                 <a class="nav-link <?= $state ?>" id="<?= $tabId ?>" role="tab" aria-selected="<?= $state === 'active' ? 'true' : 'false' ?>"
                    aria-controls="tab-<?= $grouplang ?>-<?= $tab ?>" data-bs-toggle="tab" href="#tab-<?= $grouplang ?>-<?= $tab ?>">
                     <?= $details['title'] ?>
-                    <?php if (!empty(array_filter(array_column($esrow->attachments[$tab] ?? [], 'error')))): ?>
+                    <?php if (!empty(array_filter(array_column($esrow->attachments[$tab] ?? [], 'error')))) : ?>
                         <i class="ri-error-warning-fill text-danger" aria-hidden="true"></i>
                         <span class="visually-hidden"><?= gT("Missing attachment files") ?></span>
                     <?php endif; ?>

@@ -30,9 +30,7 @@
                                aria-selected="<?= $c ? 'true' : 'false' ?>"
                                data-bs-toggle="tab"
                                href="#language_<?php echo $sLanguage ?>"
-                               aria-controls="language_<?php echo CHtml::encode(
-                                   $sLanguage
-                               ); ?>">
+                               aria-controls="language_<?= CHtml::encode($sLanguage) ?>">
                                 <?php $c = false; ?>
                                 <?php echo $sTabTitle; ?>
                             </a>
@@ -47,7 +45,7 @@
                         <div id="language_<?php echo $sLanguage ?>"
                              class="table-responsive tab-pane fade <?= $c ? "show active" : "" ?>"
                              role="tabpanel" aria-labelledby="<?= $tabId ?>">
-                            <?php $c=false; ?>
+                            <?php $c = false; ?>
                             <table class='listtokenattributes table table-hover'>
                                 <thead> <tr>
                                     <th><?php eT("Attribute field"); ?></th>

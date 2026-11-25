@@ -147,7 +147,7 @@ class Zend_View_Helper_Navigation
      *                                             exceptions should be
      *                                             thrown if something goes
      *                                             wrong. Default is true.
-     * @return Zend_View_Helper_Navigation_Helper  helper instance
+     * @return Zend_View_Helper_Navigation_Helper|null  helper instance
      * @throws Zend_Loader_PluginLoader_Exception  if $strict is true and
      *                                             helper cannot be found
      * @throws Zend_View_Exception                 if $strict is true and

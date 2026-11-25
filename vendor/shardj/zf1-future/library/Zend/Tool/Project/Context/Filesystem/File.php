@@ -151,7 +151,7 @@ class Zend_Tool_Project_Context_Filesystem_File extends Zend_Tool_Project_Contex
     /**
      * getContents()
      *
-     * @return null
+     * @return string|null
      */
     public function getContents()
     {

@@ -55,7 +55,7 @@ class Zend_Controller_Router_Rewrite extends Zend_Controller_Router_Abstract
     /**
      * Currently matched route
      *
-     * @var string
+     * @var string|null
      */
     protected $_currentRoute = null;
 

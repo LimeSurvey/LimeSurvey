@@ -156,7 +156,6 @@ class Zend_View_Stream
                 } else {
                     return false;
                 }
-                break;
 
             case SEEK_CUR:
                 if ($offset >= 0) {
@@ -165,7 +164,6 @@ class Zend_View_Stream
                 } else {
                     return false;
                 }
-                break;
 
             case SEEK_END:
                 if (strlen($this->_data) + $offset >= 0) {
@@ -174,7 +172,6 @@ class Zend_View_Stream
                 } else {
                     return false;
                 }
-                break;
 
             default:
                 return false;

@@ -97,7 +97,6 @@ class Zend_Soap_Wsdl_Strategy_Composite implements Zend_Soap_Wsdl_Strategy_Inter
      * Return default strategy of this composite
      *
      * @throws Zend_Soap_Wsdl_Exception
-     * @param  string $type
      * @return Zend_Soap_Wsdl_Strategy_Interface
      */
     public function getDefaultStrategy()
