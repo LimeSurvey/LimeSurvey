@@ -67,7 +67,7 @@ echo viewHelper::getViewTestTag('templateOptions');
                                     <?php $isOutdated = TemplateConfig::isOutdated($oTemplate->path . 'config.xml'); ?>
                                     <td class="col-lg-2">
                                         <?php echo CHtml::encode($oTemplate->sTemplateName); ?>
-                                        <?php if ($isOutdated) : ?>
+                                        <?php if ($isOutdated || Template::isMissingCoreOptions($oTemplate->path . 'config.xml')) : ?>
                                             <?= TemplateConfig::getOutdatedBadge() ?>
                                         <?php endif; ?>
                                     </td>

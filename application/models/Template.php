@@ -309,12 +309,14 @@ class Template extends LSActiveRecord
     }
 
     /**
-     * Check if a custom theme is outdated: It was made for the previous major LimeSurvey version.
+     * Check if a custom theme is outdated: It was made for the previous major LimeSurvey version,
+     * or it lacks options that the core theme it is based on defines.
      * Outdated themes stay installed and usable, they are only flagged in the theme list.
      * Core themes are never outdated.
      *
      * @param Template $template The template model
      * @return bool True if the theme is outdated
+     * @throws CException
      */
     public static function isOutdatedTemplate($template): bool
     {
@@ -322,7 +324,81 @@ class Template extends LSActiveRecord
             return false;
         }
         $configXmlPath = self::getConfigXmlPath($template);
-        return $configXmlPath !== null && TemplateConfig::isOutdated($configXmlPath);
+        return $configXmlPath !== null
+            && (TemplateConfig::isOutdated($configXmlPath) || self::isMissingCoreOptions($configXmlPath));
+    }
+
+    /**
+     * Check if a custom theme lacks options that the core theme it is based on defines.
+     * A theme doesn't inherit option definitions: Only the options in its own config.xml are offered,
+     * so options added to the core theme later are missing in themes that were created before.
+     * The inheritance chain is followed through the <extends> entries of the config.xml files, so this
+     * also works for themes that are not installed yet. Themes without own options are not checked.
+     *
+     * @param string $configXmlPath Full path of the theme's config.xml
+     * @return bool True if the core theme defines at least one option that the theme doesn't define
+     * @throws CException
+     */
+    public static function isMissingCoreOptions(string $configXmlPath): bool
+    {
+        $themeOptionNames = self::getOptionNames($configXmlPath);
+        if (empty($themeOptionNames)) {
+            return false;
+        }
+        $coreConfigXmlPath = self::getCoreAncestorConfigXmlPath($configXmlPath);
+        if ($coreConfigXmlPath === null) {
+            return false;
+        }
+        return array_diff(self::getOptionNames($coreConfigXmlPath), $themeOptionNames) !== [];
+    }
+
+    /**
+     * Get the config.xml path of the first core theme in the inheritance chain of a theme
+     *
+     * @param string $configXmlPath Full path of the theme's config.xml
+     * @return string|null The path, or null if the chain doesn't lead to an available core theme
+     * @throws CException
+     */
+    private static function getCoreAncestorConfigXmlPath(string $configXmlPath): ?string
+    {
+        $visited = [];
+        $extensionConfig = ExtensionConfig::loadFromFileCached($configXmlPath);
+        while ($extensionConfig !== null) {
+            $parentName = (string) $extensionConfig->xml->metadata->extends;
+            if ($parentName === '' || isset($visited[$parentName])) {
+                return null;
+            }
+            $visited[$parentName] = true;
+            // Theme names and folders are kept equal (see importManifest() and renameTo())
+            $parentConfigXmlPath = self::getConfigXmlPathByName($parentName, $parentName);
+            if ($parentConfigXmlPath === null) {
+                return null;
+            }
+            if (self::isCoreTemplateName($parentName)) {
+                return $parentConfigXmlPath;
+            }
+            $extensionConfig = ExtensionConfig::loadFromFileCached($parentConfigXmlPath);
+        }
+        return null;
+    }
+
+    /**
+     * Get the names of the options defined in a theme's config.xml
+     *
+     * @param string $configXmlPath Full path of the config.xml
+     * @return string[] The option names, empty if the file or its options can't be read
+     */
+    private static function getOptionNames(string $configXmlPath): array
+    {
+        $extensionConfig = ExtensionConfig::loadFromFileCached($configXmlPath);
+        if ($extensionConfig === null || !isset($extensionConfig->xml->options)) {
+            return [];
+        }
+        $optionNames = [];
+        foreach ($extensionConfig->xml->options->children() as $optionName => $option) {
+            $optionNames[] = (string) $optionName;
+        }
+        return array_unique($optionNames);
     }
 
     /**
@@ -333,10 +409,21 @@ class Template extends LSActiveRecord
      */
     private static function isCoreTemplate($template): bool
     {
+        return self::isCoreTemplateName((string) $template->name);
+    }
+
+    /**
+     * Check if a theme name is the name of one of the core themes shipped with LimeSurvey
+     *
+     * @param string $templateName The theme name
+     * @return bool True for a core theme
+     */
+    private static function isCoreTemplateName(string $templateName): bool
+    {
         // TODO: we can not trust the filestate and need to be
         //  able to check the theme type (core or custom) from the database, this should replace the call to getTemplatesData()
         $templates = array_column(LsDefaultDataSets::getTemplatesData(), 'name');
-        return in_array($template->name, $templates, true);
+        return in_array($templateName, $templates, true);
     }
 
     /**
@@ -349,11 +436,25 @@ class Template extends LSActiveRecord
      */
     private static function getConfigXmlPath($template): ?string
     {
+        return self::getConfigXmlPathByName((string) $template->name, (string) $template->folder);
+    }
+
+    /**
+     * Get the full path of the config.xml of a theme by its name and folder, from the same root directory
+     * that getTemplatePath() uses for rendering: The standard themes for a standard theme, otherwise the user themes.
+     *
+     * @param string $templateName The theme name
+     * @param string $folder The theme folder
+     * @return string|null The path, or null if no config.xml was found
+     * @throws CException
+     */
+    private static function getConfigXmlPathByName(string $templateName, string $folder): ?string
+    {
         Yii::import('application.helpers.SurveyThemeHelper');
-        $rootDir = SurveyThemeHelper::isStandardTemplate($template->name)
+        $rootDir = SurveyThemeHelper::isStandardTemplate($templateName)
             ? App()->getConfig("standardthemerootdir")
             : App()->getConfig("userthemerootdir");
-        $configXmlPath = $rootDir . DIRECTORY_SEPARATOR . $template->folder . DIRECTORY_SEPARATOR . 'config.xml';
+        $configXmlPath = $rootDir . DIRECTORY_SEPARATOR . $folder . DIRECTORY_SEPARATOR . 'config.xml';
         return is_file($configXmlPath) ? $configXmlPath : null;
     }
 
