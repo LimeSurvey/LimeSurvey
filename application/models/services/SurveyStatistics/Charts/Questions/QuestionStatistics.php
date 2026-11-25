@@ -437,6 +437,12 @@ class QuestionStatistics implements StatisticsChartInterface
         return 0;
     }
 
+    /**
+     * Builds the query that loads the survey's questions with their texts,
+     * answers and attributes in the statistics language.
+     *
+     * @return CDbCommand The command with its parameters bound, ready to run
+     */
     private function buildBaseQuery(): CDbCommand
     {
         $select = [
@@ -472,7 +478,7 @@ class QuestionStatistics implements StatisticsChartInterface
             ->leftJoin('{{groups}} g', 'q.gid = g.gid')
             ->leftJoin('{{question_l10ns}} ql', 'q.qid = ql.qid AND ql.language = :language')
             ->leftJoin('{{answers}} a', 'q.qid = a.qid')
-            ->leftJoin('{{answer_l10ns}} al', 'a.aid = al.aid AND al.language = :language')
+            ->leftJoin('{{answer_l10ns}} al', 'a.aid = al.aid AND al.language = :answerlanguage')
             ->leftJoin('{{question_attributes}} qa', 'q.qid = qa.qid')
             ->where('q.sid = :sid')
             ->order('q.parent_qid ASC, g.group_order ASC, q.scale_id ASC, q.question_order ASC, q.title ASC, a.sortorder ASC, a.code ASC');
@@ -480,6 +486,7 @@ class QuestionStatistics implements StatisticsChartInterface
         $command->params = [
             ':sid' => $this->surveyId,
             ':language' => $this->language,
+            ':answerlanguage' => $this->language,
         ];
 
         return $command;
