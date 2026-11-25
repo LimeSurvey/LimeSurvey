@@ -3156,12 +3156,14 @@ class ParticipantsAction extends SurveyCommonAction
             ->from('{{participant_attribute_names}}')
             ->where("encrypted = 'Y' AND core_attribute <> 'Y'")
             ->queryColumn());
+        /* Save only the encrypted columns (and duplicatefinder) : other columns changed meanwhile are kept */
+        $encryptedColumns = Participant::model()->getAllEncryptedAttributes(0, 'Participant');
         foreach ($oParticipants as $oParticipant) {
             /* Participant and its attributes in one step : all or nothing */
             $transaction = App()->db->getCurrentTransaction() ? null : App()->db->beginTransaction();
             try {
                 $oParticipant->decrypt();
-                if (!$oParticipant->encryptSave(false)) {
+                if (!empty($encryptedColumns) && !$oParticipant->encryptSave(false, $encryptedColumns)) {
                     if ($transaction) {
                         $transaction->rollback();
                     }
@@ -3292,7 +3294,8 @@ class ParticipantsAction extends SurveyCommonAction
         $oParticipants = Participant::model()->invaliduplicatefinder()->findAll($criteria);
         foreach ($oParticipants as $oParticipant) {
             $oParticipant->decrypt();
-            if ($oParticipant->encryptSave(false)) {
+            /* Save only duplicatefinder : other columns changed meanwhile are kept */
+            if ($oParticipant->encryptSave(false, ['duplicatefinder'])) {
                 $processed++;
                 $lastParticipantId = $oParticipant->participant_id;
                 App()->user->setState($stateId, $lastParticipantId);

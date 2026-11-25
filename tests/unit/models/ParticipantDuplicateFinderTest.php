@@ -4,6 +4,7 @@ namespace ls\tests;
 
 use Participant;
 use ParticipantAttributeName;
+use ls\tests\DummyController;
 use Yii;
 
 /**
@@ -194,5 +195,111 @@ class ParticipantDuplicateFinderTest extends TestBaseClass
         $participant->decrypt();
         $this->assertTrue($participant->encryptSave());
         $this->assertSame(0, Participant::getDuplicateFinderInvalidCount($criteria));
+    }
+
+    /**
+     * @param string $participantId
+     * @return array the stored row
+     */
+    private function getStoredParticipant(string $participantId): array
+    {
+        return Yii::app()->db->createCommand()
+            ->select('*')
+            ->from('{{participants}}')
+            ->where('participant_id = :id', [':id' => $participantId])
+            ->queryRow();
+    }
+
+    /**
+     * Run a CPDB maintenance action as superadmin
+     * @param string $action reencryptParticipantData or recalculateDuplicateFinder
+     * @return void
+     */
+    private function runMaintenance(string $action): void
+    {
+        Yii::import('application.controllers.admin.ParticipantsAction', true);
+        Yii::app()->setController(new DummyController('dummyid'));
+        Yii::app()->session['loginID'] = 1;
+        Yii::app()->user->setId(1);
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+        try {
+            (new \ParticipantsAction('dummy'))->$action();
+        } finally {
+            $_SERVER['REQUEST_METHOD'] = 'GET';
+            Yii::app()->user->setState('currentReencryptLastParticipantId', null);
+            Yii::app()->user->setState('currentReencryptMethod', null);
+            Yii::app()->user->setState('currentDuplicateFinderInvalidParticipantId', null);
+            Yii::app()->user->setState('currentDuplicateFinderBits', null);
+        }
+    }
+
+    /** Re-encryption saves only the encrypted columns : a column changed meanwhile is kept. */
+    public function testReencryptionKeepsAColumnChangedMeanwhile(): void
+    {
+        $created = $this->createParticipant(['firstname' => 'Sarah', 'lastname' => 'Connor', 'email' => 'sarah@example.org']);
+        $participant = Participant::model()->findByPk($created->participant_id);
+        Participant::model()->updateByPk($created->participant_id, ['language' => 'fr']);
+
+        $participant->decrypt();
+        $this->assertTrue($participant->encryptSave(false, $participant->getAllEncryptedAttributes(0, 'Participant')));
+
+        $this->assertSame('fr', $this->getStoredParticipant($created->participant_id)['language']);
+    }
+
+    /** The duplicate index update saves only duplicatefinder : a column changed meanwhile is kept. */
+    public function testDuplicateFinderUpdateKeepsAColumnChangedMeanwhile(): void
+    {
+        $created = $this->createParticipant(['firstname' => 'John', 'lastname' => 'Connor', 'email' => 'john@example.org']);
+        Participant::model()->updateByPk($created->participant_id, ['duplicatefinder' => '']);
+        $participant = Participant::model()->findByPk($created->participant_id);
+        Participant::model()->updateByPk($created->participant_id, ['language' => 'fr']);
+
+        $participant->decrypt();
+        $this->assertTrue($participant->encryptSave(false, ['duplicatefinder']));
+
+        $stored = $this->getStoredParticipant($created->participant_id);
+        $this->assertSame('fr', $stored['language']);
+        $this->assertSame(
+            Participant::getDuplicateFinderValue(['firstname' => 'John', 'lastname' => 'Connor', 'email' => 'john@example.org']),
+            $stored['duplicatefinder']
+        );
+    }
+
+    /** The re-encryption action re-encrypts the core attributes with the current method. */
+    public function testReencryptionActionUsesTheCurrentMethod(): void
+    {
+        $method = Yii::app()->getConfig('CPDB_encryption_method');
+        Yii::app()->setConfig('CPDB_encryption_method', 'B');
+        $created = $this->createParticipant(['firstname' => 'Kate', 'lastname' => 'Brewster', 'email' => 'kate@example.org']);
+        $this->assertSame(\LSActiveRecord::encryptSingle('Kate', 'B'), $this->getStoredParticipant($created->participant_id)['firstname']);
+
+        Yii::app()->setConfig('CPDB_encryption_method', 'H');
+        try {
+            $this->runMaintenance('reencryptParticipantData');
+        } finally {
+            Yii::app()->setConfig('CPDB_encryption_method', $method);
+        }
+
+        $stored = $this->getStoredParticipant($created->participant_id);
+        $this->assertNotSame(\LSActiveRecord::encryptSingle('Kate', 'B'), $stored['firstname'], 'Re-encrypted with the hardened method.');
+        $this->assertSame('Kate', \LSActiveRecord::decryptSingle($stored['firstname'], 'H'));
+        $this->assertSame(
+            Participant::getDuplicateFinderValue(['firstname' => 'Kate', 'lastname' => 'Brewster', 'email' => 'kate@example.org']),
+            $stored['duplicatefinder']
+        );
+    }
+
+    /** The duplicate index update action computes the missing duplicatefinder. */
+    public function testDuplicateFinderActionComputesTheMissingIndex(): void
+    {
+        $created = $this->createParticipant(['firstname' => 'Marcus', 'lastname' => 'Wright', 'email' => 'marcus@example.org']);
+        Participant::model()->updateByPk($created->participant_id, ['duplicatefinder' => '']);
+
+        $this->runMaintenance('recalculateDuplicateFinder');
+
+        $this->assertSame(
+            Participant::getDuplicateFinderValue(['firstname' => 'Marcus', 'lastname' => 'Wright', 'email' => 'marcus@example.org']),
+            $this->getStoredParticipant($created->participant_id)['duplicatefinder']
+        );
     }
 }
