@@ -136,7 +136,6 @@ class AuthLDAPAutoCreateRoleTest extends TestBaseClass
     private function assignAutoCreateRole($userId)
     {
         $method = new \ReflectionMethod(\AuthLDAP::class, 'assignAutoCreateRole');
-        $method->setAccessible(true);
         $method->invoke(self::$plugin, $userId);
     }
 

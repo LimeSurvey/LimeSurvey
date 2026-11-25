@@ -186,7 +186,8 @@
                 '<p>' . gT("File should be a standard CSV (comma delimited) file with optional double quotes around values (default for most spreadsheet tools). The first line must contain the field names. The fields can be in any order.") . '</p>' .
                 '<span class="fw-bold">' . gT("Mandatory fields:") . '</span> firstname, lastname, email<br/>' .
                 '<span class="fw-bold">' . gT('Optional fields:') .
-                '</span> emailstatus, token, language, validfrom, validuntil, usesleft, attribute_1, attribute_2, attribute_3, ... .</div>' .
+                '</span> emailstatus, token, language, validfrom, validuntil, usesleft, attribute_1, attribute_2, attribute_3, ... .<br/>' .
+                gT("The dates in validfrom and validuntil must be in UTC, in the format YYYY-MM-DD HH:MM.") . '</div>' .
                 $exampleButton . '</div>';
             $this->widget('ext.AlertWidget.AlertWidget', [
                 'text' => $message,

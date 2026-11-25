@@ -18,6 +18,48 @@
     object-fit: fill;
 }
 
+/*
+ * Options with their own settings from the image editor, passed as CSS variables. rows/answer_image.twig only
+ * outputs the frame in the survey themes the new editor can edit.
+ * The frame has the saved width and aspect ratio, but never gets wider than the answer.
+ * The cropped part of the image fills it; the size and fit settings above don't apply.
+ */
+.imageselect-answers .imageselect-frame {
+    display: block;
+    position: relative;
+    overflow: hidden;
+    width: var(--imageselect-frame-width);
+    max-width: 100%;
+    aspect-ratio: var(--imageselect-frame-ratio);
+    border-radius: var(--imageselect-frame-radius);
+}
+
+.imageselect-answers .imageselect-frame .imageselect-img {
+    position: absolute;
+    max-width: none;
+    width: var(--imageselect-crop-width);
+    height: var(--imageselect-crop-height);
+    left: var(--imageselect-crop-left);
+    top: var(--imageselect-crop-top);
+    object-fit: fill;
+}
+
+/* Settings without crop: The image covers the frame at the saved position */
+.imageselect-answers .imageselect-frame-cover .imageselect-img {
+    position: static;
+    max-width: 100%;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: var(--imageselect-crop-position);
+}
+
+/* The label around the frame is an inline-block: Without a limit, a wide frame would make it wider than the answer */
+.imageselect-answers .imageselect-label:has(.imageselect-frame) {
+    box-sizing: border-box;
+    max-width: 100%;
+}
+
 /* Display columns: don't split an answer across two columns */
 .imageselect-answers > li {
     break-inside: avoid;

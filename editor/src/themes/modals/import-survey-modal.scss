@@ -93,44 +93,9 @@
     width: 100%;
   }
 
+  // The checkbox itself is styled for all modals, see modal.scss.
   .form-check-ui-component {
-    align-items: center;
-    gap: 16px;
-    justify-content: flex-start;
     margin-top: 20px !important;
-    padding-left: 0;
-  }
-
-  .form-check-input[type='checkbox'] {
-    border: 0;
-    border-radius: 4px;
-    flex: 0 0 24px;
-    height: 24px;
-    margin: 0;
-    outline: 2px solid $g-900;
-    width: 24px;
-  }
-
-  .form-check-input:checked[type='checkbox'] {
-    background-color: $g-800;
-    color: $white;
-    outline: 2px solid $g-900;
-
-    &::before {
-      align-items: center;
-      display: flex;
-      font-size: 20px;
-      height: 24px;
-      justify-content: center;
-      line-height: 1;
-      width: 24px;
-    }
-  }
-
-  .form-check-label {
-    font-size: 16px;
-    line-height: 24px;
-    margin: 0;
   }
 }
 

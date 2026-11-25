@@ -1,6 +1,7 @@
 <?php
 
 use LimeSurvey\Models\Services\Quotas;
+use LimeSurvey\Models\Services\SubmitNotificationSender;
 use LimeSurvey\Models\Services\SurveyAccessModeService;
 use LimeSurvey\Models\Services\SurveySessionState;
 
@@ -1385,7 +1386,7 @@ class SurveyRuntimeHelper
             }
             //Send notifications
             if ($surveyActive) {
-                sendSubmitNotifications($this->iSurveyid);
+                (new SubmitNotificationSender((int) $this->iSurveyid))->sendForCurrentResponse($this->thissurvey ?? []);
             }
             // Link to Print Answer Preview  **********
             $this->aSurveyInfo['aCompleted']['aPrintAnswers']['show'] = false;
@@ -1576,6 +1577,8 @@ class SurveyRuntimeHelper
             $aLSJavascriptVar['bNumRealValue'] = (int) (bool) Yii::app()->getConfig('bNumRealValue', 0);
             $aRadix                            = getRadixPointData($aSurveyinfo['surveyls_numberformat']);
             $aLSJavascriptVar['sLEMradix']     = $aRadix['separator'];
+            // Significant digits PHP prints for a float: Calculated expression results are rounded the same way in JavaScript
+            $aLSJavascriptVar['floatPrecision'] = (int) ini_get('precision');
             $aLSJavascriptVar['lang']          = [
                 "confirm" =>  [
                     "confirm_cancel" =>  gT('Cancel'),

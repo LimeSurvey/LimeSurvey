@@ -78,11 +78,11 @@ export const RankingQuestionSubquestion = ({
           )}
         {subquestion?.preview && (
           <EditableImage
-            update={handleSubquestionUpdate}
             imageSrc={subquestion}
             width={'200px'}
             showControllers={isFocused}
             handleRemoveImage={() => handleSubquestionUpdate('')}
+            imageName={title}
           />
         )}
       </div>

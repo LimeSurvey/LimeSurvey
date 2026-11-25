@@ -33,6 +33,12 @@ p {
   margin: 0;
 }
 
+// Small text (Bootstrap's .small, 14px) needs a smaller line height than the
+// 28px above, else wrapped lines are far apart.
+p.small {
+  line-height: $line-height-20;
+}
+
 .text-sm {
   font-size: $font-size-xs;
 }

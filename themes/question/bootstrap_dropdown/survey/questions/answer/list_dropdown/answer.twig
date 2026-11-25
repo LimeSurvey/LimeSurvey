@@ -28,6 +28,7 @@
                 {{ data_live_search }}
                 {{ width_entry }}
                 data-none-selected-text=''
+                data-none-results-text="{{ sprintf(gT('No results matched %s'), '{0}')|escape }}"
                 name="{{ name }}"
                 id="answer{{ name }}"
                 {% if dropdownSize %} data-size={{ dropdownSize }} {% endif %}
@@ -43,6 +44,10 @@
             'disabled' : "disabled",
         }))
         }}
+        {# Search result announcement for screen readers #}
+        {% if data_live_search %}
+            <output id="answer{{ name }}-search-status" class="visually-hidden" aria-live="polite" aria-atomic="true"></output>
+        {% endif %}
     </div>
     {# rows/othertext.php #}
     {{ sOther }}
@@ -107,6 +112,50 @@
                     $bsToggle.trigger('click.bs.dropdown.data-api').trigger('focus');
                 }
             }, true);
+
+            {% if data_live_search %}
+            {# Announce the search result (number of results or no result) #}
+            var $searchStatus = $('#answer{{ name }}-search-status');
+            {# Unescaped : used with .text() #}
+            {# Same strings and singular handling as the responses statistics in the editor #}
+            var oneResultText = {{ json_encode(gT('1 result found', 'unescaped')) }};
+            var resultsText = {{ json_encode(gT('%s results found', 'unescaped')) }};
+            var noResultsText = {{ json_encode(gT('No results matched %s', 'unescaped')) }};
+            var searchStatusTimer = null;
+            {# No results message as a paragraph outside the listbox, replace the plugin <li class="no-results"> #}
+            var $noResults = $('<p class="no-results mb-0" hidden></p>');
+            $bsWrapper.find('[role="listbox"]').first().after($noResults);
+            $bsWrapper.on('input', '.bs-searchbox input', function () {
+                var search = this.value;
+                var noResultsMessage = noResultsText.replace('%s', function () { return '"' + search + '"'; });
+                {# Count from the filtered data, the DOM only has the visible part when virtual scroll is used #}
+                var picker = selectPicker.data('selectpicker');
+                var count = $.grep(picker.selectpicker.search.data, function (item) { return item.type === 'option'; }).length;
+                $bsWrapper.find('[role="listbox"] li.no-results').remove();
+                $noResults.text(noResultsMessage).prop('hidden', search === '' || count > 0);
+                clearTimeout(searchStatusTimer);
+                {# Clear then write after a delay, so an identical message is announced again (W3C ARIA19) #}
+                $searchStatus.text('');
+                searchStatusTimer = setTimeout(function () {
+                    var message = '';
+                    if (search !== '') {
+                        if (count === 0) {
+                            message = noResultsMessage;
+                        } else if (count === 1) {
+                            message = oneResultText;
+                        } else {
+                            message = resultsText.replace('%s', count);
+                        }
+                    }
+                    $searchStatus.text(message);
+                }, 500);
+            });
+            selectPicker.on('hidden.bs.select', function () {
+                clearTimeout(searchStatusTimer);
+                $searchStatus.text('');
+                $noResults.prop('hidden', true);
+            });
+            {% endif %}
         });
 
     </script>

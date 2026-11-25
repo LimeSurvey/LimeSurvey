@@ -28,7 +28,7 @@
     {% endif %}
     {% if aSurveyInfo.datasecurity_error %}
     <div class="{{ aSurveyInfo.class.activealert }} alert alert-danger alert-dismissible alert-dismissible {% if not aSurveyInfo.datasecuritynotaccepted %}ls-js-hidden {% endif %}" {{ aSurveyInfo.attr.activealert }} id="datasecurity_error">
-        <a {{ aSurveyInfo.attr.activealertbutton }} class="{{ aSurveyInfo.class.activealertbutton }} btn-close" aria-hidden="true"></a>
+        <button {{ aSurveyInfo.attr.activealertbutton }} class="{{ aSurveyInfo.class.activealertbutton }} btn-close"></button>
         {{ aSurveyInfo.datasecurity_error }}
     </div>
         {% if aSurveyInfo.datasecuritynotaccepted %}

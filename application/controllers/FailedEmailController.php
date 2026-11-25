@@ -1,5 +1,7 @@
 <?php
 
+use LimeSurvey\Models\Services\SubmitNotificationSender;
+
 /**
  * @psalm-suppress InvalidScalarArgument
  */
@@ -74,8 +76,10 @@ class FailedEmailController extends LSBaseController
 
 
     /**
+     * Resend the selected failed email notifications of a survey and show the result
+     *
      * @throws CHttpException|CException
-     * @return string|void
+     * @return string|void The rendered result for the modal (HTML for the bulk action, JSON for a single email)
      */
     public function actionResend()
     {
@@ -83,9 +87,6 @@ class FailedEmailController extends LSBaseController
         if (!$surveyId) {
             throw new CHttpException(403, gT("Invalid survey ID"));
         }
-
-        global $thissurvey;
-        $thissurvey = getSurveyInfo($surveyId);
 
         if (!Permission::model()->hasSurveyPermission($surveyId, 'responses', 'update')) {
             App()->user->setFlash('error', gT("You do not have permission to access this page."));
@@ -113,7 +114,7 @@ class FailedEmailController extends LSBaseController
                         'resendVars' => $failedEmail->resend_vars,
                     ];
                 }
-                $result = sendSubmitNotifications($surveyId, $emailsByType, true);
+                $result = (new SubmitNotificationSender($surveyId))->resend($emailsByType);
                 if (!$preserveResend) {
                     // only delete FailedEmail entries that have succeeded
                     $criteria->addCondition('status = :status');

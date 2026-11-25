@@ -8,6 +8,7 @@ use LSYii_Application;
 use PluginEvent;
 use CHttpSession;
 use LimeSurvey\PluginManager\PluginManager;
+use LimeSurvey\PluginManager\PasswordSettingMask;
 use LimeSurvey\Models\Services\Exception\{
     PersistErrorException,
     NotFoundException,
@@ -488,8 +489,11 @@ class GeneralSettings
     /**
      * Dispatch plugin event new survey settings
      *
-     * @param int $surveyId
-     * @param array $pluginSettings
+     * Each plugin gets its own submitted settings. A password setting that was submitted
+     * with the placeholder of the form gets its stored value back first.
+     *
+     * @param int $surveyId ID of the survey the settings are saved for
+     * @param array $pluginSettings Submitted settings indexed by plugin name
      * @return void
      */
     private function dispatchPluginEventNewSurveySettings($surveyId, $pluginSettings)
@@ -498,12 +502,51 @@ class GeneralSettings
             ? $pluginSettings
             : [];
         foreach ($pluginSettings as $plugin => $settings) {
+            $settings = $this->restorePluginPasswordSettings($surveyId, $plugin, $settings);
             $settingsEvent = new PluginEvent('newSurveySettings');
             $settingsEvent->set('settings', $settings);
             $settingsEvent->set('survey', $surveyId);
             $this->pluginManager
                 ->dispatchEvent($settingsEvent, $plugin);
         }
+    }
+
+    /**
+     * Put the stored password back where a plugin setting was submitted with the placeholder
+     *
+     * The survey settings form shows a placeholder instead of a stored password. If the
+     * placeholder comes back the user did not change the password, so the plugin gets the
+     * stored one. The stored values are only asked from the plugin when a placeholder was
+     * submitted. A placeholder the plugin gives no stored password for is removed from the
+     * settings, it is never handed over as the new password.
+     *
+     * @param int $surveyId ID of the survey the settings are saved for
+     * @param string $plugin Name of the plugin the settings belong to
+     * @param mixed $settings Submitted settings of the plugin
+     * @return mixed The settings to hand over to the plugin
+     */
+    private function restorePluginPasswordSettings($surveyId, $plugin, $settings)
+    {
+        if (!is_array($settings) || !PasswordSettingMask::containsPlaceholder($settings)) {
+            return $settings;
+        }
+        $currentSettingsEvent = new PluginEvent('beforeSurveySettings');
+        $currentSettingsEvent->set('survey', $surveyId);
+        $this->pluginManager
+            ->dispatchEvent($currentSettingsEvent, $plugin);
+        $currentSettings = $currentSettingsEvent->get('surveysettings');
+        $definitions = [];
+        foreach (is_array($currentSettings) ? $currentSettings : [] as $pluginSettings) {
+            if (
+                is_array($pluginSettings)
+                && isset($pluginSettings['name'], $pluginSettings['settings'])
+                && (string) $pluginSettings['name'] === (string) $plugin
+                && is_array($pluginSettings['settings'])
+            ) {
+                $definitions = array_replace($definitions, $pluginSettings['settings']);
+            }
+        }
+        return PasswordSettingMask::restore($settings, $definitions);
     }
 
     /**

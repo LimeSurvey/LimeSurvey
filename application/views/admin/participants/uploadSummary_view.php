@@ -11,6 +11,7 @@
 /** @var $invalidparticipantid */
 /** @var $overwritten */
 /** @var $dupreason */
+/** @var $noPermissionList */
 
 $successSummary = '';
 $infoSummary = '';
@@ -35,7 +36,7 @@ if (empty($errorinupload)) {
     if ($overwritten > 0) {
         $infoSummary .= "<li>" . sprintf(gT("%s records were updated"), $overwritten) . "</li>";
     }
-    if (count($duplicatelist) || count($nopermissionlist) || count($invalidemaillist) || count($invalidparticipantid) || count($invalidattribute) || count($aInvalidFormatlist)) {
+    if (count($duplicatelist) || count($noPermissionList) || count($invalidemaillist) || count($invalidparticipantid) || count($invalidattribute) || count($aInvalidFormatlist)) {
         $warningSummary .= "<div class='warningheader'>" . gT('Warnings') . "</div><ul>";
         if (count($duplicatelist) > 0) {
             $warningSummary .= "<li>" . sprintf(gT("%s were found to be duplicate entries and did not need a new participant to be created."), count($duplicatelist));
@@ -45,10 +46,10 @@ if (empty($errorinupload)) {
             }
             $warningSummary .= "</ul></div></li>";
         }
-        if (count($nopermissionlist) > 0) {
-            $warningSummary .= "<li>" . sprintf(gT("%s matching participants were not updated because you do not have permission to edit them"), count($nopermissionlist));
+        if (count($noPermissionList) > 0) {
+            $warningSummary .= "<li>" . sprintf(gT("%s participants already exist but you do not have permission to update them."), count($noPermissionList));
             $warningSummary .= "<div class='badtokenlist' id='nopermissionlist'><ul>";
-            foreach ($nopermissionlist as $data) {
+            foreach ($noPermissionList as $data) {
                 $warningSummary .= "<li>" . $data . "</li>";
             }
             $warningSummary .= "</ul></div></li>";

@@ -3,6 +3,7 @@
 namespace LimeSurvey\Models\Services\QuestionAggregateService;
 
 use Question;
+use QuestionType;
 use QuestionAttribute;
 use Survey;
 use Answer;
@@ -17,7 +18,8 @@ use LimeSurvey\Models\Services\{
     Proxy\ProxyQuestion,
     Exception\PersistErrorException,
     Exception\NotFoundException,
-    Exception\PermissionDeniedException
+    Exception\PermissionDeniedException,
+    Exception\QuestionHasConditionsException
 };
 
 /**
@@ -37,6 +39,10 @@ class QuestionService
     private ProxySettingsUser $proxySettingsUser;
     private ProxyQuestion $proxyQuestion;
     private LSYii_Application $yiiApp;
+    /** @var array<string, string>|null Answer option layout per question type, see getAnswerOptionLayouts() */
+    private ?array $answerOptionLayouts = null;
+    /** @var int[] The questions whose conditions the last update deleted, see getChangedDependentQuestionIds() */
+    private array $changedDependentQuestionIds = [];
 
     public function __construct(
         Question $modelQuestion,
@@ -85,6 +91,7 @@ class QuestionService
      * @return Question
      * @throws NotFoundException
      * @throws PermissionDeniedException
+     * @throws QuestionHasConditionsException
      * @throws PersistErrorException
      */
     public function save($input)
@@ -282,11 +289,12 @@ class QuestionService
     /**
      * Method to store and filter data for editing a question
      *
-     * @param Question $question
-     * @param array $data
-     * @return Question
-     * @throws NotFoundException
-     * @throws PersistErrorException
+     * @param Question $question The question to update
+     * @param array $data The new question data
+     * @return Question The updated question
+     * @throws NotFoundException If the group or parent question is not in the survey
+     * @throws QuestionHasConditionsException If "Other" is switched off while conditions use it (see Question::validateOtherNotUsedInConditions())
+     * @throws PersistErrorException If the question could not be saved
      */
     private function updateQuestionData(Question $question, $data)
     {
@@ -296,13 +304,58 @@ class QuestionService
 
         $originalRelevance = $question->relevance;
         $originalTitle = $question->title;
-        if ($question->type !== ($data['type'] ?? $question->type)) {
-            $this->removeAnswersAndDependentConditions($question->qid);
+        $oldType = (string) $question->type;
+        $newType = $this->getNewType($question, $data);
+        if (isset($data['type'])) {
+            // The validation must see the type that is saved: It switches "Other" off for a type without it
+            $data['type'] = $newType;
         }
+        $this->changedDependentQuestionIds = [];
 
         $question->setAttributes($data, false);
 
-        if (!$question->save()) {
+        $removeAnswers = $oldType !== $newType && !$this->typeChangeKeepsAnswerOptions($oldType, $newType);
+        $removeOther = $oldType !== $newType && !$this->typeChangeKeepsOther($oldType, $newType);
+        if ($removeAnswers || $removeOther) {
+            // Validate before deleting, so a refused update keeps the answer options. The conditions
+            // on "Other" are deleted by the type change: Their refusal doesn't count, save() validates again
+            $question->validate();
+            if ($removeOther && !empty($question->getOtherConditionQuestionCodes())) {
+                $question->clearErrors('other');
+            }
+            if ($question->hasErrors()) {
+                throw new PersistErrorException(
+                    gT('Update failed, could not save.')
+                );
+            }
+            $this->changedDependentQuestionIds = $this->removeAnswersAndDependentConditions(
+                (int) $question->qid,
+                (int) $question->sid,
+                $oldType,
+                $removeAnswers,
+                $removeOther
+            );
+        }
+
+        $saved = $question->save();
+        if ($saved && $oldType !== $newType) {
+            // The fields of the new type are known only after the save
+            $this->changedDependentQuestionIds = array_values(array_unique(array_merge(
+                $this->changedDependentQuestionIds,
+                $this->removeConditionsOnRemovedFields($question, $oldType)
+            )));
+        }
+        // Also after a refused save: The conditions deleted before it are gone
+        $this->rebuildDependentRelevance($this->changedDependentQuestionIds);
+
+        if (!$saved) {
+            // The validation refuses to switch "Other" off while conditions use it
+            if (!empty($question->getOtherConditionQuestionCodes())) {
+                throw new QuestionHasConditionsException(
+                    $question->getError('other'),
+                    PersistErrorException::CODE_CHANGE_REFUSED
+                );
+            }
             throw new PersistErrorException(
                 gT('Update failed, could not save.')
             );
@@ -357,6 +410,39 @@ class QuestionService
     }
 
     /**
+     * Returns the type the question has after the update: An active survey keeps
+     * the stored type, as Question::beforeSave() does, so nothing may be deleted
+     * or refused for a type change that isn't saved.
+     *
+     * @param Question $question The question before the update
+     * @param array $data The question data of the update
+     * @return string The question type after the update
+     */
+    private function getNewType(Question $question, array $data): string
+    {
+        $newType = (string) ($data['type'] ?? $question->type);
+        if ($newType === (string) $question->type) {
+            return $newType;
+        }
+        $survey = Survey::model()->findByPk($question->sid);
+        if (!empty($survey) && $survey->active !== 'N') {
+            return (string) $question->type;
+        }
+        return $newType;
+    }
+
+    /**
+     * Returns the questions whose conditions the last update deleted with an
+     * incompatible type change, so the editor can show their new conditions.
+     *
+     * @return int[] The question IDs, empty if no conditions were deleted
+     */
+    public function getChangedDependentQuestionIds(): array
+    {
+        return $this->changedDependentQuestionIds;
+    }
+
+    /**
      * @param array $data
      * @return array
      */
@@ -375,12 +461,75 @@ class QuestionService
     }
 
     /**
-     * @param int $questionId
-     * @return void
+     * Checks whether a type change keeps the answer options (same answer option layout).
+     *
+     * @param string $oldType The current question type
+     * @param string $newType The new question type
+     * @return bool True if the answer options and the conditions on them are kept
      */
-    private function removeAnswersAndDependentConditions($questionId)
+    private function typeChangeKeepsAnswerOptions(string $oldType, string $newType): bool
     {
-        $answers = Answer::model()->findAll('qid = :qid', [':qid' => $questionId]);
+        $layouts = $this->getAnswerOptionLayouts();
+        return isset($layouts[$oldType], $layouts[$newType])
+            && $layouts[$oldType] === $layouts[$newType];
+    }
+
+    /**
+     * Checks whether a type change keeps the conditions on the "Other" option: Both types
+     * have "Other" in the same form, as an answer option (e.g. List (radio) and List
+     * (dropdown)) or as a subquestion (Multiple choice with and without comments).
+     *
+     * @param string $oldType The current question type
+     * @param string $newType The new question type
+     * @return bool True if the conditions on "Other" are kept, also if the current type has no "Other"
+     */
+    private function typeChangeKeepsOther(string $oldType, string $newType): bool
+    {
+        $types = QuestionType::modelsAttributes();
+        if (empty($types[$oldType]['other'])) {
+            return true;
+        }
+        if (empty($types[$newType]['other'])) {
+            return false;
+        }
+        return $types[$oldType]['answerscales'] === $types[$newType]['answerscales']
+            && $types[$oldType]['subquestions'] === $types[$newType]['subquestions'];
+    }
+
+    /**
+     * Returns the answer option layout (answer scales and subquestions) of each type with answer options.
+     *
+     * A type change between types with the same layout keeps the answer options.
+     *
+     * @return array<string, string> Layout key indexed by question type code.
+     */
+    public function getAnswerOptionLayouts(): array
+    {
+        if ($this->answerOptionLayouts === null) {
+            $this->answerOptionLayouts = [];
+            foreach (QuestionType::modelsAttributes() as $type => $settings) {
+                if ($settings['answerscales'] > 0) {
+                    $this->answerOptionLayouts[$type] = $settings['answerscales'] . '-' . $settings['subquestions'];
+                }
+            }
+        }
+        return $this->answerOptionLayouts;
+    }
+
+    /**
+     * Deletes the answer options of a question and the conditions on them, and/or
+     * the conditions on its "Other" option.
+     *
+     * @param int $questionId Question ID.
+     * @param int $surveyId The survey of the question
+     * @param string $oldType The type of the question before the change
+     * @param bool $removeAnswers True to delete the answer options and the conditions on them
+     * @param bool $removeOther True to delete the conditions on "Other"
+     * @return int[] The questions whose conditions were deleted
+     */
+    private function removeAnswersAndDependentConditions($questionId, $surveyId, $oldType, bool $removeAnswers, bool $removeOther)
+    {
+        $answers = $removeAnswers ? Answer::model()->findAll('qid = :qid', [':qid' => $questionId]) : [];
         $qids = [];
         foreach ($answers as $answer) {
             $conditions = Condition::model()->findAll(
@@ -394,8 +543,136 @@ class QuestionService
             AnswerL10n::model()->deleteAll('aid = :aid', [':aid' => $answer->aid]);
             $answer->delete();
         }
+        // "Other" of the old type: Its answer option (value -oth-) and its text field
+        $otherConditions = [];
+        if ($removeOther) {
+            [$where, $params] = Question::getOtherConditionsCriteria((int) $questionId, (int) $surveyId, (string) $oldType);
+            $otherConditions = $this->yiiApp->db->createCommand()
+                ->select('c.cid, c.qid')
+                ->from('{{conditions}} c')
+                ->join('{{questions}} q', 'q.qid = c.qid')
+                ->where($where, $params)
+                ->queryAll();
+        }
+        if (!empty($otherConditions)) {
+            Condition::model()->deleteByPk(array_column($otherConditions, 'cid'));
+            foreach ($otherConditions as $condition) {
+                $qids[$condition['qid']] = true;
+            }
+        }
 
-        foreach (array_keys($qids) as $qid) {
+        return array_map('intval', array_keys($qids));
+    }
+
+    /**
+     * Deletes the conditions on the fields a question lost with its type change, and the
+     * conditions comparing to them: E.g. Multiple choice has no field for the answer of a
+     * List (radio), so "No answer", constants and regular expressions on it can't work.
+     * Must run after the save: The fields are built from the saved type.
+     *
+     * @param Question $question The saved question with its new type
+     * @param string $oldType The type of the question before the change
+     * @return int[] The questions whose conditions were deleted
+     */
+    private function removeConditionsOnRemovedFields(Question $question, string $oldType): array
+    {
+        $questionId = (int) $question->qid;
+        if (!$this->isInFieldMap($question)) {
+            // createFieldMap() would return no fields, although the question still has them
+            return [];
+        }
+        $fieldMap = createFieldMap($question->survey, 'short', true, $questionId);
+        $questionField = 'Q' . $questionId;
+        // "Group of checkboxes" conditions of the multiple choice types are on the question itself,
+        // with a subquestion code as value: They only work between these types
+        $checkboxGroupTypes = [Question::QT_M_MULTIPLE_CHOICE, Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS];
+        $wasCheckboxGroup = in_array($oldType, $checkboxGroupTypes, true);
+        $isCheckboxGroup = in_array((string) $question->type, $checkboxGroupTypes, true);
+        // Comparisons to this question's fields: "@Q12@" or "@Q12_S34@", not "@Q123@"
+        $ownField = '/^@(' . $questionField . '(?:_[^@]*)?)@$/';
+        // Two queries instead of one with OR, so each can use an index
+        $conditions = array_merge(
+            $this->yiiApp->db->createCommand()
+                ->select('cid, qid, cqid, cfieldname, value')
+                ->from('{{conditions}}')
+                ->where('cqid = :qid', [':qid' => $questionId])
+                ->queryAll(),
+            $this->yiiApp->db->createCommand()
+                ->select('c.cid, c.qid, c.cqid, c.cfieldname, c.value')
+                ->from('{{conditions}} c')
+                ->join('{{questions}} q', 'q.qid = c.qid')
+                ->where(
+                    'q.sid = :sid AND c.value LIKE :reference',
+                    [':sid' => (int) $question->sid, ':reference' => '@' . $questionField . '%']
+                )
+                ->queryAll()
+        );
+        $removed = [];
+        foreach ($conditions as $condition) {
+            // A leading "+" marks a condition on a single checkbox of a subquestion
+            $fieldname = ltrim((string) $condition['cfieldname'], '+');
+            if ((int) $condition['cqid'] !== $questionId) {
+                $onRemovedField = false;
+            } elseif ($fieldname === $questionField && ($wasCheckboxGroup || $isCheckboxGroup)) {
+                $onRemovedField = $wasCheckboxGroup !== $isCheckboxGroup;
+            } else {
+                $onRemovedField = !isset($fieldMap[$fieldname]);
+            }
+            $toRemovedField = preg_match($ownField, (string) $condition['value'], $matches)
+                && !isset($fieldMap[$matches[1]]);
+            if ($onRemovedField || $toRemovedField) {
+                $removed[(int) $condition['cid']] = (int) $condition['qid'];
+            }
+        }
+        if (!empty($removed)) {
+            Condition::model()->deleteByPk(array_keys($removed));
+        }
+        return array_values(array_unique($removed));
+    }
+
+    /**
+     * Checks that createFieldMap() includes the question: It only reads questions and
+     * groups that have a text in the base language of the survey.
+     *
+     * @param Question $question The question
+     * @return bool True if the field map includes the question
+     */
+    private function isInFieldMap(Question $question): bool
+    {
+        $language = (string) $question->survey->language;
+        return \QuestionL10n::model()->exists(
+            'qid = :qid AND language = :language',
+            [':qid' => (int) $question->qid, ':language' => $language]
+        ) && \QuestionGroupL10n::model()->exists(
+            'gid = :gid AND language = :language',
+            [':gid' => (int) $question->gid, ':language' => $language]
+        );
+    }
+
+    /**
+     * Rebuilds the relevance of the questions whose conditions were deleted.
+     *
+     * @param int[] $questionIds The questions whose conditions were deleted
+     * @return void
+     */
+    private function rebuildDependentRelevance(array $questionIds): void
+    {
+        if (empty($questionIds)) {
+            return;
+        }
+        // Without conditions left, the upgrade keeps the old relevance: Reset it for all of them
+        // in one statement, as RevertUpgradeConditionsToRelevance() would
+        $this->yiiApp->db->createCommand()->update(
+            '{{questions}}',
+            ['relevance' => '1'],
+            [
+                'and',
+                ['in', 'qid', $questionIds],
+                'NOT EXISTS (SELECT 1 FROM {{conditions}} c WHERE c.qid = {{questions}}.qid)',
+            ]
+        );
+        // The relevance is built from the conditions of one question at a time
+        foreach ($questionIds as $qid) {
             LimeExpressionManager::UpgradeConditionsToRelevance(null, $qid);
         }
     }

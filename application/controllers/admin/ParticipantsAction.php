@@ -909,16 +909,8 @@ class ParticipantsAction extends SurveyCommonAction
             $aFirstLine = fgets($oCSVFile);
             rewind($oCSVFile);
 
-            $sSeparator = Yii::app()->request->getPost('separatorused');
-            if ($sSeparator == 'auto') {
-                $aCount = array();
-                $aCount[','] = substr_count($aFirstLine, ',');
-                $aCount[';'] = substr_count($aFirstLine, ';');
-                $aCount['|'] = substr_count($aFirstLine, '|');
-                $aResult = array_keys($aCount, max($aCount));
-                $sSeparator = $aResult[0];
-            }
-            $firstline = fgetcsv($oCSVFile, 1000, $sSeparator[0], '"', "\\");
+            $separator = $this->getCsvSeparator((string) Yii::app()->request->getPost('separatorused'), (string) $aFirstLine);
+            $firstline = fgetcsv($oCSVFile, 1000, $separator, '"', "\\");
             // Remove UTF-8 BOM from the first field
             if (!empty($firstline)) {
                 $firstline[0] = preg_replace('/^\xEF\xBB\xBF/', '', $firstline[0]);
@@ -979,6 +971,8 @@ class ParticipantsAction extends SurveyCommonAction
      * Requires global 'participantpanel' 'import' permission. Existing participants are only
      * overwritten if Participant::userHasPermissionToEdit() allows it, and core participant
      * columns (owner_uid, created_by, ...) are never accepted as mapped attribute names.
+     * Existing participants the user may not edit are reported separately when an overwrite was requested.
+     *
      * @return void
      */
     public function uploadCSV()
@@ -999,7 +993,7 @@ class ParticipantsAction extends SurveyCommonAction
         $overwritten = 0;
         $dupreason = "nameemail"; //Default duplicate comparison method
         $duplicatelist = array();
-        $nopermissionlist = array();
+        $noPermissionList = array();
         $invalidemaillist = array();
         $invalidformatlist = array();
         $invalidattribute = array();
@@ -1069,22 +1063,7 @@ class ParticipantsAction extends SurveyCommonAction
                 $buffer = removeBOM($buffer);
 
                 //For Attributes
-                switch ($separator) {
-                    case 'comma':
-                        $separator = ',';
-                        break;
-                    case 'semicolon':
-                        $separator = ';';
-                        break;
-                    default:
-                        $comma = substr_count((string) $buffer, ',');
-                        $semicolon = substr_count((string) $buffer, ';');
-                        if ($semicolon > $comma) {
-                            $separator = ';';
-                        } else {
-                            $separator = ',';
-                        }
-                }
+                $separator = $this->getCsvSeparator((string) $separator, $buffer);
                 $firstline = str_getcsv((string) $buffer, $separator, '"', "\\");
                 $firstline = array_map('trim', $firstline);
                 $ignoredcolumns = array();
@@ -1176,9 +1155,9 @@ class ParticipantsAction extends SurveyCommonAction
                             /* Only overwrite existing participants the user is allowed to edit */
                             if (!$existingParticipant->userHasPermissionToEdit()) {
                                 if (!empty($writearray['participant_id'])) {
-                                    $nopermissionlist[] = CHtml::encode($writearray['participant_id'] . " : " . $writearray['firstname'] . " " . $writearray['lastname'] . " (" . $writearray['email'] . ")");
+                                    $noPermissionList[] = CHtml::encode($writearray['participant_id'] . " : " . $writearray['firstname'] . " " . $writearray['lastname'] . " (" . $writearray['email'] . ")");
                                 } else {
-                                    $nopermissionlist[] = CHtml::encode($writearray['firstname'] . " " . $writearray['lastname'] . " (" . $writearray['email'] . ")");
+                                    $noPermissionList[] = CHtml::encode($writearray['firstname'] . " " . $writearray['lastname'] . " (" . $writearray['email'] . ")");
                                 }
                                 continue;
                             }
@@ -1302,7 +1281,7 @@ class ParticipantsAction extends SurveyCommonAction
         $aData = array();
         $aData['recordcount'] = $recordcount - 1;
         $aData['duplicatelist'] = $duplicatelist;
-        $aData['nopermissionlist'] = $nopermissionlist;
+        $aData['noPermissionList'] = $noPermissionList;
         $aData['mincriteria'] = $mincriteria;
         $aData['imported'] = $imported;
         $aData['errorinupload'] = $errorinupload;
@@ -3388,6 +3367,32 @@ class ParticipantsAction extends SurveyCommonAction
             }
         }
         return $result;
+    }
+
+    /**
+     * Return the CSV separator character for the separator chosen in the CPDB CSV import form
+     *
+     * Used by both import steps (field mapping and import), so they always read the file the same way.
+     *
+     * @param string $selectedSeparator The posted choice: 'comma', 'semicolon' or 'auto'
+     * @param string $headerLine The first line of the CSV file, used for the automatic detection
+     * @return string The separator character
+     */
+    private function getCsvSeparator(string $selectedSeparator, string $headerLine): string
+    {
+        if ($selectedSeparator === 'comma') {
+            return ',';
+        }
+        if ($selectedSeparator === 'semicolon') {
+            return ';';
+        }
+        // Automatic detection: The most frequent candidate wins, ties prefer the earlier one
+        $counts = [
+            ',' => substr_count($headerLine, ','),
+            ';' => substr_count($headerLine, ';'),
+            '|' => substr_count($headerLine, '|'),
+        ];
+        return (string) array_search(max($counts), $counts, true);
     }
 
     /**
