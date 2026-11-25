@@ -85,7 +85,7 @@ class Zend_Validate_File_WordCount extends Zend_Validate_File_Count
     /**
      * Throws an error of the given type
      *
-     * @param  string $file
+     * @param  string|array|null $file
      * @param  string $errorType
      * @return false
      */

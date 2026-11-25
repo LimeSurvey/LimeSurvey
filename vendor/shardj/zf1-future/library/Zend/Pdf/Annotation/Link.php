@@ -120,7 +120,7 @@ class Zend_Pdf_Annotation_Link extends Zend_Pdf_Annotation
     {
         if (is_string($target)) {
             require_once 'Zend/Pdf/Destination/Named.php';
-            $destination = Zend_Pdf_Destination_Named::create($target);
+            $target = Zend_Pdf_Destination_Named::create($target);
         }
         if (!$target instanceof Zend_Pdf_Target) {
             require_once 'Zend/Pdf/Exception.php';
@@ -128,7 +128,6 @@ class Zend_Pdf_Annotation_Link extends Zend_Pdf_Annotation
         }
 
         $this->_annotationDictionary->touch();
-        $this->_annotationDictionary->Dest = $destination->getResource();
         if ($target instanceof Zend_Pdf_Destination) {
             $this->_annotationDictionary->Dest = $target->getResource();
             $this->_annotationDictionary->A    = null;

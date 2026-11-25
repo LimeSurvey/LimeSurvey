@@ -117,6 +117,7 @@ class Zend_Tool_Project_Context_Zf_ProjectProviderFile extends Zend_Tool_Project
     public function getContents()
     {
 
+        require_once 'Zend/Filter/Word/DashToCamelCase.php';
         $filter = new Zend_Filter_Word_DashToCamelCase();
 
         $className = $filter->filter($this->_projectProviderName) . 'Provider';

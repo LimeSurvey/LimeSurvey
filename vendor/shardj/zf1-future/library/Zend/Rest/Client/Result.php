@@ -37,7 +37,7 @@ class Zend_Rest_Client_Result implements IteratorAggregate {
 
     /**
      * error information
-     * @var string
+     * @var string|null
      */
     protected $_errstr;
 
@@ -50,8 +50,11 @@ class Zend_Rest_Client_Result implements IteratorAggregate {
     public function __construct($data)
     {
         set_error_handler([$this, 'handleXmlErrors']);
-        $this->_sxml = Zend_Xml_Security::scan($data);
-        restore_error_handler();
+        try {
+            $this->_sxml = Zend_Xml_Security::scan($data);
+        } finally {
+            restore_error_handler();
+        }
         if($this->_sxml === false) {
             if ($this->_errstr === null) {
                 $message = "An error occured while parsing the REST response with simplexml.";
@@ -169,7 +172,7 @@ class Zend_Rest_Client_Result implements IteratorAggregate {
     /**
      * Implement IteratorAggregate::getIterator()
      *
-     * @return bool|DomDocument|SimpleXMLElement|null
+     * @return Traversable
      */
     #[\ReturnTypeWillChange]
     public function getIterator(): \Traversable

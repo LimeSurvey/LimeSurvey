@@ -92,7 +92,7 @@ class Zend_Pdf_Resource_Image_Jpeg extends Zend_Pdf_Resource_Image
         $imageDictionary->BitsPerComponent = new Zend_Pdf_Element_Numeric($imageInfo['bits']);
         if ($imageInfo[2] == IMAGETYPE_JPEG) {
             $imageDictionary->Filter       = new Zend_Pdf_Element_Name('DCTDecode');
-        } else if ($imageInfo[2] == IMAGETYPE_JPEG2000){
+        } else {
             $imageDictionary->Filter       = new Zend_Pdf_Element_Name('JPXDecode');
         }
 

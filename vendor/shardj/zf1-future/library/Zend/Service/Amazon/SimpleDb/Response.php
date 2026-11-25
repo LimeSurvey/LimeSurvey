@@ -53,14 +53,14 @@ class Zend_Service_Amazon_SimpleDb_Response
     /**
      * The response document object
      *
-     * @var DOMDocument
+     * @var DOMDocument|false
      */
     private $_document = null;
 
     /**
      * The response XPath
      *
-     * @var DOMXPath
+     * @var DOMXPath|false
      */
     private $_xpath = null;
 

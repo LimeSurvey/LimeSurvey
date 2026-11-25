@@ -92,6 +92,7 @@ class Zend_Cache_Frontend_File extends Zend_Cache_Core
             $this->setOption($name, $value);
         }
         if (!isset($this->_specificOptions['master_files'])) {
+            require_once 'Zend/Cache.php';
             Zend_Cache::throwException('master_files option must be set');
         }
     }
@@ -118,6 +119,7 @@ class Zend_Cache_Frontend_File extends Zend_Cache_Core
             }
 
             if (!$this->_specificOptions['ignore_missing_master_files'] && !$mtime) {
+                require_once 'Zend/Cache.php';
                 Zend_Cache::throwException('Unable to read master_file : ' . $masterFile);
             }
 

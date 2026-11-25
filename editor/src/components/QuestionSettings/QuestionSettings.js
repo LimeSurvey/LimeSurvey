@@ -8,9 +8,17 @@ import {
   createBufferOperation,
   getDisabledQuestionTypes,
   errorToast,
+  getQuestionById,
   isTempId,
 } from 'helpers'
-import { useAppState, useBuffer, useFocused, useSurvey } from 'hooks'
+import {
+  useAppState,
+  useBuffer,
+  useCloseConditionPopups,
+  useFocused,
+  useQuestionAttributes,
+  useSurvey,
+} from 'hooks'
 import { SideBarHeader } from 'components/SideBar'
 import { CloseIcon } from 'components/icons'
 import { ToggleButtons } from 'components/UIComponents'
@@ -18,6 +26,7 @@ import { ConfirmModal } from 'components/Modals'
 
 import { Setting } from './Setting'
 import { getQuestionSettings } from './getQuestionSettings'
+import { buildSettingsFromAttributes } from './dynamic'
 import { typeChangeKeepsAnswerOptions } from './typeChangeKeepsAnswerOptions'
 import { getQuestionTypeInfo } from '../QuestionTypes'
 import { ScenarioList } from 'components/ConditionDesigner/ScenarioList'
@@ -51,26 +60,57 @@ export const QuestionSettings = ({ surveyId }) => {
   // Type change waiting for confirmation: { qid, value }
   const [pendingTypeChange, setPendingTypeChange] = useState(null)
 
-  const {
-    focused = {},
-    unFocus,
-    setFocused,
-    groupIndex,
-    questionIndex,
-  } = useFocused()
+  const { focused = {}, unFocus, setFocused } = useFocused()
+
+  // The survey is the source of truth; `focused` is only a snapshot. Its qid
+  // can be missing from the survey, and its stored indices are only corrected
+  // by EditorContextController in an effect after the survey changes. Resolve
+  // the question and its position from the qid instead.
+  // Not memoized: survey updates mutate the question groups in place, so the
+  // survey reference can stay the same while the question object is replaced.
+  const isSurveyLoaded = Array.isArray(survey?.questionGroups)
+  const { question, groupIndex, questionIndex, questionNumber } =
+    focused?.qid != null && isSurveyLoaded
+      ? getQuestionById(focused.qid, survey)
+      : {}
+  // When it is missing, this panel renders nothing. Removing the focus is left
+  // to EditorContextController, which waits for the deep link to be handled.
+  const isFocusedQuestionMissing =
+    focused?.qid != null && isSurveyLoaded && !question
 
   useEffect(() => {
     closeConditionDesignerPanels()
     setPendingTypeChange(null)
   }, [focused?.qid])
 
+  const {
+    attributes: { attributesDetails = {} },
+  } = useQuestionAttributes()
+  const themeAttributes =
+    attributesDetails[focused?.questionThemeName]?.attributes
+
+  // Close the condition popups when the question changes, is gone, or this
+  // panel unmounts. Condition actions also look the question up when they run.
+  useCloseConditionPopups(focused?.qid, isFocusedQuestionMissing)
+
   const questionSettings = useMemo(() => {
     if (!focused?.qid) {
       return []
     }
 
+    const settings = buildSettingsFromAttributes(themeAttributes)
+    if (settings.length) {
+      return settings
+    }
+
+    // Falls back to the hardcoded settings when the backend config isn't available.
     return getQuestionSettings()[focused.questionThemeName]
-  }, [focused?.questionThemeName])
+  }, [focused?.qid, focused?.questionThemeName, themeAttributes])
+
+  const allQuestionAttributes = useMemo(
+    () => (questionSettings || []).flatMap((setting) => setting.attributes),
+    [questionSettings]
+  )
 
   const advancedQuestionSettings = useMemo(() => {
     const simpleSettingsTitle = getQuestionAttributesTitles().SIMPLE
@@ -110,6 +150,9 @@ export const QuestionSettings = ({ surveyId }) => {
   }, [questionSettingsOptions?.isAdvanced, advancedQuestionSettings])
 
   const handleOnQuestionCodeClick = () => {
+    if (!question) {
+      return
+    }
     setFocused(focused, groupIndex, questionIndex)
   }
 
@@ -296,11 +339,19 @@ export const QuestionSettings = ({ surveyId }) => {
     !!questionSettingsOptions?.isAdvanced &&
     advancedQuestionSettings.length > 0
 
-  if (focused && typeof focused.qid === 'number') {
+  if (isFocusedQuestionMissing) {
+    return null
+  }
+
+  if (question && typeof focused.qid === 'number') {
     if (conditionDesignerPanels.isConditionPanelOpen || scenarioToPatch) {
       return (
         <ConditionDesigner
           key={`condition-designer-${focused.qid}`}
+          question={question}
+          groupIndex={groupIndex}
+          questionIndex={questionIndex}
+          isFirstQuestion={questionNumber === 1}
           survey={survey}
           update={update}
           language={language}
@@ -311,12 +362,13 @@ export const QuestionSettings = ({ surveyId }) => {
       )
     }
     if (
-      focused.relevance !== null &&
+      question.relevance != null &&
       conditionDesignerPanels.isExpressionScriptPanelOpen
     ) {
       return (
         <ExpressionScript
           key={`expression-script-${focused.qid}`}
+          question={question}
           onNavigateBack={closeConditionDesignerPanels}
         />
       )
@@ -393,6 +445,7 @@ export const QuestionSettings = ({ surveyId }) => {
                 handleUpdate={updateAttribute}
                 title={setting.title}
                 attributes={setting.attributes}
+                allAttributes={allQuestionAttributes}
                 language={activeLanguage}
                 hasDefaultAttributeValues={
                   Object.keys(
@@ -417,25 +470,27 @@ export const QuestionSettings = ({ surveyId }) => {
         </>
       )}
       <div id="condition-designer">
-        {!focused || (focused && isTempId(focused.qid)) ? null : (
+        {!question || isTempId(focused.qid) ? null : (
           <>
             <AddScenario
               key={`add-scenario-${focused.qid}`}
               onShowPanel={toggleConditionDesignerPanels}
             />
 
-            {focused.scenarios?.length ? (
+            {question.scenarios?.length ? (
               <ScenarioList
-                key={`scenario-list-${focused.qid}-${focused.scenarios.length}`}
+                key={`scenario-list-${focused.qid}-${question.scenarios.length}`}
+                question={question}
                 setScenarioToPatch={setScenarioToPatch}
                 pendingScenarioName={pendingScenarioName}
                 setPendingScenarioName={setPendingScenarioName}
               />
             ) : null}
 
-            {focused.relevance != null && (
+            {question.relevance != null && (
               <ExpressionScriptInputBox
                 key={`condition-expression-trigger-${focused.qid}`}
+                question={question}
                 onShowPanel={toggleConditionDesignerPanels}
                 onNavigateBack={closeConditionDesignerPanels}
               />

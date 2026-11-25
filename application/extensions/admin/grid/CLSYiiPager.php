@@ -131,5 +131,4 @@ class CLSYiiPager extends CLinkPager
             return '<li class="page-item ' . $class . '">' . CHtml::link($label, $this->createPageUrl($page), $linkOptions) . '</li>';
         }
     }
-} 
-
+}

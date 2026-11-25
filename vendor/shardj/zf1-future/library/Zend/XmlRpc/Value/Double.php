@@ -40,7 +40,7 @@ class Zend_XmlRpc_Value_Double extends Zend_XmlRpc_Value_Scalar
     /**
      * Set the value of a double native type
      *
-     * @param float $value
+     * @param float|string $value
      */
     public function __construct($value)
     {

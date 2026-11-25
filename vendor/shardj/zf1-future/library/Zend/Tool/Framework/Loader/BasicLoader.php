@@ -47,7 +47,7 @@ class Zend_Tool_Framework_Loader_BasicLoader
     implements Zend_Tool_Framework_Loader_Interface, Zend_Tool_Framework_Registry_EnabledInterface
 {
     /**
-     * @var Zend_Tool_Framework_Repository_Interface
+     * @var Zend_Tool_Framework_Registry_Interface
      */
     protected $_registry = null;
 

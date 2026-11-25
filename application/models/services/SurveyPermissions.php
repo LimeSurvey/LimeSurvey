@@ -77,8 +77,8 @@ class SurveyPermissions
 
     /**
      * Returns a CDbCriteria object which selects columns from table
-     * permissions and users taking care of samegrouppolicy and not logged in
-     * user for this survey.
+     * permissions and users taking care of samegrouppolicy, without the
+     * logged in user and the survey owner (who always has all permissions).
      *
      * @return \CDbCriteria
      */
@@ -93,7 +93,7 @@ class SurveyPermissions
         $criteria->join = 'INNER JOIN {{users}} AS u ON t.uid = u.uid';
         $criteria->condition = 't.entity_id =:entity_id';
         $criteria->addCondition('t.entity =:entity');
-        $criteria->addNotInCondition('u.uid', [$currentUserId]);
+        $criteria->addNotInCondition('u.uid', [$currentUserId, $this->survey->owner_id]);
         $criteria->addInCondition('t.uid', $userList);
         $criteria->params = array_merge($criteria->params, [
             ':entity_id' => $this->survey->sid,
@@ -144,6 +144,10 @@ class SurveyPermissions
     public function addUserToSurveyPermission($userid)
     {
         $isResult = false;
+        if ((int)$userid === (int)$this->survey->owner_id) {
+            // The survey owner always has all permissions
+            return false;
+        }
         $user = \User::model()->findByPk($userid);
         if (isset($user) && in_array($userid, getUserList('onlyuidarray'))) {
             $isResult = \Permission::model()->insertSomeRecords(
@@ -181,6 +185,10 @@ class SurveyPermissions
             $users = $users->readAll();
             if (count($users) > 0) {
                 foreach ($users as $user) {
+                    if ((int)$user['uid'] === (int)$this->survey->owner_id) {
+                        // The survey owner always has all permissions
+                        continue;
+                    }
                     $isResult = \Permission::model()->insertSomeRecords(
                         [
                             'entity_id' => $this->survey->sid,
@@ -201,7 +209,7 @@ class SurveyPermissions
 
     /**
      * Returns a list of users which still not have survey permissions and
-     * could be added to survey permissions,
+     * could be added to survey permissions (the survey owner always has all permissions),
      * including the check for usercontrolSameGroupPolicy (see config file for more information).
      * The list is sorted alphabetically by username.
      *
@@ -210,6 +218,7 @@ class SurveyPermissions
     public function getSurveyUserList()
     {
         $aUserIds = $this->getUserIdsWithSurveyPermissions();
+        $aUserIds[] = $this->survey->owner_id;
         $criteria = new \CDbCriteria();
         $criteria->select = 't.uid, t.users_name, t.full_name';
         $criteria->addNotInCondition('t.uid', $aUserIds);
@@ -240,7 +249,8 @@ class SurveyPermissions
     /**
      * Return a list (array) of user groups which could still be added to survey permissions.
      * A user group could be added to survey permissions if there is at least one user in the group
-     * which has not already been added to survey permissions of this survey.
+     * which has not already been added to survey permissions of this survey
+     * and is not the survey owner.
      *
      * @return array containing ['ugid'] and ['name']
      */
@@ -255,10 +265,11 @@ class SurveyPermissions
             LEFT JOIN (
                 SELECT * FROM {{permissions}}
                 WHERE entity_id =:surveyid and entity='survey'
-            ) AS c ON b.uid = c.uid WHERE c.uid IS NULL
+            ) AS c ON b.uid = c.uid WHERE c.uid IS NULL AND b.uid <> :ownerid
         ) AS d ON t.ugid = d.ugid";
         $criteria->params = [
             'surveyid' => $this->survey->sid,
+            'ownerid' => $this->survey->owner_id,
         ];
         $criteria->group = 't.ugid, t.name';
         $criteria->having = 'MAX(d.ugid) IS NOT NULL'; //make sure that there is at least one possible group
@@ -266,7 +277,7 @@ class SurveyPermissions
 
         $userGroups = \UserGroup::model()->findAll($criteria);
 
-        $authorizedGroupsList = getUserGroupList();
+        $authorizedGroupsList = \UserGroup::model()->getAuthorizedGroupIds();
         $simpleugidarray = [];
         $index = 0;
         foreach ($userGroups as $userGroup) {
@@ -395,7 +406,7 @@ class SurveyPermissions
     public function getUserGroupNames($userid, $usercontrolSameGroupPolicy)
     {
         $group_names = [];
-        $authorizedGroupsList = getUserGroupList();
+        $authorizedGroupsList = \UserGroup::model()->getAuthorizedGroupIds();
         /** @var \UserInGroup[] */
         $userInGroups = \UserInGroup::model()->with('users')->findAll('users.uid = :uid', array(':uid' => $userid));
         foreach ($userInGroups as $userGroup) {

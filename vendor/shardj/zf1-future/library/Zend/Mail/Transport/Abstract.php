@@ -214,6 +214,7 @@ abstract class Zend_Mail_Transport_Abstract
              * @see Zend_Mail_Transport_Exception
              */
             require_once 'Zend/Mail/Transport/Exception.php';
+            require_once 'Zend/Mail/Exception.php';
             throw new Zend_Mail_Exception('At least one mail header line is too long');
         }
     }
@@ -255,6 +256,7 @@ abstract class Zend_Mail_Transport_Abstract
                   . $this->EOL
                   . $boundaryEnd;
 
+            require_once 'Zend/Mime/Part.php';
             $mp           = new Zend_Mime_Part($body);
             $mp->type     = Zend_Mime::MULTIPART_ALTERNATIVE;
             $mp->boundary = $mime->boundary();
@@ -339,6 +341,7 @@ abstract class Zend_Mail_Transport_Abstract
         // Create message body
         // This is done so that the same Zend_Mail object can be used in
         // multiple transports
+        require_once 'Zend/Mime/Message.php';
         $message = new Zend_Mime_Message();
         $message->setParts($this->_parts);
         $message->setMime($mime);

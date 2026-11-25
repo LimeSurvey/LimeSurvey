@@ -85,10 +85,14 @@ class Zend_Db_Table_Definition
     public function setTableConfig($tableName, array $tableConfig)
     {
         // @todo logic here
+        require_once 'Zend/Db/Table.php';
         $tableConfig[Zend_Db_Table::DEFINITION_CONFIG_NAME] = $tableName;
+        require_once 'Zend/Db/Table.php';
         $tableConfig[Zend_Db_Table::DEFINITION] = $this;
 
+        require_once 'Zend/Db/Table.php';
         if (!isset($tableConfig[Zend_Db_Table::NAME])) {
+            require_once 'Zend/Db/Table.php';
             $tableConfig[Zend_Db_Table::NAME] = $tableName;
         }
 

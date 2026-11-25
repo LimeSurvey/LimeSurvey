@@ -58,7 +58,7 @@ class Zend_EventManager_EventManager implements Zend_EventManager_EventCollectio
 
     /**
      * Static collections
-     * @var false|null|Zend_EventManager_StaticEventCollection
+     * @var Zend_EventManager_SharedEventCollection|false|null
      */
     protected $sharedCollections = null;
 
@@ -116,7 +116,7 @@ class Zend_EventManager_EventManager implements Zend_EventManager_EventCollectio
     /**
      * Get static collections container
      *
-     * @return false|Zend_EventManager_StaticEventCollection|null
+     * @return false|Zend_EventManager_SharedEventCollection|null
      */
     public function getSharedCollections()
     {
@@ -432,7 +432,7 @@ class Zend_EventManager_EventManager implements Zend_EventManager_EventCollectio
      * delegate.
      *
      * @param  string           $event Event name
-     * @param  EventDescription $e
+     * @param  Zend_EventManager_EventDescription $e
      * @param  null|callable    $callback
      * @return Zend_EventManager_ResponseCollection
      */

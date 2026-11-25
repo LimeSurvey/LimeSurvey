@@ -39,6 +39,7 @@ require_once 'Zend/Gdata/Calendar/Extension/WebContent.php';
  * @subpackage Calendar
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @deprecated Deprecated since 1.27.1 and will be removed in a future version: Google shut down the Google Data APIs it implements and the ClientLogin and AuthSub authentication
  */
 class Zend_Gdata_Calendar_Extension_Link extends Zend_Gdata_App_Extension_Link
 {
@@ -48,7 +49,7 @@ class Zend_Gdata_Calendar_Extension_Link extends Zend_Gdata_App_Extension_Link
     /**
      * Constructs a new Zend_Gdata_Calendar_Extension_Link object.
      * @see Zend_Gdata_App_Extension_Link#__construct
-     * @param Zend_Gdata_Calendar_Extension_Webcontent $webContent
+     * @param Zend_Gdata_Calendar_Extension_WebContent $webContent
      */
     public function __construct($href = null, $rel = null, $type = null,
             $hrefLang = null, $title = null, $length = null, $webContent = null)
@@ -101,7 +102,7 @@ class Zend_Gdata_Calendar_Extension_Link extends Zend_Gdata_App_Extension_Link
     /**
      * Get the value for this element's WebContent attribute.
      *
-     * @return Zend_Gdata_Calendar_Extension_Webcontent The WebContent value
+     * @return Zend_Gdata_Calendar_Extension_WebContent The WebContent value
      */
     public function getWebContent()
     {

@@ -11,12 +11,16 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  */
+
+use LimeSurvey\Models\Services\ExpressionManagerSessionState;
+
 class ValidateExpressionCommand extends CConsoleCommand
 {
     /**
      * @param int $surveyId
      * @param string $lang
      * @param string $type 'invitation' 'reminder' 'registration' 'confirmation' 'admin_notification' 'admin_detailed_notification'
+     * @return void
      */
     public function actionEmail($surveyId, $lang, $type)
     {
@@ -28,7 +32,7 @@ class ValidateExpressionCommand extends CConsoleCommand
         Yii::import('application.helpers.common_helper', true);
 
         $c = new ExpressionValidate();
-        $_SESSION['LEMsid'] = $surveyId;
+        ExpressionManagerSessionState::current()->setSurveyId((int) $surveyId);
         $c->email($surveyId, $lang);
     }
 }

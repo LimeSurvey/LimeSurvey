@@ -113,7 +113,7 @@ class ConsoleApplication extends CConsoleApplication
 
         /* encrypt emailsmtppassword value, because emailsmtppassword in database is also encrypted
            it would be decrypted in LimeMailer when needed */
-       $this->config['emailsmtppassword'] = LSActiveRecord::encryptSingle($this->config['emailsmtppassword']);
+        $this->config['emailsmtppassword'] = LSActiveRecord::encryptSingle($this->config['emailsmtppassword']);
 
         /* Load the database settings : if available */
         try {

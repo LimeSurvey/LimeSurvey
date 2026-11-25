@@ -1,6 +1,7 @@
 import 'tests/mocks'
 
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, screen } from '@testing-library/react'
+import { renderWithQueryClient } from 'tests/testUtils'
 
 import { ParticipantSource } from './ParticipantSource'
 
@@ -30,7 +31,7 @@ const survey = {
 }
 
 const renderSource = (filter, onUpdate = jest.fn()) => {
-  render(
+  renderWithQueryClient(
     <ParticipantSource filter={filter} survey={survey} onUpdate={onUpdate} />
   )
   return onUpdate

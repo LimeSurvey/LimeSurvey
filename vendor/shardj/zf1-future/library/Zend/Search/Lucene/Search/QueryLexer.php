@@ -75,7 +75,7 @@ class Zend_Search_Lucene_Search_QueryLexer extends Zend_Search_Lucene_FSM
     /**
      * Query string (array of single- or non single-byte characters)
      *
-     * @var array
+     * @var array|null
      */
     private $_queryString;
 

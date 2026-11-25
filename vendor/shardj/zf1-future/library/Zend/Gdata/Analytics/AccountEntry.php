@@ -49,6 +49,7 @@ require_once 'Zend/Gdata/Analytics/Extension/TableId.php';
  * @category   Zend
  * @package    Zend_Gdata
  * @subpackage Analytics
+ * @deprecated Deprecated since 1.27.1 and will be removed in a future version: Google shut down the Google Data APIs it implements and the ClientLogin and AuthSub authentication
  */
 class Zend_Gdata_Analytics_AccountEntry extends Zend_Gdata_Entry
 {

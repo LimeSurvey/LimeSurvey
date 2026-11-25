@@ -21,6 +21,8 @@
  */
 class AdminTheme extends CFormModel
 {
+    use TwigSandboxIteratorTrait;
+
     /** @var string $name Admin Theme's name */
     public $name;
     /** @var string $path Admin Theme's path */

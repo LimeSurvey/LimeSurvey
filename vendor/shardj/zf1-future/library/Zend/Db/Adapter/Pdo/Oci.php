@@ -119,7 +119,7 @@ class Zend_Db_Adapter_Pdo_Oci extends Zend_Db_Adapter_Pdo_Abstract
         if (is_int($value) || is_float($value)) {
             return $value;
         }
-        $value = str_replace("'", "''", $value);
+        $value = str_replace("'", "''", (string) $value);
         return "'" . addcslashes($value, "\000\n\r\\\032") . "'";
     }
 

@@ -125,7 +125,7 @@ abstract class Zend_Mail_Protocol_Abstract
 
     /**
      * String template for parsing server responses using sscanf (default: 3 digit code and response string)
-     * @var resource
+     * @var resource|string
      * @deprecated Since 1.10.3
      */
     protected $_template = '%d%s';
@@ -434,7 +434,7 @@ abstract class Zend_Mail_Protocol_Abstract
      * Read the response from the stream and check for expected return code.
      * Throws a Zend_Mail_Protocol_Exception if an unexpected code is returned.
      *
-     * @param  string|array $code One or more codes that indicate a successful response
+     * @param  string|array|int $code One or more codes that indicate a successful response
      * @throws Zend_Mail_Protocol_Exception
      * @return string Last line of response string
      */
@@ -456,6 +456,7 @@ abstract class Zend_Mail_Protocol_Abstract
 
             if ($errMsg !== '') {
                 $errMsg .= ' ' . $msg;
+            // @phpstan-ignore identical.alwaysFalse (preg_split() may return fewer parts, list() then assigns null)
             } elseif ($cmd === null || !in_array($cmd, $code)) {
                 $errMsg =  $msg;
             }

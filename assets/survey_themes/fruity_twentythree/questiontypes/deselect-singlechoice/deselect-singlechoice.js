@@ -22,7 +22,7 @@
  *
  * Pointer path: uses mousedown to capture pre-click checked state, then a
  * native capture click listener (so stopPropagation in inline onclick handlers
- * such as cancelBubbleThis cannot block it). The actual deselect is deferred
+ * of custom themes cannot block it). The actual deselect is deferred
  * via setTimeout so our checkconditions('') wins over any inline checkconditions
  * call with the previous value.
  *
@@ -96,8 +96,24 @@ const DeselectSinglechoiceScripts = (() => {
             deselect(this);
         });
 
+        // Wrapper divs adjacent to the "other" radio (.other-text-item, .othertext-suffix-label).
+        // Use capture phase so stopPropagation() in the inline twig bubble-phase listener
+        // cannot block this handler from firing.
+        document.addEventListener('click', function (e) {
+            if (e.target.tagName === 'INPUT') { return; }
+            const wrapper = e.target.closest('.other-text-item, .othertext-suffix-label');
+            if (!wrapper) { return; }
+            if (!wrapper.closest(CONTAINER_SELECTOR)) { return; }
+            const item = wrapper.closest('li');
+            if (!item) { return; }
+            const radio = item.querySelector('input[type="radio"]');
+            if (radio && radio.checked) {
+                deselect(radio);
+            }
+        }, true); // capture phase
+
         // Pointer: native capture listener fires top-down before stopPropagation()
-        // in inline onclick handlers (e.g. cancelBubbleThis in image-select questions).
+        // in inline onclick handlers (e.g. in custom themes).
         document.addEventListener('click', function (e) {
             const radio = e.target;
             if (radio.tagName !== 'INPUT' || radio.type !== 'radio') {

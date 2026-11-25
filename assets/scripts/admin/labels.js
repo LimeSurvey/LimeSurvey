@@ -42,8 +42,10 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     });
 
 
+    // Without update permission there is no form and the labels are read-only
+    const isEditable = $('#mainform').length > 0;
     const answersTable = $(".answertable tbody");
-    if (answersTable.length && answersTable.children().length == 0) {
+    if (isEditable && answersTable.length && answersTable.children().length == 0) {
         add_label(undefined);
     }
 
@@ -52,10 +54,12 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     $(document).on('keyup change', '.codeval', sync_label);
     $(document).on('keyup change', '.assessmentval', sync_label);
 
-    $('#neweditlblset0 .answertable tbody').sortable({
-        update:sort_complete,
-        distance:2
-    });
+    if (isEditable) {
+        $('#neweditlblset0 .answertable tbody').sortable({
+            update:sort_complete,
+            distance:2
+        });
+    }
 
     $('#btnqareplace').click(quickaddfunction);
     $('#btnqainsert').click(quickaddfunction);

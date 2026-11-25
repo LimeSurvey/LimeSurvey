@@ -48,6 +48,7 @@ require_once 'Zend/Gdata/Gapps/Extension/Property.php';
  * @subpackage Gapps
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @deprecated Deprecated since 1.27.1 and will be removed in a future version: Google shut down the Google Data APIs it implements and the ClientLogin and AuthSub authentication
  */
 class Zend_Gdata_Gapps_OwnerEntry extends Zend_Gdata_Entry
 {
@@ -58,7 +59,7 @@ class Zend_Gdata_Gapps_OwnerEntry extends Zend_Gdata_Entry
      * <apps:property> element containing information about other items
      * relevant to this entry.
      *
-     * @var Zend_Gdata_Gapps_Extension_Property
+     * @var Zend_Gdata_Gapps_Extension_Property[]
      */
     protected $_property = [];
 

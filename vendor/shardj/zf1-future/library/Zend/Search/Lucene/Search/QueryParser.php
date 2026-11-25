@@ -66,7 +66,7 @@ class Zend_Search_Lucene_Search_QueryParser extends Zend_Search_Lucene_FSM
     /**
      * Current token
      *
-     * @var integer|string
+     * @var Zend_Search_Lucene_Search_QueryToken
      */
     private $_currentToken;
 
@@ -75,7 +75,7 @@ class Zend_Search_Lucene_Search_QueryParser extends Zend_Search_Lucene_FSM
      *
      * It can be processed within FSM states, but this addirional state simplifies FSM
      *
-     * @var Zend_Search_Lucene_Search_QueryToken
+     * @var Zend_Search_Lucene_Search_QueryToken|null
      */
     private $_lastToken = null;
 
@@ -479,7 +479,9 @@ class Zend_Search_Lucene_Search_QueryParser extends Zend_Search_Lucene_FSM
                 break;
 
             case Zend_Search_Lucene_Search_QueryToken::TT_BOOSTING_MARK:
-                $this->_context->boost($this->_currentToken->text);
+                /** @var numeric-string $boostFactor a number token */
+                $boostFactor = $this->_currentToken->text;
+                $this->_context->boost($boostFactor);
                 break;
 
             default:

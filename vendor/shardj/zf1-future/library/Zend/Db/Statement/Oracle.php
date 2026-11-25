@@ -58,7 +58,7 @@ class Zend_Db_Statement_Oracle extends Zend_Db_Statement
     /**
      * Activate/deactivate return of LOB as string
      *
-     * @param string $lob_as_string
+     * @param string|bool $lob_as_string
      * @return $this
      */
     public function setLobAsString($lob_as_string)
@@ -152,7 +152,7 @@ class Zend_Db_Statement_Oracle extends Zend_Db_Statement
      * Returns the number of columns in the result set.
      * Returns null if the statement has no result set metadata.
      *
-     * @return int The number of columns.
+     * @return int|false The number of columns.
      */
     public function columnCount()
     {
@@ -201,7 +201,7 @@ class Zend_Db_Statement_Oracle extends Zend_Db_Statement
      * Retrieves the error code, if any, associated with the last operation on
      * the statement handle.
      *
-     * @return string error code.
+     * @return string|false error code.
      */
     public function errorCode()
     {
@@ -223,7 +223,7 @@ class Zend_Db_Statement_Oracle extends Zend_Db_Statement
      * Retrieves an array of error information, if any, associated with the
      * last operation on the statement handle.
      *
-     * @return array
+     * @return array|false
      */
     public function errorInfo()
     {
@@ -268,9 +268,6 @@ class Zend_Db_Statement_Oracle extends Zend_Db_Statement
         }
 
         if ($params !== null) {
-            if (!is_array($params)) {
-                $params = [$params];
-            }
             $error = false;
             foreach (array_keys($params) as $name) {
                 if (!$this->bindParam($name, $params[$name], null, -1)) {
@@ -363,7 +360,6 @@ class Zend_Db_Statement_Oracle extends Zend_Db_Statement
                         'message' => "Invalid fetch mode '$style' specified"
                     ]
                 );
-                break;
         }
 
         if (! $row && $error = oci_error($this->_stmt)) {
@@ -386,7 +382,7 @@ class Zend_Db_Statement_Oracle extends Zend_Db_Statement
      *
      * @param int $style OPTIONAL Fetch mode.
      * @param int $col   OPTIONAL Column number, if fetch mode is by column.
-     * @return array Collection of rows, each in a format by the fetch mode.
+     * @return array|false Collection of rows, each in a format by the fetch mode.
      * @throws Zend_Db_Statement_Exception
      */
     public function fetchAll($style = null, $col = 0)
@@ -436,7 +432,6 @@ class Zend_Db_Statement_Oracle extends Zend_Db_Statement
                         'message' => "Invalid fetch mode '$style' specified"
                     ]
                 );
-                break;
         }
 
         $result = [];
@@ -449,9 +444,7 @@ class Zend_Db_Statement_Oracle extends Zend_Db_Statement
                     require_once 'Zend/Db/Statement/Oracle/Exception.php';
                     throw new Zend_Db_Statement_Oracle_Exception($error);
                 }
-                if (!$rows) {
-                    return [];
-                }
+                return [];
             }
             if ($style == Zend_Db::FETCH_COLUMN) {
                 $result = $result[$col];
@@ -518,7 +511,7 @@ class Zend_Db_Statement_Oracle extends Zend_Db_Statement
      * Returns a single column from the next row of a result set.
      *
      * @param int $col OPTIONAL Position of the column to fetch.
-     * @return string
+     * @return string|false
      * @throws Zend_Db_Statement_Exception
      */
     public function fetchColumn($col = 0)
@@ -551,6 +544,7 @@ class Zend_Db_Statement_Oracle extends Zend_Db_Statement
         if ($this->getLobAsString()) {
             // the LOB class is OCILob since PHP 8 and OCI-Lob before
             $type = class_exists('OCILob', false) ? 'OCILob' : 'OCI-Lob';
+            // @phpstan-ignore instanceof.alwaysFalse (a LOB column is fetched as an object of the LOB class)
             if ($data instanceof $type) {
                 $data = $data->read($data->size());
             }
@@ -615,7 +609,7 @@ class Zend_Db_Statement_Oracle extends Zend_Db_Statement
      * last INSERT, DELETE, or UPDATE statement executed by this
      * statement object.
      *
-     * @return int     The number of rows affected.
+     * @return int|false     The number of rows affected.
      * @throws Zend_Db_Statement_Exception
      */
     public function rowCount()

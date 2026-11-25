@@ -37,7 +37,7 @@ abstract class Zend_Dojo_Form_Element_Slider extends Zend_Dojo_Form_Element_Diji
     /**
      * Set clickSelect flag
      *
-     * @param  bool $clickSelect
+     * @param  bool $flag
      * @return Zend_Dojo_Form_Element_Slider
      */
     public function setClickSelect($flag)
@@ -62,7 +62,7 @@ abstract class Zend_Dojo_Form_Element_Slider extends Zend_Dojo_Form_Element_Diji
     /**
      * Set intermediateChanges flag
      *
-     * @param  bool $intermediateChanges
+     * @param  bool $flag
      * @return Zend_Dojo_Form_Element_Slider
      */
     public function setIntermediateChanges($flag)
@@ -87,7 +87,7 @@ abstract class Zend_Dojo_Form_Element_Slider extends Zend_Dojo_Form_Element_Diji
     /**
      * Set showButtons flag
      *
-     * @param  bool $showButtons
+     * @param  bool $flag
      * @return Zend_Dojo_Form_Element_Slider
      */
     public function setShowButtons($flag)

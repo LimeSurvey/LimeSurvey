@@ -36,7 +36,7 @@ class Zend_Log_Writer_Db extends Zend_Log_Writer_Abstract
     /**
      * Database adapter instance
      *
-     * @var Zend_Db_Adapter
+     * @var Zend_Db_Adapter_Abstract|null
      */
     protected $_db;
 
@@ -57,7 +57,7 @@ class Zend_Log_Writer_Db extends Zend_Log_Writer_Abstract
     /**
      * Class constructor
      *
-     * @param Zend_Db_Adapter $db   Database adapter instance
+     * @param Zend_Db_Adapter_Abstract $db   Database adapter instance
      * @param string $table         Log table in database
      * @param array $columnMap
      * @return void
@@ -98,7 +98,7 @@ class Zend_Log_Writer_Db extends Zend_Log_Writer_Abstract
     /**
      * Formatting is not possible on this writer
      *
-     * @return void
+     * @return never
      * @throws Zend_Log_Exception
      */
     public function setFormatter(Zend_Log_Formatter_Interface $formatter)

@@ -133,6 +133,7 @@ class Zend_Mobile_Push_Gcm extends Zend_Mobile_Push_Abstract
         if (!$message->validate()) {
             throw new Zend_Mobile_Push_Exception('The message is not valid.');
         }
+        /** @var Zend_Mobile_Push_Message_Gcm $message the service takes its own message class only */
 
         $this->connect();
 
@@ -149,19 +150,15 @@ class Zend_Mobile_Push_Gcm extends Zend_Mobile_Push_Abstract
             case 500:
                 require_once 'Zend/Mobile/Push/Exception/ServerUnavailable.php';
                 throw new Zend_Mobile_Push_Exception_ServerUnavailable('The server encountered an internal error, try again');
-                break;
             case 503:
                 require_once 'Zend/Mobile/Push/Exception/ServerUnavailable.php';
                 throw new Zend_Mobile_Push_Exception_ServerUnavailable('The server was unavailable, check Retry-After header');
-                break;
             case 401:
                 require_once 'Zend/Mobile/Push/Exception/InvalidAuthToken.php';
                 throw new Zend_Mobile_Push_Exception_InvalidAuthToken('There was an error authenticating the sender account');
-                break;
             case 400:
                 require_once 'Zend/Mobile/Push/Exception/InvalidPayload.php';
                 throw new Zend_Mobile_Push_Exception_InvalidPayload('The request could not be parsed as JSON or contains invalid fields');
-                break;
         }
         return new Zend_Mobile_Push_Response_Gcm($response->getBody(), $message);
     }

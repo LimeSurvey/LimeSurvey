@@ -53,8 +53,8 @@ class Zend_Crypt_Math_BigInteger_Gmp implements Zend_Crypt_Math_BigInteger_Inter
     /**
      * Adds two arbitrary precision numbers
      *
-     * @param resource $left_operand
-     * @param resource $right_operand
+     * @param GMP|string $left_operand
+     * @param GMP|string $right_operand
      * @return string
      */
     public function add($left_operand, $right_operand)
@@ -66,8 +66,8 @@ class Zend_Crypt_Math_BigInteger_Gmp implements Zend_Crypt_Math_BigInteger_Inter
     /**
      * Subtract numbers
      *
-     * @param resource $left_operand
-     * @param resource $right_operand
+     * @param GMP|string $left_operand
+     * @param GMP|string $right_operand
      * @return string
      */
     public function subtract($left_operand, $right_operand)
@@ -81,8 +81,8 @@ class Zend_Crypt_Math_BigInteger_Gmp implements Zend_Crypt_Math_BigInteger_Inter
      * both are identical, 1 that left_operand is larger, or -1 that
      * right_operand is larger.
      *
-     * @param resource $left_operand
-     * @param resource $right_operand
+     * @param GMP|string $left_operand
+     * @param GMP|string $right_operand
      * @return string
      */
     public function compare($left_operand, $right_operand)
@@ -95,8 +95,8 @@ class Zend_Crypt_Math_BigInteger_Gmp implements Zend_Crypt_Math_BigInteger_Inter
      * Divide two big integers and return result or NULL if the denominator
      * is zero.
      *
-     * @param resource $left_operand
-     * @param resource $right_operand
+     * @param GMP|string $left_operand
+     * @param GMP|string $right_operand
      * @return string|null
      */
     public function divide($left_operand, $right_operand)
@@ -108,8 +108,8 @@ class Zend_Crypt_Math_BigInteger_Gmp implements Zend_Crypt_Math_BigInteger_Inter
     /**
      * Modulo operation
      *
-     * @param resource $left_operand
-     * @param resource $modulus
+     * @param GMP|string $left_operand
+     * @param GMP|string $modulus
      * @internal param string $right_operand
      * @return string
      */
@@ -122,8 +122,8 @@ class Zend_Crypt_Math_BigInteger_Gmp implements Zend_Crypt_Math_BigInteger_Inter
     /**
      * Multiply numbers
      *
-     * @param resource $left_operand
-     * @param resource $right_operand
+     * @param GMP|string $left_operand
+     * @param GMP|string $right_operand
      * @return string
      */
     public function multiply($left_operand, $right_operand)
@@ -135,7 +135,7 @@ class Zend_Crypt_Math_BigInteger_Gmp implements Zend_Crypt_Math_BigInteger_Inter
     /**
      * Raise number into power
      *
-     * @param resource $left_operand
+     * @param GMP|string $left_operand
      * @param int      $right_operand
      * @return string
      */
@@ -148,9 +148,9 @@ class Zend_Crypt_Math_BigInteger_Gmp implements Zend_Crypt_Math_BigInteger_Inter
     /**
      * Raise number into power with modulo
      *
-     * @param resource $left_operand
-     * @param resource $right_operand
-     * @param resource $modulus
+     * @param GMP|string $left_operand
+     * @param GMP|string $right_operand
+     * @param GMP|string $modulus
      * @return string
      */
     public function powmod($left_operand, $right_operand, $modulus)
@@ -187,7 +187,7 @@ class Zend_Crypt_Math_BigInteger_Gmp implements Zend_Crypt_Math_BigInteger_Inter
     }
 
     /**
-     * @param resource $operand GMP number resource
+     * @param GMP|string $operand GMP number
      * @return string
      */
     public function integerToBinary($operand)
@@ -209,13 +209,10 @@ class Zend_Crypt_Math_BigInteger_Gmp implements Zend_Crypt_Math_BigInteger_Inter
      */
     public function hexToDecimal($operand)
     {
-        $return = '0';
-        while(strlen($hex)) {
-            $hex = hexdec(substr($operand, 0, 4));
-            $dec = gmp_add(gmp_mul($return, 65536), $hex);
-            $operand = substr($operand, 4);
+        if ($operand === '') {
+            return '0';
         }
-        return $return;
+        return gmp_strval(gmp_init($operand, 16));
     }
 
 }

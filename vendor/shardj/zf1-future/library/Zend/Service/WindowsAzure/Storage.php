@@ -486,7 +486,7 @@ class Zend_Service_WindowsAzure_Storage
 	/**
 	 * Parse metadata XML
 	 *
-	 * @param SimpleXMLElement $parentElement Element containing the Metadata element.
+	 * @param SimpleXMLElement $element Element containing the Metadata element.
 	 * @return array
 	 */
 	protected function _parseMetadataElement($element = null)

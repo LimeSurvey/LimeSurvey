@@ -25,6 +25,7 @@
  * @subpackage StorageService
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @deprecated Deprecated since 1.27.1 and will be removed in a future version: the Simple Cloud API is not developed any further; use the SDK of the cloud provider
  */
 interface Zend_Cloud_StorageService_Adapter
 {
@@ -68,7 +69,7 @@ interface Zend_Cloud_StorageService_Adapter
      * The $destinationPath must be a directory.
      *
      * @param  string $sourcePath
-     * @param  string $destination path
+     * @param  string $destinationPath path
      * @param  array $options
      * @return void
      */
@@ -80,7 +81,7 @@ interface Zend_Cloud_StorageService_Adapter
      * The $destinationPath must be a directory.
      *
      * @param  string $sourcePath
-     * @param  string $destination path
+     * @param  string $destinationPath path
      * @param  array $options
      * @return void
      */
@@ -133,7 +134,6 @@ interface Zend_Cloud_StorageService_Adapter
      * Delete a key/value array of metadata at the given path.
      *
      * @param  string $path
-     * @param  array $options
      * @return void
      */
     public function deleteMetadata($path);

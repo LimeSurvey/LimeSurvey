@@ -32,6 +32,7 @@ require_once 'Zend/Service/Ebay/Finding/Response/Histograms.php';
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @uses       Zend_Service_Ebay_Finding_Response_Histograms
+ * @deprecated Deprecated since 1.27.0 and will be removed in a future version: the eBay Finding API was decommissioned on 2025-02-05
  */
 class Zend_Service_Ebay_Finding_Response_Items extends Zend_Service_Ebay_Finding_Response_Histograms
 {
@@ -222,7 +223,7 @@ class Zend_Service_Ebay_Finding_Response_Items extends Zend_Service_Ebay_Finding
     /**
      * @param  Zend_Service_Ebay_Finding $proxy
      * @param  integer                   $max
-     * @return Zend_Service_Ebay_Finding_Response_Items
+     * @return Zend_Service_Ebay_Finding_Response_Items|null
      */
     public function pageNext(Zend_Service_Ebay_Finding $proxy, $max = self::PAGE_MAX_DEFAULT)
     {
@@ -236,7 +237,7 @@ class Zend_Service_Ebay_Finding_Response_Items extends Zend_Service_Ebay_Finding
 
     /**
      * @param  Zend_Service_Ebay_Finding $proxy
-     * @return Zend_Service_Ebay_Finding_Response_Items
+     * @return Zend_Service_Ebay_Finding_Response_Items|null
      */
     public function pagePrevious(Zend_Service_Ebay_Finding $proxy)
     {

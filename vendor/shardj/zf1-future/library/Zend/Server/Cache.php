@@ -58,6 +58,7 @@ class Zend_Server_Cache
         $methods = $server->getFunctions();
 
         if ($methods instanceof Zend_Server_Definition) {
+            require_once 'Zend/Server/Definition.php';
             $definition = new Zend_Server_Definition();
             foreach ($methods as $method) {
                 if (in_array($method->getName(), self::$_skipMethods)) {

@@ -52,7 +52,7 @@ class Zend_Tool_Project_Context_Filesystem_Directory extends Zend_Tool_Project_C
     /**
      * create()
      *
-     * @return Zend_Tool_Project_Context_Filesystem_Directory;
+     * @return Zend_Tool_Project_Context_Filesystem_Directory
      */
     public function create()
     {

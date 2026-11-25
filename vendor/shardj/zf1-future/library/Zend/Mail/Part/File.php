@@ -150,7 +150,7 @@ class Zend_Mail_Part_File extends Zend_Mail_Part
      *
      * If part is multipart the raw content of this part with all sub parts is returned
      *
-     * @return string body
+     * @return string|int|false body
      * @throws Zend_Mail_Exception
      */
     public function getContent($stream = null)

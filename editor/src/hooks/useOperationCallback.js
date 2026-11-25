@@ -16,7 +16,6 @@ export const useOperationCallback = () => {
   const subscribe = useCallback(
     ({ entity, operation, id, match, callback, onError, once = true }) => {
       const key = `${entity}_${operation}`
-      // id and match (a predicate on the operation) optionally narrow the match
       const subscription = { callback, onError, once, id, match }
 
       const currentSubscriptions = queryClient.getQueryData([

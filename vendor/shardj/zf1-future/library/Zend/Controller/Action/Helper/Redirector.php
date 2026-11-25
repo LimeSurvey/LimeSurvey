@@ -350,16 +350,14 @@ class Zend_Controller_Action_Helper_Redirector extends Zend_Controller_Action_He
         // prevent header injections
         $url = str_replace(["\n", "\r"], '', $url);
 
-        if (null !== $options) {
-            if (isset($options['exit'])) {
-                $this->setExit(($options['exit']) ? true : false);
-            }
-            if (isset($options['prependBase'])) {
-                $this->setPrependBase(($options['prependBase']) ? true : false);
-            }
-            if (isset($options['code'])) {
-                $this->setCode($options['code']);
-            }
+        if (isset($options['exit'])) {
+            $this->setExit(($options['exit']) ? true : false);
+        }
+        if (isset($options['prependBase'])) {
+            $this->setPrependBase(($options['prependBase']) ? true : false);
+        }
+        if (isset($options['code'])) {
+            $this->setCode($options['code']);
         }
 
         // If relative URL, decide if we should prepend base URL
@@ -479,7 +477,9 @@ class Zend_Controller_Action_Helper_Redirector extends Zend_Controller_Action_He
     {
         if ($this->getCloseSessionOnExit()) {
             // Close session, if started
+            require_once 'Zend/Session.php';
             if (class_exists('Zend_Session', false) && Zend_Session::isStarted()) {
+                require_once 'Zend/Session.php';
                 Zend_Session::writeClose();
             } elseif (isset($_SESSION)) {
                 session_write_close();

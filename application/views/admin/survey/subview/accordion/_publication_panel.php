@@ -136,9 +136,9 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
                             : ((in_array($usecap, $aCaptchaRegistrationInherit))
                                 ? ('I')
                                 : ('N')),
-                                                                         'selectOptions' => ($bShowInherited)
-                                                                         ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->useCaptchaRegistration . " ᴵ"])
-                                                                         : $optionsOnOff,
+                                                                             'selectOptions' => ($bShowInherited)
+                                                                             ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->useCaptchaRegistration . " ᴵ"])
+                                                                             : $optionsOnOff,
                     ]); ?>
                 </div>
             </div>

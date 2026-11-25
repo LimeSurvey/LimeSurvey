@@ -31,6 +31,7 @@ require_once 'Zend/Service/WindowsAzure/Storage/Table.php';
  * @subpackage DocumentService
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @deprecated Deprecated since 1.27.1 and will be removed in a future version: the Simple Cloud API is not developed any further; use the SDK of the cloud provider
  */
 class Zend_Cloud_DocumentService_Adapter_WindowsAzure
     extends Zend_Cloud_DocumentService_Adapter_AbstractAdapter
@@ -82,6 +83,8 @@ class Zend_Cloud_DocumentService_Adapter_WindowsAzure
      */
     public function __construct($options = [])
     {
+        trigger_error(get_class($this) . ' is deprecated and will be removed in a future version', E_USER_DEPRECATED);
+
         if ($options instanceof Zend_Config) {
             $options = $options->toArray();
         }
@@ -222,8 +225,6 @@ class Zend_Cloud_DocumentService_Adapter_WindowsAzure
         } catch(Zend_Service_WindowsAzure_Exception $e) {
             throw new Zend_Cloud_DocumentService_Exception('Error on collection list: '.$e->getMessage(), $e->getCode(), $e);
         }
-
-        return $tables;
     }
 
     /**
@@ -385,7 +386,8 @@ class Zend_Cloud_DocumentService_Adapter_WindowsAzure
     /**
      * Delete document.
      *
-     * @param  mixed  $document Document ID or Document object.
+     * @param  string $collectionName
+     * @param  mixed  $documentId Document ID or Document object.
      * @param  array  $options
      * @return void
      */
@@ -416,7 +418,7 @@ class Zend_Cloud_DocumentService_Adapter_WindowsAzure
      * @param  string $collectionName Collection name
      * @param  mixed $documentId Document ID, adapter-dependent
      * @param  array $options
-     * @return Zend_Cloud_DocumentService_Document
+     * @return Zend_Cloud_DocumentService_Document|false
      */
     public function fetchDocument($collectionName, $documentId, $options = null)
     {
@@ -557,7 +559,7 @@ class Zend_Cloud_DocumentService_Adapter_WindowsAzure
      * - otherwise, it's invalid
      *
      * @param  array|string $documentId
-     * @param  null|string $collectionName
+     * @param  string|false|null $collectionName
      * @return array
      * @throws Zend_Cloud_DocumentService_Exception
      */
