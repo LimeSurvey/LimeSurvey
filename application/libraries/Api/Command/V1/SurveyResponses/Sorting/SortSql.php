@@ -92,6 +92,30 @@ final class SortSql
     }
 
     /**
+     * CASE expression mapping stored values to their rank, for orders that differ
+     * from the order of the stored values (e.g. answer codes sorted by answer text).
+     *
+     * @param string $expression SQL expression of the stored value
+     * @param array<string|int, int> $ranks Stored value => rank, at least one entry
+     * @param int $otherwise Rank of the values that aren't in the list
+     * @return string SQL expression returning the rank
+     * @throws \InvalidArgumentException If no ranks are given
+     */
+    public static function rank(string $expression, array $ranks, int $otherwise): string
+    {
+        if (empty($ranks)) {
+            throw new \InvalidArgumentException('A rank expression needs at least one value');
+        }
+        $db = \Yii::app()->db;
+        $cases = '';
+        foreach ($ranks as $value => $rank) {
+            // Numeric codes become integer keys: Compare them as the strings they are stored as
+            $cases .= ' WHEN ' . $db->quoteValue((string) $value) . ' THEN ' . (int) $rank;
+        }
+        return "CASE $expression$cases ELSE $otherwise END";
+    }
+
+    /**
      * ORDER BY parts for an expression of a given value type, without the tie-breaker.
      *
      * @param string $expression SQL expression of the sorted value
