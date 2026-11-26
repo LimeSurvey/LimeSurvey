@@ -79,7 +79,6 @@
 
                     <!--Filter by email address -->
                     <div class=" mb-3 control-group" data-name="filteremail">
-
                         <label class="default form-label" for="filteremail">
                             <?php eT('Filter by email address:'); ?>
                         </label>
@@ -93,7 +92,6 @@
                             'htmlOptions' => ['class' => 'mt-1' ,'id' => 'filteremailhelp'],
                         ]);
                         ?>
-
                     </div>
 
                     <!--Delete exported tokens -->
@@ -177,5 +175,4 @@
             </form>
         </div>
     </div>
-</div>
 </div>

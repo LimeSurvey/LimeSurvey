@@ -59,9 +59,15 @@ function buildSelects($allfields, $surveyid, $language)
     $formatdata = getDateFormatData(Yii::app()->session['dateformat']);
 
     $fieldmap = createFieldMap($survey, "full", false, false, $language);
+    /* Hardened : encrypted questions can not be filtered (random nonce), their posted fields are ignored */
+    $hardenedEncryptedQids = [];
+    $hardened = $survey->oOptions->encryption_method == 'H';
     foreach ($fieldmap as $field) {
         if (isset($field['qid']) && $field['qid'] != '') {
             $aQuestionMap[] = 'Q' . $field['qid'];
+            if ($hardened && ($field['encrypted'] ?? 'N') === 'Y') {
+                $hardenedEncryptedQids[(int) $field['qid']] = true;
+            }
         }
     }
 
@@ -111,6 +117,10 @@ function buildSelects($allfields, $surveyid, $language)
     foreach ($postvars as $pv) {
         // Reset per iteration so a value from a previous key cannot leak in.
         $firstletter = '';
+        /* Every filter field name contains Q<qid> : M/P, T/Q/J, N/K, D, | and the other types */
+        if (!empty($hardenedEncryptedQids) && preg_match('/Q(\d+)/', (string) $pv, $matches) && isset($hardenedEncryptedQids[(int) $matches[1]])) {
+            continue;
+        }
         //Only do this if there is actually a value for the $pv
 
         if (

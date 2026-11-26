@@ -381,7 +381,7 @@ class GlobalSettings extends SurveyCommonAction
         SettingGlobal::setSetting('emailmethod', $emailMethod);
         SettingGlobal::setSetting('emailsmtphost', strip_tags((string) returnGlobal('emailsmtphost')));
         if (returnGlobal('emailsmtppassword') != 'somepassword') {
-            SettingGlobal::setSetting('emailsmtppassword', LSActiveRecord::encryptSingle(returnGlobal('emailsmtppassword')));
+            SettingGlobal::setSetting('emailsmtppassword', returnGlobal('emailsmtppassword'));
         }
         SettingGlobal::setSetting('bounceaccounthost', strip_tags((string) returnGlobal('bounceaccounthost')));
         SettingGlobal::setSetting('bounceaccounttype', Yii::app()->request->getPost('bounceaccounttype', 'off'));
@@ -389,7 +389,7 @@ class GlobalSettings extends SurveyCommonAction
         SettingGlobal::setSetting('bounceaccountuser', strip_tags((string) returnGlobal('bounceaccountuser')));
 
         if (returnGlobal('bounceaccountpass') != 'enteredpassword') {
-            SettingGlobal::setSetting('bounceaccountpass', LSActiveRecord::encryptSingle(returnGlobal('bounceaccountpass')));
+            SettingGlobal::setSetting('bounceaccountpass', returnGlobal('bounceaccountpass'));
         }
 
         SettingGlobal::setSetting('emailsmtpssl', sanitize_paranoid_string(Yii::app()->request->getPost('emailsmtpssl', '')));
@@ -466,6 +466,21 @@ class GlobalSettings extends SurveyCommonAction
             SettingGlobal::setSetting($googleapikey, $fixedValue);
         }
         SettingGlobal::setSetting('surveyPreview_require_Auth', Yii::app()->getRequest()->getPost('surveyPreview_require_Auth'));
+        /* Invalid values : keep the current settings */
+        $cpdbEncryptionMethod = Yii::app()->getRequest()->getPost('CPDB_encryption_method');
+        if (in_array($cpdbEncryptionMethod, ['B', 'H'], true)) {
+            SettingGlobal::setSetting('CPDB_encryption_method', $cpdbEncryptionMethod);
+        }
+        $cpdbDuplicatefinderBits = Yii::app()->getRequest()->getPost('CPDB_duplicatefinder_bits');
+        $duplicateFinderBitsChanged = false;
+        if (in_array($cpdbDuplicatefinderBits, ['0', '64', '96', '128', '192', '256'], true)) {
+            $duplicateFinderBitsChanged = (string) App()->getConfig('CPDB_duplicatefinder_bits') !== $cpdbDuplicatefinderBits;
+            SettingGlobal::setSetting('CPDB_duplicatefinder_bits', $cpdbDuplicatefinderBits);
+            if ($duplicateFinderBitsChanged) {
+                App()->setConfig('CPDB_duplicatefinder_bits', (int) $cpdbDuplicatefinderBits);
+                Participant::checkDuplicateFinderSettingsChange();
+            }
+        }
         SettingGlobal::setSetting('RPCInterface', Yii::app()->getRequest()->getPost('RPCInterface'));
         SettingGlobal::setSetting('rpc_publish_api', Yii::app()->getRequest()->getPost('rpc_publish_api'));
         SettingGlobal::setSetting('add_access_control_header', Yii::app()->getRequest()->getPost('add_access_control_header'));
@@ -499,6 +514,18 @@ class GlobalSettings extends SurveyCommonAction
             Yii::app()->setFlashMessage($warning, 'warning');
         }
         Yii::app()->setFlashMessage(gT("Global settings were saved."), 'success');
+
+        /* The duplicate index size changed : the participants must be updated */
+        if ($duplicateFinderBitsChanged && Participant::countCoreAttributeCrypted() > 0 && Participant::canUseDuplicateFinder()) {
+            Yii::app()->setFlashMessage(sprintf(
+                gT("%s participants must have their duplicate index updated. Warning: the duplicate index size was changed, duplicate participants are not found until their index is updated."),
+                Participant::getDuplicateFinderInvalidCount()
+            ), 'warning');
+            if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+                Yii::app()->getController()->redirect(App()->createUrl('admin/participants/sa/encryptionMaintenance'));
+                return;
+            }
+        }
 
         // Redirect if user clicked save-and-close-button
         if (Yii::app()->getRequest()->getPost('saveandclose')) {

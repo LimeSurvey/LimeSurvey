@@ -7,7 +7,7 @@ import {
   YESNO_BOOLEAN,
 } from 'helpers/options'
 
-export const getNotificationsDataSettingsBlocks = () => ({
+export const getNotificationsDataSettingsBlocks = (survey) => ({
   NOTIFICATIONS_DATA: {
     title: t('Notifications & data'),
     settings: {
@@ -73,6 +73,25 @@ export const getNotificationsDataSettingsBlocks = () => ({
           mainText: t('Save quota exit'),
           childComponent: ToggleButtons,
           toggleOptions: getOnOffOptions(ONOFF_BOOLEAN),
+          activeDisabled: true,
+          noPermissionDisabled: true,
+        },
+      },
+      ENCRYPTION_METHOD: {
+        keyPath: 'encryptionMethod',
+        props: {
+          id: 'encryptionMethod',
+          mainText: t('Encryption method'),
+          childComponent: ToggleButtons,
+          toggleOptions: [
+            { name: t('Basic'), value: 'B' },
+            {
+              name: t('Hardened'),
+              value: 'H',
+              // Hardened can not be used if a quota uses an encrypted question
+              disabled: !!survey?.encryptionHardenedDisabled,
+            },
+          ],
           activeDisabled: true,
           noPermissionDisabled: true,
         },

@@ -352,6 +352,7 @@ class DataEntry extends SurveyCommonAction
             $sourceTable = PluginDynamic::model($sourceTableName);
             $sourceSchema = $sourceTable->getTableSchema();
             $encryptedAttributes = Response::getEncryptedAttributes($iSurveyId);
+            $encryptionMethod = $survey->oOptions->encryption_method;
             $tbl_name = $sourceSchema->name;
 
             if (!empty(App()->db->tablePrefix) && strpos((string) $sourceSchema->name, (string) App()->db->tablePrefix) === 0) {
@@ -452,12 +453,18 @@ class DataEntry extends SurveyCommonAction
                 $isExplicitId = !$isUpdate && isset($targetResponse->id);
 
                 foreach ($fieldMap as $sourceField => $targetField) {
-                    $targetResponse[$targetField] = $sourceResponse[$sourceField];
-                    if (in_array($sourceField, $archivedEncryptedAttributes, false) && !in_array($targetField, $encryptedAttributes, false)) {
-                        $targetResponse[$targetField] = $sourceResponse->decryptSingle($sourceResponse[$sourceField]);
-                    }
-                    if (!in_array($sourceField, $archivedEncryptedAttributes, false) && in_array($targetField, $encryptedAttributes, false)) {
-                        $targetResponse[$targetField] = $sourceResponse->encryptSingle($sourceResponse[$sourceField]);
+                    $sourceEncrypted = in_array($sourceField, $archivedEncryptedAttributes, false);
+                    $value = $sourceResponse[$sourceField];
+                    if ($value === null || $value === '') {
+                        $targetResponse[$targetField] = $value;
+                    } elseif (in_array($targetField, $encryptedAttributes, false)) {
+                        /* Encrypt with the (new) encryption method of the survey : archived values can use the previous one, decrypt tries both */
+                        $plainValue = $sourceEncrypted ? LSActiveRecord::decryptSingle($value) : $value;
+                        $targetResponse[$targetField] = LSActiveRecord::encryptSingle($plainValue, $encryptionMethod);
+                    } elseif ($sourceEncrypted) {
+                        $targetResponse[$targetField] = LSActiveRecord::decryptSingle($value);
+                    } else {
+                        $targetResponse[$targetField] = $value;
                     }
                 }
                 foreach ($otherCheckedFromText as $checkedColumn => $otherColumn) {
@@ -472,19 +479,18 @@ class DataEntry extends SurveyCommonAction
                         }
 
                         $value = $sourceResponse[$oldFieldName];
-                        if (in_array($oldFieldName, $archivedEncryptedAttributes, false) && !in_array($oldFieldName, $encryptedAttributes, false)) {
-                            $value = $sourceResponse->decryptSingle($sourceResponse[$oldFieldName]);
+                        if (in_array($oldFieldName, $archivedEncryptedAttributes, false)) {
+                            $value = LSActiveRecord::decryptSingle($value);
                         }
-                        if (!in_array($oldFieldName, $archivedEncryptedAttributes, false) && in_array($oldFieldName, $encryptedAttributes, false)) {
-                            $value = $sourceResponse->encryptSingle($sourceResponse[$oldFieldName]);
-                        }
-                        
                         $rankingJSONs[$newFieldName][] = $value;
                     }
                 }
 
                 foreach ($rankingJSONs as $newFieldName => $value) {
-                    $targetResponse[$newFieldName] = json_encode($value);
+                    /* The whole JSON is stored in the ranking column : encrypt it with the encryption method of the survey */
+                    $targetResponse[$newFieldName] = in_array($newFieldName, $encryptedAttributes, false)
+                        ? LSActiveRecord::encryptSingle(json_encode($value), $encryptionMethod)
+                        : json_encode($value);
                 }
 
                 if (isset($targetSchema->columns['startdate']) && empty($targetResponse['startdate'])) {
@@ -534,7 +540,7 @@ class DataEntry extends SurveyCommonAction
             if ($preserveIDs && $isPgsql) {
                 $this->syncResponseIdSequence($iSurveyId);
             }
-            $this->fillOtherCheckedFromText($iSurveyId, $targetSchema, $fieldMap, array_values($aSRIDConversions), $encryptedAttributes);
+            $this->fillOtherCheckedFromText($iSurveyId, $targetSchema, $fieldMap, array_values($aSRIDConversions), $encryptedAttributes, $encryptionMethod);
             if (empty($responseErrors) && !$skipped) {
                 Yii::app()->session['flashmessage'] = sprintf(gT("%s old response(s) were successfully imported."), $imported);
             }
@@ -1672,14 +1678,16 @@ class DataEntry extends SurveyCommonAction
     /**
      * Imported responses from a table without the tick column of multiple choice Other: text always ticks Other.
      * One query per Other column and per 1000 responses, not per response.
+     * Except with hardened encryption : each response gets its own encrypted value (random nonce).
      * @param integer $iSurveyId
      * @param CDbTableSchema $targetSchema
      * @param array $fieldMap imported source column => target column
      * @param integer[] $importedIds ids of the imported responses, other responses are not changed
      * @param array $encryptedAttributes encrypted columns of the target table
+     * @param string $encryptionMethod encryption method of the target survey : 'B' or 'H'
      * @return void
      */
-    private function fillOtherCheckedFromText($iSurveyId, $targetSchema, array $fieldMap, array $importedIds, array $encryptedAttributes)
+    private function fillOtherCheckedFromText($iSurveyId, $targetSchema, array $fieldMap, array $importedIds, array $encryptedAttributes, $encryptionMethod)
     {
         if (empty($importedIds)) {
             return;
@@ -1693,16 +1701,32 @@ class DataEntry extends SurveyCommonAction
             if (!$targetSchema->getColumn($otherColumn)) {
                 continue;
             }
-            $checked = in_array($checkedColumn, $encryptedAttributes, false) ? LSActiveRecord::encryptSingle('Y') : 'Y';
+            $encrypted = in_array($checkedColumn, $encryptedAttributes, false);
+            $hardened = $encrypted && $encryptionMethod === 'H';
+            $checked = $encrypted ? LSActiveRecord::encryptSingle('Y', $encryptionMethod) : 'Y';
             $quotedChecked = $db->quoteColumnName($checkedColumn);
             $quotedOther = $db->quoteColumnName($otherColumn);
+            $quotedId = $db->quoteColumnName('id');
             foreach (array_chunk($importedIds, 1000) as $ids) {
-                $db->createCommand()->update(
-                    "{{responses_$iSurveyId}}",
-                    [$checkedColumn => $checked],
-                    "($quotedChecked IS NULL OR $quotedChecked = '') AND $quotedOther IS NOT NULL AND $quotedOther <> ''"
-                    . " AND " . $db->quoteColumnName('id') . " IN (" . implode(',', array_map('intval', $ids)) . ")"
-                );
+                $eligible = "($quotedChecked IS NULL OR $quotedChecked = '') AND $quotedOther IS NOT NULL AND $quotedOther <> ''";
+                $condition = $eligible . " AND $quotedId IN (" . implode(',', array_map('intval', $ids)) . ")";
+                if (!$hardened) {
+                    $db->createCommand()->update("{{responses_$iSurveyId}}", [$checkedColumn => $checked], $condition);
+                    continue;
+                }
+                $matchingIds = $db->createCommand()
+                    ->select('id')
+                    ->from("{{responses_$iSurveyId}}")
+                    ->where($condition)
+                    ->queryColumn();
+                foreach ($matchingIds as $id) {
+                    $db->createCommand()->update(
+                        "{{responses_$iSurveyId}}",
+                        [$checkedColumn => LSActiveRecord::encryptSingle('Y', 'H')],
+                        "$quotedId = :id AND $eligible",
+                        [':id' => (int) $id]
+                    );
+                }
             }
         }
     }

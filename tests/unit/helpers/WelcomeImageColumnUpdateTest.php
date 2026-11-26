@@ -13,6 +13,9 @@ class WelcomeImageColumnUpdateTest extends TestBaseClass
     /** @var string The surveys table name with prefix */
     private static $table;
 
+    /** @var string|false DBVersion before the test : Update_722::safeUp() sets it to 722 */
+    private static $dbVersion;
+
     /**
      * Imports a survey, so the surveys table has a row whose value must survive the conversion
      *
@@ -23,7 +26,29 @@ class WelcomeImageColumnUpdateTest extends TestBaseClass
         parent::setUpBeforeClass();
         \Yii::import('application.helpers.update.updatedb_helper', true);
         self::$table = \Yii::app()->db->tablePrefix . 'surveys';
+        self::$dbVersion = \Yii::app()->db->createCommand()
+            ->select('stg_value')
+            ->from('{{settings_global}}')
+            ->where("stg_name = 'DBVersion'")
+            ->queryScalar();
         self::importSurvey(self::$surveysFolder . '/limesurvey_survey_188432_answerSetsForEmTest.lss');
+    }
+
+    /**
+     * Restores DBVersion, the next runs on the same database (debug mode in CI) read it
+     *
+     * @return void
+     */
+    public static function tearDownAfterClass(): void
+    {
+        if (self::$dbVersion !== false) {
+            \Yii::app()->db->createCommand()->update(
+                '{{settings_global}}',
+                ['stg_value' => self::$dbVersion],
+                "stg_name = 'DBVersion'"
+            );
+        }
+        parent::tearDownAfterClass();
     }
 
     /**

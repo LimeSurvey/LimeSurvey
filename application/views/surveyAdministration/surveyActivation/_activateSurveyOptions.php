@@ -174,6 +174,26 @@ $optionsOnOff = ['Y' => gT('On'), 'N' => gT('Off')];
             </div>
         </div>
     </div>
+    <!-- Encryption method : responses are encrypted with it, it can not be changed once activated -->
+    <div class='col-md-6'>
+        <div class="ex-form-group mb-3">
+            <div class="form-label" id='activate_encryption_method-label'><?php eT("Encryption method:"); ?></div>
+            <div class="">
+                <?php
+                $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
+                    'name' => 'encryption_method',
+                    'checkedOption' => $oSurvey->getResolvedEncryptionMethod(),
+                    'selectOptions' => ['B' => gT('Basic', 'unescaped'), 'H' => gT('Hardened', 'unescaped')],
+                    'htmlOptions' => [
+                        'aria-labelledby' => 'activate_encryption_method-label',
+                        /* Hardened can not be used if a quota uses an encrypted question */
+                        'disabledOptions' => Quota::hasEncryptedQuestion($oSurvey->sid) ? ['H'] : [],
+                    ],
+                ]);
+                ?>
+            </div>
+        </div>
+    </div>
 </div>
 
     <div class="row sub_footer">

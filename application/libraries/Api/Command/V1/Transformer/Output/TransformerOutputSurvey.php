@@ -78,6 +78,7 @@ class TransformerOutputSurvey extends TransformerOutputActiveRecord
                 'key' => 'refUrl',
                 'formatter' => ['ynToBool' => true]
             ],
+            "encryption_method" => 'encryptionMethod',
             "savequotaexit" => [
                 'key' => 'saveQuotaExit',
                 'formatter' => ['ynToBool' => true]

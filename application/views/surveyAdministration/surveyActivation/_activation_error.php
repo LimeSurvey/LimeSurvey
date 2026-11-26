@@ -10,7 +10,13 @@
     <div class="ls-flex-column fill col-12 overflow-enabled">
         <div class="row col-12">
             <h3 class="pagetitle"><?php eT('Survey activation error'); ?></h3>
-            <?php if (App()->getConfig('debug')) : ?>
+            <?php if ($result['error'] == 'surveysettings') :
+                $this->widget('ext.AlertWidget.AlertWidget', [
+                    'header' => gT("The survey settings could not be saved."),
+                    'errorSummaryModel' => $result['survey'],
+                ]);
+                ?>
+            <?php elseif (App()->getConfig('debug')) : ?>
                 <p><?php eT('Database error!'); ?></p>
                 <pre>
                     <?php echo $result['error']; ?>

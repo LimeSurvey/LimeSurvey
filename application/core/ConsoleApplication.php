@@ -111,9 +111,13 @@ class ConsoleApplication extends CConsoleApplication
         }
         $this->config = array_merge($this->config, $lsConfig);
 
-        /* encrypt emailsmtppassword value, because emailsmtppassword in database is also encrypted
-           it would be decrypted in LimeMailer when needed */
-        $this->config['emailsmtppassword'] = LSActiveRecord::encryptSingle($this->config['emailsmtppassword']);
+        /* encrypt the settings set by file that are encrypted in database (emailsmtppassword, bounceaccountpass)
+           they are decrypted by getConfig() */
+        foreach (SettingGlobal::getCryptedSettings() as $cryptedSetting) {
+            if (!empty($this->config[$cryptedSetting])) {
+                $this->config[$cryptedSetting] = LSActiveRecord::encryptSingle($this->config[$cryptedSetting], 'H');
+            }
+        }
 
         /* Load the database settings : if available */
         try {
@@ -165,12 +169,16 @@ class ConsoleApplication extends CConsoleApplication
     public function getConfig($name = null, $default = false)
     {
         if (isset($this->$name)) {
-            return $this->name;
-        } elseif (isset($this->config[$name])) {
-            return $this->config[$name];
-        } else {
+            // Console specific : unsure of usage
+            return $this->$name;
+        }
+        if (!isset($this->config[$name])) {
             return $default;
         }
+        if (in_array($name, SettingGlobal::getCryptedSettings())) {
+            return LSActiveRecord::decryptSingle($this->config[$name], 'H');
+        }
+        return $this->config[$name];
     }
 
     /**

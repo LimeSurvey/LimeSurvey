@@ -133,6 +133,12 @@ class CopySurvey
                 $mappingGroupIdsAndQuestionIds['questionIds'],
                 $this->options->isResourcesAndLinks()
             ));
+            /* Hardened encrypted answers can not be counted : use Basic if a quota uses an encrypted question */
+            $copiedSurvey = Survey::model()->findByPkNoCache($destinationSurvey->sid);
+            if ($copiedSurvey && $copiedSurvey->forceBasicIfHardenedQuota()) {
+                $destinationSurvey->encryption_method = 'B';
+                $copySurveyResult->setWarnings(gT("Basic encryption was set for this survey instead of hardened encryption, because a quota uses an encrypted question."));
+            }
         }
 
         if ($this->options->isConditions()) {

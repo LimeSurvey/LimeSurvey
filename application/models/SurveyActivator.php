@@ -52,7 +52,11 @@ class SurveyActivator
      * Creates necessary tables "responseTable", "timingTable".
      * Fires events "beforeSurveyActivate" and "afterSurveyActivation"
      *
-     * @return array
+     * @return array On error : 'error' (string) : 'plugin' with 'message' (string),
+     *     'surveytablecreation' (the database error message in debug mode) or 'timingstablecreation'.
+     *   On simulation : 'dbengine', 'dbtype' and 'fields'.
+     *   On success : 'status' ('OK'), 'pluginFeedback', 'isAllowRegister' (bool), 'tableWarnings' (string[])
+     *     and 'warning' ('nouploadsurveydir') if the upload directory could not be created.
      * @throws CException
      */
     public function activate()
@@ -84,6 +88,13 @@ class SurveyActivator
                 'dbtype' => Yii::app()->db->driverName,
                 'fields' => $this->tableDefinition
             );
+        }
+
+        /* Responses are encrypted with this method : fix the inherited one, whatever the activation path (archive import, command) */
+        if ($this->survey->encryption_method === 'I') {
+            $encryptionMethod = $this->survey->getResolvedEncryptionMethod('I');
+            Survey::model()->updateByPk($this->survey->sid, ['encryption_method' => $encryptionMethod]);
+            $this->survey->encryption_method = $encryptionMethod;
         }
 
         if (!$this->createResponseTable()) {
@@ -259,6 +270,10 @@ class SurveyActivator
                     break;
                 default:
                     $aTableDefinition[$aRow['fieldname']] = (array_key_exists('encrypted', $aRow) && $aRow['encrypted'] == 'Y') ? "text" : (isset($aRow['answertabledefinition']) && !empty($aRow['answertabledefinition']) ? $aRow['answertabledefinition'] : "string(5)");
+            }
+            /* Encrypted answers are longer than plain ones (hardened : 2 × length + 80), MySQL text is limited to 65535 bytes */
+            if (isset($aTableDefinition[$aRow['fieldname']]) && ($aRow['encrypted'] ?? 'N') === 'Y') {
+                $aTableDefinition[$aRow['fieldname']] = "mediumtext";
             }
             if (!$this->survey->isAnonymized && !array_key_exists('token', $aTableDefinition)) {
                 $aTableDefinition['token'] = 'string(' . Token::MAX_LENGTH . ')' . $collation;

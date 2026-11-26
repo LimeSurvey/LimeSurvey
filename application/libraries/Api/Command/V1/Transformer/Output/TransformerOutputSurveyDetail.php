@@ -25,7 +25,7 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
         'printanswers', 'publicgraphs', 'publicstatistics', 'questionindex', 'refurl',
         'savetimings', 'sendconfirmation', 'showgroupinfo', 'shownoanswer', 'preselectnoanswer', 'showprogress', 'showqnumcode',
         'showwelcome', 'showxquestions', 'template', 'tokenanswerspersistence', 'tokenlength', 'usecookie',
-        'savequotaexit'
+        'savequotaexit', 'encryption_method'
     ];
 
     private TransformerOutputSurvey $transformerSurvey;
@@ -98,8 +98,10 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
 
         $options = $options ?? [];
 
+        $encryptionHardenedDisabled = $this->isEncryptionHardenedDisabled($data);
         $data = $this->setInheritedBetaOptions($data);
         $survey = $this->transformerSurvey->transform($data);
+        $survey['encryptionHardenedDisabled'] = $encryptionHardenedDisabled;
         $survey['templateInherited'] = $data->oOptions->template;
         $survey['formatInherited'] = $data->oOptions->format;
         $survey['isEditorCompatible'] = $data->getIsEditorCompatible();
@@ -339,6 +341,17 @@ class TransformerOutputSurveyDetail extends TransformerOutputActiveRecord
             }
         }
         return $output;
+    }
+
+    /**
+     * Hardened can not be used if a quota uses an encrypted question (except if already set)
+     *
+     * @param Survey $survey
+     * @return bool
+     */
+    private function isEncryptionHardenedDisabled(Survey $survey): bool
+    {
+        return $survey->encryption_method !== 'H' && \Quota::hasEncryptedQuestion((int) $survey->sid);
     }
 
     /**

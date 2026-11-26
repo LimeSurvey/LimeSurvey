@@ -52,7 +52,8 @@ class ResponseFilterSetService
 
         $resolver = new ResponseFilterResolver(
             QuestionColumnMap::fromQuestionFieldMap($questionFieldMap()),
-            ParticipantResolver::fromSurvey($survey)
+            ParticipantResolver::fromSurvey($survey),
+            (string) ($survey->oOptions->encryption_method ?? 'B')
         );
 
         return $resolver->resolve($filterSet);

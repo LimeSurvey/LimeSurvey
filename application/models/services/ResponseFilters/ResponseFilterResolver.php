@@ -17,11 +17,15 @@ class ResponseFilterResolver
     private SurveyDataResolver $surveyDataResolver;
     private ParticipantResolver $participantResolver;
 
+    /**
+     * @param string $encryptionMethod Encryption method of the survey : 'B' (Basic) or 'H' (Hardened)
+     */
     public function __construct(
         QuestionColumnMap $columnMap,
-        ParticipantResolver $participantResolver
+        ParticipantResolver $participantResolver,
+        string $encryptionMethod = 'B'
     ) {
-        $this->questionResolver = new QuestionResolver($columnMap);
+        $this->questionResolver = new QuestionResolver($columnMap, $encryptionMethod);
         $this->surveyDataResolver = new SurveyDataResolver();
         $this->participantResolver = $participantResolver;
     }

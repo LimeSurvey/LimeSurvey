@@ -371,9 +371,9 @@ class ParticipantsAction extends SurveyCommonAction
             'aAttributes' => ParticipantAttributeName::model()->getAllAttributes(),
             'totalrecords' => $iTotalRecords,
             'model' => $model,
-            'debug' => $request->getParam('Participant')
+            'debug' => $request->getParam('Participant'),
+            'duplicateFinderUpToDate' => Participant::isDuplicateFinderUpToDate()
         );
-
         $aData['pageSizeParticipantView'] = Yii::app()->user->getState('pageSizeParticipantView');
         $searchstring = $request->getPost('searchstring');
         $aData['searchstring'] = $searchstring;
@@ -906,12 +906,15 @@ class ParticipantsAction extends SurveyCommonAction
             if ($oCSVFile === false) {
                 safeDie('File not found.');
             }
-            $aFirstLine = fgets($oCSVFile);
+            $aFirstLine = (string) fgets($oCSVFile);
             rewind($oCSVFile);
+            // Skip the UTF-8 BOM before parsing, like uploadCSV() (removeBOM) : a quoted first column name is then parsed the same way
+            if (removeBOM($aFirstLine) !== $aFirstLine) {
+                fseek($oCSVFile, 3);
+            }
 
-            $separator = $this->getCsvSeparator((string) Yii::app()->request->getPost('separatorused'), (string) $aFirstLine);
+            $separator = $this->getCsvSeparator((string) Yii::app()->request->getPost('separatorused'), $aFirstLine);
             $firstline = fgetcsv($oCSVFile, 1000, $separator, '"', "\\");
-
             $selectedcsvfields = array();
             $fieldlist = array();
             foreach ($firstline as $key => $value) {
@@ -927,13 +930,18 @@ class ParticipantsAction extends SurveyCommonAction
             $iLineCount = count(array_filter(array_filter((array) file($sFilePath), 'trim')));
 
             $attributes = ParticipantAttributeName::model()->model()->getCPDBAttributes();
+            /* Warning for duplicate control */
+            /* duplicatefinder is used as soon as a core attribute is encrypted (Basic or Hardened) */
+            $duplicateControlDisable = Participant::countCoreAttributeCrypted() > 0
+                && !Participant::canUseDuplicateFinder();
             $aData = array(
                 'attributes' => $attributes,
                 'firstline' => $selectedcsvfields,
                 'fullfilepath' => $sRandomFileName,
                 'linecount' => $iLineCount - 1,
                 'filterbea' => $filterblankemails,
-                'participant_id_exists' => in_array('participant_id', $fieldlist)
+                'participant_id_exists' => in_array('participant_id', $fieldlist),
+                'duplicateControlDisable' => $duplicateControlDisable
             );
             App()->getClientScript()->registerPackage('jquery-nestedSortable');
             App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'attributeMapCSV.js');
@@ -1093,34 +1101,36 @@ class ParticipantsAction extends SurveyCommonAction
                         $writearray[$sFilterDuplicateField] = "";
                     }
                 }
+                //Checking the email address is in a valid format
+                $invalidemail = false;
+                $writearray['email'] = trim($writearray['email']);
+                if ($writearray['email'] != '') {
+                    $aEmailAddresses = explode(';', $writearray['email']);
+                    // Ignore additional email addresses
+                    $sEmailaddress = $aEmailAddresses[0];
+                    if (!LimeMailer::validateAddress($sEmailaddress)) {
+                        $invalidemail = true;
+                    }
+                }
                 $dupfound = false;
-                $thisduplicate = 0;
-
                 //Check for duplicate participants
-                if (in_array('participant_id', $firstline)) {
+                if (in_array('participant_id', $firstline) && !empty($writearray['participant_id'])) {
                     $dupreason = "participant_id";
-                    $duplicateCriteriaAttributes = ['participant_id' => $writearray['participant_id']];
                 } else {
                     $dupreason = "nameemail";
-                    $duplicateCriteriaAttributes = [
-                        'firstname' => $writearray['firstname'],
-                        'lastname'  => $writearray['lastname'],
-                        'email'     => $writearray['email'],
-                        'owner_uid' => Yii::app()->session['loginID']
-                    ];
                 }
-                $existingParticipant = Participant::model()->findByAttributes($duplicateCriteriaAttributes);
+                $existingParticipants = Participant::getDuplicates($writearray, Yii::app()->session['loginID'], false);
                 // Note: Older participant IDs can have surrounding spaces, so the ID is only trimmed if no participant has it as is
-                if (empty($existingParticipant) && isset($writearray['participant_id'])) {
+                if (empty($existingParticipants) && isset($writearray['participant_id'])) {
                     $trimmedParticipantId = trim((string) $writearray['participant_id']);
                     if ($trimmedParticipantId !== $writearray['participant_id']) {
                         $writearray['participant_id'] = $trimmedParticipantId;
-                        $existingParticipant = Participant::model()->findByAttributes(['participant_id' => $trimmedParticipantId]);
+                        $existingParticipants = Participant::getDuplicates($writearray, Yii::app()->session['loginID'], false);
                     }
                 }
                 // New participants need a UUID as participant ID, existing ones are still found by an older ID
                 if (
-                    empty($existingParticipant)
+                    empty($existingParticipants)
                     && isset($writearray['participant_id'])
                     && $writearray['participant_id'] !== ''
                     && !Participant::isValidParticipantId($writearray['participant_id'])
@@ -1133,65 +1143,74 @@ class ParticipantsAction extends SurveyCommonAction
                     $recordcount++;
                     continue;
                 }
-                $noPermissionForExisting = false;
-                if (!empty($existingParticipant)) {
-                    $thisduplicate = 1;
-                    $dupcount++;
-                    if ($overwrite == "true" && !$existingParticipant->userHasPermissionToEdit()) {
-                        // The user requested an overwrite but may not edit this participant (no global update permission, not the owner and no editable share)
-                        $noPermissionForExisting = true;
+                if ($invalidemail) {
+                    $invalidemaillist[] = CHtml::encode($writearray['firstname'] . " " . $writearray['lastname'] . " (" . $writearray['email'] . ")");
+                }
+                if (!empty($existingParticipants)) {
+                    $dupfound = true;
+                    if ($overwrite == "true" && $invalidemail) {
+                        // Invalid email address : already reported in $invalidemaillist, existing participant is not overwritten
                     } elseif ($overwrite == "true") {
-                        // We want all the non filtering internal attributes to be updated,too
-                        // Note: Only language and blacklisted, never ownership or other core columns
-                        foreach ($writearray as $attribute => $value) {
-                            if (!in_array($attribute, ['language', 'blacklisted'])) {
+                        foreach ($existingParticipants as $existingParticipant) {
+                            /* Only overwrite existing participants the user is allowed to edit */
+                            if (!$existingParticipant->userHasPermissionToEdit()) {
+                                if (!empty($writearray['participant_id'])) {
+                                    $noPermissionList[] = CHtml::encode($writearray['participant_id'] . " : " . $writearray['firstname'] . " " . $writearray['lastname'] . " (" . $writearray['email'] . ")");
+                                } else {
+                                    $noPermissionList[] = CHtml::encode($writearray['firstname'] . " " . $writearray['lastname'] . " (" . $writearray['email'] . ")");
+                                }
                                 continue;
                             }
-                            $existingParticipant->$attribute = $value;
-                        }
-                        $existingParticipant->save();
-                        //Although this person already exists, we want to update the mapped attribute values
-                        if (!empty($mappedarray)) {
-                            //The mapped array contains the attributes we are
-                            //saving in this import
-                            foreach ($mappedarray as $attid => $attname) {
-                                if (!empty($attname)) {
-                                    $bData = array(
-                                        'participant_id' => $existingParticipant->participant_id,
-                                        'attribute_id' => $attid,
-                                        'value' => $writearray[strtolower((string) $attname)]
-                                    );
-                                    ParticipantAttribute::model()->updateParticipantAttributeValue($bData);
-                                } else {
-                                    //If the value is empty, don't write the value
+                            $overwrittenAttributes = [];
+                            foreach ($writearray as $attribute => $value) {
+                                // Note: Only language and blacklisted, never ownership or other core columns
+                                // and only when present in the CSV, so stored values are not overwritten by empty defaults
+                                if (in_array($attribute, ['language', 'blacklisted']) && in_array($attribute, $firstline)) {
+                                    $existingParticipant->$attribute = $value;
+                                    $overwrittenAttributes[] = $attribute;
+                                }
+                            }
+                            /* Validate only the overwritten attributes : other stored values are not changed by the import */
+                            if (
+                                (!empty($overwrittenAttributes) && !$existingParticipant->validate($overwrittenAttributes))
+                                || !$existingParticipant->encryptSave(false)
+                            ) {
+                                $invalidattribute[] = CHtml::encode($writearray['firstname'] . " " . $writearray['lastname'] . " (" . $writearray['email'] . ")");
+                                continue;
+                            }
+                            //Although this person already exists, we want to update the mapped attribute values
+                            if (!empty($mappedarray)) {
+                                //The mapped array contains the attributes we are
+                                //saving in this import
+                                foreach ($mappedarray as $attid => $attname) {
+                                    if (!empty($attname) && array_key_exists(strtolower((string) $attname), $writearray)) {
+                                        $oParticipantAttribute = new ParticipantAttribute();
+                                        $oParticipantAttribute->participant_id = $existingParticipant->participant_id;
+                                        $oParticipantAttribute->attribute_id = $attid;
+                                        $oParticipantAttribute->value = $writearray[strtolower((string) $attname)];
+                                        $oParticipantAttribute->encrypt();
+                                        $bData = array(
+                                            'participant_id' => $oParticipantAttribute->participant_id,
+                                            'attribute_id' => $oParticipantAttribute->attribute_id,
+                                            'value' => $oParticipantAttribute->value
+                                        );
+                                        ParticipantAttribute::model()->updateParticipantAttributeValue($bData);
+                                    } else {
+                                        //If the value is empty, don't write the value
+                                    }
                                 }
                             }
                             $overwritten++;
                         }
-                    }
-                }
-                if ($thisduplicate == 1) {
-                    $dupfound = true;
-                    $duplicateLabel = CHtml::encode($writearray['firstname'] . " " . $writearray['lastname'] . " (" . $writearray['email'] . ")");
-                    if ($noPermissionForExisting) {
-                        $noPermissionList[] = $duplicateLabel;
                     } else {
-                        $duplicatelist[] = $duplicateLabel;
+                        if (!empty($writearray['participant_id'])) {
+                            $duplicatelist[] = CHtml::encode($writearray['participant_id'] . " : " . $writearray['firstname'] . " " . $writearray['lastname'] . " (" . $writearray['email'] . ")");
+                        } else {
+                            $duplicatelist[] = CHtml::encode($writearray['firstname'] . " " . $writearray['lastname'] . " (" . $writearray['email'] . ")");
+                        }
                     }
                 }
 
-                //Checking the email address is in a valid format
-                $invalidemail = false;
-                $writearray['email'] = trim($writearray['email']);
-                if ($writearray['email'] != '') {
-                    $aEmailAddresses = explode(';', $writearray['email']);
-                    // Ignore additional email addresses
-                    $sEmailaddress = $aEmailAddresses[0];
-                    if (!LimeMailer::validateAddress($sEmailaddress)) {
-                        $invalidemail = true;
-                        $invalidemaillist[] = CHtml::encode($line[0] . " " . $line[1] . " (" . $line[2] . ")");
-                    }
-                }
                 if (!$dupfound && !$invalidemail) {
                     //If it isn't a duplicate value or an invalid email, process the entry as a new participant
 
@@ -1248,13 +1267,8 @@ class ParticipantsAction extends SurveyCommonAction
                     }
                     //If any of the mandatory fields are blank, then don't import this user
                     if (!$dontimport) {
-                        $participant = Participant::model();
-                        foreach ($writearray as $key => $value) {
-                            if ($participant->hasAttribute($key)) {
-                                $participant->$key = $value;
-                            }
-                        }
-                        if ($participant->encrypt()->insertParticipantCSV($participant->attributes)) {
+                        /* Plain values : insertParticipantCSV computes the duplicatefinder and encrypts */
+                        if (Participant::model()->insertParticipantCSV($writearray)) {
                             $imported++;
                         }
                     }
@@ -1263,7 +1277,6 @@ class ParticipantsAction extends SurveyCommonAction
             }
             $recordcount++;
         }
-
         unlink($sFilePath);
         $aData = array();
         $aData['recordcount'] = $recordcount - 1;
@@ -1590,6 +1603,7 @@ class ParticipantsAction extends SurveyCommonAction
         $attributeName->encrypted = $encrypted_value;
         $encryptedAfterChange = $attributeName->isEncrypted();
         $sDefaultname = $attributeName->defaultname;
+        $cryptMethod = App()->getConfig('CPDB_encryption_method', 'B');
 
         // encryption/decryption MUST be done in a one synchronous step, either all succeeded or none
         $oDB = Yii::app()->db;
@@ -1601,12 +1615,17 @@ class ParticipantsAction extends SurveyCommonAction
                 foreach ($oParticipants as $participant) {
                     $aUpdateData = array();
                     if ($encryptedBeforeChange && !$encryptedAfterChange) {
-                        $aUpdateData[$sDefaultname] = LSActiveRecord::decryptSingle($participant->$sDefaultname);
+                        $aUpdateData[$sDefaultname] = LSActiveRecord::decryptSingle($participant->$sDefaultname, $cryptMethod);
                     } elseif (!$encryptedBeforeChange && $encryptedAfterChange) {
-                        $aUpdateData[$sDefaultname] = LSActiveRecord::encryptSingle($participant->$sDefaultname);
+                        $aUpdateData[$sDefaultname] = LSActiveRecord::encryptSingle($participant->$sDefaultname, $cryptMethod);
                     }
                     if (!empty($aUpdateData)) {
-                        $oDB->createCommand()->update('{{participants}}', $aUpdateData, "participant_id='" . $participant->participant_id . "'");
+                        $oDB->createCommand()->update(
+                            '{{participants}}',
+                            $aUpdateData,
+                            'participant_id = :participant_id',
+                            [':participant_id' => $participant->participant_id]
+                        );
                     }
                 }
             } else {
@@ -1618,9 +1637,9 @@ class ParticipantsAction extends SurveyCommonAction
                 foreach ($oAttributes as $attribute) {
                     $aUpdateData = array();
                     if ($encryptedBeforeChange && !$encryptedAfterChange) {
-                        $aUpdateData['value'] = LSActiveRecord::decryptSingle($attribute->value);
+                        $aUpdateData['value'] = LSActiveRecord::decryptSingle($attribute->value, $cryptMethod);
                     } elseif (!$encryptedBeforeChange && $encryptedAfterChange) {
-                        $aUpdateData['value'] = LSActiveRecord::encryptSingle($attribute->value);
+                        $aUpdateData['value'] = LSActiveRecord::encryptSingle($attribute->value, $cryptMethod);
                     }
                     if (!empty($aUpdateData) && $aUpdateData['value'] !== null) {
                         $oDB->createCommand()->update(
@@ -1763,6 +1782,7 @@ class ParticipantsAction extends SurveyCommonAction
         $AttributeNameLanguages = Yii::app()->request->getPost('ParticipantAttributeNameLanguages');
         $ParticipantAttributeNamesDropdown = Yii::app()->request->getPost('ParticipantAttributeNamesDropdown');
         $sEncryptedAfterChange = $AttributeNameAttributes['encrypted'];
+        $cryptMethod = App()->getConfig('CPDB_encryption_method', 'B');
 
         // The default name is optional, but the attribute needs a name in at least one place
         $aNames = array_merge([$AttributeNameAttributes['defaultname'] ?? ''], is_array($AttributeNameLanguages) ? $AttributeNameLanguages : []);
@@ -1797,9 +1817,9 @@ class ParticipantsAction extends SurveyCommonAction
             foreach ($oAttributes as $attribute) {
                 $aUpdateData = array();
                 if ($sEncryptedBeforeChange == 'Y' && $sEncryptedAfterChange == 'N') {
-                    $aUpdateData['value'] = LSActiveRecord::decryptSingle($attribute->value);
+                    $aUpdateData['value'] = LSActiveRecord::decryptSingle($attribute->value, $cryptMethod);
                 } elseif ($sEncryptedBeforeChange == 'N' && $sEncryptedAfterChange == 'Y') {
-                    $aUpdateData['value'] = LSActiveRecord::encryptSingle($attribute->value);
+                    $aUpdateData['value'] = LSActiveRecord::encryptSingle($attribute->value, $cryptMethod);
                 }
                 if (!empty($aUpdateData)) {
                     $oDB->createCommand()->update(
@@ -2978,6 +2998,7 @@ class ParticipantsAction extends SurveyCommonAction
         App()->getClientScript()->registerPackage('jqueryui'); // jqueryui
         $aCPDBAttributes = ParticipantAttributeName::model()->getCPDBAttributes();
         $aTokenAttributes = getTokenFieldsAndNames($iSurveyID, true);
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
 
         //string of participant IDs which should be added to CPDB, if not set to sessionvar those will not be added!!
         $participants = Yii::app()->request->getPost('itemsid');
@@ -2991,7 +3012,6 @@ class ParticipantsAction extends SurveyCommonAction
         $alreadymappedattid = array();
         $alreadymappedattdisplay = array();
         $alreadymappedattnames = array();
-
         foreach ($aTokenAttributes as $key => $value) {
             if ($value['cpdbmap'] == '') {
                 $selectedattribute[$value['description']] = $key;
@@ -3021,15 +3041,19 @@ class ParticipantsAction extends SurveyCommonAction
         if (count($selectedattribute) === 0) {
             Yii::app()->setFlashMessage(gT("There are no unmapped attributes"), 'warning');
         }
+        /* Warning for duplicate control */
+        /* duplicatefinder is used as soon as a core attribute is encrypted (Basic or Hardened) */
+        $duplicateControlDisable = Participant::countCoreAttributeCrypted() > 0
+            && !Participant::canUseDuplicateFinder();
 
         $aData = array(
             'attribute' => $selectedcentralattribute,
             'tokenattribute' => $selectedattribute,
             'alreadymappedattributename' => $alreadymappedattdisplay,
-            'alreadymappedattdescription' => $alreadymappedattnames
+            'alreadymappedattdescription' => $alreadymappedattnames,
+            'duplicateControlDisable' => $duplicateControlDisable
         );
 
-        $oSurvey = Survey::model()->findByPk($iSurveyID);
         $aData['subaction'] = gT('Add participants to central database');
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyID . ")";
         $topbarData = TopbarConfiguration::getSurveyTopbarData($oSurvey->sid);
@@ -3040,6 +3064,344 @@ class ParticipantsAction extends SurveyCommonAction
         );
 
         $this->renderWrappedTemplate('participants', 'attributeMapToken', $aData);
+    }
+
+    /**
+     * Display Encryption data form action
+     *
+     */
+    public function encryptionMaintenance()
+    {
+        if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+            throw new \CHttpException(403, gT('Access denied'));
+        }
+        $title = gT("Fix encryption data");
+        /* Global participants */
+        $stilltoProcess = $participantsCount = Participant::model()->count();
+        $lastParticipantId = strval(App()->user->getState('currentReencryptLastParticipantId', ''));
+        if ($lastParticipantId !== '') {
+            $criteria = new CDbCriteria();
+            $criteria->addCondition('participant_id > :lastParticipantId');
+            $criteria->params[':lastParticipantId'] = $lastParticipantId;
+            $stilltoProcess = Participant::model()->count($criteria);
+        }
+        /* Outdated DuplicateFinder participants */
+        $duplicateFinderInvalidStilltoProcess = $duplicateFinderInvalidCount = Participant::model()->getDuplicateFinderInvalidCount();
+        /* Index disabled : a run in progress can not be resumed, it must not hide the re-encryption */
+        $lastDuplicateFinderInvalidParticipantId = Participant::canUseDuplicateFinder()
+            ? strval(App()->user->getState('currentDuplicateFinderInvalidParticipantId', ''))
+            : '';
+        if ($lastDuplicateFinderInvalidParticipantId !== '') {
+            $criteria = new CDbCriteria();
+            $criteria->addCondition('participant_id > :lastParticipantId');
+            $criteria->params[':lastParticipantId'] = $lastDuplicateFinderInvalidParticipantId;
+            $duplicateFinderInvalidStilltoProcess = Participant::model()->getDuplicateFinderInvalidCount($criteria);
+        }
+        $aData = array(
+            'currentReencryptLastParticipantId' => $lastParticipantId,
+            'participantsCount' => Participant::model()->count(),
+            'currentReencryptStillToProcess' => $stilltoProcess,
+            'currentDuplicateFinderInvalidParticipantId' => $lastDuplicateFinderInvalidParticipantId,
+            'duplicateFinderInvalidCount' => $duplicateFinderInvalidCount,
+            'currentDuplicateFinderInvalidStillToProcess' => $duplicateFinderInvalidStilltoProcess,
+            'aAttributes' => ParticipantAttributeName::model()->getAllAttributes(),
+        );
+        $aData['topbar'] = $this->getTopBarComponents($title, true, false);
+        $this->renderWrappedTemplate('participants', array('participantsPanel', 'encryptionMaintenance'), $aData);
+    }
+
+    /**
+     * Action to re-encrypt the entire Participant DB using a new encryption method.
+     *
+     * @return void
+     */
+    public function reencryptParticipantData()
+    {
+        if (!App()->getRequest()->isPostRequest) {
+            throw new CHttpException(405, gT("Invalid action"));
+        }
+        if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+            throw new \CHttpException(403, gT('Access denied'));
+        }
+        $stateId = 'currentReencryptLastParticipantId';
+        /* The encryption method used since the first participant of the current run */
+        $methodStateId = 'currentReencryptMethod';
+        /* The participants not saved since the first participant of the current run */
+        $failedStateId = 'currentReencryptFailed';
+        $cryptMethod = App()->getConfig('CPDB_encryption_method', 'B');
+        if (App()->getRequest()->getPost('rencrypt') == 'reset') {
+            $lastParticipantId = '';
+            App()->user->setState($stateId, null);
+            App()->user->setState($failedStateId, null);
+        } else {
+            $lastParticipantId = strval(App()->user->getState($stateId, ''));
+            if ($lastParticipantId !== '' && App()->user->getState($methodStateId) !== $cryptMethod) {
+                /* The method changed during the run : the participants already done use the previous one */
+                App()->user->setState($stateId, null);
+                App()->user->setState($methodStateId, null);
+                App()->user->setState($failedStateId, null);
+                App()->setFlashMessage(gT("The encryption method changed during the re-encryption. Please restart the re-encryption from the first participant."), 'warning');
+                App()->getController()->redirect(['admin/participants/sa/encryptionMaintenance']);
+                return;
+            }
+        }
+        App()->user->setState($methodStateId, $cryptMethod);
+        $limit = intval(App()->getConfig('CPDB_reencrypt_limit', 0));
+        $processed = 0;
+        $failed = 0;
+        $stilltoProcess = $count = Participant::model()->count();
+        $criteria = new CDbCriteria();
+        $criteria->order = "participant_id";
+        if ($limit > 0 && $limit < $count) {
+            $criteria->limit = $limit;
+        }
+        if ($lastParticipantId !== '') {
+            $criteria->addCondition('participant_id > :lastParticipantId');
+            $criteria->params[':lastParticipantId'] = $lastParticipantId;
+        }
+        $oParticipants = Participant::model()->findAll($criteria);
+        /* Extra attributes (not core) encrypted : re-encrypted with the participant */
+        $encryptedAttributeIds = array_map('intval', App()->db->createCommand()
+            ->select('attribute_id')
+            ->from('{{participant_attribute_names}}')
+            ->where("encrypted = 'Y' AND core_attribute <> 'Y'")
+            ->queryColumn());
+        /* Save only the encrypted columns (and duplicatefinder) : other columns changed meanwhile are kept */
+        /* The list includes the encrypted extra attributes (participant_attribute table) : keep only the participants columns */
+        $encryptedColumns = array_values(array_intersect(
+            Participant::model()->getAllEncryptedAttributes(0, 'Participant'),
+            Participant::model()->getTableSchema()->getColumnNames()
+        ));
+        foreach ($oParticipants as $oParticipant) {
+            /* Participant and its attributes in one step : all or nothing */
+            $transaction = App()->db->getCurrentTransaction() ? null : App()->db->beginTransaction();
+            try {
+                $oParticipant->decrypt();
+                if (!empty($encryptedColumns) && !$oParticipant->encryptSave(false, $encryptedColumns)) {
+                    if ($transaction) {
+                        $transaction->rollback();
+                    }
+                    $failed++;
+                    $this->logParticipantSaveError($oParticipant, 'reencryptParticipantData');
+                    /* Counted in the failures : the next batch starts after it */
+                    $lastParticipantId = $oParticipant->participant_id;
+                    App()->user->setState($stateId, $lastParticipantId);
+                    continue;
+                }
+                $this->reencryptParticipantAttributes($oParticipant->participant_id, $encryptedAttributeIds, $cryptMethod);
+                if ($transaction) {
+                    $transaction->commit();
+                }
+            } catch (Exception $e) {
+                if ($transaction) {
+                    $transaction->rollback();
+                }
+                /* The cursor is after the failed participants of this batch : keep them for the end of the run */
+                App()->user->setState($failedStateId, intval(App()->user->getState($failedStateId, 0)) + $failed);
+                throw $e;
+            }
+            $processed++;
+            $lastParticipantId = $oParticipant->participant_id;
+            App()->user->setState($stateId, $lastParticipantId);
+        }
+        if ($lastParticipantId !== '') {
+            $stilltoProcess = Participant::model()->count(
+                'participant_id > :lastParticipantId',
+                array(':lastParticipantId' => $lastParticipantId)
+            );
+        }
+        /* Failures of the previous batches of this run : the last batch reports the total */
+        $runFailed = intval(App()->user->getState($failedStateId, 0)) + $failed;
+        if ($stilltoProcess == 0) {
+            App()->user->setState($stateId, null);
+            App()->user->setState($methodStateId, null);
+            App()->user->setState($failedStateId, null);
+            if ($runFailed == 0) {
+                App()->setFlashMessage(gT("All participant data have been re-encrypted."));
+            }
+            $this->setParticipantSaveErrorFlash($runFailed);
+        } else {
+            App()->user->setState($failedStateId, $runFailed);
+            App()->setFlashMessage(sprintf(
+                gT("%s participant data have been re-encrypted; %s still need to be re-encrypted."),
+                $processed,
+                $stilltoProcess
+            ));
+            $this->setParticipantSaveErrorFlash($failed);
+        }
+        App()->getController()->redirect(['admin/participants/sa/encryptionMaintenance']);
+    }
+
+    /**
+     * Re-encrypt the encrypted extra attributes of a participant with the current CPDB encryption method
+     * Decryption tries both methods (Basic and Hardened)
+     * @param string $participantId
+     * @param integer[] $attributeIds encrypted extra attributes
+     * @param string $cryptMethod 'B' or 'H'
+     * @return void
+     */
+    private function reencryptParticipantAttributes($participantId, array $attributeIds, $cryptMethod)
+    {
+        if (empty($attributeIds)) {
+            return;
+        }
+        $attributes = App()->db->createCommand()
+            ->select('attribute_id, value')
+            ->from('{{participant_attribute}}')
+            ->where(
+                ['and', 'participant_id = :participant_id', ['in', 'attribute_id', $attributeIds]],
+                [':participant_id' => $participantId]
+            )
+            ->queryAll();
+        foreach ($attributes as $attribute) {
+            if ($attribute['value'] === null || $attribute['value'] === '') {
+                continue;
+            }
+            $value = LSActiveRecord::encryptSingle(
+                LSActiveRecord::decryptSingle($attribute['value'], $cryptMethod),
+                $cryptMethod
+            );
+            App()->db->createCommand()->update(
+                '{{participant_attribute}}',
+                ['value' => $value],
+                'participant_id = :participant_id AND attribute_id = :attribute_id',
+                [':participant_id' => $participantId, ':attribute_id' => $attribute['attribute_id']]
+            );
+        }
+    }
+
+    /**
+     * Action to recalculate the duplicate finder for the entire Participant DB.
+     * Only participants with an invalid duplicate finder are re-encrypted.
+     * Participants with a valid duplicate finder are not processed.
+     * @return void
+     */
+    public function recalculateDuplicateFinder()
+    {
+        if (!App()->getRequest()->isPostRequest) {
+            throw new CHttpException(405, gT("Invalid action"));
+        }
+        if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+            throw new \CHttpException(403, gT('Access denied'));
+        }
+        /* No key (security.php not writable) or disabled : every value is '', nothing can be recalculated */
+        if (!Participant::canUseDuplicateFinder()) {
+            App()->setFlashMessage(gT("Participant duplicate indexes can not be recalculated: the encryptionduplicateindexkey setting is missing or CPDB_duplicatefinder_bits is 0."), 'warning');
+            App()->getController()->redirect(['admin/participants/sa/encryptionMaintenance']);
+            return;
+        }
+        $stateId = 'currentDuplicateFinderInvalidParticipantId';
+        Participant::checkDuplicateFinderSettingsChange();
+        /* The duplicate index size used since the first participant of the current run */
+        $bitsStateId = 'currentDuplicateFinderBits';
+        $bits = intval(App()->getConfig('CPDB_duplicatefinder_bits', 128));
+        /* The participants not saved since the first participant of the current run */
+        $failedStateId = 'currentDuplicateFinderFailed';
+        if (App()->getRequest()->getPost('rencrypt') == 'reset') {
+            $lastParticipantId = '';
+            App()->user->setState($stateId, null);
+            App()->user->setState($failedStateId, null);
+        } else {
+            $lastParticipantId = strval(App()->user->getState($stateId, ''));
+            if ($lastParticipantId !== '' && App()->user->getState($bitsStateId) !== $bits) {
+                /* The size changed during the run : the participants already done use the previous one */
+                App()->user->setState($stateId, null);
+                App()->user->setState($bitsStateId, null);
+                App()->user->setState($failedStateId, null);
+                App()->setFlashMessage(gT("The duplicate index size changed during the update. Please restart the update from the first participant."), 'warning');
+                App()->getController()->redirect(['admin/participants/sa/encryptionMaintenance']);
+                return;
+            }
+        }
+        App()->user->setState($bitsStateId, $bits);
+        $limit = intval(App()->getConfig('CPDB_reencrypt_limit', 0));
+        $processed = 0;
+        $failed = 0;
+        $stilltoProcess = $count = Participant::model()->getDuplicateFinderInvalidCount();
+        $criteria = new CDbCriteria();
+        $criteria->order = "participant_id";
+        if ($limit > 0 && $limit < $count) {
+            $criteria->limit = $limit;
+        }
+        if ($lastParticipantId !== '') {
+            $criteria->addCondition('participant_id > :lastParticipantId');
+            $criteria->params[':lastParticipantId'] = $lastParticipantId;
+        }
+        $oParticipants = Participant::model()->invaliduplicatefinder()->findAll($criteria);
+        foreach ($oParticipants as $oParticipant) {
+            $oParticipant->decrypt();
+            /* Save only duplicatefinder : other columns changed meanwhile are kept */
+            if ($oParticipant->encryptSave(false, ['duplicatefinder'])) {
+                $processed++;
+            } else {
+                $failed++;
+                $this->logParticipantSaveError($oParticipant, 'recalculateDuplicateFinder');
+            }
+            /* A failed one is counted in the failures : the next batch starts after it */
+            $lastParticipantId = $oParticipant->participant_id;
+            App()->user->setState($stateId, $lastParticipantId);
+        }
+        if ($lastParticipantId !== '') {
+            $criteria = new CDbCriteria();
+            $criteria->addCondition('participant_id > :lastParticipantId');
+            $criteria->params[':lastParticipantId'] = $lastParticipantId;
+            $stilltoProcess = Participant::model()->getDuplicateFinderInvalidCount($criteria);
+        }
+        /* Failures of the previous batches of this run : the last batch reports the total */
+        $runFailed = intval(App()->user->getState($failedStateId, 0)) + $failed;
+        if ($stilltoProcess == 0) {
+            App()->user->setState($stateId, null);
+            App()->user->setState($bitsStateId, null);
+            App()->user->setState($failedStateId, null);
+            if ($runFailed == 0) {
+                App()->setFlashMessage(gT("All participant duplicate indexes are up to date."));
+            }
+            $this->setParticipantSaveErrorFlash($runFailed);
+        } else {
+            App()->user->setState($failedStateId, $runFailed);
+            App()->setFlashMessage(sprintf(
+                gT("%s duplicate finder entries saved, %s remaining."),
+                $processed,
+                $stilltoProcess
+            ));
+            $this->setParticipantSaveErrorFlash($failed);
+        }
+        App()->getController()->redirect(['admin/participants/sa/encryptionMaintenance']);
+    }
+
+    /**
+     * Log a participant that could not be saved during encryption maintenance
+     * @param Participant $participant
+     * @param string $action
+     * @return void
+     */
+    private function logParticipantSaveError(Participant $participant, $action)
+    {
+        Yii::log(
+            sprintf(
+                '%s: participant %s could not be saved: %s',
+                $action,
+                $participant->participant_id,
+                json_encode($participant->getErrors())
+            ),
+            CLogger::LEVEL_ERROR,
+            'application.controllers.admin.ParticipantsAction'
+        );
+    }
+
+    /**
+     * Flash message for the participants that could not be saved during encryption maintenance
+     * @param integer $failed
+     * @return void
+     */
+    private function setParticipantSaveErrorFlash($failed)
+    {
+        if ($failed > 0) {
+            App()->setFlashMessage(sprintf(
+                gT("%s participants could not be saved, see the error log."),
+                $failed
+            ), 'error');
+        }
     }
 
     /**

@@ -18,7 +18,7 @@ export const getSettingsBlocksInfo = (survey) => {
       settingsBlocks.getPublicationAccessSettingsBlocks()
     ),
     [SURVEY_MENU_TITLES.notification]: Object.values(
-      settingsBlocks.getNotificationsDataSettingsBlocks()
+      settingsBlocks.getNotificationsDataSettingsBlocks(survey)
     ),
     [SURVEY_MENU_TITLES.tokens]: Object.values(
       settingsBlocks.getParticipantsSettingsBlocks()
