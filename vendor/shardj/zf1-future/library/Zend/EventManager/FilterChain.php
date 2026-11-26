@@ -60,7 +60,7 @@ class Zend_EventManager_FilterChain implements Zend_EventManager_Filter
      * Begins iteration of the filters.
      *
      * @param  mixed $context Object under observation
-     * @param  mixed $argv Associative array of arguments
+     * @param  array $argv Associative array of arguments
      * @return mixed
      */
     public function run($context, array $argv = [])

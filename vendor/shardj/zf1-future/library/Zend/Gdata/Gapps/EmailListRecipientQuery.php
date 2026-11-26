@@ -39,6 +39,7 @@ require_once('Zend/Gdata/Gapps/Query.php');
  * @subpackage Gapps
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @deprecated Deprecated since 1.27.1 and will be removed in a future version: Google shut down the Google Data APIs it implements and the ClientLogin and AuthSub authentication
  */
 class Zend_Gdata_Gapps_EmailListRecipientQuery extends Zend_Gdata_Gapps_Query
 {
@@ -86,8 +87,6 @@ class Zend_Gdata_Gapps_EmailListRecipientQuery extends Zend_Gdata_Gapps_Query
      * Get the email list name to query for. If no name is set, null will be
      * returned.
      *
-     * @param string $value The email list name to filter search results by,
-     *          or null if disabled.
      */
     public function getEmailListName()
     {
@@ -114,7 +113,7 @@ class Zend_Gdata_Gapps_EmailListRecipientQuery extends Zend_Gdata_Gapps_Query
      * Get the first recipient which should be displayed when retrieving
      * a list of email list recipients.
      *
-     * @return string The first recipient to be returned, or null if
+     * @return string|null The first recipient to be returned, or null if
      *              disabled.
      */
     public function getStartRecipient()

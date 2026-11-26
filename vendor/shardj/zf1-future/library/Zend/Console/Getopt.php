@@ -704,7 +704,7 @@ class Zend_Console_Getopt
     public function parse()
     {
         if ($this->_parsed === true) {
-            return;
+            return $this;
         }
         $argv = $this->_argv;
         $this->_options = [];
@@ -884,7 +884,7 @@ class Zend_Console_Getopt
     /**
      * Define legal options using the gnu-style format.
      *
-     * @param  string $rules
+     * @param  string|array $rules
      * @return void
      */
     protected function _addRulesModeGnu($rules)

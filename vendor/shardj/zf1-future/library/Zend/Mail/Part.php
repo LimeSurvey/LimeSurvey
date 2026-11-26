@@ -256,7 +256,7 @@ class Zend_Mail_Part implements RecursiveIterator, Zend_Mail_Part_Interface
     /**
      * Cache content and split in parts if multipart
      *
-     * @return null
+     * @return void
      * @throws Zend_Mail_Exception
      */
     protected function _cacheContent()
@@ -453,10 +453,10 @@ class Zend_Mail_Part implements RecursiveIterator, Zend_Mail_Part_Interface
      * the specific header field does not exist, returns null.
      *
      * @param  string $name       name of header, like in getHeader()
-     * @param  string $wantedPart the wanted part, default is first, if null an array with all parts is returned
-     * @param  string $firstName  key name for the first part
+     * @param  string|int $wantedPart the wanted part, default is first, if null an array with all parts is returned
+     * @param  string|int $firstName  key name for the first part
      * @return string|array wanted part or all parts as array($firstName => firstPart, partname => value)
-     * @throws Zend_Exception, Zend_Mail_Exception
+     * @throws Zend_Exception|Zend_Mail_Exception
      */
     public function getHeaderField($name, $wantedPart = 0, $firstName = 0) {
         return Zend_Mime_Decode::splitHeaderField(current($this->getHeader($name, 'array')), $wantedPart, $firstName);
@@ -540,7 +540,7 @@ class Zend_Mail_Part implements RecursiveIterator, Zend_Mail_Part_Interface
     /**
      * implements Iterator::next()
      *
-     * @return null
+     * @return void
      */
     public function next(): void
     {
@@ -572,7 +572,7 @@ class Zend_Mail_Part implements RecursiveIterator, Zend_Mail_Part_Interface
     /**
      * implements Iterator::rewind()
      *
-     * @return null
+     * @return void
      */
     public function rewind(): void
     {

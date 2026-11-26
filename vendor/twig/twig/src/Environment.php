@@ -20,10 +20,12 @@ use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 use Twig\ExpressionParser\ExpressionParsers;
+use Twig\Extension\AttributeExtension;
 use Twig\Extension\CoreExtension;
 use Twig\Extension\EscaperExtension;
 use Twig\Extension\ExtensionInterface;
 use Twig\Extension\OptimizerExtension;
+use Twig\Extension\SandboxExtension;
 use Twig\Extension\YieldNotReadyExtension;
 use Twig\Loader\ArrayLoader;
 use Twig\Loader\ChainLoader;
@@ -43,11 +45,11 @@ use Twig\TokenParser\TokenParserInterface;
  */
 class Environment
 {
-    public const VERSION = '3.30.0';
-    public const VERSION_ID = 33000;
+    public const VERSION = '3.31.1';
+    public const VERSION_ID = 33101;
     public const MAJOR_VERSION = 3;
-    public const MINOR_VERSION = 30;
-    public const RELEASE_VERSION = 0;
+    public const MINOR_VERSION = 31;
+    public const RELEASE_VERSION = 1;
     public const EXTRA_VERSION = '';
 
     private $charset;
@@ -70,6 +72,7 @@ class Environment
     private $optionsHash;
     /** @var bool */
     private $useYield;
+    private int $optimizations;
     private $defaultRuntimeLoader;
     private array $hotCache = [];
     /**
@@ -128,6 +131,7 @@ class Environment
         ], $options);
 
         $this->useYield = (bool) $options['use_yield'];
+        $this->optimizations = (int) $options['optimizations'];
         $this->debug = (bool) $options['debug'];
         $this->setCharset($options['charset'] ?? 'UTF-8');
         $this->autoReload = null === $options['auto_reload'] ? $this->debug : (bool) $options['auto_reload'];
@@ -145,7 +149,7 @@ class Environment
         if (\PHP_VERSION_ID >= 80000) {
             $this->addExtension(new YieldNotReadyExtension($this->useYield));
         }
-        $this->addExtension(new OptimizerExtension($options['optimizations']));
+        $this->addExtension(new OptimizerExtension($this->optimizations));
     }
 
     public function __clone()
@@ -325,6 +329,12 @@ class Environment
     public function getTemplateClass(string $name, ?int $index = null): string
     {
         $key = ($this->hotCache[$name] ?? $this->getLoader()->getCacheKey($name)).($this->optionsHash ??= $this->getOptionsHash());
+        if ($this->hasExtension(EscaperExtension::class)) {
+            $key .= ':autoescape:'.self::encodeAutoescapeStrategy($this->getExtension(EscaperExtension::class)->getDefaultStrategy($name));
+        }
+        if ($this->hasExtension(SandboxExtension::class)) {
+            $key .= ':sandbox:'.$this->extensionSet->getSandboxSignature();
+        }
 
         return '__TwigTemplate_'.hash(\PHP_VERSION_ID < 80100 ? 'sha256' : 'xxh128', $key).(null === $index ? '' : '___'.$index);
     }
@@ -514,6 +524,10 @@ class Environment
             if ($name instanceof Template) {
                 trigger_deprecation('twig/twig', '3.9', 'Passing a "%s" instance to "%s" is deprecated.', Template::class, __METHOD__);
 
+                if (!$name->isOwnedBy($this)) {
+                    throw new RuntimeError(\sprintf('A "%s" can only be used with the "%s" that created it.', Template::class, self::class));
+                }
+
                 return new TemplateWrapper($this, $name);
             }
             if ($name instanceof TemplateWrapper) {
@@ -662,7 +676,13 @@ class Environment
      */
     public function getExtension(string $class): ExtensionInterface
     {
-        return $this->extensionSet->getExtension($class);
+        $extension = $this->extensionSet->getExtension($class);
+
+        if (AttributeExtension::class === $extension::class && is_a($extension->getClass(), ExtensionInterface::class, true)) {
+            return $this->getRuntime($extension->getClass());
+        }
+
+        return $extension;
     }
 
     /**
@@ -690,6 +710,10 @@ class Environment
 
         if (null !== $runtime = $this->defaultRuntimeLoader->load($class)) {
             return $this->runtimes[$class] = $runtime;
+        }
+
+        if ($this->extensionSet->hasExtension($class) && ($extension = $this->extensionSet->getExtension($class)) instanceof $class) {
+            return $this->runtimes[$class] = $extension;
         }
 
         throw new RuntimeError(\sprintf('Unable to load the "%s" runtime.', $class));
@@ -952,6 +976,18 @@ class Environment
         return $this->extensionSet->getExpressionParsers();
     }
 
+    private static function encodeAutoescapeStrategy($strategy): string
+    {
+        if (false === $strategy) {
+            return 'false';
+        }
+        if (\is_string($strategy)) {
+            return 'string:'.\strlen($strategy).':'.$strategy;
+        }
+
+        return 'invalid:'.get_debug_type($strategy).':'.(int) (bool) $strategy;
+    }
+
     private function getOptionsHash(): string
     {
         return implode(':', [
@@ -962,6 +998,7 @@ class Environment
             (int) $this->debug,
             (int) $this->strictVariables,
             $this->useYield ? '1' : '0',
+            $this->optimizations,
         ]);
     }
 }

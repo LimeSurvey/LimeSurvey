@@ -20,6 +20,8 @@
  * @version    $Id$
  */
 
+require_once 'Zend/Tool/Framework/Manifest/Interface.php';
+
 /**
  * @category   Zend
  * @package    Zend_Tool

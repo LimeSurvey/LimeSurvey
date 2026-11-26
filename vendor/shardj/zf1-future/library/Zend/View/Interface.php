@@ -23,6 +23,37 @@
 /**
  * Interface class for Zend_View compatible template engine implementations
  *
+ * The methods below are not part of the interface: they are the methods of Zend_View_Abstract and the
+ * view helpers that the components of the library call on the view object.
+ *
+ * @method mixed escape($var)
+ * @method Zend_View_Abstract addHelperPath($path, $classPrefix = 'Zend_View_Helper_')
+ * @method Zend_View_Abstract setHelperPath($path, $classPrefix = 'Zend_View_Helper_')
+ * @method array getHelperPaths()
+ * @method Zend_Loader_PluginLoader getPluginLoader($type)
+ * @method object getHelper($name)
+ * @method Zend_View_Helper_Doctype doctype($doctype = null)
+ * @method Zend_Dojo_View_Helper_Dojo_Container dojo()
+ * @method string fieldset($name, $content, $attribs = null)
+ * @method string form($name, $attribs = null, $content = false)
+ * @method string formButton($name, $value = null, $attribs = null)
+ * @method string formErrors($errors, $options = null)
+ * @method string formHidden($name, $value = null, $attribs = null)
+ * @method string formImage($name, $value = null, $attribs = null)
+ * @method string formLabel($name, $value = null, $attribs = null)
+ * @method string formMultiCheckbox($name, $value = null, $attribs = null, $options = null, $listsep = "<br />\n")
+ * @method string formRadio($name, $value = null, $attribs = null, $options = null, $listsep = "<br />\n")
+ * @method string formSelect($name, $value = null, $attribs = null, $options = null, $listsep = "<br />\n")
+ * @method string formText($name, $value = null, $attribs = null)
+ * @method string formTextarea($name, $value = null, $attribs = null)
+ * @method Zend_View_Helper_HeadStyle headStyle($content = null, $placement = 'APPEND', $attributes = [])
+ * @method string htmlList($items, $ordered = false, $attribs = false, $escape = true)
+ * @method string paginationControl($paginator = null, $scrollingStyle = null, $partial = null, $params = null)
+ * @method string|Zend_View_Helper_Partial partial($name = null, $module = null, $model = null)
+ * @method Zend_View_Helper_Placeholder_Container_Abstract placeholder($name)
+ * @method string serverUrl($requestUri = null)
+ * @method string url($urlOptions = [], $name = null, $reset = false, $encode = true)
+ *
  * @category   Zend
  * @package    Zend_View
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)

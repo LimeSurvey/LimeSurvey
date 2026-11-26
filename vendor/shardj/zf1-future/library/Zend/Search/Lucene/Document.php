@@ -111,7 +111,7 @@ class Zend_Search_Lucene_Document
      * Returns the string value of a named field in this document.
      *
      * @see __get()
-     * @return string
+     * @return string|bool
      */
     public function getFieldValue($fieldName)
     {

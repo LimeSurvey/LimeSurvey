@@ -86,13 +86,13 @@ class Zend_Oauth_Token_AuthorizedRequest extends Zend_Oauth_Token
     /**
      * Parse string data into array
      *
-     * @return array
+     * @return array|null
      */
     protected function _parseData()
     {
         $params = [];
         if (empty($this->_data)) {
-            return;
+            return null;
         }
         foreach ($this->_data as $key => $value) {
             $params[rawurldecode($key)] = rawurldecode($value);

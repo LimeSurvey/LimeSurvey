@@ -65,9 +65,9 @@ PrepareEditorScript(false, $this);
                     : $optionsOnOff
             ]) ?>
             <div id="showtokenpolicy-help" class="form-text"><?php eT(
-                    "Only applies when 'Show privacy policy text with mandatory checkbox' is set to Inline text or Collapsible text.",
-                    'unescaped'
-                ); ?></div>
+                "Only applies when 'Show privacy policy text with mandatory checkbox' is set to Inline text or Collapsible text.",
+                'unescaped'
+            ); ?></div>
         </div>
     </div>
     <div class="col-sm-6">
@@ -83,18 +83,18 @@ PrepareEditorScript(false, $this);
                 'selectOptions' => ($bShowInherited)
                     ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->showregisterpolicy . " ᴵ"])
                     : $optionsOnOff
-            ]) ?>
+                ]) ?>
             <div id="showregisterpolicy-help" class="form-text"><?php eT(
-                    "Only applies when 'Show privacy policy text with mandatory checkbox' is set to Inline text or Collapsible text.",
-                    'unescaped'
-                ); ?></div>
+                "Only applies when 'Show privacy policy text with mandatory checkbox' is set to Inline text or Collapsible text.",
+                'unescaped'
+            ); ?></div>
         </div>
     </div>
 </div>
 
 <nav>
     <div class="nav nav-tabs" id="edit-survey-datasecurity-element-language-selection" role="tablist">
-        <?php foreach ($aTabTitles as $i => $eachtitle): ?>
+        <?php foreach ($aTabTitles as $i => $eachtitle) : ?>
             <button class="nav-link <?= $count == 0 ? "active" : '' ?>" role="tab" data-bs-toggle="tab" data-bs-target="#editdatasecele-<?= $count ?>" type="button">
                 <?= $eachtitle; ?>
             </button>
@@ -102,7 +102,7 @@ PrepareEditorScript(false, $this);
         <?php endforeach; ?>
     </div>
     <div class="tab-content">
-        <?php foreach ($aTabContents as $i => $sTabContent): ?>
+        <?php foreach ($aTabContents as $i => $sTabContent) : ?>
             <?= $sTabContent ?>
         <?php endforeach; ?>
     </div>

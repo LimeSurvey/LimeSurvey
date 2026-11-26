@@ -120,7 +120,8 @@ Responsive navbar-brand image CSS
         max-width: 350px;
         max-height: 70vh;
 
-        li a {
+        li a,
+        li button {
           font-size: 0.7em !important;
         }
       }
@@ -135,7 +136,8 @@ Responsive navbar-brand image CSS
         padding: 0;
         margin: 0 1rem;
     }
-    .dropdown-menu > li > a {
+    .dropdown-menu > li > a,
+    .dropdown-menu > li > button {
         text-decoration : none;
         font-weight : $font-weight-normal;
         font-size   : $font-size-sm;

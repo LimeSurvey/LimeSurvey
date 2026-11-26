@@ -59,7 +59,7 @@ class Zend_Tool_Project_Profile_Resource extends Zend_Tool_Project_Profile_Resou
     /**#@-*/
 
     /**
-     * @var Zend_Tool_Project_Context|string
+     * @var Zend_Tool_Project_Context_Interface|string
      */
     protected $_context = null;
 
@@ -98,7 +98,7 @@ class Zend_Tool_Project_Profile_Resource extends Zend_Tool_Project_Profile_Resou
     /**
      * getContext()
      *
-     * @return string|Zend_Tool_Project_Context|null
+     * @return string|Zend_Tool_Project_Context_Interface|null
      */
     public function getContext()
     {
@@ -119,6 +119,7 @@ class Zend_Tool_Project_Profile_Resource extends Zend_Tool_Project_Profile_Resou
         } elseif ($this->_context instanceof Zend_Tool_Project_Context_Interface) {
             return $this->_context->getName();
         } else {
+            require_once 'Zend/Tool/Project/Exception.php';
             throw new Zend_Tool_Project_Exception('Invalid context in resource');
         }
     }
@@ -212,7 +213,7 @@ class Zend_Tool_Project_Profile_Resource extends Zend_Tool_Project_Profile_Resou
     public function initializeContext()
     {
         if ($this->_isContextInitialized) {
-            return;
+            return $this;
         }
         if (is_string($this->_context)) {
             $this->_context = Zend_Tool_Project_Context_Repository::getInstance()->getContext($this->_context);
@@ -255,6 +256,7 @@ class Zend_Tool_Project_Profile_Resource extends Zend_Tool_Project_Profile_Resou
             }
             return call_user_func_array([$this->_context, $method], $arguments);
         } else {
+            require_once 'Zend/Tool/Project/Profile/Exception.php';
             throw new Zend_Tool_Project_Profile_Exception('cannot call ' . $method);
         }
     }

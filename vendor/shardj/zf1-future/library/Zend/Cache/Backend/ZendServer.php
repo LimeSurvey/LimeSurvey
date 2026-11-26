@@ -136,7 +136,7 @@ abstract class Zend_Cache_Backend_ZendServer extends Zend_Cache_Backend implemen
      * @param string $data datas to cache
      * @param string $id cache id
      * @param array $tags array of strings, the cache record will be tagged by each string entry
-     * @param int $specificLifetime if != false, set a specific lifetime for this cache record (null => infinite lifetime)
+     * @param int|false $specificLifetime if != false, set a specific lifetime for this cache record (null => infinite lifetime)
      * @return boolean true if no problem
      */
     public function save($data, $id, $tags = [], $specificLifetime = false)
@@ -182,7 +182,7 @@ abstract class Zend_Cache_Backend_ZendServer extends Zend_Cache_Backend implemen
      * @param  string $mode clean mode
      * @param  array  $tags array of tags
      * @throws Zend_Cache_Exception
-     * @return boolean true if no problem
+     * @return boolean|null true if no problem
      */
     public function clean($mode = Zend_Cache::CLEANING_MODE_ALL, $tags = [])
     {
@@ -190,7 +190,6 @@ abstract class Zend_Cache_Backend_ZendServer extends Zend_Cache_Backend implemen
             case Zend_Cache::CLEANING_MODE_ALL:
                 $this->_clear();
                 return true;
-                break;
             case Zend_Cache::CLEANING_MODE_OLD:
                 $this->_log("Zend_Cache_Backend_ZendServer::clean() : CLEANING_MODE_OLD is unsupported by the Zend Server backends.");
                 break;
@@ -202,7 +201,8 @@ abstract class Zend_Cache_Backend_ZendServer extends Zend_Cache_Backend implemen
                 break;
             default:
                 Zend_Cache::throwException('Invalid mode for clean() method');
-                break;
         }
+
+        return null;
     }
 }

@@ -10,7 +10,7 @@ require_once(__DIR__ . '/autoload.php');
 
 class ReactEditor extends \PluginBase
 {
-    const STG_NAME_REACT_EDITOR = "editorEnabled";
+    public const STG_NAME_REACT_EDITOR = "editorEnabled";
 
     protected $storage = 'DbStorage';
 
@@ -45,7 +45,7 @@ class ReactEditor extends \PluginBase
     public function beforeDeactivate()
     {
         $this->getEvent()->set('success', false);
-        $this->getEvent()->set('message', gT('Core plugin can not be disabled.'));
+        $this->getEvent()->set('message', gT('This core plugin can not be disabled.'));
     }
 
     /**

@@ -39,7 +39,7 @@ class Zend_Pdf_ElementFactory implements Zend_Pdf_ElementFactory_Interface
      *
      * Array: ojbectNumber => Zend_Pdf_Element_Object
      *
-     * @var array
+     * @var array|null
      */
     private $_modifiedObjects = [];
 
@@ -48,7 +48,7 @@ class Zend_Pdf_ElementFactory implements Zend_Pdf_ElementFactory_Interface
      *
      * Array: ojbectNumber => Zend_Pdf_Element_Object
      *
-     * @var SplObjectStorage
+     * @var SplObjectStorage|null
      */
     private $_removedObjects;
 
@@ -58,7 +58,7 @@ class Zend_Pdf_ElementFactory implements Zend_Pdf_ElementFactory_Interface
      *
      * Array of Zend_Pdf_Element objects
      *
-     * @var array
+     * @var array|null
      */
     private $_registeredObjects = [];
 
@@ -75,7 +75,7 @@ class Zend_Pdf_ElementFactory implements Zend_Pdf_ElementFactory_Interface
      * List of the attached object factories.
      * Array of Zend_Pdf_ElementFactory_Interface objects
      *
-     * @var array
+     * @var array|null
      */
     private $_attachedFactories = [];
 
@@ -343,7 +343,7 @@ class Zend_Pdf_ElementFactory implements Zend_Pdf_ElementFactory_Interface
      *
      * @todo Reusage of the freed object. It's not a support of new feature, but only improvement.
      *
-     * @param mixed $objectValue
+     * @param mixed $streamValue
      * @return Zend_Pdf_Element_Object_Stream
      */
     public function newStreamObject($streamValue)

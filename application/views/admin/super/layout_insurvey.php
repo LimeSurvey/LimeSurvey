@@ -47,7 +47,7 @@ echo ' <!-- Survey page, started in SurveyCommonAction::renderWrappedTemplate() 
             $this->organizequestionbar($aData);
 
             echo '<div id="in_survey_common" '
-            . 'class="container-fluid ls-flex-column col-12"'
+            . 'class="container-fluid ls-flex-column col-12" role="main"'
             . '>';
 
                 //Rendered through /admin/update/_update_notification

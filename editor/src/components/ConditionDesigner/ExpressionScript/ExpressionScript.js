@@ -2,56 +2,52 @@ import { useParams } from 'react-router-dom'
 import React, { useEffect, useState } from 'react'
 import classNames from 'classnames'
 
-import {
-  useBuffer,
-  useExpressionScriptValidation,
-  useFocused,
-  useSurvey,
-} from 'hooks'
-import { getQuestionById, QUESTION_RELEVANCE_DEFAULT_VALUE } from 'helpers'
+import { useBuffer, useExpressionScriptValidation, useSurvey } from 'hooks'
+import { QUESTION_RELEVANCE_DEFAULT_VALUE } from 'helpers'
 import { SideBarHeader } from 'components/SideBar'
 import { Button, ExpressionScriptEditor } from 'components/UIComponents'
 import { ArrowLeftIcon } from 'components/icons'
 
 import { handleConditionScriptUpdate } from './handleConditionScriptUpdate'
 import {
+  getConditionState,
   isValidRelevanceValue,
+  runIfConditionUnchanged,
   showConditionOverwriteConfirmationOverlay,
   showUnsavedChangesOverlay,
 } from '../utils'
 
-export const ExpressionScript = ({ onNavigateBack = () => {} }) => {
+export const ExpressionScript = ({ question, onNavigateBack = () => {} }) => {
   const { surveyId } = useParams()
-  const { survey, update } = useSurvey(surveyId)
-  const { focused, groupIndex, questionIndex } = useFocused()
+  const { update } = useSurvey(surveyId)
   const { addToBuffer } = useBuffer()
 
-  const question = getQuestionById(focused.qid, survey).question
   const validateExpression = useExpressionScriptValidation(
     surveyId,
-    question.qid
+    question?.qid
   )
 
   const [content, setContent] = useState(
-    question.relevance === QUESTION_RELEVANCE_DEFAULT_VALUE
+    question?.relevance === QUESTION_RELEVANCE_DEFAULT_VALUE
       ? ''
-      : question.relevance
+      : (question?.relevance ?? '')
   )
 
+  // Reset the editor when the question's condition changes, e.g. another
+  // session changed it and the survey was refreshed, so "Apply" can't write
+  // the old script back
   useEffect(() => {
     setContent(
-      question.relevance === QUESTION_RELEVANCE_DEFAULT_VALUE
+      question?.relevance === QUESTION_RELEVANCE_DEFAULT_VALUE
         ? ''
-        : question.relevance
+        : (question?.relevance ?? '')
     )
-  }, [focused])
+  }, [question?.qid, question?.relevance])
 
   const handleApply = () => {
     handleConditionScriptUpdate(
       content,
-      survey,
-      questionIndex,
-      groupIndex,
+      question.qid,
       addToBuffer,
       update,
       onNavigateBack
@@ -69,14 +65,24 @@ export const ExpressionScript = ({ onNavigateBack = () => {} }) => {
   }
 
   const handleApplyClick = () => {
-    if (question?.scenarios.length > 0) {
+    if ((question?.scenarios ?? []).length > 0) {
+      // The confirmation only applies to the scenarios it was shown for
+      const shownCondition = getConditionState(question)
       showConditionOverwriteConfirmationOverlay({
-        onConfirm: () => handleApply(content),
+        onConfirm: () =>
+          runIfConditionUnchanged(question.qid, shownCondition, () =>
+            handleApply(content)
+          ),
         onCancel: onNavigateBack,
       })
     } else {
       handleApply(content)
     }
+  }
+
+  // The focused question was removed (e.g. its group was deleted)
+  if (!question) {
+    return null
   }
 
   return (

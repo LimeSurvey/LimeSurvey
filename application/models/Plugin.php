@@ -79,7 +79,7 @@ class Plugin extends LSActiveRecord
         // TODO: Works on all SQL systems?
         $sql = "UPDATE {{plugins}} SET load_error = 1, load_error_message = :error_message WHERE id = :id";
         $params = [
-            ':error_message' => $error['message'] . ' ' . $error['file'],
+            ':error_message' => self::getLoadErrorMessage($error),
             ':id' => $this->id
         ];
         $rowNumber = \Yii::app()->db->createCommand($sql)->bindValues($params)->execute();
@@ -458,6 +458,30 @@ class Plugin extends LSActiveRecord
             ];
         }
         return App()->getController()->widget('ext.admin.grid.GridActionsWidget.GridActionsWidget', ['dropdownItems' => $dropdownItems], true);
+    }
+
+    /**
+     * Builds the load error message that is saved and shown in the plugin manager.
+     * Server paths are shown relative to the LimeSurvey root folder (or the upload
+     * folder), so the full server path is not exposed in the admin interface.
+     *
+     * @param array $error Array with 'message' and 'file' keys (as get from error_get_last).
+     * @return string
+     */
+    public static function getLoadErrorMessage(array $error)
+    {
+        $message = trim($error['message'] . ' ' . $error['file']);
+        return str_replace(
+            [
+                App()->getConfig('uploaddir') . DIRECTORY_SEPARATOR,
+                App()->getConfig('rootdir') . DIRECTORY_SEPARATOR
+            ],
+            [
+                'upload' . DIRECTORY_SEPARATOR,
+                ''
+            ],
+            $message
+        );
     }
 
     /**

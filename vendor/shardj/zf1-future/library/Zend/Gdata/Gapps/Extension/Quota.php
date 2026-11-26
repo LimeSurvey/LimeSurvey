@@ -42,6 +42,7 @@ require_once 'Zend/Gdata/Gapps.php';
  * @subpackage Gapps
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @deprecated Deprecated since 1.27.1 and will be removed in a future version: Google shut down the Google Data APIs it implements and the ClientLogin and AuthSub authentication
  */
 class Zend_Gdata_Gapps_Extension_Quota extends Zend_Gdata_Extension
 {
@@ -52,7 +53,7 @@ class Zend_Gdata_Gapps_Extension_Quota extends Zend_Gdata_Extension
     /**
      * The amount of storage space available to the user in megabytes.
      *
-     * @var integer
+     * @var integer|string|null
      */
     protected $_limit = null;
 
@@ -109,7 +110,7 @@ class Zend_Gdata_Gapps_Extension_Quota extends Zend_Gdata_Extension
      * Get the value for this element's limit attribute.
      *
      * @see setLimit
-     * @return string The requested attribute.
+     * @return string|int The requested attribute.
      */
     public function getLimit()
     {

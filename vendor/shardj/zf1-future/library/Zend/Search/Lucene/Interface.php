@@ -245,7 +245,7 @@ interface Zend_Search_Lucene_Interface extends Zend_Search_Lucene_Index_TermsStr
      *
      * Default value is 10
      *
-     * @param integer $maxMergeDocs
+     * @param integer $mergeFactor
      */
     public function setMergeFactor($mergeFactor);
 
@@ -314,7 +314,7 @@ interface Zend_Search_Lucene_Interface extends Zend_Search_Lucene_Index_TermsStr
      *
      * @param Zend_Search_Lucene_Index_Term $term
      * @param Zend_Search_Lucene_Index_DocsFilter|null $docsFilter
-     * @return integer
+     * @return array
      */
     public function termFreqs(Zend_Search_Lucene_Index_Term $term, $docsFilter = null);
 

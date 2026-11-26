@@ -151,7 +151,7 @@ class Zend_Currency
     public function toCurrency($value = null, array $options = [])
     {
         if ($value === null) {
-            if (is_array($options) && isset($options['value'])) {
+            if (isset($options['value'])) {
                 $value = $options['value'];
             } else {
                 $value = $this->_options['value'];
@@ -756,7 +756,7 @@ class Zend_Currency
      *
      * @param float|integer|Zend_Currency $value    Compares the currency with this value
      * @param string|Zend_Currency        $currency The currency to compare this value from
-     * @return unknown
+     * @return float|int
      */
     protected function _exchangeCurrency($value, $currency)
     {
@@ -785,7 +785,7 @@ class Zend_Currency
     /**
      * Returns the set service class
      *
-     * @return Zend_Service
+     * @return Zend_Currency_CurrencyInterface
      */
     public function getService()
     {

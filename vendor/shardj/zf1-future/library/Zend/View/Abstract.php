@@ -376,7 +376,7 @@ abstract class Zend_View_Abstract implements Zend_View_Interface
      * </code>
      *
      * @param  string $path
-     * @param  string $prefix Prefix to use for helper and filter paths
+     * @param  string $classPrefix Prefix to use for helper and filter paths
      * @return Zend_View_Abstract
      */
     public function setBasePath($path, $classPrefix = 'Zend_View')
@@ -403,7 +403,7 @@ abstract class Zend_View_Abstract implements Zend_View_Interface
      * </code>
      *
      * @param  string $path
-     * @param  string $prefix Prefix to use for helper and filter paths
+     * @param  string $classPrefix Prefix to use for helper and filter paths
      * @return Zend_View_Abstract
      */
     public function addBasePath($path, $classPrefix = 'Zend_View')
@@ -435,7 +435,7 @@ abstract class Zend_View_Abstract implements Zend_View_Interface
      *
      * To clear all paths, use Zend_View::setScriptPath(null).
      *
-     * @param string|array $path The directory (-ies) to set as the path.
+     * @param string|array|null $path The directory (-ies) to set as the path.
      * @return Zend_View_Abstract
      */
     public function setScriptPath($path)
@@ -661,7 +661,7 @@ abstract class Zend_View_Abstract implements Zend_View_Interface
      *
      * To clear all paths, use Zend_View::setFilterPath(null).
      *
-     * @param string|array $path The directory (-ies) to set as the path.
+     * @param string|array|null $path The directory (-ies) to set as the path.
      * @param string $classPrefix The class prefix to apply to all elements in
      * $path; defaults to Zend_View_Filter
      * @return Zend_View_Abstract
@@ -1184,6 +1184,7 @@ abstract class Zend_View_Abstract implements Zend_View_Interface
             }
         }
 
+        // @phpstan-ignore variable.undefined (called with 'filter' or 'helper' only)
         $this->$storeVar = $store;
         return $store[$name];
     }

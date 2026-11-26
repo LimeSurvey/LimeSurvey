@@ -201,9 +201,7 @@ class Zend_Loader
 
         foreach (self::explodeIncludePath() as $path) {
             if ($path == '.') {
-                if (is_readable($filename)) {
-                    return true;
-                }
+                // the current directory is checked above
                 continue;
             }
             $file = $path . '/' . $filename;

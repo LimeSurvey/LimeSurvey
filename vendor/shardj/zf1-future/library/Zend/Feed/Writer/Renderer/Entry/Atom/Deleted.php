@@ -20,6 +20,11 @@
  */
 
 /**
+ * @see Zend_Feed_Writer_Renderer_RendererInterface
+ */
+require_once 'Zend/Feed/Writer/Renderer/RendererInterface.php';
+
+/**
  * @see Zend_Feed_Writer_Renderer_RendererAbstract
  */
 require_once 'Zend/Feed/Writer/Renderer/RendererAbstract.php';
@@ -58,6 +63,7 @@ class Zend_Feed_Writer_Renderer_Entry_Atom_Deleted
         $this->_dom->appendChild($entry);
 
         $entry->setAttribute('ref', $this->_container->getReference());
+        require_once 'Zend/Date.php';
         $entry->setAttribute('when', $this->_container->getWhen()->get(Zend_Date::ISO_8601));
 
         $this->_setBy($this->_dom, $entry);
@@ -95,7 +101,7 @@ class Zend_Feed_Writer_Renderer_Entry_Atom_Deleted
     protected function _setBy(DOMDocument $dom, DOMElement $root)
     {
         $data = $this->_container->getBy();
-        if ((!$data || empty($data))) {
+        if (!$data) {
             return;
         }
         $author = $this->_dom->createElement('at:by');

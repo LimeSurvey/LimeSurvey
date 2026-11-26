@@ -107,7 +107,7 @@ class Zend_Feed_Writer_Extension_Threading_Renderer_Entry
     protected function _setCommentFeedLinks(DOMDocument $dom, DOMElement $root)
     {
         $links = $this->getDataContainer()->getCommentFeedLinks();
-        if (!$links || empty($links)) {
+        if (!$links) {
             return;
         }
         foreach ($links as $link) {

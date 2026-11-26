@@ -82,7 +82,6 @@ class Zend_Search_Lucene_Analysis_Token
      * @param string  $text
      * @param integer $start
      * @param integer $end
-     * @param string  $type
      */
     public function __construct($text, $start, $end)
     {

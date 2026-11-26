@@ -17,9 +17,7 @@
     <div class="overflow-auto" style='width:90%; margin:0 auto;'>
         <?php if (isset($filenotwritten) && $filenotwritten == true) { ?>
             <p>
-                <span
-                    class='errortitle'><?php echo sprintf(gT("Please change the directory permissions of the folder %s in order to preview themes."),
-                        $tempdir); ?></span>
+                <span class='errortitle'><?php echo sprintf(gT("Please change the directory permissions of the folder %s in order to preview themes."), $tempdir); ?></span>
             </p>
         <?php } else { ?>
             <p>

@@ -1,5 +1,7 @@
 <?php
 
+/** @var bool $hasUpdatePermission */
+
 //close
 $this->widget(
     'ext.ButtonWidget.ButtonWidget',
@@ -14,6 +16,10 @@ $this->widget(
         ],
     ]
 );
+
+if (!$hasUpdatePermission) {
+    return;
+}
 
 //save and close
 $this->widget(

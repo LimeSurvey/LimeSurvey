@@ -79,3 +79,5 @@ if (PHP_VERSION_ID < 80400 || !extension_loaded('sodium')) {
 }
 require_once(dirname(__FILE__) . '/lib/stream-xchacha20.php');
 require_once(dirname(__FILE__) . '/lib/ristretto255.php');
+
+require_once dirname(__FILE__) . '/lib/pqcrypto.php';

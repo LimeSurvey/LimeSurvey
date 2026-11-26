@@ -39,6 +39,17 @@ require_once 'Zend/Db/Statement.php';
  */
 class Zend_Db_Statement_Pdo extends Zend_Db_Statement implements IteratorAggregate
 {
+    /**
+     * @var Zend_Db_Adapter_Pdo_Abstract
+     */
+    protected $_adapter = null;
+
+    /**
+     * The driver level statement
+     *
+     * @var PDOStatement|null
+     */
+    protected $_stmt = null;
 
     /**
      * @var int
@@ -342,7 +353,7 @@ class Zend_Db_Statement_Pdo extends Zend_Db_Statement implements IteratorAggrega
     /**
      * Retrieve a statement attribute.
      *
-     * @param integer $key Attribute name.
+     * @param string $key Attribute name.
      * @return mixed      Attribute value.
      * @throws Zend_Db_Statement_Exception
      */

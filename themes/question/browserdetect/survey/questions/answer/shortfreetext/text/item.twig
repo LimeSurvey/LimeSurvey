@@ -45,7 +45,8 @@ question_template_attribute.add_platform_info           : {{question_template_at
             {% if inputsize is not empty %} size="{{inputsize}}" {% endif %}
             {% if maxlength is not empty %} maxlength='{{maxlength}}' {% endif %}
             readonly="readonly"
-            aria-labelledby="ls-question-text-{{basename}}"
+            aria-labelledby="ls-question-text-{{ basename }}"
+            aria-describedby="ls-question-help-{{ basename }} ls-question-validation-{{ basename }}"
         />
 
         <!-- Suffix -->

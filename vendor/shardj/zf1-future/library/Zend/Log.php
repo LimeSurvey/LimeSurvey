@@ -407,7 +407,7 @@ class Zend_Log
     /**
      * Log a message at a priority
      *
-     * @param  string   $message   Message to log
+     * @param  string|null   $message   Message to log
      * @param  integer  $priority  Priority of message
      * @param  mixed    $extras    Extra information to log in event
      * @return void

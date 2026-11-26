@@ -43,14 +43,14 @@ class Zend_Search_Lucene_TermStreamsPriorityQueue implements Zend_Search_Lucene_
     /**
      * Terms stream queue
      *
-     * @var Zend_Search_Lucene_Index_TermsPriorityQueue
+     * @var Zend_Search_Lucene_Index_TermsPriorityQueue|null
      */
     protected $_termsStreamQueue = null;
 
     /**
      * Last Term in a terms stream
      *
-     * @var Zend_Search_Lucene_Index_Term
+     * @var Zend_Search_Lucene_Index_Term|null
      */
     protected $_lastTerm = null;
 

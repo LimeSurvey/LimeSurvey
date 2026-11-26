@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 
 import { Button } from 'components'
 import { QuestionPreview } from 'components/Survey'
 import { getCellInfo } from '../utils'
-import { getSiteUrl } from 'helpers'
+import { getSiteUrl, getSurveyDateFormatsByLanguage } from 'helpers'
 
 export const ResponseDetailView = ({
   language,
@@ -15,34 +15,45 @@ export const ResponseDetailView = ({
   rowInfo = {},
   disableUpdatingResponses = false,
 }) => {
-  const rowCells = rowInfo.getVisibleCells()
-  const questionsInfo = {}
+  // Built once per survey, so the date questions' settings aren't computed again on every render
+  const surveySettings = useMemo(
+    () => ({
+      showNoAnswer: survey.showNoAnswer,
+      languages: survey.languages,
+      dateFormats: getSurveyDateFormatsByLanguage(survey),
+    }),
+    [survey.showNoAnswer, survey.languages, survey.languageSettings]
+  )
+  // All cells, so questions hidden in the table's column management are shown too
+  const rowCells = rowInfo.getAllCells()
   const rowData = rowInfo?.original || {}
+  const addedQids = new Set()
+  const questionsInfo = []
 
-  rowCells.map((cell) => {
+  rowCells.forEach((cell) => {
     const question = cell.column.columnDef?.meta?.question
 
-    if (!question || questionsInfo[question.qid]) {
+    if (!question || addedQids.has(question.qid)) {
       return
     }
 
-    questionsInfo[question.qid] = getCellInfo(cell, rowInfo)
+    addedQids.add(question.qid)
+    questionsInfo.push(getCellInfo(cell, rowInfo))
   })
+
+  // Show the questions in survey order, independent of the table's column order and pinning
+  questionsInfo.sort((a, b) => a.questionNumber - b.questionNumber)
 
   return (
     <div key={rowData?.id} className="response-detail-view">
       <div className="response-questions">
-        {Object.entries(questionsInfo).map(([, questionInfo], index) => {
+        {questionsInfo.map((questionInfo) => {
           return (
-            <React.Fragment key={'response-detail-view-' + index}>
+            <React.Fragment key={'response-detail-view-' + questionInfo.qid}>
               <QuestionPreview
                 language={language}
                 valueInfo={questionInfo}
-                surveySettings={{
-                  showNoAnswer: survey.showNoAnswer,
-                  languages: survey.languages,
-                }}
-                questionNumber={questionInfo?.meta?.questionNumber}
+                surveySettings={surveySettings}
                 onSave={onSave}
                 onCancel={() => {}}
                 disableUpdatingResponses={disableUpdatingResponses}

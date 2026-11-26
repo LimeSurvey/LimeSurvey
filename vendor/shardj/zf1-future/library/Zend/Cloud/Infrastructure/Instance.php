@@ -14,6 +14,7 @@
  * @subpackage Infrastructure
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @deprecated Deprecated since 1.27.1 and will be removed in a future version: the Simple Cloud API is not developed any further; use the SDK of the cloud provider
  */
 class Zend_Cloud_Infrastructure_Instance
 {
@@ -118,8 +119,8 @@ class Zend_Cloud_Infrastructure_Instance
     /**
      * Get Attribute with a specific key
      *
-     * @param array $data
-     * @return misc|false
+     * @param string $key
+     * @return mixed|false
      */
     public function getAttribute($key)
     {
@@ -309,7 +310,7 @@ class Zend_Cloud_Infrastructure_Instance
     /**
      * Run arbitrary shell script on the instance
      *
-     * @param  array $param
+     * @param  array $params
      * @param  string|array $cmd
      * @return string|array
      */

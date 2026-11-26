@@ -23,6 +23,7 @@
 
 /** Zend_Search_Lucene_LockManager */
 require_once 'Zend/Search/Lucene/LockManager.php';
+require_once 'Zend/Search/Lucene.php';
 
 
 /**
@@ -116,7 +117,7 @@ class Zend_Search_Lucene_Index_Writer
     /**
      * Current segment to add documents
      *
-     * @var Zend_Search_Lucene_Index_SegmentWriter_DocumentWriter
+     * @var Zend_Search_Lucene_Index_SegmentWriter_DocumentWriter|null
      */
     private $_currentSegment = null;
 
@@ -218,7 +219,6 @@ class Zend_Search_Lucene_Index_Writer
      * @param Zend_Search_Lucene_Storage_Directory $directory
      * @param array $segmentInfos
      * @param integer $targetFormatVersion
-     * @param Zend_Search_Lucene_Storage_File $cleanUpLock
      */
     public function __construct(Zend_Search_Lucene_Storage_Directory $directory, &$segmentInfos, $targetFormatVersion)
     {
@@ -537,8 +537,11 @@ class Zend_Search_Lucene_Index_Writer
                     $newSegmentFile->writeLong($delGen);
                     if ($this->_targetFormatVersion == Zend_Search_Lucene::FORMAT_2_3) {
                         if ($docStoreOptions !== null) {
+                            // @phpstan-ignore variable.undefined (set together with $docStoreOptions)
                             $newSegmentFile->writeInt($docStoreOffset);
+                            // @phpstan-ignore variable.undefined (set together with $docStoreOptions)
                             $newSegmentFile->writeString($docStoreSegment);
+                            // @phpstan-ignore variable.undefined (set together with $docStoreOptions)
                             $newSegmentFile->writeByte($docStoreIsCompoundFile);
                         } else {
                             // Set DocStoreOffset to -1
@@ -554,6 +557,7 @@ class Zend_Search_Lucene_Index_Writer
                     $newSegmentFile->writeByte($hasSingleNormFile);
                     $newSegmentFile->writeInt($numField);
                     if ($numField != (int)0xFFFFFFFF) {
+                        // @phpstan-ignore variable.undefined (the format without norm generations sets $numField to 0xFFFFFFFF)
                         foreach ($normGens as $normGen) {
                             $newSegmentFile->writeLong($normGen);
                         }

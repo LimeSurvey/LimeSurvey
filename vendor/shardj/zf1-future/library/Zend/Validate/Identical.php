@@ -142,7 +142,7 @@ class Zend_Validate_Identical extends Zend_Validate_Abstract
     {
         $this->_setValue($value);
 
-        if (($context !== null) && isset($context) && array_key_exists($this->getToken(), $context)) {
+        if (($context !== null) && array_key_exists($this->getToken(), $context)) {
             $token = $context[$this->getToken()];
         } else {
             $token = $this->getToken();

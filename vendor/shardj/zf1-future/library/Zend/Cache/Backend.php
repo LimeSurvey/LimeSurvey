@@ -21,6 +21,8 @@
  */
 
 
+require_once 'Zend/Cache.php';
+
 /**
  * @package    Zend_Cache
  * @subpackage Zend_Cache_Backend
@@ -113,7 +115,7 @@ class Zend_Cache_Backend
      * Returns an option
      *
      * @param string $name Optional, the options name to return
-     * @throws Zend_Cache_Exceptions
+     * @throws Zend_Cache_Exception
      * @return mixed
      */
     public function getOption($name)

@@ -32,7 +32,7 @@ class Zend_Translate_Plural
     /**
      * Manual rule to use
      *
-     * @var string
+     * @var string|array
      */
     protected static $_plural = [];
 
@@ -81,7 +81,6 @@ class Zend_Translate_Plural
             case 'vi':
             case 'zh':
                 return 0;
-                break;
 
             case 'af':
             case 'bn':
@@ -201,7 +200,7 @@ class Zend_Translate_Plural
      *
      * @param string $rule   Callback which acts as rule
      * @param string $locale Locale which is used for this callback
-     * @return null
+     * @return void
      */
     public static function setPlural($rule, $locale)
     {

@@ -32,14 +32,14 @@ require_once 'Zend/View/Helper/Placeholder/Container/Standalone.php';
  * @subpackage Helper
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @method $this appendHttpEquiv($keyValue, $content, $conditionalHttpEquiv)
- * @method $this appendName($keyValue, $content, $conditionalName)
+ * @method $this appendHttpEquiv($keyValue, $content, $modifiers = [])
+ * @method $this appendName($keyValue, $content, $modifiers = [])
  * @method $this appendProperty($property, $content, $modifiers = [])
- * @method $this offsetSetHttpEquiv($index, $keyValue, $content, $conditionalHttpEquiv)
- * @method $this offsetSetName($index, $keyValue, $content, $conditionalName)
+ * @method $this offsetSetHttpEquiv($index, $keyValue, $content, $modifiers = [])
+ * @method $this offsetSetName($index, $keyValue, $content, $modifiers = [])
  * @method $this offsetSetProperty($index, $property, $content, $modifiers = [])
- * @method $this prependHttpEquiv($keyValue, $content, $conditionalHttpEquiv)
- * @method $this prependName($keyValue, $content, $conditionalName)
+ * @method $this prependHttpEquiv($keyValue, $content, $modifiers = [])
+ * @method $this prependName($keyValue, $content, $modifiers = [])
  * @method $this prependProperty($property, $content, $modifiers = [])
  * @method $this setHttpEquiv($keyValue, $content, $modifiers = [])
  * @method $this setName($keyValue, $content, $modifiers = [])
@@ -139,7 +139,7 @@ class Zend_View_Helper_HeadMeta extends Zend_View_Helper_Placeholder_Container_S
      *
      * @param  string $method
      * @param  array $args
-     * @return Zend_View_Helper_HeadMeta
+     * @return Zend_View_Helper_HeadMeta|null
      */
     public function __call($method, $args)
     {
@@ -216,8 +216,8 @@ class Zend_View_Helper_HeadMeta extends Zend_View_Helper_Placeholder_Container_S
 
         $isHtml5 = is_null($this->view) ? false : $this->view->doctype()->isHtml5();
 
-        if (!isset($item->content)
-        && (! $isHtml5 || (! $isHtml5 && $item->type !== 'charset'))) {
+        // the content is required, except with an HTML5 doctype
+        if (!isset($item->content) && ! $isHtml5) {
             return false;
         }
 
@@ -246,7 +246,7 @@ class Zend_View_Helper_HeadMeta extends Zend_View_Helper_Placeholder_Container_S
             throw $e;
         }
 
-        return $this->getContainer()->append($value);
+        $this->getContainer()->append($value);
     }
 
     /**
@@ -267,7 +267,7 @@ class Zend_View_Helper_HeadMeta extends Zend_View_Helper_Placeholder_Container_S
             throw $e;
         }
 
-        return $this->getContainer()->offsetSet($index, $value);
+        $this->getContainer()->offsetSet($index, $value);
     }
 
     /**
@@ -287,7 +287,7 @@ class Zend_View_Helper_HeadMeta extends Zend_View_Helper_Placeholder_Container_S
             throw $e;
         }
 
-        return $this->getContainer()->offsetUnset($index);
+        $this->getContainer()->offsetUnset($index);
     }
 
     /**
@@ -306,7 +306,7 @@ class Zend_View_Helper_HeadMeta extends Zend_View_Helper_Placeholder_Container_S
             throw $e;
         }
 
-        return $this->getContainer()->prepend($value);
+        $this->getContainer()->prepend($value);
     }
 
     /**
@@ -332,16 +332,12 @@ class Zend_View_Helper_HeadMeta extends Zend_View_Helper_Placeholder_Container_S
             }
         }
 
-        return $this->append($value);
+        $this->append($value);
     }
 
     /**
      * Build meta HTML string
      *
-     * @param  string $type
-     * @param  string $typeValue
-     * @param  string $content
-     * @param  array $modifiers
      * @return string
      */
     public function itemToString(stdClass $item)
