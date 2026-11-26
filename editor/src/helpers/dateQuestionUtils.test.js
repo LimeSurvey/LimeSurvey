@@ -3,7 +3,9 @@ import dayjs from 'dayjs'
 import {
   DATE_QUESTION_DEFAULT_MAX,
   DATE_QUESTION_DEFAULT_MIN,
+  DATE_QUESTION_FIELD_PLACEHOLDERS,
   convertSurveyDateFormat,
+  convertToSurveyDateFormat,
   formatDateParts,
   getDateFormatParts,
   getDatePickerViews,
@@ -12,7 +14,6 @@ import {
   getDateQuestionYears,
   getSurveyDateFormatsByLanguage,
   isDateInLimits,
-  isFullDateFormat,
   normalizeDateToViews,
 } from './dateQuestionUtils'
 
@@ -55,6 +56,37 @@ describe('convertSurveyDateFormat', () => {
     expect(convertSurveyDateFormat('dd.mm.yyyy HH:MM')).toBe('DD.MM.YYYY HH:mm')
     expect(convertSurveyDateFormat('mm/yyyy')).toBe('MM/YYYY')
     expect(convertSurveyDateFormat('d/m/yy H:M')).toBe('D/M/YY H:m')
+  })
+})
+
+describe('convertToSurveyDateFormat', () => {
+  it('converts dayjs tokens back to LimeSurvey tokens', () => {
+    expect(convertToSurveyDateFormat('DD.MM.YYYY HH:mm')).toBe(
+      'dd.mm.yyyy HH:MM'
+    )
+    expect(convertToSurveyDateFormat('MM/YYYY')).toBe('mm/yyyy')
+    expect(convertToSurveyDateFormat('D/M/YY H:m')).toBe('d/m/yy H:M')
+  })
+})
+
+describe('DATE_QUESTION_FIELD_PLACEHOLDERS', () => {
+  it('shows the empty parts in the LimeSurvey date format', () => {
+    const {
+      fieldYearPlaceholder,
+      fieldMonthPlaceholder,
+      fieldDayPlaceholder,
+      fieldHoursPlaceholder,
+      fieldMinutesPlaceholder,
+    } = DATE_QUESTION_FIELD_PLACEHOLDERS
+    expect(fieldYearPlaceholder({ format: 'YYYY', digitAmount: 4 })).toBe(
+      'yyyy'
+    )
+    expect(fieldMonthPlaceholder({ format: 'MM', contentType: 'digit' })).toBe(
+      'mm'
+    )
+    expect(fieldDayPlaceholder({ format: 'DD' })).toBe('dd')
+    expect(fieldHoursPlaceholder({ format: 'HH' })).toBe('HH')
+    expect(fieldMinutesPlaceholder({ format: 'mm' })).toBe('MM')
   })
 })
 
@@ -102,7 +134,6 @@ describe('getDateQuestionSettings', () => {
       minDate: '1900-01-01',
       maxDate: '2030-06-30 23:59:59',
       format: 'DD.MM.YYYY',
-      surveyFormat: 'DD.MM.YYYY',
       displayFormat: 'dd.mm.yyyy',
       views: ['year', 'month', 'day'],
       dropdown: true,
@@ -155,16 +186,6 @@ describe('formatDateParts', () => {
     expect(formatDateParts('DD/MM/YYYY', values)).toBe('31/02/2001')
     expect(formatDateParts('D.M.YY', values)).toBe('31.2.01')
     expect(formatDateParts('DD.MM.YYYY HH:mm', values)).toBe('31.02.2001 09:05')
-  })
-})
-
-describe('isFullDateFormat', () => {
-  it('requires year, month and day', () => {
-    expect(isFullDateFormat('DD.MM.YYYY')).toBe(true)
-    expect(isFullDateFormat('YYYY-MM-DD HH:mm')).toBe(true)
-    expect(isFullDateFormat('MM/YYYY')).toBe(false)
-    expect(isFullDateFormat('HH:mm')).toBe(false)
-    expect(isFullDateFormat(undefined)).toBe(false)
   })
 })
 

@@ -15,6 +15,7 @@ import {
   DATE_QUESTION_DEFAULT_MIN,
   DATE_QUESTION_DEFAULT_MAX,
   DATE_QUESTION_STORAGE_FORMAT,
+  DATE_QUESTION_FIELD_PLACEHOLDERS,
   isDateInLimits,
   normalizeDateToViews,
 } from 'helpers'
@@ -297,6 +298,8 @@ export const DateTimePickerComponent = ({
               }}
               ampm={false}
               format={format}
+              // A given format is a question's: Show its empty parts like the format hint does
+              localeText={format ? DATE_QUESTION_FIELD_PLACEHOLDERS : undefined}
               views={views}
               timeSteps={minuteStep ? { minutes: minuteStep } : undefined}
               {...limitProps}

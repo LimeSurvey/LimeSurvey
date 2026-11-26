@@ -8,7 +8,6 @@ import {
   dayJsHelper,
   getDateQuestionSettings,
   isDateInLimits,
-  isFullDateFormat,
   DATE_QUESTION_STORAGE_FORMAT,
 } from 'helpers'
 
@@ -73,20 +72,15 @@ export const DateQuestionInput = ({
     return parsed.isValid() ? parsed : null
   }, [participantMode, valueInfo?.value])
 
-  // The limits are full dates: Show them in the question's format only when it shows a full
-  // date too, otherwise (e.g. mm/yyyy or HH:MM) in the survey's date format
-  const limitFormat = [settings.format, settings.surveyFormat].find(
-    isFullDateFormat
-  )
-
   /**
-   * Formats a limit for the "between" message.
+   * Formats a limit for the "between" message in the question's format, like the survey does
+   * (e.g. 05/2024 for mm/yyyy).
    *
    * @param {string} limit The limit from the settings
    * @returns {string} The formatted limit
    */
   const formatLimit = (limit) =>
-    dayJsHelper(limit).format(limitFormat || 'YYYY-MM-DD')
+    dayJsHelper(limit).format(settings.format || 'YYYY-MM-DD')
   const rangeMessage = sprintf(
     t('Answer must be between %s and %s'),
     formatLimit(settings.minDate),

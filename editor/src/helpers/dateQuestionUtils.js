@@ -94,6 +94,39 @@ export const convertSurveyDateFormat = (dateFormat = '') => {
 }
 
 /**
+ * Converts a dayjs format back into a LimeSurvey date format, the reverse of
+ * convertSurveyDateFormat().
+ *
+ * @param {string} format The dayjs format, e.g. "DD.MM.YYYY HH:mm"
+ * @returns {string} The LimeSurvey date format, e.g. "dd.mm.yyyy HH:MM"
+ */
+export const convertToSurveyDateFormat = (format = '') => {
+  const map = { D: 'd', M: 'm', Y: 'y', m: 'M' }
+
+  return format.replace(/[DMYm]/g, (character) => map[character])
+}
+
+/**
+ * Placeholder of an empty part of the picker's input: Its token in the LimeSurvey date format,
+ * so the empty input reads like the format hint (dd.mm.yyyy, HH:MM) instead of MUI's DD.MM.YYYY
+ * and hh:mm.
+ *
+ * @param {{format: string}} params The part's dayjs token from MUI, e.g. "DD"
+ * @returns {string} The placeholder, e.g. "dd"
+ */
+const getSurveyFormatPlaceholder = ({ format }) =>
+  convertToSurveyDateFormat(format)
+
+/** MUI localeText for the picker's input placeholders in the LimeSurvey date format */
+export const DATE_QUESTION_FIELD_PLACEHOLDERS = {
+  fieldYearPlaceholder: getSurveyFormatPlaceholder,
+  fieldMonthPlaceholder: getSurveyFormatPlaceholder,
+  fieldDayPlaceholder: getSurveyFormatPlaceholder,
+  fieldHoursPlaceholder: getSurveyFormatPlaceholder,
+  fieldMinutesPlaceholder: getSurveyFormatPlaceholder,
+}
+
+/**
  * Returns the picker views (year, month, day, hours, minutes) a dayjs format contains.
  *
  * @param {string|undefined} format The dayjs format
@@ -155,18 +188,6 @@ export const formatDateParts = (format, values) =>
       return token.length === 2 ? value.padStart(2, '0') : value
     })
     .join('')
-
-/**
- * Checks whether a dayjs format shows a full date: Year, month and day.
- *
- * @param {string|undefined} format The dayjs format
- * @returns {boolean} True when the format contains year, month and day
- */
-export const isFullDateFormat = (format) => {
-  const types = getDateFormatParts(format).map((part) => part.type)
-
-  return ['year', 'month', 'day'].every((type) => types.includes(type))
-}
 
 /**
  * Resets the parts of a date its format doesn't show, like the survey does when it saves a
@@ -266,7 +287,7 @@ export const getSurveyDateFormatsByLanguage = (survey) =>
  * @param {number|string|undefined} surveyDateFormat The survey language's date format index
  * @param {object|undefined} dateFormats The site's date formats (index => {dateformat, jsdate})
  * @returns {{minDate: string, maxDate: string, format: (string|undefined),
- *   surveyFormat: (string|undefined), displayFormat: string,
+ *   displayFormat: string,
  *   views: (string[]|undefined), dropdown: boolean, minuteStep: number, monthStyle: number,
  *   reverse: boolean, showTip: boolean}} The date question settings
  */
@@ -300,7 +321,6 @@ export const getDateQuestionSettings = (
       true
     ),
     format,
-    surveyFormat: surveyFormat?.jsdate || undefined,
     displayFormat: questionFormat || surveyFormat?.dateformat || '',
     views: getDatePickerViews(format),
     dropdown: getAttributeString(question, 'dropdown_dates', language) === '1',

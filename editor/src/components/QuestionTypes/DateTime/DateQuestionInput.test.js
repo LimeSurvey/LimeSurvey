@@ -114,7 +114,7 @@ describe('DateQuestionInput in dropdown mode', () => {
     )
   })
 
-  it('shows the limits as full dates when the format has no day', () => {
+  it('shows the limits in the question format like the survey', () => {
     const onValueChange = jest.fn()
     renderDropdowns(
       { date_format: 'mm/yyyy', date_min: '2024-05-15' },
@@ -126,7 +126,7 @@ describe('DateQuestionInput in dropdown mode', () => {
 
     expect(savedValues(onValueChange)).toEqual([])
     expect(screen.getByRole('alert').textContent).toBe(
-      'Answer must be between 15.05.2024 and 31.12.2187'
+      'Answer must be between 05/2024 and 12/2187'
     )
 
     select('Month', '6')
@@ -289,6 +289,19 @@ describe('DateQuestionInput in picker mode', () => {
     const input = screen.getByLabelText('Date in the format: dd.mm.yyyy')
     const hint = document.getElementById(input.getAttribute('aria-describedby'))
     expect(hint.textContent).toBe('Format: dd.mm.yyyy')
+  })
+
+  it('shows the empty input in the notation of the format hint', () => {
+    const { unmount } = renderPicker({}, 1, { participantMode: false })
+    expect(screen.getByRole('textbox').getAttribute('placeholder')).toBe(
+      'dd.mm.yyyy'
+    )
+    unmount()
+
+    renderPicker({ date_format: 'HH:MM' }, 1, { participantMode: false })
+    expect(screen.getByRole('textbox').getAttribute('placeholder')).toBe(
+      'HH:MM'
+    )
   })
 
   it('does not point to a hint that is not shown', () => {
