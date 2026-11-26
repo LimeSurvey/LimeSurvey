@@ -17,11 +17,14 @@ class ParticipantDuplicateFinderTest extends TestBaseClass
     /** @var int[] attribute_id of the core attributes added by this test */
     private static $addedAttributeIds = [];
 
-    /** @var string[] participant_id of the participants created by a test */
-    private $createdParticipantIds = [];
-
     /** @var mixed CPDB_duplicatefinder_bits before the test */
     private static $duplicatefinderBits;
+
+    /** @var mixed */
+    private $backupReencryptLimit;
+
+    /** @var \CDbTransaction each test starts without participant, rolled back after the test */
+    private $transaction;
 
     /**
      * Encrypt firstname, lastname and email in the central participant database.
@@ -66,11 +69,23 @@ class ParticipantDuplicateFinderTest extends TestBaseClass
         parent::tearDownAfterClass();
     }
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->backupReencryptLimit = Yii::app()->getConfig('CPDB_reencrypt_limit');
+        /* All participants in one run */
+        Yii::app()->setConfig('CPDB_reencrypt_limit', 0);
+        /* The maintenance and the up to date state use every participant : only the ones of the test */
+        $this->transaction = Yii::app()->db->beginTransaction();
+        Participant::model()->deleteAll();
+        Yii::app()->cache->flush();
+    }
+
     protected function tearDown(): void
     {
-        if (!empty($this->createdParticipantIds)) {
-            Participant::model()->deleteByPk($this->createdParticipantIds);
-        }
+        $this->transaction->rollback();
+        Yii::app()->cache->flush();
+        Yii::app()->setConfig('CPDB_reencrypt_limit', $this->backupReencryptLimit);
         Yii::app()->setConfig('CPDB_duplicatefinder_bits', 128);
         parent::tearDown();
     }
@@ -92,7 +107,6 @@ class ParticipantDuplicateFinderTest extends TestBaseClass
         $participant->owner_uid = $ownerUid;
         $participant->created_by = 1;
         $this->assertTrue($participant->encryptSave(), json_encode($participant->getErrors()));
-        $this->createdParticipantIds[] = $participant->participant_id;
         return $participant;
     }
 
