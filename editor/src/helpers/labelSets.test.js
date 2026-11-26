@@ -118,7 +118,8 @@ describe('getLabelSetCodes', () => {
     ).toEqual(['LONGSUBQUESTION1'])
   })
 
-  test('Continues numeric answer codes', () => {
+  test('Gives clashing numeric answer codes the default scheme after the highest number', () => {
+    // Like adding an answer option: 1 and 2 are followed by A003
     expect(
       getLabelSetCodes(
         labels('1', '2'),
@@ -126,7 +127,7 @@ describe('getLabelSetCodes', () => {
         [{ code: '1' }, { code: '2' }],
         Entities.answer
       )
-    ).toEqual(['3', '4'])
+    ).toEqual(['A003', 'A004'])
   })
 
   test('Keeps generated answer codes within five characters', () => {
