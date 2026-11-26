@@ -107,7 +107,7 @@
                 {% endif %}
 
                 <!-- tr -->
-                <tr id="javatbd{{ ansrow.myfname }}" role="group" aria-labelledby="answertext{{ ansrow.myfname }}"
+                <tr id="javatbd{{ ansrow.myfname }}"
                     class="answers-list radio-list {% if ansrow.odd %}ls-odd{% else %}ls-even{% endif %}{% if ansrow.showmandatoryviolation %} ls-error-mandatory has-error{% endif %} {{ ansrow.relevanceClass }}"
                 >
                 <th id="answertext{{ ansrow.myfname }}" class="answertext control-label{% if answerwidth==0 %} visually-hidden{% endif %}">
@@ -139,7 +139,7 @@
                             name="{{ ansrow.myfname0 }}"
                             value="{{ ld }}"
                             id="answer{{ ansrow.myfid0 }}-{{ ld }}"
-                            aria-labelledby="answer{{ basename }}_0-{{ ld }}{% if leftheader != '' %} left-header-{{ basename }}{% endif %}"
+                            aria-labelledby="answertext{{ ansrow.myfname }} answer{{ basename }}_0-{{ ld }}{% if leftheader != '' %} left-header-{{ basename }}{% endif %}"
                             {{ labelcode0_checked[ansrow.title][ld] }}
                         />
                         <label for="answer{{ ansrow.myfid0 }}-{{ ld }}" class="ls-label-xs-visibility" aria-hidden="true">
@@ -157,7 +157,7 @@
                                 name='{{ ansrow.myfname0 }}'
                                 value=''
                                 id='answer{{ ansrow.myfid0 }}-'
-                                aria-labelledby="answer{{ basename }}-"
+                                aria-labelledby="answertext{{ ansrow.myfname }} answer{{ basename }}-"
                                 {{ ansrow.myfname0_notset }}
                             />
                             <label for='answer{{ ansrow.myfid0 }}-' class='ls-label-xs-visibility' aria-hidden="true">
@@ -179,7 +179,7 @@
                                 name="{{ ansrow.myfname1 }}"
                                 value="{{ ld }}"
                                 id="answer{{ ansrow.myfid1 }}-{{ ld }}"
-                                aria-labelledby="answer{{ basename }}_1-{{ ld }}{% if rightheader != '' %} right-header-{{ basename }}{% endif %}"
+                                aria-labelledby="answertext{{ ansrow.myfname }} answer{{ basename }}_1-{{ ld }}{% if rightheader != '' %} right-header-{{ basename }}{% endif %}"
                                 {{ labelcode1_checked[ansrow.title][ld] }}
                             />
                             <label for="answer{{ ansrow.myfid1 }}-{{ ld }}" class="ls-label-xs-visibility" aria-hidden="true">
@@ -203,7 +203,7 @@
                                     name='{{ ansrow.myfname1 }}'
                                     value=''
                                     id='answer{{ ansrow.myfid1 }}-'
-                                    aria-labelledby="answer{{ basename }}-"
+                                    aria-labelledby="answertext{{ ansrow.myfname }} answer{{ basename }}-"
                                     {{ ansrow.myfname1_notset }}
                                 />
                             <label for='answer{{ ansrow.myfid1 }}-' class="ls-label-xs-visibility" aria-hidden="true">
@@ -215,7 +215,7 @@
                                     name='{{ ansrow.myfname0 }}'
                                     value=''
                                     id='answer{{ ansrow.myfid0 }}-'
-                                    aria-labelledby="answer{{ basename }}-"
+                                    aria-labelledby="answertext{{ ansrow.myfname }} answer{{ basename }}-"
                                     {{ ansrow.myfname0_notset }}
                                 />
                             <label for='answer{{ ansrow.myfid0 }}-' class="ls-label-xs-visibility" aria-hidden="true">

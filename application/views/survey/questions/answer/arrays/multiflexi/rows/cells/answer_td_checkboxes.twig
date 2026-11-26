@@ -5,6 +5,7 @@
  * @var $ld
  * @var $answertypeclass
  * @var $value $myvalue : 1 VS 0 or '' : OK to use it as boolean directly
+ * @var $myfname
  * @var $myfname2
  * @var $setmyvalue
  * @var $checkconditionFunction
@@ -22,7 +23,7 @@
         'class' : extraclass,
         'id' : "cbox"~myfname2,
         'value' : "1",
-        'aria-labelledby' : "answertext" ~ basename ~ "_" ~ dataCode,
+        'aria-labelledby' : "answertext" ~ myfname ~ " answertext" ~ basename ~ "_" ~ dataCode,
     }))
     }}
     <label for="cbox{{ myfname2 }}" class="ls-label-xs-visibility" aria-hidden="true">{{ processString(dataTitle) }}</label>

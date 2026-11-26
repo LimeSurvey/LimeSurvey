@@ -2,6 +2,7 @@
  * Answer cell
  *
  * @var $ld
+ * @var $myfname
  * @var $myfname2
  * @var $labelText $labelans[$thiskey]
  * @var $maxlength
@@ -18,7 +19,7 @@
     {# Value for expression manager javascript (use id) ; no need to submit #}
     {{ C.Html.textField(myfname2,value,({
         'id' : "answer"~myfname2,
-        'aria-labelledby' : "answertext" ~ basename ~ "_" ~ ld,
+        'aria-labelledby' : "answertext" ~ myfname ~ " answertext" ~ basename ~ "_" ~ ld,
         'class' : "form-control",
         'size' : (inputsize ? inputsize : null),
         'maxlength' : (maxlength ? maxlength : null),
