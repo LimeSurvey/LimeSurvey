@@ -3193,6 +3193,8 @@ class ParticipantsAction extends SurveyCommonAction
                 if ($transaction) {
                     $transaction->rollback();
                 }
+                /* The cursor is already after the failed participants of this batch : keep them for the end of the run */
+                App()->user->setState($failedStateId, intval(App()->user->getState($failedStateId, 0)) + $failed);
                 throw $e;
             }
             $processed++;
