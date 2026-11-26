@@ -3087,7 +3087,10 @@ class ParticipantsAction extends SurveyCommonAction
         }
         /* Outdated DuplicateFinder participants */
         $duplicateFinderInvalidStilltoProcess = $duplicateFinderInvalidCount = Participant::model()->getDuplicateFinderInvalidCount();
-        $lastDuplicateFinderInvalidParticipantId = strval(App()->user->getState('currentDuplicateFinderInvalidParticipantId', ''));
+        /* Index disabled : a run in progress can not be resumed, it must not hide the re-encryption */
+        $lastDuplicateFinderInvalidParticipantId = Participant::canUseDuplicateFinder()
+            ? strval(App()->user->getState('currentDuplicateFinderInvalidParticipantId', ''))
+            : '';
         if ($lastDuplicateFinderInvalidParticipantId !== '') {
             $criteria = new CDbCriteria();
             $criteria->addCondition('participant_id > :lastParticipantId');
