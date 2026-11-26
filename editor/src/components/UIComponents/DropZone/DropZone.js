@@ -90,6 +90,14 @@ export const DropZone = forwardRef(
     const editButtonRef = useRef(null)
     const [previewUrl, setPreviewUrl] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
+    // URL of a preview image that couldn't be loaded, e.g. its file is
+    // missing: The placeholder is shown instead, and as there is nothing to
+    // edit, the edit button is hidden, but it can still be deleted. Keeping
+    // the URL gives a new image its own chance.
+    const [failedImageUrl, setFailedImageUrl] = useState(null)
+    const isImageMissing = !!previewUrl && failedImageUrl === previewUrl
+    const showEditButton = !!onEdit && !isImageMissing
+    const showPlaceholder = !isValidImg || isImageMissing
 
     const handleOnMouseHover = () => setIsHovered(true)
     const handleOnMouseLeave = () => setIsHovered(false)
@@ -237,7 +245,7 @@ export const DropZone = forwardRef(
     }
     const areButtonsShown =
       !isLoading &&
-      (trashIconEnabled || !!onEdit) &&
+      (trashIconEnabled || showEditButton) &&
       (isHovered || hasFocus || isKeyboardEdit)
 
     // Beside the image, the buttons look like the image buttons of the
@@ -266,7 +274,7 @@ export const DropZone = forwardRef(
             : ['position-absolute', { 'd-none': !areButtonsShown }]
         )}
       >
-        {onEdit && (
+        {showEditButton && (
           <Button
             {...imageButtonProps}
             aria-label={
@@ -323,10 +331,11 @@ export const DropZone = forwardRef(
       >
         {isLoading ? loadingSpinner : null}
         <EditedImage
-          src={isValidImg ? previewUrl : NoImageFound}
+          src={showPlaceholder ? NoImageFound : previewUrl}
           alt={imageAlt}
-          settings={isValidImg && !fixedHeight ? imageSettings : null}
+          settings={!showPlaceholder && !fixedHeight ? imageSettings : null}
           height={previewMaxHeight}
+          onError={() => setFailedImageUrl(previewUrl)}
           fallbackStyle={
             fixedHeight
               ? {

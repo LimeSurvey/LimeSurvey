@@ -4,7 +4,7 @@ import 'tests/mocks'
 import { useState } from 'react'
 import { renderWithProviders } from 'tests/testUtils'
 import { DropZone } from './DropZone'
-import { act, screen } from '@testing-library/react'
+import { act, fireEvent, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { getNoAnswerLabel } from 'helpers'
 
@@ -145,6 +145,51 @@ describe('DropZone', () => {
     ).not.toBeInTheDocument()
     expect(
       screen.getByRole('button', { name: 'Delete image', hidden: true })
+    ).toBeInTheDocument()
+  })
+
+  test('Shows the placeholder and only the delete button when the image is not found', async () => {
+    await renderWithProviders(
+      <DropZone
+        previewUrlInit="/upload/surveys/1/images/missing.png"
+        onEdit={jest.fn()}
+        imageName="A1"
+      />
+    )
+
+    fireEvent.error(screen.getByAltText('Image Select List'))
+
+    // The no-image-found placeholder, stubbed in the tests.
+    expect(screen.getByAltText('Image Select List')).toHaveAttribute(
+      'src',
+      'test-file-stub'
+    )
+    expect(
+      screen.queryByRole('button', { name: 'Edit image A1', hidden: true })
+    ).not.toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: 'Delete image A1', hidden: true })
+    ).toBeInTheDocument()
+  })
+
+  test('Shows the edit button again when a missing image is replaced', async () => {
+    let setTestUrl
+    const ReplaceableDropZone = () => {
+      const [url, setUrl] = useState('/upload/surveys/1/images/missing.png')
+      setTestUrl = setUrl
+      return <DropZone previewUrlInit={url} onEdit={jest.fn()} imageName="A1" />
+    }
+    await renderWithProviders(<ReplaceableDropZone />)
+    fireEvent.error(screen.getByAltText('Image Select List'))
+
+    act(() => setTestUrl('/upload/surveys/1/images/b.png'))
+
+    expect(screen.getByAltText('Image Select List')).toHaveAttribute(
+      'src',
+      '/upload/surveys/1/images/b.png'
+    )
+    expect(
+      screen.getByRole('button', { name: 'Edit image A1', hidden: true })
     ).toBeInTheDocument()
   })
 

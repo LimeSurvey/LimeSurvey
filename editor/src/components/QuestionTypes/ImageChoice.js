@@ -90,6 +90,11 @@ export const ImageChoice = ({
 
   const regexContainsHtml = /(<([^>]+)>)/i
   const isValidImg = useMemo(() => !regexContainsHtml.test(value), [value])
+  // URL of an image that couldn't be loaded, e.g. its file is missing: The
+  // placeholder is shown instead. Keeping the URL gives a new image its own
+  // chance.
+  const [failedImageUrl, setFailedImageUrl] = useState(null)
+  const showImage = !!previewUrl && isValidImg && failedImageUrl !== previewUrl
 
   const idSuffix = idPrefix + id + '-i' + index
 
@@ -167,10 +172,11 @@ export const ImageChoice = ({
           >
             <div className={classNames({ 'd-none': showLoader })}>
               <EditedImage
-                src={previewUrl && isValidImg ? previewUrl : NoImageFound}
+                src={showImage ? previewUrl : NoImageFound}
                 alt={imageAltText || code}
-                settings={previewUrl && isValidImg ? imageSettings : null}
+                settings={showImage ? imageSettings : null}
                 height={IMAGE_PREVIEW_HEIGHT}
+                onError={() => setFailedImageUrl(previewUrl)}
                 fallbackStyle={{
                   height: '100%',
                   maxHeight: IMAGE_PREVIEW_HEIGHT,

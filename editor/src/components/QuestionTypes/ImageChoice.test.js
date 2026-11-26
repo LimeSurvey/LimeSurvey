@@ -1,6 +1,6 @@
 import 'tests/mocks'
 
-import { screen } from '@testing-library/react'
+import { fireEvent, screen } from '@testing-library/react'
 import { renderWithProviders } from 'tests/testUtils'
 
 import { ImageChoice } from './ImageChoice'
@@ -43,5 +43,19 @@ describe('ImageChoice', () => {
     expect(
       screen.getByRole('button', { name: 'Delete image A1', hidden: true })
     ).toBeInTheDocument()
+  })
+
+  test('Shows the placeholder in view mode when the image is not found', async () => {
+    await renderOption({ isFocused: false })
+
+    // The first image is the one shown in view mode, the second one belongs
+    // to the hidden upload area.
+    fireEvent.error(screen.getAllByAltText('A1')[0])
+
+    // The no-image-found placeholder, stubbed in the tests.
+    expect(screen.getAllByAltText('A1')[0]).toHaveAttribute(
+      'src',
+      'test-file-stub'
+    )
   })
 })
