@@ -201,7 +201,7 @@ class LSYii_Application extends CWebApplication
             $this->config = array_merge($this->config, $userConfigs['config']);
         }
 
-        /* encrypt the crypted settings set by file (emailsmtppassword, bounceaccountpass), because they are also encrypted in database
+        /* encrypt the settings set by file that are encrypted in database (emailsmtppassword, bounceaccountpass)
            they are decrypted by getConfig() */
         foreach (SettingGlobal::getCryptedSettings() as $cryptedSetting) {
             if (!empty($this->config[$cryptedSetting])) {
