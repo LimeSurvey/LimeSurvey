@@ -148,25 +148,44 @@ function loadanswers()
  * The name in the current language is left out if it is the same as the native name (e.g. for the current language itself).
  *
  * @param array $aLanguage Language data as returned by getLanguageData()
- * @return string
+ * @return string The label, e.g. "Français - French"
  */
 function getLanguageChangerLabel($aLanguage)
 {
+    return getLanguageChangerDetails('', $aLanguage)['label'];
+}
+
+/**
+ * Returns the parts of a language changer entry, so that themes can mark the native name with its own language (WCAG 3.1.2).
+ * The name in the current language is empty if it is the same as the native name.
+ *
+ * @param string $sLangCode LimeSurvey language code
+ * @param array $aLanguage Language data as returned by getLanguageData()
+ * @return array{label: string, nativeName: string, name: string, lang: string, dir: string} The full label, the native name,
+ *         the name in the current language, the lang attribute value of the native name and its writing direction
+ */
+function getLanguageChangerDetails($sLangCode, $aLanguage)
+{
     $sNativeName = html_entity_decode((string) $aLanguage['nativedescription'], ENT_COMPAT, 'UTF-8');
     $sName = (string) $aLanguage['description'];
-    if ($sName === '' || $sName === $sNativeName) {
-        return $sNativeName;
+    if ($sName === $sNativeName) {
+        $sName = '';
     }
-    return $sNativeName . ' - ' . $sName;
+    return array(
+        'label'      => $sName === '' ? $sNativeName : $sNativeName . ' - ' . $sName,
+        'nativeName' => $sNativeName,
+        'name'       => $sName,
+        'lang'       => getHtmlLangAttributeValue($sLangCode, $aLanguage),
+        'dir'        => !empty($aLanguage['rtl']) ? 'rtl' : 'ltr',
+    );
 }
 
 /**
  * This function creates the language selector for a particular survey
-*
-* @param string  $sSelectedLanguage : lang to be selected (forced)
-*
-* @return array|false               : array of data if more than one language, else false
-*/
+ *
+ * @param string $sSelectedLanguage Language to be selected (forced)
+ * @return array|false Data for the language changer (sSelected, aListLang, aListLangDetails, sClass, targetUrl) if the survey has more than one language, else false
+ */
 function getLanguageChangerDatas($sSelectedLanguage = "")
 {
     $surveyid = Yii::app()->getConfig('surveyID');
@@ -208,17 +227,20 @@ function getLanguageChangerDatas($sSelectedLanguage = "")
         }
 
         $aListLang = array();
+        $aListLangDetails = array();
         foreach ($aSurveyLangs as $sLangCode => $aSurveyLang) {
-            $aListLang[$sLangCode] = getLanguageChangerLabel($aSurveyLang);
+            $aListLangDetails[$sLangCode] = getLanguageChangerDetails($sLangCode, $aSurveyLang);
+            $aListLang[$sLangCode] = $aListLangDetails[$sLangCode]['label'];
         }
 
         $sSelected = ($sSelectedLanguage) ? $sSelectedLanguage : App()->language;
 
         $languageChangerDatas = array(
-            'sSelected' => $sSelected,
-            'aListLang' => $aListLang,
-            'sClass'    => $sClass,
-            'targetUrl' => $sTargetURL,
+            'sSelected'        => $sSelected,
+            'aListLang'        => $aListLang,
+            'aListLangDetails' => $aListLangDetails,
+            'sClass'           => $sClass,
+            'targetUrl'        => $sTargetURL,
         );
 
         return $languageChangerDatas;
@@ -231,22 +253,26 @@ function getLanguageChangerDatas($sSelectedLanguage = "")
  * This function creates the language selector for the public survey index page
  *
  * @param string $sSelectedLanguage The language in which all information is shown
- * @return array|bool
+ * @return array|false Data for the language changer (sSelected, aListLang, aListLangDetails, sClass) if more than one language is available, else false
  */
 function getLanguageChangerDatasPublicList($sSelectedLanguage)
 {
     $aLanguages = getLanguageDataRestricted(true); // Order by native
     if (count($aLanguages) > 1) {
         $sClass = "ls-language-changer-item";
+        $aListLang = array();
+        $aListLangDetails = array();
         foreach ($aLanguages as $sLangCode => $aLanguage) {
-            $aListLang[$sLangCode] = getLanguageChangerLabel($aLanguage);
+            $aListLangDetails[$sLangCode] = getLanguageChangerDetails($sLangCode, $aLanguage);
+            $aListLang[$sLangCode] = $aListLangDetails[$sLangCode]['label'];
         }
         $sSelected = $sSelectedLanguage;
 
         $languageChangerDatas = array(
-            'sSelected' => $sSelected,
-            'aListLang' => $aListLang,
-            'sClass'    => $sClass,
+            'sSelected'        => $sSelected,
+            'aListLang'        => $aListLang,
+            'aListLangDetails' => $aListLangDetails,
+            'sClass'           => $sClass,
         );
 
         return $languageChangerDatas;

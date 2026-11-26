@@ -40,9 +40,9 @@
                 <select class="col-form-label" name="lang" id="language-changer-select">
                     {% for key,value in  aLCD.aListLang %}
                         {% if key == aLCD.sSelected %}
-                        <option value="{{ key }}" selected="selected">{{ value }} </option>
+                        <option value="{{ key }}"{% if aLCD.aListLangDetails[key] is defined %} lang="{{ aLCD.aListLangDetails[key].lang }}"{% endif %} selected="selected">{{ value }} </option>
                          {% else %}
-                             <option value="{{ key }}">{{ value }}</option>
+                             <option value="{{ key }}"{% if aLCD.aListLangDetails[key] is defined %} lang="{{ aLCD.aListLangDetails[key].lang }}"{% endif %}>{{ value }}</option>
                              {% endif %}
                     {% endfor %}
                 </select>
