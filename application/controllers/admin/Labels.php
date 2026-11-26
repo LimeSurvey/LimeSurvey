@@ -482,9 +482,7 @@ class Labels extends SurveyCommonAction
     /**
      * Echo the label sets the current user may overwrite, for the overwrite list of the classic question editor.
      *
-     * The JSON object maps each label set id to the label set name.
-     *
-     * @return void
+     * @return void Echoes a JSON object that maps each label set id to the label set name
      */
     public function getRestrictedSets()
     {
@@ -500,9 +498,7 @@ class Labels extends SurveyCommonAction
     /**
      * Create a label set from the answer options or subquestions posted by the classic question editor.
      *
-     * Echoes a success message.
-     *
-     * @return void
+     * @return void Echoes a success message
      * @throws CHttpException When the user may not create label sets, or the name, labels or languages are invalid
      */
     public function ajaxSave()
@@ -526,9 +522,7 @@ class Labels extends SurveyCommonAction
     /**
      * Overwrite a label set with the answer options or subquestions posted by the classic question editor.
      *
-     * Echoes a success message.
-     *
-     * @return void
+     * @return void Echoes a success message
      * @throws CHttpException When the label set doesn't exist, the user may not update it, or the labels are invalid
      */
     public function ajaxUpdate()
@@ -543,7 +537,7 @@ class Labels extends SurveyCommonAction
     /**
      * Get the label set service, which both question editors use to read and write label sets.
      *
-     * @return LabelSetService
+     * @return LabelSetService The service from the DI container
      */
     private function getLabelSetService(): LabelSetService
     {
@@ -555,7 +549,7 @@ class Labels extends SurveyCommonAction
      *
      * @param int|null $labelSetId Label set to overwrite, null to create a new one
      * @param string $labelName Name of the new label set
-     * @return void
+     * @return void Nothing: A failed save throws instead
      * @throws CHttpException When the label set can't be saved
      */
     private function saveLabelSetFromRequest(?int $labelSetId, string $labelName = '')
@@ -617,75 +611,6 @@ class Labels extends SurveyCommonAction
             $rowIndex++;
         }
         return $labels;
-    }
-
-    /**
-     * Get Label Sets for Question
-     * @return void
-     */
-    public function getLabelSetsForQuestion()
-    {
-        $languages = Yii::app()->request->getParam('languages', null);
-        $oCriteria = new CDbCriteria();
-        if ($languages != null) {
-            array_walk(
-                $languages,
-                function ($lng) use (&$oCriteria) {
-                    $oCriteria->compare('languages', $lng, true, 'OR');
-                }
-            );
-        }
-        $aLabelSets = LabelSet::model()->findAll($oCriteria);
-
-        $returnArray = [];
-        foreach ($aLabelSets as $oLabelSet) {
-            $aLabelSet = $oLabelSet->attributes;
-            $aLabelSet['labels'] = array_map(
-                function ($oLabel) {
-                    return array_merge($oLabel->attributes, $oLabel->labell10ns);
-                },
-                $oLabelSet->labels
-            );
-            $returnArray[] = $aLabelSet;
-        }
-
-        Yii::app()->getController()->renderPartial(
-            '/admin/super/_renderJson',
-            ['data' => $returnArray]
-        );
-        App()->end();
-    }
-
-    /**
-     * Get Label I10N Object
-     *
-     * @param int    $labelId   Label ID
-     * @param string $language  Language Code
-     * @return LabelL10n
-     * @todo Not used?
-     */
-    private function getLabelI10NObject(int $labelId, string $language)
-    {
-        $oLabelL10n = LabelL10n::model()->findByAttributes(['label_id' => $labelId, 'language' => $language]);
-        if ($oLabelL10n == null) {
-            $oLabelL10n = new LabelL10n();
-            $oLabelL10n->label_id = $labelId;
-            $oLabelL10n->language = $language;
-        }
-        return $oLabelL10n;
-    }
-
-    /**
-     * Get Label Object
-     *
-     * @param int $labelId Label ID
-     * @return Label
-     * @todo Not used?
-     */
-    private function getLabelObject(int $labelId): Label
-    {
-        $oLabel = Label::model()->findByPk($labelId);
-        return $oLabel == null ? (new Label()) : $oLabel;
     }
 
     /**

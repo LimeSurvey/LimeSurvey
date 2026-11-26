@@ -2133,11 +2133,9 @@ class QuestionAdministrationController extends LSBaseController
     /**
      * Echo the label sets for the label set picker of the classic question editor as JSON.
      *
-     * The JSON view ends the request, so nothing is returned.
-     *
      * @param int $sid Survey id
      * @param int $match 1 to only list label sets that contain all the posted "languages"
-     * @return void
+     * @return void Nothing: The JSON view ends the request
      */
     public function actionGetLabelsetPicker($sid, $match = 0)
     {
