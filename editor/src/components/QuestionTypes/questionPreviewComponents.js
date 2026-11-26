@@ -11,7 +11,7 @@ import { GenderQuestion } from './GenderQuestion/GenderQuestion'
 import { YesNoQuestion } from './YesNoQuestion/YesNoQuestion'
 import { OptionQuestionViewMode } from './QuestionModes/OptionQuestionViewMode'
 import { TextDisplay } from './TextQuestion/TextDisplay'
-import { DateTimePickerComponent } from 'components/UIComponents/DateTimePicker/DateTimePicker'
+import { DateQuestionInput } from './DateTime/DateQuestionInput'
 import { ArrayParticipantMode } from 'components/QuestionsParticipantMode'
 
 /**
@@ -69,7 +69,7 @@ export const questionPreviewComponents = {
   [getQuestionTypeInfo().RANKING.theme]: RankingAdvancedQuestion, // todo: update this to use another component once it's ready.
   [getQuestionTypeInfo().RANKING_ADVANCED.theme]: RankingAdvancedQuestion,
   [getQuestionTypeInfo().EQUATION.theme]: Equation,
-  [getQuestionTypeInfo().DATE_TIME.theme]: DateTimePickerComponent,
+  [getQuestionTypeInfo().DATE_TIME.theme]: DateQuestionInput,
   [getQuestionTypeInfo().GENDER.theme]: GenderQuestion,
   [getQuestionTypeInfo().YES_NO.theme]: YesNoQuestion,
   [getQuestionTypeInfo().TEXT_DISPLAY.theme]: TextDisplay,
