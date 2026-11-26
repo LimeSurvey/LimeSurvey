@@ -1,5 +1,6 @@
 import React, { useMemo, useState, useEffect } from 'react'
 import classNames from 'classnames'
+import { format } from 'util'
 
 import {
   isTempId,
@@ -79,6 +80,9 @@ export const ImageChoice = ({
   )
 
   const onChange = (filePath) => {
+    // A missing image replaced by one with the same name keeps its URL: The
+    // new file gets its own chance to load.
+    setFailedImageUrl(null)
     update(encodeURI(filePath))
   }
 
@@ -90,6 +94,15 @@ export const ImageChoice = ({
 
   const regexContainsHtml = /(<([^>]+)>)/i
   const isValidImg = useMemo(() => !regexContainsHtml.test(value), [value])
+  // URL of an image that couldn't be loaded, e.g. its file is missing: The
+  // placeholder is shown instead. Keeping the URL gives a new image its own
+  // chance.
+  const [failedImageUrl, setFailedImageUrl] = useState(null)
+  const showImage = !!previewUrl && isValidImg && failedImageUrl !== previewUrl
+  // Screen readers are told that the placeholder isn't the image.
+  const noImageAlt = code
+    ? format(t('No image found for %s'), code)
+    : t('No image found')
 
   const idSuffix = idPrefix + id + '-i' + index
 
@@ -167,10 +180,11 @@ export const ImageChoice = ({
           >
             <div className={classNames({ 'd-none': showLoader })}>
               <EditedImage
-                src={previewUrl && isValidImg ? previewUrl : NoImageFound}
-                alt={imageAltText || code}
-                settings={previewUrl && isValidImg ? imageSettings : null}
+                src={showImage ? previewUrl : NoImageFound}
+                alt={showImage ? imageAltText || code : noImageAlt}
+                settings={showImage ? imageSettings : null}
                 height={IMAGE_PREVIEW_HEIGHT}
+                onError={() => setFailedImageUrl(previewUrl)}
                 fallbackStyle={{
                   height: '100%',
                   maxHeight: IMAGE_PREVIEW_HEIGHT,
