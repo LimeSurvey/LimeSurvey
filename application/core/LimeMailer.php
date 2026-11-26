@@ -17,25 +17,25 @@ class LimeMailer extends PHPMailer
      * Reset part
      */
     /* No reset */
-    const ResetNone = 0;
+    public const ResetNone = 0;
     /* Basic reset */
-    const ResetBase = 1;
+    public const ResetBase = 1;
     /* Complete reset : all except survey part , remind : you always can get a new one */
-    const ResetComplete = 2;
+    public const ResetComplete = 2;
 
     /**
      * Email methods
      */
     /* PHP mail() */
-    const MethodMail = 'mail';
+    public const MethodMail = 'mail';
     /* Sendmail */
-    const MethodSendmail = 'sendmail';
+    public const MethodSendmail = 'sendmail';
     /* Qmail */
-    const MethodQmail = 'qmail';
+    public const MethodQmail = 'qmail';
     /* SMTP */
-    const MethodSmtp = 'smtp';
+    public const MethodSmtp = 'smtp';
     /* Plugin */
-    const MethodPlugin = 'plugin';
+    public const MethodPlugin = 'plugin';
 
     /* @var null|integer $surveyId Current survey ID */
     public $surveyId;
@@ -171,6 +171,11 @@ class LimeMailer extends PHPMailer
         /* Don't check tls by default : allow own sign certificate */
         $this->SMTPAutoTLS = false;
 
+        /* Collect debug output (SMTP and mail()) instead of echoing it */
+        $this->Debugoutput = function ($str, $level) {
+            $this->addDebug($str);
+        };
+
         switch ($emailmethod) {
             case self::MethodQmail:
                 $this->IsQmail();
@@ -178,9 +183,6 @@ class LimeMailer extends PHPMailer
             case self::MethodSmtp:
                 $this->IsSMTP();
                 $this->SMTPKeepAlive = true;
-                $this->Debugoutput = function ($str, $level) {
-                    $this->addDebug($str);
-                };
                 if ($emailsmtpdebug > 0) {
                     if ($emailsmtpdebug == 1) {
                         // Map "On errors" to PHPMailer debug level 2
@@ -361,6 +363,63 @@ class LimeMailer extends PHPMailer
     }
 
     /**
+     * Add the List-Unsubscribe headers if the message offers an opt-out link
+     * Only token emails whose raw template uses OPTOUTURL or whose body contains the opt-out url get the headers,
+     * so that one click unsubscribe is not offered on emails without an opt-out link (e.g. registration or confirmation)
+     * List-Unsubscribe-Post (one click unsubscribe) is only added if the opt-out url uses HTTPS, as required by RFC 8058
+     * @see https://datatracker.ietf.org/doc/html/rfc2369
+     * @see https://datatracker.ietf.org/doc/html/rfc8058
+     * @return void
+     */
+    private function addListUnsubscribeHeaders()
+    {
+        if (empty($this->oToken)) {
+            return;
+        }
+        /* Do not add unsubscribe URL if not OPTOUTURL in body */
+        $optoutBaseUrl = $this->createListUnsubscribeUrl("/optout/tokens");
+        if (
+            strpos((string) $this->Body, $optoutBaseUrl) === false
+            && strpos((string) $this->rawBody, 'OPTOUTURL') === false
+        ) {
+            return;
+        }
+        // separate one click url, so that the OPTOUTURL replacement field always requires a confirmation
+        $unsubscribeUrl = $this->createListUnsubscribeUrl(
+            "/optout/oneclick",
+            [
+                "surveyid" => $this->surveyId,
+                "token" => $this->oToken->token,
+                "langcode" => $this->mailLanguage,
+            ]
+        );
+        // avoid duplicate headers if the same instance sends the message more than once
+        $this->clearCustomHeader("List-Unsubscribe");
+        $this->clearCustomHeader("List-Unsubscribe-Post");
+        $this->addCustomHeader("List-Unsubscribe", "<$unsubscribeUrl>");
+        // one click unsubscribe requires an HTTPS URI, over plain HTTP the receiver only gets the manual opt-out link
+        if (strtolower((string) parse_url($unsubscribeUrl, PHP_URL_SCHEME)) === 'https') {
+            $this->addCustomHeader("List-Unsubscribe-Post", "List-Unsubscribe=One-Click");
+        }
+    }
+
+    /**
+     * Create an absolute url for the List-Unsubscribe headers the same way as the token replacement urls:
+     * validated against the allowed hosts to prevent host header injection, with a fallback to the request host
+     * @param string $route
+     * @param array<string, mixed> $params
+     * @return string
+     */
+    private function createListUnsubscribeUrl($route, $params = [])
+    {
+        $url = App()->createValidatedAbsoluteUrl($route, $params);
+        if ($url === false) {
+            $url = App()->getController()->createAbsoluteUrl($route, $params);
+        }
+        return $url;
+    }
+
+    /**
      * Sets the email type and raw content for a survey email.
      *
      * This function sets the email type, determines the appropriate language,
@@ -405,29 +464,42 @@ class LimeMailer extends PHPMailer
         $this->rawSubject = $oSurveyLanguageSetting->{$attributeSubject};
         $this->rawBody = $oSurveyLanguageSetting->{$emailColumns[$emailType]};
     }
+
+    /**
+     * Split a «Name <email>» string into its name and email address parts.
+     * The address is the last <…> part at the end, so a name containing '<' or '>' is kept intact.
+     * @param string $string «email», «Name <email>» or «<email>» (forces an empty name)
+     * @return array{name: string|null, address: string} name is null if there is no <…> part at the end,
+     *               and an empty string for «<email>» (explicitly empty name)
+     */
+    public static function parseNameAndAddress($string)
+    {
+        $string = trim((string) $string);
+        if (preg_match('/^(.*)<([^<>]*)>$/s', $string, $matches)) {
+            return array('name' => trim($matches[1]), 'address' => trim($matches[2]));
+        }
+        return array('name' => null, 'address' => $string);
+    }
+
     /**
      * @inheritdoc
      * Fix first parameters if he had email + name ( Name <email> format)
+     * @param string $from email, «Name <email>» or «<email>» (forces an empty name)
+     * @param string|null $fromname name, if null: taken from $from or the current FromName
+     * @param bool $auto see parent
      * @return bool
      */
     public function setFrom($from, $fromname = null, $auto = true)
     {
-        $fromemail = $from;
-        if (strpos($from, '<') !== false) {
-            if (is_null($fromname)) {
-                if (strpos($from, '<')) {
-                    $fromname = trim(substr($from, 0, strpos($from, '<') - 1));
-                } else {
-                    /* Allow to force empty name in token email */
-                    $fromname = '';
-                }
-            }
-            $fromemail = substr($from, strpos($from, '<') + 1, strpos($from, '>') - 1 - strpos($from, '<'));
+        $parsed = self::parseNameAndAddress($from);
+        if (is_null($fromname)) {
+            /* An empty name part (e.g. «<email>») allows to force empty name in token email */
+            $fromname = $parsed['name'];
         }
         if (is_null($fromname)) {
             $fromname = $this->FromName;
         }
-        return parent::setFrom($fromemail, $fromname, $auto);
+        return parent::setFrom($parsed['address'], $fromname, $auto);
     }
 
     /**
@@ -446,17 +518,18 @@ class LimeMailer extends PHPMailer
     /**
      * @inheritdoc
      * Fix first parameters if he had email + name ( Name <email> format)
+     * @param string $addressTo email or «Name <email>»
+     * @param string $name the name, if empty string or null: taken from $addressTo
+     * @return bool
      */
     public function addAddress($addressTo, $name = '')
     {
-        $address = $addressTo;
-        if (strpos($address, '<')) {
-            $address = substr($addressTo, strpos($addressTo, '<') + 1, strpos($addressTo, '>') - 1 - strpos($addressTo, '<'));
-            if (empty($name)) {
-                $name = trim(substr($addressTo, 0, strpos($addressTo, '<') - 1));
-            }
+        $parsed = self::parseNameAndAddress($addressTo);
+        /* Not empty(): a name like "0" must be kept */
+        if ($name === '' || $name === null) {
+            $name = (string) $parsed['name'];
         }
-        return parent::addAddress($address, $name);
+        return parent::addAddress($parsed['address'], $name);
     }
 
     /**
@@ -645,6 +718,7 @@ class LimeMailer extends PHPMailer
             $this->setError(gT('Email was not sent. One or more attachments did not exist.'));
             return false;
         }
+        $this->addListUnsubscribeHeaders();
         /* All core done, next are done for all survey */
         $eventResult = $this->manageEvent();
         if (!is_null($eventResult)) {
@@ -688,7 +762,15 @@ class LimeMailer extends PHPMailer
                 return $event->get('error') == null;
             }
         }
-        return parent::Send();
+        // PHPMailer changes the content type to multipart/alternative when the email has a plain text alternative.
+        // Restore it: This mailer instance can be reused for the next recipient and getIsHtml() must stay right,
+        // else the next email gets no links and no HTML wrapper.
+        $contentType = $this->ContentType;
+        try {
+            return parent::Send();
+        } finally {
+            $this->ContentType = $contentType;
+        }
     }
 
     /**
@@ -885,6 +967,12 @@ class LimeMailer extends PHPMailer
             foreach ($this->oToken->attributes as $attribute => $value) {
                 $aTokenReplacements[strtoupper((string) $attribute)] = $value;
             }
+            // Validity dates are stored in UTC. Show them in the display timezone (the timezone of the sending admin).
+            foreach (['VALIDFROM', 'VALIDUNTIL'] as $validityField) {
+                if (!empty($aTokenReplacements[$validityField])) {
+                    $aTokenReplacements[$validityField] = dateShift($aTokenReplacements[$validityField], 'Y-m-d H:i:s');
+                }
+            }
         }
         /* Set the minimal url and add it to Placeholders - use validated URLs to prevent host header injection */
         $aTokenReplacements["OPTOUTURL"] = App()
@@ -914,7 +1002,7 @@ class LimeMailer extends PHPMailer
             $aTokenReplacements["GLOBALOPTINURL"] = App()->getController()
                 ->createAbsoluteUrl("/optin/participants", array("surveyid" => $this->surveyId, "token" => $token,"langcode" => $language));
         }
-        $this->addUrlsPlaceholders("GLOBALOPTINURL");
+        $this->addUrlsPlaceholders("GLOBALOPTIN");
         $aTokenReplacements["SURVEYURL"] = $survey->getSurveyUrl($language, ["token" => $token]);
         // Validate the survey URL host against allowed hosts to prevent host header injection
         $parsedSurveyUrl = parse_url($aTokenReplacements["SURVEYURL"]);

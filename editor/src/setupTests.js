@@ -42,6 +42,9 @@ jest.mock('sweetalert2-react-content', () => {
           isConfirmed: true, // simulate clicking "OK", since sweetalert2 is not being rendered correctly in tests.
         })
       ),
+      // No popup is ever rendered, so there is never one to return or close
+      getPopup: jest.fn(() => null),
+      close: jest.fn(),
     }),
   }
 })

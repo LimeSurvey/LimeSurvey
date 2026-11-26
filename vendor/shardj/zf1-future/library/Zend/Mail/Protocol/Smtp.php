@@ -133,7 +133,6 @@ class Zend_Mail_Protocol_Smtp extends Zend_Mail_Protocol_Abstract
                      */
                     require_once 'Zend/Mail/Protocol/Exception.php';
                     throw new Zend_Mail_Protocol_Exception($config['ssl'] . ' is unsupported SSL type');
-                    break;
             }
         }
 
@@ -145,6 +144,23 @@ class Zend_Mail_Protocol_Smtp extends Zend_Mail_Protocol_Abstract
         }
 
         parent::__construct($host, $port, $config);
+    }
+
+
+    /**
+     * Ends an open SMTP session before the connection is closed
+     *
+     * @return void
+     */
+    public function __destruct()
+    {
+        try {
+            $this->quit();
+        } catch (Zend_Mail_Protocol_Exception $e) {
+            // the server closed the connection or did not answer, it is closed below anyway
+        }
+
+        parent::__destruct();
     }
 
 
@@ -252,7 +268,7 @@ class Zend_Mail_Protocol_Smtp extends Zend_Mail_Protocol_Abstract
             throw new Zend_Mail_Protocol_Exception('A valid session has not been started');
         }
 
-        $this->_send('MAIL FROM:<' . $from . '>');
+        $this->_send('MAIL FROM:<' . $this->_encodeHostname($from) . '>');
         $this->_expect(250, 300); // Timeout set for 5 minutes as per RFC 2821 4.5.3.2
 
         // Set mail to true, clear recipients and any existing data flags as per 4.1.1.2 of RFC 2821
@@ -280,9 +296,40 @@ class Zend_Mail_Protocol_Smtp extends Zend_Mail_Protocol_Abstract
         }
 
         // Set rcpt to true, as per 4.1.1.3 of RFC 2821
-        $this->_send('RCPT TO:<' . $to . '>');
+        $this->_send('RCPT TO:<' . $this->_encodeHostname($to) . '>');
         $this->_expect([250, 251], 300); // Timeout set for 5 minutes as per RFC 2821 4.5.3.2
         $this->_rcpt = true;
+    }
+
+
+    /**
+     * Converts an internationalized domain in the host part of an address to its ASCII (punycode) form
+     *
+     * SMTP without the SMTPUTF8 extension only takes ASCII in the envelope;
+     * the host part of an IDN address is converted with the intl extension,
+     * the local part and addresses without intl are sent unchanged.
+     *
+     * @param  string $address
+     * @return string
+     */
+    protected function _encodeHostname($address)
+    {
+        $at = strrpos($address, '@');
+        if ($at === false || !function_exists('idn_to_ascii')) {
+            return $address;
+        }
+
+        $host = substr($address, $at + 1);
+        if (!preg_match('/[\x80-\xff]/', $host)) {
+            return $address;
+        }
+
+        $ascii = idn_to_ascii($host, IDNA_NONTRANSITIONAL_TO_ASCII, INTL_IDNA_VARIANT_UTS46);
+        if ($ascii === false) {
+            return $address;
+        }
+
+        return substr($address, 0, $at + 1) . $ascii;
     }
 
 

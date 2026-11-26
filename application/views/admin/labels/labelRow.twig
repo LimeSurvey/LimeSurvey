@@ -2,6 +2,8 @@
  /**
  * Label row view (for Label Set editor)
  *
+ * Note: Without update permission the row is rendered as plain text, without position and action columns.
+ *
  * @var bool $first
  * @var string $language
  * @var string $rowId
@@ -12,7 +14,7 @@
  */
 #}
 <tr class="labelDatas" style='white-space: nowrap;' id='row_{{ language }}_{{ rowId }}'>
-    {% if not first %}
+    {% if not first or not hasLabelSetUpdatePermission %}
         <td>{{ code|escape }}</td>
         <td>{{ assessmentValue }}</td>
     {% else %}
@@ -30,12 +32,12 @@
         </td>
     {% endif %}
 
-    <td>
-        <input type='text' class=" form-control  " name='title_{{ language }}_{{ rowId }}' id='title_{{ language }}_{{ rowId }}' maxlength='3000' size='80' value="{{ title|escape }}" />
-    </td>
-    <td>
-        <div class="icon-btn-row">
-            {% if hasLabelSetUpdatePermission %}
+    {% if hasLabelSetUpdatePermission %}
+        <td>
+            <input type='text' class=" form-control  " name='title_{{ language }}_{{ rowId }}' id='title_{{ language }}_{{ rowId }}' maxlength='3000' size='80' value="{{ title|escape }}" />
+        </td>
+        <td>
+            <div class="icon-btn-row">
                 <button type="button"
                     class="btn btn-outline-secondary btn-sm htmleditor--openmodal"
                     data-target-field-id="title_{{ language }}_{{ rowId }}"
@@ -52,7 +54,9 @@
                         <i class="ri-indeterminate-circle-fill text-danger"></i>
                     </button>
                 {% endif %}
-            {% endif %}
-        </div>
-    </td>
+            </div>
+        </td>
+    {% else %}
+        <td>{{ title|escape }}</td>
+    {% endif %}
 </tr>

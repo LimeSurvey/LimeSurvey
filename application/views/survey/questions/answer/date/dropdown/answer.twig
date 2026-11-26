@@ -16,11 +16,11 @@
 
 <!-- answer -->
 <div class="{{ coreClass }} ls-no-js-hidden mb-3 row row-cols-sm-auto g-1 align-items-center" role="group"
-     aria-labelledby="ls-question-text-{{ name }}">
+     aria-labelledby="ls-question-text-{{ name }}" aria-describedby="ls-question-help-{{ name }} ls-question-validation-{{ name }}">
     {# // rows/*.php #}
     {{ sRows }}
 </div>
-<!-- answer fo nojs action and real value sent -->
+<!-- answer for nojs action and real value sent -->
 <div class="row">
     <div class='{{ coreClass }} ls-js-hidden mb-3 col-3'>
         <label for='answer{{ name }}' class='visually-hidden control-label'>
@@ -31,7 +31,7 @@
             {{ C.Html.textField(name,dateoutput,{
                 'id' : "answer" ~ name,
                 'class' : "form-control date-control date",
-                'aria-describedby' : "ls-question-text-" ~ name,
+                'aria-describedby' : "ls-question-text-" ~ name ~ " ls-question-help-" ~ name ~ " ls-question-validation-" ~ name,
             }) }}
         </div>
         <p class="tip help-block" aria-hidden='true'>

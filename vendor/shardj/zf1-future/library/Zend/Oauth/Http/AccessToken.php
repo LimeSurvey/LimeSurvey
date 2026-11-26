@@ -164,6 +164,7 @@ class Zend_Oauth_Http_AccessToken extends Zend_Oauth_Http
                     $this->_consumer->getAccessTokenUrl());
                 break;
         }
+        // @phpstan-ignore variable.undefined (Zend_Oauth_Config accepts the three request schemes only)
         return $httpClient->request();
     }
 

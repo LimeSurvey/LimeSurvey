@@ -91,6 +91,7 @@ class QuestionGroupService
             $questionGroup,
             $input['questionGroupI10N']
         );
+        $this->proxyExpressionManager->flushEmCache();
 
         return $questionGroup;
     }
@@ -169,6 +170,7 @@ class QuestionGroupService
      * @return int|null number of deleted rows
      * @throws PermissionDeniedException
      * @throws QuestionGroupHasConditionsException if questions of other groups have conditions on this group
+     * @throws NotFoundException if the group does not exist in this survey
      */
     public function deleteGroup(int $questionGroupId, int $surveyId)
     {
@@ -178,6 +180,10 @@ class QuestionGroupService
             throw new QuestionGroupHasConditionsException(
                 gT('Group can not be deleted, because of depending conditions')
             );
+        }
+        // Checked before the conditions are reverted, they would not be upgraded again otherwise
+        if (!$this->modelQuestionGroup->exists('gid = :gid AND sid = :sid', [':gid' => $questionGroupId, ':sid' => $surveyId])) {
+            throw new NotFoundException(gT('Group not found'));
         }
         $this->proxyExpressionManager->revertUpgradeConditionsToRelevance($surveyId);
 
@@ -320,7 +326,30 @@ class QuestionGroupService
         QuestionGroup $oQuestionGroup,
         array $dataSet
     ) {
-        $storeValid = true;
+        try {
+            $this->updateQuestionGroupLanguagesOrFail($oQuestionGroup, $dataSet);
+        } catch (PersistErrorException $e) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Stores questiongroup languages. All languages are attempted, languages
+     * failing validation are reported afterwards.
+     *
+     * @param QuestionGroup $oQuestionGroup
+     * @param array $dataSet array with languages
+     * @return void
+     * @throws PersistErrorException if any language could not be saved, the
+     *   first failing model is attached as error model
+     */
+    public function updateQuestionGroupLanguagesOrFail(
+        QuestionGroup $oQuestionGroup,
+        array $dataSet
+    ): void {
+        $failedLanguages = [];
+        $failedModel = null;
 
         foreach ($dataSet as $sLanguage => $aL10NBlock) {
             $l10N = $this->modelQuestionGroupL10n->findByAttributes(
@@ -337,11 +366,20 @@ class QuestionGroupService
                         'description' => $aL10NBlock['description']
                     ], false);
                 }
-                $storeValid = $storeValid && $l10N->save();
+                if (!$l10N->save()) {
+                    $failedLanguages[] = $sLanguage;
+                    $failedModel = $failedModel ?? $l10N;
+                }
             }
         }
 
-        return $storeValid;
+        if (!empty($failedLanguages)) {
+            $e = new PersistErrorException(
+                gT('Could not save question group') . ' (' . implode(', ', $failedLanguages) . ')'
+            );
+            $e->setErrorModel($failedModel);
+            throw $e;
+        }
     }
 
     /**
@@ -397,6 +435,9 @@ class QuestionGroupService
     /**
      * Gets array with question related parameters (qid, question_order, gid)
      * and updates them in those questions and their subquestions
+     *
+     * Note: The question and its target group must belong to the survey.
+     *
      * @param array $aQuestion
      * @param int $surveyId
      * @param bool $success
@@ -407,6 +448,14 @@ class QuestionGroupService
         int $surveyId,
         bool $success
     ) {
+        if (
+            !$this->modelQuestionGroup->exists(
+                "gid=:gid AND sid=:sid",
+                [':gid' => (int) ($aQuestion['gid'] ?? 0), ':sid' => $surveyId]
+            )
+        ) {
+            return false;
+        }
         $aQuestions = $this->modelQuestion->findAll(
             "qid=:qid AND sid=:sid",
             [':qid' => $aQuestion['qid'], ':sid' => $surveyId]
@@ -571,10 +620,13 @@ class QuestionGroupService
      * @param int $surveyId
      * @return void
      * @throws PermissionDeniedException
+     * @throws NotFoundException
      */
     public function checkCreatePermission(int $surveyId)
     {
+        $survey = $this->getSurvey($surveyId);
         if (
+            $survey->isActive ||
             !$this->modelPermission->hasSurveyPermission(
                 $surveyId,
                 'surveycontent',
@@ -591,10 +643,11 @@ class QuestionGroupService
      * @param int $surveyId
      * @return void
      * @throws PermissionDeniedException
+     * @throws NotFoundException
      */
     public function checkDeletePermission(int $surveyId)
     {
-        $survey = $this->modelSurvey->findByPk($surveyId);
+        $survey = $this->getSurvey($surveyId);
         if (
             $survey->isActive ||
             !$this->modelPermission->hasSurveyPermission(

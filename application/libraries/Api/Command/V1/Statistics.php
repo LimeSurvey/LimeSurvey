@@ -5,6 +5,8 @@ namespace LimeSurvey\Libraries\Api\Command\V1;
 use CDbException;
 use InvalidArgumentException;
 use LimeSurvey\Models\Services\Exception\NotFoundException;
+use LimeSurvey\Models\Services\Exception\PermissionDeniedException;
+use LimeSurvey\Models\Services\ResponseFilters\ResponseFilterSetService;
 use LimeSurvey\Models\Services\SurveyStatistics\StatisticsResponseFilters;
 use LimeSurvey\Models\Services\SurveyStatistics\StatisticsService;
 use Permission;
@@ -16,12 +18,14 @@ use LimeSurvey\Api\Command\{
     Response\ResponseFactory
 };
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermissionTrait;
+use LimeSurvey\Libraries\Api\Command\V1\Statistics\StatisticsFilterParamsTrait;
 use DI\FactoryInterface;
 use Yii;
 
 class Statistics implements CommandInterface
 {
     use AuthPermissionTrait;
+    use StatisticsFilterParamsTrait;
 
     /** Default number of charts returned per page */
     private const DEFAULT_PAGE_SIZE = 15;
@@ -33,28 +37,32 @@ class Statistics implements CommandInterface
     protected ResponseFactory $responseFactory;
     protected StatisticsService $statisticsService;
     protected StatisticsResponseFilters $filters;
+    protected ResponseFilterSetService $filterSetService;
 
     /**
      * Constructor
      *
      * @param TransformerOutputSurvey $transformerOutputSurvey
-     * @param FactoryInterface $diFactory
+     * @param Permission $permission
      * @param ResponseFactory $responseFactory
      * @param StatisticsResponseFilters $filters
      * @param StatisticsService $statisticsService
+     * @param ResponseFilterSetService $filterSetService
      */
     public function __construct(
         TransformerOutputSurvey $transformerOutputSurvey,
         Permission $permission,
         ResponseFactory $responseFactory,
         StatisticsResponseFilters $filters,
-        StatisticsService $statisticsService
+        StatisticsService $statisticsService,
+        ResponseFilterSetService $filterSetService
     ) {
         $this->permission = $permission;
         $this->transformerOutputSurvey = $transformerOutputSurvey;
         $this->responseFactory = $responseFactory;
         $this->statisticsService = $statisticsService;
         $this->filters = $filters;
+        $this->filterSetService = $filterSetService;
     }
 
     /**
@@ -78,6 +86,14 @@ class Statistics implements CommandInterface
                 $this->statisticsService->setFilters($this->filters);
             }
 
+            $this->statisticsService->setResolvedFilters(
+                $this->resolveFilterSet(
+                    $request,
+                    $this->statisticsService->getSurvey(),
+                    $this->statisticsService->getLanguage()
+                )
+            );
+
             $this->statisticsService->setPagination(
                 $this->getPage(),
                 $this->getPageSize()
@@ -86,6 +102,8 @@ class Statistics implements CommandInterface
             $statistics = $this->statisticsService->run();
         } catch (InvalidArgumentException $exception) {
             return $this->responseFactory->makeErrorBadRequest($exception->getMessage());
+        } catch (PermissionDeniedException $exception) {
+            return $this->responseFactory->makeErrorUnauthorised();
         } catch (NotFoundException $exception) {
             return $this->responseFactory->makeErrorNotFound($exception->getMessage());
         } catch (CDbException $exception) {
@@ -112,31 +130,5 @@ class Statistics implements CommandInterface
     {
         $pageSize = Yii::app()->getRequest()->getQueryParams()['pageSize'] ?? self::DEFAULT_PAGE_SIZE;
         return min(self::MAX_PAGE_SIZE, max(1, (int)$pageSize));
-    }
-
-    public function getFilters(): StatisticsResponseFilters
-    {
-        $params = Yii::app()->getRequest()->getQueryParams();
-        $filterMap = [
-            'minId' => 'setMinId',
-            'maxId' => 'setMaxId',
-            'completed' => 'setCompleted',
-        ];
-
-        foreach ($filterMap as $key => $method) {
-            $value = $params[$key] ?? null;
-            if ($value !== null) {
-                $this->filters->$method(
-                    $key === 'completed' ? $value === 'true' : (int)$value
-                );
-            }
-        }
-
-        $search = $params['search'] ?? null;
-        if ($search !== null) {
-            $this->filters->setSearchTerms(is_array($search) ? $search : [$search]);
-        }
-
-        return $this->filters;
     }
 }

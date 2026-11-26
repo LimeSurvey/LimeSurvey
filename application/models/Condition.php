@@ -51,6 +51,37 @@ class Condition extends LSActiveRecord
     }
 
     /**
+     * Refuses to save a condition whose source question (cqid) doesn't belong to the survey of the question (qid).
+     *
+     * @return boolean
+     */
+    protected function beforeSave()
+    {
+        if (!empty($this->cqid) && !self::isQuestionOfSameSurvey((int) $this->qid, (int) $this->cqid)) {
+            $this->addError('cqid', gT("The condition must be based on a question of the same survey."));
+            return false;
+        }
+        return parent::beforeSave();
+    }
+
+    /**
+     * Checks whether two questions belong to the same survey.
+     *
+     * @param integer $qid the question ID
+     * @param integer $otherQid the other question ID
+     * @return boolean
+     */
+    public static function isQuestionOfSameSurvey(int $qid, int $otherQid): bool
+    {
+        return (bool) Yii::app()->db->createCommand()
+            ->select('COUNT(*)')
+            ->from('{{questions}} q')
+            ->join('{{questions}} oq', 'oq.sid = q.sid')
+            ->where('q.qid = :qid AND oq.qid = :oqid', [':qid' => $qid, ':oqid' => $otherQid])
+            ->queryScalar();
+    }
+
+    /**
      * Returns the primary key of this table
      *
      * @access public
@@ -130,8 +161,24 @@ class Condition extends LSActiveRecord
 
 
 
+    /**
+     * Inserts a condition, or updates the conditions matching $condition.
+     *
+     * Note: Fails if the source question (cqid) doesn't belong to the survey of the question (qid).
+     *
+     * @param array $data the condition attributes
+     * @param boolean $update whether to update existing conditions instead of inserting one
+     * @param array|string|false $condition the conditions to update
+     * @return boolean|integer save result, or the number of updated rows
+     */
     public function insertRecords($data, $update = false, $condition = false)
     {
+        if (!empty($data['cqid'])) {
+            $qid = $data['qid'] ?? (is_array($condition) ? ($condition['qid'] ?? null) : null);
+            if (empty($qid) || !self::isQuestionOfSameSurvey((int) $qid, (int) $data['cqid'])) {
+                return false;
+            }
+        }
         $record = new self();
         foreach ($data as $k => $v) {
             $v = str_replace(array("'", '"'), '', (string) $v);

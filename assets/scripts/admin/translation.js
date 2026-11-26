@@ -56,10 +56,9 @@ $(document).on('ready  pjax:scriptcomplete',  function(){
             }
 
             if (!bIgnore){
-
-                sToConvert = sToConvert.replace( new RegExp( "\\n", "g" ),'\\n');
-                sToConvert = sToConvert.replace(/"/g,'\\"');
-                setTimeout('fDoTranslateAjax("'+sBaseLang+'","'+sToLang+'","'+sToConvert+'","'+sId+'");',index*intThrottlingRate);
+                setTimeout(function () {
+                    fDoTranslateAjax(sBaseLang, sToLang, sToConvert, sId);
+                }, index * intThrottlingRate);
             }
 
         });
@@ -69,6 +68,58 @@ $(document).on('ready  pjax:scriptcomplete',  function(){
     });
 });
 
+
+/**
+ * Saves the changed texts only, all in the single field "translations".
+ * The form has several fields per text, so posting it as it is exceeds the PHP setting
+ * max_input_vars on larger surveys, and PHP drops the fields beyond that limit.
+ */
+$(document).on('submit', '#translateform', function (event) {
+    var form = this;
+    var fieldValue = function (name) {
+        var field = form.elements[name];
+        return field ? field.value : '';
+    };
+    // The browser converts line breaks in a textarea, but not in the hidden field with the saved text
+    var normalize = function (text) {
+        return String(text).replace(/\r\n?/g, '\n');
+    };
+
+    var changes = [];
+    $(form).find('textarea').each(function () {
+        var match = /^(.+)_newvalue_(\d+)$/.exec(this.name);
+        if (!match) {
+            return;
+        }
+        var editor = window.CKEDITOR && CKEDITOR.instances[this.name];
+        if (editor) {
+            editor.updateElement();
+        }
+        var type = match[1];
+        var index = match[2];
+        if (this.value === '' || normalize(this.value) === normalize(fieldValue(type + '_oldvalue_' + index))) {
+            return;
+        }
+        changes.push({
+            type: type,
+            id1: fieldValue(type + '_id1_' + index),
+            id2: fieldValue(type + '_id2_' + index),
+            scaleid: fieldValue(type + '_scaleid_' + index),
+            value: this.value
+        });
+    });
+
+    event.preventDefault();
+    // form.action is the field named "action" here, not the URL
+    var $saveForm = $('<form>', {method: 'post', action: form.getAttribute('action'), 'class': 'd-none'});
+    var names = [LS.data.csrfTokenName, 'sid', 'action', 'actionvalue', 'tolang', 'baselang'];
+    $.each(names, function (i, name) {
+        $('<input>', {type: 'hidden', name: name, value: fieldValue(name)}).appendTo($saveForm);
+    });
+    $('<input>', {type: 'hidden', name: 'translations', value: JSON.stringify(changes)}).appendTo($saveForm);
+    $saveForm.appendTo(document.body);
+    $saveForm[0].submit();
+});
 
 function fHideAjaxLoader(){
     iRunningThreads--;

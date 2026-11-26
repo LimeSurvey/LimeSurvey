@@ -131,7 +131,7 @@ class Zend_Filter_Compress_Zip extends Zend_Filter_Compress_CompressAbstract
             throw new Zend_Filter_Exception($this->_errorString($res));
         }
 
-        if (file_exists($content)) {
+        if ($this->_isExistingFile($content)) {
             $content  = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, realpath($content));
             $basename = substr($content, strrpos($content, DIRECTORY_SEPARATOR) + 1);
             if (is_dir($content)) {
@@ -161,7 +161,7 @@ class Zend_Filter_Compress_Zip extends Zend_Filter_Compress_CompressAbstract
                     $zip->addEmptyDir(substr($local, 0, -1));
 
                     foreach ($files as $file) {
-                        $zip->addFile($current . $file, $local . $file);
+                        $res = $zip->addFile($current . $file, $local . $file);
                         if ($res !== true) {
                             require_once 'Zend/Filter/Exception.php';
                             throw new Zend_Filter_Exception($this->_errorString($res));
@@ -203,7 +203,7 @@ class Zend_Filter_Compress_Zip extends Zend_Filter_Compress_CompressAbstract
     public function decompress($content)
     {
         $archive = $this->getArchive();
-        if (file_exists($content)) {
+        if ($this->_isExistingFile($content)) {
             $archive = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, realpath($content));
         } elseif (empty($archive) || !file_exists($archive)) {
             require_once 'Zend/Filter/Exception.php';
@@ -246,7 +246,7 @@ class Zend_Filter_Compress_Zip extends Zend_Filter_Compress_CompressAbstract
     /**
      * Returns the proper string based on the given error constant
      *
-     * @param string $error
+     * @param string|int|false $error
      */
     protected function _errorString($error)
     {

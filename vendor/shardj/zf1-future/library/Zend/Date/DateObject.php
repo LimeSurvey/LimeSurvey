@@ -144,12 +144,12 @@ abstract class Zend_Date_DateObject
      * Year has to be 4 digits otherwise it would be recognised as
      * year 70 AD instead of 1970 AD as expected !!
      *
-     * @param  integer  $hour
-     * @param  integer  $minute
-     * @param  integer  $second
-     * @param  integer  $month
-     * @param  integer  $day
-     * @param  integer  $year    Added limitation: $year value must be between -10 000 and 10 000
+     * @param  integer|string|float  $hour
+     * @param  integer|string|float  $minute
+     * @param  integer|string|float  $second
+     * @param  integer|string  $month
+     * @param  integer|string  $day
+     * @param  integer|string  $year    Added limitation: $year value must be between -10 000 and 10 000
      *                           Original method implementation causes 504 error if it gets too big(small) year value
      * @param  boolean  $gmt     OPTIONAL true = other arguments are for UTC time, false = arguments are for local time/date
      * @return integer|float     timestamp (number of seconds elapsed relative to 1970/01/01 00:00:00 GMT/UTC)
@@ -179,7 +179,7 @@ abstract class Zend_Date_DateObject
         if (isset(self::$_cache)) {
             $id = strtr('Zend_DateObject_mkTime_' . $this->_offset . '_' . $year.$month.$day.'_'.$hour.$minute.$second . '_'.(int)$gmt, '-','_');
             if ($result = self::$_cache->load($id)) {
-                return unserialize($result);
+                return unserialize($result, ['allowed_classes' => false]);
             }
         }
 
@@ -345,7 +345,7 @@ abstract class Zend_Date_DateObject
         if (isset(self::$_cache)) {
             $idstamp = strtr('Zend_DateObject_date_' . $this->_offset . '_'. $timestamp . '_'.(int)$gmt, '-','_');
             if ($result2 = self::$_cache->load($idstamp)) {
-                $timestamp = unserialize($result2);
+                $timestamp = unserialize($result2, ['allowed_classes' => false]);
                 $jump = true;
             }
         }
@@ -356,12 +356,6 @@ abstract class Zend_Date_DateObject
             if ($tempstamp > 0) {
                 while (abs($tempstamp) > 0x7FFFFFFF) {
                     $tempstamp -= (86400 * 23376);
-                }
-
-                $dst = date("I", $tempstamp);
-
-                if ($dst === 1) {
-                    $timestamp += 3600;
                 }
 
                 $temp       = date('Z', $tempstamp);
@@ -649,7 +643,7 @@ abstract class Zend_Date_DateObject
      *
      * @param  integer  $year
      * @param  integer  $month
-     * @param  integer  $day
+     * @param  integer|float  $day
      * @return integer  dayOfWeek
      */
     protected static function dayOfWeek($year, $month, $day)
@@ -706,7 +700,7 @@ abstract class Zend_Date_DateObject
         if (isset(self::$_cache)) {
             $id = strtr('Zend_DateObject_getDateParts_' . $timestamp.'_'.(int)$fast, '-','_');
             if ($result = self::$_cache->load($id)) {
-                return unserialize($result);
+                return unserialize($result, ['allowed_classes' => false]);
             }
         }
 
@@ -932,28 +926,46 @@ abstract class Zend_Date_DateObject
     }
 
     /**
+     * Key of date_sun_info() for the horizon of Zend_Date::_checkLocation(),
+     * the sine of the altitude of the sun: the effective horizon, or the
+     * civil (-6 degrees), nautical (-12) or astronomical (-18) twilight
+     *
+     * @param  float $horizon
+     * @param  bool  $rise    true: sunrise; false: sunset
+     * @return string
+     */
+    private function _sunInfoKey($horizon, $rise)
+    {
+        $twilights = [
+            'civil_twilight'        => -0.104528,
+            'nautical_twilight'     => -0.207912,
+            'astronomical_twilight' => -0.309017,
+        ];
+        foreach ($twilights as $twilight => $sine) {
+            if (abs($horizon - $sine) < 0.000001) {
+                return $twilight . ($rise ? '_begin' : '_end');
+            }
+        }
+        return $rise ? 'sunrise' : 'sunset';
+    }
+
+    /**
      * Calculates the sunrise or sunset based on a location
      *
      * @param  array  $location  Location for calculation MUST include 'latitude', 'longitude', 'horizon'
-     * @param  bool   $horizon   true: sunrise; false: sunset
+     * @param  float  $horizon   Sine of the altitude of the sun at the horizon
+     * @param  bool   $rise      true: sunrise; false: sunset
      * @return mixed  - false: midnight sun, integer:
      */
     protected function calcSun($location, $horizon, $rise = false)
     {
         // timestamp within 32bit
         if (abs($this->_unixTimestamp) <= 0x7FFFFFFF) {
-            if (PHP_VERSION_ID >= 80100) { // on php 8.1
-                $suninfo = date_sun_info($this->_unixTimestamp, $location['latitude'], $location['longitude']);
-                $sunrise = $suninfo['sunrise'];
-                $sunset  = $suninfo['sunset'];
-                return $rise === false ? $sunset : $sunrise;
-            }
-            if ($rise === false) {
-                return date_sunset($this->_unixTimestamp, SUNFUNCS_RET_TIMESTAMP, $location['latitude'],
-                                   $location['longitude'], 90 + $horizon, $this->getGmtOffset() / 3600);
-            }
-            return date_sunrise($this->_unixTimestamp, SUNFUNCS_RET_TIMESTAMP, $location['latitude'],
-                                $location['longitude'], 90 + $horizon, $this->getGmtOffset() / 3600);
+            $suninfo = date_sun_info($this->_unixTimestamp, $location['latitude'], $location['longitude']);
+            $time = $suninfo[$this->_sunInfoKey($horizon, $rise)];
+
+            // true: the sun does not set, false: the sun does not rise
+            return is_int($time) ? $time : false;
         }
 
         // self calculation - timestamp bigger than 32bit
@@ -1048,7 +1060,7 @@ abstract class Zend_Date_DateObject
      * For a list of supported timezones look here: http://php.net/timezones
      * If no timezone can be detected or the given timezone is wrong UTC will be set.
      *
-     * @param  string  $zone      OPTIONAL timezone for date calculation; defaults to date_default_timezone_get()
+     * @param  string|int  $zone      OPTIONAL timezone for date calculation; defaults to date_default_timezone_get()
      * @return $this
      * @throws Zend_Date_Exception
      */
@@ -1121,7 +1133,6 @@ abstract class Zend_Date_DateObject
     /**
      * Internal method to check if the given cache supports tags
      *
-     * @param Zend_Cache $cache
      */
     protected static function _getTagSupportForCache()
     {

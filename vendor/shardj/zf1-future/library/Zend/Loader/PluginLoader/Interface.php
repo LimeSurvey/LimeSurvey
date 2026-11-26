@@ -53,7 +53,7 @@ interface Zend_Loader_PluginLoader_Interface
      * Whether or not a Helper by a specific name
      *
      * @param string $name
-     * @return Zend_Loader_PluginLoader
+     * @return bool
      */
     public function isLoaded($name);
 

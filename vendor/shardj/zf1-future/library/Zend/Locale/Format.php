@@ -173,7 +173,6 @@ class Zend_Locale_Format
                 default:
                     require_once 'Zend/Locale/Exception.php';
                     throw new Zend_Locale_Exception("Unknown option: '$name' = '$value'");
-                    break;
 
             }
         }
@@ -191,7 +190,7 @@ class Zend_Locale_Format
      * Example for conversion from Latin to Arabic numerals:
      *   convertNumerals('100 Tests', 'Latn', 'Arab'); -> returns '١١٠ Tests'
      *
-     * @param  string  $input  String to convert
+     * @param  string|int  $input  String to convert
      * @param  string  $from   Script to parse, see {@link Zend_Locale::getScriptList()} for details.
      * @param  string  $to     OPTIONAL Script to convert to
      * @return string  Returns the converted input
@@ -259,6 +258,7 @@ class Zend_Locale_Format
 
         // Get correct signs for this locale
         $symbols = Zend_Locale_Data::getList($options['locale'],'symbols');
+        $input = self::_normalizeGroupSeparator($input, $symbols['group']);
         // Change locale input to be default number
         if (($input[0] == $symbols['minus']) && ('-' != $input[0])) {
             $input = '-' . substr($input, 1);
@@ -525,6 +525,7 @@ class Zend_Locale_Format
 
         // Get correct signs for this locale
         $symbols = Zend_Locale_Data::getList($options['locale'],'symbols');
+        $input = self::_normalizeGroupSeparator((string) $input, $symbols['group']);
 
         $regexs = Zend_Locale_Format::_getRegexForType('decimalnumber', $options);
         $regexs = array_merge($regexs, Zend_Locale_Format::_getRegexForType('scientificnumber', $options));
@@ -542,6 +543,25 @@ class Zend_Locale_Format
         }
 
         return false;
+    }
+
+    /**
+     * Space, no-break space and narrow no-break space are interchangeable as group separator
+     *
+     * Locale data defines one of them, but input usually contains a plain space.
+     *
+     * @param  string $input
+     * @param  string $group Group separator of the locale
+     * @return string
+     */
+    protected static function _normalizeGroupSeparator($input, $group)
+    {
+        $spaces = [' ', "\xC2\xA0", "\xE2\x80\xAF"];
+        if (!in_array($group, $spaces, true)) {
+            return $input;
+        }
+
+        return str_replace($spaces, $group, $input);
     }
 
     /**
@@ -698,7 +718,7 @@ class Zend_Locale_Format
      * '0' = 0
      * '(-){0,1}(\d+(\.){0,1})*(\,){0,1})\d+'
      *
-     * @param   string   $input    Input string to parse for numbers
+     * @param   string|int   $input    Input string to parse for numbers
      * @param   array    $options  Options: locale. See {@link setOptions()} for details.
      * @return  integer            Returns the extracted number
      */
@@ -752,7 +772,7 @@ class Zend_Locale_Format
      * 'a', 'A' - Meridiem is not explicit upper/lowercase, you have to upper/lowercase the translated value yourself
      *
      * @param  string  $format  Format string in PHP's date format
-     * @return string           Format string in ISO format
+     * @return string|null           Format string in ISO format
      */
     public static function convertPhpToIsoFormat($format)
     {
@@ -1122,9 +1142,16 @@ class Zend_Locale_Format
         // Otherwise, translate locale aware month names in $number to their numeric equivalents.
         $position = false;
         if ($monthlist && $monthlist[1] != 1) {
+            // longest names first, so that e.g. '11月' is not matched by '1月'
+            uasort($monthlist, function ($a, $b) {
+                return iconv_strlen($b, 'UTF-8') - iconv_strlen($a, 'UTF-8');
+            });
+
             foreach($monthlist as $key => $name) {
                 if (($position = iconv_strpos($number, $name, 0, 'UTF-8')) !== false) {
-                    $number   = str_ireplace($name, $key, $number);
+                    // the space keeps the month number apart from a following
+                    // number when the name ends without a separator (e.g. '1月13日')
+                    $number   = str_ireplace($name, $key . ' ', $number);
                     return $position;
                 }
             }

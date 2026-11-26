@@ -84,7 +84,7 @@ class Zend_Rest_Server implements Zend_Server_Interface
     ];
 
     /**
-     * @var string Current Method
+     * @var string|null Current Method
      */
     protected $_method;
 
@@ -169,7 +169,7 @@ class Zend_Rest_Server implements Zend_Server_Interface
     /**
      * Implement Zend_Server_Interface::handle()
      *
-     * @param  array $request
+     * @param  array|false $request
      * @throws Zend_Rest_Server_Exception
      * @return string|void
      */
@@ -472,14 +472,14 @@ class Zend_Rest_Server implements Zend_Server_Interface
      *
      * Creates XML error response, returning DOMDocument with response.
      *
-     * @param string|Exception $fault Message
+     * @param string|Exception $exception Message
      * @param int $code Error Code
      * @return DOMDocument
      */
     public function fault($exception = null, $code = null)
     {
-        if (isset($this->_functions[$this->_method])) {
-            $function = $this->_functions[$this->_method];
+        if (isset($this->_functions[$this->_method ?? ''])) {
+            $function = $this->_functions[$this->_method ?? ''];
         } elseif (isset($this->_method)) {
             $function = $this->_method;
         } else {

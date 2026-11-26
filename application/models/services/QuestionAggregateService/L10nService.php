@@ -82,11 +82,9 @@ class L10nService
                 false
             );
             if (!$l10n->save()) {
+                $errors = array_unique(array_merge(...array_values($l10n->getErrors())));
                 throw new PersistErrorException(
-                    sprintf(
-                        'Could not store translation %s',
-                        json_encode($l10n->getErrors())
-                    )
+                    'Could not store translation: ' . implode(' ', $errors)
                 );
             }
         }

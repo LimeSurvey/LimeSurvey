@@ -13,6 +13,8 @@ import { TooltipContainer } from 'components/TooltipContainer/TooltipContainer'
 //   onClick: () => {},
 //   submenu: [], // for type 'submenu'
 //   checked: true || false, // for type 'item', shows a checkmark on the right
+//   trailingIcon: 'ri-eye-line', // for type 'item', icon class shown on the right
+//   hideIconSpace: true, // for type 'item', no placeholder space for a missing left icon
 // },
 
 /**
@@ -103,6 +105,7 @@ export const Dropdown = ({
     id: '', // must be unique to trigger the menu
     title: '',
     testId: '',
+    ariaLabel: undefined,
   },
 }) => {
   const [openSubmenu, setOpenSubmenu] = useState(null)
@@ -118,7 +121,8 @@ export const Dropdown = ({
         className="button me-2 dropdown-toggler"
         id={toggleSettings.id}
         data-testid={toggleSettings.testId}
-        role="menu"
+        aria-label={toggleSettings.ariaLabel}
+        aria-haspopup="menu"
       >
         {toggleSettings.title}
         <i className={toggleSettings.iconClassName}></i>
@@ -143,6 +147,8 @@ export const Dropdown = ({
               disabled = {},
               submenu,
               checked,
+              trailingIcon,
+              hideIconSpace,
               className,
               testId,
             },
@@ -176,17 +182,29 @@ export const Dropdown = ({
                     className={classNames(className, {
                       'has-checkmark': checked !== undefined,
                       'is-checked': checked,
+                      'has-trailing-icon': !!trailingIcon,
                     })}
                   >
-                    {checked === undefined ? (
+                    {trailingIcon ? (
                       <>
-                        <i className={icon}></i>
+                        <span>
+                          {icon && <i className={icon}></i>}
+                          {label}
+                        </span>
+                        <i
+                          className={trailingIcon}
+                          data-testid={testId && `${testId}-trailing-icon`}
+                        ></i>
+                      </>
+                    ) : checked === undefined ? (
+                      <>
+                        {(icon || !hideIconSpace) && <i className={icon}></i>}
                         {label}
                       </>
                     ) : (
                       <>
                         <span>
-                          <i className={icon}></i>
+                          {(icon || !hideIconSpace) && <i className={icon}></i>}
                           {label}
                         </span>
                         {checked && <i className="ri-check-line"></i>}

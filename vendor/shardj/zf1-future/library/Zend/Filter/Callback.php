@@ -49,8 +49,11 @@ class Zend_Filter_Callback implements Zend_Filter_Interface
     /**
      * Constructor
      *
-     * @param string|array $callback Callback in a call_user_func format
-     * @param mixed        $options  (Optional) Default options for this filter
+     * Accepts an array or Zend_Config with the keys 'callback' and 'options', or the
+     * callback (in a call_user_func format) followed by the optional default options
+     * of the filter as a second argument.
+     *
+     * @param string|array|Zend_Config $options
      */
     public function __construct($options)
     {

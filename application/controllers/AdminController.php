@@ -84,45 +84,6 @@ class AdminController extends LSYii_Controller
     }
 
     /**
-     * Shows a nice error message to the world
-     *
-     * todo REFACTORING is this still in use? can't find any call in an action or a view ...
-     * todo its used multiple times getController->error, all calls should be replaceable by setFlashMessage
-     *
-     * @access public
-     * @param string $message The error message
-     * @return void
-     */
-    public function error($message, $sURL = array())
-    {
-        $this->getAdminHeader();
-        $sOutput = "<div class='messagebox ui-corner-all'>\n";
-        $sOutput .= '<div class="warningheader">' . gT('Error') . '</div><br />' . "\n";
-        $sOutput .= $message . '<br /><br />' . "\n";
-        if (!empty($sURL) && !is_array($sURL)) {
-            $sTitle = gT('Back');
-        } elseif (!empty($sURL['url'])) {
-            if (!empty($sURL['title'])) {
-                $sTitle = $sURL['title'];
-            } else {
-                $sTitle = gT('Back');
-            }
-            $sURL = $sURL['url'];
-        } else {
-            $sTitle = gT('Main admin screen');
-            $sURL = $this->createUrl('/admin');
-        }
-        $sOutput .= '<input type="submit" value="' . $sTitle . '" onclick=\'window.open("' . $sURL . '", "_top")\' /><br /><br />' . "\n";
-        $sOutput .= '</div>' . "\n";
-        $sOutput .= '</div>' . "\n";
-        echo $sOutput;
-
-        $this->getAdminFooter('http://manual.limesurvey.org', gT('LimeSurvey online manual'));
-
-        Yii::app()->end();
-    }
-
-    /**
      * Load and set session vars
      *
      * REFACTORED (in LSBaseController)
@@ -158,6 +119,9 @@ class AdminController extends LSYii_Controller
      */
     public function run($action)
     {
+        // Nothing may be changed while the hosting system makes a backup or runs the database update
+        $this->endRequestIfAdministrationLocked(($action == 'remotecontrol' || Yii::app()->request->isAjaxRequest) ? 'text' : 'html');
+
         // Check if the DB is up to date
         if (Yii::app()->db->schema->getTable('{{surveys}}')) {
             $sDBVersion = Yii::app()->getConfig('DBVersion');
@@ -470,12 +434,7 @@ class AdminController extends LSYii_Controller
         $aData['sAdmintheme'] = $oAdminTheme->name;
         $aData['aPackageScripts'] = $aData['aPackageStyles'] = array();
 
-        $aData['pageTitle'] = null;
-        if (!empty($pageData['topbar'] ?? null) && !empty($pageData['topbar']['title'] ?? null)) {
-            $aData['pageTitle'] = strip_tags((string) $pageData['topbar']['title']);
-        } elseif (!empty($pageData['title_bar'] ?? null) && !empty($pageData['title_bar']['title'] ?? null)) {
-            $aData['pageTitle'] = strip_tags((string) $pageData['title_bar']['title']);
-        }
+        $aData['pageTitle'] = LayoutHelper::getDocumentTitle($pageData);
 
             //foreach ($aData['aPackageStyles'] as &$filename)
             //{

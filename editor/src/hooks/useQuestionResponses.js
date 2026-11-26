@@ -5,7 +5,14 @@ import { PAGE_SIZE, useQuestionAnswers } from './useQuestionAnswers'
 export function useQuestionResponses(
   surveyId,
   questionCode,
-  { enabled = true, fields = [], filters = {}, search = [] } = {}
+  {
+    enabled = true,
+    fields = [],
+    filters = {},
+    filterSet = [],
+    search = [],
+    answerFilters = [],
+  } = {}
 ) {
   const {
     items: rows,
@@ -21,7 +28,9 @@ export function useQuestionResponses(
         questionCode,
         activeLanguage,
         filters,
+        filterSet,
         search,
+        answerFilters,
       ],
       queryFn: ({ pageParam = 0 }) =>
         statisticsService.getQuestionResponses(
@@ -32,7 +41,9 @@ export function useQuestionResponses(
           activeLanguage,
           fields,
           filters,
-          search
+          search,
+          filterSet,
+          answerFilters
         ),
     }),
     { enabled, fields, pageItems: 'rows' }

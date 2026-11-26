@@ -49,7 +49,6 @@ class CheckIntegrityTest extends TestBaseClass
     private function callMethod($method, array $args)
     {
         $reflection = new \ReflectionMethod(\DataIntegrityChecker::class, $method);
-        $reflection->setAccessible(true);
         return $reflection->invokeArgs($this->integrityChecker, $args);
     }
 
@@ -197,9 +196,7 @@ class CheckIntegrityTest extends TestBaseClass
             // unit test does not provide; only fixintegrity()'s DB side effects are under
             // test here, so the trailing render call is stubbed out.
             $noRenderController = new class('dummy', 'fixintegrity') extends \CheckIntegrity {
-                protected function renderWrappedTemplate($sAction = 'checkintegrity', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
-                {
-                }
+                protected function renderWrappedTemplate($sAction = 'checkintegrity', $aViewUrls = array(), $aData = array(), $sRenderFile = false) {}
             };
             $noRenderController->fixintegrity();
         } finally {
@@ -211,6 +208,42 @@ class CheckIntegrityTest extends TestBaseClass
             \QuotaLanguageSetting::model()->findAllByAttributes(array('quotals_quota_id' => $quotaId)),
             'Quota language setting was left behind after its orphan parent quota was deleted in the same pass.'
         );
+    }
+
+    /** Verifies that quota members without a related quota are detected and deleted, and valid ones are kept. */
+    public function testQuotaMembersWithoutQuotaAreDetectedAndDeleted()
+    {
+        $question = \Question::model()->find('sid = :sid AND parent_qid = 0', array(':sid' => self::$surveyId));
+
+        $quota = new \Quota();
+        $quota->sid = self::$surveyId;
+        $quota->name = 'Valid quota';
+        $quota->qlimit = 1;
+        $quota->action = 1;
+        $this->assertTrue($quota->save(), 'Could not save quota fixture: ' . json_encode($quota->errors));
+
+        $command = \Yii::app()->db->createCommand();
+        $command->insert('{{quota_members}}', array('sid' => self::$surveyId, 'qid' => $question->qid, 'quota_id' => $quota->id, 'code' => 'A1'));
+        $validMemberId = getLastInsertID('{{quota_members}}');
+        // Left over from a deleted quota
+        $command->insert('{{quota_members}}', array('sid' => self::$surveyId, 'qid' => $question->qid, 'quota_id' => 999999904, 'code' => 'A2'));
+        $missingQuotaMemberId = getLastInsertID('{{quota_members}}');
+        // Imported from a file referencing a quota that was not in it
+        $command->insert('{{quota_members}}', array('sid' => self::$surveyId, 'qid' => $question->qid, 'quota_id' => null, 'code' => 'A3'));
+        $nullQuotaMemberId = getLastInsertID('{{quota_members}}');
+
+        try {
+            $aDelete = $this->integrityChecker->checkintegrity();
+            $this->assertGreaterThanOrEqual(2, $aDelete['quotamembers'], 'Quota members without a quota were not detected.');
+
+            $this->callMethod('deleteQuotaMembers', array(array()));
+
+            $this->assertNull(\QuotaMember::model()->findByPk($missingQuotaMemberId), 'Quota member of a missing quota was not deleted.');
+            $this->assertNull(\QuotaMember::model()->findByPk($nullQuotaMemberId), 'Quota member without quota ID was not deleted.');
+            $this->assertNotNull(\QuotaMember::model()->findByPk($validMemberId), 'Valid quota member was deleted.');
+        } finally {
+            \Quota::model()->deleteQuota(array('id' => $quota->id));
+        }
     }
 
     public function testIndexDoesNotRunTheConsistencyCheck()
@@ -496,6 +529,38 @@ class CheckIntegrityTest extends TestBaseClass
     }
 
     /**
+     * An empty responses archive and its questions archive of a deleted survey are both
+     * auto-deleted; the questions archive is dropped together with the responses archive
+     * and must not be dropped a second time, which failed with a "table does not exist" error.
+     */
+    public function testQuestionsArchiveOfAnEmptyResponsesArchiveIsDroppedOnlyOnce()
+    {
+        $dbPrefix = \Yii::app()->db->tablePrefix;
+        $bogusSid = 999999918;
+        $responsesTable = $dbPrefix . 'old_responses_' . $bogusSid . '_20200101120000';
+        $questionsTable = $dbPrefix . 'old_questions_' . $bogusSid . '_20200101120000';
+
+        \Yii::app()->db->createCommand()->createTable($responsesTable, array('id' => 'pk'));
+        \Yii::app()->db->createCommand()->createTable($questionsTable, array('qid' => 'pk'));
+        // tableExists() reads the cached schema table names
+        \Yii::app()->db->schema->refresh();
+
+        try {
+            $aData = $this->integrityChecker->applyAutomaticFixes();
+
+            $this->assertFalse($this->tableExistsRaw($responsesTable), 'Empty old survey responses table was not auto-deleted.');
+            $this->assertFalse($this->tableExistsRaw($questionsTable), 'Related old questions table was not auto-deleted.');
+            $questionsWarnings = array_filter($aData['warnings'], function ($warning) use ($questionsTable) {
+                return strpos($warning, $questionsTable) !== false;
+            });
+            $this->assertEmpty($questionsWarnings, 'The old questions table was dropped twice.');
+        } finally {
+            $this->dropTableIfPresent($responsesTable);
+            $this->dropTableIfPresent($questionsTable);
+        }
+    }
+
+    /**
      * A non-empty old participant list table must never be auto-deleted, even when
      * its parent survey no longer exists at all - only ever offered for manual
      * confirmation via the data redundancy check, since it still holds real
@@ -740,6 +805,69 @@ class CheckIntegrityTest extends TestBaseClass
             $this->assertNotNull(\SurveysGroupsettings::model()->findByPk(1), 'The consistency check deleted the default survey group settings.');
         } finally {
             \Yii::app()->db->createCommand()->delete('{{surveys_groupsettings}}', 'gsid = :gsid', array(':gsid' => $bogusGsid));
+        }
+    }
+
+    /** Verifies that survey theme options of a deleted survey are only deleted, and reported, by the consistency check. */
+    public function testOrphanThemeConfigurationsAreOnlyDeletedAndReportedByTheConsistencyCheck()
+    {
+        $bogusSid = 999999917;
+        \Yii::app()->db->createCommand()->insert('{{template_configuration}}', array(
+            'template_name' => 'vanilla',
+            'sid' => $bogusSid,
+            'options' => 'inherit',
+        ));
+        $countThemeConfigurations = function ($condition, array $params = array()) {
+            return (int) \Yii::app()->db->createCommand()->select('count(*)')->from('{{template_configuration}}')->where($condition, $params)->queryScalar();
+        };
+        $themeConfigurationsWithoutSurvey = $countThemeConfigurations('sid IS NULL');
+
+        try {
+            $this->newNoRenderController()->index();
+            $this->assertSame(1, $countThemeConfigurations('sid = :sid', array(':sid' => $bogusSid)), 'Merely loading the check page (GET) deleted the theme options of a deleted survey.');
+
+            $logOfFixes = implode(' ', $this->runFixIntegrity());
+
+            $this->assertSame(0, $countThemeConfigurations('sid = :sid', array(':sid' => $bogusSid)), 'The consistency check did not delete the theme options of a deleted survey.');
+            $this->assertStringContainsString('survey theme option(s) of surveys that no longer exist', $logOfFixes);
+            $this->assertSame($themeConfigurationsWithoutSurvey, $countThemeConfigurations('sid IS NULL'), 'The consistency check deleted theme options that do not belong to a survey.');
+        } finally {
+            \Yii::app()->db->createCommand()->delete('{{template_configuration}}', 'sid = :sid', array(':sid' => $bogusSid));
+        }
+    }
+
+    /** Verifies that duplicate survey theme options are only deleted, and reported, by the consistency check, keeping the oldest one. */
+    public function testDuplicateThemeConfigurationsAreOnlyDeletedAndReportedByTheConsistencyCheckKeepingTheOldest()
+    {
+        $templateName = 'fruity_twentythree';
+        $getIds = function () use ($templateName) {
+            return array_map('intval', \Yii::app()->db->createCommand()->select('id')->from('{{template_configuration}}')
+                ->where('sid = :sid AND template_name = :template_name', array(':sid' => self::$surveyId, ':template_name' => $templateName))
+                ->order('id')->queryColumn());
+        };
+        $preexistingIds = $getIds();
+        foreach (array('{"container":"off"}', '{"container":"on"}') as $options) {
+            \Yii::app()->db->createCommand()->insert('{{template_configuration}}', array(
+                'template_name' => $templateName,
+                'sid' => self::$surveyId,
+                'options' => $options,
+            ));
+            $insertedIds[] = (int) getLastInsertID('{{template_configuration}}');
+        }
+        // getLastInsertID() without a sequence name fails on PostgreSQL
+        $insertedIds = array_values(array_diff($getIds(), $preexistingIds));
+        $idsBefore = $getIds();
+
+        try {
+            $this->newNoRenderController()->index();
+            $this->assertSame($idsBefore, $getIds(), 'Merely loading the check page (GET) deleted duplicate theme options.');
+
+            $logOfFixes = implode(' ', $this->runFixIntegrity());
+
+            $this->assertSame(array($idsBefore[0]), $getIds(), 'The consistency check did not keep only the oldest theme options of the survey and theme.');
+            $this->assertStringContainsString('duplicate survey theme option(s)', $logOfFixes);
+        } finally {
+            \Yii::app()->db->createCommand()->delete('{{template_configuration}}', array('in', 'id', $insertedIds));
         }
     }
 

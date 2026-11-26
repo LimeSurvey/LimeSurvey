@@ -1,5 +1,8 @@
 <?php
 
+use LimeSurvey\Models\Services\ExpressionManagerSessionState;
+use LimeSurvey\Models\Services\SurveySessionState;
+
 if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
@@ -47,6 +50,7 @@ function eT($sToTranslate, $sEscapeMode = 'html')
 
 /**
  * Translation helper function for plural forms
+ * @deprecated Use gTPlural(), translators get only one field for both forms of "singular|plural"
  * @param string $sTextToTranslate
  * @param integer $iCount
  * @param string $sEscapeMode
@@ -59,6 +63,7 @@ function ngT($sTextToTranslate, $iCount, $sEscapeMode = 'html')
 
 /**
  * Translation helper function for plural forms which outputs right away
+ * @deprecated Use eTPlural(), translators get only one field for both forms of "singular|plural"
  * @param string $sToTranslate
  * @param integer $iCount
  * @param string $sEscapeMode
@@ -66,6 +71,43 @@ function ngT($sTextToTranslate, $iCount, $sEscapeMode = 'html')
 function neT($sToTranslate, $iCount, $sEscapeMode = 'html')
 {
     echo ngT($sToTranslate, $iCount, $sEscapeMode);
+}
+
+/**
+ * Translation helper function for gettext plural forms (msgid / msgid_plural)
+ *
+ * Unlike ngT(), translators get one field per plural form of their language.
+ * Placeholders are not replaced, use sprintf(), e.g.
+ * sprintf(gTPlural('%d file', '%d files', $count), $count)
+ *
+ * @param string $sSingular The source text for one item
+ * @param string $sPlural The source text for several items
+ * @param integer $iCount The number of items, selects the plural form
+ * @param string $sEscapeMode Valid values are html (this is the default, js and unescaped)
+ * @param string|null $sLanguage Defaults to the application language
+ * @return string
+ */
+function gTPlural($sSingular, $sPlural, $iCount, $sEscapeMode = 'html', $sLanguage = null)
+{
+    return quoteText(
+        App()->getMessages()->translatePlural($sSingular, $sPlural, (int)$iCount, $sLanguage),
+        $sEscapeMode
+    );
+}
+
+/**
+ * As gTPlural(), but echoes directly
+ *
+ * @param string $sSingular The source text for one item
+ * @param string $sPlural The source text for several items
+ * @param integer $iCount The number of items, selects the plural form
+ * @param string $sEscapeMode Valid values are html (this is the default, js and unescaped)
+ * @param string|null $sLanguage Defaults to the application language
+ * @return void
+ */
+function eTPlural($sSingular, $sPlural, $iCount, $sEscapeMode = 'html', $sLanguage = null)
+{
+    echo gTPlural($sSingular, $sPlural, $iCount, $sEscapeMode, $sLanguage);
 }
 
 
@@ -678,7 +720,7 @@ function getUserList($outputformat = 'fullinfoarray')
         $usercontrolSameGroupPolicy == true
     ) {
         if (isset($myuid)) {
-            $userGroupList = getUserGroupList();
+            $userGroupList = UserGroup::model()->getAuthorizedGroupIds();
             $criteria = new CDBCriteria();
             $criteria->order = 'full_name, users_name, t.uid';
             $criteria->with = 'groups';
@@ -1261,6 +1303,7 @@ function getStatisticsFieldNames($iSurveyID, $aFilters, $sLanguage)
             case Question::QT_T_LONG_FREE_TEXT: // Long free text
             case Question::QT_U_HUGE_FREE_TEXT: // Huge free text
             case Question::QT_S_SHORT_FREE_TEXT: // Short free text
+            case Question::QT_J_MAP: // Map
                 $myfield = "T$myfield";
                 $allfields[] = $myfield;
                 break;
@@ -1421,27 +1464,21 @@ function getFieldName(string $tableName, string $fieldName, array $rawQuestions,
                     if ($code === '') {
                         return "Q{$qid}";
                     }
-                    $commentText = false;
-                    $currentQuestion = null;
-                    $excludeSubquestion = false;
+                    $subquestionQids = [];
                     foreach ($questions as $question) {
-                        if ($question->title === $code) {
-                            $currentQuestion = $question;
-                        } elseif (in_array($code, ["other", "comment", "othercomment", $question->title . "other", $question->title . "comment", $question->title . "othercomment"])) {
-                            $currentQuestion = $question;
-                            $commentText = $code;
-                            if (strpos($code, $question->title) === 0) {
-                                $commentText = substr($code, strlen($question->title));
-                            } else {
-                                $excludeSubquestion = true;
-                            }
+                        if ($question->parent_qid) {
+                            $subquestionQids[$question->title] = $question->qid;
                         }
                     }
-                    if ($currentQuestion) {
-                        $newFieldName = "Q{$qid}" . ($excludeSubquestion ? "" : "_S{$currentQuestion->qid}");
-                        if ($commentText) {
-                            $newFieldName = $newFieldName . "_C" . $commentText;
-                        }
+                    if (isset($subquestionQids[$code])) {
+                        // A subquestion with exactly this code, even if it is coded "other", "comment" or "othercomment"
+                        $newFieldName = "Q{$qid}_S{$subquestionQids[$code]}";
+                    } elseif (strlen($code) > 7 && substr($code, -7) === 'comment' && isset($subquestionQids[substr($code, 0, -7)])) {
+                        // The comment field of a subquestion (multiple choice with comments)
+                        $newFieldName = "Q{$qid}_S{$subquestionQids[substr($code, 0, -7)]}_Ccomment";
+                    } elseif ($code === 'other' || $code === 'othercomment') {
+                        // The "Other" field of the question itself and its comment
+                        $newFieldName = "Q{$qid}_C{$code}";
                     }
                     break;
                 case \Question::QT_SEMICOLON_ARRAY_TEXT:
@@ -1469,6 +1506,7 @@ function getFieldName(string $tableName, string $fieldName, array $rawQuestions,
                 case \Question::QT_G_GENDER:
                 case \Question::QT_I_LANGUAGE:
                 case \Question::QT_S_SHORT_FREE_TEXT:
+                case \Question::QT_J_MAP:
                 case \Question::QT_T_LONG_FREE_TEXT:
                 case \Question::QT_U_HUGE_FREE_TEXT:
                 case \Question::QT_X_TEXT_DISPLAY:
@@ -1522,7 +1560,7 @@ function getFieldName(string $tableName, string $fieldName, array $rawQuestions,
                         if (($iRankingSuffix > 0) && isset($subQuestions[($iRankingSuffix - 1)])) {
                             $qid = $subQuestions[($iRankingSuffix - 1)]->qid;
                             $newFieldName = "Q{$rootQuestion->qid}_{$prefix}" . $qid;
-                        } else if (count($subQuestions)) {
+                        } elseif (count($subQuestions)) {
                             $minSortOrder = $subQuestions[0]->question_order;
                             $diff = 0;
                             if ($minSortOrder === 0) {
@@ -2217,6 +2255,31 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     $fieldmap[$fieldname]['groupSeq'] = $groupSeq;
                     $fieldmap[$fieldname]['other'] = $arow['other'];
                 }
+                if ($arow['type'] == Question::QT_M_MULTIPLE_CHOICE && $survey->hasOtherCheckedColumn($arow['qid'])) {
+                    // Own variable: question relevance goes on the last $fieldname and EM skips the otherchecked field
+                    $otherCheckedFieldname = "Q{$arow['qid']}_Cotherchecked";
+                    if (isset($fieldmap[$otherCheckedFieldname])) {
+                        $aDuplicateQIDs[$arow['qid']] = array('fieldname' => $otherCheckedFieldname, 'question' => $arow['question'], 'gid' => $arow['gid']);
+                    }
+                    $fieldmap[$otherCheckedFieldname] = array("fieldname" => $otherCheckedFieldname, 'type' => $arow['type'], 'sid' => $surveyid, "gid" => $arow['gid'], "qid" => $arow['qid'], "aid" => "otherchecked", "suffix" => "_Cotherchecked");
+                    if (isset($answerColumnDefinition)) {
+                        $fieldmap[$otherCheckedFieldname]['answertabledefinition'] = $answerColumnDefinition;
+                    }
+
+                    if ($style == "full") {
+                        $fieldmap[$otherCheckedFieldname]['title'] = $arow['title'];
+                        $fieldmap[$otherCheckedFieldname]['question'] = $arow['question'];
+                        $fieldmap[$otherCheckedFieldname]['subquestion'] = gT('Other (selected)');
+                        $fieldmap[$otherCheckedFieldname]['group_name'] = $arow['group_name'];
+                        $fieldmap[$otherCheckedFieldname]['mandatory'] = $arow['mandatory'];
+                        $fieldmap[$otherCheckedFieldname]['encrypted'] = $arow['encrypted'];
+                        $fieldmap[$otherCheckedFieldname]['hasconditions'] = $conditions;
+                        $fieldmap[$otherCheckedFieldname]['usedinconditions'] = $usedinconditions;
+                        $fieldmap[$otherCheckedFieldname]['questionSeq'] = $questionSeq;
+                        $fieldmap[$otherCheckedFieldname]['groupSeq'] = $groupSeq;
+                        $fieldmap[$otherCheckedFieldname]['other'] = $arow['other'];
+                    }
+                }
                 if ($arow['type'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) {
                     $fieldname = "Q{$arow['qid']}_Cothercomment";
                     if (isset($fieldmap[$fieldname])) {
@@ -2266,10 +2329,8 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
 
     if ($questionid === false) {
         // If the fieldmap was randomized, the master will contain the proper order.  Copy that fieldmap with the new language settings.
-        if (isset(Yii::app()->session['responses_' . $surveyid]['fieldmap-' . $surveyid . '-randMaster'])) {
-            $masterFieldmap = Yii::app()->session['responses_' . $surveyid]['fieldmap-' . $surveyid . '-randMaster'];
-            $mfieldmap = Yii::app()->session['responses_' . $surveyid][$masterFieldmap];
-
+        $mfieldmap = SurveySessionState::forSurvey((int) $surveyid)->getRandomizedFieldMap();
+        if ($mfieldmap !== null) {
             foreach ($mfieldmap as $fieldname => $mf) {
                 if (isset($fieldmap[$fieldname])) {
                     // This array holds the keys of translatable attributes
@@ -2507,7 +2568,7 @@ function jsonEscape(string $str, $strip_tags = false, $htmldecode = false)
 }
 
 /**
-*  This functions removes all HTML tags, Javascript, CRs, linefeeds and other strange chars from a given text
+*  This functions removes all HTML tags, Javascript, CSS style blocks, CRs, linefeeds and other strange chars from a given text
 *
 * @param string $sTextToFlatten  Text you want to clean
 * @param boolean $bKeepSpan set to true for keep span, used for expression manager. Default: false
@@ -2520,6 +2581,8 @@ function jsonEscape(string $str, $strip_tags = false, $htmldecode = false)
 function flattenText($sTextToFlatten, $bKeepSpan = false, $bDecodeHTMLEntities = false, $sCharset = 'UTF-8', $bStripNewLines = true)
 {
     $sNicetext = stripJavaScript($sTextToFlatten);
+    // strip_tags() keeps the content of <style> elements: Remove the whole block, like the <script> ones
+    $sNicetext = (string) preg_replace('@<style[^>]*?>.*?</style>@si', '', $sNicetext);
     // When stripping tags, add a space before closing tags so that strings with embedded HTML tables don't get concatenated
     $sNicetext = str_replace(array('</td', '</th'), array(' </td', ' </th'), $sNicetext);
     if ($bKeepSpan) {
@@ -2957,32 +3020,45 @@ function dateShift($date, $toDateFormat, $toTimezone = null, $fromTimezone = 'UT
 }
 
 /**
- * Gets the UTC of the date to be stored
- * @param string|null $date
- * @return string|null
+ * Returns the display timezone of the current admin user.
+ * This is their personal timezone if it is set and valid, otherwise the global display timezone,
+ * the same way LSYii_Controller resolves it. An empty personal setting means "use the global setting".
+ * @return string|null Timezone identifier, empty/null if none is configured (UTC)
+ */
+function getAdminDisplayTimezone()
+{
+    $userSetting = \SettingsUser::getUserSetting('displayTimezone');
+    if (!empty($userSetting->stg_value) && in_array($userSetting->stg_value, timezone_identifiers_list(), true)) {
+        return $userSetting->stg_value;
+    }
+    return \Yii::app()->getConfig('displayTimezone');
+}
+
+/**
+ * Converts a date entered in the display timezone of the current admin user to UTC, for storage.
+ * @param string|null $date Date in the admin's display timezone, in a format accepted by DateTime
+ * @return string|null Date in UTC in 'Y-m-d H:i:s' format, unchanged if empty
  */
 function getUTCOfDate(?string $date = null)
 {
     if (!$date) {
         return $date;
     }
-    $userSetting = \SettingsUser::getUserSetting('displayTimezone');
-    $tz = $userSetting->stg_value ?? \Yii::app()->getConfig('displayTimezone');
+    $tz = getAdminDisplayTimezone();
     return dateShift($date, "Y-m-d H:i:s", 'UTC', $tz);
 }
 
 /**
- * Gets the date of the UTC to be displayed
- * @param string|null $date
- * @return string|null
+ * Converts a date stored in UTC to the display timezone of the current admin user.
+ * @param string|null $date Date in UTC, in a format accepted by DateTime
+ * @return string|null Date in the admin's display timezone in 'Y-m-d H:i:s' format, unchanged if empty
  */
 function getDateOfUTC(?string $date = null)
 {
     if (!$date) {
         return $date;
     }
-    $userSetting = \SettingsUser::getUserSetting('displayTimezone');
-    $tz = $userSetting->stg_value ?? \Yii::app()->getConfig('displayTimezone');
+    $tz = getAdminDisplayTimezone();
     return dateShift($date, "Y-m-d H:i:s", $tz, 'UTC');
 }
 
@@ -3004,7 +3080,8 @@ function dateShiftRelative($date, $toDateFormat, $modifier, $timeZone = 'UTC')
 }
 
 
-function convertTimezoneDiffToHours(){
+function convertTimezoneDiffToHours()
+{
     $desiredTimezone = new DateTimeZone(Yii::app()->getConfig('displayTimezone') ?: 'UTC');
     // Get the current time in the desired timezone
     $currentDateTime = new DateTime('now', new DateTimeZone(date_default_timezone_get()));
@@ -3238,16 +3315,20 @@ function hasResources($id, $type = 'survey')
 /**
  * Creates a random sequence of characters
  *
+ * Uses a cryptographically secure random number generator, because the result
+ * is used for secrets like participant access codes and password reset keys.
+ *
  * @param integer $length Length of resulting string
  * @param string $pattern To define which characters should be in the resulting string
  * @return string
+ * @throws \Exception If no source of randomness is available
  */
 function randomChars($length, $pattern = "23456789abcdefghijkmnpqrstuvwxyz")
 {
     $patternlength = strlen($pattern) - 1;
     $key = '';
     for ($i = 0; $i < $length; $i++) {
-        $key .= $pattern[mt_rand(0, $patternlength)];
+        $key .= $pattern[random_int(0, $patternlength)];
     }
     return $key;
 }
@@ -4491,10 +4572,17 @@ function cleanLanguagesFromSurvey($iSurveyID, $availlangs, $baselang = '')
     foreach ($result as $row) {
         Yii::app()->db->createCommand('delete from {{group_l10ns}} where id =' . $row['id'])->execute();
     }
+
+    // Remove translated question attributes, the other attributes have an empty or NULL language
+    Yii::app()->db->createCommand(
+        "DELETE FROM {{question_attributes}}
+        WHERE qid IN (SELECT qid FROM {{questions}} WHERE sid={$iSurveyID})
+        AND language <> '' AND {$sqllang}"
+    )->execute();
 }
 
 /**
-* fixLanguageConsistency() fixes missing groups, questions, answers, quotas & assessments for languages on a survey
+* fixLanguageConsistency() fixes missing groups, questions, answers, translated question attributes, quotas & assessments for languages on a survey
 * @param int $sid - the currently selected survey
 * @param string $availlangs - space separated list of additional languages in survey - if empty all additional languages of a survey are checked against the base language
 * @param string $baselang - language to use as base (useful when changing the base language) - if empty, it will be picked from the survey
@@ -4586,6 +4674,21 @@ function fixLanguageConsistency($sid, $availlangs = '', $baselang = '')
                 Yii::app()->db->createCommand()->insert('{{answer_l10ns}}', $data);
             }
         }
+    }
+
+    // Translated question attributes: Copy the base language value where the language has none yet
+    foreach ($languagesToCheck as $lang) {
+        Yii::app()->db->createCommand(
+            "INSERT INTO {{question_attributes}} (qid, attribute, value, language)
+            SELECT qa.qid, qa.attribute, qa.value, :language
+            FROM {{question_attributes}} qa
+            JOIN {{questions}} q ON q.qid = qa.qid
+            WHERE q.sid = :sid AND qa.language = :baselang
+            AND NOT EXISTS (
+                SELECT 1 FROM {{question_attributes}} existing
+                WHERE existing.qid = qa.qid AND existing.attribute = qa.attribute AND existing.language = :existinglanguage
+            )"
+        )->execute([':language' => $lang, ':sid' => $sid, ':baselang' => $baselang, ':existinglanguage' => $lang]);
     }
 
     switchMSSQLIdentityInsert('assessments', true);
@@ -4986,45 +5089,22 @@ function checkMoveQuestionConstraintsForConditions($sid, $qid, $newgid = "all")
 
 /**
 * Determines whether the list of user groups will need filtering before viewing.
-* @returns bool
+* @deprecated 7.11.0 Use UserGroup::model()->isFilteredBySameGroupPolicy() instead
+* @return bool
 */
 function shouldFilterUserGroupList()
 {
-    $bUserControlSameGroupPolicy = Yii::app()->getConfig('usercontrolSameGroupPolicy', true);
-    $bUserHasSuperAdminReadPermissions = Permission::model()->hasGlobalPermission('superadmin', 'read');
-    return $bUserControlSameGroupPolicy && !$bUserHasSuperAdminReadPermissions;
+    return UserGroup::model()->isFilteredBySameGroupPolicy();
 }
 
 /**
-* Get a list of all user groups
-* All user group or filtered according to usercontrolSameGroupPolicy
-* @returns array
+* Get the ids of all user groups, or filtered according to usercontrolSameGroupPolicy
+* @deprecated 7.11.0 Use UserGroup::model()->getAuthorizedGroupIds() instead
+* @return int[]
 */
 function getUserGroupList()
 {
-    $sQuery = "SELECT distinct a.ugid, a.name, a.owner_id FROM {{user_groups}} AS a LEFT JOIN {{user_in_groups}} AS b ON a.ugid = b.ugid WHERE 1=1 ";
-    if (shouldFilterUserGroupList()) {
-        $userid = intval(App()->session['loginID']);
-        $sQuery .= " AND (b.uid = {$userid})";
-        $sQuery .= " OR (a.owner_id = {$userid})";
-    }
-    $sQuery .= " ORDER BY name";
-
-    $sresult = App()->db->createCommand($sQuery)->query(); //Checked
-    if (!$sresult) {
-        return "Database Error";
-    }
-    $aGroupNames = [];
-    foreach ($sresult->readAll() as $row) {
-        $aGroupNames[] = $row;
-    }
-    $simplegidarray = array();
-    if (isset($aGroupNames)) {
-        foreach ($aGroupNames as $gn) {
-            $simplegidarray[] = $gn['ugid'];
-        }
-    }
-    return $simplegidarray;
+    return UserGroup::model()->getAuthorizedGroupIds();
 }
 
 /**
@@ -5145,19 +5225,20 @@ function getLabelSets($languages = null)
 
 /**
  * get the header
- * @param bool $meta : not used in any call (2016-10-18)
+ * @param bool $meta Not used in any call (2016-10-18)
  * @return string
  */
 function getHeader($meta = false)
 {
     /* Todo : move this to layout/public.html */
-    $surveyid = Yii::app()->session['LEMsid'];
+    $surveyid = ExpressionManagerSessionState::current()->getSurveyId();
     $oSurvey = Survey::model()->findByPk($surveyid);
     Yii::app()->loadHelper('surveytranslator');
 
     // Set Language // TODO remove one of the Yii::app()->session see bug #5901
-    if (Yii::app()->session['responses_' . $surveyid]['s_lang']) {
-        $languagecode = Yii::app()->session['responses_' . $surveyid]['s_lang'];
+    $sessionLanguage = SurveySessionState::forSurvey((int) $surveyid)->getLanguage();
+    if ($sessionLanguage) {
+        $languagecode = $sessionLanguage;
     } elseif (isset($surveyid) && $surveyid && $oSurvey) {
         $languagecode = $oSurvey->language;
     } else {
@@ -5531,11 +5612,43 @@ function convertPHPSizeToBytes($sSize)
 /**
  * Get the maximum allowed file upload size in bytes
  *
- * @return int The maximum allowed file upload size in bytes
+ * PHP does not enforce a post_max_size or upload_max_filesize of 0 (or less), so such a setting is ignored.
+ *
+ * @return int The maximum allowed file upload size in bytes, PHP_INT_MAX if PHP does not limit it
  **/
 function getMaximumFileUploadSize()
 {
-    return min(convertPHPSizeToBytes(ini_get('post_max_size')), convertPHPSizeToBytes(ini_get('upload_max_filesize')));
+    $limits = array_filter(
+        [convertPHPSizeToBytes(ini_get('post_max_size')), convertPHPSizeToBytes(ini_get('upload_max_filesize'))],
+        function ($limit) {
+            return $limit > 0;
+        }
+    );
+    return empty($limits) ? PHP_INT_MAX : min($limits);
+}
+
+/**
+ * Check if PHP limits the file upload size at all
+ *
+ * @return bool False if both post_max_size and upload_max_filesize are disabled (0)
+ **/
+function isFileUploadSizeLimited()
+{
+    return getMaximumFileUploadSize() < PHP_INT_MAX;
+}
+
+/**
+ * Get the value for the accept attribute of a file input from a list of file extensions
+ *
+ * @param string $extensions Comma-separated file extensions, e.g. the 'allowedthemeimageformats' setting
+ * @return string Comma-separated lowercase extensions with a leading dot, e.g. ".gif,.png"
+ **/
+function getFileInputAcceptValue($extensions)
+{
+    $extensions = array_unique(array_filter(array_map('trim', explode(',', strtolower((string) $extensions))), 'strlen'));
+    return implode(',', array_map(function ($extension) {
+        return '.' . $extension;
+    }, $extensions));
 }
 
 /**
@@ -6041,6 +6154,7 @@ function sortByKeyLengthDescending($input)
  * @param int|null $aid The answer ID (null for parent questions)
  * @return bool
  */
-function isRankingQuestionParent($aid) {
+function isRankingQuestionParent($aid)
+{
     return !isset($aid);
 }

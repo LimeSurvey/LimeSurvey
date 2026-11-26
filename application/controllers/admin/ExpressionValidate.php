@@ -26,9 +26,13 @@ class ExpressionValidate extends SurveyCommonAction
 
     /**
      * Check the Expression in quota
+     *
+     * Note: The quota must belong to the survey the permission is checked on.
+     *
      * @param integer $iSurveyId : the survey ID : can be sid/surveyid url GET parameters
      * @param integer $quota : the quota id
      * @param string $lang : the survey language, optional : if not set get all language of survey
+     * @throws CHttpException
      *
      * @author Denis Chenu
      * @version 1.0
@@ -38,6 +42,10 @@ class ExpressionValidate extends SurveyCommonAction
         $oSurvey = Survey::model()->findByPk($iSurveyId);
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'quotas', 'read')) {
             throw new CHttpException(401, "401 Unauthorized");
+        }
+        /* The quota must belong to the survey the permission was checked on */
+        if (!Quota::model()->exists('id = :id AND sid = :sid', [':id' => (int) $quota, ':sid' => (int) $iSurveyId])) {
+            throw new CHttpException(404, gT("Invalid quota ID"));
         }
         $iQuotaId = $quota;
         if (is_string($lang)) {
@@ -62,7 +70,7 @@ class ExpressionValidate extends SurveyCommonAction
                 );
                 $aExpressions['url_' . $sLang] = array(
                     'title' => sprintf(gT("URL (%s)"), $sLang),
-                    'expression' => $this->getHtmlExpression($oQuotaLanguageSetting->quotals_url, array(), __METHOD__),
+                    'expression' => $this->getHtmlExpression($oQuotaLanguageSetting->quotals_url, array(), __METHOD__, true),
                 );
                 $aExpressions['urldescrip_' . $sLang] = array(
                     'title' => sprintf(gT("URL description (%s)"), $sLang),
@@ -244,14 +252,20 @@ class ExpressionValidate extends SurveyCommonAction
      * @param string $sExpression : the string to parse
      * @param array $aReplacement : optional array of replacemement
      * @param string $sDebugSource : optional debug source (for templatereplace)
+     * @param bool $isUrl : true if the string is an end URL, whose {PASSTHRU:...} placeholders are not expressions
+     * @return string The HTML of the pretty-printed string
      * @uses ExpressionValidate::$iSurveyId
      * @uses ExpressionValidate::$sLang
      *
      * @author Denis Chenu
      * @version 1.0
      */
-    private function getHtmlExpression($sExpression, $aReplacement = array(), $sDebugSource = __CLASS__)
+    private function getHtmlExpression($sExpression, $aReplacement = array(), $sDebugSource = __CLASS__, $isUrl = false)
     {
+        $passthruMarkers = [];
+        if ($isUrl) {
+            [$sExpression, $passthruMarkers] = LimeExpressionManager::maskPassthruPlaceholders($sExpression);
+        }
         $LEM = LimeExpressionManager::singleton();
         $LEM::SetDirtyFlag(); // Not sure it's needed
         $LEM::SetPreviewMode('logic');
@@ -266,6 +280,6 @@ class ExpressionValidate extends SurveyCommonAction
         templatereplace(viewHelper::filterScript($sExpression), $aReplacement, $aReData, $sDebugSource, false, null, array(), true);
         $oFilter = new CHtmlPurifier();
 
-        return $oFilter->purify($LEM::GetLastPrettyPrintExpression());
+        return $oFilter->purify(strtr($LEM::GetLastPrettyPrintExpression(), $passthruMarkers));
     }
 }

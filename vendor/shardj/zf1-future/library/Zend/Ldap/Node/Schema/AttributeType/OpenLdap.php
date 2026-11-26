@@ -65,7 +65,7 @@ class Zend_Ldap_Node_Schema_AttributeType_OpenLdap extends Zend_Ldap_Node_Schema
     /**
      * Gets the attribute syntax
      *
-     * @return string
+     * @return string|null
      */
     public function getSyntax()
     {
@@ -125,5 +125,7 @@ class Zend_Ldap_Node_Schema_AttributeType_OpenLdap extends Zend_Ldap_Node_Schema
         if (count($this->_parents) === 1) {
             return $this->_parents[0];
         }
+
+        return null;
     }
 }

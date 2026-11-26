@@ -39,6 +39,17 @@ require_once 'Zend/Db/Statement.php';
  */
 class Zend_Db_Statement_Pdo extends Zend_Db_Statement implements IteratorAggregate
 {
+    /**
+     * @var Zend_Db_Adapter_Pdo_Abstract
+     */
+    protected $_adapter = null;
+
+    /**
+     * The driver level statement
+     *
+     * @var PDOStatement|null
+     */
+    protected $_stmt = null;
 
     /**
      * @var int
@@ -105,7 +116,7 @@ class Zend_Db_Statement_Pdo extends Zend_Db_Statement implements IteratorAggrega
                     $type = PDO::PARAM_BOOL;
                 } elseif ($variable === null) {
                     $type = PDO::PARAM_NULL;
-                } elseif (is_integer($variable)) {
+                } elseif (is_int($variable)) {
                     $type = PDO::PARAM_INT;
                 } else {
                     $type = PDO::PARAM_STR;
@@ -250,6 +261,13 @@ class Zend_Db_Statement_Pdo extends Zend_Db_Statement implements IteratorAggrega
         if ($style === null) {
             $style = $this->_fetchMode;
         }
+        // Zend_Db_Statement_Interface allows null, PDO expects integers
+        if ($cursor === null) {
+            $cursor = \PDO::FETCH_ORI_NEXT;
+        }
+        if ($offset === null) {
+            $offset = 0;
+        }
         try {
             return $this->_stmt->fetch($style, $cursor, $offset);
         } catch (PDOException $e) {
@@ -335,7 +353,7 @@ class Zend_Db_Statement_Pdo extends Zend_Db_Statement implements IteratorAggrega
     /**
      * Retrieve a statement attribute.
      *
-     * @param integer $key Attribute name.
+     * @param string $key Attribute name.
      * @return mixed      Attribute value.
      * @throws Zend_Db_Statement_Exception
      */

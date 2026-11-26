@@ -29,7 +29,7 @@ class SPSSWriter extends Writer
 
     protected $spssfileversion = null;
 
-    function __construct($pluginsettings)
+    public function __construct($pluginsettings)
     {
         $this->output          = '';
         $this->separator       = ',';
@@ -85,7 +85,7 @@ class SPSSWriter extends Writer
      * @param FormattingOptions $oOptions
      * @return mixed
      */
-    function createSPSSFieldmap($survey, $sLanguage, $oOptions)
+    public function createSPSSFieldmap($survey, $sLanguage, $oOptions)
     {
         App()->setLanguage($sLanguage);
 
@@ -524,6 +524,7 @@ class SPSSWriter extends Writer
             'prodName' => '@(#) IBM SPSS STATISTICS 64-bit Macintosh 23.0.0.0',
             'creationDate' => date('d M y'),
             'creationTime' => date('H:i:s'),
+            'fileLabel' => '',
             'weightIndex' => 0,
         );
 

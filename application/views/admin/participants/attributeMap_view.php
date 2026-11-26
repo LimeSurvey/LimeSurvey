@@ -9,7 +9,7 @@
     var copyUrl = "<?php echo $this->createUrl("/admin/participants/sa/addToTokenattmap"); ?>";
 
     // Comma separated string of participant ids
-    var participant_id = "<?php echo $participant_id; ?>";
+    var participant_id = <?php echo json_encode((string) $participant_id, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
 
     /* SCRIPT TEXT */
     var attributesMappedText = "<?php eT("All the attributes are automatically mapped") ?>";
@@ -194,12 +194,12 @@ $ajaxloader = array(
 <?php echo CHtml::image($ajaxloader['src'], $ajaxloader['alt']); ?>
 </div>
 
-<div id='attribute-map-participant-modal' class="modal fade" tabindex="-1" role="dialog">
+<div id='attribute-map-participant-modal' class="modal fade" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="attribute-map-participant-modal-title">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title"><?php eT("Map participant attributes"); ?></h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h2 class="modal-title h5" id="attribute-map-participant-modal-title"><?php eT("Map participant attributes"); ?></h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<?php eT("Close"); ?>"></button>
             </div>
             <div class="modal-body">
             </div>

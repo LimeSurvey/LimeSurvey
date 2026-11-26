@@ -1,3 +1,9 @@
+/* Dual scale dropdown: The scale header inside the cell is only shown when the table is stacked and its thead hidden */
+table.ls-answers .dropdown-item > .leftheader,
+table.ls-answers .dropdown-item > .rightheader {
+  display: none !important;
+}
+
 /*
 Max width before this PARTICULAR table gets nasty
 For iPads specifically : add this : (min-device-width: 768px) and (max-device-width: 1024px)
@@ -6,6 +12,11 @@ For iPads specifically : add this : (min-device-width: 768px) and (max-device-wi
 (min-device-width: 768px) and (max-device-width: 1024px) {
   table.ls-answers, table.ls-answers thead, table.ls-answers tbody, table.ls-answers th, table.ls-answers td, table.ls-answers tr {
     display: block;
+  }
+
+  table.ls-answers .dropdown-item > .leftheader,
+  table.ls-answers .dropdown-item > .rightheader {
+    display: block !important;
   }
   table.ls-answers, table.ls-answers thead, table.ls-answers tbody, table.ls-answers th, table.ls-answers td, table.ls-answers tr {
     text-align: left;

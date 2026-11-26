@@ -19,6 +19,8 @@
  * @version    $Id$
  */
 
+require_once 'Zend/Tool/Framework/Client/Response/ContentDecorator/Interface.php';
+
 /**
  * @category   Zend
  * @package    Zend_Tool

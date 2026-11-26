@@ -3,9 +3,11 @@
 namespace ls\tests\unit\objectpatch;
 
 use LimeSurvey\Api\Command\V1\SurveyPatch\OpHandlerQuestionCreate;
+use LimeSurvey\Api\Command\V1\SurveyPatch\Response\ExceptionErrors;
 use LimeSurvey\Api\Command\V1\SurveyPatch\Response\SurveyResponse;
 use LimeSurvey\Api\Command\V1\SurveyPatch\Response\TempIdMapItem;
 use LimeSurvey\Api\Command\V1\SurveyPatch\Response\TempIdMapping;
+use LimeSurvey\Api\Command\V1\SurveyPatch\Response\ValidationErrors;
 use LimeSurvey\Api\Command\V1\SurveyPatch\Traits\OpHandlerValidationTrait;
 use LimeSurvey\Api\Command\V1\Transformer\Input\TransformerInputQuestionAggregate;
 use LimeSurvey\DI;
@@ -75,6 +77,79 @@ class SurveyResponseTest extends TestBaseClass
         $exceptionErrorItem = $responseObject['exceptionErrors'][0];
         $this->assertEquals('Exception message', $exceptionErrorItem->error);
         $this->assertEquals('create', $exceptionErrorItem->op);
+    }
+
+    /**
+     * Checks that the question data of several operations end up in one list of extras.
+     *
+     * @testdox extras merge the question data of several operations
+     * @return void
+     */
+    public function testExtrasMergeQuestionData()
+    {
+        $surveyResponse = self::getEmptySurveyResponse();
+        // A condition operation returns one question, a type change a list
+        $surveyResponse->handleResponse(['additional' => ['qid' => 5, 'relevance' => '1']]);
+        $surveyResponse->handleResponse(['additional' => [
+            ['qid' => 6, 'relevance' => '1', 'scenarios' => []],
+            ['qid' => 7, 'relevance' => '1', 'scenarios' => []],
+        ]]);
+        $this->assertSame(
+            [5, 6, 7],
+            array_column($surveyResponse->buildResponseObject()['extras'], 'qid')
+        );
+    }
+
+    /**
+     * Checks that extras without question data replace the extras of an earlier operation.
+     *
+     * @testdox extras without question data replace the extras of an earlier operation
+     * @return void
+     */
+    public function testExtrasWithoutQuestionDataReplace()
+    {
+        $surveyResponse = self::getEmptySurveyResponse();
+        $surveyResponse->handleResponse(['additional' => ['qid' => 5, 'relevance' => '1']]);
+        $surveyResponse->handleResponse(['additional' => ['expire' => '2030-01-01 00:00:00']]);
+        $this->assertSame(
+            ['expire' => '2030-01-01 00:00:00'],
+            $surveyResponse->buildResponseObject()['extras']
+        );
+    }
+
+    /**
+     * Returns a survey response without operations.
+     *
+     * @return SurveyResponse The empty survey response
+     */
+    private static function getEmptySurveyResponse(): SurveyResponse
+    {
+        return new SurveyResponse(new TempIdMapping(), new ValidationErrors(), new ExceptionErrors());
+    }
+
+    /**
+     * @testdox exception error contains validation errors of the error model
+     */
+    public function testExceptionErrorContainsErrorModelErrors()
+    {
+        $errorModel = new \SurveyLanguageSetting();
+        $errorModel->addError('surveyls_description', 'Links are not allowed.');
+        $errorModel->addError('surveyls_welcometext', 'Links are not allowed.');
+        $exception = new PersistErrorException('Failed saving language settings');
+        $exception->setErrorModel($errorModel);
+
+        $surveyResponse = new SurveyResponse(
+            new TempIdMapping(),
+            new ValidationErrors(),
+            new ExceptionErrors()
+        );
+        $surveyResponse->handleException($exception, self::getOp());
+        $responseObject = $surveyResponse->buildResponseObject();
+
+        $this->assertEquals(
+            'Failed saving language settings: Links are not allowed.',
+            $responseObject['exceptionErrors'][0]->error
+        );
     }
 
     private static function getResponse()

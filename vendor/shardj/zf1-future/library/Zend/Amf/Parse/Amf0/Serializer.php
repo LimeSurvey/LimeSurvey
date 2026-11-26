@@ -34,6 +34,7 @@ require_once 'Zend/Amf/Parse/Serializer.php';
  * @subpackage Parse_Amf0
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @deprecated Deprecated since 1.27.1 and will be removed in a future version: AMF is the data format of Adobe Flash Player, which reached its end of life on 2020-12-31
  */
 class Zend_Amf_Parse_Amf0_Serializer extends Zend_Amf_Parse_Serializer
 {
@@ -221,7 +222,7 @@ class Zend_Amf_Parse_Amf0_Serializer extends Zend_Amf_Parse_Serializer
     /**
      * Write a PHP array with string or mixed keys.
      *
-     * @param object $data
+     * @param object $object
      * @return Zend_Amf_Parse_Amf0_Serializer
      */
     public function writeObject($object)

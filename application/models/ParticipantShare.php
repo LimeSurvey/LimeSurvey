@@ -91,30 +91,29 @@ class ParticipantShare extends LSActiveRecord
     }
 
     /**
-     * @param integer $selected
-     * @return string html dropdown
+     * Returns the filter dropdown for the "Shared with" column of the share panel.
+     *
+     * @param integer|string|null $selected The currently selected share user ID, or empty for no filter
+     * @return string The HTML of the dropdown list
      */
     public function getSharedByList($selected)
     {
-        $share_uids = Yii::app()->db->createCommand()
-            ->selectDistinct('share_uid')
-            ->from('{{participant_shares}}')
+        // One query for all share targets: The inner join skips shares with users that were deleted since
+        $shareUsers = Yii::app()->db->createCommand()
+            ->selectDistinct('ps.share_uid, u.full_name')
+            ->from('{{participant_shares}} ps')
+            ->join('{{users}} u', 'u.uid = ps.share_uid')
             ->queryAll();
 
         $shareList = array(
-            '' => '', // No filter
+            '' => gT('All'), // No filter
             '-1' => gT('Everybody')
         );
 
-        foreach ($share_uids as $id) {
-            if ($id['share_uid'] == -1) {
-                continue;
-            }
-            /** @var User $oUser */
-            $oUser = User::model()->findByPk($id['share_uid']);
-            $shareList[$id['share_uid']] = $oUser->full_name;
+        foreach ($shareUsers as $shareUser) {
+            $shareList[$shareUser['share_uid']] = $shareUser['full_name'];
         }
-        return TbHtml::dropDownList('ParticipantShare[share_uid]', $selected, $shareList);
+        return TbHtml::dropDownList('ParticipantShare[share_uid]', $selected, $shareList, ['aria-label' => gT('Shared with')]);
     }
 
     /**
@@ -162,13 +161,14 @@ class ParticipantShare extends LSActiveRecord
         $permission_superadmin_read = Permission::model()->hasGlobalPermission('superadmin', 'read');
         $userId = App()->user->id;
         $isOwner = $this->participant->owner_uid == $userId;
-            $url = App()->createUrl(
-                'admin/participants/sa/deleteSingleParticipantShare',
-                [
-                    'participantId' => urlencode($this->participant_id),
-                    'shareUid'      => $this->share_uid
-                ]
-            );
+        // Note: The IDs are posted, not added to the URL, so participant IDs with special characters work too
+        $jsArguments = implode(', ', array_map(function ($value) {
+            return json_encode((string) $value, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
+        }, [
+            App()->createUrl('admin/participants/sa/deleteSingleParticipantShare'),
+            $this->participant_id,
+            $this->share_uid
+        ]));
 
         $dropdownItems = [];
         $dropdownItems[] = [
@@ -181,7 +181,7 @@ class ParticipantShare extends LSActiveRecord
                 'data-title'     => gT('Unshare this participant'),
                 'data-btntext'   => gT('Unshare'),
                 'data-message'   => gT('Do you really want to unshare this participant?'),
-                'data-onclick'   => "(function() { LS.CPDB.deleteSingleParticipantShare(\"$url\")})",
+                'data-onclick'   => "(function() { LS.CPDB.deleteSingleParticipantShare($jsArguments)})",
             ],
             'enabledCondition' => $isOwner || $permission_superadmin_read
         ];
@@ -204,7 +204,8 @@ class ParticipantShare extends LSActiveRecord
         $participantIdAndShareUid = $this->participant_id . ',' . $this->share_uid;
 
         if ($isOwner || $isSuperAdmin) {
-            $html = "<input type='checkbox' class='selector_participantShareCheckbox massiveActionsCheckbox' name='selectedParticipantShare[]' value='" . $participantIdAndShareUid . "' >";
+            $label = sprintf(gT('Select share of participant %s with %s'), $this->participant->getDisplayName(), $this->getSharedBy());
+            $html = "<input type='checkbox' class='selector_participantShareCheckbox massiveActionsCheckbox' name='selectedParticipantShare[]' value='" . CHtml::encode($participantIdAndShareUid) . "' aria-label='" . CHtml::encode($label) . "' >";
         } else {
             $html = '';
         }
@@ -213,7 +214,9 @@ class ParticipantShare extends LSActiveRecord
     }
 
     /**
-     * @return array
+     * Returns the column definitions for the share panel grid.
+     *
+     * @return array The column configurations for the grid view
      */
     public function getColumns()
     {
@@ -222,26 +225,27 @@ class ParticipantShare extends LSActiveRecord
             [
                 "name"              => 'checkbox',
                 "type"              => 'raw',
-                "header"            => "<input type='checkbox' id='action_toggleAllParticipantShare' />",
+                "header"            => "<input type='checkbox' id='action_toggleAllParticipantShare' aria-label='" . CHtml::encode(gT('Select all')) . "' />",
                 "filter"            => false,
                 'filterHtmlOptions' => ['class' => 'ls-sticky-column'],
-                'headerHtmlOptions' => ['class' => 'ls-sticky-column'],
+                // The header only holds a checkbox: Name the column for the screen reader table navigation
+                'headerHtmlOptions' => ['class' => 'ls-sticky-column', 'aria-label' => gT('Selection')],
                 'htmlOptions'       => ['class' => 'ls-sticky-column'],
             ],
             [
                 "name"   => 'participant.lastname',
                 "header" => gT("Last name"),
-                "filter" => TbHtml::textField("Participant[lastname]", $participantFilter['lastname'] ?? '')
+                "filter" => TbHtml::textField("Participant[lastname]", $participantFilter['lastname'] ?? '', ['aria-label' => gT("Last name")])
             ],
             [
                 "name"   => 'participant.firstname',
                 "header" => gT("First name"),
-                "filter" => TbHtml::textField("Participant[firstname]", $participantFilter['firstname'] ?? '')
+                "filter" => TbHtml::textField("Participant[firstname]", $participantFilter['firstname'] ?? '', ['aria-label' => gT("First name")])
             ],
             [
                 "name"   => 'participant.email',
                 "header" => gT("Email address"),
-                "filter" => TbHtml::textField("Participant[email]", $participantFilter['email'] ?? '')
+                "filter" => TbHtml::textField("Participant[email]", $participantFilter['email'] ?? '', ['aria-label' => gT("Email address")])
             ],
             [
                 "name"   => 'share_uid',
@@ -264,6 +268,7 @@ class ParticipantShare extends LSActiveRecord
                 "value"  => '$data->getCanEditHtml()',
                 "header" => gT("Can edit?"),
                 "filter" => [1 => gT('Yes'), 0 => gT('No')],
+                "filterInputOptions" => ['prompt' => gT('All')],
                 "type"   => "raw"
             ],
             [

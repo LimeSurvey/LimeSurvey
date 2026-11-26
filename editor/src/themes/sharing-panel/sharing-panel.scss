@@ -81,7 +81,6 @@
   background: none;
   border: none;
   padding: 0;
-  font: inherit;
   outline: inherit;
   width: fit-content;
 }
@@ -94,6 +93,20 @@
   display: flex;
   justify-content: end;
   gap: 12px;
+
+  button {
+    &:hover {
+      background-color: $g-200;
+      color: $g-900;
+    }
+
+    &:focus {
+      background-color: $g-200;
+      color: $g-900;
+      border-color: $grape;
+      box-shadow: none;
+    }
+  }
 }
 
 .social-cards-wrapper {

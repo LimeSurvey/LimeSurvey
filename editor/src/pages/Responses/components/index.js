@@ -1,4 +1,3 @@
-export * from './ColumnFilter'
 export * from './ExportResponsesModal'
 export * from './ResponseDetailView'
 export * from './BulkActions'

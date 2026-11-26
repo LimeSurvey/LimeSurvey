@@ -504,7 +504,7 @@ class QuestionAdministrationController extends LSBaseController
      * Action called by the FE editor when a save is triggered.
      * This is called for both new question and update.
      *
-     * @return void
+     * @return void Outputs the result as JSON (Ajax) or redirects with a flash message
      * @throws CException
      */
     public function actionSaveQuestionData()
@@ -664,9 +664,14 @@ class QuestionAdministrationController extends LSBaseController
                 throw $e->setRedirectUrl($redirectUrl);
             }
 
+            $message = $e->getMessage();
+            // This message is plain text with question codes: Without Ajax it is shown as HTML flash message
+            if (!$calledWithAjax && $e instanceof QuestionHasConditionsException) {
+                $message = CHtml::encode($message);
+            }
             throw new LSUserException(
                 500,
-                $e->getMessage(),
+                $message,
                 0,
                 $redirectUrl
             );
@@ -958,7 +963,7 @@ class QuestionAdministrationController extends LSBaseController
             'gid'       => $gid,
             'qid'       => $qid,
             'language'  => $language,
-            'question'  => '',
+            'question'  => $this->getParentQuestionFromRequest($surveyid) ?? '',
             'relevance' => '1',
             'oldCode'   => $oldCode,
             'subquestion'  => $oSubquestion
@@ -1011,7 +1016,7 @@ class QuestionAdministrationController extends LSBaseController
             'gid'               => $gid,
             'qid'               => $qid,
             'language'          => $language,
-            'question'          => $oQuestion,
+            'question'          => $this->getParentQuestionFromRequest($surveyid) ?? $oQuestion,
             'relevance'         => '1',
             'oldCode'           => $oldCode,
         );
@@ -1019,6 +1024,26 @@ class QuestionAdministrationController extends LSBaseController
         $html .= App()->twigRenderer->renderPartial('/questionAdministration/' . $view, $aData);
         $html .= '<!-- end of Inserted Row -->';
         return $html;
+    }
+
+    /**
+     * Returns the saved parent question of a new subquestion/answer option row, taken from the "qid" request parameter.
+     * Used by the placeholder picker of the row's editor.
+     *
+     * @param int $surveyid
+     * @return Question|null null for unsaved questions or if the question doesn't belong to the survey
+     */
+    private function getParentQuestionFromRequest($surveyid)
+    {
+        $parentQid = (int) App()->getRequest()->getParam('qid');
+        if (!$parentQid) {
+            return null;
+        }
+        $parentQuestion = Question::model()->findByPk($parentQid);
+        if (!$parentQuestion || (int) $parentQuestion->sid !== (int) $surveyid || !empty($parentQuestion->parent_qid)) {
+            return null;
+        }
+        return $parentQuestion;
     }
 
     /**
@@ -1223,6 +1248,10 @@ class QuestionAdministrationController extends LSBaseController
 
     /**
      * Import the Question
+     *
+     * Note: The question is only imported into a group of the survey the permission was checked on.
+     *
+     * @return void
      */
     public function actionImport()
     {
@@ -1263,7 +1292,8 @@ class QuestionAdministrationController extends LSBaseController
             $fatalerror .= gT("No (valid) survey ID has been provided. Cannot import question.");
         }
 
-        if (!$gid) {
+        // The group must belong to the survey the permission was checked on
+        if (!$gid || !QuestionGroup::model()->exists('gid = :gid AND sid = :sid', [':gid' => $gid, ':sid' => $iSurveyID])) {
             $fatalerror .= gT("No (valid) group ID has been provided. Cannot import question.");
         }
 
@@ -1296,6 +1326,7 @@ class QuestionAdministrationController extends LSBaseController
         fixLanguageConsistency($iSurveyID);
 
         if (isset($aImportResults['fatalerror'])) {
+            unlink($sFullFilepath);
             App()->setFlashMessage($aImportResults['fatalerror'], 'error');
             $this->redirect(['questionAdministration/importView', 'surveyid' => $iSurveyID]);
             return;
@@ -1619,11 +1650,15 @@ class QuestionAdministrationController extends LSBaseController
 
         if (Permission::model()->hasSurveyPermission($iSid, 'surveycontent', 'update')) {
             self::setMultipleQuestionMandatoryState($aQids, $sMandatory, $iSid);
+            EmCacheHelper::flushAtEndOfRequest();
         }
     }
 
     /**
-     * Change the "other" option for applicable question types
+     * Change the "other" option for applicable question types.
+     * Questions whose "Other" is used in conditions keep it on, the response names them.
+     *
+     * @return void Outputs an error message as JSON when questions keep "Other" on
      */
     public function actionChangeMultipleQuestionOtherState()
     {
@@ -1632,7 +1667,18 @@ class QuestionAdministrationController extends LSBaseController
         $sOther = (Yii::app()->request->getPost('other') === '1') ? 'Y' : 'N';
 
         if (Permission::model()->hasSurveyPermission($iSid, 'surveycontent', 'update')) {
-            self::setMultipleQuestionOtherState($aQids, $sOther, $iSid);
+            $refusedQuestionCodes = self::setMultipleQuestionOtherState($aQids, $sOther, $iSid);
+            EmCacheHelper::flushAtEndOfRequest();
+            if (!empty($refusedQuestionCodes)) {
+                // An error status, so the mass action shows the message
+                http_response_code(400);
+                $this->renderJSON([
+                    'message' => sprintf(
+                        gT('"Other" could not be switched off for these questions, because conditions use it: %s.', 'unescaped'),
+                        implode(', ', $refusedQuestionCodes)
+                    ),
+                ], false);
+            }
         }
     }
 
@@ -1663,6 +1709,7 @@ class QuestionAdministrationController extends LSBaseController
             $attributesWithValue,
             $validQuestionTypes
         );
+        EmCacheHelper::flushAtEndOfRequest();
     }
 
     /**
@@ -1670,10 +1717,11 @@ class QuestionAdministrationController extends LSBaseController
      *
      * @param int $gid
      * @param string $classes
+     * @param string $display form_group, or general_option for the question editor general settings
      * @return CWidget|mixed|void
      * @throws Exception
      */
-    public function actionAjaxLoadPositionWidget($gid, $classes = '')
+    public function actionAjaxLoadPositionWidget($gid, $classes = '', $display = 'form_group')
     {
         $oQuestionGroup = QuestionGroup::model()->find('gid=:gid', [':gid' => $gid]);
         if (
@@ -1681,7 +1729,7 @@ class QuestionAdministrationController extends LSBaseController
             Permission::model()->hasSurveyPermission($oQuestionGroup->sid, 'surveycontent', 'read')
         ) {
             $aOptions = [
-                'display'           => 'form_group',
+                'display'           => $display === 'general_option' ? 'general_option' : 'form_group',
                 'oQuestionGroup'    => $oQuestionGroup,
 
             ];
@@ -1777,14 +1825,10 @@ class QuestionAdministrationController extends LSBaseController
             $questionTheme
         );
 
-        $questionThemeObject = QuestionTheme::model()->find('name=:name', array(':name' => $questionTheme));
         $this->renderPartial("generalSettings", [
             'generalSettings' => $generalSettings,
             'oSurvey' => Survey::model()->findByPk($surveyId),
             'question' => $question,
-            'aQuestionTypeGroups' => $this->getQuestionTypeGroups(QuestionTheme::findAllQuestionMetaDataForSelector()),
-            'questionTheme' => $questionThemeObject,
-            'selectormodeclass' => $this->getSelectorModeClass(),
         ]);
     }
 
@@ -2175,14 +2219,17 @@ class QuestionAdministrationController extends LSBaseController
     /**
      * Set the other state for selected Questions
      *
-     * Note: Questions not belonging to the survey are skipped.
+     * Note: Questions not belonging to the survey are skipped, and so are
+     * questions whose "Other" is used in conditions when switching it off.
      *
      * @param array $aQids All question id's affected
      * @param string $sOther the "other" value 'Y' or 'N'
      * @param int $iSid survey ID
+     * @return string[] The codes of the questions not switched off, because conditions use their "Other"
      */
     public static function setMultipleQuestionOtherState($aQids, $sOther, $iSid)
     {
+        $refusedQuestionCodes = [];
         foreach ($aQids as $sQid) {
             $iQid = (int)$sQid;
             $oQuestion = Question::model()->findByPk(["qid" => $iQid], 'sid=:sid', [':sid' => $iSid]);
@@ -2192,9 +2239,13 @@ class QuestionAdministrationController extends LSBaseController
             // Only set the other state for question types that have this attribute (and no parent_qid)
             if ($oQuestion->getAllowOther()) {
                 $oQuestion->other = $sOther;
-                $oQuestion->save();
+                // The validation refuses to switch "Other" off while conditions use it
+                if (!$oQuestion->save() && !empty($oQuestion->getOtherConditionQuestionCodes())) {
+                    $refusedQuestionCodes[] = $oQuestion->title;
+                }
             }
         }
+        return $refusedQuestionCodes;
     }
 
     /**
@@ -2452,9 +2503,12 @@ class QuestionAdministrationController extends LSBaseController
      *
      * todo: this should be moved to model ...
      *
+     * Note: The group is only set if it belongs to the survey of the question.
+     *
      * @param int $iQuestionId
      * @param string $sQuestionType
      * @param int $gid
+     * @param string $questionThemeName
      * @return Question
      * @throws CException
      */
@@ -2479,7 +2533,7 @@ class QuestionAdministrationController extends LSBaseController
             $oQuestion->question_theme_name = $questionThemeName;
         }
 
-        if ($gid != null) {
+        if ($gid != null && QuestionGroup::model()->exists('gid = :gid AND sid = :sid', [':gid' => (int) $gid, ':sid' => (int) $oQuestion->sid])) {
             $oQuestion->gid = $gid;
         }
 

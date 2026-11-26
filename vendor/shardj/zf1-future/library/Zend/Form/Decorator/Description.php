@@ -128,7 +128,7 @@ class Zend_Form_Decorator_Description extends Zend_Form_Decorator_Abstract
     /**
      * Get escape flag
      *
-     * @return true
+     * @return true|bool
      */
     public function getEscape()
     {
@@ -163,7 +163,11 @@ class Zend_Form_Decorator_Description extends Zend_Form_Decorator_Abstract
             $description = trim($description);
         }
 
-        if (!empty($description) && (null !== ($translator = $element->getTranslator()))) {
+        // Zend_Form_Element::getDescription() translates already; forms and display groups do not
+        if (!empty($description)
+            && !$element instanceof Zend_Form_Element
+            && (null !== ($translator = $element->getTranslator()))
+        ) {
             $description = $translator->translate($description);
         }
 

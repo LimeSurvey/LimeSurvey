@@ -520,29 +520,28 @@ class Zend_View_Helper_Navigation_Menu
         }
 
         // UL class
-        if (isset($options['ulClass']) && $options['ulClass'] !== null) {
+        if (isset($options['ulClass'])) {
             $options['ulClass'] = (string) $options['ulClass'];
         } else {
             $options['ulClass'] = $this->getUlClass();
         }
 
         // UL id
-        if (isset($options['ulId']) && $options['ulId'] !== null) {
+        if (isset($options['ulId'])) {
             $options['ulId'] = (string) $options['ulId'];
         } else {
             $options['ulId'] = $this->getUlId();
         }
 
         // Active class
-        if (isset($options['activeClass']) && $options['activeClass'] !== null
-        ) {
+        if (isset($options['activeClass'])) {
             $options['activeClass'] = (string) $options['activeClass'];
         } else {
             $options['activeClass'] = $this->getActiveClass();
         }
 
         // Parent class
-        if (isset($options['parentClass']) && $options['parentClass'] !== null) {
+        if (isset($options['parentClass'])) {
             $options['parentClass'] = (string) $options['parentClass'];
         } else {
             $options['parentClass'] = $this->getParentClass();
@@ -782,6 +781,7 @@ class Zend_View_Helper_Navigation_Menu
                     } else if ($foundPage->getParent()->hasPage($page)) {
                         // page is a sibling of the active page...
                         if (!$foundPage->hasPages() ||
+                            // @phpstan-ignore variable.undefined (set together with $foundPage)
                             is_int($maxDepth) && $foundDepth + 1 > $maxDepth) {
                             // accept if active page has no children, or the
                             // children are too deep to be rendered

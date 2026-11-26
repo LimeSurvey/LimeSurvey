@@ -237,6 +237,7 @@ class Zend_Db_Adapter_Pdo_Mssql extends Zend_Db_Adapter_Pdo_Abstract
         $stmt = $this->query($sql);
         $result = $stmt->fetchAll(Zend_Db::FETCH_NUM);
 
+        $owner       = 1;
         $table_name  = 2;
         $column_name = 3;
         $type_name   = 5;
@@ -269,11 +270,9 @@ class Zend_Db_Adapter_Pdo_Mssql extends Zend_Db_Adapter_Pdo_Abstract
         foreach ($result as $key => $row) {
             $identity = false;
             $words = explode(' ', $row[$type_name], 2);
-            if (isset($words[0])) {
-                $type = $words[0];
-                if (isset($words[1])) {
-                    $identity = (bool) preg_match('/identity/', $words[1]);
-                }
+            $type = $words[0];
+            if (isset($words[1])) {
+                $identity = (bool) preg_match('/identity/', $words[1]);
             }
 
             $isPrimary = array_key_exists($row[$column_name], $primaryKeyColumn);
@@ -284,7 +283,7 @@ class Zend_Db_Adapter_Pdo_Mssql extends Zend_Db_Adapter_Pdo_Abstract
             }
 
             $desc[$this->foldCase($row[$column_name])] = [
-                'SCHEMA_NAME'      => null, // @todo
+                'SCHEMA_NAME'      => $this->foldCase($row[$owner]),
                 'TABLE_NAME'       => $this->foldCase($row[$table_name]),
                 'COLUMN_NAME'      => $this->foldCase($row[$column_name]),
                 'COLUMN_POSITION'  => (int) $row[$column_position],
@@ -339,40 +338,36 @@ class Zend_Db_Adapter_Pdo_Mssql extends Zend_Db_Adapter_Pdo_Abstract
         if ($offset > 0) {
             $orderby = stristr($sql, 'ORDER BY');
 
-            if ($orderby !== false) {
-                $orderParts = explode(',', substr($orderby, 8));
-                $pregReplaceCount = null;
-                $orderbyInverseParts = [];
-                foreach ($orderParts as $orderPart) {
-                    $orderPart = rtrim($orderPart);
-                    $inv = preg_replace('/\s+desc$/i', ' ASC', $orderPart, 1, $pregReplaceCount);
-                    if ($pregReplaceCount) {
-                        $orderbyInverseParts[] = $inv;
-                        continue;
-                    }
-                    $inv = preg_replace('/\s+asc$/i', ' DESC', $orderPart, 1, $pregReplaceCount);
-                    if ($pregReplaceCount) {
-                        $orderbyInverseParts[] = $inv;
-                        continue;
-                    } else {
-                        $orderbyInverseParts[] = $orderPart . ' DESC';
-                    }
+            if ($orderby === false) {
+                // without an order there is nothing to invert, the rows are numbered instead
+                return 'SELECT * FROM (SELECT ROW_NUMBER() OVER (ORDER BY (SELECT 0)) AS "ZEND_DB_ROWNUM", *'
+                    . ' FROM (' . $sql . ') AS inner_tbl) AS outer_tbl'
+                    . ' WHERE "ZEND_DB_ROWNUM" > ' . $offset;
+            }
+
+            $orderParts = explode(',', substr($orderby, 8));
+            $pregReplaceCount = null;
+            $orderbyInverseParts = [];
+            foreach ($orderParts as $orderPart) {
+                $orderPart = rtrim($orderPart);
+                $inv = preg_replace('/\s+desc$/i', ' ASC', $orderPart, 1, $pregReplaceCount);
+                if ($pregReplaceCount) {
+                    $orderbyInverseParts[] = $inv;
+                    continue;
                 }
-
-                $orderbyInverse = 'ORDER BY ' . implode(', ', $orderbyInverseParts);
+                $inv = preg_replace('/\s+asc$/i', ' DESC', $orderPart, 1, $pregReplaceCount);
+                if ($pregReplaceCount) {
+                    $orderbyInverseParts[] = $inv;
+                    continue;
+                } else {
+                    $orderbyInverseParts[] = $orderPart . ' DESC';
+                }
             }
 
+            $orderbyInverse = 'ORDER BY ' . implode(', ', $orderbyInverseParts);
 
-
-
-            $sql = 'SELECT * FROM (SELECT TOP ' . $count . ' * FROM (' . $sql . ') AS inner_tbl';
-            if ($orderby !== false) {
-                $sql .= ' ' . $orderbyInverse . ' ';
-            }
-            $sql .= ') AS outer_tbl';
-            if ($orderby !== false) {
-                $sql .= ' ' . $orderby;
-            }
+            $sql = 'SELECT * FROM (SELECT TOP ' . $count . ' * FROM (' . $sql . ') AS inner_tbl'
+                . ' ' . $orderbyInverse . ' ) AS outer_tbl ' . $orderby;
         }
 
         return $sql;
@@ -405,7 +400,7 @@ class Zend_Db_Adapter_Pdo_Mssql extends Zend_Db_Adapter_Pdo_Abstract
     /**
      * Retrieve server version in PHP style
      * Pdo_Mssql doesn't support getAttribute(PDO::ATTR_SERVER_VERSION)
-     * @return string
+     * @return string|null
      */
     public function getServerVersion()
     {
@@ -431,7 +426,7 @@ class Zend_Db_Adapter_Pdo_Mssql extends Zend_Db_Adapter_Pdo_Abstract
     {
         if (!is_int($value) && !is_float($value)) {
             // Fix for null-byte injection
-            $value = addcslashes($value, "\000\032");
+            $value = addcslashes((string) $value, "\000\032");
         }
         return parent::_quote($value);
     }

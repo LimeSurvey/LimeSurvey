@@ -22,7 +22,7 @@ class LSYii_Validators extends CValidator
      * Expression functions that turn encoded text back into HTML markup, and are not allowed in a filtered expression
      * @var string[]
      */
-    const XSS_UNSAFE_EM_FUNCTIONS = array('html_entity_decode', 'htmlspecialchars_decode', 'quoted_printable_decode');
+    public const XSS_UNSAFE_EM_FUNCTIONS = array('html_entity_decode', 'htmlspecialchars_decode', 'quoted_printable_decode');
 
     /**
      * Filter attribute for fixCKeditor
@@ -178,9 +178,15 @@ class LSYii_Validators extends CValidator
         $filter = LSYii_HtmlPurifier::getXssPurifier();
         Yii::import('application.helpers.expressions.em_core_helper', true); // Already imported in em_manager_helper.php ?
         $oExpressionManager = new ExpressionManager();
-        /** Start to get complete filtered value with  url decode {QCODE} (bug #09300). This allow only question number in url, seems OK with XSS protection **/
+        /** Start to get complete filtered value with  url decode {QCODE} (bug #09300). This allow only variable names (Q1_SQ001.shown, TOKEN:ATTRIBUTE_1 …) in url, seems OK with XSS protection **/
         $sFiltered = $filter->purify($value);
-        $sFiltered = preg_replace('#%7B([a-zA-Z0-9\.]*)%7D#', '{$1}', (string) $sFiltered);
+        $sFiltered = preg_replace_callback(
+            '#%7B((?:[a-zA-Z0-9\._]|%3A)*)%7D#',
+            function ($aMatches) {
+                return '{' . str_replace('%3A', ':', $aMatches[1]) . '}';
+            },
+            (string) $sFiltered
+        );
         /**  We get 2 array : one filtered, other unfiltered **/
         $aValues = $oExpressionManager->asSplitStringOnExpressions($value); // Return array of array : 0=>the string,1=>string length,2=>string type (STRING or EXPRESSION)
         $aFilteredValues = $oExpressionManager->asSplitStringOnExpressions($sFiltered); // Same but for the filtered string

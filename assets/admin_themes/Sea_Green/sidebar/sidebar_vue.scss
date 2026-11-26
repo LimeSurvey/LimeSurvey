@@ -149,7 +149,7 @@
     }
 
     li.dragged {
-        color                      : $white;
+        color                      : $g-900;
         background                 : var(--bs-primary) none !important;
         padding-top                : 18px;
         padding-bottom             : 18px;
@@ -160,7 +160,7 @@
             background : var(--bs-primary) !important;
         }
         a, svg, a:not(.btn, .nav-tabs .nav-link) {
-            color : $white;
+            color : $g-900;
         }
     }
     .menu-selected {

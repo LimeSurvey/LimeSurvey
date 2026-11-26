@@ -12,6 +12,9 @@
 <div class="row">
     <div class="survey-actionbar col-12">
         <?php $form = $this->beginWidget('CActiveForm', ['action' => $this->formUrl, 'method' => 'get', 'id' => 'survey-search']); ?>
+        <?php // Filtering reloads the page: filters.js writes the result into this live region so it gets announced ?>
+        <div id="survey-search-status" class="visually-hidden" role="status" aria-live="polite" aria-atomic="true"
+             data-message="<?= CHtml::encode($this->getResultMessage()) ?>"></div>
         <div class="d-flex align-items-baseline">
 
             <!-- select state -->
@@ -19,7 +22,8 @@
             <?php if ($this->onlyfilter) : ?>
                 <div class="survey-actionbar-filters">
                     <div class="survey-actionbar-item">
-                        <select name="active" id='survey_active' class="form-select survey-actionbar-formfield" aria-labelledby="survey_search_all_surveys">
+                        <label for="survey_active" class="visually-hidden"><?= gT('Survey status') ?></label>
+                        <select name="active" id='survey_active' class="form-select survey-actionbar-formfield">
                             <option value="" <?= empty(App()->request->getQuery('active')) ? "selected" : '' ?>>
                                 <?= gT('Status') ?>
                             </option>
@@ -46,11 +50,13 @@
                 <!-- select group -->
                 <div class="survey-actionbar-filters">
                     <div class="survey-actionbar-item search-bar">
-                        <?= $form->textField($this->model, 'searched_value', ['class' => 'form-control survey-actionbar-formfield', 'placeholder' => 'Search', 'value' => App()->request->getQuery('Survey')['searched_value'] ?? '', 'aria-labelledby' => 'survey_search_all_surveys', 'id' => 'survey_searched_value']) ?>
+                        <label for="survey_searched_value" class="visually-hidden"><?= gT('Search surveys') ?></label>
+                        <?= $form->textField($this->model, 'searched_value', ['class' => 'form-control survey-actionbar-formfield', 'placeholder' => gT('Search'), 'value' => App()->request->getQuery('Survey')['searched_value'] ?? '', 'id' => 'survey_searched_value']) ?>
                         <i class="ri-search-line"></i>
                     </div>
                     <div class="survey-actionbar-item">
-                        <select name="active" id='survey_active' class="form-select survey-actionbar-formfield" aria-labelledby="survey_search_all_surveys">
+                        <label for="survey_active" class="visually-hidden"><?= gT('Survey status') ?></label>
+                        <select name="active" id='survey_active' class="form-select survey-actionbar-formfield">
                             <option value="" <?= empty(App()->request->getQuery('active')) ? "selected" : '' ?>>
                                 <?= gT('Status') ?>
                             </option>
@@ -72,7 +78,8 @@
                         </select>
                     </div>
                     <div class="survey-actionbar-item">
-                        <select name="gsid" id='survey_gsid' class="form-select survey-actionbar-formfield" aria-labelledby="survey_search_all_surveys">
+                        <label for="survey_gsid" class="visually-hidden"><?= gT('Survey group') ?></label>
+                        <select name="gsid" id='survey_gsid' class="form-select survey-actionbar-formfield">
                             <option value=""><?= gT('Group') ?></option>
                             <?php foreach (SurveysGroups::getSurveyGroupsList() as $gsid => $group_title) : ?>
                                 <option value="<?= $gsid ?>" <?= (App()->request->getQuery('gsid') == $gsid) ? "selected" : "" ?>><?= CHtml::encode($group_title) ?></option>
@@ -100,18 +107,19 @@
                 </div>
             </div>
 
-  <?php if ($this->switch): ?>
-                <div class="survey-actionbar-switch">
-                    <i class="view-switch ri-grid-fill survey-actionbar-item" data-action="box-widget" role="button"
+  <?php if ($this->switch) : ?>
+                <?php // One of the two views is always chosen: plain buttons, the chosen one is marked as current (not toggle buttons) ?>
+                <div class="survey-actionbar-switch" role="group" aria-label="<?= gT('View') ?>">
+                    <i class="view-switch ri-grid-fill survey-actionbar-item" id="survey_view_box" data-action="box-widget" role="button"
                        tabindex="0"
                        aria-label="<?= gT('Box view') ?>"
-                       aria-pressed="<?= $this->viewtype === 'box-widget' ? 'true' : 'false' ?>" <?= $this->viewtype === 'box-widget' ? 'active' : '' ?>></i>
-                    <i class="view-switch ri-menu-line survey-actionbar-item" data-action="list-widget" role="button"
+                       <?= $this->viewtype === 'box-widget' ? 'aria-current="true" active' : '' ?>></i>
+                    <i class="view-switch ri-menu-line survey-actionbar-item" id="survey_view_list" data-action="list-widget" role="button"
                        tabindex="0"
                        aria-label="<?= gT('List view') ?>"
-                       aria-pressed="<?= $this->viewtype === 'list-widget' ? 'true' : 'false' ?>" <?= $this->viewtype === 'list-widget' ? 'active' : '' ?>></i>
+                       <?= $this->viewtype === 'list-widget' ? 'aria-current="true" active' : '' ?>></i>
                 </div>
-            <?php endif; ?>
+  <?php endif; ?>
 
 
         </div>

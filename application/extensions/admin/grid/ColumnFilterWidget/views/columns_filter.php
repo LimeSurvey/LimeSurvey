@@ -9,7 +9,7 @@
 ?>
 
 <!-- Modal -->
-<div class="modal fade" id="<?= $modalId ?>" tabindex="-1" role="dialog" data-target="<?= $ajaxUpdate ?>" aria-labelledby="<?= $modalId ?>-label" aria-modal="true">
+<div class="modal fade" id="<?= $modalId ?>" tabindex="-1" role="dialog" data-target="<?= $ajaxUpdate ?>" aria-labelledby="<?= $modalId ?>-label <?= $modalId ?>-label-dialogsr" aria-modal="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <form
@@ -35,7 +35,8 @@
                             <?php eT("Clear selection"); ?>
                         </button>
                     </div>
-                    <div class="mb-3 responses-multiselect-checkboxes">
+                    <?php // The checkboxes are announced as a group named by the modal title ?>
+                    <div class="mb-3 responses-multiselect-checkboxes" role="group" aria-labelledby="<?= $modalId ?>-label">
                         <?php foreach ($columnsData as $column) : ?>
                             <?php if (!empty($column->header) && $column->name !== 'dropdown_actions' && !array_key_exists($column->name, $filterableColumns)) : ?>
                                 <div class="checkbox">

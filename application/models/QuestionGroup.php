@@ -155,16 +155,19 @@ class QuestionGroup extends LSActiveRecord
 
     /**
      * Deletes a question group and all its dependencies.
-     * Returns affected rows of question group table (should be 1 or null)
+     * The group itself is deleted first through delete(), so the beforeQuestionGroupDelete/beforeModelDelete
+     * and afterQuestionGroupDelete/afterModelDelete plugin events are raised while its questions still exist.
+     * Returns affected rows of question group table (should be 1 or 0)
      * @param integer $groupId
-     * @param integer|null $surveyId deprecated
-     * @throw Exception
-     * @return int|null
+     * @param integer|null $surveyId if set, the group must belong to this survey
+     * @throws NotFoundException if the group does not exist
+     * @throws BadRequestException if the survey is active
+     * @return int
      */
     public static function deleteWithDependency($groupId, $surveyId = null)
     {
         $QuestionGroup = self::model()->findByPk($groupId);
-        if (empty($QuestionGroup)) {
+        if (empty($QuestionGroup) || ($surveyId !== null && (int) $surveyId !== (int) $QuestionGroup->sid)) {
             throw new NotFoundException(gT('Group not found'));
         }
         // Abort if the survey is active
@@ -174,12 +177,14 @@ class QuestionGroup extends LSActiveRecord
         }
         $surveyId = $QuestionGroup->sid;
         $questionIds = QuestionGroup::getQuestionIdsInGroup($groupId);
+        if (!$QuestionGroup->delete()) {
+            return 0;
+        }
         Question::deleteAllById($questionIds);
         Assessment::model()->deleteAllByAttributes(array('sid' => $surveyId, 'gid' => $groupId));
         QuestionGroupL10n::model()->deleteAllByAttributes(array('gid' => $groupId));
-        $affectedRows = QuestionGroup::model()->deleteAllByAttributes(array('sid' => $surveyId, 'gid' => $groupId));
         (new SurveyDetailService())->touchSurveyLastModified((int) $surveyId);
-        return $affectedRows;
+        return 1;
     }
 
     /**
@@ -493,7 +498,8 @@ class QuestionGroup extends LSActiveRecord
     }
 
     /**
-     * Used in frontend helper, buildsurveysession.
+     * Count the groups that contain at least one question without "Always hide this question"
+     * (used for the {NUMBEROFGROUPS} placeholder)
      * @param int $surveyid
      * @return int
      */
@@ -505,11 +511,9 @@ class QuestionGroup extends LSActiveRecord
             return $value;
         }
 
-        $quotedGroups = Yii::app()->db->quoteTableName('{{groups}}');
-        $sQuery = "select count(DISTINCT $quotedGroups.gid) from $quotedGroups
-            left join {{questions}} on  $quotedGroups.gid={{questions}}.gid
-            where $quotedGroups.sid ={$surveyid} and qid is not null";
-        $result = Yii::app()->db->createCommand($sQuery)->queryScalar();
+        // Groups with only always hidden questions are never shown to the participant
+        $survey = Survey::model()->findByPk($surveyid);
+        $result = $survey ? count($survey->getGroupIdsWithVisibleQuestions()) : 0;
 
         EmCacheHelper::set($cacheKey, $result);
 

@@ -5,6 +5,7 @@ namespace PhpOffice\PhpSpreadsheet\Writer\Ods;
 use Composer\Pcre\Preg;
 use PhpOffice\PhpSpreadsheet\Calculation\Calculation;
 use PhpOffice\PhpSpreadsheet\Calculation\Exception as CalculationException;
+use PhpOffice\PhpSpreadsheet\Calculation\Information\ErrorValue;
 use PhpOffice\PhpSpreadsheet\Calculation\Information\ExcelError;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
@@ -13,6 +14,7 @@ use PhpOffice\PhpSpreadsheet\Shared\Date;
 use PhpOffice\PhpSpreadsheet\Shared\XMLWriter;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
+use PhpOffice\PhpSpreadsheet\Worksheet\BaseDrawing;
 use PhpOffice\PhpSpreadsheet\Worksheet\RowCellIterator;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use PhpOffice\PhpSpreadsheet\Writer\Ods;
@@ -26,6 +28,10 @@ class Content extends WriterPart
 {
     private Formula $formulaConvertor;
 
+    private Drawing $drawingWriter;
+
+    private int $drawingIndex = 0;
+
     /**
      * Set parent Ods writer.
      */
@@ -34,6 +40,7 @@ class Content extends WriterPart
         parent::__construct($writer);
 
         $this->formulaConvertor = new Formula($this->getParentWriter()->getSpreadsheet()->getDefinedNames());
+        $this->drawingWriter = new Drawing($writer);
     }
 
     /**
@@ -84,6 +91,7 @@ class Content extends WriterPart
         $objWriter->writeAttribute('xmlns:xhtml', 'http://www.w3.org/1999/xhtml');
         $objWriter->writeAttribute('xmlns:grddl', 'http://www.w3.org/2003/g/data-view#');
         $objWriter->writeAttribute('xmlns:tableooo', 'http://openoffice.org/2009/table');
+        $objWriter->writeAttribute('xmlns:calcext', 'urn:org:documentfoundation:names:experimental:calc:xmlns:calcext:1.0');
         $objWriter->writeAttribute('xmlns:field', 'urn:openoffice:names:experimental:ooo-ms-interop:xmlns:field:1.0');
         $objWriter->writeAttribute('xmlns:formx', 'urn:openoffice:names:experimental:ooxml-odf-interop:xmlns:form:1.0');
         $objWriter->writeAttribute('xmlns:css3t', 'http://www.w3.org/TR/css3-text/');
@@ -95,6 +103,7 @@ class Content extends WriterPart
         // Styles XF
         $objWriter->startElement('office:automatic-styles');
         $this->writeXfStyles($objWriter, $this->getParentWriter()->getSpreadsheet());
+        $this->drawingWriter->writeGraphicStyles($objWriter, $this->getParentWriter()->getSpreadsheet());
         $objWriter->endElement();
 
         $objWriter->startElement('office:body');
@@ -103,15 +112,23 @@ class Content extends WriterPart
 
         $this->writeSheets($objWriter);
 
-        (new AutoFilters($objWriter, $this->getParentWriter()->getSpreadsheet()))->write();
-        // Defined names (ranges and formulae)
+        // Defined names (ranges and formulae), then the database ranges, in the order of the schema
         (new NamedExpressions($objWriter, $this->getParentWriter()->getSpreadsheet(), $this->formulaConvertor))->write();
+        (new AutoFilters($objWriter, $this->getParentWriter()->getSpreadsheet()))->write();
 
         $objWriter->endElement();
         $objWriter->endElement();
         $objWriter->endElement();
 
         return $objWriter->getData();
+    }
+
+    /**
+     * Get drawing writer instance.
+     */
+    public function getDrawingWriter(): Drawing
+    {
+        return $this->drawingWriter;
     }
 
     /**
@@ -156,11 +173,26 @@ class Content extends WriterPart
     {
         $spanRow = 0;
         $rows = $sheet->getRowIterator();
+
+        // Build a map of drawings by their row position
+        /** @var array<int, array<int, array{drawing: BaseDrawing, index: int}>> */
+        $drawingsByRow = [];
+        foreach ($sheet->getDrawingCollection() as $drawing) {
+            ++$this->drawingIndex;
+            $coordinates = Coordinate::coordinateFromString($drawing->getCoordinates());
+            $row = (int) $coordinates[1];
+            if (!isset($drawingsByRow[$row])) {
+                $drawingsByRow[$row] = [];
+            }
+            $drawingsByRow[$row][] = ['drawing' => $drawing, 'index' => $this->drawingIndex];
+        }
+
         foreach ($rows as $row) {
             $cellIterator = $row->getCellIterator(iterateOnlyExistingCells: true);
             $cellIterator->rewind();
             $rowStyleExists = $sheet->rowDimensionExists($row->getRowIndex()) && $sheet->getRowDimension($row->getRowIndex())->getRowHeight() > 0;
-            if ($cellIterator->valid() || $rowStyleExists) {
+            $rowIndex = $row->getRowIndex();
+            if ($cellIterator->valid() || $rowStyleExists || isset($drawingsByRow[$rowIndex])) {
                 if ($spanRow) {
                     $objWriter->startElement('table:table-row');
                     $objWriter->writeAttribute(
@@ -174,15 +206,15 @@ class Content extends WriterPart
                 if ($rowStyleExists) {
                     $objWriter->writeAttribute(
                         'table:style-name',
-                        sprintf('%s_%d_%d', Style::ROW_STYLE_PREFIX, $sheetIndex, $row->getRowIndex())
+                        sprintf('%s_%d_%d', Style::ROW_STYLE_PREFIX, $sheetIndex, $rowIndex)
                     );
-                } elseif ($sheet->getDefaultRowDimension()->getRowHeight() > 0.0 && !$sheet->getRowDimension($row->getRowIndex())->getCustomFormat()) {
+                } elseif ($sheet->getDefaultRowDimension()->getRowHeight() > 0.0 && !$sheet->getRowDimension($rowIndex)->getCustomFormat()) {
                     $objWriter->writeAttribute(
                         'table:style-name',
                         sprintf('%s%d', Style::ROW_STYLE_PREFIX, $sheetIndex)
                     );
                 }
-                $this->writeCells($objWriter, $cellIterator);
+                $this->writeCells($objWriter, $cellIterator, $drawingsByRow, $rowIndex, $sheet);
                 $objWriter->endElement();
             } else {
                 ++$spanRow;
@@ -192,10 +224,20 @@ class Content extends WriterPart
 
     /**
      * Write cells of the specified row.
+     *
+     * @param array<int, array<int, array{drawing: BaseDrawing, index: int}>> $drawingsByRow
      */
-    private function writeCells(XMLWriter $objWriter, RowCellIterator $cells): void
+    private function writeCells(XMLWriter $objWriter, RowCellIterator $cells, array $drawingsByRow, int $rowIndex, Worksheet $sheet): void
     {
         $prevColumn = -1;
+        // Get drawings for this row
+        $rowDrawings = $drawingsByRow[$rowIndex] ?? [];
+        $drawingsByColumn = [];
+        foreach ($rowDrawings as $drawingData) {
+            $coordinates = Coordinate::coordinateFromString($drawingData['drawing']->getCoordinates());
+            $column = Coordinate::columnIndexFromString($coordinates[0]) - 1;
+            $drawingsByColumn[$column] = $drawingData;
+        }
         foreach ($cells as $cell) {
             /** @var Cell $cell */
             $column = Coordinate::columnIndexFromString($cell->getColumn()) - 1;
@@ -213,14 +255,18 @@ class Content extends WriterPart
                 case DataType::TYPE_BOOL:
                     $objWriter->writeAttribute('office:value-type', 'boolean');
                     $objWriter->writeAttribute('office:boolean-value', $cell->getValue() ? 'true' : 'false');
-                    $objWriter->writeElement('text:p', Calculation::getInstance()->getLocaleBoolean($cell->getValue() ? 'TRUE' : 'FALSE'));
+                    $this->writeCellText($objWriter, $cell, Calculation::getInstance()->getLocaleBoolean($cell->getValue() ? 'TRUE' : 'FALSE'));
 
                     break;
                 case DataType::TYPE_ERROR:
-                    $objWriter->writeAttribute('table:formula', 'of:=#NULL!');
+                    $error = $cell->getValueString();
                     $objWriter->writeAttribute('office:value-type', 'string');
-                    $objWriter->writeAttribute('office:string-value', '');
-                    $objWriter->writeElement('text:p', '#NULL!');
+                    $objWriter->writeAttribute(
+                        'office:string-value',
+                        $error
+                    );
+                    $objWriter->writeAttribute('calcext:value-type', 'error');
+                    $this->writeCellText($objWriter, $cell, $error);
 
                     break;
                 case DataType::TYPE_FORMULA:
@@ -251,6 +297,14 @@ class Content extends WriterPart
                         }
                     }
                     $objWriter->writeAttribute('table:formula', $this->formulaConvertor->convertFormula($cell->getValueString()));
+                    if (!$this->getParentWriter()->getPreCalculateFormulas()) {
+                        // No cached value: the application that opens the file calculates the formula
+                        if ($cell->hasHyperlink()) {
+                            $this->writeCellText($objWriter, $cell, '');
+                        }
+
+                        break;
+                    }
                     if (is_bool($formulaValueCalc)) {
                         $objWriter->writeAttribute(
                             'office:value-type',
@@ -260,7 +314,24 @@ class Content extends WriterPart
                             'office:boolean-value',
                             $formulaValueCalc ? 'true' : 'false'
                         );
-                        $objWriter->writeElement('text:p', $formulaValueCalc ? 'TRUE' : 'FALSE');
+                        $this->writeCellText($objWriter, $cell, $formulaValueCalc ? 'TRUE' : 'FALSE');
+
+                        break;
+                    }
+                    if (ErrorValue::isError($formulaValue)) {
+                        $objWriter->writeAttribute(
+                            'office:value-type',
+                            'string'
+                        );
+                        $objWriter->writeAttribute(
+                            'office:string-value',
+                            ''
+                        );
+                        $objWriter->writeAttribute(
+                            'calcext:value-type',
+                            'error'
+                        );
+                        $this->writeCellText($objWriter, $cell, $formulaValue);
 
                         break;
                     }
@@ -273,7 +344,7 @@ class Content extends WriterPart
                             'office:string-value',
                             $formulaValue
                         );
-                        $objWriter->writeElement('text:p', $formulaValue);
+                        $this->writeCellText($objWriter, $cell, $formulaValue);
 
                         break;
                     }
@@ -299,11 +370,9 @@ class Content extends WriterPart
                     if (Date::isDateTimeFormatCode($numFmt, true)) {
                         $valueCalc = $cell->getCalculatedValueString();
                         if (Preg::isMatch('/[HhSs]/', $numFmt) && !Preg::isMatch('/[YyDd]/', $numFmt)) {
-                            $minus = '';
                             $type = 'time';
                             $valueType = 'time-value';
                             if (str_starts_with($valueCalc, '-')) {
-                                $minus = '-';
                                 $absVal = fmod(abs((float) $value), 1.0);
                                 $hms = (int) round(86400 * $absVal);
                                 $hours = intdiv($hms, 3600);
@@ -359,37 +428,85 @@ class Content extends WriterPart
                             $value
                         );
                     }
-                    $objWriter->writeElement('text:p', $formatted);
+                    $this->writeCellText($objWriter, $cell, $formatted);
 
                     break;
                 case DataType::TYPE_INLINE:
                     // break intentionally omitted
                 case DataType::TYPE_STRING:
                     $objWriter->writeAttribute('office:value-type', 'string');
-                    $url = $cell->getHyperlink()->getUrl();
-                    if (empty($url)) {
-                        $objWriter->writeElement('text:p', $cell->getValueString());
-                    } else {
-                        $objWriter->startElement('text:p');
-                        $objWriter->startElement('text:a');
-                        $sheets = 'sheet://';
-                        $lensheets = strlen($sheets);
-                        if (substr($url, 0, $lensheets) === $sheets) {
-                            $url = '#' . substr($url, $lensheets);
-                        }
-                        $objWriter->writeAttribute('xlink:href', $url);
-                        $objWriter->writeAttribute('xlink:type', 'simple');
-                        $objWriter->text($cell->getValueString());
-                        $objWriter->endElement(); // text:a
-                        $objWriter->endElement(); // text:p
-                    }
+                    $this->writeCellText($objWriter, $cell, $cell->getValueString());
 
                     break;
             }
+
+            // Write drawing if it belongs to this cell
+            if (isset($drawingsByColumn[$column])) {
+                $drawingData = $drawingsByColumn[$column];
+                $this->drawingWriter->writeDrawingFrame(
+                    $objWriter,
+                    $drawingData['drawing'],
+                    $drawingData['index'],
+                    $sheet->getTitle()
+                );
+            }
+
             Comment::write($objWriter, $cell);
             $objWriter->endElement();
             $prevColumn = $column;
         }
+
+        // Write any remaining drawings that don't have cells.
+        // I don't know how to trigger the if condition below,
+        //   and would prefer to eliminate the code and have
+        //   someone raise an issue rather than have them
+        //   execute unpredictable code.
+
+        /*
+        foreach ($drawingsByColumn as $column => $drawingData) {
+            if ($column > $prevColumn) {
+                $this->writeCellSpan($objWriter, $column, $prevColumn);
+                $objWriter->startElement('table:table-cell');
+
+                $this->drawingWriter->writeDrawingFrame(
+                    $objWriter,
+                    $drawingData['drawing'],
+                    $drawingData['index'],
+                    $sheet->getTitle()
+                );
+
+                $objWriter->endElement();
+                $prevColumn = $column;
+            }
+        }
+        */
+    }
+
+    /**
+     * Write the text of a cell, as a link when the cell has one.
+     */
+    private function writeCellText(XMLWriter $objWriter, Cell $cell, string $text): void
+    {
+        // getHyperlink() would add an empty hyperlink to a cell that has none
+        $url = $cell->hasHyperlink() ? $cell->getHyperlink()->getUrl() : '';
+        if ($url === '') {
+            $objWriter->writeElement('text:p', $text);
+
+            return;
+        }
+        $objWriter->startElement('text:p');
+        $objWriter->startElement('text:a');
+        $sheets = 'sheet://';
+        $lensheets = strlen($sheets);
+        if (substr($url, 0, $lensheets) === $sheets) {
+            // ODF separates the sheet from the cell with a dot: #'My Sheet'.A1
+            $url = '#' . Preg::replace("/^('(?:[^']|'')*'|[^'!]+)!/", '$1.', substr($url, $lensheets));
+        }
+        $objWriter->writeAttribute('xlink:href', $url);
+        $objWriter->writeAttribute('xlink:type', 'simple');
+        $objWriter->text($text);
+        $objWriter->endElement(); // text:a
+        $objWriter->endElement(); // text:p
     }
 
     /**

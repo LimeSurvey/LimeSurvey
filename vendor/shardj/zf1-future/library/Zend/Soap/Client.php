@@ -102,7 +102,7 @@ class Zend_Soap_Client
     /**
      * SoapClient object
      *
-     * @var SoapClient
+     * @var SoapClient|null
      */
     protected $_soapClient;
 
@@ -192,7 +192,7 @@ class Zend_Soap_Client
      *
      * @param  array|Zend_Config $options
      * @return Zend_Soap_Client
-     * @throws Zend_SoapClient_Exception
+     * @throws Zend_Soap_Client_Exception
      */
     public function setOptions($options)
     {
@@ -281,7 +281,6 @@ class Zend_Soap_Client
                 default:
                     require_once 'Zend/Soap/Client/Exception.php';
                     throw new Zend_Soap_Client_Exception('Unknown SOAP client option');
-                    break;
             }
         }
 
@@ -701,7 +700,7 @@ class Zend_Soap_Client
     /**
      * Set proxy password
      *
-     * @param  string $proxyLogin
+     * @param  string $proxyPassword
      * @return Zend_Soap_Client
      */
     public function setProxyPassword($proxyPassword)
@@ -1030,9 +1029,9 @@ class Zend_Soap_Client
     {
         // Perform request as is
         if ($one_way == null) {
-            return call_user_func([$client,'SoapClient::__doRequest'], $request, $location, $action, $version);
+            return $client->doRequest($request, $location, $action, $version);
         } else {
-            return call_user_func([$client,'SoapClient::__doRequest'], $request, $location, $action, $version, $one_way);
+            return $client->doRequest($request, $location, $action, $version, $one_way);
         }
     }
 
@@ -1089,7 +1088,7 @@ class Zend_Soap_Client
      *
      * My be overridden in descendant classes
      *
-     * @param array $arguments
+     * @param array $result
      */
     protected function _preProcessResult($result)
     {
@@ -1229,8 +1228,8 @@ class Zend_Soap_Client
     }
 
     /**
-     * @param string $name
-     * @param string $value
+     * @param string $cookieName
+     * @param string $cookieValue
      * @return Zend_Soap_Client
      */
     public function setCookie($cookieName, $cookieValue=null)

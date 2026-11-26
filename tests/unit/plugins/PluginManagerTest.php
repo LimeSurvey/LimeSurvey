@@ -103,7 +103,39 @@ class PluginManagerTest extends TestBaseClass
         $this->assertSame(1, $result[$pluginName]['load_error']);
         $this->assertSame('upload', $result[$pluginName]['pluginType']);
         $this->assertStringContainsString('Broken test plugin', $result[$pluginName]['load_error_message']);
+        $this->assertStringContainsString(
+            'upload' . DIRECTORY_SEPARATOR . 'plugins' . DIRECTORY_SEPARATOR . $pluginName,
+            $result[$pluginName]['load_error_message']
+        );
+        $this->assertStringNotContainsString(
+            \Yii::app()->getConfig('rootdir') . DIRECTORY_SEPARATOR,
+            $result[$pluginName]['load_error_message']
+        );
         $this->assertNull(\Plugin::model()->findByAttributes(['name' => $pluginName]));
+    }
+
+    /**
+     * The plugin load error message shown in the plugin manager must not expose
+     * the full server path, neither in the file nor in the error message itself.
+     * @return void
+     */
+    public function testLoadErrorMessageDoesNotExposeFullPath()
+    {
+        $rootDir = \Yii::app()->getConfig('rootdir');
+        $uploadDir = \Yii::app()->getConfig('uploaddir');
+        $corePluginFile = implode(DIRECTORY_SEPARATOR, ['application', 'core', 'plugins', 'Foo', 'Foo.php']);
+        $uploadPluginFile = implode(DIRECTORY_SEPARATOR, ['plugins', 'Bar', 'Bar.php']);
+
+        $message = \Plugin::getLoadErrorMessage([
+            'message' => 'Failed opening ' . $rootDir . DIRECTORY_SEPARATOR . $corePluginFile,
+            'file' => $uploadDir . DIRECTORY_SEPARATOR . $uploadPluginFile,
+        ]);
+
+        $this->assertSame(
+            'Failed opening ' . $corePluginFile . ' upload' . DIRECTORY_SEPARATOR . $uploadPluginFile,
+            $message
+        );
+        $this->assertSame('Unknown error', \Plugin::getLoadErrorMessage(['message' => 'Unknown error', 'file' => '']));
     }
 
     /**

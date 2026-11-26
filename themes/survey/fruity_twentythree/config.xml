@@ -39,6 +39,10 @@
               Eg: You can't add a file with the same name as a file in the mother theme. It will always replace it. You must use a different file name.
               Eg: Vanilla manifest already has "<add>css/theme.css</add>". So here, if you use "<add>css/theme.css</add>" it will replace the vanilla css/theme.css
 
+        NOTE: Colour variations must be in the folder css/variations/. A theme uses only one variation:
+              The variation of an extended theme replaces the variation of its mother theme, also when the file name is different.
+              If more than one file of css/variations/ is listed, only the last one is used.
+
         NOTE: If a file in a mother theme, you don't need to add it here again.
               Eg: css/ajaxify.css is already added in vanilla, this theme doesn't replace it, so ne need to add it here.
                   Even if no mention at all about  "css/ajaxify.css" is made here, it will be added because it's in the mother theme configuration
@@ -89,6 +93,9 @@
         <showclearall type="buttons" category="Simple options" width="4" title="Show 'Clear all' button" options="on|off"
                       optionlabels="Yes|No">off
         </showclearall>
+        <showlanguageswitcher type="buttons" category="Simple options" width="4" title="Show language switcher" options="on|off"
+                              optionlabels="Yes|No">on
+        </showlanguageswitcher>
         <questionhelptextposition type="buttons" category="Simple options" width="4" title="Question help text position"
                                   options="top|bottom" optionlabels="Top|Bottom">top
         </questionhelptextposition>
@@ -97,6 +104,8 @@
         </fixnumauto>
         <deselectsinglechoice type="buttons" category="Simple options" width="4" title="Deselect single-choice option by click" options="on|off"
                               optionlabels="Yes|No">off</deselectsinglechoice>
+        <automatichyphenation type="buttons" category="Simple options" width="4" title="Automatic hyphenation" options="on|off"
+                              optionlabels="On|Off">on</automatichyphenation>
         <cornerradius type="buttons" category="Simple options" width="4" title="Corner radius" options="1|2|3" optionlabels="0px|4px|20px" optionimages="cornerradius_0.svg|cornerradius_4.svg|cornerradius_20.svg">2</cornerradius>
         <!-- colors -->
         <bodybackgroundcolor type="colorpicker" category="Colors" width="4" title="Background color" options="on|off" optionlabels="Yes|No">#ffffff</bodybackgroundcolor>
@@ -180,10 +189,12 @@
         <hideprivacyinfo category="Display options" />
         <notables category="Display options" />
         <showclearall category="Display options" />
+        <showlanguageswitcher category="Display options" />
         <questionhelptextposition category="Display options"/>
         <showpopups category="Display options" />
         <fixnumauto category="Display options" />
         <deselectsinglechoice category="Display options" />
+        <automatichyphenation category="Display options" />
     </optionsOrderReact>
 
     <!-- Here datas about how LimeSurvey should load the theme -->
@@ -283,6 +294,10 @@
                     <file type="view" role="subview">./subviews/header/nav_bar.twig</file>
                     <file type="view" role="subview">./subviews/header/progress_bar.twig</file>
                     <file type="view" role="subview">./subviews/messages/welcome.twig</file>
+                    <file type="view" role="subview">./subviews/messages/welcome_subviews/welcome_content.twig</file>
+                    <file type="view" role="subview">./subviews/messages/welcome_subviews/welcome_image_container.twig</file>
+                    <file type="view" role="subview">./subviews/messages/welcome_subviews/welcome_image.twig</file>
+                    <file type="view" role="subview">./subviews/messages/welcome_subviews/welcome_questioncount.twig</file>
                     <file type="view" role="subview">./subviews/messages/warnings.twig</file>
                     <file type="view" role="subview">./subviews/messages/no_js_alert.twig</file>
                     <file type="view" role="subview">./subviews/privacy/privacy.twig</file>
@@ -473,6 +488,7 @@
                     <file type="view" role="subview">./subviews/navigation/language_changer.twig</file>
                     <file type="view" role="subview">./subviews/navigation/question_index_menu.twig</file>
                     <file type="view" role="subview">./subviews/navigation/navigator.twig</file>
+                    <file type="view" role="subview">./subviews/navigation/navigator_next_submit_button.twig</file>
                     <file type="view" role="subview">./subviews/navigation/navigator_complement.twig</file>
                     <file type="view" role="subview">./subviews/navigation/clearall_buttons.twig</file>
                     <file type="view" role="subview">./subviews/navigation/save_buttons.twig</file>

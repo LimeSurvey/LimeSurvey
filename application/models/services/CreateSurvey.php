@@ -16,22 +16,22 @@ use LimeSurvey\Datavalueobjects\SimpleSurveyValues;
 class CreateSurvey
 {
     /** @var int number of attempts to find a valid survey ID */
-    const ATTEMPTS_CREATE_SURVEY_ID = 50;
+    public const ATTEMPTS_CREATE_SURVEY_ID = 50;
 
     /** @var string all attributes that have the value "NO" */
-    const STRING_VALUE_FOR_NO_FALSE = 'N';
+    public const STRING_VALUE_FOR_NO_FALSE = 'N';
 
     /** @var string all attributes that have the value "YES" */
-    const STRING_VALUE_FOR_YES_TRUE = 'Y';
+    public const STRING_VALUE_FOR_YES_TRUE = 'Y';
 
     /** @var string value to set attribute to inherit */
-    const STRING_SHORT_VALUE_INHERIT = 'I';
+    public const STRING_SHORT_VALUE_INHERIT = 'I';
 
     /** @var int */
-    const INTEGER_VALUE_FOR_INHERIT = -1;
+    public const INTEGER_VALUE_FOR_INHERIT = -1;
 
     /** @var int this is the default value for DB table (it corresponds to ) */
-    const DEFAULT_DATE_FORMAT = 1;
+    public const DEFAULT_DATE_FORMAT = 1;
 
     /** @var Survey the survey */
     private $survey;
@@ -41,6 +41,9 @@ class CreateSurvey
 
     /** @var SimpleSurveyValues has the simple values for creating a survey */
     private $simpleSurveyValues;
+
+    /** @var string short reason why the survey could not be created, safe to show to the user */
+    private $errorMessage = '';
 
     /**
      * CreateSurvey constructor.
@@ -59,14 +62,15 @@ class CreateSurvey
      * This creates a simple survey with the basic attributes set in param simpleSurveyValues
      *
      * @param SimpleSurveyValues $simpleSurveyValues
-     * @param int $userID the id of user who is creating the survey
-     * @param Permission $permissionModel
+     * @param int $userID Not used anymore: The current user becomes the survey owner, see Survey::init()
+     * @param Permission $permissionModel Not used anymore: The survey owner always has all permissions on the survey
+     * @param bool $overrideAdministrator whether to set the administrator name and email from $simpleSurveyValues
      *
-     * @return Survey|bool returns the survey or false if survey could not be created for any reason
+     * @return Survey|bool returns the survey or false if survey could not be created for any reason (see getErrorMessage())
      */
     public function createSimple($simpleSurveyValues, $userID, $permissionModel, $overrideAdministrator = true)
     {
-
+        $this->errorMessage = '';
         $this->simpleSurveyValues = $simpleSurveyValues;
         $this->survey->gsid = $simpleSurveyValues->surveyGroupId;
         try {
@@ -75,20 +79,38 @@ class CreateSurvey
             $this->initialiseSurveyAttributes($overrideAdministrator);
 
             if (!$this->survey->save()) {
-                // TODO: Localization?
+                $this->errorMessage = sprintf(
+                    gT("Survey could not be created because some values are invalid: %s"),
+                    implode(' ', array_merge(...array_values($this->survey->getErrors())))
+                );
                 throw new \Exception("Survey value/values are not valid. Not possible to save survey");
             }
 
             //check realtional tables to be initialised like survey_languagesettings
             $this->createRelationSurveyLanguageSettings($this->newLanguageSettings);
-
-            // Update survey permissions
-            $permissionModel->giveAllSurveyPermissions($userID, $this->survey->sid);
         } catch (\Exception $e) {
+            // Don't show the exception message to the user, it could reveal details about the server
+            if ($e instanceof \CDbException) {
+                $this->errorMessage = gT("Survey could not be created because of a database error.");
+            } elseif ($this->errorMessage === '') {
+                $this->errorMessage = gT("Survey could not be created.");
+            }
+            \Yii::log('Survey could not be created: ' . $e->getMessage(), \CLogger::LEVEL_ERROR, 'application.services.createSurvey');
             return false;
         }
 
         return $this->survey;
+    }
+
+    /**
+     * Returns the reason why the last call of createSimple() failed. It is safe to show it to the user,
+     * it doesn't contain any technical details.
+     *
+     * @return string empty if the survey was created
+     */
+    public function getErrorMessage()
+    {
+        return $this->errorMessage;
     }
 
     /**
@@ -154,6 +176,7 @@ class CreateSurvey
         if (array_key_exists($baseLang, $languageShortNames)) {
             $this->survey->language = $baseLang;
         } else {
+            $this->errorMessage = gT("Survey could not be created because the base language is invalid.");
             throw new \Exception("Invalid language");
         }
     }

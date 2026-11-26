@@ -341,9 +341,15 @@ class DataEntry extends SurveyCommonAction
 
             $this->renderWrappedTemplate('dataentry', 'import', $aData);
         } else {
+            $sourceTableName = App()->getRequest()->getPost('table');
+            if (!$this->checkResponseTableName($iSurveyId, $sourceTableName)) {
+                App()->setFlashMessage(gT("The selected table is not an archived response table of this survey."), 'error');
+                $this->getController()->redirect(["admin/dataentry/sa/import/surveyid/{$iSurveyId}"]);
+                return;
+            }
             $aSRIDConversions = array();
             $targetSchema = SurveyDynamic::model($iSurveyId)->getTableSchema();
-            $sourceTable = PluginDynamic::model($_POST['table']);
+            $sourceTable = PluginDynamic::model($sourceTableName);
             $sourceSchema = $sourceTable->getTableSchema();
             $encryptedAttributes = Response::getEncryptedAttributes($iSurveyId);
             $tbl_name = $sourceSchema->name;
@@ -352,10 +358,25 @@ class DataEntry extends SurveyCommonAction
                 $tbl_name = substr((string) $sourceSchema->name, strlen((string) App()->db->tablePrefix));
             }
 
-            $archivedTableSettings = ArchivedTableSettings::model()->findByAttributes(['tbl_name' => $tbl_name]);
+            $archivedTableSettings = ArchivedTableSettings::model()->findByAttributes([
+                'tbl_name' => $tbl_name,
+                'survey_id' => $iSurveyId,
+                'tbl_type' => 'response',
+            ]);
             $archivedEncryptedAttributes = [];
             if ($archivedTableSettings) {
                 $archivedEncryptedAttributes = json_decode((string) $archivedTableSettings->properties);
+            }
+
+            // Subquestions deleted and re-created with the same code since the archive was made
+            $recreatedSubquestionColumns = [];
+            if (preg_match('/^old_responses_(\d+_\d+)$/', (string) $tbl_name, $tableMatches) && tableExists("{{old_questions_{$tableMatches[1]}}}")) {
+                require_once "application/helpers/admin/import_helper.php";
+                $recreatedSubquestionColumns = getRecreatedSubquestionColumns(
+                    $iSurveyId,
+                    $sourceSchema->name,
+                    App()->db->tablePrefix . "old_questions_{$tableMatches[1]}"
+                );
             }
 
             $fieldMap = [];
@@ -370,6 +391,8 @@ class DataEntry extends SurveyCommonAction
                 // Exact match.
                 if ($targetSchema->getColumn($name)) {
                     $fieldMap[$name] = $name;
+                } elseif (isset($recreatedSubquestionColumns[$name])) {
+                    $fieldMap[$name] = $recreatedSubquestionColumns[$name];
                 } elseif (preg_match($pattern, (string) $name, $matches)) {
                     // Column name is SIDXGIDXQID
                     $qid = $matches[3];
@@ -400,6 +423,13 @@ class DataEntry extends SurveyCommonAction
                     }
                 }
             }
+            $otherCheckedFromText = [];
+            foreach ($targetSchema->getColumnNames() as $checkedColumn) {
+                $otherColumn = substr((string) $checkedColumn, 0, -7);
+                if (substr((string) $checkedColumn, -14) === '_Cotherchecked' && !in_array($checkedColumn, $fieldMap, true) && in_array($otherColumn, $fieldMap, true)) {
+                    $otherCheckedFromText[$checkedColumn] = $otherColumn;
+                }
+            }
             foreach ($sourceResponses as $sourceResponse) {
                 $iOldID = $sourceResponse->id;
                 // Using plugindynamic model because I dont trust surveydynamic.
@@ -423,12 +453,15 @@ class DataEntry extends SurveyCommonAction
 
                 foreach ($fieldMap as $sourceField => $targetField) {
                     $targetResponse[$targetField] = $sourceResponse[$sourceField];
-                    if (in_array($sourceField, $archivedEncryptedAttributes, false) && !in_array($sourceField, $encryptedAttributes, false)) {
+                    if (in_array($sourceField, $archivedEncryptedAttributes, false) && !in_array($targetField, $encryptedAttributes, false)) {
                         $targetResponse[$targetField] = $sourceResponse->decryptSingle($sourceResponse[$sourceField]);
                     }
-                    if (!in_array($sourceField, $archivedEncryptedAttributes, false) && in_array($sourceField, $encryptedAttributes, false)) {
+                    if (!in_array($sourceField, $archivedEncryptedAttributes, false) && in_array($targetField, $encryptedAttributes, false)) {
                         $targetResponse[$targetField] = $sourceResponse->encryptSingle($sourceResponse[$sourceField]);
                     }
+                }
+                foreach ($otherCheckedFromText as $checkedColumn => $otherColumn) {
+                    $targetResponse[$checkedColumn] = $targetResponse[$otherColumn] === null ? null : '';
                 }
                 $rankingJSONs = [];
 
@@ -501,6 +534,7 @@ class DataEntry extends SurveyCommonAction
             if ($preserveIDs && $isPgsql) {
                 $this->syncResponseIdSequence($iSurveyId);
             }
+            $this->fillOtherCheckedFromText($iSurveyId, $targetSchema, $fieldMap, array_values($aSRIDConversions), $encryptedAttributes);
             if (empty($responseErrors) && !$skipped) {
                 Yii::app()->session['flashmessage'] = sprintf(gT("%s old response(s) were successfully imported."), $imported);
             }
@@ -551,6 +585,21 @@ class DataEntry extends SurveyCommonAction
         }
     }
 
+
+    /**
+     * Checks if a table name is the name of an archived response table of this survey.
+     *
+     * Only the tables offered by the import form are valid, so a valid name
+     * can never point to a table of another survey or to any other table.
+     *
+     * @param int $surveyId Survey ID
+     * @param mixed $tableName Table name including the table prefix, usually a posted value
+     * @return bool
+     */
+    protected function checkResponseTableName($surveyId, $tableName)
+    {
+        return is_string($tableName) && in_array($tableName, App()->getApi()->getOldResponseTables($surveyId), true);
+    }
 
     /**
      * Sets the PostgreSQL sequence of the response ID so that it continues after the highest existing response ID,
@@ -1001,7 +1050,7 @@ class DataEntry extends SurveyCommonAction
                         $thisqid = $fname['qid'];
                         $currentvalues = array();
                         $myfname = 'Q' . $fname['qid'];
-                        $questionInput = '<div id="question' . $thisqid . '" class="ranking-answers"><ul class="answers-list select-list">';
+                        $questionInput = '<div id="question' . $thisqid . '" class="ranking-answers"><ul class="answers-list select-list list-unstyled">';
                         $unseen = true;
                         while (isset($fname['type']) && $fname['type'] == "R" && $fname['qid'] == $thisqid) {
                             $isParent = isRankingQuestionParent($fname['aid'] ?? null);
@@ -1038,36 +1087,11 @@ class DataEntry extends SurveyCommonAction
                                 (isset($currentvalues[$i - 1]) && $currentvalues[$i - 1] == $qrow['title']) ? $selected = " selected=\"selected\"" : $selected = "";
                                 $questionInput .= "\t<option value=\"" . $qrow['title'] . "\" $selected>" . flattenText($qrow->questionl10ns[$sDataEntryLanguage]->question) . "</option>\n";
                             }
-                            $questionInput .= "</select\n";
+                            $questionInput .= "</select>\n";
                             $questionInput .= "</li>";
                         }
                         $questionInput .= '</ul>';
-                        $questionInput .= "<div style='display:none' id='ranking-{$thisqid}-maxans'>{$qcount}</div>"
-                            . "<div style='display:none' id='ranking-{$thisqid}-minans'>0</div>"
-                            . "<div style='display:none' id='ranking-{$thisqid}-name'>javatbd{$myfname}</div>";
-                        $questionInput .= "<div style=\"display:none\">";
-                        foreach ($qresult as $qrow) {
-                            $questionInput .= "<div id=\"htmlblock-{$thisqid}-{$qrow['title']}\">{$qrow->questionl10ns[$sDataEntryLanguage]->question}</div>";
-                        }
-                        $questionInput .= "</div>";
                         $questionInput .= '</div>';
-                        App()->getClientScript()->registerPackage('jquery-actual');
-                        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'ranking.js');
-                        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'ranking.css');
-                        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'jquery-ui-custom.css');
-
-                        $questionInput .= "<script type='text/javascript'>\n"
-                            .  "  <!--\n"
-                            . "var aRankingTranslations = {
-                                     choicetitle: '" . gT("Your choices", 'js') . "',
-                                     ranktitle: '" . gT("Your ranking", 'js') . "'
-                                    };\n"
-                            . "function checkconditions(){};"
-                            . "$(function() {"
-                            . " doDragDropRank({$thisqid},0,true,true);\n"
-                            . "});\n"
-                            . " -->\n"
-                            . "</script>\n";
                         $questionInputs[$myfname] = $questionInput;
                         $unseenStatus = [$myfname => $unseen];
 
@@ -1077,7 +1101,7 @@ class DataEntry extends SurveyCommonAction
 
                     case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox
                         $thisqid = $fname['qid'];
-                        while ($fname['qid'] == $thisqid) {
+                        while (isset($fname['qid']) && $fname['qid'] == $thisqid) {
                             if (substr((string) $fname['fieldname'], -5) == "other") {
                                 $questionInput = "\t<input type='text' name='{$fname['fieldname']}' value='"
                                 . htmlspecialchars((string) $idrow[$fname['fieldname']], ENT_QUOTES) . "' />\n";
@@ -1201,6 +1225,7 @@ class DataEntry extends SurveyCommonAction
                         $questionInputs[$fname['fieldname']] = CHtml::textField($fname['fieldname'], $value, array('pattern' => "[-]?([0-9]{0,20}([\.][0-9]{0,10})?)?",'title' => gT("Only numbers may be entered in this field.")));
                         break;
                     case Question::QT_S_SHORT_FREE_TEXT: //Short free text
+                    case Question::QT_J_MAP:
                         $questionInputs[$fname['fieldname']] = CHtml::textField($fname['fieldname'], $idrow[$fname['fieldname']]);
                         break;
                     case Question::QT_T_LONG_FREE_TEXT: //LONG FREE TEXT
@@ -1231,7 +1256,7 @@ class DataEntry extends SurveyCommonAction
                         break;
                     case Question::QT_A_ARRAY_5_POINT: // Array (5 point choice) radio-buttons
                         $thisqid = $fname['qid'];
-                        while ($fname['qid'] == $thisqid) {
+                        while (isset($fname['qid']) && $fname['qid'] == $thisqid) {
                             $questionInput = "<span>" . $fname['subquestion'] . "</span>";
                             $questionInput .= " <span>";
                             for ($j = 1; $j <= 5; $j++) {
@@ -1260,7 +1285,7 @@ class DataEntry extends SurveyCommonAction
                         break;
                     case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: // Array (10 point choice) radio-buttons
                         $thisqid = $fname['qid'];
-                        while ($fname['qid'] == $thisqid) {
+                        while (isset($fname['qid']) && $fname['qid'] == $thisqid) {
                             $questionInput = "<span>" . $fname['subquestion'] . "</span>";
                             $questionInput .= " <span>";
                             for ($j = 1; $j <= 10; $j++) {
@@ -1319,7 +1344,7 @@ class DataEntry extends SurveyCommonAction
                         break;
                     case Question::QT_E_ARRAY_INC_SAME_DEC: // Array (Increase/Same/Decrease) radio-buttons
                         $thisqid = $fname['qid'];
-                        while ($fname['qid'] == $thisqid) {
+                        while (isset($fname['qid']) && $fname['qid'] == $thisqid) {
                             $questionInput = "<span>" . $fname['subquestion'] . "</span>";
                             $questionInput .= " <span>";
                             $options = [
@@ -1645,6 +1670,59 @@ class DataEntry extends SurveyCommonAction
     }
 
     /**
+     * Imported responses from a table without the tick column of multiple choice Other: text always ticks Other.
+     * One query per Other column and per 1000 responses, not per response.
+     * @param integer $iSurveyId
+     * @param CDbTableSchema $targetSchema
+     * @param array $fieldMap imported source column => target column
+     * @param integer[] $importedIds ids of the imported responses, other responses are not changed
+     * @param array $encryptedAttributes encrypted columns of the target table
+     * @return void
+     */
+    private function fillOtherCheckedFromText($iSurveyId, $targetSchema, array $fieldMap, array $importedIds, array $encryptedAttributes)
+    {
+        if (empty($importedIds)) {
+            return;
+        }
+        $db = Yii::app()->db;
+        foreach ($targetSchema->getColumnNames() as $checkedColumn) {
+            if (substr((string) $checkedColumn, -14) !== '_Cotherchecked' || in_array($checkedColumn, $fieldMap, true)) {
+                continue;
+            }
+            $otherColumn = substr((string) $checkedColumn, 0, -7);
+            if (!$targetSchema->getColumn($otherColumn)) {
+                continue;
+            }
+            $checked = in_array($checkedColumn, $encryptedAttributes, false) ? LSActiveRecord::encryptSingle('Y') : 'Y';
+            $quotedChecked = $db->quoteColumnName($checkedColumn);
+            $quotedOther = $db->quoteColumnName($otherColumn);
+            foreach (array_chunk($importedIds, 1000) as $ids) {
+                $db->createCommand()->update(
+                    "{{responses_$iSurveyId}}",
+                    [$checkedColumn => $checked],
+                    "($quotedChecked IS NULL OR $quotedChecked = '') AND $quotedOther IS NOT NULL AND $quotedOther <> ''"
+                    . " AND " . $db->quoteColumnName('id') . " IN (" . implode(',', array_map('intval', $ids)) . ")"
+                );
+            }
+        }
+    }
+
+    /**
+     * Stored tick of the multiple choice Other option: text always ticks Other, like in the survey
+     * @param array $field fieldmap entry
+     * @param string $value posted value
+     * @return string
+     */
+    private function getOtherCheckedValue(array $field, $value)
+    {
+        if (($field['aid'] ?? '') !== 'otherchecked') {
+            return $value;
+        }
+        $otherText = Yii::app()->request->getPost("Q{$field['qid']}_Cother", '');
+        return ($value === 'Y' || (string) $otherText !== '') ? 'Y' : '';
+    }
+
+    /**
      * dataentry::update()
      * update dataentry
      * @return void
@@ -1705,7 +1783,7 @@ class DataEntry extends SurveyCommonAction
             if ($fieldname == 'id') {
                 continue;
             }
-            $thisvalue = Yii::app()->request->getPost($fieldname, '');
+            $thisvalue = $this->getOtherCheckedValue($irow, Yii::app()->request->getPost($fieldname, ''));
             // For questions, if the "Unseen" checkbox is checked, we must set the field to null.
             // There are some special cases we need to handle.
             if ($irow['type'] == Question::QT_R_RANKING) {
@@ -2023,6 +2101,10 @@ class DataEntry extends SurveyCommonAction
                             $rankValues[] = $posValue;
                         }
                         $insert_data[$fieldname] = json_encode($rankValues);
+                        continue;
+                    }
+                    if (($irow['aid'] ?? '') === 'otherchecked') {
+                        $insert_data[$fieldname] = $this->getOtherCheckedValue($irow, Yii::app()->request->getPost($fieldname, ''));
                         continue;
                     }
                     if (isset($_POST[$fieldname])) {
@@ -2541,9 +2623,6 @@ class DataEntry extends SurveyCommonAction
                                 'params' => [":qid" => $thisqid],
                                 'order' => 'question_order'
                             ]);
-                            App()->getClientScript()->registerPackage('jquery-actual');
-                            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'ranking.js');
-                            App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'ranking.css');
                             break;
                         case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox (Quite tricky really!)
                             if (trim((string) $qidattributes['display_columns']) != '') {
@@ -2555,6 +2634,7 @@ class DataEntry extends SurveyCommonAction
                             $meacount = count($cdata['mearesult']);
                             $cdata['meacount'] = $meacount;
                             $cdata['dcols'] = $dcols;
+                            $cdata['hasOtherChecked'] = $arQuestion->other == 'Y' && $survey->hasOtherCheckedColumn($arQuestion->qid);
                             break;
                         case Question::QT_I_LANGUAGE: //Language Switch
                             $cdata['slangs'] = $survey->allLanguages;

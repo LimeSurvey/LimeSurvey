@@ -145,9 +145,9 @@ App()->getClientScript()->registerScript(
 <!-- Presentation panel -->
 <div id='presentation-panel'>
     <div class="row">
-        <h1>
+        <h2 class="h1">
             <?php eT('Display'); ?>
-        </h1>
+        </h2>
         <div class="col-12 col-lg-6">
             <!-- Show "No answer" -->
             <div class="mb-3">
@@ -163,7 +163,7 @@ App()->getClientScript()->registerScript(
                                 array_merge($optionsOnOff, array('I' => $oSurveyOptions->shownoanswer . " ᴵ")) : $optionsOnOff
                         )
                     );
-                                                                ?>
+                                                                    ?>
                 </div>
             </div>
 
@@ -301,7 +301,7 @@ App()->getClientScript()->registerScript(
                                 array_merge($optionsOnOff, array('I' => $oSurveyOptions->showwelcome . " ᴵ")) : $optionsOnOff
                         )
                     );
-                                                                ?>
+                                                                    ?>
                 </div>
             </div>
 
@@ -319,7 +319,7 @@ App()->getClientScript()->registerScript(
                                 array_merge($optionsOnOff, array('I' => $oSurveyOptions->showprogress . " ᴵ")) : $optionsOnOff
                         )
                     );
-                                                                ?>
+                                                                    ?>
                 </div>
             </div>
 
@@ -336,7 +336,7 @@ App()->getClientScript()->registerScript(
                             'selectOptions' => $optionsQuestionIndex
                         )
                     );
-                                                                ?>
+                                                                    ?>
                 </div>
             </div>
 
@@ -344,7 +344,7 @@ App()->getClientScript()->registerScript(
     </div>
 
     <div class="row mt-5">
-        <h1><?php eT('Navigation') ?></h1>
+        <h2 class="h1"><?php eT('Navigation') ?></h2>
         <!-- Navigation delay -->
         <div class="col-12 col-lg-6 mb-3">
             <?php $navigationdelay = $oSurvey->navigationdelay; ?>
@@ -389,7 +389,7 @@ App()->getClientScript()->registerScript(
                                 ? array_merge($optionsOnOff, array('I' => $oSurveyOptions->autoredirect . " ᴵ")) : $optionsOnOff
                         )
                     );
-                                                                ?>
+                                                                    ?>
                 </div>
             </div>
         </div>
@@ -411,7 +411,7 @@ App()->getClientScript()->registerScript(
                             )
                         )
                     );
-                                                            ?>
+                                                                ?>
                 </div>
                 <div id="allowprev-help" class="form-text <?= $bQuestionIndexEnabled ? '' : 'd-none' ?>">
                     <?php eT('Participants can always go back using the question index while it is enabled.'); ?>
@@ -431,7 +431,7 @@ App()->getClientScript()->registerScript(
                                 array_merge($optionsOnOff, array('I' => $oSurveyOptions->printanswers . " ᴵ")) : $optionsOnOff
                         )
                     );
-                                                                ?>
+                                                                    ?>
                 </div>
             </div>
         </div>
@@ -454,7 +454,7 @@ App()->getClientScript()->registerScript(
                                 array_merge($optionsOnOff, array('I' => $oSurveyOptions->publicstatistics . " ᴵ")) : $optionsOnOff
                         )
                     );
-                                                                    ?>
+                                                                        ?>
                 </div>
             </div>
         </div>
@@ -475,7 +475,7 @@ App()->getClientScript()->registerScript(
                             array_merge($optionsOnOff, array('I' => $oSurveyOptions->publicgraphs . " ᴵ")) : $optionsOnOff
                     )
                 );
-                                                                    ?>
+                                                                        ?>
             </div>
         </div>
     </div>

@@ -104,12 +104,12 @@ class Zend_Dojo_Form_Element_Button extends Zend_Dojo_Form_Element_Dijit
      *
      * Uses only 'DijitElement' and 'DtDdWrapper' decorators by default.
      *
-     * @return void
+     * @return $this
      */
     public function loadDefaultDecorators()
     {
         if ($this->loadDefaultDecoratorsIsDisabled()) {
-            return;
+            return $this;
         }
 
         $decorators = $this->getDecorators();
@@ -117,5 +117,7 @@ class Zend_Dojo_Form_Element_Button extends Zend_Dojo_Form_Element_Dijit
             $this->addDecorator('DijitElement')
                  ->addDecorator('DtDdWrapper');
         }
+
+        return $this;
     }
 }

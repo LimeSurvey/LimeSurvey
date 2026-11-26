@@ -317,7 +317,7 @@ abstract class Writer implements IWriter
         $sFile = '';
 
         // If empty survey, prepare an empty responses array, and output just 1 empty record with header.
-        if ($oSurvey->responses->rowCount == 0) {
+        if (count($oSurvey->responses) == 0) {
             foreach ($oOptions->selectedColumns as $column) {
                 $elementArray[] = "";
             }

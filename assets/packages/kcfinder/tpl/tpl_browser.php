@@ -2,7 +2,15 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>KCFinder: /<?php echo $this->session['dir'] ?></title>
-<base href="<?= Yii::app()->request->getBaseUrl() ?>/">
+<?php
+    // Without an explicit request.baseUrl config, Yii already derives the base URL from this
+    // script's own path (.../assets/packages/kcfinder), so only append it when that's not the case.
+    $sKcfBaseUrl = rtrim((string) Yii::app()->request->getBaseUrl(), '/');
+    if (substr($sKcfBaseUrl, -25) !== '/assets/packages/kcfinder') {
+        $sKcfBaseUrl .= '/assets/packages/kcfinder';
+    }
+?>
+<base href="<?= $sKcfBaseUrl ?>/" />
 <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
 <?php INCLUDE "tpl/tpl_css.php" ?>
 <?php INCLUDE "tpl/tpl_javascript.php" ?>

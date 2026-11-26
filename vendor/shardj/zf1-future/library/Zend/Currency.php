@@ -48,6 +48,11 @@ class Zend_Currency
     public const LEFT     = 32;
 
     /**
+     * Currency sign with the space next to it
+     */
+    protected const SIGN_SPACE_PATTERN = '/[ \x{00A0}\x{202F}]?¤[ \x{00A0}\x{202F}]?/u';
+
+    /**
      * Options array
      *
      * The following options are available
@@ -146,7 +151,7 @@ class Zend_Currency
     public function toCurrency($value = null, array $options = [])
     {
         if ($value === null) {
-            if (is_array($options) && isset($options['value'])) {
+            if (isset($options['value'])) {
                 $value = $options['value'];
             } else {
                 $value = $this->_options['value'];
@@ -194,12 +199,12 @@ class Zend_Currency
                                                                'precision'     => $options['precision']]);
 
         if ($options['position'] !== self::STANDARD) {
-            $value = str_replace('¤', '', $value);
+            // keeps the space between the currency sign and the number, the group separator can be a space too
             $space = '';
-            if (iconv_strpos($value, ' ') !== false) {
-                $value = str_replace(' ', '', $value);
-                $space = ' ';
+            if (preg_match(self::SIGN_SPACE_PATTERN, $value, $match)) {
+                $space = str_replace('¤', '', $match[0]);
             }
+            $value = preg_replace(self::SIGN_SPACE_PATTERN, '', $value);
 
             if ($options['position'] == self::LEFT) {
                 $value = '¤' . $space . $value;
@@ -232,7 +237,7 @@ class Zend_Currency
 
                 default:
                     $sign = '';
-                    $value = str_replace(' ', '', $value);
+                    $value = preg_replace(self::SIGN_SPACE_PATTERN, '¤', $value);
                     break;
             }
         }
@@ -751,7 +756,7 @@ class Zend_Currency
      *
      * @param float|integer|Zend_Currency $value    Compares the currency with this value
      * @param string|Zend_Currency        $currency The currency to compare this value from
-     * @return unknown
+     * @return float|int
      */
     protected function _exchangeCurrency($value, $currency)
     {
@@ -780,7 +785,7 @@ class Zend_Currency
     /**
      * Returns the set service class
      *
-     * @return Zend_Service
+     * @return Zend_Currency_CurrencyInterface
      */
     public function getService()
     {

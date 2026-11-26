@@ -68,7 +68,7 @@ class Zend_Form_Decorator_HtmlTag extends Zend_Form_Decorator_Abstract
     protected $_tag;
 
     /**
-     * @var Zend_Filter
+     * @var Zend_Filter|null
      */
     protected $_tagFilter;
 

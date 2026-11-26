@@ -31,12 +31,27 @@
         }
     }
 
-    .dropdown-menu > li > a {
+    .dropdown-menu > li > a,
+    .dropdown-menu > li > button {
         color : $g-900;
         //&:hover {
         //    background  : none !important;
         //    border-left : $base-color solid 8px;
         //}
+    }
+
+    // Highlighted menu items get $base-color as background (see
+    // bootstrap_select_colors.scss); $base-color-contrast keeps the text
+    // WCAG AA readable on it (see theme_color_variables.scss).
+    .dropdown-menu > li > a:hover,
+    .dropdown-menu > li > a:focus,
+    .dropdown-menu > li > a:active,
+    .dropdown-menu > li > a.active,
+    .dropdown-menu > .active > a,
+    .dropdown-menu > li > button:hover,
+    .dropdown-menu > li > button:focus,
+    .dropdown-menu > li > button:active {
+        color : $base-color-contrast;
     }
 
     #main-dropdown {

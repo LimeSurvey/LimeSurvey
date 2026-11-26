@@ -31,7 +31,7 @@ class Zend_Form_DisplayGroup implements Iterator,Countable
 {
     /**
      * Element Id
-     * @var string
+     * @var string|null
      */
     protected $id;
 
@@ -718,9 +718,8 @@ class Zend_Form_DisplayGroup implements Iterator,Countable
                 'options'   => $options,
             ];
         } elseif (is_array($decorator)) {
-            foreach ($decorator as $name => $spec) {
-                break;
-            }
+            $spec = reset($decorator);
+            $name = key($decorator);
             if (is_numeric($name)) {
                 require_once 'Zend/Form/Exception.php';
                 throw new Zend_Form_Exception('Invalid alias provided to addDecorator; must be alphanumeric string');
@@ -768,18 +767,10 @@ class Zend_Form_DisplayGroup implements Iterator,Countable
                         $options = $decoratorInfo['options'];
                     }
                     $this->addDecorator($decorator, $options);
-                } else {
-                    switch (true) {
-                        case (0 == $argc):
-                            break;
-                        case (1 <= $argc):
-                            $decorator  = array_shift($decoratorInfo);
-                        case (2 <= $argc):
-                            $options = array_shift($decoratorInfo);
-                        default:
-                            $this->addDecorator($decorator, $options);
-                            break;
-                    }
+                } elseif (0 < $argc) {
+                    $decorator = array_shift($decoratorInfo);
+                    $options   = array_shift($decoratorInfo);
+                    $this->addDecorator($decorator, $options);
                 }
             } else {
                 require_once 'Zend/Form/Exception.php';
@@ -806,7 +797,7 @@ class Zend_Form_DisplayGroup implements Iterator,Countable
      * Retrieve a registered decorator
      *
      * @param  string $name
-     * @return false|Zend_Form_Decorator_Abstract
+     * @return Zend_Form_Decorator_Interface|false
      */
     public function getDecorator($name)
     {
@@ -1055,7 +1046,6 @@ class Zend_Form_DisplayGroup implements Iterator,Countable
     public function current()
     {
         $this->_sort();
-        current($this->_elementOrder);
         $key = key($this->_elementOrder);
         return $this->getElement($key);
     }

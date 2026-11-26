@@ -8,7 +8,8 @@ use LimeSurvey\Models\Services\SurveyUseCaptcha;
  * Pure-unit tests for SurveyUseCaptcha.
  *
  * These tests exercise the encoding, decoding, merging and recalculation
- * logic without touching the database.
+ * logic without touching the database. Only the constructor test does
+ * one survey lookup, as a control.
  */
 class SurveyUseCaptchaTest extends TestBaseClass
 {
@@ -211,5 +212,31 @@ class SurveyUseCaptchaTest extends TestBaseClass
                 ['surveyAccess' => 'N', 'registration' => 'Y', 'saveAndLoad' => 'I'],
             ],
         ];
+    }
+
+    /**
+     * The conversion methods need no survey, so creating the service without a survey
+     * and without a survey ID must not look up a survey in the database.
+     * The lookup with an ID is the control: It proves that lookups are counted.
+     */
+    public function testConstructorOnlyLooksUpSurveyIfIdIsGiven()
+    {
+        $lookups = 0;
+        $countLookup = function () use (&$lookups) {
+            $lookups++;
+        };
+        \Survey::model()->attachEventHandler('onBeforeFind', $countLookup);
+        try {
+            new SurveyUseCaptcha();
+            $this->assertSame(0, $lookups, 'No survey lookup expected without a survey ID');
+
+            new SurveyUseCaptcha(null, new \Survey());
+            $this->assertSame(0, $lookups, 'No survey lookup expected if the survey is given');
+
+            new SurveyUseCaptcha(-1);
+            $this->assertSame(1, $lookups, 'Survey lookup expected if only the survey ID is given');
+        } finally {
+            \Survey::model()->detachEventHandler('onBeforeFind', $countLookup);
+        }
     }
 }

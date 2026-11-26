@@ -53,6 +53,7 @@ class SchemaFactorySurvey
                 Schema::boolean('useTokens')->default(null),
                 Schema::string('bounceEmail')->default(null),
                 Schema::string('attributeDescriptions')->default(null),
+                Schema::array('participantEncryptedAttributes')->items(Schema::string())->default(null),
                 Schema::boolean('emailResponseTo')->default(null),
                 Schema::string('emailNotificationTo')->default(null),
                 Schema::integer('tokenLength')->default(null)->example(15),

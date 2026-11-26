@@ -70,8 +70,8 @@ function doRatingStar(qID) {
         if (i == openValue) {
             classes += " star-rated-on star-thisrated";
         }
-        //append the element
-        starsHtmlElement.append("<div class='star-" + i + " " + classes + "' data-star='" + i + "' title='" + i + "'><i class='fa fa-star ri-star-fill'></i></div>");
+        //append the element, with an outlined and a filled star so lit stars differ in shape and not only in colour
+        starsHtmlElement.append("<div class='star-" + i + " " + classes + "' data-star='" + i + "' title='" + i + "'><i class='fa fa-star-o ri-star-line star-icon-empty'></i><i class='fa fa-star ri-star-fill star-icon-filled'></i></div>");
     }
 
     answersList.after(starsHtmlElement);

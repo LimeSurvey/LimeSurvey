@@ -142,7 +142,7 @@ class Zend_Db_Adapter_Db2 extends Zend_Db_Adapter_Abstract
 
         if (!isset($this->_config['driver_options']['autocommit'])) {
             // set execution mode
-            $this->_config['driver_options']['autocommit'] = &$this->_execute_mode;
+            $this->_config['driver_options']['autocommit'] = $this->_execute_mode;
         }
 
         if (isset($this->_config['options'][Zend_Db::CASE_FOLDING])) {
@@ -173,8 +173,8 @@ class Zend_Db_Adapter_Db2 extends Zend_Db_Adapter_Abstract
                      ';PWD='      . $this->_config['password'] .';';
             $this->_connection = $conn_func_name(
                 $dbname,
-                null,
-                null,
+                '',
+                '',
                 $this->_config['driver_options']
             );
         } else {
@@ -268,7 +268,6 @@ class Zend_Db_Adapter_Db2 extends Zend_Db_Adapter_Abstract
                  */
                 require_once 'Zend/Db/Adapter/Db2/Exception.php';
                 throw new Zend_Db_Adapter_Db2_Exception("execution mode not supported");
-                break;
         }
     }
 
@@ -289,7 +288,7 @@ class Zend_Db_Adapter_Db2 extends Zend_Db_Adapter_Abstract
          * so fall back to default quoting in the parent class.
          */
         if (function_exists('db2_escape_string')) {
-            return "'" . db2_escape_string($value) . "'";
+            return "'" . db2_escape_string((string) $value) . "'";
         }
         return parent::_quote($value);
     }
@@ -301,6 +300,7 @@ class Zend_Db_Adapter_Db2 extends Zend_Db_Adapter_Abstract
     {
         $this->_connect();
         $info = db2_server_info($this->_connection);
+        $identQuote = null;
         if ($info) {
             $identQuote = $info->IDENTIFIER_QUOTE_CHAR;
         } else {
@@ -329,7 +329,7 @@ class Zend_Db_Adapter_Db2 extends Zend_Db_Adapter_Abstract
 
         if (!$this->_isI5) {
             if ($schema) {
-                $stmt = db2_tables($this->_connection, null, $schema);
+                $stmt = db2_tables($this->_connection, '', $schema);
             } else {
                 $stmt = db2_tables($this->_connection);
             }
@@ -385,7 +385,7 @@ class Zend_Db_Adapter_Db2 extends Zend_Db_Adapter_Abstract
         if (!$this->_isI5) {
 
             $sql = "SELECT DISTINCT c.tabschema, c.tabname, c.colname, c.colno,
-                c.typename, c.default, c.nulls, c.length, c.scale,
+                c.typename, CAST(c.default AS VARCHAR(2000)), c.nulls, c.length, c.scale,
                 c.identity, tc.type AS tabconsttype, k.colseq
                 FROM syscat.columns c
                 LEFT JOIN (syscat.keycoluse k JOIN syscat.tabconst tc
@@ -641,14 +641,12 @@ class Zend_Db_Adapter_Db2 extends Zend_Db_Adapter_Abstract
                  */
                 require_once 'Zend/Db/Adapter/Db2/Exception.php';
                 throw new Zend_Db_Adapter_Db2_Exception('FETCH_BOUND is not supported yet');
-                break;
             default:
                 /**
                  * @see Zend_Db_Adapter_Db2_Exception
                  */
                 require_once 'Zend/Db/Adapter/Db2/Exception.php';
                 throw new Zend_Db_Adapter_Db2_Exception("Invalid fetch mode '$mode' specified");
-                break;
         }
     }
 
@@ -685,29 +683,7 @@ class Zend_Db_Adapter_Db2 extends Zend_Db_Adapter_Abstract
             return $sql . " FETCH FIRST $count ROWS ONLY";
         }
 
-        /**
-         * DB2 does not implement the LIMIT clause as some RDBMS do.
-         * We have to simulate it with subqueries and ROWNUM.
-         * Unfortunately because we use the column wildcard "*",
-         * this puts an extra column into the query result set.
-         */
-        // Add this piece and place $order in OVER() clause
-        $pieces = preg_split("/order by/i", $sql);
-        $order = "";
-        if(array_key_exists(1, $pieces)) {
-            $order = "ORDER BY " . $pieces[1];
-        }
-
-        $limit_sql = "SELECT z2.*
-              FROM (
-                 SELECT ROW_NUMBER() OVER($order) AS \"ZEND_DB_ROWNUM\", z1.*
-                    FROM (
-                       " . $sql . "
-                    ) z1
-               ) z2
-               WHERE z2.zend_db_rownum BETWEEN " . ($offset+1) . " AND " . ($offset+$count);
-
-        return $limit_sql;
+        return $sql . " OFFSET $offset ROWS FETCH FIRST $count ROWS ONLY";
     }
 
     /**
@@ -729,7 +705,7 @@ class Zend_Db_Adapter_Db2 extends Zend_Db_Adapter_Abstract
     /**
      * Retrieve server version in PHP style
      *
-     * @return string
+     * @return string|null
      */
     public function getServerVersion()
     {
@@ -796,7 +772,7 @@ class Zend_Db_Adapter_Db2 extends Zend_Db_Adapter_Abstract
         //list of i5 libraries.
         $tables = [];
         if ($schema) {
-            $tablesStatement = db2_tables($this->_connection, null, $schema);
+            $tablesStatement = db2_tables($this->_connection, '', $schema);
             while ($rowTables = db2_fetch_assoc($tablesStatement) ) {
                 if ($rowTables['TABLE_NAME'] !== null) {
                     $tables[] = $rowTables['TABLE_NAME'];
@@ -807,7 +783,7 @@ class Zend_Db_Adapter_Db2 extends Zend_Db_Adapter_Abstract
             while ($schema = db2_fetch_assoc($schemaStatement)) {
                 if ($schema['TABLE_SCHEM'] !== null) {
                     // list of the tables which belongs to the selected library
-                    $tablesStatement = db2_tables($this->_connection, NULL, $schema['TABLE_SCHEM']);
+                    $tablesStatement = db2_tables($this->_connection, '', $schema['TABLE_SCHEM']);
                     if (is_resource($tablesStatement)) {
                         while ($rowTables = db2_fetch_assoc($tablesStatement) ) {
                             if ($rowTables['TABLE_NAME'] !== null) {

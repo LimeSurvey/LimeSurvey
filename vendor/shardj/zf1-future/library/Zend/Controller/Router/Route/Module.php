@@ -99,6 +99,7 @@ class Zend_Controller_Router_Route_Module extends Zend_Controller_Router_Route_A
      */
     public static function getInstance(Zend_Config $config)
     {
+        require_once 'Zend/Controller/Front.php';
         $frontController = Zend_Controller_Front::getInstance();
 
         $defs       = ($config->defaults instanceof Zend_Config) ? $config->defaults->toArray() : [];
@@ -304,13 +305,15 @@ class Zend_Controller_Router_Route_Module extends Zend_Controller_Router_Route_A
      * Return a single parameter of route's defaults
      *
      * @param string $name Array key of the parameter
-     * @return string Previously set default
+     * @return string|null Previously set default
      */
     public function getDefault($name)
     {
         if (isset($this->_defaults[$name])) {
             return $this->_defaults[$name];
         }
+
+        return null;
     }
 
     /**

@@ -1,8 +1,9 @@
-import React, { useEffect, useState, useMemo } from 'react'
+import React, { useState, useMemo } from 'react'
 import { Form } from 'react-bootstrap'
 import ReactSelect from 'react-select'
+import CreatableSelect from 'react-select/creatable'
+import { format } from 'util'
 import classNames from 'classnames'
-import { useQueryClient } from '@tanstack/react-query'
 
 import { useAppState } from '../../../hooks'
 import { RemoveHTMLTagsInString, STATES } from '../../../helpers'
@@ -36,9 +37,14 @@ export const Select = ({
   menuPlacement = 'auto',
   menuPosition = 'absolute',
   formatOptionLabel,
+  // Lets the user type a value that is not in the options list
+  isCreatable = false,
+  isClearable = false,
 }) => {
   const [isOpen, setIsOpen] = useState(false)
-  const [canUseAppState, setCanUseAppState] = useState(false)
+  const [hasSurveyUpdatePermission] = useAppState(
+    STATES.HAS_SURVEY_UPDATE_PERMISSION
+  )
 
   options = useMemo(
     () =>
@@ -49,32 +55,26 @@ export const Select = ({
     [options]
   )
 
-  useEffect(() => {
-    try {
-      useQueryClient()
-      setCanUseAppState(true)
-    } catch (error) {
-      setCanUseAppState(false)
-    }
-  }, [])
-
-  const [isSurveyActive] = canUseAppState
-    ? useAppState(STATES.IS_SURVEY_ACTIVE)
-    : [true]
-  const [hasSurveyUpdatePermission] = canUseAppState
-    ? useAppState(STATES.HAS_SURVEY_UPDATE_PERMISSION)
-    : [true]
-
+  // Callers pass activeDisabled already resolved against the survey's active
+  // state, so it locks the select on its own.
   const permissionDisabled =
-    (isSurveyActive && activeDisabled) ||
+    activeDisabled ||
     (!hasSurveyUpdatePermission && noPermissionDisabled) ||
     noAccessDisabled
-  const toolTip =
-    isSurveyActive && activeDisabled
-      ? getTooltipMessages().ACTIVE_DISABLED
-      : getTooltipMessages().NO_PERMISSION
+  const toolTip = activeDisabled
+    ? getTooltipMessages().ACTIVE_DISABLED
+    : getTooltipMessages().NO_PERMISSION
 
-  if (
+  if (isCreatable && !isMultiselect && value !== null && value !== undefined) {
+    // A value that is not one of the options was typed in, so show it as is
+    value =
+      value === ''
+        ? null
+        : (optionFilter(options, 'value', value) ?? {
+            label: String(value),
+            value,
+          })
+  } else if (
     value !== null &&
     value !== undefined &&
     !isMultiselect &&
@@ -99,9 +99,24 @@ export const Select = ({
       const updateValue = selectedOption.map((option) => option.value)
       update(updateValue)
     } else {
-      update(selectedOption.value)
+      // selectedOption is null when the selection was cleared
+      update(selectedOption?.value ?? '')
     }
   }
+
+  const handleOnCreateOption = (inputValue) => {
+    const newValue = inputValue.trim()
+    onChange({ label: newValue, value: newValue })
+    update(newValue)
+  }
+
+  const SelectComponent = isCreatable ? CreatableSelect : ReactSelect
+  const creatableProps = isCreatable
+    ? {
+        onCreateOption: handleOnCreateOption,
+        formatCreateLabel: (inputValue) => format(t('Use "%s"'), inputValue),
+      }
+    : {}
 
   const handleOnMenuOpen = () => {
     setIsOpen(true)
@@ -122,7 +137,8 @@ export const Select = ({
     >
       {labelText && <Form.Label htmlFor="select">{labelText}</Form.Label>}
       <TooltipContainer tip={toolTip} showTip={permissionDisabled}>
-        <ReactSelect
+        <SelectComponent
+          {...creatableProps}
           classNames={{
             control: () => 'select',
             menu: () => menuClassName,
@@ -188,7 +204,7 @@ export const Select = ({
             }),
           }}
           isDisabled={disabled || permissionDisabled}
-          isClearable={false}
+          isClearable={isClearable}
           onMenuOpen={handleOnMenuOpen}
           onMenuClose={handleOnMenuClose}
         />

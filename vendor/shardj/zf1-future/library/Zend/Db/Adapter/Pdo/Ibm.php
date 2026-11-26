@@ -51,7 +51,7 @@ class Zend_Db_Adapter_Pdo_Ibm extends Zend_Db_Adapter_Pdo_Abstract
     /**
      * The IBM data server connected to
      *
-     * @var string
+     * @var Zend_Db_Adapter_Pdo_Ibm_Db2|Zend_Db_Adapter_Pdo_Ibm_Ids|null
      */
     protected $_serverType = null;
 
@@ -186,7 +186,6 @@ class Zend_Db_Adapter_Pdo_Ibm extends Zend_Db_Adapter_Pdo_Abstract
      * Prepares an SQL statement.
      *
      * @param string $sql The SQL statement with placeholders.
-     * @param array $bind An array of data to bind to the placeholders.
      * @return PDOStatement
      * @throws Zend_Db_Adapter_Exception
      */
@@ -194,13 +193,18 @@ class Zend_Db_Adapter_Pdo_Ibm extends Zend_Db_Adapter_Pdo_Abstract
     {
         $this->_connect();
         $stmtClass = $this->_defaultStmtClass;
+        if (!class_exists($stmtClass)) {
+            require_once 'Zend/Loader.php';
+            Zend_Loader::loadClass($stmtClass);
+        }
         $stmt = new $stmtClass($this, $sql);
         $stmt->setFetchMode($this->_fetchMode);
         return $stmt;
     }
 
     /**
-     * Returns a list of the tables in the database.
+     * Returns a list of the tables in the database, on Db2 of the schema of the
+     * configuration if it has one.
      *
      * @return array
      * @throws Zend_Db_Adapter_Exception
@@ -208,6 +212,9 @@ class Zend_Db_Adapter_Pdo_Ibm extends Zend_Db_Adapter_Pdo_Abstract
     public function listTables()
     {
         $this->_connect();
+        if ($this->_serverType instanceof Zend_Db_Adapter_Pdo_Ibm_Db2 && !empty($this->_config['schema'])) {
+            return $this->_serverType->listTables($this->_config['schema']);
+        }
         return $this->_serverType->listTables();
     }
 
@@ -261,11 +268,9 @@ class Zend_Db_Adapter_Pdo_Ibm extends Zend_Db_Adapter_Pdo_Abstract
     {
         $this->_connect();
         $newbind = [];
-        if (is_array($bind)) {
-            foreach ($bind as $name => $value) {
-                if($value !== null) {
-                    $newbind[$name] = $value;
-                }
+        foreach ($bind as $name => $value) {
+            if($value !== null) {
+                $newbind[$name] = $value;
             }
         }
 
@@ -293,7 +298,7 @@ class Zend_Db_Adapter_Pdo_Ibm extends Zend_Db_Adapter_Pdo_Abstract
      *
      * @param string $tableName OPTIONAL
      * @param string $primaryKey OPTIONAL
-     * @return integer
+     * @return string|int|false
      * @throws Zend_Db_Adapter_Exception
      */
     public function lastInsertId($tableName = null, $primaryKey = null)
@@ -316,7 +321,7 @@ class Zend_Db_Adapter_Pdo_Ibm extends Zend_Db_Adapter_Pdo_Abstract
      * Return the most recent value from the specified sequence in the database.
      *
      * @param string $sequenceName
-     * @return integer
+     * @return string|int
      * @throws Zend_Db_Adapter_Exception
      */
     public function lastSequenceId($sequenceName)
@@ -330,7 +335,7 @@ class Zend_Db_Adapter_Pdo_Ibm extends Zend_Db_Adapter_Pdo_Abstract
      * and return it.
      *
      * @param string $sequenceName
-     * @return integer
+     * @return string|int
      * @throws Zend_Db_Adapter_Exception
      */
     public function nextSequenceId($sequenceName)
@@ -343,7 +348,7 @@ class Zend_Db_Adapter_Pdo_Ibm extends Zend_Db_Adapter_Pdo_Abstract
      * Retrieve server version in PHP style
      * Pdo_Idm doesn't support getAttribute(PDO::ATTR_SERVER_VERSION)
      *
-     * @return string
+     * @return string|null
      * @throws Zend_Db_Adapter_Exception
      * @throws Zend_Db_Statement_Exception
      */

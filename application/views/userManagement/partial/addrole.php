@@ -1,7 +1,7 @@
 <?php
 Yii::app()->getController()->renderPartial(
     '/layouts/partial_modals/modal_header',
-    ['modalTitle' => gT('Edit user roles')]
+    ['modalTitle' => gT('Edit user roles'), 'modalTitleId' => 'UserManagement-action-modal-title']
 );
 
 ?>
@@ -38,14 +38,15 @@ Yii::app()->getController()->renderPartial(
         }
         ?>
         <div class="mb-3">
-            <label for="roleselector"><?= gT("Select role(s):") ?></label>
+            <label for="roleselector" id="UserManagement--roleselector-label"><?= gT("Select role(s):") ?></label>
             <?php $this->widget(
                 'yiiwheels.widgets.select2.WhSelect2',
                 [
                     'asDropDownList' => true,
                     'htmlOptions'    => [
                         'style'    => 'width:100%;',
-                        'multiple' => true
+                        'multiple' => true,
+                        'aria-labelledby' => 'UserManagement--roleselector-label'
                     ],
                     'data'           => $aPossibleRoles,
                     'value'          => $aCurrentRoles,
@@ -60,7 +61,19 @@ Yii::app()->getController()->renderPartial(
      <button class="btn btn-cancel" id="exitForm" data-bs-dismiss="modal">
          <?=gT('Cancel')?>
      </button>
-    <button class="btn btn-primary" id="submitForm">
+    <button
+        class="btn btn-primary"
+        id="submitForm"
+        <?php if ($hasIndividualPermissions) : ?>
+            data-confirm-title="<?= CHtml::encode(gT("Remove individual permissions?")) ?>"
+            data-confirm-message="<?= CHtml::encode(gT("Saving will remove all individual permissions of this user. The user will then only have the permissions of the selected roles.")) ?>"
+            data-confirm-btntext="<?= CHtml::encode(gT("Remove permissions and save")) ?>"
+            <?php if (!$hasRoles) : ?>
+                <?php /* Without current roles, the individual permissions are only removed when a role is assigned */ ?>
+                data-confirm-if-filled="roleselector[]"
+            <?php endif; ?>
+        <?php endif; ?>
+    >
         <?=gT('Save')?>
     </button>
 </div>

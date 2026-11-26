@@ -53,6 +53,23 @@ class Zend_Db_Adapter_Mysqli extends Zend_Db_Adapter_Abstract
 {
 
     /**
+     * Database connection
+     *
+     * @var mysqli|null
+     */
+    protected $_connection = null;
+
+    /**
+     * Returns the underlying database connection object, creating it when needed
+     *
+     * @return mysqli
+     */
+    public function getConnection()
+    {
+        return parent::getConnection();
+    }
+
+    /**
      * Keys are UPPERCASE SQL datatypes or the constants
      * Zend_Db::INT_TYPE, Zend_Db::BIGINT_TYPE, or Zend_Db::FLOAT_TYPE.
      *
@@ -99,7 +116,7 @@ class Zend_Db_Adapter_Mysqli extends Zend_Db_Adapter_Abstract
      *
      * @param mixed $value Raw string
      *
-     * @return string           Quoted string
+     * @return string|float|int           Quoted string
      */
     protected function _quote($value)
     {
@@ -107,7 +124,7 @@ class Zend_Db_Adapter_Mysqli extends Zend_Db_Adapter_Abstract
             return $value;
         }
         $this->_connect();
-        return "'" . $this->_connection->real_escape_string($value) . "'";
+        return "'" . $this->_connection->real_escape_string((string) $value) . "'";
     }
 
     /**
@@ -131,7 +148,7 @@ class Zend_Db_Adapter_Mysqli extends Zend_Db_Adapter_Abstract
         // Use mysqli extension API, because SHOW doesn't work
         // well as a prepared statement on MySQL 4.1.
         $sql = 'SHOW TABLES';
-        if ($queryResult = $this->getConnection()->query($sql)) {
+        if ($queryResult = $this->_query($sql)) {
             while ($row = $queryResult->fetch_row()) {
                 $result[] = $row[0];
             }
@@ -191,7 +208,8 @@ class Zend_Db_Adapter_Mysqli extends Zend_Db_Adapter_Abstract
          * Use mysqli extension API, because DESCRIBE doesn't work
          * well as a prepared statement on MySQL 4.1.
          */
-        if ($queryResult = $this->getConnection()->query($sql)) {
+        $result = [];
+        if ($queryResult = $this->_query($sql)) {
             while ($row = $queryResult->fetch_assoc()) {
                 $result[] = $row;
             }
@@ -323,18 +341,25 @@ class Zend_Db_Adapter_Mysqli extends Zend_Db_Adapter_Abstract
 
         // Suppress connection warnings here.
         // Throw an exception instead.
-        $_isConnected = @mysqli_real_connect(
-            $this->_connection,
-            $this->_config['host'],
-            $this->_config['username'],
-            $this->_config['password'],
-            $this->_config['dbname'],
-            $port,
-            $socket,
-            isset($this->_config['driver_options'], $this->_config['driver_options']['flags'])
-                ? (int)$this->_config['driver_options']['flags']
-                : 0
-        );
+        try {
+            $_isConnected = @mysqli_real_connect(
+                $this->_connection,
+                $this->_config['host'],
+                $this->_config['username'],
+                $this->_config['password'],
+                $this->_config['dbname'],
+                $port,
+                $socket,
+                isset($this->_config['driver_options'], $this->_config['driver_options']['flags'])
+                    ? (int)$this->_config['driver_options']['flags']
+                    : 0
+            );
+        } catch (mysqli_sql_exception $e) {
+            // PHP 8.1+ throws by default (MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT)
+            $this->closeConnection();
+            require_once 'Zend/Db/Adapter/Mysqli/Exception.php';
+            throw new Zend_Db_Adapter_Mysqli_Exception($e->getMessage(), 0, $e);
+        }
 
         if ($_isConnected === false || mysqli_connect_errno()) {
 
@@ -347,7 +372,55 @@ class Zend_Db_Adapter_Mysqli extends Zend_Db_Adapter_Abstract
         }
 
         if (!empty($this->_config['charset'])) {
-            mysqli_set_charset($this->_connection, $this->_config['charset']);
+            try {
+                mysqli_set_charset($this->_connection, $this->_config['charset']);
+            } catch (mysqli_sql_exception $e) {
+                $this->closeConnection();
+                require_once 'Zend/Db/Adapter/Mysqli/Exception.php';
+                throw new Zend_Db_Adapter_Mysqli_Exception($e->getMessage(), 0, $e);
+            }
+        }
+    }
+
+    /**
+     * Runs a query through the mysqli extension API.
+     *
+     * Converts the mysqli_sql_exception thrown by default since PHP 8.1
+     * (MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT) into a Zend_Db_Adapter_Mysqli_Exception.
+     *
+     * @param string $sql
+     * @return mysqli_result|bool
+     * @throws Zend_Db_Adapter_Mysqli_Exception
+     */
+    protected function _query($sql)
+    {
+        try {
+            return $this->getConnection()->query($sql);
+        } catch (mysqli_sql_exception $e) {
+            require_once 'Zend/Db/Adapter/Mysqli/Exception.php';
+            throw new Zend_Db_Adapter_Mysqli_Exception($e->getMessage(), 0, $e);
+        }
+    }
+
+    /**
+     * Calls a transaction method on the connection.
+     *
+     * Converts the mysqli_sql_exception thrown by default since PHP 8.1
+     * (MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT) into a Zend_Db_Adapter_Mysqli_Exception.
+     *
+     * @param string $method One of autocommit, commit, rollback
+     * @param array  $args
+     * @return void
+     * @throws Zend_Db_Adapter_Mysqli_Exception
+     */
+    protected function _transaction($method, array $args = [])
+    {
+        $this->_connect();
+        try {
+            call_user_func_array([$this->_connection, $method], $args);
+        } catch (mysqli_sql_exception $e) {
+            require_once 'Zend/Db/Adapter/Mysqli/Exception.php';
+            throw new Zend_Db_Adapter_Mysqli_Exception($e->getMessage(), 0, $e);
         }
     }
 
@@ -378,7 +451,7 @@ class Zend_Db_Adapter_Mysqli extends Zend_Db_Adapter_Abstract
      * Prepare a statement and return a PDOStatement-like object.
      *
      * @param  string  $sql  SQL query
-     * @return Zend_Db_Statement_Mysqli
+     * @return Zend_Db_Statement_Mysqli|false
      */
     public function prepare($sql)
     {
@@ -392,9 +465,6 @@ class Zend_Db_Adapter_Mysqli extends Zend_Db_Adapter_Abstract
             Zend_Loader::loadClass($stmtClass);
         }
         $stmt = new $stmtClass($this, $sql);
-        if ($stmt === false) {
-            return false;
-        }
         $stmt->setFetchMode($this->_fetchMode);
         $this->_stmt = $stmt;
         return $stmt;
@@ -430,8 +500,7 @@ class Zend_Db_Adapter_Mysqli extends Zend_Db_Adapter_Abstract
      */
     protected function _beginTransaction()
     {
-        $this->_connect();
-        $this->_connection->autocommit(false);
+        $this->_transaction('autocommit', [false]);
     }
 
     /**
@@ -441,9 +510,8 @@ class Zend_Db_Adapter_Mysqli extends Zend_Db_Adapter_Abstract
      */
     protected function _commit()
     {
-        $this->_connect();
-        $this->_connection->commit();
-        $this->_connection->autocommit(true);
+        $this->_transaction('commit');
+        $this->_transaction('autocommit', [true]);
     }
 
     /**
@@ -453,9 +521,8 @@ class Zend_Db_Adapter_Mysqli extends Zend_Db_Adapter_Abstract
      */
     protected function _rollBack()
     {
-        $this->_connect();
-        $this->_connection->rollback();
-        $this->_connection->autocommit(true);
+        $this->_transaction('rollback');
+        $this->_transaction('autocommit', [true]);
     }
 
     /**
@@ -482,7 +549,6 @@ class Zend_Db_Adapter_Mysqli extends Zend_Db_Adapter_Abstract
                  */
                 require_once 'Zend/Db/Adapter/Mysqli/Exception.php';
                 throw new Zend_Db_Adapter_Mysqli_Exception('FETCH_BOUND is not supported yet');
-                break;
             default:
                 /**
                  * @see Zend_Db_Adapter_Mysqli_Exception

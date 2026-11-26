@@ -256,8 +256,8 @@ function ldap_doTokenSearch($ds, $ldapq, &$ResArray, $surveyid)
                                 }
                             }
                         }
-                    } // End of Member is DN and a userbase is defined
-                    else {
+                        // End of Member is DN and a userbase is defined
+                    } else {
                         // There is no userbase defined
                         // Only apply userfilter to the user's DN
                         $search_users = ldap_search_withScope(
@@ -276,9 +276,8 @@ function ldap_doTokenSearch($ds, $ldapq, &$ResArray, $surveyid)
                             $totalrescount++;
                         }
                     } // End of Member is DN and a userbase is NOT defined
-                } // End of the member are DNs case
-
-                else {
+                    // End of the member are DNs case
+                } else {
                     //$user is the user ID, not a DN
                     // Search given userid combined with userfilter
 
@@ -314,9 +313,8 @@ function ldap_doTokenSearch($ds, $ldapq, &$ResArray, $surveyid)
                 } // End of the members are not DN case
             } // End of foreach user member in the group
         } // End of foreach group
-    } // End of GroupSearches
-
-    else {
+        // End of GroupSearches
+    } else {
         // No groupfilter is defined
         // Apply a simple userfilter then
 

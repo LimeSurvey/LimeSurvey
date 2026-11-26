@@ -19,7 +19,6 @@ class PrefillDateValidityTest extends TestBaseClass
     private function isValidDateTimeValue($value)
     {
         $method = new \ReflectionMethod(\LimeExpressionManager::class, 'isValidDateTimeValue');
-        $method->setAccessible(true);
         return $method->invoke(null, $value);
     }
 

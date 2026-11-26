@@ -1,11 +1,11 @@
-import { Draggable } from 'react-beautiful-dnd'
+import { Draggable } from '@hello-pangea/dnd'
 import { useState } from 'react'
 
 import { DragIcon } from 'components/icons'
 import { DragAndDrop as DragAndDropComponent } from '../DragAndDrop/DragAndDrop'
 
 export default {
-  title: 'UIComponents/DragAndDrop',
+  title: 'imageWrapper/DragAndDrop',
   component: DragAndDropComponent,
 }
 

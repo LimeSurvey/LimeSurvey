@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE ldml SYSTEM "../../common/dtd/ldml.dtd">
-<!-- Copyright © 1991-2013 Unicode, Inc.
-CLDR data files are interpreted according to the LDML specification (http://unicode.org/reports/tr35/)
+<!-- Copyright © 1991-2026 Unicode, Inc.
 For terms of use, see http://www.unicode.org/copyright.html
+SPDX-License-Identifier: Unicode-3.0
+CLDR data files are interpreted according to the LDML specification (http://unicode.org/reports/tr35/)
 -->
 <ldml>
 	<identity>
-		<version number="$Revision: 9287 $"/>
-		<generation date="$Date: 2013-08-28 21:32:04 -0500 (Wed, 28 Aug 2013) $"/>
+		<version number="$Revision$"/>
 		<language type="naq"/>
 	</identity>
 	<localeDisplayNames>
@@ -66,7 +66,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="AI">Anguillab</territory>
 			<territory type="AL">Albaniab</territory>
 			<territory type="AM">Armeniab</territory>
-			<territory type="AN">Netherlands Antilles</territory>
 			<territory type="AO">Angolab</territory>
 			<territory type="AR">Argentinab</territory>
 			<territory type="AS">Americab Samoab</territory>
@@ -150,7 +149,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="IE">Irlandi</territory>
 			<territory type="IL">Israeli</territory>
 			<territory type="IN">Indiab</territory>
-			<territory type="IO">British Indian Ocean Territory</territory>
+			<territory type="IO" draft="provisional">British Indian Ocean Territory</territory>
 			<territory type="IQ">Iraqi</territory>
 			<territory type="IR">Iranni</territory>
 			<territory type="IS">Iceland</territory>
@@ -185,7 +184,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="MD">Moldova</territory>
 			<territory type="MG">Madagascari</territory>
 			<territory type="MH">Marshall Islands</territory>
-			<territory type="MK">Macedoniab</territory>
 			<territory type="ML">Malib</territory>
 			<territory type="MM">Myanmar</territory>
 			<territory type="MN">Mongolia</territory>
@@ -287,16 +285,10 @@ For terms of use, see http://www.unicode.org/copyright.html
 		</territories>
 	</localeDisplayNames>
 	<characters>
-		<exemplarCharacters>[a â b c d e f g h i î k m n o ô p q r s t u û w x y z ǀ ǁ ǂ ǃ]</exemplarCharacters>
+		<exemplarCharacters>[aâ b c d e f g h iî k m n oô p q r s t uû w x y z ǀ ǁ ǂ ǃ]</exemplarCharacters>
 		<exemplarCharacters type="auxiliary">[j l v]</exemplarCharacters>
 		<exemplarCharacters type="index">[A B C D E F G H I K M N O P Q R S T U W X Y Z]</exemplarCharacters>
 	</characters>
-	<delimiters>
-		<quotationStart>“</quotationStart>
-		<quotationEnd>”</quotationEnd>
-		<alternateQuotationStart>‘</alternateQuotationStart>
-		<alternateQuotationEnd>’</alternateQuotationEnd>
-	</delimiters>
 	<dates>
 		<calendars>
 			<calendar type="generic">
@@ -324,19 +316,11 @@ For terms of use, see http://www.unicode.org/copyright.html
 				</dateFormats>
 				<dateTimeFormats>
 					<availableFormats>
-						<dateFormatItem id="d">d</dateFormatItem>
-						<dateFormatItem id="hm">h:mm a</dateFormatItem>
-						<dateFormatItem id="Hm">HH:mm</dateFormatItem>
-						<dateFormatItem id="Hms">HH:mm:ss</dateFormatItem>
-						<dateFormatItem id="M">L</dateFormatItem>
+						<dateFormatItem id="hm">h:mm a</dateFormatItem>
 						<dateFormatItem id="Md">M/d</dateFormatItem>
 						<dateFormatItem id="MEd">E, M/d</dateFormatItem>
-						<dateFormatItem id="MMM">LLL</dateFormatItem>
-						<dateFormatItem id="MMMd">MMM d</dateFormatItem>
 						<dateFormatItem id="MMMEd">E, MMM d</dateFormatItem>
-						<dateFormatItem id="MMMMd">MMMM d</dateFormatItem>
 						<dateFormatItem id="MMMMEd">E, MMMM d</dateFormatItem>
-						<dateFormatItem id="ms">mm:ss</dateFormatItem>
 						<dateFormatItem id="y">y</dateFormatItem>
 						<dateFormatItem id="yM">M/y</dateFormatItem>
 						<dateFormatItem id="yMEd">E, M/d/y</dateFormatItem>
@@ -448,7 +432,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 				</quarters>
 				<dayPeriods>
 					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
+						<dayPeriodWidth type="abbreviated">
 							<dayPeriod type="am">ǁgoagas</dayPeriod>
 							<dayPeriod type="pm">ǃuias</dayPeriod>
 						</dayPeriodWidth>
@@ -489,41 +473,36 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<timeFormats>
 					<timeFormatLength type="full">
 						<timeFormat>
-							<pattern>h:mm:ss a zzzz</pattern>
+							<pattern>h:mm:ss a zzzz</pattern>
+							<datetimeSkeleton>ahmmsszzzz</datetimeSkeleton>
 						</timeFormat>
 					</timeFormatLength>
 					<timeFormatLength type="long">
 						<timeFormat>
-							<pattern>h:mm:ss a z</pattern>
+							<pattern>h:mm:ss a z</pattern>
+							<datetimeSkeleton>ahmmssz</datetimeSkeleton>
 						</timeFormat>
 					</timeFormatLength>
 					<timeFormatLength type="medium">
 						<timeFormat>
-							<pattern>h:mm:ss a</pattern>
+							<pattern>h:mm:ss a</pattern>
+							<datetimeSkeleton>ahmmss</datetimeSkeleton>
 						</timeFormat>
 					</timeFormatLength>
 					<timeFormatLength type="short">
 						<timeFormat>
-							<pattern>h:mm a</pattern>
+							<pattern>h:mm a</pattern>
+							<datetimeSkeleton>ahmm</datetimeSkeleton>
 						</timeFormat>
 					</timeFormatLength>
 				</timeFormats>
 				<dateTimeFormats>
 					<availableFormats>
-						<dateFormatItem id="d">d</dateFormatItem>
-						<dateFormatItem id="hm">h:mm a</dateFormatItem>
-						<dateFormatItem id="Hm">HH:mm</dateFormatItem>
-						<dateFormatItem id="Hms">HH:mm:ss</dateFormatItem>
-						<dateFormatItem id="M">L</dateFormatItem>
+						<dateFormatItem id="hm">h:mm a</dateFormatItem>
 						<dateFormatItem id="Md">M/d</dateFormatItem>
 						<dateFormatItem id="MEd">E, M/d</dateFormatItem>
-						<dateFormatItem id="MMM">LLL</dateFormatItem>
-						<dateFormatItem id="MMMd">MMM d</dateFormatItem>
 						<dateFormatItem id="MMMEd">E, MMM d</dateFormatItem>
-						<dateFormatItem id="MMMMd">MMMM d</dateFormatItem>
 						<dateFormatItem id="MMMMEd">E, MMMM d</dateFormatItem>
-						<dateFormatItem id="ms">mm:ss</dateFormatItem>
-						<dateFormatItem id="y">y</dateFormatItem>
 						<dateFormatItem id="yM">M/y</dateFormatItem>
 						<dateFormatItem id="yMEd">E, M/d/y</dateFormatItem>
 						<dateFormatItem id="yMMM">MMM y</dateFormatItem>
@@ -550,7 +529,9 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</field>
 			<field type="day">
 				<displayName>Tsees</displayName>
+				<relative type="-1">yesterday</relative>
 				<relative type="0">Neetsee</relative>
+				<relative type="1">tomorrow</relative>
 			</field>
 			<field type="weekday">
 				<displayName>Wekheb tsees</displayName>
@@ -577,6 +558,83 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<currencyFormatLength>
 				<currencyFormat type="standard">
 					<pattern>¤#,##0.00</pattern>
+					<pattern alt="alphaNextToNumber" draft="provisional">¤ #,##0.00</pattern>
+				</currencyFormat>
+			</currencyFormatLength>
+			<currencyFormatLength type="short">
+				<currencyFormat type="standard">
+					<pattern type="1000" count="one" draft="provisional">¤0K</pattern>
+					<pattern type="1000" count="one" alt="alphaNextToNumber" draft="provisional">¤ 0K</pattern>
+					<pattern type="1000" count="two" draft="provisional">¤0K</pattern>
+					<pattern type="1000" count="two" alt="alphaNextToNumber" draft="provisional">¤ 0K</pattern>
+					<pattern type="1000" count="other" draft="provisional">¤0K</pattern>
+					<pattern type="1000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 0K</pattern>
+					<pattern type="10000" count="one" draft="provisional">¤00K</pattern>
+					<pattern type="10000" count="one" alt="alphaNextToNumber" draft="provisional">¤ 00K</pattern>
+					<pattern type="10000" count="two" draft="provisional">¤00K</pattern>
+					<pattern type="10000" count="two" alt="alphaNextToNumber" draft="provisional">¤ 00K</pattern>
+					<pattern type="10000" count="other" draft="provisional">¤00K</pattern>
+					<pattern type="10000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 00K</pattern>
+					<pattern type="100000" count="one" draft="provisional">¤000K</pattern>
+					<pattern type="100000" count="one" alt="alphaNextToNumber" draft="provisional">¤ 000K</pattern>
+					<pattern type="100000" count="two" draft="provisional">¤000K</pattern>
+					<pattern type="100000" count="two" alt="alphaNextToNumber" draft="provisional">¤ 000K</pattern>
+					<pattern type="100000" count="other" draft="provisional">¤000K</pattern>
+					<pattern type="100000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 000K</pattern>
+					<pattern type="1000000" count="one" draft="provisional">¤0M</pattern>
+					<pattern type="1000000" count="one" alt="alphaNextToNumber" draft="provisional">¤ 0M</pattern>
+					<pattern type="1000000" count="two" draft="provisional">¤0M</pattern>
+					<pattern type="1000000" count="two" alt="alphaNextToNumber" draft="provisional">¤ 0M</pattern>
+					<pattern type="1000000" count="other" draft="provisional">¤0M</pattern>
+					<pattern type="1000000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 0M</pattern>
+					<pattern type="10000000" count="one" draft="provisional">¤00M</pattern>
+					<pattern type="10000000" count="one" alt="alphaNextToNumber" draft="provisional">¤ 00M</pattern>
+					<pattern type="10000000" count="two" draft="provisional">¤00M</pattern>
+					<pattern type="10000000" count="two" alt="alphaNextToNumber" draft="provisional">¤ 00M</pattern>
+					<pattern type="10000000" count="other" draft="provisional">¤00M</pattern>
+					<pattern type="10000000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 00M</pattern>
+					<pattern type="100000000" count="one" draft="provisional">¤000M</pattern>
+					<pattern type="100000000" count="one" alt="alphaNextToNumber" draft="provisional">¤ 000M</pattern>
+					<pattern type="100000000" count="two" draft="provisional">¤000M</pattern>
+					<pattern type="100000000" count="two" alt="alphaNextToNumber" draft="provisional">¤ 000M</pattern>
+					<pattern type="100000000" count="other" draft="provisional">¤000M</pattern>
+					<pattern type="100000000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 000M</pattern>
+					<pattern type="1000000000" count="one" draft="provisional">¤0G</pattern>
+					<pattern type="1000000000" count="one" alt="alphaNextToNumber" draft="provisional">¤ 0G</pattern>
+					<pattern type="1000000000" count="two" draft="provisional">¤0G</pattern>
+					<pattern type="1000000000" count="two" alt="alphaNextToNumber" draft="provisional">¤ 0G</pattern>
+					<pattern type="1000000000" count="other" draft="provisional">¤0G</pattern>
+					<pattern type="1000000000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 0G</pattern>
+					<pattern type="10000000000" count="one" draft="provisional">¤00G</pattern>
+					<pattern type="10000000000" count="one" alt="alphaNextToNumber" draft="provisional">¤ 00G</pattern>
+					<pattern type="10000000000" count="two" draft="provisional">¤00G</pattern>
+					<pattern type="10000000000" count="two" alt="alphaNextToNumber" draft="provisional">¤ 00G</pattern>
+					<pattern type="10000000000" count="other" draft="provisional">¤00G</pattern>
+					<pattern type="10000000000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 00G</pattern>
+					<pattern type="100000000000" count="one" draft="provisional">¤000G</pattern>
+					<pattern type="100000000000" count="one" alt="alphaNextToNumber" draft="provisional">¤ 000G</pattern>
+					<pattern type="100000000000" count="two" draft="provisional">¤000G</pattern>
+					<pattern type="100000000000" count="two" alt="alphaNextToNumber" draft="provisional">¤ 000G</pattern>
+					<pattern type="100000000000" count="other" draft="provisional">¤000G</pattern>
+					<pattern type="100000000000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 000G</pattern>
+					<pattern type="1000000000000" count="one" draft="provisional">¤0T</pattern>
+					<pattern type="1000000000000" count="one" alt="alphaNextToNumber" draft="provisional">¤ 0T</pattern>
+					<pattern type="1000000000000" count="two" draft="provisional">¤0T</pattern>
+					<pattern type="1000000000000" count="two" alt="alphaNextToNumber" draft="provisional">¤ 0T</pattern>
+					<pattern type="1000000000000" count="other" draft="provisional">¤0T</pattern>
+					<pattern type="1000000000000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 0T</pattern>
+					<pattern type="10000000000000" count="one" draft="provisional">¤00T</pattern>
+					<pattern type="10000000000000" count="one" alt="alphaNextToNumber" draft="provisional">¤ 00T</pattern>
+					<pattern type="10000000000000" count="two" draft="provisional">¤00T</pattern>
+					<pattern type="10000000000000" count="two" alt="alphaNextToNumber" draft="provisional">¤ 00T</pattern>
+					<pattern type="10000000000000" count="other" draft="provisional">¤00T</pattern>
+					<pattern type="10000000000000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 00T</pattern>
+					<pattern type="100000000000000" count="one" draft="provisional">¤000T</pattern>
+					<pattern type="100000000000000" count="one" alt="alphaNextToNumber" draft="provisional">¤ 000T</pattern>
+					<pattern type="100000000000000" count="two" draft="provisional">¤000T</pattern>
+					<pattern type="100000000000000" count="two" alt="alphaNextToNumber" draft="provisional">¤ 000T</pattern>
+					<pattern type="100000000000000" count="other" draft="provisional">¤000T</pattern>
+					<pattern type="100000000000000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 000T</pattern>
 				</currencyFormat>
 			</currencyFormatLength>
 		</currencyFormats>
@@ -672,6 +730,9 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Malagasy Franc</displayName>
 			</currency>
 			<currency type="MRO">
+				<displayName>Mauritania Ouguiya (1973–2017)</displayName>
+			</currency>
+			<currency type="MRU">
 				<displayName>Mauritania Ouguiya</displayName>
 			</currency>
 			<currency type="MUR">
@@ -708,13 +769,19 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<currency type="SHP">
 				<displayName>St Helena Ponds</displayName>
 			</currency>
-			<currency type="SLL">
+			<currency type="SLE">
 				<displayName>Leone</displayName>
+			</currency>
+			<currency type="SLL">
+				<displayName>Leone (1964—2022)</displayName>
 			</currency>
 			<currency type="SOS">
 				<displayName>Somali Shillings</displayName>
 			</currency>
 			<currency type="STD">
+				<displayName>Sao Tome and Principe Dobra (1977–2017)</displayName>
+			</currency>
+			<currency type="STN">
 				<displayName>Sao Tome and Principe Dobra</displayName>
 			</currency>
 			<currency type="SZL">
@@ -759,4 +826,3 @@ For terms of use, see http://www.unicode.org/copyright.html
 		</messages>
 	</posix>
 </ldml>
-

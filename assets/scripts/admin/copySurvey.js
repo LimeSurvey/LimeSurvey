@@ -25,9 +25,14 @@ $(document).ready(function () {
                 placeholder: '',
                 allowClear: false
             });
+            // Select2 hides the select: Mark its combobox as required for screen readers
+            $select.next('.select2').find('.select2-selection')
+                .attr('aria-required', 'true')
+                .attr('aria-describedby', 'surveyIdToCopy-error');
 
             // When source survey changes, update the title field
             $select.on('select2:select', function (e) {
+                setSourceSurveyError('');
                 var data = e.params.data;
                 var rawTitle = data.title || '';
                 var format = $select.data('copy-format') || '%s - Copy';
@@ -66,8 +71,19 @@ $(document).ready(function () {
         }
     });
 
+    // Without a source survey the server can't copy anything: Keep the modal open and show the error
+    $('#copysurvey').on('submit', function () {
+        if (!$('#surveyIdToCopy').val()) {
+            setSourceSurveyError($(this).data('error-survey-required'));
+            $('#surveyIdToCopy').next('.select2').find('.select2-selection').trigger('focus');
+            return false;
+        }
+        return true;
+    });
+
     // Reset modal state when it closes to ensure clean state on next open
     $('#copySurvey_modal').on('hidden.bs.modal', function () {
+        setSourceSurveyError('');
         var $modal = $('#copySurvey_modal');
         var $form = $modal.find('form').first();
         var $select = $('#surveyIdToCopy');
@@ -95,6 +111,29 @@ $(document).ready(function () {
 });
 
 /**
+ * Show or clear the "no source survey" error of the copy survey modal.
+ * The alert region is emptied first and filled after a short delay, so screen readers
+ * announce the message again when the same error is shown twice in a row.
+ *
+ * @param {string} message Error message to show, or an empty string to clear the error
+ * @return {void}
+ */
+function setSourceSurveyError(message) {
+    var $error = $('#surveyIdToCopy-error');
+    var $fields = $('#surveyIdToCopy').add($('#surveyIdToCopy').next('.select2').find('.select2-selection'));
+    clearTimeout(setSourceSurveyError.timeout);
+    $error.text('');
+    if (message) {
+        setSourceSurveyError.timeout = setTimeout(function () {
+            $error.text(message);
+        }, 100);
+        $fields.attr('aria-invalid', 'true');
+    } else {
+        $fields.removeAttr('aria-invalid');
+    }
+}
+
+/**
  * Preselects a survey and title in the copy survey modal, then opens it.
  *
  * @param surveyId
@@ -107,7 +146,7 @@ function copySurveyOptions(surveyId, defaultTitle, surveyText) {
         // Clear any previous selection
         $select.empty();
 
-        // Pre-select the current survey
+        // Preselect the current survey
         if (surveyId) {
             var option = new Option(surveyText || surveyId, surveyId, true, true);
             $select.append(option).trigger('change');

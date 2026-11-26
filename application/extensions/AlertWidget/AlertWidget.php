@@ -14,8 +14,8 @@
  */
 class AlertWidget extends CWidget
 {
-    const DEFAULT_TIMEOUT = 4000;
-    const DEFAULT_LONGER_TIMEOUT = 7000;
+    public const DEFAULT_TIMEOUT = 4000;
+    public const DEFAULT_LONGER_TIMEOUT = 7000;
 
     /** @var string the html element in which the alert should be displayed */
     public $tag = 'div';

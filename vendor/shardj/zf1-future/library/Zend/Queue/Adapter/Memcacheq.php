@@ -33,6 +33,7 @@ require_once 'Zend/Queue/Adapter/AdapterAbstract.php';
  * @subpackage Adapter
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @deprecated Deprecated since 1.26.1 and will be removed in a future version: MemcacheQ has not been maintained since 2009
  */
 class Zend_Queue_Adapter_Memcacheq extends Zend_Queue_Adapter_AdapterAbstract
 {
@@ -73,6 +74,8 @@ class Zend_Queue_Adapter_Memcacheq extends Zend_Queue_Adapter_AdapterAbstract
      */
     public function __construct($options, ?Zend_Queue $queue = null)
     {
+        trigger_error(get_class($this) . ' is deprecated and will be removed in a future version', E_USER_DEPRECATED);
+
         if (!extension_loaded('memcache')) {
             require_once 'Zend/Queue/Exception.php';
             throw new Zend_Queue_Exception('Memcache extension does not appear to be loaded');
@@ -362,7 +365,6 @@ class Zend_Queue_Adapter_Memcacheq extends Zend_Queue_Adapter_AdapterAbstract
      * $array['function name'] = true or false
      * true is supported, false is not supported.
      *
-     * @param  string $name
      * @return array
      */
     public function getCapabilities()

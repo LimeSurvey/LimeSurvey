@@ -35,33 +35,30 @@ class Zend_Crypt_Math extends Zend_Crypt_Math_BigInteger
 {
 
     /**
-     * Generate a pseudorandom number within the given range.
-     * Will attempt to read from a systems RNG if it exists or else utilises
-     * a simple random character to maximum length process. Simplicity
-     * is a factor better left for development...
+     * Generate a random number within the given range, $minimum included
+     * and $maximum excluded, from the random source of the system
      *
-     * @param string|int $minimum
-     * @param string|int $maximum
+     * @param  string|int $minimum
+     * @param  string|int $maximum
      * @return string
+     * @throws Zend_Crypt_Math_Exception when the range is empty
      */
     public function rand($minimum, $maximum)
     {
-        if (file_exists('/dev/urandom')) {
-            $frandom = fopen('/dev/urandom', 'r');
-            if ($frandom !== false) {
-                return fread($frandom, strlen($maximum) - 1);
-            }
+        $minimum = (string) $minimum;
+        $maximum = (string) $maximum;
+
+        $range = $this->_math->subtract($maximum, $minimum);
+        if ($this->_math->compare($range, '1') < 0) {
+            require_once 'Zend/Crypt/Math/Exception.php';
+            throw new Zend_Crypt_Math_Exception('The maximum must be greater than the minimum');
         }
-        if (strlen($maximum) < 4) {
-            return mt_rand($minimum, $maximum - 1);
-        }
-        $rand = '';
-        $i2 = strlen($maximum) - 1;
-        for ($i = 1; $i < $i2; $i++) {
-            $rand .= mt_rand(0, 9);
-        }
-        $rand .= mt_rand(0, 9);
-        return $rand;
+
+        // 64 random bits more than the range needs keep the bias of the modulo negligible
+        $bytes  = strlen($this->_math->integerToBinary($range)) + 8;
+        $random = $this->_math->binaryToInteger(random_bytes($bytes));
+
+        return $this->_math->add($minimum, $this->_math->modulus($random, $range));
     }
 
     /**
@@ -69,7 +66,7 @@ class Zend_Crypt_Math extends Zend_Crypt_Math_BigInteger
      *
      * @param  integer $length
      * @param  boolean $strong
-     * @return string
+     * @return string|false
      */
     public static function randBytes($length, $strong = false)
     {

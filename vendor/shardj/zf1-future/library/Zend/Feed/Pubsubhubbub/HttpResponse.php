@@ -139,6 +139,8 @@ class Zend_Feed_Pubsubhubbub_HttpResponse
                 return $header['value'];
             }
         }
+
+        return null;
     }
 
     /**

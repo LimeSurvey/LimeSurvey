@@ -175,7 +175,7 @@ class Zend_Oauth_Config implements Zend_Oauth_Config_ConfigInterface
      * Parse option array or Zend_Config instance and setup options using their
      * relevant mutators.
      *
-     * @param  array|Zend_Config $options
+     * @param  array $options
      * @return Zend_Oauth_Config
      */
     public function setOptions(array $options)

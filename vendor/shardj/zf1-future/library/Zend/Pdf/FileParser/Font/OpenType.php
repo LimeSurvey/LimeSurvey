@@ -529,7 +529,6 @@ abstract class Zend_Pdf_FileParser_Font_OpenType extends Zend_Pdf_FileParser_Fon
                 /* Something else went wrong. Throw this exception higher up the chain.
                  */
                 throw $e;
-                throw new Zend_Pdf_Exception($e->getMessage(), $e->getCode(), $e);
             }
         }
 
@@ -562,8 +561,7 @@ abstract class Zend_Pdf_FileParser_Font_OpenType extends Zend_Pdf_FileParser_Fon
          * fsSelection
          * https://learn.microsoft.com/en-us/typography/opentype/spec/os2#fsselection
          * 
-         * fsSelection is skipped by default, ulUnicodeRange's implementation
-         * is not corrent and should be marked as bug.
+         * fsSelection is skipped by default.
          */
         $tableVersion = $this->readUInt(2);
         if (($tableVersion < 0) || ($tableVersion > 4)) {
@@ -675,20 +673,13 @@ abstract class Zend_Pdf_FileParser_Font_OpenType extends Zend_Pdf_FileParser_Fon
         $this->_debugLog('Unicode ranges: 0x%x 0x%x 0x%x 0x%x',
                         $unicodeRange1, $unicodeRange2, $unicodeRange3, $unicodeRange4);
 
-        /* The Unicode range is currently only used to decide if the character
-         * set covered by the font is a subset of the Adobe Latin set, meaning
-         * it only has the basic latin set. If it covers any other characters,
-         * even any of the extended latin characters, it is considered symbolic
-         * to PDF and must be described differently in the Font Descriptor.
+        /* The Unicode range decides whether the character set of the font is
+         * a subset of the Adobe Latin set, i.e. whether it is a Latin text
+         * font (Nonsymbolic in the font descriptor) or covers other scripts
+         * (Symbolic).
          */
-        /**
-         * @todo Font is recognized as Adobe Latin subset font if it only contains
-         * Basic Latin characters (only bit 0 of Unicode range bits is set).
-         * Actually, other Unicode subranges like General Punctuation (bit 31) also
-         * fall into Adobe Latin characters. So this code has to be modified.
-         */
-        $this->isAdobeLatinSubset = (($unicodeRange1 == 1) && ($unicodeRange2 == 0) &&
-                                      ($unicodeRange3 == 0) && ($unicodeRange4 == 0));
+        $this->isAdobeLatinSubset = self::isAdobeLatinUnicodeRange($unicodeRange1, $unicodeRange2,
+                                                                   $unicodeRange3, $unicodeRange4);
         $this->_debugLog(($this->isAdobeLatinSubset ? 'Is' : 'Is not') . ' a subset of Adobe Latin');
 
         $this->vendorID = $this->readBytes(4);
@@ -746,6 +737,64 @@ abstract class Zend_Pdf_FileParser_Font_OpenType extends Zend_Pdf_FileParser_Fon
          */
     }
 
+
+    /**
+     * Decides from the OS/2 ulUnicodeRange bit fields whether the character set
+     * of a font is a subset of the Adobe Latin character set.
+     *
+     * Each bit stands for a Unicode block the font at least partially covers.
+     * The blocks that make up the Adobe Latin set (Latin letters, their
+     * diacritics and modifiers, punctuation, currency, letterlike and
+     * mathematical symbols, geometric shapes and the fi / fl ligatures) are
+     * allowed, as are Greek and the Private Use Area, which Latin fonts set
+     * for the few Greek letters of the Mac Roman encoding and for private
+     * ligatures. Any other block (Cyrillic, Hebrew, Arabic, CJK, ...) makes
+     * the font a non-Latin font.
+     *
+     * @param integer $unicodeRange1 bits 0-31
+     * @param integer $unicodeRange2 bits 32-63
+     * @param integer $unicodeRange3 bits 64-95
+     * @param integer $unicodeRange4 bits 96-127
+     * @return boolean
+     */
+    public static function isAdobeLatinUnicodeRange($unicodeRange1, $unicodeRange2, $unicodeRange3, $unicodeRange4)
+    {
+        $latinBits = [
+            0,  // Basic Latin
+            1,  // Latin-1 Supplement
+            2,  // Latin Extended-A
+            3,  // Latin Extended-B
+            4,  // IPA Extensions
+            5,  // Spacing Modifier Letters
+            6,  // Combining Diacritical Marks
+            7,  // Greek and Coptic (pi, Omega, mu of the Mac Roman encoding)
+            29, // Latin Extended Additional
+            31, // General Punctuation
+            32, // Superscripts And Subscripts
+            33, // Currency Symbols
+            35, // Letterlike Symbols
+            36, // Number Forms
+            38, // Mathematical Operators
+            45, // Geometric Shapes
+            60, // Private Use Area
+            62, // Alphabetic Presentation Forms (fi, fl)
+        ];
+
+        $allowed = [0, 0, 0, 0];
+        foreach ($latinBits as $bit) {
+            $allowed[intdiv($bit, 32)] |= 1 << ($bit % 32);
+        }
+
+        $ranges = [$unicodeRange1, $unicodeRange2, $unicodeRange3, $unicodeRange4];
+        foreach ($ranges as $index => $range) {
+            if (($range & ~$allowed[$index] & 0xFFFFFFFF) !== 0) {
+                return false;
+            }
+        }
+
+        // A font that covers nothing at all is not a Latin text font either
+        return ($unicodeRange1 & 1) === 1;
+    }
 
     /**
      * Parses the OpenType hmtx (Horizontal Metrics) table.
@@ -958,8 +1007,11 @@ abstract class Zend_Pdf_FileParser_Font_OpenType extends Zend_Pdf_FileParser_Fon
         /* Now extract the subtable data and create a Zend_Pdf_FontCmap object.
          */
         $this->_debugLog('Using cmap type %d; offset: 0x%x; length: %d',
+                         // @phpstan-ignore variable.undefined, variable.undefined (set together with $cmapType)
                          $cmapType, $cmapOffset, $cmapLength);
+        // @phpstan-ignore variable.undefined (set together with $cmapType)
         $this->moveToOffset($cmapOffset);
+        // @phpstan-ignore variable.undefined (set together with $cmapType)
         $cmapData = $this->readBytes($cmapLength);
 
         require_once 'Zend/Pdf/Cmap.php';
@@ -1038,7 +1090,7 @@ abstract class Zend_Pdf_FileParser_Font_OpenType extends Zend_Pdf_FileParser_Fon
      * returns the version number.
      *
      * @param float $minVersion Minimum compatible version number.
-     * @param float $maxVertion Maximum compatible version number.
+     * @param float $maxVersion Maximum compatible version number.
      * @return float Table version number.
      * @throws Zend_Pdf_Exception
      */
@@ -1060,7 +1112,7 @@ abstract class Zend_Pdf_FileParser_Font_OpenType extends Zend_Pdf_FileParser_Fon
      * not supported.
      *
      * @param integer $platformID
-     * @param integer $encodingID
+     * @param integer $languageID
      * @return string | null
      */
     protected function _languageCodeForPlatform($platformID, $languageID)

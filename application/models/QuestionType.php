@@ -16,35 +16,36 @@
  */
 class QuestionType extends StaticModel
 {
-    const QT_1_ARRAY_DUAL = '1'; // Array dual scale
-    const QT_5_POINT_CHOICE = '5';
-    const QT_A_ARRAY_5_POINT = 'A'; // Array of 5 point choice questions
-    const QT_B_ARRAY_10_POINT = 'B'; // Array of 10 point choice questions
-    const QT_C_ARRAY_YES_UNCERTAIN_NO = 'C'; // ARRAY OF Yes\No\Uncertain questions
-    const QT_D_DATE = 'D';
-    const QT_E_ARRAY_INC_SAME_DEC = 'E';
-    const QT_F_ARRAY = 'F';
-    const QT_G_GENDER = 'G';
-    const QT_H_ARRAY_COLUMN = 'H';
-    const QT_I_LANGUAGE = 'I';
-    const QT_K_MULTIPLE_NUMERICAL = 'K';
-    const QT_L_LIST = 'L';
-    const QT_M_MULTIPLE_CHOICE = 'M';
-    const QT_N_NUMERICAL = 'N';
-    const QT_O_LIST_WITH_COMMENT = 'O';
-    const QT_P_MULTIPLE_CHOICE_WITH_COMMENTS = 'P';
-    const QT_Q_MULTIPLE_SHORT_TEXT = 'Q';
-    const QT_R_RANKING = 'R';
-    const QT_S_SHORT_FREE_TEXT = 'S';
-    const QT_T_LONG_FREE_TEXT = 'T';
-    const QT_U_HUGE_FREE_TEXT = 'U';
-    const QT_X_TEXT_DISPLAY = 'X';
-    const QT_Y_YES_NO_RADIO = 'Y';
-    const QT_EXCLAMATION_LIST_DROPDOWN = '!';
-    const QT_VERTICAL_FILE_UPLOAD = '|';
-    const QT_ASTERISK_EQUATION = '*';
-    const QT_COLON_ARRAY_NUMBERS = ':';
-    const QT_SEMICOLON_ARRAY_TEXT = ';';
+    public const QT_1_ARRAY_DUAL = '1'; // Array dual scale
+    public const QT_5_POINT_CHOICE = '5';
+    public const QT_A_ARRAY_5_POINT = 'A'; // Array of 5 point choice questions
+    public const QT_B_ARRAY_10_POINT = 'B'; // Array of 10 point choice questions
+    public const QT_C_ARRAY_YES_UNCERTAIN_NO = 'C'; // ARRAY OF Yes\No\Uncertain questions
+    public const QT_D_DATE = 'D';
+    public const QT_E_ARRAY_INC_SAME_DEC = 'E';
+    public const QT_F_ARRAY = 'F';
+    public const QT_G_GENDER = 'G';
+    public const QT_H_ARRAY_COLUMN = 'H';
+    public const QT_I_LANGUAGE = 'I';
+    public const QT_J_MAP = 'J';
+    public const QT_K_MULTIPLE_NUMERICAL = 'K';
+    public const QT_L_LIST = 'L';
+    public const QT_M_MULTIPLE_CHOICE = 'M';
+    public const QT_N_NUMERICAL = 'N';
+    public const QT_O_LIST_WITH_COMMENT = 'O';
+    public const QT_P_MULTIPLE_CHOICE_WITH_COMMENTS = 'P';
+    public const QT_Q_MULTIPLE_SHORT_TEXT = 'Q';
+    public const QT_R_RANKING = 'R';
+    public const QT_S_SHORT_FREE_TEXT = 'S';
+    public const QT_T_LONG_FREE_TEXT = 'T';
+    public const QT_U_HUGE_FREE_TEXT = 'U';
+    public const QT_X_TEXT_DISPLAY = 'X';
+    public const QT_Y_YES_NO_RADIO = 'Y';
+    public const QT_EXCLAMATION_LIST_DROPDOWN = '!';
+    public const QT_VERTICAL_FILE_UPLOAD = '|';
+    public const QT_ASTERISK_EQUATION = '*';
+    public const QT_COLON_ARRAY_NUMBERS = ':';
+    public const QT_SEMICOLON_ARRAY_TEXT = ';';
 
     /** @var Question */
     public $question;
@@ -125,7 +126,6 @@ class QuestionType extends StaticModel
      * TODO choose between self::modelsAttributes and QuestionTheme::findQuestionMetaData or QuestionTheme::getAllQuestionMetaData
      * TODO QuestionTheme 1591616914305: Needs to be replaced by @link QuestionTheme::getAllQuestionMetaData() however translations inside the xml need to be inserted first
      */
-
     public static function modelsAttributes($language = '')
     {
         return [
@@ -249,6 +249,17 @@ class QuestionType extends StaticModel
                 'assessable' => 0,
                 'answerscales' => 0,
                 'class' => 'language'
+            ],
+            self::QT_J_MAP => [
+                'code' => self::QT_J_MAP,
+                'description' => gT("Map", "html", $language),
+                'group' => gT("Mask questions"),
+                'subquestions' => 0,
+                'other' => false,
+                'hasdefaultvalues' => 1,
+                'assessable' => 0,
+                'answerscales' => 0,
+                'class' => 'map'
             ],
             self::QT_K_MULTIPLE_NUMERICAL => [
                 'code' => self::QT_K_MULTIPLE_NUMERICAL,
@@ -459,8 +470,13 @@ class QuestionType extends StaticModel
     public static function textCodes()
     {
         return [
-            self::QT_I_LANGUAGE, self::QT_S_SHORT_FREE_TEXT, self::QT_U_HUGE_FREE_TEXT,
-            self::QT_Q_MULTIPLE_SHORT_TEXT, self::QT_T_LONG_FREE_TEXT, self::QT_SEMICOLON_ARRAY_TEXT,
+            self::QT_I_LANGUAGE,
+            self::QT_J_MAP,
+            self::QT_S_SHORT_FREE_TEXT,
+            self::QT_U_HUGE_FREE_TEXT,
+            self::QT_Q_MULTIPLE_SHORT_TEXT,
+            self::QT_T_LONG_FREE_TEXT,
+            self::QT_SEMICOLON_ARRAY_TEXT,
             self::QT_COLON_ARRAY_NUMBERS,
         ];
     }
@@ -473,7 +489,9 @@ class QuestionType extends StaticModel
     public static function charCodes()
     {
         return [
-            self::QT_5_POINT_CHOICE, self::QT_G_GENDER, self::QT_Y_YES_NO_RADIO,
+            self::QT_5_POINT_CHOICE,
+            self::QT_G_GENDER,
+            self::QT_Y_YES_NO_RADIO,
             self::QT_X_TEXT_DISPLAY
         ];
     }

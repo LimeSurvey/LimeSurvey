@@ -24,6 +24,15 @@ $input-font-size             : 14px;
     }
 }
 
+// iOS Safari zooms into the page when a field with a font size below 16px gets the focus
+@media (pointer: coarse) {
+    .form-control,
+    .form-control.ls-important-field,
+    .form-select {
+        font-size : 16px;
+    }
+}
+
 .form-control[disabled] {
     color            : $color_mercury_approx;
     &.total {

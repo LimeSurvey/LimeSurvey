@@ -6,7 +6,6 @@ import {
     updateLineClass,
     updateRepeatHeading,
     manageIndex,
-    activateLanguageChanger,
     activateActionLink,
     confirmSurveyDialog,
     activateConfirmButton,
@@ -49,8 +48,35 @@ export var TemplateCoreClass = function () {
                 text = startPopups.join("");
             }
             if (text) {
-                $("#bootstrap-alert-box-modal .modal-header .modal-title").text(title || "");
-                $("#bootstrap-alert-box-modal .modal-body").html(text);
+                var $modal = $("#bootstrap-alert-box-modal");
+                var $title = $modal.find(".modal-header .modal-title");
+                var $body = $modal.find(".modal-body");
+                $title.text(title || "");
+                $body.html(text);
+                /* Without a title, the message gives the dialog its name for screen readers */
+                if ($body.attr('id')) {
+                    if (title && $title.attr('id')) {
+                        $modal.attr({'aria-labelledby': $title.attr('id'), 'aria-describedby': $body.attr('id')});
+                    } else {
+                        $modal.attr('aria-labelledby', $body.attr('id')).removeAttr('aria-describedby');
+                    }
+                }
+                /* Move keyboard focus to the message when the dialog opens (tabindex comes from aSurveyInfo.attr.modalbody, added here for themes not using it) */
+                if (!$body.is('[tabindex]')) {
+                    $body.attr('tabindex', '-1');
+                }
+                $modal.one('shown.bs.modal', function () {
+                    $body.trigger('focus');
+                });
+                /* Bracket the dialog with two invisible, focusable nodes while it is open, as in the W3C modal dialog example
+                 * (https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/examples/dialog/): focus never leaves the document,
+                 * the Bootstrap focus trap sends it back to the first or last element of the dialog */
+                var $preNode = $('<div tabindex="0"></div>').insertBefore($modal);
+                var $postNode = $('<div tabindex="0"></div>').insertAfter($modal);
+                $modal.one('hidden.bs.modal', function () {
+                    $preNode.remove();
+                    $postNode.remove();
+                });
                 const modal = new bootstrap.Modal(document.getElementById('bootstrap-alert-box-modal'), {})
                 modal.show();
             }
@@ -58,7 +84,7 @@ export var TemplateCoreClass = function () {
         /* confirmSurveyDialog @see application/core/package/limesurvey */
         confirmSurveyDialog: function (text, title, submits) {
             $("#bootstrap-alert-box-modal .modal-header .modal-title").text(title);
-            $("#bootstrap-alert-box-modal .modal-body").html("<p>" + text + "</p>" + "<div class='btn-group btn-group-justified' role='group'><a class='btn btn-warning btn-confirm' data-bs-dismiss='modal'>" + LSvar.lang.yes + "</a><a class='btn btn-cancel' data-bs-dismiss='modal'>" + LSvar.lang.no + "</a></div>");
+            $("#bootstrap-alert-box-modal .modal-body").html("<p>" + text + "</p>" + "<div class='btn-group btn-group-justified' role='group'><button type='button' class='btn btn-warning btn-confirm' data-bs-dismiss='modal'>" + LSvar.lang.yes + "</button><button type='button' class='btn btn-cancel' data-bs-dismiss='modal'>" + LSvar.lang.no + "</button></div>");
             const modal = new bootstrap.Modal(document.getElementById('bootstrap-alert-box-modal'), {})
             modal.show();
             $("#bootstrap-alert-box-modal .btn-confirm").on('click', function () {

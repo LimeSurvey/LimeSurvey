@@ -240,6 +240,7 @@ class Zend_Db_Adapter_Pdo_Sqlsrv extends Zend_Db_Adapter_Pdo_Abstract
         $stmt = $this->query($sql);
         $result = $stmt->fetchAll(Zend_Db::FETCH_NUM);
 
+        $owner       = 1;
         $table_name  = 2;
         $column_name = 3;
         $type_name   = 5;
@@ -272,11 +273,9 @@ class Zend_Db_Adapter_Pdo_Sqlsrv extends Zend_Db_Adapter_Pdo_Abstract
         foreach ($result as $key => $row) {
             $identity = false;
             $words = explode(' ', $row[$type_name], 2);
-            if (isset($words[0])) {
-                $type = $words[0];
-                if (isset($words[1])) {
-                    $identity = (bool) preg_match('/identity/', $words[1]);
-                }
+            $type = $words[0];
+            if (isset($words[1])) {
+                $identity = (bool) preg_match('/identity/', $words[1]);
             }
 
             $isPrimary = array_key_exists($row[$column_name], $primaryKeyColumn);
@@ -287,7 +286,7 @@ class Zend_Db_Adapter_Pdo_Sqlsrv extends Zend_Db_Adapter_Pdo_Abstract
             }
 
             $desc[$this->foldCase($row[$column_name])] = [
-                'SCHEMA_NAME'      => null, // @todo
+                'SCHEMA_NAME'      => $this->foldCase($row[$owner]),
                 'TABLE_NAME'       => $this->foldCase($row[$table_name]),
                 'COLUMN_NAME'      => $this->foldCase($row[$column_name]),
                 'COLUMN_POSITION'  => (int) $row[$column_position],
@@ -313,7 +312,7 @@ class Zend_Db_Adapter_Pdo_Sqlsrv extends Zend_Db_Adapter_Pdo_Abstract
      * @param integer $count
      * @param integer $offset OPTIONAL
      * @return string
-     * @throws Zend_Db_Adapter_Exceptions
+     * @throws Zend_Db_Adapter_Exception
      */
      public function limit($sql, $count, $offset = 0)
      {
@@ -361,7 +360,7 @@ class Zend_Db_Adapter_Pdo_Sqlsrv extends Zend_Db_Adapter_Pdo_Abstract
     /**
      * Retrieve server version in PHP style
      * Pdo_Mssql doesn't support getAttribute(PDO::ATTR_SERVER_VERSION)
-     * @return string
+     * @return string|null
      */
     public function getServerVersion()
     {

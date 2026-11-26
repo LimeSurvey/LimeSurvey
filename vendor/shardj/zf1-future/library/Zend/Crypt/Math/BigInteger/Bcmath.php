@@ -173,7 +173,7 @@ class Zend_Crypt_Math_BigInteger_Bcmath implements Zend_Crypt_Math_BigInteger_In
         $result = '0';
         while (strlen($operand)) {
             $ord = ord(substr($operand, 0, 1));
-            $result = bcadd(bcmul($result, 256), $ord);
+            $result = bcadd(bcmul($result, '256'), (string) $ord);
             $operand = substr($operand, 1);
         }
         return $result;
@@ -185,16 +185,16 @@ class Zend_Crypt_Math_BigInteger_Bcmath implements Zend_Crypt_Math_BigInteger_In
      */
     public function integerToBinary($operand)
     {
-        $cmp = bccomp($operand, 0);
+        $cmp = bccomp($operand, '0');
         $return = '';
 
         if ($cmp === 0) {
             return "\0";
         }
 
-        while (bccomp($operand, 0) > 0) {
-            $return = chr(bcmod($operand, 256)) . $return;
-            $operand = bcdiv($operand, 256);
+        while (bccomp($operand, '0') > 0) {
+            $return = chr((int) bcmod($operand, '256')) . $return;
+            $operand = bcdiv($operand, '256');
         }
         if (ord($return[0]) > 127) {
             $return = "\0" . $return;
@@ -206,7 +206,7 @@ class Zend_Crypt_Math_BigInteger_Bcmath implements Zend_Crypt_Math_BigInteger_In
     {
         $return = '';
         while(bccomp($operand, '0')) {
-            $return .= chr(bcmod($operand, '256'));
+            $return .= chr((int) bcmod($operand, '256'));
             $operand = bcdiv($operand, '256');
         }
         return $return;
@@ -218,10 +218,11 @@ class Zend_Crypt_Math_BigInteger_Bcmath implements Zend_Crypt_Math_BigInteger_In
      */
     public function hexToDecimal($operand)
     {
-        $return = '0';
-        while(strlen($hex)) {
-            $hex = hexdec(substr($operand, 0, 4));
-            $dec = bcadd(bcmul($return, 65536), $hex);
+        // Process four hex digits per step; left padding keeps every step a full 16 bits
+        $operand = str_pad($operand, (int) ceil(strlen($operand) / 4) * 4, '0', STR_PAD_LEFT);
+        $return  = '0';
+        while (strlen($operand)) {
+            $return  = bcadd(bcmul($return, '65536'), (string) hexdec(substr($operand, 0, 4)));
             $operand = substr($operand, 4);
         }
         return $return;

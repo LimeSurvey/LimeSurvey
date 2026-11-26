@@ -100,6 +100,9 @@ class LSBaseController extends LSYii_Controller
      */
     public function run($action)
     {
+        // Nothing may be changed while the hosting system makes a backup or runs the database update
+        $this->endRequestIfAdministrationLocked(Yii::app()->request->isAjaxRequest ? 'text' : 'html');
+
         // Check if the DB is up to date
         $sDBVersion = Yii::app()->getConfig('DBVersion');
 
@@ -119,9 +122,10 @@ class LSBaseController extends LSYii_Controller
 
                 App()->user->setReturnUrl(App()->request->requestUri);
 
-                // If this is an ajax call, don't redirect, but echo login modal instead
-                $isAjax = isset($_GET['ajax']) && $_GET['ajax'];
+                // If this is an ajax call, don't redirect, but answer with HTTP 401 and the "logged out" modal
+                $isAjax = Yii::app()->request->isAjaxRequest || !empty($_GET['ajax']);
                 if ($isAjax && Yii::app()->user->getIsGuest()) {
+                    http_response_code(401);
                     Yii::import('application.helpers.admin.ajax_helper', true);
                     ls\ajax\AjaxHelper::outputNotLoggedIn();
                     return;

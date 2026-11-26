@@ -14,14 +14,18 @@
         <div class="row mb-3">
             <div class="col-4">
                 <label>
-                    <?php printf(gT("Upload an image (maximum size: %d MB):"), getMaximumFileUploadSize() / 1024 / 1024); ?>
+                    <?php if (isFileUploadSizeLimited()) {
+                        printf(gT("Upload an image (maximum size: %d MB):"), getMaximumFileUploadSize() / 1024 / 1024);
+                    } else {
+                        eT("Upload an image:");
+                    } ?>
                 </label>
             </div>
             <div class="col-8">
                 <?php // loaded through upload_frontend form in themeOptions/update.php ?>
                 <span id="fileselector">
                     <label class="btn btn-outline-secondary" for="upload_image">
-                        <input class="d-none" id="upload_image" name="upload_image" type="file">
+                        <input class="d-none" id="upload_image" name="upload_image" type="file" accept="<?= CHtml::encode(getFileInputAcceptValue(App()->getConfig('allowedthemeimageformats'))) ?>">
                         <i class="ri-upload-fill ls-space margin right-10"></i><?php eT("Upload"); ?>
                     </label>
                 </span>

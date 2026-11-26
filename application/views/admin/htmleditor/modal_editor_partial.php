@@ -1,4 +1,4 @@
-<div id="htmleditor-modal" class="modal fade" role="dialog" aria-labelledby="htmleditor-modal-title" aria-modal="true" tabindex="-1">
+<div id="htmleditor-modal" class="modal fade" role="dialog" aria-labelledby="htmleditor-modal-title htmleditor-modal-title-dialogsr" aria-modal="true" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
             <?php

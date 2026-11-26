@@ -11,8 +11,8 @@
  */
 ?>
 
-<div class="btn-group <?= $htmlOptions['class'] ?? '' ?>" data-bs-toggle="tooltip"
-    id="<?= $id ?>" role="group"
+<div class="btn-group <?= CHtml::encode($htmlOptions['class'] ?? '') ?>" data-bs-toggle="tooltip"
+    id="<?= CHtml::encode($id) ?>" role="group"
     <?php if ($ariaLabelledBy) : ?>
         aria-labelledby="<?= CHtml::encode($ariaLabelledBy) ?>"
     <?php elseif ($ariaLabel) : ?>
@@ -30,11 +30,11 @@
     >
     <?php $count = 1 ?>
     <?php foreach ($selectOptions as $value => $caption) : ?>
-        <input type="radio" class="btn-check" name="<?= $name ?>" id="<?= $id . '_' . $count ?>" autocomplete="off"
-            value="<?= $value ?>" <?= $checkedOption == $value ? 'checked' : '' ?> <?= isset($htmlOptions['disabled']) && $htmlOptions['disabled'] ? 'disabled' : '' ?>>
-        <label id="<?= $id . '_' . $count ?>_label" class="btn btn-outline-secondary" for="<?= $id . '_' . $count ?>">
+        <input type="radio" class="btn-check" name="<?= CHtml::encode($name) ?>" id="<?= CHtml::encode($id . '_' . $count) ?>" autocomplete="off"
+            value="<?= CHtml::encode($value) ?>" <?= $checkedOption == $value ? 'checked' : '' ?> <?= isset($htmlOptions['disabled']) && $htmlOptions['disabled'] ? 'disabled' : '' ?>>
+        <label id="<?= CHtml::encode($id . '_' . $count) ?>_label" class="btn btn-outline-secondary" for="<?= CHtml::encode($id . '_' . $count) ?>">
             <?php if (isset($htmlOptions['icon']) && isset($htmlOptions['icon'][$value])) : ?>
-                <span class="<?= $htmlOptions['icon'][$value] ?>" style="margin-right: 5px;"></span>
+                <span class="<?= CHtml::encode($htmlOptions['icon'][$value]) ?>" style="margin-right: 5px;"></span>
             <?php endif; ?>
             <?= $caption ?>
         </label>

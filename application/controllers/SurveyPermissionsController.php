@@ -65,14 +65,6 @@ class SurveyPermissionsController extends LSBaseController
         App()->getClientScript()->registerPackage('usermanagement');
         App()->getClientScript()->registerPackage('select2-bootstrap');
 
-        // Register client scripts for grid action dropdown
-        // This is usually done inside the grid widget.
-        // Still, in case no users are added yet, the grid widget doesn't render any row
-        // and doesn't include this widget.
-        // As this page reloads through ajax when adding a new row, we need the GridActionsWidget to be already loaded
-        // In the future, the Grid widget could have a callback to allow to register widgets, even when no rows.
-        // But for now, this workaround is ok
-        App()->getController()->widget('ext.admin.grid.GridActionsWidget.GridActionsWidget', [], true);
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'surveypermissions.js', CClientScript::POS_END);
         $oSurvey = Survey::model()->findByPk($surveyid);
         $aData['surveyid'] = $surveyid;
@@ -100,8 +92,9 @@ class SurveyPermissionsController extends LSBaseController
             'basePermissions' => $aBaseSurveyPermissions,
             'userCreatePermission' => Permission::model()->hasSurveyPermission($surveyid, 'surveysecurity', 'create'),
             'surveyid' => $surveyid,
+            'surveyOwner' => $oSurvey->owner,
             'userList' => $oSurveyPermissions->getSurveyUserList(),
-            'userListFilteredByGroup' => shouldFilterUserGroupList(),
+            'userListFilteredByGroup' => UserGroup::model()->isFilteredBySameGroupPolicy(),
             'userGroupList' => $oSurveyPermissions->getSurveyUserGroupList(),
             'tableContent' => $oSurveyPermissions->getUsersSurveyPermissions(),
             'oSurveyPermissions' => $oSurveyPermissions,
@@ -264,8 +257,7 @@ class SurveyPermissionsController extends LSBaseController
     public function actionSavePermissions($surveyid)
     {
         $surveyid = sanitize_int($surveyid);
-        //todo: or update permission ?!?
-        if (!Permission::model()->hasSurveyPermission($surveyid, 'surveysecurity', 'create')) {
+        if (!Permission::model()->hasSurveyPermission($surveyid, 'surveysecurity', 'update')) {
             Yii::app()->user->setFlash('error', gT("No permission or survey does not exist."));
             $this->redirect(Yii::app()->request->urlReferrer);
         }
@@ -280,6 +272,9 @@ class SurveyPermissionsController extends LSBaseController
         switch ($action) {
             case 'user':
                 $userId = sanitize_int(Yii::app()->request->getPost('uid'));
+                if (!in_array($userId, getUserList('onlyuidarray'))) {
+                    throw new CHttpException(403, gT("You do not have permission to access this user."));
+                }
                 $success = $oSurveyPermissions->saveUserPermissions($userId, $setOfPermissions['Survey']);
                 if ($success) {
                     Yii::app()->user->setFlash('success', gT("Successfully saved permissions for user."));
@@ -289,7 +284,7 @@ class SurveyPermissionsController extends LSBaseController
                 break;
             case 'usergroup':
                 $userGroupId = sanitize_int(Yii::app()->request->getPost('ugid'));
-                if (shouldFilterUserGroupList() && !in_array($userGroupId, getUserGroupList())) {
+                if (!UserGroup::model()->isAuthorizedGroup($userGroupId)) {
                     throw new CHttpException(403, gT("You do not have permission to this user group."));
                 }
                 $success = $oSurveyPermissions->saveUserGroupPermissions($userGroupId, $setOfPermissions['Survey']);

@@ -207,7 +207,7 @@ describe('Editor interactions', () => {
     )
 
     // Click the group title (triggers onTitleClick → setFocused → expands group)
-    const groupTitle = questionGroups[0].querySelector('.sidebar-row-title')
+    const groupTitle = questionGroups[0].querySelector('.structure-item-title')
     if (groupTitle) {
       await userEvent.click(groupTitle)
     } else {

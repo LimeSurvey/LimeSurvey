@@ -22,7 +22,7 @@ foreach ($filterableColumns as $key => $column) {
 }
 ?>
 
-<div class="modal fade organize-columns-modal" id="<?= $modalId ?>" tabindex="-1" role="dialog" data-target="<?= CHtml::encode($ajaxUpdate) ?>" aria-labelledby="<?= $modalId ?>-label" aria-modal="true">
+<div class="modal fade organize-columns-modal" id="<?= $modalId ?>" tabindex="-1" role="dialog" data-target="<?= CHtml::encode($ajaxUpdate) ?>" aria-labelledby="<?= $modalId ?>-label <?= $modalId ?>-label-dialogsr" aria-modal="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <form class="pjax" method="POST" data-filtered-columns="<?= CHtml::encode(json_encode($filteredColumns)) ?>">
@@ -42,7 +42,8 @@ foreach ($filterableColumns as $key => $column) {
                             <span class="ri-close-circle-line"></span>&nbsp;<?= gT('Clear selection') ?>
                         </button>
                     </div>
-                    <div class="organize-columns-list">
+                    <?php // The checkboxes are announced as a group named by the modal title ?>
+                    <div class="organize-columns-list" role="group" aria-labelledby="<?= $modalId ?>-label">
                         <?php foreach ($columnsData as $column) : ?>
                             <?php if (!empty($column->header) && $column->name !== 'dropdown_actions' && !array_key_exists($column->name, $filterableColumns)) : ?>
                                 <div class="organize-columns-item organize-columns-locked">

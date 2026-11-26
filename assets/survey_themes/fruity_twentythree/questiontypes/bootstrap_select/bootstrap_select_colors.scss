@@ -15,7 +15,9 @@
     // inside `ul.dropdown-menu.inner`, so these rules would otherwise match the
     // answer dropdown too — and their !important would beat the theming below.
     &:not(.inner) > {
-        li > a {
+        // button: survey navbar submenu openers and Back
+        li > a,
+        li > button {
             color : $g-700;
             &:hover {
                 color            : $white;
@@ -61,7 +63,7 @@
 
         &:focus, &:focus-visible {
             border-color : $input-focus-border-color;
-            box-shadow   : $input-box-shadow;
+            box-shadow   : none;
         }
     }
 

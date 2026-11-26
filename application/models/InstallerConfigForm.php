@@ -31,6 +31,8 @@
  */
 class InstallerConfigForm extends CFormModel
 {
+    use TwigSandboxIteratorTrait;
+
     public const ENGINE_TYPE_MYISAM = 'MYISAM';
     public const ENGINE_TYPE_INNODB = 'INNODB';
 
@@ -49,7 +51,8 @@ class InstallerConfigForm extends CFormModel
     public const RECOMMENDED_POST_MAX_SIZE = 32;
     /** @var int Recommended value in MB for the PHP setting upload_max_filesize, it limits survey imports and file uploads */
     public const RECOMMENDED_UPLOAD_MAX_FILESIZE = 32;
-    public const MINIMUM_PHP_VERSION = '8.1.29';
+    /** @var string Minimum supported PHP version, keep in sync with require → php and config → platform → php in composer.json and the check in index.php */
+    public const MINIMUM_PHP_VERSION = '8.2.27';
 
     // Database
     /** @var string $dbtype */

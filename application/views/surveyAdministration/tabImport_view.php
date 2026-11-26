@@ -17,7 +17,11 @@
                 <!-- Select file -->
                 <div class="mb-3 col-4">
                     <label class='form-label ' for='the_file'>
-                        <?php printf(gT("Select survey structure file (*.lss, *.txt) or survey archive (*.lsa) (maximum file size: %01.2f MB)"), getMaximumFileUploadSize() / 1024 / 1024); ?>
+                        <?php if (isFileUploadSizeLimited()) {
+                            printf(gT("Select survey structure file (*.lss, *.txt) or survey archive (*.lsa) (maximum file size: %01.2f MB)"), getMaximumFileUploadSize() / 1024 / 1024);
+                        } else {
+                            eT("Select survey structure file (*.lss, *.txt) or survey archive (*.lsa)");
+                        } ?>
                     </label>
                     <div>
                         <input id='the_file' name="the_file" class="form-control" type="file" accept='.lss,.lsa,.tsv,.txt' onchange="$('#import-submit').attr('disabled', false).attr('data-bs-toggle', false);" required />
@@ -68,20 +72,3 @@
         </div>
     </div>
 </div>
-
-<div id='pleaseselectfile-popup' class="modal fade" tabindex="-1" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title"><?php eT("No file selected"); ?></h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p><?php eT("Please select a file to import!"); ?></p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"><?php eT("Close"); ?></button>
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->

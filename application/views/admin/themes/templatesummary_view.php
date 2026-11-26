@@ -31,7 +31,8 @@ Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype 
             echo CHtml::hiddenField('editfile', $editfile);
             echo CHtml::hiddenField('relativePathEditfile', $relativePathEditfile);
             echo CHtml::hiddenField('action', 'templatesavechanges');
-            echo CHtml::textArea('changes',
+            echo CHtml::textArea(
+                'changes',
                 !empty($editfile) ? file_get_contents($editfile) : '',
                 [
                     'rows'          => '20',
@@ -39,22 +40,23 @@ Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype 
                     'data-filetype' => $sEditorFileType,
                     'class'         => 'ace ' . $sTemplateEditorMode,
                     'style'         => 'width:100%'
-                ]);
+                ]
+            );
             ?>
             <p class='text-center'>
                 <br/>
                 <?php if (Permission::model()->hasGlobalPermission('templates', 'update')) {
-                    $buttonType = $oEditedTemplate->getTemplateForFile($relativePathEditfile,
-                        $oEditedTemplate)->sTemplateName == $oEditedTemplate->sTemplateName
+                    $buttonType = $oEditedTemplate->getTemplateForFile($relativePathEditfile, $oEditedTemplate)->sTemplateName == $oEditedTemplate->sTemplateName
                         ? "savebutton" : "copybutton";
-                    if (is_writable($templates[$templatename])):
-                        if ($buttonType === "savebutton"): ?>
+                    ?>
+                    <?php if (is_writable($templates[$templatename])) : ?>
+                        <?php if ($buttonType === "savebutton") : ?>
                             <button type='submit' class='btn btn-primary' id='button-save-changes'
                                     value='' <?= (!is_template_editable($templatename) ? "disabled='disabled' alt='" . gT("Changes cannot be saved to a standard theme.") . "'" : "") ?> >
                                 <i class="ri-check-fill"></i>
                                 <?= gT('Save'); ?>
                             </button>
-                        <?php else: ?>
+                        <?php else : ?>
                             <button type='submit' class='btn btn-outline-secondary' id='button-save-changes'
                                     value='' <?= (!is_template_editable($templatename) ? "disabled='disabled' alt='" . gT("Changes cannot be saved to a standard theme.") . "'" : "") ?> >
                                 <?= gT("Copy to local theme and save changes") ?>
@@ -74,19 +76,18 @@ Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype 
                     <label class="card-title"><?php eT("Screen part files:"); ?></label>
                     <?php foreach ($files as $file) { ?>
                         <div class="row">
-                            <div class="col-8">
-                                <a href="<?php echo $this->createUrl('admin/themes',
-                                    ['sa' => 'view', 'screenname' => $screenname, 'templatename' => $templatename, 'editfile' => $file]); ?>"
+                            <div class="col text-break">
+                                <a href="<?php echo $this->createUrl('admin/themes', ['sa' => 'view', 'screenname' => $screenname, 'templatename' => $templatename, 'editfile' => $file]); ?>"
                                    class="<?= $file == $relativePathEditfile ? 'text-danger' : 'text-success' ?>">
                                     <?= (empty(substr(strrchr((string) $file, DIRECTORY_SEPARATOR), 1)))
                                         ? $file
                                         : substr(strrchr((string) $file, DIRECTORY_SEPARATOR), 1) ?>
                                 </a>
                             </div>
-                            <div class="col-4">
-                                <?php if ($oEditedTemplate->getTemplateForFile($file, $oEditedTemplate, false)
-                                    && $oEditedTemplate->getTemplateForFile($file,
-                                        $oEditedTemplate)->sTemplateName === $oEditedTemplate->sTemplateName) { ?>
+                            <div class="col-auto">
+                                <?php $isOwnFile = $oEditedTemplate->getTemplateForFile($file, $oEditedTemplate, false)
+                                    && $oEditedTemplate->getTemplateForFile($file, $oEditedTemplate)->sTemplateName === $oEditedTemplate->sTemplateName; ?>
+                                <?php if ($isOwnFile) { ?>
                                     <?php if (Permission::model()->hasGlobalPermission('templates', 'delete')) { ?>
                                         <?= CHtml::form(['admin/themes', 'sa' => 'templatefiledelete'], 'post', ['class' => 'd-grid gap-2']); ?>
                                         <input type='hidden' name="filetype" value="<?php echo CHtml::encode('screen'); ?>"/>
@@ -99,7 +100,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype 
                                         <?= CHtml::endForm() ?>
                                     <?php } ?>
                                 <?php } else { ?>
-                                    <span class="badge bg-danger"> <?php eT("Inherited"); ?> </span>
+                                    <span class="badge bg-info"><?php eT("Inherited"); ?></span>
                                 <?php } ?>
                             </div>
                         </div>
@@ -111,18 +112,16 @@ Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype 
                     <label class="card-title"><?php eT("JavaScript files:"); ?></label>
                     <?php foreach ($jsfiles as $file) { ?>
                         <div class="row">
-                            <div class="col-8">
-                                <a href="<?php echo $this->createUrl('admin/themes',
-                                    ['sa' => 'view', 'screenname' => $screenname, 'templatename' => $templatename, 'editfile' => $file]); ?>"
+                            <div class="col text-break">
+                                <a href="<?php echo $this->createUrl('admin/themes', ['sa' => 'view', 'screenname' => $screenname, 'templatename' => $templatename, 'editfile' => $file]); ?>"
                                    class="<?= $file == $relativePathEditfile ? 'text-danger' : 'text-success' ?>">
                                     <?= (empty(substr(strrchr((string) $file, DIRECTORY_SEPARATOR), 1)))
                                         ? $file
                                         : substr(strrchr((string) $file, DIRECTORY_SEPARATOR), 1); ?>
                                 </a>
                             </div>
-                            <div class="col-4">
-                                <?php if ($oEditedTemplate->getTemplateForFile($file,
-                                        $oEditedTemplate)->sTemplateName === $oEditedTemplate->sTemplateName) { ?>
+                            <div class="col-auto">
+                                <?php if ($oEditedTemplate->getTemplateForFile($file, $oEditedTemplate)->sTemplateName === $oEditedTemplate->sTemplateName) { ?>
                                     <?php if (Permission::model()->hasGlobalPermission('templates', 'delete')) { ?>
                                         <?= CHtml::form(['admin/themes', 'sa' => 'templatefiledelete'], 'post', ['class' => 'd-grid gap-2']); ?>
                                         <input type='hidden' name="filetype" value="<?php echo CHtml::encode('js'); ?>"/>
@@ -136,7 +135,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype 
                                         <?= CHtml::endForm() ?>
                                     <?php } ?>
                                 <?php } else { ?>
-                                    <span class="badge bg-danger "><?php eT("Inherited"); ?></span>
+                                    <span class="badge bg-info"><?php eT("Inherited"); ?></span>
                                 <?php } ?>
                             </div>
                         </div>
@@ -149,18 +148,16 @@ Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype 
                     <label class="card-title"><?php eT("CSS files:"); ?></label>
                     <?php foreach ($cssfiles as $file) { ?>
                         <div class="row">
-                            <div class="col-8">
-                                <a href="<?php echo $this->createUrl('admin/themes',
-                                    ['sa' => 'view', 'screenname' => $screenname, 'templatename' => $templatename, 'editfile' => $file]); ?>"
-                                   class="<?= $file === $relativePathEditfile ? 'text-danger' : 'text-success'?>">
+                            <div class="col text-break">
+                                <a href="<?php echo $this->createUrl('admin/themes', ['sa' => 'view', 'screenname' => $screenname, 'templatename' => $templatename, 'editfile' => $file]); ?>"
+                                   class="<?= $file === $relativePathEditfile ? 'text-danger' : 'text-success' ?>">
                                     <?= (empty(substr(strrchr((string) $file, DIRECTORY_SEPARATOR), 1)))
                                         ? $file
                                         : substr(strrchr((string) $file, DIRECTORY_SEPARATOR), 1); ?>
                                 </a>
                             </div>
-                            <div class="col-4">
-                                <?php if ($oEditedTemplate->getTemplateForFile($file,
-                                        $oEditedTemplate)->sTemplateName == $oEditedTemplate->sTemplateName) { ?>
+                            <div class="col-auto">
+                                <?php if ($oEditedTemplate->getTemplateForFile($file, $oEditedTemplate)->sTemplateName == $oEditedTemplate->sTemplateName) { ?>
                                     <?php if (Permission::model()->hasGlobalPermission('templates', 'delete')) { ?>
                                         <?= CHtml::form(['admin/themes', 'sa' => 'templatefiledelete'], 'post', ['class' => 'd-grid gap-2']); ?>
                                         <input type='hidden' name="filetype" value="<?php echo CHtml::encode('css'); ?>"/>
@@ -174,7 +171,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype 
                                         <?= CHtml::endForm() ?>
                                     <?php } ?>
                                 <?php } else { ?>
-                                    <span class="badge bg-danger "><?php eT("Inherited"); ?></span>
+                                    <span class="badge bg-info"><?php eT("Inherited"); ?></span>
                                 <?php } ?>
                             </div>
                         </div>
@@ -187,17 +184,14 @@ Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype 
                     <div class="col-12 mb-3 other-files-list">
                         <?php foreach ($otherfiles as $fileName => $file) { ?>
                             <div class="row other-files-row">
-                                <div class="col-8 other-files-filename">
+                                <div class="col text-break other-files-filename">
                                     <?php echo CHtml::encode($fileName); ?>
                                 </div>
-                                <div class="col-4">
+                                <div class="col-auto">
                                     <?php //TODO: make it ajax and less messy ?>
-                                    <?php if ($oEditedTemplate->getTemplateForFile($fileName,
-                                            $oEditedTemplate)->sTemplateName == $oEditedTemplate->sTemplateName) {
-                                        if (Permission::model()->hasGlobalPermission('templates', 'delete')) { ?>
-                                            <?= CHtml::form(['admin/themes', 'sa' => 'templatefiledelete'],
-                                                'post',
-                                                ['class' => 'd-grid gap-2']); ?>
+                                    <?php if ($oEditedTemplate->getTemplateForFile($fileName, $oEditedTemplate)->sTemplateName == $oEditedTemplate->sTemplateName) { ?>
+                                        <?php if (Permission::model()->hasGlobalPermission('templates', 'delete')) { ?>
+                                            <?= CHtml::form(['admin/themes', 'sa' => 'templatefiledelete'], 'post', ['class' => 'd-grid gap-2']); ?>
                                             <input type='hidden' name="filetype" value="<?php echo CHtml::encode('other'); ?>"/>
                                             <input type='hidden' name="filename" value="<?php echo CHtml::encode($file); ?>"/>
                                             <input type='submit'
@@ -210,7 +204,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype 
                                             <?= CHtml::endForm() ?>
                                         <?php } ?>
                                     <?php } else { ?>
-                                        <span class="badge bg-danger "><?php eT("Inherited"); ?></span>
+                                        <span class="badge bg-info"><?php eT("Inherited"); ?></span>
                                     <?php } ?>
                                 </div>
                             </div>
@@ -219,21 +213,27 @@ Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype 
                     <div class="mb-3">
                         <?php if (Permission::model()->hasGlobalPermission('templates', 'update')) { ?>
                             <div class="">
-                                <?php echo CHtml::form(['admin/themes/sa/uploadfile'],
+                                <?php echo CHtml::form(
+                                    ['admin/themes/sa/uploadfile'],
                                     'post',
                                     [
                                         'id'      => 'importtemplatefile',
                                         'name'    => 'importtemplatefile',
                                         'enctype' => 'multipart/form-data'
-                                    ]); ?>
+                                    ]
+                                ); ?>
                                 <div class="row">
                                     <label class="form-label col-12">
-                                        <?php printf(gT("Upload a file (maximum size: %d MB):"), getMaximumFileUploadSize() / 1024 / 1024); ?>
+                                        <?php if (isFileUploadSizeLimited()) {
+                                            printf(gT("Upload a file (maximum size: %d MB):"), getMaximumFileUploadSize() / 1024 / 1024);
+                                        } else {
+                                            eT("Upload a file:");
+                                        } ?>
                                     </label>
                                 </div>
                                 <div class="row">
                                     <div class="col-12 mb-3">
-                                        <input name='upload_file' id="upload_file" type="file" class="form-control" required="required"/>
+                                        <input name='upload_file' id="upload_file" type="file" class="form-control" required="required" accept="<?= CHtml::encode(getFileInputAcceptValue(App()->getConfig('allowedthemeuploads') . ',' . App()->getConfig('allowedthemeimageformats'))) ?>"/>
                                         <input type='hidden' name='editfile' value='<?php echo htmlspecialchars((string) $relativePathEditfile); ?>'/>
                                         <input type='hidden' name='screenname' value='<?php echo HTMLEscape($screenname); ?>'/>
                                         <input type='hidden' name='templatename' value='<?php echo $templatename; ?>'/>

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE ldml SYSTEM "../../common/dtd/ldml.dtd">
-<!-- Copyright © 1991-2013 Unicode, Inc.
-CLDR data files are interpreted according to the LDML specification (http://unicode.org/reports/tr35/)
+<!-- Copyright © 1991-2026 Unicode, Inc.
 For terms of use, see http://www.unicode.org/copyright.html
+SPDX-License-Identifier: Unicode-3.0
+CLDR data files are interpreted according to the LDML specification (http://unicode.org/reports/tr35/)
 -->
 <ldml>
 	<identity>
-		<version number="$Revision: 9061 $"/>
-		<generation date="$Date: 2013-07-20 12:27:45 -0500 (Sat, 20 Jul 2013) $"/>
+		<version number="$Revision$"/>
 		<language type="mgh"/>
 	</identity>
 	<localeDisplayNames>
@@ -132,7 +132,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="LY">Ulibya</territory>
 			<territory type="ME">Umantegro</territory>
 			<territory type="MG">Ubukini</territory>
-			<territory type="MK">Umasedonia</territory>
 			<territory type="MW">Umalawi</territory>
 			<territory type="MZ" draft="contributed">Umozambiki</territory>
 			<territory type="NE">Unijeri</territory>
@@ -229,17 +228,11 @@ For terms of use, see http://www.unicode.org/copyright.html
 				</dateFormats>
 				<dateTimeFormats>
 					<availableFormats>
-						<dateFormatItem id="d">d</dateFormatItem>
 						<dateFormatItem id="Ed">E d</dateFormatItem>
-						<dateFormatItem id="hm">h:mm a</dateFormatItem>
-						<dateFormatItem id="Hm">HH:mm</dateFormatItem>
-						<dateFormatItem id="hms">h:mm:ss a</dateFormatItem>
-						<dateFormatItem id="Hms">HH:mm:ss</dateFormatItem>
-						<dateFormatItem id="M">L</dateFormatItem>
+						<dateFormatItem id="hm">h:mm a</dateFormatItem>
+						<dateFormatItem id="hms">h:mm:ss a</dateFormatItem>
 						<dateFormatItem id="Md">d/M</dateFormatItem>
 						<dateFormatItem id="MEd">E, M/d</dateFormatItem>
-						<dateFormatItem id="MMM">LLL</dateFormatItem>
-						<dateFormatItem id="MMMd">MMM d</dateFormatItem>
 						<dateFormatItem id="MMMEd">E, MMM d</dateFormatItem>
 						<dateFormatItem id="ms">m:ss</dateFormatItem>
 						<dateFormatItem id="y">y</dateFormatItem>
@@ -283,7 +276,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 							<month type="9">Mweri wo tisa</month>
 							<month type="10">Mweri wo kumi</month>
 							<month type="11">Mweri wo kumi na moja</month>
-							<month type="12">Mweri wo kumi na yel'li</month>
+							<month type="12">Mweri wo kumi na yel’li</month>
 						</monthWidth>
 					</monthContext>
 					<monthContext type="stand-alone">
@@ -338,9 +331,9 @@ For terms of use, see http://www.unicode.org/copyright.html
 				</days>
 				<dayPeriods>
 					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
+						<dayPeriodWidth type="abbreviated">
 							<dayPeriod type="am">wichishu</dayPeriod>
-							<dayPeriod type="pm">mchochil'l</dayPeriod>
+							<dayPeriod type="pm">mchochil’l</dayPeriod>
 						</dayPeriodWidth>
 					</dayPeriodContext>
 				</dayPeriods>
@@ -379,41 +372,34 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<timeFormats>
 					<timeFormatLength type="full">
 						<timeFormat>
-							<pattern>h:mm:ss a zzzz</pattern>
+							<pattern>HH:mm:ss zzzz</pattern>
 						</timeFormat>
 					</timeFormatLength>
 					<timeFormatLength type="long">
 						<timeFormat>
-							<pattern>h:mm:ss a z</pattern>
+							<pattern>HH:mm:ss z</pattern>
 						</timeFormat>
 					</timeFormatLength>
 					<timeFormatLength type="medium">
 						<timeFormat>
-							<pattern>h:mm:ss a</pattern>
+							<pattern>HH:mm:ss</pattern>
 						</timeFormat>
 					</timeFormatLength>
 					<timeFormatLength type="short">
 						<timeFormat>
-							<pattern>h:mm a</pattern>
+							<pattern>HH:mm</pattern>
 						</timeFormat>
 					</timeFormatLength>
 				</timeFormats>
 				<dateTimeFormats>
 					<availableFormats>
-						<dateFormatItem id="d">d</dateFormatItem>
 						<dateFormatItem id="Ed">E d</dateFormatItem>
-						<dateFormatItem id="hm">h:mm a</dateFormatItem>
-						<dateFormatItem id="Hm">HH:mm</dateFormatItem>
-						<dateFormatItem id="hms">h:mm:ss a</dateFormatItem>
-						<dateFormatItem id="Hms">HH:mm:ss</dateFormatItem>
-						<dateFormatItem id="M">L</dateFormatItem>
+						<dateFormatItem id="hm">h:mm a</dateFormatItem>
+						<dateFormatItem id="hms">h:mm:ss a</dateFormatItem>
 						<dateFormatItem id="Md">d/M</dateFormatItem>
 						<dateFormatItem id="MEd">E, M/d</dateFormatItem>
-						<dateFormatItem id="MMM">LLL</dateFormatItem>
-						<dateFormatItem id="MMMd">MMM d</dateFormatItem>
 						<dateFormatItem id="MMMEd">E, MMM d</dateFormatItem>
 						<dateFormatItem id="ms">m:ss</dateFormatItem>
-						<dateFormatItem id="y">y</dateFormatItem>
 						<dateFormatItem id="yM">M/y</dateFormatItem>
 						<dateFormatItem id="yMd">d/M/y</dateFormatItem>
 						<dateFormatItem id="yMEd">E, M/d/y</dateFormatItem>
@@ -428,7 +414,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 		</calendars>
 		<fields>
 			<field type="era">
-				<displayName>kal'lai</displayName>
+				<displayName>kal’lai</displayName>
 			</field>
 			<field type="year">
 				<displayName>yaka</displayName>
@@ -441,9 +427,9 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</field>
 			<field type="day">
 				<displayName>nihuku</displayName>
-				<relative type="-1">n'chana</relative>
-				<relative type="0">lel'lo</relative>
-				<relative type="1">me'llo</relative>
+				<relative type="-1">n’chana</relative>
+				<relative type="0">lel’lo</relative>
+				<relative type="1">me’llo</relative>
 			</field>
 			<field type="weekday">
 				<displayName>nihuku no mwisho wa wiki</displayName>
@@ -473,7 +459,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 	<posix>
 		<messages>
 			<yesstr>eyo:e</yesstr>
-			<nostr>akin'tuna:a</nostr>
+			<nostr>akin’tuna:a</nostr>
 		</messages>
 	</posix>
 </ldml>

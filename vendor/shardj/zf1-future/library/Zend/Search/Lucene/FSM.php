@@ -327,7 +327,7 @@ abstract class Zend_Search_Lucene_FSM
      * Action execution order is defined by addInputAction() calls
      *
      * @param integer|string $state
-     * @param integer|string $input
+     * @param integer|string $inputSymbol
      * @param Zend_Search_Lucene_FSMAction $action
      */
     public function addInputAction($state, $inputSymbol, Zend_Search_Lucene_FSMAction $action)

@@ -50,8 +50,10 @@ class Zend_Feed_Reader_Feed_Atom_Source extends Zend_Feed_Reader_Feed_Atom
         $this->_registerNamespaces();
         $this->_loadExtensions();
 
+        require_once 'Zend/Feed/Reader.php';
         $atomClass = Zend_Feed_Reader::getPluginLoader()->getClassName('Atom_Feed');
         $this->_extensions['Atom_Feed'] = new $atomClass($this->_domDocument, $this->_data['type'], $this->_xpath);
+        require_once 'Zend/Feed/Reader.php';
         $atomClass = Zend_Feed_Reader::getPluginLoader()->getClassName('DublinCore_Feed');
         $this->_extensions['DublinCore_Feed'] = new $atomClass($this->_domDocument, $this->_data['type'], $this->_xpath);
         foreach ($this->_extensions as $extension) {

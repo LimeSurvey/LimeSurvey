@@ -4,6 +4,7 @@ namespace PhpOffice\PhpSpreadsheet\Worksheet;
 
 use Composer\Pcre\Preg;
 use PhpOffice\PhpSpreadsheet\Exception as PhpSpreadsheetException;
+use PhpOffice\PhpSpreadsheet\Shared\Metafile;
 use ZipArchive;
 
 class Drawing extends BaseDrawing
@@ -15,6 +16,8 @@ class Drawing extends BaseDrawing
         IMAGETYPE_BMP => IMAGETYPE_PNG,
     ];
 
+    const UNSUPPORTED_IMAGE_TYPE_MESSAGE = 'Unsupported image type in comment background. Supported types: PNG, JPEG, BMP, GIF, WMF, EMF.';
+
     /**
      * Path.
      */
@@ -24,6 +27,13 @@ class Drawing extends BaseDrawing
      * Whether or not we are dealing with a URL.
      */
     private bool $isUrl;
+
+    /**
+     * Metafile type (Metafile::TYPE_WMF, Metafile::TYPE_EMF or Metafile::TYPE_EMFPLUS), null if not a metafile.
+     */
+    private ?string $metafileType = null;
+
+    private bool $throwWhenTesting = false;
 
     /**
      * Create a new Drawing.
@@ -62,6 +72,9 @@ class Drawing extends BaseDrawing
         if (Preg::isMatch('~^data:image/([^;]+);base64,~', $this->path, $matches)) {
             return $matches[1];
         }
+        if ($this->metafileType !== null) {
+            return Metafile::getExtension($this->metafileType);
+        }
         $exploded = explode('.', basename($this->path));
 
         return $exploded[count($exploded) - 1];
@@ -72,10 +85,6 @@ class Drawing extends BaseDrawing
      */
     public function getMediaFilename(): string
     {
-        if (!array_key_exists($this->type, self::IMAGE_TYPES_CONVERTION_MAP)) {
-            throw new PhpSpreadsheetException('Unsupported image type in comment background. Supported types: PNG, JPEG, BMP, GIF.');
-        }
-
         return sprintf('image%d%s', $this->getImageIndex(), $this->getImageFileExtensionForSave());
     }
 
@@ -100,6 +109,7 @@ class Drawing extends BaseDrawing
     public function setPath(string $path, bool $verifyFile = true, ?ZipArchive $zip = null, bool $allowExternal = true, ?callable $isWhitelisted = null): static
     {
         $this->isUrl = false;
+        $this->metafileType = null;
         if (Preg::isMatch('~^data:image/[a-z]+;base64,~', $path)) {
             $this->path = $path;
 
@@ -116,14 +126,16 @@ class Drawing extends BaseDrawing
                     $this->setSizesAndType($path);
                 }
             }
-        // Check if a URL has been passed. https://stackoverflow.com/a/2058596/1252979
+        // Check if a URL has been passed.
         } elseif (
-            filter_var($path, FILTER_VALIDATE_URL)
-            || Preg::isMatch('~^phar://~i', $path)
-            || (Preg::isMatch('/^([\w.\s\x00-\x1f]+):/', $path) && !Preg::isMatch('/^([\w.]+):/', $path))
+            Preg::isMatch('/^([\w.\s\x00-\x1f]+):/', $path)
+            && !Preg::isMatch('~^[a-zA-Z]:~', $path)
         ) {
             if (!Preg::isMatch('/^(http|https|file|ftp|s3):/', $path)) {
                 throw new PhpSpreadsheetException('Invalid protocol for linked drawing');
+            }
+            if ($this->throwWhenTesting) {
+                throw new PhpSpreadsheetException('Deliberate exception on url path');
             }
             if (!$allowExternal) {
                 return $this;
@@ -139,6 +151,7 @@ class Drawing extends BaseDrawing
             if (str_starts_with($path, 'https:') || str_starts_with($path, 'http:')) {
                 $ctxArray = [
                     'http' => [
+                        'follow_location' => 0,
                         'user_agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
                         'header' => [
                             //'Connection: keep-alive', // unacceptable performance
@@ -166,6 +179,9 @@ class Drawing extends BaseDrawing
                 }
             }
         } else {
+            if ($this->throwWhenTesting) {
+                throw new PhpSpreadsheetException('Deliberate exception on local file path');
+            }
             $exists = @file_exists($path);
             if ($exists !== false && $this->isImage($path)) {
                 $this->path = $path;
@@ -195,8 +211,66 @@ class Drawing extends BaseDrawing
             $extension = pathinfo($path, PATHINFO_EXTENSION);
             $retVal = in_array($extension, ['bin', 'emf'], true);
         }
+        if (!$retVal) {
+            $retVal = Metafile::detectFile($path) !== null;
+        }
 
         return $retVal;
+    }
+
+    /**
+     * Set Fact Sizes and Type of Image, rendering Windows Metafiles (WMF, EMF, EMF+) to know their sizes.
+     */
+    protected function setSizesAndType(string $path): void
+    {
+        $this->metafileType = Metafile::detectFile($path);
+        if ($this->metafileType !== null && $this->imageWidth === 0 && $this->imageHeight === 0) {
+            // If the metafile can not be rendered, its sizes stay unknown
+            $image = Metafile::tryToGdImage((string) file_get_contents($path));
+            if ($image !== null) {
+                $this->imageWidth = imagesx($image);
+                $this->imageHeight = imagesy($image);
+            }
+        }
+
+        parent::setSizesAndType($path);
+    }
+
+    /**
+     * Whether the image is a Windows Metafile (WMF, EMF or EMF+).
+     */
+    public function isMetafile(): bool
+    {
+        return $this->metafileType !== null;
+    }
+
+    /**
+     * Get the Windows Metafile type (Metafile::TYPE_WMF, Metafile::TYPE_EMF or Metafile::TYPE_EMFPLUS), null if not a metafile.
+     */
+    public function getMetafileType(): ?string
+    {
+        return $this->metafileType;
+    }
+
+    /**
+     * Get the contents of the image file.
+     */
+    public function getContents(): ?string
+    {
+        if ($this->path === '') {
+            return null;
+        }
+        $contents = @file_get_contents($this->path);
+
+        return ($contents === false) ? null : $contents;
+    }
+
+    /**
+     * Whether the image can be saved as PNG, JPEG (comment background, ...).
+     */
+    public function isSupportedForSave(): bool
+    {
+        return $this->metafileType !== null || array_key_exists($this->type, self::IMAGE_TYPES_CONVERTION_MAP);
     }
 
     /**
@@ -226,8 +300,12 @@ class Drawing extends BaseDrawing
      */
     public function getImageTypeForSave(): int
     {
+        // Windows Metafiles are converted to PNG
+        if ($this->metafileType !== null) {
+            return IMAGETYPE_PNG;
+        }
         if (!array_key_exists($this->type, self::IMAGE_TYPES_CONVERTION_MAP)) {
-            throw new PhpSpreadsheetException('Unsupported image type in comment background. Supported types: PNG, JPEG, BMP, GIF.');
+            throw new PhpSpreadsheetException(self::UNSUPPORTED_IMAGE_TYPE_MESSAGE);
         }
 
         return self::IMAGE_TYPES_CONVERTION_MAP[$this->type];
@@ -238,11 +316,7 @@ class Drawing extends BaseDrawing
      */
     public function getImageFileExtensionForSave(bool $includeDot = true): string
     {
-        if (!array_key_exists($this->type, self::IMAGE_TYPES_CONVERTION_MAP)) {
-            throw new PhpSpreadsheetException('Unsupported image type in comment background. Supported types: PNG, JPEG, BMP, GIF.');
-        }
-
-        $result = image_type_to_extension(self::IMAGE_TYPES_CONVERTION_MAP[$this->type], $includeDot);
+        $result = image_type_to_extension($this->getImageTypeForSave(), $includeDot);
 
         return "$result";
     }
@@ -252,10 +326,12 @@ class Drawing extends BaseDrawing
      */
     public function getImageMimeType(): string
     {
-        if (!array_key_exists($this->type, self::IMAGE_TYPES_CONVERTION_MAP)) {
-            throw new PhpSpreadsheetException('Unsupported image type in comment background. Supported types: PNG, JPEG, BMP, GIF.');
-        }
+        return image_type_to_mime_type($this->getImageTypeForSave());
+    }
 
-        return image_type_to_mime_type(self::IMAGE_TYPES_CONVERTION_MAP[$this->type]);
+    /** @internal */
+    public function setThrowWhenTesting(bool $throwWhenTesting): void
+    {
+        $this->throwWhenTesting = $throwWhenTesting;
     }
 }

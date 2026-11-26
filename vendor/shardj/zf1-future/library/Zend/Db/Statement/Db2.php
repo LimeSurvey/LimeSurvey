@@ -47,6 +47,13 @@ class Zend_Db_Statement_Db2 extends Zend_Db_Statement
     protected $_values;
 
     /**
+     * Parameter and data types of the bound parameters, by position.
+     *
+     * @var array
+     */
+    protected $_bindTypes = [];
+
+    /**
      * Prepare a statement handle.
      *
      * @param string $sql
@@ -96,16 +103,8 @@ class Zend_Db_Statement_Db2 extends Zend_Db_Statement
             $datatype = DB2_CHAR;
         }
 
-        if (!db2_bind_param($this->_stmt, $parameter, "variable", $type, $datatype)) {
-            /**
-             * @see Zend_Db_Statement_Db2_Exception
-             */
-            require_once 'Zend/Db/Statement/Db2/Exception.php';
-            throw new Zend_Db_Statement_Db2_Exception(
-                db2_stmt_errormsg(),
-                db2_stmt_error()
-            );
-        }
+        // the variable is bound to the statement on execute
+        $this->_bindTypes[$parameter] = [$type, $datatype];
 
         return true;
     }
@@ -130,7 +129,7 @@ class Zend_Db_Statement_Db2 extends Zend_Db_Statement
      * Returns the number of columns in the result set.
      * Returns null if the statement has no result set metadata.
      *
-     * @return int The number of columns.
+     * @return int|false The number of columns.
      */
     public function columnCount()
     {
@@ -141,10 +140,51 @@ class Zend_Db_Statement_Db2 extends Zend_Db_Statement
     }
 
     /**
+     * Returns metadata for a column in a result set, in the format of
+     * PDOStatement::getColumnMeta() of pdo_ibm as far as ibm_db2 reports it:
+     * native_type, name, len, precision, scale and pdo_type. ibm_db2 reports
+     * neither the table nor the flags of a column, and as the native_type the
+     * kind of values it fetches (int, real, string, clob, blob, date, time,
+     * timestamp, xml, boolean) instead of the SQL type. As in pdo_ibm, len is
+     * the display size and precision is the scale. The pdo_type is the type of
+     * the values fetched: SMALLINT and INTEGER columns come as integers,
+     * BIGINT columns as strings.
+     *
+     * @param int $column Zero-based index of the column.
+     * @return array|false False when the statement has no result set or no such column.
+     */
+    public function getColumnMeta($column)
+    {
+        $column = (int) $column;
+        if (!$this->_stmt || $column < 0 || $column >= db2_num_fields($this->_stmt)) {
+            return false;
+        }
+
+        $type = db2_field_type($this->_stmt, $column);
+        $scale = db2_field_scale($this->_stmt, $column);
+        if ($type === 'boolean') {
+            $pdoType = Zend_Db::PARAM_BOOL;
+        } elseif ($type === 'int' && db2_field_precision($this->_stmt, $column) <= 10) {
+            $pdoType = Zend_Db::PARAM_INT;
+        } else {
+            $pdoType = Zend_Db::PARAM_STR;
+        }
+
+        return [
+            'native_type' => $type,
+            'name'        => db2_field_name($this->_stmt, $column),
+            'len'         => db2_field_display_size($this->_stmt, $column),
+            'precision'   => $scale,
+            'scale'       => $scale,
+            'pdo_type'    => $pdoType,
+        ];
+    }
+
+    /**
      * Retrieves the error code, if any, associated with the last operation on
      * the statement handle.
      *
-     * @return string error code.
+     * @return string|false error code.
      */
     public function errorCode()
     {
@@ -164,7 +204,7 @@ class Zend_Db_Statement_Db2 extends Zend_Db_Statement
      * Retrieves an array of error information, if any, associated with the
      * last operation on the statement handle.
      *
-     * @return array
+     * @return array|false
      */
     public function errorInfo()
     {
@@ -197,6 +237,28 @@ class Zend_Db_Statement_Db2 extends Zend_Db_Statement
             return false;
         }
 
+        // db2_bind_param() binds a variable by its name, so the values of
+        // bindParam() and bindValue() get variables in the scope of db2_execute()
+        $bound = [];
+        if ($params === null) {
+            foreach ($this->_bindParam as $position => $value) {
+                $name = 'zendDbParam' . $position;
+                $$name = $value;
+                [$type, $datatype] = $this->_bindTypes[$position];
+                if (!db2_bind_param($this->_stmt, $position, $name, $type, $datatype)) {
+                    /**
+                     * @see Zend_Db_Statement_Db2_Exception
+                     */
+                    require_once 'Zend/Db/Statement/Db2/Exception.php';
+                    throw new Zend_Db_Statement_Db2_Exception(
+                        db2_stmt_errormsg(),
+                        db2_stmt_error()
+                    );
+                }
+                $bound[$position] = $name;
+            }
+        }
+
         $retval = true;
         if ($params !== null) {
             $retval = @db2_execute($this->_stmt, $params);
@@ -212,6 +274,13 @@ class Zend_Db_Statement_Db2 extends Zend_Db_Statement
             throw new Zend_Db_Statement_Db2_Exception(
                 db2_stmt_errormsg(),
                 db2_stmt_error());
+        }
+
+        // output parameters return their values to the bound variables
+        foreach ($bound as $position => $name) {
+            if (in_array($this->_bindTypes[$position][0], [DB2_PARAM_OUT, DB2_PARAM_INOUT], true)) {
+                $this->_bindParam[$position] = $$name;
+            }
         }
 
         $this->_keys = [];
@@ -274,7 +343,6 @@ class Zend_Db_Statement_Db2 extends Zend_Db_Statement
                  */
                 require_once 'Zend/Db/Statement/Db2/Exception.php';
                 throw new Zend_Db_Statement_Db2_Exception("Invalid fetch mode '$style' specified");
-                break;
         }
 
         return $row;
@@ -314,7 +382,7 @@ class Zend_Db_Statement_Db2 extends Zend_Db_Statement
      * last INSERT, DELETE, or UPDATE statement executed by this
      * statement object.
      *
-     * @return int     The number of rows affected.
+     * @return int|false     The number of rows affected.
      */
     public function rowCount()
     {

@@ -2,17 +2,13 @@ import classNames from 'classnames'
 
 import { getQuestionTypeInfo } from 'components'
 import { getCellInfo, getCommonPinningStyles } from '../../utils'
-import { ColumnFilter } from '../ColumnFilter'
 import { FileInfoCell } from './FileInfoCell'
 import { TableCell } from './TableCell'
 
 export const ResponsesTableBody = ({
   table,
   clickedRowRef,
-  showFilters,
   sortedColumnId,
-  columnsFilters,
-  setColumnsFilters,
   sid,
   setShowQuestionComponent,
   cellQuestionInfoRef,
@@ -36,32 +32,6 @@ export const ResponsesTableBody = ({
 
   return (
     <tbody>
-      {showFilters &&
-        table.getHeaderGroups().map((headerGroup) => (
-          <tr className="border-none column-filters" key={headerGroup.id}>
-            {headerGroup.headers.map((header, index) => {
-              const isSortedColumn = header.column.id === sortedColumnId
-
-              return (
-                <td
-                  style={{
-                    ...getCommonPinningStyles(header.column),
-                  }}
-                  className={classNames(`border-none column-filter-${index}`, {
-                    'highlight-cell': isSortedColumn,
-                  })}
-                  key={header.id + 'filters'}
-                >
-                  <ColumnFilter
-                    columnsFilters={columnsFilters}
-                    setColumnsFilters={setColumnsFilters}
-                    column={header.column}
-                  />
-                </td>
-              )
-            })}
-          </tr>
-        ))}
       {table.getRowModel().rows.map((row) => {
         const isRowSelected = row.getIsSelected()
 

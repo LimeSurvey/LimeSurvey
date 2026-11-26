@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE ldml SYSTEM "../../common/dtd/ldml.dtd">
-<!-- Copyright © 1991-2013 Unicode, Inc.
-CLDR data files are interpreted according to the LDML specification (http://unicode.org/reports/tr35/)
+<!-- Copyright © 1991-2026 Unicode, Inc.
 For terms of use, see http://www.unicode.org/copyright.html
+SPDX-License-Identifier: Unicode-3.0
+CLDR data files are interpreted according to the LDML specification (http://unicode.org/reports/tr35/)
 -->
 <ldml>
 	<identity>
-		<version number="$Revision: 9287 $"/>
-		<generation date="$Date: 2013-08-28 21:32:04 -0500 (Wed, 28 Aug 2013) $"/>
+		<version number="$Revision$"/>
 		<language type="mua"/>
 	</identity>
 	<localeDisplayNames>
@@ -49,7 +49,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<language type="so">Somaliya</language>
 			<language type="sv">Swedia</language>
 			<language type="ta">Tamul</language>
-			<language type="th">th</language>
 			<language type="tr">Turk</language>
 			<language type="uk">Ukrainia</language>
 			<language type="ur">Urdu</language>
@@ -66,7 +65,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="AI">anguiya</territory>
 			<territory type="AL">albaniya</territory>
 			<territory type="AM">armeniya</territory>
-			<territory type="AN">Sǝr ma kasǝŋ ma laŋne</territory>
 			<territory type="AO">angola</territory>
 			<territory type="AR">argentiniya</territory>
 			<territory type="AS">samoa Amerika</territory>
@@ -150,7 +148,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="IE">Sǝr Ireland</territory>
 			<territory type="IL">Sǝr Israel</territory>
 			<territory type="IN">Sǝr Indǝ</territory>
-			<territory type="IO">anglofoŋ ma Indiya</territory>
+			<territory type="IO" draft="provisional">anglofoŋ ma Indiya</territory>
 			<territory type="IQ">Irak</territory>
 			<territory type="IR">Iraŋ</territory>
 			<territory type="IS">Sǝr Island</territory>
@@ -185,7 +183,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="MD">Moldoviya</territory>
 			<territory type="MG">Madagaskar</territory>
 			<territory type="MH">Sǝr Marshall ma laŋne</territory>
-			<territory type="MK">Macedoniya</territory>
 			<territory type="ML">Sǝr Mali</territory>
 			<territory type="MM">Sǝr Myanmar</territory>
 			<territory type="MN">Mongoliya</territory>
@@ -287,7 +284,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 		</territories>
 	</localeDisplayNames>
 	<characters>
-		<exemplarCharacters>[a ã b ɓ c d ɗ e ë ǝ f g h i ĩ j k l m n ŋ o õ p r s t u v ṽ w y z]</exemplarCharacters>
+		<exemplarCharacters>[aã b ɓ c d ɗ eë ǝ f g h iĩ j k l m n ŋ oõ p r s t u vṽ w y z]</exemplarCharacters>
 		<exemplarCharacters type="auxiliary">[q x]</exemplarCharacters>
 		<exemplarCharacters type="index">[A B Ɓ C D Ɗ E Ǝ F G H I J K L M N Ŋ O P R S T U V W Y Z]</exemplarCharacters>
 	</characters>
@@ -319,21 +316,17 @@ For terms of use, see http://www.unicode.org/copyright.html
 					<dateFormatLength type="short">
 						<dateFormat>
 							<pattern>d/M/y GGGGG</pattern>
+							<datetimeSkeleton>GGGGGyMd</datetimeSkeleton>
 						</dateFormat>
 					</dateFormatLength>
 				</dateFormats>
 				<dateTimeFormats>
 					<availableFormats>
-						<dateFormatItem id="d">d</dateFormatItem>
 						<dateFormatItem id="Ed">E d</dateFormatItem>
-						<dateFormatItem id="hm">h:mm a</dateFormatItem>
-						<dateFormatItem id="Hm">HH:mm</dateFormatItem>
-						<dateFormatItem id="hms">h:mm:ss a</dateFormatItem>
-						<dateFormatItem id="Hms">HH:mm:ss</dateFormatItem>
-						<dateFormatItem id="M">L</dateFormatItem>
+						<dateFormatItem id="hm">h:mm a</dateFormatItem>
+						<dateFormatItem id="hms">h:mm:ss a</dateFormatItem>
 						<dateFormatItem id="Md">d/M</dateFormatItem>
 						<dateFormatItem id="MEd">E d/M</dateFormatItem>
-						<dateFormatItem id="MMM">LLL</dateFormatItem>
 						<dateFormatItem id="MMMd">d MMM</dateFormatItem>
 						<dateFormatItem id="MMMEd">E d MMM</dateFormatItem>
 						<dateFormatItem id="ms">m:ss</dateFormatItem>
@@ -410,7 +403,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 							<day type="sat">Cze</day>
 						</dayWidth>
 						<dayWidth type="wide">
-							<day type="sun">Com'yakke</day>
+							<day type="sun">Com’yakke</day>
 							<day type="mon">Comlaaɗii</day>
 							<day type="tue">Comzyiiɗii</day>
 							<day type="wed">Comkolle</day>
@@ -443,13 +436,13 @@ For terms of use, see http://www.unicode.org/copyright.html
 							<quarter type="1">Tai fĩi sai ma tǝn kee zah</quarter>
 							<quarter type="2">Tai fĩi sai zah lǝn gwa ma kee</quarter>
 							<quarter type="3">Tai fĩi sai zah lǝn sai ma kee</quarter>
-							<quarter type="4">Tai fĩi sai ma coo kee zah 'na</quarter>
+							<quarter type="4">Tai fĩi sai ma coo kee zah ‘na</quarter>
 						</quarterWidth>
 					</quarterContext>
 				</quarters>
 				<dayPeriods>
 					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
+						<dayPeriodWidth type="abbreviated">
 							<dayPeriod type="am">comme</dayPeriod>
 							<dayPeriod type="pm">lilli</dayPeriod>
 						</dayPeriodWidth>
@@ -484,6 +477,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 					<dateFormatLength type="short">
 						<dateFormat>
 							<pattern>d/M/y</pattern>
+							<datetimeSkeleton>yMd</datetimeSkeleton>
 						</dateFormat>
 					</dateFormatLength>
 				</dateFormats>
@@ -511,20 +505,14 @@ For terms of use, see http://www.unicode.org/copyright.html
 				</timeFormats>
 				<dateTimeFormats>
 					<availableFormats>
-						<dateFormatItem id="d">d</dateFormatItem>
 						<dateFormatItem id="Ed">E d</dateFormatItem>
-						<dateFormatItem id="hm">h:mm a</dateFormatItem>
-						<dateFormatItem id="Hm">HH:mm</dateFormatItem>
-						<dateFormatItem id="hms">h:mm:ss a</dateFormatItem>
-						<dateFormatItem id="Hms">HH:mm:ss</dateFormatItem>
-						<dateFormatItem id="M">L</dateFormatItem>
+						<dateFormatItem id="hm">h:mm a</dateFormatItem>
+						<dateFormatItem id="hms">h:mm:ss a</dateFormatItem>
 						<dateFormatItem id="Md">d/M</dateFormatItem>
 						<dateFormatItem id="MEd">E d/M</dateFormatItem>
-						<dateFormatItem id="MMM">LLL</dateFormatItem>
 						<dateFormatItem id="MMMd">d MMM</dateFormatItem>
 						<dateFormatItem id="MMMEd">E d MMM</dateFormatItem>
 						<dateFormatItem id="ms">m:ss</dateFormatItem>
-						<dateFormatItem id="y">y</dateFormatItem>
 						<dateFormatItem id="yM">M/y</dateFormatItem>
 						<dateFormatItem id="yMd">d/M/y</dateFormatItem>
 						<dateFormatItem id="yMEd">E d/M/y</dateFormatItem>
@@ -551,10 +539,10 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Luma</displayName>
 			</field>
 			<field type="day">
-				<displayName>Zah'nane/ Comme</displayName>
+				<displayName>Zah’nane/ Comme</displayName>
 				<relative type="-1">Tǝsoo</relative>
-				<relative type="0">Tǝ'nahko</relative>
-				<relative type="1">Tǝ'nane</relative>
+				<relative type="0">Tǝ’nahko</relative>
+				<relative type="1">Tǝ’nane</relative>
 			</field>
 			<field type="weekday">
 				<displayName>Kǝsyil luma</displayName>
@@ -578,27 +566,44 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<decimal>,</decimal>
 			<group>.</group>
 		</symbols>
-		<decimalFormats numberSystem="latn">
-			<decimalFormatLength>
-				<decimalFormat>
-					<pattern>#,##0.###</pattern>
-				</decimalFormat>
-			</decimalFormatLength>
-		</decimalFormats>
-		<percentFormats numberSystem="latn">
-			<percentFormatLength>
-				<percentFormat>
-					<pattern>#,##0%</pattern>
-				</percentFormat>
-			</percentFormatLength>
-		</percentFormats>
 		<currencyFormats numberSystem="latn">
 			<currencyFormatLength>
 				<currencyFormat type="standard">
 					<pattern>¤#,##0.00</pattern>
+					<pattern alt="alphaNextToNumber" draft="provisional">¤ #,##0.00</pattern>
 				</currencyFormat>
 				<currencyFormat type="accounting">
 					<pattern>¤#,##0.00;(¤#,##0.00)</pattern>
+					<pattern alt="alphaNextToNumber" draft="provisional">¤ #,##0.00;(¤ #,##0.00)</pattern>
+					<pattern alt="noCurrency" draft="provisional">#,##0.00;(#,##0.00)</pattern>
+				</currencyFormat>
+			</currencyFormatLength>
+			<currencyFormatLength type="short">
+				<currencyFormat type="standard">
+					<pattern type="1000" count="other" draft="provisional">¤0K</pattern>
+					<pattern type="1000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 0K</pattern>
+					<pattern type="10000" count="other" draft="provisional">¤00K</pattern>
+					<pattern type="10000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 00K</pattern>
+					<pattern type="100000" count="other" draft="provisional">¤000K</pattern>
+					<pattern type="100000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 000K</pattern>
+					<pattern type="1000000" count="other" draft="provisional">¤0M</pattern>
+					<pattern type="1000000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 0M</pattern>
+					<pattern type="10000000" count="other" draft="provisional">¤00M</pattern>
+					<pattern type="10000000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 00M</pattern>
+					<pattern type="100000000" count="other" draft="provisional">¤000M</pattern>
+					<pattern type="100000000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 000M</pattern>
+					<pattern type="1000000000" count="other" draft="provisional">¤0G</pattern>
+					<pattern type="1000000000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 0G</pattern>
+					<pattern type="10000000000" count="other" draft="provisional">¤00G</pattern>
+					<pattern type="10000000000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 00G</pattern>
+					<pattern type="100000000000" count="other" draft="provisional">¤000G</pattern>
+					<pattern type="100000000000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 000G</pattern>
+					<pattern type="1000000000000" count="other" draft="provisional">¤0T</pattern>
+					<pattern type="1000000000000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 0T</pattern>
+					<pattern type="10000000000000" count="other" draft="provisional">¤00T</pattern>
+					<pattern type="10000000000000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 00T</pattern>
+					<pattern type="100000000000000" count="other" draft="provisional">¤000T</pattern>
+					<pattern type="100000000000000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 000T</pattern>
 				</currencyFormat>
 			</currencyFormatLength>
 		</currencyFormats>
@@ -694,6 +699,9 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Solai Malagasya</displayName>
 			</currency>
 			<currency type="MRO">
+				<displayName>Solai Mauritaniya (1973–2017)</displayName>
+			</currency>
+			<currency type="MRU">
 				<displayName>Solai Mauritaniya</displayName>
 			</currency>
 			<currency type="MUR">
@@ -729,13 +737,19 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<currency type="SHP">
 				<displayName>Solai Helena</displayName>
 			</currency>
-			<currency type="SLL">
+			<currency type="SLE">
 				<displayName>solai Sierra leonǝ</displayName>
+			</currency>
+			<currency type="SLL">
+				<displayName>solai Sierra leonǝ (1964—2022)</displayName>
 			</currency>
 			<currency type="SOS">
 				<displayName>Solai Somaliya</displayName>
 			</currency>
 			<currency type="STD">
+				<displayName>Solai Sao Tome (1977–2017)</displayName>
+			</currency>
+			<currency type="STN">
 				<displayName>Solai Sao Tome</displayName>
 			</currency>
 			<currency type="SZL">
@@ -780,4 +794,3 @@ For terms of use, see http://www.unicode.org/copyright.html
 		</messages>
 	</posix>
 </ldml>
-

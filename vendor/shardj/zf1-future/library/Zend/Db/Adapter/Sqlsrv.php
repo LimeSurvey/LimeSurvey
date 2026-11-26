@@ -59,7 +59,7 @@ class Zend_Db_Adapter_Sqlsrv extends Zend_Db_Adapter_Abstract
     /**
      * Last insert id from INSERT query
      *
-     * @var int
+     * @var int|string|false|null
      */
     protected $_lastInsertId;
 
@@ -314,7 +314,7 @@ class Zend_Db_Adapter_Sqlsrv extends Zend_Db_Adapter_Abstract
             return sprintf('%F', $value);
         }
 
-        $value = addcslashes($value, "\000\032");
+        $value = addcslashes((string) $value, "\000\032");
         return "'" . str_replace("'", "''", $value) . "'";
     }
 
@@ -432,10 +432,18 @@ class Zend_Db_Adapter_Sqlsrv extends Zend_Db_Adapter_Abstract
      */
     public function describeTable($tableName, $schemaName = null)
     {
+        // a schema given as database.schema
+        if ($schemaName != null && strpos($schemaName, '.') !== false) {
+            $schemaName = explode('.', $schemaName)[1];
+        }
+
         /**
          * Discover metadata information about this table.
          */
         $sql    = "exec sp_columns @table_name = " . $this->quoteIdentifier($tableName, true);
+        if ($schemaName != null) {
+            $sql .= ", @table_owner = " . $this->quoteIdentifier($schemaName, true);
+        }
         $stmt   = $this->query($sql);
         $result = $stmt->fetchAll(Zend_Db::FETCH_NUM);
 
@@ -483,11 +491,9 @@ class Zend_Db_Adapter_Sqlsrv extends Zend_Db_Adapter_Abstract
         foreach ($result as $key => $row) {
             $identity = false;
             $words    = explode(' ', $row[$type_name], 2);
-            if (isset($words[0])) {
-                $type = $words[0];
-                if (isset($words[1])) {
-                    $identity = (bool) preg_match('/identity/', $words[1]);
-                }
+            $type = $words[0];
+            if (isset($words[1])) {
+                $identity = (bool) preg_match('/identity/', $words[1]);
             }
 
             $isPrimary = array_key_exists($row[$column_name], $primaryKeyColumn);
@@ -498,7 +504,7 @@ class Zend_Db_Adapter_Sqlsrv extends Zend_Db_Adapter_Abstract
             }
 
             $desc[$this->foldCase($row[$column_name])] = [
-                'SCHEMA_NAME'      => null, // @todo
+                'SCHEMA_NAME'      => $this->foldCase($row[$owner]),
                 'TABLE_NAME'       => $this->foldCase($row[$table_name]),
                 'COLUMN_NAME'      => $this->foldCase($row[$column_name]),
                 'COLUMN_POSITION'  => (int) $row[$column_position],
@@ -581,11 +587,9 @@ class Zend_Db_Adapter_Sqlsrv extends Zend_Db_Adapter_Abstract
             case Zend_Db::FETCH_BOUND: // bound to PHP variable
                 require_once 'Zend/Db/Adapter/Sqlsrv/Exception.php';
                 throw new Zend_Db_Adapter_Sqlsrv_Exception('FETCH_BOUND is not supported yet');
-                break;
             default:
                 require_once 'Zend/Db/Adapter/Sqlsrv/Exception.php';
                 throw new Zend_Db_Adapter_Sqlsrv_Exception("Invalid fetch mode '$mode' specified");
-                break;
         }
     }
 
@@ -671,10 +675,12 @@ class Zend_Db_Adapter_Sqlsrv extends Zend_Db_Adapter_Abstract
         $this->_connect();
         $serverInfo = sqlsrv_server_info($this->_connection);
 
+        // @phpstan-ignore notIdentical.alwaysTrue (sqlsrv_server_info() returns false on failure)
         if ($serverInfo !== false) {
             return $serverInfo['SQLServerVersion'];
         }
 
+        // @phpstan-ignore deadCode.unreachable (reached when sqlsrv_server_info() returns false)
         return null;
     }
 }

@@ -246,39 +246,21 @@ class Update_700 extends DatabaseUpdateBase
                         if ($code === '') {
                             return "Q{$qid}";
                         }
-                        $commentText = false;
-                        $currentQuestion = null;
-                        $excludeSubquestion = false;
+                        $subquestionQids = [];
                         foreach ($questions as $question) {
-                            if ($question['title'] === $code) {
-                                $currentQuestion = $question;
-                            } elseif (
-                                in_array(
-                                    $code,
-                                    [
-                                    'other',
-                                    'comment',
-                                    'othercomment',
-                                    $question['title'] . 'other',
-                                    $question['title'] . 'comment',
-                                    $question['title'] . 'othercomment'
-                                    ]
-                                )
-                            ) {
-                                $currentQuestion = $question;
-                                $commentText = $code;
-                                if (strpos($code, $question['title']) === 0) {
-                                    $commentText = substr($code, strlen($question['title']));
-                                } else {
-                                    $excludeSubquestion = true;
-                                }
+                            if ($question['parent_qid']) {
+                                $subquestionQids[$question['title']] = $question['qid'];
                             }
                         }
-                        if ($currentQuestion) {
-                            $newFieldName = 'Q' . $qid . ($excludeSubquestion ? '' : '_S' . $currentQuestion['qid']);
-                            if ($commentText) {
-                                $newFieldName .= '_C' . $commentText;
-                            }
+                        if (isset($subquestionQids[$code])) {
+                            // A subquestion with exactly this code, even if it is coded "other", "comment" or "othercomment"
+                            $newFieldName = "Q{$qid}_S{$subquestionQids[$code]}";
+                        } elseif (strlen($code) > 7 && substr($code, -7) === 'comment' && isset($subquestionQids[substr($code, 0, -7)])) {
+                            // The comment field of a subquestion (multiple choice with comments)
+                            $newFieldName = "Q{$qid}_S{$subquestionQids[substr($code, 0, -7)]}_Ccomment";
+                        } elseif ($code === 'other' || $code === 'othercomment') {
+                            // The "Other" field of the question itself and its comment
+                            $newFieldName = "Q{$qid}_C{$code}";
                         }
                         break;
                     case ';': // QT_SEMICOLON_ARRAY_TEXT
@@ -1465,11 +1447,17 @@ class Update_700 extends DatabaseUpdateBase
      * and all following ranks of that question are moved one column to the left, so the ranks
      * stay gapless and the surplus trailing slots end up empty and can be dropped losslessly.
      *
+     * Old SGQA column names are ambiguous: rank slot 3 of ranking question 1 and the column of
+     * question 13 are both named "{sid}X{gid}X13", so a legacy table only holds one of them.
+     * A column is therefore only treated as a rank slot if the field map assigns it to this
+     * ranking question or leaves it unmapped (a surplus trailing rank slot).
+     *
      * @param string $tableName legacy (old) response table name
      * @param string[] $columnNames all column names of that table
+     * @param array<string,string> $fieldMap old column name => new column name of that table
      * @return void
      */
-    protected function compactLegacyRankingValues(string $tableName, array $columnNames): void
+    protected function compactLegacyRankingValues(string $tableName, array $columnNames, array $fieldMap): void
     {
         $isArchivedTable = $this->isArchivedTableName($tableName);
         // ignore old tables and timings since they are not relevant for this cleanup
@@ -1501,7 +1489,12 @@ class Update_700 extends DatabaseUpdateBase
             // Collect the rank slots of this question in rank order (1..n).
             $rankColumns = [];
             for ($rank = 1; isset($availableColumns["{$sid}X{$gid}X{$qid}{$rank}"]); $rank++) {
-                $rankColumns[] = "{$sid}X{$gid}X{$qid}{$rank}";
+                $rankColumn = "{$sid}X{$gid}X{$qid}{$rank}";
+                $newName = $fieldMap[$rankColumn] ?? null;
+                // Skip columns that belong to another question with a longer qid (e.g. qid 13)
+                if (($newName === $rankColumn) || (strpos((string)$newName, "Q{$qid}_S") === 0)) {
+                    $rankColumns[] = $rankColumn;
+                }
             }
             if (!count($rankColumns)) {
                 continue;
@@ -2197,7 +2190,7 @@ class Update_700 extends DatabaseUpdateBase
                 // following ranks shifted one column to the left - while the legacy table is
                 // still intact. Otherwise dropping the surplus trailing rank column would
                 // silently discard a valid rank instead of the unmappable one.
-                $this->compactLegacyRankingValues($TABLE_NAME, $allColumnNames);
+                $this->compactLegacyRankingValues($TABLE_NAME, $allColumnNames, $fields);
                 $this->db->createCommand($scripts[$TABLE_NAME]['CREATE'])->execute();
                 foreach ($orphanedColumnsToDrop as $orphanedColumn) {
                     $this->db->createCommand()->dropColumn($scripts[$TABLE_NAME]['new_name'], $orphanedColumn);

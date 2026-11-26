@@ -19,7 +19,7 @@
 * Tested with TCPDF 5.8.008 - see http://www.tcpdf.org/
 */
 
-require('pdf.php');
+Yii::import('application.libraries.admin.pdf', true);
 
 /**
 * A TCPDF based class to produce queXF compatible questionnaire PDF files and banding description XML from queXML
@@ -38,7 +38,7 @@ class quexmlpdf extends pdf
      *
      * @const float Defaults to 25.4
      */
-    const INCH_IN_MM = 25.4;
+    public const INCH_IN_MM = 25.4;
 
     /**
      * Language for translation
@@ -741,6 +741,16 @@ class quexmlpdf extends pdf
         if (!empty($language)) {
             $this->language = $language;
         }
+    }
+
+    /**
+     * Returns the language code of the questionnaire.
+     *
+     * @return string|null The language code set with setLanguage()
+     */
+    protected function getDocumentLanguage()
+    {
+        return $this->language;
     }
 
     /**
@@ -2520,6 +2530,7 @@ class quexmlpdf extends pdf
                             break;
                         case 'number':
                             $bgtype = 4;
+                            // no break
                         case 'currency':
                         case 'longtext':
                         case 'text':
@@ -2573,6 +2584,7 @@ class quexmlpdf extends pdf
                             break;
                         case 'number':
                             $bgtype = 4;
+                            // no break
                         case 'currency':
                         case 'text':
                             $this->addBoxGroup($bgtype, $varname, $rtext, $response['width']);
@@ -3812,6 +3824,8 @@ class quexmlpdf extends pdf
      *
      * Draw the barcode and page corners
      *
+     * @param bool $init Whether to always start a new page (first page of the questionnaire)
+     * @return void
      */
     protected function newPage($init = false)
     {
@@ -3828,7 +3842,7 @@ class quexmlpdf extends pdf
             $this->SetHeaderMargin(0);
             $this->SetFooterMargin(0);
 
-            $oTemplate = Template::model()->getInstance();
+            $oTemplate = Template::getInstance(null, $this->questionnaireId);
             $sLogoFileName = $oTemplate->filesPath . Yii::app()->getConfig('pdflogofile');
             if (file_exists($sLogoFileName)) {
                 $result = LSYii_ImageValidator::validateImage($sLogoFileName);

@@ -28,61 +28,73 @@ class InviteParticipantsTest extends BaseTest
     {
         $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
         $result = $this->handler->invite_participants($sessionKey, self::$surveyId);
-        // Assert emails for participants 1 and 2 were sent
+        // Assert emails for participants 1, 2, 4 and 5 were sent
         $this->assertParticipantResultIsOk($result, 1);
         $this->assertParticipantResultIsOk($result, 2);
-        // Assert email for participant 3 was not sent
-        $this->assertParticipantResultIsNotOk($result, 3);
-        // Assert email sending stopped on error
-        $this->assertArrayNotHasKey(4, $result);
-        $this->assertArrayNotHasKey(5, $result);
-
-        //Test invitation status in database.
-        $participant_1 = \Token::model(self::$surveyId)->findByAttributes(array('tid' => 1));
-        $this->assertNotSame('N', $participant_1->sent, 'Sent field in database should be a date, not ' . $participant_1->sent);
-
-        $participant_2 = \Token::model(self::$surveyId)->findByAttributes(array('tid' => 2));
-        $this->assertNotSame('N', $participant_2->sent, 'Sent field in database should be a date, not ' . $participant_2->sent);
-
-        $participant_3 = \Token::model(self::$surveyId)->findByAttributes(array('tid' => 3));
-        $this->assertSame('N', $participant_3->sent, 'Sent field in database should be N not ' . $participant_3->sent);
-
-        $participant_4 = \Token::model(self::$surveyId)->findByAttributes(array('tid' => 4));
-        $this->assertSame('N', $participant_4->sent, 'Sent field in database should be N, not ' . $participant_4->sent);
-
-        $participant_5 = \Token::model(self::$surveyId)->findByAttributes(array('tid' => 4));
-        $this->assertSame('N', $participant_5->sent, 'Sent field in database should be N, not ' . $participant_5->sent);
-    }
-
-    public function testInviteParticipantsSkippingErrors()
-    {
-        $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
-        $result = $this->handler->invite_participants($sessionKey, self::$surveyId, null, true, true);
-        // Assert emails for participants 1 and 2 were not sent
-        // since they were sent in the previous test.
-        $this->assertArrayNotHasKey(1, $result);
-        $this->assertArrayNotHasKey(2, $result);
-        // Assert email for participant 3 was not sent
-        $this->assertParticipantResultIsNotOk($result, 3);
-        // Assert emails for participants 4 and 5 were sent
         $this->assertParticipantResultIsOk($result, 4);
         $this->assertParticipantResultIsOk($result, 5);
+        // Assert participant 3 was skipped, as it is not valid anymore
+        $this->assertArrayNotHasKey(3, $result);
+        $this->assertSame('0 left to send', $result['status']);
 
         //Test invitation status in database.
-        $participant_1 = \Token::model(self::$surveyId)->findByAttributes(array('tid' => 1));
-        $this->assertNotSame('N', $participant_1->sent, 'Sent field in database should be a date, not ' . $participant_1->sent);
-
-        $participant_2 = \Token::model(self::$surveyId)->findByAttributes(array('tid' => 2));
-        $this->assertNotSame('N', $participant_2->sent, 'Sent field in database should be a date, not ' . $participant_2->sent);
+        foreach ([1, 2, 4, 5] as $tid) {
+            $participant = \Token::model(self::$surveyId)->findByAttributes(array('tid' => $tid));
+            $this->assertNotSame('N', $participant->sent, 'Sent field in database should be a date, not ' . $participant->sent);
+        }
 
         $participant_3 = \Token::model(self::$surveyId)->findByAttributes(array('tid' => 3));
         $this->assertSame('N', $participant_3->sent, 'Sent field in database should be N not ' . $participant_3->sent);
+    }
 
-        $participant_4 = \Token::model(self::$surveyId)->findByAttributes(array('tid' => 4));
-        $this->assertNotSame('N', $participant_4->sent, 'Sent field in database should be a date, not ' . $participant_4->sent);
+    /**
+     * Participants that are not valid yet or not valid anymore must not use up the email batch,
+     * so valid participants after them are still invited.
+     */
+    public function testInviteParticipantsSkipsParticipantsOutsideValidityPeriodInBatch()
+    {
+        $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
 
-        $participant_5 = \Token::model(self::$surveyId)->findByAttributes(array('tid' => 5));
-        $this->assertNotSame('N', $participant_5->sent, 'Sent field in database should be a date, not ' . $participant_5->sent);
+        $newParticipants = array(
+            array(
+                'firstname' => 'Not valid yet',
+                'email' => 'notvalidyet@example.com',
+                'validfrom' => gmdate('Y-m-d H:i:s', strtotime('+1 year')),
+            ),
+            array(
+                'firstname' => 'Not valid anymore',
+                'email' => 'notvalidanymore@example.com',
+                'validuntil' => gmdate('Y-m-d H:i:s', strtotime('-1 day')),
+            ),
+            array(
+                'firstname' => 'Valid',
+                'email' => 'valid@example.com',
+                'validfrom' => gmdate('Y-m-d H:i:s', strtotime('-1 day')),
+                'validuntil' => gmdate('Y-m-d H:i:s', strtotime('+1 year')),
+            ),
+        );
+        $participantsData = $this->handler->add_participants($sessionKey, self::$surveyId, $newParticipants);
+        $notValidYetTid = (int)$participantsData[0]['tid'];
+        $notValidAnymoreTid = (int)$participantsData[1]['tid'];
+        $validTid = (int)$participantsData[2]['tid'];
+
+        $maxEmails = \Yii::app()->getConfig('maxemails');
+        \Yii::app()->setConfig('maxemails', 2);
+        try {
+            $result = $this->handler->invite_participants($sessionKey, self::$surveyId);
+        } finally {
+            \Yii::app()->setConfig('maxemails', $maxEmails);
+        }
+
+        $this->assertParticipantResultIsOk($result, $validTid);
+        $this->assertArrayNotHasKey($notValidYetTid, $result);
+        $this->assertArrayNotHasKey($notValidAnymoreTid, $result);
+        $this->assertSame('0 left to send', $result['status']);
+
+        $notValidYet = \Token::model(self::$surveyId)->findByPk($notValidYetTid);
+        $this->assertSame('N', $notValidYet->sent);
+        $notValidAnymore = \Token::model(self::$surveyId)->findByPk($notValidAnymoreTid);
+        $this->assertSame('N', $notValidAnymore->sent);
     }
 
     public function testAddNewParticipantWithoutALanguageAndInviteIt()
@@ -102,6 +114,46 @@ class InviteParticipantsTest extends BaseTest
         $result = $this->handler->invite_participants($sessionKey, self::$surveyId, null, true, true);
 
         $this->assertParticipantResultIsOk($result, $tid);
+    }
+
+    /**
+     * Participants that are not valid anymore must not use up the email batch when sending reminders.
+     */
+    public function testRemindParticipantsSkipsParticipantsOutsideValidityPeriodInBatch()
+    {
+        $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
+
+        $sent = gmdate('Y-m-d H:i', strtotime('-1 week'));
+        $newParticipants = array(
+            array(
+                'firstname' => 'Not valid anymore',
+                'email' => 'remindnotvalidanymore@example.com',
+                'sent' => $sent,
+                'validuntil' => gmdate('Y-m-d H:i:s', strtotime('-1 day')),
+            ),
+            array(
+                'firstname' => 'Valid',
+                'email' => 'remindvalid@example.com',
+                'sent' => $sent,
+            ),
+        );
+        $participantsData = $this->handler->add_participants($sessionKey, self::$surveyId, $newParticipants);
+        $notValidAnymoreTid = (int)$participantsData[0]['tid'];
+        $validTid = (int)$participantsData[1]['tid'];
+
+        $maxEmails = \Yii::app()->getConfig('maxemails');
+        \Yii::app()->setConfig('maxemails', 1);
+        try {
+            $result = $this->handler->remind_participants($sessionKey, self::$surveyId, null, null, [$notValidAnymoreTid, $validTid]);
+        } finally {
+            \Yii::app()->setConfig('maxemails', $maxEmails);
+        }
+
+        $this->assertParticipantResultIsOk($result, $validTid);
+        $this->assertArrayNotHasKey($notValidAnymoreTid, $result);
+
+        $notValidAnymore = \Token::model(self::$surveyId)->findByPk($notValidAnymoreTid);
+        $this->assertSame('N', $notValidAnymore->remindersent);
     }
 
     /**

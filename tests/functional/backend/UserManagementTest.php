@@ -250,7 +250,8 @@ class UserManagementTest extends TestBaseClassWeb
             // Check basic attributes
             $this->assertEquals($fullname, $user->full_name);
             $this->assertEquals($email, $user->email);
-            $this->assertEquals($expirationDbValue, $user->expires);
+            // Formatted, as MSSQL returns the date with fractional seconds
+            $this->assertEquals($expirationDbValue, date('Y-m-d H:i:s', strtotime($user->expires)));
 
             // Test login
             sleep(5);
@@ -369,7 +370,8 @@ class UserManagementTest extends TestBaseClassWeb
             // Check basic attributes
             $this->assertEquals($fullname, $user->full_name);
             $this->assertEquals($email, $user->email);
-            $this->assertEquals($expirationDbValue, $user->expires);
+            // Formatted, as MSSQL returns the date with fractional seconds
+            $this->assertEquals($expirationDbValue, date('Y-m-d H:i:s', strtotime($user->expires)));
 
             // Test login
             sleep(5);

@@ -1,19 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE ldml SYSTEM "../../common/dtd/ldml.dtd">
-<!-- Copyright © 1991-2013 Unicode, Inc.
-CLDR data files are interpreted according to the LDML specification (http://unicode.org/reports/tr35/)
+<!-- Copyright © 1991-2026 Unicode, Inc.
 For terms of use, see http://www.unicode.org/copyright.html
+SPDX-License-Identifier: Unicode-3.0
+CLDR data files are interpreted according to the LDML specification (http://unicode.org/reports/tr35/)
 -->
 <ldml>
 	<identity>
-		<version number="$Revision: 9792 $"/>
-		<generation date="$Date: 2014-02-25 16:17:53 -0600 (Tue, 25 Feb 2014) $"/>
+		<version number="$Revision$"/>
 		<language type="mt"/>
 	</identity>
 	<localeDisplayNames>
-		<localeDisplayPattern>
-			<localeSeparator draft="unconfirmed">{0}, {1}</localeSeparator>
-		</localeDisplayPattern>
 		<languages>
 			<language type="aa">Afar</language>
 			<language type="ab">Abkażjan</language>
@@ -24,35 +21,41 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<language type="ae">Avestan</language>
 			<language type="af">Afrikans</language>
 			<language type="afh">Afriħili</language>
+			<language type="agq">Aghem</language>
 			<language type="ain">Ajnu</language>
 			<language type="ak">Akan</language>
 			<language type="akk">Akkadjen</language>
 			<language type="ale">Aleut</language>
-			<language type="am">Amħariku</language>
-			<language type="an">Aragonese</language>
-			<language type="ang">Ingliż, Antik</language>
+			<language type="alt">Altai tan-Nofsinhar</language>
+			<language type="am">Amhariku</language>
+			<language type="an">Aragoniż</language>
+			<language type="ang">Ingliż Antik</language>
+			<language type="ann" draft="unconfirmed">Obolo</language>
 			<language type="anp">Angika</language>
 			<language type="ar">Għarbi</language>
 			<language type="ar_001">Għarbi Standard Modern</language>
 			<language type="arc">Aramajk</language>
-			<language type="arn">Arawkanjan</language>
-			<language type="arp">Arapaħo</language>
+			<language type="arn">Mapuche</language>
+			<language type="arp">Arapaho</language>
 			<language type="arw">Arawak</language>
-			<language type="as">Assamese</language>
+			<language type="as">Assamiż</language>
+			<language type="asa">Asu</language>
 			<language type="ast">Asturian</language>
 			<language type="av">Avarik</language>
-			<language type="awa">Awadħi</language>
-			<language type="ay">Ajmara</language>
+			<language type="awa">Awadhi</language>
+			<language type="ay">Aymara</language>
 			<language type="az">Ażerbajġani</language>
-			<language type="ba">Baxkir</language>
+			<language type="az" alt="short">Ażeri</language>
+			<language type="ba">Bashkir</language>
 			<language type="bal">Baluċi</language>
 			<language type="ban">Baliniż</language>
 			<language type="bas">Basa</language>
 			<language type="be">Belarussu</language>
 			<language type="bej">Beja</language>
 			<language type="bem">Bemba</language>
+			<language type="bez">Bena</language>
 			<language type="bg">Bulgaru</language>
-			<language type="bho">Bojpuri</language>
+			<language type="bho">Bhojpuri</language>
 			<language type="bi">Bislama</language>
 			<language type="bik">Bikol</language>
 			<language type="bin">Bini</language>
@@ -60,52 +63,63 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<language type="bm">Bambara</language>
 			<language type="bn">Bengali</language>
 			<language type="bo">Tibetjan</language>
-			<language type="br">Brenton</language>
+			<language type="br">Breton</language>
 			<language type="bra">Braj</language>
-			<language type="bs">Bosnijan</language>
+			<language type="brx">Bodo</language>
+			<language type="bs">Bożnijaku</language>
 			<language type="bua">Burjat</language>
-			<language type="bug">Buginiż</language>
+			<language type="bug">Buginese</language>
 			<language type="byn">Blin</language>
 			<language type="ca">Katalan</language>
 			<language type="cad">Kaddo</language>
 			<language type="car">Karib</language>
 			<language type="cch">Atsam</language>
-			<language type="ce">Ċeċen</language>
-			<language type="ceb">Sibwano</language>
-			<language type="ch">Ċamorro</language>
-			<language type="chb">Ċibċa</language>
-			<language type="chg">Ċagataj</language>
-			<language type="chk">Ċukese</language>
+			<language type="ce">Chechen</language>
+			<language type="ceb">Cebuano</language>
+			<language type="cgg">Chiga</language>
+			<language type="ch">Chamorro</language>
+			<language type="chb">Chibcha</language>
+			<language type="chg">Chagatai</language>
+			<language type="chk">Ċukiż</language>
 			<language type="chm">Mari</language>
-			<language type="chn">Ġargon taċ-Ċinuk</language>
-			<language type="cho">Ċostaw</language>
+			<language type="chn">Chinook Jargon</language>
+			<language type="cho">Choctaw</language>
 			<language type="chp">Ċipewjan</language>
-			<language type="chr">Ċerokij</language>
-			<language type="chy">Xajenn</language>
+			<language type="chr">Cherokee</language>
+			<language type="chy">Cheyenne</language>
+			<language type="ckb">Kurd Ċentrali</language>
 			<language type="co">Korsiku</language>
 			<language type="cop">Koptiku</language>
-			<language type="cr">Krij</language>
-			<language type="crh">Crimean Turkish; Crimean Tatar</language>
+			<language type="cr">Cree</language>
+			<language type="crh">Tork tal-Krimea</language>
+			<language type="crs">Franċiż tas-Seselwa Creole</language>
 			<language type="cs">Ċek</language>
 			<language type="csb">Kashubian</language>
 			<language type="cu">Slaviku tal-Knisja</language>
-			<language type="cv">Ċuvax</language>
-			<language type="cy">Welx</language>
+			<language type="cv">Chuvash</language>
+			<language type="cy">Welsh</language>
 			<language type="da">Daniż</language>
 			<language type="dak">Dakota</language>
 			<language type="dar">Dargwa</language>
+			<language type="dav">Taita</language>
 			<language type="de">Ġermaniż</language>
+			<language type="de_AT">Ġermaniż Awstrijak</language>
+			<language type="de_CH">Ġermaniż Żvizzeru</language>
 			<language type="del">Delawerjan</language>
 			<language type="den">Slav</language>
 			<language type="dgr">Dogrib</language>
 			<language type="din">Dinka</language>
+			<language type="dje">Zarma</language>
 			<language type="doi">Dogri</language>
-			<language type="dsb">Lower Sorbian</language>
+			<language type="dsb">Sorbjan Komuni</language>
 			<language type="dua">Dwala</language>
-			<language type="dum">Olandiż, Medjevali</language>
-			<language type="dv">Diveħi</language>
-			<language type="dyu">Djula</language>
-			<language type="dz">Dżongka</language>
+			<language type="dum">Olandiż Medjevali</language>
+			<language type="dv">Divehi</language>
+			<language type="dyo">Jola-Fonyi</language>
+			<language type="dyu">Dyula</language>
+			<language type="dz">Dzongkha</language>
+			<language type="dzg">Dazaga</language>
+			<language type="ebu">Embu</language>
 			<language type="ee">Ewe</language>
 			<language type="efi">Efik</language>
 			<language type="egy">Eġizzjan (Antik)</language>
@@ -113,63 +127,77 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<language type="el">Grieg</language>
 			<language type="elx">Elamit</language>
 			<language type="en">Ingliż</language>
-			<language type="enm">Ingliż, Medjevali</language>
+			<language type="en_AU">Ingliż Awstraljan</language>
+			<language type="en_CA">Ingliż Kanadiż</language>
+			<language type="en_GB">Ingliż Brittaniku</language>
+			<language type="en_GB" alt="short">Ingliż (UK)</language>
+			<language type="en_US">Ingliż Amerikan</language>
+			<language type="en_US" alt="short">Ingliż (US)</language>
+			<language type="enm">Ingliż Medjevali</language>
 			<language type="eo">Esperanto</language>
 			<language type="es">Spanjol</language>
+			<language type="es_419">Spanjol Latin Amerikan</language>
+			<language type="es_ES">Spanjol Ewropew</language>
+			<language type="es_MX">Spanjol tal-Messiku</language>
 			<language type="et">Estonjan</language>
 			<language type="eu">Bask</language>
 			<language type="ewo">Ewondo</language>
 			<language type="fa">Persjan</language>
 			<language type="fan">Fang</language>
 			<language type="fat">Fanti</language>
-			<language type="ff">Fulaħ</language>
+			<language type="ff">Fulah</language>
 			<language type="fi">Finlandiż</language>
-			<language type="fil">Filippino</language>
-			<language type="fj">Fiġi</language>
-			<language type="fo">Fawriż</language>
+			<language type="fil">Filippin</language>
+			<language type="fj">Fiġjan</language>
+			<language type="fo">Faroese</language>
 			<language type="fon">Fon</language>
 			<language type="fr">Franċiż</language>
-			<language type="frm">Franċiż, Medjevali</language>
-			<language type="fro">Franċiż, Antik</language>
+			<language type="fr_CA">Franċiż Kanadiż</language>
+			<language type="fr_CH">Franċiż Żvizzeru</language>
+			<language type="frm">Franċiż Medjevali</language>
+			<language type="fro">Franċiż Antik</language>
 			<language type="fur">Frijuljan</language>
-			<language type="fy">Friżjan</language>
+			<language type="fy">Frisian tal-Punent</language>
 			<language type="ga">Irlandiż</language>
 			<language type="gaa">Ga</language>
-			<language type="gay">Gajo</language>
-			<language type="gba">Gbaja</language>
+			<language type="gay">Gayo</language>
+			<language type="gba">Gbaya</language>
 			<language type="gd">Galliku Skoċċiż</language>
 			<language type="gez">Geez</language>
 			<language type="gil">Gilbertjan</language>
-			<language type="gl">Gallegjan</language>
-			<language type="gmh">Ġermaniku, Medjevali Pulit</language>
-			<language type="gn">Gwarani</language>
-			<language type="goh">Ġermaniku, Antik Pulit</language>
+			<language type="gl">Galiċjan</language>
+			<language type="gmh">Ġermaniż Medjevali Pulit</language>
+			<language type="gn">Guarani</language>
+			<language type="goh">Ġermaniż Antik, Pulit</language>
 			<language type="gon">Gondi</language>
 			<language type="gor">Gorontalo</language>
 			<language type="got">Gotiku</language>
-			<language type="grb">Ġerbo</language>
+			<language type="grb">Grebo</language>
 			<language type="grc">Grieg, Antik</language>
-			<language type="gu">Guġarati</language>
-			<language type="gv">Manks</language>
+			<language type="gsw">Ġermaniż tal-Iżvizzera</language>
+			<language type="gu">Gujarati</language>
+			<language type="guz">Gusii</language>
+			<language type="gv">Manx</language>
 			<language type="gwi">Gwiċin</language>
-			<language type="ha">Ħawsa</language>
-			<language type="hai">Ħajda</language>
+			<language type="ha">Hausa</language>
+			<language type="hai">Haida</language>
 			<language type="haw">Ħawajjan</language>
 			<language type="he">Ebrajk</language>
-			<language type="hi">Ħindi</language>
+			<language type="hi">Hindi</language>
 			<language type="hil">Hiligaynon</language>
-			<language type="hit">Ħittit</language>
-			<language type="hmn">Ħmong</language>
-			<language type="ho">Ħiri Motu</language>
+			<language type="hit">Hittite</language>
+			<language type="hmn">Hmong</language>
+			<language type="ho">Hiri Motu</language>
 			<language type="hr">Kroat</language>
-			<language type="hsb">Upper Sorbian</language>
-			<language type="ht">Haitian</language>
+			<language type="hsb">Sorbjan ta’ Fuq</language>
+			<language type="ht">Creole ta’ Haiti</language>
 			<language type="hu">Ungeriż</language>
-			<language type="hup">Ħupa</language>
-			<language type="hy">Armenjan</language>
-			<language type="hz">Ħerero</language>
+			<language type="hup">Hupa</language>
+			<language type="hy">Armen</language>
+			<language type="hz">Herero</language>
 			<language type="ia">Interlingua</language>
 			<language type="iba">Iban</language>
+			<language type="ibb">Ibibio</language>
 			<language type="id">Indoneżjan</language>
 			<language type="ie">Interlingue</language>
 			<language type="ig">Igbo</language>
@@ -180,200 +208,249 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<language type="io">Ido</language>
 			<language type="is">Iżlandiż</language>
 			<language type="it">Taljan</language>
-			<language type="iu">Inukitut</language>
+			<language type="iu">Inuktitut</language>
 			<language type="ja">Ġappuniż</language>
 			<language type="jbo">Lojban</language>
+			<language type="jgo">Ngomba</language>
+			<language type="jmc">Machame</language>
 			<language type="jpr">Lhudi-Persjan</language>
 			<language type="jrb">Lhudi-Għarbi</language>
 			<language type="jv">Ġavaniż</language>
 			<language type="ka">Ġorġjan</language>
 			<language type="kaa">Kara-Kalpak</language>
 			<language type="kab">Kabuljan</language>
-			<language type="kac">Kaċin</language>
+			<language type="kac">Kachin</language>
+			<language type="kaj">Jju</language>
 			<language type="kam">Kamba</language>
 			<language type="kaw">Kawi</language>
 			<language type="kbd">Kabardian</language>
+			<language type="kcg">Tyap</language>
+			<language type="kde">Makonde</language>
+			<language type="kea">Cape Verdjan</language>
+			<language type="kfo">Koro</language>
 			<language type="kg">Kongo</language>
-			<language type="kha">Kasi</language>
+			<language type="kha">Khasi</language>
 			<language type="kho">Kotaniż</language>
+			<language type="khq">Koyra Chiini</language>
 			<language type="ki">Kikuju</language>
 			<language type="kj">Kuanyama</language>
 			<language type="kk">Każak</language>
+			<language type="kkj">Kako</language>
 			<language type="kl">Kalallisut</language>
-			<language type="km">Kmer</language>
+			<language type="kln">Kalenjin</language>
+			<language type="km">Khmer</language>
 			<language type="kmb">Kimbundu</language>
 			<language type="kn">Kannada</language>
-			<language type="ko">Korejan</language>
+			<language type="ko">Korean</language>
 			<language type="kok">Konkani</language>
 			<language type="kos">Kosrejan</language>
 			<language type="kpe">Kpelle</language>
 			<language type="kr">Kanuri</language>
 			<language type="krc">Karachay-Balkar</language>
-			<language type="kru">Kurusk</language>
-			<language type="ks">Kaxmiri</language>
-			<language type="ku">Kurdiż</language>
-			<language type="kum">Kumiku</language>
+			<language type="krl">Kareljan</language>
+			<language type="kru">Kurux</language>
+			<language type="ks">Kashmiri</language>
+			<language type="ksb">Shambala</language>
+			<language type="ksf">Bafia</language>
+			<language type="ksh">Kolonjan</language>
+			<language type="ku">Kurd</language>
+			<language type="kum">Kumyk</language>
 			<language type="kut">Kutenaj</language>
 			<language type="kv">Komi</language>
 			<language type="kw">Korniku</language>
 			<language type="ky">Kirgiż</language>
 			<language type="la">Latin</language>
 			<language type="lad">Ladino</language>
-			<language type="lah">Landa</language>
+			<language type="lag">Langi</language>
+			<language type="lah">Lahnda</language>
 			<language type="lam">Lamba</language>
-			<language type="lb">Letżburgiż</language>
+			<language type="lb">Lussemburgiż</language>
 			<language type="lez">Leżgjan</language>
 			<language type="lg">Ganda</language>
 			<language type="li">Limburgish</language>
+			<language type="lkt">Lakota</language>
 			<language type="ln">Lingaljan</language>
-			<language type="lo">Lao</language>
+			<language type="lo">Laosjan</language>
 			<language type="lol">Mongo</language>
 			<language type="loz">Lożi</language>
-			<language type="lt">Litwanjan</language>
+			<language type="lrc">Luri tat-Tramuntana</language>
+			<language type="lt">Litwan</language>
 			<language type="lu">Luba-Katanga</language>
 			<language type="lua">Luba-Luluwa</language>
-			<language type="lui">Luwisinuż</language>
+			<language type="lui">Luiseno</language>
 			<language type="lun">Lunda</language>
-			<language type="luo">Luwa</language>
-			<language type="lus">Luxaj</language>
+			<language type="luo">Luo</language>
+			<language type="lus">Mizo</language>
+			<language type="luy">Luyia</language>
 			<language type="lv">Latvjan</language>
 			<language type="mad">Maduriż</language>
-			<language type="mag">Magaħi</language>
-			<language type="mai">Majtili</language>
+			<language type="mag">Magahi</language>
+			<language type="mai">Maithili</language>
 			<language type="mak">Makasar</language>
-			<language type="man">Mandingwan</language>
-			<language type="mas">Masaj</language>
+			<language type="man">Mandingo</language>
+			<language type="mas">Masai</language>
 			<language type="mdf">Moksha</language>
 			<language type="mdr">Mandar</language>
 			<language type="men">Mende</language>
-			<language type="mg">Malagażi</language>
-			<language type="mga">Irlandiż, Medjevali</language>
-			<language type="mh">Marxall</language>
+			<language type="mer">Meru</language>
+			<language type="mfe">Morisyen</language>
+			<language type="mg">Malagasy</language>
+			<language type="mga">Irlandiż Medjevali</language>
+			<language type="mgh">Makhuwa-Meetto</language>
+			<language type="mgo">Metà</language>
+			<language type="mh">Marshalljaniż</language>
 			<language type="mi">Maori</language>
-			<language type="mic">Mikmek</language>
-			<language type="min">Minangkabaw</language>
+			<language type="mic">Micmac</language>
+			<language type="min">Minangkabau</language>
 			<language type="mk">Maċedonjan</language>
-			<language type="ml">Malajalam</language>
+			<language type="ml">Malayalam</language>
 			<language type="mn">Mongoljan</language>
-			<language type="mnc">Manċurjan</language>
+			<language type="mnc">Manchu</language>
 			<language type="mni">Manipuri</language>
-			<language type="moh">Moħak</language>
+			<language type="moh">Mohawk</language>
 			<language type="mos">Mossi</language>
-			<language type="mr">Marati</language>
-			<language type="ms">Malajan</language>
+			<language type="mr">Marathi</language>
+			<language type="ms">Malay</language>
 			<language type="mt">Malti</language>
+			<language type="mua">Mundang</language>
 			<language type="mul">Lingwi Diversi</language>
 			<language type="mus">Kriek</language>
 			<language type="mwl">Mirandiż</language>
 			<language type="mwr">Marwari</language>
 			<language type="my">Burmiż</language>
 			<language type="myv">Erzya</language>
-			<language type="na">Nawuru</language>
-			<language type="nap">Neapolitan</language>
-			<language type="nb">Bokmahal Norveġiż</language>
-			<language type="nd">Ndebele, ta’ Fuq</language>
-			<language type="nds">Ġermaniż Komuni; Sassonu Komuni</language>
+			<language type="mzn">Mazanderani</language>
+			<language type="na">Naurujan</language>
+			<language type="nap">Naplitan</language>
+			<language type="naq">Nama</language>
+			<language type="nb">Bokmal Norveġiż</language>
+			<language type="nd">Ndebeli tat-Tramuntana</language>
+			<language type="nds">Ġermaniż Komuni</language>
+			<language type="nds_NL">Sassonu Komuni</language>
 			<language type="ne">Nepaliż</language>
 			<language type="new">Newari</language>
 			<language type="ng">Ndonga</language>
 			<language type="nia">Nijas</language>
-			<language type="niu">Nijuwejan</language>
+			<language type="niu">Niuean</language>
 			<language type="nl">Olandiż</language>
+			<language type="nl_BE">Fjamming</language>
+			<language type="nmg">Kwasio</language>
 			<language type="nn">Ninorsk Norveġiż</language>
+			<language type="nnh">Ngiemboon</language>
 			<language type="no">Norveġiż</language>
 			<language type="nog">Nogai</language>
-			<language type="non">Skandinav, Antik</language>
-			<language type="nr">Ndebele, t’Isfel</language>
-			<language type="nso">Soto, ta’ Fuq</language>
-			<language type="nv">Navaħo</language>
-			<language type="nwc">Classical Newari</language>
-			<language type="ny">Ċiċewa; Njanġa</language>
+			<language type="non">Nors Antik</language>
+			<language type="nqo">N’Ko</language>
+			<language type="nr">Ndebele tan-Nofsinhar</language>
+			<language type="nso">Soto tat-Tramuntana</language>
+			<language type="nus">Nuer</language>
+			<language type="nv">Navajo</language>
+			<language type="nwc">Newari Klassiku</language>
+			<language type="ny">Nyanja</language>
 			<language type="nym">Njamweżi</language>
 			<language type="nyn">Nyankole</language>
-			<language type="nyo">Njoro</language>
-			<language type="nzi">Nżima</language>
+			<language type="nyo">Nyoro</language>
+			<language type="nzi">Nzima</language>
 			<language type="oc">Oċċitan</language>
 			<language type="oj">Oġibwa</language>
-			<language type="om">Oromo (Afan)</language>
-			<language type="or">Orija</language>
+			<language type="om">Oromo</language>
+			<language type="or">Odia</language>
 			<language type="os">Ossettiku</language>
 			<language type="osa">Osaġjan</language>
-			<language type="ota">Tork (Imperu Ottoman)</language>
-			<language type="pa">Punġabi</language>
+			<language type="ota">Tork Ottoman</language>
+			<language type="pa">Punjabi</language>
 			<language type="pag">Pangasinjan</language>
-			<language type="pal">Paħlavi</language>
-			<language type="pam">Pampamga</language>
-			<language type="pap">Papjamento</language>
+			<language type="pal">Pahlavi</language>
+			<language type="pam">Pampanga</language>
+			<language type="pap">Papiamento</language>
 			<language type="pau">Palawjan</language>
+			<language type="pcm">Pidgin Niġerjan</language>
 			<language type="peo">Persjan Antik</language>
 			<language type="phn">Feniċju</language>
 			<language type="pi">Pali</language>
 			<language type="pl">Pollakk</language>
 			<language type="pon">Ponpejan</language>
-			<language type="pro">Provenzal, Antik</language>
-			<language type="ps">Paxtun</language>
+			<language type="prg">Prussu</language>
+			<language type="pro">Provenzal Antik</language>
+			<language type="ps">Pashto</language>
 			<language type="pt">Portugiż</language>
-			<language type="qu">Keċwa</language>
+			<language type="pt_BR">Portugiż tal-Brażil</language>
+			<language type="pt_PT">Portugiż Ewropew</language>
+			<language type="qu">Quechua</language>
+			<language type="quc">K’iche’</language>
 			<language type="raj">Raġastani</language>
 			<language type="rap">Rapanwi</language>
 			<language type="rar">Rarotongani</language>
-			<language type="rm">Reto-Romanz</language>
+			<language type="rm">Romanz</language>
 			<language type="rn">Rundi</language>
 			<language type="ro">Rumen</language>
-			<language type="ro_MD">Moldavjan</language>
-			<language type="rom">Żingaru</language>
-			<language type="root">Għerq</language>
+			<language type="ro_MD">Moldovan</language>
+			<language type="rof">Rombo</language>
+			<language type="rom">Romanesk</language>
 			<language type="ru">Russu</language>
-			<language type="rup">Aromanijan</language>
+			<language type="rup">Aromanjan</language>
 			<language type="rw">Kinjarwanda</language>
+			<language type="rwk">Rwa</language>
 			<language type="sa">Sanskrit</language>
 			<language type="sad">Sandawe</language>
-			<language type="sah">Jakut</language>
-			<language type="sam">Samritan</language>
-			<language type="sas">Saska</language>
+			<language type="sah">Sakha</language>
+			<language type="sam">Samaritan Aramajk</language>
+			<language type="saq">Samburu</language>
+			<language type="sas">Sasak</language>
 			<language type="sat">Santali</language>
+			<language type="sba">Ngambay</language>
+			<language type="sbp">Sangu</language>
 			<language type="sc">Sardinjan</language>
+			<language type="scn">Sqalli</language>
 			<language type="sco">Skoċċiż</language>
-			<language type="sd">Sindi</language>
-			<language type="se">Sami ta’ Fuq</language>
+			<language type="sd">Sindhi</language>
+			<language type="se">Sami tat-Tramuntana</language>
+			<language type="seh">Sena</language>
 			<language type="sel">Selkup</language>
+			<language type="ses">Koyraboro Senni</language>
 			<language type="sg">Sango</language>
-			<language type="sga">Irlandiż, Antik</language>
+			<language type="sga">Irlandiż Antik</language>
 			<language type="sh">Serbo-Kroat</language>
-			<language type="shn">Xan</language>
-			<language type="si">Sinħaliż</language>
+			<language type="shi">Tachelhit</language>
+			<language type="shn">Shan</language>
+			<language type="si">Sinhala</language>
 			<language type="sid">Sidamo</language>
 			<language type="sk">Slovakk</language>
 			<language type="sl">Sloven</language>
-			<language type="sm">Samojan</language>
-			<language type="sma">Southern Sami</language>
+			<language type="sm">Samoan</language>
+			<language type="sma">Sami tan-Nofsinhar</language>
 			<language type="smj">Lule Sami</language>
 			<language type="smn">Inari Sami</language>
 			<language type="sms">Skolt Sami</language>
-			<language type="sn">Xona</language>
+			<language type="sn">Shona</language>
 			<language type="snk">Soninke</language>
 			<language type="so">Somali</language>
 			<language type="sog">Sogdien</language>
 			<language type="sq">Albaniż</language>
 			<language type="sr">Serb</language>
+			<language type="srn">Sranan Tongo</language>
 			<language type="srr">Serer</language>
 			<language type="ss">Swati</language>
-			<language type="st">Soto, t’Isfel</language>
+			<language type="ssy">Saho</language>
+			<language type="st">Soto tan-Nofsinhar</language>
 			<language type="su">Sundaniż</language>
 			<language type="suk">Sukuma</language>
 			<language type="sus">Susu</language>
 			<language type="sux">Sumerjan</language>
-			<language type="sv">Svediż</language>
-			<language type="sw">Swaħili</language>
+			<language type="sv">Żvediż</language>
+			<language type="sw">Swahili</language>
+			<language type="sw_CD">Swahili tar-Repubblika Demokratika tal-Kongo</language>
+			<language type="swb">Komorjan</language>
 			<language type="syr">Sirjan</language>
 			<language type="ta">Tamil</language>
 			<language type="te">Telugu</language>
 			<language type="tem">Timne</language>
+			<language type="teo">Teso</language>
 			<language type="ter">Tereno</language>
 			<language type="tet">Tetum</language>
 			<language type="tg">Taġik</language>
 			<language type="th">Tajlandiż</language>
-			<language type="ti">Tigrinja</language>
+			<language type="ti">Tigrinya</language>
 			<language type="tig">Tigre</language>
 			<language type="tiv">Tiv</language>
 			<language type="tk">Turkmeni</language>
@@ -381,66 +458,81 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<language type="tl">Tagalog</language>
 			<language type="tlh">Klingon</language>
 			<language type="tli">Tlingit</language>
-			<language type="tmh">Tamaxek</language>
-			<language type="tn">Zwana</language>
+			<language type="tmh">Tamashek</language>
+			<language type="tn">Tswana</language>
 			<language type="to">Tongan</language>
-			<language type="tog">Tonga (Njasa)</language>
+			<language type="tog">Nyasa Tonga</language>
 			<language type="tpi">Tok Pisin</language>
 			<language type="tr">Tork</language>
+			<language type="trv">Taroko</language>
 			<language type="ts">Tsonga</language>
-			<language type="tsi">Zimxjan</language>
+			<language type="tsi">Tsimshian</language>
 			<language type="tt">Tatar</language>
 			<language type="tum">Tumbuka</language>
 			<language type="tvl">Tuvalu</language>
 			<language type="tw">Twi</language>
+			<language type="twq">Tasawaq</language>
 			<language type="ty">Taħitjan</language>
 			<language type="tyv">Tuvinjan</language>
+			<language type="tzm">Tamazight tal-Atlas Ċentrali</language>
 			<language type="udm">Udmurt</language>
-			<language type="ug">Wigur</language>
+			<language type="ug">Uyghur</language>
 			<language type="uga">Ugaritiku</language>
-			<language type="uk">Ukranjan</language>
+			<language type="uk">Ukren</language>
 			<language type="umb">Umbundu</language>
-			<language type="und">Indeterminat</language>
+			<language type="und">Lingwa Mhix Magħrufa</language>
 			<language type="ur">Urdu</language>
-			<language type="uz">Użbek</language>
+			<language type="uz">Uzbek</language>
 			<language type="vai">Vai</language>
 			<language type="ve">Venda</language>
 			<language type="vi">Vjetnamiż</language>
 			<language type="vo">Volapuk</language>
 			<language type="vot">Votik</language>
+			<language type="vun">Vunjo</language>
 			<language type="wa">Walloon</language>
+			<language type="wae">Walser</language>
 			<language type="wal">Walamo</language>
-			<language type="war">Waraj</language>
-			<language type="was">Waxo</language>
+			<language type="war">Waray</language>
+			<language type="was">Washo</language>
 			<language type="wo">Wolof</language>
 			<language type="xal">Kalmyk</language>
-			<language type="xh">Ħoża</language>
-			<language type="yao">Jao</language>
-			<language type="yap">Japese</language>
-			<language type="yi">Jiddix</language>
-			<language type="yo">Joruba</language>
-			<language type="za">Żwang</language>
-			<language type="zap">Żapotek</language>
-			<language type="zen">Żenaga</language>
+			<language type="xh">Xhosa</language>
+			<language type="xog">Soga</language>
+			<language type="yao">Yao</language>
+			<language type="yap">Yapese</language>
+			<language type="yav">Yangben</language>
+			<language type="ybb">Yemba</language>
+			<language type="yi">Yiddish</language>
+			<language type="yo">Yoruba</language>
+			<language type="yue">Kantoniż</language>
+			<language type="za">Zhuang</language>
+			<language type="zap">Zapotec</language>
+			<language type="zen">Zenaga</language>
+			<language type="zgh">Tamazight Standard tal-Marokk</language>
 			<language type="zh">Ċiniż</language>
-			<language type="zu">Żulu</language>
-			<language type="zun">Żuni</language>
-			<language type="zxx" draft="unconfirmed">Bla kontent lingwistiku</language>
+			<language type="zh_Hans">Ċiniż Simplifikat</language>
+			<language type="zh_Hant">Ċiniż Tradizzjonali</language>
+			<language type="zu">Zulu</language>
+			<language type="zun">Zuni</language>
+			<language type="zxx">Bla kontenut lingwistiku</language>
+			<language type="zza">Zaza</language>
 		</languages>
 		<scripts>
 			<script type="Arab">Għarbi</script>
-			<script type="Brai" draft="unconfirmed">Braille</script>
-			<script type="Cyrl" draft="unconfirmed">Ċirilliku</script>
+			<script type="Brai">Braille</script>
+			<script type="Cyrl">Ċirilliku</script>
 			<script type="Grek">Grieg</script>
-			<script type="Hans">Sempliċi</script>
-			<script type="Hans" alt="stand-alone">Ħan Sempliċi</script>
+			<script type="Hans">Simplifikat</script>
+			<script type="Hans" alt="stand-alone">Han Simplifikat</script>
 			<script type="Hant">Tradizzjonali</script>
-			<script type="Hant" alt="stand-alone">Ħan Tradizzjonali</script>
+			<script type="Hant" alt="stand-alone">Han Tradizzjonali</script>
+			<script type="Jpan">Ġappuniż</script>
+			<script type="Kore" draft="unconfirmed">Korean</script>
 			<script type="Latn">Latin</script>
 			<script type="Xpeo">Persjan Antik</script>
 			<script type="Zxxx">Mhux Miktub</script>
 			<script type="Zyyy">Komuni</script>
-			<script type="Zzzz">Skritt Mhux Magħruf</script>
+			<script type="Zzzz">Kitba Mhux Magħrufa</script>
 		</scripts>
 		<territories>
 			<territory type="001">Dinja</territory>
@@ -473,252 +565,281 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="154">Ewropa ta’ Fuq</territory>
 			<territory type="155">Ewropa tal-Punent</territory>
 			<territory type="419">Amerika Latina</territory>
+			<territory type="AC">Ascension Island</territory>
 			<territory type="AD">Andorra</territory>
-			<territory type="AE">Emirati Għarab Maqgħuda</territory>
-			<territory type="AF">Afganistan</territory>
-			<territory type="AG">Antigua and Barbuda</territory>
-			<territory type="AI">Angwilla</territory>
-			<territory type="AL">Albanija</territory>
-			<territory type="AM">Armenja</territory>
-			<territory type="AN">Antilles Olandiżi</territory>
-			<territory type="AO">Angola</territory>
-			<territory type="AQ">Antartika</territory>
-			<territory type="AR">Arġentina</territory>
-			<territory type="AS">Samoa Amerikana</territory>
-			<territory type="AT">Awstrija</territory>
-			<territory type="AU">Awstralja</territory>
+			<territory type="AE">l-Emirati Għarab Magħquda</territory>
+			<territory type="AF">l-Afganistan</territory>
+			<territory type="AG">Antigua u Barbuda</territory>
+			<territory type="AI">Anguilla</territory>
+			<territory type="AL">l-Albanija</territory>
+			<territory type="AM">l-Armenja</territory>
+			<territory type="AO">l-Angola</territory>
+			<territory type="AQ">l-Antartika</territory>
+			<territory type="AR">l-Arġentina</territory>
+			<territory type="AS">is-Samoa Amerikana</territory>
+			<territory type="AT">l-Awstrija</territory>
+			<territory type="AU">l-Awstralja</territory>
 			<territory type="AW">Aruba</territory>
-			<territory type="AX">Gżejjer Aland</territory>
-			<territory type="AZ">Ażerbajġan</territory>
-			<territory type="BA">Bożnija Ħerżegovina</territory>
+			<territory type="AX">il-Gżejjer Aland</territory>
+			<territory type="AZ">l-Ażerbajġan</territory>
+			<territory type="BA">il-Bożnija-Ħerzegovina</territory>
 			<territory type="BB">Barbados</territory>
-			<territory type="BD">Bangladexx</territory>
-			<territory type="BE">Belġju</territory>
-			<territory type="BF">Burkina Faso</territory>
-			<territory type="BG">Bulgarija</territory>
-			<territory type="BH">Baħrajn</territory>
-			<territory type="BI">Burundi</territory>
-			<territory type="BJ">Benin</territory>
+			<territory type="BD">il-Bangladesh</territory>
+			<territory type="BE">il-Belġju</territory>
+			<territory type="BF">il-Burkina Faso</territory>
+			<territory type="BG">il-Bulgarija</territory>
+			<territory type="BH">il-Bahrain</territory>
+			<territory type="BI">il-Burundi</territory>
+			<territory type="BJ">il-Benin</territory>
+			<territory type="BL">Saint Barthélemy</territory>
 			<territory type="BM">Bermuda</territory>
-			<territory type="BN">Brunej</territory>
-			<territory type="BO">Bolivja</territory>
-			<territory type="BR">Brażil</territory>
-			<territory type="BS">Baħamas</territory>
-			<territory type="BT">Butan</territory>
-			<territory type="BV">Bouvet Island</territory>
-			<territory type="BW">Botswana</territory>
-			<territory type="BY">Bjelorussja</territory>
-			<territory type="BZ">Beliże</territory>
-			<territory type="CA">Kanada</territory>
-			<territory type="CC">Cocos (Keeling) Islands</territory>
-			<territory type="CD">Democratic Republic of the Congo</territory>
-			<territory type="CF">Repubblika Afrikana Ċentrali</territory>
-			<territory type="CG">Kongo</territory>
-			<territory type="CH">Svizzera</territory>
-			<territory type="CI">Kosta ta’ l-Avorju</territory>
-			<territory type="CK">Cook Islands</territory>
-			<territory type="CL">Ċili</territory>
-			<territory type="CM">Kamerun</territory>
-			<territory type="CN">Ċina</territory>
-			<territory type="CO">Kolumbja</territory>
-			<territory type="CR">Kosta Rika</territory>
+			<territory type="BN">il-Brunei</territory>
+			<territory type="BO">il-Bolivja</territory>
+			<territory type="BQ">in-Netherlands tal-Karibew</territory>
+			<territory type="BR">Il-Brażil</territory>
+			<territory type="BS">il-Bahamas</territory>
+			<territory type="BT">il-Bhutan</territory>
+			<territory type="BV">Gżira Bouvet</territory>
+			<territory type="BW">il-Botswana</territory>
+			<territory type="BY">il-Belarussja</territory>
+			<territory type="BZ">il-Belize</territory>
+			<territory type="CA">il-Kanada</territory>
+			<territory type="CC">Gżejjer Cocos (Keeling)</territory>
+			<territory type="CD">ir-Repubblika Demokratika tal-Kongo</territory>
+			<territory type="CD" alt="variant">Kongo (RDK)</territory>
+			<territory type="CF">ir-Repubblika Ċentru-Afrikana</territory>
+			<territory type="CG">il-Kongo - Brazzaville</territory>
+			<territory type="CG" alt="variant">ir-Repubblika tal-Kongo</territory>
+			<territory type="CH">l-Iżvizzera</territory>
+			<territory type="CI">il-Kosta tal-Avorju</territory>
+			<territory type="CK">Gżejjer Cook</territory>
+			<territory type="CL">iċ-Ċili</territory>
+			<territory type="CM">il-Kamerun</territory>
+			<territory type="CN">iċ-Ċina</territory>
+			<territory type="CO">il-Kolombja</territory>
+			<territory type="CP">il-Gżira Clipperton</territory>
+			<territory type="CR">il-Costa Rica</territory>
 			<territory type="CU">Kuba</territory>
-			<territory type="CV">Kape Verde</territory>
-			<territory type="CX">Christmas Island</territory>
+			<territory type="CV">Cape Verde</territory>
+			<territory type="CW">Curaçao</territory>
+			<territory type="CX">il-Gżira Christmas</territory>
 			<territory type="CY">Ċipru</territory>
-			<territory type="CZ">Repubblika Ċeka</territory>
-			<territory type="DE">Ġermanja</territory>
-			<territory type="DJ">Ġibuti</territory>
-			<territory type="DK">Danimarka</territory>
-			<territory type="DM">Dominika</territory>
-			<territory type="DO">Republikka Domenikana</territory>
-			<territory type="DZ">Alġerija</territory>
-			<territory type="EC">Ekwador</territory>
-			<territory type="EE">Estonja</territory>
-			<territory type="EG">Eġittu</territory>
-			<territory type="EH">Sahara tal-Punent</territory>
-			<territory type="ER">Eritreja</territory>
+			<territory type="CZ">ir-Repubblika Ċeka</territory>
+			<territory type="CZ" alt="variant">Ir-Repubblika Ċeka</territory>
+			<territory type="DE">il-Ġermanja</territory>
+			<territory type="DG">Diego Garcia</territory>
+			<territory type="DJ">il-Djibouti</territory>
+			<territory type="DK">id-Danimarka</territory>
+			<territory type="DM">Dominica</territory>
+			<territory type="DO">ir-Repubblika Dominicana</territory>
+			<territory type="DZ">l-Alġerija</territory>
+			<territory type="EA">Ceuta u Melilla</territory>
+			<territory type="EC">l-Ekwador</territory>
+			<territory type="EE">l-Estonja</territory>
+			<territory type="EG">l-Eġittu</territory>
+			<territory type="EH">is-Saħara tal-Punent</territory>
+			<territory type="ER">l-Eritrea</territory>
 			<territory type="ES">Spanja</territory>
-			<territory type="ET">Etijopja</territory>
+			<territory type="ET">l-Etjopja</territory>
 			<territory type="EU">Unjoni Ewropea</territory>
-			<territory type="FI">Finlandja</territory>
+			<territory type="FI">il-Finlandja</territory>
 			<territory type="FJ">Fiġi</territory>
-			<territory type="FK">Falkland Islands</territory>
-			<territory type="FM">Mikronesja</territory>
-			<territory type="FO">Gżejjer Faroe</territory>
+			<territory type="FK">il-Gżejjer Falkland</territory>
+			<territory type="FK" alt="variant">Il-Gżejjer Falkland (il-Gżejjer Malvinas)</territory>
+			<territory type="FM">il-Mikroneżja</territory>
+			<territory type="FO">il-Gżejjer Faeroe</territory>
 			<territory type="FR">Franza</territory>
-			<territory type="GA">Gabon</territory>
-			<territory type="GB">Ingilterra</territory>
+			<territory type="GA">il-Gabon</territory>
+			<territory type="GB">ir-Renju Unit</territory>
+			<territory type="GB" alt="short">UK</territory>
 			<territory type="GD">Grenada</territory>
-			<territory type="GE">Ġorġja</territory>
-			<territory type="GF">Gujana Franċiża</territory>
-			<territory type="GH">Gana</territory>
-			<territory type="GI">Gibraltar</territory>
-			<territory type="GL">Grinlandja</territory>
-			<territory type="GM">Gambja</territory>
-			<territory type="GN">Gineja</territory>
-			<territory type="GP">Gwadelupe</territory>
-			<territory type="GQ">Ginea Ekwatorjali</territory>
-			<territory type="GR">Greċja</territory>
-			<territory type="GS">South Georgia and the South Sandwich Islands</territory>
-			<territory type="GT">Gwatemala</territory>
-			<territory type="GU">Gwam</territory>
-			<territory type="GW">Ginea-Bissaw</territory>
-			<territory type="GY">Gujana</territory>
-			<territory type="HK">Ħong Kong S.A.R. Ċina</territory>
-			<territory type="HK" alt="short" draft="unconfirmed">Ħong Kong</territory>
-			<territory type="HM">Heard Island and McDonald Islands</territory>
-			<territory type="HN">Ħonduras</territory>
-			<territory type="HR">Kroazja</territory>
-			<territory type="HT">Ħaiti</territory>
-			<territory type="HU">Ungerija</territory>
-			<territory type="ID">Indoneżja</territory>
-			<territory type="IE">Irlanda</territory>
+			<territory type="GE">il-Georgia</territory>
+			<territory type="GF">il-Guyana Franċiża</territory>
+			<territory type="GG">Guernsey</territory>
+			<territory type="GH">il-Ghana</territory>
+			<territory type="GI">Ġibiltà</territory>
+			<territory type="GL">Greenland</territory>
+			<territory type="GM">il-Gambja</territory>
+			<territory type="GN">il-Guinea</territory>
+			<territory type="GP">Guadeloupe</territory>
+			<territory type="GQ">il-Guinea Ekwatorjali</territory>
+			<territory type="GR">il-Greċja</territory>
+			<territory type="GS">il-Georgia tan-Nofsinhar u l-Gżejjer Sandwich tan-Nofsinhar</territory>
+			<territory type="GT">il-Gwatemala</territory>
+			<territory type="GU">Guam</territory>
+			<territory type="GW">il-Guinea-Bissau</territory>
+			<territory type="GY">il-Guyana</territory>
+			<territory type="HK">ir-Reġjun Amministrattiv Speċjali ta’ Hong Kong tar-Repubblika tal-Poplu taċ-Ċina</territory>
+			<territory type="HK" alt="short">Hong Kong</territory>
+			<territory type="HM">il-Gżejjer Heard u l-Gżejjer McDonald</territory>
+			<territory type="HN">il-Honduras</territory>
+			<territory type="HR">il-Kroazja</territory>
+			<territory type="HT">il-Haiti</territory>
+			<territory type="HU">l-Ungerija</territory>
+			<territory type="IC">il-Gżejjer Canary</territory>
+			<territory type="ID">l-Indoneżja</territory>
+			<territory type="IE">l-Irlanda</territory>
 			<territory type="IL">Iżrael</territory>
 			<territory type="IM">Isle of Man</territory>
-			<territory type="IN">Indja</territory>
-			<territory type="IO">British Indian Ocean Territory</territory>
-			<territory type="IQ">Iraq</territory>
-			<territory type="IR">Iran</territory>
-			<territory type="IS">Islanda</territory>
-			<territory type="IT">Italja</territory>
-			<territory type="JM">Ġamajka</territory>
-			<territory type="JO">Ġordan</territory>
-			<territory type="JP">Ġappun</territory>
-			<territory type="KE">Kenja</territory>
-			<territory type="KG">Kirgistan</territory>
-			<territory type="KH">Kambodja</territory>
+			<territory type="IN">l-Indja</territory>
+			<territory type="IO" draft="provisional">Territorju Brittaniku tal-Oċean Indjan</territory>
+			<territory type="IQ">l-Iraq</territory>
+			<territory type="IR">l-Iran</territory>
+			<territory type="IS">l-Iżlanda</territory>
+			<territory type="IT">l-Italja</territory>
+			<territory type="JE">Jersey</territory>
+			<territory type="JM">il-Ġamajka</territory>
+			<territory type="JO">il-Ġordan</territory>
+			<territory type="JP">il-Ġappun</territory>
+			<territory type="KE">il-Kenja</territory>
+			<territory type="KG">il-Kirgiżistan</territory>
+			<territory type="KH">il-Kambodja</territory>
 			<territory type="KI">Kiribati</territory>
-			<territory type="KM">Komoros</territory>
-			<territory type="KN">Saint Kitts and Nevis</territory>
-			<territory type="KP">Koreja ta’ Fuq</territory>
-			<territory type="KR">Koreja t’Isfel</territory>
-			<territory type="KW">Kuwajt</territory>
-			<territory type="KY">Gżejjer Kajmani</territory>
-			<territory type="KZ">Każakstan</territory>
-			<territory type="LA">Laos</territory>
-			<territory type="LB">Libanu</territory>
-			<territory type="LC">Santa Luċija</territory>
-			<territory type="LI">Liechtenstein</territory>
-			<territory type="LK">Sri Lanka</territory>
-			<territory type="LR">Liberja</territory>
-			<territory type="LS">Lesoto</territory>
-			<territory type="LT">Litwanja</territory>
-			<territory type="LU">Lussemburgu</territory>
-			<territory type="LV">Latvja</territory>
-			<territory type="LY">Libja</territory>
-			<territory type="MA">Marokk</territory>
-			<territory type="MC">Monako</territory>
-			<territory type="MD">Maldova</territory>
-			<territory type="MG">Madagaskar</territory>
-			<territory type="MH">Gżejjer ta’ Marshall</territory>
-			<territory type="MK">Maċedonja</territory>
-			<territory type="ML">Mali</territory>
-			<territory type="MM">Mjanmar</territory>
-			<territory type="MN">Mongolja</territory>
-			<territory type="MO">Macao S.A.R., China</territory>
-			<territory type="MO" alt="short" draft="unconfirmed">Macao</territory>
-			<territory type="MP">Gżejjer Marjana ta’ Fuq</territory>
-			<territory type="MQ">Martinik</territory>
-			<territory type="MR">Mawritanja</territory>
+			<territory type="KM">Comoros</territory>
+			<territory type="KN">Saint Kitts u Nevis</territory>
+			<territory type="KP">il-Korea ta’ Fuq</territory>
+			<territory type="KR">il-Korea t’Isfel</territory>
+			<territory type="KW">il-Kuwajt</territory>
+			<territory type="KY">il-Gżejjer Cayman</territory>
+			<territory type="KZ">il-Każakistan</territory>
+			<territory type="LA">il-Laos</territory>
+			<territory type="LB">il-Libanu</territory>
+			<territory type="LC">Saint Lucia</territory>
+			<territory type="LI">il-Liechtenstein</territory>
+			<territory type="LK">is-Sri Lanka</territory>
+			<territory type="LR">il-Liberja</territory>
+			<territory type="LS">il-Lesoto</territory>
+			<territory type="LT">il-Litwanja</territory>
+			<territory type="LU">il-Lussemburgu</territory>
+			<territory type="LV">il-Latvja</territory>
+			<territory type="LY">il-Libja</territory>
+			<territory type="MA">il-Marokk</territory>
+			<territory type="MC">Monaco</territory>
+			<territory type="MD">il-Moldova</territory>
+			<territory type="ME">il-Montenegro</territory>
+			<territory type="MF">Saint Martin</territory>
+			<territory type="MG">Madagascar</territory>
+			<territory type="MH">Gżejjer Marshall</territory>
+			<territory type="MK">il-Maċedonja ta’ Fuq</territory>
+			<territory type="ML">il-Mali</territory>
+			<territory type="MM">il-Myanmar/Burma</territory>
+			<territory type="MN">il-Mongolja</territory>
+			<territory type="MO">ir-Reġjun Amministrattiv Speċjali tal-Macao tar-Repubblika tal-Poplu taċ-Ċina</territory>
+			<territory type="MO" alt="short">il-Macao</territory>
+			<territory type="MP">Ġżejjer Mariana tat-Tramuntana</territory>
+			<territory type="MQ">Martinique</territory>
+			<territory type="MR">il-Mauritania</territory>
 			<territory type="MS">Montserrat</territory>
 			<territory type="MT">Malta</territory>
-			<territory type="MU">Mawrizju</territory>
-			<territory type="MV">Maldives</territory>
-			<territory type="MW">Malawi</territory>
-			<territory type="MX">Messiku</territory>
-			<territory type="MY">Malasja</territory>
-			<territory type="MZ">Możambik</territory>
-			<territory type="NA">Namibja</territory>
+			<territory type="MU">Mauritius</territory>
+			<territory type="MV">il-Maldivi</territory>
+			<territory type="MW">il-Malawi</territory>
+			<territory type="MX">il-Messiku</territory>
+			<territory type="MY">il-Malasja</territory>
+			<territory type="MZ">il-Mozambique</territory>
+			<territory type="NA">in-Namibja</territory>
 			<territory type="NC">New Caledonia</territory>
-			<territory type="NE">Niġer</territory>
-			<territory type="NF">Norfolk Island</territory>
-			<territory type="NG">Niġerja</territory>
-			<territory type="NI">Nikaragwa</territory>
-			<territory type="NL">Olanda</territory>
-			<territory type="NO">Norveġja</territory>
-			<territory type="NP">Nepal</territory>
+			<territory type="NE">in-Niġer</territory>
+			<territory type="NF">Gżira Norfolk</territory>
+			<territory type="NG">in-Niġerja</territory>
+			<territory type="NI">in-Nikaragwa</territory>
+			<territory type="NL">in-Netherlands</territory>
+			<territory type="NO">in-Norveġja</territory>
+			<territory type="NP">in-Nepal</territory>
 			<territory type="NR">Nauru</territory>
 			<territory type="NU">Niue</territory>
 			<territory type="NZ">New Zealand</territory>
-			<territory type="OM">Oman</territory>
-			<territory type="PA">Panama</territory>
-			<territory type="PE">Peru</territory>
-			<territory type="PF">Polinesja Franċiża</territory>
-			<territory type="PG">Papwa-Ginea Ġdida</territory>
-			<territory type="PH">Filippini</territory>
-			<territory type="PK">Pakistan</territory>
-			<territory type="PL">Polonja</territory>
-			<territory type="PM">Saint Pierre and Miquelon</territory>
-			<territory type="PN">Pitcairn</territory>
+			<territory type="OM">l-Oman</territory>
+			<territory type="PA">il-Panama</territory>
+			<territory type="PE">il-Perù</territory>
+			<territory type="PF">Polineżja Franċiża</territory>
+			<territory type="PG">Papua New Guinea</territory>
+			<territory type="PH">il-Filippini</territory>
+			<territory type="PK">il-Pakistan</territory>
+			<territory type="PL">il-Polonja</territory>
+			<territory type="PM">Saint Pierre u Miquelon</territory>
+			<territory type="PN">Gżejjer Pitcairn</territory>
 			<territory type="PR">Puerto Rico</territory>
-			<territory type="PS">Territorju Palestinjan</territory>
-			<territory type="PT">Portugall</territory>
+			<territory type="PS">it-Territorji Palestinjani</territory>
+			<territory type="PS" alt="short">il-Palestina</territory>
+			<territory type="PT">il-Portugall</territory>
 			<territory type="PW">Palau</territory>
-			<territory type="PY">Paragwaj</territory>
-			<territory type="QA">Qatar</territory>
+			<territory type="PY">il-Paragwaj</territory>
+			<territory type="QA">il-Qatar</territory>
 			<territory type="RE">Réunion</territory>
-			<territory type="RO">Rumanija</territory>
-			<territory type="RU">Russja</territory>
-			<territory type="RW">Rwanda</territory>
-			<territory type="SA">Għarabja Sawdita</territory>
-			<territory type="SB">Solomon Islands</territory>
-			<territory type="SC">Seychelles</territory>
-			<territory type="SD">Sudan</territory>
-			<territory type="SE">Żvezja</territory>
-			<territory type="SG">Singapor</territory>
+			<territory type="RO">ir-Rumanija</territory>
+			<territory type="RS">is-Serbja</territory>
+			<territory type="RU">ir-Russja</territory>
+			<territory type="RW">ir-Rwanda</territory>
+			<territory type="SA">l-Arabja Sawdija</territory>
+			<territory type="SB">il-Gżejjer Solomon</territory>
+			<territory type="SC">is-Seychelles</territory>
+			<territory type="SD">is-Sudan</territory>
+			<territory type="SE">l-Iżvezja</territory>
+			<territory type="SG">Singapore</territory>
 			<territory type="SH">Saint Helena</territory>
-			<territory type="SI">Slovenja</territory>
-			<territory type="SJ">Svalbard and Jan Mayen</territory>
-			<territory type="SK">Slovakkja</territory>
+			<territory type="SI">is-Slovenja</territory>
+			<territory type="SJ">Svalbard u Jan Mayen</territory>
+			<territory type="SK">is-Slovakkja</territory>
 			<territory type="SL">Sierra Leone</territory>
 			<territory type="SM">San Marino</territory>
-			<territory type="SN">Senegal</territory>
-			<territory type="SO">Somalja</territory>
-			<territory type="SR">Surinam</territory>
-			<territory type="ST">Sao Tome and Principe</territory>
+			<territory type="SN">is-Senegal</territory>
+			<territory type="SO">is-Somalja</territory>
+			<territory type="SR">is-Suriname</territory>
+			<territory type="SS">is-Sudan t’Isfel</territory>
+			<territory type="ST">São Tomé u Príncipe</territory>
 			<territory type="SV">El Salvador</territory>
-			<territory type="SY">Sirja</territory>
-			<territory type="SZ">Sważiland</territory>
-			<territory type="TC">Turks and Caicos Islands</territory>
-			<territory type="TD">Ċad</territory>
-			<territory type="TF">Territorji Franċiżi ta’ Nofsinhar</territory>
-			<territory type="TG">Togo</territory>
-			<territory type="TH">Tajlandja</territory>
-			<territory type="TJ">Taġikistan</territory>
-			<territory type="TK">Tokelaw</territory>
-			<territory type="TL">Timor tal-Lvant</territory>
-			<territory type="TM">Turkmenistan</territory>
-			<territory type="TN">Tuneż</territory>
+			<territory type="SX">Sint Maarten</territory>
+			<territory type="SY">is-Sirja</territory>
+			<territory type="SZ">l-Eswatini</territory> <!-- ir-Renju tal-Eswatini -->
+			<territory type="SZ" alt="variant" draft="unconfirmed">is-Swaziland</territory>
+			<territory type="TA">Tristan da Cunha</territory>
+			<territory type="TC">il-Gżejjer Turks u Caicos</territory>
+			<territory type="TD">iċ-Chad</territory>
+			<territory type="TF">It-Territorji Franċiżi tan-Nofsinhar</territory>
+			<territory type="TG">it-Togo</territory>
+			<territory type="TH">it-Tajlandja</territory>
+			<territory type="TJ">it-Taġikistan</territory>
+			<territory type="TK">it-Tokelau</territory>
+			<territory type="TL">Timor Leste</territory>
+			<territory type="TL" alt="variant">Timor tal-Lvant</territory>
+			<territory type="TM">it-Turkmenistan</territory>
+			<territory type="TN">it-Tuneżija</territory>
 			<territory type="TO">Tonga</territory>
-			<territory type="TR">Turkija</territory>
+			<territory type="TR">it-Turkija</territory>
 			<territory type="TT">Trinidad u Tobago</territory>
 			<territory type="TV">Tuvalu</territory>
-			<territory type="TW">Tajwan</territory>
-			<territory type="TZ">Tanżanija</territory>
-			<territory type="UA">Ukraina</territory>
-			<territory type="UG">Uganda</territory>
-			<territory type="UM">United States Minor Outlying Islands</territory>
-			<territory type="US">Stati Uniti</territory>
-			<territory type="UY">Urugwaj</territory>
-			<territory type="UZ">Użbekistan</territory>
-			<territory type="VA">Vatikan</territory>
-			<territory type="VC">Saint Vincent and the Grenadines</territory>
-			<territory type="VE">Venezwela</territory>
-			<territory type="VG">British Virgin Islands</territory>
-			<territory type="VI">U.S. Virgin Islands</territory>
-			<territory type="VN">Vjetnam</territory>
-			<territory type="VU">Vanwatu</territory>
-			<territory type="WF">Wallis and Futuna</territory>
+			<territory type="TW">it-Tajwan</territory>
+			<territory type="TZ">it-Tanzanija</territory>
+			<territory type="UA">l-Ukrajna</territory>
+			<territory type="UG">l-Uganda</territory>
+			<territory type="UM">Il-Gżejjer Minuri Mbiegħda tal-Istati Uniti</territory>
+			<territory type="US">l-Istati Uniti</territory>
+			<territory type="US" alt="short">US</territory>
+			<territory type="UY">l-Urugwaj</territory>
+			<territory type="UZ">l-Użbekistan</territory>
+			<territory type="VA">l-Istat tal-Belt tal-Vatikan</territory>
+			<territory type="VC">Saint Vincent u l-Grenadini</territory>
+			<territory type="VE">il-Venezwela</territory>
+			<territory type="VG">il-Gżejjer Verġni Brittaniċi</territory>
+			<territory type="VI">il-Gżejjer Verġni tal-Istati Uniti</territory>
+			<territory type="VN">il-Vjetnam</territory>
+			<territory type="VU">Vanuatu</territory>
+			<territory type="WF">Wallis u Futuna</territory>
 			<territory type="WS">Samoa</territory>
-			<territory type="XK" draft="unconfirmed">Kosovo</territory>
-			<territory type="YE">Jemen</territory>
-			<territory type="YT">Majotte</territory>
-			<territory type="ZA">Afrika t’Isfel</territory>
-			<territory type="ZM">Żambja</territory>
-			<territory type="ZW">Żimbabwe</territory>
+			<territory type="XK">il-Kosovo</territory>
+			<territory type="YE">il-Jemen</territory>
+			<territory type="YT">Mayotte</territory>
+			<territory type="ZA">l-Afrika t’Isfel</territory>
+			<territory type="ZM">iż-Żambja</territory>
+			<territory type="ZW">iż-Żimbabwe</territory>
 			<territory type="ZZ">Reġjun Mhux Magħruf</territory>
 		</territories>
+		<subdivisions>
+			<subdivision type="gbeng">l-Ingilterra</subdivision>
+			<subdivision type="gbsct">l-Iskozja</subdivision>
+			<subdivision type="gbwls">Wales</subdivision>
+		</subdivisions>
 		<variants>
 			<variant type="REVISED">Ortografija Irriveda</variant>
 		</variants>
@@ -729,45 +850,40 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<key type="numbers" draft="unconfirmed">Numri</key>
 		</keys>
 		<types>
-			<type type="big5han" key="collation">Ordni Ċiniż Tradizzjonali (Big5)</type>
-			<type type="buddhist" key="calendar">Kalendarju Buddist</type>
-			<type type="chinese" key="calendar">Kalendarju Ċiniż</type>
-			<type type="dictionary" key="collation" draft="unconfirmed">Ordni tad-Dizzjunarju</type>
-			<type type="gb2312han" key="collation">Ordni Ċiniż Sempliċi (GB2312)</type>
-			<type type="gregorian" key="calendar">Kalendarju Gregorjan</type>
-			<type type="hebrew" key="calendar">Kalendarju Ebrajk</type>
-			<type type="islamic" key="calendar">Kalendarju Islamiku</type>
-			<type type="islamic-civil" key="calendar">Kalendarju Islamiku-Ċivili</type>
-			<type type="japanese" key="calendar">Kalendarju Ġappuniż</type>
-			<type type="latn" key="numbers" draft="unconfirmed">Numri Oċċidentali</type>
-			<type type="phonebook" key="collation">Ordni Telefonika</type>
-			<type type="pinyin" key="collation">Ordni tal-Pinjin</type>
-			<type type="stroke" key="collation">Ordni Maħżuża</type>
-			<type type="traditional" key="collation">Tradizzjonali</type>
+			<type key="calendar" type="buddhist">Kalendarju Buddist</type>
+			<type key="calendar" type="chinese">Kalendarju Ċiniż</type>
+			<type key="calendar" type="coptic" draft="unconfirmed">Kalendarju Koptiku</type>
+			<type key="calendar" type="dangi">Kalendarju Dangi</type>
+			<type key="calendar" type="ethiopic">Kalendarju Etjopiku</type>
+			<type key="calendar" type="gregorian">Kalendarju Gregorjan</type>
+			<type key="calendar" type="hebrew">Kalendarju Ebrajk</type>
+			<type key="calendar" type="islamic" draft="provisional">Kalendarju Iżlamiku</type>
+			<type key="calendar" type="islamic-civil" draft="provisional">Kalendarju Islamiku-Ċivili</type>
+			<type key="calendar" type="iso8601">Kalendarju ISO-8601</type>
+			<type key="calendar" type="japanese">Kalendarju Ġappuniż</type>
+			<type key="collation" type="dictionary" draft="unconfirmed">Ordni tad-Dizzjunarju</type>
+			<type key="collation" type="phonebook">Ordni Telefonika</type>
+			<type key="collation" type="pinyin">Ordni tal-Pinjin</type>
+			<type key="collation" type="standard">Ordni Standard</type>
+			<type key="collation" type="stroke">Ordni Maħżuża</type>
+			<type key="collation" type="traditional">Tradizzjonali</type>
+			<type key="numbers" type="latn">Numri tal-Punent</type>
 		</types>
 		<measurementSystemNames>
 			<measurementSystemName type="metric">Metriku</measurementSystemName>
-			<measurementSystemName type="UK">UK</measurementSystemName>
-			<measurementSystemName type="US">US</measurementSystemName>
 		</measurementSystemNames>
 		<codePatterns>
 			<codePattern type="language">Lingwa: {0}</codePattern>
-			<codePattern type="script">Skritt: {0}</codePattern>
+			<codePattern type="script">Skript: {0}</codePattern>
 			<codePattern type="territory">Reġjun: {0}</codePattern>
 		</codePatterns>
 	</localeDisplayNames>
 	<characters>
-		<exemplarCharacters>[a à b ċ d e è f ġ g {għ} h ħ i ì j k l m n o ò p q r s t u ù v w x ż z]</exemplarCharacters>
+		<exemplarCharacters>[aà b ċ d eè f ġ g {għ} h ħ iì j k l m n oò p q r s t uù v w x ż z]</exemplarCharacters>
 		<exemplarCharacters type="auxiliary">[c y]</exemplarCharacters>
-		<exemplarCharacters type="index" draft="contributed">[A B Ċ C D E F Ġ G {GĦ} H Ħ I {IE} J K L M N O P Q R S T U V W X Y Ż Z]</exemplarCharacters>
-		<exemplarCharacters type="punctuation">[\- , ; \: ! ? . ' ‘ ’ &quot; “ ” ( ) \[ \] \{ \}]</exemplarCharacters>
+		<exemplarCharacters type="index" draft="contributed">[A B Ċ C D E F Ġ G {GĦ} H Ħ I {IE*} J K L M N O P Q R S T U V W X Y Ż Z]</exemplarCharacters>
+		<exemplarCharacters type="punctuation">[\- ‑ , ; \: ! ? . '‘’ &quot;“” ( ) \[ \] \{ \}]</exemplarCharacters>
 	</characters>
-	<delimiters>
-		<quotationStart draft="unconfirmed">“</quotationStart>
-		<quotationEnd draft="unconfirmed">”</quotationEnd>
-		<alternateQuotationStart draft="unconfirmed">‘</alternateQuotationStart>
-		<alternateQuotationEnd draft="unconfirmed">’</alternateQuotationEnd>
-	</delimiters>
 	<dates>
 		<calendars>
 			<calendar type="generic">
@@ -785,6 +901,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 					<dateFormatLength type="medium">
 						<dateFormat>
 							<pattern>dd MMM y G</pattern>
+							<datetimeSkeleton>GyMMMdd</datetimeSkeleton>
 						</dateFormat>
 					</dateFormatLength>
 					<dateFormatLength type="short">
@@ -794,95 +911,94 @@ For terms of use, see http://www.unicode.org/copyright.html
 					</dateFormatLength>
 				</dateFormats>
 				<dateTimeFormats>
+					<dateTimeFormatLength type="short">
+						<dateTimeFormat>
+							<pattern>{1} {0}</pattern>
+						</dateTimeFormat>
+					</dateTimeFormatLength>
 					<availableFormats>
-						<dateFormatItem id="MMMMd" draft="unconfirmed">d 'ta'’ MMMM</dateFormatItem>
-						<dateFormatItem id="yMMMM" draft="unconfirmed">MMMM 'ta'’ y G</dateFormatItem>
+						<dateFormatItem id="MEd">E, M/d</dateFormatItem>
+						<dateFormatItem id="MMMEd">E, d 'ta'’ MMM</dateFormatItem>
+						<dateFormatItem id="MMMMd">d 'ta'’ MMMM</dateFormatItem>
+						<dateFormatItem id="yMMMM">MMMM y</dateFormatItem>
+						<dateFormatItem id="yyyyMd">GGGGG dd-MM-y</dateFormatItem>
+						<dateFormatItem id="yyyyMEd">GGGGG E, dd-MM-y</dateFormatItem>
+						<dateFormatItem id="yyyyMMM">GGGGG MMM y</dateFormatItem>
+						<dateFormatItem id="yyyyMMMd">GGGGG dd MMM y</dateFormatItem>
+						<dateFormatItem id="yyyyMMMEd">GGGGG E, dd MMM y</dateFormatItem>
+						<dateFormatItem id="yyyyMMMM">GGGGG MMMM y</dateFormatItem>
 					</availableFormats>
 					<intervalFormats>
-						<intervalFormatFallback draft="unconfirmed">{0} - {1}</intervalFormatFallback>
-						<intervalFormatItem id="d">
-							<greatestDifference id="d" draft="unconfirmed">d-d</greatestDifference>
-						</intervalFormatItem>
 						<intervalFormatItem id="h">
-							<greatestDifference id="h" draft="unconfirmed">h-h a</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="H">
-							<greatestDifference id="H" draft="unconfirmed">HH-HH</greatestDifference>
+							<greatestDifference id="h" draft="unconfirmed">h–h a</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="hm">
-							<greatestDifference id="h" draft="unconfirmed">h:mm-h:mm a</greatestDifference>
-							<greatestDifference id="m" draft="unconfirmed">h:mm-h:mm a</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="Hm">
-							<greatestDifference id="H" draft="unconfirmed">HH:mm-HH:mm</greatestDifference>
-							<greatestDifference id="m" draft="unconfirmed">HH:mm-HH:mm</greatestDifference>
+							<greatestDifference id="h" draft="unconfirmed">h:mm–h:mm a</greatestDifference>
+							<greatestDifference id="m" draft="unconfirmed">h:mm–h:mm a</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="hmv">
-							<greatestDifference id="h" draft="unconfirmed">h:mm-h:mm a v</greatestDifference>
-							<greatestDifference id="m" draft="unconfirmed">h:mm-h:mm a v</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="Hmv">
-							<greatestDifference id="H" draft="unconfirmed">HH:mm-HH:mm v</greatestDifference>
-							<greatestDifference id="m" draft="unconfirmed">HH:mm-HH:mm v</greatestDifference>
+							<greatestDifference id="h" draft="unconfirmed">h:mm–h:mm a v</greatestDifference>
+							<greatestDifference id="m" draft="unconfirmed">h:mm–h:mm a v</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="hv">
-							<greatestDifference id="h" draft="unconfirmed">h-h a v</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="Hv">
-							<greatestDifference id="H" draft="unconfirmed">HH-HH v</greatestDifference>
+							<greatestDifference id="h" draft="unconfirmed">h–h a v</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="M">
-							<greatestDifference id="M" draft="unconfirmed">M-M</greatestDifference>
+							<greatestDifference id="M">M–M</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="Md">
-							<greatestDifference id="d" draft="unconfirmed">dd/MM - dd/MM</greatestDifference>
-							<greatestDifference id="M" draft="unconfirmed">dd/MM - dd/MM</greatestDifference>
+							<greatestDifference id="d">dd/MM – dd/MM</greatestDifference>
+							<greatestDifference id="M">dd/MM – dd/MM</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="MEd">
-							<greatestDifference id="d" draft="unconfirmed">E, dd/MM - E, dd/MM</greatestDifference>
-							<greatestDifference id="M" draft="unconfirmed">E, dd/MM - E, dd/MM</greatestDifference>
+							<greatestDifference id="d">E, dd/MM – E, dd/MM</greatestDifference>
+							<greatestDifference id="M">E, dd/MM – E, dd/MM</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="MMM">
-							<greatestDifference id="M" draft="unconfirmed">MMM-MMM</greatestDifference>
+							<greatestDifference id="M">MMM–MMM</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="MMMd">
-							<greatestDifference id="d" draft="unconfirmed">d 'ta'’-d 'ta'’ MMM</greatestDifference>
-							<greatestDifference id="M" draft="unconfirmed">d 'ta'’ MMM - d 'ta'’ MMM</greatestDifference>
+							<greatestDifference id="d">d – d MMM</greatestDifference>
+							<greatestDifference id="M">d MMM – d MMM</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="MMMEd">
-							<greatestDifference id="d" draft="unconfirmed">E, d 'ta'’ - E, d 'ta'’ MMM</greatestDifference>
-							<greatestDifference id="M" draft="unconfirmed">E, d 'ta'’ MMM - E, d 'ta'’ MMM</greatestDifference>
+							<greatestDifference id="d">E, d MMM – E, d MMM</greatestDifference>
+							<greatestDifference id="M">E, d MMM – E, d MMM</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="y">
-							<greatestDifference id="y" draft="unconfirmed">y-y G</greatestDifference>
+							<greatestDifference id="y">y–y G</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="yM">
-							<greatestDifference id="M" draft="unconfirmed">MM/y - MM/y G</greatestDifference>
-							<greatestDifference id="y" draft="unconfirmed">MM/y - MM/y G</greatestDifference>
+							<greatestDifference id="M">MM/y – MM/y G</greatestDifference>
+							<greatestDifference id="y">MM/y – MM/y G</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="yMd">
-							<greatestDifference id="d" draft="unconfirmed">dd/MM/y - dd/MM/y G</greatestDifference>
-							<greatestDifference id="M" draft="unconfirmed">dd/MM/y - dd/MM/y G</greatestDifference>
-							<greatestDifference id="y" draft="unconfirmed">dd/MM/y - dd/MM/y G</greatestDifference>
+							<greatestDifference id="d">dd/MM/y – dd/MM/y G</greatestDifference>
+							<greatestDifference id="M">dd/MM/y – dd/MM/y G</greatestDifference>
+							<greatestDifference id="y">dd/MM/y – dd/MM/y G</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="yMEd">
-							<greatestDifference id="d" draft="unconfirmed">E, dd/MM/y - E, dd/MM/y G</greatestDifference>
-							<greatestDifference id="M" draft="unconfirmed">E, dd/MM/y - E, dd/MM/y G</greatestDifference>
-							<greatestDifference id="y" draft="unconfirmed">E, dd/MM/y - E, dd/MM/y G</greatestDifference>
+							<greatestDifference id="d">E, dd/MM/y – E, dd/MM/y G</greatestDifference>
+							<greatestDifference id="M">E, dd/MM/y – E, dd/MM/y G</greatestDifference>
+							<greatestDifference id="y">E, dd/MM/y – E, dd/MM/y G</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="yMMM">
-							<greatestDifference id="M" draft="unconfirmed">MMM-MMM y G</greatestDifference>
-							<greatestDifference id="y" draft="unconfirmed">MMM y - MMM y G</greatestDifference>
+							<greatestDifference id="M">MMM–MMM y G</greatestDifference>
+							<greatestDifference id="y">MMM y – MMM y G</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="yMMMd">
-							<greatestDifference id="d" draft="unconfirmed">d 'ta'’-d 'ta'’ MMM y G</greatestDifference>
-							<greatestDifference id="M" draft="unconfirmed">d 'ta'’ MMM - d 'ta'’ MMM y G</greatestDifference>
-							<greatestDifference id="y" draft="unconfirmed">d 'ta'’ MMM y - d 'ta'’ MMM y G</greatestDifference>
+							<greatestDifference id="d">d – d MMM, y G</greatestDifference>
+							<greatestDifference id="M">d MMM – d MMM, y G</greatestDifference>
+							<greatestDifference id="y">d MMM, y – d MMM, y G</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="yMMMEd">
-							<greatestDifference id="d" draft="unconfirmed">E, d 'ta'’ - E, d 'ta'’ MMM y G</greatestDifference>
-							<greatestDifference id="M" draft="unconfirmed">E, d 'ta'’ MMM - E, d 'ta'’ MMM y G</greatestDifference>
-							<greatestDifference id="y" draft="unconfirmed">E, d 'ta'’ MMM y - E, d 'ta'’ MMM y G</greatestDifference>
+							<greatestDifference id="d">E, d MMM – E, d MMM, y G</greatestDifference>
+							<greatestDifference id="M">E, d MMM – E, d MMM, y G</greatestDifference>
+							<greatestDifference id="y">E, d MMM, y – E, d MMM, y G</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="yMMMM">
+							<greatestDifference id="M">MMMM – MMMM y G</greatestDifference>
+							<greatestDifference id="y">MMMM y – MMMM y G</greatestDifference>
 						</intervalFormatItem>
 					</intervalFormats>
 				</dateTimeFormats>
@@ -904,22 +1020,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 							<month type="11">Nov</month>
 							<month type="12">Diċ</month>
 						</monthWidth>
-						<monthWidth type="wide">
-							<month type="1">Jannar</month>
-							<month type="2">Frar</month>
-							<month type="3">Marzu</month>
-							<month type="4">April</month>
-							<month type="5">Mejju</month>
-							<month type="6">Ġunju</month>
-							<month type="7">Lulju</month>
-							<month type="8">Awwissu</month>
-							<month type="9">Settembru</month>
-							<month type="10">Ottubru</month>
-							<month type="11">Novembru</month>
-							<month type="12">Diċembru</month>
-						</monthWidth>
-					</monthContext>
-					<monthContext type="stand-alone">
 						<monthWidth type="narrow">
 							<month type="1">J</month>
 							<month type="2">F</month>
@@ -949,6 +1049,22 @@ For terms of use, see http://www.unicode.org/copyright.html
 							<month type="12">Diċembru</month>
 						</monthWidth>
 					</monthContext>
+					<monthContext type="stand-alone">
+						<monthWidth type="narrow">
+							<month type="1">Jn</month>
+							<month type="2">Fr</month>
+							<month type="3">Mz</month>
+							<month type="4">Ap</month>
+							<month type="5">Mj</month>
+							<month type="6">Ġn</month>
+							<month type="7">Lj</month>
+							<month type="8">Aw</month>
+							<month type="9">St</month>
+							<month type="10">Ob</month>
+							<month type="11">Nv</month>
+							<month type="12">Dċ</month>
+						</monthWidth>
+					</monthContext>
 				</months>
 				<days>
 					<dayContext type="format">
@@ -962,13 +1078,13 @@ For terms of use, see http://www.unicode.org/copyright.html
 							<day type="sat">Sib</day>
 						</dayWidth>
 						<dayWidth type="narrow">
-							<day type="sun">Ħ</day>
+							<day type="sun">Ħd</day>
 							<day type="mon">T</day>
-							<day type="tue">T</day>
-							<day type="wed">E</day>
-							<day type="thu">Ħ</day>
-							<day type="fri">Ġ</day>
-							<day type="sat">S</day>
+							<day type="tue">Tl</day>
+							<day type="wed">Er</day>
+							<day type="thu">Ħm</day>
+							<day type="fri">Ġm</day>
+							<day type="sat">Sb</day>
 						</dayWidth>
 						<dayWidth type="wide">
 							<day type="sun">Il-Ħadd</day>
@@ -982,13 +1098,13 @@ For terms of use, see http://www.unicode.org/copyright.html
 					</dayContext>
 					<dayContext type="stand-alone">
 						<dayWidth type="narrow">
-							<day type="sun">Ħ</day>
-							<day type="mon">T</day>
-							<day type="tue">T</day>
-							<day type="wed">E</day>
-							<day type="thu">Ħ</day>
-							<day type="fri">Ġ</day>
-							<day type="sat">S</day>
+							<day type="sun">Ħd</day>
+							<day type="mon">Tn</day>
+							<day type="tue">Tl</day>
+							<day type="wed">Er</day>
+							<day type="thu">Ħm</day>
+							<day type="fri">Ġm</day>
+							<day type="sat">Sb</day>
 						</dayWidth>
 					</dayContext>
 				</days>
@@ -1000,45 +1116,25 @@ For terms of use, see http://www.unicode.org/copyright.html
 							<quarter type="3">K3</quarter>
 							<quarter type="4">K4</quarter>
 						</quarterWidth>
-						<quarterWidth type="narrow">
-							<quarter type="1">1</quarter>
-							<quarter type="2">2</quarter>
-							<quarter type="3">3</quarter>
-							<quarter type="4">4</quarter>
-						</quarterWidth>
-						<quarterWidth type="wide">
-							<quarter type="1">K1</quarter>
-							<quarter type="2">K2</quarter>
-							<quarter type="3">K3</quarter>
-							<quarter type="4">K4</quarter>
-						</quarterWidth>
-					</quarterContext>
-					<quarterContext type="stand-alone">
-						<quarterWidth type="abbreviated">
-							<quarter type="1">K1</quarter>
-							<quarter type="2">K2</quarter>
-							<quarter type="3">K3</quarter>
-							<quarter type="4">K4</quarter>
-						</quarterWidth>
-						<quarterWidth type="narrow">
-							<quarter type="1">1</quarter>
-							<quarter type="2">2</quarter>
-							<quarter type="3">3</quarter>
-							<quarter type="4">4</quarter>
-						</quarterWidth>
 						<quarterWidth type="wide">
 							<quarter type="1">1el kwart</quarter>
 							<quarter type="2">2ni kwart</quarter>
 							<quarter type="3">3et kwart</quarter>
-							<quarter type="4">4ba' kwart</quarter>
+							<quarter type="4">4ba’ kwart</quarter>
 						</quarterWidth>
 					</quarterContext>
 				</quarters>
 				<dayPeriods>
 					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">QN</dayPeriod>
-							<dayPeriod type="pm">WN</dayPeriod>
+						<dayPeriodWidth type="narrow">
+							<dayPeriod type="am">am</dayPeriod>
+							<dayPeriod type="pm">pm</dayPeriod>
+						</dayPeriodWidth>
+					</dayPeriodContext>
+					<dayPeriodContext type="stand-alone">
+						<dayPeriodWidth type="narrow">
+							<dayPeriod type="am">am</dayPeriod>
+							<dayPeriod type="pm">pm</dayPeriod>
 						</dayPeriodWidth>
 					</dayPeriodContext>
 				</dayPeriods>
@@ -1068,6 +1164,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 					<dateFormatLength type="medium">
 						<dateFormat>
 							<pattern>dd MMM y</pattern>
+							<datetimeSkeleton>yMMMdd</datetimeSkeleton>
 						</dateFormat>
 					</dateFormatLength>
 					<dateFormatLength type="short">
@@ -1079,194 +1176,635 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<timeFormats>
 					<timeFormatLength type="full">
 						<timeFormat>
-							<pattern draft="unconfirmed">HH:mm:ss zzzz</pattern>
+							<pattern>HH:mm:ss zzzz</pattern>
 						</timeFormat>
 					</timeFormatLength>
 					<timeFormatLength type="long">
 						<timeFormat>
-							<pattern draft="unconfirmed">HH:mm:ss z</pattern>
+							<pattern>HH:mm:ss z</pattern>
 						</timeFormat>
 					</timeFormatLength>
 					<timeFormatLength type="medium">
 						<timeFormat>
-							<pattern draft="unconfirmed">HH:mm:ss</pattern>
+							<pattern>HH:mm:ss</pattern>
 						</timeFormat>
 					</timeFormatLength>
 					<timeFormatLength type="short">
 						<timeFormat>
-							<pattern draft="unconfirmed">HH:mm</pattern>
+							<pattern>HH:mm</pattern>
 						</timeFormat>
 					</timeFormatLength>
 				</timeFormats>
 				<dateTimeFormats>
+					<dateTimeFormatLength type="full">
+						<dateTimeFormat>
+							<pattern>{1} {0}</pattern>
+						</dateTimeFormat>
+					</dateTimeFormatLength>
+					<dateTimeFormatLength type="long">
+						<dateTimeFormat>
+							<pattern>{1} {0}</pattern>
+						</dateTimeFormat>
+					</dateTimeFormatLength>
+					<dateTimeFormatLength type="medium">
+						<dateTimeFormat>
+							<pattern>{1} {0}</pattern>
+						</dateTimeFormat>
+					</dateTimeFormatLength>
+					<dateTimeFormatLength type="short">
+						<dateTimeFormat>
+							<pattern>{1} {0}</pattern>
+						</dateTimeFormat>
+					</dateTimeFormatLength>
 					<availableFormats>
-						<dateFormatItem id="MMMMd" draft="unconfirmed">d 'ta'’ MMMM</dateFormatItem>
-						<dateFormatItem id="yMMMM" draft="unconfirmed">MMMM 'ta'’ y</dateFormatItem>
+						<dateFormatItem id="Ehm">E h:mm a</dateFormatItem>
+						<dateFormatItem id="Ehms">E h:mm:ss a</dateFormatItem>
+						<dateFormatItem id="GyMMM">MMM y G</dateFormatItem>
+						<dateFormatItem id="GyMMMd">d MMM, y G</dateFormatItem>
+						<dateFormatItem id="GyMMMEd">E, d 'ta'’ MMM, y G</dateFormatItem>
+						<dateFormatItem id="h">h a</dateFormatItem>
+						<dateFormatItem id="hm">h:mm a</dateFormatItem>
+						<dateFormatItem id="hms">h:mm:ss a</dateFormatItem>
+						<dateFormatItem id="hmsv">h:mm:ss a v</dateFormatItem>
+						<dateFormatItem id="hmv">h:mm a v</dateFormatItem>
+						<dateFormatItem id="MEd">E, M-d</dateFormatItem>
+						<dateFormatItem id="MMMEd">E, d 'ta'’ MMM</dateFormatItem>
+						<dateFormatItem id="MMMMd">d 'ta'’ MMMM</dateFormatItem>
+						<dateFormatItem id="MMMMW" count="one">W 'ġimgħa' 'ta''' MMMM</dateFormatItem>
+						<dateFormatItem id="MMMMW" count="two">W 'ġimgħatejn' 'ta''' MMMM</dateFormatItem>
+						<dateFormatItem id="MMMMW" count="few">W 'ġimgħat' 'ta''' MMMM</dateFormatItem>
+						<dateFormatItem id="MMMMW" count="many">W-'il' 'ġimgħa' 'ta''' MMMM</dateFormatItem>
+						<dateFormatItem id="MMMMW" count="other">W 'ġimgħa' 'ta''' MMMM</dateFormatItem>
+						<dateFormatItem id="yMd">M/d/y</dateFormatItem>
+						<dateFormatItem id="yMEd">E, d/M/y</dateFormatItem>
+						<dateFormatItem id="yMMM">MMM y</dateFormatItem>
+						<dateFormatItem id="yMMMd">d 'ta'’ MMM, y</dateFormatItem>
+						<dateFormatItem id="yMMMEd">E, d 'ta'’ MMM, y</dateFormatItem>
+						<dateFormatItem id="yMMMM">MMMM y</dateFormatItem>
+						<dateFormatItem id="yQQQ">QQQ - y</dateFormatItem>
+						<dateFormatItem id="yQQQQ">QQQQ - y</dateFormatItem>
+						<dateFormatItem id="yw" count="one">w 'ġimgħa' 'ta''' Y</dateFormatItem>
+						<dateFormatItem id="yw" count="two">w 'ġimgħatejn' 'ta''' Y</dateFormatItem>
+						<dateFormatItem id="yw" count="few">w 'ġimgħat' 'ta''' Y</dateFormatItem>
+						<dateFormatItem id="yw" count="many">w-'il' 'ġimgħa' 'ta''' Y</dateFormatItem>
+						<dateFormatItem id="yw" count="other">w 'ġimgħa' 'ta''' Y</dateFormatItem>
 					</availableFormats>
 					<intervalFormats>
-						<intervalFormatFallback draft="unconfirmed">{0} - {1}</intervalFormatFallback>
-						<intervalFormatItem id="d">
-							<greatestDifference id="d" draft="unconfirmed">d-d</greatestDifference>
-						</intervalFormatItem>
 						<intervalFormatItem id="h">
-							<greatestDifference id="h" draft="unconfirmed">h-h a</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="H">
-							<greatestDifference id="H" draft="unconfirmed">HH-HH</greatestDifference>
+							<greatestDifference id="a">h a – h a</greatestDifference>
+							<greatestDifference id="h">h – h a</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="hm">
-							<greatestDifference id="h" draft="unconfirmed">h:mm-h:mm a</greatestDifference>
-							<greatestDifference id="m" draft="unconfirmed">h:mm-h:mm a</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="Hm">
-							<greatestDifference id="H" draft="unconfirmed">HH:mm-HH:mm</greatestDifference>
-							<greatestDifference id="m" draft="unconfirmed">HH:mm-HH:mm</greatestDifference>
+							<greatestDifference id="a">h:mm a – h:mm a</greatestDifference>
+							<greatestDifference id="h">h:mm–h:mm a</greatestDifference>
+							<greatestDifference id="m">h:mm–h:mm a</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="hmv">
-							<greatestDifference id="h" draft="unconfirmed">h:mm-h:mm a v</greatestDifference>
-							<greatestDifference id="m" draft="unconfirmed">h:mm-h:mm a v</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="Hmv">
-							<greatestDifference id="H" draft="unconfirmed">HH:mm-HH:mm v</greatestDifference>
-							<greatestDifference id="m" draft="unconfirmed">HH:mm-HH:mm v</greatestDifference>
+							<greatestDifference id="a">h:mm a – h:mm a v</greatestDifference>
+							<greatestDifference id="h">h:mm–h:mm a v</greatestDifference>
+							<greatestDifference id="m">h:mm–h:mm a v</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="hv">
-							<greatestDifference id="h" draft="unconfirmed">h-h a v</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="Hv">
-							<greatestDifference id="H" draft="unconfirmed">HH-HH v</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="M">
-							<greatestDifference id="M" draft="unconfirmed">M-M</greatestDifference>
+							<greatestDifference id="a">h a – h a v</greatestDifference>
+							<greatestDifference id="h">h–h a v</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="Md">
-							<greatestDifference id="d" draft="unconfirmed">dd/MM - dd/MM</greatestDifference>
-							<greatestDifference id="M" draft="unconfirmed">dd/MM - dd/MM</greatestDifference>
+							<greatestDifference id="d">dd/MM – dd/MM</greatestDifference>
+							<greatestDifference id="M">dd/MM – dd/MM</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="MEd">
-							<greatestDifference id="d" draft="unconfirmed">E, dd/MM - E, dd/MM</greatestDifference>
-							<greatestDifference id="M" draft="unconfirmed">E, dd/MM - E, dd/MM</greatestDifference>
+							<greatestDifference id="d">E, dd/MM – E, dd/MM</greatestDifference>
+							<greatestDifference id="M">E, dd/MM – E, dd/MM</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="MMM">
-							<greatestDifference id="M" draft="unconfirmed">MMM-MMM</greatestDifference>
+							<greatestDifference id="M">MMM – MMM</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="MMMd">
-							<greatestDifference id="d" draft="unconfirmed">d 'ta'’-d 'ta'’ MMM</greatestDifference>
-							<greatestDifference id="M" draft="unconfirmed">d 'ta'’ MMM - d 'ta'’ MMM</greatestDifference>
+							<greatestDifference id="d">d – d MMM</greatestDifference>
+							<greatestDifference id="M">d 'ta'’ MMM – d 'ta'’ MMM</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="MMMEd">
-							<greatestDifference id="d" draft="unconfirmed">E, d 'ta'’ - E, d 'ta'’ MMM</greatestDifference>
-							<greatestDifference id="M" draft="unconfirmed">E, d 'ta'’ MMM - E, d 'ta'’ MMM</greatestDifference>
+							<greatestDifference id="d">E, d – E d MMM</greatestDifference>
+							<greatestDifference id="M">E, d 'ta'’ MMM – E, d 'ta'’ MMM</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="y">
-							<greatestDifference id="y" draft="unconfirmed">y-y</greatestDifference>
+							<greatestDifference id="y">y – y</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="yM">
-							<greatestDifference id="M" draft="unconfirmed">MM/y - MM/y</greatestDifference>
-							<greatestDifference id="y" draft="unconfirmed">MM/y - MM/y</greatestDifference>
+							<greatestDifference id="M">MM/y – MM/y</greatestDifference>
+							<greatestDifference id="y">MM/y – MM/y</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="yMd">
-							<greatestDifference id="d" draft="unconfirmed">dd/MM/y - dd/MM/y</greatestDifference>
-							<greatestDifference id="M" draft="unconfirmed">dd/MM/y - dd/MM/y</greatestDifference>
-							<greatestDifference id="y" draft="unconfirmed">dd/MM/y - dd/MM/y</greatestDifference>
+							<greatestDifference id="d">dd/MM/y – dd/MM/y</greatestDifference>
+							<greatestDifference id="M">dd/MM/y – dd/MM/y</greatestDifference>
+							<greatestDifference id="y">dd/MM/y – dd/MM/y</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="yMEd">
-							<greatestDifference id="d" draft="unconfirmed">E, dd/MM/y - E, dd/MM/y</greatestDifference>
-							<greatestDifference id="M" draft="unconfirmed">E, dd/MM/y - E, dd/MM/y</greatestDifference>
-							<greatestDifference id="y" draft="unconfirmed">E, dd/MM/y - E, dd/MM/y</greatestDifference>
+							<greatestDifference id="d">E, dd/MM/y – E, dd/MM/y</greatestDifference>
+							<greatestDifference id="M">E, dd/MM/y – E, dd/MM/y</greatestDifference>
+							<greatestDifference id="y">E, dd/MM/y – E, dd/MM/y</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="yMMM">
-							<greatestDifference id="M" draft="unconfirmed">MMM-MMM y</greatestDifference>
-							<greatestDifference id="y" draft="unconfirmed">MMM y - MMM y</greatestDifference>
+							<greatestDifference id="M">MMM–MMM y</greatestDifference>
+							<greatestDifference id="y">MMM y – MMM y</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="yMMMd">
-							<greatestDifference id="d" draft="unconfirmed">d 'ta'’-d 'ta'’ MMM y</greatestDifference>
-							<greatestDifference id="M" draft="unconfirmed">d 'ta'’ MMM - d 'ta'’ MMM y</greatestDifference>
-							<greatestDifference id="y" draft="unconfirmed">d 'ta'’ MMM y - d 'ta'’ MMM y</greatestDifference>
+							<greatestDifference id="d">d – d MMM y</greatestDifference>
+							<greatestDifference id="M">y MMM d – MMM d</greatestDifference>
+							<greatestDifference id="y">d MMM, y – d MMM, y</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="yMMMEd">
-							<greatestDifference id="d" draft="unconfirmed">E, d 'ta'’ - E, d 'ta'’ MMM y</greatestDifference>
-							<greatestDifference id="M" draft="unconfirmed">E, d 'ta'’ MMM - E, d 'ta'’ MMM y</greatestDifference>
-							<greatestDifference id="y" draft="unconfirmed">E, d 'ta'’ MMM y - E, d 'ta'’ MMM y</greatestDifference>
+							<greatestDifference id="d">E, d MMM – E, d MMM, y</greatestDifference>
+							<greatestDifference id="M">E, d 'ta'’ MMM – E, d 'ta'’ MMM y</greatestDifference>
+							<greatestDifference id="y">E, d 'ta'’ MMM y – E, d 'ta'’ MMM y</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="yMMMM">
+							<greatestDifference id="M">MMMM – MMMM y</greatestDifference>
+							<greatestDifference id="y">MMMM y – MMMM y</greatestDifference>
 						</intervalFormatItem>
 					</intervalFormats>
 				</dateTimeFormats>
 			</calendar>
 		</calendars>
 		<fields>
-			<field type="era">
-				<displayName>Epoka</displayName>
-			</field>
 			<field type="year">
 				<displayName>Sena</displayName>
-				<relative type="-1">Is-sena li għaddiet</relative>
-				<relative type="0" draft="unconfirmed">Din is-sena</relative>
-				<relative type="1">Is-sena d-dieħla</relative>
+				<relative type="-1">is-sena l-oħra</relative>
+				<relative type="0">din is-sena</relative>
+				<relative type="1">is-sena d-dieħla</relative>
+				<relativeTime type="future">
+					<relativeTimePattern count="one">fi żmien sena</relativeTimePattern>
+					<relativeTimePattern count="two">fi żmien sentejn oħra</relativeTimePattern>
+					<relativeTimePattern count="few">fi żmien {0} snin oħra</relativeTimePattern>
+					<relativeTimePattern count="many">fi żmien {0}-il sena oħra</relativeTimePattern>
+					<relativeTimePattern count="other">fi żmien {0} sena oħra</relativeTimePattern>
+				</relativeTime>
 				<relativeTime type="past">
-					<relativeTimePattern count="one">{0} sena ilu</relativeTimePattern>
+					<relativeTimePattern count="one">sena ilu</relativeTimePattern>
+					<relativeTimePattern count="two">sentejn ilu</relativeTimePattern>
 					<relativeTimePattern count="few">{0} snin ilu</relativeTimePattern>
-					<relativeTimePattern count="many">{0} snin ilu</relativeTimePattern>
-					<relativeTimePattern count="other">{0} snin ilu</relativeTimePattern>
+					<relativeTimePattern count="many">{0}-il sena ilu</relativeTimePattern>
+					<relativeTimePattern count="other">{0} sena ilu</relativeTimePattern>
+				</relativeTime>
+			</field>
+			<field type="year-short">
+				<displayName>Sn</displayName>
+				<relativeTime type="past">
+					<relativeTimePattern count="one">sa sena ilu</relativeTimePattern>
+					<relativeTimePattern count="two">sentejn ilu</relativeTimePattern>
+					<relativeTimePattern count="few">{0} snin ilu</relativeTimePattern>
+					<relativeTimePattern count="many">{0}-il sena ilu</relativeTimePattern>
+					<relativeTimePattern count="other">{0} sena ilu</relativeTimePattern>
+				</relativeTime>
+			</field>
+			<field type="year-narrow">
+				<displayName>Sena</displayName>
+				<relativeTime type="past">
+					<relativeTimePattern count="one">sena ilu</relativeTimePattern>
+					<relativeTimePattern count="two">sentejn ilu</relativeTimePattern>
+					<relativeTimePattern count="few">{0} snin ilu</relativeTimePattern>
+					<relativeTimePattern count="many">{0}-il sena ilu</relativeTimePattern>
+					<relativeTimePattern count="other">{0} sena ilu</relativeTimePattern>
+				</relativeTime>
+			</field>
+			<field type="quarter">
+				<displayName draft="provisional">kwart</displayName>
+				<relative type="-1">il-kwart ta’ sena li għadda</relative>
+				<relative type="0">il-kwart ta’ sena li qegħdin fih</relative>
+				<relative type="1">il-kwart li jmiss tas-sena</relative>
+				<relativeTime type="future">
+					<relativeTimePattern count="one">f’{0} kwart ta’ sena oħrajn</relativeTimePattern>
+					<relativeTimePattern count="two">f’{0} kwarti ta’ sena oħrajn</relativeTimePattern>
+					<relativeTimePattern count="few">f’{0} kwarti ta’ sena oħrajn</relativeTimePattern>
+					<relativeTimePattern count="many">f’{0}-il kwart ta’ sena oħrajn</relativeTimePattern>
+					<relativeTimePattern count="other">f’{0} kwart ta’ sena oħrajn</relativeTimePattern>
+				</relativeTime>
+				<relativeTime type="past">
+					<relativeTimePattern count="one">il-kwart ta’ sena li għadda</relativeTimePattern>
+					<relativeTimePattern count="two">{0} kwarti ta’ sena li għaddew</relativeTimePattern>
+					<relativeTimePattern count="few">{0} kwarti ta’ sena li għaddew</relativeTimePattern>
+					<relativeTimePattern count="many">{0}-il kwart ta’ sena li għaddew</relativeTimePattern>
+					<relativeTimePattern count="other">{0} kwart ta’ sena li għaddew</relativeTimePattern>
+				</relativeTime>
+			</field>
+			<field type="quarter-short">
+				<displayName>kwrt</displayName>
+				<relativeTime type="future">
+					<relativeTimePattern count="one">fil-kwart tas-sena li ġej</relativeTimePattern>
+					<relativeTimePattern count="two">f’{0} kwarti ta’ sena oħrajn</relativeTimePattern>
+					<relativeTimePattern count="few">f’{0} kwarti ta’ sena oħrajn</relativeTimePattern>
+					<relativeTimePattern count="many">f’{0}-il kwart ta’ sena oħrajn</relativeTimePattern>
+					<relativeTimePattern count="other">f’{0} kwart ta’ sena oħrajn</relativeTimePattern>
+				</relativeTime>
+				<relativeTime type="past">
+					<relativeTimePattern count="one">fil-kwart tas-sena li għadda</relativeTimePattern>
+					<relativeTimePattern count="two">{0} kwarti ta’ sena ilu</relativeTimePattern>
+					<relativeTimePattern count="few">{0} kwarti ta’ sena ilu</relativeTimePattern>
+					<relativeTimePattern count="many">{0}-il kwart ta’ sena ilu</relativeTimePattern>
+					<relativeTimePattern count="other">{0} kwart ta’ sena ilu</relativeTimePattern>
+				</relativeTime>
+			</field>
+			<field type="quarter-narrow">
+				<displayName>l-ewwel kwart tas-sena, it-tieni kwart tas-sena, it-tielet kwart tas-sena, ir-raba’ kwart tas-sena</displayName>
+				<relativeTime type="future">
+					<relativeTimePattern count="one">fi kwart ta’ sena ieħor</relativeTimePattern>
+					<relativeTimePattern count="two">f’{0} kwarti ta’ sena oħrajn</relativeTimePattern>
+					<relativeTimePattern count="few">f’{0} kwarti ta’ sena oħrajn</relativeTimePattern>
+					<relativeTimePattern count="many">f’{0}-il kwart ta’ sena oħrajn</relativeTimePattern>
+					<relativeTimePattern count="other">f’{0} kwart ta’ sena oħrajn</relativeTimePattern>
 				</relativeTime>
 			</field>
 			<field type="month">
+				<displayName>xahar</displayName>
+				<relative type="-1">ix-xahar li għadda</relative>
+				<relative type="0">dan ix-xahar</relative>
+				<relative type="1">ix-xahar id-dieħel</relative>
+				<relativeTime type="future">
+					<relativeTimePattern count="one">sa xahar ieħor</relativeTimePattern>
+					<relativeTimePattern count="two">fi xahrejn oħra</relativeTimePattern>
+					<relativeTimePattern count="few">fi {0} xhur oħra</relativeTimePattern>
+					<relativeTimePattern count="many">fi {0}-xahar oħra</relativeTimePattern>
+					<relativeTimePattern count="other">fi {0} xahar oħra</relativeTimePattern>
+				</relativeTime>
+				<relativeTime type="past">
+					<relativeTimePattern count="one">xahar ilu</relativeTimePattern>
+					<relativeTimePattern count="two">xahrejn ilu</relativeTimePattern>
+					<relativeTimePattern count="few">{0} xhur ilu</relativeTimePattern>
+					<relativeTimePattern count="many">{0}-il xahar ilu</relativeTimePattern>
+					<relativeTimePattern count="other">{0} xahar ilu</relativeTimePattern>
+				</relativeTime>
+			</field>
+			<field type="month-short">
 				<displayName>Xahar</displayName>
-				<relative type="-1">Ix-xahar li għadda</relative>
-				<relative type="0">Dan ix-xahar</relative>
-				<relative type="1">Ix-xahar id-dieħel</relative>
+				<relativeTime type="future">
+					<relativeTimePattern count="one">sa xahar ieħor</relativeTimePattern>
+					<relativeTimePattern count="two">sa xahrejn oħra</relativeTimePattern>
+					<relativeTimePattern count="few">sa {0} xhur oħra</relativeTimePattern>
+					<relativeTimePattern count="many">sa {0}-il xahar oħra</relativeTimePattern>
+					<relativeTimePattern count="other">sa {0} xahar oħra</relativeTimePattern>
+				</relativeTime>
+				<relativeTime type="past">
+					<relativeTimePattern count="one">{0} xahar ilu</relativeTimePattern>
+					<relativeTimePattern count="two">xahrejn ilu</relativeTimePattern>
+					<relativeTimePattern count="few">{0} xhur ilu</relativeTimePattern>
+					<relativeTimePattern count="many">{0}-il xahar ilu</relativeTimePattern>
+					<relativeTimePattern count="other">{0} xahar ilu</relativeTimePattern>
+				</relativeTime>
+			</field>
+			<field type="month-narrow">
+				<relativeTime type="past">
+					<relativeTimePattern count="one">xahar ilu</relativeTimePattern>
+					<relativeTimePattern count="two">xahrejn ilu</relativeTimePattern>
+					<relativeTimePattern count="few">{0} xhur ilu</relativeTimePattern>
+					<relativeTimePattern count="many">{0}-il xahar ilu</relativeTimePattern>
+					<relativeTimePattern count="other">{0} xahar ilu</relativeTimePattern>
+				</relativeTime>
 			</field>
 			<field type="week">
-				<displayName>Ġimgħa</displayName>
-				<relative type="-1">Il-ġimgħa li għaddiet</relative>
-				<relative type="0">Din il-ġimgħa</relative>
-				<relative type="1">Il-ġimgħa d-dieħla</relative>
+				<displayName>ġimgħa</displayName>
+				<relative type="-1">il-ġimgħa li għaddiet</relative>
+				<relative type="0">din il-ġimgħa</relative>
+				<relative type="1">il-ġimgħa d-dieħla</relative>
+				<relativeTime type="future">
+					<relativeTimePattern count="one">sa ġimgħa oħra</relativeTimePattern>
+					<relativeTimePattern count="two">sa ġimagħtejn oħra</relativeTimePattern>
+					<relativeTimePattern count="few">sa {0} ġimgħat oħra</relativeTimePattern>
+					<relativeTimePattern count="many">sa {0}-il ġimgħa oħra</relativeTimePattern>
+					<relativeTimePattern count="other">sa {0} ġimgħa oħra</relativeTimePattern>
+				</relativeTime>
+				<relativeTime type="past">
+					<relativeTimePattern count="one">ġimgħa ilu</relativeTimePattern>
+					<relativeTimePattern count="two">ġimagħtejn ilu</relativeTimePattern>
+					<relativeTimePattern count="few">{0} ġimgħat ilu</relativeTimePattern>
+					<relativeTimePattern count="many">{0}-il ġimgħa ilu</relativeTimePattern>
+					<relativeTimePattern count="other">{0} ġimgħa ilu</relativeTimePattern>
+				</relativeTime>
+				<relativePeriod>fil-ġimgħa ta’ {0}</relativePeriod>
+			</field>
+			<field type="week-short">
+				<displayName>ġm</displayName>
+			</field>
+			<field type="week-narrow">
+				<displayName draft="provisional">Ġimgħa</displayName>
+			</field>
+			<field type="weekOfMonth">
+				<displayName>ġimgħa tax-xahar</displayName>
 			</field>
 			<field type="day">
+				<displayName>jum</displayName>
+				<relative type="-1">lbieraħ</relative>
+				<relative type="0">illum</relative>
+				<relative type="1">għada</relative>
+				<relativeTime type="future">
+					<relativeTimePattern count="one">fi żmien ġurnata</relativeTimePattern>
+					<relativeTimePattern count="two">fi żmien jumejn oħra</relativeTimePattern>
+					<relativeTimePattern count="few">fi żmien {0} ġranet oħra</relativeTimePattern>
+					<relativeTimePattern count="many">fi żmien {0}-il ġurnata oħra</relativeTimePattern>
+					<relativeTimePattern count="other">fi żmien {0} ġurnata oħra</relativeTimePattern>
+				</relativeTime>
+				<relativeTime type="past">
+					<relativeTimePattern count="one">ġurnata ilu</relativeTimePattern>
+					<relativeTimePattern count="two">jumejn ilu</relativeTimePattern>
+					<relativeTimePattern count="few">{0} ġranet ilu</relativeTimePattern>
+					<relativeTimePattern count="many">{0}-il ġurnata ilu</relativeTimePattern>
+					<relativeTimePattern count="other">{0} ġurnata ilu</relativeTimePattern>
+				</relativeTime>
+			</field>
+			<field type="day-short">
 				<displayName>Jum</displayName>
-				<relative type="-1">Ilbieraħ</relative>
-				<relative type="0">Illum</relative>
-				<relative type="1">Għada</relative>
+			</field>
+			<field type="day-narrow">
+				<relativeTime type="future">
+					<relativeTimePattern count="one">fi żmien ġurnata</relativeTimePattern>
+					<relativeTimePattern count="two">fi żmien jumejn oħra</relativeTimePattern>
+					<relativeTimePattern count="few">fi żmien {0} ġurnata oħra</relativeTimePattern>
+					<relativeTimePattern count="many">fi żmien {0}-il ġurnata oħra</relativeTimePattern>
+					<relativeTimePattern count="other">fi żmien {0} ġurnata oħra</relativeTimePattern>
+				</relativeTime>
+			</field>
+			<field type="dayOfYear">
+				<displayName>jum tas-sena</displayName>
 			</field>
 			<field type="weekday">
-				<displayName>Jum tal-Ġimgħa</displayName>
+				<displayName>jum tal-ġimgħa</displayName>
+			</field>
+			<field type="weekdayOfMonth">
+				<displayName>jum tax-xahar</displayName>
+			</field>
+			<field type="weekdayOfMonth-narrow">
+				<displayName>Weekday Of Month</displayName>
 			</field>
 			<field type="sun">
 				<relative type="-1">Il-Ħadd li għadda</relative>
-				<relative type="0">Dan il-Ħadd</relative>
-				<relative type="1">Il-Ħadd li ġej</relative>
+				<relative type="0">il-Ħadd li ġej</relative>
+				<relative type="1">il-Ħadd ta’ wara</relative>
+				<relativeTime type="future">
+					<relativeTimePattern count="one">sa Ħadd ieħor</relativeTimePattern>
+					<relativeTimePattern count="two">sa {0} Ħdud oħra</relativeTimePattern>
+					<relativeTimePattern count="few">sa {0} Ħdud oħra</relativeTimePattern>
+					<relativeTimePattern count="many">sa {0}-il Ħadd oħra</relativeTimePattern>
+					<relativeTimePattern count="other">sa {0} Ħadd oħra</relativeTimePattern>
+				</relativeTime>
+				<relativeTime type="past">
+					<relativeTimePattern count="one">il-Ħadd li għadda</relativeTimePattern>
+					<relativeTimePattern count="two">{0} Ħdud ilu</relativeTimePattern>
+					<relativeTimePattern count="few">{0} Ħdud ilu</relativeTimePattern>
+					<relativeTimePattern count="many">{0}-il Ħadd ilu</relativeTimePattern>
+					<relativeTimePattern count="other">{0} Ħadd ilu</relativeTimePattern>
+				</relativeTime>
+			</field>
+			<field type="sun-short">
+				<relative type="-1">il-Ħd. li għadda</relative>
+				<relative type="0">il-Ħd. li ġej</relative>
+				<relative type="1">il-Ħd. ta’ wara</relative>
+				<relativeTime type="future">
+					<relativeTimePattern count="one">sa Ħd. ieħor</relativeTimePattern>
+					<relativeTimePattern count="two">sa {0} Ħd. oħra</relativeTimePattern>
+					<relativeTimePattern count="few">sa {0} Ħd. oħra</relativeTimePattern>
+					<relativeTimePattern count="many">sa {0}-il Ħd. oħra</relativeTimePattern>
+					<relativeTimePattern count="other">sa {0} Ħd. oħra</relativeTimePattern>
+				</relativeTime>
+				<relativeTime type="past">
+					<relativeTimePattern count="one">il-Ħd. li għadda</relativeTimePattern>
+					<relativeTimePattern count="two">{0} Ħd. ilu</relativeTimePattern>
+					<relativeTimePattern count="few">{0} Ħd. ilu</relativeTimePattern>
+					<relativeTimePattern count="many">{0}-il Ħd. ilu</relativeTimePattern>
+					<relativeTimePattern count="other">{0} Ħd. ilu</relativeTimePattern>
+				</relativeTime>
+			</field>
+			<field type="sun-narrow">
+				<relativeTime type="past">
+					<relativeTimePattern count="one">{0} Ħd. ilu</relativeTimePattern>
+					<relativeTimePattern count="two">{0} Ħd. ilu</relativeTimePattern>
+					<relativeTimePattern count="few">{0} Ħd. ilu</relativeTimePattern>
+					<relativeTimePattern count="many">{0}-il Ħd. ilu</relativeTimePattern>
+					<relativeTimePattern count="other">{0} Ħd. ilu</relativeTimePattern>
+				</relativeTime>
 			</field>
 			<field type="mon">
 				<relative type="-1">It-Tnejn li għadda</relative>
+				<relative type="0">Dan It-Tnejn</relative>
 				<relative type="1">It-Tnejn li ġej</relative>
 			</field>
+			<field type="mon-short">
+				<relative type="-1">it-Tn. li għadda</relative>
+				<relative type="0">it-Tn. li ġej</relative>
+				<relative type="1">it-Tn. ta’ wara</relative>
+			</field>
+			<field type="tue">
+				<relative type="-1">it-Tlieta li għaddiet</relative>
+				<relative type="0">it-Tlieta li ġejja</relative>
+				<relative type="1">it-Tlieta ta’ wara</relative>
+			</field>
 			<field type="dayperiod">
-				<displayName draft="unconfirmed">QN/WN</displayName>
+				<displayName>AM/PM</displayName>
 			</field>
 			<field type="hour">
-				<displayName>Siegħa</displayName>
+				<displayName>siegħa</displayName>
+				<relative type="0">din is-siegħa</relative>
+				<relativeTime type="future">
+					<relativeTimePattern count="one">fi żmien siegħa oħra</relativeTimePattern>
+					<relativeTimePattern count="two">fi żmien sagħtejn</relativeTimePattern>
+					<relativeTimePattern count="few">fi żmien {0} sigħat</relativeTimePattern>
+					<relativeTimePattern count="many">fi żmien {0}-il siegħa</relativeTimePattern>
+					<relativeTimePattern count="other">fi żmien {0} siegħa</relativeTimePattern>
+				</relativeTime>
+				<relativeTime type="past">
+					<relativeTimePattern count="one">siegħa ilu</relativeTimePattern>
+					<relativeTimePattern count="two">sagħtejn ilu</relativeTimePattern>
+					<relativeTimePattern count="few">{0} sigħat ilu</relativeTimePattern>
+					<relativeTimePattern count="many">{0}-il siegħa ilu</relativeTimePattern>
+					<relativeTimePattern count="other">{0} siegħa ilu</relativeTimePattern>
+				</relativeTime>
 			</field>
 			<field type="minute">
-				<displayName>Minuta</displayName>
+				<displayName>minuta</displayName>
+				<relative type="0">din il-minuta</relative>
+				<relativeTime type="future">
+					<relativeTimePattern count="one">sa minuta oħra</relativeTimePattern>
+					<relativeTimePattern count="two">sa {0} minuti oħra</relativeTimePattern>
+					<relativeTimePattern count="few">sa {0} minuti oħra</relativeTimePattern>
+					<relativeTimePattern count="many">sa {0}-il minuta oħra</relativeTimePattern>
+					<relativeTimePattern count="other">sa {0} minuta oħra</relativeTimePattern>
+				</relativeTime>
+				<relativeTime type="past">
+					<relativeTimePattern count="one">minuta ilu</relativeTimePattern>
+					<relativeTimePattern count="two">{0} minuti ilu</relativeTimePattern>
+					<relativeTimePattern count="few">{0} minuti ilu</relativeTimePattern>
+					<relativeTimePattern count="many">{0}-il minuta ilu</relativeTimePattern>
+					<relativeTimePattern count="other">{0} minuta ilu</relativeTimePattern>
+				</relativeTime>
+			</field>
+			<field type="minute-short">
+				<displayName>min.</displayName>
+				<relativeTime type="future">
+					<relativeTimePattern count="one">sa min. oħra</relativeTimePattern>
+					<relativeTimePattern count="two">sa {0} min. oħra</relativeTimePattern>
+					<relativeTimePattern count="few">sa {0} min. oħra</relativeTimePattern>
+					<relativeTimePattern count="many">sa {0}-il min. oħra</relativeTimePattern>
+					<relativeTimePattern count="other">sa {0} min. oħra</relativeTimePattern>
+				</relativeTime>
+				<relativeTime type="past">
+					<relativeTimePattern count="one">min. ilu</relativeTimePattern>
+					<relativeTimePattern count="two">{0} min. ilu</relativeTimePattern>
+					<relativeTimePattern count="few">{0} min. ilu</relativeTimePattern>
+					<relativeTimePattern count="many">{0}-il min. ilu</relativeTimePattern>
+					<relativeTimePattern count="other">{0} min. ilu</relativeTimePattern>
+				</relativeTime>
+			</field>
+			<field type="minute-narrow">
+				<displayName>m</displayName>
+				<relativeTime type="future">
+					<relativeTimePattern count="one">sa min. oħra</relativeTimePattern>
+					<relativeTimePattern count="two">sa {0} min. oħra</relativeTimePattern>
+					<relativeTimePattern count="few">sa {0} min. oħra</relativeTimePattern>
+					<relativeTimePattern count="many">sa {0}-il min</relativeTimePattern>
+					<relativeTimePattern count="other">sa {0} min. oħra</relativeTimePattern>
+				</relativeTime>
 			</field>
 			<field type="second">
-				<displayName>Sekonda</displayName>
+				<displayName>sekonda</displayName>
+				<relative type="0">issa</relative>
+				<relativeTime type="future">
+					<relativeTimePattern count="one">sa sekonda oħra</relativeTimePattern>
+					<relativeTimePattern count="two">sa {0} sekondi oħra</relativeTimePattern>
+					<relativeTimePattern count="few">sa {0} sekondi oħra</relativeTimePattern>
+					<relativeTimePattern count="many">sa {0}-il sekonda oħra</relativeTimePattern>
+					<relativeTimePattern count="other">sa {0} sekonda oħra</relativeTimePattern>
+				</relativeTime>
+				<relativeTime type="past">
+					<relativeTimePattern count="one">sekonda ilu</relativeTimePattern>
+					<relativeTimePattern count="two">{0} sekondi ilu</relativeTimePattern>
+					<relativeTimePattern count="few">{0} sekondi ilu</relativeTimePattern>
+					<relativeTimePattern count="many">{0}-il sekonda ilu</relativeTimePattern>
+					<relativeTimePattern count="other">{0} sekonda ilu</relativeTimePattern>
+				</relativeTime>
+			</field>
+			<field type="second-short">
+				<displayName>sek.</displayName>
+				<relativeTime type="future">
+					<relativeTimePattern count="one">sa sek. oħra</relativeTimePattern>
+					<relativeTimePattern count="two">sa {0} sek. oħra</relativeTimePattern>
+					<relativeTimePattern count="few">sa {0} sek. oħra</relativeTimePattern>
+					<relativeTimePattern count="many">sa {0}-il sek. oħra</relativeTimePattern>
+					<relativeTimePattern count="other">sa {0} sek. oħra</relativeTimePattern>
+				</relativeTime>
+				<relativeTime type="past">
+					<relativeTimePattern count="one">sek. ilu</relativeTimePattern>
+					<relativeTimePattern count="two">{0} sek. ilu</relativeTimePattern>
+					<relativeTimePattern count="few">{0} sek. ilu</relativeTimePattern>
+					<relativeTimePattern count="many">{0}-il sek. ilu</relativeTimePattern>
+					<relativeTimePattern count="other">{0} sek. ilu</relativeTimePattern>
+				</relativeTime>
+			</field>
+			<field type="second-narrow">
+				<displayName>s</displayName>
 			</field>
 			<field type="zone">
-				<displayName>Żona</displayName>
+				<displayName>żona tal-ħin</displayName>
+			</field>
+			<field type="zone-short">
+				<displayName>żona</displayName>
 			</field>
 		</fields>
 		<timeZoneNames>
-			<hourFormat>+HH:mm;-HH:mm</hourFormat>
-			<gmtFormat>GMT{0}</gmtFormat>
 			<regionFormat>Ħin ta’ {0}</regionFormat>
+			<regionFormat type="standard">{0} Ħin Standard</regionFormat>
+			<zone type="Pacific/Honolulu">
+				<exemplarCity>Honolulu</exemplarCity>
+			</zone>
 			<zone type="Etc/Unknown">
 				<exemplarCity>Belt Mhux Magħruf</exemplarCity>
+			</zone>
+			<zone type="Europe/Tirane">
+				<exemplarCity>Tirana</exemplarCity>
+			</zone>
+			<zone type="Europe/Vienna">
+				<exemplarCity>Vjenna</exemplarCity>
+			</zone>
+			<zone type="Europe/Brussels">
+				<exemplarCity>Brussell</exemplarCity>
+			</zone>
+			<zone type="Europe/Sofia">
+				<exemplarCity>Sofija</exemplarCity>
+			</zone>
+			<zone type="Asia/Nicosia">
+				<exemplarCity>Nikosija</exemplarCity>
+			</zone>
+			<zone type="Europe/Prague">
+				<exemplarCity>Praga</exemplarCity>
+			</zone>
+			<zone type="Africa/Algiers">
+				<exemplarCity>l-Alġier</exemplarCity>
+			</zone>
+			<zone type="Europe/Paris">
+				<exemplarCity>Pariġi</exemplarCity>
 			</zone>
 			<zone type="Europe/London">
 				<exemplarCity>Londra</exemplarCity>
 			</zone>
+			<zone type="Europe/Gibraltar">
+				<exemplarCity>Ġibiltà</exemplarCity>
+			</zone>
+			<zone type="Europe/Athens">
+				<exemplarCity>Ateni</exemplarCity>
+			</zone>
+			<zone type="Atlantic/South_Georgia">
+				<exemplarCity>il-Georgia tan-Nofsinhar</exemplarCity>
+			</zone>
+			<zone type="America/Guatemala">
+				<exemplarCity>il-Gwatemala</exemplarCity>
+			</zone>
+			<zone type="Asia/Jerusalem">
+				<exemplarCity>Ġerusalemm</exemplarCity>
+			</zone>
+			<zone type="Europe/Rome">
+				<exemplarCity>Ruma</exemplarCity>
+			</zone>
+			<zone type="America/Jamaica">
+				<exemplarCity>il-Ġamajka</exemplarCity>
+			</zone>
+			<zone type="Asia/Kuwait">
+				<exemplarCity>il-Belt tal-Kuwajt</exemplarCity>
+			</zone>
+			<zone type="Asia/Beirut">
+				<exemplarCity>Bejrut</exemplarCity>
+			</zone>
+			<zone type="Europe/Luxembourg">
+				<exemplarCity>il-Lussemburgu</exemplarCity>
+			</zone>
+			<zone type="Asia/Rangoon">
+				<exemplarCity>Rangoon</exemplarCity>
+			</zone>
+			<zone type="Asia/Macau">
+				<exemplarCity>Macau</exemplarCity>
+			</zone>
 			<zone type="Europe/Malta">
 				<exemplarCity>Valletta</exemplarCity>
+			</zone>
+			<zone type="Indian/Maldives">
+				<exemplarCity>il-Maldivi</exemplarCity>
+			</zone>
+			<zone type="Europe/Warsaw">
+				<exemplarCity>Varsavja</exemplarCity>
+			</zone>
+			<zone type="Europe/Lisbon">
+				<exemplarCity>Liżbona</exemplarCity>
+			</zone>
+			<zone type="Europe/Belgrade">
+				<exemplarCity>Belgrad</exemplarCity>
+			</zone>
+			<zone type="Europe/Moscow">
+				<exemplarCity>Moska</exemplarCity>
+			</zone>
+			<zone type="Europe/Stockholm">
+				<exemplarCity>Stokkolma</exemplarCity>
+			</zone>
+			<zone type="Asia/Damascus">
+				<exemplarCity>Damasku</exemplarCity>
+			</zone>
+			<zone type="Europe/Vatican">
+				<exemplarCity>il-Belt tal-Vatikan</exemplarCity>
 			</zone>
 			<metazone type="Europe_Central">
 				<long>
@@ -1295,6 +1833,9 @@ For terms of use, see http://www.unicode.org/copyright.html
 				</short>
 			</metazone>
 			<metazone type="GMT">
+				<long>
+					<standard>Greenwich Mean Time</standard>
+				</long>
 				<short>
 					<standard>GMT</standard>
 				</short>
@@ -1302,39 +1843,241 @@ For terms of use, see http://www.unicode.org/copyright.html
 		</timeZoneNames>
 	</dates>
 	<numbers>
-		<symbols numberSystem="latn">
-			<decimal>.</decimal>
-			<group>,</group>
-		</symbols>
 		<currencyFormats numberSystem="latn">
 			<currencyFormatLength>
 				<currencyFormat type="standard">
 					<pattern>¤#,##0.00</pattern>
+					<pattern alt="alphaNextToNumber" draft="provisional">¤ #,##0.00</pattern>
 				</currencyFormat>
 			</currencyFormatLength>
+			<currencyFormatLength type="short">
+				<currencyFormat type="standard">
+					<pattern type="1000" count="one" draft="provisional">¤0K</pattern>
+					<pattern type="1000" count="one" alt="alphaNextToNumber" draft="provisional">¤ 0K</pattern>
+					<pattern type="1000" count="two" draft="provisional">¤0K</pattern>
+					<pattern type="1000" count="two" alt="alphaNextToNumber" draft="provisional">¤ 0K</pattern>
+					<pattern type="1000" count="few" draft="provisional">¤0K</pattern>
+					<pattern type="1000" count="few" alt="alphaNextToNumber" draft="provisional">¤ 0K</pattern>
+					<pattern type="1000" count="many" draft="provisional">¤0K</pattern>
+					<pattern type="1000" count="many" alt="alphaNextToNumber" draft="provisional">¤ 0K</pattern>
+					<pattern type="1000" count="other" draft="provisional">¤0K</pattern>
+					<pattern type="1000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 0K</pattern>
+					<pattern type="10000" count="one" draft="provisional">¤00K</pattern>
+					<pattern type="10000" count="one" alt="alphaNextToNumber" draft="provisional">¤ 00K</pattern>
+					<pattern type="10000" count="two" draft="provisional">¤00K</pattern>
+					<pattern type="10000" count="two" alt="alphaNextToNumber" draft="provisional">¤ 00K</pattern>
+					<pattern type="10000" count="few" draft="provisional">¤00K</pattern>
+					<pattern type="10000" count="few" alt="alphaNextToNumber" draft="provisional">¤ 00K</pattern>
+					<pattern type="10000" count="many" draft="provisional">¤00K</pattern>
+					<pattern type="10000" count="many" alt="alphaNextToNumber" draft="provisional">¤ 00K</pattern>
+					<pattern type="10000" count="other" draft="provisional">¤00K</pattern>
+					<pattern type="10000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 00K</pattern>
+					<pattern type="100000" count="one" draft="provisional">¤000K</pattern>
+					<pattern type="100000" count="one" alt="alphaNextToNumber" draft="provisional">¤ 000K</pattern>
+					<pattern type="100000" count="two" draft="provisional">¤000K</pattern>
+					<pattern type="100000" count="two" alt="alphaNextToNumber" draft="provisional">¤ 000K</pattern>
+					<pattern type="100000" count="few" draft="provisional">¤000K</pattern>
+					<pattern type="100000" count="few" alt="alphaNextToNumber" draft="provisional">¤ 000K</pattern>
+					<pattern type="100000" count="many" draft="provisional">¤000K</pattern>
+					<pattern type="100000" count="many" alt="alphaNextToNumber" draft="provisional">¤ 000K</pattern>
+					<pattern type="100000" count="other" draft="provisional">¤000K</pattern>
+					<pattern type="100000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 000K</pattern>
+					<pattern type="1000000" count="one" draft="provisional">¤0M</pattern>
+					<pattern type="1000000" count="one" alt="alphaNextToNumber" draft="provisional">¤ 0M</pattern>
+					<pattern type="1000000" count="two" draft="provisional">¤0M</pattern>
+					<pattern type="1000000" count="two" alt="alphaNextToNumber" draft="provisional">¤ 0M</pattern>
+					<pattern type="1000000" count="few" draft="provisional">¤0M</pattern>
+					<pattern type="1000000" count="few" alt="alphaNextToNumber" draft="provisional">¤ 0M</pattern>
+					<pattern type="1000000" count="many" draft="provisional">¤0M</pattern>
+					<pattern type="1000000" count="many" alt="alphaNextToNumber" draft="provisional">¤ 0M</pattern>
+					<pattern type="1000000" count="other" draft="provisional">¤0M</pattern>
+					<pattern type="1000000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 0M</pattern>
+					<pattern type="10000000" count="one" draft="provisional">¤00M</pattern>
+					<pattern type="10000000" count="one" alt="alphaNextToNumber" draft="provisional">¤ 00M</pattern>
+					<pattern type="10000000" count="two" draft="provisional">¤00M</pattern>
+					<pattern type="10000000" count="two" alt="alphaNextToNumber" draft="provisional">¤ 00M</pattern>
+					<pattern type="10000000" count="few" draft="provisional">¤00M</pattern>
+					<pattern type="10000000" count="few" alt="alphaNextToNumber" draft="provisional">¤ 00M</pattern>
+					<pattern type="10000000" count="many" draft="provisional">¤00M</pattern>
+					<pattern type="10000000" count="many" alt="alphaNextToNumber" draft="provisional">¤ 00M</pattern>
+					<pattern type="10000000" count="other" draft="provisional">¤00M</pattern>
+					<pattern type="10000000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 00M</pattern>
+					<pattern type="100000000" count="one" draft="provisional">¤000M</pattern>
+					<pattern type="100000000" count="one" alt="alphaNextToNumber" draft="provisional">¤ 000M</pattern>
+					<pattern type="100000000" count="two" draft="provisional">¤000M</pattern>
+					<pattern type="100000000" count="two" alt="alphaNextToNumber" draft="provisional">¤ 000M</pattern>
+					<pattern type="100000000" count="few" draft="provisional">¤000M</pattern>
+					<pattern type="100000000" count="few" alt="alphaNextToNumber" draft="provisional">¤ 000M</pattern>
+					<pattern type="100000000" count="many" draft="provisional">¤000M</pattern>
+					<pattern type="100000000" count="many" alt="alphaNextToNumber" draft="provisional">¤ 000M</pattern>
+					<pattern type="100000000" count="other" draft="provisional">¤000M</pattern>
+					<pattern type="100000000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 000M</pattern>
+					<pattern type="1000000000" count="one" draft="provisional">¤0G</pattern>
+					<pattern type="1000000000" count="one" alt="alphaNextToNumber" draft="provisional">¤ 0G</pattern>
+					<pattern type="1000000000" count="two" draft="provisional">¤0G</pattern>
+					<pattern type="1000000000" count="two" alt="alphaNextToNumber" draft="provisional">¤ 0G</pattern>
+					<pattern type="1000000000" count="few" draft="provisional">¤0G</pattern>
+					<pattern type="1000000000" count="few" alt="alphaNextToNumber" draft="provisional">¤ 0G</pattern>
+					<pattern type="1000000000" count="many" draft="provisional">¤0G</pattern>
+					<pattern type="1000000000" count="many" alt="alphaNextToNumber" draft="provisional">¤ 0G</pattern>
+					<pattern type="1000000000" count="other" draft="provisional">¤0G</pattern>
+					<pattern type="1000000000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 0G</pattern>
+					<pattern type="10000000000" count="one" draft="provisional">¤00G</pattern>
+					<pattern type="10000000000" count="one" alt="alphaNextToNumber" draft="provisional">¤ 00G</pattern>
+					<pattern type="10000000000" count="two" draft="provisional">¤00G</pattern>
+					<pattern type="10000000000" count="two" alt="alphaNextToNumber" draft="provisional">¤ 00G</pattern>
+					<pattern type="10000000000" count="few" draft="provisional">¤00G</pattern>
+					<pattern type="10000000000" count="few" alt="alphaNextToNumber" draft="provisional">¤ 00G</pattern>
+					<pattern type="10000000000" count="many" draft="provisional">¤00G</pattern>
+					<pattern type="10000000000" count="many" alt="alphaNextToNumber" draft="provisional">¤ 00G</pattern>
+					<pattern type="10000000000" count="other" draft="provisional">¤00G</pattern>
+					<pattern type="10000000000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 00G</pattern>
+					<pattern type="100000000000" count="one" draft="provisional">¤000G</pattern>
+					<pattern type="100000000000" count="one" alt="alphaNextToNumber" draft="provisional">¤ 000G</pattern>
+					<pattern type="100000000000" count="two" draft="provisional">¤000G</pattern>
+					<pattern type="100000000000" count="two" alt="alphaNextToNumber" draft="provisional">¤ 000G</pattern>
+					<pattern type="100000000000" count="few" draft="provisional">¤000G</pattern>
+					<pattern type="100000000000" count="few" alt="alphaNextToNumber" draft="provisional">¤ 000G</pattern>
+					<pattern type="100000000000" count="many" draft="provisional">¤000G</pattern>
+					<pattern type="100000000000" count="many" alt="alphaNextToNumber" draft="provisional">¤ 000G</pattern>
+					<pattern type="100000000000" count="other" draft="provisional">¤000G</pattern>
+					<pattern type="100000000000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 000G</pattern>
+					<pattern type="1000000000000" count="one" draft="provisional">¤0T</pattern>
+					<pattern type="1000000000000" count="one" alt="alphaNextToNumber" draft="provisional">¤ 0T</pattern>
+					<pattern type="1000000000000" count="two" draft="provisional">¤0T</pattern>
+					<pattern type="1000000000000" count="two" alt="alphaNextToNumber" draft="provisional">¤ 0T</pattern>
+					<pattern type="1000000000000" count="few" draft="provisional">¤0T</pattern>
+					<pattern type="1000000000000" count="few" alt="alphaNextToNumber" draft="provisional">¤ 0T</pattern>
+					<pattern type="1000000000000" count="many" draft="provisional">¤0T</pattern>
+					<pattern type="1000000000000" count="many" alt="alphaNextToNumber" draft="provisional">¤ 0T</pattern>
+					<pattern type="1000000000000" count="other" draft="provisional">¤0T</pattern>
+					<pattern type="1000000000000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 0T</pattern>
+					<pattern type="10000000000000" count="one" draft="provisional">¤00T</pattern>
+					<pattern type="10000000000000" count="one" alt="alphaNextToNumber" draft="provisional">¤ 00T</pattern>
+					<pattern type="10000000000000" count="two" draft="provisional">¤00T</pattern>
+					<pattern type="10000000000000" count="two" alt="alphaNextToNumber" draft="provisional">¤ 00T</pattern>
+					<pattern type="10000000000000" count="few" draft="provisional">¤00T</pattern>
+					<pattern type="10000000000000" count="few" alt="alphaNextToNumber" draft="provisional">¤ 00T</pattern>
+					<pattern type="10000000000000" count="many" draft="provisional">¤00T</pattern>
+					<pattern type="10000000000000" count="many" alt="alphaNextToNumber" draft="provisional">¤ 00T</pattern>
+					<pattern type="10000000000000" count="other" draft="provisional">¤00T</pattern>
+					<pattern type="10000000000000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 00T</pattern>
+					<pattern type="100000000000000" count="one" draft="provisional">¤000T</pattern>
+					<pattern type="100000000000000" count="one" alt="alphaNextToNumber" draft="provisional">¤ 000T</pattern>
+					<pattern type="100000000000000" count="two" draft="provisional">¤000T</pattern>
+					<pattern type="100000000000000" count="two" alt="alphaNextToNumber" draft="provisional">¤ 000T</pattern>
+					<pattern type="100000000000000" count="few" draft="provisional">¤000T</pattern>
+					<pattern type="100000000000000" count="few" alt="alphaNextToNumber" draft="provisional">¤ 000T</pattern>
+					<pattern type="100000000000000" count="many" draft="provisional">¤000T</pattern>
+					<pattern type="100000000000000" count="many" alt="alphaNextToNumber" draft="provisional">¤ 000T</pattern>
+					<pattern type="100000000000000" count="other" draft="provisional">¤000T</pattern>
+					<pattern type="100000000000000" count="other" alt="alphaNextToNumber" draft="provisional">¤ 000T</pattern>
+				</currencyFormat>
+			</currencyFormatLength>
+			<unitPattern count="one">{0} {1}</unitPattern>
+			<unitPattern count="two">{0} {1}</unitPattern>
+			<unitPattern count="few">{0} {1}</unitPattern>
+			<unitPattern count="many">{0} {1}</unitPattern>
+			<unitPattern count="other">{0} {1}</unitPattern>
 		</currencyFormats>
 		<currencies>
+			<currency type="BYN">
+				<symbol alt="narrow" draft="contributed">р.</symbol>
+			</currency>
 			<currency type="EUR">
-				<displayName>Ewro</displayName>
+				<displayName>ewro</displayName>
 			</currency>
 			<currency type="MTL">
 				<displayName>Lira Maltija</displayName>
 			</currency>
+			<currency type="PHP">
+				<symbol draft="contributed">PHP</symbol>
+			</currency>
 			<currency type="XXX">
-				<displayName>Munita Mhux Magħrufa jew Mhux Valida</displayName>
-				<displayName count="one">Munita Mhux Magħruf jew Mhux Validu</displayName>
-				<displayName count="few">Munita Mhux Magħruf jew Mhux Validu</displayName>
-				<displayName count="many">Munita Mhux Magħruf jew Mhux Validu</displayName>
-				<displayName count="other">Munita Mhux Magħruf jew Mhux Validu</displayName>
+				<displayName>Munita Mhix Magħrufa jew Mhix Valida</displayName>
+				<displayName count="one">Munita mhix magħrufa jew mhix valida</displayName>
+				<displayName count="two">Munita Mhix Magħrufa jew Mhix Valida</displayName>
+				<displayName count="few">Munita Mhix Magħrufa jew Mhix Valida</displayName>
+				<displayName count="many">Munita Mhix Magħrufa jew Mhix Valida</displayName>
+				<displayName count="other">Munita Mhix Magħrufa jew Mhix Valida</displayName>
 			</currency>
 		</currencies>
+		<minimalPairs>
+			<pluralMinimalPairs count="one">jum</pluralMinimalPairs>
+			<pluralMinimalPairs count="two">jumejn</pluralMinimalPairs>
+			<pluralMinimalPairs count="few">{0} ijiem</pluralMinimalPairs>
+			<pluralMinimalPairs count="many">{0}-il jum</pluralMinimalPairs>
+			<pluralMinimalPairs count="other">{0} jum</pluralMinimalPairs>
+		</minimalPairs>
 	</numbers>
+	<units>
+		<unitLength type="long">
+			<unit type="concentr-karat">
+				<displayName>karati</displayName>
+			</unit>
+			<unit type="consumption-liter-per-kilometer">
+				<unitPattern count="one">{0} litru kull kilometru</unitPattern>
+				<unitPattern count="two">{0} litri kull kilometru</unitPattern>
+				<unitPattern count="few">{0} litri kull kilometru</unitPattern>
+				<unitPattern count="many">{0}-il litru kull kilometru</unitPattern>
+				<unitPattern count="other">{0} litru kull kilometru</unitPattern>
+			</unit>
+			<unit type="digital-terabyte">
+				<displayName>terabytes</displayName>
+				<unitPattern count="one">{0} terabyte</unitPattern>
+				<unitPattern count="two">{0} terabytes</unitPattern>
+				<unitPattern count="few">{0} terabytes</unitPattern>
+				<unitPattern count="many">{0} terabytes</unitPattern>
+				<unitPattern count="other">{0} terabytes</unitPattern>
+			</unit>
+			<unit type="digital-terabit">
+				<displayName>terabits</displayName>
+				<unitPattern count="one">{0} terabit</unitPattern>
+				<unitPattern count="two">{0} terabits</unitPattern>
+				<unitPattern count="few">{0} terabits</unitPattern>
+				<unitPattern count="many">{0} terabits</unitPattern>
+				<unitPattern count="other">{0} terabits</unitPattern>
+			</unit>
+			<unit type="digital-megabyte">
+				<displayName>megabytes</displayName>
+				<unitPattern count="one">{0} megabyte</unitPattern>
+				<unitPattern count="two">{0} megabytes</unitPattern>
+				<unitPattern count="few">{0} megabytes</unitPattern>
+				<unitPattern count="many">{0}-il megabyte</unitPattern>
+				<unitPattern count="other">{0} megabyte</unitPattern>
+			</unit>
+			<unit type="duration-millisecond">
+				<displayName>millisekondi</displayName>
+				<unitPattern count="one">{0} millisekonda</unitPattern>
+				<unitPattern count="two">{0} millisekondi</unitPattern>
+				<unitPattern count="few">{0} millisekondi</unitPattern>
+				<unitPattern count="many">{0}-il millisekonda</unitPattern>
+				<unitPattern count="other">{0} millisekonda</unitPattern>
+			</unit>
+		</unitLength>
+		<unitLength type="short">
+			<unit type="duration-millisecond">
+				<displayName>millisek</displayName>
+			</unit>
+		</unitLength>
+		<unitLength type="narrow">
+			<unit type="duration-millisecond">
+				<unitPattern count="one">{0}ms</unitPattern>
+				<unitPattern count="two">{0}ms</unitPattern>
+				<unitPattern count="few">{0}ms</unitPattern>
+				<unitPattern count="many">{0}ms</unitPattern>
+				<unitPattern count="other">{0}ms</unitPattern>
+			</unit>
+		</unitLength>
+	</units>
 	<listPatterns>
 		<listPattern>
-			<listPatternPart type="start" draft="unconfirmed">{0}, {1}</listPatternPart>
-			<listPatternPart type="middle" draft="unconfirmed">{0}, {1}</listPatternPart>
-			<listPatternPart type="end" draft="unconfirmed">{0}, u {1}</listPatternPart>
-			<listPatternPart type="2" draft="unconfirmed">{0} u {1}</listPatternPart>
+			<listPatternPart type="end">{0}, u {1}</listPatternPart>
+			<listPatternPart type="2">{0} u {1}</listPatternPart>
+		</listPattern>
+		<listPattern type="unit-narrow">
+			<listPatternPart type="end">{0}, {1}</listPatternPart>
+			<listPatternPart type="2">{0}, {1}</listPatternPart>
 		</listPattern>
 	</listPatterns>
 	<posix>
@@ -1343,5 +2086,27 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<nostr>le:l</nostr>
 		</messages>
 	</posix>
+	<personNames>
+		<nameOrderLocales order="givenFirst" draft="unconfirmed">und mt</nameOrderLocales>
+		<parameterDefault parameter="formality" draft="unconfirmed">informal</parameterDefault>
+		<sampleName item="nativeGS">
+			<nameField type="surname" draft="unconfirmed">Grech</nameField>
+		</sampleName>
+		<sampleName item="nativeGGS">
+			<nameField type="given" draft="unconfirmed">Maria Elena</nameField>
+			<nameField type="given2" draft="unconfirmed">Farrugia</nameField>
+			<nameField type="surname" draft="unconfirmed">Vella</nameField>
+		</sampleName>
+		<sampleName item="nativeFull">
+			<nameField type="title" draft="unconfirmed">Is-Sur</nameField>
+			<nameField type="given" draft="unconfirmed">Evaristu Muscat</nameField>
+			<nameField type="given-informal" draft="unconfirmed">Varist</nameField>
+			<nameField type="given2" draft="unconfirmed">George Mifsud</nameField>
+			<nameField type="surname-prefix" draft="unconfirmed">∅∅∅</nameField>
+			<nameField type="surname-core" draft="unconfirmed">Azzopardi</nameField>
+			<nameField type="surname2" draft="unconfirmed">∅∅∅</nameField>
+			<nameField type="generation" draft="unconfirmed">Jr</nameField>
+			<nameField type="credentials" draft="unconfirmed">MP</nameField>
+		</sampleName>
+	</personNames>
 </ldml>
-

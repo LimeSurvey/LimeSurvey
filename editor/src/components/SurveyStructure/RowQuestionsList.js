@@ -1,8 +1,13 @@
 import { useState } from 'react'
-import { Draggable, Droppable } from 'react-beautiful-dnd'
+import { Draggable, Droppable } from '@hello-pangea/dnd'
 import classNames from 'classnames'
 
-import { useAppState, useBuffer, useFocused } from 'hooks'
+import {
+  useAppState,
+  useBuffer,
+  useFocused,
+  useToggleQuestionCodes,
+} from 'hooks'
 import {
   arrayDeleteItem,
   DuplicateQuestion,
@@ -24,6 +29,7 @@ export const RowQuestionsList = ({
   const { focused = {}, setFocused, unFocus } = useFocused()
   const [deleteState, setDeleteState] = useState({ show: false, index: null })
   const [isSurveyActive] = useAppState(STATES.IS_SURVEY_ACTIVE, false)
+  const { areCodesVisible, toggleQuestionCodes } = useToggleQuestionCodes()
 
   const getQuestionDragStyle = (draggableStyle) => ({
     userSelect: 'none',
@@ -141,6 +147,8 @@ export const RowQuestionsList = ({
                         focused={focused}
                         snapshot={snapshot}
                         isSurveyActive={isSurveyActive}
+                        areCodesVisible={areCodesVisible}
+                        toggleQuestionCodes={toggleQuestionCodes}
                       />
                     </div>
                   )}

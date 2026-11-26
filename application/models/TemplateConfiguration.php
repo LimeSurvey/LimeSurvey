@@ -41,6 +41,20 @@
 class TemplateConfiguration extends TemplateConfig
 {
     /**
+     * Configuration attributes whose complete value can be inherited.
+     * Options are handled separately because each option can inherit independently.
+     */
+    private const INHERITABLE_RENDERING_ATTRIBUTES = [
+        'files_css',
+        'files_js',
+        'files_print_css',
+        'cssframework_name',
+        'cssframework_css',
+        'cssframework_js',
+        'packages_to_load',
+    ];
+
+    /**
      * @var TemplateConfiguration $oParentTemplate The parent template name
      * A template configuration, in the database, can inherit from another one.
      * This used to manage the different configuration levels for a very same template: global, survey group, survey
@@ -865,9 +879,16 @@ class TemplateConfiguration extends TemplateConfig
     public function addOptionFromXMLToLiveTheme()
     {
         if ($this->options != 'inherit') {
-            $oOptions = get_object_vars(json_decode($this->options));
+            $decodedOptions = json_decode((string) $this->options);
+            if (!is_object($decodedOptions)) {
+                return;
+            }
+            $oOptions = get_object_vars($decodedOptions);
             $oTemplateConfigurationModel = new TemplateManifest();
-            $oTemplateConfigurationModel->setBasics();
+            $oTemplateConfigurationModel->setBasics($this->template_name);
+            if (!isset($oTemplateConfigurationModel->config->options)) {
+                return;
+            }
             $oXmlOptions = get_object_vars($oTemplateConfigurationModel->config->options);
 
             // compare template options to options from the XML and add if missing
@@ -1333,6 +1354,39 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
+     * Resolve complete-field inheritance into the prepared model attributes.
+     *
+     * Database-backed configuration objects retain the literal "inherit" value until
+     * rendering is prepared. Once prepared, consumers such as getAttributes() and
+     * serializers must see the same resolved values as regular property access.
+     *
+     * @return void
+     */
+    protected function resolveInheritedRenderingAttributes()
+    {
+        foreach (self::INHERITABLE_RENDERING_ATTRIBUTES as $attribute) {
+            $configuration = $this;
+            $value = $configuration->getAttribute($attribute);
+            $visited = [spl_object_id($configuration) => true];
+
+            while ($value === 'inherit') {
+                $parent = $configuration->getParentConfiguration();
+                $parentId = spl_object_id($parent);
+
+                if ($parent === $configuration || isset($visited[$parentId])) {
+                    break;
+                }
+
+                $visited[$parentId] = true;
+                $configuration = $parent;
+                $value = $configuration->getAttribute($attribute);
+            }
+
+            $this->setAttribute($attribute, $value);
+        }
+    }
+
+    /**
      * @todo document me
      * @return void
      */
@@ -1734,7 +1788,7 @@ class TemplateConfiguration extends TemplateConfig
                     $previewUrl = Template::getTemplateURL($this->template->name) . $sTemplateFileFolder . '/preview.png';
                     $this->sPreviewImgTag = '<img src="' .
                         $previewUrl .
-                        '" alt="template preview" height="200" class="img-thumbnail p-0 rounded-0" />';
+                        '" alt="' . CHtml::encode(sprintf(gT('%s template preview', 'unescaped'), $this->template->title)) . '" height="200" class="img-thumbnail p-0 rounded-0" />';
                 }
             } else {
                 $this->sPreviewImgTag = '<em>' . gT('No preview available') . '</em>';
@@ -1768,6 +1822,7 @@ class TemplateConfiguration extends TemplateConfig
         }
 
         $this->setBasics($sTemplateName, $iSurveyId, $bUseMagicInherit);
+        $this->resolveInheritedRenderingAttributes();
         $this->setMotherTemplates(); // Recursive mother templates configuration
         $this->setThisTemplate(); // Set the main config values of this template
         $this->createTemplatePackage($this); // Create an asset package ready to be loaded
@@ -1812,6 +1867,10 @@ class TemplateConfiguration extends TemplateConfig
         $aCssFiles  = array_merge($aCssFiles, $aTCssFiles);
         $aJsFiles   = array_merge($aJsFiles, $aTJsFiles);
 
+        //For fruity_twentythree surveytheme we completely replace the variation theme css file:
+        // Before changeMotherConfiguration(), so a variation of a mother template is looked up with its rtl name too
+        $aCssFiles = $this->replaceVariationFilesWithRtl($aCssFiles);
+
         // Remove/Replace mother template files
         if (
             App()->getConfig('force_xmlsettings_for_survey_rendering') ||
@@ -1821,9 +1880,6 @@ class TemplateConfiguration extends TemplateConfig
               $aCssFiles = $this->changeMotherConfiguration('css', $aCssFiles);
               $aJsFiles  = $this->changeMotherConfiguration('js', $aJsFiles);
         }
-
-        //For fruity_twentythree surveytheme we completely replace the variation theme css file:
-        $aCssFiles = $this->replaceVariationFilesWithRtl($aCssFiles);
 
         $this->sPackageName = 'survey-template-' . $this->sTemplateName;
         $sTemplateurl       = $oTemplate->getTemplateURL();
@@ -1855,7 +1911,11 @@ class TemplateConfiguration extends TemplateConfig
             foreach ($cssFiles as $index => $cssFile) {
                 if (strpos($cssFile, 'css/variations/theme_') !== false) {
                     $cssFileSplitArray = explode('.', $cssFile);
-                    $cssFiles[$index] =  $cssFileSplitArray[0] . '-rtl.css';
+                    $rtlCssFile = $cssFileSplitArray[0] . '-rtl.css';
+                    // Keep the ltr file if neither this theme nor a mother theme has an rtl version
+                    if (file_exists($this->path . $rtlCssFile) || $this->getTemplateForAsset($rtlCssFile, $this)) {
+                        $cssFiles[$index] = $rtlCssFile;
+                    }
                 }
             }
         }

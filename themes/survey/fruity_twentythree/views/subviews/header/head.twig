@@ -40,10 +40,17 @@
         'submit_preview': gT("Responses were not saved")
     } %}
     {% set sPageTitle = aPageTitles[sIncludeContent]|default('') %}
-    {% if sIncludeContent == 'main' and aSurveyInfo.format != 'A' and aSurveyInfo.aGroups|default([])|length == 1 %}
-        {% set aCurrentGroup = aSurveyInfo.aGroups|first %}
-        {% if aCurrentGroup.showgroupinfo == 'N' or aCurrentGroup.showgroupinfo == 'B' %}
-            {% set sPageTitle = processString(aCurrentGroup.name,1)|striptags|trim %}
+    {% if sIncludeContent == 'main' and aSurveyInfo.format != 'A' %}
+        {% if aSurveyInfo.aGroups|default([])|length == 1 %}
+            {% set aCurrentGroup = aSurveyInfo.aGroups|first %}
+            {% if aCurrentGroup.showgroupinfo == 'N' or aCurrentGroup.showgroupinfo == 'B' %}
+                {% set sPageTitle = processString(aCurrentGroup.name,1)|striptags|trim %}
+            {% endif %}
+        {% endif %}
+        {# Without a shown group name, and in question by question mode (several pages per group), the page number tells the pages apart #}
+        {% if aSurveyInfo.pagenumber is defined and (sPageTitle == '' or aSurveyInfo.format == 'S') %}
+            {% set sPageNumber = gT("Page %s")|format(aSurveyInfo.pagenumber) %}
+            {% set sPageTitle = sPageTitle != '' ? sPageNumber ~ ' - ' ~ sPageTitle : sPageNumber %}
         {% endif %}
     {% endif %}
     {# Mark pages showing answer errors in the title, so screen reader users notice them right away #}

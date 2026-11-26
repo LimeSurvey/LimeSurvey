@@ -30,7 +30,7 @@
                         <?php echo $tabitem; ?>
                     </a>
                 </li>
-                <?php if ($action === "newlabelset" && Permission::model()->hasGlobalPermission('labelsets', 'import')): ?>
+                <?php if ($action === "newlabelset" && Permission::model()->hasGlobalPermission('labelsets', 'import')) : ?>
                     <li class="nav-item" role="presentation">
                         <a class="nav-link"
                            id="editlabel-tab-1"
@@ -118,7 +118,10 @@
                         <?php echo CHtml::form(["admin/labels/sa/import"], 'post', ['enctype' => 'multipart/form-data', 'class' => 'form', 'id' => 'importlabels', 'name' => "importlabels"]); ?>
                         <div class="mb-3 col-6">
                             <label class="form-label" for='the_file'>
-                                <?php echo gT("Select label set file (*.lsl):") . '<br>' . sprintf(gT("(Maximum file size: %01.2f MB)"), getMaximumFileUploadSize() / 1024 / 1024); ?>
+                                <?php echo gT("Select label set file (*.lsl):");
+                                if (isFileUploadSizeLimited()) {
+                                    echo '<br>' . sprintf(gT("(Maximum file size: %01.2f MB)"), getMaximumFileUploadSize() / 1024 / 1024);
+                                } ?>
                             </label>
                             <input id='the_file' class="form-control col" name='the_file' type='file' accept=".lsl"/>
                             <div class="col"></div>

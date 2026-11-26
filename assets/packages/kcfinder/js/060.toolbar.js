@@ -94,6 +94,15 @@ _.initToolbar = function() {
     });
 
     _.initUploadButton();
+
+    // The upload button can change its size after the initialization (e.g. by
+    // styles, icons or fonts loaded later), so keep the upload field on top of it
+    $(window).resize(_.fixUploadButton);
+    if (window.ResizeObserver) {
+        var observer = new ResizeObserver(_.fixUploadButton);
+        observer.observe($('#toolbar').get(0));
+        observer.observe($('#toolbar a[href="kcact:upload"]').get(0));
+    }
 };
 
 _.initUploadButton = function() {
@@ -102,18 +111,29 @@ _.initUploadButton = function() {
         btn.hide();
         return;
     }
-    var top = btn.get(0).offsetTop,
-        width = btn.outerWidth(),
-        height = btn.outerHeight(),
-        jInput = $('#upload input');
 
-    $('#toolbar').prepend('<div id="upload" style="top:' + top + 'px;width:' + width + 'px;height:' + height + 'px"><form enctype="multipart/form-data" method="post" target="uploadResponse" action="' + _.getURL('upload') + '"><input type="file" name="upload[]" onchange="_.uploadFile(this.form)" style="height:' + height + 'px" multiple="multiple" /><input type="hidden" name="dir" value="" /><input type="hidden" name="kcfinder_csrftoken" value="' + _.csrftoken + '" /></form></div>');
-    jInput.css('margin-left', "-" + (jInput.outerWidth() - width));
+    $('#toolbar').prepend('<div id="upload"><form enctype="multipart/form-data" method="post" target="uploadResponse" action="' + _.getURL('upload') + '"><input type="file" name="upload[]" onchange="_.uploadFile(this.form)" multiple="multiple" /><input type="hidden" name="dir" value="" /><input type="hidden" name="kcfinder_csrftoken" value="' + _.csrftoken + '" /></form></div>');
+    _.fixUploadButton();
     $('#upload').mouseover(function() {
         $('#toolbar a[href="kcact:upload"]').addClass('hover');
     }).mouseout(function() {
         $('#toolbar a[href="kcact:upload"]').removeClass('hover');
     });
+};
+
+_.fixUploadButton = function() {
+    var btn = $('#toolbar a[href="kcact:upload"]'),
+        height = btn.outerHeight();
+    if (!btn.length || !$('#upload').length)
+        return;
+
+    $('#upload').css({
+        top: btn.get(0).offsetTop,
+        left: btn.get(0).offsetLeft,
+        width: btn.outerWidth(),
+        height: height
+    });
+    $('#upload input[type="file"]').css('height', height);
 };
 
 _.uploadFile = function(form) {

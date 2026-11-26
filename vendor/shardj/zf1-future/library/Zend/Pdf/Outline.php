@@ -206,7 +206,6 @@ abstract class Zend_Pdf_Outline implements RecursiveIterator, Countable
                 default:
                     require_once 'Zend/Pdf/Exception.php';
                     throw new Zend_Pdf_Exception("Unknown option name - '$key'.");
-                    break;
             }
         }
 
@@ -320,20 +319,24 @@ abstract class Zend_Pdf_Outline implements RecursiveIterator, Countable
 
     /**
      * Go to next child
+     *
+     * @return void
      */
     #[\ReturnTypeWillChange]
     public function next()
     {
-        return next($this->childOutlines);
+        next($this->childOutlines);
     }
 
     /**
      * Rewind children
+     *
+     * @return void
      */
     #[\ReturnTypeWillChange]
     public function rewind()
     {
-        return reset($this->childOutlines);
+        reset($this->childOutlines);
     }
 
     /**

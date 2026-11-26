@@ -122,6 +122,29 @@ class EmCacheHelperTest extends TestBaseClass
     }
 
     /**
+     * Test that flushAtEndOfRequest() flushes once, at the end of the request.
+     */
+    public function testFlushAtEndOfRequest()
+    {
+        \EmCacheHelper::init(['sid' => 1, 'active' => 'Y']);
+        \EmCacheHelper::set('somekey', 'value');
+        $handlers = \Yii::app()->getEventHandlers('onEndRequest');
+        $handlerCount = $handlers->getCount();
+
+        \EmCacheHelper::flushAtEndOfRequest();
+        \EmCacheHelper::flushAtEndOfRequest();
+
+        $this->assertEquals('value', \EmCacheHelper::get('somekey'));
+        $this->assertEquals($handlerCount + 1, $handlers->getCount());
+
+        $handler = $handlers->itemAt($handlerCount);
+        $handlers->removeAt($handlerCount);
+        call_user_func($handler, new \CEvent(\Yii::app()));
+
+        $this->assertEquals(false, \EmCacheHelper::get('somekey'));
+    }
+
+    /**
      * Init twice with same sid.
      */
     public function testDoubleInit()

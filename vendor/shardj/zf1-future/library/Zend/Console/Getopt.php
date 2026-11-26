@@ -243,6 +243,7 @@ class Zend_Console_Getopt
     {
         if (!isset($_SERVER['argv'])) {
             require_once 'Zend/Console/Getopt/Exception.php';
+            // phpcs:ignore PHPCompatibility.IniDirectives.RemovedIniDirectives.register_argc_argvDeprecated -- reading the directive is not deprecated
             if (ini_get('register_argc_argv') == false) {
                 throw new Zend_Console_Getopt_Exception(
                     "argv is not available, because ini option 'register_argc_argv' is set Off"
@@ -703,7 +704,7 @@ class Zend_Console_Getopt
     public function parse()
     {
         if ($this->_parsed === true) {
-            return;
+            return $this;
         }
         $argv = $this->_argv;
         $this->_options = [];
@@ -883,7 +884,7 @@ class Zend_Console_Getopt
     /**
      * Define legal options using the gnu-style format.
      *
-     * @param  string $rules
+     * @param  string|array $rules
      * @return void
      */
     protected function _addRulesModeGnu($rules)

@@ -53,9 +53,7 @@ class Zend_Stdlib_CallbackHandler
     /**
      * Constructor
      *
-     * @param  string $event Event to which slot is subscribed
      * @param  string|array|object $callback PHP callback
-     * @param  array $options Options used by the callback handler (e.g., priority)
      * @return void
      */
     public function __construct($callback, array $metadata = [])
@@ -94,12 +92,16 @@ class Zend_Stdlib_CallbackHandler
     protected function registerCallback($callback)
     {
         $errorLevel = (defined('E_STRICT') && version_compare(PHP_VERSION, '8.4.0', '<'))
+            // phpcs:ignore PHPCompatibility.Constants.RemovedConstants.e_strictDeprecated -- used before PHP 8.4 only
             ? (E_ALL | E_STRICT)
             : E_ALL;
 
         set_error_handler([$this, 'errorHandler'], $errorLevel);
-        $callable = is_callable($callback);
-        restore_error_handler();
+        try {
+            $callable = is_callable($callback);
+        } finally {
+            restore_error_handler();
+        }
         if (!$callable || $this->error) {
             require_once 'Zend/Stdlib/Exception/InvalidCallbackException.php';
             throw new Zend_Stdlib_Exception_InvalidCallbackException('Invalid callback provided; not callable');
@@ -107,8 +109,11 @@ class Zend_Stdlib_CallbackHandler
 
         // If pecl/weakref is not installed, simply store the callback and return
         set_error_handler([$this, 'errorHandler'], $errorLevel);
-        $callable = class_exists('WeakRef');
-        restore_error_handler();
+        try {
+            $callable = class_exists('WeakRef');
+        } finally {
+            restore_error_handler();
+        }
         if (!$callable || $this->error) {
             $this->callback = $callback;
             return;

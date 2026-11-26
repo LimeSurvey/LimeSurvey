@@ -133,6 +133,15 @@ class DataIntegrityChecker
             $aData = $this->deleteSurveys($aDelete['surveys'], $aData);
         }
 
+        // Also run when surveys were deleted above: their theme options are only orphaned now
+        if (isset($aDelete['orphanthemeconfigurations']) || isset($aDelete['surveys'])) {
+            $aData = $this->deleteOrphanThemeConfigurations($aData);
+        }
+
+        if (isset($aDelete['duplicatethemeconfigurations'])) {
+            $aData = $this->deleteDuplicateThemeConfigurations($aData);
+        }
+
         if (isset($aDelete['surveylanguagesettings'])) {
             $aData = $this->deleteSurveyLanguageSettings($aDelete['surveylanguagesettings'], $aData);
         }
@@ -233,7 +242,13 @@ class DataIntegrityChecker
      */
     private function dropOrphanSurveyTables(array $surveyTables, array $aData)
     {
+        // A questions archive can be listed here as well as its responses archive, but it
+        // is already dropped together with that one, so it must not be dropped twice
+        $relatedQuestionsTables = array_filter(array_map(array($this, 'getRelatedArchivedQuestionsTableName'), $surveyTables));
         foreach ($surveyTables as $aSurveyTable) {
+            if (in_array($aSurveyTable, $relatedQuestionsTables, true)) {
+                continue;
+            }
             if ($this->dropTableIfExists($aSurveyTable, $aData)) {
                 $aData['messages'][] = sprintf(gT('Deleting orphan survey table: %s'), $aSurveyTable);
             }
@@ -259,15 +274,10 @@ class DataIntegrityChecker
     public function dropRelatedArchivedQuestionsTable($sSurveyTableName, array $aData)
     {
         $sDBPrefix = Yii::app()->db->tablePrefix;
-        // Only response archive tables (old_responses_<sid>_<date>) have a matching questions archive
-        if (strpos((string) $sSurveyTableName, $sDBPrefix . 'old_responses_') !== 0) {
+        $sQuestionsTableName = $this->getRelatedArchivedQuestionsTableName($sSurveyTableName);
+        if ($sQuestionsTableName === null) {
             return $aData;
         }
-        $sQuestionsTableName = str_replace(
-            $sDBPrefix . 'old_responses_',
-            $sDBPrefix . 'old_questions_',
-            (string) $sSurveyTableName
-        );
         // Not every responses archive has a questions archive (e.g. older archives), so
         // only attempt the drop - and so risk a warning - when there is one.
         if (!tableExists(substr($sQuestionsTableName, strlen((string) $sDBPrefix)))) {
@@ -277,6 +287,29 @@ class DataIntegrityChecker
             $aData['messages'][] = sprintf(gT('Deleting related archived questions table: %s'), $sQuestionsTableName);
         }
         return $aData;
+    }
+
+    /**
+     * Returns the name of the archived questions table (old_questions_<sid>_<date>) that
+     * belongs to an archived survey responses table (old_responses_<sid>_<date>), whether
+     * that questions table exists or not.
+     *
+     * @param string $sSurveyTableName Full (prefixed) name of an archived survey table
+     * @return string|null Full (prefixed) name of the questions archive, or null if the
+     *                     given table is not a responses archive
+     */
+    private function getRelatedArchivedQuestionsTableName($sSurveyTableName)
+    {
+        $sDBPrefix = Yii::app()->db->tablePrefix;
+        // Only response archive tables (old_responses_<sid>_<date>) have a matching questions archive
+        if (strpos((string) $sSurveyTableName, $sDBPrefix . 'old_responses_') !== 0) {
+            return null;
+        }
+        return str_replace(
+            $sDBPrefix . 'old_responses_',
+            $sDBPrefix . 'old_questions_',
+            (string) $sSurveyTableName
+        );
     }
 
     /**
@@ -552,25 +585,31 @@ class DataIntegrityChecker
     }
 
     /**
-     * This function deletes QuotaMember by join on question
+     * This function deletes quota members without related question, survey or quota
      * @param array $aData for view generation
      * @return array
      */
     private function deleteQuotaMembers(array $aData)
     {
         $oCriteria = new CDbCriteria();
-        $oCriteria->join = 'LEFT JOIN {{questions}} q ON t.qid=q.qid LEFT JOIN {{surveys}} s ON t.sid=s.sid';
-        $oCriteria->condition = '(q.qid IS NULL) OR (s.sid IS NULL)';
-        $count = 0;
-        $aRecords = QuotaMember::model()->findAll($oCriteria);
-        foreach ($aRecords as $aRecord) {
-            $deleted = QuotaMember::model()->deleteAllByAttributes($aRecord);
-            $count += $deleted;
-        }
+        $oCriteria->condition = $this->getOrphanedQuotaMembersCondition('{{quota_members}}');
+        $count = QuotaMember::model()->deleteAll($oCriteria);
         if ($count > 0) {
             $aData['messages'][] = sprintf(gT('Deleted %u orphaned quota rule(s)'), $count);
         }
         return $aData;
+    }
+
+    /**
+     * Returns the SQL condition matching quota members without related question, survey or quota
+     * @param string $tableAlias Alias or name of the quota members table in the query
+     * @return string
+     */
+    private function getOrphanedQuotaMembersCondition($tableAlias)
+    {
+        return "NOT EXISTS (SELECT 1 FROM {{questions}} q WHERE q.qid = {$tableAlias}.qid)"
+            . " OR NOT EXISTS (SELECT 1 FROM {{surveys}} s WHERE s.sid = {$tableAlias}.sid)"
+            . " OR NOT EXISTS (SELECT 1 FROM {{quota}} qu WHERE qu.id = {$tableAlias}.quota_id)";
     }
 
     /**
@@ -851,6 +890,72 @@ class DataIntegrityChecker
         $count = SurveysGroupsettings::model()->deleteAll($this->getOrphanSurveyGroupSettingsCriteria());
         if ($count > 0) {
             $aData['messages'][] = sprintf(gT('Deleted %u survey group setting(s) of survey groups that no longer exist'), $count);
+        }
+        return $aData;
+    }
+
+    /**
+     * Returns the criteria matching survey theme options of surveys that no longer exist.
+     *
+     * A survey later created with the same ID would otherwise get these stale options.
+     * Theme options of a theme itself or of a survey group have no sid and are never matched.
+     *
+     * @return CDbCriteria
+     */
+    private function getOrphanThemeConfigurationsCriteria()
+    {
+        $oCriteria = new CDbCriteria();
+        $oCriteria->condition = 'sid IS NOT NULL AND sid NOT IN (SELECT s.sid FROM {{surveys}} s)';
+        return $oCriteria;
+    }
+
+    /**
+     * Deletes survey theme options of surveys that no longer exist.
+     *
+     * @param array $aData For view generation.
+     * @return array $aData with a message if any theme options were deleted.
+     */
+    private function deleteOrphanThemeConfigurations(array $aData)
+    {
+        $count = TemplateConfiguration::model()->deleteAll($this->getOrphanThemeConfigurationsCriteria());
+        if ($count > 0) {
+            $aData['messages'][] = sprintf(gT('Deleted %u survey theme option(s) of surveys that no longer exist'), $count);
+        }
+        return $aData;
+    }
+
+    /**
+     * Returns the criteria matching duplicate survey theme options: All but the oldest
+     * row of each survey and theme.
+     *
+     * Duplicates came from a survey ID being used again after its survey was deleted. Only
+     * one row is ever used, and on MySQL this is the oldest one, which the theme options
+     * editor also saves into, so that one is kept.
+     * The derived table lets MySQL read the table it deletes from.
+     *
+     * @return CDbCriteria
+     */
+    private function getDuplicateThemeConfigurationsCriteria()
+    {
+        $oCriteria = new CDbCriteria();
+        $oCriteria->condition = 'sid IS NOT NULL AND id NOT IN ('
+            . 'SELECT kept.min_id FROM ('
+            . 'SELECT MIN(tc.id) AS min_id FROM {{template_configuration}} tc WHERE tc.sid IS NOT NULL GROUP BY tc.sid, tc.template_name'
+            . ') kept)';
+        return $oCriteria;
+    }
+
+    /**
+     * Deletes duplicate survey theme options, keeping the oldest row of each survey and theme.
+     *
+     * @param array $aData For view generation.
+     * @return array $aData with a message if any theme options were deleted.
+     */
+    private function deleteDuplicateThemeConfigurations(array $aData)
+    {
+        $count = TemplateConfiguration::model()->deleteAll($this->getDuplicateThemeConfigurationsCriteria());
+        if ($count > 0) {
+            $aData['messages'][] = sprintf(gT('Deleted %u duplicate survey theme option(s), keeping the oldest one of each survey and theme'), $count);
         }
         return $aData;
     }
@@ -1448,6 +1553,18 @@ class DataIntegrityChecker
         }
 
         /**********************************************************************/
+        /*     Check survey theme options of deleted surveys                  */
+        /**********************************************************************/
+        $iCount = TemplateConfiguration::model()->count($this->getOrphanThemeConfigurationsCriteria());
+        if ($iCount > 0) {
+            $aDelete['orphanthemeconfigurations'] = $iCount;
+        }
+        $iCount = TemplateConfiguration::model()->count($this->getDuplicateThemeConfigurationsCriteria());
+        if ($iCount > 0) {
+            $aDelete['duplicatethemeconfigurations'] = $iCount;
+        }
+
+        /**********************************************************************/
         /*     Check active surveys with a missing response table             */
         /**********************************************************************/
         $survey = new SurveyLight();
@@ -1605,8 +1722,7 @@ class DataIntegrityChecker
         /*     Check quota members                                   */
         /**********************************************************************/
         $oCriteria = new CDbCriteria();
-        $oCriteria->join = 'LEFT JOIN {{questions}} q ON t.qid=q.qid LEFT JOIN {{surveys}} s ON t.sid=s.sid';
-        $oCriteria->condition = '(q.qid IS NULL) OR (s.sid IS NULL)';
+        $oCriteria->condition = $this->getOrphanedQuotaMembersCondition('t');
 
         $aDelete['quotamembers'] = QuotaMember::model()->count($oCriteria);
 

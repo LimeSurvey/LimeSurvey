@@ -25,6 +25,7 @@
  * @see Zend_Cache_Core
  */
 require_once 'Zend/Cache/Core.php';
+require_once 'Zend/Cache.php';
 
 
 /**
@@ -123,7 +124,6 @@ class Zend_Cache_Frontend_Page extends Zend_Cache_Core
      * Constructor
      *
      * @param  array   $options                Associative array of options
-     * @param  boolean $doNotTestCacheValidity If set to true, the cache validity won't be tested
      * @throws Zend_Cache_Exception
      * @return void
      */
@@ -205,7 +205,7 @@ class Zend_Cache_Frontend_Page extends Zend_Cache_Core
     /**
      * Specific setter for the 'regexps' option (with some additional tests)
      *
-     * @param  array $options Associative array
+     * @param  array $regexps Associative array
      * @throws Zend_Cache_Exception
      * @return void
      */
@@ -235,7 +235,7 @@ class Zend_Cache_Frontend_Page extends Zend_Cache_Core
     /**
      * Start the cache
      *
-     * @param  string  $id       (optional) A cache id (if you set a value here, maybe you have to use Output frontend instead)
+     * @param  string|false  $id       (optional) A cache id (if you set a value here, maybe you have to use Output frontend instead)
      * @param  boolean $doNotDie For unit testing only !
      * @return boolean True if the cache is hit (false else)
      */
@@ -271,10 +271,13 @@ class Zend_Cache_Frontend_Page extends Zend_Cache_Core
             $data = $array['data'];
             $headers = $array['headers'];
             if (!headers_sent()) {
+                $replaced = [];
                 foreach ($headers as $key=>$headerCouple) {
                     $name = $headerCouple[0];
                     $value = $headerCouple[1];
-                    header("$name: $value");
+                    $lowerName = strtolower($name);
+                    header("$name: $value", !isset($replaced[$lowerName]));
+                    $replaced[$lowerName] = true;
                 }
             }
             if ($this->_specificOptions['debug_header']) {
@@ -377,6 +380,7 @@ class Zend_Cache_Frontend_Page extends Zend_Cache_Core
             }
             break;
         case 'Cookie':
+            // @phpstan-ignore isset.variable (the application may unset or replace the superglobal)
             if (isset($_COOKIE)) {
                 $var = $_COOKIE;
             } else {

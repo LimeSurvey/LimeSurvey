@@ -5,11 +5,14 @@ namespace LimeSurvey\Models\Services\SurveyStatistics\Charts\Questions;
 use CDbCommand;
 use Exception;
 use InvalidArgumentException;
+use LimeSurvey\Models\Services\ResponseFilters\ResolvedFilter;
 use LimeSurvey\Models\Services\SurveyStatistics\Charts\StatisticsChartDTO;
 use LimeSurvey\Models\Services\SurveyStatistics\Charts\StatisticsChartInterface;
 use LimeSurvey\Models\Services\SurveyStatistics\StatisticsResponseFilters;
-use LimeSurvey\Models\Services\SurveyStatistics\Charts\Questions\Processors\{ArrayNumbersProcessor,
+use LimeSurvey\Models\Services\SurveyStatistics\Charts\Questions\Processors\{
+    ArrayNumbersProcessor,
     ArrayTextProcessor,
+    DateProcessor,
     FileUploadProcessor,
     MultipleChoiceProcessor,
     MultipleNumericalProcessor,
@@ -19,7 +22,8 @@ use LimeSurvey\Models\Services\SurveyStatistics\Charts\Questions\Processors\{Arr
     TextProcessor,
     RankingProcessor,
     SingleOptionProcessor,
-    DualScaleProcessor};
+    DualScaleProcessor
+};
 use Question;
 use QuestionType;
 use Yii;
@@ -37,6 +41,9 @@ class QuestionStatistics implements StatisticsChartInterface
 
     private $filters = null;
 
+    /** @var ResolvedFilter[] The filter the user built in the modal, resolved */
+    private array $resolvedFilters = [];
+
     /** @var int Zero-based page index, used when a page size is set */
     private int $page = 0;
 
@@ -52,6 +59,10 @@ class QuestionStatistics implements StatisticsChartInterface
     /** @var \Survey|null Survey model injected by the service to avoid a second fetch */
     private ?\Survey $survey = null;
 
+    /**
+     * Registers the processor factories per question type, including placeholders
+     * for multiple short text questions whose responses are fetched by the client.
+     */
     public function __construct()
     {
         $this->factories = [
@@ -61,15 +72,16 @@ class QuestionStatistics implements StatisticsChartInterface
             Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS => fn() => new MultipleChoiceProcessor(),
             Question::QT_T_LONG_FREE_TEXT => fn() => new TextProcessor(),
             Question::QT_S_SHORT_FREE_TEXT => fn() => new TextProcessor(),
+            Question::QT_J_MAP => fn() => new TextProcessor(),
             Question::QT_U_HUGE_FREE_TEXT => fn() => new TextProcessor(),
-            Question::QT_Q_MULTIPLE_SHORT_TEXT => fn() => new MultipleChoiceProcessor(),
+            Question::QT_Q_MULTIPLE_SHORT_TEXT => fn() => new ArrayTextProcessor(),
             Question::QT_R_RANKING => fn() => new RankingProcessor(),
             Question::QT_1_ARRAY_DUAL => fn() => new DualScaleProcessor(),
+            Question::QT_D_DATE => fn() => new DateProcessor(),
 
             // No statistics for these types of questions
             Question::QT_K_MULTIPLE_NUMERICAL => fn() => new MultipleNumericalProcessor(),
             Question::QT_ASTERISK_EQUATION => fn() => null,
-            Question::QT_D_DATE => fn() => null,
             Question::QT_VERTICAL_FILE_UPLOAD => fn() => new FileUploadProcessor(),
             Question::QT_SEMICOLON_ARRAY_TEXT => fn() => new ArrayTextProcessor(),
             Question::QT_X_TEXT_DISPLAY => fn() => null,
@@ -107,10 +119,10 @@ class QuestionStatistics implements StatisticsChartInterface
         $surveyQuestions = $survey['questions'];
         $this->questionFields = $this->buildQuestionFields();
 
-        $batch = new ResponseAggregateBatch($surveyId, $this->filters);
+        $batch = new ResponseAggregateBatch($surveyId, $this->filters, $this->resolvedFilters);
 
         // Pair each chart-producing question with its processor; types without
-        // a processor (equations, dates, text display, ...) produce no chart
+        // a processor (equations, text display, ...) produce no chart
         // and never occupy a page slot.
         $eligible = [];
         foreach ($surveyQuestions as $question) {
@@ -147,6 +159,14 @@ class QuestionStatistics implements StatisticsChartInterface
     public function setFilters(StatisticsResponseFilters $filters): void
     {
         $this->filters = $filters;
+    }
+
+    /**
+     * @param ResolvedFilter[] $filters
+     */
+    public function setResolvedFilters(array $filters): void
+    {
+        $this->resolvedFilters = $filters;
     }
 
     public function setSurveyModel(\Survey $survey): void
@@ -247,7 +267,7 @@ class QuestionStatistics implements StatisticsChartInterface
     /**
      * Materialize a chart plan: resolve every deferred value against the
      * executed batch and compute the total.
-     * 
+     *
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     private function resolvePlan(array $plan, array $question): StatisticsChartDTO
@@ -372,6 +392,7 @@ class QuestionStatistics implements StatisticsChartInterface
                 // statistics_graphtype question setting; '' = best chart for the type.
                 'chartType' => $question['attributes']['statistics_graphtype'] ?? '',
             ];
+            $meta['question']['mapService'] = $this->getMapService($question);
             // Dual-scale column headers by scale id, same source and defaults
             // as the chart's per-scale titles (DualScaleProcessor).
             if (($question['type'] ?? null) === Question::QT_1_ARRAY_DUAL) {
@@ -380,21 +401,66 @@ class QuestionStatistics implements StatisticsChartInterface
                     flattenText($question['attributes']['dualscale_headerB'] ?? 'Scale B', false, true),
                 ];
             }
+            // Date/time: whether answers carry a date (Calendar view, Date
+            // column) and a time (Time columns, time breakdown), and whether
+            // the calendar needs decrypting first.
+            if (($question['type'] ?? null) === Question::QT_D_DATE) {
+                $meta['question']['hasDate'] = DateProcessor::hasDate($question);
+                $meta['question']['hasTime'] = DateProcessor::hasTime($question);
+                $meta['question']['encrypted'] = DateProcessor::isEncrypted($question);
+            }
             $dto->setMeta($meta);
         }
+    }
+
+    /**
+     * Map answers are stored as "lat;lng". The Map type (J) and old Short text
+     * questions with a map service are maps; Browser Detection is not, and
+     * neither is a Short text shown as a textarea (display_rows set), same as
+     * the Update_720 migration.
+     *
+     * @return int 0 = not a map, 1 = Google, 100 = OpenStreetMap
+     */
+    private function getMapService(array $question): int
+    {
+        $attributes = $question['attributes'] ?? [];
+        $mapService = (int) ($attributes['location_mapservice'] ?? 0);
+        if (($question['type'] ?? null) === Question::QT_J_MAP) {
+            return $mapService === 1 ? 1 : 100;
+        }
+        $isBrowserDetection = ($question['question_theme_name'] ?? '') === 'browserdetect';
+        $isTextarea = ($attributes['display_rows'] ?? '') !== '';
+        if (($question['type'] ?? null) === Question::QT_S_SHORT_FREE_TEXT && !$isBrowserDetection && !$isTextarea) {
+            // Only 1 and 100 render a map, any other value is a plain text input
+            return in_array($mapService, [1, 100], true) ? $mapService : 0;
+        }
+        return 0;
     }
 
     private function buildBaseQuery(): CDbCommand
     {
         $select = [
-            'q.qid', 'q.sid', 'q.gid', 'q.type', 'q.title',
-            'q.parent_qid', 'q.scale_id', 'q.question_order', 'q.other',
+            'q.qid',
+            'q.sid',
+            'q.gid',
+            'q.type',
+            'q.title',
+            'q.parent_qid',
+            'q.scale_id',
+            'q.question_order',
+            'q.other',
             'q.question_theme_name',
-            'ql.question as question_text', 'ql.help as help_text',
-            'a.aid', 'a.qid as answer_qid', 'a.code', 'a.sortorder',
+            'q.encrypted',
+            'ql.question as question_text',
+            'ql.help as help_text',
+            'a.aid',
+            'a.qid as answer_qid',
+            'a.code',
+            'a.sortorder',
             'a.scale_id as answer_scale_id',
             'al.answer',
-            'qa.attribute', 'qa.value'
+            'qa.attribute',
+            'qa.value'
         ];
 
         // Charts follow the survey structure: question groups in their survey
@@ -432,27 +498,39 @@ class QuestionStatistics implements StatisticsChartInterface
             if ((int) $row['parent_qid'] === 0) {
                 if (empty($questions[$qid])) {
                     $questions[$qid] = [
-                        'qid' => $qid, 'sid' => $row['sid'], 'gid' => $row['gid'],
-                        'type' => $row['type'], 'title' => $row['title'],
+                        'qid' => $qid,
+                        'sid' => $row['sid'],
+                        'gid' => $row['gid'],
+                        'type' => $row['type'],
+                        'title' => $row['title'],
                         'question' => flattenText($row['question_text'], false, true),
-                        'help' => flattenText($row['help_text'], false, true), 'other' => $row['other'],
+                        'help' => flattenText($row['help_text'], false, true),
+                        'other' => $row['other'],
                         'question_theme_name' => $row['question_theme_name'],
-                        'subQuestions' => [], 'attributes' => [],
+                        'encrypted' => $row['encrypted'],
+                        'subQuestions' => [],
+                        'attributes' => [],
                     ];
                 }
             } else {
                 if (empty($questions[$row['parent_qid']]['subQuestions'][$qid])) {
                     $questions[$row['parent_qid']]['subQuestions'][$qid] = [
-                        'qid' => $qid, 'gid' => $row['gid'],
-                        'title' => $row['title'], 'question' => flattenText($row['question_text'], false, true),
-                        'scale_id' => $row['scale_id'] ?? 0, 'question_order' => $row['question_order']
+                        'qid' => $qid,
+                        'gid' => $row['gid'],
+                        'title' => $row['title'],
+                        'question' => flattenText($row['question_text'], false, true),
+                        'scale_id' => $row['scale_id'] ?? 0,
+                        'question_order' => $row['question_order']
                     ];
                 }
             }
             if (!empty($row['aid'])) {
                 $answers[$row['answer_qid']][$row['code']] = [
-                    'aid' => $row['aid'], 'code' => $row['code'], 'answer' => flattenText($row['answer'], false, true),
-                    'sortorder' => $row['sortorder'], 'scale_id' => $row['answer_scale_id']
+                    'aid' => $row['aid'],
+                    'code' => $row['code'],
+                    'answer' => flattenText($row['answer'], false, true),
+                    'sortorder' => $row['sortorder'],
+                    'scale_id' => $row['answer_scale_id']
                 ];
             }
             if (!empty($row['attribute']) && empty($questions[$qid]['attributes'][$row['attribute']])) {

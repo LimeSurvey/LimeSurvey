@@ -130,6 +130,7 @@
     padding-right: calc(1.05em + 6px);
   }
 
+  .lime-toggle-btn-group .btn-outline-lime-toggle.dropdown-toggle.active,
   .lime-toggle-btn-group .btn-check:checked + .btn-outline-lime-toggle.btn {
     forced-color-adjust: none;
     background-color: Highlight !important;

@@ -1,4 +1,4 @@
-import { DragDropContext } from 'react-beautiful-dnd'
+import { DragDropContext } from '@hello-pangea/dnd'
 
 import { useSurvey } from 'hooks'
 import { RowQuestionGroup as RowQuestionGroupComponent } from '../RowQuestionGroup'

@@ -349,7 +349,7 @@ class Zend_Http_Response
     public function getHeader($header)
     {
         $header = ucwords(strtolower($header));
-        if (! is_string($header) || ! isset($this->headers[$header])) return null;
+        if (! isset($this->headers[$header])) return null;
 
         return $this->headers[$header];
     }
@@ -416,7 +416,7 @@ class Zend_Http_Response
      *
      * @param int $code HTTP response code
      * @param boolean $http11 Use HTTP version 1.1
-     * @return string
+     * @return string|array
      */
     public static function responseCodeAsText($code = null, $http11 = true)
     {
@@ -436,7 +436,7 @@ class Zend_Http_Response
      * Extract the response code from a response string
      *
      * @param string $response_str
-     * @return int
+     * @return int|false
      */
     public static function extractCode($response_str)
     {
@@ -453,7 +453,7 @@ class Zend_Http_Response
      * Extract the HTTP message from a response
      *
      * @param string $response_str
-     * @return string
+     * @return string|false
      */
     public static function extractMessage($response_str)
     {
@@ -470,7 +470,7 @@ class Zend_Http_Response
      * Extract the HTTP version from a response
      *
      * @param string $response_str
-     * @return string
+     * @return string|false
      */
     public static function extractVersion($response_str)
     {
@@ -596,6 +596,7 @@ class Zend_Http_Response
         // If mbstring overloads substr and strlen functions, we have to
         // override it's internal encoding
         if (function_exists('mb_internal_encoding') &&
+           // phpcs:ignore PHPCompatibility.IniDirectives.RemovedIniDirectives.mbstring_func_overloadDeprecatedRemoved -- the directive exists on PHP 7.4
            ((int) ini_get('mbstring.func_overload')) & 2) {
             $mbIntEnc = mb_internal_encoding();
             mb_internal_encoding('ASCII');

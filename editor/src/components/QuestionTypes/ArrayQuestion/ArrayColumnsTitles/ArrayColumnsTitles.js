@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { Draggable } from 'react-beautiful-dnd'
-import { useParams } from 'react-router-dom'
+import { Draggable } from '@hello-pangea/dnd'
 import classNames from 'classnames'
 import { max } from 'lodash'
 
@@ -13,7 +12,7 @@ import {
   SCALE_2,
   STATES,
 } from 'helpers'
-import { useAppState, useSurvey } from 'hooks'
+import { useAppState, useToggleQuestionCodes } from 'hooks'
 import { ContentEditor, DragAndDrop } from 'components'
 import { getDisplayAttributes } from 'components/QuestionSettings/attributes'
 import { getQuestionTypeInfo } from 'components/QuestionTypes/getQuestionTypeInfo'
@@ -21,6 +20,7 @@ import { ARRAY_ROW_LABEL_INSET } from '../arrayLayout'
 
 import { ArrayColumnTitle } from './ArrayColumnTitle'
 
+/** Header row of an array question showing the draggable answer (column) titles. */
 export const ArrayColumnsTitles = ({
   question: {
     answers = [],
@@ -54,11 +54,10 @@ export const ArrayColumnsTitles = ({
 }) => {
   const [isReorderingAnswers, setIsReorderingAnswers] = useState(false)
   const [headerValue, setHeaderValue] = useState('')
-  const { surveyId } = useParams()
   const answersContainerRef = useRef(null)
 
   const [activeLanguage] = useAppState(STATES.ACTIVE_LANGUAGE)
-  const { survey } = useSurvey(surveyId)
+  const { areCodesVisible } = useToggleQuestionCodes()
 
   const isArrayByColumn =
     questionThemeName === getQuestionTypeInfo().ARRAY_COLUMN.theme
@@ -68,8 +67,6 @@ export const ArrayColumnsTitles = ({
     questionThemeName === getQuestionTypeInfo().ARRAY_NUMBERS.theme
   const isArrayPointChoice =
     questionThemeName === getQuestionTypeInfo().ARRAY.theme
-
-  const showQNumCode = survey.showQNumCode
 
   const handleHeaderChange = (value) => {
     setHeaderValue(value)
@@ -223,7 +220,7 @@ export const ArrayColumnsTitles = ({
               scaleId === SCALE_1
                 ? highestSubquestionWidth +
                   ARRAY_ROW_LABEL_INSET +
-                  (isFocused && showQNumCode?.showNumber ? 90 : 0)
+                  (isFocused && areCodesVisible ? 90 : 0)
                 : 0,
           }}
         ></div>
@@ -234,7 +231,9 @@ export const ArrayColumnsTitles = ({
               className="d-flex justify-content-center"
             >
               <ContentEditor
-                placeholder={`Header ${scaleId + 1}`}
+                placeholder={
+                  scaleId === SCALE_1 ? t('Header A') : t('Header B')
+                }
                 value={headerValue}
                 update={(value) => handleHeaderChange(value, scaleId)}
                 style={{ width: 'max-content' }}
@@ -246,8 +245,8 @@ export const ArrayColumnsTitles = ({
             {entitiesInfo?.items?.map((entity, index) => {
               return (
                 <Draggable
-                  key={`${entity.appKey || entity[entitiesInfo.idKey]}}-subQuestionAnswerTitle`}
-                  draggableId={`${entity.appKey || entity[entitiesInfo.idKey]}}-subQuestionAnswerTitle`}
+                  key={`${entity.appKey || entity[entitiesInfo.idKey]}-subQuestionAnswerTitle`}
+                  draggableId={`${entity.appKey || entity[entitiesInfo.idKey]}-subQuestionAnswerTitle`}
                   index={index}
                 >
                   {(provided, snapshot) => (

@@ -26,9 +26,9 @@ $form = $this->beginWidget(
 <div class="modal-body edit-participant-modal-body ">
     <input type="hidden" name="oper" value="<?php echo $editType; ?>"/>
     <?= $form->hiddenField($model, 'participant_id') ?>
-    <fieldset>
+    <div>
         <?php
-        echo "<legend>" . gT("Basic attributes") . "</legend>";
+        echo '<h3 class="h4">' . gT("Basic attributes") . "</h3>";
         $baseControlGroupHtmlOptions = [
             'labelOptions' => ['class' => ''],
             'class'        => '',
@@ -90,7 +90,7 @@ $form = $this->beginWidget(
         </div>
 
         <!-- Change owner -->
-        <?php if ($model->isOwnerOrSuperAdmin()): ?>
+        <?php if ($model->isOwnerOrSuperAdmin()) : ?>
             <div class='mb-3'>
                 <label id="owner_uid_label" class='form-label' for="owner_uid"><?php eT("Owner:"); ?></label>
                 <?php
@@ -106,13 +106,13 @@ $form = $this->beginWidget(
                 ?>
             </div>
         <?php endif; ?>
-    </fieldset>
+    </div>
 
-    <?php if (count($extraAttributes) > 0): ?>
+    <?php if (count($extraAttributes) > 0) : ?>
         <fieldset>
             <legend><?php eT("Custom attributes"); ?></legend>
-            <?php foreach ($extraAttributes as $attribute): ?>
-                <?php switch ($attribute['attribute_type']):
+            <?php foreach ($extraAttributes as $attribute) : ?>
+                <?php switch ($attribute['attribute_type']) :
                     case 'TB': // Text box
                         $this->renderPartial('/admin/participants/modal_subviews/attributes/textbox', $attribute);
                         break;

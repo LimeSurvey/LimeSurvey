@@ -62,7 +62,7 @@ class ExportSurveyResultsService
      * @return
      * @throws Exception
      */
-    function exportResponses($iSurveyId, $sLanguageCode, $sExportPlugin, FormattingOptions $oOptions, $sFilter = '')
+    public function exportResponses($iSurveyId, $sLanguageCode, $sExportPlugin, FormattingOptions $oOptions, $sFilter = '')
     {
         //Do some input validation.
         if (empty($iSurveyId)) {
@@ -116,15 +116,10 @@ class ExportSurveyResultsService
             $responsesQuery = $surveyDao->loadSurveyResults($survey, $oOptions->responseMinRecord, $oOptions->responseMaxRecord, $sFilter, $oOptions->responseCompletionState, $oOptions->selectedColumns, $oOptions->aResponses);
             $responsesQuery->offset($offset);
             $responsesQuery->limit($maxRows);
-            $survey->responses = $responsesQuery->query();
+            $survey->responses = $surveyDao->addJoinedResults($survey, $responsesQuery->queryAll(), $oOptions->selectedColumns);
             $writer->write($survey, $sLanguageCode, $oOptions, true);
         }
         $result = $writer->close();
-
-        // Close resultset if needed
-        if ($survey->responses instanceof CDbDataReader) {
-            $survey->responses->close();
-        }
 
         if ($oOptions->output == 'file') {
             return $writer->filename;
@@ -183,5 +178,30 @@ class ExportSurveyResultsService
         }
 
         return $this->_exports;
+    }
+
+    /**
+     * Get the display options of all export types provided by a plugin
+     *
+     * @return array Indexed by export type, each entry with the keys 'label', 'tooltip', 'onclick' and 'default'
+     */
+    public function getExportOptions()
+    {
+        $exportOptions = array();
+        $oPluginManager = App()->getPluginManager();
+        // Leave out all entries that are not plugin
+        foreach (array_filter($this->getExports()) as $type => $plugin) {
+            $event = new PluginEvent('listExportOptions');
+            $event->set('type', $type);
+            $oPluginManager->dispatchEvent($event, $plugin);
+            $exportOptions[$type] = array(
+                'label'   => $event->get('label'),
+                'tooltip' => $event->get('tooltip', null),
+                'onclick' => $event->get('onclick'),
+                'default' => (bool) $event->get('default', false),
+            );
+        }
+
+        return $exportOptions;
     }
 }

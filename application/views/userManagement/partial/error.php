@@ -10,7 +10,8 @@
 
 ?>
 <div class="modal-header">
-    <h5 class="modal-title"><?= gT('Error') ?></h5>
+    <h5 class="modal-title" id="UserManagement-action-modal-title"><?= gT('Error') ?></h5>
+    <span class="visually-hidden" id="UserManagement-action-modal-title-dialogsr"><?= gT('Dialog') ?></span>
 </div>
 <div class="modal-body">
     <div class="row selector--animated_row">

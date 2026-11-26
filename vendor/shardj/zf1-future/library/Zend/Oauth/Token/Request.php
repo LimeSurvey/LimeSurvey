@@ -44,6 +44,7 @@ class Zend_Oauth_Token_Request extends Zend_Oauth_Token
 
         // detect if server supports OAuth 1.0a
         if (isset($this->_params[Zend_Oauth_Token::TOKEN_PARAM_CALLBACK_CONFIRMED])) {
+            require_once 'Zend/Oauth/Client.php';
             Zend_Oauth_Client::$supportsRevisionA = true;
         }
     }

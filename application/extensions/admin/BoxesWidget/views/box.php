@@ -36,10 +36,9 @@
 <?php if (!empty($items)) : ?>
     <?php foreach ($items as $item) : ?>
         <?php if ($item['type'] == BoxesWidget::TYPE_PRODUCT) : ?>
+            <?php // The card is clickable with the mouse; keyboard and screen reader users get the title link ?>
             <div class="box-widget-card align-middle d-inline-block"
-                 data-url="<?php echo $item['link'] ?>"
-                 role="link"
-                 tabindex="0">
+                 data-url="<?php echo $item['link'] ?>">
                 <div class="box-widget-card-body">
                     <div class="box-widget-card-header">
                         <div class="box-widget-card-title">
@@ -49,8 +48,14 @@
                             if (isset($defaultlanguage)) {
                                 $surveyls_title = $defaultlanguage->surveyls_title;
                             }
+                            // Without a title the link would have no accessible name: Name it after the survey ID
+                            $titleLinkLabel = trim((string) $surveyls_title) === ''
+                                ? ' aria-label="' . CHtml::encode(sprintf(gT('Survey %s'), $item['survey']->sid)) . '"'
+                                : '';
                             ?>
-                            <?php echo viewHelper::filterScript($surveyls_title); ?>
+                            <a href="<?php echo $item['link'] ?>" class="box-widget-card-title-link text-reset text-decoration-none"<?php echo $titleLinkLabel; ?>>
+                                <?php echo viewHelper::filterScript($surveyls_title); ?>
+                            </a>
                         </div>
                     </div>
                     <div class="box-widget-card-text">
@@ -89,24 +94,27 @@
                                        class="active"
                                        data-bs-toggle="tooltip"
                                        data-bs-original-title="<?= gT('Activate') ?>"
+                                       aria-label="<?= gT('Activate') ?>"
                                     >
-                                        <i class="ri-check-line"></i>
+                                        <i class="ri-check-line" aria-hidden="true"></i>
                                     </a>
                                 <?php elseif ($item['survey']->active !== "Y") : ?>
                                     <a href="<?= App()->createUrl("/surveyAdministration/view?iSurveyID=" . $item['survey']->sid) ?? '#' ?>"
                                        class="active"
                                        data-bs-toggle="tooltip"
                                        data-bs-original-title="<?= gT('Edit survey') ?>"
+                                       aria-label="<?= gT('Edit survey') ?>"
                                     >
-                                        <i class="ri-edit-line"></i>
+                                        <i class="ri-edit-line" aria-hidden="true"></i>
                                     </a>
                                 <?php elseif ($item['survey']->active === "Y") : ?>
                                     <a href="<?= App()->createUrl("/admin/statistics/sa/simpleStatistics/surveyid/" . $item['survey']->sid) ?? '#' ?>"
                                        class="active"
                                        data-bs-toggle="tooltip"
                                        data-bs-original-title="<?= gT('Statistics') ?>"
+                                       aria-label="<?= gT('Statistics') ?>"
                                     >
-                                        <i class="ri-bar-chart-2-line"></i>
+                                        <i class="ri-bar-chart-2-line" aria-hidden="true"></i>
                                     </a>
                                 <?php endif; ?>
 
@@ -118,9 +126,11 @@
             </div>
         <?php elseif ($item['type'] == BoxesWidget::TYPE_LINK) : ?>
             <div class="box-widget-card card-link align-middle d-inline-block <?= $item['colored'] ? 'card-link-highlight' : ''; ?>"
-                 data-url="<?= $item['link'] ?>" <?= $item['external'] ? 'target="_blank"' : ''?>>
+                 data-url="<?= $item['link'] ?>" <?= $item['external'] ? 'target="_blank"' : ''?>
+                 role="link"
+                 tabindex="0">
                 <div class="box-widget-card-body">
-                    <i class="<?= $item['icon'] ?>"></i>
+                    <i class="<?= $item['icon'] ?>" aria-hidden="true"></i>
                     <?= $item['text'] ?>
                 </div>
             </div>

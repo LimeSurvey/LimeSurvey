@@ -41,7 +41,7 @@ class GreaterThanConditionHandler implements HandlerInterface
         }
 
         $quotedKey = $this->sanitizeKey($key);
-        $param = ':' . $this->stripKey($key) . 'GreaterThan';
+        $param = $this->nextParamName();
 
         $criteria = new \CDbCriteria();
         $criteria->condition = "$quotedKey > $param";

@@ -15,6 +15,8 @@
  */
 class Box extends CActiveRecord
 {
+    use TwigSandboxIteratorTrait;
+
     /** @inheritdoc */
     public function tableName()
     {
@@ -112,6 +114,16 @@ class Box extends CActiveRecord
     public function getLocalizedTitle()
     {
         return gT($this->title, 'unescaped');
+    }
+
+    /**
+     * Default boxes are stored in English, so translate the description for display.
+     * Custom descriptions without a translation are returned unchanged.
+     * @return string
+     */
+    public function getLocalizedDescription()
+    {
+        return gT((string)$this->desc, 'unescaped');
     }
 
     /**

@@ -1,4 +1,5 @@
 <?php
+
 namespace actions;
 
 /**
@@ -29,6 +30,9 @@ class AttributeListMassiveActions
                 'keepopen'      => 'no',
                 'sModalTitle'   => \gT('Delete'),
                 'htmlModalBody' => \gT('Do you really want to delete this attribute?'),
+                'aLinkSpecificDatas' => [
+                    'on-success' => 'LS.AjaxHelper.onSuccess',
+                ],
                 'aCustomDatas'  => [],
             ];
         }

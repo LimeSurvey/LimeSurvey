@@ -10,6 +10,8 @@
  * @var $otherTextRight
  * @var $otherInputSize
  * @var $otherMaxLength
+ * @var $otherMandatoryTipId id of the shown "please specify" tip, else empty
+ * @var $otherInvalid the submit was blocked because Other is ticked without text
  */
  #}
 <!-- Multiple Choice -->
@@ -24,7 +26,7 @@
 {% set buttons_cols_class = max_buttons_row_value in buttons_per_row_map|keys ? 'bootstrap-buttons-cols-' ~ buttons_per_row_map[max_buttons_row_value] : '' %}
 <input type="hidden" name="MULTI{{name}}" value="{{anscount}}" />
 <div class="{{coreClass}} {{ extraclass }}" >
-    <ul class="list-unstyled bootstrap-buttons-list {{ buttons_cols_class }}" data-bs-toggle="buttons" role="group" aria-labelledby="ls-question-text-{{basename }}">
+    <ul class="list-unstyled bootstrap-buttons-list {{ buttons_cols_class }}" data-bs-toggle="buttons" role="group" aria-labelledby="ls-question-text-{{ basename }}" aria-describedby="ls-question-help-{{ basename }} ls-question-validation-{{ basename }}">
         {% for aRow in aRows %}
             {% set aRow = aRow|merge({'button_size_class': button_size_class})|merge({'max_buttons_row': max_buttons_row}) %}
             {% set rowTemplate = aRow.other ? './survey/questions/answer/multiplechoice/rows/answer_row_other.twig' : './survey/questions/answer/multiplechoice/rows/answer_row.twig' %}
@@ -45,15 +47,17 @@
                     id="answer{{ name }}other"
                     name="{{ name }}_Cother"
                     aria-labelledby="label-id-{{ name }}"
+                    {% if otherMandatoryTipId %} aria-describedby="{{ otherMandatoryTipId }}" {% endif %}
+                    {% if otherInvalid %} aria-invalid="true" {% endif %}
                     data-name="{{ name }}other"
                     {% if otherInputSize %} size="{{ otherInputSize }}" {% endif %}
                     {% if otherMaxLength %} maxlength="{{ otherMaxLength }}" {% endif %}
                 />
             </div>
             {% if otherTextRight is defined and otherTextRight|length > 0 %}
-            <div class="othertext-suffix-label button-suffix col-auto">
+            <label class="othertext-suffix-label button-suffix col-auto" for="answer{{ name }}other">
                 {{ processString(otherTextRight) }}
-            </div>
+            </label>
             {% endif %}
         </div>
     </div>

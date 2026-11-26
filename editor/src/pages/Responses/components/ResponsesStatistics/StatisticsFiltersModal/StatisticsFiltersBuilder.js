@@ -13,17 +13,20 @@ import {
   isFilterComplete,
 } from './utils'
 
-// The filter builder: holds the list of filter rows in local state and renders
-// them plus the Add / Reset / Apply actions. Frontend only — "Apply" just emits
-// the current filter model (no backend / useStatistics wiring).
+// The filter builder: renders the filter rows plus the Add / Reset / Apply
+// actions. `appliedFilters` is the committed filter model (owned by Responses,
+// shared by the Responses and Statistics tabs); "Apply" hands the edited list
+// back. Frontend only
 export const StatisticsFiltersBuilder = ({
   questionOptions = [],
   survey,
+  appliedFilters = [],
   onApply = () => {},
 }) => {
-  // Start empty: the modal opens showing only "+ Add filter". The first filter
-  // section (with the source tabs) appears once the user adds one.
-  const [filters, setFilters] = useState([])
+  // Draft state: the modal mounts this component only while it is open, so
+  // every open starts from the applied filters and edits stay uncommitted
+  // until "Apply filter"
+  const [filters, setFilters] = useState(appliedFilters)
 
   const updateFilter = (id, key, value) => {
     setFilters((prev) =>
@@ -97,21 +100,13 @@ export const StatisticsFiltersBuilder = ({
 
   const resetFilters = () => setFilters([])
 
-  const applyFilters = () => {
-    // Frontend-only scope
-    // console.log('Statistics filters applied:', filters)
-    onApply(filters)
-  }
+  const applyFilters = () => onApply(filters)
 
-  // Footer/button state:
-  // - Apply is always shown once a row exists, enabled only when every row is
-  //   complete (a question needs at least one answer option).
-  // - Reset appears once any row has its primary selection.
-  // - "+ Add filter" shows when there are no incomplete rows — true when empty
-  //   (add the first) and again once all rows are complete.
   const allComplete = filters.every(isFilterComplete)
   const showReset = filters.some(hasPrimarySelection)
-  const canApply = filters.length > 0 && allComplete
+
+  const hasAppliedFilters = appliedFilters.length > 0
+  const canApply = allComplete && (filters.length > 0 || hasAppliedFilters)
 
   return (
     <div className="responses-statistics-filters-builder">
@@ -138,7 +133,7 @@ export const StatisticsFiltersBuilder = ({
         </Button>
       )}
 
-      {filters.length > 0 && (
+      {(filters.length > 0 || hasAppliedFilters) && (
         <div className="responses-statistics-filters-footer">
           {showReset && (
             <Button

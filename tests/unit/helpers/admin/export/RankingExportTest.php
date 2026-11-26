@@ -256,7 +256,7 @@ class RankingExportTest extends TestBaseClass
             return $line !== '';
         });
         return array_values(array_map(function ($line) use ($separator) {
-            return str_getcsv($line, $separator);
+            return str_getcsv($line, $separator, '"', "\\");
         }, $lines));
     }
 }

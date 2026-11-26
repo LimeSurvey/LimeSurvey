@@ -19,7 +19,7 @@ class TFAYubikeyOtpHelper
      * @param string $clientId  The client ID. If not set, the test mode ID will be used.
      * @param string $clientSecret  The client secret. The request won't be signed and the response signature won't be verified.
      */
-    function __construct($otpCode, $clientId = null, $clientSecret = null)
+    public function __construct($otpCode, $clientId = null, $clientSecret = null)
     {
         $this->otpCode = trim($otpCode);
         $this->clientId = !empty($clientId) ? $clientId : 1;
@@ -136,13 +136,21 @@ class TFAYubikeyOtpHelper
         return $result;
     }
 
+    /**
+     * Generates the nonce sent with an OTP verification request.
+     *
+     * Uses a cryptographically secure random number generator, so the nonce cannot be predicted.
+     *
+     * @return string 20 random alphanumeric characters
+     * @throws \Exception If no source of randomness is available
+     */
     private function generateNonce()
     {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $charactersLength = strlen($characters);
         $nonce = '';
         for ($i = 0; $i < 20; $i++) {
-            $nonce .= $characters[rand(0, $charactersLength - 1)];
+            $nonce .= $characters[random_int(0, $charactersLength - 1)];
         }
         return $nonce;
     }

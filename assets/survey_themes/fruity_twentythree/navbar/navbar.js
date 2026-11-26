@@ -26,15 +26,26 @@ export var NavbarScripts = function () {
         // Submenu that is currently shown, so the focus can return to its opener on "Back"
         var openedSubmenuId = null;
 
-        $(document).on('click', '[data-navtargetid]', function(event) {
-            event.preventDefault();
+        $(document).on('click', '[data-navtargetid]', function() {
             openedSubmenuId = $(this).data('navtargetid');
             replaceContent(getContentByElementId('main-dropdown'), 'back-content');
             //replace menu content with submenu content
             replaceContent(getContentByElementId(openedSubmenuId), 'main-dropdown');
             focusMenuItem('.back-link');
         });
+        // Submenu openers that are still links with role="button" (not native buttons): no navigation to href="#"
+        $(document).on('click', 'a[data-navtargetid]', function(event) {
+            event.preventDefault();
+        });
+        // and browsers only activate links with Enter, so Space has to open them like a button
+        $(document).on('keydown', 'a[data-navtargetid]', function(event) {
+            if (event.key === ' ') {
+                event.preventDefault();
+                $(this).trigger('click');
+            }
+        });
         $(document).on('click', '.back-link', function(event) {
+            // Customized themes can still have a link with href="#": no navigation
             event.preventDefault();
             // switch menu content back to original content (this currently works only with one level nested elements)
             replaceContent(getContentByElementId('back-content'), 'main-dropdown');

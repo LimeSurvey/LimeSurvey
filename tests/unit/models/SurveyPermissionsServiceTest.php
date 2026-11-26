@@ -315,6 +315,113 @@ class SurveyPermissionsServiceTest extends \ls\tests\TestBaseClass
         self::assertTrue($oSurveyPermissions->saveUserGroupPermissions((int)self::$userGroupId, $permissions));
     }
 
+    /**
+     * A user managing survey permissions can only give or remove the permissions
+     * they hold, unknown permissions are ignored.
+     */
+    public function testSaveUserPermissionsLimitedToCurrentUserPermissions()
+    {
+        $surveyId = self::$testSurvey->sid;
+        $editorId = self::$userIds[1];
+        $targetId = self::$userIds[2];
+        $oSurveyPermissions = new SurveyPermissions(self::$testSurvey, true);
+        self::assertTrue($oSurveyPermissions->saveUserPermissions($targetId, [
+            'responses' => ['read' => 1, 'export' => 1],
+        ]));
+        $oSurveyPermissions->deleteUserPermissions($editorId);
+        $editorPermissions = [
+            'survey' => ['read_p' => 1],
+            'surveysecurity' => ['read_p' => 1, 'update_p' => 1],
+            'tokens' => ['read_p' => 1],
+        ];
+        foreach ($editorPermissions as $permission => $cruds) {
+            \Permission::model()->insertSomeRecords(array_merge([
+                'entity_id' => $surveyId,
+                'entity' => 'survey',
+                'uid' => $editorId,
+                'permission' => $permission,
+            ], $cruds));
+        }
+
+        \Yii::app()->session['loginID'] = $editorId;
+        try {
+            self::assertTrue($oSurveyPermissions->saveUserPermissions($targetId, [
+                'tokens' => ['read' => 1],
+                'surveyactivation' => ['update' => 1],
+                'unknownpermission' => ['read' => 1],
+            ]));
+        } finally {
+            \Yii::app()->session['loginID'] = 1;
+        }
+
+        $responses = $oSurveyPermissions->getUsersSurveyPermissionEntity($targetId, 'responses');
+        self::assertEquals(1, $responses->read_p, 'Permission the editor does not hold must be kept.');
+        self::assertEquals(1, $responses->export_p, 'Permission the editor does not hold must be kept.');
+        self::assertEquals(1, $oSurveyPermissions->getUsersSurveyPermissionEntity($targetId, 'tokens')->read_p);
+        self::assertEquals(1, $oSurveyPermissions->getUsersSurveyPermissionEntity($targetId, 'survey')->read_p);
+        self::assertNull($oSurveyPermissions->getUsersSurveyPermissionEntity($targetId, 'surveyactivation'));
+        self::assertNull($oSurveyPermissions->getUsersSurveyPermissionEntity($targetId, 'unknownpermission'));
+        $oSurveyPermissions->deleteUserPermissions($editorId);
+        $oSurveyPermissions->deleteUserPermissions($targetId);
+    }
+
+    /**
+     * An imported survey gets no permission rows for its owner.
+     *
+     * @return void
+     */
+    public function testImportedSurveyHasNoOwnerPermissionRows()
+    {
+        $ownerRows = \Permission::model()->countByAttributes([
+            'entity' => 'survey',
+            'entity_id' => self::$testSurvey->sid,
+            'uid' => self::$testSurvey->owner_id,
+        ]);
+        self::assertSame(0, (int)$ownerRows);
+    }
+
+    /**
+     * The survey owner has all permissions without permission rows,
+     * can not be added to the survey permissions and is not listed there.
+     *
+     * @return void
+     */
+    public function testSurveyOwnerIsNotPartOfSurveyPermissions()
+    {
+        $survey = self::$testSurvey;
+        $originalOwnerId = $survey->owner_id;
+        $ownerId = (int)self::$userIds[4];
+        \Survey::model()->updateByPk($survey->sid, ['owner_id' => $ownerId]);
+        $survey->owner_id = $ownerId;
+        $oSurveyPermissions = new SurveyPermissions($survey, true);
+        try {
+            self::assertTrue(\Permission::model()->hasSurveyPermission($survey->sid, 'responses', 'delete', $ownerId));
+            self::assertFalse($oSurveyPermissions->addUserToSurveyPermission($ownerId));
+            $userIds = array_map('intval', array_column($oSurveyPermissions->getSurveyUserList(), 'userid'));
+            self::assertNotContains($ownerId, $userIds);
+
+            // Surveys created before can still have permission rows for the owner
+            \Permission::model()->insertSomeRecords([
+                'entity_id' => $survey->sid,
+                'entity' => 'survey',
+                'uid' => $ownerId,
+                'permission' => 'survey',
+                'read_p' => 1,
+            ]);
+            $listedUserIds = array_map(
+                function ($permission) {
+                    return (int)$permission->uid;
+                },
+                $oSurveyPermissions->getUsersSurveyPermissions()
+            );
+            self::assertNotContains($ownerId, $listedUserIds);
+        } finally {
+            \Survey::model()->updateByPk($survey->sid, ['owner_id' => $originalOwnerId]);
+            $survey->owner_id = $originalOwnerId;
+            $oSurveyPermissions->deleteUserPermissions($ownerId);
+        }
+    }
+
     public function testDeleteUsersSurveyPermissions()
     {
         $oSurveyPermissions = new SurveyPermissions(self::$testSurvey, true);

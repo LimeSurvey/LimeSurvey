@@ -111,37 +111,14 @@ class SurveyDao
                     $aRankingBaseFields[] = 'Q' . $survey->fieldMap[$sField]['qid'];
                 }
             }
-            $aSelectFields = array_intersect(array_merge($aFields, $aRankingBaseFields), $aSelectFields);
+            // The id and token are needed to add the participant and timing values (see addJoinedResults())
+            $aSelectFields = array_intersect(array_merge($aFields, $aRankingBaseFields, ['id', 'token']), $aSelectFields);
         }
         // Always add Table prefix : see bug #08396 . Don't use array_walk for PHP < 5.3 compatibility
         foreach ($aSelectFields as &$sField) {
             $sField = $oSurvey->responsesTableName . "." . $sField;
         }
         $oRecordSet = Yii::app()->db->createCommand()->from($oSurvey->responsesTableName);
-        if (
-            tableExists($oSurvey->tokensTableName)
-            && array_key_exists('token', SurveyDynamic::model($oSurvey->primaryKey)->attributes)
-            && Permission::model()->hasSurveyPermission($oSurvey->primaryKey, 'tokens', 'read')
-        ) {
-            $oRecordSet->leftJoin($oSurvey->tokensTableName . ' tokentable', $oSurvey->responsesTableName . '.token=tokentable.token');
-            $aTokenFields = Yii::app()->db->schema->getTable($oSurvey->tokensTableName)->getColumnNames();
-            foreach ($aTokenFields as &$sField) {
-                $sField = "tokentable." . $sField;
-            }
-            $aSelectFields = array_merge($aSelectFields, array_diff($aTokenFields, ['tokentable.token']));
-            //$aSelectFields=array_diff($aSelectFields, array('{{responses_{$survey->id}}}.token'));
-            //$aSelectFields[]='{{responses_' . $survey->id . '}}.token';
-        }
-        if ($survey->info['savetimings'] == "Y") {
-            $oRecordSet->leftJoin("{{timings_" . $survey->id . "}} timings", "{{responses_" . $survey->id . "}}.id = timings.id");
-            $aTimingFields = Yii::app()->db->schema->getTable("{{timings_" . $survey->id . "}}")->getColumnNames();
-            foreach ($aTimingFields as &$sField) {
-                $sField = "timings." . $sField;
-            }
-            $aSelectFields = array_merge($aSelectFields, array_diff($aTimingFields, ['timings.id']));
-            //$aSelectFields=array_diff($aSelectFields, array('{{responses_{$survey->id}}}.id'));
-            //$aSelectFields[]='{{responses_' . $survey->id . '}}.id';
-        }
         if (empty($sResponsesId)) {
             $aParams = [
                 'min' => $iMinimum,
@@ -188,5 +165,79 @@ class SurveyDao
         $oRecordSet->order = $oSurvey->responsesTableName . '.id ASC';
         $oRecordSet->select($aSelectFields);
         return $oRecordSet;
+    }
+
+    /**
+     * Adds the values of the participant and timing columns to a page of results from loadSurveyResults().
+     * They are loaded with separate queries instead of joins, otherwise surveys with many questions
+     * exceed the maximum number of columns in a query (1664 on PostgreSQL).
+     *
+     * @param SurveyObj $survey
+     * @param array[] $aResponses Response rows, each with the id and token column
+     * @param string[]|null $aFields If empty all, otherwise only add the selected participant and timing fields
+     * @return array[] The response rows with the participant and timing values
+     */
+    public function addJoinedResults(SurveyObj $survey, array $aResponses, $aFields = array()): array
+    {
+        if (empty($aResponses)) {
+            return $aResponses;
+        }
+        $oSurvey = Survey::model()->findByPk($survey->id);
+        if (
+            tableExists($oSurvey->tokensTableName)
+            && array_key_exists('token', SurveyDynamic::model($oSurvey->primaryKey)->attributes)
+            && Permission::model()->hasSurveyPermission($oSurvey->primaryKey, 'tokens', 'read')
+        ) {
+            $aResponses = $this->addJoinedRows($aResponses, $oSurvey->tokensTableName, 'token', 'tid', $aFields);
+        }
+        if ($survey->info['savetimings'] == "Y") {
+            $aResponses = $this->addJoinedRows($aResponses, $oSurvey->timingsTableName, 'id', 'id', $aFields);
+        }
+        return $aResponses;
+    }
+
+    /**
+     * Adds the columns of the rows of another table to the response rows, like a left join on the given key column.
+     *
+     * @param array[] $aResponses Response rows
+     * @param string $sTableName Table to load the rows from
+     * @param string $sKey Column that links the rows to the responses, it is not added
+     * @param string $sOrder Column to sort by, of several rows with the same key the first one is used
+     * @param string[]|null $aFields If empty all, otherwise only add the selected columns
+     * @return array[]
+     */
+    private function addJoinedRows(array $aResponses, string $sTableName, string $sKey, string $sOrder, $aFields): array
+    {
+        $aColumns = array_diff(Yii::app()->db->schema->getTable($sTableName)->getColumnNames(), [$sKey]);
+        if (!empty($aFields)) {
+            $aColumns = array_intersect($aColumns, $aFields);
+        }
+        if (empty($aColumns)) {
+            return $aResponses;
+        }
+        $aKeys = array_unique(array_filter(array_column($aResponses, $sKey), function ($value) {
+            return $value !== null && $value !== '';
+        }));
+        $aJoinedRows = array();
+        if (!empty($aKeys)) {
+            $aRows = Yii::app()->db->createCommand()
+                ->select(array_merge([$sKey], $aColumns))
+                ->from($sTableName)
+                ->where(['in', $sKey, array_values($aKeys)])
+                ->order($sOrder)
+                ->queryAll();
+            foreach ($aRows as $aRow) {
+                $sRowKey = $aRow[$sKey];
+                unset($aRow[$sKey]);
+                if (!isset($aJoinedRows[$sRowKey])) {
+                    $aJoinedRows[$sRowKey] = $aRow;
+                }
+            }
+        }
+        $aEmptyRow = array_fill_keys($aColumns, null);
+        foreach ($aResponses as &$aResponse) {
+            $aResponse = array_merge($aResponse, $aJoinedRows[$aResponse[$sKey] ?? ''] ?? $aEmptyRow);
+        }
+        return $aResponses;
     }
 }

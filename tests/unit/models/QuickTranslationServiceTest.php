@@ -60,4 +60,108 @@ class QuickTranslationServiceTest extends TestBaseClass
         $this->assertNotNull($ts);
         $this->assertEquals(1, $ts);
     }*/
+
+    /**
+     * Expressions are replaced by markers, the HTML around them stays in one piece.
+     */
+    public function testProtectExpressionsKeepsHtmlTogether()
+    {
+        $protected = QuickTranslation::protectExpressions('<p>Dear {TOKEN:FIRSTNAME},</p><p>Age: <b>{age}</b> years</p>');
+
+        $this->assertSame(
+            '<p>Dear <span class="notranslate" translate="no">LSEXPR0</span>,</p>'
+            . '<p>Age: <b><span class="notranslate" translate="no">LSEXPR1</span></b> years</p>',
+            $protected['text']
+        );
+        $this->assertSame(['{TOKEN:FIRSTNAME}', '{age}'], $protected['expressions']);
+        $this->assertTrue($protected['hasText']);
+    }
+
+    /**
+     * A text without expressions is returned as it is.
+     */
+    public function testProtectExpressionsWithoutExpressions()
+    {
+        $protected = QuickTranslation::protectExpressions('First line<br>Second line');
+
+        $this->assertSame('First line<br>Second line', $protected['text']);
+        $this->assertSame([], $protected['expressions']);
+        $this->assertTrue($protected['hasText']);
+    }
+
+    /**
+     * A text made of tags and expressions only has nothing to translate.
+     */
+    public function testProtectExpressionsWithoutText()
+    {
+        $protected = QuickTranslation::protectExpressions('<p>{TOKEN:FIRSTNAME} </p>');
+
+        $this->assertFalse($protected['hasText']);
+    }
+
+    /**
+     * Expressions are put back exactly, also when the translation dropped the marker's wrapper.
+     */
+    public function testRestoreExpressions()
+    {
+        $expressions = ['{if(age > 5, "a & b", \'$1\\\\\')}', '{age}'];
+        $translated = '<p>Hallo <span class="notranslate" translate="no">LSEXPR0</span>,</p><p>Alter: <b>LSEXPR1</b></p>';
+
+        $this->assertSame(
+            '<p>Hallo ' . $expressions[0] . ',</p><p>Alter: <b>{age}</b></p>',
+            QuickTranslation::restoreExpressions($translated, $expressions)
+        );
+    }
+
+    /**
+     * A translation that lost an expression is rejected.
+     */
+    public function testRestoreExpressionsMissingMarker()
+    {
+        $this->assertNull(QuickTranslation::restoreExpressions('<p>Hallo</p>', ['{TOKEN:FIRSTNAME}']));
+    }
+
+    /**
+     * The posted list of changes is read with every key as a string, missing keys are empty.
+     */
+    public function testParsePostedTranslations()
+    {
+        $json = json_encode([
+            ['type' => 'title', 'id1' => '', 'id2' => '', 'scaleid' => '', 'value' => 'Titel'],
+            ['type' => 'answer', 'id1' => 12, 'id2' => 'A1', 'scaleid' => 0, 'value' => "It's <b>2 > 1</b>"],
+            ['type' => 'question', 'id1' => '7', 'value' => '0'],
+        ]);
+
+        $this->assertSame(
+            [
+                ['type' => 'title', 'id1' => '', 'id2' => '', 'scaleid' => '', 'value' => 'Titel'],
+                ['type' => 'answer', 'id1' => '12', 'id2' => 'A1', 'scaleid' => '0', 'value' => "It's <b>2 > 1</b>"],
+                ['type' => 'question', 'id1' => '7', 'id2' => '', 'scaleid' => '', 'value' => '0'],
+            ],
+            QuickTranslation::parsePostedTranslations($json)
+        );
+    }
+
+    /**
+     * An emptied translation is left out, like no change at all.
+     */
+    public function testParsePostedTranslationsSkipsEmptyValues()
+    {
+        $json = json_encode([['type' => 'question', 'id1' => '7', 'id2' => '', 'scaleid' => '', 'value' => '']]);
+
+        $this->assertSame([], QuickTranslation::parsePostedTranslations($json));
+        $this->assertSame([], QuickTranslation::parsePostedTranslations('[]'));
+    }
+
+    /**
+     * Anything but a list of changes with plain values is rejected as a whole.
+     */
+    public function testParsePostedTranslationsRejectsInvalidData()
+    {
+        $this->assertNull(QuickTranslation::parsePostedTranslations(''));
+        $this->assertNull(QuickTranslation::parsePostedTranslations('{"type":'));
+        $this->assertNull(QuickTranslation::parsePostedTranslations('"title"'));
+        $this->assertNull(QuickTranslation::parsePostedTranslations('["title"]'));
+        $this->assertNull(QuickTranslation::parsePostedTranslations('[{"type":"question","id1":[7],"value":"x"}]'));
+    }
 }

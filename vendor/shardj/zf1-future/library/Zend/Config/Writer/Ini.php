@@ -49,7 +49,7 @@ class Zend_Config_Writer_Ini extends Zend_Config_Writer_FileAbstract
     /**
      * Set the nest separator
      *
-     * @param  string $filename
+     * @param  string $separator
      * @return Zend_Config_Writer_Ini
      */
     public function setNestSeparator($separator)
@@ -145,11 +145,11 @@ class Zend_Config_Writer_Ini extends Zend_Config_Writer_FileAbstract
      * Prepare a value for INI
      *
      * @param  mixed $value
-     * @return string
+     * @return string|float|int
      */
     protected function _prepareValue($value)
     {
-        if (is_integer($value) || is_float($value)) {
+        if (is_int($value) || is_float($value)) {
             return $value;
         } elseif (is_bool($value)) {
             return ($value ? 'true' : 'false');
@@ -188,6 +188,7 @@ class Zend_Config_Writer_Ini extends Zend_Config_Writer_FileAbstract
             $configArray[$key] = $value;
         }
 
+        require_once 'Zend/Config.php';
         return new Zend_Config($configArray);
     }
 }

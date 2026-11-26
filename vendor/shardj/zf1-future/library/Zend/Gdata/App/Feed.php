@@ -39,6 +39,7 @@ require_once 'Zend/Gdata/App/FeedSourceParent.php';
  * @subpackage App
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @deprecated Deprecated since 1.27.1 and will be removed in a future version: Google shut down the Google Data APIs it implements and the ClientLogin and AuthSub authentication
  */
 class Zend_Gdata_App_Feed extends Zend_Gdata_App_FeedSourceParent
         implements Iterator, ArrayAccess, Countable
@@ -239,7 +240,7 @@ class Zend_Gdata_App_Feed extends Zend_Gdata_App_FeedSourceParent
      * Required by the ArrayAccess interface
      *
      * @param int $key The index to get
-     * @param Zend_Gdata_App_Entry $value The value to set
+     * @return Zend_Gdata_App_Entry|null
      */
     #[\ReturnTypeWillChange]
     public function offsetGet($key)
@@ -247,13 +248,14 @@ class Zend_Gdata_App_Feed extends Zend_Gdata_App_FeedSourceParent
         if (array_key_exists($key, $this->_entry)) {
             return $this->_entry[$key];
         }
+
+        return null;
     }
 
     /**
      * Required by the ArrayAccess interface
      *
      * @param int $key The index to set
-     * @param Zend_Gdata_App_Entry $value The value to set
      */
     public function offsetUnset($key): void
     {

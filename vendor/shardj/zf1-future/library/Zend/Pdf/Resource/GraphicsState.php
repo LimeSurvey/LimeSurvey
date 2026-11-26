@@ -54,13 +54,11 @@ class Zend_Pdf_Resource_GraphicsState extends Zend_Pdf_Resource
     {
         if ($extGStateObject == null) {
             // Create new Graphics State object
-            require_once 'Zend/Pdf/ElementFactory.php';
-            $factory = Zend_Pdf_ElementFactory::createFactory(1);
-
             $gsDictionary = new Zend_Pdf_Element_Dictionary();
             $gsDictionary->Type = new Zend_Pdf_Element_Name('ExtGState');
 
-            $extGStateObject = $factory->newObject($gsDictionary);
+            parent::__construct($gsDictionary);
+            return;
         }
 
         if ($extGStateObject->getType() != Zend_Pdf_Element::TYPE_DICTIONARY) {
@@ -68,7 +66,7 @@ class Zend_Pdf_Resource_GraphicsState extends Zend_Pdf_Resource
             throw new Zend_Pdf_Exception('Graphics state PDF object must be a dictionary');
         }
 
-        parent::__construct($gsDictionary);
+        parent::__construct($extGStateObject);
     }
 
     /**

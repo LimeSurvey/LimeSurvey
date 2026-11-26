@@ -411,7 +411,7 @@ class Zend_Db_Select
      * as described in the from() method.
      *
      * @param  array|string|Zend_Db_Expr $name The table name.
-     * @param  string $cond Join on this condition.
+     * @param  string|null $cond Join on this condition.
      * @param  array|string $cols The columns to select from the joined table.
      * @param  string $schema The database name to specify, if any.
      * @return $this This Zend_Db_Select object.
@@ -793,7 +793,7 @@ class Zend_Db_Select
      *
      * @param integer $fetchMode OPTIONAL
      * @param  mixed  $bind An array of data to bind to the placeholders.
-     * @return Zend_Db_Statement
+     * @return Zend_Db_Statement_Interface
      */
     public function query($fetchMode = null, $bind = [])
     {
@@ -863,7 +863,7 @@ class Zend_Db_Select
      *
      * @param  null|string $type Type of join; inner, left, and null are currently supported
      * @param  array|string|Zend_Db_Expr $name Table name
-     * @param  string $cond Join on this condition
+     * @param  string|null $cond Join on this condition
      * @param  array|string $cols The columns to select from the joined table
      * @param  string $schema The database name to specify, if any.
      * @return $this This Zend_Db_Select object
@@ -1034,7 +1034,7 @@ class Zend_Db_Select
     /**
      * Adds to the internal table-to-column mapping array.
      *
-     * @param  string $tbl The table/join the columns come from.
+     * @param  string $correlationName The table/join the columns come from.
      * @param  array|string $cols The list of columns; preferably as
      * an array, but possibly as a string containing one column.
      * @param  bool|string $afterCorrelationName True if it should be prepended, a correlation name if it should be inserted
@@ -1058,7 +1058,8 @@ class Zend_Db_Select
                 // Check for a column matching "<column> AS <alias>" and extract the alias name
                 $col = trim(str_replace("\n", ' ', $col));
                 if (preg_match('/^(.+)\s+' . self::SQL_AS . '\s+(.+)$/i', $col, $m)) {
-                    $col = $m[1];
+                    // whitespace before AS would keep an expression from being recognized as one
+                    $col = rtrim($m[1]);
                     $alias = $m[2];
                 }
                 // Check for columns that look like functions and convert to Zend_Db_Expr
@@ -1109,7 +1110,7 @@ class Zend_Db_Select
      *
      * @param string   $condition
      * @param mixed    $value  optional
-     * @param string   $type   optional
+     * @param string|int|null   $type   optional
      * @param boolean  $bool  true = AND, false = OR
      * @return string  clause
      */
@@ -1279,7 +1280,14 @@ class Zend_Db_Select
             foreach ($this->_parts[self::UNION] as $cnt => $union) {
                 list($target, $type) = $union;
                 if ($target instanceof Zend_Db_Select) {
+                    $wrap = $target->getPart(self::ORDER)
+                        || $target->getPart(self::LIMIT_COUNT) !== null
+                        || $target->getPart(self::LIMIT_OFFSET) !== null;
                     $target = $target->assemble();
+                    if ($wrap) {
+                        // ORDER BY and LIMIT of a part apply to the whole union unless the part is parenthesized
+                        $target = '(' . $target . ')';
+                    }
                 }
                 $sql .= $target;
                 if ($cnt < $parts - 1) {

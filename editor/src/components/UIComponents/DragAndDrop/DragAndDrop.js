@@ -1,9 +1,10 @@
-import { DragDropContext, Droppable } from 'react-beautiful-dnd'
+import { DragDropContext, Droppable } from '@hello-pangea/dnd'
 
 import { useAppState } from '../../../hooks'
 import { errorToast, STATES } from '../../../helpers'
 import { getTooltipMessages } from 'helpers/options'
 
+/** Droppable list wrapper that blocks dropping when the survey is active or the user lacks update permission. */
 export const DragAndDrop = ({
   children,
   onDragStart,
@@ -24,13 +25,19 @@ export const DragAndDrop = ({
     isDropDisabled ||
     !hasSurveyUpdatePermission
 
+  /** Shows an error toast and passes the drop on as cancelled (`destination: null`) when reordering is not allowed, so consumers can still clean up drag state. */
   const handleOnDragEnd = (result) => {
-    if ((isSurveyActive && surveyActiveDisable) || !hasSurveyUpdatePermission)
+    if ((isSurveyActive && surveyActiveDisable) || !hasSurveyUpdatePermission) {
       errorToast(
         isSurveyActive && surveyActiveDisable
           ? getTooltipMessages().ACTIVE_DISABLED
           : getTooltipMessages().NO_PERMISSION
       )
+
+      onDragEnd({ ...result, destination: null })
+      return
+    }
+
     onDragEnd(result)
   }
 
@@ -47,7 +54,6 @@ export const DragAndDrop = ({
             <div
               className={className}
               ref={provided.innerRef}
-              {...provided.droppableProps}
               {...provided.droppableProps}
             >
               {children}

@@ -7,7 +7,7 @@
     xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
     findUnusedBaselineEntry="true"
     findUnusedCode="true"
-    phpVersion="8.1.0"
+    phpVersion="8.2.0"
 >
     <!-- TODO: Update phpVersion when raising the minimum supported version -->
     <projectFiles>

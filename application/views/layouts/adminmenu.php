@@ -12,10 +12,13 @@
     App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'surveysettings.js', LSYii_ClientScript::POS_BEGIN);
 ?>
 <!-- admin menu bar -->
-<nav class="navbar navbar-expand-md">
+<header>
+<?php // The logo is part of the banner; the menus inside are the navigation landmarks ?>
+<div class="navbar navbar-expand-md">
     <div class="container-fluid">
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#small-screens-menus"
-            aria-controls="small-screens-menus" aria-expanded="false">
+        <?php // On small screens this button shows/hides the complete main and user menu ?>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminmenu-main, #adminmenu-user"
+            aria-controls="adminmenu-main adminmenu-user" aria-expanded="false" aria-label="<?php eT('Toggle navigation'); ?>">
             <span class="navbar-toggler-icon"></span>
         </button>
         <a class="navbar-brand" href="<?php echo $this->createUrl("/admin/"); ?>">
@@ -23,38 +26,10 @@
                 class="d-inline-block align-bottom" alt="">
             <?= $sitename ?>
         </a>
-        <!-- Only on xs screens -->
-        <div class="collapse navbar-collapse " id="small-screens-menus">
-            <ul class="nav navbar-nav">
-                <!-- active surveys -->
-                <?php if ($activesurveyscount > 0): ?>
-                    <li class="nav-item">
-                        <a class="nav-link"
-                            href="<?php echo $this->createUrl('surveyAdministration/listsurveys/active/Y'); ?>">
-                            <?php eT("Active surveys"); ?> <span class="badge"><?php echo $activesurveyscount ?></span>
-                        </a>
-                    </li>
-                <?php endif; ?>
-                <!-- List surveys -->
-                <li class="nav-item">
-                    <a class="nav-link" href="<?php echo $this->createUrl("surveyAdministration/listsurveys"); ?>">
-                        <?php eT("List surveys"); ?>
-                    </a>
-                </li>
-                <!-- Logout -->
-                <li class="nav-item">
-                    <a class="nav-link" href="<?php echo $this->createUrl("admin/authentication/sa/logout"); ?>">
-                        <?php eT("Logout"); ?>
-                    </a>
-                </li>
-            </ul>
-        </div>
-
-        <div class="collapse navbar-collapse">
+        <div class="collapse navbar-collapse" id="adminmenu-main" role="navigation" aria-label="<?php eT('Main menu'); ?>">
             <ul class="nav navbar-nav">
                 <!-- Maintenance mode -->
-                <?php $sMaintenanceMode = Yii::app()->getConfig('maintenancemode');
-                if ($sMaintenanceMode === 'hard' || $sMaintenanceMode === 'soft') { ?>
+                <?php if (SettingGlobal::getMaintenanceMode() !== SettingGlobal::MAINTENANCE_MODE_OFF) { ?>
                     <li class="nav-item">
                         <a class="nav-link text-warning" href="<?php echo $this->createUrl("admin/globalsettings"); ?>"
                             title="<?php eT("Click here to change maintenance mode setting."); ?>">
@@ -73,10 +48,10 @@
 
                 <?php App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'copySurvey.js', LSYii_ClientScript::POS_BEGIN); ?>
 
-                <li class="nav-item d-flex"><a
+                <li class="nav-item d-flex" id="surveys-menu-item"><a
                         href="<?php echo $this->createUrl("surveyAdministration/listsurveys"); ?>"
                         class="nav-link ps-2"><?php eT("Surveys"); ?></a>
-                    <?php if ($activesurveyscount > 0): ?>
+                    <?php if ($activesurveyscount > 0) : ?>
                         <a class="nav-link ps-0 active-surveys"
                             href="<?php echo $this->createUrl('surveyAdministration/listsurveys/active/Y'); ?>">
                             <span class="visually-hidden"><?php eT("List active surveys"); ?></span>
@@ -97,7 +72,7 @@
                 <?php $this->renderPartial("application.libraries.MenuObjects.views._extraMenu", ['extraMenus' => $extraMenus, 'middleSection' => true, 'prependedMenu' => false]); ?>
             </ul>
         </div>
-        <div class="collapse navbar-collapse justify-content-end">
+        <div class="collapse navbar-collapse justify-content-end" id="adminmenu-user" role="navigation" aria-label="<?php eT('User menu'); ?>">
             <ul class="nav navbar-nav">
                 <!-- Extra menus from plugins -->
                 <?php $this->renderPartial("application.libraries.MenuObjects.views._extraMenu", ['extraMenus' => $extraMenus, 'middleSection' => false, 'prependedMenu' => true]); ?>
@@ -105,7 +80,7 @@
                 <?php echo $adminNotifications; ?>
 
                 <li class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown"
+                    <a href="#" id="admin-menu-user-button" class="nav-link dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown"
                         role="button" aria-expanded="false">
                         <!-- <i class="ri-user-fill"></i> <?php echo Yii::app()->session['user']; ?> <span class="caret"></span></a> -->
                         <span class='rounded-circle text-center d-flex align-items-center justify-content-center me-1'>
@@ -113,7 +88,7 @@
                         </span>
                         <?= Yii::app()->session['user']; ?>
                         <span class="caret"></span></a>
-                    <ul class="dropdown-menu dropdown-menu-end" role="menu">
+                    <ul class="dropdown-menu dropdown-menu-end">
                         <li id="admin-menu-item-account">
                             <a class="dropdown-item"
                                 href="<?php echo $this->createUrl("/admin/user/sa/personalsettings"); ?>">
@@ -138,15 +113,5 @@
         </div><!-- /.nav-collapse -->
 
     </div>
-</nav>
-<script type="text/javascript">
-    //show tooltips
-    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl);
-    })
-
-    $(document).ajaxComplete(function (handler) {
-        window.LS.doToolTip();
-    });
-</script>
+</div>
+</header>

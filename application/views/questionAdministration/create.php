@@ -58,11 +58,7 @@ $questionTheme = !empty($oQuestion->questionTheme) ? $oQuestion->questionTheme :
     <input type="hidden" name="sid" value="<?= $oSurvey->sid; ?>"/>
     <input type="hidden" name="question[qid]" value="<?= $oQuestion->qid; ?>"/>
     <input type="hidden" name="tabOverviewEditor" id='tab-overview-editor-input' value="<?= $this->aData['tabOverviewEditor'] ?>"/>
-    <?php
-
-/** this btn is trigger by save&close topbar button in copyQuestiontobar_view  */
-
-    ?>
+    <?php // this btn is trigger by save&close topbar button in copyQuestiontobar_view ?>
     <input
         type='submit'
         style="display:none"
@@ -81,6 +77,29 @@ $questionTheme = !empty($oQuestion->questionTheme) ? $oQuestion->questionTheme :
             <?php endif; ?>
         </div>
         <div class="col-xl-8 pe-1">
+            <div class="row align-items-end">
+                <!-- Question code -->
+                <div class="col-md-4 mb-3">
+                    <?php $this->renderPartial(
+                        "questionCode",
+                        ['question' => $oQuestion, 'questionEditorView' => true]
+                    ); ?>
+                </div>
+                <!-- Question type selector -->
+                <div class="col-md-8">
+                    <?php
+                    $this->renderPartial(
+                        "typeSelector",
+                        [
+                            'oSurvey' => $oSurvey,
+                            'question' => $oQuestion,
+                            'aQuestionTypeGroups' => $aQuestionTypeGroups,
+                            'questionTheme' => $questionTheme,
+                            'selectormodeclass' => $selectormodeclass,
+                        ]
+                    ); ?>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-12">
                     <!-- Text elements -->
@@ -119,9 +138,6 @@ $questionTheme = !empty($oQuestion->questionTheme) ? $oQuestion->questionTheme :
                         'generalSettings' => $generalSettings,
                         'oSurvey' => $oSurvey,
                         'question' => $oQuestion,
-                        'aQuestionTypeGroups' => $aQuestionTypeGroups,
-                        'questionTheme' => $questionTheme,
-                        'selectormodeclass' => $selectormodeclass,
                     ]
                 );
                 ?>

@@ -84,14 +84,14 @@ class Zend_Feed_Reader
     /**
      * Cache instance
      *
-     * @var Zend_Cache_Core
+     * @var Zend_Cache_Core|null
      */
     protected static $_cache = null;
 
     /**
      * HTTP client object to use for retrieving feeds
      *
-     * @var Zend_Http_Client
+     * @var Zend_Http_Client|null
      */
     protected static $_httpClient = null;
 
@@ -222,7 +222,7 @@ class Zend_Feed_Reader
     /**
      * Import a feed by providing a URL
      *
-     * @param  string $url The URL to the feed
+     * @param  string $uri The URL to the feed
      * @param  string $etag OPTIONAL Last received ETag for this resource
      * @param  string $lastModified OPTIONAL Last-Modified value for this resource
      * @return Zend_Feed_Reader_FeedInterface
@@ -429,14 +429,19 @@ class Zend_Feed_Reader
         $responseHtml = $response->getBody();
         $libxml_errflag = libxml_use_internal_errors(true);
         if (LIBXML_VERSION < 20900) {
+            // phpcs:ignore PHPCompatibility.FunctionUse.RemovedFunctions.libxml_disable_entity_loaderDeprecated -- called with libxml before 2.9 only
             $oldValue = libxml_disable_entity_loader(true);
         }
-        $dom = new DOMDocument;
-        $status = $dom->loadHTML($responseHtml);
-        if (LIBXML_VERSION < 20900) {
-            libxml_disable_entity_loader($oldValue);
+        try {
+            $dom = new DOMDocument;
+            $status = $dom->loadHTML($responseHtml);
+        } finally {
+            if (LIBXML_VERSION < 20900) {
+                // phpcs:ignore PHPCompatibility.FunctionUse.RemovedFunctions.libxml_disable_entity_loaderDeprecated -- called with libxml before 2.9 only
+                libxml_disable_entity_loader($oldValue);
+            }
+            libxml_use_internal_errors($libxml_errflag);
         }
-        libxml_use_internal_errors($libxml_errflag);
         if (!$status) {
             // Build error message
             $error = libxml_get_last_error();
@@ -497,7 +502,7 @@ class Zend_Feed_Reader
         } else {
             require_once 'Zend/Feed/Exception.php';
             throw new Zend_Feed_Exception('Invalid object/scalar provided: must'
-            . ' be of type Zend_Feed_Reader_FeedInterface, DomDocument or string');
+            . ' be of type Zend_Feed_Reader_FeedInterface, DOMDocument or string');
         }
         $xpath = new DOMXPath($dom);
 
@@ -573,6 +578,7 @@ class Zend_Feed_Reader
 
         $xpath->registerNamespace('atom', self::NAMESPACE_ATOM_03);
 
+        // @phpstan-ignore if.alwaysFalse (the atom prefix is bound to another namespace above)
         if ($xpath->query('//atom:feed')->length) {
             return self::TYPE_ATOM_03;
         }

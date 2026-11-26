@@ -1,168 +1,224 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE ldml SYSTEM "../../common/dtd/ldml.dtd">
-<!-- Copyright © 1991-2013 Unicode, Inc.
-CLDR data files are interpreted according to the LDML specification (http://unicode.org/reports/tr35/)
+<!-- Copyright © 1991-2026 Unicode, Inc.
 For terms of use, see http://www.unicode.org/copyright.html
+SPDX-License-Identifier: Unicode-3.0
+CLDR data files are interpreted according to the LDML specification (http://unicode.org/reports/tr35/)
 -->
 <ldml>
 	<identity>
-		<version number="$Revision: 9814 $"/>
-		<generation date="$Date: 2014-02-26 15:19:38 -0600 (Wed, 26 Feb 2014) $"/>
+		<version number="$Revision$"/>
 		<language type="sv"/>
 		<territory type="FI"/>
 	</identity>
 	<localeDisplayNames>
-		<languages>
-			<language type="az" alt="short" draft="contributed">azerbajdzjanska</language>
-			<language type="chm" draft="contributed">mari</language>
-			<language type="fj" draft="contributed">fiji</language>
-			<language type="ha" draft="contributed">hausa</language>
-			<language type="ig" draft="contributed">igbo</language>
-			<language type="km" draft="contributed">khmer</language>
-			<language type="ks" draft="contributed">kashmiri</language>
-			<language type="ky" draft="contributed">kirgiziska</language>
-			<language type="lo" draft="contributed">lao</language>
-			<language type="nb" draft="contributed">bokmål</language>
-			<language type="pa" draft="contributed">panjabi</language>
-			<language type="ps" draft="contributed">pashto</language>
-			<language type="te" draft="contributed">telugu</language>
-			<language type="th" draft="contributed">thai</language>
-			<language type="ti" draft="contributed">tigrinska</language>
-			<language type="und" draft="contributed">okänt språk</language>
-		</languages>
 		<scripts>
-			<script type="Arab" alt="variant" draft="contributed">persisk-arabiska</script>
-			<script type="Hrkt" draft="contributed">kana</script>
-			<script type="Mero" draft="contributed">meroitiska</script>
+			<script type="Arab" alt="variant">persisk-arabiska</script>
 		</scripts>
-		<territories>
-			<territory type="035" draft="contributed">Sydöstasien</territory>
-			<territory type="BL" draft="contributed">Saint-Barthélemy</territory>
-			<territory type="BQ" draft="contributed">Bonaire, S:t Eustatius och Saba</territory>
-			<territory type="CD" draft="contributed">Demokratiska republiken Kongo</territory>
-			<territory type="CG" draft="contributed">Kongo</territory>
-			<territory type="GB" draft="contributed">Förenade kungariket</territory>
-			<territory type="KN" draft="contributed">Saint Kitts och Nevis</territory>
-			<territory type="LC" draft="contributed">Saint Lucia</territory>
-			<territory type="MF" draft="contributed">S:t Martin (franska delen)</territory>
-			<territory type="MM" draft="contributed">Burma</territory>
-			<territory type="PM" draft="contributed">Saint Pierre och Miquelon</territory>
-			<territory type="PN" draft="contributed">Pitcairn</territory>
-			<territory type="PS" draft="contributed">Palestinska området</territory>
-			<territory type="SD" draft="contributed">Nordsudan</territory>
-			<territory type="SH" draft="contributed">Saint Helena</territory>
-			<territory type="SX" draft="contributed">Sint Martin</territory>
-			<territory type="TK" draft="contributed">Tokelauöarna</territory>
-			<territory type="US" draft="contributed">Förenta staterna</territory>
-			<territory type="VA" draft="contributed">Vatikanen</territory>
-			<territory type="VC" draft="contributed">Saint Vincent och Grenadinerna</territory>
-			<territory type="WF" draft="contributed">Wallis- och Futuna</territory>
-		</territories>
-		<variants>
-			<variant type="1996">1996 års stavning</variant>
-		</variants>
 		<keys>
 			<key type="timezone" draft="contributed">tidszon</key>
 		</keys>
 		<types>
-			<type type="big5han" key="collation" draft="unconfirmed">kinesiska i big5-sorteringsordning</type>
-			<type type="buddhist" key="calendar" draft="contributed">buddhistisk kalender</type>
-			<type type="gb2312han" key="collation" draft="unconfirmed">kinesiska i gb2312-sorteringsordning</type>
-			<type type="pinyin" key="collation" draft="unconfirmed">kinesiska i pinyin-sorteringsordning</type>
-			<type type="stroke" key="collation" draft="unconfirmed">kinesiska i strecksorteringsordning</type>
-			<type type="traditional" key="collation" draft="unconfirmed">traditionell sorteringsordning</type>
+			<type key="collation" type="pinyin" draft="unconfirmed">kinesiska i pinyin-sorteringsordning</type>
+			<type key="collation" type="stroke" draft="unconfirmed">kinesiska i strecksorteringsordning</type>
 		</types>
-		<measurementSystemNames>
-			<measurementSystemName type="UK" draft="contributed">engelska enheter (UK)</measurementSystemName>
-			<measurementSystemName type="US" draft="contributed">engelska enheter (USA)</measurementSystemName>
-		</measurementSystemNames>
 	</localeDisplayNames>
 	<characters>
-		<exemplarCharacters draft="unconfirmed">[a à b c d e é f g h i j k l m n o p q r s t u v x y z å ä ö]</exemplarCharacters>
-		<exemplarCharacters type="auxiliary">[ã ç ë í ñ ó š ÿ ü ž]</exemplarCharacters>
+		<ellipsis type="word-final">{0}…</ellipsis>
+		<ellipsis type="word-initial">…{0}</ellipsis>
+		<ellipsis type="word-medial">{0}…{1}</ellipsis>
 	</characters>
 	<dates>
 		<calendars>
 			<calendar type="gregorian">
-				<eras>
-					<eraNames>
-						<era type="0" draft="contributed">före Kristus</era>
-						<era type="0" alt="variant" draft="contributed">före vår tideräkning</era>
-						<era type="1" draft="contributed">efter Kristus</era>
-						<era type="1" alt="variant" draft="contributed">vår tideräkning</era>
-					</eraNames>
-				</eras>
+				<quarters>
+					<quarterContext type="stand-alone">
+						<quarterWidth type="abbreviated">
+							<quarter type="1">K1</quarter>
+							<quarter type="2">K2</quarter>
+							<quarter type="3">K3</quarter>
+							<quarter type="4">K4</quarter>
+						</quarterWidth>
+					</quarterContext>
+				</quarters>
 				<dateFormats>
 					<dateFormatLength type="full">
 						<dateFormat>
-							<pattern draft="contributed">EEEE'en' 'den' d:'e' MMMM y</pattern>
+							<pattern>EEEE d MMMM y</pattern>
 						</dateFormat>
 					</dateFormatLength>
 					<dateFormatLength type="long">
 						<dateFormat>
-							<pattern draft="contributed">d MMMM y</pattern>
+							<pattern>d MMMM y</pattern>
 						</dateFormat>
 					</dateFormatLength>
 					<dateFormatLength type="medium">
 						<dateFormat>
-							<pattern draft="contributed">d MMM y</pattern>
+							<pattern>d MMM y</pattern>
 						</dateFormat>
 					</dateFormatLength>
 					<dateFormatLength type="short">
 						<dateFormat>
-							<pattern draft="contributed">dd-MM-y</pattern>
+							<pattern>d.M.y</pattern>
 						</dateFormat>
 					</dateFormatLength>
 				</dateFormats>
+				<timeFormats>
+					<timeFormatLength type="full">
+						<timeFormat>
+							<pattern>HH.mm.ss zzzz</pattern>
+						</timeFormat>
+					</timeFormatLength>
+					<timeFormatLength type="long">
+						<timeFormat>
+							<pattern>H.mm.ss z</pattern>
+						</timeFormat>
+					</timeFormatLength>
+					<timeFormatLength type="medium">
+						<timeFormat>
+							<pattern>H.mm.ss</pattern>
+						</timeFormat>
+					</timeFormatLength>
+					<timeFormatLength type="short">
+						<timeFormat>
+							<pattern>H.mm</pattern>
+						</timeFormat>
+					</timeFormatLength>
+				</timeFormats>
+				<dateTimeFormats>
+					<dateTimeFormatLength type="full">
+						<dateTimeFormat>
+							<pattern>{1} {0}</pattern>
+						</dateTimeFormat>
+					</dateTimeFormatLength>
+					<dateTimeFormatLength type="long">
+						<dateTimeFormat>
+							<pattern>{1} {0}</pattern>
+						</dateTimeFormat>
+					</dateTimeFormatLength>
+					<dateTimeFormatLength type="medium">
+						<dateTimeFormat>
+							<pattern>{1} {0}</pattern>
+						</dateTimeFormat>
+					</dateTimeFormatLength>
+					<dateTimeFormatLength type="short">
+						<dateTimeFormat>
+							<pattern>{1} {0}</pattern>
+						</dateTimeFormat>
+					</dateTimeFormatLength>
+					<availableFormats>
+						<dateFormatItem id="Bhm">h.mm B</dateFormatItem>
+						<dateFormatItem id="Bhms">h.mm.ss B</dateFormatItem>
+						<dateFormatItem id="EBhm">E h.mm B</dateFormatItem>
+						<dateFormatItem id="EBhms">E h.mm.ss B</dateFormatItem>
+						<dateFormatItem id="Ehm">E h.mm a</dateFormatItem>
+						<dateFormatItem id="EHm">E HH.mm</dateFormatItem>
+						<dateFormatItem id="Ehms">E h.mm.ss a</dateFormatItem>
+						<dateFormatItem id="EHms">E HH.mm.ss</dateFormatItem>
+						<dateFormatItem id="GyM">M.y G</dateFormatItem>
+						<dateFormatItem id="GyMd">d.M.y G</dateFormatItem>
+						<dateFormatItem id="GyMEd">E d.M.y G</dateFormatItem>
+						<dateFormatItem id="H">H</dateFormatItem>
+						<dateFormatItem id="hm">h.mm a</dateFormatItem>
+						<dateFormatItem id="Hm">HH.mm</dateFormatItem>
+						<dateFormatItem id="hms">h.mm.ss a</dateFormatItem>
+						<dateFormatItem id="Hms">HH.mm.ss</dateFormatItem>
+						<dateFormatItem id="hmsv">h.mm.ss a v</dateFormatItem>
+						<dateFormatItem id="Hmsv">HH.mm.ss v</dateFormatItem>
+						<dateFormatItem id="hmv">h.mm a v</dateFormatItem>
+						<dateFormatItem id="Hmv">HH.mm v</dateFormatItem>
+						<dateFormatItem id="Md">d.M</dateFormatItem>
+						<dateFormatItem id="MEd">E d.M</dateFormatItem>
+						<dateFormatItem id="MMd">d.M</dateFormatItem>
+						<dateFormatItem id="MMdd">dd.MM</dateFormatItem>
+						<dateFormatItem id="ms">mm.ss</dateFormatItem>
+						<dateFormatItem id="yM">L.y</dateFormatItem>
+						<dateFormatItem id="yMd">d.M.y</dateFormatItem>
+						<dateFormatItem id="yMEd">E d.M.y</dateFormatItem>
+						<dateFormatItem id="yMM">M.y</dateFormatItem>
+					</availableFormats>
+					<intervalFormats>
+						<intervalFormatItem id="Bhm">
+							<greatestDifference id="B">h.mm B–h.mm B</greatestDifference>
+							<greatestDifference id="h">h.mm–h.mm B</greatestDifference>
+							<greatestDifference id="m">h.mm–h.mm B</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="GyMd">
+							<greatestDifference id="d">d.M.y–d.M.y GGGGG</greatestDifference>
+							<greatestDifference id="G">d.M.y GGGGG–d.M.y GGGGG</greatestDifference>
+							<greatestDifference id="M">d.M.y–d.M.y GGGGG</greatestDifference>
+							<greatestDifference id="y">d.M.y–d.M.y GGGGG</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="GyMEd">
+							<greatestDifference id="d">E d.M.y–E d.M.y GGGGG</greatestDifference>
+							<greatestDifference id="G">E d.M.y GGGGG–E d.M.y GGGGG</greatestDifference>
+							<greatestDifference id="M">E d.M.y–E d.M.y GGGGG</greatestDifference>
+							<greatestDifference id="y">E d.M.y–E d.M.y GGGGG</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="hm">
+							<greatestDifference id="a">h.mm a–h.mm a</greatestDifference>
+							<greatestDifference id="h">h.mm–h.mm a</greatestDifference>
+							<greatestDifference id="m">h.mm–h.mm a</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="Hm">
+							<greatestDifference id="H">H.mm–H.mm</greatestDifference>
+							<greatestDifference id="m">HH.mm–HH.mm</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="hmv">
+							<greatestDifference id="a">h.mm a–h.mm a v</greatestDifference>
+							<greatestDifference id="h">h.mm–h.mm a v</greatestDifference>
+							<greatestDifference id="m">h.mm–h.mm a v</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="Hmv">
+							<greatestDifference id="H">HH.mm–HH.mm v</greatestDifference>
+							<greatestDifference id="m">HH.mm–HH.mm v</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="Md">
+							<greatestDifference id="d">d–d.M</greatestDifference>
+							<greatestDifference id="M">d.M–d.M</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="MEd">
+							<greatestDifference id="d">E d.M–E d.M</greatestDifference>
+							<greatestDifference id="M">E d.M–E d.M</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="yM">
+							<greatestDifference id="M">MMM–MMM y</greatestDifference>
+							<greatestDifference id="y">MMMM y–MMMM y</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="yMd">
+							<greatestDifference id="d">d–d.M.y</greatestDifference>
+							<greatestDifference id="M">d.M–d.M.y</greatestDifference>
+							<greatestDifference id="y">d.M.y–d.M.y</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="yMEd">
+							<greatestDifference id="d">E d.M.y–E d.M.y</greatestDifference>
+							<greatestDifference id="M">E d.M.y–E d.M.y</greatestDifference>
+							<greatestDifference id="y">E d.M.y–E d.M.y</greatestDifference>
+						</intervalFormatItem>
+					</intervalFormats>
+				</dateTimeFormats>
 			</calendar>
 		</calendars>
 		<fields>
-			<field type="era">
-				<displayName draft="contributed">era</displayName>
+			<field type="year-short">
+				<relative type="-1">förra året</relative>
+				<relative type="0">i år</relative>
+				<relative type="1">nästa år</relative>
 			</field>
-			<field type="year">
-				<displayName draft="contributed">år</displayName>
-			</field>
-			<field type="month">
-				<displayName draft="contributed">månad</displayName>
-			</field>
-			<field type="week">
-				<displayName draft="contributed">vecka</displayName>
-			</field>
-			<field type="day">
-				<displayName draft="contributed">dag</displayName>
-			</field>
-			<field type="weekday">
-				<displayName draft="contributed">veckodag</displayName>
-			</field>
-			<field type="dayperiod">
-				<displayName>dagsperiod</displayName>
-			</field>
-			<field type="minute">
-				<displayName draft="contributed">minut</displayName>
-			</field>
-			<field type="second">
-				<displayName draft="contributed">sekund</displayName>
-			</field>
-			<field type="zone">
-				<displayName draft="contributed">tidszon</displayName>
+			<field type="year-narrow">
+				<relative type="-1">förra året</relative>
+				<relative type="0">i år</relative>
+				<relative type="1">nästa år</relative>
 			</field>
 		</fields>
-		<timeZoneNames>
-			<hourFormat draft="contributed">+H:mm;−H:mm</hourFormat>
-			<regionFormat draft="contributed">tidszon: {0}</regionFormat>
-			<zone type="Etc/Unknown">
-				<exemplarCity draft="contributed">(okänd tidszon)</exemplarCity>
-			</zone>
-		</timeZoneNames>
 	</dates>
+	<numbers>
+		<symbols numberSystem="latn">
+			<timeSeparator draft="contributed">.</timeSeparator>
+			<timeSeparator alt="variant">:</timeSeparator>
+		</symbols>
+	</numbers>
 	<units>
-		<unitLength type="long">
-			<unit type="temperature-celsius">
-				<unitPattern count="one" draft="contributed">{0} grad Celsius</unitPattern>
-				<unitPattern count="other" draft="contributed">{0} grader Celsius</unitPattern>
-			</unit>
-		</unitLength>
 		<unitLength type="narrow">
 			<unit type="speed-kilometer-per-hour">
 				<unitPattern count="one" draft="contributed">{0} km/h</unitPattern>
@@ -170,19 +226,4 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</unit>
 		</unitLength>
 	</units>
-	<listPatterns>
-		<listPattern type="unit">
-			<listPatternPart type="start" draft="contributed">{0}, {1}</listPatternPart>
-			<listPatternPart type="middle" draft="contributed">{0}, {1}</listPatternPart>
-			<listPatternPart type="end" draft="contributed">{0} och {1}</listPatternPart>
-			<listPatternPart type="2" draft="contributed">{0} och {1}</listPatternPart>
-		</listPattern>
-		<listPattern type="unit-short">
-			<listPatternPart type="start" draft="contributed">{0}, {1}</listPatternPart>
-			<listPatternPart type="middle" draft="contributed">{0}, {1}</listPatternPart>
-			<listPatternPart type="end" draft="contributed">{0} och {1}</listPatternPart>
-			<listPatternPart type="2" draft="contributed">{0} och {1}</listPatternPart>
-		</listPattern>
-	</listPatterns>
 </ldml>
-

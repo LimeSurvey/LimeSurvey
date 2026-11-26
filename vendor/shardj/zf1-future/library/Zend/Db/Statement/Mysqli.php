@@ -38,6 +38,17 @@ require_once 'Zend/Db/Statement.php';
  */
 class Zend_Db_Statement_Mysqli extends Zend_Db_Statement
 {
+    /**
+     * @var Zend_Db_Adapter_Mysqli
+     */
+    protected $_adapter = null;
+
+    /**
+     * The driver level statement
+     *
+     * @var mysqli_stmt|false|null
+     */
+    protected $_stmt = null;
 
     /**
      * Column names.
@@ -54,7 +65,10 @@ class Zend_Db_Statement_Mysqli extends Zend_Db_Statement
     protected $_values;
 
     /**
-     * @var array
+     * Result set metadata, false for a statement without a result set,
+     * null before the first execution.
+     *
+     * @var mysqli_result|false|null
      */
     protected $_meta = null;
 
@@ -67,7 +81,13 @@ class Zend_Db_Statement_Mysqli extends Zend_Db_Statement
     {
         $mysqli = $this->_adapter->getConnection();
 
-        $this->_stmt = $mysqli->prepare($sql);
+        try {
+            $this->_stmt = $mysqli->prepare($sql);
+        } catch (mysqli_sql_exception $e) {
+            // PHP 8.1+ throws by default (MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT)
+            require_once 'Zend/Db/Statement/Mysqli/Exception.php';
+            throw new Zend_Db_Statement_Mysqli_Exception("Mysqli prepare error: " . $e->getMessage(), $e->getCode(), $e);
+        }
 
         if ($this->_stmt === false || $mysqli->errno) {
             /**
@@ -142,10 +162,97 @@ class Zend_Db_Statement_Mysqli extends Zend_Db_Statement
     }
 
     /**
+     * Returns metadata for a column in a result set, in the format of
+     * PDOStatement::getColumnMeta() of pdo_mysql: native_type, flags, table,
+     * name, len, precision and pdo_type. The pdo_type is the type of the
+     * values fetched: integer columns come as integers from mysqli.
+     *
+     * @param int $column Zero-based index of the column.
+     * @return array|false False when the statement has no result set or no such column.
+     */
+    public function getColumnMeta($column)
+    {
+        $column = (int) $column;
+        if (!$this->_meta || $column < 0 || $column >= $this->_meta->field_count) {
+            return false;
+        }
+
+        $field = $this->_meta->fetch_field_direct($column);
+        if (!$field) {
+            return false;
+        }
+
+        $meta = [];
+        $nativeTypes = [
+            MYSQLI_TYPE_STRING      => 'STRING',
+            MYSQLI_TYPE_VAR_STRING  => 'VAR_STRING',
+            MYSQLI_TYPE_TINY        => 'TINY',
+            MYSQLI_TYPE_BIT         => 'BIT',
+            MYSQLI_TYPE_SHORT       => 'SHORT',
+            MYSQLI_TYPE_LONG        => 'LONG',
+            MYSQLI_TYPE_LONGLONG    => 'LONGLONG',
+            MYSQLI_TYPE_INT24       => 'INT24',
+            MYSQLI_TYPE_FLOAT       => 'FLOAT',
+            MYSQLI_TYPE_DOUBLE      => 'DOUBLE',
+            MYSQLI_TYPE_DECIMAL     => 'DECIMAL',
+            MYSQLI_TYPE_NEWDECIMAL  => 'NEWDECIMAL',
+            MYSQLI_TYPE_GEOMETRY    => 'GEOMETRY',
+            MYSQLI_TYPE_TIMESTAMP   => 'TIMESTAMP',
+            MYSQLI_TYPE_YEAR        => 'YEAR',
+            MYSQLI_TYPE_SET         => 'SET',
+            MYSQLI_TYPE_ENUM        => 'ENUM',
+            MYSQLI_TYPE_DATE        => 'DATE',
+            MYSQLI_TYPE_NEWDATE     => 'NEWDATE',
+            MYSQLI_TYPE_TIME        => 'TIME',
+            MYSQLI_TYPE_DATETIME    => 'DATETIME',
+            MYSQLI_TYPE_TINY_BLOB   => 'TINY_BLOB',
+            MYSQLI_TYPE_MEDIUM_BLOB => 'MEDIUM_BLOB',
+            MYSQLI_TYPE_LONG_BLOB   => 'LONG_BLOB',
+            MYSQLI_TYPE_BLOB        => 'BLOB',
+            MYSQLI_TYPE_NULL        => 'NULL',
+        ];
+        // pdo_mysql leaves the key out for the types it has no name for
+        if (isset($nativeTypes[$field->type])) {
+            $meta['native_type'] = $nativeTypes[$field->type];
+        }
+
+        $flags = [];
+        $flagNames = [
+            MYSQLI_NOT_NULL_FLAG     => 'not_null',
+            MYSQLI_PRI_KEY_FLAG      => 'primary_key',
+            MYSQLI_MULTIPLE_KEY_FLAG => 'multiple_key',
+            MYSQLI_UNIQUE_KEY_FLAG   => 'unique_key',
+            MYSQLI_BLOB_FLAG         => 'blob',
+        ];
+        foreach ($flagNames as $flag => $name) {
+            if ($field->flags & $flag) {
+                $flags[] = $name;
+            }
+        }
+        $meta['flags'] = $flags;
+
+        $meta['table']     = $field->table;
+        $meta['name']      = $field->name;
+        $meta['len']       = $field->length;
+        $meta['precision'] = $field->decimals;
+
+        $integerTypes = [
+            MYSQLI_TYPE_BIT, MYSQLI_TYPE_YEAR, MYSQLI_TYPE_TINY, MYSQLI_TYPE_SHORT,
+            MYSQLI_TYPE_INT24, MYSQLI_TYPE_LONG,
+        ];
+        if (PHP_INT_SIZE == 8) {
+            $integerTypes[] = MYSQLI_TYPE_LONGLONG;
+        }
+        $meta['pdo_type'] = in_array($field->type, $integerTypes, true) ? Zend_Db::PARAM_INT : Zend_Db::PARAM_STR;
+
+        return $meta;
+    }
+
+    /**
      * Retrieves the error code, if any, associated with the last operation on
      * the statement handle.
      *
-     * @return string error code.
+     * @return string|false error code.
      */
     public function errorCode()
     {
@@ -159,7 +266,7 @@ class Zend_Db_Statement_Mysqli extends Zend_Db_Statement
      * Retrieves an array of error information, if any, associated with the
      * last operation on the statement handle.
      *
-     * @return array
+     * @return array|false
      */
     public function errorInfo()
     {
@@ -191,6 +298,25 @@ class Zend_Db_Statement_Mysqli extends Zend_Db_Statement
         if ($params === null) {
             $params = $this->_bindParam;
         }
+        try {
+            return $this->_executeStatement($params);
+        } catch (mysqli_sql_exception $e) {
+            // PHP 8.1+ throws by default (MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT)
+            require_once 'Zend/Db/Statement/Mysqli/Exception.php';
+            throw new Zend_Db_Statement_Mysqli_Exception("Mysqli statement execute error : " . $e->getMessage(), $e->getCode(), $e);
+        }
+    }
+
+    /**
+     * Binds the parameters, executes the statement and binds the result.
+     *
+     * @param array|null $params Values to bind to parameter placeholders.
+     * @return bool
+     * @throws Zend_Db_Statement_Mysqli_Exception
+     * @throws mysqli_sql_exception
+     */
+    protected function _executeStatement($params)
+    {
         // send $params as input parameters to the statement
         if ($params) {
             array_unshift($params, str_repeat('s', count($params)));
@@ -275,8 +401,7 @@ class Zend_Db_Statement_Mysqli extends Zend_Db_Statement
         // fetch the next result
         $retval = $this->_stmt->fetch();
         switch ($retval) {
-            case null: // end of data
-            case false: // error occurred
+            case null: // end of data; the loose comparison also matches false (an error occurred)
                 $this->_stmt->reset();
                 return false;
             default:
@@ -314,14 +439,12 @@ class Zend_Db_Statement_Mysqli extends Zend_Db_Statement
                 $assoc = array_combine($this->_keys, $values);
                 $row = array_merge($values, $assoc);
                 return $this->_fetchBound($row);
-                break;
             default:
                 /**
                  * @see Zend_Db_Statement_Mysqli_Exception
                  */
                 require_once 'Zend/Db/Statement/Mysqli/Exception.php';
                 throw new Zend_Db_Statement_Mysqli_Exception("Invalid fetch mode '$style' specified");
-                break;
         }
         return $row;
     }
@@ -348,7 +471,7 @@ class Zend_Db_Statement_Mysqli extends Zend_Db_Statement
      * last INSERT, DELETE, or UPDATE statement executed by this
      * statement object.
      *
-     * @return int     The number of rows affected.
+     * @return int|false     The number of rows affected.
      */
     public function rowCount()
     {

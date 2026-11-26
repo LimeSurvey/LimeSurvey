@@ -35,6 +35,8 @@ class Sidebar {
         this.handlePjaxSend = this.handlePjaxSend.bind(this);
         this.handlePjaxRefresh = this.handlePjaxRefresh.bind(this);
         this.handleStateChange = this.handleStateChange.bind(this);
+        this.observeTopbar = this.observeTopbar.bind(this);
+        this.topbarObserver = null;
     }
 
     /**
@@ -72,7 +74,7 @@ class Sidebar {
 
         this.render();
         this.bindEvents();
-        this.calculateHeight();
+        this.observeTopbar();
 
         // Initial data load - check if menus are already loaded from basemenus
         const sidemenus = StateManager.get('sidemenus');
@@ -136,12 +138,22 @@ class Sidebar {
     }
 
     /**
-     * Calculate sidebar height based on viewport
+     * Keep the sticky sidebar right below the sticky topbar, whose height differs per page
+     * and changes e.g. when the question editor is opened
      */
-    calculateHeight() {
-        const height = $('#in_survey_common').height();
-        if (height) {
-            StateManager.commit('changeSideBarHeight', height);
+    observeTopbar() {
+        if (this.topbarObserver) {
+            this.topbarObserver.disconnect();
+        }
+        const topbar = document.querySelector('.topbar.sticky-top');
+        const updateTop = () => {
+            const top = topbar && topbar.offsetParent !== null ? topbar.offsetHeight : 0;
+            this.container.style.setProperty('--ls-sidebar-top', top + 'px');
+        };
+        updateTop();
+        if (topbar && window.ResizeObserver) {
+            this.topbarObserver = new ResizeObserver(updateTop);
+            this.topbarObserver.observe(topbar);
         }
     }
 
@@ -152,14 +164,6 @@ class Sidebar {
         const width = StateManager.getComputed('isCollapsed') ? 98 : this.sideBarWidth;
         // Ensure we always return a number by parsing if needed
         return typeof width === 'string' ? parseInt(width) : width;
-    }
-
-    /**
-     * Calculate sidebar menu height
-     */
-    calculateSideBarMenuHeight() {
-        const currentSideBar = StateManager.get('sideBarHeight');
-        return LS.ld.min([currentSideBar, Math.floor(screen.height * 2)]) + 'px';
     }
 
     /**
@@ -412,9 +416,6 @@ class Sidebar {
      * Bind event handlers
      */
     bindEvents() {
-        // Window resize
-        window.addEventListener('resize', LS.ld.debounce(() => this.calculateHeight(), 300));
-
         // Body mouse move for resize
         $('body').on('mousemove', this.handleMouseMove);
 
@@ -424,6 +425,7 @@ class Sidebar {
         $(document).on('vue-redraw', this.handleVueRedraw);
         $(document).on('pjax:send', this.handlePjaxSend);
         $(document).on('pjax:refresh', this.handlePjaxRefresh);
+        $(document).on('pjax:scriptcomplete', this.observeTopbar);
 
         // EventBus equivalent for updateSideBar
         $(document).on('updateSideBar', this.handleUpdateSideBar);
@@ -545,17 +547,17 @@ class Sidebar {
             html += this.renderStateToggle(isCollapsed, currentTab, isRTL);
 
             // Side menu content
-            html += '<div id="sidemenu-container" class="slide-fade" role="tabpanel" aria-labelledby="adminsidepanel__sidebar--selectorSettingsButton" style="display: ' + (!isCollapsed && currentTab === 'settings' ? 'block' : 'none') + '; min-height: ' + this.calculateSideBarMenuHeight() + ';"></div>';
+            html += '<div id="sidemenu-container" class="slide-fade" role="tabpanel" aria-labelledby="adminsidepanel__sidebar--selectorSettingsButton" style="display: ' + (!isCollapsed && currentTab === 'settings' ? 'block' : 'none') + ';"></div>';
 
             // Question explorer content
-            html += '<div id="questionexplorer-container" class="slide-fade" role="tabpanel" aria-labelledby="adminsidepanel__sidebar--selectorStructureButton" style="display: ' + (!isCollapsed && currentTab === 'questiontree' ? 'block' : 'none') + '; min-height: ' + this.calculateSideBarMenuHeight() + ';"></div>';
+            html += '<div id="questionexplorer-container" class="slide-fade" role="tabpanel" aria-labelledby="adminsidepanel__sidebar--selectorStructureButton" style="display: ' + (!isCollapsed && currentTab === 'questiontree' ? 'block' : 'none') + ';"></div>';
 
             // Quick menu (collapsed state)
             html += '<div id="quickmenu-container" style="display: ' + (isCollapsed ? 'block' : 'none') + ';"></div>';
 
             // Resize handle
             if ((UIHelpers.useMobileView() && !this.smallScreenHidden) || !UIHelpers.useMobileView()) {
-                html += '<div class="resize-handle ls-flex-column" style="height: ' + this.calculateSideBarMenuHeight() + ';">';
+                html += '<div class="resize-handle ls-flex-column">';
                 if (!isCollapsed) {
                     html += '<button class="btn resize-btn" type="button">' +
                         '<svg width="9" height="14" viewBox="0 0 9 14" fill="none" xmlns="http://www.w3.org/2000/svg">' +

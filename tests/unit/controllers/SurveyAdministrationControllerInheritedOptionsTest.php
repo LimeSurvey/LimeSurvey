@@ -71,7 +71,6 @@ class SurveyAdministrationControllerInheritedOptionsTest extends TestBaseClass
     {
         $controller = new SurveyAdministrationController('surveyAdministration');
         $method = new ReflectionMethod($controller, 'loadSurveyWithInheritedOptions');
-        $method->setAccessible(true);
 
         $survey = $method->invoke($controller, self::$surveyId);
 

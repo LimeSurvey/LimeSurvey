@@ -48,6 +48,18 @@ class RegisterController extends LSYii_Controller
     /** @var bool Whether to send the registration email or not */
     private $sendRegistrationEmail;
 
+    /**
+     * Ends every action with the maintenance page while participants are locked out, see
+     * LSYii_Controller::filterParticipantsLocked().
+     *
+     * @return array
+     */
+    #[\Override]
+    public function filters()
+    {
+        return array_merge(parent::filters(), ['participantsLocked']);
+    }
+
     public function actions()
     {
         return array(
@@ -358,7 +370,7 @@ class RegisterController extends LSYii_Controller
             $oToken->decrypt();
             if ($oToken->usesleft < 1 && $aSurveyInfo['alloweditaftercompletion'] != 'Y') {
                 $this->aRegisterErrors[] = gT("The email address you have entered is already registered and the survey has been completed.");
-            } elseif (strtolower(substr(trim((string) $oToken->emailstatus), 0, 6)) === "optout") {
+            } elseif ($oToken->optOutStatus) {
                 // And global blocklisting ?
                 {
                 $this->aRegisterErrors[] = gT("This email address cannot be used because it was opted out of this survey.");

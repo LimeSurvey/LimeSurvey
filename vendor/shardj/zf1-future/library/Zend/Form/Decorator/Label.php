@@ -75,19 +75,19 @@ class Zend_Form_Decorator_Label extends Zend_Form_Decorator_Abstract
 
     /**
      * Default placement: prepend
-     * @var string
+     * @var string|null
      */
     protected $_placement = 'PREPEND';
 
     /**
      * HTML tag with which to surround label
-     * @var string
+     * @var string|null
      */
     protected $_tag;
 
     /**
      * Class for the HTML tag with which to surround label
-     * @var string
+     * @var string|null
      */
     protected $_tagClass;
 
@@ -334,12 +334,10 @@ class Zend_Form_Decorator_Label extends Zend_Form_Decorator_Abstract
         $reqSuffix = $this->getReqSuffix();
         $separator = $this->getSeparator();
 
-        if (!empty($label)) {
-            if ($element->isRequired()) {
-                $label = $reqPrefix . $label . $reqSuffix;
-            } else {
-                $label = $optPrefix . $label . $optSuffix;
-            }
+        if ($element->isRequired()) {
+            $label = $reqPrefix . $label . $reqSuffix;
+        } else {
+            $label = $optPrefix . $label . $optSuffix;
         }
 
         return $label;
@@ -379,7 +377,7 @@ class Zend_Form_Decorator_Label extends Zend_Form_Decorator_Abstract
      * Render a label
      *
      * @param  string $content
-     * @return string
+     * @return string|null
      */
     public function render($content)
     {
@@ -482,5 +480,7 @@ class Zend_Form_Decorator_Label extends Zend_Form_Decorator_Abstract
             case self::IMPLICIT_APPEND:
                 return $label;
         }
+
+        return null;
     }
 }

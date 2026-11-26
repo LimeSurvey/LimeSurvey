@@ -13,6 +13,7 @@ export function useQuestionComments(
     selectedField = '',
     fields = [],
     questionType,
+    filterSet = [],
   } = {}
 ) {
   const { data, ...rest } = useQuestionAnswers(
@@ -28,6 +29,7 @@ export function useQuestionComments(
         selectedField,
         fields,
         questionType,
+        filterSet,
       ],
       queryFn: ({ pageParam = 0 }) =>
         statisticsService.getQuestionComments(
@@ -39,7 +41,8 @@ export function useQuestionComments(
           selectedAnswer,
           fields,
           questionType,
-          selectedField
+          selectedField,
+          filterSet
         ),
     }),
     { enabled, fields }

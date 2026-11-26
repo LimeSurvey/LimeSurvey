@@ -33,6 +33,12 @@ class SearchBoxWidget extends CWidget
     public bool $switch = false;
 
     /**
+     * @var int|null $resultCount Number of surveys matching the current filters, null if unknown.
+     * When set, it is announced to screen readers after the user changed a filter (see filters.js).
+     */
+    public ?int $resultCount = null;
+
+    /**
      * Runs the widget, rendering the appropriate view based on the viewtype and switch properties.
      * It determines the viewtype from the query parameters, user settings, or defaults.
      *
@@ -54,6 +60,24 @@ class SearchBoxWidget extends CWidget
         }
 
         $this->render('searchBox');
+    }
+
+    /**
+     * Returns the message announced to screen readers after filtering, e.g. "No surveys found.".
+     * It is always rendered; filters.js only announces it when the page was reloaded by a filter change,
+     * so clearing a filter is announced too, while a plain page load stays silent.
+     *
+     * @return string The result message, empty when the number of results is unknown.
+     */
+    public function getResultMessage(): string
+    {
+        if ($this->resultCount === null) {
+            return '';
+        }
+        if ($this->resultCount === 0) {
+            return gT('No surveys found.', 'unescaped');
+        }
+        return sprintf(ngT('%s survey found.|%s surveys found.', $this->resultCount, 'unescaped'), $this->resultCount);
     }
 
     /**

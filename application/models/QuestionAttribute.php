@@ -36,9 +36,31 @@ class QuestionAttribute extends LSActiveRecord
     /** @var string A date limit (date_min/date_max) given as YYYY-MM-DD date, optionally followed by HH:MM or HH:MM:SS */
     public const DATE_LIMIT_PATTERN = '/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])([ T]([01][0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?)?$/D';
 
-    protected static $questionAttributesSettings = array();
-
     protected $xssFilterAttributes = ['value'];
+
+    /**
+     * @var array<string,array<string,mixed>> Attribute definitions of the last validated question, by question id, type and theme.
+     * Only one question is kept: attribute rows are saved question by question (editor, import).
+     */
+    private static $attributeDefinitions = [];
+
+    /**
+     * @var array{subscriptions: array, attributes: array}|null Result of the newQuestionAttributes event, with the
+     * subscriptions it was dispatched to: the event is dispatched again only when plugins are (un)loaded
+     */
+    private static $pluginAttributes = null;
+
+    /**
+     * @var array{key: string, definition: array<string,mixed>|false}|null Definition of this attribute during one
+     * validation, so that the validation rules look up the question only once
+     */
+    private $validatedAttributeDefinition;
+
+    /**
+     * @var array<int,array<string,array>> Results of getQuestionAttributes() in this request, by question id and
+     * json encoded language, see useRequestCache()
+     */
+    private static $requestCache = [];
 
     /**
      * @return static
@@ -96,6 +118,7 @@ class QuestionAttribute extends LSActiveRecord
     {
         return array(
             array('qid,attribute', 'required'),
+            array('value', 'sanitizeByInputType'),
             array('value', 'filterXss'),
             array('value', 'validateDateLimit'),
             array('language', 'LSYii_Validators', 'isLanguage' => true)
@@ -230,8 +253,8 @@ class QuestionAttribute extends LSActiveRecord
 
     /**
      * Returns Question attribute array name=>value
-     * --> returns result from emCache if it is set OR
-     * --> build the returned array and set the emCache to it
+     * --> returns result from the request cache (survey runtime only) or the emCache if it is set OR
+     * --> build the returned array and set both caches to it
      *
      * --get attributes from XML-Files
      * --get additional attributes from extended theme
@@ -250,14 +273,20 @@ class QuestionAttribute extends LSActiveRecord
         if ($receivedIDOnly) {
             $iQuestionID = intval($q);
         } else {
-            $iQuestionID = $q->qid;
+            $iQuestionID = (int) $q->qid;
         }
-        static $survey = '';
-        // Limit the size of the attribute cache due to memory usage
-        $cacheKey = 'getQuestionAttributes_' . $iQuestionID . '_' . json_encode($sLanguage);
+        $requestCacheKey = json_encode($sLanguage);
+        $useRequestCache = self::useRequestCache();
+        if ($useRequestCache && isset(self::$requestCache[$iQuestionID][$requestCacheKey])) {
+            return self::$requestCache[$iQuestionID][$requestCacheKey];
+        }
+        $cacheKey = 'getQuestionAttributes_' . $iQuestionID . '_' . $requestCacheKey;
         if (class_exists('EmCacheHelper', false) && EmCacheHelper::useCache()) {
             $value = EmCacheHelper::get($cacheKey);
             if ($value !== false) {
+                if ($useRequestCache) {
+                    self::$requestCache[$iQuestionID][$requestCacheKey] = $value;
+                }
                 return $value;
             }
         }
@@ -279,11 +308,12 @@ class QuestionAttribute extends LSActiveRecord
         $aAttributeValues = [];
         foreach ($aQuestionAttributes as $aAttribute) {
             if ($aAttribute['i18n'] == false) {
-                $aAttributeValues[$aAttribute['name']] = $aAttribute['value'];
+                // Values stored before they were sanitized on save, or by a group import, are sanitized here
+                $aAttributeValues[$aAttribute['name']] = self::sanitizeValue($aAttribute['value'], $aAttribute);
             } else {
                 foreach ($aLanguages as $language) {
                     if (isset($aAttribute[$language]['value'])) {
-                        $aAttributeValues[$aAttribute['name']][$language] = $aAttribute[$language]['value'];
+                        $aAttributeValues[$aAttribute['name']][$language] = self::sanitizeValue($aAttribute[$language]['value'], $aAttribute);
                     }
                 }
             }
@@ -292,8 +322,66 @@ class QuestionAttribute extends LSActiveRecord
         if (class_exists('EmCacheHelper', false) && EmCacheHelper::useCache()) {
             EmCacheHelper::set($cacheKey, $aAttributeValues);
         }
+        if ($useRequestCache) {
+            self::$requestCache[$iQuestionID][$requestCacheKey] = $aAttributeValues;
+        }
 
         return $aAttributeValues;
+    }
+
+    /**
+     * True if getQuestionAttributes() may keep its results for the rest of the request: Only in the survey
+     * runtime, where the same question is asked for several times per page and attributes are not changed.
+     * Admin pages save attributes and read them back in the same request, so they always read the database.
+     *
+     * @return boolean
+     */
+    private static function useRequestCache()
+    {
+        $app = Yii::app();
+        if (!($app instanceof CWebApplication) || $app->getController() === null) {
+            return false;
+        }
+        return get_class($app->getController()) === 'SurveyController';
+    }
+
+    /**
+     * Forget the attribute values getQuestionAttributes() kept for this request.
+     *
+     * @param int|null $iQuestionID Only forget this question, null for all questions
+     * @return void
+     */
+    public static function clearRequestCache($iQuestionID = null)
+    {
+        if ($iQuestionID === null) {
+            self::$requestCache = [];
+        } else {
+            unset(self::$requestCache[(int) $iQuestionID]);
+        }
+    }
+
+    /**
+     * Forget the kept attribute values of this question after one of its attributes was saved.
+     *
+     * @return void
+     */
+    #[\Override]
+    protected function afterSave()
+    {
+        parent::afterSave();
+        self::clearRequestCache($this->qid);
+    }
+
+    /**
+     * Forget the kept attribute values of this question after one of its attributes was deleted.
+     *
+     * @return void
+     */
+    #[\Override]
+    protected function afterDelete()
+    {
+        parent::afterDelete();
+        self::clearRequestCache($this->qid);
     }
 
     /**
@@ -323,6 +411,9 @@ class QuestionAttribute extends LSActiveRecord
 
     /**
      * Insert additional attributes from an extended question theme
+     *
+     * @deprecated 7.12.2 Not used by core anymore, will be removed in a future version, use
+     *             LimeSurvey\Models\Services\QuestionAttributeFetcher
      *
      * @param array $aAttributeNames array of attributes (see getQuestionAttributesSettings())
      * @param Question $oQuestion
@@ -419,143 +510,55 @@ class QuestionAttribute extends LSActiveRecord
      *
      * @param string $sType : type of question (this is the attribute 'question_type' in table question_theme)
      * @param boolean $advancedOnly If true, only fetch advanced attributes
-     * @return array The attribute settings for this question type
-     *                 returns values from getGeneralAttributesFromXml and getAdvancedAttributesFromXml if this fails
-     *                 getAttributesDefinition and getDefaultSettings are returned
+     * @return array The attribute settings for this question type, from the config.xml of its base question theme
      *
      * @throws CException
      */
     public static function getQuestionAttributesSettings($sType, $advancedOnly = false)
     {
-        $sXmlFilePath = QuestionTheme::getQuestionXMLPathForBaseType($sType);
-        if ($advancedOnly) {
-            $generalAttributes = [];
-        } else {
-            // Get attributes from config.xml
-            $generalAttributes = self::getGeneralAttibutesFromXml($sXmlFilePath);
+        $coreProvider = new \LimeSurvey\Models\Services\CoreQuestionAttributeProvider();
+        $attributes = $coreProvider->getDefinitions(['questionType' => $sType, 'advancedOnly' => $advancedOnly]);
+        // The provider leaves out the defaults that only this method returns (xssfilter, min, max)
+        $defaultSettings = self::getDefaultSettings();
+        foreach ($attributes as $attributeName => $attribute) {
+            $attributes[$attributeName] = array_merge($defaultSettings, $attribute);
         }
-        $advancedAttributes = self::getAdvancedAttributesFromXml($sXmlFilePath);
-        self::$questionAttributesSettings[$sType] = array_merge($generalAttributes, $advancedAttributes);
-
-        // if empty, fall back to getting attributes from questionHelper
-        if (empty(self::$questionAttributesSettings[$sType])) {
-            self::$questionAttributesSettings[$sType] = array();
-            $attributes = \LimeSurvey\Helpers\questionHelper::getAttributesDefinitions();
-            /* Filter to get this question type setting */
-            $aQuestionTypeAttributes = array_filter($attributes, function ($attribute) use ($sType) {
-                return stripos((string) $attribute['types'], $sType) !== false;
-            });
-            foreach ($aQuestionTypeAttributes as $attribute => $settings) {
-                  self::$questionAttributesSettings[$sType][$attribute] = array_merge(
-                      QuestionAttribute::getDefaultSettings(),
-                      array("category" => gT("Plugins")),
-                      $settings,
-                      array("name" => $attribute)
-                  );
-            }
-        }
-        return self::$questionAttributesSettings[$sType];
+        // Filter all pesky '[]' values (empty values should be null, e.g. <default></default>).
+        $questionAttributeHelper = new QuestionAttributeHelper();
+        return $questionAttributeHelper->sanitizeQuestionAttributes($attributes);
     }
 
     /**
-     * Read question attributes from XML file and convert it to array
+     * Returns the definitions of the attributes of all question types: The advanced attributes of the base question
+     * themes and the attributes added by plugins. The general attributes (question columns like mandatory or
+     * relevance) are not included.
+     * An attribute used by several question types is returned once, with the definition of the first question type
+     * using it: Settings that can differ between question types (like the default value) must be read with
+     * getQuestionAttributesSettings() or the QuestionAttributeFetcher for the question.
      *
-     * @param string $sXmlFilePath Path to XML
-     *
-     * @return ?array The advanced attribute settings for this question type
+     * @return array<string,array<string,mixed>> The attribute definitions, by attribute name
      */
-    protected static function getAdvancedAttributesFromXml($sXmlFilePath)
+    public static function getAllAttributesSettings()
     {
-        $aXmlAttributes = array();
-        $aAttributes = array();
-
-        if (file_exists($sXmlFilePath)) {
-            // load xml file
-            $xml_config = simplexml_load_file($sXmlFilePath);
-            $aXmlAttributes = json_decode(json_encode((array)$xml_config->attributes), true);
-            // if only one attribute, then it doesn't return numeric index
-            if (!empty($aXmlAttributes) && !array_key_exists('0', $aXmlAttributes['attribute'])) {
-                $aTemp = $aXmlAttributes['attribute'];
-                unset($aXmlAttributes);
-                $aXmlAttributes['attribute'][0] = $aTemp;
-            }
-        } else {
-            return null;
-        }
-
-        // set $aAttributes array with attribute data
-        if (!empty($aXmlAttributes['attribute'])) {
-            foreach ($aXmlAttributes['attribute'] as $key => $value) {
-                if (empty($value['name'])) {
-                    /* Allow comments in attributes */
-                    continue;
-                }
-                /* settings the default value */
-                $aAttributes[$value['name']] = self::getDefaultSettings();
-                /* settings the xml value */
-                foreach ($value as $key2 => $value2) {
-                    if ($key2 === 'options' && !empty($value2)) {
-                        foreach ($value2['option'] as $key3 => $value3) {
-                            if (isset($value3['value'])) {
-                                $value4 = is_array($value3['value']) ? '' : $value3['value'];
-                                $aAttributes[$value['name']]['options'][$value4] = $value3['text'];
-                            }
-                        }
-                    } else {
-                        $aAttributes[$value['name']][$key2] = $value2;
-                    }
-                }
-            }
-        }
-
-        // Filter all pesky '[]' values (empty values should be null, e.g. <default></default>).
+        $questionTypes = App()->db->createCommand()
+            ->selectDistinct('question_type')
+            ->from('{{question_themes}}')
+            ->where("extends = ''")
+            ->order('question_type')
+            ->queryColumn();
+        $providers = [
+            new \LimeSurvey\Models\Services\CoreQuestionAttributeProvider(),
+            new \LimeSurvey\Models\Services\PluginQuestionAttributeProvider(),
+        ];
         $questionAttributeHelper = new QuestionAttributeHelper();
-        $aAttributes = $questionAttributeHelper->sanitizeQuestionAttributes($aAttributes);
-
-        return $aAttributes;
-    }
-
-    /**
-     * Read question attributes from XML file and convert it to array
-     *
-     * @param string $sXmlFilePath Path to XML
-     *
-     * @return ?array The general attribute settings for this question type
-     * @todo What's the opposite of a "general" attribute? How many types of attributes are there?
-     */
-    protected static function getGeneralAttibutesFromXml($sXmlFilePath)
-    {
-        $aAttributes = array();
-
-        if (file_exists($sXmlFilePath)) {
-            // load xml file
-            $xml_config = simplexml_load_file($sXmlFilePath);
-            $aXmlAttributes = json_decode(json_encode((array)$xml_config->generalattributes), true);
-            // if only one attribute, then it doesn't return numeric index
-            if (!empty($aXmlAttributes) && !array_key_exists('0', $aXmlAttributes['attribute'])) {
-                $aTemp = $aXmlAttributes['attribute'];
-                unset($aXmlAttributes);
-                $aXmlAttributes['attribute'][0] = $aTemp;
-            }
-        } else {
-            return null;
-        }
-
-        // set $aAttributes array with attribute data
-        if (!empty($aXmlAttributes['attribute'])) {
-            foreach ($aXmlAttributes['attribute'] as $key => $xmlAttribute) {
-                /* settings the default value */
-                $aAttributes[$xmlAttribute] = self::getDefaultSettings();
-                /* settings the xml value */
-                $aAttributes[$xmlAttribute]['name'] = $xmlAttribute;
+        $allAttributes = [];
+        foreach ($questionTypes as $questionType) {
+            foreach ($providers as $provider) {
+                $attributes = $provider->getDefinitions(['questionType' => $questionType, 'advancedOnly' => true]);
+                $allAttributes += $questionAttributeHelper->sanitizeQuestionAttributes($attributes);
             }
         }
-
-        // Filter all pesky '[]' values (empty values should be null, e.g. <default></default>).
-        $questionAttributeHelper = new QuestionAttributeHelper();
-        $aAttributes = $questionAttributeHelper->sanitizeQuestionAttributes($aAttributes);
-
-        return $aAttributes;
+        return $allAttributes;
     }
 
     /**
@@ -566,7 +569,7 @@ class QuestionAttribute extends LSActiveRecord
      * $questionAttributes=[
      *  attributeName=>[
      *      'types' : Apply to this question type
-     *      'category' : Where to put it
+     *      'category' : Where to put it, untranslated (ex: 'Logic'); core categories given translated are untranslated
      *      'sortorder' : Qort order in this category
      *      'inputtype' : type of input
      *      'expression' : 2 to force Expression Manager when see the survey logic overview (add { } and validate, 1 : allow it : validate in survey logic overview
@@ -576,14 +579,24 @@ class QuestionAttribute extends LSActiveRecord
      *      'help' : an help
      *  ]
      *
+     * The event is dispatched once per request: the attributes don't depend on a question.
+     *
      * @return array the event attributes as array or an empty array
      */
     public static function getOwnQuestionAttributesViaPlugin()
     {
-        $event = new \LimeSurvey\PluginManager\PluginEvent('newQuestionAttributes');
-        $result = App()->getPluginManager()->dispatchEvent($event);
+        $pluginManager = App()->getPluginManager();
+        $subscriptions = $pluginManager->getSubscriptions('newQuestionAttributes');
+        if (self::$pluginAttributes === null || self::$pluginAttributes['subscriptions'] !== $subscriptions) {
+            $event = new \LimeSurvey\PluginManager\PluginEvent('newQuestionAttributes');
+            $result = $pluginManager->dispatchEvent($event);
+            self::$pluginAttributes = [
+                'subscriptions' => $subscriptions,
+                'attributes' => (array) $result->get('questionAttributes'),
+            ];
+        }
 
-        return (array) $result->get('questionAttributes');
+        return self::$pluginAttributes['attributes'];
     }
 
     /**
@@ -594,24 +607,17 @@ class QuestionAttribute extends LSActiveRecord
      */
     public function filterXss($attribute, $params)
     {
-        $question = Question::model()->find("qid=:qid", ['qid' => $this->qid]);
-        if (empty($question)) {
+        $questionAttributeDefinition = $this->getAttributeDefinition();
+        if ($questionAttributeDefinition === false) {
             return;
         }
-        $questionAttributeFetcher = new \LimeSurvey\Models\Services\QuestionAttributeFetcher();
-        $questionAttributeFetcher->setQuestion($question);
-        $questionAttributeDefinitions = $questionAttributeFetcher->fetch();
 
         // The value will be filtered unless the attribute definition has the "xssfilter" property set to false
-        $shouldFilter = true;
-        if (isset($questionAttributeDefinitions[$this->attribute])) {
-            $questionAttributeDefinition = $questionAttributeDefinitions[$this->attribute];
-            if (array_key_exists("xssfilter", $questionAttributeDefinition) && $questionAttributeDefinition['xssfilter'] == false) {
-                $shouldFilter = false;
-            }
-        }
-
-        if (!$shouldFilter) {
+        if (
+            !empty($questionAttributeDefinition)
+            && array_key_exists("xssfilter", $questionAttributeDefinition)
+            && $questionAttributeDefinition['xssfilter'] == false
+        ) {
             return;
         }
 
@@ -619,6 +625,100 @@ class QuestionAttribute extends LSActiveRecord
         $validator = new LSYii_Validators();
         $validator->attributes = [$attribute];
         $validator->validate($this, [$attribute]);
+    }
+
+    /**
+     * Sanitize the value of this attribute according to its definition, see sanitizeValue().
+     * @param string $attribute the name of the attribute to be validated.
+     * @param array<mixed> $params additional parameters passed with rule when being executed.
+     * @return void
+     */
+    public function sanitizeByInputType($attribute, $params)
+    {
+        if (!is_scalar($this->$attribute) || trim((string) $this->$attribute) === '') {
+            return;
+        }
+        $questionAttributeDefinition = $this->getAttributeDefinition();
+        if (!empty($questionAttributeDefinition)) {
+            $this->$attribute = self::sanitizeValue($this->$attribute, $questionAttributeDefinition);
+        }
+    }
+
+    /**
+     * Attributes with a fixed format only keep values matching their definition: integer, float and columns
+     * attributes must be numbers (otherwise emptied), switch attributes must be 0 or 1, single select and
+     * button group attributes must be one of their options (otherwise both are reset to the default value).
+     * Other attributes and attributes allowing expressions are returned unchanged.
+     * @param mixed $value the attribute value
+     * @param array<string,mixed> $definition the attribute definition (inputtype, options, default, expression)
+     * @return mixed the sanitized value
+     */
+    public static function sanitizeValue($value, array $definition)
+    {
+        if (!is_scalar($value) || empty($definition['inputtype']) || !empty($definition['expression'])) {
+            return $value;
+        }
+        $trimmedValue = trim((string) $value);
+        if ($trimmedValue === '') {
+            return $value;
+        }
+        $default = isset($definition['default']) && is_scalar($definition['default']) ? (string) $definition['default'] : '';
+        switch ($definition['inputtype']) {
+            case 'integer':
+            case 'float':
+            case 'columns':
+                // Decimals are kept for integer attributes too: older versions may have accepted them
+                return is_numeric($trimmedValue) ? $trimmedValue : '';
+            case 'switch':
+                // The switch always submits 1/0, old survey files may contain Y/N
+                $trimmedValue = strtr($trimmedValue, ['Y' => '1', 'N' => '0']);
+                return in_array($trimmedValue, ['0', '1'], true) ? $trimmedValue : $default;
+            case 'singleselect':
+            case 'buttongroup':
+                if (empty($definition['options']) || !is_array($definition['options'])) {
+                    return $value;
+                }
+                // Options are value => label: the editors submit the key, also for a plain list of labels
+                $validValues = array_map('strval', array_keys($definition['options']));
+                return in_array($trimmedValue, $validValues, true) ? $trimmedValue : $default;
+        }
+        return $value;
+    }
+
+    /**
+     * Returns the definition of this attribute for the current type and theme of its question.
+     * @return array<string,mixed>|false the definition, an empty array if the attribute is unknown, false if the question does not exist
+     */
+    private function getAttributeDefinition()
+    {
+        $validationKey = $this->qid . '|' . $this->attribute;
+        if (isset($this->validatedAttributeDefinition) && $this->validatedAttributeDefinition['key'] === $validationKey) {
+            return $this->validatedAttributeDefinition['definition'];
+        }
+        $definition = false;
+        $question = Question::model()->find("qid=:qid", ['qid' => $this->qid]);
+        if (!empty($question)) {
+            $cacheKey = $question->qid . '|' . $question->type . '|' . $question->question_theme_name;
+            if (!isset(self::$attributeDefinitions[$cacheKey])) {
+                $questionAttributeFetcher = new \LimeSurvey\Models\Services\QuestionAttributeFetcher();
+                $questionAttributeFetcher->setQuestion($question);
+                self::$attributeDefinitions = [$cacheKey => $questionAttributeFetcher->fetch()];
+            }
+            $definition = self::$attributeDefinitions[$cacheKey][$this->attribute] ?? [];
+        }
+        $this->validatedAttributeDefinition = ['key' => $validationKey, 'definition' => $definition];
+        return $definition;
+    }
+
+    /**
+     * Forgets the attribute definition of the previous validation: the question type or theme may have changed since
+     * @return boolean whether validation should be executed
+     */
+    #[\Override]
+    protected function beforeValidate()
+    {
+        $this->validatedAttributeDefinition = null;
+        return parent::beforeValidate();
     }
 
     /**

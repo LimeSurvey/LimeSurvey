@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event'
 
 import 'tests/mocks'
 import { renderWithProviders } from 'tests/testUtils'
+import { Input } from 'components/UIComponents'
 
 import { Setting } from './Setting'
 import { getOtherAttributes } from './attributes/getOtherAttributes'
@@ -36,6 +37,76 @@ const SettingWithState = ({ attributes }) => {
     />
   )
 }
+
+const DependentSettingWithState = ({ onDependsToggle }) => {
+  const [question, setQuestion] = useState({
+    qid: 1,
+    type: '|',
+    attributes: {
+      controller: { '': 'x' },
+      dependent: { '': 'kept' },
+    },
+  })
+
+  return (
+    <Setting
+      question={question}
+      handleUpdate={(value) =>
+        setQuestion((current) => ({
+          ...current,
+          attributes: { ...current.attributes, ...value },
+        }))
+      }
+      title="Simple"
+      simpleSettings
+      attributes={[
+        {
+          component: Input,
+          attributePath: 'attributes.controller',
+          props: { dataTestId: 'controller' },
+        },
+        {
+          component: Input,
+          attributePath: 'attributes.dependent',
+          props: { dataTestId: 'dependent' },
+          dependsOn: { attributePath: 'attributes.controller', value: 'x' },
+          onDependsToggle,
+        },
+      ]}
+    />
+  )
+}
+
+describe('Setting dependent attributes', () => {
+  const toggleController = async () => {
+    const controller = screen.getByTestId('controller')
+    await userEvent.clear(controller)
+    expect(screen.queryByTestId('dependent')).toBeNull()
+    await userEvent.type(controller, 'x')
+  }
+
+  test('resets the dependent value when its condition becomes false', async () => {
+    await renderWithProviders(
+      <DependentSettingWithState onDependsToggle={{ onFalse: '' }} />
+    )
+
+    await toggleController()
+
+    expect(screen.getByTestId('dependent').value).toBe('')
+  })
+
+  test('keeps the dependent value when keepValue is enabled', async () => {
+    await renderWithProviders(
+      <DependentSettingWithState
+        onDependsToggle={{ onFalse: '', keepValue: true }}
+      />
+    )
+
+    await toggleController()
+
+    expect(screen.getByTestId('dependent').value).toBe('kept')
+  })
+})
 
 describe('Setting input default values', () => {
   test('shows the default values when the attributes are not set', async () => {
@@ -76,5 +147,83 @@ describe('Setting input default values', () => {
 
     await userEvent.type(input, '7')
     expect(input.value).toBe('7')
+  })
+})
+
+const DerivedToggleWithState = ({ attributes }) => {
+  const [question, setQuestion] = useState({ qid: 1, type: 'L', attributes })
+
+  return (
+    <Setting
+      question={question}
+      handleUpdate={(value) =>
+        setQuestion((current) => ({
+          ...current,
+          attributes: { ...current.attributes, ...value },
+        }))
+      }
+      title="Timer"
+      simpleSettings
+      attributes={[
+        {
+          component: Input,
+          attributePath: 'attributes.use_warning',
+          props: { dataTestId: 'use-warning', defaultValue: '0' },
+          valueWhenDependentsSet: {
+            value: '1',
+            paths: ['attributes.warning'],
+          },
+        },
+        {
+          component: Input,
+          attributePath: 'attributes.warning',
+          props: { dataTestId: 'warning' },
+          dependsOn: { attributePath: 'attributes.use_warning', value: '1' },
+          onDependsToggle: { onFalse: '' },
+        },
+      ]}
+    />
+  )
+}
+
+describe('Setting toggle derived from its dependents', () => {
+  test('is on when a dependent has a value but the toggle is not stored', async () => {
+    await renderWithProviders(
+      <DerivedToggleWithState attributes={{ warning: { '': '10' } }} />
+    )
+
+    expect(screen.getByTestId('use-warning').value).toBe('1')
+    expect(screen.getByTestId('warning').value).toBe('10')
+  })
+
+  test('shows its default when no dependent has a value', async () => {
+    await renderWithProviders(<DerivedToggleWithState attributes={{}} />)
+
+    expect(screen.getByTestId('use-warning').value).toBe('0')
+    expect(screen.queryByTestId('warning')).toBeNull()
+  })
+
+  test('uses the stored toggle value over the derived one', async () => {
+    await renderWithProviders(
+      <DerivedToggleWithState
+        attributes={{ use_warning: { '': '0' }, warning: { '': '10' } }}
+      />
+    )
+
+    expect(screen.getByTestId('use-warning').value).toBe('0')
+    expect(screen.queryByTestId('warning')).toBeNull()
+  })
+
+  test('stays on while its only value is cleared and retyped', async () => {
+    await renderWithProviders(
+      <DerivedToggleWithState attributes={{ warning: { '': '10' } }} />
+    )
+    const warning = screen.getByTestId('warning')
+
+    await userEvent.clear(warning)
+    expect(screen.getByTestId('use-warning').value).toBe('1')
+
+    await userEvent.type(screen.getByTestId('warning'), '15')
+    expect(screen.getByTestId('warning').value).toBe('15')
   })
 })

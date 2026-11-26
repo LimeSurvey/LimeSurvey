@@ -133,7 +133,7 @@ $ldap_queries = array();
 // optionally give the user's attributes that provides the
 // token, language, attr1 and attr2 piece of information
 // if unused, leave empty or comment the lines
-// $ldap_queries[$query_id]['token_attr'] = ''; // Leave empty for Auto Token generation bu phpsv
+// $ldap_queries[$query_id]['token_attr'] = ''; // Leave empty for Auto Token generation by phpsv
 // $ldap_queries[$query_id]['language'] = '';
 // $ldap_queries[$query_id]['attr1'] = '';
 // $ldap_queries[$query_id]['attr2'] = '';
@@ -169,7 +169,7 @@ $ldap_queries = array();
 // $ldap_queries[$query_id]['firstname_attr'] = 'givenname';
 // $ldap_queries[$query_id]['lastname_attr'] = 'sn';
 // $ldap_queries[$query_id]['email_attr'] = 'mail';
-// $ldap_queries[$query_id]['token_attr'] = ''; // Leave empty for Auto Token generation bu phpsv
+// $ldap_queries[$query_id]['token_attr'] = ''; // Leave empty for Auto Token generation by phpsv
 // $ldap_queries[$query_id]['language'] = '';
 // $ldap_queries[$query_id]['attr1'] = '';
 // $ldap_queries[$query_id]['attr2'] = '';
@@ -199,7 +199,7 @@ $ldap_queries = array();
 // $ldap_queries[$query_id]['firstname_attr'] = 'givenname';
 // $ldap_queries[$query_id]['lastname_attr'] = 'sn';
 // $ldap_queries[$query_id]['email_attr'] = 'mail';
-// $ldap_queries[$query_id]['token_attr'] = ''; // Leave empty for Auto Token generation bu phpsv
+// $ldap_queries[$query_id]['token_attr'] = ''; // Leave empty for Auto Token generation by phpsv
 // $ldap_queries[$query_id]['language'] = '';
 // $ldap_queries[$query_id]['attr1'] = '';
 // $ldap_queries[$query_id]['attr2'] = '';

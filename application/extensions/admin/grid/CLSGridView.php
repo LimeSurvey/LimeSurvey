@@ -1,6 +1,7 @@
 <?php
 
 Yii::import('zii.widgets.grid.CGridView');
+Yii::import('ext.admin.grid.LSCheckBoxColumn');
 
 class CLSGridView extends TbGridView
 {
@@ -127,6 +128,10 @@ class CLSGridView extends TbGridView
         ], true);
         $this->rowLink();
         $this->lsAfterAjaxUpdate();
+        // Logged out (HTTP 401): The adminbasics ajaxError handler shows the "logged out" modal, skip the default error alert
+        if ($this->ajaxUpdateError === null) {
+            $this->ajaxUpdateError = 'function(xhr, textStatus, errorThrown, err){if(xhr.status !== 401 && err){alert(err);}}';
+        }
         if (!empty($classes)) {
             $classes = implode(' ', $classes);
             if (isset($this->itemsCssClass)) {
@@ -136,6 +141,28 @@ class CLSGridView extends TbGridView
             }
         }
         $this->registerGridviewScripts();
+    }
+
+    /**
+     * Renders the pager.
+     * Overrides parent to render it as a navigation landmark instead of a plain div.
+     * The landmark is named after the table caption, so pages with several grids
+     * get distinguishable landmarks.
+     *
+     * @return void
+     */
+    public function renderPager()
+    {
+        ob_start();
+        parent::renderPager();
+        $pager = ob_get_clean();
+        $prefix = '<div class="' . $this->pagerCssClass . '">';
+        if (strpos($pager, $prefix) === 0) {
+            $label = empty($this->lsCaption) ? gT('Pagination') : sprintf(gT('Pagination: %s'), $this->lsCaption);
+            $pager = '<nav class="' . $this->pagerCssClass . '" aria-label="' . CHtml::encode($label) . '">'
+                . substr($pager, strlen($prefix), -strlen('</div>')) . '</nav>';
+        }
+        echo $pager;
     }
 
     /**
@@ -190,6 +217,10 @@ class CLSGridView extends TbGridView
         foreach ($this->columns as $i => $column) {
             if (is_array($column) && !isset($column['class'])) {
                 $this->columns[$i]['class'] = '\TbDataColumn';
+            }
+            // Row checkboxes get an accessible name
+            if (is_array($column) && isset($column['class']) && ltrim($column['class'], '\\') === 'CCheckBoxColumn') {
+                $this->columns[$i]['class'] = 'LSCheckBoxColumn';
             }
         }
         parent::initColumns();
@@ -282,6 +313,11 @@ class CLSGridView extends TbGridView
         }
     }
 
+    /**
+     * Registers the script files used by every CLSGridView, whether or not it has rows
+     *
+     * @return void
+     */
     private function registerGridviewScripts()
     {
         $assetsPath = dirname(__FILE__) . '/assets/';
@@ -320,6 +356,17 @@ class CLSGridView extends TbGridView
         // Accessibility: keyboard navigation and focus management for sort links
         App()->clientScript->registerScriptFile(
             App()->getAssetManager()->publish($assetsPath . 'sortAccessibility.js'),
+            CClientScript::POS_END
+        );
+        // Accessibility: Keep the focus on the filter field after the grid update
+        App()->clientScript->registerScriptFile(
+            App()->getAssetManager()->publish($assetsPath . 'restoreFilterFocus.js'),
+            CClientScript::POS_END
+        );
+        // Row action dropdowns: Registered here too, because GridActionsWidget only registers it when a row is
+        // rendered, and rows added later to an initially empty grid by AJAX need it
+        App()->clientScript->registerScriptFile(
+            App()->getAssetManager()->publish(dirname(__FILE__) . '/GridActionsWidget/assets/action_dropdown.js'),
             CClientScript::POS_END
         );
         // Standard afterAjaxUpdate handler (actionDropdown, rowlink, columnFilter, restoreFocus)
@@ -395,11 +442,22 @@ class CLSGridView extends TbGridView
             "jQuery('#$id').yiiGridView($options);",
             LSYii_ClientScript::POS_POSTSCRIPT
         );
-        // Under PJAX this inline script runs before afterAjaxUpdate.js is loaded, so defer until it is available
+        // Under PJAX this inline script runs before afterAjaxUpdate.js is loaded, so defer until it is available.
+        // A page script may already have restored the focus (e.g. the dashboard filter after filtering, see
+        // SearchBoxWidget filters.js): Leave it there. If that script announces the result itself, stay silent,
+        // otherwise announce the empty message without moving the focus.
         $cs->registerScript(
             __CLASS__ . '-emptyAnnounce#' . $id,
             'jQuery(function(){
-                var announceEmpty = function() { LS.gridView.announceEmptyMessage(' . CJavaScript::encode($id) . '); };
+                var announceEmpty = function() {
+                    // Only for this page load: Grids loaded later (e.g. by PJAX) announce as usual
+                    var restored = LS.gridView.focusRestoredOnLoad;
+                    delete LS.gridView.focusRestoredOnLoad;
+                    if (restored && restored.announced) {
+                        return;
+                    }
+                    LS.gridView.announceEmptyMessage(' . CJavaScript::encode($id) . ', !!restored);
+                };
                 if (window.LS && LS.gridView && LS.gridView.announceEmptyMessage) {
                     announceEmpty();
                 } else {
@@ -413,6 +471,9 @@ class CLSGridView extends TbGridView
     /**
      * Appends columns to the gridview based on the selected columns of the columnFilter param.
      * If available loads saved column filter from user settings.
+     * The grid id is used to detect the column selection request and as storage key, since
+     * ajaxUpdate may list further elements to refresh, while the "ajax" request variable is
+     * always the id of the grid itself.
      * @return void
      */
     protected function appendAdditionalColumns(): void
@@ -440,24 +501,25 @@ class CLSGridView extends TbGridView
             'filter'            => false
         ];
         /* Updating the columns to be added */
-        if (App()->request->getParam('selectColumns') && $this->ajaxUpdate === $ajaxUpdate) {
+        $settingName = 'gridview_columns_' . $this->id;
+        if (App()->request->getParam('selectColumns') && $this->id === $ajaxUpdate) {
             $columnsSelected = (array) App()->request->getQuery('columnsSelected');
             if ($this->lsOrganizeColumns) {
-                App()->session['gridview_columns_' . $this->ajaxUpdate] = array_values(array_filter($columnsSelected, 'is_string'));
+                App()->session[$settingName] = array_values(array_filter($columnsSelected, 'is_string'));
             } elseif (empty($columnsSelected)) {
                 // If there are no columns selected, we delete the user setting.
-                SettingsUser::deleteUserSetting('gridview_columns_' . $this->ajaxUpdate);
+                SettingsUser::deleteUserSetting($settingName);
             } else {
-                SettingsUser::setUserSetting('gridview_columns_' . $this->ajaxUpdate, json_encode($columnsSelected));
+                SettingsUser::setUserSetting($settingName, json_encode($columnsSelected));
             }
         }
         if ($this->lsOrganizeColumns) {
-            $sessionColumns = App()->session['gridview_columns_' . $this->ajaxUpdate];
+            $sessionColumns = App()->session[$settingName];
             $this->addColumns(is_array($sessionColumns) ? $sessionColumns : $this->lsAdditionalColumnsDefault);
             return;
         }
         /* get the columns to be added */
-        $userColumns = SettingsUser::getUserSettingValue('gridview_columns_' . $this->ajaxUpdate);
+        $userColumns = SettingsUser::getUserSettingValue($settingName);
         if (!empty($userColumns)) {
             $columnsSelected = json_decode($userColumns, false);
             if (is_array($columnsSelected)) {

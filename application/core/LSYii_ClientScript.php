@@ -36,8 +36,8 @@ class LSYii_ClientScript extends CClientScript
      * The script is rendered at the end of the body section.
      * only for scripts not script files
      */
-    const POS_POSTSCRIPT = 5;
-    const POS_PREBEGIN = 6;
+    public const POS_POSTSCRIPT = 5;
+    public const POS_PREBEGIN = 6;
     /**
      * Packages that must never be published through the asset manager.
      * These packages reference sibling packages using runtime-relative paths
@@ -107,10 +107,27 @@ class LSYii_ClientScript extends CClientScript
         }
     }
 
+    /**
+     * Remove a script file, whatever position it was registered at.
+     * If the file was published through the asset manager (see registerScriptFile), the published URL is removed too.
+     *
+     * @param string $sName URL of the script file, as given to registerScriptFile
+     * @return void
+     */
     public function unregisterScriptFile($sName)
     {
-        if (!empty($this->scriptFiles[0]["$sName"])) {
-            unset($this->scriptFiles[0]["$sName"]);
+        $aUrls = [(string) $sName];
+        $aUrlDatas = $this->analyzeUrl($sName);
+        if ($aUrlDatas['toPublish']) {
+            $sPublishedUrl = App()->assetManager->getPublishedUrl($aUrlDatas['sPathToFile']);
+            if ($sPublishedUrl) {
+                $aUrls[] = $sPublishedUrl;
+            }
+        }
+        foreach (array_keys($this->scriptFiles) as $position) {
+            foreach ($aUrls as $sUrl) {
+                unset($this->scriptFiles[$position][$sUrl]);
+            }
         }
     }
 
@@ -155,18 +172,18 @@ class LSYii_ClientScript extends CClientScript
 
 
     /**
-     * Remove a file from a given package
+     * Remove a file from a given package (all its entries, a file can be added more than once)
      *
-     * @var $sPackageName   string  name of the package
-     * @var $sType          string  css/js
-     * @var $sFileName      string name of the file to remove
+     * @param string $sPackageName name of the package
+     * @param string $sType        css/js
+     * @param string $sFileName    name of the file to remove
+     * @return void
      */
     public function removeFileFromPackage($sPackageName, $sType, $sFileName)
     {
         if (!empty(Yii::app()->clientScript->packages[$sPackageName])) {
             if (!empty(Yii::app()->clientScript->packages[$sPackageName][$sType])) {
-                $key = array_search($sFileName, Yii::app()->clientScript->packages[$sPackageName][$sType]);
-                if ($key !== false) {
+                foreach (array_keys(Yii::app()->clientScript->packages[$sPackageName][$sType], $sFileName) as $key) {
                     unset(Yii::app()->clientScript->packages[$sPackageName][$sType][$key]);
                 }
             }

@@ -34,6 +34,10 @@ export const DropZone = forwardRef(
       trashIconEnabled = true,
       disabled = false,
       previewCover = true,
+      // When set, both the empty and the uploaded-image states use this
+      // exact height. The uploaded image then fills the full width/height
+      // of the dropzone and gets cropped (top/bottom) via object-fit: cover.
+      fixedHeight,
     },
     ref
   ) => {
@@ -152,7 +156,10 @@ export const DropZone = forwardRef(
     )
 
     const emptyDropzone = (
-      <div className={classNames('dropzone', { disabled: disabled })}>
+      <div
+        className={classNames('dropzone', { disabled: disabled })}
+        style={fixedHeight ? { height: fixedHeight } : undefined}
+      >
         <UploadIcon className="icon" />
         <p className="label">{emptyZoneText}</p>
       </div>
@@ -162,20 +169,29 @@ export const DropZone = forwardRef(
       <div
         onMouseOver={handleOnMouseHover}
         onMouseLeave={handleOnMouseLeave}
-        className="position-relative"
+        className="position-relative dropzone-img"
         style={{
-          maxHeight: previewMaxHeight,
+          height: fixedHeight || undefined,
+          maxHeight: fixedHeight ? undefined : previewMaxHeight,
         }}
       >
         {isLoading ? loadingSpinner : null}
         <Image
           src={isValidImg ? previewUrl : NoImageFound}
           alt="Image Select List"
-          style={{
-            maxHeight: previewMaxHeight,
-            maxWidth: previewMaxWidth,
-            objectFit: previewCover ? 'cover' : 'container',
-          }}
+          style={
+            fixedHeight
+              ? {
+                  width: '100%',
+                  height: '100%',
+                  objectFit: previewCover ? 'cover' : 'contain',
+                }
+              : {
+                  maxHeight: previewMaxHeight,
+                  maxWidth: previewMaxWidth,
+                  objectFit: previewCover ? 'cover' : 'contain',
+                }
+          }
         />
         <div
           className={`position-absolute image-handle-btn-wrapper ${
