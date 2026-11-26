@@ -699,6 +699,10 @@ JAVASCRIPT
                     App()->user->setFlash('error', sprintf(gT("Template could not be renamed to '%s'."), $sNewName) . " " . gT("This name is reserved for standard template."));
                 } elseif (file_exists($sNewDirectoryPath) || Template::findNameConflict($sNewName, $sOldName) !== null) {
                     App()->user->setFlash('error', sprintf(gT("Template could not be renamed to '%s'."), $sNewName) . " " . gT("A template with that name already exists."));
+                } elseif (!uploadPathChangeAllowed('themes/survey/' . $sNewName, 'rename', ['previousPath' => 'themes/survey/' . $sOldName])) {
+                    App()->user->setFlash('error', sprintf(gT("Template could not be renamed to '%s'."), $sNewName));
+                } elseif (!TemplateManifest::childExtendsChangeAllowed($sOldName)) {
+                    App()->user->setFlash('error', sprintf(gT("Template could not be renamed to '%s'."), $sNewName));
                 } elseif (rename($sOldDirectoryPath, $sNewDirectoryPath) == false) {
                     App()->user->setFlash('error', sprintf(gT("Template could not be renamed to '%s'."), $sNewName) . " " . gT("Maybe you don't have permission."));
                 } else {
@@ -752,12 +756,22 @@ JAVASCRIPT
                 $oFileHelper = new CFileHelper();
                 $mkdirresult = mkdir_p($newdirname);
 
-                if ($mkdirresult == 1) {
+                if ($mkdirresult == 1 && !uploadPathChangeAllowed('themes/survey/' . $newname, 'write')) {
+                    @rmdir($newdirname);
+                    Yii::app()->setFlashMessage(sprintf(gT("Unable to create directory `%s`."), $newname), 'error');
+                    $this->getController()->redirect(array("admin/themes/sa/view"));
+                } elseif ($mkdirresult == 1) {
+                    $sourceRelative = uploadRelativePath($copydirname);
+                    if ($sourceRelative !== null) {
+                        dispatchUploadPathEvent('beforeUploadPathUse', $sourceRelative);
+                    }
                     // We just copy the whole directory structure, but only the xml and image files
                     $oFileHelper->copyDirectory($copydirname, $newdirname, array('fileTypes' => array('xml', 'png', 'jpg', 'svg'), 'newDirMode' => 0755));
                     //TemplateConfiguration::removeAllNodes($newdirname);
                     TemplateManifest::extendsConfig($copydir, $newname);
-                    TemplateManifest::importManifest($newname, ['extends' => $copydir]);
+                    if (TemplateManifest::importManifest($newname, ['extends' => $copydir])) {
+                        dispatchUploadPathEvent('afterUploadPathChange', 'themes/survey/' . $newname, ['action' => 'write']);
+                    }
                     $this->getController()->redirect(array("admin/themes/sa/view", 'templatename' => $newname));
                 } elseif ($mkdirresult == 2) {
                     Yii::app()->setFlashMessage(sprintf(gT("Directory with the name `%s` already exists - choose another name"), $newname), 'error');
@@ -796,7 +810,11 @@ JAVASCRIPT
                     // Deleting the default theme would leave every survey without a usable theme
                     Yii::app()->setFlashMessage(sprintf(gT("You can't delete theme '%s' because it is the default survey theme."), $templatename), 'error');
                 } elseif (!Template::hasInheritance($templatename)) {
-                    if (rmdirr(Yii::app()->getConfig('userthemerootdir') . "/" . $templatename)) {
+                    $themePath = 'themes/survey/' . $templatename;
+                    if (!uploadPathChangeAllowed($themePath, 'delete')) {
+                        Yii::app()->setFlashMessage(sprintf(gT("There was a problem deleting the template '%s'. Please check your directory/file permissions."), $templatename), 'error');
+                    } elseif (rmdirr(Yii::app()->getConfig('userthemerootdir') . "/" . $templatename)) {
+                        dispatchUploadPathEvent('afterUploadPathChange', $themePath, ['action' => 'delete']);
                         Template::model()->findByPk($templatename)->deleteAssetVersion();
                         $surveys = Survey::model()->findAllByAttributes(array('template' => $templatename));
 
@@ -846,7 +864,9 @@ JAVASCRIPT
             }
             $templatename  = sanitize_dirname($templatename);
             if (array_key_exists($templatename, $aBrokenThemes)) {
-                if (rmdirr(Yii::app()->getConfig('userthemerootdir') . "/" . $templatename)) {
+                $themePath = 'themes/survey/' . $templatename;
+                if (uploadPathChangeAllowed($themePath, 'delete') && rmdirr(Yii::app()->getConfig('userthemerootdir') . "/" . $templatename)) {
+                    dispatchUploadPathEvent('afterUploadPathChange', $themePath, ['action' => 'delete']);
                     Yii::app()->setFlashMessage(sprintf(gT("Theme '%s' was successfully deleted."), $templatename));
                 }
             } else {
@@ -879,7 +899,11 @@ JAVASCRIPT
             // CheckIfTemplateExists check if the template is installed....
                 Yii::import('application.helpers.SurveyThemeHelper');
             if (! Template::checkIfTemplateExists($templatename) && !SurveyThemeHelper::isStandardTemplate($templatename)) {
-                if (rmdirr($completeFileName)) {
+                $themePath = 'themes/survey/' . $templatename;
+                if (!uploadPathChangeAllowed($themePath, 'delete')) {
+                    App()->setFlashMessage(sprintf(gT("There was a problem deleting the template '%s'. Please check your directory/file permissions."), $templatename), 'error');
+                } elseif (rmdirr($completeFileName)) {
+                    dispatchUploadPathEvent('afterUploadPathChange', $themePath, ['action' => 'delete']);
                     App()->setFlashMessage(sprintf(gT("Theme '%s' was successfully deleted."), $templatename));
                 } else {
                     App()->setFlashMessage(sprintf(gT("There was a problem deleting the template '%s'. Please check your directory/file permissions."), $templatename), 'error');
@@ -942,12 +966,16 @@ JAVASCRIPT
                     }
 
                     //$savefilename = $oEditedTemplate
-                    if (!file_exists($oEditedTemplate->path . $relativePathEditfile) && !file_exists($oEditedTemplate->viewPath . $relativePathEditfile)) {
-                        $oEditedTemplate->extendsFile($relativePathEditfile);
+                    $destination = (pathinfo((string) $relativePathEditfile, PATHINFO_EXTENSION) == 'twig')
+                        ? $oEditedTemplate->viewPath . $relativePathEditfile
+                        : $oEditedTemplate->path . $relativePathEditfile;
+                    $savedRelative = uploadRelativePath($destination);
+                    if ($savedRelative !== null && !uploadPathChangeAllowed($savedRelative, 'write')) {
+                        Yii::app()->user->setFlash('error', gT('Could not write file ') . $destination);
+                        $this->getController()->redirect(array("admin/themes/sa/upload"));
                     }
 
-                    $savefilename = $oEditedTemplate->extendsFile($relativePathEditfile, $relativePathEditfile);
-
+                    $savefilename = $oEditedTemplate->extendsFile($relativePathEditfile);
                     if (is_writable($savefilename)) {
                         if (!$handle = fopen($savefilename, 'w')) {
                             Yii::app()->user->setFlash('error', gT('Could not open file ') . $savefilename);
@@ -958,6 +986,9 @@ JAVASCRIPT
                             Yii::app()->user->setFlash('error', gT('Could not write file ') . $savefilename);
                             $this->getController()->redirect(array("admin/themes/sa/upload"));
                         } else {
+                            if ($savedRelative !== null) {
+                                dispatchUploadPathEvent('afterUploadPathChange', $savedRelative, ['action' => 'write']);
+                            }
                             Yii::app()->setFlashMessage(gT("Changes saved successfully."));
                         }
 

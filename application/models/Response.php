@@ -10,7 +10,10 @@ abstract class Response extends Dynamic
     public function beforeDelete()
     {
         if (parent::beforeDelete()) {
-            $this->deleteFiles();
+            $retained = $this->deleteFiles();
+            if ($this->retainedUploadFiles($retained)) {
+                return false;
+            }
             $this->deleteTimings();
             return true;
         }
@@ -159,12 +162,39 @@ abstract class Response extends Dynamic
     public function deleteFiles()
     {
         $errors = array();
+        $pending = array();
+        $blocked = false;
         $uploaddir = Yii::app()->getConfig('uploaddir') . "/surveys/{$this->dynamicId}/files/";
+        Yii::import('application.helpers.common_helper', true);
         foreach ($this->getFiles() as $fileInfo) {
             $basename = basename((string) $fileInfo['filename']);
-            $result = @unlink($uploaddir . $basename);
-            if (!$result) {
+            $relativePath = 'surveys/' . $this->dynamicId . '/files/' . $basename;
+            $fullPath = $uploaddir . $basename;
+            if (!uploadPathChangeAllowed($relativePath, 'delete', ['surveyId' => $this->dynamicId])) {
                 $errors[] = $fileInfo['filename'];
+                if (is_file($fullPath)) {
+                    $blocked = true;
+                }
+                continue;
+            }
+            $pending[] = array(
+                'filename' => $fileInfo['filename'],
+                'relativePath' => $relativePath,
+                'fullPath' => $fullPath,
+            );
+        }
+        // A veto on a file still on disk must keep every attachment: the response row stays and still references them.
+        if ($blocked) {
+            return $errors;
+        }
+        foreach ($pending as $file) {
+            if (@unlink($file['fullPath'])) {
+                dispatchUploadPathEvent('afterUploadPathChange', $file['relativePath'], [
+                    'action' => 'delete',
+                    'surveyId' => $this->dynamicId,
+                ]);
+            } else {
+                $errors[] = $file['filename'];
             }
         }
 
@@ -192,6 +222,7 @@ abstract class Response extends Dynamic
         $errors = array();
         $success = 0;
         $uploaddir = Yii::app()->getConfig('uploaddir') . "/surveys/{$this->dynamicId}/files/";
+        Yii::import('application.helpers.common_helper', true);
         $filesData = $this->getFilesAndSqga();
 
         foreach ($filesData as $sgqa => $aQuestion) {
@@ -204,11 +235,17 @@ abstract class Response extends Dynamic
                 $basename = basename((string) $fileInfo['filename']);
                 $fullFilename = $uploaddir . $basename;
 
+                $relativePath = 'surveys/' . $this->dynamicId . '/files/' . $basename;
                 if (file_exists($fullFilename)) {
-                    $result = @unlink($fullFilename);
+                    $result = uploadPathChangeAllowed($relativePath, 'delete', ['surveyId' => $this->dynamicId])
+                        && @unlink($fullFilename);
                     if (!$result) {
                         $errors[] = $fileInfo['filename'];
                     } else {
+                        dispatchUploadPathEvent('afterUploadPathChange', $relativePath, [
+                            'action' => 'delete',
+                            'surveyId' => $this->dynamicId,
+                        ]);
                         $files[$i]['name'] = $fileInfo['name'] . sprintf(' (%s)', gT('deleted'));
 
                         $sEncoded = json_encode($files);
@@ -237,9 +274,30 @@ abstract class Response extends Dynamic
     public function delete($deleteFiles = false)
     {
         if ($deleteFiles) {
-            $this->deleteFiles();
+            $retained = $this->deleteFiles();
+            if ($this->retainedUploadFiles($retained)) {
+                return false;
+            }
         }
         return parent::delete();
+    }
+
+    /**
+     * A name from deleteFiles() is retained only while that file is still on disk.
+     * A missing file is not retained: a later pass reports unlink failures for files already removed.
+     *
+     * @param string[] $filenames
+     * @return bool
+     */
+    private function retainedUploadFiles(array $filenames)
+    {
+        $uploaddir = Yii::app()->getConfig('uploaddir') . "/surveys/{$this->dynamicId}/files/";
+        foreach ($filenames as $filename) {
+            if (is_file($uploaddir . basename((string) $filename))) {
+                return true;
+            }
+        }
+        return false;
     }
     public function relations()
     {

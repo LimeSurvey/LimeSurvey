@@ -9353,13 +9353,25 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                                         $aFiles[$i]->filename = get_absolute_path($aFiles[$i]->filename);
                                         if (file_exists($tmp . $aFiles[$i]->filename)) {
                                             $sDestinationFileName = 'fu_' . randomChars(15);
-                                            if (!is_dir($LEM->surveyOptions['target'])) {
-                                                mkdir($LEM->surveyOptions['target'], 0777, true);
+                                            $storedPath = 'surveys/' . $LEM->sid . '/files/' . $sDestinationFileName;
+                                            $moved = false;
+                                            if (uploadPathChangeAllowed($storedPath, 'write', ['surveyId' => $LEM->sid])) {
+                                                if (!is_dir($LEM->surveyOptions['target'])) {
+                                                    mkdir($LEM->surveyOptions['target'], 0777, true);
+                                                }
+                                                if (rename($tmp . $aFiles[$i]->filename, $LEM->surveyOptions['target'] . $sDestinationFileName)) {
+                                                    dispatchUploadPathEvent('afterUploadPathChange', $storedPath, [
+                                                        'action' => 'write',
+                                                        'surveyId' => $LEM->sid,
+                                                    ]);
+                                                    $aFiles[$i]->filename = $sDestinationFileName;
+                                                    $moved = true;
+                                                }
                                             }
-                                            if (!rename($tmp . $aFiles[$i]->filename, $LEM->surveyOptions['target'] . $sDestinationFileName)) {
+                                            if (!$moved) {
                                                 echo "Error moving file to target destination";
+                                                $LEM->invalidAnswerString[$sq] = gT("Error moving file to target destination");
                                             }
-                                            $aFiles[$i]->filename = $sDestinationFileName;
                                         }
                                         /* Sanitize size */
                                         $aFiles[$i]->size = floatval($aFiles[$i]->size);

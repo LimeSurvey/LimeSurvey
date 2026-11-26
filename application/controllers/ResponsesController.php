@@ -780,6 +780,7 @@ class ResponsesController extends LSBaseController
                 $sDir = get_absolute_path(Yii::app()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . "surveys" . DIRECTORY_SEPARATOR . $surveyId . DIRECTORY_SEPARATOR . "files") . DIRECTORY_SEPARATOR;
                 $sFileRealName = $sDir . $aFile['filename'];
                 $sRealUserPath = get_absolute_path($sFileRealName);
+                dispatchUploadPathEvent('beforeUploadPathUse', 'surveys/' . $surveyId . '/files/' . basename((string) $aFile['filename']));
                 if (strpos($sRealUserPath, $sDir) !== 0) {
                     throw new CHttpException(403, "File cannot be accessed.");
                 } elseif (!is_file($sRealUserPath)) {
@@ -1084,6 +1085,7 @@ class ResponsesController extends LSBaseController
                 * unique. This way we can have 234_1_image1.gif, 234_2_image1.gif as it could be
                 * files from a different source with the same name.
                 */
+                dispatchUploadPathEvent('beforeUploadPathUse', 'surveys/' . $surveyId . '/files/' . basename((string) $fileInfo['filename']));
                 if (file_exists($tmpdir . basename((string) $fileInfo['filename']))) {
                     $filelist[] = [
                         $tmpdir . basename((string) $fileInfo['filename']),

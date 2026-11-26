@@ -750,6 +750,8 @@ class QuestionTheme extends LSActiveRecord
      */
     public static function getQuestionThemeDirectories()
     {
+        Yii::import('application.helpers.common_helper', true);
+        dispatchUploadPathEvent('beforeUploadPathUse', 'themes/question');
         $questionThemeDirectories[self::THEME_TYPE_CORE] = App()->getConfig('corequestiontypedir') . '/survey/questions/answer';
         $questionThemeDirectories[self::THEME_TYPE_CUSTOM] = App()->getConfig('customquestionthemedir');
         $questionThemeDirectories[self::THEME_TYPE_USER] = App()->getConfig('userquestionthemerootdir');
@@ -1041,7 +1043,18 @@ class QuestionTheme extends LSActiveRecord
         $additionalAttributes = array();
         $questionTheme = QuestionTheme::model()->findByAttributes([], 'name = :name AND extends = :extends', ['name' => $sQuestionThemeName, 'extends' => $type]);
         if ($questionTheme !== null) {
-            $xml_config = simplexml_load_file($questionTheme->getXmlPath() . '/config.xml');
+            $manifestPath = $questionTheme->getXmlPath() . '/config.xml';
+            Yii::import('application.helpers.common_helper', true);
+            $relativeManifest = uploadRelativePath($manifestPath);
+            if ($relativeManifest === null) {
+                $relativeManifest = uploadRelativePath(
+                    Yii::app()->getConfig('rootdir') . '/' . ltrim(str_replace('\\', '/', (string) $manifestPath), '/')
+                );
+            }
+            if ($relativeManifest !== null) {
+                dispatchUploadPathEvent('beforeUploadPathUse', $relativeManifest);
+            }
+            $xml_config = simplexml_load_file($manifestPath);
             $attributes = json_decode(json_encode((array)$xml_config->attributes), true);
         }
         if (!empty($attributes)) {

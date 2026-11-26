@@ -214,7 +214,11 @@ class LabelSet extends LSActiveRecord implements PermissionInterface
             LabelL10n::model()->deleteAllByAttributes([], 'label_id = :id', [':id' => $oLabel->id]);
             $oLabel->delete();
         }
-        rmdirr(App()->getConfig('uploaddir') . '/labels/' . $this->lid);
+        Yii::import('application.helpers.common_helper', true);
+        $labelPath = 'labels/' . $this->lid;
+        if (uploadPathChangeAllowed($labelPath, 'delete') && rmdirr(App()->getConfig('uploaddir') . '/labels/' . $this->lid)) {
+            dispatchUploadPathEvent('afterUploadPathChange', $labelPath, ['action' => 'delete']);
+        }
     }
 
     /**
