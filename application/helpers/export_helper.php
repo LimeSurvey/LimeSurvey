@@ -771,6 +771,8 @@ function SPSSGetQuery($iSurveyID, $limit = null, $offset = null)
  * @param mixed $Query  The table query to build from
  * @param string $tagname  If the XML tag of the resulting question should be named differently than the table name set it here
  * @param string[] $excludes array of columnames not to include in export
+ * @param int $iSurveyID  The survey ID, only needed for the 'responses' and 'tokens' tables
+ * @return void
  */
 function buildXMLFromQuery($xmlwriter, $Query, $tagname = '', $excludes = array(), $iSurveyID = 0)
 {
@@ -787,6 +789,8 @@ function buildXMLFromQuery($xmlwriter, $Query, $tagname = '', $excludes = array(
 
     // Read table in smaller chunks
     $iStart = 0;
+    // The last chunk is empty when the row count is a multiple of the chunk size, so remember the opened table element
+    $isTableOpen = false;
     do {
         $result = array();
         // data need to be converted to model to be able to decrypt responses and tokens
@@ -828,6 +832,7 @@ function buildXMLFromQuery($xmlwriter, $Query, $tagname = '', $excludes = array(
             }
             $xmlwriter->endElement(); // close columns
             $xmlwriter->startElement('rows');
+            $isTableOpen = true;
         }
         foreach ($result as $Row) {
             $xmlwriter->startElement('row');
@@ -858,7 +863,7 @@ function buildXMLFromQuery($xmlwriter, $Query, $tagname = '', $excludes = array(
         }
         $iStart = $iStart + $iChunkSize;
     } while (count($result) == $iChunkSize);
-    if (count($result) > 0) {
+    if ($isTableOpen) {
         $xmlwriter->endElement(); // close rows
         $xmlwriter->endElement(); // close tablename
     }
@@ -2778,7 +2783,7 @@ function tsvSurveyExport($surveyid)
     $aSurveyLanguages = $survey->getAllLanguages();
 
     // Advanced question attributes : @todo get used question attribute by question in survey ?
-    $aQuestionAttributes = array_keys(\LimeSurvey\Helpers\questionHelper::getAttributesDefinitions());
+    $aQuestionAttributes = array_keys(QuestionAttribute::getAllAttributesSettings());
     sort($aQuestionAttributes);
     $fields = array_merge($aBaseFields, $aQuestionAttributes);
     // Reusing existing XML function to get data for exporting into TSV format

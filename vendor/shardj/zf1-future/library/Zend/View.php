@@ -147,7 +147,7 @@ class Zend_View extends Zend_View_Abstract
     /**
      * Includes the view script in a scope with only public $this variables.
      *
-     * @param string The view script to execute.
+     * The view script to execute is the first argument.
      */
     protected function _run()
     {

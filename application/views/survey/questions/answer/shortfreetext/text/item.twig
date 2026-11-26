@@ -41,6 +41,7 @@
             {% if maxlength %}maxlength="{{ maxlength }}" {% endif %}
             {% if numberonly %}data-number="1" {% endif %}
             aria-labelledby="ls-question-text-{{ basename }}"
+            aria-describedby="ls-question-help-{{ basename }} ls-question-validation-{{ basename }}"
         />
 
         <!-- Suffix -->

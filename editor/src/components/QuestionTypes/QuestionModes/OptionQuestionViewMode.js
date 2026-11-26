@@ -25,6 +25,10 @@ import { getCommentedCheckboxOptions } from 'helpers/options'
 import { MultipleChoiceNumericalSubquestion } from '../MultipleChoice/MultipleChoiceNumericalSubquestion'
 import { cloneDeep } from 'lodash'
 import { singleChoiceThemes } from '../singleChoiceThemes'
+import {
+  getImageOptionForImage,
+  getImageOptionLanguageMaps,
+} from '../imageOptionSettings'
 
 const dropdownThemeComponents = [
   getQuestionTypeInfo().SINGLE_CHOICE_DROPDOWN.theme,
@@ -83,6 +87,20 @@ const insertOtherByPosition = (
 }
 
 // todo: add input fields for multiple numerical/texts
+/**
+ * View mode of the choice question types, also used to answer the question in
+ * the preview: The options as radio buttons, checkboxes, buttons, dropdown or
+ * images, with "Other" and the comment fields where the theme has them.
+ *
+ * @param {Object} question the question
+ * @param {string} language the active language
+ * @param {Object[]} _children the answers or subquestions
+ * @param {Function} onValueChange called with the new value and its response key
+ * @param {Object[]} values the current response values
+ * @param {boolean} participantMode whether the question is answered by a participant
+ * @param {Object} surveySettings the survey settings
+ * @returns {JSX.Element} the options in view mode
+ */
 export const OptionQuestionViewMode = ({
   question: { questionThemeName, qid, gid, attributes, mandatory, other } = {},
   language,
@@ -114,10 +132,37 @@ export const OptionQuestionViewMode = ({
     [questionThemeName]
   )
 
-  const isSingleChoiceButtons =
-    questionThemeName === getQuestionTypeInfo().SINGLE_CHOICE_BUTTONS.theme
+  // Parsed once per change, not for each option on every render.
+  const imageOptionMaps = useMemo(
+    () => getImageOptionLanguageMaps(attributes, language),
+    [attributes, language]
+  )
+
+  /**
+   * Returns the image settings props of an option for ImageChoice: The image
+   * as set up in the image editor, unless the settings were saved for another
+   * image of the option. The code is the alt text of an image without one.
+   *
+   * @param {Object} child the answer or subquestion
+   * @returns {{code: string, imageSettings: Object|null,
+   *   imageAltText: string}} the props
+   */
+  const getImageOptionViewProps = (child) => {
+    const code = child[childrenInfo.codeKey]
+    const { settings, altText } = getImageOptionForImage(
+      imageOptionMaps,
+      code,
+      L10ns({ prop: childrenInfo.titleKey, language, l10ns: child.l10ns })
+    )
+    return { code, imageSettings: settings, imageAltText: altText }
+  }
+
+  const isButtonsTheme = [
+    getQuestionTypeInfo().SINGLE_CHOICE_BUTTONS.theme,
+    getQuestionTypeInfo().MULTIPLE_CHOICE_BUTTONS.theme,
+  ].includes(questionThemeName)
   const buttonsPerRow =
-    isSingleChoiceButtons && BUTTONS_PER_ROW[getAttributeValue(max_buttons_row)]
+    isButtonsTheme && BUTTONS_PER_ROW[getAttributeValue(max_buttons_row)]
 
   const isSingleChoiceWithComments = useMemo(() => {
     return (
@@ -451,7 +496,7 @@ export const OptionQuestionViewMode = ({
       <div
         className={classNames('children-parent', {
           'multiple-short-texts': isMultipleShortTexts,
-          'single-choice-buttons': isSingleChoiceButtons,
+          'single-choice-buttons': isButtonsTheme,
           'fixed-columns': buttonsPerRow,
         })}
         style={
@@ -570,6 +615,9 @@ export const OptionQuestionViewMode = ({
                 }
                 disabled={ChildUiComponentToRender.name === contentEditorName}
                 isNoAnswer={child.isNoAnswer}
+                {...(ChildUiComponentToRender === ImageChoice
+                  ? getImageOptionViewProps(child)
+                  : {})}
               />
               {isMultipleShortTexts && (
                 <Input
@@ -599,7 +647,7 @@ export const OptionQuestionViewMode = ({
                 </div>
               )}
               {child.isOther &&
-                !isSingleChoiceButtons &&
+                !isButtonsTheme &&
                 renderOtherInput(
                   isSingleChoiceTheme ? valueInfo?.otherText : value?.otherText
                 )}
@@ -658,9 +706,14 @@ export const OptionQuestionViewMode = ({
           </div>
         )}
       </div>
-      {isSingleChoiceButtons && supportsOther && (
+      {isButtonsTheme && supportsOther && (
         <div className="single-choice-buttons-other">
-          {renderOtherInput(valueInfo?.otherText)}
+          {renderOtherInput(
+            isSingleChoiceTheme
+              ? valueInfo?.otherText
+              : childrenValuesInOrder[children.findIndex((c) => c.isOther)]
+                  ?.otherText
+          )}
         </div>
       )}
     </>

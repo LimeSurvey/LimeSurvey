@@ -173,6 +173,7 @@ class Zend_Tool_Project_Context_Zf_TestApplicationActionMethod implements Zend_T
 EOS;
         }
 
+        require_once 'Zend/CodeGenerator/Php/File.php';
         $codeGenFile = Zend_CodeGenerator_Php_File::fromReflectedFileName($file, true, true);
         $codeGenFile->getClass()->setMethod([
             'name' => 'test' . ucfirst($actionParam) . 'Action',

@@ -2035,6 +2035,14 @@ class Survey extends LSActiveRecord implements PermissionInterface
         );
         $sort->defaultOrder = array('creation_date' => CSort::SORT_DESC);
 
+        // Persist the chosen sort order in session, the same way pageSize is persisted,
+        // since CSort itself only reads from the current request's GET params.
+        if (isset($_GET[$sort->sortVar]) && is_string($_GET[$sort->sortVar])) {
+            Yii::app()->user->setState('surveyListSort', $_GET[$sort->sortVar]);
+        } elseif (($surveyListSort = Yii::app()->user->getState('surveyListSort')) !== null) {
+            $_GET[$sort->sortVar] = $surveyListSort;
+        }
+
         $criteria = new LSDbCriteria();
         $aWithRelations = array('correct_relation_defaultlanguage');
 
@@ -2521,6 +2529,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
      */
     public function getWelcomeImageSettings()
     {
+        if (!$this->hasAttribute('welcome_image')) {
+            return [];
+        }
         return json_decode_ls($this->welcome_image);
     }
 

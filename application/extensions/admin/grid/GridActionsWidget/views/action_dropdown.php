@@ -11,7 +11,7 @@
         <i class="ri-more-fill"></i>
     </button>
     <ul id="<?= 'dropdownmenu_' . $id; ?>" class="dropdown-menu">
-        <?php foreach ($dropdownItems as $dropdownItem): ?>
+        <?php foreach ($dropdownItems as $dropdownItem) : ?>
             <?php $enabledCondition = $dropdownItem['enabledCondition'] ?? true ?>
             <?php
             if (isset($dropdownItem['submenu']) && $dropdownItem['submenu']) { ?>

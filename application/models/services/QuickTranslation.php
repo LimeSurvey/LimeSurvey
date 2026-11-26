@@ -599,6 +599,42 @@ class QuickTranslation
     }
 
     /**
+     * Reads the changed translations the quick translation page posts as one JSON list.
+     *
+     * One field for all texts keeps the request below the PHP setting max_input_vars, however many texts were changed.
+     * Texts without a new value are left out: An emptied translation is not saved.
+     *
+     * @param string $json JSON list of objects with the keys type, id1, id2, scaleid and value
+     * @return array<int, array{type: string, id1: string, id2: string, scaleid: string, value: string}>|null
+     *         the changes, null if the JSON is not such a list
+     */
+    public static function parsePostedTranslations(string $json): ?array
+    {
+        $posted = json_decode($json, true);
+        if (!is_array($posted)) {
+            return null;
+        }
+        $changes = [];
+        foreach ($posted as $item) {
+            if (!is_array($item)) {
+                return null;
+            }
+            $change = [];
+            foreach (['type', 'id1', 'id2', 'scaleid', 'value'] as $key) {
+                $value = $item[$key] ?? '';
+                if (!is_scalar($value)) {
+                    return null;
+                }
+                $change[$key] = (string) $value;
+            }
+            if ($change['value'] !== '') {
+                $changes[] = $change;
+            }
+        }
+        return $changes;
+    }
+
+    /**
      * Replaces every expression ({...}) in a text with a numbered marker that machine translation
      * leaves alone, so the text can be translated in one piece with its HTML tags intact.
      *

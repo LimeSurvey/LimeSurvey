@@ -81,7 +81,7 @@ class Zend_Translate_Adapter_Csv extends Zend_Translate_Adapter
      * @param  string|array  $filename  Filename and full path to the translation source
      * @param  string        $locale    Locale/Language to add data for, identical with locale identifier,
      *                                  see Zend_Locale for more information
-     * @param  array         $option    OPTIONAL Options to use
+     * @param  array         $options    OPTIONAL Options to use
      * @return array
      */
     protected function _loadTranslationData($filename, $locale, array $options = [])

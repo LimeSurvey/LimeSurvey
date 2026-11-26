@@ -21,6 +21,7 @@ require_once 'Zend/Cloud/Infrastructure/Adapter/AbstractAdapter.php';
  * @subpackage Adapter
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @deprecated Deprecated since 1.27.1 and will be removed in a future version: the Simple Cloud API is not developed any further; use the SDK of the cloud provider
  */
 class Zend_Cloud_Infrastructure_Adapter_Rackspace extends Zend_Cloud_Infrastructure_Adapter_AbstractAdapter
 {
@@ -95,6 +96,8 @@ class Zend_Cloud_Infrastructure_Adapter_Rackspace extends Zend_Cloud_Infrastruct
      */
     public function __construct($options = [])
     {
+        trigger_error(get_class($this) . ' is deprecated and will be removed in a future version', E_USER_DEPRECATED);
+
         if (is_object($options)) {
             if (method_exists($options, 'toArray')) {
                 $options= $options->toArray();
@@ -411,6 +414,9 @@ class Zend_Cloud_Infrastructure_Adapter_Rackspace extends Zend_Cloud_Infrastruct
         $average = 0;
 
         $outputs= explode("\n",$result);
+        $usage   = null;
+        $total   = null;
+        $used    = null;
         foreach ($outputs as $output) {
             if (!empty($output)) {
                 switch ($metric) {

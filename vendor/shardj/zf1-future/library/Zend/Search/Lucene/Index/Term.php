@@ -57,6 +57,7 @@ class Zend_Search_Lucene_Index_Term
      */
     public function __construct($text, $field = null)
     {
+        require_once 'Zend/Search/Lucene.php';
         $this->field = ($field === null)?  Zend_Search_Lucene::getDefaultSearchField() : $field;
         $this->text  = $text;
     }

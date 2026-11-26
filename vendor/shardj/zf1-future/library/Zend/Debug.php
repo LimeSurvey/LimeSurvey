@@ -40,7 +40,7 @@ class Zend_Debug
      * Get the current value of the debug output environment.
      * This defaults to the value of PHP_SAPI.
      *
-     * @return string;
+     * @return string
      */
     public static function getSapi()
     {
@@ -55,7 +55,7 @@ class Zend_Debug
      * Setting a value of null causes Zend_Debug to use PHP_SAPI.
      *
      * @param string $sapi
-     * @return void;
+     * @return void
      */
     public static function setSapi($sapi)
     {

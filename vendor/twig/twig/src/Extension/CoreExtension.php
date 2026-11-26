@@ -30,6 +30,7 @@ use Twig\ExpressionParser\InfixAssociativity;
 use Twig\ExpressionParser\PrecedenceChange;
 use Twig\ExpressionParser\Prefix\GroupingExpressionParser;
 use Twig\ExpressionParser\Prefix\LiteralExpressionParser;
+use Twig\ExpressionParser\Prefix\SpreadExpressionParser;
 use Twig\ExpressionParser\Prefix\UnaryOperatorExpressionParser;
 use Twig\MacroNamespace;
 use Twig\Markup;
@@ -77,6 +78,7 @@ use Twig\Node\Expression\Test\ConstantTest;
 use Twig\Node\Expression\Test\DefinedTest;
 use Twig\Node\Expression\Test\DivisiblebyTest;
 use Twig\Node\Expression\Test\EvenTest;
+use Twig\Node\Expression\Test\NonStringCoercingInputTest;
 use Twig\Node\Expression\Test\NullTest;
 use Twig\Node\Expression\Test\OddTest;
 use Twig\Node\Expression\Test\SameasTest;
@@ -84,7 +86,6 @@ use Twig\Node\Expression\Test\TrueTest;
 use Twig\Node\Expression\Unary\NegUnary;
 use Twig\Node\Expression\Unary\NotUnary;
 use Twig\Node\Expression\Unary\PosUnary;
-use Twig\Node\Expression\Unary\SpreadUnary;
 use Twig\Node\Node;
 use Twig\NodeVisitor\CorrectnessNodeVisitor;
 use Twig\Parser;
@@ -322,9 +323,9 @@ final class CoreExtension extends AbstractExtension
             new TwigTest('divisible by', null, ['node_class' => DivisiblebyTest::class, 'one_mandatory_argument' => true, 'always_allowed_in_sandbox' => true]),
             new TwigTest('constant', null, ['node_class' => ConstantTest::class]),
             new TwigTest('empty', [self::class, 'testEmpty'], ['always_allowed_in_sandbox' => true]),
-            new TwigTest('iterable', 'is_iterable', ['always_allowed_in_sandbox' => true]),
-            new TwigTest('sequence', [self::class, 'testSequence'], ['always_allowed_in_sandbox' => true]),
-            new TwigTest('mapping', [self::class, 'testMapping'], ['always_allowed_in_sandbox' => true]),
+            new TwigTest('iterable', 'is_iterable', ['node_class' => NonStringCoercingInputTest::class, 'always_allowed_in_sandbox' => true]),
+            new TwigTest('sequence', [self::class, 'testSequence'], ['node_class' => NonStringCoercingInputTest::class, 'always_allowed_in_sandbox' => true]),
+            new TwigTest('mapping', [self::class, 'testMapping'], ['node_class' => NonStringCoercingInputTest::class, 'always_allowed_in_sandbox' => true]),
             new TwigTest('true', null, ['node_class' => TrueTest::class, 'always_allowed_in_sandbox' => true]),
         ];
     }
@@ -341,7 +342,7 @@ final class CoreExtension extends AbstractExtension
         return [
             // unary operators
             new UnaryOperatorExpressionParser(NotUnary::class, 'not', 50, new PrecedenceChange('twig/twig', '3.15', 70)),
-            new UnaryOperatorExpressionParser(SpreadUnary::class, '...', 512, description: 'Spread operator', operandPrecedence: 0),
+            new SpreadExpressionParser(),
             new UnaryOperatorExpressionParser(NegUnary::class, '-', 500),
             new UnaryOperatorExpressionParser(PosUnary::class, '+', 500),
 
@@ -837,7 +838,7 @@ final class CoreExtension extends AbstractExtension
     public static function join($value, $glue = '', $and = null): string
     {
         if (!is_iterable($value)) {
-            $value = (array) $value;
+            $value = null === $value ? [] : [$value];
         }
 
         $value = self::toArray($value, false);
@@ -1218,8 +1219,8 @@ final class CoreExtension extends AbstractExtension
             default => throw new RuntimeError('Trimming side must be "left", "right" or "both".'),
         };
 
-        // trimming a safe string with the default character mask always returns a safe string (independently of the context)
-        return $string instanceof Markup && self::DEFAULT_TRIM_CHARS === $characterMask ? new Markup($trimmed, $string->getCharset()) : $trimmed;
+        // trimming a safe string with the default character mask keeps it as safe as it was
+        return $string instanceof Markup && self::DEFAULT_TRIM_CHARS === $characterMask ? $string->withContent($trimmed) : $trimmed;
     }
 
     /**
@@ -1866,8 +1867,10 @@ final class CoreExtension extends AbstractExtension
 
             static $propertyCheckers = [];
 
-            if (isset($object->$item)
-                || ($propertyCheckers[$object::class][$item] ??= self::getPropertyChecker($object::class, $item))($object, $item)
+            $propertyChecker = $propertyCheckers[$object::class][$item] ??= self::getPropertyChecker($object::class, $item);
+
+            if (false !== $propertyChecker
+                && (isset($object->$item) || ($propertyChecker instanceof \Closure && $propertyChecker($object, $item)))
             ) {
                 if ($isDefinedTest) {
                     return true;
@@ -1884,7 +1887,9 @@ final class CoreExtension extends AbstractExtension
                 return ((array) $object)[$item];
             }
 
-            if (\defined($object::class.'::'.$item)) {
+            static $constants = [];
+
+            if ($constants[$object::class][$item] ??= \defined($object::class.'::'.$item)) {
                 if ($isDefinedTest) {
                     return true;
                 }
@@ -2266,7 +2271,11 @@ final class CoreExtension extends AbstractExtension
         return new GetAttrExpression($args[0], $args[1], $args[2] ?? null, Template::ANY_CALL, $line);
     }
 
-    private static function getPropertyChecker(string $class, string $property): \Closure
+    /**
+     * @return \Closure|bool A closure checking that the property is initialized, true to only rely on isset(),
+     *                       or false when the property cannot be read from outside the object
+     */
+    private static function getPropertyChecker(string $class, string $property): \Closure|bool
     {
         static $classReflectors = [];
 
@@ -2281,9 +2290,8 @@ final class CoreExtension extends AbstractExtension
         $property = $class->getProperty($property);
 
         if (!$property->isPublic() || $property->isStatic()) {
-            static $false;
-
-            return $false ??= static fn () => false;
+            // isset() on an inaccessible property can only be true through __isset()
+            return $class->hasMethod('__isset');
         }
 
         return static fn ($object) => $property->isInitialized($object);

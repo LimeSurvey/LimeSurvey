@@ -39,6 +39,11 @@ export const QuestionGroups = ({
   const [, setSurveyRefreshRequired] = useAppState(
     STATES.SURVEY_REFRESH_REQUIRED
   )
+  const [isSurveyActive] = useAppState(STATES.IS_SURVEY_ACTIVE, false)
+  const [hasSurveyUpdatePermission] = useAppState(
+    STATES.HAS_SURVEY_UPDATE_PERMISSION
+  )
+  const canModifyGroups = !isSurveyActive && hasSurveyUpdatePermission
 
   const handleUpdate = (index, questionGroup) => {
     update([
@@ -49,12 +54,13 @@ export const QuestionGroups = ({
   }
 
   const handleGroupDeletion = (index) => {
+    if (!canModifyGroups) return
     setDeleteState({ show: true, index, gid: questionGroups[index]?.gid })
   }
 
   const handleConfirmGroupDeletion = () => {
     const index = getGroupIndexForDeletion(questionGroups, deleteState.gid)
-    if (index === -1) {
+    if (!canModifyGroups || index === -1) {
       setDeleteState({ show: false, index: null, gid: null })
       return
     }
@@ -76,6 +82,7 @@ export const QuestionGroups = ({
   }
 
   const handleQuestionGroupDuplication = (questionGroup, index) => {
+    if (!canModifyGroups) return
     const duplicatedQuestionGroup = DuplicateQuestionGroup(questionGroup)
     const updatedQuestionGroups = InsertElementAndIncrementProperty(
       questionGroups,

@@ -30,7 +30,7 @@
                         <?php echo $tabitem; ?>
                     </a>
                 </li>
-                <?php if ($action === "newlabelset" && Permission::model()->hasGlobalPermission('labelsets', 'import')): ?>
+                <?php if ($action === "newlabelset" && Permission::model()->hasGlobalPermission('labelsets', 'import')) : ?>
                     <li class="nav-item" role="presentation">
                         <a class="nav-link"
                            id="editlabel-tab-1"

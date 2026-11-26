@@ -85,8 +85,8 @@ abstract class Zend_View_Helper_FormElement extends Zend_View_Helper_HtmlElement
      *
      * @access protected
      *
-     * @return array An element info array with keys for name, value,
-     * attribs, options, listsep, disable, and escape.
+     * @return array{name: mixed, id: mixed, value: mixed, attribs: mixed, options: mixed, listsep: mixed, disable: mixed, escape: mixed}
+     *         An element info array with keys for name, id, value, attribs, options, listsep, disable, and escape.
      */
     protected function _getInfo($name, $value = null, $attribs = null,
         $options = null, $listsep = null

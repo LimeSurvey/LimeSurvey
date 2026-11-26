@@ -42,10 +42,26 @@ class LSETwigViewRenderer extends ETwigViewRenderer
     private $questionTemplateDataCache = [];
 
     /**
+     * @var array<int,bool> Whether the new editor can edit the survey, cached per survey id
+     * @see LSETwigViewRenderer::renderQuestion()
+     */
+    private $editorCompatibleSurveyCache = [];
+
+    /**
      * @var array Custom LS Users Extensions
      * Example: array('HelloWorld_Twig_Extension')
      */
     public $user_extensions = [];
+
+    /**
+     * @var string[] Keys of the survey info arrays (aSurveyInfo, surveyInfo) that must not reach the templates
+     */
+    private const HIDDEN_SURVEY_INFO_KEYS = ['bounceaccounttype', 'bounceaccounthost', 'bounceaccountuser', 'bounceaccountpass', 'bounceaccountencryption'];
+
+    /**
+     * @var LSETwigViewRenderer[] Renderers with a Twig rendering in progress, the current one last (nested renderings)
+     */
+    private static $renderingRenderers = [];
 
     /**
      * @inheritdoc
@@ -271,6 +287,8 @@ window.addEventListener('message', function(event) {
      * This method is called from qanda helper to render a question view file.
      * It first checks if the question use a template (set in display attributes)
      * If it is the case, it will use the views of that template, else, it will render the core view.
+     * Question views also get surveyInfo and isEditorCompatibleSurvey: Whether the new editor can edit the
+     * survey (see Survey::getIsEditorCompatible()), e.g. for the image editor settings of image select options.
      *
      * @param string $sView the view (layout) to render
      * @param array $aData the datas needed for the view rendering
@@ -322,13 +340,20 @@ window.addEventListener('message', function(event) {
                 $aData = array_merge($aData, $this->getQuestionTemplateData($oQuestionModel));
                 $aData['question_template_attribute'] = $oQuestionTemplate->getCustomAttributes();
                 $surveyId = ExpressionManagerSessionState::current()->getSurveyId();
-                $sBaseLanguage = Survey::model()->findByPk($surveyId)->language;
+                $oSurvey = Survey::model()->findByPk($surveyId);
+                $sBaseLanguage = $oSurvey->language;
                 $aData['surveyInfo'] = getSurveyInfo($surveyId, $sBaseLanguage);
+                // Settings made in the new editor (e.g. the image editor of image select options) only apply in
+                // the survey themes it can edit: Then the survey shows what the editor shows.
+                if (!isset($this->editorCompatibleSurveyCache[$surveyId])) {
+                    $this->editorCompatibleSurveyCache[$surveyId] = $oSurvey->getIsEditorCompatible();
+                }
+                $aData['isEditorCompatibleSurvey'] = $this->editorCompatibleSurveyCache[$surveyId];
                 $aData['this'] = App()->getController();
             } else {
                 $aData['question_template_attribute'] = null;
             }
-            $template = $this->_twig->render($sView . '.twig', $aData);
+            $template = $this->renderTwigTemplate($this->_twig->load($sView . '.twig'), $aData);
             return $template;
         } else {
             return App()->getController()->renderPartial($sView, $aData, true);
@@ -540,7 +565,7 @@ window.addEventListener('message', function(event) {
 
             $aData['question_template_attribute'] = null;
 
-            $template = $this->_twig->render($sView . '.twig', $aData);
+            $template = $this->renderTwigTemplate($this->_twig->load($sView . '.twig'), $aData);
             return $template;
         } else {
             return App()->getController()->renderPartial($sView, $aData, true);
@@ -592,7 +617,7 @@ window.addEventListener('message', function(event) {
         while (!file_exists($oRTemplate->path . $sOptionFile)) {
             $oMotherTemplate = $oRTemplate->oMotherTemplate;
             if (!($oMotherTemplate instanceof TemplateConfiguration)) {
-                return sprintf(gT('%s not found!', $oRTemplate->path . $sOptionFile));
+                return sprintf(gT('%s not found!'), $oRTemplate->path . $sOptionFile);
                 break;
             }
             $oRTemplate = $oMotherTemplate;
@@ -617,8 +642,7 @@ window.addEventListener('message', function(event) {
             : '';
         // Twig rendering
         $line         = file_get_contents($oRTemplate->path . $sOptionFile);
-        $oTwigTemplate = $twig->createTemplate($line);
-        $sHtml        = $oTwigTemplate->render($renderArray, false);
+        $sHtml        = $this->renderTwigTemplate($twig->createTemplate($line), $renderArray);
 
         return $sHtml;
     }
@@ -679,8 +703,7 @@ window.addEventListener('message', function(event) {
         }
 
         // Twig rendering
-        $oTwigTemplate = $twig->createTemplate($sString);
-        $sHtml         = $oTwigTemplate->render($aData, false);
+        $sHtml = $this->renderTwigTemplate($twig->createTemplate($sString), $aData);
 
         return $sHtml;
     }
@@ -1010,7 +1033,76 @@ window.addEventListener('message', function(event) {
         $oTemplate = Template::getLastInstance();
         $aData = $this->getAdditionalInfos($aData, $oTemplate);
         $this->addRecursiveTemplatesPath($oTemplate);
-        return $this->_twig->render($twigView, $aData);
+        return $this->renderTwigTemplate($this->_twig->load($twigView), $aData);
+    }
+
+    /**
+     * Renders a Twig template with the protections of the sandboxed data.
+     *
+     * The bounce account credentials are removed from the survey info arrays, and the models iterate only the
+     * attributes allowed by the sandbox while the template is rendered (@see TwigSandboxIteratorTrait).
+     *
+     * @param \Twig\TemplateWrapper $template the template to render
+     * @param array $data the variables of the template
+     * @return string the rendered html
+     */
+    private function renderTwigTemplate(\Twig\TemplateWrapper $template, array $data)
+    {
+        $data = $this->removeHiddenSurveyInfo($data);
+        self::$renderingRenderers[] = $this;
+        try {
+            return $template->render($data);
+        } finally {
+            array_pop(self::$renderingRenderers);
+        }
+    }
+
+    /**
+     * Returns the renderer that is currently rendering a Twig template, or null outside of a rendering.
+     *
+     * @return LSETwigViewRenderer|null
+     */
+    public static function getRenderingRenderer()
+    {
+        return self::$renderingRenderers === [] ? null : end(self::$renderingRenderers);
+    }
+
+    /**
+     * Returns the attributes of a model that the Twig sandbox allows the templates to read.
+     *
+     * The allow-list is the "properties" part of the sandbox configuration, matched like Twig does it: A model gets
+     * the properties of every configured class it is an instance of.
+     *
+     * @param CModel $model
+     * @return array<string,mixed> the allowed attributes, indexed by name
+     */
+    public function getSandboxedAttributes(CModel $model)
+    {
+        $allowedProperties = [];
+        foreach ($this->sandboxConfig['properties'] ?? [] as $class => $properties) {
+            if ($model instanceof $class) {
+                $allowedProperties = array_merge($allowedProperties, (array) $properties);
+            }
+        }
+        return array_intersect_key($model->getAttributes(), array_flip($allowedProperties));
+    }
+
+    /**
+     * Removes the keys of the survey info arrays that the templates must not read.
+     *
+     * The survey info arrays contain all attributes of the survey, and the sandbox does not check array keys.
+     *
+     * @param array $data the variables of the template
+     * @return array the variables without the hidden survey info keys
+     */
+    private function removeHiddenSurveyInfo(array $data)
+    {
+        foreach (['aSurveyInfo', 'surveyInfo'] as $key) {
+            if (isset($data[$key]) && is_array($data[$key])) {
+                $data[$key] = array_diff_key($data[$key], array_flip(self::HIDDEN_SURVEY_INFO_KEYS));
+            }
+        }
+        return $data;
     }
 
     /**

@@ -265,8 +265,9 @@ class SurveyThemeConfiguration
      /**
      * Returns the theme option attributes with custom format for react
      *
-     * @param array $themeData
-     * @return array
+     * @param array $themeData The theme options page data: option attributes (aOptionAttributes), the theme
+     *                         configuration with its image file list (aTemplateConfiguration) and the parent options (oParentOptions)
+     * @return array The options listed in optionsOrderReact, indexed by option name, with their current and parent values
      */
     public function getSurveyThemeOptionsAttributes($themeData): array
     {
@@ -298,7 +299,12 @@ class SurveyThemeConfiguration
             if ($key === 'cornerradius' && empty($attributesCompleteData[$key]['parentValue'])) {
                 $attributesCompleteData[$key]['parentValue'] = self::DEFAULT_CORNER_RADIUS;
             }
-            if (
+            if ($attributesCompleteData[$key]['type'] === 'imagefile') {
+                // The editor shows image file options as a dropdown of the theme images with an upload button
+                $attributesCompleteData[$key]['type'] = 'dropdown';
+                $attributesCompleteData[$key]['dropdownoptions'] = $imageDefaultDropDown;
+                $attributesCompleteData[$key]['hasFileUpload'] = true;
+            } elseif (
                 $attributesCompleteData[$key]['type'] === 'dropdown'
                 // "checkicon" is of type "icon" but has dropdown options
                 || !empty($attributesCompleteData[$key]['dropdownoptions'])
@@ -307,11 +313,6 @@ class SurveyThemeConfiguration
                 if (empty($attributesCompleteData[$key]['dropdownoptions'])) {
                     $attributesCompleteData[$key]['dropdownoptions'] = $imageDefaultDropDown;
                 }
-            }
-
-            // TODO: incorporate this option type into the theme properly
-            if (in_array($key, ['brandlogofile', 'backgroundimagefile'])) {
-                $attributesCompleteData[$key]['hasFileUpload'] = true;
             }
 
             // TODO: AT-1896 - force temporary theme color to be of icon type for the API

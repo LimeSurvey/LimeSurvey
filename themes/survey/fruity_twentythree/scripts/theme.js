@@ -1168,22 +1168,26 @@ var NavbarScripts = exports.NavbarScripts = function NavbarScripts() {
   var initNavbarEvents = function initNavbarEvents() {
     // Submenu that is currently shown, so the focus can return to its opener on "Back"
     var openedSubmenuId = null;
-    $(document).on('click', '[data-navtargetid]', function (event) {
-      event.preventDefault();
+    $(document).on('click', '[data-navtargetid]', function () {
       openedSubmenuId = $(this).data('navtargetid');
       replaceContent(getContentByElementId('main-dropdown'), 'back-content');
       //replace menu content with submenu content
       replaceContent(getContentByElementId(openedSubmenuId), 'main-dropdown');
       focusMenuItem('.back-link');
     });
-    // The submenu openers are links with role="button", which browsers only activate with Enter, so Space has to open them like a button
-    $(document).on('keydown', '[data-navtargetid]', function (event) {
+    // Submenu openers that are still links with role="button" (not native buttons): no navigation to href="#"
+    $(document).on('click', 'a[data-navtargetid]', function (event) {
+      event.preventDefault();
+    });
+    // and browsers only activate links with Enter, so Space has to open them like a button
+    $(document).on('keydown', 'a[data-navtargetid]', function (event) {
       if (event.key === ' ') {
         event.preventDefault();
         $(this).trigger('click');
       }
     });
     $(document).on('click', '.back-link', function (event) {
+      // Customized themes can still have a link with href="#": no navigation
       event.preventDefault();
       // switch menu content back to original content (this currently works only with one level nested elements)
       replaceContent(getContentByElementId('back-content'), 'main-dropdown');
@@ -1262,7 +1266,7 @@ exports["default"] = void 0;
  *
  * Pointer path: uses mousedown to capture pre-click checked state, then a
  * native capture click listener (so stopPropagation in inline onclick handlers
- * such as cancelBubbleThis cannot block it). The actual deselect is deferred
+ * of custom themes cannot block it). The actual deselect is deferred
  * via setTimeout so our checkconditions('') wins over any inline checkconditions
  * call with the previous value.
  *
@@ -1356,7 +1360,7 @@ var DeselectSinglechoiceScripts = function () {
     }, true); // capture phase
 
     // Pointer: native capture listener fires top-down before stopPropagation()
-    // in inline onclick handlers (e.g. cancelBubbleThis in image-select questions).
+    // in inline onclick handlers (e.g. in custom themes).
     document.addEventListener('click', function (e) {
       var radio = e.target;
       if (radio.tagName !== 'INPUT' || radio.type !== 'radio') {

@@ -24,6 +24,7 @@
  * @see Zend_Application_Resource_ResourceAbstract
  */
 require_once 'Zend/Application/Resource/ResourceAbstract.php';
+require_once 'Zend/Loader/Autoloader.php';
 
 /**
  * Resource for setting up Mail Transport and default From & ReplyTo addresses
@@ -71,6 +72,7 @@ class Zend_Application_Resource_Mail extends Zend_Application_Resource_ResourceA
                         && !is_numeric($options['transport']['register'])
                         && (bool)$options['transport']['register'] == true)
                 ) {
+                    require_once 'Zend/Mail.php';
                     Zend_Mail::setDefaultTransport($this->_transport);
                 }
             }
@@ -118,6 +120,7 @@ class Zend_Application_Resource_Mail extends Zend_Application_Resource_ResourceA
             if (!Zend_Loader_Autoloader::autoload($transportName)) {
                 $transportName = 'Zend_Mail_Transport_' . $transportName;
                 if (!Zend_Loader_Autoloader::autoload($transportName)) {
+                    require_once 'Zend/Application/Resource/Exception.php';
                     throw new Zend_Application_Resource_Exception(
                         "Specified Mail Transport '{$transportName}'"
                         . 'could not be found'
@@ -132,6 +135,7 @@ class Zend_Application_Resource_Mail extends Zend_Application_Resource_ResourceA
         switch($transportName) {
             case 'Zend_Mail_Transport_Smtp':
                 if (!isset($options['host'])) {
+                    require_once 'Zend/Application/Resource/Exception.php';
                     throw new Zend_Application_Resource_Exception(
                         'A host is necessary for smtp transport,'
                         . ' but none was given'

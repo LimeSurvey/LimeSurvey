@@ -26,6 +26,7 @@
  * @subpackage Ebay
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @deprecated Deprecated since 1.27.0 and will be removed in a future version: the eBay Finding API was decommissioned on 2025-02-05
  */
 abstract class Zend_Service_Ebay_Finding_Set_Abstract implements SeekableIterator, Countable
 {

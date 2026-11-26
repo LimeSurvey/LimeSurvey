@@ -383,7 +383,7 @@ class Zend_Service_WindowsAzure_Management_Client
      * determine whether the operation has succeed, failed, or is still in progress.
      *
      * @param string $requestId The request ID. If omitted, the last request ID will be used.
-     * @return Zend_Service_WindowsAzure_Management_OperationStatusInstance
+     * @return Zend_Service_WindowsAzure_Management_OperationStatusInstance|null
      * @throws Zend_Service_WindowsAzure_Management_Exception
      */
     public function getOperationStatus($requestId = '')
@@ -510,7 +510,7 @@ class Zend_Service_WindowsAzure_Management_Client
      *
      * @param string $requestId The request ID. If omitted, the last request ID will be used.
      * @param int $sleepInterval Sleep interval in milliseconds.
-     * @return Zend_Service_WindowsAzure_Management_OperationStatusInstance
+     * @return Zend_Service_WindowsAzure_Management_OperationStatusInstance|null
      * @throws Zend_Service_WindowsAzure_Management_Exception
      */
     public function waitForOperation($requestId = '', $sleepInterval = 250)
@@ -653,7 +653,7 @@ class Zend_Service_WindowsAzure_Management_Client
      * belongs, or its geo-location if it is not part of an affinity group.
      *
      * @param string $serviceName The name of your service.
-     * @return Zend_Service_WindowsAzure_Management_StorageServiceInstance
+     * @return Zend_Service_WindowsAzure_Management_StorageServiceInstance|null
      * @throws Zend_Service_WindowsAzure_Management_Exception
      */
     public function getStorageAccountProperties($serviceName)
@@ -913,7 +913,7 @@ class Zend_Service_WindowsAzure_Management_Client
      * optionally, information on the service's deployments.
      *
      * @param string $serviceName The name of your service.
-     * @return Zend_Service_WindowsAzure_Management_HostedServiceInstance
+     * @return Zend_Service_WindowsAzure_Management_HostedServiceInstance|null
      * @throws Zend_Service_WindowsAzure_Management_Exception
      */
     public function getHostedServiceProperties($serviceName)
@@ -1278,7 +1278,7 @@ class Zend_Service_WindowsAzure_Management_Client
      * Converts an XmlElement into a Zend_Service_WindowsAzure_Management_DeploymentInstance
      *
      * @param object $xmlService The XML Element
-     * @return Zend_Service_WindowsAzure_Management_DeploymentInstance
+     * @return Zend_Service_WindowsAzure_Management_DeploymentInstance|null
      * @throws Zend_Service_WindowsAzure_Management_Exception
      */
     protected function _convertXmlElementToDeploymentInstance($xmlService)
@@ -1383,7 +1383,7 @@ class Zend_Service_WindowsAzure_Management_Client
      * Updates a deployment's role instance count.
      *
      * @param string $serviceName		The service name
-     * @param string $deploymentSlot	The deployment slot (production or staging)
+     * @param string $deploymentId	The deployment slot (production or staging)
      * @param string|array $roleName	The role name
      * @param string|array $instanceCount The instance count
      * @throws Zend_Service_WindowsAzure_Management_Exception

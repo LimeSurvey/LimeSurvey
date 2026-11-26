@@ -38,6 +38,17 @@ require_once 'Zend/Db/Statement.php';
  */
 class Zend_Db_Statement_Mysqli extends Zend_Db_Statement
 {
+    /**
+     * @var Zend_Db_Adapter_Mysqli
+     */
+    protected $_adapter = null;
+
+    /**
+     * The driver level statement
+     *
+     * @var mysqli_stmt|false|null
+     */
+    protected $_stmt = null;
 
     /**
      * Column names.
@@ -241,7 +252,7 @@ class Zend_Db_Statement_Mysqli extends Zend_Db_Statement
      * Retrieves the error code, if any, associated with the last operation on
      * the statement handle.
      *
-     * @return string error code.
+     * @return string|false error code.
      */
     public function errorCode()
     {
@@ -255,7 +266,7 @@ class Zend_Db_Statement_Mysqli extends Zend_Db_Statement
      * Retrieves an array of error information, if any, associated with the
      * last operation on the statement handle.
      *
-     * @return array
+     * @return array|false
      */
     public function errorInfo()
     {
@@ -390,8 +401,7 @@ class Zend_Db_Statement_Mysqli extends Zend_Db_Statement
         // fetch the next result
         $retval = $this->_stmt->fetch();
         switch ($retval) {
-            case null: // end of data
-            case false: // error occurred
+            case null: // end of data; the loose comparison also matches false (an error occurred)
                 $this->_stmt->reset();
                 return false;
             default:
@@ -429,14 +439,12 @@ class Zend_Db_Statement_Mysqli extends Zend_Db_Statement
                 $assoc = array_combine($this->_keys, $values);
                 $row = array_merge($values, $assoc);
                 return $this->_fetchBound($row);
-                break;
             default:
                 /**
                  * @see Zend_Db_Statement_Mysqli_Exception
                  */
                 require_once 'Zend/Db/Statement/Mysqli/Exception.php';
                 throw new Zend_Db_Statement_Mysqli_Exception("Invalid fetch mode '$style' specified");
-                break;
         }
         return $row;
     }
@@ -463,7 +471,7 @@ class Zend_Db_Statement_Mysqli extends Zend_Db_Statement
      * last INSERT, DELETE, or UPDATE statement executed by this
      * statement object.
      *
-     * @return int     The number of rows affected.
+     * @return int|false     The number of rows affected.
      */
     public function rowCount()
     {

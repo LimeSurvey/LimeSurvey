@@ -86,8 +86,8 @@ class Zend_Soap_Client_Local extends Zend_Soap_Client
         $this->_server->handle($request);
         $response = ob_get_clean();
 
-        if ($response === null || $response === '') {
-            $serverResponse = $this->server->getResponse();
+        if ($response === false || $response === '') {
+            $serverResponse = $this->_server->getLastResponse();
             if ($serverResponse !== null) {
                 $response = $serverResponse;
             }

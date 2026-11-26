@@ -44,9 +44,9 @@ class RenderMultipleChoice extends QuestionBaseRenderer
     /** @var bool|null whether Other is ticked without text after a blocked submit, computed once per render */
     private $otherInvalid;
 
-    const OTHER_POS_END = 'end';
-    const OTHER_POS_START = 'beginning';
-    const OTHER_POS_AFTER_SUBQUESTION = 'specific';
+    public const OTHER_POS_END = 'end';
+    public const OTHER_POS_START = 'beginning';
+    public const OTHER_POS_AFTER_SUBQUESTION = 'specific';
 
     public function __construct($aFieldArray, $bRenderDirect = false)
     {
@@ -73,6 +73,10 @@ class RenderMultipleChoice extends QuestionBaseRenderer
         return '/survey/questions/answer/multiplechoice';
     }
 
+    /**
+     * Build the answer rows, without the rows left out by their relevance, with the "Other" row at its position
+     * @return array[] the data of each row for the row template
+     */
     public function getRows()
     {
         $otherAdded = false;
@@ -92,6 +96,9 @@ class RenderMultipleChoice extends QuestionBaseRenderer
         /// Generate answer rows
         foreach ($this->aSubQuestions[0] as $oQuestion) {
             $myfname = $this->sSGQA . "_S" . $oQuestion->qid;
+            if ($this->isRowStaticallyHidden($myfname)) {
+                continue;
+            }
             $this->inputnames[] = $myfname;
             ////
             // Insert row

@@ -127,6 +127,7 @@ class Zend_Reflection_Function extends ReflectionFunction
 
         $tag    = $docblock->getTag('return');
 
+        require_once 'Zend/Reflection/Docblock/Tag.php';
         return Zend_Reflection_Docblock_Tag::factory('@return ' . $tag->getDescription());
     }
 }

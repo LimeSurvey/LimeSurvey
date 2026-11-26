@@ -104,7 +104,7 @@ class Zend_Mail_Storage_Folder implements RecursiveIterator
     /**
      * implements Iterator::next()
      *
-     * @return null
+     * @return void
      */
     public function next(): void
     {
@@ -136,7 +136,7 @@ class Zend_Mail_Storage_Folder implements RecursiveIterator
     /**
      * implements Iterator::rewind()
      *
-     * @return null
+     * @return void
      */
     public function rewind(): void
     {

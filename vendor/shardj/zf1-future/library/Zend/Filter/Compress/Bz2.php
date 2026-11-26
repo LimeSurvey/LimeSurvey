@@ -75,7 +75,7 @@ class Zend_Filter_Compress_Bz2 extends Zend_Filter_Compress_CompressAbstract
     /**
      * Sets a new blocksize
      *
-     * @param integer $level
+     * @param integer $blocksize
      * @return Zend_Filter_Compress_Bz2
      */
     public function setBlocksize($blocksize)

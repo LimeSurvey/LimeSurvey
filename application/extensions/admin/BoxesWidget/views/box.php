@@ -42,16 +42,19 @@
             if (isset($defaultlanguage)) {
                 $surveyls_title = $defaultlanguage->surveyls_title;
             }
+            // Without a title the link would have no accessible name: Name it after the survey ID
+            $titleLinkLabel = trim((string) $surveyls_title) === ''
+                ? ' aria-label="' . CHtml::encode(sprintf(gT('Survey %s'), $item['survey']->sid)) . '"'
+                : '';
             $surveyCode = (string)$item['survey']->code;
             // Not empty(): "0" is a valid code
             $showSurveyCode = $surveyCode !== '' && $item['survey']->getShowsQuestionCodes();
             // With the code badge the title gets one line and both can be cut off,
-            // so the card's tooltip shows them in full, on hover and on keyboard focus
+            // so the card's tooltip shows them in full, on hover and when the title link gets the keyboard focus
             ?>
+            <?php // The card is clickable with the mouse; keyboard and screen reader users get the title link ?>
             <div class="box-widget-card align-middle d-inline-block"
                  data-url="<?php echo $item['link'] ?>"
-                 role="link"
-                 tabindex="0"
                 <?php if ($showSurveyCode) : ?>
                     data-bs-toggle="tooltip"
                     data-bs-placement="bottom"
@@ -60,7 +63,9 @@
                 <div class="box-widget-card-body">
                     <div class="box-widget-card-header<?= $showSurveyCode ? ' has-code' : '' ?>">
                         <div class="box-widget-card-title">
-                            <?php echo viewHelper::filterScript($surveyls_title); ?>
+                            <a href="<?php echo $item['link'] ?>" class="box-widget-card-title-link text-reset text-decoration-none"<?php echo $titleLinkLabel; ?>>
+                                <?php echo viewHelper::filterScript($surveyls_title); ?>
+                            </a>
                         </div>
                         <?php if ($showSurveyCode) : ?>
                             <span class="badge rounded-pill bg-light box-widget-card-code">

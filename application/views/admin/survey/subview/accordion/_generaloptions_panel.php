@@ -40,49 +40,48 @@ if ($bShowInherited) {
     $formatSelectOptions['I'] = $oSurveyOptions->format . " ᴵ";
 }
 ?>
-<?php if ($action == 'editsurveysettings'): ?>
-<?php
-$sConfirmLanguageScript = "
-        $(document).on('submit','#globalsetting',function(){
-        if(!ConfirmLanguageChange('" . gT("All questions, answers, etc for removed languages will be lost. Are you sure?", "js") . "')){
-            return false;
-        }
-        });
-
-        function ConfirmLanguageChange(confirmtxt) {
-
-            if ($('#oldlanguages').val().trim()=='') {
-                mylangs= [];
-            } else {
-                mylangs=$('#oldlanguages').val().split(' ');
+<?php if ($action == 'editsurveysettings') : ?>
+    <?php
+    $sConfirmLanguageScript = "
+            $(document).on('submit','#globalsetting',function(){
+            if(!ConfirmLanguageChange('" . gT("All questions, answers, etc for removed languages will be lost. Are you sure?", "js") . "')){
+                return false;
             }
+            });
 
-            if (checkSelect2Languages(mylangs)) {
-                return true;
-            } else {
-                return confirm(confirmtxt);
-            }
-        }
+            function ConfirmLanguageChange(confirmtxt) {
 
-        function checkSelect2Languages(mylangs) {
-            newLanguages=$('#additional_languages').val();
-            for (x = 0; x < mylangs.length; x++) {
-                if ($.inArray(mylangs[x],newLanguages)==-1) {
-                    return false;
+                if ($('#oldlanguages').val().trim()=='') {
+                    mylangs= [];
+                } else {
+                    mylangs=$('#oldlanguages').val().split(' ');
+                }
+
+                if (checkSelect2Languages(mylangs)) {
+                    return true;
+                } else {
+                    return confirm(confirmtxt);
                 }
             }
-            return true;
-        }
-    ";
-Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", $sConfirmLanguageScript, LSYii_ClientScript::POS_POSTSCRIPT);
-// var_dump($owner);
-?>
+
+            function checkSelect2Languages(mylangs) {
+                newLanguages=$('#additional_languages').val();
+                for (x = 0; x < mylangs.length; x++) {
+                    if ($.inArray(mylangs[x],newLanguages)==-1) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+        ";
+    Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", $sConfirmLanguageScript, LSYii_ClientScript::POS_POSTSCRIPT);
+    ?>
 
 <!-- Container -->
 <div class="row">
     <div class="col-lg-6 col-12">
         <?php if ($bShowAllOptions === true) { ?>
-            <?php if (!$oSurvey->isNewRecord): ?>
+            <?php if (!$oSurvey->isNewRecord) : ?>
                 <!-- Survey Languages -->
                 <div class="mb-3">
                     <label id="additional_languages_label" class=" form-label" for='additional_languages'><?php eT("Survey languages:"); ?></label>
@@ -90,7 +89,8 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
                         <?php
                         $aAllLanguages = getLanguageDataRestricted(false, 'short');
 
-                        Yii::app()->getController()->widget('ext.admin.survey.LanguagesWidget.LanguagesWidget',
+                        Yii::app()->getController()->widget(
+                            'ext.admin.survey.LanguagesWidget.LanguagesWidget',
                             array(
                                 'asDropDownList' => true,
                                 'htmlOptions' => array('multiple' => 'multiple', 'style' => "width: 100%", 'class' => 'form-select', 'aria-labelledby' => 'additional_languages_label'),
@@ -112,7 +112,8 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
                 <div class="mb-3">
                     <label id="language_label" class=" form-label" for="language"><?php eT("Base language:"); ?></label>
                     <div class="">
-                        <?php $this->widget('yiiwheels.widgets.select2.WhSelect2',
+                        <?php $this->widget(
+                            'yiiwheels.widgets.select2.WhSelect2',
                             array(
                                 'asDropDownList' => true,
                                 'htmlOptions' => array('id' => 'language', 'style' => "width: 100%", 'aria-labelledby' => 'language_label'),
@@ -127,12 +128,14 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
             <?php endif; ?>
         <?php } ?>
         <!-- Survey owner -->
-        <?php
-        if (isset($oSurvey->owner_id) && Yii::app()->session['loginID'] == $oSurvey->owner_id || Permission::model()->hasGlobalPermission('superadmin', 'read')):?>
+        <?php $canChangeOwner = isset($oSurvey->owner_id) && Yii::app()->session['loginID'] == $oSurvey->owner_id || Permission::model()->hasGlobalPermission('superadmin', 'read'); ?>
+        <?php if ($canChangeOwner) : ?>
             <div class="mb-3">
                 <label id="owner_id_label" class="form-label" for="owner_id"><?php eT("Survey owner:"); ?></label>
-                <div class=""><?php
-                    Yii::app()->getController()->widget('yiiwheels.widgets.select2.WhSelect2',
+                <div class="">
+                    <?php
+                    Yii::app()->getController()->widget(
+                        'yiiwheels.widgets.select2.WhSelect2',
                         array(
                             'asDropDownList' => true,
                             'htmlOptions' => array(
@@ -232,8 +235,7 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
                 </div>
             </div>
         </div>
-
-            <?php else: ?>
+<?php else : ?>
             <!-- End URL -->
             <div class="mb-3">
                 <label class=" form-label" for='url'><?php eT("End URL:"); ?></label>
@@ -289,7 +291,7 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
                     <input type='email' size='50' class="form-control" id='bounce_email' name='bounce_email' value='<?php echo $owner['bounce_email']; ?>'/>
                 </div>
             </div>
-        <?php endif; ?>
+<?php endif; ?>
     </div>
     <div class="col-lg-6 col-12">
 
@@ -298,7 +300,8 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
             <div class="mb-3">
                 <label id="gsid_label" class=" form-label" for='gsid'><?php eT("Group:"); ?></label>
                 <div class="">
-                    <?php $this->widget('yiiwheels.widgets.select2.WhSelect2',
+                    <?php $this->widget(
+                        'yiiwheels.widgets.select2.WhSelect2',
                         array(
                             'asDropDownList' => true,
                             'htmlOptions' => array('style' => "width: 100%", 'aria-labelledby' => 'gsid_label'),
@@ -347,7 +350,7 @@ Yii::app()->getClientScript()->registerScript("GeneralOption-confirm-language", 
                     <?php
                     foreach ($aTemplateList as $templateEntry) {
                         $templateName = $templateEntry['name'];
-                    ?>
+                        ?>
                             <option value='<?php echo CHtml::encode($templateName); ?>'
                                 <?php if ($oSurvey->template && htmlspecialchars((string) $templateName) === $themeConf->template_name && $oSurvey->template !== 'inherit') { ?>
                                     selected='selected'

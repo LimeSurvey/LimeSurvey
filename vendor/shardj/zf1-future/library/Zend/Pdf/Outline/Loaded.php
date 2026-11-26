@@ -114,7 +114,7 @@ class Zend_Pdf_Outline_Loaded extends Zend_Pdf_Outline
     /**
      * Returns true if outline item is displayed in italic
      *
-     * @return boolean
+     * @return boolean|int
      */
     public function isItalic()
     {
@@ -149,7 +149,7 @@ class Zend_Pdf_Outline_Loaded extends Zend_Pdf_Outline
     /**
      * Returns true if outline item is displayed in bold
      *
-     * @return boolean
+     * @return boolean|int
      */
     public function isBold()
     {
@@ -185,7 +185,7 @@ class Zend_Pdf_Outline_Loaded extends Zend_Pdf_Outline
     /**
      * Get outline text color.
      *
-     * @return Zend_Pdf_Color_Rgb
+     * @return Zend_Pdf_Color_Rgb|null
      */
     public function getColor()
     {
@@ -196,17 +196,17 @@ class Zend_Pdf_Outline_Loaded extends Zend_Pdf_Outline
         $components = $this->_outlineDictionary->C->items;
 
         require_once 'Zend/Pdf/Color/Rgb.php';
-        return new Zend_Pdf_Color_Rgb($components[0], $components[1], $components[2]);
+        return new Zend_Pdf_Color_Rgb($components[0]->value, $components[1]->value, $components[2]->value);
     }
 
     /**
      * Set outline text color.
      * (null means default color which is black)
      *
-     * @param Zend_Pdf_Color_Rgb $color
+     * @param Zend_Pdf_Color_Rgb|null $color
      * @return Zend_Pdf_Outline
      */
-    public function setColor(Zend_Pdf_Color_Rgb $color)
+    public function setColor(?Zend_Pdf_Color_Rgb $color)
     {
         $this->_outlineDictionary->touch();
 
@@ -226,7 +226,7 @@ class Zend_Pdf_Outline_Loaded extends Zend_Pdf_Outline
     /**
      * Get outline target.
      *
-     * @return Zend_Pdf_Target
+     * @return Zend_Pdf_Target|null
      * @throws Zend_Pdf_Exception
      */
     public function getTarget()
@@ -301,9 +301,6 @@ class Zend_Pdf_Outline_Loaded extends Zend_Pdf_Outline
      * Create PDF outline object using specified dictionary
      *
      * @param Zend_Pdf_Element $dictionary (It's actually Dictionary or Dictionary Object or Reference to a Dictionary Object)
-     * @param Zend_Pdf_Action  $parentAction
-     * @param SplObjectStorage $processedOutlines  List of already processed Outline dictionaries,
-     *                                             used to avoid cyclic references
      * @return void
      * @throws Zend_Pdf_Exception
      * @internal

@@ -12,7 +12,7 @@ class JsonWriter extends Writer
      */
     protected $havePrev = false;
 
-    function __construct()
+    public function __construct()
     {
         $this->output = '';
     }

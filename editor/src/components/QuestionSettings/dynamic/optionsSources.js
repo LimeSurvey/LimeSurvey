@@ -1,15 +1,10 @@
 import { L10ns } from 'helpers'
-import { getQuestionTypeInfo } from 'components/QuestionTypes'
+import { getImageSelectThemes } from 'components/QuestionTypes/imageOptionSettings'
 
 import { getStatisticsAttributes } from '../attributes/getStatisticsAttributes'
 
-const getImageChoiceThemes = () => [
-  getQuestionTypeInfo().SINGLE_CHOICE_IMAGE_SELECT.theme,
-  getQuestionTypeInfo().MULTIPLE_CHOICE_IMAGE_SELECT.theme,
-]
-
 const isImageChoiceTheme = (question) =>
-  getImageChoiceThemes().includes(question?.questionThemeName)
+  getImageSelectThemes().includes(question?.questionThemeName)
 
 // Image select themes show the code: their answer/subquestion text is the image
 const mapAnswers = ({ question, language }) => {

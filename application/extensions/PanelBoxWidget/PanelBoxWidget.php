@@ -117,18 +117,18 @@ class PanelBoxWidget extends CWidget
         $box = ($box == '') ? $this : $box;
         if ($box->usergroup == '-1') {
             return true;
-        } // If the user group is not set, or set to -2, only admin can see the box
-        elseif (empty($box->usergroup) || $box->usergroup == '-2') {
+        } elseif (empty($box->usergroup) || $box->usergroup == '-2') {
+            // If the user group is not set, or set to -2, only admin can see the box
             if (Permission::model()->hasGlobalPermission('superadmin', 'read') ? 1 : 0) {
                 return true;
             } else {
                 return false;
             }
-        } // If user group is set to -3, nobody can see the box
-        elseif ($box->usergroup == '-3') {
+        } elseif ($box->usergroup == '-3') {
+            // If user group is set to -3, nobody can see the box
             return false;
-        } // If usegroup is set and exist, if the user belong to it, he can see the box
-        else {
+        } else {
+            // If usegroup is set and exist, if the user belong to it, he can see the box
             $oUsergroup = UserGroup::model()->findByPk($box->usergroup);
 
             // The group doesn't exist anymore, so only admin can see it

@@ -10,7 +10,7 @@ require_once(__DIR__ . '/autoload.php');
 
 class ReactEditor extends \PluginBase
 {
-    const STG_NAME_REACT_EDITOR = "editorEnabled";
+    public const STG_NAME_REACT_EDITOR = "editorEnabled";
 
     protected $storage = 'DbStorage';
 

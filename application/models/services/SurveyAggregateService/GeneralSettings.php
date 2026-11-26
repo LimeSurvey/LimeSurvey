@@ -8,6 +8,7 @@ use LSYii_Application;
 use PluginEvent;
 use CHttpSession;
 use LimeSurvey\PluginManager\PluginManager;
+use LimeSurvey\PluginManager\PasswordSettingMask;
 use LimeSurvey\Models\Services\Exception\{
     PersistErrorException,
     NotFoundException,
@@ -172,6 +173,8 @@ class GeneralSettings
         }
 
         if (!empty($meta['updateFields'])) {
+            $this->validateLanguages($survey, $initAttributes);
+
             $this->languageConsistency->update(
                 $survey,
                 $initAttributes['language']
@@ -467,6 +470,47 @@ class GeneralSettings
     }
 
     /**
+     * Check that the base language and the additional languages of the survey are known languages
+     *
+     * A language the survey already had before the update stays allowed, so a survey using a
+     * language code that is no longer available can still be saved.
+     *
+     * @param Survey $survey Survey with the updated attribute values
+     * @param array $initAttributes Attributes of the survey before the update
+     * @throws PersistErrorException If the base language or an additional language is not known
+     * @return void
+     */
+    private function validateLanguages(Survey $survey, array $initAttributes)
+    {
+        $allowedLanguages = array_merge(
+            array_keys(getLanguageData()),
+            [(string) $initAttributes['language']],
+            array_filter(explode(' ', trim((string) $initAttributes['additional_languages'])))
+        );
+        $languagesByAttribute = [
+            'language' => [(string) $survey->language],
+            'additional_languages' => array_filter(
+                explode(' ', trim((string) $survey->additional_languages))
+            )
+        ];
+        foreach ($languagesByAttribute as $attribute => $languages) {
+            foreach ($languages as $language) {
+                if (!in_array($language, $allowedLanguages, true)) {
+                    $survey->addError($attribute, gT('Invalid language'));
+                    $e = new PersistErrorException(
+                        sprintf(
+                            'Invalid language for survey #%s',
+                            $survey->sid
+                        )
+                    );
+                    $e->setErrorModel($survey);
+                    throw $e;
+                }
+            }
+        }
+    }
+
+    /**
      * Filter Input
      *
      * @param array $surveyId
@@ -484,8 +528,11 @@ class GeneralSettings
     /**
      * Dispatch plugin event new survey settings
      *
-     * @param int $surveyId
-     * @param array $pluginSettings
+     * Each plugin gets its own submitted settings. A password setting that was submitted
+     * with the placeholder of the form gets its stored value back first.
+     *
+     * @param int $surveyId ID of the survey the settings are saved for
+     * @param array $pluginSettings Submitted settings indexed by plugin name
      * @return void
      */
     private function dispatchPluginEventNewSurveySettings($surveyId, $pluginSettings)
@@ -494,12 +541,51 @@ class GeneralSettings
             ? $pluginSettings
             : [];
         foreach ($pluginSettings as $plugin => $settings) {
+            $settings = $this->restorePluginPasswordSettings($surveyId, $plugin, $settings);
             $settingsEvent = new PluginEvent('newSurveySettings');
             $settingsEvent->set('settings', $settings);
             $settingsEvent->set('survey', $surveyId);
             $this->pluginManager
                 ->dispatchEvent($settingsEvent, $plugin);
         }
+    }
+
+    /**
+     * Put the stored password back where a plugin setting was submitted with the placeholder
+     *
+     * The survey settings form shows a placeholder instead of a stored password. If the
+     * placeholder comes back the user did not change the password, so the plugin gets the
+     * stored one. The stored values are only asked from the plugin when a placeholder was
+     * submitted. A placeholder the plugin gives no stored password for is removed from the
+     * settings, it is never handed over as the new password.
+     *
+     * @param int $surveyId ID of the survey the settings are saved for
+     * @param string $plugin Name of the plugin the settings belong to
+     * @param mixed $settings Submitted settings of the plugin
+     * @return mixed The settings to hand over to the plugin
+     */
+    private function restorePluginPasswordSettings($surveyId, $plugin, $settings)
+    {
+        if (!is_array($settings) || !PasswordSettingMask::containsPlaceholder($settings)) {
+            return $settings;
+        }
+        $currentSettingsEvent = new PluginEvent('beforeSurveySettings');
+        $currentSettingsEvent->set('survey', $surveyId);
+        $this->pluginManager
+            ->dispatchEvent($currentSettingsEvent, $plugin);
+        $currentSettings = $currentSettingsEvent->get('surveysettings');
+        $definitions = [];
+        foreach (is_array($currentSettings) ? $currentSettings : [] as $pluginSettings) {
+            if (
+                is_array($pluginSettings)
+                && isset($pluginSettings['name'], $pluginSettings['settings'])
+                && (string) $pluginSettings['name'] === (string) $plugin
+                && is_array($pluginSettings['settings'])
+            ) {
+                $definitions = array_replace($definitions, $pluginSettings['settings']);
+            }
+        }
+        return PasswordSettingMask::restore($settings, $definitions);
     }
 
     /**

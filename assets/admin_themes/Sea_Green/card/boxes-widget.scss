@@ -20,6 +20,16 @@
         &:focus-visible {
             @include state-border(2px, $grape90, 0px);
         }
+        // The title link sits in a clamped box with overflow hidden, which would clip its outline: Show the focus on the card.
+        // Kept in @supports, so browsers without :has() keep the rule above and the title link outline below
+        @supports selector(:has(*)) {
+            &:has(.box-widget-card-title-link:focus-visible) {
+                @include state-border(2px, $grape90, 0px);
+                .box-widget-card-title-link:focus-visible {
+                    outline : none;
+                }
+            }
+        }
         &:active {
             @include state-border(1px, $grape90, 4px);
             @include inset-border(1px, transparent);
@@ -198,6 +208,19 @@
             display    : inline-block;
             padding    : 5px;
             margin-top : 25px;
+            &:focus-visible {
+                outline        : 2px solid $grape;
+                outline-offset : 2px;
+            }
+        }
+    }
+    .box-widget-card-title-link {
+        // Keep the title looking as before it became a link: Links are medium weight by default
+        font-weight : inherit;
+        // Browsers without :has(): An inset outline, which the clamped title box does not clip
+        &:focus-visible {
+            outline        : 2px solid $grape;
+            outline-offset : -2px;
         }
     }
     .survey-state {

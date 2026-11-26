@@ -41,7 +41,7 @@ interface Zend_Filter_Compress_CompressInterface
      * Decompresses $value with the defined settings
      *
      * @param  string $value Data to decompress
-     * @return string The decompressed data
+     * @return string|bool The decompressed data
      */
     public function decompress($value);
 

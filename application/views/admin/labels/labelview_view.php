@@ -3,8 +3,12 @@
     var otherisreserved = '<?php eT("Error: 'other' is a reserved keyword.", 'js'); ?>';
 </script>
 
+<?php $hasUpdatePermission = $model->hasPermission('labelset', 'update'); ?>
+
 <!-- quick add popup -->
-<?php $this->renderPartial("./labels/_labelviewquickadd_view", []); ?>
+<?php if ($hasUpdatePermission) : ?>
+    <?php $this->renderPartial("./labels/_labelviewquickadd_view", []); ?>
+<?php endif; ?>
 
 <div class="col-12 labels">
     <h2 class="pagetitle h3">
@@ -34,14 +38,18 @@
             <?php endforeach; ?>
         </ul>
 
-        <!-- FORM -->
-        <?php echo CHtml::form(["admin/labels/sa/process"], 'post', ['id' => 'mainform']); ?>
-        <input type='hidden' name='lid' value='<?php echo $lid ?>'/>
-        <input type='hidden' name='action' value='modlabelsetanswers'/>
+        <!-- FORM (only with update permission, else the labels are shown read-only) -->
+        <?php if ($hasUpdatePermission) : ?>
+            <?php echo CHtml::form(["admin/labels/sa/process"], 'post', ['id' => 'mainform']); ?>
+            <input type='hidden' name='lid' value='<?php echo $lid ?>'/>
+            <input type='hidden' name='action' value='modlabelsetanswers'/>
+        <?php endif; ?>
 
         <!-- tab content -->
-        <?php $this->renderPartial("./labels/_labelviewtabcontent_view", ['lslanguages' => $lslanguages, 'results' => $results, 'action' => $action, 'updatePermission' => $model->hasPermission('labelset', 'update')]); ?>
-        <?php echo CHtml::endForm() ?>
+        <?php $this->renderPartial("./labels/_labelviewtabcontent_view", ['lslanguages' => $lslanguages, 'results' => $results, 'action' => $action, 'updatePermission' => $hasUpdatePermission]); ?>
+        <?php if ($hasUpdatePermission) : ?>
+            <?php echo CHtml::endForm() ?>
+        <?php endif; ?>
 
         <!-- For javascript -->
         <input
@@ -55,7 +63,7 @@
     </div>
 
     <!-- Bottom content -->
-    <?php if ($model->hasPermission('labelset', 'update')) { ?>
+    <?php if ($hasUpdatePermission) { ?>
         <?php $this->renderPartial("./labels/_labelviewrightcontent_view", ['lid' => $lid]); ?>
     <?php }; ?>
 </div>

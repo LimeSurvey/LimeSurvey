@@ -40,6 +40,7 @@ require_once 'Zend/Gdata/MimeBodyString.php';
  * @subpackage Gdata
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @deprecated Deprecated since 1.27.1 and will be removed in a future version: Google shut down the Google Data APIs it implements and the ClientLogin and AuthSub authentication
  */
 class Zend_Gdata_MediaMimeStream
 {
@@ -128,9 +129,9 @@ class Zend_Gdata_MediaMimeStream
     /**
      * Read a specific chunk of the the MIME multipart message.
      *
-     * @param integer $bufferSize The size of the chunk that is to be read,
+     * @param integer $bytesRequested The size of the chunk that is to be read,
      *                            must be lower than MAX_BUFFER_SIZE.
-     * @return string A corresponding piece of the message. This could be
+     * @return string|false A corresponding piece of the message. This could be
      *                binary or regular text.
      */
     public function read($bytesRequested)

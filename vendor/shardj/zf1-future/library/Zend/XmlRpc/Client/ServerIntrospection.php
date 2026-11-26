@@ -138,7 +138,7 @@ class Zend_XmlRpc_Client_ServerIntrospection
     /**
      * Call system.methodSignature() for the given method
      *
-     * @param  array  $method
+     * @param  array|string  $method
      * @return array  array(array(return, param, param, param...))
      */
     public function getMethodSignature($method)
@@ -155,7 +155,6 @@ class Zend_XmlRpc_Client_ServerIntrospection
     /**
      * Call system.listMethods()
      *
-     * @param  array  $method
      * @return array  array(method, method, method...)
      */
     public function listMethods()

@@ -109,7 +109,7 @@ class Zend_Form_Decorator_ViewScript extends Zend_Form_Decorator_Abstract
     /**
      * Set view script module
      *
-     * @param  string $module
+     * @param  string $viewModule
      * @return Zend_Form_Decorator_ViewScript
      */
     public function setViewModule($viewModule)

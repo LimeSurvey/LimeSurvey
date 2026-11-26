@@ -33,7 +33,7 @@
 class CheckIntegrityCommand extends CConsoleCommand
 {
     /** Hard cap on repeated passes, in case a pass keeps finding "new" issues forever. */
-    const MAX_PASSES = 5;
+    public const MAX_PASSES = 5;
 
     /**
      * Runs automatic integrity fix passes until nothing is left to fix or MAX_PASSES

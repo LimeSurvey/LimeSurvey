@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Draggable } from '@hello-pangea/dnd'
-import { useParams } from 'react-router-dom'
 import classNames from 'classnames'
 import { max } from 'lodash'
 
@@ -13,7 +12,7 @@ import {
   SCALE_2,
   STATES,
 } from 'helpers'
-import { useAppState, useSurvey } from 'hooks'
+import { useAppState, useToggleQuestionCodes } from 'hooks'
 import { ContentEditor, DragAndDrop } from 'components'
 import { getDisplayAttributes } from 'components/QuestionSettings/attributes'
 import { getQuestionTypeInfo } from 'components/QuestionTypes/getQuestionTypeInfo'
@@ -55,11 +54,10 @@ export const ArrayColumnsTitles = ({
 }) => {
   const [isReorderingAnswers, setIsReorderingAnswers] = useState(false)
   const [headerValue, setHeaderValue] = useState('')
-  const { surveyId } = useParams()
   const answersContainerRef = useRef(null)
 
   const [activeLanguage] = useAppState(STATES.ACTIVE_LANGUAGE)
-  const { survey } = useSurvey(surveyId)
+  const { areCodesVisible } = useToggleQuestionCodes()
 
   const isArrayByColumn =
     questionThemeName === getQuestionTypeInfo().ARRAY_COLUMN.theme
@@ -69,8 +67,6 @@ export const ArrayColumnsTitles = ({
     questionThemeName === getQuestionTypeInfo().ARRAY_NUMBERS.theme
   const isArrayPointChoice =
     questionThemeName === getQuestionTypeInfo().ARRAY.theme
-
-  const showQNumCode = survey.showQNumCode
 
   const handleHeaderChange = (value) => {
     setHeaderValue(value)
@@ -224,7 +220,7 @@ export const ArrayColumnsTitles = ({
               scaleId === SCALE_1
                 ? highestSubquestionWidth +
                   ARRAY_ROW_LABEL_INSET +
-                  (isFocused && showQNumCode?.showNumber ? 90 : 0)
+                  (isFocused && areCodesVisible ? 90 : 0)
                 : 0,
           }}
         ></div>

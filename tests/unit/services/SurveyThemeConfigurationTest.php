@@ -127,4 +127,57 @@ class SurveyThemeConfigurationTest extends TestBaseClass
         $this->assertArrayNotHasKey('inheritedvaluelabel', $optionAttributes['optionAttributes']['unknown']);
         $this->assertArrayNotHasKey('inheritedvaluelabel', $optionAttributes['optionAttributes']['fontcolor']);
     }
+
+    /**
+     * Image file options are sent to the editor as a dropdown of the theme images with an upload button.
+     *
+     * @return void
+     */
+    public function testImagefileOptionsForEditor()
+    {
+        $themeData = [
+            'aOptionAttributes' => [
+                'optionsOrderReact' => [
+                    'brandlogofile' => ['category' => 'Logo'],
+                    'cssframework' => ['category' => 'Appearance'],
+                ],
+                'optionAttributes' => [
+                    'brandlogofile' => ['type' => 'imagefile', 'title' => 'Logo file', 'dropdownoptions' => ''],
+                    'cssframework' => ['type' => 'dropdown', 'title' => 'Variations', 'dropdownoptions' => self::FRUITY_OPTIONS],
+                ],
+            ],
+            'aTemplateConfiguration' => [
+                'options' => (object)['brandlogofile' => 'image::theme::files/logo.png'],
+                'imageFileList' => [
+                    'image::theme::files/logo.png' => [
+                        'group' => 'Theme',
+                        'preview' => '/tmp/assets/abc/logo.png',
+                        'filepath' => 'image::theme::files/logo.png',
+                        'filepathOptions' => 'themes/survey/vanilla/files/logo.png',
+                        'filename' => 'logo.png',
+                    ],
+                ],
+            ],
+            'oParentOptions' => [],
+        ];
+        $service = new SurveyThemeConfiguration(new \Permission());
+        $attributes = $service->getSurveyThemeOptionsAttributes($themeData);
+
+        $logo = $attributes['brandlogofile'];
+        $this->assertSame('dropdown', $logo['type']);
+        $this->assertTrue($logo['hasFileUpload']);
+        $this->assertSame('image::theme::files/logo.png', $logo['currentValue']);
+        $this->assertSame(
+            [[
+                'value' => 'image::theme::files/logo.png',
+                'label' => 'logo.png',
+                'group' => 'Theme',
+                'imagePreviewPath' => '/tmp/assets/abc/logo.png',
+                'imageOriginPath' => 'themes/survey/vanilla/files/logo.png',
+            ]],
+            $logo['dropdownoptions']
+        );
+        $this->assertArrayNotHasKey('hasFileUpload', $attributes['cssframework']);
+        $this->assertSame('apple', $attributes['cssframework']['dropdownoptions'][0]['value']);
+    }
 }

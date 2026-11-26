@@ -72,7 +72,7 @@ class Zend_Auth_Adapter_Digest implements Zend_Auth_Adapter_Interface
      * @param  mixed $username
      * @param  mixed $password
      *
-     * @phpstan-ignore-next-line (constructor.unusedParameter)
+     * @phpstan-ignore-next-line constructor.unusedParameter
      */
     public function __construct($filename = null, $realm = null, $username = null, $password = null)
     {

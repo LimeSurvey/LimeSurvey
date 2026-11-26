@@ -122,7 +122,6 @@ class Zend_Pdf_Filter_Ascii85 implements Zend_Pdf_Filter_Interface
         if (substr($data, -2) != '~>') {
             require_once 'Zend/Pdf/Exception.php';
             throw new Zend_Pdf_Exception('Invalid EOF marker');
-            return '';
         }
 
         $data = substr($data, 0, (strlen($data) - 2));
