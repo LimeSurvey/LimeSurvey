@@ -108,7 +108,8 @@ $slidesJson = htmlspecialchars(json_encode($slides), ENT_QUOTES, 'UTF-8');
                         <div class="<?= $colClassRight ?> editor-slider-column">
                             <div class="editor-slider">
                                 <div class="editor-slide-title-wrap">
-                                    <h1 class="editor-slider-title reg-24"></h1>
+                                    <?php // Level 3 below the modal title, and never empty: it starts with the title of the first slide (activateEditor.js updates it) ?>
+                                    <h3 class="editor-slider-title reg-24"><?= $slides[0]['title'] ?? '' ?></h3>
                                 </div>
                                 <div class="editor-slider-image-wrap">
                                     <img class="editor-slider-image img-fluid" src="" alt="">
