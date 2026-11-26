@@ -431,8 +431,11 @@ class PluginManagerController extends SurveyCommonAction
         $aPluginProp = App()->getPluginManager()->getPluginInfo($plugin->name);
 
         $topbar['backLink'] = $this->getController()->createUrl('/admin/pluginmanager', ['sa' => 'index']);
-        $topbar['title'] = '<a class="ls-link" href="' . CHtml::encode($topbar['backLink']) . '">' . CHtml::encode(gT('Plugins')) . '</a>'
-            . ' <span class="text-muted mx-1">/</span> ' . CHtml::encode($plugin['name']);
+        // "Plugins / <name>": the plugin name is the page heading, "Plugins" is its parent in the breadcrumb navigation
+        $topbar['title'] = CHtml::encode($plugin['name']);
+        $topbar['titleParents'] = [
+            ['text' => gT('Plugins'), 'href' => $topbar['backLink']],
+        ];
 
         $this->renderWrappedTemplate(
             'pluginmanager',
