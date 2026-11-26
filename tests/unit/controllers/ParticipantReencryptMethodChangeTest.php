@@ -5,6 +5,7 @@ namespace ls\tests\controllers;
 use ls\tests\DummyController;
 use ls\tests\TestBaseClass;
 use Participant;
+use ParticipantAttributeName;
 use Yii;
 
 /**
@@ -88,6 +89,27 @@ class ParticipantReencryptMethodChangeTest extends TestBaseClass
         $this->assertNull(Yii::app()->user->getState('currentReencryptLastParticipantId'));
         $this->assertNull(Yii::app()->user->getState('currentReencryptMethod'));
         $this->assertContains('All participant data have been re-encrypted.', $this->getFlashMessages());
+    }
+
+    /** An encrypted extra attribute is not a participants column : the core save must not use it. */
+    public function testCompleteRunWithEncryptedExtraAttribute(): void
+    {
+        $attributeName = new ParticipantAttributeName();
+        $attributeName->attribute_type = 'TB';
+        $attributeName->defaultname = 'reencryptextra';
+        $attributeName->visible = 'TRUE';
+        $attributeName->encrypted = 'Y';
+        $attributeName->core_attribute = 'N';
+        $this->assertTrue($attributeName->save());
+        try {
+            Yii::app()->setConfig('CPDB_encryption_method', 'H');
+
+            (new \ParticipantsAction('dummy'))->reencryptParticipantData();
+
+            $this->assertContains('All participant data have been re-encrypted.', $this->getFlashMessages());
+        } finally {
+            $attributeName->delete();
+        }
     }
 
     /** A duplicate index update resumed with another size stops : the cursor is cleared, nothing is processed. */

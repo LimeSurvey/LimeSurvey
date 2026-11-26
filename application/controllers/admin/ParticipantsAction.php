@@ -3160,7 +3160,11 @@ class ParticipantsAction extends SurveyCommonAction
             ->where("encrypted = 'Y' AND core_attribute <> 'Y'")
             ->queryColumn());
         /* Save only the encrypted columns (and duplicatefinder) : other columns changed meanwhile are kept */
-        $encryptedColumns = Participant::model()->getAllEncryptedAttributes(0, 'Participant');
+        /* The list includes the encrypted extra attributes (participant_attribute table) : keep only the participants columns */
+        $encryptedColumns = array_values(array_intersect(
+            Participant::model()->getAllEncryptedAttributes(0, 'Participant'),
+            Participant::model()->getTableSchema()->getColumnNames()
+        ));
         foreach ($oParticipants as $oParticipant) {
             /* Participant and its attributes in one step : all or nothing */
             $transaction = App()->db->getCurrentTransaction() ? null : App()->db->beginTransaction();
