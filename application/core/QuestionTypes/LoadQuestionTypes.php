@@ -95,6 +95,8 @@ class LoadQuestionTypes
                 Yii::import('questiontypes.LongFreeText.*');
                 break;
             case Question::QT_U_HUGE_FREE_TEXT:
+                // RenderHugeFreeText extends RenderLongFreeText
+                Yii::import('questiontypes.LongFreeText.*');
                 Yii::import('questiontypes.HugeFreeText.*');
                 break;
             case Question::QT_K_MULTIPLE_NUMERICAL:
