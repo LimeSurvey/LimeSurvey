@@ -3081,7 +3081,8 @@ class ParticipantsAction extends SurveyCommonAction
         $lastParticipantId = strval(App()->user->getState('currentReencryptLastParticipantId', ''));
         if ($lastParticipantId !== '') {
             $criteria = new CDbCriteria();
-            $criteria->compare('participant_id', '>' . $lastParticipantId);
+            $criteria->addCondition('participant_id > :lastParticipantId');
+            $criteria->params[':lastParticipantId'] = $lastParticipantId;
             $stilltoProcess = Participant::model()->count($criteria);
         }
         /* Outdated DuplicateFinder participants */
@@ -3089,7 +3090,8 @@ class ParticipantsAction extends SurveyCommonAction
         $lastDuplicateFinderInvalidParticipantId = strval(App()->user->getState('currentDuplicateFinderInvalidParticipantId', ''));
         if ($lastDuplicateFinderInvalidParticipantId !== '') {
             $criteria = new CDbCriteria();
-            $criteria->compare('participant_id', '>' . $lastDuplicateFinderInvalidParticipantId);
+            $criteria->addCondition('participant_id > :lastParticipantId');
+            $criteria->params[':lastParticipantId'] = $lastDuplicateFinderInvalidParticipantId;
             $duplicateFinderInvalidStilltoProcess = Participant::model()->getDuplicateFinderInvalidCount($criteria);
         }
         $aData = array(
@@ -3147,7 +3149,8 @@ class ParticipantsAction extends SurveyCommonAction
             $criteria->limit = $limit;
         }
         if ($lastParticipantId !== '') {
-            $criteria->compare('participant_id', '>' . $lastParticipantId);
+            $criteria->addCondition('participant_id > :lastParticipantId');
+            $criteria->params[':lastParticipantId'] = $lastParticipantId;
         }
         $oParticipants = Participant::model()->findAll($criteria);
         /* Extra attributes (not core) encrypted : re-encrypted with the participant */
@@ -3290,7 +3293,8 @@ class ParticipantsAction extends SurveyCommonAction
             $criteria->limit = $limit;
         }
         if ($lastParticipantId !== '') {
-            $criteria->compare('participant_id', '>' . $lastParticipantId);
+            $criteria->addCondition('participant_id > :lastParticipantId');
+            $criteria->params[':lastParticipantId'] = $lastParticipantId;
         }
         $oParticipants = Participant::model()->invaliduplicatefinder()->findAll($criteria);
         foreach ($oParticipants as $oParticipant) {
@@ -3307,7 +3311,8 @@ class ParticipantsAction extends SurveyCommonAction
         }
         if ($lastParticipantId !== '') {
             $criteria = new CDbCriteria();
-            $criteria->compare('participant_id', '>' . $lastParticipantId);
+            $criteria->addCondition('participant_id > :lastParticipantId');
+            $criteria->params[':lastParticipantId'] = $lastParticipantId;
             $stilltoProcess = Participant::model()->getDuplicateFinderInvalidCount($criteria);
         }
         if ($stilltoProcess == 0) {
