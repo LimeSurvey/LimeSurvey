@@ -106,17 +106,17 @@ class SurveyCodeTest extends TestBaseClass
         foreach (\Survey::model()->findAllByAttributes(['gsid' => self::$groupId]) as $survey) {
             \Survey::model()->deleteSurvey($survey->sid);
         }
-        $withB = $this->createSurvey('B code');
+        $secondCode = $this->createSurvey('B code');
         $withoutCode = $this->createSurvey(null);
         $withEmptyCode = $this->createSurvey(null);
         \Survey::model()->updateByPk($withEmptyCode, ['code' => '']);
-        $withA = $this->createSurvey('A code');
+        $firstCode = $this->createSurvey('A code');
 
         $empties = [$withoutCode, $withEmptyCode];
         sort($empties);
 
-        $this->assertSame(array_merge($empties, [$withA, $withB]), $this->searchSorted('code'));
-        $this->assertSame(array_merge([$withB, $withA], array_reverse($empties)), $this->searchSorted('code.desc'));
+        $this->assertSame(array_merge($empties, [$firstCode, $secondCode]), $this->searchSorted('code'));
+        $this->assertSame(array_merge([$secondCode, $firstCode], array_reverse($empties)), $this->searchSorted('code.desc'));
     }
 
     /**
