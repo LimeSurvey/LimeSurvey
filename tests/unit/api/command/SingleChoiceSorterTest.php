@@ -211,14 +211,12 @@ class SingleChoiceSorterTest extends TestBaseClass
             // Make the sort helper use the PHP fallback, as without php-intl
             \LimeSurvey\Helpers\SortHelper::getInstance('en');
             $collator = new \ReflectionProperty(\LimeSurvey\Helpers\SortHelper::class, 'collator');
-            $collator->setAccessible(true);
             $collator->setValue(null, null);
             try {
                 $this->assertSame(['A1' => 1, 'A3' => 1, 'A2' => 2], (new AnswerLabelOrder('en'))->getRanks($qid));
             } finally {
                 // The next getInstance() call creates the helper again, with the collator
                 $instance = new \ReflectionProperty(\LimeSurvey\Helpers\SortHelper::class, 'instance');
-                $instance->setAccessible(true);
                 $instance->setValue(null, null);
             }
         });
