@@ -4,8 +4,7 @@ import { isString } from 'lodash'
 import { EditableImage } from 'components/EditableImage/EditableImage'
 import { ContentEditor, DropZone } from 'components/UIComponents'
 import { CloseCircleFillIcon, DragIcon } from 'components/icons'
-import { useParams } from 'react-router-dom'
-import { useSurvey, useAppState } from 'hooks'
+import { useToggleQuestionCodes, useAppState } from 'hooks'
 import { canUpdateChildren, Entities, STATES } from 'helpers'
 import { CodeInput } from '../codeComponents'
 // Todo: handle switching between image and text using attributes.
@@ -20,8 +19,7 @@ export const RankingQuestionSubquestion = ({
   index,
   title,
 }) => {
-  const { surveyId } = useParams()
-  const { survey } = useSurvey(surveyId)
+  const { areCodesVisible } = useToggleQuestionCodes()
   const [isSurveyActive] = useAppState(STATES.IS_SURVEY_ACTIVE)
   const isChildUpdateAllowed = canUpdateChildren(
     Entities.subquestion,
@@ -53,7 +51,7 @@ export const RankingQuestionSubquestion = ({
       <div className="d-flex align-items-center ">
         {!subquestion?.preview && isString(subquestion) && (
           <div className="d-flex align-items-center gap-3">
-            {isFocused && survey.showQNumCode?.showNumber && (
+            {isFocused && areCodesVisible && (
               <CodeInput
                 isEditable={isChildUpdateAllowed}
                 code={title}

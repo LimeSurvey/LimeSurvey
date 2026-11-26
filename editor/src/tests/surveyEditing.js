@@ -1,4 +1,4 @@
-import { act, useEffect } from 'react'
+import { act } from 'react'
 import { queryClient } from 'queryClient'
 import { STATES } from 'helpers'
 
@@ -9,15 +9,12 @@ export const setSurveyActive = (value) =>
     await new Promise((resolve) => setTimeout(resolve, 0))
   })
 
-// Shows answer and subquestion codes on the canvas, also after the demo survey (re)loads
-export const WithCodesShown = ({ survey, update, children }) => {
-  const areCodesShown = !!survey?.showQNumCode?.showNumber
+// Shows answer and subquestion codes on the canvas
+export const WithCodesShown = ({ children }) => {
+  queryClient.setQueryData(
+    ['appState', STATES.SHOW_QUESTION_CODES_IN_EDITOR],
+    true
+  )
 
-  useEffect(() => {
-    if (!areCodesShown) {
-      update({ showQNumCode: { showCode: true, showNumber: true } })
-    }
-  }, [areCodesShown])
-
-  return areCodesShown ? children : null
+  return children
 }

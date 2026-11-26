@@ -1,9 +1,12 @@
 import { Button } from 'react-bootstrap'
-import { useParams } from 'react-router-dom'
 import { Draggable } from '@hello-pangea/dnd'
 import { PlusLg } from 'react-bootstrap-icons'
 import classNames from 'classnames'
-import { useAppState, useSurvey, useChildKeyboardShortcuts } from 'hooks'
+import {
+  useAppState,
+  useToggleQuestionCodes,
+  useChildKeyboardShortcuts,
+} from 'hooks'
 import { canUpdateChildren, Entities, hasTempId, L10ns, STATES } from 'helpers'
 import { getTooltipMessages } from 'helpers/options'
 import { ContentEditor, DragAndDrop, TooltipContainer } from 'components'
@@ -32,8 +35,7 @@ export const OptionQuestionEditMode = ({
   _children = [],
   isTitleFocused,
 }) => {
-  const { surveyId } = useParams()
-  const { survey } = useSurvey(surveyId)
+  const { areCodesVisible } = useToggleQuestionCodes()
   const isSingleChoiceTheme = singleChoiceThemes.includes(questionThemeName)
   const isImageTheme = imageThemeComponents.includes(questionThemeName)
 
@@ -122,7 +124,7 @@ export const OptionQuestionEditMode = ({
                       })}
                     />
                   </div>
-                  {survey.showQNumCode?.showNumber && (
+                  {areCodesVisible && (
                     <CodeInput
                       isEditable={isChildUpdateAllowed}
                       isAnswerCode={isSingleChoiceTheme}
