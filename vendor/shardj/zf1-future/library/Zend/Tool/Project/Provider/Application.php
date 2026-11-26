@@ -20,6 +20,9 @@
  * @version    $Id$
  */
 
+require_once 'Zend/Tool/Project/Provider/Abstract.php';
+require_once 'Zend/Tool/Framework/Provider/Pretendable.php';
+
 /**
  * @category   Zend
  * @package    Zend_Tool
@@ -36,7 +39,6 @@ class Zend_Tool_Project_Provider_Application
     /**
      *
      * @param string $classNamePrefix Prefix of classes
-     * @param bool   $force
      */
     public function changeClassNamePrefix($classNamePrefix /* , $force = false */)
     {
@@ -51,6 +53,7 @@ class Zend_Tool_Project_Provider_Application
         $configFileResource = $profile->search('ApplicationConfigFile');
         $zc = $configFileResource->getAsZendConfig('production');
         if ($zc->appnamespace == $classNamePrefix) {
+            require_once 'Zend/Tool/Project/Exception.php';
             throw new Zend_Tool_Project_Exception('The requested name ' . $classNamePrefix . ' is already the prefix.');
         }
 

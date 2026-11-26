@@ -29,6 +29,7 @@ require_once 'Zend/Gdata/Extension.php';
  * @category   Zend
  * @package    Zend_Gdata
  * @subpackage Analytics
+ * @deprecated Deprecated since 1.27.1 and will be removed in a future version: Google shut down the Google Data APIs it implements and the ClientLogin and AuthSub authentication
  */
 class Zend_Gdata_Analytics_Extension_TableId extends Zend_Gdata_Extension
 {
@@ -72,7 +73,7 @@ class Zend_Gdata_Analytics_Extension_TableId extends Zend_Gdata_Extension
      * instance members.  If no mapping is defined, the name and value are
      * stored in an array.
      *
-     * @param DOMNode $attribute The DOMNode attribute needed to be handled
+     * @param DOMNode $child The DOMNode attribute needed to be handled
      */
     protected function takeChildFromDOM($child)
     {

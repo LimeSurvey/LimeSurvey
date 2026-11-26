@@ -20,6 +20,10 @@
  * @version    $Id$
  */
 
+require_once 'Zend/Tool/Project/Context/Filesystem/File.php';
+require_once 'Zend/CodeGenerator/Php/File.php';
+require_once 'Zend/CodeGenerator/Php/Method.php';
+
 /**
  * This class is the front most class for utilizing Zend_Tool_Project
  *
@@ -58,7 +62,7 @@ class Zend_Tool_Project_Context_Zf_ControllerFile extends Zend_Tool_Project_Cont
         $this->_controllerName = $this->_resource->getAttribute('controllerName');
         $this->_moduleName = $this->_resource->getAttribute('moduleName');
         $this->_filesystemName = ucfirst($this->_controllerName) . 'Controller.php';
-        parent::init();
+        return parent::init();
     }
 
     /**
@@ -100,11 +104,13 @@ class Zend_Tool_Project_Context_Zf_ControllerFile extends Zend_Tool_Project_Cont
      */
     public function getContents()
     {
+        require_once 'Zend/Filter/Word/DashToCamelCase.php';
         $filter = new Zend_Filter_Word_DashToCamelCase();
 
         $className = ($this->_moduleName) ? $filter->filter(ucfirst($this->_moduleName)) . '_' : '';
         $className .= ucfirst($this->_controllerName) . 'Controller';
 
+        require_once 'Zend/CodeGenerator/Php/Class.php';
         $codeGenFile = new Zend_CodeGenerator_Php_File([
             'fileName' => $this->getPath(),
             'classes' => [
@@ -124,6 +130,7 @@ class Zend_Tool_Project_Context_Zf_ControllerFile extends Zend_Tool_Project_Cont
 
         if ($className == 'ErrorController') {
 
+            require_once 'Zend/CodeGenerator/Php/Class.php';
             $codeGenFile = new Zend_CodeGenerator_Php_File([
                 'fileName' => $this->getPath(),
                 'classes' => [

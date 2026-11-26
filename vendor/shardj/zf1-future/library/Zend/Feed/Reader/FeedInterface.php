@@ -59,7 +59,7 @@ interface Zend_Feed_Reader_FeedInterface extends Iterator, Countable
     /**
      * Get the feed modification date
      *
-     * @return string|null
+     * @return Zend_Date|string|null
      */
     public function getDateModified();
 

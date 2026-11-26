@@ -342,7 +342,9 @@ class Labels extends SurveyCommonAction
             );
             $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
                 '/admin/labels/partials/topbarBtns_singlelabelset/rightSideButtons',
-                [],
+                [
+                    'hasUpdatePermission' => $model->hasPermission('labelset', 'update'),
+                ],
                 true
             );
         }

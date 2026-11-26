@@ -12,7 +12,6 @@
 * See COPYRIGHT.php for copyright notices and details.
 */
 
-use LimeSurvey\Helpers\questionHelper;
 use LimeSurvey\Models\Services\SurveyAccessModeService;
 
 /**
@@ -515,7 +514,8 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $suppo
 
     // Import questionattributes --------------------------------------------------------------
     if (isset($xml->question_attributes)) {
-        $aAllAttributes = questionHelper::getAttributesDefinitions();
+        // Only needed to copy the translatable attributes of files older than DB version 156 to each language
+        $aAllAttributes = $iDBVersion < 156 ? QuestionAttribute::getAllAttributesSettings() : [];
 
         /** @var array<integer,array<string,mixed>> List of "answer order" related attributes, grouped by qid */
         $answerOrderAttributes = [];
@@ -1134,7 +1134,8 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
 
     // Import questionattributes --------------------------------------------------------------
     if (isset($xml->question_attributes)) {
-        $aAllAttributes = questionHelper::getAttributesDefinitions();
+        // Only needed to copy the translatable attributes of files older than DB version 156 to each language
+        $aAllAttributes = $iDBVersion < 156 ? QuestionAttribute::getAllAttributesSettings() : [];
         /** @var array<string,mixed> List of "answer order" related attributes */
         $answerOrderAttributes = [];
         importQuestionThemeAttributes($xml, $aQIDReplacements, $aLanguagesSupported);
@@ -3197,7 +3198,8 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
 
     // Import questionattributes -------------------------------------------------
     if (isset($xml->question_attributes)) {
-        $aAllAttributes = questionHelper::getAttributesDefinitions();
+        // Only needed to copy the translatable attributes of files older than DB version 156 to each language
+        $aAllAttributes = $iDBVersion < 156 ? QuestionAttribute::getAllAttributesSettings() : [];
         /** @var array<integer,array<string,mixed>> List of "answer order" related attributes, grouped by qid */
         $answerOrderAttributes = [];
         importQuestionThemeAttributes($xml, $aQIDReplacements);
@@ -4468,7 +4470,7 @@ function TSVImportSurvey($sFullFilePath)
     $questions = array();
     $attributes = array();
     $seenAttributes = array();
-    $aAllAttributes = questionHelper::getAttributesDefinitions();
+    $aAllAttributes = QuestionAttribute::getAllAttributesSettings();
     $subquestions = array();
     $defaultvalues = array();
     $answers = array();
@@ -4712,7 +4714,8 @@ function TSVImportSurvey($sFullFilePath)
             case 'SQ':
                 $sqname = ($row['name'] ?? 'SQ' . $sqseq);
                 $sqid = '';
-                if ($qtype == Question::QT_O_LIST_WITH_COMMENT || $qtype == Question::QT_VERTICAL_FILE_UPLOAD) {;   // these are fake rows to show naming of comment and filecount fields
+                if ($qtype == Question::QT_O_LIST_WITH_COMMENT || $qtype == Question::QT_VERTICAL_FILE_UPLOAD) {
+                    ;   // these are fake rows to show naming of comment and filecount fields
                 } elseif ($sqname == 'other' && $lastother == "Y") {
                     // If last question have other to Y : it's not a real SQ row
                     if ($qtype == Question::QT_EXCLAMATION_LIST_DROPDOWN || $qtype == Question::QT_L_LIST) {

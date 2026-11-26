@@ -20,6 +20,16 @@
         &:focus-visible {
             @include state-border(2px, $grape90, 0px);
         }
+        // The title link sits in a clamped box with overflow hidden, which would clip its outline: Show the focus on the card.
+        // Kept in @supports, so browsers without :has() keep the rule above and the title link outline below
+        @supports selector(:has(*)) {
+            &:has(.box-widget-card-title-link:focus-visible) {
+                @include state-border(2px, $grape90, 0px);
+                .box-widget-card-title-link:focus-visible {
+                    outline : none;
+                }
+            }
+        }
         &:active {
             @include state-border(1px, $grape90, 4px);
             @include inset-border(1px, transparent);
@@ -45,6 +55,23 @@
                 font-weight        : 400;
                 line-height        : 24px;
                 margin             : 0;
+            }
+            // Survey code (internal title) badge, shown only when question codes are visible
+            .box-widget-card-code {
+                display        : inline-block;
+                max-width      : 100%;
+                margin-top     : 8px;
+                overflow       : hidden;
+                text-overflow  : ellipsis;
+                white-space    : nowrap;
+                vertical-align : top;
+                font-size      : 12px;
+                line-height    : 16px;
+                letter-spacing : 0.036px;
+            }
+            // Keep the fixed card height: the title gets one line when the badge is shown
+            &.has-code .box-widget-card-title {
+                -webkit-line-clamp : 1;
             }
         }
         .box-widget-card-text {
@@ -181,6 +208,19 @@
             display    : inline-block;
             padding    : 5px;
             margin-top : 25px;
+            &:focus-visible {
+                outline        : 2px solid $grape;
+                outline-offset : 2px;
+            }
+        }
+    }
+    .box-widget-card-title-link {
+        // Keep the title looking as before it became a link: Links are medium weight by default
+        font-weight : inherit;
+        // Browsers without :has(): An inset outline, which the clamped title box does not clip
+        &:focus-visible {
+            outline        : 2px solid $grape;
+            outline-offset : -2px;
         }
     }
     .survey-state {

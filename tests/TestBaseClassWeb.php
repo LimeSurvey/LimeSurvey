@@ -191,7 +191,7 @@ class TestBaseClassWeb extends TestBaseClass
             try {
                 self::$webDriver->wait(10)->until(
                     WebDriverExpectedCondition::presenceOfElementLocated(
-                        WebDriverBy::cssSelector('nav.navbar')
+                        WebDriverBy::cssSelector('header .navbar')
                     )
                 );
                 self::ignoreEditorModal();

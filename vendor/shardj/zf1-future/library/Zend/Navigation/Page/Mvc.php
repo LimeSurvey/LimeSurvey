@@ -124,7 +124,7 @@ class Zend_Navigation_Page_Mvc extends Zend_Navigation_Page
      * called more than once during the lifetime of a request. If a property
      * is updated, the cache is invalidated.
      *
-     * @var string
+     * @var string|null
      */
     protected $_hrefCache;
 

@@ -49,6 +49,7 @@ require_once 'Zend/Amf/Value/Messaging/RemotingMessage.php';
  * @subpackage Parse
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @deprecated Deprecated since 1.27.1 and will be removed in a future version: AMF is the data format of Adobe Flash Player, which reached its end of life on 2020-12-31
  */
 final class Zend_Amf_Parse_TypeLoader
 {
@@ -109,7 +110,7 @@ final class Zend_Amf_Parse_TypeLoader
      * Looks up the supplied call name to its mapped class name
      *
      * @param  string $className
-     * @return string
+     * @return string|false
      */
     public static function getMappedClassName($className)
     {
@@ -181,7 +182,7 @@ final class Zend_Amf_Parse_TypeLoader
      * Get plugin class that handles this resource
      *
      * @param resource $resource Resource type
-     * @return string Class name
+     * @return string|false Class name
      */
     public static function getResourceParser($resource)
     {

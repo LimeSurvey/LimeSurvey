@@ -134,156 +134,142 @@ function buildSelects($allfields, $surveyid, $language)
                 * K - Multiple numerical input
                 */
             try {
-            if (
-                $pv != "sid" && $pv != "display" && $firstletter != "M" && $firstletter != "P" && $firstletter != "T" &&
+                if (
+                    $pv != "sid" && $pv != "display" && $firstletter != "M" && $firstletter != "P" && $firstletter != "T" &&
                     $firstletter != "Q" && $firstletter != "J" && $firstletter != "D" && $firstletter != "N" && $firstletter != "K" && $firstletter != "|" &&
                     $pv != "summary" && substr($pv, 0, 2) != "id" && substr($pv, 0, 9) != "datestamp" && substr($pv, 0, 10) != "quota_exit"
-            ) {
-                //pull out just the fieldnames
-                //put together some SQL here
-                $thisquestion = $quoteColumn($pv) . " IN (";
+                ) {
+                    //pull out just the fieldnames
+                    //put together some SQL here
+                    $thisquestion = $quoteColumn($pv) . " IN (";
 
-                $db = Yii::app()->db;
-                foreach ($_POST[$pv] as $condition) {
-                    $thisquestion .=  Yii::app()->db->quoteValue(getEncryptedCondition($responseModel, $pv, $condition)) . ", ";
-                }
-
-                $thisquestion = substr($thisquestion, 0, -2)
-                . ")";
-
-                //we collect all the to be selected data in this array
-                $selects[] = $thisquestion;
-            }
-
-                //M - Multiple choice
-                //P - Multiple choice with comments
-            elseif ($firstletter == "M" || $firstletter == "P") {
-                $mselects = array();
-                //create a list out of the $pv array
-                $lqid = ($pv[1] === 'Q') ? substr($pv, 2) : $pv;
-
-                $aresult = Question::model()->findAll(array('order' => 'question_order', 'condition' => 'parent_qid=:parent_qid AND scale_id=0', 'params' => array(":parent_qid" => $lqid)));
-                foreach ($aresult as $arow) {
-                    // only add condition if answer has been chosen
-                    if (in_array($arow['title'], $_POST[$pv])) {
-                        $fieldname = substr($pv, 1, strlen($pv)) . "_S" . $arow['qid'];
-                        $mselects[] = $quoteColumn($fieldname) . " = " . Yii::app()->db->quoteValue(getEncryptedCondition($responseModel, $fieldname, 'Y'));
-                    }
-                }
-                /* If there are multiple conditions generated from this multiple choice question, join them using the boolean "OR" */
-                if ($mselects) {
-                    $thismulti = implode(" OR ", $mselects);
-                    $selects[] = "($thismulti)";
-                    unset($mselects);
-                }
-            }
-
-                //N - Numerical input
-                //K - Multiple numerical input
-            elseif ($firstletter == "N" || $firstletter == "K" || $firstletter == ":") {
-                //value greater than
-                if (substr($pv, strlen($pv) - 1, 1) == "G" && $_POST[$pv] != "") {
-                    $selects[] = $quoteColumn(substr($pv, 1, -1)) . " > " . sanitize_float($_POST[$pv]);
-                }
-
-                //value less than
-                if (substr($pv, strlen($pv) - 1, 1) == "L" && $_POST[$pv] != "") {
-                    $selects[] = $quoteColumn(substr($pv, 1, -1)) . " < " . sanitize_float($_POST[$pv]);
-                }
-            }
-
-                //| - File Upload Question Type
-            elseif ($firstletter == "|") {
-                // no. of files greater than
-                if (substr($pv, strlen($pv) - 1, 1) == "G" && $_POST[$pv] != "") {
-                    $selects[] = $quoteColumn(substr($pv, 1, -1) . "_Cfilecount") . " > " . sanitize_int($_POST[$pv]);
-                }
-
-                // no. of files less than
-                if (substr($pv, strlen($pv) - 1, 1) == "L" && $_POST[$pv] != "") {
-                    $selects[] = $quoteColumn(substr($pv, 1, -1) . "_Cfilecount") . " < " . sanitize_int($_POST[$pv]);
-                }
-            }
-
-                //"id" is a built in field, the unique database id key of each response row
-            elseif (substr($pv, 0, 2) == "id") {
-                if (substr($pv, strlen($pv) - 1, 1) == "G" && $_POST[$pv] != "") {
-                    $selects[] = $quoteColumn(substr($pv, 0, -1)) . " > " . sanitize_int($_POST[$pv]);
-                }
-                if (substr($pv, strlen($pv) - 1, 1) == "L" && $_POST[$pv] != "") {
-                    $selects[] = $quoteColumn(substr($pv, 0, -1)) . " < " . sanitize_int($_POST[$pv]);
-                }
-            }
-
-                //T - Long free text
-                //Q - Multiple short text
-            elseif (($firstletter == "T" || $firstletter == "Q" || $firstletter == "J") && $_POST[$pv] != "") {
-                $selectSubs = array();
-                $postValue = is_array($_POST[$pv]) ? implode(' OR ', $_POST[$pv]) : (string) $_POST[$pv];
-                //We interpret and * and % as wildcard matches, and use ' OR ' and , as the separators
-                $pvParts = explode(",", str_replace('*', '%', str_replace(' OR ', ',', $postValue)));
-                if (is_array($pvParts) and count($pvParts)) {
-                    foreach ($pvParts as $pvPart) {
-                        $columnName = ($pv[1] === 'Q') ? substr($pv, 1) : $pv;
-                        $encryptedValue = getEncryptedCondition($responseModel, $columnName, $pvPart);
-                        $selectSubs[] = $quoteColumn($columnName) . " LIKE " . App()->db->quoteValue($encryptedValue);
-                    }
-                    if (count($selectSubs)) {
-                        $selects[] = ' (' . implode(' OR ', $selectSubs) . ') ';
-                    }
-                }
-            }
-
-                //D - Date
-            elseif ($firstletter == "D" && $_POST[$pv] != "") {
-                $datetimeobj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'] . ' H:i');
-                //Date equals
-                if (substr($pv, -2) == "eq") {
-                    $dateValue = $datetimeobj->convert("Y-m-d");
-                    $columnName = $quoteColumn(substr($pv, 1, strlen($pv) - 3));
-                    $selects[] = $columnName . " >= " . Yii::app()->db->quoteValue($dateValue . " 00:00:00") . " and " . $columnName . " <= " . Yii::app()->db->quoteValue($dateValue . " 23:59:59");
-                } else {
-                    $dateValue = $datetimeobj->convert("Y-m-d H:i");
-                    //date less than
-                    if (substr($pv, -4) == "more") {
-                        $dateTimeObj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'] . ' H:i');
-                        $sDateValue = $dateTimeObj->convert("Y-m-d H:i:s");
-                        $selects[] = $quoteColumn(substr($pv, 1, strlen($pv) - 5)) . " >= " . App()->db->quoteValue($sDateValue);
+                    $db = Yii::app()->db;
+                    foreach ($_POST[$pv] as $condition) {
+                        $thisquestion .=  Yii::app()->db->quoteValue(getEncryptedCondition($responseModel, $pv, $condition)) . ", ";
                     }
 
-                    //date greater than
-                    if (substr($pv, -4) == "less") {
-                        $dateTimeObj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'] . ' H:i');
-                        $sDateValue = $dateTimeObj->convert("Y-m-d H:i:s");
-                        $selects[] = $quoteColumn(substr($pv, 1, strlen($pv) - 5)) . " <= " . App()->db->quoteValue($sDateValue);
-                    }
-                }
-            }
+                    $thisquestion = substr($thisquestion, 0, -2)
+                    . ")";
 
-                //check for datestamp of given answer
-            elseif (substr($pv, 0, 9) == "datestamp") {
-                //timestamp equals
-                if (substr($pv, -1, 1) == "E" && !empty($_POST[$pv])) {
+                    //we collect all the to be selected data in this array
+                    $selects[] = $thisquestion;
+                } elseif ($firstletter == "M" || $firstletter == "P") {
+                    //M - Multiple choice
+                    //P - Multiple choice with comments
+                    $mselects = array();
+                    //create a list out of the $pv array
+                    $lqid = ($pv[1] === 'Q') ? substr($pv, 2) : $pv;
+
+                    $aresult = Question::model()->findAll(array('order' => 'question_order', 'condition' => 'parent_qid=:parent_qid AND scale_id=0', 'params' => array(":parent_qid" => $lqid)));
+                    foreach ($aresult as $arow) {
+                        // only add condition if answer has been chosen
+                        if (in_array($arow['title'], $_POST[$pv])) {
+                            $fieldname = substr($pv, 1, strlen($pv)) . "_S" . $arow['qid'];
+                            $mselects[] = $quoteColumn($fieldname) . " = " . Yii::app()->db->quoteValue(getEncryptedCondition($responseModel, $fieldname, 'Y'));
+                        }
+                    }
+                    /* If there are multiple conditions generated from this multiple choice question, join them using the boolean "OR" */
+                    if ($mselects) {
+                        $thismulti = implode(" OR ", $mselects);
+                        $selects[] = "($thismulti)";
+                        unset($mselects);
+                    }
+                } elseif ($firstletter == "N" || $firstletter == "K" || $firstletter == ":") {
+                    //N - Numerical input
+                    //K - Multiple numerical input
+                    //value greater than
+                    if (substr($pv, strlen($pv) - 1, 1) == "G" && $_POST[$pv] != "") {
+                        $selects[] = $quoteColumn(substr($pv, 1, -1)) . " > " . sanitize_float($_POST[$pv]);
+                    }
+
+                    //value less than
+                    if (substr($pv, strlen($pv) - 1, 1) == "L" && $_POST[$pv] != "") {
+                        $selects[] = $quoteColumn(substr($pv, 1, -1)) . " < " . sanitize_float($_POST[$pv]);
+                    }
+                } elseif ($firstletter == "|") {
+                    //| - File Upload Question Type
+                    // no. of files greater than
+                    if (substr($pv, strlen($pv) - 1, 1) == "G" && $_POST[$pv] != "") {
+                        $selects[] = $quoteColumn(substr($pv, 1, -1) . "_Cfilecount") . " > " . sanitize_int($_POST[$pv]);
+                    }
+
+                    // no. of files less than
+                    if (substr($pv, strlen($pv) - 1, 1) == "L" && $_POST[$pv] != "") {
+                        $selects[] = $quoteColumn(substr($pv, 1, -1) . "_Cfilecount") . " < " . sanitize_int($_POST[$pv]);
+                    }
+                } elseif (substr($pv, 0, 2) == "id") {
+                    //"id" is a built in field, the unique database id key of each response row
+                    if (substr($pv, strlen($pv) - 1, 1) == "G" && $_POST[$pv] != "") {
+                        $selects[] = $quoteColumn(substr($pv, 0, -1)) . " > " . sanitize_int($_POST[$pv]);
+                    }
+                    if (substr($pv, strlen($pv) - 1, 1) == "L" && $_POST[$pv] != "") {
+                        $selects[] = $quoteColumn(substr($pv, 0, -1)) . " < " . sanitize_int($_POST[$pv]);
+                    }
+                } elseif (($firstletter == "T" || $firstletter == "Q" || $firstletter == "J") && $_POST[$pv] != "") {
+                    //T - Long free text
+                    //Q - Multiple short text
+                    $selectSubs = array();
+                    $postValue = is_array($_POST[$pv]) ? implode(' OR ', $_POST[$pv]) : (string) $_POST[$pv];
+                    //We interpret and * and % as wildcard matches, and use ' OR ' and , as the separators
+                    $pvParts = explode(",", str_replace('*', '%', str_replace(' OR ', ',', $postValue)));
+                    if (is_array($pvParts) and count($pvParts)) {
+                        foreach ($pvParts as $pvPart) {
+                            $columnName = ($pv[1] === 'Q') ? substr($pv, 1) : $pv;
+                            $encryptedValue = getEncryptedCondition($responseModel, $columnName, $pvPart);
+                            $selectSubs[] = $quoteColumn($columnName) . " LIKE " . App()->db->quoteValue($encryptedValue);
+                        }
+                        if (count($selectSubs)) {
+                            $selects[] = ' (' . implode(' OR ', $selectSubs) . ') ';
+                        }
+                    }
+                } elseif ($firstletter == "D" && $_POST[$pv] != "") {
+                    //D - Date
                     $datetimeobj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'] . ' H:i');
-                    $sDateValue = $datetimeobj->convert("Y-m-d");
+                    //Date equals
+                    if (substr($pv, -2) == "eq") {
+                        $dateValue = $datetimeobj->convert("Y-m-d");
+                        $columnName = $quoteColumn(substr($pv, 1, strlen($pv) - 3));
+                        $selects[] = $columnName . " >= " . Yii::app()->db->quoteValue($dateValue . " 00:00:00") . " and " . $columnName . " <= " . Yii::app()->db->quoteValue($dateValue . " 23:59:59");
+                    } else {
+                        $dateValue = $datetimeobj->convert("Y-m-d H:i");
+                        //date less than
+                        if (substr($pv, -4) == "more") {
+                            $dateTimeObj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'] . ' H:i');
+                            $sDateValue = $dateTimeObj->convert("Y-m-d H:i:s");
+                            $selects[] = $quoteColumn(substr($pv, 1, strlen($pv) - 5)) . " >= " . App()->db->quoteValue($sDateValue);
+                        }
 
-                    $selects[] = Yii::app()->db->quoteColumnName('datestamp') . " >= " . App()->db->quoteValue($sDateValue . " 00:00:00") . " and " . Yii::app()->db->quoteColumnName('datestamp') . " <= " . App()->db->quoteValue($sDateValue . " 23:59:59");
-                } else {
-                    //timestamp less than
-                    if (substr($pv, -1, 1) == "L" && !empty($_POST[$pv])) {
-                        $datetimeobj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'] . ' H:i');
-                        $sDateValue = $datetimeobj->convert("Y-m-d H:i:s");
-                        $selects[] = Yii::app()->db->quoteColumnName('datestamp') . " < " . App()->db->quoteValue($sDateValue);
+                        //date greater than
+                        if (substr($pv, -4) == "less") {
+                            $dateTimeObj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'] . ' H:i');
+                            $sDateValue = $dateTimeObj->convert("Y-m-d H:i:s");
+                            $selects[] = $quoteColumn(substr($pv, 1, strlen($pv) - 5)) . " <= " . App()->db->quoteValue($sDateValue);
+                        }
                     }
-
-                    //timestamp greater than
-                    if (substr($pv, -1, 1) == "G" && !empty($_POST[$pv])) {
+                } elseif (substr($pv, 0, 9) == "datestamp") {
+                    //check for datestamp of given answer
+                    //timestamp equals
+                    if (substr($pv, -1, 1) == "E" && !empty($_POST[$pv])) {
                         $datetimeobj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'] . ' H:i');
-                        $sDateValue = $datetimeobj->convert("Y-m-d H:i:s");
-                        $selects[] = Yii::app()->db->quoteColumnName('datestamp') . " > " . App()->db->quoteValue($sDateValue);
+                        $sDateValue = $datetimeobj->convert("Y-m-d");
+
+                        $selects[] = Yii::app()->db->quoteColumnName('datestamp') . " >= " . App()->db->quoteValue($sDateValue . " 00:00:00") . " and " . Yii::app()->db->quoteColumnName('datestamp') . " <= " . App()->db->quoteValue($sDateValue . " 23:59:59");
+                    } else {
+                        //timestamp less than
+                        if (substr($pv, -1, 1) == "L" && !empty($_POST[$pv])) {
+                            $datetimeobj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'] . ' H:i');
+                            $sDateValue = $datetimeobj->convert("Y-m-d H:i:s");
+                            $selects[] = Yii::app()->db->quoteColumnName('datestamp') . " < " . App()->db->quoteValue($sDateValue);
+                        }
+
+                        //timestamp greater than
+                        if (substr($pv, -1, 1) == "G" && !empty($_POST[$pv])) {
+                            $datetimeobj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'] . ' H:i');
+                            $sDateValue = $datetimeobj->convert("Y-m-d H:i:s");
+                            $selects[] = Yii::app()->db->quoteColumnName('datestamp') . " > " . App()->db->quoteValue($sDateValue);
+                        }
                     }
                 }
-            }
             } catch (InvalidArgumentException $e) {
                 // bug #20648: ignore filters that reference a column outside the response table.
             }
@@ -460,10 +446,8 @@ class statistics_helper
                     $qqid = $fielddata['qid']; // setting $qqid variable to parent qid enables graph for Array Text to be shown
                 }
             }
-        }
-
-        //Q - Multiple short text
-        elseif ($sQuestionType == Question::QT_Q_MULTIPLE_SHORT_TEXT) {
+        } elseif ($sQuestionType == Question::QT_Q_MULTIPLE_SHORT_TEXT) {
+            //Q - Multiple short text
             //Build an array of legitimate qid's for testing later
             $key = substr($rt, strcspn($rt, '0123456789') - 1);
             if (!isset($fieldmap[$key])) {
@@ -500,10 +484,8 @@ class statistics_helper
             // This question type then can provide a % of the question answered in the summary.
             $alist[] = array("Answer", gT("Answer"), $mfield);
             $alist[] = array("NoAnswer", gT("No answer"), $mfield);
-        }
-
-        // Ranking OPTION
-        elseif ($sQuestionType == "R") {
+        } elseif ($sQuestionType == "R") {
+            // Ranking OPTION
             $fld = explode('-', substr($rt, 1))[0];
             if (!isset($fieldmap[$fld])) {
                 return [];
@@ -669,12 +651,10 @@ class statistics_helper
                 default:
                     break;
             }
-        }
-
-        //N = Numerical input
-        //K = Multiple numerical input
-        //: = Array (Numbers) - Only when using "Text Input"
-        elseif ($sQuestionType == "N" || $sQuestionType == "K" || $sQuestionType == ":") {
+        } elseif ($sQuestionType == "N" || $sQuestionType == "K" || $sQuestionType == ":") {
+            //N = Numerical input
+            //K = Multiple numerical input
+            //: = Array (Numbers) - Only when using "Text Input"
             //NUMERICAL TYPE
             //Zero handling
             $excludezeros = 1;
@@ -954,10 +934,9 @@ class statistics_helper
                     }
                 }
             }    //end else -> check last character, greater/less/equals don't need special treatment
-        }    //end else-if -> multiple numerical types
-
-        //is there some "id", "datestamp" or "D" within the type?
-        elseif (substr($rt, 0, 2) == "id" || substr($rt, 0, 9) == "datestamp" || ($sQuestionType == "D")) {
+            //end else-if -> multiple numerical types
+        } elseif (substr($rt, 0, 2) == "id" || substr($rt, 0, 9) == "datestamp" || ($sQuestionType == "D")) {
+            //is there some "id", "datestamp" or "D" within the type?
             /*
             * DON'T show anything for date questions
             * because there aren't any statistics implemented yet!
@@ -965,16 +944,14 @@ class statistics_helper
             * See bug report #2539 and
             * feature request #2620
             */
-        }
-
-        // NICE SIMPLE SINGLE OPTION ANSWERS
-        /*
-        TO DEBUG QUESTION TYPES FIRSTLETTER, UNCOMMENT THOSE LINES
-        elseif(!isset($fieldmap[$rt]))
-        {
-        echo "problem, wrong question type for $rt ; $firstletter"; die();
-        }*/
-        else {
+        } else {
+            // NICE SIMPLE SINGLE OPTION ANSWERS
+            /*
+            TO DEBUG QUESTION TYPES FIRSTLETTER, UNCOMMENT THOSE LINES
+            elseif(!isset($fieldmap[$rt]))
+            {
+            echo "problem, wrong question type for $rt ; $firstletter"; die();
+            }*/
             //search for key
             if (!isset($fieldmap[$rt])) {
                 return [];
@@ -1211,19 +1188,15 @@ class statistics_helper
                         if (trim((string) $aQuestionAttributes['dualscale_headerA'][$language]) != '') {
                             //output
                             $labelheader = "[" . $aQuestionAttributes['dualscale_headerA'][$language] . "]";
-                        }
-
-                        //no header
-                        else {
+                        } else {
+                            //no header
                             $labelheader = '';
                         }
 
                         //output
                         $labelno = sprintf(gT('Label %s'), '1');
-                    }
-
-                    //label 2
-                    else {
+                    } else {
+                        //label 2
                         //get label 2
                         $fquery = "SELECT * FROM {{answers}} a JOIN {{answer_l10ns}} l ON a.aid = l.aid  WHERE a.qid='{$qqid}' AND a.scale_id=1 AND l.language='{$language}' ORDER BY a.sortorder, a.code";
 
@@ -1231,10 +1204,8 @@ class statistics_helper
                         if (trim((string) $aQuestionAttributes['dualscale_headerB'][$language]) != '') {
                             //output
                             $labelheader = "[" . $aQuestionAttributes['dualscale_headerB'][$language] . "]";
-                        }
-
-                        //no header
-                        else {
+                        } else {
+                            //no header
                             $labelheader = '';
                         }
 
@@ -1497,20 +1468,17 @@ class statistics_helper
                         $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE (" . Yii::app()->db->quoteColumnName($al[2]) . " <> ''"
                             . $this->getOtherCheckedCondition($surveyid, $responseModel, $al[2]) . ")";
                     }
-                }
-
-                /*
-                * text questions:
-                *
-                * U = Huge free text
-                * T = long free text
-                * S = Short free text
-                * Q = Multiple short text
-
-                * And also mask questions:
-                * J = Map
-                */
-                elseif ($outputs['qtype'] == Question::QT_U_HUGE_FREE_TEXT || $outputs['qtype'] == Question::QT_T_LONG_FREE_TEXT || $outputs['qtype'] == Question::QT_S_SHORT_FREE_TEXT || $outputs['qtype'] == Question::QT_J_MAP || $outputs['qtype'] == Question::QT_Q_MULTIPLE_SHORT_TEXT || $outputs['qtype'] == Question::QT_SEMICOLON_ARRAY_TEXT) {
+                } elseif ($outputs['qtype'] == Question::QT_U_HUGE_FREE_TEXT || $outputs['qtype'] == Question::QT_T_LONG_FREE_TEXT || $outputs['qtype'] == Question::QT_S_SHORT_FREE_TEXT || $outputs['qtype'] == Question::QT_J_MAP || $outputs['qtype'] == Question::QT_Q_MULTIPLE_SHORT_TEXT || $outputs['qtype'] == Question::QT_SEMICOLON_ARRAY_TEXT) {
+                    /*
+                    * text questions:
+                    *
+                    * U = Huge free text
+                    * T = long free text
+                    * S = Short free text
+                    * Q = Multiple short text
+                    * And also mask questions:
+                    * J = Map
+                    */
                     if ($noncompleted > 1 && $al[0] === 'NoAnswer') {
                         continue;
                     }
@@ -1518,9 +1486,8 @@ class statistics_helper
                     if ($al[0] == "Answer") {
                         $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE ";
                         $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($cn) . " != ''" : "NOT (" . Yii::app()->db->quoteColumnName($cn) . " LIKE '')";
-                    }
-                    //"no answer" handling
-                    elseif ($al[0] == "NoAnswer") {
+                    } elseif ($al[0] == "NoAnswer") {
+                        //"no answer" handling
                         $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE ( ";
                         $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($cn) . " = '')" : " (" . Yii::app()->db->quoteColumnName($cn) . " LIKE ''))";
                     }
@@ -1535,9 +1502,8 @@ class statistics_helper
                         $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE " . Yii::app()->db->quoteColumnName($al[2]) . " = '$encryptedValue'";
                     }
                 }
-            }    //end if -> alist set
-
-            else {
+                //end if -> alist set
+            } else {
                 if ($al[0] != "") {
                     //get more data
                     $encryptedValue = getEncryptedCondition($responseModel, $rt, $al[0]);
@@ -1595,11 +1561,9 @@ class statistics_helper
             //"no answer" handling
             if ($al[0] === "") {
                 $fname = gT("No answer");
-            }
-
-            //"other" handling
-            //"Answer" means that we show an option to list answer to "other" text field
-            elseif (($al[0] === gT("Other") || $al[0] === "Answer" || ($outputs['qtype'] === "O" && $al[0] === gT("Comments")) || $outputs['qtype'] === "P") && count($al) > 2) {
+            } elseif (($al[0] === gT("Other") || $al[0] === "Answer" || ($outputs['qtype'] === "O" && $al[0] === gT("Comments")) || $outputs['qtype'] === "P") && count($al) > 2) {
+                //"other" handling
+                //"Answer" means that we show an option to list answer to "other" text field
                 if ($outputs['qtype'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) {
                     $sColumnName = $al[2] . "_Ccomment";
                 } else {
@@ -1614,17 +1578,15 @@ class statistics_helper
                     $fname .= " <input type='button' class='statisticsbrowsebutton btn btn-outline-secondary btn-large' value='"
                     . gT("Browse") . "' id='$sColumnName' />";
                 }
-            }
-
-            /*
-            * text questions:
-            *
-            * U = Huge free text
-            * T = long free text
-            * S = Short free text
-            * Q = Multiple short text
-            */
-            elseif ($outputs['qtype'] == Question::QT_S_SHORT_FREE_TEXT || $outputs['qtype'] == Question::QT_J_MAP || $outputs['qtype'] == Question::QT_U_HUGE_FREE_TEXT || $outputs['qtype'] == Question::QT_T_LONG_FREE_TEXT || $outputs['qtype'] == Question::QT_Q_MULTIPLE_SHORT_TEXT) {
+            } elseif ($outputs['qtype'] == Question::QT_S_SHORT_FREE_TEXT || $outputs['qtype'] == Question::QT_J_MAP || $outputs['qtype'] == Question::QT_U_HUGE_FREE_TEXT || $outputs['qtype'] == Question::QT_T_LONG_FREE_TEXT || $outputs['qtype'] == Question::QT_Q_MULTIPLE_SHORT_TEXT) {
+                /*
+                * text questions:
+                *
+                * U = Huge free text
+                * T = long free text
+                * S = Short free text
+                * Q = Multiple short text
+                */
                 $headPDF = array();
                 $headPDF[] = array(gT("Answer"), gT("Count"), gT("Percentage"));
 
@@ -1641,21 +1603,17 @@ class statistics_helper
 
                 $bAnswer = true; // For view
                 $bSum = false;
-            }
-
-
-            //check if aggregated results should be shown
-            elseif (Yii::app()->getConfig('showaggregateddata') == 1) {
+            } elseif (Yii::app()->getConfig('showaggregateddata') == 1) {
+                //check if aggregated results should be shown
                 if (!isset($showheadline) || $showheadline != false) {
                     $showheadline = false;
                 }
 
                 //text for answer column is always needed
                 $fname = "$al[1] ($al[0])";
-            }    //end if -> show aggregated data
-
-            //handling what's left
-            else {
+                //end if -> show aggregated data
+            } else {
+                //handling what's left
                 if (!isset($showheadline) || $showheadline != false) {
                     $showheadline = false;
                 }
@@ -1667,9 +1625,8 @@ class statistics_helper
             if ($results > 0) {
                 //calculate percentage
                 $gdata[] = ($row / $results) * 100;
-            }
-            //no results
-            else {
+            } else {
+                //no results
                 //no data!
                 $gdata[] = "N/A";
             }
@@ -1765,9 +1722,8 @@ class statistics_helper
                     if ($results > 0) {
                         //calculate percentage
                         $gdata[] = ($multiNotDisplayed / $results) * 100;
-                    }
-                    //no data :(
-                    else {
+                    } else {
+                        //no data :(
                         $gdata[] = "N/A";
                     }
                     //put data of incompleted records into array
@@ -2254,17 +2210,15 @@ class statistics_helper
                         $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($al[2]) . " != ''" : "NOT (" . Yii::app()->db->quoteColumnName($al[2]) . " LIKE '')";
                         $query .= $this->getOtherCheckedCondition($surveyid, $responseModel, $al[2]) . ")";
                     }
-                }
-
-                /*
-                * text questions:
-                *
-                * U = Huge free text
-                * T = long free text
-                * S = Short free text
-                * Q = Multiple short text
-                */
-                elseif ($outputs['qtype'] == Question::QT_U_HUGE_FREE_TEXT || $outputs['qtype'] == Question::QT_T_LONG_FREE_TEXT || $outputs['qtype'] == Question::QT_S_SHORT_FREE_TEXT || $outputs['qtype'] == Question::QT_J_MAP || $outputs['qtype'] == Question::QT_Q_MULTIPLE_SHORT_TEXT || $outputs['qtype'] == Question::QT_SEMICOLON_ARRAY_TEXT) {
+                } elseif ($outputs['qtype'] == Question::QT_U_HUGE_FREE_TEXT || $outputs['qtype'] == Question::QT_T_LONG_FREE_TEXT || $outputs['qtype'] == Question::QT_S_SHORT_FREE_TEXT || $outputs['qtype'] == Question::QT_J_MAP || $outputs['qtype'] == Question::QT_Q_MULTIPLE_SHORT_TEXT || $outputs['qtype'] == Question::QT_SEMICOLON_ARRAY_TEXT) {
+                    /*
+                    * text questions:
+                    *
+                    * U = Huge free text
+                    * T = long free text
+                    * S = Short free text
+                    * Q = Multiple short text
+                    */
                     if ($noncompleted > 1 && $al[0] === 'NoAnswer') {
                         continue;
                     }
@@ -2274,9 +2228,8 @@ class statistics_helper
                     if ($al[0] == "Answer") {
                         $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE ";
                         $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($cn) . " != ''" : "NOT (" . Yii::app()->db->quoteColumnName($cn) . " LIKE '')";
-                    }
-                    //"no answer" handling
-                    elseif ($al[0] == "NoAnswer") {
+                    } elseif ($al[0] == "NoAnswer") {
+                        //"no answer" handling
                         $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE ( ";
                         $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($cn) . " = '')" : " (" . Yii::app()->db->quoteColumnName($cn) . " LIKE ''))";
                     }
@@ -2290,8 +2243,8 @@ class statistics_helper
                         $query = "SELECT count(*) FROM {{responses_$surveyid}} WHERE " . Yii::app()->db->quoteColumnName($al[2]) . " = '$encryptedValue'";
                     }
                 }
-            }    //end if -> alist set
-            else {
+                //end if -> alist set
+            } else {
                 if ($al[0] != "") {
                     //get more data
                     $sDatabaseType = Yii::app()->db->getDriverName();
@@ -2361,10 +2314,9 @@ class statistics_helper
             //"no answer" handling
             if ($al[0] === "") {
                 $fname = gT("No answer");
-            }
-            //"other" handling
-            //"Answer" means that we show an option to list answer to "other" text field
-            elseif (($al[0] === gT("Other") || $al[0] === "Answer" || ($outputs['qtype'] === "O" && $al[0] === gT("Comments")) || $outputs['qtype'] === "P") && count($al) > 2) {
+            } elseif (($al[0] === gT("Other") || $al[0] === "Answer" || ($outputs['qtype'] === "O" && $al[0] === gT("Comments")) || $outputs['qtype'] === "P") && count($al) > 2) {
+                //"other" handling
+                //"Answer" means that we show an option to list answer to "other" text field
                 if ($outputs['qtype'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) {
                     $sColumnName = $al[2] . "_Ccomment";
                 } else {
@@ -2400,17 +2352,15 @@ class statistics_helper
                         $tableXLS[] = array($row2['id'], $row2['value']);
                     }
                 }
-            }
-
-            /*
-            * text questions:
-            *
-            * U = Huge free text
-            * T = long free text
-            * S = Short free text
-            * Q = Multiple short text
-            */
-            elseif ($outputs['qtype'] == Question::QT_S_SHORT_FREE_TEXT || $outputs['qtype'] == Question::QT_J_MAP || $outputs['qtype'] == Question::QT_U_HUGE_FREE_TEXT || $outputs['qtype'] == Question::QT_T_LONG_FREE_TEXT || $outputs['qtype'] == Question::QT_Q_MULTIPLE_SHORT_TEXT) {
+            } elseif ($outputs['qtype'] == Question::QT_S_SHORT_FREE_TEXT || $outputs['qtype'] == Question::QT_J_MAP || $outputs['qtype'] == Question::QT_U_HUGE_FREE_TEXT || $outputs['qtype'] == Question::QT_T_LONG_FREE_TEXT || $outputs['qtype'] == Question::QT_Q_MULTIPLE_SHORT_TEXT) {
+                /*
+                * text questions:
+                *
+                * U = Huge free text
+                * T = long free text
+                * S = Short free text
+                * Q = Multiple short text
+                */
                 $headPDF = array();
                 $headPDF[] = array(gT("Answer"), gT("Count"), gT("Percentage"));
 
@@ -2440,11 +2390,8 @@ class statistics_helper
                         $tablePDF2[] = array($row2['id'], $row2['value']);
                     }
                 }
-            }
-
-
-            //check if aggregated results should be shown
-            elseif (Yii::app()->getConfig('showaggregateddata') == 1) {
+            } elseif (Yii::app()->getConfig('showaggregateddata') == 1) {
+                //check if aggregated results should be shown
                 if (!isset($showheadline) || $showheadline != false) {
                     if ($outputs['qtype'] == Question::QT_5_POINT_CHOICE || $outputs['qtype'] == Question::QT_A_ARRAY_5_POINT) {
                         switch ($outputType) {
@@ -2504,10 +2451,9 @@ class statistics_helper
 
                 //text for answer column is always needed
                 $fname = "$al[1] ($al[0])";
-            }    //end if -> show aggregated data
-
-            //handling what's left
-            else {
+                //end if -> show aggregated data
+            } else {
+                //handling what's left
                 if (!isset($showheadline) || $showheadline != false) {
                     switch ($outputType) {
                         case 'xls':
@@ -2660,10 +2606,8 @@ class statistics_helper
                 if ($results > 0) {
                     //calculate percentage
                     $gdata[] = ($TotalIncomplete / $results) * 100;
-                }
-
-                //no data :(
-                else {
+                } else {
+                    //no data :(
                     $gdata[] = "N/A";
                 }
 
@@ -2848,10 +2792,8 @@ class statistics_helper
                     default:
                         break;
                 }
-            }
-
-            //data available
-            else {
+            } else {
+                //data available
                 //check if data should be aggregated
                 if (Yii::app()->getConfig('showaggregateddata') == 1 && ($outputs['qtype'] == Question::QT_5_POINT_CHOICE || $outputs['qtype'] == Question::QT_A_ARRAY_5_POINT)) {
                     //mark that we have done something special here
@@ -2983,10 +2925,9 @@ class statistics_helper
                                 break;
                         }
                     }
-                }    //end if -> show aggregated data
-
-                //don't show aggregated data
-                else {
+                    //end if -> show aggregated data
+                } else {
+                    //don't show aggregated data
                     switch ($outputType) {
                         case 'xls':
                             $label[$i] = flattenText($label[$i]);
@@ -4226,7 +4167,7 @@ class statistics_helper
      * @return array[] List of ['id' => response ID, 'value' => column value]
      * @throws InvalidArgumentException if $column or $sortby is not a response table column
      */
-    function _listcolumn($surveyid, $column, $sortby = "", $sortmethod = "", $sorttype = "")
+    public function _listcolumn($surveyid, $column, $sortby = "", $sortmethod = "", $sorttype = "")
     {
         // Security (mantis #20741): quoteColumnName() does not escape identifier quoting
         // characters, so only real response table columns may be passed to it.

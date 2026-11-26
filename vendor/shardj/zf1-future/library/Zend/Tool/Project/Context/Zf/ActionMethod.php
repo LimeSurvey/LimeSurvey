@@ -186,7 +186,7 @@ class Zend_Tool_Project_Context_Zf_ActionMethod implements Zend_Tool_Project_Con
      * @param string $controllerPath
      * @param string $actionName
      * @param string $body
-     * @return true
+     * @return bool
      */
     public static function createActionMethod($controllerPath, $actionName, $body = '        // action body')
     {
@@ -194,6 +194,7 @@ class Zend_Tool_Project_Context_Zf_ActionMethod implements Zend_Tool_Project_Con
             return false;
         }
 
+        require_once 'Zend/CodeGenerator/Php/File.php';
         $controllerCodeGenFile = Zend_CodeGenerator_Php_File::fromReflectedFileName($controllerPath, true, true);
         $controllerCodeGenFile->getClass()->setMethod([
             'name' => $actionName . 'Action',
@@ -217,6 +218,7 @@ class Zend_Tool_Project_Context_Zf_ActionMethod implements Zend_Tool_Project_Con
             return false;
         }
 
+        require_once 'Zend/CodeGenerator/Php/File.php';
         $controllerCodeGenFile = Zend_CodeGenerator_Php_File::fromReflectedFileName($controllerPath, true, true);
         return $controllerCodeGenFile->getClass()->hasMethod($actionName . 'Action');
     }

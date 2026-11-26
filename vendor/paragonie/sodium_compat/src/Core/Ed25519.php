@@ -503,9 +503,11 @@ abstract class ParagonIE_Sodium_Core_Ed25519 extends ParagonIE_Sodium_Core_Curve
 
         for ($i = 0; $i < $countBlocklist; ++$i) {
             $c = 0;
-            for ($j = 0; $j < 32; ++$j) {
+            for ($j = 0; $j < 31; ++$j) {
                 $c |= self::chrToInt($R[$j]) ^ (int) $blocklist[$i][$j];
             }
+            // The x sign bit cannot change the order of the decoded point:
+            $c |= (self::chrToInt($R[31]) & 0x7f) ^ ($blocklist[$i][31] & 0x7f);
             if ($c === 0) {
                 return true;
             }

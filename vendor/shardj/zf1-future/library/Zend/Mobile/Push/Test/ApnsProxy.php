@@ -36,7 +36,7 @@ class Zend_Mobile_Push_Test_ApnsProxy extends Zend_Mobile_Push_Apns
     /**
      * Read Response
      *
-     * @var string
+     * @var string|null
      */
     protected $_readResponse;
 
@@ -79,7 +79,7 @@ class Zend_Mobile_Push_Test_ApnsProxy extends Zend_Mobile_Push_Apns
     /**
      * Return Response
      *
-     * @param string $length
+     * @param int $length
      * @return string
      */
     protected function _read($length) {

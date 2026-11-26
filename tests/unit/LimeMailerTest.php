@@ -73,4 +73,54 @@ class LimeMailerTest extends TestBaseClass
         $this->assertSame('team@example.org', $mailer->From);
         $this->assertSame('Current name', $mailer->FromName);
     }
+
+    /**
+     * An HTML email sent to several recipients with the same mailer keeps its links and its HTML
+     * for every recipient, not only for the first one
+     * @return void
+     */
+    public function testHtmlEmailToSeveralRecipients()
+    {
+        $demoMode = \Yii::app()->getConfig('demoMode');
+        \Yii::app()->setConfig('demoMode', false);
+        $mailer = new class extends \LimeMailer {
+            /** @var string[] The MIME bodies of the emails handed over for sending */
+            public $sentBodies = [];
+
+            /**
+             * Called by PHPMailer for the mailer "capture": Records the email without sending it
+             * @param string $header The MIME header
+             * @param string $body The MIME body
+             * @return bool Always true: The email counts as sent
+             */
+            protected function captureSend($header, $body)
+            {
+                $this->sentBodies[] = $body;
+                return true;
+            }
+        };
+        $mailer->Mailer = 'capture';
+        $mailer->setFrom('admin@example.org', 'Admin');
+        $mailer->isHTML(true);
+        $mailer->aUrlsPlaceholders = ['VIEWRESPONSE'];
+        $mailer->addAndReplaceReplacement(['VIEWRESPONSEURL' => 'http://example.org/response/1']);
+        $mailer->rawSubject = 'New response';
+        $mailer->rawBody = 'See the response: {VIEWRESPONSEURL}';
+
+        try {
+            foreach (['first@example.org', 'second@example.org'] as $recipient) {
+                $mailer->setTo($recipient);
+                $this->assertTrue($mailer->sendMessage(), (string) $mailer->getError());
+                $this->assertTrue($mailer->getIsHtml(), 'The mailer must still know that the email is HTML after sending.');
+            }
+        } finally {
+            \Yii::app()->setConfig('demoMode', $demoMode);
+        }
+
+        $this->assertCount(2, $mailer->sentBodies);
+        foreach ($mailer->sentBodies as $body) {
+            $this->assertStringContainsString('<html>', $body);
+            $this->assertStringContainsString('<a href="http://example.org/response/1">', $body);
+        }
+    }
 }

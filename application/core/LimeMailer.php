@@ -17,25 +17,25 @@ class LimeMailer extends PHPMailer
      * Reset part
      */
     /* No reset */
-    const ResetNone = 0;
+    public const ResetNone = 0;
     /* Basic reset */
-    const ResetBase = 1;
+    public const ResetBase = 1;
     /* Complete reset : all except survey part , remind : you always can get a new one */
-    const ResetComplete = 2;
+    public const ResetComplete = 2;
 
     /**
      * Email methods
      */
     /* PHP mail() */
-    const MethodMail = 'mail';
+    public const MethodMail = 'mail';
     /* Sendmail */
-    const MethodSendmail = 'sendmail';
+    public const MethodSendmail = 'sendmail';
     /* Qmail */
-    const MethodQmail = 'qmail';
+    public const MethodQmail = 'qmail';
     /* SMTP */
-    const MethodSmtp = 'smtp';
+    public const MethodSmtp = 'smtp';
     /* Plugin */
-    const MethodPlugin = 'plugin';
+    public const MethodPlugin = 'plugin';
 
     /* @var null|integer $surveyId Current survey ID */
     public $surveyId;
@@ -762,7 +762,15 @@ class LimeMailer extends PHPMailer
                 return $event->get('error') == null;
             }
         }
-        return parent::Send();
+        // PHPMailer changes the content type to multipart/alternative when the email has a plain text alternative.
+        // Restore it: This mailer instance can be reused for the next recipient and getIsHtml() must stay right,
+        // else the next email gets no links and no HTML wrapper.
+        $contentType = $this->ContentType;
+        try {
+            return parent::Send();
+        } finally {
+            $this->ContentType = $contentType;
+        }
     }
 
     /**
@@ -1135,7 +1143,7 @@ class LimeMailer extends PHPMailer
      * Validate a list of email addresses - either as array or as comma or semicolon-limited text
      * @param string|string[] $aEmailAddressList  Email address to check
      * @param string|callable $patternselect Which pattern to use (default to static::$validator)
-     * @return string[]|false List with valid email addresses - invalid email addresses are filtered - false if none of the email addresses are valid
+     * @return string[] List with valid email addresses - invalid email addresses are filtered
      */
     public static function validateAddresses($aEmailAddressList, $patternselect = null)
     {

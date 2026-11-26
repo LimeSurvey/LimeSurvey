@@ -54,6 +54,7 @@ class Zend_Translate_Adapter_Ini extends Zend_Translate_Adapter
         }
 
         $inidata = parse_ini_file($data, false);
+        // @phpstan-ignore isset.offset (data of other locales are added by earlier calls)
         if (!isset($this->_data[$locale])) {
             $this->_data[$locale] = [];
         }

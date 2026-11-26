@@ -15,10 +15,10 @@
  */
 class BoxesWidget extends CWidget
 {
-    const TYPE_PRODUCT = 0;
-    const TYPE_PRODUCT_GROUP = 1;
-    const TYPE_LINK = 2;
-    const TYPE_PLACEHOLDER = 3;
+    public const TYPE_PRODUCT = 0;
+    public const TYPE_PRODUCT_GROUP = 1;
+    public const TYPE_LINK = 2;
+    public const TYPE_PLACEHOLDER = 3;
     public array $items = [];
     public int $limit = 5;
     public bool $searchBox = true;
@@ -43,13 +43,18 @@ class BoxesWidget extends CWidget
         );
     }
 
-    /** Executes the widget
+    /**
+     * Executes the widget: Collects the boxes (links and surveys) and renders them with the search box.
+     *
+     * @return void
      * @throws CException
      */
     public function run()
     {
         $boxes = [];
         $itemsCount = 0;
+        // Number of surveys for the search box, unknown (null) as long as there is no survey item
+        $resultCount = null;
         foreach ($this->items as $item) {
             $item = (object)$item;
 
@@ -70,6 +75,7 @@ class BoxesWidget extends CWidget
                     $item->model->active = $_GET['active'];
                 }
                 $itemsCount = $item->model->search()->totalItemCount;
+                $resultCount = (int) $itemsCount;
 
                 // Set number of page
                 App()->user->setState('pageSize', $item->limit);
@@ -122,7 +128,8 @@ class BoxesWidget extends CWidget
         $this->render('boxes', [
             'items' => $boxes,
             'limit' => $this->limit,
-            'itemsCount' => $itemsCount
+            'itemsCount' => $itemsCount,
+            'resultCount' => $resultCount,
         ]);
     }
 

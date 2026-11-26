@@ -79,6 +79,7 @@ require_once 'Zend/Version.php';
  * @subpackage App
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @deprecated Deprecated since 1.27.1 and will be removed in a future version: Google shut down the Google Data APIs it implements and the ClientLogin and AuthSub authentication
  */
 abstract class Zend_Gdata_App_FeedEntryParent extends Zend_Gdata_App_Base
 {
@@ -378,8 +379,8 @@ abstract class Zend_Gdata_App_FeedEntryParent extends Zend_Gdata_App_Base
      * 'edit', and 'alternate'.
      *
      * @param string $rel The rel value of the link to be found.  If null,
-     *     the array of Zend_Gdata_App_Extension_link elements is returned
-     * @return mixed Either a single Zend_Gdata_App_Extension_link element,
+     *     the array of Zend_Gdata_App_Extension_Link elements is returned
+     * @return mixed Either a single Zend_Gdata_App_Extension_Link element,
      *     an array of the same or null is returned depending on the rel value
      *     supplied as the argument to this function
      */
@@ -517,7 +518,7 @@ abstract class Zend_Gdata_App_FeedEntryParent extends Zend_Gdata_App_Base
      * The title is an extremely short textual representation of this
      * resource and is found as an atom:title element in a feed or entry
      *
-     * @return string
+     * @return string|null
      */
     public function getTitleValue()
     {

@@ -29,6 +29,7 @@ require_once 'Zend/Queue.php';
  * @subpackage QueueService
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @deprecated Deprecated since 1.27.1 and will be removed in a future version: the Simple Cloud API is not developed any further; use the SDK of the cloud provider
  */
 class Zend_Cloud_QueueService_Adapter_ZendQueue
     extends Zend_Cloud_QueueService_Adapter_AbstractAdapter
@@ -59,6 +60,8 @@ class Zend_Cloud_QueueService_Adapter_ZendQueue
      */
     public function __construct ($options = [])
     {
+        trigger_error(get_class($this) . ' is deprecated and will be removed in a future version', E_USER_DEPRECATED);
+
         if ($options instanceof Zend_Config) {
             $options = $options->toArray();
         }
@@ -115,7 +118,7 @@ class Zend_Cloud_QueueService_Adapter_ZendQueue
      *
      * @param string $queueId
      * @param array $options
-     * @return boolean true if successful, false otherwise
+     * @return boolean|null true if successful, false otherwise
      * @throws Zend_Cloud_QueueService_Exception
      */
     public function deleteQueue($queueId, $options = null)
@@ -131,6 +134,8 @@ class Zend_Cloud_QueueService_Adapter_ZendQueue
         } catch (Zend_Queue_Exception $e) {
             throw new Zend_Cloud_QueueService_Exception('Error on queue deletion: '.$e->getMessage(), $e->getCode(), $e);
         }
+
+        return null;
     }
 
     /**
@@ -177,7 +182,7 @@ class Zend_Cloud_QueueService_Adapter_ZendQueue
      * @param string $queueId
      * @param array $metadata
      * @param array $options
-     * @return void
+     * @return Zend_Queue
      * @throws Zend_Cloud_QueueService_Exception
      */
     public function storeQueueMetadata($queueId, $metadata, $options = null)
@@ -264,7 +269,7 @@ class Zend_Cloud_QueueService_Adapter_ZendQueue
      * @param string $queueId
      * @param Zend_Cloud_QueueService_Message $message Message ID or message
      * @param array $options
-     * @return void
+     * @return bool
      * @throws Zend_Cloud_QueueService_Exception
      */
     public function deleteMessage($queueId, $message, $options = null)

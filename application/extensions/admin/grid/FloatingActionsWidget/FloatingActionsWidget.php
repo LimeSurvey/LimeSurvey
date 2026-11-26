@@ -115,12 +115,12 @@ class FloatingActionsWidget extends CWidget
                 continue;
             }
 
-            if ($action['type'] === 'action'
+            if (
+                $action['type'] === 'action'
                 && isset($action['actionType'])
                 && $action['actionType'] === 'modal'
             ) {
                 $this->renderModal((string) $key, $action);
-
             } elseif ($action['type'] === 'dropdown' && !empty($action['items'])) {
                 foreach ($action['items'] as $subKey => $subAction) {
                     if (isset($subAction['actionType']) && $subAction['actionType'] === 'modal') {
@@ -191,4 +191,3 @@ class FloatingActionsWidget extends CWidget
         return 'floating-actions-modal-' . $this->gridId . '-' . $action . '-' . $keyStr;
     }
 }
-

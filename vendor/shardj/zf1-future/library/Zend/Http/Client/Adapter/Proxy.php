@@ -233,7 +233,7 @@ class Zend_Http_Client_Adapter_Proxy extends Zend_Http_Client_Adapter_Socket
      * Preform handshaking with HTTPS proxy using CONNECT method
      *
      * @param string  $host
-     * @param integer $port
+     * @param integer|string $port
      * @param string  $http_ver
      * @param array   $headers
      * @return void

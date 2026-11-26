@@ -1,14 +1,13 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Button } from 'react-bootstrap'
-import { useParams } from 'react-router-dom'
 import { Draggable } from '@hello-pangea/dnd'
 import { PlusLg } from 'react-bootstrap-icons'
 import classNames from 'classnames'
 import {
   useAppState,
   useBuffer,
-  useSurvey,
   useChildKeyboardShortcuts,
+  useToggleQuestionCodes,
 } from 'hooks'
 import {
   createBufferOperation,
@@ -79,8 +78,6 @@ export const OptionQuestionEditMode = ({
   surveySettings = {},
 }) => {
   const { questionThemeName, showAssessmentValue } = question
-  const { surveyId } = useParams()
-  const { survey } = useSurvey(surveyId)
   const surveyLanguages = surveySettings.languages ?? []
   const [showLoadLabelSetModal, setShowLoadLabelSetModal] = useState(false)
   const { addToBuffer } = useBuffer()
@@ -122,6 +119,7 @@ export const OptionQuestionEditMode = ({
     }
     return false
   }
+  const { areCodesVisible } = useToggleQuestionCodes()
   const isSingleChoiceTheme = singleChoiceThemes.includes(questionThemeName)
   const isImageTheme = getImageSelectThemes().includes(questionThemeName)
 
@@ -602,7 +600,7 @@ export const OptionQuestionEditMode = ({
                       })}
                     />
                   </div>
-                  {survey.showQNumCode?.showNumber && (
+                  {areCodesVisible && (
                     <SubquestionCodeInput
                       isSurveyActive={isSurveyActive}
                       code={isSingleChoiceTheme ? child.code : child.title}

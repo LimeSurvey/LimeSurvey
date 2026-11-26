@@ -225,7 +225,7 @@ class Zend_Service_Amazon_Ec2_Instance extends Zend_Service_Amazon_Ec2_Abstract
      * Recently terminated instances might appear in the returned results.
      * This interval is usually less than one hour.
      *
-     * @param string|array $instaceId       Set of instances IDs of which to get the status.
+     * @param string|array $instanceId       Set of instances IDs of which to get the status.
      * @param boolean $ignoreTerminated     Ture to ignore Terminated Instances.
      * @return array
      */

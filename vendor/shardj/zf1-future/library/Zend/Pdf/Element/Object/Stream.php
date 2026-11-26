@@ -44,7 +44,7 @@ class Zend_Pdf_Element_Object_Stream extends Zend_Pdf_Element_Object
      * Required enries:
      * Length
      *
-     * @var Zend_Pdf_Element_Dictionary
+     * @var Zend_Pdf_Element_Dictionary|null
      */
     private $_dictionary;
 

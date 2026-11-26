@@ -68,6 +68,7 @@ require_once 'Zend/Gdata/Photos/CommentEntry.php';
  * @subpackage Photos
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @deprecated Deprecated since 1.27.1 and will be removed in a future version: Google shut down the Google Data APIs it implements and the ClientLogin and AuthSub authentication
  */
 class Zend_Gdata_Photos_UserFeed extends Zend_Gdata_Feed
 {
@@ -189,7 +190,7 @@ class Zend_Gdata_Photos_UserFeed extends Zend_Gdata_Feed
     /**
      * Set the value for this element's gphoto:user attribute.
      *
-     * @param string $value The desired value for this attribute.
+     * @param Zend_Gdata_Photos_Extension_User $value The desired value for this attribute.
      * @return Zend_Gdata_Photos_UserFeed The element being modified.
      */
     public function setGphotoUser($value)
@@ -212,7 +213,7 @@ class Zend_Gdata_Photos_UserFeed extends Zend_Gdata_Feed
     /**
      * Set the value for this element's gphoto:nickname attribute.
      *
-     * @param string $value The desired value for this attribute.
+     * @param Zend_Gdata_Photos_Extension_Nickname $value The desired value for this attribute.
      * @return Zend_Gdata_Photos_UserFeed The element being modified.
      */
     public function setGphotoNickname($value)
@@ -235,7 +236,7 @@ class Zend_Gdata_Photos_UserFeed extends Zend_Gdata_Feed
     /**
      * Set the value for this element's gphoto:thumbnail attribute.
      *
-     * @param string $value The desired value for this attribute.
+     * @param Zend_Gdata_Photos_Extension_Thumbnail $value The desired value for this attribute.
      * @return Zend_Gdata_Photos_UserFeed The element being modified.
      */
     public function setGphotoThumbnail($value)

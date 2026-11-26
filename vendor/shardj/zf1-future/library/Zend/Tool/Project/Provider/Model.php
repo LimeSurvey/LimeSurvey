@@ -20,6 +20,8 @@
  * @version    $Id$
  */
 
+require_once 'Zend/Tool/Project/Provider/Abstract.php';
+
 /**
  * @category   Zend
  * @package    Zend_Tool
@@ -32,6 +34,7 @@ class Zend_Tool_Project_Provider_Model extends Zend_Tool_Project_Provider_Abstra
     public static function createResource(Zend_Tool_Project_Profile $profile, $modelName, $moduleName = null)
     {
         if (!is_string($modelName)) {
+            require_once 'Zend/Tool/Project/Provider/Exception.php';
             throw new Zend_Tool_Project_Provider_Exception('Zend_Tool_Project_Provider_Model::createResource() expects \"modelName\" is the name of a model resource to create.');
         }
 
@@ -41,6 +44,7 @@ class Zend_Tool_Project_Provider_Model extends Zend_Tool_Project_Provider_Abstra
             } else {
                 $exceptionMessage = 'A model directory was not found.';
             }
+            require_once 'Zend/Tool/Project/Provider/Exception.php';
             throw new Zend_Tool_Project_Provider_Exception($exceptionMessage);
         }
 
@@ -61,6 +65,7 @@ class Zend_Tool_Project_Provider_Model extends Zend_Tool_Project_Provider_Abstra
     public static function hasResource(Zend_Tool_Project_Profile $profile, $modelName, $moduleName = null)
     {
         if (!is_string($modelName)) {
+            require_once 'Zend/Tool/Project/Provider/Exception.php';
             throw new Zend_Tool_Project_Provider_Exception('Zend_Tool_Project_Provider_Model::createResource() expects \"modelName\" is the name of a model resource to check for existence.');
         }
 
@@ -113,10 +118,12 @@ class Zend_Tool_Project_Provider_Model extends Zend_Tool_Project_Provider_Abstra
 
         // Check that there is not a dash or underscore, return if doesnt match regex
         if (preg_match('#[_-]#', $name)) {
+            require_once 'Zend/Tool/Project/Provider/Exception.php';
             throw new Zend_Tool_Project_Provider_Exception('Model names should be camel cased.');
         }
 
         if (self::hasResource($this->_loadedProfile, $name, $module)) {
+            require_once 'Zend/Tool/Project/Provider/Exception.php';
             throw new Zend_Tool_Project_Provider_Exception('This project already has a model named ' . $name);
         }
 

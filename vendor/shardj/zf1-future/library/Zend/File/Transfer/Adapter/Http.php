@@ -57,7 +57,7 @@ class Zend_File_Transfer_Adapter_Http extends Zend_File_Transfer_Adapter_Abstrac
     /**
      * Sets a validator for the class, erasing all previous set
      *
-     * @param  string|array $validator Validator to set
+     * @param  array $validators Validators to set
      * @param  string|array $files     Files to limit this validator to
      * @return Zend_File_Transfer_Adapter_Http
      */
@@ -85,7 +85,6 @@ class Zend_File_Transfer_Adapter_Http extends Zend_File_Transfer_Adapter_Abstrac
     /**
      * Remove an individual validator
      *
-     * @param  string $name
      * @return Zend_File_Transfer_Adapter_Abstract
      */
     public function clearValidators()
@@ -100,7 +99,7 @@ class Zend_File_Transfer_Adapter_Http extends Zend_File_Transfer_Adapter_Abstrac
      * Send the file to the client (Download)
      *
      * @param  string|array $options Options for the file(s) to send
-     * @return void
+     * @return never
      * @throws Zend_File_Transfer_Exception Not implemented
      */
     public function send($options = null)
@@ -223,7 +222,7 @@ class Zend_File_Transfer_Adapter_Http extends Zend_File_Transfer_Adapter_Abstrac
     /**
      * Checks if the file was already sent
      *
-     * @param  string|array $file Files to check
+     * @param  string|array $files Files to check
      * @return bool
      * @throws Zend_File_Transfer_Exception Not implemented
      */
@@ -280,7 +279,7 @@ class Zend_File_Transfer_Adapter_Http extends Zend_File_Transfer_Adapter_Abstrac
     /**
      * Has a file been uploaded ?
      *
-     * @param  array|string|null $file
+     * @param  array|string|null $files
      * @return bool
      */
     public function isUploaded($files = null)
@@ -352,6 +351,7 @@ class Zend_File_Transfer_Adapter_Http extends Zend_File_Transfer_Adapter_Abstrac
         }
 
         if (!empty($id)) {
+            $call = null;
             if (self::isApcAvailable()) {
 
                 $call = call_user_func(self::$_callbackApc, ini_get('apc.rfc1867_prefix') . $id);

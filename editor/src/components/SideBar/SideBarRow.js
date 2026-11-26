@@ -5,11 +5,10 @@ import React, {
   useRef,
   useCallback,
 } from 'react'
-import { useParams } from 'react-router-dom'
 import classNames from 'classnames'
 import Button from 'react-bootstrap/Button'
 
-import { useSurvey } from 'hooks'
+import { useToggleQuestionCodes } from 'hooks'
 import { ArrowDownIcon } from 'components/icons'
 import { ContentEditor, Dropdown, TooltipContainer } from 'components'
 import { RemoveHTMLTagsInString } from 'helpers'
@@ -40,9 +39,7 @@ export const SideBarRow = ({
   menuItems = [],
 }) => {
   const [isOpen, setOpen] = useState(_isOpen)
-  const { surveyId } = useParams()
-  const { survey } = useSurvey(surveyId)
-  const showQNumCode = survey.showQNumCode
+  const { areCodesVisible } = useToggleQuestionCodes()
 
   useEffect(() => {
     if (!isOpen) {
@@ -110,8 +107,7 @@ export const SideBarRow = ({
   const rowType = isQuestionGroup ? 'group' : isPinned ? 'pinned' : 'question'
   // The drag library passes null (not undefined) when dragging is disabled
   const isDraggable = !!provided.dragHandleProps
-  const showCodeBadge =
-    rowType === 'question' && showQNumCode?.showCode && !!code
+  const showCodeBadge = rowType === 'question' && areCodesVisible && !!code
 
   useLayoutEffect(() => {
     const el = codeRef.current
@@ -208,7 +204,7 @@ export const SideBarRow = ({
             <ContentEditor
               className={classNames('structure-item-title', {
                 'question-group': !code,
-                'question-code': showQNumCode?.showCode,
+                'question-code': areCodesVisible,
               })}
               data-placeholder={titlePlaceholder}
               value={RemoveHTMLTagsInString(title)}

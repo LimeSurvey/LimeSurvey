@@ -137,7 +137,7 @@ class Zend_Tool_Project_Profile_FileParser_Xml implements Zend_Tool_Project_Prof
      * when *serializing* an xml structure into a string
      *
      * @param array $resources
-     * @param SimpleXmlElement $xmlNode
+     * @param SimpleXMLElement $xmlNode
      */
     protected function _serializeRecurser($resources, SimpleXMLElement $xmlNode)
     {

@@ -222,13 +222,15 @@ abstract class Zend_Http_UserAgent_AbstractDevice
         if ($this->hasFeature($feature)) {
             return $this->_aFeatures[$feature];
         }
+
+        return null;
     }
 
     /**
      * Set a feature for the current browser/device.
      *
      * @param  string $feature The feature to set.
-     * @param  string $value (option) feature value.
+     * @param  string|bool $value (option) feature value.
      * @param  string $group (option) Group to associate with the feature
      * @return Zend_Http_UserAgent_AbstractDevice
      */
@@ -771,7 +773,6 @@ abstract class Zend_Http_UserAgent_AbstractDevice
      * Loads the Features Adapter if it's defined in the $config array
      * Otherwise, nothing is done
      *
-     * @param  string $browserType Browser type
      * @return array
      */
     protected function _loadFeaturesAdapter()
@@ -809,7 +810,7 @@ abstract class Zend_Http_UserAgent_AbstractDevice
     /**
      * Retrieve image format support
      *
-     * @return array
+     * @return array|null
      */
     public function getImageFormatSupport()
     {
@@ -869,7 +870,7 @@ abstract class Zend_Http_UserAgent_AbstractDevice
     /**
      * Get supported X/HTML version
      *
-     * @return int
+     * @return int|string|null
      */
     public function getXhtmlSupportLevel()
     {
@@ -879,7 +880,7 @@ abstract class Zend_Http_UserAgent_AbstractDevice
     /**
      * Does the device support Flash?
      *
-     * @return bool
+     * @return bool|string|null
      */
     public function hasFlashSupport()
     {
@@ -889,7 +890,7 @@ abstract class Zend_Http_UserAgent_AbstractDevice
     /**
      * Does the device support PDF?
      *
-     * @return bool
+     * @return bool|string|null
      */
     public function hasPdfSupport()
     {
@@ -899,7 +900,7 @@ abstract class Zend_Http_UserAgent_AbstractDevice
     /**
      * Does the device have a phone number associated with it?
      *
-     * @return bool
+     * @return bool|string|null
      */
     public function hasPhoneNumber()
     {

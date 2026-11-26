@@ -18,7 +18,6 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-require_once 'Zend/EventManager/EventManager.php';
 require_once 'Zend/EventManager/SharedEventCollection.php';
 
 /**
@@ -75,6 +74,7 @@ class Zend_EventManager_SharedEventManager implements Zend_EventManager_SharedEv
         $ids = (array) $id;
         foreach ($ids as $id) {
             if (!array_key_exists($id, $this->identifiers)) {
+                require_once 'Zend/EventManager/EventManager.php';
                 $this->identifiers[$id] = new Zend_EventManager_EventManager();
             }
             $this->identifiers[$id]->attach($event, $callback, $priority);

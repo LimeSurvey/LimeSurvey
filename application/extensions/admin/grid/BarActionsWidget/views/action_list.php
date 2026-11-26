@@ -14,11 +14,11 @@
                 href="<?= $item['url'] ?>"
                 data-bs-toggle="tooltip"
                 data-bs-original-title="<?= $item['title'] ?>"
-            <?php else : ?>
+           <?php else : ?>
                 class="disabled"
                 role="link"
                 aria-disabled="true"
-            <?php endif; ?>
+           <?php endif; ?>
             aria-label="<?= $item['title'] ?>"
         >
             <i class="<?= $item['iconClass'] ?>" aria-hidden="true"></i>

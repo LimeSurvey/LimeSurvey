@@ -140,7 +140,7 @@ class Zend_Form_Decorator_ViewHelper extends Zend_Form_Decorator_Abstract
      *
      * Set id to element name and/or array item.
      *
-     * @return array
+     * @return array|null
      */
     public function getElementAttribs()
     {

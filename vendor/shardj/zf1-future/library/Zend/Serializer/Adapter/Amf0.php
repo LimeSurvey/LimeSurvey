@@ -41,9 +41,20 @@ require_once 'Zend/Amf/Parse/Amf0/Deserializer.php';
  * @subpackage Adapter
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @deprecated Deprecated since 1.27.1 and will be removed in a future version: AMF is the data format of Adobe Flash Player, which reached its end of life on 2020-12-31
  */
 class Zend_Serializer_Adapter_Amf0 extends Zend_Serializer_Adapter_AdapterAbstract
 {
+    /**
+     * @param array|Zend_Config $opts
+     */
+    public function __construct($opts = [])
+    {
+        trigger_error(get_class($this) . ' is deprecated and will be removed in a future version', E_USER_DEPRECATED);
+
+        parent::__construct($opts);
+    }
+
     /**
      * Serialize a PHP value to AMF0 format
      *
@@ -70,7 +81,7 @@ class Zend_Serializer_Adapter_Amf0 extends Zend_Serializer_Adapter_AdapterAbstra
      *
      * @param  mixed $value
      * @param  array $opts
-     * @return array|bool|DomDocument|float|object|SimpleXMLElement|string|Zend_Date|null
+     * @return array|bool|DOMDocument|float|object|SimpleXMLElement|string|Zend_Date|null
      * @throws Zend_Serializer_Exception
      */
     public function unserialize($value, array $opts = [])

@@ -35,7 +35,7 @@ class ExpressionManager
      * so it does not end a single-quoted string. A quote directly followed by an operator word
      * (e.g. 'a'and'b') still ends the string.
      */
-    const RDP_REGEX_INNER_APOSTROPHE = '(?<=\\p{L}\')(?!(?:and|or|eq|ne|lt|le|gt|ge)\\b)\\p{L}';
+    public const RDP_REGEX_INNER_APOSTROPHE = '(?<=\\p{L}\')(?!(?:and|or|eq|ne|lt|le|gt|ge)\\b)\\p{L}';
 
     // These are the allowable variable suffixes for variables - each represents an attribute of a variable that can be updated on same page
     private $aRDP_regexpVariableAttribute = array(
@@ -107,7 +107,7 @@ class ExpressionManager
     private $hyperlinkSyntaxHighlighting = true; // TODO - change this back to false
     private $sgqaNaming = false;
 
-    function __construct()
+    public function __construct()
     {
         /* EM core string must be in adminlang : keep the actual for resetting at end. See bug #12208 */
         /**
@@ -2179,7 +2179,7 @@ class ExpressionManager
      * @param string $src
      * @return string
      */
-    function ExpandThisVar($src)
+    public function ExpandThisVar($src)
     {
         /** @var array */
         static $cache = [];
@@ -2764,7 +2764,7 @@ class ExpressionManager
      * Show a table of allowable ExpressionScript Engine functions
      * @return string
      */
-    static function ShowAllowableFunctions()
+    public static function ShowAllowableFunctions()
     {
         $em = new ExpressionManager();
         $output = "<div class='h3'>Functions Available within ExpressionScript Engine</div>\n";
@@ -2787,7 +2787,7 @@ class ExpressionManager
      * Show a table of allowable ExpressionScript Engine functions
      * @return string
      */
-    static function GetAllowableFunctions()
+    public static function GetAllowableFunctions()
     {
         $em = new ExpressionManager();
         return $em->RDP_ValidFunctions;

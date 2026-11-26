@@ -65,7 +65,7 @@ abstract class Zend_Dojo_Form_Element_Dijit extends Zend_Form_Element
      *
      * @param  string $key
      * @param  mixed $value
-     * @return Zend_Dojo_Form_Element_Dijit
+     * @return $this
      */
     public function setDijitParam($key, $value)
     {
@@ -78,7 +78,7 @@ abstract class Zend_Dojo_Form_Element_Dijit extends Zend_Form_Element
      * Set multiple dijit params at once
      *
      * @param  array $params
-     * @return Zend_Dojo_Form_Element_Dijit
+     * @return $this
      */
     public function setDijitParams(array $params)
     {
