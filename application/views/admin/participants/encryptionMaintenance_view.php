@@ -32,7 +32,7 @@
             </div>
         </div>
     <?php endif; ?>
-    <?php if (!$currentReencryptLastParticipantId && $duplicateFinderInvalidCount) : ?>
+    <?php if (!$currentReencryptLastParticipantId && ($duplicateFinderInvalidCount || $currentDuplicateFinderInvalidParticipantId)) : ?>
         <div class="card">
             <div class="card-header"><h2 class="h4"><?= gT("Recalculate participant duplicate indexes") ?></h2></div>
             <div class="card-body">
@@ -42,7 +42,7 @@
                     <?= 
                     Chtml::htmlButton(
                         sprintf(gT("Continue from last position, still %s to fix"), $currentDuplicateFinderInvalidStillToProcess),
-                        [ 'name' => 'rencrypt', 'value' => 'continue', 'type' => 'submit', 'type' => 'submit', 'class' => 'btn btn-primary']
+                        [ 'name' => 'rencrypt', 'value' => 'continue', 'type' => 'submit', 'class' => 'btn btn-primary']
                     ) ?>
                     <?= Chtml::htmlButton(
                         gT("Start from the beginning"),
