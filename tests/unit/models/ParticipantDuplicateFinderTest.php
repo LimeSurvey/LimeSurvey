@@ -201,6 +201,18 @@ class ParticipantDuplicateFinderTest extends TestBaseClass
         $this->assertSame([], Participant::getDuplicates($values, 999999));
     }
 
+    /** An unused participant_id : the name and email fallback is used only when asked (survey participant with a stale link), not for an import with its own id. */
+    public function testUnusedParticipantIdNameEmailFallback(): void
+    {
+        $participant = $this->createParticipant(['firstname' => 'Marcus', 'lastname' => 'Wright', 'email' => 'marcus@example.org']);
+        $values = ['participant_id' => Participant::genUuid(), 'firstname' => 'Marcus', 'lastname' => 'Wright', 'email' => 'marcus@example.org'];
+
+        $duplicates = Participant::getDuplicates($values);
+        $this->assertCount(1, $duplicates);
+        $this->assertSame($participant->participant_id, $duplicates[0]->participant_id);
+        $this->assertSame([], Participant::getDuplicates($values, false, false));
+    }
+
     /** Without firstname, lastname and email, a participant is never a duplicate. */
     public function testEmptyParticipantIsNeverADuplicate(): void
     {

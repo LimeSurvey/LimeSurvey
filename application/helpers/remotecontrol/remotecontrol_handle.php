@@ -4282,7 +4282,7 @@ class remotecontrol_handle
             }
 
             /* By participant_id if set, else by firstname, lastname and email of current user (works with encrypted attributes) */
-            $duplicates = Participant::getDuplicates($participant, Yii::app()->session['loginID']);
+            $duplicates = Participant::getDuplicates($participant, Yii::app()->session['loginID'], false);
             if (!empty($duplicates)) {
                 $model = reset($duplicates);
             }

@@ -2805,13 +2805,15 @@ class Participant extends LSActiveRecord
     /**
      * Find duplicates participant and return the array using default core system
      * If participant_id is is set and not empty : use it
-     * Else duplicate are found using firstname, lastname, email and owner_uid
+     * Else (or if not found and $nameEmailFallback) duplicate are found using firstname, lastname, email and owner_uid
      * If firstname, lastname and email are all empty : no duplicate (empty array)
      * @param string[]
      * @param false|integer owner_id to use, if false : get in all CPDB, never used if  participant_id is set
+     * @param boolean $nameEmailFallback participant_id set but not found : check firstname, lastname and email (survey participant with a stale link),
+     *     false when the participant_id is the identity of the participant (CSV import, API)
      * @return false|self[] false if duplicates can not be checked (duplicate finder disabled with encrypted core attributes)
      */
-    public static function getDuplicates(array $participant, $ownerid = false)
+    public static function getDuplicates(array $participant, $ownerid = false, $nameEmailFallback = true)
     {
         
         /* If participant_id is in $participant : directly use it */
@@ -2824,7 +2826,7 @@ class Participant extends LSActiveRecord
                 $duplicate->decrypt();
             }
             /* participant_id not in CPDB (external id, deleted participant) : check firstname, lastname and email */
-            if (!empty($duplicates)) {
+            if (!empty($duplicates) || !$nameEmailFallback) {
                 return $duplicates;
             }
         }

@@ -1119,13 +1119,13 @@ class ParticipantsAction extends SurveyCommonAction
                 } else {
                     $dupreason = "nameemail";
                 }
-                $existingParticipants = Participant::getDuplicates($writearray, Yii::app()->session['loginID']);
+                $existingParticipants = Participant::getDuplicates($writearray, Yii::app()->session['loginID'], false);
                 // Note: Older participant IDs can have surrounding spaces, so the ID is only trimmed if no participant has it as is
                 if (empty($existingParticipants) && isset($writearray['participant_id'])) {
                     $trimmedParticipantId = trim((string) $writearray['participant_id']);
                     if ($trimmedParticipantId !== $writearray['participant_id']) {
                         $writearray['participant_id'] = $trimmedParticipantId;
-                        $existingParticipants = Participant::getDuplicates($writearray, Yii::app()->session['loginID']);
+                        $existingParticipants = Participant::getDuplicates($writearray, Yii::app()->session['loginID'], false);
                     }
                 }
                 // New participants need a UUID as participant ID, existing ones are still found by an older ID
