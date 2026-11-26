@@ -20,6 +20,9 @@ class ParticipantReencryptMethodChangeTest extends TestBaseClass
     /** @var mixed */
     private $encryptionMethod;
 
+    /** @var mixed */
+    private $backupDuplicateFinderBits;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -30,6 +33,7 @@ class ParticipantReencryptMethodChangeTest extends TestBaseClass
         Yii::app()->session['aFlashMessage'] = [];
         $_SERVER['REQUEST_METHOD'] = 'POST';
         $this->encryptionMethod = Yii::app()->getConfig('CPDB_encryption_method');
+        $this->backupDuplicateFinderBits = Yii::app()->getConfig('CPDB_duplicatefinder_bits');
 
         $participant = new Participant();
         $participant->participant_id = Participant::genUuid();
@@ -50,7 +54,7 @@ class ParticipantReencryptMethodChangeTest extends TestBaseClass
         Yii::app()->user->setState('currentReencryptFailed', null);
         Yii::app()->user->setState('currentDuplicateFinderInvalidParticipantId', null);
         Yii::app()->user->setState('currentDuplicateFinderBits', null);
-        Yii::app()->setConfig('CPDB_duplicatefinder_bits', 128);
+        Yii::app()->setConfig('CPDB_duplicatefinder_bits', $this->backupDuplicateFinderBits);
         Yii::app()->session['aFlashMessage'] = [];
         $_SERVER['REQUEST_METHOD'] = 'GET';
         parent::tearDown();
