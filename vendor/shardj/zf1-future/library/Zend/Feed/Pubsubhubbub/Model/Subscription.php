@@ -82,7 +82,7 @@ class Zend_Feed_Pubsubhubbub_Model_Subscription
      * @param  string $key
      * @throws Zend_Db_Table_Exception
      * @throws Zend_Feed_Pubsubhubbub_Exception
-     * @return array
+     * @return array|false
      */
     public function getSubscription($key)
     {

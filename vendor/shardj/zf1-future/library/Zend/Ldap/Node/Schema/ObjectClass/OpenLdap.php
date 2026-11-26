@@ -28,6 +28,7 @@ require_once 'Zend/Ldap/Node/Schema/Item.php';
  * @see Zend_Ldap_Node_Schema_ObjectClass_Interface
  */
 require_once 'Zend/Ldap/Node/Schema/ObjectClass/Interface.php';
+require_once 'Zend/Ldap/Node/Schema.php';
 
 /**
  * Zend_Ldap_Node_Schema_ObjectClass_OpenLdap provides access to the objectClass

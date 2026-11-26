@@ -142,6 +142,7 @@ class Zend_Controller_Plugin_ErrorHandler extends Zend_Controller_Plugin_Abstrac
     public function getErrorHandlerModule()
     {
         if (null === $this->_errorModule) {
+            require_once 'Zend/Controller/Front.php';
             $this->_errorModule = Zend_Controller_Front::getInstance()->getDispatcher()->getDefaultModule();
         }
         return $this->_errorModule;
@@ -234,6 +235,7 @@ class Zend_Controller_Plugin_ErrorHandler extends Zend_Controller_Plugin_Abstrac
      */
     protected function _handleError(Zend_Controller_Request_Abstract $request)
     {
+        require_once 'Zend/Controller/Front.php';
         $frontController = Zend_Controller_Front::getInstance();
         if ($frontController->getParam('noErrorHandler')) {
             return;
@@ -255,36 +257,37 @@ class Zend_Controller_Plugin_ErrorHandler extends Zend_Controller_Plugin_Abstrac
             $this->_isInsideErrorHandlerLoop = true;
 
             // Get exception information
+            /** @var ArrayObject<string, mixed> $error */
             $error            = new ArrayObject([], ArrayObject::ARRAY_AS_PROPS);
             $exceptions       = $response->getException();
             $exception        = $exceptions[0];
             $exceptionType    = get_class($exception);
-            $error->exception = $exception;
+            $error['exception'] = $exception;
             switch ($exceptionType) {
                 case 'Zend_Controller_Router_Exception':
                     if (404 == $exception->getCode()) {
-                        $error->type = self::EXCEPTION_NO_ROUTE;
+                        $error['type'] = self::EXCEPTION_NO_ROUTE;
                     } else {
-                        $error->type = self::EXCEPTION_OTHER;
+                        $error['type'] = self::EXCEPTION_OTHER;
                     }
                     break;
                 case 'Zend_Controller_Dispatcher_Exception':
-                    $error->type = self::EXCEPTION_NO_CONTROLLER;
+                    $error['type'] = self::EXCEPTION_NO_CONTROLLER;
                     break;
                 case 'Zend_Controller_Action_Exception':
                     if (404 == $exception->getCode()) {
-                        $error->type = self::EXCEPTION_NO_ACTION;
+                        $error['type'] = self::EXCEPTION_NO_ACTION;
                     } else {
-                        $error->type = self::EXCEPTION_OTHER;
+                        $error['type'] = self::EXCEPTION_OTHER;
                     }
                     break;
                 default:
-                    $error->type = self::EXCEPTION_OTHER;
+                    $error['type'] = self::EXCEPTION_OTHER;
                     break;
             }
 
             // Keep a copy of the original request
-            $error->request = clone $request;
+            $error['request'] = clone $request;
 
             // get a count of the number of exceptions encountered
             $this->_exceptionCountAtFirstEncounter = count($exceptions);

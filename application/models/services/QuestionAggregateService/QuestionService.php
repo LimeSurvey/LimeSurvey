@@ -166,16 +166,8 @@ class QuestionService
                 ->getConfig('preselectquestiontype')
         );
 
-        if (isset($data['same_default'])) {
-            if ($data['same_default'] == 1) {
-                $data['same_default'] = 0;
-            } else {
-                $data['same_default'] = 1;
-            }
-        }
-        if (!isset($data['same_script'])) {
-            $data['same_script'] = 0;
-        }
+        // A flag that isn't sent gets the default of the model (off)
+        $data = $this->normalizeQuestionFlags($data);
 
         $data = array_merge(
             [
@@ -443,18 +435,21 @@ class QuestionService
     }
 
     /**
-     * @param array $data
-     * @return array
+     * Normalizes the "same for all languages" flags (same_default, same_script) of the question data:
+     * A flag that is sent is saved as 0 or 1, a flag that isn't sent (or is null) is removed from
+     * the data, so the question keeps its stored value.
+     *
+     * @param array $data The question data
+     * @return array The question data with the sent flags as 0 or 1
      */
     private function normalizeQuestionFlags($data)
     {
-        // @todo something wrong in frontend ... (?what is wrong?)
-        if (isset($data['same_default'])) {
-            $data['same_default'] = $data['same_default'] == 1 ? 0 : 1;
-        }
-
-        if (!isset($data['same_script'])) {
-            $data['same_script'] = 0;
+        foreach (['same_default', 'same_script'] as $flag) {
+            if (isset($data[$flag])) {
+                $data[$flag] = empty($data[$flag]) ? 0 : 1;
+            } else {
+                unset($data[$flag]);
+            }
         }
 
         return $data;

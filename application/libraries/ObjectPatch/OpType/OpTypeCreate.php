@@ -4,5 +4,5 @@ namespace LimeSurvey\ObjectPatch\OpType;
 
 class OpTypeCreate extends OpType
 {
-    const ID = 'create';
+    public const ID = 'create';
 }

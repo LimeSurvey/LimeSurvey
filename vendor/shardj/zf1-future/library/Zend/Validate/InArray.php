@@ -116,7 +116,7 @@ class Zend_Validate_InArray extends Zend_Validate_Abstract
     /**
      * Sets the haystack option
      *
-     * @param  mixed $haystack
+     * @param  array $haystack
      * @return $this
      */
     public function setHaystack(array $haystack)

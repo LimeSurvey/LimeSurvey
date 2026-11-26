@@ -144,12 +144,12 @@ abstract class Zend_Date_DateObject
      * Year has to be 4 digits otherwise it would be recognised as
      * year 70 AD instead of 1970 AD as expected !!
      *
-     * @param  integer  $hour
-     * @param  integer  $minute
-     * @param  integer  $second
-     * @param  integer  $month
-     * @param  integer  $day
-     * @param  integer  $year    Added limitation: $year value must be between -10 000 and 10 000
+     * @param  integer|string|float  $hour
+     * @param  integer|string|float  $minute
+     * @param  integer|string|float  $second
+     * @param  integer|string  $month
+     * @param  integer|string  $day
+     * @param  integer|string  $year    Added limitation: $year value must be between -10 000 and 10 000
      *                           Original method implementation causes 504 error if it gets too big(small) year value
      * @param  boolean  $gmt     OPTIONAL true = other arguments are for UTC time, false = arguments are for local time/date
      * @return integer|float     timestamp (number of seconds elapsed relative to 1970/01/01 00:00:00 GMT/UTC)
@@ -356,12 +356,6 @@ abstract class Zend_Date_DateObject
             if ($tempstamp > 0) {
                 while (abs($tempstamp) > 0x7FFFFFFF) {
                     $tempstamp -= (86400 * 23376);
-                }
-
-                $dst = date("I", $tempstamp);
-
-                if ($dst === 1) {
-                    $timestamp += 3600;
                 }
 
                 $temp       = date('Z', $tempstamp);
@@ -649,7 +643,7 @@ abstract class Zend_Date_DateObject
      *
      * @param  integer  $year
      * @param  integer  $month
-     * @param  integer  $day
+     * @param  integer|float  $day
      * @return integer  dayOfWeek
      */
     protected static function dayOfWeek($year, $month, $day)
@@ -1066,7 +1060,7 @@ abstract class Zend_Date_DateObject
      * For a list of supported timezones look here: http://php.net/timezones
      * If no timezone can be detected or the given timezone is wrong UTC will be set.
      *
-     * @param  string  $zone      OPTIONAL timezone for date calculation; defaults to date_default_timezone_get()
+     * @param  string|int  $zone      OPTIONAL timezone for date calculation; defaults to date_default_timezone_get()
      * @return $this
      * @throws Zend_Date_Exception
      */
@@ -1139,7 +1133,6 @@ abstract class Zend_Date_DateObject
     /**
      * Internal method to check if the given cache supports tags
      *
-     * @param Zend_Cache $cache
      */
     protected static function _getTagSupportForCache()
     {

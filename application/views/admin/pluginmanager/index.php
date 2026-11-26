@@ -113,4 +113,3 @@ $this->widget(
 );
 
 $this->renderPartial('./pluginmanager/uploadModal', []);
-?>

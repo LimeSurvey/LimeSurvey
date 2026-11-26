@@ -194,7 +194,7 @@ class Zend_Filter_Inflector implements Zend_Filter_Interface
      * Set Whether or not the inflector should throw an exception when a replacement
      * identifier is still found within an inflected target.
      *
-     * @param bool $throwTargetExceptions
+     * @param bool $throwTargetExceptionsOn
      * @return Zend_Filter_Inflector
      */
     public function setThrowTargetExceptionsOn($throwTargetExceptionsOn)
@@ -264,7 +264,7 @@ class Zend_Filter_Inflector implements Zend_Filter_Interface
     /**
      * Set Target Reference
      *
-     * @param reference $target
+     * @param string $target
      * @return Zend_Filter_Inflector
      */
     public function setTargetReference(&$target)

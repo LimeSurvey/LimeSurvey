@@ -57,7 +57,7 @@ class Zend_Tool_Project_Context_Zf_FormFile extends Zend_Tool_Project_Context_Zf
     {
         $this->_formName = $this->_resource->getAttribute('formName');
         $this->_filesystemName = ucfirst($this->_formName) . '.php';
-        parent::init();
+        return parent::init();
     }
 
     /**
@@ -92,6 +92,9 @@ class Zend_Tool_Project_Context_Zf_FormFile extends Zend_Tool_Project_Context_Zf
 
         $className = $this->getFullClassName($this->_formName, 'Form');
 
+        require_once 'Zend/CodeGenerator/Php/Method.php';
+        require_once 'Zend/CodeGenerator/Php/Class.php';
+        require_once 'Zend/CodeGenerator/Php/File.php';
         $codeGenFile = new Zend_CodeGenerator_Php_File([
             'fileName' => $this->getPath(),
             'classes' => [

@@ -96,7 +96,7 @@ class Zend_Mail_Protocol_Smtp_Auth_Crammd5 extends Zend_Mail_Protocol_Smtp
      *
      * @param  string $key   Challenge key (usually password)
      * @param  string $data  Challenge data
-     * @param  string $block Length of blocks
+     * @param  string|int $block Length of blocks
      * @return string
      */
     protected function _hmacMd5($key, $data, $block = 64)

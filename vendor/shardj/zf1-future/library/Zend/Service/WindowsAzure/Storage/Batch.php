@@ -21,6 +21,8 @@
  */
 
 
+require_once 'Zend/Http/Client.php';
+
 /**
  * @category   Zend
  * @package    Zend_Service_WindowsAzure
@@ -33,7 +35,7 @@ class Zend_Service_WindowsAzure_Storage_Batch
     /**
      * Storage client the batch is defined on
      *
-     * @var Zend_Service_WindowsAzure_Storage_BatchStorageAbstract
+     * @var Zend_Service_WindowsAzure_Storage_BatchStorageAbstract|null
      */
     protected $_storageClient = null;
 
@@ -145,7 +147,9 @@ class Zend_Service_WindowsAzure_Storage_Batch
 		}
 
 		// URL encoding
+		require_once 'Zend/Service/WindowsAzure/Storage.php';
 		$path           = Zend_Service_WindowsAzure_Storage::urlencode($path);
+		require_once 'Zend/Service/WindowsAzure/Storage.php';
 		$queryString    = Zend_Service_WindowsAzure_Storage::urlencode($queryString);
 
 		// Generate URL

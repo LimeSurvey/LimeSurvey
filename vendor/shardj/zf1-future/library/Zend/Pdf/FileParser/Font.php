@@ -197,7 +197,7 @@ abstract class Zend_Pdf_FileParser_Font extends Zend_Pdf_FileParser
      * may accompany it as additional parameters.
      *
      * @param string $message
-     * @param mixed (optional, multiple) Additional arguments
+     * Additional arguments for the sprintf() style message follow it.
      */
     protected function _debugLog($message)
     {

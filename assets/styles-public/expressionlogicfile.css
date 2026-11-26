@@ -47,3 +47,11 @@ background-color:lightyellow;
 .logicfileattributetable td:first-child {
     overflow-wrap: normal;
 }
+
+/**
+ * Scale down large images (e.g. in question texts) to the column width, so the logic file stays readable and printable
+ */
+#logicfiletable img {
+    max-width: 100%;
+    height: auto !important;
+}

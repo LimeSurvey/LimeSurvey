@@ -48,7 +48,7 @@ class Zend_Tool_Framework_Provider_Signature implements Zend_Tool_Framework_Regi
 {
 
     /**
-     * @var Zend_Tool_Framework_Registry
+     * @var Zend_Tool_Framework_Registry_Interface
      */
     protected $_registry = null;
 
@@ -184,7 +184,7 @@ class Zend_Tool_Framework_Provider_Signature implements Zend_Tool_Framework_Regi
      * useful information about what can be exectued on this provider
      *
      * @param string $methodName
-     * @return array
+     * @return array|false
      */
     public function getActionableMethod($methodName)
     {
@@ -200,7 +200,7 @@ class Zend_Tool_Framework_Provider_Signature implements Zend_Tool_Framework_Regi
      * will return an array of useful information about what can be exectued on this provider
      *
      * @param string $actionName
-     * @return array
+     * @return array|false
      */
     public function getActionableMethodByActionName($actionName, $specialtyName = '_Global')
     {

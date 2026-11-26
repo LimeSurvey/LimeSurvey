@@ -1908,7 +1908,9 @@ body {
         background-color: $white !important;
         box-shadow:       0 3px 3px $color_gunsmoke_10_approx;
         border-radius:    0 !important;
-        a {
+        // button.nav-link: language changer and question index openers are buttons
+        a,
+        button.nav-link {
             text-decoration: none;
             line-height:     1.8rem;
             font-size:       1.2rem;

@@ -35,7 +35,7 @@ class ExpressionManager
      * so it does not end a single-quoted string. A quote directly followed by an operator word
      * (e.g. 'a'and'b') still ends the string.
      */
-    const RDP_REGEX_INNER_APOSTROPHE = '(?<=\\p{L}\')(?!(?:and|or|eq|ne|lt|le|gt|ge)\\b)\\p{L}';
+    public const RDP_REGEX_INNER_APOSTROPHE = '(?<=\\p{L}\')(?!(?:and|or|eq|ne|lt|le|gt|ge)\\b)\\p{L}';
 
     // These are the allowable variable suffixes for variables - each represents an attribute of a variable that can be updated on same page
     private $aRDP_regexpVariableAttribute = array(
@@ -107,7 +107,7 @@ class ExpressionManager
     private $hyperlinkSyntaxHighlighting = true; // TODO - change this back to false
     private $sgqaNaming = false;
 
-    function __construct()
+    public function __construct()
     {
         /* EM core string must be in adminlang : keep the actual for resetting at end. See bug #12208 */
         /**
@@ -135,7 +135,8 @@ class ExpressionManager
         // Legacy SGQA field names (123X45X678sq1#0) and the dual scale cell field names since 7.0 (Q678_S910#0):
         // only these may contain a '#', every other field name is tokenized as a WORD
         $RDP_regex_sgqa = '(?:(?:INSERTANS:)?[0-9]+X[0-9]+X[0-9]+[A-Z0-9_]*\#?[01]?|Q[0-9]+_S[0-9]+\#[01])(?:\.(?:[a-zA-Z0-9_]*))?';
-        $RDP_regex_word = '(?:TOKEN:)?(?:[A-Z][A-Z0-9_]*)?(?:\.(?:[A-Z][A-Z0-9_]*))*(?:\.(?:[a-zA-Z0-9_]*))?';
+        // A dot followed by a digit starts a number (.5), not a WORD: Without the lookahead the attribute part matches it
+        $RDP_regex_word = '(?!\.[0-9])(?:TOKEN:)?(?:[A-Z][A-Z0-9_]*)?(?:\.(?:[A-Z][A-Z0-9_]*))*(?:\.(?:[a-zA-Z0-9_]*))?';
         $RDP_regex_number = '[0-9]+\.?[0-9]*|\.[0-9]+';
         $RDP_regex_andor = '\band\b|\bor\b|&&|\|\|';
         $RDP_regex_lcb = '{';
@@ -1493,6 +1494,16 @@ class ExpressionManager
     }
 
     /**
+     * Whether the most recent expression only reads one variable, like {Q1} or {Q1.shown}.
+     * PHP then prints the answer as it is stored, so the page must not round it.
+     * @return boolean
+     */
+    private function isSingleVariableExpression()
+    {
+        return count($this->RDP_tokens) === 1 && in_array($this->RDP_tokens[0][2], array('WORD', 'SGQA'));
+    }
+
+    /**
      * Generate the function needed to dynamically change the value of a <span> section
      * @param integer $questionNum No longer used
      * @param string $elementId - the ID name for the function
@@ -1502,8 +1513,13 @@ class ExpressionManager
     public function GetJavaScriptFunctionForReplacement($questionNum, $elementId, $eqn)
     {
         $jsParts = array();
+        $jsExpression = $this->GetJavaScriptEquivalentOfExpression();
+        if ($jsExpression !== '' && !$this->isSingleVariableExpression()) {
+            // PHP prints a calculated float with a limited number of digits: Show the same number in the page
+            $jsExpression = "LEMroundFloat(\n" . $jsExpression . ")";
+        }
         $jsParts[] = "jQuery('#{$elementId}').html(LEMfixnum(\n";
-        $jsParts[] = $this->GetJavaScriptEquivalentOfExpression();
+        $jsParts[] = $jsExpression;
         $jsParts[] = "));\n";
         // Add an event after html is updated (see #11937 and really good helper for template manager)
         $jsParts[] = "jQuery('#{$elementId}').trigger('html:updated');\n"; // See http://learn.jquery.com/events/introduction-to-custom-events/#naming-custom-events for colons in name
@@ -2163,7 +2179,7 @@ class ExpressionManager
      * @param string $src
      * @return string
      */
-    function ExpandThisVar($src)
+    public function ExpandThisVar($src)
     {
         /** @var array */
         static $cache = [];
@@ -2748,7 +2764,7 @@ class ExpressionManager
      * Show a table of allowable ExpressionScript Engine functions
      * @return string
      */
-    static function ShowAllowableFunctions()
+    public static function ShowAllowableFunctions()
     {
         $em = new ExpressionManager();
         $output = "<div class='h3'>Functions Available within ExpressionScript Engine</div>\n";
@@ -2771,7 +2787,7 @@ class ExpressionManager
      * Show a table of allowable ExpressionScript Engine functions
      * @return string
      */
-    static function GetAllowableFunctions()
+    public static function GetAllowableFunctions()
     {
         $em = new ExpressionManager();
         return $em->RDP_ValidFunctions;

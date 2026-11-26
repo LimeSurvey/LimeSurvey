@@ -54,14 +54,14 @@ abstract class Zend_Barcode_Object_ObjectAbstract
     /**
      * Height of the object
      *
-     * @var integer
+     * @var integer|float
      */
     protected $_height = null;
 
     /**
      * Width of the object
      *
-     * @var integer
+     * @var integer|float
      */
     protected $_width = null;
 
@@ -90,7 +90,7 @@ abstract class Zend_Barcode_Object_ObjectAbstract
      * Factor to multiply bar and font measure
      * (barHeight, barThinWidth, barThickWidth & fontSize)
      *
-     * @var integer
+     * @var integer|float
      */
     protected $_factor = 1;
 
@@ -140,7 +140,7 @@ abstract class Zend_Barcode_Object_ObjectAbstract
      * Offset from the top the object
      * (calculated from the orientation)
      *
-     * @var integer
+     * @var integer|float
      */
     protected $_offsetTop = null;
 
@@ -148,7 +148,7 @@ abstract class Zend_Barcode_Object_ObjectAbstract
      * Offset from the left the object
      * (calculated from the orientation)
      *
-     * @var integer
+     * @var integer|float
      */
     protected $_offsetLeft = null;
 
@@ -1377,6 +1377,7 @@ abstract class Zend_Barcode_Object_ObjectAbstract
     {
         $validatorName = (isset($options['validator'])) ? $options['validator'] : $this->getType();
 
+        require_once 'Zend/Validate/Barcode.php';
         $validator = new Zend_Validate_Barcode(
             [
                 'adapter'  => $validatorName,

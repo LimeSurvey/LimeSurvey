@@ -54,7 +54,7 @@ class Zend_Controller_Action_HelperBroker
     /**
      * $_helpers - Helper array
      *
-     * @var Zend_Controller_Action_HelperBroker_PriorityStack
+     * @var Zend_Controller_Action_HelperBroker_PriorityStack|null
      */
     protected static $_stack = null;
 
@@ -144,7 +144,7 @@ class Zend_Controller_Action_HelperBroker
      * the helper class cannot be found.
      *
      * @param  string $name
-     * @return Zend_Controller_Action_Helper_Abstract
+     * @return ($name is 'viewRenderer'|'ViewRenderer' ? Zend_Controller_Action_Helper_ViewRenderer : ($name is 'json'|'Json' ? Zend_Controller_Action_Helper_Json : ($name is 'url'|'Url' ? Zend_Controller_Action_Helper_Url : ($name is 'redirector'|'Redirector' ? Zend_Controller_Action_Helper_Redirector : Zend_Controller_Action_Helper_Abstract))))
      */
     public static function getStaticHelper($name)
     {
@@ -170,7 +170,7 @@ class Zend_Controller_Action_HelperBroker
      * prior to retrieving it.
      *
      * @param  string $name
-     * @return Zend_Controller_Action_Helper_Abstract
+     * @return ($name is 'viewRenderer'|'ViewRenderer' ? Zend_Controller_Action_Helper_ViewRenderer : ($name is 'json'|'Json' ? Zend_Controller_Action_Helper_Json : ($name is 'url'|'Url' ? Zend_Controller_Action_Helper_Url : ($name is 'redirector'|'Redirector' ? Zend_Controller_Action_Helper_Redirector : Zend_Controller_Action_Helper_Abstract))))
      * @throws Zend_Controller_Action_Exception
      */
     public static function getExistingHelper($name)
@@ -282,7 +282,7 @@ class Zend_Controller_Action_HelperBroker
      * getHelper() - get helper by name
      *
      * @param  string $name
-     * @return Zend_Controller_Action_Helper_Abstract
+     * @return ($name is 'viewRenderer'|'ViewRenderer' ? Zend_Controller_Action_Helper_ViewRenderer : ($name is 'json'|'Json' ? Zend_Controller_Action_Helper_Json : ($name is 'url'|'Url' ? Zend_Controller_Action_Helper_Url : ($name is 'redirector'|'Redirector' ? Zend_Controller_Action_Helper_Redirector : Zend_Controller_Action_Helper_Abstract))))
      */
     public function getHelper($name)
     {
@@ -332,7 +332,7 @@ class Zend_Controller_Action_HelperBroker
      * Retrieve helper by name as object property
      *
      * @param  string $name
-     * @return Zend_Controller_Action_Helper_Abstract
+     * @return ($name is 'viewRenderer'|'ViewRenderer' ? Zend_Controller_Action_Helper_ViewRenderer : ($name is 'json'|'Json' ? Zend_Controller_Action_Helper_Json : ($name is 'url'|'Url' ? Zend_Controller_Action_Helper_Url : ($name is 'redirector'|'Redirector' ? Zend_Controller_Action_Helper_Redirector : Zend_Controller_Action_Helper_Abstract))))
      */
     public function __get($name)
     {

@@ -35,7 +35,7 @@ class Zend_Pdf_ElementFactory_Proxy implements Zend_Pdf_ElementFactory_Interface
     /**
      * Factory object
      *
-     * @var Zend_Pdf_ElementFactory_Interface
+     * @var Zend_Pdf_ElementFactory_Interface|null
      */
     private $_factory;
 
@@ -142,12 +142,11 @@ class Zend_Pdf_ElementFactory_Proxy implements Zend_Pdf_ElementFactory_Interface
      * Clean enumeration shift cache.
      * Has to be used after PDF render operation to let followed updates be correct.
      *
-     * @param Zend_Pdf_ElementFactory_Interface $factory
-     * @return integer
+     * @return void
      */
     public function cleanEnumerationShiftCache()
     {
-        return $this->_factory->cleanEnumerationShiftCache();
+        $this->_factory->cleanEnumerationShiftCache();
     }
 
     /**
@@ -202,7 +201,7 @@ class Zend_Pdf_ElementFactory_Proxy implements Zend_Pdf_ElementFactory_Interface
      *
      * @todo Reusage of the freed object. It's not a support of new feature, but only improvement.
      *
-     * @param mixed $objectValue
+     * @param mixed $streamValue
      * @return Zend_Pdf_Element_Object_Stream
      */
     public function newStreamObject($streamValue)

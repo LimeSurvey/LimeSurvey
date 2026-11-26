@@ -54,7 +54,7 @@ class Zend_View_Helper_FormLabel extends Zend_View_Helper_FormElement
         }
 
         $value = ($escape) ? $this->view->escape($value) : $value;
-        $for   = (empty($attribs['disableFor']) || !$attribs['disableFor'])
+        $for   = empty($attribs['disableFor'])
                ? ' for="' . $this->view->escape($id) . '"'
                : '';
         if (array_key_exists('disableFor', $attribs)) {

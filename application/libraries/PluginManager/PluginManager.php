@@ -340,7 +340,7 @@ class PluginManager extends \CApplicationComponent
                                         $result[$pluginName] = [
                                             'pluginName' => $pluginName,
                                             'load_error' => 1,
-                                            'load_error_message' => $error['message'] . ' ' . $error['file'],
+                                            'load_error_message' => Plugin::getLoadErrorMessage($error),
                                             'isCompatible' => false,
                                             'pluginType' => $pluginType,
                                         ];

@@ -156,7 +156,7 @@ class Zend_Search_Lucene_Search_BooleanExpressionRecognizer extends Zend_Search_
     /**
      * Process expression literal.
      *
-     * @param integer $operator
+     * @param mixed $literal
      */
     public function processLiteral($literal)
     {

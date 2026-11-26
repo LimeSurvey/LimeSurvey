@@ -21,7 +21,7 @@
             <input type='hidden' name='action' value='importsurveyresources' />
             <div class="mb-3">
                 <label class="form-label" for='the_file'><?php  eT("Select ZIP file:"); ?></label>
-                <input id='the_file' class="form-control" name='the_file' type='file' />
+                <input id='the_file' class="form-control" name='the_file' type='file' accept='.zip' required />
             </div>
           </div>
 

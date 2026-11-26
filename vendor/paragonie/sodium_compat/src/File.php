@@ -1274,9 +1274,7 @@ class ParagonIE_Sodium_File extends ParagonIE_Sodium_Core_Util
             /** @var string|bool $message */
             $message = fread(
                 $fp,
-                ($size - $i) > self::BUFFER_SIZE
-                    ? $size - $i
-                    : self::BUFFER_SIZE
+                min($size - $i, self::BUFFER_SIZE)
             );
             if (!is_string($message)) {
                 throw new SodiumException('Unexpected error reading from file.');

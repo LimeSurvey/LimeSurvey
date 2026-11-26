@@ -30,6 +30,7 @@ require_once 'Zend/Cloud/StorageService/Exception.php';
  * @subpackage StorageService
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @deprecated Deprecated since 1.27.1 and will be removed in a future version: the Simple Cloud API is not developed any further; use the SDK of the cloud provider
  */
 class Zend_Cloud_StorageService_Adapter_WindowsAzure
     implements Zend_Cloud_StorageService_Adapter
@@ -77,6 +78,8 @@ class Zend_Cloud_StorageService_Adapter_WindowsAzure
      */
     public function __construct($options = [])
     {
+        trigger_error(get_class($this) . ' is deprecated and will be removed in a future version', E_USER_DEPRECATED);
+
         if ($options instanceof Zend_Config) {
             $options = $options->toArray();
         }
@@ -313,7 +316,7 @@ class Zend_Cloud_StorageService_Adapter_WindowsAzure
      */
     public function renameItem($path, $name, $options = null)
     {
-        return $this->moveItem($path, $name, $options);
+        $this->moveItem($path, $name, $options);
     }
 
     /**
@@ -364,7 +367,7 @@ class Zend_Cloud_StorageService_Adapter_WindowsAzure
      *
      * @param  string $path
      * @param  array  $options
-     * @return array
+     * @return array|false
      */
     public function fetchMetadata($path, $options = null)
     {
@@ -411,7 +414,7 @@ class Zend_Cloud_StorageService_Adapter_WindowsAzure
     public function deleteMetadata($path, $options = null)
     {
         try {
-            $this->_storageClient->setBlobMetadata($this->_container, $destinationPath, []);
+            $this->_storageClient->setBlobMetadata($this->_container, $path, []);
         } catch (Zend_Service_WindowsAzure_Exception $e) {
             if (strpos($e->getMessage(), "could not be accessed") === false) {
                 throw new Zend_Cloud_StorageService_Exception('Error on delete metadata: '.$e->getMessage(), $e->getCode(), $e);

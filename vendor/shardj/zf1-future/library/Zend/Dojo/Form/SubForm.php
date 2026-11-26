@@ -59,12 +59,12 @@ class Zend_Dojo_Form_SubForm extends Zend_Form_SubForm
     /**
      * Load the default decorators
      *
-     * @return void
+     * @return $this
      */
     public function loadDefaultDecorators()
     {
         if ($this->loadDefaultDecoratorsIsDisabled()) {
-            return;
+            return $this;
         }
 
         $decorators = $this->getDecorators();
@@ -73,6 +73,8 @@ class Zend_Dojo_Form_SubForm extends Zend_Form_SubForm
                  ->addDecorator('HtmlTag', ['tag' => 'dl'])
                  ->addDecorator('ContentPane');
         }
+
+        return $this;
     }
 
     /**

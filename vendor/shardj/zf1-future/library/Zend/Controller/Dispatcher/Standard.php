@@ -196,7 +196,7 @@ class Zend_Controller_Dispatcher_Standard extends Zend_Controller_Dispatcher_Abs
      * if a given controller does not exist. This method returning false does
      * not necessarily indicate the dispatcher will not still dispatch the call.
      *
-     * @param Zend_Controller_Request_Abstract $action
+     * @param Zend_Controller_Request_Abstract $request
      * @return boolean
      */
     public function isDispatchable(Zend_Controller_Request_Abstract $request)
@@ -279,8 +279,7 @@ class Zend_Controller_Dispatcher_Standard extends Zend_Controller_Dispatcher_Abs
          * arguments; throw exception if it's not an action controller
          */
         $controller = new $moduleClassName($request, $this->getResponse(), $this->getParams());
-        if (!($controller instanceof Zend_Controller_Action_Interface) &&
-            !($controller instanceof Zend_Controller_Action)) {
+        if (!($controller instanceof Zend_Controller_Action_Interface)) {
             require_once 'Zend/Controller/Dispatcher/Exception.php';
             throw new Zend_Controller_Dispatcher_Exception(
                 'Controller "' . $moduleClassName . '" is not an instance of Zend_Controller_Action_Interface'
@@ -360,11 +359,13 @@ class Zend_Controller_Dispatcher_Standard extends Zend_Controller_Dispatcher_Abs
             throw new Zend_Controller_Dispatcher_Exception('Cannot load controller class "' . $className . '" from file "' . $loadFile . "'");
         }
 
+        // @phpstan-ignore booleanNot.alwaysTrue (the file loaded above may define the class)
         if (!class_exists($finalClass, false)) {
             require_once 'Zend/Controller/Dispatcher/Exception.php';
             throw new Zend_Controller_Dispatcher_Exception('Invalid controller class ("' . $finalClass . '")');
         }
 
+        // @phpstan-ignore deadCode.unreachable (reached when the file loaded above defines the class)
         return $finalClass;
     }
 

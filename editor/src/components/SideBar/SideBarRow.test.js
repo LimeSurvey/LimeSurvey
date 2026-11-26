@@ -3,25 +3,29 @@ import 'tests/mocks'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { renderWithProviders } from 'tests/testUtils'
+import { queryClient } from 'queryClient'
+import { STATES } from 'helpers'
 
 import { SideBarRow } from './SideBarRow'
 
-let mockShowCode = true
-jest.mock('hooks/useSurvey', () => ({
-  useSurvey: () => ({
-    survey: {
-      ...require('helpers/data/survey-detail.json').survey,
-      showQNumCode: { showCode: mockShowCode },
-    },
-    update: () => {},
-  }),
-}))
+const setCodesVisible = (isVisible) =>
+  queryClient.setQueryData(
+    ['appState', STATES.SHOW_QUESTION_CODES_IN_EDITOR],
+    isVisible
+  )
 
 const menuItems = [{ type: 'item', label: 'Delete', onClick: () => {} }]
 
 describe('SideBarRow', () => {
   beforeEach(() => {
-    mockShowCode = true
+    setCodesVisible(true)
+  })
+
+  afterEach(() => {
+    queryClient.removeQueries({
+      queryKey: ['appState', STATES.SHOW_QUESTION_CODES_IN_EDITOR],
+      exact: true,
+    })
   })
 
   test('shows the question code badge when question codes are enabled', async () => {
@@ -34,7 +38,7 @@ describe('SideBarRow', () => {
   })
 
   test('hides the question code badge when question codes are disabled', async () => {
-    mockShowCode = false
+    setCodesVisible(false)
     await renderWithProviders(
       <SideBarRow title="Q" code="Q006" menuItems={menuItems} />
     )

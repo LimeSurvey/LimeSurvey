@@ -33,7 +33,7 @@ require_once 'Zend/Stdlib/CallbackHandler.php';
 class Zend_EventManager_StaticEventManager extends Zend_EventManager_SharedEventManager
 {
     /**
-     * @var Zend_EventManager_StaticEventManager
+     * @var Zend_EventManager_StaticEventManager|null
      */
     protected static $instance;
 

@@ -40,7 +40,7 @@ require_once 'Zend/Xml/Security.php';
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  *
- * @property Zend_Service_WindowsAzure_Diagnostics_ConfigurationDataSources	DataSources	Data sources
+ * @property Zend_Service_WindowsAzure_Diagnostics_ConfigurationDataSources	$DataSources	Data sources
  */
 class Zend_Service_WindowsAzure_Diagnostics_ConfigurationInstance
 	extends Zend_Service_WindowsAzure_Diagnostics_ConfigurationObjectBaseAbstract

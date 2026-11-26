@@ -76,7 +76,7 @@ class Zend_Crypt
      * @param string $algorithm
      * @param string $data
      * @param bool $binaryOutput
-     * @return unknown
+     * @return mixed
      */
     public static function hash($algorithm, $data, $binaryOutput = false)
     {

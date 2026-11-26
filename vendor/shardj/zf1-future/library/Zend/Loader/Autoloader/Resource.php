@@ -141,7 +141,7 @@ class Zend_Loader_Autoloader_Resource implements Zend_Loader_Autoloader_Interfac
      * Helper method to calculate the correct class path
      *
      * @param string $class
-     * @return False if not matched other wise the correct path
+     * @return False|string if not matched other wise the correct path
      */
     public function getClassPath($class)
     {

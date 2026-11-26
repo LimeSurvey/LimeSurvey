@@ -100,8 +100,8 @@ class Zend_Feed_Reader_Entry_Rss extends Zend_Feed_Reader_EntryAbstract implemen
     /**
      * Constructor
      *
-     * @param  Zend_Feed_Entry_Abstract $entry
-     * @param  string $entryKey
+     * @param  DOMElement $entry
+     * @param  string|int|null $entryKey
      * @param  string $type
      * @return void
      */
@@ -135,8 +135,8 @@ class Zend_Feed_Reader_Entry_Rss extends Zend_Feed_Reader_EntryAbstract implemen
     /**
      * Get an author entry
      *
-     * @param DOMElement $element
-     * @return string
+     * @param int $index
+     * @return string|null
      */
     public function getAuthor($index = 0)
     {
@@ -193,7 +193,7 @@ class Zend_Feed_Reader_Entry_Rss extends Zend_Feed_Reader_EntryAbstract implemen
             }
         }
 
-        if (count($authors ?? []) === 0) {
+        if (count($authors) === 0) {
             $authors = $this->getExtension('Atom')->getAuthors();
         } else {
             $authors = new Zend_Feed_Reader_Collection_Author(
@@ -349,7 +349,7 @@ class Zend_Feed_Reader_Entry_Rss extends Zend_Feed_Reader_EntryAbstract implemen
 
     /**
      * Get the entry enclosure
-     * @return string
+     * @return stdClass|null
      */
     public function getEnclosure()
     {
@@ -360,6 +360,7 @@ class Zend_Feed_Reader_Entry_Rss extends Zend_Feed_Reader_EntryAbstract implemen
         $enclosure = null;
 
         if ($this->getType() == Zend_Feed_Reader::TYPE_RSS_20) {
+            /** @var DOMNodeList<DOMElement> $nodeList */
             $nodeList = $this->_xpath->query($this->_xpathQueryRss . '/enclosure');
 
             if ($nodeList->length > 0) {
@@ -425,7 +426,7 @@ class Zend_Feed_Reader_Entry_Rss extends Zend_Feed_Reader_EntryAbstract implemen
      * Get a specific link
      *
      * @param  int $index
-     * @return string
+     * @return string|null
      */
     public function getLink($index = 0)
     {
@@ -486,8 +487,10 @@ class Zend_Feed_Reader_Entry_Rss extends Zend_Feed_Reader_EntryAbstract implemen
 
         if ($this->getType() !== Zend_Feed_Reader::TYPE_RSS_10 &&
             $this->getType() !== Zend_Feed_Reader::TYPE_RSS_090) {
+            /** @var DOMNodeList<DOMElement> $list */
             $list = $this->_xpath->query($this->_xpathQueryRss.'//category');
         } else {
+            /** @var DOMNodeList<DOMElement> $list */
             $list = $this->_xpath->query($this->_xpathQueryRdf.'//rss:category');
         }
 

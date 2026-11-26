@@ -144,6 +144,28 @@ class CLSGridView extends TbGridView
     }
 
     /**
+     * Renders the pager.
+     * Overrides parent to render it as a navigation landmark instead of a plain div.
+     * The landmark is named after the table caption, so pages with several grids
+     * get distinguishable landmarks.
+     *
+     * @return void
+     */
+    public function renderPager()
+    {
+        ob_start();
+        parent::renderPager();
+        $pager = ob_get_clean();
+        $prefix = '<div class="' . $this->pagerCssClass . '">';
+        if (strpos($pager, $prefix) === 0) {
+            $label = empty($this->lsCaption) ? gT('Pagination') : sprintf(gT('Pagination: %s'), $this->lsCaption);
+            $pager = '<nav class="' . $this->pagerCssClass . '" aria-label="' . CHtml::encode($label) . '">'
+                . substr($pager, strlen($prefix), -strlen('</div>')) . '</nav>';
+        }
+        echo $pager;
+    }
+
+    /**
      * Renders the data items for the grid view.
      * Overrides parent to output an optional table caption after the opening <table> tag.
      */
@@ -420,11 +442,22 @@ class CLSGridView extends TbGridView
             "jQuery('#$id').yiiGridView($options);",
             LSYii_ClientScript::POS_POSTSCRIPT
         );
-        // Under PJAX this inline script runs before afterAjaxUpdate.js is loaded, so defer until it is available
+        // Under PJAX this inline script runs before afterAjaxUpdate.js is loaded, so defer until it is available.
+        // A page script may already have restored the focus (e.g. the dashboard filter after filtering, see
+        // SearchBoxWidget filters.js): Leave it there. If that script announces the result itself, stay silent,
+        // otherwise announce the empty message without moving the focus.
         $cs->registerScript(
             __CLASS__ . '-emptyAnnounce#' . $id,
             'jQuery(function(){
-                var announceEmpty = function() { LS.gridView.announceEmptyMessage(' . CJavaScript::encode($id) . '); };
+                var announceEmpty = function() {
+                    // Only for this page load: Grids loaded later (e.g. by PJAX) announce as usual
+                    var restored = LS.gridView.focusRestoredOnLoad;
+                    delete LS.gridView.focusRestoredOnLoad;
+                    if (restored && restored.announced) {
+                        return;
+                    }
+                    LS.gridView.announceEmptyMessage(' . CJavaScript::encode($id) . ', !!restored);
+                };
                 if (window.LS && LS.gridView && LS.gridView.announceEmptyMessage) {
                     announceEmpty();
                 } else {

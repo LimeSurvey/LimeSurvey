@@ -33,11 +33,12 @@ export const TopBarQuestionInserter = ({ surveyID }) => {
   const { survey, update, language } = useSurvey(surveyID)
   const { addToBuffer } = useBuffer()
   const { setFocused, groupIndex } = useFocused()
+  // The survey has no question groups until it is loaded: Adding questions stays disabled until then
   const questionGroupToAddQuestion = clickedQuestionGroupIndex
-    ? survey?.questionGroups[clickedQuestionGroupIndex]
+    ? survey?.questionGroups?.[clickedQuestionGroupIndex]
     : groupIndex
-      ? survey?.questionGroups[groupIndex]
-      : survey?.questionGroups[0]
+      ? survey?.questionGroups?.[groupIndex]
+      : survey?.questionGroups?.[0]
 
   const [isSurveyActive] = useAppState(STATES.IS_SURVEY_ACTIVE, false)
   const [hasSurveyUpdatePermission] = useAppState(
@@ -140,6 +141,11 @@ export const TopBarQuestionInserter = ({ surveyID }) => {
   const addNewQuestion = (questionTypeInfo) => {
     const questionId = `${NEW_OBJECT_ID_PREFIX}${RandomNumber()}`
     const questionThemeName = questionTypeInfo.questionThemeName
+
+    // Nothing can be added to the empty survey object used while the survey is loading
+    if (!survey?.sid) {
+      return
+    }
 
     if (
       (!questionGroupToAddQuestion &&
@@ -312,7 +318,7 @@ export const TopBarQuestionInserter = ({ surveyID }) => {
    * @returns {Object} Built-in attribute defaults.
    */
   const getDefaultAttributes = (questionThemeName) => {
-    if (questionThemeName === getQuestionTypeInfo().BROWSER_DETECTION.theme) {
+    if (questionThemeName === getQuestionTypeInfo().MAP.theme) {
       return { location_mapservice: { '': '100' } }
     }
 

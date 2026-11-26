@@ -120,7 +120,7 @@ class Zend_Wildfire_Plugin_FirePhp implements Zend_Wildfire_Plugin_Interface
 
     /**
      * Singleton instance
-     * @var Zend_Wildfire_Plugin_FirePhp
+     * @var Zend_Wildfire_Plugin_FirePhp|null
      */
     protected static $_instance = null;
 
@@ -312,8 +312,8 @@ class Zend_Wildfire_Plugin_FirePhp implements Zend_Wildfire_Plugin_Interface
      *
      * Filters are used to exclude object members.
      *
-     * @param string $Class The class name of the object
-     * @param array $Filter An array of members to exclude
+     * @param string $class The class name of the object
+     * @param array $filter An array of members to exclude
      * @return void
      */
     public function setObjectFilter($class, $filter) {
@@ -422,10 +422,8 @@ class Zend_Wildfire_Plugin_FirePhp implements Zend_Wildfire_Plugin_Interface
                 $var = null;
             }
 
-            if (!$trace) {
-                $trace = $firephp->_getStackTrace(array_merge($options,
-                                                              ['maxTraceDepth'=>$options['maxTraceDepth']+1]));
-            }
+            $trace = $firephp->_getStackTrace(array_merge($options,
+                                                          ['maxTraceDepth'=>$options['maxTraceDepth']+1]));
 
             $var = ['Class'=>$trace[0]['class'],
                          'Type'=>$trace[0]['type'],
@@ -470,21 +468,16 @@ class Zend_Wildfire_Plugin_FirePhp implements Zend_Wildfire_Plugin_Interface
             default:
                 require_once 'Zend/Wildfire/Exception.php';
                 throw new Zend_Wildfire_Exception('Log style "'.$meta['Type'].'" not recognized!');
-                break;
         }
 
         if ($meta['Type'] != self::DUMP && $options['includeLineNumbers']) {
-            if (!isset($meta['File']) || !isset($meta['Line'])) {
-
-                if (!$trace) {
-                    $trace = $firephp->_getStackTrace(array_merge($options,
-                                                                  ['maxTraceDepth'=>$options['maxTraceDepth']+1]));
-                }
-
-                $meta['File'] = isset($trace[0]['file'])?$trace[0]['file']:'';
-                $meta['Line'] = isset($trace[0]['line'])?$trace[0]['line']:'';
-
+            if (!$trace) {
+                $trace = $firephp->_getStackTrace(array_merge($options,
+                                                              ['maxTraceDepth'=>$options['maxTraceDepth']+1]));
             }
+
+            $meta['File'] = isset($trace[0]['file'])?$trace[0]['file']:'';
+            $meta['Line'] = isset($trace[0]['line'])?$trace[0]['line']:'';
         } else {
             unset($meta['File']);
             unset($meta['Line']);
@@ -531,7 +524,7 @@ class Zend_Wildfire_Plugin_FirePhp implements Zend_Wildfire_Plugin_Interface
         if (isset($options['fixZendLogOffsetIfApplicable']) && $options['fixZendLogOffsetIfApplicable']) {
             if (count($trace) >=3 &&
                 isset($trace[0]['file']) && substr($trace[0]['file'], -7, 7)=='Log.php' &&
-                isset($trace[1]['function']) && $trace[1]['function']=='__call') {
+                $trace[1]['function']=='__call') {
 
                 $spliceOffset = 2;
                 //Debug backtrace changed in PHP 7.0.0
@@ -607,15 +600,13 @@ class Zend_Wildfire_Plugin_FirePhp implements Zend_Wildfire_Plugin_Interface
             default:
                 require_once 'Zend/Wildfire/Exception.php';
                 throw new Zend_Wildfire_Exception('Structure of name "'.$structure.'" is not recognized.');
-                break;
         }
-        return false;
     }
 
     /**
      * Encodes a table by encoding each row and column with _encodeObject()
      *
-     * @param array $Table The table to be encoded
+     * @param array $table The table to be encoded
      * @return array|null
      */
     protected function _encodeTable($table)
@@ -636,7 +627,7 @@ class Zend_Wildfire_Plugin_FirePhp implements Zend_Wildfire_Plugin_Interface
     /**
      * Encodes a trace by encoding all "args" with _encodeObject()
      *
-     * @param array $Trace The trace to be encoded
+     * @param array $trace The trace to be encoded
      * @return array|null The encoded trace
      */
     protected function _encodeTrace($trace)
@@ -659,7 +650,7 @@ class Zend_Wildfire_Plugin_FirePhp implements Zend_Wildfire_Plugin_Interface
      * the object class is added.
      *
      * @param mixed $object The object/array/value to be encoded
-     * @return array The encoded object
+     * @return array|string The encoded object
      */
     protected function _encodeObject($object, $objectDepth = 1, $arrayDepth = 1)
     {
