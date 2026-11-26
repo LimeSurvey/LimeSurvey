@@ -132,11 +132,27 @@ class ParticipantReencryptMethodChangeTest extends TestBaseClass
         $attributeName->encrypted = 'Y';
         $attributeName->core_attribute = 'N';
         $this->assertTrue($attributeName->save());
+        $basicValue = \LSActiveRecord::encryptSingle('extra value', 'B');
+        Yii::app()->db->createCommand()->insert('{{participant_attribute}}', [
+            'participant_id' => $this->createdParticipantIds[0],
+            'attribute_id' => $attributeName->attribute_id,
+            'value' => $basicValue,
+        ]);
         Yii::app()->setConfig('CPDB_encryption_method', 'H');
 
         (new \ParticipantsAction('dummy'))->reencryptParticipantData();
 
         $this->assertContains('All participant data have been re-encrypted.', $this->getFlashMessages());
+        $storedValue = Yii::app()->db->createCommand()
+            ->select('value')
+            ->from('{{participant_attribute}}')
+            ->where(
+                'participant_id = :participant_id AND attribute_id = :attribute_id',
+                [':participant_id' => $this->createdParticipantIds[0], ':attribute_id' => $attributeName->attribute_id]
+            )
+            ->queryScalar();
+        $this->assertNotSame($basicValue, $storedValue, 'Re-encrypted with the hardened method.');
+        $this->assertSame('extra value', \LSActiveRecord::decryptSingle($storedValue, 'H'));
     }
 
     /** A duplicate index update resumed with another size stops : the cursor is cleared, nothing is processed. */
