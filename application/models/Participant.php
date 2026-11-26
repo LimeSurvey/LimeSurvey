@@ -2804,7 +2804,7 @@ class Participant extends LSActiveRecord
 
     /**
      * Find duplicates participant and return the array using default core system
-     * If participant_id is is set and not empty : use it
+     * If participant_id is is set and not an empty string ("0" is a valid id) : use it
      * Else (or if not found and $nameEmailFallback) duplicate are found using firstname, lastname, email and owner_uid
      * If firstname, lastname and email are all empty : no duplicate (empty array)
      * @param string[]
@@ -2817,7 +2817,7 @@ class Participant extends LSActiveRecord
     {
         
         /* If participant_id is in $participant : directly use it */
-        if (!empty($participant['participant_id'])) {
+        if (isset($participant['participant_id']) && strval($participant['participant_id']) !== '') {
             $duplicates = Participant::model()->findAllByAttributes([
                 'participant_id' => $participant['participant_id'],
             ]);
