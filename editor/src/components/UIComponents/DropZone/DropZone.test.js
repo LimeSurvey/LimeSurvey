@@ -193,6 +193,37 @@ describe('DropZone', () => {
     ).toBeInTheDocument()
   })
 
+  test('Shows a missing image again when a file with the same name is uploaded', async () => {
+    const url = '/upload/surveys/1/images/missing.png'
+    const fileService = {
+      uploadSurveyImage: jest.fn(async () => ({
+        success: true,
+        uploaded: { filePath: url, previewUrl: url },
+      })),
+    }
+    await renderWithProviders(
+      <DropZone
+        previewUrlInit={url}
+        fileService={fileService}
+        onEdit={jest.fn()}
+        imageName="A1"
+      />
+    )
+    fireEvent.error(screen.getByAltText('Image Select List'))
+
+    const input = screen.getByTestId('dropzone').querySelector('input')
+    await userEvent.upload(
+      input,
+      new File(['image'], 'missing.png', { type: 'image/png' })
+    )
+
+    expect(fileService.uploadSurveyImage).toHaveBeenCalledTimes(1)
+    expect(screen.getByAltText('Image Select List')).toHaveAttribute('src', url)
+    expect(
+      screen.getByRole('button', { name: 'Edit image A1', hidden: true })
+    ).toBeInTheDocument()
+  })
+
   test('Shows the buttons next to the image with buttonsBeside', async () => {
     await renderWithProviders(
       <DropZone

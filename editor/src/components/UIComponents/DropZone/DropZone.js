@@ -181,6 +181,9 @@ export const DropZone = forwardRef(
         }
 
         onChange(response.uploaded.filePath)
+        // A missing image replaced by one with the same name keeps its URL:
+        // The new file gets its own chance to load.
+        setFailedImageUrl(null)
         changePreview(response.uploaded.previewUrl)
         setLoading(false)
       })

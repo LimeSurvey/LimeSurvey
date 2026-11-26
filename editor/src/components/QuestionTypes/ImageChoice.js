@@ -79,6 +79,9 @@ export const ImageChoice = ({
   )
 
   const onChange = (filePath) => {
+    // A missing image replaced by one with the same name keeps its URL: The
+    // new file gets its own chance to load.
+    setFailedImageUrl(null)
     update(encodeURI(filePath))
   }
 
