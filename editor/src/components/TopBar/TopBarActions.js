@@ -122,7 +122,7 @@ export const TopBarActions = ({
     },
     {
       type: 'item',
-      label: t('Question codes'),
+      label: t('View codes'),
       onClick: toggleQuestionCodes,
       checked: areCodesVisible,
     },

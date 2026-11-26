@@ -69,7 +69,9 @@ class TransformerInputSurvey extends Transformer
                 'formatter' => ['ynToBool' => ['revert' => true]]
             ],
             'autoNumberStart' => [
-                'key' => 'autonumber_start', 'type' => 'int', 'numerical'
+                'key' => 'autonumber_start',
+                'type' => 'int',
+                'numerical'
             ],
             'autoRedirect' => [
                 'key' => 'autoredirect',
@@ -134,9 +136,33 @@ class TransformerInputSurvey extends Transformer
             'useCaptcha' => [
                 'key' => 'usecaptcha',
                 'range' => [
-                    'A', 'B', 'C', 'D', 'X', 'R', 'S', 'N', 'E', 'F', 'G', 'H',
-                    'I', 'J', 'K', 'L', 'M', 'O', 'P', 'T', 'U',
-                    '1', '2', '3', '4', '5', '6'
+                    'A',
+                    'B',
+                    'C',
+                    'D',
+                    'X',
+                    'R',
+                    'S',
+                    'N',
+                    'E',
+                    'F',
+                    'G',
+                    'H',
+                    'I',
+                    'J',
+                    'K',
+                    'L',
+                    'M',
+                    'O',
+                    'P',
+                    'T',
+                    'U',
+                    '1',
+                    '2',
+                    '3',
+                    '4',
+                    '5',
+                    '6'
                 ]
             ],
             'useCaptchaAccess' => [
@@ -176,10 +202,13 @@ class TransformerInputSurvey extends Transformer
             ],
             'showQNumCode' => 'showqnumcode',
             'bounceTime' => [
-                'key' => 'bouncetime', 'type' => 'int', 'numerical'
+                'key' => 'bouncetime',
+                'type' => 'int',
+                'numerical'
             ],
             'bounceProcessing' => [
-                'key' => 'bounceprocessing', 'range' => ['L', 'N', 'G']
+                'key' => 'bounceprocessing',
+                'range' => ['L', 'N', 'G']
             ],
             'bounceAccountType' => 'bounceaccounttype',
             'bounceAccountHost' => 'bounceaccounthost',
@@ -200,7 +229,9 @@ class TransformerInputSurvey extends Transformer
                 'numerical' => ['min' => -1, 'max' => 2]
             ],
             'navigationDelay' => [
-                'key' => 'navigationdelay', 'type' => 'int', 'numerical'
+                'key' => 'navigationdelay',
+                'type' => 'int',
+                'numerical'
             ],
             'allowedItAfterCompletion' => [
                 'key' => 'alloweditaftercompletion',
@@ -222,6 +253,9 @@ class TransformerInputSurvey extends Transformer
             ],
             'template' => true,
             'format' => ['range' => ['G', 'S', 'A', 'I']],
+            'code' => [
+                'key' => 'code'
+            ],
             'welcomeImage' => ['key' => 'welcome_image', 'json' => true]
         ]);
     }
@@ -245,7 +279,7 @@ class TransformerInputSurvey extends Transformer
                 array_key_exists('useCaptchaAccess', $survey) ||
                 array_key_exists('useCaptchaRegistration', $survey) ||
                 array_key_exists('useCaptchaSaveLoad', $survey)
-                );
+            );
             if ($useCaptchaExists && !empty($options)) {
                 $survey['usecaptcha'] = $this->transformCaptcha(
                     $survey,

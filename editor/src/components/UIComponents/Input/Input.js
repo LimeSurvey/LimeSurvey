@@ -13,6 +13,7 @@ export const Input = ({
   dataTestId,
   onChange = () => {},
   onBlur = () => {},
+  onKeyDown = () => {},
   inputRef: inputRefProp = null,
   type = 'text',
   role = 'input',
@@ -42,6 +43,7 @@ export const Input = ({
   autoComplete = true,
   allowEmpty = true,
   focus,
+  maxLength,
 }) => {
   const inputRef = inputRefProp ? inputRefProp : useRef(null)
   const [hasSurveyUpdatePermission] = useAppState(
@@ -128,6 +130,7 @@ export const Input = ({
             type={type}
             role={role}
             rows={rows}
+            onKeyDown={onKeyDown}
             as={role}
             onBlur={handleOnBlur}
             style={{
@@ -139,6 +142,7 @@ export const Input = ({
             }`}
             autoComplete={autoComplete ? 1 : 0}
             autoFocus={focus}
+            maxLength={maxLength}
           />
         </TooltipContainer>
         {Icon && typeof Icon === 'string' && (

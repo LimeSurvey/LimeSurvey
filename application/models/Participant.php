@@ -115,10 +115,10 @@ class Participant extends LSActiveRecord
     {
         /* array[] scopes by DBVersion */
         $scopes = [
-            'invaliduplicatefinder' => [] // in 723
+            'invaliduplicatefinder' => [] // in 724
         ];
 
-        if (App()->getConfig('DBVersion') < 723) {
+        if (App()->getConfig('DBVersion') < 724) {
             return $scopes;
         }
         /* Invalid duplicate finder */

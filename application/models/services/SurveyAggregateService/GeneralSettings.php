@@ -310,6 +310,7 @@ class GeneralSettings
             'gsid' => ['default' => 1],
             'format' => [],
             'template' => [],
+            'code' => [],
             'welcome_image' => []
         ];
     }

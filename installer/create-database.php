@@ -689,6 +689,7 @@ function populateDatabase($oDB)
             'access_mode' => "string(1) DEFAULT 'O'",
             'encryption_method' => "string(1) DEFAULT 'I'",
             'lastmodified' => 'datetime NOT NULL',
+            'code' => 'string(128) NULL',
             'welcome_image' => 'mediumtext NULL'
         ), $options);
 
