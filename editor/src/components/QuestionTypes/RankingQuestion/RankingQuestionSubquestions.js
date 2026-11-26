@@ -49,6 +49,7 @@ export const RankingQuestionSubquestions = ({
             key={`ranking-${subquestion.appKey || subquestion.qid}`}
             draggableId={`ranking-${subquestion.appKey || subquestion.qid}`}
             index={index}
+            isDragDisabled={!isChildUpdateAllowed}
           >
             {(provided, snapshot) => (
               <div

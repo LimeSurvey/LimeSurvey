@@ -3,10 +3,11 @@ import { isString } from 'lodash'
 
 import { EditableImage } from 'components/EditableImage/EditableImage'
 import { ContentEditor, DropZone } from 'components/UIComponents'
-import { CloseCircleFillIcon, DragIcon } from 'components/icons'
+import { CloseCircleFillIcon } from 'components/icons'
 import { useToggleQuestionCodes, useAppState } from 'hooks'
 import { canUpdateChildren, Entities, STATES } from 'helpers'
 import { CodeInput } from '../codeComponents'
+import { ChildDragIcon } from '../ChildDragIcon'
 // Todo: handle switching between image and text using attributes.
 export const RankingQuestionSubquestion = ({
   subquestion,
@@ -43,10 +44,13 @@ export const RankingQuestionSubquestion = ({
       <div
         {...provided.dragHandleProps}
         className={classNames({
-          'disabled opacity-0': !provided.dragHandleProps,
+          'cursor-not-allowed': !isChildUpdateAllowed,
         })}
       >
-        <DragIcon className="text-secondary fill-current me-3" />
+        <ChildDragIcon
+          isLocked={!isChildUpdateAllowed}
+          className="text-secondary fill-current me-3"
+        />
       </div>
       <div className="d-flex align-items-center ">
         {!subquestion?.preview && isString(subquestion) && (

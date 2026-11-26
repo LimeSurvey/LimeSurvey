@@ -47,6 +47,9 @@ const getRemoveIcons = () =>
     .getAllByTestId('remove-subquestion-button')
     .map((button) => button.querySelector('.remove-option-button'))
 
+const getDragHandles = () =>
+  Array.from(document.querySelectorAll('.question-drag-handle'))
+
 describe('OptionQuestionEditMode on an active survey', () => {
   afterEach(async () => {
     await setSurveyActive(false)
@@ -88,6 +91,20 @@ describe('OptionQuestionEditMode on an active survey', () => {
     getRemoveIcons().forEach((icon) => expect(icon).not.toHaveClass('d-none'))
   })
 
+  test('answer options of a single choice question can be reordered', async () => {
+    await renderEditMode({
+      questionThemeName: getQuestionTypeInfo().SINGLE_CHOICE_LIST_RADIO.theme,
+      children: answers,
+    })
+    await setSurveyActive(true)
+
+    getDragHandles().forEach((handle) => {
+      expect(handle).toHaveAttribute('data-rfd-drag-handle-draggable-id')
+      expect(handle).not.toHaveClass('cursor-not-allowed')
+      expect(handle.querySelector('svg')).not.toHaveClass('disabled')
+    })
+  })
+
   test('subquestion codes of a multiple choice question are read-only', async () => {
     const handleChildAdd = jest.fn()
     await renderEditMode({
@@ -101,5 +118,19 @@ describe('OptionQuestionEditMode on an active survey', () => {
     expect(screen.getByText('SQ001')).toHaveClass('question-code-tag')
     expect(screen.getByTestId('add-child-button')).toBeDisabled()
     getRemoveIcons().forEach((icon) => expect(icon).toHaveClass('d-none'))
+  })
+
+  test('subquestions of a multiple choice question have greyed out drag handles', async () => {
+    await renderEditMode({
+      questionThemeName: getQuestionTypeInfo().MULTIPLE_CHOICE.theme,
+      children: subquestions,
+    })
+    await setSurveyActive(true)
+
+    getDragHandles().forEach((handle) => {
+      expect(handle).not.toHaveAttribute('data-rfd-drag-handle-draggable-id')
+      expect(handle).toHaveClass('cursor-not-allowed')
+      expect(handle.querySelector('svg')).toHaveClass('disabled')
+    })
   })
 })

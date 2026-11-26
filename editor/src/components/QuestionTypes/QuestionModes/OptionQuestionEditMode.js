@@ -10,11 +10,12 @@ import {
 import { canUpdateChildren, Entities, hasTempId, L10ns, STATES } from 'helpers'
 import { getTooltipMessages } from 'helpers/options'
 import { ContentEditor, DragAndDrop, TooltipContainer } from 'components'
-import { CloseCircleFillIcon, DragIcon } from 'components/icons'
+import { CloseCircleFillIcon } from 'components/icons'
 import { ImageChoice } from 'components/QuestionTypes/ImageChoice'
 import { getQuestionTypeInfo } from '../getQuestionTypeInfo'
 import { singleChoiceThemes } from '../singleChoiceThemes'
 import { CodeInput } from '../codeComponents'
+import { ChildDragIcon } from '../ChildDragIcon'
 import { AssessmentValueInput } from '../AssessmentValueInput'
 
 const imageThemeComponents = [
@@ -82,6 +83,7 @@ export const OptionQuestionEditMode = ({
             key={`${child.appKey || child[childrenInfo.idKey]}-choice`}
             draggableId={`${child.appKey || child[childrenInfo.idKey]}-choice`}
             index={index}
+            isDragDisabled={!isChildUpdateAllowed}
           >
             {(provided, snapshot) => (
               <div className="w-100">
@@ -115,10 +117,13 @@ export const OptionQuestionEditMode = ({
                     />
                   </div>
                   <div
-                    className="question-drag-handle"
+                    className={classNames('question-drag-handle', {
+                      'cursor-not-allowed': !isChildUpdateAllowed,
+                    })}
                     {...provided.dragHandleProps}
                   >
-                    <DragIcon
+                    <ChildDragIcon
+                      isLocked={!isChildUpdateAllowed}
                       className={classNames('text-secondary fill-current', {
                         'd-none': !isFocused,
                       })}

@@ -1,10 +1,11 @@
 import classNames from 'classnames'
 import { ContentEditor } from 'components'
-import { CloseCircleFillIcon, DragIcon } from 'components/icons'
+import { CloseCircleFillIcon } from 'components/icons'
 import { canUpdateChildren, Entities, hasTempId, STATES } from 'helpers'
 import { useAppState, useToggleQuestionCodes } from 'hooks'
 import { CodeInput } from '../../codeComponents'
 import { AssessmentValueInput } from '../../AssessmentValueInput'
+import { ChildDragIcon } from '../../ChildDragIcon'
 
 export const ArrayColumnTitle = ({
   isFocused,
@@ -47,12 +48,18 @@ export const ArrayColumnTitle = ({
           {...provided.dragHandleProps}
           className={classNames(
             {
-              'disabled opacity-0': !provided.dragHandleProps,
+              'disabled opacity-0': isNoAnswer,
+              'cursor-not-allowed': !isNoAnswer && !isChildUpdateAllowed,
             },
             'd-flex align-items-center action-item-button drag column'
           )}
         >
-          {isFocused && <DragIcon className="text-secondary fill-current" />}
+          {isFocused && (
+            <ChildDragIcon
+              isLocked={!isChildUpdateAllowed}
+              className="text-secondary fill-current"
+            />
+          )}
         </div>
         {isChildUpdateAllowed && (
           <div

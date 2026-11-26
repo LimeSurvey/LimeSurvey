@@ -2,10 +2,11 @@ import { useEffect, useRef } from 'react'
 import { Draggable } from '@hello-pangea/dnd'
 import classNames from 'classnames'
 import { CodeInput } from '../codeComponents'
+import { ChildDragIcon } from '../ChildDragIcon'
 import { useToggleQuestionCodes, useAppState } from 'hooks'
 import { canUpdateChildren, Entities, hasTempId, STATES } from 'helpers'
 import { ContentEditor } from 'components/UIComponents'
-import { CloseCircleFillIcon, DragIcon } from 'components/icons'
+import { CloseCircleFillIcon } from 'components/icons'
 import { L10ns } from 'helpers'
 
 export const RankingAdvancedQuestionSubquestions = ({
@@ -27,6 +28,7 @@ export const RankingAdvancedQuestionSubquestions = ({
     Entities.subquestion,
     isSurveyActive
   )
+  const isDragLocked = !participantMode && !isChildUpdateAllowed
 
   useEffect(() => {
     if (!setSubQuestionsHeight) {
@@ -70,7 +72,7 @@ export const RankingAdvancedQuestionSubquestions = ({
             key={`advanced-subquestion${subquestion.appKey || subquestion.qid}-${index}`}
             draggableId={`advanced-subquestion${subquestion.appKey || subquestion.qid}-${index}`}
             index={index}
-            isDragDisabled={!participantMode && !isChildUpdateAllowed}
+            isDragDisabled={isDragLocked}
           >
             {(provided, snapshot) => {
               return (
@@ -142,6 +144,9 @@ export const RankingAdvancedQuestionSubquestions = ({
                     </div>
                     <div
                       {...provided.dragHandleProps}
+                      className={classNames({
+                        'cursor-not-allowed': isDragLocked,
+                      })}
                       style={{
                         position: 'absolute',
                         right: '0',
@@ -151,7 +156,7 @@ export const RankingAdvancedQuestionSubquestions = ({
                       }}
                       onClick={(e) => e.stopPropagation()}
                     >
-                      <DragIcon />
+                      <ChildDragIcon isLocked={isDragLocked} />
                     </div>
                   </div>
                 </div>

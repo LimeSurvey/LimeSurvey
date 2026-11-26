@@ -28,12 +28,15 @@ const renderColumnTitle = async ({ itemsKey, code, handleChildCodeUpdate }) => {
   await setSurveyActive(true)
 }
 
+// The drag area of the rendered column title
+const getDragArea = () => document.querySelector('.action-item-button.drag')
+
 describe('ArrayColumnTitle on an active survey', () => {
   afterEach(async () => {
     await setSurveyActive(false)
   })
 
-  test('answer option codes are editable and the answer option can be removed', async () => {
+  test('answer option codes are editable and the answer option can be removed and reordered', async () => {
     const handleChildCodeUpdate = jest.fn()
     await renderColumnTitle({
       itemsKey: 'answers',
@@ -49,9 +52,11 @@ describe('ArrayColumnTitle on an active survey', () => {
     expect(
       screen.getByTestId('remove-horizontal-option-button')
     ).toBeInTheDocument()
+    expect(getDragArea()).not.toHaveClass('cursor-not-allowed')
+    expect(getDragArea().querySelector('svg')).not.toHaveClass('disabled')
   })
 
-  test('subquestion codes are read-only and the subquestion can not be removed', async () => {
+  test('subquestion codes are read-only and the subquestion can not be removed or reordered', async () => {
     await renderColumnTitle({
       itemsKey: 'subquestions',
       code: 'SQ001',
@@ -61,5 +66,7 @@ describe('ArrayColumnTitle on an active survey', () => {
     expect(screen.queryByRole('textbox', { name: /code/ })).toBeNull()
     expect(screen.getByText('SQ001')).toHaveClass('question-code-tag')
     expect(screen.queryByTestId('remove-horizontal-option-button')).toBeNull()
+    expect(getDragArea()).toHaveClass('cursor-not-allowed')
+    expect(getDragArea().querySelector('svg')).toHaveClass('disabled')
   })
 })

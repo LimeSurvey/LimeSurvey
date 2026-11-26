@@ -58,6 +58,7 @@ export const ArrayColumnsTitles = ({
   const answersContainerRef = useRef(null)
 
   const [activeLanguage] = useAppState(STATES.ACTIVE_LANGUAGE)
+  const [isSurveyActive] = useAppState(STATES.IS_SURVEY_ACTIVE)
   const { areCodesVisible } = useToggleQuestionCodes()
 
   const isArrayByColumn =
@@ -250,6 +251,9 @@ export const ArrayColumnsTitles = ({
                   key={`${entity.appKey || entity[entitiesInfo.idKey]}-subQuestionAnswerTitle`}
                   draggableId={`${entity.appKey || entity[entitiesInfo.idKey]}-subQuestionAnswerTitle`}
                   index={index}
+                  isDragDisabled={
+                    !canUpdateChildren(entitiesInfo.entity, isSurveyActive)
+                  }
                 >
                   {(provided, snapshot) => (
                     <div
