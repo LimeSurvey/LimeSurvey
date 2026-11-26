@@ -31,18 +31,21 @@ class ParticipantDuplicateFinderTest extends TestBaseClass
         parent::setUpBeforeClass();
         /* Adds encryptionduplicateindexkey if missing */
         Yii::app()->getComponent('sodium');
-        self::$duplicatefinderBits = Yii::app()->getConfig('CPDB_duplicatefinder_bits');
-        Yii::app()->setConfig('CPDB_duplicatefinder_bits', 128);
 
+        /* Check the 3 attributes before any change : a skip does not call tearDownAfterClass */
+        $missingAttributes = [];
         foreach (['firstname', 'lastname', 'email'] as $coreAttribute) {
             $attributeName = ParticipantAttributeName::model()->findByAttributes(['defaultname' => $coreAttribute]);
-            if ($attributeName) {
-                /* Existing installation : keep it, encrypt it for the test */
-                if ($attributeName->encrypted !== 'Y') {
-                    self::markTestSkipped("Core attribute $coreAttribute exists and is not encrypted, the test does not change it.");
-                }
-                continue;
+            if (!$attributeName) {
+                $missingAttributes[] = $coreAttribute;
+            } elseif ($attributeName->encrypted !== 'Y') {
+                self::markTestSkipped("Core attribute $coreAttribute exists and is not encrypted, the test does not change it.");
             }
+        }
+
+        self::$duplicatefinderBits = Yii::app()->getConfig('CPDB_duplicatefinder_bits');
+        Yii::app()->setConfig('CPDB_duplicatefinder_bits', 128);
+        foreach ($missingAttributes as $coreAttribute) {
             $attributeName = new ParticipantAttributeName();
             $attributeName->attribute_type = 'TB';
             $attributeName->defaultname = $coreAttribute;
