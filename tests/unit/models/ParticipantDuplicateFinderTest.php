@@ -327,12 +327,12 @@ class ParticipantDuplicateFinderTest extends TestBaseClass
     public function testReencryptionActionUsesTheCurrentMethod(): void
     {
         $method = Yii::app()->getConfig('CPDB_encryption_method');
-        Yii::app()->setConfig('CPDB_encryption_method', 'B');
-        $created = $this->createParticipant(['firstname' => 'Kate', 'lastname' => 'Brewster', 'email' => 'kate@example.org']);
-        $this->assertSame(\LSActiveRecord::encryptSingle('Kate', 'B'), $this->getStoredParticipant($created->participant_id)['firstname']);
-
-        Yii::app()->setConfig('CPDB_encryption_method', 'H');
         try {
+            Yii::app()->setConfig('CPDB_encryption_method', 'B');
+            $created = $this->createParticipant(['firstname' => 'Kate', 'lastname' => 'Brewster', 'email' => 'kate@example.org']);
+            $this->assertSame(\LSActiveRecord::encryptSingle('Kate', 'B'), $this->getStoredParticipant($created->participant_id)['firstname']);
+
+            Yii::app()->setConfig('CPDB_encryption_method', 'H');
             $this->runMaintenance('reencryptParticipantData');
         } finally {
             Yii::app()->setConfig('CPDB_encryption_method', $method);
