@@ -1,0 +1,96 @@
+// Load / save label set modals (question footer)
+.label-set-modal {
+  .modal-dialog {
+    width: 531px;
+    max-width: calc(100% - 32px);
+    min-width: auto;
+  }
+
+  .modal-header {
+    padding: 40px 12px 0 24px;
+
+    .modal-title {
+      font-size: 24px;
+      line-height: 32px;
+      font-weight: 400;
+      color: $g-900;
+      text-align: left;
+    }
+  }
+
+  .label-set-modal-body {
+    padding: 12px 24px 0;
+  }
+
+  .label-set-modal-description {
+    font-size: 14px;
+    line-height: 20px;
+    color: $g-900;
+    margin-bottom: 24px;
+  }
+
+  .label-set-modal-empty {
+    font-size: 14px;
+    line-height: 20px;
+    color: $g-700;
+    margin-bottom: 0;
+  }
+
+  .label-set-modal-error {
+    display: flex;
+    gap: 8px;
+    align-items: baseline;
+    font-size: 14px;
+    line-height: 20px;
+    color: $error;
+
+    .label-set-modal-retry {
+      font-size: 14px;
+      line-height: 20px;
+    }
+  }
+
+  .label-set-modal-warning {
+    padding: 8px 12px;
+    border-left: 3px solid $warning;
+    background-color: rgba($warning, 0.15);
+    font-size: 14px;
+    line-height: 20px;
+    color: $g-900;
+
+    p {
+      margin-bottom: 0;
+    }
+
+    p + p,
+    div + p,
+    p + div,
+    div + div {
+      margin-top: 4px;
+    }
+
+    .label-set-modal-removed-languages {
+      margin: 4px 0 0;
+      padding-left: 20px;
+    }
+  }
+
+  .label-set-modal-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    // Select renders a plain form-label; match the small sidebar labels of the other fields
+    .select-component .form-label {
+      @include label-s-sidebar;
+    }
+
+    .lime-toggle-btn-group .btn-group {
+      width: 100%;
+    }
+  }
+
+  .modal-footer {
+    padding: 24px 20px;
+  }
+}

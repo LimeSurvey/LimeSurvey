@@ -1,0 +1,311 @@
+import { useEffect, useMemo, useRef, useState } from 'react'
+
+import {
+  LABEL_SET_CONFLICT,
+  useAppState,
+  useLabelSet,
+  useLabelSets,
+  useSaveLabelSet,
+} from 'hooks'
+import { childrenToLabels, Entities, STATES } from 'helpers'
+import { ComponentModal } from 'components/Modals'
+import { Input, Select, ToggleButtons } from 'components/UIComponents'
+import {
+  showErrorMessage,
+  showSuccessMessage,
+} from 'components/ConditionDesigner/utils'
+
+import { LabelSetListError } from './LabelSetListError'
+
+const NAME_INPUT_ID = 'save-label-set-name-input'
+const LANGUAGE_INPUT_ID = 'save-label-set-languages-input'
+const OVERWRITE_INPUT_ID = 'save-label-set-overwrite-input'
+
+/**
+ * Saves the answer options or subquestions of a question as a new label set,
+ * or overwrites an existing label set.
+ *
+ * canCreate and canUpdate say which of the two the user may do; with only one
+ * of them, the choice between new and overwrite isn't offered.
+ */
+export const SaveLabelSetModal = ({
+  show = false,
+  onHide = () => {},
+  _children = [],
+  entityType = Entities.answer,
+  surveyLanguages = [],
+  canCreate = true,
+  canUpdate = true,
+}) => {
+  const [name, setName] = useState('')
+  const [languages, setLanguages] = useState(surveyLanguages)
+  const [overwrite, setOverwrite] = useState(!canCreate)
+  const [overwriteLid, setOverwriteLid] = useState(null)
+  // Bumped whenever the modal opens or closes, so a save that finishes later
+  // doesn't close the modal after it was reopened
+  const sessionId = useRef(0)
+  const [allLanguages] = useAppState(STATES.ALL_AVAILABLE_LANGUAGES)
+  const [userDetails] = useAppState(STATES.USER_DETAIL)
+  const { saveLabelSet, isSaving } = useSaveLabelSet()
+  const {
+    labelSets: updatableLabelSets,
+    isFetching,
+    isError,
+    refetch,
+  } = useLabelSets({
+    updatable: true,
+    enabled: show && overwrite,
+  })
+  // The warnings and the revision sent with the overwrite come from the same
+  // freshly loaded set, so the server can reject the overwrite if it changed since
+  const {
+    labelSet: selectedLabelSet,
+    isFetching: isFetchingSelected,
+    isError: isSelectedError,
+    refetch: refetchSelected,
+  } = useLabelSet({
+    lid: overwriteLid,
+    enabled: show && overwrite,
+  })
+
+  useEffect(() => {
+    sessionId.current++
+    if (show) {
+      setName('')
+      setLanguages(surveyLanguages)
+      setOverwrite(!canCreate)
+      setOverwriteLid(null)
+    }
+  }, [show])
+
+  // Users who may only overwrite get no name field: Focus the set to overwrite
+  // instead. The select is disabled while the list loads, so focus it once it's there
+  const focusFirstField = () =>
+    (
+      document.getElementById(NAME_INPUT_ID) ??
+      document.getElementById(OVERWRITE_INPUT_ID)
+    )?.focus()
+  useEffect(() => {
+    if (show && !canCreate && !isFetching) {
+      document.getElementById(OVERWRITE_INPUT_ID)?.focus()
+    }
+  }, [show, canCreate, isFetching])
+
+  const languageNames = allLanguages?.[userDetails?.lang]
+  const getLanguageName = (language) =>
+    languageNames?.[language]?.description || language
+  const languageOptions = useMemo(
+    () =>
+      surveyLanguages.map((language) => ({
+        value: language,
+        label: getLanguageName(language),
+      })),
+    [surveyLanguages, languageNames]
+  )
+
+  const overwriteOptions = useMemo(
+    () =>
+      updatableLabelSets.map((labelSet) => ({
+        value: labelSet.lid,
+        label: labelSet.name,
+      })),
+    [updatableLabelSets]
+  )
+
+  // Like the classic editor, overwriting replaces all labels and drops the
+  // translations of languages that are not selected, so say what will be lost
+  const isListed =
+    overwrite &&
+    updatableLabelSets.some(
+      (labelSet) => Number(labelSet.lid) === Number(overwriteLid)
+    )
+  const overwriteTarget =
+    isListed && Number(selectedLabelSet?.lid) === Number(overwriteLid)
+      ? selectedLabelSet
+      : null
+  const removedLanguages = (overwriteTarget?.languages ?? []).filter(
+    (language) => !languages.includes(language)
+  )
+  const hasAssessmentValues = (overwriteTarget?.labels ?? []).some(
+    (label) => Number(label.assessmentValue) !== 0
+  )
+
+  const isAnswer = entityType === Entities.answer
+  // Overwriting needs the selected set in a freshly loaded list and freshly loaded
+  // itself, so the warnings above describe what is replaced; a set that was
+  // deleted meanwhile can't be picked
+  const canOverwrite =
+    !!overwriteTarget &&
+    !isFetching &&
+    !isError &&
+    !isFetchingSelected &&
+    !isSelectedError
+  const isValid =
+    _children.length > 0 &&
+    languages.length > 0 &&
+    (overwrite ? canOverwrite : name.trim() !== '')
+
+  const handleSave = async () => {
+    if (!isValid) {
+      return
+    }
+
+    const saveSessionId = sessionId.current
+    try {
+      await saveLabelSet({
+        lid: overwrite ? overwriteLid : undefined,
+        name: name.trim(),
+        ...(overwrite && { revision: overwriteTarget.revision }),
+        languages,
+        labels: childrenToLabels(_children, entityType, languages),
+      })
+      showSuccessMessage(
+        overwrite
+          ? t('Label set successfully updated')
+          : t('Label set successfully saved.')
+      )
+      if (saveSessionId === sessionId.current) {
+        onHide()
+      }
+    } catch (error) {
+      if (error?.code === LABEL_SET_CONFLICT) {
+        // Load the set again, so the warnings show what is replaced now and the
+        // user has to confirm the overwrite again
+        refetchSelected()
+        refetch()
+        showErrorMessage(
+          t(
+            'The label set was changed in the meantime. Please check the warnings and save again.'
+          )
+        )
+        return
+      }
+      showErrorMessage(error?.message || t('Error'))
+    }
+  }
+
+  return (
+    <ComponentModal
+      show={show}
+      onHide={onHide}
+      title={
+        overwrite
+          ? t('Overwrite an existing label set')
+          : t('Save as new label set')
+      }
+      modalClassname="label-set-modal"
+      componentClassname="label-set-modal-body"
+      Component={
+        <div data-testid="save-label-set-modal">
+          <p className="label-set-modal-description">
+            {isAnswer
+              ? t('Save the answer options of this question as a label set.')
+              : t('Save the subquestions of this question as a label set.')}
+          </p>
+          <div className="label-set-modal-fields">
+            {!overwrite && (
+              <Input
+                id={NAME_INPUT_ID}
+                labelText={t('Label set name')}
+                value={name}
+                update={(value) => setName(value)}
+                dataTestId="save-label-set-name"
+              />
+            )}
+            <Select
+              labelText={t('Languages')}
+              options={languageOptions}
+              value={languageOptions.filter((option) =>
+                languages.includes(option.value)
+              )}
+              update={(value) => setLanguages(value)}
+              isMultiselect
+              dataTestId="save-label-set-languages"
+              inputId={LANGUAGE_INPUT_ID}
+            />
+            {canCreate && canUpdate && (
+              <ToggleButtons
+                id="save-label-set-overwrite"
+                labelText={t('Overwrite an existing label set')}
+                toggleOptions={[
+                  { name: t('Yes'), value: true },
+                  { name: t('No'), value: false },
+                ]}
+                value={overwrite}
+                update={(value) => setOverwrite(value)}
+              />
+            )}
+            {overwrite && isError && !isFetching && (
+              <LabelSetListError
+                onRetry={refetch}
+                testId="save-label-set-list-error"
+              />
+            )}
+            {overwrite && !(isError && !isFetching) && (
+              <Select
+                labelText={t('Overwrite label set')}
+                options={overwriteOptions}
+                value={overwriteLid}
+                defaultValue={null}
+                update={(value) => setOverwriteLid(value)}
+                placeholder={isFetching ? t('Loading...') : undefined}
+                disabled={isFetching}
+                dataTestId="save-label-set-overwrite-select"
+                inputId={OVERWRITE_INPUT_ID}
+              />
+            )}
+            {isListed && isSelectedError && !isFetchingSelected && (
+              <LabelSetListError
+                onRetry={refetchSelected}
+                testId="save-label-set-selected-error"
+              />
+            )}
+            {overwriteTarget && (
+              <div
+                className="label-set-modal-warning"
+                role="alert"
+                data-testid="save-label-set-overwrite-warning"
+              >
+                {/* Same warnings as the classic editor, plus the names of the lost languages */}
+                {hasAssessmentValues && (
+                  <p data-testid="save-label-set-assessment-warning">
+                    {t(
+                      'The existing label set has assessment values assigned. If you replace the label set the existing assessment values will be lost.'
+                    )}
+                  </p>
+                )}
+                {removedLanguages.length > 0 && (
+                  <div data-testid="save-label-set-removed-languages">
+                    <p>
+                      {t(
+                        'The existing label set has different/more languages. If you replace the label set these translations will be lost:'
+                      )}
+                    </p>
+                    <ul className="label-set-modal-removed-languages">
+                      {removedLanguages.map((language) => (
+                        <li key={language}>{getLanguageName(language)}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+                {!hasAssessmentValues && removedLanguages.length === 0 && (
+                  <p>
+                    {t(
+                      'You are about to replace an existing label set with the current answer options.'
+                    )}
+                  </p>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+      }
+      useFooter
+      confirmButtonText={t('Save label set')}
+      onConfirm={handleSave}
+      isLoading={isSaving}
+      confirmDisabled={!isValid}
+      onEntered={focusFirstField}
+    />
+  )
+}

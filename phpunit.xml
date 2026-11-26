@@ -55,6 +55,7 @@
     <testsuite name="question-b">
       <file>tests/functional/backend/CreateQuestionTest.php</file>
       <file>tests/functional/backend/SaveDualScaleAnswerOptionsTest.php</file>
+      <file>tests/functional/backend/SaveLabelSetFromDualScaleQuestionTest.php</file>
       <file>tests/functional/backend/QuestionGroupEditorTest.php</file>
       <file>tests/functional/backend/SaveSubquestionRelevanceTest.php</file>
       <file>tests/functional/backend/OldCodesReplacementTest.php</file>

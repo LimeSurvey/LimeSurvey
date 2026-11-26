@@ -40,6 +40,8 @@ export const Select = ({
   // Lets the user type a value that is not in the options list
   isCreatable = false,
   isClearable = false,
+  // Id of the select's input, so the label can point to it
+  inputId,
 }) => {
   const [isOpen, setIsOpen] = useState(false)
   const [hasSurveyUpdatePermission] = useAppState(
@@ -135,7 +137,9 @@ export const Select = ({
       })}
       data-testid={dataTestId}
     >
-      {labelText && <Form.Label htmlFor="select">{labelText}</Form.Label>}
+      {labelText && (
+        <Form.Label htmlFor={inputId || 'select'}>{labelText}</Form.Label>
+      )}
       <TooltipContainer tip={toolTip} showTip={permissionDisabled}>
         <SelectComponent
           {...creatableProps}
@@ -144,6 +148,7 @@ export const Select = ({
             menu: () => menuClassName,
           }}
           classNamePrefix="select"
+          inputId={inputId}
           defaultValue={defaultValue}
           value={value}
           onChange={handleOnChange}
