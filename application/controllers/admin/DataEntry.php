@@ -1708,8 +1708,8 @@ class DataEntry extends SurveyCommonAction
             $quotedOther = $db->quoteColumnName($otherColumn);
             $quotedId = $db->quoteColumnName('id');
             foreach (array_chunk($importedIds, 1000) as $ids) {
-                $condition = "($quotedChecked IS NULL OR $quotedChecked = '') AND $quotedOther IS NOT NULL AND $quotedOther <> ''"
-                    . " AND $quotedId IN (" . implode(',', array_map('intval', $ids)) . ")";
+                $eligible = "($quotedChecked IS NULL OR $quotedChecked = '') AND $quotedOther IS NOT NULL AND $quotedOther <> ''";
+                $condition = $eligible . " AND $quotedId IN (" . implode(',', array_map('intval', $ids)) . ")";
                 if (!$hardened) {
                     $db->createCommand()->update("{{responses_$iSurveyId}}", [$checkedColumn => $checked], $condition);
                     continue;
@@ -1723,7 +1723,7 @@ class DataEntry extends SurveyCommonAction
                     $db->createCommand()->update(
                         "{{responses_$iSurveyId}}",
                         [$checkedColumn => LSActiveRecord::encryptSingle('Y', 'H')],
-                        "$quotedId = :id",
+                        "$quotedId = :id AND $eligible",
                         [':id' => (int) $id]
                     );
                 }
