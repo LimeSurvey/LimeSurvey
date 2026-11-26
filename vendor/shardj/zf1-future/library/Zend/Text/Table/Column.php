@@ -232,6 +232,7 @@ class Zend_Text_Table_Column
 
         foreach ($lines AS $line) {
             $paddedLines[] = str_repeat(' ', $padding)
+                           // @phpstan-ignore variable.undefined (setAlign() accepts the three alignments only)
                            . Zend_Text_MultiByte::strPad($line, $columnWidth, ' ', $padMode, $outputCharset)
                            . str_repeat(' ', $padding);
         }

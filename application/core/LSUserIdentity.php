@@ -23,9 +23,9 @@ use LimeSurvey\PluginManager\PluginEvent;
  */
 class LSUserIdentity extends CUserIdentity
 {
-    const ERROR_SECOND_FACTOR_REQUIRED = 97;
-    const ERROR_IP_LOCKED_OUT = 98;
-    const ERROR_UNKNOWN_HANDLER = 99;
+    public const ERROR_SECOND_FACTOR_REQUIRED = 97;
+    public const ERROR_IP_LOCKED_OUT = 98;
+    public const ERROR_UNKNOWN_HANDLER = 99;
 
     protected $config = array();
 

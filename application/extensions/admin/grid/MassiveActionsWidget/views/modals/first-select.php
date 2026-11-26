@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Error modal shown when the user triggers a massive action without selecting any item.
  * Rendered without $aAction or $key — builds its own IDs from $this->gridid.
  */
+
 $firstSelectTitleId  = 'error-first-select-' . $this->gridid . '-title';
 $firstSelectDialogSrId = $firstSelectTitleId . '-dialogsr';
 ?>

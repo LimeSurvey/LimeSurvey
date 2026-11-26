@@ -20,6 +20,8 @@
  * @version    $Id$
  */
 
+require_once 'Zend/Tool/Project/Provider/Abstract.php';
+
 /**
  * @category   Zend
  * @package    Zend_Tool
@@ -31,6 +33,7 @@ class Zend_Tool_Project_Provider_Form extends Zend_Tool_Project_Provider_Abstrac
     public static function createResource(Zend_Tool_Project_Profile $profile, $formName, $moduleName = null)
     {
         if (!is_string($formName)) {
+            require_once 'Zend/Tool/Project/Provider/Exception.php';
             throw new Zend_Tool_Project_Provider_Exception('Zend_Tool_Project_Provider_Form::createResource() expects \"formName\" is the name of a form resource to create.');
         }
 
@@ -40,6 +43,7 @@ class Zend_Tool_Project_Provider_Form extends Zend_Tool_Project_Provider_Abstrac
             } else {
                 $exceptionMessage = 'A form directory was not found.';
             }
+            require_once 'Zend/Tool/Project/Provider/Exception.php';
             throw new Zend_Tool_Project_Provider_Exception($exceptionMessage);
         }
 
@@ -62,6 +66,7 @@ class Zend_Tool_Project_Provider_Form extends Zend_Tool_Project_Provider_Abstrac
     public static function hasResource(Zend_Tool_Project_Profile $profile, $formName, $moduleName = null)
     {
         if (!is_string($formName)) {
+            require_once 'Zend/Tool/Project/Provider/Exception.php';
             throw new Zend_Tool_Project_Provider_Exception('Zend_Tool_Project_Provider_Form::createResource() expects \"formName\" is the name of a form resource to check for existence.');
         }
 
@@ -95,11 +100,13 @@ class Zend_Tool_Project_Provider_Form extends Zend_Tool_Project_Provider_Abstrac
         $this->_loadProfile(self::NO_PROFILE_THROW_EXCEPTION);
 
         // determine if testing is enabled in the project
+        require_once 'Zend/Tool/Project/Provider/Test.php';
         $testingEnabled = Zend_Tool_Project_Provider_Test::isTestingEnabled($this->_loadedProfile);
 
         $formDirectoryResource = self::_getFormsDirectoryResource($this->_loadedProfile, $module);
 
         if ($formDirectoryResource->isEnabled()) {
+            require_once 'Zend/Tool/Project/Provider/Exception.php';
             throw new Zend_Tool_Project_Provider_Exception('This project already has forms enabled.');
         }
 
@@ -126,19 +133,23 @@ class Zend_Tool_Project_Provider_Form extends Zend_Tool_Project_Provider_Abstrac
         $this->_loadProfile(self::NO_PROFILE_THROW_EXCEPTION);
 
         // determine if testing is enabled in the project
+        require_once 'Zend/Tool/Project/Provider/Test.php';
         $testingEnabled = Zend_Tool_Project_Provider_Test::isTestingEnabled($this->_loadedProfile);
 
         if (self::hasResource($this->_loadedProfile, $name, $module)) {
+            require_once 'Zend/Tool/Project/Provider/Exception.php';
             throw new Zend_Tool_Project_Provider_Exception('This project already has a form named ' . $name);
         }
 
         // Check that there is not a dash or underscore, return if doesnt match regex
         if (preg_match('#[_-]#', $name)) {
+            require_once 'Zend/Tool/Project/Provider/Exception.php';
             throw new Zend_Tool_Project_Provider_Exception('Form names should be camel cased.');
         }
 
         $name = ucwords($name);
 
+        $testFormResource = null;
         try {
             $formResource = self::createResource($this->_loadedProfile, $name, $module);
 

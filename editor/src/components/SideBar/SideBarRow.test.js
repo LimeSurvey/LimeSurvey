@@ -3,15 +3,34 @@ import 'tests/mocks'
 import { fireEvent, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { renderWithProviders } from 'tests/testUtils'
+import { queryClient } from 'queryClient'
+import { STATES } from 'helpers'
 
 import { SideBarRow } from './SideBarRow'
+
+const setCodesVisible = (isVisible) =>
+  queryClient.setQueryData(
+    ['appState', STATES.SHOW_QUESTION_CODES_IN_EDITOR],
+    isVisible
+  )
 
 const menuItems = [{ type: 'item', label: 'Delete', onClick: () => {} }]
 
 describe('SideBarRow', () => {
+  beforeEach(() => {
+    setCodesVisible(true)
+  })
+
+  afterEach(() => {
+    queryClient.removeQueries({
+      queryKey: ['appState', STATES.SHOW_QUESTION_CODES_IN_EDITOR],
+      exact: true,
+    })
+  })
+
   test('shows the question code badge when question codes are enabled', async () => {
     await renderWithProviders(
-      <SideBarRow title="Q" code="Q006" menuItems={menuItems} showCode />
+      <SideBarRow title="Q" code="Q006" menuItems={menuItems} />
     )
     expect(await screen.findByTestId('question-code-badge')).toHaveTextContent(
       'Q006'
@@ -19,6 +38,7 @@ describe('SideBarRow', () => {
   })
 
   test('hides the question code badge when question codes are disabled', async () => {
+    setCodesVisible(false)
     await renderWithProviders(
       <SideBarRow title="Q" code="Q006" menuItems={menuItems} />
     )

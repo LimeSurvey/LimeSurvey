@@ -29,7 +29,6 @@ export const RowQuestionGroup = memo(function RowQuestionGroup({
   /* The focus is on the group itself */
   isFocused = false,
   isSurveyActive,
-  showCode = false,
   /* (updatedGroup, groupIndex) */
   update = noop,
   /* (questionGroup, groupIndex) */
@@ -85,7 +84,6 @@ export const RowQuestionGroup = memo(function RowQuestionGroup({
         ]}
         isOpen={isOpen}
         isFocused={isFocused}
-        showCode={showCode}
       >
         <RowQuestionsList
           questions={questions}

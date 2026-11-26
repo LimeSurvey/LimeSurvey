@@ -268,7 +268,6 @@ class Zend_Db_Adapter_Db2 extends Zend_Db_Adapter_Abstract
                  */
                 require_once 'Zend/Db/Adapter/Db2/Exception.php';
                 throw new Zend_Db_Adapter_Db2_Exception("execution mode not supported");
-                break;
         }
     }
 
@@ -289,7 +288,7 @@ class Zend_Db_Adapter_Db2 extends Zend_Db_Adapter_Abstract
          * so fall back to default quoting in the parent class.
          */
         if (function_exists('db2_escape_string')) {
-            return "'" . db2_escape_string($value) . "'";
+            return "'" . db2_escape_string((string) $value) . "'";
         }
         return parent::_quote($value);
     }
@@ -301,6 +300,7 @@ class Zend_Db_Adapter_Db2 extends Zend_Db_Adapter_Abstract
     {
         $this->_connect();
         $info = db2_server_info($this->_connection);
+        $identQuote = null;
         if ($info) {
             $identQuote = $info->IDENTIFIER_QUOTE_CHAR;
         } else {
@@ -641,14 +641,12 @@ class Zend_Db_Adapter_Db2 extends Zend_Db_Adapter_Abstract
                  */
                 require_once 'Zend/Db/Adapter/Db2/Exception.php';
                 throw new Zend_Db_Adapter_Db2_Exception('FETCH_BOUND is not supported yet');
-                break;
             default:
                 /**
                  * @see Zend_Db_Adapter_Db2_Exception
                  */
                 require_once 'Zend/Db/Adapter/Db2/Exception.php';
                 throw new Zend_Db_Adapter_Db2_Exception("Invalid fetch mode '$mode' specified");
-                break;
         }
     }
 
@@ -707,7 +705,7 @@ class Zend_Db_Adapter_Db2 extends Zend_Db_Adapter_Abstract
     /**
      * Retrieve server version in PHP style
      *
-     * @return string
+     * @return string|null
      */
     public function getServerVersion()
     {

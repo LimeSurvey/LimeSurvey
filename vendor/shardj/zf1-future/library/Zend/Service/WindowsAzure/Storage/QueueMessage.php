@@ -51,7 +51,7 @@ class Zend_Service_WindowsAzure_Storage_QueueMessage
      * @param string $expirationTime    Expiration time
      * @param string $popReceipt  	    Receipt verification for deleting the message from queue.
      * @param string $timeNextVisible   Next time the message is visible in the queue
-     * @param int    $dequeueCount      Number of times the message has been dequeued. This value is incremented each time the message is subsequently dequeued.
+     * @param int|string    $dequeueCount      Number of times the message has been dequeued. This value is incremented each time the message is subsequently dequeued.
      * @param string $messageText       Message text
      */
     public function __construct($messageId, $insertionTime, $expirationTime, $popReceipt, $timeNextVisible, $dequeueCount, $messageText)

@@ -30,6 +30,7 @@ require_once 'Zend/Cache/Backend/ExtendedInterface.php';
  * @see Zend_Cache_Backend
  */
 require_once 'Zend/Cache/Backend.php';
+require_once 'Zend/Cache.php';
 
 /**
  * @package    Zend_Cache
@@ -98,7 +99,7 @@ class Zend_Cache_Backend_Test extends Zend_Cache_Backend implements Zend_Cache_B
      *
      * @param  string  $id                     Cache id
      * @param  boolean $doNotTestCacheValidity If set to true, the cache validity won't be tested
-     * @return string Cached datas (or false)
+     * @return string|false Cached datas (or false)
      */
     public function load($id, $doNotTestCacheValidity = false)
     {
@@ -161,7 +162,7 @@ class Zend_Cache_Backend_Test extends Zend_Cache_Backend implements Zend_Cache_B
      * @param  string $data             Datas to cache
      * @param  string $id               Cache id
      * @param  array  $tags             Array of strings, the cache record will be tagged by each string entry
-     * @param  int    $specificLifetime If != false, set a specific lifetime for this cache record (null => infinite lifetime)
+     * @param  int|false    $specificLifetime If != false, set a specific lifetime for this cache record (null => infinite lifetime)
      * @return boolean True if no problem
      */
     public function save($data, $id, $tags = [], $specificLifetime = false)

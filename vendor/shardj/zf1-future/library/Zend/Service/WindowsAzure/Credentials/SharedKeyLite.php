@@ -23,6 +23,8 @@
  * @see Zend_Service_WindowsAzure_Credentials_CredentialsAbstract
  */
 require_once 'Zend/Service/WindowsAzure/Credentials/CredentialsAbstract.php';
+require_once 'Zend/Service/WindowsAzure/Storage.php';
+require_once 'Zend/Http/Client.php';
 
 /**
  * @category   Zend

@@ -54,7 +54,7 @@ class Zend_Db_Profiler_Firebug extends Zend_Db_Profiler
 
     /**
      * The message envelope holding the profiling summary
-     * @var Zend_Wildfire_Plugin_FirePhp_TableMessage
+     * @var Zend_Wildfire_Plugin_FirePhp_TableMessage|null
      */
     protected $_message = null;
 
@@ -117,14 +117,14 @@ class Zend_Db_Profiler_Firebug extends Zend_Db_Profiler
      *
      * @param  integer $queryId
      * @throws Zend_Db_Profiler_Exception
-     * @return void
+     * @return string Inform that a query is stored or ignored.
      */
     public function queryEnd($queryId)
     {
         $state = parent::queryEnd($queryId);
 
         if (!$this->getEnabled() || $state == self::IGNORED) {
-            return;
+            return $state;
         }
 
         $this->_message->setDestroy(false);
@@ -138,6 +138,8 @@ class Zend_Db_Profiler_Firebug extends Zend_Db_Profiler
                                       ($params=$profile->getQueryParams())?$params:null]);
 
         $this->updateMessageLabel();
+
+        return $state;
     }
 
     /**

@@ -56,7 +56,7 @@ abstract class Zend_Search_Lucene_Search_QueryEntry
     /**
      * Boost query entry
      *
-     * @param float $boostFactor
+     * @param float|numeric-string $boostFactor
      */
     public function boost($boostFactor)
     {

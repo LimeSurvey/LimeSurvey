@@ -85,7 +85,7 @@ class Zend_Queue implements Countable
      * - or -
      * $queue = new Zend_Queue(null, $config); // Zend_Queue->createQueue();
      *
-     * @param  string|Zend_Queue_Adapter|array|Zend_Config|null $spec String or adapter instance, or options array or Zend_Config instance
+     * @param  string|Zend_Queue_Adapter_AdapterInterface|array|Zend_Config|null $spec String or adapter instance, or options array or Zend_Config instance
      * @param  Zend_Config|array $options Zend_Config or a configuration array
      * @return void
      */
@@ -240,7 +240,7 @@ class Zend_Queue implements Countable
 
         if (!$adapter instanceof Zend_Queue_Adapter_AdapterInterface) {
             require_once 'Zend/Queue/Exception.php';
-            throw new Zend_Queue_Exception("Adapter class '" . get_class($adapterName) . "' does not implement Zend_Queue_Adapter_AdapterInterface");
+            throw new Zend_Queue_Exception("Adapter class '" . (is_object($adapter) ? get_class($adapter) : gettype($adapter)) . "' does not implement Zend_Queue_Adapter_AdapterInterface");
         }
 
         $this->_adapter = $adapter;
@@ -467,7 +467,6 @@ class Zend_Queue implements Countable
      * $array['function name'] = true or false
      * true is supported, false is not supported.
      *
-     * @param  string $name
      * @return array
      */
     public function getCapabilities()

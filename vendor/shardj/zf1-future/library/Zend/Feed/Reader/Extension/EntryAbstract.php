@@ -44,7 +44,7 @@ abstract class Zend_Feed_Reader_Extension_EntryAbstract
     /**
      * Entry instance
      *
-     * @var Zend_Feed_Entry_Abstract
+     * @var DOMElement
      */
     protected $_entry = null;
 
@@ -72,7 +72,7 @@ abstract class Zend_Feed_Reader_Extension_EntryAbstract
     /**
      * Constructor
      *
-     * @param  Zend_Feed_Entry_Abstract $entry
+     * @param  DOMElement $entry
      * @param  int $entryKey
      * @param  string $type
      * @return void
@@ -86,9 +86,11 @@ abstract class Zend_Feed_Reader_Extension_EntryAbstract
         if ($type !== null) {
             $this->_data['type'] = $type;
         } else {
+            require_once 'Zend/Feed/Reader.php';
             $this->_data['type'] = Zend_Feed_Reader::detectType($entry->ownerDocument, true);
         }
         // set the XPath query prefix for the entry being queried
+        require_once 'Zend/Feed/Reader.php';
         if ($this->getType() == Zend_Feed_Reader::TYPE_RSS_10
             || $this->getType() == Zend_Feed_Reader::TYPE_RSS_090
         ) {

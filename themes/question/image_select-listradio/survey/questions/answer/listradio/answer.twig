@@ -40,7 +40,7 @@
 
 <!-- answer -->
 {{ sTimer }}
-<ul class="imageselect-list {{ coreClass }} list-unstyled imageselect-answers imageselect-fit-{{ imageselectFit }}{% if imageselectHorizontal %} imageselect-horizontal{% endif %}{% if imageselectColumns %} ls-column-count-{{ imageselectColumns }}{% endif %}" role="radiogroup" aria-labelledby="ls-question-text-{{ name }}"{% if imageselectColumns %} data-column-count={{ imageselectColumns }}{% endif %}{% if imageselectWidth or imageselectHeight %} style="{% if imageselectWidth %}--imageselect-width: {{ imageselectWidth }}px;{% endif %}{% if imageselectHeight %} --imageselect-height: {{ imageselectHeight }}px;{% endif %}"{% endif %}>
+<ul class="imageselect-list {{ coreClass }} list-unstyled imageselect-answers imageselect-fit-{{ imageselectFit }}{% if imageselectHorizontal %} imageselect-horizontal{% endif %}{% if imageselectColumns %} ls-column-count-{{ imageselectColumns }}{% endif %}" role="radiogroup" aria-labelledby="ls-question-text-{{ name }}" aria-describedby="ls-question-help-{{ name }} ls-question-validation-{{ name }}"{% if imageselectColumns %} data-column-count={{ imageselectColumns }}{% endif %}{% if imageselectWidth or imageselectHeight %} style="{% if imageselectWidth %}--imageselect-width: {{ imageselectWidth }}px;{% endif %}{% if imageselectHeight %} --imageselect-height: {{ imageselectHeight }}px;{% endif %}"{% endif %}>
     {# rows/answer_row.php #}
     {{ sRows }}
 </ul>

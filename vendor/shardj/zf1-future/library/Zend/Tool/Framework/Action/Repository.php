@@ -83,7 +83,7 @@ class Zend_Tool_Framework_Action_Repository
     /**
      * process() - this is called when the client is done constructing (after init())
      *
-     * @return unknown|null
+     * @return mixed|null
      */
     public function process()
     {
@@ -104,7 +104,7 @@ class Zend_Tool_Framework_Action_Repository
      * getAction() - get an action by a specific name
      *
      * @param string $actionName
-     * @return Zend_Tool_Framework_Action_Interface
+     * @return Zend_Tool_Framework_Action_Interface|null
      */
     public function getAction($actionName)
     {

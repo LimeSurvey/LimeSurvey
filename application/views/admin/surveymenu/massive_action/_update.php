@@ -11,7 +11,7 @@
 ?>
 
 <form class="custom-modal-datas form form-horizontal">
-	<div class="container-fluid">
+    <div class="container-fluid">
         <fieldset class="mb-0" aria-labelledby="massedit-menu-modify-legend">
             <legend id="massedit-menu-modify-legend" class="visually-hidden"><?php eT("Modify"); ?></legend>
             <div class="ex-form-group mb-3">

@@ -77,17 +77,21 @@ class Zend_Application_Resource_Modules extends Zend_Application_Resource_Resour
                     $eMsgTpl = 'Bootstrap file found for module "%s" but bootstrap class "%s" not found';
                     include_once $bootstrapPath;
                     if (($default != $module)
+                        // @phpstan-ignore booleanNot.alwaysTrue (the file loaded above may define the class)
                         && !class_exists($bootstrapClass, false)
                     ) {
+                        require_once 'Zend/Application/Resource/Exception.php';
                         throw new Zend_Application_Resource_Exception(
                             sprintf(
                                 $eMsgTpl, $module, $bootstrapClass
                             )
                         );
                     } elseif ($default == $module) {
+                        // @phpstan-ignore booleanNot.alwaysTrue (the file loaded above may define the class)
                         if (!class_exists($bootstrapClass, false)) {
                             $bootstrapClass = 'Bootstrap';
                             if (!class_exists($bootstrapClass, false)) {
+                                require_once 'Zend/Application/Resource/Exception.php';
                                 throw new Zend_Application_Resource_Exception(
                                     sprintf(
                                         $eMsgTpl, $module, $bootstrapClass
@@ -120,6 +124,7 @@ class Zend_Application_Resource_Modules extends Zend_Application_Resource_Resour
     protected function bootstrapBootstraps($bootstraps)
     {
         $bootstrap = $this->getBootstrap();
+        /** @var ArrayObject<string, object> $out */
         $out       = new ArrayObject([], ArrayObject::ARRAY_AS_PROPS);
 
         foreach ($bootstraps as $module => $bootstrapClass) {

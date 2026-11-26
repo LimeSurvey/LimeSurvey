@@ -7,7 +7,6 @@ export const RowPinned = ({
   isFocused = false,
   onRowClick,
   testId,
-  showCode,
 }) => {
   return (
     <SideBarRow
@@ -18,7 +17,6 @@ export const RowPinned = ({
       isFocused={isFocused}
       onRowClick={onRowClick}
       testId={testId}
-      showCode={showCode}
     />
   )
 }

@@ -14,6 +14,7 @@
 
 /**
  * @var $this ListSurveysWidget
+ * @var CActiveDataProvider $dataProvider
  */
 
 ?>
@@ -34,14 +35,14 @@
         <?php
 
         $surveyGrid = $this->widget('application.extensions.admin.grid.CLSGridView', [
-            'dataProvider'          => $this->model->search(),
+            'dataProvider'          => $dataProvider,
             // Number of row per page selection
             'id'                    => 'survey-grid',
             'lsCaption'               => gT('List of surveys'),
             'emptyText'             => gT('No surveys found.'),
             'lsPageSizeCurrentValue'  => $this->pageSize,
             // Also refresh the survey counts in the admin menu, since mass actions like delete change them
-            'ajaxUpdate'            => 'survey-grid,surveys-menu-item,small-screens-menu-items,systemoverview',
+            'ajaxUpdate'            => 'survey-grid,surveys-menu-item,systemoverview',
             'lsAfterAjaxUpdate'     => [
                 'window.LS.doToolTip();',
                 'LS.restoreFocusAfterSort("survey-grid");',

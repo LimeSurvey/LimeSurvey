@@ -141,7 +141,7 @@ class Zend_OpenId_Provider
      * Sets the OP Endpoint URL
      *
      * @param string $url the OP Endpoint URL
-     * @return null
+     * @return void
      */
     public function setOpEndpoint($url)
     {
@@ -506,10 +506,10 @@ class Zend_OpenId_Provider
      *
      * @param float $version OpenID version
      * @param array $params GET or POST request variables
-     * @param bool $immediate enables or disables interaction with user
+     * @param bool|int $immediate enables or disables interaction with user
      * @param mixed $extensions extension object or array of extensions objects
      * @param Zend_Controller_Response_Abstract $response
-     * @return array
+     * @return array|bool
      */
     protected function _checkId($version, $params, $immediate, $extensions=null,
         ?Zend_Controller_Response_Abstract $response = null)

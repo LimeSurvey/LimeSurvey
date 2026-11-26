@@ -14,7 +14,7 @@ $selectAllUrl = $this->selectAllUrl ? CHtml::encode($this->selectAllUrl) : '';
     class="floating-actions-bar"
     data-grid-id="<?= $gridId ?>"
     data-pk="<?= $pk ?>"
-    <?php if ($selectAllUrl): ?>data-select-all-url="<?= $selectAllUrl ?>"<?php endif; ?>
+    <?= $selectAllUrl ? 'data-select-all-url="' . $selectAllUrl . '"' : '' ?>
     role="toolbar"
     aria-label="<?= gT('Actions for selected items') ?>"
 >
@@ -24,7 +24,7 @@ $selectAllUrl = $this->selectAllUrl ? CHtml::encode($this->selectAllUrl) : '';
     </span>
     <div class="floating-actions-separator" role="separator" aria-hidden="true"></div>
 
-    <?php if ($selectAllUrl || $this->lsSelectAllEnabled): ?>
+    <?php if ($selectAllUrl || $this->lsSelectAllEnabled) : ?>
         <!-- Separator before "Select all" -->
         <!-- Select all button -->
         <button
@@ -43,11 +43,9 @@ $selectAllUrl = $this->selectAllUrl ? CHtml::encode($this->selectAllUrl) : '';
         <?php endif; ?>
 
         <?php if ($action['type'] === 'separator') : ?>
-
             <div class="floating-actions-separator" role="separator" aria-hidden="true"></div>
 
         <?php elseif ($action['type'] === 'action') : ?>
-
             <button
                 type="button"
                 class="floating-actions-btn<?= !empty($action['btnClass']) ? ' ' . CHtml::encode($action['btnClass']) : '' ?>"
@@ -69,7 +67,6 @@ $selectAllUrl = $this->selectAllUrl ? CHtml::encode($this->selectAllUrl) : '';
             </button>
 
         <?php elseif ($action['type'] === 'dropdown' && !empty($action['items'])) : ?>
-
             <div class="dropdown">
                 <button
                     type="button"
@@ -101,9 +98,9 @@ $selectAllUrl = $this->selectAllUrl ? CHtml::encode($this->selectAllUrl) : '';
                                        data-modal-id="<?= $this->getModalId('d' . $key . '_' . $subKey, $subAction['action']) ?>"
                                    <?php endif; ?>
                                    <?php if (isset($subAction['aLinkSpecificDatas'])) : ?>
-                                       <?php foreach ($subAction['aLinkSpecificDatas'] as $dataName => $dataValue) : ?>
+                                        <?php foreach ($subAction['aLinkSpecificDatas'] as $dataName => $dataValue) : ?>
                                            data-<?= CHtml::encode($dataName) ?>="<?= CHtml::encode($dataValue) ?>"
-                                       <?php endforeach; ?>
+                                        <?php endforeach; ?>
                                    <?php endif; ?>
                                 >
                                     <?php if (!empty($subAction['iconClasses'])) : ?>

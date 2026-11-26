@@ -162,7 +162,7 @@ unset($attribute);
                                     </div>
                                     <?php // An inherited color is shown as an empty field with a placeholder, see themeoptions-core.js ?>
                                     <input id="<?= $attributeKey ?>" type="text" name="<?= $attributeKey ?>" data-inheritvalue="<?= CHtml::encode($sParentOption) ?>" value=""
-                                           <?php if ($bInherit) : ?>placeholder="<?= gT("Inherit") ?> [<?= gT("Inherited value:") ?> <?= CHtml::encode($sParentOption) ?>]"<?php endif; ?>
+                                           <?= $bInherit ? 'placeholder="' . gT("Inherit") . ' [' . gT("Inherited value:") . ' ' . CHtml::encode($sParentOption) . ']"' : '' ?>
                                            class="selector_option_value_field selector__color-picker form-control simple_edit_options_<?= $attributeKey ?>"/>
                                     <?php if ($bInherit && isset($sParentOption)) : ?>
                                         <div class="input-group-text">

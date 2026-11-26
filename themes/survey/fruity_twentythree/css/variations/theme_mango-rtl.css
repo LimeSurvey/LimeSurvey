@@ -12082,7 +12082,8 @@ Responsive navbar-brand image CSS
     max-width: 350px;
     max-height: 70vh;
   }
-  #survey-nav #main-dropdown li a {
+  #survey-nav #main-dropdown li a,
+  #survey-nav #main-dropdown li button {
     font-size: 0.7em !important;
   }
 }
@@ -12095,7 +12096,8 @@ Responsive navbar-brand image CSS
   padding: 0;
   margin: 0 1rem;
 }
-#survey-nav .dropdown-menu > li > a {
+#survey-nav .dropdown-menu > li > a,
+#survey-nav .dropdown-menu > li > button {
   text-decoration: none;
   font-weight: 400;
   font-size: 0.9975rem;
@@ -12152,14 +12154,18 @@ Responsive navbar-brand image CSS
 #survey-nav .navbar-toggler .ri-more-fill {
   color: #6e748c;
 }
-#survey-nav .dropdown-menu > li > a {
+#survey-nav .dropdown-menu > li > a,
+#survey-nav .dropdown-menu > li > button {
   color: #1e1e1e;
 }
 #survey-nav .dropdown-menu > li > a:hover,
 #survey-nav .dropdown-menu > li > a:focus,
 #survey-nav .dropdown-menu > li > a:active,
 #survey-nav .dropdown-menu > li > a.active,
-#survey-nav .dropdown-menu > .active > a {
+#survey-nav .dropdown-menu > .active > a,
+#survey-nav .dropdown-menu > li > button:hover,
+#survey-nav .dropdown-menu > li > button:focus,
+#survey-nav .dropdown-menu > li > button:active {
   color: #fff;
 }
 #survey-nav #main-dropdown .list-group-item {
@@ -15772,14 +15778,17 @@ body > .bootstrap-select .dropdown-menu {
 .dropdown-menu .divider {
   background-color: #eeeff7;
 }
-.dropdown-menu:not(.inner) > li > a {
+.dropdown-menu:not(.inner) > li > a,
+.dropdown-menu:not(.inner) > li > button {
   color: #6e748c;
 }
-.dropdown-menu:not(.inner) > li > a:hover {
+.dropdown-menu:not(.inner) > li > a:hover,
+.dropdown-menu:not(.inner) > li > button:hover {
   color: #ffffff;
   background-color: #E32416 !important;
 }
-.dropdown-menu:not(.inner) > li > a:focus {
+.dropdown-menu:not(.inner) > li > a:focus,
+.dropdown-menu:not(.inner) > li > button:focus {
   color: #ffffff;
   background-color: #E32416 !important;
 }

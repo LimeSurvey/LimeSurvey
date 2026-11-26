@@ -8,6 +8,7 @@ import React, {
 import classNames from 'classnames'
 import Button from 'react-bootstrap/Button'
 
+import { useToggleQuestionCodes } from 'hooks'
 import { ArrowDownIcon } from 'components/icons'
 import { ContentEditor, Dropdown, TooltipContainer } from 'components'
 import { RemoveHTMLTagsInString } from 'helpers'
@@ -38,11 +39,9 @@ export const SideBarRow = ({
   className = '',
   isFocused = false,
   menuItems = [],
-  /* Whether question codes are shown. A prop, not read from the survey here,
-     so a survey change does not render every row again. */
-  showCode = false,
 }) => {
   const [isOpen, setOpen] = useState(_isOpen)
+  const { areCodesVisible } = useToggleQuestionCodes()
 
   useEffect(() => {
     if (!isOpen) {
@@ -111,7 +110,7 @@ export const SideBarRow = ({
   const rowType = isQuestionGroup ? 'group' : isPinned ? 'pinned' : 'question'
   // The drag library passes null (not undefined) when dragging is disabled
   const isDraggable = !!provided.dragHandleProps
-  const showCodeBadge = rowType === 'question' && showCode && !!code
+  const showCodeBadge = rowType === 'question' && areCodesVisible && !!code
 
   useLayoutEffect(() => {
     const el = codeRef.current
@@ -212,7 +211,7 @@ export const SideBarRow = ({
             <ContentEditor
               className={classNames('structure-item-title', {
                 'question-group': !code,
-                'question-code': showCode,
+                'question-code': areCodesVisible,
               })}
               data-placeholder={titlePlaceholder}
               value={RemoveHTMLTagsInString(title)}

@@ -82,12 +82,14 @@ class Zend_Tool_Project_Context_Content_Engine_CodeGenerator
         if (method_exists($context, 'getCodeGenerator')) {
             $codeGenerator = $context->getCodeGenerator();
         } else {
+            require_once 'Zend/CodeGenerator/Php/File.php';
             $codeGenerator = new Zend_CodeGenerator_Php_File();
         }
 
         $codeGenerator = include $streamUri;
 
         if (!$codeGenerator instanceof Zend_CodeGenerator_Abstract) {
+            require_once 'Zend/Tool/Project/Exception.php';
             throw new Zend_Tool_Project_Exception('Custom file at ' . $streamUri . ' did not return the $codeGenerator object.');
         }
 

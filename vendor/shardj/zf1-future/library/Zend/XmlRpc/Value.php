@@ -454,7 +454,6 @@ abstract class Zend_XmlRpc_Value
             default:
                 require_once 'Zend/XmlRpc/Value/Exception.php';
                 throw new Zend_XmlRpc_Value_Exception('Value type \''. $type .'\' parsed from the XML string is not a known XML-RPC native type');
-                break;
         }
         $xmlrpcValue->_setXML($xml->asXML());
 

@@ -19,6 +19,8 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
+require_once 'Zend/Application/Resource/ResourceAbstract.php';
+
 /**
  * @category   Zend
  * @package    Zend_Application
@@ -64,6 +66,7 @@ class Zend_Application_Resource_Useragent extends Zend_Application_Resource_Reso
     {
         if (null === $this->_userAgent) {
             $options = $this->getOptions();
+            require_once 'Zend/Http/UserAgent.php';
             $this->_userAgent = new Zend_Http_UserAgent($options);
         }
 

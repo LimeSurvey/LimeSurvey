@@ -11,7 +11,7 @@
 ?>
 
 <form class="custom-modal-datas form form-horizontal">
-	<div class="container-fluid">
+    <div class="container-fluid">
         <fieldset class="mb-0" aria-labelledby="massedit-modify-legend">
             <legend id="massedit-modify-legend" class="visually-hidden">
                 <?php eT("Modify"); ?>
@@ -83,7 +83,7 @@
         </fieldset>
         <?php echo TbHtml::hiddenField('changed_by', Yii::app()->user->id, ['class' => 'custom-data']); ?>
         <?php echo TbHtml::hiddenField('changed_at', date('Y-m-d H:i:s'), ['class' => 'custom-data']); ?>
-	</div>
+    </div>
 </form>
 <!-- form -->
 <script>

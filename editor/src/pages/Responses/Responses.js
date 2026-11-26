@@ -8,6 +8,7 @@ import { useAppState, useResponses, useSetAllLanguages, useSurvey } from 'hooks'
 import {
   createBufferOperation,
   downloadBlob,
+  getApiUrl,
   getFilenameFromContentDisposition,
   PAGES,
   STATES,
@@ -15,6 +16,7 @@ import {
   toastComponent,
 } from 'helpers'
 import { ComponentModal } from 'components'
+import { SiteSettingsService } from 'services'
 
 import { LeftSideBar } from './Sidebars/LeftSideBar'
 import {
@@ -55,6 +57,7 @@ export const Responses = () => {
     STATES.HAS_RESPONSES_UPDATE_PERMISSION
   )
   const [, setTopbarConfig] = useAppState(STATES.TOPBAR_CONFIG, {})
+  const [, setSiteSettings] = useAppState(STATES.SITE_SETTINGS, {})
   const {
     survey = {},
     fetchSurvey,
@@ -84,6 +87,19 @@ export const Responses = () => {
       fetchAllLanguages(survey.languages)
     }
   }, [survey.sid])
+
+  // For the same reason load the site settings here: Date questions need their date formats
+  useEffect(() => {
+    if (process.env.REACT_APP_DEMO_MODE === 'true') {
+      return
+    }
+
+    new SiteSettingsService(getApiUrl()).getSiteData().then((result) => {
+      if (result) {
+        setSiteSettings(result)
+      }
+    })
+  }, [])
 
   // A filter the server cannot honour — an attribute this survey does not
   // have, a question from another survey — comes back as a bad request with

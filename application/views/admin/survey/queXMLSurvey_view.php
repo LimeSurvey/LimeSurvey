@@ -14,8 +14,7 @@
                         <option value='<?php echo $lang; ?>'
                                 selected='selected'><?php echo getLanguageNameFromCode($lang, false); ?></option>
                     <?php } else { ?>
-                        <option value='<?php echo $lang; ?>'><?php echo getLanguageNameFromCode($lang,
-                                false); ?></option>
+                        <option value='<?php echo $lang; ?>'><?php echo getLanguageNameFromCode($lang, false); ?></option>
                     <?php }
                 } ?>
             </select>
@@ -214,13 +213,14 @@
             <div class="row">
                 <label class="form-label"><?php eT("Reset to default settings:"); ?></label>
                 <div>
-                         <?php echo CHtml::form(array("admin/export/sa/quexmlclear/surveyid/{$surveyid}/"), 'post', array('id'=>'quexmlclearform'));
-                         echo CHtml::htmlButton(gT('Reset now'), [
-                             'type' => 'submit',
-                             'class' => 'btn btn-danger',
-                         ]);
-                         ?>
-                         <?= CHtml::endForm() ?>
+                    <?php
+                    echo CHtml::form(array("admin/export/sa/quexmlclear/surveyid/{$surveyid}/"), 'post', array('id' => 'quexmlclearform'));
+                    echo CHtml::htmlButton(gT('Reset now'), [
+                        'type' => 'submit',
+                        'class' => 'btn btn-danger',
+                    ]);
+                    ?>
+                    <?= CHtml::endForm() ?>
                 </div>
             </div>
          </div>

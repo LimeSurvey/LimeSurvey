@@ -96,7 +96,7 @@ class Zend_Validate_Isbn extends Zend_Validate_Abstract
     /**
      * Detect input format.
      *
-     * @return string
+     * @return string|null
      */
     protected function _detectFormat()
     {

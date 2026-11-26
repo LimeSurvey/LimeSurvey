@@ -32,6 +32,8 @@ require_once 'Zend/View/Helper/HtmlElement.php';
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
   */
+require_once 'Zend/Dojo/View/Helper/Dojo.php';
+
 abstract class Zend_Dojo_View_Helper_Dijit extends Zend_View_Helper_HtmlElement
 {
     /**
@@ -141,7 +143,7 @@ abstract class Zend_Dojo_View_Helper_Dijit extends Zend_View_Helper_HtmlElement
     /**
      * Create a layout container
      *
-     * @param  int $id
+     * @param  int|string|null $id
      * @param  string $content
      * @param  array $params
      * @param  array $attribs
@@ -163,7 +165,7 @@ abstract class Zend_Dojo_View_Helper_Dijit extends Zend_View_Helper_HtmlElement
     /**
      * Create HTML representation of a dijit form element
      *
-     * @param  string $id
+     * @param  string|int $id
      * @param  string $value
      * @param  array $params
      * @param  array $attribs
@@ -201,6 +203,7 @@ abstract class Zend_Dojo_View_Helper_Dijit extends Zend_View_Helper_HtmlElement
     {
         $this->dojo->requireModule($this->_module);
 
+        $stripParams = [];
         switch ($type) {
             case 'layout':
                 $stripParams = ['id'];
@@ -304,7 +307,7 @@ abstract class Zend_Dojo_View_Helper_Dijit extends Zend_View_Helper_HtmlElement
     /**
      * Render a hidden element to hold a value
      *
-     * @param  string $id
+     * @param  string|int $id
      * @param  string|int|float $value
      * @return string
      */

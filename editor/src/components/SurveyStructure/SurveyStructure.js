@@ -50,16 +50,9 @@ export const SurveyStructure = () => {
   const navigate = useNavigate()
   const { setFocused, unFocus, focused } = useFocused()
   const {
-    survey: {
-      questionGroups = [],
-      language,
-      showWelcome,
-      sid,
-      showQNumCode,
-    } = {},
+    survey: { questionGroups = [], language, showWelcome, sid } = {},
     update,
   } = useSurvey(surveyId)
-  const showCode = !!showQNumCode?.showCode
 
   const { addToBuffer } = useBuffer()
   const { clearSurveyRequestTimestamp } = useSurveyRequestTimestamp()
@@ -470,7 +463,6 @@ export const SurveyStructure = () => {
           </SideBarHeader>
           <RowPinned
             testId="survey-structure-header"
-            showCode={showCode}
             title={t('Welcome')}
             disabled={!showWelcome}
             isFocused={
@@ -537,7 +529,6 @@ export const SurveyStructure = () => {
                                 isGroupOpen && focused?.qid === undefined
                               }
                               isSurveyActive={isSurveyActive}
-                              showCode={showCode}
                               update={handleGroupUpdate}
                               duplicateGroup={handleGroupDuplicate}
                               deleteGroup={handleGroupDelete}
@@ -556,7 +547,6 @@ export const SurveyStructure = () => {
           {questionGroups.length > 0 ? (
             <RowPinned
               testId="survey-structure-footer"
-              showCode={showCode}
               title={t('End')}
               isFocused={
                 focused?.info?.type === getQuestionTypeInfo().END_SCREEN.type

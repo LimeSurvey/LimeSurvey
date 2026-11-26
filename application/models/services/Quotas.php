@@ -17,10 +17,10 @@ use Survey;
 class Quotas
 {
     //Quota massive actions
-    const MASSIVE_ACTION_ACTIVATE = 'activate';
-    const MASSIVE_ACTION_DEACTIVATE = 'deactivate';
-    const MASSIVE_ACTION_DELETE = 'delete';
-    const MASSIVE_ACTION_CHANGE_LANGUAGE_SETTINGS = 'changeLanguageSettings';
+    public const MASSIVE_ACTION_ACTIVATE = 'activate';
+    public const MASSIVE_ACTION_DEACTIVATE = 'deactivate';
+    public const MASSIVE_ACTION_DELETE = 'delete';
+    public const MASSIVE_ACTION_CHANGE_LANGUAGE_SETTINGS = 'changeLanguageSettings';
 
     /** @var \Survey the survey */
     private $survey;

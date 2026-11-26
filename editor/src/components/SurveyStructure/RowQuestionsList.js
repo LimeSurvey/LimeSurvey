@@ -14,17 +14,8 @@ import {
   arrayDeleteItem,
   DuplicateQuestion,
   createBufferOperation,
-  Entities,
-  getNumericAnswerCodes,
-  hasNumericAnswerCodes,
   STATES,
 } from 'helpers'
-import { createChildrenUpdateOperation } from 'hooks/useQuestionChildren'
-import {
-  applyAttributeChanges,
-  getImageOptionRemapChanges,
-  getImageSelectThemes,
-} from 'components/QuestionTypes/imageOptionSettings'
 import { ConfirmModal } from 'components/Modals'
 
 import { RowQuestion } from './RowQuestion'
@@ -41,9 +32,7 @@ export const RowQuestionsList = ({
   const [deleteState, setDeleteState] = useState({ show: false, index: null })
   const [isSurveyActive] = useAppState(STATES.IS_SURVEY_ACTIVE, false)
   const { surveyId } = useParams()
-  // Read once per list instead of per row to avoid a subscription per question
-  const { areCodesVisible, toggleQuestionCodes } =
-    useToggleQuestionCodes(surveyId)
+  const { areCodesVisible, toggleQuestionCodes } = useToggleQuestionCodes()
 
   const getQuestionDragStyle = (draggableStyle) => ({
     userSelect: 'none',
@@ -92,64 +81,6 @@ export const RowQuestionsList = ({
     }, 0)
   }
 
-  /**
-   * Renumbers the answer codes of a question (1, 2, 3, … per scale). In the
-   * image select themes, the image settings and alt texts of the answers are
-   * stored by code: They move to the new codes.
-   *
-   * @param {Object} question the question
-   * @param {number} index position of the question in the list
-   * @returns {boolean} whether the codes changed
-   */
-  const assignNumericAnswerCodes = (question, index) => {
-    if (hasNumericAnswerCodes(question.answers)) {
-      return false
-    }
-    const answers = getNumericAnswerCodes(question.answers)
-    const imageChanges = getImageSelectThemes().includes(
-      question.questionThemeName
-    )
-      ? getImageOptionRemapChanges(
-          question.attributes,
-          Object.fromEntries(
-            question.answers.map((answer, answerIndex) => [
-              answer.code,
-              answers[answerIndex].code,
-            ])
-          )
-        )
-      : null
-    const updatedQuestion = {
-      ...question,
-      answers,
-      ...(imageChanges
-        ? {
-            attributes: applyAttributeChanges(
-              question.attributes,
-              imageChanges
-            ),
-          }
-        : {}),
-    }
-    const updatedQuestions = [...questions]
-    updatedQuestions[index] = updatedQuestion
-    addToBuffer(
-      createChildrenUpdateOperation(question.qid, Entities.answer, answers)
-    )
-    if (imageChanges) {
-      addToBuffer(
-        createBufferOperation(question.qid)
-          .questionAttribute()
-          .update(imageChanges)
-      )
-    }
-    handleUpdate(updatedQuestions)
-    if (focused?.qid === question.qid) {
-      setFocused(updatedQuestion, groupIndex, index)
-    }
-    return true
-  }
-
   const deleteQuestion = (index) => {
     setDeleteState({ show: true, index })
   }
@@ -176,9 +107,6 @@ export const RowQuestionsList = ({
   )
   const handleDuplicate = useEventCallback(duplicateQuestion)
   const handleDelete = useEventCallback(deleteQuestion)
-  const handleAssignNumericAnswerCodes = useEventCallback(
-    assignNumericAnswerCodes
-  )
   const handleToggleQuestionCodes = useEventCallback(toggleQuestionCodes)
 
   return (
@@ -235,7 +163,6 @@ export const RowQuestionsList = ({
                       onSelect={handleSelect}
                       duplicateQuestion={handleDuplicate}
                       deleteQuestion={handleDelete}
-                      assignNumericAnswerCodes={handleAssignNumericAnswerCodes}
                       toggleQuestionCodes={handleToggleQuestionCodes}
                     />
                   </div>

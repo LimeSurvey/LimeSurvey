@@ -38,7 +38,7 @@ class quexmlpdf extends pdf
      *
      * @const float Defaults to 25.4
      */
-    const INCH_IN_MM = 25.4;
+    public const INCH_IN_MM = 25.4;
 
     /**
      * Language for translation
@@ -2530,6 +2530,7 @@ class quexmlpdf extends pdf
                             break;
                         case 'number':
                             $bgtype = 4;
+                            // no break
                         case 'currency':
                         case 'longtext':
                         case 'text':
@@ -2583,6 +2584,7 @@ class quexmlpdf extends pdf
                             break;
                         case 'number':
                             $bgtype = 4;
+                            // no break
                         case 'currency':
                         case 'text':
                             $this->addBoxGroup($bgtype, $varname, $rtext, $response['width']);

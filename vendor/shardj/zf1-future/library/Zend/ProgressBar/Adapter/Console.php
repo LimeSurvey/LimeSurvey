@@ -135,7 +135,7 @@ class Zend_ProgressBar_Adapter_Console extends Zend_ProgressBar_Adapter
     /**
      * Width of the text element
      *
-     * @var string
+     * @var string|int
      */
     protected $_textWidth = 20;
 

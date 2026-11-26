@@ -157,6 +157,7 @@ class Zend_Oauth_Http_RequestToken extends Zend_Oauth_Http
                     $this->_consumer->getRequestTokenUrl());
                 break;
         }
+        // @phpstan-ignore variable.undefined (Zend_Oauth_Config accepts the three request schemes only)
         return $httpClient->request();
     }
 }
