@@ -65,7 +65,7 @@ export const EndScreenSettings = ({ surveyId }) => {
             handleUpdate({ urlDescription: value })
           }
           value={settings.urlDescription}
-          labelText={'URL description'}
+          labelText={t('URL description:')}
           className="ms-3 mt-3"
           noPermissionDisabled={true}
         />
@@ -73,7 +73,7 @@ export const EndScreenSettings = ({ surveyId }) => {
           dataTestId="end-screen-forwarding-button-url"
           onChange={({ target: { value } }) => handleUpdate({ url: value })}
           value={settings.url}
-          labelText={'End url'}
+          labelText={t('End url')}
           className="ms-3 mt-3"
           noPermissionDisabled={true}
         />

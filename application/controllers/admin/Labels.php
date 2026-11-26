@@ -44,7 +44,8 @@ class Labels extends SurveyCommonAction
     {
         $lid = $this->validateLabelSetId(App()->request->getParam('lid'), 'update');
         if (Yii::app()->getConfig('demoMode')) {
-            $this->getController()->error(gT("Demo mode only: Uploading files is disabled in this system."), $this->getController()->createUrl("admin/labels/sa/view/lid/{$lid}"));
+            Yii::app()->setFlashMessage(gT("Demo mode only: Uploading files is disabled in this system."), 'error');
+            $this->getController()->redirect(App()->createUrl("admin/labels/sa/view/lid/{$lid}"));
         }
 
         // Create temporary directory
@@ -71,7 +72,8 @@ class Labels extends SurveyCommonAction
         if (is_file($zipfilename)) {
             $zip = new LimeSurvey\Zip();
             if ($zip->open($zipfilename) !== true || $zip->extractTo($extractdir) !== true) {
-                $this->getController()->error(gT("This file is not a valid ZIP file archive. Import failed. " . $zip->errorInfo(true)), $this->getController()->createUrl("admin/labels/sa/view/lid/{$lid}"));
+                Yii::app()->setFlashMessage(gT("This file is not a valid ZIP file archive. Import failed."), 'error');
+                $this->getController()->redirect(App()->createUrl("admin/labels/sa/view/lid/{$lid}"));
             }
             $zip->close();
 
@@ -101,10 +103,12 @@ class Labels extends SurveyCommonAction
                 $sError = $hasResourceFolders
                     ? gT("This ZIP archive contains no valid Resources files. Import failed.")
                     : gT("The ZIP archive must contain a 'files' and/or an 'images' folder at its top level, with the resource files placed inside. Import failed.");
-                $this->getController()->error($sError, $this->getController()->createUrl("admin/labels/sa/view/lid/{$lid}"));
+                Yii::app()->setFlashMessage($sError, 'error');
+                $this->getController()->redirect(App()->createUrl("admin/labels/sa/view/lid/{$lid}"));
             }
         } else {
-            $this->getController()->error(gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder."), $this->getController()->createUrl("admin/labels/sa/view/lid/{$lid}"));
+            Yii::app()->setFlashMessage(gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder."), 'error');
+            $this->getController()->redirect(App()->createUrl("admin/labels/sa/view/lid/{$lid}"));
         }
 
         $aData = array(
@@ -328,7 +332,9 @@ class Labels extends SurveyCommonAction
             );
             $aData['topbar']['rightButtons'] = Yii::app()->getController()->renderPartial(
                 '/admin/labels/partials/topbarBtns_singlelabelset/rightSideButtons',
-                [],
+                [
+                    'hasUpdatePermission' => $model->hasPermission('labelset', 'update'),
+                ],
                 true
             );
         }

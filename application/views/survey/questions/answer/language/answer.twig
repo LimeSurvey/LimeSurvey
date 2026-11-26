@@ -20,7 +20,7 @@
             name="{{ name }}"
             id="answer{{ name }}"
             class="languagesurvey form-control form-select"
-            aria-describedby="ls-question-text-{{ name }}"
+            aria-describedby="ls-question-text-{{ name }} ls-question-help-{{ name }} ls-question-validation-{{ name }}"
         >
             {% for ansrow in answerlangs %}
                 <option value="{{ ansrow }}" {% if sLang == ansrow %} SELECTED {% endif %}>

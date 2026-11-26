@@ -20,11 +20,7 @@
 <?php } ?>
 
 <?php
-
-/**
- * Include the Survey Preview and Group Preview buttons
- */
-
+// Include the Survey Preview and Group Preview buttons
 $this->renderPartial(
     '/surveyAdministration/partial/topbar/previewOrRunButton_view',
     [

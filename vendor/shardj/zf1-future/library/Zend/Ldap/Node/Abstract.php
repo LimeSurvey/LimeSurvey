@@ -358,7 +358,7 @@ abstract class Zend_Ldap_Node_Abstract implements ArrayAccess, Countable
      *
      * @param  string $name
      * @param  mixed  $value
-     * @return null
+     * @return void
      * @throws BadMethodCallException
      */
     public function __set($name, $value)
@@ -388,7 +388,7 @@ abstract class Zend_Ldap_Node_Abstract implements ArrayAccess, Countable
      * This is an offline method.
      *
      * @param  string $name
-     * @return null
+     * @return void
      * @throws BadMethodCallException
      */
     public function __unset($name)
@@ -417,7 +417,7 @@ abstract class Zend_Ldap_Node_Abstract implements ArrayAccess, Countable
      *
      * @param  string $name
      * @param  mixed  $value
-     * @return null
+     * @return void
      * @throws BadMethodCallException
      */
     public function offsetSet($name, $value): void
@@ -450,7 +450,7 @@ abstract class Zend_Ldap_Node_Abstract implements ArrayAccess, Countable
      * This is an offline method.
      *
      * @param  string $name
-     * @return null
+     * @return void
      * @throws BadMethodCallException
      */
     public function offsetUnset($name): void

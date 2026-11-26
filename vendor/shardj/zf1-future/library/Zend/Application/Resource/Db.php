@@ -139,11 +139,13 @@ class Zend_Application_Resource_Db extends Zend_Application_Resource_ResourceAbs
         if ((null === $this->_db)
             && (null !== ($adapter = $this->getAdapter()))
         ) {
+            require_once 'Zend/Db.php';
             $this->_db = Zend_Db::factory($adapter, $this->getParams());
 
             if ($this->_db instanceof Zend_Db_Adapter_Abstract
                 && $this->isDefaultTableAdapter()
             ) {
+                require_once 'Zend/Db/Table.php';
                 Zend_Db_Table::setDefaultAdapter($this->_db);
             }
         }
@@ -190,6 +192,7 @@ class Zend_Application_Resource_Db extends Zend_Application_Resource_ResourceAbs
         }
 
         if ($metadataCache instanceof Zend_Cache_Core) {
+            require_once 'Zend/Db/Table.php';
             Zend_Db_Table::setDefaultMetadataCache($metadataCache);
         }
 

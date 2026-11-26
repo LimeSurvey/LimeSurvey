@@ -139,7 +139,7 @@ class Zend_Service_Twitter_Response
      * If the response was successful, an empty array is returned.
      *
      * @return array
-     * @throws Exception\DomainException if unable to detect structure of error response
+     * @throws Zend_Service_Twitter_Exception if unable to detect structure of error response
      */
     public function getErrors()
     {

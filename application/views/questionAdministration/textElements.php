@@ -117,6 +117,8 @@
                         </div>
                         <?php if ($lang == $oSurvey->language) : ?>
                             <div class="form-check mb-0">
+                                <?php // An unchecked checkbox isn't sent: This sends the 0 that switches the setting off ?>
+                                <input type="hidden" name="question[same_script]" value="0" />
                                 <input
                                     type="checkbox"
                                     class="form-check-input"

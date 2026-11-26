@@ -274,10 +274,9 @@ function createChart($iQuestionID, $iSurveyID, $type, $lbl, $gdata, $grawdata, $
                 $cachefilename = basename((string) $cache->GetFileFromCache($sCacheID, $DataSet->GetData()));
                 unset($graph);
             }
-        }    //end if (bar chart)
-
-        //Pie Chart
-        else {
+            //end if (bar chart)
+        } else {
+            //Pie Chart
             // this block is to remove the items with value == 0
             // and an inelegant way to remove comments from List with Comments questions
             $i = 0;

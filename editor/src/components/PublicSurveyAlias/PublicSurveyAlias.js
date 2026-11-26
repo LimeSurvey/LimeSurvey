@@ -1,10 +1,11 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
+import { Button } from 'react-bootstrap'
 import copy from 'copy-text-to-clipboard'
 import classNames from 'classnames'
 
 import { useSurveyUpdatePermission } from 'hooks'
-import { formatUrlPreview, getSurveyAccessLink } from 'helpers'
-import { Button, CustomizeButton, Input } from 'components/UIComponents'
+import { formatUrlPreview, getSiteUrl, getSurveyAccessLink } from 'helpers'
+import { CustomizeButton, Input } from 'components/UIComponents'
 import { PluginSlot } from 'plugins/PluginSlot'
 import pluginManager from 'plugins/PluginManager'
 import { PLUGIN_SLOTS } from 'plugins/slots'
@@ -30,8 +31,7 @@ export const PublicSurveyAlias = ({
   const [isEditingAlias, setIsEditingAlias] = useState(false)
   const inputRef = useRef(null)
   const aliasRef = useRef(null)
-  const linkPrefix =
-    window.location.protocol + '//' + window.location.host + '/'
+  const linkPrefix = getSiteUrl('/')
   const alias = useMemo(
     () => survey.languageSettings[language]?.alias?.trim() || '',
     [language, survey]

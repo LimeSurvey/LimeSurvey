@@ -39,7 +39,7 @@ interface Zend_Mail_Storage_Writable_Interface
      *
      * @param string                          $name         global name of folder, local name if $parentFolder is set
      * @param string|Zend_Mail_Storage_Folder $parentFolder parent folder for new folder, else root folder is parent
-     * @return null
+     * @return void
      * @throws Zend_Mail_Storage_Exception
      */
     public function createFolder($name, $parentFolder = null);
@@ -48,7 +48,7 @@ interface Zend_Mail_Storage_Writable_Interface
      * remove a folder
      *
      * @param string|Zend_Mail_Storage_Folder $name      name or instance of folder
-     * @return null
+     * @return void
      * @throws Zend_Mail_Storage_Exception
      */
     public function removeFolder($name);
@@ -60,7 +60,7 @@ interface Zend_Mail_Storage_Writable_Interface
      *
      * @param string|Zend_Mail_Storage_Folder $oldName name or instance of folder
      * @param string                          $newName new global name of folder
-     * @return null
+     * @return void
      * @throws Zend_Mail_Storage_Exception
      */
     public function renameFolder($oldName, $newName);
@@ -80,7 +80,7 @@ interface Zend_Mail_Storage_Writable_Interface
      *
      * @param  int                             $id     number of message
      * @param  string|Zend_Mail_Storage_Folder $folder name or instance of targer folder
-     * @return null
+     * @return void
      * @throws Zend_Mail_Storage_Exception
      */
     public function copyMessage($id, $folder);
@@ -90,7 +90,7 @@ interface Zend_Mail_Storage_Writable_Interface
      *
      * @param  int                             $id     number of message
      * @param  string|Zend_Mail_Storage_Folder $folder name or instance of targer folder
-     * @return null
+     * @return void
      * @throws Zend_Mail_Storage_Exception
      */
     public function moveMessage($id, $folder);

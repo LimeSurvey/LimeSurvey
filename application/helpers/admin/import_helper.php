@@ -12,7 +12,6 @@
 * See COPYRIGHT.php for copyright notices and details.
 */
 
-use LimeSurvey\Helpers\questionHelper;
 use LimeSurvey\Models\Services\SurveyAccessModeService;
 
 /**
@@ -515,7 +514,8 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $suppo
 
     // Import questionattributes --------------------------------------------------------------
     if (isset($xml->question_attributes)) {
-        $aAllAttributes = questionHelper::getAttributesDefinitions();
+        // Only needed to copy the translatable attributes of files older than DB version 156 to each language
+        $aAllAttributes = $iDBVersion < 156 ? QuestionAttribute::getAllAttributesSettings() : [];
 
         /** @var array<integer,array<string,mixed>> List of "answer order" related attributes, grouped by qid */
         $answerOrderAttributes = [];
@@ -598,6 +598,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields, $suppo
         }
     }
 
+    convertLegacyMapQuestions($importedQuestions);
 
     // Import defaultvalues ------------------------------------------------------
     importDefaultValues($xml, $importlanguages, $aQIDReplacements, $results, $allImportedQuestions, $newOldQidMapping, $oldNewFieldRoots);
@@ -1133,7 +1134,8 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
 
     // Import questionattributes --------------------------------------------------------------
     if (isset($xml->question_attributes)) {
-        $aAllAttributes = questionHelper::getAttributesDefinitions();
+        // Only needed to copy the translatable attributes of files older than DB version 156 to each language
+        $aAllAttributes = $iDBVersion < 156 ? QuestionAttribute::getAllAttributesSettings() : [];
         /** @var array<string,mixed> List of "answer order" related attributes */
         $answerOrderAttributes = [];
         importQuestionThemeAttributes($xml, $aQIDReplacements, $aLanguagesSupported);
@@ -1217,6 +1219,8 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
         App()->db->createCommand()->insert('{{question_attributes}}', $insertdata);
         $results['question_attributes']++;
     }
+
+    convertLegacyMapQuestions($importedQuestions);
 
     // Import defaultvalues ------------------------------------------------------
     importDefaultValues($xml, $aLanguagesSupported, $aQIDReplacements, $results, $allImportedQuestions, $newOldQidMapping, $oldNewFieldRoots);
@@ -1456,21 +1460,25 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
                 $aImportResults['error'] = gT("This is not a valid LimeSurvey LSA file.");
                 return $aImportResults;
             }
-            // Step 1 - import the LSS file and activate the survey
+            // Archives of inactive surveys contain no responses file, so the survey is only activated if there is one
+            $bHasResponsesFile = !empty(array_filter($files, fn($filename) => pathinfo((string) $filename, PATHINFO_EXTENSION) == 'lsr'));
+            // Step 1 - import the LSS file and activate the survey if needed
             foreach ($files as $filename) {
                 if (pathinfo((string) $filename, PATHINFO_EXTENSION) == 'lss') {
                     //Import the LSS file
-                    $aImportResults = XMLImportSurvey(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $filename, null, $sNewSurveyName, null, true, false, $targetSurveyGroup);
+                    $aImportResults = XMLImportSurvey(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $filename, null, $sNewSurveyName, $DestSurveyID, true, false, $targetSurveyGroup);
                     if (empty($aImportResults['newsid'])) {
                         break;
                     }
                     $SurveyIntegrity = new LimeSurvey\Models\Services\SurveyIntegrity(Survey::model()->findByPk($aImportResults['newsid']));
                     $SurveyIntegrity->fixSurveyIntegrity();
-                    // Activate the survey
-                    Yii::app()->loadHelper("admin.activate");
-                    $survey = Survey::model()->findByPk($aImportResults['newsid']);
-                    $surveyActivator = new SurveyActivator($survey);
-                    $surveyActivator->activate();
+                    if ($bHasResponsesFile) {
+                        // Activate the survey
+                        Yii::app()->loadHelper("admin.activate");
+                        $survey = Survey::model()->findByPk($aImportResults['newsid']);
+                        $surveyActivator = new SurveyActivator($survey);
+                        $surveyActivator->activate();
+                    }
                     unlink(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $filename);
                     break;
                 }
@@ -3190,7 +3198,8 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
 
     // Import questionattributes -------------------------------------------------
     if (isset($xml->question_attributes)) {
-        $aAllAttributes = questionHelper::getAttributesDefinitions();
+        // Only needed to copy the translatable attributes of files older than DB version 156 to each language
+        $aAllAttributes = $iDBVersion < 156 ? QuestionAttribute::getAllAttributesSettings() : [];
         /** @var array<integer,array<string,mixed>> List of "answer order" related attributes, grouped by qid */
         $answerOrderAttributes = [];
         importQuestionThemeAttributes($xml, $aQIDReplacements);
@@ -3287,6 +3296,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
         }
     }
 
+    convertLegacyMapQuestions($importedQuestions);
 
     // Import defaultvalues ------------------------------------------------------
     importDefaultValues($xml, $aLanguagesSupported, $aQIDReplacements, $results, $allImportedQuestions, $newOldQidMapping, $oldNewFieldRoots);
@@ -3700,8 +3710,6 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
         }
     }
 
-    // Set survey rights
-    Permission::model()->giveAllSurveyPermissions(Yii::app()->session['loginID'], $iNewSID);
     $aOldNewFieldmap = reverseTranslateFieldNames($iOldSID, $iNewSID, $aGIDReplacements, $aQIDReplacements);
     $results['FieldReMap'] = $aOldNewFieldmap;
     LimeExpressionManager::SetSurveyId($iNewSID);
@@ -4462,7 +4470,7 @@ function TSVImportSurvey($sFullFilePath)
     $questions = array();
     $attributes = array();
     $seenAttributes = array();
-    $aAllAttributes = questionHelper::getAttributesDefinitions();
+    $aAllAttributes = QuestionAttribute::getAllAttributesSettings();
     $subquestions = array();
     $defaultvalues = array();
     $answers = array();
@@ -4528,6 +4536,8 @@ function TSVImportSurvey($sFullFilePath)
 
     /* Keep track of id for group */
     $groupIds = [];
+    /* Group id in the file => group id used for the import */
+    $fileGroupIds = [];
     /* Keep track of id for question (can come from tsv and can be broken : issue #17980 */
     $questionsIds = [];
     $rownumber = 1;
@@ -4575,6 +4585,10 @@ function TSVImportSurvey($sFullFilePath)
                     } else {
                         $gidNew += 1;
                         $gid = $gidNew;
+                    }
+                    // Group assessments reference the group id from the file in their related_id column
+                    if (!empty($row['id']) && !isset($fileGroupIds[$row['id']])) {
+                        $fileGroupIds[$row['id']] = $gid;
                     }
                     $group['gid'] = $gid;
                     $groupIds[] = $gid;
@@ -4700,7 +4714,8 @@ function TSVImportSurvey($sFullFilePath)
             case 'SQ':
                 $sqname = ($row['name'] ?? 'SQ' . $sqseq);
                 $sqid = '';
-                if ($qtype == Question::QT_O_LIST_WITH_COMMENT || $qtype == Question::QT_VERTICAL_FILE_UPLOAD) {;   // these are fake rows to show naming of comment and filecount fields
+                if ($qtype == Question::QT_O_LIST_WITH_COMMENT || $qtype == Question::QT_VERTICAL_FILE_UPLOAD) {
+                    ;   // these are fake rows to show naming of comment and filecount fields
                 } elseif ($sqname == 'other' && $lastother == "Y") {
                     // If last question have other to Y : it's not a real SQ row
                     if ($qtype == Question::QT_EXCLAMATION_LIST_DROPDOWN || $qtype == Question::QT_L_LIST) {
@@ -4783,7 +4798,14 @@ function TSVImportSurvey($sFullFilePath)
                 $assessment = array();
                 $assessment['sid'] = $iNewSID;
                 $assessment['scope'] = $row['type/scale'] ?? '';
-                $assessment['gid'] = $gid;
+                if ($assessment['scope'] !== 'G') {
+                    $assessment['gid'] = 0;
+                } elseif (isset($row['related_id']) && isset($fileGroupIds[$row['related_id']])) {
+                    $assessment['gid'] = $fileGroupIds[$row['related_id']];
+                } else {
+                    // No group id in the file: Use the group of the previous group row
+                    $assessment['gid'] = $gid;
+                }
                 $assessment['name'] = $row['name'] ?? '';
                 $assessment['minimum'] = $row['min_num_value'] ?? '';
                 $assessment['maximum'] = $row['max_num_value'] ?? '';
@@ -5570,4 +5592,51 @@ function convertRankingSubquestionType(array &$insertdata, array $importedQuesti
     ) {
         $insertdata['type'] = Question::QT_R_RANKING;
     }
+}
+
+/**
+ * Convert imported legacy map questions (Short text with a map service enabled) to the Map question type.
+ * Mirrors the Update_719 database migration.
+ *
+ * @param Question[] $importedQuestions Imported parent questions keyed by new qid (updated in place)
+ * @return int[] The converted question ids
+ */
+function convertLegacyMapQuestions(array $importedQuestions): array
+{
+    if (empty($importedQuestions)) {
+        return [];
+    }
+    $mapQuestionIds = App()->db->createCommand()
+        ->select('q.qid')
+        ->from('{{questions}} q')
+        ->join('{{question_attributes}} qa', 'qa.qid = q.qid')
+        ->where(['in', 'q.qid', array_map('intval', array_keys($importedQuestions))])
+        ->andWhere('q.parent_qid = 0')
+        ->andWhere('q.type = :type', [':type' => Question::QT_S_SHORT_FREE_TEXT])
+        // Questions on a custom Short Text theme stay untouched to keep their theme views and settings.
+        ->andWhere("q.question_theme_name IS NULL OR q.question_theme_name IN ('', 'core', 'shortfreetext', 'browserdetect')")
+        ->andWhere('qa.attribute = :attribute', [':attribute' => 'location_mapservice'])
+        ->andWhere("qa.value IN ('1', '100')")
+        // Short Text rendered a textarea, not a map, when display_rows was set.
+        ->andWhere("NOT EXISTS (SELECT 1 FROM {{question_attributes}} dr WHERE dr.qid = q.qid AND dr.attribute = 'display_rows' AND dr.value <> '')")
+        ->group('q.qid')
+        ->queryColumn();
+
+    if (empty($mapQuestionIds)) {
+        return [];
+    }
+
+    $criteria = new CDbCriteria();
+    $criteria->addInCondition('qid', $mapQuestionIds);
+    Question::model()->updateAll(
+        ['type' => Question::QT_J_MAP, 'question_theme_name' => 'map'],
+        $criteria
+    );
+    foreach ($mapQuestionIds as $qid) {
+        if (isset($importedQuestions[$qid])) {
+            $importedQuestions[$qid]->type = Question::QT_J_MAP;
+            $importedQuestions[$qid]->question_theme_name = 'map';
+        }
+    }
+    return array_map('intval', $mapQuestionIds);
 }

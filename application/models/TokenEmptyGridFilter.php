@@ -24,6 +24,8 @@
  */
 class TokenEmptyGridFilter extends CFormModel
 {
+    use TwigSandboxIteratorTrait;
+
     /** @var array<string,mixed> attribute name => value */
     private $attributeValues = array();
 

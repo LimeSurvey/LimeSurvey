@@ -142,7 +142,7 @@ class Zend_Pdf_Element_Reference extends Zend_Pdf_Element
     /**
      * Return reference to the object
      *
-     * @param Zend_Pdf_Factory $factory
+     * @param Zend_Pdf_ElementFactory_Interface|null $factory
      * @return string
      */
     public function toString($factory = null)

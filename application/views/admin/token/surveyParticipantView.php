@@ -137,7 +137,7 @@ echo viewHelper::getViewTestTag('surveyParticipantsIndex');
                         'ajaxUpdate'            => 'token-grid',
                         'ajaxType'              => 'POST',
                         'lsAfterAjaxUpdate'     => ['onUpdateTokenGrid();', 'LS.restoreFocusAfterSort("token-grid");']
-                ]);
+                    ]);
                 } elseif (!empty($emptyGridDataProvider)) {
                     $this->widget('application.extensions.admin.grid.CLSGridView', [
                         'dataProvider'          => $emptyGridDataProvider,

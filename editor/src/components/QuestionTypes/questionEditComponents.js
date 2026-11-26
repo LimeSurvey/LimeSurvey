@@ -3,10 +3,11 @@ import { FivePointChoiceQuestion } from './FivePointChoiceQuestion/FivePointChoi
 import { TextQuestion } from './TextQuestion/TextQuestion'
 import { RatingQuestion } from './RatingQuestion/RatingQuestion'
 import { FileUpload } from './FileUpload/FileUpload'
+import { MapQuestion } from './MapQuestion/MapQuestion'
 import { RankingQuestion } from './RankingQuestion/RankingQuestion'
 import { RankingAdvancedQuestion } from './RankingAdvancedQuestion/RankingAdvancedQuestion'
 import { Equation } from './Equation/Equation'
-import { DateTime } from './DateTime/DateTime'
+import { DateQuestionInput } from './DateTime/DateQuestionInput'
 import { GenderQuestion } from './GenderQuestion/GenderQuestion'
 import { YesNoQuestion } from './YesNoQuestion/YesNoQuestion'
 import { ArrayQuestion } from './ArrayQuestion/ArrayQuestion'
@@ -48,10 +49,11 @@ export const questionEditComponents = {
   [getQuestionTypeInfo().ARRAY_DUAL_SCALE.theme]: ArrayQuestion,
   [getQuestionTypeInfo().RATING.theme]: RatingQuestion,
   [getQuestionTypeInfo().FILE_UPLOAD.theme]: FileUpload,
+  [getQuestionTypeInfo().MAP.theme]: MapQuestion,
   [getQuestionTypeInfo().RANKING.theme]: RankingQuestion,
   [getQuestionTypeInfo().RANKING_ADVANCED.theme]: RankingAdvancedQuestion,
   [getQuestionTypeInfo().EQUATION.theme]: Equation,
-  [getQuestionTypeInfo().DATE_TIME.theme]: DateTime,
+  [getQuestionTypeInfo().DATE_TIME.theme]: DateQuestionInput,
   [getQuestionTypeInfo().GENDER.theme]: GenderQuestion,
   [getQuestionTypeInfo().YES_NO.theme]: YesNoQuestion,
   [getQuestionTypeInfo().TEXT_DISPLAY.theme]: TextDisplay,

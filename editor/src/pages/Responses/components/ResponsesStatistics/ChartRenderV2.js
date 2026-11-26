@@ -7,6 +7,7 @@ import {
   isRankingQuestion,
   QT_1_ARRAY_DUAL,
   QT_COLON_ARRAY_NUMBERS,
+  QT_D_DATE,
   QT_K_MULTIPLE_NUMERICAL,
   QT_N_NUMERICAL,
   QT_Q_MULTIPLE_SHORT_TEXT,
@@ -22,6 +23,9 @@ import { ArrayTextTable } from './ArrayTextTable.js'
 import { ResponsesGrid } from './ResponsesGrid.js'
 import { MultiFieldResponsesGrid } from './MultiFieldResponsesGrid.js'
 import { FileUploadTable } from './FileUploadTable.js'
+import { DateTimeCalendar } from './DateTimeCalendar.js'
+import { EncryptedDateTimeCalendar } from './EncryptedDateTimeCalendar.js'
+import { DateTimeTable } from './DateTimeTable.js'
 import {
   BarChart,
   PieChart,
@@ -55,6 +59,7 @@ import {
 } from './ChartOrientationMenu.js'
 
 const VIEW = {
+  CALENDAR: 'calendar',
   BAR_CHART: 'bar-chart',
   STACKED_BAR: 'stacked-bar',
   GROUPED_BAR: 'grouped-bar',
@@ -70,6 +75,42 @@ const VIEW = {
 }
 
 const VIEWS = [
+  {
+    value: VIEW.CALENDAR,
+    graphType: statisticsGraphs.CALENDAR,
+    label: () => t('Calendar'),
+    icon: () => <i className="ri-calendar-line"></i>,
+    supports: ({ hasDate }) => hasDate,
+    render: ({
+      data,
+      surveyId,
+      question,
+      filters,
+      filterSet,
+      calendarState,
+      onCalendarStateChange,
+    }) =>
+      question?.encrypted ? (
+        <EncryptedDateTimeCalendar
+          surveyId={surveyId}
+          question={question}
+          filters={filters}
+          filterSet={filterSet}
+          calendarState={calendarState}
+          onCalendarStateChange={onCalendarStateChange}
+        />
+      ) : (
+        <DateTimeCalendar
+          surveyId={surveyId}
+          question={question}
+          filters={filters}
+          filterSet={filterSet}
+          stats={data?.[0]?.stats}
+          calendarState={calendarState}
+          onCalendarStateChange={onCalendarStateChange}
+        />
+      ),
+  },
   {
     value: VIEW.BAR_CHART,
     graphType: statisticsGraphs.BAR_CHART,
@@ -252,8 +293,20 @@ const VIEWS = [
       onViewOther,
       isOtherOpen,
       otherListId,
+      isDate,
+      calendarState,
+      onCalendarStateChange,
     }) =>
-      isFileUpload ? (
+      isDate ? (
+        <DateTimeTable
+          surveyId={surveyId}
+          question={question}
+          filters={filters}
+          filterSet={filterSet}
+          calendarState={calendarState}
+          onCalendarStateChange={onCalendarStateChange}
+        />
+      ) : isFileUpload ? (
         <FileUploadTable
           surveyId={surveyId}
           questionId={question?.qid}
@@ -345,6 +398,7 @@ const getDefaultView = (availableViews, viewContext, chartType) => {
     // Ranking opens on the table; only the table breaks down the ranked places.
     viewContext.isRanking && VIEW.TABLE,
     ...(GRAPH_VIEWS[chartType] ?? []),
+    viewContext.isDate && VIEW.CALENDAR,
     viewContext.isArrayText && VIEW.TABLE,
     viewContext.isArray && !viewContext.isArrayNumbers && VIEW.STACKED_BAR,
     viewContext.isNumerical && VIEW.TABLE,
@@ -368,6 +422,15 @@ const getDefaultView = (availableViews, viewContext, chartType) => {
  *
  * Multiple short text questions show a response list that fetches its own data,
  * so an empty `data` array does not suppress that list.
+ *
+ * @param {Object} props
+ * @param {Object} props.data Chart data.
+ * @param {number} props.index Card index.
+ * @param {number|string} props.surveyId Survey id.
+ * @param {string} props.chartId Chart id.
+ * @param {Object} props.question Question metadata.
+ * @param {string} props.valueType Count or percentage.
+ * @param {Object} props.filters Active statistics filters.
  */
 export const ChartRendererV2 = ({
   data,
@@ -384,11 +447,13 @@ export const ChartRendererV2 = ({
   const isMultipleShortText = question?.type === QT_Q_MULTIPLE_SHORT_TEXT
   const isRanking = isRankingQuestion(question?.themeName)
   const isFileUpload = question?.type === QT_VERTICAL_FILE_UPLOAD
+  const isDate = question?.type === QT_D_DATE
   const availableGraphTypes = getStatisticsGraphsForType(question?.type)
   const [commentsAnswer, setCommentsAnswer] = useState(null)
   const [isOtherAnswersOpen, setIsOtherAnswersOpen] = useState(false)
   const otherListId = useId()
   const otherItem = (data ?? []).find(hasOtherAnswers)
+  const [calendarState, setCalendarState] = useState({})
   const cardRef = useRef(null)
   const isImage = isImageTheme(question?.themeName)
   const hasComments = isCommentQuestionType(question?.type)
@@ -398,8 +463,9 @@ export const ChartRendererV2 = ({
   const isText = TEXT_QUESTION_TYPES.includes(question?.type)
   const isArrayNumbers = question?.type === QT_COLON_ARRAY_NUMBERS
   const isDualScale = question?.type === QT_1_ARRAY_DUAL
+  const hasDate = question?.hasDate !== false
   const effectiveValueType =
-    isArrayNumbers || isRanking ? VALUE_TYPE.COUNT : valueType
+    isArrayNumbers || isRanking || isDate ? VALUE_TYPE.COUNT : valueType
   // No responses for this question when every answer option has a zero count.
   // Array text bypasses this — its table loads its own per-response data.
   const hasResponses =
@@ -416,13 +482,14 @@ export const ChartRendererV2 = ({
     isArrayNumbers,
     isNumerical,
     isMultiNumerical,
+    isDate,
   }
 
   // `supports` narrows views that share a graph type to the data shape they render.
   const availableViews = VIEWS.filter(
     ({ graphType, supports }) =>
       availableGraphTypes.includes(graphType) &&
-      (!supports || supports({ isDualScale }))
+      (!supports || supports({ isDualScale, hasDate }))
   )
   const [view, setView] = useState(() =>
     getDefaultView(availableViews, viewContext, question?.chartType)
@@ -474,6 +541,9 @@ export const ChartRendererV2 = ({
     filters,
     orientation,
     filterSet,
+    isDate,
+    calendarState,
+    onCalendarStateChange: setCalendarState,
     onViewComments: setCommentsAnswer,
     onViewOther: otherItem
       ? () => setIsOtherAnswersOpen((isOpen) => !isOpen)

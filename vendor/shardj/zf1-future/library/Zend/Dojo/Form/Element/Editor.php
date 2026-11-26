@@ -619,7 +619,7 @@ class Zend_Dojo_Form_Element_Editor extends Zend_Dojo_Form_Element_Dijit
     /**
      * Add multiple extra plugins.
      *
-     * @param  array $extraPlugins
+     * @param  array $plugins
      * @return Zend_Dojo_Form_Element_Editor
      */
     public function addExtraPlugins(array $plugins)

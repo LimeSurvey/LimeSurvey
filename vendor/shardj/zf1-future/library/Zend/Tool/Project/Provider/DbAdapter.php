@@ -29,6 +29,7 @@ require_once 'Zend/Tool/Project/Provider/Abstract.php';
  * @see Zend_Tool_Framework_Provider_Interactable
  */
 require_once 'Zend/Tool/Framework/Provider/Interactable.php';
+require_once 'Zend/Tool/Framework/Provider/Pretendable.php';
 
 /**
  * @category   Zend
@@ -54,11 +55,13 @@ class Zend_Tool_Project_Provider_DbAdapter
         $appConfigFileResource = $profile->search('applicationConfigFile');
 
         if ($appConfigFileResource == false) {
+            require_once 'Zend/Tool/Project/Exception.php';
             throw new Zend_Tool_Project_Exception('A project with an application config file is required to use this provider.');
         }
 
         $this->_appConfigFilePath = $appConfigFileResource->getPath();
 
+        require_once 'Zend/Config/Ini.php';
         $this->_config = new Zend_Config_Ini($this->_appConfigFilePath, null, ['skipExtends' => true, 'allowModifications' => true]);
 
         if ($sectionName != 'production') {
@@ -66,10 +69,12 @@ class Zend_Tool_Project_Provider_DbAdapter
         }
 
         if (!isset($this->_config->{$this->_sectionName})) {
+            require_once 'Zend/Tool/Project/Exception.php';
             throw new Zend_Tool_Project_Exception('The config does not have a ' . $this->_sectionName . ' section.');
         }
 
         if (isset($this->_config->{$this->_sectionName}->resources->db)) {
+            require_once 'Zend/Tool/Project/Exception.php';
             throw new Zend_Tool_Project_Exception('The config already has a db resource configured in section ' . $this->_sectionName . '.');
         }
 
@@ -89,6 +94,7 @@ class Zend_Tool_Project_Provider_DbAdapter
         $dsnVars = [];
 
         if (strpos($dsn, '=') === false) {
+            require_once 'Zend/Tool/Project/Provider/Exception.php';
             throw new Zend_Tool_Project_Provider_Exception('At least one name value pair is expected, typcially '
                 . 'in the format of "adapter=Mysqli&username=uname&password=mypass&dbname=mydb"'
                 );

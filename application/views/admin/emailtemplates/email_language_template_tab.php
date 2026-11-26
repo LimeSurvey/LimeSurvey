@@ -26,7 +26,7 @@ if (isset($esrow->attachments[$tab])) {
      class="tab-pane fade in <?= $active ?>"
      role="tabpanel"
      aria-labelledby="<?= "tab-" . $grouplang . "-" . $tab . "-tab" ?>">
-    <?php if ($attachmentsHaveErrors): ?>
+    <?php if ($attachmentsHaveErrors) : ?>
         <div class="row">
             <div class='col-sm-12'>
                 <div class="alert alert-danger">
@@ -100,7 +100,7 @@ if (isset($esrow->attachments[$tab])) {
     <div class="row">
         <br/>
     </div>
-    <?php if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'update')): ?>
+    <?php if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'update')) : ?>
         <div class="row" role="group" aria-labelledby="email_attachments_label_<?= $grouplang ?>_<?= $tab ?>">
             <label id="email_attachments_label_<?= $grouplang ?>_<?= $tab ?>" class='form-label col-12'>
                 <?= $details['attachments'] ?>

@@ -9,6 +9,7 @@ use LimeSurvey\Models\Services\GroupHelper;
 use LimeSurvey\Models\Services\SurveyAccessModeService;
 use LimeSurvey\Models\Services\SurveyDetailService;
 use LimeSurvey\Models\Services\SurveyThemeConfiguration;
+use LimeSurvey\PluginManager\PasswordSettingMask;
 
 /**
  * Class SurveyAdministrationController
@@ -2968,7 +2969,8 @@ class SurveyAdministrationController extends LSBaseController
      *
      * @param Survey $survey Given Survey
      *
-     * @return array
+     * @return array Data for the view: The settings panels of the plugins under the key "pluginSettings",
+     *               with stored passwords replaced by a placeholder
      *
      * This method is called via call_user_func in self::rendersidemenulink()
      * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
@@ -2981,6 +2983,12 @@ class SurveyAdministrationController extends LSBaseController
         App()->getPluginManager()->dispatchEvent($beforeSurveySettings);
         $pluginSettings = $beforeSurveySettings->get('surveysettings');
         if (is_array($pluginSettings)) {
+            // Stored passwords must not reach the browser
+            foreach ($pluginSettings as $pluginId => $plugin) {
+                if (isset($plugin['settings']) && is_array($plugin['settings'])) {
+                    $pluginSettings[$pluginId]['settings'] = PasswordSettingMask::mask($plugin['settings']);
+                }
+            }
             // Sort the plugin panels by their displayed name, keeping the plugin IDs as keys
             uasort($pluginSettings, function ($a, $b) {
                 return strnatcasecmp((string) ($a['name'] ?? ''), (string) ($b['name'] ?? ''));

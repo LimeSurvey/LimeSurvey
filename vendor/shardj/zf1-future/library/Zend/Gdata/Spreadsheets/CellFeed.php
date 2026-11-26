@@ -43,6 +43,7 @@ require_once 'Zend/Gdata/Spreadsheets/Extension/ColCount.php';
  * @subpackage   Spreadsheets
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @deprecated Deprecated since 1.27.1 and will be removed in a future version: Google shut down the Google Data APIs it implements and the ClientLogin and AuthSub authentication
  */
 class Zend_Gdata_Spreadsheets_CellFeed extends Zend_Gdata_Feed
 {
@@ -139,7 +140,7 @@ class Zend_Gdata_Spreadsheets_CellFeed extends Zend_Gdata_Feed
 
     /**
      * Sets the row count for this feed.
-     * @param string $rowCount The new row count for the feed.
+     * @param Zend_Gdata_Spreadsheets_Extension_RowCount $rowCount The new row count for the feed.
      */
     public function setRowCount($rowCount)
     {
@@ -149,7 +150,7 @@ class Zend_Gdata_Spreadsheets_CellFeed extends Zend_Gdata_Feed
 
     /**
      * Sets the column count for this feed.
-     * @param string $colCount The new column count for the feed.
+     * @param Zend_Gdata_Spreadsheets_Extension_ColCount $colCount The new column count for the feed.
      */
     public function setColumnCount($colCount)
     {

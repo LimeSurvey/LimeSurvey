@@ -334,18 +334,21 @@ class Zend_Http_Client_Adapter_Socket implements Zend_Http_Client_Adapter_Interf
 
         $this->_checkSocketReadTimeout();
 
+        require_once 'Zend/Http/Response.php';
         $statusCode = Zend_Http_Response::extractCode($response);
 
         // Handle 100 and 101 responses internally by restarting the read again
         if ($statusCode == 100 || $statusCode == 101) return $this->read();
 
         // Check headers to see what kind of connection / transfer encoding we have
+        require_once 'Zend/Http/Response.php';
         $headers = Zend_Http_Response::extractHeaders($response);
 
         /**
          * Responses to HEAD requests and 204 or 304 responses are not expected
          * to have a body - stop reading here
          */
+        require_once 'Zend/Http/Client.php';
         if ($statusCode == 304 || $statusCode == 204 ||
             $this->method == Zend_Http_Client::HEAD) {
 
@@ -412,9 +415,6 @@ class Zend_Http_Client_Adapter_Socket implements Zend_Http_Client_Adapter_Interf
                 $this->close();
         require_once 'Zend/Http/Client/Adapter/Exception.php';
                 $encoding = $headers['transfer-encoding'];
-                if (is_array($encoding)) {
-                    $encoding = json_encode($encoding);
-                }
                 throw new Zend_Http_Client_Adapter_Exception('Cannot handle "' .
                     $encoding . '" transfer encoding');
             }

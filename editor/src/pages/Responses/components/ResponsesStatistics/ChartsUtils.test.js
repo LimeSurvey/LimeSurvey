@@ -9,8 +9,14 @@ import {
   hasOtherAnswers,
   LABEL_CHAR_WIDTH,
   statisticsGraphs,
+  TEXT_QUESTION_TYPES,
 } from './ChartsUtils'
-import { QT_Q_MULTIPLE_SHORT_TEXT } from 'helpers'
+import {
+  QT_D_DATE,
+  QT_J_MAP,
+  QT_Q_MULTIPLE_SHORT_TEXT,
+  QT_S_SHORT_FREE_TEXT,
+} from 'helpers'
 
 global.t = (key) => key
 
@@ -26,10 +32,31 @@ describe('getBarChartMinWidth', () => {
   })
 })
 
+describe('TEXT_QUESTION_TYPES', () => {
+  test('includes Map and Browser Detection question types', () => {
+    expect(TEXT_QUESTION_TYPES).toEqual(
+      expect.arrayContaining([QT_J_MAP, QT_S_SHORT_FREE_TEXT])
+    )
+  })
+})
+
 describe('getStatisticsGraphsForType', () => {
   test('uses only the response list for multiple short text', () => {
     expect(getStatisticsGraphsForType(QT_Q_MULTIPLE_SHORT_TEXT)).toEqual([
       statisticsGraphs.GRID,
+    ])
+  })
+
+  test('offers the same views for Map as for short text', () => {
+    expect(getStatisticsGraphsForType(QT_J_MAP)).toEqual(
+      getStatisticsGraphsForType(QT_S_SHORT_FREE_TEXT)
+    )
+  })
+
+  test('gives date/time questions a calendar and a table', () => {
+    expect(getStatisticsGraphsForType(QT_D_DATE)).toEqual([
+      statisticsGraphs.CALENDAR,
+      statisticsGraphs.TABLE,
     ])
   })
 })

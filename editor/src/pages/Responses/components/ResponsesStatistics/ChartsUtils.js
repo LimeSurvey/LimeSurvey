@@ -8,12 +8,14 @@ import {
   QT_B_ARRAY_10_CHOICE_QUESTIONS,
   QT_C_ARRAY_YES_UNCERTAIN_NO,
   QT_COLON_ARRAY_NUMBERS,
+  QT_D_DATE,
   QT_E_ARRAY_INC_SAME_DEC,
   QT_EXCLAMATION_LIST_DROPDOWN,
   QT_F_ARRAY,
   QT_G_GENDER,
   QT_H_ARRAY_COLUMN,
   QT_I_LANGUAGE,
+  QT_J_MAP,
   QT_K_MULTIPLE_NUMERICAL,
   QT_L_LIST,
   QT_M_MULTIPLE_CHOICE,
@@ -82,6 +84,7 @@ export const TEXT_QUESTION_TYPES = [
   QT_S_SHORT_FREE_TEXT,
   QT_T_LONG_FREE_TEXT,
   QT_U_HUGE_FREE_TEXT,
+  QT_J_MAP,
 ]
 
 // Whether charts display raw response counts or percentages.
@@ -103,6 +106,8 @@ export const statisticsGraphs = {
   TABLE: 8,
   COMMENTS: 9,
   GRID: 10,
+  // Date/time questions only; not offered in the "Show in statistics" setting.
+  CALENDAR: 11,
 }
 
 const ARRAY_POINT_CHOICE_TYPES = [
@@ -125,6 +130,7 @@ const TABLE_QUESTION_TYPES = [
   QT_N_NUMERICAL,
   QT_K_MULTIPLE_NUMERICAL,
   QT_VERTICAL_FILE_UPLOAD,
+  QT_D_DATE,
 ]
 
 // Types whose statistics card has a Grid view (one row per response).
@@ -135,6 +141,7 @@ const GRID_QUESTION_TYPES = [
   QT_N_NUMERICAL,
   QT_K_MULTIPLE_NUMERICAL,
   QT_Q_MULTIPLE_SHORT_TEXT,
+  QT_J_MAP,
 ]
 
 const getChartsForType = (type) => {
@@ -162,6 +169,9 @@ const getChartsForType = (type) => {
   }
   if (type === QT_COLON_ARRAY_NUMBERS) {
     return [statisticsGraphs.GROUPED_BAR]
+  }
+  if (type === QT_D_DATE) {
+    return [statisticsGraphs.CALENDAR]
   }
   return []
 }

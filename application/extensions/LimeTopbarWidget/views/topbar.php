@@ -9,7 +9,7 @@
 
 <div class="topbar sticky-top <?php if ($editorEnabled) {
     echo 'editor';
-} ?>" id="pjax-content">
+                              } ?>" id="pjax-content">
     <div class="container-fluid">
         <div class="row">
             <!-- Title or breadcrumb -->

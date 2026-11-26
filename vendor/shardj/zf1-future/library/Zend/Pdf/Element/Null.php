@@ -65,7 +65,7 @@ class Zend_Pdf_Element_Null extends Zend_Pdf_Element
     /**
      * Return object as string
      *
-     * @param Zend_Pdf_Factory $factory
+     * @param Zend_Pdf_ElementFactory_Interface|null $factory
      * @return string
      */
     public function toString($factory = null)

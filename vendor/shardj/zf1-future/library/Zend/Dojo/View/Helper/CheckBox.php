@@ -56,7 +56,7 @@ class Zend_Dojo_View_Helper_CheckBox extends Zend_Dojo_View_Helper_Dijit
      * dijit.form.CheckBox
      *
      * @param  int $id
-     * @param  string $content
+     * @param  string $value
      * @param  array $params  Parameters to use for dijit creation
      * @param  array $attribs HTML attributes
      * @param  array $checkedOptions Should contain either two items, or the keys checkedValue and uncheckedValue

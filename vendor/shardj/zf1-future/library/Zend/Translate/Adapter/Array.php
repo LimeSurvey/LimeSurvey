@@ -61,6 +61,7 @@ class Zend_Translate_Adapter_Array extends Zend_Translate_Adapter
             throw new Zend_Translate_Exception("Error including array or file '".$data."'");
         }
 
+        // @phpstan-ignore isset.offset (data of other locales are added by earlier calls)
         if (!isset($this->_data[$locale])) {
             $this->_data[$locale] = [];
         }

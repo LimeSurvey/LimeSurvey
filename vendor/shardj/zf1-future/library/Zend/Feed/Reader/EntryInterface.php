@@ -73,7 +73,7 @@ interface Zend_Feed_Reader_EntryInterface
     /**
      * Get the entry enclosure
      *
-     * @return stdClass
+     * @return stdClass|null
      */
     public function getEnclosure();
 
@@ -116,7 +116,7 @@ interface Zend_Feed_Reader_EntryInterface
     /**
      * Get the number of comments/replies for current entry
      *
-     * @return integer
+     * @return int|string|null
      */
     public function getCommentCount();
 

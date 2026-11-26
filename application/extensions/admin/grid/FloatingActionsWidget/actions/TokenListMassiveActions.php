@@ -1,5 +1,7 @@
 <?php
+
 namespace actions;
+
 /**
  * Action definitions for the survey participants (tokens) floating action bar.
  */

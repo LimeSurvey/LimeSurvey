@@ -53,7 +53,7 @@ class Zend_Memory_Container_Movable extends Zend_Memory_Container {
     /**
      * Value object
      *
-     * @var Zend_Memory_Value
+     * @var Zend_Memory_Value|null
      */
     private $_value;
 
@@ -174,7 +174,7 @@ class Zend_Memory_Container_Movable extends Zend_Memory_Container {
      * _Must_ be used for value access before PHP v 5.2
      * or _may_ be used for performance considerations
      *
-     * @return &string
+     * @return string
      */
     public function &getRef()
     {

@@ -60,7 +60,6 @@ class Zend_Controller_Action_Helper_Json extends Zend_Controller_Action_Helper_A
      *         then, the array can contains a 'keepLayout'=>true|false and/or 'encodeData'=>true|false
      *         that will not be passed to Zend_Json::encode method but will be passed
      *         to Zend_View_Helper_Json
-     * @throws Zend_Controller_Action_Helper_Json
      * @return string
      */
     public function encodeJson($data, $keepLayouts = false, $encodeData = true)

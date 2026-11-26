@@ -10,7 +10,8 @@ permissions:
 
 jobs:
   label-review:
-    if: github.event.review.state == 'approved'
+    # Only an approval by a human reviewer counts, not one by a bot like CodeRabbit
+    if: github.event.review.state == 'approved' && github.event.review.user.type != 'Bot'
     runs-on: ubuntu-latest
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

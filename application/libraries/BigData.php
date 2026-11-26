@@ -34,9 +34,8 @@ class BigData
             return true;
         } elseif (is_array($item)) {
             return array_reduce($item, array('BigData', 'hasStream'), false);
-        }
-        // Should use get_resource_type to do stricter check.
-        elseif (self::isStream($item)) {
+        } elseif (self::isStream($item)) {
+            // Should use get_resource_type to do stricter check.
             return true;
         } else {
             return false;

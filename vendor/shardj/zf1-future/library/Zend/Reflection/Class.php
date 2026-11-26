@@ -160,7 +160,7 @@ class Zend_Reflection_Class extends ReflectionClass
     /**
      * Get reflection objects of all methods
      *
-     * @param  string $filter
+     * @param  string|int $filter
      * @param  string $reflectionClass Reflection class to use for methods
      * @return array Array of Zend_Reflection_Method objects
      */
@@ -185,7 +185,7 @@ class Zend_Reflection_Class extends ReflectionClass
      * Get parent reflection class of reflected class
      *
      * @param  string $reflectionClass Name of Reflection class to use
-     * @return Zend_Reflection_Class
+     * @return Zend_Reflection_Class|false
      */
     #[\ReturnTypeWillChange]
     public function getParentClass($reflectionClass = 'Zend_Reflection_Class')

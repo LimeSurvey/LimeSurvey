@@ -162,6 +162,7 @@ abstract class Zend_Validate_Db_Abstract extends Zend_Validate_Abstract
          * Check for an adapter being defined. if not, fetch the default adapter.
          */
         if ($this->_adapter === null) {
+            require_once 'Zend/Db/Table/Abstract.php';
             $this->_adapter = Zend_Db_Table_Abstract::getDefaultAdapter();
             if (null === $this->_adapter) {
                 require_once 'Zend/Validate/Exception.php';
@@ -309,6 +310,7 @@ abstract class Zend_Validate_Db_Abstract extends Zend_Validate_Abstract
             /**
              * Build select object
              */
+            require_once 'Zend/Db/Select.php';
             $select = new Zend_Db_Select($db);
             $select->from($this->_table, [$this->_field], $this->_schema);
             if ($db->supportsParameters('named')) {
@@ -343,6 +345,7 @@ abstract class Zend_Validate_Db_Abstract extends Zend_Validate_Abstract
         $select = $this->getSelect();
 
         // Run query
+        require_once 'Zend/Db.php';
         return $select->getAdapter()->fetchRow(
             $select,
             ['value' => $value], // this should work whether db supports positional or named params

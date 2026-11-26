@@ -119,7 +119,7 @@ abstract class Zend_Db_Table_Abstract
     /**
      * The schema name (default null means current schema)
      *
-     * @var array
+     * @var array|string
      */
     protected $_schema = null;
 
@@ -353,7 +353,7 @@ abstract class Zend_Db_Table_Abstract
     /**
      * setDefinitionConfigName()
      *
-     * @param string $definition
+     * @param string $definitionConfigName
      * @return $this
      */
     public function setDefinitionConfigName($definitionConfigName)
@@ -595,7 +595,7 @@ abstract class Zend_Db_Table_Abstract
 
     /**
      * @param  mixed $db Either an Adapter object, or a string naming a Registry key
-     * @return Zend_Db_Adapter_Abstract
+     * @return Zend_Db_Adapter_Abstract|null
      * @throws Zend_Db_Table_Exception
      */
     protected static function _setupAdapter($db)
@@ -690,7 +690,7 @@ abstract class Zend_Db_Table_Abstract
 
     /**
      * @param mixed $metadataCache Either a Cache object, or a string naming a Registry key
-     * @return Zend_Cache_Core
+     * @return Zend_Cache_Core|null
      * @throws Zend_Db_Table_Exception
      */
     protected static function _setupMetadataCache($metadataCache)
@@ -803,6 +803,7 @@ abstract class Zend_Db_Table_Abstract
         }
 
         // If $this has a metadata cache
+        $cacheId = null;
         if (null !== $this->_metadataCache) {
             // Define the cache identifier where the metadata are saved
 
@@ -1282,7 +1283,8 @@ abstract class Zend_Db_Table_Abstract
      * The find() method always returns a Rowset object, even if only one row
      * was found.
      *
-     * @param  mixed $key The value(s) of the primary keys.
+     * The value(s) of the primary keys are passed as arguments.
+     *
      * @return Zend_Db_Table_Rowset_Abstract Row(s) matching the criteria.
      * @throws Zend_Db_Table_Exception
      */
@@ -1505,7 +1507,7 @@ abstract class Zend_Db_Table_Abstract
         if ($defaultSource == self::DEFAULT_DB) {
             foreach ($this->_metadata as $metadataName => $metadata) {
                 if (($metadata['DEFAULT'] != null) &&
-                    ($metadata['NULLABLE'] !== true || ($metadata['NULLABLE'] === true && isset($this->_defaultValues[$metadataName]) && $this->_defaultValues[$metadataName] === true)) &&
+                    ($metadata['NULLABLE'] !== true || (isset($this->_defaultValues[$metadataName]) && $this->_defaultValues[$metadataName] === true)) &&
                     (!(isset($this->_defaultValues[$metadataName]) && $this->_defaultValues[$metadataName] === false))) {
                     $defaults[$metadataName] = $metadata['DEFAULT'];
                 }
@@ -1606,6 +1608,7 @@ abstract class Zend_Db_Table_Abstract
             $tableDefinition = $referenceTable->getDefinition();
 
             if ($tableDefinition !== null && $tableDefinition->hasTableConfig($tableName)) {
+                require_once 'Zend/Db/Table.php';
                 return new Zend_Db_Table($tableName, $tableDefinition);
             }
         }
@@ -1627,7 +1630,7 @@ abstract class Zend_Db_Table_Abstract
             $options['db'] = $referenceTable->getAdapter();
         }
 
-        if (isset($tableDefinition) && $tableDefinition !== null) {
+        if (isset($tableDefinition)) {
             $options[Zend_Db_Table_Abstract::DEFINITION] = $tableDefinition;
         }
 

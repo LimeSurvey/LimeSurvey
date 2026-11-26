@@ -37,7 +37,7 @@ class Zend_Registry extends ArrayObject
 
     /**
      * Registry object provides storage for shared objects.
-     * @var Zend_Registry
+     * @var Zend_Registry|null
      */
     private static $_registry = null;
 

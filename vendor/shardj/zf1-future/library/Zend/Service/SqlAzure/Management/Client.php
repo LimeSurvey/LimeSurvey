@@ -357,7 +357,7 @@ class Zend_Service_SqlAzure_Management_Client
             require_once 'Zend/Service/SqlAzure/Management/Exception.php';
             throw new Zend_Service_SqlAzure_Management_Exception('Administrator password should be specified.');
         }
-        if (is_null($location) && is_null($affinityGroup)) {
+        if (is_null($location)) {
             require_once 'Zend/Service/SqlAzure/Management/Exception.php';
             throw new Zend_Service_SqlAzure_Management_Exception('Please specify a location for the server.');
         }
