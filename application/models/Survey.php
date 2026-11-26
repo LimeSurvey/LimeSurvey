@@ -610,9 +610,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
             array('showqnumcode', 'in', 'range' => array('B', 'N', 'C', 'X', 'I'), 'allowEmpty' => true),
             array('format', 'in', 'range' => array('G', 'S', 'A', 'I'), 'allowEmpty' => true),
             array('googleanalyticsstyle', 'numerical', 'integerOnly' => true, 'min' => '0', 'max' => '3', 'allowEmpty' => true),
-            // Plain text for everyone, superadmins included: tags are stripped, but nothing is
-            // HTML-encoded ("R&D" stays "R&D"), as every output escapes the value
-            array('code', 'LSYii_FilterValidator', 'filter' => 'strip_tags', 'skipOnEmpty' => true),
+            // Plain text, stored exactly as typed ("Q1<Q2 test", "R&D"): Every output HTML-encodes it.
+            // Not strip_tags: It cuts everything after a "<" followed by a letter.
             array('code', 'LSYii_FilterValidator', 'filter' => 'trim', 'skipOnEmpty' => true),
             array('code', 'length', 'max' => 128, 'allowEmpty' => true),
             array('autonumber_start', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
@@ -2030,6 +2029,13 @@ class Survey extends LSActiveRecord implements PermissionInterface
             'group' => array(
                 'asc'  => 'surveygroup.title asc',
                 'desc' => 'surveygroup.title desc',
+            ),
+
+            // Surveys without internal title are stored as NULL or as empty string: Sort both the same way on all
+            // databases (PostgreSQL puts NULL last). Most surveys have none, the survey ID keeps the pages stable.
+            'code' => array(
+                'asc'  => "COALESCE(t.code, '') asc, t.sid asc",
+                'desc' => "COALESCE(t.code, '') desc, t.sid desc",
             ),
 
         );
