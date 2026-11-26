@@ -61,9 +61,11 @@ export const RankingAdvancedQuestionSubquestions = ({
     <div>
       {subquestions.map((subquestion, index) => {
         return (
+          // Keyed by the subquestion, not its position: A reorder moves the
+          // existing rows instead of rebuilding them.
           <Draggable
-            key={`advanced-subquestion${subquestion.appKey || subquestion.qid}-${index}`}
-            draggableId={`advanced-subquestion${subquestion.appKey || subquestion.qid}-${index}`}
+            key={`advanced-subquestion${subquestion.appKey || subquestion.qid}`}
+            draggableId={`advanced-subquestion${subquestion.appKey || subquestion.qid}`}
             index={index}
           >
             {(provided, snapshot) => {

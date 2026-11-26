@@ -1,10 +1,12 @@
 import { useState } from 'react'
+import { useParams } from 'react-router-dom'
 import { Draggable, Droppable } from '@hello-pangea/dnd'
 import classNames from 'classnames'
 
 import {
   useAppState,
   useBuffer,
+  useEventCallback,
   useFocused,
   useToggleQuestionCodes,
 } from 'hooks'
@@ -29,11 +31,16 @@ export const RowQuestionsList = ({
   const { focused = {}, setFocused, unFocus } = useFocused()
   const [deleteState, setDeleteState] = useState({ show: false, index: null })
   const [isSurveyActive] = useAppState(STATES.IS_SURVEY_ACTIVE, false)
+  const { surveyId } = useParams()
   const { areCodesVisible, toggleQuestionCodes } = useToggleQuestionCodes()
 
   const getQuestionDragStyle = (draggableStyle) => ({
     userSelect: 'none',
-    margin: '0',
+    // The 6px gap between rows (the margin-bottom of .structure-item). The
+    // drag library measures this element only, and the inner margin collapses
+    // through it uncounted: Without the gap here, it sizes rows 6px too short,
+    // so rows jump while dragging and the dropped row snaps into place.
+    margin: '0 0 6px 0',
     ...draggableStyle,
   })
 
@@ -91,6 +98,17 @@ export const RowQuestionsList = ({
     unFocus()
     setDeleteState({ show: false, index: null })
   }
+
+  // Same functions on every render, so the memoized rows only render again
+  // when their own props change (the drag library also renders the rows on
+  // every pointer move)
+  const handleSelect = useEventCallback((question, index) =>
+    setFocused({ ...question }, groupIndex, index)
+  )
+  const handleDuplicate = useEventCallback(duplicateQuestion)
+  const handleDelete = useEventCallback(deleteQuestion)
+  const handleToggleQuestionCodes = useEventCallback(toggleQuestionCodes)
+
   return (
     <>
       <ConfirmModal
@@ -104,7 +122,6 @@ export const RowQuestionsList = ({
         confirmButtonText={t('Delete')}
       />
       <Droppable
-        key={`g${groupIndex}-${questions?.length}`}
         droppableId={`g${groupIndex}`}
         type="question"
         direction="vertical"
@@ -115,46 +132,43 @@ export const RowQuestionsList = ({
             ref={provided.innerRef}
             className="group"
           >
-            {questions.map((question, index) => {
-              return (
-                <Draggable
-                  key={`g${groupIndex}_q${index}_${question.qid}`}
-                  draggableId={`g${groupIndex}_q${index}`}
-                  index={index}
-                >
-                  {(provided, snapshot) => (
-                    <div
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      style={getQuestionDragStyle(
-                        provided.draggableProps.style
-                      )}
-                      data-sortorder={question.sortOrder}
-                      className={classNames({
-                        'focus-element': snapshot.isDragging,
-                      })}
-                    >
-                      <RowQuestion
-                        question={question}
-                        language={language}
-                        provided={provided}
-                        duplicateQuestion={() =>
-                          duplicateQuestion(question, index)
-                        }
-                        deleteQuestion={() => deleteQuestion(index)}
-                        groupIndex={groupIndex}
-                        questionIndex={index}
-                        focused={focused}
-                        snapshot={snapshot}
-                        isSurveyActive={isSurveyActive}
-                        areCodesVisible={areCodesVisible}
-                        toggleQuestionCodes={toggleQuestionCodes}
-                      />
-                    </div>
-                  )}
-                </Draggable>
-              )
-            })}
+            {questions.map((question, index) => (
+              // Keyed by the question, not its position: A reorder moves the
+              // existing rows instead of rebuilding them.
+              <Draggable
+                key={question.qid}
+                draggableId={`question-${question.qid}`}
+                index={index}
+              >
+                {(provided, snapshot) => (
+                  <div
+                    ref={provided.innerRef}
+                    {...provided.draggableProps}
+                    style={getQuestionDragStyle(provided.draggableProps.style)}
+                    data-sortorder={question.sortOrder}
+                    className={classNames({
+                      'focus-element': snapshot.isDragging,
+                    })}
+                  >
+                    <RowQuestion
+                      question={question}
+                      language={language}
+                      surveyId={surveyId}
+                      dragHandleProps={provided.dragHandleProps}
+                      questionIndex={index}
+                      isDragging={snapshot.isDragging}
+                      isFocused={focused?.qid === question.qid}
+                      isSurveyActive={isSurveyActive}
+                      areCodesVisible={areCodesVisible}
+                      onSelect={handleSelect}
+                      duplicateQuestion={handleDuplicate}
+                      deleteQuestion={handleDelete}
+                      toggleQuestionCodes={handleToggleQuestionCodes}
+                    />
+                  </div>
+                )}
+              </Draggable>
+            ))}
             {provided.placeholder}
             {questions.length === 0 && (
               <div>{t('Question group is empty.')}</div>

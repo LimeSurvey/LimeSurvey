@@ -1,6 +1,6 @@
 import 'tests/mocks'
 
-import { screen } from '@testing-library/react'
+import { fireEvent, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { renderWithProviders } from 'tests/testUtils'
 import { queryClient } from 'queryClient'
@@ -259,5 +259,21 @@ describe('SideBarRow', () => {
     await userEvent.click(b)
     expect(b).toHaveAttribute('aria-expanded', 'true')
     expect(a).toHaveAttribute('aria-expanded', 'false')
+  })
+
+  test('opens the question context menu on right click and closes it on an outside click', async () => {
+    await renderWithProviders(
+      <SideBarRow title="Q" code="Q006" testId="row" menuItems={menuItems} />
+    )
+    const row = await screen.findByTestId('row')
+    expect(screen.queryByText('Copy question code')).toBeNull()
+
+    fireEvent.contextMenu(row, { clientX: 10, clientY: 10 })
+    expect(screen.getByText('Copy question code').closest('menu')).toHaveClass(
+      'active'
+    )
+
+    await userEvent.click(document.body)
+    expect(screen.queryByText('Copy question code')).toBeNull()
   })
 })

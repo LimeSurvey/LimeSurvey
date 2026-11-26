@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useRef } from 'react'
 import { omit } from 'lodash'
 import { useQuery } from '@tanstack/react-query'
 import { useBuffer } from './useBuffer'
@@ -61,7 +61,6 @@ export const useQuestionChildren = ({
   language,
 }) => {
   const { addToBuffer } = useBuffer()
-  const [children, setChildren] = useState([])
   // The latest question and update function: An image upload calls
   // handleChildLUpdate from the render where it started. The image option
   // attributes and the question changed meanwhile must not be overwritten.
@@ -73,13 +72,18 @@ export const useQuestionChildren = ({
     isFocused || !handleUpdateWithoutFocus
       ? handleUpdate
       : handleUpdateWithoutFocus
-  // The children of the latest render, see getLatestChildArray().
-  const latestChildren = useRef(children)
-  latestChildren.current = children
 
   const isSingleChoiceTheme = singleChoiceThemes.includes(
     question.questionThemeName
   )
+  // Derived from props, not copied into state: A state copy renders one
+  // frame behind a drag-and-drop reorder and makes the list flicker.
+  const children = isSingleChoiceTheme
+    ? question.answers
+    : question.subquestions
+  // The children of the latest render, see getLatestChildArray().
+  const latestChildren = useRef(children)
+  latestChildren.current = children
 
   // Use useQuery directly to avoid circular dependencies
   const { data: activeLanguage = language } = useQuery({
@@ -593,14 +597,6 @@ export const useQuestionChildren = ({
 
     return newErrorMessage
   }
-
-  useEffect(() => {
-    const children = isSingleChoiceTheme
-      ? question.answers
-      : question.subquestions
-
-    setChildren(children)
-  }, [question.answers, question.subquestions, language, isSingleChoiceTheme])
 
   // useEffect(() => {
   //   const children = isSingleChoiceTheme
