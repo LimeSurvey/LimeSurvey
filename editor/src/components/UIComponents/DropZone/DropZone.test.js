@@ -159,8 +159,9 @@ describe('DropZone', () => {
 
     fireEvent.error(screen.getByAltText('Image Select List'))
 
-    // The no-image-found placeholder, stubbed in the tests.
-    expect(screen.getByAltText('Image Select List')).toHaveAttribute(
+    // The no-image-found placeholder, stubbed in the tests, with an alt text
+    // telling screen reader users that the image is missing.
+    expect(screen.getByAltText('No image found for A1')).toHaveAttribute(
       'src',
       'test-file-stub'
     )
@@ -170,6 +171,36 @@ describe('DropZone', () => {
     expect(
       screen.getByRole('button', { name: 'Delete image A1', hidden: true })
     ).toBeInTheDocument()
+  })
+
+  test('A focused edit button hidden because the image is not found passes the focus to the delete button', async () => {
+    const editButton = await renderEditableDropZone()
+
+    editButton.focus()
+    fireEvent.error(screen.getByAltText('Image Select List'))
+
+    expect(editButton).not.toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: 'Delete image A1', hidden: true })
+    ).toHaveFocus()
+  })
+
+  test('After editing with the keyboard, the focus goes to the delete button when the image is not found meanwhile', async () => {
+    const editButton = await renderEditableDropZone()
+
+    editButton.focus()
+    await userEvent.keyboard('{Enter}')
+    // The editor takes the focus while it is open.
+    act(() => editButton.blur())
+    fireEvent.error(screen.getByAltText('Image Select List'))
+
+    act(() => setTestIsEditing(false))
+    const deleteButton = screen.getByRole('button', {
+      name: 'Delete image A1',
+      hidden: true,
+    })
+    expect(deleteButton).toHaveFocus()
+    expect(deleteButton.parentElement).not.toHaveClass('invisible')
   })
 
   test('Shows the edit button again when a missing image is replaced', async () => {

@@ -1,5 +1,6 @@
 import React, { useMemo, useState, useEffect } from 'react'
 import classNames from 'classnames'
+import { format } from 'util'
 
 import {
   isTempId,
@@ -98,6 +99,10 @@ export const ImageChoice = ({
   // chance.
   const [failedImageUrl, setFailedImageUrl] = useState(null)
   const showImage = !!previewUrl && isValidImg && failedImageUrl !== previewUrl
+  // Screen readers are told that the placeholder isn't the image.
+  const noImageAlt = code
+    ? format(t('No image found for %s'), code)
+    : t('No image found')
 
   const idSuffix = idPrefix + id + '-i' + index
 
@@ -176,7 +181,7 @@ export const ImageChoice = ({
             <div className={classNames({ 'd-none': showLoader })}>
               <EditedImage
                 src={showImage ? previewUrl : NoImageFound}
-                alt={imageAltText || code}
+                alt={showImage ? imageAltText || code : noImageAlt}
                 settings={showImage ? imageSettings : null}
                 height={IMAGE_PREVIEW_HEIGHT}
                 onError={() => setFailedImageUrl(previewUrl)}

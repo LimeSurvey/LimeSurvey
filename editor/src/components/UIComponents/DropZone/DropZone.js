@@ -88,6 +88,7 @@ export const DropZone = forwardRef(
     // that the focus can go back to the edit button when the editor closes.
     const [isKeyboardEdit, setIsKeyboardEdit] = useState(false)
     const editButtonRef = useRef(null)
+    const deleteButtonRef = useRef(null)
     const [previewUrl, setPreviewUrl] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
     // URL of a preview image that couldn't be loaded, e.g. its file is
@@ -98,6 +99,27 @@ export const DropZone = forwardRef(
     const isImageMissing = !!previewUrl && failedImageUrl === previewUrl
     const showEditButton = !!onEdit && !isImageMissing
     const showPlaceholder = !isValidImg || isImageMissing
+    // Screen readers are told that the placeholder isn't the image.
+    const noImageAlt = imageName
+      ? format(t('No image found for %s'), imageName)
+      : t('No image found')
+
+    /**
+     * Shows the placeholder instead of an image that couldn't be loaded. A
+     * focused edit button is about to be hidden: The focus moves to the
+     * delete button first, so that it doesn't fall back to the page.
+     *
+     * @returns {void}
+     */
+    const handleImageError = () => {
+      if (
+        editButtonRef.current &&
+        document.activeElement === editButtonRef.current
+      ) {
+        deleteButtonRef.current?.focus()
+      }
+      setFailedImageUrl(previewUrl)
+    }
 
     const handleOnMouseHover = () => setIsHovered(true)
     const handleOnMouseLeave = () => setIsHovered(false)
@@ -119,10 +141,13 @@ export const DropZone = forwardRef(
     }
 
     // Hidden buttons can't take the focus back from the closed editor: Focus
-    // the edit button here, while it is still visible.
+    // the edit button here, while it is still visible. If the image couldn't
+    // be loaded in the meantime, the edit button is gone: The delete button
+    // gets the focus instead.
     useEffect(() => {
       if (!isEditing && isKeyboardEdit) {
-        editButtonRef.current?.focus()
+        const button = editButtonRef.current ?? deleteButtonRef.current
+        button?.focus()
         setIsKeyboardEdit(false)
       }
     }, [isEditing])
@@ -312,6 +337,7 @@ export const DropZone = forwardRef(
                 ? format(t('Delete image %s'), imageName)
                 : t('Delete image')
             }
+            ref={deleteButtonRef}
             onClick={(event) => {
               handleDelete()
               event.stopPropagation()
@@ -335,10 +361,10 @@ export const DropZone = forwardRef(
         {isLoading ? loadingSpinner : null}
         <EditedImage
           src={showPlaceholder ? NoImageFound : previewUrl}
-          alt={imageAlt}
+          alt={showPlaceholder ? noImageAlt : imageAlt}
           settings={!showPlaceholder && !fixedHeight ? imageSettings : null}
           height={previewMaxHeight}
-          onError={() => setFailedImageUrl(previewUrl)}
+          onError={handleImageError}
           fallbackStyle={
             fixedHeight
               ? {

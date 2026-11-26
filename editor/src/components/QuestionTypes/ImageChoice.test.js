@@ -52,8 +52,9 @@ describe('ImageChoice', () => {
     // to the hidden upload area.
     fireEvent.error(screen.getAllByAltText('A1')[0])
 
-    // The no-image-found placeholder, stubbed in the tests.
-    expect(screen.getAllByAltText('A1')[0]).toHaveAttribute(
+    // The no-image-found placeholder, stubbed in the tests, with an alt text
+    // telling screen reader users that the image is missing.
+    expect(screen.getByAltText('No image found for A1')).toHaveAttribute(
       'src',
       'test-file-stub'
     )
