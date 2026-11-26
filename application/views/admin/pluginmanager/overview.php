@@ -29,21 +29,21 @@
 <?php if (trim((string) $metadata->authorEmail) !== '') : ?>
     <div class="row mb-2">
         <div class="col-md-4 text-end fw-bold"><?php eT("Email:"); ?></div>
-        <div class="col-md-8"><a href="mailto:<?php echo $metadata->authorEmail; ?>"><?php echo $metadata->authorEmail; ?></a></div>
+        <div class="col-md-8"><a class="ls-link" href="mailto:<?php echo $metadata->authorEmail; ?>"><?php echo $metadata->authorEmail; ?></a></div>
     </div>
 <?php endif; ?>
 
 <!-- Url -->
 <div class="row mb-2">
     <div class="col-md-4 text-end fw-bold"><?php eT("Web page:"); ?></div>
-    <div class="col-md-8"><a href="<?php echo $metadata->authorUrl; ?>" target="_blank"><?php echo $metadata->authorUrl; ?></a></div>
+    <div class="col-md-8"><a class="ls-link" href="<?php echo $metadata->authorUrl; ?>" target="_blank"><?php echo $metadata->authorUrl; ?><span class="visually-hidden"> (<?php eT('Link opens in a new tab'); ?>)</span></a></div>
 </div>
 
 <!-- Documentation -->
 <?php if (trim((string) $metadata->documentationUrl) !== '') : ?>
     <div class="row mb-2">
         <div class="col-md-4 text-end fw-bold"><?php eT("Documentation:"); ?></div>
-        <div class="col-md-8"><a href="<?php echo CHtml::encode($metadata->documentationUrl); ?>" target="_blank" rel="noopener"><?php echo CHtml::encode($metadata->documentationUrl); ?></a></div>
+        <div class="col-md-8"><a class="ls-link" href="<?php echo CHtml::encode($metadata->documentationUrl); ?>" target="_blank" rel="noopener"><?php echo CHtml::encode($metadata->documentationUrl); ?><span class="visually-hidden"> (<?php eT('Link opens in a new tab'); ?>)</span></a></div>
     </div>
 <?php endif; ?>
 

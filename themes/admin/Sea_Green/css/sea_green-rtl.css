@@ -20765,6 +20765,9 @@ table [class^=ri-], table [class*=" ri-"] {
   border: none;
   box-shadow: none;
 }
+.accordion-button:focus-visible {
+  box-shadow: inset 0 0 0 2px #8146F6;
+}
 
 .accordion-item {
   border-top: none;
@@ -20815,6 +20818,10 @@ table [class^=ri-], table [class*=" ri-"] {
 #copy-question .accordion-button:focus {
   border: none;
   box-shadow: none;
+}
+#advanced-question-editor .accordion-button:focus-visible,
+#copy-question .accordion-button:focus-visible {
+  box-shadow: inset 0 0 0 2px #8146F6;
 }
 #advanced-question-editor .accordion-item,
 #copy-question .accordion-item {
