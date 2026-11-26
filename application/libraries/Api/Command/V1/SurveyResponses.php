@@ -7,7 +7,10 @@ use LimeSurvey\Api\Transformer\TransformerException;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\FilterPatcher;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\ResponseFilterCriteriaBuilder;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\ResponseMappingTrait;
+use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\Sorting\AnswerLabelOrder;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\Sorting\ResponseSort;
+use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\Sorting\SingleChoiceSorter;
+use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\Sorting\SingleValueSorter;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\SurveyResponseFiles;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\SurveyRequestTrait;
 use LimeSurvey\Models\Services\Exception\PermissionDeniedException;
@@ -386,9 +389,10 @@ class SurveyResponses implements CommandInterface
     }
 
     /**
-     * Sort builder for the survey, with the participant columns the user may sort by.
+     * Sort builder for the survey, with the question sorters and the participant
+     * columns the user may sort by.
      *
-     * @param Request $request
+     * @param Request $request Request, whose language decides the order of answer texts
      * @return ResponseSort Builder knowing all sortable columns of the survey
      */
     protected function getResponseSort(Request $request): ResponseSort
@@ -410,9 +414,14 @@ class SurveyResponses implements CommandInterface
             }
         }
 
+        $answerLabelOrder = new AnswerLabelOrder($this->getLanguage($request));
+
         return new ResponseSort(
             $this->transformerOutputSurveyResponses->fieldMap,
-            [],
+            [
+                new SingleChoiceSorter($answerLabelOrder),
+                new SingleValueSorter(),
+            ],
             $participantsTable,
             $participantColumns
         );
