@@ -2963,6 +2963,10 @@ class Participant extends LSActiveRecord
      */
     public static function getDuplicateFinderInvalidCount($extraCriteria = null)
     {
+        /* duplicatefinder can not be used (no key, or disabled) : every value is '', it can not be updated */
+        if (!self::canUseDuplicateFinder()) {
+            return 0;
+        }
         /* Force integer : some drivers (pdo_sqlsrv) return count as string */
         if ($extraCriteria) {
             return (int) self::model()->invaliduplicatefinder()->count($extraCriteria);

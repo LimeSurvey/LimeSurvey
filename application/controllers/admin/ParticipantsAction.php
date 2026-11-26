@@ -3276,6 +3276,12 @@ class ParticipantsAction extends SurveyCommonAction
         if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
             throw new \CHttpException(403, gT('Access denied'));
         }
+        /* No key (security.php not writable) or disabled : every value is '', nothing can be recalculated */
+        if (!Participant::canUseDuplicateFinder()) {
+            App()->setFlashMessage(gT("Participant duplicate indexes can not be recalculated: the encryptionduplicateindexkey setting is missing or CPDB_duplicatefinder_bits is 0."), 'warning');
+            App()->getController()->redirect(['admin/participants/sa/encryptionMaintenance']);
+            return;
+        }
         $stateId = 'currentDuplicateFinderInvalidParticipantId';
         Participant::checkDuplicateFinderSettingsChange();
         /* The duplicate index size used since the first participant of the current run */
