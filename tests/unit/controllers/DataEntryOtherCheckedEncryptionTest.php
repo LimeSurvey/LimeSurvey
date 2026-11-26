@@ -43,7 +43,7 @@ class DataEntryOtherCheckedEncryptionTest extends TestBaseClass
                 'startlanguage' => 'en',
                 self::$otherColumn => $text === '' ? '' : \LSActiveRecord::encryptSingle($text, 'H'),
             ]);
-            $id = (int) $db->getLastInsertID();
+            $id = (int) getLastInsertID("{{responses_" . self::$surveyId . "}}");
             if ($text === '') {
                 self::$withoutTextId = $id;
             } else {
