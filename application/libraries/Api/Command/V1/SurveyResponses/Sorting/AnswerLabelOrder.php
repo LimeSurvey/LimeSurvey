@@ -38,7 +38,9 @@ class AnswerLabelOrder
      */
     public function getRanks(int $qid, int $scaleId = 0): array
     {
-        $labels = $this->getLabels($qid, $scaleId);
+        // Lowercase before sorting: Without php-intl, the sort only ignores the case of ASCII
+        // letters, and labels differing in the case of e.g. "Ä" wouldn't end up next to each other
+        $labels = array_map('mb_strtolower', $this->getLabels($qid, $scaleId));
         // Equal labels keep the order of their codes
         ksort($labels, SORT_STRING);
         SortHelper::getInstance($this->language)->asort($labels, SortHelper::SORT_STRING);
@@ -47,10 +49,9 @@ class AnswerLabelOrder
         $rank = 0;
         $previous = null;
         foreach ($labels as $code => $label) {
-            $comparable = mb_strtolower($label);
-            if ($comparable !== $previous) {
+            if ($label !== $previous) {
                 $rank++;
-                $previous = $comparable;
+                $previous = $label;
             }
             $ranks[$code] = $rank;
         }

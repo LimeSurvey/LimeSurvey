@@ -199,6 +199,32 @@ class SingleChoiceSorterTest extends TestBaseClass
     }
 
     /**
+     * @testdox Without php-intl, answers differing in the case of non-ASCII letters share a rank
+     * @return void
+     */
+    public function testRanksWithoutIntl(): void
+    {
+        $qid = (int) $this->getAllSurveyQuestions()['qList']->qid;
+        // The PHP fallback sorts these as Äpfel, Öl, äpfel: Only ASCII letters are compared case-insensitively
+        $texts = ['A1' => 'Äpfel', 'A2' => 'Öl', 'A3' => 'äpfel'];
+        $this->withEnglishAnswerTexts($texts, function () use ($qid) {
+            // Make the sort helper use the PHP fallback, as without php-intl
+            \LimeSurvey\Helpers\SortHelper::getInstance('en');
+            $collator = new \ReflectionProperty(\LimeSurvey\Helpers\SortHelper::class, 'collator');
+            $collator->setAccessible(true);
+            $collator->setValue(null, null);
+            try {
+                $this->assertSame(['A1' => 1, 'A3' => 1, 'A2' => 2], (new AnswerLabelOrder('en'))->getRanks($qid));
+            } finally {
+                // The next getInstance() call creates the helper again, with the collator
+                $instance = new \ReflectionProperty(\LimeSurvey\Helpers\SortHelper::class, 'instance');
+                $instance->setAccessible(true);
+                $instance->setValue(null, null);
+            }
+        });
+    }
+
+    /**
      * @testdox Responses of answers with the same text are ordered newest first, not by answer code
      * @return void
      */
@@ -220,16 +246,35 @@ class SingleChoiceSorterTest extends TestBaseClass
      */
     private function withCherryRenamedToBanana(callable $checks): void
     {
+        $this->withEnglishAnswerTexts(['A3' => 'BANANA'], $checks);
+    }
+
+    /**
+     * Run checks while answers of qList have other English texts, and restore
+     * the original texts afterwards.
+     *
+     * @param array<string, string> $texts Answer code => English text to use during the checks
+     * @param callable $checks Assertions to run with the changed texts
+     * @return void
+     */
+    private function withEnglishAnswerTexts(array $texts, callable $checks): void
+    {
         $qid = (int) $this->getAllSurveyQuestions()['qList']->qid;
-        $answer = \Answer::model()->findByAttributes(['qid' => $qid, 'code' => 'A3']);
-        $l10n = \AnswerL10n::model()->findByAttributes(['aid' => $answer->aid, 'language' => 'en']);
-        $l10n->answer = 'BANANA';
-        $l10n->save();
+        $originals = [];
         try {
+            foreach ($texts as $code => $text) {
+                $answer = \Answer::model()->findByAttributes(['qid' => $qid, 'code' => $code]);
+                $l10n = \AnswerL10n::model()->findByAttributes(['aid' => $answer->aid, 'language' => 'en']);
+                $originals[] = [$l10n, $l10n->answer];
+                $l10n->answer = $text;
+                $l10n->save();
+            }
             $checks();
         } finally {
-            $l10n->answer = 'Cherry';
-            $l10n->save();
+            foreach ($originals as [$l10n, $original]) {
+                $l10n->answer = $original;
+                $l10n->save();
+            }
         }
     }
 }
