@@ -3183,6 +3183,9 @@ class ParticipantsAction extends SurveyCommonAction
                     }
                     $failed++;
                     $this->logParticipantSaveError($oParticipant, 'reencryptParticipantData');
+                    /* Counted in the failures : the next batch starts after it */
+                    $lastParticipantId = $oParticipant->participant_id;
+                    App()->user->setState($stateId, $lastParticipantId);
                     continue;
                 }
                 $this->reencryptParticipantAttributes($oParticipant->participant_id, $encryptedAttributeIds, $cryptMethod);
@@ -3193,7 +3196,7 @@ class ParticipantsAction extends SurveyCommonAction
                 if ($transaction) {
                     $transaction->rollback();
                 }
-                /* The cursor is already after the failed participants of this batch : keep them for the end of the run */
+                /* The cursor is after the failed participants of this batch : keep them for the end of the run */
                 App()->user->setState($failedStateId, intval(App()->user->getState($failedStateId, 0)) + $failed);
                 throw $e;
             }
@@ -3292,15 +3295,19 @@ class ParticipantsAction extends SurveyCommonAction
         /* The duplicate index size used since the first participant of the current run */
         $bitsStateId = 'currentDuplicateFinderBits';
         $bits = intval(App()->getConfig('CPDB_duplicatefinder_bits', 128));
+        /* The participants not saved since the first participant of the current run */
+        $failedStateId = 'currentDuplicateFinderFailed';
         if (App()->getRequest()->getPost('rencrypt') == 'reset') {
             $lastParticipantId = '';
             App()->user->setState($stateId, null);
+            App()->user->setState($failedStateId, null);
         } else {
             $lastParticipantId = strval(App()->user->getState($stateId, ''));
             if ($lastParticipantId !== '' && App()->user->getState($bitsStateId) !== $bits) {
                 /* The size changed during the run : the participants already done use the previous one */
                 App()->user->setState($stateId, null);
                 App()->user->setState($bitsStateId, null);
+                App()->user->setState($failedStateId, null);
                 App()->setFlashMessage(gT("The duplicate index size changed during the update. Please restart the update from the first participant."), 'warning');
                 App()->getController()->redirect(['admin/participants/sa/encryptionMaintenance']);
                 return;
@@ -3326,12 +3333,13 @@ class ParticipantsAction extends SurveyCommonAction
             /* Save only duplicatefinder : other columns changed meanwhile are kept */
             if ($oParticipant->encryptSave(false, ['duplicatefinder'])) {
                 $processed++;
-                $lastParticipantId = $oParticipant->participant_id;
-                App()->user->setState($stateId, $lastParticipantId);
             } else {
                 $failed++;
                 $this->logParticipantSaveError($oParticipant, 'recalculateDuplicateFinder');
             }
+            /* A failed one is counted in the failures : the next batch starts after it */
+            $lastParticipantId = $oParticipant->participant_id;
+            App()->user->setState($stateId, $lastParticipantId);
         }
         if ($lastParticipantId !== '') {
             $criteria = new CDbCriteria();
@@ -3339,20 +3347,25 @@ class ParticipantsAction extends SurveyCommonAction
             $criteria->params[':lastParticipantId'] = $lastParticipantId;
             $stilltoProcess = Participant::model()->getDuplicateFinderInvalidCount($criteria);
         }
+        /* Failures of the previous batches of this run : the last batch reports the total */
+        $runFailed = intval(App()->user->getState($failedStateId, 0)) + $failed;
         if ($stilltoProcess == 0) {
             App()->user->setState($stateId, null);
             App()->user->setState($bitsStateId, null);
-        }
-        if ($stilltoProcess == 0 && $failed == 0) {
-            App()->setFlashMessage(gT("All participant duplicate indexes are up to date."));
-        } elseif ($stilltoProcess > 0) {
+            App()->user->setState($failedStateId, null);
+            if ($runFailed == 0) {
+                App()->setFlashMessage(gT("All participant duplicate indexes are up to date."));
+            }
+            $this->setParticipantSaveErrorFlash($runFailed);
+        } else {
+            App()->user->setState($failedStateId, $runFailed);
             App()->setFlashMessage(sprintf(
                 gT("%s duplicate finder entries saved, %s remaining."),
                 $processed,
                 $stilltoProcess
             ));
+            $this->setParticipantSaveErrorFlash($failed);
         }
-        $this->setParticipantSaveErrorFlash($failed);
         App()->getController()->redirect(['admin/participants/sa/encryptionMaintenance']);
     }
 

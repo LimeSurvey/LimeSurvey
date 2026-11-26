@@ -288,6 +288,7 @@ class ParticipantDuplicateFinderTest extends TestBaseClass
             Yii::app()->user->setState('currentReencryptMethod', null);
             Yii::app()->user->setState('currentDuplicateFinderInvalidParticipantId', null);
             Yii::app()->user->setState('currentDuplicateFinderBits', null);
+            Yii::app()->user->setState('currentDuplicateFinderFailed', null);
         }
     }
 

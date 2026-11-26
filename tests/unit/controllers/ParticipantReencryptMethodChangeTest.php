@@ -64,6 +64,7 @@ class ParticipantReencryptMethodChangeTest extends TestBaseClass
         Yii::app()->user->setState('currentReencryptFailed', null);
         Yii::app()->user->setState('currentDuplicateFinderInvalidParticipantId', null);
         Yii::app()->user->setState('currentDuplicateFinderBits', null);
+        Yii::app()->user->setState('currentDuplicateFinderFailed', null);
         Yii::app()->setConfig('CPDB_duplicatefinder_bits', $this->backupDuplicateFinderBits);
         Yii::app()->setConfig('CPDB_reencrypt_limit', $this->backupReencryptLimit);
         Yii::app()->session['aFlashMessage'] = [];
