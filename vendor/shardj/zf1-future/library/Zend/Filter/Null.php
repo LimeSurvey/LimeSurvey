@@ -71,7 +71,7 @@ class Zend_Filter_Null implements Zend_Filter_Interface
                 $temp = array_shift($options);
             }
             $options = $temp;
-        } else if (is_array($options) && array_key_exists('type', $options)) {
+        } else if (array_key_exists('type', $options)) {
             $options = $options['type'];
         }
 
@@ -132,7 +132,7 @@ class Zend_Filter_Null implements Zend_Filter_Interface
      * types that should be considered null.
      *
      * @param  string $value
-     * @return string
+     * @return string|null
      */
     public function filter($value)
     {

@@ -1,5 +1,7 @@
 <?php
 
+use LimeSurvey\Models\Services\SurveySessionState;
+
 /**
  * class ResponsesController
  **/
@@ -441,7 +443,9 @@ class ResponsesController extends LSBaseController
      * Show responses for survey
      *
      * @param int $surveyId
+     * @param int $surveyid Alias of $surveyId, used if $surveyId is not set
      * @return void
+     * @throws CHttpException
      */
     public function actionBrowse(int $surveyId = 0, int $surveyid = 0): void
     {
@@ -498,12 +502,10 @@ class ResponsesController extends LSBaseController
             }
 
             // Model filters
-            if (isset($_SESSION['responses_' . $surveyId])) {
-                $sessionSurveyArray = App()->session->get('responses_' . $surveyId);
-                $visibleColumns = $sessionSurveyArray['filteredColumns'] ?? null;
-                if (!empty($visibleColumns)) {
-                    $model->setAttributes($visibleColumns, false);
-                }
+            $sessionState = SurveySessionState::forSurvey((int) $surveyId);
+            $visibleColumns = $sessionState->getFilteredColumns();
+            if (!empty($visibleColumns)) {
+                $model->setAttributes($visibleColumns, false);
             }
             // Using safe search on dynamic column names would be far too much complex.
             // So we pass over the safe validation and directly set attributes (second parameter of setAttributes to false).
@@ -526,7 +528,7 @@ class ResponsesController extends LSBaseController
             }
 
             // Sets which columns to filter
-            $filteredColumns = !empty(isset($_SESSION['responses_' . $surveyId]['filteredColumns'])) ? $_SESSION['responses_' . $surveyId]['filteredColumns'] : null;
+            $filteredColumns = $sessionState->getFilteredColumns();
             $aData['filteredColumns'] = $filteredColumns;
 
             // rendering
@@ -601,6 +603,8 @@ class ResponsesController extends LSBaseController
      * Saves the hidden columns for response browsing in the session
      * @access public
      * @param int $surveyId
+     * @return void
+     * @throws CHttpException
      */
     public function actionSetFilteredColumns(int $surveyId): void
     {
@@ -618,9 +622,9 @@ class ResponsesController extends LSBaseController
                             $aFilteredColumns[] = $sColumn;
                         }
                     }
-                    $_SESSION['responses_' . $surveyId]['filteredColumns'] = $aFilteredColumns;
+                    SurveySessionState::forSurvey($surveyId)->setFilteredColumns($aFilteredColumns);
                 } else {
-                    $_SESSION['responses_' . $surveyId]['filteredColumns'] = [];
+                    SurveySessionState::forSurvey($surveyId)->setFilteredColumns([]);
                 }
             }
         }
@@ -686,8 +690,8 @@ class ResponsesController extends LSBaseController
         }
 
         if ($errors || $timingErrors) {
-            $message = ($errors) ? ngT("A response was not deleted.|{n} responses were not deleted.", $errors) : "";
-            $message .= ($timingErrors) ? ngT("A timing record was not deleted.|{n} timing records were not deleted.", $errors) : "";
+            $message = ($errors) ? sprintf(gTPlural("A response was not deleted.", "%d responses were not deleted.", $errors), $errors) : "";
+            $message .= ($timingErrors) ? sprintf(gTPlural("A timing record was not deleted.", "%d timing records were not deleted.", $errors), $errors) : "";
             if (App()->getRequest()->isAjaxRequest) {
                 ls\ajax\AjaxHelper::outputError($message);
             } else {
@@ -928,7 +932,7 @@ class ResponsesController extends LSBaseController
             App()->user->setFlash('error', $message);
             $this->redirect(["responses/browse", "surveyId" => $surveyId]);
         }
-        $message = sprintf(ngT('%d file deleted.|%d files deleted.', $allSuccess), $allSuccess);
+        $message = sprintf(gTPlural('%d file deleted.', '%d files deleted.', $allSuccess), $allSuccess);
         if ($request->isAjaxRequest) {
             ls\ajax\AjaxHelper::outputSuccess($message);
             App()->end();

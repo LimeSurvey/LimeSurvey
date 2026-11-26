@@ -213,7 +213,6 @@ class Zend_CodeGenerator_Php_Property_DefaultValue extends Zend_CodeGenerator_Ph
                 return self::TYPE_STRING;
             case 'double':
             case 'float':
-            case 'integer':
                 return self::TYPE_NUMBER;
             case 'array':
                 return self::TYPE_ARRAY;

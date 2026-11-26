@@ -73,7 +73,7 @@ class Zend_Service_Amazon_Ec2_Keypair extends Zend_Service_Amazon_Ec2_Abstract
      * key pairs, information about those key pairs is returned. Otherwise,
      * information for all registered key pairs is returned.
      *
-     * @param string|rarray $keyName    Key pair IDs to describe.
+     * @param string|array $keyName    Key pair IDs to describe.
      * @return array
      */
     public function describe($keyName = null)

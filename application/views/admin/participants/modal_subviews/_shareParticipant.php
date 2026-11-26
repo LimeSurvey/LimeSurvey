@@ -1,7 +1,7 @@
 <?php
 Yii::app()->getController()->renderPartial(
-'/layouts/partial_modals/modal_header',
-['modalTitle' => gT('Share participant(s)'), 'modalTitleId' => 'participant_edit_modal']
+    '/layouts/partial_modals/modal_header',
+    ['modalTitle' => gT('Share participant(s)'), 'modalTitleId' => 'participant_edit_modal']
 );
 ?>
 <?php
@@ -15,8 +15,8 @@ $form = $this->beginWidget(
 );
 ?>
 <div class="modal-body ">
-    <?php if (isset($participantIds)): ?>
-        <?php foreach ($participantIds as $id): ?>
+    <?php if (isset($participantIds)) : ?>
+        <?php foreach ($participantIds as $id) : ?>
             <input type="hidden" name="participant_id[]" value="<?php echo CHtml::encode($id); ?>" />
         <?php endforeach;?>
     <?php else : ?>

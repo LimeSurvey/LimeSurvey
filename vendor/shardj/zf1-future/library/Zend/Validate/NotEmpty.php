@@ -152,7 +152,7 @@ class Zend_Validate_NotEmpty extends Zend_Validate_Abstract
      *
      * Returns true if and only if $value is not an empty value.
      *
-     * @param  string $value
+     * @param  mixed $value
      * @return boolean
      */
     public function isValid($value)
@@ -184,7 +184,7 @@ class Zend_Validate_NotEmpty extends Zend_Validate_Abstract
             $object = true;
 
             if ((is_object($value) && (!method_exists($value, '__toString'))) ||
-                (is_object($value) && (method_exists($value, '__toString')) && (((string) $value) == ""))) {
+                (is_object($value) && (((string) $value) == ""))) {
                 $this->_error(self::IS_EMPTY);
                 return false;
             }

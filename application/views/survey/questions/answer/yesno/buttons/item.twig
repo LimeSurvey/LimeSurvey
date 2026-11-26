@@ -11,7 +11,7 @@
  */
 #}
 
-<div class="ls-answers answers-list yesno-button btn-group btn-group-justified" role="radiogroup" aria-labelledby="ls-question-text-{{ basename }}">
+<div class="ls-answers answers-list yesno-button btn-group btn-group-justified" role="radiogroup" aria-labelledby="ls-question-text-{{ basename }}" aria-describedby="ls-question-help-{{ basename }} ls-question-validation-{{ basename }}">
     <!-- Yes -->
     <input type="radio" class="btn-check ls-button-radio" name="{{ name }}" id="answer{{ name }}Y" value="Y" {{ yChecked }}>
     <label class="btn btn-primary mb-3 answer-item ls-button-label" id="javatbd{{ name }}_CY" for="answer{{ name }}Y">

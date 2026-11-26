@@ -181,7 +181,7 @@ $iconFail = "<span class='ri-error-warning-fill text-danger'></span>";
                <td><?= $model::RECOMMENDED_MAX_INPUT_VARS ?></td>
                <td>
                    <?php if ($model->isMaxInputVarsOK) : ?>
-                       <?= $model->maxInputVars ?>
+                        <?= $model->maxInputVars ?>
                    <?php else : ?>
                        <span class='ri-error-warning-fill text-warning' aria-hidden='true'></span>
                        <span class='fw-bold'><?php eT("Too low"); ?>: <?= $model->maxInputVars ?></span>
@@ -199,7 +199,7 @@ $iconFail = "<span class='ri-error-warning-fill text-danger'></span>";
                <td><?= $model::RECOMMENDED_POST_MAX_SIZE ?>M</td>
                <td>
                    <?php if ($model->isPostMaxSizeOK) : ?>
-                       <?= CHtml::encode(ini_get('post_max_size')) ?>
+                        <?= CHtml::encode(ini_get('post_max_size')) ?>
                    <?php else : ?>
                        <span class='ri-error-warning-fill text-warning' aria-hidden='true'></span>
                        <span class='fw-bold'><?php eT("Too low"); ?>: <?= CHtml::encode(ini_get('post_max_size')) ?></span>
@@ -217,7 +217,7 @@ $iconFail = "<span class='ri-error-warning-fill text-danger'></span>";
                <td><?= $model::RECOMMENDED_UPLOAD_MAX_FILESIZE ?>M</td>
                <td>
                    <?php if ($model->isUploadMaxFilesizeOK) : ?>
-                       <?= CHtml::encode(ini_get('upload_max_filesize')) ?>
+                        <?= CHtml::encode(ini_get('upload_max_filesize')) ?>
                    <?php else : ?>
                        <span class='ri-error-warning-fill text-warning' aria-hidden='true'></span>
                        <span class='fw-bold'><?php eT("Too low"); ?>: <?= CHtml::encode(ini_get('upload_max_filesize')) ?></span>

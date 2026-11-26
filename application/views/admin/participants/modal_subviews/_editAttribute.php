@@ -1,5 +1,5 @@
 <div class="modal-header">
-    <h2 class="modal-title h5" id="participant_edit_modal"><?php if ($editType === 'new') : eT('Add attribute'); else: eT('Edit attribute'); endif; ?></h2>
+    <h2 class="modal-title h5" id="participant_edit_modal"><?= $editType === 'new' ? gT('Add attribute') : gT('Edit attribute') ?></h2>
     <?php // aria-hidden: only read as part of the dialog name, not again when reading the dialog content ?>
     <span class="visually-hidden" id="participant_edit_modal-dialogsr" aria-hidden="true"><?= gT('Dialog') ?></span>
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -74,7 +74,7 @@ $form = $this->beginWidget(
             <?php // Always sent (empty values are skipped), so removing every field clears the saved values ?>
             <input type="hidden" name="ParticipantAttributeNamesDropdown[]" value=""/>
             <div id='ParticipantAttributeNamesDropdownEditList'>
-                <?php foreach ($model->getAttributesValues($model->attribute_id) as $attribute_value): ?>
+                <?php foreach ($model->getAttributesValues($model->attribute_id) as $attribute_value) : ?>
                     <div class="control-group">
                         <div class="dropDownContainer col-8 col-offset-2">
                             <?= TbHtml::textField('ParticipantAttributeNamesDropdown[]', $attribute_value['value'], ['class' => 'form-control', 'id' => '', 'aria-label' => gT('Dropdown field')]) ?>
@@ -117,7 +117,8 @@ $form = $this->beginWidget(
         <div id='languagesList' class="row"
              data-remove-language-label="<?= CHtml::encode(gT('Remove %s language', 'unescaped')) ?>"
              data-at-least-one-language="<?= CHtml::encode(gT('There has to be at least one language.', 'unescaped')) ?>">
-            <?php if ($editType !== 'edit') : $languageKey = Yii::app()->getLanguage(); ?>
+            <?php if ($editType !== 'edit') :
+                $languageKey = Yii::app()->getLanguage(); ?>
                 <div class="col-12 ex-form-group mb-3" data-lang="<?= $languageKey ?>">
                     <label class="form-label" for="ParticipantAttributeNameLanguages_<?= $languageKey ?>">
                         <?= getLanguageNameFromCode($languageKey, false) ?>

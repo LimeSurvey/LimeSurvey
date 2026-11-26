@@ -105,7 +105,7 @@ abstract class Zend_Pdf_Trailer
     /**
      * Get length of source PDF
      *
-     * @return string
+     * @return int
      */
     abstract public function getPDFLength();
 

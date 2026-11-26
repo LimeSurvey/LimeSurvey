@@ -188,7 +188,6 @@ export const getNotificationsDataSettingsBlocks = () => ({
         props: {
           id: 'emailResponseTo',
           mainText: t('Detailed admin notifications email address'),
-          activeDisabled: true,
           noPermissionDisabled: true,
           childOnNewLine: true,
           childComponent: Input,

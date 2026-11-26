@@ -3,6 +3,7 @@ import { EntitiesType } from './Buffer'
 import { arrayDeleteItem } from './arrayDeleteItem'
 import { getEntityInfo } from './getEntityInfo'
 import { replaceValuesInObject } from './replaceValuesInObject'
+import { rememberResolvedTempId } from './resolvedTempIds'
 
 /**
  * Replace survey branch references.
@@ -55,6 +56,9 @@ export const replaceTempIdsInSurveyAndBuffer = (
   focused = undefined
 ) => {
   mappings.forEach((tempIdMap) => {
+    // Keep the mapping for UI state that still holds the temporary ID (e.g. open dialogs)
+    rememberResolvedTempId(tempIdMap.tempId, tempIdMap.id)
+
     // Retrieve the entity based on type and temporary ID
     let entityInfo = getEntityInfo(tempIdMap.tempId, survey, entityType)
 
@@ -159,6 +163,20 @@ export const updateSurveyEntitiesData = (
 ) => {
   if (!entityDataMap || Object.keys(entityDataMap).length === 0) {
     return { survey, operationsBuffer }
+  }
+
+  // A list updates several entities, e.g. the questions whose conditions a type change deleted
+  if (Array.isArray(entityDataMap)) {
+    return entityDataMap.reduce(
+      (result, entityData) =>
+        updateSurveyEntitiesData(
+          entityType,
+          result.survey,
+          result.operationsBuffer,
+          entityData
+        ),
+      { survey, operationsBuffer }
+    )
   }
 
   if (entityType === EntitiesType.question) {

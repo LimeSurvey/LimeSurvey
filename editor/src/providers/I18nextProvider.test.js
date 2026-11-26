@@ -20,8 +20,14 @@ jest.mock('../helpers', () => ({
   loadDayjsLocale: jest.fn(async () => 'en'),
 }))
 
-// auth, setLanguages and languages, passed through to the i18n factory
-const extraArgs = [expect.anything(), expect.anything(), expect.anything()]
+// auth, setLanguages, languages, isSurveyTranslation and onReady, passed through to the i18n factory
+const extraArgs = [
+  expect.anything(),
+  expect.anything(),
+  expect.anything(),
+  undefined,
+  expect.any(Function),
+]
 
 const renderProvider = () => {
   const i18n = jest.fn(() => ({}))

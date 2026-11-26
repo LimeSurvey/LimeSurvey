@@ -3,7 +3,6 @@
 namespace ls\tests;
 
 use TokenDynamic;
-use PHPUnit\Framework\TestCase;
 
 class TokenDynamicTest extends TestBaseClass
 {
@@ -18,215 +17,199 @@ class TokenDynamicTest extends TestBaseClass
         TokenDynamic::model(self::$surveyId);
     }
 
+    /**
+     * Creates an unsaved participant with the given attributes.
+     * The "allow edit after completion" setting is set on the survey instance that the participant uses.
+     * @param array $attributes Participant attributes
+     * @param bool $allowEditAfterCompletion Value of the survey setting "Allow editing after completion"
+     * @return TokenDynamic
+     */
+    private function createParticipant(array $attributes, bool $allowEditAfterCompletion = false): TokenDynamic
+    {
+        $participant = new TokenDynamic(self::$surveyId);
+        $participant->setAttributes($attributes, false);
+        $participant->survey->oOptions->alloweditaftercompletion = $allowEditAfterCompletion ? 'Y' : 'N';
+        return $participant;
+    }
+
+    /**
+     * Returns the attributes of a participant that can be emailed
+     * @param array $overrides Attributes that replace the defaults
+     * @return array
+     */
+    private function getEmailableAttributes(array $overrides = []): array
+    {
+        return array_merge(
+            [
+                'token' => 'a-token-string',
+                'emailstatus' => 'OK',
+                'email' => 'user@example.com',
+                'completed' => 'N',
+                'usesleft' => 1,
+            ],
+            $overrides
+        );
+    }
+
     public function testTokenCanBeUsedWithoutTokenAttribute()
     {
-        $token = new TokenDynamic(self::$surveyId);
-        $this->assertFalse($token->canBeUsed(), 'There is no token attribute, the token should not be able to be used.');
+        $participant = $this->createParticipant([]);
+        $this->assertFalse($participant->canBeUsed(), 'There is no access code, the participant should not be able to enter the survey.');
     }
 
     public function testTokenCanBeUsedWithCompletedAttributeUnset()
     {
-        $tokenData = array(
-            'token' => 'a-token-string',
-            'completed' => '',
-        );
-
-        $token = new TokenDynamic(self::$surveyId);
-        $token->setAttributes($tokenData, false);
-
-        $this->assertTrue($token->canBeUsed(), 'The completed attribute was not set, the token should be able to be used.');
+        $participant = $this->createParticipant(['token' => 'a-token-string', 'completed' => '', 'usesleft' => 1]);
+        $this->assertTrue($participant->canBeUsed(), 'The completed attribute was not set, the participant should be able to enter the survey.');
     }
 
     public function testTokenCanBeUsedWithCompletedAttributeSetToNo()
     {
-        $tokenData = array(
-            'token' => 'a-token-string',
-            'completed' => 'N',
-        );
-
-        $token = new TokenDynamic(self::$surveyId);
-        $token->setAttributes($tokenData, false);
-
-        $this->assertTrue($token->canBeUsed(), 'The completed attribute was set to N, the token should be able to be used.');
-    }
-
-    public function testTokenCanBeUsedWithAllowEditAfterCompletionSetToNo()
-    {
-        $tokenData = array(
-            'token' => 'a-token-string',
-            'completed' => 'N',
-        );
-
-        self::$testSurvey->oOptions->alloweditaftercompletion = 'N';
-
-        $token = new TokenDynamic(self::$surveyId);
-        $token->setAttributes($tokenData, false);
-
-        $this->assertTrue($token->canBeUsed(), 'The survey allow edit after completion attribute was set to N, the token should be able to be used.');
+        $participant = $this->createParticipant(['token' => 'a-token-string', 'completed' => 'N', 'usesleft' => 1]);
+        $this->assertTrue($participant->canBeUsed(), 'The completed attribute was set to N, the participant should be able to enter the survey.');
     }
 
     public function testTokenCanBeUsedWithAllowEditAfterCompletionSetToYes()
     {
-        $tokenData = array(
-            'token' => 'a-token-string',
-            'completed' => 'N',
-        );
-
-        self::$testSurvey->oOptions->alloweditaftercompletion = 'Y';
-
-        $token = new TokenDynamic(self::$surveyId);
-        $token->setAttributes($tokenData, false);
-
-        $this->assertTrue($token->canBeUsed(), 'The survey allow edit after completion attribute was set to Y, the token should be able to be used.');
-    }
-
-    public function testTokenCanBeUsedWithCompletedAttributeSetToYes()
-    {
-        $tokenData = array(
-            'token' => 'a-token-string',
-            'completed' => 'Y',
-        );
-
-        $token = new TokenDynamic(self::$surveyId);
-        $token->setAttributes($tokenData, false);
-
-        $this->assertFalse($token->canBeUsed(), 'The completed attribute was set to Y, the token should not be able to be used.');
+        $participant = $this->createParticipant(['token' => 'a-token-string', 'completed' => 'N', 'usesleft' => 1], true);
+        $this->assertTrue($participant->canBeUsed(), 'Editing after completion is allowed, the participant should be able to enter the survey.');
     }
 
     public function testCompletedTokenCanBeUsedWithAllowEditAfterCompletionSetToNo()
     {
-        $tokenData = array(
-            'token' => 'a-token-string',
-            'completed' => 'Y',
-        );
-
-        self::$testSurvey->oOptions->alloweditaftercompletion = 'N';
-
-        $token = new TokenDynamic(self::$surveyId);
-        $token->setAttributes($tokenData, false);
-
-        $this->assertFalse($token->canBeUsed(), 'The survey allow edit after completion attribute was set to N, the token should not be able to be used.');
+        $participant = $this->createParticipant(['token' => 'a-token-string', 'completed' => 'Y', 'usesleft' => 0]);
+        $this->assertFalse($participant->canBeUsed(), 'The participant completed the survey and editing after completion is not allowed, the participant should not be able to enter the survey.');
     }
 
     public function testCompletedTokenCanBeUsedWithAllowEditAfterCompletionSetToYes()
     {
-        $tokenData = array(
+        $participant = $this->createParticipant(['token' => 'a-token-string', 'completed' => 'Y', 'usesleft' => 0], true);
+        $this->assertTrue($participant->canBeUsed(), 'Editing after completion is allowed, the participant should be able to enter the survey again.');
+    }
+
+    public function testDateCompletedTokenCanBeUsedWithAllowEditAfterCompletionSetToNo()
+    {
+        $participant = $this->createParticipant(['token' => 'a-token-string', 'completed' => '2026-01-01 10:00', 'usesleft' => 0]);
+        $this->assertFalse($participant->canBeUsed(), 'The participant completed the survey (date stamp) and editing after completion is not allowed, the participant should not be able to enter the survey.');
+    }
+
+    public function testScreenedOutTokenCanBeUsedWithAllowEditAfterCompletionSetToNo()
+    {
+        $participant = $this->createParticipant(['token' => 'a-token-string', 'completed' => 'Q', 'usesleft' => 1]);
+        $this->assertFalse($participant->canBeUsed(), 'The participant was screened out by a quota, the participant should not be able to enter the survey.');
+    }
+
+    public function testTokenCanBeUsedWithNoUsesLeft()
+    {
+        $participant = $this->createParticipant(['token' => 'a-token-string', 'completed' => 'N', 'usesleft' => 0]);
+        $this->assertFalse($participant->canBeUsed(), 'There are no uses left, the participant should not be able to enter the survey.');
+    }
+
+    public function testTokenCanBeUsedWithNoUsesLeftAndAllowEditAfterCompletionSetToYes()
+    {
+        $participant = $this->createParticipant(['token' => 'a-token-string', 'completed' => 'N', 'usesleft' => 0], true);
+        $this->assertTrue($participant->canBeUsed(), 'Editing after completion is allowed, the uses left should not matter.');
+    }
+
+    public function testTokenCanBeUsedInsideValidityPeriod()
+    {
+        $participant = $this->createParticipant([
+            'token' => 'a-token-string',
+            'completed' => 'N',
+            'usesleft' => 1,
+            'validfrom' => gmdate('Y-m-d H:i:s', strtotime('-1 day')),
+            'validuntil' => gmdate('Y-m-d H:i:s', strtotime('+1 day')),
+        ]);
+        $this->assertTrue($participant->canBeUsed(), 'The current time is inside the validity period, the participant should be able to enter the survey.');
+    }
+
+    public function testTokenCanBeUsedBeforeValidityPeriod()
+    {
+        $participant = $this->createParticipant([
+            'token' => 'a-token-string',
+            'completed' => 'N',
+            'usesleft' => 1,
+            'validfrom' => gmdate('Y-m-d H:i:s', strtotime('+1 day')),
+        ]);
+        $this->assertFalse($participant->canBeUsed(), 'The validity period has not started yet, the participant should not be able to enter the survey.');
+    }
+
+    public function testTokenCanBeUsedAfterValidityPeriod()
+    {
+        $participant = $this->createParticipant([
             'token' => 'a-token-string',
             'completed' => 'Y',
-        );
-
-        self::$testSurvey->oOptions->alloweditaftercompletion = 'Y';
-
-        $token = new TokenDynamic(self::$surveyId);
-        $token->setAttributes($tokenData, false);
-
-        $this->assertFalse($token->canBeUsed(), 'The survey allow edit after completion attribute was set to Y, the token should be able be used.');
+            'usesleft' => 0,
+            'validuntil' => gmdate('Y-m-d H:i:s', strtotime('-1 day')),
+        ], true);
+        $this->assertFalse($participant->canBeUsed(), 'The validity period has ended, the participant should not be able to enter the survey, even if editing after completion is allowed.');
     }
 
     public function testTokenCanBeEmailedWithoutTokenAttribute()
     {
-        $token = new TokenDynamic(self::$surveyId);
-        $this->assertFalse($token->canBeEmailed(), 'There is no token attribute, the token should not be able to be emailed.');
+        $participant = $this->createParticipant($this->getEmailableAttributes(['token' => '']));
+        $this->assertFalse($participant->canBeEmailed(), 'There is no access code, the participant should not be able to be emailed.');
     }
 
     public function testTokenCanBeEmailedWithEmailStatusOk()
     {
-        $tokenData = array(
-            'token' => 'a-token-string',
-            'emailstatus' => 'OK',
-            'email' => 'user@example.com',
-            'completed' => 'N',
-            'usesleft' => 1,
-        );
-
-        self::$testSurvey->oOptions->alloweditaftercompletion = 'N';
-
-        $token = new TokenDynamic(self::$surveyId);
-        $token->setAttributes($tokenData, false);
-        $this->assertTrue($token->canBeEmailed(), 'Email status is ok, the token should be able to be emailed.');
+        $participant = $this->createParticipant($this->getEmailableAttributes());
+        $this->assertTrue($participant->canBeEmailed(), 'Email status is OK, the participant should be able to be emailed.');
     }
 
     public function testTokenCanBeEmailedWithEmailStatusNotOk()
     {
-        $tokenData = array(
-            'token' => 'a-token-string',
-            'emailstatus' => '',
-            'email' => 'user@example.com',
-            'completed' => 'N',
-            'usesleft' => 1,
-        );
+        $participant = $this->createParticipant($this->getEmailableAttributes(['emailstatus' => '']));
+        $this->assertFalse($participant->canBeEmailed(), 'Email status is empty, the participant should not be able to be emailed.');
+    }
 
-        self::$testSurvey->oOptions->alloweditaftercompletion = 'N';
-
-        $token = new TokenDynamic(self::$surveyId);
-        $token->setAttributes($tokenData, false);
-        $this->assertFalse($token->canBeEmailed(), 'Email status is empty, the token should not be able to be emailed.');
+    public function testTokenCanBeEmailedWithEmailStatusOptOut()
+    {
+        $participant = $this->createParticipant($this->getEmailableAttributes(['emailstatus' => 'OptOut']));
+        $this->assertFalse($participant->canBeEmailed(), 'The participant opted out, the participant should not be able to be emailed.');
     }
 
     public function testTokenCanBeEmailedNoEmailSet()
     {
-        $tokenData = array(
-            'token' => 'a-token-string',
-            'emailstatus' => 'OK',
-            'completed' => 'N',
-            'usesleft' => 1,
-        );
-
-        self::$testSurvey->oOptions->alloweditaftercompletion = 'N';
-
-        $token = new TokenDynamic(self::$surveyId);
-        $token->setAttributes($tokenData, false);
-        $this->assertFalse($token->canBeEmailed(), 'Email was not set, the token should not be able to be emailed.');
+        $participant = $this->createParticipant($this->getEmailableAttributes(['email' => '']));
+        $this->assertFalse($participant->canBeEmailed(), 'Email was not set, the participant should not be able to be emailed.');
     }
 
     public function testTokenCanBeEmailedWithCompletedAttributeSetToYes()
     {
-        $tokenData = array(
-            'token' => 'a-token-string',
-            'emailstatus' => 'OK',
-            'email' => 'user@example.com',
-            'completed' => 'Y',
-            'usesleft' => 1,
-        );
+        $participant = $this->createParticipant($this->getEmailableAttributes(['completed' => 'Y']));
+        $this->assertFalse($participant->canBeEmailed(), 'Completed was set to Y, the participant should not be able to be emailed.');
+    }
 
-        self::$testSurvey->oOptions->alloweditaftercompletion = 'N';
+    public function testTokenCanBeEmailedWithCompletedAttributeSetToYesAndAllowEditAfterCompletionSetToYes()
+    {
+        $participant = $this->createParticipant($this->getEmailableAttributes(['completed' => 'Y', 'usesleft' => 0]), true);
+        $this->assertFalse($participant->canBeEmailed(), 'Completed was set to Y, the participant should not be able to be emailed, even if editing after completion is allowed.');
+    }
 
-        $token = new TokenDynamic(self::$surveyId);
-        $token->setAttributes($tokenData, false);
-        $this->assertFalse($token->canBeEmailed(), 'Completes was set to Y, the token should not be able to be emailed.');
+    public function testTokenCanBeEmailedWithCompletedAttributeUnset()
+    {
+        $participant = $this->createParticipant($this->getEmailableAttributes(['completed' => '']));
+        $this->assertTrue($participant->canBeEmailed(), 'The completed attribute was not set, the participant should be able to be emailed.');
     }
 
     public function testTokenCanBeEmailedWithNoUsesLeft()
     {
-        $tokenData = array(
-            'token' => 'a-token-string',
-            'emailstatus' => 'OK',
-            'email' => 'user@example.com',
-            'completed' => 'N',
-            'usesleft' => 0,
-        );
-
-        self::$testSurvey->oOptions->alloweditaftercompletion = 'N';
-
-        $token = new TokenDynamic(self::$surveyId);
-        $token->setAttributes($tokenData, false);
-        $this->assertFalse($token->canBeEmailed(), 'No uses left, the token should not be able to be emailed.');
+        $participant = $this->createParticipant($this->getEmailableAttributes(['usesleft' => 0]));
+        $this->assertFalse($participant->canBeEmailed(), 'No uses left, the participant should not be able to be emailed.');
     }
 
-    public function testTokenCanBeEmailedWithSurveyAllowAfterCompletionSetToYes()
+    public function testTokenCanBeEmailedWithNoUsesLeftAndAllowEditAfterCompletionSetToYes()
     {
-        $tokenData = array(
-            'token' => 'a-token-string',
-            'emailstatus' => 'OK',
-            'email' => 'user@example.com',
-            'completed' => 'N',
-            'usesleft' => 0,
-        );
+        $participant = $this->createParticipant($this->getEmailableAttributes(['usesleft' => 0]), true);
+        $this->assertTrue($participant->canBeEmailed(), 'Editing after completion is allowed, the uses left should not matter.');
+    }
 
-        self::$testSurvey->oOptions->alloweditaftercompletion = 'Y';
-
-        $token = new TokenDynamic(self::$surveyId);
-        $token->setAttributes($tokenData, false);
-        $this->assertFalse($token->canBeEmailed(), 'Survey can be edited after completion, the token should not be able to be emailed.');
+    public function testTokenCanBeEmailedAfterValidityPeriod()
+    {
+        $participant = $this->createParticipant($this->getEmailableAttributes([
+            'validuntil' => gmdate('Y-m-d H:i:s', strtotime('-1 day')),
+        ]));
+        $this->assertFalse($participant->canBeEmailed(), 'The validity period has ended, the participant should not be able to be emailed.');
     }
 }

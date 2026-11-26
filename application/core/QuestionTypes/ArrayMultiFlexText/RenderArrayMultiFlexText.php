@@ -367,10 +367,11 @@ class RenderArrayMultiFlexText extends QuestionBaseRenderer
      */
     private function renderRows(array $aQuestionsY, array $labelans, array $labelans2): string
     {
+        $aQuestionsY = $this->withoutStaticallyHiddenRows($aQuestionsY);
         $anscount = count($aQuestionsY);
         $fn = 1;
         $sRows = '';
-        foreach ($aQuestionsY as $j => $ansrow) {
+        foreach ($aQuestionsY as $ansrow) {
             if (isset($this->repeatheadings) && $this->repeatheadings > 0 && ($fn - 1) > 0 && ($fn - 1) % $this->repeatheadings == 0) {
                 if (($anscount - $fn + 1) >= $this->minrepeatheadings) {
                     // Close actual body and open another one
@@ -383,7 +384,7 @@ class RenderArrayMultiFlexText extends QuestionBaseRenderer
                     ));
                 }
             }
-            $sRows .= $this->renderRow($ansrow, $j, $labelans);
+            $sRows .= $this->renderRow($ansrow, $fn - 1, $labelans);
             $fn++;
         }
         return $sRows;

@@ -98,7 +98,7 @@ abstract class Zend_ProgressBar_Adapter
      * @param  float   $max           Max progress value
      * @param  float   $percent       Current percent value
      * @param  integer $timeTaken     Taken time in seconds
-     * @param  integer $timeRemaining Remaining time in seconds
+     * @param  integer|float|null $timeRemaining Remaining time in seconds
      * @param  string  $text          Status text
      * @return void
      */

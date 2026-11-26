@@ -22,6 +22,7 @@ export const themeSettingUpdateJoi = Joi.object({
     brandlogo: Joi.string().optional(),
     cornerradius: Joi.string().optional(),
     deselectsinglechoice: Joi.string().optional(),
+    automatichyphenation: Joi.string().optional(),
     container: Joi.string().optional(),
     zebrastriping: Joi.string().optional(),
     crosshover: Joi.string().optional(),

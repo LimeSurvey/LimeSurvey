@@ -38,6 +38,7 @@ require_once 'Zend/Amf/Parse/Deserializer.php';
  * @subpackage Parse_Amf0
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @deprecated Deprecated since 1.27.1 and will be removed in a future version: AMF is the data format of Adobe Flash Player, which reached its end of life on 2020-12-31
  */
 class Zend_Amf_Parse_Amf0_Deserializer extends Zend_Amf_Parse_Deserializer
 {
@@ -62,7 +63,7 @@ class Zend_Amf_Parse_Amf0_Deserializer extends Zend_Amf_Parse_Deserializer
      * the following value.
      *
      * @param  integer $typeMarker
-     * @return array|bool|DomDocument|float|object|SimpleXMLElement|string|Zend_Date|null whatever the data type is of the marker in php
+     * @return array|bool|DOMDocument|float|object|SimpleXMLElement|string|Zend_Date|null whatever the data type is of the marker in php
      * @throws Zend_Amf_Exception for invalid type
      */
     public function readTypeMarker($typeMarker = null)
@@ -244,9 +245,9 @@ class Zend_Amf_Parse_Amf0_Deserializer extends Zend_Amf_Parse_Deserializer
 
     /**
      * Convert XML to SimpleXml
-     * If user wants DomDocument they can use dom_import_simplexml
+     * If user wants DOMDocument they can use dom_import_simplexml
      *
-     * @return bool|DomDocument|SimpleXMLElement|null Object
+     * @return bool|DOMDocument|SimpleXMLElement|null Object
      */
     public function readXmlString()
     {

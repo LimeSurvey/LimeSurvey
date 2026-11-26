@@ -44,8 +44,7 @@ export const TopBarActions = ({
   const navigate = useNavigate()
   const [showImportSurveyModal, setShowImportSurveyModal] = useState(false)
   const surveyImportService = useSurveyImportService()
-  const { areCodesVisible, toggleQuestionCodes } =
-    useToggleQuestionCodes(surveyId)
+  const { areCodesVisible, toggleQuestionCodes } = useToggleQuestionCodes()
   const [siteSettings = {}] = useAppState(STATES.SITE_SETTINGS, {})
   const [, startEditorTutorial] = useAppState(
     STATES.START_EDITOR_TUTORIAL,

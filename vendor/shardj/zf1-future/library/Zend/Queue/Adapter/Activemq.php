@@ -51,7 +51,7 @@ class Zend_Queue_Adapter_Activemq extends Zend_Queue_Adapter_AdapterAbstract
     public const DEFAULT_PORT   = 61613;
 
     /**
-     * @var Zend_Queue_Adapter_Stomp_client
+     * @var Zend_Queue_Stomp_Client
      */
     private $_client = null;
 
@@ -63,7 +63,7 @@ class Zend_Queue_Adapter_Activemq extends Zend_Queue_Adapter_AdapterAbstract
     /**
      * Constructor
      *
-     * @param  array|Zend_Config $config An array having configuration data
+     * @param  array|Zend_Config $options An array having configuration data
      * @param  Zend_Queue $queue The Zend_Queue object that created this class
      * @return void
      */
@@ -133,7 +133,7 @@ class Zend_Queue_Adapter_Activemq extends Zend_Queue_Adapter_AdapterAbstract
      *
      * @param  string  $name    queue name
      * @param  integer $timeout default visibility timeout
-     * @return void
+     * @return never
      * @throws Zend_Queue_Exception
      */
     public function create($name, $timeout=null)
@@ -146,7 +146,7 @@ class Zend_Queue_Adapter_Activemq extends Zend_Queue_Adapter_AdapterAbstract
      * Delete a queue and all of its messages
      *
      * @param  string $name queue name
-     * @return void
+     * @return never
      * @throws Zend_Queue_Exception
      */
     public function delete($name)
@@ -178,7 +178,7 @@ class Zend_Queue_Adapter_Activemq extends Zend_Queue_Adapter_AdapterAbstract
     /**
      * Get an array of all available queues
      *
-     * @return void
+     * @return never
      * @throws Zend_Queue_Exception
      */
     public function getQueues()
@@ -368,7 +368,6 @@ class Zend_Queue_Adapter_Activemq extends Zend_Queue_Adapter_AdapterAbstract
      * $array['function name'] = true or false
      * true is supported, false is not supported.
      *
-     * @param  string $name
      * @return array
      */
     public function getCapabilities()

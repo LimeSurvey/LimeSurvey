@@ -4,8 +4,8 @@ namespace LimeSurvey\PluginManager;
 
 class PluginEventContent
 {
-    const APPEND = 'append';
-    const PREPEND = 'prepend';
+    public const APPEND = 'append';
+    public const PREPEND = 'prepend';
 
     protected $_content = null;
     protected $_cssClass = array('pluginblock' => 'pluginblock');

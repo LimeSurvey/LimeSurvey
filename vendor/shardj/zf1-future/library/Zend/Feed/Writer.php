@@ -57,7 +57,7 @@ class Zend_Feed_Writer
     /**
      * PluginLoader instance used by component
      *
-     * @var Zend_Loader_PluginLoader_Interface
+     * @var Zend_Loader_PluginLoader_Interface|null
      */
     protected static $_pluginLoader = null;
 

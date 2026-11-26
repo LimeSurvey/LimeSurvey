@@ -19,7 +19,7 @@ $countSpan = "<span class='grid-selection-count'>0</span>";
      data-select-all-disable-threshold="<?= (int) $this->lsSelectAllDisableThreshold ?>"
      data-select-all-warning-message="<?= CHtml::encode(gT('Individual deselection is unavailable when more than {threshold} entries are selected. Reduce the selection below {threshold} to enable this feature.')) ?>"></div>
 <?php endif; ?>
-<?php if ($showSelectionBar ?? true): ?>
+<?php if ($showSelectionBar ?? true) : ?>
 <div class="grid-selection-bar"
      data-grid-id="<?= CHtml::encode($this->id) ?>"
      style="display:none;">

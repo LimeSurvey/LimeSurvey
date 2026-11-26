@@ -52,14 +52,14 @@ class Zend_Form_Decorator_Callback extends Zend_Form_Decorator_Abstract
 {
     /**
      * Callback
-     * @var string|array
+     * @var callable|null
      */
     protected $_callback;
 
     /**
      * Set callback
      *
-     * @param  callback $callback
+     * @param  callable $callback
      * @return Zend_Form_Decorator_Callback
      * @throws Zend_Form_Exception
      */

@@ -75,6 +75,6 @@ class Zend_Controller_Action_Helper_AjaxContext extends Zend_Controller_Action_H
             return;
         }
 
-        return parent::initContext($format);
+        parent::initContext($format);
     }
 }

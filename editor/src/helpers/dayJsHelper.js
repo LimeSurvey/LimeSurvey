@@ -3,12 +3,14 @@ import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import dayjsLocales from 'dayjs/locale.json'
+import customParseFormat from 'dayjs/plugin/customParseFormat'
 
 import { resolveLocale } from './localeUtils'
 
 dayjs.extend(utc)
 dayjs.extend(timezone)
 dayjs.extend(relativeTime)
+dayjs.extend(customParseFormat)
 
 export const dayJsHelper = dayjs
 

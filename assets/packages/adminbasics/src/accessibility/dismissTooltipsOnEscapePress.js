@@ -1,9 +1,13 @@
+import {hideTooltipNow} from './keepTooltipsHoverable';
+
 /**
  * Dismiss all visible Bootstrap 5 tooltips when the user presses Escape.
  *
  * Safe to call multiple times — a guard flag on the window object ensures
  * the keydown listener is only attached once per page load, regardless of
  * how many modules or scripts call this function.
+ *
+ * @returns {void}
  */
 const dismissTooltipsOnEscapePress = () => {
     if (window.LS && LS._tooltipEscapeDismissBound) {
@@ -20,11 +24,11 @@ const dismissTooltipsOnEscapePress = () => {
         document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (el) {
             var t = bootstrap.Tooltip.getInstance(el);
             if (t) {
-                t.hide();
+                // Bypass the delayed hide of keepTooltipsHoverable: Escape hides at once
+                hideTooltipNow(el, t);
             }
         });
     });
 };
 
 export default dismissTooltipsOnEscapePress;
-

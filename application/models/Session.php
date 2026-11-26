@@ -24,6 +24,8 @@
  */
 class Session extends CActiveRecord
 {
+    use TwigSandboxIteratorTrait;
+
     /** @var mixed $dataBackup to reset $data after save */
     private $dataBackup = null;
 

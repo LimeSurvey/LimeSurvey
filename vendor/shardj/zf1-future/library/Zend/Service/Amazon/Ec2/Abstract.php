@@ -91,8 +91,8 @@ abstract class Zend_Service_Amazon_Ec2_Abstract extends Zend_Service_Amazon_Abst
     /**
      * Create Amazon client.
      *
-     * @param  string $access_key       Override the default Access Key
-     * @param  string $secret_key       Override the default Secret Key
+     * @param  string $accessKey       Override the default Access Key
+     * @param  string $secretKey       Override the default Secret Key
      * @param  string $region           Sets the AWS Region
      * @return void
      */
@@ -224,8 +224,6 @@ abstract class Zend_Service_Amazon_Ec2_Abstract extends Zend_Service_Amazon_Abst
      *    values before constructing this string. Do not use any separator
      *    characters when appending strings.
      *
-     * @param array  $parameters the parameters for which to get the signature.
-     * @param string $secretKey  the secret key to use to sign the parameters.
      *
      * @return string the signed data.
      */

@@ -1,3 +1,5 @@
+import { getScriptPath } from '../getScriptPath'
+
 export const MINIMUM_INPUT_WIDTH_PERCENT = 15
 export const FOCUS_ANIMATION_DURATION_IN_MS = 1000
 
@@ -53,11 +55,13 @@ export const STATES = {
   OPERATION_FINISH_SUBSCRIPTIONS: 'operation_finish_subscriptions',
   SURVEY_QUESTIONS_FIELDNAME: 'survey_questions_fieldname',
   START_EDITOR_TUTORIAL: 'start_editor_tutorial',
+  SHOW_QUESTION_CODES_IN_EDITOR: 'show_question_codes_in_editor',
   SURVEY_RESPONSES: 'survey_responses',
   SURVEY_RESPONSE_ANSWERS: 'survey_response_answers',
   SURVEY_RESPONSE_FILES: 'survey_response_files',
   SURVEY_RESPONSE_COMMENTS: 'survey_response_comments',
   SURVEY_STATISTICS: 'survey_statistics',
+  SURVEY_STATISTICS_DATE_VALUES: 'survey_statistics_date_values',
   EDITOR_HELP_APPEARED: 'editor_help_appeared',
   USER_PERMISSIONS: 'user_permissions',
   HAS_RESPONSES_READ_PERMISSION: 'has_responses_read_permission',
@@ -67,10 +71,12 @@ export const STATES = {
   LOADED_SURVEY_ID: 'loaded_survey_id',
   SURVEY_LOGIC: 'survey_logic',
   TOPBAR_CONFIG: 'topbar_config',
+  QUESTION_THEME_ATTRIBUTES: 'question_theme_attributes',
 }
 
 export const TUTORIALS = {
   EDITOR_TUTORIAL: 'editorTutorial',
+  EDITOR_TUTORIAL_DISMISSED: 'editorTutorialDismissed',
 }
 
 export const SURVEY_MENU_TITLES = {
@@ -117,11 +123,9 @@ export const RESPONSES_TITLES = {
   list: '',
 }
 
-const getBasePath = () => window.location.pathname.split('/editor')[0]
-
 export const URLS = {
-  ADMIN: `${getBasePath()}/admin`,
-  SURVEY_OVERVIEW: `${getBasePath()}/surveyAdministration/view/`,
+  ADMIN: `${getScriptPath()}/admin`,
+  SURVEY_OVERVIEW: `${getScriptPath()}/surveyAdministration/view/`,
 }
 
 export const placeholderStandardFields = {

@@ -230,7 +230,7 @@ class Zend_Test_DbAdapter extends Zend_Db_Adapter_Abstract
      * Prepare a statement and return a PDOStatement-like object.
      *
      * @param string|Zend_Db_Select $sql SQL query
-     * @return Zend_Db_Statment|PDOStatement
+     * @return Zend_Db_Statement|PDOStatement
      */
     public function prepare($sql)
     {

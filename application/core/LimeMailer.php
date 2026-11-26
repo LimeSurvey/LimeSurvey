@@ -17,25 +17,25 @@ class LimeMailer extends PHPMailer
      * Reset part
      */
     /* No reset */
-    const ResetNone = 0;
+    public const ResetNone = 0;
     /* Basic reset */
-    const ResetBase = 1;
+    public const ResetBase = 1;
     /* Complete reset : all except survey part , remind : you always can get a new one */
-    const ResetComplete = 2;
+    public const ResetComplete = 2;
 
     /**
      * Email methods
      */
     /* PHP mail() */
-    const MethodMail = 'mail';
+    public const MethodMail = 'mail';
     /* Sendmail */
-    const MethodSendmail = 'sendmail';
+    public const MethodSendmail = 'sendmail';
     /* Qmail */
-    const MethodQmail = 'qmail';
+    public const MethodQmail = 'qmail';
     /* SMTP */
-    const MethodSmtp = 'smtp';
+    public const MethodSmtp = 'smtp';
     /* Plugin */
-    const MethodPlugin = 'plugin';
+    public const MethodPlugin = 'plugin';
 
     /* @var null|integer $surveyId Current survey ID */
     public $surveyId;
@@ -363,6 +363,63 @@ class LimeMailer extends PHPMailer
     }
 
     /**
+     * Add the List-Unsubscribe headers if the message offers an opt-out link
+     * Only token emails whose raw template uses OPTOUTURL or whose body contains the opt-out url get the headers,
+     * so that one click unsubscribe is not offered on emails without an opt-out link (e.g. registration or confirmation)
+     * List-Unsubscribe-Post (one click unsubscribe) is only added if the opt-out url uses HTTPS, as required by RFC 8058
+     * @see https://datatracker.ietf.org/doc/html/rfc2369
+     * @see https://datatracker.ietf.org/doc/html/rfc8058
+     * @return void
+     */
+    private function addListUnsubscribeHeaders()
+    {
+        if (empty($this->oToken)) {
+            return;
+        }
+        /* Do not add unsubscribe URL if not OPTOUTURL in body */
+        $optoutBaseUrl = $this->createListUnsubscribeUrl("/optout/tokens");
+        if (
+            strpos((string) $this->Body, $optoutBaseUrl) === false
+            && strpos((string) $this->rawBody, 'OPTOUTURL') === false
+        ) {
+            return;
+        }
+        // separate one click url, so that the OPTOUTURL replacement field always requires a confirmation
+        $unsubscribeUrl = $this->createListUnsubscribeUrl(
+            "/optout/oneclick",
+            [
+                "surveyid" => $this->surveyId,
+                "token" => $this->oToken->token,
+                "langcode" => $this->mailLanguage,
+            ]
+        );
+        // avoid duplicate headers if the same instance sends the message more than once
+        $this->clearCustomHeader("List-Unsubscribe");
+        $this->clearCustomHeader("List-Unsubscribe-Post");
+        $this->addCustomHeader("List-Unsubscribe", "<$unsubscribeUrl>");
+        // one click unsubscribe requires an HTTPS URI, over plain HTTP the receiver only gets the manual opt-out link
+        if (strtolower((string) parse_url($unsubscribeUrl, PHP_URL_SCHEME)) === 'https') {
+            $this->addCustomHeader("List-Unsubscribe-Post", "List-Unsubscribe=One-Click");
+        }
+    }
+
+    /**
+     * Create an absolute url for the List-Unsubscribe headers the same way as the token replacement urls:
+     * validated against the allowed hosts to prevent host header injection, with a fallback to the request host
+     * @param string $route
+     * @param array<string, mixed> $params
+     * @return string
+     */
+    private function createListUnsubscribeUrl($route, $params = [])
+    {
+        $url = App()->createValidatedAbsoluteUrl($route, $params);
+        if ($url === false) {
+            $url = App()->getController()->createAbsoluteUrl($route, $params);
+        }
+        return $url;
+    }
+
+    /**
      * Sets the email type and raw content for a survey email.
      *
      * This function sets the email type, determines the appropriate language,
@@ -661,6 +718,7 @@ class LimeMailer extends PHPMailer
             $this->setError(gT('Email was not sent. One or more attachments did not exist.'));
             return false;
         }
+        $this->addListUnsubscribeHeaders();
         /* All core done, next are done for all survey */
         $eventResult = $this->manageEvent();
         if (!is_null($eventResult)) {
@@ -704,7 +762,15 @@ class LimeMailer extends PHPMailer
                 return $event->get('error') == null;
             }
         }
-        return parent::Send();
+        // PHPMailer changes the content type to multipart/alternative when the email has a plain text alternative.
+        // Restore it: This mailer instance can be reused for the next recipient and getIsHtml() must stay right,
+        // else the next email gets no links and no HTML wrapper.
+        $contentType = $this->ContentType;
+        try {
+            return parent::Send();
+        } finally {
+            $this->ContentType = $contentType;
+        }
     }
 
     /**
@@ -901,6 +967,12 @@ class LimeMailer extends PHPMailer
             foreach ($this->oToken->attributes as $attribute => $value) {
                 $aTokenReplacements[strtoupper((string) $attribute)] = $value;
             }
+            // Validity dates are stored in UTC. Show them in the display timezone (the timezone of the sending admin).
+            foreach (['VALIDFROM', 'VALIDUNTIL'] as $validityField) {
+                if (!empty($aTokenReplacements[$validityField])) {
+                    $aTokenReplacements[$validityField] = dateShift($aTokenReplacements[$validityField], 'Y-m-d H:i:s');
+                }
+            }
         }
         /* Set the minimal url and add it to Placeholders - use validated URLs to prevent host header injection */
         $aTokenReplacements["OPTOUTURL"] = App()
@@ -930,7 +1002,7 @@ class LimeMailer extends PHPMailer
             $aTokenReplacements["GLOBALOPTINURL"] = App()->getController()
                 ->createAbsoluteUrl("/optin/participants", array("surveyid" => $this->surveyId, "token" => $token,"langcode" => $language));
         }
-        $this->addUrlsPlaceholders("GLOBALOPTINURL");
+        $this->addUrlsPlaceholders("GLOBALOPTIN");
         $aTokenReplacements["SURVEYURL"] = $survey->getSurveyUrl($language, ["token" => $token]);
         // Validate the survey URL host against allowed hosts to prevent host header injection
         $parsedSurveyUrl = parse_url($aTokenReplacements["SURVEYURL"]);

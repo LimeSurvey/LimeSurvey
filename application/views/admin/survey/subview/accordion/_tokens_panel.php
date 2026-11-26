@@ -263,12 +263,12 @@ App()->getClientScript()->registerScript("edit-after-completion-message", "
                             ? array_merge($optionsOnOff, ['I' => $oSurveyOptions->htmlemail . " ᴵ" ])
                             : $optionsOnOff,
                     ]);
-                                                           $this->widget('yiistrap_fork.widgets.TbModal', [
-                                                           'id'      => 'htmlemailModal',
-                                                           'header'  => gT('Warning', 'unescaped'),
-                                                           'content' => '<p>' . gT("If you change the email format, you'll have to review your email templates to fit the new format") . '</p>',
-                                                           'footer'  => TbHtml::button('Close', ['data-bs-dismiss' => 'modal', 'class' => 'btn-outline-secondary'])
-                                                           ]); ?>
+                                                               $this->widget('yiistrap_fork.widgets.TbModal', [
+                                                               'id'      => 'htmlemailModal',
+                                                               'header'  => gT('Warning', 'unescaped'),
+                                                               'content' => '<p>' . gT("If you change the email format, you'll have to review your email templates to fit the new format") . '</p>',
+                                                               'footer'  => TbHtml::button('Close', ['data-bs-dismiss' => 'modal', 'class' => 'btn-outline-secondary'])
+                                                               ]); ?>
                 </div>
             </div>
 

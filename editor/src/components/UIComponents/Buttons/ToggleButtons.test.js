@@ -3,8 +3,10 @@ import 'tests/mocks'
 
 import { useState } from 'react'
 import { renderWithProviders } from 'tests/testUtils'
+import { queryClient } from 'queryClient'
+import { STATES } from 'helpers'
 import { ToggleButtons } from './ToggleButtons'
-import { screen } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 function BasicWrapper() {
@@ -121,5 +123,63 @@ describe('ToggleButtons', () => {
       await userEvent.click(offButton)
       expect(output).toHaveTextContent('"0"')
     })
+  })
+})
+
+describe('ToggleButtons with activeDisabled', () => {
+  test('Should be disabled when activeDisabled is set', async () => {
+    await renderWithProviders(
+      <ToggleButtons id="locked" activeDisabled={true} />
+    )
+
+    expect(
+      document.getElementById('toggleButton-locked-option-0')
+    ).toBeDisabled()
+  })
+
+  test('Should stay enabled without activeDisabled', async () => {
+    await renderWithProviders(<ToggleButtons id="unlocked" />)
+
+    expect(
+      document.getElementById('toggleButton-unlocked-option-0')
+    ).toBeEnabled()
+  })
+})
+
+describe('ToggleButtons with noPermissionDisabled', () => {
+  const setHasSurveyUpdatePermission = (value) => {
+    act(() => {
+      queryClient.setQueryData(
+        ['appState', STATES.HAS_SURVEY_UPDATE_PERMISSION],
+        value
+      )
+    })
+  }
+
+  afterEach(() => {
+    setHasSurveyUpdatePermission(true)
+  })
+
+  test('Should be disabled without survey update permission', async () => {
+    await renderWithProviders(
+      <ToggleButtons id="no-permission" noPermissionDisabled={true} />
+    )
+    setHasSurveyUpdatePermission(false)
+
+    await waitFor(() =>
+      expect(
+        document.getElementById('toggleButton-no-permission-option-0')
+      ).toBeDisabled()
+    )
+  })
+
+  test('Should stay enabled with survey update permission', async () => {
+    await renderWithProviders(
+      <ToggleButtons id="permission" noPermissionDisabled={true} />
+    )
+
+    expect(
+      document.getElementById('toggleButton-permission-option-0')
+    ).toBeEnabled()
   })
 })

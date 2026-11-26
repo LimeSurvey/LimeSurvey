@@ -850,7 +850,7 @@ class Zend_Controller_Front
          */
         if ($request !== null) {
             $this->setRequest($request);
-        } elseif ((null === $request) && (null === ($request = $this->getRequest()))) {
+        } elseif (null === ($request = $this->getRequest())) {
             require_once 'Zend/Controller/Request/Http.php';
             $request = new Zend_Controller_Request_Http();
             $this->setRequest($request);

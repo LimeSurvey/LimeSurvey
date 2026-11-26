@@ -39,6 +39,7 @@ require_once 'Zend/Service/Yahoo/PageDataResult.php';
  * @subpackage Yahoo
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @deprecated Deprecated since 1.27.1 and will be removed in a future version: the Yahoo! Search web services (search.yahooapis.com) were shut down
  */
 class Zend_Service_Yahoo_PageDataResultSet extends Zend_Service_Yahoo_ResultSet
 {

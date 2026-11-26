@@ -30,6 +30,7 @@ require_once 'Zend/Cloud/DocumentService/QueryAdapter.php';
  * @subpackage DocumentService
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @deprecated Deprecated since 1.27.1 and will be removed in a future version: the Simple Cloud API is not developed any further; use the SDK of the cloud provider
  */
 class Zend_Cloud_DocumentService_Query
     implements Zend_Cloud_DocumentService_QueryAdapter
@@ -108,7 +109,7 @@ class Zend_Cloud_DocumentService_Query
      * WHERE query
      *
      * @param string $cond Condition
-     * @param array $args Arguments to substitute instead of ?'s in condition
+     * @param array $value Arguments to substitute instead of ?'s in condition
      * @param string $op relation to other clauses - and/or
      * @return Zend_Cloud_DocumentService_Query
      */

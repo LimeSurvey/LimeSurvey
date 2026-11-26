@@ -48,7 +48,7 @@ class Zend_Queue_Message_Iterator implements Iterator, Countable
     /**
      * Zend_Queue_Adapter_AdapterInterface parent class or instance
      *
-     * @var Zend_Queue_Adapter_AdapterInterface
+     * @var Zend_Queue|null
      */
     protected $_queue = null;
 
@@ -110,9 +110,7 @@ class Zend_Queue_Message_Iterator implements Iterator, Countable
             $message = ['data' => $data];
 
             // If queue has not been set, then use the default.
-            if (empty($message['queue'])) {
-                $message['queue'] = $this->_queue;
-            }
+            $message['queue'] = $this->_queue;
 
             // construct the message and add it to _data[];
             $this->_data[] = new $classname($message);
@@ -172,7 +170,7 @@ class Zend_Queue_Message_Iterator implements Iterator, Countable
      * Set the queue object, to re-establish a live connection
      * to the queue for a Message that has been de-serialized.
      *
-     * @param  Zend_Queue_Adapter_AdapterInterface $queue
+     * @param  Zend_Queue $queue
      * @return boolean
      * @throws Zend_Queue_Exception
      */

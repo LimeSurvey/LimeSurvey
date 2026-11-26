@@ -24,6 +24,7 @@
  * @see Zend_Ldap_Node_Abstract
  */
 require_once 'Zend/Ldap/Node/Abstract.php';
+require_once 'Zend/Ldap/Node/RootDse.php';
 
 /**
  * Zend_Ldap_Node_Schema provides a simple data-container for the Schema node.

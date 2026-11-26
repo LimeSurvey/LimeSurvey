@@ -85,7 +85,6 @@ if (!empty($aFloatingActions)) {
 
 <?php
 App()->getClientScript()->registerScriptFile(
-    Yii::app()->getAssetManager()->publish('assets/scripts/admin/installedThemesList.js'
-    )
+    Yii::app()->getAssetManager()->publish('assets/scripts/admin/installedThemesList.js')
 );
 

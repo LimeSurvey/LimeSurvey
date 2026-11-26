@@ -68,11 +68,11 @@ class Zend_Serializer_Adapter_Igbinary extends Zend_Serializer_Adapter_AdapterAb
      */
     public function serialize($value, array $opts = [])
     {
-        $ret = igbinary_serialize($value);
+        $error = null;
+        $ret = $this->_call('igbinary_serialize', $value, $error);
         if ($ret === false) {
-            $lastErr = error_get_last();
             require_once 'Zend/Serializer/Exception.php';
-            throw new Zend_Serializer_Exception($lastErr['message']);
+            throw new Zend_Serializer_Exception($error ?? 'Serialization with igbinary failed');
         }
         return $ret;
     }
@@ -80,19 +80,40 @@ class Zend_Serializer_Adapter_Igbinary extends Zend_Serializer_Adapter_AdapterAb
     /**
      * Deserialize igbinary string to PHP value
      *
-     * @param  string|binary $serialized
+     * @param  string $serialized
      * @param  array $opts
      * @return mixed
      * @throws Zend_Serializer_Exception on igbinary error
      */
     public function unserialize($serialized, array $opts = [])
     {
-        $ret = igbinary_unserialize($serialized);
+        $error = null;
+        $ret = $this->_call('igbinary_unserialize', $serialized, $error);
         if ($ret === null && $serialized !== self::$_serializedNull) {
-            $lastErr = error_get_last();
             require_once 'Zend/Serializer/Exception.php';
-            throw new Zend_Serializer_Exception($lastErr['message']);
+            throw new Zend_Serializer_Exception($error ?? 'Unserialization with igbinary failed');
         }
         return $ret;
+    }
+
+    /**
+     * Calls an igbinary function and records its warning instead of emitting it
+     *
+     * @param  string      $function
+     * @param  mixed       $value
+     * @param  string|null $error the message of the last warning, null without one
+     * @return mixed
+     */
+    protected function _call($function, $value, &$error)
+    {
+        set_error_handler(function ($errno, $errstr) use (&$error) {
+            $error = $errstr;
+            return true;
+        }, E_WARNING | E_NOTICE);
+        try {
+            return $function($value);
+        } finally {
+            restore_error_handler();
+        }
     }
 }

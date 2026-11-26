@@ -344,7 +344,7 @@ class Zend_Validate_File_ImageSize extends Zend_Validate_Abstract
     /**
      * Throws an error of the given type
      *
-     * @param  string $file
+     * @param  string|array|null $file
      * @param  string $errorType
      * @return false
      */

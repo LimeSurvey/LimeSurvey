@@ -97,7 +97,7 @@ class Zend_Pdf_Parser
     /**
      * Load XReference table and referenced objects
      *
-     * @param integer $offset
+     * @param integer|string $offset
      * @throws Zend_Pdf_Exception
      * @return Zend_Pdf_Trailer_Keeper
      */

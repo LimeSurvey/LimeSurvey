@@ -7,7 +7,7 @@ import { format } from 'util'
 import { getSiteUrl } from 'helpers'
 
 export const getSurveyDatabaseAlertMessage = (isSuperAdmin) => {
-  const linkOpen = `<a class="grape-link" href="${getSiteUrl('/index.php/admin/checkintegrity')}">`
+  const linkOpen = `<a class="grape-link" href="${getSiteUrl('/admin/checkintegrity')}">`
 
   const action = isSuperAdmin
     ? format(
