@@ -28,7 +28,10 @@ class SingleChoiceSorter implements QuestionSorterInterface
     private AnswerLabelOrder $answerLabelOrder;
 
     /**
+     * Create the sorter with the answer order it ranks the chosen answers by.
+     *
      * @param AnswerLabelOrder $answerLabelOrder Order of the answer options in the table language
+     * @return void
      */
     public function __construct(AnswerLabelOrder $answerLabelOrder)
     {
@@ -67,8 +70,28 @@ class SingleChoiceSorter implements QuestionSorterInterface
         return [
             SortSql::missingLast($column, $descending),
             SortSql::rank($column, $ranks, $unknownRank) . " $direction",
-            // Keeps the responses of each unknown code together
-            "$column $direction",
+            self::unknownCodes($column, array_keys($ranks)) . " $direction",
         ];
+    }
+
+    /**
+     * Expression keeping the responses of each unknown answer code together.
+     * Known codes all map to the same value, so answers with the same text
+     * stay equal and are ordered by the newest-first tie-breaker.
+     *
+     * @param string $column Quoted answer column
+     * @param array<int, string|int> $knownCodes Codes that have a rank, at least one
+     * @return string SQL expression: Empty text for known codes, the stored code otherwise
+     */
+    private static function unknownCodes(string $column, array $knownCodes): string
+    {
+        $db = \Yii::app()->db;
+        $cases = '';
+        foreach ($knownCodes as $code) {
+            // Numeric codes become integer keys: Compare them as the strings they are stored as.
+            // No IN list: Yii's limit rewrite for old MSSQL versions splits the ORDER BY at commas.
+            $cases .= ' WHEN ' . $db->quoteValue((string) $code) . " THEN ''";
+        }
+        return "CASE $column$cases ELSE $column END";
     }
 }

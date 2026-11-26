@@ -18,7 +18,10 @@ class AnswerLabelOrder
     private string $language;
 
     /**
+     * Create the answer order for one language of the response table.
+     *
      * @param string $language Language of the response table, which the answer texts are read in
+     * @return void
      */
     public function __construct(string $language)
     {
@@ -63,39 +66,24 @@ class AnswerLabelOrder
      */
     private function getLabels(int $qid, int $scaleId): array
     {
-        $db = \Yii::app()->db;
-        $rows = $db->createCommand()
-            ->select(['a.code', 'l.answer'])
+        // One query for the answers and the question theme, which decides how the answers are shown
+        $rows = \Yii::app()->db->createCommand()
+            ->select(['a.code', 'l.answer', 'q.question_theme_name'])
             ->from('{{answers}} a')
+            ->join('{{questions}} q', 'q.qid = a.qid')
             ->leftJoin('{{answer_l10ns}} l', 'l.aid = a.aid AND l.language = :language', [':language' => $this->language])
             ->where('a.qid = :qid AND a.scale_id = :scale', [':qid' => $qid, ':scale' => $scaleId])
             ->queryAll();
-        $themeName = (string) $db->createCommand()
-            ->select('question_theme_name')
-            ->from('{{questions}}')
-            ->where('qid = :qid', [':qid' => $qid])
-            ->queryScalar();
-        $isImageSelect = str_starts_with($themeName, self::IMAGE_SELECT_THEME_PREFIX);
 
         $labels = [];
         foreach ($rows as $row) {
+            $isImageSelect = str_starts_with((string) $row['question_theme_name'], self::IMAGE_SELECT_THEME_PREFIX);
             $text = (string) ($row['answer'] ?? '');
-            $label = $isImageSelect ? self::imageName($text) : self::plainText($text);
+            $label = $isImageSelect ? self::imageName($text) : flattenText($text, false, true);
             // The table shows the code when an answer has no text
             $labels[$row['code']] = $label !== '' ? $label : (string) $row['code'];
         }
         return $labels;
-    }
-
-    /**
-     * Text without HTML tags and entities, like the response table shows it.
-     *
-     * @param string $html Answer text, which may contain HTML
-     * @return string Plain, trimmed text
-     */
-    private static function plainText(string $html): string
-    {
-        return trim(html_entity_decode(strip_tags($html), ENT_QUOTES | ENT_HTML5, 'UTF-8'));
     }
 
     /**

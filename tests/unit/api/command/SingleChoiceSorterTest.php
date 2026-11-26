@@ -193,12 +193,40 @@ class SingleChoiceSorterTest extends TestBaseClass
         $qid = (int) $this->getAllSurveyQuestions()['qList']->qid;
         $this->assertSame(['A2' => 1, 'A1' => 2, 'A3' => 3], (new AnswerLabelOrder('en'))->getRanks($qid));
 
+        $this->withCherryRenamedToBanana(function () use ($qid) {
+            $this->assertSame(['A2' => 1, 'A1' => 2, 'A3' => 2], (new AnswerLabelOrder('en'))->getRanks($qid));
+        });
+    }
+
+    /**
+     * @testdox Responses of answers with the same text are ordered newest first, not by answer code
+     * @return void
+     */
+    public function testSameTextSortsNewestFirst(): void
+    {
+        $this->withCherryRenamedToBanana(function () {
+            // apple, then Banana A1 (r1, r7) and BANANA A3 (r3) mixed by age, then deleted code, Other, No answer, not shown
+            $this->assertSame(['r2', 'r7', 'r3', 'r1', 'r8', 'r4', 'r5', 'r6'], $this->getSortedNames('qList', 'asc'));
+            $this->assertSame(['r6', 'r5', 'r4', 'r8', 'r7', 'r3', 'r1', 'r2'], $this->getSortedNames('qList', 'desc'));
+        });
+    }
+
+    /**
+     * Run checks while the English text of qList's answer A3 is "BANANA", the same
+     * text as A1 in other case, and restore "Cherry" afterwards.
+     *
+     * @param callable $checks Assertions to run with the renamed answer
+     * @return void
+     */
+    private function withCherryRenamedToBanana(callable $checks): void
+    {
+        $qid = (int) $this->getAllSurveyQuestions()['qList']->qid;
         $answer = \Answer::model()->findByAttributes(['qid' => $qid, 'code' => 'A3']);
         $l10n = \AnswerL10n::model()->findByAttributes(['aid' => $answer->aid, 'language' => 'en']);
         $l10n->answer = 'BANANA';
         $l10n->save();
         try {
-            $this->assertSame(['A2' => 1, 'A1' => 2, 'A3' => 2], (new AnswerLabelOrder('en'))->getRanks($qid));
+            $checks();
         } finally {
             $l10n->answer = 'Cherry';
             $l10n->save();
