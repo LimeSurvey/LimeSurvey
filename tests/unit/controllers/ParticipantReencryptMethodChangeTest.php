@@ -47,6 +47,7 @@ class ParticipantReencryptMethodChangeTest extends TestBaseClass
         Yii::app()->setConfig('CPDB_encryption_method', $this->encryptionMethod);
         Yii::app()->user->setState('currentReencryptLastParticipantId', null);
         Yii::app()->user->setState('currentReencryptMethod', null);
+        Yii::app()->user->setState('currentReencryptFailed', null);
         Yii::app()->user->setState('currentDuplicateFinderInvalidParticipantId', null);
         Yii::app()->user->setState('currentDuplicateFinderBits', null);
         Yii::app()->setConfig('CPDB_duplicatefinder_bits', 128);
@@ -89,6 +90,21 @@ class ParticipantReencryptMethodChangeTest extends TestBaseClass
         $this->assertNull(Yii::app()->user->getState('currentReencryptLastParticipantId'));
         $this->assertNull(Yii::app()->user->getState('currentReencryptMethod'));
         $this->assertContains('All participant data have been re-encrypted.', $this->getFlashMessages());
+    }
+
+    /** Failures of a previous batch are reported at the end of the run, not "all re-encrypted". */
+    public function testCompleteRunReportsFailuresOfPreviousBatches(): void
+    {
+        Yii::app()->user->setState('currentReencryptLastParticipantId', '0');
+        Yii::app()->user->setState('currentReencryptMethod', 'H');
+        Yii::app()->user->setState('currentReencryptFailed', 2);
+        Yii::app()->setConfig('CPDB_encryption_method', 'H');
+
+        (new \ParticipantsAction('dummy'))->reencryptParticipantData();
+
+        $this->assertNull(Yii::app()->user->getState('currentReencryptFailed'));
+        $this->assertNotContains('All participant data have been re-encrypted.', $this->getFlashMessages());
+        $this->assertContains('2 participants could not be saved, see the error log.', $this->getFlashMessages());
     }
 
     /** An encrypted extra attribute is not a participants column : the core save must not use it. */

@@ -3123,16 +3123,20 @@ class ParticipantsAction extends SurveyCommonAction
         $stateId = 'currentReencryptLastParticipantId';
         /* The encryption method used since the first participant of the current run */
         $methodStateId = 'currentReencryptMethod';
+        /* The participants not saved since the first participant of the current run */
+        $failedStateId = 'currentReencryptFailed';
         $cryptMethod = App()->getConfig('CPDB_encryption_method', 'B');
         if (App()->getRequest()->getPost('rencrypt') == 'reset') {
             $lastParticipantId = '';
             App()->user->setState($stateId, null);
+            App()->user->setState($failedStateId, null);
         } else {
             $lastParticipantId = strval(App()->user->getState($stateId, ''));
             if ($lastParticipantId !== '' && App()->user->getState($methodStateId) !== $cryptMethod) {
                 /* The method changed during the run : the participants already done use the previous one */
                 App()->user->setState($stateId, null);
                 App()->user->setState($methodStateId, null);
+                App()->user->setState($failedStateId, null);
                 App()->setFlashMessage(gT("The encryption method changed during the re-encryption. Please restart the re-encryption from the first participant."), 'warning');
                 App()->getController()->redirect(['admin/participants/sa/encryptionMaintenance']);
                 return;
@@ -3198,20 +3202,25 @@ class ParticipantsAction extends SurveyCommonAction
                 array(':lastParticipantId' => $lastParticipantId)
             );
         }
+        /* Failures of the previous batches of this run : the last batch reports the total */
+        $runFailed = intval(App()->user->getState($failedStateId, 0)) + $failed;
         if ($stilltoProcess == 0) {
             App()->user->setState($stateId, null);
             App()->user->setState($methodStateId, null);
-        }
-        if ($stilltoProcess == 0 && $failed == 0) {
-            App()->setFlashMessage(gT("All participant data have been re-encrypted."));
-        } elseif ($stilltoProcess > 0) {
+            App()->user->setState($failedStateId, null);
+            if ($runFailed == 0) {
+                App()->setFlashMessage(gT("All participant data have been re-encrypted."));
+            }
+            $this->setParticipantSaveErrorFlash($runFailed);
+        } else {
+            App()->user->setState($failedStateId, $runFailed);
             App()->setFlashMessage(sprintf(
                 gT("%s participant data have been re-encrypted; %s still need to be re-encrypted."),
                 $processed,
                 $stilltoProcess
             ));
+            $this->setParticipantSaveErrorFlash($failed);
         }
-        $this->setParticipantSaveErrorFlash($failed);
         App()->getController()->redirect(['admin/participants/sa/encryptionMaintenance']);
     }
 
