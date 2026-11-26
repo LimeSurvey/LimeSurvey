@@ -1,9 +1,11 @@
 // Import shared mocks
-import { screen } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import 'tests/mocks'
 import { renderWithProviders } from 'tests/testUtils'
+import { queryClient } from 'queryClient'
+import { STATES } from 'helpers'
 
 import { Input } from './Input'
 
@@ -119,5 +121,55 @@ describe('Input with defaultValue', () => {
     const input = screen.getByTestId('default-value-input')
     expect(input.value).toBe('foo')
     input.remove()
+  })
+})
+
+describe('Input with activeDisabled', () => {
+  test('Should be disabled when activeDisabled is set', async () => {
+    await renderWithProviders(
+      <Input dataTestId={'active-disabled-input'} activeDisabled={true} />
+    )
+
+    expect(screen.getByTestId('active-disabled-input')).toBeDisabled()
+  })
+
+  test('Should stay enabled without activeDisabled', async () => {
+    await renderWithProviders(<Input dataTestId={'plain-input'} />)
+
+    expect(screen.getByTestId('plain-input')).toBeEnabled()
+  })
+})
+
+describe('Input with noPermissionDisabled', () => {
+  const setHasSurveyUpdatePermission = (value) => {
+    act(() => {
+      queryClient.setQueryData(
+        ['appState', STATES.HAS_SURVEY_UPDATE_PERMISSION],
+        value
+      )
+    })
+  }
+
+  afterEach(() => {
+    setHasSurveyUpdatePermission(true)
+  })
+
+  test('Should be disabled without survey update permission', async () => {
+    await renderWithProviders(
+      <Input dataTestId={'no-permission-input'} noPermissionDisabled={true} />
+    )
+    setHasSurveyUpdatePermission(false)
+
+    await waitFor(() =>
+      expect(screen.getByTestId('no-permission-input')).toBeDisabled()
+    )
+  })
+
+  test('Should stay enabled with survey update permission', async () => {
+    await renderWithProviders(
+      <Input dataTestId={'permission-input'} noPermissionDisabled={true} />
+    )
+
+    expect(screen.getByTestId('permission-input')).toBeEnabled()
   })
 })

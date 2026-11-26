@@ -1928,7 +1928,7 @@ class ParticipantsAction extends SurveyCommonAction
 
             $this->ajaxHelper::outputSuccess(
                 sprintf(
-                    ngT('%s attribute deleted|%s attributes deleted', $deletedAttributes),
+                    gTPlural('%s attribute deleted', '%s attributes deleted', $deletedAttributes),
                     $deletedAttributes
                 )
             );
@@ -2694,7 +2694,7 @@ class ParticipantsAction extends SurveyCommonAction
         } else {
             $this->ajaxHelper::outputSuccess(
                 sprintf(
-                    ngT('%s participant share was deleted|%s participant shares were deleted', $sharesDeleted),
+                    gTPlural('%s participant share was deleted', '%s participant shares were deleted', $sharesDeleted),
                     $sharesDeleted
                 )
             );

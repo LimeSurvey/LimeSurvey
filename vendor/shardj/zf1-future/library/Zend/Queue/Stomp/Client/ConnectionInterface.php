@@ -82,7 +82,7 @@ interface Zend_Queue_Stomp_Client_ConnectionInterface
      * This must be a Zend_Queue_Stomp_FrameInterface.
      *
      * @param  string $class
-     * @return Zend_Queue_Stomp_Client_ConnectionInterface;
+     * @return Zend_Queue_Stomp_Client_ConnectionInterface
      */
     public function setFrameClass($class);
 

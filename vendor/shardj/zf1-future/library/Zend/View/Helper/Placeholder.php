@@ -46,7 +46,7 @@ class Zend_View_Helper_Placeholder extends Zend_View_Helper_Abstract
     protected $_items = [];
 
     /**
-     * @var Zend_View_Helper_Placeholder_Registry
+     * @var Zend_View_Helper_Placeholder_Registry|null
      */
     protected $_registry;
 

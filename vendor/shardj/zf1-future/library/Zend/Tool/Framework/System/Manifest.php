@@ -28,6 +28,7 @@ require_once 'Zend/Tool/Framework/System/Provider/Phpinfo.php';
 require_once 'Zend/Tool/Framework/System/Provider/Manifest.php';
 require_once 'Zend/Tool/Framework/System/Action/Create.php';
 require_once 'Zend/Tool/Framework/System/Action/Delete.php';
+require_once 'Zend/Tool/Framework/Registry/EnabledInterface.php';
 
 /**
  * @category   Zend

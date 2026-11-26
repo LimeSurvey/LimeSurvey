@@ -312,7 +312,7 @@ class Zend_Db_Adapter_Pdo_Sqlite extends Zend_Db_Adapter_Pdo_Abstract
     {
         if (!is_int($value) && !is_float($value)) {
             // Fix for null-byte injection
-            $value = addcslashes($value, "\000\032");
+            $value = addcslashes((string) $value, "\000\032");
         }
         return parent::_quote($value);
     }

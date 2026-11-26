@@ -134,7 +134,7 @@
                                 case 'T':
                                 case 'U':*
                                 */
-                                /**
+                                /*
                                  * Call default value widget for yes/no question type
                                  * This is fast insert rewrite of this view follows
                                  */

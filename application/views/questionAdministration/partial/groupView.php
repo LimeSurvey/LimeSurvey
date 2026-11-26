@@ -26,7 +26,7 @@
                 ],
                 true
             );
-            ?>
+?>
 
             <div class="mt-4">
                 <?php App()->getController()->renderPartial(

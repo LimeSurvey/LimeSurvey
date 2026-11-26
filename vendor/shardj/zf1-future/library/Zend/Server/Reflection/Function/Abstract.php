@@ -53,7 +53,7 @@ require_once 'Zend/Server/Reflection/Prototype.php';
 abstract class Zend_Server_Reflection_Function_Abstract
 {
     /**
-     * @var ReflectionFunction
+     * @var ReflectionFunction|ReflectionMethod
      */
     protected $_reflection;
 
@@ -193,7 +193,7 @@ abstract class Zend_Server_Reflection_Function_Abstract
      *
      * @param array $return Array of return types
      * @param string $returnDesc Return value description
-     * @param array $params Array of arguments (each an array of types)
+     * @param array $paramTypes Array of arguments (each an array of types)
      * @param array $paramDesc Array of parameter descriptions
      * @return void
      */
@@ -253,7 +253,6 @@ abstract class Zend_Server_Reflection_Function_Abstract
      * comment. Determines method signatures using a combination of
      * ReflectionFunction and parsing of DocBlock param and return values.
      *
-     * @param ReflectionFunction $function
      * @return void
      */
     protected function _reflect()

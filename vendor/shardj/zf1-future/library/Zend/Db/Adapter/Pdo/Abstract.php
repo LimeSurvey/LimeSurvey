@@ -45,6 +45,23 @@ require_once 'Zend/Db/Statement/Pdo.php';
 abstract class Zend_Db_Adapter_Pdo_Abstract extends Zend_Db_Adapter_Abstract
 {
     /**
+     * Database connection
+     *
+     * @var PDO|null
+     */
+    protected $_connection = null;
+
+    /**
+     * Returns the underlying database connection object, creating it when needed
+     *
+     * @return PDO
+     */
+    public function getConnection()
+    {
+        return parent::getConnection();
+    }
+
+    /**
      * Transaction in BC mode for php >= 8 flag
      * 
      * Bring back behavior of PDO::rollback()/PDO::commit() 
@@ -132,6 +149,7 @@ abstract class Zend_Db_Adapter_Pdo_Abstract extends Zend_Db_Adapter_Abstract
         }
 
         // create PDO connection
+        require_once 'Zend/Db/Profiler.php';
         $q = $this->_profiler->queryStart('connect', Zend_Db_Profiler::CONNECT);
 
         // add the persistence flag if we find it in our config array
@@ -199,7 +217,6 @@ abstract class Zend_Db_Adapter_Pdo_Abstract extends Zend_Db_Adapter_Abstract
      * Prepares an SQL statement.
      *
      * @param string $sql The SQL statement with placeholders.
-     * @param array $bind An array of data to bind to the placeholders.
      * @return PDOStatement
      */
     public function prepare($sql)
@@ -230,7 +247,7 @@ abstract class Zend_Db_Adapter_Pdo_Abstract extends Zend_Db_Adapter_Abstract
      *
      * @param string $tableName   OPTIONAL Name of table.
      * @param string $primaryKey  OPTIONAL Name of primary key column.
-     * @return string
+     * @return string|int
      */
     public function lastInsertId($tableName = null, $primaryKey = null)
     {
@@ -391,7 +408,6 @@ abstract class Zend_Db_Adapter_Pdo_Abstract extends Zend_Db_Adapter_Abstract
                  */
                 require_once 'Zend/Db/Adapter/Exception.php';
                 throw new Zend_Db_Adapter_Exception("Invalid fetch mode '$mode' specified");
-                break;
         }
     }
 
@@ -414,7 +430,7 @@ abstract class Zend_Db_Adapter_Pdo_Abstract extends Zend_Db_Adapter_Abstract
     /**
      * Retrieve server version in PHP style
      *
-     * @return string
+     * @return string|null
      */
     public function getServerVersion()
     {

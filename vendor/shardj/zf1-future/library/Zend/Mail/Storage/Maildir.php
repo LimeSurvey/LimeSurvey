@@ -308,7 +308,7 @@ class Zend_Mail_Storage_Maildir extends Zend_Mail_Storage_Abstract
      * open given dir as current maildir
      *
      * @param string $dirname name of maildir
-     * @return null
+     * @return void
      * @throws Zend_Mail_Storage_Exception
      */
     protected function _openMaildir($dirname)
@@ -347,7 +347,7 @@ class Zend_Mail_Storage_Maildir extends Zend_Mail_Storage_Abstract
      * @param resource $dh            dir handle used for search
      * @param string   $dirname       dirname of dir in $dh
      * @param array    $default_flags default flags for given dir
-     * @return null
+     * @return void
      */
     protected function _getMaildirFiles($dh, $dirname, $default_flags = [])
     {
@@ -419,7 +419,7 @@ class Zend_Mail_Storage_Maildir extends Zend_Mail_Storage_Abstract
     /**
      * stub for not supported message deletion
      *
-     * @return null
+     * @return void
      * @throws Zend_Mail_Storage_Exception
      */
     public function removeMessage($id)

@@ -68,7 +68,7 @@ class Zend_Feed_Reader_Extension_Atom_Feed
     /**
      * Get an array with feed authors
      *
-     * @return array
+     * @return Zend_Feed_Reader_Collection_Author|null
      */
     public function getAuthors()
     {
@@ -76,6 +76,7 @@ class Zend_Feed_Reader_Extension_Atom_Feed
             return $this->_data['authors'];
         }
 
+        /** @var DOMNodeList<DOMElement> $list */
         $list = $this->_xpath->query('//atom:author');
 
         $authors = [];
@@ -471,6 +472,7 @@ class Zend_Feed_Reader_Extension_Atom_Feed
         }
 
         if ($this->getType() == Zend_Feed_Reader::TYPE_ATOM_10) {
+            /** @var DOMNodeList<DOMElement> $list */
             $list = $this->_xpath->query($this->getXpathPrefix() . '/atom:category');
         } else {
             /**
@@ -479,6 +481,7 @@ class Zend_Feed_Reader_Extension_Atom_Feed
              * may have been retrofittied to use Atom 1.0 instead.
              */
             $this->_xpath->registerNamespace('atom10', Zend_Feed_Reader::NAMESPACE_ATOM_10);
+            /** @var DOMNodeList<DOMElement> $list */
             $list = $this->_xpath->query($this->getXpathPrefix() . '/atom10:category');
         }
 

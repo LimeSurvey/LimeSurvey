@@ -381,7 +381,7 @@ abstract class Zend_Controller_Response_Abstract
      * If $name is a string, sets the named segment in the body array to
      * $content.
      *
-     * @param string $content
+     * @param string|null $content
      * @param null|string $name
      * @return $this
      */

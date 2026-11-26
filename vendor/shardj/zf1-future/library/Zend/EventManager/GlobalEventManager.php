@@ -58,6 +58,7 @@ class Zend_EventManager_GlobalEventManager
     public static function getEventCollection()
     {
         if (null === self::$events) {
+            require_once 'Zend/EventManager/EventManager.php';
             self::setEventCollection(new Zend_EventManager_EventManager());
         }
         return self::$events;
@@ -108,7 +109,7 @@ class Zend_EventManager_GlobalEventManager
      * Detach a callback from a listener
      *
      * @param  Zend_Stdlib_CallbackHandler $listener
-     * @return void
+     * @return bool
      */
     public static function detach(Zend_Stdlib_CallbackHandler $listener)
     {
@@ -144,6 +145,6 @@ class Zend_EventManager_GlobalEventManager
      */
     public static function clearListeners($event)
     {
-        return self::getEventCollection()->clearListeners($event);
+        self::getEventCollection()->clearListeners($event);
     }
 }

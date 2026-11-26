@@ -113,7 +113,9 @@ $defaultBreadcrumbMode           = Yii::app()->getConfig('defaultBreadcrumbMode'
                     <?php // show a select box with all available time zones
                     $displayTimezone = App()->getConfig('displayTimezone');
                     ?>
-                    <option value=""<?php if (empty($displayTimezone)) { echo " selected='selected'"; } ?>><?php eT("UTC (default)"); ?></option>
+                    <option value=""<?php if (empty($displayTimezone)) {
+                        echo " selected='selected'"; 
+                                    } ?>><?php eT("UTC (default)"); ?></option>
                     <?php foreach (DateTimeZone::listIdentifiers() as $timezone) {
                         echo "<option value='" . $timezone . "'";
                         if ($displayTimezone == $timezone) {

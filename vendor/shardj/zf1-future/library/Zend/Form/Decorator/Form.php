@@ -89,6 +89,7 @@ class Zend_Form_Decorator_Form extends Zend_Form_Decorator_Abstract
             if ($element instanceof Zend_Form) {
                 $element->getAction();
                 $method = $element->getMethod();
+                require_once 'Zend/Form.php';
                 if ($method == Zend_Form::METHOD_POST) {
                     $this->setOption('enctype', 'application/x-www-form-urlencoded');
                 }

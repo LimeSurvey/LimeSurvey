@@ -474,6 +474,7 @@ class Zend_Service_Amazon_SimpleDb extends Zend_Service_Amazon_Abstract
 
             $request->setUri($this->getEndpoint());
             $request->setMethod(Zend_Http_Client::POST);
+            $params_out = [];
             foreach ($params as $key => $value) {
                 $params_out[] = rawurlencode($key)."=".rawurlencode($value);
             }

@@ -39,6 +39,7 @@ require_once('Zend/Gdata/Gapps/Query.php');
  * @subpackage Gapps
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @deprecated Deprecated since 1.27.1 and will be removed in a future version: Google shut down the Google Data APIs it implements and the ClientLogin and AuthSub authentication
  */
 class Zend_Gdata_Gapps_NicknameQuery extends Zend_Gdata_Gapps_Query
 {
@@ -121,7 +122,7 @@ class Zend_Gdata_Gapps_NicknameQuery extends Zend_Gdata_Gapps_Query
      * returned.
      *
      * @see setUsername
-     * @return string The username to filter search results by, or null if
+     * @return string|null The username to filter search results by, or null if
      *              disabled.
      */
     public function getUsername()
@@ -153,7 +154,7 @@ class Zend_Gdata_Gapps_NicknameQuery extends Zend_Gdata_Gapps_Query
      * Get the first nickname which should be displayed when retrieving
      * a list of nicknames.
      *
-     * @return string The first nickname to be returned, or null to
+     * @return string|null The first nickname to be returned, or null to
      *              disable.
      */
     public function getStartNickname()

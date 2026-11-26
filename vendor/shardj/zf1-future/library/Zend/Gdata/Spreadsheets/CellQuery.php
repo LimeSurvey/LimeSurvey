@@ -41,6 +41,7 @@ require_once('Zend/Gdata/Query.php');
  * @subpackage   Spreadsheets
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @deprecated Deprecated since 1.27.1 and will be removed in a future version: Google shut down the Google Data APIs it implements and the ClientLogin and AuthSub authentication
  */
 class Zend_Gdata_Spreadsheets_CellQuery extends Zend_Gdata_Query
 {
@@ -192,7 +193,7 @@ class Zend_Gdata_Spreadsheets_CellQuery extends Zend_Gdata_Query
     /**
      * Gets the min-row attribute for this query.
      *
-     * @return string min-row
+     * @return string|null min-row
      */
     public function getMinRow()
     {
@@ -222,7 +223,7 @@ class Zend_Gdata_Spreadsheets_CellQuery extends Zend_Gdata_Query
     /**
      * Gets the max-row attribute for this query.
      *
-     * @return string max-row
+     * @return string|null max-row
      */
     public function getMaxRow()
     {
@@ -252,7 +253,7 @@ class Zend_Gdata_Spreadsheets_CellQuery extends Zend_Gdata_Query
     /**
      * Gets the min-col attribute for this query.
      *
-     * @return string min-col
+     * @return string|null min-col
      */
     public function getMinCol()
     {
@@ -282,7 +283,7 @@ class Zend_Gdata_Spreadsheets_CellQuery extends Zend_Gdata_Query
     /**
      * Gets the max-col attribute for this query.
      *
-     * @return string max-col
+     * @return string|null max-col
      */
     public function getMaxCol()
     {
@@ -312,7 +313,7 @@ class Zend_Gdata_Spreadsheets_CellQuery extends Zend_Gdata_Query
     /**
      * Gets the range attribute for this query.
      *
-     * @return string range
+     * @return string|null range
      */
     public function getRange()
     {
@@ -344,7 +345,7 @@ class Zend_Gdata_Spreadsheets_CellQuery extends Zend_Gdata_Query
     /**
      * Gets the return-empty attribute for this query.
      *
-     * @return string return-empty
+     * @return string|null return-empty
      */
     public function getReturnEmpty()
     {

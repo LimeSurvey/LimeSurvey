@@ -23,6 +23,8 @@
 */
 class UpdateForm extends CFormModel
 {
+    use TwigSandboxIteratorTrait;
+
     /** @var string $build The build id */
     public $build;
 

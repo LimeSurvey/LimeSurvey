@@ -56,6 +56,7 @@ class Zend_Db_Table extends Zend_Db_Table_Abstract
         }
 
         if (is_string($config)) {
+            require_once 'Zend/Registry.php';
             if (Zend_Registry::isRegistered($config)) {
                 trigger_error(__CLASS__ . '::' . __METHOD__ . '(\'registryName\') is not valid usage of Zend_Db_Table, '
                     . 'try extending Zend_Db_Table_Abstract in your extending classes.',

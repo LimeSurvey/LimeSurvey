@@ -109,7 +109,7 @@ class Zend_Paginator_Adapter_DbSelect implements Zend_Paginator_Adapter_Interfac
      * Users are therefore encouraged to profile their queries to find
      * the solution that best meets their needs.
      *
-     * @param  Zend_Db_Select|integer $totalRowCount Total row count integer
+     * @param  Zend_Db_Select|integer $rowCount Total row count integer
      *                                               or query
      * @return Zend_Paginator_Adapter_DbSelect $this
      * @throws Zend_Paginator_Exception
@@ -161,7 +161,7 @@ class Zend_Paginator_Adapter_DbSelect implements Zend_Paginator_Adapter_Interfac
      *
      * @param  integer $offset Page offset
      * @param  integer $itemCountPerPage Number of items per page
-     * @return array
+     * @return array|Traversable
      */
     public function getItems($offset, $itemCountPerPage)
     {

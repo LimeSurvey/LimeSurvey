@@ -21,6 +21,7 @@
 
 /** Zend_Form_Decorator_Abstract */
 require_once 'Zend/Form/Decorator/Abstract.php';
+require_once 'Zend/Form.php';
 
 /**
  * Zend_Form_Decorator_FormElements
@@ -76,6 +77,7 @@ class Zend_Form_Decorator_FormElements extends Zend_Form_Decorator_Abstract
 
         $belongsTo      = ($form instanceof Zend_Form) ? $form->getElementsBelongTo() : null;
         $elementContent = '';
+        // @phpstan-ignore instanceof.alwaysTrue (the decorated element is a form or a display group)
         $displayGroups  = ($form instanceof Zend_Form) ? $form->getDisplayGroups() : [];
         $separator      = $this->getSeparator();
         $translator     = $form->getTranslator();
@@ -121,8 +123,10 @@ class Zend_Form_Decorator_FormElements extends Zend_Form_Decorator_Abstract
                 || (($item instanceof Zend_Form_DisplayGroup)
                     && (Zend_Form::ENCTYPE_MULTIPART == $item->getAttrib('enctype')))
             ) {
+                // @phpstan-ignore instanceof.alwaysTrue (the decorated element is a form or a display group)
                 if ($form instanceof Zend_Form) {
                     $form->setEnctype(Zend_Form::ENCTYPE_MULTIPART);
+                // @phpstan-ignore instanceof.alwaysFalse (the decorated element is a form or a display group)
                 } elseif ($form instanceof Zend_Form_DisplayGroup) {
                     $form->setAttrib('enctype', Zend_Form::ENCTYPE_MULTIPART);
                 }

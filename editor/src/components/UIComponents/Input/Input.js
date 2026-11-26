@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { Form } from 'react-bootstrap'
 
 import { useAppState } from 'hooks'
@@ -6,7 +6,6 @@ import { STATES } from 'helpers'
 import { getTooltipMessages } from 'helpers/options'
 
 import { TooltipContainer } from '../../TooltipContainer/TooltipContainer'
-import { useQueryClient } from '@tanstack/react-query'
 
 export const Input = ({
   value = null,
@@ -44,37 +43,20 @@ export const Input = ({
   allowEmpty = true,
   focus,
 }) => {
-  const [canUseAppState, setCanUseAppState] = useState(false)
   const inputRef = inputRefProp ? inputRefProp : useRef(null)
+  const [hasSurveyUpdatePermission] = useAppState(
+    STATES.HAS_SURVEY_UPDATE_PERMISSION
+  )
 
-  useEffect(() => {
-    try {
-      useQueryClient()
-      setCanUseAppState(true)
-    } catch (error) {
-      setCanUseAppState(false)
-    }
-  }, [])
+  const permissionDisabled =
+    (!hasSurveyUpdatePermission && noPermissionDisabled) || noAccessDisabled
+  const inputDisabled = activeDisabled || disabled || permissionDisabled
 
-  const [isSurveyActive] = canUseAppState
-    ? useAppState(STATES.IS_SURVEY_ACTIVE)
-    : [false]
-  const [hasSurveyUpdatePermission] = canUseAppState
-    ? useAppState(STATES.HAS_SURVEY_UPDATE_PERMISSION)
-    : [true]
-
-  const inputDisabled =
-    (isSurveyActive && activeDisabled) ||
-    disabled ||
-    (!hasSurveyUpdatePermission && noPermissionDisabled) ||
-    noAccessDisabled
-
-  const toolTip =
-    isSurveyActive && activeDisabled
-      ? getTooltipMessages().ACTIVE_DISABLED
-      : (!hasSurveyUpdatePermission && noPermissionDisabled) || noAccessDisabled
-        ? getTooltipMessages().NO_PERMISSION
-        : ''
+  const toolTip = activeDisabled
+    ? getTooltipMessages().ACTIVE_DISABLED
+    : permissionDisabled
+      ? getTooltipMessages().NO_PERMISSION
+      : ''
 
   useEffect(() => {
     if (!inputRef?.current) {

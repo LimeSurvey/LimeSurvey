@@ -40,10 +40,12 @@
 <!-- answer -->
 {# What is the usage of this input ? #}
 <input type="hidden" name="MULTI{{ name }}" value="{{ anscount }}" />
+<div role="group" aria-labelledby="ls-question-text-{{ name }}" aria-describedby="ls-question-help-{{ name }} ls-question-validation-{{ name }}">
 <ul class="list-unstyled {{coreClass}} imageselect-answers imageselect-fit-{{ imageselectFit }}{% if imageselectHorizontal %} imageselect-horizontal{% endif %}{% if imageselectColumns %} ls-column-count-{{ imageselectColumns }}{% endif %}"{% if imageselectColumns %} data-column-count={{ imageselectColumns }}{% endif %}{% if imageselectWidth or imageselectHeight %} style="{% if imageselectWidth %}--imageselect-width: {{ imageselectWidth }}px;{% endif %}{% if imageselectHeight %} --imageselect-height: {{ imageselectHeight }}px;{% endif %}"{% endif %}>
     {% for aRow in aRows %}
         {% set rowTemplate = aRow.other ? './survey/questions/answer/multiplechoice/rows/answer_row_other.twig' : './survey/questions/answer/multiplechoice/rows/answer_row.twig' %}
         {% include rowTemplate with aRow %}
     {% endfor %}
 </ul>
+</div>
 <!-- end of answer -->

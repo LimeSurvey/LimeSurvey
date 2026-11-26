@@ -34,7 +34,7 @@ class Zend_Validate_Barcode_Code25interleaved extends Zend_Validate_Barcode_Adap
 {
     /**
      * Allowed barcode lengths
-     * @var integer
+     * @var integer|string
      */
     protected $_length = 'even';
 

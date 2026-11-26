@@ -81,7 +81,7 @@ class Zend_Pdf_Destination_Named extends Zend_Pdf_Destination
     /**
      * Get name
      *
-     * @return Zend_Pdf_Element
+     * @return string
      */
     public function getName()
     {

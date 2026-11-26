@@ -18,13 +18,15 @@ $codeids = '';
                 </caption>
                 <thead>
                 <tr>
-                    <?php if ($first) : ?>
+                    <?php if ($first && $updatePermission) : ?>
                         <th><?php eT('Position'); ?></th>
                     <?php endif; ?>
                     <th><?php eT("Code") ?></th>
                     <th><?php eT("Assessment value") ?></th>
                     <th><?php eT("Title") ?></th>
-                    <th><?php eT("Action") ?></th>
+                    <?php if ($updatePermission) : ?>
+                        <th><?php eT("Action") ?></th>
+                    <?php endif; ?>
                 </tr>
                 </thead>
 

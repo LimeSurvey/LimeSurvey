@@ -101,8 +101,8 @@
             <div class="col-12">
                 <select class="form-select" name="emailplugin" id="emailplugin">
                     <option value=''><?php eT("None"); ?></option>
-                    <?php if (!empty($emailPlugins)): ?>
-                        <?php foreach ($emailPlugins as $emailPluginDetails): ?>
+                    <?php if (!empty($emailPlugins)) : ?>
+                        <?php foreach ($emailPlugins as $emailPluginDetails) : ?>
                             <option value='<?= htmlspecialchars($emailPluginDetails->class) ?>' <?= ($emailPluginDetails->class == Yii::app()->getConfig('emailplugin')) ? "selected='selected'" : "" ?>>
                                 <?= htmlspecialchars($emailPluginDetails->name) ?>
                             </option>

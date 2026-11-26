@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import Col from 'react-bootstrap/Col'
 
 import { useAppState, useSurvey } from 'hooks'
-import { STATES } from 'helpers'
+import { STATES, getSurveyDateFormatsByLanguage } from 'helpers'
 
 import { SurveyHeader } from './SurveyHeader'
 import { SurveyFooter } from './SurveyFooter'
@@ -22,8 +22,14 @@ export const Survey = ({ id }) => {
       showNoAnswer: survey.showNoAnswer,
       preselectNoAnswer: survey.preselectNoAnswer,
       languages: survey.languages,
+      dateFormats: getSurveyDateFormatsByLanguage(survey),
     }
-  }, [survey.showNoAnswer, survey.preselectNoAnswer, survey.languages])
+  }, [
+    survey.showNoAnswer,
+    survey.preselectNoAnswer,
+    survey.languages,
+    survey.languageSettings,
+  ])
 
   const surveyHasAdditionalLanguages = () => {
     // here we check if lang switch is even possible

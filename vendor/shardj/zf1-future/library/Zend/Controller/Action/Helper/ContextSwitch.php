@@ -69,7 +69,7 @@ class Zend_Controller_Action_Helper_ContextSwitch extends Zend_Controller_Action
 
     /**
      * Current context
-     * @var string
+     * @var string|null
      */
     protected $_currentContext;
 
@@ -412,7 +412,7 @@ class Zend_Controller_Action_Helper_ContextSwitch extends Zend_Controller_Action
                         $prependViewRendererSuffix = array_shift($suffixInfo);
                         $this->setSuffix($context, $suffix, $prependViewRendererSuffix);
                         break;
-                    case ($count >= 2):
+                    default:
                         $suffix  = array_shift($suffixInfo);
                         $prependViewRendererSuffix = array_shift($suffixInfo);
                         $this->setSuffix($context, $suffix, $prependViewRendererSuffix);
@@ -570,7 +570,7 @@ class Zend_Controller_Action_Helper_ContextSwitch extends Zend_Controller_Action
      * Passing an empty header value to the setters disables the response
      * header.
      *
-     * @param  string $type   Context type for which to set suffix
+     * @param  string $context   Context type for which to set suffix
      * @param  string $header Header to set
      * @param  string $content Header content
      * @return $this
@@ -1139,7 +1139,7 @@ class Zend_Controller_Action_Helper_ContextSwitch extends Zend_Controller_Action
         $this->hasContext($context, true);
         $controller = $this->getActionController();
         if (null === $controller) {
-            return;
+            return $this;
         }
         $action     = (string) $action;
         $contextKey = $this->_contextKey;
@@ -1179,7 +1179,7 @@ class Zend_Controller_Action_Helper_ContextSwitch extends Zend_Controller_Action
         $this->hasContext($context, true);
         $controller = $this->getActionController();
         if (null === $controller) {
-            return;
+            return $this;
         }
         $action     = (string) $action;
         $contextKey = $this->_contextKey;
@@ -1380,7 +1380,7 @@ class Zend_Controller_Action_Helper_ContextSwitch extends Zend_Controller_Action
     /**
      * Retrieve ViewRenderer
      *
-     * @return $this
+     * @return Zend_Controller_Action_Helper_ViewRenderer
      */
     protected function _getViewRenderer()
     {

@@ -15,13 +15,13 @@
 class EMWarningPlusOperator extends EMWarningBase
 {
     /** Both operands are numeric: + is an addition */
-    const NUMERIC = 'numeric';
+    public const NUMERIC = 'numeric';
 
     /** One operand is a string literal or a string function result: + is a concatenation */
-    const STRING = 'string';
+    public const STRING = 'string';
 
     /** Operands with a value not known yet (e.g. an unanswered question in the logic file) */
-    const UNKNOWN = 'unknown';
+    public const UNKNOWN = 'unknown';
 
     /**
      * @param array $token

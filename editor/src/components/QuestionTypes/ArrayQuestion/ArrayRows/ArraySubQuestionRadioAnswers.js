@@ -1,8 +1,7 @@
 import classNames from 'classnames'
 import { FormCheck } from 'react-bootstrap'
-import { useParams } from 'react-router-dom'
 
-import { useSurvey } from 'hooks'
+import { useToggleQuestionCodes } from 'hooks'
 
 export const ArraySubQuestionRadioAnswers = ({
   subQuestionindex,
@@ -14,11 +13,7 @@ export const ArraySubQuestionRadioAnswers = ({
   qid,
   isFocused,
 }) => {
-  const { surveyId } = useParams()
-
-  const { survey } = useSurvey(surveyId)
-
-  const showQNumCode = survey.showQNumCode
+  const { areCodesVisible } = useToggleQuestionCodes()
 
   return (
     <FormCheck
@@ -31,7 +26,7 @@ export const ArraySubQuestionRadioAnswers = ({
         { 'bg-grey': showBackgroundUnderSubQuestion }
       )}
       style={{
-        width: `${arrayAnswersWidth[index] + (isFocused && showQNumCode?.showNumber ? 80 : dragIconSize * 2)}px`,
+        width: `${arrayAnswersWidth[index] + (isFocused && areCodesVisible ? 80 : dragIconSize * 2)}px`,
         minHeight: (subQuestionsHeight[subQuestionindex] || 50) + 10,
       }}
       name={`array-subquestion-radio-answers-${subQuestionindex}${qid}`}

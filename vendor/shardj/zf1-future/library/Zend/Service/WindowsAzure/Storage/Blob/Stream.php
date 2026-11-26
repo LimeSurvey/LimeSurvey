@@ -67,7 +67,7 @@ class Zend_Service_WindowsAzure_Storage_Blob_Stream
     /**
      * List of blobs
      *
-     * @var array
+     * @var array|null
      */
     protected $_blobs = null;
 
@@ -82,11 +82,14 @@ class Zend_Service_WindowsAzure_Storage_Blob_Stream
         if (is_null($this->_storageClient)) {
             $url = explode(':', $path);
             if (!$url) {
+                require_once 'Zend/Service/WindowsAzure/Exception.php';
                 throw new Zend_Service_WindowsAzure_Exception('Could not parse path "' . $path . '".');
             }
 
+            require_once 'Zend/Service/WindowsAzure/Storage/Blob.php';
             $this->_storageClient = Zend_Service_WindowsAzure_Storage_Blob::getWrapperClient($url[0]);
             if (!$this->_storageClient) {
+                require_once 'Zend/Service/WindowsAzure/Exception.php';
                 throw new Zend_Service_WindowsAzure_Exception('No storage client registered for stream type "' . $url[0] . '://".');
             }
         }
@@ -221,7 +224,7 @@ class Zend_Service_WindowsAzure_Storage_Blob_Stream
      * Read from the stream
      *
      * @param  integer $count
-     * @return string
+     * @return string|false
      */
     public function stream_read($count)
     {
@@ -331,7 +334,7 @@ class Zend_Service_WindowsAzure_Storage_Blob_Stream
     /**
      * Returns data array of stream variables
      *
-     * @return array
+     * @return array|false
      */
     public function stream_stat()
     {
@@ -370,6 +373,7 @@ class Zend_Service_WindowsAzure_Storage_Blob_Stream
     public function rename($path_from, $path_to)
     {
         if ($this->_getContainerName($path_from) != $this->_getContainerName($path_to)) {
+            require_once 'Zend/Service/WindowsAzure/Exception.php';
             throw new Zend_Service_WindowsAzure_Exception('Container name can not be changed.');
         }
 
@@ -399,7 +403,7 @@ class Zend_Service_WindowsAzure_Storage_Blob_Stream
      *
      * @param  string $path
      * @param  integer $flags
-     * @return array
+     * @return array|false
      */
     public function url_stat($path, $flags)
     {
@@ -462,6 +466,7 @@ class Zend_Service_WindowsAzure_Storage_Blob_Stream
                 return false;
             }
         } else {
+            require_once 'Zend/Service/WindowsAzure/Exception.php';
             throw new Zend_Service_WindowsAzure_Exception('mkdir() with multiple levels is not supported on Windows Azure Blob Storage.');
         }
     }
@@ -489,6 +494,7 @@ class Zend_Service_WindowsAzure_Storage_Blob_Stream
                 return false;
             }
         } else {
+            require_once 'Zend/Service/WindowsAzure/Exception.php';
             throw new Zend_Service_WindowsAzure_Exception('rmdir() with multiple levels is not supported on Windows Azure Blob Storage.');
         }
     }
@@ -511,7 +517,7 @@ class Zend_Service_WindowsAzure_Storage_Blob_Stream
     /**
      * Return the next filename in the directory
      *
-     * @return string
+     * @return string|false
      */
     public function dir_readdir()
     {

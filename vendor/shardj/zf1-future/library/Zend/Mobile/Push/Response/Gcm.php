@@ -149,6 +149,7 @@ class Zend_Mobile_Push_Response_Gcm
             !isset($response['failure']) ||
             !isset($response['canonical_ids']) ||
             !isset($response['multicast_id'])) {
+            require_once 'Zend/Mobile/Push/Exception.php';
             throw new Zend_Mobile_Push_Exception('Response did not contain the proper fields');
         }
         $this->_response = $response;

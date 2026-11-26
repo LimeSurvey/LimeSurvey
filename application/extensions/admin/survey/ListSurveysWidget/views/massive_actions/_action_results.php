@@ -16,9 +16,9 @@ if (!isset($tableLabels)) {
 <?php endif;?>
 <table class="table table-striped">
     <caption class="massive-action-results-caption visually-hidden"><?php
-        if (isset($tableCaption) && $tableCaption !== '') {
-            echo CHtml::encode($tableCaption);
-        }
+    if (isset($tableCaption) && $tableCaption !== '') {
+        echo CHtml::encode($tableCaption);
+    }
     ?></caption>
     <thead>
         <?php foreach ($tableLabels as $label) :?>

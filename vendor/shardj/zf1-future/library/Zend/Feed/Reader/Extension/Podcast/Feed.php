@@ -79,7 +79,7 @@ class Zend_Feed_Reader_Extension_Podcast_Feed extends Zend_Feed_Reader_Extension
     /**
      * Get the entry category
      *
-     * @return string
+     * @return string|array|null
      */
     public function getCategories()
     {
@@ -87,6 +87,7 @@ class Zend_Feed_Reader_Extension_Podcast_Feed extends Zend_Feed_Reader_Extension
             return $this->_data['categories'];
         }
 
+        /** @var DOMNodeList<DOMElement> $categoryList */
         $categoryList = $this->_xpath->query($this->getXpathPrefix() . '/itunes:category');
 
         $categories = [];

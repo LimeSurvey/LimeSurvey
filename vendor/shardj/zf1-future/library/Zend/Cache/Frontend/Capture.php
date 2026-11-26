@@ -76,6 +76,7 @@ class Zend_Cache_Frontend_Capture extends Zend_Cache_Core
     {
         $id = array_pop($this->_idStack);
         if ($id === null) {
+            require_once 'Zend/Cache.php';
             Zend_Cache::throwException('use of _flush() without a start()');
         }
         if ($this->_extension) {

@@ -1,5 +1,7 @@
 <?php
 
+use LimeSurvey\Models\Services\SurveySessionState;
+
 /**
  * RenderClass for Boilerplate Question
  *  * The ia Array contains the following
@@ -42,9 +44,9 @@ class RenderMultipleChoice extends QuestionBaseRenderer
     /** @var bool|null whether Other is ticked without text after a blocked submit, computed once per render */
     private $otherInvalid;
 
-    const OTHER_POS_END = 'end';
-    const OTHER_POS_START = 'beginning';
-    const OTHER_POS_AFTER_SUBQUESTION = 'specific';
+    public const OTHER_POS_END = 'end';
+    public const OTHER_POS_START = 'beginning';
+    public const OTHER_POS_AFTER_SUBQUESTION = 'specific';
 
     public function __construct($aFieldArray, $bRenderDirect = false)
     {
@@ -155,13 +157,18 @@ class RenderMultipleChoice extends QuestionBaseRenderer
         ];
     }
 
+    /**
+     * Returns the template data of the "Other" option row.
+     *
+     * @return array
+     */
     public function getOtherRow()
     {
         $sSeparator = (getRadixPointData($this->oQuestion->survey->correct_relation_defaultlanguage->surveyls_numberformat))['separator'];
         $oth_checkconditionFunction = ($this->getQuestionAttribute('other_numbers_only') == 1) ? "fixnum_checkconditions" : "checkconditions";
 
         $myfname = $this->sSGQA . '_Cother';
-        $mSessionValue = $_SESSION['responses_' . Yii::app()->getConfig('surveyID')][$myfname] ?? '';
+        $mSessionValue = $this->setDefaultIfEmpty(SurveySessionState::forSurvey((int) Yii::app()->getConfig('surveyID'))->getFieldValue($myfname), '');
         $this->inputnames[] = $myfname;
 
         $sValue = '';

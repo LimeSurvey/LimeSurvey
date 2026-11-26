@@ -69,6 +69,7 @@ class Zend_Application_Resource_Session extends Zend_Application_Resource_Resour
         if (!$this->_saveHandler instanceof Zend_Session_SaveHandler_Interface) {
             if (is_array($this->_saveHandler)) {
                 if (!array_key_exists('class', $this->_saveHandler)) {
+                    require_once 'Zend/Application/Resource/Exception.php';
                     throw new Zend_Application_Resource_Exception('Session save handler class not provided in options');
                 }
                 $options = [];
@@ -82,6 +83,7 @@ class Zend_Application_Resource_Session extends Zend_Application_Resource_Resour
             }
 
             if (!$this->_saveHandler instanceof Zend_Session_SaveHandler_Interface) {
+                require_once 'Zend/Application/Resource/Exception.php';
                 throw new Zend_Application_Resource_Exception('Invalid session save handler');
             }
         }
@@ -109,10 +111,12 @@ class Zend_Application_Resource_Session extends Zend_Application_Resource_Resour
         }
 
         if (count($options) > 0) {
+            require_once 'Zend/Session.php';
             Zend_Session::setOptions($options);
         }
 
         if ($this->_hasSaveHandler()) {
+            require_once 'Zend/Session.php';
             Zend_Session::setSaveHandler($this->getSaveHandler());
         }
     }
