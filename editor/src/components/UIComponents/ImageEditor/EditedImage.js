@@ -65,7 +65,6 @@ export const getEditedImageStyles = (settings, height) => {
  * @param {Object|null} settings the settings from ImageEditor's onSave
  * @param {number|string} height the preview height in px, e.g. 160 or "160px"
  * @param {Object} fallbackStyle style of the image without settings
- * @param {Function} onLoad called when the image has loaded
  * @param {Function} onError called when the image can't be loaded, e.g. when
  *   the file doesn't exist
  * @returns {JSX.Element} the image
@@ -76,30 +75,15 @@ export const EditedImage = ({
   settings = null,
   height,
   fallbackStyle = {},
-  onLoad,
   onError,
 }) => {
   const styles = getEditedImageStyles(settings, parseFloat(height))
   if (!styles) {
-    return (
-      <Image
-        src={src}
-        alt={alt}
-        style={fallbackStyle}
-        onLoad={onLoad}
-        onError={onError}
-      />
-    )
+    return <Image src={src} alt={alt} style={fallbackStyle} onError={onError} />
   }
   return (
     <div style={styles.frame} data-testid="edited-image">
-      <img
-        src={src}
-        alt={alt}
-        style={styles.image}
-        onLoad={onLoad}
-        onError={onError}
-      />
+      <img src={src} alt={alt} style={styles.image} onError={onError} />
     </div>
   )
 }
