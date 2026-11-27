@@ -150,7 +150,9 @@ class SurveyThemeConfiguration
 
                 $attributeKey = ($key === 'cssframework') ? 'files_css' : 'packages_to_load';
                 $attributeInherited = $model->__get($attributeKey);
-                if ($newFileValue !== '') {
+                if ($key === 'cssframework' && $value === 'inherit') {
+                    $attributes[$attributeKey] = 'inherit';
+                } elseif ($newFileValue !== '') {
                     if ($key === 'cssframework') {
                         // Repair an empty entry saved by an earlier failed replacement
                         $attributeInherited = str_replace('""', '"' . $newFileValue . '"', $attributeInherited);

@@ -152,6 +152,9 @@ class SurveyThemeConfigurationTest extends TestBaseClass
             $service->updateThemeOption((int)$survey->sid, ['templateName' => 'fruity_twentythree', 'cssframework' => 'mango']);
             $filesCss = json_decode(\TemplateConfiguration::model()->findByAttributes($criteria)->files_css, true);
             $this->assertSame('css/variations/theme_mango.css', $filesCss['add'][0]);
+
+            $service->updateThemeOption((int)$survey->sid, ['templateName' => 'fruity_twentythree', 'cssframework' => 'inherit']);
+            $this->assertSame('inherit', \TemplateConfiguration::model()->findByAttributes($criteria)->files_css);
         } finally {
             $survey->delete();
             \Template::resetInstance();
