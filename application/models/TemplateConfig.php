@@ -971,7 +971,8 @@ class TemplateConfig extends CActiveRecord
                     );
                 }
             } else {
-                /** TODO: temporary disabling of uninstalling themes to rework it after LS7 release has been completed #AT-2266 */
+                // Themes made for the previous major version are outdated: They stay installed and usable,
+                // and the theme list marks them as outdated (see isOutdated()).
                 return true;
             }
         } elseif (($isCompatible === null) && $redirect) {
@@ -990,15 +991,16 @@ class TemplateConfig extends CActiveRecord
     }
 
     /**
-     * Returns true when all compatibility versions declared in the theme config are strictly below
-     * the minimum allowed major version (current LimeSurvey major version minus one).
+     * Returns true when no compatibility version declared in the theme config is within the supported
+     * major versions: The previous LimeSurvey major version (current minus one) and the current one.
      *
-     * Example: if the running LS is 7.x the minimum allowed major is 6, so a theme that only
-     * declares compatibility with 5.x or lower is considered too old and should be uninstalled.
-     * A theme that declares at least one version >= minimum allowed major is kept.
+     * Example: if the running LS is 7.x, a theme that only declares compatibility with 5.x or lower,
+     * or only with 8.x or higher, is not supported and should be uninstalled.
+     * A theme that declares at least one 6.x or 7.x version is kept.
+     * Themes without any declared compatibility are kept too.
      *
-     * @param ExtensionConfig|null $extensionConfig
-     * @return bool
+     * @param ExtensionConfig|null $extensionConfig Config of the theme to check
+     * @return bool True if the theme should be uninstalled, false if it can be kept
      */
     private static function isThemeTooOldToKeep(?ExtensionConfig $extensionConfig): bool
     {
@@ -1017,14 +1019,55 @@ class TemplateConfig extends CActiveRecord
         $minimumAllowedMajor = $currentMajor - 1;
 
         foreach ($extensionConfig->xml->compatibility->version as $version) {
-            if ((int) substr((string) $version, 0, 1) >= $minimumAllowedMajor) {
-                // At least one declared compatibility version is recent enough to keep
+            $versionMajor = (int) substr((string) $version, 0, 1);
+            if ($versionMajor >= $minimumAllowedMajor && $versionMajor <= $currentMajor) {
+                // At least one declared compatibility version is within the supported major versions
                 return false;
             }
         }
         return true;
     }
 
+    /**
+     * Checks if a theme is outdated: It doesn't declare compatibility with this LimeSurvey version,
+     * but with the previous major version. Outdated themes are kept installed and can still be used,
+     * but they may miss improvements of the core theme files they override.
+     *
+     * @param string $themePath Full path of the theme's config.xml
+     * @return bool True if the theme is outdated, false if it is compatible, declares no compatibility,
+     *              is not supported anymore or was not found
+     */
+    public static function isOutdated($themePath): bool
+    {
+        $extensionConfig = ExtensionConfig::loadFromFileCached($themePath);
+        if (
+            $extensionConfig === null
+            || $extensionConfig->isCompatible()
+            || !isset($extensionConfig->xml->compatibility->version)
+        ) {
+            return false;
+        }
+        return !self::isThemeTooOldToKeep($extensionConfig);
+    }
+
+    /**
+     * Returns the "Outdated" badge shown next to the name of outdated themes in the theme lists
+     *
+     * @return string HTML of the badge
+     */
+    public static function getOutdatedBadge(): string
+    {
+        return CHtml::tag(
+            'span',
+            [
+                'class' => 'badge bg-warning text-dark ms-1',
+                'tabindex' => '0',
+                'data-bs-toggle' => 'tooltip',
+                'title' => gT('This theme was made for an older LimeSurvey version. It can still be used, but it may miss improvements of the theme it extends.', 'unescaped'),
+            ],
+            CHtml::encode(gT('Outdated', 'unescaped'))
+        );
+    }
 
     /**
      * Checks if theme is compatible with the current limesurvey version

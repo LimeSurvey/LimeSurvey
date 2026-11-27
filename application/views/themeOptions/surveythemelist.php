@@ -39,7 +39,10 @@ $this->widget(
             [
                 'header' => gT('Name'),
                 'name' => 'template_name',
-                'value' => '"<strong>".CHtml::encode($data->template->title)."</strong>" ."<br>" .CHtml::encode($data->template_name)',
+                'value' => function ($data) {
+                    $outdatedBadge = Template::isOutdatedTemplate($data->template) ? TemplateConfig::getOutdatedBadge() : '';
+                    return '<strong>' . CHtml::encode($data->template->title) . '</strong>' . $outdatedBadge . '<br>' . CHtml::encode($data->template_name);
+                },
                 'htmlOptions' => ['class' => 'col-lg-2'],
                 'type' => 'raw',
             ],
