@@ -52,6 +52,7 @@ import keepTooltipsHoverable from './accessibility/keepTooltipsHoverable';
 import restoreFocusAfterModal from './accessibility/restoreFocusAfterModal';
 import skipToMainContent from './accessibility/skipToMainContent';
 import spaceActivatesButtonLinks from './accessibility/spaceActivatesButtonLinks';
+import announceLoading from './accessibility/announceLoading';
 import tabsControl from './accessibility/tabsControl';
 
 // import components
@@ -108,6 +109,7 @@ const AdminCore = function(){
             restoreFocusAfterModal();
             skipToMainContent();
             spaceActivatesButtonLinks();
+            appendToLoad(announceLoading);
             AjaxHelper.bindNotLoggedInHandler();
         },
         appendToLoad = (fn, event, root, delay) => {

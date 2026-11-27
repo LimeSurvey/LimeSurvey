@@ -5,6 +5,14 @@
     background-color : $g-200;
     .ls-topbar-buttons {
         margin-bottom : -4px;
+        // Flex items: screen readers read the buttons one by one instead of as one line of text
+        display     : flex;
+        flex-wrap   : wrap;
+        align-items : flex-start;
+        column-gap  : 4px;
+        &.text-end {
+            justify-content : flex-end;
+        }
     }
     .btn {
         margin-bottom : 4px;

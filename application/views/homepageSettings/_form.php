@@ -25,9 +25,9 @@
 
 
     <div class="mb-3">
-        <label class='form-label '><?php echo $form->labelEx($model, 'position'); ?></label>
+        <?php echo $form->labelEx($model, 'position', ['class' => 'form-label']); ?>
         <div class=''>
-            <?php echo $form->numberField($model, 'position', array('class' => 'form-control')); ?>
+            <?php echo $form->numberField($model, 'position', array('class' => 'form-control', 'aria-required' => 'true')); ?>
         </div>
         <?php if ($form->error($model, 'position')) : ?>
             <div class=" text-danger">
@@ -37,9 +37,9 @@
     </div>
 
     <div class="mb-3">
-        <label class='form-label '><?php echo $form->labelEx($model, 'url'); ?></label>
+        <?php echo $form->labelEx($model, 'url', ['class' => 'form-label']); ?>
         <div class=''>
-            <?php echo $form->textField($model, 'url', array('class' => 'form-control')); ?>
+            <?php echo $form->textField($model, 'url', array('class' => 'form-control', 'aria-required' => 'true')); ?>
         </div>
         <?php if ($form->error($model, 'url')) : ?>
             <div class=' text-danger'>
@@ -49,9 +49,9 @@
     </div>
 
     <div class="mb-3">
-        <label class='form-label '><?php echo $form->labelEx($model, 'title'); ?></label>
+        <?php echo $form->labelEx($model, 'title', ['class' => 'form-label']); ?>
         <div class=''>
-            <?php echo $form->textField($model, 'title', array('class' => 'form-control')); ?>
+            <?php echo $form->textField($model, 'title', array('class' => 'form-control', 'aria-required' => 'true')); ?>
         </div>
         <?php if ($form->error($model, 'title')) : ?>
             <div class=" text-danger">
@@ -61,24 +61,34 @@
     </div>
 
     <div class="mb-3">
-        <label class='form-label '><?php echo $form->labelEx($model, 'ico'); ?></label>
-        <div class='row align-items-center'>
-            <div class='btn-group col-2'>
-                <button type='button' class='btn btn-outline-secondary dropdown-toggle limebutton form-control' data-bs-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
+        <?php // The icon is chosen with the "Select icon" button, the text field itself is hidden ?>
+        <span class="form-label d-block required" id="Box_ico_label">
+            <?= CHtml::encode($model->getAttributeLabel('ico')) ?> <span class="required">*</span>
+        </span>
+        <?php // col-auto: on small screens the button and the chosen icon keep their size and wrap instead of overlapping ?>
+        <div class='row align-items-center gy-2'>
+            <div class='btn-group col-auto'>
+                <button type='button' class='btn btn-outline-secondary dropdown-toggle limebutton form-control' data-bs-toggle='dropdown' aria-haspopup='true' aria-expanded='false' aria-describedby="Box_ico_label">
                     <?= gT('Select icon') ?>
                     <span class='caret'></span>
                 </button>
                 <ul class='dropdown-menu'>
                     <?php // One list item per icon, so the number of icons is announced correctly ?>
                     <?php foreach ($icons as $icon) : ?>
+                        <?php $iconLabel = Box::getIconLabel($icon['icon']); ?>
                         <li class="d-inline">
-                            <a href="#" class="m-2">
-                                <span data-icon='<?php echo $icon['icon']; ?>' data-iconId='<?php echo $icon['id']; ?>' class='option-icon <?php echo $icon['icon']; ?>'></span>
+                            <a href="#" role="button" class="m-2 option-icon-link" title="<?= CHtml::encode($iconLabel) ?>" aria-label="<?= CHtml::encode($iconLabel) ?>">
+                                <span data-icon='<?php echo $icon['icon']; ?>' data-iconId='<?php echo $icon['id']; ?>' data-icon-label="<?= CHtml::encode($iconLabel) ?>" class='option-icon <?php echo $icon['icon']; ?>' aria-hidden="true"></span>
                             </a>
                         </li>
                     <?php endforeach; ?>
                 </ul></div>
-            <div class="col-2"><span>&nbsp;<?= gT('Chosen icon:') ?></span>&nbsp;<span id="chosen-icon" class="<?= $model->getIconName() ?> text-success"></span></div>
+            <div class="col-auto">
+                <span><?= gT('Chosen icon:') ?></span>
+                <span id="chosen-icon" class="<?= $model->getIconName() ?> text-success" aria-hidden="true"></span>
+                <?php // Text alternative of the chosen icon, announced when another icon is chosen ?>
+                <span id="chosen-icon-label" class="visually-hidden" role="status"><?= CHtml::encode(Box::getIconLabel($model->getIconName())) ?></span>
+            </div>
             <?php echo $form->textField($model, 'ico', array('size' => 60, 'maxlength' => 255, 'class' => 'form-control d-none')); ?>
         </div>
 
@@ -90,9 +100,9 @@
     </div>
 
     <div class="mb-3">
-        <label class='form-label '><?php echo $form->labelEx($model, 'desc'); ?></label>
+        <?php echo $form->labelEx($model, 'desc', ['class' => 'form-label']); ?>
         <div class=''>
-            <?php echo $form->textArea($model, 'desc', array('rows' => 6, 'cols' => 50, 'class' => 'form-control')); ?>
+            <?php echo $form->textArea($model, 'desc', array('rows' => 6, 'cols' => 50, 'class' => 'form-control', 'aria-required' => 'true')); ?>
         </div>
         <?php if ($form->error($model, 'desc')) : ?>
             <div class=" text-danger" role="alert">
@@ -111,7 +121,7 @@
     </div>
 
     <div class="mb-3">
-        <label class='form-label '><?php echo $form->labelEx($model, 'usergroup'); ?></label>
+        <?php echo $form->labelEx($model, 'usergroup', ['class' => 'form-label']); ?>
         <div class=''>
             <?php
             $options_array = CHtml::listData(UserGroup::model()->findAll(), 'ugid', 'name');

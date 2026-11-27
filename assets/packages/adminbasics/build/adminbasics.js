@@ -17732,6 +17732,46 @@
 	};
 
 	/**
+	 * Announces the loading overlay (#ls-loading) to screen readers (WCAG 4.1.3 Status Messages).
+	 *
+	 * The overlay is a status region with a static, visually hidden "Loading..." text that is only
+	 * shown and hidden ($('#ls-loading').show()). Showing an unchanged live region is not announced
+	 * reliably, so its text is set again every time the overlay becomes visible.
+	 *
+	 * Safe to call multiple times — the observer is only attached once per overlay element.
+	 */
+	const announceLoading = () => {
+	  const loading = document.getElementById('ls-loading');
+	  if (!loading || loading.dataset.announceLoadingBound === '1' || typeof MutationObserver === 'undefined') {
+	    return;
+	  }
+	  const textElement = loading.querySelector('.visually-hidden');
+	  if (!textElement) {
+	    return;
+	  }
+	  loading.dataset.announceLoadingBound = '1';
+	  const text = textElement.textContent;
+	  let wasVisible = window.getComputedStyle(loading).display !== 'none';
+	  // Pending restore of the text: A newer appearance of the overlay replaces it, so that one gets the full delay
+	  let restoreTimeout = null;
+	  new MutationObserver(() => {
+	    const isVisible = window.getComputedStyle(loading).display !== 'none';
+	    if (isVisible && !wasVisible) {
+	      window.clearTimeout(restoreTimeout);
+	      textElement.textContent = '';
+	      restoreTimeout = window.setTimeout(() => {
+	        restoreTimeout = null;
+	        textElement.textContent = text;
+	      }, 100);
+	    }
+	    wasVisible = isVisible;
+	  }).observe(loading, {
+	    attributes: true,
+	    attributeFilter: ['style', 'class']
+	  });
+	};
+
+	/**
 	 * Accessible keyboard navigation for Bootstrap tab components (ARIA APG pattern).
 	 *
 	 * - Roving tabindex: only the active tab is reachable via the Tab key;
@@ -17910,12 +17950,19 @@
 	    closeButton = $(closeButtonHTML),
 	    confirmButton = $(confirmButtonHTML);
 	  let modalObject = null;
+
+	  // Every link gets its own modal: Unique ids for the title and the text that name the dialog
+	  window.LS = window.LS || {};
+	  LS._confirmDeleteModalCount = (LS._confirmDeleteModalCount || 0) + 1;
+	  const titleId = 'confirm-delete-modal-title-' + LS._confirmDeleteModalCount,
+	    textId = 'confirm-delete-modal-text-' + LS._confirmDeleteModalCount;
 	  const combineModal = () => {
 	      const thisContent = contentBlock.clone();
 	      thisContent.append(bodyBlock.clone());
 	      if (confirmTitle !== '') {
 	        const thisHeader = headerBlock.clone();
 	        headlineBlock.text(confirmTitle);
+	        headlineBlock.attr('id', titleId);
 	        thisHeader.append(headlineBlock);
 	        thisHeader.append(closeIcon.clone());
 	        thisContent.prepend(thisHeader);
@@ -17925,6 +17972,15 @@
 	      thisFooter.append(confirmButton.clone());
 	      thisContent.append(thisFooter);
 	      modalObject = outerBlock.clone();
+	      // Accessible name of the dialog: The title, or the confirmation question when there is no title.
+	      // The question is copied as text, since AJAX responses replace the body that holds it.
+	      if (confirmTitle !== '') {
+	        modalObject.attr('aria-labelledby', titleId).attr('aria-describedby', textId);
+	      } else {
+	        // DOMParser: Reads the text without loading images or running handlers of the markup
+	        const questionText = new DOMParser().parseFromString(String(confirmText), 'text/html').body.textContent;
+	        modalObject.attr('aria-label', questionText.trim());
+	      }
 	      modalObject.append(innerBlock.clone().append(thisContent));
 	    },
 	    addForm = function () {
@@ -17942,7 +17998,7 @@
 	      }
 	      formObject.append($("<input type='hidden'>").attr("name", LS.data.csrfTokenName).attr("value", LS.data.csrfToken));
 	      modalObject.find('.modal-body').append(formObject);
-	      modalObject.find('.modal-body').append('<p>' + confirmText + '</p>');
+	      modalObject.find('.modal-body').append($('<p></p>').attr('id', textId).html(confirmText));
 	      if (showTextArea !== '') {
 	        modalObject.find('form').append('<textarea id="modalTextArea" name="modalTextArea" class="form-control mb-3"></textarea>');
 	      }
@@ -18664,6 +18720,7 @@
 	      restoreFocusAfterModal();
 	      skipToMainContent();
 	      spaceActivatesButtonLinks();
+	      appendToLoad(announceLoading);
 	      bindNotLoggedInHandler();
 	    },
 	    appendToLoad = (fn, event, root, delay) => {
