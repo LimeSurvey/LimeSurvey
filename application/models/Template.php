@@ -600,7 +600,8 @@ class Template extends LSActiveRecord
             $getNewInstance = true;
         } elseif (
             !self::$instance instanceof TemplateManifest
-            && !(self::$instance->sid === $iSurveyId && self::$instance->gsid === $iSurveyGroupId)
+            // IDs are cast because some database drivers return them as strings
+            && !((int)self::$instance->sid === (int)$iSurveyId && (int)self::$instance->gsid === (int)$iSurveyGroupId)
         ) {
             // if the current instance matches the requested surveys sid and gsid, generate a new one
             $getNewInstance = true;
@@ -610,7 +611,8 @@ class Template extends LSActiveRecord
         }
         if ($getNewInstance) {
             self::$instance = self::getTemplateConfiguration($sTemplateName, $iSurveyId, $iSurveyGroupId, $bForceXML);
-            self::$instance->prepareTemplateRendering($sTemplateName, $iSurveyId);
+            // An already prepared instance is returned if there is one, the new one is then not prepared
+            self::$instance = self::$instance->prepareTemplateRendering($sTemplateName, $iSurveyId);
         }
 
         return self::getLastInstance(false);
