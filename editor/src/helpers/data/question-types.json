@@ -1,0 +1,816 @@
+{
+  "success": true,
+  "categories": [
+    {
+      "name": "singleChoice",
+      "title": "Single choice",
+      "icon": "QuestionInserterSingleChoiceIcon"
+    },
+    {
+      "name": "multipleChoice",
+      "title": "Multiple choice",
+      "icon": "QuestionInserterMultipleChoiceIcon"
+    },
+    {
+      "name": "rankingRating",
+      "title": "Ranking & rating",
+      "icon": "QuestionInserterRankIcon"
+    },
+    {
+      "name": "datesData",
+      "title": "Dates & data",
+      "icon": "QuestionInserterDataIcon"
+    },
+    {
+      "name": "text",
+      "title": "Text",
+      "icon": "QuestionInserterTextIcon"
+    },
+    {
+      "name": "number",
+      "title": "Number",
+      "icon": "QuestionInserterNumberIcon"
+    },
+    {
+      "name": "array",
+      "title": "Array",
+      "icon": "TableIcon"
+    }
+  ],
+  "questionTypes": {
+    "5pointchoice": {
+      "name": "5pointchoice",
+      "type": "5",
+      "title": "5 point choice",
+      "group": "Single choice questions",
+      "extends": "",
+      "coreTheme": true,
+      "visible": true,
+      "settings": {
+        "subquestions": "0",
+        "answerscales": "0",
+        "hasdefaultvalues": "0",
+        "assessable": "0",
+        "class": "choice-5-pt-radio"
+      },
+      "editorOnly": false,
+      "category": "singleChoice",
+      "sortOrder": 3,
+      "devOnly": false
+    },
+    "arrays/10point": {
+      "name": "arrays/10point",
+      "type": "B",
+      "title": "Array (10 point choice)",
+      "group": "Arrays",
+      "extends": "",
+      "coreTheme": true,
+      "visible": true,
+      "settings": {
+        "subquestions": "1",
+        "answerscales": "0",
+        "hasdefaultvalues": "0",
+        "assessable": "1",
+        "class": "array-10-pt"
+      },
+      "editorOnly": false,
+      "category": null,
+      "sortOrder": null,
+      "devOnly": false
+    },
+    "arrays/5point": {
+      "name": "arrays/5point",
+      "type": "A",
+      "title": "Array (5 point choice)",
+      "group": "Arrays",
+      "extends": "",
+      "coreTheme": true,
+      "visible": true,
+      "settings": {
+        "subquestions": "1",
+        "answerscales": "0",
+        "hasdefaultvalues": "0",
+        "assessable": "1",
+        "class": "array-5-pt"
+      },
+      "editorOnly": false,
+      "category": null,
+      "sortOrder": null,
+      "devOnly": false
+    },
+    "arrays/array": {
+      "name": "arrays/array",
+      "type": "F",
+      "title": "Array (Point choice)",
+      "group": "Arrays",
+      "extends": "",
+      "coreTheme": true,
+      "visible": true,
+      "settings": {
+        "subquestions": "1",
+        "answerscales": "1",
+        "hasdefaultvalues": "0",
+        "assessable": "1",
+        "class": "array-flexible-row"
+      },
+      "editorOnly": false,
+      "category": "array",
+      "sortOrder": 0,
+      "devOnly": false
+    },
+    "arrays/column": {
+      "name": "arrays/column",
+      "type": "H",
+      "title": "Array by column",
+      "group": "Arrays",
+      "extends": "",
+      "coreTheme": true,
+      "visible": true,
+      "settings": {
+        "subquestions": "1",
+        "answerscales": "1",
+        "hasdefaultvalues": "0",
+        "assessable": "1",
+        "class": "array-flexible-column"
+      },
+      "editorOnly": false,
+      "category": "array",
+      "sortOrder": 3,
+      "devOnly": false
+    },
+    "arrays/dualscale": {
+      "name": "arrays/dualscale",
+      "type": "1",
+      "title": "Array dual scale",
+      "group": "Arrays",
+      "extends": "",
+      "coreTheme": true,
+      "visible": true,
+      "settings": {
+        "subquestions": "1",
+        "answerscales": "2",
+        "hasdefaultvalues": "0",
+        "assessable": "1",
+        "class": "array-flexible-dual-scale"
+      },
+      "editorOnly": false,
+      "category": "array",
+      "sortOrder": 4,
+      "devOnly": false
+    },
+    "arrays/increasesamedecrease": {
+      "name": "arrays/increasesamedecrease",
+      "type": "E",
+      "title": "Array (Increase/Same/Decrease)",
+      "group": "Arrays",
+      "extends": "",
+      "coreTheme": true,
+      "visible": true,
+      "settings": {
+        "subquestions": "1",
+        "answerscales": "0",
+        "hasdefaultvalues": "0",
+        "assessable": "1",
+        "class": "array-increase-same-decrease"
+      },
+      "editorOnly": false,
+      "category": null,
+      "sortOrder": null,
+      "devOnly": false
+    },
+    "arrays/multiflexi": {
+      "name": "arrays/multiflexi",
+      "type": ":",
+      "title": "Array (Numbers)",
+      "group": "Arrays",
+      "extends": "",
+      "coreTheme": true,
+      "visible": true,
+      "settings": {
+        "subquestions": "2",
+        "answerscales": "0",
+        "hasdefaultvalues": "0",
+        "assessable": "1",
+        "class": "array-multi-flexi"
+      },
+      "editorOnly": false,
+      "category": "array",
+      "sortOrder": 2,
+      "devOnly": false
+    },
+    "arrays/texts": {
+      "name": "arrays/texts",
+      "type": ";",
+      "title": "Array (Texts)",
+      "group": "Arrays",
+      "extends": "",
+      "coreTheme": true,
+      "visible": true,
+      "settings": {
+        "subquestions": "2",
+        "answerscales": "0",
+        "hasdefaultvalues": "0",
+        "assessable": "0",
+        "class": "array-multi-flexi-text"
+      },
+      "editorOnly": false,
+      "category": "array",
+      "sortOrder": 1,
+      "devOnly": false
+    },
+    "arrays/yesnouncertain": {
+      "name": "arrays/yesnouncertain",
+      "type": "C",
+      "title": "Array (Yes/Uncertain/No)",
+      "group": "Arrays",
+      "extends": "",
+      "coreTheme": true,
+      "visible": true,
+      "settings": {
+        "subquestions": "1",
+        "answerscales": "0",
+        "hasdefaultvalues": "0",
+        "assessable": "1",
+        "class": "array-yes-uncertain-no"
+      },
+      "editorOnly": false,
+      "category": null,
+      "sortOrder": null,
+      "devOnly": false
+    },
+    "boilerplate": {
+      "name": "boilerplate",
+      "type": "X",
+      "title": "Text display",
+      "group": "Mask questions",
+      "extends": "",
+      "coreTheme": true,
+      "visible": true,
+      "settings": {
+        "subquestions": "0",
+        "answerscales": "0",
+        "hasdefaultvalues": "0",
+        "assessable": "0",
+        "class": "boilerplate"
+      },
+      "editorOnly": false,
+      "category": "text",
+      "sortOrder": 3,
+      "devOnly": false
+    },
+    "date": {
+      "name": "date",
+      "type": "D",
+      "title": "Date/time",
+      "group": "Mask questions",
+      "extends": "",
+      "coreTheme": true,
+      "visible": true,
+      "settings": {
+        "subquestions": "0",
+        "answerscales": "0",
+        "hasdefaultvalues": "1",
+        "assessable": "0",
+        "class": "date"
+      },
+      "editorOnly": false,
+      "category": "datesData",
+      "sortOrder": 2,
+      "devOnly": false
+    },
+    "equation": {
+      "name": "equation",
+      "type": "*",
+      "title": "Equation",
+      "group": "Mask questions",
+      "extends": "",
+      "coreTheme": true,
+      "visible": true,
+      "settings": {
+        "subquestions": "0",
+        "answerscales": "0",
+        "hasdefaultvalues": "0",
+        "assessable": "0",
+        "class": "equation"
+      },
+      "editorOnly": false,
+      "category": "number",
+      "sortOrder": 2,
+      "devOnly": false
+    },
+    "file_upload": {
+      "name": "file_upload",
+      "type": "|",
+      "title": "File upload",
+      "group": "Mask questions",
+      "extends": "",
+      "coreTheme": true,
+      "visible": true,
+      "settings": {
+        "subquestions": "0",
+        "answerscales": "0",
+        "hasdefaultvalues": "0",
+        "assessable": "0",
+        "class": "upload-files"
+      },
+      "editorOnly": false,
+      "category": "datesData",
+      "sortOrder": 3,
+      "devOnly": false
+    },
+    "gender": {
+      "name": "gender",
+      "type": "G",
+      "title": "Gender",
+      "group": "Mask questions",
+      "extends": "",
+      "coreTheme": true,
+      "visible": true,
+      "settings": {
+        "subquestions": "0",
+        "answerscales": "0",
+        "hasdefaultvalues": "0",
+        "assessable": "0",
+        "class": "gender"
+      },
+      "editorOnly": false,
+      "category": "rankingRating",
+      "sortOrder": 3,
+      "devOnly": false
+    },
+    "hugefreetext": {
+      "name": "hugefreetext",
+      "type": "U",
+      "title": "Huge free text",
+      "group": "Text questions",
+      "extends": "",
+      "coreTheme": true,
+      "visible": true,
+      "settings": {
+        "subquestions": "0",
+        "answerscales": "0",
+        "hasdefaultvalues": "1",
+        "assessable": "0",
+        "class": "text-huge"
+      },
+      "editorOnly": false,
+      "category": null,
+      "sortOrder": null,
+      "devOnly": false
+    },
+    "language": {
+      "name": "language",
+      "type": "I",
+      "title": "Language switch",
+      "group": "Mask questions",
+      "extends": "",
+      "coreTheme": true,
+      "visible": true,
+      "settings": {
+        "subquestions": "0",
+        "answerscales": "0",
+        "hasdefaultvalues": "0",
+        "assessable": "0",
+        "class": "language"
+      },
+      "editorOnly": false,
+      "category": null,
+      "sortOrder": null,
+      "devOnly": false
+    },
+    "listradio": {
+      "name": "listradio",
+      "type": "L",
+      "title": "List (Radio)",
+      "group": "Single choice questions",
+      "extends": "",
+      "coreTheme": true,
+      "visible": true,
+      "settings": {
+        "subquestions": "0",
+        "answerscales": "1",
+        "hasdefaultvalues": "1",
+        "assessable": "1",
+        "class": "list-radio"
+      },
+      "editorOnly": false,
+      "category": "singleChoice",
+      "sortOrder": 0,
+      "devOnly": false
+    },
+    "list_dropdown": {
+      "name": "list_dropdown",
+      "type": "!",
+      "title": "List (Dropdown)",
+      "group": "Single choice questions",
+      "extends": "",
+      "coreTheme": true,
+      "visible": true,
+      "settings": {
+        "subquestions": "0",
+        "answerscales": "1",
+        "hasdefaultvalues": "1",
+        "assessable": "1",
+        "class": "list-dropdown"
+      },
+      "editorOnly": false,
+      "category": null,
+      "sortOrder": null,
+      "devOnly": false
+    },
+    "list_with_comment": {
+      "name": "list_with_comment",
+      "type": "O",
+      "title": "List with comment (Radio)",
+      "group": "Single choice questions",
+      "extends": "",
+      "coreTheme": true,
+      "visible": true,
+      "settings": {
+        "subquestions": "0",
+        "answerscales": "1",
+        "hasdefaultvalues": "1",
+        "assessable": "1",
+        "class": "list-with-comment"
+      },
+      "editorOnly": false,
+      "category": "singleChoice",
+      "sortOrder": 1,
+      "devOnly": false
+    },
+    "longfreetext": {
+      "name": "longfreetext",
+      "type": "T",
+      "title": "Long text",
+      "group": "Text questions",
+      "extends": "",
+      "coreTheme": true,
+      "visible": true,
+      "settings": {
+        "subquestions": "0",
+        "answerscales": "0",
+        "hasdefaultvalues": "1",
+        "assessable": "0",
+        "class": "text-long"
+      },
+      "editorOnly": false,
+      "category": "text",
+      "sortOrder": 1,
+      "devOnly": false
+    },
+    "multiplechoice": {
+      "name": "multiplechoice",
+      "type": "M",
+      "title": "Multiple choice",
+      "group": "Multiple choice questions",
+      "extends": "",
+      "coreTheme": true,
+      "visible": true,
+      "settings": {
+        "subquestions": "1",
+        "answerscales": "0",
+        "hasdefaultvalues": "1",
+        "assessable": "1",
+        "class": "multiple-opt"
+      },
+      "editorOnly": false,
+      "category": "multipleChoice",
+      "sortOrder": 0,
+      "devOnly": false
+    },
+    "multiplechoice_with_comments": {
+      "name": "multiplechoice_with_comments",
+      "type": "P",
+      "title": "Multiple choice with comments",
+      "group": "Multiple choice questions",
+      "extends": "",
+      "coreTheme": true,
+      "visible": true,
+      "settings": {
+        "subquestions": "1",
+        "answerscales": "0",
+        "hasdefaultvalues": "1",
+        "assessable": "1",
+        "class": "multiple-opt-comments"
+      },
+      "editorOnly": false,
+      "category": "multipleChoice",
+      "sortOrder": 1,
+      "devOnly": false
+    },
+    "multiplenumeric": {
+      "name": "multiplenumeric",
+      "type": "K",
+      "title": "Multiple numerical input",
+      "group": "Mask questions",
+      "extends": "",
+      "coreTheme": true,
+      "visible": true,
+      "settings": {
+        "subquestions": "1",
+        "answerscales": "0",
+        "hasdefaultvalues": "1",
+        "assessable": "1",
+        "class": "numeric-multi"
+      },
+      "editorOnly": false,
+      "category": "number",
+      "sortOrder": 1,
+      "devOnly": false
+    },
+    "multipleshorttext": {
+      "name": "multipleshorttext",
+      "type": "Q",
+      "title": "Multiple short text",
+      "group": "Text questions",
+      "extends": "",
+      "coreTheme": true,
+      "visible": true,
+      "settings": {
+        "subquestions": "1",
+        "answerscales": "0",
+        "hasdefaultvalues": "1",
+        "assessable": "0",
+        "class": "multiple-short-txt"
+      },
+      "editorOnly": false,
+      "category": "text",
+      "sortOrder": 2,
+      "devOnly": false
+    },
+    "numerical": {
+      "name": "numerical",
+      "type": "N",
+      "title": "Numerical input",
+      "group": "Mask questions",
+      "extends": "",
+      "coreTheme": true,
+      "visible": true,
+      "settings": {
+        "subquestions": "0",
+        "answerscales": "0",
+        "hasdefaultvalues": "1",
+        "assessable": "0",
+        "class": "numeric"
+      },
+      "editorOnly": false,
+      "category": "number",
+      "sortOrder": 0,
+      "devOnly": false
+    },
+    "ranking": {
+      "name": "ranking",
+      "type": "R",
+      "title": "Ranking",
+      "group": "Mask questions",
+      "extends": "",
+      "coreTheme": true,
+      "visible": true,
+      "settings": {
+        "subquestions": "1",
+        "answerscales": "0",
+        "hasdefaultvalues": "0",
+        "assessable": "1",
+        "class": "ranking"
+      },
+      "editorOnly": false,
+      "category": "rankingRating",
+      "sortOrder": 0,
+      "devOnly": true
+    },
+    "shortfreetext": {
+      "name": "shortfreetext",
+      "type": "S",
+      "title": "Short text",
+      "group": "Text questions",
+      "extends": "",
+      "coreTheme": true,
+      "visible": true,
+      "settings": {
+        "subquestions": "0",
+        "answerscales": "0",
+        "hasdefaultvalues": "1",
+        "assessable": "0",
+        "class": "text-short"
+      },
+      "editorOnly": false,
+      "category": "text",
+      "sortOrder": 0,
+      "devOnly": false
+    },
+    "yesno": {
+      "name": "yesno",
+      "type": "Y",
+      "title": "Yes/No",
+      "group": "Mask questions",
+      "extends": "",
+      "coreTheme": true,
+      "visible": true,
+      "settings": {
+        "subquestions": "0",
+        "answerscales": "0",
+        "hasdefaultvalues": "1",
+        "assessable": "0",
+        "class": "yes-no"
+      },
+      "editorOnly": false,
+      "category": "rankingRating",
+      "sortOrder": 4,
+      "devOnly": false
+    },
+    "bootstrap_dropdown": {
+      "name": "bootstrap_dropdown",
+      "type": "!",
+      "title": "Dropdown",
+      "group": "Single choice questions",
+      "extends": "!",
+      "coreTheme": true,
+      "visible": true,
+      "settings": {
+        "subquestions": "0",
+        "answerscales": "1",
+        "hasdefaultvalues": "1",
+        "assessable": "1",
+        "class": "list-dropdown"
+      },
+      "editorOnly": false,
+      "category": "singleChoice",
+      "sortOrder": 4,
+      "devOnly": false
+    },
+    "bootstrap_buttons": {
+      "name": "bootstrap_buttons",
+      "type": "L",
+      "title": "Single choice buttons",
+      "group": "Single choice questions",
+      "extends": "L",
+      "coreTheme": true,
+      "visible": true,
+      "settings": {
+        "subquestions": "0",
+        "answerscales": "1",
+        "hasdefaultvalues": "1",
+        "assessable": "1",
+        "class": "list-radio"
+      },
+      "editorOnly": false,
+      "category": "singleChoice",
+      "sortOrder": 5,
+      "devOnly": false
+    },
+    "bootstrap_buttons_multi": {
+      "name": "bootstrap_buttons_multi",
+      "type": "M",
+      "title": "Multiple choice buttons",
+      "group": "Multiple choice questions",
+      "extends": "M",
+      "coreTheme": true,
+      "visible": true,
+      "settings": {
+        "subquestions": "1",
+        "answerscales": "0",
+        "hasdefaultvalues": "1",
+        "assessable": "1",
+        "class": "multiple-opt"
+      },
+      "editorOnly": false,
+      "category": "multipleChoice",
+      "sortOrder": 2,
+      "devOnly": false
+    },
+    "browserdetect": {
+      "name": "browserdetect",
+      "type": "S",
+      "title": "Browser detection",
+      "group": "Text questions",
+      "extends": "S",
+      "coreTheme": true,
+      "visible": true,
+      "settings": {
+        "subquestions": "0",
+        "answerscales": "0",
+        "hasdefaultvalues": "1",
+        "assessable": "0",
+        "class": "text-short"
+      },
+      "editorOnly": false,
+      "category": "datesData",
+      "sortOrder": 1,
+      "devOnly": false
+    },
+    "image_select-listradio": {
+      "name": "image_select-listradio",
+      "type": "L",
+      "title": "List image select (Radio)",
+      "group": "Single choice questions",
+      "extends": "L",
+      "coreTheme": true,
+      "visible": true,
+      "settings": {
+        "subquestions": "0",
+        "answerscales": "1",
+        "hasdefaultvalues": "1",
+        "assessable": "1",
+        "class": "list-radio"
+      },
+      "editorOnly": false,
+      "category": "singleChoice",
+      "sortOrder": 2,
+      "devOnly": false
+    },
+    "image_select-multiplechoice": {
+      "name": "image_select-multiplechoice",
+      "type": "M",
+      "title": "Image select multiple choice",
+      "group": "Multiple choice questions",
+      "extends": "M",
+      "coreTheme": true,
+      "visible": true,
+      "settings": {
+        "subquestions": "1",
+        "answerscales": "0",
+        "hasdefaultvalues": "1",
+        "assessable": "1",
+        "class": "multiple-opt"
+      },
+      "editorOnly": false,
+      "category": "multipleChoice",
+      "sortOrder": 3,
+      "devOnly": false
+    },
+    "inputondemand": {
+      "name": "inputondemand",
+      "type": "Q",
+      "title": "Input on demand",
+      "group": "Text questions",
+      "extends": "Q",
+      "coreTheme": true,
+      "visible": true,
+      "settings": {
+        "subquestions": "1",
+        "answerscales": "0",
+        "hasdefaultvalues": "1",
+        "assessable": "0",
+        "class": "multiple-short-txt"
+      },
+      "editorOnly": false,
+      "category": null,
+      "sortOrder": null,
+      "devOnly": false
+    },
+    "ranking_advanced": {
+      "name": "ranking_advanced",
+      "type": "R",
+      "title": "Ranking advanced",
+      "group": "Mask questions",
+      "extends": "R",
+      "coreTheme": true,
+      "visible": true,
+      "settings": {
+        "subquestions": "1",
+        "answerscales": "0",
+        "hasdefaultvalues": "0",
+        "assessable": "1",
+        "class": "ranking"
+      },
+      "editorOnly": false,
+      "category": "rankingRating",
+      "sortOrder": 1,
+      "devOnly": false
+    },
+    "map": {
+      "name": "map",
+      "type": "J",
+      "title": "Map",
+      "group": "Mask questions",
+      "extends": "",
+      "coreTheme": true,
+      "visible": true,
+      "settings": {
+        "subquestions": "0",
+        "answerscales": "0",
+        "hasdefaultvalues": "1",
+        "assessable": "0",
+        "class": "map"
+      },
+      "editorOnly": false,
+      "category": "datesData",
+      "sortOrder": 0,
+      "devOnly": false
+    },
+    "rating": {
+      "name": "rating",
+      "type": "RT",
+      "title": "Rating",
+      "group": "",
+      "extends": "",
+      "coreTheme": true,
+      "visible": true,
+      "settings": {},
+      "editorOnly": true,
+      "category": "rankingRating",
+      "sortOrder": 2,
+      "devOnly": true
+    }
+  }
+}

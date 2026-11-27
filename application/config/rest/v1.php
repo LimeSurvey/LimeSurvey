@@ -13,6 +13,10 @@ $rest = [
                 'name' => 'Question Attributes',
                 'description' => 'Question Attributes',
             ],
+            'question-types' => [
+                'name' => 'Question Types',
+                'description' => 'Question Types',
+            ],
             'auth' => [
                 'name' => 'Auth',
                 'description' => 'Auth',
@@ -63,4 +67,5 @@ return array_merge(
     include_once __DIR__ . '/v1/file-upload.php',
     include_once __DIR__ . '/v1/version-info.php',
     include_once __DIR__ . '/v1/question-attributes.php',
+    include_once __DIR__ . '/v1/question-types.php',
 );

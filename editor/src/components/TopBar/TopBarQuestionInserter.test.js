@@ -26,6 +26,20 @@ jest.mock('hooks/useBuffer', () => ({
 jest.mock('hooks/useFocused', () => ({
   useFocused: () => ({ setFocused: jest.fn(), groupIndex: undefined }),
 }))
+// The question types come from the API: Use the ones of a default installation
+jest.mock('hooks/useQuestionTypes', () => {
+  const { getDefaultQuestionTypes } = jest.requireActual(
+    'helpers/getDefaultQuestionTypes'
+  )
+  return {
+    useQuestionTypes: () => ({
+      ...getDefaultQuestionTypes('en'),
+      getTitle: () => '',
+      isFetching: false,
+      isLoaded: true,
+    }),
+  }
+})
 
 describe('TopBarQuestionInserter', () => {
   const originalT = global.t

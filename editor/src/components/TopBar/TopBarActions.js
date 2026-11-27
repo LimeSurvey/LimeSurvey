@@ -4,6 +4,7 @@ import classNames from 'classnames'
 
 import {
   useAppState,
+  useQuestionTypes,
   useSurveyImportService,
   useToggleQuestionCodes,
 } from 'hooks'
@@ -46,6 +47,8 @@ export const TopBarActions = ({
   const surveyImportService = useSurveyImportService()
   const { areCodesVisible, toggleQuestionCodes } = useToggleQuestionCodes()
   const [siteSettings = {}] = useAppState(STATES.SITE_SETTINGS, {})
+  // Loads the question types before the question inserter opens: It can't offer them until they are loaded
+  useQuestionTypes()
   const [, startEditorTutorial] = useAppState(
     STATES.START_EDITOR_TUTORIAL,
     false

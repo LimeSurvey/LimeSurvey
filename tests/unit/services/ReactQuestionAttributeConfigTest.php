@@ -141,6 +141,34 @@ class ReactQuestionAttributeConfigTest extends TestBaseClass
         $this->assertSame([['value' => 'X', 'text' => 'X']], $result['custom']['options']);
     }
 
+    /**
+     * questiontypes.xml in the overlay directory adds no attribute overlays.
+     *
+     * @return void
+     */
+    public function testQuestionTypeListIsNotReadAsAttributeOverlay(): void
+    {
+        $directory = sys_get_temp_dir() . '/react-overlay-' . uniqid();
+        mkdir($directory);
+        file_put_contents(
+            $directory . '/questiontypes.xml',
+            '<questiontypes><tab>Display</tab><attributes><attribute><name>custom</name>'
+            . '<component>Select</component></attribute></attributes></questiontypes>'
+        );
+
+        try {
+            $result = (new ReactQuestionAttributeConfig($directory))->apply(
+                ['custom' => ['name' => 'custom', 'category' => 'Display']],
+                'listradio'
+            );
+        } finally {
+            unlink($directory . '/questiontypes.xml');
+            rmdir($directory);
+        }
+
+        $this->assertArrayNotHasKey('component', $result['custom']);
+    }
+
     public function testQuestionHelperOptionFormatIsNormalized(): void
     {
         $result = self::$config->apply(

@@ -3,14 +3,108 @@ import 'tests/mocks'
 
 import { renderWithProviders } from 'tests/testUtils'
 import { QuestionTypeSelector } from './'
+import { getQuestionItemsList } from './constants'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { getQuestionTypeInfo } from 'components/QuestionTypes/getQuestionTypeInfo'
+import questionTypesData from 'helpers/data/question-types.json'
+
+// Lets a test simulate that the question types of the installation are still loading
+let mockIsLoaded = true
+jest.mock('hooks/useQuestionTypes', () => {
+  const actual = jest.requireActual('hooks/useQuestionTypes')
+  return {
+    useQuestionTypes: () => ({
+      ...actual.useQuestionTypes(),
+      isLoaded: mockIsLoaded,
+    }),
+  }
+})
+
+// Tests run in demo mode, where useQuestionTypes returns this fixture
+const offeredItems = getQuestionItemsList(
+  questionTypesData.categories,
+  questionTypesData.questionTypes
+).flatMap((category) => category.items)
+
+describe('getQuestionItemsList', () => {
+  const categories = [
+    { name: 'first', title: 'First', icon: 'TableIcon' },
+    { name: 'second', title: 'Second', icon: 'UnknownIcon' },
+  ]
+  const makeType = (name, props) => ({
+    name,
+    type: 'L',
+    title: name,
+    category: 'first',
+    sortOrder: 0,
+    devOnly: false,
+    visible: true,
+    ...props,
+  })
+
+  test('Should group the themes by category in their order', () => {
+    const list = getQuestionItemsList(categories, {
+      bootstrap_buttons: makeType('bootstrap_buttons', { sortOrder: 1 }),
+      listradio: makeType('listradio', { title: 'List' }),
+      yesno: makeType('yesno', { type: 'Y', category: 'second' }),
+    })
+
+    expect(list.map((category) => category.title)).toEqual(['First', 'Second'])
+    expect(list[0].icon).not.toBeNull()
+    expect(list[1].icon).toBeNull()
+    expect(list[0].items).toEqual([
+      { value: 'L', label: 'List', theme: 'listradio' },
+      { value: 'L', label: 'bootstrap_buttons', theme: 'bootstrap_buttons' },
+    ])
+    expect(list[1].items.map((item) => item.theme)).toEqual(['yesno'])
+  })
+
+  test('Should leave out hidden, unlisted and not renderable themes', () => {
+    const list = getQuestionItemsList(categories, {
+      listradio: makeType('listradio', { visible: false }),
+      hugefreetext: makeType('hugefreetext', { type: 'U', category: null }),
+      my_custom_theme: makeType('my_custom_theme'),
+      // A custom theme reusing a core theme name for another question type
+      bootstrap_buttons: makeType('bootstrap_buttons', { type: 'M' }),
+      yesno: makeType('yesno', { type: 'Y' }),
+    })
+
+    expect(list[0].items.map((item) => item.theme)).toEqual(['yesno'])
+  })
+
+  test('Should offer the dev-only themes only in dev mode', () => {
+    const devMode = process.env.REACT_APP_DEV_MODE
+    const questionTypes = {
+      ranking: makeType('ranking', { type: 'R', devOnly: true }),
+    }
+
+    try {
+      delete process.env.REACT_APP_DEV_MODE
+      expect(getQuestionItemsList(categories, questionTypes)[0].items).toEqual(
+        []
+      )
+
+      process.env.REACT_APP_DEV_MODE = 'true'
+      expect(
+        getQuestionItemsList(categories, questionTypes)[0].items.map(
+          (item) => item.theme
+        )
+      ).toEqual(['ranking'])
+    } finally {
+      if (devMode === undefined) {
+        delete process.env.REACT_APP_DEV_MODE
+      } else {
+        process.env.REACT_APP_DEV_MODE = devMode
+      }
+    }
+  })
+})
 
 describe('QuestionTypeSelector', () => {
   let selectedType
 
   beforeEach(async () => {
+    selectedType = undefined
     await renderWithProviders(
       <QuestionTypeSelector
         callBack={(value) => {
@@ -21,13 +115,10 @@ describe('QuestionTypeSelector', () => {
   })
 
   test('Should use the labels exactly one time', async () => {
-    for (const key of Object.keys(getQuestionTypeInfo())) {
-      if (!getQuestionTypeInfo()[key].isQuestionType) {
-        continue
-      }
-
+    expect(offeredItems.length).toBeGreaterThan(0)
+    for (const item of offeredItems) {
       const questionTypeInputs = screen.getAllByTestId(
-        `question-type-${getQuestionTypeInfo()[key].theme}`
+        `question-type-${item.theme}`
       )
 
       expect(questionTypeInputs.length).toBe(1)
@@ -35,16 +126,12 @@ describe('QuestionTypeSelector', () => {
   })
 
   test('Should be mapping the labels to the correct values', async () => {
-    for (const key of Object.keys(getQuestionTypeInfo())) {
-      if (!getQuestionTypeInfo()[key].isQuestionType) {
-        continue
-      }
-
+    for (const item of offeredItems) {
       const questionTypeInput = screen.getByTestId(
-        `question-type-${getQuestionTypeInfo()[key].theme}`
+        `question-type-${item.theme}`
       )
       await userEvent.click(questionTypeInput)
-      expect(selectedType).toBe(getQuestionTypeInfo()[key].type)
+      expect(selectedType).toBe(item.value)
     }
   })
 
@@ -191,5 +278,46 @@ describe('QuestionTypeSelector keyboard navigation', () => {
     expect(
       getItems().filter((item) => item.classList.contains('d-none'))
     ).toEqual([])
+  })
+})
+
+describe('QuestionTypeSelector while the question types of the installation load', () => {
+  let selected
+
+  beforeEach(async () => {
+    // The default question types are shown, but may contain themes an administrator hid
+    mockIsLoaded = false
+    selected = undefined
+    await renderWithProviders(
+      <QuestionTypeSelector
+        callBack={(value) => {
+          selected = value
+        }}
+      />
+    )
+  })
+
+  afterEach(() => {
+    mockIsLoaded = true
+  })
+
+  test('Should show the question types disabled', () => {
+    const item = screen.getByTestId('question-type-listradio')
+
+    expect(item).toHaveClass('disabled')
+    expect(item).toHaveAttribute('aria-disabled', 'true')
+  })
+
+  test('Should not add a question type on click', async () => {
+    await userEvent.click(screen.getByTestId('question-type-listradio'))
+
+    expect(selected).toBeUndefined()
+  })
+
+  test('Should not add a question type on Enter', async () => {
+    await userEvent.keyboard('[ArrowDown]')
+    await userEvent.keyboard('[Enter]')
+
+    expect(selected).toBeUndefined()
   })
 })

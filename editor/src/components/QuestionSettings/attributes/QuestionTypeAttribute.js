@@ -1,11 +1,10 @@
 import { Button, Form, OverlayTrigger, Popover } from 'react-bootstrap'
 import { useState } from 'react'
-import { useAppState, useBuffer, useFocused } from 'hooks'
+import { useAppState, useBuffer, useFocused, useQuestionTypes } from 'hooks'
 import { Entities, Operations, STATES } from 'helpers'
 
 import { QuestionTypeSelector } from 'components/QuestionTypeSelector'
 import { ArrowDownIcon } from 'components/icons'
-import { getQuestionTypeInfo } from '../../QuestionTypes'
 
 export const QuestionTypeAttribute = ({
   value,
@@ -19,6 +18,7 @@ export const QuestionTypeAttribute = ({
   )
   const { operationsBuffer } = useBuffer()
   const { focused } = useFocused()
+  const { getTitle } = useQuestionTypes()
   // Locked until a queued type change is sent, so a second change can't merge into it.
   const queuedQuestionUpdate = operationsBuffer?.getOperation(
     focused?.qid,
@@ -49,11 +49,7 @@ export const QuestionTypeAttribute = ({
     </Popover>
   )
 
-  const questionTypeKey = Object.keys(getQuestionTypeInfo()).find(
-    (key) => getQuestionTypeInfo()[key].theme === value
-  )
-
-  const questionTypeTitle = getQuestionTypeInfo()[questionTypeKey]?.title
+  const questionTypeTitle = getTitle(value)
 
   return (
     <div className="question-type-general-settings" data-testid="question-type">
