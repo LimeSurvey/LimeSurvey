@@ -24,7 +24,10 @@ export const QuestionTypeSelector = ({
   const listItemRef = useRef(null)
   const [searchedQuestionTypeOrGroup, setSearchedQuestionTypeOrGroup] =
     useState([])
-  const { categories, questionTypes } = useQuestionTypes()
+  const { categories, questionTypes, isLoaded } = useQuestionTypes()
+  // Until the question types of this installation are loaded, the default ones are shown:
+  // They may contain themes an administrator hid, so they can't be selected yet
+  const isAddingDisabled = disableAddingQuestions || !isLoaded
 
   // getQuestionItemsList leaves out the dev-only question types outside dev mode,
   // so that the keyboard navigation can't reach them
@@ -64,7 +67,7 @@ export const QuestionTypeSelector = ({
         setSelectedItemIndex((prevSelectedItem) =>
           Math.min(prevSelectedItem + 1, itemsLength - 1)
         )
-      } else if (event.key === 'Enter') {
+      } else if (event.key === 'Enter' && !isAddingDisabled) {
         // loop into the items until we find the selected item index.
         let index = 0
         for (let i = 0; i < filteredItemsLists.length; i++) {
@@ -108,7 +111,7 @@ export const QuestionTypeSelector = ({
     return () => {
       document.removeEventListener('keydown', handleKeyDown)
     }
-  }, [selectedItemIndex, filteredItemsLists, callBack])
+  }, [selectedItemIndex, filteredItemsLists, callBack, isAddingDisabled])
 
   // Keeps a running count on how many questions we have
 
@@ -137,7 +140,7 @@ export const QuestionTypeSelector = ({
                   <ListGroup.Item
                     key={'list-item' + listItemIndex}
                     onClick={() => {
-                      if (disableAddingQuestions) {
+                      if (isAddingDisabled) {
                         return
                       }
                       const temp = [...searchedQuestionTypeOrGroup]
@@ -151,8 +154,9 @@ export const QuestionTypeSelector = ({
                     className={classNames('px-2', {
                       'focus-element':
                         selectedItemIndex === offsetIndex + listItemIndex,
-                      'disabled': disableAddingQuestions,
+                      'disabled': isAddingDisabled,
                     })}
+                    aria-disabled={isAddingDisabled || undefined}
                     ref={
                       selectedItemIndex === offsetIndex + listItemIndex
                         ? listItemRef

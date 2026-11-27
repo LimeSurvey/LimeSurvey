@@ -8,6 +8,18 @@ import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import questionTypesData from 'helpers/data/question-types.json'
 
+// Lets a test simulate that the question types of the installation are still loading
+let mockIsLoaded = true
+jest.mock('hooks/useQuestionTypes', () => {
+  const actual = jest.requireActual('hooks/useQuestionTypes')
+  return {
+    useQuestionTypes: () => ({
+      ...actual.useQuestionTypes(),
+      isLoaded: mockIsLoaded,
+    }),
+  }
+})
+
 // Tests run in demo mode, where useQuestionTypes returns this fixture
 const offeredItems = getQuestionItemsList(
   questionTypesData.categories,
@@ -266,5 +278,46 @@ describe('QuestionTypeSelector keyboard navigation', () => {
     expect(
       getItems().filter((item) => item.classList.contains('d-none'))
     ).toEqual([])
+  })
+})
+
+describe('QuestionTypeSelector while the question types of the installation load', () => {
+  let selected
+
+  beforeEach(async () => {
+    // The default question types are shown, but may contain themes an administrator hid
+    mockIsLoaded = false
+    selected = undefined
+    await renderWithProviders(
+      <QuestionTypeSelector
+        callBack={(value) => {
+          selected = value
+        }}
+      />
+    )
+  })
+
+  afterEach(() => {
+    mockIsLoaded = true
+  })
+
+  test('Should show the question types disabled', () => {
+    const item = screen.getByTestId('question-type-listradio')
+
+    expect(item).toHaveClass('disabled')
+    expect(item).toHaveAttribute('aria-disabled', 'true')
+  })
+
+  test('Should not add a question type on click', async () => {
+    await userEvent.click(screen.getByTestId('question-type-listradio'))
+
+    expect(selected).toBeUndefined()
+  })
+
+  test('Should not add a question type on Enter', async () => {
+    await userEvent.keyboard('[ArrowDown]')
+    await userEvent.keyboard('[Enter]')
+
+    expect(selected).toBeUndefined()
   })
 })

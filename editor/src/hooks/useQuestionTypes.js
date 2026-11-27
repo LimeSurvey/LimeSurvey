@@ -12,12 +12,14 @@ import useAuth from './useAuth'
  * Returns the question types of the editor (react/questiontypes.xml merged with the installed question themes):
  * The categories of the question type selector, and every question theme keyed by theme name.
  * Until the first response, and when the request fails, the question types of a default installation
- * are returned, so that questions can always be added.
+ * are returned, so that titles can be shown. They don't know which themes an administrator hid, so they
+ * must not be offered for selection: isLoaded tells whether the question types of this installation are in hand.
  * @returns {{
  *   categories: {name: string, title: string, icon: string}[],
  *   questionTypes: Object<string, {name: string, type: string, title: string, category: ?string, sortOrder: ?number, devOnly: boolean, visible: boolean}>,
  *   getTitle: (themeName: string, fallback?: string) => string,
  *   isFetching: boolean,
+ *   isLoaded: boolean,
  * }}
  */
 export const useQuestionTypes = () => {
@@ -44,12 +46,13 @@ export const useQuestionTypes = () => {
     gcTime: Infinity,
   })
 
+  const hasServerData = !!(data?.categories && data?.questionTypes)
+  // Demo mode and storybook have no administrator, so the default question types are the complete list
+  const isLoaded = isDemoMode || hasServerData
+
   const { categories, questionTypes } = useMemo(
-    () =>
-      data?.categories && data?.questionTypes
-        ? data
-        : getDefaultQuestionTypes(language),
-    [data, language]
+    () => (hasServerData ? data : getDefaultQuestionTypes(language)),
+    [data, hasServerData, language]
   )
 
   const getTitle = useCallback(
@@ -57,5 +60,5 @@ export const useQuestionTypes = () => {
     [questionTypes]
   )
 
-  return { categories, questionTypes, getTitle, isFetching }
+  return { categories, questionTypes, getTitle, isFetching, isLoaded }
 }

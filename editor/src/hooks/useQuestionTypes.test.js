@@ -80,6 +80,7 @@ describe('useQuestionTypes', () => {
     )
     expect(result.current.getTitle('shortfreetext')).toBe('Texte court')
     expect(result.current.getTitle('unknown', 'Fallback')).toBe('Fallback')
+    expect(result.current.isLoaded).toBe(true)
     expect(mockGet).toHaveBeenCalledWith('questionTypes', expect.anything())
   })
 
@@ -90,6 +91,17 @@ describe('useQuestionTypes', () => {
 
     expect(result.current.categories).toEqual(questionTypesData.categories)
     expect(result.current.getTitle('shortfreetext')).toBe('Short text')
+    expect(result.current.isLoaded).toBe(false)
+  })
+
+  it('returns the default question types as loaded in demo mode', () => {
+    process.env.REACT_APP_DEMO_MODE = 'true'
+
+    const { result } = render()
+
+    expect(result.current.categories).toEqual(questionTypesData.categories)
+    expect(result.current.isLoaded).toBe(true)
+    expect(mockGet).not.toHaveBeenCalled()
   })
 
   it('translates the default question types into the user language', () => {
@@ -113,6 +125,7 @@ describe('useQuestionTypes', () => {
     expect(result.current.questionTypes).toEqual(
       questionTypesData.questionTypes
     )
+    expect(result.current.isLoaded).toBe(false)
   })
 
   it('keeps the previous titles while the ones of a new language load', async () => {
@@ -128,5 +141,6 @@ describe('useQuestionTypes', () => {
 
     await waitFor(() => expect(mockGet).toHaveBeenCalledTimes(2))
     expect(result.current.getTitle('shortfreetext')).toBe('Texte court')
+    expect(result.current.isLoaded).toBe(true)
   })
 })

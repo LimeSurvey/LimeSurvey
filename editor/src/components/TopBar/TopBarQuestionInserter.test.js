@@ -36,6 +36,7 @@ jest.mock('hooks/useQuestionTypes', () => {
       ...getDefaultQuestionTypes('en'),
       getTitle: () => '',
       isFetching: false,
+      isLoaded: true,
     }),
   }
 })
