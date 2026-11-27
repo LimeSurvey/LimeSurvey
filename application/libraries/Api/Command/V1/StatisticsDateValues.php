@@ -104,7 +104,7 @@ class StatisticsDateValues implements CommandInterface
         }
 
         try {
-            $filters = $this->getFilters();
+            $filters = $this->getFilters($request);
             $values = $this->dateTimeValues->get(
                 $surveyId,
                 $qid,

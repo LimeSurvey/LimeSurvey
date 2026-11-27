@@ -9,6 +9,7 @@ use LimeSurvey\Api\Command\Request\Request;
 use LimeSurvey\Api\Command\Response\Response;
 use LimeSurvey\Api\Command\Response\ResponseFactory;
 use LimeSurvey\Api\Transformer\TransformerException;
+use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\CompletionFilter;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\ExportFilterSql;
 use LimeSurvey\Models\Services\Exception\PermissionDeniedException;
 use LimeSurvey\Models\Services\ExportSurveyResultsService;
@@ -218,9 +219,20 @@ class SurveyResponsesExport implements CommandInterface
 
         [$type, $language, $answerFormat, $csvSeparator, $filters] = $this->getExportRequestData($request);
 
+        $completion = $request->getData('completion', 'all');
+        if (!is_string($completion)) {
+            throw new InvalidArgumentException('Invalid completion filter.');
+        }
+        CompletionFilter::assertValid($completion);
+
         $resolvedFilters = $this->resolveFilterSet($request, $language);
 
         if (!in_array($type, $this->nativeFormats)) {
+            if ($completion === 'screened_out') {
+                throw new InvalidArgumentException(
+                    'The screened_out completion filter is not supported for this export format.'
+                );
+            }
             return $this->exportViaLegacyExporter(
                 $surveyId,
                 $type,
@@ -228,12 +240,14 @@ class SurveyResponsesExport implements CommandInterface
                 $answerFormat,
                 $csvSeparator,
                 $filters,
-                $resolvedFilters
+                $resolvedFilters,
+                $completion
             );
         }
 
         $exportService = $this->exportSurvey
             ->setLanguage($language)
+            ->setCompletionFilter($completion)
             ->setOutputMode('file');
 
         if ($answerFormat) {
@@ -298,7 +312,8 @@ class SurveyResponsesExport implements CommandInterface
         ?string $answerFormat,
         ?string $csvSeparator,
         array $filters = [],
-        array $resolvedFilters = []
+        array $resolvedFilters = [],
+        string $completion = 'all'
     ): array {
         Yii::app()->loadHelper('admin.exportresults');
 
@@ -313,6 +328,8 @@ class SurveyResponsesExport implements CommandInterface
         $options->selectedColumns = array_keys($fieldMap);
         $options->responseMinRecord = \SurveyDynamic::model($surveyId)->getMinId();
         $options->responseMaxRecord = \SurveyDynamic::model($surveyId)->getMaxId();
+        // The completion state goes in as SQL so the legacy exporter uses the
+        // same predicates as every other path.
         $options->responseCompletionState = 'all';
         $options->headingFormat = 'full';
         $options->answerFormat = $answerFormat ?: 'long';
@@ -325,6 +342,10 @@ class SurveyResponsesExport implements CommandInterface
             $filters,
             $resolvedFilters
         );
+        $completionSql = CompletionFilter::predicate($completion, CompletionFilter::savesQuotaExit($surveyId));
+        if ($completionSql !== null) {
+            $sqlFilter = $this->filterSql->combineSqlFilters($sqlFilter, '(' . $completionSql . ')');
+        }
 
         $legacyService = new \ExportSurveyResultsService();
         $filePath = $legacyService->exportResponses($surveyId, $language, $legacyType, $options, $sqlFilter);

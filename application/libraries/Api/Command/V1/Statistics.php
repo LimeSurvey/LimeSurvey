@@ -20,7 +20,6 @@ use LimeSurvey\Api\Command\{
 use LimeSurvey\Api\Command\Mixin\Auth\AuthPermissionTrait;
 use LimeSurvey\Libraries\Api\Command\V1\Statistics\StatisticsFilterParamsTrait;
 use DI\FactoryInterface;
-use Yii;
 
 class Statistics implements CommandInterface
 {
@@ -82,7 +81,7 @@ class Statistics implements CommandInterface
         try {
             $this->statisticsService->setSurvey($surveyId, $request->getData('language'));
 
-            if ($this->getFilters()->count() > 0) {
+            if ($this->getFilters($request)->count() > 0) {
                 $this->statisticsService->setFilters($this->filters);
             }
 
@@ -95,8 +94,8 @@ class Statistics implements CommandInterface
             );
 
             $this->statisticsService->setPagination(
-                $this->getPage(),
-                $this->getPageSize()
+                $this->getPage($request),
+                $this->getPageSize($request)
             );
 
             $statistics = $this->statisticsService->run();
@@ -120,15 +119,27 @@ class Statistics implements CommandInterface
             ]);
     }
 
-    private function getPage(): int
+    /**
+     * The page of charts to return, from the `page` param.
+     *
+     * @param Request $request
+     * @return int Zero-based page number, never negative
+     */
+    private function getPage(Request $request): int
     {
-        $page = Yii::app()->getRequest()->getQueryParams()['page'] ?? 0;
+        $page = $request->getData('page', 0);
         return max(0, (int)$page);
     }
 
-    private function getPageSize(): int
+    /**
+     * The number of charts per page, from the `pageSize` param.
+     *
+     * @param Request $request
+     * @return int Between 1 and MAX_PAGE_SIZE
+     */
+    private function getPageSize(Request $request): int
     {
-        $pageSize = Yii::app()->getRequest()->getQueryParams()['pageSize'] ?? self::DEFAULT_PAGE_SIZE;
+        $pageSize = $request->getData('pageSize', self::DEFAULT_PAGE_SIZE);
         return min(self::MAX_PAGE_SIZE, max(1, (int)$pageSize));
     }
 }
