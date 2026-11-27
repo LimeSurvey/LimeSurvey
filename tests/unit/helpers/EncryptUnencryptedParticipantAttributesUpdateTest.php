@@ -93,7 +93,7 @@ class EncryptUnencryptedParticipantAttributesUpdateTest extends TestBaseClass
             'encrypted' => $encrypted,
             'core_attribute' => 'N',
         ]);
-        $attributeId = (int) $db->getLastInsertID();
+        $attributeId = (int) getLastInsertID('{{participant_attribute_names}}');
         $this->attributeIds[] = $attributeId;
         $db->createCommand()->insert('{{participant_attribute}}', [
             'participant_id' => $this->participantId,

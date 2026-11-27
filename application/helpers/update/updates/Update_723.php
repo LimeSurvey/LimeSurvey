@@ -56,9 +56,13 @@ class Update_723 extends DatabaseUpdateBase
                 }
                 $this->db->createCommand()->update(
                     '{{participant_attribute}}',
-                    ['value' => \LSActiveRecord::encryptSingle($value)],
-                    'participant_id = :participant_id AND attribute_id = :attribute_id',
-                    [':participant_id' => $row['participant_id'], ':attribute_id' => $attributeId]
+                    ['value' => Yii::app()->sodium->encrypt($value)],
+                    'participant_id = :participant_id AND attribute_id = :attribute_id AND value = :old_value',
+                    [
+                        ':participant_id' => $row['participant_id'],
+                        ':attribute_id' => $attributeId,
+                        ':old_value' => $row['value'],
+                    ]
                 );
             }
         }
