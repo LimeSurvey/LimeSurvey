@@ -73,7 +73,7 @@ $this->widget(
             ],
 
             [
-                'header' => '',
+                'header' => gT('Action'),
                 'name' => 'actions',
                 'value' => '$data->buttons',
                 'type' => 'raw',

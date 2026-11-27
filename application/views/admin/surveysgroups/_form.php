@@ -20,7 +20,7 @@
     ));
     ?>
 
-    <p role="heading" aria-level="2" class="note"><?php echo sprintf(gT('Fields with %s are required.'), '<span class="required">*</span>'); ?></p>
+    <p class="note"><?php echo sprintf(gT('Fields with %s are required.'), '<span class="required">*</span>'); ?></p>
 
 
     <?php
@@ -32,12 +32,12 @@
 
     <div class="mb-3">
         <?php echo $form->labelEx($model, 'name'); ?>
-        <?php echo $form->textField($model, 'name', array('size' => 60, 'maxlength' => 100, 'readonly' => !$model->isNewRecord || !$updateRigth, 'aria-describedby' => CHtml::activeId($model, 'name') . '_em_')); ?>
+        <?php echo $form->textField($model, 'name', array('size' => 60, 'maxlength' => 100, 'readonly' => !$model->isNewRecord || !$updateRigth, 'aria-required' => 'true', 'aria-describedby' => CHtml::activeId($model, 'name') . '_em_')); ?>
         <?php echo $form->error($model, 'name', array('errorCssClass' => 'text-danger', 'id' => CHtml::activeId($model, 'name') . '_em_')); ?>
     </div>
     <div class="mb-3">
         <?php echo $form->labelEx($model, 'title'); ?>
-        <?php echo $form->textField($model, 'title', array('size' => 60, 'maxlength' => 100, 'readonly' => !$updateRigth, 'aria-describedby' => CHtml::activeId($model, 'title') . '_em_')); ?>
+        <?php echo $form->textField($model, 'title', array('size' => 60, 'maxlength' => 100, 'readonly' => !$updateRigth, 'aria-required' => 'true', 'aria-describedby' => CHtml::activeId($model, 'title') . '_em_')); ?>
         <?php echo $form->error($model, 'title', array('errorCssClass' => 'text-danger', 'id' => CHtml::activeId($model, 'title') . '_em_')); ?>
     </div>
 
@@ -50,7 +50,7 @@
     <div class="mb-3">
         <?php $model->sortorder = $model->sortorder ? $model->sortorder : $model->getNextOrderPosition(); ?>
         <?php echo $form->labelEx($model, 'sortorder'); ?>
-        <?php echo $form->textField($model, 'sortorder', array('readonly' => !$updateRigth, 'aria-describedby' => CHtml::activeId($model, 'sortorder') . '_em_')); ?>
+        <?php echo $form->textField($model, 'sortorder', array('aria-required' => 'true', 'readonly' => !$updateRigth, 'aria-describedby' => CHtml::activeId($model, 'sortorder') . '_em_')); ?>
         <?php echo $form->error($model, 'sortorder', array('errorCssClass' => 'text-danger', 'id' => CHtml::activeId($model, 'sortorder') . '_em_')); ?>
     </div>
 
