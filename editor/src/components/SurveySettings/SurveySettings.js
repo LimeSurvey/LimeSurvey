@@ -20,6 +20,8 @@ import {
   createSurveyUpdate,
   createBufferOperationForSetting,
 } from './utils/updateSettingHelpers'
+import { PluginSlot } from 'plugins/PluginSlot'
+import { PLUGIN_SLOTS } from 'plugins/slots'
 
 export const SurveySettings = ({ id }) => {
   const { panel, menu } = useParams()
@@ -232,6 +234,7 @@ export const SurveySettings = ({ id }) => {
         setRerenderSettings={setRerenderSettings}
       />
       {menu === 'advancedOptions' && <AdvancedOptionsSettings surveyId={id} />}
+      <PluginSlot slotName={PLUGIN_SLOTS.SURVEY_SETTINGS_EXTRA_MENU} /> 
     </div>
   )
 }

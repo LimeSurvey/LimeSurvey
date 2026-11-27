@@ -1,7 +1,6 @@
 import {
   PAGES,
   SURVEY_MENU_TITLES,
-  decodeHTMLEntities,
   getSiteUrl,
 } from 'helpers'
 import { getTooltipMessages } from 'helpers/options'
@@ -16,38 +15,6 @@ export const presentationOptions = (surveyId, menuEntries) => [
     label: menuEntries[SURVEY_MENU_TITLES.presentation]?.menuTitle,
     labelEditor: t('Presentation'),
     menu: SURVEY_MENU_TITLES.presentation,
-  },
-]
-
-export const settingsOptions = (surveyId, menuEntries) => [
-  {
-    label: menuEntries[SURVEY_MENU_TITLES.generalSettings]?.menuTitle,
-    labelEditor: t('General'),
-    menu: SURVEY_MENU_TITLES.generalSettings,
-  },
-  {
-    label: menuEntries[SURVEY_MENU_TITLES.dataSecurity]?.menuTitle,
-    labelEditor: t('Privacy policy'),
-    menu: SURVEY_MENU_TITLES.dataSecurity,
-  },
-  {
-    label: menuEntries[SURVEY_MENU_TITLES.tokens]?.menuTitle,
-    labelEditor: t('Participant settings'),
-    menu: SURVEY_MENU_TITLES.tokens,
-  },
-  {
-    label: decodeHTMLEntities(
-      menuEntries[SURVEY_MENU_TITLES.publication]?.menuTitle
-    ),
-    labelEditor: t('Publication & access'),
-    menu: SURVEY_MENU_TITLES.publication,
-  },
-  {
-    label: decodeHTMLEntities(
-      menuEntries[SURVEY_MENU_TITLES.notification]?.menuTitle
-    ),
-    labelEditor: t('Notifications & data'),
-    menu: SURVEY_MENU_TITLES.notification,
   },
 ]
 

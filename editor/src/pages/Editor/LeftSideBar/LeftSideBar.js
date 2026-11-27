@@ -9,12 +9,12 @@ import { getSurveyPanels } from 'helpers/options'
 import {
   menuOptions,
   presentationOptions,
-  settingsOptions,
 } from 'components/SurveySettings/panelOptions'
 import { PAGES } from 'helpers'
 import { getSharingPanels } from 'shared/getSharingPanels'
 import { getSharingPanelOptions } from 'shared/sharingPanelOptions'
 import { translationsPanelOptions } from 'shared/translationPanelOptions'
+import { settingsPanelOptions } from 'shared/settingsPanelOptions'
 
 export const LeftSideBar = ({
   surveyId,
@@ -91,7 +91,7 @@ export const LeftSideBar = ({
 
     return {
       [panels.presentation?.panel]: presentationOptions(surveyId, menuEntries),
-      [panels.settings?.panel]: settingsOptions(surveyId, menuEntries),
+      [panels.settings?.panel]: settingsPanelOptions(surveyId, menuEntries),
       [panels.menu?.panel]: menuOptions(surveyId, menuEntries, survey.active),
       [panels.translations?.panel]: translationsPanelOptions(surveyId, survey),
     }

@@ -4,6 +4,7 @@ export const PLUGIN_SLOTS = {
   EDITOR_TOP: 'editor:top',
   EDITOR_LAYOUT_EXTRA: 'editor:layout:extra',
   SHARING_PANEL_EXTRA_MENU: 'sharingpanel:extra:menu',
+  SURVEY_SETTINGS_EXTRA_MENU: 'surveysettings:extra:menu', // extra menu in settings panel
   SURVEY_SETTINGS_BLOCK_TOKENS_BOTTOM: 'surveysettingsblock:tokens:bottom',
   SHARING_OVERVIEW_BOTTOM_LEFT: 'sharingoverview:bottom:left',
   SHARING_OVERVIEW_BOTTOM_RIGHT: 'sharingoverview:bottom:right',
