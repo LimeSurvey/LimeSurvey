@@ -222,6 +222,16 @@ class SettingsWidget extends CWidget
         // Find function
         $function = "render{$metaData['type']}";
 
+        // Accessibility: the help text is the description of the input, the label gets an id
+        // so groups of inputs (e.g. the On/Off buttons of a boolean setting) can be named by it
+        $settingId = CHtml::getIdByName($name);
+        if (is_string($metaData['help']) && !isset($metaData['htmlOptions']['aria-describedby'])) {
+            $metaData['htmlOptions']['aria-describedby'] = $settingId . '-help';
+        }
+        if (isset($metaData['label']) && !isset($metaData['labelOptions']['id'])) {
+            $metaData['labelOptions']['id'] = $settingId . '-label';
+        }
+
         // Construct the content
         // The labels
         $content  = $this->renderLabel($name, $metaData);
@@ -369,7 +379,7 @@ class SettingsWidget extends CWidget
             return "";
         }
         // p is more clean but have class in adminstyle
-        return CHtml::tag('div', array('class' => 'help-block'), $metaData['help']);
+        return CHtml::tag('div', array('class' => 'help-block', 'id' => CHtml::getIdByName($name) . '-help'), $metaData['help']);
     }
 
     /***********************************************************************
@@ -390,6 +400,8 @@ class SettingsWidget extends CWidget
         $value = $metaData['current'] ?? '';
         return $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
             'name' => $name,
+            // The On/Off buttons are a group named by the label of the setting
+            'ariaLabelledBy' => $metaData['labelOptions']['id'] ?? '',
             'checkedOption' => $value,
             'selectOptions' => [
                 '1' => gT('On'),
