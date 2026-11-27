@@ -28,9 +28,8 @@ class CoreQuestionAttributeProvider extends QuestionAttributeProvider
      *
      * @param string $questionType : type of question (this is the attribute 'question_type' in table question_theme)
      * @param boolean $advancedOnly If true, only fetch advanced attributes
-     * @return array<string,array> the attribute settings for this question type
-     *                 returns values from getGeneralAttributesFromXml and getAdvancedAttributesFromXml if this fails
-     *                 getAttributesDefinition and getDefaultSettings are returned
+     * @return array<string,array> the attribute settings for this question type, from the config.xml of its base
+     *                 question theme
      *
      * @throws \CException
      */

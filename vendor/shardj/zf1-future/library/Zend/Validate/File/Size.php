@@ -62,7 +62,7 @@ class Zend_Validate_File_Size extends Zend_Validate_Abstract
 
     /**
      * Minimum filesize
-     * @var integer
+     * @var integer|string
      */
     protected $_min;
 
@@ -71,14 +71,14 @@ class Zend_Validate_File_Size extends Zend_Validate_Abstract
      *
      * If null, there is no maximum filesize
      *
-     * @var integer|null
+     * @var integer|string|null
      */
     protected $_max;
 
     /**
      * Detected size
      *
-     * @var integer
+     * @var integer|string
      */
     protected $_size;
 
@@ -322,7 +322,7 @@ class Zend_Validate_File_Size extends Zend_Validate_Abstract
     /**
      * Returns the formatted size
      *
-     * @param  integer $size
+     * @param  integer|string $size
      * @return string
      */
     protected function _toByteString($size)
@@ -338,7 +338,7 @@ class Zend_Validate_File_Size extends Zend_Validate_Abstract
     /**
      * Returns the unformatted size
      *
-     * @param  string $size
+     * @param  string|int $size
      * @return integer
      */
     protected function _fromByteString($size)
@@ -353,6 +353,7 @@ class Zend_Validate_File_Size extends Zend_Validate_Abstract
         if (!is_numeric($value)) {
             $value = substr($value, 0, -1);
         }
+        /** @var numeric-string $value the number in front of the unit */
         $value = trim((string) $value);
         switch (strtoupper($type)) {
             case 'Y':
@@ -389,7 +390,7 @@ class Zend_Validate_File_Size extends Zend_Validate_Abstract
     /**
      * Throws an error of the given type
      *
-     * @param  string $file
+     * @param  string|array|null $file
      * @param  string $errorType
      * @return false
      */

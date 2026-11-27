@@ -18,6 +18,7 @@ import {
   updateQuestionScenarios,
   isDuplicate,
   replaceQuestionInSurvey,
+  splitConditionValues,
 } from '../components/ConditionDesigner/utils'
 
 export const useConditionDesigner = ({
@@ -163,14 +164,14 @@ export const useConditionDesigner = ({
 
     try {
       const deletedConditions = conditions.filter((c) => c.isDeleted)
-      // One row per value
+      // One row per value: Only answer options selected together are joined with commas
       const savedConditions = conditions
         .filter((c) => !c.isDeleted)
-        .flatMap(({ value, ...rest }) =>
-          value
-            .toString()
-            .split(',')
-            .map((v) => ({ ...rest, value: v }))
+        .flatMap((condition) =>
+          splitConditionValues(condition).map((value) => ({
+            ...condition,
+            value,
+          }))
         )
 
       if (deletedConditions.length) {

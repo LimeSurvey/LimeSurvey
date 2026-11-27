@@ -148,7 +148,7 @@ class Zend_Validate implements Zend_Validate_Interface
      * Sets new default namespaces
      *
      * @param array|string $namespace
-     * @return null
+     * @return void
      */
     public static function setDefaultNamespaces($namespace)
     {
@@ -163,7 +163,7 @@ class Zend_Validate implements Zend_Validate_Interface
      * Adds a new default namespace
      *
      * @param array|string $namespace
-     * @return null
+     * @return void
      */
     public static function addDefaultNamespaces($namespace)
     {

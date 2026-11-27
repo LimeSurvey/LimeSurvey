@@ -35,7 +35,7 @@ $layoutHelper = new LayoutHelper();
 
         <?php $containerClass = !App()->user->isGuest ? 'container-fluid' : 'container-fluid ps-0' ?>
         <!-- Full page, started in SurveyCommonAction::renderWrappedTemplate() -->
-        <div class="<?= $containerClass ?>" id="in_survey_common_action">
+        <div class="<?= $containerClass ?>" id="in_survey_common_action" role="main">
             <?= $content ?>
         </div>
 <?php // Close layout wrapper only for authenticated users (was opened above) ?>

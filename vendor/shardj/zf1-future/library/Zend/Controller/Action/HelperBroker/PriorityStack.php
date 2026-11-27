@@ -38,7 +38,7 @@ class Zend_Controller_Action_HelperBroker_PriorityStack implements IteratorAggre
      * Magic property overloading for returning helper by name
      *
      * @param string $helperName    The helper name
-     * @return Zend_Controller_Action_Helper_Abstract
+     * @return Zend_Controller_Action_Helper_Abstract|false
      */
     public function __get($helperName)
     {

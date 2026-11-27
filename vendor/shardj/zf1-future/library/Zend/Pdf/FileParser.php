@@ -69,7 +69,7 @@ abstract class Zend_Pdf_FileParser
 
     /**
      * Object representing the data source to be parsed.
-     * @var Zend_Pdf_FileParserDataSource
+     * @var Zend_Pdf_FileParserDataSource|null
      */
     protected $_dataSource = null;
 

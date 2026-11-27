@@ -75,7 +75,7 @@ if (isset($updateInfos->html)) {
             </td>
 
             <!-- stable / unstable -->
-            <?php if (preg_match('/RC|dev|beta|alpha/i', $aUpdateVersion['branch'])): ?>
+            <?php if (preg_match('/RC|dev|beta|alpha/i', $aUpdateVersion['branch'])) : ?>
                 <td class="text-danger">
                     <?php eT('unstable'); ?>
                 </td>

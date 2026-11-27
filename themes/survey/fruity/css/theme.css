@@ -177,7 +177,7 @@ element.style {
 .dir-ltr .ls-questionhelp{margin-left:1.2em;}
 .dir-rtl .ls-questionhelp{margin-right:1.2em;}
 
-.ls-questionhelp:before{content:"\f059"}
+.ls-questionhelp:before{content:"\f059";content:"\f059" / ""}
 .ls-questionhelp:before {
     display: block;
     position:absolute;

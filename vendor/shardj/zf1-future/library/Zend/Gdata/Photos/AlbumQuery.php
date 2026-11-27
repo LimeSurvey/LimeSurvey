@@ -39,6 +39,7 @@ require_once('Zend/Gdata/Photos/UserQuery.php');
  * @subpackage Photos
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @deprecated Deprecated since 1.27.1 and will be removed in a future version: Google shut down the Google Data APIs it implements and the ClientLogin and AuthSub authentication
  */
 class Zend_Gdata_Photos_AlbumQuery extends Zend_Gdata_Photos_UserQuery
 {
@@ -46,14 +47,14 @@ class Zend_Gdata_Photos_AlbumQuery extends Zend_Gdata_Photos_UserQuery
     /**
      * The name of the album to query for. Mutually exclusive with AlbumId.
      *
-     * @var string
+     * @var string|null
      */
     protected $_albumName = null;
 
     /**
      * The ID of the album to query for. Mutually exclusive with AlbumName.
      *
-     * @var string
+     * @var string|null
      */
     protected $_albumId = null;
 

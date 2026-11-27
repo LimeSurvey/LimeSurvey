@@ -127,12 +127,12 @@ class Zend_Json_Decoder
      *        - float
      *        - boolean
      *        - null
-     *      - StdClass
+     *      - stdClass
      *      - array
      *         - array of one or more of the above types
      *
      * By default, decoded objects will be returned as associative arrays; to
-     * return a StdClass object instead, pass {@link Zend_Json::TYPE_OBJECT} to
+     * return a stdClass object instead, pass {@link Zend_Json::TYPE_OBJECT} to
      * the $objectDecodeType parameter.
      *
      * Throws a Zend_Json_Exception if the source string is null.
@@ -143,7 +143,7 @@ class Zend_Json_Decoder
      * @param int $objectDecodeType How objects should be decoded; should be
      * either or {@link Zend_Json::TYPE_ARRAY} or
      * {@link Zend_Json::TYPE_OBJECT}; defaults to TYPE_ARRAY
-     * @return array|StdClass|null
+     * @return array|stdClass|null
      * @throws Zend_Json_Exception
      */
     public static function decode($source = null, $objectDecodeType = Zend_Json::TYPE_ARRAY)
@@ -167,7 +167,7 @@ class Zend_Json_Decoder
     /**
      * Recursive driving rountine for supported toplevel tops
      *
-     * @return array|StdClass|null
+     * @return array|stdClass|null
      * @throws Zend_Json_Exception
      */
     protected function _decodeValue()
@@ -177,16 +177,12 @@ class Zend_Json_Decoder
                 $result  = $this->_tokenValue;
                 $this->_getNextToken();
                 return($result);
-                break;
             case self::LBRACE:
                 return($this->_decodeObject());
-                break;
             case self::LBRACKET:
                 return($this->_decodeArray());
-                break;
             default:
                 return null;
-                break;
         }
     }
 
@@ -198,11 +194,11 @@ class Zend_Json_Decoder
      * a special attribute called __className which specifies a class
      * name that should wrap the data contained within the encoded source.
      *
-     * Decodes to either an array or StdClass object, based on the value of
+     * Decodes to either an array or stdClass object, based on the value of
      * {@link $_decodeType}. If invalid $_decodeType present, returns as an
      * array.
      *
-     * @return array|StdClass
+     * @return array|stdClass
      */
     protected function _decodeObject()
     {
@@ -241,7 +237,7 @@ class Zend_Json_Decoder
 
         switch ($this->_decodeType) {
             case Zend_Json::TYPE_OBJECT:
-                // Create new StdClass and populate with $members
+                // Create new stdClass and populate with $members
                 $result = new stdClass();
                 foreach ($members as $key => $value) {
                     if ($key === '') {
@@ -480,7 +476,7 @@ class Zend_Json_Decoder
      *
      * @link   http://solarphp.com/
      * @link   http://svn.solarphp.com/core/trunk/Solar/Json.php
-     * @param  string $value
+     * @param  string $chrs
      * @return string
      */
     public static function decodeUnicodeString($chrs)

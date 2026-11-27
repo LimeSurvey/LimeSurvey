@@ -80,7 +80,7 @@ class Zend_Service_Rackspace_Servers_SharedIpGroupList implements Countable, Ite
     /**
      * Add a shared Ip group
      *
-     * @param  Zend_Service_Rackspace_Servers_SharedIpGroup $shared
+     * @param  Zend_Service_Rackspace_Servers_SharedIpGroup $share
      * @return Zend_Service_Rackspace_Servers_SharedIpGroupList
      */
     protected function addSharedIpGroup (Zend_Service_Rackspace_Servers_SharedIpGroup $share)

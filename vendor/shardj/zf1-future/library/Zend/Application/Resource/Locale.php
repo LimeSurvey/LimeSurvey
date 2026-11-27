@@ -24,6 +24,7 @@
  * @see Zend_Application_Resource_ResourceAbstract
  */
 require_once 'Zend/Application/Resource/ResourceAbstract.php';
+require_once 'Zend/Locale.php';
 
 
 /**
@@ -81,6 +82,7 @@ class Zend_Application_Resource_Locale
             $key = (isset($options['registry_key']) && !is_numeric($options['registry_key']))
                 ? $options['registry_key']
                 : self::DEFAULT_REGISTRY_KEY;
+            require_once 'Zend/Registry.php';
             Zend_Registry::set($key, $this->_locale);
         }
 

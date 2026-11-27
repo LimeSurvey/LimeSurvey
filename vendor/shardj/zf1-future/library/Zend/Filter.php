@@ -130,7 +130,7 @@ class Zend_Filter implements Zend_Filter_Interface
      * Sets new default namespaces
      *
      * @param array|string $namespace
-     * @return null
+     * @return void
      */
     public static function setDefaultNamespaces($namespace)
     {
@@ -145,7 +145,7 @@ class Zend_Filter implements Zend_Filter_Interface
      * Adds a new default namespace
      *
      * @param array|string $namespace
-     * @return null
+     * @return void
      */
     public static function addDefaultNamespaces($namespace)
     {

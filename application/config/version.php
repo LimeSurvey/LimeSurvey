@@ -1,4 +1,5 @@
 <?php
+
 /*
  * LimeSurvey
  * Copyright (C) 2007-2026 The LimeSurvey Project Team
@@ -11,10 +12,10 @@
  * See COPYRIGHT.php for copyright notices and details.
  */
 
-$config['versionnumber'] = '7.11.0';
-$config['dbversionnumber'] = 718;
+$config['versionnumber'] = '7.12.1';
+$config['dbversionnumber'] = 722;
 $config['buildnumber'] = '';
 $config['updatable'] = true;
 $config['templateapiversion']  = 3;
-$config['assetsversionnumber'] = '30519';
+$config['assetsversionnumber'] = '30521';
 return $config;

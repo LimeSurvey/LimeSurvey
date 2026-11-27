@@ -34,7 +34,7 @@ class Zend_Validate_Barcode_Intelligentmail extends Zend_Validate_Barcode_Adapte
 {
     /**
      * Allowed barcode lengths
-     * @var integer
+     * @var integer|array
      */
     protected $_length = [20, 25, 29, 31];
 

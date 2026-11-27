@@ -82,7 +82,7 @@ class Zend_Pdf_Outline_Created extends Zend_Pdf_Outline
      *
      * Null means no target.
      *
-     * @var Zend_Pdf_Destination|Zend_Pdf_Action
+     * @var Zend_Pdf_Target|null
      */
     protected $_target = null;
 
@@ -168,10 +168,10 @@ class Zend_Pdf_Outline_Created extends Zend_Pdf_Outline
      * Set outline text color.
      * (null means default color which is black)
      *
-     * @param Zend_Pdf_Color_Rgb $color
+     * @param Zend_Pdf_Color_Rgb|null $color
      * @return Zend_Pdf_Outline
      */
-    public function setColor(Zend_Pdf_Color_Rgb $color)
+    public function setColor(?Zend_Pdf_Color_Rgb $color)
     {
         $this->_color = $color;
         return $this;

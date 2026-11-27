@@ -39,7 +39,7 @@ class Zend_Markup_Token
     /**
      * Children of this token
      *
-     * @var Zend_Markup_TokenList
+     * @var Zend_Markup_TokenList|null
      */
     protected $_children;
 
@@ -81,7 +81,7 @@ class Zend_Markup_Token
     /**
      * The parent token
      *
-     * @var Zend_Markup_Token
+     * @var Zend_Markup_Token|null
      */
     protected $_parent;
 

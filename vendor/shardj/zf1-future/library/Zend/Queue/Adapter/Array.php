@@ -297,7 +297,6 @@ class Zend_Queue_Adapter_Array extends Zend_Queue_Adapter_AdapterAbstract
      * $array['function name'] = true or false
      * true is supported, false is not supported.
      *
-     * @param  string $name
      * @return array
      */
     public function getCapabilities()
@@ -334,7 +333,7 @@ class Zend_Queue_Adapter_Array extends Zend_Queue_Adapter_AdapterAbstract
      * returns underlying _data array
      * $queue->getAdapter()->getData();
      *
-     * @return array;
+     * @return array
      */
     public function getData()
     {
@@ -346,7 +345,7 @@ class Zend_Queue_Adapter_Array extends Zend_Queue_Adapter_AdapterAbstract
      * $queue->getAdapter()->setData($data);
      *
      * @param array $data
-     * @return $this;
+     * @return $this
      */
     public function setData($data)
     {

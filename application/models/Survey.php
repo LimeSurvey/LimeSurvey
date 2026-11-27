@@ -13,6 +13,7 @@
 *
 */
 
+use LimeSurvey\Models\Services\SurveySessionState;
 use LimeSurvey\Models\Services\SurveyUseCaptcha;
 use LimeSurvey\PluginManager\PluginEvent;
 
@@ -152,6 +153,8 @@ use LimeSurvey\PluginManager\PluginEvent;
  * @property SurveysGroups $surveygroup
  * @property boolean $isDateExpired Whether survey is expired depending on the current time and survey configuration status
  * @property string $lastmodified date as SQL datetime (YYYY-MM-DD HH:mm:ss)
+ * @property string[] $welcome_image image path and settings for uploaded image to be isplayed on welcome screen
+ * @property-read array|null $welcomeImageSettings decoded welcome_image json (image_path, image_align, image_brightness, image_radius, image_alt_text, image_styles)
  * @method mixed active()
  */
 class Survey extends LSActiveRecord implements PermissionInterface
@@ -442,8 +445,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
             $sLang = Yii::app()->request->getParam('lang');
         } else {
             // SESSION
-            if (isset(Yii::app()->session['responses_' . $this->sid]['s_lang'])) {
-                $sLang = Yii::app()->session['responses_' . $this->sid]['s_lang'];
+            $sessionLanguage = SurveySessionState::forSurvey((int) $this->sid)->getLanguage();
+            if ($sessionLanguage !== null) {
+                $sLang = $sessionLanguage;
             }
         }
         return $sLang;
@@ -2102,9 +2106,13 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
     /**
      * Get criteria from Permission
-     * @param $userid for this user id , if not set : get current one
+     * Plugins can change the criteria with the getSurveyPermissionCriteria event, for example to
+     * list surveys they give access to with beforeHasPermission. The event gets:
+     * - userid: The user the criteria is for
+     * - hasGlobalRead: Whether the user has the global surveys read permission, the criteria is empty then
+     * - criteria: The core CDbCriteria, plugins can update it (e.g. mergeWith() with 'OR') or set a new one
+     * @param int|null $userid for this user id , if not set : get current one
      * @todo : move to PermissionInterface
-     * @todo : create an event
      * @return CDbCriteria
      */
     protected static function getPermissionCriteria($userid = null)
@@ -2115,7 +2123,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
         // Note: reflect Permission::hasPermission
         $criteriaPerm = new CDbCriteria();
         $criteriaPerm->params = array();
-        if (!Permission::model()->hasGlobalPermission("surveys", 'read', $userid)) {
+        $hasGlobalRead = Permission::model()->hasGlobalPermission("surveys", 'read', $userid);
+        if (!$hasGlobalRead) {
             /* it's the owner of the survey */
             $criteriaPerm->compare('t.owner_id', $userid, false);
 
@@ -2147,7 +2156,15 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 $criteriaPerm->compare("surveysgroupsowner{$userid}.owner_id", $userid, false, 'OR');
             }
         }
-        /* Place for a new event */
+        $event = new PluginEvent('getSurveyPermissionCriteria');
+        $event->set('userid', $userid);
+        $event->set('hasGlobalRead', $hasGlobalRead);
+        $event->set('criteria', $criteriaPerm);
+        App()->getPluginManager()->dispatchEvent($event);
+        $pluginCriteria = $event->get('criteria');
+        if ($pluginCriteria instanceof CDbCriteria) {
+            return $pluginCriteria;
+        }
         return $criteriaPerm;
     }
     /**
@@ -2470,6 +2487,18 @@ class Survey extends LSActiveRecord implements PermissionInterface
         }
         $criteria->addColumnCondition(['type' => $type]);
         return Question::model()->find($criteria);
+    }
+
+    /**
+     * decodes the welcome_image json to be used anywhere necessary
+     * @return array|null
+     */
+    public function getWelcomeImageSettings()
+    {
+        if (!$this->hasAttribute('welcome_image')) {
+            return [];
+        }
+        return json_decode_ls($this->welcome_image);
     }
 
     /**

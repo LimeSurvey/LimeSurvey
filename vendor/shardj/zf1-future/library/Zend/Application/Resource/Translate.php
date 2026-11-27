@@ -24,6 +24,7 @@
  * @see Zend_Application_Resource_ResourceAbstract
  */
 require_once 'Zend/Application/Resource/ResourceAbstract.php';
+require_once 'Zend/Registry.php';
 
 
 /**
@@ -83,6 +84,7 @@ class Zend_Application_Resource_Translate extends Zend_Application_Resource_Reso
             }
 
             if (empty($options['adapter'])) {
+                require_once 'Zend/Translate.php';
                 $options['adapter'] = Zend_Translate::AN_ARRAY;
             }
 
@@ -93,6 +95,7 @@ class Zend_Application_Resource_Translate extends Zend_Application_Resource_Reso
 
             if (isset($options['log'])) {
                 if (is_array($options['log'])) {
+                    require_once 'Zend/Log.php';
                     $options['log'] = Zend_Log::factory($options['log']);
                 }
             }
@@ -137,6 +140,7 @@ class Zend_Application_Resource_Translate extends Zend_Application_Resource_Reso
                 $translate->addTranslation($options);
                 $this->_translate = $translate;
             } else {
+                require_once 'Zend/Translate.php';
                 $this->_translate = new Zend_Translate($options);
                 Zend_Registry::set($key, $this->_translate);
             }

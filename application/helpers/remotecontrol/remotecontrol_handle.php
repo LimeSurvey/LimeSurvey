@@ -8,42 +8,42 @@ use LimeSurvey\PluginManager\PluginEvent;
 
 class remotecontrol_handle
 {
-    const INVALID_SESSION_KEY = 'Invalid session key';
+    public const INVALID_SESSION_KEY = 'Invalid session key';
 
     // Error codes
-    const ERR_INVALID_SESSION = 'ERR_INVALID_SESSION';
-    const ERR_INVALID_CREDENTIALS = 'ERR_INVALID_CREDENTIALS';
-    const ERR_NO_PERMISSION = 'ERR_NO_PERMISSION';
-    const ERR_INVALID_USER = 'ERR_INVALID_USER';
-    const ERR_INVALID_SURVEY = 'ERR_INVALID_SURVEY';
-    const ERR_INVALID_GROUP = 'ERR_INVALID_GROUP';
-    const ERR_INVALID_QUESTION = 'ERR_INVALID_QUESTION';
-    const ERR_INVALID_QUOTA = 'ERR_INVALID_QUOTA';
-    const ERR_INVALID_TOKEN = 'ERR_INVALID_TOKEN';
-    const ERR_INVALID_LANGUAGE = 'ERR_INVALID_LANGUAGE';
-    const ERR_INVALID_SETTING = 'ERR_INVALID_SETTING';
-    const ERR_INVALID_PARAMETERS = 'ERR_INVALID_PARAMETERS';
-    const ERR_INVALID_EXTENSION = 'ERR_INVALID_EXTENSION';
-    const ERR_INVALID_XML = 'ERR_INVALID_XML';
-    const ERR_INVALID_COLUMNS = 'ERR_INVALID_COLUMNS';
-    const ERR_SURVEY_ACTIVE = 'ERR_SURVEY_ACTIVE';
-    const ERR_SURVEY_NOT_ACTIVE = 'ERR_SURVEY_NOT_ACTIVE';
-    const ERR_NO_PARTICIPANT_TABLE = 'ERR_NO_PARTICIPANT_TABLE';
-    const ERR_NO_RESPONSE_TABLE = 'ERR_NO_RESPONSE_TABLE';
-    const ERR_CREATION_FAILED = 'ERR_CREATION_FAILED';
-    const ERR_DELETION_FAILED = 'ERR_DELETION_FAILED';
-    const ERR_COPY_FAILED = 'ERR_COPY_FAILED';
-    const ERR_UPDATE_FAILED = 'ERR_UPDATE_FAILED';
-    const ERR_NO_DATA = 'ERR_NO_DATA';
-    const ERR_ALREADY_EXISTS = 'ERR_ALREADY_EXISTS';
-    const ERR_DEPENDENCIES = 'ERR_DEPENDENCIES';
-    const ERR_CONSISTENCY_CHECK = 'ERR_CONSISTENCY_CHECK';
-    const ERR_EDIT_NOT_ALLOWED = 'ERR_EDIT_NOT_ALLOWED';
-    const ERR_MULTIPLE_MATCHES = 'ERR_MULTIPLE_MATCHES';
-    const ERR_NOT_FOUND = 'ERR_NOT_FOUND';
-    const ERR_MISSING_IDENTIFIER = 'ERR_MISSING_IDENTIFIER';
-    const ERR_FILE_ERROR = 'ERR_FILE_ERROR';
-    const ERR_CANNOT_REMOVE_BASE_LANG = 'ERR_CANNOT_REMOVE_BASE_LANG';
+    public const ERR_INVALID_SESSION = 'ERR_INVALID_SESSION';
+    public const ERR_INVALID_CREDENTIALS = 'ERR_INVALID_CREDENTIALS';
+    public const ERR_NO_PERMISSION = 'ERR_NO_PERMISSION';
+    public const ERR_INVALID_USER = 'ERR_INVALID_USER';
+    public const ERR_INVALID_SURVEY = 'ERR_INVALID_SURVEY';
+    public const ERR_INVALID_GROUP = 'ERR_INVALID_GROUP';
+    public const ERR_INVALID_QUESTION = 'ERR_INVALID_QUESTION';
+    public const ERR_INVALID_QUOTA = 'ERR_INVALID_QUOTA';
+    public const ERR_INVALID_TOKEN = 'ERR_INVALID_TOKEN';
+    public const ERR_INVALID_LANGUAGE = 'ERR_INVALID_LANGUAGE';
+    public const ERR_INVALID_SETTING = 'ERR_INVALID_SETTING';
+    public const ERR_INVALID_PARAMETERS = 'ERR_INVALID_PARAMETERS';
+    public const ERR_INVALID_EXTENSION = 'ERR_INVALID_EXTENSION';
+    public const ERR_INVALID_XML = 'ERR_INVALID_XML';
+    public const ERR_INVALID_COLUMNS = 'ERR_INVALID_COLUMNS';
+    public const ERR_SURVEY_ACTIVE = 'ERR_SURVEY_ACTIVE';
+    public const ERR_SURVEY_NOT_ACTIVE = 'ERR_SURVEY_NOT_ACTIVE';
+    public const ERR_NO_PARTICIPANT_TABLE = 'ERR_NO_PARTICIPANT_TABLE';
+    public const ERR_NO_RESPONSE_TABLE = 'ERR_NO_RESPONSE_TABLE';
+    public const ERR_CREATION_FAILED = 'ERR_CREATION_FAILED';
+    public const ERR_DELETION_FAILED = 'ERR_DELETION_FAILED';
+    public const ERR_COPY_FAILED = 'ERR_COPY_FAILED';
+    public const ERR_UPDATE_FAILED = 'ERR_UPDATE_FAILED';
+    public const ERR_NO_DATA = 'ERR_NO_DATA';
+    public const ERR_ALREADY_EXISTS = 'ERR_ALREADY_EXISTS';
+    public const ERR_DEPENDENCIES = 'ERR_DEPENDENCIES';
+    public const ERR_CONSISTENCY_CHECK = 'ERR_CONSISTENCY_CHECK';
+    public const ERR_EDIT_NOT_ALLOWED = 'ERR_EDIT_NOT_ALLOWED';
+    public const ERR_MULTIPLE_MATCHES = 'ERR_MULTIPLE_MATCHES';
+    public const ERR_NOT_FOUND = 'ERR_NOT_FOUND';
+    public const ERR_MISSING_IDENTIFIER = 'ERR_MISSING_IDENTIFIER';
+    public const ERR_FILE_ERROR = 'ERR_FILE_ERROR';
+    public const ERR_CANNOT_REMOVE_BASE_LANG = 'ERR_CANNOT_REMOVE_BASE_LANG';
 
     /**
      * @var AdminController
@@ -242,7 +242,6 @@ class remotecontrol_handle
 
                     $langsettings = new SurveyLanguageSetting();
                     $langsettings->insertNewSurvey($aInsertData);
-                    Permission::model()->giveAllSurveyPermissions(Yii::app()->session['loginID'], $iNewSurveyid);
 
                     return (int) $iNewSurveyid;
                 } catch (Exception $e) {
@@ -1619,7 +1618,7 @@ class remotecontrol_handle
      * @return array|int On success: new question ID. On failure: array with 'status' and 'error_code' keys.
      *              Possible error codes: ERR_INVALID_SESSION, ERR_INVALID_SURVEY, ERR_NO_PERMISSION,
      *              ERR_SURVEY_ACTIVE, ERR_INVALID_GROUP, ERR_ALREADY_EXISTS, ERR_INVALID_EXTENSION, ERR_INVALID_XML,
-     *              ERR_CREATION_FAILED.
+     *              ERR_CREATION_FAILED, ERR_UPDATE_FAILED.
      */
     public function import_question($sSessionKey, $iSurveyID, $iGroupID, $sImportData, $sImportDataType, $sMandatory = 'N', $sNewQuestionTitle = null, $sNewqQuestion = null, $sNewQuestionHelp = null)
     {
@@ -1705,7 +1704,8 @@ class remotecontrol_handle
             if (!$oQuestion->save()) {
                 return array(
                     'status' => 'Error when update question',
-                    'errors' => $oQuestion->getErrors()
+                    'errors' => $oQuestion->getErrors(),
+                    'error_code' => self::ERR_UPDATE_FAILED
                 );
             }
 
@@ -1729,7 +1729,8 @@ class remotecontrol_handle
             if (!empty($errors)) {
                 return array(
                     'status' => 'Error when update question',
-                    'errors' => $errors
+                    'errors' => $errors,
+                    'error_code' => self::ERR_UPDATE_FAILED
                 );
             }
 
@@ -2131,19 +2132,59 @@ class remotecontrol_handle
     /**
      * Add participants to the survey.
      *
-     * The parameters $aParticipantData is a 2 dimensionnal array containing needed participant data.
-     * @see \Token for all available attribute,
-     * @example : `[ {"email":"me@example.com","lastname":"Bond","firstname":"James"},{"email":"me2@example.com","attribute_1":"example"} ]`
-     * Dates (validfrom, validuntil, sent, remindersent, completed) are in UTC, in the format 'YYYY-MM-DD HH:MM:SS'.
+     * $aParticipantData is a list of participants. Each participant is an array (a JSON object) with the field
+     * names of the survey participant list as keys. Example with two participants:
      *
-     * Returns the inserted data including additional new information like the Token entry ID and the token string. In case of errors in some data, return it in errors.
+     * ```
+     * [
+     *     {
+     *         "firstname": "James",
+     *         "lastname": "Bond",
+     *         "email": "me@example.com"
+     *     },
+     *     {
+     *         "email": "me2@example.com",
+     *         "validuntil": "2030-12-31 23:59:59",
+     *         "attribute_1": "example"
+     *     }
+     * ]
+     * ```
+     *
+     * All fields are optional. Keys that are not a field of the survey participant list are ignored.
+     * The formats below are the same for all languages. The fields and their validation rules:
+     *
+     * * firstname, lastname: Text. HTML tags are removed.
+     * * email: A valid email address, or several addresses separated by a semicolon.
+     * * emailstatus: Text, for example "OK", "bounced" or "OptOut". Defaults to "OK".
+     * * token: Access code with at most 36 characters, unique in the survey. By default only the characters
+     *   0-9, a-z, A-Z, "_", "-" and "~" are kept. It is only used if $bCreateToken is false,
+     *   otherwise the generated access code replaces it.
+     * * language: Language code, for example "en". It has to be one of the languages of the survey.
+     * * blacklisted: "Y" or "N".
+     * * usesleft: Integer. Defaults to 1.
+     * * validfrom, validuntil: Date in UTC in the format "YYYY-MM-DD HH:MM:SS".
+     *   "YYYY-MM-DD HH:MM" and "YYYY-MM-DD" are accepted as well.
+     * * sent, remindersent: "N" or a date in UTC in the format "YYYY-MM-DD HH:MM" (without seconds).
+     * * completed: "N" (not completed, the default), "Y" (completed), "Q" (closed by a quota)
+     *   or the completion date in UTC in the format "YYYY-MM-DD HH:MM" (without seconds).
+     * * remindercount: Integer.
+     * * attribute_1, attribute_2, ...: Text. Only the custom attributes that exist in the survey are saved.
+     *
+     * Returns the list of participants. A participant that was added is returned with all saved fields, including
+     * the participant ID (tid) and the access code (token). A participant with invalid data is not added,
+     * it is returned as it was sent, with the validation messages of each invalid field in an additional "errors" key.
+     * The other participants are still added.
+     *
+     * @see \Token for all fields of the survey participant list
      *
      * @access public
      * @param string $sSessionKey Auth credentials
      * @param int $iSurveyID ID of the Survey
-     * @param array $aParticipantData Data of the participants to be added
-     * @param bool $bCreateToken Optional - Defaults to true and determines if the access token automatically created
-     * @return array On success: inserted participant data including token ID and token string.
+     * @param array $aParticipantData List of participants to be added, see the description for the fields
+     * @param bool $bCreateToken Optional - Defaults to true and determines if the access code is created automatically.
+     *                           Pass false to set your own access codes in the "token" field.
+     * @return array On success: list of the participants, each one with the saved data including participant ID
+     *              and access code, or with an "errors" key if its data is invalid.
      *              On failure: array with 'status' and 'error_code' keys.
      *              Possible error codes: ERR_INVALID_SESSION, ERR_INVALID_SURVEY, ERR_NO_PARTICIPANT_TABLE, ERR_NO_PERMISSION.
      */
@@ -2298,8 +2339,22 @@ class remotecontrol_handle
      * Set properties of a survey participant (RPC function)
      *
      * Allow to set properties about a specific participant, only one participant can be updated.
-     * Dates (validfrom, validuntil, sent, remindersent, completed) are in UTC, in the format 'YYYY-MM-DD HH:MM:SS'.
-     * @see \Token for available properties
+     *
+     * $aTokenData is an array (a JSON object) with the field names of the survey participant list as keys.
+     * Only the given fields are changed. Example:
+     *
+     * ```
+     * {"email": "me@example.com", "validuntil": "2030-12-31 23:59:59"}
+     * ```
+     *
+     * The fields, formats and validation rules are the same as in add_participants(). For example the dates
+     * validfrom and validuntil are in UTC in the format "YYYY-MM-DD HH:MM:SS", and the dates
+     * sent, remindersent and completed are in UTC in the format "YYYY-MM-DD HH:MM" (without seconds).
+     * The participant ID (tid) can not be changed. Keys that are not a field of the survey participant list
+     * are ignored. If a value is invalid, nothing is saved.
+     *
+     * @see remotecontrol_handle::add_participants() for the fields and their validation rules
+     * @see \Token for all fields of the survey participant list
      *
      * @access public
      * @param string $sSessionKey Auth credentials
@@ -2307,8 +2362,11 @@ class remotecontrol_handle
      * @param struct|int $aTokenQueryProperties of participant properties used to query the participant, or the token id as an integer
      * @param struct $aTokenData An array with the particular fieldnames as keys and their values to set on that particular Participant
      * @return array On success: updated participant attributes. On failure: array with 'status' and 'error_code' keys.
+     *              If a value is invalid: array with a 'status' key that holds the validation messages
+     *              of each invalid field.
      *              Possible error codes: ERR_INVALID_SESSION, ERR_INVALID_SURVEY, ERR_NO_PARTICIPANT_TABLE,
-     *              ERR_NO_PERMISSION, ERR_NOT_FOUND, ERR_MULTIPLE_MATCHES, ERR_INVALID_TOKEN, ERR_NO_DATA.
+     *              ERR_NO_PERMISSION, ERR_NOT_FOUND, ERR_MULTIPLE_MATCHES, ERR_INVALID_TOKEN, ERR_NO_DATA,
+     *              ERR_UPDATE_FAILED.
      */
     public function set_participant_properties($sSessionKey, $iSurveyID, $aTokenQueryProperties, $aTokenData)
     {
@@ -2357,7 +2415,7 @@ class remotecontrol_handle
                 if ($oToken->encryptSave(true)) {
                     return $oToken->attributes;
                 } else {
-                    return array('status' => $oToken->getErrors());
+                    return array('status' => $oToken->getErrors(), 'error_code' => self::ERR_UPDATE_FAILED);
                 }
             } else {
                 return array('status' => 'No permission', 'error_code' => self::ERR_NO_PERMISSION);
@@ -3027,7 +3085,7 @@ class remotecontrol_handle
      * @param int $uid Optional; ID of the user
      * @param string $username Optional; name of the user
      * @return array On success: list of users. On failure: array with 'status' and 'error_code' keys.
-     *              Possible error codes: ERR_INVALID_SESSION, ERR_INVALID_USER, ERR_NO_DATA.
+     *              Possible error codes: ERR_INVALID_SESSION, ERR_NO_PERMISSION, ERR_INVALID_USER, ERR_NO_DATA.
      */
     public function list_users($sSessionKey = null, $uid = null, $username = null)
     {
@@ -3098,7 +3156,7 @@ class remotecontrol_handle
                 }
                 return $data;
             } else {
-                return array('status' => 'Permission denied.');
+                return array('status' => 'Permission denied.', 'error_code' => self::ERR_NO_PERMISSION);
             }
         } else {
             return array('status' => self::INVALID_SESSION_KEY, 'error_code' => self::ERR_INVALID_SESSION);
@@ -3358,7 +3416,6 @@ class remotecontrol_handle
         }
 
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'update')) {
-
             if (!tableExists("{{tokens_$iSurveyID}}")) {
                 return array('status' => 'Error: No survey participant list', 'error_code' => self::ERR_NO_PARTICIPANT_TABLE);
             }
@@ -3738,6 +3795,69 @@ class remotecontrol_handle
             'filename' => $randfilename,
             'msg' => gT('The file has been successfully uploaded.')
         );
+    }
+
+    /**
+     * List available response export formats.
+     *
+     * Each entry contains the 'type' to use as document type in export_responses
+     * and export_responses_by_token, a plain-text 'label' and 'tooltip' (tooltip can be null)
+     * and 'isDefault', which flags the default export format.
+     * Labels and tooltips are always in English.
+     *
+     * @access public
+     * @param string $sSessionKey Auth credentials
+     * @return array On success: list of export formats. On failure: array with 'status' and 'error_code' keys.
+     *              Possible error codes: ERR_INVALID_SESSION, ERR_NO_DATA.
+     */
+    public function list_response_exports($sSessionKey)
+    {
+        if (!$this->_checkSessionKey($sSessionKey)) {
+            return array('status' => self::INVALID_SESSION_KEY, 'error_code' => self::ERR_INVALID_SESSION);
+        }
+
+        Yii::app()->loadHelper('admin.exportresults');
+        $oExport = new ExportSurveyResultsService();
+        $sOriginalLanguage = Yii::app()->getLanguage();
+        try {
+            Yii::app()->setLanguage('en');
+            $aExportOptions = $oExport->getExportOptions();
+        } finally {
+            Yii::app()->setLanguage($sOriginalLanguage);
+        }
+
+        if (empty($aExportOptions)) {
+            return array('status' => 'No export formats found', 'error_code' => self::ERR_NO_DATA);
+        }
+
+        ksort($aExportOptions, SORT_STRING);
+        $aExportFormats = array();
+        foreach ($aExportOptions as $sType => $aExportOption) {
+            $aExportFormats[] = array(
+                'type' => (string) $sType,
+                'label' => $this->htmlToPlainText($aExportOption['label']),
+                'tooltip' => $this->htmlToPlainText($aExportOption['tooltip']),
+                'isDefault' => $aExportOption['default'],
+            );
+        }
+
+        return $aExportFormats;
+    }
+
+    /**
+     * Convert an HTML fragment meant for the admin GUI to plain text,
+     * keeping words on both sides of a tag apart
+     *
+     * @param string|null $sHtml The HTML fragment
+     * @return string|null The plain text, or null if no or an empty fragment was given
+     */
+    protected function htmlToPlainText($sHtml)
+    {
+        if ($sHtml === null || $sHtml === '') {
+            return null;
+        }
+        $sText = flattenText(str_replace('<', ' <', (string) $sHtml), false, true);
+        return trim(preg_replace('~\s+~u', ' ', $sText));
     }
 
     /**

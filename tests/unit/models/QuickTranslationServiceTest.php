@@ -120,4 +120,48 @@ class QuickTranslationServiceTest extends TestBaseClass
     {
         $this->assertNull(QuickTranslation::restoreExpressions('<p>Hallo</p>', ['{TOKEN:FIRSTNAME}']));
     }
+
+    /**
+     * The posted list of changes is read with every key as a string, missing keys are empty.
+     */
+    public function testParsePostedTranslations()
+    {
+        $json = json_encode([
+            ['type' => 'title', 'id1' => '', 'id2' => '', 'scaleid' => '', 'value' => 'Titel'],
+            ['type' => 'answer', 'id1' => 12, 'id2' => 'A1', 'scaleid' => 0, 'value' => "It's <b>2 > 1</b>"],
+            ['type' => 'question', 'id1' => '7', 'value' => '0'],
+        ]);
+
+        $this->assertSame(
+            [
+                ['type' => 'title', 'id1' => '', 'id2' => '', 'scaleid' => '', 'value' => 'Titel'],
+                ['type' => 'answer', 'id1' => '12', 'id2' => 'A1', 'scaleid' => '0', 'value' => "It's <b>2 > 1</b>"],
+                ['type' => 'question', 'id1' => '7', 'id2' => '', 'scaleid' => '', 'value' => '0'],
+            ],
+            QuickTranslation::parsePostedTranslations($json)
+        );
+    }
+
+    /**
+     * An emptied translation is left out, like no change at all.
+     */
+    public function testParsePostedTranslationsSkipsEmptyValues()
+    {
+        $json = json_encode([['type' => 'question', 'id1' => '7', 'id2' => '', 'scaleid' => '', 'value' => '']]);
+
+        $this->assertSame([], QuickTranslation::parsePostedTranslations($json));
+        $this->assertSame([], QuickTranslation::parsePostedTranslations('[]'));
+    }
+
+    /**
+     * Anything but a list of changes with plain values is rejected as a whole.
+     */
+    public function testParsePostedTranslationsRejectsInvalidData()
+    {
+        $this->assertNull(QuickTranslation::parsePostedTranslations(''));
+        $this->assertNull(QuickTranslation::parsePostedTranslations('{"type":'));
+        $this->assertNull(QuickTranslation::parsePostedTranslations('"title"'));
+        $this->assertNull(QuickTranslation::parsePostedTranslations('["title"]'));
+        $this->assertNull(QuickTranslation::parsePostedTranslations('[{"type":"question","id1":[7],"value":"x"}]'));
+    }
 }

@@ -370,7 +370,7 @@ class Zend_Ldap_Dn implements ArrayAccess
      * Do a case folding on a RDN
      *
      * @param  array  $part
-     * @param  string $caseFold
+     * @param  string|null $caseFold
      * @return array
      */
     protected static function _caseFoldRdn(array $part, $caseFold)
@@ -487,10 +487,8 @@ class Zend_Ldap_Dn implements ArrayAccess
             case self::ATTR_CASEFOLD_UPPER:
             case self::ATTR_CASEFOLD_LOWER:
                 return $caseFold;
-                break;
             default:
                 return $default;
-                break;
         }
     }
 
@@ -725,7 +723,7 @@ class Zend_Ldap_Dn implements ArrayAccess
      * This method supports the creation of multi-valued RDNs
      * $part must contain an even number of elemets.
      *
-     * @param  array  $attribute
+     * @param  array  $part
      * @param  string $caseFold
      * @return string
      * @throws Zend_Ldap_Exception

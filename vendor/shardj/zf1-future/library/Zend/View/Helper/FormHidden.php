@@ -55,7 +55,7 @@ class Zend_View_Helper_FormHidden extends Zend_View_Helper_FormElement
         $info = $this->_getInfo($name, $value, $attribs);
         extract($info); // name, value, attribs, options, listsep, disable
         if (isset($id)) {
-            if (isset($attribs) && is_array($attribs)) {
+            if (isset($attribs)) {
                 $attribs['id'] = $id;
             } else {
                 $attribs = ['id' => $id];

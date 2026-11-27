@@ -1341,6 +1341,32 @@ function LEMval(alias, keepText)
 }
 
 
+/**
+ * Round a float to the number of significant digits PHP uses when it prints a float (ini setting "precision").
+ * PHP prints 1850/100/20*0.1*100 as 9.25 while JavaScript prints 9.250000000000002: Without rounding the page
+ * shows another value than the one PHP calculates and saves.
+ * Used for the calculated results written into the page, not inside calculations.
+ * Integers and non-numbers are returned unchanged.
+ * @param {*} value
+ * @return {*}
+ */
+function LEMroundFloat(value)
+{
+    if (typeof value !== 'number' || !isFinite(value) || Math.floor(value) === value) {
+        return value;
+    }
+    // PHP default, used when the page does not tell the setting
+    var precision = 14;
+    if (typeof LSvar !== 'undefined' && typeof LSvar.floatPrecision === 'number') {
+        precision = LSvar.floatPrecision;
+    }
+    // With -1 PHP prints the shortest exact form, like JavaScript does. From 17 digits on PHP prints more digits than JavaScript.
+    if (precision < 1 || precision > 16) {
+        return value;
+    }
+    return parseFloat(value.toPrecision(precision));
+}
+
 /** Display number with comma as radix separator, if needed
  */
 function LEMfixnum(value)

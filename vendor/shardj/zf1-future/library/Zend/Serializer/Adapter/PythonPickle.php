@@ -1112,7 +1112,7 @@ class Zend_Serializer_Adapter_PythonPickle extends Zend_Serializer_Adapter_Adapt
     /**
      * Convert a hex string to a UTF-8 string
      *
-     * @param  string $sequence
+     * @param  string $hex
      * @return string
      * @throws Zend_Serializer_Exception on unmatched unicode sequence
      */

@@ -85,11 +85,5 @@ class Zend_Pdf_Filter_Compression_Lzw extends Zend_Pdf_Filter_Compression
     {
         require_once 'Zend/Pdf/Exception.php';
         throw new Zend_Pdf_Exception('Not implemented yet');
-
-        if ($params !== null) {
-            return self::_applyDecodeParams($data, $params);
-        } else {
-            return $data;
-        }
     }
 }

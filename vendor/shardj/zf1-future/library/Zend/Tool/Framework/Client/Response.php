@@ -39,7 +39,7 @@ class Zend_Tool_Framework_Client_Response
     protected $_content = [];
 
     /**
-     * @var Zend_Tool_Framework_Exception
+     * @var Exception|null
      */
     protected $_exception = null;
 
@@ -87,7 +87,7 @@ class Zend_Tool_Framework_Client_Response
     /**
      * appendCallback
      *
-     * @param string $content
+     * @param string|null $content
      * @return Zend_Tool_Framework_Client_Response
      */
     public function appendContent($content, Array $decoratorOptions = [])

@@ -14,6 +14,7 @@
  * @subpackage Infrastructure
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @deprecated Deprecated since 1.27.1 and will be removed in a future version: the Simple Cloud API is not developed any further; use the SDK of the cloud provider
  */
 class Zend_Cloud_Infrastructure_Image
 {
@@ -93,8 +94,8 @@ class Zend_Cloud_Infrastructure_Image
     /**
      * Get Attribute with a specific key
      *
-     * @param array $data
-     * @return misc|boolean
+     * @param string $key
+     * @return mixed|boolean
      */
     public function getAttribute($key)
     {

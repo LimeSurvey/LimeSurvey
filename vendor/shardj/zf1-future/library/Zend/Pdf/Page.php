@@ -196,7 +196,6 @@ class Zend_Pdf_Page extends Zend_Pdf_Canvas_Abstract
                     $this->_attached   = true;
                     $this->_safeGS     = false;
                     return;
-                    break;
 
                 case Zend_Pdf_Element::TYPE_NULL:
                     $this->_objFactory = $param2;
@@ -206,7 +205,6 @@ class Zend_Pdf_Page extends Zend_Pdf_Canvas_Abstract
                 default:
                     require_once 'Zend/Pdf/Exception.php';
                     throw new Zend_Pdf_Exception('Unrecognized object type.');
-                    break;
 
             }
         } else if ($param1 instanceof Zend_Pdf_Page && $param2 === null && $param3 === null) {

@@ -115,14 +115,14 @@ class Zend_Memory_Manager
      * object.
      * So we have to trace only _first_ object modification and do nothing for others
      *
-     * @var Zend_Memory_Container_Movable
+     * @var Zend_Memory_Container_Movable|null
      */
     private $_lastModified = null;
 
     /**
      * Unique memory manager id
      *
-     * @var integer
+     * @var string
      */
     private $_managerId;
 
@@ -156,7 +156,6 @@ class Zend_Memory_Manager
      * If backend is not specified, then memory objects are never swapped
      *
      * @param Zend_Cache_Backend $backend
-     * @param array $backendOptions associative array of options for the corresponding backend constructor
      */
     public function __construct($backend = null)
     {
@@ -197,6 +196,7 @@ class Zend_Memory_Manager
     public function __destruct()
     {
         if ($this->_backend !== null) {
+            require_once 'Zend/Cache.php';
             $this->_backend->clean(Zend_Cache::CLEANING_MODE_MATCHING_TAG, $this->_tags);
         }
     }
@@ -386,7 +386,7 @@ class Zend_Memory_Manager
     /**
      * Check and swap objects if necessary
      *
-     * @throws Zend_MemoryException
+     * @throws Zend_Memory_Exception
      */
     private function _swapCheck()
     {

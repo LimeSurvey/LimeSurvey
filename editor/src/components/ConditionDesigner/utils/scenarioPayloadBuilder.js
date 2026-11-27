@@ -13,6 +13,7 @@
  * - getApiOperationActions from utils.js
  */
 import { getApiOperationActions } from './getApiOperationActions'
+import { getConditionTypeInfo } from './getConditionTypeInfo'
 
 const sourceTabs = {
   Question: '#SRCPREVQUEST',
@@ -25,6 +26,21 @@ const targetTabs = {
   Question: '#PREVQUESTIONS',
   Token: '#TOKENATTRS',
   RegExp: '#REGEXP',
+}
+
+/**
+ * Returns the values of a condition: The answer options selected together for a new
+ * condition are joined with commas and become one condition each. Constants and
+ * regular expressions may contain commas themselves, so they stay one value.
+ *
+ * @param {object} condition The condition of the Condition Designer.
+ * @returns {string[]} The values, one per condition to save.
+ */
+export const splitConditionValues = (condition) => {
+  const value = condition.value.toString()
+  return condition.targetType === getConditionTypeInfo().TARGET.ANSWER_OPTIONS
+    ? value.split(',')
+    : [value]
 }
 
 export const buildScenarioPayload = (question, conditions, scenarioName) => {
@@ -86,19 +102,16 @@ export const buildScenarioPayload = (question, conditions, scenarioName) => {
   }
 
   conditions.forEach((condition) => {
-    condition.value
-      .toString()
-      .split(',')
-      .forEach((val) => {
-        const apiCondition = createApiCondition(condition, val)
-        let scenario = scenarios.find((s) => s.scid == apiCondition.scenario)
+    splitConditionValues(condition).forEach((val) => {
+      const apiCondition = createApiCondition(condition, val)
+      let scenario = scenarios.find((s) => s.scid == apiCondition.scenario)
 
-        if (!scenario) {
-          scenario = { scid: apiCondition.scenario, conditions: [] }
-          scenarios.push(scenario)
-        }
-        scenario.conditions.push(apiCondition)
-      })
+      if (!scenario) {
+        scenario = { scid: apiCondition.scenario, conditions: [] }
+        scenarios.push(scenario)
+      }
+      scenario.conditions.push(apiCondition)
+    })
   })
 
   return scenarios.length ? { qid, scenarios } : null

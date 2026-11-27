@@ -202,7 +202,8 @@ body {
 }
 
 .ls-questionhelp:before {
-    content: "\f059"
+    content: "\f059";
+    content: "\f059" / "";
 }
 
 .ls-questionhelp:before {

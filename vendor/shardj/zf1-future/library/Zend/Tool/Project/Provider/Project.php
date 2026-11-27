@@ -98,6 +98,7 @@ class Zend_Tool_Project_Provider_Project
             'This command created a web project, '
             . 'for more information setting up your VHOST, please see docs/README');
 
+        require_once 'Zend/Tool/Project/Provider/Test.php';
         if (!Zend_Tool_Project_Provider_Test::isPHPUnitAvailable()) {
             $response->appendContent('Testing Note: ', ['separator' => false, 'color' => 'yellow']);
             $response->appendContent('PHPUnit was not found in your include_path, therefore no testing actions will be created.');
@@ -126,10 +127,12 @@ class Zend_Tool_Project_Provider_Project
     protected function _getDefaultProfile()
     {
         $testAction = '';
+        require_once 'Zend/Tool/Project/Provider/Test.php';
         if (Zend_Tool_Project_Provider_Test::isPHPUnitAvailable()) {
             $testAction = '                    	<testApplicationActionMethod forActionName="index" />';
         }
 
+        require_once 'Zend/Version.php';
         $version = Zend_Version::VERSION;
 
         $data = <<<EOS
@@ -209,6 +212,7 @@ EOS;
 
     public static function getDefaultReadmeContents($caller = null)
     {
+        $name = '';
         $projectDirResource = $caller->getResource()->getProfile()->search('projectDirectory');
         if ($projectDirResource) {
             $name = ltrim(strrchr($projectDirResource->getPath(), DIRECTORY_SEPARATOR), DIRECTORY_SEPARATOR);

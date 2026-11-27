@@ -1,5 +1,7 @@
 <?php
 
+require_once 'Zend/Mail/Transport/Smtp.php';
+
 class Zend_Mail_Transport_SendgridSmtp extends Zend_Mail_Transport_Smtp
 {
     /**
@@ -19,6 +21,7 @@ class Zend_Mail_Transport_SendgridSmtp extends Zend_Mail_Transport_Smtp
     public function __construct($options)
     {
         if (!isset($options['host'])) {
+            require_once 'Zend/Application/Resource/Exception.php';
             throw new Zend_Application_Resource_Exception(
                 'A host is necessary for smtp transport,'
                 . ' but none was given'
@@ -35,7 +38,7 @@ class Zend_Mail_Transport_SendgridSmtp extends Zend_Mail_Transport_Smtp
     /**
      * Set ClickTracking status
      *
-     * @param bool $status
+     * @param bool $bool
      * @return void
      */ 
     public function setClickTracking($bool)
@@ -103,6 +106,7 @@ class Zend_Mail_Transport_SendgridSmtp extends Zend_Mail_Transport_Smtp
      */
     protected function _prepareHeaders($headers)
     {
+        require_once 'Zend/Json.php';
         $headers['X-SMTPAPI'] = Zend_Json::encode($this->apiOptions);
         parent::_prepareHeaders($headers);
     }

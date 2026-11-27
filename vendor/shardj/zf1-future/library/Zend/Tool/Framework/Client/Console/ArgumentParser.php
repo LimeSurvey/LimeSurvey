@@ -111,7 +111,7 @@ class Zend_Tool_Framework_Client_Console_ArgumentParser implements Zend_Tool_Fra
      * Parse() - This method does the work of parsing the arguments into the enpooint request,
      * this will also (during help operations) fill the response in with information as needed
      *
-     * @return null
+     * @return void
      */
     public function parse()
     {
@@ -236,7 +236,7 @@ class Zend_Tool_Framework_Client_Console_ArgumentParser implements Zend_Tool_Fra
     /**
      * Internal routine for parsing global options from the command line
      *
-     * @return null
+     * @return void
      */
     protected function _parseGlobalPart()
     {
@@ -271,7 +271,7 @@ class Zend_Tool_Framework_Client_Console_ArgumentParser implements Zend_Tool_Fra
     /**
      * Internal routine for parsing the action name from the arguments
      *
-     * @return null
+     * @return void
      */
     protected function _parseActionPart()
     {
@@ -316,7 +316,7 @@ class Zend_Tool_Framework_Client_Console_ArgumentParser implements Zend_Tool_Fra
     /**
      * Internal routine for parsing the provider part of the command line arguments
      *
-     * @return null
+     * @return void
      */
     protected function _parseProviderPart()
     {
@@ -401,7 +401,7 @@ class Zend_Tool_Framework_Client_Console_ArgumentParser implements Zend_Tool_Fra
     /**
      * Internal routine for parsing the provider options from the command line
      *
-     * @return null
+     * @return void
      */
     protected function _parseProviderOptionsPart()
     {
