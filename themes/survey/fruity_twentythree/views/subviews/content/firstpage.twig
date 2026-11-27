@@ -62,7 +62,7 @@
         {{ aSurveyInfo.EM.ScriptsAndHiddenInputs  }}
 
         {# Welcome message, including the privacy message #}
-        {% set welcomeHtml %}{{ include('./subviews/messages/welcome.twig', {'welcomeWithPrivacy': true}) }}{% endset %}
+        {% set welcomeHtml %}{{ include('./subviews/messages/welcome.twig') }}{% endset %}
         {{ welcomeHtml }}
         {# A theme's own welcome.twig may not render the privacy message: without it, the data policy can't be accepted #}
         {% if '<!-- Privacy message -->' not in welcomeHtml %}
