@@ -75,8 +75,8 @@ function checkconditions(value, name, type, evt_type)
 
 /**
  * Check if value is a number for the survey radix.
- * Same as the server : comma is accepted only when the radix is comma (#16878)
- * The opposite is not done : period is still accepted when the radix is comma (#20870)
+ * Same as the server: comma is accepted only when the radix is comma (#16878)
+ * The opposite is not done: period is still accepted when the radix is comma (#20870)
  * @see https://bugs.limesurvey.org/view.php?id=20870
  * @param {string} value
  * @return {boolean}
@@ -1275,13 +1275,13 @@ function LEMval(alias, keepText)
                 }
 
                 /* Set as number if regexp is OK AND lenght is > 1 (then not fix [-.,] #14533 and no need to fix single number) */
-                /* Need a digit : Decimal throws an error on -. and -, */
+                /* Need a digit: Decimal throws an error on -. and -, */
                 if( /[,.]/.test(value) && /[0-9]/.test(value) && isLEMnumeric(value) && value.length > 1 )
                 {
                     var length = value.length;
                     var firstLetterIsNull = value.split("").shift() === '0';
-                    // LEMradix is already checked by isLEMnumeric : a comma reaches this point only when the radix is comma (#16878)
-                    // Decimal refuses the comma, so the replace in catch is needed for these surveys : keep it
+                    // LEMradix is already checked by isLEMnumeric: a comma reaches this point only when the radix is comma (#16878)
+                    // Decimal refuses the comma, so the replace in catch is needed for these surveys: keep it
                     try{
                         var numtest = new Decimal(value);
                     } catch(e){
