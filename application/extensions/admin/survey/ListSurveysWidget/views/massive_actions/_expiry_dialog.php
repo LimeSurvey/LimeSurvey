@@ -11,7 +11,7 @@ $form = $this->beginWidget('CActiveForm', array('id' => 'survey-expiry',)); ?>
     <div class="row">
         <!-- Expiry date/time -->
         <div class="mb-3">
-            <label class="col-md-6 form-label" for='expires'><?php
+            <label class="col-md-6 form-label" for='expiryPicker'><?php
                 eT("Expiry date/time:"); ?></label>
             <div class='col-md-6'>
                 <?php
