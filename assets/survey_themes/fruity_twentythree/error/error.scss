@@ -1,34 +1,97 @@
 body.error-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
   margin: 0;
   padding: 0;
   background: $white;
-  height: 100vh;
-  font-family: Arial, Helvetica, sans-serif;
-  .container {
+  color: $g-900;
+
+  .error-container {
     display: flex;
-    height: 90%;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    padding: 3rem 1rem;
   }
+
+  .error-main {
+    flex: 0 1 514px;
+    min-width: 0;
+  }
+
+  .error-illustration {
+    flex: 0 1 507px;
+    min-width: 0;
+    height: auto;
+  }
+
   .error-title {
+    margin: 0 0 16px;
+    font-weight: $font-weight-600;
+    font-size: $font-size-base;
+    line-height: $line-height-20;
+    color: $g-700;
+
+    p,
+    ul {
+      margin: 0;
+    }
+
+    .text-danger {
+      color: inherit !important;
+    }
+  }
+
+  .error-image {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto;
+  }
+
+  .error-heading {
+    margin: 16px 0 24px;
+    font-family: $ibm-serif-font-family;
     font-weight: $font-weight-600;
     font-size: $font-size-2xl;
     line-height: $line-height-52;
     letter-spacing: -0.017em;
-    p {
-      color: $g-900 !important;
-    }
+    color: $g-900;
   }
 
   .error-content {
-    font-style: normal;
     font-weight: $font-weight-normal;
     font-size: $font-size-md;
     line-height: $line-height-24;
     letter-spacing: -0.017em;
     color: $g-900;
   }
+
   .error-link {
     font-weight: $font-weight-normal;
     font-size: $font-size-md;
     line-height: $line-height-24;
+  }
+
+  .error-trace {
+    margin-top: 24px;
+    max-height: 50vh;
+    overflow: auto;
+    font-size: $font-size-xs;
+  }
+
+  @media (max-width: 991.98px) {
+    .error-illustration {
+      display: none;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .error-heading {
+      font-size: $font-size-xl;
+      line-height: 32px;
+    }
   }
 }
