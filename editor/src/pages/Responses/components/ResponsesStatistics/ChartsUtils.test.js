@@ -5,6 +5,7 @@ import {
   getCategoryAxisWidth,
   getStatisticsGraphsForType,
   LABEL_CHAR_WIDTH,
+  rankLabel,
   statisticsGraphs,
   TEXT_QUESTION_TYPES,
 } from './ChartsUtils'
@@ -92,4 +93,16 @@ describe('getCategoryAxisWidth', () => {
       )
     }
   )
+})
+
+describe('rankLabel', () => {
+  const originalTranslate = globalThis.t
+  afterEach(() => {
+    globalThis.t = originalTranslate
+  })
+
+  test('uses the translated "Rank %s" label', () => {
+    globalThis.t = (text) => (text === 'Rank %s' ? 'Classement %s' : text)
+    expect(rankLabel(2)).toBe('Classement 2')
+  })
 })
