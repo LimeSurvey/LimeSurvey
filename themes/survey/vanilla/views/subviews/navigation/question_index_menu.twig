@@ -29,11 +29,11 @@ There is two possible displays for index, depending on Survey Mode:
     {% if aSurveyInfo.format == 'G' %}
         <!-- Question index, group, {{ aSurveyInfo.aQuestionIndex.type }} -->
         <li class="dropdown nav-item ls-no-js-hidden px-2 index-menu-{{ aSurveyInfo.aQuestionIndex.type }}">
-            <button id="index-menu" type="button" class="dropdown-toggle nav-link border-0 bg-transparent" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <button id="index-menu" type="button" class="dropdown-toggle nav-link border-0 bg-transparent" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="index-menu-list">
                 {{ gT("Question index") }}
                 <span class="caret" aria-hidden="true"></span>
             </button>
-            <nav role="navigation" class="dropdown-menu dropdown-menu-end" aria-labelledby="index-menu">
+            <nav id="index-menu-list" class="dropdown-menu dropdown-menu-end" aria-labelledby="index-menu">
                 <ul class="list-unstyled">
                     {% for step, indexItem in aSurveyInfo.aQuestionIndex.items %}
                         {% set statusClass = '' %}
@@ -66,12 +66,12 @@ There is two possible displays for index, depending on Survey Mode:
     {% if aSurveyInfo.format == 'S' %}
         <!-- Question index, question by question, {{ aSurveyInfo.aQuestionIndex.type }} -->
         <li class="dropdown nav-item ls-no-js-hidden dropdown index-menu-{{ aSurveyInfo.aQuestionIndex.type }}">
-            <button id="index-menu" type="button" class="dropdown-toggle nav-link border-0 bg-transparent" data-bs-toggle="dropdown" aria-haspopup="true"
-               aria-expanded="false">
+            <button id="index-menu" type="button" class="dropdown-toggle nav-link border-0 bg-transparent" data-bs-toggle="dropdown"
+               aria-expanded="false" aria-controls="index-menu-list">
                 {{ gT("Question index") }}
                 <span class="caret" aria-hidden="true"></span>
             </button>
-            <nav role="navigation" class="dropdown-menu dropdown-menu-end" aria-labelledby="index-menu">
+            <nav id="index-menu-list" class="dropdown-menu dropdown-menu-end" aria-labelledby="index-menu">
                 <ul class="list-unstyled">
                     {% for group in aSurveyInfo.aQuestionIndex.items %}
                         <li><div class="dropdown-header">
