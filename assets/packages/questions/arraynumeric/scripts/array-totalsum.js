@@ -106,13 +106,14 @@ function formatValue(sValue) {
 
 /**
  * Get the value to add to the totals
- * Comma is a number only when the radix is comma (#16878) : count 0 and keep the answer as typed
- * An invalid value (like -.) counts 0 too : Decimal throws an error on false
+ * Use the same rule as the numeric check (isLEMnumeric) : comma is a number only when the radix is comma (#16878)
+ * An invalid value counts 0 and the answer is kept as typed : the numbers_only validation shows the error
+ * An incomplete value (like -.) counts 0 too : Decimal throws an error on false
  * @param {string} aValue
  * @return {Decimal}
  */
 function getSumValue(aValue) {
-    if (LSvar.sLEMradix !== ',' && String(aValue).indexOf(',') !== -1) {
+    if (!isLEMnumeric(aValue)) {
         return new Decimal(0);
     }
     return normalizeValue(aValue) || new Decimal(0);
