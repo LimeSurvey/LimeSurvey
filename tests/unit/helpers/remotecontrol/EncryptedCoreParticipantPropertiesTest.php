@@ -36,6 +36,48 @@ class EncryptedCoreParticipantPropertiesTest extends BaseTest
     }
 
     /**
+     * Get properties from a participant found by an encrypted core property.
+     */
+    public function testGetParticipantPropertiesByEncryptedCoreProperty()
+    {
+        $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
+
+        $result = $this->handler->get_participant_properties($sessionKey, self::$surveyId, array('email' => 'p1@mail.com'));
+
+        $this->assertArrayNotHasKey('status', $result, 'The participant should be found by the encrypted email.');
+        $this->assertEquals('participant', $result['firstname']);
+        $this->assertEquals('one', $result['lastname']);
+        $this->assertEquals('p1@mail.com', $result['email']);
+    }
+
+    /**
+     * Find a participant by a list of values for an encrypted core property.
+     */
+    public function testGetParticipantPropertiesByEncryptedCorePropertyValues()
+    {
+        $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
+
+        $result = $this->handler->get_participant_properties($sessionKey, self::$surveyId, array('email' => array('p1@mail.com', 'nobody@mail.com')));
+
+        $this->assertArrayNotHasKey('status', $result, 'The participant should be found by one of the encrypted emails.');
+        $this->assertEquals('one', $result['lastname']);
+    }
+
+    /**
+     * No participant has the encrypted core property value.
+     */
+    public function testGetParticipantPropertiesByEncryptedCorePropertyWithoutMatch()
+    {
+        $sessionKey = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
+
+        foreach (array('nobody@mail.com', array('nobody@mail.com')) as $email) {
+            $result = $this->handler->get_participant_properties($sessionKey, self::$surveyId, array('email' => $email));
+
+            $this->assertEquals('ERR_NOT_FOUND', $result['error_code']);
+        }
+    }
+
+    /**
      * Set new encrypted email.
      */
     public function testSetAndGetEncryptedCorePropertyByTokenId()
