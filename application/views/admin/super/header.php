@@ -47,6 +47,8 @@
 
     <?php echo $datepickerlang;?>
     <title><?php echo (isset($pageTitle) && $pageTitle !== '') ? htmlspecialchars((string) $pageTitle) . ' - ' . $sitename : $sitename; ?></title>
+    <link rel="apple-touch-icon" href="<?php echo Yii::app()->getConfig('styleurl');?>home-screen-icon-192.png" />
+    <link rel="icon" href="<?php echo Yii::app()->getConfig('styleurl');?>home-screen-icon-192.png" type="image/png" sizes="192x192" />
     <link rel="shortcut icon" href="<?php echo Yii::app()->getConfig('styleurl');?>favicon.ico" type="image/x-icon" />
     <link rel="icon" href="<?php echo Yii::app()->getConfig('styleurl');?>favicon.ico" type="image/x-icon" />
     <?php $this->widget('ext.LimeScript.LimeScript'); ?>
