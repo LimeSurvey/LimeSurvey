@@ -1156,12 +1156,12 @@ class ParticipantsAction extends SurveyCommonAction
                             //saving in this import
                             foreach ($mappedarray as $attid => $attname) {
                                 if (!empty($attname)) {
-                                    $bData = array(
-                                        'participant_id' => $existingParticipant->participant_id,
-                                        'attribute_id' => $attid,
-                                        'value' => $writearray[strtolower((string) $attname)]
-                                    );
-                                    ParticipantAttribute::model()->updateParticipantAttributeValue($bData);
+                                    $attribute = ParticipantAttribute::model();
+                                    $attribute->participant_id = $existingParticipant->participant_id;
+                                    $attribute->attribute_id = $attid;
+                                    $attribute->value = $writearray[strtolower((string) $attname)];
+                                    $attribute->encrypt();
+                                    $attribute->updateParticipantAttributeValue($attribute->attributes);
                                 } else {
                                     //If the value is empty, don't write the value
                                 }
