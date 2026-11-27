@@ -36,7 +36,10 @@ the page footer inside this wrapper, so it is visually covered by the welcome im
             {% block welcome_wrapped_content %}
                 {# Default content: overridden by firstpage.twig via embed to also wrap the language changer and main form #}
                 {{ include('./subviews/messages/welcome_subviews/welcome_content.twig') }}
-                {{ include('./subviews/privacy/privacy.twig') }}
+                {# Only when asked for by the including template, see welcome.twig #}
+                {% if welcomeWithPrivacy is defined and welcomeWithPrivacy %}
+                    {{ include('./subviews/privacy/privacy.twig') }}
+                {% endif %}
                 {{ include('./subviews/messages/welcome_subviews/welcome_questioncount.twig') }}
             {% endblock %}
             <div class="welcome-footer-container">

@@ -20,7 +20,12 @@
 {% if aSurveyInfo.format == 'A' %}
     {% if aSurveyInfo.showwelcome is not defined or aSurveyInfo.showwelcome != 'N' %}
         {# welcome.twig also renders the privacy message, so the welcome image (if set) wraps it too #}
-        {{ include('./subviews/messages/welcome.twig') }}
+        {% set welcomeHtml %}{{ include('./subviews/messages/welcome.twig', {'welcomeWithPrivacy': true}) }}{% endset %}
+        {{ welcomeHtml }}
+        {# A theme's own welcome.twig may not render the privacy message: without it, the data policy can't be accepted and the survey can't be submitted #}
+        {% if '<!-- Privacy message -->' not in welcomeHtml %}
+            {{ include('./subviews/privacy/privacy.twig') }}
+        {% endif %}
     {% else %}
         {{ include('./subviews/privacy/privacy.twig') }}
     {% endif %}

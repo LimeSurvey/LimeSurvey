@@ -18,6 +18,9 @@ TODO: use it for other modes too
 In this file, you have access to the array aSurveyInfo that contains the datas of the current survey
 To see what's inside aSurveyInfo, turn debug mode on and copy the following line to the end of this file:
 {{ dump(aSurveyInfo) }}
+
+The privacy message is only rendered here when the including template passes welcomeWithPrivacy: true.
+Older theme copies of allinone_mode_welcome_privacy.twig and firstpage.twig include privacy.twig themselves.
 #}
 
 {% set hasImage = aSurveyInfo.welcomeimage['image_path'] is defined and aSurveyInfo.welcomeimage['image_path'] %}
@@ -29,7 +32,9 @@ To see what's inside aSurveyInfo, turn debug mode on and copy the following line
     {% else %}
         {{ include('./subviews/messages/welcome_subviews/welcome_content.twig') }}
         {# Privacy policy checkbox/message is part of the welcome page, so it's also wrapped by the welcome image when present #}
-        {{ include('./subviews/privacy/privacy.twig') }}
+        {% if welcomeWithPrivacy is defined and welcomeWithPrivacy %}
+            {{ include('./subviews/privacy/privacy.twig') }}
+        {% endif %}
         {{ include('./subviews/messages/welcome_subviews/welcome_questioncount.twig') }}
     {% endif %}
 </div>
