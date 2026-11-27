@@ -346,6 +346,25 @@ abstract class QuestionBaseRenderer extends StaticModel
         ];
     }
 
+    /**
+     * Check whether the respondent explicitly chose "No answer" in this question when its page was last submitted.
+     * @return boolean True if "No answer" was chosen
+     */
+    protected function isNoAnswerChosen()
+    {
+        return LimeExpressionManager::isNoAnswerChosen($this->sSGQA);
+    }
+
+    /**
+     * Check whether "No answer" is selected when the question has no answer: Either the survey preselects
+     * "No answer", or the respondent chose it explicitly before the page was shown again.
+     * @return boolean True if "No answer" is selected for an unanswered question
+     */
+    protected function isNoAnswerPreselected()
+    {
+        return PRESELECT_NO_ANSWER || $this->isNoAnswerChosen();
+    }
+
     protected function setDefaultIfEmpty($value, $default)
     {
         if (is_null($value)) {
