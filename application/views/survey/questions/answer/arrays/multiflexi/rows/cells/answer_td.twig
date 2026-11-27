@@ -6,6 +6,7 @@
  * @var $ld
  * @var $answertypeclass
  * @var $extraclass
+ * @var $myfname
  * @var $myfname2
  * @var $answertext
  * @var $error
@@ -39,7 +40,7 @@
                 class="form-select text-end"
                 name="{{ myfname2 }}"
                 id="answer{{ myfname2 }}"
-                aria-labelledby="answertext{{ basename }}_{{ dataCode }}"
+                aria-labelledby="answertext{{ myfname }} answertext{{ basename }}_{{ dataCode }}"
             >
                 <option value="">
                     {{ gT('...') }}
@@ -55,7 +56,7 @@
             <!-- InputBox Layout -->
             {{ C.Html.textField(myfname2,value,({
                 'id' : "answer"~myfname2,
-                'aria-labelledby' : "answertext" ~ basename ~ "_" ~ dataCode,
+                'aria-labelledby' : "answertext" ~ myfname ~ " answertext" ~ basename ~ "_" ~ dataCode,
                 'class' : "multiflexitext form-control "~answertypeclass~" ",
                 'title' : gT('Only numbers may be entered in this field.', 'unescaped'),
                 'size' : (inputsize ? inputsize : null),

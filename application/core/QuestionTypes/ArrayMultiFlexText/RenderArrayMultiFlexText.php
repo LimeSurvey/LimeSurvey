@@ -479,6 +479,7 @@ class RenderArrayMultiFlexText extends QuestionBaseRenderer
             $answer_tds .= Yii::app()->twigRenderer->renderQuestion('/survey/questions/answer/arrays/texts/rows/cells/answer_td', array(
                 'ld'         => $aLabel['title'],
                 'basename'   => $this->sSGQA,
+                'myfname'    => $myfname,
                 'myfname2'   => $myfname2,
                 'labelText'  => $aLabel['label'],
                 'kpclass'    => '', // Old class of removed keypad functionality, kept for question theme backward compatibility
