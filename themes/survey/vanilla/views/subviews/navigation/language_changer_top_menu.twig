@@ -17,6 +17,7 @@ It's a typical bootstrap dropdown button.
 @see: http://getbootstrap.com/components/#dropdowns
 
 @var array  aSurveyInfo.alanguageChangerDatas.aListLang :  contains the list of available languages for this survey, 'language_code' => 'language name'
+@var array  aSurveyInfo.alanguageChangerDatas.aListLangDetails :  'language_code' => {nativeName, name, lang, dir}, to mark the native name with its own language
 @var string aSurveyInfo.alanguageChangerDatas.sSelected :  the language code of the selected language
 
 The language change is done via javascript
@@ -41,7 +42,12 @@ The language change is done via javascript
             {% for value, lang in aLCD.aListLang %}
                 <li class="index-item">
                     <a href='#' data-limesurvey-lang='{{ value }}' class="dropdown-item ls-language-link">
-                        {{ lang }}
+                        {% if aLCD.aListLangDetails[value] is defined %}
+                            {% set langDetails = aLCD.aListLangDetails[value] %}
+                            <span lang="{{ langDetails.lang }}" dir="{{ langDetails.dir }}">{{ langDetails.nativeName }}</span>{% if langDetails.name %} - {{ langDetails.name }}{% endif %}
+                        {% else %}
+                            {{ lang }}
+                        {% endif %}
                     </a>
                 </li>
             {% endfor %}

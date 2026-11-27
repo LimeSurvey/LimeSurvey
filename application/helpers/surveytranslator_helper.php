@@ -1499,14 +1499,18 @@ function getLanguageRTL($sLanguageCode)
  * to an unrelated approximate locale, which would misrepresent the actual
  * content language if used for the HTML lang attribute.
  *
- * @param string $sLanguageCode
- * @return string
+ * @param string $sLanguageCode LimeSurvey language code
+ * @param array|null $aLanguage Data of this language as returned by getLanguageData(), if already loaded; loaded otherwise
+ * @return string The BCP 47 tag, or the language code itself if it is already valid
  */
-function getHtmlLangAttributeValue($sLanguageCode)
+function getHtmlLangAttributeValue($sLanguageCode, $aLanguage = null)
 {
-    $aLanguageData = getLanguageData(false, $sLanguageCode);
-    if (!empty($aLanguageData[$sLanguageCode]['bcp47'])) {
-        return $aLanguageData[$sLanguageCode]['bcp47'];
+    if ($aLanguage === null) {
+        $aLanguageData = getLanguageData(false, $sLanguageCode);
+        $aLanguage = $aLanguageData[$sLanguageCode] ?? array();
+    }
+    if (!empty($aLanguage['bcp47'])) {
+        return $aLanguage['bcp47'];
     }
     return (string) $sLanguageCode;
 }
