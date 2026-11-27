@@ -14,13 +14,13 @@
         <div class="mb-3">
             <label class=" form-label" for='siteadminemail'><?php eT("Default site admin email:"); ?></label>
             <div class="">
-                <input class="form-control" type='email' size='50' id='siteadminemail' name='siteadminemail' value="<?php echo htmlspecialchars((string) Yii::app()->getConfig('siteadminemail')); ?>"/>
+                <input class="form-control" type='email' size='50' autocomplete='email' id='siteadminemail' name='siteadminemail' value="<?php echo htmlspecialchars((string) Yii::app()->getConfig('siteadminemail')); ?>"/>
             </div>
         </div>
         <div class="mb-3">
             <label class="  form-label" for='siteadminname'><?php eT("Administrator name:"); ?></label>
             <div class="">
-                <input class="form-control" type='text' size='50' id='siteadminname' name='siteadminname' value="<?php echo htmlspecialchars((string) Yii::app()->getConfig('siteadminname')); ?>"/>
+                <input class="form-control" type='text' size='50' autocomplete='name' id='siteadminname' name='siteadminname' value="<?php echo htmlspecialchars((string) Yii::app()->getConfig('siteadminname')); ?>"/>
             </div>
         </div>
         <div class="mb-3">

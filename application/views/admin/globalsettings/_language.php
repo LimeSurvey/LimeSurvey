@@ -33,11 +33,13 @@
             </div>
 
             <div class="mb-3">
-                <label class=" form-label"  for='includedLanguages'><?php eT("Available languages:"); ?></label>
+                <?php // The two lists are a group "Available languages", each list is labelled "Visible" / "Hidden" ?>
+                <span class="form-label d-block" id="languageSelection-label"><?php eT("Available languages:"); ?></span>
+                    <div role="group" aria-labelledby="languageSelection-label">
                     <table id='languageSelection' role="presentation">
                     <tr>
                         <td>
-                            <?php eT("Visible:"); ?>
+                            <label for="includedLanguages"><?php eT("Visible:"); ?></label>
                             <br>
                             <select class="form-select"  style='min-width:220px;min-height:300px;' size='10' id='includedLanguages' name='includedLanguages' multiple='multiple'>
                                 <?php foreach ($restrictToLanguages as $sLanguageCode) : ?>
@@ -67,8 +69,8 @@
                                 </button>
                             </div>
                         </td>
-                        <td >
-                            <?php eT("Hidden:"); ?>
+                        <td>
+                            <label for="excludedLanguages"><?php eT("Hidden:"); ?></label>
                             <br>
                             <select class="form-select"  size='10' style='min-width:220px;min-height:300px;' id='excludedLanguages' name='excludedLanguages' multiple='multiple'>
                                 <?php foreach ($excludedLanguages as $sLanguageCode) : ?>
@@ -80,6 +82,11 @@
                         </td>
                     </tr>
                 </table>
+                    </div>
+                <?php // Announces the languages moved with "Add" / "Remove" (globalsettings.js) ?>
+                <div id="languageSelection-status" class="visually-hidden" role="status" aria-live="polite" aria-atomic="true"
+                     data-added="<?= CHtml::encode(gT('Added to the visible languages: %s', 'unescaped')) ?>"
+                     data-removed="<?= CHtml::encode(gT('Moved to the hidden languages: %s', 'unescaped')) ?>"></div>
             </div>
 
             <?php if (Yii::app()->getConfig("demoMode") == true) :?>
