@@ -19,7 +19,15 @@ class SchemaFactorySurveyStatistics
             ->properties(
                 Schema::string('key')->description('Unique identifier for the data point'),
                 Schema::string('title')->description('Display title for the data point'),
-                Schema::integer('value')->description('Numeric value/count for the data point')
+                Schema::integer('value')->description('Numeric value/count for the data point'),
+                Schema::array('otherAnswers')
+                    ->items(
+                        Schema::object()->properties(
+                            Schema::string('text')->description('Free-text answer'),
+                            Schema::integer('count')->description('Number of responses with this text')
+                        )
+                    )
+                    ->description('Only on the "other" data point: its free-text answers, most frequent first')
             );
 
         $statisticsItemSchema = Schema::object()

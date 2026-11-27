@@ -82,6 +82,7 @@ class SingleOptionProcessorTest extends TestCase
         // shared mutable state across the whole PHPUnit process, so another
         // test can leave it on something other than English.
         $this->assertSame(gT('Other'), $plan['data'][3]['title']);
+        $this->assertIsCallable($plan['data'][3]['otherAnswers']);
     }
 
     /**

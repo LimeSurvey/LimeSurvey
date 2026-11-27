@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useId, useRef, useState } from 'react'
 import classNames from 'classnames'
 import { Card } from 'react-bootstrap'
 
@@ -44,11 +44,13 @@ import {
   TEXT_QUESTION_TYPES,
   getSegmentedCategories,
   getStatisticsGraphsForType,
+  hasOtherAnswers,
   statisticsGraphs,
   VALUE_TYPE,
   wrapTerm,
 } from './ChartsUtils.js'
 import { QuestionComments } from './QuestionComments.js'
+import { OtherAnswersList } from './OtherAnswersList.js'
 import { CommentsModal } from './CommentsModal.js'
 import {
   ChartOrientationMenu,
@@ -122,6 +124,7 @@ const VIEWS = [
       question,
       hasComments,
       onViewComments,
+      onViewOther,
       orientation,
     }) => {
       if (isRanking) {
@@ -134,6 +137,7 @@ const VIEWS = [
           isImage={isImage}
           hasComments={hasComments}
           onViewComments={onViewComments}
+          onViewOther={onViewOther}
           orientation={orientation}
         />
       )
@@ -181,8 +185,13 @@ const VIEWS = [
     // Comment types keep only Bar/Table/Comments in the quick toggle; pie moves
     // to the meatball menu.
     menuOnly: ({ hasComments }) => hasComments,
-    render: ({ data, valueType, isImage }) => (
-      <PieChart data={data} valueType={valueType} isImage={isImage} />
+    render: ({ data, valueType, isImage, onViewOther }) => (
+      <PieChart
+        data={data}
+        valueType={valueType}
+        isImage={isImage}
+        onViewOther={onViewOther}
+      />
     ),
   },
   {
@@ -281,6 +290,9 @@ const VIEWS = [
       question,
       filters,
       filterSet,
+      onViewOther,
+      isOtherOpen,
+      otherListId,
       isDate,
       calendarState,
       onCalendarStateChange,
@@ -314,7 +326,14 @@ const VIEWS = [
           scaleHeaders={question?.scaleHeaders}
         />
       ) : (
-        <StatisticsTable data={data} isImage={isImage} valueType={valueType} />
+        <StatisticsTable
+          data={data}
+          isImage={isImage}
+          valueType={valueType}
+          onViewOther={onViewOther}
+          isOtherOpen={isOtherOpen}
+          otherListId={otherListId}
+        />
       ),
   },
   {
@@ -334,6 +353,8 @@ const VIEWS = [
     ),
   },
 ]
+
+const OTHER_ANSWERS_VIEWS = [VIEW.BAR_CHART, VIEW.PIE_CHART, VIEW.TABLE]
 
 const HIDDEN_CHARTS_STORAGE_KEY = 'responses-statistics-hidden-charts'
 
@@ -429,6 +450,9 @@ export const ChartRendererV2 = ({
   const isDate = question?.type === QT_D_DATE
   const availableGraphTypes = getStatisticsGraphsForType(question?.type)
   const [commentsAnswer, setCommentsAnswer] = useState(null)
+  const [isOtherAnswersOpen, setIsOtherAnswersOpen] = useState(false)
+  const otherListId = useId()
+  const otherItem = (data ?? []).find(hasOtherAnswers)
   const [calendarState, setCalendarState] = useState({})
   const cardRef = useRef(null)
   const isImage = isImageTheme(question?.themeName)
@@ -521,6 +545,11 @@ export const ChartRendererV2 = ({
     calendarState,
     onCalendarStateChange: setCalendarState,
     onViewComments: setCommentsAnswer,
+    onViewOther: otherItem
+      ? () => setIsOtherAnswersOpen((isOpen) => !isOpen)
+      : undefined,
+    isOtherOpen: isOtherAnswersOpen,
+    otherListId,
   }
 
   const storageKey = getStorageKey(surveyId, chartId, index)
@@ -609,6 +638,16 @@ export const ChartRendererV2 = ({
               </div>
             )}
             <div>{activeView?.render(renderContext)}</div>
+            {isOtherAnswersOpen &&
+              OTHER_ANSWERS_VIEWS.includes(activeView?.value) && (
+                <OtherAnswersList
+                  id={otherListId}
+                  item={otherItem}
+                  onViewComments={
+                    hasComments ? () => setCommentsAnswer('other') : undefined
+                  }
+                />
+              )}
             {toggleOptions.length > 1 && (
               <div className="responses-statistics-chart-toggle">
                 <ToggleButtons
