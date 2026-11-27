@@ -14,7 +14,7 @@ class NumericRadixJavascriptTest extends TestCase
 {
     private const NODE_SCRIPT = <<<'JS'
         const fs = require('fs'), vm = require('vm');
-        const [root, totalsum, radix, value] = process.argv.slice(1);
+        const [root, totalsum, radix, value, fixNumAuto] = process.argv.slice(1);
         let rewritten = null;
         const field = {
             on: () => field,
@@ -33,8 +33,8 @@ class NumericRadixJavascriptTest extends TestCase
             console: {ls: {log() {}, warn() {}, error() {}}},
             setTimeout: (callback) => { callback(); return 1; },
             clearTimeout() {},
-            LSvar: {sLEMradix: radix, bFixNumAuto: 1, bNumRealValue: 0},
-            bFixNumAuto: 1,
+            LSvar: {sLEMradix: radix, bFixNumAuto: Number(fixNumAuto), bNumRealValue: 0},
+            bFixNumAuto: Number(fixNumAuto),
             numRegex: /[^-.,0-9]/g,
             LEMradix: radix,
             LEMmode: 'survey',
@@ -54,12 +54,13 @@ JS;
 
     /**
      * Typed values with each decimal separator, and what the survey JavaScript must do with them.
-     * @return array[] radix, typed value, LEMval result, value written in the field, total with another cell at 2
+     * @return array[] radix, typed value, LEMval result, value written in the field, total with another cell at 2, automatic number fix (1 when not set)
      */
     public static function radixProvider(): array
     {
         return [
-            'period: comma is refused'    => ['.', '1,1', '1,1', null, '2'],
+            'period: comma is corrected'  => ['.', '1,1', '1,1', '1.1', '2'],
+            'period, no automatic fix: comma is refused' => ['.', '1,1', '1,1', null, '2', 0],
             'period: period is a number'  => ['.', '1.1', 1.1, null, '3.1'],
             'period: integer keeps zeros' => ['.', '007', '007', '7', '9'],
             'comma: comma is a number'    => [',', '1,1', 1.1, null, '3.1'],
@@ -78,12 +79,13 @@ JS;
      * @param string|float $lemval the expected LEMval() result: a number when the value is valid, else the value as typed
      * @param string|null $rewritten the expected value written back in the field by fixnum_checkconditions(), null when the field is not updated
      * @param string $total the expected total of the value and another cell at 2
+     * @param int $fixNumAuto the automatic number fix setting (bFixNumAuto): 1 on, 0 off
      * @return void
      */
-    public function testValueFollowsRadix(string $radix, string $value, $lemval, ?string $rewritten, string $total): void
+    public function testValueFollowsRadix(string $radix, string $value, $lemval, ?string $rewritten, string $total, int $fixNumAuto = 1): void
     {
         foreach (['array-totalsum.js', 'array-totalsum.min.js'] as $file) {
-            $result = $this->runNode('assets/packages/questions/arraynumeric/scripts/' . $file, $radix, $value);
+            $result = $this->runNode('assets/packages/questions/arraynumeric/scripts/' . $file, $radix, $value, $fixNumAuto);
             $this->assertSame($lemval, $result['lemval'], $file . ': LEMval');
             $this->assertSame($rewritten, $result['rewritten'], $file . ': value written in the field');
             $this->assertSame($total, $result['total'], $file . ': total');
@@ -95,11 +97,12 @@ JS;
      * @param string $totalsum the array-totalsum script to load, relative to the root folder
      * @param string $radix the survey decimal separator: '.' or ','
      * @param string $value the value typed in the numeric field
+     * @param int $fixNumAuto the automatic number fix setting (bFixNumAuto): 1 on, 0 off
      * @return array the LEMval() result ('lemval'), the value written in the field ('rewritten') and the total ('total')
      */
-    private function runNode(string $totalsum, string $radix, string $value): array
+    private function runNode(string $totalsum, string $radix, string $value, int $fixNumAuto): array
     {
-        $arguments = [self::NODE_SCRIPT, dirname(__DIR__, 3), $totalsum, $radix, $value];
+        $arguments = [self::NODE_SCRIPT, dirname(__DIR__, 3), $totalsum, $radix, $value, (string) $fixNumAuto];
         exec('node -e ' . implode(' ', array_map('escapeshellarg', $arguments)) . ' 2>&1', $output, $exitCode);
         $this->assertSame(0, $exitCode, implode("\n", $output));
         return json_decode(end($output), true);

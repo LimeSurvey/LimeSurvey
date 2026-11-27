@@ -169,7 +169,8 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
                 decimalValue = new Decimal(cleansedValue);
             } catch(e){
                 try{
-                    decimalValue = new Decimal((LEMradix === ',') ? cleansedValue.replace(',','.') : cleansedValue);
+                    // Automatic fix: a comma is corrected to the survey radix, even when the radix is period (#16878)
+                    decimalValue = new Decimal(cleansedValue.replace(',','.'));
                 } catch(e){
                     decimalValue = new Decimal(NaN);
 
