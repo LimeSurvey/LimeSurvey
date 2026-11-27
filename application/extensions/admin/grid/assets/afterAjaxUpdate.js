@@ -28,7 +28,7 @@ LS.gridView.announceEmptyMessage = function (gridId, keepFocus) {
 };
 
 /**
- * Grids refreshed by a filter or page size change, whose result summary has to be announced.
+ * Grids refreshed by a filter, page size or sort change, whose result summary has to be announced.
  * @type {Object.<string, boolean>}
  */
 LS.gridView.pendingSummaryAnnouncement =
@@ -49,9 +49,22 @@ jQuery(document).on(
     },
 );
 
+// The result summary is announced after sorting as well
+jQuery(document).on(
+    "click",
+    ".grid-view-ls a.sort-link",
+    function () {
+        "use strict";
+        var gridId = jQuery(this).closest(".grid-view-ls").attr("id");
+        if (gridId) {
+            LS.gridView.pendingSummaryAnnouncement[gridId] = true;
+        }
+    },
+);
+
 /**
  * Announce the result summary (e.g. "Displaying 1-5 of 6 result(s).") through a polite live region
- * after a filter or page size change. An empty result is announced by announceEmptyMessage instead.
+ * after a filter, page size or sort change. An empty result is announced by announceEmptyMessage instead.
  *
  * @param {string} gridId The grid element ID.
  */
