@@ -28,7 +28,13 @@
             name="{{ name }}"
             id="SOTH{{ name }}"
             {{ checkedState }}
-            aria-labelledby="ls-question-text-{{ name }} label-id-{{ name }}"
+            {% if othertext is not empty %}
+                aria-labelledby="label-id-{{ name }}"
+            {% elseif otherTextRight is defined and otherTextRight|length > 0 %}
+                aria-labelledby="suffix-id-{{ name }}"
+            {% else %}
+                aria-labelledby="ls-question-text-{{ name }}"
+            {% endif %}
             />
 
             <label for="SOTH{{ name }}" class="control-label label-radio" id="label-id-{{ name }}">{{ processString(othertext) }}</label>
