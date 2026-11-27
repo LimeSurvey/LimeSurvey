@@ -10,6 +10,12 @@ class TopbarWidget extends CWidget
     public $titleBackLink = null;
 
     /**
+     * @var array Parent pages of the title, shown in front of it as breadcrumb navigation.
+     * Each parent is an array with 'text' (plain text) and 'href'. Only used when leftSide is a simple text.
+     */
+    public $titleParents = [];
+
+    /**
      * @var bool true if leftSide is a breadcrumb, defaults to false
      */
     public $isBreadCrumb = false;
@@ -49,6 +55,7 @@ class TopbarWidget extends CWidget
                 'rightSide' => $this->rightSide,
                 'isBreadCrumb' => $this->isBreadCrumb,
                 'titleBackLink' => $this->titleBackLink,
+                'titleParents' => $this->titleParents,
                 'editorEnabled' => Yii::app()->getConfig('editorEnabled') ?? false,
             ]
         );

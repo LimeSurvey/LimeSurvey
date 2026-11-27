@@ -101,7 +101,16 @@ class LayoutHelper
     {
         if (!empty($pageData['topbar']['title'])) {
             // The topbar title is HTML (names in it are encoded), the document title is plain text
-            return html_entity_decode(strip_tags((string) $pageData['topbar']['title']), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+            $title = html_entity_decode(strip_tags((string) $pageData['topbar']['title']), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+            // Parent pages shown as breadcrumb in front of the title, e.g. "Plugins / AuditLog"
+            $parents = [];
+            foreach ((array) ($pageData['topbar']['titleParents'] ?? []) as $parent) {
+                if (!empty($parent['text'])) {
+                    $parents[] = html_entity_decode(strip_tags((string) $parent['text']), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+                }
+            }
+            $parents[] = $title;
+            return implode(' / ', $parents);
         }
         if (empty($pageData['title_bar']['title'])) {
             return !empty($pageData['pageTitle']) ? strip_tags((string) $pageData['pageTitle']) : null;
@@ -343,7 +352,8 @@ class LayoutHelper
                     'middle'       => $middle, //array of ButtonWidget
                     'rightSide'    => $rightSide, //array of ButtonWidget
                     'isBreadCrumb' => $isBreadCrumb,
-                    'titleBackLink' => $titleBackLink
+                    'titleBackLink' => $titleBackLink,
+                    'titleParents' => $aData['topbar']['titleParents'] ?? [],
                 ],
                 true
             );
