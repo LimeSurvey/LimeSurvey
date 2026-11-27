@@ -16,25 +16,26 @@ App()->getClientScript()->registerScript(
 <div class="row">
     <div class="col-12 list-surveys">
         <!-- Tabs -->
-        <ul class="nav nav-tabs" id="boxeslist">
-            <li class="nav-item">
-                <a class="nav-link active" href='#boxes' data-bs-toggle="tab">
+        <ul class="nav nav-tabs" id="boxeslist" role="tablist" aria-label="<?= gT('Dashboard settings') ?>">
+            <li class="nav-item" role="presentation">
+                <a class="nav-link active" id="boxes-tab" href='#boxes' data-bs-toggle="tab" role="tab" aria-controls="boxes" aria-selected="true">
                     <?php eT('Buttons') ?>
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href='#boxsettings' data-bs-toggle="tab">
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="boxsettings-tab" href='#boxsettings' data-bs-toggle="tab" role="tab" aria-controls="boxsettings" aria-selected="false">
                     <?php eT('Settings'); ?>
                 </a>
             </li>
         </ul>
         <div class="tab-content">
             <!-- Boxes -->
-            <div id="boxes" class="tab-pane fade show active">
+            <div id="boxes" class="tab-pane fade show active" role="tabpanel" aria-labelledby="boxes-tab">
                 <?php $this->widget(
                     'application.extensions.admin.grid.CLSGridView',
                     [
                         'id' => 'boxes-grid',
+                        'lsCaption' => gT('Dashboard buttons'),
                         'dataProvider' => $dataProviderBox->search(),
                         'lsPageSizeCurrentValue' => Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']),
                         'columns' => [
@@ -88,7 +89,7 @@ App()->getClientScript()->registerScript(
                 ); ?>
             </div>
             <!-- Box Settings -->
-            <div id="boxsettings" class="tab-pane fade">
+            <div id="boxsettings" class="tab-pane fade" role="tabpanel" aria-labelledby="boxsettings-tab">
 
                 <div class="row">
 <!--                    <label class="col-md-2 col-form-label">--><?php //eT("Display logo:"); ?><!-- </label>-->
@@ -104,10 +105,12 @@ App()->getClientScript()->registerScript(
 <!--                        <input type="hidden" id="show_logo-url" data-url="--><?php //echo App()->createUrl('homepageSettings/toggleShowLogoStatus'); ?><!--"/>-->
 <!--                    </div>-->
 
-                    <label class="col-md-4 col-form-label"><?php eT("Show last visited survey and question:"); ?> </label>
+                    <?php // Label of the On/Off button group (there is no single field it could be a <label> for) ?>
+                    <span class="col-md-4 col-form-label" id="show_last_survey_and_question-label"><?php eT("Show last visited survey and question:"); ?> </span>
                     <div class="col-md-2">
                         <?php $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                             'name'          => 'show_last_survey_and_question',
+                            'ariaLabelledBy' => 'show_last_survey_and_question-label',
                             'checkedOption' => $bShowLastSurveyAndQuestion,
                             'selectOptions' => [
                                 '1' => gT('On'),
