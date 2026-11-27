@@ -12171,18 +12171,22 @@ Responsive navbar-brand image CSS
 #survey-nav #main-dropdown .list-group-item {
   border: none;
 }
-#survey-nav #main-dropdown .list-group-item a.disabled {
+#survey-nav #main-dropdown .list-group-item a.disabled,
+#survey-nav #main-dropdown .list-group-item button.disabled {
   color: #9094a7;
 }
-#survey-nav #main-dropdown .list-group-item a.index-warning {
+#survey-nav #main-dropdown .list-group-item a.index-warning,
+#survey-nav #main-dropdown .list-group-item button.index-warning {
   background: none;
   border-right: #ffe046 solid 8px;
 }
-#survey-nav #main-dropdown .list-group-item a.index-danger {
+#survey-nav #main-dropdown .list-group-item a.index-danger,
+#survey-nav #main-dropdown .list-group-item button.index-danger {
   background: none;
   border-right: #ff515f solid 8px;
 }
-#survey-nav #main-dropdown .list-group-item a:not(.index-danger):not(.index-warning) {
+#survey-nav #main-dropdown .list-group-item a:not(.index-danger):not(.index-warning),
+#survey-nav #main-dropdown .list-group-item button:not(.index-danger):not(.index-warning) {
   background: none;
   border-right: transparent solid 8px;
 }
@@ -15804,14 +15808,15 @@ body > .bootstrap-select .dropdown-menu {
   color: #ffffff;
   background-color: #0F8545 !important;
 }
-.dropdown-menu:not(.inner) > li > a.disabled {
-  color: #9094a7;
+.dropdown-menu:not(.inner) > li > a.disabled,
+.dropdown-menu:not(.inner) > li > button.disabled {
+  color: #6e748c;
 }
-.dropdown-menu:not(.inner) > li > a.disabled :hover {
-  color: #9094a7 !important;
-}
-.dropdown-menu:not(.inner) > li > a.disabled :focus {
-  color: #9094a7 !important;
+.dropdown-menu:not(.inner) > li > a.disabled:hover, .dropdown-menu:not(.inner) > li > a.disabled:focus,
+.dropdown-menu:not(.inner) > li > button.disabled:hover,
+.dropdown-menu:not(.inner) > li > button.disabled:focus {
+  color: #6e748c !important;
+  background-color: #ffffff !important;
 }
 
 .dropdown-header, .dropdown-item {

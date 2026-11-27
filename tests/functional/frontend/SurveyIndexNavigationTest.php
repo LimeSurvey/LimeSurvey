@@ -54,8 +54,8 @@ class SurveyIndexNavigationTest extends TestBaseClassWeb
             $web->findElement(WebDriverBy::cssSelector('#navbar-toggler'))->click();
             $web->findElement(WebDriverBy::cssSelector('[data-navtargetid="index-dropdown"]'))->click();
 
-            // Click on menu option
-            $web->findElement(WebDriverBy::cssSelector('#main-dropdown a[href$="move=2"]'))->click();
+            // Click on menu option (button with the step to move to, see questionIndexHelper)
+            $web->findElement(WebDriverBy::cssSelector("#main-dropdown [data-limesurvey-submit='{ \"move\":2 }']"))->click();
 
             // Wait max 10 second to find the second group title
             $groupTitleDiv = self::$webDriver->wait(10)->until(
@@ -72,7 +72,7 @@ class SurveyIndexNavigationTest extends TestBaseClassWeb
             $web->findElement(WebDriverBy::cssSelector('[data-navtargetid="index-dropdown"]'))->click();
 
             //Click on menu option
-            $web->findElement(WebDriverBy::cssSelector('#main-dropdown a[href$="move=1"]'))->click();
+            $web->findElement(WebDriverBy::cssSelector("#main-dropdown [data-limesurvey-submit='{ \"move\":1 }']"))->click();
 
             // Wait max 10 second to find the second group title
             $groupTitleDiv = self::$webDriver->wait(10)->until(
@@ -86,5 +86,85 @@ class SurveyIndexNavigationTest extends TestBaseClassWeb
             self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
             $this->assertFalse(true, self::$testHelper->javaTrace($ex));
         }
+    }
+
+    /**
+     * Same navigation with the Vanilla theme: The index is a Bootstrap dropdown opened by a button, entries are buttons
+     * @return void
+     */
+    public function testSurveyIndexNavigationVanilla()
+    {
+        \Survey::model()->updateByPk(self::$surveyId, ['template' => 'vanilla']);
+        $web = self::$webDriver;
+        $url = $this->getSurveyUrl();
+
+        try {
+            // Open survey.
+            $web->get($url);
+
+            // Move from Welcome to first group
+            $web->findElement(WebDriverBy::cssSelector('button[type="submit"][name="move"][value="movenext"]'))->click();
+            $groupTitleDiv = self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::presenceOfElementLocated(
+                    WebDriverBy::cssSelector('#group-0 .group-title')
+                )
+            );
+            $this->assertEquals("My first question group", $groupTitleDiv->getText());
+
+            // Move from first group to second group with the index menu
+            $this->openVanillaIndexMenu();
+            $this->clickVanillaIndexEntry(2);
+            $groupTitleDiv = self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::presenceOfElementLocated(
+                    WebDriverBy::cssSelector('#group-1 .group-title')
+                )
+            );
+            $this->assertEquals("My second question group", $groupTitleDiv->getText());
+
+            // Move from second group back to first group
+            $this->openVanillaIndexMenu();
+            $this->clickVanillaIndexEntry(1);
+            $groupTitleDiv = self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::presenceOfElementLocated(
+                    WebDriverBy::cssSelector('#group-0 .group-title')
+                )
+            );
+            $this->assertEquals("My first question group", $groupTitleDiv->getText());
+        } catch (\Exception $ex) {
+            self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
+            $this->assertFalse(true, self::$testHelper->javaTrace($ex));
+        } finally {
+            \Survey::model()->updateByPk(self::$surveyId, ['template' => 'inherit']);
+        }
+    }
+
+    /**
+     * Open the Vanilla index menu, the top menu can be collapsed on small screen
+     * @return void
+     */
+    private function openVanillaIndexMenu()
+    {
+        $web = self::$webDriver;
+        $toggler = $web->findElements(WebDriverBy::cssSelector('#survey-nav .navbar-toggler'));
+        if (!empty($toggler) && $toggler[0]->isDisplayed()) {
+            $toggler[0]->click();
+        }
+        $web->wait(10)->until(
+            WebDriverExpectedCondition::elementToBeClickable(WebDriverBy::id('index-menu'))
+        )->click();
+    }
+
+    /**
+     * Click on the index entry to move to the step (button with data-limesurvey-submit, see questionIndexHelper)
+     * @param int $step the index step to move to (1 for the first group)
+     * @return void
+     */
+    private function clickVanillaIndexEntry($step)
+    {
+        self::$webDriver->wait(10)->until(
+            WebDriverExpectedCondition::elementToBeClickable(
+                WebDriverBy::cssSelector("nav[aria-labelledby='index-menu'] [data-limesurvey-submit='{ \"move\":" . $step . " }']")
+            )
+        )->click();
     }
 }

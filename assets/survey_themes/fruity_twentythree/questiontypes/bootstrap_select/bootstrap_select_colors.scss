@@ -40,13 +40,13 @@
                 background-color : $base_color !important;
             }
         }
-        li > a.disabled {
-            color : $g-600;
-            :hover {
-                color : $g-600 !important;
-            }
-            :focus {
-                color : $g-600 !important;
+        li > a.disabled,
+        li > button.disabled {
+            color : $g-700;
+            &:hover,
+            &:focus {
+                color            : $g-700 !important;
+                background-color : $white !important;
             }
         }
     }

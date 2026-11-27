@@ -898,8 +898,8 @@ label::after {
     color: #333;
 }
 
-.list-group-itemindex-item a:hover, .list-group-itemindex-item a:focus {
-    background-color: #e9ecef !important;
+.index-item > .dropdown-item:hover, .index-item > .dropdown-item:focus {
+    background-color: var(--bs-gray-200) !important;
 }
 
 label {
