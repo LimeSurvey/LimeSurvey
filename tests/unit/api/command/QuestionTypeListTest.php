@@ -36,7 +36,7 @@ class QuestionTypeListTest extends TestBaseClass
      * Runs the command and returns the response data.
      *
      * @param ReactQuestionTypeConfig|null $config Reader of questiontypes.xml, defaults to the shipped file
-     * @return array<string, mixed>
+     * @return array<string, mixed> Response data with the categories and question types
      */
     private function runCommand(?ReactQuestionTypeConfig $config = null): array
     {
@@ -44,6 +44,18 @@ class QuestionTypeListTest extends TestBaseClass
         $data = $command->run(new Request([]))->getData();
         $this->assertTrue($data['success']);
         return $data;
+    }
+
+    /**
+     * Returns a title as the command returns it: Translated into the current language, not HTML-escaped.
+     * The translation catalog can change a text even in English (e.g. "List (Radio)" becomes "List (radio)").
+     *
+     * @param string $title Title as written in questiontypes.xml or in the question theme
+     * @return string Expected title
+     */
+    private function translated(string $title): string
+    {
+        return gT($title, 'unescaped');
     }
 
     /**
@@ -76,9 +88,13 @@ class QuestionTypeListTest extends TestBaseClass
     {
         $questionTypes = $this->runCommand()['questionTypes'];
 
-        $this->assertSame('Short text', $questionTypes['shortfreetext']['title']);
-        $this->assertSame('List (Radio)', $questionTypes['listradio']['title'], 'Without an editor title, the theme title is used');
-        $this->assertSame('Huge free text', $questionTypes['hugefreetext']['title']);
+        $this->assertSame($this->translated('Short text'), $questionTypes['shortfreetext']['title']);
+        $this->assertSame(
+            $this->translated('List (Radio)'),
+            $questionTypes['listradio']['title'],
+            'Without an editor title, the theme title is used'
+        );
+        $this->assertSame($this->translated('Huge free text'), $questionTypes['hugefreetext']['title']);
     }
 
     /**
@@ -91,7 +107,8 @@ class QuestionTypeListTest extends TestBaseClass
         $data = $this->runCommand();
         $questionTypes = $data['questionTypes'];
 
-        $this->assertSame('Ranking & rating', $data['categories'][2]['title'], 'Titles are not HTML-escaped');
+        $this->assertSame($this->translated('Ranking & rating'), $data['categories'][2]['title']);
+        $this->assertStringNotContainsString('&amp;', $data['categories'][2]['title'], 'Titles are not HTML-escaped');
         $this->assertSame('text', $questionTypes['longfreetext']['category']);
         $this->assertSame(1, $questionTypes['longfreetext']['sortOrder']);
         $this->assertFalse($questionTypes['longfreetext']['devOnly']);
@@ -110,7 +127,7 @@ class QuestionTypeListTest extends TestBaseClass
         $rating = $this->runCommand()['questionTypes']['rating'];
 
         $this->assertSame('RT', $rating['type']);
-        $this->assertSame('Rating', $rating['title']);
+        $this->assertSame($this->translated('Rating'), $rating['title']);
         $this->assertTrue($rating['editorOnly']);
         $this->assertTrue($rating['devOnly']);
     }
@@ -154,7 +171,7 @@ class QuestionTypeListTest extends TestBaseClass
         $questionTypes = $this->runCommand(new ReactQuestionTypeConfig($this->directory))['questionTypes'];
 
         $this->assertArrayNotHasKey('not_installed_theme', $questionTypes);
-        $this->assertSame('Custom title', $questionTypes['listradio']['title']);
+        $this->assertSame($this->translated('Custom title'), $questionTypes['listradio']['title']);
         $this->assertSame('first', $questionTypes['listradio']['category']);
     }
 
@@ -184,6 +201,6 @@ class QuestionTypeListTest extends TestBaseClass
         }
 
         $this->assertSame('L', $questionTypes['bootstrap_buttons']['type']);
-        $this->assertSame('Single choice buttons', $questionTypes['bootstrap_buttons']['title']);
+        $this->assertSame($this->translated('Single choice buttons'), $questionTypes['bootstrap_buttons']['title']);
     }
 }
