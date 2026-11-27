@@ -7,8 +7,9 @@ $optionsOnOff = ['Y' => gT('On'), 'N' => gT('Off')];
 ?>
 <div class="row">
     <div class='col-md-12'>
-        <h2><?php eT("Please keep in mind:"); ?></h2>
-        <h2><?php eT("Once a survey has been activated you can no longer add or delete questions, question groups or subquestions.") ?> </h2>
+        <?php // Plain text with the look of a heading: it does not introduce a section of the dialog ?>
+        <p class="h2"><?php eT("Please keep in mind:"); ?></p>
+        <p class="h2"><?php eT("Once a survey has been activated you can no longer add or delete questions, question groups or subquestions.") ?> </p>
         <p>
             <?php eT("Editing questions, question groups or subquestions is still possible. The following settings cannot be changed once a survey has been activated.", 'unescaped'); ?>
         </p>
@@ -39,15 +40,19 @@ $optionsOnOff = ['Y' => gT('On'), 'N' => gT('Off')];
     <!-- Anonymized responses -->
     <div class='col-md-6'>
         <div class="ex-form-group mb-3">
-            <label class=" form-label" for='anonymized'><?php eT("Anonymized responses"); ?></label>
-            <i class="ri-information-line"
+            <?php // Label of the radio button group below (there is no single field it could be a <label> for) ?>
+            <span class="form-label" id="activate-anonymized-label"><?php eT("Anonymized responses"); ?></span>
+            <?php // A button, so the tooltip is also shown with the keyboard (on focus); its text is the name of the button ?>
+            <button type="button" class="btn btn-sm btn-link p-0 align-baseline text-body"
                data-bs-toggle="tooltip"
                title="<?= gT("If enabled, responses will be anonymized - there will be no way to connect responses and participants."); ?>"
-            ></i>
+               aria-label="<?= gT("If enabled, responses will be anonymized - there will be no way to connect responses and participants."); ?>"
+            ><i class="ri-information-line" aria-hidden="true"></i></button>
             <div class="">
                 <?php
                 $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                     'name' => 'anonymized',
+                    'ariaLabelledBy' => 'activate-anonymized-label',
                     'id' => 'activate_anonymized',
                     'checkedOption' => $aSurveysettings['anonymized'],
                     'selectOptions' => $optionsOnOff
@@ -60,15 +65,19 @@ $optionsOnOff = ['Y' => gT('On'), 'N' => gT('Off')];
     <!-- Date Stamp -->
     <div class='col-md-6'>
         <div class="ex-form-group mb-3">
-            <label class=" form-label" for='datestamp'><?php eT("Date stamp"); ?></label>
-            <i class="ri-information-line"
+            <?php // Label of the radio button group below (there is no single field it could be a <label> for) ?>
+            <span class="form-label" id="activate-datestamp-label"><?php eT("Date stamp"); ?></span>
+            <?php // A button, so the tooltip is also shown with the keyboard (on focus); its text is the name of the button ?>
+            <button type="button" class="btn btn-sm btn-link p-0 align-baseline text-body"
                data-bs-toggle="tooltip"
                title="<?= gT("If enabled, the submission time of a response will be recorded."); ?>"
-            ></i>
+               aria-label="<?= gT("If enabled, the submission time of a response will be recorded."); ?>"
+            ><i class="ri-information-line" aria-hidden="true"></i></button>
             <div class="">
                 <?php
                 $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                     'name' => 'datestamp',
+                    'ariaLabelledBy' => 'activate-datestamp-label',
                     'checkedOption' => $aSurveysettings['datestamp'],
                     'selectOptions' => $optionsOnOff
                 ]);
@@ -81,15 +90,19 @@ $optionsOnOff = ['Y' => gT('On'), 'N' => gT('Off')];
 <div class="row">
     <div class='col-md-6'>
         <div class="ex-form-group mb-3">
-            <label class=" form-label" for='ipaddr'><?php eT("Save IP address"); ?></label>
-            <i class="ri-information-line"
+            <?php // Label of the radio button group below (there is no single field it could be a <label> for) ?>
+            <span class="form-label" id="activate-ipaddr-label"><?php eT("Save IP address"); ?></span>
+            <?php // A button, so the tooltip is also shown with the keyboard (on focus); its text is the name of the button ?>
+            <button type="button" class="btn btn-sm btn-link p-0 align-baseline text-body"
                data-bs-toggle="tooltip"
                title="<?= gT("If enabled, the IP address of the survey respondent will be stored together with the response."); ?>"
-            ></i>
+               aria-label="<?= gT("If enabled, the IP address of the survey respondent will be stored together with the response."); ?>"
+            ><i class="ri-information-line" aria-hidden="true"></i></button>
             <div class="">
                 <?php
                 $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                     'name' => 'ipaddr',
+                    'ariaLabelledBy' => 'activate-ipaddr-label',
                     'checkedOption' => $aSurveysettings['ipaddr'],
                     'selectOptions' => $optionsOnOff
                 ]);
@@ -99,15 +112,19 @@ $optionsOnOff = ['Y' => gT('On'), 'N' => gT('Off')];
     </div>
     <div class='col-md-6'>
         <div class="ex-form-group mb-3">
-            <label class="form-label" for='ipanonymize'><?php eT("Anonymize IP address"); ?></label>
-            <i class="ri-information-line"
+            <?php // Label of the radio button group below (there is no single field it could be a <label> for) ?>
+            <span class="form-label" id="activate-ipanonymize-label"><?php eT("Anonymize IP address"); ?></span>
+            <?php // A button, so the tooltip is also shown with the keyboard (on focus); its text is the name of the button ?>
+            <button type="button" class="btn btn-sm btn-link p-0 align-baseline text-body"
                data-bs-toggle="tooltip"
                title="<?= gT("If enabled, the IP address of the respondent is not recorded."); ?>"
-            ></i>
+               aria-label="<?= gT("If enabled, the IP address of the respondent is not recorded."); ?>"
+            ><i class="ri-information-line" aria-hidden="true"></i></button>
             <div class="">
                 <?php
                 $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                     'name' => 'ipanonymize',
+                    'ariaLabelledBy' => 'activate-ipanonymize-label',
                     'checkedOption' => $aSurveysettings['ipanonymize'],
                     'selectOptions' => $optionsOnOff
                 ]);
@@ -120,15 +137,19 @@ $optionsOnOff = ['Y' => gT('On'), 'N' => gT('Off')];
 <div class="row">
     <div class='col-md-6'>
         <div class="ex-form-group mb-3">
-            <label class="form-label" for='savetimings'><?php eT("Save timings"); ?></label>
-            <i class="ri-information-line"
+            <?php // Label of the radio button group below (there is no single field it could be a <label> for) ?>
+            <span class="form-label" id="activate-savetimings-label"><?php eT("Save timings"); ?></span>
+            <?php // A button, so the tooltip is also shown with the keyboard (on focus); its text is the name of the button ?>
+            <button type="button" class="btn btn-sm btn-link p-0 align-baseline text-body"
                data-bs-toggle="tooltip"
                title="<?= gT("If enabled, the time spent on each page of the survey by each survey participant is recorded."); ?>"
-            ></i>
+               aria-label="<?= gT("If enabled, the time spent on each page of the survey by each survey participant is recorded."); ?>"
+            ><i class="ri-information-line" aria-hidden="true"></i></button>
             <div class="">
                 <?php
                 $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                     'name' => 'savetimings',
+                    'ariaLabelledBy' => 'activate-savetimings-label',
                     'checkedOption' => $aSurveysettings['savetimings'],
                     'selectOptions' => $optionsOnOff
                 ]);
@@ -138,15 +159,19 @@ $optionsOnOff = ['Y' => gT('On'), 'N' => gT('Off')];
     </div>
     <div class='col-md-6'>
         <div class="ex-form-group mb-3">
-            <label class="form-label" for='refurl'><?php eT("Save referrer URL"); ?></label>
-            <i class="ri-information-line"
+            <?php // Label of the radio button group below (there is no single field it could be a <label> for) ?>
+            <span class="form-label" id="activate-refurl-label"><?php eT("Save referrer URL"); ?></span>
+            <?php // A button, so the tooltip is also shown with the keyboard (on focus); its text is the name of the button ?>
+            <button type="button" class="btn btn-sm btn-link p-0 align-baseline text-body"
                data-bs-toggle="tooltip"
                title="<?= gT("If enabled, the referrer URL will be stored together with the response."); ?>"
-            ></i>
+               aria-label="<?= gT("If enabled, the referrer URL will be stored together with the response."); ?>"
+            ><i class="ri-information-line" aria-hidden="true"></i></button>
             <div class="">
                 <?php
                 $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                     'name' => 'refurl',
+                    'ariaLabelledBy' => 'activate-refurl-label',
                     'checkedOption' => $aSurveysettings['refurl'],
                     'selectOptions' => $optionsOnOff
                 ]);
@@ -158,15 +183,19 @@ $optionsOnOff = ['Y' => gT('On'), 'N' => gT('Off')];
 <div class="row">
     <div class='col-md-6'>
         <div class="ex-form-group mb-3">
-            <label class="form-label" for='savequotaexit'><?php eT("Save quota exit"); ?></label>
-            <i class="ri-information-line"
+            <?php // Label of the radio button group below (there is no single field it could be a <label> for) ?>
+            <span class="form-label" id="activate-savequotaexit-label"><?php eT("Save quota exit"); ?></span>
+            <?php // A button, so the tooltip is also shown with the keyboard (on focus); its text is the name of the button ?>
+            <button type="button" class="btn btn-sm btn-link p-0 align-baseline text-body"
                data-bs-toggle="tooltip"
                title="<?= gT("If enabled, the ID of the matched quota will be stored together with the response."); ?>"
-            ></i>
+               aria-label="<?= gT("If enabled, the ID of the matched quota will be stored together with the response."); ?>"
+            ><i class="ri-information-line" aria-hidden="true"></i></button>
             <div class="">
                 <?php
                 $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                     'name' => 'savequotaexit',
+                    'ariaLabelledBy' => 'activate-savequotaexit-label',
                     'checkedOption' => $aSurveysettings['savequotaexit'],
                     'selectOptions' => $optionsOnOff
                 ]);
@@ -180,7 +209,7 @@ $optionsOnOff = ['Y' => gT('On'), 'N' => gT('Off')];
         <div class="col-12 mt-5 mb-3">
             <div class="sub_footer_border"></div>
         </div>
-        <h3><?php eT("Do you want your survey to be public for everyone (open-access mode) or invite only (closed-access mode)?"); ?></h3>
+        <p class="h3" id="activate-openAccessMode-label"><?php eT("Do you want your survey to be public for everyone (open-access mode) or invite only (closed-access mode)?"); ?></p>
         <div class='col-md-10' style="width: 100%;">
             <div class="mb-5" style="width: 100%;">
                 <?php
@@ -191,6 +220,7 @@ $optionsOnOff = ['Y' => gT('On'), 'N' => gT('Off')];
                 $icons = ['Y' => 'ri-global-line', 'N' => 'ri-lock-2-line'];
                 $this->widget('ext.ButtonGroupWidget.ButtonGroupWidget', [
                     'name' => 'openAccessMode',
+                    'ariaLabelledBy' => 'activate-openAccessMode-label',
                     'checkedOption' => $closeAccessMode ? 'N' : 'Y',
                     'selectOptions' => $optionsOnOff,
                     'htmlOptions' => ['icon' => $icons,
