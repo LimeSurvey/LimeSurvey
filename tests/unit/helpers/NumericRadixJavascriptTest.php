@@ -53,6 +53,7 @@ class NumericRadixJavascriptTest extends TestCase
 JS;
 
     /**
+     * Typed values with each decimal separator, and what the survey JavaScript must do with them.
      * @return array[] radix, typed value, LEMval result, value written in the field, total with another cell at 2
      */
     public static function radixProvider(): array
@@ -69,12 +70,14 @@ JS;
     }
 
     /**
+     * The value used by the expressions, the value written in the field and the array total follow the survey decimal separator.
+     * Checked with the source and the minified array-totalsum script.
      * @dataProvider radixProvider
-     * @param string $radix
-     * @param string $value
-     * @param string|float $lemval
-     * @param string|null $rewritten
-     * @param string $total
+     * @param string $radix the survey decimal separator: '.' or ','
+     * @param string $value the value typed in the numeric field
+     * @param string|float $lemval the expected LEMval() result: a number when the value is valid, else the value as typed
+     * @param string|null $rewritten the expected value written back in the field by fixnum_checkconditions(), null when the field is not updated
+     * @param string $total the expected total of the value and another cell at 2
      * @return void
      */
     public function testValueFollowsRadix(string $radix, string $value, $lemval, ?string $rewritten, string $total): void
@@ -88,10 +91,11 @@ JS;
     }
 
     /**
-     * @param string $totalsum
-     * @param string $radix
-     * @param string $value
-     * @return array
+     * Run NODE_SCRIPT with Node and return its result.
+     * @param string $totalsum the array-totalsum script to load, relative to the root folder
+     * @param string $radix the survey decimal separator: '.' or ','
+     * @param string $value the value typed in the numeric field
+     * @return array the LEMval() result ('lemval'), the value written in the field ('rewritten') and the total ('total')
      */
     private function runNode(string $totalsum, string $radix, string $value): array
     {
