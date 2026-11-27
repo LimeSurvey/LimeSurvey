@@ -89,7 +89,8 @@ class SurveyIndexNavigationTest extends TestBaseClassWeb
     }
 
     /**
-     * Same navigation with the Vanilla theme: the index is a Bootstrap dropdown opened by a button, entries are buttons
+     * Same navigation with the Vanilla theme: The index is a Bootstrap dropdown opened by a button, entries are buttons
+     * @return void
      */
     public function testSurveyIndexNavigationVanilla()
     {
@@ -139,6 +140,7 @@ class SurveyIndexNavigationTest extends TestBaseClassWeb
 
     /**
      * Open the Vanilla index menu, the top menu can be collapsed on small screen
+     * @return void
      */
     private function openVanillaIndexMenu()
     {
@@ -154,7 +156,8 @@ class SurveyIndexNavigationTest extends TestBaseClassWeb
 
     /**
      * Click on the index entry to move to the step (button with data-limesurvey-submit, see questionIndexHelper)
-     * @param int $step
+     * @param int $step the index step to move to (1 for the first group)
+     * @return void
      */
     private function clickVanillaIndexEntry($step)
     {
