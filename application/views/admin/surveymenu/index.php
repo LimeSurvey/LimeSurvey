@@ -17,12 +17,12 @@ echo viewHelper::getViewTestTag('surveyMenus');
     <div class="col-12">
         <!-- Tabs -->
         <ul class="nav nav-tabs" id="menueslist" role="tablist">
-            <li class="nav-item">
+            <li class="nav-item" role="presentation">
                 <a id="menueslist-tab-surveymenues" class="nav-link active" role="tab" data-bs-toggle="tab" href="#surveymenues" aria-controls="surveymenues" aria-selected="true" tabindex="0">
                     <?php eT('Survey menus'); ?>
                 </a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" role="presentation">
                 <a id="menueslist-tab-surveymenuentries" class="nav-link" role="tab" data-bs-toggle="tab" href="#surveymenuentries" aria-controls="surveymenuentries" aria-selected="false" tabindex="-1">
                     <?php eT('Survey menu entries'); ?>
                 </a>
