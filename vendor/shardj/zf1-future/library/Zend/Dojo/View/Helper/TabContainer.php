@@ -53,7 +53,7 @@ class Zend_Dojo_View_Helper_TabContainer extends Zend_Dojo_View_Helper_DijitCont
      * @param  string $content
      * @param  array $params  Parameters to use for dijit creation
      * @param  array $attribs HTML attributes
-     * @return string
+     * @return $this|string
      */
     public function tabContainer($id = null, $content = '', array $params = [], array $attribs = [])
     {

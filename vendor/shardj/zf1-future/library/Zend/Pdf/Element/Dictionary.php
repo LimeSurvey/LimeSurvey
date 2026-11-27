@@ -101,7 +101,7 @@ class Zend_Pdf_Element_Dictionary extends Zend_Pdf_Element
     /**
      * Get handler
      *
-     * @param string $property
+     * @param string $item
      * @return Zend_Pdf_Element | null
      */
     public function __get($item)
@@ -114,7 +114,7 @@ class Zend_Pdf_Element_Dictionary extends Zend_Pdf_Element
     /**
      * Set handler
      *
-     * @param string $property
+     * @param string $item
      * @param  mixed $value
      */
     public function __set($item, $value)
@@ -140,7 +140,7 @@ class Zend_Pdf_Element_Dictionary extends Zend_Pdf_Element
     /**
      * Return object as string
      *
-     * @param Zend_Pdf_Factory $factory
+     * @param Zend_Pdf_ElementFactory_Interface|null $factory
      * @return string
      */
     public function toString($factory = null)
@@ -182,6 +182,7 @@ class Zend_Pdf_Element_Dictionary extends Zend_Pdf_Element
             if ($this->_items['Type']->value == 'Pages') {
                 // It's a page tree node
                 // skip it and its children
+                require_once 'Zend/Pdf/Element/Null.php';
                 return new Zend_Pdf_Element_Null();
             }
 
@@ -189,6 +190,7 @@ class Zend_Pdf_Element_Dictionary extends Zend_Pdf_Element
                 $mode == Zend_Pdf_Element::CLONE_MODE_SKIP_PAGES
             ) {
                 // It's a page node, skip it
+                require_once 'Zend/Pdf/Element/Null.php';
                 return new Zend_Pdf_Element_Null();
             }
         }

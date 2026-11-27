@@ -19,7 +19,7 @@
 {% set buttons_cols_class = max_buttons_row_value in buttons_per_row_map|keys ? 'bootstrap-buttons-cols-' ~ buttons_per_row_map[max_buttons_row_value] : '' %}
 {{ sTimer }}
 <div>
-    <ul class="{{coreClass}} list-unstyled bootstrap-buttons-list {{ buttons_cols_class }}" data-bs-toggle="buttons" role="radiogroup" aria-labelledby="ls-question-text-{{name }}">
+    <ul class="{{coreClass}} list-unstyled bootstrap-buttons-list {{ buttons_cols_class }}" data-bs-toggle="buttons" role="radiogroup" aria-labelledby="ls-question-text-{{ name }}" aria-describedby="ls-question-help-{{ name }} ls-question-validation-{{ name }}">
     {# rows/answer_row.php #}
     {{ sRows }}
     </ul>

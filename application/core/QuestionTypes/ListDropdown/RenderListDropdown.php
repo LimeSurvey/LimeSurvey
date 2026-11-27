@@ -38,10 +38,10 @@ class RenderListDropdown extends QuestionBaseRenderer
 
     private $iRowNum = 0;
 
-    const OTHER_POS_BEFORE_NOANSWER = 'default';
-    const OTHER_POS_START = 'beginning';
-    const OTHER_POS_END = 'end';
-    const OTHER_POS_AFTER_OPTION = 'specific';
+    public const OTHER_POS_BEFORE_NOANSWER = 'default';
+    public const OTHER_POS_START = 'beginning';
+    public const OTHER_POS_END = 'end';
+    public const OTHER_POS_AFTER_OPTION = 'specific';
 
     public function __construct($aFieldArray, $bRenderDirect = false)
     {

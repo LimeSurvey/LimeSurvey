@@ -61,7 +61,7 @@ class Zend_Tool_Project_Context_Zf_ViewControllerScriptsDirectory extends Zend_T
     protected $_filesystemName = 'controllerName';
 
     /**
-     * @var name
+     * @var string
      */
     protected $_forControllerName = null;
 

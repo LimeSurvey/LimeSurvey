@@ -26,6 +26,8 @@ export const QuestionTypeSelector = ({
     useState([])
   const { categories, questionTypes } = useQuestionTypes()
 
+  // getQuestionItemsList leaves out the dev-only question types outside dev mode,
+  // so that the keyboard navigation can't reach them
   const filteredItemsLists = getQuestionItemsList(
     categories,
     questionTypes
@@ -112,9 +114,9 @@ export const QuestionTypeSelector = ({
 
   const renderData = (data) => {
     const rows = []
+    // Items are numbered across all rows, like in the Enter handler
+    let previousItemsTotal = 0
     for (let i = 0; i < data.length; i += 3) {
-      let previousItemsTotal = 0
-
       const rowItems =
         data.slice(i, i + 3).length === 3
           ? data.slice(i, i + 3)

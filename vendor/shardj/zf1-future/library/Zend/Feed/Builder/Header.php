@@ -310,6 +310,7 @@ class Zend_Feed_Builder_Header extends ArrayObject
      */
     public function setCloud($uri, $procedure, $protocol)
     {
+        require_once 'Zend/Uri/Http.php';
         if (is_string($uri) && Zend_Uri_Http::check($uri)) {
             $uri = Zend_Uri::factory($uri);
         }

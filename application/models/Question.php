@@ -13,7 +13,6 @@
 *
 */
 
-use LimeSurvey\Helpers\questionHelper;
 use LimeSurvey\Models\Services\SurveyDetailService;
 
 /**
@@ -51,51 +50,51 @@ use LimeSurvey\Models\Services\SurveyDetailService;
  */
 class Question extends LSActiveRecord
 {
-    const QT_1_ARRAY_DUAL = '1'; // Array Dual scale
-    const QT_5_POINT_CHOICE = '5';
-    const QT_A_ARRAY_5_POINT = 'A'; // Array of 5 point choice questions
-    const QT_B_ARRAY_10_CHOICE_QUESTIONS = 'B'; // Array of 10 point choice questions
-    const QT_C_ARRAY_YES_UNCERTAIN_NO = 'C'; // ARRAY OF YES\No\gT("Uncertain") QUESTIONS
-    const QT_D_DATE = 'D';
-    const QT_E_ARRAY_INC_SAME_DEC = 'E';
-    const QT_F_ARRAY = 'F';
-    const QT_G_GENDER = 'G';
-    const QT_H_ARRAY_COLUMN = 'H';
-    const QT_I_LANGUAGE = 'I';
-    const QT_J_MAP = 'J';
-    const QT_K_MULTIPLE_NUMERICAL = 'K';
-    const QT_L_LIST = 'L';
-    const QT_M_MULTIPLE_CHOICE = 'M';
-    const QT_N_NUMERICAL = 'N';
-    const QT_O_LIST_WITH_COMMENT = 'O';
-    const QT_P_MULTIPLE_CHOICE_WITH_COMMENTS = 'P';
-    const QT_Q_MULTIPLE_SHORT_TEXT = 'Q';
-    const QT_R_RANKING = 'R';
-    const QT_S_SHORT_FREE_TEXT = 'S';
-    const QT_T_LONG_FREE_TEXT = 'T';
-    const QT_U_HUGE_FREE_TEXT = 'U';
-    const QT_X_TEXT_DISPLAY = 'X';
-    const QT_Y_YES_NO_RADIO = 'Y';
-    const QT_EXCLAMATION_LIST_DROPDOWN = '!';
-    const QT_VERTICAL_FILE_UPLOAD = '|';
-    const QT_ASTERISK_EQUATION = '*';
-    const QT_COLON_ARRAY_NUMBERS = ':';
-    const QT_SEMICOLON_ARRAY_TEXT = ';';
+    public const QT_1_ARRAY_DUAL = '1'; // Array Dual scale
+    public const QT_5_POINT_CHOICE = '5';
+    public const QT_A_ARRAY_5_POINT = 'A'; // Array of 5 point choice questions
+    public const QT_B_ARRAY_10_CHOICE_QUESTIONS = 'B'; // Array of 10 point choice questions
+    public const QT_C_ARRAY_YES_UNCERTAIN_NO = 'C'; // ARRAY OF YES\No\gT("Uncertain") QUESTIONS
+    public const QT_D_DATE = 'D';
+    public const QT_E_ARRAY_INC_SAME_DEC = 'E';
+    public const QT_F_ARRAY = 'F';
+    public const QT_G_GENDER = 'G';
+    public const QT_H_ARRAY_COLUMN = 'H';
+    public const QT_I_LANGUAGE = 'I';
+    public const QT_J_MAP = 'J';
+    public const QT_K_MULTIPLE_NUMERICAL = 'K';
+    public const QT_L_LIST = 'L';
+    public const QT_M_MULTIPLE_CHOICE = 'M';
+    public const QT_N_NUMERICAL = 'N';
+    public const QT_O_LIST_WITH_COMMENT = 'O';
+    public const QT_P_MULTIPLE_CHOICE_WITH_COMMENTS = 'P';
+    public const QT_Q_MULTIPLE_SHORT_TEXT = 'Q';
+    public const QT_R_RANKING = 'R';
+    public const QT_S_SHORT_FREE_TEXT = 'S';
+    public const QT_T_LONG_FREE_TEXT = 'T';
+    public const QT_U_HUGE_FREE_TEXT = 'U';
+    public const QT_X_TEXT_DISPLAY = 'X';
+    public const QT_Y_YES_NO_RADIO = 'Y';
+    public const QT_EXCLAMATION_LIST_DROPDOWN = '!';
+    public const QT_VERTICAL_FILE_UPLOAD = '|';
+    public const QT_ASTERISK_EQUATION = '*';
+    public const QT_COLON_ARRAY_NUMBERS = ':';
+    public const QT_SEMICOLON_ARRAY_TEXT = ';';
 
-    const ORDER_TYPES_SUBQUESTION = [
+    public const ORDER_TYPES_SUBQUESTION = [
         self::QT_M_MULTIPLE_CHOICE,
         self::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS,
         self::QT_R_RANKING,
     ];
-    const ORDER_TYPES_ANSWER = [
+    public const ORDER_TYPES_ANSWER = [
         self::QT_L_LIST,
         self::QT_EXCLAMATION_LIST_DROPDOWN,
         self::QT_O_LIST_WITH_COMMENT
     ];
 
-    const START_SORTING_VALUE = 1; //this is the start value for question_order
+    public const START_SORTING_VALUE = 1; //this is the start value for question_order
 
-    const DEFAULT_QUESTION_THEME = 'core';  // The question theme name to use when no theme is specified
+    public const DEFAULT_QUESTION_THEME = 'core';  // The question theme name to use when no theme is specified
 
     /** @var string $group_name Stock the active group_name for questions list filtering */
     public $group_name;

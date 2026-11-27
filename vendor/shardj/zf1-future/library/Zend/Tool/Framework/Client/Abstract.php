@@ -45,7 +45,7 @@ abstract class Zend_Tool_Framework_Client_Abstract implements Zend_Tool_Framewor
     protected $_registry = null;
 
     /**
-     * @var callback|null
+     * @var callable|null
      */
     protected $_interactiveCallback = null;
 
@@ -66,6 +66,7 @@ abstract class Zend_Tool_Framework_Client_Abstract implements Zend_Tool_Framewor
 
         // this might look goofy, but this is setting up the
         // registry for dependency injection into the client
+        require_once 'Zend/Tool/Framework/Registry.php';
         $registry = new Zend_Tool_Framework_Registry();
         $registry->setClient($this);
 
@@ -109,6 +110,7 @@ abstract class Zend_Tool_Framework_Client_Abstract implements Zend_Tool_Framewor
         $this->_preInit();
 
         $manifest = $this->_registry->getManifestRepository();
+        require_once 'Zend/Tool/Framework/Client/Manifest.php';
         $manifest->addManifest(new Zend_Tool_Framework_Client_Manifest());
 
         // setup the debug log

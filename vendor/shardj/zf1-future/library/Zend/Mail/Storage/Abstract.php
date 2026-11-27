@@ -167,7 +167,7 @@ abstract class Zend_Mail_Storage_Abstract implements Countable, ArrayAccess, See
      * Close resource for mail lib. If you need to control, when the resource
      * is closed. Otherwise the destructor would call this.
      *
-     * @return null
+     * @return void
      */
     abstract public function close();
 
@@ -175,14 +175,14 @@ abstract class Zend_Mail_Storage_Abstract implements Countable, ArrayAccess, See
     /**
      * Keep the resource alive.
      *
-     * @return null
+     * @return void
      */
     abstract public function noop();
 
     /**
      * delete a message from current box/folder
      *
-     * @return null
+     * @return void
      */
     abstract public function removeMessage($id);
 
@@ -204,7 +204,7 @@ abstract class Zend_Mail_Storage_Abstract implements Countable, ArrayAccess, See
      * as parameter and use this method to translate it to message number right before calling removeMessage()
      *
      * @param string $id unique id
-     * @return int message number
+     * @return int|string message number
      * @throws Zend_Mail_Storage_Exception
      */
     abstract public function getNumberByUniqueId($id);
@@ -256,7 +256,7 @@ abstract class Zend_Mail_Storage_Abstract implements Countable, ArrayAccess, See
      /**
       * ArrayAccess::offsetSet()
       *
-      * @param    id     $id
+      * @param    mixed  $id
       * @param    mixed  $value
       * @throws   Zend_Mail_Storage_Exception
       * @return   void
@@ -275,12 +275,12 @@ abstract class Zend_Mail_Storage_Abstract implements Countable, ArrayAccess, See
       * ArrayAccess::offsetUnset()
       *
       * @param    int   $id
-      * @return   boolean|null success
+      * @return   void
       */
      #[\ReturnTypeWillChange]
      public function offsetUnset($id)
      {
-        return $this->removeMessage($id);
+        $this->removeMessage($id);
      }
 
 

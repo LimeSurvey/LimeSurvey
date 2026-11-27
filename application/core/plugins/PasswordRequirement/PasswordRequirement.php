@@ -13,18 +13,18 @@ class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
      */
     protected $storage = 'DbStorage';
 
-    const DEFAULT_NEEDS_NUMBER = true;
-    const DEFAULT_NEEDS_UPPERCASE = true;
-    const DEFAULT_NEEDS_LOWERCASE = false;
-    const DEFAULT_NEEDS_NON_ALPHANUMERIC = false;
-    const DEFAULT_MINIMUM_SIZE = 12;
+    public const DEFAULT_NEEDS_NUMBER = true;
+    public const DEFAULT_NEEDS_UPPERCASE = true;
+    public const DEFAULT_NEEDS_LOWERCASE = false;
+    public const DEFAULT_NEEDS_NON_ALPHANUMERIC = false;
+    public const DEFAULT_MINIMUM_SIZE = 12;
     /** No maximum length */
-    const DEFAULT_MAXIMUM_SIZE = 0;
-    const DEFAULT_SURVEY_SAVE_ACTIVE = false;
-    const DEFAULT_SURVEY_SAVE_NEEDS_NUMBER = false;
-    const DEFAULT_SURVEY_SAVE_NEEDS_UPPERCASE = false;
-    const DEFAULT_SURVEY_SAVE_NEEDS_NON_ALPHANUMERIC = false;
-    const DEFAULT_SURVEY_SAVE_MINIMUM_SIZE = 8;
+    public const DEFAULT_MAXIMUM_SIZE = 0;
+    public const DEFAULT_SURVEY_SAVE_ACTIVE = false;
+    public const DEFAULT_SURVEY_SAVE_NEEDS_NUMBER = false;
+    public const DEFAULT_SURVEY_SAVE_NEEDS_UPPERCASE = false;
+    public const DEFAULT_SURVEY_SAVE_NEEDS_NON_ALPHANUMERIC = false;
+    public const DEFAULT_SURVEY_SAVE_MINIMUM_SIZE = 8;
 
     /** @inheritdoc this plugin didn't have any public method */
     public $allowedPublicMethods = array();

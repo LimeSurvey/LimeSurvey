@@ -34,7 +34,7 @@ interface Zend_Paginator_Adapter_Interface extends Countable
      *
      * @param  integer $offset Page offset
      * @param  integer $itemCountPerPage Number of items per page
-     * @return array
+     * @return array|Traversable
      */
     public function getItems($offset, $itemCountPerPage);
 }

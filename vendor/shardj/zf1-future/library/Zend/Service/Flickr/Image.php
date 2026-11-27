@@ -48,14 +48,14 @@ class Zend_Service_Flickr_Image
     /**
      * The height of the image in pixels
      *
-     * @var string
+     * @var string|int
      */
     public $height;
 
     /**
      * The width of the image in pixels
      *
-     * @var string
+     * @var string|int
      */
     public $width;
 

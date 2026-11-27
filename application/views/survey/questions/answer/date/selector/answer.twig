@@ -26,7 +26,7 @@
             {{ C.Html.textField(name,dateoutput,{
                 'id' : "answer" ~ name,
                 'class' : "form-control date-control date",
-                'aria-describedby' : "ls-question-text-" ~ name,
+                'aria-describedby' : "ls-question-text-" ~ name ~ " ls-question-help-" ~ name ~ " ls-question-validation-" ~ name,
             }) }}
             <div class="input-group-addon btn btn-primary">
                 <i class="fa fa-calendar ri-calendar-2-fill" aria-hidden="true"></i>

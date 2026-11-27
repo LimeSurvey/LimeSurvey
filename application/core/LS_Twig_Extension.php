@@ -657,7 +657,7 @@ class LS_Twig_Extension extends AbstractExtension
      * @param bool $strict If the third parameter strict is set to TRUE then the in_array() function will also check the types of the needle in the haystack.
      * @todo in_array_r is not defined - delete this method?
      */
-    function in_multiarray($needle, $haystack, $strict = false)
+    public function in_multiarray($needle, $haystack, $strict = false)
     {
 
         foreach ($haystack as $item) {

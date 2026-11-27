@@ -44,7 +44,7 @@ class Zend_Oauth_Http
     /**
      * Reference to the Zend_Oauth_Consumer instance in use.
      *
-     * @var string
+     * @var Zend_Oauth_Consumer|null
      */
     protected $_consumer = null;
 

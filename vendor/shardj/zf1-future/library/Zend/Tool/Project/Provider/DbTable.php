@@ -20,6 +20,9 @@
  * @version    $Id$
  */
 
+require_once 'Zend/Tool/Project/Provider/Abstract.php';
+require_once 'Zend/Tool/Framework/Provider/Pretendable.php';
+
 /**
  * @category   Zend
  * @package    Zend_Tool
@@ -51,6 +54,7 @@ class Zend_Tool_Project_Provider_DbTable
         $modelsDirectory = $profile->search($profileSearchParams);
 
         if (!($modelsDirectory instanceof Zend_Tool_Project_Profile_Resource)) {
+            require_once 'Zend/Tool/Project/Provider/Exception.php';
             throw new Zend_Tool_Project_Provider_Exception(
                 'A models directory was not found' .
                 (($moduleName) ? ' for module ' . $moduleName . '.' : '.')
@@ -96,6 +100,7 @@ class Zend_Tool_Project_Provider_DbTable
 
         // Check that there is not a dash or underscore, return if doesnt match regex
         if (preg_match('#[_-]#', $name)) {
+            require_once 'Zend/Tool/Project/Provider/Exception.php';
             throw new Zend_Tool_Project_Provider_Exception('DbTable names should be camel cased.');
         }
 
@@ -103,10 +108,12 @@ class Zend_Tool_Project_Provider_DbTable
         $name = ucfirst($name);
 
         if ($actualTableName == '') {
+            require_once 'Zend/Tool/Project/Provider/Exception.php';
             throw new Zend_Tool_Project_Provider_Exception('You must provide both the DbTable name as well as the actual db table\'s name.');
         }
 
         if (self::hasResource($this->_loadedProfile, $name, $module)) {
+            require_once 'Zend/Tool/Project/Provider/Exception.php';
             throw new Zend_Tool_Project_Provider_Exception('This project already has a DbTable named ' . $name);
         }
 
@@ -161,8 +168,8 @@ class Zend_Tool_Project_Provider_DbTable
         try {
             $zendApp->bootstrap('db');
         } catch (Zend_Application_Exception $e) {
+            require_once 'Zend/Tool/Project/Provider/Exception.php';
             throw new Zend_Tool_Project_Provider_Exception('Db resource not available, you might need to configure a DbAdapter.');
-            return;
         }
 
         /* @var Zend_Db_Adapter_Abstract $db */
@@ -174,6 +181,7 @@ class Zend_Tool_Project_Provider_DbTable
             $dbTableName = $this->_convertTableNameToClassName($actualTableName);
 
             if (!$forceOverwrite && self::hasResource($this->_loadedProfile, $dbTableName, $module)) {
+                require_once 'Zend/Tool/Project/Provider/Exception.php';
                 throw new Zend_Tool_Project_Provider_Exception(
                     'This DbTable resource already exists, if you wish to overwrite it, '
                     . 'pass the "forceOverwrite" flag to this provider.'
@@ -215,7 +223,9 @@ class Zend_Tool_Project_Provider_DbTable
     protected function _convertTableNameToClassName($tableName)
     {
         if ($this->_nameFilter == null) {
+            require_once 'Zend/Filter.php';
             $this->_nameFilter = new Zend_Filter();
+            require_once 'Zend/Filter/Word/UnderscoreToCamelCase.php';
             $this->_nameFilter
                 ->addFilter(new Zend_Filter_Word_UnderscoreToCamelCase());
         }

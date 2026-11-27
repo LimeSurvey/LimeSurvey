@@ -74,7 +74,7 @@ require_once 'Zend/View.php';
 class Zend_Controller_Action_Helper_ViewRenderer extends Zend_Controller_Action_Helper_Abstract
 {
     /**
-     * @var Zend_View_Interface
+     * @var Zend_View_Interface|null
      */
     public $view;
 
@@ -136,13 +136,13 @@ class Zend_Controller_Action_Helper_ViewRenderer extends Zend_Controller_Action_
 
     /**
      * Which named segment of the response to utilize
-     * @var string
+     * @var string|null
      */
     protected $_responseSegment = null;
 
     /**
      * Which action view script to render
-     * @var string
+     * @var string|null
      */
     protected $_scriptAction    = null;
 
@@ -882,9 +882,11 @@ class Zend_Controller_Action_Helper_ViewRenderer extends Zend_Controller_Action_
         $filtered = $inflector->filter($params);
 
         if (isset($params['suffix'])) {
+            // @phpstan-ignore variable.undefined (set above under the same condition)
             $this->setViewSuffix($origSuffix);
         }
         if (isset($params['moduleDir'])) {
+            // @phpstan-ignore variable.undefined (set above under the same condition)
             $this->_setModuleDir($origModuleDir);
         }
 

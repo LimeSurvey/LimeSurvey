@@ -62,7 +62,7 @@ class Zend_Tool_Framework_Client_Console
     protected $_storageOptions = null;
 
     /**
-     * @var Zend_Filter_Word_CamelCaseToDash
+     * @var Zend_Filter
      */
     protected $_filterToClientNaming = null;
 
@@ -143,6 +143,7 @@ class Zend_Tool_Framework_Client_Console
         $storage = $this->_registry->getStorage();
 
         if ($this->_storageOptions != null && isset($this->_storageOptions['directory'])) {
+            require_once 'Zend/Tool/Framework/Client/Storage/Directory.php';
             $storage->setAdapter(
                 new Zend_Tool_Framework_Client_Storage_Directory($this->_storageOptions['directory'])
                 );
@@ -169,6 +170,7 @@ class Zend_Tool_Framework_Client_Console
             }
         }
 
+        require_once 'Zend/Tool/Framework/Loader/BasicLoader.php';
         $this->_registry->setLoader(
             new Zend_Tool_Framework_Loader_BasicLoader(['classesToLoad' => $classesToLoad])
             );
@@ -184,17 +186,23 @@ class Zend_Tool_Framework_Client_Console
     {
         $response = $this->_registry->getResponse();
 
+        require_once 'Zend/Tool/Framework/Client/Console/ResponseDecorator/AlignCenter.php';
         $response->addContentDecorator(new Zend_Tool_Framework_Client_Console_ResponseDecorator_AlignCenter());
+        require_once 'Zend/Tool/Framework/Client/Console/ResponseDecorator/Indention.php';
         $response->addContentDecorator(new Zend_Tool_Framework_Client_Console_ResponseDecorator_Indention());
+        require_once 'Zend/Tool/Framework/Client/Console/ResponseDecorator/Blockize.php';
         $response->addContentDecorator(new Zend_Tool_Framework_Client_Console_ResponseDecorator_Blockize());
 
         if (function_exists('posix_isatty')) {
+            require_once 'Zend/Tool/Framework/Client/Console/ResponseDecorator/Colorizer.php';
             $response->addContentDecorator(new Zend_Tool_Framework_Client_Console_ResponseDecorator_Colorizer());
         }
 
+        require_once 'Zend/Tool/Framework/Client/Response/ContentDecorator/Separator.php';
         $response->addContentDecorator(new Zend_Tool_Framework_Client_Response_ContentDecorator_Separator())
             ->setDefaultDecoratorOptions(['separator' => true]);
 
+        require_once 'Zend/Tool/Framework/Client/Console/ArgumentParser.php';
         $optParser = new Zend_Tool_Framework_Client_Console_ArgumentParser();
         $optParser->setArguments($_SERVER['argv'])
             ->setRegistry($this->_registry)
@@ -213,6 +221,7 @@ class Zend_Tool_Framework_Client_Console
         $response = $this->_registry->getResponse();
 
         if ($response->isException()) {
+            require_once 'Zend/Tool/Framework/Client/Console/HelpSystem.php';
             $helpSystem = new Zend_Tool_Framework_Client_Console_HelpSystem();
             $helpSystem->setRegistry($this->_registry)
                 ->respondWithErrorMessage($response->getException()->getMessage(), $response->getException())
@@ -280,8 +289,11 @@ class Zend_Tool_Framework_Client_Console
     public function convertToClientNaming($string)
     {
         if (!$this->_filterToClientNaming) {
+            require_once 'Zend/Filter.php';
             $filter = new Zend_Filter();
+            require_once 'Zend/Filter/Word/CamelCaseToDash.php';
             $filter->addFilter(new Zend_Filter_Word_CamelCaseToDash());
+            require_once 'Zend/Filter/StringToLower.php';
             $filter->addFilter(new Zend_Filter_StringToLower());
 
             $this->_filterToClientNaming = $filter;
@@ -303,6 +315,7 @@ class Zend_Tool_Framework_Client_Console
     public function convertFromClientNaming($string)
     {
         if (!$this->_filterFromClientNaming) {
+            require_once 'Zend/Filter/Word/DashToCamelCase.php';
             $this->_filterFromClientNaming = new Zend_Filter_Word_DashToCamelCase();
         }
 

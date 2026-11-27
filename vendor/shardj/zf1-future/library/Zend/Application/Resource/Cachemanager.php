@@ -56,6 +56,7 @@ class Zend_Application_Resource_Cachemanager extends Zend_Application_Resource_R
     public function getCacheManager()
     {
         if (null === $this->_manager) {
+            require_once 'Zend/Cache/Manager.php';
             $this->_manager = new Zend_Cache_Manager;
 
             $options = $this->getOptions();
@@ -64,6 +65,7 @@ class Zend_Application_Resource_Cachemanager extends Zend_Application_Resource_R
                 if (isset($value['frontend']['options']['logger'])) {
                     $logger = $value['frontend']['options']['logger'];
                     if (is_array($logger)) {
+                        require_once 'Zend/Log.php';
                         $value['frontend']['options']['logger'] = Zend_Log::factory($logger);
                     }
                 }

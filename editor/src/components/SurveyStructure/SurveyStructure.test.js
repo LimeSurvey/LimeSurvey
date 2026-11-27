@@ -4,7 +4,7 @@ import 'tests/mocks'
 import { act } from 'react'
 import { renderWithProviders } from 'tests/testUtils'
 import { SurveyStructure } from './SurveyStructure'
-import { screen, waitFor } from '@testing-library/react'
+import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import surveyData from 'helpers/data/survey-detail.json'
 import { queryClient } from 'queryClient'
@@ -34,6 +34,18 @@ const setAppState = (key, value) =>
 
 const getAllGroupsContainer = () =>
   document.querySelector('[data-rfd-droppable-id="all-groups"]')
+
+const getGroupRows = () =>
+  screen.getAllByTestId('survey-structure-question-group')
+
+const dropItem = (type, droppableId, fromIndex, toIndex) =>
+  act(() => {
+    mockDragDropContextProps.onDragEnd({
+      type,
+      source: { droppableId, index: fromIndex },
+      destination: { droppableId, index: toIndex },
+    })
+  })
 
 describe('SurveyStructure', () => {
   const Survey = surveyData.survey
@@ -113,5 +125,110 @@ describe('SurveyStructure', () => {
     })
 
     expect(getAllGroupsContainer()).toHaveStyle({ cursor: 'auto' })
+  })
+
+  test('A group expanded by hand stays expanded after it is moved', async () => {
+    await renderWithProviders(<SurveyStructure />)
+    const movedGroupName = Survey.questionGroups[2].l10ns.en.groupName
+    const toggler = within(getGroupRows()[2]).getByTestId(
+      'sidebar-row-toggler-button'
+    )
+    await userEvent.click(toggler)
+    expect(toggler).toHaveAttribute('aria-expanded', 'true')
+
+    await dropItem('group', 'all-groups', 2, 0)
+
+    const firstRow = getGroupRows()[0]
+    expect(firstRow).toHaveTextContent(movedGroupName)
+    expect(
+      within(firstRow).getByTestId('sidebar-row-toggler-button')
+    ).toHaveAttribute('aria-expanded', 'true')
+
+    await dropItem('group', 'all-groups', 0, 2)
+  })
+
+  test('Reordering questions moves the existing rows instead of rebuilding them', async () => {
+    await renderWithProviders(<SurveyStructure />)
+    await userEvent.click(
+      within(getGroupRows()[0]).getByTestId('sidebar-row-toggler-button')
+    )
+    const getQuestionRows = () =>
+      within(
+        document.querySelector('[data-rfd-droppable-id="g0"]')
+      ).getAllByTestId('sidebar-row-question')
+    const [firstRow] = getQuestionRows()
+
+    await dropItem('question', 'g0', 0, 2)
+
+    expect(getQuestionRows()[2]).toBe(firstRow)
+
+    await dropItem('question', 'g0', 2, 0)
+  })
+
+  describe('Dropping does not move the focus to the dragged item', () => {
+    const getFocusState = () =>
+      queryClient.getQueryData([STATES.FOCUSED_ENTITY])
+
+    const dropQuestionInGroup = (fromGroup, fromIndex, toGroup, toIndex) =>
+      act(() => {
+        mockDragDropContextProps.onDragEnd({
+          type: 'question',
+          source: { droppableId: `g${fromGroup}`, index: fromIndex },
+          destination: { droppableId: `g${toGroup}`, index: toIndex },
+        })
+      })
+
+    test('A dropped question or group does not take the focus', async () => {
+      await renderWithProviders(<SurveyStructure />)
+      const welcome = await screen.findByTestId('survey-structure-header')
+      await userEvent.click(welcome)
+      await waitFor(() =>
+        expect(welcome).toHaveAttribute('aria-current', 'true')
+      )
+
+      await dropItem('question', 'g0', 0, 2)
+      await dropItem('group', 'all-groups', 1, 3)
+
+      const currentRows = [
+        ...document.querySelectorAll('[aria-current="true"]'),
+      ].map((row) => row.getAttribute('data-testid'))
+      expect(currentRows).toEqual(['survey-structure-header'])
+      expect(getFocusState().focused.qid).toBeUndefined()
+
+      await dropItem('group', 'all-groups', 3, 1)
+      await dropItem('question', 'g0', 2, 0)
+    })
+
+    test('The focused question keeps the focus, with its new group, when it is dragged', async () => {
+      await renderWithProviders(<SurveyStructure />)
+      const question = Survey.questionGroups[0].questions[0]
+      const destinationGid = Survey.questionGroups[1].gid
+      await userEvent.click(
+        within(getGroupRows()[0]).getByTestId('sidebar-row-toggler-button')
+      )
+      await userEvent.click(
+        within(
+          document.querySelector('[data-rfd-droppable-id="g0"]')
+        ).getAllByTestId('sidebar-row-question')[0]
+      )
+      await waitFor(() =>
+        expect(getFocusState().focused.qid).toBe(question.qid)
+      )
+
+      await dropQuestionInGroup(0, 0, 1, 1)
+
+      expect(getFocusState()).toEqual(
+        expect.objectContaining({
+          focused: expect.objectContaining({
+            qid: question.qid,
+            gid: destinationGid,
+          }),
+          groupIndex: 1,
+          questionIndex: 1,
+        })
+      )
+
+      await dropQuestionInGroup(1, 1, 0, 0)
+    })
   })
 })

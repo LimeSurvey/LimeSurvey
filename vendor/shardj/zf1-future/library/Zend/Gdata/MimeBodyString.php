@@ -29,6 +29,7 @@
  * @subpackage Gdata
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @deprecated Deprecated since 1.27.1 and will be removed in a future version: Google shut down the Google Data APIs it implements and the ClientLogin and AuthSub authentication
  */
 class Zend_Gdata_MimeBodyString
 {
@@ -61,7 +62,7 @@ class Zend_Gdata_MimeBodyString
      * Read the next chunk of the string.
      *
      * @param integer $bytesRequested The size of the chunk that is to be read.
-     * @return string A corresponding piece of the string.
+     * @return string|false A corresponding piece of the string.
      */
     public function read($bytesRequested)
     {

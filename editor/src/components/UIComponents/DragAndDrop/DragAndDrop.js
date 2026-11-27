@@ -1,7 +1,11 @@
 import { DragDropContext, Droppable } from '@hello-pangea/dnd'
 
 import { useAppState } from '../../../hooks'
-import { errorToast, STATES } from '../../../helpers'
+import {
+  errorToast,
+  runWithSyncQueryNotifications,
+  STATES,
+} from '../../../helpers'
 import { getTooltipMessages } from 'helpers/options'
 
 /** Droppable list wrapper that blocks dropping when the survey is active or the user lacks update permission. */
@@ -38,7 +42,7 @@ export const DragAndDrop = ({
       return
     }
 
-    onDragEnd(result)
+    runWithSyncQueryNotifications(() => onDragEnd(result))
   }
 
   return (

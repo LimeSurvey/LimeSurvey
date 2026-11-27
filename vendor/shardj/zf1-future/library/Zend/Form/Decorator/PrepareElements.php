@@ -61,7 +61,7 @@ class Zend_Form_Decorator_PrepareElements extends Zend_Form_Decorator_FormElemen
 
     protected function _recursivelyPrepareForm(Zend_Form $form)
     {
-        $belongsTo      = ($form instanceof Zend_Form) ? $form->getElementsBelongTo() : null;
+        $belongsTo      = $form->getElementsBelongTo();
         $elementContent = '';
         $separator      = $this->getSeparator();
         $translator     = $form->getTranslator();

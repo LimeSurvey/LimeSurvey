@@ -687,6 +687,7 @@ function populateDatabase($oDB)
             'tokenencryptionoptions' => "text NULL",
             'access_mode' => "string(1) DEFAULT 'O'",
             'lastmodified' => 'datetime NOT NULL',
+            'code' => 'string(128) NULL',
             'welcome_image' => 'mediumtext NULL'
         ), $options);
 

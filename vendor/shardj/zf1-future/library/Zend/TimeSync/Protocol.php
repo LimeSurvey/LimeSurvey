@@ -39,7 +39,7 @@ abstract class Zend_TimeSync_Protocol
     /**
      * Holds the current socket connection
      *
-     * @var array
+     * @var array|resource|null
      */
     protected $_socket;
 
@@ -102,9 +102,11 @@ abstract class Zend_TimeSync_Protocol
      */
     protected function _connect()
     {
+        require_once 'Zend/TimeSync.php';
         $socket = @fsockopen($this->_timeserver, $this->_port, $errno, $errstr,
                              Zend_TimeSync::$options['timeout']);
         if ($socket === false) {
+            require_once 'Zend/TimeSync/Exception.php';
             throw new Zend_TimeSync_Exception('could not connect to ' .
                 "'$this->_timeserver' on port '$this->_port', reason: '$errstr'");
         }
@@ -149,6 +151,7 @@ abstract class Zend_TimeSync_Protocol
         $this->_write($this->_prepare());
         $timestamp = $this->_extract($this->_read());
 
+        require_once 'Zend/Date.php';
         return new Zend_Date($this, null, $locale);
     }
 }

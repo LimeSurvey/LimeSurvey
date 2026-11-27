@@ -24,6 +24,8 @@
  */
 class QuestionTemplate extends CFormModel
 {
+    use TwigSandboxIteratorTrait;
+
     // Main variables
     /** @var Question $oQuestion The current question */
     public $oQuestion;

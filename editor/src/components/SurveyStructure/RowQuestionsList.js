@@ -6,6 +6,7 @@ import classNames from 'classnames'
 import {
   useAppState,
   useBuffer,
+  useEventCallback,
   useFocused,
   useToggleQuestionCodes,
 } from 'hooks'
@@ -13,17 +14,8 @@ import {
   arrayDeleteItem,
   DuplicateQuestion,
   createBufferOperation,
-  Entities,
-  getNumericAnswerCodes,
-  hasNumericAnswerCodes,
   STATES,
 } from 'helpers'
-import { createChildrenUpdateOperation } from 'hooks/useQuestionChildren'
-import {
-  applyAttributeChanges,
-  getImageOptionRemapChanges,
-  getImageSelectThemes,
-} from 'components/QuestionTypes/imageOptionSettings'
 import { ConfirmModal } from 'components/Modals'
 
 import { RowQuestion } from './RowQuestion'
@@ -40,13 +32,15 @@ export const RowQuestionsList = ({
   const [deleteState, setDeleteState] = useState({ show: false, index: null })
   const [isSurveyActive] = useAppState(STATES.IS_SURVEY_ACTIVE, false)
   const { surveyId } = useParams()
-  // Read once per list instead of per row to avoid a subscription per question
-  const { areCodesVisible, toggleQuestionCodes } =
-    useToggleQuestionCodes(surveyId)
+  const { areCodesVisible, toggleQuestionCodes } = useToggleQuestionCodes()
 
   const getQuestionDragStyle = (draggableStyle) => ({
     userSelect: 'none',
-    margin: '0',
+    // The 6px gap between rows (the margin-bottom of .structure-item). The
+    // drag library measures this element only, and the inner margin collapses
+    // through it uncounted: Without the gap here, it sizes rows 6px too short,
+    // so rows jump while dragging and the dropped row snaps into place.
+    margin: '0 0 6px 0',
     ...draggableStyle,
   })
 
@@ -87,64 +81,6 @@ export const RowQuestionsList = ({
     }, 0)
   }
 
-  /**
-   * Renumbers the answer codes of a question (1, 2, 3, … per scale). In the
-   * image select themes, the image settings and alt texts of the answers are
-   * stored by code: They move to the new codes.
-   *
-   * @param {Object} question the question
-   * @param {number} index position of the question in the list
-   * @returns {boolean} whether the codes changed
-   */
-  const assignNumericAnswerCodes = (question, index) => {
-    if (hasNumericAnswerCodes(question.answers)) {
-      return false
-    }
-    const answers = getNumericAnswerCodes(question.answers)
-    const imageChanges = getImageSelectThemes().includes(
-      question.questionThemeName
-    )
-      ? getImageOptionRemapChanges(
-          question.attributes,
-          Object.fromEntries(
-            question.answers.map((answer, answerIndex) => [
-              answer.code,
-              answers[answerIndex].code,
-            ])
-          )
-        )
-      : null
-    const updatedQuestion = {
-      ...question,
-      answers,
-      ...(imageChanges
-        ? {
-            attributes: applyAttributeChanges(
-              question.attributes,
-              imageChanges
-            ),
-          }
-        : {}),
-    }
-    const updatedQuestions = [...questions]
-    updatedQuestions[index] = updatedQuestion
-    addToBuffer(
-      createChildrenUpdateOperation(question.qid, Entities.answer, answers)
-    )
-    if (imageChanges) {
-      addToBuffer(
-        createBufferOperation(question.qid)
-          .questionAttribute()
-          .update(imageChanges)
-      )
-    }
-    handleUpdate(updatedQuestions)
-    if (focused?.qid === question.qid) {
-      setFocused(updatedQuestion, groupIndex, index)
-    }
-    return true
-  }
-
   const deleteQuestion = (index) => {
     setDeleteState({ show: true, index })
   }
@@ -162,6 +98,17 @@ export const RowQuestionsList = ({
     unFocus()
     setDeleteState({ show: false, index: null })
   }
+
+  // Same functions on every render, so the memoized rows only render again
+  // when their own props change (the drag library also renders the rows on
+  // every pointer move)
+  const handleSelect = useEventCallback((question, index) =>
+    setFocused({ ...question }, groupIndex, index)
+  )
+  const handleDuplicate = useEventCallback(duplicateQuestion)
+  const handleDelete = useEventCallback(deleteQuestion)
+  const handleToggleQuestionCodes = useEventCallback(toggleQuestionCodes)
+
   return (
     <>
       <ConfirmModal
@@ -175,7 +122,6 @@ export const RowQuestionsList = ({
         confirmButtonText={t('Delete')}
       />
       <Droppable
-        key={`g${groupIndex}-${questions?.length}`}
         droppableId={`g${groupIndex}`}
         type="question"
         direction="vertical"
@@ -186,49 +132,43 @@ export const RowQuestionsList = ({
             ref={provided.innerRef}
             className="group"
           >
-            {questions.map((question, index) => {
-              return (
-                <Draggable
-                  key={`g${groupIndex}_q${index}_${question.qid}`}
-                  draggableId={`g${groupIndex}_q${index}`}
-                  index={index}
-                >
-                  {(provided, snapshot) => (
-                    <div
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      style={getQuestionDragStyle(
-                        provided.draggableProps.style
-                      )}
-                      data-sortorder={question.sortOrder}
-                      className={classNames({
-                        'focus-element': snapshot.isDragging,
-                      })}
-                    >
-                      <RowQuestion
-                        question={question}
-                        language={language}
-                        provided={provided}
-                        duplicateQuestion={() =>
-                          duplicateQuestion(question, index)
-                        }
-                        deleteQuestion={() => deleteQuestion(index)}
-                        groupIndex={groupIndex}
-                        questionIndex={index}
-                        focused={focused}
-                        snapshot={snapshot}
-                        isSurveyActive={isSurveyActive}
-                        assignNumericAnswerCodes={(q) =>
-                          assignNumericAnswerCodes(q, index)
-                        }
-                        areCodesVisible={areCodesVisible}
-                        toggleQuestionCodes={toggleQuestionCodes}
-                      />
-                    </div>
-                  )}
-                </Draggable>
-              )
-            })}
+            {questions.map((question, index) => (
+              // Keyed by the question, not its position: A reorder moves the
+              // existing rows instead of rebuilding them.
+              <Draggable
+                key={question.qid}
+                draggableId={`question-${question.qid}`}
+                index={index}
+              >
+                {(provided, snapshot) => (
+                  <div
+                    ref={provided.innerRef}
+                    {...provided.draggableProps}
+                    style={getQuestionDragStyle(provided.draggableProps.style)}
+                    data-sortorder={question.sortOrder}
+                    className={classNames({
+                      'focus-element': snapshot.isDragging,
+                    })}
+                  >
+                    <RowQuestion
+                      question={question}
+                      language={language}
+                      surveyId={surveyId}
+                      dragHandleProps={provided.dragHandleProps}
+                      questionIndex={index}
+                      isDragging={snapshot.isDragging}
+                      isFocused={focused?.qid === question.qid}
+                      isSurveyActive={isSurveyActive}
+                      areCodesVisible={areCodesVisible}
+                      onSelect={handleSelect}
+                      duplicateQuestion={handleDuplicate}
+                      deleteQuestion={handleDelete}
+                      toggleQuestionCodes={handleToggleQuestionCodes}
+                    />
+                  </div>
+                )}
+              </Draggable>
+            ))}
             {provided.placeholder}
             {questions.length === 0 && (
               <div>{t('Question group is empty.')}</div>

@@ -39,6 +39,7 @@ require_once 'Zend/Gdata/Extension.php';
  * @subpackage Spreadsheets
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @deprecated Deprecated since 1.27.1 and will be removed in a future version: Google shut down the Google Data APIs it implements and the ClientLogin and AuthSub authentication
  */
 class Zend_Gdata_Spreadsheets_Extension_Cell extends Zend_Gdata_Extension
 {
@@ -77,9 +78,9 @@ class Zend_Gdata_Spreadsheets_Extension_Cell extends Zend_Gdata_Extension
      * Constructs a new Zend_Gdata_Spreadsheets_Extension_Cell element.
      *
      * @param string $text (optional) Text contents of the element.
-     * @param string $row (optional) Row attribute of the element.
-     * @param string $col (optional) Column attribute of the element.
-     * @param string $inputValue (optional) Input value attribute of the element.
+     * @param string|int $row (optional) Row attribute of the element.
+     * @param string|int $col (optional) Column attribute of the element.
+     * @param string|int $inputValue (optional) Input value attribute of the element.
      * @param string $numericValue (optional) Numeric value attribute of the element.
      */
     public function __construct($text = null, $row = null, $col = null, $inputValue = null, $numericValue = null)

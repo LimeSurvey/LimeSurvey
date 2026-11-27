@@ -237,7 +237,7 @@ class Zend_Text_Figlet
     /**
      * Current char
      *
-     * @var array
+     * @var array|null
      */
     protected $_currentChar = null;
 
@@ -837,7 +837,7 @@ class Zend_Text_Figlet
      *
      * @param  string $leftChar  Left character to smush
      * @param  string $rightChar Right character to smush
-     * @return string
+     * @return string|null
      */
     protected function _smushem($leftChar, $rightChar)
     {
@@ -862,11 +862,7 @@ class Zend_Text_Figlet
 
         if (($this->_smushMode & 63) === 0) {
             // This is smushing by universal overlapping
-            if ($leftChar === ' ') {
-                return $rightChar;
-            } else if ($rightChar === ' ') {
-                return $leftChar;
-            } else if ($leftChar === $this->_hardBlank) {
+            if ($leftChar === $this->_hardBlank) {
                 return $rightChar;
             } else if ($rightChar === $this->_hardBlank) {
                 return $rightChar;
@@ -1089,8 +1085,7 @@ class Zend_Text_Figlet
             // Convert it if required
             if (substr($uniCode, 0, 2) === '0x') {
                 $uniCode = hexdec(substr($uniCode, 2));
-            } else if (substr($uniCode, 0, 1) === '0' &&
-                       $uniCode !== '0' ||
+            } else if (substr($uniCode, 0, 1) === '0' ||
                        substr($uniCode, 0, 2) === '-0') {
                 $uniCode = octdec($uniCode);
             } else {
@@ -1179,7 +1174,7 @@ class Zend_Text_Figlet
      * Load a single character from the font file
      *
      * @param  resource $fp File pointer to the font file
-     * @return array
+     * @return array|false
      */
     protected function _loadChar($fp)
     {

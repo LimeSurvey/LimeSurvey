@@ -31,7 +31,8 @@
         }
     }
 
-    .dropdown-menu > li > a {
+    .dropdown-menu > li > a,
+    .dropdown-menu > li > button {
         color : $g-900;
         //&:hover {
         //    background  : none !important;
@@ -46,7 +47,10 @@
     .dropdown-menu > li > a:focus,
     .dropdown-menu > li > a:active,
     .dropdown-menu > li > a.active,
-    .dropdown-menu > .active > a {
+    .dropdown-menu > .active > a,
+    .dropdown-menu > li > button:hover,
+    .dropdown-menu > li > button:focus,
+    .dropdown-menu > li > button:active {
         color : $base-color-contrast;
     }
 

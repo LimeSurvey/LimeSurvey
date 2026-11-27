@@ -18,8 +18,13 @@ export const QuestionBodyPreview = ({
   disableUpdatingResponses,
 }) => {
   const [children, setChildren] = useState([])
-  const [valueIsUpdated, setValueIsUpdated] = useState(false)
-  const [value, setValue] = useState({})
+  // The changed response values, the fields whose input can't be saved and whether there are
+  // unconfirmed changes, kept together so every change can be applied as one functional update
+  const emptyPending = { value: {}, invalidKeys: [], isUpdated: false }
+  const [pending, setPending] = useState(emptyPending)
+  const { value, invalidKeys, isUpdated: valueIsUpdated } = pending
+  // An invalid input keeps Cancel available, so it can be reset, but can't be confirmed
+  const showButtons = valueIsUpdated || invalidKeys.length > 0
   const lastToastTimeRef = useRef(0)
 
   const QuestionViewComponent = useMemo(
@@ -48,16 +53,6 @@ export const QuestionBodyPreview = ({
     [valueInfo.values]
   )
 
-  if (!QuestionViewComponent) {
-    return (
-      <h6 className="pb-5">
-        {t(
-          `This question type isn't supported in the LimeSurvey Editor, so the detail view can't be shown. Your response is still collected.`
-        )}
-      </h6>
-    )
-  }
-
   useEffect(() => {
     const children = isSingleChoiceTheme
       ? question.answers
@@ -68,11 +63,46 @@ export const QuestionBodyPreview = ({
 
   // Drop local overrides once refreshed response values arrive from the parent
   useEffect(() => {
-    setValue({})
-    setValueIsUpdated(false)
+    setPending(emptyPending)
   }, [valuesSignature])
 
-  const handleOnValueChange = (newValue, key) => {
+  // Only after all hooks, so every render calls them in the same order
+  if (!QuestionViewComponent) {
+    return (
+      <h6 className="pb-5">
+        {t(
+          `This question type isn't supported in the LimeSurvey Editor, so the detail view can't be shown. Your response is still collected.`
+        )}
+      </h6>
+    )
+  }
+
+  /**
+   * Keeps a changed response value until it is confirmed.
+   *
+   * @param {*} newValue The new value
+   * @param {string} key The response field
+   * @param {boolean} [isInvalid] True when the input can't be saved (e.g. a date outside its limits): Drops the pending change and marks the field invalid
+   * @returns {void}
+   */
+  const handleOnValueChange = (newValue, key, isInvalid = false) => {
+    if (isInvalid) {
+      setPending((previous) => {
+        // eslint-disable-next-line no-unused-vars
+        const { [key]: _dropped, ...rest } = previous.value
+
+        return {
+          value: rest,
+          invalidKeys:
+            disableUpdatingResponses || previous.invalidKeys.includes(key)
+              ? previous.invalidKeys
+              : [...previous.invalidKeys, key],
+          isUpdated: Object.keys(rest).length > 0,
+        }
+      })
+      return
+    }
+
     if (disableUpdatingResponses) {
       // Debounce toast messages to prevent spam (only show once per 3 seconds)
       const now = Date.now()
@@ -88,16 +118,26 @@ export const QuestionBodyPreview = ({
       return
     }
 
-    setValue((previous) => ({ ...previous, [key]: newValue }))
-    setValueIsUpdated(true)
+    setPending((previous) => ({
+      value: { ...previous.value, [key]: newValue },
+      invalidKeys: previous.invalidKeys.filter(
+        (invalidKey) => invalidKey !== key
+      ),
+      isUpdated: true,
+    }))
   }
 
+  /**
+   * Saves the pending changes, unless an input can't be saved.
+   *
+   * @returns {void}
+   */
   const handleOnSave = () => {
-    if (disableUpdatingResponses) {
+    if (disableUpdatingResponses || invalidKeys.length > 0) {
       return
     }
 
-    setValueIsUpdated(false)
+    setPending((previous) => ({ ...previous, isUpdated: false }))
     onSave(value)
     Toast({
       message: t('Responses updated!'),
@@ -124,7 +164,7 @@ export const QuestionBodyPreview = ({
       />
       <div
         className={classNames('d-flex justify-content-end gap-2 mt-3', {
-          'opacity-0 disabled pointer-events-none': !valueIsUpdated,
+          'opacity-0 disabled pointer-events-none': !showButtons,
         })}
       >
         <Button
@@ -140,6 +180,7 @@ export const QuestionBodyPreview = ({
           className="text-light"
           variant="danger"
           onClick={handleOnSave}
+          disabled={invalidKeys.length > 0}
         >
           {t('Confirm')}
         </Button>

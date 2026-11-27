@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react'
+import { renderWithQueryClient } from 'tests/testUtils'
 
 import { getConditionTypeInfo, getDefaultCondition } from '../utils'
 import { QuestionTypeToggle } from './QuestionTypeToggle'
@@ -22,7 +22,7 @@ const ROW_INDEX = 2
 
 const renderToggle = (isFirstQuestion) => {
   const updateCondition = jest.fn()
-  render(
+  renderWithQueryClient(
     <QuestionTypeToggle
       index={ROW_INDEX}
       condition={questionSourcedCondition}

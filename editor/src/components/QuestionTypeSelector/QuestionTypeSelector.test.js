@@ -189,3 +189,82 @@ describe('QuestionTypeSelector', () => {
     ).toBe(false)
   })
 })
+
+describe('QuestionTypeSelector keyboard navigation', () => {
+  const devMode = process.env.REACT_APP_DEV_MODE
+  let selected
+
+  /**
+   * Returns the question type entries in the order of the keyboard navigation (the DOM order).
+   * @returns {HTMLElement[]}
+   */
+  const getItems = () =>
+    Array.from(
+      document.querySelectorAll('.question-type-selector .list-group-item')
+    ).filter((item) =>
+      item.getAttribute('data-testid')?.startsWith('question-type-')
+    )
+
+  beforeAll(() => {
+    // Like a production build, where the dev-only question types are hidden
+    delete process.env.REACT_APP_DEV_MODE
+  })
+
+  afterAll(() => {
+    if (devMode !== undefined) {
+      process.env.REACT_APP_DEV_MODE = devMode
+    }
+  })
+
+  beforeEach(async () => {
+    selected = undefined
+    await renderWithProviders(
+      <QuestionTypeSelector
+        callBack={(value) => {
+          selected = value
+        }}
+      />
+    )
+  })
+
+  test('Should highlight exactly one question type in all rows', async () => {
+    const items = getItems()
+    expect(items.length).toBeGreaterThan(15)
+
+    for (let index = 0; index < items.length; index++) {
+      await userEvent.keyboard('[ArrowDown]')
+      const highlighted = items.filter((item) =>
+        item.classList.contains('focus-element')
+      )
+      expect(highlighted).toEqual([items[index]])
+    }
+  })
+
+  test('Should add the highlighted question type on Enter', async () => {
+    // Go to the first entry of the second row of categories
+    const firstRowCount = document.querySelectorAll(
+      '.question-type-selector .row:first-child .list-group-item'
+    ).length
+    for (let index = 0; index <= firstRowCount; index++) {
+      await userEvent.keyboard('[ArrowDown]')
+    }
+    const highlighted = getItems().filter((item) =>
+      item.classList.contains('focus-element')
+    )
+    expect(highlighted.length).toBe(1)
+
+    await userEvent.keyboard('[Enter]')
+
+    expect(`question-type-${selected?.questionThemeName}`).toBe(
+      highlighted[0].getAttribute('data-testid')
+    )
+  })
+
+  test('Should not offer the hidden question types', async () => {
+    expect(screen.queryByTestId('question-type-ranking')).toBeNull()
+    expect(screen.queryByTestId('question-type-rating')).toBeNull()
+    expect(
+      getItems().filter((item) => item.classList.contains('d-none'))
+    ).toEqual([])
+  })
+})

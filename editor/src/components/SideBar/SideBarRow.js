@@ -5,11 +5,10 @@ import React, {
   useRef,
   useCallback,
 } from 'react'
-import { useParams } from 'react-router-dom'
 import classNames from 'classnames'
 import Button from 'react-bootstrap/Button'
 
-import { useSurvey } from 'hooks'
+import { useToggleQuestionCodes } from 'hooks'
 import { ArrowDownIcon } from 'components/icons'
 import { ContentEditor, Dropdown, TooltipContainer } from 'components'
 import { RemoveHTMLTagsInString } from 'helpers'
@@ -17,6 +16,8 @@ import { RemoveHTMLTagsInString } from 'helpers'
 import { QuestionContextMenu } from './QuestionContextMenu'
 
 const noop = () => {}
+
+const CLOSED_CONTEXT_MENU = { position: { x: 0, y: 0 }, toggled: false }
 
 export const SideBarRow = ({
   icon,
@@ -40,9 +41,7 @@ export const SideBarRow = ({
   menuItems = [],
 }) => {
   const [isOpen, setOpen] = useState(_isOpen)
-  const { surveyId } = useParams()
-  const { survey } = useSurvey(surveyId)
-  const showQNumCode = survey.showQNumCode
+  const { areCodesVisible } = useToggleQuestionCodes()
 
   useEffect(() => {
     if (!isOpen) {
@@ -51,10 +50,7 @@ export const SideBarRow = ({
   }, [_isOpen])
 
   const contextMenuRef = useRef(null)
-  const [contextMenu, setContextMenu] = useState({
-    position: { x: 0, y: 0 },
-    toggled: false,
-  })
+  const [contextMenu, setContextMenu] = useState(CLOSED_CONTEXT_MENU)
 
   function handleOnContextMenu(e) {
     if (!isQuestionGroup) {
@@ -72,8 +68,12 @@ export const SideBarRow = ({
     }
   }
 
+  // Every row runs this on any click or scroll in the document. Keeping the
+  // state object while the menu is closed skips the re-render of every row.
   const resetContextMenu = useCallback(() => {
-    setContextMenu({ position: { x: 0, y: 0 }, toggled: false })
+    setContextMenu((current) =>
+      current.toggled ? CLOSED_CONTEXT_MENU : current
+    )
   }, [])
 
   useEffect(() => {
@@ -110,8 +110,7 @@ export const SideBarRow = ({
   const rowType = isQuestionGroup ? 'group' : isPinned ? 'pinned' : 'question'
   // The drag library passes null (not undefined) when dragging is disabled
   const isDraggable = !!provided.dragHandleProps
-  const showCodeBadge =
-    rowType === 'question' && showQNumCode?.showCode && !!code
+  const showCodeBadge = rowType === 'question' && areCodesVisible && !!code
 
   useLayoutEffect(() => {
     const el = codeRef.current
@@ -157,14 +156,18 @@ export const SideBarRow = ({
 
   return (
     <div>
-      <QuestionContextMenu
-        code={code}
-        contextMenuRef={contextMenuRef}
-        positionX={contextMenu.position.x}
-        positionY={contextMenu.position.y}
-        isToggled={contextMenu.toggled}
-        setContextMenu={setContextMenu}
-      />
+      {/* Only while open: The menu reads the whole survey, and every row
+          rendering it would make each survey change render every row again */}
+      {contextMenu.toggled && (
+        <QuestionContextMenu
+          code={code}
+          contextMenuRef={contextMenuRef}
+          positionX={contextMenu.position.x}
+          positionY={contextMenu.position.y}
+          isToggled={contextMenu.toggled}
+          setContextMenu={setContextMenu}
+        />
+      )}
 
       <div onContextMenu={handleOnContextMenu}>
         <div
@@ -208,7 +211,7 @@ export const SideBarRow = ({
             <ContentEditor
               className={classNames('structure-item-title', {
                 'question-group': !code,
-                'question-code': showQNumCode?.showCode,
+                'question-code': areCodesVisible,
               })}
               data-placeholder={titlePlaceholder}
               value={RemoveHTMLTagsInString(title)}

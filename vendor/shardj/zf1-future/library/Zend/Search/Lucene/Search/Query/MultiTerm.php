@@ -51,14 +51,14 @@ class Zend_Search_Lucene_Search_Query_MultiTerm extends Zend_Search_Lucene_Searc
      *
      * If array is null then all terms are required
      *
-     * @var array
+     * @var array|null
      */
     private $_signs;
 
     /**
      * Result vector.
      *
-     * @var array
+     * @var array|null
      */
     private $_resVector = null;
 
@@ -108,6 +108,7 @@ class Zend_Search_Lucene_Search_Query_MultiTerm extends Zend_Search_Lucene_Searc
         if (is_array($terms)) {
             require_once 'Zend/Search/Lucene.php';
             if (count($terms) > Zend_Search_Lucene::getTermsPerQueryLimit()) {
+                require_once 'Zend/Search/Lucene/Exception.php';
                 throw new Zend_Search_Lucene_Exception('Terms per query limit is reached.');
             }
 
@@ -341,6 +342,7 @@ class Zend_Search_Lucene_Search_Query_MultiTerm extends Zend_Search_Lucene_Searc
 
         require_once 'Zend/Search/Lucene/Index/DocsFilter.php';
         $docsFilter = new Zend_Search_Lucene_Index_DocsFilter();
+        $termDocs   = [];
         foreach ($this->_terms as $termId => $term) {
             $termDocs = $reader->termDocs($term, $docsFilter);
         }

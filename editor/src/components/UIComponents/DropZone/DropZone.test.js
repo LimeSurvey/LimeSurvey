@@ -4,7 +4,7 @@ import 'tests/mocks'
 import { useState } from 'react'
 import { renderWithProviders } from 'tests/testUtils'
 import { DropZone } from './DropZone'
-import { act, screen } from '@testing-library/react'
+import { act, fireEvent, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { getNoAnswerLabel } from 'helpers'
 
@@ -145,6 +145,113 @@ describe('DropZone', () => {
     ).not.toBeInTheDocument()
     expect(
       screen.getByRole('button', { name: 'Delete image', hidden: true })
+    ).toBeInTheDocument()
+  })
+
+  test('Shows the placeholder and only the delete button when the image is not found', async () => {
+    await renderWithProviders(
+      <DropZone
+        previewUrlInit="/upload/surveys/1/images/missing.png"
+        onEdit={jest.fn()}
+        imageName="A1"
+      />
+    )
+
+    fireEvent.error(screen.getByAltText('Image Select List'))
+
+    // The no-image-found placeholder, stubbed in the tests, with an alt text
+    // telling screen reader users that the image is missing.
+    expect(screen.getByAltText('No image found for A1')).toHaveAttribute(
+      'src',
+      'test-file-stub'
+    )
+    expect(
+      screen.queryByRole('button', { name: 'Edit image A1', hidden: true })
+    ).not.toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: 'Delete image A1', hidden: true })
+    ).toBeInTheDocument()
+  })
+
+  test('A focused edit button hidden because the image is not found passes the focus to the delete button', async () => {
+    const editButton = await renderEditableDropZone()
+
+    editButton.focus()
+    fireEvent.error(screen.getByAltText('Image Select List'))
+
+    expect(editButton).not.toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: 'Delete image A1', hidden: true })
+    ).toHaveFocus()
+  })
+
+  test('After editing with the keyboard, the focus goes to the delete button when the image is not found meanwhile', async () => {
+    const editButton = await renderEditableDropZone()
+
+    editButton.focus()
+    await userEvent.keyboard('{Enter}')
+    // The editor takes the focus while it is open.
+    act(() => editButton.blur())
+    fireEvent.error(screen.getByAltText('Image Select List'))
+
+    act(() => setTestIsEditing(false))
+    const deleteButton = screen.getByRole('button', {
+      name: 'Delete image A1',
+      hidden: true,
+    })
+    expect(deleteButton).toHaveFocus()
+    expect(deleteButton.parentElement).not.toHaveClass('invisible')
+  })
+
+  test('Shows the edit button again when a missing image is replaced', async () => {
+    let setTestUrl
+    const ReplaceableDropZone = () => {
+      const [url, setUrl] = useState('/upload/surveys/1/images/missing.png')
+      setTestUrl = setUrl
+      return <DropZone previewUrlInit={url} onEdit={jest.fn()} imageName="A1" />
+    }
+    await renderWithProviders(<ReplaceableDropZone />)
+    fireEvent.error(screen.getByAltText('Image Select List'))
+
+    act(() => setTestUrl('/upload/surveys/1/images/b.png'))
+
+    expect(screen.getByAltText('Image Select List')).toHaveAttribute(
+      'src',
+      '/upload/surveys/1/images/b.png'
+    )
+    expect(
+      screen.getByRole('button', { name: 'Edit image A1', hidden: true })
+    ).toBeInTheDocument()
+  })
+
+  test('Shows a missing image again when a file with the same name is uploaded', async () => {
+    const url = '/upload/surveys/1/images/missing.png'
+    const fileService = {
+      uploadSurveyImage: jest.fn(async () => ({
+        success: true,
+        uploaded: { filePath: url, previewUrl: url },
+      })),
+    }
+    await renderWithProviders(
+      <DropZone
+        previewUrlInit={url}
+        fileService={fileService}
+        onEdit={jest.fn()}
+        imageName="A1"
+      />
+    )
+    fireEvent.error(screen.getByAltText('Image Select List'))
+
+    const input = screen.getByTestId('dropzone').querySelector('input')
+    await userEvent.upload(
+      input,
+      new File(['image'], 'missing.png', { type: 'image/png' })
+    )
+
+    expect(fileService.uploadSurveyImage).toHaveBeenCalledTimes(1)
+    expect(screen.getByAltText('Image Select List')).toHaveAttribute('src', url)
+    expect(
+      screen.getByRole('button', { name: 'Edit image A1', hidden: true })
     ).toBeInTheDocument()
   })
 

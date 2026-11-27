@@ -54,8 +54,8 @@ class Zend_Translate_Adapter_Tbx extends Zend_Translate_Adapter {
      * @param  string  $filename  TBX file to add, full path must be given for access
      * @param  string  $locale    Locale has no effect for TBX because TBX defines all languages within
      *                            the source file
-     * @param  array   $option    OPTIONAL Options to use
-     * @throws Zend_Translation_Exception
+     * @param  array   $options    OPTIONAL Options to use
+     * @throws Zend_Translate_Exception
      * @return array
      */
     protected function _loadTranslationData($filename, $locale, array $options = [])

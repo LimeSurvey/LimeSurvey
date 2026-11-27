@@ -52,6 +52,7 @@ class Zend_Application_Resource_View extends Zend_Application_Resource_ResourceA
     {
         $view = $this->getView();
 
+        require_once 'Zend/Controller/Action/HelperBroker.php';
         $viewRenderer = Zend_Controller_Action_HelperBroker::getStaticHelper('viewRenderer');
         $viewRenderer->setView($view);
         return $view;
@@ -66,6 +67,7 @@ class Zend_Application_Resource_View extends Zend_Application_Resource_ResourceA
     {
         if (null === $this->_view) {
             $options = $this->getOptions();
+            require_once 'Zend/View.php';
             $this->_view = new Zend_View($options);
 
             if (isset($options['doctype'])) {

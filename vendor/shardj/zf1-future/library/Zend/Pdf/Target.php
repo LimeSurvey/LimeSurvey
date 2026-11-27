@@ -34,8 +34,8 @@ abstract class Zend_Pdf_Target
     /**
      * Parse resource and return it as an Action or Explicit Destination
      *
-     * $param Zend_Pdf_Element $resource
-     * @return Zend_Pdf_Destination|
+     * @param Zend_Pdf_Element $resource
+     * @return Zend_Pdf_Destination|Zend_Pdf_Action
      * @throws Zend_Pdf_Exception
      */
     public static function load(Zend_Pdf_Element $resource) {

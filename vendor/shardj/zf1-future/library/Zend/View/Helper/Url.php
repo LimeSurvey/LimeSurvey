@@ -45,6 +45,7 @@ class Zend_View_Helper_Url extends Zend_View_Helper_Abstract
      */
     public function url(array $urlOptions = [], $name = null, $reset = false, $encode = true)
     {
+        require_once 'Zend/Controller/Front.php';
         $router = Zend_Controller_Front::getInstance()->getRouter();
         return $router->assemble($urlOptions, $name, $reset, $encode);
     }
