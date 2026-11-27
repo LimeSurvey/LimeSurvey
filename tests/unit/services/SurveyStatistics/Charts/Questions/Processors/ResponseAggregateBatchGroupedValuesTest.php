@@ -135,6 +135,29 @@ class ResponseAggregateBatchGroupedValuesTest extends TestBaseClass
     }
 
     /**
+     * @testdox groupedValueCounts() keeps a stored "0" that was saved before encryption
+     */
+    public function testKeepsZeroSavedBeforeEncryption()
+    {
+        $field = $this->fillSecondOtherField(['Yoga', ''], true);
+        \Yii::app()->db->createCommand()->update(
+            \Survey::model()->findByPk(self::$surveyId)->responsesTableName,
+            [$field => '0'],
+            'id = :id',
+            [':id' => self::$responseIds[1]]
+        );
+        $batch = new ResponseAggregateBatch(self::$surveyId);
+
+        $this->assertSame(
+            [
+                ['text' => 'Yoga', 'count' => 4],
+                ['text' => '0', 'count' => 1],
+            ],
+            $batch->groupedValueCounts($field, true)
+        );
+    }
+
+    /**
      * @testdox The statistics output carries the grouped answers on the "other" item
      */
     public function testStatisticsOutputIncludesOtherAnswers()

@@ -457,6 +457,10 @@ final class ResponseAggregateBatch
      */
     private function decryptOrKeep(string $value): string
     {
+        // decryptSingle() treats "0" as empty; ciphertext is never "0".
+        if ($value === '0') {
+            return $value;
+        }
         try {
             return LSActiveRecord::decryptSingle($value);
         } catch (Exception $e) {
