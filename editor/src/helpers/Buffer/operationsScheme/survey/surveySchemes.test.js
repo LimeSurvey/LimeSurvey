@@ -1,7 +1,9 @@
+import { OperationsBuffer } from '../../OperationsBuffer'
 import { languageSettingUpdateJoi } from './languageSettingUpdateJoi'
 import { surveyUpdateJoi } from './surveyUpdateJoi'
 
 import { surveyStatusUpdateJoi } from './surveyStatusUpdateJoi'
+import { themeSettingUpdateJoi } from './themeSettingUpdateJoi'
 
 describe('LanguageSettingUpdateJoi Schema Tests', () => {
   // Valid input test
@@ -419,5 +421,54 @@ describe('SurveyStatusUpdateJoi Schema Tests', () => {
         activate: true,
       },
     })
+  })
+})
+
+describe('ThemeSettingUpdateJoi Schema Tests', () => {
+  const buildOperation = (props) => ({
+    id: 754621,
+    op: 'update',
+    entity: 'themeSettings',
+    props: { templateName: 'custom_options_demo', ...props },
+  })
+
+  test('Accepts option keys of any theme', () => {
+    const input = buildOperation({
+      headerBackgroundColor: '#2a2f38',
+      showclearall: 'off',
+      brandlogofile: null,
+    })
+
+    const { error, value } = themeSettingUpdateJoi.validate(input)
+    expect(error).toBeUndefined()
+    expect(value).toEqual(input)
+  })
+
+  test('Fails validation when "templateName" is missing', () => {
+    const { error } = themeSettingUpdateJoi.validate({
+      id: 754621,
+      op: 'update',
+      entity: 'themeSettings',
+      props: { headerBackgroundColor: '#2a2f38' },
+    })
+    expect(error).toBeDefined()
+    expect(error.message).toContain('"props.templateName" is required')
+  })
+
+  test('OperationsBuffer.addOperation buffers custom theme options unchanged', () => {
+    const consoleError = jest
+      .spyOn(console, 'error')
+      .mockImplementation(() => {})
+    const buffer = new OperationsBuffer()
+    const operation = buildOperation({
+      headerBackgroundColor: '#2a2f38',
+      animationDuration: '300',
+    })
+
+    buffer.addOperation(operation)
+
+    expect(buffer.getOperations()).toEqual([{ ...operation, error: false }])
+    expect(consoleError).not.toHaveBeenCalled()
+    consoleError.mockRestore()
   })
 })

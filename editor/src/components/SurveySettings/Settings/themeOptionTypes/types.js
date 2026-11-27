@@ -1,4 +1,4 @@
-export const TYPES = {
+export const THEME_OPTIONS_TYPES = {
   BUTTONS: 'buttons',
   DROPDOWN: 'dropdown',
   COLORPICKER: 'colorpicker',
