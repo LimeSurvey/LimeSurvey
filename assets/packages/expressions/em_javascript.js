@@ -74,6 +74,19 @@ function checkconditions(value, name, type, evt_type)
 }
 
 /**
+ * Check if value is a number for the survey radix.
+ * Same as the server: comma is accepted only when the radix is comma (#16878)
+ * The opposite is not done: period is still accepted when the radix is comma (#20870)
+ * @see https://bugs.limesurvey.org/view.php?id=20870
+ * @param {string} value
+ * @return {boolean}
+ */
+function isLEMnumeric(value)
+{
+    return (LEMradix === ',' ? /^-?[0-9]*[,.]?[0-9]*$/ : /^-?[0-9]*\.?[0-9]*$/).test(value);
+}
+
+/**
  * fixnum_checkconditions : javascript function attach to some element
  * Update the answer of the user to be numeric and launch checkconditions
  *
@@ -93,19 +106,18 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
 
     var decimalValue;
     var newval = new String(value);
-    var checkNumericRegex = new RegExp(/^(-)?[0-9]*(,|\.|)[0-9]*$/);
     var cleansedValue = newval.replace(numRegex,'');
     /**
     * If have to use parsed value.
     */
     if(!LSvar.bNumRealValue)
     {
-        if(checkNumericRegex.test(value)) {
+        if(isLEMnumeric(value)) {
             try{
                 decimalValue = new Decimal(cleansedValue);
             } catch(e){
                 try{
-                    decimalValue = new Decimal(cleansedValue.replace(',','.'));
+                    decimalValue = new Decimal((LEMradix === ',') ? cleansedValue.replace(',','.') : cleansedValue);
                 } catch(e){
                     decimalValue = new Decimal(NaN);
                 }
@@ -157,6 +169,7 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
                 decimalValue = new Decimal(cleansedValue);
             } catch(e){
                 try{
+                    // Automatic fix: a comma is corrected to the survey radix, even when the radix is period (#16878)
                     decimalValue = new Decimal(cleansedValue.replace(',','.'));
                 } catch(e){
                     decimalValue = new Decimal(NaN);
@@ -1262,13 +1275,14 @@ function LEMval(alias, keepText)
                     return "";
                 }
 
-                var checkNumericRegex = new RegExp(/^(-)?[0-9]*(,|\.)[0-9]*$/);
                 /* Set as number if regexp is OK AND lenght is > 1 (then not fix [-.,] #14533 and no need to fix single number) */
-                if( checkNumericRegex.test(value) && value.length > 1 )
+                /* Need a digit: Decimal throws an error on -. and -, */
+                if( /[,.]/.test(value) && /[0-9]/.test(value) && isLEMnumeric(value) && value.length > 1 )
                 {
                     var length = value.length;
                     var firstLetterIsNull = value.split("").shift() === '0';
-                    // @todo : use . or , according to LEMradix !
+                    // LEMradix is already checked by isLEMnumeric: a comma reaches this point only when the radix is comma (#16878)
+                    // Decimal refuses the comma, so the replace in catch is needed for these surveys: keep it
                     try{
                         var numtest = new Decimal(value);
                     } catch(e){
