@@ -5,6 +5,7 @@ import { useStatistics } from 'hooks'
 import { useIsInViewport } from 'hooks/useInViewport'
 
 import { ResponsesHeader } from '../../ResponsesHeader'
+import { ActiveFilters } from '../ActiveFilters'
 import { TAB_KEYS } from '../../utils'
 import { VALUE_TYPE } from './ChartsUtils'
 import { StatisticsContainer } from './StatisticsContainer.js'
@@ -94,6 +95,12 @@ export const ResponsesStatistics = ({
           toggleOptions={valueTypeOptions}
         />
       </div>
+      <ActiveFilters
+        className="responses-statistics-active-filters"
+        appliedFilters={appliedFilters}
+        questionOptions={questionOptions}
+        survey={survey}
+      />
       {renderContent()}
       <div ref={loadMoreRef} className="responses-statistics-load-more">
         {isFetchingNextPage && <span className="loader"></span>}

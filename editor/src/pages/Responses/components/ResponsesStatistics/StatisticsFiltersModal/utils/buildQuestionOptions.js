@@ -315,6 +315,8 @@ export const buildQuestionOptions = (survey, language) => {
       options.push({
         value: question.qid,
         label,
+        code: question.title,
+        text,
         kind,
         answerOptions: finalAnswerOptions,
         isImageSelect: imageSelect,

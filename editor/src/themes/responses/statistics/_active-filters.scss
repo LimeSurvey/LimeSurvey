@@ -1,0 +1,74 @@
+// Applied filters shown as chips above the statistics / response table.
+.responses-active-filters {
+  position: relative;
+
+  &-list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px; // CHIP_GAP in ActiveFilters.js
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    > li {
+      min-width: 0;
+    }
+  }
+
+  // Off-screen single-line copy, only used to measure the chips.
+  &-measure {
+    position: absolute;
+    inset: 0 0 auto 0;
+    display: flex;
+    gap: 8px;
+    overflow: hidden;
+    visibility: hidden;
+    pointer-events: none;
+
+    > * {
+      flex-shrink: 0;
+    }
+  }
+
+  &-chip {
+    @include truncate;
+    display: inline-block;
+    max-width: 240px;
+    padding: 2px 8px;
+    border: 1px solid $grape;
+    border-radius: $border-radius-xs;
+    color: $grape;
+    font-size: $font-size-xs;
+    line-height: 20px;
+    vertical-align: middle;
+    cursor: default;
+  }
+
+  &-toggle {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: $grape;
+    font-size: $font-size-xs;
+    text-decoration: underline;
+    white-space: nowrap;
+  }
+}
+
+.responses-active-filters-tooltip {
+  .tooltip-inner {
+    max-width: 320px;
+    text-align: left;
+  }
+
+  ul {
+    margin: 0;
+    padding-left: 16px;
+  }
+}
+
+.responses-statistics-active-filters {
+  max-width: 1280px;
+  margin: 0 auto 24px;
+}
