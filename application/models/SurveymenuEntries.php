@@ -256,11 +256,13 @@ class SurveymenuEntries extends LSActiveRecord
     {
         switch ($data->menu_icon_type) {
             case 'fontawesome':
-                return "<i class='fa fa-" . CHtml::encode($data->menu_icon) . "'></i>";
+                return "<i class='fa fa-" . CHtml::encode($data->menu_icon) . "' aria-hidden='true'></i>"
+                    . "<span class='visually-hidden'>" . CHtml::encode($data->menu_icon) . "</span>";
             case 'image':
-                return '<img width="60px" src="' . CHtml::encode($data->menu_icon) . '" />';
+                return '<img width="60px" src="' . CHtml::encode($data->menu_icon) . '" alt="' . CHtml::encode($data->menu_title) . '" />';
             case 'remix':
-                return "<i class='icon " . CHtml::encode($data->menu_icon) . "'></i>";
+                return "<i class='icon " . CHtml::encode($data->menu_icon) . "' aria-hidden='true'></i>"
+                    . "<span class='visually-hidden'>" . CHtml::encode($data->menu_icon) . "</span>";
             case '':
                 return "";
             default:
@@ -424,7 +426,7 @@ class SurveymenuEntries extends LSActiveRecord
             ],
             [
                 'name'   => 'user_id',
-                'value'  => '$data->user_id ? $data->user->full_name : "<i class=\'ri-subtract-fill\'></i>"',
+                'value'  => '$data->user_id ? $data->user->full_name : "<i class=\'ri-subtract-fill\' aria-hidden=\'true\'></i><span class=\'visually-hidden\'>" . gT("None") . "</span>"',
                 'type'   => 'raw',
                 'filter' => $this->getUserOptions()
             ],

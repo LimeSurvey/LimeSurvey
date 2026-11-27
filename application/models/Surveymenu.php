@@ -406,17 +406,17 @@ class Surveymenu extends LSActiveRecord
             ],
             [
                 'name'  => 'parent_id',
-                'value' => '$data->parent_id ? $data->parent[\'title\']." (".$data->parent_id.")" : "<i class=\'ri-subtract-fill\'></i>"',
+                'value' => '$data->parent_id ? $data->parent[\'title\']." (".$data->parent_id.")" : "<i class=\'ri-subtract-fill\' aria-hidden=\'true\'></i><span class=\'visually-hidden\'>" . gT("None") . "</span>"',
                 'type'  => 'raw'
             ],
             [
                 'name'  => 'survey_id',
-                'value' => '$data->survey_id ? $data->survey->defaultlanguage->surveyls_title : "<i class=\'ri-subtract-fill\'></i>"',
+                'value' => '$data->survey_id ? $data->survey->defaultlanguage->surveyls_title : "<i class=\'ri-subtract-fill\' aria-hidden=\'true\'></i><span class=\'visually-hidden\'>" . gT("None") . "</span>"',
                 'type'  => 'raw'
             ],
             [
                 'name'  => 'user_id',
-                'value' => '$data->user_id ? $data->user->full_name : "<i class=\'ri-subtract-fill\'></i>"',
+                'value' => '$data->user_id ? $data->user->full_name : "<i class=\'ri-subtract-fill\' aria-hidden=\'true\'></i><span class=\'visually-hidden\'>" . gT("None") . "</span>"',
                 'type'  => 'raw'
             ],
             [
@@ -538,12 +538,12 @@ class Surveymenu extends LSActiveRecord
             ),
             array(
                 'name' => 'parent_id',
-                'value' => '$data->parent_id ? $data->parent->title : "<i class=\'ri-subtract-fill\'></i>"',
+                'value' => '$data->parent_id ? $data->parent->title : "<i class=\'ri-subtract-fill\' aria-hidden=\'true\'></i><span class=\'visually-hidden\'>" . gT("None") . "</span>"',
                 'type' => 'raw'
             ),
             array(
                 'name' => 'survey_id',
-                'value' => '$data->survey_id ? $data->survey->defaultlanguage->surveyls_title : "<i class=\'ri-subtract-fill\'></i>"',
+                'value' => '$data->survey_id ? $data->survey->defaultlanguage->surveyls_title : "<i class=\'ri-subtract-fill\' aria-hidden=\'true\'></i><span class=\'visually-hidden\'>" . gT("None") . "</span>"',
                 'type' => 'raw'
             )
         );
