@@ -15075,6 +15075,7 @@ a [class^=ri-], a [class*=" ri-"] {
 }
 
 .top-container {
+  padding-top: 4px;
   margin-bottom: 0.5rem;
 }
 .top-container .ls-progress-container {

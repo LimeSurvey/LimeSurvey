@@ -1,4 +1,6 @@
 .top-container {
+    // Room for the keyboard focus ring of the progress bar (2px outline + 2px offset), else hidden by the navbar (Mantis issue #20854)
+    padding-top: 4px;
     margin-bottom: 0.5rem;
     .ls-progress-container {
         padding: 4px 0;
