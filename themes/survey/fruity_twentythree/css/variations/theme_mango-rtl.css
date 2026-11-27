@@ -15676,15 +15676,13 @@ body > .bootstrap-select .dropdown-menu {
 }
 .dropdown-menu:not(.inner) > li > a.disabled,
 .dropdown-menu:not(.inner) > li > button.disabled {
-  color: #9094A7;
+  color: #6E748C;
 }
-.dropdown-menu:not(.inner) > li > a.disabled :hover,
-.dropdown-menu:not(.inner) > li > button.disabled :hover {
-  color: #9094A7 !important;
-}
-.dropdown-menu:not(.inner) > li > a.disabled :focus,
-.dropdown-menu:not(.inner) > li > button.disabled :focus {
-  color: #9094A7 !important;
+.dropdown-menu:not(.inner) > li > a.disabled:hover, .dropdown-menu:not(.inner) > li > a.disabled:focus,
+.dropdown-menu:not(.inner) > li > button.disabled:hover,
+.dropdown-menu:not(.inner) > li > button.disabled:focus {
+  color: #6E748C !important;
+  background-color: #ffffff !important;
 }
 
 .dropdown-header, .dropdown-item {

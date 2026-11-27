@@ -42,12 +42,11 @@
         }
         li > a.disabled,
         li > button.disabled {
-            color : $g-600;
-            :hover {
-                color : $g-600 !important;
-            }
-            :focus {
-                color : $g-600 !important;
+            color : $g-700;
+            &:hover,
+            &:focus {
+                color            : $g-700 !important;
+                background-color : $white !important;
             }
         }
     }
