@@ -76,6 +76,7 @@ class SurveyActivator
         $iSurveyId = $this->survey->sid;
         SurveySessionState::forSurvey((int) $iSurveyId)->clear();
 
+        $this->setInheritedActivationSettings();
         $this->prepareResponsesTable();
 
         if ($this->isSimulation) {
@@ -433,6 +434,31 @@ class SurveyActivator
                 Yii::log($e->getMessage(), 'error', 'application.model.SurveyActivator.createResponseTableKeys');
                 $this->tableWarnings[] = sprintf(gT("Unable to set the start value of the response numbering with message %s"), $e->getMessage());
             }
+        }
+    }
+
+    /**
+     * Replaces "inherit" by the inherited value for the settings that can't be changed while the survey is active
+     *
+     * The tables are created with these values. They are stored, otherwise the survey would follow a later change of
+     * the survey group or global settings, although its tables were created with the old values.
+     *
+     * @return void
+     */
+    protected function setInheritedActivationSettings()
+    {
+        $settings = [];
+        foreach (Survey::ACTIVATION_SETTINGS as $setting) {
+            if (!in_array($this->survey->getAttribute($setting), ['Y', 'N'], true)) {
+                $settings[$setting] = ($this->survey->oOptions->{$setting} ?? 'N') === 'Y' ? 'Y' : 'N';
+            }
+        }
+        if (empty($settings)) {
+            return;
+        }
+        $this->survey->setAttributes($settings, false);
+        if (!$this->isSimulation) {
+            Survey::model()->updateByPk($this->survey->sid, $settings);
         }
     }
 
