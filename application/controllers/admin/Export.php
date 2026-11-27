@@ -13,6 +13,8 @@
 *
 */
 
+use LimeSurvey\Models\Services\ExpressionManagerSessionState;
+
 /**
 * Export Action
 *
@@ -192,21 +194,16 @@ class Export extends SurveyCommonAction
             $data['thissurvey'] = $thissurvey;
             $data['display']['menu_bars']['browse'] = gT("Export results");
             $data['topBar']['type'] = 'responses';
-            // Export plugins, leave out all entries that are not plugin
-            $exports = array_filter($exports);
+            // Export plugins
             $exportData = array();
-            foreach ($exports as $key => $plugin) {
-                $event = new PluginEvent('listExportOptions');
-                $event->set('type', $key);
-                $oPluginManager = App()->getPluginManager();
-                $oPluginManager->dispatchEvent($event, $plugin);
+            foreach ($resultsService->getExportOptions() as $key => $exportOption) {
                 $exportData[$key] = array(
-                    'onclick' => $event->get('onclick'),
-                    'label'   => $event->get('label'),
-                    'tooltip' => $event->get('tooltip', null)
+                    'onclick' => $exportOption['onclick'],
+                    'label'   => $exportOption['label'],
+                    'tooltip' => $exportOption['tooltip']
                 );
-                if ($event->get('default', false)) {
-                    $default = $event->get('label');
+                if ($exportOption['default']) {
+                    $default = $exportOption['label'];
                 }
             }
             $data['exports'] = $exportData; // Pass available exports
@@ -1051,7 +1048,7 @@ class Export extends SurveyCommonAction
 
             // Specific to each kind of export
             switch ($sExportType) {
-                // Export archives for active surveys
+                // Export archives for active surveys and for inactive surveys with participants
                 case 'archive':
                     if (
                         ($oSurvey->hasTokensTable && !Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'export'))
@@ -1060,8 +1057,8 @@ class Export extends SurveyCommonAction
                         $aResults[$iSurveyID]['error'] = gT("We are sorry but you don't have permissions to do this.");
                         break;
                     }
-                    if (!$oSurvey->isActive) {
-                        $aResults[$iSurveyID]['error'] = gT("Not active.");
+                    if (!$oSurvey->isActive && !$oSurvey->hasTokens()) {
+                        $aResults[$iSurveyID]['error'] = gT("Not active and no participants.");
                         break;
                     }
                     $archiveName = $this->exportarchive($iSurveyID, false);
@@ -1398,8 +1395,9 @@ class Export extends SurveyCommonAction
         $siteLanguage = Yii::app()->language;
         foreach ($aLanguages as $language) {
             //set session for replacement helper if session not set
-            if (!isset($_SESSION['LEMsid'])) {
-                $_SESSION['LEMsid'] = $oSurvey->getPrimaryKey();
+            $emSessionState = ExpressionManagerSessionState::current();
+            if (!$emSessionState->hasSurveyId()) {
+                $emSessionState->setSurveyId((int) $oSurvey->getPrimaryKey());
             }
 
             $file = $this->exportPrintableHtml($oSurvey, $language, $tempdir, $zip);

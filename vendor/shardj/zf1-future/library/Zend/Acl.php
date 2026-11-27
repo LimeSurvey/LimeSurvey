@@ -93,17 +93,17 @@ class Zend_Acl
     protected $_resources = [];
 
     /**
-     * @var Zend_Acl_Role_Interface
+     * @var Zend_Acl_Role_Interface|null
      */
     protected $_isAllowedRole     = null;
 
     /**
-     * @var Zend_Acl_Resource_Interface
+     * @var Zend_Acl_Resource_Interface|null
      */
     protected $_isAllowedResource = null;
 
     /**
-     * @var String
+     * @var String|null
      */
     protected $_isAllowedPrivilege = null;
 
@@ -399,7 +399,7 @@ class Zend_Acl
      * @param  Zend_Acl_Resource_Interface|string $resource
      * @param  Zend_Acl_Resource_Interface|string $inherit
      * @param  boolean                            $onlyParent
-     * @throws Zend_Acl_Resource_Registry_Exception
+     * @throws Zend_Acl_Exception
      * @return boolean
      */
     public function inherits($resource, $inherit, $onlyParent = false)
@@ -1120,6 +1120,7 @@ class Zend_Acl
         }
 
         // check assertion first
+        $assertionValue = null;
         if ($rule['assert']) {
             $assertion = $rule['assert'];
             $assertionValue = $assertion->assert(

@@ -45,7 +45,7 @@ class Zend_Service_ShortUrl_BitLy extends Zend_Service_ShortUrl_AbstractShortene
     /**
      * user login name
      *
-     * @var string
+     * @var string|null
      */
     protected $_loginName;
 
@@ -122,6 +122,7 @@ class Zend_Service_ShortUrl_BitLy extends Zend_Service_ShortUrl_AbstractShortene
     {
         $response = $this->getHttpClient()->request();
         if(500 == $response->getStatus()) {
+            require_once 'Zend/Service/ShortUrl/Exception.php';
             throw new Zend_Service_ShortUrl_Exception('Bit.ly :: '.$response->getBody());
         }
         return $response->getBody();

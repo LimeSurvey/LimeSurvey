@@ -96,6 +96,7 @@ class Zend_Tool_Project_Context_Zf_TestApplicationControllerFile extends Zend_To
     public function getContents()
     {
 
+        require_once 'Zend/Filter/Word/DashToCamelCase.php';
         $filter = new Zend_Filter_Word_DashToCamelCase();
 
         $className = $filter->filter($this->_forControllerName) . 'ControllerTest';
@@ -107,6 +108,9 @@ class Zend_Tool_Project_Context_Zf_TestApplicationControllerFile extends Zend_To
                 . '_' . $className;
         }
 
+        require_once 'Zend/CodeGenerator/Php/Method.php';
+        require_once 'Zend/CodeGenerator/Php/Class.php';
+        require_once 'Zend/CodeGenerator/Php/File.php';
         $codeGenFile = new Zend_CodeGenerator_Php_File([
             'classes' => [
                 new Zend_CodeGenerator_Php_Class([

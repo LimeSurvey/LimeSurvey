@@ -19,7 +19,7 @@ class TFAYubikeyOtpHelper
      * @param string $clientId  The client ID. If not set, the test mode ID will be used.
      * @param string $clientSecret  The client secret. The request won't be signed and the response signature won't be verified.
      */
-    function __construct($otpCode, $clientId = null, $clientSecret = null)
+    public function __construct($otpCode, $clientId = null, $clientSecret = null)
     {
         $this->otpCode = trim($otpCode);
         $this->clientId = !empty($clientId) ? $clientId : 1;

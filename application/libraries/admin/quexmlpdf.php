@@ -19,7 +19,7 @@
 * Tested with TCPDF 5.8.008 - see http://www.tcpdf.org/
 */
 
-require('pdf.php');
+Yii::import('application.libraries.admin.pdf', true);
 
 /**
 * A TCPDF based class to produce queXF compatible questionnaire PDF files and banding description XML from queXML
@@ -38,7 +38,7 @@ class quexmlpdf extends pdf
      *
      * @const float Defaults to 25.4
      */
-    const INCH_IN_MM = 25.4;
+    public const INCH_IN_MM = 25.4;
 
     /**
      * Language for translation
@@ -741,6 +741,16 @@ class quexmlpdf extends pdf
         if (!empty($language)) {
             $this->language = $language;
         }
+    }
+
+    /**
+     * Returns the language code of the questionnaire.
+     *
+     * @return string|null The language code set with setLanguage()
+     */
+    protected function getDocumentLanguage()
+    {
+        return $this->language;
     }
 
     /**
@@ -2520,6 +2530,7 @@ class quexmlpdf extends pdf
                             break;
                         case 'number':
                             $bgtype = 4;
+                            // no break
                         case 'currency':
                         case 'longtext':
                         case 'text':
@@ -2573,6 +2584,7 @@ class quexmlpdf extends pdf
                             break;
                         case 'number':
                             $bgtype = 4;
+                            // no break
                         case 'currency':
                         case 'text':
                             $this->addBoxGroup($bgtype, $varname, $rtext, $response['width']);

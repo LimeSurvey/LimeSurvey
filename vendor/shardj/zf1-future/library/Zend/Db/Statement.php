@@ -43,7 +43,7 @@ abstract class Zend_Db_Statement implements Zend_Db_Statement_Interface
 {
 
     /**
-     * @var resource|object The driver level statement object/resource
+     * @var resource|object|false|null The driver level statement object/resource; false or null when there is none
      */
     protected $_stmt = null;
 
@@ -95,7 +95,7 @@ abstract class Zend_Db_Statement implements Zend_Db_Statement_Interface
     protected $_sqlParam = [];
 
     /**
-     * @var Zend_Db_Profiler_Query
+     * @var int|null
      */
     protected $_queryId = null;
 
@@ -251,9 +251,8 @@ abstract class Zend_Db_Statement implements Zend_Db_Statement_Interface
 
         $position = null;
         if (($intval = (int) $parameter) > 0 && $this->_adapter->supportsParameters('positional')) {
-            if ($intval >= 1 || $intval <= count($this->_sqlParam)) {
-                $position = $intval;
-            }
+            // the upper bound is checked by the driver
+            $position = $intval;
         } else if ($this->_adapter->supportsParameters('named')) {
             if ($parameter[0] != ':') {
                 $parameter = ':' . $parameter;
@@ -273,6 +272,7 @@ abstract class Zend_Db_Statement implements Zend_Db_Statement_Interface
 
         // Finally we are assured that $position is valid
         $this->_bindParam[$position] =& $variable;
+        // @phpstan-ignore method.notFound (implemented by the statement classes of the adapters)
         return $this->_bindParam($position, $variable, $type, $length, $options);
     }
 
@@ -301,6 +301,7 @@ abstract class Zend_Db_Statement implements Zend_Db_Statement_Interface
          * Simple case - no query profiler to manage.
          */
         if ($this->_queryId === null) {
+            // @phpstan-ignore method.notFound (implemented by the statement classes of the adapters)
             return $this->_execute($params);
         }
 
@@ -319,8 +320,9 @@ abstract class Zend_Db_Statement implements Zend_Db_Statement_Interface
         } else {
             $qp->bindParams($this->_bindParam);
         }
-        $qp->start($this->_queryId);
+        $qp->start();
 
+        // @phpstan-ignore method.notFound (implemented by the statement classes of the adapters)
         $retval = $this->_execute($params);
 
         $prof->queryEnd($this->_queryId);
@@ -439,7 +441,6 @@ abstract class Zend_Db_Statement implements Zend_Db_Statement_Interface
                  */
                 require_once 'Zend/Db/Statement/Exception.php';
                 throw new Zend_Db_Statement_Exception('invalid fetch mode');
-                break;
         }
     }
 

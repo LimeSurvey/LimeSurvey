@@ -1,8 +1,15 @@
 <?php
+require_once 'Zend/Tool/Project/Provider/Abstract.php';
+require_once 'Zend/Db/Schema/Manager.php';
+require_once 'Zend/Config/Ini.php';
+require_once 'Zend/Config/Xml.php';
+require_once 'Zend/Config/Json.php';
+require_once 'Zend/Config/Yaml.php';
+
 class Zend_Tool_DatabaseSchemaProvider extends Zend_Tool_Project_Provider_Abstract
 {
     /**
-     * @var Zend_Db_Adapter_Interface
+     * @var Zend_Db_Adapter_Abstract
      */
     protected $_db;
 
@@ -33,7 +40,7 @@ class Zend_Tool_DatabaseSchemaProvider extends Zend_Tool_Project_Provider_Abstra
      * If you are downgrading, it will go to the highest version that is equal to or lower than the
      * version you specified.
      *
-     * @param string $version Version to change to
+     * @param string|null $version Version to change to
      * @param string $env     Environment to retrieve database credentials from, default is development
      * @param string $dir     Directory containing migration files, default is ./scripts/migrations
      *
@@ -193,7 +200,7 @@ class Zend_Tool_DatabaseSchemaProvider extends Zend_Tool_Project_Provider_Abstra
      *
      * @param string $env Environment to initialize for
      *
-     * @return null
+     * @return void
      *
      * @throws Zend_Tool_Project_Exception
      */
@@ -203,6 +210,7 @@ class Zend_Tool_DatabaseSchemaProvider extends Zend_Tool_Project_Provider_Abstra
         $appConfigFileResource = $profile->search('applicationConfigFile');
 
         if ($appConfigFileResource == false) {
+            require_once 'Zend/Tool/Project/Exception.php';
             throw new Zend_Tool_Project_Exception('A project with an application config file is required to use this provider.');
         }
         $appConfigFilePath = $appConfigFileResource->getPath();
@@ -245,7 +253,7 @@ class Zend_Tool_DatabaseSchemaProvider extends Zend_Tool_Project_Provider_Abstra
      * @param string $filename           File to create the object from
      * @param string $section            If not null, pull this sestion of the config
      * file only. Doesn't apply to .php and .inc file
-     * @param string $allowModifications Should the object be mutable or not
+     * @param string|bool $allowModifications Should the object be mutable or not
      *
      * @throws Zend_Db_Schema_Exception
      *
@@ -285,14 +293,17 @@ class Zend_Tool_DatabaseSchemaProvider extends Zend_Tool_Project_Provider_Abstra
             case 'inc':
                 $config = include $filename;
                 if (!is_array($config)) {
+                    require_once 'Zend/Db/Schema/Exception.php';
                     throw new Zend_Db_Schema_Exception(
                         'Invalid configuration file provided; PHP file does not return array value'
                     );
                 }
+                require_once 'Zend/Config.php';
                 $config = new Zend_Config($config, $allowModifications);
                 break;
 
             default:
+                require_once 'Zend/Db/Schema/Exception.php';
                 throw new Zend_Db_Schema_Exception(
                     'Invalid configuration file provided; unknown config type'
                 );
@@ -430,22 +441,25 @@ class Zend_Tool_DatabaseSchemaProvider extends Zend_Tool_Project_Provider_Abstra
     /**
      * Retrieve initialized DB connection
      *
-     * @return Zend_Db_Adapter_Interface
+     * @return Zend_Db_Adapter_Abstract
      */
     protected function _getDbAdapter()
     {
         if ((null === $this->_db)) {
             if($this->_config->resources->db){
                 $dbConfig = $this->_config->resources->db;
+                require_once 'Zend/Db.php';
                 $this->_db = Zend_Db::factory($dbConfig->adapter, $dbConfig->params);
             } elseif($this->_config->resources->multidb){
                 foreach ($this->_config->resources->multidb as $db) {
                     if($db->default){
+                        require_once 'Zend/Db.php';
                         $this->_db = Zend_Db::factory($db->adapter, $db);
                     }
                 }
             }
-            if($this->_db instanceof Zend_Db_Adapter_Interface) {
+            if(!$this->_db instanceof Zend_Db_Adapter_Abstract) {
+                require_once 'Zend/Db/Schema/Exception.php';
                 throw new Zend_Db_Schema_Exception('Database was not initialized');
             }
         }

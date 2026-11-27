@@ -16,22 +16,22 @@ use LimeSurvey\Datavalueobjects\SimpleSurveyValues;
 class CreateSurvey
 {
     /** @var int number of attempts to find a valid survey ID */
-    const ATTEMPTS_CREATE_SURVEY_ID = 50;
+    public const ATTEMPTS_CREATE_SURVEY_ID = 50;
 
     /** @var string all attributes that have the value "NO" */
-    const STRING_VALUE_FOR_NO_FALSE = 'N';
+    public const STRING_VALUE_FOR_NO_FALSE = 'N';
 
     /** @var string all attributes that have the value "YES" */
-    const STRING_VALUE_FOR_YES_TRUE = 'Y';
+    public const STRING_VALUE_FOR_YES_TRUE = 'Y';
 
     /** @var string value to set attribute to inherit */
-    const STRING_SHORT_VALUE_INHERIT = 'I';
+    public const STRING_SHORT_VALUE_INHERIT = 'I';
 
     /** @var int */
-    const INTEGER_VALUE_FOR_INHERIT = -1;
+    public const INTEGER_VALUE_FOR_INHERIT = -1;
 
     /** @var int this is the default value for DB table (it corresponds to ) */
-    const DEFAULT_DATE_FORMAT = 1;
+    public const DEFAULT_DATE_FORMAT = 1;
 
     /** @var Survey the survey */
     private $survey;
@@ -62,8 +62,8 @@ class CreateSurvey
      * This creates a simple survey with the basic attributes set in param simpleSurveyValues
      *
      * @param SimpleSurveyValues $simpleSurveyValues
-     * @param int $userID the id of user who is creating the survey
-     * @param Permission $permissionModel
+     * @param int $userID Not used anymore: The current user becomes the survey owner, see Survey::init()
+     * @param Permission $permissionModel Not used anymore: The survey owner always has all permissions on the survey
      * @param bool $overrideAdministrator whether to set the administrator name and email from $simpleSurveyValues
      *
      * @return Survey|bool returns the survey or false if survey could not be created for any reason (see getErrorMessage())
@@ -88,9 +88,6 @@ class CreateSurvey
 
             //check realtional tables to be initialised like survey_languagesettings
             $this->createRelationSurveyLanguageSettings($this->newLanguageSettings);
-
-            // Update survey permissions
-            $permissionModel->giveAllSurveyPermissions($userID, $this->survey->sid);
         } catch (\Exception $e) {
             // Don't show the exception message to the user, it could reveal details about the server
             if ($e instanceof \CDbException) {

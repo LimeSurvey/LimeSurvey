@@ -205,6 +205,7 @@ class Zend_Uri_Http extends Zend_Uri
         }
 
         // Failed decomposition; no further processing needed
+        // @phpstan-ignore identical.alwaysFalse (preg_match() returns false on a PCRE error)
         if ($status === false) {
             return;
         }
@@ -374,7 +375,7 @@ class Zend_Uri_Http extends Zend_Uri
         }
 
         // If the password is nonempty, but there is no username, then it is considered invalid
-        if (strlen($password) > 0 && strlen($this->_username) === 0) {
+        if (strlen($this->_username) === 0) {
             return false;
         }
 
@@ -500,7 +501,7 @@ class Zend_Uri_Http extends Zend_Uri
     /**
      * Sets the port for the current URI, and returns the old port
      *
-     * @param  string $port The HTTP port
+     * @param  string|int $port The HTTP port
      * @throws Zend_Uri_Exception When $port is not a valid HTTP port
      * @return string
      */

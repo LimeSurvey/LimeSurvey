@@ -171,7 +171,6 @@ abstract class Zend_Session_Abstract
      * namespaceGetAll() - Get an array containing $namespace, including expiring data.
      *
      * @param string $namespace
-     * @param string $name
      * @return array
      */
     protected static function _namespaceGetAll($namespace)

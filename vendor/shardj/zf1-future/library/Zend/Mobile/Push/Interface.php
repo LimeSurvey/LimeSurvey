@@ -35,7 +35,7 @@ interface Zend_Mobile_Push_Interface
     /**
      * Connect to the Push Server
      *
-     * @return Push
+     * @return Zend_Mobile_Push_Interface
      */
     public function connect();
 

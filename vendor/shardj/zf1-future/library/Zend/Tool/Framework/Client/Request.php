@@ -233,7 +233,7 @@ class Zend_Tool_Framework_Client_Request
     /**
      * setDebug()
      *
-     * @param bool $pretend
+     * @param bool $debug
      * @return Zend_Tool_Framework_Client_Request
      */
     public function setDebug($debug)

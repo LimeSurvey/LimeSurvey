@@ -47,7 +47,7 @@ interface Zend_Loader_SplAutoloader
      * Traversable object.
      *
      * @param  array|Traversable $options
-     * @return SplAutoloader
+     * @return Zend_Loader_SplAutoloader
      */
     public function setOptions($options);
 

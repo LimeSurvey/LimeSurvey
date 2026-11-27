@@ -31,6 +31,8 @@
  */
 class InstallerConfigForm extends CFormModel
 {
+    use TwigSandboxIteratorTrait;
+
     public const ENGINE_TYPE_MYISAM = 'MYISAM';
     public const ENGINE_TYPE_INNODB = 'INNODB';
 

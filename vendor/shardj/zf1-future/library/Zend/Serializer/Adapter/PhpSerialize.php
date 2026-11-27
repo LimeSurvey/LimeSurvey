@@ -74,13 +74,7 @@ class Zend_Serializer_Adapter_PhpSerialize extends Zend_Serializer_Adapter_Adapt
      */
     public function serialize($value, array $opts = [])
     {
-        $ret = serialize($value);
-        if ($ret === false) {
-            $lastErr = error_get_last();
-            require_once 'Zend/Serializer/Exception.php';
-            throw new Zend_Serializer_Exception($lastErr['message']);
-        }
-        return $ret;
+        return serialize($value);
     }
 
     /**

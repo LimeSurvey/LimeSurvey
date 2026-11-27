@@ -30,6 +30,7 @@
  * @subpackage Value
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @deprecated Deprecated since 1.27.1 and will be removed in a future version: AMF is the data format of Adobe Flash Player, which reached its end of life on 2020-12-31
  */
 class Zend_Amf_Value_MessageHeader
 {
@@ -66,8 +67,8 @@ class Zend_Amf_Value_MessageHeader
      *
      * @param String $name
      * @param Boolean $mustRead
-     * @param misc $content
-     * @param integer $length
+     * @param mixed $data
+     * @param integer|float $length
      */
     public function __construct($name, $mustRead, $data, $length=null)
     {

@@ -41,6 +41,7 @@ require_once('Zend/Gdata/Query.php');
  * @subpackage Calendar
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @deprecated Deprecated since 1.27.1 and will be removed in a future version: Google shut down the Google Data APIs it implements and the ClientLogin and AuthSub authentication
  */
 class Zend_Gdata_Calendar_EventQuery extends Zend_Gdata_Query
 {
@@ -250,7 +251,7 @@ class Zend_Gdata_Calendar_EventQuery extends Zend_Gdata_Query
     }
 
     /**
-     * @return int start-max
+     * @return int|null start-max
      */
     public function getStartMax()
     {
@@ -262,7 +263,7 @@ class Zend_Gdata_Calendar_EventQuery extends Zend_Gdata_Query
     }
 
     /**
-     * @return int start-min
+     * @return int|null start-min
      */
     public function getStartMin()
     {
@@ -274,7 +275,7 @@ class Zend_Gdata_Calendar_EventQuery extends Zend_Gdata_Query
     }
 
     /**
-     * @return string orderby
+     * @return string|null orderby
      */
     public function getOrderBy()
     {
@@ -286,7 +287,7 @@ class Zend_Gdata_Calendar_EventQuery extends Zend_Gdata_Query
     }
 
     /**
-     * @return string sortorder
+     * @return string|null sortorder
      */
     public function getSortOrder()
     {
@@ -311,7 +312,7 @@ class Zend_Gdata_Calendar_EventQuery extends Zend_Gdata_Query
     }
 
     /**
-     * @return string recurrence-expansion-start
+     * @return string|null recurrence-expansion-start
      */
     public function getRecurrenceExpansionStart()
     {
@@ -337,7 +338,7 @@ class Zend_Gdata_Calendar_EventQuery extends Zend_Gdata_Query
 
 
     /**
-     * @return string recurrence-expansion-end
+     * @return string|null recurrence-expansion-end
      */
     public function getRecurrenceExpansionEnd()
     {
@@ -362,8 +363,7 @@ class Zend_Gdata_Calendar_EventQuery extends Zend_Gdata_Query
     }
 
     /**
-     * @param string $value Also accepts bools.
-     * @return $this
+     * @return $this|bool|null
      */
     public function getSingleEvents()
     {
@@ -372,10 +372,8 @@ class Zend_Gdata_Calendar_EventQuery extends Zend_Gdata_Query
             switch ($value) {
                 case 'true':
                     return true;
-                    break;
                 case 'false':
                     return false;
-                    break;
                 default:
                     require_once 'Zend/Gdata/App/Exception.php';
                     throw new Zend_Gdata_App_Exception(
@@ -420,10 +418,8 @@ class Zend_Gdata_Calendar_EventQuery extends Zend_Gdata_Query
             switch ($value) {
                 case 'true':
                     return true;
-                    break;
                 case 'false':
                     return false;
-                    break;
                 default:
                     require_once 'Zend/Gdata/App/Exception.php';
                     throw new Zend_Gdata_App_Exception(

@@ -44,7 +44,7 @@ class Zend_Crypt_DiffieHellman
     /**
      * Default large prime number; required by the algorithm.
      *
-     * @var string
+     * @var string|null
      */
     private $_prime = null;
 
@@ -52,7 +52,7 @@ class Zend_Crypt_DiffieHellman
      * The default generator number. This number must be greater than 0 but
      * less than the prime number set.
      *
-     * @var string
+     * @var string|null
      */
     private $_generator = null;
 
@@ -60,7 +60,7 @@ class Zend_Crypt_DiffieHellman
      * A private number set by the local user. It's optional and will
      * be generated if not set.
      *
-     * @var string
+     * @var string|null
      */
     private $_privateKey = null;
 
@@ -82,7 +82,7 @@ class Zend_Crypt_DiffieHellman
      * The shared secret key resulting from a completed Diffie Hellman
      * exchange
      *
-     * @var string
+     * @var string|null
      */
     private $_secretKey = null;
 

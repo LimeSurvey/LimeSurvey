@@ -16,6 +16,7 @@ import {
   useBuffer,
   useCloseConditionPopups,
   useFocused,
+  useQuestionAttributes,
   useSurvey,
 } from 'hooks'
 import { SideBarHeader } from 'components/SideBar'
@@ -25,6 +26,7 @@ import { ConfirmModal } from 'components/Modals'
 
 import { Setting } from './Setting'
 import { getQuestionSettings } from './getQuestionSettings'
+import { buildSettingsFromAttributes } from './dynamic'
 import { typeChangeKeepsAnswerOptions } from './typeChangeKeepsAnswerOptions'
 import { getQuestionTypeInfo } from '../QuestionTypes'
 import { ScenarioList } from 'components/ConditionDesigner/ScenarioList'
@@ -81,6 +83,12 @@ export const QuestionSettings = ({ surveyId }) => {
     setPendingTypeChange(null)
   }, [focused?.qid])
 
+  const {
+    attributes: { attributesDetails = {} },
+  } = useQuestionAttributes()
+  const themeAttributes =
+    attributesDetails[focused?.questionThemeName]?.attributes
+
   // Close the condition popups when the question changes, is gone, or this
   // panel unmounts. Condition actions also look the question up when they run.
   useCloseConditionPopups(focused?.qid, isFocusedQuestionMissing)
@@ -90,8 +98,19 @@ export const QuestionSettings = ({ surveyId }) => {
       return []
     }
 
+    const settings = buildSettingsFromAttributes(themeAttributes)
+    if (settings.length) {
+      return settings
+    }
+
+    // Falls back to the hardcoded settings when the backend config isn't available.
     return getQuestionSettings()[focused.questionThemeName]
-  }, [focused?.questionThemeName])
+  }, [focused?.qid, focused?.questionThemeName, themeAttributes])
+
+  const allQuestionAttributes = useMemo(
+    () => (questionSettings || []).flatMap((setting) => setting.attributes),
+    [questionSettings]
+  )
 
   const advancedQuestionSettings = useMemo(() => {
     const simpleSettingsTitle = getQuestionAttributesTitles().SIMPLE
@@ -426,6 +445,7 @@ export const QuestionSettings = ({ surveyId }) => {
                 handleUpdate={updateAttribute}
                 title={setting.title}
                 attributes={setting.attributes}
+                allAttributes={allQuestionAttributes}
                 language={activeLanguage}
                 hasDefaultAttributeValues={
                   Object.keys(

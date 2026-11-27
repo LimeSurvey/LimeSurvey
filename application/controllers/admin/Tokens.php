@@ -190,8 +190,9 @@ class Tokens extends SurveyCommonAction
     }
 
     /**
-     * tokens::bounceprocessing()
-     * @param int $iSurveyId
+     * Scans the bounce email account of the survey and marks the matching participants as bounced.
+     * Outputs the result as an HTML fragment for the bounce processing modal.
+     * @param int $iSurveyId Survey ID
      * @return void
      */
     public function bounceprocessing($iSurveyId)
@@ -324,29 +325,25 @@ class Tokens extends SurveyCommonAction
                 imap_close($mbox);
 
                 if ($bouncetotal > 0) {
-                    printf(gT("%s unread messages were scanned out of which %s were marked as bounce by the system."), $checktotal, $bouncetotal);
-                    echo "<br>";
-                    eT("You can now close this modal box.");
+                    echo CHtml::tag('p', [], sprintf(gT("%s unread messages were scanned out of which %s were marked as bounce by the system."), $checktotal, $bouncetotal));
                 } else {
-                    printf(gT("%s unread messages were scanned, none were marked as bounce by the system."), $checktotal);
-                    echo "<br>";
-                    eT("You can now close this modal box.");
+                    echo CHtml::tag('p', [], sprintf(gT("%s unread messages were scanned, none were marked as bounce by the system."), $checktotal));
                 }
+                echo CHtml::tag('p', [], gT("You can now close this modal box."));
             } else {
-                $sSettingsUrl = App()->createUrl('admin/tokens/sa/bouncesettings/surveyid/' . $iSurveyId);
-                eT("Failed to open the inbox of the bounce email account.");
-                echo "<br><strong>";
-                printf(gT("Please %s check your settings %s."), '<a href="' . $sSettingsUrl . '" title="Bounce settings" >', '</a>');
-                echo "</strong><br> <br/>";
-                eT("Error message returned by IMAP:");
-                echo "<br>";
-                $aErrors = @imap_errors();
-
-                foreach ($aErrors as $sError) {
-                    echo $sError . '<br/>';
+                $settingsUrl = App()->createUrl('admin/tokens/sa/bouncesettings/surveyid/' . $iSurveyId);
+                echo CHtml::tag('p', [], gT("Failed to open the inbox of the bounce email account."));
+                echo CHtml::tag('p', [], CHtml::tag('strong', [], sprintf(gT("Please %s check your settings %s."), '<a href="' . $settingsUrl . '">', '</a>')));
+                $imapErrors = imap_errors();
+                if (!empty($imapErrors)) {
+                    echo CHtml::tag('p', [], gT("Error message returned by IMAP:"));
+                    echo CHtml::openTag('ul');
+                    foreach ($imapErrors as $imapError) {
+                        echo CHtml::tag('li', [], CHtml::encode($imapError));
+                    }
+                    echo CHtml::closeTag('ul');
                 }
-                echo "<br><br/>";
-                eT("You can now close this modal box.");
+                echo CHtml::tag('p', [], gT("You can now close this modal box."));
             }
         } else {
             eT("Bounce processing is deactivated either application-wide or for this survey in particular.");
@@ -373,7 +370,7 @@ class Tokens extends SurveyCommonAction
             $deletedTokenCount += TokenDynamic::model($iSid)->deleteRecords($chunk);
         }
         if ($deletedTokenCount > 0) {
-            ls\ajax\AjaxHelper::outputSuccess(ngT('Deleted {n} survey participant.|Deleted {n} survey participants.', $deletedTokenCount));
+            ls\ajax\AjaxHelper::outputSuccess(sprintf(gTPlural('Deleted %d survey participant.', 'Deleted %d survey participants.', $deletedTokenCount), $deletedTokenCount));
         } else {
             ls\ajax\AjaxHelper::outputError(gT('Could not delete survey participants.'));
         }
@@ -401,7 +398,7 @@ class Tokens extends SurveyCommonAction
         }
         $deletedTokenCount = TokenDynamic::model($iSid)->deleteRecords(array($aTokenId));
         if ($deletedTokenCount > 0) {
-            Yii::app()->setFlashMessage(ngT('Deleted {n} survey participant.|Deleted {n} survey participants.', $deletedTokenCount));
+            Yii::app()->setFlashMessage(sprintf(gTPlural('Deleted %d survey participant.', 'Deleted %d survey participants.', $deletedTokenCount), $deletedTokenCount));
         } else {
             Yii::app()->setFlashMessage(gT('Could not delete survey participant.'), 'error');
         }
@@ -2707,12 +2704,12 @@ class Tokens extends SurveyCommonAction
             $neededtokencount = $newtoken['1'];
             if ($neededtokencount > $newtokencount) {
                 $aData['success'] = false;
-                $message = ngT('Only {n} access code has been created.|Only {n} access codes have been created.', $newtokencount)
-                    . ngT('Need {n} access code.|Need {n} access codes.', $neededtokencount);
+                $message = sprintf(gTPlural('Only %d access code has been created.', 'Only %d access codes have been created.', $newtokencount), $newtokencount)
+                    . sprintf(gTPlural('Need %d access code.', 'Need %d access codes.', $neededtokencount), $neededtokencount);
                 $message .= '<p class="mt-3"><a href="' . App()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId) . '" title="" class="btn btn-outline-secondary ">' . gT("OK") . '</a></p>';
             } else {
                 $aData['success'] = true;
-                $message = ngT('{n} access code has been created.|{n} access codes have been created.', $newtokencount);
+                $message = sprintf(gTPlural('%d access code has been created.', '%d access codes have been created.', $newtokencount), $newtokencount);
                 $message .= '<p class="mt-3"><a href="' . App()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId) . '" title="" class="btn btn-outline-secondary ">' . gT("OK") . '</a></p>';
             }
             $this->renderWrappedTemplate('token', array('message' => array(
@@ -3280,7 +3277,7 @@ class Tokens extends SurveyCommonAction
         if ($request->getPost('bypassbademails') == '1') {
             return "emailstatus = 'OK'";
         } else {
-            return "emailstatus <> 'OptOut' OR emailstatus IS NULL";
+            return "emailstatus NOT LIKE 'OptOut%' OR emailstatus IS NULL";
         }
     }
 

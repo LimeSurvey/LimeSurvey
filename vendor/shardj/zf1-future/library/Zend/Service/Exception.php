@@ -35,7 +35,7 @@ require_once 'Zend/Exception.php';
 class Zend_Service_Exception extends Zend_Exception
 {
     /**
-     * @var string
+     * @var string|array
      */
     public $error;
 

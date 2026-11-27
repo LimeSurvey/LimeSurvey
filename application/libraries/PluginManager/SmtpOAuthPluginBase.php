@@ -8,11 +8,11 @@ use PHPMailer\PHPMailer\OAuth;
 
 abstract class SmtpOAuthPluginBase extends EmailPluginBase
 {
-    const SETUP_STATUS_VALID_REFRESH_TOKEN = 1;
-    const SETUP_STATUS_REQUIREMENT_UNMET = 2;
-    const SETUP_STATUS_INCOMPLETE_CREDENTIALS = 3;
-    const SETUP_STATUS_MISSING_REFRESH_TOKEN = 4;
-    const SETUP_STATUS_INVALID_REFRESH_TOKEN = 5;
+    public const SETUP_STATUS_VALID_REFRESH_TOKEN = 1;
+    public const SETUP_STATUS_REQUIREMENT_UNMET = 2;
+    public const SETUP_STATUS_INCOMPLETE_CREDENTIALS = 3;
+    public const SETUP_STATUS_MISSING_REFRESH_TOKEN = 4;
+    public const SETUP_STATUS_INVALID_REFRESH_TOKEN = 5;
 
     /** @var string[] The names of attributes that form part of the credentials set. Example: ['clientId', 'clientSecret'] */
     protected $credentialAttributes = [];

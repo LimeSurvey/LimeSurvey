@@ -22,7 +22,7 @@ class LSYii_Validators extends CValidator
      * Expression functions that turn encoded text back into HTML markup, and are not allowed in a filtered expression
      * @var string[]
      */
-    const XSS_UNSAFE_EM_FUNCTIONS = array('html_entity_decode', 'htmlspecialchars_decode', 'quoted_printable_decode');
+    public const XSS_UNSAFE_EM_FUNCTIONS = array('html_entity_decode', 'htmlspecialchars_decode', 'quoted_printable_decode');
 
     /**
      * Filter attribute for fixCKeditor

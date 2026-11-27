@@ -75,10 +75,14 @@ class Zend_Tool_Project_Context_Zf_TestLibraryFile extends Zend_Tool_Project_Con
     public function getContents()
     {
 
+        require_once 'Zend/Filter/Word/DashToCamelCase.php';
         $filter = new Zend_Filter_Word_DashToCamelCase();
 
         $className = $filter->filter($this->_forClassName) . 'Test';
 
+        require_once 'Zend/CodeGenerator/Php/Method.php';
+        require_once 'Zend/CodeGenerator/Php/Class.php';
+        require_once 'Zend/CodeGenerator/Php/File.php';
         $codeGenFile = new Zend_CodeGenerator_Php_File([
             'requiredFiles' => [
                 'PHPUnit/Framework/TestCase.php'

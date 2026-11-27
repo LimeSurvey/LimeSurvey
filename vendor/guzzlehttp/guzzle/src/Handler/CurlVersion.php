@@ -47,6 +47,10 @@ final class CurlVersion
     // plaintext HTTP proxy, and 7.50.2 through 7.51 reject it at connect time.
     private const HTTPS_PROXY_VERSION = '7.52.0';
 
+    // curl 7.31.0 started to strip proxy userinfo that has an empty username;
+    // older libcurl leaves it in place, finds no host, and skips the proxy.
+    private const PROXY_EMPTY_USERNAME_VERSION = '7.31.0';
+
     private const HANDLER_SHARING_VERSION = '7.35.0';
 
     private const SSL_SESSION_SHARING_VERSION = '8.6.0';
@@ -55,6 +59,11 @@ final class CurlVersion
     // CURL_LOCK_DATA_CONNECT; older share objects can only hold DNS, TLS
     // session, and cookie data, never connections.
     private const SHARE_CONNECTION_CACHE_VERSION = '7.57.0';
+
+    // curl 7.83.1 started comparing CURLOPT_SSL_OPTIONS when matching
+    // connections and TLS sessions for reuse (CVE-2022-27782); older libcurl
+    // can reuse either across requests with different SSL options.
+    private const SSL_OPTIONS_REUSE_MATCH_VERSION = '7.83.1';
 
     // curl 7.83.1 added proxy TLS-SRP to the connection-reuse match
     // (CVE-2022-27782); the proxy client certificate was matched from 7.52.0,
@@ -186,6 +195,14 @@ final class CurlVersion
             && 0 !== ($httpsProxyFeature & $versionInfo['features']);
     }
 
+    public static function supportsProxyEmptyUsername(): bool
+    {
+        $version = self::getVersion();
+
+        return $version !== null
+            && \version_compare($version, self::PROXY_EMPTY_USERNAME_VERSION, '>=');
+    }
+
     public static function supportsNtlm(): bool
     {
         $versionInfo = self::getVersionInfo();
@@ -242,6 +259,14 @@ final class CurlVersion
         // An undetectable libcurl version is treated as capable so the
         // opaque share safeguards fail closed.
         return $version === null || \version_compare($version, self::SHARE_CONNECTION_CACHE_VERSION, '>=');
+    }
+
+    public static function supportsSslOptionsReuseMatching(): bool
+    {
+        $version = self::getVersion();
+
+        return $version !== null
+            && \version_compare($version, self::SSL_OPTIONS_REUSE_MATCH_VERSION, '>=');
     }
 
     public static function supportsProxyTlsCredentialAwareConnectionReuse(): bool

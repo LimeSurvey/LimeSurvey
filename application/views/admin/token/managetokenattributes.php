@@ -30,9 +30,7 @@
                                aria-selected="<?= $c ? 'true' : 'false' ?>"
                                data-bs-toggle="tab"
                                href="#language_<?php echo $sLanguage ?>"
-                               aria-controls="language_<?php echo CHtml::encode(
-                                   $sLanguage
-                               ); ?>">
+                               aria-controls="language_<?= CHtml::encode($sLanguage) ?>">
                                 <?php $c = false; ?>
                                 <?php echo $sTabTitle; ?>
                             </a>
@@ -47,7 +45,7 @@
                         <div id="language_<?php echo $sLanguage ?>"
                              class="table-responsive tab-pane fade <?= $c ? "show active" : "" ?>"
                              role="tabpanel" aria-labelledby="<?= $tabId ?>">
-                            <?php $c=false; ?>
+                            <?php $c = false; ?>
                             <table class='listtokenattributes table table-hover'>
                                 <thead> <tr>
                                     <th><?php eT("Attribute field"); ?></th>
@@ -227,7 +225,7 @@
 
     <div class="row">
         <div class="col-12 content-right">
-            <p><?php neT('There is {n} user attribute field in this survey participant list.|There are {n} user attribute fields in this survey participant list.', $nrofattributes); ?></p>
+            <p><?php printf(gTPlural('There is %d user attribute field in this survey participant list.', 'There are %d user attribute fields in this survey participant list.', $nrofattributes), $nrofattributes); ?></p>
             <?php echo CHtml::form(array("admin/tokens/sa/updatetokenattributes/surveyid/{$surveyid}"), 'post', array('id' => 'addattribute')); ?>
             <p>
                 <label for="addnumber"><?php eT('Number of attribute fields to add:'); ?></label>

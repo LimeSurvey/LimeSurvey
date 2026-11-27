@@ -31,12 +31,12 @@ The language change is done via javascript
     <!-- Language Changer, top menu version -->
     <li class="dropdown-header text-uppercase">{{ gT("Select language") }}</li>
     <li class="ls-no-js-hidden form-change-lang dropdown nav-item">
-        <a href='#' class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdownCustom"
+        <button type="button" class="nav-link dropdown-toggle dropdown-item" data-bs-toggle="dropdownCustom"
            data-bs-target="#language-dropdown" data-navtargetid="language-dropdown">
             {# NOTE:  {{gT( aLCD.aListLang[aLCD.sSelected] )}}: retrieves the language name of the selected language and translates it #}
             {{ aLCD.aListLang[aLCD.sSelected] }}
 
-        </a>
+        </button>
         <ul class="dropdown-menu dropdown-menu-end" id="language-dropdown">
             {{ include('./subviews/navigation/back.twig') }}
             {# List of available languages. #}

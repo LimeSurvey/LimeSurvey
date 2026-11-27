@@ -10,12 +10,12 @@ use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\conditions\NullCondition
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\conditions\RangeConditionHandler;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\conditions\DateRangeConditionHandler;
 use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\conditions\GreaterThanConditionHandler;
+use LimeSurvey\Libraries\Api\Command\V1\SurveyResponses\conditions\NotEmptyConditionHandler;
 
 class FilterPatcher
 {
     private array $handlers = [];
     private array $filtersRequiredKeys = ['key', 'filterMethod', 'value'];
-    private array $sortAllowedKeys = ['id', 'submitDate'];
 
     public function __construct()
     {
@@ -23,14 +23,17 @@ class FilterPatcher
     }
 
     /**
-     * @param array $filterParams
-     * @param \LSDbCriteria $criteria
-     * @param \CSort $sort
+     * Add the requested filters to the criteria and set the default order (newest first).
+     *
+     * @param array $filterParams Request params, of which "filters" is used
+     * @param \LSDbCriteria $criteria Criteria the filter conditions are merged into
+     * @param \CSort $sort Sort that gets the default order
      * @param array $dataMap Static attribute map of the response transformer.
      * @param array $validColumns Real response columns (system + nested
      *   question/subquestion columns) used to validate filter keys. When empty
      *   no validation is performed, preserving the previous behaviour.
      * @param-out \CSort $sort
+     * @return void
      */
     public function apply(
         array $filterParams,
@@ -39,17 +42,8 @@ class FilterPatcher
         array $dataMap = array(),
         array $validColumns = array()
     ): void {
+        // The response list sorts with ResponseSort, which replaces this order
         $sort->defaultOrder = "id DESC";
-        if (!empty($filterParams['sort'])) {
-            $sortParams = array_intersect_key($filterParams['sort'], array_flip($this->sortAllowedKeys));
-            foreach ($sortParams as $column => $order) {
-                $op = (new SortingHandler());
-                $key = $this->findMapKeyByValue($column, $dataMap);
-                if ($op->canHandle($order)) {
-                    $sort = $op->execute($key, $order);
-                }
-            }
-        }   
         /*
          * http://ls-ce/rest/v1/survey-responses/132241?
          * filters[0][key]=132241X130X2110& filters[0][filterMethod]='contain'& filters[0][value]='Lorem'
@@ -142,6 +136,7 @@ class FilterPatcher
         $this->addHandler(DateRangeConditionHandler::class);
         $this->addHandler(MultiSelectConditionHandler::class);
         $this->addHandler(GreaterThanConditionHandler::class);
+        $this->addHandler(NotEmptyConditionHandler::class);
     }
 
     public function addHandler(string $handler): void

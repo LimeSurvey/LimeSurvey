@@ -284,7 +284,7 @@ class Zend_Feed_Writer_Renderer_Feed_Rss
     protected function _setAuthors(DOMDocument $dom, DOMElement $root)
     {
         $authors = $this->getDataContainer()->getAuthors();
-        if (!$authors || empty($authors)) {
+        if (!$authors) {
             return;
         }
         foreach ($authors as $data) {

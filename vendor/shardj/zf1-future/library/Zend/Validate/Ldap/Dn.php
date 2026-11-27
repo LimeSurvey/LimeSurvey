@@ -55,6 +55,7 @@ class Zend_Validate_Ldap_Dn extends Zend_Validate_Abstract
      */
     public function isValid($value)
     {
+        require_once 'Zend/Ldap/Dn.php';
         $valid = Zend_Ldap_Dn::checkDn($value);
         if ($valid === false) {
             $this->_error(self::MALFORMED);

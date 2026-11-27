@@ -101,7 +101,7 @@ implements Iterator, Countable
      * Appends a Zend_Feed_Writer_Deleted object representing a new entry tombstone
      * to the feed data container's internal group of entries.
      *
-     * @param Zend_Feed_Writer_Deleted $entry
+     * @param Zend_Feed_Writer_Deleted $deleted
      */
     public function addTombstone(Zend_Feed_Writer_Deleted $deleted)
     {
@@ -208,7 +208,7 @@ implements Iterator, Countable
     /**
      * Return the current entry
      *
-     * @return Zend_Feed_Reader_Entry_Interface
+     * @return Zend_Feed_Writer_Entry
      */
     #[\ReturnTypeWillChange]
     public function current()

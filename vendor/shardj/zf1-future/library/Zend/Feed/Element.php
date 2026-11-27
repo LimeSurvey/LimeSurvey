@@ -21,6 +21,8 @@
  */
 
 
+require_once 'Zend/Feed.php';
+
 /**
  * Wraps a DOMElement allowing for SimpleXML-like access to attributes.
  *
@@ -280,6 +282,8 @@ class Zend_Feed_Element implements ArrayAccess
                 }
             }
         }
+
+        return false;
     }
 
 

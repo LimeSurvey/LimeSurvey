@@ -40,7 +40,6 @@ interface Zend_EventManager_ListenerAggregate
      * implementation will pass this to the aggregate.
      *
      * @param Zend_EventManager_EventCollection $events
-     * @param null|int $priority Optional priority "hint" to use when attaching listeners
      */
     public function attach(Zend_EventManager_EventCollection $events);
 

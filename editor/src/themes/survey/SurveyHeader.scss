@@ -3,12 +3,23 @@
   box-shadow: 0 2px 6px 0 $elevation-shadow-soft;
   border-radius: 2px;
   width: 100%;
-  padding: 63px 67px;
   border: 2px solid $g-700;
+  position: relative;
+  overflow: hidden;
+
+  .survey-header-content,
+  .survey-header-row {
+    padding: 40px;
+  }
+
+  .welcome-image-container {
+    width: 40%;
+  }
 
   .show-x-questions {
-    font-size: 16px;
-    font-weight: normal;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-normal;
+    line-height: $line-height-16;
   }
 
   .select {
@@ -78,7 +89,7 @@
 
   .language-change-header {
     color: $g-700;
-    margin-bottom: 18px;
+    margin-bottom: 16px;
   }
 
   .welcome-screen-survey-title {

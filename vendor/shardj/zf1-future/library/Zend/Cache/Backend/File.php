@@ -29,6 +29,7 @@ require_once 'Zend/Cache/Backend/ExtendedInterface.php';
  * @see Zend_Cache_Backend
  */
 require_once 'Zend/Cache/Backend.php';
+require_once 'Zend/Cache.php';
 
 
 /**
@@ -402,7 +403,7 @@ class Zend_Cache_Backend_File extends Zend_Cache_Backend implements Zend_Cache_B
      * - mtime : timestamp of last modification time
      *
      * @param string $id cache id
-     * @return array array of metadatas (false if the cache id is not found)
+     * @return array|false array of metadatas (false if the cache id is not found)
      */
     public function getMetadatas($id)
     {
@@ -741,7 +742,6 @@ class Zend_Cache_Backend_File extends Zend_Cache_Backend implements Zend_Cache_B
                         break;
                     default:
                         Zend_Cache::throwException('Invalid mode for clean() method');
-                        break;
                 }
             }
             if ((is_dir($file)) && ($this->_options['hashed_directory_level']>0)) {
@@ -832,7 +832,6 @@ class Zend_Cache_Backend_File extends Zend_Cache_Backend implements Zend_Cache_B
                         break;
                     default:
                         Zend_Cache::throwException('Invalid mode for _get() method');
-                        break;
                 }
             }
             if ((is_dir($file)) && ($this->_options['hashed_directory_level']>0)) {
@@ -868,7 +867,7 @@ class Zend_Cache_Backend_File extends Zend_Cache_Backend implements Zend_Cache_B
      * @param  string $data        Data
      * @param  string $controlType Type of control 'md5', 'crc32' or 'strlen'
      * @throws Zend_Cache_Exception
-     * @return string Control key
+     * @return string|int Control key
      */
     protected function _hash($data, $controlType)
     {
@@ -917,7 +916,7 @@ class Zend_Cache_Backend_File extends Zend_Cache_Backend implements Zend_Cache_B
      *
      * @param  string $id Cache id
      * @param  boolean $parts if true, returns array of directory parts instead of single string
-     * @return string Complete directory path
+     * @return string|array Complete directory path, or its parts
      */
     protected function _path($id, $parts = false)
     {
@@ -982,7 +981,7 @@ class Zend_Cache_Backend_File extends Zend_Cache_Backend implements Zend_Cache_B
      * Return the file content of the given file
      *
      * @param  string $file File complete path
-     * @return string File content (or false if problem)
+     * @return string|false File content (or false if problem)
      */
     protected function _fileGetContents($file)
     {
