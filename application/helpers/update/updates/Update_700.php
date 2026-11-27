@@ -1101,7 +1101,12 @@ class Update_700 extends DatabaseUpdateBase
     }
 
     /**
-     * execute Db scripts for specific database types
+     * Executes database scripts needed by the update for specific database types.
+     * On PostgreSQL this creates the show_create_table() helper function, which builds the
+     * CREATE TABLE statement of a table. The column types come from pg_catalog.format_type(),
+     * so they keep the length of text columns and the exact precision and scale of numeric
+     * columns, including unconstrained numerics.
+     *
      * @return void
      */
     public function doPreparations()
@@ -1118,12 +1123,13 @@ class Update_700 extends DatabaseUpdateBase
                     string_agg(column_list.column_expr, ', ' || $2 || '') || 
                     '' || $2 || ');'
                 FROM (
-                  SELECT '    \"' || column_name || '\" ' || data_type || 
-                       coalesce('(' || character_maximum_length || ')', '') || 
-                       case when is_nullable = 'YES' then '' else ' NOT NULL' end as column_expr
-                  FROM information_schema.columns
-                  WHERE table_schema = 'public' AND table_name = $1
-                  ORDER BY ordinal_position) column_list;
+                  SELECT '    \"' || a.attname || '\" ' || pg_catalog.format_type(a.atttypid, a.atttypmod) ||
+                       case when a.attnotnull then ' NOT NULL' else '' end as column_expr
+                  FROM pg_catalog.pg_attribute a
+                  JOIN pg_catalog.pg_class c ON c.oid = a.attrelid
+                  JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
+                  WHERE n.nspname = 'public' AND c.relname = $1 AND a.attnum > 0 AND NOT a.attisdropped
+                  ORDER BY a.attnum) column_list;
                 \$BODY\$
                   LANGUAGE SQL STABLE
                 ;
@@ -1256,6 +1262,15 @@ class Update_700 extends DatabaseUpdateBase
         }
     }
 
+    /**
+     * Returns the SQL that reads the CREATE TABLE statement of an existing table.
+     * SQL Server has no SHOW CREATE TABLE, so the statement is built from sys.columns,
+     * keeping each column's length, precision, scale and collation: The old data is copied
+     * into the re-created table, so any narrower definition truncates or rounds it.
+     *
+     * @param string $tableName Name of the table, including the table prefix
+     * @return string|null SQL returning the statement in the "Create Table" column, null for unsupported drivers
+     */
     public function showCreateTable(string $tableName)
     {
         switch (Yii::app()->db->getDriverName()) {
@@ -1271,11 +1286,20 @@ class Update_700 extends DatabaseUpdateBase
                 SELECT
                         'CREATE TABLE '  + SCHEMA_NAME(t.schema_id) + '.' + t.name + ' (' +
                                 STUFF ((
-                                        SELECT ', [' + c2.name + '] ' + type_name(c2.user_type_id) + 
-                                                            CASE
-                                                                    WHEN type_name(c2.user_type_id) = 'nvarchar' THEN ' (256)'
-                                                                        ELSE ''
-                                                                END +
+                                        SELECT ', ' + QUOTENAME(c2.name) + ' ' + type_name(c2.user_type_id) +
+                                                CASE
+                                                        WHEN type_name(c2.user_type_id) IN ('nvarchar', 'nchar', 'varchar', 'char', 'varbinary', 'binary') AND c2.max_length = -1 THEN '(max)'
+                                                        WHEN type_name(c2.user_type_id) IN ('nvarchar', 'nchar') THEN '(' + CAST(c2.max_length / 2 AS VARCHAR(10)) + ')'
+                                                        WHEN type_name(c2.user_type_id) IN ('varchar', 'char', 'varbinary', 'binary') THEN '(' + CAST(c2.max_length AS VARCHAR(10)) + ')'
+                                                        WHEN type_name(c2.user_type_id) IN ('decimal', 'numeric') THEN '(' + CAST(c2.precision AS VARCHAR(10)) + ',' + CAST(c2.scale AS VARCHAR(10)) + ')'
+                                                        WHEN type_name(c2.user_type_id) IN ('datetime2', 'datetimeoffset', 'time') THEN '(' + CAST(c2.scale AS VARCHAR(10)) + ')'
+                                                        ELSE ''
+                                                END +
+                                                CASE
+                                                        WHEN c2.collation_name IS NOT NULL
+                                                        THEN ' COLLATE ' + c2.collation_name
+                                                        ELSE ''
+                                                END +
                                                 CASE
                                                         WHEN c2.is_nullable = 1 THEN ' NULL'
                                                         ELSE ' NOT NULL'
